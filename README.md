@@ -10,6 +10,7 @@ mdkg is intentionally boring and portable:
 - **Node.js 18+**
 - written in **TypeScript**
 - **zero runtime dependencies** (no sqlite, no external indexers)
+- **dev dependencies only**: TypeScript (build-time) and Node 18+ (runtime)
 - works with npm / pnpm / bun
 
 ---

@@ -2,7 +2,7 @@
 id: task-2
 type: task
 title: create typescript cli skeleton and build
-status: todo
+status: done
 priority: 1
 epic: epic-1
 tags: [typescript, cli, build]

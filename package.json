@@ -6,6 +6,13 @@
   "bin": {
     "mdkg": "dist/cli.js"
   },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/add-shebang.js"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "typescript": "^5.4.0"
+  },
   "files": [
     "dist/",
     "README.md",
