@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "tool": "mdkg",
+  "root_required": true,
+
+  "index": {
+    "auto_reindex": true,
+    "tolerant": false,
+    "global_index_path": ".mdkg/index/global.json"
+  },
+
+  "pack": {
+    "default_depth": 2,
+    "default_edges": ["parent", "epic", "relates"],
+    "verbose_core_list_path": ".mdkg/core/core.md",
+    "limits": {
+      "max_nodes": 25,
+      "max_bytes": 2000000
+    }
+  },
+
+  "templates": {
+    "root_path": ".mdkg/templates",
+    "default_set": "default",
+    "workspace_overrides_enabled": false
+  },
+
+  "work": {
+    "status_enum": ["backlog", "blocked", "todo", "progress", "review", "done"],
+    "priority_min": 0,
+    "priority_max": 9,
+    "next": {
+      "strategy": "chain_then_priority",
+      "status_preference": ["progress", "todo", "review", "blocked", "backlog", "done"]
+    }
+  },
+
+  "workspaces": {
+    "root": {
+      "path": ".",
+      "enabled": true,
+      "mdkg_dir": ".mdkg"
+    }
+  }
+}
