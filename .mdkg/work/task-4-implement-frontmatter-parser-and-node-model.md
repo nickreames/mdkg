@@ -2,7 +2,7 @@
 id: task-4
 type: task
 title: implement strict frontmatter parser and node model
-status: todo
+status: done
 priority: 1
 epic: epic-1
 tags: [frontmatter, parser, schema]
