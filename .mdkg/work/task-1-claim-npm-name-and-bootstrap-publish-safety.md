@@ -1,3 +1,4 @@
+---
 id: task-1
 type: task
 title: claim npm name and bootstrap publish safety
@@ -8,6 +9,7 @@ relates: [rule-4, rule-5]
 tags: [npm, publish, safety]
 created: 2026-01-06
 updated: 2026-01-06
+---
 
 Overview
 
