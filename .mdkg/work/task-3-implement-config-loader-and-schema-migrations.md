@@ -2,7 +2,7 @@
 id: task-3
 type: task
 title: implement config loader and schema migrations
-status: todo
+status: done
 priority: 1
 epic: epic-1
 tags: [config, schema, migrations]
