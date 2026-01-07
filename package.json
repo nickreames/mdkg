@@ -1,0 +1,26 @@
+{
+  "name": "mdkg",
+  "version": "0.0.1",
+  "description": "Markdown Knowledge Graph",
+  "license": "MIT",
+  "bin": {
+    "mdkg": "dist/cli.js"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nickreames/mdkg.git"
+  },
+  "keywords": [
+    "markdown",
+    "knowledge-graph",
+    "cli"
+  ]
+}
