@@ -23,7 +23,7 @@ export type Node = {
 const ID_RE = /^[a-z]+-[0-9]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
-const WORK_TYPES = new Set(["epic", "feat", "task", "bug", "chk"]);
+const WORK_TYPES = new Set(["epic", "feat", "task", "bug", "checkpoint"]);
 const DEC_TYPES = new Set(["dec"]);
 const ALLOWED_TYPES = new Set([
   "rule",
@@ -35,7 +35,7 @@ const ALLOWED_TYPES = new Set([
   "feat",
   "task",
   "bug",
-  "chk",
+  "checkpoint",
 ]);
 
 const WORK_STATUS = new Set(["backlog", "blocked", "todo", "progress", "review", "done"]);
@@ -100,8 +100,12 @@ function requireLowercase(value: string, key: string, filePath: string): string 
   return value;
 }
 
+function isValidId(value: string): boolean {
+  return ID_RE.test(value) || value === "rule-guide";
+}
+
 function requireIdFormat(value: string, key: string, filePath: string): string {
-  if (!ID_RE.test(value)) {
+  if (!isValidId(value)) {
     throw formatError(filePath, `${key} must match <prefix>-<number>`);
   }
   return value;
@@ -130,7 +134,7 @@ function normalizeIdList(values: string[], key: string, filePath: string): strin
     if (value !== value.toLowerCase()) {
       throw formatError(filePath, `${key} entries must be lowercase`);
     }
-    if (!ID_RE.test(value)) {
+    if (!isValidId(value)) {
       throw formatError(filePath, `${key} entries must match <prefix>-<number>`);
     }
     return value;
