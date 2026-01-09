@@ -3,6 +3,7 @@
 import fs from "fs";
 import path from "path";
 import { parseArgs } from "./util/argparse";
+import { runIndexCommand } from "./commands/index";
 
 function printUsage(): void {
   console.log("mdkg - Markdown Knowledge Graph");
@@ -50,6 +51,17 @@ function main(): void {
   }
 
   switch (command) {
+    case "index": {
+      const tolerant = Boolean(parsed.flags["--tolerant"]);
+      try {
+        runIndexCommand({ root, tolerant });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error(message);
+        process.exit(4);
+      }
+      process.exit(0);
+    }
     default:
       console.error(`Unknown command: ${command}`);
       printUsage();

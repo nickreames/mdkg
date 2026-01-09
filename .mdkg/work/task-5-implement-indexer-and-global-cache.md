@@ -2,7 +2,7 @@
 id: task-5
 type: task
 title: implement indexer and global cache (global.json)
-status: todo
+status: done
 priority: 1
 epic: epic-1
 tags: [index, cache, workspaces]
