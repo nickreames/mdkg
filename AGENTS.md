@@ -2,10 +2,12 @@
 
 ## Project Structure & Module Organization
 
-This repository currently contains only mdkg configuration data. The working files live under the `.mdkg/` directory.
+This repository contains the mdkg CLI source plus mdkg configuration data.
 
-- `.mdkg/config.json` stores the mdkg tool configuration.
-- No application source, tests, or assets are present yet.
+- `src/` holds the TypeScript CLI implementation.
+- `tests/` holds unit tests compiled to `dist/tests/`.
+- `scripts/` contains build helpers.
+- `.mdkg/` stores mdkg configuration and docs (`.mdkg/config.json`).
 
 When adding code, keep related files grouped (e.g., `src/`, `tests/`, `assets/`) and update this guide to reflect the new layout.
 
@@ -26,11 +28,13 @@ There is no project-specific style guide yet. Follow these defaults until a code
 
 ## Testing Guidelines
 
-No testing framework is configured. If you add tests, document the framework, naming scheme (e.g., `*_test.py`, `*.spec.ts`), and how to run them.
+We use Node's built-in test runner. Tests live under `tests/` and use `*.test.ts` naming.
+
+- `npm run test`
 
 ## Commit & Pull Request Guidelines
 
-This directory is not initialized as a Git repository, so no commit history or conventions exist. If you add Git history, define a commit format and PR expectations here (issue links, change summary, screenshots for UI changes, etc.).
+No commit or PR conventions are defined yet. If you add them, document the format and expectations here (issue links, change summary, screenshots for UI changes, etc.).
 
 ## Configuration Notes
 
