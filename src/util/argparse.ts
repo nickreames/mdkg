@@ -6,7 +6,7 @@ export type ParsedArgs = {
   error?: string;
 };
 
-const NORMALIZE_VALUE_FLAGS = new Set(["--ws", "--type", "--status", "--template"]);
+const NORMALIZE_VALUE_FLAGS = new Set(["--ws", "--type", "--status", "--template", "--epic"]);
 
 export function parseArgs(argv: string[]): ParsedArgs {
   const result: ParsedArgs = {
