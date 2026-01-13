@@ -11,7 +11,10 @@ When adding code, keep related files grouped (e.g., `src/`, `tests/`, `assets/`)
 
 ## Build, Test, and Development Commands
 
-No build, test, or runtime commands are defined in the current repository. If you introduce a build system or task runner, document the exact commands here (for example, `make build`, `npm test`, or `./scripts/dev`).
+Build and test commands:
+
+- `npm run build`
+- `npm run test`
 
 ## Coding Style & Naming Conventions
 
