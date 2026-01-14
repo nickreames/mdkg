@@ -7,6 +7,7 @@ import { runIndexCommand } from "./commands/index";
 import { runListCommand } from "./commands/list";
 import { runSearchCommand } from "./commands/search";
 import { runShowCommand } from "./commands/show";
+import { runPackCommand } from "./commands/pack";
 import { NotFoundError, UsageError } from "./util/errors";
 
 function printUsage(): void {
@@ -19,6 +20,8 @@ function printUsage(): void {
   console.log("  mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]");
   console.log("           [--priority <n>] [--blocked]");
   console.log("  mdkg search <query> [--type <type>] [--status <status>] [--ws <alias>]");
+  console.log("  mdkg pack <id-or-qid> [--depth <n>] [--edges <keys>] [--verbose]");
+  console.log("           [--format md|json|toon|xml] [--out <path>] [--ws <alias>]");
   console.log("\nGlobal options:");
   console.log("  --root <path>  Run against a specific repo root");
   console.log("  --help, -h     Show help");
@@ -85,6 +88,20 @@ function parseNumberFlag(
     throw new UsageError(`${flag} must be an integer`);
   }
   return parsed;
+}
+
+function parseEdgesFlag(value: string | boolean | undefined): string[] | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === true) {
+    throw new UsageError("--edges requires a value");
+  }
+  const raw = String(value)
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return raw.length > 0 ? raw : undefined;
 }
 
 function handleCommandError(err: unknown): never {
@@ -206,6 +223,37 @@ function main(): void {
           ws,
           type,
           status,
+          noCache,
+          noReindex,
+        });
+      } catch (err) {
+        handleCommandError(err);
+      }
+      process.exit(0);
+    }
+    case "pack": {
+      const id = parsed.positionals[1];
+      if (!id || parsed.positionals.length > 2) {
+        handleCommandError(new UsageError("pack requires a single id"));
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const depth = parseNumberFlag("--depth", parsed.flags["--depth"]);
+      const edges = parseEdgesFlag(parsed.flags["--edges"]);
+      const verbose = parseBooleanFlag("--verbose", parsed.flags["--verbose"]);
+      const format = requireFlagValue("--format", parsed.flags["--format"]);
+      const out = requireFlagValue("--out", parsed.flags["--out"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      try {
+        runPackCommand({
+          root,
+          id,
+          ws,
+          depth,
+          edges,
+          verbose,
+          format,
+          out,
           noCache,
           noReindex,
         });
