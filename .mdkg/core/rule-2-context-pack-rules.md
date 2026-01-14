@@ -4,7 +4,7 @@ type: rule
 title: mdkg context pack rules (selection, ordering, verbose, checkpoints)
 tags: [mdkg, pack, agents, spec]
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-13
 ---
 
 # mdkg context pack rules
@@ -18,11 +18,11 @@ Packs are the core feature that turns a Markdown graph into a repeatable “what
 - Deterministic: same repo state + same command → same pack ordering and contents.
 - Relevant: include the minimum set needed to execute the work well.
 - Safe: enforce limits to prevent runaway packs.
-- Flexible: export to Markdown / JSON / TOON.
+- Flexible: export to Markdown / JSON / TOON / XML.
 
 ## Command (conceptual)
 
-`mdkg pack <id-or-qid> [--depth N] [--verbose] [--edges ...] [--ws <alias>] [--format md|json|toon] [--out <path>]`
+`mdkg pack <id-or-qid> [--depth N] [--verbose] [--edges ...] [--ws <alias>] [--format md|json|toon|xml] [--out <path>]`
 
 Notes:
 - CLI normalizes to lowercase before processing.
@@ -49,6 +49,8 @@ Optional edges (include only when requested via `--edges`):
 - `blocks`
 - `prev`
 - `next`
+
+`--edges` adds to the default edge set; duplicates are ignored.
 
 ### Traversal method
 - BFS traversal from the root to the specified depth.
@@ -77,11 +79,26 @@ Ordering is designed to maximize agent usefulness and rule compliance.
 6) Work graph neighbors (if included):
    - blockers, blocks, prev/next chain, related tasks/bugs
 
+### Non-task root ordering (fallback)
+
+If the root is not a `task-*` or `bug-*`, the root is still first. Remaining nodes are ordered by type priority:
+
+1) `edd-*`
+2) `dec-*`
+3) `rule-*`
+4) `prd-*`
+5) `prop-*`
+6) `epic-*`
+7) `feat-*`
+8) `task-*`
+9) `bug-*`
+10) `chk-*`
+
 ### Tie-breakers (stable determinism)
 
 Within each group:
 1) type priority (as listed above)
-2) numeric ID ascending
+2) numeric ID ascending (use the trailing number in `<prefix>-<number>` when present; otherwise treat as infinity)
 3) title lexicographic (final tie-break)
 
 ## Verbose mode (`--verbose`)
@@ -91,6 +108,7 @@ Verbose mode is intended for “fresh agent sessions” and MUST add baseline ru
 When `--verbose` is enabled:
 - include IDs listed in `.mdkg/core/core.md` (one per line)
 - pinned core inclusion MUST obey pack limits
+- IDs are resolved as `id` or `qid`; ambiguous matches should warn and be skipped unless a qualified ID is provided
 
 If a pinned core ID does not exist, pack generation should warn but continue.
 
@@ -116,12 +134,13 @@ When a limit is hit:
 - the root node MUST remain included
 - higher-priority types (`edd/dec/rule/prd`) should be favored over low-priority neighbors
 - pack metadata must record that truncation occurred
+- `max_bytes` is enforced for Markdown output; other formats ignore byte limits in v1
 
 ## Export formats
 
 ### Markdown (`--format md`)
 Markdown packs MUST include:
-- a pack header with metadata (root, depth, verbose, node count)
+- a pack header with metadata (root, depth, verbose, node count, truncation flags)
 - an ordered “included nodes” list
 - each node content separated by a stable divider
 - node headers should include: `qid`, `type`, `title`, `status` (if any), `priority` (if any), `path`, and the searchable frontmatter lists `links` and `artifacts`
@@ -144,6 +163,14 @@ TOON packs SHOULD mirror JSON semantics:
 - node fields as above
 
 Exact TOON encoding is defined by the project’s TOON spec adoption.
+
+### XML (`--format xml`)
+XML packs SHOULD mirror JSON semantics:
+- `<pack>` root element with `<meta>` and `<nodes>`
+- `<nodes>` contains ordered `<node>` elements
+- node fields align with JSON exporter
+- list fields are represented as repeated child elements
+- body content must be safely encoded
 
 ## Determinism requirements
 

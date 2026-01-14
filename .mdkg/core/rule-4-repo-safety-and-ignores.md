@@ -24,10 +24,12 @@ The repo MUST ignore at minimum:
 - `node_modules/`
 - `dist/`
 - `.mdkg/index/`
+- `.mdkg/pack/`
 
 Recommended `.gitignore` entries:
 - `.mdkg/index/`
 - `.mdkg/index/**`
+- `.mdkg/pack/`
 
 ## npm publish safety (required)
 
