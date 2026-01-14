@@ -14,17 +14,24 @@ export function sanitizeFilename(value: string): string {
   return value.replace(/[^a-z0-9_-]/gi, "-");
 }
 
-export function formatTimestampForFilename(date: Date): string {
+export function formatTimestampForFilename(date: Date, useUtc = false): string {
   const pad = (value: number, size: number) => String(value).padStart(size, "0");
+  const year = useUtc ? date.getUTCFullYear() : date.getFullYear();
+  const month = useUtc ? date.getUTCMonth() + 1 : date.getMonth() + 1;
+  const day = useUtc ? date.getUTCDate() : date.getDate();
+  const hours = useUtc ? date.getUTCHours() : date.getHours();
+  const minutes = useUtc ? date.getUTCMinutes() : date.getMinutes();
+  const seconds = useUtc ? date.getUTCSeconds() : date.getSeconds();
+  const millis = useUtc ? date.getUTCMilliseconds() : date.getMilliseconds();
   return [
-    date.getFullYear(),
-    pad(date.getMonth() + 1, 2),
-    pad(date.getDate(), 2),
+    year,
+    pad(month, 2),
+    pad(day, 2),
     "-",
-    pad(date.getHours(), 2),
-    pad(date.getMinutes(), 2),
-    pad(date.getSeconds(), 2),
-    pad(date.getMilliseconds(), 3),
+    pad(hours, 2),
+    pad(minutes, 2),
+    pad(seconds, 2),
+    pad(millis, 3),
   ].join("");
 }
 

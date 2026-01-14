@@ -23,7 +23,7 @@ test("formatLargeOutputWarning mentions --out", () => {
 
 test("formatTimestampForFilename includes milliseconds", () => {
   const date = new Date(Date.UTC(2026, 0, 13, 12, 34, 56, 789));
-  assert.equal(formatTimestampForFilename(date), "20260113-123456789");
+  assert.equal(formatTimestampForFilename(date, true), "20260113-123456789");
 });
 
 test("buildDefaultPackPath includes kind, id, and format", () => {
