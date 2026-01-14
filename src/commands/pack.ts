@@ -4,6 +4,7 @@ import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
+import { formatLargeOutputWarning, shouldWarnLargeOutput } from "../util/output";
 import { buildPack } from "../pack/pack";
 import { exportMarkdown } from "../pack/export_md";
 import { exportJson } from "../pack/export_json";
@@ -121,5 +122,9 @@ export function runPackCommand(options: PackCommandOptions): void {
     return;
   }
 
+  const outputBytes = Buffer.byteLength(output, "utf8");
+  if (shouldWarnLargeOutput(outputBytes, Boolean(process.stdout.isTTY))) {
+    console.error(formatLargeOutputWarning(outputBytes));
+  }
   console.log(output);
 }

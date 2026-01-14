@@ -11,20 +11,26 @@ export function formatResolveError(
   result: ResolveResult,
   wsHint?: string
 ): string {
-  if (result.status === "missing") {
-    if (wsHint) {
-      if (result.candidates.length > 0) {
-        return `${label} not found in workspace ${wsHint}: ${value} (did you mean ${result.candidates.join(
-          ", "
-        )}?)`;
+  switch (result.status) {
+    case "missing": {
+      if (wsHint) {
+        if (result.candidates.length > 0) {
+          return `${label} not found in workspace ${wsHint}: ${value} (did you mean ${result.candidates.join(
+            ", "
+          )}?)`;
+        }
+        return `${label} not found in workspace ${wsHint}: ${value}`;
       }
-      return `${label} not found in workspace ${wsHint}: ${value}`;
+      return `${label} not found: ${value}`;
     }
-    return `${label} not found: ${value}`;
+    case "ambiguous": {
+      const candidates = result.candidates.join(", ");
+      return `ambiguous ${label}: ${value} (use ${candidates})`;
+    }
+    case "ok": {
+      return `${label} resolved: ${result.qid}`;
+    }
   }
-
-  const candidates = result.candidates.join(", ");
-  return `ambiguous ${label}: ${value} (use ${candidates})`;
 }
 
 export function resolveQid(index: Index, idOrQid: string, wsHint?: string): ResolveResult {
