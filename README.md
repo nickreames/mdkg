@@ -163,6 +163,7 @@ If you want something searchable, put it in frontmatter:
 - `mdkg pack <id> [--format md|json|toon|xml] [--verbose] [--depth <n>] [--edges <keys>]`
 
 `--verbose` includes pinned core docs listed in `.mdkg/core/core.md`.
+If `--out` is omitted, packs are written to `/tmp/pack_<kind>_<id>_<timestamp>.<ext>`.
 
 ### Workflow helpers
 

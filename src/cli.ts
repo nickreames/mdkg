@@ -20,10 +20,10 @@ function printUsage(): void {
   console.log("  mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]");
   console.log("           [--priority <n>] [--blocked]");
   console.log("  mdkg search <query> [--type <type>] [--status <status>] [--ws <alias>]");
-  console.log("  mdkg pack <id-or-qid> [--depth <n>] [--edges <keys>] [--verbose]");
-  console.log("           [--format md|json|toon|xml] [--out <path>] [--ws <alias>]");
+  console.log("  mdkg pack <id-or-qid> [-d <n>] [-e <keys>] [-v]");
+  console.log("           [-f md|json|toon|xml] [-o <path>] [-w <alias>]");
   console.log("\nGlobal options:");
-  console.log("  --root <path>  Run against a specific repo root");
+  console.log("  --root, -r <path>  Run against a specific repo root");
   console.log("  --help, -h     Show help");
   console.log("  --no-cache     Bypass reading the index cache");
   console.log("  --no-reindex   Do not auto rebuild when cache is stale");

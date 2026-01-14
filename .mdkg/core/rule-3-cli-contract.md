@@ -4,7 +4,7 @@ type: rule
 title: mdkg cli contract (root-only, commands, flags, exit codes)
 tags: [mdkg, cli, contract, spec]
 created: 2026-01-06
-updated: 2026-01-13
+updated: 2026-01-14
 ---
 
 # mdkg CLI contract
@@ -142,6 +142,8 @@ Common flags:
 - `mdkg pack <id-or-qid> [--depth <n>] [--verbose] [--edges <keys>] [--format md|json|toon|xml] [--out <path>] [--ws <alias>]`
   - `--edges` adds to the default edge set
   - `--out` writes to a file (create parent dirs; overwrite if exists)
+  - if `--out` is omitted, write to `/tmp/pack_<kind>_<id>_<timestamp>.<ext>`
+  - short flags supported: `-o`, `-f`, `-v`, `-d`, `-e`, `-w`, `-r`
 
 ### Next priority
 - `mdkg next [<id-or-qid>] [--ws <alias>]`

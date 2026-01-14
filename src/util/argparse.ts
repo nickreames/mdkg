@@ -8,6 +8,27 @@ export type ParsedArgs = {
 
 const NORMALIZE_VALUE_FLAGS = new Set(["--ws", "--type", "--status", "--template", "--epic"]);
 
+const FLAG_ALIASES: Record<string, string> = {
+  "--o": "--out",
+  "-o": "--out",
+  "--f": "--format",
+  "-f": "--format",
+  "--v": "--verbose",
+  "-v": "--verbose",
+  "--d": "--depth",
+  "-d": "--depth",
+  "--e": "--edges",
+  "-e": "--edges",
+  "--w": "--ws",
+  "-w": "--ws",
+  "--r": "--root",
+  "-r": "--root",
+};
+
+function normalizeFlag(flag: string): string {
+  return FLAG_ALIASES[flag] ?? flag;
+}
+
 export function parseArgs(argv: string[]): ParsedArgs {
   const result: ParsedArgs = {
     help: false,
@@ -22,9 +43,17 @@ export function parseArgs(argv: string[]): ParsedArgs {
       continue;
     }
 
-    if (arg.startsWith("--")) {
-      const eqIndex = arg.indexOf("=");
-      const flag = eqIndex === -1 ? arg : arg.slice(0, eqIndex);
+    let normalizedArg = arg;
+    if (normalizedArg.startsWith("-") && !normalizedArg.startsWith("--")) {
+      if (normalizedArg.length === 2) {
+        normalizedArg = `--${normalizedArg.slice(1)}`;
+      }
+    }
+
+    if (normalizedArg.startsWith("--")) {
+      const eqIndex = normalizedArg.indexOf("=");
+      const flagRaw = eqIndex === -1 ? normalizedArg : normalizedArg.slice(0, eqIndex);
+      const flag = normalizeFlag(flagRaw);
       const inlineValue = eqIndex === -1 ? undefined : arg.slice(eqIndex + 1);
 
       if (flag === "--root") {

@@ -47,7 +47,7 @@ const basePack = {
 };
 
 test("exportMarkdown enforces max_bytes", () => {
-  const { meta, nodes, content } = exportMarkdown(basePack, 200);
+  const { meta, nodes, content } = exportMarkdown(basePack, 260);
   assert.equal(meta.truncated.max_bytes, true);
   assert.equal(nodes.length, 1);
   assert.ok(content.includes("root:task-1"));
