@@ -1,3 +1,5 @@
+import path from "path";
+
 export const PACK_WARN_BYTES = 200000;
 
 export function shouldWarnLargeOutput(bytes: number, isTTY: boolean): boolean {
@@ -27,6 +29,7 @@ export function formatTimestampForFilename(date: Date): string {
 }
 
 export function buildDefaultPackPath(
+  root: string,
   rootId: string,
   format: string,
   verbose: boolean,
@@ -36,5 +39,6 @@ export function buildDefaultPackPath(
   const safeId = sanitizeFilename(rootId.toLowerCase());
   const safeFormat = sanitizeFilename(format.toLowerCase());
   const timestamp = formatTimestampForFilename(now);
-  return `/tmp/pack_${kind}_${safeId}_${timestamp}.${safeFormat}`;
+  const filename = `pack_${kind}_${safeId}_${timestamp}.${safeFormat}`;
+  return path.resolve(root, ".mdkg", "pack", filename);
 }

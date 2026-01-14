@@ -142,7 +142,7 @@ Common flags:
 - `mdkg pack <id-or-qid> [--depth <n>] [--verbose] [--edges <keys>] [--format md|json|toon|xml] [--out <path>] [--ws <alias>]`
   - `--edges` adds to the default edge set
   - `--out` writes to a file (create parent dirs; overwrite if exists)
-  - if `--out` is omitted, write to `/tmp/pack_<kind>_<id>_<timestamp>.<ext>`
+  - if `--out` is omitted, write to `.mdkg/pack/pack_<kind>_<id>_<timestamp>.<ext>`
   - short flags supported: `-o`, `-f`, `-v`, `-d`, `-e`, `-w`, `-r`
 
 ### Next priority

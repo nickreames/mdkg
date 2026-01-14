@@ -23,7 +23,7 @@ When `mdkg pack` runs without `--out`, write output to `/tmp` with a determinist
 
 # Acceptance Criteria
 
-- default output path is `/tmp/pack_<kind>_<id>_<timestamp>.<ext>` when `--out` is omitted
+- default output path is `.mdkg/pack/pack_<kind>_<id>_<timestamp>.<ext>` when `--out` is omitted
 - `<kind>` is `verbose` when `--verbose` is set, otherwise `standard`
 - `<id>` is the root id (unqualified), normalized lowercase
 - `<timestamp>` includes milliseconds and is safe for filenames

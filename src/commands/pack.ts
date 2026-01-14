@@ -4,7 +4,7 @@ import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { buildDefaultPackPath, formatLargeOutputWarning, shouldWarnLargeOutput } from "../util/output";
+import { buildDefaultPackPath } from "../util/output";
 import { buildPack } from "../pack/pack";
 import { exportMarkdown } from "../pack/export_md";
 import { exportJson } from "../pack/export_json";
@@ -115,16 +115,11 @@ export function runPackCommand(options: PackCommandOptions): void {
   }
 
   const rootId = resolved.qid.split(":")[1] ?? resolved.qid;
-  const outPathRaw =
-    options.out ?? buildDefaultPackPath(rootId, format, Boolean(options.verbose), new Date());
-  const outPath = options.out ? path.resolve(options.root, outPathRaw) : outPathRaw;
+  const outPath = options.out
+    ? path.resolve(options.root, options.out)
+    : buildDefaultPackPath(options.root, rootId, format, Boolean(options.verbose), new Date());
 
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, output, "utf8");
   console.log(`pack written: ${outPath}`);
-
-  const outputBytes = Buffer.byteLength(output, "utf8");
-  if (!options.out && shouldWarnLargeOutput(outputBytes, Boolean(process.stdout.isTTY))) {
-    console.error(formatLargeOutputWarning(outputBytes));
-  }
 }

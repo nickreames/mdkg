@@ -28,8 +28,8 @@ test("formatTimestampForFilename includes milliseconds", () => {
 
 test("buildDefaultPackPath includes kind, id, and format", () => {
   const date = new Date(Date.UTC(2026, 0, 13, 12, 34, 56, 7));
-  const path = buildDefaultPackPath("task-1", "md", true, date);
-  assert.ok(path.startsWith("/tmp/pack_verbose_task-1_"));
+  const path = buildDefaultPackPath("/repo/root", "task-1", "md", true, date);
+  assert.ok(path.includes("/.mdkg/pack/pack_verbose_task-1_"));
   assert.ok(path.endsWith(".md"));
 });
 
