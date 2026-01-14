@@ -2,7 +2,7 @@
 id: task-18
 type: task
 title: add pack tests and fixtures
-status: todo
+status: done
 priority: 2
 epic: epic-2
 tags: [pack, tests, fixtures]
@@ -14,7 +14,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-13
-updated: 2026-01-13
+updated: 2026-01-14
 ---
 
 # Overview

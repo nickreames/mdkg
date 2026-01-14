@@ -2,7 +2,7 @@
 id: epic-2
 type: epic
 title: context pack exporters v1
-status: todo
+status: done
 priority: 2
 tags: [pack, exporters, context]
 links: [cmd:pack, format:md, format:json, format:toon, format:xml]
@@ -13,7 +13,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-13
-updated: 2026-01-13
+updated: 2026-01-14
 ---
 
 # Goal

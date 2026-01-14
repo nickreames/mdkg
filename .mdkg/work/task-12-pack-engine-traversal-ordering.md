@@ -2,7 +2,7 @@
 id: task-12
 type: task
 title: implement pack engine traversal, ordering, and limits
-status: todo
+status: done
 priority: 2
 epic: epic-2
 tags: [pack, traversal, ordering]
@@ -14,7 +14,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-13
-updated: 2026-01-13
+updated: 2026-01-14
 ---
 
 # Overview
