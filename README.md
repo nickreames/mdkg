@@ -21,7 +21,7 @@ You store project knowledge as Markdown nodes with strict frontmatter (a small, 
 
 1) indexes those nodes into a local JSON cache (`.mdkg/index/global.json`)
 2) provides fast search/list/show tools
-3) generates deterministic **context packs** for agents (Markdown/JSON/TOON exports)
+3) generates deterministic **context packs** for agents (Markdown/JSON/TOON/XML exports)
 
 Everything stays in your repo. No servers. No surprises.
 
@@ -160,9 +160,10 @@ If you want something searchable, put it in frontmatter:
 
 ### Packs (agent context)
 
-- `mdkg pack <id> [--format md|json|toon] [--verbose] [--depth <n>] [--edges <keys>]`
+- `mdkg pack <id> [--format md|json|toon|xml] [--verbose] [--depth <n>] [--edges <keys>]`
 
 `--verbose` includes pinned core docs listed in `.mdkg/core/core.md`.
+If `--out` is omitted, packs are written to `.mdkg/pack/pack_<kind>_<id>_<timestamp>.<ext>`.
 
 ### Workflow helpers
 
