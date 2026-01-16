@@ -1,8 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import fs from "fs";
 import path from "path";
-const { buildIndex } = require("../../graph/indexer");
-const { loadConfig } = require("../../core/config");
+const { runValidateCommand } = require("../../commands/validate");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -31,7 +31,10 @@ function writeConfig(root: string): void {
       status_enum: ["backlog", "blocked", "todo", "progress", "review", "done"],
       priority_min: 0,
       priority_max: 9,
-      next: { strategy: "chain_then_priority", status_preference: ["progress", "todo", "review", "blocked", "backlog", "done"] },
+      next: {
+        strategy: "chain_then_priority",
+        status_preference: ["progress", "todo", "review", "blocked", "backlog", "done"],
+      },
     },
     workspaces: {
       root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
@@ -41,17 +44,18 @@ function writeConfig(root: string): void {
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));
 }
 
-function writeTask(root: string, id: string, relates: string[] = []): void {
+function writeTask(root: string): void {
   const content = [
     "---",
-    `id: ${id}`,
+    "id: task-1",
     "type: task",
-    `title: ${id}`,
+    "title: missing headings",
     "status: todo",
     "tags: []",
+    "owners: []",
     "links: []",
     "artifacts: []",
-    `relates: [${relates.join(", ")}]`,
+    "relates: []",
     "blocked_by: []",
     "blocks: []",
     "refs: []",
@@ -59,33 +63,34 @@ function writeTask(root: string, id: string, relates: string[] = []): void {
     "created: 2026-01-06",
     "updated: 2026-01-06",
     "---",
+    "",
   ].join("\n");
-  writeFile(path.join(root, ".mdkg", "work", `${id}.md`), content);
+  writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
 }
 
-test("buildIndex creates qids and reverse edges", () => {
-  const root = makeTempDir("mdkg-index-");
+test("runValidateCommand writes warnings to --out and respects --quiet", () => {
+  const root = makeTempDir("mdkg-validate-");
   writeConfig(root);
   writeDefaultTemplates(root);
-  writeTask(root, "task-1", ["task-2"]);
-  writeTask(root, "task-2");
+  writeTask(root);
 
-  const config = loadConfig(root);
-  const index = buildIndex(root, config);
+  const outPath = "report.txt";
+  const originalError = console.error;
+  const originalLog = console.log;
+  const errorCalls: string[] = [];
+  console.error = (...args: unknown[]) => {
+    errorCalls.push(args.map(String).join(" "));
+  };
+  console.log = () => {};
 
-  assert.ok(index.nodes["root:task-1"]);
-  assert.ok(index.nodes["root:task-2"]);
-  assert.deepEqual(index.reverse_edges.relates["root:task-2"], ["root:task-1"]);
-});
+  try {
+    runValidateCommand({ root, out: outPath, quiet: true });
+  } finally {
+    console.error = originalError;
+    console.log = originalLog;
+  }
 
-test("buildIndex tolerates invalid nodes when tolerant", () => {
-  const root = makeTempDir("mdkg-index-");
-  writeConfig(root);
-  writeDefaultTemplates(root);
-  writeTask(root, "task-1");
-  writeFile(path.join(root, ".mdkg", "work", "bad.md"), "no frontmatter");
-
-  const config = loadConfig(root);
-  const index = buildIndex(root, config, { tolerant: true });
-  assert.ok(index.nodes["root:task-1"]);
+  const report = fs.readFileSync(path.join(root, outPath), "utf8");
+  assert.ok(report.includes("warning: root:task-1"));
+  assert.equal(errorCalls.length, 0);
 });

@@ -5,9 +5,10 @@ title: add pack tests and fixtures
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, tests, fixtures]
+tags: [fixtures, pack, tests]
+owners: []
 links: [cmd:test]
-artifacts: [pack-tests, pack-fixtures]
+artifacts: [pack-fixtures, pack-tests]
 relates: [rule-2, rule-6]
 blocked_by: []
 blocks: []

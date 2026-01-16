@@ -5,7 +5,8 @@ title: implement toon context pack exporter
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, export, toon]
+tags: [export, pack, toon]
+owners: []
 links: [format:toon]
 artifacts: [pack-toon]
 relates: [rule-2]

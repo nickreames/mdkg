@@ -2,9 +2,15 @@
 id: rule-6
 type: rule
 title: mdkg templates and schemas (global templates, required frontmatter, body guidance)
-tags: [mdkg, templates, schema]
+tags: [mdkg, schema, templates]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Templates and schemas

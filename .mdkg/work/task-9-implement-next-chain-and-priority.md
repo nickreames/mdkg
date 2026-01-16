@@ -5,8 +5,9 @@ title: implement next (chain first then priority p0..p9)
 status: todo
 priority: 2
 epic: epic-1
-tags: [next, priority, chain]
-links: [cmd:next, priority:p0-p9, chain:prev-next]
+tags: [chain, next, priority]
+owners: []
+links: [chain:prev-next, cmd:next, priority:p0-p9]
 artifacts: [next-chain, next-priority-fallback, status-preference-sort]
 relates: [dec-6, rule-3]
 blocked_by: []
@@ -14,7 +15,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

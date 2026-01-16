@@ -6,6 +6,31 @@ export type ParsedFrontmatter = {
 
 const KEY_RE = /^[a-z][a-z0-9_]*$/;
 
+export const DEFAULT_FRONTMATTER_KEY_ORDER = [
+  "id",
+  "type",
+  "title",
+  "status",
+  "priority",
+  "epic",
+  "parent",
+  "prev",
+  "next",
+  "supersedes",
+  "tags",
+  "owners",
+  "links",
+  "artifacts",
+  "relates",
+  "blocked_by",
+  "blocks",
+  "refs",
+  "aliases",
+  "scope",
+  "created",
+  "updated",
+];
+
 function formatError(filePath: string, lineNumber: number, message: string): Error {
   return new Error(`${filePath}:${lineNumber}: ${message}`);
 }
@@ -101,4 +126,35 @@ export function parseFrontmatter(content: string, filePath: string): ParsedFront
 
   const body = lines.slice(endIndex + 1).join("\n");
   return { frontmatter, body };
+}
+
+function formatValue(value: FrontmatterValue): string {
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return "[]";
+    }
+    return `[${value.join(", ")}]`;
+  }
+  if (typeof value === "boolean") {
+    return value ? "true" : "false";
+  }
+  return value;
+}
+
+export function formatFrontmatter(
+  frontmatter: Record<string, FrontmatterValue>,
+  keyOrder: string[] = DEFAULT_FRONTMATTER_KEY_ORDER
+): string[] {
+  const keys = Object.keys(frontmatter);
+  const keySet = new Set(keys);
+  const ordered: string[] = [];
+  for (const key of keyOrder) {
+    if (keySet.has(key)) {
+      ordered.push(key);
+    }
+  }
+  const remaining = keys.filter((key) => !keyOrder.includes(key)).sort();
+  ordered.push(...remaining);
+
+  return ordered.map((key) => `${key}: ${formatValue(frontmatter[key])}`);
 }

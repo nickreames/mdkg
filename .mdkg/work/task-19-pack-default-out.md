@@ -5,7 +5,8 @@ title: add default pack output path naming
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, cli, output]
+tags: [cli, output, pack]
+owners: []
 links: [cmd:pack]
 artifacts: [pack-auto-out]
 relates: [rule-2, rule-3]

@@ -3,9 +3,15 @@ id: dec-4
 type: dec
 title: strict frontmatter and flexible body structure
 status: accepted
-tags: [mdkg, frontmatter, schema]
+tags: [frontmatter, mdkg, schema]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Context
@@ -31,3 +37,7 @@ We need strictness where it matters and flexibility where it does not.
 - `mdkg validate` must clearly report frontmatter violations
 - `mdkg format` should help repair common frontmatter formatting issues
 - templates become important for agent usability
+
+# Links / references
+
+- none

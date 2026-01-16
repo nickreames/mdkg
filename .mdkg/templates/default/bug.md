@@ -9,6 +9,7 @@ parent: {{parent}}
 prev: {{prev}}
 next: {{next}}
 tags: []
+owners: []
 links: []
 artifacts: []
 relates: []

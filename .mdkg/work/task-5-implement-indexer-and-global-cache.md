@@ -5,16 +5,17 @@ title: implement indexer and global cache (global.json)
 status: done
 priority: 1
 epic: epic-1
-tags: [index, cache, workspaces]
+tags: [cache, index, workspaces]
+owners: []
 links: [index:global.json, ws:registered-only]
-artifacts: [indexer, global-json, reverse-edges, staleness-check]
-relates: [edd-1, dec-2, dec-3]
+artifacts: [global-json, indexer, reverse-edges, staleness-check]
+relates: [dec-2, dec-3, edd-1]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

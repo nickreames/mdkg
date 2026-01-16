@@ -5,16 +5,17 @@ title: add unit tests and test strategy
 status: done
 priority: 2
 epic: epic-1
-tags: [tests, coverage, strategy]
+tags: [coverage, strategy, tests]
+owners: []
 links: [cmd:test, runner:node]
-artifacts: [unit-tests, fixtures, test-scripts]
-relates: [rule-1, rule-6, dec-4]
+artifacts: [fixtures, test-scripts, unit-tests]
+relates: [dec-4, rule-1, rule-6]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

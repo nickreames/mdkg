@@ -8,7 +8,9 @@ import { runListCommand } from "./commands/list";
 import { runSearchCommand } from "./commands/search";
 import { runShowCommand } from "./commands/show";
 import { runPackCommand } from "./commands/pack";
-import { NotFoundError, UsageError } from "./util/errors";
+import { runValidateCommand } from "./commands/validate";
+import { runFormatCommand } from "./commands/format";
+import { NotFoundError, UsageError, ValidationError } from "./util/errors";
 
 function printUsage(): void {
   console.log("mdkg - Markdown Knowledge Graph");
@@ -22,6 +24,8 @@ function printUsage(): void {
   console.log("  mdkg search <query> [--type <type>] [--status <status>] [--ws <alias>]");
   console.log("  mdkg pack <id-or-qid> [-d <n>] [-e <keys>] [-v]");
   console.log("           [-f md|json|toon|xml] [-o <path>] [-w <alias>]");
+  console.log("  mdkg validate [--out <path>] [--quiet]");
+  console.log("  mdkg format");
   console.log("\nGlobal options:");
   console.log("  --root, -r <path>  Run against a specific repo root");
   console.log("  --help, -h     Show help");
@@ -110,6 +114,10 @@ function handleCommandError(err: unknown): never {
     console.error(message);
     printUsage();
     process.exit(1);
+  }
+  if (err instanceof ValidationError) {
+    console.error(message);
+    process.exit(2);
   }
   if (err instanceof NotFoundError) {
     console.error(message);
@@ -257,6 +265,30 @@ function main(): void {
           noCache,
           noReindex,
         });
+      } catch (err) {
+        handleCommandError(err);
+      }
+      process.exit(0);
+    }
+    case "validate": {
+      if (parsed.positionals.length > 1) {
+        handleCommandError(new UsageError("validate does not accept positional arguments"));
+      }
+      const out = requireFlagValue("--out", parsed.flags["--out"]);
+      const quiet = parseBooleanFlag("--quiet", parsed.flags["--quiet"]);
+      try {
+        runValidateCommand({ root, out, quiet });
+      } catch (err) {
+        handleCommandError(err);
+      }
+      process.exit(0);
+    }
+    case "format": {
+      if (parsed.positionals.length > 1) {
+        handleCommandError(new UsageError("format does not accept positional arguments"));
+      }
+      try {
+        runFormatCommand({ root });
       } catch (err) {
         handleCommandError(err);
       }

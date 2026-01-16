@@ -5,16 +5,17 @@ title: implement search, list, and show commands using global index
 status: done
 priority: 2
 epic: epic-1
-tags: [search, list, show]
-links: [cmd:search, cmd:list, cmd:show]
-artifacts: [show-output, list-filters, search-index]
+tags: [list, search, show]
+owners: []
+links: [cmd:list, cmd:search, cmd:show]
+artifacts: [list-filters, search-index, show-output]
 relates: [rule-3]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-13
+updated: 2026-01-14
 ---
 
 # Overview
