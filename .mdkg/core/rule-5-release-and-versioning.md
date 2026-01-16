@@ -2,9 +2,15 @@
 id: rule-5
 type: rule
 title: mdkg release and versioning (semver, publish checklist)
-tags: [mdkg, release, semver, npm]
+tags: [mdkg, npm, release, semver]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Release and versioning

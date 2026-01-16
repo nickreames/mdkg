@@ -6,15 +6,16 @@ status: done
 priority: 2
 epic: epic-1
 tags: [pack, planning, research]
-links: [cmd:pack, format:md, format:json, format:toon, format:xml]
-artifacts: [pack-epic, pack-subtasks, pack-spec-alignment]
-relates: [rule-2, rule-3, epic-2, task-12, task-13, task-14, task-15, task-16, task-17, task-18]
+owners: []
+links: [cmd:pack, format:json, format:md, format:toon, format:xml]
+artifacts: [pack-epic, pack-spec-alignment, pack-subtasks]
+relates: [epic-2, rule-2, rule-3, task-12, task-13, task-14, task-15, task-16, task-17, task-18]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-13
+updated: 2026-01-14
 ---
 
 # Overview

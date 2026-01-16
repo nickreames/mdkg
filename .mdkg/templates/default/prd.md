@@ -3,6 +3,7 @@ id: {{id}}
 type: prd
 title: {{title}}
 tags: []
+owners: []
 links: []
 artifacts: []
 relates: []

@@ -5,16 +5,17 @@ title: create typescript cli skeleton and build
 status: done
 priority: 1
 epic: epic-1
-tags: [typescript, cli, build]
+tags: [build, cli, typescript]
+owners: []
 links: [node:>=18, typescript]
-artifacts: [dist-cli, bin-entry]
+artifacts: [bin-entry, dist-cli]
 relates: [edd-1, rule-3, rule-5]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

@@ -3,6 +3,7 @@ id: {{id}}
 type: prop
 title: {{title}}
 tags: []
+owners: []
 links: []
 artifacts: []
 relates: []

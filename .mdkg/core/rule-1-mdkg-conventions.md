@@ -2,9 +2,15 @@
 id: rule-1
 type: rule
 title: mdkg conventions (naming, ids, frontmatter, status, priority, templates)
-tags: [mdkg, conventions, spec]
+tags: [conventions, mdkg, spec]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # mdkg conventions

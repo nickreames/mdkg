@@ -2,9 +2,15 @@
 id: edd-1
 type: edd
 title: mdkg cli and index architecture (v1)
-tags: [mdkg, cli, index, architecture]
+tags: [architecture, cli, index, mdkg]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-15
 ---
 
 # mdkg CLI and index architecture (v1)
@@ -34,6 +40,14 @@ All commands assume they are invoked from the repo root unless `--root` is provi
 Root validity check:
 - `./.mdkg/config.json` must exist
 - if missing: error with instructions (or suggest `mdkg init`)
+
+## Architecture
+
+High-level layout:
+- CLI entrypoint in `src/cli.ts` dispatches to `src/commands/*`.
+- Core services live under `src/core` and `src/graph`.
+- Pack generation lives under `src/pack`.
+- Templates live under `.mdkg/templates` and are loaded by the CLI.
 
 ## Configuration
 
@@ -96,6 +110,13 @@ Each markdown file becomes a node:
 - graph edges: `epic`, `parent`, `relates`, `blocked_by`, `blocks`, `prev`, `next`
 - note: `refs` is a searchable reference list but is NOT traversed by default pack traversal
 - note: `links` and `artifacts` store any searchable reference strings (may include URLs)
+
+## Data model
+
+Primary records:
+- nodes (frontmatter + body)
+- edges (qualified ids across workspaces)
+- index metadata (schema version, generated time)
 
 ### Global uniqueness and qualified IDs
 
@@ -166,6 +187,12 @@ Each command should:
 5) output deterministically
 6) exit with stable code per rule-3
 
+## APIs / interfaces
+
+CLI interface:
+- `mdkg <command> [flags]` with strict exit codes and deterministic output.
+- `--root` and `--ws` for targeting root or workspaces.
+
 ## Packs architecture
 
 Pack generation uses:
@@ -200,6 +227,32 @@ Formatting is conservative:
 - enforces lowercase for keys and enums
 - leaves body content unchanged where possible
 - may normalize newline endings
+
+## Failure modes
+
+- invalid frontmatter blocks indexing (unless tolerant mode is enabled)
+- missing templates break `mdkg new` and validation
+- stale index triggers rebuilds before graph operations
+
+## Observability
+
+- command output is deterministic and includes warnings/errors
+- index metadata includes timestamps for troubleshooting
+
+## Security / privacy
+
+- `.mdkg/index/` is generated and gitignored
+- `.mdkg/` docs should never be published in the npm package
+
+## Testing strategy
+
+- unit tests for parsing, indexing, validation, and pack outputs
+- CLI smoke checks via `npm run test`
+
+## Rollout plan
+
+- implement features incrementally by task
+- publish npm package with a strict `files` whitelist
 
 ## Security and publish safety
 

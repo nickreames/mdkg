@@ -6,7 +6,8 @@ status: done
 priority: 2
 epic: epic-2
 tags: [cli, flags, pack]
-links: [cmd:pack, cmd:cli]
+owners: []
+links: [cmd:cli, cmd:pack]
 artifacts: [short-flags]
 relates: [rule-3]
 blocked_by: []

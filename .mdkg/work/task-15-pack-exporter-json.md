@@ -5,7 +5,8 @@ title: implement json context pack exporter
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, export, json]
+tags: [export, json, pack]
+owners: []
 links: [format:json]
 artifacts: [pack-json]
 relates: [rule-2]

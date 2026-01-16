@@ -1,49 +1,9 @@
 ---
 id: {{id}}
-type: epic
-title: {{title}}
-status: {{status}}
-priority: {{priority}}
-tags: []
-links: []
-artifacts: []
-relates: []
-blocked_by: []
-blocks: []
-refs: []
-created: {{created}}
-updated: {{updated}}
----
-
-Goal
-
-What outcome does this epic deliver?
-
-Scope
-
-What is included?
-
-Milestones
-	•	milestone 1
-	•	milestone 2
-
-Out of Scope
-
-What is explicitly excluded?
-
-Risks
-	•	risk 1
-	•	risk 2
-
-Links / Artifacts
-	•	related docs
-	•	related tasks
-	•	external links
----
-id: {{id}}
 type: edd
 title: {{title}}
 tags: []
+owners: []
 links: []
 artifacts: []
 relates: []
@@ -59,41 +19,32 @@ What are we building and why?
 
 # Architecture
 
-High-level components and responsibilities.
+Describe the high-level structure and key components.
 
 # Data model
 
-Key entities and data flows.
+Key entities and their relationships.
 
-# Interfaces
+# APIs / interfaces
 
-APIs, CLI contracts, and module boundaries.
+External and internal interfaces.
 
 # Failure modes
 
-How can this fail? What should happen?
+What can go wrong and how we handle it.
 
 # Observability
 
-Logging, metrics, tracing, debugging.
+Metrics, logs, tracing, and health checks.
 
-# Security / Privacy
+# Security / privacy
 
-Sensitive data, secrets, access controls, data retention.
-
-# Performance
-
-Constraints and expectations.
+Data handling, access, and protections.
 
 # Testing strategy
 
-Unit, integration, e2e, smoke tests.
+How we validate the design.
 
 # Rollout plan
 
 How we ship this safely.
-
-# Open Questions
-
-- question 1
-- question 2

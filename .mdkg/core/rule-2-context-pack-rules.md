@@ -2,9 +2,15 @@
 id: rule-2
 type: rule
 title: mdkg context pack rules (selection, ordering, verbose, checkpoints)
-tags: [mdkg, pack, agents, spec]
+tags: [agents, mdkg, pack, spec]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-13
+updated: 2026-01-14
 ---
 
 # mdkg context pack rules

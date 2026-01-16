@@ -5,7 +5,8 @@ title: wire mdkg pack CLI command and flags
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, cli]
+tags: [cli, pack]
+owners: []
 links: [cmd:pack]
 artifacts: [pack-cli]
 relates: [rule-2, rule-3]

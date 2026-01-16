@@ -6,15 +6,16 @@ status: todo
 priority: 3
 epic: epic-1
 tags: [checkpoint, pack]
-links: [cmd:checkpoint, type:checkpoint, pack:checkpoint-ordering]
-artifacts: [checkpoint-new, checkpoint-indexed, pack-checkpoint-priority]
+owners: []
+links: [cmd:checkpoint, pack:checkpoint-ordering, type:checkpoint]
+artifacts: [checkpoint-indexed, checkpoint-new, pack-checkpoint-priority]
 relates: [dec-7, rule-2]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

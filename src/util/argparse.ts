@@ -36,6 +36,7 @@ const BOOLEAN_FLAGS = new Set([
   "--blocked",
   "--body",
   "--verbose",
+  "--quiet",
   "--no-cache",
   "--no-reindex",
 ]);
@@ -55,6 +56,8 @@ const FLAG_ALIASES: Record<string, string> = {
   "-w": "--ws",
   "--r": "--root",
   "-r": "--root",
+  "--q": "--quiet",
+  "-q": "--quiet",
 };
 
 function normalizeFlag(flag: string): string {

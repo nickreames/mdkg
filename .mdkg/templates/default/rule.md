@@ -3,6 +3,7 @@ id: {{id}}
 type: rule
 title: {{title}}
 tags: []
+owners: []
 links: []
 artifacts: []
 relates: []

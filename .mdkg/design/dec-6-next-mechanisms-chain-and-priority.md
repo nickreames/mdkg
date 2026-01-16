@@ -3,9 +3,15 @@ id: dec-6
 type: dec
 title: next priority uses chain first then priority (p0..p9)
 status: accepted
-tags: [mdkg, next, priority, chain]
+tags: [chain, mdkg, next, priority]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Context
@@ -38,3 +44,7 @@ Priority meaning:
 
 - index must support fast filtering by status and priority
 - CLI must resolve ambiguity and provide clear suggestions
+
+# Links / references
+
+- none

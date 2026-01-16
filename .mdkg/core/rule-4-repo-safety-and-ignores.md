@@ -2,9 +2,15 @@
 id: rule-4
 type: rule
 title: mdkg repo safety (ignore rules, publish safety, deployment safety)
-tags: [mdkg, safety, publishing]
+tags: [mdkg, publishing, safety]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Repo safety and ignores

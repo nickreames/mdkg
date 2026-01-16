@@ -5,7 +5,8 @@ title: implement markdown context pack exporter
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, export, md]
+tags: [export, md, pack]
+owners: []
 links: [format:md]
 artifacts: [pack-md]
 relates: [rule-2]

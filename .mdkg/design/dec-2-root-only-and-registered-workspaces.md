@@ -3,9 +3,15 @@ id: dec-2
 type: dec
 title: root-only operation and registered workspaces (no discovery)
 status: accepted
-tags: [mdkg, workspaces, root, indexing]
+tags: [indexing, mdkg, root, workspaces]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Context
@@ -32,3 +38,7 @@ We also want support for multiple workspaces (subdirectories) with docs near cod
 - Users must add workspaces explicitly via config/CLI
 - Indexing is predictable and bounded to known directories
 - All commands can default to global behavior with easy filtering
+
+# Links / references
+
+- none

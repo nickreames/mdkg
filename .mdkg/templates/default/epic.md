@@ -5,6 +5,7 @@ title: {{title}}
 status: {{status}}
 priority: {{priority}}
 tags: []
+owners: []
 links: []
 artifacts: []
 relates: []

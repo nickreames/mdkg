@@ -111,7 +111,7 @@ This is also intended to be a compatible building block for “life git”-style
 A node is a Markdown file with strict YAML-like frontmatter fenced by `---`.
 
 Each node must include:
-- `id` (unique)
+- `id` (unique per workspace; global uniqueness via qualified IDs)
 - `type` (rule, prd, edd, dec, prop, epic, feat, task, bug, checkpoint)
 - `title`
 - `created` / `updated` (`YYYY-MM-DD`)
@@ -178,6 +178,7 @@ If `--out` is omitted, packs are written to `.mdkg/pack/pack_<kind>_<id>_<timest
 - `mdkg validate`
   - strict frontmatter validation
   - missing required fields, invalid enums, dangling edges, cycles, duplicates
+  - supports `--out <path>` and `--quiet` for CI workflows
 
 - `mdkg format`
   - conservative frontmatter normalizer (idempotent)

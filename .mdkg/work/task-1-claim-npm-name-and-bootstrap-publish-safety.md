@@ -6,15 +6,16 @@ status: done
 priority: 0
 epic: epic-1
 tags: [npm, publish, safety]
+owners: []
 links: [npm:mdkg]
-artifacts: [publish-whitelist, tarball-verified, bin-wired]
+artifacts: [bin-wired, publish-whitelist, tarball-verified]
 relates: [rule-4, rule-5]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

@@ -2,9 +2,15 @@
 id: rule-guide
 type: rule
 title: agent guide (how to work in this repo using mdkg)
-tags: [agents, workflow, mdkg]
+tags: [agents, mdkg, workflow]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Agent guide

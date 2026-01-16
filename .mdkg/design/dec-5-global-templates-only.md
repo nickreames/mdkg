@@ -4,8 +4,14 @@ type: dec
 title: global templates only (root templates)
 status: accepted
 tags: [mdkg, templates]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Context
@@ -31,3 +37,7 @@ We still want strong templating to support agent workflows.
 - consistent document structure across the repo
 - easier implementation and validation
 - specialization happens via fields/tags/workspace separation, not templates
+
+# Links / references
+
+- none
