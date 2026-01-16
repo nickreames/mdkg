@@ -3,9 +3,15 @@ id: dec-1
 type: dec
 title: config schema versioning and migrations
 status: accepted
-tags: [mdkg, config, schema, migrations]
+tags: [config, mdkg, migrations, schema]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Context
@@ -35,3 +41,7 @@ Without versioning, early changes would break existing repos and make upgrades p
 
 - The CLI must maintain migration code for older versions
 - Config shape becomes a stable contract and supports future tools (including life git ingestion)
+
+# Links / references
+
+- none

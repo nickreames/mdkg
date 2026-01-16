@@ -6,15 +6,16 @@ status: done
 priority: 1
 epic: epic-1
 tags: [frontmatter, parser, schema]
+owners: []
 links: [frontmatter:restricted, validate:required-fields]
-artifacts: [frontmatter-parser, node-model, edges-normalization]
-relates: [rule-1, rule-6, dec-4]
+artifacts: [edges-normalization, frontmatter-parser, node-model]
+relates: [dec-4, rule-1, rule-6]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

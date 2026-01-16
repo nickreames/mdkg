@@ -4,16 +4,17 @@ type: epic
 title: v1 bootstrap and npm publish
 status: progress
 priority: 1
-tags: [mdkg, v1, release]
+tags: [mdkg, release, v1]
+owners: []
 links: [npm:mdkg]
 artifacts: []
-relates: [edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, dec-7]
+relates: [dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, dec-7, edd-1]
 blocked_by: []
 blocks: []
 refs: [rule-1, rule-2, rule-3, rule-4, rule-5, rule-6]
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Goal
@@ -39,7 +40,7 @@ Included:
 - npm publish safety (files whitelist)
 - minimal smoke tests / scripts
 
-Excluded (explicitly deferred):
+# Out of Scope
 
 - sqlite/postgres indexing (life git layer)
 - per-workspace template overrides

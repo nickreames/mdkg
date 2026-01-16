@@ -5,7 +5,8 @@ title: implement config loader and schema migrations
 status: done
 priority: 1
 epic: epic-1
-tags: [config, schema, migrations]
+tags: [config, migrations, schema]
+owners: []
 links: [config:schema_version, migrate:n-to-n+1]
 artifacts: [config-loader, migrate-functions]
 relates: [dec-1, rule-3]
@@ -14,7 +15,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Overview

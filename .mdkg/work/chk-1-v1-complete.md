@@ -6,16 +6,17 @@ status: backlog
 priority: 9
 epic: epic-1
 tags: [checkpoint, v1]
+owners: []
 links: [npm:mdkg, release:v0.1.0]
 artifacts: []
 relates: [epic-1]
 blocked_by: []
 blocks: []
-refs: [rule-1, rule-2, rule-3, rule-4, rule-5, rule-6, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, dec-7]
+refs: [dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, dec-7, edd-1, rule-1, rule-2, rule-3, rule-4, rule-5, rule-6]
 aliases: []
-scope: [task-1, task-2, task-3, task-4, task-5, task-6, task-7, task-8, task-9, task-10]
+scope: [task-1, task-10, task-2, task-3, task-4, task-5, task-6, task-7, task-8, task-9]
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Summary

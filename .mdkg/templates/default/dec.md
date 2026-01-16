@@ -3,7 +3,9 @@ id: {{id}}
 type: dec
 title: {{title}}
 status: proposed
+supersedes: {{supersedes}}
 tags: []
+owners: []
 links: []
 artifacts: []
 relates: []
@@ -30,7 +32,7 @@ What we decided and why.
 
 What changes because of this decision?
 
-# Links / References
+# Links / references
 
 - related docs
 - related tasks

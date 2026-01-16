@@ -5,7 +5,8 @@ title: implement xml context pack exporter
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, export, xml]
+tags: [export, pack, xml]
+owners: []
 links: [format:xml]
 artifacts: [pack-xml]
 relates: [rule-2]

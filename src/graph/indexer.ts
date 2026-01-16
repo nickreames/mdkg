@@ -1,10 +1,11 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
-import { parseNode } from "./node";
+import { ALLOWED_TYPES, parseNode } from "./node";
 import { EdgeMap } from "./edges";
 import { listWorkspaceDocFilesByAlias } from "./workspace_files";
 import { validateGraph } from "./validate_graph";
+import { loadTemplateSchemas } from "./template_schema";
 
 export type IndexNode = {
   id: string;
@@ -79,6 +80,7 @@ function addReverseEdge(
 
 export function buildIndex(root: string, config: Config, options: IndexOptions = {}): Index {
   const tolerant = options.tolerant ?? config.index.tolerant;
+  const templateSchemas = loadTemplateSchemas(root, config, ALLOWED_TYPES);
   const nodes: Record<string, IndexNode> = {};
   const idsByWorkspace: Record<string, Set<string>> = {};
   const docFilesByAlias = listWorkspaceDocFilesByAlias(root, config);
@@ -93,7 +95,12 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
       }
       try {
         const content = fs.readFileSync(filePath, "utf8");
-        const node = parseNode(content, filePath);
+        const node = parseNode(content, filePath, {
+          workStatusEnum: config.work.status_enum,
+          priorityMin: config.work.priority_min,
+          priorityMax: config.work.priority_max,
+          templateSchemas,
+        });
 
         if (idsByWorkspace[alias].has(node.id)) {
           throw new Error(`duplicate id ${node.id} in workspace ${alias}`);

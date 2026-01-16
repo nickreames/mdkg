@@ -5,8 +5,9 @@ title: implement pack engine traversal, ordering, and limits
 status: done
 priority: 2
 epic: epic-2
-tags: [pack, traversal, ordering]
-links: [rule:pack, cmd:pack]
+tags: [ordering, pack, traversal]
+owners: []
+links: [cmd:pack, rule:pack]
 artifacts: [pack-engine]
 relates: [rule-2, rule-3]
 blocked_by: []

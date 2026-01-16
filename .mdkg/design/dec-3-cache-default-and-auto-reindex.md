@@ -3,9 +3,15 @@ id: dec-3
 type: dec
 title: cache is default and commands auto reindex when stale
 status: accepted
-tags: [mdkg, cache, indexing]
+tags: [cache, indexing, mdkg]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Context
@@ -33,3 +39,7 @@ We also want low friction for humans and agents; stale caches should not cause c
 - index rebuild must be reliable and deterministic
 - staleness detection must be correct (config and markdown mtimes)
 - index path must remain gitignored and safe
+
+# Links / references
+
+- none

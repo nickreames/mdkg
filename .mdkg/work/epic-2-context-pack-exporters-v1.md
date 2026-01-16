@@ -4,8 +4,9 @@ type: epic
 title: context pack exporters v1
 status: done
 priority: 2
-tags: [pack, exporters, context]
-links: [cmd:pack, format:md, format:json, format:toon, format:xml]
+tags: [context, exporters, pack]
+owners: []
+links: [cmd:pack, format:json, format:md, format:toon, format:xml]
 artifacts: []
 relates: [epic-1, rule-2, rule-3]
 blocked_by: []

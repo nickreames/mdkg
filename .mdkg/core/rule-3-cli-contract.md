@@ -2,7 +2,13 @@
 id: rule-3
 type: rule
 title: mdkg cli contract (root-only, commands, flags, exit codes)
-tags: [mdkg, cli, contract, spec]
+tags: [cli, contract, mdkg, spec]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
 updated: 2026-01-14
 ---

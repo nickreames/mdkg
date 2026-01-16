@@ -3,9 +3,15 @@ id: dec-7
 type: dec
 title: checkpoints (chk) are first-class compression nodes
 status: accepted
-tags: [mdkg, checkpoints, pack]
+tags: [checkpoints, mdkg, pack]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
 created: 2026-01-06
-updated: 2026-01-06
+updated: 2026-01-14
 ---
 
 # Context
@@ -33,3 +39,7 @@ We need a way to summarize completed phases while retaining references and verif
 - agents can consume checkpoint summaries instead of many individual nodes
 - packs can prefer checkpoints (optional future flag) to reduce size
 - project continuity improves significantly
+
+# Links / references
+
+- none

@@ -44,6 +44,214 @@ function writeConfig(root: string): void {
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));
 }
 
+function writeTemplates(root: string): void {
+  const templates: Record<string, string> = {
+    task: [
+      "---",
+      "id: {{id}}",
+      "type: task",
+      "title: {{title}}",
+      "status: {{status}}",
+      "priority: {{priority}}",
+      "epic: {{epic}}",
+      "parent: {{parent}}",
+      "prev: {{prev}}",
+      "next: {{next}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    epic: [
+      "---",
+      "id: {{id}}",
+      "type: epic",
+      "title: {{title}}",
+      "status: {{status}}",
+      "priority: {{priority}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    feat: [
+      "---",
+      "id: {{id}}",
+      "type: feat",
+      "title: {{title}}",
+      "status: {{status}}",
+      "priority: {{priority}}",
+      "epic: {{epic}}",
+      "parent: {{parent}}",
+      "prev: {{prev}}",
+      "next: {{next}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    bug: [
+      "---",
+      "id: {{id}}",
+      "type: bug",
+      "title: {{title}}",
+      "status: {{status}}",
+      "priority: {{priority}}",
+      "epic: {{epic}}",
+      "parent: {{parent}}",
+      "prev: {{prev}}",
+      "next: {{next}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    checkpoint: [
+      "---",
+      "id: {{id}}",
+      "type: checkpoint",
+      "title: {{title}}",
+      "status: {{status}}",
+      "priority: {{priority}}",
+      "epic: {{epic}}",
+      "parent: {{parent}}",
+      "prev: {{prev}}",
+      "next: {{next}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "scope: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    rule: [
+      "---",
+      "id: {{id}}",
+      "type: rule",
+      "title: {{title}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    prd: [
+      "---",
+      "id: {{id}}",
+      "type: prd",
+      "title: {{title}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    edd: [
+      "---",
+      "id: {{id}}",
+      "type: edd",
+      "title: {{title}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    prop: [
+      "---",
+      "id: {{id}}",
+      "type: prop",
+      "title: {{title}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    dec: [
+      "---",
+      "id: {{id}}",
+      "type: dec",
+      "title: {{title}}",
+      "status: proposed",
+      "supersedes: {{supersedes}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+  };
+
+  for (const [name, content] of Object.entries(templates)) {
+    writeFile(path.join(root, ".mdkg", "templates", "default", `${name}.md`), content);
+  }
+}
+
 function writeCoreList(root: string, ids: string[]): void {
   const lines = ["# core list", ...ids];
   writeFile(path.join(root, ".mdkg", "core", "core.md"), lines.join("\n"));
@@ -121,6 +329,7 @@ function writeNode(root: string, options: NodeOptions): void {
 test("buildPack includes verbose core ids", () => {
   const root = makeTempDir("mdkg-pack-");
   writeConfig(root);
+  writeTemplates(root);
   writeCoreList(root, ["rule-1", "rule-missing"]);
 
   writeNode(root, { id: "task-1", type: "task", status: "todo", epic: "epic-1", parent: "feat-1", relates: ["prd-1"] });
@@ -154,6 +363,7 @@ test("buildPack includes verbose core ids", () => {
 test("task-root ordering follows rule-2 groups", () => {
   const root = makeTempDir("mdkg-pack-order-");
   writeConfig(root);
+  writeTemplates(root);
   writeCoreList(root, []);
 
   writeNode(root, {
@@ -210,6 +420,7 @@ test("task-root ordering follows rule-2 groups", () => {
 test("non-task roots use fallback ordering", () => {
   const root = makeTempDir("mdkg-pack-fallback-");
   writeConfig(root);
+  writeTemplates(root);
   writeCoreList(root, []);
 
   writeNode(root, {
@@ -263,6 +474,7 @@ test("non-task roots use fallback ordering", () => {
 test("pack truncates by max_nodes", () => {
   const root = makeTempDir("mdkg-pack-truncate-");
   writeConfig(root);
+  writeTemplates(root);
   writeCoreList(root, []);
 
   writeNode(root, {
