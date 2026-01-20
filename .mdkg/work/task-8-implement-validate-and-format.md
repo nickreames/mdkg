@@ -2,7 +2,7 @@
 id: task-8
 type: task
 title: implement validate and format commands
-status: todo
+status: done
 priority: 2
 epic: epic-1
 tags: [format, validate]
@@ -15,7 +15,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-15
+updated: 2026-01-20
 ---
 
 # Overview
