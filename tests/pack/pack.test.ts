@@ -33,7 +33,7 @@ function writeConfig(root: string): void {
       priority_max: 9,
       next: {
         strategy: "chain_then_priority",
-        status_preference: ["progress", "todo", "review", "blocked", "backlog", "done"],
+        status_preference: ["progress", "todo", "review", "blocked", "backlog"],
       },
     },
     workspaces: {

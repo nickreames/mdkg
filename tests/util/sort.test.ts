@@ -1,8 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-const { sortIndexNodes, sortNodesByQid } = require("../../util/sort");
+const { sortIndexNodes, sortNodesByQid, sortNodesForNext } = require("../../util/sort");
 
-function makeNode(qid: string) {
+function makeNode(qid: string, overrides: Record<string, unknown> = {}) {
   return {
     id: qid.split(":")[1],
     qid,
@@ -29,6 +29,7 @@ function makeNode(qid: string) {
       blocked_by: [],
       blocks: [],
     },
+    ...overrides,
   };
 }
 
@@ -58,4 +59,24 @@ test("sortIndexNodes returns a record with sorted keys", () => {
 
   const sorted = sortIndexNodes(nodes);
   assert.deepEqual(Object.keys(sorted), ["alpha:task-1", "root:task-1", "root:task-2"]);
+});
+
+test("sortNodesForNext orders by priority, status preference, then qid", () => {
+  const nodes = [
+    makeNode("root:task-3", { priority: 1, status: "todo" }),
+    makeNode("root:task-1", { priority: 1, status: "progress" }),
+    makeNode("root:task-2", { priority: 1, status: "progress" }),
+    makeNode("root:task-0", { priority: 0, status: "todo" }),
+    makeNode("root:task-4", { priority: undefined, status: "progress" }),
+  ];
+
+  const sorted = sortNodesForNext(nodes, {
+    statusPreference: ["progress", "todo"],
+    priorityMax: 9,
+  });
+
+  assert.deepEqual(
+    sorted.map((node: { qid: string }) => node.qid),
+    ["root:task-0", "root:task-1", "root:task-2", "root:task-3", "root:task-4"]
+  );
 });
