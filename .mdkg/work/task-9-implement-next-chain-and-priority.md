@@ -2,7 +2,7 @@
 id: task-9
 type: task
 title: implement next (chain first then priority p0..p9)
-status: todo
+status: done
 priority: 2
 epic: epic-1
 tags: [chain, next, priority]
@@ -15,7 +15,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-01-20
 ---
 
 # Overview
@@ -42,6 +42,12 @@ Implement the `mdkg next` command to surface the immediate next priority item.
 
 - priority is 0..9 where 0 is highest urgency.
 - do not infer next if chain has gaps; just fall back.
+- priority selection uses: priority (low number first), then status preference, then qid.
+- missing priority is treated as lowest urgency (priority_max + 1).
+- eligible types are feat/task/bug (exclude epic/checkpoint).
+- only statuses in config.work.next.status_preference are considered.
+- follow next across workspaces even when --ws is provided.
+- if no candidates match, print no node line, emit a prompt on stderr, and exit 0.
 
 # Test Plan
 

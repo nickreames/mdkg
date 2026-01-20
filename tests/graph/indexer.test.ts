@@ -31,7 +31,7 @@ function writeConfig(root: string): void {
       status_enum: ["backlog", "blocked", "todo", "progress", "review", "done"],
       priority_min: 0,
       priority_max: 9,
-      next: { strategy: "chain_then_priority", status_preference: ["progress", "todo", "review", "blocked", "backlog", "done"] },
+      next: { strategy: "chain_then_priority", status_preference: ["progress", "todo", "review", "blocked", "backlog"] },
     },
     workspaces: {
       root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },

@@ -8,6 +8,7 @@ import { runListCommand } from "./commands/list";
 import { runSearchCommand } from "./commands/search";
 import { runShowCommand } from "./commands/show";
 import { runPackCommand } from "./commands/pack";
+import { runNextCommand } from "./commands/next";
 import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { NotFoundError, UsageError, ValidationError } from "./util/errors";
@@ -24,6 +25,7 @@ function printUsage(): void {
   console.log("  mdkg search <query> [--type <type>] [--status <status>] [--ws <alias>]");
   console.log("  mdkg pack <id-or-qid> [-d <n>] [-e <keys>] [-v]");
   console.log("           [-f md|json|toon|xml] [-o <path>] [-w <alias>]");
+  console.log("  mdkg next [<id-or-qid>] [--ws <alias>]");
   console.log("  mdkg validate [--out <path>] [--quiet]");
   console.log("  mdkg format");
   console.log("\nGlobal options:");
@@ -262,6 +264,27 @@ function main(): void {
           verbose,
           format,
           out,
+          noCache,
+          noReindex,
+        });
+      } catch (err) {
+        handleCommandError(err);
+      }
+      process.exit(0);
+    }
+    case "next": {
+      if (parsed.positionals.length > 2) {
+        handleCommandError(new UsageError("next accepts at most one id"));
+      }
+      const id = parsed.positionals[1];
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      try {
+        runNextCommand({
+          root,
+          id,
+          ws,
           noCache,
           noReindex,
         });
