@@ -2,7 +2,7 @@
 id: task-10
 type: task
 title: implement checkpoints and pack integration
-status: todo
+status: done
 priority: 3
 epic: epic-1
 tags: [checkpoint, pack]
@@ -15,7 +15,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-01-20
 ---
 
 # Overview

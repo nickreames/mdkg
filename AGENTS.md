@@ -5,6 +5,7 @@
 This repository contains the mdkg CLI source plus mdkg configuration data.
 
 - `src/` holds the TypeScript CLI implementation.
+- `src/templates/` holds template loading and rendering helpers.
 - `tests/` holds unit tests compiled to `dist/tests/`.
 - `scripts/` contains build helpers.
 - `.mdkg/` stores mdkg configuration and docs (`.mdkg/config.json`).
