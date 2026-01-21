@@ -21,6 +21,7 @@ const VALUE_FLAGS = new Set([
   "--format",
   "--out",
   "--relates",
+  "--scope",
   "--blocked-by",
   "--blocks",
   "--prev",
@@ -155,7 +156,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
       continue;
     }
 
-    result.positionals.push(arg.toLowerCase());
+    result.positionals.push(arg);
   }
 
   return result;

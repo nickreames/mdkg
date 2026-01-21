@@ -11,6 +11,7 @@ import { runPackCommand } from "./commands/pack";
 import { runNextCommand } from "./commands/next";
 import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
+import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { NotFoundError, UsageError, ValidationError } from "./util/errors";
 
 function printUsage(): void {
@@ -26,6 +27,7 @@ function printUsage(): void {
   console.log("  mdkg pack <id-or-qid> [-d <n>] [-e <keys>] [-v]");
   console.log("           [-f md|json|toon|xml] [-o <path>] [-w <alias>]");
   console.log("  mdkg next [<id-or-qid>] [--ws <alias>]");
+  console.log("  mdkg checkpoint new <title> [--ws <alias>] [--relates <id,id,...>] [--scope <id,id,...>]");
   console.log("  mdkg validate [--out <path>] [--quiet]");
   console.log("  mdkg format");
   console.log("\nGlobal options:");
@@ -148,7 +150,7 @@ function main(): void {
     process.exit(1);
   }
 
-  const command = parsed.positionals[0] ?? "";
+  const command = (parsed.positionals[0] ?? "").toLowerCase();
   if (!command) {
     printUsage();
     process.exit(0);
@@ -287,6 +289,37 @@ function main(): void {
           ws,
           noCache,
           noReindex,
+        });
+      } catch (err) {
+        handleCommandError(err);
+      }
+      process.exit(0);
+    }
+    case "checkpoint": {
+      const sub = (parsed.positionals[1] ?? "").toLowerCase();
+      if (!sub) {
+        handleCommandError(new UsageError("checkpoint requires a subcommand"));
+      }
+      if (sub !== "new") {
+        handleCommandError(new UsageError(`unknown checkpoint subcommand: ${sub}`));
+      }
+      const title = parsed.positionals.slice(2).join(" ");
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const relates = requireFlagValue("--relates", parsed.flags["--relates"]);
+      const scope = requireFlagValue("--scope", parsed.flags["--scope"]);
+      const status = requireFlagValue("--status", parsed.flags["--status"]);
+      const priority = parseNumberFlag("--priority", parsed.flags["--priority"]);
+      const template = requireFlagValue("--template", parsed.flags["--template"]);
+      try {
+        runCheckpointNewCommand({
+          root,
+          title,
+          ws,
+          relates,
+          scope,
+          status,
+          priority,
+          template,
         });
       } catch (err) {
         handleCommandError(err);
