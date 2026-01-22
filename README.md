@@ -33,7 +33,7 @@ mdkg lives in a hidden directory at the repo root:
 
 - `.mdkg/core/` — rules + “pinned” docs
 - `.mdkg/design/` — decisions + architecture
-- `.mdkg/work/` — epics/tasks/bugs/checkpoints
+- `.mdkg/work/` — epics/tasks/bugs/tests/checkpoints
 - `.mdkg/templates/` — document templates used by `mdkg new`
 - `.mdkg/index/` — generated cache (gitignored)
 
@@ -112,7 +112,7 @@ A node is a Markdown file with strict YAML-like frontmatter fenced by `---`.
 
 Each node must include:
 - `id` (unique per workspace; global uniqueness via qualified IDs)
-- `type` (rule, prd, edd, dec, prop, epic, feat, task, bug, checkpoint)
+- `type` (rule, prd, edd, dec, prop, epic, feat, task, bug, checkpoint, test)
 - `title`
 - `created` / `updated` (`YYYY-MM-DD`)
 
@@ -164,6 +164,17 @@ If you want something searchable, put it in frontmatter:
 
 `--verbose` includes pinned core docs listed in `.mdkg/core/core.md`.
 If `--out` is omitted, packs are written to `.mdkg/pack/pack_<kind>_<id>_<timestamp>.<ext>`.
+
+### Quickstart (CLI only)
+
+```bash
+mdkg init --llm
+mdkg index
+mdkg new task "..." --status todo --priority 1
+mdkg list --status todo
+mdkg pack <id> --verbose
+mdkg validate
+```
 
 ### Workflow helpers
 

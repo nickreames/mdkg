@@ -25,7 +25,7 @@ const ID_RE = /^[a-z]+-[0-9]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DEC_ID_RE = /^dec-[0-9]+$/;
 
-export const WORK_TYPES = new Set(["epic", "feat", "task", "bug", "checkpoint"]);
+export const WORK_TYPES = new Set(["epic", "feat", "task", "bug", "checkpoint", "test"]);
 export const DEC_TYPES = new Set(["dec"]);
 export const ALLOWED_TYPES = new Set([
   "rule",
@@ -38,6 +38,7 @@ export const ALLOWED_TYPES = new Set([
   "task",
   "bug",
   "checkpoint",
+  "test",
 ]);
 
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);

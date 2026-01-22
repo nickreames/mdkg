@@ -4,18 +4,18 @@ type: checkpoint
 title: v1 progress: tasks 1-9 + other done tasks
 status: done
 priority: 9
-tags: [checkpoint, v1, progress]
+tags: [checkpoint, progress, v1]
 owners: []
-links: [cmd:index, cmd:search, cmd:list, cmd:show, cmd:validate, cmd:format, cmd:next, cmd:pack, cmd:checkpoint]
+links: [cmd:checkpoint, cmd:format, cmd:index, cmd:list, cmd:next, cmd:pack, cmd:search, cmd:show, cmd:validate]
 artifacts: []
 relates: [epic-1, epic-2]
 blocked_by: []
 blocks: []
-refs: [edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, dec-7, rule-1, rule-2, rule-3, rule-4, rule-5, rule-6, rule-guide]
+refs: [dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, dec-7, edd-1, rule-1, rule-2, rule-3, rule-4, rule-5, rule-6, rule-guide]
 aliases: []
-scope: [task-1, task-2, task-3, task-4, task-5, task-6, task-7, task-8, task-9, task-11, task-12, task-13, task-14, task-15, task-16, task-17, task-18, task-19, task-20]
+scope: [task-1, task-11, task-12, task-13, task-14, task-15, task-16, task-17, task-18, task-19, task-2, task-20, task-3, task-4, task-5, task-6, task-7, task-8, task-9]
 created: 2026-01-20
-updated: 2026-01-20
+updated: 2026-01-21
 ---
 # Summary
 

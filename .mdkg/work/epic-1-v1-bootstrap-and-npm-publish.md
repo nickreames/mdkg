@@ -2,7 +2,7 @@
 id: epic-1
 type: epic
 title: v1 bootstrap and npm publish
-status: progress
+status: done
 priority: 1
 tags: [mdkg, release, v1]
 owners: []
@@ -14,7 +14,7 @@ blocks: []
 refs: [rule-1, rule-2, rule-3, rule-4, rule-5, rule-6]
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-01-22
 ---
 
 # Goal
