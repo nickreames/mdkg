@@ -2,7 +2,7 @@
 id: epic-1
 type: epic
 title: v1 polish and npm publish
-status: progress
+status: done
 priority: 1
 tags: [polish, release]
 owners: []
@@ -14,7 +14,7 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-01-21
-updated: 2026-01-21
+updated: 2026-01-22
 ---
 # Goal
 
