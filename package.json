@@ -1,13 +1,13 @@
 {
   "name": "mdkg",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Markdown Knowledge Graph",
   "license": "MIT",
   "bin": {
     "mdkg": "dist/cli.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node scripts/add-shebang.js",
+    "build": "tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js",
     "build:test": "tsc -p tsconfig.test.json",
     "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js"
   },
@@ -16,7 +16,14 @@
     "typescript": "^5.4.0"
   },
   "files": [
-    "dist/",
+    "dist/cli.js",
+    "dist/commands/",
+    "dist/core/",
+    "dist/graph/",
+    "dist/init/",
+    "dist/pack/",
+    "dist/templates/",
+    "dist/util/",
     "README.md",
     "LICENSE"
   ],

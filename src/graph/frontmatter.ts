@@ -26,6 +26,7 @@ export const DEFAULT_FRONTMATTER_KEY_ORDER = [
   "blocks",
   "refs",
   "aliases",
+  "cases",
   "scope",
   "created",
   "updated",

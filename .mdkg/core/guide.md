@@ -10,12 +10,31 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-01-22
 ---
 
 # Agent guide
 
 This repo uses **mdkg** to manage documentation, decisions, and work tracking.
+
+## Quickstart
+
+- `mdkg init --llm`
+- `mdkg index`
+- `mdkg new task "..." --status todo --priority 1`
+- `mdkg list --status todo`
+- `mdkg pack <id> --verbose`
+- `mdkg validate`
+
+## Core commands
+
+- `mdkg init` (scaffold .mdkg and optional agent docs)
+- `mdkg guide` (print this guide)
+- `mdkg new <type> "<title>"`
+- `mdkg list` / `mdkg show` / `mdkg search`
+- `mdkg pack`
+- `mdkg next`
+- `mdkg validate` / `mdkg format`
 
 ## Always start with a pack
 

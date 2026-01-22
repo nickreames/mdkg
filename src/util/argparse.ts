@@ -30,6 +30,11 @@ const VALUE_FLAGS = new Set([
   "--artifacts",
   "--refs",
   "--aliases",
+  "--tags",
+  "--owners",
+  "--supersedes",
+  "--cases",
+  "--mdkg-dir",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -40,6 +45,13 @@ const BOOLEAN_FLAGS = new Set([
   "--quiet",
   "--no-cache",
   "--no-reindex",
+  "--force",
+  "--update-gitignore",
+  "--update-npmignore",
+  "--update-dockerignore",
+  "--agents",
+  "--claude",
+  "--llm",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {

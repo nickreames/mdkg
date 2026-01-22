@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-01-22
 ---
 
 # Templates and schemas
@@ -65,6 +65,7 @@ Optional tokens (nice-to-have, may be empty):
 - `{{artifacts}}` (list)
 - `{{refs}}` (list)
 - `{{aliases}}` (list)
+- `{{cases}}` (list)
 
 ## Frontmatter requirements by type
 
@@ -84,14 +85,15 @@ All nodes MAY include the following searchable frontmatter lists:
 - `artifacts: [ref, ref]` (build outputs, releases, commits, PRs, tarballs, etc.)
 - `refs: [id, id]` (non-edge references to other nodes)
 - `aliases: [text, text]` (extra searchable terms)
+- `cases: [id, id]` (test case identifiers; for test nodes)
 
 List fields SHOULD be written as `[]` when empty.
 Optional scalar graph fields (like `epic`, `parent`, `prev`, `next`) should be omitted when empty.
 
-Work items (`epic/feat/task/bug/chk`):
-- `status` (enum)
-- optional `priority` (0..9)
-- optional graph edges: `epic`, `parent`, `relates`, `blocked_by`, `blocks`, `prev`, `next`
+Work items (`epic/feat/task/bug/chk/test`):
+  - `status` (enum)
+  - optional `priority` (0..9)
+  - optional graph edges: `epic`, `parent`, `relates`, `blocked_by`, `blocks`, `prev`, `next`
 
 Decision records (`dec-*`):
 - `status` (enum: `proposed`, `accepted`, `rejected`, `superseded`)
@@ -116,6 +118,15 @@ Body headings are strongly recommended for agent usability but should not be har
 - Implementation Notes
 - Test Plan
 - Links / Artifacts
+
+### Test template headings (recommended)
+
+- Overview
+- Target / Scope
+- Preconditions / Environment
+- Test Cases
+- Results / Evidence
+- Notes / Follow-ups
 
 ### Epic template headings (recommended)
 

@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-01-22
 ---
 
 # mdkg conventions
@@ -153,11 +153,11 @@ All nodes MUST include:
 - `created` (YYYY-MM-DD)
 - `updated` (YYYY-MM-DD)
 
-Work items (`epic/feat/task/bug/chk`) MUST include:
-- `status`
+Work items (`epic/feat/task/bug/chk/test`) MUST include:
+  - `status`
 
 Work items MAY include:
-- `priority`
+  - `priority`
 
 Optional searchable metadata
 

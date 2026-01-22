@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-01-22
 ---
 
 # mdkg CLI contract
@@ -99,6 +99,14 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - creates `.mdkg/config.json` if missing
   - creates core docs and templates if missing
   - does NOT overwrite existing docs unless `--force`
+  - optional agent files:
+    - `--agents` creates `AGENTS.md`
+    - `--claude` creates `CLAUDE.md`
+  - `--llm` creates both
+
+### Guide
+- `mdkg guide`
+  - prints `.mdkg/core/guide.md` to stdout
 
 ### Workspace management (registered, no discovery)
 - `mdkg workspace ls`
