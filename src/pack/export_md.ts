@@ -19,8 +19,16 @@ function renderHeader(meta: PackMeta, nodes: PackNode[]): string[] {
   lines.push(`root: ${meta.root}`);
   lines.push(`depth: ${meta.depth}`);
   lines.push(`verbose: ${meta.verbose}`);
+  if (meta.profile) {
+    lines.push(`profile: ${meta.profile}`);
+  }
+  if (meta.body_mode) {
+    lines.push(`body_mode: ${meta.body_mode}`);
+  }
   lines.push(`nodes: ${nodes.length}`);
-  lines.push(`truncated: max_nodes=${meta.truncated.max_nodes} max_bytes=${meta.truncated.max_bytes}`);
+  lines.push(
+    `truncated: max_nodes=${meta.truncated.max_nodes} max_bytes=${meta.truncated.max_bytes} max_chars=${Boolean(meta.truncated.max_chars)} max_lines=${Boolean(meta.truncated.max_lines)} max_tokens=${Boolean(meta.truncated.max_tokens)}`
+  );
   if (meta.truncated.dropped.length > 0) {
     lines.push(`dropped: ${meta.truncated.dropped.join(", ")}`);
   }
@@ -66,6 +74,10 @@ function cloneTruncation(truncation: PackTruncation): PackTruncation {
     max_nodes: truncation.max_nodes,
     max_bytes: truncation.max_bytes,
     dropped: [...truncation.dropped],
+    max_chars: truncation.max_chars,
+    max_lines: truncation.max_lines,
+    max_tokens: truncation.max_tokens,
+    body_truncated: truncation.body_truncated ? [...truncation.body_truncated] : [],
   };
 }
 

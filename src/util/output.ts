@@ -40,9 +40,10 @@ export function buildDefaultPackPath(
   rootId: string,
   format: string,
   verbose: boolean,
-  now: Date
+  now: Date,
+  profile = "standard"
 ): string {
-  const kind = verbose ? "verbose" : "standard";
+  const kind = verbose ? "verbose" : sanitizeFilename(profile.toLowerCase() || "standard");
   const safeId = sanitizeFilename(rootId.toLowerCase());
   const safeFormat = sanitizeFilename(format.toLowerCase());
   const timestamp = formatTimestampForFilename(now);

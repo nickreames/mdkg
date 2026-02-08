@@ -1,6 +1,7 @@
 export type ParsedArgs = {
   root?: string;
   help: boolean;
+  version: boolean;
   positionals: string[];
   flags: Record<string, string | boolean>;
   error?: string;
@@ -35,12 +36,18 @@ const VALUE_FLAGS = new Set([
   "--supersedes",
   "--cases",
   "--mdkg-dir",
+  "--pack-profile",
+  "--max-code-lines",
+  "--max-chars",
+  "--max-lines",
+  "--max-tokens",
+  "--stats-out",
+  "--truncation-report",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
   "--tolerant",
   "--blocked",
-  "--body",
   "--verbose",
   "--quiet",
   "--no-cache",
@@ -52,6 +59,14 @@ const BOOLEAN_FLAGS = new Set([
   "--agents",
   "--claude",
   "--llm",
+  "--body",
+  "--strip-code",
+  "--stats",
+  "--concise",
+  "--version",
+  "--dry-run",
+  "--json",
+  "--list-profiles",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {
@@ -71,6 +86,8 @@ const FLAG_ALIASES: Record<string, string> = {
   "-r": "--root",
   "--q": "--quiet",
   "-q": "--quiet",
+  "--V": "--version",
+  "-V": "--version",
 };
 
 function normalizeFlag(flag: string): string {
@@ -101,6 +118,7 @@ function isFlagToken(token: string): boolean {
 export function parseArgs(argv: string[]): ParsedArgs {
   const result: ParsedArgs = {
     help: false,
+    version: false,
     positionals: [],
     flags: {},
   };
@@ -109,6 +127,10 @@ export function parseArgs(argv: string[]): ParsedArgs {
     const arg = argv[i];
     if (arg === "--help" || arg === "-h") {
       result.help = true;
+      continue;
+    }
+    if (arg === "--version" || arg === "-V") {
+      result.version = true;
       continue;
     }
 
