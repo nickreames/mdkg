@@ -86,6 +86,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedTemplates = path.join(seedRoot, "templates");
   const seedAgents = path.join(seedRoot, "AGENTS.md");
   const seedClaude = path.join(seedRoot, "CLAUDE.md");
+  const seedReadme = path.join(seedRoot, "README.md");
 
   if (!fs.existsSync(seedConfig) || !fs.existsSync(seedCore) || !fs.existsSync(seedTemplates)) {
     throw new NotFoundError(
@@ -98,6 +99,9 @@ export function runInitCommand(options: InitCommandOptions): void {
   if (createClaude && !fs.existsSync(seedClaude)) {
     throw new NotFoundError(`init assets missing CLAUDE.md at ${seedRoot}`);
   }
+  if (!fs.existsSync(seedReadme)) {
+    throw new NotFoundError(`init assets missing README.md at ${seedRoot}`);
+  }
 
   const mdkgDir = path.join(root, ".mdkg");
   fs.mkdirSync(mdkgDir, { recursive: true });
@@ -106,6 +110,7 @@ export function runInitCommand(options: InitCommandOptions): void {
 
   const stats: CopyStats = { created: 0, skipped: 0 };
   copySeedFile(seedConfig, path.join(mdkgDir, "config.json"), Boolean(options.force), stats);
+  copySeedFile(seedReadme, path.join(mdkgDir, "README.md"), Boolean(options.force), stats);
   copySeedDir(seedCore, path.join(mdkgDir, "core"), Boolean(options.force), stats);
   copySeedDir(seedTemplates, path.join(mdkgDir, "templates"), Boolean(options.force), stats);
   if (createAgents) {
@@ -123,6 +128,13 @@ export function runInitCommand(options: InitCommandOptions): void {
   }
   if (options.updateDockerignore) {
     appendIgnoreEntries(path.join(root, ".dockerignore"), [".mdkg/"]);
+  }
+
+  if (!options.updateGitignore && !options.updateNpmignore && !options.updateDockerignore) {
+    console.error("warning: ignore files were not updated");
+    console.error(
+      "hint: rerun `mdkg init --update-gitignore --update-npmignore` to avoid committing cache/pack artifacts"
+    );
   }
 
   console.log(

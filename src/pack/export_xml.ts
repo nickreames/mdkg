@@ -30,11 +30,20 @@ export function exportXml(pack: PackResult): string {
   lines.push(`    <root>${escapeXml(pack.meta.root)}</root>`);
   lines.push(`    <depth>${pack.meta.depth}</depth>`);
   lines.push(`    <verbose>${pack.meta.verbose}</verbose>`);
+  if (pack.meta.profile) {
+    lines.push(`    <profile>${escapeXml(pack.meta.profile)}</profile>`);
+  }
+  if (pack.meta.body_mode) {
+    lines.push(`    <body_mode>${escapeXml(pack.meta.body_mode)}</body_mode>`);
+  }
   lines.push(`    <generated_at>${escapeXml(pack.meta.generated_at)}</generated_at>`);
   lines.push(`    <node_count>${pack.meta.node_count}</node_count>`);
   lines.push("    <truncated>");
   lines.push(`      <max_nodes>${pack.meta.truncated.max_nodes}</max_nodes>`);
   lines.push(`      <max_bytes>${pack.meta.truncated.max_bytes}</max_bytes>`);
+  lines.push(`      <max_chars>${Boolean(pack.meta.truncated.max_chars)}</max_chars>`);
+  lines.push(`      <max_lines>${Boolean(pack.meta.truncated.max_lines)}</max_lines>`);
+  lines.push(`      <max_tokens>${Boolean(pack.meta.truncated.max_tokens)}</max_tokens>`);
   if (pack.meta.truncated.dropped.length > 0) {
     lines.push("      <dropped>");
     for (const qid of pack.meta.truncated.dropped) {

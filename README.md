@@ -57,10 +57,10 @@ Once published:
 1) Initialize mdkg in your repo:
 
 ```bash
-mdkg init
+mdkg init --llm --update-gitignore --update-npmignore
 ```
 
-This creates `.mdkg/` (rules, templates, work folders) and updates ignore rules so caches are not committed.
+This creates `.mdkg/` (rules, templates, work folders). Use the ignore-update flags to append recommended mdkg ignore entries.
 
 2) Index your repo (cache is default behavior):
 
@@ -86,6 +86,7 @@ mdkg show task-1
 
 ```bash
 mdkg pack task-1 --format md --verbose
+mdkg pack task-1 --pack-profile concise --dry-run --stats
 ```
 
 ---
@@ -161,9 +162,16 @@ If you want something searchable, put it in frontmatter:
 ### Packs (agent context)
 
 - `mdkg pack <id> [--format md|json|toon|xml] [--verbose] [--depth <n>] [--edges <keys>]`
+- `mdkg pack <id> [--pack-profile standard|concise|headers] [--max-chars <n>] [--max-lines <n>] [--max-tokens <n>]`
+- `mdkg pack <id> [--stats] [--stats-out <path>] [--truncation-report <path>]`
+- `mdkg pack <id> [--dry-run]`
+- `mdkg pack --list-profiles`
 
 `--verbose` includes pinned core docs listed in `.mdkg/core/core.md`.
+`--pack-profile concise` uses summary-oriented body shaping and strips code blocks by default.
 If `--out` is omitted, packs are written to `.mdkg/pack/pack_<kind>_<id>_<timestamp>.<ext>`.
+
+`--max-tokens` uses a heuristic estimate: `~tokens = chars / 4`.
 
 ### Quickstart (CLI only)
 
@@ -173,6 +181,7 @@ mdkg index
 mdkg new task "..." --status todo --priority 1
 mdkg list --status todo
 mdkg pack <id> --verbose
+mdkg pack <id> --pack-profile concise --dry-run --stats
 mdkg validate
 ```
 
@@ -183,6 +192,14 @@ mdkg validate
 
 - `mdkg checkpoint new "<title>"`
   - creates a checkpoint node (a compression summary)
+
+- `mdkg doctor`
+  - runs consumer diagnostics (node version, config, templates, index)
+- `mdkg doctor --json`
+  - emits machine-readable diagnostics for scripts/CI
+
+- `mdkg --version`
+  - prints installed CLI version
 
 ### Quality gates
 
@@ -216,6 +233,7 @@ Suggested workflow:
 1) create or update a task in `.mdkg/work/`
 2) run `mdkg validate`
 3) generate a pack for the task and use it as agent context
+4) run `npm run smoke:consumer` before publishing to verify tarball install + onboarding flow
 
 ---
 

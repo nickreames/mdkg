@@ -11,6 +11,7 @@ import { runPackCommand } from "./commands/pack";
 import { runNextCommand } from "./commands/next";
 import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
+import { runDoctorCommand } from "./commands/doctor";
 import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
@@ -20,12 +21,14 @@ import {
   runWorkspaceListCommand,
   runWorkspaceRemoveCommand,
 } from "./commands/workspace";
+import { listPackProfiles } from "./pack/profile";
 import { NotFoundError, UsageError, ValidationError } from "./util/errors";
 
 function printGlobalOptions(): void {
   console.log("\nGlobal options:");
   console.log("  --root, -r <path>   Run against a specific repo root");
   console.log("  --help, -h          Show help");
+  console.log("  --version, -V       Show version");
   console.log("  --no-cache          Bypass reading the index cache");
   console.log("  --no-reindex        Do not auto rebuild when cache is stale");
 }
@@ -48,12 +51,14 @@ function printUsage(): void {
   console.log("  checkpoint  Create a checkpoint node");
   console.log("  validate    Validate frontmatter + graph");
   console.log("  format      Normalize frontmatter");
+  console.log("  doctor      Run install and workspace diagnostics");
   console.log("\nQuickstart:");
-  console.log("  mdkg init --llm");
+  console.log("  mdkg init --llm --update-gitignore --update-npmignore");
   console.log("  mdkg index");
   console.log('  mdkg new task "..." --status todo --priority 1');
   console.log("  mdkg list --status todo");
   console.log("  mdkg pack <id> --verbose");
+  console.log("  mdkg pack <id> --pack-profile concise --dry-run --stats");
   console.log("  mdkg validate");
   console.log("\nRun `mdkg help <command>` or `mdkg <command> --help` for details.");
   printGlobalOptions();
@@ -142,9 +147,46 @@ function printSearchHelp(): void {
 
 function printPackHelp(): void {
   console.log("Usage:");
-  console.log("  mdkg pack <id-or-qid> [-d <n>] [-e <keys>] [-v]");
-  console.log("           [-f md|json|toon|xml] [-o <path>] [-w <alias>]");
+  console.log("  mdkg pack <id-or-qid> [options]");
+  console.log("  mdkg pack --list-profiles");
+  console.log("\nOptions:");
+  console.log("  -d, --depth <n>              Traversal depth (default from config pack.default_depth)");
+  console.log("  -e, --edges <keys>           Extra edges: parent,epic,relates,blocked_by,blocks,prev,next");
+  console.log("  -v, --verbose                Include pinned core docs from .mdkg/core/core.md (standard profile only)");
+  console.log("  -f, --format <fmt>           Output format: md|json|toon|xml (default md)");
+  console.log("  -o, --out <path>             Output file path (default .mdkg/pack/pack_<kind>_<id>_<ts>.<ext>)");
+  console.log("  -w, --ws <alias>             Workspace hint when resolving ambiguous ids");
+  console.log("      --pack-profile <name>    Built-in body profile: standard|concise|headers (default standard)");
+  console.log("      --concise                Shorthand for --pack-profile concise");
+  console.log("      --strip-code             Remove fenced code blocks from shaped body content");
+  console.log("      --max-code-lines <n>     Keep at most n lines per fenced code block");
+  console.log("      --max-chars <n>          Hard cap on shaped pack characters");
+  console.log("      --max-lines <n>          Hard cap on shaped pack lines");
+  console.log("      --max-tokens <n>         Hard cap on shaped pack token estimate (~chars/4)");
+  console.log("      --dry-run                Preview selection/order/stats without writing files");
+  console.log("      --truncation-report <p>  Write truncation report JSON (default <out>.truncation.json when needed)");
+  console.log("      --stats                  Print per-node + total pack stats and write stats sidecar JSON");
+  console.log("      --stats-out <path>       Write stats JSON to explicit path");
+  console.log("      --list-profiles          List built-in pack profiles and exit");
+  console.log("\nExamples:");
+  console.log("  mdkg pack --list-profiles");
+  console.log("  mdkg pack task-1 -v");
+  console.log("  mdkg pack task-1 --pack-profile concise --max-tokens 12000 --stats");
+  console.log("  mdkg pack task-1 --pack-profile concise --dry-run");
+  console.log("  mdkg pack epic-2 --format json --max-chars 50000 --truncation-report .mdkg/pack/epic-2.truncation.json");
   printGlobalOptions();
+}
+
+function printPackProfiles(): void {
+  const profiles = listPackProfiles();
+  console.log("Built-in pack profiles:");
+  for (const entry of profiles) {
+    console.log(`- ${entry.profile} (body=${entry.bodyMode})`);
+    console.log(`  ${entry.description}`);
+    if (entry.defaults.length > 0) {
+      console.log(`  defaults: ${entry.defaults.join(", ")}`);
+    }
+  }
 }
 
 function printNextHelp(): void {
@@ -169,6 +211,19 @@ function printValidateHelp(): void {
 function printFormatHelp(): void {
   console.log("Usage:");
   console.log("  mdkg format");
+  printGlobalOptions();
+}
+
+function printDoctorHelp(): void {
+  console.log("Usage:");
+  console.log("  mdkg doctor [--json]");
+  console.log("\nChecks:");
+  console.log("  - Node.js version compatibility");
+  console.log("  - mdkg repo root + .mdkg/config.json");
+  console.log("  - Template schema availability");
+  console.log("  - Index load/rebuild health");
+  console.log("\nOptions:");
+  console.log("  --json                Emit machine-readable JSON output");
   printGlobalOptions();
 }
 
@@ -217,6 +272,9 @@ function printCommandHelp(command?: string): void {
     case "format":
       printFormatHelp();
       return;
+    case "doctor":
+      printDoctorHelp();
+      return;
     default:
       printUsage();
   }
@@ -228,9 +286,38 @@ function printRootError(root: string): void {
   console.error("hint: run from the repo root, pass --root <path>, or run `mdkg init`");
 }
 
+function readPackageVersion(): string {
+  const packagePath = path.resolve(__dirname, "..", "package.json");
+  if (!fs.existsSync(packagePath)) {
+    return "unknown";
+  }
+  try {
+    const raw = JSON.parse(fs.readFileSync(packagePath, "utf8")) as { version?: unknown };
+    if (typeof raw.version === "string" && raw.version.trim().length > 0) {
+      return raw.version;
+    }
+  } catch {
+    return "unknown";
+  }
+  return "unknown";
+}
+
 function hasConfig(root: string): boolean {
   const configPath = path.join(root, ".mdkg", "config.json");
   return fs.existsSync(configPath);
+}
+
+function shouldRequireConfig(
+  command: string,
+  flags: Record<string, string | boolean>
+): boolean {
+  if (command === "init" || command === "help") {
+    return false;
+  }
+  if (command === "pack" && flags["--list-profiles"]) {
+    return false;
+  }
+  return true;
 }
 
 function requireFlagValue(
@@ -297,11 +384,19 @@ function parseEdgesFlag(value: string | boolean | undefined): string[] | undefin
   return raw.length > 0 ? raw : undefined;
 }
 
+function inferCommandFromArgv(): string | undefined {
+  const raw = process.argv[2];
+  if (!raw || raw.startsWith("-")) {
+    return undefined;
+  }
+  return raw.toLowerCase();
+}
+
 function handleCommandError(err: unknown): never {
   const message = err instanceof Error ? err.message : String(err);
   if (err instanceof UsageError) {
     console.error(message);
-    printUsage();
+    printCommandHelp(inferCommandFromArgv());
     process.exit(1);
   }
   if (err instanceof ValidationError) {
@@ -328,6 +423,10 @@ function main(): void {
     printCommandHelp(parsed.positionals[0]);
     process.exit(0);
   }
+  if (parsed.version) {
+    console.log(readPackageVersion());
+    process.exit(0);
+  }
 
   const command = (parsed.positionals[0] ?? "").toLowerCase();
   if (!command) {
@@ -341,14 +440,15 @@ function main(): void {
   }
 
   const root = parsed.root ? path.resolve(parsed.root) : process.cwd();
-  if (command !== "init" && command !== "help") {
+  if (shouldRequireConfig(command, parsed.flags)) {
     if (!hasConfig(root)) {
       printRootError(root);
       process.exit(1);
     }
   }
 
-  switch (command) {
+  try {
+    switch (command) {
     case "init": {
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
       const createAgents = parseBooleanFlag("--agents", parsed.flags["--agents"]);
@@ -582,6 +682,14 @@ function main(): void {
       process.exit(0);
     }
     case "pack": {
+      const listProfiles = parseBooleanFlag("--list-profiles", parsed.flags["--list-profiles"]);
+      if (listProfiles) {
+        if (parsed.positionals.length > 1) {
+          handleCommandError(new UsageError("pack --list-profiles does not accept positional arguments"));
+        }
+        printPackProfiles();
+        process.exit(0);
+      }
       const id = parsed.positionals[1];
       if (!id || parsed.positionals.length > 2) {
         handleCommandError(new UsageError("pack requires a single id"));
@@ -590,7 +698,21 @@ function main(): void {
       const depth = parseNumberFlag("--depth", parsed.flags["--depth"]);
       const edges = parseEdgesFlag(parsed.flags["--edges"]);
       const verbose = parseBooleanFlag("--verbose", parsed.flags["--verbose"]);
+      const concise = parseBooleanFlag("--concise", parsed.flags["--concise"]);
+      const stripCode = parseBooleanFlag("--strip-code", parsed.flags["--strip-code"]);
       const format = requireFlagValue("--format", parsed.flags["--format"]);
+      const packProfile = requireFlagValue("--pack-profile", parsed.flags["--pack-profile"]);
+      const maxCodeLines = parseNumberFlag("--max-code-lines", parsed.flags["--max-code-lines"]);
+      const maxChars = parseNumberFlag("--max-chars", parsed.flags["--max-chars"]);
+      const maxLines = parseNumberFlag("--max-lines", parsed.flags["--max-lines"]);
+      const maxTokens = parseNumberFlag("--max-tokens", parsed.flags["--max-tokens"]);
+      const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
+      const stats = parseBooleanFlag("--stats", parsed.flags["--stats"]);
+      const statsOut = requireFlagValue("--stats-out", parsed.flags["--stats-out"]);
+      const truncationReport = requireFlagValue(
+        "--truncation-report",
+        parsed.flags["--truncation-report"]
+      );
       const out = requireFlagValue("--out", parsed.flags["--out"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
@@ -602,7 +724,18 @@ function main(): void {
           depth,
           edges,
           verbose,
+          concise,
+          stripCode,
           format,
+          packProfile,
+          maxCodeLines,
+          maxChars,
+          maxLines,
+          maxTokens,
+          dryRun,
+          stats,
+          statsOut,
+          truncationReport,
           out,
           noCache,
           noReindex,
@@ -688,10 +821,27 @@ function main(): void {
       }
       process.exit(0);
     }
-    default:
-      console.error(`Unknown command: ${command}`);
-      printUsage();
-      process.exit(1);
+    case "doctor": {
+      if (parsed.positionals.length > 1) {
+        handleCommandError(new UsageError("doctor does not accept positional arguments"));
+      }
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      try {
+        runDoctorCommand({ root, noCache, noReindex, json });
+      } catch (err) {
+        handleCommandError(err);
+      }
+      process.exit(0);
+    }
+      default:
+        console.error(`Unknown command: ${command}`);
+        printUsage();
+        process.exit(1);
+    }
+  } catch (err) {
+    handleCommandError(err);
   }
 }
 
