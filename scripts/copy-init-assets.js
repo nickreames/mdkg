@@ -28,5 +28,6 @@ const distRoot = path.join(root, "dist", "init");
 copyFile(path.join(root, ".mdkg", "config.json"), path.join(distRoot, "config.json"));
 copyDir(path.join(root, ".mdkg", "core"), path.join(distRoot, "core"));
 copyDir(path.join(root, ".mdkg", "templates"), path.join(distRoot, "templates"));
+copyFile(path.join(root, "assets", "init", "README.md"), path.join(distRoot, "README.md"));
 copyFile(path.join(root, "assets", "init", "AGENTS.md"), path.join(distRoot, "AGENTS.md"));
 copyFile(path.join(root, "assets", "init", "CLAUDE.md"), path.join(distRoot, "CLAUDE.md"));

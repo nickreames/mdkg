@@ -1,6 +1,6 @@
 {
   "name": "mdkg",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Markdown Knowledge Graph",
   "license": "MIT",
   "bin": {
@@ -9,7 +9,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js",
     "build:test": "tsc -p tsconfig.test.json",
-    "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js"
+    "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js",
+    "smoke:consumer": "npm run build && node scripts/smoke-consumer.js"
   },
   "devDependencies": {
     "@types/node": "^18.19.0",
