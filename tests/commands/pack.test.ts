@@ -65,6 +65,7 @@ function writeTaskTemplateWithHeadings(root: string): void {
     "blocks: []",
     "refs: []",
     "aliases: []",
+    "skills: []",
     "created: {{created}}",
     "updated: {{updated}}",
     "---",
@@ -110,6 +111,50 @@ function writeTaskNode(root: string): void {
     "Tail details should not be in concise summary.",
   ].join("\n");
   writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
+}
+
+function writeTaskNodeWithSkills(root: string, skills: string[]): void {
+  const content = [
+    "---",
+    "id: task-1",
+    "type: task",
+    "title: pack profile fixture",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    `skills: [${skills.join(", ")}]`,
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+    "",
+    "# Overview",
+    "Primary summary line.",
+  ].join("\n");
+  writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
+}
+
+function writeSkill(root: string, slug: string): void {
+  const content = [
+    "---",
+    `name: ${slug}`,
+    "description: deploy workflow",
+    "tags: [stage:execute, risk:high]",
+    "version: 1.0.0",
+    "---",
+    "",
+    "# Procedure",
+    "",
+    "1. Run deploy",
+  ].join("\n");
+  writeFile(path.join(root, ".mdkg", "skills", slug, "SKILL.md"), content);
 }
 
 function setupPackFixture(root: string): void {
@@ -247,4 +292,54 @@ test("runPackCommand dry-run prints summary and does not write files", () => {
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "pack", "dry.md")), false);
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "pack", "dry.stats.json")), false);
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "pack", "dry.trunc.json")), false);
+});
+
+test("runPackCommand auto-includes referenced skills as metadata by default", () => {
+  const root = makeTempDir("mdkg-pack-skills-auto-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTaskTemplateWithHeadings(root);
+  writeTaskNodeWithSkills(root, ["deploy-service"]);
+  writeSkill(root, "deploy-service");
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+
+  const out = ".mdkg/pack/skills-auto.json";
+  runPackCommand({
+    root,
+    id: "task-1",
+    format: "json",
+    out,
+  });
+
+  const payload = JSON.parse(fs.readFileSync(path.join(root, out), "utf8"));
+  const skillNode = payload.nodes.find((node: { type: string }) => node.type === "skill");
+  assert.ok(skillNode);
+  assert.match(skillNode.qid, /root:skill:deploy-service/);
+  assert.match(skillNode.body, /description: deploy workflow/);
+});
+
+test("runPackCommand supports explicit skills list with full depth", () => {
+  const root = makeTempDir("mdkg-pack-skills-full-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTaskTemplateWithHeadings(root);
+  writeTaskNode(root);
+  writeSkill(root, "deploy-service");
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+
+  const out = ".mdkg/pack/skills-full.json";
+  runPackCommand({
+    root,
+    id: "task-1",
+    format: "json",
+    skills: "deploy-service",
+    skillsDepth: "full",
+    out,
+  });
+
+  const payload = JSON.parse(fs.readFileSync(path.join(root, out), "utf8"));
+  const skillNode = payload.nodes.find((node: { type: string }) => node.type === "skill");
+  assert.ok(skillNode);
+  assert.match(skillNode.body, /# Procedure/);
+  assert.match(skillNode.body, /Run deploy/);
 });

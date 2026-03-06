@@ -23,6 +23,7 @@ export type IndexNode = {
   artifacts: string[];
   refs: string[];
   aliases: string[];
+  skills: string[];
   path: string;
   edges: EdgeMap;
 };
@@ -34,6 +35,7 @@ export type Index = {
     generated_at: string;
     root: string;
     workspaces: string[];
+    latest_checkpoint_qid?: Record<string, string>;
   };
   workspaces: Record<string, { path: string; enabled: boolean }>;
   nodes: Record<string, IndexNode>;
@@ -127,6 +129,7 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
           artifacts: node.artifacts,
           refs: node.refs,
           aliases: node.aliases,
+          skills: node.skills,
           path: relPath,
           edges: normalizedEdges,
         };
@@ -190,5 +193,27 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
   };
 
   validateGraph(index, { allowMissing: tolerant });
+
+  const latestCheckpointByWorkspace: Record<string, string> = {};
+  for (const alias of workspaceAliases) {
+    const candidates = Object.values(nodes)
+      .filter((node) => node.ws === alias && node.type === "checkpoint")
+      .sort((a, b) => {
+        if (a.updated !== b.updated) {
+          return b.updated.localeCompare(a.updated);
+        }
+        if (a.created !== b.created) {
+          return b.created.localeCompare(a.created);
+        }
+        return b.qid.localeCompare(a.qid);
+      });
+    if (candidates.length > 0) {
+      latestCheckpointByWorkspace[alias] = candidates[0].qid;
+    }
+  }
+  if (Object.keys(latestCheckpointByWorkspace).length > 0) {
+    index.meta.latest_checkpoint_qid = latestCheckpointByWorkspace;
+  }
+
   return index;
 }

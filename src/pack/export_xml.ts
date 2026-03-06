@@ -36,6 +36,14 @@ export function exportXml(pack: PackResult): string {
   if (pack.meta.body_mode) {
     lines.push(`    <body_mode>${escapeXml(pack.meta.body_mode)}</body_mode>`);
   }
+  if (pack.meta.latest_checkpoint_qid) {
+    lines.push(`    <latest_checkpoint_qid>${escapeXml(pack.meta.latest_checkpoint_qid)}</latest_checkpoint_qid>`);
+  }
+  if (pack.meta.latest_checkpoint_qid_hint) {
+    lines.push(
+      `    <latest_checkpoint_qid_hint>${escapeXml(pack.meta.latest_checkpoint_qid_hint)}</latest_checkpoint_qid_hint>`
+    );
+  }
   lines.push(`    <generated_at>${escapeXml(pack.meta.generated_at)}</generated_at>`);
   lines.push(`    <node_count>${pack.meta.node_count}</node_count>`);
   lines.push("    <truncated>");

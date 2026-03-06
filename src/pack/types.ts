@@ -17,6 +17,8 @@ export type PackMeta = {
   verbose: boolean;
   generated_at: string;
   node_count: number;
+  latest_checkpoint_qid?: string;
+  latest_checkpoint_qid_hint?: string;
   truncated: PackTruncation;
   profile?: PackProfile;
   body_mode?: PackBodyMode;

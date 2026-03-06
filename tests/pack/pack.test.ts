@@ -295,6 +295,9 @@ type NodeOptions = {
   relates?: string[];
   blocked_by?: string[];
   blocks?: string[];
+  skills?: string[];
+  created?: string;
+  updated?: string;
 };
 
 function areaForType(type: string): string {
@@ -339,8 +342,11 @@ function writeNode(root: string, options: NodeOptions): void {
   if (options.blocks) {
     lines.push(`blocks: [${options.blocks.join(", ")}]`);
   }
-  lines.push("created: 2026-01-06");
-  lines.push("updated: 2026-01-06");
+  if (options.skills) {
+    lines.push(`skills: [${options.skills.join(", ")}]`);
+  }
+  lines.push(`created: ${options.created ?? "2026-01-06"}`);
+  lines.push(`updated: ${options.updated ?? "2026-01-06"}`);
   lines.push("---");
   lines.push("");
   lines.push(`# ${options.id}`);
@@ -531,4 +537,92 @@ test("pack truncates by max_nodes", () => {
   assert.equal(result.pack.meta.truncated.max_nodes, true);
   assert.equal(result.pack.nodes.length, 3);
   assert.deepEqual(result.pack.meta.truncated.dropped, ["root:rule-1", "root:prd-1"]);
+});
+
+test("buildPack includes latest checkpoint via pack-time resolver", () => {
+  const root = makeTempDir("mdkg-pack-latest-checkpoint-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, []);
+
+  writeNode(root, { id: "task-1", type: "task", status: "todo" });
+  writeNode(root, {
+    id: "chk-1",
+    type: "checkpoint",
+    status: "done",
+    created: "2026-01-01",
+    updated: "2026-01-01",
+  });
+  writeNode(root, {
+    id: "chk-2",
+    type: "checkpoint",
+    status: "done",
+    created: "2026-02-01",
+    updated: "2026-02-01",
+  });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.meta.latest_checkpoint_qid?.root, "root:chk-2");
+
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:task-1",
+    depth: 0,
+    edges: config.pack.default_edges,
+    verbose: false,
+    maxNodes: config.pack.limits.max_nodes,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    wsHint: "root",
+  });
+
+  assert.equal(result.pack.meta.latest_checkpoint_qid, "root:chk-2");
+  assert.deepEqual(
+    result.pack.nodes.map((node: { qid: string }) => node.qid),
+    ["root:task-1", "root:chk-2"]
+  );
+});
+
+test("buildPack latest checkpoint hint never overrides resolver", () => {
+  const root = makeTempDir("mdkg-pack-checkpoint-hint-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, []);
+
+  writeNode(root, { id: "task-1", type: "task", status: "todo" });
+  writeNode(root, {
+    id: "chk-1",
+    type: "checkpoint",
+    status: "done",
+    created: "2026-01-01",
+    updated: "2026-01-01",
+  });
+  writeNode(root, {
+    id: "chk-2",
+    type: "checkpoint",
+    status: "done",
+    created: "2026-03-01",
+    updated: "2026-03-01",
+  });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  index.meta.latest_checkpoint_qid = { root: "root:chk-1" };
+
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:task-1",
+    depth: 0,
+    edges: config.pack.default_edges,
+    verbose: false,
+    maxNodes: config.pack.limits.max_nodes,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    wsHint: "root",
+  });
+
+  assert.equal(result.pack.meta.latest_checkpoint_qid_hint, "root:chk-1");
+  assert.equal(result.pack.meta.latest_checkpoint_qid, "root:chk-2");
+  assert.ok(result.warnings.some((warning: string) => warning.includes("hint mismatch")));
 });

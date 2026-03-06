@@ -36,6 +36,7 @@ Recommended `.gitignore` entries:
 - `.mdkg/index/`
 - `.mdkg/index/**`
 - `.mdkg/pack/`
+- `.mdkg/work/events/*.jsonl` (when episodic logging is enabled)
 
 ## npm publish safety (required)
 
@@ -67,13 +68,17 @@ For application builds:
 
 ## mdkg init behavior
 
-`mdkg init` MAY offer optional flags to append ignore entries:
+`mdkg init` updates ignore files by default for safety:
+
+- `.gitignore` appends `.mdkg/index/`, `.mdkg/pack/`, `.mdkg/work/events/*.jsonl`
+- `.npmignore` appends `.mdkg/`, `.mdkg/index/`, `.mdkg/pack/`
+- `--no-update-ignores` disables these default writes
+
+Explicit flags remain available and take precedence:
 
 - `--update-gitignore`
 - `--update-npmignore`
 - `--update-dockerignore`
-
-In v1, mdkg should default to **not** editing user files without an explicit flag.
 
 ## Index safety
 
@@ -92,6 +97,7 @@ Workspace-local `.mdkg/` directories (near code) should follow the same rules:
 ## Summary checklist
 
 - ✅ `.mdkg/index/` ignored
+- ✅ `.mdkg/work/events/*.jsonl` ignored when event logging is enabled
 - ✅ npm publishes only `dist/`, `README.md`, `LICENSE`
 - ✅ optional `.npmignore` excludes `.mdkg/`
 - ✅ `.dockerignore` excludes `.mdkg/` when applicable

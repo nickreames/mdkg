@@ -1,0 +1,46 @@
+---
+id: task-57
+type: task
+title: followup llms txt contract and bootstrap content
+status: todo
+priority: 1
+epic: epic-6
+tags: [v0_4x, docs, llm]
+owners: []
+links: []
+artifacts: []
+relates: [prd-2, task-45, test-26, epic-6]
+blocked_by: []
+blocks: [test-26]
+refs: []
+aliases: []
+created: 2026-03-05
+updated: 2026-03-05
+---
+
+# Overview
+
+Create root `llms.txt` with deterministic mdkg usage bootstrap guidance.
+
+# Acceptance Criteria
+
+- Defines docs index, command starter list, directory shape, and pack-first workflow guidance.
+- Stays source-truth aligned to current CLI behavior.
+
+# Files Affected
+
+- llms.txt
+- README.md
+
+# Implementation Notes
+
+- Non-blocking follow-up for post-v0.4.0 cut.
+
+# Test Plan
+
+- Validate via `test-26` contract checks.
+
+# Links / Artifacts
+
+- prd-2
+- epic-6

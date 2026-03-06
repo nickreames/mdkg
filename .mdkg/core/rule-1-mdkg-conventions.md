@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-22
+updated: 2026-03-05
 ---
 
 # mdkg conventions
@@ -87,6 +87,11 @@ Canonical ID format:
 
 `<prefix>-<number>`
 
+Reserved rule IDs allowed by contract:
+- `rule-guide`
+- `rule-soul`
+- `rule-human`
+
 Examples:
 - `task-183`
 - `edd-14`
@@ -153,11 +158,12 @@ All nodes MUST include:
 - `created` (YYYY-MM-DD)
 - `updated` (YYYY-MM-DD)
 
-Work items (`epic/feat/task/bug/chk/test`) MUST include:
+Work items (`epic/feat/task/bug/checkpoint/test`) MUST include:
   - `status`
 
 Work items MAY include:
   - `priority`
+  - `skills: [slug, ...]` (kebab-case skill references)
 
 Optional searchable metadata
 
@@ -222,6 +228,7 @@ They SHOULD include:
 The cache is enabled by default.
 
 - Root global index lives at `.mdkg/index/global.json`
+- Root skills index lives at `.mdkg/index/skills.json`
 - Index is rebuilt automatically when stale unless disabled by flag/config.
 - `.mdkg/index/` is generated and MUST be gitignored.
 

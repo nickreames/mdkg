@@ -17,6 +17,7 @@ function makeNode(qid: string, edges: Partial<any>): any {
     artifacts: [],
     refs: [],
     aliases: [],
+    skills: [],
     status: "todo",
     priority: 1,
     path: `${qid}.md`,

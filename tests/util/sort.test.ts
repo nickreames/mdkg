@@ -19,6 +19,7 @@ function makeNode(qid: string, overrides: Record<string, unknown> = {}) {
     artifacts: [],
     refs: [],
     aliases: [],
+    skills: [],
     path: ".mdkg/work/task-1.md",
     edges: {
       epic: undefined,

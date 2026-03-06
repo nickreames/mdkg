@@ -2,6 +2,9 @@ import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
+import { parseFrontmatter } from "../graph/frontmatter";
+import { loadSkillsIndex } from "../graph/skills_index_cache";
+import { SkillIndexEntry } from "../graph/skills_indexer";
 import { ALLOWED_TYPES } from "../graph/node";
 import { applyPackBudgets } from "../pack/budget";
 import { exportJson } from "../pack/export_json";
@@ -20,6 +23,7 @@ import { formatResolveError, resolveQid } from "../util/qid";
 
 const EDGE_KEYS = new Set(["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next"]);
 const FORMAT_KEYS = new Set(["md", "json", "toon", "xml"]);
+const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export type PackCommandOptions = {
   root: string;
@@ -40,6 +44,8 @@ export type PackCommandOptions = {
   truncationReport?: string;
   stats?: boolean;
   statsOut?: string;
+  skills?: string;
+  skillsDepth?: string;
   out?: string;
   noCache?: boolean;
   noReindex?: boolean;
@@ -70,6 +76,178 @@ function normalizeFormat(format?: string): string {
     throw new UsageError(`invalid format: ${format}`);
   }
   return normalized;
+}
+
+type SkillsPolicy =
+  | { mode: "none" }
+  | { mode: "auto" }
+  | { mode: "list"; slugs: string[] };
+
+function normalizeSkillSlug(slug: string): string {
+  const normalized = slug.toLowerCase().trim();
+  if (!SKILL_SLUG_RE.test(normalized)) {
+    throw new UsageError(`invalid skill slug: ${slug}`);
+  }
+  return normalized;
+}
+
+function resolveSkillsPolicy(raw?: string): SkillsPolicy {
+  if (!raw) {
+    return { mode: "auto" };
+  }
+  const normalized = raw.toLowerCase().trim();
+  if (!normalized || normalized === "auto") {
+    return { mode: "auto" };
+  }
+  if (normalized === "none") {
+    return { mode: "none" };
+  }
+  const slugs = normalized
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .map((value) => normalizeSkillSlug(value));
+  if (slugs.length === 0) {
+    return { mode: "none" };
+  }
+  return { mode: "list", slugs: Array.from(new Set(slugs)) };
+}
+
+function resolveSkillsDepth(raw?: string): "meta" | "full" {
+  if (!raw) {
+    return "meta";
+  }
+  const normalized = raw.toLowerCase().trim();
+  if (normalized === "meta" || normalized === "full") {
+    return normalized;
+  }
+  throw new UsageError("--skills-depth must be meta or full");
+}
+
+function renderSkillMetaBody(skill: SkillIndexEntry): string {
+  const lines: string[] = [];
+  lines.push(`description: ${skill.description}`);
+  if (skill.tags.length > 0) {
+    lines.push(`tags: ${skill.tags.join(", ")}`);
+  }
+  if (skill.version) {
+    lines.push(`version: ${skill.version}`);
+  }
+  if (skill.authors.length > 0) {
+    lines.push(`authors: ${skill.authors.join(", ")}`);
+  }
+  if (skill.links.length > 0) {
+    lines.push(`links: ${skill.links.join(", ")}`);
+  }
+  lines.push(`has_scripts: ${skill.has_scripts ? "true" : "false"}`);
+  lines.push(`has_references: ${skill.has_references ? "true" : "false"}`);
+  for (const [key, value] of Object.entries(skill.ochatr).sort(([a], [b]) => a.localeCompare(b))) {
+    if (Array.isArray(value)) {
+      lines.push(`${key}: ${value.join(", ")}`);
+    } else if (typeof value === "boolean") {
+      lines.push(`${key}: ${value ? "true" : "false"}`);
+    } else {
+      lines.push(`${key}: ${value}`);
+    }
+  }
+  return lines.join("\n").trimEnd();
+}
+
+function loadSkillFullBody(root: string, skill: SkillIndexEntry): string {
+  const skillPath = path.resolve(root, skill.path);
+  if (!fs.existsSync(skillPath)) {
+    return renderSkillMetaBody(skill);
+  }
+  const content = fs.readFileSync(skillPath, "utf8");
+  return parseFrontmatter(content, skillPath).body.trimEnd();
+}
+
+function uniqueSkillOrder(slugs: string[]): string[] {
+  const seen = new Set<string>();
+  const ordered: string[] = [];
+  for (const slug of slugs) {
+    if (seen.has(slug)) {
+      continue;
+    }
+    seen.add(slug);
+    ordered.push(slug);
+  }
+  return ordered;
+}
+
+function collectReferencedSkills(
+  indexQids: string[],
+  indexNodes: Record<string, { skills: string[]; type: string }>
+): string[] {
+  const slugs: string[] = [];
+  for (const qid of indexQids) {
+    const node = indexNodes[qid];
+    if (!node) {
+      continue;
+    }
+    if (node.type === "skill") {
+      continue;
+    }
+    slugs.push(...node.skills);
+  }
+  return uniqueSkillOrder(slugs);
+}
+
+function appendSkillsToPack(
+  pack: PackResult,
+  skillEntries: SkillIndexEntry[],
+  depth: "meta" | "full",
+  root: string
+): PackResult {
+  const existing = new Set(pack.nodes.map((node) => node.qid));
+  const newNodes = skillEntries
+    .filter((skill) => !existing.has(skill.qid))
+    .map((skill) => ({
+      qid: skill.qid,
+      id: skill.id,
+      workspace: skill.ws,
+      type: "skill",
+      title: skill.name,
+      status: undefined,
+      priority: undefined,
+      path: skill.path,
+      links: skill.links,
+      artifacts: [],
+      refs: [],
+      aliases: [skill.slug, ...skill.tags],
+      body: depth === "full" ? loadSkillFullBody(root, skill) : renderSkillMetaBody(skill),
+    }));
+  if (newNodes.length === 0) {
+    return pack;
+  }
+  const mergedNodes = [...pack.nodes, ...newNodes];
+  return {
+    meta: {
+      ...pack.meta,
+      node_count: mergedNodes.length,
+    },
+    nodes: mergedNodes,
+  };
+}
+
+function applyNodeCountLimit(pack: PackResult, maxNodes: number): PackResult {
+  if (maxNodes <= 0 || pack.nodes.length <= maxNodes) {
+    return pack;
+  }
+  const included = pack.nodes.slice(0, maxNodes);
+  const dropped = pack.nodes.slice(maxNodes).map((node) => node.qid);
+  return {
+    meta: {
+      ...pack.meta,
+      node_count: included.length,
+      truncated: {
+        ...pack.meta.truncated,
+        max_nodes: true,
+        dropped: [...pack.meta.truncated.dropped, ...dropped],
+      },
+    },
+    nodes: included,
+  };
 }
 
 function writeJsonFile(outPath: string, payload: unknown): void {
@@ -110,6 +288,12 @@ function printDryRunSummary(
   console.log(`body_mode: ${pack.meta.body_mode ?? "full"}`);
   console.log(`format: ${format}`);
   console.log(`nodes: ${pack.nodes.length}`);
+  if (pack.meta.latest_checkpoint_qid) {
+    console.log(`latest_checkpoint_qid: ${pack.meta.latest_checkpoint_qid}`);
+  }
+  if (pack.meta.latest_checkpoint_qid_hint) {
+    console.log(`latest_checkpoint_qid_hint: ${pack.meta.latest_checkpoint_qid_hint}`);
+  }
   if (pack.meta.truncated.dropped.length > 0) {
     console.log(`dropped: ${pack.meta.truncated.dropped.join(", ")}`);
   }
@@ -154,6 +338,8 @@ export function runPackCommand(options: PackCommandOptions): void {
 
   const extraEdges = options.edges ? normalizeEdges(options.edges) : [];
   const edges = normalizeEdges([...config.pack.default_edges, ...extraEdges]);
+  const skillsPolicy = resolveSkillsPolicy(options.skills);
+  const skillsDepth = resolveSkillsDepth(options.skillsDepth);
 
   let resolvedProfile;
   try {
@@ -182,17 +368,50 @@ export function runPackCommand(options: PackCommandOptions): void {
     maxNodes: config.pack.limits.max_nodes,
     verboseCoreListPath: path.resolve(options.root, config.pack.verbose_core_list_path),
     wsHint: ws,
+    includeLatestCheckpoint: true,
   });
 
   for (const warning of buildResult.warnings) {
     console.error(`warning: ${warning}`);
   }
 
+  let packWithSkills = buildResult.pack;
+  if (skillsPolicy.mode !== "none") {
+    const skillsLoad = loadSkillsIndex({
+      root: options.root,
+      config,
+      useCache: !options.noCache,
+      allowReindex: !options.noReindex,
+    });
+    if (skillsLoad.stale && !skillsLoad.rebuilt && !options.noCache) {
+      console.error("warning: skills index is stale; run mdkg index to refresh");
+    }
+
+    const indexQids = buildResult.pack.nodes.map((node) => node.qid);
+    const autoSlugs = collectReferencedSkills(indexQids, index.nodes);
+    const selectedSlugs =
+      skillsPolicy.mode === "list"
+        ? skillsPolicy.slugs
+        : autoSlugs;
+
+    const selectedEntries: SkillIndexEntry[] = [];
+    for (const slug of selectedSlugs) {
+      const entry = skillsLoad.index.skills[slug];
+      if (!entry) {
+        console.error(`warning: requested skill missing: ${slug}`);
+        continue;
+      }
+      selectedEntries.push(entry);
+    }
+    packWithSkills = appendSkillsToPack(packWithSkills, selectedEntries, skillsDepth, options.root);
+    packWithSkills = applyNodeCountLimit(packWithSkills, config.pack.limits.max_nodes);
+  }
+
   const templateHeadingMap =
     resolvedProfile.bodyMode === "summary"
       ? loadTemplateHeadingMap(options.root, config, Array.from(ALLOWED_TYPES))
       : {};
-  const shaped = shapePackBodies(buildResult.pack, {
+  const shaped = shapePackBodies(packWithSkills, {
     resolved: resolvedProfile,
     templateHeadingMap,
   });

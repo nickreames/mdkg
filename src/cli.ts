@@ -53,7 +53,7 @@ function printUsage(): void {
   console.log("  format      Normalize frontmatter");
   console.log("  doctor      Run install and workspace diagnostics");
   console.log("\nQuickstart:");
-  console.log("  mdkg init --llm --update-gitignore --update-npmignore");
+  console.log("  mdkg init --llm");
   console.log("  mdkg index");
   console.log('  mdkg new task "..." --status todo --priority 1');
   console.log("  mdkg list --status todo");
@@ -72,6 +72,8 @@ function printInitHelp(): void {
   console.log("  --agents              Create AGENTS.md");
   console.log("  --claude              Create CLAUDE.md");
   console.log("  --llm                 Create AGENTS.md and CLAUDE.md");
+  console.log("  --omni                Create omni bootstrap scaffolding");
+  console.log("  --no-update-ignores   Skip default gitignore/npmignore updates");
   console.log("  --update-gitignore    Append mdkg ignore entries");
   console.log("  --update-npmignore    Append mdkg ignore entries");
   console.log("  --update-dockerignore Append mdkg ignore entries");
@@ -98,6 +100,7 @@ function printNewHelp(): void {
   console.log("  --artifacts <ref,ref,...>  Artifact refs");
   console.log("  --refs <id,id,...>         Non-edge refs");
   console.log("  --aliases <text,text,...>  Search aliases");
+  console.log("  --skills <slug,slug,...>   Skill slugs for work items");
   console.log("  --cases <id,id,...>        Test case ids");
   console.log("  --tags <tag,tag,...>       Tags");
   console.log("  --owners <owner,owner,...> Owners");
@@ -128,20 +131,22 @@ function printIndexHelp(): void {
 
 function printShowHelp(): void {
   console.log("Usage:");
-  console.log("  mdkg show <id-or-qid> [--ws <alias>] [--body]");
+  console.log("  mdkg show <id-or-qid> [--ws <alias>] [--body] [--meta]");
+  console.log("  mdkg show skill:<slug> [--meta]");
   printGlobalOptions();
 }
 
 function printListHelp(): void {
   console.log("Usage:");
   console.log("  mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]");
-  console.log("           [--priority <n>] [--blocked]");
+  console.log("           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]");
   printGlobalOptions();
 }
 
 function printSearchHelp(): void {
   console.log("Usage:");
   console.log('  mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]');
+  console.log("               [--tags <tag,tag,...>] [--tags-mode any|all]");
   printGlobalOptions();
 }
 
@@ -163,6 +168,8 @@ function printPackHelp(): void {
   console.log("      --max-chars <n>          Hard cap on shaped pack characters");
   console.log("      --max-lines <n>          Hard cap on shaped pack lines");
   console.log("      --max-tokens <n>         Hard cap on shaped pack token estimate (~chars/4)");
+  console.log("      --skills <mode>          Skill inclusion: none|auto|<slug,slug,...> (default auto)");
+  console.log("      --skills-depth <mode>    Skill body mode: meta|full (default meta)");
   console.log("      --dry-run                Preview selection/order/stats without writing files");
   console.log("      --truncation-report <p>  Write truncation report JSON (default <out>.truncation.json when needed)");
   console.log("      --stats                  Print per-node + total pack stats and write stats sidecar JSON");
@@ -384,6 +391,37 @@ function parseEdgesFlag(value: string | boolean | undefined): string[] | undefin
   return raw.length > 0 ? raw : undefined;
 }
 
+function parseCsvFlag(
+  flag: string,
+  value: string | boolean | undefined
+): string[] | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === true) {
+    throw new UsageError(`${flag} requires a value`);
+  }
+  const items = String(value)
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter(Boolean);
+  return items.length > 0 ? items : undefined;
+}
+
+function parseTagsModeFlag(value: string | boolean | undefined): "any" | "all" | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  if (value === true) {
+    throw new UsageError("--tags-mode requires a value");
+  }
+  const normalized = String(value).toLowerCase();
+  if (normalized === "any" || normalized === "all") {
+    return normalized;
+  }
+  throw new UsageError("--tags-mode must be any or all");
+}
+
 function inferCommandFromArgv(): string | undefined {
   const raw = process.argv[2];
   if (!raw || raw.startsWith("-")) {
@@ -454,6 +492,11 @@ function main(): void {
       const createAgents = parseBooleanFlag("--agents", parsed.flags["--agents"]);
       const createClaude = parseBooleanFlag("--claude", parsed.flags["--claude"]);
       const createLlm = parseBooleanFlag("--llm", parsed.flags["--llm"]);
+      const omni = parseBooleanFlag("--omni", parsed.flags["--omni"]);
+      const noUpdateIgnores = parseBooleanFlag(
+        "--no-update-ignores",
+        parsed.flags["--no-update-ignores"]
+      );
       const updateGitignore = parseBooleanFlag(
         "--update-gitignore",
         parsed.flags["--update-gitignore"]
@@ -473,9 +516,11 @@ function main(): void {
           updateGitignore,
           updateNpmignore,
           updateDockerignore,
+          noUpdateIgnores,
           createAgents,
           createClaude,
           createLlm,
+          omni,
         });
       } catch (err) {
         handleCommandError(err);
@@ -519,6 +564,7 @@ function main(): void {
       const artifacts = requireFlagValue("--artifacts", parsed.flags["--artifacts"]);
       const refs = requireFlagValue("--refs", parsed.flags["--refs"]);
       const aliases = requireFlagValue("--aliases", parsed.flags["--aliases"]);
+      const skills = requireFlagValue("--skills", parsed.flags["--skills"]);
       const cases = requireFlagValue("--cases", parsed.flags["--cases"]);
       const tags = requireFlagValue("--tags", parsed.flags["--tags"]);
       const owners = requireFlagValue("--owners", parsed.flags["--owners"]);
@@ -545,6 +591,7 @@ function main(): void {
           artifacts,
           refs,
           aliases,
+          skills,
           cases,
           tags,
           owners,
@@ -611,6 +658,7 @@ function main(): void {
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const includeBody = parseBooleanFlag("--body", parsed.flags["--body"]);
+      const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       try {
@@ -619,6 +667,7 @@ function main(): void {
           id,
           ws,
           includeBody,
+          metaOnly,
           noCache,
           noReindex,
         });
@@ -637,6 +686,8 @@ function main(): void {
       const epic = requireFlagValue("--epic", parsed.flags["--epic"]);
       const priority = parseNumberFlag("--priority", parsed.flags["--priority"]);
       const blocked = parseBooleanFlag("--blocked", parsed.flags["--blocked"]);
+      const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
+      const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       try {
@@ -648,6 +699,8 @@ function main(): void {
           epic,
           priority,
           blocked,
+          tags,
+          tagsMode,
           noCache,
           noReindex,
         });
@@ -664,6 +717,8 @@ function main(): void {
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const type = requireFlagValue("--type", parsed.flags["--type"]);
       const status = requireFlagValue("--status", parsed.flags["--status"]);
+      const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
+      const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       try {
@@ -673,6 +728,8 @@ function main(): void {
           ws,
           type,
           status,
+          tags,
+          tagsMode,
           noCache,
           noReindex,
         });
@@ -706,6 +763,8 @@ function main(): void {
       const maxChars = parseNumberFlag("--max-chars", parsed.flags["--max-chars"]);
       const maxLines = parseNumberFlag("--max-lines", parsed.flags["--max-lines"]);
       const maxTokens = parseNumberFlag("--max-tokens", parsed.flags["--max-tokens"]);
+      const skills = requireFlagValue("--skills", parsed.flags["--skills"]);
+      const skillsDepth = requireFlagValue("--skills-depth", parsed.flags["--skills-depth"]);
       const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
       const stats = parseBooleanFlag("--stats", parsed.flags["--stats"]);
       const statsOut = requireFlagValue("--stats-out", parsed.flags["--stats-out"]);
@@ -732,6 +791,8 @@ function main(): void {
           maxChars,
           maxLines,
           maxTokens,
+          skills,
+          skillsDepth,
           dryRun,
           stats,
           statsOut,

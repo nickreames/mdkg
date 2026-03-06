@@ -88,6 +88,7 @@ function writeFormattedTask(root: string): { filePath: string; content: string }
     "blocks: []",
     "refs: []",
     "aliases: []",
+    "skills: []",
     "created: 2026-01-06",
     "updated: 2026-01-01",
     "---",

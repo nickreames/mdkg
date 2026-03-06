@@ -25,6 +25,12 @@ function renderHeader(meta: PackMeta, nodes: PackNode[]): string[] {
   if (meta.body_mode) {
     lines.push(`body_mode: ${meta.body_mode}`);
   }
+  if (meta.latest_checkpoint_qid) {
+    lines.push(`latest_checkpoint_qid: ${meta.latest_checkpoint_qid}`);
+  }
+  if (meta.latest_checkpoint_qid_hint) {
+    lines.push(`latest_checkpoint_qid_hint: ${meta.latest_checkpoint_qid_hint}`);
+  }
   lines.push(`nodes: ${nodes.length}`);
   lines.push(
     `truncated: max_nodes=${meta.truncated.max_nodes} max_bytes=${meta.truncated.max_bytes} max_chars=${Boolean(meta.truncated.max_chars)} max_lines=${Boolean(meta.truncated.max_lines)} max_tokens=${Boolean(meta.truncated.max_tokens)}`

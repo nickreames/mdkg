@@ -89,3 +89,43 @@ test("buildIndex tolerates invalid nodes when tolerant", () => {
   const index = buildIndex(root, config, { tolerant: true });
   assert.ok(index.nodes["root:task-1"]);
 });
+
+test("buildIndex includes latest checkpoint hint by workspace", () => {
+  const root = makeTempDir("mdkg-index-checkpoint-hint-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root, "task-1");
+
+  const chk1 = [
+    "---",
+    "id: chk-1",
+    "type: checkpoint",
+    "title: chk-1",
+    "status: done",
+    "priority: 1",
+    "tags: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "scope: []",
+    "created: 2026-01-01",
+    "updated: 2026-01-01",
+    "---",
+  ].join("\n");
+  const chk2 = chk1
+    .replace("id: chk-1", "id: chk-2")
+    .replace("title: chk-1", "title: chk-2")
+    .replace("created: 2026-01-01", "created: 2026-02-01")
+    .replace("updated: 2026-01-01", "updated: 2026-02-01");
+  writeFile(path.join(root, ".mdkg", "work", "chk-1.md"), chk1);
+  writeFile(path.join(root, ".mdkg", "work", "chk-2.md"), chk2);
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.meta.latest_checkpoint_qid?.root, "root:chk-2");
+});
