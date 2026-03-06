@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-22
+updated: 2026-03-05
 ---
 
 # mdkg CLI contract
@@ -99,10 +99,19 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - creates `.mdkg/config.json` if missing
   - creates core docs and templates if missing
   - does NOT overwrite existing docs unless `--force`
+  - updates `.gitignore` and `.npmignore` by default
+  - `--no-update-ignores` disables default ignore writes
+  - explicit flags (`--update-gitignore`, `--update-npmignore`, `--update-dockerignore`) force writes even with global opt-out
   - optional agent files:
     - `--agents` creates `AGENTS.md`
     - `--claude` creates `CLAUDE.md`
   - `--llm` creates both
+  - `--omni` adds strict-node bootstrap docs and scaffolding:
+    - `.mdkg/core/SOUL.md` (`id: rule-soul`)
+    - `.mdkg/core/HUMAN.md` (`id: rule-human`)
+    - `.mdkg/skills/registry.md`
+    - `.mdkg/work/events/events.jsonl`
+    - deterministic `core.md` pin insertion (`rule-soul`, then `rule-human`)
 
 ### Guide
 - `mdkg guide`
@@ -116,6 +125,7 @@ If a user provides an unqualified ID and it is ambiguous globally:
 ### Indexing
 - `mdkg index`
   - rebuild global cache `.mdkg/index/global.json`
+  - rebuild skills cache `.mdkg/index/skills.json` from `.mdkg/skills/**/SKILL.md`
   - strict by default (fails on invalid frontmatter)
   - optional `--tolerant` to skip invalid nodes (escape hatch)
 
@@ -140,24 +150,27 @@ Common flags:
 - `--artifacts <ref,ref,...>`
 - `--refs <id,id,...>`
 - `--aliases <text,text,...>`
+- `--skills <slug,slug,...>` (work items)
 - `--template <set>` (default from config)
 
 ### Read/search
-- `mdkg show <id-or-qid>`
-- `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]`
+- `mdkg show <id-or-qid> [--body]`
+- `mdkg show skill:<slug> [--meta]`
+- `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all]`
   - search SHOULD match on IDs, titles, tags, path tokens, and searchable frontmatter lists (`links`, `artifacts`, `refs`, `aliases`)
-- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--blocked] [--priority <n>]`
-
-### Graph views
-- `mdkg tree <epic-id-or-qid> [--ws <alias>]`
-- `mdkg neighbors <id-or-qid> --depth <n> [--edges <...>]`
+- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--blocked] [--priority <n>] [--tags <tag,tag,...>] [--tags-mode any|all]`
+  - skills stay in existing command family (`list/show/search`), including `mdkg list --type skill`
 
 ### Packs (core feature)
 - `mdkg pack <id-or-qid> [--depth <n>] [--verbose] [--edges <keys>] [--format md|json|toon|xml] [--out <path>] [--ws <alias>]`
+  - optional skill inclusion flags:
+    - `--skills none|auto|<slug,slug,...>`
+    - `--skills-depth meta|full`
   - `--edges` adds to the default edge set
   - `--out` writes to a file (create parent dirs; overwrite if exists)
   - if `--out` is omitted, write to `.mdkg/pack/pack_<kind>_<id>_<timestamp>.<ext>`
   - short flags supported: `-o`, `-f`, `-v`, `-d`, `-e`, `-w`, `-r`
+  - pack selection includes latest checkpoint by pack-time resolver; index hint `latest_checkpoint_qid` is optimization-only
 
 ### Next priority
 - `mdkg next [<id-or-qid>] [--ws <alias>]`
@@ -172,6 +185,8 @@ Common flags:
 ### Validation and formatting
 - `mdkg validate`
   - strict frontmatter + graph integrity checks (exit code 2 on failure)
+  - validates optional node->skill references
+  - validates optional `.mdkg/work/events/events.jsonl` record shape when file exists
 - `mdkg format`
   - normalize frontmatter formatting and casing
   - avoid destructive body edits

@@ -17,6 +17,7 @@ export type PackBuildOptions = {
   maxNodes: number;
   verboseCoreListPath: string;
   wsHint?: string;
+  includeLatestCheckpoint?: boolean;
 };
 
 const EDGE_KEYS = ["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next"] as const;
@@ -156,6 +157,26 @@ function mergeWarnings(warnings: string[], message: string): void {
   warnings.push(message);
 }
 
+function checkpointWorkspaceFromQid(qid: string): string {
+  const [workspace] = qid.split(":");
+  return workspace ?? "root";
+}
+
+function resolveLatestCheckpointQid(index: Index, workspace: string): string | undefined {
+  const candidates = Object.values(index.nodes)
+    .filter((node) => node.ws === workspace && node.type === "checkpoint")
+    .sort((a, b) => {
+      if (a.updated !== b.updated) {
+        return b.updated.localeCompare(a.updated);
+      }
+      if (a.created !== b.created) {
+        return b.created.localeCompare(a.created);
+      }
+      return b.qid.localeCompare(a.qid);
+    });
+  return candidates[0]?.qid;
+}
+
 function applyMaxNodes(
   orderedQids: string[],
   maxNodes: number,
@@ -174,12 +195,33 @@ function applyMaxNodes(
 
 export function buildPack(options: PackBuildOptions): PackBuildResult {
   const warnings: string[] = [];
+  const includeLatestCheckpoint = options.includeLatestCheckpoint ?? true;
   const { qids, depths } = collectNodes(
     options.index,
     options.rootQid,
     options.depth,
     options.edges
   );
+
+  const workspace = checkpointWorkspaceFromQid(options.rootQid);
+  const latestCheckpointHint = options.index.meta.latest_checkpoint_qid?.[workspace];
+  const latestCheckpointResolved = includeLatestCheckpoint
+    ? resolveLatestCheckpointQid(options.index, workspace)
+    : undefined;
+  if (latestCheckpointResolved && latestCheckpointResolved !== options.rootQid) {
+    qids.add(latestCheckpointResolved);
+  }
+  if (
+    includeLatestCheckpoint &&
+    latestCheckpointHint &&
+    latestCheckpointResolved &&
+    latestCheckpointHint !== latestCheckpointResolved
+  ) {
+    mergeWarnings(
+      warnings,
+      `latest_checkpoint_qid hint mismatch for ${workspace}: ${latestCheckpointHint} -> ${latestCheckpointResolved}`
+    );
+  }
 
   if (options.verbose) {
     const coreIds = readVerboseCoreList(options.verboseCoreListPath);
@@ -214,6 +256,8 @@ export function buildPack(options: PackBuildOptions): PackBuildResult {
       verbose: options.verbose,
       generated_at: new Date().toISOString(),
       node_count: nodes.length,
+      latest_checkpoint_qid: latestCheckpointResolved,
+      latest_checkpoint_qid_hint: latestCheckpointHint,
       truncated: truncation,
     },
     nodes,

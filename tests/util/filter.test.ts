@@ -19,6 +19,7 @@ function makeNode(overrides: Record<string, unknown> = {}) {
     artifacts: [],
     refs: [],
     aliases: [],
+    skills: [],
     path: ".mdkg/work/task-1.md",
     edges: {
       epic: undefined,
@@ -95,6 +96,32 @@ test("filterNodes applies epic/priority/blocked filters", () => {
   const result = filterNodes(nodes, { epic: "root:epic-1", priority: 2, blocked: true });
   assert.deepEqual(
     result.map((node: { qid: string }) => node.qid),
+    ["root:task-1"]
+  );
+});
+
+test("filterNodes applies tag filtering with any/all modes", () => {
+  const nodes = [
+    makeNode({ qid: "root:task-1", tags: ["stage:plan", "lang:go"] }),
+    makeNode({ qid: "root:task-2", tags: ["stage:execute"] }),
+    makeNode({ qid: "root:task-3", tags: [] }),
+  ];
+
+  const anyMode = filterNodes(nodes, {
+    tags: ["stage:plan", "stage:review"],
+    tagsMode: "any",
+  });
+  assert.deepEqual(
+    anyMode.map((node: { qid: string }) => node.qid),
+    ["root:task-1"]
+  );
+
+  const allMode = filterNodes(nodes, {
+    tags: ["stage:plan", "lang:go"],
+    tagsMode: "all",
+  });
+  assert.deepEqual(
+    allMode.map((node: { qid: string }) => node.qid),
     ["root:task-1"]
   );
 });

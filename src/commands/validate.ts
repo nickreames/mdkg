@@ -4,6 +4,7 @@ import { loadConfig } from "../core/config";
 import { loadTemplateSchemas } from "../graph/template_schema";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
 import { Index, IndexNode } from "../graph/indexer";
+import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
 import { ValidationError } from "../util/errors";
@@ -131,6 +132,7 @@ function buildIndexNode(
     artifacts: node.artifacts,
     refs: node.refs,
     aliases: node.aliases,
+    skills: node.skills,
     path: path.relative(root, filePath),
     edges: normalizeEdges(node.edges, ws),
   };
@@ -143,6 +145,77 @@ function buildWorkspaceMap(config: ReturnType<typeof loadConfig>): Record<string
     workspaces[alias] = { path: entry.path, enabled: entry.enabled };
   }
   return workspaces;
+}
+
+function listDirectories(dirPath: string): string[] {
+  if (!fs.existsSync(dirPath)) {
+    return [];
+  }
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(dirPath, entry.name))
+    .sort();
+}
+
+function validateEventsJsonl(
+  root: string,
+  config: ReturnType<typeof loadConfig>,
+  errors: string[]
+): void {
+  const rootWorkspace = config.workspaces.root;
+  if (!rootWorkspace || !rootWorkspace.enabled) {
+    return;
+  }
+
+  const eventsPath = path.resolve(
+    root,
+    rootWorkspace.path,
+    rootWorkspace.mdkg_dir,
+    "work",
+    "events",
+    "events.jsonl"
+  );
+  if (!fs.existsSync(eventsPath)) {
+    return;
+  }
+
+  const lines = fs.readFileSync(eventsPath, "utf8").split(/\r?\n/);
+  for (let i = 0; i < lines.length; i += 1) {
+    const raw = lines[i].trim();
+    if (!raw) {
+      continue;
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      errors.push(`${eventsPath}:${i + 1}: invalid JSON`);
+      continue;
+    }
+
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+      errors.push(`${eventsPath}:${i + 1}: event must be a JSON object`);
+      continue;
+    }
+
+    const event = parsed as Record<string, unknown>;
+    for (const key of ["ts", "run_id", "workspace", "agent", "kind", "status"]) {
+      const value = event[key];
+      if (typeof value !== "string" || value.trim().length === 0) {
+        errors.push(`${eventsPath}:${i + 1}: ${key} is required and must be a non-empty string`);
+      }
+    }
+    if (!Array.isArray(event.refs)) {
+      errors.push(`${eventsPath}:${i + 1}: refs is required and must be a list`);
+    }
+    if (!Array.isArray(event.artifacts)) {
+      errors.push(`${eventsPath}:${i + 1}: artifacts is required and must be a list`);
+    }
+    if (typeof event.notes !== "string") {
+      errors.push(`${eventsPath}:${i + 1}: notes is required and must be a string`);
+    }
+  }
 }
 
 export function runValidateCommand(options: ValidateCommandOptions): void {
@@ -220,6 +293,31 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
 
   const graphErrors = collectGraphErrors(index, { allowMissing: false });
   errors.push(...graphErrors);
+
+  try {
+    const skillsIndex = buildSkillsIndex(options.root, config);
+    const knownSkills = new Set(Object.keys(skillsIndex.skills));
+    for (const node of Object.values(nodes)) {
+      for (const slug of node.skills) {
+        if (!knownSkills.has(slug)) {
+          errors.push(`${node.qid}: skills reference missing slug: ${slug}`);
+        }
+      }
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "unknown skill validation error";
+    errors.push(message);
+  }
+
+  const skillsRoot = resolveSkillsRoot(options.root, config);
+  for (const dirPath of listDirectories(skillsRoot)) {
+    const skillPath = path.join(dirPath, "SKILL.md");
+    if (!fs.existsSync(skillPath)) {
+      errors.push(`${dirPath}: missing SKILL.md`);
+    }
+  }
+
+  validateEventsJsonl(options.root, config, errors);
 
   const reportLines = [
     ...warnings.map((warning) => `warning: ${warning}`),

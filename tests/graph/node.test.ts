@@ -17,6 +17,24 @@ function makeSchema(type: string, keys: string[], listKeys: string[]): any {
 }
 
 const TEMPLATE_SCHEMAS = {
+  rule: makeSchema(
+    "rule",
+    [
+      "id",
+      "type",
+      "title",
+      "tags",
+      "owners",
+      "links",
+      "artifacts",
+      "relates",
+      "refs",
+      "aliases",
+      "created",
+      "updated",
+    ],
+    ["tags", "owners", "links", "artifacts", "relates", "refs", "aliases"]
+  ),
   task: makeSchema(
     "task",
     [
@@ -220,4 +238,26 @@ test("parseNode uses config status enum", () => {
     workStatusEnum: ["backlog"],
   };
   assert.throws(() => parseNode(content, "status.md", options), /status must be one of/);
+});
+
+test("parseNode accepts reserved rule ids and id references", () => {
+  const content = [
+    "---",
+    "id: rule-soul",
+    "type: rule",
+    "title: soul",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: [rule-human, root:rule-guide]",
+    "refs: []",
+    "aliases: []",
+    "created: 2026-03-05",
+    "updated: 2026-03-05",
+    "---",
+  ].join("\n");
+  const node = parseNode(content, "soul.md", PARSE_OPTIONS);
+  assert.equal(node.id, "rule-soul");
+  assert.deepEqual(node.edges.relates, ["rule-human", "root:rule-guide"]);
 });

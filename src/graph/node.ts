@@ -1,6 +1,7 @@
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { EdgeMap, extractEdges } from "./edges";
 import { TemplateSchema, TemplateSchemaMap } from "./template_schema";
+import { isCanonicalId } from "../util/id";
 
 export type Node = {
   id: string;
@@ -16,12 +17,12 @@ export type Node = {
   artifacts: string[];
   refs: string[];
   aliases: string[];
+  skills: string[];
   edges: EdgeMap;
   body: string;
   frontmatter: Record<string, FrontmatterValue>;
 };
 
-const ID_RE = /^[a-z]+-[0-9]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DEC_ID_RE = /^dec-[0-9]+$/;
 
@@ -42,6 +43,7 @@ export const ALLOWED_TYPES = new Set([
 ]);
 
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
+const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export type NodeParseOptions = {
   workStatusEnum: string[];
@@ -119,12 +121,12 @@ function requireLowercaseList(values: string[], key: string, filePath: string): 
 }
 
 function isValidId(value: string): boolean {
-  return ID_RE.test(value) || value === "rule-guide";
+  return isCanonicalId(value);
 }
 
 function requireIdFormat(value: string, key: string, filePath: string): string {
   if (!isValidId(value)) {
-    throw formatError(filePath, `${key} must match <prefix>-<number>`);
+    throw formatError(filePath, `${key} must match <prefix>-<number> or reserved id`);
   }
   return value;
 }
@@ -153,9 +155,19 @@ function normalizeIdList(values: string[], key: string, filePath: string): strin
       throw formatError(filePath, `${key} entries must be lowercase`);
     }
     if (!isValidId(value)) {
-      throw formatError(filePath, `${key} entries must match <prefix>-<number>`);
+      throw formatError(filePath, `${key} entries must match <prefix>-<number> or reserved id`);
     }
     return value;
+  });
+}
+
+function normalizeSkillList(values: string[], filePath: string): string[] {
+  return values.map((value, index) => {
+    const normalized = value.toLowerCase();
+    if (!SKILL_SLUG_RE.test(normalized)) {
+      throw formatError(filePath, `skills[${index}] must be kebab-case`);
+    }
+    return normalized;
   });
 }
 
@@ -274,6 +286,11 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     "aliases",
     filePath
   );
+  const skillsRaw = optionalList(frontmatter, "skills", filePath);
+  const skills = normalizeSkillList(skillsRaw, filePath);
+  if (skills.length > 0 && !WORK_TYPES.has(type)) {
+    throw formatError(filePath, "skills is only allowed for work items");
+  }
   normalizeIdList(optionalList(frontmatter, "scope", filePath), "scope", filePath);
   const supersedesValue = optionalString(frontmatter, "supersedes", filePath);
   if (supersedesValue !== undefined) {
@@ -302,6 +319,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     artifacts,
     refs,
     aliases,
+    skills,
     edges,
     body,
     frontmatter,

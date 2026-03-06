@@ -24,6 +24,8 @@ test("cli help pack includes profile and stats flags", () => {
   assert.match(result.stdout, /--stats/);
   assert.match(result.stdout, /--dry-run/);
   assert.match(result.stdout, /--truncation-report <p>/);
+  assert.match(result.stdout, /--skills <mode>/);
+  assert.match(result.stdout, /--skills-depth <mode>/);
 });
 
 test("cli pack --list-profiles works outside an initialized repo", () => {
@@ -47,4 +49,47 @@ test("cli usage errors show command-specific help", () => {
   assert.equal(result.status, 1);
   assert.match(result.stderr, /--max-tokens must be an integer/);
   assert.match(result.stdout, /Usage:\n  mdkg pack <id-or-qid> \[options\]/);
+});
+
+test("cli help list/search/show include skills and tag filters", () => {
+  const listHelp = spawnSync(process.execPath, [cliPath, "help", "list"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(listHelp.status, 0);
+  assert.match(listHelp.stdout, /--tags <tag,tag,\.\.\.>/);
+  assert.match(listHelp.stdout, /--tags-mode any\|all/);
+
+  const searchHelp = spawnSync(process.execPath, [cliPath, "help", "search"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(searchHelp.status, 0);
+  assert.match(searchHelp.stdout, /--tags <tag,tag,\.\.\.>/);
+  assert.match(searchHelp.stdout, /--tags-mode any\|all/);
+
+  const showHelp = spawnSync(process.execPath, [cliPath, "help", "show"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(showHelp.status, 0);
+  assert.match(showHelp.stdout, /show skill:<slug>/);
+  assert.match(showHelp.stdout, /--meta/);
+
+  const newHelp = spawnSync(process.execPath, [cliPath, "help", "new"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(newHelp.status, 0);
+  assert.match(newHelp.stdout, /--skills <slug,slug,\.\.\.>/);
+});
+
+test("cli help init includes omni and ignore-default controls", () => {
+  const initHelp = spawnSync(process.execPath, [cliPath, "help", "init"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(initHelp.status, 0);
+  assert.match(initHelp.stdout, /--omni/);
+  assert.match(initHelp.stdout, /--no-update-ignores/);
 });

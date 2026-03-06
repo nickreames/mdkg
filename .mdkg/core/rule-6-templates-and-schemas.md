@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-22
+updated: 2026-03-05
 ---
 
 # Templates and schemas
@@ -65,6 +65,7 @@ Optional tokens (nice-to-have, may be empty):
 - `{{artifacts}}` (list)
 - `{{refs}}` (list)
 - `{{aliases}}` (list)
+- `{{skills}}` (list; work items)
 - `{{cases}}` (list)
 
 ## Frontmatter requirements by type
@@ -90,9 +91,10 @@ All nodes MAY include the following searchable frontmatter lists:
 List fields SHOULD be written as `[]` when empty.
 Optional scalar graph fields (like `epic`, `parent`, `prev`, `next`) should be omitted when empty.
 
-Work items (`epic/feat/task/bug/chk/test`):
+Work items (`epic/feat/task/bug/checkpoint/test`):
   - `status` (enum)
   - optional `priority` (0..9)
+  - optional `skills: [slug, ...]` (kebab-case skill slugs)
   - optional graph edges: `epic`, `parent`, `relates`, `blocked_by`, `blocks`, `prev`, `next`
 
 Decision records (`dec-*`):
@@ -182,5 +184,7 @@ Body headings are strongly recommended for agent usability but should not be har
 
 - Frontmatter: strict, hard fail if invalid.
 - Body headings: warn only (do not break indexing).
+- Node -> skill references in `skills: [...]` are validated against `.mdkg/skills/<slug>/SKILL.md`.
+- `.mdkg/work/events/events.jsonl` is optional; when present, records are schema-validated by `mdkg validate`.
 - If a template is missing:
   - `mdkg new` must fail with a helpful error (exit code 3).

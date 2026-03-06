@@ -8,6 +8,7 @@ import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
+import { isCanonicalId, isCanonicalIdRef } from "../util/id";
 
 export type NewCommandOptions = {
   root: string;
@@ -30,6 +31,7 @@ export type NewCommandOptions = {
   tags?: string;
   owners?: string;
   cases?: string;
+  skills?: string;
   supersedes?: string;
   template?: string;
   noCache?: boolean;
@@ -37,10 +39,9 @@ export type NewCommandOptions = {
   now?: Date;
 };
 
-const ID_RE = /^[a-z]+-[0-9]+$/;
-const ID_REF_RE = /^([a-z][a-z0-9_]*:)?[a-z]+-[0-9]+$/;
 const DEC_ID_RE = /^dec-[0-9]+$/;
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
+const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const CORE_TYPES = new Set(["rule"]);
 const DESIGN_TYPES = new Set(["prd", "edd", "dec", "prop"]);
 
@@ -56,15 +57,15 @@ function parseCsvList(raw?: string): string[] {
 
 function normalizeId(value: string, key: string): string {
   const normalized = value.toLowerCase();
-  if (!ID_RE.test(normalized) && normalized !== "rule-guide") {
-    throw new UsageError(`${key} entries must match <prefix>-<number>: ${value}`);
+  if (!isCanonicalId(normalized)) {
+    throw new UsageError(`${key} entries must match <prefix>-<number> or reserved id: ${value}`);
   }
   return normalized;
 }
 
 function normalizeIdRef(value: string, key: string): string {
   const normalized = value.toLowerCase();
-  if (!ID_REF_RE.test(normalized)) {
+  if (!isCanonicalIdRef(normalized)) {
     throw new UsageError(`${key} entries must match <id> or <ws>:<id>: ${value}`);
   }
   return normalized;
@@ -84,6 +85,16 @@ function normalizeIdList(raw: string | undefined, key: string): string[] {
 
 function normalizeIdRefList(raw: string | undefined, key: string): string[] {
   return parseCsvList(raw).map((value) => normalizeIdRef(value, key));
+}
+
+function normalizeSkillList(raw: string | undefined): string[] {
+  return parseCsvList(raw).map((value) => {
+    const normalized = value.toLowerCase();
+    if (!SKILL_SLUG_RE.test(normalized)) {
+      throw new UsageError(`--skills entries must be kebab-case: ${value}`);
+    }
+    return normalized;
+  });
 }
 
 function normalizeWorkspace(value?: string): string {
@@ -253,8 +264,12 @@ export function runNewCommand(options: NewCommandOptions): void {
   const tags = normalizeLowercaseList(options.tags);
   const owners = normalizeLowercaseList(options.owners);
   const cases = normalizeLowercaseList(options.cases);
+  const skills = normalizeSkillList(options.skills);
   const links = normalizeList(options.links);
   const artifacts = normalizeList(options.artifacts);
+  if (skills.length > 0 && !WORK_TYPES.has(type)) {
+    throw new UsageError("--skills is only valid for work items");
+  }
 
   if (type === "dec" && options.supersedes) {
     const supersedes = options.supersedes.toLowerCase();
@@ -313,6 +328,7 @@ export function runNewCommand(options: NewCommandOptions): void {
     artifacts: artifacts.length > 0 ? artifacts : undefined,
     refs: refs.length > 0 ? refs : undefined,
     aliases: aliases.length > 0 ? aliases : undefined,
+    skills: skills.length > 0 ? skills : undefined,
     cases: cases.length > 0 ? cases : undefined,
     supersedes: options.supersedes ? options.supersedes.toLowerCase() : undefined,
     created: today,

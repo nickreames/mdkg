@@ -37,3 +37,19 @@ test("parseArgs accepts dry-run, json, and list-profiles booleans", () => {
   assert.equal(parsed.flags["--list-profiles"], true);
   assert.equal(parsed.flags["--json"], true);
 });
+
+test("parseArgs treats init/show boolean flags as booleans when chained", () => {
+  const initParsed = parseArgs([
+    "init",
+    "--omni",
+    "--no-update-ignores",
+    "--update-gitignore",
+  ]);
+  assert.equal(initParsed.flags["--omni"], true);
+  assert.equal(initParsed.flags["--no-update-ignores"], true);
+  assert.equal(initParsed.flags["--update-gitignore"], true);
+
+  const showParsed = parseArgs(["show", "skill:demo", "--meta", "--body"]);
+  assert.equal(showParsed.flags["--meta"], true);
+  assert.equal(showParsed.flags["--body"], true);
+});

@@ -6,14 +6,20 @@ tags: [architecture, cli, index, mdkg]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [edd-2]
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-15
+updated: 2026-02-27
 ---
 
 # mdkg CLI and index architecture (v1)
+
+## Baseline note
+
+This document captures the **v1 / v0.0.3 baseline architecture**.
+
+For v0.4 target architecture planning (skills index, omni scaffolding, skill-aware packs/validation), see `edd-2`.
 
 ## Overview
 

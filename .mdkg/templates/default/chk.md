@@ -17,6 +17,7 @@ blocked_by: []
 blocks: []
 refs: []
 aliases: []
+skills: []
 scope: []
 created: {{created}}
 updated: {{updated}}

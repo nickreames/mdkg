@@ -12,14 +12,13 @@ import { ALLOWED_TYPES, DEC_TYPES, WORK_TYPES } from "../graph/node";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { ValidationError } from "../util/errors";
 import { formatDate } from "../util/date";
+import { isCanonicalId, isCanonicalIdRef } from "../util/id";
 
 export type FormatCommandOptions = {
   root: string;
   now?: Date;
 };
 
-const ID_RE = /^[a-z]+-[0-9]+$/;
-const ID_REF_RE = /^([a-z][a-z0-9_]*:)?[a-z]+-[0-9]+$/;
 const DEC_ID_RE = /^dec-[0-9]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -29,7 +28,7 @@ const ID_REF_SCALAR_KEYS = new Set(["epic", "parent", "prev", "next"]);
 const PRESERVE_CASE_LIST_KEYS = new Set(["links", "artifacts"]);
 
 function isValidId(value: string): boolean {
-  return ID_RE.test(value) || value === "rule-guide";
+  return isCanonicalId(value);
 }
 
 function isCoreListFile(filePath: string): boolean {
@@ -75,9 +74,9 @@ function normalizeList(
       continue;
     }
     if (ID_LIST_KEYS.has(key) && !isValidId(entry)) {
-      errors.push(`${filePath}: ${key} entries must match <prefix>-<number>`);
+      errors.push(`${filePath}: ${key} entries must match <prefix>-<number> or reserved id`);
     }
-    if (ID_REF_LIST_KEYS.has(key) && !ID_REF_RE.test(entry)) {
+    if (ID_REF_LIST_KEYS.has(key) && !isCanonicalIdRef(entry)) {
       errors.push(`${filePath}: ${key} entries must be valid id references`);
     }
   }
@@ -91,7 +90,7 @@ function normalizeIdRef(
   filePath: string
 ): string {
   const normalized = normalizeScalar(value).toLowerCase();
-  if (!ID_REF_RE.test(normalized)) {
+  if (!isCanonicalIdRef(normalized)) {
     errors.push(`${filePath}: ${key} must be a valid id reference`);
   }
   return normalized;
@@ -164,7 +163,7 @@ function normalizeFrontmatter(
   } else {
     const normalizedId = idValue.toLowerCase();
     if (!isValidId(normalizedId)) {
-      errors.push(`${filePath}: id must match <prefix>-<number>`);
+      errors.push(`${filePath}: id must match <prefix>-<number> or reserved id`);
     }
     normalized.id = normalizedId;
   }

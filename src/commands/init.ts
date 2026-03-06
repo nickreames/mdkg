@@ -1,13 +1,16 @@
 import fs from "fs";
 import path from "path";
 import { NotFoundError } from "../util/errors";
+import { formatDate } from "../util/date";
 
 export type InitCommandOptions = {
   root: string;
   force?: boolean;
+  omni?: boolean;
   updateGitignore?: boolean;
   updateNpmignore?: boolean;
   updateDockerignore?: boolean;
+  noUpdateIgnores?: boolean;
   createAgents?: boolean;
   createClaude?: boolean;
   createLlm?: boolean;
@@ -20,6 +23,14 @@ type CopyStats = {
 };
 
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
+const SOUL_PIN_ID = "rule-soul";
+const HUMAN_PIN_ID = "rule-human";
+const DEFAULT_CORE_LIST_HEADER = [
+  "# mdkg verbose core list",
+  "",
+  "# One node ID per line. Lines starting with # are comments.",
+  "# This list is included by `mdkg pack --verbose`.",
+];
 
 function listFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) {
@@ -75,11 +86,196 @@ function appendIgnoreEntries(filePath: string, entries: string[]): boolean {
   return true;
 }
 
+function writeFileIfMissing(
+  filePath: string,
+  content: string,
+  force: boolean,
+  stats: CopyStats
+): void {
+  if (fs.existsSync(filePath) && !force) {
+    stats.skipped += 1;
+    return;
+  }
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, content, "utf8");
+  stats.created += 1;
+}
+
+function soulTemplate(created: string): string {
+  return [
+    "---",
+    `id: ${SOUL_PIN_ID}`,
+    "type: rule",
+    "title: agent soul and execution contract",
+    "tags: [omni, agent, constraints]",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "refs: []",
+    "aliases: [soul]",
+    `created: ${created}`,
+    `updated: ${created}`,
+    "---",
+    "",
+    "# Purpose",
+    "",
+    "Define the canonical agent execution boundaries and memory contract for this repository.",
+    "",
+    "# Scope",
+    "",
+    "Applies to all orchestrators and coding-agent executions using mdkg in this repo.",
+    "",
+    "# Requirements",
+    "",
+    "- Ask for approval before destructive operations or policy-sensitive actions.",
+    "- Prefer deterministic mdkg packs over ad-hoc context assembly.",
+    "- Follow single-writer commit discipline and event-driven batching.",
+    "- Never place secrets in mdkg docs or generated packs.",
+    "",
+    "# Notes",
+    "",
+    "Customize this file to encode repo-specific constraints, approval boundaries, and memory cadence.",
+    "",
+  ].join("\n");
+}
+
+function humanTemplate(created: string): string {
+  return [
+    "---",
+    `id: ${HUMAN_PIN_ID}`,
+    "type: rule",
+    "title: human working profile and collaboration preferences",
+    "tags: [human, collaboration, preferences]",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "refs: []",
+    "aliases: [human]",
+    `created: ${created}`,
+    `updated: ${created}`,
+    "---",
+    "",
+    "# Purpose",
+    "",
+    "Capture stable collaboration preferences and boundaries so agents can work with less ambiguity.",
+    "",
+    "# Scope",
+    "",
+    "Applies to planning, implementation, and review interactions in this repository.",
+    "",
+    "# Requirements",
+    "",
+    "- Keep top goals, boundaries, and style preferences current.",
+    "- Include ask-before-doing constraints for risky or high-impact actions.",
+    "- Record preferred environment assumptions and validation commands.",
+    "",
+    "# Notes",
+    "",
+    "Suggested prompts:",
+    "- What are your top 3 goals in this repo right now?",
+    "- What should never happen without confirmation?",
+    "- What coding/review style should the agent prefer?",
+    "- What OS/runtime/test commands should be assumed?",
+    "",
+  ].join("\n");
+}
+
+function registryTemplate(): string {
+  return [
+    "# Skills Registry",
+    "",
+    "This directory stores Agent Skills packages used by mdkg tooling and orchestrators.",
+    "",
+    "## Conventions",
+    "",
+    "- One folder per skill slug.",
+    "- Use `SKILL.md` as the canonical skill entrypoint.",
+    "- Keep procedures deterministic and avoid embedding secrets.",
+    "",
+    "## Suggested Next Skills",
+    "",
+    "- deterministic-pack-generation",
+    "- test-and-verify-loop",
+    "- release-readiness-audit",
+    "",
+  ].join("\n");
+}
+
+function seededInitEvent(nowIso: string): string {
+  const event = {
+    ts: nowIso,
+    run_id: `init-${nowIso.replace(/[^0-9]/g, "").slice(0, 14)}`,
+    workspace: "root",
+    agent: "mdkg",
+    kind: "RUN_STARTED",
+    status: "ok",
+    refs: ["edd-4"],
+    artifacts: [],
+    notes: "init omni scaffold target initialized",
+    redacted: true,
+  };
+  return `${JSON.stringify(event)}\n`;
+}
+
+function parseCoreList(raw: string): { header: string[]; ids: string[] } {
+  const lines = raw.split(/\r?\n/);
+  const header: string[] = [];
+  const ids: string[] = [];
+  let seenFirstId = false;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    const isComment = trimmed.startsWith("#");
+    if (!seenFirstId && (trimmed.length === 0 || isComment)) {
+      header.push(line);
+      continue;
+    }
+    if (trimmed.length === 0 || isComment) {
+      seenFirstId = true;
+      continue;
+    }
+    seenFirstId = true;
+    ids.push(trimmed.toLowerCase());
+  }
+  return { header, ids };
+}
+
+function ensureCorePins(coreListPath: string, requiredPins: string[]): void {
+  const raw = fs.existsSync(coreListPath) ? fs.readFileSync(coreListPath, "utf8") : "";
+  const { header, ids } = parseCoreList(raw);
+
+  const seen = new Set<string>();
+  const dedupedExisting: string[] = [];
+  for (const id of ids) {
+    if (seen.has(id)) {
+      continue;
+    }
+    seen.add(id);
+    dedupedExisting.push(id);
+  }
+
+  const required = requiredPins.map((value) => value.toLowerCase());
+  const filteredExisting = dedupedExisting.filter((value) => !required.includes(value));
+  const finalIds = [...required, ...filteredExisting];
+
+  const headerLines = header.length > 0 ? header : DEFAULT_CORE_LIST_HEADER;
+  const normalizedHeader = headerLines.slice();
+  while (normalizedHeader.length > 0 && normalizedHeader[normalizedHeader.length - 1].trim() === "") {
+    normalizedHeader.pop();
+  }
+
+  const output = [...normalizedHeader, "", ...finalIds, ""].join("\n");
+  fs.mkdirSync(path.dirname(coreListPath), { recursive: true });
+  fs.writeFileSync(coreListPath, output, "utf8");
+}
+
 export function runInitCommand(options: InitCommandOptions): void {
   const root = path.resolve(options.root);
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
   const createAgents = Boolean(options.createAgents || options.createLlm);
   const createClaude = Boolean(options.createClaude || options.createLlm);
+  const force = Boolean(options.force);
 
   const seedConfig = path.join(seedRoot, "config.json");
   const seedCore = path.join(seedRoot, "core");
@@ -109,32 +305,54 @@ export function runInitCommand(options: InitCommandOptions): void {
   fs.mkdirSync(path.join(mdkgDir, "design"), { recursive: true });
 
   const stats: CopyStats = { created: 0, skipped: 0 };
-  copySeedFile(seedConfig, path.join(mdkgDir, "config.json"), Boolean(options.force), stats);
-  copySeedFile(seedReadme, path.join(mdkgDir, "README.md"), Boolean(options.force), stats);
-  copySeedDir(seedCore, path.join(mdkgDir, "core"), Boolean(options.force), stats);
-  copySeedDir(seedTemplates, path.join(mdkgDir, "templates"), Boolean(options.force), stats);
+  copySeedFile(seedConfig, path.join(mdkgDir, "config.json"), force, stats);
+  copySeedFile(seedReadme, path.join(mdkgDir, "README.md"), force, stats);
+  copySeedDir(seedCore, path.join(mdkgDir, "core"), force, stats);
+  copySeedDir(seedTemplates, path.join(mdkgDir, "templates"), force, stats);
   if (createAgents) {
-    copySeedFile(seedAgents, path.join(root, "AGENTS.md"), Boolean(options.force), stats);
+    copySeedFile(seedAgents, path.join(root, "AGENTS.md"), force, stats);
   }
   if (createClaude) {
-    copySeedFile(seedClaude, path.join(root, "CLAUDE.md"), Boolean(options.force), stats);
+    copySeedFile(seedClaude, path.join(root, "CLAUDE.md"), force, stats);
   }
 
-  if (options.updateGitignore) {
-    appendIgnoreEntries(path.join(root, ".gitignore"), [".mdkg/index/", ".mdkg/pack/"]);
+  if (options.omni) {
+    const today = formatDate(new Date());
+    const soulPath = path.join(mdkgDir, "core", "SOUL.md");
+    const humanPath = path.join(mdkgDir, "core", "HUMAN.md");
+    const skillsDir = path.join(mdkgDir, "skills");
+    const registryPath = path.join(skillsDir, "registry.md");
+    const eventsDir = path.join(mdkgDir, "work", "events");
+    const eventsPath = path.join(eventsDir, "events.jsonl");
+    fs.mkdirSync(skillsDir, { recursive: true });
+    fs.mkdirSync(eventsDir, { recursive: true });
+    writeFileIfMissing(soulPath, soulTemplate(today), force, stats);
+    writeFileIfMissing(humanPath, humanTemplate(today), force, stats);
+    writeFileIfMissing(registryPath, registryTemplate(), force, stats);
+    if (!fs.existsSync(eventsPath) || force) {
+      writeFileIfMissing(eventsPath, seededInitEvent(new Date().toISOString()), force, stats);
+    }
+
+    const coreListPath = path.join(mdkgDir, "core", "core.md");
+    ensureCorePins(coreListPath, [SOUL_PIN_ID, HUMAN_PIN_ID]);
   }
-  if (options.updateNpmignore) {
+
+  const noUpdateIgnores = Boolean(options.noUpdateIgnores);
+  const shouldUpdateGitignore = Boolean(options.updateGitignore || !noUpdateIgnores);
+  const shouldUpdateNpmignore = Boolean(options.updateNpmignore || !noUpdateIgnores);
+
+  if (shouldUpdateGitignore) {
+    appendIgnoreEntries(path.join(root, ".gitignore"), [
+      ".mdkg/index/",
+      ".mdkg/pack/",
+      ".mdkg/work/events/*.jsonl",
+    ]);
+  }
+  if (shouldUpdateNpmignore) {
     appendIgnoreEntries(path.join(root, ".npmignore"), [".mdkg/", ".mdkg/index/", ".mdkg/pack/"]);
   }
   if (options.updateDockerignore) {
     appendIgnoreEntries(path.join(root, ".dockerignore"), [".mdkg/"]);
-  }
-
-  if (!options.updateGitignore && !options.updateNpmignore && !options.updateDockerignore) {
-    console.error("warning: ignore files were not updated");
-    console.error(
-      "hint: rerun `mdkg init --update-gitignore --update-npmignore` to avoid committing cache/pack artifacts"
-    );
   }
 
   console.log(

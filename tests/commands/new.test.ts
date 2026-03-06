@@ -112,3 +112,23 @@ test("runNewCommand creates a test node with cases list", () => {
   assert.ok(content.includes("type: test"));
   assert.ok(content.includes("cases: [tc-1, tc-2]"));
 });
+
+test("runNewCommand writes skills list for work items", () => {
+  const root = makeTempDir("mdkg-new-skills-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+
+  runNewCommand({
+    root,
+    type: "task",
+    title: "Use skill refs",
+    status: "todo",
+    skills: "persist-memory,mdkg-core",
+    now: new Date(2026, 0, 23),
+  });
+
+  const filePath = path.join(root, ".mdkg", "work", "task-1-use-skill-refs.md");
+  assert.ok(fs.existsSync(filePath));
+  const content = fs.readFileSync(filePath, "utf8");
+  assert.ok(content.includes("skills: [persist-memory, mdkg-core]"));
+});

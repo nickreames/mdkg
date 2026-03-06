@@ -6,6 +6,7 @@ import { Index } from "../graph/indexer";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
+import { isCanonicalId, isCanonicalIdRef } from "../util/id";
 
 export type CheckpointNewCommandOptions = {
   root: string;
@@ -17,9 +18,6 @@ export type CheckpointNewCommandOptions = {
   priority?: number;
   template?: string;
 };
-
-const ID_RE = /^[a-z]+-[0-9]+$/;
-const ID_REF_RE = /^([a-z][a-z0-9_]*:)?[a-z]+-[0-9]+$/;
 
 function parseCsvList(raw?: string): string[] {
   if (!raw) {
@@ -33,15 +31,15 @@ function parseCsvList(raw?: string): string[] {
 
 function normalizeId(value: string, key: string): string {
   const normalized = value.toLowerCase();
-  if (!ID_RE.test(normalized) && normalized !== "rule-guide") {
-    throw new UsageError(`${key} entries must match <prefix>-<number>: ${value}`);
+  if (!isCanonicalId(normalized)) {
+    throw new UsageError(`${key} entries must match <prefix>-<number> or reserved id: ${value}`);
   }
   return normalized;
 }
 
 function normalizeIdRef(value: string, key: string): string {
   const normalized = value.toLowerCase();
-  if (!ID_REF_RE.test(normalized)) {
+  if (!isCanonicalIdRef(normalized)) {
     throw new UsageError(`${key} entries must match <id> or <ws>:<id>: ${value}`);
   }
   return normalized;

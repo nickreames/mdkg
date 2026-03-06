@@ -1,4 +1,5 @@
 import { FrontmatterValue } from "./frontmatter";
+import { isCanonicalIdRef } from "../util/id";
 
 export type EdgeMap = {
   epic?: string;
@@ -10,8 +11,6 @@ export type EdgeMap = {
   blocks: string[];
 };
 
-const ID_REF_RE = /^([a-z][a-z0-9_]*:)?[a-z]+-[0-9]+$/;
-
 function formatError(filePath: string, key: string, message: string): Error {
   return new Error(`${filePath}: ${key} ${message}`);
 }
@@ -21,7 +20,7 @@ function normalizeIdRef(value: string, filePath: string, key: string): string {
   if (normalized !== value) {
     throw formatError(filePath, key, "must be lowercase");
   }
-  if (!ID_REF_RE.test(normalized)) {
+  if (!isCanonicalIdRef(normalized)) {
     throw formatError(filePath, key, `invalid id reference: ${value}`);
   }
   return normalized;

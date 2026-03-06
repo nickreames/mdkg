@@ -19,9 +19,10 @@ mdkg is intentionally boring and portable:
 
 You store project knowledge as Markdown nodes with strict frontmatter (a small, stable schema). mdkg:
 
-1) indexes those nodes into a local JSON cache (`.mdkg/index/global.json`)
-2) provides fast search/list/show tools
-3) generates deterministic **context packs** for agents (Markdown/JSON/TOON/XML exports)
+1) indexes nodes into a local JSON cache (`.mdkg/index/global.json`)
+2) indexes skills metadata into `.mdkg/index/skills.json` when `.mdkg/skills/**/SKILL.md` exists
+3) provides fast search/list/show tools
+4) generates deterministic **context packs** for agents (Markdown/JSON/TOON/XML exports)
 
 Everything stays in your repo. No servers. No surprises.
 
@@ -35,6 +36,7 @@ mdkg lives in a hidden directory at the repo root:
 - `.mdkg/design/` — decisions + architecture
 - `.mdkg/work/` — epics/tasks/bugs/tests/checkpoints
 - `.mdkg/templates/` — document templates used by `mdkg new`
+- `.mdkg/skills/` — optional Agent Skills packages (`<slug>/SKILL.md`)
 - `.mdkg/index/` — generated cache (gitignored)
 
 mdkg is root-only: you run commands from the repository root and mdkg indexes all registered workspaces without “discovering” nested repos.
@@ -57,10 +59,10 @@ Once published:
 1) Initialize mdkg in your repo:
 
 ```bash
-mdkg init --llm --update-gitignore --update-npmignore
+mdkg init --llm
 ```
 
-This creates `.mdkg/` (rules, templates, work folders). Use the ignore-update flags to append recommended mdkg ignore entries.
+This creates `.mdkg/` (rules, templates, work folders) and updates `.gitignore`/`.npmignore` defaults unless `--no-update-ignores` is set.
 
 2) Index your repo (cache is default behavior):
 
@@ -80,6 +82,8 @@ mdkg new task "bootstrap cli" --status todo --priority 1 --tags cli,build
 mdkg search "pack"
 mdkg list --type task --status todo
 mdkg show task-1
+mdkg list --type skill --tags stage:plan --tags-mode any
+mdkg show skill:example-skill --meta
 ```
 
 5) Generate a deterministic context bundle for an agent:
@@ -105,6 +109,56 @@ This is also intended to be a compatible building block for “life git”-style
 
 ---
 
+## Roadmap (v0.4.0 target + current source state)
+
+These are target-state goals and partial implementation tracks for v0.4.0.
+
+Implemented in current source:
+- `mdkg init --omni` bootstrap mode (with `--llm` retained for compatibility)
+- init-omni scaffold contract: `.mdkg/core/SOUL.md` (`id: rule-soul`), `.mdkg/core/HUMAN.md` (`id: rule-human`), `.mdkg/skills/` scaffold, seeded events JSONL, and ID-only core pin updates
+- safer init defaults with global opt-out:
+  - default updates for `.gitignore` and `.npmignore`
+  - `--no-update-ignores` to disable defaults
+- deterministic skills metadata index artifact: `.mdkg/index/skills.json`
+- skills query surfaces in existing command family:
+  - `mdkg list --type skill`
+  - `mdkg show skill:<slug>` (plus `--meta`)
+  - `mdkg search` includes skill metadata
+- query-time tag filtering flags: `--tags <tag,tag,...>` and `--tags-mode any|all`
+- optional work-item `skills: [slug,...]` frontmatter field with validation
+- `mdkg new ... --skills <slug,slug,...>` support for work-item creation
+- optional pack skill inclusion:
+  - `--skills none|auto|<slug,slug,...>`
+  - `--skills-depth meta|full`
+- hybrid latest-checkpoint behavior:
+  - pack-time authoritative selection
+  - index hint `latest_checkpoint_qid` (optimization only)
+- `mdkg validate` JSONL contract checks for `.mdkg/work/events/events.jsonl` when present
+
+Planned targets:
+- skills capability direction locked to existing command families (`list/show/search/pack`) for v0.4 planning
+- planned skills query filters include `--tags` and `--tags-mode any|all` with policy-stage conventions (for example `stage:plan`)
+- policy-driven memory assembly guidance for external orchestrators (single-writer + batched updates)
+- redaction policy-level runtime controls (`safe`/`strict`) beyond current docs/contract validation
+- v0.4 decision-log rollup documenting design rationale (`dec-9`)
+- gap-closure decision record and contracts stream (`dec-10`, `edd-7`, `edd-8`, `epic-5`)
+- mdkg.dev launch plan: Home/Docs/Examples/CLI/Blog IA, docs versioning, and initial SEO pillars
+- LLM-readable docs artifacts plan: `llms.txt`, agent prompt snippet, and example pack shapes
+- skills integration guide plan: authoring standards, progressive disclosure, and script-risk guidance
+- event logs + checkpoints guide plan: two-tier episodic memory, JSONL provenance schema, and checkpoint compression cadence
+- `.mdkg/core/SOUL.md` and `.mdkg/core/HUMAN.md` as strict mdkg nodes
+- episodic event logs under `.mdkg/work/events/*.jsonl`
+- docs-level redaction policy framing (`safe`/`strict`) with runtime behavior deferred
+- manual docs alignment audits for v0.4.x (command/help parity + source-gap refresh)
+
+Explicitly deferred in planning:
+- exact events command names and final non-breaking flag syntax details
+
+Current behavior remains:
+- no dedicated event-log command surface
+
+---
+
 ## Concepts
 
 ### Nodes
@@ -116,6 +170,8 @@ Each node must include:
 - `type` (rule, prd, edd, dec, prop, epic, feat, task, bug, checkpoint, test)
 - `title`
 - `created` / `updated` (`YYYY-MM-DD`)
+
+Most IDs use `<prefix>-<number>`. Reserved rule IDs are also supported: `rule-guide`, `rule-soul`, `rule-human`.
 
 Work items also typically include:
 - `status` (backlog, blocked, todo, progress, review, done)
@@ -145,24 +201,29 @@ If you want something searchable, put it in frontmatter:
 
 - `mdkg init`
   - create `.mdkg/` structure
-  - add ignore rules for caches
+  - updates `.gitignore` and `.npmignore` by default (`--no-update-ignores` to skip)
+- `mdkg init --omni`
+  - scaffolds `SOUL.md`, `HUMAN.md`, skills registry, events JSONL seed, and core pin updates
 
 ### Indexing
 
 - `mdkg index`
   - builds `.mdkg/index/global.json`
+  - builds `.mdkg/index/skills.json` from `.mdkg/skills/**/SKILL.md`
   - cache is the default; mdkg will reindex automatically if stale
 
 ### Query
 
-- `mdkg show <id-or-qid>`
-- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--priority <n>]`
-- `mdkg search "<query>"`
+- `mdkg show <id-or-qid> [--body]`
+- `mdkg show skill:<slug> [--meta]`
+- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]`
+- `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all]`
 
 ### Packs (agent context)
 
 - `mdkg pack <id> [--format md|json|toon|xml] [--verbose] [--depth <n>] [--edges <keys>]`
 - `mdkg pack <id> [--pack-profile standard|concise|headers] [--max-chars <n>] [--max-lines <n>] [--max-tokens <n>]`
+- `mdkg pack <id> [--skills none|auto|<slug,slug,...>] [--skills-depth meta|full]`
 - `mdkg pack <id> [--stats] [--stats-out <path>] [--truncation-report <path>]`
 - `mdkg pack <id> [--dry-run]`
 - `mdkg pack --list-profiles`
@@ -177,6 +238,7 @@ If `--out` is omitted, packs are written to `.mdkg/pack/pack_<kind>_<id>_<timest
 
 ```bash
 mdkg init --llm
+mdkg init --omni
 mdkg index
 mdkg new task "..." --status todo --priority 1
 mdkg list --status todo
@@ -206,6 +268,7 @@ mdkg validate
 - `mdkg validate`
   - strict frontmatter validation
   - missing required fields, invalid enums, dangling edges, cycles, duplicates
+  - validates optional node->skill references and event-log JSONL record shape
   - supports `--out <path>` and `--quiet` for CI workflows
 
 - `mdkg format`
@@ -219,6 +282,7 @@ mdkg is designed to avoid accidental leaks:
 - cache files live under `.mdkg/index/` and must be gitignored
 - publishing should use a strict `package.json.files` whitelist
 - `.mdkg/` content should never ship to production builds
+- `.mdkg/work/events/*.jsonl` should be gitignored when episodic logging is enabled
 
 ---
 
