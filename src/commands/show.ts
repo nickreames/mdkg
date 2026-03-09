@@ -13,7 +13,6 @@ export type ShowCommandOptions = {
   root: string;
   id: string;
   ws?: string;
-  includeBody?: boolean;
   metaOnly?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
@@ -173,7 +172,7 @@ export function runShowCommand(options: ShowCommandOptions): void {
     lines.push(blocksLine);
   }
 
-  if (options.includeBody) {
+  if (!options.metaOnly) {
     const filePath = path.resolve(options.root, node.path);
     if (!fs.existsSync(filePath)) {
       throw new NotFoundError(`file not found for ${node.qid}: ${node.path}`);

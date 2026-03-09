@@ -11,7 +11,7 @@ relates: [dec-8, dec-10, prd-1, prd-2, edd-2, edd-3, edd-4, edd-5, edd-6, edd-7,
 refs: []
 aliases: [doc-4, decision-log, design-philosophy]
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-06
 ---
 
 # Context
@@ -73,6 +73,7 @@ Decision: mdkg adopts SKILL.md package conventions, metadata indexing, and optio
 
 Locked metadata policy:
 - optional routing metadata is flattened as `ochatr_*` keys (no nested map contract in v0.4).
+- mdkg indexes and discovers skills but does not execute skill scripts.
 
 Consequences:
 - enabled: portable procedural memory and ecosystem interoperability
@@ -144,6 +145,7 @@ Decision:
 - commit on end-of-run, checkpoint-worthy transitions, or timer flush for long-running orchestrators
 - never commit on every tool call
 - this is external-orchestrator guidance in v0.4 docs, not mdkg runtime enforcement
+- the orchestrator is the durable writer for batched task status updates, artifact refs, optional checkpoints, and commit boundaries
 
 Consequences:
 - enabled: cleaner history and more stable orchestration behavior

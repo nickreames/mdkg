@@ -37,23 +37,37 @@ export type SkillsIndex = {
   skills: Record<string, SkillIndexEntry>;
 };
 
-function listSkillMarkdownFiles(dir: string): string[] {
+type SkillDocCandidate = {
+  slug: string;
+  filePath: string;
+};
+
+function listSkillMarkdownFiles(dir: string): SkillDocCandidate[] {
   if (!fs.existsSync(dir)) {
     return [];
   }
   const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const files: string[] = [];
+  const files: SkillDocCandidate[] = [];
   for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...listSkillMarkdownFiles(fullPath));
+    if (!entry.isDirectory()) {
       continue;
     }
-    if (entry.isFile() && entry.name === "SKILL.md") {
-      files.push(fullPath);
+    const slug = entry.name.toLowerCase();
+    const skillDir = path.join(dir, entry.name);
+    const canonicalPath = path.join(skillDir, "SKILL.md");
+    const compatPath = path.join(skillDir, "SKILLS.md");
+    if (fs.existsSync(canonicalPath) && fs.existsSync(compatPath)) {
+      throw new Error(`${skillDir}: both SKILL.md and SKILLS.md exist`);
+    }
+    if (fs.existsSync(canonicalPath)) {
+      files.push({ slug, filePath: canonicalPath });
+      continue;
+    }
+    if (fs.existsSync(compatPath)) {
+      files.push({ slug, filePath: compatPath });
     }
   }
-  files.sort();
+  files.sort((a, b) => a.slug.localeCompare(b.slug));
   return files;
 }
 
@@ -143,9 +157,8 @@ export function buildSkillsIndex(root: string, config: Config): SkillsIndex {
   const files = listSkillMarkdownFiles(skillsRoot);
   const skills: Record<string, SkillIndexEntry> = {};
 
-  for (const filePath of files) {
-    const slugRaw = path.basename(path.dirname(filePath));
-    const slug = slugRaw.toLowerCase();
+  for (const file of files) {
+    const { slug, filePath } = file;
     if (!SKILL_SLUG_RE.test(slug)) {
       throw new Error(`${filePath}: skill slug must be kebab-case`);
     }

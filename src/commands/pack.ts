@@ -355,7 +355,7 @@ export function runPackCommand(options: PackCommandOptions): void {
   }
 
   if (options.verbose && resolvedProfile.profile !== "standard") {
-    throw new UsageError("--verbose is only supported with --pack-profile standard");
+    throw new UsageError("--verbose is only supported with --profile standard");
   }
 
   const buildResult = buildPack({

@@ -75,6 +75,7 @@ const BOOLEAN_FLAGS = new Set([
 const FLAG_ALIASES: Record<string, string> = {
   "--o": "--out",
   "-o": "--out",
+  "--profile": "--pack-profile",
   "--f": "--format",
   "-f": "--format",
   "--v": "--verbose",

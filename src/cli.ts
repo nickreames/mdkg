@@ -3,6 +3,7 @@
 import fs from "fs";
 import path from "path";
 import { parseArgs } from "./util/argparse";
+import { ParsedArgs } from "./util/argparse";
 import { runIndexCommand } from "./commands/index";
 import { runListCommand } from "./commands/list";
 import { runSearchCommand } from "./commands/search";
@@ -24,273 +25,283 @@ import {
 import { listPackProfiles } from "./pack/profile";
 import { NotFoundError, UsageError, ValidationError } from "./util/errors";
 
-function printGlobalOptions(): void {
-  console.log("\nGlobal options:");
-  console.log("  --root, -r <path>   Run against a specific repo root");
-  console.log("  --help, -h          Show help");
-  console.log("  --version, -V       Show version");
-  console.log("  --no-cache          Bypass reading the index cache");
-  console.log("  --no-reindex        Do not auto rebuild when cache is stale");
+type LogFn = (...args: unknown[]) => void;
+type ExitCode = 0 | 1 | 2 | 3 | 4;
+
+export type CliRuntime = {
+  log?: LogFn;
+  error?: LogFn;
+  cwd?: () => string;
+};
+
+type ResolvedCliRuntime = {
+  log: LogFn;
+  error: LogFn;
+  cwd: () => string;
+};
+
+function resolveRuntime(runtime: CliRuntime = {}): ResolvedCliRuntime {
+  return {
+    log: runtime.log ?? console.log,
+    error: runtime.error ?? console.error,
+    cwd: runtime.cwd ?? (() => process.cwd()),
+  };
 }
 
-function printUsage(): void {
-  console.log("mdkg - Markdown Knowledge Graph");
-  console.log("\nUsage:");
-  console.log("  mdkg <command> [options]");
-  console.log("\nCommands:");
-  console.log("  init        Initialize .mdkg scaffolding");
-  console.log("  guide       Show the mdkg guide");
-  console.log("  new         Create a node from templates");
-  console.log("  workspace   Manage workspaces (ls/add/rm)");
-  console.log("  index       Build the global index");
-  console.log("  show        Show a node by id or qid");
-  console.log("  list        List nodes with filters");
-  console.log("  search      Search nodes by query");
-  console.log("  pack        Generate a context pack");
-  console.log("  next        Suggest the next work item");
-  console.log("  checkpoint  Create a checkpoint node");
-  console.log("  validate    Validate frontmatter + graph");
-  console.log("  format      Normalize frontmatter");
-  console.log("  doctor      Run install and workspace diagnostics");
-  console.log("\nQuickstart:");
-  console.log("  mdkg init --llm");
-  console.log("  mdkg index");
-  console.log('  mdkg new task "..." --status todo --priority 1');
-  console.log("  mdkg list --status todo");
-  console.log("  mdkg pack <id> --verbose");
-  console.log("  mdkg pack <id> --pack-profile concise --dry-run --stats");
-  console.log("  mdkg validate");
-  console.log("\nRun `mdkg help <command>` or `mdkg <command> --help` for details.");
-  printGlobalOptions();
+function printGlobalOptions(log: LogFn): void {
+  log("\nGlobal options:");
+  log("  --root, -r <path>   Run against a specific repo root");
+  log("  --help, -h          Show help");
+  log("  --version, -V       Show version");
 }
 
-function printInitHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg init [options]");
-  console.log("\nOptions:");
-  console.log("  --force               Overwrite existing mdkg files");
-  console.log("  --agents              Create AGENTS.md");
-  console.log("  --claude              Create CLAUDE.md");
-  console.log("  --llm                 Create AGENTS.md and CLAUDE.md");
-  console.log("  --omni                Create omni bootstrap scaffolding");
-  console.log("  --no-update-ignores   Skip default gitignore/npmignore updates");
-  console.log("  --update-gitignore    Append mdkg ignore entries");
-  console.log("  --update-npmignore    Append mdkg ignore entries");
-  console.log("  --update-dockerignore Append mdkg ignore entries");
-  printGlobalOptions();
+function printUsage(log: LogFn): void {
+  log("mdkg - Markdown Knowledge Graph");
+  log("\nUsage:");
+  log("  mdkg <command> [options]");
+  log("\nPrimary commands:");
+  log("  init        Initialize .mdkg scaffolding");
+  log("  new         Create a node from templates");
+  log("  show        Show a node by id or qid");
+  log("  list        List nodes with filters");
+  log("  search      Search nodes by query");
+  log("  pack        Generate a context pack");
+  log("  next        Suggest the next work item");
+  log("  validate    Validate frontmatter + graph");
+  log("\nAdvanced / maintenance commands:");
+  log("  checkpoint  Create a checkpoint node");
+  log("  index       Build the global index");
+  log("  guide       Show the mdkg guide");
+  log("  format      Normalize frontmatter");
+  log("  doctor      Run install and workspace diagnostics");
+  log("  workspace   Manage workspaces (ls/add/rm)");
+  log("\nQuickstart:");
+  log("  mdkg init --llm");
+  log('  mdkg new task "..." --status todo --priority 1');
+  log('  mdkg search "..."');
+  log("  mdkg show <id>");
+  log("  mdkg next");
+  log("  mdkg pack <id>");
+  log("  mdkg pack <id> --profile concise --dry-run --stats");
+  log("  mdkg validate");
+  log("\nOptional agent-ready bootstrap:");
+  log("  mdkg init --omni");
+  log("\nRun `mdkg help <command>` or `mdkg <command> --help` for details.");
+  printGlobalOptions(log);
 }
 
-function printNewHelp(): void {
-  console.log("Usage:");
-  console.log('  mdkg new <type> "<title>" [options]');
-  console.log("\nTypes:");
-  console.log("  rule prd edd dec prop epic feat task bug checkpoint test");
-  console.log("\nOptions:");
-  console.log("  --ws <alias>               Workspace alias (default root)");
-  console.log("  --status <status>          Work item or decision status");
-  console.log("  --priority <0..9>          Work item priority");
-  console.log("  --epic <id>                Epic id");
-  console.log("  --parent <id>              Parent id");
-  console.log("  --prev <id>                Previous id");
-  console.log("  --next <id>                Next id");
-  console.log("  --relates <id,id,...>      Related ids");
-  console.log("  --blocked-by <id,id,...>   Blockers");
-  console.log("  --blocks <id,id,...>       Blocked items");
-  console.log("  --links <ref,ref,...>      Link refs");
-  console.log("  --artifacts <ref,ref,...>  Artifact refs");
-  console.log("  --refs <id,id,...>         Non-edge refs");
-  console.log("  --aliases <text,text,...>  Search aliases");
-  console.log("  --skills <slug,slug,...>   Skill slugs for work items");
-  console.log("  --cases <id,id,...>        Test case ids");
-  console.log("  --tags <tag,tag,...>       Tags");
-  console.log("  --owners <owner,owner,...> Owners");
-  console.log("  --supersedes <dec-id>      Decision supersedes");
-  console.log("  --template <set>           Template set");
-  printGlobalOptions();
+function printInitHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg init [options]");
+  log("\nOptions:");
+  log("  --force               Overwrite existing mdkg files");
+  log("  --llm                 Create AGENTS.md and CLAUDE.md");
+  log("  --omni                Add SOUL/HUMAN/skills/events scaffolding");
+  log("  --no-update-ignores   Skip default .gitignore/.npmignore updates");
+  log("  --update-gitignore    Append mdkg ignore entries");
+  log("  --update-npmignore    Append mdkg ignore entries");
+  log("  --update-dockerignore Append mdkg ignore entries");
+  log("\nCompatibility flags still supported but not shown in the primary onboarding story.");
+  printGlobalOptions(log);
 }
 
-function printGuideHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg guide");
-  printGlobalOptions();
+function printNewHelp(log: LogFn): void {
+  log("Usage:");
+  log('  mdkg new <type> "<title>" [options]');
+  log("\nTypes:");
+  log("  rule prd edd dec prop epic feat task bug checkpoint test");
+  log("\nOptions:");
+  log("  --ws <alias>               Workspace alias (default root)");
+  log("  --status <status>          Work item or decision status");
+  log("  --priority <0..9>          Work item priority");
+  log("  --epic <id>                Epic id");
+  log("  --tags <tag,tag,...>       Tags");
+  log("  --skills <slug,slug,...>   Skill slugs for work items");
+  log("  --template <set>           Template set");
+  log("\nAdvanced metadata flags:");
+  log("  --parent --prev --next --relates --blocked-by --blocks");
+  log("  --links --artifacts --refs --aliases --owners --cases --supersedes");
+  log("  --owners <owner,owner,...> Owners");
+  printGlobalOptions(log);
 }
 
-function printWorkspaceHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg workspace ls");
-  console.log("  mdkg workspace add <alias> <path> [--mdkg-dir <dir>]");
-  console.log("  mdkg workspace rm <alias>");
-  printGlobalOptions();
+function printGuideHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg guide");
+  printGlobalOptions(log);
 }
 
-function printIndexHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg index [--tolerant]");
-  printGlobalOptions();
+function printWorkspaceHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg workspace ls");
+  log("  mdkg workspace add <alias> <path> [--mdkg-dir <dir>]");
+  log("  mdkg workspace rm <alias>");
+  printGlobalOptions(log);
 }
 
-function printShowHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg show <id-or-qid> [--ws <alias>] [--body] [--meta]");
-  console.log("  mdkg show skill:<slug> [--meta]");
-  printGlobalOptions();
+function printIndexHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg index [--tolerant]");
+  printGlobalOptions(log);
 }
 
-function printListHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]");
-  console.log("           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]");
-  printGlobalOptions();
+function printShowHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg show <id-or-qid> [--ws <alias>] [--meta]");
+  log("  mdkg show skill:<slug> [--meta]");
+  log("\nDefault behavior:");
+  log("  Shows full body content. Use --meta for card + metadata only.");
+  printGlobalOptions(log);
 }
 
-function printSearchHelp(): void {
-  console.log("Usage:");
-  console.log('  mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]');
-  console.log("               [--tags <tag,tag,...>] [--tags-mode any|all]");
-  printGlobalOptions();
+function printListHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]");
+  log("           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]");
+  printGlobalOptions(log);
 }
 
-function printPackHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg pack <id-or-qid> [options]");
-  console.log("  mdkg pack --list-profiles");
-  console.log("\nOptions:");
-  console.log("  -d, --depth <n>              Traversal depth (default from config pack.default_depth)");
-  console.log("  -e, --edges <keys>           Extra edges: parent,epic,relates,blocked_by,blocks,prev,next");
-  console.log("  -v, --verbose                Include pinned core docs from .mdkg/core/core.md (standard profile only)");
-  console.log("  -f, --format <fmt>           Output format: md|json|toon|xml (default md)");
-  console.log("  -o, --out <path>             Output file path (default .mdkg/pack/pack_<kind>_<id>_<ts>.<ext>)");
-  console.log("  -w, --ws <alias>             Workspace hint when resolving ambiguous ids");
-  console.log("      --pack-profile <name>    Built-in body profile: standard|concise|headers (default standard)");
-  console.log("      --concise                Shorthand for --pack-profile concise");
-  console.log("      --strip-code             Remove fenced code blocks from shaped body content");
-  console.log("      --max-code-lines <n>     Keep at most n lines per fenced code block");
-  console.log("      --max-chars <n>          Hard cap on shaped pack characters");
-  console.log("      --max-lines <n>          Hard cap on shaped pack lines");
-  console.log("      --max-tokens <n>         Hard cap on shaped pack token estimate (~chars/4)");
-  console.log("      --skills <mode>          Skill inclusion: none|auto|<slug,slug,...> (default auto)");
-  console.log("      --skills-depth <mode>    Skill body mode: meta|full (default meta)");
-  console.log("      --dry-run                Preview selection/order/stats without writing files");
-  console.log("      --truncation-report <p>  Write truncation report JSON (default <out>.truncation.json when needed)");
-  console.log("      --stats                  Print per-node + total pack stats and write stats sidecar JSON");
-  console.log("      --stats-out <path>       Write stats JSON to explicit path");
-  console.log("      --list-profiles          List built-in pack profiles and exit");
-  console.log("\nExamples:");
-  console.log("  mdkg pack --list-profiles");
-  console.log("  mdkg pack task-1 -v");
-  console.log("  mdkg pack task-1 --pack-profile concise --max-tokens 12000 --stats");
-  console.log("  mdkg pack task-1 --pack-profile concise --dry-run");
-  console.log("  mdkg pack epic-2 --format json --max-chars 50000 --truncation-report .mdkg/pack/epic-2.truncation.json");
-  printGlobalOptions();
+function printSearchHelp(log: LogFn): void {
+  log("Usage:");
+  log('  mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]');
+  log("               [--tags <tag,tag,...>] [--tags-mode any|all]");
+  printGlobalOptions(log);
 }
 
-function printPackProfiles(): void {
+function printPackHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg pack <id-or-qid> [options]");
+  log("  mdkg pack --list-profiles");
+  log("\nOptions:");
+  log("  -w, --ws <alias>             Workspace hint when resolving ambiguous ids");
+  log("  -v, --verbose                Include pinned core docs from .mdkg/core/core.md");
+  log("  -f, --format <fmt>           Output format: md|json|toon|xml (default md)");
+  log("  -o, --out <path>             Output file path");
+  log("      --profile <name>         Body profile: standard|concise|headers (default standard)");
+  log("      --skills <mode>          Skill inclusion: none|auto|<slug,slug,...> (default auto)");
+  log("      --skills-depth <mode>    Skill body mode: meta|full (default meta)");
+  log("      --dry-run                Preview selection/order/stats without writing files");
+  log("      --stats                  Print per-node + total pack stats and write stats sidecar JSON");
+  log("      --list-profiles          List built-in pack profiles and exit");
+  log("\nAdvanced shaping / debug flags:");
+  log("  --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens");
+  log("  --truncation-report --stats-out");
+  log("\nExamples:");
+  log("  mdkg pack --list-profiles");
+  log("  mdkg pack task-1");
+  log("  mdkg pack task-1 --profile concise --dry-run --stats");
+  log("  mdkg pack task-1 --skills auto --skills-depth full");
+  log("  mdkg pack epic-2 --format json --profile headers");
+  printGlobalOptions(log);
+}
+
+function printPackProfiles(log: LogFn): void {
   const profiles = listPackProfiles();
-  console.log("Built-in pack profiles:");
+  log("Built-in pack profiles:");
   for (const entry of profiles) {
-    console.log(`- ${entry.profile} (body=${entry.bodyMode})`);
-    console.log(`  ${entry.description}`);
+    log(`- ${entry.profile} (body=${entry.bodyMode})`);
+    log(`  ${entry.description}`);
     if (entry.defaults.length > 0) {
-      console.log(`  defaults: ${entry.defaults.join(", ")}`);
+      log(`  defaults: ${entry.defaults.join(", ")}`);
     }
   }
 }
 
-function printNextHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg next [<id-or-qid>] [--ws <alias>]");
-  printGlobalOptions();
+function printNextHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg next [<id-or-qid>] [--ws <alias>]");
+  printGlobalOptions(log);
 }
 
-function printCheckpointHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg checkpoint new <title> [--ws <alias>]");
-  console.log("        [--relates <id,id,...>] [--scope <id,id,...>]");
-  printGlobalOptions();
+function printCheckpointHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg checkpoint new <title> [--ws <alias>]");
+  log("        [--relates <id,id,...>] [--scope <id,id,...>]");
+  printGlobalOptions(log);
 }
 
-function printValidateHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg validate [--out <path>] [--quiet]");
-  printGlobalOptions();
+function printValidateHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg validate [--out <path>] [--quiet]");
+  printGlobalOptions(log);
 }
 
-function printFormatHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg format");
-  printGlobalOptions();
+function printFormatHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg format");
+  printGlobalOptions(log);
 }
 
-function printDoctorHelp(): void {
-  console.log("Usage:");
-  console.log("  mdkg doctor [--json]");
-  console.log("\nChecks:");
-  console.log("  - Node.js version compatibility");
-  console.log("  - mdkg repo root + .mdkg/config.json");
-  console.log("  - Template schema availability");
-  console.log("  - Index load/rebuild health");
-  console.log("\nOptions:");
-  console.log("  --json                Emit machine-readable JSON output");
-  printGlobalOptions();
+function printDoctorHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg doctor [--json]");
+  log("\nChecks:");
+  log("  - Node.js version compatibility");
+  log("  - mdkg repo root + .mdkg/config.json");
+  log("  - Template schema availability");
+  log("  - Index load/rebuild health");
+  log("\nOptions:");
+  log("  --json                Emit machine-readable JSON output");
+  printGlobalOptions(log);
 }
 
-function printCommandHelp(command?: string): void {
+function printCommandHelp(log: LogFn, command?: string): void {
   switch ((command ?? "").toLowerCase()) {
     case "":
     case "help":
-      printUsage();
+      printUsage(log);
       return;
     case "init":
-      printInitHelp();
+      printInitHelp(log);
       return;
     case "guide":
-      printGuideHelp();
+      printGuideHelp(log);
       return;
     case "new":
-      printNewHelp();
+      printNewHelp(log);
       return;
     case "workspace":
-      printWorkspaceHelp();
+      printWorkspaceHelp(log);
       return;
     case "index":
-      printIndexHelp();
+      printIndexHelp(log);
       return;
     case "show":
-      printShowHelp();
+      printShowHelp(log);
       return;
     case "list":
-      printListHelp();
+      printListHelp(log);
       return;
     case "search":
-      printSearchHelp();
+      printSearchHelp(log);
       return;
     case "pack":
-      printPackHelp();
+      printPackHelp(log);
       return;
     case "next":
-      printNextHelp();
+      printNextHelp(log);
       return;
     case "checkpoint":
-      printCheckpointHelp();
+      printCheckpointHelp(log);
       return;
     case "validate":
-      printValidateHelp();
+      printValidateHelp(log);
       return;
     case "format":
-      printFormatHelp();
+      printFormatHelp(log);
       return;
     case "doctor":
-      printDoctorHelp();
+      printDoctorHelp(log);
       return;
     default:
-      printUsage();
+      printUsage(log);
   }
 }
 
-function printRootError(root: string): void {
-  console.error("mdkg must be run from a repo root with .mdkg/config.json");
-  console.error(`root checked: ${root}`);
-  console.error("hint: run from the repo root, pass --root <path>, or run `mdkg init`");
+function printRootError(error: LogFn, root: string): void {
+  error("mdkg must be run from a repo root with .mdkg/config.json");
+  error(`root checked: ${root}`);
+  error("hint: run from the repo root, pass --root <path>, or run `mdkg init`");
 }
 
 function readPackageVersion(): string {
@@ -314,10 +325,7 @@ function hasConfig(root: string): boolean {
   return fs.existsSync(configPath);
 }
 
-function shouldRequireConfig(
-  command: string,
-  flags: Record<string, string | boolean>
-): boolean {
+function shouldRequireConfig(command: string, flags: Record<string, string | boolean>): boolean {
   if (command === "init" || command === "help") {
     return false;
   }
@@ -327,10 +335,7 @@ function shouldRequireConfig(
   return true;
 }
 
-function requireFlagValue(
-  flag: string,
-  value: string | boolean | undefined
-): string | undefined {
+function requireFlagValue(flag: string, value: string | boolean | undefined): string | undefined {
   if (value === undefined) {
     return undefined;
   }
@@ -360,10 +365,7 @@ function parseBooleanFlag(flag: string, value: string | boolean | undefined): bo
   throw new UsageError(`${flag} must be true or false`);
 }
 
-function parseNumberFlag(
-  flag: string,
-  value: string | boolean | undefined
-): number | undefined {
+function parseNumberFlag(flag: string, value: string | boolean | undefined): number | undefined {
   if (value === undefined) {
     return undefined;
   }
@@ -422,71 +424,68 @@ function parseTagsModeFlag(value: string | boolean | undefined): "any" | "all" |
   throw new UsageError("--tags-mode must be any or all");
 }
 
-function inferCommandFromArgv(): string | undefined {
-  const raw = process.argv[2];
-  if (!raw || raw.startsWith("-")) {
-    return undefined;
-  }
-  return raw.toLowerCase();
-}
-
-function handleCommandError(err: unknown): never {
+function handleCommandError(
+  err: unknown,
+  command: string | undefined,
+  runtime: ResolvedCliRuntime
+): ExitCode {
   const message = err instanceof Error ? err.message : String(err);
   if (err instanceof UsageError) {
-    console.error(message);
-    printCommandHelp(inferCommandFromArgv());
-    process.exit(1);
+    runtime.error(message);
+    printCommandHelp(runtime.log, command);
+    return 1;
   }
   if (err instanceof ValidationError) {
-    console.error(message);
-    process.exit(2);
+    runtime.error(message);
+    return 2;
   }
   if (err instanceof NotFoundError) {
-    console.error(message);
-    process.exit(3);
+    runtime.error(message);
+    return 3;
   }
-  console.error(message);
-  process.exit(4);
+  runtime.error(message);
+  return 4;
 }
 
-function main(): void {
-  const parsed = parseArgs(process.argv.slice(2));
-  if (parsed.error) {
-    console.error(parsed.error);
-    printUsage();
-    process.exit(1);
-  }
-
-  if (parsed.help) {
-    printCommandHelp(parsed.positionals[0]);
-    process.exit(0);
-  }
-  if (parsed.version) {
-    console.log(readPackageVersion());
-    process.exit(0);
-  }
-
-  const command = (parsed.positionals[0] ?? "").toLowerCase();
-  if (!command) {
-    printUsage();
-    process.exit(0);
-  }
-
-  if (command === "help") {
-    printCommandHelp(parsed.positionals[1]);
-    process.exit(0);
-  }
-
-  const root = parsed.root ? path.resolve(parsed.root) : process.cwd();
-  if (shouldRequireConfig(command, parsed.flags)) {
-    if (!hasConfig(root)) {
-      printRootError(root);
-      process.exit(1);
+function runWorkspaceSubcommand(
+  parsed: ParsedArgs,
+  root: string
+): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "ls": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("workspace ls takes no arguments");
+      }
+      runWorkspaceListCommand({ root });
+      return 0;
     }
+    case "add": {
+      const alias = parsed.positionals[2];
+      const workspacePath = parsed.positionals[3];
+      if (!alias || !workspacePath) {
+        throw new UsageError("workspace add requires <alias> <path>");
+      }
+      const mdkgDir = requireFlagValue("--mdkg-dir", parsed.flags["--mdkg-dir"]);
+      runWorkspaceAddCommand({ root, alias, workspacePath, mdkgDir });
+      return 0;
+    }
+    case "rm": {
+      const alias = parsed.positionals[2];
+      if (!alias || parsed.positionals.length > 3) {
+        throw new UsageError("workspace rm requires <alias>");
+      }
+      runWorkspaceRemoveCommand({ root, alias });
+      return 0;
+    }
+    default:
+      throw new UsageError("workspace requires ls/add/rm");
   }
+}
 
-  try {
-    switch (command) {
+function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntime): ExitCode {
+  const command = (parsed.positionals[0] ?? "").toLowerCase();
+  switch (command) {
     case "init": {
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
       const createAgents = parseBooleanFlag("--agents", parsed.flags["--agents"]);
@@ -509,46 +508,33 @@ function main(): void {
         "--update-dockerignore",
         parsed.flags["--update-dockerignore"]
       );
-      try {
-        runInitCommand({
-          root,
-          force,
-          updateGitignore,
-          updateNpmignore,
-          updateDockerignore,
-          noUpdateIgnores,
-          createAgents,
-          createClaude,
-          createLlm,
-          omni,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runInitCommand({
+        root,
+        force,
+        updateGitignore,
+        updateNpmignore,
+        updateDockerignore,
+        noUpdateIgnores,
+        createAgents,
+        createClaude,
+        createLlm,
+        omni,
+      });
+      return 0;
     }
-    case "guide": {
-      try {
-        runGuideCommand({ root });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
-    }
+    case "guide":
+      runGuideCommand({ root });
+      return 0;
     case "index": {
       const tolerant = Boolean(parsed.flags["--tolerant"]);
-      try {
-        runIndexCommand({ root, tolerant });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runIndexCommand({ root, tolerant });
+      return 0;
     }
     case "new": {
       const type = parsed.positionals[1];
       const title = parsed.positionals.slice(2).join(" ");
       if (!type || !title) {
-        handleCommandError(new UsageError("new requires a type and title"));
+        throw new UsageError("new requires a type and title");
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const status = requireFlagValue("--status", parsed.flags["--status"]);
@@ -572,113 +558,59 @@ function main(): void {
       const template = requireFlagValue("--template", parsed.flags["--template"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      try {
-        runNewCommand({
-          root,
-          type,
-          title,
-          ws,
-          status,
-          priority,
-          epic,
-          parent,
-          prev,
-          next,
-          relates,
-          blockedBy,
-          blocks,
-          links,
-          artifacts,
-          refs,
-          aliases,
-          skills,
-          cases,
-          tags,
-          owners,
-          supersedes,
-          template,
-          noCache,
-          noReindex,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runNewCommand({
+        root,
+        type,
+        title,
+        ws,
+        status,
+        priority,
+        epic,
+        parent,
+        prev,
+        next,
+        relates,
+        blockedBy,
+        blocks,
+        links,
+        artifacts,
+        refs,
+        aliases,
+        skills,
+        cases,
+        tags,
+        owners,
+        supersedes,
+        template,
+        noCache,
+        noReindex,
+      });
+      return 0;
     }
-    case "workspace": {
-      const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
-      switch (subcommand) {
-        case "ls": {
-          if (parsed.positionals.length > 2) {
-            handleCommandError(new UsageError("workspace ls takes no arguments"));
-          }
-          try {
-            runWorkspaceListCommand({ root });
-          } catch (err) {
-            handleCommandError(err);
-          }
-          process.exit(0);
-        }
-        case "add": {
-          const alias = parsed.positionals[2];
-          const workspacePath = parsed.positionals[3];
-          if (!alias || !workspacePath) {
-            handleCommandError(new UsageError("workspace add requires <alias> <path>"));
-          }
-          const mdkgDir = requireFlagValue("--mdkg-dir", parsed.flags["--mdkg-dir"]);
-          try {
-            runWorkspaceAddCommand({ root, alias, workspacePath, mdkgDir });
-          } catch (err) {
-            handleCommandError(err);
-          }
-          process.exit(0);
-        }
-        case "rm": {
-          const alias = parsed.positionals[2];
-          if (!alias || parsed.positionals.length > 3) {
-            handleCommandError(new UsageError("workspace rm requires <alias>"));
-          }
-          try {
-            runWorkspaceRemoveCommand({ root, alias });
-          } catch (err) {
-            handleCommandError(err);
-          }
-          process.exit(0);
-        }
-        default: {
-          handleCommandError(new UsageError("workspace requires ls/add/rm"));
-        }
-      }
-      process.exit(0);
-    }
+    case "workspace":
+      return runWorkspaceSubcommand(parsed, root);
     case "show": {
       const id = parsed.positionals[1];
       if (!id || parsed.positionals.length > 2) {
-        handleCommandError(new UsageError("show requires a single id"));
+        throw new UsageError("show requires a single id");
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
-      const includeBody = parseBooleanFlag("--body", parsed.flags["--body"]);
       const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      try {
-        runShowCommand({
-          root,
-          id,
-          ws,
-          includeBody,
-          metaOnly,
-          noCache,
-          noReindex,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runShowCommand({
+        root,
+        id,
+        ws,
+        metaOnly,
+        noCache,
+        noReindex,
+      });
+      return 0;
     }
     case "list": {
       if (parsed.positionals.length > 1) {
-        handleCommandError(new UsageError("list does not accept positional arguments"));
+        throw new UsageError("list does not accept positional arguments");
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const type = requireFlagValue("--type", parsed.flags["--type"]);
@@ -690,28 +622,24 @@ function main(): void {
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      try {
-        runListCommand({
-          root,
-          ws,
-          type,
-          status,
-          epic,
-          priority,
-          blocked,
-          tags,
-          tagsMode,
-          noCache,
-          noReindex,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runListCommand({
+        root,
+        ws,
+        type,
+        status,
+        epic,
+        priority,
+        blocked,
+        tags,
+        tagsMode,
+        noCache,
+        noReindex,
+      });
+      return 0;
     }
     case "search": {
       if (parsed.positionals.length < 2) {
-        handleCommandError(new UsageError("search requires a query"));
+        throw new UsageError("search requires a query");
       }
       const query = parsed.positionals.slice(1).join(" ");
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
@@ -721,35 +649,31 @@ function main(): void {
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      try {
-        runSearchCommand({
-          root,
-          query,
-          ws,
-          type,
-          status,
-          tags,
-          tagsMode,
-          noCache,
-          noReindex,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runSearchCommand({
+        root,
+        query,
+        ws,
+        type,
+        status,
+        tags,
+        tagsMode,
+        noCache,
+        noReindex,
+      });
+      return 0;
     }
     case "pack": {
       const listProfiles = parseBooleanFlag("--list-profiles", parsed.flags["--list-profiles"]);
       if (listProfiles) {
         if (parsed.positionals.length > 1) {
-          handleCommandError(new UsageError("pack --list-profiles does not accept positional arguments"));
+          throw new UsageError("pack --list-profiles does not accept positional arguments");
         }
-        printPackProfiles();
-        process.exit(0);
+        printPackProfiles(runtime.log);
+        return 0;
       }
       const id = parsed.positionals[1];
       if (!id || parsed.positionals.length > 2) {
-        handleCommandError(new UsageError("pack requires a single id"));
+        throw new UsageError("pack requires a single id");
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const depth = parseNumberFlag("--depth", parsed.flags["--depth"]);
@@ -775,65 +699,57 @@ function main(): void {
       const out = requireFlagValue("--out", parsed.flags["--out"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      try {
-        runPackCommand({
-          root,
-          id,
-          ws,
-          depth,
-          edges,
-          verbose,
-          concise,
-          stripCode,
-          format,
-          packProfile,
-          maxCodeLines,
-          maxChars,
-          maxLines,
-          maxTokens,
-          skills,
-          skillsDepth,
-          dryRun,
-          stats,
-          statsOut,
-          truncationReport,
-          out,
-          noCache,
-          noReindex,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runPackCommand({
+        root,
+        id,
+        ws,
+        depth,
+        edges,
+        verbose,
+        concise,
+        stripCode,
+        format,
+        packProfile,
+        maxCodeLines,
+        maxChars,
+        maxLines,
+        maxTokens,
+        skills,
+        skillsDepth,
+        dryRun,
+        stats,
+        statsOut,
+        truncationReport,
+        out,
+        noCache,
+        noReindex,
+      });
+      return 0;
     }
     case "next": {
       if (parsed.positionals.length > 2) {
-        handleCommandError(new UsageError("next accepts at most one id"));
+        throw new UsageError("next accepts at most one id");
       }
       const id = parsed.positionals[1];
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      try {
-        runNextCommand({
-          root,
-          id,
-          ws,
-          noCache,
-          noReindex,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runNextCommand({
+        root,
+        id,
+        ws,
+        noCache,
+        noReindex,
+      });
+      return 0;
     }
     case "checkpoint": {
       const sub = (parsed.positionals[1] ?? "").toLowerCase();
       if (!sub) {
-        handleCommandError(new UsageError("checkpoint requires a subcommand"));
+        throw new UsageError("checkpoint requires a subcommand");
       }
       if (sub !== "new") {
-        handleCommandError(new UsageError(`unknown checkpoint subcommand: ${sub}`));
+        throw new UsageError(`unknown checkpoint subcommand: ${sub}`);
       }
       const title = parsed.positionals.slice(2).join(" ");
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
@@ -842,68 +758,96 @@ function main(): void {
       const status = requireFlagValue("--status", parsed.flags["--status"]);
       const priority = parseNumberFlag("--priority", parsed.flags["--priority"]);
       const template = requireFlagValue("--template", parsed.flags["--template"]);
-      try {
-        runCheckpointNewCommand({
-          root,
-          title,
-          ws,
-          relates,
-          scope,
-          status,
-          priority,
-          template,
-        });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runCheckpointNewCommand({
+        root,
+        title,
+        ws,
+        relates,
+        scope,
+        status,
+        priority,
+        template,
+      });
+      return 0;
     }
     case "validate": {
       if (parsed.positionals.length > 1) {
-        handleCommandError(new UsageError("validate does not accept positional arguments"));
+        throw new UsageError("validate does not accept positional arguments");
       }
       const out = requireFlagValue("--out", parsed.flags["--out"]);
       const quiet = parseBooleanFlag("--quiet", parsed.flags["--quiet"]);
-      try {
-        runValidateCommand({ root, out, quiet });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runValidateCommand({ root, out, quiet });
+      return 0;
     }
-    case "format": {
+    case "format":
       if (parsed.positionals.length > 1) {
-        handleCommandError(new UsageError("format does not accept positional arguments"));
+        throw new UsageError("format does not accept positional arguments");
       }
-      try {
-        runFormatCommand({ root });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
-    }
+      runFormatCommand({ root });
+      return 0;
     case "doctor": {
       if (parsed.positionals.length > 1) {
-        handleCommandError(new UsageError("doctor does not accept positional arguments"));
+        throw new UsageError("doctor does not accept positional arguments");
       }
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      try {
-        runDoctorCommand({ root, noCache, noReindex, json });
-      } catch (err) {
-        handleCommandError(err);
-      }
-      process.exit(0);
+      runDoctorCommand({ root, noCache, noReindex, json });
+      return 0;
     }
-      default:
-        console.error(`Unknown command: ${command}`);
-        printUsage();
-        process.exit(1);
-    }
-  } catch (err) {
-    handleCommandError(err);
+    default:
+      runtime.error(`Unknown command: ${command}`);
+      printUsage(runtime.log);
+      return 1;
   }
 }
 
-main();
+export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
+  const io = resolveRuntime(runtime);
+  const parsed = parseArgs(argv);
+  if (parsed.error) {
+    io.error(parsed.error);
+    printUsage(io.log);
+    return 1;
+  }
+
+  if (parsed.help) {
+    printCommandHelp(io.log, parsed.positionals[0]);
+    return 0;
+  }
+  if (parsed.version) {
+    io.log(readPackageVersion());
+    return 0;
+  }
+
+  const command = (parsed.positionals[0] ?? "").toLowerCase();
+  if (!command) {
+    printUsage(io.log);
+    return 0;
+  }
+
+  if (command === "help") {
+    printCommandHelp(io.log, parsed.positionals[1]);
+    return 0;
+  }
+
+  const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
+  if (shouldRequireConfig(command, parsed.flags) && !hasConfig(root)) {
+    printRootError(io.error, root);
+    return 1;
+  }
+
+  try {
+    return runCommand(parsed, root, io);
+  } catch (err) {
+    return handleCommandError(err, command, io);
+  }
+}
+
+export function main(argv: string[] = process.argv.slice(2)): void {
+  process.exit(runCli(argv, { cwd: () => process.cwd() }));
+}
+
+if (require.main === module) {
+  main();
+}

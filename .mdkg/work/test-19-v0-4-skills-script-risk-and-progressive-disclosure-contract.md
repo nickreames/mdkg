@@ -2,13 +2,13 @@
 id: test-19
 type: test
 title: v0.4 skills script risk and progressive disclosure contract
-status: todo
+status: done
 priority: 1
 epic: epic-4
 tags: [v0_4, skills, security, packs]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/design/edd-3-mdkg-agent-memory-model-deterministic-memory-skills-events.md, .mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md, README.md]
 relates: [prd-1, dec-8, dec-9, edd-5, task-36, task-48, task-49, epic-4]
 blocked_by: []
 blocks: []
@@ -16,7 +16,7 @@ refs: []
 aliases: []
 cases: [script-risk-guidance, approvals-and-logging-guidance, meta-vs-full-loading-guidance, omni-usage-pattern]
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-06
 ---
 
 # Overview

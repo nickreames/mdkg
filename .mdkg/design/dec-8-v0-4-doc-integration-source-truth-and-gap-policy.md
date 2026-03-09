@@ -11,7 +11,7 @@ relates: [prd-1, prd-2, epic-4, epic-5, edd-2, edd-3, edd-4, edd-5, edd-6, edd-7
 refs: []
 aliases: [source-truth, gap-policy]
 created: 2026-02-27
-updated: 2026-02-27
+updated: 2026-03-06
 ---
 
 # Context
@@ -29,6 +29,7 @@ We are integrating forward-looking v0.4 architecture and product docs into the m
 - Skills are planned as deterministic local metadata indexed by mdkg and optionally included in packs.
 - Skills capabilities are planned under existing mdkg command families (no new `mdkg skills` namespace in v0.4 docs).
 - Optional skill routing metadata in v0.4 docs is flattened (`ochatr_*`) and non-breaking.
+- mdkg indexes and discovers skills but does not execute skill scripts in v0.4; script execution remains runtime/orchestrator policy.
 - Skill discovery is planned to support hybrid stage gating: query-time tag filters plus policy-time orchestrator gating.
 - Skill inclusion behavior in packs remains policy-driven.
 - Single-writer and commit-cadence rules are guidance for external orchestrators, not mdkg runtime enforcement in v0.4.

@@ -359,9 +359,10 @@ export function runInitCommand(options: InitCommandOptions): void {
     `mdkg init complete: ${stats.created} file(s) created, ${stats.skipped} skipped`
   );
   console.log("next:");
-  console.log("  mdkg index");
   console.log('  mdkg new task "..." --status todo --priority 1');
-  console.log("  mdkg list --status todo");
-  console.log("  mdkg pack <id> --verbose");
+  console.log('  mdkg search "..."');
+  console.log("  mdkg show <id>");
+  console.log("  mdkg next");
+  console.log("  mdkg pack <id>");
   console.log("  mdkg validate");
 }

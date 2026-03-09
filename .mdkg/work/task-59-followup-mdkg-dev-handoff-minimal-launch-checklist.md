@@ -2,7 +2,7 @@
 id: task-59
 type: task
 title: followup mdkg dev handoff minimal launch checklist
-status: todo
+status: done
 priority: 1
 epic: epic-6
 tags: [v0_4x, mdkg-dev, launch]

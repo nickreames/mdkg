@@ -2,14 +2,14 @@
 id: task-61
 type: task
 title: followup cli defaults simplification and compat map
-status: todo
+status: done
 priority: 1
 epic: epic-7
 tags: [v0_5, cli, defaults, compat]
 owners: []
 links: []
 artifacts: []
-relates: [prd-1, dec-10, task-60, test-29, epic-7]
+relates: [prd-1, dec-10, dec-11, edd-9, task-60, task-66, test-29, epic-7]
 blocked_by: []
 blocks: [test-29]
 refs: []
@@ -26,6 +26,8 @@ Define simplified defaults and a compatibility roadmap for command/flag transiti
 
 - Simplification proposal includes compatibility/deprecation guidance.
 - Proposed defaults reduce unnecessary configuration for common flows.
+- Proposal keeps `pack <id>` central in the primary workflow.
+- Proposal keeps the generic OSS story anchored on `init --llm`.
 
 # Files Affected
 
@@ -44,4 +46,5 @@ Define simplified defaults and a compatibility roadmap for command/flag transiti
 # Links / Artifacts
 
 - prd-1
+- dec-11
 - epic-7

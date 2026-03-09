@@ -2,20 +2,20 @@
 id: task-45
 type: task
 title: plan llms txt agent prompt snippet and example pack docs
-status: todo
+status: done
 priority: 1
 epic: epic-4
 tags: [v0_4, mdkg-dev, llm, docs]
 owners: []
 links: []
-artifacts: []
+artifacts: [llms.txt, AGENT_PROMPT_SNIPPET.md, PACK_EXAMPLES.md, README.md]
 relates: [prd-2, dec-8, dec-9, edd-2, edd-3, edd-4, edd-5, epic-4]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-06
 ---
 
 # Overview

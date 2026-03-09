@@ -311,17 +311,31 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
 
   const skillsRoot = resolveSkillsRoot(options.root, config);
   for (const dirPath of listDirectories(skillsRoot)) {
-    const skillPath = path.join(dirPath, "SKILL.md");
-    if (!fs.existsSync(skillPath)) {
-      errors.push(`${dirPath}: missing SKILL.md`);
+    const canonicalPath = path.join(dirPath, "SKILL.md");
+    const compatPath = path.join(dirPath, "SKILLS.md");
+    const hasCanonical = fs.existsSync(canonicalPath);
+    const hasCompat = fs.existsSync(compatPath);
+    if (hasCanonical && hasCompat) {
+      errors.push(`${dirPath}: both SKILL.md and SKILLS.md exist`);
+      continue;
+    }
+    if (!hasCanonical && !hasCompat) {
+      errors.push(`${dirPath}: missing SKILL.md or SKILLS.md`);
+      continue;
+    }
+    if (hasCompat) {
+      warnings.push(`${path.relative(options.root, compatPath)}: using legacy SKILLS.md compatibility file`);
     }
   }
 
   validateEventsJsonl(options.root, config, errors);
 
+  const uniqueWarnings = Array.from(new Set(warnings));
+  const uniqueErrors = Array.from(new Set(errors));
+
   const reportLines = [
-    ...warnings.map((warning) => `warning: ${warning}`),
-    ...errors,
+    ...uniqueWarnings.map((warning) => `warning: ${warning}`),
+    ...uniqueErrors,
   ];
 
   let outPath: string | undefined = undefined;
@@ -332,20 +346,20 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
   }
 
   if (!options.quiet) {
-    for (const warning of warnings) {
+    for (const warning of uniqueWarnings) {
       console.error(`warning: ${warning}`);
     }
   }
 
-  if (errors.length > 0) {
+  if (uniqueErrors.length > 0) {
     if (outPath) {
-      console.error(`validation failed: ${errors.length} error(s). details written to ${outPath}`);
+      console.error(`validation failed: ${uniqueErrors.length} error(s). details written to ${outPath}`);
     } else {
-      for (const error of errors) {
+      for (const error of uniqueErrors) {
         console.error(error);
       }
     }
-    throw new ValidationError(`validation failed with ${errors.length} error(s)`);
+    throw new ValidationError(`validation failed with ${uniqueErrors.length} error(s)`);
   }
 
   if (outPath) {

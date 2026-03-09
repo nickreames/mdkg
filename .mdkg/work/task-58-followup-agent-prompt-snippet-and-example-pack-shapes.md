@@ -2,14 +2,14 @@
 id: task-58
 type: task
 title: followup agent prompt snippet and example pack shapes
-status: todo
+status: done
 priority: 1
 epic: epic-6
 tags: [v0_4x, docs, llm, examples]
 owners: []
 links: []
 artifacts: []
-relates: [prd-2, task-45, test-27, epic-6]
+relates: [prd-2, dec-11, edd-9, task-45, task-64, test-27, epic-6]
 blocked_by: []
 blocks: [test-27]
 refs: []
@@ -25,6 +25,7 @@ Add prompt snippet and representative task/edd/skills pack examples for docs con
 # Acceptance Criteria
 
 - Prompt snippet is deterministic and pack-first.
+- Prompt snippet assumes a generic mdkg OSS repo first, not an Omni-specific environment.
 - Example pack docs stay synchronized with current pack output contracts.
 
 # Files Affected
@@ -43,4 +44,5 @@ Add prompt snippet and representative task/edd/skills pack examples for docs con
 # Links / Artifacts
 
 - prd-2
+- dec-11
 - epic-6

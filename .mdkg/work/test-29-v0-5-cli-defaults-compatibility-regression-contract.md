@@ -2,13 +2,13 @@
 id: test-29
 type: test
 title: v0.5 cli defaults compatibility regression contract
-status: todo
+status: done
 priority: 1
 epic: epic-7
 tags: [v0_5, cli, compat, regression]
 owners: []
 links: []
-artifacts: []
+artifacts: [CLI_COMMAND_MATRIX.md, .mdkg/core/rule-3-cli-contract.md, README.md]
 relates: [task-61, task-62, epic-7]
 blocked_by: []
 blocks: []
@@ -16,7 +16,7 @@ refs: []
 aliases: []
 cases: [default-behavior-shifts, deprecation-guidance, script-compatibility]
 created: 2026-03-05
-updated: 2026-03-05
+updated: 2026-03-06
 ---
 
 # Overview

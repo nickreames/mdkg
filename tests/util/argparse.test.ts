@@ -38,7 +38,10 @@ test("parseArgs accepts dry-run, json, and list-profiles booleans", () => {
   assert.equal(parsed.flags["--json"], true);
 });
 
-test("parseArgs treats init/show boolean flags as booleans when chained", () => {
+test("parseArgs supports profile alias and compatibility booleans", () => {
+  const packParsed = parseArgs(["pack", "task-1", "--profile", "concise"]);
+  assert.equal(packParsed.flags["--pack-profile"], "concise");
+
   const initParsed = parseArgs([
     "init",
     "--omni",

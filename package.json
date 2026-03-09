@@ -10,6 +10,7 @@
     "build": "tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js",
     "build:test": "tsc -p tsconfig.test.json",
     "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js",
+    "test:coverage": "npm run build && npm run build:test && node --test --experimental-test-coverage dist/tests/**/*.test.js",
     "smoke:consumer": "npm run build && node scripts/smoke-consumer.js"
   },
   "devDependencies": {
