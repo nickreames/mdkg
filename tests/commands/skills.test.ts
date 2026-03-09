@@ -350,16 +350,42 @@ test("internal dogfood skills comply with the locked Anthropic best-practice sna
 
     const body = parsed.body;
     assert.match(body, /^# Goal/m);
-    assert.match(body, /^# When To Use/m);
-    assert.match(body, /^# Inputs/m);
-    assert.match(body, /^# Steps/m);
-    assert.match(body, /^# Outputs/m);
-    assert.match(body, /^# Safety/m);
-    assert.match(body, /^# Failure Handling/m);
+    assert.match(body, /^## When To Use/m);
+    assert.match(body, /^## Inputs/m);
+    assert.match(body, /^## Steps/m);
+    assert.match(body, /^## Outputs/m);
+    assert.match(body, /^## Safety/m);
+    assert.match(body, /^## Failure Handling/m);
     assert.match(body, /mdkg indexes and discovers skills, but does not execute skill scripts/i);
 
     for (const pattern of skill.bodyChecks) {
       assert.match(body, pattern);
     }
   }
+});
+
+test("built-in skill template and registry stay aligned with dogfood skills", () => {
+  const realRoot = path.resolve(__dirname, "..", "..", "..");
+  const templatePath = path.join(realRoot, "assets", "skills", "SKILL.md.example");
+  assert.ok(fs.existsSync(templatePath), templatePath);
+  const template = fs.readFileSync(templatePath, "utf8");
+  assert.match(template, /^# Goal/m);
+  assert.match(template, /^## When To Use/m);
+  assert.match(template, /^## Inputs/m);
+  assert.match(template, /^## Steps/m);
+  assert.match(template, /^## Outputs/m);
+  assert.match(template, /^## Safety/m);
+  assert.match(template, /^## Failure Handling/m);
+  assert.doesNotMatch(template, /^## Preconditions/m);
+  assert.doesNotMatch(template, /^## Examples/m);
+  assert.doesNotMatch(template, /^## References/m);
+
+  const registryPath = path.join(realRoot, ".mdkg", "skills", "registry.md");
+  const registry = fs.readFileSync(registryPath, "utf8");
+  assert.match(registry, /mdkg skill new <slug> "<name>" --description "\.\.\."/);
+  assert.match(registry, /<!-- mdkg:skill-registry:start -->/);
+  assert.match(registry, /<!-- mdkg:skill-registry:end -->/);
+  assert.match(registry, /`select-work-and-ground-context`/);
+  assert.match(registry, /`build-pack-and-execute-task`/);
+  assert.match(registry, /`verify-close-and-checkpoint`/);
 });

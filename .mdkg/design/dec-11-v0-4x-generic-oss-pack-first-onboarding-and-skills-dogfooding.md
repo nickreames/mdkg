@@ -7,7 +7,7 @@ tags: [v0_4x, product, onboarding, cli, skills]
 owners: []
 links: []
 artifacts: []
-relates: [dec-10, prd-1, prd-2, edd-5, edd-9, epic-6, epic-7, epic-8]
+relates: [dec-10, dec-12, prd-1, prd-2, edd-5, edd-9, epic-6, epic-7, epic-8, epic-9]
 refs: []
 aliases: [generic-oss, pack-first, skills-dogfooding]
 created: 2026-03-05

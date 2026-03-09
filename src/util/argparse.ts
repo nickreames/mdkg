@@ -43,6 +43,10 @@ const VALUE_FLAGS = new Set([
   "--max-tokens",
   "--stats-out",
   "--truncation-report",
+  "--description",
+  "--authors",
+  "--links",
+  "--tags-mode",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -70,6 +74,7 @@ const BOOLEAN_FLAGS = new Set([
   "--dry-run",
   "--json",
   "--list-profiles",
+  "--with-scripts",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {

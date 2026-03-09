@@ -11,19 +11,19 @@ links: [README.md, PACK_EXAMPLES.md, llms.txt]
 
 Use `mdkg pack <id>` as the default execution context instead of ad-hoc file gathering.
 
-# When To Use
+## When To Use
 
 - Before coding
 - Before handing work to another agent
 - Before review when precise linked context matters
 
-# Inputs
+## Inputs
 
 - Selected node id
 - Optional profile choice
 - Optional skills inclusion mode
 
-# Steps
+## Steps
 
 1. Start with `mdkg pack <id>`.
 2. For a preview, use `mdkg pack <id> --profile concise --dry-run --stats`.
@@ -34,13 +34,13 @@ Use `mdkg pack <id>` as the default execution context instead of ad-hoc file gat
 7. Hand the pack, not a loose file list, to the next coding step or agent.
 8. Keep this stage patch-only: subagents and tools may produce patches, test output, and evidence, but not direct mdkg state writes or commits.
 
-# Outputs
+## Outputs
 
 - Deterministic pack file or dry-run selection report
 - Stable context bundle for execution or review
 - Patch bundles, test output, or evidence artifacts ready for orchestrator review
 
-# Safety
+## Safety
 
 - Prefer smaller packs first; expand only when the task requires it.
 - Keep pinned rules ahead of opportunistic context.
@@ -48,7 +48,7 @@ Use `mdkg pack <id>` as the default execution context instead of ad-hoc file gat
 - Do not mutate task status, create checkpoints, or commit from this stage.
 - mdkg indexes and discovers skills, but does not execute skill scripts.
 
-# Failure Handling
+## Failure Handling
 
 - If the pack is too broad, reduce profile or skill depth before continuing.
 - If the required procedure is unclear, return to metadata discovery instead of loading every skill body.

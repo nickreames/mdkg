@@ -25,6 +25,7 @@ The primary loop is:
 5. validate before closing the loop
 
 If an agent is involved, the default handoff primitive is `mdkg pack <id>`.
+If a repo needs repeatable procedures, author them as first-class skills under `.mdkg/skills/`.
 
 ## Install
 
@@ -83,6 +84,15 @@ Validate before handoff or commit:
 mdkg validate
 ```
 
+Create a first-class skill:
+
+```bash
+mdkg skill new release-readiness "release readiness audit" --description "use when preparing a release"
+mdkg skill list
+mdkg skill show release-readiness
+mdkg skill validate release-readiness
+```
+
 ## LLM-readable onboarding artifacts
 
 The root docs below are the canonical fast-start set for humans and agents:
@@ -112,6 +122,7 @@ These are the commands new users and agents should learn first:
 - `mdkg show`
 - `mdkg next`
 - `mdkg pack`
+- `mdkg skill`
 - `mdkg validate`
 
 Advanced / maintenance commands still exist, but they are not the first-run story:
@@ -134,9 +145,15 @@ Canonical layout:
 
 Current source behavior:
 - skills are indexed into `.mdkg/index/skills.json`
-- skills are discoverable via existing command families:
+- skills have a focused command family:
+  - `mdkg skill new <slug> "<name>" --description "..."`
+  - `mdkg skill list`
+  - `mdkg skill search "<query>"`
+  - `mdkg skill show <slug>`
+  - `mdkg skill validate [<slug>]`
+- generic compatibility still works:
   - `mdkg list --type skill`
-  - `mdkg search "<query>"`
+  - `mdkg search "<query>" --type skill`
   - `mdkg show skill:<slug>`
 - work items may reference `skills: [slug,...]`
 - packs may include skills with `--skills` and `--skills-depth`
@@ -144,6 +161,7 @@ Current source behavior:
 - `SKILL.md` is canonical
 - `SKILLS.md` is tolerated on read for compatibility, but validation warns and canonical docs still use `SKILL.md`
 - if both `SKILL.md` and `SKILLS.md` exist in one skill folder, validation fails
+- `mdkg skill new` scaffolds `SKILL.md`, `references/`, `assets/`, and `scripts/` only when requested with `--with-scripts`
 
 This repo now dogfoods three internal skills:
 - `select-work-and-ground-context`
@@ -166,6 +184,7 @@ Current post-v0.4x direction is:
 - keep `pack <id>` at the center of the human/agent loop
 - simplify visible CLI help before removing deeper compatibility paths
 - dogfood real skills inside the repo
+- make skill authoring first-class through `mdkg skill`
 - run manual behavior audits before enforcing stronger coverage thresholds
 
 Design and decision records live in the internal graph under `.mdkg/design/`.

@@ -5,7 +5,7 @@ import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 
 export const SKILLS_INDEX_RELATIVE_PATH = ".mdkg/index/skills.json";
 
-const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+export const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export type SkillIndexEntry = {
   slug: string;
@@ -152,6 +152,40 @@ export function resolveSkillsIndexPath(root: string): string {
   return path.resolve(root, SKILLS_INDEX_RELATIVE_PATH);
 }
 
+export function buildSkillIndexEntry(root: string, slug: string, filePath: string): SkillIndexEntry {
+  if (!SKILL_SLUG_RE.test(slug)) {
+    throw new Error(`${filePath}: skill slug must be kebab-case`);
+  }
+
+  const content = fs.readFileSync(filePath, "utf8");
+  const { frontmatter } = parseFrontmatter(content, filePath);
+  const name = requireString(frontmatter, "name", filePath);
+  const description = requireString(frontmatter, "description", filePath);
+  const version = optionalString(frontmatter, "version", filePath);
+  const tags = toLowercaseList(optionalList(frontmatter, "tags", filePath));
+  const authors = toLowercaseList(optionalList(frontmatter, "authors", filePath));
+  const links = optionalList(frontmatter, "links", filePath);
+  const skillDir = path.dirname(filePath);
+
+  return {
+    slug,
+    id: `skill:${slug}`,
+    qid: `root:skill:${slug}`,
+    ws: "root",
+    type: "skill",
+    name,
+    description,
+    tags,
+    version,
+    authors,
+    links,
+    path: path.relative(root, filePath),
+    has_scripts: hasDirectory(path.join(skillDir, "scripts")),
+    has_references: hasDirectory(path.join(skillDir, "references")),
+    ochatr: extractOchatr(frontmatter),
+  };
+}
+
 export function buildSkillsIndex(root: string, config: Config): SkillsIndex {
   const skillsRoot = resolveSkillsRoot(root, config);
   const files = listSkillMarkdownFiles(skillsRoot);
@@ -159,40 +193,10 @@ export function buildSkillsIndex(root: string, config: Config): SkillsIndex {
 
   for (const file of files) {
     const { slug, filePath } = file;
-    if (!SKILL_SLUG_RE.test(slug)) {
-      throw new Error(`${filePath}: skill slug must be kebab-case`);
-    }
     if (skills[slug]) {
       throw new Error(`${filePath}: duplicate skill slug ${slug}`);
     }
-
-    const content = fs.readFileSync(filePath, "utf8");
-    const { frontmatter } = parseFrontmatter(content, filePath);
-    const name = requireString(frontmatter, "name", filePath);
-    const description = requireString(frontmatter, "description", filePath);
-    const version = optionalString(frontmatter, "version", filePath);
-    const tags = toLowercaseList(optionalList(frontmatter, "tags", filePath));
-    const authors = toLowercaseList(optionalList(frontmatter, "authors", filePath));
-    const links = optionalList(frontmatter, "links", filePath);
-    const skillDir = path.dirname(filePath);
-
-    skills[slug] = {
-      slug,
-      id: `skill:${slug}`,
-      qid: `root:skill:${slug}`,
-      ws: "root",
-      type: "skill",
-      name,
-      description,
-      tags,
-      version,
-      authors,
-      links,
-      path: path.relative(root, filePath),
-      has_scripts: hasDirectory(path.join(skillDir, "scripts")),
-      has_references: hasDirectory(path.join(skillDir, "references")),
-      ochatr: extractOchatr(frontmatter),
-    };
+    skills[slug] = buildSkillIndexEntry(root, slug, filePath);
   }
 
   const sortedSkills: Record<string, SkillIndexEntry> = {};

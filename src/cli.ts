@@ -18,6 +18,13 @@ import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
 import { runGuideCommand } from "./commands/guide";
 import {
+  runSkillListCommand,
+  runSkillNewCommand,
+  runSkillSearchCommand,
+  runSkillShowCommand,
+  runSkillValidateCommand,
+} from "./commands/skill";
+import {
   runWorkspaceAddCommand,
   runWorkspaceListCommand,
   runWorkspaceRemoveCommand,
@@ -66,6 +73,7 @@ function printUsage(log: LogFn): void {
   log("  list        List nodes with filters");
   log("  search      Search nodes by query");
   log("  pack        Generate a context pack");
+  log("  skill       Create, list, show, search, and validate skills");
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
   log("\nAdvanced / maintenance commands:");
@@ -83,6 +91,7 @@ function printUsage(log: LogFn): void {
   log("  mdkg next");
   log("  mdkg pack <id>");
   log("  mdkg pack <id> --profile concise --dry-run --stats");
+  log('  mdkg skill new release-readiness "release readiness audit" --description "use when preparing a release"');
   log("  mdkg validate");
   log("\nOptional agent-ready bootstrap:");
   log("  mdkg init --omni");
@@ -207,6 +216,53 @@ function printPackProfiles(log: LogFn): void {
   }
 }
 
+function printSkillHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "new":
+      log("Usage:");
+      log('  mdkg skill new <slug> "<name>" --description "<description>" [options]');
+      log("\nOptions:");
+      log("  --tags <tag,tag,...>         Optional skill tags");
+      log("  --authors <name,name,...>    Optional authors list");
+      log("  --links <url,url,...>        Optional links list");
+      log("  --with-scripts               Create scripts/ in the scaffold");
+      log("  --force                      Overwrite existing SKILL.md");
+      printGlobalOptions(log);
+      return;
+    case "list":
+      log("Usage:");
+      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all]");
+      printGlobalOptions(log);
+      return;
+    case "show":
+      log("Usage:");
+      log("  mdkg skill show <slug> [--meta]");
+      printGlobalOptions(log);
+      return;
+    case "search":
+      log("Usage:");
+      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all]');
+      printGlobalOptions(log);
+      return;
+    case "validate":
+      log("Usage:");
+      log("  mdkg skill validate [<slug>]");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log('  mdkg skill new <slug> "<name>" --description "<description>" [options]');
+      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all]");
+      log("  mdkg skill show <slug> [--meta]");
+      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all]');
+      log("  mdkg skill validate [<slug>]");
+      log("\nNotes:");
+      log("  Skill commands are focused aliases over the existing skill-capable discovery flows.");
+      log("  Generic compatibility remains: list --type skill, show skill:<slug>, search --type skill.");
+      printGlobalOptions(log);
+  }
+}
+
 function printNextHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg next [<id-or-qid>] [--ws <alias>]");
@@ -245,7 +301,7 @@ function printDoctorHelp(log: LogFn): void {
   printGlobalOptions(log);
 }
 
-function printCommandHelp(log: LogFn, command?: string): void {
+function printCommandHelp(log: LogFn, command?: string, subcommand?: string): void {
   switch ((command ?? "").toLowerCase()) {
     case "":
     case "help":
@@ -277,6 +333,9 @@ function printCommandHelp(log: LogFn, command?: string): void {
       return;
     case "pack":
       printPackHelp(log);
+      return;
+    case "skill":
+      printSkillHelp(log, subcommand);
       return;
     case "next":
       printNextHelp(log);
@@ -483,6 +542,106 @@ function runWorkspaceSubcommand(
   }
 }
 
+function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "new": {
+      const slug = parsed.positionals[2];
+      const name = parsed.positionals[3];
+      if (!slug || !name) {
+        throw new UsageError('skill new requires <slug> "<name>"');
+      }
+      if (parsed.positionals.length > 4) {
+        throw new UsageError('skill new accepts exactly <slug> "<name>"');
+      }
+      const description = requireFlagValue("--description", parsed.flags["--description"]);
+      if (!description) {
+        throw new UsageError("skill new requires --description");
+      }
+      const tags = requireFlagValue("--tags", parsed.flags["--tags"]);
+      const authors = requireFlagValue("--authors", parsed.flags["--authors"]);
+      const links = requireFlagValue("--links", parsed.flags["--links"]);
+      const withScripts = parseBooleanFlag("--with-scripts", parsed.flags["--with-scripts"]);
+      const force = parseBooleanFlag("--force", parsed.flags["--force"]);
+      runSkillNewCommand({
+        root,
+        slug,
+        name,
+        description,
+        tags,
+        authors,
+        links,
+        withScripts,
+        force,
+      });
+      return 0;
+    }
+    case "list": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("skill list does not accept positional arguments");
+      }
+      const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
+      const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runSkillListCommand({
+        root,
+        tags,
+        tagsMode,
+        noCache,
+        noReindex,
+      });
+      return 0;
+    }
+    case "show": {
+      const slug = parsed.positionals[2];
+      if (!slug || parsed.positionals.length > 3) {
+        throw new UsageError("skill show requires <slug>");
+      }
+      const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runSkillShowCommand({
+        root,
+        slug,
+        metaOnly,
+        noCache,
+        noReindex,
+      });
+      return 0;
+    }
+    case "search": {
+      if (parsed.positionals.length < 3) {
+        throw new UsageError("skill search requires a query");
+      }
+      const query = parsed.positionals.slice(2).join(" ");
+      const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
+      const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runSkillSearchCommand({
+        root,
+        query,
+        tags,
+        tagsMode,
+        noCache,
+        noReindex,
+      });
+      return 0;
+    }
+    case "validate": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("skill validate accepts at most one slug");
+      }
+      const slug = parsed.positionals[2];
+      runSkillValidateCommand({ root, slug });
+      return 0;
+    }
+    default:
+      throw new UsageError("skill requires new/list/show/search/validate");
+  }
+}
+
 function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntime): ExitCode {
   const command = (parsed.positionals[0] ?? "").toLowerCase();
   switch (command) {
@@ -589,6 +748,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
     }
     case "workspace":
       return runWorkspaceSubcommand(parsed, root);
+    case "skill":
+      return runSkillSubcommand(parsed, root);
     case "show": {
       const id = parsed.positionals[1];
       if (!id || parsed.positionals.length > 2) {
@@ -812,7 +973,7 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   }
 
   if (parsed.help) {
-    printCommandHelp(io.log, parsed.positionals[0]);
+    printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
     return 0;
   }
   if (parsed.version) {
@@ -827,7 +988,7 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   }
 
   if (command === "help") {
-    printCommandHelp(io.log, parsed.positionals[1]);
+    printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
     return 0;
   }
 

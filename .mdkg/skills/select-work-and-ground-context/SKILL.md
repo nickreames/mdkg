@@ -11,19 +11,19 @@ links: [README.md, llms.txt, AGENT_PROMPT_SNIPPET.md]
 
 Choose the correct work item and load the smallest deterministic context needed to act.
 
-# When To Use
+## When To Use
 
 - At the start of a work session
 - When the active task is unclear
 - Before generating a pack or making code changes
 
-# Inputs
+## Inputs
 
 - Current repo root
 - Optional task or epic id
 - Optional user goal in plain language
 
-# Steps
+## Steps
 
 1. If a task id is already known, inspect it with `mdkg show <id>`.
 2. If the task is not known, use `mdkg next` or `mdkg search "<query>"` to narrow candidates.
@@ -32,13 +32,13 @@ Choose the correct work item and load the smallest deterministic context needed 
 5. If the task is ambiguous, resolve that before building a pack.
 6. Treat this stage as read-only: inspect and decide, but do not mutate mdkg state or commit.
 
-# Outputs
+## Outputs
 
 - One selected node id
 - Clear understanding of the active task, related docs, and current state
 - No durable mdkg writes or commits from this stage
 
-# Safety
+## Safety
 
 - Do not start coding from chat memory alone.
 - Prefer explicit rules, EDDs, DECs, and task nodes over informal notes.
@@ -46,7 +46,7 @@ Choose the correct work item and load the smallest deterministic context needed 
 - If writer ownership or policy boundaries are unclear, stop and resolve them before execution.
 - mdkg indexes and discovers skills, but does not execute skill scripts.
 
-# Failure Handling
+## Failure Handling
 
 - If no clear work item exists, stop and ask for clarification instead of guessing.
 - If the selected task conflicts with current status or linked design docs, resolve the conflict before moving to pack generation.

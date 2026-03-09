@@ -1,0 +1,41 @@
+---
+name: {{name}}
+description: {{description}}
+{{tags_block}}{{authors_block}}{{links_block}}---
+
+# Goal
+
+Describe the deterministic outcome this skill should achieve.
+
+## When To Use
+
+- Use this skill when the workflow is triggered and the needed outcome is clear.
+- Prefer this skill over ad-hoc instructions when the procedure should be repeatable.
+
+## Inputs
+
+- Repo root
+- Current task, node, or user goal
+- Any required references or artifacts
+
+## Steps
+
+1. Confirm the triggering task or need before acting.
+2. Load only the references and artifacts required for this run.
+3. Execute the smallest deterministic workflow that satisfies the request.
+
+## Outputs
+
+- Deterministic result, patch, or artifact
+- Evidence needed for review or orchestration
+
+## Safety
+
+- Prefer repo truth over chat memory.
+- Keep secrets out of skills, references, and generated artifacts.
+- Stop and resolve ambiguity instead of guessing.
+
+## Failure Handling
+
+- If required context or policy is unclear, stop and ask before proceeding.
+- If the procedure needs more detail, load the specific reference rather than broad context.
