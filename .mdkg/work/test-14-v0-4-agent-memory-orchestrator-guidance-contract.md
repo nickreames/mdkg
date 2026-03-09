@@ -2,13 +2,13 @@
 id: test-14
 type: test
 title: v0.4 agent memory orchestrator guidance contract
-status: todo
+status: done
 priority: 1
 epic: epic-4
 tags: [v0_4, memory-model, orchestration]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/design/edd-3-mdkg-agent-memory-model-deterministic-memory-skills-events.md, .mdkg/design/edd-6-mdkg-event-logs-and-checkpoints-guide-v0-4-episodic-memory-and-provenance.md, .mdkg/design/prd-1-mdkg-product-spec-v0-4-deterministic-agent-memory-and-skills.md, .mdkg/design/dec-9-v0-4-decision-log-design-philosophy-and-key-decisions.md, README.md]
 relates: [prd-1, dec-8, dec-9, edd-3, edd-6, task-43]
 blocked_by: []
 blocks: []
@@ -16,7 +16,7 @@ refs: []
 aliases: []
 cases: [single-writer-guidance, commit-cadence-guidance, checkpoint-batching-guidance, docs-vs-runtime-boundary]
 created: 2026-02-27
-updated: 2026-02-27
+updated: 2026-03-06
 ---
 
 # Overview

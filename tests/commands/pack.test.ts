@@ -227,7 +227,7 @@ test("runPackCommand rejects --verbose with non-standard profile", () => {
         verbose: true,
         packProfile: "concise",
       }),
-    /--verbose is only supported with --pack-profile standard/
+    /--verbose is only supported with --profile standard/
   );
 });
 

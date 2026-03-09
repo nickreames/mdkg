@@ -14,7 +14,7 @@ blocks: [task-33, task-34, task-35, task-36, task-37, task-38, task-39, task-40,
 refs: []
 aliases: [v0.4]
 created: 2026-02-27
-updated: 2026-03-05
+updated: 2026-03-06
 ---
 
 # Goal
@@ -54,6 +54,11 @@ Deliver the v0.4 documentation and implementation planning framework for determi
 
 - implementing v0.4 code changes in this documentation integration pass
 - introducing vector DBs, hosted services, or non-file memory layers
+
+# Current Remaining Work
+
+- remaining open work in `epic-4` stays focused on mdkg.dev and docs-positioning follow-through in this pass: `task-39`, `task-40`, `task-44`, `task-46`, and `test-15`
+- these backlog items are not moved to a new follow-up epic in this cleanup pass
 
 # Risks
 

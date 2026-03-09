@@ -10,7 +10,7 @@ relates: [prd-1, prd-2, dec-8, dec-9, dec-10, edd-2, edd-3, edd-4, edd-5, edd-7,
 refs: []
 aliases: [doc-8, events-guide, checkpoints-guide, episodic-memory, events.jsonl, jsonl-events, latest_checkpoint_qid]
 created: 2026-03-04
-updated: 2026-03-05
+updated: 2026-03-06
 ---
 
 # Overview
@@ -27,11 +27,11 @@ Non-goals:
 - no committed markdown logs under `.mdkg/work/events/` in v0.4 docs
 - no finalized new CLI command names for skills/events in this pass
 
-## Current source gaps (2026-03-05)
+## Current source state (2026-03-06)
 
 | Capability | v0.4 target | Current source behavior | Source anchor |
 | --- | --- | --- | --- |
-| Event log scaffold contract | `.mdkg/work/events/events.jsonl` guidance and seeded-init record expectations | `init` does not create events scaffold or seed JSONL lines | `src/commands/init.ts`, `src/cli.ts` |
+| Event log scaffold contract | `.mdkg/work/events/events.jsonl` guidance and seeded-init record expectations | implemented: `init --omni` creates the events path and seeds a valid init JSONL line | `src/commands/init.ts`, `src/cli.ts` |
 | Event log schema checks | validate JSONL shape/redaction expectations | implemented baseline JSONL record validation when file exists; redaction remains docs-policy | `src/commands/validate.ts` |
 | Event-path parse safety | avoid markdown files under event log path | workspace scan indexes `core/design/work/**/*.md`; markdown under `work/events` would be treated as strict nodes | `src/graph/workspace_files.ts`, `src/graph/indexer.ts` |
 | Checkpoint-event linkage | checkpoint guidance references run/event scope | checkpoint creation supports generic relates/scope but no event-log coupling contract | `src/commands/checkpoint.ts`, `src/commands/validate.ts` |
@@ -65,6 +65,15 @@ Operational policy:
 - event streams are primarily for debugging/replay
 - checkpoints are primary durable episodic memory anchors for future packs
 - commit cadence remains event-driven and single-writer (external orchestrator guidance)
+- mdkg CLI does not enforce this policy at runtime; orchestrators apply it
+
+Recommended external orchestrator write cycle:
+1. retrieve the active work item and latest checkpoint context through `pack` when available
+2. append JSONL events during execution only if the orchestrator keeps an event stream
+3. batch task status changes and artifact refs in the workspace
+4. create a checkpoint only for meaningful run or milestone compression
+5. commit once at the durable boundary
+6. never commit on every tool call
 
 # Data model
 
@@ -116,6 +125,7 @@ Capability contracts for v0.4 docs:
 - single-writer + batch commit cadence is external orchestrator policy guidance
 - latest checkpoint inclusion in pack-context guidance remains default target when available
 - latest checkpoint strategy is hybrid: pack-time authoritative resolver with optional `latest_checkpoint_qid` hint
+- deterministic checkpoint tie-break order is `updated` descending, then `created` descending, then `qid` descending
 
 CLI naming policy:
 - exact new skills/events command names remain deferred
@@ -149,6 +159,7 @@ Non-normative examples:
 - Redact suspicious values in event logs by default.
 - Keep checkpoint summaries high-signal and secret-free.
 - Keep `.mdkg/` out of npm/runtime shipping artifacts.
+- Treat raw event logs as debugging artifacts first and durable project memory second.
 
 # Testing strategy
 

@@ -6,11 +6,11 @@ tags: [v0_4, mdkg-dev, docs, seo]
 owners: []
 links: []
 artifacts: []
-relates: [prd-1, dec-8, dec-9, edd-2, edd-3, edd-4, edd-5, edd-6, epic-4]
+relates: [prd-1, dec-8, dec-9, dec-11, edd-2, edd-3, edd-4, edd-5, edd-6, edd-9, epic-4, epic-6, epic-7]
 refs: []
 aliases: [doc-5, mdkg.dev, llms-txt, llms.txt, docs-plan]
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-06
 ---
 
 # Problem
@@ -21,6 +21,8 @@ mdkg v0.4 planning is strong internally, but discoverability and onboarding rema
 
 - Launch a minimal, high-signal mdkg.dev information architecture for discoverability.
 - Define docs that teach both humans and LLMs how to use mdkg correctly.
+- Separate the generic OSS mdkg story from optional agent-ready scaffolding.
+- Teach a shorter pack-first workflow before exposing the full command surface.
 - Keep command/reference content aligned to source-truth CLI behavior.
 - Establish SEO pillars that target high-intent mdkg use cases.
 - Provide examples that reduce docs burden and improve adoption speed.
@@ -39,8 +41,10 @@ mdkg v0.4 planning is strong internally, but discoverability and onboarding rema
 - Define mdkg.dev IA with top-level nav: Home, Docs, Examples, CLI, Blog, GitHub/npm.
 - Define home page sections and messaging for deterministic memory, 3-layer model, and quickstart.
 - Define minimal versioned docs structure: Start Here, CLI reference, Agent docs, migration notes.
+- Define a primary-vs-advanced command teaching strategy so first-run docs stay small.
 - Include episodic-memory docs coverage (events + checkpoints) as first-class agent guidance.
 - Define LLM-readable strategy: top-level `llms.txt`, agent prompt snippet, sample pack shapes.
+- Keep `init --llm` as the generic entry story and frame `init --omni` as optional agent-ready scaffolding.
 - Define SEO content roadmap with first priority posts (Pillar 1 and Pillar 3 first).
 - Define examples strategy (demo repo + realistic repo + skill examples + SOUL/HUMAN examples).
 - Define conversion paths for humans and agent builders.
@@ -53,17 +57,19 @@ mdkg v0.4 planning is strong internally, but discoverability and onboarding rema
 - Website/docs strategy must preserve mdkg deterministic/local-first positioning.
 - Safety messaging must remain explicit: no secrets in mdkg docs, ignore cache/pack artifacts, strict publish boundaries.
 
-## Current Source Gap Matrix (as of 2026-03-04)
+## Current Source State Matrix (as of 2026-03-06)
 
 | Capability | v0.4 target | Current source behavior | Evidence |
 | --- | --- | --- | --- |
-| Public docs site IA | mdkg.dev with Home/Docs/Examples/CLI/Blog | repo has README only; no website IA artifacts in source | `README.md` |
-| LLM-readable index file | root `llms.txt` with mdkg basics and pack workflow | no `llms.txt` file in repo root | repository root tree |
-| CLI reference anti-drift workflow | generated or tightly maintained CLI docs contract | CLI help text and README are independently maintained today | `src/cli.ts`, `README.md` |
-| Agent prompt snippet artifact | canonical copy-paste snippet page | no dedicated snippet artifact in repo docs | `README.md`, `.mdkg/design/` |
-| Example pack artifacts in docs | task/edd/skills-included pack examples | no committed docs examples for those pack classes | `README.md`, `.mdkg/work/` |
-| SEO content backlog | 6 pillar posts with staged rollout | only planning tasks exist for two mdkg.dev themes | `.mdkg/work/task-39-*.md`, `.mdkg/work/task-40-*.md` |
-| Analytics plan | simple pageview + CTA tracking contract | no docs analytics plan artifact exists | `README.md`, repository root |
+| Public docs site IA | mdkg.dev with Home/Docs/Examples/CLI/Blog | repo now has root-first handoff artifacts, but no website/app IA implementation yet | `README.md`, `llms.txt`, `AGENT_PROMPT_SNIPPET.md`, `PACK_EXAMPLES.md` |
+| LLM-readable index file | root `llms.txt` with mdkg basics and pack workflow | implemented in repo root | `llms.txt` |
+| Audience-separated onboarding story | generic OSS quickstart plus optional agent-ready branch | implemented in root docs artifacts and simplified README | `README.md`, `AGENT_PROMPT_SNIPPET.md`, `MANUAL_BEHAVIOR_AUDIT.md` |
+| CLI reference anti-drift workflow | generated or tightly maintained CLI docs contract | still manual parity; no generator or scripted drift check exists | `src/cli.ts`, `README.md`, `CLI_COMMAND_MATRIX.md` |
+| Agent prompt snippet artifact | canonical copy-paste snippet page | implemented in repo root | `AGENT_PROMPT_SNIPPET.md` |
+| Example pack artifacts in docs | task/edd/skills-included pack examples | implemented as source-aligned root artifact | `PACK_EXAMPLES.md` |
+| Primary-vs-advanced command story | first-run docs teach fewer commands | implemented in help/docs surface, with advanced commands still available | `src/cli.ts`, `README.md`, `CLI_COMMAND_MATRIX.md` |
+| SEO content backlog | 6 pillar posts with staged rollout | planning coverage exists; website/blog artifacts remain follow-up work | `.mdkg/work/task-39-*.md`, `.mdkg/work/task-40-*.md`, `.mdkg/work/epic-6-*.md` |
+| Analytics plan | simple pageview + CTA tracking contract | still planning-only; no implemented artifact in repo | `README.md`, `.mdkg/design/prd-2-mdkg-dev-website-and-documentation-plan-v0-4.md` |
 
 # Acceptance Criteria
 

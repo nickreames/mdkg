@@ -102,10 +102,8 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - updates `.gitignore` and `.npmignore` by default
   - `--no-update-ignores` disables default ignore writes
   - explicit flags (`--update-gitignore`, `--update-npmignore`, `--update-dockerignore`) force writes even with global opt-out
-  - optional agent files:
-    - `--agents` creates `AGENTS.md`
-    - `--claude` creates `CLAUDE.md`
-  - `--llm` creates both
+  - `--llm` is the canonical documented path for creating `AGENTS.md` and `CLAUDE.md`
+  - `--agents` / `--claude` remain compatibility flags, but are not part of the primary onboarding story
   - `--omni` adds strict-node bootstrap docs and scaffolding:
     - `.mdkg/core/SOUL.md` (`id: rule-soul`)
     - `.mdkg/core/HUMAN.md` (`id: rule-human`)
@@ -125,7 +123,9 @@ If a user provides an unqualified ID and it is ambiguous globally:
 ### Indexing
 - `mdkg index`
   - rebuild global cache `.mdkg/index/global.json`
-  - rebuild skills cache `.mdkg/index/skills.json` from `.mdkg/skills/**/SKILL.md`
+  - rebuild skills cache `.mdkg/index/skills.json` from `.mdkg/skills/<slug>/SKILL.md`
+  - tolerate `.mdkg/skills/<slug>/SKILLS.md` on read with warning
+  - fail validation if both `SKILL.md` and `SKILLS.md` exist in one skill directory
   - strict by default (fails on invalid frontmatter)
   - optional `--tolerant` to skip invalid nodes (escape hatch)
 
@@ -154,7 +154,9 @@ Common flags:
 - `--template <set>` (default from config)
 
 ### Read/search
-- `mdkg show <id-or-qid> [--body]`
+- `mdkg show <id-or-qid> [--meta]`
+  - default behavior shows the full node body
+  - `--meta` is the compact card-only view
 - `mdkg show skill:<slug> [--meta]`
 - `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all]`
   - search SHOULD match on IDs, titles, tags, path tokens, and searchable frontmatter lists (`links`, `artifacts`, `refs`, `aliases`)
@@ -162,14 +164,25 @@ Common flags:
   - skills stay in existing command family (`list/show/search`), including `mdkg list --type skill`
 
 ### Packs (core feature)
-- `mdkg pack <id-or-qid> [--depth <n>] [--verbose] [--edges <keys>] [--format md|json|toon|xml] [--out <path>] [--ws <alias>]`
+- `mdkg pack <id-or-qid> [--profile <name>] [--verbose] [--format md|json|toon|xml] [--out <path>] [--ws <alias>]`
   - optional skill inclusion flags:
     - `--skills none|auto|<slug,slug,...>`
     - `--skills-depth meta|full`
+  - advanced shaping/debug flags remain supported but de-emphasized:
+    - `--depth <n>`
+    - `--edges <keys>`
+    - `--strip-code`
+    - `--max-code-lines <n>`
+    - `--max-chars <n>`
+    - `--max-lines <n>`
+    - `--max-tokens <n>`
+    - `--truncation-report <path>`
+    - `--stats-out <path>`
   - `--edges` adds to the default edge set
   - `--out` writes to a file (create parent dirs; overwrite if exists)
   - if `--out` is omitted, write to `.mdkg/pack/pack_<kind>_<id>_<timestamp>.<ext>`
   - short flags supported: `-o`, `-f`, `-v`, `-d`, `-e`, `-w`, `-r`
+  - `--profile` is the primary documented alias for `--pack-profile`
   - pack selection includes latest checkpoint by pack-time resolver; index hint `latest_checkpoint_qid` is optimization-only
 
 ### Next priority

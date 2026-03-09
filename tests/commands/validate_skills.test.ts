@@ -105,3 +105,30 @@ test("validate fails when skills directory misses SKILL.md", () => {
     /validation failed with 1 error/
   );
 });
+
+test("validate accepts SKILLS.md compatibility file", () => {
+  const root = makeTempDir("mdkg-validate-skills-compat-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root, ["review-loop"]);
+  writeFile(
+    path.join(root, ".mdkg", "skills", "review-loop", "SKILLS.md"),
+    ["---", "name: review-loop", "description: review", "---", "", "# Goal"].join("\n")
+  );
+  assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
+});
+
+test("validate fails when SKILL.md and SKILLS.md both exist", () => {
+  const root = makeTempDir("mdkg-validate-skills-conflict-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root, ["review-loop"]);
+  const content = ["---", "name: review-loop", "description: review", "---", "", "# Goal"].join("\n");
+  writeFile(path.join(root, ".mdkg", "skills", "review-loop", "SKILL.md"), content);
+  writeFile(path.join(root, ".mdkg", "skills", "review-loop", "SKILLS.md"), content);
+
+  assert.throws(
+    () => runValidateCommand({ root, quiet: true }),
+    /validation failed with 1 error/
+  );
+});

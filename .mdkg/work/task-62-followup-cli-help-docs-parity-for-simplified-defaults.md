@@ -2,7 +2,7 @@
 id: task-62
 type: task
 title: followup cli help docs parity for simplified defaults
-status: todo
+status: done
 priority: 1
 epic: epic-7
 tags: [v0_5, cli, docs, parity]

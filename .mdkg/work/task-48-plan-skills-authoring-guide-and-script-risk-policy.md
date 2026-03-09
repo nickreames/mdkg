@@ -2,20 +2,20 @@
 id: task-48
 type: task
 title: plan skills authoring guide and script risk policy
-status: todo
+status: done
 priority: 1
 epic: epic-4
 tags: [v0_4, skills, guide, security]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md, .mdkg/design/prd-1-mdkg-product-spec-v0-4-deterministic-agent-memory-and-skills.md, .mdkg/design/dec-9-v0-4-decision-log-design-philosophy-and-key-decisions.md, README.md]
 relates: [prd-1, dec-8, dec-9, edd-5, epic-4]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-06
 ---
 
 # Overview

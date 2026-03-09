@@ -2,13 +2,13 @@
 id: test-28
 type: test
 title: v0.5 cli command matrix inventory contract
-status: todo
+status: done
 priority: 1
 epic: epic-7
 tags: [v0_5, cli, validation]
 owners: []
 links: []
-artifacts: []
+artifacts: [CLI_COMMAND_MATRIX.md, src/cli.ts, README.md]
 relates: [task-60, task-62, epic-7]
 blocked_by: []
 blocks: []
@@ -16,7 +16,7 @@ refs: []
 aliases: []
 cases: [command-matrix-completeness, flag-count-baseline, simplification-candidates]
 created: 2026-03-05
-updated: 2026-03-05
+updated: 2026-03-06
 ---
 
 # Overview

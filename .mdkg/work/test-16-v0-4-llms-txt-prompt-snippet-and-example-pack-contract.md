@@ -2,13 +2,13 @@
 id: test-16
 type: test
 title: v0.4 llms txt prompt snippet and example pack contract
-status: todo
+status: done
 priority: 1
 epic: epic-4
 tags: [v0_4, mdkg-dev, llm, docs]
 owners: []
 links: []
-artifacts: []
+artifacts: [llms.txt, AGENT_PROMPT_SNIPPET.md, PACK_EXAMPLES.md, README.md, .mdkg/design/prd-2-mdkg-dev-website-and-documentation-plan-v0-4.md]
 relates: [prd-2, dec-8, dec-9, edd-4, edd-5, task-45, epic-4]
 blocked_by: []
 blocks: []
@@ -16,7 +16,7 @@ refs: []
 aliases: []
 cases: [llms-txt-contract, prompt-snippet-contract, example-pack-coverage, docs-versioning-contract]
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-06
 ---
 
 # Overview

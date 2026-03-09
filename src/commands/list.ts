@@ -82,6 +82,10 @@ export function runListCommand(options: ListCommandOptions): void {
       options.tags,
       options.tagsMode ?? "any"
     ).sort((a, b) => a.qid.localeCompare(b.qid));
+    if (skills.length === 0) {
+      console.error("note: no skills indexed under .mdkg/skills/");
+      return;
+    }
     for (const skill of skills) {
       console.log(formatSkillCard(skill));
     }

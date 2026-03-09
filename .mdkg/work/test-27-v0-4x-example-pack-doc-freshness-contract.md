@@ -2,13 +2,13 @@
 id: test-27
 type: test
 title: v0.4x example pack doc freshness contract
-status: todo
+status: done
 priority: 1
 epic: epic-6
 tags: [v0_4x, docs, examples, validation]
 owners: []
 links: []
-artifacts: []
+artifacts: [PACK_EXAMPLES.md, README.md]
 relates: [task-58, task-59, epic-6]
 blocked_by: []
 blocks: []
@@ -16,7 +16,7 @@ refs: []
 aliases: []
 cases: [task-pack-shape, edd-pack-shape, skills-pack-shape]
 created: 2026-03-05
-updated: 2026-03-05
+updated: 2026-03-06
 ---
 
 # Overview

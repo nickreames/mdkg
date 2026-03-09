@@ -80,3 +80,40 @@ test("buildSkillsIndex parses skill metadata deterministically", () => {
   assert.equal(entry.has_references, true);
   assert.equal(entry.ochatr.ochatr_policy, "approval-required");
 });
+
+test("buildSkillsIndex supports SKILLS.md compatibility files", () => {
+  const root = makeTempDir("mdkg-skills-index-compat-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+
+  const skill = [
+    "---",
+    "name: review-loop",
+    "description: review loop guidance",
+    "tags: [stage:review]",
+    "---",
+    "",
+    "# Steps",
+  ].join("\n");
+  writeFile(path.join(root, ".mdkg", "skills", "review-loop", "SKILLS.md"), skill);
+
+  const config = loadConfig(root);
+  const index = buildSkillsIndex(root, config);
+  assert.equal(index.meta.skill_count, 1);
+  const entry = index.skills["review-loop"];
+  assert.equal(entry.slug, "review-loop");
+  assert.equal(entry.path, ".mdkg/skills/review-loop/SKILLS.md");
+});
+
+test("buildSkillsIndex fails when SKILL.md and SKILLS.md both exist", () => {
+  const root = makeTempDir("mdkg-skills-index-conflict-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+
+  const skill = ["---", "name: conflict-skill", "description: conflict", "---", "", "# Goal"].join("\n");
+  writeFile(path.join(root, ".mdkg", "skills", "conflict-skill", "SKILL.md"), skill);
+  writeFile(path.join(root, ".mdkg", "skills", "conflict-skill", "SKILLS.md"), skill);
+
+  const config = loadConfig(root);
+  assert.throws(() => buildSkillsIndex(root, config), /both SKILL\.md and SKILLS\.md exist/);
+});

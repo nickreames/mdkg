@@ -4,13 +4,13 @@ type: edd
 title: v0.4 agent skills standards alignment and research snapshot
 tags: [architecture, v0_4, skills, standards, research]
 owners: []
-links: [https://agentskills.io/specification, https://agentskills.io/integrate-skills, https://agentskills.io/skill-creation/using-scripts, https://docs.claude.com/en/docs/claude-code/skills]
+links: [https://docs.claude.com/en/docs/agents-and-tools/agent-skills, https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices, https://support.claude.com/en/articles/12512198-how-to-create-custom-skills, https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices, https://agentskills.io/specification]
 artifacts: []
 relates: [prd-1, dec-8, dec-9, dec-10, edd-2, edd-3, edd-5, epic-4, epic-5]
 refs: []
 aliases: [doc-9, skills-research, as_of_2026-03-05, stage:plan]
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-05
 ---
 
 # Overview
@@ -19,15 +19,20 @@ This document captures mdkg v0.4 alignment to external Agent Skills best-practic
 
 Research snapshot as_of: `2026-03-05`.
 
-Primary sources reviewed:
+Source-truth review input for this pass:
+- [Anthropic agent skills overview](https://docs.claude.com/en/docs/agents-and-tools/agent-skills)
+- [Anthropic skill authoring best practices](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices)
+- [Anthropic custom skills help article](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills)
+- [Anthropic API skill best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
+
+Supplemental open-standard reference:
 - [agentskills.io specification](https://agentskills.io/specification)
-- [agentskills.io client integration guidance](https://agentskills.io/integrate-skills)
-- [agentskills.io scripts guidance](https://agentskills.io/skill-creation/using-scripts)
-- [Claude Code skills documentation](https://docs.claude.com/en/docs/claude-code/skills)
 
 Adopted in v0.4 docs:
 - metadata-first progressive disclosure
 - required `name` and `description` in `SKILL.md`
+- lowercase kebab-case skill names
+- concise, single-purpose skills with explicit procedural sections
 - deterministic, local skill discovery and explicit activation
 - script-risk guidance and approval boundaries
 
@@ -38,7 +43,7 @@ Deferred or constrained in v0.4:
 
 # Architecture
 
-External guidance emphasizes small skill units, explicit procedures, and metadata-driven discovery. mdkg alignment model:
+Anthropic guidance emphasizes small skill units, explicit procedures, and metadata-driven discovery. mdkg alignment model:
 - discover skill metadata locally from `.mdkg/skills/**/SKILL.md`
 - search/select skills using deterministic metadata filters
 - load full skill body only when policy + task context requires it
@@ -77,10 +82,12 @@ No v0.4 docs commitment to a `mdkg skills ...` namespace.
 - Always loading full skill bodies causes context bloat.
 - Missing stage/risk conventions weakens policy gating behavior.
 - Divergence from external standards without documented rationale increases interoperability risk.
+- Large `SKILL.md` bodies or vague descriptions reduce invocation quality for agents and humans.
 
 # Observability
 
 - Track external standards snapshot date (`as_of`) in docs.
+- Track which external publisher was treated as source-truth for each review cycle.
 - Maintain explicit adopted vs deferred mapping per release family.
 - Include source links in planning docs so refreshes are auditable.
 

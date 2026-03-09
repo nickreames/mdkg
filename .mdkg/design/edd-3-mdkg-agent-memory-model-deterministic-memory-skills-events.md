@@ -10,7 +10,7 @@ relates: [edd-2, prd-1, prd-2, dec-8, dec-9, dec-10, epic-4, epic-5, edd-4, edd-
 refs: []
 aliases: [doc-3, agent-memory-model, deterministic-memory, single-writer, human.md, skills.json, events.jsonl]
 created: 2026-02-27
-updated: 2026-03-05
+updated: 2026-03-06
 ---
 
 # Overview
@@ -66,6 +66,7 @@ mdkg v0.4 memory model is a deterministic three-layer stack:
 - metadata indexed locally (skills index), full skill bodies loaded on demand
 - work-item `skills` references select relevant procedures
 - stage-aware skill routing uses hybrid gating guidance (query-time tags + policy-time orchestrator controls)
+- mdkg indexes and discovers skills, but does not execute skill scripts
 
 3. Episodic memory (what happened)
 - append-only JSONL events (usually gitignored)
@@ -79,13 +80,21 @@ Retrieval policy:
 Update policy:
 - single-writer and commit-cadence rules are guidance for external orchestrators (human or platform runtime), not mdkg runtime enforcement in v0.4.
 
+External orchestrator mutation contract:
+- mdkg v0.4 does not lock repos or enforce single-writer ownership at runtime.
+- Exactly one orchestrator should own durable mdkg writes for a run or milestone boundary.
+- Subagents and tools may return patches, tests, or event records, but the orchestrator should batch task status updates, artifact refs, optional checkpoint creation, and commit/push into one durable write boundary.
+- Recommended durable boundaries are end-of-run, checkpoint-worthy milestone, or optional timer flush for long-running agents.
+- Never commit on every tool call.
+
 Recommended external orchestrator flow:
-1. retrieve deterministic semantic context (`pack` + pinned core docs)
-2. load required procedural skills
-3. execute work and collect artifacts
-4. append episodic events (if enabled)
-5. update node/checkpoint memory
-6. batch and commit once per run or milestone
+1. retrieve deterministic semantic context (`pack` + pinned core docs + latest checkpoint when available)
+2. discover candidate skills by metadata and tag policy during planning
+3. load only the selected full skill bodies required for execution
+4. execute work and collect artifacts
+5. append episodic events if the orchestrator keeps an event stream
+6. update task status, artifact refs, and optional checkpoint memory
+7. batch and commit once per run or milestone
 
 # Data model
 
@@ -196,6 +205,7 @@ Pack inclusion policy expectations:
 - skills after related nodes unless explicitly elevated by policy
 - include the most recent checkpoint by default (if a checkpoint exists)
 - pack-time resolver remains authoritative for latest checkpoint selection; optional `latest_checkpoint_qid` index hint is optimization only
+- when multiple checkpoints are equally recent, resolve deterministically by `updated` descending, then `created` descending, then `qid` descending
 
 # Failure modes
 
@@ -219,6 +229,7 @@ Pack inclusion policy expectations:
 
 - Keep `.mdkg/index/` and `.mdkg/pack/` ignored by default.
 - Treat event logs as redacted-by-default operational traces.
+- Treat skill scripts as runtime-governed high-risk assets; mdkg does not execute them directly.
 - Keep skills and docs free of secrets.
 - Keep mdkg memory artifacts out of production package outputs.
 - Preserve explicit boundaries: committed semantic/checkpoint memory vs optional gitignored episodic logs.

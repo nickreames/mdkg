@@ -1,0 +1,50 @@
+mdkg is a local-first CLI for deterministic project memory in git.
+
+Primary loop:
+- mdkg init --llm
+- mdkg new <type> "<title>"
+- mdkg search "<query>"
+- mdkg show <id>
+- mdkg next
+- mdkg pack <id>
+- mdkg validate
+
+Optional agent-ready bootstrap:
+- mdkg init --omni
+
+Directory structure:
+- .mdkg/core/ rules and pinned docs
+- .mdkg/design/ product and architecture docs
+- .mdkg/work/ work graph and checkpoints
+- .mdkg/templates/ node templates
+- .mdkg/skills/ Agent Skills packages
+- .mdkg/index/ generated cache
+
+Node schema summary:
+- required frontmatter: id, type, title, created, updated
+- common work fields: status, priority
+- explicit links: epic, parent, relates, blocked_by, blocks, prev, next
+- optional work-item skills: skills: [slug,...]
+
+Agent rules:
+- Prefer mdkg packs over ad-hoc file reading.
+- Treat rules, EDDs, DECs, PRDs, and task nodes as authoritative over chat memory.
+- Use mdkg show <id> for targeted inspection and mdkg show <id> --meta for card-only output.
+- Use mdkg list --type skill or mdkg search to discover skills.
+- Use mdkg show skill:<slug> to load a full skill only when needed.
+- Run mdkg validate before marking work done.
+
+Pack guidance:
+- mdkg pack <id>
+- mdkg pack <id> --profile concise --dry-run --stats
+- mdkg pack <id> --skills auto --skills-depth full
+
+Skill filename policy:
+- SKILL.md is canonical
+- SKILLS.md is compatibility-only on read
+- both files in one skill directory is invalid
+
+See also:
+- README.md
+- AGENT_PROMPT_SNIPPET.md
+- PACK_EXAMPLES.md

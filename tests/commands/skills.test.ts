@@ -1,10 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import fs from "fs";
 import path from "path";
 const { runIndexCommand } = require("../../commands/index");
 const { runListCommand } = require("../../commands/list");
 const { runSearchCommand } = require("../../commands/search");
 const { runShowCommand } = require("../../commands/show");
+const { parseFrontmatter } = require("../../graph/frontmatter");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -158,6 +160,42 @@ test("skill list supports type=skill and tag mode filtering", () => {
   assert.match(anyStage, /root:skill:deploy-service/);
 });
 
+test("skill list prints empty-state note and rejects unsupported filters", () => {
+  const root = makeTempDir("mdkg-skill-list-empty-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root);
+
+  const empty = captureOutput(() =>
+    runListCommand({
+      root,
+      type: "skill",
+    })
+  );
+  assert.equal(empty.stdout, "");
+  assert.match(empty.stderr, /note: no skills indexed under \.mdkg\/skills\//);
+
+  assert.throws(
+    () =>
+      runListCommand({
+        root,
+        type: "skill",
+        ws: "docs",
+      }),
+    /workspace not found: docs/
+  );
+
+  assert.throws(
+    () =>
+      runListCommand({
+        root,
+        type: "skill",
+        status: "todo",
+      }),
+    /--status\/--epic\/--priority\/--blocked are not supported with --type skill/
+  );
+});
+
 test("skill search includes skills metadata", () => {
   const root = makeTempDir("mdkg-skill-search-");
   writeConfig(root);
@@ -173,6 +211,68 @@ test("skill search includes skills metadata", () => {
     })
   ).stdout;
   assert.match(output, /root:skill:deploy-service/);
+});
+
+test("skill search enforces query and skill-only filter rules", () => {
+  const root = makeTempDir("mdkg-skill-search-rules-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root);
+  writeSkills(root);
+  runIndexCommand({ root });
+
+  assert.throws(
+    () =>
+      runSearchCommand({
+        root,
+        query: "   ",
+      }),
+    /search query cannot be empty/
+  );
+
+  assert.throws(
+    () =>
+      runSearchCommand({
+        root,
+        query: "plan",
+        type: "skill",
+        status: "todo",
+      }),
+    /--status is not supported with --type skill/
+  );
+
+  assert.throws(
+    () =>
+      runSearchCommand({
+        root,
+        query: "plan",
+        type: "skill",
+        ws: "docs",
+      }),
+    /workspace not found: docs/
+  );
+});
+
+test("skill search supports type=skill plus tag filtering", () => {
+  const root = makeTempDir("mdkg-skill-search-filtered-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root);
+  writeSkills(root);
+  runIndexCommand({ root });
+
+  const output = captureOutput(() =>
+    runSearchCommand({
+      root,
+      query: "workflow",
+      type: "skill",
+      tags: ["stage:plan"],
+      tagsMode: "all",
+    })
+  ).stdout;
+
+  assert.match(output, /root:skill:plan-run/);
+  assert.doesNotMatch(output, /deploy-service/);
 });
 
 test("show skill renders full body by default and meta when requested", () => {
@@ -202,4 +302,64 @@ test("show skill renders full body by default and meta when requested", () => {
   assert.match(meta, /root:skill:plan-run \| skill \| -\/- \| plan-run/);
   assert.match(meta, /tags: stage:plan, risk:low/);
   assert.match(meta, /ochatr_policy: advisory/);
+});
+
+test("internal dogfood skills comply with the locked Anthropic best-practice snapshot", () => {
+  const realRoot = path.resolve(__dirname, "..", "..", "..");
+  const requiredSkills = [
+    {
+      slug: "select-work-and-ground-context",
+      writerTag: "writer:read-only",
+      bodyChecks: [/read-only/i, /do not mutate mdkg state/i],
+    },
+    {
+      slug: "build-pack-and-execute-task",
+      writerTag: "writer:patch-only",
+      bodyChecks: [/patch-only/i, /pack <id>/i, /do not mutate task status/i],
+    },
+    {
+      slug: "verify-close-and-checkpoint",
+      writerTag: "writer:orchestrator",
+      bodyChecks: [/single-writer/i, /durable mdkg writes/i, /never commit on every tool call/i],
+    },
+  ];
+
+  for (const skill of requiredSkills) {
+    const slug = skill.slug;
+    const skillPath = path.join(realRoot, ".mdkg", "skills", slug, "SKILL.md");
+    assert.ok(fs.existsSync(skillPath), skillPath);
+    assert.equal(fs.existsSync(path.join(realRoot, ".mdkg", "skills", slug, "SKILLS.md")), false);
+
+    const content = fs.readFileSync(skillPath, "utf8");
+    const lineCount = content.split("\n").length;
+    const parsed = parseFrontmatter(content, skillPath);
+
+    assert.equal(parsed.frontmatter.name, slug);
+    assert.match(String(parsed.frontmatter.name), /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    assert.equal(typeof parsed.frontmatter.description, "string");
+    assert.ok(String(parsed.frontmatter.description).trim().length > 0);
+    assert.match(String(parsed.frontmatter.description), /\bwhen\b/i);
+    assert.ok(lineCount < 500, `${slug} exceeds Anthropic guidance size budget`);
+
+    const tags = Array.isArray(parsed.frontmatter.tags) ? parsed.frontmatter.tags.map(String) : [];
+    const stageTags = tags.filter((tag: string) => tag.startsWith("stage:"));
+    const writerTags = tags.filter((tag: string) => tag.startsWith("writer:"));
+    assert.equal(stageTags.length, 1, `${slug} must carry exactly one stage tag`);
+    assert.equal(writerTags.length, 1, `${slug} must carry exactly one writer tag`);
+    assert.equal(writerTags[0], skill.writerTag);
+
+    const body = parsed.body;
+    assert.match(body, /^# Goal/m);
+    assert.match(body, /^# When To Use/m);
+    assert.match(body, /^# Inputs/m);
+    assert.match(body, /^# Steps/m);
+    assert.match(body, /^# Outputs/m);
+    assert.match(body, /^# Safety/m);
+    assert.match(body, /^# Failure Handling/m);
+    assert.match(body, /mdkg indexes and discovers skills, but does not execute skill scripts/i);
+
+    for (const pattern of skill.bodyChecks) {
+      assert.match(body, pattern);
+    }
+  }
 });

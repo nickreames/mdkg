@@ -2,13 +2,13 @@
 id: test-18
 type: test
 title: v0.4 skills guide metadata portability and source truth
-status: todo
+status: done
 priority: 1
 epic: epic-4
 tags: [v0_4, skills, docs, validation]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md, .mdkg/design/dec-8-v0-4-doc-integration-source-truth-and-gap-policy.md, .mdkg/design/dec-9-v0-4-decision-log-design-philosophy-and-key-decisions.md, README.md]
 relates: [prd-1, dec-8, dec-9, edd-5, task-35, task-48, epic-4]
 blocked_by: []
 blocks: []
@@ -16,7 +16,7 @@ refs: []
 aliases: []
 cases: [flattened-metadata-contract, source-truth-labeling, portability-guidance]
 created: 2026-03-04
-updated: 2026-03-04
+updated: 2026-03-06
 ---
 
 # Overview
