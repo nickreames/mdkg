@@ -31,3 +31,4 @@ copyDir(path.join(root, ".mdkg", "templates"), path.join(distRoot, "templates"))
 copyFile(path.join(root, "assets", "init", "README.md"), path.join(distRoot, "README.md"));
 copyFile(path.join(root, "assets", "init", "AGENTS.md"), path.join(distRoot, "AGENTS.md"));
 copyFile(path.join(root, "assets", "init", "CLAUDE.md"), path.join(distRoot, "CLAUDE.md"));
+copyDir(path.join(root, "assets", "skills"), path.join(distRoot, "skills"));

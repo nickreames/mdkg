@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { NotFoundError } from "../util/errors";
 import { formatDate } from "../util/date";
+import { registryTemplate } from "./skill_support";
 
 export type InitCommandOptions = {
   root: string;
@@ -178,27 +179,6 @@ function humanTemplate(created: string): string {
     "- What should never happen without confirmation?",
     "- What coding/review style should the agent prefer?",
     "- What OS/runtime/test commands should be assumed?",
-    "",
-  ].join("\n");
-}
-
-function registryTemplate(): string {
-  return [
-    "# Skills Registry",
-    "",
-    "This directory stores Agent Skills packages used by mdkg tooling and orchestrators.",
-    "",
-    "## Conventions",
-    "",
-    "- One folder per skill slug.",
-    "- Use `SKILL.md` as the canonical skill entrypoint.",
-    "- Keep procedures deterministic and avoid embedding secrets.",
-    "",
-    "## Suggested Next Skills",
-    "",
-    "- deterministic-pack-generation",
-    "- test-and-verify-loop",
-    "- release-readiness-audit",
     "",
   ].join("\n");
 }

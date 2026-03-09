@@ -6,11 +6,11 @@ tags: [architecture, v0_4, skills, standards, research]
 owners: []
 links: [https://docs.claude.com/en/docs/agents-and-tools/agent-skills, https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices, https://support.claude.com/en/articles/12512198-how-to-create-custom-skills, https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices, https://agentskills.io/specification]
 artifacts: []
-relates: [prd-1, dec-8, dec-9, dec-10, edd-2, edd-3, edd-5, epic-4, epic-5]
+relates: [prd-1, dec-8, dec-9, dec-10, dec-12, edd-2, edd-3, edd-5, epic-4, epic-5, epic-9]
 refs: []
 aliases: [doc-9, skills-research, as_of_2026-03-05, stage:plan]
 created: 2026-03-04
-updated: 2026-03-05
+updated: 2026-03-08
 ---
 
 # Overview
@@ -38,8 +38,12 @@ Adopted in v0.4 docs:
 
 Deferred or constrained in v0.4:
 - no nested metadata map contract in mdkg docs (`ochatr_*` flattened policy retained)
-- no finalized new skills command namespace
 - runtime script execution and policy enforcement remain out of scope for this pass
+
+Current source delta as of `2026-03-08`:
+- mdkg now implements a dedicated `mdkg skill` namespace for authoring and skill-specific discovery
+- generated skills use the Anthropic-aligned minimum body shape from the built-in scaffold
+- internal dogfood skills remain the source-truth exemplars for the generated template
 
 # Architecture
 
@@ -69,12 +73,11 @@ Stage-gating tag conventions (policy-level examples):
 
 # APIs / interfaces
 
-Planned public-interface posture:
-- extend existing mdkg command families for skills capabilities
-- include tag-aware discovery filters (`--tags`, `--tags-mode any|all`) in planned query surfaces
-- keep command examples non-normative until runtime implementation is delivered
-
-No v0.4 docs commitment to a `mdkg skills ...` namespace.
+Public-interface posture after the current source delta:
+- keep generic `list/show/search` skill compatibility
+- provide focused `mdkg skill list/show/search` aliases for primary skill UX
+- provide `mdkg skill new` and `mdkg skill validate` as first-class authoring commands
+- keep tag-aware discovery filters (`--tags`, `--tags-mode any|all`) on both generic and skill-focused query surfaces
 
 # Failure modes
 
@@ -116,3 +119,4 @@ Future implementation checks:
 1. integrate this research snapshot into v0.4 design graph
 2. align skill query/gating tasks/tests to this contract
 3. refresh snapshot as part of each v0.4.x docs alignment audit
+4. keep the `mdkg skill` scaffold and docs aligned to the source-truth dogfood skills for v0.5 work

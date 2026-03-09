@@ -6,11 +6,11 @@ tags: [architecture, v0_4, skills, guide, packs]
 owners: []
 links: []
 artifacts: []
-relates: [prd-1, prd-2, dec-8, dec-9, dec-10, dec-11, edd-2, edd-3, edd-4, edd-6, edd-7, edd-8, edd-9, epic-4, epic-5, epic-7]
+relates: [prd-1, prd-2, dec-8, dec-9, dec-10, dec-11, dec-12, edd-2, edd-3, edd-4, edd-6, edd-7, edd-8, edd-9, epic-4, epic-5, epic-7, epic-9]
 refs: []
 aliases: [doc-7, skills-guide, agent-skills]
 created: 2026-03-04
-updated: 2026-03-06
+updated: 2026-03-08
 ---
 
 # Overview
@@ -26,10 +26,10 @@ Scope:
 
 Non-goals:
 - no nested metadata map contracts (`ochatr:` blocks) in v0.4 docs
-- no new top-level `mdkg skills ...` namespace in v0.4
+- no runtime script execution inside mdkg
 - no finalized events command names in this pass
 
-## Current source state (2026-03-06)
+## Current source state (2026-03-08)
 
 | Capability | v0.4 target | Current source behavior | Source anchor |
 | --- | --- | --- | --- |
@@ -42,6 +42,7 @@ Non-goals:
 | Script-risk surfaced in index | detect and expose `has_scripts`/risk posture | implemented `has_scripts` / `has_references`; enforcement remains docs-level | `src/graph/skills_indexer.ts`, `src/commands/validate.ts` |
 | Filename compatibility tolerance | keep `SKILL.md` canonical while tolerating `SKILLS.md` | implemented read-compat for `SKILLS.md`, with warning and hard-fail if both files exist | `src/graph/skills_indexer.ts`, `src/commands/validate.ts` |
 | Internal skills dogfooding | mdkg repo carries real skills for mdkg itself | implemented three internal skills that teach the simplified workflow, writer roles, and pack-first handoff rules | `.mdkg/skills/`, `README.md` |
+| First-class skill authoring | scaffold and validate skills through a dedicated UX | implemented `mdkg skill new/list/show/search/validate`, built-in template asset, and registry updates | `src/commands/skill.ts`, `src/commands/skill_support.ts`, `src/cli.ts`, `assets/skills/SKILL.md.example` |
 
 # Architecture
 
@@ -62,6 +63,7 @@ Compatibility direction:
 - current source tolerates `SKILLS.md` on read with warning
 - validation fails if both `SKILL.md` and `SKILLS.md` exist in one skill directory
 - docs/templates should continue writing `SKILL.md`
+- first-class scaffolding writes `SKILL.md` only
 
 Slug convention:
 - folder slug is stable identifier
@@ -116,16 +118,19 @@ Guidance:
 
 ## Authoring structure guidance
 
-Recommended SKILL body sections:
+Required default SKILL body sections for mdkg-generated skills:
 - `# Goal`
 - `## When To Use`
 - `## Inputs`
-- `## Preconditions`
 - `## Steps`
 - `## Outputs`
 - `## Safety`
 - `## Failure Handling`
+
+Optional sections:
+- `## Preconditions`
 - `## Examples`
+- `## References`
 
 Authoring guidance:
 - keep each skill single-purpose and tightly scoped
@@ -133,6 +138,7 @@ Authoring guidance:
 - keep runtime-specific routing metadata optional and secondary to the markdown instructions
 - keep the body concise enough for pack inclusion and direct agent consumption
 - for mdkg internal skills, encode writer role and memory-update boundaries in the body, not in heavy metadata
+- the built-in scaffold should match the current dogfood skills and Anthropic-aligned minimum shape
 
 Good examples:
 - `deploy-go-service-staged-rollout`
@@ -149,11 +155,18 @@ Bad examples:
 Indexing/discovery target:
 - `mdkg index` builds node index + skills metadata index
 - agent discovery flow: metadata search -> select skill -> load full SKILL body only when needed
-- planned stage-aware discovery filters include `--tags` with `--tags-mode any|all` under existing query command families
+- stage-aware discovery filters use `--tags` with `--tags-mode any|all`
 
 Pack inclusion target (non-normative examples only):
 - `--skills none|auto|<list>`
 - `--skills-depth meta|full`
+
+Skill authoring command surface:
+- `mdkg skill new <slug> "<name>" --description "<description>"`
+- `mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all]`
+- `mdkg skill show <slug> [--meta]`
+- `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all]`
+- `mdkg skill validate [<slug>]`
 
 Usage guidance:
 - planning/discovery stages prefer metadata-only skills
@@ -164,10 +177,8 @@ Usage guidance:
   - `writer:read-only`
   - `writer:patch-only`
   - `writer:orchestrator`
-
-CLI naming policy:
-- skills stay in existing command families (`list/show/search/pack`) and current flag names are binding for v0.4 implementation
-- examples for future events-specific commands remain non-normative
+- skill-specific commands should reuse the existing list/show/search/validate skill logic rather than fork it
+- generic compatibility remains available through `list/show/search` skill flows
 
 # Failure modes
 
@@ -179,13 +190,14 @@ CLI naming policy:
 - Missing skill slugs in node frontmatter create deterministic validation failures.
 - Non-portable skills tied to one runtime/tool reduce interoperability.
 - Missing stage/risk tag conventions can weaken policy gating outcomes.
+- Generated templates drifting from the dogfood skills makes first-class authoring misleading.
 
 # Observability
 
 - skills index should expose deterministic metadata ordering and stable slug identity.
 - validation should report missing required fields and dangling skill references deterministically.
 - pack diagnostics should indicate when skill metadata or full bodies were included.
-- script-bearing skills should be clearly discoverable (planned metadata flags).
+- script-bearing skills should be clearly discoverable in metadata and registry output.
 
 # Security / privacy
 
@@ -202,19 +214,16 @@ CLI naming policy:
 Docs integration checks:
 - `mdkg validate` passes with `edd-5` and linked roadmap nodes
 - `mdkg list --type edd` includes `edd-5`
-- `mdkg show edd-5 --body` reflects flattened metadata policy and progressive disclosure guidance
+- `mdkg show edd-5 --body` reflects flattened metadata policy, first-class skill authoring, and progressive disclosure guidance
 
 Future implementation checks:
 - skills index/discovery contracts (`test-10`, `test-12`)
 - node skill-reference validation (`test-13`)
 - authoring/security guidance contracts (`test-18`, `test-19`)
 - tag-filter and stage-policy gating contracts (`test-20`)
+- skill scaffold, alias parity, and targeted validation contracts (`test-33` to `test-36`)
 
 # Rollout plan
-
-For this pass:
-- documentation/work-node integration only
-- no runtime implementation changes
 
 Implemented sequence to date:
 1. skills index artifact and discovery surfaces
@@ -223,6 +232,7 @@ Implemented sequence to date:
 4. internal dogfooded skills that teach the simplified mdkg workflow
 5. tolerant `SKILLS.md` compatibility while keeping `SKILL.md` canonical
 6. script-risk surfacing in metadata, with policy enforcement still deferred to runtimes/docs
+7. first-class `mdkg skill` authoring, alias discovery commands, and targeted skill validation
 
 Doc tracking:
 - this document is Doc 7 (`edd-5`) for skills integration usage/spec guidance

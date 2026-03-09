@@ -11,20 +11,20 @@ links: [README.md, AGENT_PROMPT_SNIPPET.md]
 
 Finish work with evidence, validation, and minimal memory drift.
 
-# When To Use
+## When To Use
 
 - After implementation
 - Before commit
 - Before marking a task done
 - Before creating a checkpoint
 
-# Inputs
+## Inputs
 
 - Active task id
 - Test or build outputs
 - Any new artifact references
 
-# Steps
+## Steps
 
 1. Run the relevant technical gates for the changed surface.
 2. Run `mdkg validate` before closing the task.
@@ -34,14 +34,14 @@ Finish work with evidence, validation, and minimal memory drift.
 6. Create a checkpoint only for milestone-level transitions, not every small step.
 7. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
 
-# Outputs
+## Outputs
 
 - Verified mdkg graph state
 - Attached evidence and artifact refs
 - Task ready for review, done, or checkpointing
 - One durable writer action at the selected run or milestone boundary
 
-# Safety
+## Safety
 
 - Do not mark work done without validation.
 - Do not create checkpoint spam.
@@ -50,7 +50,7 @@ Finish work with evidence, validation, and minimal memory drift.
 - Never commit on every tool call.
 - mdkg indexes and discovers skills, but does not execute skill scripts.
 
-# Failure Handling
+## Failure Handling
 
 - If validation fails, stop and return the task to active work instead of closing it.
 - If artifact or evidence refs are missing, attach them before status changes or checkpoint creation.

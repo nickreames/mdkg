@@ -8,7 +8,7 @@ This repository contains the mdkg CLI source plus mdkg configuration data.
 - `src/templates/` holds template loading and rendering helpers.
 - `tests/` holds unit tests compiled to `dist/tests/`.
 - `scripts/` contains build helpers.
-- `assets/` contains init-time templates (AGENTS/CLAUDE docs).
+- `assets/` contains init-time templates and built-in skill scaffolds.
 - `.mdkg/` stores mdkg configuration and docs (`.mdkg/config.json`).
 
 ## mdkg Quickstart
@@ -18,6 +18,7 @@ This repository contains the mdkg CLI source plus mdkg configuration data.
 - `mdkg new task "..." --status todo --priority 1`
 - `mdkg list --status todo`
 - `mdkg pack <id> --verbose`
+- `mdkg skill new <slug> "<name>" --description "..."`
 - `mdkg validate`
 
 When adding code, keep related files grouped (e.g., `src/`, `tests/`, `assets/`) and update this guide to reflect the new layout.
