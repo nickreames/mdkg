@@ -20,14 +20,14 @@ updated: 2026-03-05
 
 # Overview
 
-Define v0.4 policy-level skill gating semantics so orchestrators can restrict skill access by stage and risk tags.
+Define 0.0.4 policy-level skill gating semantics so orchestrators can restrict skill access by stage and risk tags.
 
 # Acceptance Criteria
 
 - Hybrid gating model is explicit: query-time filtering plus policy-time gating.
 - Tag conventions for stage/risk classes are documented and portable.
 - Policy-level enforcement responsibilities are scoped to external orchestrators.
-- No global stage allowlist validation is introduced in v0.4 docs.
+- No global stage allowlist validation is introduced in 0.0.4 docs.
 - Guidance is compatible with flattened metadata policy.
 
 # Files Affected
@@ -40,7 +40,7 @@ Define v0.4 policy-level skill gating semantics so orchestrators can restrict sk
 # Implementation Notes
 
 - Keep policy gating declarative and runtime-agnostic in this pass.
-- Avoid command namespace expansion in v0.4 docs.
+- Avoid command namespace expansion in 0.0.4 docs.
 
 # Test Plan
 

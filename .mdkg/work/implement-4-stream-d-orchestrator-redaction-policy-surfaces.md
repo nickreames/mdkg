@@ -25,7 +25,7 @@ Implement Stream D documentation-facing schema hooks for orchestrator run/event/
 # Acceptance Criteria
 
 - Minimal structured contract fields are represented in mdkg surfaces without over-scoping runtime protocol.
-- Redaction policy semantics remain policy-level (`safe`/`strict`) for v0.4.
+- Redaction policy semantics remain policy-level (`safe`/`strict`) for 0.0.4.
 - Validation hooks align with documentation contracts where applicable.
 
 # Files Affected

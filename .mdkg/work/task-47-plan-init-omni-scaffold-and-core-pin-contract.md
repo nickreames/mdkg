@@ -28,7 +28,7 @@ Define the explicit scaffold-file and core-pin behavior for `mdkg init --omni` s
 - Skills scaffold directory/registry contract is documented; default example skill file is optional and not required.
 - Core pin update behavior is documented as ID-only with no duplicates and priority ordering for SOUL/HUMAN pins.
 - `.mdkg/work/events/*.md` guidance files are explicitly excluded in favor of root/core docs guidance.
-- No `.mdkg/twin/` dependency is introduced in v0.4 docs.
+- No `.mdkg/twin/` dependency is introduced in 0.0.4 docs.
 
 # Files Affected
 

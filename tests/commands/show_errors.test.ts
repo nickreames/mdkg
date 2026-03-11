@@ -54,7 +54,7 @@ test("runShowCommand rejects unknown workspaces", () => {
   );
 });
 
-test("runShowCommand errors for missing skill", () => {
+test("runShowCommand rejects removed generic skill access", () => {
   const root = makeTempDir("mdkg-show-error-skill-");
   writeRootConfig(root);
   writeDefaultTemplates(root);
@@ -65,7 +65,7 @@ test("runShowCommand errors for missing skill", () => {
         root,
         id: "skill:nope",
       }),
-    /skill not found: skill:nope/
+    /generic skill show is no longer supported; use `mdkg skill show nope`/
   );
 });
 

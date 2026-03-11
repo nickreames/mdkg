@@ -3,9 +3,7 @@ import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
 const { runIndexCommand } = require("../../commands/index");
-const { runListCommand } = require("../../commands/list");
-const { runSearchCommand } = require("../../commands/search");
-const { runShowCommand } = require("../../commands/show");
+const { runSkillListCommand, runSkillSearchCommand, runSkillShowCommand } = require("../../commands/skill");
 const { parseFrontmatter } = require("../../graph/frontmatter");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
@@ -79,8 +77,8 @@ function writeSkills(root: string): void {
   const planSkill = [
     "---",
     "name: plan-run",
-    "description: plan stage workflow",
-    "tags: [stage:plan, risk:low]",
+    "description: plan stage workflow when a plan-stage skill is needed",
+    "tags: [stage:plan, writer:read-only, risk:low]",
     "version: 1.0.0",
     "authors: [team]",
     "links: [https://example.com/plan]",
@@ -90,17 +88,65 @@ function writeSkills(root: string): void {
     "# Goal",
     "",
     "Plan work deterministically.",
+    "",
+    "## When To Use",
+    "",
+    "- During planning.",
+    "",
+    "## Inputs",
+    "",
+    "- Task",
+    "",
+    "## Steps",
+    "",
+    "1. Plan.",
+    "",
+    "## Outputs",
+    "",
+    "- Plan.",
+    "",
+    "## Safety",
+    "",
+    "- Safe.",
+    "",
+    "## Failure Handling",
+    "",
+    "- Stop.",
   ].join("\n");
   const executeSkill = [
     "---",
     "name: deploy-service",
-    "description: execute deploy workflow",
-    "tags: [stage:execute, risk:high]",
+    "description: execute deploy workflow when a service is ready to ship",
+    "tags: [stage:execute, writer:patch-only, risk:high]",
     "---",
     "",
     "# Goal",
     "",
     "Deploy safely.",
+    "",
+    "## When To Use",
+    "",
+    "- During execution.",
+    "",
+    "## Inputs",
+    "",
+    "- Task",
+    "",
+    "## Steps",
+    "",
+    "1. Deploy.",
+    "",
+    "## Outputs",
+    "",
+    "- Deploy result.",
+    "",
+    "## Safety",
+    "",
+    "- Safe.",
+    "",
+    "## Failure Handling",
+    "",
+    "- Stop.",
   ].join("\n");
   writeFile(path.join(root, ".mdkg", "skills", "plan-run", "SKILL.md"), planSkill);
   writeFile(path.join(root, ".mdkg", "skills", "deploy-service", "SKILL.md"), executeSkill);
@@ -129,7 +175,7 @@ function captureOutput(fn: () => void): { stdout: string; stderr: string } {
   };
 }
 
-test("skill list supports type=skill and tag mode filtering", () => {
+test("skill list supports tag filtering and count output", () => {
   const root = makeTempDir("mdkg-skill-list-");
   writeConfig(root);
   writeDefaultTemplates(root);
@@ -138,65 +184,45 @@ test("skill list supports type=skill and tag mode filtering", () => {
   runIndexCommand({ root });
 
   const planOnly = captureOutput(() =>
-    runListCommand({
+    runSkillListCommand({
       root,
-      type: "skill",
       tags: ["stage:plan"],
       tagsMode: "all",
     })
-  ).stdout;
-  assert.match(planOnly, /root:skill:plan-run \| skill \| -\/- \| plan-run/);
-  assert.doesNotMatch(planOnly, /deploy-service/);
+  );
+  assert.match(planOnly.stdout, /root:skill:plan-run \| skill \| -\/- \| plan-run/);
+  assert.doesNotMatch(planOnly.stdout, /deploy-service/);
+  assert.match(planOnly.stderr, /count: 1/);
 
   const anyStage = captureOutput(() =>
-    runListCommand({
+    runSkillListCommand({
       root,
-      type: "skill",
       tags: ["stage:plan", "stage:execute"],
       tagsMode: "any",
     })
-  ).stdout;
-  assert.match(anyStage, /root:skill:plan-run/);
-  assert.match(anyStage, /root:skill:deploy-service/);
+  );
+  assert.match(anyStage.stdout, /root:skill:plan-run/);
+  assert.match(anyStage.stdout, /root:skill:deploy-service/);
+  assert.match(anyStage.stderr, /count: 2/);
 });
 
-test("skill list prints empty-state note and rejects unsupported filters", () => {
+test("skill list prints empty-state note", () => {
   const root = makeTempDir("mdkg-skill-list-empty-");
   writeConfig(root);
   writeDefaultTemplates(root);
   writeTask(root);
 
   const empty = captureOutput(() =>
-    runListCommand({
+    runSkillListCommand({
       root,
-      type: "skill",
     })
   );
   assert.equal(empty.stdout, "");
-  assert.match(empty.stderr, /note: no skills indexed under \.mdkg\/skills\//);
-
-  assert.throws(
-    () =>
-      runListCommand({
-        root,
-        type: "skill",
-        ws: "docs",
-      }),
-    /workspace not found: docs/
-  );
-
-  assert.throws(
-    () =>
-      runListCommand({
-        root,
-        type: "skill",
-        status: "todo",
-      }),
-    /--status\/--epic\/--priority\/--blocked are not supported with --type skill/
-  );
+  assert.match(empty.stderr, /count: 0/);
+  assert.match(empty.stderr, /note: no skills matched current filters/);
 });
 
-test("skill search includes skills metadata", () => {
+test("skill search includes skills metadata and tag filtering", () => {
   const root = makeTempDir("mdkg-skill-search-");
   writeConfig(root);
   writeDefaultTemplates(root);
@@ -205,15 +231,18 @@ test("skill search includes skills metadata", () => {
   runIndexCommand({ root });
 
   const output = captureOutput(() =>
-    runSearchCommand({
+    runSkillSearchCommand({
       root,
       query: "deploy workflow",
+      tags: ["stage:execute"],
+      tagsMode: "all",
     })
-  ).stdout;
-  assert.match(output, /root:skill:deploy-service/);
+  );
+  assert.match(output.stdout, /root:skill:deploy-service/);
+  assert.match(output.stderr, /count: 1/);
 });
 
-test("skill search enforces query and skill-only filter rules", () => {
+test("skill search enforces query", () => {
   const root = makeTempDir("mdkg-skill-search-rules-");
   writeConfig(root);
   writeDefaultTemplates(root);
@@ -223,59 +252,15 @@ test("skill search enforces query and skill-only filter rules", () => {
 
   assert.throws(
     () =>
-      runSearchCommand({
+      runSkillSearchCommand({
         root,
         query: "   ",
       }),
     /search query cannot be empty/
   );
-
-  assert.throws(
-    () =>
-      runSearchCommand({
-        root,
-        query: "plan",
-        type: "skill",
-        status: "todo",
-      }),
-    /--status is not supported with --type skill/
-  );
-
-  assert.throws(
-    () =>
-      runSearchCommand({
-        root,
-        query: "plan",
-        type: "skill",
-        ws: "docs",
-      }),
-    /workspace not found: docs/
-  );
 });
 
-test("skill search supports type=skill plus tag filtering", () => {
-  const root = makeTempDir("mdkg-skill-search-filtered-");
-  writeConfig(root);
-  writeDefaultTemplates(root);
-  writeTask(root);
-  writeSkills(root);
-  runIndexCommand({ root });
-
-  const output = captureOutput(() =>
-    runSearchCommand({
-      root,
-      query: "workflow",
-      type: "skill",
-      tags: ["stage:plan"],
-      tagsMode: "all",
-    })
-  ).stdout;
-
-  assert.match(output, /root:skill:plan-run/);
-  assert.doesNotMatch(output, /deploy-service/);
-});
-
-test("show skill renders full body by default and meta when requested", () => {
+test("skill show renders full body by default and meta when requested", () => {
   const root = makeTempDir("mdkg-skill-show-");
   writeConfig(root);
   writeDefaultTemplates(root);
@@ -284,29 +269,34 @@ test("show skill renders full body by default and meta when requested", () => {
   runIndexCommand({ root });
 
   const full = captureOutput(() =>
-    runShowCommand({
+    runSkillShowCommand({
       root,
-      id: "skill:plan-run",
+      slug: "plan-run",
     })
   ).stdout;
   assert.match(full, /name: plan-run/);
   assert.match(full, /# Goal/);
 
   const meta = captureOutput(() =>
-    runShowCommand({
+    runSkillShowCommand({
       root,
-      id: "skill:plan-run",
+      slug: "plan-run",
       metaOnly: true,
     })
   ).stdout;
   assert.match(meta, /root:skill:plan-run \| skill \| -\/- \| plan-run/);
-  assert.match(meta, /tags: stage:plan, risk:low/);
+  assert.match(meta, /tags: stage:plan, writer:read-only, risk:low/);
   assert.match(meta, /ochatr_policy: advisory/);
 });
 
 test("internal dogfood skills comply with the locked Anthropic best-practice snapshot", () => {
   const realRoot = path.resolve(__dirname, "..", "..", "..");
   const requiredSkills = [
+    {
+      slug: "author-mdkg-skill",
+      writerTag: "writer:orchestrator",
+      bodyChecks: [/mdkg skill new/i, /update it instead of creating a near-duplicate/i],
+    },
     {
       slug: "select-work-and-ground-context",
       writerTag: "writer:read-only",
@@ -383,8 +373,10 @@ test("built-in skill template and registry stay aligned with dogfood skills", ()
   const registryPath = path.join(realRoot, ".mdkg", "skills", "registry.md");
   const registry = fs.readFileSync(registryPath, "utf8");
   assert.match(registry, /mdkg skill new <slug> "<name>" --description "\.\.\."/);
+  assert.match(registry, /CLI_COMMAND_MATRIX\.md/);
   assert.match(registry, /<!-- mdkg:skill-registry:start -->/);
   assert.match(registry, /<!-- mdkg:skill-registry:end -->/);
+  assert.match(registry, /`author-mdkg-skill`/);
   assert.match(registry, /`select-work-and-ground-context`/);
   assert.match(registry, /`build-pack-and-execute-task`/);
   assert.match(registry, /`verify-close-and-checkpoint`/);

@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Plan the v0.4 change where `mdkg init` updates ignore entries by default, with opt-out behavior defined in implementation design.
+Plan the 0.0.4 change where `mdkg init` updates ignore entries by default, with opt-out behavior defined in implementation design.
 
 # Acceptance Criteria
 

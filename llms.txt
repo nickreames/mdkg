@@ -7,6 +7,9 @@ Primary loop:
 - mdkg show <id>
 - mdkg next
 - mdkg pack <id>
+- mdkg task start <id>
+- mdkg task update <id> ...
+- mdkg task done <id>
 - mdkg validate
 
 Optional agent-ready bootstrap:
@@ -30,8 +33,11 @@ Agent rules:
 - Prefer mdkg packs over ad-hoc file reading.
 - Treat rules, EDDs, DECs, PRDs, and task nodes as authoritative over chat memory.
 - Use mdkg show <id> for targeted inspection and mdkg show <id> --meta for card-only output.
-- Use mdkg list --type skill or mdkg search to discover skills.
-- Use mdkg show skill:<slug> to load a full skill only when needed.
+- Use mdkg skill list or mdkg skill search to discover skills.
+- Use mdkg skill show <slug> to load a full skill only when needed.
+- Use mdkg task start/update/done instead of hand-editing task, bug, and test markdown for routine lifecycle changes.
+- Use mdkg event enable before expecting automatic JSONL provenance from mutating commands.
+- Use CLI_COMMAND_MATRIX.md as the canonical command and flag reference.
 - Run mdkg validate before marking work done.
 
 Pack guidance:
@@ -44,7 +50,13 @@ Skill filename policy:
 - SKILLS.md is compatibility-only on read
 - both files in one skill directory is invalid
 
+Event logging:
+- mdkg event enable
+- mdkg event append --kind <kind> --status <status> --refs <id,...>
+- automatic events append only after event logging is enabled
+
 See also:
 - README.md
+- CLI_COMMAND_MATRIX.md
 - AGENT_PROMPT_SNIPPET.md
 - PACK_EXAMPLES.md

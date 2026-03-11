@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Plan expanded deterministic unit/integration test coverage for v0.4 features without introducing runtime code changes in this pass.
+Plan expanded deterministic unit/integration test coverage for 0.0.4 features without introducing runtime code changes in this pass.
 
 # Acceptance Criteria
 

@@ -27,8 +27,8 @@ Define deterministic local metadata indexing requirements for skill packages und
 - Skill indexing output is specified as `.mdkg/index/skills.json` separate from `global.json`.
 - Root-owned skills scan scope is explicit (`.mdkg/skills/**/SKILL.md`).
 - Required and optional skill metadata fields are documented, including flattened optional `ochatr_*` keys.
-- Generic per-skill `tags` semantics are documented for filtering (no stage allowlist validation in v0.4).
-- Gap between current index scope and v0.4 target is explicit.
+- Generic per-skill `tags` semantics are documented for filtering (no stage allowlist validation in 0.0.4).
+- Gap between current index scope and 0.0.4 target is explicit.
 
 # Files Affected
 

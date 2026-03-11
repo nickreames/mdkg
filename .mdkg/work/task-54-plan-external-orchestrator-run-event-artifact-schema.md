@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Define the v0.4 minimal structured contract for external orchestrators: run envelope, event record shape, artifact URI conventions, and commit gate policy.
+Define the 0.0.4 minimal structured contract for external orchestrators: run envelope, event record shape, artifact URI conventions, and commit gate policy.
 
 # Acceptance Criteria
 
@@ -39,7 +39,7 @@ Define the v0.4 minimal structured contract for external orchestrators: run enve
 # Implementation Notes
 
 - Keep schema minimal and interoperable across orchestrators.
-- Avoid overfitting to one runtime implementation in v0.4 planning.
+- Avoid overfitting to one runtime implementation in 0.0.4 planning.
 
 # Test Plan
 

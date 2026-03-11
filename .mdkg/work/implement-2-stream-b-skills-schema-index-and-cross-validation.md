@@ -41,7 +41,7 @@ Implement Stream B skills data model and deterministic indexing/validation behav
 
 # Implementation Notes
 
-- Keep optional metadata flattened for v0.4 compatibility.
+- Keep optional metadata flattened for 0.0.4 compatibility.
 - Preserve existing node/schema behavior outside new skills fields.
 
 # Test Plan

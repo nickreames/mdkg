@@ -163,57 +163,53 @@ function validateEventsJsonl(
   config: ReturnType<typeof loadConfig>,
   errors: string[]
 ): void {
-  const rootWorkspace = config.workspaces.root;
-  if (!rootWorkspace || !rootWorkspace.enabled) {
-    return;
-  }
-
-  const eventsPath = path.resolve(
-    root,
-    rootWorkspace.path,
-    rootWorkspace.mdkg_dir,
-    "work",
-    "events",
-    "events.jsonl"
-  );
-  if (!fs.existsSync(eventsPath)) {
-    return;
-  }
-
-  const lines = fs.readFileSync(eventsPath, "utf8").split(/\r?\n/);
-  for (let i = 0; i < lines.length; i += 1) {
-    const raw = lines[i].trim();
-    if (!raw) {
+  for (const [alias, workspace] of Object.entries(config.workspaces)) {
+    if (!workspace.enabled) {
       continue;
     }
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      errors.push(`${eventsPath}:${i + 1}: invalid JSON`);
+    const eventsPath = path.resolve(root, workspace.path, workspace.mdkg_dir, "work", "events", "events.jsonl");
+    if (!fs.existsSync(eventsPath)) {
       continue;
     }
 
-    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-      errors.push(`${eventsPath}:${i + 1}: event must be a JSON object`);
-      continue;
-    }
-
-    const event = parsed as Record<string, unknown>;
-    for (const key of ["ts", "run_id", "workspace", "agent", "kind", "status"]) {
-      const value = event[key];
-      if (typeof value !== "string" || value.trim().length === 0) {
-        errors.push(`${eventsPath}:${i + 1}: ${key} is required and must be a non-empty string`);
+    const lines = fs.readFileSync(eventsPath, "utf8").split(/\r?\n/);
+    for (let i = 0; i < lines.length; i += 1) {
+      const raw = lines[i].trim();
+      if (!raw) {
+        continue;
       }
-    }
-    if (!Array.isArray(event.refs)) {
-      errors.push(`${eventsPath}:${i + 1}: refs is required and must be a list`);
-    }
-    if (!Array.isArray(event.artifacts)) {
-      errors.push(`${eventsPath}:${i + 1}: artifacts is required and must be a list`);
-    }
-    if (typeof event.notes !== "string") {
-      errors.push(`${eventsPath}:${i + 1}: notes is required and must be a string`);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(raw);
+      } catch {
+        errors.push(`${eventsPath}:${i + 1}: invalid JSON`);
+        continue;
+      }
+
+      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+        errors.push(`${eventsPath}:${i + 1}: event must be a JSON object`);
+        continue;
+      }
+
+      const event = parsed as Record<string, unknown>;
+      for (const key of ["ts", "run_id", "workspace", "agent", "kind", "status"]) {
+        const value = event[key];
+        if (typeof value !== "string" || value.trim().length === 0) {
+          errors.push(`${eventsPath}:${i + 1}: ${key} is required and must be a non-empty string`);
+        }
+      }
+      if (!Array.isArray(event.refs)) {
+        errors.push(`${eventsPath}:${i + 1}: refs is required and must be a list`);
+      }
+      if (!Array.isArray(event.artifacts)) {
+        errors.push(`${eventsPath}:${i + 1}: artifacts is required and must be a list`);
+      }
+      if (typeof event.notes !== "string") {
+        errors.push(`${eventsPath}:${i + 1}: notes is required and must be a string`);
+      }
+      if (typeof event.workspace === "string" && event.workspace !== alias) {
+        errors.push(`${eventsPath}:${i + 1}: workspace must match ${alias}`);
+      }
     }
   }
 }

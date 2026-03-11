@@ -33,6 +33,7 @@ Use `mdkg pack <id>` as the default execution context instead of ad-hoc file gat
 6. Discover skills by metadata first; load full skill bodies only for the selected execution procedures.
 7. Hand the pack, not a loose file list, to the next coding step or agent.
 8. Keep this stage patch-only: subagents and tools may produce patches, test output, and evidence, but not direct mdkg state writes or commits.
+9. If execution reveals new artifacts or blockers, hand them to the orchestrator stage for `mdkg task update ...` rather than editing markdown directly.
 
 ## Outputs
 
@@ -47,6 +48,7 @@ Use `mdkg pack <id>` as the default execution context instead of ad-hoc file gat
 - Do not treat raw event logs as primary execution context.
 - Do not mutate task status, create checkpoints, or commit from this stage.
 - mdkg indexes and discovers skills, but does not execute skill scripts.
+- If event logging is enabled, rely on later task/checkpoint commands to append baseline events instead of writing ad-hoc log entries here.
 
 ## Failure Handling
 

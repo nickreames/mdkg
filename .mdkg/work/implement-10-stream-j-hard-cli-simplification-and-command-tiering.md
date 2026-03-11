@@ -20,7 +20,7 @@ updated: 2026-03-06
 
 # Overview
 
-Apply the first hard v0.5 simplification pass to CLI flags/defaults and help surfaces while keeping top-level command count stable.
+Apply the first hard `0.0.4x` simplification pass to CLI flags/defaults and help surfaces while keeping top-level command count stable.
 
 # Acceptance Criteria
 

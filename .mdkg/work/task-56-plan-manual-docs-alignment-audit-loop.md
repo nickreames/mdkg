@@ -20,12 +20,12 @@ updated: 2026-03-05
 
 # Overview
 
-Define the manual v0.4 docs alignment audit cadence for command parity, source-gap freshness, and planned-vs-implemented wording.
+Define the manual 0.0.4 docs alignment audit cadence for command parity, source-gap freshness, and planned-vs-implemented wording.
 
 # Acceptance Criteria
 
 - A repeatable manual audit checklist is documented.
-- Audit cadence is defined for each v0.4.x release cut.
+- Audit cadence is defined for each 0.0.4.x release cut.
 - `mdkg --help` vs README parity checks are included.
 - Source-gap matrix refresh checks are included for core PRD/EDD docs.
 - Audit results are expected to be captured in mdkg work/checkpoint records.
@@ -34,13 +34,13 @@ Define the manual v0.4 docs alignment audit cadence for command parity, source-g
 
 - README.md
 - .mdkg/design/prd-1-mdkg-product-spec-v0-4-deterministic-agent-memory-and-skills.md
-- .mdkg/design/prd-2-mdkg-dev-website-and-documentation-plan-v0-4.md
+- .mdkg/design/prd-2-mdkg-dev-external-docs-handoff-note.md
 - .mdkg/design/edd-7-v0-4-agent-skills-standards-alignment-and-research-snapshot.md
 
 # Implementation Notes
 
 - Keep governance process lightweight and human-executable.
-- Avoid introducing scripted parity checks in v0.4 planning.
+- Avoid introducing scripted parity checks in 0.0.4 planning.
 
 # Test Plan
 

@@ -20,7 +20,7 @@ updated: 2026-03-06
 
 # Overview
 
-Define the v0.4 contract for LLM-readable artifacts: `llms.txt`, agent prompt snippet, and sample pack examples.
+Define the 0.0.4 contract for LLM-readable artifacts: `llms.txt`, agent prompt snippet, and sample pack examples.
 
 # Acceptance Criteria
 
@@ -31,7 +31,7 @@ Define the v0.4 contract for LLM-readable artifacts: `llms.txt`, agent prompt sn
 
 # Files Affected
 
-- .mdkg/design/prd-2-mdkg-dev-website-and-documentation-plan-v0-4.md
+- .mdkg/design/prd-2-mdkg-dev-external-docs-handoff-note.md
 - README.md
 - src/cli.ts
 - .mdkg/design/edd-2-mdkg-v0-4-architecture-indexing-validation-packs-skills.md

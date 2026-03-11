@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-03-05
+updated: 2026-03-08
 ---
 
 # mdkg CLI contract
@@ -88,7 +88,7 @@ If a user provides an unqualified ID and it is ambiguous globally:
 - Commands should be script-friendly:
   - concise outputs for single items
   - predictable formatting
-  - optional `--json` output later (not required for v1)
+  - `--json` output for supported discovery/show commands
   - when printing node summaries (e.g., `show`/list results), outputs SHOULD surface key searchable frontmatter fields such as `links` and `artifacts`
 
 ## Command set (v1 target)
@@ -154,14 +154,30 @@ Common flags:
 - `--template <set>` (default from config)
 
 ### Read/search
-- `mdkg show <id-or-qid> [--meta]`
+- `mdkg show <id-or-qid> [--meta] [--json]`
   - default behavior shows the full node body
   - `--meta` is the compact card-only view
-- `mdkg show skill:<slug> [--meta]`
-- `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all]`
+- `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
   - search SHOULD match on IDs, titles, tags, path tokens, and searchable frontmatter lists (`links`, `artifacts`, `refs`, `aliases`)
-- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--blocked] [--priority <n>] [--tags <tag,tag,...>] [--tags-mode any|all]`
-  - skills stay in existing command family (`list/show/search`), including `mdkg list --type skill`
+- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--blocked] [--priority <n>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+- skills are first-class under `mdkg skill ...` only:
+  - `mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+  - `mdkg skill show <slug> [--meta] [--json]`
+  - `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+  - `mdkg skill validate [<slug>]`
+
+### Task lifecycle mutation
+- `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]`
+  - supports `task`, `bug`, and `test` nodes only
+  - sets `status: progress`
+- `mdkg task update <id-or-qid> [...]`
+  - supports additive list mutation for `artifacts`, `links`, `refs`, `skills`, `tags`, and `blocked_by`
+  - supports scalar replacement for `status` and `priority`
+  - `--clear-blocked-by` resets blockers before optional re-add
+- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [...]`
+  - supports `task`, `bug`, and `test` nodes only
+  - sets `status: done`
+  - optional checkpoint creation is explicit only
 
 ### Packs (core feature)
 - `mdkg pack <id-or-qid> [--profile <name>] [--verbose] [--format md|json|toon|xml] [--out <path>] [--ws <alias>]`
@@ -194,6 +210,21 @@ Common flags:
 - `mdkg checkpoint new "<title>" [--ws <alias>] [--relates <id,...>] [--scope <id,...>]`
   - creates a `chk-*` node from template
   - designed as a phase summary / compression node
+
+### Events
+- `mdkg event enable [--ws <alias>] [--no-update-gitignore]`
+  - creates `.mdkg/work/events/events.jsonl` if missing
+  - updates `.gitignore` by default
+- `mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [...]`
+  - appends one JSONL provenance record
+- automatic command-level events append only when event logging is enabled for the target workspace
+- current automatic mutation events:
+  - `NODE_CREATED`
+  - `SKILL_CREATED`
+  - `CHECKPOINT_CREATED`
+  - `TASK_STARTED`
+  - `TASK_UPDATED`
+  - `TASK_DONE`
 
 ### Validation and formatting
 - `mdkg validate`

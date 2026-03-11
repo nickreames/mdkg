@@ -20,11 +20,11 @@ updated: 2026-03-05
 
 # Overview
 
-Define v0.4 episodic memory conventions using append-only JSONL logs under `.mdkg/work/events/` and checkpoint guidance for compression summaries.
+Define 0.0.4 episodic memory conventions using append-only JSONL logs under `.mdkg/work/events/` and checkpoint guidance for compression summaries.
 
 # Acceptance Criteria
 
-- Event log format is locked to JSONL for v0.4 planning.
+- Event log format is locked to JSONL for 0.0.4 planning.
 - Two-tier episodic model is explicit: high-frequency event logs + low-frequency checkpoint compression nodes.
 - Redaction-by-default guidance is documented.
 - Seeded init event example line is documented as a valid first `events.jsonl` record.

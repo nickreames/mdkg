@@ -17,6 +17,7 @@ import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
 import { runGuideCommand } from "./commands/guide";
+import { runEventAppendCommand, runEventEnableCommand } from "./commands/event";
 import {
   runSkillListCommand,
   runSkillNewCommand,
@@ -24,6 +25,7 @@ import {
   runSkillShowCommand,
   runSkillValidateCommand,
 } from "./commands/skill";
+import { runTaskDoneCommand, runTaskStartCommand, runTaskUpdateCommand } from "./commands/task";
 import {
   runWorkspaceAddCommand,
   runWorkspaceListCommand,
@@ -74,9 +76,11 @@ function printUsage(log: LogFn): void {
   log("  search      Search nodes by query");
   log("  pack        Generate a context pack");
   log("  skill       Create, list, show, search, and validate skills");
+  log("  task        Start, update, and complete task-like nodes");
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
   log("\nAdvanced / maintenance commands:");
+  log("  event       Enable or append episodic event logs");
   log("  checkpoint  Create a checkpoint node");
   log("  index       Build the global index");
   log("  guide       Show the mdkg guide");
@@ -91,7 +95,9 @@ function printUsage(log: LogFn): void {
   log("  mdkg next");
   log("  mdkg pack <id>");
   log("  mdkg pack <id> --profile concise --dry-run --stats");
+  log("  mdkg task start <id>");
   log('  mdkg skill new release-readiness "release readiness audit" --description "use when preparing a release"');
+  log("  mdkg skill list --tags stage:plan --json");
   log("  mdkg validate");
   log("\nOptional agent-ready bootstrap:");
   log("  mdkg init --omni");
@@ -127,6 +133,7 @@ function printNewHelp(log: LogFn): void {
   log("  --tags <tag,tag,...>       Tags");
   log("  --skills <slug,slug,...>   Skill slugs for work items");
   log("  --template <set>           Template set");
+  log("  --run-id <id>              Optional event run id when event logging is enabled");
   log("\nAdvanced metadata flags:");
   log("  --parent --prev --next --relates --blocked-by --blocks");
   log("  --links --artifacts --refs --aliases --owners --cases --supersedes");
@@ -156,8 +163,9 @@ function printIndexHelp(log: LogFn): void {
 
 function printShowHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg show <id-or-qid> [--ws <alias>] [--meta]");
-  log("  mdkg show skill:<slug> [--meta]");
+  log("  mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json]");
+  log("\nWhen to use:");
+  log("  Inspect one mdkg node exactly. Use `mdkg skill show <slug>` for skills.");
   log("\nDefault behavior:");
   log("  Shows full body content. Use --meta for card + metadata only.");
   printGlobalOptions(log);
@@ -166,14 +174,18 @@ function printShowHelp(log: LogFn): void {
 function printListHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]");
-  log("           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]");
+  log("           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
+  log("\nWhen to use:");
+  log("  List mdkg nodes. Use `mdkg skill list` for skills.");
   printGlobalOptions(log);
 }
 
 function printSearchHelp(log: LogFn): void {
   log("Usage:");
   log('  mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]');
-  log("               [--tags <tag,tag,...>] [--tags-mode any|all]");
+  log("               [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
+  log("\nWhen to use:");
+  log("  Search mdkg nodes by metadata. Use `mdkg skill search` for skills.");
   printGlobalOptions(log);
 }
 
@@ -225,23 +237,30 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
       log("  --tags <tag,tag,...>         Optional skill tags");
       log("  --authors <name,name,...>    Optional authors list");
       log("  --links <url,url,...>        Optional links list");
+      log("  --run-id <id>                Optional event run id when event logging is enabled");
       log("  --with-scripts               Create scripts/ in the scaffold");
       log("  --force                      Overwrite existing SKILL.md");
       printGlobalOptions(log);
       return;
     case "list":
       log("Usage:");
-      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all]");
+      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
+      log("\nWhen to use:");
+      log("  Discover skills directly, including stage-tagged orchestrator lookups.");
       printGlobalOptions(log);
       return;
     case "show":
       log("Usage:");
-      log("  mdkg skill show <slug> [--meta]");
+      log("  mdkg skill show <slug> [--meta] [--json]");
+      log("\nWhen to use:");
+      log("  Inspect one skill body or metadata after discovery.");
       printGlobalOptions(log);
       return;
     case "search":
       log("Usage:");
-      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all]');
+      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]');
+      log("\nWhen to use:");
+      log("  Search skills by trigger text, tags, and stage conventions like `stage:plan`.");
       printGlobalOptions(log);
       return;
     case "validate":
@@ -252,13 +271,77 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
     default:
       log("Usage:");
       log('  mdkg skill new <slug> "<name>" --description "<description>" [options]');
-      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all]");
-      log("  mdkg skill show <slug> [--meta]");
-      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all]');
+      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
+      log("  mdkg skill show <slug> [--meta] [--json]");
+      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]');
       log("  mdkg skill validate [<slug>]");
       log("\nNotes:");
-      log("  Skill commands are focused aliases over the existing skill-capable discovery flows.");
-      log("  Generic compatibility remains: list --type skill, show skill:<slug>, search --type skill.");
+      log("  Skills are first-class under `mdkg skill ...`.");
+      log("  Use stage tags like `stage:plan`, `stage:execute`, and `stage:review` with --tags.");
+      printGlobalOptions(log);
+  }
+}
+
+function printTaskHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "start":
+      log("Usage:");
+      log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]');
+      log("\nWhen to use:");
+      log("  Move a task, bug, or test into progress and emit a baseline event when logging is enabled.");
+      printGlobalOptions(log);
+      return;
+    case "update":
+      log("Usage:");
+      log("  mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]");
+      log("                   [--add-artifacts <a,...>] [--add-links <l,...>] [--add-refs <id,...>]");
+      log("                   [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]");
+      log('                   [--clear-blocked-by] [--run-id <id>] [--note "<text>"]');
+      log("\nWhen to use:");
+      log("  Update task metadata and evidence without editing markdown manually.");
+      printGlobalOptions(log);
+      return;
+    case "done":
+      log("Usage:");
+      log('  mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]');
+      log('                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"]');
+      log("\nWhen to use:");
+      log("  Mark a task-like node done, optionally create a checkpoint, and emit a completion event when enabled.");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]');
+      log("  mdkg task update <id-or-qid> [options]");
+      log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [options]');
+      log("\nNotes:");
+      log("  `mdkg task ...` only supports task, bug, and test nodes in this wave.");
+      printGlobalOptions(log);
+  }
+}
+
+function printEventHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "enable":
+      log("Usage:");
+      log("  mdkg event enable [--ws <alias>] [--no-update-gitignore]");
+      log("\nWhen to use:");
+      log("  Create the append-only JSONL event log for a workspace.");
+      printGlobalOptions(log);
+      return;
+    case "append":
+      log("Usage:");
+      log("  mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...>");
+      log('                    [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>]');
+      log("                    [--agent <name>] [--skill <slug>] [--tool <id>]");
+      log("\nWhen to use:");
+      log("  Append explicit provenance events from an orchestrator or manual workflow.");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log("  mdkg event enable [--ws <alias>] [--no-update-gitignore]");
+      log("  mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options]");
       printGlobalOptions(log);
   }
 }
@@ -272,7 +355,7 @@ function printNextHelp(log: LogFn): void {
 function printCheckpointHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg checkpoint new <title> [--ws <alias>]");
-  log("        [--relates <id,id,...>] [--scope <id,id,...>]");
+  log('        [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]');
   printGlobalOptions(log);
 }
 
@@ -336,6 +419,12 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "skill":
       printSkillHelp(log, subcommand);
+      return;
+    case "task":
+      printTaskHelp(log, subcommand);
+      return;
+    case "event":
+      printEventHelp(log, subcommand);
       return;
     case "next":
       printNextHelp(log);
@@ -563,6 +652,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const links = requireFlagValue("--links", parsed.flags["--links"]);
       const withScripts = parseBooleanFlag("--with-scripts", parsed.flags["--with-scripts"]);
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
       runSkillNewCommand({
         root,
         slug,
@@ -573,6 +663,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         links,
         withScripts,
         force,
+        runId,
       });
       return 0;
     }
@@ -584,10 +675,12 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runSkillListCommand({
         root,
         tags,
         tagsMode,
+        json,
         noCache,
         noReindex,
       });
@@ -599,12 +692,14 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         throw new UsageError("skill show requires <slug>");
       }
       const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runSkillShowCommand({
         root,
         slug,
         metaOnly,
+        json,
         noCache,
         noReindex,
       });
@@ -617,6 +712,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const query = parsed.positionals.slice(2).join(" ");
       const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runSkillSearchCommand({
@@ -624,6 +720,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         query,
         tags,
         tagsMode,
+        json,
         noCache,
         noReindex,
       });
@@ -639,6 +736,137 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     }
     default:
       throw new UsageError("skill requires new/list/show/search/validate");
+  }
+}
+
+function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "start": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("task start requires <id-or-qid>");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      const note = requireFlagValue("--note", parsed.flags["--note"]);
+      runTaskStartCommand({ root, id, ws, runId, note });
+      return 0;
+    }
+    case "update": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("task update requires <id-or-qid>");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const status = requireFlagValue("--status", parsed.flags["--status"]);
+      const priority = parseNumberFlag("--priority", parsed.flags["--priority"]);
+      const addArtifacts = requireFlagValue("--add-artifacts", parsed.flags["--add-artifacts"]);
+      const addLinks = requireFlagValue("--add-links", parsed.flags["--add-links"]);
+      const addRefs = requireFlagValue("--add-refs", parsed.flags["--add-refs"]);
+      const addSkills = requireFlagValue("--add-skills", parsed.flags["--add-skills"]);
+      const addTags = requireFlagValue("--add-tags", parsed.flags["--add-tags"]);
+      const addBlockedBy = requireFlagValue("--add-blocked-by", parsed.flags["--add-blocked-by"]);
+      const clearBlockedBy = parseBooleanFlag("--clear-blocked-by", parsed.flags["--clear-blocked-by"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      const note = requireFlagValue("--note", parsed.flags["--note"]);
+      runTaskUpdateCommand({
+        root,
+        id,
+        ws,
+        status,
+        priority,
+        addArtifacts,
+        addLinks,
+        addRefs,
+        addSkills,
+        addTags,
+        addBlockedBy,
+        clearBlockedBy,
+        runId,
+        note,
+      });
+      return 0;
+    }
+    case "done": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("task done requires <id-or-qid>");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const addArtifacts = requireFlagValue("--add-artifacts", parsed.flags["--add-artifacts"]);
+      const addLinks = requireFlagValue("--add-links", parsed.flags["--add-links"]);
+      const addRefs = requireFlagValue("--add-refs", parsed.flags["--add-refs"]);
+      const checkpoint = requireFlagValue("--checkpoint", parsed.flags["--checkpoint"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      const note = requireFlagValue("--note", parsed.flags["--note"]);
+      runTaskDoneCommand({
+        root,
+        id,
+        ws,
+        addArtifacts,
+        addLinks,
+        addRefs,
+        checkpoint,
+        runId,
+        note,
+      });
+      return 0;
+    }
+    default:
+      throw new UsageError("task requires start/update/done");
+  }
+}
+
+function runEventSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "enable": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("event enable does not accept positional arguments");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const noUpdateGitignore = parseBooleanFlag(
+        "--no-update-gitignore",
+        parsed.flags["--no-update-gitignore"]
+      );
+      runEventEnableCommand({ root, ws, updateGitignore: !noUpdateGitignore });
+      return 0;
+    }
+    case "append": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("event append does not accept positional arguments");
+      }
+      const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+      const status = requireFlagValue("--status", parsed.flags["--status"]);
+      const refs = requireFlagValue("--refs", parsed.flags["--refs"]);
+      if (!kind || !status || !refs) {
+        throw new UsageError("event append requires --kind, --status, and --refs");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const artifacts = requireFlagValue("--artifacts", parsed.flags["--artifacts"]);
+      const notes = requireFlagValue("--notes", parsed.flags["--notes"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      const agent = requireFlagValue("--agent", parsed.flags["--agent"]);
+      const skill = requireFlagValue("--skill", parsed.flags["--skill"]);
+      const tool = requireFlagValue("--tool", parsed.flags["--tool"]);
+      runEventAppendCommand({
+        root,
+        ws,
+        kind,
+        status,
+        refs,
+        artifacts,
+        notes,
+        runId,
+        agent,
+        skill,
+        tool,
+      });
+      return 0;
+    }
+    default:
+      throw new UsageError("event requires enable/append");
   }
 }
 
@@ -717,6 +945,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const template = requireFlagValue("--template", parsed.flags["--template"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
       runNewCommand({
         root,
         type,
@@ -743,6 +972,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         template,
         noCache,
         noReindex,
+        runId,
       });
       return 0;
     }
@@ -750,6 +980,10 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runWorkspaceSubcommand(parsed, root);
     case "skill":
       return runSkillSubcommand(parsed, root);
+    case "task":
+      return runTaskSubcommand(parsed, root);
+    case "event":
+      return runEventSubcommand(parsed, root);
     case "show": {
       const id = parsed.positionals[1];
       if (!id || parsed.positionals.length > 2) {
@@ -757,6 +991,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runShowCommand({
@@ -764,6 +999,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         id,
         ws,
         metaOnly,
+        json,
         noCache,
         noReindex,
       });
@@ -781,6 +1017,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const blocked = parseBooleanFlag("--blocked", parsed.flags["--blocked"]);
       const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runListCommand({
@@ -793,6 +1030,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         blocked,
         tags,
         tagsMode,
+        json,
         noCache,
         noReindex,
       });
@@ -808,6 +1046,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const status = requireFlagValue("--status", parsed.flags["--status"]);
       const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runSearchCommand({
@@ -818,6 +1057,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         status,
         tags,
         tagsMode,
+        json,
         noCache,
         noReindex,
       });
@@ -919,6 +1159,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const status = requireFlagValue("--status", parsed.flags["--status"]);
       const priority = parseNumberFlag("--priority", parsed.flags["--priority"]);
       const template = requireFlagValue("--template", parsed.flags["--template"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      const note = requireFlagValue("--note", parsed.flags["--note"]);
       runCheckpointNewCommand({
         root,
         title,
@@ -928,6 +1170,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         status,
         priority,
         template,
+        runId,
+        note,
       });
       return 0;
     }

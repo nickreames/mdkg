@@ -29,11 +29,11 @@ Define a minimal handoff checklist for mdkg.dev docs/IA/SEO artifacts after CLI 
 
 # Files Affected
 
-- .mdkg/design/prd-2-mdkg-dev-website-and-documentation-plan-v0-4.md
+- .mdkg/design/prd-2-mdkg-dev-external-docs-handoff-note.md
 
 # Implementation Notes
 
-- Non-blocking follow-up for post-v0.4.0 cut.
+- Non-blocking follow-up for post-0.0.4 cut.
 
 # Test Plan
 

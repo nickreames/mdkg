@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Define v0.4 hybrid latest-checkpoint selection behavior for pack planning: pack-time authoritative resolver with optional index hint.
+Define 0.0.4 hybrid latest-checkpoint selection behavior for pack planning: pack-time authoritative resolver with optional index hint.
 
 # Acceptance Criteria
 

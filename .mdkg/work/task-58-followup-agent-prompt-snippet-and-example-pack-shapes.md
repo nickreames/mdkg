@@ -35,7 +35,7 @@ Add prompt snippet and representative task/edd/skills pack examples for docs con
 
 # Implementation Notes
 
-- Non-blocking follow-up for post-v0.4.0 cut.
+- Non-blocking follow-up for post-0.0.4 cut.
 
 # Test Plan
 
