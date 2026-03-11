@@ -102,14 +102,20 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - updates `.gitignore` and `.npmignore` by default
   - `--no-update-ignores` disables default ignore writes
   - explicit flags (`--update-gitignore`, `--update-npmignore`, `--update-dockerignore`) force writes even with global opt-out
-  - `--llm` is the canonical documented path for creating `AGENTS.md` and `CLAUDE.md`
+  - `--llm` is the canonical documented path for creating `AGENTS.md`, `CLAUDE.md`, `llms.txt`, and `AGENT_START.md`
   - `--agents` / `--claude` remain compatibility flags, but are not part of the primary onboarding story
-  - `--omni` adds strict-node bootstrap docs and scaffolding:
+  - `--agent` adds strict-node bootstrap docs and scaffolding:
     - `.mdkg/core/SOUL.md` (`id: rule-soul`)
     - `.mdkg/core/HUMAN.md` (`id: rule-human`)
     - `.mdkg/skills/registry.md`
     - `.mdkg/work/events/events.jsonl`
+    - `.agents/skills/`
+    - `.claude/skills/`
     - deterministic `core.md` pin insertion (`rule-soul`, then `rule-human`)
+  - mirrored skills are append-focused outputs:
+    - `.mdkg/skills/` remains canonical
+    - unrelated existing folders under `.agents/skills/` and `.claude/skills/` are preserved
+    - same-slug collisions fail by default unless explicitly forced through `mdkg skill sync --force`
 
 ### Guide
 - `mdkg guide`
@@ -165,6 +171,7 @@ Common flags:
   - `mdkg skill show <slug> [--meta] [--json]`
   - `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
   - `mdkg skill validate [<slug>]`
+  - `mdkg skill sync [--force]`
 
 ### Task lifecycle mutation
 - `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]`
@@ -231,6 +238,7 @@ Common flags:
   - strict frontmatter + graph integrity checks (exit code 2 on failure)
   - validates optional node->skill references
   - validates optional `.mdkg/work/events/events.jsonl` record shape when file exists
+  - warns when `.agents/skills/` or `.claude/skills/` drift from canonical `.mdkg/skills/`
 - `mdkg format`
   - normalize frontmatter formatting and casing
   - avoid destructive body edits

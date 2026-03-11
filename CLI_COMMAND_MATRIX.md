@@ -1,9 +1,8 @@
 # CLI Command Matrix
 
-as_of: 2026-03-08
-current_version_truth: 0.0.4
-publish_status: cut prepared, not yet published
-source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`
+as_of: 2026-03-11
+package_version_in_source: 0.0.5
+source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
 ## Purpose
@@ -68,7 +67,7 @@ Usage:
 Flags:
 - `--force`
 - `--llm`
-- `--omni`
+- `--agent`
 - `--no-update-ignores`
 - `--update-gitignore`
 - `--update-npmignore`
@@ -77,6 +76,10 @@ Flags:
 Compatibility flags still supported but not part of the primary story:
 - `--agents`
 - `--claude`
+
+Notes:
+- `--agent` is independent from `--llm`
+- `--llm --agent` is the full AI-agent bootstrap path
 
 ### `mdkg new`
 
@@ -268,6 +271,19 @@ Flags:
 - `--with-scripts`
 - `--force`
 
+#### `mdkg skill sync`
+
+Usage:
+- `mdkg skill sync [--force]`
+
+Flags:
+- `--force`
+
+Notes:
+- syncs canonical `.mdkg/skills/` into `.agents/skills/` and `.claude/skills/`
+- preserves unrelated existing folders
+- same-slug collisions fail unless forced
+
 Scaffold behavior:
 - writes `.mdkg/skills/<slug>/SKILL.md`
 - creates `references/`
@@ -348,6 +364,7 @@ Usage:
 Behavior:
 - supports `task`, `bug`, and `test` only
 - sets `status: progress`
+- if events are disabled for the workspace, prints a short `stderr` reminder about `mdkg event enable`
 
 #### `mdkg task update`
 
@@ -373,6 +390,12 @@ Behavior:
 - supports `task`, `bug`, and `test` only
 - sets `status: done`
 - `--checkpoint` creates a related checkpoint
+- if events are disabled for the workspace, prints a short `stderr` reminder about `mdkg event enable`
+
+Closeout guidance:
+- use `--checkpoint` for milestone compression and parent closeout summaries
+- do not create a checkpoint for every routine task completion
+- feat/epic status edits remain manual in `0.0.5`; use checkpoints as the durable narrative layer
 
 ### `mdkg next`
 
@@ -417,6 +440,7 @@ Behavior:
 - creates `.mdkg/work/events/events.jsonl` if missing
 - updates `.gitignore` by default
 - automatic command-level events only happen after enablement
+- task start/done reminders point here when provenance is disabled
 
 #### `mdkg event append`
 

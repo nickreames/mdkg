@@ -16,12 +16,12 @@ updated: 2026-03-05
 
 # Context
 
-mdkg now has enough 0.0.4 capability to support agent memory and workflow guidance, but the product surface still reads as implementation-first rather than user-loop-first. The OSS CLI also needs to stay generic even while supporting Omni-oriented scaffolding.
+mdkg now has enough 0.0.4 capability to support agent memory and workflow guidance, but the product surface still reads as implementation-first rather than user-loop-first. The OSS CLI also needs to stay generic even while supporting AI-agent-oriented scaffolding.
 
 # Decision
 
 - `mdkg init --llm` remains supported and documented as the generic OSS bootstrap path.
-- `mdkg init --omni` remains supported as an optional agent-ready scaffold, but does not replace the generic OSS story.
+- `mdkg init --agent` remains supported as an optional agent-ready scaffold, but does not replace the generic OSS story.
 - `mdkg pack <id>` is the primary context handoff verb for both human-builder and agent workflows.
 - Product simplification should reduce the visible/default command story before removing compatible commands.
 - Skills dogfooding is required:
@@ -33,7 +33,7 @@ mdkg now has enough 0.0.4 capability to support agent memory and workflow guidan
 
 # Alternatives considered
 
-- Make `--omni` the only documented init path (rejected): too product-specific for the OSS CLI.
+- Make the deeper agent-ready bootstrap the only documented init path (rejected): it would displace the generic `--llm` OSS onboarding story.
 - Keep treating `pack` as just one advanced command among many (rejected): it is the core interoperability surface.
 - Support `SKILLS.md` and `SKILL.md` equally as canonical forms (rejected): encourages drift from the skills standard.
 - Fold reliability/coverage into existing simplification work only (rejected): weakens explicit ownership and sequencing.

@@ -1,58 +1,21 @@
-# Repository Guidelines
+# AGENTS
 
-## Project Structure & Module Organization
+Read `AGENT_START.md` first.
 
-This repository contains the mdkg CLI source plus mdkg configuration data.
+Codex/OpenAI conventions for this repo:
+- use `.agents/skills/` when mirrored skills are present
+- use `mdkg skill ...` as the canonical skill command family
+- use `CLI_COMMAND_MATRIX.md` as the single command reference
 
-- `src/` holds the TypeScript CLI implementation.
-- `src/templates/` holds template loading and rendering helpers.
-- `tests/` holds unit tests compiled to `dist/tests/`.
-- `scripts/` contains build helpers.
-- `assets/` contains init-time templates and built-in skill scaffolds.
-- `.mdkg/` stores mdkg configuration and docs (`.mdkg/config.json`).
+Repo-specific quickstart:
+- build: `npm run build`
+- test: `npm run test`
+- command parity: `npm run cli:check`
+- graph validation: `node dist/cli.js validate`
 
-## mdkg Quickstart
-
-- `mdkg init --llm`
-- `mdkg index`
-- `mdkg new task "..." --status todo --priority 1`
-- `mdkg list --status todo`
-- `mdkg pack <id> --verbose`
-- `mdkg task start <id>`
-- `mdkg task done <id>`
-- `mdkg skill new <slug> "<name>" --description "..."`
-- `mdkg validate`
-- `CLI_COMMAND_MATRIX.md` is the canonical command and flag reference
-
-When adding code, keep related files grouped (e.g., `src/`, `tests/`, `assets/`) and update this guide to reflect the new layout.
-
-## Build, Test, and Development Commands
-
-Build and test commands:
-
-- `npm run build`
-- `npm run test`
-- `npm run cli:snapshot`
-- `npm run cli:check`
-
-## Coding Style & Naming Conventions
-
-There is no project-specific style guide yet. Follow these defaults until a codebase is added:
-
-- JSON files should use 2-space indentation, matching `.mdkg/config.json`.
-- Use clear, lowercase filenames with hyphens for new Markdown or config files (example: `project-notes.md`).
-- Keep files ASCII unless a feature requires Unicode.
-
-## Testing Guidelines
-
-We use Node's built-in test runner. Tests live under `tests/` and use `*.test.ts` naming.
-
-- `npm run test`
-
-## Commit & Pull Request Guidelines
-
-No commit or PR conventions are defined yet. If you add them, document the format and expectations here (issue links, change summary, screenshots for UI changes, etc.).
-
-## Configuration Notes
-
-The mdkg configuration expects a `.mdkg/` folder at the repository root. If you relocate or rename this directory, update `.mdkg/config.json` accordingly.
+Normal mdkg loop:
+1. identify work with `mdkg search`, `mdkg show`, or `mdkg next`
+2. build context with `mdkg pack <id>`
+3. mutate durable work state with `mdkg task ...`
+4. use `mdkg event enable` if JSONL provenance is needed
+5. validate before closing work

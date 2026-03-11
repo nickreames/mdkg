@@ -1,13 +1,15 @@
 import fs from "fs";
 import path from "path";
+import { loadConfig } from "../core/config";
 import { NotFoundError } from "../util/errors";
 import { formatDate } from "../util/date";
 import { registryTemplate } from "./skill_support";
+import { scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 
 export type InitCommandOptions = {
   root: string;
   force?: boolean;
-  omni?: boolean;
+  agent?: boolean;
   updateGitignore?: boolean;
   updateNpmignore?: boolean;
   updateDockerignore?: boolean;
@@ -108,7 +110,7 @@ function soulTemplate(created: string): string {
     `id: ${SOUL_PIN_ID}`,
     "type: rule",
     "title: agent soul and execution contract",
-    "tags: [omni, agent, constraints]",
+    "tags: [agent, constraints]",
     "owners: []",
     "links: []",
     "artifacts: []",
@@ -193,7 +195,7 @@ function seededInitEvent(nowIso: string): string {
     status: "ok",
     refs: ["edd-4"],
     artifacts: [],
-    notes: "init omni scaffold target initialized",
+    notes: "init agent scaffold target initialized",
     redacted: true,
   };
   return `${JSON.stringify(event)}\n`;
@@ -255,6 +257,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
   const createAgents = Boolean(options.createAgents || options.createLlm);
   const createClaude = Boolean(options.createClaude || options.createLlm);
+  const createStartupDocs = Boolean(options.createLlm || options.agent);
   const force = Boolean(options.force);
 
   const seedConfig = path.join(seedRoot, "config.json");
@@ -262,6 +265,9 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedTemplates = path.join(seedRoot, "templates");
   const seedAgents = path.join(seedRoot, "AGENTS.md");
   const seedClaude = path.join(seedRoot, "CLAUDE.md");
+  const seedLlms = path.join(seedRoot, "llms.txt");
+  const seedAgentStart = path.join(seedRoot, "AGENT_START.md");
+  const seedCliMatrix = path.join(seedRoot, "CLI_COMMAND_MATRIX.md");
   const seedReadme = path.join(seedRoot, "README.md");
 
   if (!fs.existsSync(seedConfig) || !fs.existsSync(seedCore) || !fs.existsSync(seedTemplates)) {
@@ -274,6 +280,15 @@ export function runInitCommand(options: InitCommandOptions): void {
   }
   if (createClaude && !fs.existsSync(seedClaude)) {
     throw new NotFoundError(`init assets missing CLAUDE.md at ${seedRoot}`);
+  }
+  if (createStartupDocs && !fs.existsSync(seedLlms)) {
+    throw new NotFoundError(`init assets missing llms.txt at ${seedRoot}`);
+  }
+  if (createStartupDocs && !fs.existsSync(seedAgentStart)) {
+    throw new NotFoundError(`init assets missing AGENT_START.md at ${seedRoot}`);
+  }
+  if (createStartupDocs && !fs.existsSync(seedCliMatrix)) {
+    throw new NotFoundError(`init assets missing CLI_COMMAND_MATRIX.md at ${seedRoot}`);
   }
   if (!fs.existsSync(seedReadme)) {
     throw new NotFoundError(`init assets missing README.md at ${seedRoot}`);
@@ -295,8 +310,13 @@ export function runInitCommand(options: InitCommandOptions): void {
   if (createClaude) {
     copySeedFile(seedClaude, path.join(root, "CLAUDE.md"), force, stats);
   }
+  if (createStartupDocs) {
+    copySeedFile(seedLlms, path.join(root, "llms.txt"), force, stats);
+    copySeedFile(seedAgentStart, path.join(root, "AGENT_START.md"), force, stats);
+    copySeedFile(seedCliMatrix, path.join(root, "CLI_COMMAND_MATRIX.md"), force, stats);
+  }
 
-  if (options.omni) {
+  if (options.agent) {
     const today = formatDate(new Date());
     const soulPath = path.join(mdkgDir, "core", "SOUL.md");
     const humanPath = path.join(mdkgDir, "core", "HUMAN.md");
@@ -315,6 +335,10 @@ export function runInitCommand(options: InitCommandOptions): void {
 
     const coreListPath = path.join(mdkgDir, "core", "core.md");
     ensureCorePins(coreListPath, [SOUL_PIN_ID, HUMAN_PIN_ID]);
+
+    scaffoldMirrorRoots(root);
+    const config = loadConfig(root);
+    syncSkillMirrors({ root, config, createRoots: true, force });
   }
 
   const noUpdateIgnores = Boolean(options.noUpdateIgnores);
@@ -339,6 +363,9 @@ export function runInitCommand(options: InitCommandOptions): void {
     `mdkg init complete: ${stats.created} file(s) created, ${stats.skipped} skipped`
   );
   console.log("next:");
+  if (createStartupDocs) {
+    console.log("  read AGENT_START.md");
+  }
   console.log('  mdkg new task "..." --status todo --priority 1');
   console.log('  mdkg search "..."');
   console.log("  mdkg show <id>");

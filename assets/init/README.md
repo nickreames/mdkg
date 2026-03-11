@@ -14,12 +14,14 @@ This repository is initialized for mdkg.
 ## First Commands
 
 ```bash
-mdkg index
-mdkg new task "..." --status todo --priority 1
-mdkg list --status todo
-mdkg pack <id> --verbose
+mdkg init --llm --agent
+mdkg search "..."
+mdkg show <id>
+mdkg pack <id>
 mdkg validate
 ```
+
+Read `AGENT_START.md` first when this repo includes it.
 
 ## Pack Profiles
 

@@ -23,7 +23,7 @@ We are integrating forward-looking 0.0.4 architecture and product docs into the 
 - Source code is the truth source for current behavior.
 - 0.0.4 content is documented as planned target state with explicit gap notes.
 - `SOUL.md` and `HUMAN.md` are planned as strict mdkg nodes under `.mdkg/core/`.
-- `init --omni` is planned, with `--llm` retained for compatibility.
+- `init --agent` is the planned generic agent bootstrap surface, with `--llm` retained for compatibility.
 - Event log format is locked to `.mdkg/work/events/*.jsonl` for 0.0.4 planning.
 - Event docs avoid markdown files under `.mdkg/work/events/` to prevent strict-node parse failures.
 - Skills are planned as deterministic local metadata indexed by mdkg and optionally included in packs.
@@ -46,7 +46,7 @@ We are integrating forward-looking 0.0.4 architecture and product docs into the 
 - 0.0.4 decision log updates are amended in place under this decision record.
 - Doc 4 decision-log content is captured in `dec-9`.
 - Doc 5 website/docs planning content is captured in `prd-2`.
-- Doc 6 init omni specification content is captured in `edd-4`.
+- Doc 6 init agent specification content is captured in `edd-4`.
 - Doc 7 skills integration guide content is captured in `edd-5`.
 - Doc 8 event logs + checkpoints guide content is captured in `edd-6`.
 - Doc 9 Agent Skills standards alignment snapshot is captured in `edd-7`.

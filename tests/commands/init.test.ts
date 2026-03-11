@@ -44,9 +44,12 @@ function setupSeed(seed: string, includeAgentDocs = true): void {
   writeFile(path.join(seed, "core", "core.md"), "# core\n\nrule-1\nrule-2\n");
   writeFile(path.join(seed, "templates", "default", "task.md"), "---\nid: {{id}}\n---\n");
   writeFile(path.join(seed, "README.md"), "# mdkg\n");
+  writeFile(path.join(seed, "AGENT_START.md"), "# AGENT_START\n");
+  writeFile(path.join(seed, "CLI_COMMAND_MATRIX.md"), "# CLI Command Matrix\n");
+  writeFile(path.join(seed, "llms.txt"), "Read `AGENT_START.md` first.\n");
   if (includeAgentDocs) {
-    writeFile(path.join(seed, "AGENTS.md"), "# Agents\n");
-    writeFile(path.join(seed, "CLAUDE.md"), "# Claude\n");
+    writeFile(path.join(seed, "AGENTS.md"), "# Agents\nRead `AGENT_START.md` first.\n");
+    writeFile(path.join(seed, "CLAUDE.md"), "# Claude\nRead `AGENT_START.md` first.\n");
   }
 }
 
@@ -75,7 +78,7 @@ test("runInitCommand copies seed assets, creates directories, and updates ignore
   assert.match(npmignore, /\.mdkg\/pack\//);
 });
 
-test("runInitCommand creates agent docs when requested", () => {
+test("runInitCommand creates startup docs when requested", () => {
   const root = makeTempDir("mdkg-init-agent-");
   const seed = makeTempDir("mdkg-init-agent-seed-");
   setupSeed(seed);
@@ -84,6 +87,9 @@ test("runInitCommand creates agent docs when requested", () => {
 
   assert.ok(fs.existsSync(path.join(root, "AGENTS.md")));
   assert.ok(fs.existsSync(path.join(root, "CLAUDE.md")));
+  assert.ok(fs.existsSync(path.join(root, "llms.txt")));
+  assert.ok(fs.existsSync(path.join(root, "AGENT_START.md")));
+  assert.ok(fs.existsSync(path.join(root, "CLI_COMMAND_MATRIX.md")));
 });
 
 test("runInitCommand supports global ignore opt-out", () => {
@@ -115,23 +121,31 @@ test("runInitCommand explicit ignore flags override global opt-out", () => {
   assert.ok(fs.existsSync(path.join(root, ".dockerignore")));
 });
 
-test("runInitCommand omni mode scaffolds soul/human/skills/events and core pin order", () => {
-  const root = makeTempDir("mdkg-init-omni-");
-  const seed = makeTempDir("mdkg-init-omni-seed-");
+test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and core pin order", () => {
+  const root = makeTempDir("mdkg-init-agent-bootstrap-");
+  const seed = makeTempDir("mdkg-init-agent-bootstrap-seed-");
   setupSeed(seed, false);
 
-  runInitCommand({ root, seedRoot: seed, omni: true });
+  runInitCommand({ root, seedRoot: seed, agent: true });
 
   const soulPath = path.join(root, ".mdkg", "core", "SOUL.md");
   const humanPath = path.join(root, ".mdkg", "core", "HUMAN.md");
   const registryPath = path.join(root, ".mdkg", "skills", "registry.md");
   const eventsPath = path.join(root, ".mdkg", "work", "events", "events.jsonl");
   const coreListPath = path.join(root, ".mdkg", "core", "core.md");
+  const agentsSkillsPath = path.join(root, ".agents", "skills");
+  const claudeSkillsPath = path.join(root, ".claude", "skills");
+  const agentStartPath = path.join(root, "AGENT_START.md");
+  const cliMatrixPath = path.join(root, "CLI_COMMAND_MATRIX.md");
 
   assert.ok(fs.existsSync(soulPath));
   assert.ok(fs.existsSync(humanPath));
   assert.ok(fs.existsSync(registryPath));
   assert.ok(fs.existsSync(eventsPath));
+  assert.ok(fs.existsSync(agentsSkillsPath));
+  assert.ok(fs.existsSync(claudeSkillsPath));
+  assert.ok(fs.existsSync(agentStartPath));
+  assert.ok(fs.existsSync(cliMatrixPath));
 
   const soul = fs.readFileSync(soulPath, "utf8");
   assert.match(soul, /id: rule-soul/);
@@ -151,6 +165,7 @@ test("runInitCommand omni mode scaffolds soul/human/skills/events and core pin o
   assert.ok(Array.isArray(parsed.refs));
   assert.ok(Array.isArray(parsed.artifacts));
   assert.equal(typeof parsed.notes, "string");
+  assert.match(String(parsed.notes), /init agent scaffold target initialized/);
 
   const coreLines = fs
     .readFileSync(coreListPath, "utf8")

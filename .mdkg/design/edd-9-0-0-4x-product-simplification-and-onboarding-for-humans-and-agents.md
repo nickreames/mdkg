@@ -29,7 +29,7 @@ Core stance:
 
 | Capability | Desired product shape | Current source behavior | Source anchor |
 | --- | --- | --- | --- |
-| Generic bootstrap story | `init --llm` remains generic/default docs path | implemented in README, `llms.txt`, and prompt snippet; `init --omni` stays optional | `README.md`, `llms.txt`, `AGENT_PROMPT_SNIPPET.md` |
+| Generic bootstrap story | `init --llm` remains generic/default docs path | implemented in README, `llms.txt`, and prompt snippet; `init --agent` stays optional | `README.md`, `llms.txt`, `AGENT_PROMPT_SNIPPET.md` |
 | Command visibility | short primary workflow, advanced tools de-emphasized | implemented via primary vs advanced help grouping and simplified command help surfaces | `src/cli.ts` |
 | Pack-first mental model | `pack <id>` centered in docs and agent guidance | implemented in root onboarding docs and help examples | `README.md`, `PACK_EXAMPLES.md`, `src/cli.ts`, `src/commands/pack.ts` |
 | Skills standard compatibility | canonical `SKILL.md`, tolerant compatibility for `SKILLS.md` later | implemented: canonical `SKILL.md`, tolerant `SKILLS.md`, conflict invalid | `src/graph/skills_indexer.ts`, `src/commands/validate.ts` |
@@ -104,7 +104,7 @@ Primary workflow to teach first:
 6. `mdkg validate`
 
 Optional agent-ready branch:
-- `mdkg init --omni` when the repo needs SOUL/HUMAN/skills/events scaffolding
+- `mdkg init --agent` when the repo needs SOUL/HUMAN/skills/events scaffolding
 
 Command visibility policy:
 - primary commands should be taught in README, `llms.txt`, prompt snippets, and future docs landing pages
@@ -169,7 +169,7 @@ The README should not try to fully replace `llms.txt` or the CLI reference.
 # Failure modes
 
 - Flat command help makes the tool feel larger than it needs to be.
-- Teaching `--omni` as the only story makes the OSS tool feel product-specific.
+- Teaching a product-specific bootstrap story makes the OSS tool feel narrower than it is.
 - Treating `pack` as optional leads agents back to ad-hoc file reading.
 - Skills that are not dogfooded remain theoretical and weaken trust.
 - Forcing strict `SKILL.md` only with poor feedback creates unnecessary onboarding friction.

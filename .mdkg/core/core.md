@@ -3,6 +3,8 @@
 # One node ID per line. Lines starting with # are comments.
 # This list is included by `mdkg pack --verbose`.
 
+rule-soul
+rule-human
 rule-1
 rule-2
 rule-3

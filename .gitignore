@@ -4,3 +4,4 @@ node_modules/
 *.tgz
 
 .mdkg/pack/
+.mdkg/work/events/*.jsonl

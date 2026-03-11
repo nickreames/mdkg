@@ -35,7 +35,7 @@ Plan the 0.0.4 change where `mdkg init` updates ignore entries by default, with 
 - README.md
 - .mdkg/core/rule-4-repo-safety-and-ignores.md
 - .mdkg/design/prd-1-mdkg-product-spec-v0-4-deterministic-agent-memory-and-skills.md
-- .mdkg/design/edd-4-mdkg-init-omni-specification-v0-4.md
+- .mdkg/design/edd-4-mdkg-init-agent-specification-0-0-5.md
 
 # Implementation Notes
 

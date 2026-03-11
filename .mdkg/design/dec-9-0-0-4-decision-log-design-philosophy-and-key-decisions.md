@@ -101,11 +101,11 @@ Consequences:
 - enabled: deterministic skill routing and auto-inclusion paths for packs
 - constrained: schema/validation surface area increases
 
-## DEC-08 `init --omni` bootstraps agent-ready repos
+## DEC-08 `init --agent` bootstraps agent-ready repos
 
 Context: agents and humans need a shared minimal starting contract.
 
-Decision: 0.0.4 plans `init --omni` scaffolding with SOUL/HUMAN, skills scaffold, and core pin updates.
+Decision: 0.0.4 plans `init --agent` scaffolding with SOUL/HUMAN, skills scaffold, and core pin updates.
 
 Consequences:
 - enabled: consistent onboarding and reduced setup ambiguity

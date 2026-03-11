@@ -15,7 +15,7 @@ updated: 2026-03-04
 
 # Overview
 
-This document defines a minimal structured interoperability contract for external orchestrators (Omni-class and compatible systems) in 0.0.4 documentation.
+This document defines a minimal structured interoperability contract for external orchestrators (AI-agent-class and compatible systems) in 0.0.4 documentation.
 
 Scope:
 - run envelope shape
@@ -48,7 +48,7 @@ Contract model is intentionally minimal to support portability while preserving 
 {
   "run_id": "run_20260304_001",
   "workspace": "root",
-  "orchestrator": "omni",
+  "orchestrator": "ai-agent",
   "stage": "execute",
   "status": "running",
   "started_at": "2026-03-04T18:00:00Z"
@@ -62,7 +62,7 @@ Contract model is intentionally minimal to support portability while preserving 
   "ts": "2026-03-04T18:12:03Z",
   "run_id": "run_20260304_001",
   "workspace": "root",
-  "agent": "omni",
+  "agent": "ai-agent",
   "kind": "SUBTASK_COMPLETED",
   "status": "ok",
   "refs": ["task-17"],

@@ -20,6 +20,7 @@ import {
 } from "./skill_support";
 import { toSkillDetailJson, toSkillSummaryJson, writeCount, writeJson } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
+import { shouldMaintainSkillMirrors, syncSkillMirrors } from "./skill_mirror";
 
 export type SkillNewCommandOptions = {
   root: string;
@@ -66,6 +67,11 @@ export type SkillSearchCommandOptions = {
 export type SkillValidateCommandOptions = {
   root: string;
   slug?: string;
+};
+
+export type SkillSyncCommandOptions = {
+  root: string;
+  force?: boolean;
 };
 
 function parseCsvList(raw?: string): string[] {
@@ -244,6 +250,9 @@ export function runSkillNewCommand(options: SkillNewCommandOptions): void {
 
   ensureSkillsRegistry(root, config);
   refreshSkillsRegistry(root, config);
+  if (shouldMaintainSkillMirrors(root)) {
+    syncSkillMirrors({ root, config, createRoots: true, force });
+  }
 
   if (config.index.auto_reindex) {
     const skillsIndex = buildSkillsIndex(root, config);
@@ -457,4 +466,17 @@ export function runSkillValidateCommand(options: SkillValidateCommandOptions): v
         .filter((value) => value.isDirectory()).length
     : 0;
   console.log(`skill validation ok: ${checkedCount} skill${checkedCount === 1 ? "" : "s"} checked`);
+}
+
+export function runSkillSyncCommand(options: SkillSyncCommandOptions): void {
+  const config = loadConfig(options.root);
+  const result = syncSkillMirrors({
+    root: options.root,
+    config,
+    createRoots: true,
+    force: options.force,
+  });
+  console.log(
+    `skill mirror sync ok: ${result.synced} synced, ${result.pruned} pruned across ${result.targets} target${result.targets === 1 ? "" : "s"}`
+  );
 }

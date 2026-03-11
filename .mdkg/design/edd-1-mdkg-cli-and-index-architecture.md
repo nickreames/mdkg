@@ -19,7 +19,7 @@ updated: 2026-02-27
 
 This document captures the **v1 / v0.0.3 baseline architecture**.
 
-For 0.0.4 target architecture planning (skills index, omni scaffolding, skill-aware packs/validation), see `edd-2`.
+For 0.0.4/0.0.5 target architecture planning (skills index, agent scaffolding, skill-aware packs/validation), see `edd-2`.
 
 ## Overview
 

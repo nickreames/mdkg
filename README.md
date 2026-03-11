@@ -13,8 +13,7 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no sqlite, daemon, hosted index, or vector DB
 
-Current package version in this repo: `0.0.4`
-Publish status: cut prepared, not yet published
+Current package version in source: `0.0.5`
 
 ## The product shape
 
@@ -55,10 +54,10 @@ This is the generic OSS bootstrap path. It creates `.mdkg/` and updates `.gitign
 Optional agent-ready scaffold:
 
 ```bash
-mdkg init --omni
+mdkg init --agent
 ```
 
-This adds strict-node `SOUL.md` / `HUMAN.md`, a skills scaffold, seeded events JSONL, and core pin updates.
+This adds strict-node `SOUL.md` / `HUMAN.md`, a skills scaffold, seeded events JSONL, core pin updates, and mirrored skill folders under `.agents/skills/` and `.claude/skills/`.
 
 Create a task:
 
@@ -114,6 +113,7 @@ mdkg skill validate release-readiness
 ## LLM-readable onboarding artifacts
 
 The root docs below are the canonical fast-start set for humans and agents:
+- [`AGENT_START.md`](/Users/nicholasreames/Git/mdkg/AGENT_START.md)
 - [`llms.txt`](/Users/nicholasreames/Git/mdkg/llms.txt)
 - [`AGENT_PROMPT_SNIPPET.md`](/Users/nicholasreames/Git/mdkg/AGENT_PROMPT_SNIPPET.md)
 - [`PACK_EXAMPLES.md`](/Users/nicholasreames/Git/mdkg/PACK_EXAMPLES.md)
@@ -129,6 +129,8 @@ mdkg lives under a hidden root directory:
 - `.mdkg/work/` tasks, bugs, tests, epics, checkpoints
 - `.mdkg/templates/` templates used by `mdkg new`
 - `.mdkg/skills/` Agent Skills packages
+- `.agents/skills/` Codex/OpenAI-facing mirrored skills
+- `.claude/skills/` Claude-facing mirrored skills
 - `.mdkg/index/` generated cache files
 
 ## Primary commands
@@ -165,12 +167,15 @@ Canonical layout:
 
 Current source behavior:
 - skills are indexed into `.mdkg/index/skills.json`
+- `.mdkg/skills/` remains the canonical skill source of truth
+- `.agents/skills/` and `.claude/skills/` are materialized mirrors for agent products
 - skills have a focused command family:
   - `mdkg skill new <slug> "<name>" --description "..."`
   - `mdkg skill list`
   - `mdkg skill search "<query>"`
   - `mdkg skill show <slug>`
   - `mdkg skill validate [<slug>]`
+  - `mdkg skill sync`
 - machine-readable skill discovery is available through:
   - `mdkg skill list --json`
   - `mdkg skill search "<query>" --json`
@@ -182,6 +187,8 @@ Current source behavior:
 - `SKILLS.md` is tolerated on read for compatibility, but validation warns and canonical docs still use `SKILL.md`
 - if both `SKILL.md` and `SKILLS.md` exist in one skill folder, validation fails
 - `mdkg skill new` scaffolds `SKILL.md`, `references/`, `assets/`, and `scripts/` only when requested with `--with-scripts`
+- `mdkg skill sync` refreshes the product-specific mirrors from canonical `.mdkg/skills/`
+- mirrored skill folders are append-focused outputs; preserve unrelated existing folders and fail on same-slug collisions unless explicitly forced
 
 This repo now dogfoods three internal skills:
 - `author-mdkg-skill`
@@ -191,17 +198,20 @@ This repo now dogfoods three internal skills:
 
 ## Current direction
 
-Current `0.0.4` release polish already includes:
-- `init --omni`
+This release includes:
+- `init --agent`
 - default ignore updates with `--no-update-ignores`
 - skills indexing and search/show/list support
 - optional `skills: [...]` on work items
 - pack-time skill inclusion
 - latest-checkpoint resolver + index hint
 - events JSONL validation
+- product-specific skill mirrors for Codex/OpenAI and Claude
+- shared `AGENT_START.md` startup guidance
 
-Current `0.0.4` polish direction is:
+Current direction:
 - keep the OSS story generic around `init --llm`
+- use `init --agent` for deeper AI-agent bootstrap
 - keep `pack <id>` at the center of the human/agent loop
 - make task mutation and event logging guided instead of purely manual
 - dogfood real skills inside the repo
