@@ -47,6 +47,20 @@ const VALUE_FLAGS = new Set([
   "--authors",
   "--links",
   "--tags-mode",
+  "--run-id",
+  "--note",
+  "--add-artifacts",
+  "--add-links",
+  "--add-refs",
+  "--add-skills",
+  "--add-tags",
+  "--add-blocked-by",
+  "--checkpoint",
+  "--kind",
+  "--notes",
+  "--agent",
+  "--skill",
+  "--tool",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -75,6 +89,8 @@ const BOOLEAN_FLAGS = new Set([
   "--json",
   "--list-profiles",
   "--with-scripts",
+  "--clear-blocked-by",
+  "--no-update-gitignore",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {

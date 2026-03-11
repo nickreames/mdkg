@@ -18,8 +18,11 @@ This repository contains the mdkg CLI source plus mdkg configuration data.
 - `mdkg new task "..." --status todo --priority 1`
 - `mdkg list --status todo`
 - `mdkg pack <id> --verbose`
+- `mdkg task start <id>`
+- `mdkg task done <id>`
 - `mdkg skill new <slug> "<name>" --description "..."`
 - `mdkg validate`
+- `CLI_COMMAND_MATRIX.md` is the canonical command and flag reference
 
 When adding code, keep related files grouped (e.g., `src/`, `tests/`, `assets/`) and update this guide to reflect the new layout.
 
@@ -29,6 +32,8 @@ Build and test commands:
 
 - `npm run build`
 - `npm run test`
+- `npm run cli:snapshot`
+- `npm run cli:check`
 
 ## Coding Style & Naming Conventions
 

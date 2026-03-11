@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Define v0.4 documentation-level redaction policy model for event logging and provenance artifacts.
+Define 0.0.4 documentation-level redaction policy model for event logging and provenance artifacts.
 
 # Acceptance Criteria
 

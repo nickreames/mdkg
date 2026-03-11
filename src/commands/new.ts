@@ -9,6 +9,7 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
+import { appendAutomaticEvent } from "./event_support";
 
 export type NewCommandOptions = {
   root: string;
@@ -36,6 +37,7 @@ export type NewCommandOptions = {
   template?: string;
   noCache?: boolean;
   noReindex?: boolean;
+  runId?: string;
   now?: Date;
 };
 
@@ -343,6 +345,17 @@ export function runNewCommand(options: NewCommandOptions): void {
     const outputPath = path.resolve(options.root, config.index.global_index_path);
     writeIndex(outputPath, updatedIndex);
   }
+
+  appendAutomaticEvent({
+    root: options.root,
+    ws,
+    kind: "NODE_CREATED",
+    status: "ok",
+    refs: [id],
+    notes: `node created via mdkg new`,
+    runId: options.runId,
+    now: options.now,
+  });
 
   console.log(`node created: ${ws}:${id} (${path.relative(options.root, filePath)})`);
 }

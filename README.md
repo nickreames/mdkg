@@ -13,6 +13,9 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no sqlite, daemon, hosted index, or vector DB
 
+Current package version in this repo: `0.0.4`
+Publish status: cut prepared, not yet published
+
 ## The product shape
 
 mdkg has one core job: make repo knowledge cheap to retrieve and safe to reuse.
@@ -84,6 +87,21 @@ Validate before handoff or commit:
 mdkg validate
 ```
 
+Mutate a task-like node without manual markdown editing:
+
+```bash
+mdkg task start task-1 --run-id run_local_1
+mdkg task update task-1 --add-artifacts tests://unit.txt --add-tags release
+mdkg task done task-1 --checkpoint "release readiness milestone"
+```
+
+Enable and append baseline event memory:
+
+```bash
+mdkg event enable
+mdkg event append --kind RUN_COMPLETED --status ok --refs task-1 --notes "manual closeout"
+```
+
 Create a first-class skill:
 
 ```bash
@@ -123,9 +141,11 @@ These are the commands new users and agents should learn first:
 - `mdkg next`
 - `mdkg pack`
 - `mdkg skill`
+- `mdkg task`
 - `mdkg validate`
 
 Advanced / maintenance commands still exist, but they are not the first-run story:
+- `mdkg event`
 - `mdkg checkpoint`
 - `mdkg index`
 - `mdkg guide`
@@ -151,10 +171,10 @@ Current source behavior:
   - `mdkg skill search "<query>"`
   - `mdkg skill show <slug>`
   - `mdkg skill validate [<slug>]`
-- generic compatibility still works:
-  - `mdkg list --type skill`
-  - `mdkg search "<query>" --type skill`
-  - `mdkg show skill:<slug>`
+- machine-readable skill discovery is available through:
+  - `mdkg skill list --json`
+  - `mdkg skill search "<query>" --json`
+  - `mdkg skill show <slug> --json`
 - work items may reference `skills: [slug,...]`
 - packs may include skills with `--skills` and `--skills-depth`
 - mdkg indexes and discovers skills but does not execute skill scripts
@@ -164,13 +184,14 @@ Current source behavior:
 - `mdkg skill new` scaffolds `SKILL.md`, `references/`, `assets/`, and `scripts/` only when requested with `--with-scripts`
 
 This repo now dogfoods three internal skills:
+- `author-mdkg-skill`
 - `select-work-and-ground-context`
 - `build-pack-and-execute-task`
 - `verify-close-and-checkpoint`
 
 ## Current direction
 
-Current v0.4 source already includes:
+Current `0.0.4` release polish already includes:
 - `init --omni`
 - default ignore updates with `--no-update-ignores`
 - skills indexing and search/show/list support
@@ -179,12 +200,13 @@ Current v0.4 source already includes:
 - latest-checkpoint resolver + index hint
 - events JSONL validation
 
-Current post-v0.4x direction is:
+Current `0.0.4` polish direction is:
 - keep the OSS story generic around `init --llm`
 - keep `pack <id>` at the center of the human/agent loop
-- simplify visible CLI help before removing deeper compatibility paths
+- make task mutation and event logging guided instead of purely manual
 - dogfood real skills inside the repo
 - make skill authoring first-class through `mdkg skill`
+- make `CLI_COMMAND_MATRIX.md` the single source of truth for the live CLI surface
 - run manual behavior audits before enforcing stronger coverage thresholds
 
 Design and decision records live in the internal graph under `.mdkg/design/`.
@@ -212,8 +234,10 @@ Suggested local loop:
 1. create or select a work item
 2. inspect truth with `search`, `show`, or `next`
 3. build context with `pack <id>`
-4. implement and test
-5. run `mdkg validate`
+4. mutate task state with `mdkg task ...` when durable state changes
+5. enable event logging if provenance should be captured in JSONL
+6. implement and test
+7. run `mdkg validate`
 
 ## License
 

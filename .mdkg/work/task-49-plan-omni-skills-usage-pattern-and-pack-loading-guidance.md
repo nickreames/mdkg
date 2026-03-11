@@ -38,7 +38,7 @@ Define recommended orchestrator usage of skills in Omni-style or other external-
 # Implementation Notes
 
 - Keep command naming deferred; examples are illustrative only.
-- Preserve pack ordering and checkpoint-default inclusion assumptions from existing v0.4 decisions.
+- Preserve pack ordering and checkpoint-default inclusion assumptions from existing 0.0.4 decisions.
 
 # Test Plan
 

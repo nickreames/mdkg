@@ -7,6 +7,7 @@ import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
+import { appendAutomaticEvent } from "./event_support";
 
 export type CheckpointNewCommandOptions = {
   root: string;
@@ -17,6 +18,9 @@ export type CheckpointNewCommandOptions = {
   status?: string;
   priority?: number;
   template?: string;
+  runId?: string;
+  note?: string;
+  now?: Date;
 };
 
 function parseCsvList(raw?: string): string[] {
@@ -137,7 +141,8 @@ export function runCheckpointNewCommand(options: CheckpointNewCommandOptions): v
   }
   const scope = parseCsvList(options.scope).map((value) => normalizeId(value, "--scope"));
 
-  const today = formatDate(new Date());
+  const now = options.now ?? new Date();
+  const today = formatDate(now);
   const template = loadTemplate(options.root, config, "checkpoint", options.template);
   const content = renderTemplate(template, {
     id,
@@ -152,6 +157,17 @@ export function runCheckpointNewCommand(options: CheckpointNewCommandOptions): v
 
   fs.mkdirSync(workDir, { recursive: true });
   fs.writeFileSync(filePath, content, "utf8");
+
+  appendAutomaticEvent({
+    root: options.root,
+    ws,
+    kind: "CHECKPOINT_CREATED",
+    status: "ok",
+    refs: [id],
+    notes: options.note ?? `checkpoint created via mdkg checkpoint new`,
+    runId: options.runId,
+    now,
+  });
 
   console.log(
     `checkpoint created: ${ws}:${id} (${path.relative(options.root, filePath)})`

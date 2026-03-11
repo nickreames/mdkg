@@ -56,3 +56,59 @@ test("parseArgs supports profile alias and compatibility booleans", () => {
   assert.equal(showParsed.flags["--meta"], true);
   assert.equal(showParsed.flags["--body"], true);
 });
+
+test("parseArgs supports task and event mutation flags", () => {
+  const taskParsed = parseArgs([
+    "task",
+    "update",
+    "task-1",
+    "--status",
+    "progress",
+    "--priority",
+    "2",
+    "--add-artifacts",
+    "tests://ok",
+    "--add-skills",
+    "review-pr",
+    "--clear-blocked-by",
+    "--run-id",
+    "run_local_1",
+    "--note",
+    "moved to progress",
+  ]);
+  assert.equal(taskParsed.flags["--status"], "progress");
+  assert.equal(taskParsed.flags["--priority"], "2");
+  assert.equal(taskParsed.flags["--add-artifacts"], "tests://ok");
+  assert.equal(taskParsed.flags["--add-skills"], "review-pr");
+  assert.equal(taskParsed.flags["--clear-blocked-by"], true);
+  assert.equal(taskParsed.flags["--run-id"], "run_local_1");
+  assert.equal(taskParsed.flags["--note"], "moved to progress");
+
+  const eventParsed = parseArgs([
+    "event",
+    "append",
+    "--kind",
+    "TASK_UPDATED",
+    "--status",
+    "ok",
+    "--refs",
+    "task-1",
+    "--notes",
+    "done",
+    "--agent",
+    "omni",
+    "--skill",
+    "verify-close-and-checkpoint",
+    "--tool",
+    "codex",
+    "--no-update-gitignore",
+  ]);
+  assert.equal(eventParsed.flags["--kind"], "TASK_UPDATED");
+  assert.equal(eventParsed.flags["--status"], "ok");
+  assert.equal(eventParsed.flags["--refs"], "task-1");
+  assert.equal(eventParsed.flags["--notes"], "done");
+  assert.equal(eventParsed.flags["--agent"], "omni");
+  assert.equal(eventParsed.flags["--skill"], "verify-close-and-checkpoint");
+  assert.equal(eventParsed.flags["--tool"], "codex");
+  assert.equal(eventParsed.flags["--no-update-gitignore"], true);
+});

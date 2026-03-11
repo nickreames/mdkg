@@ -15,7 +15,7 @@ updated: 2026-03-06
 
 # Overview
 
-This document defines the canonical v0.4 memory model for mdkg as a deterministic, file-based substrate for agents and humans.
+This document defines the canonical 0.0.4 memory model for mdkg as a deterministic, file-based substrate for agents and humans.
 
 Core thesis:
 - semantic memory stores stable truth
@@ -31,16 +31,16 @@ Scope:
 - safe memory update guidance for orchestrators
 
 Non-goals:
-- no vector DB requirement in v0.4
+- no vector DB requirement in 0.0.4
 - no daemon/background state
 - no hosted mdkg services
 - no mdkg-managed agent runtime
 
-Current architecture baseline is v0.0.3. Existing source now supports most v0.4 skills and episodic capabilities, with runtime commit-policy enforcement still pending.
+Current architecture baseline is v0.0.3. Existing source now supports most 0.0.4 skills and episodic capabilities, with runtime commit-policy enforcement still pending.
 
 ## Current source gaps (2026-03-05)
 
-| Capability | v0.4 memory-model target | Current source behavior | Source anchor |
+| Capability | 0.0.4 memory-model target | Current source behavior | Source anchor |
 | --- | --- | --- | --- |
 | Procedural memory index | skills metadata index at `.mdkg/index/skills.json` | implemented via separate deterministic skills index artifact | `src/commands/index.ts`, `src/graph/skills_indexer.ts`, `src/graph/skills_index_cache.ts` |
 | Skill-aware retrieval | skills discoverable via list/show/search capabilities | implemented via existing command family (`list/show/search`) | `src/commands/list.ts`, `src/commands/show.ts`, `src/commands/search.ts`, `src/cli.ts` |
@@ -54,7 +54,7 @@ Current architecture baseline is v0.0.3. Existing source now supports most v0.4 
 
 # Architecture
 
-mdkg v0.4 memory model is a deterministic three-layer stack:
+mdkg 0.0.4 memory model is a deterministic three-layer stack:
 
 1. Semantic memory (stable truth)
 - markdown nodes in `.mdkg/core`, `.mdkg/design`, `.mdkg/work`
@@ -78,10 +78,10 @@ Retrieval policy:
 - include the most recent checkpoint by default when available
 
 Update policy:
-- single-writer and commit-cadence rules are guidance for external orchestrators (human or platform runtime), not mdkg runtime enforcement in v0.4.
+- single-writer and commit-cadence rules are guidance for external orchestrators (human or platform runtime), not mdkg runtime enforcement in 0.0.4.
 
 External orchestrator mutation contract:
-- mdkg v0.4 does not lock repos or enforce single-writer ownership at runtime.
+- mdkg 0.0.4 does not lock repos or enforce single-writer ownership at runtime.
 - Exactly one orchestrator should own durable mdkg writes for a run or milestone boundary.
 - Subagents and tools may return patches, tests, or event records, but the orchestrator should batch task status updates, artifact refs, optional checkpoint creation, and commit/push into one durable write boundary.
 - Recommended durable boundaries are end-of-run, checkpoint-worthy milestone, or optional timer flush for long-running agents.
@@ -180,12 +180,12 @@ Checkpoint nodes remain semantic records of episodic compression. They should su
 
 # APIs / interfaces
 
-Capability contracts for v0.4:
+Capability contracts for 0.0.4:
 - semantic retrieval remains deterministic (`pack`, `show`, `search`)
 - procedural memory discovery and inclusion are policy-driven
 - episodic memory uses JSONL events + checkpoint summaries
 - update safety guidance is documented for external orchestrators
-- skills capabilities remain on existing command families; no new top-level skills namespace in v0.4 docs
+- skills capabilities remain on existing command families; no new top-level skills namespace in 0.0.4 docs
 
 Normative policy points:
 - exact new skills/events command names stay deferred
@@ -194,7 +194,7 @@ Normative policy points:
 
 Non-normative examples:
 - `mdkg pack task-17 --verbose`
-- `mdkg list --type skill --tags stage:plan --tags-mode all`
+- `mdkg skill list --tags stage:plan --tags-mode all --json`
 - `mdkg pack task-17 --skills auto --skills-depth full`
 - `mdkg show skill:review-pr`
 
@@ -262,6 +262,6 @@ Implementation status in current source:
 7. hybrid latest-checkpoint resolver + optional hint metadata path implemented
 
 Doc tracking:
-- this document is `edd-3` for v0.4 memory model
+- this document is `edd-3` for 0.0.4 memory model
 - decision philosophy rollup is captured in `dec-9`
 - skills integration usage guidance is captured in `edd-5`

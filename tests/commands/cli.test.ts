@@ -51,7 +51,7 @@ test("cli usage errors show command-specific help", () => {
   assert.match(result.stdout, /Usage:\n  mdkg pack <id-or-qid> \[options\]/);
 });
 
-test("cli help list/search/show include skills and tag filters", () => {
+test("cli help list/search/show/skill include json and namespace-only skill guidance", () => {
   const listHelp = spawnSync(process.execPath, [cliPath, "help", "list"], {
     encoding: "utf8",
     cwd: repoRoot,
@@ -59,6 +59,8 @@ test("cli help list/search/show include skills and tag filters", () => {
   assert.equal(listHelp.status, 0);
   assert.match(listHelp.stdout, /--tags <tag,tag,\.\.\.>/);
   assert.match(listHelp.stdout, /--tags-mode any\|all/);
+  assert.match(listHelp.stdout, /--json/);
+  assert.doesNotMatch(listHelp.stdout, /--type skill/);
 
   const searchHelp = spawnSync(process.execPath, [cliPath, "help", "search"], {
     encoding: "utf8",
@@ -67,16 +69,26 @@ test("cli help list/search/show include skills and tag filters", () => {
   assert.equal(searchHelp.status, 0);
   assert.match(searchHelp.stdout, /--tags <tag,tag,\.\.\.>/);
   assert.match(searchHelp.stdout, /--tags-mode any\|all/);
+  assert.match(searchHelp.stdout, /--json/);
 
   const showHelp = spawnSync(process.execPath, [cliPath, "help", "show"], {
     encoding: "utf8",
     cwd: repoRoot,
   });
   assert.equal(showHelp.status, 0);
-  assert.match(showHelp.stdout, /show skill:<slug>/);
+  assert.match(showHelp.stdout, /Use `mdkg skill show <slug>` for skills/);
   assert.match(showHelp.stdout, /--meta/);
+  assert.match(showHelp.stdout, /--json/);
   assert.doesNotMatch(showHelp.stdout, /--body/);
   assert.match(showHelp.stdout, /Shows full body content/);
+
+  const skillHelp = spawnSync(process.execPath, [cliPath, "help", "skill"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(skillHelp.status, 0);
+  assert.match(skillHelp.stdout, /mdkg skill search "<query>".*--json/s);
+  assert.match(skillHelp.stdout, /Skills are first-class under `mdkg skill \.\.\.`\./);
 
   const newHelp = spawnSync(process.execPath, [cliPath, "help", "new"], {
     encoding: "utf8",

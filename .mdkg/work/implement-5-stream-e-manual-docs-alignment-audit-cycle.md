@@ -20,12 +20,12 @@ updated: 2026-03-05
 
 # Overview
 
-Execute Stream E release-cut manual alignment audits across CLI help, README, and v0.4 design nodes.
+Execute Stream E release-cut manual alignment audits across CLI help, README, and 0.0.4 design nodes.
 
 # Acceptance Criteria
 
 - Manual parity checks are completed for `mdkg --help` and command help surfaces.
-- Planned-vs-implemented wording remains source-aligned across v0.4 docs.
+- Planned-vs-implemented wording remains source-aligned across 0.0.4 docs.
 - Audit evidence is captured in mdkg artifacts and linked test nodes.
 
 # Files Affected
@@ -36,7 +36,7 @@ Execute Stream E release-cut manual alignment audits across CLI help, README, an
 
 # Implementation Notes
 
-- Keep manual audits as the v0.4 governance mechanism.
+- Keep manual audits as the 0.0.4 governance mechanism.
 - Avoid scripted drift tooling in this release family.
 
 # Test Plan

@@ -40,7 +40,7 @@ Define schema and validation contracts for optional node `skills: [...]` referen
 
 # Implementation Notes
 
-- Keep v0.4 optional metadata extensibility compatible with strict frontmatter constraints.
+- Keep 0.0.4 optional metadata extensibility compatible with strict frontmatter constraints.
 - Prefer deterministic failure messaging for missing skill references.
 
 # Test Plan

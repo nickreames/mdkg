@@ -3,6 +3,8 @@
 This directory stores Agent Skills packages used by mdkg tooling and orchestrators.
 
 Use `mdkg skill new <slug> "<name>" --description "..."` to scaffold a new skill from the built-in Anthropic-aligned template.
+Use `CLI_COMMAND_MATRIX.md` as the canonical command and flag reference when updating skill procedures.
+Use `mdkg task ...` for routine task-like node mutation and `mdkg event ...` when a workflow needs explicit or automatic JSONL provenance.
 
 ## Conventions
 
@@ -14,6 +16,11 @@ Use `mdkg skill new <slug> "<name>" --description "..."` to scaffold a new skill
 ## Registered Skills
 
 <!-- mdkg:skill-registry:start -->
+- `author-mdkg-skill`
+  - name: `author-mdkg-skill`
+  - stage: `stage:plan`
+  - writer role: `writer:orchestrator`
+  - description: Create or update an mdkg skill when a repeatable repo workflow should be codified or an existing skill has drifted from the current command surface.
 - `build-pack-and-execute-task`
   - name: `build-pack-and-execute-task`
   - stage: `stage:execute`

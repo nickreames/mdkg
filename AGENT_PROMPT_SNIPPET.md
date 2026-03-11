@@ -10,7 +10,10 @@ Operating rules:
 - Treat mdkg rules, EDDs, DECs, PRDs, and work-item nodes as authoritative over chat memory.
 - Use mdkg show <id> for direct inspection and mdkg show <id> --meta when you only need the card and metadata.
 - Use mdkg search and mdkg next to discover current work.
-- Use mdkg list --type skill, mdkg search, and mdkg show skill:<slug> for skills discovery.
+- Use mdkg skill list, mdkg skill search, and mdkg skill show <slug> for skills discovery.
+- Use mdkg task start/update/done for routine task, bug, and test lifecycle mutations instead of hand-editing markdown.
+- Use mdkg event enable before expecting automatic JSONL provenance from mutating commands.
+- Use CLI_COMMAND_MATRIX.md when you need the canonical command and flag surface.
 - Run mdkg validate before marking work done.
 
 Recommended loop:
@@ -18,7 +21,8 @@ Recommended loop:
 2. Inspect truth with mdkg show / mdkg search / mdkg next.
 3. Build deterministic context with mdkg pack <id>.
 4. Execute only against the selected task and linked docs.
-5. Attach evidence and validate before closing the loop.
+5. Update task state with mdkg task commands when durable state changes.
+6. Attach evidence and validate before closing the loop.
 
 Pinned docs live in .mdkg/core/core.md.
 Skills live in .mdkg/skills/<slug>/SKILL.md.

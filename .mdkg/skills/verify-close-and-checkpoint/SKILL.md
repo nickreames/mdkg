@@ -28,11 +28,13 @@ Finish work with evidence, validation, and minimal memory drift.
 
 1. Run the relevant technical gates for the changed surface.
 2. Run `mdkg validate` before closing the task.
-3. Update task status, artifacts, and related refs together so the graph stays coherent.
-4. Batch durable mdkg writes at one boundary: task status, artifact refs, optional checkpoint, and commit.
-5. Mark tasks done only after evidence exists.
-6. Create a checkpoint only for milestone-level transitions, not every small step.
-7. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
+3. Use `mdkg task update <id> ...` for additive evidence and metadata changes instead of hand-editing routine task fields.
+4. Use `mdkg task done <id> --checkpoint "<title>"` when the task should close with milestone compression.
+5. Batch durable mdkg writes at one boundary: task status, artifact refs, optional checkpoint, and commit.
+6. Mark tasks done only after evidence exists.
+7. Create a checkpoint only for milestone-level transitions, not every small step.
+8. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
+9. If provenance should be captured automatically, ensure `mdkg event enable` has already been run for the workspace.
 
 ## Outputs
 

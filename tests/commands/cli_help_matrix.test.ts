@@ -19,14 +19,17 @@ test("cli help covers the remaining command help surfaces", () => {
     ["guide", /mdkg guide/],
     ["workspace", /mdkg workspace add <alias> <path>/],
     ["index", /mdkg index \[--tolerant\]/],
-    ["show", /mdkg show skill:<slug>/],
-    ["list", /--tags-mode any\|all/],
+    ["show", /mdkg show <id-or-qid> \[--ws <alias>\] \[--meta\] \[--json\]/],
+    ["list", /--tags-mode any\|all.*--json/s],
     ["search", /mdkg search "<query>"/],
     ["next", /mdkg next \[<id-or-qid>\]/],
     ["checkpoint", /mdkg checkpoint new <title>/],
     ["validate", /mdkg validate \[--out <path>\] \[--quiet\]/],
     ["format", /mdkg format/],
     ["doctor", /mdkg doctor \[--json\]/],
+    ["skill", /mdkg skill list \[--tags <tag,tag,\.\.\.>\] \[--tags-mode any\|all\] \[--json\]/],
+    ["task", /mdkg task start <id-or-qid>/],
+    ["event", /mdkg event enable \[--ws <alias>\] \[--no-update-gitignore\]/],
   ];
 
   for (const [command, pattern] of cases) {

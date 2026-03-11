@@ -20,15 +20,13 @@ updated: 2026-03-05
 
 # Overview
 
-Implement the Stream A runtime surface for skill discovery and filtering using existing mdkg command families.
+Implement the Stream A runtime surface for skill discovery and filtering, later superseded by the dedicated `mdkg skill ...` namespace before publish.
 
 # Acceptance Criteria
 
-- `mdkg list --type skill` returns deterministic skill discovery output.
-- `mdkg show skill:<slug>` resolves and renders a skill deterministically.
-- `mdkg search` includes skill metadata in results.
+- tag-filtered skill discovery returns deterministic output.
 - Tag filtering support is implemented with `--tags` and `--tags-mode any|all`.
-- No `mdkg skills ...` namespace is introduced.
+- This stream is historical implementation context; the public discovery surface is later narrowed by `dec-13`.
 
 # Files Affected
 

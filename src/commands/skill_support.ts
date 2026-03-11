@@ -59,6 +59,7 @@ export function registryTemplate(): string {
     "This directory stores Agent Skills packages used by mdkg tooling and orchestrators.",
     "",
     "Use `mdkg skill new <slug> \"<name>\" --description \"...\"` to scaffold a new skill from the built-in Anthropic-aligned template.",
+    "Use `CLI_COMMAND_MATRIX.md` as the canonical command and flag reference when updating skill procedures.",
     "",
     "## Conventions",
     "",

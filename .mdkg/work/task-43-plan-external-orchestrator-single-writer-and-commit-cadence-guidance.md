@@ -20,7 +20,7 @@ updated: 2026-03-06
 
 # Overview
 
-Define v0.4 guidance for external orchestrators to update mdkg memory safely using single-writer ownership and batched commits.
+Define 0.0.4 guidance for external orchestrators to update mdkg memory safely using single-writer ownership and batched commits.
 
 # Acceptance Criteria
 

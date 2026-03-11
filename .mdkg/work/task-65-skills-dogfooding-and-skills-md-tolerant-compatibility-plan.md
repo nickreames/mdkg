@@ -36,7 +36,7 @@ Plan the next-step skills polish work so mdkg uses real internal skills and tole
 
 # Implementation Notes
 
-- This is a post-v0.4 simplification/polish task, not a release blocker.
+- This is a post-0.0.4 simplification/polish task, not a release blocker.
 
 # Test Plan
 

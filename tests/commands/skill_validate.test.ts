@@ -44,11 +44,11 @@ test("skill validate supports all-skill and single-skill scope", () => {
 
   const allResult = captureOutput(() => runSkillValidateCommand({ root }));
   assert.equal(allResult.error, undefined);
-  assert.match(allResult.stdout, /skill validation ok/);
+  assert.match(allResult.stdout, /skill validation ok: 1 skill checked/);
 
   const singleResult = captureOutput(() => runSkillValidateCommand({ root, slug: "plan-run" }));
   assert.equal(singleResult.error, undefined);
-  assert.match(singleResult.stdout, /skill validation ok: plan-run/);
+  assert.match(singleResult.stdout, /skill validation ok: plan-run \(1 skill checked\)/);
 });
 
 test("skill validate warns for legacy compat files and fails deterministically on malformed skills", () => {

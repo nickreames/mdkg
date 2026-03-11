@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Define deterministic query contracts for tag-filtered skill discovery in v0.4 planning.
+Define deterministic query contracts for tag-filtered skill discovery in 0.0.4 planning.
 
 # Acceptance Criteria
 
@@ -43,7 +43,7 @@ Define deterministic query contracts for tag-filtered skill discovery in v0.4 pl
 # Implementation Notes
 
 - Keep command naming deterministic and compatible with existing command families.
-- Keep stage gating vocabulary policy-driven, not hardcoded allowlist in v0.4.
+- Keep stage gating vocabulary policy-driven, not hardcoded allowlist in 0.0.4.
 
 # Test Plan
 

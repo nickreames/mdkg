@@ -20,7 +20,7 @@ function setupRepo(): string {
     path.join(root, ".mdkg", "skills", "plan-run", "SKILL.md"),
     [
       "---",
-      'name: "plan run"',
+      'name: "plan-run"',
       'description: "plan the work when a plan-stage skill is needed"',
       "tags: [stage:plan, writer:read-only]",
       "---",
@@ -73,40 +73,50 @@ function captureOutput(fn: () => void): { stdout: string; stderr: string } {
   return { stdout: stdout.join("\n"), stderr: stderr.join("\n") };
 }
 
-test("skill aliases match generic list show and search behavior", () => {
+test("skill namespace commands work and generic skill access is removed", () => {
   const root = setupRepo();
 
   const skillList = captureOutput(() =>
     runSkillListCommand({ root, tags: ["stage:plan"], tagsMode: "all" })
-  ).stdout;
-  const genericList = captureOutput(() =>
-    runListCommand({ root, type: "skill", tags: ["stage:plan"], tagsMode: "all" })
-  ).stdout;
-  assert.equal(skillList, genericList);
+  );
+  assert.match(skillList.stdout, /root:skill:plan-run/);
+  assert.match(skillList.stderr, /count: 1/);
 
-  const skillShow = captureOutput(() => runSkillShowCommand({ root, slug: "plan-run" })).stdout;
-  const genericShow = captureOutput(() => runShowCommand({ root, id: "skill:plan-run" })).stdout;
-  assert.equal(skillShow, genericShow);
+  const skillShow = captureOutput(() => runSkillShowCommand({ root, slug: "plan-run" }));
+  assert.match(skillShow.stdout, /name: "plan-run"/);
 
   const skillSearch = captureOutput(() =>
     runSkillSearchCommand({ root, query: "plan-stage", tags: ["stage:plan"], tagsMode: "all" })
-  ).stdout;
-  const genericSearch = captureOutput(() =>
-    runSearchCommand({ root, query: "plan-stage", type: "skill", tags: ["stage:plan"], tagsMode: "all" })
-  ).stdout;
-  assert.equal(skillSearch, genericSearch);
+  );
+  assert.match(skillSearch.stdout, /root:skill:plan-run/);
+  assert.match(skillSearch.stderr, /count: 1/);
+
+  assert.throws(
+    () => runListCommand({ root, type: "skill" }),
+    /--type skill is no longer supported here; use `mdkg skill list`/
+  );
+  assert.throws(
+    () => runSearchCommand({ root, query: "plan-stage", type: "skill" }),
+    /--type skill is no longer supported here; use `mdkg skill search`/
+  );
+  assert.throws(
+    () => runShowCommand({ root, id: "skill:plan-run" }),
+    /generic skill show is no longer supported; use `mdkg skill show plan-run`/
+  );
 });
 
-test("cli help teaches the skill namespace", () => {
+test("cli help teaches skill namespace only", () => {
   const root = setupRepo();
   const stdout: string[] = [];
   const stderr: string[] = [];
-  const code = runCli(["help", "skill", "new"], {
+  const code = runCli(["help", "skill"], {
     cwd: () => root,
     log: (...args: unknown[]) => stdout.push(args.map(String).join(" ")),
     error: (...args: unknown[]) => stderr.push(args.map(String).join(" ")),
   });
   assert.equal(code, 0);
-  assert.match(stdout.join("\n"), /mdkg skill new <slug> "<name>" --description "<description>"/);
+  assert.match(stdout.join("\n"), /mdkg skill show <slug> \[--meta\] \[--json\]/);
+  assert.match(stdout.join("\n"), /Skills are first-class under `mdkg skill \.\.\.`\./);
+  assert.doesNotMatch(stdout.join("\n"), /show skill:<slug>/);
   assert.equal(stderr.join("\n"), "");
 });

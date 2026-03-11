@@ -1,12 +1,11 @@
 import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
-import { loadSkillsIndex } from "../graph/skills_index_cache";
 import { IndexNode } from "../graph/indexer";
-import { SkillIndexEntry } from "../graph/skills_indexer";
 import { filterNodes } from "../util/filter";
 import { NotFoundError, UsageError } from "../util/errors";
 import { sortNodesByQid } from "../util/sort";
 import { formatNodeCard } from "./node_card";
+import { toNodeSummaryJson, writeCount, writeJson } from "./query_output";
 
 export type SearchCommandOptions = {
   root: string;
@@ -16,6 +15,7 @@ export type SearchCommandOptions = {
   status?: string;
   tags?: string[];
   tagsMode?: "any" | "all";
+  json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
 };
@@ -44,35 +44,6 @@ function buildSearchText(node: IndexNode): string {
   return tokens.join(" ").toLowerCase();
 }
 
-function formatSkillCard(skill: SkillIndexEntry): string {
-  return [skill.qid, "skill", "-/-", skill.name, skill.path].join(" | ");
-}
-
-function buildSkillSearchText(skill: SkillIndexEntry): string {
-  const ochatrTokens = Object.entries(skill.ochatr).flatMap(([key, value]) => {
-    if (Array.isArray(value)) {
-      return [key, ...value];
-    }
-    if (typeof value === "boolean") {
-      return [key, value ? "true" : "false"];
-    }
-    return [key, value];
-  });
-  const tokens = [
-    skill.slug,
-    skill.id,
-    skill.qid,
-    skill.name,
-    skill.description,
-    skill.path,
-    ...skill.tags,
-    ...skill.authors,
-    ...skill.links,
-    ...ochatrTokens,
-  ];
-  return tokens.join(" ").toLowerCase();
-}
-
 function matchesQuery(node: IndexNode, terms: string[]): boolean {
   const text = buildSearchText(node);
   for (const term of terms) {
@@ -81,34 +52,6 @@ function matchesQuery(node: IndexNode, terms: string[]): boolean {
     }
   }
   return true;
-}
-
-function matchesSkillQuery(skill: SkillIndexEntry, terms: string[]): boolean {
-  const text = buildSkillSearchText(skill);
-  for (const term of terms) {
-    if (!text.includes(term)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-function filterSkillsByTags(
-  skills: SkillIndexEntry[],
-  tags?: string[],
-  tagsMode: "any" | "all" = "any"
-): SkillIndexEntry[] {
-  const normalizedTags = tags?.map((value) => value.toLowerCase()).filter(Boolean) ?? [];
-  if (normalizedTags.length === 0) {
-    return skills;
-  }
-  return skills.filter((skill) => {
-    const skillTags = new Set(skill.tags.map((value) => value.toLowerCase()));
-    if (tagsMode === "all") {
-      return normalizedTags.every((value) => skillTags.has(value));
-    }
-    return normalizedTags.some((value) => skillTags.has(value));
-  });
 }
 
 export function runSearchCommand(options: SearchCommandOptions): void {
@@ -123,11 +66,8 @@ export function runSearchCommand(options: SearchCommandOptions): void {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
   const normalizedType = options.type?.toLowerCase();
-  if (normalizedType === "skill" && options.status) {
-    throw new UsageError("--status is not supported with --type skill");
-  }
-  if (normalizedType === "skill" && ws && ws !== "root") {
-    throw new UsageError("skills are only available in workspace root");
+  if (normalizedType === "skill") {
+    throw new UsageError("--type skill is no longer supported here; use `mdkg skill search`");
   }
 
   const { index, rebuilt, stale } = loadIndex({
@@ -142,48 +82,30 @@ export function runSearchCommand(options: SearchCommandOptions): void {
   }
 
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-  const nodeResults =
-    normalizedType === "skill"
-      ? []
-      : filterNodes(Object.values(index.nodes), {
-          ws,
-          type: normalizedType,
-          status: options.status,
-          tags: options.tags,
-          tagsMode: options.tagsMode,
-        }).filter((node) => matchesQuery(node, terms));
+  const nodeResults = filterNodes(Object.values(index.nodes), {
+    ws,
+    type: normalizedType,
+    status: options.status,
+    tags: options.tags,
+    tagsMode: options.tagsMode,
+  }).filter((node) => matchesQuery(node, terms));
 
-  let skillResults: SkillIndexEntry[] = [];
-  const includeSkills = normalizedType === "skill" || normalizedType === undefined;
-  if (includeSkills && (!ws || ws === "root")) {
-    const skillsLoad = loadSkillsIndex({
-      root: options.root,
-      config,
-      useCache: !options.noCache,
-      allowReindex: !options.noReindex,
+  const sorted = sortNodesByQid(nodeResults);
+  if (options.json) {
+    writeJson({
+      command: "search",
+      kind: "node",
+      count: sorted.length,
+      items: sorted.map(toNodeSummaryJson),
     });
-    if (skillsLoad.stale && !skillsLoad.rebuilt && !options.noCache) {
-      console.error("warning: skills index is stale; run mdkg index to refresh");
-    }
-    skillResults = filterSkillsByTags(
-      Object.values(skillsLoad.index.skills),
-      options.tags,
-      options.tagsMode ?? "any"
-    ).filter((skill) => matchesSkillQuery(skill, terms));
+    return;
   }
 
-  const lines = [
-    ...sortNodesByQid(nodeResults).map((node) => ({
-      qid: node.qid,
-      line: formatNodeCard(node),
-    })),
-    ...skillResults.map((skill) => ({
-      qid: skill.qid,
-      line: formatSkillCard(skill),
-    })),
-  ].sort((a, b) => a.qid.localeCompare(b.qid));
-
-  for (const entry of lines) {
-    console.log(entry.line);
+  writeCount(
+    sorted.length,
+    sorted.length === 0 ? `no nodes matched query "${query}"` : undefined
+  );
+  for (const node of sorted) {
+    console.log(formatNodeCard(node));
   }
 }

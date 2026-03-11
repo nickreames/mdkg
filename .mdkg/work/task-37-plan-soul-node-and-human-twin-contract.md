@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Define v0.4 documentation contracts for `.mdkg/core/SOUL.md` and `.mdkg/core/HUMAN.md` as strict nodes.
+Define 0.0.4 documentation contracts for `.mdkg/core/SOUL.md` and `.mdkg/core/HUMAN.md` as strict nodes.
 
 # Acceptance Criteria
 

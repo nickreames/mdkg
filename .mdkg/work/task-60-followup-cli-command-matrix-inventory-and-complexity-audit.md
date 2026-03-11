@@ -36,7 +36,7 @@ Inventory all command flags and identify simplification opportunities with deter
 
 # Implementation Notes
 
-- Follow-up work; not a v0.4.0 release blocker.
+- Follow-up work; not a v0.0.4 release blocker.
 
 # Test Plan
 

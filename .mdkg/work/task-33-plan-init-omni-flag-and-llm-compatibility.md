@@ -20,7 +20,7 @@ updated: 2026-03-05
 
 # Overview
 
-Define the planned v0.4 contract for `mdkg init --omni` while preserving `--llm` compatibility and source-truth documentation.
+Define the planned 0.0.4 contract for `mdkg init --omni` while preserving `--llm` compatibility and source-truth documentation.
 
 # Acceptance Criteria
 
