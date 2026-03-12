@@ -42,7 +42,8 @@ Non-goals:
 | Core agent scaffold outputs | SOUL/HUMAN core nodes, skills scaffold, events path | implemented with create-if-missing semantics and force-aware overwrite behavior | `src/commands/init.ts` |
 | Skill mirrors | `.agents/skills/` and `.claude/skills/` materialized from canonical skills | implemented with append-focused sync and validate-time drift warnings | `src/commands/skill_mirror.ts`, `src/commands/skill.ts`, `src/commands/validate.ts` |
 | Core pin update logic | ensure SOUL/HUMAN IDs in `.mdkg/core/core.md` without duplicates | implemented as deterministic ID-only insertion with stable remaining order | `src/commands/init.ts`, `src/pack/verbose_core.ts` |
-| Events ignore guidance | include `.mdkg/work/events/*.jsonl` in gitignore updates | implemented in default init ignore updates | `src/commands/init.ts` |
+| Seeded default skills | seed three canonical mdkg usage skills into `.mdkg/skills/` on `init --agent` | implemented via init asset copy + registry refresh + mirror sync | `src/commands/init.ts`, `dist/init/skills/default`, `src/commands/skill_support.ts` |
+| Events default guidance | create committed-by-default `events.jsonl` and leave `.gitignore` unchanged | implemented in current init + event enable behavior | `src/commands/init.ts`, `src/commands/event.ts`, `src/commands/event_support.ts` |
 
 # Architecture
 
@@ -149,9 +150,11 @@ Implemented mirror capability contract:
 - `mdkg skill sync [--force]`
 
 Safety/ignore contract:
-- default init behavior updates `.gitignore` with `.mdkg/index/`, `.mdkg/pack/`, and `.mdkg/work/events/*.jsonl`
+- default init behavior updates `.gitignore` with `.mdkg/index/` and `.mdkg/pack/`
 - `--no-update-ignores` disables default ignore updates
 - explicit update flags force writes even with global opt-out
+- `events.jsonl` is created and committed by default for `--agent` repos
+- `mdkg event enable` recreates the file if missing and does not edit ignore files
 
 # Failure modes
 
@@ -170,7 +173,7 @@ Safety/ignore contract:
 
 # Security / privacy
 
-- keep event logs redacted by default and typically gitignored
+- keep event logs redacted by default and committed unless a repo chooses to ignore them manually
 - keep `.mdkg/index/` and `.mdkg/pack/` ignored
 - avoid secrets in SOUL/HUMAN/skills/startup docs
 - preserve package publishing boundaries to prevent accidental `.mdkg` shipment

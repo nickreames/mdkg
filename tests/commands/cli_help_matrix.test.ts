@@ -29,7 +29,7 @@ test("cli help covers the remaining command help surfaces", () => {
     ["doctor", /mdkg doctor \[--json\]/],
     ["skill", /mdkg skill list \[--tags <tag,tag,\.\.\.>\] \[--tags-mode any\|all\] \[--json\]/],
     ["task", /mdkg task start <id-or-qid>/],
-    ["event", /mdkg event enable \[--ws <alias>\] \[--no-update-gitignore\]/],
+    ["event", /mdkg event enable \[--ws <alias>\]/],
   ];
 
   for (const [command, pattern] of cases) {

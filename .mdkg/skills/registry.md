@@ -6,7 +6,8 @@ Use `mdkg skill new <slug> "<name>" --description "..."` to scaffold a new skill
 Use `mdkg skill sync` to refresh `.agents/skills/` and `.claude/skills/` from canonical `.mdkg/skills/` when AI-agent bootstrap is enabled.
 Use `CLI_COMMAND_MATRIX.md` as the canonical command and flag reference when updating skill procedures.
 Use `AGENT_START.md` as the canonical first-read startup doc for agents.
-Use `mdkg task ...` for routine task-like node mutation and `mdkg event ...` when a workflow needs explicit or automatic JSONL provenance.
+Use `mdkg task ...` for structured task-like node fields and `mdkg event ...` when a workflow needs explicit or restored JSONL provenance.
+Keep narrative body edits, nuanced summaries, and manual parent closeout updates in markdown.
 
 ## Conventions
 

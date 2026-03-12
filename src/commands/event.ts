@@ -4,7 +4,6 @@ import { UsageError } from "../util/errors";
 export type EventEnableCommandOptions = {
   root: string;
   ws?: string;
-  updateGitignore?: boolean;
 };
 
 export type EventAppendCommandOptions = {
@@ -24,8 +23,7 @@ export type EventAppendCommandOptions = {
 export function runEventEnableCommand(options: EventEnableCommandOptions): void {
   const result = ensureEventsEnabled(options);
   const createdLabel = result.created ? "created" : "already present";
-  const ignoreLabel = result.gitignoreUpdated ? "updated .gitignore" : "left .gitignore unchanged";
-  console.log(`event logging enabled: ${result.ws} (${createdLabel}; ${ignoreLabel})`);
+  console.log(`event logging enabled: ${result.ws} (${createdLabel})`);
 }
 
 function normalizeEventStatus(value: string): EventStatus {

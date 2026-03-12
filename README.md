@@ -13,7 +13,7 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no sqlite, daemon, hosted index, or vector DB
 
-Current package version in source: `0.0.5`
+Current package version in source: `0.0.6`
 
 ## The product shape
 
@@ -49,7 +49,7 @@ Initialize mdkg in a repo:
 mdkg init --llm
 ```
 
-This is the generic OSS bootstrap path. It creates `.mdkg/` and updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out.
+This is the generic OSS bootstrap path. It creates `.mdkg/` and updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out of those ignore-file updates.
 
 Optional agent-ready scaffold:
 
@@ -57,7 +57,7 @@ Optional agent-ready scaffold:
 mdkg init --agent
 ```
 
-This adds strict-node `SOUL.md` / `HUMAN.md`, a skills scaffold, seeded events JSONL, core pin updates, and mirrored skill folders under `.agents/skills/` and `.claude/skills/`.
+This adds strict-node `SOUL.md` / `HUMAN.md`, seeds the three default mdkg usage skills, creates `events.jsonl`, updates the skill registry, adds core pin updates, and creates mirrored skill folders under `.agents/skills/` and `.claude/skills/`.
 
 Create a task:
 
@@ -86,7 +86,7 @@ Validate before handoff or commit:
 mdkg validate
 ```
 
-Mutate a task-like node without manual markdown editing:
+Update structured task state and evidence while keeping body and narrative edits in markdown:
 
 ```bash
 mdkg task start task-1 --run-id run_local_1
@@ -94,7 +94,7 @@ mdkg task update task-1 --add-artifacts tests://unit.txt --add-tags release
 mdkg task done task-1 --checkpoint "release readiness milestone"
 ```
 
-Enable and append baseline event memory:
+Ensure and append baseline event memory:
 
 ```bash
 mdkg event enable
@@ -200,7 +200,7 @@ This repo now dogfoods three internal skills:
 
 This release includes:
 - `init --agent`
-- default ignore updates with `--no-update-ignores`
+- default ignore updates with `--no-update-ignores` for `.mdkg/index/` and `.mdkg/pack/`
 - skills indexing and search/show/list support
 - optional `skills: [...]` on work items
 - pack-time skill inclusion
@@ -213,7 +213,8 @@ Current direction:
 - keep the OSS story generic around `init --llm`
 - use `init --agent` for deeper AI-agent bootstrap
 - keep `pack <id>` at the center of the human/agent loop
-- make task mutation and event logging guided instead of purely manual
+- use `mdkg task ...` for structured state changes and markdown edits for narrative/body content
+- make event logging guided instead of purely manual
 - dogfood real skills inside the repo
 - make skill authoring first-class through `mdkg skill`
 - make `CLI_COMMAND_MATRIX.md` the single source of truth for the live CLI surface
@@ -228,7 +229,7 @@ mdkg is not a secret store.
 Use these defaults:
 - keep `.mdkg/index/` gitignored
 - keep `.mdkg/pack/` gitignored
-- keep `.mdkg/work/events/*.jsonl` gitignored unless you deliberately opt in
+- event logs are committed by default; ignore or delete them manually if a repo wants local-only provenance
 - do not ship `.mdkg/` into production builds or published packages
 - if an external orchestrator is writing mdkg state, keep one durable writer per run and batch commits at end-of-run or checkpoint boundaries
 - do not commit on every tool call
@@ -245,7 +246,7 @@ Suggested local loop:
 2. inspect truth with `search`, `show`, or `next`
 3. build context with `pack <id>`
 4. mutate task state with `mdkg task ...` when durable state changes
-5. enable event logging if provenance should be captured in JSONL
+5. ensure event logging exists if the JSONL file was deleted or is missing
 6. implement and test
 7. run `mdkg validate`
 

@@ -16,6 +16,6 @@ Repo-specific quickstart:
 Normal mdkg loop:
 1. identify work with `mdkg search`, `mdkg show`, or `mdkg next`
 2. build context with `mdkg pack <id>`
-3. mutate durable work state with `mdkg task ...`
-4. use `mdkg event enable` if JSONL provenance is needed
+3. mutate structured work state with `mdkg task ...`
+4. use `mdkg event enable` only if the JSONL file was deleted or is missing
 5. validate before closing work

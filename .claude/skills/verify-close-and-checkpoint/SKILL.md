@@ -28,16 +28,16 @@ Finish work with evidence, validation, and minimal memory drift.
 
 1. Run the relevant technical gates for the changed surface.
 2. Run `mdkg validate` before closing the task.
-3. Use `mdkg task update <id> ...` for additive evidence and metadata changes instead of hand-editing routine task fields.
+3. Use `mdkg task update <id> ...` for additive evidence and structured metadata changes; keep narrative/body edits in markdown.
 4. Use `mdkg task done <id> --checkpoint "<title>"` when the task should close with milestone compression.
 5. Batch durable mdkg writes at one boundary: task status, artifact refs, optional checkpoint, and commit.
 6. Mark tasks done only after evidence exists.
 7. Create a checkpoint only for milestone-level transitions, not every small step.
 8. For feat or epic closeout, prefer a checkpoint body as the durable narrative summary of what changed and what is next.
 9. Use feat closeout scope as direct children with `parent: <feat-id>` and epic closeout scope as descendant work with `epic: <epic-id>`.
-10. Parent status edits remain manual in `0.0.5`; do not invent a hidden parent-closeout workflow.
+10. Parent status edits remain manual; do not invent a hidden parent-closeout workflow.
 11. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
-12. If provenance should be captured automatically, ensure `mdkg event enable` has already been run for the workspace.
+12. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
 
 ## Outputs
 

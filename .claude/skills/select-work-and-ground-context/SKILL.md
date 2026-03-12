@@ -30,7 +30,7 @@ Choose the correct work item and load the smallest deterministic context needed 
 3. Use `mdkg show <id> --meta` when you only need the card and link metadata.
 4. Confirm the selected node has the right constraints, related design docs, and current status.
 5. If the task is ambiguous, resolve that before building a pack.
-6. If the chosen task is ready to be claimed, hand off to `mdkg task start <id>` in the writer stage instead of editing markdown manually.
+6. If the chosen task is ready to be claimed, hand off to `mdkg task start <id>` in the writer stage for the structured status change.
 7. If resuming closeout work for a feat or epic, inspect the latest relevant checkpoint before deciding what remains open.
 8. Treat this stage as read-only: inspect and decide, but do not mutate mdkg state or commit.
 
@@ -47,7 +47,7 @@ Choose the correct work item and load the smallest deterministic context needed 
 - If multiple tasks appear valid, stop and choose deliberately instead of guessing.
 - If writer ownership or policy boundaries are unclear, stop and resolve them before execution.
 - mdkg indexes and discovers skills, but does not execute skill scripts.
-- Event logging is optional; use `mdkg event enable` before expecting automatic JSONL provenance from later mutation commands.
+- Event logging is committed by default in `init --agent` repos; use `mdkg event enable` only if `events.jsonl` is missing.
 
 ## Failure Handling
 

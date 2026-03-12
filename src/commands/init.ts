@@ -3,7 +3,7 @@ import path from "path";
 import { loadConfig } from "../core/config";
 import { NotFoundError } from "../util/errors";
 import { formatDate } from "../util/date";
-import { registryTemplate } from "./skill_support";
+import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 
 export type InitCommandOptions = {
@@ -269,6 +269,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedAgentStart = path.join(seedRoot, "AGENT_START.md");
   const seedCliMatrix = path.join(seedRoot, "CLI_COMMAND_MATRIX.md");
   const seedReadme = path.join(seedRoot, "README.md");
+  const seedDefaultSkills = path.join(seedRoot, "skills", "default");
 
   if (!fs.existsSync(seedConfig) || !fs.existsSync(seedCore) || !fs.existsSync(seedTemplates)) {
     throw new NotFoundError(
@@ -292,6 +293,9 @@ export function runInitCommand(options: InitCommandOptions): void {
   }
   if (!fs.existsSync(seedReadme)) {
     throw new NotFoundError(`init assets missing README.md at ${seedRoot}`);
+  }
+  if (options.agent && !fs.existsSync(seedDefaultSkills)) {
+    throw new NotFoundError(`init assets missing default skills at ${seedRoot}`);
   }
 
   const mdkgDir = path.join(root, ".mdkg");
@@ -326,6 +330,7 @@ export function runInitCommand(options: InitCommandOptions): void {
     const eventsPath = path.join(eventsDir, "events.jsonl");
     fs.mkdirSync(skillsDir, { recursive: true });
     fs.mkdirSync(eventsDir, { recursive: true });
+    copySeedDir(seedDefaultSkills, skillsDir, force, stats);
     writeFileIfMissing(soulPath, soulTemplate(today), force, stats);
     writeFileIfMissing(humanPath, humanTemplate(today), force, stats);
     writeFileIfMissing(registryPath, registryTemplate(), force, stats);
@@ -338,6 +343,7 @@ export function runInitCommand(options: InitCommandOptions): void {
 
     scaffoldMirrorRoots(root);
     const config = loadConfig(root);
+    refreshSkillsRegistry(root, config);
     syncSkillMirrors({ root, config, createRoots: true, force });
   }
 
@@ -349,7 +355,6 @@ export function runInitCommand(options: InitCommandOptions): void {
     appendIgnoreEntries(path.join(root, ".gitignore"), [
       ".mdkg/index/",
       ".mdkg/pack/",
-      ".mdkg/work/events/*.jsonl",
     ]);
   }
   if (shouldUpdateNpmignore) {

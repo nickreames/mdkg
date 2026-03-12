@@ -42,7 +42,7 @@ Non-goals:
 
 0.0.4 episodic memory uses a two-tier model:
 
-1. Tier A: event logs (high-frequency, append-only, usually gitignored)
+1. Tier A: event logs (high-frequency, append-only, committed by default)
 2. Tier B: checkpoints (low-frequency, durable node summaries committed to git)
 
 Design intent:
@@ -62,11 +62,11 @@ Recommended event kind set (initial):
 - `MDKG_PATCH_APPLIED`, `MDKG_NODE_UPDATED`, `CHECKPOINT_CREATED`, `PERSIST_COMMIT_PUSHED`
 
 Operational policy:
-- event streams are primarily for debugging/replay
+- event streams are durable baseline provenance and support debugging/replay
 - checkpoints are primary durable episodic memory anchors for future packs
 - commit cadence remains event-driven and single-writer (external orchestrator guidance)
 - mdkg CLI does not enforce this policy at runtime; orchestrators apply it
-- when events are disabled, `mdkg task start` and `mdkg task done` should emit a short reminder about `mdkg event enable`
+- when `events.jsonl` is missing, `mdkg task start` and `mdkg task done` should emit a short reminder about `mdkg event enable`
 
 Recommended external orchestrator write cycle:
 1. retrieve the active work item and latest checkpoint context through `pack` when available
@@ -163,12 +163,11 @@ Non-normative examples:
 
 # Security / privacy
 
-- Keep `.mdkg/work/events/*.jsonl` gitignored by default.
 - Keep `.mdkg/index/` and `.mdkg/pack/` gitignored.
 - Redact suspicious values in event logs by default.
 - Keep checkpoint summaries high-signal and secret-free.
 - Keep `.mdkg/` out of npm/runtime shipping artifacts.
-- Treat raw event logs as debugging artifacts first and durable project memory second.
+- Treat raw event logs as durable project memory first and debugging/provenance detail second.
 
 # Testing strategy
 
@@ -193,7 +192,7 @@ For this pass:
 - no new parent-closeout command is introduced
 
 Recommended implementation order:
-1. scaffold events path + ignore defaults in init-agent implementation
+1. scaffold events path in init-agent implementation
 2. add JSONL schema/redaction validation path
 3. add checkpoint-event linkage guidance hooks in templates/docs
 4. add pack-level latest-checkpoint default inclusion behavior

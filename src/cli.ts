@@ -297,8 +297,8 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]');
       log("\nWhen to use:");
-      log("  Move a task, bug, or test into progress and emit a baseline event when logging is enabled.");
-      log("  If events are disabled, mdkg prints a short reminder about `mdkg event enable`.");
+      log("  Move a task, bug, or test into progress as a structured state change.");
+      log("  If `events.jsonl` is missing, mdkg prints a short reminder about `mdkg event enable`.");
       printGlobalOptions(log);
       return;
     case "update":
@@ -308,7 +308,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log("                   [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]");
       log('                   [--clear-blocked-by] [--run-id <id>] [--note "<text>"]');
       log("\nWhen to use:");
-      log("  Update task metadata and evidence without editing markdown manually.");
+      log("  Update structured task metadata and evidence while keeping body and narrative edits in markdown.");
       printGlobalOptions(log);
       return;
     case "done":
@@ -336,9 +336,9 @@ function printEventHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "enable":
       log("Usage:");
-      log("  mdkg event enable [--ws <alias>] [--no-update-gitignore]");
+      log("  mdkg event enable [--ws <alias>]");
       log("\nWhen to use:");
-      log("  Create the append-only JSONL event log for a workspace.");
+      log("  Create or ensure the append-only JSONL event log for a workspace.");
       printGlobalOptions(log);
       return;
     case "append":
@@ -352,7 +352,7 @@ function printEventHelp(log: LogFn, subcommand?: string): void {
       return;
     default:
       log("Usage:");
-      log("  mdkg event enable [--ws <alias>] [--no-update-gitignore]");
+      log("  mdkg event enable [--ws <alias>]");
       log("  mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options]");
       printGlobalOptions(log);
   }
@@ -846,11 +846,7 @@ function runEventSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         throw new UsageError("event enable does not accept positional arguments");
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
-      const noUpdateGitignore = parseBooleanFlag(
-        "--no-update-gitignore",
-        parsed.flags["--no-update-gitignore"]
-      );
-      runEventEnableCommand({ root, ws, updateGitignore: !noUpdateGitignore });
+      runEventEnableCommand({ root, ws });
       return 0;
     }
     case "append": {

@@ -37,35 +37,7 @@ export type AppendEventOptions = {
 export type EnsureEventsEnabledOptions = {
   root: string;
   ws?: string;
-  updateGitignore?: boolean;
 };
-
-function appendIgnoreEntries(filePath: string, entries: string[]): boolean {
-  const normalizedEntries = entries.map((entry) => entry.trim()).filter(Boolean);
-  if (normalizedEntries.length === 0) {
-    return false;
-  }
-
-  let existing = "";
-  if (fs.existsSync(filePath)) {
-    existing = fs.readFileSync(filePath, "utf8");
-  }
-  const existingLines = new Set(
-    existing
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter(Boolean)
-  );
-
-  const additions = normalizedEntries.filter((entry) => !existingLines.has(entry));
-  if (additions.length === 0) {
-    return false;
-  }
-
-  const next = existing.length === 0 ? `${additions.join("\n")}\n` : `${existing.replace(/\s*$/, "\n")}${additions.join("\n")}\n`;
-  fs.writeFileSync(filePath, next, "utf8");
-  return true;
-}
 
 export function normalizeWorkspaceForEvents(config: MdkgConfig, raw?: string): string {
   const normalized = (raw ?? "root").toLowerCase();
@@ -105,12 +77,10 @@ export function ensureEventsEnabled(options: EnsureEventsEnabledOptions): {
   ws: string;
   eventsPath: string;
   created: boolean;
-  gitignoreUpdated: boolean;
 } {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspaceForEvents(config, options.ws);
   const eventsPath = resolveEventsPath(options.root, config, ws);
-  const updateGitignore = options.updateGitignore !== false;
 
   let created = false;
   if (!fs.existsSync(eventsPath)) {
@@ -119,14 +89,7 @@ export function ensureEventsEnabled(options: EnsureEventsEnabledOptions): {
     created = true;
   }
 
-  let gitignoreUpdated = false;
-  if (updateGitignore) {
-    gitignoreUpdated = appendIgnoreEntries(path.join(options.root, ".gitignore"), [
-      ".mdkg/work/events/*.jsonl",
-    ]);
-  }
-
-  return { ws, eventsPath, created, gitignoreUpdated };
+  return { ws, eventsPath, created };
 }
 
 function normalizeIdOrIdRef(value: string): string {
@@ -179,7 +142,9 @@ export function appendEvent(options: AppendEventOptions): EventRecord {
   }
   const eventsPath = resolveEventsPath(options.root, config, record.workspace);
   if (!fs.existsSync(eventsPath)) {
-    throw new NotFoundError(`event logging is not enabled for workspace ${record.workspace}; run \`mdkg event enable --ws ${record.workspace}\``);
+    throw new NotFoundError(
+      `events.jsonl is missing for workspace ${record.workspace}; run \`mdkg event enable --ws ${record.workspace}\``
+    );
   }
   fs.appendFileSync(eventsPath, `${JSON.stringify(record)}\n`, "utf8");
   return record;

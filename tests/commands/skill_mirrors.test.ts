@@ -149,3 +149,36 @@ test("validate warns when mirrored skills drift from canonical content", () => {
   assert.match(output.stderr, /warning: \.claude\/skills\/release-readiness: mirrored skill drift detected/);
   assert.match(output.stdout, /validation ok/);
 });
+
+test("skill sync refreshes managed mirrors in place after canonical edits", () => {
+  const root = makeTempDir("mdkg-skill-mirror-refresh-");
+  seedAgentBootstrap(root);
+  runSkillNewCommand({
+    root,
+    slug: "release-readiness",
+    name: "release-readiness",
+    description: "audit release readiness when preparing a release",
+  });
+
+  writeFile(
+    path.join(root, ".mdkg", "skills", "release-readiness", "SKILL.md"),
+    [
+      "---",
+      "name: release-readiness",
+      "description: audit release readiness when preparing a release",
+      "---",
+      "",
+      "# Goal",
+      "",
+      "Updated canonical body.",
+    ].join("\n")
+  );
+
+  assert.doesNotThrow(() => runSkillSyncCommand({ root }));
+
+  const mirrored = fs.readFileSync(
+    path.join(root, ".agents", "skills", "release-readiness", "SKILL.md"),
+    "utf8"
+  );
+  assert.match(mirrored, /Updated canonical body/);
+});
