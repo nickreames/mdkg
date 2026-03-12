@@ -35,17 +35,17 @@ Actions taken in this pass:
 Commands run:
 
 ```bash
-mdkg init --omni
+mdkg init --agent
 mdkg --help
 mdkg show rule-human
 ```
 
 Baseline observations before this pass:
-- the OSS and Omni stories were both present, but the CLI surface did not clearly make `--omni` optional.
+- the OSS and AI-agent stories were both present, but the CLI surface did not clearly show the deeper agent bootstrap path.
 - `show rule-human` only returned the node card, which weakened the value of the scaffold.
 
 Actions taken in this pass:
-- README and help now keep `init --llm` primary and `init --omni` optional.
+- README and help now keep `init --llm` primary and `init --agent` as the deeper AI-agent bootstrap path.
 - `show rule-human` now returns the full strict-node body by default.
 
 ### Skills discovery

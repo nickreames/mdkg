@@ -14,7 +14,7 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
-import { appendAutomaticEvent } from "./event_support";
+import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
 import { runCheckpointNewCommand } from "./checkpoint";
 
 const MUTABLE_TASK_TYPES = new Set(["task", "bug", "test"]);
@@ -257,6 +257,15 @@ function updateUpdatedDate(
   frontmatter.updated = formatDate(now);
 }
 
+function maybeWarnEventsDisabled(root: string, config: ReturnType<typeof loadConfig>, ws: string): void {
+  if (isEventLoggingEnabled(root, config, ws)) {
+    return;
+  }
+  console.error(
+    `note: event logging not enabled for workspace ${ws}; run mdkg event enable --ws ${ws} if you want JSONL provenance`
+  );
+}
+
 export function runTaskStartCommand(options: TaskStartCommandOptions): void {
   const loaded = loadMutableTaskNode(options.root, options.id, options.ws);
   const now = options.now ?? new Date();
@@ -276,6 +285,7 @@ export function runTaskStartCommand(options: TaskStartCommandOptions): void {
     now,
   });
 
+  maybeWarnEventsDisabled(options.root, loaded.config, loaded.ws);
   console.log(`task started: ${loaded.qid}`);
 }
 
@@ -380,5 +390,6 @@ export function runTaskDoneCommand(options: TaskDoneCommandOptions): void {
   }
 
   maybeReindex(options.root, loaded.config);
+  maybeWarnEventsDisabled(options.root, loaded.config, loaded.ws);
   console.log(`task done: ${loaded.qid}`);
 }

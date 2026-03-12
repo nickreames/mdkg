@@ -79,7 +79,7 @@ test("validate accepts well-formed events.jsonl records", () => {
     ts: "2026-03-05T00:00:00Z",
     run_id: "run_123",
     workspace: "root",
-    agent: "omni",
+    agent: "ai-agent",
     kind: "RUN_COMPLETED",
     status: "ok",
     refs: ["task-1"],
@@ -99,7 +99,7 @@ test("validate rejects malformed events.jsonl records", () => {
   const line = {
     ts: "2026-03-05T00:00:00Z",
     workspace: "root",
-    agent: "omni",
+    agent: "ai-agent",
     kind: "RUN_COMPLETED",
     status: "ok",
     refs: ["task-1"],

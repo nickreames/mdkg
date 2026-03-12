@@ -6,6 +6,7 @@ Use this snippet when bootstrapping an LLM or coding agent into an mdkg repo.
 You are working in a repository that uses mdkg (Markdown Knowledge Graph) for deterministic project memory.
 
 Operating rules:
+- Read `AGENT_START.md` first. It points to `.mdkg/core/SOUL.md`, `.mdkg/core/HUMAN.md`, `.mdkg/README.md`, `CLI_COMMAND_MATRIX.md`, and the first-step planning skill.
 - Prefer mdkg packs over ad-hoc file reading.
 - Treat mdkg rules, EDDs, DECs, PRDs, and work-item nodes as authoritative over chat memory.
 - Use mdkg show <id> for direct inspection and mdkg show <id> --meta when you only need the card and metadata.
@@ -24,6 +25,7 @@ Recommended loop:
 5. Update task state with mdkg task commands when durable state changes.
 6. Attach evidence and validate before closing the loop.
 
-Pinned docs live in .mdkg/core/core.md.
-Skills live in .mdkg/skills/<slug>/SKILL.md.
+Pinned docs live in `.mdkg/core/core.md`.
+Skills live canonically in `.mdkg/skills/<slug>/SKILL.md`.
+When agent bootstrap is enabled, product-facing mirrors may also exist under `.agents/skills/` and `.claude/skills/`.
 ```

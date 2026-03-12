@@ -20,15 +20,15 @@ updated: 2026-03-05
 
 # Overview
 
-Define the planned 0.0.4 contract for `mdkg init --omni` while preserving `--llm` compatibility and source-truth documentation.
+Define the planned 0.0.4 contract for `mdkg init --agent` while preserving `--llm` compatibility and source-truth documentation.
 
 # Acceptance Criteria
 
-- Planned behavior for `--omni` is documented as target-state, not current behavior.
+- Planned behavior for `--agent` is documented as target-state, not current behavior.
 - Compatibility expectations for `--llm` are explicit.
 - Scope for SOUL/HUMAN core-node scaffolding is documented.
-- Omni scaffold target requires `.mdkg/skills/` scaffold but does not require a default example skill file.
-- Omni scaffold target includes seeded `.mdkg/work/events/events.jsonl` first-event line in valid JSONL format.
+- Agent scaffold target requires `.mdkg/skills/` scaffold but does not require a default example skill file.
+- Agent scaffold target includes seeded `.mdkg/work/events/events.jsonl` first-event line in valid JSONL format.
 
 # Files Affected
 
@@ -37,7 +37,7 @@ Define the planned 0.0.4 contract for `mdkg init --omni` while preserving `--llm
 - README.md
 - .mdkg/design/prd-1-mdkg-product-spec-v0-4-deterministic-agent-memory-and-skills.md
 - .mdkg/design/edd-2-mdkg-v0-4-architecture-indexing-validation-packs-skills.md
-- .mdkg/design/edd-4-mdkg-init-omni-specification-v0-4.md
+- .mdkg/design/edd-4-mdkg-init-agent-specification-0-0-5.md
 
 # Implementation Notes
 

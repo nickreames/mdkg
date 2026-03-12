@@ -75,10 +75,10 @@ const BOOLEAN_FLAGS = new Set([
   "--update-gitignore",
   "--update-npmignore",
   "--update-dockerignore",
+  "--agent",
   "--agents",
   "--claude",
   "--llm",
-  "--omni",
   "--body",
   "--meta",
   "--strip-code",
@@ -186,14 +186,16 @@ export function parseArgs(argv: string[]): ParsedArgs {
         continue;
       }
 
-      if (BOOLEAN_FLAGS.has(flag)) {
-        result.flags[flag] = true;
-        continue;
-      }
-
       const value = inlineValue ?? argv[i + 1];
-      if (VALUE_FLAGS.has(flag)) {
+      const supportsValue = VALUE_FLAGS.has(flag);
+      const supportsBoolean = BOOLEAN_FLAGS.has(flag);
+
+      if (supportsValue) {
         if (value === undefined || isFlagToken(value)) {
+          if (supportsBoolean) {
+            result.flags[flag] = true;
+            continue;
+          }
           result.flags[flag] = true;
           continue;
         }
@@ -201,6 +203,11 @@ export function parseArgs(argv: string[]): ParsedArgs {
           i += 1;
         }
         result.flags[flag] = NORMALIZE_VALUE_FLAGS.has(flag) ? value.toLowerCase() : value;
+        continue;
+      }
+
+      if (supportsBoolean) {
+        result.flags[flag] = true;
         continue;
       }
 

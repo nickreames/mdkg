@@ -8,7 +8,7 @@ links: []
 artifacts: []
 relates: [dec-8, dec-9, dec-10, prd-2, epic-4, epic-5, edd-2, edd-3, edd-4, edd-5, edd-6, edd-7, edd-8]
 refs: []
-aliases: [0.0.4, omni, deterministic-memory]
+aliases: [0.0.4, deterministic-memory, agent-memory]
 created: 2026-02-27
 updated: 2026-03-06
 ---
@@ -22,9 +22,9 @@ mdkg already provides deterministic semantic context packs, but the 0.0.4 target
 - Extend mdkg from semantic graph tooling into a three-layer memory substrate: semantic, episodic, and procedural.
 - Keep all 0.0.4 features local-first, deterministic, and repo-native.
 - Make 0.0.4 intent understandable from docs alone, while preserving source-truth accuracy for current CLI behavior.
-- Define a concrete roadmap for `init --omni`, skills metadata indexing, optional pack skill inclusion, and episodic event logs.
+- Define a concrete roadmap for `init --agent`, skills metadata indexing, optional pack skill inclusion, and episodic event logs.
 - Define mdkg.dev/docs positioning so new users and agents can understand mdkg without tribal context.
-- Define a concrete `init --omni` scaffold contract for SOUL/HUMAN/skills/events and core pin updates.
+- Define a concrete `init --agent` scaffold contract for SOUL/HUMAN/skills/events and core pin updates.
 
 # Non-goals
 
@@ -39,7 +39,7 @@ mdkg already provides deterministic semantic context packs, but the 0.0.4 target
 ## Functional
 
 - Document 0.0.4 as planned target state with explicit source-truth gap tracking.
-- Plan `mdkg init --omni` as the bootstrap mode for agent-ready scaffolding.
+- Plan `mdkg init --agent` as the bootstrap mode for agent-ready scaffolding.
 - Plan deterministic local indexing of skill metadata from `.mdkg/skills/**/SKILL.md` into `.mdkg/index/skills.json`.
 - Plan optional skill inclusion in packs while preserving deterministic ordering.
 - Plan skills capabilities under existing mdkg command families (no new top-level skills namespace).
@@ -70,12 +70,12 @@ mdkg already provides deterministic semantic context packs, but the 0.0.4 target
 
 | Capability | 0.0.4 target | Current source behavior | Evidence |
 | --- | --- | --- | --- |
-| Omni bootstrap | `mdkg init --omni` | implemented: CLI flag scaffolds SOUL/HUMAN/skills/events and deterministic core pin updates | `src/commands/init.ts`, `src/cli.ts` |
+| bootstrap agent bootstrap | `mdkg init --agent` | implemented: CLI flag scaffolds SOUL/HUMAN/skills/events and deterministic core pin updates | `src/commands/init.ts`, `src/cli.ts` |
 | Skills indexing | root-owned deterministic metadata index at `.mdkg/index/skills.json` | implemented: `mdkg index` emits separate `skills.json` artifact from `.mdkg/skills/**/SKILL.md` | `src/commands/index.ts`, `src/graph/skills_indexer.ts`, `src/graph/skills_index_cache.ts` |
 | Pack skill inclusion | optional skill content in packs | implemented: `mdkg pack` supports `--skills` and `--skills-depth` | `src/commands/pack.ts`, `src/pack/pack.ts`, `src/cli.ts` |
 | Node skill references | optional `skills: [...]` on work-item nodes | implemented: parser/model support plus cross-validation of missing slugs | `src/graph/frontmatter.ts`, `src/graph/node.ts`, `src/commands/validate.ts` |
 | Skills stage-tag filtering | tag-filtered skill query/discovery contracts | implemented: `mdkg skill list/search` support `--tags` + `--tags-mode any|all` and `--json`; `mdkg skill show <slug>` supported | `src/commands/skill.ts`, `src/util/filter.ts`, `src/cli.ts` |
-| Omni core docs | `SOUL` and `HUMAN` core-node conventions | implemented: `SOUL.md`/`HUMAN.md` strict-node scaffolding with IDs `rule-soul`/`rule-human` | `src/commands/init.ts`, `src/graph/node.ts` |
+| bootstrap agent core docs | `SOUL` and `HUMAN` core-node conventions | implemented: `SOUL.md`/`HUMAN.md` strict-node scaffolding with IDs `rule-soul`/`rule-human` | `src/commands/init.ts`, `src/graph/node.ts` |
 | Skill script execution | mdkg indexes/discovers skills while runtimes govern execution | implemented: mdkg surfaces and validates skill files but does not execute scripts | `src/graph/skills_indexer.ts`, `src/commands/validate.ts`, `src/commands/show.ts` |
 | Episodic event logs | `.mdkg/work/events/*.jsonl` conventions | implemented: validate-time JSONL contract checks when file exists; no dedicated events command surface | `src/commands/validate.ts`, `src/cli.ts` |
 | Latest checkpoint hint | optional `latest_checkpoint_qid` optimization metadata | implemented: index hint emitted; pack-time resolver remains authoritative on mismatches | `src/graph/indexer.ts`, `src/pack/pack.ts` |
@@ -91,7 +91,7 @@ mdkg already provides deterministic semantic context packs, but the 0.0.4 target
 # Metrics / Success
 
 - `mdkg validate` passes after doc integration.
-- `mdkg search "omni"` and `mdkg search "skills"` return 0.0.4 planning nodes.
+- `mdkg search "agent"` and `mdkg search "skills"` return the relevant planning nodes.
 - `mdkg list --type prd` returns `root:prd-1`.
 
 # Risks

@@ -40,7 +40,7 @@ Define 0.0.4 episodic memory conventions using append-only JSONL logs under `.md
 - .mdkg/design/prd-1-mdkg-product-spec-v0-4-deterministic-agent-memory-and-skills.md
 - .mdkg/design/edd-2-mdkg-v0-4-architecture-indexing-validation-packs-skills.md
 - .mdkg/design/edd-6-mdkg-event-logs-and-checkpoints-guide-v0-4-episodic-memory-and-provenance.md
-- .mdkg/design/edd-4-mdkg-init-omni-specification-v0-4.md
+- .mdkg/design/edd-4-mdkg-init-agent-specification-0-0-5.md
 
 # Implementation Notes
 

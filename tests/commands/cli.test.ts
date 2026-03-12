@@ -98,14 +98,33 @@ test("cli help list/search/show/skill include json and namespace-only skill guid
   assert.match(newHelp.stdout, /--skills <slug,slug,\.\.\.>/);
 });
 
-test("cli help init includes omni and ignore-default controls", () => {
+test("cli help init includes agent bootstrap and ignore-default controls", () => {
   const initHelp = spawnSync(process.execPath, [cliPath, "help", "init"], {
     encoding: "utf8",
     cwd: repoRoot,
   });
   assert.equal(initHelp.status, 0);
-  assert.match(initHelp.stdout, /--omni/);
+  assert.match(initHelp.stdout, /--agent/);
+  assert.doesNotMatch(initHelp.stdout, /--omni/);
   assert.match(initHelp.stdout, /--no-update-ignores/);
   assert.doesNotMatch(initHelp.stdout, /--agents/);
   assert.doesNotMatch(initHelp.stdout, /--claude/);
+});
+
+test("cli init --omni fails with migration guidance", () => {
+  const result = spawnSync(process.execPath, [cliPath, "init", "--omni"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /removed; use `mdkg init --agent`/);
+});
+
+test("cli help skill includes sync subcommand", () => {
+  const skillHelp = spawnSync(process.execPath, [cliPath, "help", "skill"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(skillHelp.status, 0);
+  assert.match(skillHelp.stdout, /mdkg skill sync \[--force\]/);
 });

@@ -10,7 +10,7 @@ relates: [prd-1, prd-2, dec-8, dec-9, dec-10, edd-2, edd-3, edd-4, edd-5, edd-7,
 refs: []
 aliases: [doc-8, events-guide, checkpoints-guide, episodic-memory, events.jsonl, jsonl-events, latest_checkpoint_qid]
 created: 2026-03-04
-updated: 2026-03-06
+updated: 2026-03-11
 ---
 
 # Overview
@@ -31,12 +31,12 @@ Non-goals:
 
 | Capability | 0.0.4 target | Current source behavior | Source anchor |
 | --- | --- | --- | --- |
-| Event log scaffold contract | `.mdkg/work/events/events.jsonl` guidance and seeded-init record expectations | implemented: `init --omni` creates the events path and seeds a valid init JSONL line | `src/commands/init.ts`, `src/cli.ts` |
+| Event log scaffold contract | `.mdkg/work/events/events.jsonl` guidance and seeded-init record expectations | implemented: `init --agent` creates the events path and seeds a valid init JSONL line | `src/commands/init.ts`, `src/cli.ts` |
 | Event log schema checks | validate JSONL shape/redaction expectations | implemented baseline JSONL record validation when file exists; redaction remains docs-policy | `src/commands/validate.ts` |
 | Event-path parse safety | avoid markdown files under event log path | workspace scan indexes `core/design/work/**/*.md`; markdown under `work/events` would be treated as strict nodes | `src/graph/workspace_files.ts`, `src/graph/indexer.ts` |
 | Checkpoint-event linkage | checkpoint guidance references run/event scope | checkpoint creation supports generic relates/scope but no event-log coupling contract | `src/commands/checkpoint.ts`, `src/commands/validate.ts` |
 | Pack episodic inclusion policy | latest checkpoint included by default when available | implemented via pack-time authoritative resolver with optional index hint metadata | `src/commands/pack.ts`, `src/pack/pack.ts`, `src/graph/indexer.ts` |
-| Events command surface | capability-level guidance for event usage | no dedicated events commands in CLI | `src/cli.ts` |
+| Events command surface | capability-level guidance for event usage | implemented via `mdkg event enable` and `mdkg event append` | `src/commands/event.ts`, `src/commands/event_support.ts`, `src/cli.ts` |
 
 # Architecture
 
@@ -66,6 +66,7 @@ Operational policy:
 - checkpoints are primary durable episodic memory anchors for future packs
 - commit cadence remains event-driven and single-writer (external orchestrator guidance)
 - mdkg CLI does not enforce this policy at runtime; orchestrators apply it
+- when events are disabled, `mdkg task start` and `mdkg task done` should emit a short reminder about `mdkg event enable`
 
 Recommended external orchestrator write cycle:
 1. retrieve the active work item and latest checkpoint context through `pack` when available
@@ -74,6 +75,12 @@ Recommended external orchestrator write cycle:
 4. create a checkpoint only for meaningful run or milestone compression
 5. commit once at the durable boundary
 6. never commit on every tool call
+
+Parent closeout guidance:
+- feat and epic closeout should prefer a related checkpoint when closing a milestone or summarizing completed child work
+- checkpoints are recommended for parent closeout, not required for every parent status change
+- routine task completion should not automatically imply parent checkpoint creation
+- narrative "what changed / what is next" memory should live in checkpoint bodies by default
 
 # Data model
 
@@ -98,13 +105,13 @@ Recommended optional fields:
 Canonical event example:
 
 ```json
-{"ts":"2026-03-04T18:12:03Z","run_id":"run_01HXYZ","workspace":"root","agent":"omni","kind":"SUBTASK_COMPLETED","status":"ok","skill":"review-pr","tool":"codex.connector","refs":["task-17"],"artifacts":["patch://run_01HXYZ/diff.patch","tests://run_01HXYZ/go-test.txt"],"notes":"Codex produced patch; tests passed","redacted":true}
+{"ts":"2026-03-04T18:12:03Z","run_id":"run_01HXYZ","workspace":"root","agent":"ai-agent","kind":"SUBTASK_COMPLETED","status":"ok","skill":"review-pr","tool":"codex.connector","refs":["task-17"],"artifacts":["patch://run_01HXYZ/diff.patch","tests://run_01HXYZ/go-test.txt"],"notes":"Codex produced patch; tests passed","redacted":true}
 ```
 
 Canonical seeded init line target:
 
 ```json
-{"ts":"2026-03-04T00:00:00.000Z","run_id":"init-20260304-000000","workspace":"root","agent":"mdkg","kind":"RUN_STARTED","status":"ok","refs":["edd-4"],"artifacts":[],"notes":"init omni scaffold target initialized","redacted":true}
+{"ts":"2026-03-04T00:00:00.000Z","run_id":"init-20260304-000000","workspace":"root","agent":"mdkg","kind":"RUN_STARTED","status":"ok","refs":["edd-4"],"artifacts":[],"notes":"init agent scaffold target initialized","redacted":true}
 ```
 
 ## Checkpoint compression model
@@ -128,12 +135,14 @@ Capability contracts for 0.0.4 docs:
 - deterministic checkpoint tie-break order is `updated` descending, then `created` descending, then `qid` descending
 
 CLI naming policy:
-- exact new skills/events command names remain deferred
-- any event command examples are non-normative
+- `mdkg event enable` and `mdkg event append` are implemented
+- `mdkg task done --checkpoint "<title>"` remains the preferred assisted checkpoint path
 
 Non-normative examples:
 - `mdkg checkpoint new "weekly provenance summary"`
 - `mdkg pack task-17 --verbose`
+- `mdkg event enable`
+- `mdkg task done task-17 --checkpoint "milestone summary"`
 
 # Failure modes
 
@@ -180,11 +189,11 @@ Future implementation checks:
 # Rollout plan
 
 For this pass:
-- documentation/work-node integration only
-- no runtime CLI changes
+- lifecycle guidance aligns to the current runtime task/event/checkpoint surfaces
+- no new parent-closeout command is introduced
 
 Recommended implementation order:
-1. scaffold events path + ignore defaults in init-omni implementation
+1. scaffold events path + ignore defaults in init-agent implementation
 2. add JSONL schema/redaction validation path
 3. add checkpoint-event linkage guidance hooks in templates/docs
 4. add pack-level latest-checkpoint default inclusion behavior

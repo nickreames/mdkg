@@ -63,7 +63,7 @@ test("event enable and append create valid JSONL that validate accepts", () => {
     artifacts: "tests://go-test.txt",
     notes: "manual append",
     runId: "run_manual_1",
-    agent: "omni",
+    agent: "ai-agent",
     skill: "verify-close-and-checkpoint",
     tool: "codex",
   });
@@ -206,6 +206,36 @@ test("task commands reject non-task-like ids with guidance", () => {
   assert.throws(
     () => runTaskStartCommand({ root, id: "epic-1" }),
     /mdkg task only supports task, bug, and test nodes/
+  );
+});
+
+test("cli task start and done warn when events are disabled but task update stays quiet", () => {
+  const root = createTaskRepo("mdkg-cli-task-events-disabled-");
+  const run = (args: string[]) =>
+    spawnSync(process.execPath, [cliPath, ...args], {
+      cwd: root,
+      encoding: "utf8",
+    });
+
+  let result = run(["task", "start", "task-1", "--run-id", "run_cli_disabled"]);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /task started: root:task-1/);
+  assert.match(
+    result.stderr,
+    /note: event logging not enabled for workspace root; run mdkg event enable --ws root if you want JSONL provenance/
+  );
+
+  result = run(["task", "update", "task-1", "--status", "review", "--run-id", "run_cli_disabled"]);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /task updated: root:task-1/);
+  assert.doesNotMatch(result.stderr, /event logging not enabled/);
+
+  result = run(["task", "done", "task-1", "--run-id", "run_cli_disabled"]);
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /task done: root:task-1/);
+  assert.match(
+    result.stderr,
+    /note: event logging not enabled for workspace root; run mdkg event enable --ws root if you want JSONL provenance/
   );
 });
 

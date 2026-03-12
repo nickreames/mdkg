@@ -8,6 +8,7 @@ import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
 import { ValidationError } from "../util/errors";
+import { auditSkillMirrors } from "./skill_mirror";
 
 export type ValidateCommandOptions = {
   root: string;
@@ -323,6 +324,8 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
       warnings.push(`${path.relative(options.root, compatPath)}: using legacy SKILLS.md compatibility file`);
     }
   }
+
+  warnings.push(...auditSkillMirrors(options.root, config));
 
   validateEventsJsonl(options.root, config, errors);
 

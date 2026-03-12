@@ -20,6 +20,7 @@ const HELP_TARGETS = [
   ["skill", "show"],
   ["skill", "search"],
   ["skill", "validate"],
+  ["skill", "sync"],
   ["task"],
   ["task", "start"],
   ["task", "update"],

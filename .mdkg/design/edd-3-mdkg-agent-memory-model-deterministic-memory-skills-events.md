@@ -10,7 +10,7 @@ relates: [edd-2, prd-1, prd-2, dec-8, dec-9, dec-10, epic-4, epic-5, edd-4, edd-
 refs: []
 aliases: [doc-3, agent-memory-model, deterministic-memory, single-writer, human.md, skills.json, events.jsonl]
 created: 2026-02-27
-updated: 2026-03-06
+updated: 2026-03-11
 ---
 
 # Overview
@@ -46,8 +46,8 @@ Current architecture baseline is v0.0.3. Existing source now supports most 0.0.4
 | Skill-aware retrieval | skills discoverable via list/show/search capabilities | implemented via existing command family (`list/show/search`) | `src/commands/list.ts`, `src/commands/show.ts`, `src/commands/search.ts`, `src/cli.ts` |
 | Node -> skill references | optional `skills: [...]` on work items | implemented in parser/model/new command with cross-validation | `src/graph/frontmatter.ts`, `src/graph/node.ts`, `src/commands/new.ts`, `src/commands/validate.ts` |
 | Pack procedural layer | policy-driven optional skill payload inclusion | implemented via `--skills` and `--skills-depth` pack flags | `src/commands/pack.ts`, `src/pack/pack.ts`, `src/cli.ts` |
-| Omni scaffold for core memory anchors | `init --omni` target with SOUL/HUMAN/skills scaffold/events seed | implemented in init with strict-node SOUL/HUMAN and seeded events JSONL | `src/commands/init.ts`, `src/cli.ts` |
-| Episodic event logs | append-only `.mdkg/work/events/events.jsonl` conventions | implemented validate-time JSONL schema checks; dedicated events command surface still absent | `src/commands/validate.ts`, `src/cli.ts` |
+| Agent scaffold for core memory anchors | `init --agent` target with SOUL/HUMAN/skills scaffold/events seed | implemented in init with strict-node SOUL/HUMAN and seeded events JSONL | `src/commands/init.ts`, `src/cli.ts` |
+| Episodic event logs | append-only `.mdkg/work/events/events.jsonl` conventions | implemented via `mdkg event enable` / `mdkg event append` plus validate-time JSONL schema checks | `src/commands/event.ts`, `src/commands/event_support.ts`, `src/commands/validate.ts`, `src/cli.ts` |
 | Checkpoint linkage to runs/events | checkpoint guidance referencing run/event ranges | checkpoint command creates nodes but no events coupling contract | `src/commands/checkpoint.ts`, `src/commands/validate.ts` |
 | Latest checkpoint hybrid strategy | pack-time authoritative selection with optional index hint | implemented resolver + `latest_checkpoint_qid` hint emission | `src/graph/indexer.ts`, `src/pack/pack.ts`, `src/commands/pack.ts` |
 | Single-writer/batching policy | explicit external orchestrator guidance | no runtime enforcement in mdkg CLI (documentation policy only) | `src/commands/init.ts`, `src/commands/pack.ts`, `src/commands/checkpoint.ts` |
@@ -79,6 +79,7 @@ Retrieval policy:
 
 Update policy:
 - single-writer and commit-cadence rules are guidance for external orchestrators (human or platform runtime), not mdkg runtime enforcement in 0.0.4.
+- `mdkg task start` and `mdkg task done` should remind users how to enable episodic provenance when events are disabled, but should not auto-enable logging.
 
 External orchestrator mutation contract:
 - mdkg 0.0.4 does not lock repos or enforce single-writer ownership at runtime.
@@ -95,6 +96,13 @@ Recommended external orchestrator flow:
 5. append episodic events if the orchestrator keeps an event stream
 6. update task status, artifact refs, and optional checkpoint memory
 7. batch and commit once per run or milestone
+
+Parent closeout guidance in 0.0.5:
+- feat closeout scope is direct child work with `parent: <feat-id>`
+- epic closeout scope is descendant work with `epic: <epic-id>`
+- parent closeout remains guidance plus checkpoint-first memory, not a new parent mutation command
+- parent status edits remain manual markdown updates in 0.0.5
+- the preferred durable narrative for parent closeout is a checkpoint body summarizing what changed and what is next
 
 # Data model
 
@@ -173,7 +181,7 @@ Event log path target:
 Canonical seeded first line (init target):
 
 ```json
-{"ts":"2026-03-04T00:00:00.000Z","run_id":"init-20260304-000000","workspace":"root","agent":"mdkg","kind":"RUN_STARTED","status":"ok","refs":["edd-4"],"artifacts":[],"notes":"init omni scaffold target initialized","redacted":true}
+{"ts":"2026-03-04T00:00:00.000Z","run_id":"init-20260304-000000","workspace":"root","agent":"mdkg","kind":"RUN_STARTED","status":"ok","refs":["edd-4"],"artifacts":[],"notes":"init agent scaffold target initialized","redacted":true}
 ```
 
 Checkpoint nodes remain semantic records of episodic compression. They should summarize event ranges/run IDs through references rather than embedding raw logs.
@@ -186,17 +194,20 @@ Capability contracts for 0.0.4:
 - episodic memory uses JSONL events + checkpoint summaries
 - update safety guidance is documented for external orchestrators
 - skills capabilities remain on existing command families; no new top-level skills namespace in 0.0.4 docs
+- task/event lifecycle surfaces exist for task-like nodes, but parent closeout remains documentation-guided
 
 Normative policy points:
-- exact new skills/events command names stay deferred
-- command examples are non-binding illustrations
-- `init --omni` is implemented; `--llm` compatibility is retained
+- `mdkg event enable` and `mdkg event append` are implemented command surfaces
+- `mdkg task start`, `mdkg task update`, and `mdkg task done` are implemented command surfaces for task-like nodes
+- `mdkg task done --checkpoint "<title>"` is the assisted milestone-closeout path
+- parent closeout is checkpoint-first guidance rather than a new command surface in 0.0.5
+- `init --agent` is implemented; `--llm` compatibility is retained
 
 Non-normative examples:
 - `mdkg pack task-17 --verbose`
 - `mdkg skill list --tags stage:plan --tags-mode all --json`
 - `mdkg pack task-17 --skills auto --skills-depth full`
-- `mdkg show skill:review-pr`
+- `mdkg task done task-17 --checkpoint "milestone summary"`
 
 Pack inclusion policy expectations:
 - root context first
@@ -244,7 +255,7 @@ Documentation integration checks:
 Future implementation checks:
 - skill metadata indexing and discovery contracts (`test-10`, `test-12`)
 - node->skill cross-validation (`test-13`)
-- init omni + seeded event behavior (`test-9`, `test-11`)
+- init agent + seeded event behavior (`test-51`, `test-53`, `test-54`)
 - pack determinism with policy-driven skill inclusion (`test-10`)
 - stage-tag filtering and policy gating contracts (`test-20`)
 - hybrid checkpoint hint consistency contracts (`test-21`, `test-22`)
@@ -256,8 +267,8 @@ Implementation status in current source:
 1. skill metadata index + deterministic query surfaces implemented
 2. node `skills` schema and cross-validation implemented
 3. policy-driven pack skill inclusion implemented
-4. `init --omni` scaffolding implemented (SOUL/HUMAN/skills scaffold/events seed)
-5. episodic validation/guardrails implemented at validate-time (events command surface still deferred)
+4. `init --agent` scaffolding implemented (SOUL/HUMAN/skills scaffold/events seed)
+5. events command surface implemented with opt-in enablement and explicit append flow
 6. stage-tag skill discovery filters implemented
 7. hybrid latest-checkpoint resolver + optional hint metadata path implemented
 

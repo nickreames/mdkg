@@ -37,7 +37,7 @@ Define 0.0.4 documentation contracts for `.mdkg/core/SOUL.md` and `.mdkg/core/HU
 - src/pack/verbose_core.ts
 - .mdkg/core/rule-1-mdkg-conventions.md
 - .mdkg/design/edd-2-mdkg-v0-4-architecture-indexing-validation-packs-skills.md
-- .mdkg/design/edd-4-mdkg-init-omni-specification-v0-4.md
+- .mdkg/design/edd-4-mdkg-init-agent-specification-0-0-5.md
 
 # Implementation Notes
 

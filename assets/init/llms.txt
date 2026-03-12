@@ -1,0 +1,17 @@
+# mdkg agent bootstrap
+
+Read `AGENT_START.md` first.
+
+Key files:
+- `.mdkg/core/SOUL.md`
+- `.mdkg/core/HUMAN.md`
+- `.mdkg/README.md`
+- `CLI_COMMAND_MATRIX.md`
+
+First commands:
+- `mdkg search "..."`
+- `mdkg show <id>`
+- `mdkg next`
+- `mdkg pack <id>`
+- `mdkg skill list --tags stage:plan --json`
+- `mdkg validate`

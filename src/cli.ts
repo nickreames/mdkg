@@ -23,6 +23,7 @@ import {
   runSkillNewCommand,
   runSkillSearchCommand,
   runSkillShowCommand,
+  runSkillSyncCommand,
   runSkillValidateCommand,
 } from "./commands/skill";
 import { runTaskDoneCommand, runTaskStartCommand, runTaskUpdateCommand } from "./commands/task";
@@ -100,7 +101,7 @@ function printUsage(log: LogFn): void {
   log("  mdkg skill list --tags stage:plan --json");
   log("  mdkg validate");
   log("\nOptional agent-ready bootstrap:");
-  log("  mdkg init --omni");
+  log("  mdkg init --agent");
   log("\nRun `mdkg help <command>` or `mdkg <command> --help` for details.");
   printGlobalOptions(log);
 }
@@ -110,8 +111,8 @@ function printInitHelp(log: LogFn): void {
   log("  mdkg init [options]");
   log("\nOptions:");
   log("  --force               Overwrite existing mdkg files");
-  log("  --llm                 Create AGENTS.md and CLAUDE.md");
-  log("  --omni                Add SOUL/HUMAN/skills/events scaffolding");
+  log("  --llm                 Create AGENTS.md, CLAUDE.md, llms.txt, and AGENT_START.md");
+  log("  --agent               Add SOUL/HUMAN/skills/events scaffolding and skill mirrors");
   log("  --no-update-ignores   Skip default .gitignore/.npmignore updates");
   log("  --update-gitignore    Append mdkg ignore entries");
   log("  --update-npmignore    Append mdkg ignore entries");
@@ -268,6 +269,13 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg skill validate [<slug>]");
       printGlobalOptions(log);
       return;
+    case "sync":
+      log("Usage:");
+      log("  mdkg skill sync [--force]");
+      log("\nWhen to use:");
+      log("  Rebuild .agents/skills and .claude/skills from canonical .mdkg/skills.");
+      printGlobalOptions(log);
+      return;
     default:
       log("Usage:");
       log('  mdkg skill new <slug> "<name>" --description "<description>" [options]');
@@ -275,6 +283,7 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg skill show <slug> [--meta] [--json]");
       log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]');
       log("  mdkg skill validate [<slug>]");
+      log("  mdkg skill sync [--force]");
       log("\nNotes:");
       log("  Skills are first-class under `mdkg skill ...`.");
       log("  Use stage tags like `stage:plan`, `stage:execute`, and `stage:review` with --tags.");
@@ -289,6 +298,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]');
       log("\nWhen to use:");
       log("  Move a task, bug, or test into progress and emit a baseline event when logging is enabled.");
+      log("  If events are disabled, mdkg prints a short reminder about `mdkg event enable`.");
       printGlobalOptions(log);
       return;
     case "update":
@@ -307,6 +317,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log('                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"]');
       log("\nWhen to use:");
       log("  Mark a task-like node done, optionally create a checkpoint, and emit a completion event when enabled.");
+      log("  Use `--checkpoint` for milestone compression, not every routine task completion.");
       printGlobalOptions(log);
       return;
     default:
@@ -316,6 +327,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [options]');
       log("\nNotes:");
       log("  `mdkg task ...` only supports task, bug, and test nodes in this wave.");
+      log("  Feat and epic closeout remain checkpoint-first guidance plus manual parent updates.");
       printGlobalOptions(log);
   }
 }
@@ -734,8 +746,16 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runSkillValidateCommand({ root, slug });
       return 0;
     }
+    case "sync": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("skill sync does not accept positional arguments");
+      }
+      const force = parseBooleanFlag("--force", parsed.flags["--force"]);
+      runSkillSyncCommand({ root, force });
+      return 0;
+    }
     default:
-      throw new UsageError("skill requires new/list/show/search/validate");
+      throw new UsageError("skill requires new/list/show/search/validate/sync");
   }
 }
 
@@ -878,7 +898,10 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const createAgents = parseBooleanFlag("--agents", parsed.flags["--agents"]);
       const createClaude = parseBooleanFlag("--claude", parsed.flags["--claude"]);
       const createLlm = parseBooleanFlag("--llm", parsed.flags["--llm"]);
-      const omni = parseBooleanFlag("--omni", parsed.flags["--omni"]);
+      if (parsed.flags["--omni"]) {
+        throw new UsageError("`mdkg init --omni` was removed; use `mdkg init --agent`");
+      }
+      const agent = parseBooleanFlag("--agent", parsed.flags["--agent"]);
       const noUpdateIgnores = parseBooleanFlag(
         "--no-update-ignores",
         parsed.flags["--no-update-ignores"]
@@ -905,7 +928,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         createAgents,
         createClaude,
         createLlm,
-        omni,
+        agent,
       });
       return 0;
     }

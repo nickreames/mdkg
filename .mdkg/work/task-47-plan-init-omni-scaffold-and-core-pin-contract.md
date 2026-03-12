@@ -20,11 +20,11 @@ updated: 2026-03-05
 
 # Overview
 
-Define the explicit scaffold-file and core-pin behavior for `mdkg init --omni` so bootstrapped repos are deterministic, schema-safe, and constraint-first.
+Define the explicit scaffold-file and core-pin behavior for `mdkg init --agent` so bootstrapped repos are deterministic, schema-safe, and constraint-first.
 
 # Acceptance Criteria
 
-- Omni scaffold target paths are documented: `.mdkg/core/SOUL.md`, `.mdkg/core/HUMAN.md`, `.mdkg/skills/`, `.mdkg/work/events/events.jsonl`.
+- Agent scaffold target paths are documented: `.mdkg/core/SOUL.md`, `.mdkg/core/HUMAN.md`, `.mdkg/skills/`, `.mdkg/work/events/events.jsonl`.
 - Skills scaffold directory/registry contract is documented; default example skill file is optional and not required.
 - Core pin update behavior is documented as ID-only with no duplicates and priority ordering for SOUL/HUMAN pins.
 - `.mdkg/work/events/*.md` guidance files are explicitly excluded in favor of root/core docs guidance.
@@ -35,7 +35,7 @@ Define the explicit scaffold-file and core-pin behavior for `mdkg init --omni` s
 - src/commands/init.ts
 - src/cli.ts
 - src/pack/verbose_core.ts
-- .mdkg/design/edd-4-mdkg-init-omni-specification-v0-4.md
+- .mdkg/design/edd-4-mdkg-init-agent-specification-0-0-5.md
 - .mdkg/design/edd-2-mdkg-v0-4-architecture-indexing-validation-packs-skills.md
 - .mdkg/work/task-33-plan-init-omni-flag-and-llm-compatibility.md
 

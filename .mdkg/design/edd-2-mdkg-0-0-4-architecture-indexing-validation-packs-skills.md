@@ -18,7 +18,7 @@ updated: 2026-03-05
 This document is the canonical technical blueprint for mdkg 0.0.4 architecture.
 
 For 0.0.4 agent memory behavior guidance (semantic/procedural/episodic usage model and external orchestrator commit cadence), see `edd-3`.
-For init-omni scaffold and pin/update contract details, see `edd-4`.
+For init-agent scaffold and pin/update contract details, see `edd-4`.
 For practical skills authoring/integration usage guidance, see `edd-5`.
 For detailed episodic logging and checkpoint operational guidance, see `edd-6`.
 For standards-alignment and research snapshot context, see `edd-7`.
@@ -28,7 +28,7 @@ Scope:
 - node and skill discovery/indexing
 - schema and graph validation
 - deterministic pack generation
-- `init --omni` agent-ready scaffolding design
+- `init --agent` agent-ready scaffolding design
 - episodic log + checkpoint scaffolding guidance
 
 Current architecture baseline is **v0.0.3** (source-truth implementation), not a generalized `v0.3` line.
@@ -49,7 +49,7 @@ Current baseline behaviors (v0.0.3):
 
 | Capability | 0.0.4 target | current behavior | source anchor |
 | --- | --- | --- | --- |
-| Omni bootstrap flag | `mdkg init --omni` | implemented | `src/cli.ts`, `src/commands/init.ts` |
+| Agent bootstrap flag | `mdkg init --agent` | implemented | `src/cli.ts`, `src/commands/init.ts` |
 | Skill discovery/indexing | `.mdkg/skills/**/SKILL.md` -> `.mdkg/index/skills.json` | implemented | `src/graph/skills_indexer.ts`, `src/graph/skills_index_cache.ts`, `src/commands/index.ts` |
 | Skill metadata schema | required skill frontmatter + optional flattened `ochatr_*` | implemented (flattened keys only) | `src/graph/skills_indexer.ts` |
 | Node -> skill references | optional `skills: [...]` on work-item nodes | implemented + validated | `src/graph/node.ts`, `src/commands/validate.ts`, `src/graph/frontmatter.ts` |
@@ -70,7 +70,7 @@ Subsystem additions:
 1. Node indexer (existing): `.mdkg/index/global.json`
 2. Skill indexer (new): `.mdkg/index/skills.json`
 3. Pack assembler extension (new): optional skill payload selection
-4. Omni bootstrap extension (new): `init --omni` scaffolding contract
+4. Agent bootstrap extension (new): `init --agent` scaffolding contract
 5. Episodic scaffold conventions (new): `events.jsonl` + checkpoints
 
 ## Indexing execution flow
@@ -134,10 +134,10 @@ Truncation priority target:
 - truncate related nodes before core constraints
 - include skills last unless explicitly requested
 
-## Omni bootstrap target behavior
+## Agent bootstrap target behavior
 
 Command signature target:
-- `mdkg init --omni [--llm] [--update-gitignore] [--update-npmignore]`
+- `mdkg init --agent [--llm] [--update-gitignore] [--update-npmignore]`
 
 Scaffold target (if missing):
 - `.mdkg/core/SOUL.md` (strict node)
@@ -240,7 +240,7 @@ Canonical `skills.json` example:
 Canonical seeded `events.jsonl` first line example:
 
 ```json
-{"ts":"2026-03-04T00:00:00.000Z","run_id":"init-20260304-000000","workspace":"root","agent":"mdkg","kind":"RUN_STARTED","status":"ok","refs":["edd-4"],"artifacts":[],"notes":"init omni scaffold target initialized","redacted":true}
+{"ts":"2026-03-04T00:00:00.000Z","run_id":"init-20260304-000000","workspace":"root","agent":"mdkg","kind":"RUN_STARTED","status":"ok","refs":["edd-4"],"artifacts":[],"notes":"init agent scaffold target initialized","redacted":true}
 ```
 
 # APIs / interfaces
@@ -269,7 +269,7 @@ Pack capabilities:
 - optional `latest_checkpoint_qid` hint as optimization with pack-time authoritative resolution
 
 Init capabilities:
-- omni scaffolding target with SOUL/HUMAN core nodes, skills scaffold (no required default sample skill file), and seeded events line
+- agent scaffolding target with SOUL/HUMAN core nodes, skills scaffold, mirrored skill roots, and a seeded events line
 
 Operational model:
 - single-writer and batching guidance is documentation for external orchestrators in 0.0.4, not runtime enforcement inside mdkg
@@ -278,7 +278,7 @@ Operational model:
 
 - Exact skills/events CLI names remain deferred.
 - Any command/flag examples in 0.0.4 docs are non-normative illustrations.
-- `init --omni` remains the explicit planned flag name.
+- `init --agent` remains the explicit planned flag name.
 
 Non-normative examples:
 - `mdkg skill list --tags stage:plan --tags-mode all`
@@ -314,7 +314,7 @@ Non-normative examples:
 - Keep `mdkg validate` as main quality gate for documentation graph correctness.
 - Add 0.0.4-target coverage for skill indexing and cross-validation contracts.
 - Add pack determinism checks with/without skill inclusion.
-- Add omni scaffold acceptance checks for SOUL/HUMAN/skills scaffold/seeded events format.
+- Add agent scaffold acceptance checks for SOUL/HUMAN/skills scaffold/mirror roots/seeded events format.
 - Ensure CLI help remains unchanged in this docs-only pass.
 
 # Rollout plan
@@ -324,7 +324,7 @@ Implementation sequence for 0.0.4 architecture work:
 2. Extend validation with skill schema checks and node->skill cross-validation.
 3. Extend query/display capabilities for skill discovery and inspection.
 4. Extend pack engine with optional skill inclusion policy and deterministic ordering.
-5. Extend `init --omni` scaffolding (SOUL/HUMAN core nodes, skills scaffold, seeded events).
+5. Extend `init --agent` scaffolding (SOUL/HUMAN core nodes, skills scaffold, seeded events).
 6. Keep docs/rules/roadmap nodes aligned to source-truth during rollout.
 7. Add stage-tag filtering + policy gating contract coverage (`task-50`, `task-51`, `test-20`).
 8. Add hybrid checkpoint hint coverage (`task-52`, `test-21`, `test-22`).

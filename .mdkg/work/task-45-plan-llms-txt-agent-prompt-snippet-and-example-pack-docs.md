@@ -36,7 +36,7 @@ Define the 0.0.4 contract for LLM-readable artifacts: `llms.txt`, agent prompt s
 - src/cli.ts
 - .mdkg/design/edd-2-mdkg-v0-4-architecture-indexing-validation-packs-skills.md
 - .mdkg/design/edd-3-mdkg-agent-memory-model-deterministic-memory-skills-events.md
-- .mdkg/design/edd-4-mdkg-init-omni-specification-v0-4.md
+- .mdkg/design/edd-4-mdkg-init-agent-specification-0-0-5.md
 - .mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md
 
 # Implementation Notes

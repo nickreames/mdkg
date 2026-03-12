@@ -44,17 +44,25 @@ test("parseArgs supports profile alias and compatibility booleans", () => {
 
   const initParsed = parseArgs([
     "init",
-    "--omni",
+    "--agent",
     "--no-update-ignores",
     "--update-gitignore",
   ]);
-  assert.equal(initParsed.flags["--omni"], true);
+  assert.equal(initParsed.flags["--agent"], true);
   assert.equal(initParsed.flags["--no-update-ignores"], true);
   assert.equal(initParsed.flags["--update-gitignore"], true);
 
   const showParsed = parseArgs(["show", "skill:demo", "--meta", "--body"]);
   assert.equal(showParsed.flags["--meta"], true);
   assert.equal(showParsed.flags["--body"], true);
+});
+
+test("parseArgs allows --agent to act as a boolean or a valued flag depending on usage", () => {
+  const initParsed = parseArgs(["init", "--agent"]);
+  assert.equal(initParsed.flags["--agent"], true);
+
+  const eventParsed = parseArgs(["event", "append", "--agent", "mdkg-cli"]);
+  assert.equal(eventParsed.flags["--agent"], "mdkg-cli");
 });
 
 test("parseArgs supports task and event mutation flags", () => {
@@ -96,7 +104,7 @@ test("parseArgs supports task and event mutation flags", () => {
     "--notes",
     "done",
     "--agent",
-    "omni",
+    "ai-agent",
     "--skill",
     "verify-close-and-checkpoint",
     "--tool",
@@ -107,7 +115,7 @@ test("parseArgs supports task and event mutation flags", () => {
   assert.equal(eventParsed.flags["--status"], "ok");
   assert.equal(eventParsed.flags["--refs"], "task-1");
   assert.equal(eventParsed.flags["--notes"], "done");
-  assert.equal(eventParsed.flags["--agent"], "omni");
+  assert.equal(eventParsed.flags["--agent"], "ai-agent");
   assert.equal(eventParsed.flags["--skill"], "verify-close-and-checkpoint");
   assert.equal(eventParsed.flags["--tool"], "codex");
   assert.equal(eventParsed.flags["--no-update-gitignore"], true);
