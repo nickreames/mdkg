@@ -18,7 +18,13 @@ import {
   refreshSkillsRegistry,
   renderSkillTemplate,
 } from "./skill_support";
-import { toSkillDetailJson, toSkillSummaryJson, writeCount, writeJson } from "./query_output";
+import {
+  QueryOutputFormat,
+  toSkillDetailJson,
+  toSkillSummaryJson,
+  writeCount,
+  writeStructuredOutput,
+} from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
 import { shouldMaintainSkillMirrors, syncSkillMirrors } from "./skill_mirror";
 
@@ -40,6 +46,7 @@ export type SkillListCommandOptions = {
   root: string;
   tags?: string[];
   tagsMode?: "any" | "all";
+  format?: QueryOutputFormat;
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
@@ -49,6 +56,7 @@ export type SkillShowCommandOptions = {
   root: string;
   slug: string;
   metaOnly?: boolean;
+  format?: QueryOutputFormat;
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
@@ -59,6 +67,7 @@ export type SkillSearchCommandOptions = {
   query: string;
   tags?: string[];
   tagsMode?: "any" | "all";
+  format?: QueryOutputFormat;
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
@@ -291,13 +300,14 @@ export function runSkillListCommand(options: SkillListCommandOptions): void {
     options.tagsMode ?? "any"
   ).sort((a, b) => a.qid.localeCompare(b.qid));
 
-  if (options.json) {
-    writeJson({
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
       command: "list",
       kind: "skill",
       count: skills.length,
       items: skills.map(toSkillSummaryJson),
-    });
+    }, format);
     return;
   }
 
@@ -333,12 +343,13 @@ export function runSkillShowCommand(options: SkillShowCommandOptions): void {
     body = fs.readFileSync(skillPath, "utf8").trimEnd();
   }
 
-  if (options.json) {
-    writeJson({
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
       command: "show",
       kind: "skill",
       item: toSkillDetailJson(skill, options.metaOnly ? undefined : body),
-    });
+    }, format);
     return;
   }
 
@@ -407,13 +418,14 @@ export function runSkillSearchCommand(options: SkillSearchCommandOptions): void 
     .filter((skill) => matchesSkillQuery(skill, terms))
     .sort((a, b) => a.qid.localeCompare(b.qid));
 
-  if (options.json) {
-    writeJson({
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
       command: "search",
       kind: "skill",
       count: skills.length,
       items: skills.map(toSkillSummaryJson),
-    });
+    }, format);
     return;
   }
 

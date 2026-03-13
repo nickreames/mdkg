@@ -88,7 +88,7 @@ If a user provides an unqualified ID and it is ambiguous globally:
 - Commands should be script-friendly:
   - concise outputs for single items
   - predictable formatting
-  - `--json` output for supported discovery/show commands
+  - `--json`, `--xml`, `--toon`, and `--md` output for supported discovery/show commands
   - when printing node summaries (e.g., `show`/list results), outputs SHOULD surface key searchable frontmatter fields such as `links` and `artifacts`
 
 ## Command set (v1 target)
@@ -164,18 +164,19 @@ Common flags:
 - `--template <set>` (default from config)
 
 ### Read/search
-- `mdkg show <id-or-qid> [--meta] [--json]`
+- `mdkg show <id-or-qid> [--meta] [--json|--xml|--toon|--md]`
   - default behavior shows the full node body
   - `--meta` is the compact card-only view
-- `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+- `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
   - search SHOULD match on IDs, titles, tags, path tokens, and searchable frontmatter lists (`links`, `artifacts`, `refs`, `aliases`)
-- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--blocked] [--priority <n>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+- `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--blocked] [--priority <n>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
 - skills are first-class under `mdkg skill ...` only:
-  - `mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
-  - `mdkg skill show <slug> [--meta] [--json]`
-  - `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+  - `mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
+  - `mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]`
+  - `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
   - `mdkg skill validate [<slug>]`
   - `mdkg skill sync [--force]`
+- discovery/show output flags are mutually exclusive; text mode remains the default when none are supplied
 
 ### Task lifecycle mutation
 - `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]`

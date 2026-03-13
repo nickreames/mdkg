@@ -80,6 +80,7 @@ Compatibility flags still supported but not part of the primary story:
 Notes:
 - `--agent` is independent from `--llm`
 - `--llm --agent` is the full AI-agent bootstrap path
+- published bootstrap config is root-only by default
 - `--agent` seeds three default mdkg usage skills into canonical `.mdkg/skills/`, updates the registry, creates `events.jsonl`, and syncs non-empty mirrors
 
 ### `mdkg new`
@@ -136,17 +137,21 @@ When to use:
 - use `mdkg skill show <slug>` for skills
 
 Usage:
-- `mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json]`
+- `mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]`
 
 Flags:
 - `--ws <alias>`
 - `--meta`
 - `--json`
+- `--xml`
+- `--toon`
+- `--md`
 
 Notes:
 - default behavior prints full body content
 - `--meta` omits the body
-- `--json` returns `{ command, kind, item }`
+- structured outputs are mutually exclusive
+- `--json`, `--xml`, `--toon`, and `--md` all return the same `show` envelope shape
 
 Removed surface:
 - `mdkg show skill:<slug>`
@@ -159,7 +164,7 @@ When to use:
 
 Usage:
 - `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]`
-- `           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+- `           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
 
 Flags:
 - `--type <type>`
@@ -171,10 +176,14 @@ Flags:
 - `--tags <tag,tag,...>`
 - `--tags-mode any|all`
 - `--json`
+- `--xml`
+- `--toon`
+- `--md`
 
 Notes:
 - text mode prints cards on stdout and `count:` / `note:` on stderr
-- `--json` returns `{ command, kind, count, items }`
+- structured outputs are mutually exclusive
+- `--json`, `--xml`, `--toon`, and `--md` all return the same `list` envelope shape
 
 Removed surface:
 - `mdkg list --type skill`
@@ -187,7 +196,7 @@ When to use:
 
 Usage:
 - `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]`
-- `               [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+- `               [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
 
 Flags:
 - `--type <type>`
@@ -196,11 +205,15 @@ Flags:
 - `--tags <tag,tag,...>`
 - `--tags-mode any|all`
 - `--json`
+- `--xml`
+- `--toon`
+- `--md`
 
 Notes:
 - search returns nodes only
 - text mode prints cards on stdout and `count:` / `note:` on stderr
-- `--json` returns `{ command, kind, count, items }`
+- structured outputs are mutually exclusive
+- `--json`, `--xml`, `--toon`, and `--md` all return the same `search` envelope shape
 
 Removed surfaces:
 - `mdkg search --type skill`
@@ -295,45 +308,57 @@ Scaffold behavior:
 #### `mdkg skill list`
 
 Usage:
-- `mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+- `mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
 
 Flags:
 - `--tags <tag,tag,...>`
 - `--tags-mode any|all`
 - `--json`
+- `--xml`
+- `--toon`
+- `--md`
 
 Notes:
 - text mode prints cards on stdout and `count:` / `note:` on stderr
-- JSON mode returns `{ command, kind, count, items }`
+- structured outputs are mutually exclusive
+- `--json`, `--xml`, `--toon`, and `--md` all return the same `list` envelope shape
 - preferred orchestrator lookup pattern: `mdkg skill list --tags stage:plan --json`
 
 #### `mdkg skill show`
 
 Usage:
-- `mdkg skill show <slug> [--meta] [--json]`
+- `mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]`
 
 Flags:
 - `--meta`
 - `--json`
+- `--xml`
+- `--toon`
+- `--md`
 
 Notes:
 - default behavior prints full skill body
 - `--meta` omits the body
-- JSON mode returns `{ command, kind, item }`
+- structured outputs are mutually exclusive
+- `--json`, `--xml`, `--toon`, and `--md` all return the same `show` envelope shape
 
 #### `mdkg skill search`
 
 Usage:
-- `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]`
+- `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
 
 Flags:
 - `--tags <tag,tag,...>`
 - `--tags-mode any|all`
 - `--json`
+- `--xml`
+- `--toon`
+- `--md`
 
 Notes:
 - text mode prints cards on stdout and `count:` / `note:` on stderr
-- JSON mode returns `{ command, kind, count, items }`
+- structured outputs are mutually exclusive
+- `--json`, `--xml`, `--toon`, and `--md` all return the same `search` envelope shape
 - preferred orchestrator lookup pattern: `mdkg skill search "checkpoint" --tags stage:review --json`
 
 #### `mdkg skill validate`

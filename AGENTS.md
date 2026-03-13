@@ -6,6 +6,7 @@ Codex/OpenAI conventions for this repo:
 - use `.agents/skills/` when mirrored skills are present
 - use `mdkg skill ...` as the canonical skill command family
 - use `CLI_COMMAND_MATRIX.md` as the single command reference
+- use `mdkg help <command>` or `CLI_COMMAND_MATRIX.md` for the full `--json|--xml|--toon|--md` discovery/show surface
 
 Repo-specific quickstart:
 - build: `npm run build`

@@ -176,10 +176,13 @@ Current source behavior:
   - `mdkg skill show <slug>`
   - `mdkg skill validate [<slug>]`
   - `mdkg skill sync`
-- machine-readable skill discovery is available through:
+- machine-readable skill discovery and inspection is available through:
   - `mdkg skill list --json`
   - `mdkg skill search "<query>" --json`
   - `mdkg skill show <slug> --json`
+  - `mdkg skill list --xml|--toon|--md`
+  - `mdkg skill search "<query>" --xml|--toon|--md`
+  - `mdkg skill show <slug> --xml|--toon|--md`
 - work items may reference `skills: [slug,...]`
 - packs may include skills with `--skills` and `--skills-depth`
 - mdkg indexes and discovers skills but does not execute skill scripts
@@ -201,11 +204,13 @@ This repo now dogfoods three internal skills:
 This release includes:
 - `init --agent`
 - default ignore updates with `--no-update-ignores` for `.mdkg/index/` and `.mdkg/pack/`
+- root-only published init seed config
 - skills indexing and search/show/list support
 - optional `skills: [...]` on work items
 - pack-time skill inclusion
 - latest-checkpoint resolver + index hint
 - events JSONL validation
+- XML / TOON / Markdown output for node and skill list/search/show
 - product-specific skill mirrors for Codex/OpenAI and Claude
 - shared `AGENT_START.md` startup guidance
 

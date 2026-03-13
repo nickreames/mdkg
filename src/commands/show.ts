@@ -6,13 +6,18 @@ import { parseFrontmatter } from "../graph/frontmatter";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { formatNodeCard } from "./node_card";
-import { toNodeDetailJson, writeJson } from "./query_output";
+import {
+  QueryOutputFormat,
+  toNodeDetailJson,
+  writeStructuredOutput,
+} from "./query_output";
 
 export type ShowCommandOptions = {
   root: string;
   id: string;
   ws?: string;
   metaOnly?: boolean;
+  format?: QueryOutputFormat;
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
@@ -72,12 +77,13 @@ export function runShowCommand(options: ShowCommandOptions): void {
     body = parseFrontmatter(content, filePath).body.trimEnd();
   }
 
-  if (options.json) {
-    writeJson({
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
       command: "show",
       kind: "node",
       item: toNodeDetailJson(node, options.metaOnly ? undefined : body),
-    });
+    }, format);
     return;
   }
 

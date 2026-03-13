@@ -2,7 +2,7 @@
 id: task-28
 type: task
 title: add version and doctor commands
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 tags: []
@@ -15,11 +15,11 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-02-07
-updated: 2026-02-07
+updated: 2026-03-12
 ---
 # Overview
 
-Describe what this task is and why it matters.
+Historical placeholder task. Version and doctor commands shipped in later implementation and this node no longer represents actionable backlog.
 
 # Acceptance Criteria
 
@@ -44,6 +44,4 @@ How will we verify it works?
 
 # Links / Artifacts
 
-- related docs
-- related issues
-- references
+- superseded by shipped doctor/version command work in the current source tree

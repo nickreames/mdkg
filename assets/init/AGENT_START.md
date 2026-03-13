@@ -45,3 +45,9 @@ Conventions:
 - Prefer checkpoints for feat/epic closeout summaries; parent status edits remain manual.
 - If `events.jsonl` is missing, `mdkg task start` and `mdkg task done` will remind you how to recreate it.
 - Files outside mdkg-managed skill mirrors, such as local tool permission files, are not managed by mdkg unless documented explicitly.
+
+Structured discovery/show exports:
+- `--json`
+- `--xml`
+- `--toon`
+- `--md`

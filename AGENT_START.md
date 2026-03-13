@@ -94,3 +94,9 @@ Build and verification:
 - `npm run cli:check`
 
 When you need a full command reference, use `CLI_COMMAND_MATRIX.md` or `mdkg help <command>`.
+
+Discovery and show commands also support structured exports when an agent needs machine-readable output:
+- `--json`
+- `--xml`
+- `--toon`
+- `--md`
