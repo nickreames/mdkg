@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-03-11
-package_version_in_source: 0.0.5
+package_version_in_source: 0.0.6
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -80,6 +80,7 @@ Compatibility flags still supported but not part of the primary story:
 Notes:
 - `--agent` is independent from `--llm`
 - `--llm --agent` is the full AI-agent bootstrap path
+- `--agent` seeds three default mdkg usage skills into canonical `.mdkg/skills/`, updates the registry, creates `events.jsonl`, and syncs non-empty mirrors
 
 ### `mdkg new`
 
@@ -348,7 +349,8 @@ Notes:
 ### `mdkg task`
 
 When to use:
-- mutate task-like nodes without hand-editing markdown
+- mutate structured task-like fields and capture routine lifecycle evidence
+- keep narrative/body edits and manual parent summaries in markdown
 - optionally append baseline task events when event logging is enabled
 
 Usage:
@@ -364,7 +366,7 @@ Usage:
 Behavior:
 - supports `task`, `bug`, and `test` only
 - sets `status: progress`
-- if events are disabled for the workspace, prints a short `stderr` reminder about `mdkg event enable`
+- if `events.jsonl` is missing for the workspace, prints a short `stderr` reminder about `mdkg event enable`
 
 #### `mdkg task update`
 
@@ -390,12 +392,12 @@ Behavior:
 - supports `task`, `bug`, and `test` only
 - sets `status: done`
 - `--checkpoint` creates a related checkpoint
-- if events are disabled for the workspace, prints a short `stderr` reminder about `mdkg event enable`
+- if `events.jsonl` is missing for the workspace, prints a short `stderr` reminder about `mdkg event enable`
 
 Closeout guidance:
 - use `--checkpoint` for milestone compression and parent closeout summaries
 - do not create a checkpoint for every routine task completion
-- feat/epic status edits remain manual in `0.0.5`; use checkpoints as the durable narrative layer
+- feat/epic status edits remain manual; use checkpoints as the durable narrative layer
 
 ### `mdkg next`
 
@@ -428,19 +430,19 @@ Notes:
 ### `mdkg event`
 
 When to use:
-- enable or append append-only episodic logs
-- keep a cheap provenance trail for mutating workflows
+- ensure or append append-only episodic logs
+- keep a durable provenance trail for mutating workflows
 
 #### `mdkg event enable`
 
 Usage:
-- `mdkg event enable [--ws <alias>] [--no-update-gitignore]`
+- `mdkg event enable [--ws <alias>]`
 
 Behavior:
 - creates `.mdkg/work/events/events.jsonl` if missing
-- updates `.gitignore` by default
-- automatic command-level events only happen after enablement
-- task start/done reminders point here when provenance is disabled
+- leaves `.gitignore` unchanged
+- automatic command-level events happen when the file exists
+- task start/done reminders point here when `events.jsonl` is missing
 
 #### `mdkg event append`
 
@@ -520,7 +522,7 @@ Explicit commands:
 - `mdkg event enable`
 - `mdkg event append`
 
-Automatic baseline events append only when event logging is enabled for the workspace.
+Automatic baseline events append only when `events.jsonl` exists for the workspace.
 Current automatic mutation events:
 - `NODE_CREATED`
 - `SKILL_CREATED`

@@ -27,7 +27,7 @@ Create or update a focused mdkg skill that teaches a repeatable workflow without
 
 1. Check for an existing fit first with `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>`.
 2. If an existing skill already covers the workflow, update it instead of creating a near-duplicate.
-3. If the workflow is really task mutation or event provenance, prefer teaching `mdkg task ...` and `mdkg event ...` rather than inventing manual markdown-editing steps.
+3. If the workflow is really task mutation or event provenance, prefer teaching `mdkg task ...` and `mdkg event ...` for structured fields while still allowing markdown narrative edits where they fit better.
 4. If a new skill is justified, scaffold it with `mdkg skill new <slug> "<name>" --description "..."`.
 5. Write the description so it says both what the skill does and when to use it.
 6. Add only the minimum tags needed for discovery, including the correct `stage:*` tag and a single `writer:*` tag.

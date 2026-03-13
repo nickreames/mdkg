@@ -40,7 +40,8 @@ Conventions:
 - `.agents/skills/` and `.claude/skills/` mirror canonical skills from `.mdkg/skills/` when agent bootstrap is enabled.
 - mdkg does not execute skill scripts; runtimes decide when and whether to do that.
 - Prefer packs over ad-hoc file lists.
-- Prefer task/event commands over hand-editing routine work-state changes.
+- Prefer task/event commands for structured work-state changes and use markdown edits for narrative/body updates.
 - Use `mdkg task done <id> --checkpoint "<title>"` for milestone compression, not every routine task completion.
-- Prefer checkpoints for feat/epic closeout summaries; parent status edits remain manual in 0.0.5.
-- If events are disabled, `mdkg task start` and `mdkg task done` will remind you how to enable JSONL provenance.
+- Prefer checkpoints for feat/epic closeout summaries; parent status edits remain manual.
+- If `events.jsonl` is missing, `mdkg task start` and `mdkg task done` will remind you how to recreate it.
+- Files outside mdkg-managed skill mirrors, such as local tool permission files, are not managed by mdkg unless documented explicitly.

@@ -48,12 +48,13 @@ function createTaskRepo(prefix: string): string {
 
 test("event enable and append create valid JSONL that validate accepts", () => {
   const root = createTaskRepo("mdkg-event-enable-");
+  fs.writeFileSync(path.join(root, ".gitignore"), ".mdkg/index/\n", "utf8");
 
   runEventEnableCommand({ root });
   const eventsPath = path.join(root, ".mdkg", "work", "events", "events.jsonl");
   assert.ok(fs.existsSync(eventsPath));
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
-  assert.match(gitignore, /\.mdkg\/work\/events\/\*\.jsonl/);
+  assert.equal(gitignore, ".mdkg/index/\n");
 
   runEventAppendCommand({
     root,
@@ -86,7 +87,7 @@ test("task start update and done mutate task-like nodes and optional checkpoint"
     name: "review-pr",
     description: "review pull requests when validating final changes",
   });
-  runEventEnableCommand({ root, updateGitignore: false });
+  runEventEnableCommand({ root });
 
   runTaskStartCommand({
     root,
@@ -159,7 +160,7 @@ test("automatic event append applies to enabled mutation commands only", () => {
   });
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "work", "events", "events.jsonl")), false);
 
-  runEventEnableCommand({ root, updateGitignore: false });
+  runEventEnableCommand({ root });
   runNewCommand({
     root,
     type: "task",
@@ -222,7 +223,7 @@ test("cli task start and done warn when events are disabled but task update stay
   assert.match(result.stdout, /task started: root:task-1/);
   assert.match(
     result.stderr,
-    /note: event logging not enabled for workspace root; run mdkg event enable --ws root if you want JSONL provenance/
+    /note: events\.jsonl is missing for workspace root; run mdkg event enable --ws root to restore JSONL provenance/
   );
 
   result = run(["task", "update", "task-1", "--status", "review", "--run-id", "run_cli_disabled"]);
@@ -235,7 +236,7 @@ test("cli task start and done warn when events are disabled but task update stay
   assert.match(result.stdout, /task done: root:task-1/);
   assert.match(
     result.stderr,
-    /note: event logging not enabled for workspace root; run mdkg event enable --ws root if you want JSONL provenance/
+    /note: events\.jsonl is missing for workspace root; run mdkg event enable --ws root to restore JSONL provenance/
   );
 });
 

@@ -107,6 +107,10 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - `--agent` adds strict-node bootstrap docs and scaffolding:
     - `.mdkg/core/SOUL.md` (`id: rule-soul`)
     - `.mdkg/core/HUMAN.md` (`id: rule-human`)
+    - seeded canonical skills:
+      - `.mdkg/skills/select-work-and-ground-context/SKILL.md`
+      - `.mdkg/skills/build-pack-and-execute-task/SKILL.md`
+      - `.mdkg/skills/verify-close-and-checkpoint/SKILL.md`
     - `.mdkg/skills/registry.md`
     - `.mdkg/work/events/events.jsonl`
     - `.agents/skills/`
@@ -219,9 +223,9 @@ Common flags:
   - designed as a phase summary / compression node
 
 ### Events
-- `mdkg event enable [--ws <alias>] [--no-update-gitignore]`
+- `mdkg event enable [--ws <alias>]`
   - creates `.mdkg/work/events/events.jsonl` if missing
-  - updates `.gitignore` by default
+  - leaves `.gitignore` unchanged
 - `mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [...]`
   - appends one JSONL provenance record
 - automatic command-level events append only when event logging is enabled for the target workspace

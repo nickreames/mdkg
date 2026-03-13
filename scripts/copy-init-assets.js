@@ -38,3 +38,7 @@ copyFile(
   path.join(distRoot, "CLI_COMMAND_MATRIX.md")
 );
 copyDir(path.join(root, "assets", "skills"), path.join(distRoot, "skills"));
+copyDir(
+  path.join(root, "assets", "init", "skills", "default"),
+  path.join(distRoot, "skills", "default")
+);

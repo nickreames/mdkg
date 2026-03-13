@@ -262,7 +262,7 @@ function maybeWarnEventsDisabled(root: string, config: ReturnType<typeof loadCon
     return;
   }
   console.error(
-    `note: event logging not enabled for workspace ${ws}; run mdkg event enable --ws ${ws} if you want JSONL provenance`
+    `note: events.jsonl is missing for workspace ${ws}; run mdkg event enable --ws ${ws} to restore JSONL provenance`
   );
 }
 

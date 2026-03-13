@@ -12,8 +12,8 @@ Operating rules:
 - Use mdkg show <id> for direct inspection and mdkg show <id> --meta when you only need the card and metadata.
 - Use mdkg search and mdkg next to discover current work.
 - Use mdkg skill list, mdkg skill search, and mdkg skill show <slug> for skills discovery.
-- Use mdkg task start/update/done for routine task, bug, and test lifecycle mutations instead of hand-editing markdown.
-- Use mdkg event enable before expecting automatic JSONL provenance from mutating commands.
+- Use mdkg task start/update/done for structured task, bug, and test lifecycle fields; keep narrative/body edits in markdown.
+- Use mdkg event enable only if `events.jsonl` is missing and you want to restore automatic JSONL provenance.
 - Use CLI_COMMAND_MATRIX.md when you need the canonical command and flag surface.
 - Run mdkg validate before marking work done.
 

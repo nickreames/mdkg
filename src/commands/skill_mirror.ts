@@ -143,29 +143,67 @@ function loadCanonicalSources(root: string, config: Config): SkillMirrorSource[]
     });
 }
 
-function copyDir(srcDir: string, destDir: string): void {
+function writeFileIfChanged(srcPath: string, destPath: string): void {
+  const next = fs.readFileSync(srcPath);
+  if (fs.existsSync(destPath) && fs.statSync(destPath).isFile()) {
+    const current = fs.readFileSync(destPath);
+    if (current.equals(next)) {
+      return;
+    }
+  }
+  fs.mkdirSync(path.dirname(destPath), { recursive: true });
+  fs.writeFileSync(destPath, next);
+}
+
+function syncDir(srcDir: string, destDir: string): void {
   fs.mkdirSync(destDir, { recursive: true });
-  const entries = fs.readdirSync(srcDir, { withFileTypes: true });
-  for (const entry of entries) {
+
+  const sourceEntries = fs.readdirSync(srcDir, { withFileTypes: true });
+  const sourceNames = new Set(sourceEntries.map((entry) => entry.name));
+  if (fs.existsSync(destDir)) {
+    for (const existing of fs.readdirSync(destDir)) {
+      if (!sourceNames.has(existing)) {
+        fs.rmSync(path.join(destDir, existing), { recursive: true, force: true });
+      }
+    }
+  }
+
+  for (const entry of sourceEntries) {
     const srcPath = path.join(srcDir, entry.name);
     const destPath = path.join(destDir, entry.name);
     if (entry.isDirectory()) {
-      copyDir(srcPath, destPath);
+      syncDir(srcPath, destPath);
     } else if (entry.isFile()) {
-      fs.mkdirSync(path.dirname(destPath), { recursive: true });
-      fs.copyFileSync(srcPath, destPath);
+      writeFileIfChanged(srcPath, destPath);
     }
   }
 }
 
 function materializeSkillMirror(source: SkillMirrorSource, destDir: string): void {
-  fs.rmSync(destDir, { recursive: true, force: true });
   fs.mkdirSync(destDir, { recursive: true });
-  fs.copyFileSync(source.docPath, path.join(destDir, "SKILL.md"));
+
+  const expectedRootEntries = new Set<string>(["SKILL.md"]);
   for (const entry of ["references", "assets", "scripts"]) {
     const srcPath = path.join(source.sourceDir, entry);
     if (fs.existsSync(srcPath) && fs.statSync(srcPath).isDirectory()) {
-      copyDir(srcPath, path.join(destDir, entry));
+      expectedRootEntries.add(entry);
+    }
+  }
+
+  for (const existing of fs.readdirSync(destDir)) {
+    if (!expectedRootEntries.has(existing)) {
+      fs.rmSync(path.join(destDir, existing), { recursive: true, force: true });
+    }
+  }
+
+  writeFileIfChanged(source.docPath, path.join(destDir, "SKILL.md"));
+  for (const entry of ["references", "assets", "scripts"]) {
+    const srcPath = path.join(source.sourceDir, entry);
+    const destPath = path.join(destDir, entry);
+    if (fs.existsSync(srcPath) && fs.statSync(srcPath).isDirectory()) {
+      syncDir(srcPath, destPath);
+    } else if (fs.existsSync(destPath)) {
+      fs.rmSync(destPath, { recursive: true, force: true });
     }
   }
 }

@@ -90,7 +90,6 @@ const BOOLEAN_FLAGS = new Set([
   "--list-profiles",
   "--with-scripts",
   "--clear-blocked-by",
-  "--no-update-gitignore",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {

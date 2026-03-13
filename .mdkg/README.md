@@ -23,6 +23,8 @@ mdkg validate
 
 Read `../AGENT_START.md` first when the repo includes it. Treat it as the instant-start guide before scanning the wider graph.
 
+Use `mdkg task ...` for structured state changes and evidence updates. Keep narrative node bodies, detailed summaries, and manual parent closeout edits in markdown.
+
 ## Pack Profiles
 
 - `--pack-profile standard`: full body (current default behavior)

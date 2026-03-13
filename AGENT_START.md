@@ -66,8 +66,8 @@ Use this loop for normal work:
 1. identify the work item
 2. build a deterministic pack
 3. execute with the smallest sufficient context
-4. update task state with `mdkg task ...`
-5. enable and rely on `mdkg event ...` if JSONL provenance is needed
+4. update structured task state with `mdkg task ...` and keep narrative/body edits in markdown
+5. rely on the default JSONL event log and use `mdkg event enable` only if the file is missing
 6. validate before closing work
 
 ## Closeout guidance
@@ -76,8 +76,14 @@ Use this loop for normal work:
 - Prefer checkpoints for parent closeout summaries:
   - feat closeout should summarize direct child work with `parent: <feat-id>`
   - epic closeout should summarize descendant work with `epic: <epic-id>`
-- Parent status edits remain manual in `0.0.5`; mdkg does not yet provide a dedicated parent closeout command.
-- If event logging is not enabled, `mdkg task start` and `mdkg task done` will remind you how to turn it on.
+- Parent status edits remain manual; mdkg does not yet provide a dedicated parent closeout command.
+- If `events.jsonl` is missing, `mdkg task start` and `mdkg task done` will remind you how to recreate it.
+
+## Editing boundary
+
+- Use `mdkg task ...` for structured field changes such as status, priority, artifacts, refs, tags, blockers, and skills.
+- Edit markdown directly for narrative body content, nuanced summaries, and manual parent-node closeout updates.
+- Files outside mdkg-managed skill mirrors, such as local tool permission files, are not managed by mdkg unless documented explicitly.
 
 ## Repo-specific commands
 

@@ -113,3 +113,12 @@ test("validate rejects malformed events.jsonl records", () => {
     /validation failed with 1 error/
   );
 });
+
+test("validate tolerates a missing events.jsonl file", () => {
+  const root = makeTempDir("mdkg-validate-events-missing-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root);
+
+  assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
+});

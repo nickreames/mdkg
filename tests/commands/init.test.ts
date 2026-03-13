@@ -51,6 +51,25 @@ function setupSeed(seed: string, includeAgentDocs = true): void {
     writeFile(path.join(seed, "AGENTS.md"), "# Agents\nRead `AGENT_START.md` first.\n");
     writeFile(path.join(seed, "CLAUDE.md"), "# Claude\nRead `AGENT_START.md` first.\n");
   }
+  for (const slug of [
+    "select-work-and-ground-context",
+    "build-pack-and-execute-task",
+    "verify-close-and-checkpoint",
+  ]) {
+    writeFile(
+      path.join(seed, "skills", "default", slug, "SKILL.md"),
+      [
+        "---",
+        `name: ${slug}`,
+        `description: use ${slug} when bootstrap scaffolding is created`,
+        "---",
+        "",
+        "# Goal",
+        "",
+        "Seeded test skill.",
+      ].join("\n")
+    );
+  }
 }
 
 test("runInitCommand copies seed assets, creates directories, and updates ignores by default", () => {
@@ -70,8 +89,6 @@ test("runInitCommand copies seed assets, creates directories, and updates ignore
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assert.match(gitignore, /\.mdkg\/index\//);
   assert.match(gitignore, /\.mdkg\/pack\//);
-  assert.match(gitignore, /\.mdkg\/work\/events\/\*\.jsonl/);
-
   const npmignore = fs.readFileSync(path.join(root, ".npmignore"), "utf8");
   assert.match(npmignore, /\.mdkg\//);
   assert.match(npmignore, /\.mdkg\/index\//);
@@ -123,29 +140,34 @@ test("runInitCommand explicit ignore flags override global opt-out", () => {
 
 test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and core pin order", () => {
   const root = makeTempDir("mdkg-init-agent-bootstrap-");
-  const seed = makeTempDir("mdkg-init-agent-bootstrap-seed-");
-  setupSeed(seed, false);
-
-  runInitCommand({ root, seedRoot: seed, agent: true });
+  runInitCommand({ root, agent: true });
 
   const soulPath = path.join(root, ".mdkg", "core", "SOUL.md");
   const humanPath = path.join(root, ".mdkg", "core", "HUMAN.md");
   const registryPath = path.join(root, ".mdkg", "skills", "registry.md");
+  const planSkillPath = path.join(root, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md");
+  const executeSkillPath = path.join(root, ".mdkg", "skills", "build-pack-and-execute-task", "SKILL.md");
+  const reviewSkillPath = path.join(root, ".mdkg", "skills", "verify-close-and-checkpoint", "SKILL.md");
   const eventsPath = path.join(root, ".mdkg", "work", "events", "events.jsonl");
   const coreListPath = path.join(root, ".mdkg", "core", "core.md");
   const agentsSkillsPath = path.join(root, ".agents", "skills");
   const claudeSkillsPath = path.join(root, ".claude", "skills");
   const agentStartPath = path.join(root, "AGENT_START.md");
   const cliMatrixPath = path.join(root, "CLI_COMMAND_MATRIX.md");
+  const llmsPath = path.join(root, "llms.txt");
 
   assert.ok(fs.existsSync(soulPath));
   assert.ok(fs.existsSync(humanPath));
   assert.ok(fs.existsSync(registryPath));
+  assert.ok(fs.existsSync(planSkillPath));
+  assert.ok(fs.existsSync(executeSkillPath));
+  assert.ok(fs.existsSync(reviewSkillPath));
   assert.ok(fs.existsSync(eventsPath));
   assert.ok(fs.existsSync(agentsSkillsPath));
   assert.ok(fs.existsSync(claudeSkillsPath));
   assert.ok(fs.existsSync(agentStartPath));
   assert.ok(fs.existsSync(cliMatrixPath));
+  assert.ok(fs.existsSync(llmsPath));
 
   const soul = fs.readFileSync(soulPath, "utf8");
   assert.match(soul, /id: rule-soul/);
@@ -167,6 +189,23 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.equal(typeof parsed.notes, "string");
   assert.match(String(parsed.notes), /init agent scaffold target initialized/);
 
+  const registry = fs.readFileSync(registryPath, "utf8");
+  assert.match(registry, /select-work-and-ground-context/);
+  assert.match(registry, /build-pack-and-execute-task/);
+  assert.match(registry, /verify-close-and-checkpoint/);
+
+  const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
+  assert.doesNotMatch(gitignore, /\.mdkg\/work\/events\/\*\.jsonl/);
+
+  const agentStart = fs.readFileSync(agentStartPath, "utf8");
+  assert.match(agentStart, /\.mdkg\/core\/SOUL\.md/);
+  assert.match(agentStart, /\.mdkg\/core\/HUMAN\.md/);
+  assert.match(agentStart, /select-work-and-ground-context/);
+  assert.match(agentStart, /markdown edits for narrative\/body updates/);
+
+  const llms = fs.readFileSync(llmsPath, "utf8");
+  assert.match(llms, /AGENT_START\.md/);
+
   const coreLines = fs
     .readFileSync(coreListPath, "utf8")
     .split(/\r?\n/)
@@ -175,4 +214,11 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.deepEqual(coreLines.slice(0, 2), ["rule-soul", "rule-human"]);
   assert.equal(coreLines.filter((value) => value === "rule-soul").length, 1);
   assert.equal(coreLines.filter((value) => value === "rule-human").length, 1);
+
+  assert.ok(fs.existsSync(path.join(root, ".agents", "skills", "select-work-and-ground-context", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(root, ".agents", "skills", "build-pack-and-execute-task", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(root, ".agents", "skills", "verify-close-and-checkpoint", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "select-work-and-ground-context", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "build-pack-and-execute-task", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "verify-close-and-checkpoint", "SKILL.md")));
 });
