@@ -2,7 +2,7 @@
 id: epic-3
 type: epic
 title: pack concision and consumer ux v0.0.3
-status: backlog
+status: done
 priority: 1
 tags: []
 owners: []
@@ -14,32 +14,32 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-02-07
-updated: 2026-02-07
+updated: 2026-03-12
 ---
 # Goal
 
-What outcome does this epic deliver?
+Historical planning record for the pack concision, consumer UX, doctor/version, and `0.0.3` release work that shipped across later implementation waves.
 
 # Scope
 
-What is included?
+- pack profile CLI behavior
+- pack body shaping and truncation
+- pack stats and onboarding help
+- version / doctor command work
+- `0.0.3` release preparation
 
 # Milestones
 
-- milestone 1
-- milestone 2
+- closed as historical backlog cleanup after later shipped implementation replaced these placeholder tasks
 
 # Out of Scope
 
-What is explicitly excluded?
+- new runtime work in current releases
 
 # Risks
 
-- risk 1
-- risk 2
+- if left open, `mdkg next` surfaces stale work instead of current priorities
 
 # Links / Artifacts
 
-- related docs
-- related tasks
-- external links
+- historical placeholder epic closed during `0.0.7` graph hygiene cleanup

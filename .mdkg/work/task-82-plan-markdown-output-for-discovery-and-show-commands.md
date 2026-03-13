@@ -2,25 +2,25 @@
 id: task-82
 type: task
 title: plan markdown output for discovery and show commands
-status: todo
+status: done
 priority: 1
 epic: epic-11
 tags: [0_0_4x, cli, markdown]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/commands/query_output.ts, src/commands/list.ts, src/commands/search.ts, src/commands/show.ts]
 relates: [dec-13, epic-11]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 created: 2026-03-08
-updated: 2026-03-08
+updated: 2026-03-12
 ---
 
 # Overview
 
-Plan Markdown output support for discovery and show commands after JSON stabilizes.
+This planning task was superseded by `epic-17` and implemented in `task-112` / `task-113`.
 
 # Acceptance Criteria
 
@@ -45,3 +45,4 @@ Plan Markdown output support for discovery and show commands after JSON stabiliz
 # Links / Artifacts
 
 - epic linkage and frontmatter artifacts are the source of truth for this planning record
+- superseded by `epic-17`, `task-112`, and `task-113`

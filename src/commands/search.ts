@@ -5,7 +5,12 @@ import { filterNodes } from "../util/filter";
 import { NotFoundError, UsageError } from "../util/errors";
 import { sortNodesByQid } from "../util/sort";
 import { formatNodeCard } from "./node_card";
-import { toNodeSummaryJson, writeCount, writeJson } from "./query_output";
+import {
+  QueryOutputFormat,
+  toNodeSummaryJson,
+  writeCount,
+  writeStructuredOutput,
+} from "./query_output";
 
 export type SearchCommandOptions = {
   root: string;
@@ -15,6 +20,7 @@ export type SearchCommandOptions = {
   status?: string;
   tags?: string[];
   tagsMode?: "any" | "all";
+  format?: QueryOutputFormat;
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
@@ -91,13 +97,14 @@ export function runSearchCommand(options: SearchCommandOptions): void {
   }).filter((node) => matchesQuery(node, terms));
 
   const sorted = sortNodesByQid(nodeResults);
-  if (options.json) {
-    writeJson({
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
       command: "search",
       kind: "node",
       count: sorted.length,
       items: sorted.map(toNodeSummaryJson),
-    });
+    }, format);
     return;
   }
 

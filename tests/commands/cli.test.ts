@@ -59,7 +59,7 @@ test("cli help list/search/show/skill include json and namespace-only skill guid
   assert.equal(listHelp.status, 0);
   assert.match(listHelp.stdout, /--tags <tag,tag,\.\.\.>/);
   assert.match(listHelp.stdout, /--tags-mode any\|all/);
-  assert.match(listHelp.stdout, /--json/);
+  assert.match(listHelp.stdout, /--json\|--xml\|--toon\|--md/);
   assert.doesNotMatch(listHelp.stdout, /--type skill/);
 
   const searchHelp = spawnSync(process.execPath, [cliPath, "help", "search"], {
@@ -69,7 +69,7 @@ test("cli help list/search/show/skill include json and namespace-only skill guid
   assert.equal(searchHelp.status, 0);
   assert.match(searchHelp.stdout, /--tags <tag,tag,\.\.\.>/);
   assert.match(searchHelp.stdout, /--tags-mode any\|all/);
-  assert.match(searchHelp.stdout, /--json/);
+  assert.match(searchHelp.stdout, /--json\|--xml\|--toon\|--md/);
 
   const showHelp = spawnSync(process.execPath, [cliPath, "help", "show"], {
     encoding: "utf8",
@@ -78,7 +78,7 @@ test("cli help list/search/show/skill include json and namespace-only skill guid
   assert.equal(showHelp.status, 0);
   assert.match(showHelp.stdout, /Use `mdkg skill show <slug>` for skills/);
   assert.match(showHelp.stdout, /--meta/);
-  assert.match(showHelp.stdout, /--json/);
+  assert.match(showHelp.stdout, /--json\|--xml\|--toon\|--md/);
   assert.doesNotMatch(showHelp.stdout, /--body/);
   assert.match(showHelp.stdout, /Shows full body content/);
 
@@ -87,7 +87,7 @@ test("cli help list/search/show/skill include json and namespace-only skill guid
     cwd: repoRoot,
   });
   assert.equal(skillHelp.status, 0);
-  assert.match(skillHelp.stdout, /mdkg skill search "<query>".*--json/s);
+  assert.match(skillHelp.stdout, /mdkg skill search "<query>".*--json\|--xml\|--toon\|--md/s);
   assert.match(skillHelp.stdout, /Skills are first-class under `mdkg skill \.\.\.`\./);
 
   const newHelp = spawnSync(process.execPath, [cliPath, "help", "new"], {
@@ -127,4 +127,13 @@ test("cli help skill includes sync subcommand", () => {
   });
   assert.equal(skillHelp.status, 0);
   assert.match(skillHelp.stdout, /mdkg skill sync \[--force\]/);
+});
+
+test("cli rejects multiple structured output flags on discovery commands", () => {
+  const result = spawnSync(process.execPath, [cliPath, "list", "--json", "--xml"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /choose at most one output flag: --json, --xml, --toon, or --md/);
 });

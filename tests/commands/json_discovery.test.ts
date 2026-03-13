@@ -203,3 +203,59 @@ test("json discovery returns zero counts and text discovery prints explicit coun
   assert.match(textSkillSearch.stderr, /count: 0/);
   assert.match(textSkillSearch.stderr, /note: no skills matched query "missing"/);
 });
+
+test("node discovery and show support xml, toon, and markdown envelopes", () => {
+  const root = setupRepo();
+
+  const listXml = captureOutput(() => runListCommand({ root, format: "xml" }));
+  assert.equal(listXml.stderr, "");
+  assert.match(listXml.stdout, /<response>/);
+  assert.match(listXml.stdout, /<command>list<\/command>/);
+  assert.match(listXml.stdout, /<kind>node<\/kind>/);
+  assert.match(listXml.stdout, /<count>1<\/count>/);
+
+  const searchToon = captureOutput(() =>
+    runSearchCommand({ root, query: "Json fixture", format: "toon" })
+  );
+  const searchToonPayload = JSON.parse(searchToon.stdout);
+  assert.equal(searchToonPayload.command, "search");
+  assert.equal(searchToonPayload.kind, "node");
+  assert.equal(searchToonPayload.items[0].qid, "root:task-1");
+
+  const showMd = captureOutput(() => runShowCommand({ root, id: "task-1", format: "md" }));
+  assert.equal(showMd.stderr, "");
+  assert.match(showMd.stdout, /# mdkg response/);
+  assert.match(showMd.stdout, /- command: show/);
+  assert.match(showMd.stdout, /- kind: node/);
+  assert.match(showMd.stdout, /- body:/);
+  assert.match(showMd.stdout, /JSON body/);
+});
+
+test("skill discovery and show support xml, toon, and markdown envelopes", () => {
+  const root = setupRepo();
+
+  const listXml = captureOutput(() =>
+    runSkillListCommand({ root, tags: ["stage:plan"], tagsMode: "all", format: "xml" })
+  );
+  assert.equal(listXml.stderr, "");
+  assert.match(listXml.stdout, /<response>/);
+  assert.match(listXml.stdout, /<kind>skill<\/kind>/);
+  assert.match(listXml.stdout, /<count>1<\/count>/);
+
+  const searchToon = captureOutput(() =>
+    runSkillSearchCommand({ root, query: "plan-stage", tags: ["stage:plan"], tagsMode: "all", format: "toon" })
+  );
+  const searchToonPayload = JSON.parse(searchToon.stdout);
+  assert.equal(searchToonPayload.command, "search");
+  assert.equal(searchToonPayload.kind, "skill");
+  assert.equal(searchToonPayload.items[0].qid, "root:skill:plan-run");
+
+  const showMd = captureOutput(() =>
+    runSkillShowCommand({ root, slug: "plan-run", metaOnly: true, format: "md" })
+  );
+  assert.equal(showMd.stderr, "");
+  assert.match(showMd.stdout, /# mdkg response/);
+  assert.match(showMd.stdout, /- command: show/);
+  assert.match(showMd.stdout, /- kind: skill/);
+  assert.doesNotMatch(showMd.stdout, /- body:/);
+});

@@ -2,7 +2,7 @@
 id: task-27
 type: task
 title: improve pack help and readme onboarding
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 tags: []
@@ -15,11 +15,11 @@ blocks: []
 refs: []
 aliases: []
 created: 2026-02-07
-updated: 2026-02-07
+updated: 2026-03-12
 ---
 # Overview
 
-Describe what this task is and why it matters.
+Historical placeholder task. Pack help and README onboarding shipped in later implementation and this node no longer represents actionable backlog.
 
 # Acceptance Criteria
 
@@ -44,6 +44,4 @@ How will we verify it works?
 
 # Links / Artifacts
 
-- related docs
-- related issues
-- references
+- superseded by shipped onboarding/help work in the current source tree

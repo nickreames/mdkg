@@ -23,12 +23,12 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - name: `author-mdkg-skill`
   - stage: `stage:plan`
   - writer role: `writer:orchestrator`
-  - description: Create or update an mdkg skill when a repeatable repo workflow should be codified or an existing skill has drifted from the current command surface.
+  - description: Create or update an mdkg skill when a repeatable repo workflow should be codified or an existing skill has drifted from the current command surface for humans and AI agents.
 - `build-pack-and-execute-task`
   - name: `build-pack-and-execute-task`
   - stage: `stage:execute`
   - writer role: `writer:patch-only`
-  - description: Build a deterministic mdkg pack for the active work item and use it as the execution handoff when coding or delegating to another agent.
+  - description: Build a deterministic mdkg pack for the active work item and use it as the execution handoff when coding or delegating to another AI agent.
 - `select-work-and-ground-context`
   - name: `select-work-and-ground-context`
   - stage: `stage:plan`
@@ -38,5 +38,5 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - name: `verify-close-and-checkpoint`
   - stage: `stage:review`
   - writer role: `writer:orchestrator`
-  - description: Verify code and mdkg state, attach evidence, and close work cleanly when the single-writer orchestrator is ready to perform durable writes.
+  - description: Verify code and mdkg state, attach evidence, and close work cleanly when the single-writer AI agent or human orchestrator is ready to perform durable writes.
 <!-- mdkg:skill-registry:end -->

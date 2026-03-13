@@ -1,25 +1,26 @@
 ---
-id: task-29
+id: task-110
 type: task
-title: release 0.0.3
+title: separate published init config from live repo config
 status: done
 priority: 1
-epic: epic-3
-tags: []
+epic: epic-17
+tags: [0_0_7, config, init, exports]
 owners: []
 links: []
-artifacts: []
+artifacts: [assets/init/config.json, scripts/copy-init-assets.js]
 relates: []
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
-created: 2026-02-07
+skills: []
+created: 2026-03-12
 updated: 2026-03-12
 ---
 # Overview
 
-Historical placeholder task for the `0.0.3` release. The release shipped and this node no longer represents actionable backlog.
+Describe what this task is and why it matters.
 
 # Acceptance Criteria
 
@@ -44,4 +45,6 @@ How will we verify it works?
 
 # Links / Artifacts
 
-- superseded by the published `0.0.3` release history
+- related docs
+- related issues
+- references

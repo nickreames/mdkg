@@ -34,6 +34,7 @@ import {
 } from "./commands/workspace";
 import { listPackProfiles } from "./pack/profile";
 import { NotFoundError, UsageError, ValidationError } from "./util/errors";
+import { QueryOutputFormat } from "./commands/query_output";
 
 type LogFn = (...args: unknown[]) => void;
 type ExitCode = 0 | 1 | 2 | 3 | 4;
@@ -164,7 +165,7 @@ function printIndexHelp(log: LogFn): void {
 
 function printShowHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json]");
+  log("  mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]");
   log("\nWhen to use:");
   log("  Inspect one mdkg node exactly. Use `mdkg skill show <slug>` for skills.");
   log("\nDefault behavior:");
@@ -175,7 +176,8 @@ function printShowHelp(log: LogFn): void {
 function printListHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]");
-  log("           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
+  log("           [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]");
+  log("           [--json|--xml|--toon|--md]");
   log("\nWhen to use:");
   log("  List mdkg nodes. Use `mdkg skill list` for skills.");
   printGlobalOptions(log);
@@ -184,7 +186,7 @@ function printListHelp(log: LogFn): void {
 function printSearchHelp(log: LogFn): void {
   log("Usage:");
   log('  mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]');
-  log("               [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
+  log("               [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]");
   log("\nWhen to use:");
   log("  Search mdkg nodes by metadata. Use `mdkg skill search` for skills.");
   printGlobalOptions(log);
@@ -245,21 +247,21 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
       return;
     case "list":
       log("Usage:");
-      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
+      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]");
       log("\nWhen to use:");
       log("  Discover skills directly, including stage-tagged orchestrator lookups.");
       printGlobalOptions(log);
       return;
     case "show":
       log("Usage:");
-      log("  mdkg skill show <slug> [--meta] [--json]");
+      log("  mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]");
       log("\nWhen to use:");
       log("  Inspect one skill body or metadata after discovery.");
       printGlobalOptions(log);
       return;
     case "search":
       log("Usage:");
-      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]');
+      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]');
       log("\nWhen to use:");
       log("  Search skills by trigger text, tags, and stage conventions like `stage:plan`.");
       printGlobalOptions(log);
@@ -279,9 +281,9 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
     default:
       log("Usage:");
       log('  mdkg skill new <slug> "<name>" --description "<description>" [options]');
-      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json]");
-      log("  mdkg skill show <slug> [--meta] [--json]");
-      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json]');
+      log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]");
+      log("  mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]");
+      log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]');
       log("  mdkg skill validate [<slug>]");
       log("  mdkg skill sync [--force]");
       log("\nNotes:");
@@ -584,6 +586,26 @@ function parseTagsModeFlag(value: string | boolean | undefined): "any" | "all" |
   throw new UsageError("--tags-mode must be any or all");
 }
 
+function parseQueryOutputFormat(parsed: ParsedArgs): QueryOutputFormat | undefined {
+  const enabled: QueryOutputFormat[] = [];
+  if (parseBooleanFlag("--json", parsed.flags["--json"])) {
+    enabled.push("json");
+  }
+  if (parseBooleanFlag("--xml", parsed.flags["--xml"])) {
+    enabled.push("xml");
+  }
+  if (parseBooleanFlag("--toon", parsed.flags["--toon"])) {
+    enabled.push("toon");
+  }
+  if (parseBooleanFlag("--md", parsed.flags["--md"])) {
+    enabled.push("md");
+  }
+  if (enabled.length > 1) {
+    throw new UsageError("choose at most one output flag: --json, --xml, --toon, or --md");
+  }
+  return enabled[0];
+}
+
 function handleCommandError(
   err: unknown,
   command: string | undefined,
@@ -687,12 +709,12 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const format = parseQueryOutputFormat(parsed);
       runSkillListCommand({
         root,
         tags,
         tagsMode,
-        json,
+        format,
         noCache,
         noReindex,
       });
@@ -704,14 +726,14 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         throw new UsageError("skill show requires <slug>");
       }
       const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
-      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const format = parseQueryOutputFormat(parsed);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runSkillShowCommand({
         root,
         slug,
         metaOnly,
-        json,
+        format,
         noCache,
         noReindex,
       });
@@ -724,7 +746,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const query = parsed.positionals.slice(2).join(" ");
       const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
-      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const format = parseQueryOutputFormat(parsed);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runSkillSearchCommand({
@@ -732,7 +754,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         query,
         tags,
         tagsMode,
-        json,
+        format,
         noCache,
         noReindex,
       });
@@ -1010,7 +1032,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
-      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const format = parseQueryOutputFormat(parsed);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runShowCommand({
@@ -1018,7 +1040,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         id,
         ws,
         metaOnly,
-        json,
+        format,
         noCache,
         noReindex,
       });
@@ -1036,7 +1058,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const blocked = parseBooleanFlag("--blocked", parsed.flags["--blocked"]);
       const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
-      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const format = parseQueryOutputFormat(parsed);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runListCommand({
@@ -1049,7 +1071,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         blocked,
         tags,
         tagsMode,
-        json,
+        format,
         noCache,
         noReindex,
       });
@@ -1065,7 +1087,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const status = requireFlagValue("--status", parsed.flags["--status"]);
       const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
-      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const format = parseQueryOutputFormat(parsed);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       runSearchCommand({
@@ -1076,7 +1098,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         status,
         tags,
         tagsMode,
-        json,
+        format,
         noCache,
         noReindex,
       });

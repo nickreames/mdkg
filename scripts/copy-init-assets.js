@@ -25,7 +25,7 @@ function copyDir(src, dest) {
 const root = path.resolve(__dirname, "..");
 const distRoot = path.join(root, "dist", "init");
 
-copyFile(path.join(root, ".mdkg", "config.json"), path.join(distRoot, "config.json"));
+copyFile(path.join(root, "assets", "init", "config.json"), path.join(distRoot, "config.json"));
 copyDir(path.join(root, ".mdkg", "core"), path.join(distRoot, "core"));
 copyDir(path.join(root, ".mdkg", "templates"), path.join(distRoot, "templates"));
 copyFile(path.join(root, "assets", "init", "README.md"), path.join(distRoot, "README.md"));

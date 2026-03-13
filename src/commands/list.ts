@@ -5,7 +5,12 @@ import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { sortNodesByQid } from "../util/sort";
 import { formatNodeCard } from "./node_card";
-import { toNodeSummaryJson, writeCount, writeJson } from "./query_output";
+import {
+  QueryOutputFormat,
+  toNodeSummaryJson,
+  writeCount,
+  writeStructuredOutput,
+} from "./query_output";
 
 export type ListCommandOptions = {
   root: string;
@@ -17,6 +22,7 @@ export type ListCommandOptions = {
   blocked?: boolean;
   tags?: string[];
   tagsMode?: "any" | "all";
+  format?: QueryOutputFormat;
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
@@ -73,13 +79,14 @@ export function runListCommand(options: ListCommandOptions): void {
   });
 
   const sorted = sortNodesByQid(filtered);
-  if (options.json) {
-    writeJson({
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
       command: "list",
       kind: "node",
       count: sorted.length,
       items: sorted.map(toNodeSummaryJson),
-    });
+    }, format);
     return;
   }
 

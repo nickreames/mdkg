@@ -115,7 +115,10 @@ test("cli help teaches skill namespace only", () => {
     error: (...args: unknown[]) => stderr.push(args.map(String).join(" ")),
   });
   assert.equal(code, 0);
-  assert.match(stdout.join("\n"), /mdkg skill show <slug> \[--meta\] \[--json\]/);
+  assert.match(
+    stdout.join("\n"),
+    /mdkg skill show <slug> \[--meta\] \[--json\|--xml\|--toon\|--md\]/
+  );
   assert.match(stdout.join("\n"), /Skills are first-class under `mdkg skill \.\.\.`\./);
   assert.doesNotMatch(stdout.join("\n"), /show skill:<slug>/);
   assert.equal(stderr.join("\n"), "");

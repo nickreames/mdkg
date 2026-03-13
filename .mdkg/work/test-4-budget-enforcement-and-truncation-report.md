@@ -2,7 +2,7 @@
 id: test-4
 type: test
 title: budget enforcement and truncation report
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 tags: []
@@ -16,30 +16,21 @@ refs: []
 aliases: []
 cases: []
 created: 2026-02-07
-updated: 2026-02-07
+updated: 2026-03-12
 ---
 # Overview
 
-Describe what this test validates and why it matters.
+Historical placeholder test node. The underlying pack and CLI behavior shipped in later implementation work, so this file is retained only as historical graph context and no longer represents actionable backlog.
 
-# Target / Scope
+# Scope
 
-List the work items or areas covered (use `relates` for tickets).
-
-# Preconditions / Environment
-
-Document environment, data, and setup requirements.
-
-# Test Cases
-
-- case 1
-- case 2
+- pack behavior covered by later shipped runtime and test work
+- no remaining release-critical work tracked here
 
 # Results / Evidence
 
-Record outcomes and link evidence in `artifacts` or `links`.
+- closed during 0.0.7 graph hygiene cleanup
 
 # Notes / Follow-ups
 
-- follow-up 1
-- follow-up 2
+- use current release epics and tests for active work, not this historical placeholder

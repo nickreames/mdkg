@@ -2,7 +2,7 @@
 id: epic-16
 type: epic
 title: agent bootstrap default skills events and release
-status: review
+status: done
 priority: 1
 tags: [0_0_6, agent, skills, events, release]
 owners: []

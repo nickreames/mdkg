@@ -2,13 +2,13 @@
 id: epic-11
 type: epic
 title: 0.0.4x structured output format expansion
-status: todo
+status: done
 priority: 1
 tags: [0_0_4x, cli, json, xml, toon, markdown]
 owners: []
 links: []
-artifacts: []
-relates: [dec-13, epic-10]
+artifacts: [epic-17-bootstrap-config-cleanup-discovery-exports-and-release.md]
+relates: [dec-13, epic-10, epic-17]
 blocked_by: []
 blocks: [task-80, task-81, task-82]
 refs: []
@@ -19,12 +19,11 @@ updated: 2026-03-08
 
 # Goal
 
-Extend discovery and show commands beyond JSON after the first structured-output wave is stable.
+Historical planning record for extending discovery and show commands beyond JSON after the first structured-output wave stabilized.
 
 # Scope
 
-- add tracked plans for XML, TOON, and Markdown discovery/show output
-- preserve the JSON envelopes as the reference starting point
+- This planning work was superseded by `epic-17`, which implemented XML / TOON / Markdown discovery/show output directly.
 
 # Milestones
 
@@ -46,3 +45,4 @@ Extend discovery and show commands beyond JSON after the first structured-output
 
 - `dec-13`
 - `epic-10`
+- superseded by `epic-17`, `task-112`, and `task-113`

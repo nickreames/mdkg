@@ -221,4 +221,14 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "select-work-and-ground-context", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "build-pack-and-execute-task", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "verify-close-and-checkpoint", "SKILL.md")));
+
+  const config = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "config.json"), "utf8"));
+  assert.deepEqual(Object.keys(config.workspaces), ["root"]);
+});
+
+test("published init seed config remains root-only", () => {
+  const assetConfig = JSON.parse(
+    fs.readFileSync(path.resolve(process.cwd(), "assets", "init", "config.json"), "utf8")
+  );
+  assert.deepEqual(Object.keys(assetConfig.workspaces), ["root"]);
 });
