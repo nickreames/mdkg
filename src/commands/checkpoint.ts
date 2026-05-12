@@ -20,7 +20,15 @@ export type CheckpointNewCommandOptions = {
   template?: string;
   runId?: string;
   note?: string;
+  json?: boolean;
   now?: Date;
+};
+
+export type CheckpointReceipt = {
+  workspace: string;
+  id: string;
+  qid: string;
+  path: string;
 };
 
 function parseCsvList(raw?: string): string[] {
@@ -94,7 +102,7 @@ function normalizeWorkspace(value?: string): string {
   return normalized;
 }
 
-export function runCheckpointNewCommand(options: CheckpointNewCommandOptions): void {
+export function createCheckpoint(options: CheckpointNewCommandOptions): CheckpointReceipt {
   const title = options.title.trim();
   if (!title) {
     throw new UsageError("checkpoint title cannot be empty");
@@ -169,7 +177,29 @@ export function runCheckpointNewCommand(options: CheckpointNewCommandOptions): v
     now,
   });
 
-  console.log(
-    `checkpoint created: ${ws}:${id} (${path.relative(options.root, filePath)})`
-  );
+  return {
+    workspace: ws,
+    id,
+    qid: `${ws}:${id}`,
+    path: path.relative(options.root, filePath),
+  };
+}
+
+export function runCheckpointNewCommand(options: CheckpointNewCommandOptions): void {
+  const checkpoint = createCheckpoint(options);
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "created",
+          checkpoint,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  console.log(`checkpoint created: ${checkpoint.qid} (${checkpoint.path})`);
 }

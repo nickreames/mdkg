@@ -1,7 +1,13 @@
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { EdgeMap, extractEdges } from "./edges";
 import { TemplateSchema, TemplateSchemaMap } from "./template_schema";
-import { isCanonicalId } from "../util/id";
+import {
+  extractAgentAttributes,
+  isAgentFileType,
+  AGENT_FILE_TYPES,
+  validateAgentFrontmatter,
+} from "./agent_file_types";
+import { isCanonicalId, isPortableId } from "../util/id";
 
 export type Node = {
   id: string;
@@ -19,6 +25,7 @@ export type Node = {
   aliases: string[];
   skills: string[];
   edges: EdgeMap;
+  attributes: Record<string, FrontmatterValue>;
   body: string;
   frontmatter: Record<string, FrontmatterValue>;
 };
@@ -40,6 +47,7 @@ export const ALLOWED_TYPES = new Set([
   "bug",
   "checkpoint",
   "test",
+  ...AGENT_FILE_TYPES,
 ]);
 
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
@@ -131,6 +139,13 @@ function requireIdFormat(value: string, key: string, filePath: string): string {
   return value;
 }
 
+function requirePortableIdFormat(value: string, key: string, filePath: string): string {
+  if (!isPortableId(value)) {
+    throw formatError(filePath, `${key} must be a lowercase portable id`);
+  }
+  return value;
+}
+
 function requireDate(value: string, key: string, filePath: string): string {
   if (!DATE_RE.test(value)) {
     throw formatError(filePath, `${key} must be YYYY-MM-DD`);
@@ -149,12 +164,18 @@ function parsePriority(value: string, filePath: string, min: number, max: number
   return parsed;
 }
 
-function normalizeIdList(values: string[], key: string, filePath: string): string[] {
+function normalizeIdList(
+  values: string[],
+  key: string,
+  filePath: string,
+  allowPortableIds = false
+): string[] {
   return values.map((value) => {
     if (value !== value.toLowerCase()) {
       throw formatError(filePath, `${key} entries must be lowercase`);
     }
-    if (!isValidId(value)) {
+    const valid = allowPortableIds ? isPortableId(value) : isValidId(value);
+    if (!valid) {
       throw formatError(filePath, `${key} entries must match <prefix>-<number> or reserved id`);
     }
     return value;
@@ -220,14 +241,15 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   if (!ALLOWED_TYPES.has(type)) {
     throw formatError(filePath, `type must be one of ${Array.from(ALLOWED_TYPES).join(", ")}`);
   }
+  const isAgentType = isAgentFileType(type);
   const schema = requireTemplateSchema(type, options.templateSchemas, filePath);
   validateTemplateKeys(frontmatter, schema, filePath);
+  validateAgentFrontmatter(type, frontmatter, filePath);
 
-  const id = requireIdFormat(
-    requireLowercase(expectString(frontmatter, "id", filePath), "id", filePath),
-    "id",
-    filePath
-  );
+  const idValue = requireLowercase(expectString(frontmatter, "id", filePath), "id", filePath);
+  const id = isAgentType
+    ? requirePortableIdFormat(idValue, "id", filePath)
+    : requireIdFormat(idValue, "id", filePath);
 
   const title = expectString(frontmatter, "title", filePath);
   const created = requireDate(expectString(frontmatter, "created", filePath), "created", filePath);
@@ -280,7 +302,12 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   );
   const links = optionalList(frontmatter, "links", filePath);
   const artifacts = optionalList(frontmatter, "artifacts", filePath);
-  const refs = normalizeIdList(optionalList(frontmatter, "refs", filePath), "refs", filePath);
+  const refs = normalizeIdList(
+    optionalList(frontmatter, "refs", filePath),
+    "refs",
+    filePath,
+    isAgentType
+  );
   const aliases = requireLowercaseList(
     optionalList(frontmatter, "aliases", filePath),
     "aliases",
@@ -303,7 +330,8 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     }
   }
 
-  const edges = extractEdges(frontmatter, filePath);
+  const edges = extractEdges(frontmatter, filePath, { allowPortableRefs: isAgentType });
+  const attributes = extractAgentAttributes(type, frontmatter);
 
   return {
     id,
@@ -321,6 +349,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     aliases,
     skills,
     edges,
+    attributes,
     body,
     frontmatter,
   };

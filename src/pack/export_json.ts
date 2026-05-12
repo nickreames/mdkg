@@ -1,3 +1,4 @@
+import { FrontmatterValue } from "../graph/frontmatter";
 import { PackResult } from "./types";
 
 type JsonNode = {
@@ -9,7 +10,7 @@ type JsonNode = {
   status?: string;
   priority?: number;
   path: string;
-  frontmatter: Record<string, string[]>;
+  frontmatter: Record<string, FrontmatterValue>;
   body: string;
 };
 
@@ -18,8 +19,8 @@ type JsonPack = {
   nodes: JsonNode[];
 };
 
-function buildFrontmatter(node: PackResult["nodes"][number]): Record<string, string[]> {
-  const frontmatter: Record<string, string[]> = {};
+function buildFrontmatter(node: PackResult["nodes"][number]): Record<string, FrontmatterValue> {
+  const frontmatter: Record<string, FrontmatterValue> = {};
   if (node.links.length > 0) {
     frontmatter.links = node.links;
   }
@@ -31,6 +32,9 @@ function buildFrontmatter(node: PackResult["nodes"][number]): Record<string, str
   }
   if (node.aliases.length > 0) {
     frontmatter.aliases = node.aliases;
+  }
+  for (const [key, value] of Object.entries(node.attributes ?? {})) {
+    frontmatter[key] = value;
   }
   return frontmatter;
 }

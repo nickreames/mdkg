@@ -4,6 +4,8 @@ import fs from "fs";
 import path from "path";
 const {
   runWorkspaceAddCommand,
+  runWorkspaceDisableCommand,
+  runWorkspaceEnableCommand,
   runWorkspaceListCommand,
   runWorkspaceRemoveCommand,
 } = require("../../commands/workspace");
@@ -36,6 +38,10 @@ test("runWorkspaceRemoveCommand rejects root removal", () => {
     () => runWorkspaceRemoveCommand({ root, alias: "root" }),
     /cannot remove root workspace/
   );
+  assert.throws(
+    () => runWorkspaceDisableCommand({ root, alias: "root" }),
+    /cannot disable root workspace/
+  );
 });
 
 test("workspace commands reject invalid config JSON", () => {
@@ -47,7 +53,7 @@ test("workspace commands reject invalid config JSON", () => {
   );
 });
 
-test("workspace commands reject non-object config and list empty workspace sets", () => {
+test("workspace commands reject non-object config and empty workspace sets", () => {
   const root = makeTempDir("mdkg-workspace-non-object-");
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify("bad-config"));
   assert.throws(
@@ -91,23 +97,33 @@ test("workspace commands reject non-object config and list empty workspace sets"
     )
   );
 
-  const lines: string[] = [];
-  const originalLog = console.log;
-  console.log = (...args: unknown[]) => {
-    lines.push(args.map(String).join(" "));
-  };
-  try {
-    runWorkspaceListCommand({ root: emptyRoot });
-  } finally {
-    console.log = originalLog;
-  }
-  assert.deepEqual(lines, ["no workspaces registered"]);
+  assert.throws(
+    () => runWorkspaceListCommand({ root: emptyRoot }),
+    /workspaces\.root is required/
+  );
+  assert.throws(
+    () => runWorkspaceAddCommand({ root: emptyRoot, alias: "docs", workspacePath: "docs" }),
+    /workspaces\.root is required/
+  );
+  assert.equal(fs.existsSync(path.join(emptyRoot, "docs")), false);
 });
 
 test("runWorkspaceAddCommand rejects invalid alias, blank path, and missing config", () => {
   const root = makeTempDir("mdkg-workspace-more-errors-");
   writeRootConfig(root);
 
+  assert.throws(
+    () => runWorkspaceAddCommand({ root, alias: "Docs", workspacePath: "docs" }),
+    /workspace alias must be lowercase and use \[a-z0-9_\]/
+  );
+  assert.throws(
+    () => runWorkspaceRemoveCommand({ root, alias: "Docs" }),
+    /workspace alias must be lowercase and use \[a-z0-9_\]/
+  );
+  assert.throws(
+    () => runWorkspaceEnableCommand({ root, alias: "Docs" }),
+    /workspace alias must be lowercase and use \[a-z0-9_\]/
+  );
   assert.throws(
     () => runWorkspaceAddCommand({ root, alias: "docs-team", workspacePath: "docs" }),
     /workspace alias must be lowercase and use \[a-z0-9_\]/
@@ -116,6 +132,12 @@ test("runWorkspaceAddCommand rejects invalid alias, blank path, and missing conf
     () => runWorkspaceAddCommand({ root, alias: "docs", workspacePath: "   " }),
     /workspace path cannot be empty/
   );
+  assert.throws(
+    () => runWorkspaceAddCommand({ root, alias: "docs", workspacePath: "./" }),
+    /workspace path must not be "\." for non-root workspaces/
+  );
+  const raw = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "config.json"), "utf8"));
+  assert.equal(raw.workspaces.docs, undefined);
 
   const missingRoot = makeTempDir("mdkg-workspace-missing-config-");
   assert.throws(
@@ -133,11 +155,11 @@ test("workspace commands reject malformed workspaces and missing removals", () =
 
   assert.throws(
     () => runWorkspaceAddCommand({ root, alias: "docs", workspacePath: "docs" }),
-    /config\.workspaces must be an object/
+    /workspaces must be an object/
   );
   assert.throws(
     () => runWorkspaceRemoveCommand({ root, alias: "docs" }),
-    /config\.workspaces must be an object/
+    /workspaces must be an object/
   );
 });
 
@@ -158,6 +180,14 @@ test("runWorkspaceAddCommand supports custom mdkg dir and remove rejects missing
 
   assert.throws(
     () => runWorkspaceRemoveCommand({ root, alias: "missing" }),
+    /workspace not found: missing/
+  );
+  assert.throws(
+    () => runWorkspaceEnableCommand({ root, alias: "missing" }),
+    /workspace not found: missing/
+  );
+  assert.throws(
+    () => runWorkspaceDisableCommand({ root, alias: "missing" }),
     /workspace not found: missing/
   );
 });

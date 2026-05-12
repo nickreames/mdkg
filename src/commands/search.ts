@@ -34,9 +34,16 @@ function normalizeWorkspace(value?: string): string | undefined {
 }
 
 function buildSearchText(node: IndexNode): string {
+  const attributeTokens = Object.entries(node.attributes ?? {}).flatMap(([key, value]) => {
+    if (Array.isArray(value)) {
+      return [key, ...value];
+    }
+    return [key, String(value)];
+  });
   const tokens = [
     node.id,
     node.qid,
+    node.type,
     node.title,
     node.path,
     ...node.tags,
@@ -46,6 +53,7 @@ function buildSearchText(node: IndexNode): string {
     ...node.refs,
     ...node.aliases,
     ...node.skills,
+    ...attributeTokens,
   ];
   return tokens.join(" ").toLowerCase();
 }

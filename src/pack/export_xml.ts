@@ -22,6 +22,17 @@ function listItems(tag: string, itemTag: string, items: string[], indent: string
   return lines;
 }
 
+function attributeLines(
+  key: string,
+  value: PackResult["nodes"][number]["attributes"][string],
+  indent: string
+): string[] {
+  if (Array.isArray(value)) {
+    return listItems(key, "item", value, indent);
+  }
+  return [`${indent}<${key}>${escapeXml(String(value))}</${key}>`];
+}
+
 export function exportXml(pack: PackResult): string {
   const lines: string[] = [];
   lines.push("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -82,6 +93,9 @@ export function exportXml(pack: PackResult): string {
     lines.push(...listItems("artifacts", "artifact", node.artifacts, "        "));
     lines.push(...listItems("refs", "ref", node.refs, "        "));
     lines.push(...listItems("aliases", "alias", node.aliases, "        "));
+    for (const [key, value] of Object.entries(node.attributes ?? {})) {
+      lines.push(...attributeLines(key, value, "        "));
+    }
     lines.push("      </frontmatter>");
     lines.push(`      <body>${escapeXml(node.body)}</body>`);
     lines.push("    </node>");

@@ -66,6 +66,42 @@ function captureStdout(fn: () => void): string[] {
   return lines;
 }
 
+function writeTaskFile(root: string, id = "task-1", title = "task one"): void {
+  writeFile(
+    path.join(root, ".mdkg", "work", `${id}.md`),
+    [
+      "---",
+      `id: ${id}`,
+      "type: task",
+      `title: ${title}`,
+      "status: todo",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-01-06",
+      "updated: 2026-01-06",
+      "---",
+      "",
+      `# ${id}`,
+    ].join("\n")
+  );
+}
+
+function setupCheckpointRepo(prefix: string): string {
+  const root = makeTempDir(prefix);
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTaskFile(root);
+  return root;
+}
+
 test("checkpoint new creates chk-* from template and indexes", () => {
   const root = makeTempDir("mdkg-checkpoint-");
   writeConfig(root);
@@ -164,6 +200,103 @@ test("checkpoint new creates chk-* from template and indexes", () => {
     runListCommand({ root, type: "checkpoint" });
   }).join("\n");
   assert.ok(listOut.includes("root:chk-2"));
+});
+
+test("checkpoint new can print deterministic json receipt", () => {
+  const root = setupCheckpointRepo("mdkg-checkpoint-json-");
+  const eventsPath = path.join(root, ".mdkg", "work", "events", "events.jsonl");
+  writeFile(eventsPath, "");
+
+  const output = captureStdout(() => {
+    runCheckpointNewCommand({
+      root,
+      title: "JSON checkpoint",
+      status: "done",
+      priority: 2,
+      relates: "task-1",
+      scope: "task-1",
+      runId: "run_json_checkpoint",
+      note: "json checkpoint receipt",
+      json: true,
+      now: new Date("2026-03-08T00:00:00.000Z"),
+    });
+  });
+
+  const receipt = JSON.parse(output.join("\n"));
+  assert.deepEqual(receipt, {
+    action: "created",
+    checkpoint: {
+      workspace: "root",
+      id: "chk-1",
+      qid: "root:chk-1",
+      path: ".mdkg/work/chk-1-json-checkpoint.md",
+    },
+  });
+
+  const createdPath = path.join(root, receipt.checkpoint.path);
+  assert.equal(fs.existsSync(createdPath), true);
+
+  const events = fs.readFileSync(eventsPath, "utf8")
+    .trim()
+    .split(/\r?\n/)
+    .map((line) => JSON.parse(line));
+  assert.equal(events.length, 1);
+  assert.equal(events[0].workspace, "root");
+  assert.equal(events[0].kind, "CHECKPOINT_CREATED");
+  assert.equal(events[0].status, "ok");
+  assert.deepEqual(events[0].refs, ["chk-1"]);
+  assert.equal(events[0].run_id, "run_json_checkpoint");
+});
+
+test("checkpoint new rejects validation errors", () => {
+  const root = setupCheckpointRepo("mdkg-checkpoint-errors-");
+
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "   " }),
+    /checkpoint title cannot be empty/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Bad workspace", ws: "all" }),
+    /--ws all is not valid for checkpoint creation/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Missing workspace", ws: "missing" }),
+    /workspace not found: missing/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Bad status", status: "invalid" }),
+    /--status must be one of/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Bad priority", priority: 10 }),
+    /--priority must be between 0 and 9/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Bad scope", scope: "bad id" }),
+    /--scope entries must match/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Bad relates", relates: "bad id" }),
+    /--relates entries must match/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Missing relates", relates: "task-404" }),
+    /related node not found: task-404/
+  );
+});
+
+test("checkpoint new falls back and truncates slugs", () => {
+  const root = setupCheckpointRepo("mdkg-checkpoint-slugs-");
+
+  captureStdout(() => runCheckpointNewCommand({ root, title: "!!!" }));
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "work", "chk-1-checkpoint.md")), true);
+
+  const longTitle = "a".repeat(120);
+  captureStdout(() => runCheckpointNewCommand({ root, title: longTitle }));
+  const files = fs.readdirSync(path.join(root, ".mdkg", "work"));
+  const longSlugFile = files.find((name) => name.startsWith("chk-2-"));
+
+  assert.equal(longSlugFile, `chk-2-${"a".repeat(80)}.md`);
 });
 
 test("checkpoint new supports --ws for non-root workspace", () => {
@@ -353,4 +486,46 @@ test("cli checkpoint new works end-to-end with --root and --ws", () => {
   assert.equal(frontmatter.id, "chk-1");
   assert.equal(frontmatter.type, "checkpoint");
   assert.deepEqual(frontmatter.relates, ["root:task-1", "task-2"]);
+});
+
+test("cli checkpoint new supports json receipts", () => {
+  const root = setupCheckpointRepo("mdkg-checkpoint-cli-json-");
+
+  const cliPath = path.resolve(__dirname, "../../cli.js");
+  const stdout = execFileSync(
+    process.execPath,
+    [
+      cliPath,
+      "--root",
+      root,
+      "checkpoint",
+      "new",
+      "CLI JSON checkpoint",
+      "--relates",
+      "TASK-1",
+      "--scope",
+      "TASK-1",
+      "--json",
+    ],
+    { encoding: "utf8" }
+  );
+
+  const receipt = JSON.parse(stdout);
+  assert.deepEqual(receipt, {
+    action: "created",
+    checkpoint: {
+      workspace: "root",
+      id: "chk-1",
+      qid: "root:chk-1",
+      path: ".mdkg/work/chk-1-cli-json-checkpoint.md",
+    },
+  });
+
+  const createdPath = path.join(root, receipt.checkpoint.path);
+  assert.equal(fs.existsSync(createdPath), true);
+
+  const { frontmatter } = parseFrontmatter(fs.readFileSync(createdPath, "utf8"), createdPath);
+  assert.equal(frontmatter.id, "chk-1");
+  assert.equal(frontmatter.type, "checkpoint");
+  assert.deepEqual(frontmatter.relates, ["task-1"]);
 });

@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import fs from "fs";
 import path from "path";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
@@ -43,19 +44,46 @@ function writeConfig(root: string): void {
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));
 }
 
+function captureOutput(fn: () => void): string {
+  const logs: string[] = [];
+  const originalLog = console.log;
+  console.log = (...args: unknown[]) => {
+    logs.push(args.map(String).join(" "));
+  };
+  try {
+    fn();
+  } finally {
+    console.log = originalLog;
+  }
+  return logs.join("\n");
+}
+
+function captureDoctorFailure(fn: () => void): string {
+  const logs: string[] = [];
+  const originalLog = console.log;
+  console.log = (...args: unknown[]) => {
+    logs.push(args.map(String).join(" "));
+  };
+  try {
+    assert.throws(fn, /doctor failed/);
+  } finally {
+    console.log = originalLog;
+  }
+  return logs.join("\n");
+}
+
 test("runDoctorCommand succeeds on a valid workspace", () => {
   const root = makeTempDir("mdkg-doctor-ok-");
   writeConfig(root);
   writeDefaultTemplates(root);
   writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
 
-  const originalLog = console.log;
-  console.log = () => {};
-  try {
-    runDoctorCommand({ root });
-  } finally {
-    console.log = originalLog;
-  }
+  const output = captureOutput(() => runDoctorCommand({ root }));
+  assert.match(output, /ok: node-version - Node\.js/);
+  assert.match(output, /ok: config - found/);
+  assert.match(output, /ok: templates - template schema set loaded/);
+  assert.match(output, /ok: index - index cache rebuilt and loaded/);
+  assert.match(output, /doctor ok/);
 });
 
 test("runDoctorCommand fails when template schemas are missing", () => {
@@ -63,13 +91,25 @@ test("runDoctorCommand fails when template schemas are missing", () => {
   writeConfig(root);
   writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
 
-  const originalLog = console.log;
-  console.log = () => {};
-  try {
-    assert.throws(() => runDoctorCommand({ root }), /doctor failed/);
-  } finally {
-    console.log = originalLog;
-  }
+  const output = captureDoctorFailure(() => runDoctorCommand({ root }));
+  assert.match(output, /fail: templates - /);
+});
+
+test("runDoctorCommand reports missing and invalid config failures", () => {
+  const missingRoot = makeTempDir("mdkg-doctor-missing-config-");
+  const missingOutput = captureDoctorFailure(() => runDoctorCommand({ root: missingRoot }));
+  assert.match(missingOutput, /fail: config - missing config/);
+  assert.match(missingOutput, /fail: config-schema - /);
+  assert.doesNotMatch(missingOutput, /templates - /);
+  assert.doesNotMatch(missingOutput, /index - /);
+
+  const invalidRoot = makeTempDir("mdkg-doctor-invalid-config-");
+  writeFile(path.join(invalidRoot, ".mdkg", "config.json"), "{\n");
+  const invalidOutput = captureDoctorFailure(() => runDoctorCommand({ root: invalidRoot }));
+  assert.match(invalidOutput, /ok: config - found/);
+  assert.match(invalidOutput, /fail: config-schema - /);
+  assert.doesNotMatch(invalidOutput, /templates - /);
+  assert.doesNotMatch(invalidOutput, /index - /);
 });
 
 test("runDoctorCommand supports --json output", () => {
@@ -94,4 +134,33 @@ test("runDoctorCommand supports --json output", () => {
   assert.equal(payload.ok, true);
   assert.ok(Array.isArray(payload.checks));
   assert.equal(typeof payload.failure_count, "number");
+});
+
+test("runDoctorCommand reports no-cache rebuild and stale cached indexes", () => {
+  const root = makeTempDir("mdkg-doctor-index-state-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  const corePath = path.join(root, ".mdkg", "core", "core.md");
+  writeFile(corePath, "# core\n");
+
+  const rebuilt = captureOutput(() => runDoctorCommand({ root, noCache: true }));
+  assert.match(rebuilt, /ok: index - index cache rebuilt and loaded/);
+
+  captureOutput(() => runDoctorCommand({ root }));
+  const future = new Date(Date.now() + 10_000);
+  fs.utimesSync(corePath, future, future);
+
+  const stale = captureOutput(() => runDoctorCommand({ root, noReindex: true }));
+  assert.match(stale, /ok: index - index cache is stale \(run mdkg index to refresh\)/);
+});
+
+test("runDoctorCommand reports cached index read failures", () => {
+  const root = makeTempDir("mdkg-doctor-bad-index-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  writeFile(path.join(root, ".mdkg", "index", "global.json"), "{\n");
+
+  const output = captureDoctorFailure(() => runDoctorCommand({ root }));
+  assert.match(output, /fail: index - failed to read index/);
 });

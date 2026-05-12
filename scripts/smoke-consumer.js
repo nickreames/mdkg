@@ -8,11 +8,21 @@ const { spawnSync } = require("child_process");
 const NPM_CMD = process.platform === "win32" ? "npm.cmd" : "npm";
 const NPX_CMD = process.platform === "win32" ? "npx.cmd" : "npx";
 const GIT_CMD = process.platform === "win32" ? "git.exe" : "git";
+const TEMP_BASE = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
+const DEFAULT_NPM_CACHE = process.env.NPM_CONFIG_CACHE || path.join(TEMP_BASE, "mdkg-npm-cache");
 
 function run(command, args, options = {}) {
+  fs.mkdirSync(DEFAULT_NPM_CACHE, { recursive: true });
   const result = spawnSync(command, args, {
     cwd: options.cwd,
     encoding: "utf8",
+    env: {
+      ...process.env,
+      NPM_CONFIG_CACHE: DEFAULT_NPM_CACHE,
+      npm_config_cache: DEFAULT_NPM_CACHE,
+      NPM_CONFIG_DRY_RUN: "false",
+      npm_config_dry_run: "false",
+    },
     stdio: "pipe",
   });
   if (result.status !== 0) {
@@ -47,7 +57,14 @@ function runSmoke() {
   let tempRoot;
 
   try {
-    const packOutput = run(NPM_CMD, ["pack", "--silent"], { cwd: repoRoot });
+    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-consumer-"));
+    const packDir = path.join(tempRoot, "pack");
+    fs.mkdirSync(packDir, { recursive: true });
+    const packOutput = run(
+      NPM_CMD,
+      ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir],
+      { cwd: repoRoot }
+    );
     const tarballName = packOutput
       .split(/\r?\n/)
       .map((line) => line.trim())
@@ -57,10 +74,9 @@ function runSmoke() {
       throw new Error("unable to determine npm pack output tarball");
     }
 
-    tarballPath = path.resolve(repoRoot, tarballName);
+    tarballPath = path.resolve(packDir, path.basename(tarballName));
     assertExists(tarballPath);
 
-    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-consumer-"));
     const repoDir = path.join(tempRoot, "demo-repo");
     fs.mkdirSync(repoDir, { recursive: true });
     run(GIT_CMD, ["init", "-q"], { cwd: repoDir });

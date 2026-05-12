@@ -286,6 +286,7 @@ test("skill show renders full body by default and meta when requested", () => {
   ).stdout;
   assert.match(meta, /root:skill:plan-run \| skill \| -\/- \| plan-run/);
   assert.match(meta, /tags: stage:plan, writer:read-only, risk:low/);
+  assert.match(meta, /extensions\.ochatr\.policy: advisory/);
   assert.match(meta, /ochatr_policy: advisory/);
 });
 

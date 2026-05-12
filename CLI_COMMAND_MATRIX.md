@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-03-11
-package_version_in_source: 0.0.6
+package_version_in_source: 0.0.9
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -90,7 +90,7 @@ When to use:
 - optionally emit a baseline event when event logging is enabled
 
 Usage:
-- `mdkg new <type> "<title>" [options]`
+- `mdkg new <type> "<title>" [options] [--json]`
 
 Types:
 - `rule`
@@ -105,7 +105,26 @@ Types:
 - `checkpoint`
 - `test`
 
+Agent workflow file types:
+- `spec`
+- `work`
+- `work_order`
+- `receipt`
+- `feedback`
+- `dispute`
+- `proposal`
+
+Agent workflow file type creation:
+- `mdkg new spec "<title>" [options] [--json]`
+- `mdkg new work "<title>" [options] [--json]`
+- `mdkg new work_order "<title>" [options] [--json]`
+- `mdkg new receipt "<title>" [options] [--json]`
+- `mdkg new feedback "<title>" [options] [--json]`
+- `mdkg new dispute "<title>" [options] [--json]`
+- `mdkg new proposal "<title>" [options] [--json]`
+
 Primary flags:
+- `--id <portable-id>` agent workflow file types only
 - `--ws <alias>`
 - `--status <status>`
 - `--priority <0..9>`
@@ -114,6 +133,7 @@ Primary flags:
 - `--skills <slug,slug,...>`
 - `--template <set>`
 - `--run-id <id>`
+- `--json`
 
 Advanced metadata flags:
 - `--parent <id>`
@@ -129,6 +149,14 @@ Advanced metadata flags:
 - `--owners <value,value,...>`
 - `--cases <value,value,...>`
 - `--supersedes <id,id,...>`
+
+JSON receipt:
+- `{ action: "created", node: { workspace, id, qid, path, type, title, status, priority } }`
+- `status` and `priority` are included only when present on the created node.
+
+Notes:
+- `--id` lets agent workflow files use semantic portable ids such as `agent.image-worker`, `work.generate-image`, or `proposal.review-loop-1`.
+- `spec` and `work` scaffold as validation-clean standalone docs. `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` templates contain editable placeholder refs and need real graph or `skill.<slug>` refs before strict validation passes.
 
 ### `mdkg show`
 
@@ -274,7 +302,7 @@ When to use:
 #### `mdkg skill new`
 
 Usage:
-- `mdkg skill new <slug> "<name>" --description "<description>" [options]`
+- `mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]`
 
 Flags:
 - `--description <text>`
@@ -282,16 +310,24 @@ Flags:
 - `--authors <name,name,...>`
 - `--links <url,url,...>`
 - `--run-id <id>`
+- `--json`
 - `--with-scripts`
 - `--force`
+
+JSON receipt:
+- `{ action: "created", skill: { workspace, id, qid, slug, name, path, with_scripts } }`
 
 #### `mdkg skill sync`
 
 Usage:
-- `mdkg skill sync [--force]`
+- `mdkg skill sync [--force] [--json]`
 
 Flags:
 - `--force`
+- `--json`
+
+JSON receipt:
+- `{ action: "synced", sync: { synced, pruned, targets } }`
 
 Notes:
 - syncs canonical `.mdkg/skills/` into `.agents/skills/` and `.claude/skills/`
@@ -364,7 +400,14 @@ Notes:
 #### `mdkg skill validate`
 
 Usage:
-- `mdkg skill validate [<slug>]`
+- `mdkg skill validate [<slug>] [--json]`
+
+Flags:
+- `--json`
+
+JSON receipt:
+- `{ action: "validated", ok, checked_count, warning_count, error_count, warnings, errors, target }`
+- `target` is included only when a slug is passed.
 
 Notes:
 - validates all skills when no slug is passed
@@ -379,19 +422,22 @@ When to use:
 - optionally append baseline task events when event logging is enabled
 
 Usage:
-- `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]`
-- `mdkg task update <id-or-qid> [options]`
-- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [options]`
+- `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]`
+- `mdkg task update <id-or-qid> [options] [--json]`
+- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]`
 
 #### `mdkg task start`
 
 Usage:
-- `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]`
+- `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]`
 
 Behavior:
 - supports `task`, `bug`, and `test` only
 - sets `status: progress`
 - if `events.jsonl` is missing for the workspace, prints a short `stderr` reminder about `mdkg event enable`
+
+JSON receipt:
+- `{ action: "started", task: { workspace, id, qid, path, type, status, priority } }`
 
 #### `mdkg task update`
 
@@ -399,7 +445,7 @@ Usage:
 - `mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]`
 - `                   [--add-artifacts <a,...>] [--add-links <l,...>] [--add-refs <id,...>]`
 - `                   [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]`
-- `                   [--clear-blocked-by] [--run-id <id>] [--note "<text>"]`
+- `                   [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]`
 
 Behavior:
 - supports `task`, `bug`, and `test` only
@@ -407,17 +453,24 @@ Behavior:
 - scalar fields replace existing values
 - `--clear-blocked-by` clears blockers before optional re-add
 
+JSON receipt:
+- `{ action: "updated", task: { workspace, id, qid, path, type, status, priority } }`
+
 #### `mdkg task done`
 
 Usage:
 - `mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]`
-- `                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"]`
+- `                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"] [--json]`
 
 Behavior:
 - supports `task`, `bug`, and `test` only
 - sets `status: done`
 - `--checkpoint` creates a related checkpoint
 - if `events.jsonl` is missing for the workspace, prints a short `stderr` reminder about `mdkg event enable`
+
+JSON receipt:
+- without checkpoint: `{ action: "done", task: { workspace, id, qid, path, type, status, priority } }`
+- with checkpoint: `{ action: "done", task: { workspace, id, qid, path, type, status, priority }, checkpoint: { workspace, id, qid, path } }`
 
 Closeout guidance:
 - use `--checkpoint` for milestone compression and parent closeout summaries
@@ -441,11 +494,16 @@ When to use:
 - run the repo trust gate before calling work done
 
 Usage:
-- `mdkg validate [--out <path>] [--quiet]`
+- `mdkg validate [--out <path>] [--quiet] [--json]`
 
 Flags:
 - `--out <path>`
 - `--quiet`
+- `--json`
+
+JSON receipt:
+- `{ action: "validated", ok, warning_count, error_count, warnings, errors, report_path }`
+- `report_path` is included only when `--out` is used.
 
 Notes:
 - validates nodes, graph integrity, skills, and event log contracts
@@ -461,7 +519,7 @@ When to use:
 #### `mdkg event enable`
 
 Usage:
-- `mdkg event enable [--ws <alias>]`
+- `mdkg event enable [--ws <alias>] [--json]`
 
 Behavior:
 - creates `.mdkg/work/events/events.jsonl` if missing
@@ -469,10 +527,13 @@ Behavior:
 - automatic command-level events happen when the file exists
 - task start/done reminders point here when `events.jsonl` is missing
 
+JSON receipt:
+- `{ action: "enabled", workspace, created }`
+
 #### `mdkg event append`
 
 Usage:
-- `mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options]`
+- `mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]`
 
 Flags:
 - `--ws <alias>`
@@ -482,12 +543,19 @@ Flags:
 - `--agent <name>`
 - `--skill <slug>`
 - `--tool <id>`
+- `--json`
+
+JSON receipt:
+- `{ action: "appended", event }`
 
 ### `mdkg checkpoint`
 
 Usage:
-- `mdkg checkpoint new <title> [--ws <alias>]`
+- `mdkg checkpoint new <title> [--ws <alias>] [--json]`
 - `        [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]`
+
+JSON receipt:
+- `{ action: "created", checkpoint: { workspace, id, qid, path } }`
 
 ### `mdkg index`
 
@@ -512,14 +580,25 @@ Usage:
 ### `mdkg workspace`
 
 Usage:
-- `mdkg workspace ls`
-- `mdkg workspace add <alias> <path> [--mdkg-dir <dir>]`
-- `mdkg workspace rm <alias>`
+- `mdkg workspace ls [--json]`
+- `mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--json]`
+- `mdkg workspace rm <alias> [--json]`
+- `mdkg workspace enable <alias> [--json]`
+- `mdkg workspace disable <alias> [--json]`
+
+JSON mutation receipts:
+- `add`: `{ action: "added", workspace: { alias, path, enabled, mdkg_dir } }`
+- `rm`: `{ action: "removed", workspace: { alias, path, enabled, mdkg_dir } }`
+- `enable`: `{ action: "enabled", workspace: { alias, path, enabled, mdkg_dir } }`
+- `disable`: `{ action: "disabled", workspace: { alias, path, enabled, mdkg_dir } }`
 
 ## Structured output contract
 
 Current structured output surface:
-- `--json` only
+- `--json`
+- `--xml`
+- `--toon`
+- `--md`
 
 Current JSON envelopes:
 - `list` / `search`
@@ -538,6 +617,7 @@ Kind values in this wave:
 JSON behavior rules:
 - full bodies are returned only by `show` and `skill show` without `--meta`
 - list/search summaries never include bodies
+- skill summaries include generic `extensions`; `ochatr_*` metadata is exposed as `extensions.ochatr` and retained as top-level `ochatr` compatibility data in 0.0.9
 - text notes and counts go to `stderr`
 - JSON payloads go to `stdout`
 

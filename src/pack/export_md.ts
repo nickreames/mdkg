@@ -13,6 +13,13 @@ function formatList(label: string, values: string[]): string {
   return `${label}: ${values.join(", ")}`;
 }
 
+function formatAttribute(label: string, value: PackNode["attributes"][string]): string {
+  if (Array.isArray(value)) {
+    return formatList(label, value);
+  }
+  return `${label}: ${String(value)}`;
+}
+
 function renderHeader(meta: PackMeta, nodes: PackNode[]): string[] {
   const lines: string[] = [];
   lines.push("# mdkg pack");
@@ -65,6 +72,9 @@ function renderNode(node: PackNode): string[] {
   lines.push(formatList("artifacts", node.artifacts));
   if (node.refs.length > 0) {
     lines.push(formatList("refs", node.refs));
+  }
+  for (const [key, value] of Object.entries(node.attributes ?? {})) {
+    lines.push(formatAttribute(key, value));
   }
 
   if (node.body.trim().length > 0) {

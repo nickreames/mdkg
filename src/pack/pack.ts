@@ -149,6 +149,7 @@ function buildPackNode(root: string, index: Index, qid: string): PackNode {
     artifacts: node.artifacts,
     refs: node.refs,
     aliases: node.aliases,
+    attributes: node.attributes ?? {},
     body,
   };
 }

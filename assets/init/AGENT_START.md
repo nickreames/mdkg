@@ -15,6 +15,19 @@ Trust order:
 - relevant skills
 - chat history
 
+Agent operating prompt:
+- You are working in a repository that uses mdkg for deterministic project memory.
+- Prefer `mdkg pack <id>` over ad-hoc file lists when a work item is known.
+- Treat mdkg rules, EDDs, DECs, PRDs, and work nodes as more authoritative than chat memory.
+- Use `mdkg show <id>` for direct inspection and `mdkg show <id> --meta` for card-only inspection.
+- Use `mdkg search "..."` and `mdkg next` to discover current work.
+- Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
+- Use `mdkg task start/update/done` for structured task, bug, and test lifecycle fields.
+- Keep nuanced summaries, body text, and manual parent closeout edits in markdown.
+- Use `mdkg event enable` only if `events.jsonl` is missing and provenance should be restored.
+- Use `CLI_COMMAND_MATRIX.md` for the canonical command and flag surface.
+- Run `mdkg validate` before marking work done.
+
 If the active task is known:
 - `mdkg pack <id>`
 - `mdkg task start <id>` when durable work begins

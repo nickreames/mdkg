@@ -106,6 +106,17 @@ test("cli dispatch covers index, guide, show, list, search, next, validate, form
   assert.equal(validate.status, 0);
   assert.match(validate.stdout, /validation ok/);
 
+  const validateJson = runCli(root, ["validate", "--json"]);
+  assert.equal(validateJson.status, 0);
+  const receipt = JSON.parse(validateJson.stdout) as {
+    action: string;
+    ok: boolean;
+    error_count: number;
+  };
+  assert.equal(receipt.action, "validated");
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.error_count, 0);
+
   const format = runCli(root, ["format"]);
   assert.equal(format.status, 0);
   assert.match(format.stdout, /format updated/);
@@ -113,22 +124,104 @@ test("cli dispatch covers index, guide, show, list, search, next, validate, form
   const doctor = runCli(root, ["doctor", "--json"]);
   assert.equal(doctor.status, 0);
   assert.match(doctor.stdout, /\"ok\": true/);
+
+  const skillValidateJson = runCli(root, ["skill", "validate", "--json"]);
+  assert.equal(skillValidateJson.status, 0);
+  assert.deepEqual(JSON.parse(skillValidateJson.stdout), {
+    action: "validated",
+    ok: true,
+    checked_count: 0,
+    warning_count: 0,
+    error_count: 0,
+    warnings: [],
+    errors: [],
+  });
 });
 
-test("cli dispatch covers workspace add/list/remove", () => {
+test("cli dispatch covers workspace add/list/enable/disable/remove", () => {
   const root = setupRepo();
 
   const add = runCli(root, ["workspace", "add", "docs", "docs"]);
   assert.equal(add.status, 0);
   assert.match(add.stdout, /workspace added: docs/);
 
+  const disable = runCli(root, ["workspace", "disable", "docs"]);
+  assert.equal(disable.status, 0);
+  assert.match(disable.stdout, /workspace disabled: docs/);
+
   const list = runCli(root, ["workspace", "ls"]);
   assert.equal(list.status, 0);
-  assert.match(list.stdout, /docs \| enabled \| docs \| \.mdkg/);
+  assert.match(list.stdout, /docs \| disabled \| docs \| \.mdkg/);
+
+  const enable = runCli(root, ["workspace", "enable", "docs"]);
+  assert.equal(enable.status, 0);
+  assert.match(enable.stdout, /workspace enabled: docs/);
 
   const remove = runCli(root, ["workspace", "rm", "docs"]);
   assert.equal(remove.status, 0);
   assert.match(remove.stdout, /workspace removed: docs/);
+});
+
+test("cli dispatch covers workspace mutation json receipts", () => {
+  const root = setupRepo();
+
+  const add = runCli(root, ["workspace", "add", "docs", "docs", "--json"]);
+  assert.equal(add.status, 0);
+  assert.deepEqual(JSON.parse(add.stdout), {
+    action: "added",
+    workspace: {
+      alias: "docs",
+      path: "docs",
+      enabled: true,
+      mdkg_dir: ".mdkg",
+    },
+  });
+
+  const disable = runCli(root, ["workspace", "disable", "docs", "--json"]);
+  assert.equal(disable.status, 0);
+  assert.deepEqual(JSON.parse(disable.stdout), {
+    action: "disabled",
+    workspace: {
+      alias: "docs",
+      path: "docs",
+      enabled: false,
+      mdkg_dir: ".mdkg",
+    },
+  });
+});
+
+test("cli dispatch covers event json receipts", () => {
+  const root = setupRepo();
+
+  const enable = runCli(root, ["event", "enable", "--json"]);
+  assert.equal(enable.status, 0);
+  assert.deepEqual(JSON.parse(enable.stdout), {
+    action: "enabled",
+    workspace: "root",
+    created: true,
+  });
+
+  const append = runCli(root, [
+    "event",
+    "append",
+    "--kind",
+    "RUN_COMPLETED",
+    "--status",
+    "ok",
+    "--refs",
+    "TASK-1",
+    "--run-id",
+    "run_cli_event_json",
+    "--json",
+  ]);
+  assert.equal(append.status, 0);
+  const receipt = JSON.parse(append.stdout);
+  assert.equal(receipt.action, "appended");
+  assert.equal(receipt.event.run_id, "run_cli_event_json");
+  assert.equal(receipt.event.workspace, "root");
+  assert.equal(receipt.event.kind, "RUN_COMPLETED");
+  assert.equal(receipt.event.status, "ok");
+  assert.deepEqual(receipt.event.refs, ["task-1"]);
 });
 
 test("cli returns usage errors for unknown and malformed commands", () => {
@@ -140,7 +233,7 @@ test("cli returns usage errors for unknown and malformed commands", () => {
 
   const badWorkspace = runCli(root, ["workspace"]);
   assert.equal(badWorkspace.status, 1);
-  assert.match(badWorkspace.stderr, /workspace requires ls\/add\/rm/);
+  assert.match(badWorkspace.stderr, /workspace requires ls\/add\/rm\/enable\/disable/);
 
   const badShow = runCli(root, ["show"]);
   assert.equal(badShow.status, 1);

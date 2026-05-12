@@ -6,7 +6,15 @@ const { loadConfig } = require("../../core/config");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
-function writeConfig(root: string): void {
+type TestWorkspaceConfig = Record<string, { path: string; enabled: boolean; mdkg_dir: string }>;
+
+function rootWorkspaceConfig(): TestWorkspaceConfig {
+  return {
+    root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
+  };
+}
+
+function writeConfig(root: string, workspaces: TestWorkspaceConfig = rootWorkspaceConfig()): void {
   const config = {
     schema_version: 1,
     tool: "mdkg",
@@ -33,15 +41,19 @@ function writeConfig(root: string): void {
       priority_max: 9,
       next: { strategy: "chain_then_priority", status_preference: ["progress", "todo", "review", "blocked", "backlog"] },
     },
-    workspaces: {
-      root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
-    },
+    workspaces,
   };
 
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));
 }
 
-function writeTask(root: string, id: string, relates: string[] = []): void {
+function writeTask(
+  root: string,
+  id: string,
+  relates: string[] = [],
+  workspacePath = "."
+): void {
+  const workspaceRoot = workspacePath === "." ? root : path.join(root, workspacePath);
   const content = [
     "---",
     `id: ${id}`,
@@ -60,7 +72,7 @@ function writeTask(root: string, id: string, relates: string[] = []): void {
     "updated: 2026-01-06",
     "---",
   ].join("\n");
-  writeFile(path.join(root, ".mdkg", "work", `${id}.md`), content);
+  writeFile(path.join(workspaceRoot, ".mdkg", "work", `${id}.md`), content);
 }
 
 test("buildIndex creates qids and reverse edges", () => {
@@ -128,4 +140,43 @@ test("buildIndex includes latest checkpoint hint by workspace", () => {
   const config = loadConfig(root);
   const index = buildIndex(root, config);
   assert.equal(index.meta.latest_checkpoint_qid?.root, "root:chk-2");
+});
+
+test("buildIndex includes registered workspaces and ignores unregistered mdkg folders", () => {
+  const root = makeTempDir("mdkg-index-registered-");
+  writeConfig(root, {
+    ...rootWorkspaceConfig(),
+    docs: { path: "docs", enabled: true, mdkg_dir: ".mdkg" },
+  });
+  writeDefaultTemplates(root);
+  writeTask(root, "task-1");
+  writeTask(root, "task-2", [], "docs");
+  writeTask(root, "task-3", [], "scratch");
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+
+  assert.ok(index.nodes["root:task-1"]);
+  assert.ok(index.nodes["docs:task-2"]);
+  assert.equal(index.nodes["scratch:task-3"], undefined);
+  assert.deepEqual(index.meta.workspaces, ["docs", "root"]);
+});
+
+test("buildIndex excludes disabled registered workspaces", () => {
+  const root = makeTempDir("mdkg-index-disabled-");
+  writeConfig(root, {
+    ...rootWorkspaceConfig(),
+    docs: { path: "docs", enabled: false, mdkg_dir: ".mdkg" },
+  });
+  writeDefaultTemplates(root);
+  writeTask(root, "task-1");
+  writeTask(root, "task-2", [], "docs");
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+
+  assert.ok(index.nodes["root:task-1"]);
+  assert.equal(index.nodes["docs:task-2"], undefined);
+  assert.deepEqual(index.meta.workspaces, ["root"]);
+  assert.deepEqual(index.workspaces.docs, { path: "docs", enabled: false });
 });

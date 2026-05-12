@@ -1,4 +1,5 @@
 import { IndexNode } from "../graph/indexer";
+import { FrontmatterValue } from "../graph/frontmatter";
 import { SkillIndexEntry } from "../graph/skills_indexer";
 
 export type QueryOutputFormat = "json" | "xml" | "toon" | "md";
@@ -20,6 +21,7 @@ export type NodeSummaryJson = {
   refs: string[];
   aliases: string[];
   skills: string[];
+  attributes: Record<string, FrontmatterValue>;
   path: string;
   edges: IndexNode["edges"];
 };
@@ -39,6 +41,7 @@ export type SkillSummaryJson = {
   path: string;
   has_scripts: boolean;
   has_references: boolean;
+  extensions: SkillIndexEntry["extensions"];
   ochatr: SkillIndexEntry["ochatr"];
 };
 
@@ -68,6 +71,7 @@ export function toNodeSummaryJson(node: IndexNode): NodeSummaryJson {
     refs: [...node.refs],
     aliases: [...node.aliases],
     skills: [...node.skills],
+    attributes: { ...(node.attributes ?? {}) },
     path: node.path,
     edges: {
       epic: node.edges.epic,
@@ -107,6 +111,7 @@ export function toSkillSummaryJson(skill: SkillIndexEntry): SkillSummaryJson {
     path: skill.path,
     has_scripts: skill.has_scripts,
     has_references: skill.has_references,
+    extensions: JSON.parse(JSON.stringify(skill.extensions)),
     ochatr: { ...skill.ochatr },
   };
 }

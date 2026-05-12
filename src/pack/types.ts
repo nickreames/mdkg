@@ -1,3 +1,5 @@
+import { FrontmatterValue } from "../graph/frontmatter";
+
 export type PackTruncation = {
   max_nodes: boolean;
   max_bytes: boolean;
@@ -37,6 +39,7 @@ export type PackNode = {
   artifacts: string[];
   refs: string[];
   aliases: string[];
+  attributes: Record<string, FrontmatterValue>;
   body: string;
 };
 

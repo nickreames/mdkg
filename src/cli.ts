@@ -29,6 +29,8 @@ import {
 import { runTaskDoneCommand, runTaskStartCommand, runTaskUpdateCommand } from "./commands/task";
 import {
   runWorkspaceAddCommand,
+  runWorkspaceDisableCommand,
+  runWorkspaceEnableCommand,
   runWorkspaceListCommand,
   runWorkspaceRemoveCommand,
 } from "./commands/workspace";
@@ -88,7 +90,7 @@ function printUsage(log: LogFn): void {
   log("  guide       Show the mdkg guide");
   log("  format      Normalize frontmatter");
   log("  doctor      Run install and workspace diagnostics");
-  log("  workspace   Manage workspaces (ls/add/rm)");
+  log("  workspace   Manage workspaces (ls/add/rm/enable/disable)");
   log("\nQuickstart:");
   log("  mdkg init --llm");
   log('  mdkg new task "..." --status todo --priority 1');
@@ -124,10 +126,14 @@ function printInitHelp(log: LogFn): void {
 
 function printNewHelp(log: LogFn): void {
   log("Usage:");
-  log('  mdkg new <type> "<title>" [options]');
+  log('  mdkg new <type> "<title>" [options] [--json]');
   log("\nTypes:");
   log("  rule prd edd dec prop epic feat task bug checkpoint test");
+  log("\nAgent workflow file types:");
+  log("  spec work work_order receipt feedback dispute proposal");
+  log("  Use --id <portable-id> with these types for semantic ids like agent.image-worker.");
   log("\nOptions:");
+  log("  --id <portable-id>         Explicit id for agent workflow file types");
   log("  --ws <alias>               Workspace alias (default root)");
   log("  --status <status>          Work item or decision status");
   log("  --priority <0..9>          Work item priority");
@@ -140,6 +146,8 @@ function printNewHelp(log: LogFn): void {
   log("  --parent --prev --next --relates --blocked-by --blocks");
   log("  --links --artifacts --refs --aliases --owners --cases --supersedes");
   log("  --owners <owner,owner,...> Owners");
+  log("\nNotes:");
+  log("  spec/work scaffold as validation-clean docs; relational workflow docs need real refs.");
   printGlobalOptions(log);
 }
 
@@ -151,9 +159,11 @@ function printGuideHelp(log: LogFn): void {
 
 function printWorkspaceHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg workspace ls");
-  log("  mdkg workspace add <alias> <path> [--mdkg-dir <dir>]");
-  log("  mdkg workspace rm <alias>");
+  log("  mdkg workspace ls [--json]");
+  log("  mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--json]");
+  log("  mdkg workspace rm <alias> [--json]");
+  log("  mdkg workspace enable <alias> [--json]");
+  log("  mdkg workspace disable <alias> [--json]");
   printGlobalOptions(log);
 }
 
@@ -235,7 +245,7 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "new":
       log("Usage:");
-      log('  mdkg skill new <slug> "<name>" --description "<description>" [options]');
+      log('  mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]');
       log("\nOptions:");
       log("  --tags <tag,tag,...>         Optional skill tags");
       log("  --authors <name,name,...>    Optional authors list");
@@ -268,24 +278,24 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
       return;
     case "validate":
       log("Usage:");
-      log("  mdkg skill validate [<slug>]");
+      log("  mdkg skill validate [<slug>] [--json]");
       printGlobalOptions(log);
       return;
     case "sync":
       log("Usage:");
-      log("  mdkg skill sync [--force]");
+      log("  mdkg skill sync [--force] [--json]");
       log("\nWhen to use:");
       log("  Rebuild .agents/skills and .claude/skills from canonical .mdkg/skills.");
       printGlobalOptions(log);
       return;
     default:
       log("Usage:");
-      log('  mdkg skill new <slug> "<name>" --description "<description>" [options]');
+      log('  mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]');
       log("  mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]");
       log("  mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]");
       log('  mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]');
-      log("  mdkg skill validate [<slug>]");
-      log("  mdkg skill sync [--force]");
+      log("  mdkg skill validate [<slug>] [--json]");
+      log("  mdkg skill sync [--force] [--json]");
       log("\nNotes:");
       log("  Skills are first-class under `mdkg skill ...`.");
       log("  Use stage tags like `stage:plan`, `stage:execute`, and `stage:review` with --tags.");
@@ -297,7 +307,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "start":
       log("Usage:");
-      log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]');
+      log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]');
       log("\nWhen to use:");
       log("  Move a task, bug, or test into progress as a structured state change.");
       log("  If `events.jsonl` is missing, mdkg prints a short reminder about `mdkg event enable`.");
@@ -308,7 +318,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]");
       log("                   [--add-artifacts <a,...>] [--add-links <l,...>] [--add-refs <id,...>]");
       log("                   [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]");
-      log('                   [--clear-blocked-by] [--run-id <id>] [--note "<text>"]');
+      log('                   [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]');
       log("\nWhen to use:");
       log("  Update structured task metadata and evidence while keeping body and narrative edits in markdown.");
       printGlobalOptions(log);
@@ -316,7 +326,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
     case "done":
       log("Usage:");
       log('  mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]');
-      log('                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"]');
+      log('                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"] [--json]');
       log("\nWhen to use:");
       log("  Mark a task-like node done, optionally create a checkpoint, and emit a completion event when enabled.");
       log("  Use `--checkpoint` for milestone compression, not every routine task completion.");
@@ -324,9 +334,9 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       return;
     default:
       log("Usage:");
-      log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"]');
-      log("  mdkg task update <id-or-qid> [options]");
-      log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [options]');
+      log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]');
+      log("  mdkg task update <id-or-qid> [options] [--json]");
+      log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]');
       log("\nNotes:");
       log("  `mdkg task ...` only supports task, bug, and test nodes in this wave.");
       log("  Feat and epic closeout remain checkpoint-first guidance plus manual parent updates.");
@@ -338,7 +348,7 @@ function printEventHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "enable":
       log("Usage:");
-      log("  mdkg event enable [--ws <alias>]");
+      log("  mdkg event enable [--ws <alias>] [--json]");
       log("\nWhen to use:");
       log("  Create or ensure the append-only JSONL event log for a workspace.");
       printGlobalOptions(log);
@@ -346,7 +356,7 @@ function printEventHelp(log: LogFn, subcommand?: string): void {
     case "append":
       log("Usage:");
       log("  mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...>");
-      log('                    [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>]');
+      log('                    [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]');
       log("                    [--agent <name>] [--skill <slug>] [--tool <id>]");
       log("\nWhen to use:");
       log("  Append explicit provenance events from an orchestrator or manual workflow.");
@@ -354,8 +364,8 @@ function printEventHelp(log: LogFn, subcommand?: string): void {
       return;
     default:
       log("Usage:");
-      log("  mdkg event enable [--ws <alias>]");
-      log("  mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options]");
+      log("  mdkg event enable [--ws <alias>] [--json]");
+      log("  mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]");
       printGlobalOptions(log);
   }
 }
@@ -368,14 +378,14 @@ function printNextHelp(log: LogFn): void {
 
 function printCheckpointHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg checkpoint new <title> [--ws <alias>]");
+  log("  mdkg checkpoint new <title> [--ws <alias>] [--json]");
   log('        [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]');
   printGlobalOptions(log);
 }
 
 function printValidateHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg validate [--out <path>] [--quiet]");
+  log("  mdkg validate [--out <path>] [--quiet] [--json]");
   printGlobalOptions(log);
 }
 
@@ -639,7 +649,8 @@ function runWorkspaceSubcommand(
       if (parsed.positionals.length > 2) {
         throw new UsageError("workspace ls takes no arguments");
       }
-      runWorkspaceListCommand({ root });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runWorkspaceListCommand({ root, json });
       return 0;
     }
     case "add": {
@@ -649,7 +660,8 @@ function runWorkspaceSubcommand(
         throw new UsageError("workspace add requires <alias> <path>");
       }
       const mdkgDir = requireFlagValue("--mdkg-dir", parsed.flags["--mdkg-dir"]);
-      runWorkspaceAddCommand({ root, alias, workspacePath, mdkgDir });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runWorkspaceAddCommand({ root, alias, workspacePath, mdkgDir, json });
       return 0;
     }
     case "rm": {
@@ -657,11 +669,30 @@ function runWorkspaceSubcommand(
       if (!alias || parsed.positionals.length > 3) {
         throw new UsageError("workspace rm requires <alias>");
       }
-      runWorkspaceRemoveCommand({ root, alias });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runWorkspaceRemoveCommand({ root, alias, json });
+      return 0;
+    }
+    case "enable": {
+      const alias = parsed.positionals[2];
+      if (!alias || parsed.positionals.length > 3) {
+        throw new UsageError("workspace enable requires <alias>");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runWorkspaceEnableCommand({ root, alias, json });
+      return 0;
+    }
+    case "disable": {
+      const alias = parsed.positionals[2];
+      if (!alias || parsed.positionals.length > 3) {
+        throw new UsageError("workspace disable requires <alias>");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runWorkspaceDisableCommand({ root, alias, json });
       return 0;
     }
     default:
-      throw new UsageError("workspace requires ls/add/rm");
+      throw new UsageError("workspace requires ls/add/rm/enable/disable");
   }
 }
 
@@ -687,6 +718,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const withScripts = parseBooleanFlag("--with-scripts", parsed.flags["--with-scripts"]);
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runSkillNewCommand({
         root,
         slug,
@@ -698,6 +730,7 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         withScripts,
         force,
         runId,
+        json,
       });
       return 0;
     }
@@ -765,7 +798,8 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         throw new UsageError("skill validate accepts at most one slug");
       }
       const slug = parsed.positionals[2];
-      runSkillValidateCommand({ root, slug });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runSkillValidateCommand({ root, slug, json });
       return 0;
     }
     case "sync": {
@@ -773,7 +807,8 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         throw new UsageError("skill sync does not accept positional arguments");
       }
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
-      runSkillSyncCommand({ root, force });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runSkillSyncCommand({ root, force, json });
       return 0;
     }
     default:
@@ -792,7 +827,8 @@ function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
       const note = requireFlagValue("--note", parsed.flags["--note"]);
-      runTaskStartCommand({ root, id, ws, runId, note });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runTaskStartCommand({ root, id, ws, runId, note, json });
       return 0;
     }
     case "update": {
@@ -812,6 +848,7 @@ function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const clearBlockedBy = parseBooleanFlag("--clear-blocked-by", parsed.flags["--clear-blocked-by"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
       const note = requireFlagValue("--note", parsed.flags["--note"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runTaskUpdateCommand({
         root,
         id,
@@ -827,6 +864,7 @@ function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         clearBlockedBy,
         runId,
         note,
+        json,
       });
       return 0;
     }
@@ -842,6 +880,7 @@ function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const checkpoint = requireFlagValue("--checkpoint", parsed.flags["--checkpoint"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
       const note = requireFlagValue("--note", parsed.flags["--note"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runTaskDoneCommand({
         root,
         id,
@@ -852,6 +891,7 @@ function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         checkpoint,
         runId,
         note,
+        json,
       });
       return 0;
     }
@@ -868,7 +908,8 @@ function runEventSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         throw new UsageError("event enable does not accept positional arguments");
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
-      runEventEnableCommand({ root, ws });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runEventEnableCommand({ root, ws, json });
       return 0;
     }
     case "append": {
@@ -888,6 +929,7 @@ function runEventSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const agent = requireFlagValue("--agent", parsed.flags["--agent"]);
       const skill = requireFlagValue("--skill", parsed.flags["--skill"]);
       const tool = requireFlagValue("--tool", parsed.flags["--tool"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runEventAppendCommand({
         root,
         ws,
@@ -900,6 +942,7 @@ function runEventSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         agent,
         skill,
         tool,
+        json,
       });
       return 0;
     }
@@ -964,6 +1007,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       if (!type || !title) {
         throw new UsageError("new requires a type and title");
       }
+      const id = requireFlagValue("--id", parsed.flags["--id"]);
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const status = requireFlagValue("--status", parsed.flags["--status"]);
       const priority = parseNumberFlag("--priority", parsed.flags["--priority"]);
@@ -987,10 +1031,12 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runNewCommand({
         root,
         type,
         title,
+        id,
         ws,
         status,
         priority,
@@ -1014,6 +1060,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         noCache,
         noReindex,
         runId,
+        json,
       });
       return 0;
     }
@@ -1202,6 +1249,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const template = requireFlagValue("--template", parsed.flags["--template"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
       const note = requireFlagValue("--note", parsed.flags["--note"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runCheckpointNewCommand({
         root,
         title,
@@ -1213,6 +1261,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         template,
         runId,
         note,
+        json,
       });
       return 0;
     }
@@ -1222,7 +1271,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       }
       const out = requireFlagValue("--out", parsed.flags["--out"]);
       const quiet = parseBooleanFlag("--quiet", parsed.flags["--quiet"]);
-      runValidateCommand({ root, out, quiet });
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runValidateCommand({ root, out, quiet, json });
       return 0;
     }
     case "format":

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
 const { runNewCommand } = require("../../commands/new");
+const { runEventEnableCommand } = require("../../commands/event");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -68,6 +69,34 @@ function writeExistingTask(root: string): void {
   writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
 }
 
+function captureOutput(fn: () => void): { stdout: string; stderr: string } {
+  const stdout: string[] = [];
+  const stderr: string[] = [];
+  const originalLog = console.log;
+  const originalError = console.error;
+  console.log = (...args: unknown[]) => {
+    stdout.push(args.map(String).join(" "));
+  };
+  console.error = (...args: unknown[]) => {
+    stderr.push(args.map(String).join(" "));
+  };
+  try {
+    fn();
+  } finally {
+    console.log = originalLog;
+    console.error = originalError;
+  }
+  return { stdout: stdout.join("\n"), stderr: stderr.join("\n") };
+}
+
+function readEvents(root: string): Array<Record<string, unknown>> {
+  const raw = fs.readFileSync(path.join(root, ".mdkg", "work", "events", "events.jsonl"), "utf8").trim();
+  if (!raw) {
+    return [];
+  }
+  return raw.split("\n").map((line) => JSON.parse(line) as Record<string, unknown>);
+}
+
 test("runNewCommand creates next id and writes to work folder", () => {
   const root = makeTempDir("mdkg-new-task-");
   writeConfig(root);
@@ -90,6 +119,71 @@ test("runNewCommand creates next id and writes to work folder", () => {
   assert.ok(content.includes("priority: 9"));
   assert.ok(content.includes("created: 2026-01-21"));
   assert.ok(content.includes("updated: 2026-01-21"));
+});
+
+test("runNewCommand can print deterministic json receipt", () => {
+  const root = makeTempDir("mdkg-new-json-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  captureOutput(() => runEventEnableCommand({ root }));
+
+  const output = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "task",
+      title: "JSON Created",
+      status: "todo",
+      priority: 2,
+      runId: "run_new_json",
+      json: true,
+      now: new Date("2026-03-09T01:00:00Z"),
+    })
+  );
+
+  assert.equal(output.stderr, "");
+  assert.deepEqual(JSON.parse(output.stdout), {
+    action: "created",
+    node: {
+      workspace: "root",
+      id: "task-1",
+      qid: "root:task-1",
+      path: ".mdkg/work/task-1-json-created.md",
+      type: "task",
+      title: "JSON Created",
+      status: "todo",
+      priority: 2,
+    },
+  });
+  assert.ok(fs.existsSync(path.join(root, ".mdkg", "work", "task-1-json-created.md")));
+
+  const ruleOutput = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "rule",
+      title: "Core Rule",
+      runId: "run_new_json",
+      json: true,
+      now: new Date("2026-03-09T01:05:00Z"),
+    })
+  );
+  assert.equal(ruleOutput.stderr, "");
+  assert.deepEqual(JSON.parse(ruleOutput.stdout), {
+    action: "created",
+    node: {
+      workspace: "root",
+      id: "rule-1",
+      qid: "root:rule-1",
+      path: ".mdkg/core/rule-1-core-rule.md",
+      type: "rule",
+      title: "Core Rule",
+    },
+  });
+
+  const events = readEvents(root);
+  assert.equal(events.length, 2);
+  assert.equal(events[0]?.kind, "NODE_CREATED");
+  assert.deepEqual(events[0]?.refs, ["task-1"]);
+  assert.deepEqual(events[1]?.refs, ["rule-1"]);
 });
 
 test("runNewCommand creates a test node with cases list", () => {

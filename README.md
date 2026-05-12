@@ -13,7 +13,7 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no sqlite, daemon, hosted index, or vector DB
 
-Current package version in source: `0.0.6`
+Current package version in source: `0.0.9`
 
 ## The product shape
 
@@ -30,8 +30,6 @@ If an agent is involved, the default handoff primitive is `mdkg pack <id>`.
 If a repo needs repeatable procedures, author them as first-class skills under `.mdkg/skills/`.
 
 ## Install
-
-Once published:
 
 ```bash
 npm i -g mdkg
@@ -63,6 +61,13 @@ Create a task:
 
 ```bash
 mdkg new task "bootstrap cli" --status todo --priority 1 --tags cli,build
+```
+
+Create an agent workflow document with a semantic portable id:
+
+```bash
+mdkg new spec "image worker" --id agent.image-worker
+mdkg new work "generate image" --id work.generate-image
 ```
 
 Inspect the current truth:
@@ -113,13 +118,13 @@ mdkg skill validate release-readiness
 ## LLM-readable onboarding artifacts
 
 The root docs below are the canonical fast-start set for humans and agents:
-- [`AGENT_START.md`](/Users/nicholasreames/Git/mdkg/AGENT_START.md)
-- [`llms.txt`](/Users/nicholasreames/Git/mdkg/llms.txt)
-- [`AGENT_PROMPT_SNIPPET.md`](/Users/nicholasreames/Git/mdkg/AGENT_PROMPT_SNIPPET.md)
-- [`PACK_EXAMPLES.md`](/Users/nicholasreames/Git/mdkg/PACK_EXAMPLES.md)
-- [`MANUAL_BEHAVIOR_AUDIT.md`](/Users/nicholasreames/Git/mdkg/MANUAL_BEHAVIOR_AUDIT.md)
-- [`CLI_COMMAND_MATRIX.md`](/Users/nicholasreames/Git/mdkg/CLI_COMMAND_MATRIX.md)
-- [`COVERAGE_HARDENING_MATRIX.md`](/Users/nicholasreames/Git/mdkg/COVERAGE_HARDENING_MATRIX.md)
+- [`AGENT_START.md`](AGENT_START.md)
+- [`llms.txt`](llms.txt)
+- [`PACK_EXAMPLES.md`](PACK_EXAMPLES.md)
+- [`CLI_COMMAND_MATRIX.md`](CLI_COMMAND_MATRIX.md)
+- [`COVERAGE_HARDENING_MATRIX.md`](COVERAGE_HARDENING_MATRIX.md)
+- [`CHANGELOG.md`](CHANGELOG.md)
+- [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ## Repository shape
 
@@ -199,6 +204,21 @@ This repo now dogfoods three internal skills:
 - `build-pack-and-execute-task`
 - `verify-close-and-checkpoint`
 
+Optional skill metadata with prefixes such as `ochatr_*` is treated as vendor extension data. Structured skill output exposes it under `extensions.ochatr` while keeping the top-level `ochatr` field as a 0.0.9 compatibility alias. ochatr.ai is a pioneering adopter of this extension pattern, not the name of the base mdkg standard.
+
+## Agent workflow files
+
+mdkg recognizes a small set of canonical agent workflow documents:
+- `SPEC.md` for agent, package, or runtime specifications
+- `WORK.md` for reusable work contracts
+- `WORK_ORDER.md` for concrete requests against work contracts
+- `RECEIPT.md` for completed work output and artifacts
+- `FEEDBACK.md`, `DISPUTE.md`, and `PROPOSAL.md` for review loops
+
+Use `mdkg new spec|work|work_order|receipt|feedback|dispute|proposal "<title>"` to scaffold them. `--id <portable-id>` is available for these types when semantic ids such as `agent.image-worker` or `work.generate-image` are preferred.
+
+Relational templates contain editable placeholder refs. `spec` and `work` scaffold as validation-clean standalone docs; `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
+
 ## Current direction
 
 This release includes:
@@ -211,6 +231,7 @@ This release includes:
 - latest-checkpoint resolver + index hint
 - events JSONL validation
 - XML / TOON / Markdown output for node and skill list/search/show
+- agent workflow file types and semantic `mdkg new --id` support
 - product-specific skill mirrors for Codex/OpenAI and Claude
 - shared `AGENT_START.md` startup guidance
 
@@ -240,6 +261,8 @@ Use these defaults:
 - do not commit on every tool call
 
 ## Contributing
+
+Start with [`CONTRIBUTING.md`](CONTRIBUTING.md). mdkg prefers Prompt Requests before Pull Requests: contributors can submit intent, workflows, prompts, and acceptance criteria without needing to write code first.
 
 This repo dogfoods mdkg itself. The behavior source of truth is the combination of:
 - source under `src/`

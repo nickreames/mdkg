@@ -22,6 +22,7 @@ export type SkillIndexEntry = {
   path: string;
   has_scripts: boolean;
   has_references: boolean;
+  extensions: Record<string, Record<string, FrontmatterValue>>;
   ochatr: Record<string, FrontmatterValue>;
 };
 
@@ -129,6 +130,17 @@ function extractOchatr(frontmatter: Record<string, FrontmatterValue>): Record<st
   return extracted;
 }
 
+function stripPrefix(
+  values: Record<string, FrontmatterValue>,
+  prefix: string
+): Record<string, FrontmatterValue> {
+  const stripped: Record<string, FrontmatterValue> = {};
+  for (const [key, value] of Object.entries(values)) {
+    stripped[key.slice(prefix.length)] = value;
+  }
+  return stripped;
+}
+
 function hasDirectory(dirPath: string): boolean {
   if (!fs.existsSync(dirPath)) {
     return false;
@@ -166,6 +178,11 @@ export function buildSkillIndexEntry(root: string, slug: string, filePath: strin
   const authors = toLowercaseList(optionalList(frontmatter, "authors", filePath));
   const links = optionalList(frontmatter, "links", filePath);
   const skillDir = path.dirname(filePath);
+  const ochatr = extractOchatr(frontmatter);
+  const extensions: Record<string, Record<string, FrontmatterValue>> = {};
+  if (Object.keys(ochatr).length > 0) {
+    extensions.ochatr = stripPrefix(ochatr, "ochatr_");
+  }
 
   return {
     slug,
@@ -182,7 +199,8 @@ export function buildSkillIndexEntry(root: string, slug: string, filePath: strin
     path: path.relative(root, filePath),
     has_scripts: hasDirectory(path.join(skillDir, "scripts")),
     has_references: hasDirectory(path.join(skillDir, "references")),
-    ochatr: extractOchatr(frontmatter),
+    extensions,
+    ochatr,
   };
 }
 
