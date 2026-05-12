@@ -4,6 +4,21 @@ All notable changes to mdkg are documented here.
 
 This project follows a pragmatic changelog style inspired by Keep a Changelog. Versions use npm package versions.
 
+## 0.1.0 - 2026-05-12
+
+### Added
+
+- Added conservative `mdkg upgrade` for existing workspaces.
+- Added `.mdkg/init-manifest.json` ownership tracking for managed init assets.
+- Added v0.0.9 seed fingerprints so clean older workspaces can safely adopt current init docs, templates, and default skills.
+- Added `npm run smoke:upgrade` for packed-package upgrade verification in temporary workspaces.
+
+### Changed
+
+- `mdkg upgrade` defaults to dry-run; `mdkg upgrade --apply` is the only mutating upgrade path.
+- Agent-enabled workspaces can receive safe managed default skill upgrades and mirror refreshes during upgrade.
+- Publish readiness now checks packaged init manifests and runs upgrade smoke before publish.
+
 ## 0.0.9 - 2026-05-12
 
 ### Added

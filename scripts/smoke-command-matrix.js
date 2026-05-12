@@ -11,6 +11,7 @@ const GIT_CMD = process.platform === "win32" ? "git.exe" : "git";
 const HELP_TARGETS = [
   ["global"],
   ["init"],
+  ["upgrade"],
   ["new"],
   ["show"],
   ["list"],
@@ -41,6 +42,7 @@ const HELP_TARGETS = [
 ];
 
 const repoRoot = path.resolve(__dirname, "..");
+const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
 const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
 
 function commandEnv(extra = {}) {
@@ -359,7 +361,7 @@ function runSmoke() {
       cwd: tempRoot,
       env: { npm_config_prefix: prefix },
     });
-    assertIncludes(install.combined, "mdkg 0.0.9 installed.", "postinstall");
+    assertIncludes(install.combined, `mdkg ${packageVersion} installed.`, "postinstall");
     assertIncludes(install.combined, "mdkg --help", "postinstall");
 
     const binPath = process.platform === "win32"
@@ -368,8 +370,8 @@ function runSmoke() {
     assertExists(binPath);
 
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
-    if (version !== "0.0.9") {
-      throw new Error(`expected mdkg version 0.0.9, got ${version}`);
+    if (version !== packageVersion) {
+      throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     }
 
     exerciseHelp(binPath);

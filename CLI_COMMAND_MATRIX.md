@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-03-11
-package_version_in_source: 0.0.9
+package_version_in_source: 0.1.0
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -17,6 +17,7 @@ Verification commands:
 
 Primary commands:
 - `init`
+- `upgrade`
 - `new`
 - `show`
 - `list`
@@ -82,6 +83,27 @@ Notes:
 - `--llm --agent` is the full AI-agent bootstrap path
 - published bootstrap config is root-only by default
 - `--agent` seeds three default mdkg usage skills into canonical `.mdkg/skills/`, updates the registry, creates `events.jsonl`, and syncs non-empty mirrors
+
+### `mdkg upgrade`
+
+When to use:
+- preview or apply safe mdkg scaffold upgrades in an existing workspace
+- refresh managed init docs, templates, and default skills without overwriting local edits
+
+Usage:
+- `mdkg upgrade [--dry-run] [--apply] [--json]`
+
+Flags:
+- `--dry-run`
+- `--apply`
+- `--json`
+
+Notes:
+- `mdkg upgrade` defaults to dry-run and writes nothing
+- `--apply` is the only mutating upgrade path
+- customized docs, templates, skills, and core files are preserved and reported as conflicts
+- agent-enabled workspaces include safe default skill upgrades and skill mirror sync
+- non-agent workspaces do not gain skills, events, or mirrors implicitly
 
 ### `mdkg new`
 

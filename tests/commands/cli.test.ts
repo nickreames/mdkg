@@ -113,6 +113,27 @@ test("cli help init includes agent bootstrap and ignore-default controls", () =>
   assert.doesNotMatch(initHelp.stdout, /--claude/);
 });
 
+test("cli help upgrade documents conservative dry-run/apply behavior", () => {
+  const upgradeHelp = spawnSync(process.execPath, [cliPath, "help", "upgrade"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(upgradeHelp.status, 0);
+  assert.match(upgradeHelp.stdout, /mdkg upgrade \[--dry-run\] \[--apply\] \[--json\]/);
+  assert.match(upgradeHelp.stdout, /Preview upgrade changes/);
+  assert.match(upgradeHelp.stdout, /--apply/);
+});
+
+test("cli upgrade rejects dry-run and apply together", () => {
+  const result = spawnSync(process.execPath, [cliPath, "upgrade", "--dry-run", "--apply"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /choose either --dry-run or --apply/);
+  assert.match(result.stdout, /mdkg upgrade \[--dry-run\] \[--apply\] \[--json\]/);
+});
+
 test("cli init --omni fails with migration guidance", () => {
   const result = spawnSync(process.execPath, [cliPath, "init", "--omni"], {
     encoding: "utf8",

@@ -17,6 +17,7 @@ import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
 import { runGuideCommand } from "./commands/guide";
+import { runUpgradeCommand } from "./commands/upgrade";
 import { runEventAppendCommand, runEventEnableCommand } from "./commands/event";
 import {
   runSkillListCommand,
@@ -74,6 +75,7 @@ function printUsage(log: LogFn): void {
   log("  mdkg <command> [options]");
   log("\nPrimary commands:");
   log("  init        Initialize .mdkg scaffolding");
+  log("  upgrade     Conservatively upgrade mdkg scaffolding");
   log("  new         Create a node from templates");
   log("  show        Show a node by id or qid");
   log("  list        List nodes with filters");
@@ -93,6 +95,8 @@ function printUsage(log: LogFn): void {
   log("  workspace   Manage workspaces (ls/add/rm/enable/disable)");
   log("\nQuickstart:");
   log("  mdkg init --llm");
+  log("  mdkg upgrade");
+  log("  mdkg upgrade --apply");
   log('  mdkg new task "..." --status todo --priority 1');
   log('  mdkg search "..."');
   log("  mdkg show <id>");
@@ -121,6 +125,20 @@ function printInitHelp(log: LogFn): void {
   log("  --update-npmignore    Append mdkg ignore entries");
   log("  --update-dockerignore Append mdkg ignore entries");
   log("\nCompatibility flags still supported but not shown in the primary onboarding story.");
+  printGlobalOptions(log);
+}
+
+function printUpgradeHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg upgrade [--dry-run] [--apply] [--json]");
+  log("\nOptions:");
+  log("  --dry-run             Preview upgrade changes without writing files (default)");
+  log("  --apply               Apply safe managed init asset upgrades");
+  log("  --json                Emit machine-readable upgrade receipt");
+  log("\nNotes:");
+  log("  - preserves customized docs, templates, skills, and core files");
+  log("  - upgrades default mdkg skills only when they match managed seed fingerprints");
+  log("  - run without flags first, then rerun with --apply when the receipt looks right");
   printGlobalOptions(log);
 }
 
@@ -416,6 +434,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "init":
       printInitHelp(log);
+      return;
+    case "upgrade":
+      printUpgradeHelp(log);
       return;
     case "guide":
       printGuideHelp(log);
@@ -991,6 +1012,19 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         createLlm,
         agent,
       });
+      return 0;
+    }
+    case "upgrade": {
+      if (parsed.positionals.length > 1) {
+        throw new UsageError("upgrade does not accept positional arguments");
+      }
+      const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
+      const apply = parseBooleanFlag("--apply", parsed.flags["--apply"]);
+      if (dryRun && apply) {
+        throw new UsageError("choose either --dry-run or --apply, not both");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runUpgradeCommand({ root, dryRun, apply, json });
       return 0;
     }
     case "guide":

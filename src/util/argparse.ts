@@ -87,6 +87,7 @@ const BOOLEAN_FLAGS = new Set([
   "--concise",
   "--version",
   "--dry-run",
+  "--apply",
   "--json",
   "--xml",
   "--toon",
