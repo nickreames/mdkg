@@ -28,16 +28,17 @@ Finish work with evidence, validation, and minimal memory drift.
 
 1. Run the relevant technical gates for the changed surface.
 2. Run `mdkg validate` before closing the task.
-3. Use `mdkg task update <id> ...` for additive evidence and structured metadata changes; keep narrative/body edits in markdown.
-4. Use `mdkg task done <id> --checkpoint "<title>"` when the task should close with milestone compression.
-5. Batch durable mdkg writes at one boundary: task status, artifact refs, optional checkpoint, and commit.
-6. Mark tasks done only after evidence exists.
-7. Create a checkpoint only for milestone-level transitions, not every small step.
-8. For feat or epic closeout, prefer a checkpoint body as the durable narrative summary of what changed and what is next.
-9. Use feat closeout scope as direct children with `parent: <feat-id>` and epic closeout scope as descendant work with `epic: <epic-id>`.
-10. Parent status edits remain manual; do not invent a hidden parent-closeout workflow.
-11. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
-12. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
+3. For mdkg scaffold or release work, include `mdkg upgrade` dry-run/apply evidence and any package smoke that exercises upgrade behavior.
+4. Use `mdkg task update <id> ...` for additive evidence and structured metadata changes; keep narrative/body edits in markdown.
+5. Use `mdkg task done <id> --checkpoint "<title>"` when the task should close with milestone compression.
+6. Batch durable mdkg writes at one boundary: task status, artifact refs, optional checkpoint, and commit.
+7. Mark tasks done only after evidence exists.
+8. Create a checkpoint only for milestone-level transitions, not every small step.
+9. For feat or epic closeout, prefer a checkpoint body as the durable narrative summary of what changed and what is next.
+10. Use feat closeout scope as direct children with `parent: <feat-id>` and epic closeout scope as descendant work with `epic: <epic-id>`.
+11. Parent status edits remain manual; do not invent a hidden parent-closeout workflow.
+12. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
+13. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
 
 ## Outputs
 

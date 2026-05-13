@@ -45,7 +45,7 @@ Use this local repo-only checklist before publishing mdkg:
 
 1. Confirm package intent and version in `package.json`, `package-lock.json`, `README.md`, `CLI_COMMAND_MATRIX.md`, and `CHANGELOG.md`.
 2. Use a clean npm cache: `export NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache`.
-3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, and `npm run smoke:matrix`.
+3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, and `npm run smoke:upgrade`.
 4. Run `npm pack --dry-run --json` and confirm the tarball includes `dist/cli.js`, compiled folders, `dist/init/`, release docs, and `scripts/postinstall.js`.
 5. Confirm registry state with `npm view mdkg version --registry=https://registry.npmjs.org/`.
 6. Publish only after the registry still shows the previous version and npm auth is known to have write access.

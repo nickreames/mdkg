@@ -12,7 +12,7 @@ test("postinstall hint prints starter command and PATH snippets when global bin 
     () => ({ status: 0, stdout: "/opt/homebrew\n" })
   );
 
-  assert.match(message, /mdkg 0\.0\.9 installed/);
+  assert.match(message, /mdkg 0\.1\.0 installed/);
   assert.match(message, /mdkg --help/);
   assert.match(message, /export PATH="\/opt\/homebrew\/bin:\$PATH"/);
   assert.match(message, /\.zshrc/);

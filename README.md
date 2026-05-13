@@ -13,7 +13,7 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no sqlite, daemon, hosted index, or vector DB
 
-Current package version in source: `0.0.9`
+Current package version in source: `0.1.0`
 
 ## The product shape
 
@@ -56,6 +56,21 @@ mdkg init --agent
 ```
 
 This adds strict-node `SOUL.md` / `HUMAN.md`, seeds the three default mdkg usage skills, creates `events.jsonl`, updates the skill registry, adds core pin updates, and creates mirrored skill folders under `.agents/skills/` and `.claude/skills/`.
+
+Preview safe scaffold upgrades in an existing mdkg workspace:
+
+```bash
+mdkg upgrade
+mdkg upgrade --json
+```
+
+Apply only after reviewing the receipt:
+
+```bash
+mdkg upgrade --apply
+```
+
+Upgrade is intentionally conservative. It creates missing managed startup docs and updates unchanged mdkg seed assets, but preserves customized docs, templates, skills, and core files as reported conflicts. Agent-enabled workspaces also get safe default skill upgrades and skill mirror refreshes; non-agent workspaces do not gain skills, events, or mirrors implicitly.
 
 Create a task:
 
@@ -142,6 +157,7 @@ mdkg lives under a hidden root directory:
 
 These are the commands new users and agents should learn first:
 - `mdkg init`
+- `mdkg upgrade`
 - `mdkg new`
 - `mdkg search`
 - `mdkg show`
@@ -204,7 +220,7 @@ This repo now dogfoods three internal skills:
 - `build-pack-and-execute-task`
 - `verify-close-and-checkpoint`
 
-Optional skill metadata with prefixes such as `ochatr_*` is treated as vendor extension data. Structured skill output exposes it under `extensions.ochatr` while keeping the top-level `ochatr` field as a 0.0.9 compatibility alias. ochatr.ai is a pioneering adopter of this extension pattern, not the name of the base mdkg standard.
+Optional skill metadata with prefixes such as `ochatr_*` is treated as vendor extension data. Structured skill output exposes it under `extensions.ochatr` while keeping the top-level `ochatr` field as a compatibility alias introduced in 0.0.9. ochatr.ai is a pioneering adopter of this extension pattern, not the name of the base mdkg standard.
 
 ## Agent workflow files
 

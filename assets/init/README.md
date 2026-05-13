@@ -15,6 +15,7 @@ This repository is initialized for mdkg.
 
 ```bash
 mdkg init --llm --agent
+mdkg upgrade
 mdkg search "..."
 mdkg show <id>
 mdkg pack <id>
@@ -50,3 +51,9 @@ Recommended:
 ```bash
 mdkg init --update-gitignore --update-npmignore
 ```
+
+## Upgrade
+
+`mdkg upgrade` previews safe scaffold updates for existing workspaces and writes nothing by default.
+
+Use `mdkg upgrade --apply` only after reviewing the receipt. Local customizations are preserved and reported instead of overwritten.

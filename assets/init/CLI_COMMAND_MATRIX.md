@@ -8,6 +8,7 @@ Verify live help with:
 
 Primary commands:
 - `mdkg init`
+- `mdkg upgrade [--dry-run] [--apply] [--json]`
 - `mdkg new`
 - `mdkg show`
 - `mdkg list`
@@ -63,6 +64,11 @@ Agent bootstrap:
 - `mdkg init --agent`
 - `mdkg init --llm --agent`
 - published bootstrap config is root-only by default
+
+Upgrade:
+- `mdkg upgrade` previews safe scaffold updates and writes nothing by default
+- `mdkg upgrade --apply` updates only managed or unchanged init assets
+- customized docs, templates, skills, and core files are preserved and reported
 
 Skill discovery:
 - `mdkg skill list --tags stage:plan --json`

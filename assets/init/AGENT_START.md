@@ -23,6 +23,7 @@ Agent operating prompt:
 - Use `mdkg search "..."` and `mdkg next` to discover current work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
 - Use `mdkg task start/update/done` for structured task, bug, and test lifecycle fields.
+- Use `mdkg upgrade` to preview scaffold updates; only run `mdkg upgrade --apply` after reviewing the receipt.
 - Keep nuanced summaries, body text, and manual parent closeout edits in markdown.
 - Use `mdkg event enable` only if `events.jsonl` is missing and provenance should be restored.
 - Use `CLI_COMMAND_MATRIX.md` for the canonical command and flag surface.

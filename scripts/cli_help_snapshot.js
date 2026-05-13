@@ -9,6 +9,7 @@ const matrixPath = path.join(root, "CLI_COMMAND_MATRIX.md");
 const HELP_TARGETS = [
   ["global"],
   ["init"],
+  ["upgrade"],
   ["new"],
   ["show"],
   ["list"],

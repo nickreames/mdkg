@@ -3,6 +3,8 @@ import path from "path";
 import { loadConfig } from "../core/config";
 import { NotFoundError } from "../util/errors";
 import { formatDate } from "../util/date";
+import { readPackageVersion } from "../core/version";
+import { createInitManifest, INIT_MANIFEST_FILE, writeInitManifest } from "./init_manifest";
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 
@@ -270,6 +272,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedCliMatrix = path.join(seedRoot, "CLI_COMMAND_MATRIX.md");
   const seedReadme = path.join(seedRoot, "README.md");
   const seedDefaultSkills = path.join(seedRoot, "skills", "default");
+  const seedManifest = createInitManifest(seedRoot, readPackageVersion());
 
   if (!fs.existsSync(seedConfig) || !fs.existsSync(seedCore) || !fs.existsSync(seedTemplates)) {
     throw new NotFoundError(
@@ -346,6 +349,8 @@ export function runInitCommand(options: InitCommandOptions): void {
     refreshSkillsRegistry(root, config);
     syncSkillMirrors({ root, config, createRoots: true, force });
   }
+
+  writeInitManifest(path.join(mdkgDir, INIT_MANIFEST_FILE), seedManifest);
 
   const noUpdateIgnores = Boolean(options.noUpdateIgnores);
   const shouldUpdateGitignore = Boolean(options.updateGitignore || !noUpdateIgnores);

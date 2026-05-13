@@ -60,6 +60,11 @@ function requireBuildFolders() {
 
 function requireInitAssets() {
   requireFile("dist/init/config.json");
+  const initManifest = JSON.parse(requireFile("dist/init/init-manifest.json"));
+  if (initManifest.tool !== "mdkg" || initManifest.schema_version !== 1 || !Array.isArray(initManifest.files)) {
+    fail("dist/init/init-manifest.json is not a valid mdkg init manifest");
+  }
+  requireFile("dist/init/legacy/v0.0.9-init-manifest.json");
   for (const startupDoc of [
     "README.md",
     "AGENTS.md",

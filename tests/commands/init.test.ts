@@ -83,8 +83,15 @@ test("runInitCommand copies seed assets, creates directories, and updates ignore
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "README.md")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "core", "core.md")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "templates", "default", "task.md")));
+  assert.ok(fs.existsSync(path.join(root, ".mdkg", "init-manifest.json")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "work")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "design")));
+
+  const manifest = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "init-manifest.json"), "utf8"));
+  assert.equal(manifest.schema_version, 1);
+  assert.equal(manifest.tool, "mdkg");
+  assert.ok(manifest.files.some((file: { path: string }) => file.path === ".mdkg/config.json"));
+  assert.ok(manifest.files.some((file: { path: string }) => file.path === ".mdkg/templates/default/task.md"));
 
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assert.match(gitignore, /\.mdkg\/index\//);
