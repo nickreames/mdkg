@@ -68,7 +68,9 @@ Agent bootstrap:
 Upgrade:
 - `mdkg upgrade` previews safe scaffold updates and writes nothing by default
 - `mdkg upgrade --apply` updates only managed or unchanged init assets
+- JSON receipts include `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects`
 - customized docs, templates, skills, and core files are preserved and reported
+- ignored event logs are skipped with guidance to run `mdkg event enable`
 
 Skill discovery:
 - `mdkg skill list --tags stage:plan --json`

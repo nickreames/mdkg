@@ -56,6 +56,7 @@ function requireBuildFolders() {
   ]) {
     requireDir(relativePath);
   }
+  requireFile("dist/templates/builtin.js");
 }
 
 function requireInitAssets() {

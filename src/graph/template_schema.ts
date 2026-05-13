@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
+import { requireBundledTemplatePath, resolveBundledTemplateRoot } from "../templates/builtin";
 
 export type TemplateKeyKind = "scalar" | "list" | "boolean";
 
@@ -13,6 +14,13 @@ export type TemplateSchema = {
 };
 
 export type TemplateSchemaMap = Record<string, TemplateSchema>;
+
+export type TemplateSchemaLoadResult = {
+  schemas: TemplateSchemaMap;
+  templateRoot: string;
+  bundledTemplateRoot: string;
+  fallbackTypes: string[];
+};
 
 function listMarkdownFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) {
@@ -61,13 +69,21 @@ export function loadTemplateSchemas(
   config: Config,
   requiredTypes?: Iterable<string>
 ): TemplateSchemaMap {
+  return loadTemplateSchemasWithInfo(root, config, requiredTypes).schemas;
+}
+
+export function loadTemplateSchemasWithInfo(
+  root: string,
+  config: Config,
+  requiredTypes?: Iterable<string>
+): TemplateSchemaLoadResult {
   const templateRoot = path.resolve(
     root,
     config.templates.root_path,
     config.templates.default_set
   );
   const files = listMarkdownFiles(templateRoot);
-  if (files.length === 0) {
+  if (files.length === 0 && !requiredTypes) {
     throw new Error(`no templates found at ${templateRoot}`);
   }
 
@@ -100,13 +116,36 @@ export function loadTemplateSchemas(
     }
   }
 
+  const fallbackTypes: string[] = [];
   if (requiredTypes) {
     const required = Array.from(requiredTypes, (value) => value.toLowerCase());
-    const missing = required.filter((value) => !schemas[value]);
-    if (missing.length > 0) {
-      throw new Error(`template schema missing for type(s): ${missing.join(", ")}`);
+    for (const missingType of required.filter((value) => !schemas[value])) {
+      const bundledPath = requireBundledTemplatePath(missingType);
+      const content = fs.readFileSync(bundledPath, "utf8");
+      const { frontmatter } = parseFrontmatter(content, bundledPath);
+      const typeValue = frontmatter.type;
+      if (typeValue !== missingType) {
+        throw new Error(`bundled template fallback type mismatch for ${missingType}: ${bundledPath}`);
+      }
+      const schema = {
+        type: missingType,
+        allowedKeys: new Set<string>(),
+        keyKinds: {},
+        listKeys: new Set<string>(),
+      } as TemplateSchema;
+      schemas[missingType] = schema;
+      for (const [key, value] of Object.entries(frontmatter)) {
+        const kind = getValueKind(value);
+        addKeyToSchema(schema, key, kind, bundledPath);
+      }
+      fallbackTypes.push(missingType);
     }
   }
 
-  return schemas;
+  return {
+    schemas,
+    templateRoot,
+    bundledTemplateRoot: resolveBundledTemplateRoot(),
+    fallbackTypes,
+  };
 }

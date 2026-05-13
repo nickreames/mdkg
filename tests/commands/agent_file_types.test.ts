@@ -657,6 +657,68 @@ test("new command scaffolds agent workflow spec files with canonical filenames",
   assert.deepEqual(index.nodes["root:spec-1"].attributes.skill_refs, []);
 });
 
+test("new command uses bundled template fallback when a local agent template is missing", () => {
+  const root = makeTempDir("mdkg-agent-new-bundled-template-");
+  setupWorkspace(root);
+  fs.rmSync(path.join(root, ".mdkg", "templates", "default", "spec.md"));
+
+  const output = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "spec",
+      title: "Fallback Worker",
+      json: true,
+      now: new Date("2026-03-11T00:00:00Z"),
+    })
+  );
+
+  assert.match(output.stderr, /using bundled template fallback for spec/);
+  const payload = JSON.parse(output.stdout);
+  assert.equal(payload.node.id, "spec-1");
+  assert.equal(payload.node.path, ".mdkg/work/spec-1-fallback-worker/SPEC.md");
+
+  const specPath = path.join(root, ".mdkg", "work", "spec-1-fallback-worker", "SPEC.md");
+  const content = fs.readFileSync(specPath, "utf8");
+  assert.match(content, /type: spec/);
+  assert.match(content, /role: subagent/);
+
+  const warnings: string[] = [];
+  const originalError = console.error;
+  console.error = (...args: unknown[]) => {
+    warnings.push(args.map(String).join(" "));
+  };
+  try {
+    runValidateCommand({ root });
+  } finally {
+    console.error = originalError;
+  }
+  assert.ok(warnings.some((line) => line.includes("bundled template schema fallback")));
+});
+
+test("new command does not silently fallback for an explicit missing template set", () => {
+  const root = makeTempDir("mdkg-agent-new-missing-custom-template-");
+  setupWorkspace(root);
+
+  const output = captureThrownOutput(() =>
+    runNewCommand({
+      root,
+      type: "spec",
+      title: "Custom Template Worker",
+      template: "custom",
+      json: true,
+      now: new Date("2026-03-11T00:00:00Z"),
+    })
+  );
+
+  assert.equal(output.stdout, "");
+  assert.equal(output.stderr, "");
+  assert.match(String(output.error), /template not found: custom\/spec\.md/);
+  assert.equal(
+    fs.existsSync(path.join(root, ".mdkg", "work", "spec-1-custom-template-worker", "SPEC.md")),
+    false
+  );
+});
+
 test("new command accepts explicit portable ids for agent workflow files", () => {
   const root = makeTempDir("mdkg-agent-new-explicit-id-");
   setupWorkspace(root);

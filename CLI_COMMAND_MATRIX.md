@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-03-11
-package_version_in_source: 0.1.0
+as_of: 2026-05-12
+package_version_in_source: 0.1.1
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -101,8 +101,10 @@ Flags:
 Notes:
 - `mdkg upgrade` defaults to dry-run and writes nothing
 - `--apply` is the only mutating upgrade path
-- customized docs, templates, skills, and core files are preserved and reported as conflicts
+- JSON receipts include `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects`
+- customized docs, templates, skills, and core files are preserved and reported as preserved customizations
 - agent-enabled workspaces include safe default skill upgrades and skill mirror sync
+- ignored event logs are skipped with guidance to run `mdkg event enable`
 - non-agent workspaces do not gain skills, events, or mirrors implicitly
 
 ### `mdkg new`

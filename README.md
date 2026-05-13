@@ -13,7 +13,7 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no sqlite, daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.0`
+Current package version in source: `0.1.1`
 
 ## The product shape
 
@@ -70,7 +70,9 @@ Apply only after reviewing the receipt:
 mdkg upgrade --apply
 ```
 
-Upgrade is intentionally conservative. It creates missing managed startup docs and updates unchanged mdkg seed assets, but preserves customized docs, templates, skills, and core files as reported conflicts. Agent-enabled workspaces also get safe default skill upgrades and skill mirror refreshes; non-agent workspaces do not gain skills, events, or mirrors implicitly.
+Upgrade is intentionally conservative. It creates missing managed startup docs and templates, updates unchanged mdkg seed assets, and preserves customized docs, templates, skills, and core files as reported preserved customizations. Review `safe_to_apply`, `will_write_paths`, and `apply_side_effects` in the JSON receipt before applying. Agent-enabled workspaces can receive safe default skill upgrades and skill mirror refreshes; ignored event logs are skipped with guidance to run `mdkg event enable` if provenance should be restored.
+
+Older workspaces can continue to inspect and validate current graph nodes before applying an upgrade. When local templates are missing for newly introduced built-in mdkg types, mdkg uses the installed package's bundled templates as a read-only schema fallback and warns that `mdkg upgrade --apply` can vendor the missing templates.
 
 Create a task:
 

@@ -1,6 +1,6 @@
 {
   "name": "mdkg",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Markdown Knowledge Graph",
   "license": "MIT",
   "bin": {

@@ -56,4 +56,4 @@ mdkg init --update-gitignore --update-npmignore
 
 `mdkg upgrade` previews safe scaffold updates for existing workspaces and writes nothing by default.
 
-Use `mdkg upgrade --apply` only after reviewing the receipt. Local customizations are preserved and reported instead of overwritten.
+Use `mdkg upgrade --apply` only after reviewing `safe_to_apply`, `will_write_paths`, and `apply_side_effects` in the receipt. Local customizations are preserved and reported instead of overwritten. Missing built-in templates can be loaded from the installed package as a read-only fallback until you vendor them with upgrade.

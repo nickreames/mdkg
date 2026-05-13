@@ -137,7 +137,9 @@ function printUpgradeHelp(log: LogFn): void {
   log("  --json                Emit machine-readable upgrade receipt");
   log("\nNotes:");
   log("  - preserves customized docs, templates, skills, and core files");
+  log("  - json receipts include safe_to_apply, will_write_paths, and apply_side_effects");
   log("  - upgrades default mdkg skills only when they match managed seed fingerprints");
+  log("  - skips ignored event logs; run mdkg event enable if provenance should be restored");
   log("  - run without flags first, then rerun with --apply when the receipt looks right");
   printGlobalOptions(log);
 }
