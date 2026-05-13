@@ -57,23 +57,40 @@ function writeTemplate(root: string, setName: string, filename: string, type: st
   writeFile(path.join(root, ".mdkg", "templates", setName, filename), lines.join("\n"));
 }
 
-test("loadTemplateSchemas errors when default set is missing", () => {
+test("loadTemplateSchemas falls back to bundled schemas when local built-in templates are missing", () => {
   const root = makeTempDir("mdkg-templates-");
   const config = makeConfig();
   writeTemplate(root, "other", "task.md", "task");
-  assert.throws(
-    () => loadTemplateSchemas(root, config, ["task"]),
-    /no templates found/
-  );
+  const schemas = loadTemplateSchemas(root, config, ["task"]);
+  assert.equal(Boolean(schemas.task.allowedKeys.has("title")), true);
 });
 
-test("loadTemplateSchemas errors when required types are missing", () => {
+test("loadTemplateSchemas falls back only for missing local required built-in types", () => {
+  const root = makeTempDir("mdkg-templates-");
+  const config = makeConfig();
+  writeTemplate(root, "default", "task.md", "task");
+  const schemas = loadTemplateSchemas(root, config, ["task", "bug"]);
+  assert.equal(Boolean(schemas.task.allowedKeys.has("title")), true);
+  assert.equal(Boolean(schemas.bug.allowedKeys.has("title")), true);
+});
+
+test("loadTemplateSchemas errors when a missing required type has no bundled fallback", () => {
   const root = makeTempDir("mdkg-templates-");
   const config = makeConfig();
   writeTemplate(root, "default", "task.md", "task");
   assert.throws(
+    () => loadTemplateSchemas(root, config, ["task", "not_builtin"]),
+    /bundled template fallback missing/
+  );
+});
+
+test("loadTemplateSchemas still fails on malformed local templates", () => {
+  const root = makeTempDir("mdkg-templates-");
+  const config = makeConfig();
+  writeFile(path.join(root, ".mdkg", "templates", "default", "task.md"), "not frontmatter\n");
+  assert.throws(
     () => loadTemplateSchemas(root, config, ["task", "bug"]),
-    /missing for type/
+    /frontmatter must start with ---/
   );
 });
 

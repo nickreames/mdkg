@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { spawnSync } from "child_process";
 import { migrateConfig } from "../core/migrate";
 import { validateConfigSchema } from "../core/config";
 import { configPath } from "../core/paths";
@@ -28,7 +29,7 @@ export type UpgradeCommandOptions = {
   seedRoot?: string;
 };
 
-export type UpgradeChangeAction = "create" | "update" | "migrate" | "sync" | "conflict";
+export type UpgradeChangeAction = "create" | "update" | "migrate" | "sync" | "conflict" | "skip";
 
 export type UpgradeChange = {
   path: string;
@@ -51,7 +52,12 @@ export type UpgradeReceipt = {
   action: "upgrade";
   dry_run: boolean;
   version: string;
+  safe_to_apply: boolean;
   summary: UpgradeSummary;
+  will_write_paths: string[];
+  preserved_customizations: UpgradeChange[];
+  blocking_conflicts: UpgradeChange[];
+  apply_side_effects: UpgradeChange[];
   changes: UpgradeChange[];
 };
 
@@ -132,6 +138,9 @@ function record(summary: UpgradeSummary, changes: UpgradeChange[], change: Upgra
     case "conflict":
       summary.skipped += 1;
       summary.conflicted += 1;
+      break;
+    case "skip":
+      summary.skipped += 1;
       break;
   }
 }
@@ -253,11 +262,62 @@ function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSu
   }
 }
 
+function isIgnoredBySimpleGitignore(root: string, relativePath: string): boolean {
+  const ignorePath = path.join(root, ".gitignore");
+  if (!fs.existsSync(ignorePath)) {
+    return false;
+  }
+  const normalized = relativePath.replace(/\\/g, "/");
+  const lines = fs.readFileSync(ignorePath, "utf8").split(/\r?\n/);
+  let ignored = false;
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) {
+      continue;
+    }
+    const negated = line.startsWith("!");
+    const pattern = negated ? line.slice(1) : line;
+    const normalizedPattern = pattern.replace(/\\/g, "/").replace(/^\/+/, "");
+    const matches =
+      normalizedPattern === normalized ||
+      (normalizedPattern.endsWith("/") && normalized.startsWith(normalizedPattern)) ||
+      (normalizedPattern.endsWith("/*") && normalized.startsWith(normalizedPattern.slice(0, -1)));
+    if (matches) {
+      ignored = !negated;
+    }
+  }
+  return ignored;
+}
+
+function isGitIgnored(root: string, relativePath: string): boolean {
+  const result = spawnSync("git", ["check-ignore", "--quiet", "--", relativePath], {
+    cwd: root,
+    stdio: "ignore",
+  });
+  if (result.status === 0) {
+    return true;
+  }
+  if (result.status === 1) {
+    return false;
+  }
+  return isIgnoredBySimpleGitignore(root, relativePath);
+}
+
 function ensureAgentRuntimeFiles(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const eventsPath = path.join(root, ".mdkg", "work", "events", "events.jsonl");
+  const relEventsPath = ".mdkg/work/events/events.jsonl";
   if (!fs.existsSync(eventsPath)) {
+    if (isGitIgnored(root, relEventsPath)) {
+      record(summary, changes, {
+        path: relEventsPath,
+        category: "event_log",
+        action: "skip",
+        reason: "event log path is ignored; run `mdkg event enable` if local event provenance should be restored",
+      });
+      return;
+    }
     record(summary, changes, {
-      path: ".mdkg/work/events/events.jsonl",
+      path: relEventsPath,
       category: "event_log",
       action: "create",
       reason: "agent workspace is missing event log",
@@ -270,11 +330,61 @@ function ensureAgentRuntimeFiles(root: string, dryRun: boolean, summary: Upgrade
   }
 }
 
+function isWritableChange(change: UpgradeChange): boolean {
+  return change.action === "create" || change.action === "update" || change.action === "migrate" || change.action === "sync";
+}
+
+function buildApplySideEffects(options: {
+  existingManifest: InitManifest | undefined;
+  agentWorkspace: boolean;
+  changes: UpgradeChange[];
+}): UpgradeChange[] {
+  const hasDirectWrites = options.changes.some(isWritableChange);
+  if (!hasDirectWrites && options.existingManifest) {
+    return [];
+  }
+  const effects: UpgradeChange[] = [
+    {
+      path: ".mdkg/init-manifest.json",
+      category: "init_manifest",
+      action: options.existingManifest ? "update" : "create",
+      reason: "records managed init asset fingerprints after apply",
+    },
+  ];
+  if (options.agentWorkspace) {
+    effects.push(
+      {
+        path: ".mdkg/skills/registry.md",
+        category: "skill_registry",
+        action: "update",
+        reason: "refreshes canonical skill registry after apply",
+      },
+      {
+        path: ".agents/skills,.claude/skills",
+        category: "skill_mirror",
+        action: "sync",
+        reason: "syncs managed skill mirrors after apply",
+      }
+    );
+  }
+  return effects;
+}
+
 function emitHumanReceipt(receipt: UpgradeReceipt): void {
   const mode = receipt.dry_run ? "dry-run" : "apply";
   console.log(
     `mdkg upgrade ${mode}: ${receipt.summary.created} create, ${receipt.summary.updated} update, ${receipt.summary.migrated} migrate, ${receipt.summary.synced} sync, ${receipt.summary.conflicted} conflict`
   );
+  console.log(`safe to apply: ${receipt.safe_to_apply ? "yes" : "no"}`);
+  if (receipt.will_write_paths.length > 0) {
+    console.log(`will write: ${receipt.will_write_paths.join(", ")}`);
+  }
+  if (receipt.preserved_customizations.length > 0) {
+    console.log(`preserved customizations: ${receipt.preserved_customizations.length}`);
+  }
+  if (receipt.blocking_conflicts.length > 0) {
+    console.log(`blocking conflicts: ${receipt.blocking_conflicts.length}`);
+  }
   if (receipt.changes.length === 0) {
     console.log("no upgrade changes pending");
   } else {
@@ -282,8 +392,17 @@ function emitHumanReceipt(receipt: UpgradeReceipt): void {
       console.log(`  ${change.action}: ${change.path} (${change.reason})`);
     }
   }
-  if (receipt.dry_run && receipt.changes.some((change) => change.action !== "conflict")) {
-    console.log("next: mdkg upgrade --apply");
+  if (receipt.apply_side_effects.length > 0) {
+    for (const effect of receipt.apply_side_effects) {
+      console.log(`  apply-side-effect: ${effect.path} (${effect.reason})`);
+    }
+  }
+  if (receipt.dry_run && receipt.will_write_paths.length > 0) {
+    if (receipt.safe_to_apply) {
+      console.log("next: mdkg upgrade --apply (writes only safe managed paths; preserves customized files)");
+    } else {
+      console.log("next: resolve blocking conflicts before running mdkg upgrade --apply");
+    }
   }
 }
 
@@ -325,31 +444,44 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
     ensureAgentRuntimeFiles(root, dryRun, summary, changes);
   }
 
+  const applySideEffects = buildApplySideEffects({
+    existingManifest,
+    agentWorkspace,
+    changes,
+  });
+  for (const effect of applySideEffects) {
+    record(summary, changes, effect);
+  }
+
   if (!dryRun) {
     const appliedManifest: InitManifest = {
       ...currentManifest,
       files: managedCurrentFiles.sort((a, b) => a.path.localeCompare(b.path)),
     };
-    writeInitManifest(path.join(root, ".mdkg", INIT_MANIFEST_FILE), appliedManifest);
-    if (agentWorkspace) {
+    if (applySideEffects.length > 0) {
+      writeInitManifest(path.join(root, ".mdkg", INIT_MANIFEST_FILE), appliedManifest);
+    }
+    if (agentWorkspace && applySideEffects.length > 0) {
       const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
       refreshSkillsRegistry(root, config);
       scaffoldMirrorRoots(root);
-      const result = syncSkillMirrors({ root, config, createRoots: true });
-      record(summary, changes, {
-        path: ".agents/skills,.claude/skills",
-        category: "skill_mirror",
-        action: "sync",
-        reason: `${result.synced} mirrored skill(s), ${result.pruned} stale mirror(s) pruned`,
-      });
+      syncSkillMirrors({ root, config, createRoots: true });
     }
   }
 
+  const preservedCustomizations = changes.filter((change) => change.action === "conflict");
+  const blockingConflicts: UpgradeChange[] = [];
+  const willWritePaths = changes.filter(isWritableChange).map((change) => change.path);
   const receipt: UpgradeReceipt = {
     action: "upgrade",
     dry_run: dryRun,
     version,
+    safe_to_apply: blockingConflicts.length === 0,
     summary,
+    will_write_paths: Array.from(new Set(willWritePaths)),
+    preserved_customizations: preservedCustomizations,
+    blocking_conflicts: blockingConflicts,
+    apply_side_effects: applySideEffects,
     changes,
   };
 

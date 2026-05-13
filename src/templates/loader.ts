@@ -1,11 +1,12 @@
 import fs from "fs";
-import path from "path";
 import { Config } from "../core/config";
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
 import { NotFoundError } from "../util/errors";
+import { resolveLocalTemplatePath, requireBundledTemplatePath, templateNameForType } from "./builtin";
 
 export type LoadedTemplate = {
   templatePath: string;
+  source: "local" | "bundled";
   frontmatter: Record<string, FrontmatterValue>;
   body: string;
 };
@@ -13,35 +14,22 @@ export type LoadedTemplate = {
 export type TemplateRenderValue = string | number | boolean | string[] | undefined;
 export type TemplateRenderContext = Record<string, TemplateRenderValue>;
 
-function templateNameForType(type: string): string {
-  const normalized = type.toLowerCase();
-  if (normalized === "checkpoint") {
-    return "chk";
-  }
-  return normalized;
-}
 export function loadTemplate(
   root: string,
   config: Config,
   type: string,
   templateSet?: string
 ): LoadedTemplate {
-  const setName = (templateSet ?? config.templates.default_set).toLowerCase();
-  const templateName = templateNameForType(type);
-  const templatePath = path.resolve(
-    root,
-    config.templates.root_path,
-    setName,
-    `${templateName}.md`
-  );
-
-  if (!fs.existsSync(templatePath)) {
-    throw new NotFoundError(`template not found: ${setName}/${templateName}.md`);
+  const templatePath = resolveLocalTemplatePath(root, config, type, templateSet);
+  if (!fs.existsSync(templatePath) && templateSet !== undefined) {
+    throw new NotFoundError(`template not found: ${templateSet.toLowerCase()}/${templateNameForType(type)}.md`);
   }
+  const source = fs.existsSync(templatePath) ? "local" : "bundled";
+  const resolvedPath = source === "local" ? templatePath : requireBundledTemplatePath(type);
 
-  const content = fs.readFileSync(templatePath, "utf8");
-  const { frontmatter, body } = parseFrontmatter(content, templatePath);
-  return { templatePath, frontmatter, body };
+  const content = fs.readFileSync(resolvedPath, "utf8");
+  const { frontmatter, body } = parseFrontmatter(content, resolvedPath);
+  return { templatePath: resolvedPath, source, frontmatter, body };
 }
 
 function isTokenPlaceholder(value: FrontmatterValue): value is string {

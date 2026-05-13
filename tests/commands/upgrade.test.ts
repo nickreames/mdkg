@@ -120,11 +120,17 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
   const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
     dry_run: boolean;
     changes: Array<{ action: string; path: string }>;
+    safe_to_apply: boolean;
+    will_write_paths: string[];
+    apply_side_effects: Array<{ category: string; path: string }>;
   };
 
   assert.equal(receipt.dry_run, false);
+  assert.equal(receipt.safe_to_apply, true);
   assert.ok(receipt.changes.some((change) => change.action === "update" && change.path === "AGENT_START.md"));
   assert.ok(receipt.changes.some((change) => change.action === "sync"));
+  assert.ok(receipt.will_write_paths.includes(".mdkg/init-manifest.json"));
+  assert.ok(receipt.apply_side_effects.some((change) => change.category === "skill_mirror"));
   assert.match(fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"), /current/);
   assert.match(
     fs.readFileSync(
@@ -142,7 +148,7 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
   );
 
   const manifest = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "init-manifest.json"), "utf8"));
-  assert.equal(manifest.mdkg_version, "0.1.0");
+  assert.equal(manifest.mdkg_version, "0.1.1");
 
   const secondReceipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
     changes: unknown[];
@@ -162,9 +168,15 @@ test("runUpgradeCommand preserves customized docs and default skills", () => {
 
   const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
     changes: Array<{ action: string; path: string }>;
+    safe_to_apply: boolean;
+    preserved_customizations: Array<{ path: string }>;
+    blocking_conflicts: unknown[];
   };
 
+  assert.equal(receipt.safe_to_apply, true);
+  assert.equal(receipt.blocking_conflicts.length, 0);
   assert.ok(receipt.changes.some((change) => change.action === "conflict" && change.path === "AGENT_START.md"));
+  assert.ok(receipt.preserved_customizations.some((change) => change.path === "AGENT_START.md"));
   assert.ok(
     receipt.changes.some(
       (change) =>
@@ -213,4 +225,29 @@ test("runUpgradeCommand does not add skills or events to non-agent workspaces", 
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "work", "events", "events.jsonl")), false);
   assert.ok(fs.existsSync(path.join(root, "AGENT_START.md")));
   assert.ok(fs.existsSync(path.join(root, "AGENTS.md")));
+});
+
+test("runUpgradeCommand skips ignored event logs and reports safe apply metadata", () => {
+  const root = makeTempDir("mdkg-upgrade-ignored-events-");
+  const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: oldSeed, agent: true });
+  fs.rmSync(path.join(root, ".mdkg", "work", "events", "events.jsonl"), { force: true });
+  writeFile(path.join(root, ".gitignore"), ".mdkg/work/events/\n");
+
+  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
+    safe_to_apply: boolean;
+    will_write_paths: string[];
+    changes: Array<{ action: string; path: string; category: string }>;
+  };
+
+  assert.equal(receipt.safe_to_apply, true);
+  assert.ok(
+    receipt.changes.some(
+      (change) =>
+        change.action === "skip" &&
+        change.category === "event_log" &&
+        change.path === ".mdkg/work/events/events.jsonl"
+    )
+  );
+  assert.equal(receipt.will_write_paths.includes(".mdkg/work/events/events.jsonl"), false);
 });

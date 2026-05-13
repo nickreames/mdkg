@@ -355,6 +355,11 @@ export function runNewCommand(options: NewCommandOptions): void {
 
   const today = formatDate(options.now ?? new Date());
   const template = loadTemplate(options.root, config, type, options.template);
+  if (template.source === "bundled") {
+    console.error(
+      `warning: using bundled template fallback for ${type}; run \`mdkg upgrade --apply\` to vendor missing local templates`
+    );
+  }
   const content = renderTemplate(template, {
     id,
     type,

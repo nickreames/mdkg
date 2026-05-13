@@ -86,13 +86,15 @@ test("runDoctorCommand succeeds on a valid workspace", () => {
   assert.match(output, /doctor ok/);
 });
 
-test("runDoctorCommand fails when template schemas are missing", () => {
+test("runDoctorCommand warns when local templates are missing but bundled fallback covers them", () => {
   const root = makeTempDir("mdkg-doctor-fail-");
   writeConfig(root);
   writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
 
-  const output = captureDoctorFailure(() => runDoctorCommand({ root }));
-  assert.match(output, /fail: templates - /);
+  const output = captureOutput(() => runDoctorCommand({ root }));
+  assert.match(output, /ok: templates - template schema set loaded/);
+  assert.match(output, /warn: local-templates - missing local template schema/);
+  assert.match(output, /doctor ok/);
 });
 
 test("runDoctorCommand reports missing and invalid config failures", () => {

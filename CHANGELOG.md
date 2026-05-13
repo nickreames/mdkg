@@ -4,6 +4,20 @@ All notable changes to mdkg are documented here.
 
 This project follows a pragmatic changelog style inspired by Keep a Changelog. Versions use npm package versions.
 
+## 0.1.1 - 2026-05-12
+
+### Added
+
+- Added bundled template schema fallback so older workspaces can keep using graph inspection while missing newly introduced built-in templates.
+- Added `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects` fields to `mdkg upgrade --json`.
+
+### Changed
+
+- `mdkg new <built-in-type>` can use the installed package template when the workspace has not yet vendored that local template.
+- `mdkg doctor` and `mdkg validate` warn, rather than fail, when packaged fallback schemas cover missing local built-in templates.
+- `mdkg upgrade` human output now states whether the receipt is safe to apply and what paths would be written.
+- `mdkg upgrade` skips ignored event logs and points users to `mdkg event enable` instead of creating ignored `.mdkg/work/events/events.jsonl` files.
+
 ## 0.1.0 - 2026-05-12
 
 ### Added

@@ -115,13 +115,22 @@ function exerciseUpgrade(binPath, tempRoot) {
   if (!dryRun.dry_run) {
     throw new Error("upgrade --dry-run did not report dry_run=true");
   }
+  if (dryRun.safe_to_apply !== true) {
+    throw new Error("upgrade dry-run did not report safe_to_apply=true for safe managed changes");
+  }
   if (!dryRun.changes.some((change) => change.action === "create" && change.path === "AGENTS.md")) {
     throw new Error("upgrade dry-run did not plan missing AGENTS.md creation");
+  }
+  if (!dryRun.will_write_paths.includes(".mdkg/init-manifest.json")) {
+    throw new Error("upgrade dry-run did not expose init manifest apply side effect");
   }
 
   const apply = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], root).stdout);
   if (apply.dry_run) {
     throw new Error("upgrade --apply reported dry_run=true");
+  }
+  if (!apply.apply_side_effects.some((change) => change.category === "init_manifest")) {
+    throw new Error("upgrade --apply did not report init manifest side effect");
   }
   assertExists(path.join(root, "AGENTS.md"));
   assertExists(path.join(root, "CLAUDE.md"));
@@ -135,11 +144,51 @@ function exerciseUpgrade(binPath, tempRoot) {
   const customContent = "# Custom agent start\n";
   fs.writeFileSync(path.join(customRoot, "AGENT_START.md"), customContent, "utf8");
   const customReceipt = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], customRoot).stdout);
+  if (customReceipt.safe_to_apply !== true) {
+    throw new Error("custom upgrade with preserved files should be safe to apply");
+  }
   if (!customReceipt.changes.some((change) => change.action === "conflict" && change.path === "AGENT_START.md")) {
     throw new Error("custom AGENT_START.md was not reported as a conflict");
   }
+  if (!customReceipt.preserved_customizations.some((change) => change.path === "AGENT_START.md")) {
+    throw new Error("custom AGENT_START.md was not reported as a preserved customization");
+  }
   if (fs.readFileSync(path.join(customRoot, "AGENT_START.md"), "utf8") !== customContent) {
     throw new Error("custom AGENT_START.md was overwritten");
+  }
+
+  const oldTemplateRoot = path.join(tempRoot, "old-template-workspace");
+  initGit(oldTemplateRoot);
+  mdkg(binPath, ["init"], oldTemplateRoot);
+  mdkg(binPath, ["new", "task", "Old Template Workspace", "--status", "todo", "--priority", "1"], oldTemplateRoot);
+  for (const name of ["spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal"]) {
+    fs.rmSync(path.join(oldTemplateRoot, ".mdkg", "templates", "default", `${name}.md`), { force: true });
+  }
+  const doctor = mdkg(binPath, ["doctor"], oldTemplateRoot).stdout;
+  assertIncludes(doctor, "warn: local-templates", "old-template doctor");
+  const validate = mdkg(binPath, ["validate"], oldTemplateRoot).combined;
+  assertIncludes(validate, "bundled template schema fallback", "old-template validate");
+  mdkg(binPath, ["show", "task-1", "--meta"], oldTemplateRoot);
+  const oldTemplateDryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], oldTemplateRoot).stdout);
+  if (!oldTemplateDryRun.will_write_paths.includes(".mdkg/templates/default/spec.md")) {
+    throw new Error("old-template upgrade did not plan to vendor missing agent workflow templates");
+  }
+
+  const ignoredEventsRoot = path.join(tempRoot, "ignored-events-workspace");
+  initGit(ignoredEventsRoot);
+  mdkg(binPath, ["init", "--agent"], ignoredEventsRoot);
+  fs.rmSync(path.join(ignoredEventsRoot, ".mdkg", "work", "events", "events.jsonl"), { force: true });
+  fs.writeFileSync(path.join(ignoredEventsRoot, ".gitignore"), ".mdkg/work/events/\n", "utf8");
+  const ignoredEventsDryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], ignoredEventsRoot).stdout);
+  if (
+    !ignoredEventsDryRun.changes.some(
+      (change) => change.action === "skip" && change.path === ".mdkg/work/events/events.jsonl"
+    )
+  ) {
+    throw new Error("ignored event log was not reported as skipped");
+  }
+  if (ignoredEventsDryRun.will_write_paths.includes(".mdkg/work/events/events.jsonl")) {
+    throw new Error("ignored event log should not be in will_write_paths");
   }
 }
 

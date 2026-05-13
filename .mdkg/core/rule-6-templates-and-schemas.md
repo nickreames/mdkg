@@ -187,4 +187,6 @@ Body headings are strongly recommended for agent usability but should not be har
 - Node -> skill references in `skills: [...]` are validated against `.mdkg/skills/<slug>/SKILL.md`.
 - `.mdkg/work/events/events.jsonl` is optional; when present, records are schema-validated by `mdkg validate`.
 - If a template is missing:
-  - `mdkg new` must fail with a helpful error (exit code 3).
+  - built-in mdkg node types may use the installed package's bundled default template as a read-only schema fallback.
+  - commands should warn when bundled fallback is used and recommend `mdkg upgrade --apply` to vendor missing templates.
+  - missing non-built-in templates or missing packaged fallback assets must fail with a helpful error.

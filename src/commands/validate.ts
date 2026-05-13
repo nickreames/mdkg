@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
-import { loadTemplateSchemas } from "../graph/template_schema";
+import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
 import { Index, IndexNode } from "../graph/indexer";
 import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
@@ -236,11 +236,17 @@ function validateEventsJsonl(
 
 export function runValidateCommand(options: ValidateCommandOptions): void {
   const config = loadConfig(options.root);
-  const templateSchemas = loadTemplateSchemas(options.root, config, ALLOWED_TYPES);
+  const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
+  const templateSchemas = templateSchemaInfo.schemas;
   const filesByAlias = listWorkspaceDocFilesByAlias(options.root, config);
 
   const errors: string[] = [];
   const warnings: string[] = [];
+  if (templateSchemaInfo.fallbackTypes.length > 0) {
+    warnings.push(
+      `using bundled template schema fallback for missing local type(s): ${templateSchemaInfo.fallbackTypes.join(", ")}; run \`mdkg upgrade --apply\` to vendor built-in templates`
+    );
+  }
   const nodes: Record<string, IndexNode> = {};
   const idsByWorkspace: Record<string, Map<string, string>> = {};
 

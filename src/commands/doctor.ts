@@ -3,7 +3,7 @@ import path from "path";
 import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { ALLOWED_TYPES } from "../graph/node";
-import { loadTemplateSchemas } from "../graph/template_schema";
+import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { ValidationError } from "../util/errors";
 
 export type DoctorCommandOptions = {
@@ -16,6 +16,7 @@ export type DoctorCommandOptions = {
 type CheckResult = {
   name: string;
   ok: boolean;
+  level?: "ok" | "warn" | "fail";
   detail: string;
 };
 
@@ -92,12 +93,20 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
 
   if (config) {
     try {
-      loadTemplateSchemas(options.root, config, ALLOWED_TYPES);
+      const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
       results.push({
         name: "templates",
         ok: true,
         detail: "template schema set loaded",
       });
+      if (templateSchemaInfo.fallbackTypes.length > 0) {
+        results.push({
+          name: "local-templates",
+          ok: true,
+          level: "warn",
+          detail: `missing local template schema(s) covered by bundled fallback: ${templateSchemaInfo.fallbackTypes.join(", ")}; run \`mdkg upgrade --apply\` to vendor them`,
+        });
+      }
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       results.push({
@@ -153,7 +162,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
     console.log(JSON.stringify(payload, null, 2));
   } else {
     for (const result of results) {
-      const prefix = result.ok ? "ok" : "fail";
+      const prefix = result.ok ? result.level ?? "ok" : "fail";
       console.log(`${prefix}: ${result.name} - ${result.detail}`);
     }
   }
