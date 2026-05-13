@@ -72,6 +72,47 @@ function setup(root: string, skills: string[] = []): void {
   writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
 }
 
+function setPackMaxNodes(root: string, maxNodes: number): void {
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8")) as {
+    pack: { limits: { max_nodes: number } };
+  };
+  config.pack.limits.max_nodes = maxNodes;
+  writeFile(configPath, JSON.stringify(config, null, 2));
+}
+
+function writeCheckpoint(root: string): void {
+  writeFile(
+    path.join(root, ".mdkg", "work", "chk-1.md"),
+    [
+      "---",
+      "id: chk-1",
+      "type: checkpoint",
+      "title: Latest checkpoint",
+      "status: done",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [task-1]",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "skills: []",
+      "scope: [task-1]",
+      "created: 2026-03-06",
+      "updated: 2026-03-06",
+      "---",
+      "",
+      "# Summary",
+      "",
+      "Checkpoint body",
+    ].join("\n")
+  );
+}
+
 function capture(fn: () => void): { stdout: string; stderr: string } {
   const logs: string[] = [];
   const errors: string[] = [];
@@ -104,6 +145,7 @@ test("runPackCommand auto-includes skills with meta and full depth", () => {
   assert.ok(metaSkill);
   assert.match(metaSkill.body, /description: skill description/);
   assert.match(metaSkill.body, /authors: mdkg/);
+  assert.match(metaSkill.body, /extensions\.ochatr\.approval: required/);
   assert.match(metaSkill.body, /ochatr_approval: required/);
 
   runPackCommand({
@@ -117,6 +159,48 @@ test("runPackCommand auto-includes skills with meta and full depth", () => {
   const fullSkills = fullPayload.nodes.filter((node: { type: string }) => node.type === "skill");
   assert.equal(fullSkills.length, 1);
   assert.match(fullSkills[0].body, /# Procedure/);
+});
+
+test("runPackCommand handles empty skills policy and missing full skill body fallback", () => {
+  const root = makeTempDir("mdkg-pack-skill-policy-");
+  setup(root, ["deploy-service"]);
+  writeSkill(root, "deploy-service");
+
+  runPackCommand({
+    root,
+    id: "task-1",
+    format: "json",
+    skills: " , ",
+    out: ".mdkg/pack/no-explicit-skills.json",
+  });
+  const noSkillsPayload = JSON.parse(
+    fs.readFileSync(path.join(root, ".mdkg", "pack", "no-explicit-skills.json"), "utf8")
+  );
+  assert.equal(noSkillsPayload.nodes.some((node: { type: string }) => node.type === "skill"), false);
+
+  runIndexCommand({ root, tolerant: false });
+  fs.unlinkSync(path.join(root, ".mdkg", "skills", "deploy-service", "SKILL.md"));
+
+  const captured = capture(() =>
+    runPackCommand({
+      root,
+      id: "task-1",
+      format: "json",
+      skills: "deploy-service",
+      skillsDepth: "full",
+      out: ".mdkg/pack/missing-full-skill.json",
+      noReindex: true,
+    })
+  );
+  assert.match(captured.stderr, /warning: skills index is stale; run mdkg index to refresh/);
+
+  const fallbackPayload = JSON.parse(
+    fs.readFileSync(path.join(root, ".mdkg", "pack", "missing-full-skill.json"), "utf8")
+  );
+  const fallbackSkill = fallbackPayload.nodes.find((node: { type: string }) => node.type === "skill");
+  assert.ok(fallbackSkill);
+  assert.match(fallbackSkill.body, /description: skill description/);
+  assert.doesNotMatch(fallbackSkill.body, /# Procedure/);
 });
 
 test("runPackCommand dry-run warns for ignored output flags and auto-writes truncation report", () => {
@@ -147,6 +231,29 @@ test("runPackCommand dry-run warns for ignored output flags and auto-writes trun
     out: ".mdkg/pack/truncated.json",
   });
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "pack", "truncated.json.truncation.json")));
+});
+
+test("runPackCommand dry-run reports checkpoint and truncation details", () => {
+  const root = makeTempDir("mdkg-pack-dryrun-detail-");
+  setup(root, ["deploy-service"]);
+  writeSkill(root, "deploy-service");
+  writeCheckpoint(root);
+  setPackMaxNodes(root, 1);
+
+  const dryRun = capture(() =>
+    runPackCommand({
+      root,
+      id: "task-1",
+      dryRun: true,
+      maxChars: 10,
+    })
+  );
+
+  assert.match(dryRun.stdout, /latest_checkpoint_qid: root:chk-1/);
+  assert.match(dryRun.stdout, /latest_checkpoint_qid_hint: root:chk-1/);
+  assert.match(dryRun.stdout, /dropped: .*root:chk-1/);
+  assert.match(dryRun.stdout, /body_truncated: root:task-1/);
+  assert.match(dryRun.stdout, /included_nodes:\n- root:task-1/);
 });
 
 test("runPackCommand warns when cached indexes are stale and reindex is disabled", () => {

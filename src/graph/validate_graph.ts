@@ -2,6 +2,7 @@ import { Index } from "./indexer";
 
 export type ValidateGraphOptions = {
   allowMissing?: boolean;
+  knownSkillSlugs?: Set<string>;
 };
 
 function pushError(errors: string[] | null, message: string): void {
@@ -15,6 +16,7 @@ function pushError(errors: string[] | null, message: string): void {
 function validateEdgeTargets(
   index: Index,
   allowMissing: boolean,
+  knownSkillSlugs: Set<string> | undefined,
   errors: string[] | null
 ): void {
   const nodes = index.nodes;
@@ -42,6 +44,14 @@ function validateEdgeTargets(
     for (const [edgeKey, values] of edgeLists) {
       for (const value of values) {
         if (!nodes[value]) {
+          if (
+            edgeKey === "relates" &&
+            node.type === "proposal" &&
+            node.attributes.proposal_kind === "skill_update" &&
+            validateSkillRef(qid, edgeKey, value, knownSkillSlugs, allowMissing, errors)
+          ) {
+            continue;
+          }
           if (allowMissing) {
             continue;
           }
@@ -50,6 +60,35 @@ function validateEdgeTargets(
       }
     }
   }
+}
+
+const SKILL_DOT_REF_RE = /^skill\.([a-z0-9]+(?:-[a-z0-9]+)*)$/;
+
+function skillSlugFromDotRef(value: string): string | undefined {
+  const localValue = value.includes(":") ? value.split(":").pop() ?? value : value;
+  return SKILL_DOT_REF_RE.exec(localValue)?.[1];
+}
+
+function validateSkillRef(
+  qid: string,
+  field: string,
+  value: string,
+  knownSkillSlugs: Set<string> | undefined,
+  allowMissing: boolean,
+  errors: string[] | null
+): boolean {
+  const slug = skillSlugFromDotRef(value);
+  if (!slug) {
+    return false;
+  }
+  if (knownSkillSlugs === undefined || knownSkillSlugs.has(slug)) {
+    return true;
+  }
+  if (allowMissing) {
+    return true;
+  }
+  pushError(errors, `${qid}: ${field} references missing skill ${value}`);
+  return true;
 }
 
 function validatePrevNextSymmetry(index: Index, _allowMissing: boolean, errors: string[] | null): void {
@@ -73,6 +112,386 @@ function validatePrevNextSymmetry(index: Index, _allowMissing: boolean, errors: 
       if (target.edges.next !== qid) {
         pushError(errors, `${qid}: prev ${edges.prev} missing matching next`);
       }
+    }
+  }
+}
+
+function normalizeDocPath(value: string): string {
+  return value.replace(/\\/g, "/").replace(/^\.\//, "");
+}
+
+function pathEndsWithContractRef(nodePath: string, contractRef: string): boolean {
+  const normalizedNodePath = normalizeDocPath(nodePath);
+  const normalizedContractRef = normalizeDocPath(contractRef);
+  return (
+    normalizedNodePath === normalizedContractRef ||
+    normalizedNodePath.endsWith(`/${normalizedContractRef}`)
+  );
+}
+
+function validateAgentWorkflowSpecWorkContracts(
+  index: Index,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  const workNodesByWorkspace: Record<
+    string,
+    Array<{ qid: string; path: string; agentId?: string }>
+  > = {};
+  for (const node of Object.values(index.nodes)) {
+    if (node.type !== "work") {
+      continue;
+    }
+    if (!workNodesByWorkspace[node.ws]) {
+      workNodesByWorkspace[node.ws] = [];
+    }
+    workNodesByWorkspace[node.ws].push({
+      qid: node.qid,
+      path: node.path,
+      agentId: typeof node.attributes.agent_id === "string" ? node.attributes.agent_id : undefined,
+    });
+  }
+
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "spec") {
+      continue;
+    }
+    const workContracts = node.attributes.work_contracts;
+    if (!Array.isArray(workContracts)) {
+      continue;
+    }
+    const workspaceWorkNodes = workNodesByWorkspace[node.ws] ?? [];
+    for (const [indexValue, value] of workContracts.entries()) {
+      if (typeof value !== "string") {
+        continue;
+      }
+      const matches = workspaceWorkNodes.filter((workNode) =>
+        pathEndsWithContractRef(workNode.path, value)
+      );
+      if (matches.length === 0) {
+        if (allowMissing) {
+          continue;
+        }
+        pushError(
+          errors,
+          `${qid}: work_contracts[${indexValue}] references missing WORK.md ${value}`
+        );
+        continue;
+      }
+      if (matches.length > 1) {
+        pushError(
+          errors,
+          `${qid}: work_contracts[${indexValue}] ambiguously matches ${matches
+            .map((match) => match.qid)
+            .sort()
+            .join(", ")}`
+        );
+        continue;
+      }
+      const matchedWorkNode = matches[0];
+      if (matchedWorkNode.agentId !== undefined && matchedWorkNode.agentId !== node.id) {
+        pushError(
+          errors,
+          `${qid}: work_contracts[${indexValue}] references ${matchedWorkNode.qid} owned by agent_id ${matchedWorkNode.agentId}, not ${node.id}`
+        );
+      }
+    }
+  }
+}
+
+function validateAgentWorkflowWorkOrderWorkRefs(
+  index: Index,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  const workNodesByWorkspaceAndId: Record<string, Record<string, { qid: string; version?: string }>> =
+    {};
+  for (const node of Object.values(index.nodes)) {
+    if (node.type !== "work") {
+      continue;
+    }
+    if (!workNodesByWorkspaceAndId[node.ws]) {
+      workNodesByWorkspaceAndId[node.ws] = {};
+    }
+    workNodesByWorkspaceAndId[node.ws][node.id] = {
+      qid: node.qid,
+      version:
+        typeof node.attributes.version === "string" ? node.attributes.version : undefined,
+    };
+  }
+
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "work_order") {
+      continue;
+    }
+    const workId = node.attributes.work_id;
+    if (typeof workId !== "string") {
+      continue;
+    }
+    const workNode = workNodesByWorkspaceAndId[node.ws]?.[workId];
+    if (!workNode) {
+      if (allowMissing) {
+        continue;
+      }
+      pushError(errors, `${qid}: work_id references missing WORK.md ${workId}`);
+      continue;
+    }
+    const workVersion = node.attributes.work_version;
+    if (
+      typeof workVersion === "string" &&
+      workNode.version !== undefined &&
+      workVersion !== workNode.version
+    ) {
+      pushError(
+        errors,
+        `${qid}: work_version ${workVersion} does not match ${workNode.qid} version ${workNode.version}`
+      );
+    }
+  }
+}
+
+function validateAgentWorkflowReceiptWorkOrderRefs(
+  index: Index,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  const workOrderIdsByWorkspace: Record<string, Set<string>> = {};
+  for (const node of Object.values(index.nodes)) {
+    if (node.type !== "work_order") {
+      continue;
+    }
+    if (!workOrderIdsByWorkspace[node.ws]) {
+      workOrderIdsByWorkspace[node.ws] = new Set();
+    }
+    workOrderIdsByWorkspace[node.ws].add(node.id);
+  }
+
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "receipt") {
+      continue;
+    }
+    const workOrderId = node.attributes.work_order_id;
+    if (typeof workOrderId !== "string") {
+      continue;
+    }
+    if (workOrderIdsByWorkspace[node.ws]?.has(workOrderId)) {
+      continue;
+    }
+    if (allowMissing) {
+      continue;
+    }
+    pushError(errors, `${qid}: work_order_id references missing WORK_ORDER.md ${workOrderId}`);
+  }
+}
+
+function buildSpecRolesByWorkspace(
+  index: Index
+): Record<string, Record<string, { qid: string; role?: string }>> {
+  const specRolesByWorkspace: Record<string, Record<string, { qid: string; role?: string }>> = {};
+  for (const node of Object.values(index.nodes)) {
+    if (node.type !== "spec") {
+      continue;
+    }
+    if (!specRolesByWorkspace[node.ws]) {
+      specRolesByWorkspace[node.ws] = {};
+    }
+    specRolesByWorkspace[node.ws][node.id] = {
+      qid: node.qid,
+      role: typeof node.attributes.role === "string" ? node.attributes.role : undefined,
+    };
+  }
+  return specRolesByWorkspace;
+}
+
+function validateAgentWorkflowSubagentRefs(
+  index: Index,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  const specRolesByWorkspace = buildSpecRolesByWorkspace(index);
+
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "spec" && node.type !== "work") {
+      continue;
+    }
+    const subagentRefs = node.attributes.subagent_refs;
+    if (!Array.isArray(subagentRefs)) {
+      continue;
+    }
+    for (const [indexValue, value] of subagentRefs.entries()) {
+      if (typeof value !== "string") {
+        continue;
+      }
+      const specNode = specRolesByWorkspace[node.ws]?.[value];
+      if (!specNode) {
+        if (allowMissing) {
+          continue;
+        }
+        pushError(errors, `${qid}: subagent_refs[${indexValue}] references missing SPEC.md ${value}`);
+        continue;
+      }
+      if (specNode.role !== undefined && specNode.role !== "subagent") {
+        pushError(
+          errors,
+          `${qid}: subagent_refs[${indexValue}] references ${specNode.qid} with role ${specNode.role}, not subagent`
+        );
+      }
+    }
+  }
+}
+
+function validateAgentWorkflowDisputeRefs(
+  index: Index,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  const workOrderIdsByWorkspace: Record<string, Set<string>> = {};
+  const receiptNodesByWorkspaceAndId: Record<
+    string,
+    Record<string, { qid: string; workOrderId?: string }>
+  > = {};
+
+  for (const node of Object.values(index.nodes)) {
+    if (node.type === "work_order") {
+      if (!workOrderIdsByWorkspace[node.ws]) {
+        workOrderIdsByWorkspace[node.ws] = new Set();
+      }
+      workOrderIdsByWorkspace[node.ws].add(node.id);
+    }
+    if (node.type === "receipt") {
+      if (!receiptNodesByWorkspaceAndId[node.ws]) {
+        receiptNodesByWorkspaceAndId[node.ws] = {};
+      }
+      receiptNodesByWorkspaceAndId[node.ws][node.id] = {
+        qid: node.qid,
+        workOrderId:
+          typeof node.attributes.work_order_id === "string"
+            ? node.attributes.work_order_id
+            : undefined,
+      };
+    }
+  }
+
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "dispute") {
+      continue;
+    }
+    const workOrderId = node.attributes.work_order_id;
+    if (typeof workOrderId !== "string") {
+      continue;
+    }
+    if (!workOrderIdsByWorkspace[node.ws]?.has(workOrderId) && !allowMissing) {
+      pushError(errors, `${qid}: work_order_id references missing WORK_ORDER.md ${workOrderId}`);
+    }
+
+    const receiptId = node.attributes.receipt_id;
+    if (typeof receiptId !== "string") {
+      continue;
+    }
+    const receiptNode = receiptNodesByWorkspaceAndId[node.ws]?.[receiptId];
+    if (!receiptNode) {
+      if (allowMissing) {
+        continue;
+      }
+      pushError(errors, `${qid}: receipt_id references missing RECEIPT.md ${receiptId}`);
+      continue;
+    }
+    if (receiptNode.workOrderId !== undefined && receiptNode.workOrderId !== workOrderId) {
+      pushError(
+        errors,
+        `${qid}: receipt_id ${receiptId} belongs to work_order_id ${receiptNode.workOrderId}, not ${workOrderId}`
+      );
+    }
+  }
+}
+
+function buildNodeIdsByWorkspace(index: Index): Record<string, Set<string>> {
+  const nodeIdsByWorkspace: Record<string, Set<string>> = {};
+  for (const node of Object.values(index.nodes)) {
+    if (!nodeIdsByWorkspace[node.ws]) {
+      nodeIdsByWorkspace[node.ws] = new Set();
+    }
+    nodeIdsByWorkspace[node.ws].add(node.id);
+  }
+  return nodeIdsByWorkspace;
+}
+
+function validateAgentWorkflowNodeIdRef(
+  qid: string,
+  ws: string,
+  field: string,
+  value: string,
+  nodeIdsByWorkspace: Record<string, Set<string>>,
+  allowSkillRef: boolean,
+  knownSkillSlugs: Set<string> | undefined,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  if (nodeIdsByWorkspace[ws]?.has(value)) {
+    return;
+  }
+  if (
+    allowSkillRef &&
+    validateSkillRef(qid, field, value, knownSkillSlugs, allowMissing, errors)
+  ) {
+    return;
+  }
+  if (allowMissing) {
+    return;
+  }
+  pushError(errors, `${qid}: ${field} references missing node ${value}`);
+}
+
+function validateAgentWorkflowFeedbackProposalRefs(
+  index: Index,
+  allowMissing: boolean,
+  knownSkillSlugs: Set<string> | undefined,
+  errors: string[] | null
+): void {
+  const nodeIdsByWorkspace = buildNodeIdsByWorkspace(index);
+
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "feedback" && node.type !== "proposal") {
+      continue;
+    }
+    const targetId = node.attributes.target_id;
+    if (typeof targetId === "string") {
+      const allowSkillTarget =
+        node.type === "proposal" && node.attributes.proposal_kind === "skill_update";
+      validateAgentWorkflowNodeIdRef(
+        qid,
+        node.ws,
+        "target_id",
+        targetId,
+        nodeIdsByWorkspace,
+        allowSkillTarget,
+        knownSkillSlugs,
+        allowMissing,
+        errors
+      );
+    }
+    if (node.type !== "proposal") {
+      continue;
+    }
+    const evidenceRefs = node.attributes.evidence_refs;
+    if (!Array.isArray(evidenceRefs)) {
+      continue;
+    }
+    for (const [indexValue, value] of evidenceRefs.entries()) {
+      if (typeof value !== "string") {
+        continue;
+      }
+      validateAgentWorkflowNodeIdRef(
+        qid,
+        node.ws,
+        `evidence_refs[${indexValue}]`,
+        value,
+        nodeIdsByWorkspace,
+        true,
+        knownSkillSlugs,
+        allowMissing,
+        errors
+      );
     }
   }
 }
@@ -115,8 +534,15 @@ function detectPrevNextCycles(index: Index, errors: string[] | null): void {
 export function collectGraphErrors(index: Index, options: ValidateGraphOptions = {}): string[] {
   const errors: string[] = [];
   const allowMissing = options.allowMissing ?? false;
-  validateEdgeTargets(index, allowMissing, errors);
+  const knownSkillSlugs = options.knownSkillSlugs;
+  validateEdgeTargets(index, allowMissing, knownSkillSlugs, errors);
   validatePrevNextSymmetry(index, allowMissing, errors);
+  validateAgentWorkflowSpecWorkContracts(index, allowMissing, errors);
+  validateAgentWorkflowWorkOrderWorkRefs(index, allowMissing, errors);
+  validateAgentWorkflowReceiptWorkOrderRefs(index, allowMissing, errors);
+  validateAgentWorkflowSubagentRefs(index, allowMissing, errors);
+  validateAgentWorkflowDisputeRefs(index, allowMissing, errors);
+  validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, errors);
   detectPrevNextCycles(index, errors);
   return errors;
 }

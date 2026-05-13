@@ -31,6 +31,26 @@ function readEvents(root: string): Array<Record<string, unknown>> {
     .map((line) => JSON.parse(line) as Record<string, unknown>);
 }
 
+function captureOutput(fn: () => void): { stdout: string; stderr: string } {
+  const stdout: string[] = [];
+  const stderr: string[] = [];
+  const originalLog = console.log;
+  const originalError = console.error;
+  console.log = (...args: unknown[]) => {
+    stdout.push(args.map(String).join(" "));
+  };
+  console.error = (...args: unknown[]) => {
+    stderr.push(args.map(String).join(" "));
+  };
+  try {
+    fn();
+  } finally {
+    console.log = originalLog;
+    console.error = originalError;
+  }
+  return { stdout: stdout.join("\n"), stderr: stderr.join("\n") };
+}
+
 function createTaskRepo(prefix: string): string {
   const root = makeTempDir(prefix);
   writeRootConfig(root);
@@ -77,6 +97,98 @@ test("event enable and append create valid JSONL that validate accepts", () => {
   assert.equal(events[0]?.status, "ok");
   assert.deepEqual(events[0]?.refs, ["task-1"]);
   assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
+});
+
+test("event enable reports already-present logs", () => {
+  const root = createTaskRepo("mdkg-event-enable-existing-");
+  captureOutput(() => runEventEnableCommand({ root }));
+
+  const output = captureOutput(() => runEventEnableCommand({ root }));
+
+  assert.equal(output.stderr, "");
+  assert.match(output.stdout, /event logging enabled: root \(already present\)/);
+});
+
+test("event commands print deterministic json receipts", () => {
+  const root = createTaskRepo("mdkg-event-json-receipts-");
+
+  const enableOutput = captureOutput(() => runEventEnableCommand({ root, json: true }));
+  assert.equal(enableOutput.stderr, "");
+  assert.deepEqual(JSON.parse(enableOutput.stdout), {
+    action: "enabled",
+    workspace: "root",
+    created: true,
+  });
+
+  const alreadyEnabledOutput = captureOutput(() =>
+    runEventEnableCommand({ root, json: true })
+  );
+  assert.deepEqual(JSON.parse(alreadyEnabledOutput.stdout), {
+    action: "enabled",
+    workspace: "root",
+    created: false,
+  });
+
+  const appendOutput = captureOutput(() =>
+    runEventAppendCommand({
+      root,
+      kind: "RUN_COMPLETED",
+      status: "ok",
+      refs: "TASK-1",
+      artifacts: "tests://event-json.txt",
+      notes: "json receipt",
+      runId: "run_event_json",
+      agent: "mdkg-test",
+      json: true,
+    })
+  );
+  const appended = JSON.parse(appendOutput.stdout);
+
+  assert.equal(appended.action, "appended");
+  assert.equal(appended.event.run_id, "run_event_json");
+  assert.equal(appended.event.workspace, "root");
+  assert.equal(appended.event.agent, "mdkg-test");
+  assert.equal(appended.event.kind, "RUN_COMPLETED");
+  assert.equal(appended.event.status, "ok");
+  assert.deepEqual(appended.event.refs, ["task-1"]);
+  assert.deepEqual(appended.event.artifacts, ["tests://event-json.txt"]);
+  assert.equal(appended.event.notes, "json receipt");
+  assert.deepEqual(readEvents(root), [appended.event]);
+});
+
+test("event append rejects invalid command inputs", () => {
+  const root = createTaskRepo("mdkg-event-invalid-input-");
+  runEventEnableCommand({ root });
+
+  assert.throws(
+    () => runEventAppendCommand({ root, kind: " ", status: "ok", refs: "task-1" }),
+    /--kind is required/
+  );
+  assert.throws(
+    () => runEventAppendCommand({ root, kind: "RUN_COMPLETED", status: "ok", refs: " , " }),
+    /--refs requires at least one id or qid/
+  );
+  assert.throws(
+    () => runEventAppendCommand({ root, kind: "RUN_COMPLETED", status: "unknown", refs: "task-1" }),
+    /--status must be one of ok, error, retry, skipped/
+  );
+});
+
+test("event commands report workspace and setup diagnostics", () => {
+  const root = createTaskRepo("mdkg-event-diagnostics-");
+
+  assert.throws(
+    () => runEventEnableCommand({ root, ws: "all" }),
+    /--ws all is not valid here/
+  );
+  assert.throws(
+    () => runEventEnableCommand({ root, ws: "missing" }),
+    /workspace not found: missing/
+  );
+  assert.throws(
+    () => runEventAppendCommand({ root, kind: "RUN_COMPLETED", status: "retry", refs: "TASK-1" }),
+    /events\.jsonl is missing for workspace root/
+  );
 });
 
 test("task start update and done mutate task-like nodes and optional checkpoint", () => {
@@ -143,6 +255,101 @@ test("task start update and done mutate task-like nodes and optional checkpoint"
     ["TASK_STARTED", "TASK_UPDATED", "TASK_DONE", "CHECKPOINT_CREATED"]
   );
   assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
+});
+
+test("task commands print deterministic json receipts", () => {
+  const root = createTaskRepo("mdkg-task-json-receipts-");
+  runEventEnableCommand({ root });
+
+  const startOutput = captureOutput(() =>
+    runTaskStartCommand({
+      root,
+      id: "task-1",
+      runId: "run_task_json",
+      note: "json start",
+      json: true,
+      now: new Date("2026-03-08T04:00:00Z"),
+    })
+  );
+  assert.equal(startOutput.stderr, "");
+  assert.deepEqual(JSON.parse(startOutput.stdout), {
+    action: "started",
+    task: {
+      workspace: "root",
+      id: "task-1",
+      qid: "root:task-1",
+      path: ".mdkg/work/task-1-ship-release.md",
+      type: "task",
+      status: "progress",
+      priority: 1,
+    },
+  });
+
+  const updateOutput = captureOutput(() =>
+    runTaskUpdateCommand({
+      root,
+      id: "task-1",
+      status: "review",
+      priority: 2,
+      addArtifacts: "tests://task-json.txt",
+      runId: "run_task_json",
+      note: "json update",
+      json: true,
+      now: new Date("2026-03-08T04:05:00Z"),
+    })
+  );
+  assert.equal(updateOutput.stderr, "");
+  assert.deepEqual(JSON.parse(updateOutput.stdout), {
+    action: "updated",
+    task: {
+      workspace: "root",
+      id: "task-1",
+      qid: "root:task-1",
+      path: ".mdkg/work/task-1-ship-release.md",
+      type: "task",
+      status: "review",
+      priority: 2,
+    },
+  });
+
+  const doneOutput = captureOutput(() =>
+    runTaskDoneCommand({
+      root,
+      id: "task-1",
+      addArtifacts: "tests://task-done-json.txt",
+      checkpoint: "json done checkpoint",
+      runId: "run_task_json",
+      note: "json done",
+      json: true,
+      now: new Date("2026-03-08T04:10:00Z"),
+    })
+  );
+  assert.equal(doneOutput.stderr, "");
+  assert.doesNotMatch(doneOutput.stdout, /checkpoint created|task done/);
+  assert.deepEqual(JSON.parse(doneOutput.stdout), {
+    action: "done",
+    task: {
+      workspace: "root",
+      id: "task-1",
+      qid: "root:task-1",
+      path: ".mdkg/work/task-1-ship-release.md",
+      type: "task",
+      status: "done",
+      priority: 2,
+    },
+    checkpoint: {
+      workspace: "root",
+      id: "chk-1",
+      qid: "root:chk-1",
+      path: ".mdkg/work/chk-1-json-done-checkpoint.md",
+    },
+  });
+
+  const events = readEvents(root);
+  assert.deepEqual(
+    events.map((event) => event.kind),
+    ["TASK_STARTED", "TASK_UPDATED", "TASK_DONE", "CHECKPOINT_CREATED"]
+  );
 });
 
 test("automatic event append applies to enabled mutation commands only", () => {
@@ -284,4 +491,87 @@ test("cli task and event commands work end-to-end", () => {
     events.map((event) => event.kind),
     ["TASK_STARTED", "TASK_DONE", "CHECKPOINT_CREATED"]
   );
+});
+
+test("cli task commands support json receipts", () => {
+  const root = createTaskRepo("mdkg-cli-task-json-");
+  const run = (args: string[]) =>
+    spawnSync(process.execPath, [cliPath, ...args], {
+      cwd: root,
+      encoding: "utf8",
+    });
+
+  let result = run(["event", "enable"]);
+  assert.equal(result.status, 0);
+
+  result = run(["task", "start", "task-1", "--run-id", "run_cli_task_json", "--json"]);
+  assert.equal(result.status, 0);
+  assert.deepEqual(JSON.parse(result.stdout), {
+    action: "started",
+    task: {
+      workspace: "root",
+      id: "task-1",
+      qid: "root:task-1",
+      path: ".mdkg/work/task-1-ship-release.md",
+      type: "task",
+      status: "progress",
+      priority: 1,
+    },
+  });
+
+  result = run([
+    "task",
+    "update",
+    "task-1",
+    "--status",
+    "review",
+    "--priority",
+    "2",
+    "--run-id",
+    "run_cli_task_json",
+    "--json",
+  ]);
+  assert.equal(result.status, 0);
+  assert.deepEqual(JSON.parse(result.stdout), {
+    action: "updated",
+    task: {
+      workspace: "root",
+      id: "task-1",
+      qid: "root:task-1",
+      path: ".mdkg/work/task-1-ship-release.md",
+      type: "task",
+      status: "review",
+      priority: 2,
+    },
+  });
+
+  result = run([
+    "task",
+    "done",
+    "task-1",
+    "--checkpoint",
+    "cli json checkpoint",
+    "--run-id",
+    "run_cli_task_json",
+    "--json",
+  ]);
+  assert.equal(result.status, 0);
+  assert.deepEqual(JSON.parse(result.stdout), {
+    action: "done",
+    task: {
+      workspace: "root",
+      id: "task-1",
+      qid: "root:task-1",
+      path: ".mdkg/work/task-1-ship-release.md",
+      type: "task",
+      status: "done",
+      priority: 2,
+    },
+    checkpoint: {
+      workspace: "root",
+      id: "chk-1",
+      qid: "root:chk-1",
+      path: ".mdkg/work/chk-1-cli-json-checkpoint.md",
+    },
+  });
 });

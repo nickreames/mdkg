@@ -4,7 +4,7 @@ description: Verify code and mdkg state, attach evidence, and close work cleanly
 tags: [stage:review, writer:orchestrator, mdkg, validation, release]
 version: 0.1.0
 authors: [mdkg]
-links: [README.md, AGENT_PROMPT_SNIPPET.md]
+links: [README.md, AGENT_START.md]
 ---
 
 # Goal

@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
+import { FrontmatterValue } from "./frontmatter";
 import { ALLOWED_TYPES, parseNode } from "./node";
 import { EdgeMap } from "./edges";
 import { listWorkspaceDocFilesByAlias } from "./workspace_files";
@@ -24,6 +25,7 @@ export type IndexNode = {
   refs: string[];
   aliases: string[];
   skills: string[];
+  attributes: Record<string, FrontmatterValue>;
   path: string;
   edges: EdgeMap;
 };
@@ -130,6 +132,7 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
           refs: node.refs,
           aliases: node.aliases,
           skills: node.skills,
+          attributes: node.attributes,
           path: relPath,
           edges: normalizedEdges,
         };

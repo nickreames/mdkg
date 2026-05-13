@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import fs from "fs";
 import path from "path";
 const { buildIndex } = require("../../graph/indexer");
 const { loadConfig } = require("../../core/config");
@@ -252,6 +253,159 @@ function writeTemplates(root: string): void {
       "updated: {{updated}}",
       "---",
     ].join("\n"),
+    spec: [
+      "---",
+      "id: {{id}}",
+      "type: spec",
+      "title: {{title}}",
+      "version: 0.1.0",
+      "role: subagent",
+      "runtime_mode: room_orchestrated",
+      "work_contracts: []",
+      "requested_capabilities: []",
+      "resource_profile: builder",
+      "update_policy: manual",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    work: [
+      "---",
+      "id: {{id}}",
+      "type: work",
+      "title: {{title}}",
+      "version: 0.1.0",
+      "agent_id: agent.example",
+      "kind: generic",
+      "pricing_model: quoted",
+      "required_capabilities: []",
+      "inputs: [request:text:required]",
+      "outputs: [result:text:required]",
+      "receipt_required: true",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    work_order: [
+      "---",
+      "id: {{id}}",
+      "type: work_order",
+      "title: {{title}}",
+      "version: 0.1.0",
+      "work_id: work.example",
+      "work_version: 0.1.0",
+      "requester: user.example",
+      "order_status: submitted",
+      "request_ref: request.example",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    receipt: [
+      "---",
+      "id: {{id}}",
+      "type: receipt",
+      "title: {{title}}",
+      "version: 0.1.0",
+      "work_order_id: order.example",
+      "receipt_status: recorded",
+      "outcome: success",
+      "cost_ref: cost.redacted",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    feedback: [
+      "---",
+      "id: {{id}}",
+      "type: feedback",
+      "title: {{title}}",
+      "version: 0.1.0",
+      "target_id: work.example",
+      "sentiment: neutral",
+      "feedback_status: new",
+      "source_ref: user.example",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    dispute: [
+      "---",
+      "id: {{id}}",
+      "type: dispute",
+      "title: {{title}}",
+      "version: 0.1.0",
+      "work_order_id: order.example",
+      "receipt_id: receipt.example",
+      "dispute_status: open",
+      "severity: medium",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
+    proposal: [
+      "---",
+      "id: {{id}}",
+      "type: proposal",
+      "title: {{title}}",
+      "version: 0.1.0",
+      "target_id: work.example",
+      "proposal_status: proposed",
+      "proposal_kind: work_update",
+      "evidence_refs: []",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
     dec: [
       "---",
       "id: {{id}}",
@@ -388,6 +542,124 @@ test("buildPack includes verbose core ids", () => {
   assert.deepEqual(
     result.pack.nodes.map((node: { qid: string }) => node.qid),
     ["root:task-1", "root:feat-1", "root:epic-1", "root:rule-1", "root:prd-1"]
+  );
+});
+
+test("buildPack reports verbose core ambiguity without workspace hint", () => {
+  const root = makeTempDir("mdkg-pack-verbose-ambiguous-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, ["rule-1", "rule-missing"]);
+
+  writeNode(root, { id: "task-1", type: "task", status: "todo" });
+  writeNode(root, { id: "rule-1", type: "rule" });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  const rootRule = index.nodes["root:rule-1"];
+  assert.ok(rootRule);
+  index.nodes["docs:rule-1"] = {
+    ...rootRule,
+    qid: "docs:rule-1",
+    ws: "docs",
+    path: "docs/.mdkg/core/rule-1.md",
+  };
+
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:task-1",
+    depth: 0,
+    edges: config.pack.default_edges,
+    verbose: true,
+    maxNodes: config.pack.limits.max_nodes,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    includeLatestCheckpoint: false,
+  });
+
+  assert.ok(result.warnings.some((warning: string) => warning.includes("ambiguous: rule-1")));
+  assert.ok(result.warnings.some((warning: string) => warning.includes("missing: rule-missing")));
+  assert.deepEqual(
+    result.pack.nodes.map((node: { qid: string }) => node.qid),
+    ["root:task-1"]
+  );
+});
+
+test("buildPack traverses prev next blocked edges and ignores unavailable neighbors", () => {
+  const root = makeTempDir("mdkg-pack-traversal-edges-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, []);
+
+  writeNode(root, {
+    id: "task-1",
+    type: "task",
+    status: "todo",
+    prev: "task-2",
+    next: "task-3",
+    blocked_by: ["task-4", "task-99"],
+    blocks: ["task-5", "task-2"],
+  });
+  writeNode(root, { id: "task-2", type: "task", status: "done", next: "task-1" });
+  writeNode(root, { id: "task-3", type: "task", status: "todo", prev: "task-1" });
+  writeNode(root, { id: "task-4", type: "task", status: "blocked" });
+  writeNode(root, { id: "task-5", type: "task", status: "todo" });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config, { tolerant: true });
+
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:task-1",
+    depth: 1,
+    edges: ["prev", "next", "blocked-by", "blocks", "ignored-edge", "prev"],
+    verbose: false,
+    maxNodes: config.pack.limits.max_nodes,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    wsHint: "root",
+    includeLatestCheckpoint: false,
+  });
+
+  const qids = result.pack.nodes.map((node: { qid: string }) => node.qid);
+  assert.deepEqual(
+    [...qids].sort(),
+    ["root:task-1", "root:task-2", "root:task-3", "root:task-4", "root:task-5"]
+  );
+  assert.equal(qids.filter((qid: string) => qid === "root:task-2").length, 1);
+  assert.equal(result.pack.meta.latest_checkpoint_qid, undefined);
+  assert.equal(result.pack.meta.truncated.max_nodes, false);
+  assert.deepEqual(result.warnings, []);
+});
+
+test("buildPack errors when a selected node source file is missing", () => {
+  const root = makeTempDir("mdkg-pack-missing-file-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, []);
+
+  writeNode(root, { id: "task-1", type: "task", status: "todo", relates: ["prd-1"] });
+  writeNode(root, { id: "prd-1", type: "prd" });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  fs.unlinkSync(path.join(root, ".mdkg", "design", "prd-1.md"));
+
+  assert.throws(
+    () =>
+      buildPack({
+        root,
+        index,
+        rootQid: "root:task-1",
+        depth: 1,
+        edges: ["relates"],
+        verbose: false,
+        maxNodes: config.pack.limits.max_nodes,
+        verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+        wsHint: "root",
+        includeLatestCheckpoint: false,
+      }),
+    /file not found for root:prd-1/
   );
 });
 
@@ -582,6 +854,46 @@ test("buildPack includes latest checkpoint via pack-time resolver", () => {
     result.pack.nodes.map((node: { qid: string }) => node.qid),
     ["root:task-1", "root:chk-2"]
   );
+});
+
+test("buildPack latest checkpoint resolver breaks date ties by qid", () => {
+  const root = makeTempDir("mdkg-pack-checkpoint-tie-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, []);
+
+  writeNode(root, { id: "task-1", type: "task", status: "todo" });
+  writeNode(root, {
+    id: "chk-1",
+    type: "checkpoint",
+    status: "done",
+    created: "2026-02-01",
+    updated: "2026-02-01",
+  });
+  writeNode(root, {
+    id: "chk-2",
+    type: "checkpoint",
+    status: "done",
+    created: "2026-02-01",
+    updated: "2026-02-01",
+  });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:task-1",
+    depth: 0,
+    edges: config.pack.default_edges,
+    verbose: false,
+    maxNodes: config.pack.limits.max_nodes,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    wsHint: "root",
+  });
+
+  assert.equal(result.pack.meta.latest_checkpoint_qid, "root:chk-2");
 });
 
 test("buildPack latest checkpoint hint never overrides resolver", () => {

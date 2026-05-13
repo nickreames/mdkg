@@ -21,6 +21,13 @@ mdkg pack <id>
 mdkg validate
 ```
 
+Agent workflow docs can use semantic ids:
+
+```bash
+mdkg new spec "image worker" --id agent.image-worker
+mdkg new work "generate image" --id work.generate-image
+```
+
 Read `AGENT_START.md` first when this repo includes it.
 
 ## Pack Profiles

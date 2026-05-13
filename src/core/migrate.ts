@@ -1,4 +1,5 @@
 export const LATEST_SCHEMA_VERSION = 1;
+const LEGACY_SCHEMA_VERSION = 0;
 
 export type MigrationResult = {
   config: unknown;
@@ -6,20 +7,58 @@ export type MigrationResult = {
   to: number;
 };
 
+type JsonObject = Record<string, unknown>;
 type Migrator = (input: unknown) => unknown;
 
-const MIGRATIONS: Record<number, Migrator> = {};
+function isJsonObject(value: unknown): value is JsonObject {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
 
-export function migrateConfig(raw: unknown): MigrationResult {
-  if (typeof raw !== "object" || raw === null) {
-    throw new Error("config must be a JSON object");
+function getSchemaVersion(raw: JsonObject): number {
+  const version = raw.schema_version;
+  if (version === undefined) {
+    return LEGACY_SCHEMA_VERSION;
   }
-
-  const version = (raw as { schema_version?: unknown }).schema_version;
   if (typeof version !== "number" || !Number.isInteger(version)) {
     throw new Error("config schema_version must be an integer");
   }
+  if (version < LEGACY_SCHEMA_VERSION) {
+    throw new Error("config schema_version must be non-negative");
+  }
+  return version;
+}
 
+function migrateLegacyConfig(input: unknown): unknown {
+  if (!isJsonObject(input)) {
+    throw new Error("config must be a JSON object");
+  }
+
+  return {
+    ...input,
+    schema_version: 1,
+    workspaces:
+      input.workspaces === undefined
+        ? {
+            root: {
+              path: ".",
+              enabled: true,
+              mdkg_dir: ".mdkg",
+            },
+          }
+        : input.workspaces,
+  };
+}
+
+const MIGRATIONS: Record<number, Migrator> = {
+  [LEGACY_SCHEMA_VERSION]: migrateLegacyConfig,
+};
+
+export function migrateConfig(raw: unknown): MigrationResult {
+  if (!isJsonObject(raw)) {
+    throw new Error("config must be a JSON object");
+  }
+
+  const version = getSchemaVersion(raw);
   if (version > LATEST_SCHEMA_VERSION) {
     throw new Error(
       `config schema_version ${version} is newer than supported ${LATEST_SCHEMA_VERSION}`

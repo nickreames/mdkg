@@ -20,7 +20,6 @@ function templateNameForType(type: string): string {
   }
   return normalized;
 }
-
 export function loadTemplate(
   root: string,
   config: Config,
@@ -104,4 +103,3 @@ export function renderTemplate(template: LoadedTemplate, context: TemplateRender
   }
   return lines.join("\n");
 }
-

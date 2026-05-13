@@ -51,6 +51,115 @@ test("skill validate supports all-skill and single-skill scope", () => {
   assert.match(singleResult.stdout, /skill validation ok: plan-run \(1 skill checked\)/);
 });
 
+test("skill validate supports all-skill and scoped json receipts", () => {
+  const root = makeTempDir("mdkg-skill-validate-json-");
+  writeRootConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(
+    path.join(root, ".mdkg", "skills", "plan-run", "SKILL.md"),
+    [
+      "---",
+      'name: "plan run"',
+      'description: "plan work when the plan stage is active"',
+      "---",
+      "",
+      "# Goal",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, ".mdkg", "skills", "legacy-plan", "SKILLS.md"),
+    [
+      "---",
+      'name: "legacy plan"',
+      'description: "plan work when a legacy compat file is present"',
+      "---",
+      "",
+      "# Goal",
+    ].join("\n")
+  );
+
+  const allResult = captureOutput(() => runSkillValidateCommand({ root, json: true }));
+  const allReceipt = JSON.parse(allResult.stdout) as {
+    action: string;
+    ok: boolean;
+    checked_count: number;
+    warning_count: number;
+    error_count: number;
+    warnings: string[];
+    errors: string[];
+    target?: string;
+  };
+
+  assert.equal(allResult.error, undefined);
+  assert.equal(allResult.stderr, "");
+  assert.equal(allReceipt.action, "validated");
+  assert.equal(allReceipt.ok, true);
+  assert.equal(allReceipt.checked_count, 2);
+  assert.equal(allReceipt.warning_count, 1);
+  assert.equal(allReceipt.error_count, 0);
+  assert.equal(allReceipt.errors.length, 0);
+  assert.equal(allReceipt.target, undefined);
+  assert.match(allReceipt.warnings[0] ?? "", /legacy-plan\/SKILLS\.md/);
+
+  const singleResult = captureOutput(() =>
+    runSkillValidateCommand({ root, slug: "legacy-plan", json: true })
+  );
+  const singleReceipt = JSON.parse(singleResult.stdout) as {
+    ok: boolean;
+    checked_count: number;
+    warning_count: number;
+    error_count: number;
+    warnings: string[];
+    target?: string;
+  };
+
+  assert.equal(singleResult.error, undefined);
+  assert.equal(singleResult.stderr, "");
+  assert.equal(singleReceipt.ok, true);
+  assert.equal(singleReceipt.checked_count, 1);
+  assert.equal(singleReceipt.warning_count, 1);
+  assert.equal(singleReceipt.error_count, 0);
+  assert.equal(singleReceipt.target, "legacy-plan");
+  assert.match(singleReceipt.warnings[0] ?? "", /legacy-plan\/SKILLS\.md/);
+});
+
+test("skill validate emits a failing json receipt before throwing", () => {
+  const root = makeTempDir("mdkg-skill-validate-json-fail-");
+  writeRootConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(
+    path.join(root, ".mdkg", "skills", "broken-run", "SKILL.md"),
+    [
+      "---",
+      'name: "broken run"',
+      "---",
+      "",
+      "# Goal",
+    ].join("\n")
+  );
+
+  const result = captureOutput(() =>
+    runSkillValidateCommand({ root, slug: "broken-run", json: true })
+  );
+  const receipt = JSON.parse(result.stdout) as {
+    ok: boolean;
+    checked_count: number;
+    warning_count: number;
+    error_count: number;
+    errors: string[];
+    target?: string;
+  };
+
+  assert.match(result.error instanceof Error ? result.error.message : "", /skill validation failed with 1 error/);
+  assert.equal(result.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.equal(receipt.checked_count, 1);
+  assert.equal(receipt.warning_count, 0);
+  assert.equal(receipt.error_count, 1);
+  assert.equal(receipt.target, "broken-run");
+  assert.match(receipt.errors[0] ?? "", /description is required/);
+});
+
 test("skill validate warns for legacy compat files and fails deterministically on malformed skills", () => {
   const root = makeTempDir("mdkg-skill-validate-compat-");
   writeRootConfig(root);

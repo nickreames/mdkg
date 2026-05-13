@@ -39,6 +39,7 @@ export type SkillNewCommandOptions = {
   withScripts?: boolean;
   force?: boolean;
   runId?: string;
+  json?: boolean;
   now?: Date;
 };
 
@@ -76,11 +77,34 @@ export type SkillSearchCommandOptions = {
 export type SkillValidateCommandOptions = {
   root: string;
   slug?: string;
+  json?: boolean;
 };
 
 export type SkillSyncCommandOptions = {
   root: string;
   force?: boolean;
+  json?: boolean;
+};
+
+type SkillReceipt = {
+  workspace: string;
+  id: string;
+  qid: string;
+  slug: string;
+  name: string;
+  path: string;
+  with_scripts: boolean;
+};
+
+type SkillValidateReceipt = {
+  action: "validated";
+  ok: boolean;
+  checked_count: number;
+  warning_count: number;
+  error_count: number;
+  warnings: string[];
+  errors: string[];
+  target?: string;
 };
 
 function parseCsvList(raw?: string): string[] {
@@ -178,6 +202,18 @@ function filterSkills(
 }
 
 function buildSkillSearchText(skill: SkillIndexEntry): string {
+  const extensionTokens = Object.entries(skill.extensions).flatMap(([namespace, values]) =>
+    Object.entries(values).flatMap(([key, value]) => {
+      const field = `extensions.${namespace}.${key}`;
+      if (Array.isArray(value)) {
+        return [field, ...value];
+      }
+      if (typeof value === "boolean") {
+        return [field, value ? "true" : "false"];
+      }
+      return [field, value];
+    })
+  );
   const ochatrTokens = Object.entries(skill.ochatr).flatMap(([key, value]) => {
     if (Array.isArray(value)) {
       return [key, ...value];
@@ -197,6 +233,7 @@ function buildSkillSearchText(skill: SkillIndexEntry): string {
     ...skill.tags,
     ...skill.authors,
     ...skill.links,
+    ...extensionTokens,
     ...ochatrTokens,
   ];
   return tokens.join(" ").toLowerCase();
@@ -280,7 +317,31 @@ export function runSkillNewCommand(options: SkillNewCommandOptions): void {
     now: options.now,
   });
 
-  console.log(`skill created: root:skill:${slug} (${path.relative(root, canonicalPath)})`);
+  const receipt: SkillReceipt = {
+    workspace: "root",
+    id: `skill:${slug}`,
+    qid: `root:skill:${slug}`,
+    slug,
+    name,
+    path: path.relative(root, canonicalPath),
+    with_scripts: Boolean(options.withScripts),
+  };
+
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "created",
+          skill: receipt,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  console.log(`skill created: ${receipt.qid} (${receipt.path})`);
 }
 
 export function runSkillListCommand(options: SkillListCommandOptions): void {
@@ -374,6 +435,21 @@ export function runSkillShowCommand(options: SkillShowCommandOptions): void {
     }
     lines.push(`has_scripts: ${skill.has_scripts ? "true" : "false"}`);
     lines.push(`has_references: ${skill.has_references ? "true" : "false"}`);
+    for (const [namespace, values] of Object.entries(skill.extensions).sort(([a], [b]) =>
+      a.localeCompare(b)
+    )) {
+      for (const [key, value] of Object.entries(values).sort(([a], [b]) => a.localeCompare(b))) {
+        if (Array.isArray(value)) {
+          lines.push(`extensions.${namespace}.${key}: ${value.join(", ")}`);
+          continue;
+        }
+        if (typeof value === "boolean") {
+          lines.push(`extensions.${namespace}.${key}: ${value ? "true" : "false"}`);
+          continue;
+        }
+        lines.push(`extensions.${namespace}.${key}: ${value}`);
+      }
+    }
     for (const [key, value] of Object.entries(skill.ochatr).sort(([a], [b]) => a.localeCompare(b))) {
       if (Array.isArray(value)) {
         lines.push(`${key}: ${value.join(", ")}`);
@@ -441,16 +517,23 @@ export function runSkillValidateCommand(options: SkillValidateCommandOptions): v
 
   const warnings: string[] = [];
   const errors: string[] = [];
+  let checkedCount = 0;
 
   if (targetSlug) {
-    const result = validateSingleSkill(options.root, normalizeSlug(targetSlug));
+    const normalizedSlug = normalizeSlug(targetSlug);
+    const result = validateSingleSkill(options.root, normalizedSlug);
+    checkedCount = 1;
     warnings.push(...result.warnings);
     errors.push(...result.errors);
   } else {
     const skillsRoot = resolveSkillsRoot(options.root, config);
     if (fs.existsSync(skillsRoot)) {
       const entries = fs.readdirSync(skillsRoot, { withFileTypes: true });
-      for (const entry of entries.filter((value) => value.isDirectory()).sort((a, b) => a.name.localeCompare(b.name))) {
+      const skillDirs = entries
+        .filter((value) => value.isDirectory())
+        .sort((a, b) => a.name.localeCompare(b.name));
+      checkedCount = skillDirs.length;
+      for (const entry of skillDirs) {
         const result = validateSingleSkill(options.root, entry.name.toLowerCase());
         warnings.push(...result.warnings);
         errors.push(...result.errors);
@@ -458,25 +541,41 @@ export function runSkillValidateCommand(options: SkillValidateCommandOptions): v
     }
   }
 
-  for (const warning of Array.from(new Set(warnings))) {
+  const uniqueWarnings = Array.from(new Set(warnings));
+  const uniqueErrors = Array.from(new Set(errors));
+  const receipt: SkillValidateReceipt = {
+    action: "validated",
+    ok: uniqueErrors.length === 0,
+    checked_count: checkedCount,
+    warning_count: uniqueWarnings.length,
+    error_count: uniqueErrors.length,
+    warnings: uniqueWarnings,
+    errors: uniqueErrors,
+    ...(targetSlug ? { target: normalizeSlug(targetSlug) } : {}),
+  };
+
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    if (uniqueErrors.length > 0) {
+      throw new ValidationError(`skill validation failed with ${uniqueErrors.length} error(s)`);
+    }
+    return;
+  }
+
+  for (const warning of uniqueWarnings) {
     console.error(`warning: ${warning}`);
   }
-  if (errors.length > 0) {
-    for (const error of Array.from(new Set(errors))) {
+  if (uniqueErrors.length > 0) {
+    for (const error of uniqueErrors) {
       console.error(error);
     }
-    throw new ValidationError(`skill validation failed with ${Array.from(new Set(errors)).length} error(s)`);
+    throw new ValidationError(`skill validation failed with ${uniqueErrors.length} error(s)`);
   }
 
   if (targetSlug) {
     console.log(`skill validation ok: ${targetSlug} (1 skill checked)`);
     return;
   }
-  const checkedCount = fs.existsSync(resolveSkillsRoot(options.root, config))
-    ? fs
-        .readdirSync(resolveSkillsRoot(options.root, config), { withFileTypes: true })
-        .filter((value) => value.isDirectory()).length
-    : 0;
   console.log(`skill validation ok: ${checkedCount} skill${checkedCount === 1 ? "" : "s"} checked`);
 }
 
@@ -488,6 +587,20 @@ export function runSkillSyncCommand(options: SkillSyncCommandOptions): void {
     createRoots: true,
     force: options.force,
   });
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "synced",
+          sync: result,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
   console.log(
     `skill mirror sync ok: ${result.synced} synced, ${result.pruned} pruned across ${result.targets} target${result.targets === 1 ? "" : "s"}`
   );

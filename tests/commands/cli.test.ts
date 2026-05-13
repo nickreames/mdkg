@@ -96,6 +96,8 @@ test("cli help list/search/show/skill include json and namespace-only skill guid
   });
   assert.equal(newHelp.status, 0);
   assert.match(newHelp.stdout, /--skills <slug,slug,\.\.\.>/);
+  assert.match(newHelp.stdout, /--id <portable-id>/);
+  assert.match(newHelp.stdout, /Agent workflow file types/);
 });
 
 test("cli help init includes agent bootstrap and ignore-default controls", () => {

@@ -156,6 +156,8 @@ test("skill list search and show support json envelopes", () => {
   assert.equal(listPayload.count, 1);
   assert.equal(listPayload.items[0].qid, "root:skill:plan-run");
   assert.equal(listPayload.items[0].has_scripts, false);
+  assert.deepEqual(listPayload.items[0].extensions.ochatr, { policy: "advisory" });
+  assert.deepEqual(listPayload.items[0].ochatr, { ochatr_policy: "advisory" });
 
   const search = captureOutput(() => runSkillSearchCommand({ root, query: "plan-stage", tags: ["stage:plan"], tagsMode: "all", json: true }));
   assert.equal(search.stderr, "");

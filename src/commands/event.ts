@@ -4,6 +4,7 @@ import { UsageError } from "../util/errors";
 export type EventEnableCommandOptions = {
   root: string;
   ws?: string;
+  json?: boolean;
 };
 
 export type EventAppendCommandOptions = {
@@ -18,10 +19,26 @@ export type EventAppendCommandOptions = {
   agent?: string;
   skill?: string;
   tool?: string;
+  json?: boolean;
 };
 
 export function runEventEnableCommand(options: EventEnableCommandOptions): void {
   const result = ensureEventsEnabled(options);
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "enabled",
+          workspace: result.ws,
+          created: result.created,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
   const createdLabel = result.created ? "created" : "already present";
   console.log(`event logging enabled: ${result.ws} (${createdLabel})`);
 }
@@ -62,6 +79,11 @@ export function runEventAppendCommand(options: EventAppendCommandOptions): void 
     skill: options.skill,
     tool: options.tool,
   });
+
+  if (options.json) {
+    console.log(JSON.stringify({ action: "appended", event: record }, null, 2));
+    return;
+  }
 
   console.log(`event appended: ${record.workspace}:${record.kind} (${record.run_id})`);
 }

@@ -15,7 +15,7 @@ import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
 import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
-import { runCheckpointNewCommand } from "./checkpoint";
+import { CheckpointReceipt, createCheckpoint, runCheckpointNewCommand } from "./checkpoint";
 
 const MUTABLE_TASK_TYPES = new Set(["task", "bug", "test"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -26,6 +26,7 @@ export type TaskStartCommandOptions = {
   ws?: string;
   runId?: string;
   note?: string;
+  json?: boolean;
   now?: Date;
 };
 
@@ -44,6 +45,7 @@ export type TaskUpdateCommandOptions = {
   clearBlockedBy?: boolean;
   runId?: string;
   note?: string;
+  json?: boolean;
   now?: Date;
 };
 
@@ -57,7 +59,18 @@ export type TaskDoneCommandOptions = {
   checkpoint?: string;
   runId?: string;
   note?: string;
+  json?: boolean;
   now?: Date;
+};
+
+type TaskReceipt = {
+  workspace: string;
+  id: string;
+  qid: string;
+  path: string;
+  type: string;
+  status: string;
+  priority?: number;
 };
 
 type LoadedTaskNode = {
@@ -266,6 +279,46 @@ function maybeWarnEventsDisabled(root: string, config: ReturnType<typeof loadCon
   );
 }
 
+function taskReceipt(root: string, loaded: LoadedTaskNode): TaskReceipt {
+  const rawPriority = loaded.frontmatter.priority;
+  const priority =
+    rawPriority === undefined ? undefined : Number.parseInt(String(rawPriority), 10);
+  return {
+    workspace: loaded.ws,
+    id: loaded.id,
+    qid: loaded.qid,
+    path: path.relative(root, loaded.filePath),
+    type: loaded.type,
+    status: String(loaded.frontmatter.status ?? ""),
+    ...(Number.isInteger(priority) ? { priority } : {}),
+  };
+}
+
+function printTaskMutationReceipt(
+  action: string,
+  root: string,
+  loaded: LoadedTaskNode,
+  json?: boolean,
+  checkpoint?: CheckpointReceipt
+): void {
+  if (json) {
+    console.log(
+      JSON.stringify(
+        {
+          action,
+          task: taskReceipt(root, loaded),
+          ...(checkpoint ? { checkpoint } : {}),
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  console.log(`task ${action}: ${loaded.qid}`);
+}
+
 export function runTaskStartCommand(options: TaskStartCommandOptions): void {
   const loaded = loadMutableTaskNode(options.root, options.id, options.ws);
   const now = options.now ?? new Date();
@@ -286,7 +339,7 @@ export function runTaskStartCommand(options: TaskStartCommandOptions): void {
   });
 
   maybeWarnEventsDisabled(options.root, loaded.config, loaded.ws);
-  console.log(`task started: ${loaded.qid}`);
+  printTaskMutationReceipt("started", options.root, loaded, options.json);
 }
 
 export function runTaskUpdateCommand(options: TaskUpdateCommandOptions): void {
@@ -342,7 +395,7 @@ export function runTaskUpdateCommand(options: TaskUpdateCommandOptions): void {
     now,
   });
 
-  console.log(`task updated: ${loaded.qid}`);
+  printTaskMutationReceipt("updated", options.root, loaded, options.json);
 }
 
 export function runTaskDoneCommand(options: TaskDoneCommandOptions): void {
@@ -376,7 +429,19 @@ export function runTaskDoneCommand(options: TaskDoneCommandOptions): void {
     now,
   });
 
-  if (options.checkpoint) {
+  let checkpoint: CheckpointReceipt | undefined;
+  if (options.checkpoint && options.json) {
+    checkpoint = createCheckpoint({
+      root: options.root,
+      title: options.checkpoint,
+      ws: loaded.ws,
+      relates: loaded.id,
+      scope: loaded.id,
+      runId: options.runId,
+      note: `checkpoint created from mdkg task done for ${loaded.id}`,
+      now,
+    });
+  } else if (options.checkpoint) {
     runCheckpointNewCommand({
       root: options.root,
       title: options.checkpoint,
@@ -391,5 +456,5 @@ export function runTaskDoneCommand(options: TaskDoneCommandOptions): void {
 
   maybeReindex(options.root, loaded.config);
   maybeWarnEventsDisabled(options.root, loaded.config, loaded.ws);
-  console.log(`task done: ${loaded.qid}`);
+  printTaskMutationReceipt("done", options.root, loaded, options.json, checkpoint);
 }

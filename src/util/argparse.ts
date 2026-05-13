@@ -11,6 +11,7 @@ const NORMALIZE_VALUE_FLAGS = new Set(["--ws", "--type", "--status", "--template
 
 const VALUE_FLAGS = new Set([
   "--root",
+  "--id",
   "--ws",
   "--type",
   "--status",

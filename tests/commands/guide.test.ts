@@ -75,6 +75,19 @@ test("runGuideCommand prints guide content", () => {
   assert.equal(logs.join("\n").includes("# Guide"), true);
 });
 
+test("runGuideCommand prints a blank line for empty guide content", () => {
+  const root = makeTempDir("mdkg-guide-empty-");
+  writeConfig(root);
+  writeFile(path.join(root, ".mdkg", "core", "guide.md"), "\n\n");
+
+  const { logs, errors } = captureConsole(() => {
+    runGuideCommand({ root });
+  });
+
+  assert.deepEqual(errors, []);
+  assert.deepEqual(logs, [""]);
+});
+
 test("runGuideCommand errors when guide is missing", () => {
   const root = makeTempDir("mdkg-guide-missing-");
   writeConfig(root);

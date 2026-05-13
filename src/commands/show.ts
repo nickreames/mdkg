@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import { IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
 import { parseFrontmatter } from "../graph/frontmatter";
 import { NotFoundError, UsageError } from "../util/errors";
@@ -35,6 +36,13 @@ function maybeLine(label: string, values: string[]): string | undefined {
     return undefined;
   }
   return `${label}: ${values.join(", ")}`;
+}
+
+function formatAttributeLine(key: string, value: IndexNode["attributes"][string]): string {
+  if (Array.isArray(value)) {
+    return `${key}: ${value.join(", ")}`;
+  }
+  return `${key}: ${String(value)}`;
 }
 
 export function runShowCommand(options: ShowCommandOptions): void {
@@ -100,6 +108,9 @@ export function runShowCommand(options: ShowCommandOptions): void {
     maybeLine("skills", node.skills),
   ].filter((line): line is string => Boolean(line));
   lines.push(...metaLines);
+  lines.push(
+    ...Object.entries(node.attributes ?? {}).map(([key, value]) => formatAttributeLine(key, value))
+  );
 
   if (node.edges.epic) {
     lines.push(`epic: ${node.edges.epic}`);

@@ -4,7 +4,7 @@ description: Verify code and mdkg state, attach evidence, and close work cleanly
 tags: [stage:review, writer:orchestrator, mdkg, validation, release]
 version: 0.1.0
 authors: [mdkg]
-links: [README.md, AGENT_PROMPT_SNIPPET.md]
+links: [README.md, AGENT_START.md]
 ---
 
 # Goal
@@ -38,6 +38,19 @@ Finish work with evidence, validation, and minimal memory drift.
 10. Parent status edits remain manual; do not invent a hidden parent-closeout workflow.
 11. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
 12. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
+
+## Pre-Publish Release Gate
+
+Use this local repo-only checklist before publishing mdkg:
+
+1. Confirm package intent and version in `package.json`, `package-lock.json`, `README.md`, `CLI_COMMAND_MATRIX.md`, and `CHANGELOG.md`.
+2. Use a clean npm cache: `export NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache`.
+3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, and `npm run smoke:matrix`.
+4. Run `npm pack --dry-run --json` and confirm the tarball includes `dist/cli.js`, compiled folders, `dist/init/`, release docs, and `scripts/postinstall.js`.
+5. Confirm registry state with `npm view mdkg version --registry=https://registry.npmjs.org/`.
+6. Publish only after the registry still shows the previous version and npm auth is known to have write access.
+7. If publishing fails with 2FA or token policy errors, do not commit; fix npm auth or package policy, then rerun publish.
+8. After successful publish, verify `npm view mdkg version` and `npm view mdkg dist-tags`, then commit the release changes.
 
 ## Outputs
 

@@ -1,6 +1,6 @@
 {
   "name": "mdkg",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "Markdown Knowledge Graph",
   "license": "MIT",
   "bin": {
@@ -12,8 +12,12 @@
     "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js",
     "test:coverage": "npm run build && npm run build:test && node --test --experimental-test-coverage dist/tests/**/*.test.js",
     "smoke:consumer": "npm run build && node scripts/smoke-consumer.js",
+    "smoke:matrix": "npm run build && node scripts/smoke-command-matrix.js",
     "cli:snapshot": "npm run build && node scripts/cli_help_snapshot.js",
-    "cli:check": "npm run build && node scripts/cli_help_snapshot.js --check"
+    "cli:check": "npm run build && node scripts/cli_help_snapshot.js --check",
+    "prepack": "npm run build && node scripts/assert-publish-ready.js",
+    "prepublishOnly": "npm run test && npm run cli:check && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && node scripts/assert-publish-ready.js",
+    "postinstall": "node scripts/postinstall.js"
   },
   "devDependencies": {
     "@types/node": "^18.19.0",
@@ -28,7 +32,10 @@
     "dist/pack/",
     "dist/templates/",
     "dist/util/",
+    "scripts/postinstall.js",
     "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
     "LICENSE"
   ],
   "engines": {

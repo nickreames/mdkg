@@ -3,18 +3,20 @@ import path from "path";
 import { loadConfig } from "../core/config";
 import { loadIndex, writeIndex } from "../graph/index_cache";
 import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
+import { isAgentFileType, AGENT_FILE_BASENAMES } from "../graph/agent_file_types";
 import { buildIndex, Index } from "../graph/indexer";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { isCanonicalId, isCanonicalIdRef } from "../util/id";
+import { isCanonicalId, isCanonicalIdRef, isPortableId } from "../util/id";
 import { appendAutomaticEvent } from "./event_support";
 
 export type NewCommandOptions = {
   root: string;
   type: string;
   title: string;
+  id?: string;
   ws?: string;
   status?: string;
   priority?: number;
@@ -38,7 +40,19 @@ export type NewCommandOptions = {
   noCache?: boolean;
   noReindex?: boolean;
   runId?: string;
+  json?: boolean;
   now?: Date;
+};
+
+type NewNodeReceipt = {
+  workspace: string;
+  id: string;
+  qid: string;
+  path: string;
+  type: string;
+  title: string;
+  status?: string;
+  priority?: number;
 };
 
 const DEC_ID_RE = /^dec-[0-9]+$/;
@@ -69,6 +83,14 @@ function normalizeIdRef(value: string, key: string): string {
   const normalized = value.toLowerCase();
   if (!isCanonicalIdRef(normalized)) {
     throw new UsageError(`${key} entries must match <id> or <ws>:<id>: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeAgentFileId(value: string): string {
+  const normalized = value.toLowerCase();
+  if (!isPortableId(normalized)) {
+    throw new UsageError("--id must be a lowercase portable id for agent workflow file types");
   }
   return normalized;
 }
@@ -149,6 +171,9 @@ function idPrefixForType(type: string): string {
   if (type === "checkpoint") {
     return "chk";
   }
+  if (type === "work_order") {
+    return "order";
+  }
   return type;
 }
 
@@ -162,7 +187,17 @@ function folderForType(type: string): string {
   if (WORK_TYPES.has(type)) {
     return "work";
   }
+  if (isAgentFileType(type)) {
+    return "work";
+  }
   throw new UsageError(`unsupported type: ${type}`);
+}
+
+function fileNameForType(type: string, id: string, slug: string): string {
+  if (isAgentFileType(type)) {
+    return path.join(`${id}-${slug}`, AGENT_FILE_BASENAMES[type]);
+  }
+  return `${id}-${slug}.md`;
 }
 
 function ensureExists(index: Index, value: string, ws: string, label: string): void {
@@ -198,10 +233,19 @@ export function runNewCommand(options: NewCommandOptions): void {
     allowReindex: !noReindex,
   });
 
+  if (options.id !== undefined && !isAgentFileType(type)) {
+    throw new UsageError("--id is only valid for agent workflow file types");
+  }
+
   const prefix = idPrefixForType(type);
-  const id = nextIdForPrefix(index.nodes, ws, prefix);
+  const id = options.id !== undefined
+    ? normalizeAgentFileId(options.id)
+    : nextIdForPrefix(index.nodes, ws, prefix);
+  if (index.nodes[`${ws}:${id}`]) {
+    throw new UsageError(`node already exists: ${ws}:${id}`);
+  }
   const slug = slugifyTitle(title);
-  const fileName = `${id}-${slug}.md`;
+  const fileName = fileNameForType(type, id, slug);
 
   const wsEntry = config.workspaces[ws];
   const folder = folderForType(type);
@@ -337,7 +381,7 @@ export function runNewCommand(options: NewCommandOptions): void {
     updated: today,
   });
 
-  fs.mkdirSync(targetDir, { recursive: true });
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, "utf8");
 
   if (config.index.auto_reindex && !noReindex) {
@@ -357,5 +401,31 @@ export function runNewCommand(options: NewCommandOptions): void {
     now: options.now,
   });
 
-  console.log(`node created: ${ws}:${id} (${path.relative(options.root, filePath)})`);
+  const relativePath = path.relative(options.root, filePath);
+  const receipt: NewNodeReceipt = {
+    workspace: ws,
+    id,
+    qid: `${ws}:${id}`,
+    path: relativePath,
+    type,
+    title,
+    ...(status ? { status } : {}),
+    ...(priority !== undefined ? { priority } : {}),
+  };
+
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "created",
+          node: receipt,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  console.log(`node created: ${receipt.qid} (${receipt.path})`);
 }

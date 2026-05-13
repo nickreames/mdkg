@@ -17,19 +17,20 @@ function runCli(args: string[], cwd?: string) {
 test("cli help covers the remaining command help surfaces", () => {
   const cases: Array<[string, RegExp]> = [
     ["guide", /mdkg guide/],
-    ["workspace", /mdkg workspace add <alias> <path>/],
+    ["new", /Agent workflow file types:\n  spec work work_order receipt feedback dispute proposal/],
+    ["workspace", /mdkg workspace ls \[--json\]/],
     ["index", /mdkg index \[--tolerant\]/],
     ["show", /mdkg show <id-or-qid> \[--ws <alias>\] \[--meta\] \[--json\|--xml\|--toon\|--md\]/],
     ["list", /--json\|--xml\|--toon\|--md/],
     ["search", /mdkg search "<query>"/],
     ["next", /mdkg next \[<id-or-qid>\]/],
-    ["checkpoint", /mdkg checkpoint new <title>/],
-    ["validate", /mdkg validate \[--out <path>\] \[--quiet\]/],
+    ["checkpoint", /mdkg checkpoint new <title> \[--ws <alias>\] \[--json\]/],
+    ["validate", /mdkg validate \[--out <path>\] \[--quiet\] \[--json\]/],
     ["format", /mdkg format/],
     ["doctor", /mdkg doctor \[--json\]/],
-    ["skill", /mdkg skill list \[--tags <tag,tag,\.\.\.>\] \[--tags-mode any\|all\] \[--json\|--xml\|--toon\|--md\]/],
-    ["task", /mdkg task start <id-or-qid>/],
-    ["event", /mdkg event enable \[--ws <alias>\]/],
+    ["skill", /mdkg skill validate \[<slug>\] \[--json\]/],
+    ["task", /mdkg task start <id-or-qid> \[--ws <alias>\] \[--run-id <id>\] \[--note "<text>"\] \[--json\]/],
+    ["event", /mdkg event enable \[--ws <alias>\] \[--json\]/],
   ];
 
   for (const [command, pattern] of cases) {
@@ -42,8 +43,11 @@ test("cli help covers the remaining command help surfaces", () => {
 test("cli command --help routes to command-specific help", () => {
   const result = runCli(["workspace", "--help"]);
   assert.equal(result.status, 0);
-  assert.match(result.stdout, /mdkg workspace ls/);
-  assert.match(result.stdout, /mdkg workspace rm <alias>/);
+  assert.match(result.stdout, /mdkg workspace ls \[--json\]/);
+  assert.match(result.stdout, /mdkg workspace add <alias> <path> \[--mdkg-dir <dir>\] \[--json\]/);
+  assert.match(result.stdout, /mdkg workspace rm <alias> \[--json\]/);
+  assert.match(result.stdout, /mdkg workspace enable <alias> \[--json\]/);
+  assert.match(result.stdout, /mdkg workspace disable <alias> \[--json\]/);
 });
 
 test("cli prints root guidance when config is required but missing", () => {

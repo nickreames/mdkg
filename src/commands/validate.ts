@@ -14,6 +14,17 @@ export type ValidateCommandOptions = {
   root: string;
   out?: string;
   quiet?: boolean;
+  json?: boolean;
+};
+
+type ValidateReceipt = {
+  action: "validated";
+  ok: boolean;
+  warning_count: number;
+  error_count: number;
+  warnings: string[];
+  errors: string[];
+  report_path?: string;
 };
 
 type HeadingMap = Record<string, string[]>;
@@ -69,6 +80,13 @@ const RECOMMENDED_HEADINGS: HeadingMap = {
     "Rollout plan",
   ],
   dec: ["Context", "Decision", "Alternatives considered", "Consequences", "Links / references"],
+  spec: ["Purpose", "Runtime", "Work Contracts", "Capabilities"],
+  work: ["Capability", "Inputs", "Outputs", "Receipt"],
+  work_order: ["Request", "Inputs", "Constraints"],
+  receipt: ["Outcome", "Artifacts", "Notes"],
+  feedback: ["Feedback", "Evidence"],
+  dispute: ["Dispute", "Evidence", "Resolution"],
+  proposal: ["Summary", "Evidence", "Proposed Change", "Review"],
 };
 
 function normalizeHeading(value: string): string {
@@ -134,6 +152,7 @@ function buildIndexNode(
     refs: node.refs,
     aliases: node.aliases,
     skills: node.skills,
+    attributes: node.attributes,
     path: path.relative(root, filePath),
     edges: normalizeEdges(node.edges, ws),
   };
@@ -288,12 +307,10 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     reverse_edges: {},
   };
 
-  const graphErrors = collectGraphErrors(index, { allowMissing: false });
-  errors.push(...graphErrors);
-
+  let knownSkills = new Set<string>();
   try {
     const skillsIndex = buildSkillsIndex(options.root, config);
-    const knownSkills = new Set(Object.keys(skillsIndex.skills));
+    knownSkills = new Set(Object.keys(skillsIndex.skills));
     for (const node of Object.values(nodes)) {
       for (const slug of node.skills) {
         if (!knownSkills.has(slug)) {
@@ -305,6 +322,12 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     const message = err instanceof Error ? err.message : "unknown skill validation error";
     errors.push(message);
   }
+
+  const graphErrors = collectGraphErrors(index, {
+    allowMissing: false,
+    knownSkillSlugs: knownSkills,
+  });
+  errors.push(...graphErrors);
 
   const skillsRoot = resolveSkillsRoot(options.root, config);
   for (const dirPath of listDirectories(skillsRoot)) {
@@ -342,6 +365,24 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     outPath = path.resolve(options.root, options.out);
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.writeFileSync(outPath, reportLines.join("\n"), "utf8");
+  }
+
+  const receipt: ValidateReceipt = {
+    action: "validated",
+    ok: uniqueErrors.length === 0,
+    warning_count: uniqueWarnings.length,
+    error_count: uniqueErrors.length,
+    warnings: uniqueWarnings,
+    errors: uniqueErrors,
+    ...(outPath ? { report_path: outPath } : {}),
+  };
+
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    if (uniqueErrors.length > 0) {
+      throw new ValidationError(`validation failed with ${uniqueErrors.length} error(s)`);
+    }
+    return;
   }
 
   if (!options.quiet) {

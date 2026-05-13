@@ -1,5 +1,5 @@
 import { FrontmatterValue } from "./frontmatter";
-import { isCanonicalIdRef } from "../util/id";
+import { isCanonicalIdRef, isPortableIdRef } from "../util/id";
 
 export type EdgeMap = {
   epic?: string;
@@ -15,12 +15,24 @@ function formatError(filePath: string, key: string, message: string): Error {
   return new Error(`${filePath}: ${key} ${message}`);
 }
 
-function normalizeIdRef(value: string, filePath: string, key: string): string {
+export type ExtractEdgesOptions = {
+  allowPortableRefs?: boolean;
+};
+
+function normalizeIdRef(
+  value: string,
+  filePath: string,
+  key: string,
+  options: ExtractEdgesOptions
+): string {
   const normalized = value.toLowerCase();
   if (normalized !== value) {
     throw formatError(filePath, key, "must be lowercase");
   }
-  if (!isCanonicalIdRef(normalized)) {
+  const valid = options.allowPortableRefs
+    ? isPortableIdRef(normalized)
+    : isCanonicalIdRef(normalized);
+  if (!valid) {
     throw formatError(filePath, key, `invalid id reference: ${value}`);
   }
   return normalized;
@@ -50,7 +62,8 @@ function readStringList(fm: Record<string, FrontmatterValue>, key: string): stri
 
 export function extractEdges(
   frontmatter: Record<string, FrontmatterValue>,
-  filePath: string
+  filePath: string,
+  options: ExtractEdgesOptions = {}
 ): EdgeMap {
   const epic = readString(frontmatter, "epic");
   const parent = readString(frontmatter, "parent");
@@ -62,22 +75,24 @@ export function extractEdges(
   const blocks = readStringList(frontmatter, "blocks") ?? [];
 
   const edges: EdgeMap = {
-    relates: relates.map((value) => normalizeIdRef(value, filePath, "relates")),
-    blocked_by: blocked_by.map((value) => normalizeIdRef(value, filePath, "blocked_by")),
-    blocks: blocks.map((value) => normalizeIdRef(value, filePath, "blocks")),
+    relates: relates.map((value) => normalizeIdRef(value, filePath, "relates", options)),
+    blocked_by: blocked_by.map((value) =>
+      normalizeIdRef(value, filePath, "blocked_by", options)
+    ),
+    blocks: blocks.map((value) => normalizeIdRef(value, filePath, "blocks", options)),
   };
 
   if (epic) {
-    edges.epic = normalizeIdRef(epic, filePath, "epic");
+    edges.epic = normalizeIdRef(epic, filePath, "epic", options);
   }
   if (parent) {
-    edges.parent = normalizeIdRef(parent, filePath, "parent");
+    edges.parent = normalizeIdRef(parent, filePath, "parent", options);
   }
   if (prev) {
-    edges.prev = normalizeIdRef(prev, filePath, "prev");
+    edges.prev = normalizeIdRef(prev, filePath, "prev", options);
   }
   if (next) {
-    edges.next = normalizeIdRef(next, filePath, "next");
+    edges.next = normalizeIdRef(next, filePath, "next", options);
   }
 
   return edges;
