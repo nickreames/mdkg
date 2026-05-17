@@ -14,6 +14,10 @@ export function writeRootConfig(root: string): void {
     capabilities: {
       cache_path: ".mdkg/index/capabilities.json",
     },
+    bundles: {
+      output_dir: ".mdkg/bundles",
+      default_profile: "private",
+    },
     pack: {
       default_depth: 2,
       default_edges: ["parent", "epic", "relates"],

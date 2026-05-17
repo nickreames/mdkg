@@ -45,12 +45,25 @@ Use this local repo-only checklist before publishing mdkg:
 
 1. Confirm package intent and version in `package.json`, `package-lock.json`, `README.md`, `CLI_COMMAND_MATRIX.md`, and `CHANGELOG.md`.
 2. Use a clean npm cache: `export NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache`.
-3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, and `npm run smoke:upgrade`.
+3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, `npm run smoke:upgrade`, `npm run smoke:init`, `npm run smoke:capabilities`, `npm run smoke:archive-work`, and `npm run smoke:bundle`.
 4. Run `npm pack --dry-run --json` and confirm the tarball includes `dist/cli.js`, compiled folders, `dist/init/`, release docs, and `scripts/postinstall.js`.
 5. Confirm registry state with `npm view mdkg version --registry=https://registry.npmjs.org/`.
 6. Publish only after the registry still shows the previous version and npm auth is known to have write access.
 7. If publishing fails with 2FA or token policy errors, do not commit; fix npm auth or package policy, then rerun publish.
 8. After successful publish, verify `npm view mdkg version` and `npm view mdkg dist-tags`, then commit the release changes.
+
+## Bundle-Aware Commit Gate
+
+When a repo tracks mdkg archive caches or snapshot bundles, refresh and verify them before the final commit. This is recommended after validation and before staging so the committed semantic graph, compressed archive caches, and snapshot bundle describe the same source state.
+
+```bash
+mdkg archive compress --all
+mdkg archive verify --json
+mdkg bundle create --profile private
+mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
+```
+
+Skip `mdkg archive compress --all` only when the repo has no `.mdkg/archive` sidecars. Skip bundle refresh only when the repo intentionally does not track `.mdkg/bundles/`. Use `--profile public` only for explicit export-safe bundles after public workspace visibility has been reviewed.
 
 ## Outputs
 

@@ -103,6 +103,33 @@ function runArchiveStorageCheck(root: string): CheckResult {
   };
 }
 
+function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
+  const bundleRoot = path.resolve(root, outputDir);
+  if (!fs.existsSync(bundleRoot)) {
+    return {
+      name: "bundle-storage",
+      ok: true,
+      detail: `no bundle directory found; run \`mdkg bundle create --profile private\` when a snapshot should be tracked`,
+    };
+  }
+  const bundles = walkFiles(bundleRoot)
+    .filter((filePath) => filePath.endsWith(".mdkg.zip"))
+    .map((filePath) => path.relative(root, filePath).split(path.sep).join("/"))
+    .sort();
+  if (bundles.length === 0) {
+    return {
+      name: "bundle-storage",
+      ok: true,
+      detail: `bundle directory has no .mdkg.zip files; run \`mdkg bundle create --profile private\` when a snapshot should be tracked`,
+    };
+  }
+  return {
+    name: "bundle-storage",
+    ok: true,
+    detail: `${bundles.length} bundle(s) found; run \`mdkg bundle verify <path>\` to check freshness before handoff`,
+  };
+}
+
 export function runDoctorCommand(options: DoctorCommandOptions): void {
   const results: CheckResult[] = [];
 
@@ -142,6 +169,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
 
   if (config) {
     results.push(runArchiveStorageCheck(options.root));
+    results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
 
     try {
       const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);

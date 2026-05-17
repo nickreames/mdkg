@@ -22,6 +22,7 @@ mdkg content may contain sensitive notes and internal project planning. This rul
 - `.mdkg/` must not be shipped to production deployments.
 - `.mdkg/` must not be published to npm.
 - `.mdkg/index/` must never be committed.
+- `.mdkg/bundles/` may be committed only when the repo intentionally tracks private or public snapshot bundles.
 
 ## Git ignore requirements
 
@@ -31,11 +32,13 @@ The repo MUST ignore at minimum:
 - `dist/`
 - `.mdkg/index/`
 - `.mdkg/pack/`
+- `.mdkg/archive/**/source/`
 
 Recommended `.gitignore` entries:
 - `.mdkg/index/`
 - `.mdkg/index/**`
 - `.mdkg/pack/`
+- `.mdkg/archive/**/source/`
 
 ## npm publish safety (required)
 
@@ -85,6 +88,14 @@ Explicit flags remain available and take precedence:
 - Index files may contain extracted metadata and could expose sensitive strings.
 - Index files MUST be ignored from git.
 - Index rebuild should be deterministic and safe to regenerate at any time.
+
+## Bundle safety
+
+- `.mdkg/bundles/` stores explicit snapshot artifacts and is not ignored by default.
+- Private bundles may include sensitive authored mdkg content and should stay in private repos.
+- Public bundles must be created with `mdkg bundle create --profile public` so private graph and archive refs fail closed.
+- Bundle ZIPs must exclude `.mdkg/pack/`, existing `.mdkg/index/`, nested `.mdkg/bundles/`, and raw `.mdkg/archive/**/source/` files.
+- Repos that track archive caches or bundles should refresh in this order before commit: `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, then bundle verify.
 
 ## Workspace safety
 

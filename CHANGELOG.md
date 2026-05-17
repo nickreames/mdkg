@@ -8,15 +8,21 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 ### Added
 
-- _Nothing yet._
+- Added `mdkg bundle create/list/show/verify` for deterministic full `.mdkg` graph snapshot bundles.
+- Added private and public bundle profiles with fail-closed public filtering for private graph and archive refs.
+- Added bundle-local generated indexes (`global.json`, `skills.json`, `capabilities.json`) inside snapshot ZIPs.
+- Added bundle unit and CLI coverage plus packed-package bundle smoke coverage.
 
 ### Changed
 
-- _Nothing yet._
+- Added default bundle config under `.mdkg/bundles` without making `mdkg index` rewrite bundles.
+- Updated docs, command matrix, and release skills with bundle creation and verification guidance.
+- Updated seeded init/upgrade skills so managed workspaces receive pre-commit archive compression and private bundle refresh guidance.
 
 ### Fixed
 
-- _Nothing yet._
+- Kept bundle output deterministic across repeated creates when only `.mdkg/bundles/` changes.
+- Hardened publish readiness and init smoke checks to assert seeded release skills include archive compression and bundle refresh guidance.
 
 ## 0.1.2 - 2026-05-17
 

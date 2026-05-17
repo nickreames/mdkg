@@ -26,6 +26,10 @@ const BASE_CONFIG = {
   capabilities: {
     cache_path: ".mdkg/index/capabilities.json",
   },
+  bundles: {
+    output_dir: ".mdkg/bundles",
+    default_profile: "private",
+  },
   pack: {
     default_depth: 2,
     default_edges: ["parent", "epic", "relates"],
@@ -66,6 +70,15 @@ function setupSeed(seed: string, marker: string): void {
     "build-pack-and-execute-task",
     "verify-close-and-checkpoint",
   ]) {
+    const extraLines =
+      marker === "current" && slug === "verify-close-and-checkpoint"
+        ? [
+            "",
+            "## Bundle-Aware Commit Gate",
+            "",
+            "Run `mdkg archive compress --all` and `mdkg bundle create --profile private` before commit.",
+          ]
+        : [];
     writeFile(
       path.join(seed, "skills", "default", slug, "SKILL.md"),
       [
@@ -78,6 +91,7 @@ function setupSeed(seed: string, marker: string): void {
         "# Goal",
         "",
         `Seeded ${marker} skill.`,
+        ...extraLines,
       ].join("\n")
     );
   }
@@ -152,6 +166,20 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
       "utf8"
     ),
     /current skill/
+  );
+  assert.match(
+    fs.readFileSync(
+      path.join(root, ".mdkg", "skills", "verify-close-and-checkpoint", "SKILL.md"),
+      "utf8"
+    ),
+    /mdkg archive compress --all/
+  );
+  assert.match(
+    fs.readFileSync(
+      path.join(root, ".agents", "skills", "verify-close-and-checkpoint", "SKILL.md"),
+      "utf8"
+    ),
+    /mdkg bundle create --profile private/
   );
 
   const manifest = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "init-manifest.json"), "utf8"));

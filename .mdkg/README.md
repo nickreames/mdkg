@@ -9,6 +9,7 @@ This repository is initialized for mdkg.
 - `work/`: epics, tasks, bugs, tests, checkpoints
 - `templates/`: default node templates
 - `archive/`: sidecar metadata and deterministic compressed source/artifact caches
+- `bundles/`: optional committed full graph snapshot bundles
 - `index/`: generated index cache (do not commit)
 - `pack/`: generated context packs (do not commit)
 
@@ -22,10 +23,11 @@ mdkg show <id>
 mdkg pack <id>
 mdkg capability search "..."
 mdkg archive list
+mdkg bundle create --profile private
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
 Read `../AGENT_START.md` first when the repo includes it. Treat it as the instant-start guide before scanning the wider graph.
 
@@ -52,6 +54,19 @@ Recommended:
 ```bash
 mdkg init --update-gitignore --update-npmignore
 ```
+
+## Snapshot Bundles
+
+Create explicit full `.mdkg` graph snapshots with:
+
+```bash
+mdkg archive compress --all
+mdkg archive verify --json
+mdkg bundle create --profile private
+mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
+```
+
+Use this as a pre-commit recommendation only when the repo tracks archive caches or `.mdkg/bundles/`. Private bundles are local graph transport artifacts and may be tracked in private repos when configured. Public bundles require selected workspaces with `visibility: public` and fail closed when public records reference private graph or archive records.
 
 ## Archive and Work Mirrors
 

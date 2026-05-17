@@ -242,6 +242,16 @@ function exerciseAgentInit(binPath, tempRoot) {
   }
   assertNoRemovedInitGuidance(root);
   assertIncludes(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), ".mdkg/archive/**/source/", ".gitignore");
+  assertIncludes(
+    fs.readFileSync(path.join(root, ".mdkg/skills/verify-close-and-checkpoint/SKILL.md"), "utf8"),
+    "mdkg archive compress --all",
+    "seeded verify-close-and-checkpoint skill"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, ".agents/skills/verify-close-and-checkpoint/SKILL.md"), "utf8"),
+    "mdkg bundle create --profile private",
+    "mirrored verify-close-and-checkpoint skill"
+  );
 
   const manifest = assertManifestMatches(root);
   for (const category of ["agent_doc", "startup_doc", "default_skill"]) {

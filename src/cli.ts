@@ -25,6 +25,12 @@ import {
   runArchiveShowCommand,
   runArchiveVerifyCommand,
 } from "./commands/archive";
+import {
+  runBundleCreateCommand,
+  runBundleListCommand,
+  runBundleShowCommand,
+  runBundleVerifyCommand,
+} from "./commands/bundle";
 import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
@@ -104,6 +110,7 @@ function printUsage(log: LogFn): void {
   log("  skill       Create, list, show, search, and validate skills");
   log("  capability  List, search, and show cached capability surfaces");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
+  log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  task        Start, update, and complete task-like nodes");
   log("  next        Suggest the next work item");
@@ -421,6 +428,38 @@ function printArchiveHelp(log: LogFn, subcommand?: string): void {
   printGlobalOptions(log);
 }
 
+function printBundleHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "create":
+      log("Usage:");
+      log("  mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]");
+      break;
+    case "verify":
+      log("Usage:");
+      log("  mdkg bundle verify [bundle-path] [--json]");
+      break;
+    case "show":
+      log("Usage:");
+      log("  mdkg bundle show <bundle-path> [--json]");
+      break;
+    case "list":
+      log("Usage:");
+      log("  mdkg bundle list [--json]");
+      break;
+    default:
+      log("Usage:");
+      log("  mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]");
+      log("  mdkg bundle verify [bundle-path] [--json]");
+      log("  mdkg bundle show <bundle-path> [--json]");
+      log("  mdkg bundle list [--json]");
+      log("\nNotes:");
+      log("  - bundles are explicit full .mdkg graph snapshots, not task context packs");
+      log("  - private is the default profile; public bundles fail closed on private refs");
+      log("  - .mdkg/bundles/ is commit-eligible when your repo tracks snapshot bundles");
+  }
+  printGlobalOptions(log);
+}
+
 function printWorkHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "contract":
@@ -554,6 +593,7 @@ function printDoctorHelp(log: LogFn): void {
   log("  - mdkg repo root + .mdkg/config.json");
   log("  - Template schema availability");
   log("  - Archive sidecar storage hygiene");
+  log("  - Bundle snapshot storage guidance");
   log("  - Index load/rebuild health");
   log("  - Capability cache load/rebuild health");
   log("\nOptions:");
@@ -605,6 +645,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "archive":
       printArchiveHelp(log, subcommand);
+      return;
+    case "bundle":
+      printBundleHelp(log, subcommand);
       return;
     case "work":
       printWorkHelp(log, subcommand);
@@ -967,6 +1010,51 @@ function runArchiveSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     }
     default:
       throw new UsageError("archive requires add/list/show/verify/compress");
+  }
+}
+
+function runBundleSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "create": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("bundle create does not accept positional arguments");
+      }
+      const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const output = requireFlagValue("--output", parsed.flags["--out"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runBundleCreateCommand({ root, profile, ws, output, json });
+      return 0;
+    }
+    case "verify": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("bundle verify accepts at most one bundle path");
+      }
+      const bundlePath = parsed.positionals[2];
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runBundleVerifyCommand({ root, bundlePath, json });
+      return 0;
+    }
+    case "show": {
+      const bundlePath = parsed.positionals[2];
+      if (!bundlePath || parsed.positionals.length > 3) {
+        throw new UsageError("bundle show requires <bundle-path>");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runBundleShowCommand({ root, bundlePath, json });
+      return 0;
+    }
+    case "list": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("bundle list does not accept positional arguments");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runBundleListCommand({ root, json });
+      return 0;
+    }
+    default:
+      throw new UsageError("bundle requires create/list/show/verify");
   }
 }
 
@@ -1503,6 +1591,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runCapabilitySubcommand(parsed, root);
     case "archive":
       return runArchiveSubcommand(parsed, root);
+    case "bundle":
+      return runBundleSubcommand(parsed, root);
     case "work":
       return runWorkSubcommand(parsed, root);
     case "task":

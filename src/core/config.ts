@@ -26,6 +26,10 @@ export type Config = {
   capabilities: {
     cache_path: string;
   };
+  bundles: {
+    output_dir: string;
+    default_profile: "private" | "public";
+  };
   pack: {
     default_depth: number;
     default_edges: string[];
@@ -68,6 +72,7 @@ const PACK_EDGE_KEYS = new Set([
 ]);
 const NEXT_WORK_STRATEGIES = new Set(["chain_then_priority"]);
 const WORKSPACE_VISIBILITY_VALUES = new Set(["private", "internal", "public"]);
+const BUNDLE_PROFILE_VALUES = new Set(["private", "public"]);
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -290,6 +295,10 @@ export function validateConfigSchema(raw: unknown): Config {
     raw.capabilities === undefined
       ? { cache_path: ".mdkg/index/capabilities.json" }
       : requireObject(raw.capabilities, "capabilities", errors);
+  const bundlesRaw =
+    raw.bundles === undefined
+      ? { output_dir: ".mdkg/bundles", default_profile: "private" }
+      : requireObject(raw.bundles, "bundles", errors);
   const packRaw = requireObject(raw.pack, "pack", errors);
   const templatesRaw = requireObject(raw.templates, "templates", errors);
   const workRaw = requireObject(raw.work, "work", errors);
@@ -312,6 +321,18 @@ export function validateConfigSchema(raw: unknown): Config {
         cache_path: requireContainedPath(
           capabilitiesRaw.cache_path,
           "capabilities.cache_path",
+          errors
+        ),
+      }
+    : undefined;
+
+  const bundles = bundlesRaw
+    ? {
+        output_dir: requireContainedPath(bundlesRaw.output_dir, "bundles.output_dir", errors),
+        default_profile: requireStringInSet(
+          bundlesRaw.default_profile,
+          "bundles.default_profile",
+          BUNDLE_PROFILE_VALUES,
           errors
         ),
       }
@@ -511,6 +532,7 @@ export function validateConfigSchema(raw: unknown): Config {
     root_required: root_required as boolean,
     index: index as Config["index"],
     capabilities: capabilities as Config["capabilities"],
+    bundles: bundles as Config["bundles"],
     pack: pack as Config["pack"],
     templates: templates as Config["templates"],
     work: work as Config["work"],

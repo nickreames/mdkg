@@ -198,6 +198,14 @@ Common flags:
   - `mdkg archive compress <id-or-archive-uri|--all> [--json]`
   - `archive://<archive.id>` refs resolve against local archive sidecars
   - raw copied sources live under `.mdkg/archive/**/source/`; sidecar `.md` and deterministic `.zip` caches remain commit-eligible
+- full graph snapshot bundles live under `mdkg bundle ...`:
+  - `mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]`
+  - `mdkg bundle verify [bundle-path] [--json]`
+  - `mdkg bundle show <bundle-path> [--json]`
+  - `mdkg bundle list [--json]`
+  - bundles are explicit transport artifacts and are not rewritten by `mdkg index`
+  - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
+  - public bundles must fail closed when public records reference private graph or archive records
 - work lifecycle helpers live under `mdkg work ...`:
   - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
   - `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
