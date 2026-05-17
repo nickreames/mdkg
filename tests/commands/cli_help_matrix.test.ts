@@ -30,6 +30,7 @@ test("cli help covers the remaining command help surfaces", () => {
     ["doctor", /mdkg doctor \[--json\]/],
     ["capability", /mdkg capability show <id-or-qid-or-slug> \[--json\]/],
     ["archive", /mdkg archive compress <id-or-archive-uri\|--all> \[--json\]/],
+    ["bundle", /mdkg bundle create \[--profile private\|public\] \[--ws <alias\|all>\] \[--output <path>\] \[--json\]/],
     ["work", /mdkg work artifact add/],
     ["skill", /mdkg skill validate \[<slug>\] \[--json\]/],
     ["task", /mdkg task start <id-or-qid> \[--ws <alias>\] \[--run-id <id>\] \[--note "<text>"\] \[--json\]/],

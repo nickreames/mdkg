@@ -13,7 +13,7 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no required sqlite, daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.2`
+Current package version in source: `0.1.3`
 
 ## The product shape
 
@@ -96,6 +96,18 @@ mdkg pack task-1
 mdkg pack task-1 --profile concise --dry-run --stats
 ```
 
+Create a full `.mdkg` graph snapshot bundle for root or child orchestration:
+
+```bash
+mdkg archive compress --all
+mdkg archive verify --json
+mdkg bundle create --profile private
+mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
+mdkg bundle list --json
+```
+
+Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph or archive records.
+
 Validate before handoff or commit:
 
 ```bash
@@ -172,6 +184,7 @@ mdkg lives under a hidden root directory:
 - `.mdkg/templates/` templates used by `mdkg new`
 - `.mdkg/skills/` Agent Skills packages
 - `.mdkg/archive/` sidecar metadata plus deterministic compressed source/artifact caches
+- `.mdkg/bundles/` optional committed full graph snapshot bundles
 - `.agents/skills/` Codex/OpenAI-facing mirrored skills
 - `.claude/skills/` Claude-facing mirrored skills
 - `.mdkg/index/` generated cache files

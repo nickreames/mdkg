@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-05-14
-package_version_in_source: 0.1.2
+as_of: 2026-05-17
+package_version_in_source: 0.1.3
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -26,6 +26,7 @@ Primary commands:
 - `skill`
 - `capability`
 - `archive`
+- `bundle`
 - `work`
 - `task`
 - `next`
@@ -44,6 +45,7 @@ Skills are first-class and are accessed only through `mdkg skill ...`.
 Generic `list/show/search` do not expose skills.
 Capability cache discovery is read-only and accessed through `mdkg capability ...`.
 Archive sidecars are accessed through `mdkg archive ...`.
+Full graph snapshot bundles are accessed through `mdkg bundle ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 
 ## Global usage
@@ -508,6 +510,41 @@ JSON receipts:
 - `verify`: `{ ok, count, results }`
 - `compress`: `{ action: "compressed", count, archives }`
 
+### `mdkg bundle`
+
+When to use:
+- create deterministic compressed read-only `.mdkg` graph snapshots
+- give root orchestrators a low-I/O graph transport artifact for child repos
+- verify committed private/public bundle freshness before handoff
+
+Usage:
+- `mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]`
+- `mdkg bundle verify [bundle-path] [--json]`
+- `mdkg bundle show <bundle-path> [--json]`
+- `mdkg bundle list [--json]`
+
+Flags:
+- `--profile private|public`
+- `--ws <alias|all>`
+- `--output <path>`
+- `--json`
+
+Notes:
+- default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
+- bundle refresh is explicit; `mdkg index` does not rewrite bundles
+- recommended pre-commit order for repos that track archive caches or bundles is `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, then `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip`
+- private bundles include selected authored `.mdkg` content, archive sidecars, archive ZIP caches, and generated bundle-local indexes
+- public bundles include only public workspace content and public archive sidecars
+- public bundles require at least one selected workspace with `visibility: public`
+- public bundle creation fails if public records reference private graph nodes or private archive refs
+- bundles exclude `.mdkg/pack/`, `.mdkg/bundles/`, existing `.mdkg/index/`, and raw `.mdkg/archive/**/source/` files
+
+JSON receipts:
+- `create`: `{ action: "created", path, profile, selected_workspaces, file_count, source_tree_hash, bundle_hash, zip_sha256, source }`
+- `verify`: `{ action: "verified", ok, path, profile, selected_workspaces, file_count, stale, errors, stale_paths, bundle_hash, zip_sha256 }`
+- `show`: `{ action: "show", bundle, manifest }`
+- `list`: `{ action: "list", count, items }`
+
 ### `mdkg work`
 
 When to use:
@@ -711,6 +748,7 @@ Checks:
 - global node index health
 - capability cache health
 - archive sidecar storage hygiene
+- bundle snapshot storage guidance
 
 ### `mdkg workspace`
 

@@ -33,7 +33,8 @@ Use `mdkg pack <id>` as the default execution context instead of ad-hoc file gat
 6. Discover skills by metadata first; load full skill bodies only for the selected execution procedures.
 7. Hand the pack, not a loose file list, to the next coding step or agent.
 8. Keep this stage patch-only: subagents and tools may produce patches, test output, and evidence, but not direct mdkg state writes or commits.
-9. If execution reveals new artifacts or blockers, hand them to the orchestrator stage for `mdkg task update ...` as structured field updates; keep narrative summaries in markdown.
+9. If execution creates or changes archive sidecars, raw source files, or bundle-relevant graph state, hand that to the orchestrator stage so pre-commit `mdkg archive compress --all` and `mdkg bundle create --profile private` can run at the durable writer boundary.
+10. If execution reveals new artifacts or blockers, hand them to the orchestrator stage for `mdkg task update ...` as structured field updates; keep narrative summaries in markdown.
 
 ## Outputs
 

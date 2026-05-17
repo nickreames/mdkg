@@ -17,6 +17,7 @@ Primary commands:
 - `mdkg skill`
 - `mdkg capability`
 - `mdkg archive`
+- `mdkg bundle`
 - `mdkg work`
 - `mdkg task`
 - `mdkg validate`
@@ -98,6 +99,17 @@ Archive sidecars:
 - `mdkg archive compress <id-or-archive-uri|--all> [--json]`
 - archive sidecars are `type: archive` nodes under `.mdkg/archive`
 - committed sidecar `.md` files and ZIP caches are source-of-truth evidence; raw source copies under `.mdkg/archive/**/source/` are ignored by default
+
+Graph snapshot bundles:
+- `mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]`
+- `mdkg bundle verify [bundle-path] [--json]`
+- `mdkg bundle show <bundle-path> [--json]`
+- `mdkg bundle list [--json]`
+- default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
+- private bundles are explicit local graph transport artifacts
+- repos that track archive caches or bundles should run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip` before commit
+- public bundles include only public workspace content and public archive sidecars
+- public bundle creation fails when public records reference private graph or archive records
 
 Work semantic mirrors:
 - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`

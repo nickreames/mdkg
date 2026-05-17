@@ -17,6 +17,10 @@ const BASE_CONFIG = {
   capabilities: {
     cache_path: ".mdkg/index/capabilities.json",
   },
+  bundles: {
+    output_dir: ".mdkg/bundles",
+    default_profile: "private",
+  },
   pack: {
     default_depth: 2,
     default_edges: ["parent", "epic", "relates"],
@@ -60,14 +64,17 @@ test("loadConfig reads and validates config", () => {
   assert.equal(config.workspaces.root.path, ".");
   assert.equal(config.workspaces.root.visibility, "private");
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
+  assert.equal(config.bundles.output_dir, ".mdkg/bundles");
+  assert.equal(config.bundles.default_profile, "private");
 });
 
-test("loadConfig migrates legacy config without schema_version and defaults capability fields", () => {
+test("loadConfig migrates legacy config without schema_version and defaults capability and bundle fields", () => {
   const root = makeTempDir("mdkg-config-");
   const configPath = path.join(root, ".mdkg", "config.json");
   const legacyConfig = { ...BASE_CONFIG } as Record<string, unknown>;
   delete legacyConfig.schema_version;
   delete legacyConfig.capabilities;
+  delete legacyConfig.bundles;
   const workspaces = JSON.parse(JSON.stringify(legacyConfig.workspaces)) as Record<string, Record<string, unknown>>;
   delete workspaces.root.visibility;
   legacyConfig.workspaces = workspaces;
@@ -78,6 +85,8 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   assert.equal(config.workspaces.root.mdkg_dir, ".mdkg");
   assert.equal(config.workspaces.root.visibility, "private");
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
+  assert.equal(config.bundles.output_dir, ".mdkg/bundles");
+  assert.equal(config.bundles.default_profile, "private");
 });
 
 test("loadConfig accepts contained relative registered workspace paths", () => {
@@ -154,6 +163,25 @@ test("loadConfig rejects config paths that escape the repo root", () => {
       /capabilities.cache_path cannot contain NUL bytes/,
     ],
     [
+      "bundles",
+      "output_dir",
+      "../bundles",
+      /bundles.output_dir cannot contain parent-directory components/,
+    ],
+    [
+      "bundles",
+      "output_dir",
+      path.join(root, ".mdkg", "bundles"),
+      /bundles.output_dir must be relative/,
+    ],
+    ["bundles", "output_dir", " ", /bundles.output_dir cannot be empty/],
+    [
+      "bundles",
+      "output_dir",
+      ".mdkg/bundles\0bad",
+      /bundles.output_dir cannot contain NUL bytes/,
+    ],
+    [
       "pack",
       "verbose_core_list_path",
       "../core.md",
@@ -198,6 +226,22 @@ test("loadConfig rejects config paths that escape the repo root", () => {
 
     assert.throws(() => loadConfig(root), pattern);
   }
+});
+
+test("loadConfig validates optional bundle defaults", () => {
+  const root = makeTempDir("mdkg-config-bundles-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(JSON.stringify(BASE_CONFIG));
+  config.bundles.default_profile = "public";
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  assert.equal(loadConfig(root).bundles.default_profile, "public");
+
+  config.bundles.default_profile = "external";
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  assert.throws(
+    () => loadConfig(root),
+    /bundles\.default_profile must be one of private, public/
+  );
 });
 
 test("loadConfig validates optional workspace visibility", () => {

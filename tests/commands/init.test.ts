@@ -21,6 +21,10 @@ const BASE_CONFIG = {
   capabilities: {
     cache_path: ".mdkg/index/capabilities.json",
   },
+  bundles: {
+    output_dir: ".mdkg/bundles",
+    default_profile: "private",
+  },
   pack: {
     default_depth: 2,
     default_edges: ["parent", "epic", "relates"],
@@ -258,6 +262,16 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.match(registry, /build-pack-and-execute-task/);
   assert.match(registry, /verify-close-and-checkpoint/);
 
+  const executeSkill = fs.readFileSync(executeSkillPath, "utf8");
+  assert.match(executeSkill, /mdkg archive compress --all/);
+  assert.match(executeSkill, /mdkg bundle create --profile private/);
+
+  const reviewSkill = fs.readFileSync(reviewSkillPath, "utf8");
+  assert.match(reviewSkill, /Bundle-Aware Commit Gate/);
+  assert.match(reviewSkill, /mdkg archive compress --all/);
+  assert.match(reviewSkill, /mdkg archive verify --json/);
+  assert.match(reviewSkill, /mdkg bundle create --profile private/);
+
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assert.match(gitignore, /\.mdkg\/archive\/\*\*\/source\//);
   assert.doesNotMatch(gitignore, /\.mdkg\/work\/events\/\*\.jsonl/);
@@ -297,10 +311,20 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "select-work-and-ground-context", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "build-pack-and-execute-task", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "verify-close-and-checkpoint", "SKILL.md")));
+  assert.match(
+    fs.readFileSync(path.join(root, ".agents", "skills", "verify-close-and-checkpoint", "SKILL.md"), "utf8"),
+    /mdkg archive compress --all/
+  );
+  assert.match(
+    fs.readFileSync(path.join(root, ".claude", "skills", "verify-close-and-checkpoint", "SKILL.md"), "utf8"),
+    /mdkg bundle create --profile private/
+  );
 
   const config = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "config.json"), "utf8"));
   assert.deepEqual(Object.keys(config.workspaces), ["root"]);
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
+  assert.equal(config.bundles.output_dir, ".mdkg/bundles");
+  assert.equal(config.bundles.default_profile, "private");
   assert.equal(config.workspaces.root.visibility, "private");
   assertManifestPathsExistAndMatch(root);
   captureConsole(() => runDoctorCommand({ root }));
@@ -365,5 +389,7 @@ test("published init seed config remains root-only", () => {
   );
   assert.deepEqual(Object.keys(assetConfig.workspaces), ["root"]);
   assert.equal(assetConfig.capabilities.cache_path, ".mdkg/index/capabilities.json");
+  assert.equal(assetConfig.bundles.output_dir, ".mdkg/bundles");
+  assert.equal(assetConfig.bundles.default_profile, "private");
   assert.equal(assetConfig.workspaces.root.visibility, "private");
 });

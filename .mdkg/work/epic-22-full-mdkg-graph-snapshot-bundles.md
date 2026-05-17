@@ -2,7 +2,7 @@
 id: epic-22
 type: epic
 title: full mdkg graph snapshot bundles
-status: todo
+status: done
 priority: 2
 tags: [future, snapshot-bundle, compression, orchestration, archive]
 owners: []
@@ -36,15 +36,20 @@ Default bundle posture:
 
 # Milestones
 
-- Define a deterministic bundle manifest with mdkg version, source repo, source
-  commit, created timestamp, public/private profile, file list, and hashes.
-- Include authored `.mdkg` markdown, templates, skills, archive sidecars,
-  compressed archive caches, and prebuilt indexes.
-- Exclude `.mdkg/pack`, raw secret/payment/ledger state, and public export of
-  private records by default.
-- Add validation and doctor guidance for stale or missing configured snapshots.
-- Update internal commit-cadence skills so configured repositories refresh
-  archive compression and snapshot bundles before commit.
+- Added `mdkg bundle create/list/show/verify` as the explicit snapshot command
+  namespace.
+- Defined a deterministic manifest with mdkg version, source repo, source git
+  HEAD, dirty flag, profile, selected workspaces, file metadata, index hashes,
+  source tree hash, and bundle hash.
+- Included selected authored `.mdkg` markdown/templates/skills/event files,
+  archive sidecars, committed archive ZIP caches, and freshly generated bundle
+  indexes.
+- Excluded `.mdkg/pack/`, existing `.mdkg/index/`, nested `.mdkg/bundles/`, and
+  raw `.mdkg/archive/**/source/` files.
+- Shipped private and public profiles together; public creation fails closed
+  when public records reference private graph or archive nodes.
+- Added bundle config defaults, docs, help snapshots, command matrix coverage,
+  packed temp-repo smoke, and release skill guidance.
 
 # Out of Scope
 
@@ -57,12 +62,27 @@ Default bundle posture:
 
 # Risks
 
-- Snapshot bundles can become stale unless source commit and freshness metadata
-  are visible.
+- Snapshot bundles can become stale unless `mdkg bundle verify` is run before
+  handoff or commit.
 - Private-local bundles can leak sensitive graph details if published or shared
   as public artifacts.
-- Deterministic compression must normalize ordering, timestamps, paths, and
-  hashes to avoid noisy git churn.
+- Bundle import and lazy read-only subgraph loading are intentionally deferred
+  to `epic-23`.
+
+# Verification Evidence
+
+- `npm run test`
+- `npm run cli:check`
+- `node dist/cli.js validate`
+- `npm run smoke:consumer`
+- `npm run smoke:matrix`
+- `npm run smoke:upgrade`
+- `npm run smoke:init`
+- `npm run smoke:capabilities`
+- `npm run smoke:archive-work`
+- `npm run smoke:bundle`
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run`
 
 # Links / Artifacts
 

@@ -64,6 +64,9 @@ function requireInitAssets() {
   if (!initConfig.capabilities || initConfig.capabilities.cache_path !== ".mdkg/index/capabilities.json") {
     fail("dist/init/config.json is missing the default capability cache path");
   }
+  if (!initConfig.bundles || initConfig.bundles.output_dir !== ".mdkg/bundles" || initConfig.bundles.default_profile !== "private") {
+    fail("dist/init/config.json is missing the default bundle config");
+  }
   if (!initConfig.workspaces?.root || initConfig.workspaces.root.visibility !== "private") {
     fail("dist/init/config.json is missing root workspace visibility metadata");
   }
@@ -107,6 +110,21 @@ function requireInitAssets() {
     "work_order.md",
   ]) {
     requireFile(path.join("dist/init/templates/default", template));
+  }
+  const seededReviewSkill = requireFile("dist/init/skills/default/verify-close-and-checkpoint/SKILL.md");
+  for (const expected of [
+    "Bundle-Aware Commit Gate",
+    "mdkg archive compress --all",
+    "mdkg archive verify --json",
+    "mdkg bundle create --profile private",
+  ]) {
+    if (!seededReviewSkill.includes(expected)) {
+      fail(`dist/init verify-close-and-checkpoint skill is missing ${expected}`);
+    }
+  }
+  const seededExecuteSkill = requireFile("dist/init/skills/default/build-pack-and-execute-task/SKILL.md");
+  if (!seededExecuteSkill.includes("mdkg archive compress --all") || !seededExecuteSkill.includes("mdkg bundle create --profile private")) {
+    fail("dist/init build-pack-and-execute-task skill is missing pre-commit handoff guidance");
   }
 }
 
