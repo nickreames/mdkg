@@ -13,6 +13,18 @@ import { runNextCommand } from "./commands/next";
 import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
+import {
+  runCapabilityListCommand,
+  runCapabilitySearchCommand,
+  runCapabilityShowCommand,
+} from "./commands/capability";
+import {
+  runArchiveAddCommand,
+  runArchiveCompressCommand,
+  runArchiveListCommand,
+  runArchiveShowCommand,
+  runArchiveVerifyCommand,
+} from "./commands/archive";
 import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
@@ -28,6 +40,14 @@ import {
   runSkillValidateCommand,
 } from "./commands/skill";
 import { runTaskDoneCommand, runTaskStartCommand, runTaskUpdateCommand } from "./commands/task";
+import {
+  runWorkArtifactAddCommand,
+  runWorkContractNewCommand,
+  runWorkOrderNewCommand,
+  runWorkOrderUpdateCommand,
+  runWorkReceiptNewCommand,
+  runWorkReceiptUpdateCommand,
+} from "./commands/work";
 import {
   runWorkspaceAddCommand,
   runWorkspaceDisableCommand,
@@ -82,6 +102,9 @@ function printUsage(log: LogFn): void {
   log("  search      Search nodes by query");
   log("  pack        Generate a context pack");
   log("  skill       Create, list, show, search, and validate skills");
+  log("  capability  List, search, and show cached capability surfaces");
+  log("  archive     Add, list, show, verify, and compress archive sidecars");
+  log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  task        Start, update, and complete task-like nodes");
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
@@ -94,7 +117,7 @@ function printUsage(log: LogFn): void {
   log("  doctor      Run install and workspace diagnostics");
   log("  workspace   Manage workspaces (ls/add/rm/enable/disable)");
   log("\nQuickstart:");
-  log("  mdkg init --llm");
+  log("  mdkg init --agent");
   log("  mdkg upgrade");
   log("  mdkg upgrade --apply");
   log('  mdkg new task "..." --status todo --priority 1');
@@ -107,7 +130,7 @@ function printUsage(log: LogFn): void {
   log('  mdkg skill new release-readiness "release readiness audit" --description "use when preparing a release"');
   log("  mdkg skill list --tags stage:plan --json");
   log("  mdkg validate");
-  log("\nOptional agent-ready bootstrap:");
+  log("\nAgent-ready bootstrap:");
   log("  mdkg init --agent");
   log("\nRun `mdkg help <command>` or `mdkg <command> --help` for details.");
   printGlobalOptions(log);
@@ -118,13 +141,11 @@ function printInitHelp(log: LogFn): void {
   log("  mdkg init [options]");
   log("\nOptions:");
   log("  --force               Overwrite existing mdkg files");
-  log("  --llm                 Create AGENTS.md, CLAUDE.md, llms.txt, and AGENT_START.md");
-  log("  --agent               Add SOUL/HUMAN/skills/events scaffolding and skill mirrors");
+  log("  --agent               Create the complete agent bootstrap, skills, events, and mirrors");
   log("  --no-update-ignores   Skip default .gitignore/.npmignore updates");
   log("  --update-gitignore    Append mdkg ignore entries");
   log("  --update-npmignore    Append mdkg ignore entries");
   log("  --update-dockerignore Append mdkg ignore entries");
-  log("\nCompatibility flags still supported but not shown in the primary onboarding story.");
   printGlobalOptions(log);
 }
 
@@ -152,6 +173,7 @@ function printNewHelp(log: LogFn): void {
   log("\nAgent workflow file types:");
   log("  spec work work_order receipt feedback dispute proposal");
   log("  Use --id <portable-id> with these types for semantic ids like agent.image-worker.");
+  log("  Use `mdkg archive add` for archive sidecars instead of `mdkg new archive`.");
   log("\nOptions:");
   log("  --id <portable-id>         Explicit id for agent workflow file types");
   log("  --ws <alias>               Workspace alias (default root)");
@@ -180,16 +202,22 @@ function printGuideHelp(log: LogFn): void {
 function printWorkspaceHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg workspace ls [--json]");
-  log("  mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--json]");
+  log("  mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--visibility <level>] [--json]");
   log("  mdkg workspace rm <alias> [--json]");
   log("  mdkg workspace enable <alias> [--json]");
   log("  mdkg workspace disable <alias> [--json]");
+  log("\nVisibility levels:");
+  log("  private internal public");
   printGlobalOptions(log);
 }
 
 function printIndexHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg index [--tolerant]");
+  log("\nWrites:");
+  log("  - .mdkg/index/global.json");
+  log("  - .mdkg/index/skills.json");
+  log("  - .mdkg/index/capabilities.json");
   printGlobalOptions(log);
 }
 
@@ -323,6 +351,109 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
   }
 }
 
+function printCapabilityHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "list":
+      log("Usage:");
+      log("  mdkg capability list [--kind <kind>] [--visibility <level>] [--json]");
+      log("\nKinds:");
+      log("  skill spec work core design");
+      printGlobalOptions(log);
+      return;
+    case "search":
+      log("Usage:");
+      log('  mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]');
+      log("\nKinds:");
+      log("  skill spec work core design");
+      printGlobalOptions(log);
+      return;
+    case "show":
+      log("Usage:");
+      log("  mdkg capability show <id-or-qid-or-slug> [--json]");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log("  mdkg capability list [--kind <kind>] [--visibility <level>] [--json]");
+      log('  mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]');
+      log("  mdkg capability show <id-or-qid-or-slug> [--json]");
+      log("\nNotes:");
+      log("  Capability records are deterministic cache projections from Markdown.");
+      log("  Cached kinds: skill, spec, work, core, design.");
+      printGlobalOptions(log);
+  }
+}
+
+function printArchiveHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "add":
+      log("Usage:");
+      log("  mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]");
+      break;
+    case "list":
+      log("Usage:");
+      log("  mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]");
+      break;
+    case "show":
+      log("Usage:");
+      log("  mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]");
+      break;
+    case "verify":
+      log("Usage:");
+      log("  mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]");
+      break;
+    case "compress":
+      log("Usage:");
+      log("  mdkg archive compress <id-or-archive-uri> [--ws <alias>] [--json]");
+      log("  mdkg archive compress --all [--json]");
+      break;
+    default:
+      log("Usage:");
+      log("  mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--json]");
+      log("  mdkg archive list [--kind source|artifact] [--json]");
+      log("  mdkg archive show <id-or-archive-uri> [--json]");
+      log("  mdkg archive verify [id-or-archive-uri] [--json]");
+      log("  mdkg archive compress <id-or-archive-uri|--all> [--json]");
+      log("\nNotes:");
+      log("  - archive add copies the source, writes a sidecar, and writes a deterministic zip cache");
+      log("  - archive://<archive.id> refs are validated against local archive sidecars");
+  }
+  printGlobalOptions(log);
+}
+
+function printWorkHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "contract":
+      log("Usage:");
+      log('  mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]');
+      break;
+    case "order":
+      log("Usage:");
+      log('  mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]');
+      log("  mdkg work order update <id> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]");
+      break;
+    case "receipt":
+      log("Usage:");
+      log('  mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected] [--json]');
+      log("  mdkg work receipt update <id> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]");
+      break;
+    case "artifact":
+      log("Usage:");
+      log("  mdkg work artifact add <order-or-receipt-id> <file> [--id <archive.id>] [--kind source|artifact] [--json]");
+      break;
+    default:
+      log("Usage:");
+      log("  mdkg work contract new ...");
+      log("  mdkg work order new|update ...");
+      log("  mdkg work receipt new|update ...");
+      log("  mdkg work artifact add ...");
+      log("\nNotes:");
+      log("  - work commands mutate semantic mirror files only");
+      log("  - production order, receipt, payment, ledger, and marketplace state remains canonical outside mdkg");
+  }
+  printGlobalOptions(log);
+}
+
 function printTaskHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "start":
@@ -422,7 +553,9 @@ function printDoctorHelp(log: LogFn): void {
   log("  - Node.js version compatibility");
   log("  - mdkg repo root + .mdkg/config.json");
   log("  - Template schema availability");
+  log("  - Archive sidecar storage hygiene");
   log("  - Index load/rebuild health");
+  log("  - Capability cache load/rebuild health");
   log("\nOptions:");
   log("  --json                Emit machine-readable JSON output");
   printGlobalOptions(log);
@@ -466,6 +599,15 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "skill":
       printSkillHelp(log, subcommand);
+      return;
+    case "capability":
+      printCapabilityHelp(log, subcommand);
+      return;
+    case "archive":
+      printArchiveHelp(log, subcommand);
+      return;
+    case "work":
+      printWorkHelp(log, subcommand);
       return;
     case "task":
       printTaskHelp(log, subcommand);
@@ -683,8 +825,9 @@ function runWorkspaceSubcommand(
         throw new UsageError("workspace add requires <alias> <path>");
       }
       const mdkgDir = requireFlagValue("--mdkg-dir", parsed.flags["--mdkg-dir"]);
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runWorkspaceAddCommand({ root, alias, workspacePath, mdkgDir, json });
+      runWorkspaceAddCommand({ root, alias, workspacePath, mdkgDir, visibility, json });
       return 0;
     }
     case "rm": {
@@ -717,6 +860,262 @@ function runWorkspaceSubcommand(
     default:
       throw new UsageError("workspace requires ls/add/rm/enable/disable");
   }
+}
+
+function runCapabilitySubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "list": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("capability list does not accept positional arguments");
+      }
+      const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runCapabilityListCommand({ root, kind, visibility, json, noCache, noReindex });
+      return 0;
+    }
+    case "search": {
+      if (parsed.positionals.length < 3) {
+        throw new UsageError("capability search requires a query");
+      }
+      const query = parsed.positionals.slice(2).join(" ");
+      const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runCapabilitySearchCommand({ root, query, kind, visibility, json, noCache, noReindex });
+      return 0;
+    }
+    case "show": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("capability show requires <id-or-qid-or-slug>");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runCapabilityShowCommand({ root, id, json, noCache, noReindex });
+      return 0;
+    }
+    default:
+      throw new UsageError("capability requires list/search/show");
+  }
+}
+
+function runArchiveSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "add": {
+      const file = parsed.positionals[2];
+      if (!file || parsed.positionals.length > 3) {
+        throw new UsageError("archive add requires <file>");
+      }
+      const id = requireFlagValue("--id", parsed.flags["--id"]);
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+      const title = requireFlagValue("--title", parsed.flags["--title"]);
+      const refs = requireFlagValue("--refs", parsed.flags["--refs"]);
+      const relates = requireFlagValue("--relates", parsed.flags["--relates"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runArchiveAddCommand({ root, file, id, ws, kind, title, refs, relates, json });
+      return 0;
+    }
+    case "list": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("archive list does not accept positional arguments");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runArchiveListCommand({ root, ws, kind, json });
+      return 0;
+    }
+    case "show": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("archive show requires <id-or-archive-uri>");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runArchiveShowCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "verify": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("archive verify accepts at most one id");
+      }
+      const id = parsed.positionals[2];
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runArchiveVerifyCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "compress": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("archive compress accepts at most one id");
+      }
+      const id = parsed.positionals[2];
+      const all = parseBooleanFlag("--all", parsed.flags["--all"]);
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runArchiveCompressCommand({ root, id, all, ws, json });
+      return 0;
+    }
+    default:
+      throw new UsageError("archive requires add/list/show/verify/compress");
+  }
+}
+
+function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const domain = (parsed.positionals[1] ?? "").toLowerCase();
+  const action = (parsed.positionals[2] ?? "").toLowerCase();
+  const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+
+  if (domain === "contract" && action === "new") {
+    const title = parsed.positionals.slice(3).join(" ");
+    const id = requireFlagValue("--id", parsed.flags["--id"]);
+    const agentId = requireFlagValue("--agent-id", parsed.flags["--agent-id"]);
+    const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+    const inputs = requireFlagValue("--inputs", parsed.flags["--inputs"]);
+    const outputs = requireFlagValue("--outputs", parsed.flags["--outputs"]);
+    if (!title || !id || !agentId || !kind || !inputs || !outputs) {
+      throw new UsageError("work contract new requires title, --id, --agent-id, --kind, --inputs, and --outputs");
+    }
+    const requiredCapabilities = requireFlagValue(
+      "--required-capabilities",
+      parsed.flags["--required-capabilities"]
+    );
+    const pricingModel = requireFlagValue("--pricing-model", parsed.flags["--pricing-model"]);
+    runWorkContractNewCommand({
+      root,
+      ws,
+      title,
+      id,
+      agentId,
+      kind,
+      inputs,
+      outputs,
+      requiredCapabilities,
+      pricingModel,
+      json,
+    });
+    return 0;
+  }
+
+  if (domain === "order" && action === "new") {
+    const title = parsed.positionals.slice(3).join(" ");
+    const id = requireFlagValue("--id", parsed.flags["--id"]);
+    const workId = requireFlagValue("--work-id", parsed.flags["--work-id"]);
+    const requester = requireFlagValue("--requester", parsed.flags["--requester"]);
+    if (!title || !id || !workId || !requester) {
+      throw new UsageError("work order new requires title, --id, --work-id, and --requester");
+    }
+    const requestRef = requireFlagValue("--request-ref", parsed.flags["--request-ref"]);
+    const inputRefs = requireFlagValue("--input-refs", parsed.flags["--input-refs"]);
+    const requestedOutputs = requireFlagValue("--requested-outputs", parsed.flags["--requested-outputs"]);
+    const constraintRefs = requireFlagValue("--constraint-refs", parsed.flags["--constraint-refs"]);
+    runWorkOrderNewCommand({
+      root,
+      ws,
+      title,
+      id,
+      workId,
+      requester,
+      requestRef,
+      inputRefs,
+      requestedOutputs,
+      constraintRefs,
+      json,
+    });
+    return 0;
+  }
+
+  if (domain === "order" && action === "update") {
+    const id = parsed.positionals[3];
+    if (!id || parsed.positionals.length > 4) {
+      throw new UsageError("work order update requires <id>");
+    }
+    const status = requireFlagValue("--status", parsed.flags["--status"]);
+    const addInputRefs = requireFlagValue("--add-input-refs", parsed.flags["--add-input-refs"]);
+    const addArtifacts = requireFlagValue("--add-artifacts", parsed.flags["--add-artifacts"]);
+    runWorkOrderUpdateCommand({ root, ws, id, status, addInputRefs, addArtifacts, json });
+    return 0;
+  }
+
+  if (domain === "receipt" && action === "new") {
+    const title = parsed.positionals.slice(3).join(" ");
+    const id = requireFlagValue("--id", parsed.flags["--id"]);
+    const workOrderId = requireFlagValue("--work-order-id", parsed.flags["--work-order-id"]);
+    const outcome = requireFlagValue("--outcome", parsed.flags["--outcome"]);
+    if (!title || !id || !workOrderId || !outcome) {
+      throw new UsageError("work receipt new requires title, --id, --work-order-id, and --outcome");
+    }
+    const receiptStatus = requireFlagValue("--receipt-status", parsed.flags["--receipt-status"]);
+    const costRef = requireFlagValue("--cost-ref", parsed.flags["--cost-ref"]);
+    const artifacts = requireFlagValue("--artifacts", parsed.flags["--artifacts"]);
+    const proofRefs = requireFlagValue("--proof-refs", parsed.flags["--proof-refs"]);
+    const attestationRefs = requireFlagValue("--attestation-refs", parsed.flags["--attestation-refs"]);
+    const inputHashes = requireFlagValue("--input-hashes", parsed.flags["--input-hashes"]);
+    const outputHashes = requireFlagValue("--output-hashes", parsed.flags["--output-hashes"]);
+    runWorkReceiptNewCommand({
+      root,
+      ws,
+      title,
+      id,
+      workOrderId,
+      outcome,
+      receiptStatus,
+      costRef,
+      artifacts,
+      proofRefs,
+      attestationRefs,
+      inputHashes,
+      outputHashes,
+      json,
+    });
+    return 0;
+  }
+
+  if (domain === "receipt" && action === "update") {
+    const id = parsed.positionals[3];
+    if (!id || parsed.positionals.length > 4) {
+      throw new UsageError("work receipt update requires <id>");
+    }
+    const receiptStatus = requireFlagValue("--receipt-status", parsed.flags["--receipt-status"]);
+    const addArtifacts = requireFlagValue("--add-artifacts", parsed.flags["--add-artifacts"]);
+    const addProofRefs = requireFlagValue("--add-proof-refs", parsed.flags["--add-proof-refs"]);
+    const addAttestationRefs = requireFlagValue("--add-attestation-refs", parsed.flags["--add-attestation-refs"]);
+    runWorkReceiptUpdateCommand({
+      root,
+      ws,
+      id,
+      receiptStatus,
+      addArtifacts,
+      addProofRefs,
+      addAttestationRefs,
+      json,
+    });
+    return 0;
+  }
+
+  if (domain === "artifact" && action === "add") {
+    const targetId = parsed.positionals[3];
+    const file = parsed.positionals[4];
+    if (!targetId || !file || parsed.positionals.length > 5) {
+      throw new UsageError("work artifact add requires <order-or-receipt-id> <file>");
+    }
+    const id = requireFlagValue("--id", parsed.flags["--id"]);
+    const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+    runWorkArtifactAddCommand({ root, ws, targetId, file, id, kind, json });
+    return 0;
+  }
+
+  throw new UsageError("work requires contract new, order new/update, receipt new/update, or artifact add");
 }
 
 function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
@@ -979,11 +1378,10 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
   switch (command) {
     case "init": {
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
-      const createAgents = parseBooleanFlag("--agents", parsed.flags["--agents"]);
-      const createClaude = parseBooleanFlag("--claude", parsed.flags["--claude"]);
-      const createLlm = parseBooleanFlag("--llm", parsed.flags["--llm"]);
-      if (parsed.flags["--omni"]) {
-        throw new UsageError("`mdkg init --omni` was removed; use `mdkg init --agent`");
+      for (const removedFlag of ["--llm", "--agents", "--claude", "--omni"]) {
+        if (parsed.flags[removedFlag] !== undefined) {
+          throw new UsageError(`\`mdkg init ${removedFlag}\` was removed; use \`mdkg init --agent\``);
+        }
       }
       const agent = parseBooleanFlag("--agent", parsed.flags["--agent"]);
       const noUpdateIgnores = parseBooleanFlag(
@@ -1009,9 +1407,6 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         updateNpmignore,
         updateDockerignore,
         noUpdateIgnores,
-        createAgents,
-        createClaude,
-        createLlm,
         agent,
       });
       return 0;
@@ -1104,6 +1499,12 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runWorkspaceSubcommand(parsed, root);
     case "skill":
       return runSkillSubcommand(parsed, root);
+    case "capability":
+      return runCapabilitySubcommand(parsed, root);
+    case "archive":
+      return runArchiveSubcommand(parsed, root);
+    case "work":
+      return runWorkSubcommand(parsed, root);
     case "task":
       return runTaskSubcommand(parsed, root);
     case "event":

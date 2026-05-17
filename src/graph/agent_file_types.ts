@@ -1,6 +1,7 @@
 import path from "path";
 import { FrontmatterValue } from "./frontmatter";
 import { isPortableId } from "../util/id";
+import { isSha256Ref, validatePortableOrUriRef } from "../util/refs";
 
 export const AGENT_FILE_TYPES = [
   "spec",
@@ -63,6 +64,10 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "requester",
     "order_status",
     "request_ref",
+    "input_refs",
+    "requested_outputs",
+    "constraint_refs",
+    "artifact_policy",
   ],
   receipt: [
     "version",
@@ -70,6 +75,10 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "receipt_status",
     "outcome",
     "cost_ref",
+    "proof_refs",
+    "attestation_refs",
+    "input_hashes",
+    "output_hashes",
   ],
   feedback: [
     "version",
@@ -135,6 +144,11 @@ const ORDER_STATUS_VALUES = new Set([
 ]);
 const RECEIPT_STATUS_VALUES = new Set(["recorded", "verified", "rejected"]);
 const OUTCOME_VALUES = new Set(["success", "partial", "failure"]);
+const ARTIFACT_POLICY_VALUES = new Set([
+  "commit_sidecar_and_zip",
+  "external_only",
+  "local_only",
+]);
 const SENTIMENT_VALUES = new Set(["positive", "neutral", "negative", "mixed"]);
 const FEEDBACK_STATUS_VALUES = new Set(["new", "triaged", "accepted", "rejected"]);
 const DISPUTE_STATUS_VALUES = new Set(["open", "investigating", "resolved", "rejected"]);
@@ -198,6 +212,33 @@ function optionalString(
   }
   if (value !== value.toLowerCase()) {
     throw formatError(filePath, `${key} must be lowercase`);
+  }
+  return value;
+}
+
+function expectRefString(
+  frontmatter: Record<string, FrontmatterValue>,
+  key: string,
+  filePath: string
+): string {
+  const value = frontmatter[key];
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw formatError(filePath, `${key} is required and must be a non-empty string`);
+  }
+  return value;
+}
+
+function optionalRefString(
+  frontmatter: Record<string, FrontmatterValue>,
+  key: string,
+  filePath: string
+): string | undefined {
+  const value = frontmatter[key];
+  if (value === undefined) {
+    return undefined;
+  }
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw formatError(filePath, `${key} must be a non-empty string`);
   }
   return value;
 }
@@ -283,6 +324,35 @@ function validatePortableRefs(values: string[], key: string, filePath: string): 
     }
     if (!isPortableId(value)) {
       throw formatError(filePath, `${key}[${index}] must be a lowercase portable id`);
+    }
+  }
+}
+
+function validatePortableOrUriRefs(values: string[], key: string, filePath: string): void {
+  for (const [index, value] of values.entries()) {
+    if (!validatePortableOrUriRef(value)) {
+      throw formatError(filePath, `${key}[${index}] must be a portable id or URI ref`);
+    }
+  }
+}
+
+function validatePortableOrUriScalar(value: string, key: string, filePath: string): void {
+  if (!validatePortableOrUriRef(value)) {
+    throw formatError(filePath, `${key} must be a portable id or URI ref`);
+  }
+}
+
+function validateOptionalFieldDescriptors(values: string[], key: string, filePath: string): void {
+  if (values.length === 0) {
+    return;
+  }
+  validateFieldDescriptors(values, key, filePath);
+}
+
+function validateHashRefs(values: string[], key: string, filePath: string): void {
+  for (const [index, value] of values.entries()) {
+    if (!isSha256Ref(value)) {
+      throw formatError(filePath, `${key}[${index}] must be sha256:<64 lowercase hex chars>`);
     }
   }
 }
@@ -438,11 +508,29 @@ export function validateAgentFrontmatter(
       requirePortableId(workId, "work_id", filePath);
       const workVersion = expectString(frontmatter, "work_version", filePath);
       requireSemver(workVersion, "work_version", filePath);
-      const requester = expectString(frontmatter, "requester", filePath);
-      requirePortableId(requester, "requester", filePath);
+      const requester = expectRefString(frontmatter, "requester", filePath);
+      validatePortableOrUriScalar(requester, "requester", filePath);
       const orderStatus = expectString(frontmatter, "order_status", filePath);
       requireEnum(orderStatus, "order_status", ORDER_STATUS_VALUES, filePath);
-      optionalString(frontmatter, "request_ref", filePath);
+      const requestRef = optionalRefString(frontmatter, "request_ref", filePath);
+      if (requestRef) {
+        validatePortableOrUriScalar(requestRef, "request_ref", filePath);
+      }
+      validatePortableOrUriRefs(optionalList(frontmatter, "input_refs", filePath), "input_refs", filePath);
+      validateOptionalFieldDescriptors(
+        optionalList(frontmatter, "requested_outputs", filePath),
+        "requested_outputs",
+        filePath
+      );
+      validatePortableOrUriRefs(
+        optionalList(frontmatter, "constraint_refs", filePath),
+        "constraint_refs",
+        filePath
+      );
+      const artifactPolicy = optionalString(frontmatter, "artifact_policy", filePath);
+      if (artifactPolicy) {
+        requireEnum(artifactPolicy, "artifact_policy", ARTIFACT_POLICY_VALUES, filePath);
+      }
       break;
     }
     case "receipt": {
@@ -452,7 +540,18 @@ export function validateAgentFrontmatter(
       requireEnum(receiptStatus, "receipt_status", RECEIPT_STATUS_VALUES, filePath);
       const outcome = expectString(frontmatter, "outcome", filePath);
       requireEnum(outcome, "outcome", OUTCOME_VALUES, filePath);
-      optionalString(frontmatter, "cost_ref", filePath);
+      const costRef = optionalRefString(frontmatter, "cost_ref", filePath);
+      if (costRef) {
+        validatePortableOrUriScalar(costRef, "cost_ref", filePath);
+      }
+      validatePortableOrUriRefs(optionalList(frontmatter, "proof_refs", filePath), "proof_refs", filePath);
+      validatePortableOrUriRefs(
+        optionalList(frontmatter, "attestation_refs", filePath),
+        "attestation_refs",
+        filePath
+      );
+      validateHashRefs(optionalList(frontmatter, "input_hashes", filePath), "input_hashes", filePath);
+      validateHashRefs(optionalList(frontmatter, "output_hashes", filePath), "output_hashes", filePath);
       break;
     }
     case "feedback": {

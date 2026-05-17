@@ -8,19 +8,24 @@ This repository is initialized for mdkg.
 - `design/`: product/engineering decision records
 - `work/`: epics, tasks, bugs, tests, checkpoints
 - `templates/`: default node templates
+- `archive/`: sidecar metadata and deterministic compressed source/artifact caches
 - `index/`: generated index cache (do not commit)
 - `pack/`: generated context packs (do not commit)
 
-## First Commands
+## Next Commands
 
 ```bash
-mdkg init --llm --agent
 mdkg upgrade
+mdkg new task "..." --status todo --priority 1
 mdkg search "..."
 mdkg show <id>
 mdkg pack <id>
+mdkg capability search "..."
+mdkg archive list
 mdkg validate
 ```
+
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
 Agent workflow docs can use semantic ids:
 
@@ -45,6 +50,7 @@ Ensure ignore files include:
 
 - `.mdkg/index/`
 - `.mdkg/pack/`
+- `.mdkg/archive/**/source/`
 
 Recommended:
 
@@ -57,3 +63,22 @@ mdkg init --update-gitignore --update-npmignore
 `mdkg upgrade` previews safe scaffold updates for existing workspaces and writes nothing by default.
 
 Use `mdkg upgrade --apply` only after reviewing `safe_to_apply`, `will_write_paths`, and `apply_side_effects` in the receipt. Local customizations are preserved and reported instead of overwritten. Missing built-in templates can be loaded from the installed package as a read-only fallback until you vendor them with upgrade.
+
+## Archive and Work Mirrors
+
+Archive source/artifact files with:
+
+```bash
+mdkg archive add <file> --id archive.example --kind source
+mdkg archive verify archive://archive.example
+```
+
+Use work lifecycle helpers for semantic mirrors only:
+
+```bash
+mdkg work contract new "example capability" --id work.example --agent-id agent.example --kind example --inputs prompt:text:required --outputs result:text:required
+mdkg work order new "example request" --id order.example-1 --work-id work.example --requester user://example
+mdkg work receipt new "example receipt" --id receipt.example-1 --work-order-id order.example-1 --outcome success
+```
+
+Production orders, receipts, payments, ledgers, marketplace state, and fulfillment records remain canonical outside mdkg. mdkg stores committed semantic mirrors and reviewable evidence.

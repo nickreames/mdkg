@@ -1,4 +1,5 @@
 import { Index } from "./indexer";
+import { archiveIdFromUri } from "../util/refs";
 
 export type ValidateGraphOptions = {
   allowMissing?: boolean;
@@ -496,6 +497,113 @@ function validateAgentWorkflowFeedbackProposalRefs(
   }
 }
 
+function buildArchiveIdsByWorkspace(index: Index): Record<string, Set<string>> {
+  const archiveIdsByWorkspace: Record<string, Set<string>> = {};
+  for (const node of Object.values(index.nodes)) {
+    if (node.type !== "archive") {
+      continue;
+    }
+    if (!archiveIdsByWorkspace[node.ws]) {
+      archiveIdsByWorkspace[node.ws] = new Set();
+    }
+    archiveIdsByWorkspace[node.ws].add(node.id);
+  }
+  return archiveIdsByWorkspace;
+}
+
+function validateArchiveUriValue(
+  qid: string,
+  ws: string,
+  field: string,
+  value: string,
+  archiveIdsByWorkspace: Record<string, Set<string>>,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  if (!value.startsWith("archive://")) {
+    return;
+  }
+  const archiveId = archiveIdFromUri(value);
+  if (!archiveId) {
+    pushError(errors, `${qid}: ${field} has malformed archive ref ${value}`);
+    return;
+  }
+  if (archiveIdsByWorkspace[ws]?.has(archiveId)) {
+    return;
+  }
+  if (allowMissing) {
+    return;
+  }
+  pushError(errors, `${qid}: ${field} references missing archive ${value}`);
+}
+
+function validateArchiveUriRefs(
+  index: Index,
+  allowMissing: boolean,
+  errors: string[] | null
+): void {
+  const archiveIdsByWorkspace = buildArchiveIdsByWorkspace(index);
+  const attributeListFields = [
+    "input_refs",
+    "constraint_refs",
+    "proof_refs",
+    "attestation_refs",
+  ];
+  const attributeScalarFields = ["request_ref", "cost_ref"];
+
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    for (const [indexValue, value] of node.artifacts.entries()) {
+      validateArchiveUriValue(
+        qid,
+        node.ws,
+        `artifacts[${indexValue}]`,
+        value,
+        archiveIdsByWorkspace,
+        allowMissing,
+        errors
+      );
+    }
+
+    const attributes = node.attributes ?? {};
+    for (const field of attributeListFields) {
+      const values = attributes[field];
+      if (!Array.isArray(values)) {
+        continue;
+      }
+      for (const [indexValue, value] of values.entries()) {
+        if (typeof value !== "string") {
+          continue;
+        }
+        validateArchiveUriValue(
+          qid,
+          node.ws,
+          `${field}[${indexValue}]`,
+          value,
+          archiveIdsByWorkspace,
+          allowMissing,
+          errors
+        );
+      }
+    }
+
+    for (const field of attributeScalarFields) {
+      const value = attributes[field];
+      if (typeof value !== "string") {
+        continue;
+      }
+      validateArchiveUriValue(
+        qid,
+        node.ws,
+        field,
+        value,
+        archiveIdsByWorkspace,
+        allowMissing,
+        errors
+      );
+    }
+  }
+}
+
 function detectPrevNextCycles(index: Index, errors: string[] | null): void {
   const nodes = index.nodes;
   const seen = new Set<string>();
@@ -543,6 +651,7 @@ export function collectGraphErrors(index: Index, options: ValidateGraphOptions =
   validateAgentWorkflowSubagentRefs(index, allowMissing, errors);
   validateAgentWorkflowDisputeRefs(index, allowMissing, errors);
   validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, errors);
+  validateArchiveUriRefs(index, allowMissing, errors);
   detectPrevNextCycles(index, errors);
   return errors;
 }

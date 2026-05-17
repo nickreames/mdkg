@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-03-08
+updated: 2026-05-14
 ---
 
 # mdkg CLI contract
@@ -102,9 +102,14 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - updates `.gitignore` and `.npmignore` by default
   - `--no-update-ignores` disables default ignore writes
   - explicit flags (`--update-gitignore`, `--update-npmignore`, `--update-dockerignore`) force writes even with global opt-out
-  - `--llm` is the canonical documented path for creating `AGENTS.md`, `CLAUDE.md`, `llms.txt`, and `AGENT_START.md`
-  - `--agents` / `--claude` remain compatibility flags, but are not part of the primary onboarding story
-  - `--agent` adds strict-node bootstrap docs and scaffolding:
+  - `--agent` is the canonical documented path for complete AI-agent bootstrap
+  - `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
+  - `--agent` adds startup docs, strict-node bootstrap docs, and scaffolding:
+    - `AGENT_START.md`
+    - `AGENTS.md`
+    - `CLAUDE.md`
+    - `llms.txt`
+    - `CLI_COMMAND_MATRIX.md`
     - `.mdkg/core/SOUL.md` (`id: rule-soul`)
     - `.mdkg/core/HUMAN.md` (`id: rule-human`)
     - seeded canonical skills:
@@ -116,6 +121,7 @@ If a user provides an unqualified ID and it is ambiguous globally:
     - `.agents/skills/`
     - `.claude/skills/`
     - deterministic `core.md` pin insertion (`rule-soul`, then `rule-human`)
+    - ignore policy for `.mdkg/index/`, `.mdkg/pack/`, and raw archive source copies under `.mdkg/archive/**/source/`
   - mirrored skills are append-focused outputs:
     - `.mdkg/skills/` remains canonical
     - unrelated existing folders under `.agents/skills/` and `.claude/skills/` are preserved
@@ -129,11 +135,13 @@ If a user provides an unqualified ID and it is ambiguous globally:
 - `mdkg workspace ls`
 - `mdkg workspace add <alias> <path>`
 - `mdkg workspace rm <alias>`
+- workspace entries may include advisory `visibility: private|internal|public` metadata for capability-cache filtering
 
 ### Indexing
 - `mdkg index`
   - rebuild global cache `.mdkg/index/global.json`
   - rebuild skills cache `.mdkg/index/skills.json` from `.mdkg/skills/<slug>/SKILL.md`
+  - rebuild capability cache `.mdkg/index/capabilities.json` from skills, `SPEC.md`, `WORK.md`, core docs, and design docs
   - tolerate `.mdkg/skills/<slug>/SKILLS.md` on read with warning
   - fail validation if both `SKILL.md` and `SKILLS.md` exist in one skill directory
   - strict by default (fails on invalid frontmatter)
@@ -176,6 +184,28 @@ Common flags:
   - `mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
   - `mdkg skill validate [<slug>]`
   - `mdkg skill sync [--force]`
+- capabilities are cached Markdown projections under `mdkg capability ...`:
+  - `mdkg capability list [--kind <skill|spec|work|core|design>] [--visibility <private|internal|public>] [--json]`
+  - `mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]`
+  - `mdkg capability show <id-or-qid-or-slug> [--json]`
+  - capability records are read-only derived cache entries, not source of truth
+  - normal task, epic, feat, bug, test, and checkpoint nodes are not capability records
+- archives are first-class sidecar nodes under `mdkg archive ...`:
+  - `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
+  - `mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]`
+  - `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
+  - `mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]`
+  - `mdkg archive compress <id-or-archive-uri|--all> [--json]`
+  - `archive://<archive.id>` refs resolve against local archive sidecars
+  - raw copied sources live under `.mdkg/archive/**/source/`; sidecar `.md` and deterministic `.zip` caches remain commit-eligible
+- work lifecycle helpers live under `mdkg work ...`:
+  - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+  - `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
+  - `mdkg work order update <id> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]`
+  - `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected] [--json]`
+  - `mdkg work receipt update <id> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
+  - `mdkg work artifact add <order-or-receipt-id> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+  - these commands mutate mdkg semantic mirror files only; production order, receipt, payment, ledger, and marketplace state remains canonical outside mdkg
 - discovery/show output flags are mutually exclusive; text mode remains the default when none are supplied
 
 ### Task lifecycle mutation

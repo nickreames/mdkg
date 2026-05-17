@@ -11,6 +11,9 @@ export function writeRootConfig(root: string): void {
       tolerant: false,
       global_index_path: ".mdkg/index/global.json",
     },
+    capabilities: {
+      cache_path: ".mdkg/index/capabilities.json",
+    },
     pack: {
       default_depth: 2,
       default_edges: ["parent", "epic", "relates"],
@@ -32,7 +35,7 @@ export function writeRootConfig(root: string): void {
       },
     },
     workspaces: {
-      root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
+      root: { path: ".", enabled: true, mdkg_dir: ".mdkg", visibility: "private" },
     },
   };
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));

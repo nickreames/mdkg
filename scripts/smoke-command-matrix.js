@@ -17,6 +17,21 @@ const HELP_TARGETS = [
   ["list"],
   ["search"],
   ["pack"],
+  ["capability"],
+  ["capability", "list"],
+  ["capability", "search"],
+  ["capability", "show"],
+  ["archive"],
+  ["archive", "add"],
+  ["archive", "list"],
+  ["archive", "show"],
+  ["archive", "verify"],
+  ["archive", "compress"],
+  ["work"],
+  ["work", "contract"],
+  ["work", "order"],
+  ["work", "receipt"],
+  ["work", "artifact"],
   ["skill"],
   ["skill", "new"],
   ["skill", "list"],
@@ -138,15 +153,13 @@ function initGit(root) {
   run(GIT_CMD, ["init", "-q"], { cwd: root });
 }
 
-function assertOnboardingDocs(root, expectWrappers) {
+function assertOnboardingDocs(root) {
   assertExists(path.join(root, "AGENT_START.md"));
   assertExists(path.join(root, "llms.txt"));
   assertExists(path.join(root, "CLI_COMMAND_MATRIX.md"));
   assertNotExists(path.join(root, "AGENT_PROMPT_SNIPPET.md"));
-  if (expectWrappers) {
-    assertExists(path.join(root, "AGENTS.md"));
-    assertExists(path.join(root, "CLAUDE.md"));
-  }
+  assertExists(path.join(root, "AGENTS.md"));
+  assertExists(path.join(root, "CLAUDE.md"));
 
   const agentStart = fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8");
   assertIncludes(agentStart, "Agent operating prompt", "AGENT_START.md");
@@ -166,51 +179,61 @@ function exerciseHelp(binPath) {
 }
 
 function exerciseInit(binPath, tempRoot) {
-  const llmRoot = path.join(tempRoot, "init-llm");
-  initGit(llmRoot);
-  const llmInit = mdkg(binPath, ["init", "--llm"], llmRoot);
-  assertIncludes(llmInit.stdout, "read AGENT_START.md", "init --llm");
-  assertOnboardingDocs(llmRoot, true);
-  mdkg(binPath, ["validate"], llmRoot);
+  const baseRoot = path.join(tempRoot, "init-base");
+  initGit(baseRoot);
+  const baseInit = mdkg(binPath, ["init"], baseRoot);
+  assertIncludes(baseInit.stdout, "mdkg init complete", "init base");
+  assertExists(path.join(baseRoot, ".mdkg", "config.json"));
+  assertNotExists(path.join(baseRoot, "AGENT_START.md"));
+  assertNotExists(path.join(baseRoot, "AGENTS.md"));
+  mdkg(binPath, ["doctor"], baseRoot);
+  mdkg(binPath, ["validate"], baseRoot);
 
   const agentRoot = path.join(tempRoot, "init-agent");
   initGit(agentRoot);
   const agentInit = mdkg(binPath, ["init", "--agent"], agentRoot);
   assertIncludes(agentInit.stdout, "read AGENT_START.md", "init --agent");
-  assertOnboardingDocs(agentRoot, false);
+  assertIncludes(agentInit.stdout, "agent bootstrap:", "init --agent summary");
+  assertOnboardingDocs(agentRoot);
   assertExists(path.join(agentRoot, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md"));
   assertExists(path.join(agentRoot, ".agents", "skills", "select-work-and-ground-context", "SKILL.md"));
   assertExists(path.join(agentRoot, ".claude", "skills", "select-work-and-ground-context", "SKILL.md"));
+  assertIncludes(fs.readFileSync(path.join(agentRoot, ".gitignore"), "utf8"), ".mdkg/archive/**/source/", ".gitignore");
   mdkg(binPath, ["validate"], agentRoot);
+  const dryRun = JSON.parse(mdkg(binPath, ["upgrade", "--dry-run", "--json"], agentRoot).stdout);
+  if (dryRun.changes.length !== 0) {
+    throw new Error(`fresh init --agent should not need upgrade: ${JSON.stringify(dryRun, null, 2)}`);
+  }
 
-  const fullRoot = path.join(tempRoot, "init-llm-agent");
-  initGit(fullRoot);
-  mdkg(binPath, ["init", "--llm", "--agent"], fullRoot);
-  assertOnboardingDocs(fullRoot, true);
-  assertExists(path.join(fullRoot, ".mdkg", "work", "events", "events.jsonl"));
-  mdkg(binPath, ["validate"], fullRoot);
+  const rerun = mdkg(binPath, ["init", "--agent"], agentRoot);
+  assertIncludes(rerun.stdout, "skipped", "repeated init --agent");
 
   const noIgnoresRoot = path.join(tempRoot, "init-no-ignores");
   initGit(noIgnoresRoot);
-  mdkg(binPath, ["init", "--llm", "--no-update-ignores"], noIgnoresRoot);
+  mdkg(binPath, ["init", "--agent", "--no-update-ignores"], noIgnoresRoot);
   assertNotExists(path.join(noIgnoresRoot, ".gitignore"));
   assertNotExists(path.join(noIgnoresRoot, ".npmignore"));
 
-  const removed = spawnSync(binPath, ["init", "--omni"], {
-    cwd: tempRoot,
-    env: commandEnv(),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (removed.status === 0 || !removed.stderr.includes("use `mdkg init --agent`")) {
-    throw new Error("init --omni did not report migration guidance");
+  for (const removedFlag of ["--llm", "--agents", "--claude", "--omni"]) {
+    const removedRoot = path.join(tempRoot, `removed-${removedFlag.slice(2)}`);
+    initGit(removedRoot);
+    const removed = spawnSync(binPath, ["init", removedFlag], {
+      cwd: removedRoot,
+      env: commandEnv(),
+      encoding: "utf8",
+      stdio: "pipe",
+    });
+    if (removed.status === 0 || !removed.stderr.includes("use `mdkg init --agent`")) {
+      throw new Error(`init ${removedFlag} did not report migration guidance`);
+    }
+    assertNotExists(path.join(removedRoot, ".mdkg"));
   }
 }
 
 function exerciseWorkflow(binPath, tempRoot) {
   const root = path.join(tempRoot, "workflow");
   initGit(root);
-  mdkg(binPath, ["init", "--llm", "--agent"], root);
+  mdkg(binPath, ["init", "--agent"], root);
 
   const task = parseReceipt(
     mdkg(
@@ -262,6 +285,10 @@ function exerciseWorkflow(binPath, tempRoot) {
   assertIncludes(mdkg(binPath, ["skill", "show", "review-loop", "--toon"], root).stdout, "review-loop", "skill show --toon");
   assertJsonOk(mdkg(binPath, ["skill", "validate", "review-loop", "--json"], root).stdout, "skill validate");
   mdkg(binPath, ["skill", "sync", "--json"], root);
+  const skillsCapabilities = JSON.parse(mdkg(binPath, ["capability", "list", "--kind", "skill", "--json"], root).stdout);
+  if (!skillsCapabilities.items.some((item) => item.slug === "review-loop")) {
+    throw new Error("capability list did not include review-loop skill");
+  }
 
   mdkg(binPath, ["task", "start", taskId, "--run-id", "smoke-run", "--note", "started", "--json"], root);
   mdkg(binPath, ["task", "update", taskId, "--add-artifacts", "artifact://smoke", "--add-tags", "verified", "--json"], root);
@@ -318,6 +345,11 @@ function exerciseWorkflow(binPath, tempRoot) {
   });
 
   mdkg(binPath, ["index"], root);
+  const workCapabilities = JSON.parse(mdkg(binPath, ["capability", "search", "image", "--kind", "work", "--json"], root).stdout);
+  if (!workCapabilities.items.some((item) => item.id === "work.generate-image")) {
+    throw new Error("capability search did not include generated WORK.md");
+  }
+  JSON.parse(mdkg(binPath, ["capability", "show", "review-loop", "--json"], root).stdout);
   mdkg(binPath, ["validate"], root);
   assertJsonOk(mdkg(binPath, ["doctor", "--json"], root).stdout, "doctor");
   assertIncludes(mdkg(binPath, ["guide"], root).stdout, "mdkg", "guide");
@@ -326,7 +358,7 @@ function exerciseWorkflow(binPath, tempRoot) {
   const secondary = path.join(root, "secondary-workspace");
   initGit(secondary);
   mdkg(binPath, ["init"], secondary);
-  mdkg(binPath, ["workspace", "add", "secondary", "secondary-workspace", "--json"], root);
+  mdkg(binPath, ["workspace", "add", "secondary", "secondary-workspace", "--visibility", "internal", "--json"], root);
   JSON.parse(mdkg(binPath, ["workspace", "ls", "--json"], root).stdout);
   mdkg(binPath, ["workspace", "disable", "secondary", "--json"], root);
   mdkg(binPath, ["workspace", "enable", "secondary", "--json"], root);

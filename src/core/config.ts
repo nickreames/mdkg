@@ -11,6 +11,7 @@ export type WorkspaceConfig = {
   path: string;
   enabled: boolean;
   mdkg_dir: string;
+  visibility: "private" | "internal" | "public";
 };
 
 export type Config = {
@@ -21,6 +22,9 @@ export type Config = {
     auto_reindex: boolean;
     tolerant: boolean;
     global_index_path: string;
+  };
+  capabilities: {
+    cache_path: string;
   };
   pack: {
     default_depth: number;
@@ -63,6 +67,7 @@ const PACK_EDGE_KEYS = new Set([
   "next",
 ]);
 const NEXT_WORK_STRATEGIES = new Set(["chain_then_priority"]);
+const WORKSPACE_VISIBILITY_VALUES = new Set(["private", "internal", "public"]);
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -281,6 +286,10 @@ export function validateConfigSchema(raw: unknown): Config {
   const root_required = requireBoolean(raw.root_required, "root_required", errors);
 
   const indexRaw = requireObject(raw.index, "index", errors);
+  const capabilitiesRaw =
+    raw.capabilities === undefined
+      ? { cache_path: ".mdkg/index/capabilities.json" }
+      : requireObject(raw.capabilities, "capabilities", errors);
   const packRaw = requireObject(raw.pack, "pack", errors);
   const templatesRaw = requireObject(raw.templates, "templates", errors);
   const workRaw = requireObject(raw.work, "work", errors);
@@ -293,6 +302,16 @@ export function validateConfigSchema(raw: unknown): Config {
         global_index_path: requireContainedPath(
           indexRaw.global_index_path,
           "index.global_index_path",
+          errors
+        ),
+      }
+    : undefined;
+
+  const capabilities = capabilitiesRaw
+    ? {
+        cache_path: requireContainedPath(
+          capabilitiesRaw.cache_path,
+          "capabilities.cache_path",
           errors
         ),
       }
@@ -412,8 +431,17 @@ export function validateConfigSchema(raw: unknown): Config {
       const wsPath = requireString(ws.path, `workspaces.${alias}.path`, errors);
       const wsEnabled = requireBoolean(ws.enabled, `workspaces.${alias}.enabled`, errors);
       const wsMdkgDir = requireString(ws.mdkg_dir, `workspaces.${alias}.mdkg_dir`, errors);
+      const wsVisibility =
+        ws.visibility === undefined
+          ? "private"
+          : requireStringInSet(
+              ws.visibility,
+              `workspaces.${alias}.visibility`,
+              WORKSPACE_VISIBILITY_VALUES,
+              errors
+            );
 
-      if (wsPath && wsEnabled !== undefined && wsMdkgDir) {
+      if (wsPath && wsEnabled !== undefined && wsMdkgDir && wsVisibility) {
         let normalizedPath: string | undefined;
         let normalizedMdkgDir: string | undefined;
         try {
@@ -449,6 +477,7 @@ export function validateConfigSchema(raw: unknown): Config {
           path: normalizedPath,
           enabled: wsEnabled,
           mdkg_dir: normalizedMdkgDir,
+          visibility: wsVisibility as WorkspaceConfig["visibility"],
         };
       }
     }
@@ -481,6 +510,7 @@ export function validateConfigSchema(raw: unknown): Config {
     tool: tool as string,
     root_required: root_required as boolean,
     index: index as Config["index"],
+    capabilities: capabilities as Config["capabilities"],
     pack: pack as Config["pack"],
     templates: templates as Config["templates"],
     work: work as Config["work"],

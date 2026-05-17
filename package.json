@@ -1,6 +1,6 @@
 {
   "name": "mdkg",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Markdown Knowledge Graph",
   "license": "MIT",
   "bin": {
@@ -14,10 +14,13 @@
     "smoke:consumer": "npm run build && node scripts/smoke-consumer.js",
     "smoke:matrix": "npm run build && node scripts/smoke-command-matrix.js",
     "smoke:upgrade": "npm run build && node scripts/smoke-upgrade.js",
+    "smoke:init": "npm run build && node scripts/smoke-init.js",
+    "smoke:capabilities": "npm run build && node scripts/smoke-capabilities.js",
+    "smoke:archive-work": "npm run build && node scripts/smoke-archive-work.js",
     "cli:snapshot": "npm run build && node scripts/cli_help_snapshot.js",
     "cli:check": "npm run build && node scripts/cli_help_snapshot.js --check",
     "prepack": "npm run build && node scripts/assert-publish-ready.js",
-    "prepublishOnly": "npm run test && npm run cli:check && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && node scripts/assert-publish-ready.js",
+    "prepublishOnly": "npm run test && npm run cli:check && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && npm run smoke:init && npm run smoke:capabilities && npm run smoke:archive-work && node scripts/assert-publish-ready.js",
     "postinstall": "node scripts/postinstall.js"
   },
   "devDependencies": {

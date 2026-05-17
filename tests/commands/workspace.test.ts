@@ -206,9 +206,9 @@ test("workspace ls json prints deterministic registered workspace payload", () =
   assert.equal(lines.length, 1);
   assert.deepEqual(JSON.parse(lines[0]), {
     workspaces: [
-      { alias: "api", path: "api", enabled: true, mdkg_dir: ".knowledge" },
-      { alias: "docs", path: "docs", enabled: false, mdkg_dir: ".mdkg" },
-      { alias: "root", path: ".", enabled: true, mdkg_dir: ".mdkg" },
+      { alias: "api", path: "api", enabled: true, mdkg_dir: ".knowledge", visibility: "private" },
+      { alias: "docs", path: "docs", enabled: false, mdkg_dir: ".mdkg", visibility: "private" },
+      { alias: "root", path: ".", enabled: true, mdkg_dir: ".mdkg", visibility: "private" },
     ],
   });
 });
@@ -233,6 +233,7 @@ test("workspace mutation commands print deterministic json receipts", () => {
       path: "docs",
       enabled: true,
       mdkg_dir: ".knowledge",
+      visibility: "private",
     },
   });
 
@@ -246,6 +247,7 @@ test("workspace mutation commands print deterministic json receipts", () => {
       path: "docs",
       enabled: false,
       mdkg_dir: ".knowledge",
+      visibility: "private",
     },
   });
 
@@ -259,6 +261,7 @@ test("workspace mutation commands print deterministic json receipts", () => {
       path: "docs",
       enabled: true,
       mdkg_dir: ".knowledge",
+      visibility: "private",
     },
   });
 
@@ -272,6 +275,7 @@ test("workspace mutation commands print deterministic json receipts", () => {
       path: "docs",
       enabled: true,
       mdkg_dir: ".knowledge",
+      visibility: "private",
     },
   });
 

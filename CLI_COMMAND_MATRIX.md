@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-05-12
-package_version_in_source: 0.1.1
+as_of: 2026-05-14
+package_version_in_source: 0.1.2
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -24,6 +24,9 @@ Primary commands:
 - `search`
 - `pack`
 - `skill`
+- `capability`
+- `archive`
+- `work`
 - `task`
 - `next`
 - `validate`
@@ -39,6 +42,9 @@ Advanced / maintenance commands:
 
 Skills are first-class and are accessed only through `mdkg skill ...`.
 Generic `list/show/search` do not expose skills.
+Capability cache discovery is read-only and accessed through `mdkg capability ...`.
+Archive sidecars are accessed through `mdkg archive ...`.
+Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 
 ## Global usage
 
@@ -60,29 +66,24 @@ Hidden but supported runtime flags used by selected commands:
 
 When to use:
 - bootstrap a repo with mdkg
-- optionally add agent-ready scaffolding
+- add the complete agent bootstrap when coding agents will use the repo
 
 Usage:
 - `mdkg init [options]`
 
 Flags:
 - `--force`
-- `--llm`
 - `--agent`
 - `--no-update-ignores`
 - `--update-gitignore`
 - `--update-npmignore`
 - `--update-dockerignore`
 
-Compatibility flags still supported but not part of the primary story:
-- `--agents`
-- `--claude`
-
 Notes:
-- `--agent` is independent from `--llm`
-- `--llm --agent` is the full AI-agent bootstrap path
+- `--agent` is the canonical complete AI-agent bootstrap path
+- removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
 - published bootstrap config is root-only by default
-- `--agent` seeds three default mdkg usage skills into canonical `.mdkg/skills/`, updates the registry, creates `events.jsonl`, and syncs non-empty mirrors
+- `--agent` creates `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node core docs, default mdkg usage skills, `events.jsonl`, registry, and skill mirrors
 
 ### `mdkg upgrade`
 
@@ -438,6 +439,104 @@ Notes:
 - validates one skill when a slug is passed
 - reuses the repo skill validation rules
 
+### `mdkg capability`
+
+When to use:
+- discover deterministic capability surfaces across enabled workspaces
+- query skills, `SPEC.md`, `WORK.md`, core docs, and design docs without loading the whole graph body set
+
+Usage:
+- `mdkg capability list [--kind <kind>] [--visibility <level>] [--json]`
+- `mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]`
+- `mdkg capability show <id-or-qid-or-slug> [--json]`
+
+Kinds:
+- `skill`
+- `spec`
+- `work`
+- `core`
+- `design`
+
+Visibility levels:
+- `private`
+- `internal`
+- `public`
+
+Notes:
+- capability records are derived cache projections from Markdown
+- records include deterministic source metadata such as workspace, visibility, kind, id/qid/slug, path, headings, refs, source hash, and `indexed_at`
+- `.mdkg/index/capabilities.json` is rebuilt by `mdkg index` and by capability commands when stale
+- normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
+- visibility is advisory source metadata for filtering in this release, not a hard permission gate
+
+### `mdkg archive`
+
+When to use:
+- register source documents and produced artifacts as mdkg sidecars
+- verify deterministic compressed cache integrity
+- keep raw local archive source copies out of git while committing sidecar metadata and ZIP caches
+
+Usage:
+- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
+- `mdkg archive list [--kind source|artifact] [--json]`
+- `mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]`
+- `mdkg archive show <id-or-archive-uri> [--json]`
+- `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
+- `mdkg archive verify [id-or-archive-uri] [--json]`
+- `mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]`
+- `mdkg archive compress <id-or-archive-uri|--all> [--json]`
+- `mdkg archive compress <id-or-archive-uri> [--ws <alias>] [--json]`
+- `mdkg archive compress --all [--json]`
+
+Fields:
+- archive sidecars use `type: archive`
+- ids are portable archive ids such as `archive.key-input-doc`
+- refs use `archive://archive.key-input-doc`
+- sidecars record `archive_kind`, `source_path`, `stored_path`, `compressed_path`, MIME, byte size, SHA-256 hashes, visibility, provenance, and ingest status
+
+Notes:
+- `archive add` copies the source, writes a sidecar, and writes a deterministic zip cache
+- `archive://<archive.id>` refs are validated against local archive sidecars
+- `archive verify` passes when the raw local source file is missing but the committed sidecar and ZIP cache are valid
+- generated raw source copies live under `.mdkg/archive/**/source/` and are ignored by default
+
+JSON receipts:
+- `add`: `{ action: "created", archive: { workspace, id, qid, path, archive_uri, stored_path, compressed_path, sha256, compressed_sha256 } }`
+- `list`: `{ kind: "archive", count, items }`
+- `show`: `{ kind: "archive", item, attributes }`
+- `verify`: `{ ok, count, results }`
+- `compress`: `{ action: "compressed", count, archives }`
+
+### `mdkg work`
+
+When to use:
+- create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files
+- attach archived source/artifact sidecars to orders and receipts
+
+Usage:
+- `mdkg work contract new ...`
+- `mdkg work order new|update ...`
+- `mdkg work receipt new|update ...`
+- `mdkg work artifact add ...`
+- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+- `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
+- `mdkg work order update <id> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]`
+- `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected] [--json]`
+- `mdkg work receipt update <id> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
+- `mdkg work artifact add <order-or-receipt-id> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+
+Notes:
+- work commands mutate semantic mirror files only
+- production order, receipt, payment, ledger, and marketplace state remains canonical outside mdkg
+- `work order new` accepts URI-style requester/request refs and archive input refs
+- `work receipt new` accepts URI-style cost/proof/attestation refs and SHA-256 input/output hash refs
+- `work artifact add` calls `mdkg archive add`, then attaches the resulting `archive://...` ref to the target order or receipt
+
+JSON receipts:
+- `contract new`, `order new`, `order update`, `receipt new`, and `receipt update`: `{ action, node }`
+- `artifact add`: `{ action: "artifact_registered", target, archive }`
+
 ### `mdkg task`
 
 When to use:
@@ -586,6 +685,11 @@ JSON receipt:
 Usage:
 - `mdkg index [--tolerant]`
 
+Notes:
+- writes `.mdkg/index/global.json`
+- writes `.mdkg/index/skills.json`
+- writes `.mdkg/index/capabilities.json`
+
 ### `mdkg guide`
 
 Usage:
@@ -601,20 +705,27 @@ Usage:
 Usage:
 - `mdkg doctor [--json]`
 
+Checks:
+- Node.js version compatibility
+- config and template availability
+- global node index health
+- capability cache health
+- archive sidecar storage hygiene
+
 ### `mdkg workspace`
 
 Usage:
 - `mdkg workspace ls [--json]`
-- `mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--json]`
+- `mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--visibility <level>] [--json]`
 - `mdkg workspace rm <alias> [--json]`
 - `mdkg workspace enable <alias> [--json]`
 - `mdkg workspace disable <alias> [--json]`
 
 JSON mutation receipts:
-- `add`: `{ action: "added", workspace: { alias, path, enabled, mdkg_dir } }`
-- `rm`: `{ action: "removed", workspace: { alias, path, enabled, mdkg_dir } }`
-- `enable`: `{ action: "enabled", workspace: { alias, path, enabled, mdkg_dir } }`
-- `disable`: `{ action: "disabled", workspace: { alias, path, enabled, mdkg_dir } }`
+- `add`: `{ action: "added", workspace: { alias, path, enabled, mdkg_dir, visibility } }`
+- `rm`: `{ action: "removed", workspace: { alias, path, enabled, mdkg_dir, visibility } }`
+- `enable`: `{ action: "enabled", workspace: { alias, path, enabled, mdkg_dir, visibility } }`
+- `disable`: `{ action: "disabled", workspace: { alias, path, enabled, mdkg_dir, visibility } }`
 
 ## Structured output contract
 
@@ -633,10 +744,20 @@ Current JSON envelopes:
   - `{ command, kind, count, items }`
 - `skill show`
   - `{ command, kind, item }`
+- `capability list` / `capability search`
+  - `{ kind: "capability", query?, count, items }`
+- `capability show`
+  - `{ kind: "capability", item }`
+- `archive add` / `archive list` / `archive show` / `archive verify` / `archive compress`
+  - archive-specific JSON receipts documented in the `mdkg archive` section
+- `work ...`
+  - semantic mirror mutation receipts documented in the `mdkg work` section
 
 Kind values in this wave:
 - node commands: `node`
 - skill commands: `skill`
+- capability commands: `capability`
+- archive commands: `archive`
 
 JSON behavior rules:
 - full bodies are returned only by `show` and `skill show` without `--meta`

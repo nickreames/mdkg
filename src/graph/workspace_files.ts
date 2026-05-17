@@ -27,6 +27,26 @@ function listMarkdownFiles(dir: string): string[] {
   return files;
 }
 
+function listArchiveSidecarFiles(dir: string): string[] {
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    if (entry.name === "source") {
+      continue;
+    }
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...listArchiveSidecarFiles(fullPath));
+    } else if (entry.isFile() && entry.name.endsWith(".md")) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
 export function getWorkspaceDocRoots(root: string, config: Config): WorkspaceDocRoot[] {
   const roots: WorkspaceDocRoot[] = [];
   const aliases = Object.keys(config.workspaces).sort();
@@ -48,6 +68,7 @@ export function listWorkspaceDocFiles(root: string, config: Config): string[] {
       const folderPath = path.join(wsRoot, folder);
       files.push(...listMarkdownFiles(folderPath));
     }
+    files.push(...listArchiveSidecarFiles(path.join(wsRoot, "archive")));
   }
   return files;
 }
@@ -63,6 +84,7 @@ export function listWorkspaceDocFilesByAlias(
       const folderPath = path.join(wsRoot, folder);
       files.push(...listMarkdownFiles(folderPath));
     }
+    files.push(...listArchiveSidecarFiles(path.join(wsRoot, "archive")));
     files.sort();
     result[alias] = files;
   }

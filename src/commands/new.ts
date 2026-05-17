@@ -214,6 +214,9 @@ export function runNewCommand(options: NewCommandOptions): void {
   }
 
   const type = options.type.toLowerCase();
+  if (type === "archive") {
+    throw new UsageError("use `mdkg archive add <file>` to create archive sidecars");
+  }
   if (!ALLOWED_TYPES.has(type)) {
     throw new UsageError(`type must be one of ${Array.from(ALLOWED_TYPES).join(", ")}`);
   }

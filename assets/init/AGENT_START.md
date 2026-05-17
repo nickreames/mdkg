@@ -22,6 +22,9 @@ Agent operating prompt:
 - Use `mdkg show <id>` for direct inspection and `mdkg show <id> --meta` for card-only inspection.
 - Use `mdkg search "..."` and `mdkg next` to discover current work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
+- Use `mdkg capability list/search/show` for deterministic skills, `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
+- Use `mdkg archive add/list/show/verify/compress` for committed source and artifact sidecars under `.mdkg/archive`.
+- Use `mdkg work ...` helpers for semantic mirror contracts, work orders, receipts, and artifact registration.
 - Use `mdkg task start/update/done` for structured task, bug, and test lifecycle fields.
 - Use `mdkg upgrade` to preview scaffold updates; only run `mdkg upgrade --apply` after reviewing the receipt.
 - Keep nuanced summaries, body text, and manual parent closeout edits in markdown.
@@ -42,11 +45,21 @@ If no task is known:
 - `mdkg next`
 - then use `mdkg pack <id>`
 
+If this is a fresh import or external docs bundle:
+- create a root epic, PRD, or EDD that captures the imported context and source locations
+- create follow-on tasks and tests from that root context instead of scattering untracked notes
+- run `mdkg validate` after the first ingestion pass
+
 Skill discovery:
 - `mdkg skill list --tags stage:plan --json`
 - `mdkg skill list --tags stage:execute --json`
 - `mdkg skill list --tags stage:review --json`
 - `mdkg skill show select-work-and-ground-context`
+
+Capability discovery:
+- `mdkg capability list --kind skill --json`
+- `mdkg capability search "<query>" --kind spec --json`
+- `mdkg capability search "<query>" --kind work --json`
 
 Conventions:
 - `AGENTS.md` is the Codex/OpenAI-oriented wrapper doc.

@@ -9,10 +9,13 @@ import {
 } from "../graph/frontmatter";
 import { loadTemplateSchemas, TemplateSchema } from "../graph/template_schema";
 import { ALLOWED_TYPES, DEC_TYPES, WORK_TYPES } from "../graph/node";
+import { isAgentFileType } from "../graph/agent_file_types";
+import { isArchiveType } from "../graph/archive_file";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { ValidationError } from "../util/errors";
 import { formatDate } from "../util/date";
-import { isCanonicalId, isCanonicalIdRef } from "../util/id";
+import { isCanonicalId, isCanonicalIdRef, isPortableId, isPortableIdRef } from "../util/id";
+import { isSha256Ref, validatePortableOrUriRef } from "../util/refs";
 
 export type FormatCommandOptions = {
   root: string;
@@ -25,7 +28,22 @@ const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const ID_LIST_KEYS = new Set(["refs", "scope"]);
 const ID_REF_LIST_KEYS = new Set(["relates", "blocked_by", "blocks"]);
 const ID_REF_SCALAR_KEYS = new Set(["epic", "parent", "prev", "next"]);
-const PRESERVE_CASE_LIST_KEYS = new Set(["links", "artifacts"]);
+const PRESERVE_CASE_LIST_KEYS = new Set([
+  "links",
+  "artifacts",
+  "work_contracts",
+  "input_refs",
+  "constraint_refs",
+  "proof_refs",
+  "attestation_refs",
+]);
+const EXTERNAL_REF_LIST_KEYS = new Set([
+  "input_refs",
+  "constraint_refs",
+  "proof_refs",
+  "attestation_refs",
+]);
+const HASH_REF_LIST_KEYS = new Set(["input_hashes", "output_hashes"]);
 
 function isValidId(value: string): boolean {
   return isCanonicalId(value);
@@ -63,7 +81,8 @@ function normalizeList(
   values: string[],
   key: string,
   errors: string[],
-  filePath: string
+  filePath: string,
+  allowPortableRefs = false
 ): string[] {
   const trimmed = values.map((value) => normalizeScalar(value));
   const shouldLowercase = !PRESERVE_CASE_LIST_KEYS.has(key);
@@ -73,11 +92,17 @@ function normalizeList(
       errors.push(`${filePath}: ${key} entries must be non-empty`);
       continue;
     }
-    if (ID_LIST_KEYS.has(key) && !isValidId(entry)) {
+    if (ID_LIST_KEYS.has(key) && !(allowPortableRefs ? isPortableId(entry) : isValidId(entry))) {
       errors.push(`${filePath}: ${key} entries must match <prefix>-<number> or reserved id`);
     }
-    if (ID_REF_LIST_KEYS.has(key) && !isCanonicalIdRef(entry)) {
+    if (ID_REF_LIST_KEYS.has(key) && !(allowPortableRefs ? isPortableIdRef(entry) : isCanonicalIdRef(entry))) {
       errors.push(`${filePath}: ${key} entries must be valid id references`);
+    }
+    if (EXTERNAL_REF_LIST_KEYS.has(key) && !validatePortableOrUriRef(entry)) {
+      errors.push(`${filePath}: ${key} entries must be portable ids or URI refs`);
+    }
+    if (HASH_REF_LIST_KEYS.has(key) && !isSha256Ref(entry)) {
+      errors.push(`${filePath}: ${key} entries must be sha256:<64 lowercase hex chars>`);
     }
   }
   return sortList(normalized);
@@ -101,7 +126,8 @@ function normalizeFrontmatterValue(
   value: FrontmatterValue,
   schema: TemplateSchema,
   errors: string[],
-  filePath: string
+  filePath: string,
+  type: string
 ): FrontmatterValue | undefined {
   const expected = schema.keyKinds[key];
   if (expected === "list") {
@@ -109,7 +135,8 @@ function normalizeFrontmatterValue(
       errors.push(`${filePath}: ${key} must be a list`);
       return [];
     }
-    return normalizeList(value as string[], key, errors, filePath);
+    const allowPortableRefs = isAgentFileType(type) || isArchiveType(type);
+    return normalizeList(value as string[], key, errors, filePath, allowPortableRefs);
   }
   if (expected === "boolean") {
     if (typeof value !== "boolean") {
@@ -151,7 +178,7 @@ function normalizeFrontmatter(
       }
       continue;
     }
-    const normalizedValue = normalizeFrontmatterValue(key, value, schema, errors, filePath);
+    const normalizedValue = normalizeFrontmatterValue(key, value, schema, errors, filePath, type);
     if (normalizedValue !== undefined) {
       normalized[key] = normalizedValue;
     }
@@ -162,8 +189,12 @@ function normalizeFrontmatter(
     errors.push(`${filePath}: id is required`);
   } else {
     const normalizedId = idValue.toLowerCase();
-    if (!isValidId(normalizedId)) {
-      errors.push(`${filePath}: id must match <prefix>-<number> or reserved id`);
+    const allowPortableId = isAgentFileType(type) || isArchiveType(type);
+    if (!(allowPortableId ? isPortableId(normalizedId) : isValidId(normalizedId))) {
+      const requirement = allowPortableId
+        ? "<prefix>-<number>, reserved id, or allowed portable id"
+        : "<prefix>-<number> or reserved id";
+      errors.push(`${filePath}: id must match ${requirement}`);
     }
     normalized.id = normalizedId;
   }

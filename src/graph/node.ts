@@ -7,7 +7,13 @@ import {
   AGENT_FILE_TYPES,
   validateAgentFrontmatter,
 } from "./agent_file_types";
+import {
+  extractArchiveAttributes,
+  isArchiveType,
+  validateArchiveFrontmatter,
+} from "./archive_file";
 import { isCanonicalId, isPortableId } from "../util/id";
+import { validatePortableOrUriRef } from "../util/refs";
 
 export type Node = {
   id: string;
@@ -47,6 +53,7 @@ export const ALLOWED_TYPES = new Set([
   "bug",
   "checkpoint",
   "test",
+  "archive",
   ...AGENT_FILE_TYPES,
 ]);
 
@@ -182,6 +189,23 @@ function normalizeIdList(
   });
 }
 
+function normalizeRefsList(
+  values: string[],
+  key: string,
+  filePath: string,
+  allowPortableOrUriRefs = false
+): string[] {
+  if (!allowPortableOrUriRefs) {
+    return normalizeIdList(values, key, filePath);
+  }
+  return values.map((value) => {
+    if (!validatePortableOrUriRef(value)) {
+      throw formatError(filePath, `${key} entries must be portable ids or URI refs`);
+    }
+    return value;
+  });
+}
+
 function normalizeSkillList(values: string[], filePath: string): string[] {
   return values.map((value, index) => {
     const normalized = value.toLowerCase();
@@ -242,12 +266,14 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     throw formatError(filePath, `type must be one of ${Array.from(ALLOWED_TYPES).join(", ")}`);
   }
   const isAgentType = isAgentFileType(type);
+  const isPortableType = isAgentType || isArchiveType(type);
   const schema = requireTemplateSchema(type, options.templateSchemas, filePath);
   validateTemplateKeys(frontmatter, schema, filePath);
   validateAgentFrontmatter(type, frontmatter, filePath);
+  validateArchiveFrontmatter(type, frontmatter, filePath);
 
   const idValue = requireLowercase(expectString(frontmatter, "id", filePath), "id", filePath);
-  const id = isAgentType
+  const id = isPortableType
     ? requirePortableIdFormat(idValue, "id", filePath)
     : requireIdFormat(idValue, "id", filePath);
 
@@ -302,11 +328,11 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   );
   const links = optionalList(frontmatter, "links", filePath);
   const artifacts = optionalList(frontmatter, "artifacts", filePath);
-  const refs = normalizeIdList(
+  const refs = normalizeRefsList(
     optionalList(frontmatter, "refs", filePath),
     "refs",
     filePath,
-    isAgentType
+    isPortableType
   );
   const aliases = requireLowercaseList(
     optionalList(frontmatter, "aliases", filePath),
@@ -330,8 +356,11 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     }
   }
 
-  const edges = extractEdges(frontmatter, filePath, { allowPortableRefs: isAgentType });
-  const attributes = extractAgentAttributes(type, frontmatter);
+  const edges = extractEdges(frontmatter, filePath, { allowPortableRefs: isPortableType });
+  const attributes = {
+    ...extractAgentAttributes(type, frontmatter),
+    ...extractArchiveAttributes(type, frontmatter),
+  };
 
   return {
     id,

@@ -44,6 +44,12 @@ export type SyncSkillMirrorsResult = {
   targets: number;
 };
 
+export type PreflightSkillMirrorTargetsOptions = {
+  root: string;
+  slugs: string[];
+  force?: boolean;
+};
+
 function resolveMirrorTargets(root: string): MirrorTarget[] {
   return MIRROR_PRODUCTS.map((product) => {
     const rootDir = path.join(root, `.${product}`);
@@ -321,6 +327,30 @@ export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMir
   }
 
   return { synced, pruned, targets: touchedTargets };
+}
+
+export function preflightSkillMirrorTargets(options: PreflightSkillMirrorTargetsOptions): void {
+  if (options.force) {
+    return;
+  }
+  const slugs = Array.from(new Set(options.slugs.map((value) => value.trim().toLowerCase()).filter(Boolean)));
+  if (slugs.length === 0) {
+    return;
+  }
+  for (const target of resolveMirrorTargets(options.root)) {
+    if (!fs.existsSync(target.rootDir) && !fs.existsSync(target.skillsRoot)) {
+      continue;
+    }
+    const managed = readManifest(target);
+    for (const slug of slugs) {
+      const destDir = path.join(target.skillsRoot, slug);
+      if (fs.existsSync(destDir) && !managed.has(slug)) {
+        throw new UsageError(
+          `${path.relative(options.root, destDir)} already exists and is not mdkg-managed; rerun \`mdkg init --agent --force\` or \`mdkg skill sync --force\` to replace it`
+        );
+      }
+    }
+  }
 }
 
 export function shouldMaintainSkillMirrors(root: string): boolean {

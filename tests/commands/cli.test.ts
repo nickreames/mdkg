@@ -100,6 +100,25 @@ test("cli help list/search/show/skill include json and namespace-only skill guid
   assert.match(newHelp.stdout, /Agent workflow file types/);
 });
 
+test("cli help capability documents read-only capability discovery", () => {
+  const capabilityHelp = spawnSync(process.execPath, [cliPath, "help", "capability"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(capabilityHelp.status, 0);
+  assert.match(capabilityHelp.stdout, /mdkg capability list/);
+  assert.match(capabilityHelp.stdout, /mdkg capability search/);
+  assert.match(capabilityHelp.stdout, /mdkg capability show/);
+  assert.match(capabilityHelp.stdout, /skill, spec, work, core, design/);
+
+  const workspaceHelp = spawnSync(process.execPath, [cliPath, "help", "workspace"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(workspaceHelp.status, 0);
+  assert.match(workspaceHelp.stdout, /--visibility <level>/);
+});
+
 test("cli help init includes agent bootstrap and ignore-default controls", () => {
   const initHelp = spawnSync(process.execPath, [cliPath, "help", "init"], {
     encoding: "utf8",
@@ -108,6 +127,7 @@ test("cli help init includes agent bootstrap and ignore-default controls", () =>
   assert.equal(initHelp.status, 0);
   assert.match(initHelp.stdout, /--agent/);
   assert.doesNotMatch(initHelp.stdout, /--omni/);
+  assert.doesNotMatch(initHelp.stdout, /--llm/);
   assert.match(initHelp.stdout, /--no-update-ignores/);
   assert.doesNotMatch(initHelp.stdout, /--agents/);
   assert.doesNotMatch(initHelp.stdout, /--claude/);
@@ -134,13 +154,15 @@ test("cli upgrade rejects dry-run and apply together", () => {
   assert.match(result.stdout, /mdkg upgrade \[--dry-run\] \[--apply\] \[--json\]/);
 });
 
-test("cli init --omni fails with migration guidance", () => {
-  const result = spawnSync(process.execPath, [cliPath, "init", "--omni"], {
-    encoding: "utf8",
-    cwd: repoRoot,
-  });
-  assert.equal(result.status, 1);
-  assert.match(result.stderr, /removed; use `mdkg init --agent`/);
+test("cli removed init flags fail with migration guidance", () => {
+  for (const flag of ["--llm", "--agents", "--claude", "--omni"]) {
+    const result = spawnSync(process.execPath, [cliPath, "init", flag], {
+      encoding: "utf8",
+      cwd: repoRoot,
+    });
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /removed; use `mdkg init --agent`/);
+  }
 });
 
 test("cli help skill includes sync subcommand", () => {

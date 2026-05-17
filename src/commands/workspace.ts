@@ -19,6 +19,7 @@ export type WorkspaceAddCommandOptions = {
   alias: string;
   workspacePath: string;
   mdkgDir?: string;
+  visibility?: string;
   json?: boolean;
 };
 
@@ -41,6 +42,7 @@ type WorkspaceReceipt = {
   path: string;
   enabled: boolean;
   mdkg_dir: string;
+  visibility: string;
 };
 
 function workspaceReceipt(alias: string, workspace: Record<string, unknown>): WorkspaceReceipt {
@@ -49,6 +51,7 @@ function workspaceReceipt(alias: string, workspace: Record<string, unknown>): Wo
     path: workspace.path as string,
     enabled: workspace.enabled as boolean,
     mdkg_dir: workspace.mdkg_dir as string,
+    visibility: (workspace.visibility as string | undefined) ?? "private",
   };
 }
 
@@ -130,6 +133,7 @@ export function runWorkspaceListCommand(options: WorkspaceListCommandOptions): v
               path: ws.path,
               enabled: ws.enabled,
               mdkg_dir: ws.mdkg_dir,
+              visibility: ws.visibility,
             };
           }),
         },
@@ -147,14 +151,23 @@ export function runWorkspaceListCommand(options: WorkspaceListCommandOptions): v
   for (const alias of aliases) {
     const ws = config.workspaces[alias];
     const status = ws.enabled ? "enabled" : "disabled";
-    console.log(`${alias} | ${status} | ${ws.path} | ${ws.mdkg_dir}`);
+    console.log(`${alias} | ${status} | ${ws.visibility} | ${ws.path} | ${ws.mdkg_dir}`);
   }
+}
+
+function normalizeVisibility(value: string | undefined): "private" | "internal" | "public" {
+  const normalized = (value ?? "private").toLowerCase();
+  if (normalized === "private" || normalized === "internal" || normalized === "public") {
+    return normalized;
+  }
+  throw new UsageError("--visibility must be private, internal, or public");
 }
 
 export function runWorkspaceAddCommand(options: WorkspaceAddCommandOptions): void {
   const alias = normalizeAlias(options.alias);
   const workspacePath = normalizeCommandWorkspacePath(options.workspacePath, "workspace path");
   const mdkgDir = normalizeCommandWorkspacePath(options.mdkgDir ?? ".mdkg", "workspace mdkg dir");
+  const visibility = normalizeVisibility(options.visibility);
   if (isRootWorkspacePath(workspacePath)) {
     throw new UsageError('workspace path must not be "." for non-root workspaces');
   }
@@ -183,7 +196,7 @@ export function runWorkspaceAddCommand(options: WorkspaceAddCommandOptions): voi
     }
   }
 
-  const workspace = { path: workspacePath, enabled: true, mdkg_dir: mdkgDir };
+  const workspace = { path: workspacePath, enabled: true, mdkg_dir: mdkgDir, visibility };
   workspaces[alias] = workspace;
   raw.workspaces = workspaces;
   writeRawConfig(configPath, raw);
