@@ -10,6 +10,10 @@ const {
 } = require("../../commands/init_manifest");
 import { makeTempDir, writeFile } from "../helpers/fs";
 
+const packageVersion = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), "package.json"), "utf8")
+).version;
+
 const BASE_CONFIG = {
   schema_version: 1,
   tool: "mdkg",
@@ -18,6 +22,9 @@ const BASE_CONFIG = {
     auto_reindex: true,
     tolerant: false,
     global_index_path: ".mdkg/index/global.json",
+  },
+  capabilities: {
+    cache_path: ".mdkg/index/capabilities.json",
   },
   pack: {
     default_depth: 2,
@@ -40,7 +47,7 @@ const BASE_CONFIG = {
     },
   },
   workspaces: {
-    root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
+    root: { path: ".", enabled: true, mdkg_dir: ".mdkg", visibility: "private" },
   },
 };
 
@@ -148,7 +155,7 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
   );
 
   const manifest = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "init-manifest.json"), "utf8"));
-  assert.equal(manifest.mdkg_version, "0.1.1");
+  assert.equal(manifest.mdkg_version, packageVersion);
 
   const secondReceipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
     changes: unknown[];
@@ -223,8 +230,30 @@ test("runUpgradeCommand does not add skills or events to non-agent workspaces", 
 
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "skills")), false);
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "work", "events", "events.jsonl")), false);
-  assert.ok(fs.existsSync(path.join(root, "AGENT_START.md")));
+  assert.equal(fs.existsSync(path.join(root, "AGENT_START.md")), false);
+  assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
+});
+
+test("runUpgradeCommand repairs legacy agent workspaces missing wrapper docs", () => {
+  const root = makeTempDir("mdkg-upgrade-legacy-agent-wrappers-");
+  const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: oldSeed, agent: true });
+  fs.rmSync(path.join(root, "AGENTS.md"), { force: true });
+  fs.rmSync(path.join(root, "CLAUDE.md"), { force: true });
+
+  const dryRun = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
+    changes: Array<{ action: string; path: string }>;
+    safe_to_apply: boolean;
+  };
+  assert.equal(dryRun.safe_to_apply, true);
+  assert.ok(dryRun.changes.some((change) => change.action === "create" && change.path === "AGENTS.md"));
+  assert.ok(dryRun.changes.some((change) => change.action === "create" && change.path === "CLAUDE.md"));
+  assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
+
+  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
   assert.ok(fs.existsSync(path.join(root, "AGENTS.md")));
+  assert.ok(fs.existsSync(path.join(root, "CLAUDE.md")));
 });
 
 test("runUpgradeCommand skips ignored event logs and reports safe apply metadata", () => {
@@ -249,5 +278,17 @@ test("runUpgradeCommand skips ignored event logs and reports safe apply metadata
         change.path === ".mdkg/work/events/events.jsonl"
     )
   );
+  assert.ok(
+    receipt.changes.some(
+      (change) =>
+        change.action === "update" &&
+        change.category === "ignore_policy" &&
+        change.path === ".gitignore"
+    )
+  );
   assert.equal(receipt.will_write_paths.includes(".mdkg/work/events/events.jsonl"), false);
+  assert.equal(receipt.will_write_paths.includes(".gitignore"), true);
+
+  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  assert.match(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), /\.mdkg\/archive\/\*\*\/source\//);
 });

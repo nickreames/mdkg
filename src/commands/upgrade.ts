@@ -64,6 +64,7 @@ export type UpgradeReceipt = {
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
 const PROTECTED_CORE_DOCS = new Set([".mdkg/core/SOUL.md", ".mdkg/core/HUMAN.md"]);
 const CREATE_ONLY_PRESERVED = new Set([".mdkg/core/core.md"]);
+const ARCHIVE_RAW_IGNORE_ENTRIES = [".mdkg/archive/**/source/"];
 
 function seededInitEvent(nowIso: string): string {
   const event = {
@@ -162,7 +163,7 @@ function buildKnownHashes(manifests: Array<InitManifest | undefined>): Map<strin
 }
 
 function shouldIncludeFile(file: InitManifestFile, agentWorkspace: boolean): boolean {
-  if (file.category === "default_skill") {
+  if (file.category === "agent_doc" || file.category === "startup_doc" || file.category === "default_skill") {
     return agentWorkspace;
   }
   return file.category !== "config";
@@ -330,6 +331,28 @@ function ensureAgentRuntimeFiles(root: string, dryRun: boolean, summary: Upgrade
   }
 }
 
+function ensureArchiveIgnorePolicy(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+  const ignorePath = path.join(root, ".gitignore");
+  const raw = fs.existsSync(ignorePath) ? fs.readFileSync(ignorePath, "utf8") : "";
+  const lines = raw.split(/\r?\n/);
+  const existing = new Set(lines.map((line) => line.trim()).filter(Boolean));
+  const additions = ARCHIVE_RAW_IGNORE_ENTRIES.filter((entry) => !existing.has(entry));
+  if (additions.length === 0) {
+    summary.unchanged += 1;
+    return;
+  }
+  record(summary, changes, {
+    path: ".gitignore",
+    category: "ignore_policy",
+    action: fs.existsSync(ignorePath) ? "update" : "create",
+    reason: "ignore raw local archive source copies while keeping sidecars and zip caches commit-eligible",
+  });
+  if (!dryRun) {
+    const suffix = raw.length === 0 || raw.endsWith("\n") ? "" : "\n";
+    writeFile(ignorePath, `${raw}${suffix}${additions.join("\n")}\n`);
+  }
+}
+
 function isWritableChange(change: UpgradeChange): boolean {
   return change.action === "create" || change.action === "update" || change.action === "migrate" || change.action === "sync";
 }
@@ -443,6 +466,7 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   if (agentWorkspace) {
     ensureAgentRuntimeFiles(root, dryRun, summary, changes);
   }
+  ensureArchiveIgnorePolicy(root, dryRun, summary, changes);
 
   const applySideEffects = buildApplySideEffects({
     existingManifest,

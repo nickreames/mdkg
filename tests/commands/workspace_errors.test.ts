@@ -210,8 +210,8 @@ test("runWorkspaceListCommand prints registered workspaces in sorted order", () 
   }
 
   assert.deepEqual(lines, [
-    "api | enabled | api | .mdkg",
-    "docs | enabled | docs | .mdkg",
-    "root | enabled | . | .mdkg",
+    "api | enabled | private | api | .mdkg",
+    "docs | enabled | private | docs | .mdkg",
+    "root | enabled | private | . | .mdkg",
   ]);
 });

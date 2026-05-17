@@ -38,12 +38,12 @@ export type SkillsIndex = {
   skills: Record<string, SkillIndexEntry>;
 };
 
-type SkillDocCandidate = {
+export type SkillDocCandidate = {
   slug: string;
   filePath: string;
 };
 
-function listSkillMarkdownFiles(dir: string): SkillDocCandidate[] {
+export function listSkillMarkdownFiles(dir: string): SkillDocCandidate[] {
   if (!fs.existsSync(dir)) {
     return [];
   }
@@ -164,7 +164,12 @@ export function resolveSkillsIndexPath(root: string): string {
   return path.resolve(root, SKILLS_INDEX_RELATIVE_PATH);
 }
 
-export function buildSkillIndexEntry(root: string, slug: string, filePath: string): SkillIndexEntry {
+export function buildSkillIndexEntryForWorkspace(
+  root: string,
+  workspace: string,
+  slug: string,
+  filePath: string
+): SkillIndexEntry {
   if (!SKILL_SLUG_RE.test(slug)) {
     throw new Error(`${filePath}: skill slug must be kebab-case`);
   }
@@ -187,8 +192,8 @@ export function buildSkillIndexEntry(root: string, slug: string, filePath: strin
   return {
     slug,
     id: `skill:${slug}`,
-    qid: `root:skill:${slug}`,
-    ws: "root",
+    qid: `${workspace}:skill:${slug}`,
+    ws: workspace,
     type: "skill",
     name,
     description,
@@ -202,6 +207,10 @@ export function buildSkillIndexEntry(root: string, slug: string, filePath: strin
     extensions,
     ochatr,
   };
+}
+
+export function buildSkillIndexEntry(root: string, slug: string, filePath: string): SkillIndexEntry {
+  return buildSkillIndexEntryForWorkspace(root, "root", slug, filePath);
 }
 
 export function buildSkillsIndex(root: string, config: Config): SkillsIndex {

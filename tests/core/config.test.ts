@@ -14,6 +14,9 @@ const BASE_CONFIG = {
     tolerant: false,
     global_index_path: ".mdkg/index/global.json",
   },
+  capabilities: {
+    cache_path: ".mdkg/index/capabilities.json",
+  },
   pack: {
     default_depth: 2,
     default_edges: ["parent", "epic", "relates"],
@@ -42,6 +45,7 @@ const BASE_CONFIG = {
       path: ".",
       enabled: true,
       mdkg_dir: ".mdkg",
+      visibility: "private",
     },
   },
 };
@@ -54,18 +58,26 @@ test("loadConfig reads and validates config", () => {
   const config = loadConfig(root);
   assert.equal(config.schema_version, LATEST_SCHEMA_VERSION);
   assert.equal(config.workspaces.root.path, ".");
+  assert.equal(config.workspaces.root.visibility, "private");
+  assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
 });
 
-test("loadConfig migrates legacy config without schema_version", () => {
+test("loadConfig migrates legacy config without schema_version and defaults capability fields", () => {
   const root = makeTempDir("mdkg-config-");
   const configPath = path.join(root, ".mdkg", "config.json");
   const legacyConfig = { ...BASE_CONFIG } as Record<string, unknown>;
   delete legacyConfig.schema_version;
+  delete legacyConfig.capabilities;
+  const workspaces = JSON.parse(JSON.stringify(legacyConfig.workspaces)) as Record<string, Record<string, unknown>>;
+  delete workspaces.root.visibility;
+  legacyConfig.workspaces = workspaces;
   writeFile(configPath, JSON.stringify(legacyConfig, null, 2));
 
   const config = loadConfig(root);
   assert.equal(config.schema_version, LATEST_SCHEMA_VERSION);
   assert.equal(config.workspaces.root.mdkg_dir, ".mdkg");
+  assert.equal(config.workspaces.root.visibility, "private");
+  assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
 });
 
 test("loadConfig accepts contained relative registered workspace paths", () => {
@@ -82,6 +94,7 @@ test("loadConfig accepts contained relative registered workspace paths", () => {
             path: "packages/docs",
             enabled: true,
             mdkg_dir: "docs-mdkg",
+            visibility: "internal",
           },
         },
       },
@@ -94,6 +107,7 @@ test("loadConfig accepts contained relative registered workspace paths", () => {
 
   assert.equal(config.workspaces.docs.path, "packages/docs");
   assert.equal(config.workspaces.docs.mdkg_dir, "docs-mdkg");
+  assert.equal(config.workspaces.docs.visibility, "internal");
 });
 
 test("loadConfig rejects config paths that escape the repo root", () => {
@@ -119,6 +133,25 @@ test("loadConfig rejects config paths that escape the repo root", () => {
       "global_index_path",
       ".mdkg/index/global.json\0bad",
       /index.global_index_path cannot contain NUL bytes/,
+    ],
+    [
+      "capabilities",
+      "cache_path",
+      "../capabilities.json",
+      /capabilities.cache_path cannot contain parent-directory components/,
+    ],
+    [
+      "capabilities",
+      "cache_path",
+      path.join(root, ".mdkg", "index", "capabilities.json"),
+      /capabilities.cache_path must be relative/,
+    ],
+    ["capabilities", "cache_path", " ", /capabilities.cache_path cannot be empty/],
+    [
+      "capabilities",
+      "cache_path",
+      ".mdkg/index/capabilities.json\0bad",
+      /capabilities.cache_path cannot contain NUL bytes/,
     ],
     [
       "pack",
@@ -165,6 +198,27 @@ test("loadConfig rejects config paths that escape the repo root", () => {
 
     assert.throws(() => loadConfig(root), pattern);
   }
+});
+
+test("loadConfig validates optional workspace visibility", () => {
+  const root = makeTempDir("mdkg-config-visibility-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(JSON.stringify(BASE_CONFIG));
+  config.workspaces.docs = {
+    path: "docs",
+    enabled: true,
+    mdkg_dir: ".mdkg",
+    visibility: "public",
+  };
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  assert.equal(loadConfig(root).workspaces.docs.visibility, "public");
+
+  config.workspaces.docs.visibility = "partner";
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  assert.throws(
+    () => loadConfig(root),
+    /workspaces\.docs\.visibility must be one of private, internal, public/
+  );
 });
 
 test("loadConfig rejects invalid numeric config invariants", () => {

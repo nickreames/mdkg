@@ -28,6 +28,9 @@ test("cli help covers the remaining command help surfaces", () => {
     ["validate", /mdkg validate \[--out <path>\] \[--quiet\] \[--json\]/],
     ["format", /mdkg format/],
     ["doctor", /mdkg doctor \[--json\]/],
+    ["capability", /mdkg capability show <id-or-qid-or-slug> \[--json\]/],
+    ["archive", /mdkg archive compress <id-or-archive-uri\|--all> \[--json\]/],
+    ["work", /mdkg work artifact add/],
     ["skill", /mdkg skill validate \[<slug>\] \[--json\]/],
     ["task", /mdkg task start <id-or-qid> \[--ws <alias>\] \[--run-id <id>\] \[--note "<text>"\] \[--json\]/],
     ["event", /mdkg event enable \[--ws <alias>\] \[--json\]/],
@@ -44,7 +47,7 @@ test("cli command --help routes to command-specific help", () => {
   const result = runCli(["workspace", "--help"]);
   assert.equal(result.status, 0);
   assert.match(result.stdout, /mdkg workspace ls \[--json\]/);
-  assert.match(result.stdout, /mdkg workspace add <alias> <path> \[--mdkg-dir <dir>\] \[--json\]/);
+  assert.match(result.stdout, /mdkg workspace add <alias> <path> \[--mdkg-dir <dir>\] \[--visibility <level>\] \[--json\]/);
   assert.match(result.stdout, /mdkg workspace rm <alias> \[--json\]/);
   assert.match(result.stdout, /mdkg workspace enable <alias> \[--json\]/);
   assert.match(result.stdout, /mdkg workspace disable <alias> \[--json\]/);

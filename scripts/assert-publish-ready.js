@@ -60,7 +60,13 @@ function requireBuildFolders() {
 }
 
 function requireInitAssets() {
-  requireFile("dist/init/config.json");
+  const initConfig = JSON.parse(requireFile("dist/init/config.json"));
+  if (!initConfig.capabilities || initConfig.capabilities.cache_path !== ".mdkg/index/capabilities.json") {
+    fail("dist/init/config.json is missing the default capability cache path");
+  }
+  if (!initConfig.workspaces?.root || initConfig.workspaces.root.visibility !== "private") {
+    fail("dist/init/config.json is missing root workspace visibility metadata");
+  }
   const initManifest = JSON.parse(requireFile("dist/init/init-manifest.json"));
   if (initManifest.tool !== "mdkg" || initManifest.schema_version !== 1 || !Array.isArray(initManifest.files)) {
     fail("dist/init/init-manifest.json is not a valid mdkg init manifest");
@@ -74,9 +80,13 @@ function requireInitAssets() {
     "AGENT_START.md",
     "CLI_COMMAND_MATRIX.md",
   ]) {
-    requireFile(path.join("dist/init", startupDoc));
+    const content = requireFile(path.join("dist/init", startupDoc));
+    if (content.includes("mdkg init --llm") || content.includes("--llm --agent")) {
+      fail(`dist/init/${startupDoc} contains removed init onboarding guidance`);
+    }
   }
   for (const template of [
+    "archive.md",
     "bug.md",
     "chk.md",
     "dec.md",

@@ -32,6 +32,9 @@ Operating rules:
 - Use `mdkg show <id>` for direct inspection and `mdkg show <id> --meta` for card-only inspection.
 - Use `mdkg search "..."` and `mdkg next` to discover current work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
+- Use `mdkg capability list/search/show` for deterministic skills, `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
+- Use `mdkg archive add/list/show/verify/compress` for committed source and artifact sidecars under `.mdkg/archive`.
+- Use `mdkg work ...` helpers for semantic mirror contracts, work orders, receipts, and artifact registration.
 - Use `mdkg task start/update/done` for structured task, bug, and test lifecycle fields.
 - Use `mdkg upgrade` to preview scaffold updates; only run `mdkg upgrade --apply` after reviewing the receipt.
 - Keep nuanced summaries, body text, and manual parent closeout edits in markdown.
@@ -53,6 +56,11 @@ If the active task is not known:
 - `mdkg show <id>`
 - `mdkg pack <id>`
 
+If this is a fresh import or external docs bundle:
+- create a root epic, PRD, or EDD that captures the imported context and source locations
+- create follow-on tasks and tests from that root context instead of scattering untracked notes
+- run `mdkg validate` after the first ingestion pass
+
 ## First-step skill
 
 Use the canonical planning skill first when context is still being established:
@@ -62,6 +70,11 @@ Stage-tagged discovery:
 - `mdkg skill list --tags stage:plan --json`
 - `mdkg skill list --tags stage:execute --json`
 - `mdkg skill list --tags stage:review --json`
+
+Capability discovery:
+- `mdkg capability list --kind skill --json`
+- `mdkg capability search "<query>" --kind spec --json`
+- `mdkg capability search "<query>" --kind work --json`
 
 ## Product-specific conventions
 
@@ -111,6 +124,8 @@ Build and verification:
 - `npm run cli:snapshot`
 - `npm run cli:check`
 - `npm run smoke:upgrade`
+- `npm run smoke:capabilities`
+- `npm run smoke:archive-work`
 
 When you need a full command reference, use `CLI_COMMAND_MATRIX.md` or `mdkg help <command>`.
 

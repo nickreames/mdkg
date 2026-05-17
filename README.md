@@ -11,9 +11,9 @@ mdkg stays deliberately boring:
 - repo-native under `.mdkg/`
 - TypeScript + Node.js 18+
 - zero runtime dependencies
-- no sqlite, daemon, hosted index, or vector DB
+- no required sqlite, daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.1`
+Current package version in source: `0.1.2`
 
 ## The product shape
 
@@ -44,18 +44,12 @@ bun add -g mdkg
 Initialize mdkg in a repo:
 
 ```bash
-mdkg init --llm
-```
-
-This is the generic OSS bootstrap path. It creates `.mdkg/` and updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out of those ignore-file updates.
-
-Optional agent-ready scaffold:
-
-```bash
 mdkg init --agent
 ```
 
-This adds strict-node `SOUL.md` / `HUMAN.md`, seeds the three default mdkg usage skills, creates `events.jsonl`, updates the skill registry, adds core pin updates, and creates mirrored skill folders under `.agents/skills/` and `.claude/skills/`.
+This is the canonical AI-agent bootstrap path. It creates `.mdkg/`, `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node `SOUL.md` / `HUMAN.md`, the three default mdkg usage skills, `events.jsonl`, the skill registry, core pin updates, and mirrored skill folders under `.agents/skills/` and `.claude/skills/`. It also updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out of those ignore-file updates.
+
+For a non-agent markdown graph only, run `mdkg init`.
 
 Preview safe scaffold upgrades in an existing mdkg workspace:
 
@@ -108,6 +102,32 @@ Validate before handoff or commit:
 mdkg validate
 ```
 
+Discover cached capability surfaces:
+
+```bash
+mdkg index
+mdkg capability list --kind skill --json
+mdkg capability search "image worker" --kind work --json
+mdkg capability show <id-or-qid-or-slug> --json
+```
+
+Register source and artifact files as committed archive sidecars:
+
+```bash
+mdkg archive add ./inputs/key_input_doc.pdf --id archive.key-input-doc --kind source
+mdkg archive verify archive://archive.key-input-doc
+mdkg archive list --json
+```
+
+Create semantic mirror work contracts, orders, receipts, and artifacts:
+
+```bash
+mdkg work contract new "generate image" --id work.generate-image --agent-id agent.image-worker --kind image_generation --inputs prompt:text:required --outputs image_url:url:required
+mdkg work order new "generate image request" --id order.generate-image-1 --work-id work.generate-image --requester user://example --input-refs archive://archive.key-input-doc
+mdkg work receipt new "generate image receipt" --id receipt.generate-image-1 --work-order-id order.generate-image-1 --outcome success --receipt-status recorded
+mdkg work artifact add receipt.generate-image-1 ./outputs/image.png --id archive.generated-image --kind artifact
+```
+
 Update structured task state and evidence while keeping body and narrative edits in markdown:
 
 ```bash
@@ -151,6 +171,7 @@ mdkg lives under a hidden root directory:
 - `.mdkg/work/` tasks, bugs, tests, epics, checkpoints
 - `.mdkg/templates/` templates used by `mdkg new`
 - `.mdkg/skills/` Agent Skills packages
+- `.mdkg/archive/` sidecar metadata plus deterministic compressed source/artifact caches
 - `.agents/skills/` Codex/OpenAI-facing mirrored skills
 - `.claude/skills/` Claude-facing mirrored skills
 - `.mdkg/index/` generated cache files
@@ -166,6 +187,9 @@ These are the commands new users and agents should learn first:
 - `mdkg next`
 - `mdkg pack`
 - `mdkg skill`
+- `mdkg capability`
+- `mdkg archive`
+- `mdkg work`
 - `mdkg task`
 - `mdkg validate`
 
@@ -224,6 +248,19 @@ This repo now dogfoods three internal skills:
 
 Optional skill metadata with prefixes such as `ochatr_*` is treated as vendor extension data. Structured skill output exposes it under `extensions.ochatr` while keeping the top-level `ochatr` field as a compatibility alias introduced in 0.0.9. ochatr.ai is a pioneering adopter of this extension pattern, not the name of the base mdkg standard.
 
+## Capability cache
+
+mdkg maintains `.mdkg/index/capabilities.json` as a derived access cache for deterministic capability surfaces:
+- skills from `.mdkg/skills/**/SKILL.md`
+- `SPEC.md`
+- `WORK.md`
+- core docs
+- design docs
+
+The capability cache is not the full graph and is not source of truth. Normal tasks, epics, bugs, tests, feats, and checkpoints remain in the standard graph index. Markdown remains authoritative; deleting the cache is recoverable with `mdkg index` or by running a capability command when auto-reindex is enabled.
+
+Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. Workspace `visibility` is advisory source metadata for filtering (`private`, `internal`, or `public`), not a hard permission boundary in this release.
+
 ## Agent workflow files
 
 mdkg recognizes a small set of canonical agent workflow documents:
@@ -237,13 +274,24 @@ Use `mdkg new spec|work|work_order|receipt|feedback|dispute|proposal "<title>"` 
 
 Relational templates contain editable placeholder refs. `spec` and `work` scaffold as validation-clean standalone docs; `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 
+For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. Production order state, receipt state, payments, ledgers, marketplace inventory, and fulfillment records remain canonical outside mdkg, such as in Postgres or another application database.
+
+## Archive sidecars
+
+Archive entries live under `.mdkg/archive/<archive.id>/` and are normal graph nodes with `type: archive`. `mdkg archive add` copies the source into a managed local `source/` directory, writes a frontmatter sidecar `<file>.md`, and writes a deterministic single-file ZIP cache `<file>.zip`. The original source path is left untouched.
+
+Archive sidecars support `archive://archive.example` refs from orders, receipts, artifacts, proof refs, and other workflow metadata. `mdkg archive verify` treats a missing raw local source file as non-fatal when the committed sidecar and ZIP cache hashes are valid.
+
+By default, init/upgrade ignore generated raw archive source copies with `.mdkg/archive/**/source/`; sidecar `.md` files and compressed `.zip` caches remain commit-eligible.
+
 ## Current direction
 
 This release includes:
 - `init --agent`
-- default ignore updates with `--no-update-ignores` for `.mdkg/index/` and `.mdkg/pack/`
+- default ignore updates with `--no-update-ignores` for `.mdkg/index/`, `.mdkg/pack/`, and raw archive source copies
 - root-only published init seed config
 - skills indexing and search/show/list support
+- JSON capability cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs
 - optional `skills: [...]` on work items
 - pack-time skill inclusion
 - latest-checkpoint resolver + index hint
@@ -252,16 +300,20 @@ This release includes:
 - agent workflow file types and semantic `mdkg new --id` support
 - product-specific skill mirrors for Codex/OpenAI and Claude
 - shared `AGENT_START.md` startup guidance
+- conservative `mdkg upgrade` with mode-aware init manifests
+- archive sidecars with deterministic ZIP caches
+- semantic mirror helpers under `mdkg work ...`
 
 Current direction:
-- keep the OSS story generic around `init --llm`
-- use `init --agent` for deeper AI-agent bootstrap
+- keep the OSS story generic around `mdkg init --agent`
+- use base `mdkg init` only for repos that do not want agent bootstrap assets
 - keep `pack <id>` at the center of the human/agent loop
 - use `mdkg task ...` for structured state changes and markdown edits for narrative/body content
 - make event logging guided instead of purely manual
 - dogfood real skills inside the repo
 - make skill authoring first-class through `mdkg skill`
 - make `CLI_COMMAND_MATRIX.md` the single source of truth for the live CLI surface
+- keep production execution databases canonical while mdkg stores committed semantic mirrors
 - run manual behavior audits before enforcing stronger coverage thresholds
 
 Design and decision records live in the internal graph under `.mdkg/design/`.
@@ -273,6 +325,8 @@ mdkg is not a secret store.
 Use these defaults:
 - keep `.mdkg/index/` gitignored
 - keep `.mdkg/pack/` gitignored
+- keep `.mdkg/archive/**/source/` gitignored unless a repo intentionally commits raw local copies
+- commit archive sidecar `.md` metadata and deterministic `.zip` caches when they are needed for reviewable evidence
 - event logs are committed by default; ignore or delete them manually if a repo wants local-only provenance
 - do not ship `.mdkg/` into production builds or published packages
 - if an external orchestrator is writing mdkg state, keep one durable writer per run and batch commits at end-of-run or checkpoint boundaries

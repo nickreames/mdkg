@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-22
+updated: 2026-05-14
 ---
 
 # Agent guide
@@ -19,8 +19,9 @@ This repo uses **mdkg** to manage documentation, decisions, and work tracking.
 
 ## Quickstart
 
-- `mdkg init --llm`
+- `mdkg init --agent`
 - `mdkg index`
+- `mdkg capability list --kind skill --json`
 - `mdkg new task "..." --status todo --priority 1`
 - `mdkg list --status todo`
 - `mdkg pack <id> --verbose`
@@ -32,6 +33,7 @@ This repo uses **mdkg** to manage documentation, decisions, and work tracking.
 - `mdkg guide` (print this guide)
 - `mdkg new <type> "<title>"`
 - `mdkg list` / `mdkg show` / `mdkg search`
+- `mdkg capability list` / `mdkg capability search` / `mdkg capability show`
 - `mdkg pack`
 - `mdkg next`
 - `mdkg validate` / `mdkg format`
@@ -93,6 +95,8 @@ If formatting drift is common (especially with agent edits):
 ## Indexing behavior
 
 Index is cached by default and auto-reindexed when stale.
+
+`mdkg index` writes the node index, skills index, and capability cache. The capability cache is a derived access layer for skills, `SPEC.md`, `WORK.md`, core docs, and design docs; it is not source of truth and does not include normal task/epic/test/checkpoint nodes.
 
 If debugging index issues:
 - run `mdkg index`

@@ -1,12 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { loadConfig } from "../core/config";
+import { loadConfig, validateConfigSchema } from "../core/config";
+import { migrateConfig } from "../core/migrate";
 import { NotFoundError } from "../util/errors";
 import { formatDate } from "../util/date";
 import { readPackageVersion } from "../core/version";
 import { createInitManifest, INIT_MANIFEST_FILE, writeInitManifest } from "./init_manifest";
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
-import { scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
+import { preflightSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 
 export type InitCommandOptions = {
   root: string;
@@ -16,15 +17,19 @@ export type InitCommandOptions = {
   updateNpmignore?: boolean;
   updateDockerignore?: boolean;
   noUpdateIgnores?: boolean;
-  createAgents?: boolean;
-  createClaude?: boolean;
-  createLlm?: boolean;
   seedRoot?: string;
 };
 
 type CopyStats = {
   created: number;
   skipped: number;
+  createdPaths: string[];
+  skippedPaths: string[];
+  ignoreFilesUpdated: string[];
+  manifestWritten: boolean;
+  registryRefreshed: boolean;
+  mirrorTargets: number;
+  mirroredSkills: number;
 };
 
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
@@ -54,17 +59,32 @@ function listFiles(dir: string): string[] {
   return files;
 }
 
-function copySeedFile(src: string, dest: string, force: boolean, stats: CopyStats): void {
+function displayPath(root: string, filePath: string): string {
+  const relPath = path.relative(root, filePath).split(path.sep).join("/");
+  return relPath.length > 0 ? relPath : ".";
+}
+
+function recordCreated(root: string, dest: string, stats: CopyStats): void {
+  stats.created += 1;
+  stats.createdPaths.push(displayPath(root, dest));
+}
+
+function recordSkipped(root: string, dest: string, stats: CopyStats): void {
+  stats.skipped += 1;
+  stats.skippedPaths.push(displayPath(root, dest));
+}
+
+function copySeedFile(root: string, src: string, dest: string, force: boolean, stats: CopyStats): void {
   if (fs.existsSync(dest) && !force) {
-    stats.skipped += 1;
+    recordSkipped(root, dest, stats);
     return;
   }
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.copyFileSync(src, dest);
-  stats.created += 1;
+  recordCreated(root, dest, stats);
 }
 
-function copySeedDir(srcDir: string, destDir: string, force: boolean, stats: CopyStats): void {
+function copySeedDir(root: string, srcDir: string, destDir: string, force: boolean, stats: CopyStats): void {
   if (!fs.existsSync(srcDir)) {
     return;
   }
@@ -72,7 +92,7 @@ function copySeedDir(srcDir: string, destDir: string, force: boolean, stats: Cop
   for (const filePath of files) {
     const relPath = path.relative(srcDir, filePath);
     const destPath = path.join(destDir, relPath);
-    copySeedFile(filePath, destPath, force, stats);
+    copySeedFile(root, filePath, destPath, force, stats);
   }
 }
 
@@ -92,18 +112,19 @@ function appendIgnoreEntries(filePath: string, entries: string[]): boolean {
 }
 
 function writeFileIfMissing(
+  root: string,
   filePath: string,
   content: string,
   force: boolean,
   stats: CopyStats
 ): void {
   if (fs.existsSync(filePath) && !force) {
-    stats.skipped += 1;
+    recordSkipped(root, filePath, stats);
     return;
   }
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, "utf8");
-  stats.created += 1;
+  recordCreated(root, filePath, stats);
 }
 
 function soulTemplate(created: string): string {
@@ -203,6 +224,52 @@ function seededInitEvent(nowIso: string): string {
   return `${JSON.stringify(event)}\n`;
 }
 
+function listSeedSkillSlugs(seedDefaultSkills: string): string[] {
+  if (!fs.existsSync(seedDefaultSkills)) {
+    return [];
+  }
+  return fs
+    .readdirSync(seedDefaultSkills, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(seedDefaultSkills, entry.name, "SKILL.md")))
+    .map((entry) => entry.name.toLowerCase())
+    .sort();
+}
+
+function listExistingCanonicalSkillSlugs(root: string): string[] {
+  const skillsDir = path.join(root, ".mdkg", "skills");
+  if (!fs.existsSync(skillsDir)) {
+    return [];
+  }
+  return fs
+    .readdirSync(skillsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(skillsDir, entry.name, "SKILL.md")))
+    .map((entry) => entry.name.toLowerCase())
+    .sort();
+}
+
+function preflightSeedConfig(seedConfig: string): void {
+  const raw = JSON.parse(fs.readFileSync(seedConfig, "utf8"));
+  validateConfigSchema(migrateConfig(raw).config);
+}
+
+function emitPartialInitFailure(root: string, stats: CopyStats, err: unknown): void {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error("mdkg init failed after partial writes");
+  console.error(`error: ${message}`);
+  console.error(`created: ${stats.created}`);
+  for (const created of stats.createdPaths) {
+    console.error(`  created: ${created}`);
+  }
+  console.error(`skipped: ${stats.skipped}`);
+  for (const skipped of stats.skippedPaths) {
+    console.error(`  skipped: ${skipped}`);
+  }
+  console.error("recovery:");
+  console.error("  inspect the created paths above");
+  console.error("  rerun `mdkg init --agent` after resolving the reported error");
+  console.error(`  root: ${root}`);
+}
+
 function parseCoreList(raw: string): { header: string[]; ids: string[] } {
   const lines = raw.split(/\r?\n/);
   const header: string[] = [];
@@ -257,9 +324,9 @@ function ensureCorePins(coreListPath: string, requiredPins: string[]): void {
 export function runInitCommand(options: InitCommandOptions): void {
   const root = path.resolve(options.root);
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
-  const createAgents = Boolean(options.createAgents || options.createLlm);
-  const createClaude = Boolean(options.createClaude || options.createLlm);
-  const createStartupDocs = Boolean(options.createLlm || options.agent);
+  const createAgents = Boolean(options.agent);
+  const createClaude = Boolean(options.agent);
+  const createStartupDocs = Boolean(options.agent);
   const force = Boolean(options.force);
 
   const seedConfig = path.join(seedRoot, "config.json");
@@ -272,7 +339,13 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedCliMatrix = path.join(seedRoot, "CLI_COMMAND_MATRIX.md");
   const seedReadme = path.join(seedRoot, "README.md");
   const seedDefaultSkills = path.join(seedRoot, "skills", "default");
-  const seedManifest = createInitManifest(seedRoot, readPackageVersion());
+  const seedSoul = path.join(seedCore, "SOUL.md");
+  const seedHuman = path.join(seedCore, "HUMAN.md");
+  const seedManifest = createInitManifest(seedRoot, readPackageVersion(), {
+    includeAgentDocs: Boolean(options.agent),
+    includeStartupDocs: Boolean(options.agent),
+    includeDefaultSkills: Boolean(options.agent),
+  });
 
   if (!fs.existsSync(seedConfig) || !fs.existsSync(seedCore) || !fs.existsSync(seedTemplates)) {
     throw new NotFoundError(
@@ -300,78 +373,140 @@ export function runInitCommand(options: InitCommandOptions): void {
   if (options.agent && !fs.existsSync(seedDefaultSkills)) {
     throw new NotFoundError(`init assets missing default skills at ${seedRoot}`);
   }
-
-  const mdkgDir = path.join(root, ".mdkg");
-  fs.mkdirSync(mdkgDir, { recursive: true });
-  fs.mkdirSync(path.join(mdkgDir, "work"), { recursive: true });
-  fs.mkdirSync(path.join(mdkgDir, "design"), { recursive: true });
-
-  const stats: CopyStats = { created: 0, skipped: 0 };
-  copySeedFile(seedConfig, path.join(mdkgDir, "config.json"), force, stats);
-  copySeedFile(seedReadme, path.join(mdkgDir, "README.md"), force, stats);
-  copySeedDir(seedCore, path.join(mdkgDir, "core"), force, stats);
-  copySeedDir(seedTemplates, path.join(mdkgDir, "templates"), force, stats);
-  if (createAgents) {
-    copySeedFile(seedAgents, path.join(root, "AGENTS.md"), force, stats);
-  }
-  if (createClaude) {
-    copySeedFile(seedClaude, path.join(root, "CLAUDE.md"), force, stats);
-  }
-  if (createStartupDocs) {
-    copySeedFile(seedLlms, path.join(root, "llms.txt"), force, stats);
-    copySeedFile(seedAgentStart, path.join(root, "AGENT_START.md"), force, stats);
-    copySeedFile(seedCliMatrix, path.join(root, "CLI_COMMAND_MATRIX.md"), force, stats);
-  }
-
+  preflightSeedConfig(seedConfig);
   if (options.agent) {
-    const today = formatDate(new Date());
-    const soulPath = path.join(mdkgDir, "core", "SOUL.md");
-    const humanPath = path.join(mdkgDir, "core", "HUMAN.md");
-    const skillsDir = path.join(mdkgDir, "skills");
-    const registryPath = path.join(skillsDir, "registry.md");
-    const eventsDir = path.join(mdkgDir, "work", "events");
-    const eventsPath = path.join(eventsDir, "events.jsonl");
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.mkdirSync(eventsDir, { recursive: true });
-    copySeedDir(seedDefaultSkills, skillsDir, force, stats);
-    writeFileIfMissing(soulPath, soulTemplate(today), force, stats);
-    writeFileIfMissing(humanPath, humanTemplate(today), force, stats);
-    writeFileIfMissing(registryPath, registryTemplate(), force, stats);
-    if (!fs.existsSync(eventsPath) || force) {
-      writeFileIfMissing(eventsPath, seededInitEvent(new Date().toISOString()), force, stats);
+    preflightSkillMirrorTargets({
+      root,
+      slugs: [...listSeedSkillSlugs(seedDefaultSkills), ...listExistingCanonicalSkillSlugs(root)],
+      force,
+    });
+  }
+
+  const stats: CopyStats = {
+    created: 0,
+    skipped: 0,
+    createdPaths: [],
+    skippedPaths: [],
+    ignoreFilesUpdated: [],
+    manifestWritten: false,
+    registryRefreshed: false,
+    mirrorTargets: 0,
+    mirroredSkills: 0,
+  };
+  const mdkgDir = path.join(root, ".mdkg");
+  try {
+    fs.mkdirSync(mdkgDir, { recursive: true });
+    fs.mkdirSync(path.join(mdkgDir, "work"), { recursive: true });
+    fs.mkdirSync(path.join(mdkgDir, "design"), { recursive: true });
+
+    copySeedFile(root, seedConfig, path.join(mdkgDir, "config.json"), force, stats);
+    copySeedFile(root, seedReadme, path.join(mdkgDir, "README.md"), force, stats);
+    copySeedDir(root, seedCore, path.join(mdkgDir, "core"), force, stats);
+    copySeedDir(root, seedTemplates, path.join(mdkgDir, "templates"), force, stats);
+    if (createAgents) {
+      copySeedFile(root, seedAgents, path.join(root, "AGENTS.md"), force, stats);
+    }
+    if (createClaude) {
+      copySeedFile(root, seedClaude, path.join(root, "CLAUDE.md"), force, stats);
+    }
+    if (createStartupDocs) {
+      copySeedFile(root, seedLlms, path.join(root, "llms.txt"), force, stats);
+      copySeedFile(root, seedAgentStart, path.join(root, "AGENT_START.md"), force, stats);
+      copySeedFile(root, seedCliMatrix, path.join(root, "CLI_COMMAND_MATRIX.md"), force, stats);
     }
 
-    const coreListPath = path.join(mdkgDir, "core", "core.md");
-    ensureCorePins(coreListPath, [SOUL_PIN_ID, HUMAN_PIN_ID]);
+    if (options.agent) {
+      const today = formatDate(new Date());
+      const soulPath = path.join(mdkgDir, "core", "SOUL.md");
+      const humanPath = path.join(mdkgDir, "core", "HUMAN.md");
+      const skillsDir = path.join(mdkgDir, "skills");
+      const registryPath = path.join(skillsDir, "registry.md");
+      const eventsDir = path.join(mdkgDir, "work", "events");
+      const eventsPath = path.join(eventsDir, "events.jsonl");
+      fs.mkdirSync(skillsDir, { recursive: true });
+      fs.mkdirSync(eventsDir, { recursive: true });
+      copySeedDir(root, seedDefaultSkills, skillsDir, force, stats);
+      if (!fs.existsSync(seedSoul)) {
+        writeFileIfMissing(root, soulPath, soulTemplate(today), force, stats);
+      }
+      if (!fs.existsSync(seedHuman)) {
+        writeFileIfMissing(root, humanPath, humanTemplate(today), force, stats);
+      }
+      writeFileIfMissing(root, registryPath, registryTemplate(), force, stats);
+      if (!fs.existsSync(eventsPath) || force) {
+        writeFileIfMissing(root, eventsPath, seededInitEvent(new Date().toISOString()), force, stats);
+      }
 
-    scaffoldMirrorRoots(root);
-    const config = loadConfig(root);
-    refreshSkillsRegistry(root, config);
-    syncSkillMirrors({ root, config, createRoots: true, force });
+      const coreListPath = path.join(mdkgDir, "core", "core.md");
+      ensureCorePins(coreListPath, [SOUL_PIN_ID, HUMAN_PIN_ID]);
+
+      scaffoldMirrorRoots(root);
+      const config = loadConfig(root);
+      refreshSkillsRegistry(root, config);
+      stats.registryRefreshed = true;
+      const mirrorResult = syncSkillMirrors({ root, config, createRoots: true, force });
+      stats.mirrorTargets = mirrorResult.targets;
+      stats.mirroredSkills = mirrorResult.synced;
+    }
+
+    writeInitManifest(path.join(mdkgDir, INIT_MANIFEST_FILE), seedManifest);
+    stats.manifestWritten = true;
+  } catch (err) {
+    if (stats.created > 0 || stats.skipped > 0) {
+      emitPartialInitFailure(root, stats, err);
+    }
+    throw err;
   }
-
-  writeInitManifest(path.join(mdkgDir, INIT_MANIFEST_FILE), seedManifest);
 
   const noUpdateIgnores = Boolean(options.noUpdateIgnores);
   const shouldUpdateGitignore = Boolean(options.updateGitignore || !noUpdateIgnores);
   const shouldUpdateNpmignore = Boolean(options.updateNpmignore || !noUpdateIgnores);
 
-  if (shouldUpdateGitignore) {
-    appendIgnoreEntries(path.join(root, ".gitignore"), [
-      ".mdkg/index/",
-      ".mdkg/pack/",
-    ]);
-  }
-  if (shouldUpdateNpmignore) {
-    appendIgnoreEntries(path.join(root, ".npmignore"), [".mdkg/", ".mdkg/index/", ".mdkg/pack/"]);
-  }
-  if (options.updateDockerignore) {
-    appendIgnoreEntries(path.join(root, ".dockerignore"), [".mdkg/"]);
+  try {
+    if (shouldUpdateGitignore) {
+      if (appendIgnoreEntries(path.join(root, ".gitignore"), [
+        ".mdkg/index/",
+        ".mdkg/pack/",
+        ".mdkg/archive/**/source/",
+      ])) {
+        stats.ignoreFilesUpdated.push(".gitignore");
+      }
+    }
+    if (shouldUpdateNpmignore) {
+      if (appendIgnoreEntries(path.join(root, ".npmignore"), [".mdkg/", ".mdkg/index/", ".mdkg/pack/"])) {
+        stats.ignoreFilesUpdated.push(".npmignore");
+      }
+    }
+    if (options.updateDockerignore) {
+      if (appendIgnoreEntries(path.join(root, ".dockerignore"), [".mdkg/"])) {
+        stats.ignoreFilesUpdated.push(".dockerignore");
+      }
+    }
+  } catch (err) {
+    if (stats.created > 0 || stats.skipped > 0) {
+      emitPartialInitFailure(root, stats, err);
+    }
+    throw err;
   }
 
   console.log(
     `mdkg init complete: ${stats.created} file(s) created, ${stats.skipped} skipped`
   );
+  if (stats.manifestWritten) {
+    console.log("managed manifest: .mdkg/init-manifest.json");
+  }
+  if (stats.ignoreFilesUpdated.length > 0) {
+    console.log(`ignore files updated: ${stats.ignoreFilesUpdated.join(", ")}`);
+  }
+  if (options.agent) {
+    console.log("agent bootstrap: AGENT_START.md, AGENTS.md, CLAUDE.md, llms.txt, CLI_COMMAND_MATRIX.md");
+    console.log("agent core pins: rule-soul, rule-human");
+    console.log("agent event log: .mdkg/work/events/events.jsonl");
+    console.log(`skill mirrors: ${stats.mirroredSkills} sync operation(s) across ${stats.mirrorTargets} target(s)`);
+    if (stats.registryRefreshed) {
+      console.log("skill registry: .mdkg/skills/registry.md");
+    }
+  }
   console.log("next:");
   if (createStartupDocs) {
     console.log("  read AGENT_START.md");

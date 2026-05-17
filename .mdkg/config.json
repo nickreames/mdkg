@@ -7,6 +7,9 @@
     "tolerant": false,
     "global_index_path": ".mdkg/index/global.json"
   },
+  "capabilities": {
+    "cache_path": ".mdkg/index/capabilities.json"
+  },
   "pack": {
     "default_depth": 2,
     "default_edges": [
@@ -51,7 +54,8 @@
     "root": {
       "path": ".",
       "enabled": true,
-      "mdkg_dir": ".mdkg"
+      "mdkg_dir": ".mdkg",
+      "visibility": "private"
     }
   }
 }

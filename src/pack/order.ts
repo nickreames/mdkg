@@ -15,6 +15,7 @@ const FALLBACK_TYPES = [
   "feedback",
   "dispute",
   "proposal",
+  "archive",
   "epic",
   "feat",
   "task",

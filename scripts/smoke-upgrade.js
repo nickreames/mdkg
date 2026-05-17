@@ -109,6 +109,8 @@ function exerciseUpgrade(binPath, tempRoot) {
   const root = path.join(tempRoot, "legacy-style-workspace");
   initGit(root);
   mdkg(binPath, ["init", "--agent"], root);
+  fs.rmSync(path.join(root, "AGENTS.md"), { force: true });
+  fs.rmSync(path.join(root, "CLAUDE.md"), { force: true });
   fs.rmSync(path.join(root, ".mdkg", "init-manifest.json"), { force: true });
 
   const dryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], root).stdout);

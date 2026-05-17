@@ -30,6 +30,12 @@ export type InitManifest = {
 const STARTUP_DOCS = ["llms.txt", "AGENT_START.md", "CLI_COMMAND_MATRIX.md"];
 const AGENT_DOCS = ["AGENTS.md", "CLAUDE.md"];
 
+export type CreateInitManifestOptions = {
+  includeAgentDocs?: boolean;
+  includeStartupDocs?: boolean;
+  includeDefaultSkills?: boolean;
+};
+
 function toPosixPath(value: string): string {
   return value.split(path.sep).join("/");
 }
@@ -114,19 +120,36 @@ export function seedSourcePath(seedRoot: string, file: InitManifestFile): string
   return path.join(seedRoot, file.path);
 }
 
-export function createInitManifest(seedRoot: string, mdkgVersion: string): InitManifest {
+export function createInitManifest(
+  seedRoot: string,
+  mdkgVersion: string,
+  options: CreateInitManifestOptions = {
+    includeAgentDocs: true,
+    includeStartupDocs: true,
+    includeDefaultSkills: true,
+  }
+): InitManifest {
+  const includeAgentDocs = Boolean(options.includeAgentDocs);
+  const includeStartupDocs = Boolean(options.includeStartupDocs);
+  const includeDefaultSkills = Boolean(options.includeDefaultSkills);
   const files: InitManifestFile[] = [];
   addSeedFile(files, seedRoot, "config.json", ".mdkg/config.json", "config");
   addSeedFile(files, seedRoot, "README.md", ".mdkg/README.md", "mdkg_doc");
   addSeedDir(files, seedRoot, "core", ".mdkg/core", "core");
   addSeedDir(files, seedRoot, "templates", ".mdkg/templates", "template");
-  for (const doc of AGENT_DOCS) {
-    addSeedFile(files, seedRoot, doc, doc, "agent_doc");
+  if (includeAgentDocs) {
+    for (const doc of AGENT_DOCS) {
+      addSeedFile(files, seedRoot, doc, doc, "agent_doc");
+    }
   }
-  for (const doc of STARTUP_DOCS) {
-    addSeedFile(files, seedRoot, doc, doc, "startup_doc");
+  if (includeStartupDocs) {
+    for (const doc of STARTUP_DOCS) {
+      addSeedFile(files, seedRoot, doc, doc, "startup_doc");
+    }
   }
-  addSeedDir(files, seedRoot, path.join("skills", "default"), ".mdkg/skills", "default_skill");
+  if (includeDefaultSkills) {
+    addSeedDir(files, seedRoot, path.join("skills", "default"), ".mdkg/skills", "default_skill");
+  }
 
   return {
     schema_version: INIT_MANIFEST_SCHEMA_VERSION,

@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
+import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
 import { ALLOWED_TYPES } from "../graph/node";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { ValidationError } from "../util/errors";
@@ -21,6 +22,7 @@ type CheckResult = {
 };
 
 const REQUIRED_NODE_MAJOR = 18;
+const ARCHIVE_RAW_ALLOWED_DIRS = new Set(["source"]);
 
 function parseNodeMajor(version: string): number | null {
   const major = Number.parseInt(version.split(".")[0] ?? "", 10);
@@ -51,6 +53,53 @@ function runNodeVersionCheck(): CheckResult {
     name: "node-version",
     ok: true,
     detail: `Node.js ${nodeVersion} (ok)`,
+  };
+}
+
+function walkFiles(root: string): string[] {
+  if (!fs.existsSync(root)) {
+    return [];
+  }
+  const entries = fs.readdirSync(root, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = path.join(root, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkFiles(fullPath));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+function runArchiveStorageCheck(root: string): CheckResult {
+  const archiveRoot = path.join(root, ".mdkg", "archive");
+  const files = walkFiles(archiveRoot);
+  const strayRaw = files
+    .filter((filePath) => {
+      const relative = path.relative(archiveRoot, filePath).split(path.sep);
+      const ext = path.extname(filePath).toLowerCase();
+      if (ext === ".md" || ext === ".zip") {
+        return false;
+      }
+      return !relative.some((segment) => ARCHIVE_RAW_ALLOWED_DIRS.has(segment));
+    })
+    .map((filePath) => path.relative(root, filePath).split(path.sep).join("/"))
+    .sort();
+
+  if (strayRaw.length === 0) {
+    return {
+      name: "archive-storage",
+      ok: true,
+      detail: ".mdkg/archive has no stray raw files outside managed source directories",
+    };
+  }
+  return {
+    name: "archive-storage",
+    ok: true,
+    level: "warn",
+    detail: `stray uncompressed archive file(s) found without managed sidecars: ${strayRaw.join(", ")}; run \`mdkg archive add <file>\` or move raw files under a managed archive source directory`,
   };
 }
 
@@ -92,6 +141,8 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
   }
 
   if (config) {
+    results.push(runArchiveStorageCheck(options.root));
+
     try {
       const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
       results.push({
@@ -146,6 +197,41 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
       const message = err instanceof Error ? err.message : String(err);
       results.push({
         name: "index",
+        ok: false,
+        detail: message,
+      });
+    }
+
+    try {
+      const { rebuilt, stale } = loadCapabilitiesIndex({
+        root: options.root,
+        config,
+        useCache: !options.noCache,
+        allowReindex: !options.noReindex,
+      });
+      if (rebuilt) {
+        results.push({
+          name: "capabilities-index",
+          ok: true,
+          detail: "capabilities cache rebuilt and loaded",
+        });
+      } else if (stale) {
+        results.push({
+          name: "capabilities-index",
+          ok: true,
+          detail: "capabilities cache is stale (run mdkg index to refresh)",
+        });
+      } else {
+        results.push({
+          name: "capabilities-index",
+          ok: true,
+          detail: "capabilities cache loaded",
+        });
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      results.push({
+        name: "capabilities-index",
         ok: false,
         detail: message,
       });

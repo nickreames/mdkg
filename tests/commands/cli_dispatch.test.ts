@@ -151,7 +151,7 @@ test("cli dispatch covers workspace add/list/enable/disable/remove", () => {
 
   const list = runCli(root, ["workspace", "ls"]);
   assert.equal(list.status, 0);
-  assert.match(list.stdout, /docs \| disabled \| docs \| \.mdkg/);
+  assert.match(list.stdout, /docs \| disabled \| private \| docs \| \.mdkg/);
 
   const enable = runCli(root, ["workspace", "enable", "docs"]);
   assert.equal(enable.status, 0);
@@ -174,6 +174,7 @@ test("cli dispatch covers workspace mutation json receipts", () => {
       path: "docs",
       enabled: true,
       mdkg_dir: ".mdkg",
+      visibility: "private",
     },
   });
 
@@ -186,6 +187,7 @@ test("cli dispatch covers workspace mutation json receipts", () => {
       path: "docs",
       enabled: false,
       mdkg_dir: ".mdkg",
+      visibility: "private",
     },
   });
 });

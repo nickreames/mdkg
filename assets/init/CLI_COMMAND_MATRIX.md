@@ -15,6 +15,9 @@ Primary commands:
 - `mdkg search`
 - `mdkg pack`
 - `mdkg skill`
+- `mdkg capability`
+- `mdkg archive`
+- `mdkg work`
 - `mdkg task`
 - `mdkg validate`
 
@@ -42,7 +45,7 @@ Agent workflow notes:
 
 Workspace registry commands:
 - `mdkg workspace ls [--json]`
-- `mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--json]`
+- `mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--visibility <level>] [--json]`
 - `mdkg workspace rm <alias> [--json]`
 - `mdkg workspace enable <alias> [--json]`
 - `mdkg workspace disable <alias> [--json]`
@@ -60,10 +63,10 @@ Checkpoint commands:
 - `mdkg checkpoint new <title> [--ws <alias>] [--json]`
 
 Agent bootstrap:
-- `mdkg init --llm`
 - `mdkg init --agent`
-- `mdkg init --llm --agent`
 - published bootstrap config is root-only by default
+- `mdkg init --agent` creates the complete startup docs, wrapper docs, default mdkg skills, event log, registry, and skill mirrors
+- removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
 
 Upgrade:
 - `mdkg upgrade` previews safe scaffold updates and writes nothing by default
@@ -78,6 +81,32 @@ Skill discovery:
 - `mdkg skill show <slug> --json`
 - `mdkg skill validate [<slug>] [--json]`
 - `mdkg skill sync [--force] [--json]`
+
+Capability discovery:
+- `mdkg capability list [--kind <skill|spec|work|core|design>] [--visibility <private|internal|public>] [--json]`
+- `mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]`
+- `mdkg capability show <id-or-qid-or-slug> [--json]`
+- capability records are deterministic cache projections from Markdown
+- records include source hash, headings, refs, and `indexed_at`
+- normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
+
+Archive sidecars:
+- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
+- `mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]`
+- `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
+- `mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]`
+- `mdkg archive compress <id-or-archive-uri|--all> [--json]`
+- archive sidecars are `type: archive` nodes under `.mdkg/archive`
+- committed sidecar `.md` files and ZIP caches are source-of-truth evidence; raw source copies under `.mdkg/archive/**/source/` are ignored by default
+
+Work semantic mirrors:
+- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+- `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
+- `mdkg work order update <id> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]`
+- `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected] [--json]`
+- `mdkg work receipt update <id> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
+- `mdkg work artifact add <order-or-receipt-id> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+- work commands mutate mdkg semantic mirror files only; production order, receipt, payment, ledger, and marketplace state remains canonical outside mdkg
 
 Discovery/show export flags:
 - `--json`
