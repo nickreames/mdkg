@@ -5,6 +5,7 @@ import path from "path";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 const { runPackCommand } = require("../../commands/pack");
+const { runArchiveAddCommand } = require("../../commands/archive");
 
 function writeConfig(root: string): void {
   const config = {
@@ -37,11 +38,18 @@ function writeConfig(root: string): void {
       },
     },
     workspaces: {
-      root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
+      root: { path: ".", enabled: true, mdkg_dir: ".mdkg", visibility: "private" },
     },
   };
 
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));
+}
+
+function setRootVisibility(root: string, visibility: "private" | "internal" | "public"): void {
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  config.workspaces.root.visibility = visibility;
+  fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
 }
 
 function writeTaskTemplateWithHeadings(root: string): void {
@@ -109,6 +117,33 @@ function writeTaskNode(root: string): void {
     "",
     "# Implementation Notes",
     "Tail details should not be in concise summary.",
+  ].join("\n");
+  writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
+}
+
+function writeTaskNodeWithArchiveArtifact(root: string, archiveUri: string): void {
+  const content = [
+    "---",
+    "id: task-1",
+    "type: task",
+    "title: public archive pack fixture",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    `artifacts: [${archiveUri}]`,
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "created: 2026-05-18",
+    "updated: 2026-05-18",
+    "---",
+    "",
+    "# Overview",
+    "Archive visibility fixture.",
   ].join("\n");
   writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
 }
@@ -342,4 +377,60 @@ test("runPackCommand supports explicit skills list with full depth", () => {
   assert.ok(skillNode);
   assert.match(skillNode.body, /# Procedure/);
   assert.match(skillNode.body, /Run deploy/);
+});
+
+test("runPackCommand --visibility public fails closed on private archive refs", () => {
+  const root = makeTempDir("mdkg-pack-visibility-fail-");
+  setupPackFixture(root);
+  setRootVisibility(root, "public");
+  writeFile(path.join(root, "inputs", "private.txt"), "private\n");
+  runArchiveAddCommand({
+    root,
+    file: "inputs/private.txt",
+    id: "archive.private-input",
+    kind: "source",
+    now: new Date("2026-05-18T00:00:00.000Z"),
+  });
+  writeTaskNodeWithArchiveArtifact(root, "archive://archive.private-input");
+
+  assert.throws(
+    () =>
+      runPackCommand({
+        root,
+        id: "task-1",
+        visibility: "public",
+        dryRun: true,
+      }),
+    /public pack contains less-visible references/
+  );
+});
+
+test("runPackCommand --visibility public records metadata and includes public archives", () => {
+  const root = makeTempDir("mdkg-pack-visibility-ok-");
+  setupPackFixture(root);
+  setRootVisibility(root, "public");
+  writeFile(path.join(root, "inputs", "public.txt"), "public\n");
+  runArchiveAddCommand({
+    root,
+    file: "inputs/public.txt",
+    id: "archive.public-input",
+    kind: "source",
+    visibility: "public",
+    now: new Date("2026-05-18T00:00:00.000Z"),
+  });
+  writeTaskNodeWithArchiveArtifact(root, "archive://archive.public-input");
+
+  const out = ".mdkg/pack/public.json";
+  runPackCommand({
+    root,
+    id: "task-1",
+    visibility: "public",
+    format: "json",
+    out,
+  });
+
+  const payload = JSON.parse(fs.readFileSync(path.join(root, out), "utf8"));
+  assert.equal(payload.meta.visibility, "public");
+  assert.equal(JSON.stringify(payload).includes("archive://archive.public-input"), true);
+  assert.equal(JSON.stringify(payload).includes("archive.private-input"), false);
 });

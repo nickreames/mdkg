@@ -12,6 +12,10 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 - Added `bundle_imports` config with explicit alias, bundle path, visibility, expected profile, source metadata, and optional staleness policy.
 - Added `.mdkg/index/imports.json` as a derived import projection and health cache.
 - Added packed-package bundle import smoke coverage.
+- Added shared visibility policy enforcement for workspace nodes, archive sidecars, and imported bundle nodes.
+- Added `mdkg pack --visibility public|internal|private` for explicit public-safe and internal-safe packs.
+- Added `mdkg archive add --visibility private|internal|public` and `mdkg archive list --visibility ...`.
+- Added packed-package visibility smoke coverage.
 
 ### Changed
 
@@ -19,11 +23,15 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 - Imported nodes use import-alias qids such as `child_repo:task-1` and expose original bundle/source metadata in JSON output.
 - Stale imports warn during planning reads while `mdkg bundle import verify` exits nonzero.
 - Public bundle creation now fails when public local nodes reference private or internal imported graphs.
+- Public/internal bundle imports now require public bundle profiles.
+- `mdkg validate` and `mdkg doctor` now report public/internal references to less-visible mdkg records.
+- Archive JSON receipts now include sidecar visibility.
 
 ### Fixed
 
 - Mutating task and work update flows now reject imported qids with explicit read-only import errors.
 - Local graph indexing now allows edges to configured import aliases without treating them as missing local workspace nodes.
+- Public bundle checks now reuse the same fail-closed policy as public/internal pack checks.
 
 ## 0.1.3 - 2026-05-17
 

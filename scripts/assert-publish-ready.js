@@ -59,6 +59,7 @@ function requireBuildFolders() {
   requireFile("dist/templates/builtin.js");
   requireFile("dist/commands/bundle_import.js");
   requireFile("dist/graph/bundle_imports.js");
+  requireFile("dist/graph/visibility.js");
   requireFile("dist/graph/node_body.js");
 }
 
@@ -97,6 +98,9 @@ function requireInitAssets() {
   const seededAgentStart = requireFile("dist/init/AGENT_START.md");
   if (!seededAgentStart.includes("mdkg bundle import add/list/verify")) {
     fail("dist/init/AGENT_START.md is missing bundle import onboarding guidance");
+  }
+  if (!seededAgentStart.includes("mdkg pack <id> --visibility public|internal")) {
+    fail("dist/init/AGENT_START.md is missing visibility pack guidance");
   }
   const seededReadme = requireFile("dist/init/README.md");
   if (!seededReadme.includes("mdkg bundle import add") || !seededReadme.includes("mdkg bundle import verify")) {

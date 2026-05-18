@@ -37,11 +37,18 @@ function writeConfig(root: string): void {
       },
     },
     workspaces: {
-      root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
+      root: { path: ".", enabled: true, mdkg_dir: ".mdkg", visibility: "private" },
     },
   };
 
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));
+}
+
+function updateConfig(root: string, mutate: (config: any) => void): void {
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  mutate(config);
+  fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
 }
 
 function writeTask(root: string): void {
@@ -171,4 +178,95 @@ test("runValidateCommand emits a failing JSON receipt before throwing", () => {
   assert.equal(receipt.error_count, 1);
   assert.equal(receipt.errors.length, 1);
   assert.match(receipt.errors[0] ?? "", /run_id is required/);
+});
+
+test("runValidateCommand fails public records that reference private graph records", () => {
+  const root = makeTempDir("mdkg-validate-visibility-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  updateConfig(root, (config) => {
+    config.workspaces.root.visibility = "public";
+    config.workspaces.private_ws = {
+      path: "private",
+      enabled: true,
+      mdkg_dir: ".mdkg",
+      visibility: "private",
+    };
+  });
+  writeFile(
+    path.join(root, ".mdkg", "work", "task-1.md"),
+    [
+      "---",
+      "id: task-1",
+      "type: task",
+      "title: Public task",
+      "status: todo",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [private_ws:task-2]",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-05-18",
+      "updated: 2026-05-18",
+      "---",
+      "",
+      "# Overview",
+      "",
+      "# Acceptance Criteria",
+      "",
+      "# Files Affected",
+      "",
+      "# Implementation Notes",
+      "",
+      "# Test Plan",
+      "",
+      "# Links / Artifacts",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, "private", ".mdkg", "work", "task-2.md"),
+    [
+      "---",
+      "id: task-2",
+      "type: task",
+      "title: Private task",
+      "status: todo",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-05-18",
+      "updated: 2026-05-18",
+      "---",
+      "",
+      "# Overview",
+      "",
+      "# Acceptance Criteria",
+      "",
+      "# Files Affected",
+      "",
+      "# Implementation Notes",
+      "",
+      "# Test Plan",
+      "",
+      "# Links / Artifacts",
+    ].join("\n")
+  );
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true, quiet: true }));
+  const receipt = JSON.parse(output.stdout) as { ok: boolean; errors: string[] };
+  assert.match(output.error instanceof Error ? output.error.message : "", /validation failed/);
+  assert.equal(receipt.ok, false);
+  assert.ok(receipt.errors.some((error) => error.includes("visibility: root:task-1")));
 });

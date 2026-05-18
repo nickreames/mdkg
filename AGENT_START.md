@@ -37,6 +37,8 @@ Operating rules:
 - Use `mdkg work ...` helpers for semantic mirror contracts, work orders, receipts, and artifact registration.
 - Use `mdkg bundle create/list/show/verify` for explicit full `.mdkg` graph snapshot bundles.
 - Use `mdkg bundle import add/list/verify` to register child bundle snapshots as read-only planning context.
+- Use `mdkg pack <id> --visibility public|internal` only when you need a public-safe or internal-safe pack; no flag remains private-capable local behavior.
+- Mark archive sidecars public only with explicit `mdkg archive add --visibility public` intent.
 - Before committing repos that track archive caches or `.mdkg/bundles/`, run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip`.
 - Use `mdkg task start/update/done` for structured task, bug, and test lifecycle fields.
 - Use `mdkg upgrade` to preview scaffold updates; only run `mdkg upgrade --apply` after reviewing the receipt.
@@ -131,6 +133,7 @@ Build and verification:
 - `npm run smoke:archive-work`
 - `npm run smoke:bundle`
 - `npm run smoke:bundle-import`
+- `npm run smoke:visibility`
 
 When you need a full command reference, use `CLI_COMMAND_MATRIX.md` or `mdkg help <command>`.
 

@@ -94,6 +94,7 @@ Build deterministic context:
 ```bash
 mdkg pack task-1
 mdkg pack task-1 --profile concise --dry-run --stats
+mdkg pack task-1 --visibility public --dry-run
 ```
 
 Create a full `.mdkg` graph snapshot bundle for root or child orchestration:
@@ -106,7 +107,7 @@ mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
 mdkg bundle list --json
 ```
 
-Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph or archive records.
+Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph, archive, or imported bundle records.
 
 Import a child repo bundle as a read-only planning view:
 
@@ -119,7 +120,7 @@ mdkg pack child_repo:work.example --dry-run --stats
 mdkg bundle import verify child_repo --json
 ```
 
-Imported bundle nodes are projected under the import alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, and capability discovery, but remain read-only; mutate the child repo and refresh its bundle to change imported content. Stale imports warn during planning reads and fail `mdkg bundle import verify`.
+Imported bundle nodes are projected under the import alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, and capability discovery, but remain read-only; mutate the child repo and refresh its bundle to change imported content. Stale imports warn during planning reads and fail `mdkg bundle import verify`. Public or internal imports must be backed by public bundle profiles; private imports stay private planning context.
 
 Validate before handoff or commit:
 
@@ -139,7 +140,7 @@ mdkg capability show <id-or-qid-or-slug> --json
 Register source and artifact files as committed archive sidecars:
 
 ```bash
-mdkg archive add ./inputs/key_input_doc.pdf --id archive.key-input-doc --kind source
+mdkg archive add ./inputs/key_input_doc.pdf --id archive.key-input-doc --kind source --visibility private
 mdkg archive verify archive://archive.key-input-doc
 mdkg archive list --json
 ```
@@ -286,7 +287,7 @@ mdkg maintains `.mdkg/index/capabilities.json` as a derived access cache for det
 
 The capability cache is not the full graph and is not source of truth. Normal tasks, epics, bugs, tests, feats, and checkpoints remain in the standard graph index. Markdown remains authoritative; deleting the cache is recoverable with `mdkg index` or by running a capability command when auto-reindex is enabled.
 
-Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. Workspace `visibility` is advisory source metadata for filtering (`private`, `internal`, or `public`), not a hard permission boundary in this release.
+Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. Workspace `visibility` also feeds mdkg's export safety checks for public/internal packs and public bundles. This is a CLI safety layer, not secret scanning, body redaction, or a replacement for private git hosting.
 
 ## Agent workflow files
 
@@ -309,6 +310,8 @@ Archive entries live under `.mdkg/archive/<archive.id>/` and are normal graph no
 
 Archive sidecars support `archive://archive.example` refs from orders, receipts, artifacts, proof refs, and other workflow metadata. `mdkg archive verify` treats a missing raw local source file as non-fatal when the committed sidecar and ZIP cache hashes are valid.
 
+Archive sidecar visibility defaults to `private`. Use `mdkg archive add --visibility public` only when the sidecar metadata and ZIP cache are safe for public packs or public bundles.
+
 By default, init/upgrade ignore generated raw archive source copies with `.mdkg/archive/**/source/`; sidecar `.md` files and compressed `.zip` caches remain commit-eligible.
 
 ## Current direction
@@ -330,6 +333,7 @@ This release includes:
 - conservative `mdkg upgrade` with mode-aware init manifests
 - archive sidecars with deterministic ZIP caches
 - semantic mirror helpers under `mdkg work ...`
+- explicit public/internal/private visibility enforcement for packs, bundles, archives, imports, validation, and doctor diagnostics
 
 Current direction:
 - keep the OSS story generic around `mdkg init --agent`

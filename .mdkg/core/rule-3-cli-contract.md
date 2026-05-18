@@ -199,12 +199,13 @@ Common flags:
   - capability records are read-only derived cache entries, not source of truth
   - normal task, epic, feat, bug, test, and checkpoint nodes are not capability records
 - archives are first-class sidecar nodes under `mdkg archive ...`:
-  - `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
-  - `mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]`
+  - `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
+  - `mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]`
   - `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
   - `mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]`
   - `mdkg archive compress <id-or-archive-uri|--all> [--json]`
   - `archive://<archive.id>` refs resolve against local archive sidecars
+  - archive visibility defaults to `private`
   - raw copied sources live under `.mdkg/archive/**/source/`; sidecar `.md` and deterministic `.zip` caches remain commit-eligible
 - full graph snapshot bundles live under `mdkg bundle ...`:
   - `mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]`
@@ -220,9 +221,12 @@ Common flags:
   - bundles are explicit transport artifacts and are not rewritten by `mdkg index`
   - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
   - public bundles must fail closed when public records reference private graph or archive records
+  - public bundles must fail closed when public records reference private/internal imported graph records
   - bundle imports are read-only projected graph views; child repos remain owners of real mutations and commits
   - `bundle import verify` exits nonzero for stale, missing, corrupt, profile-mismatched, or duplicate-id imports
   - public bundle creation must not re-export imported child graph content and must fail if public local nodes reference private/internal imports
+  - public/internal imports require `expected_profile: public`; private bundle profiles cannot be promoted through import visibility
+  - `mdkg pack --visibility public|internal|private` records explicit pack visibility and filters public/internal packs through the same fail-closed policy
 - work lifecycle helpers live under `mdkg work ...`:
   - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
   - `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`

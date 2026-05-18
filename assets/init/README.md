@@ -78,7 +78,7 @@ mdkg bundle create --profile private
 mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
 ```
 
-Use this as a pre-commit recommendation only when the repo tracks archive caches or `.mdkg/bundles/`. Private bundles are local graph transport artifacts and may be tracked in private repos when configured. Public bundles require selected workspaces with `visibility: public` and fail closed when public records reference private graph or archive records.
+Use this as a pre-commit recommendation only when the repo tracks archive caches or `.mdkg/bundles/`. Private bundles are local graph transport artifacts and may be tracked in private repos when configured. Public bundles require selected workspaces with `visibility: public` and fail closed when public records reference private graph, archive, or imported records.
 
 Register child bundle snapshots as read-only imports with:
 
@@ -94,7 +94,7 @@ Imported nodes use the import alias as their qid prefix and can be inspected or 
 Archive source/artifact files with:
 
 ```bash
-mdkg archive add <file> --id archive.example --kind source
+mdkg archive add <file> --id archive.example --kind source --visibility private
 mdkg archive verify archive://archive.example
 ```
 
