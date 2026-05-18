@@ -1,8 +1,11 @@
-import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
+import {
+  checkArchiveIntegrity,
+  hashArchiveBuffer,
+} from "../graph/archive_integrity";
 import { buildIndex, IndexNode } from "../graph/indexer";
 import { loadIndex, writeIndex } from "../graph/index_cache";
 import { normalizeVisibility, Visibility } from "../graph/visibility";
@@ -10,7 +13,7 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId } from "../util/id";
 import { archiveIdFromUri } from "../util/refs";
-import { createDeterministicZip, readSingleFileZip } from "../util/zip";
+import { createDeterministicZip } from "../util/zip";
 import { appendAutomaticEvent } from "./event_support";
 
 export type ArchiveAddCommandOptions = {
@@ -118,14 +121,6 @@ function slugify(value: string): string {
   return slug || "archive";
 }
 
-function hashBuffer(buffer: Buffer): string {
-  return `sha256:${crypto.createHash("sha256").update(buffer).digest("hex")}`;
-}
-
-function hashFile(filePath: string): string {
-  return hashBuffer(fs.readFileSync(filePath));
-}
-
 function normalizeWorkspace(value?: string): string {
   if (!value) {
     return "root";
@@ -166,7 +161,7 @@ function sourcePathLabel(root: string, sourcePath: string): string {
   if (!relative.startsWith("..") && !path.isAbsolute(relative)) {
     return toPosixPath(relative);
   }
-  return sourcePath;
+  return `external:${path.basename(sourcePath)}`;
 }
 
 function nextArchiveId(root: string, ws: string, basename: string, existingIds: Set<string>): string {
@@ -237,6 +232,30 @@ function archiveNodePaths(root: string, node: IndexNode): {
   };
 }
 
+function walkArchiveSidecars(root: string): string[] {
+  if (!fs.existsSync(root)) {
+    return [];
+  }
+  const entries = fs.readdirSync(root, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    if (entry.name === "source") {
+      continue;
+    }
+    const fullPath = path.join(root, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkArchiveSidecars(fullPath));
+    } else if (entry.isFile() && entry.name.endsWith(".md")) {
+      files.push(fullPath);
+    }
+  }
+  return files.sort();
+}
+
+function stringAttribute(value: FrontmatterValue | undefined): string | undefined {
+  return typeof value === "string" && value.trim().length > 0 ? value : undefined;
+}
+
 function writeArchiveSidecar(
   sidecarPath: string,
   frontmatter: Record<string, FrontmatterValue>,
@@ -247,57 +266,107 @@ function writeArchiveSidecar(
   fs.writeFileSync(sidecarPath, content.endsWith("\n") ? content : `${content}\n`, "utf8");
 }
 
-function verifyArchiveNode(root: string, node: IndexNode): ArchiveVerifyResult {
+function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): ArchiveVerifyResult | undefined {
+  const relativePath = toPosixPath(path.relative(root, sidecarPath));
+  let frontmatter: Record<string, FrontmatterValue>;
+  try {
+    frontmatter = parseFrontmatter(fs.readFileSync(sidecarPath, "utf8"), sidecarPath).frontmatter;
+  } catch (err) {
+    return {
+      qid: `${ws}:${relativePath}`,
+      id: relativePath,
+      path: relativePath,
+      ok: false,
+      raw_present: false,
+      compressed_present: false,
+      errors: [err instanceof Error ? err.message : String(err)],
+    };
+  }
+  if (frontmatter.type !== "archive") {
+    return undefined;
+  }
+  const id = stringAttribute(frontmatter.id) ?? relativePath;
   const result: ArchiveVerifyResult = {
-    qid: node.qid,
-    id: node.id,
-    path: node.path,
+    qid: `${ws}:${id}`,
+    id,
+    path: relativePath,
     ok: true,
     raw_present: false,
     compressed_present: false,
     errors: [],
   };
-  const { rawPath, zipPath } = archiveNodePaths(root, node);
-  const expectedRawHash = String(node.attributes.sha256 ?? "");
-  const expectedCompressedHash = String(node.attributes.compressed_sha256 ?? "");
-  const expectedByteSize = String(node.attributes.byte_size ?? "");
 
-  if (!fs.existsSync(zipPath)) {
-    result.errors.push(`compressed cache missing: ${path.relative(root, zipPath)}`);
-  } else {
-    result.compressed_present = true;
-    const actualCompressedHash = hashFile(zipPath);
-    if (actualCompressedHash !== expectedCompressedHash) {
-      result.errors.push(`compressed_sha256 mismatch: ${actualCompressedHash}`);
-    }
-    try {
-      const unzipped = readSingleFileZip(fs.readFileSync(zipPath));
-      const unzippedHash = hashBuffer(unzipped.data);
-      if (unzippedHash !== expectedRawHash) {
-        result.errors.push(`zip payload sha256 mismatch: ${unzippedHash}`);
-      }
-      if (String(unzipped.data.length) !== expectedByteSize) {
-        result.errors.push(`zip payload byte_size mismatch: ${unzipped.data.length}`);
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      result.errors.push(`zip read failed: ${message}`);
+  const sidecarDir = path.dirname(sidecarPath);
+  const sourcePath = stringAttribute(frontmatter.source_path);
+  const storedPath = stringAttribute(frontmatter.stored_path);
+  const compressedPath = stringAttribute(frontmatter.compressed_path);
+  const expectedRawHash = stringAttribute(frontmatter.sha256);
+  const expectedCompressedHash = stringAttribute(frontmatter.compressed_sha256);
+  const expectedByteSize = stringAttribute(frontmatter.byte_size);
+  for (const [key, value] of [
+    ["source_path", sourcePath],
+    ["stored_path", storedPath],
+    ["compressed_path", compressedPath],
+    ["sha256", expectedRawHash],
+    ["compressed_sha256", expectedCompressedHash],
+    ["byte_size", expectedByteSize],
+  ] as const) {
+    if (!value) {
+      result.errors.push(`${key} is required`);
     }
   }
-
-  if (fs.existsSync(rawPath)) {
-    result.raw_present = true;
-    const actualRawHash = hashFile(rawPath);
-    if (actualRawHash !== expectedRawHash) {
-      result.errors.push(`raw sha256 mismatch: ${actualRawHash}`);
-    }
-    const actualByteSize = String(fs.statSync(rawPath).size);
-    if (actualByteSize !== expectedByteSize) {
-      result.errors.push(`raw byte_size mismatch: ${actualByteSize}`);
-    }
+  if (result.errors.length > 0) {
+    result.ok = false;
+    return result;
   }
-  result.ok = result.errors.length === 0;
+
+  const checked = checkArchiveIntegrity({
+    root,
+    rawPath: path.resolve(sidecarDir, storedPath as string),
+    zipPath: path.resolve(sidecarDir, compressedPath as string),
+    expectedRawHash: expectedRawHash as string,
+    expectedCompressedHash: expectedCompressedHash as string,
+    expectedByteSize: expectedByteSize as string,
+  });
+  result.raw_present = checked.raw_present;
+  result.compressed_present = checked.compressed_present;
+  result.errors = checked.errors;
+  result.ok = checked.ok;
   return result;
+}
+
+function loadArchiveVerifyResults(options: ArchiveVerifyCommandOptions): ArchiveVerifyResult[] {
+  const config = loadConfig(options.root);
+  const wsFilter = options.ws ? normalizeWorkspace(options.ws) : undefined;
+  if (wsFilter && !config.workspaces[wsFilter]) {
+    throw new NotFoundError(`workspace not found: ${wsFilter}`);
+  }
+  const idFilter = options.id ? archiveIdFromInput(options.id) : undefined;
+  const results: ArchiveVerifyResult[] = [];
+  for (const alias of Object.keys(config.workspaces).sort()) {
+    if (wsFilter && alias !== wsFilter) {
+      continue;
+    }
+    const workspace = config.workspaces[alias];
+    if (!workspace.enabled) {
+      continue;
+    }
+    const archiveRoot = path.resolve(options.root, workspace.path, workspace.mdkg_dir, "archive");
+    for (const sidecarPath of walkArchiveSidecars(archiveRoot)) {
+      const result = verifyArchiveSidecar(options.root, alias, sidecarPath);
+      if (!result) {
+        continue;
+      }
+      if (idFilter && result.id !== idFilter) {
+        continue;
+      }
+      results.push(result);
+    }
+  }
+  if (idFilter && results.length === 0) {
+    throw new NotFoundError(`archive not found: ${options.id}`);
+  }
+  return results;
 }
 
 export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
@@ -348,8 +417,8 @@ export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
     compressed_path: toPosixPath(path.relative(archiveDir, zipPath)),
     mime_type: inferMime(sourcePath),
     byte_size: String(rawData.length),
-    sha256: hashBuffer(rawData),
-    compressed_sha256: hashBuffer(zipData),
+    sha256: hashArchiveBuffer(rawData),
+    compressed_sha256: hashArchiveBuffer(zipData),
     visibility,
     provenance: "local-copy",
     ingest_status: "compressed",
@@ -441,12 +510,7 @@ export function runArchiveShowCommand(options: ArchiveShowCommandOptions): void 
 }
 
 export function runArchiveVerifyCommand(options: ArchiveVerifyCommandOptions): void {
-  const config = loadConfig(options.root);
-  const { index } = loadIndex({ root: options.root, config });
-  const nodes = options.id
-    ? [resolveArchiveNode(options.root, options.id, options.ws)]
-    : Object.values(index.nodes).filter((node) => node.type === "archive");
-  const results = nodes.map((node) => verifyArchiveNode(options.root, node));
+  const results = loadArchiveVerifyResults(options);
   const ok = results.every((result) => result.ok);
   if (options.json) {
     console.log(JSON.stringify({ ok, count: results.length, results }, null, 2));
@@ -487,8 +551,8 @@ export function runArchiveCompressCommand(options: ArchiveCompressCommandOptions
     const nextFrontmatter: Record<string, FrontmatterValue> = {
       ...parsed.frontmatter,
       byte_size: String(rawData.length),
-      sha256: hashBuffer(rawData),
-      compressed_sha256: hashBuffer(zipData),
+      sha256: hashArchiveBuffer(rawData),
+      compressed_sha256: hashArchiveBuffer(zipData),
       ingest_status: "compressed",
       updated: today,
     };

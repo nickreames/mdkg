@@ -9,6 +9,9 @@ const BASE_CONFIG = {
   schema_version: 1,
   tool: "mdkg",
   root_required: true,
+  archive: {
+    large_cache_warning_bytes: 26214400,
+  },
   index: {
     auto_reindex: true,
     tolerant: false,
@@ -64,6 +67,7 @@ test("loadConfig reads and validates config", () => {
   assert.equal(config.schema_version, LATEST_SCHEMA_VERSION);
   assert.equal(config.workspaces.root.path, ".");
   assert.equal(config.workspaces.root.visibility, "private");
+  assert.equal(config.archive.large_cache_warning_bytes, 26214400);
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
   assert.equal(config.bundles.default_profile, "private");
@@ -75,6 +79,7 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   const configPath = path.join(root, ".mdkg", "config.json");
   const legacyConfig = { ...BASE_CONFIG } as Record<string, unknown>;
   delete legacyConfig.schema_version;
+  delete legacyConfig.archive;
   delete legacyConfig.capabilities;
   delete legacyConfig.bundles;
   delete legacyConfig.bundle_imports;
@@ -87,6 +92,7 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   assert.equal(config.schema_version, LATEST_SCHEMA_VERSION);
   assert.equal(config.workspaces.root.mdkg_dir, ".mdkg");
   assert.equal(config.workspaces.root.visibility, "private");
+  assert.equal(config.archive.large_cache_warning_bytes, 26214400);
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
   assert.equal(config.bundles.default_profile, "private");
@@ -355,6 +361,18 @@ test("loadConfig rejects invalid numeric config invariants", () => {
   const configPath = path.join(root, ".mdkg", "config.json");
 
   for (const [mutate, pattern] of [
+    [
+      (config: typeof BASE_CONFIG) => {
+        config.archive.large_cache_warning_bytes = -1;
+      },
+      /archive.large_cache_warning_bytes must be a non-negative integer/,
+    ],
+    [
+      (config: typeof BASE_CONFIG) => {
+        config.archive.large_cache_warning_bytes = 1.5;
+      },
+      /archive.large_cache_warning_bytes must be an integer/,
+    ],
     [
       (config: typeof BASE_CONFIG) => {
         config.pack.default_depth = -1;

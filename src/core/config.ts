@@ -28,6 +28,9 @@ export type Config = {
   schema_version: number;
   tool: string;
   root_required: boolean;
+  archive: {
+    large_cache_warning_bytes: number;
+  };
   index: {
     auto_reindex: boolean;
     tolerant: boolean;
@@ -84,6 +87,7 @@ const PACK_EDGE_KEYS = new Set([
 const NEXT_WORK_STRATEGIES = new Set(["chain_then_priority"]);
 const WORKSPACE_VISIBILITY_VALUES = new Set(["private", "internal", "public"]);
 const BUNDLE_PROFILE_VALUES = new Set(["private", "public"]);
+const DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES = 26214400;
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -318,6 +322,10 @@ export function validateConfigSchema(raw: unknown): Config {
   const tool = requireString(raw.tool, "tool", errors);
   const root_required = requireBoolean(raw.root_required, "root_required", errors);
 
+  const archiveRaw =
+    raw.archive === undefined
+      ? { large_cache_warning_bytes: DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES }
+      : requireObject(raw.archive, "archive", errors);
   const indexRaw = requireObject(raw.index, "index", errors);
   const capabilitiesRaw =
     raw.capabilities === undefined
@@ -335,6 +343,19 @@ export function validateConfigSchema(raw: unknown): Config {
   const templatesRaw = requireObject(raw.templates, "templates", errors);
   const workRaw = requireObject(raw.work, "work", errors);
   const workspacesRaw = requireObject(raw.workspaces, "workspaces", errors);
+
+  const archive = archiveRaw
+    ? {
+        large_cache_warning_bytes:
+          archiveRaw.large_cache_warning_bytes === undefined
+            ? DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES
+            : requireNonNegativeInteger(
+                archiveRaw.large_cache_warning_bytes,
+                "archive.large_cache_warning_bytes",
+                errors
+              ),
+      }
+    : undefined;
 
   const index = indexRaw
     ? {
@@ -635,6 +656,7 @@ export function validateConfigSchema(raw: unknown): Config {
     schema_version: schema_version as number,
     tool: tool as string,
     root_required: root_required as boolean,
+    archive: archive as Config["archive"],
     index: index as Config["index"],
     capabilities: capabilities as Config["capabilities"],
     bundles: bundles as Config["bundles"],

@@ -142,7 +142,7 @@ const ORDER_STATUS_VALUES = new Set([
   "cancelled",
   "failed",
 ]);
-const RECEIPT_STATUS_VALUES = new Set(["recorded", "verified", "rejected"]);
+const RECEIPT_STATUS_VALUES = new Set(["recorded", "verified", "rejected", "superseded"]);
 const OUTCOME_VALUES = new Set(["success", "partial", "failure"]);
 const ARTIFACT_POLICY_VALUES = new Set([
   "commit_sidecar_and_zip",

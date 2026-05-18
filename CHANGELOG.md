@@ -16,6 +16,9 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 - Added `mdkg pack --visibility public|internal|private` for explicit public-safe and internal-safe packs.
 - Added `mdkg archive add --visibility private|internal|public` and `mdkg archive list --visibility ...`.
 - Added packed-package visibility smoke coverage.
+- Added `receipt_status: superseded` support for committed receipt mirrors.
+- Added runtime-style work/order/receipt fixture coverage with input refs, requested outputs, proof refs, artifacts, and hashes.
+- Added `archive.large_cache_warning_bytes` config and `mdkg doctor` warnings for large committed archive ZIP caches.
 
 ### Changed
 
@@ -26,12 +29,15 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 - Public/internal bundle imports now require public bundle profiles.
 - `mdkg validate` and `mdkg doctor` now report public/internal references to less-visible mdkg records.
 - Archive JSON receipts now include sidecar visibility.
+- Archive sidecars created from outside-repo files now redact `source_path` to `external:<basename>` instead of storing absolute local paths.
+- `mdkg validate` and `mdkg archive verify` now share strict ZIP cache integrity checks for ZIP hash, readability, payload SHA-256, and payload byte size.
 
 ### Fixed
 
 - Mutating task and work update flows now reject imported qids with explicit read-only import errors.
 - Local graph indexing now allows edges to configured import aliases without treating them as missing local workspace nodes.
 - Public bundle checks now reuse the same fail-closed policy as public/internal pack checks.
+- `mdkg archive verify --json` now emits a verification receipt for corrupt archive ZIP caches instead of being blocked by strict index validation.
 
 ## 0.1.3 - 2026-05-17
 

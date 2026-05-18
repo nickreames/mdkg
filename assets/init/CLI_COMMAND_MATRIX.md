@@ -99,6 +99,9 @@ Archive sidecars:
 - `mdkg archive compress <id-or-archive-uri|--all> [--json]`
 - archive sidecars are `type: archive` nodes under `.mdkg/archive`
 - archive visibility defaults to `private`
+- `mdkg validate` and `mdkg archive verify` both check ZIP hash, ZIP readability, payload SHA-256, and payload byte size
+- outside-repo archive sources are recorded as `external:<basename>` instead of absolute local paths
+- `mdkg doctor` warns about ZIP caches larger than `archive.large_cache_warning_bytes`; `0` disables the warning
 - committed sidecar `.md` files and ZIP caches are source-of-truth evidence; raw source copies under `.mdkg/archive/**/source/` are ignored by default
 
 Graph snapshot bundles:

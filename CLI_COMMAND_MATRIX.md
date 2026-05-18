@@ -507,10 +507,13 @@ Fields:
 
 Notes:
 - `archive add` copies the source, writes a sidecar, and writes a deterministic zip cache
+- in-repo `source_path` values are repo-relative; outside-repo source paths are redacted as `external:<basename>`
 - archive visibility defaults to `private`
 - `archive://<archive.id>` refs are validated against local archive sidecars
+- `archive verify` and `validate` both check the ZIP hash, ZIP readability, payload SHA-256, and payload byte size
 - `archive verify` passes when the raw local source file is missing but the committed sidecar and ZIP cache are valid
 - generated raw source copies live under `.mdkg/archive/**/source/` and are ignored by default
+- `doctor` warns when archive ZIP caches exceed `archive.large_cache_warning_bytes` (default `26214400`; `0` disables)
 
 JSON receipts:
 - `add`: `{ action: "created", archive: { workspace, id, qid, path, archive_uri, stored_path, compressed_path, sha256, compressed_sha256, visibility } }`
@@ -778,6 +781,7 @@ Checks:
 - global node index health
 - capability cache health
 - archive sidecar storage hygiene
+- archive large-cache warning threshold
 - bundle snapshot storage guidance
 
 ### `mdkg workspace`

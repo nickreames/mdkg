@@ -207,6 +207,77 @@ test("validate and index accept valid Agent workflow file fixtures", () => {
     "receipt.generate-image-1",
     "skill.review-loop",
   ]);
+  assert.equal(index.nodes["root:receipt.runtime-render-1"].attributes.receipt_status, "superseded");
+  assert.deepEqual(index.nodes["root:order.runtime-render-1"].attributes.input_refs, [
+    "artifact://runtime/input",
+  ]);
+  assert.deepEqual(index.nodes["root:order.runtime-render-1"].attributes.requested_outputs, [
+    "artifact_uri:uri:required",
+    "receipt_markdown:file:required",
+  ]);
+  assert.equal(index.nodes["root:order.runtime-render-1"].attributes.artifact_policy, "commit_sidecar_and_zip");
+  assert.deepEqual(index.nodes["root:receipt.runtime-render-1"].attributes.proof_refs, [
+    "tool.fixture-renderer",
+    "artifact://runtime/proof",
+  ]);
+  assert.deepEqual(index.nodes["root:receipt.runtime-render-1"].attributes.input_hashes, [
+    "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  ]);
+  assert.deepEqual(index.nodes["root:receipt.runtime-render-1"].attributes.output_hashes, [
+    "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  ]);
+});
+
+test("runtime-style work order and receipt fixtures validate and pack deterministic evidence", () => {
+  const root = makeTempDir("mdkg-agent-runtime-style-");
+  setupWorkspace(root);
+  copyValidFixtures(root);
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+
+  const out = ".mdkg/pack/runtime-receipt.json";
+  runPackCommand({
+    root,
+    id: "receipt.runtime-render-1",
+    depth: 3,
+    edges: ["relates"],
+    format: "json",
+    out,
+    noCache: true,
+  });
+
+  const payload = JSON.parse(fs.readFileSync(path.join(root, out), "utf8"));
+  const qids = payload.nodes.map((node: { qid: string }) => node.qid);
+  assert.ok(qids.includes("root:receipt.runtime-render-1"));
+  assert.ok(qids.includes("root:order.runtime-render-1"));
+  assert.ok(qids.includes("root:work.runtime-render"));
+  assert.ok(qids.includes("root:agent.runtime-worker"));
+
+  const receipt = payload.nodes.find((node: { qid: string }) => node.qid === "root:receipt.runtime-render-1");
+  assert.equal(receipt.frontmatter.receipt_status, "superseded");
+  assert.deepEqual(receipt.frontmatter.artifacts, ["artifact://runtime/output"]);
+  assert.deepEqual(receipt.frontmatter.proof_refs, [
+    "tool.fixture-renderer",
+    "artifact://runtime/proof",
+  ]);
+  assert.deepEqual(receipt.frontmatter.input_hashes, [
+    "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  ]);
+  assert.deepEqual(receipt.frontmatter.output_hashes, [
+    "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  ]);
+
+  const order = payload.nodes.find((node: { qid: string }) => node.qid === "root:order.runtime-render-1");
+  assert.deepEqual(order.frontmatter.input_refs, ["artifact://runtime/input"]);
+  assert.deepEqual(order.frontmatter.requested_outputs, [
+    "artifact_uri:uri:required",
+    "receipt_markdown:file:required",
+  ]);
+  assert.deepEqual(order.frontmatter.constraint_refs, [
+    "policy.runtime-safe",
+    "fixture://runtime/constraints",
+  ]);
+  assert.equal(order.frontmatter.artifact_policy, "commit_sidecar_and_zip");
 });
 
 test("validate rejects invalid Agent workflow fixtures", () => {

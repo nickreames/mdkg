@@ -108,6 +108,13 @@ Design docs (`prd/edd/prop`):
 Rules (`rule-*`):
 - no required status field
 
+Archives (`archive`):
+- required id starts with `archive.`
+- required fields: `archive_kind`, `source_path`, `stored_path`, `compressed_path`, `mime_type`, `byte_size`, `sha256`, `compressed_sha256`, `visibility`, `provenance`, `ingest_status`
+- `source_path` is repo-relative for in-repo sources or `external:<basename>` for outside-repo sources
+- `stored_path` and `compressed_path` are relative to the sidecar directory
+- `mdkg validate` and `mdkg archive verify` both check deterministic ZIP cache integrity and tolerate a missing raw source copy when the ZIP cache is valid
+
 ## Body headings (guidance only)
 
 Body headings are strongly recommended for agent usability but should not be hard requirements.

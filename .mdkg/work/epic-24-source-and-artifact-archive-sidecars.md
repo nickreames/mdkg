@@ -2,7 +2,7 @@
 id: epic-24
 type: epic
 title: source and artifact archive sidecars
-status: todo
+status: done
 priority: 2
 tags: [future, archive, artifacts, sources, sidecars, compression]
 owners: []
@@ -15,7 +15,7 @@ refs: [edd-3, edd-8, rule-4]
 aliases: [archive-sidecars, source-artifact-sidecars]
 skills: []
 created: 2026-05-17
-updated: 2026-05-17
+updated: 2026-05-18
 ---
 
 # Goal
@@ -64,4 +64,24 @@ policy-managed.
 
 - `epic-22`
 - `epic-27`
-- Future implementation should add source and artifact fixtures.
+- `task-149`
+- `task-150`
+- `task-151`
+- `npm run test` passed with 360 tests.
+- `npm run cli:check` passed.
+- `node dist/cli.js validate` passed.
+- `npm run smoke:archive-work` passed.
+- `npm run smoke:bundle` passed.
+- `npm run smoke:bundle-import` passed.
+- `npm run smoke:visibility` passed.
+- `npm run smoke:init` passed.
+- `npm run smoke:upgrade` passed.
+
+# Closeout
+
+Epic-24 is complete for the 0.1.4 line. mdkg now has first-class archive
+sidecars, deterministic ZIP caches, strict ZIP payload validation, private-first
+visibility, public-safe pack/bundle checks, large-cache doctor warnings, and
+packed temp-repo smoke coverage. Future work can extend archive storage policy
+or external object-store integrations, but those are not blockers for this
+epic.
