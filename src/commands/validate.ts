@@ -8,6 +8,7 @@ import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
 import { buildBundleImportsIndex, mergeBundleImportsIntoIndex } from "../graph/bundle_imports";
+import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
 import { ValidationError } from "../util/errors";
 import { auditSkillMirrors } from "./skill_mirror";
 
@@ -346,6 +347,11 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     knownSkillSlugs: knownSkills,
   });
   errors.push(...graphErrors);
+  errors.push(
+    ...visibilityViolationMessages(collectVisibilityViolations(validationIndex, config)).map(
+      (message) => `visibility: ${message}`
+    )
+  );
 
   const skillsRoot = resolveSkillsRoot(options.root, config);
   for (const dirPath of listDirectories(skillsRoot)) {

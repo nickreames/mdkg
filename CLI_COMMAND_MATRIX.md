@@ -289,6 +289,7 @@ Primary flags:
 - `--format <fmt>` / `-f`
 - `--out <path>` / `-o`
 - `--profile <name>`
+- `--visibility public|internal|private`
 - `--skills <mode>`
 - `--skills-depth <mode>`
 - `--dry-run`
@@ -319,6 +320,13 @@ Profiles:
 
 Compatibility alias still supported:
 - `--pack-profile`
+
+Visibility:
+- no visibility flag preserves existing private-capable local pack behavior
+- `--visibility public` includes only public mdkg records and fails when included records reference internal/private graph, archive, or imported records
+- `--visibility internal` includes public/internal records and fails when included records reference private records
+- `--visibility private` records explicit private intent and may include all records
+- visibility filtering does not inspect or redact arbitrary Markdown body text
 
 ### `mdkg skill`
 
@@ -469,7 +477,7 @@ Notes:
 - records include deterministic source metadata such as workspace, visibility, kind, id/qid/slug, path, headings, refs, source hash, and `indexed_at`
 - `.mdkg/index/capabilities.json` is rebuilt by `mdkg index` and by capability commands when stale
 - normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
-- visibility is advisory source metadata for filtering in this release, not a hard permission gate
+- visibility is mdkg export metadata used by capability filters, `pack --visibility`, public bundle checks, validation, and doctor diagnostics; it is not secret scanning or body redaction
 
 ### `mdkg archive`
 
@@ -479,10 +487,10 @@ When to use:
 - keep raw local archive source copies out of git while committing sidecar metadata and ZIP caches
 
 Usage:
-- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--json]`
-- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
-- `mdkg archive list [--kind source|artifact] [--json]`
-- `mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]`
+- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]`
+- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
+- `mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--json]`
+- `mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]`
 - `mdkg archive show <id-or-archive-uri> [--json]`
 - `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
 - `mdkg archive verify [id-or-archive-uri] [--json]`
@@ -499,12 +507,13 @@ Fields:
 
 Notes:
 - `archive add` copies the source, writes a sidecar, and writes a deterministic zip cache
+- archive visibility defaults to `private`
 - `archive://<archive.id>` refs are validated against local archive sidecars
 - `archive verify` passes when the raw local source file is missing but the committed sidecar and ZIP cache are valid
 - generated raw source copies live under `.mdkg/archive/**/source/` and are ignored by default
 
 JSON receipts:
-- `add`: `{ action: "created", archive: { workspace, id, qid, path, archive_uri, stored_path, compressed_path, sha256, compressed_sha256 } }`
+- `add`: `{ action: "created", archive: { workspace, id, qid, path, archive_uri, stored_path, compressed_path, sha256, compressed_sha256, visibility } }`
 - `list`: `{ kind: "archive", count, items }`
 - `show`: `{ kind: "archive", item, attributes }`
 - `verify`: `{ ok, count, results }`
@@ -546,10 +555,11 @@ Notes:
 - private bundles include selected authored `.mdkg` content, archive sidecars, archive ZIP caches, and generated bundle-local indexes
 - public bundles include only public workspace content and public archive sidecars
 - public bundles require at least one selected workspace with `visibility: public`
-- public bundle creation fails if public records reference private graph nodes or private archive refs
+- public bundle creation fails if public records reference private graph nodes, private archive refs, or private/internal imported graph qids
 - bundles exclude `.mdkg/pack/`, `.mdkg/bundles/`, existing `.mdkg/index/`, and raw `.mdkg/archive/**/source/` files
 - bundle imports are read-only graph views projected under import-alias qids such as `child_repo:task-1`
 - enabled imports are visible to `list`, `search`, `show`, `pack`, and `capability`
+- public/internal imports require `--profile public`; private bundle profiles cannot be promoted to public/internal import visibility
 - stale imports warn during planning reads; `mdkg bundle import verify` exits nonzero for stale or invalid imports
 - mutating commands reject imported qids with a read-only import error
 - `mdkg index` writes `.mdkg/index/imports.json` in addition to local indexes

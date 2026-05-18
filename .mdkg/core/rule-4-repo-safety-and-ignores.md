@@ -93,7 +93,8 @@ Explicit flags remain available and take precedence:
 
 - `.mdkg/bundles/` stores explicit snapshot artifacts and is not ignored by default.
 - Private bundles may include sensitive authored mdkg content and should stay in private repos.
-- Public bundles must be created with `mdkg bundle create --profile public` so private graph and archive refs fail closed.
+- Public bundles must be created with `mdkg bundle create --profile public` so private graph, archive, and imported bundle refs fail closed.
+- Public-safe packs must be created with `mdkg pack <id> --visibility public`; internal-safe packs use `--visibility internal`. These filters do not redact Markdown body text.
 - Bundle ZIPs must exclude `.mdkg/pack/`, existing `.mdkg/index/`, nested `.mdkg/bundles/`, and raw `.mdkg/archive/**/source/` files.
 - Repos that track archive caches or bundles should refresh in this order before commit: `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, then bundle verify.
 

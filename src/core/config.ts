@@ -602,6 +602,17 @@ export function validateConfigSchema(raw: unknown): Config {
               errors
             );
 
+      if (
+        visibility !== undefined &&
+        expectedProfile !== undefined &&
+        visibility !== "private" &&
+        expectedProfile !== "public"
+      ) {
+        errors.push(
+          `bundle_imports.${alias}.expected_profile must be public when visibility is ${visibility}`
+        );
+      }
+
       if (importPath && enabled !== undefined && visibility && expectedProfile) {
         bundle_imports[alias] = {
           path: importPath,

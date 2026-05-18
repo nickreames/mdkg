@@ -71,6 +71,8 @@ test("archive commands create deterministic sidecars and verify zip caches witho
       "archive.key-input-doc",
       "--kind",
       "source",
+      "--visibility",
+      "public",
       "--title",
       "Key Input Doc",
       "--refs",
@@ -80,6 +82,7 @@ test("archive commands create deterministic sidecars and verify zip caches witho
   );
   assert.equal(created.archive.id, "archive.key-input-doc");
   assert.equal(created.archive.archive_uri, "archive://archive.key-input-doc");
+  assert.equal(created.archive.visibility, "public");
 
   const sidecar = path.join(root, ".mdkg", "archive", "archive.key-input-doc", "key_input_doc.txt.md");
   const rawCopy = path.join(root, ".mdkg", "archive", "archive.key-input-doc", "source", "key_input_doc.txt");
@@ -101,9 +104,10 @@ test("archive commands create deterministic sidecars and verify zip caches witho
   assert.equal(secondVerify.ok, true);
   assert.equal(secondVerify.results[0].raw_present, false);
 
-  const listed = JSON.parse(run(["archive", "list", "--kind", "source", "--json"], root).stdout);
+  const listed = JSON.parse(run(["archive", "list", "--kind", "source", "--visibility", "public", "--json"], root).stdout);
   assert.equal(listed.count, 1);
   assert.equal(listed.items[0].id, "archive.key-input-doc");
+  assert.equal(listed.items[0].visibility, "public");
 
   const shown = JSON.parse(run(["archive", "show", "archive://archive.key-input-doc", "--json"], root).stdout);
   assert.equal(shown.item.id, "archive.key-input-doc");

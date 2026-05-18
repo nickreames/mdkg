@@ -106,7 +106,7 @@ test("loadConfig accepts bundle import config and rejects workspace alias collis
             path: ".mdkg/bundles/private/child.mdkg.zip",
             enabled: true,
             visibility: "internal",
-            expected_profile: "private",
+            expected_profile: "public",
             source_path: "children/child-repo",
             source_repo: "git@example.com:child.git",
             max_stale_seconds: 60,
@@ -121,7 +121,7 @@ test("loadConfig accepts bundle import config and rejects workspace alias collis
   const config = loadConfig(root);
   assert.equal(config.bundle_imports.child_repo.path, ".mdkg/bundles/private/child.mdkg.zip");
   assert.equal(config.bundle_imports.child_repo.visibility, "internal");
-  assert.equal(config.bundle_imports.child_repo.expected_profile, "private");
+  assert.equal(config.bundle_imports.child_repo.expected_profile, "public");
   assert.equal(config.bundle_imports.child_repo.source_path, "children/child-repo");
   assert.equal(config.bundle_imports.child_repo.max_stale_seconds, 60);
 
@@ -144,6 +144,34 @@ test("loadConfig accepts bundle import config and rejects workspace alias collis
     )
   );
   assert.throws(() => loadConfig(root), /bundle_imports.root must not collide with workspaces.root/);
+});
+
+test("loadConfig rejects non-private bundle imports backed by private profiles", () => {
+  const root = makeTempDir("mdkg-config-bundle-import-visibility-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  writeFile(
+    configPath,
+    JSON.stringify(
+      {
+        ...BASE_CONFIG,
+        bundle_imports: {
+          child_repo: {
+            path: ".mdkg/bundles/private/child.mdkg.zip",
+            enabled: true,
+            visibility: "public",
+            expected_profile: "private",
+          },
+        },
+      },
+      null,
+      2
+    )
+  );
+
+  assert.throws(
+    () => loadConfig(root),
+    /bundle_imports\.child_repo\.expected_profile must be public when visibility is public/
+  );
 });
 
 test("loadConfig accepts contained relative registered workspace paths", () => {

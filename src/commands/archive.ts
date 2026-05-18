@@ -5,6 +5,7 @@ import { loadConfig } from "../core/config";
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
 import { buildIndex, IndexNode } from "../graph/indexer";
 import { loadIndex, writeIndex } from "../graph/index_cache";
+import { normalizeVisibility, Visibility } from "../graph/visibility";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId } from "../util/id";
@@ -21,6 +22,7 @@ export type ArchiveAddCommandOptions = {
   title?: string;
   refs?: string;
   relates?: string;
+  visibility?: string;
   json?: boolean;
   now?: Date;
 };
@@ -29,6 +31,7 @@ export type ArchiveListCommandOptions = {
   root: string;
   ws?: string;
   kind?: string;
+  visibility?: string;
   json?: boolean;
 };
 
@@ -65,6 +68,7 @@ type ArchiveReceipt = {
   compressed_path: string;
   sha256: string;
   compressed_sha256: string;
+  visibility: Visibility;
 };
 
 type ArchiveVerifyResult = {
@@ -190,6 +194,10 @@ function archiveNodeReceipt(root: string, node: IndexNode): ArchiveReceipt {
     compressed_path: String(node.attributes.compressed_path ?? ""),
     sha256: String(node.attributes.sha256 ?? ""),
     compressed_sha256: String(node.attributes.compressed_sha256 ?? ""),
+    visibility: normalizeVisibility(
+      typeof node.attributes.visibility === "string" ? node.attributes.visibility : undefined,
+      "archive visibility"
+    ),
   };
 }
 
@@ -314,6 +322,7 @@ export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
   }
 
   const archiveKind = normalizeArchiveKind(options.kind);
+  const visibility = normalizeVisibility(options.visibility);
   const today = formatDate(options.now ?? new Date());
   const archiveDir = path.resolve(options.root, workspace.path, workspace.mdkg_dir, "archive", id);
   const rawDir = path.join(archiveDir, "source");
@@ -341,7 +350,7 @@ export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
     byte_size: String(rawData.length),
     sha256: hashBuffer(rawData),
     compressed_sha256: hashBuffer(zipData),
-    visibility: "private",
+    visibility,
     provenance: "local-copy",
     ingest_status: "compressed",
     tags: [],
@@ -382,6 +391,7 @@ export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
     compressed_path: toPosixPath(path.relative(options.root, zipPath)),
     sha256: String(frontmatter.sha256),
     compressed_sha256: String(frontmatter.compressed_sha256),
+    visibility,
   };
   if (options.json) {
     console.log(JSON.stringify({ action: "created", archive: receipt }, null, 2));
@@ -395,10 +405,14 @@ export function runArchiveListCommand(options: ArchiveListCommandOptions): void 
   const { index } = loadIndex({ root: options.root, config });
   const ws = options.ws ? normalizeWorkspace(options.ws) : undefined;
   const kind = options.kind ? normalizeArchiveKind(options.kind) : undefined;
+  const visibility = options.visibility
+    ? normalizeVisibility(options.visibility)
+    : undefined;
   const items = Object.values(index.nodes)
     .filter((node) => node.type === "archive")
     .filter((node) => !ws || node.ws === ws)
     .filter((node) => !kind || node.attributes.archive_kind === kind)
+    .filter((node) => !visibility || node.attributes.visibility === visibility)
     .sort((a, b) => a.qid.localeCompare(b.qid))
     .map((node) => archiveNodeReceipt(options.root, node));
   if (options.json) {
@@ -489,6 +503,10 @@ export function runArchiveCompressCommand(options: ArchiveCompressCommandOptions
       compressed_path: String(nextFrontmatter.compressed_path ?? ""),
       sha256: String(nextFrontmatter.sha256),
       compressed_sha256: String(nextFrontmatter.compressed_sha256),
+      visibility: normalizeVisibility(
+        typeof nextFrontmatter.visibility === "string" ? nextFrontmatter.visibility : undefined,
+        "archive visibility"
+      ),
     });
   }
   maybeReindex(options.root);

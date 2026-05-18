@@ -132,6 +132,9 @@ export function runBundleImportAddCommand(options: BundleImportAddOptions): void
   const bundlePath = normalizeContained(options.bundlePath, "bundle import path");
   const visibility = normalizeVisibility(options.visibility);
   const expected_profile = normalizeProfile(options.profile);
+  if (visibility !== "private" && expected_profile !== "public") {
+    throw new UsageError("--profile public is required when --visibility is public or internal");
+  }
   const source_path = options.sourcePath
     ? normalizeContained(options.sourcePath, "bundle import source path")
     : undefined;

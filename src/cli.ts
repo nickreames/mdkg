@@ -275,6 +275,7 @@ function printPackHelp(log: LogFn): void {
   log("  -f, --format <fmt>           Output format: md|json|toon|xml (default md)");
   log("  -o, --out <path>             Output file path");
   log("      --profile <name>         Body profile: standard|concise|headers (default standard)");
+  log("      --visibility <level>     Filter output: public|internal|private");
   log("      --skills <mode>          Skill inclusion: none|auto|<slug,slug,...> (default auto)");
   log("      --skills-depth <mode>    Skill body mode: meta|full (default meta)");
   log("      --dry-run                Preview selection/order/stats without writing files");
@@ -287,6 +288,7 @@ function printPackHelp(log: LogFn): void {
   log("  mdkg pack --list-profiles");
   log("  mdkg pack task-1");
   log("  mdkg pack task-1 --profile concise --dry-run --stats");
+  log("  mdkg pack task-1 --visibility public --dry-run");
   log("  mdkg pack task-1 --skills auto --skills-depth full");
   log("  mdkg pack epic-2 --format json --profile headers");
   printGlobalOptions(log);
@@ -403,11 +405,11 @@ function printArchiveHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "add":
       log("Usage:");
-      log("  mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]");
+      log("  mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]");
       break;
     case "list":
       log("Usage:");
-      log("  mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]");
+      log("  mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]");
       break;
     case "show":
       log("Usage:");
@@ -424,13 +426,14 @@ function printArchiveHelp(log: LogFn, subcommand?: string): void {
       break;
     default:
       log("Usage:");
-      log("  mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--json]");
-      log("  mdkg archive list [--kind source|artifact] [--json]");
+      log("  mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]");
+      log("  mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--json]");
       log("  mdkg archive show <id-or-archive-uri> [--json]");
       log("  mdkg archive verify [id-or-archive-uri] [--json]");
       log("  mdkg archive compress <id-or-archive-uri|--all> [--json]");
       log("\nNotes:");
       log("  - archive add copies the source, writes a sidecar, and writes a deterministic zip cache");
+      log("  - archive visibility defaults to private");
       log("  - archive://<archive.id> refs are validated against local archive sidecars");
   }
   printGlobalOptions(log);
@@ -983,8 +986,9 @@ function runArchiveSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const title = requireFlagValue("--title", parsed.flags["--title"]);
       const refs = requireFlagValue("--refs", parsed.flags["--refs"]);
       const relates = requireFlagValue("--relates", parsed.flags["--relates"]);
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runArchiveAddCommand({ root, file, id, ws, kind, title, refs, relates, json });
+      runArchiveAddCommand({ root, file, id, ws, kind, title, refs, relates, visibility, json });
       return 0;
     }
     case "list": {
@@ -993,8 +997,9 @@ function runArchiveSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       }
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runArchiveListCommand({ root, ws, kind, json });
+      runArchiveListCommand({ root, ws, kind, visibility, json });
       return 0;
     }
     case "show": {
@@ -1799,6 +1804,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const maxTokens = parseNumberFlag("--max-tokens", parsed.flags["--max-tokens"]);
       const skills = requireFlagValue("--skills", parsed.flags["--skills"]);
       const skillsDepth = requireFlagValue("--skills-depth", parsed.flags["--skills-depth"]);
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
       const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
       const stats = parseBooleanFlag("--stats", parsed.flags["--stats"]);
       const statsOut = requireFlagValue("--stats-out", parsed.flags["--stats-out"]);
@@ -1826,6 +1832,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         maxTokens,
         skills,
         skillsDepth,
+        visibility,
         dryRun,
         stats,
         statsOut,

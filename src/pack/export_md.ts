@@ -32,6 +32,9 @@ function renderHeader(meta: PackMeta, nodes: PackNode[]): string[] {
   if (meta.body_mode) {
     lines.push(`body_mode: ${meta.body_mode}`);
   }
+  if (meta.visibility) {
+    lines.push(`visibility: ${meta.visibility}`);
+  }
   if (meta.latest_checkpoint_qid) {
     lines.push(`latest_checkpoint_qid: ${meta.latest_checkpoint_qid}`);
   }

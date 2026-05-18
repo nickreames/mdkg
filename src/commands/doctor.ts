@@ -6,6 +6,7 @@ import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
 import { buildBundleImportsIndex } from "../graph/bundle_imports";
 import { ALLOWED_TYPES } from "../graph/node";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
+import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
 import { ValidationError } from "../util/errors";
 
 export type DoctorCommandOptions = {
@@ -174,6 +175,41 @@ function runBundleImportChecks(root: string, config: ReturnType<typeof loadConfi
   });
 }
 
+function runVisibilityPolicyCheck(
+  root: string,
+  config: ReturnType<typeof loadConfig>,
+  options: Pick<DoctorCommandOptions, "noCache" | "noReindex">
+): CheckResult {
+  try {
+    const { index } = loadIndex({
+      root,
+      config,
+      useCache: !options.noCache,
+      allowReindex: !options.noReindex,
+    });
+    const messages = visibilityViolationMessages(collectVisibilityViolations(index, config));
+    if (messages.length === 0) {
+      return {
+        name: "visibility-policy",
+        ok: true,
+        detail: "public/internal records do not reference less-visible mdkg records",
+      };
+    }
+    return {
+      name: "visibility-policy",
+      ok: false,
+      detail: `${messages.length} violation(s): ${messages.join("; ")}`,
+    };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return {
+      name: "visibility-policy",
+      ok: false,
+      detail: message,
+    };
+  }
+}
+
 export function runDoctorCommand(options: DoctorCommandOptions): void {
   const results: CheckResult[] = [];
 
@@ -215,6 +251,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
     results.push(runArchiveStorageCheck(options.root));
     results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
     results.push(...runBundleImportChecks(options.root, config));
+    results.push(runVisibilityPolicyCheck(options.root, config, options));
 
     try {
       const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);

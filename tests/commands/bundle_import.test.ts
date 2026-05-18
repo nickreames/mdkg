@@ -183,7 +183,28 @@ test("public bundles fail when public local nodes reference private imports", ()
 
   const failure = runFailure(["bundle", "create", "--profile", "public", "--json"], root);
   assert.equal(failure.status, 2);
-  assert.match(failure.stderr, /references private bundle import child_import:task-1/);
+  assert.match(failure.stderr, /references private child_import:task-1/);
+});
+
+test("bundle import rejects public visibility over private bundle profiles", () => {
+  const root = makeTempDir("mdkg-bundle-import-profile-visibility-");
+  run(["init", "--agent"], root);
+  const bundlePath = createChildBundle(root);
+
+  const failure = runFailure([
+    "bundle",
+    "import",
+    "add",
+    "child_import",
+    bundlePath,
+    "--visibility",
+    "public",
+    "--profile",
+    "private",
+    "--json",
+  ], root);
+  assert.equal(failure.status, 1);
+  assert.match(failure.stderr, /--profile public is required/);
 });
 
 test("bundle import rejects bundles missing generated skills index", () => {

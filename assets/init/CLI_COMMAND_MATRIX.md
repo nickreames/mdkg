@@ -92,12 +92,13 @@ Capability discovery:
 - normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
 
 Archive sidecars:
-- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
-- `mdkg archive list [--kind source|artifact] [--ws <alias>] [--json]`
+- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
+- `mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]`
 - `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
 - `mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]`
 - `mdkg archive compress <id-or-archive-uri|--all> [--json]`
 - archive sidecars are `type: archive` nodes under `.mdkg/archive`
+- archive visibility defaults to `private`
 - committed sidecar `.md` files and ZIP caches are source-of-truth evidence; raw source copies under `.mdkg/archive/**/source/` are ignored by default
 
 Graph snapshot bundles:
@@ -106,14 +107,15 @@ Graph snapshot bundles:
 - `mdkg bundle show <bundle-path> [--json]`
 - `mdkg bundle list [--json]`
 - `mdkg bundle import add/list/rm/enable/disable/verify ...`
-- `mdkg bundle import add <alias> <bundle-path> [--source-path <path>] [--json]`
+- `mdkg bundle import add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--json]`
 - `mdkg bundle import verify [alias|--all] [--json]`
 - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
 - private bundles are explicit local graph transport artifacts
 - bundle imports are read-only planning views and use import-alias qids such as `child_repo:task-1`
 - repos that track archive caches or bundles should run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip` before commit
 - public bundles include only public workspace content and public archive sidecars
-- public bundle creation fails when public records reference private graph or archive records
+- public bundle creation fails when public records reference private graph, archive, or imported records
+- public/internal imports require public bundle profiles
 
 Work semantic mirrors:
 - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`

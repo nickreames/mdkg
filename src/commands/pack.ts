@@ -6,6 +6,14 @@ import { parseFrontmatter } from "../graph/frontmatter";
 import { loadSkillsIndex } from "../graph/skills_index_cache";
 import { SkillIndexEntry } from "../graph/skills_indexer";
 import { ALLOWED_TYPES } from "../graph/node";
+import {
+  collectVisibilityViolations,
+  effectiveNodeVisibility,
+  isVisibleAt,
+  normalizeVisibility,
+  Visibility,
+  visibilityViolationMessages,
+} from "../graph/visibility";
 import { applyPackBudgets } from "../pack/budget";
 import { exportJson } from "../pack/export_json";
 import { exportMarkdown } from "../pack/export_md";
@@ -17,7 +25,7 @@ import { resolvePackProfile, shapePackBodies } from "../pack/profile";
 import { renderPackStats } from "../pack/stats";
 import { PackResult, PackTruncationReport } from "../pack/types";
 import { loadTemplateHeadingMap } from "../templates/headings";
-import { NotFoundError, UsageError } from "../util/errors";
+import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { buildDefaultPackPath } from "../util/output";
 import { formatResolveError, resolveQid } from "../util/qid";
 
@@ -49,6 +57,7 @@ export type PackCommandOptions = {
   out?: string;
   noCache?: boolean;
   noReindex?: boolean;
+  visibility?: string;
 };
 
 function normalizeWorkspace(value?: string): string | undefined {
@@ -264,6 +273,73 @@ function applyNodeCountLimit(pack: PackResult, maxNodes: number): PackResult {
   };
 }
 
+function packNodeVisibility(
+  node: PackResult["nodes"][number],
+  index: ReturnType<typeof loadIndex>["index"],
+  config: ReturnType<typeof loadConfig>
+): Visibility {
+  const indexNode = index.nodes[node.qid];
+  if (indexNode) {
+    return effectiveNodeVisibility(indexNode, config);
+  }
+  return normalizeVisibility(config.workspaces[node.workspace]?.visibility, "workspace visibility");
+}
+
+function applyVisibilityFilter(
+  pack: PackResult,
+  index: ReturnType<typeof loadIndex>["index"],
+  config: ReturnType<typeof loadConfig>,
+  scope: Visibility
+): PackResult {
+  if (scope === "private") {
+    return {
+      ...pack,
+      meta: {
+        ...pack.meta,
+        visibility: scope,
+      },
+    };
+  }
+
+  const includedNodes = pack.nodes.filter((node) =>
+    isVisibleAt(packNodeVisibility(node, index, config), scope)
+  );
+  if (includedNodes.length === 0 || includedNodes[0].qid !== pack.nodes[0]?.qid) {
+    throw new ValidationError(`pack root ${pack.meta.root} is not visible at ${scope}`);
+  }
+
+  const includedQids = new Set(includedNodes.map((node) => node.qid));
+  const graphIncludedQids = new Set(
+    includedNodes.filter((node) => Boolean(index.nodes[node.qid])).map((node) => node.qid)
+  );
+  const violations = collectVisibilityViolations(index, config, {
+    includedQids: graphIncludedQids,
+    scope,
+  });
+  if (violations.length > 0) {
+    throw new ValidationError(
+      `${scope} pack contains less-visible references:\n${visibilityViolationMessages(violations).join("\n")}`
+    );
+  }
+
+  const dropped = pack.nodes
+    .filter((node) => !includedQids.has(node.qid))
+    .map((node) => node.qid);
+  return {
+    ...pack,
+    meta: {
+      ...pack.meta,
+      visibility: scope,
+      node_count: includedNodes.length,
+      truncated: {
+        ...pack.meta.truncated,
+        dropped: [...pack.meta.truncated.dropped, ...dropped],
+      },
+    },
+    nodes: includedNodes,
+  };
+}
+
 function writeJsonFile(outPath: string, payload: unknown): void {
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(payload, null, 2), "utf8");
@@ -300,6 +376,9 @@ function printDryRunSummary(
   console.log(`root: ${pack.meta.root}`);
   console.log(`profile: ${pack.meta.profile ?? "standard"}`);
   console.log(`body_mode: ${pack.meta.body_mode ?? "full"}`);
+  if (pack.meta.visibility) {
+    console.log(`visibility: ${pack.meta.visibility}`);
+  }
   console.log(`format: ${format}`);
   console.log(`nodes: ${pack.nodes.length}`);
   if (pack.meta.latest_checkpoint_qid) {
@@ -357,6 +436,9 @@ export function runPackCommand(options: PackCommandOptions): void {
   const edges = normalizeEdges([...config.pack.default_edges, ...extraEdges]);
   const skillsPolicy = resolveSkillsPolicy(options.skills);
   const skillsDepth = resolveSkillsDepth(options.skillsDepth);
+  const visibility = options.visibility
+    ? normalizeVisibility(options.visibility)
+    : undefined;
 
   let resolvedProfile;
   try {
@@ -422,6 +504,10 @@ export function runPackCommand(options: PackCommandOptions): void {
     }
     packWithSkills = appendSkillsToPack(packWithSkills, selectedEntries, skillsDepth, options.root);
     packWithSkills = applyNodeCountLimit(packWithSkills, config.pack.limits.max_nodes);
+  }
+
+  if (visibility) {
+    packWithSkills = applyVisibilityFilter(packWithSkills, index, config, visibility);
   }
 
   const templateHeadingMap =

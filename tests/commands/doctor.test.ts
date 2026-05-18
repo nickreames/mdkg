@@ -37,11 +37,18 @@ function writeConfig(root: string): void {
       },
     },
     workspaces: {
-      root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
+      root: { path: ".", enabled: true, mdkg_dir: ".mdkg", visibility: "private" },
     },
   };
 
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(config, null, 2));
+}
+
+function updateConfig(root: string, mutate: (config: any) => void): void {
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  mutate(config);
+  fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
 }
 
 function captureOutput(fn: () => void): string {
@@ -82,7 +89,7 @@ test("runDoctorCommand succeeds on a valid workspace", () => {
   assert.match(output, /ok: node-version - Node\.js/);
   assert.match(output, /ok: config - found/);
   assert.match(output, /ok: templates - template schema set loaded/);
-  assert.match(output, /ok: index - index cache rebuilt and loaded/);
+  assert.match(output, /ok: index - index cache (rebuilt and loaded|loaded)/);
   assert.match(output, /doctor ok/);
 });
 
@@ -165,4 +172,74 @@ test("runDoctorCommand reports cached index read failures", () => {
 
   const output = captureDoctorFailure(() => runDoctorCommand({ root }));
   assert.match(output, /fail: index - failed to read index/);
+});
+
+test("runDoctorCommand reports visibility policy violations", () => {
+  const root = makeTempDir("mdkg-doctor-visibility-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  updateConfig(root, (config) => {
+    config.workspaces.root.visibility = "public";
+    config.workspaces.private_ws = {
+      path: "private",
+      enabled: true,
+      mdkg_dir: ".mdkg",
+      visibility: "private",
+    };
+  });
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  writeFile(
+    path.join(root, ".mdkg", "work", "task-1.md"),
+    [
+      "---",
+      "id: task-1",
+      "type: task",
+      "title: Public task",
+      "status: todo",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [private_ws:task-2]",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-05-18",
+      "updated: 2026-05-18",
+      "---",
+      "",
+      "# Overview",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, "private", ".mdkg", "work", "task-2.md"),
+    [
+      "---",
+      "id: task-2",
+      "type: task",
+      "title: Private task",
+      "status: todo",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-05-18",
+      "updated: 2026-05-18",
+      "---",
+      "",
+      "# Overview",
+    ].join("\n")
+  );
+
+  const output = captureDoctorFailure(() => runDoctorCommand({ root }));
+  assert.match(output, /fail: visibility-policy - /);
+  assert.match(output, /root:task-1 \(public\) references private private_ws:task-2/);
 });

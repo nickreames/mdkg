@@ -47,6 +47,9 @@ export function exportXml(pack: PackResult): string {
   if (pack.meta.body_mode) {
     lines.push(`    <body_mode>${escapeXml(pack.meta.body_mode)}</body_mode>`);
   }
+  if (pack.meta.visibility) {
+    lines.push(`    <visibility>${escapeXml(pack.meta.visibility)}</visibility>`);
+  }
   if (pack.meta.latest_checkpoint_qid) {
     lines.push(`    <latest_checkpoint_qid>${escapeXml(pack.meta.latest_checkpoint_qid)}</latest_checkpoint_qid>`);
   }

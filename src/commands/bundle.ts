@@ -4,6 +4,7 @@ import path from "path";
 import { spawnSync } from "child_process";
 import { loadConfig, Config, WorkspaceConfig } from "../core/config";
 import { buildCapabilitiesIndex } from "../graph/capabilities_indexer";
+import { buildBundleImportsIndex, mergeBundleImportsIntoIndex } from "../graph/bundle_imports";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import {
   buildSkillIndexEntryForWorkspace,
@@ -14,6 +15,12 @@ import { FrontmatterValue } from "../graph/frontmatter";
 import { createDeterministicZipFromEntries, readZipEntries, ZipEntry } from "../util/zip";
 import { UsageError, ValidationError, NotFoundError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
+import {
+  collectVisibilityViolations,
+  effectiveNodeVisibility,
+  isVisibleAt,
+  visibilityViolationMessages,
+} from "../graph/visibility";
 
 export type BundleProfile = "private" | "public";
 
@@ -292,13 +299,13 @@ function normalizeIndexForBundle<T extends { meta: Record<string, unknown> }>(in
   return normalized;
 }
 
-function filterIndex(index: Index, selectedAliases: Set<string>, profile: BundleProfile): Index {
+function filterIndex(index: Index, config: Config, selectedAliases: Set<string>, profile: BundleProfile): Index {
   const nodes: Record<string, IndexNode> = {};
   for (const [qid, node] of Object.entries(index.nodes)) {
     if (!selectedAliases.has(node.ws)) {
       continue;
     }
-    if (profile === "public" && node.type === "archive" && node.attributes.visibility !== "public") {
+    if (profile === "public" && !isVisibleAt(effectiveNodeVisibility(node, config), "public")) {
       continue;
     }
     {
@@ -615,13 +622,19 @@ function buildBundle(options: BundleCreateCommandOptions): BundleBuildResult {
     }
   }
 
-  const filteredIndex = filterIndex(index, selectedSet, profile);
+  const filteredIndex = filterIndex(index, config, selectedSet, profile);
   if (profile === "public") {
     const includedQids = new Set(Object.keys(filteredIndex.nodes));
-    const errors = [
-      ...publicFilteringErrors(index, includedQids),
-      ...publicImportReferenceErrors(config, index, includedQids),
-    ];
+    const mergedIndex = mergeBundleImportsIntoIndex(
+      index,
+      buildBundleImportsIndex(options.root, config)
+    );
+    const errors = visibilityViolationMessages(
+      collectVisibilityViolations(mergedIndex, config, {
+        includedQids,
+        scope: "public",
+      })
+    );
     if (errors.length > 0) {
       throw new ValidationError(`public bundle contains private references:\n${errors.join("\n")}`);
     }

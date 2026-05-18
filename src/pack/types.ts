@@ -13,6 +13,7 @@ export type PackTruncation = {
 
 export type PackProfile = "standard" | "concise" | "headers";
 export type PackBodyMode = "full" | "summary" | "none";
+export type PackVisibility = "public" | "internal" | "private";
 
 export type PackMeta = {
   root: string;
@@ -25,6 +26,7 @@ export type PackMeta = {
   truncated: PackTruncation;
   profile?: PackProfile;
   body_mode?: PackBodyMode;
+  visibility?: PackVisibility;
 };
 
 export type PackNode = {
