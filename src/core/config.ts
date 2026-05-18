@@ -14,6 +14,16 @@ export type WorkspaceConfig = {
   visibility: "private" | "internal" | "public";
 };
 
+export type BundleImportConfig = {
+  path: string;
+  enabled: boolean;
+  visibility: "private" | "internal" | "public";
+  expected_profile: "private" | "public";
+  source_path?: string;
+  source_repo?: string;
+  max_stale_seconds?: number;
+};
+
 export type Config = {
   schema_version: number;
   tool: string;
@@ -30,6 +40,7 @@ export type Config = {
     output_dir: string;
     default_profile: "private" | "public";
   };
+  bundle_imports: Record<string, BundleImportConfig>;
   pack: {
     default_depth: number;
     default_edges: string[];
@@ -262,6 +273,23 @@ function validateWorkspaceAlias(alias: string, errors: ValidationErrors): void {
   }
 }
 
+function validateBundleImportAlias(
+  alias: string,
+  workspaces: Record<string, WorkspaceConfig>,
+  errors: ValidationErrors
+): void {
+  if (alias === "all") {
+    errors.push("bundle_imports.all alias is reserved");
+    return;
+  }
+  if (alias !== alias.toLowerCase() || !WORKSPACE_ALIAS_RE.test(alias)) {
+    errors.push(`bundle_imports.${alias} alias must be lowercase and use [a-z0-9_]`);
+  }
+  if (workspaces[alias]) {
+    errors.push(`bundle_imports.${alias} must not collide with workspaces.${alias}`);
+  }
+}
+
 function requireContainedPath(
   value: unknown,
   path: string,
@@ -299,6 +327,10 @@ export function validateConfigSchema(raw: unknown): Config {
     raw.bundles === undefined
       ? { output_dir: ".mdkg/bundles", default_profile: "private" }
       : requireObject(raw.bundles, "bundles", errors);
+  const bundleImportsRaw =
+    raw.bundle_imports === undefined
+      ? {}
+      : requireObject(raw.bundle_imports, "bundle_imports", errors);
   const packRaw = requireObject(raw.pack, "pack", errors);
   const templatesRaw = requireObject(raw.templates, "templates", errors);
   const workRaw = requireObject(raw.work, "work", errors);
@@ -522,6 +554,68 @@ export function validateConfigSchema(raw: unknown): Config {
     }
   }
 
+  const bundle_imports: Record<string, BundleImportConfig> = {};
+  if (bundleImportsRaw) {
+    for (const [alias, entry] of Object.entries(bundleImportsRaw)) {
+      validateBundleImportAlias(alias, workspaces, errors);
+      const rawImport = requireObject(entry, `bundle_imports.${alias}`, errors);
+      if (!rawImport) {
+        continue;
+      }
+      const importPath = requireContainedPath(rawImport.path, `bundle_imports.${alias}.path`, errors);
+      const enabled =
+        rawImport.enabled === undefined
+          ? true
+          : requireBoolean(rawImport.enabled, `bundle_imports.${alias}.enabled`, errors);
+      const visibility =
+        rawImport.visibility === undefined
+          ? "private"
+          : requireStringInSet(
+              rawImport.visibility,
+              `bundle_imports.${alias}.visibility`,
+              WORKSPACE_VISIBILITY_VALUES,
+              errors
+            );
+      const expectedProfile =
+        rawImport.expected_profile === undefined
+          ? "private"
+          : requireStringInSet(
+              rawImport.expected_profile,
+              `bundle_imports.${alias}.expected_profile`,
+              BUNDLE_PROFILE_VALUES,
+              errors
+            );
+      const sourcePath =
+        rawImport.source_path === undefined
+          ? undefined
+          : requireContainedPath(rawImport.source_path, `bundle_imports.${alias}.source_path`, errors);
+      const sourceRepo =
+        rawImport.source_repo === undefined
+          ? undefined
+          : requireString(rawImport.source_repo, `bundle_imports.${alias}.source_repo`, errors);
+      const maxStaleSeconds =
+        rawImport.max_stale_seconds === undefined
+          ? undefined
+          : requirePositiveInteger(
+              rawImport.max_stale_seconds,
+              `bundle_imports.${alias}.max_stale_seconds`,
+              errors
+            );
+
+      if (importPath && enabled !== undefined && visibility && expectedProfile) {
+        bundle_imports[alias] = {
+          path: importPath,
+          enabled,
+          visibility: visibility as BundleImportConfig["visibility"],
+          expected_profile: expectedProfile as BundleImportConfig["expected_profile"],
+          ...(sourcePath ? { source_path: sourcePath } : {}),
+          ...(sourceRepo ? { source_repo: sourceRepo } : {}),
+          ...(maxStaleSeconds !== undefined ? { max_stale_seconds: maxStaleSeconds } : {}),
+        };
+      }
+    }
+  }
+
   if (errors.length > 0) {
     throw new Error(`config validation failed:\n${errors.join("\n")}`);
   }
@@ -533,6 +627,7 @@ export function validateConfigSchema(raw: unknown): Config {
     index: index as Config["index"],
     capabilities: capabilities as Config["capabilities"],
     bundles: bundles as Config["bundles"],
+    bundle_imports,
     pack: pack as Config["pack"],
     templates: templates as Config["templates"],
     work: work as Config["work"],

@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-05-14
+updated: 2026-05-17
 ---
 
 # mdkg CLI contract
@@ -69,6 +69,9 @@ Workspaces are registered in `.mdkg/config.json`.
 
 Qualified IDs may be used as input:
 - `<ws>:<id>` (example: `e2e:task-12`)
+- Imported bundle nodes use the same qualified form with the import alias:
+  - `<import-alias>:<id>` (example: `agent_image:work.generate-image`)
+  - imported nodes are read-only planning context and MUST NOT be selected by local mutation commands
 
 If a user provides an unqualified ID and it is ambiguous globally:
 - mdkg MUST error and suggest qualified IDs.
@@ -142,6 +145,7 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - rebuild global cache `.mdkg/index/global.json`
   - rebuild skills cache `.mdkg/index/skills.json` from `.mdkg/skills/<slug>/SKILL.md`
   - rebuild capability cache `.mdkg/index/capabilities.json` from skills, `SPEC.md`, `WORK.md`, core docs, and design docs
+  - rebuild bundle import projection cache `.mdkg/index/imports.json` when bundle imports are configured
   - tolerate `.mdkg/skills/<slug>/SKILLS.md` on read with warning
   - fail validation if both `SKILL.md` and `SKILLS.md` exist in one skill directory
   - strict by default (fails on invalid frontmatter)
@@ -178,6 +182,10 @@ Common flags:
 - `mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
   - search SHOULD match on IDs, titles, tags, path tokens, and searchable frontmatter lists (`links`, `artifacts`, `refs`, `aliases`)
 - `mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>] [--blocked] [--priority <n>] [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
+- enabled bundle imports are included in `show`, `search`, `list`, `pack`, and `capability` reads by default:
+  - imported nodes surface `source.imported: true` in JSON output
+  - human output labels imported nodes as read-only and stale when applicable
+  - stale imports warn during planning reads but remain usable
 - skills are first-class under `mdkg skill ...` only:
   - `mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]`
   - `mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]`
@@ -203,9 +211,18 @@ Common flags:
   - `mdkg bundle verify [bundle-path] [--json]`
   - `mdkg bundle show <bundle-path> [--json]`
   - `mdkg bundle list [--json]`
+  - `mdkg bundle import add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]`
+  - `mdkg bundle import list [--json]`
+  - `mdkg bundle import rm <alias> [--json]`
+  - `mdkg bundle import enable <alias> [--json]`
+  - `mdkg bundle import disable <alias> [--json]`
+  - `mdkg bundle import verify [alias|--all] [--json]`
   - bundles are explicit transport artifacts and are not rewritten by `mdkg index`
   - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
   - public bundles must fail closed when public records reference private graph or archive records
+  - bundle imports are read-only projected graph views; child repos remain owners of real mutations and commits
+  - `bundle import verify` exits nonzero for stale, missing, corrupt, profile-mismatched, or duplicate-id imports
+  - public bundle creation must not re-export imported child graph content and must fail if public local nodes reference private/internal imports
 - work lifecycle helpers live under `mdkg work ...`:
   - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
   - `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
@@ -224,6 +241,7 @@ Common flags:
   - supports additive list mutation for `artifacts`, `links`, `refs`, `skills`, `tags`, and `blocked_by`
   - supports scalar replacement for `status` and `priority`
   - `--clear-blocked-by` resets blockers before optional re-add
+  - imported bundle qids fail with an explicit read-only import error
 - `mdkg task done <id-or-qid> [--checkpoint "<title>"] [...]`
   - supports `task`, `bug`, and `test` nodes only
   - sets `status: done`
@@ -280,6 +298,8 @@ Common flags:
 - `mdkg validate`
   - strict frontmatter + graph integrity checks (exit code 2 on failure)
   - validates optional node->skill references
+  - validates configured bundle imports and fails on missing/corrupt enabled bundles, malformed import config, duplicate projected ids, and invalid import refs
+  - warns, but does not fail, on stale imports
   - validates optional `.mdkg/work/events/events.jsonl` record shape when file exists
   - warns when `.agents/skills/` or `.claude/skills/` drift from canonical `.mdkg/skills/`
 - `mdkg format`

@@ -1,4 +1,5 @@
 import { FrontmatterValue } from "../graph/frontmatter";
+import { IndexNode } from "../graph/indexer";
 
 export type PackTruncation = {
   max_nodes: boolean;
@@ -40,6 +41,7 @@ export type PackNode = {
   refs: string[];
   aliases: string[];
   attributes: Record<string, FrontmatterValue>;
+  source?: IndexNode["source"];
   body: string;
 };
 

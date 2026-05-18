@@ -30,6 +30,7 @@ const HELP_TARGETS = [
   ["bundle", "list"],
   ["bundle", "show"],
   ["bundle", "verify"],
+  ["bundle", "import"],
   ["work"],
   ["work", "contract"],
   ["work", "order"],

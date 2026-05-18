@@ -1,7 +1,5 @@
-import fs from "fs";
-import path from "path";
 import { Index } from "../graph/indexer";
-import { parseFrontmatter } from "../graph/frontmatter";
+import { readNodeBody } from "../graph/node_body";
 import { resolveQid } from "../util/qid";
 import { orderPackNodes } from "./order";
 import { readVerboseCoreList } from "./verbose_core";
@@ -128,14 +126,6 @@ function buildPackNode(root: string, index: Index, qid: string): PackNode {
     throw new Error(`node not found: ${qid}`);
   }
 
-  const filePath = path.resolve(root, node.path);
-  if (!fs.existsSync(filePath)) {
-    throw new Error(`file not found for ${qid}: ${node.path}`);
-  }
-
-  const content = fs.readFileSync(filePath, "utf8");
-  const body = parseFrontmatter(content, filePath).body.trimEnd();
-
   return {
     qid: node.qid,
     id: node.id,
@@ -150,7 +140,8 @@ function buildPackNode(root: string, index: Index, qid: string): PackNode {
     refs: node.refs,
     aliases: node.aliases,
     attributes: node.attributes ?? {},
-    body,
+    ...(node.source ? { source: node.source } : {}),
+    body: readNodeBody(root, node),
   };
 }
 

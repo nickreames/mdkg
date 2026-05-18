@@ -302,6 +302,11 @@ function loadMutableAgentNode(root: string, id: string, wsRaw: string | undefine
   const { index } = loadIndex({ root, config });
   const normalizedId = normalizePortableId(id, `<${type}-id>`);
   const node = requireNodeById(index, ws, normalizedId, type, type);
+  if (node.source?.imported) {
+    throw new UsageError(
+      `cannot mutate read-only imported node ${node.qid}; update the source workspace for bundle import ${node.source.import_alias}`
+    );
+  }
   const filePath = path.resolve(root, node.path);
   const parsed = parseFrontmatter(fs.readFileSync(filePath, "utf8"), filePath);
   return { config, node, filePath, frontmatter: { ...parsed.frontmatter }, body: parsed.body };
@@ -455,6 +460,11 @@ export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions
   const target = index.nodes[`${ws}:${targetId}`];
   if (!target || (target.type !== "work_order" && target.type !== "receipt")) {
     throw new NotFoundError(`work order or receipt not found: ${options.targetId}`);
+  }
+  if (target.source?.imported) {
+    throw new UsageError(
+      `cannot mutate read-only imported node ${target.qid}; update the source workspace for bundle import ${target.source.import_alias}`
+    );
   }
 
   const archiveLogs: string[] = [];

@@ -86,6 +86,10 @@ const VALUE_FLAGS = new Set([
   "--agent",
   "--skill",
   "--tool",
+  "--visibility",
+  "--source-path",
+  "--source-repo",
+  "--max-stale-seconds",
 ]);
 
 const BOOLEAN_FLAGS = new Set([

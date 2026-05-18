@@ -7,11 +7,14 @@ function formatStatusPriority(node: IndexNode): string {
 }
 
 export function formatNodeCard(node: IndexNode): string {
+  const sourceLabel = node.source?.imported
+    ? ` | import:${node.source.import_alias}${node.source.stale ? ":stale" : ""} | read-only`
+    : "";
   return [
     node.qid,
     node.type,
     formatStatusPriority(node),
     node.title,
     node.path,
-  ].join(" | ");
+  ].join(" | ") + sourceLabel;
 }

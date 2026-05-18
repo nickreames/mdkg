@@ -32,6 +32,7 @@ const HELP_TARGETS = [
   ["bundle", "list"],
   ["bundle", "show"],
   ["bundle", "verify"],
+  ["bundle", "import"],
   ["work"],
   ["work", "contract"],
   ["work", "order"],
@@ -350,6 +351,10 @@ function exerciseWorkflow(binPath, tempRoot) {
   });
 
   mdkg(binPath, ["index"], root);
+  const emptyImports = JSON.parse(mdkg(binPath, ["bundle", "import", "list", "--json"], root).stdout);
+  if (emptyImports.count !== 0) {
+    throw new Error("fresh matrix workspace should not have bundle imports configured");
+  }
   const workCapabilities = JSON.parse(mdkg(binPath, ["capability", "search", "image", "--kind", "work", "--json"], root).stdout);
   if (!workCapabilities.items.some((item) => item.id === "work.generate-image")) {
     throw new Error("capability search did not include generated WORK.md");

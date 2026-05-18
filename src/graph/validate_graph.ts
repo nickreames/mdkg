@@ -4,6 +4,7 @@ import { archiveIdFromUri } from "../util/refs";
 export type ValidateGraphOptions = {
   allowMissing?: boolean;
   knownSkillSlugs?: Set<string>;
+  externalWorkspaces?: Set<string>;
 };
 
 function pushError(errors: string[] | null, message: string): void {
@@ -18,6 +19,7 @@ function validateEdgeTargets(
   index: Index,
   allowMissing: boolean,
   knownSkillSlugs: Set<string> | undefined,
+  externalWorkspaces: Set<string> | undefined,
   errors: string[] | null
 ): void {
   const nodes = index.nodes;
@@ -45,6 +47,10 @@ function validateEdgeTargets(
     for (const [edgeKey, values] of edgeLists) {
       for (const value of values) {
         if (!nodes[value]) {
+          const [workspace] = value.split(":");
+          if (workspace && externalWorkspaces?.has(workspace)) {
+            continue;
+          }
           if (
             edgeKey === "relates" &&
             node.type === "proposal" &&
@@ -425,9 +431,14 @@ function validateAgentWorkflowNodeIdRef(
   nodeIdsByWorkspace: Record<string, Set<string>>,
   allowSkillRef: boolean,
   knownSkillSlugs: Set<string> | undefined,
+  externalWorkspaces: Set<string> | undefined,
   allowMissing: boolean,
   errors: string[] | null
 ): void {
+  const [workspace] = value.split(":");
+  if (workspace && value.includes(":") && externalWorkspaces?.has(workspace)) {
+    return;
+  }
   if (nodeIdsByWorkspace[ws]?.has(value)) {
     return;
   }
@@ -447,6 +458,7 @@ function validateAgentWorkflowFeedbackProposalRefs(
   index: Index,
   allowMissing: boolean,
   knownSkillSlugs: Set<string> | undefined,
+  externalWorkspaces: Set<string> | undefined,
   errors: string[] | null
 ): void {
   const nodeIdsByWorkspace = buildNodeIdsByWorkspace(index);
@@ -467,6 +479,7 @@ function validateAgentWorkflowFeedbackProposalRefs(
         nodeIdsByWorkspace,
         allowSkillTarget,
         knownSkillSlugs,
+        externalWorkspaces,
         allowMissing,
         errors
       );
@@ -490,6 +503,7 @@ function validateAgentWorkflowFeedbackProposalRefs(
         nodeIdsByWorkspace,
         true,
         knownSkillSlugs,
+        externalWorkspaces,
         allowMissing,
         errors
       );
@@ -643,14 +657,15 @@ export function collectGraphErrors(index: Index, options: ValidateGraphOptions =
   const errors: string[] = [];
   const allowMissing = options.allowMissing ?? false;
   const knownSkillSlugs = options.knownSkillSlugs;
-  validateEdgeTargets(index, allowMissing, knownSkillSlugs, errors);
+  const externalWorkspaces = options.externalWorkspaces;
+  validateEdgeTargets(index, allowMissing, knownSkillSlugs, externalWorkspaces, errors);
   validatePrevNextSymmetry(index, allowMissing, errors);
   validateAgentWorkflowSpecWorkContracts(index, allowMissing, errors);
   validateAgentWorkflowWorkOrderWorkRefs(index, allowMissing, errors);
   validateAgentWorkflowReceiptWorkOrderRefs(index, allowMissing, errors);
   validateAgentWorkflowSubagentRefs(index, allowMissing, errors);
   validateAgentWorkflowDisputeRefs(index, allowMissing, errors);
-  validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, errors);
+  validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, externalWorkspaces, errors);
   validateArchiveUriRefs(index, allowMissing, errors);
   detectPrevNextCycles(index, errors);
   return errors;

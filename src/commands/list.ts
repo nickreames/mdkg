@@ -38,7 +38,7 @@ function normalizeWorkspace(value?: string): string | undefined {
 export function runListCommand(options: ListCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  if (ws && !config.workspaces[ws]) {
+  if (ws && !config.workspaces[ws] && !config.bundle_imports[ws]) {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
   const normalizedType = options.type?.toLowerCase();
@@ -47,7 +47,7 @@ export function runListCommand(options: ListCommandOptions): void {
     throw new UsageError("--type skill is no longer supported here; use `mdkg skill list`");
   }
 
-  const { index, rebuilt, stale } = loadIndex({
+  const { index, rebuilt, stale, warnings } = loadIndex({
     root: options.root,
     config,
     useCache: !options.noCache,
@@ -56,6 +56,9 @@ export function runListCommand(options: ListCommandOptions): void {
 
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: index is stale; run mdkg index to refresh");
+  }
+  for (const warning of warnings) {
+    console.error(`warning: ${warning}`);
   }
 
   let epicQid: string | undefined;

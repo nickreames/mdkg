@@ -42,6 +42,10 @@ test("cli help covers the remaining command help surfaces", () => {
     assert.equal(result.status, 0, command);
     assert.match(result.stdout, pattern, command);
   }
+
+  const bundleImport = runCli(["help", "bundle", "import"]);
+  assert.equal(bundleImport.status, 0);
+  assert.match(bundleImport.stdout, /mdkg bundle import verify \[alias\|--all\] \[--json\]/);
 });
 
 test("cli command --help routes to command-specific help", () => {

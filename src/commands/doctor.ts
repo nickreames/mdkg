@@ -3,6 +3,7 @@ import path from "path";
 import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
+import { buildBundleImportsIndex } from "../graph/bundle_imports";
 import { ALLOWED_TYPES } from "../graph/node";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { ValidationError } from "../util/errors";
@@ -130,6 +131,49 @@ function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
   };
 }
 
+function runBundleImportChecks(root: string, config: ReturnType<typeof loadConfig>): CheckResult[] {
+  const projection = buildBundleImportsIndex(root, config);
+  if (projection.index.imports.length === 0) {
+    return [
+      {
+        name: "bundle-imports",
+        ok: true,
+        detail: "no bundle imports configured",
+      },
+    ];
+  }
+  return projection.index.imports.map((item) => {
+    if (!item.enabled) {
+      return {
+        name: `bundle-import:${item.alias}`,
+        ok: true,
+        level: "warn" as const,
+        detail: `disabled import at ${item.path}`,
+      };
+    }
+    if (item.error_count > 0) {
+      return {
+        name: `bundle-import:${item.alias}`,
+        ok: false,
+        detail: item.errors.join("; "),
+      };
+    }
+    if (item.stale || item.warning_count > 0) {
+      return {
+        name: `bundle-import:${item.alias}`,
+        ok: true,
+        level: "warn" as const,
+        detail: `import is stale or has warnings; run \`mdkg bundle import verify ${item.alias}\` (${item.warnings.join("; ")})`,
+      };
+    }
+    return {
+      name: `bundle-import:${item.alias}`,
+      ok: true,
+      detail: `import loaded from ${item.path}`,
+    };
+  });
+}
+
 export function runDoctorCommand(options: DoctorCommandOptions): void {
   const results: CheckResult[] = [];
 
@@ -170,6 +214,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
   if (config) {
     results.push(runArchiveStorageCheck(options.root));
     results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
+    results.push(...runBundleImportChecks(options.root, config));
 
     try {
       const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);

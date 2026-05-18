@@ -52,6 +52,19 @@ export type CapabilityRecord = {
   };
   spec?: Record<string, FrontmatterValue>;
   work?: Record<string, FrontmatterValue>;
+  source?: {
+    imported: boolean;
+    read_only: boolean;
+    import_alias: string;
+    original_qid: string;
+    original_workspace: string;
+    original_path: string;
+    bundle_path: string;
+    bundle_hash?: string;
+    profile?: string;
+    stale: boolean;
+    warnings: string[];
+  };
 };
 
 export type CapabilitiesIndex = {

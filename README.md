@@ -13,7 +13,7 @@ mdkg stays deliberately boring:
 - zero runtime dependencies
 - no required sqlite, daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.3`
+Current package version in source: `0.1.4`
 
 ## The product shape
 
@@ -108,6 +108,19 @@ mdkg bundle list --json
 
 Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph or archive records.
 
+Import a child repo bundle as a read-only planning view:
+
+```bash
+mdkg bundle import add child_repo child-repo/.mdkg/bundles/private/all.mdkg.zip --source-path child-repo
+mdkg bundle import list --json
+mdkg search "child capability"
+mdkg show child_repo:work.example
+mdkg pack child_repo:work.example --dry-run --stats
+mdkg bundle import verify child_repo --json
+```
+
+Imported bundle nodes are projected under the import alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, and capability discovery, but remain read-only; mutate the child repo and refresh its bundle to change imported content. Stale imports warn during planning reads and fail `mdkg bundle import verify`.
+
 Validate before handoff or commit:
 
 ```bash
@@ -185,6 +198,7 @@ mdkg lives under a hidden root directory:
 - `.mdkg/skills/` Agent Skills packages
 - `.mdkg/archive/` sidecar metadata plus deterministic compressed source/artifact caches
 - `.mdkg/bundles/` optional committed full graph snapshot bundles
+- `.mdkg/index/imports.json` generated read-only bundle import cache
 - `.agents/skills/` Codex/OpenAI-facing mirrored skills
 - `.claude/skills/` Claude-facing mirrored skills
 - `.mdkg/index/` generated cache files

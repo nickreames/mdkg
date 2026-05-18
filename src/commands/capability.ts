@@ -7,6 +7,7 @@ import {
   CapabilityVisibility,
 } from "../graph/capabilities_indexer";
 import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
+import { buildImportedCapabilityRecords } from "../graph/bundle_imports";
 import { NotFoundError, UsageError } from "../util/errors";
 
 type CapabilityListOptions = {
@@ -63,7 +64,11 @@ function loadRecords(options: CapabilityListOptions): CapabilityRecord[] {
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: capabilities index is stale; run mdkg index to refresh");
   }
-  return index.records;
+  const imported = buildImportedCapabilityRecords(options.root, config);
+  for (const warning of imported.warnings) {
+    console.error(`warning: ${warning}`);
+  }
+  return [...index.records, ...(imported.records as CapabilityRecord[])];
 }
 
 function applyFilters(records: CapabilityRecord[], options: CapabilityListOptions): CapabilityRecord[] {

@@ -31,6 +31,14 @@ import {
   runBundleShowCommand,
   runBundleVerifyCommand,
 } from "./commands/bundle";
+import {
+  runBundleImportAddCommand,
+  runBundleImportDisableCommand,
+  runBundleImportEnableCommand,
+  runBundleImportListCommand,
+  runBundleImportRemoveCommand,
+  runBundleImportVerifyCommand,
+} from "./commands/bundle_import";
 import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
@@ -430,6 +438,15 @@ function printArchiveHelp(log: LogFn, subcommand?: string): void {
 
 function printBundleHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
+    case "import":
+      log("Usage:");
+      log("  mdkg bundle import add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]");
+      log("  mdkg bundle import list [--json]");
+      log("  mdkg bundle import rm <alias> [--json]");
+      log("  mdkg bundle import enable <alias> [--json]");
+      log("  mdkg bundle import disable <alias> [--json]");
+      log("  mdkg bundle import verify [alias|--all] [--json]");
+      break;
     case "create":
       log("Usage:");
       log("  mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]");
@@ -452,8 +469,10 @@ function printBundleHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg bundle verify [bundle-path] [--json]");
       log("  mdkg bundle show <bundle-path> [--json]");
       log("  mdkg bundle list [--json]");
+      log("  mdkg bundle import add/list/rm/enable/disable/verify ...");
       log("\nNotes:");
       log("  - bundles are explicit full .mdkg graph snapshots, not task context packs");
+      log("  - bundle imports are read-only graph views projected under their import alias");
       log("  - private is the default profile; public bundles fail closed on private refs");
       log("  - .mdkg/bundles/ is commit-eligible when your repo tracks snapshot bundles");
   }
@@ -594,6 +613,7 @@ function printDoctorHelp(log: LogFn): void {
   log("  - Template schema availability");
   log("  - Archive sidecar storage hygiene");
   log("  - Bundle snapshot storage guidance");
+  log("  - Bundle import health and staleness");
   log("  - Index load/rebuild health");
   log("  - Capability cache load/rebuild health");
   log("\nOptions:");
@@ -1016,6 +1036,80 @@ function runArchiveSubcommand(parsed: ParsedArgs, root: string): ExitCode {
 function runBundleSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
   switch (subcommand) {
+    case "import": {
+      const action = (parsed.positionals[2] ?? "").toLowerCase();
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      switch (action) {
+        case "add": {
+          const alias = parsed.positionals[3];
+          const bundlePath = parsed.positionals[4];
+          if (!alias || !bundlePath || parsed.positionals.length > 5) {
+            throw new UsageError("bundle import add requires <alias> <bundle-path>");
+          }
+          const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
+          const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
+          const sourcePath = requireFlagValue("--source-path", parsed.flags["--source-path"]);
+          const sourceRepo = requireFlagValue("--source-repo", parsed.flags["--source-repo"]);
+          const maxStaleRaw = requireFlagValue("--max-stale-seconds", parsed.flags["--max-stale-seconds"]);
+          const maxStaleSeconds = maxStaleRaw === undefined ? undefined : Number.parseInt(maxStaleRaw, 10);
+          runBundleImportAddCommand({
+            root,
+            alias,
+            bundlePath,
+            visibility,
+            profile,
+            sourcePath,
+            sourceRepo,
+            maxStaleSeconds,
+            json,
+          });
+          return 0;
+        }
+        case "list": {
+          if (parsed.positionals.length > 3) {
+            throw new UsageError("bundle import list does not accept positional arguments");
+          }
+          runBundleImportListCommand({ root, json });
+          return 0;
+        }
+        case "rm":
+        case "remove": {
+          const alias = parsed.positionals[3];
+          if (!alias || parsed.positionals.length > 4) {
+            throw new UsageError("bundle import rm requires <alias>");
+          }
+          runBundleImportRemoveCommand({ root, alias, json });
+          return 0;
+        }
+        case "enable": {
+          const alias = parsed.positionals[3];
+          if (!alias || parsed.positionals.length > 4) {
+            throw new UsageError("bundle import enable requires <alias>");
+          }
+          runBundleImportEnableCommand({ root, alias, json });
+          return 0;
+        }
+        case "disable": {
+          const alias = parsed.positionals[3];
+          if (!alias || parsed.positionals.length > 4) {
+            throw new UsageError("bundle import disable requires <alias>");
+          }
+          runBundleImportDisableCommand({ root, alias, json });
+          return 0;
+        }
+        case "verify": {
+          if (parsed.positionals.length > 4) {
+            throw new UsageError("bundle import verify accepts at most one alias");
+          }
+          const alias = parsed.positionals[3];
+          const all = parseBooleanFlag("--all", parsed.flags["--all"]);
+          runBundleImportVerifyCommand({ root, alias, all, json });
+          return 0;
+        }
+        default:
+          throw new UsageError("bundle import requires add/list/rm/enable/disable/verify");
+      }
+    }
     case "create": {
       if (parsed.positionals.length > 2) {
         throw new UsageError("bundle create does not accept positional arguments");
@@ -1054,7 +1148,7 @@ function runBundleSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       return 0;
     }
     default:
-      throw new UsageError("bundle requires create/list/show/verify");
+      throw new UsageError("bundle requires create/list/show/verify/import");
   }
 }
 

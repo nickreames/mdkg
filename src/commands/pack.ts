@@ -325,11 +325,11 @@ function printDryRunSummary(
 export function runPackCommand(options: PackCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  if (ws && !config.workspaces[ws]) {
+  if (ws && !config.workspaces[ws] && !config.bundle_imports[ws]) {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
 
-  const { index, rebuilt, stale } = loadIndex({
+  const { index, rebuilt, stale, warnings } = loadIndex({
     root: options.root,
     config,
     useCache: !options.noCache,
@@ -338,6 +338,9 @@ export function runPackCommand(options: PackCommandOptions): void {
 
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: index is stale; run mdkg index to refresh");
+  }
+  for (const warning of warnings) {
+    console.error(`warning: ${warning}`);
   }
 
   const resolved = resolveQid(index, options.id, ws);

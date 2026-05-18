@@ -24,6 +24,7 @@ export type NodeSummaryJson = {
   attributes: Record<string, FrontmatterValue>;
   path: string;
   edges: IndexNode["edges"];
+  source?: IndexNode["source"];
 };
 
 export type SkillSummaryJson = {
@@ -82,6 +83,7 @@ export function toNodeSummaryJson(node: IndexNode): NodeSummaryJson {
       blocked_by: [...node.edges.blocked_by],
       blocks: [...node.edges.blocks],
     },
+    ...(node.source ? { source: node.source } : {}),
   };
 }
 
