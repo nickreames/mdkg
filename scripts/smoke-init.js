@@ -252,6 +252,16 @@ function exerciseAgentInit(binPath, tempRoot) {
     "mdkg bundle create --profile private",
     "mirrored verify-close-and-checkpoint skill"
   );
+  assertIncludes(
+    fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
+    "mdkg bundle import add/list/verify",
+    "seeded AGENT_START import guidance"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
+    "mdkg bundle import add",
+    "seeded .mdkg README import guidance"
+  );
 
   const manifest = assertManifestMatches(root);
   for (const category of ["agent_doc", "startup_doc", "default_skill"]) {

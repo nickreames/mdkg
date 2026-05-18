@@ -18,6 +18,7 @@ export function writeRootConfig(root: string): void {
       output_dir: ".mdkg/bundles",
       default_profile: "private",
     },
+    bundle_imports: {},
     pack: {
       default_depth: 2,
       default_edges: ["parent", "epic", "relates"],

@@ -28,6 +28,22 @@ export type IndexNode = {
   attributes: Record<string, FrontmatterValue>;
   path: string;
   edges: EdgeMap;
+  source?: {
+    imported: boolean;
+    read_only: boolean;
+    import_alias: string;
+    original_qid: string;
+    original_ws: string;
+    original_path: string;
+    bundle_path: string;
+    bundle_hash?: string;
+    profile?: string;
+    visibility?: string;
+    stale: boolean;
+    warnings: string[];
+    source_repo?: string;
+    source_git_head?: string | null;
+  };
 };
 
 export type Index = {
@@ -195,7 +211,10 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
     reverse_edges,
   };
 
-  validateGraph(index, { allowMissing: tolerant });
+  validateGraph(index, {
+    allowMissing: tolerant,
+    externalWorkspaces: new Set(Object.keys(config.bundle_imports ?? {})),
+  });
 
   const latestCheckpointByWorkspace: Record<string, string> = {};
   for (const alias of workspaceAliases) {

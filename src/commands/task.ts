@@ -182,6 +182,11 @@ function loadMutableTaskNode(root: string, idOrQid: string, wsHint?: string): Lo
   if (!node) {
     throw new NotFoundError(`task not found: ${idOrQid}`);
   }
+  if (node.source?.imported) {
+    throw new UsageError(
+      `cannot mutate read-only imported node ${node.qid}; update the source workspace for bundle import ${node.source.import_alias}`
+    );
+  }
   if (!MUTABLE_TASK_TYPES.has(node.type)) {
     throw new UsageError(
       `mdkg task only supports task, bug, and test nodes; use markdown editing for ${node.type}:${node.id}`

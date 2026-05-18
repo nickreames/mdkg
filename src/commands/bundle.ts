@@ -500,6 +500,52 @@ function publicFilteringErrors(index: Index, includedQids: Set<string>): string[
   return errors;
 }
 
+function collectStringValues(value: unknown, out: string[]): void {
+  if (typeof value === "string") {
+    out.push(value);
+    return;
+  }
+  if (Array.isArray(value)) {
+    for (const child of value) {
+      collectStringValues(child, out);
+    }
+    return;
+  }
+  if (typeof value === "object" && value !== null) {
+    for (const child of Object.values(value)) {
+      collectStringValues(child, out);
+    }
+  }
+}
+
+function publicImportReferenceErrors(config: Config, index: Index, includedQids: Set<string>): string[] {
+  const privateImportAliases = new Set(
+    Object.entries(config.bundle_imports)
+      .filter(([, entry]) => entry.enabled && entry.visibility !== "public")
+      .map(([alias]) => alias)
+  );
+  if (privateImportAliases.size === 0) {
+    return [];
+  }
+  const errors: string[] = [];
+  for (const node of Object.values(index.nodes)) {
+    if (!includedQids.has(node.qid)) {
+      continue;
+    }
+    const values: string[] = [];
+    collectStringValues(node.edges, values);
+    collectStringValues(node.attributes, values);
+    values.push(...node.links, ...node.artifacts, ...node.refs, ...node.aliases);
+    for (const value of values) {
+      const [alias] = value.split(":");
+      if (alias && privateImportAliases.has(alias)) {
+        errors.push(`${node.qid} references private bundle import ${value}`);
+      }
+    }
+  }
+  return errors;
+}
+
 function defaultOutputPath(
   root: string,
   config: Config,
@@ -571,7 +617,11 @@ function buildBundle(options: BundleCreateCommandOptions): BundleBuildResult {
 
   const filteredIndex = filterIndex(index, selectedSet, profile);
   if (profile === "public") {
-    const errors = publicFilteringErrors(index, new Set(Object.keys(filteredIndex.nodes)));
+    const includedQids = new Set(Object.keys(filteredIndex.nodes));
+    const errors = [
+      ...publicFilteringErrors(index, includedQids),
+      ...publicImportReferenceErrors(config, index, includedQids),
+    ];
     if (errors.length > 0) {
       throw new ValidationError(`public bundle contains private references:\n${errors.join("\n")}`);
     }

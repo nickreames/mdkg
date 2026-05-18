@@ -1,9 +1,7 @@
-import fs from "fs";
-import path from "path";
 import { loadConfig } from "../core/config";
 import { IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
-import { parseFrontmatter } from "../graph/frontmatter";
+import { readNodeBody } from "../graph/node_body";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { formatNodeCard } from "./node_card";
@@ -48,7 +46,7 @@ function formatAttributeLine(key: string, value: IndexNode["attributes"][string]
 export function runShowCommand(options: ShowCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  if (ws && !config.workspaces[ws]) {
+  if (ws && !config.workspaces[ws] && !config.bundle_imports[ws]) {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
   const normalizedId = options.id.toLowerCase();
@@ -58,7 +56,7 @@ export function runShowCommand(options: ShowCommandOptions): void {
     );
   }
 
-  const { index, rebuilt, stale } = loadIndex({
+  const { index, rebuilt, stale, warnings } = loadIndex({
     root: options.root,
     config,
     useCache: !options.noCache,
@@ -68,6 +66,9 @@ export function runShowCommand(options: ShowCommandOptions): void {
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: index is stale; run mdkg index to refresh");
   }
+  for (const warning of warnings) {
+    console.error(`warning: ${warning}`);
+  }
 
   const resolved = resolveQid(index, options.id, ws);
   if (resolved.status !== "ok") {
@@ -75,14 +76,9 @@ export function runShowCommand(options: ShowCommandOptions): void {
   }
 
   const node = index.nodes[resolved.qid];
-  const filePath = path.resolve(options.root, node.path);
   let body = "";
   if (!options.metaOnly) {
-    if (!fs.existsSync(filePath)) {
-      throw new NotFoundError(`file not found for ${node.qid}: ${node.path}`);
-    }
-    const content = fs.readFileSync(filePath, "utf8");
-    body = parseFrontmatter(content, filePath).body.trimEnd();
+    body = readNodeBody(options.root, node);
   }
 
   const format = options.format ?? (options.json ? "json" : undefined);

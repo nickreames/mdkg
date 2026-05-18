@@ -4,7 +4,28 @@ All notable changes to mdkg are documented here.
 
 This project follows a pragmatic changelog style inspired by Keep a Changelog. Versions use npm package versions.
 
-## 0.1.3 - Unreleased
+## 0.1.4 - Unreleased
+
+### Added
+
+- Added `mdkg bundle import add/list/rm/enable/disable/verify` for read-only child graph snapshot imports.
+- Added `bundle_imports` config with explicit alias, bundle path, visibility, expected profile, source metadata, and optional staleness policy.
+- Added `.mdkg/index/imports.json` as a derived import projection and health cache.
+- Added packed-package bundle import smoke coverage.
+
+### Changed
+
+- `list`, `search`, `show`, `pack`, and `capability` now include enabled read-only bundle imports by default.
+- Imported nodes use import-alias qids such as `child_repo:task-1` and expose original bundle/source metadata in JSON output.
+- Stale imports warn during planning reads while `mdkg bundle import verify` exits nonzero.
+- Public bundle creation now fails when public local nodes reference private or internal imported graphs.
+
+### Fixed
+
+- Mutating task and work update flows now reject imported qids with explicit read-only import errors.
+- Local graph indexing now allows edges to configured import aliases without treating them as missing local workspace nodes.
+
+## 0.1.3 - 2026-05-17
 
 ### Added
 

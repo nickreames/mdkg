@@ -24,10 +24,11 @@ mdkg pack <id>
 mdkg capability search "..."
 mdkg archive list
 mdkg bundle create --profile private
+mdkg bundle import list --json
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg bundle ...` to create full graph snapshot bundles and read-only child graph imports, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
 Agent workflow docs can use semantic ids:
 
@@ -78,6 +79,15 @@ mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
 ```
 
 Use this as a pre-commit recommendation only when the repo tracks archive caches or `.mdkg/bundles/`. Private bundles are local graph transport artifacts and may be tracked in private repos when configured. Public bundles require selected workspaces with `visibility: public` and fail closed when public records reference private graph or archive records.
+
+Register child bundle snapshots as read-only imports with:
+
+```bash
+mdkg bundle import add child_repo child-repo/.mdkg/bundles/private/all.mdkg.zip --source-path child-repo
+mdkg bundle import verify child_repo --json
+```
+
+Imported nodes use the import alias as their qid prefix and can be inspected or packed, but mutations must happen in the owning child repo.
 
 ## Archive and Work Mirrors
 

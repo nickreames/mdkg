@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-05-17
-package_version_in_source: 0.1.3
+package_version_in_source: 0.1.4
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -45,7 +45,7 @@ Skills are first-class and are accessed only through `mdkg skill ...`.
 Generic `list/show/search` do not expose skills.
 Capability cache discovery is read-only and accessed through `mdkg capability ...`.
 Archive sidecars are accessed through `mdkg archive ...`.
-Full graph snapshot bundles are accessed through `mdkg bundle ...`.
+Full graph snapshot bundles and read-only bundle imports are accessed through `mdkg bundle ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 
 ## Global usage
@@ -522,12 +522,22 @@ Usage:
 - `mdkg bundle verify [bundle-path] [--json]`
 - `mdkg bundle show <bundle-path> [--json]`
 - `mdkg bundle list [--json]`
+- `mdkg bundle import add/list/rm/enable/disable/verify ...`
+- `mdkg bundle import add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]`
+- `mdkg bundle import list [--json]`
+- `mdkg bundle import rm <alias> [--json]`
+- `mdkg bundle import enable <alias> [--json]`
+- `mdkg bundle import disable <alias> [--json]`
+- `mdkg bundle import verify [alias|--all] [--json]`
 
 Flags:
 - `--profile private|public`
 - `--ws <alias|all>`
 - `--output <path>`
 - `--json`
+- `--source-path <path>`
+- `--source-repo <ref>`
+- `--max-stale-seconds <seconds>`
 
 Notes:
 - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
@@ -538,12 +548,21 @@ Notes:
 - public bundles require at least one selected workspace with `visibility: public`
 - public bundle creation fails if public records reference private graph nodes or private archive refs
 - bundles exclude `.mdkg/pack/`, `.mdkg/bundles/`, existing `.mdkg/index/`, and raw `.mdkg/archive/**/source/` files
+- bundle imports are read-only graph views projected under import-alias qids such as `child_repo:task-1`
+- enabled imports are visible to `list`, `search`, `show`, `pack`, and `capability`
+- stale imports warn during planning reads; `mdkg bundle import verify` exits nonzero for stale or invalid imports
+- mutating commands reject imported qids with a read-only import error
+- `mdkg index` writes `.mdkg/index/imports.json` in addition to local indexes
 
 JSON receipts:
 - `create`: `{ action: "created", path, profile, selected_workspaces, file_count, source_tree_hash, bundle_hash, zip_sha256, source }`
 - `verify`: `{ action: "verified", ok, path, profile, selected_workspaces, file_count, stale, errors, stale_paths, bundle_hash, zip_sha256 }`
 - `show`: `{ action: "show", bundle, manifest }`
 - `list`: `{ action: "list", count, items }`
+- `import add/enable/disable`: `{ action, import: { alias, path, enabled, visibility, expected_profile, profile, bundle_hash, source_git_head, stale, warnings, errors } }`
+- `import list`: `{ action: "list", count, imports }`
+- `import rm`: `{ action: "removed", import: { alias } }`
+- `import verify`: `{ action: "verified", ok, count, imports }`
 
 ### `mdkg work`
 
@@ -726,6 +745,7 @@ Notes:
 - writes `.mdkg/index/global.json`
 - writes `.mdkg/index/skills.json`
 - writes `.mdkg/index/capabilities.json`
+- writes `.mdkg/index/imports.json`
 
 ### `mdkg guide`
 

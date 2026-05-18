@@ -2,14 +2,14 @@
 id: epic-23
 type: epic
 title: read only bundle import and lazy subgraph loading
-status: backlog
+status: done
 priority: 2
 tags: [future, bundle-import, subgraph, orchestration, lazy-loading]
 owners: []
 links: []
 artifacts: []
 relates: [epic-21, epic-22, epic-27]
-blocked_by: [epic-22]
+blocked_by: []
 blocks: [epic-20, epic-21]
 refs: [edd-3, edd-8]
 aliases: [read-only-bundle-import, lazy-subgraph-loading]
@@ -36,6 +36,8 @@ The intended high-level topology is:
 
 # Milestones
 
+- Define dedicated read-only bundle import config and command receipts.
+- Project imported bundle indexes into alias-prefixed read-only graph views.
 - Register imported bundles as read-only graph sources with source repo,
   source commit, freshness, and visibility metadata.
 - Support search, show, and pack from imported bundle content.
@@ -43,6 +45,22 @@ The intended high-level topology is:
 - Make bundle import failures degrade clearly without corrupting root graph
   state.
 - Preserve public/private filtering when packing or exporting imported content.
+
+# Completion Evidence
+
+- `npm run test`
+- `npm run cli:check`
+- `node dist/cli.js validate`
+- `npm run smoke:consumer`
+- `npm run smoke:matrix`
+- `npm run smoke:upgrade`
+- `npm run smoke:init`
+- `npm run smoke:capabilities`
+- `npm run smoke:archive-work`
+- `npm run smoke:bundle`
+- `npm run smoke:bundle-import`
+- `npm pack --dry-run --json`
+- `npm publish --dry-run`
 
 # Out of Scope
 
@@ -65,3 +83,9 @@ The intended high-level topology is:
 - `epic-21`
 - `epic-27`
 - `~/omni-chat-rooms`
+- `task-139`
+- `task-140`
+- `task-141`
+- `task-142`
+- `task-143`
+- `test-83`

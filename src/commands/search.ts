@@ -76,7 +76,7 @@ export function runSearchCommand(options: SearchCommandOptions): void {
 
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  if (ws && !config.workspaces[ws]) {
+  if (ws && !config.workspaces[ws] && !config.bundle_imports[ws]) {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
   const normalizedType = options.type?.toLowerCase();
@@ -84,7 +84,7 @@ export function runSearchCommand(options: SearchCommandOptions): void {
     throw new UsageError("--type skill is no longer supported here; use `mdkg skill search`");
   }
 
-  const { index, rebuilt, stale } = loadIndex({
+  const { index, rebuilt, stale, warnings } = loadIndex({
     root: options.root,
     config,
     useCache: !options.noCache,
@@ -93,6 +93,9 @@ export function runSearchCommand(options: SearchCommandOptions): void {
 
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: index is stale; run mdkg index to refresh");
+  }
+  for (const warning of warnings) {
+    console.error(`warning: ${warning}`);
   }
 
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);

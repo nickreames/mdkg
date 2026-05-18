@@ -105,8 +105,12 @@ Graph snapshot bundles:
 - `mdkg bundle verify [bundle-path] [--json]`
 - `mdkg bundle show <bundle-path> [--json]`
 - `mdkg bundle list [--json]`
+- `mdkg bundle import add/list/rm/enable/disable/verify ...`
+- `mdkg bundle import add <alias> <bundle-path> [--source-path <path>] [--json]`
+- `mdkg bundle import verify [alias|--all] [--json]`
 - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
 - private bundles are explicit local graph transport artifacts
+- bundle imports are read-only planning views and use import-alias qids such as `child_repo:task-1`
 - repos that track archive caches or bundles should run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip` before commit
 - public bundles include only public workspace content and public archive sidecars
 - public bundle creation fails when public records reference private graph or archive records

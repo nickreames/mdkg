@@ -36,6 +36,9 @@ function selectNextByPriority(
     if (ws && node.ws !== ws) {
       return false;
     }
+    if (node.source?.imported) {
+      return false;
+    }
     if (!NEXT_TYPES.has(node.type)) {
       return false;
     }
@@ -79,6 +82,10 @@ export function runNextCommand(options: NextCommandOptions): void {
       throw new NotFoundError(formatResolveError("id", options.id, resolved, ws));
     }
     const node = index.nodes[resolved.qid];
+    if (node.source?.imported) {
+      console.error("no local next item: imported bundle nodes are read-only planning context");
+      return;
+    }
     const nextQid = node.edges.next;
     if (nextQid && index.nodes[nextQid]) {
       console.log(formatNodeCard(index.nodes[nextQid]));

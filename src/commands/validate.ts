@@ -7,6 +7,7 @@ import { Index, IndexNode } from "../graph/indexer";
 import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
+import { buildBundleImportsIndex, mergeBundleImportsIntoIndex } from "../graph/bundle_imports";
 import { ValidationError } from "../util/errors";
 import { auditSkillMirrors } from "./skill_mirror";
 
@@ -313,6 +314,17 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     reverse_edges: {},
   };
 
+  const importProjection = buildBundleImportsIndex(options.root, config);
+  for (const item of importProjection.index.imports) {
+    for (const warning of item.warnings) {
+      warnings.push(`bundle import ${item.alias}: ${warning}`);
+    }
+    for (const error of item.errors) {
+      errors.push(`bundle import ${item.alias}: ${error}`);
+    }
+  }
+  const validationIndex = mergeBundleImportsIntoIndex(index, importProjection);
+
   let knownSkills = new Set<string>();
   try {
     const skillsIndex = buildSkillsIndex(options.root, config);
@@ -329,7 +341,7 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     errors.push(message);
   }
 
-  const graphErrors = collectGraphErrors(index, {
+  const graphErrors = collectGraphErrors(validationIndex, {
     allowMissing: false,
     knownSkillSlugs: knownSkills,
   });

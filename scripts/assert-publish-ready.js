@@ -57,6 +57,9 @@ function requireBuildFolders() {
     requireDir(relativePath);
   }
   requireFile("dist/templates/builtin.js");
+  requireFile("dist/commands/bundle_import.js");
+  requireFile("dist/graph/bundle_imports.js");
+  requireFile("dist/graph/node_body.js");
 }
 
 function requireInitAssets() {
@@ -66,6 +69,9 @@ function requireInitAssets() {
   }
   if (!initConfig.bundles || initConfig.bundles.output_dir !== ".mdkg/bundles" || initConfig.bundles.default_profile !== "private") {
     fail("dist/init/config.json is missing the default bundle config");
+  }
+  if (!initConfig.bundle_imports || Object.keys(initConfig.bundle_imports).length !== 0) {
+    fail("dist/init/config.json is missing empty bundle_imports defaults");
   }
   if (!initConfig.workspaces?.root || initConfig.workspaces.root.visibility !== "private") {
     fail("dist/init/config.json is missing root workspace visibility metadata");
@@ -87,6 +93,14 @@ function requireInitAssets() {
     if (content.includes("mdkg init --llm") || content.includes("--llm --agent")) {
       fail(`dist/init/${startupDoc} contains removed init onboarding guidance`);
     }
+  }
+  const seededAgentStart = requireFile("dist/init/AGENT_START.md");
+  if (!seededAgentStart.includes("mdkg bundle import add/list/verify")) {
+    fail("dist/init/AGENT_START.md is missing bundle import onboarding guidance");
+  }
+  const seededReadme = requireFile("dist/init/README.md");
+  if (!seededReadme.includes("mdkg bundle import add") || !seededReadme.includes("mdkg bundle import verify")) {
+    fail("dist/init/README.md is missing bundle import onboarding guidance");
   }
   for (const template of [
     "archive.md",
