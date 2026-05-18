@@ -98,6 +98,8 @@ mdkg archive add <file> --id archive.example --kind source --visibility private
 mdkg archive verify archive://archive.example
 ```
 
+`mdkg validate` and `mdkg archive verify` both check the archive sidecar contract and deterministic ZIP payload integrity. Raw local archive source copies under `.mdkg/archive/**/source/` are ignored by default; sidecar `.md` files and ZIP caches are the commit-eligible evidence. Outside-repo sources are recorded as `external:<basename>`, and `mdkg doctor` warns about large ZIP caches using `archive.large_cache_warning_bytes` from `.mdkg/config.json`.
+
 Use work lifecycle helpers for semantic mirrors only:
 
 ```bash

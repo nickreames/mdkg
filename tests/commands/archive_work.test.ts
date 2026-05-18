@@ -7,6 +7,9 @@ import { spawnSync } from "node:child_process";
 import { makeTempDir } from "../helpers/fs";
 
 const cliPath = path.resolve(__dirname, "..", "..", "cli.js");
+const { createDeterministicZip } = require("../../util/zip") as {
+  createDeterministicZip: (entryName: string, data: Buffer) => Buffer;
+};
 
 function run(args: string[], cwd: string): { stdout: string; stderr: string } {
   const result = spawnSync(process.execPath, [cliPath, ...args], {
@@ -28,6 +31,17 @@ function runFailure(args: string[], cwd: string): { stdout: string; stderr: stri
 
 function sha256(filePath: string): string {
   return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+}
+
+function sha256Buffer(buffer: Buffer): string {
+  return crypto.createHash("sha256").update(buffer).digest("hex");
+}
+
+function updateConfig(root: string, mutate: (config: any) => void): void {
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  mutate(config);
+  fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
 }
 
 function updateFrontmatter(filePath: string, replacements: Record<string, string>): void {
@@ -112,6 +126,143 @@ test("archive commands create deterministic sidecars and verify zip caches witho
   const shown = JSON.parse(run(["archive", "show", "archive://archive.key-input-doc", "--json"], root).stdout);
   assert.equal(shown.item.id, "archive.key-input-doc");
   run(["validate"], root);
+});
+
+test("archive add redacts outside-repo source paths", () => {
+  const root = makeTempDir("mdkg-archive-external-source-");
+  const externalRoot = makeTempDir("mdkg-archive-external-input-");
+  run(["init", "--agent"], root);
+
+  const sourcePath = path.join(externalRoot, "external_input.txt");
+  fs.writeFileSync(sourcePath, "external input\n", "utf8");
+  const created = JSON.parse(
+    run([
+      "archive",
+      "add",
+      sourcePath,
+      "--id",
+      "archive.external-input",
+      "--json",
+    ], root).stdout
+  );
+
+  const sidecar = path.join(root, created.archive.path);
+  const content = fs.readFileSync(sidecar, "utf8");
+  assert.match(content, /^source_path: external:external_input\.txt$/m);
+  assert.doesNotMatch(content, new RegExp(externalRoot.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  run(["validate"], root);
+});
+
+test("archive validation and verify fail on missing zip cache and raw source drift", () => {
+  const root = makeTempDir("mdkg-archive-missing-zip-");
+  run(["init", "--agent"], root);
+  fs.mkdirSync(path.join(root, "inputs"), { recursive: true });
+  fs.writeFileSync(path.join(root, "inputs", "payload.txt"), "payload\n", "utf8");
+  run(["archive", "add", "inputs/payload.txt", "--id", "archive.payload", "--json"], root);
+
+  const zipPath = path.join(root, ".mdkg", "archive", "archive.payload", "payload.txt.zip");
+  fs.rmSync(zipPath);
+  const missingZipValidate = runFailure(["validate"], root);
+  assert.match(missingZipValidate.stderr, /compressed cache missing/);
+  const missingZipVerify = JSON.parse(runFailure(["archive", "verify", "archive.payload", "--json"], root).stdout);
+  assert.equal(missingZipVerify.ok, false);
+  assert.match(missingZipVerify.results[0].errors.join("\n"), /compressed cache missing/);
+
+  run(["archive", "compress", "archive.payload", "--json"], root);
+  const rawPath = path.join(root, ".mdkg", "archive", "archive.payload", "source", "payload.txt");
+  fs.writeFileSync(rawPath, "payload drift\n", "utf8");
+  const driftValidate = runFailure(["validate"], root);
+  assert.match(driftValidate.stderr, /raw sha256 mismatch/);
+  assert.match(driftValidate.stderr, /raw byte_size mismatch/);
+  const driftVerify = JSON.parse(runFailure(["archive", "verify", "archive.payload", "--json"], root).stdout);
+  assert.match(driftVerify.results[0].errors.join("\n"), /raw sha256 mismatch/);
+  assert.match(driftVerify.results[0].errors.join("\n"), /raw byte_size mismatch/);
+});
+
+test("archive validation and verify fail on corrupt zip payloads even when compressed hash matches", () => {
+  const root = makeTempDir("mdkg-archive-corrupt-zip-");
+  run(["init", "--agent"], root);
+  fs.mkdirSync(path.join(root, "inputs"), { recursive: true });
+  fs.writeFileSync(path.join(root, "inputs", "payload.txt"), "payload\n", "utf8");
+  run(["archive", "add", "inputs/payload.txt", "--id", "archive.payload", "--json"], root);
+
+  const sidecar = path.join(root, ".mdkg", "archive", "archive.payload", "payload.txt.md");
+  const zipPath = path.join(root, ".mdkg", "archive", "archive.payload", "payload.txt.zip");
+  const corruptZip = Buffer.from("not a zip");
+  fs.writeFileSync(zipPath, corruptZip);
+  updateFrontmatter(sidecar, {
+    compressed_sha256: `sha256:${sha256Buffer(corruptZip)}`,
+  });
+
+  const validateFailure = runFailure(["validate"], root);
+  assert.match(validateFailure.stderr, /zip read failed/);
+  const verifyFailure = runFailure(["archive", "verify", "archive.payload", "--json"], root);
+  const receipt = JSON.parse(verifyFailure.stdout);
+  assert.equal(receipt.ok, false);
+  assert.match(receipt.results[0].errors.join("\n"), /zip read failed/);
+});
+
+test("archive validation fails on zip payload hash and byte size mismatches", () => {
+  const root = makeTempDir("mdkg-archive-zip-payload-mismatch-");
+  run(["init", "--agent"], root);
+  fs.mkdirSync(path.join(root, "inputs"), { recursive: true });
+  fs.writeFileSync(path.join(root, "inputs", "payload.txt"), "payload\n", "utf8");
+  run(["archive", "add", "inputs/payload.txt", "--id", "archive.payload", "--json"], root);
+
+  const sidecar = path.join(root, ".mdkg", "archive", "archive.payload", "payload.txt.md");
+  const zipPath = path.join(root, ".mdkg", "archive", "archive.payload", "payload.txt.zip");
+  const replacementZip = createDeterministicZip("payload.txt", Buffer.from("different payload\n"));
+  fs.writeFileSync(zipPath, replacementZip);
+  updateFrontmatter(sidecar, {
+    compressed_sha256: `sha256:${sha256Buffer(replacementZip)}`,
+  });
+
+  const failure = runFailure(["validate"], root);
+  assert.match(failure.stderr, /zip payload sha256 mismatch/);
+  assert.match(failure.stderr, /zip payload byte_size mismatch/);
+});
+
+test("archive validation requires source_path in sidecars", () => {
+  const root = makeTempDir("mdkg-archive-source-path-required-");
+  run(["init", "--agent"], root);
+  fs.mkdirSync(path.join(root, "inputs"), { recursive: true });
+  fs.writeFileSync(path.join(root, "inputs", "payload.txt"), "payload\n", "utf8");
+  run(["archive", "add", "inputs/payload.txt", "--id", "archive.payload", "--json"], root);
+
+  const sidecar = path.join(root, ".mdkg", "archive", "archive.payload", "payload.txt.md");
+  const content = fs
+    .readFileSync(sidecar, "utf8")
+    .split(/\r?\n/)
+    .filter((line) => !line.startsWith("source_path:"))
+    .join("\n");
+  fs.writeFileSync(sidecar, content, "utf8");
+
+  const failure = runFailure(["validate"], root);
+  assert.match(failure.stderr, /source_path is required/);
+});
+
+test("doctor warns for large archive zip caches and threshold zero disables it", () => {
+  const root = makeTempDir("mdkg-archive-large-cache-");
+  run(["init", "--agent"], root);
+  updateConfig(root, (config) => {
+    config.archive.large_cache_warning_bytes = 1;
+  });
+  fs.mkdirSync(path.join(root, "inputs"), { recursive: true });
+  fs.writeFileSync(path.join(root, "inputs", "payload.txt"), "payload\n", "utf8");
+  run(["archive", "add", "inputs/payload.txt", "--id", "archive.payload", "--json"], root);
+
+  const warned = JSON.parse(run(["doctor", "--json"], root).stdout);
+  const largeCache = warned.checks.find((check: { name: string }) => check.name === "archive-large-cache");
+  assert.equal(largeCache.level, "warn");
+  assert.match(largeCache.detail, /archive\.payload\/payload\.txt\.zip/);
+
+  updateConfig(root, (config) => {
+    config.archive.large_cache_warning_bytes = 0;
+  });
+  const disabled = JSON.parse(run(["doctor", "--json"], root).stdout);
+  const disabledLargeCache = disabled.checks.find((check: { name: string }) => check.name === "archive-large-cache");
+  assert.equal(disabledLargeCache.level, undefined);
+  assert.match(disabledLargeCache.detail, /disabled/);
 });
 
 test("archive validation fails on missing local archive refs", () => {

@@ -68,6 +68,9 @@ function requireInitAssets() {
   if (!initConfig.capabilities || initConfig.capabilities.cache_path !== ".mdkg/index/capabilities.json") {
     fail("dist/init/config.json is missing the default capability cache path");
   }
+  if (!initConfig.archive || initConfig.archive.large_cache_warning_bytes !== 26214400) {
+    fail("dist/init/config.json is missing the default archive large-cache warning threshold");
+  }
   if (!initConfig.bundles || initConfig.bundles.output_dir !== ".mdkg/bundles" || initConfig.bundles.default_profile !== "private") {
     fail("dist/init/config.json is missing the default bundle config");
   }

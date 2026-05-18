@@ -435,6 +435,7 @@ function printArchiveHelp(log: LogFn, subcommand?: string): void {
       log("  - archive add copies the source, writes a sidecar, and writes a deterministic zip cache");
       log("  - archive visibility defaults to private");
       log("  - archive://<archive.id> refs are validated against local archive sidecars");
+      log("  - archive verify checks sidecar and zip payload integrity; missing raw source copies are ok when the zip cache is valid");
   }
   printGlobalOptions(log);
 }

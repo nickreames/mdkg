@@ -6,6 +6,9 @@ export function writeRootConfig(root: string): void {
     schema_version: 1,
     tool: "mdkg",
     root_required: true,
+    archive: {
+      large_cache_warning_bytes: 26214400,
+    },
     index: {
       auto_reindex: true,
       tolerant: false,

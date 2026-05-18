@@ -105,6 +105,42 @@ function runArchiveStorageCheck(root: string): CheckResult {
   };
 }
 
+function runArchiveLargeCacheCheck(root: string, warningBytes: number): CheckResult {
+  if (warningBytes === 0) {
+    return {
+      name: "archive-large-cache",
+      ok: true,
+      detail: "archive large-cache warning disabled",
+    };
+  }
+  const archiveRoot = path.join(root, ".mdkg", "archive");
+  const largeCaches = walkFiles(archiveRoot)
+    .filter((filePath) => filePath.endsWith(".zip"))
+    .map((filePath) => ({
+      path: path.relative(root, filePath).split(path.sep).join("/"),
+      size: fs.statSync(filePath).size,
+    }))
+    .filter((entry) => entry.size > warningBytes)
+    .sort((a, b) => a.path.localeCompare(b.path));
+
+  if (largeCaches.length === 0) {
+    return {
+      name: "archive-large-cache",
+      ok: true,
+      detail: `no archive ZIP cache exceeds ${warningBytes} bytes`,
+    };
+  }
+
+  return {
+    name: "archive-large-cache",
+    ok: true,
+    level: "warn",
+    detail: `archive ZIP cache(s) exceed ${warningBytes} bytes: ${largeCaches
+      .map((entry) => `${entry.path} (${entry.size} bytes)`)
+      .join(", ")}; keep large caches private or move bulky originals to repo policy-managed storage`,
+  };
+}
+
 function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
   const bundleRoot = path.resolve(root, outputDir);
   if (!fs.existsSync(bundleRoot)) {
@@ -249,6 +285,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
 
   if (config) {
     results.push(runArchiveStorageCheck(options.root));
+    results.push(runArchiveLargeCacheCheck(options.root, config.archive.large_cache_warning_bytes));
     results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
     results.push(...runBundleImportChecks(options.root, config));
     results.push(runVisibilityPolicyCheck(options.root, config, options));

@@ -1,7 +1,7 @@
-import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { FrontmatterValue } from "./frontmatter";
+import { checkArchiveIntegrity } from "./archive_integrity";
 import { isPortableId } from "../util/id";
 
 export const ARCHIVE_ATTRIBUTE_KEY_ORDER = [
@@ -58,10 +58,6 @@ function requireSha256(value: string, key: string, filePath: string): void {
   }
 }
 
-function hashFile(filePath: string): string {
-  return `sha256:${crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")}`;
-}
-
 export function isArchiveType(type: string): boolean {
   return type === "archive";
 }
@@ -82,6 +78,13 @@ export function validateArchiveFrontmatter(
 
   const archiveKind = expectString(frontmatter, "archive_kind", filePath);
   requireEnum(archiveKind, "archive_kind", ARCHIVE_KIND_VALUES, filePath);
+  const sourcePath = expectString(frontmatter, "source_path", filePath);
+  if (sourcePath.includes("\0")) {
+    throw formatError(filePath, "source_path must not contain NUL bytes");
+  }
+  if (path.isAbsolute(sourcePath) || sourcePath.split(/[\\/]/).includes("..")) {
+    throw formatError(filePath, "source_path must be repo-relative or external:<label>");
+  }
   const storedPath = expectString(frontmatter, "stored_path", filePath);
   requireRelativePath(storedPath, "stored_path", filePath);
   const compressedPath = expectString(frontmatter, "compressed_path", filePath);
@@ -108,25 +111,16 @@ export function validateArchiveFrontmatter(
   requireEnum(ingestStatus, "ingest_status", INGEST_STATUS_VALUES, filePath);
 
   const sidecarDir = path.dirname(filePath);
-  const compressedAbsolutePath = path.resolve(sidecarDir, compressedPath);
-  if (!fs.existsSync(compressedAbsolutePath)) {
-    throw formatError(filePath, `compressed_path missing: ${compressedPath}`);
-  }
-  const actualCompressedHash = hashFile(compressedAbsolutePath);
-  if (actualCompressedHash !== compressedHash) {
-    throw formatError(filePath, `compressed_sha256 mismatch for ${compressedPath}`);
-  }
-
-  const storedAbsolutePath = path.resolve(sidecarDir, storedPath);
-  if (fs.existsSync(storedAbsolutePath)) {
-    const actualSourceHash = hashFile(storedAbsolutePath);
-    if (actualSourceHash !== sourceHash) {
-      throw formatError(filePath, `sha256 mismatch for ${storedPath}`);
-    }
-    const actualByteSize = String(fs.statSync(storedAbsolutePath).size);
-    if (actualByteSize !== byteSize) {
-      throw formatError(filePath, `byte_size mismatch for ${storedPath}`);
-    }
+  const checked = checkArchiveIntegrity({
+    root: sidecarDir,
+    rawPath: path.resolve(sidecarDir, storedPath),
+    zipPath: path.resolve(sidecarDir, compressedPath),
+    expectedRawHash: sourceHash,
+    expectedCompressedHash: compressedHash,
+    expectedByteSize: byteSize,
+  });
+  if (!checked.ok) {
+    throw formatError(filePath, checked.errors.join("; "));
   }
 }
 

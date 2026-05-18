@@ -98,6 +98,14 @@ Explicit flags remain available and take precedence:
 - Bundle ZIPs must exclude `.mdkg/pack/`, existing `.mdkg/index/`, nested `.mdkg/bundles/`, and raw `.mdkg/archive/**/source/` files.
 - Repos that track archive caches or bundles should refresh in this order before commit: `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, then bundle verify.
 
+## Archive safety
+
+- Archive sidecar `.md` files and deterministic `.zip` caches are the commit-eligible evidence record.
+- Raw copied sources under `.mdkg/archive/**/source/` stay ignored by default.
+- `mdkg validate` and `mdkg archive verify` must both check ZIP cache hash, ZIP readability, payload hash, and payload byte size.
+- Outside-repo archive sources must be recorded as redacted labels such as `external:key_input_doc.pdf`, not absolute local paths.
+- `mdkg doctor` warns when committed archive ZIP caches exceed `archive.large_cache_warning_bytes`; this is advisory and does not block validation.
+
 ## Workspace safety
 
 Workspace-local `.mdkg/` directories (near code) should follow the same rules:

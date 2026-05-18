@@ -308,11 +308,13 @@ For executable or purchasable capability mirrors, prefer the lifecycle helpers u
 
 Archive entries live under `.mdkg/archive/<archive.id>/` and are normal graph nodes with `type: archive`. `mdkg archive add` copies the source into a managed local `source/` directory, writes a frontmatter sidecar `<file>.md`, and writes a deterministic single-file ZIP cache `<file>.zip`. The original source path is left untouched.
 
-Archive sidecars support `archive://archive.example` refs from orders, receipts, artifacts, proof refs, and other workflow metadata. `mdkg archive verify` treats a missing raw local source file as non-fatal when the committed sidecar and ZIP cache hashes are valid.
+Archive sidecars support `archive://archive.example` refs from orders, receipts, artifacts, proof refs, and other workflow metadata. `mdkg validate` and `mdkg archive verify` both require the sidecar contract, ZIP cache hash, readable ZIP payload, payload SHA-256, and payload byte size to match. A missing raw local source copy is non-fatal when the committed sidecar and ZIP cache are valid.
+
+When the source passed to `mdkg archive add` is inside the repo, `source_path` is repo-relative. Outside-repo sources are redacted to `external:<basename>` so sidecars do not leak absolute local paths.
 
 Archive sidecar visibility defaults to `private`. Use `mdkg archive add --visibility public` only when the sidecar metadata and ZIP cache are safe for public packs or public bundles.
 
-By default, init/upgrade ignore generated raw archive source copies with `.mdkg/archive/**/source/`; sidecar `.md` files and compressed `.zip` caches remain commit-eligible.
+By default, init/upgrade ignore generated raw archive source copies with `.mdkg/archive/**/source/`; sidecar `.md` files and compressed `.zip` caches remain commit-eligible. `mdkg doctor` warns when a committed archive ZIP cache exceeds `archive.large_cache_warning_bytes` in `.mdkg/config.json` (default `26214400`; set `0` to disable). Large-cache warnings do not block archive add or validation.
 
 ## Current direction
 
@@ -334,6 +336,7 @@ This release includes:
 - archive sidecars with deterministic ZIP caches
 - semantic mirror helpers under `mdkg work ...`
 - explicit public/internal/private visibility enforcement for packs, bundles, archives, imports, validation, and doctor diagnostics
+- strict archive ZIP payload integrity checks during validation
 
 Current direction:
 - keep the OSS story generic around `mdkg init --agent`

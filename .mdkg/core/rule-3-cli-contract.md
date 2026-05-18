@@ -206,6 +206,8 @@ Common flags:
   - `mdkg archive compress <id-or-archive-uri|--all> [--json]`
   - `archive://<archive.id>` refs resolve against local archive sidecars
   - archive visibility defaults to `private`
+  - in-repo source paths are recorded repo-relative; outside-repo source paths are redacted as `external:<basename>`
+  - `mdkg validate` and `mdkg archive verify` both check ZIP cache hash, ZIP readability, payload hash, and payload byte size
   - raw copied sources live under `.mdkg/archive/**/source/`; sidecar `.md` and deterministic `.zip` caches remain commit-eligible
 - full graph snapshot bundles live under `mdkg bundle ...`:
   - `mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]`
