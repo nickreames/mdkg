@@ -154,6 +154,9 @@ mdkg work receipt new "generate image receipt" --id receipt.generate-image-1 --w
 mdkg work artifact add receipt.generate-image-1 ./outputs/image.png --id archive.generated-image --kind artifact
 ```
 
+Receipt statuses are `recorded`, `verified`, `rejected`, and `superseded`.
+Update and artifact commands accept local ids or local qids; imported bundle qids are read-only and must be changed in their source workspace.
+
 Update structured task state and evidence while keeping body and narrative edits in markdown:
 
 ```bash
@@ -302,13 +305,13 @@ Use `mdkg new spec|work|work_order|receipt|feedback|dispute|proposal "<title>"` 
 
 Relational templates contain editable placeholder refs. `spec` and `work` scaffold as validation-clean standalone docs; `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 
-For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. Production order state, receipt state, payments, ledgers, marketplace inventory, and fulfillment records remain canonical outside mdkg, such as in Postgres or another application database.
+For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. Production order state, receipt state, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg, such as in Postgres or another application database. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
 
 ## Archive sidecars
 
 Archive entries live under `.mdkg/archive/<archive.id>/` and are normal graph nodes with `type: archive`. `mdkg archive add` copies the source into a managed local `source/` directory, writes a frontmatter sidecar `<file>.md`, and writes a deterministic single-file ZIP cache `<file>.zip`. The original source path is left untouched.
 
-Archive sidecars support `archive://archive.example` refs from orders, receipts, artifacts, proof refs, and other workflow metadata. `mdkg validate` and `mdkg archive verify` both require the sidecar contract, ZIP cache hash, readable ZIP payload, payload SHA-256, and payload byte size to match. A missing raw local source copy is non-fatal when the committed sidecar and ZIP cache are valid.
+Archive sidecars support `archive://archive.example` refs from orders, receipts, artifacts, proof refs, and other workflow metadata. `artifact://...` refs remain external or runtime-managed artifact identities; `archive://...` refs name committed mdkg archive sidecars. `mdkg validate` and `mdkg archive verify` both require the sidecar contract, ZIP cache hash, readable ZIP payload, payload SHA-256, and payload byte size to match. A missing raw local source copy is non-fatal when the committed sidecar and ZIP cache are valid.
 
 When the source passed to `mdkg archive add` is inside the repo, `source_path` is repo-relative. Outside-repo sources are redacted to `external:<basename>` so sidecars do not leak absolute local paths.
 

@@ -2,15 +2,15 @@
 id: task-156
 type: task
 title: work lifecycle packed temp repo smoke closeout
-status: todo
+status: done
 priority: 1
 epic: epic-26
 tags: [work, lifecycle, smoke, temp-repo, package]
 owners: []
 links: []
-artifacts: []
+artifacts: [scripts/smoke-archive-work.js, tests/commands/archive_work.test.ts, tests/commands/bundle_import.test.ts, README.md, CLI_COMMAND_MATRIX.md]
 relates: [epic-26, epic-24, epic-25, task-152, task-153, task-155]
-blocked_by: [task-155]
+blocked_by: []
 blocks: []
 refs: [edd-3, edd-8, rule-3]
 aliases: [work-lifecycle-packed-smoke]
@@ -52,13 +52,16 @@ work lifecycle command surface. Keep the smoke deterministic and local; no
 network, registry publish, runtime execution, payment, ledger, marketplace, or
 Postgres mutation.
 
+`npm run smoke:archive-work` now packs the current package, installs it into an
+isolated temp npm prefix, initializes a fresh git repo with `mdkg init --agent`,
+archives source and artifact files, verifies and recompresses archive caches,
+creates the contract/order/receipt chain, mutates order and receipt status with
+local qids, shows the final order and receipt, validates, indexes, searches,
+packs the receipt, verifies all archives, and runs doctor.
+
 # Test Plan
 
-- Run `npm run smoke:archive-work`.
-- Run `npm run test`.
-- Run `npm run cli:check`.
-- Run `node dist/cli.js validate`.
-- Run `git diff --check`.
+- Full release gate evidence is recorded in `epic-26` closeout.
 
 # Links / Artifacts
 

@@ -31,6 +31,10 @@ updated: {{updated}}
 
 Describe the reusable capability contract.
 
+This file is a semantic mirror for discovery and review. Do not store raw
+secrets, credentials, live payment state, ledger mutations, marketplace
+inventory, or canonical execution state here.
+
 # Inputs
 
 Document input descriptors and validation expectations.
@@ -41,4 +45,5 @@ Document output descriptors and artifact expectations.
 
 # Receipt
 
-Describe required receipt evidence.
+Describe required receipt evidence. Production execution systems remain
+canonical for real orders, receipts, payments, ledgers, and fulfillment state.

@@ -2,13 +2,13 @@
 id: task-154
 type: task
 title: semantic mirror boundary documentation closeout
-status: todo
+status: done
 priority: 2
 epic: epic-25
 tags: [docs, semantic-mirror, postgres-boundary, receipt, work-order]
 owners: []
 links: []
-artifacts: []
+artifacts: [README.md, CLI_COMMAND_MATRIX.md, AGENT_START.md, assets/init/README.md, assets/init/AGENT_START.md, .mdkg/core/rule-3-cli-contract.md, npm run cli:check, npm run smoke:init]
 relates: [epic-25, epic-24, epic-26, task-148, task-152, task-153]
 blocked_by: [task-153]
 blocks: [task-148]
@@ -56,12 +56,32 @@ users and internal runtime consumers.
 Keep public docs generic. Mention consumer repos only in mdkg graph work nodes
 or handoff prompts, not as public CLI branding.
 
+# Results
+
+- Updated public and seeded docs to state that mdkg work contracts, work orders,
+  and receipts are committed semantic mirrors only.
+- Documented the canonical-system boundary for production orders, receipts,
+  feedback, disputes, payment, ledger, marketplace inventory, fulfillment, and
+  execution state.
+- Documented that raw secrets, credentials, live payment state, ledger
+  mutations, canonical marketplace state, and bulky raw payloads do not belong
+  in mdkg work mirrors.
+- Documented the `artifact://...` versus `archive://...` split in workflow
+  guidance and default templates.
+- Left `task-148` open as the post-publish handoff prompt task.
+
 # Test Plan
 
 - Run `npm run cli:check`.
 - Run `npm run smoke:init`.
 - Run `node dist/cli.js validate`.
 - Run `git diff --check`.
+
+# Verification
+
+- `npm run cli:check`
+- `npm run smoke:init`
+- `node dist/cli.js validate`
 
 # Links / Artifacts
 

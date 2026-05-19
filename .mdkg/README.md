@@ -97,4 +97,9 @@ mdkg work order new "example request" --id order.example-1 --work-id work.exampl
 mdkg work receipt new "example receipt" --id receipt.example-1 --work-order-id order.example-1 --outcome success
 ```
 
-Production orders, receipts, payments, ledgers, marketplace state, and fulfillment records remain canonical outside mdkg. mdkg stores committed semantic mirrors and reviewable evidence.
+Receipt statuses are `recorded`, `verified`, `rejected`, and `superseded`.
+Update and artifact commands accept local ids or local qids; imported bundle qids are read-only and must be changed in their source workspace.
+
+Production orders, receipts, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg. mdkg stores committed semantic mirrors and reviewable evidence. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
+
+Use `artifact://...` for external or runtime-managed artifact identities. Use `archive://...` only for committed mdkg archive sidecars.

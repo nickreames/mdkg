@@ -35,6 +35,8 @@ Operating rules:
 - Use `mdkg capability list/search/show` for deterministic skills, `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
 - Use `mdkg archive add/list/show/verify/compress` for committed source and artifact sidecars under `.mdkg/archive`.
 - Use `mdkg work ...` helpers for semantic mirror contracts, work orders, receipts, and artifact registration.
+- Treat work contracts, orders, and receipts as committed semantic mirrors only; never store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in mdkg.
+- Use `artifact://...` for external/runtime-managed artifacts and `archive://...` for committed mdkg archive sidecars.
 - Use `mdkg bundle create/list/show/verify` for explicit full `.mdkg` graph snapshot bundles.
 - Use `mdkg bundle import add/list/verify` to register child bundle snapshots as read-only planning context.
 - Use `mdkg pack <id> --visibility public|internal` only when you need a public-safe or internal-safe pack; no flag remains private-capable local behavior.

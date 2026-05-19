@@ -17,7 +17,9 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 - Added `mdkg archive add --visibility private|internal|public` and `mdkg archive list --visibility ...`.
 - Added packed-package visibility smoke coverage.
 - Added `receipt_status: superseded` support for committed receipt mirrors.
+- Added `mdkg work receipt new|update --receipt-status superseded` CLI parity with graph validation.
 - Added runtime-style work/order/receipt fixture coverage with input refs, requested outputs, proof refs, artifacts, and hashes.
+- Added local qid support for `mdkg work order update`, `mdkg work receipt update`, and `mdkg work artifact add`.
 - Added `archive.large_cache_warning_bytes` config and `mdkg doctor` warnings for large committed archive ZIP caches.
 
 ### Changed
@@ -31,10 +33,13 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 - Archive JSON receipts now include sidecar visibility.
 - Archive sidecars created from outside-repo files now redact `source_path` to `external:<basename>` instead of storing absolute local paths.
 - `mdkg validate` and `mdkg archive verify` now share strict ZIP cache integrity checks for ZIP hash, readability, payload SHA-256, and payload byte size.
+- Work mirror docs and templates now state the canonical-system boundary for production order, receipt, feedback, dispute, payment, ledger, marketplace, fulfillment, and execution state.
+- Work lifecycle packed-package smoke now proves local qid mutation, order status updates, final superseded receipts, archive verification, indexing, show, and pack.
 
 ### Fixed
 
 - Mutating task and work update flows now reject imported qids with explicit read-only import errors.
+- Work lifecycle mutation commands now reject imported order/receipt qids with explicit read-only bundle import guidance.
 - Local graph indexing now allows edges to configured import aliases without treating them as missing local workspace nodes.
 - Public bundle checks now reuse the same fail-closed policy as public/internal pack checks.
 - `mdkg archive verify --json` now emits a verification receipt for corrupt archive ZIP caches instead of being blocked by strict index validation.
