@@ -253,7 +253,7 @@ function exerciseArchiveAndWork(binPath, tempRoot) {
         "work",
         "artifact",
         "add",
-        order.id,
+        `root:${order.id}`,
         "inputs/supplemental_prompt.txt",
         "--id",
         "archive.supplemental-prompt",
@@ -266,6 +266,12 @@ function exerciseArchiveAndWork(binPath, tempRoot) {
   );
   if (artifactOrder.archive.archive_uri !== "archive://archive.supplemental-prompt") {
     throw new Error("work artifact add did not return the supplemental archive");
+  }
+  const orderUpdate = parseJson(
+    mdkg(binPath, ["work", "order", "update", `root:${order.id}`, "--status", "completed", "--json"], root).stdout
+  );
+  if (orderUpdate.node.qid !== `root:${order.id}`) {
+    throw new Error(`work order update returned unexpected qid: ${orderUpdate.node.qid}`);
   }
 
   const outputPath = path.join(inputsDir, "image_output.txt");
@@ -311,7 +317,7 @@ function exerciseArchiveAndWork(binPath, tempRoot) {
       "work",
       "artifact",
       "add",
-      receipt.id,
+      `root:${receipt.id}`,
       "inputs/image_output.txt",
       "--id",
       "archive.image-output",
@@ -321,7 +327,8 @@ function exerciseArchiveAndWork(binPath, tempRoot) {
     ],
     root
   );
-  mdkg(binPath, ["work", "receipt", "update", receipt.id, "--receipt-status", "verified", "--json"], root);
+  mdkg(binPath, ["work", "receipt", "update", `root:${receipt.id}`, "--receipt-status", "verified", "--json"], root);
+  mdkg(binPath, ["work", "receipt", "update", `root:${receipt.id}`, "--receipt-status", "superseded", "--json"], root);
 
   const archives = parseJson(mdkg(binPath, ["archive", "list", "--json"], root).stdout);
   if (archives.count !== 3) {
@@ -335,7 +342,14 @@ function exerciseArchiveAndWork(binPath, tempRoot) {
   if (!archiveSearch.items.some((item) => item.id === "archive.key-input-doc")) {
     throw new Error("archive search did not include archive.key-input-doc");
   }
-  parseJson(mdkg(binPath, ["show", receipt.id, "--json"], root).stdout);
+  const shownReceipt = parseJson(mdkg(binPath, ["show", receipt.id, "--json"], root).stdout);
+  if (shownReceipt.item.attributes.receipt_status !== "superseded") {
+    throw new Error(`expected superseded receipt status, got ${shownReceipt.item.attributes.receipt_status}`);
+  }
+  const shownOrder = parseJson(mdkg(binPath, ["show", order.id, "--json"], root).stdout);
+  if (shownOrder.item.attributes.order_status !== "completed") {
+    throw new Error(`expected completed order status, got ${shownOrder.item.attributes.order_status}`);
+  }
   const packDryRun = mdkg(binPath, ["pack", receipt.id, "--dry-run", "--stats"], root).stdout;
   assertIncludes(packDryRun, "archive.image-output", "receipt pack dry-run");
   const verifyAll = parseJson(mdkg(binPath, ["archive", "verify", "--json"], root).stdout);

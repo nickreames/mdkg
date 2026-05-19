@@ -2,20 +2,20 @@
 id: epic-26
 type: epic
 title: mdkg work lifecycle namespace
-status: backlog
+status: done
 priority: 3
 tags: [future, cli, work, work-order, receipt, lifecycle]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/commands/work.ts, src/cli.ts, tests/commands/archive_work.test.ts, tests/commands/bundle_import.test.ts, scripts/smoke-archive-work.js, README.md, CLI_COMMAND_MATRIX.md, CHANGELOG.md]
 relates: [epic-24, epic-25]
-blocked_by: [epic-25]
+blocked_by: []
 blocks: []
 refs: [rule-3, edd-3, edd-8]
 aliases: [mdkg-work-namespace, work-lifecycle-helpers]
 skills: []
 created: 2026-05-17
-updated: 2026-05-17
+updated: 2026-05-18
 ---
 
 # Goal
@@ -45,6 +45,22 @@ Intended command family:
 - Packs include linked contract, order, receipt, feedback, dispute, proposal,
   and target context when appropriate.
 
+# Current State
+
+Epic-25 contract hardening is complete and the lifecycle namespace closeout is
+done. The implemented command family supports semantic mirror contract, order,
+receipt, and artifact registration workflows while preserving the canonical
+system boundary outside mdkg.
+
+Closeout completed:
+- `task-155`: local id-or-qid mutation parity, append-dedupe behavior, explicit
+  imported-qid read-only errors, deterministic JSON receipts, and docs/help
+  parity.
+- `task-156`: packed-package temp-repo smoke coverage for init, archive
+  add/verify/compress, work contract/order/receipt creation, qid-based order and
+  receipt updates, artifact registration, validate, index, show, pack, archive
+  verify, and doctor.
+
 # Out of Scope
 
 - No ledger, payment, inventory, or marketplace mutation.
@@ -63,3 +79,15 @@ Intended command family:
 - `epic-25`
 - `epic-24`
 - Future implementation should add command matrix and fixture coverage.
+- Verification gate:
+  - `node --test dist/tests/commands/archive_work.test.js dist/tests/commands/bundle_import.test.js`
+  - `npm run test`
+  - `npm run cli:check`
+  - `node dist/cli.js validate`
+  - `npm run smoke:archive-work`
+  - `npm run smoke:matrix`
+  - `npm run smoke:init`
+  - `npm run smoke:visibility`
+  - `npm pack --dry-run --json`
+  - `npm publish --dry-run`
+  - `git diff --check`

@@ -2,15 +2,15 @@
 id: task-155
 type: task
 title: work lifecycle namespace parity and ergonomics
-status: todo
+status: done
 priority: 1
 epic: epic-26
 tags: [work, lifecycle, cli, ergonomics, parity]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/commands/work.ts, src/cli.ts, tests/commands/archive_work.test.ts, tests/commands/bundle_import.test.ts, CLI_COMMAND_MATRIX.md, README.md, scripts/smoke-archive-work.js]
 relates: [epic-26, epic-25, epic-24, task-152, task-153, task-156]
-blocked_by: [task-152, task-153]
+blocked_by: []
 blocks: [task-156]
 refs: [edd-3, edd-8, rule-3]
 aliases: [work-lifecycle-parity]
@@ -51,14 +51,25 @@ lifecycle namespace requirements and close ergonomic parity gaps.
 This is the lifecycle namespace closeout bridge after `epic-25` schema parity.
 Do not add a runtime execution engine or database integration.
 
+Implemented shared id-or-qid resolution for mutating work lifecycle commands.
+`mdkg work order update`, `mdkg work receipt update`, and
+`mdkg work artifact add` now accept local ids or local qids. Imported bundle
+qids fail with explicit read-only guidance:
+`cannot mutate read-only imported node <qid>; update the source workspace for
+bundle import <alias>`.
+
+Create commands remain id-only and continue to require portable local ids.
+JSON receipts remain deterministic: `{ action, node }` for contract, order, and
+receipt mutations, and `{ action, target, archive }` for artifact registration.
+
+Update behavior preserves existing metadata and append-dedupes new input,
+artifact, proof, and attestation refs. `artifact://...` remains external runtime
+identity, while `archive://...` remains committed mdkg sidecar identity.
+
 # Test Plan
 
-- Add CLI tests for create/update parity and imported-node mutation errors.
-- Run `npm run test`.
-- Run `npm run cli:check`.
-- Run `npm run smoke:archive-work`.
-- Run `node dist/cli.js validate`.
-- Run `git diff --check`.
+- Focused test passed: `node --test dist/tests/commands/archive_work.test.js dist/tests/commands/bundle_import.test.js`.
+- Full release gate evidence is recorded in `epic-26` closeout.
 
 # Links / Artifacts
 

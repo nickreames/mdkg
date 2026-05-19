@@ -2,20 +2,20 @@
 id: epic-25
 type: epic
 title: work work order and receipt contract hardening
-status: todo
+status: done
 priority: 2
 tags: [future, work, work-order, receipt, schema, runtime-contract]
 owners: []
 links: []
-artifacts: [.mdkg/templates/default/work.md, .mdkg/templates/default/work_order.md, .mdkg/templates/default/receipt.md]
+artifacts: [.mdkg/templates/default/work.md, .mdkg/templates/default/work_order.md, .mdkg/templates/default/receipt.md, tests/fixtures/agent/valid/runtime-work/WORK.md, tests/fixtures/agent/valid/runtime-order/WORK_ORDER.md, tests/fixtures/agent/valid/runtime-receipt/RECEIPT.md, npm run test, npm run smoke:archive-work, omni-room-runtime room-trio validate]
 relates: [epic-24, epic-26]
 blocked_by: []
-blocks: [epic-26, task-132]
+blocks: []
 refs: [edd-3, edd-8]
 aliases: [work-order-receipt-contracts, workflow-contract-hardening]
 skills: []
 created: 2026-05-17
-updated: 2026-05-17
+updated: 2026-05-18
 ---
 
 # Goal
@@ -62,6 +62,32 @@ language should not brand these as Omni file types.
   standard.
 - Too much frontmatter complexity can make authoring brittle for humans.
 - Too little structure leaves runtimes unable to validate semantic mirrors.
+
+# Closeout
+
+Epic-25 is complete for the current `0.1.4` release line.
+
+- `task-152` closed CLI/schema parity by adding `superseded` receipt status to
+  `mdkg work receipt new|update`, docs, tests, and packed temp-repo smoke.
+- `task-153` confirmed generic runtime-style fixtures and pack coverage for
+  dependency refs, input/output descriptors, proof refs, artifacts, hashes, and
+  `artifact://` versus `archive://` semantics.
+- `task-154` closed public and seeded documentation for the semantic-mirror
+  boundary: mdkg records committed mirrors and reviewable evidence, while real
+  production order/receipt/payment/ledger/marketplace/execution state remains
+  canonical outside mdkg.
+- `task-148` remains open for post-publish consumer repo handoff prompts.
+
+# Verification
+
+- `npm run test`
+- `npm run cli:check`
+- `node dist/cli.js validate`
+- `node dist/cli.js --root /Users/nick/git/omni-room-runtime/tests/fixtures/runtime-images/room-trio/workspace validate --json`
+- `npm run smoke:archive-work`
+- `npm run smoke:matrix`
+- `npm run smoke:init`
+- `npm run smoke:visibility`
 
 # Links / Artifacts
 

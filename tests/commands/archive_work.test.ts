@@ -366,6 +366,25 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
     ], root).stdout
   ).node;
 
+  const supplementalPath = path.join(inputDir, "supplemental.txt");
+  fs.writeFileSync(supplementalPath, "supplemental source\n", "utf8");
+  const orderArtifact = JSON.parse(
+    run([
+      "work",
+      "artifact",
+      "add",
+      `root:${order.id}`,
+      "inputs/supplemental.txt",
+      "--id",
+      "archive.supplemental",
+      "--kind",
+      "source",
+      "--json",
+    ], root).stdout
+  );
+  assert.equal(orderArtifact.target.qid, `root:${order.id}`);
+  assert.equal(orderArtifact.archive.archive_uri, "archive://archive.supplemental");
+
   const outputPath = path.join(inputDir, "image.txt");
   fs.writeFileSync(outputPath, "artifact placeholder\n", "utf8");
   const outputHash = `sha256:${sha256(outputPath)}`;
@@ -382,7 +401,7 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
       "--outcome",
       "success",
       "--receipt-status",
-      "recorded",
+      "superseded",
       "--cost-ref",
       "cost://redacted/generate-image-1",
       "--artifacts",
@@ -398,13 +417,14 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
       "--json",
     ], root).stdout
   ).node;
+  assert.equal(receipt.id, "receipt.generate-image-1");
 
   const artifact = JSON.parse(
     run([
       "work",
       "artifact",
       "add",
-      receipt.id,
+      `root:${receipt.id}`,
       "inputs/image.txt",
       "--id",
       "archive.image-output",
@@ -415,12 +435,79 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
   );
   assert.equal(artifact.archive.archive_uri, "archive://archive.image-output");
 
-  run(["work", "order", "update", order.id, "--status", "completed", "--json"], root);
-  run(["work", "receipt", "update", receipt.id, "--receipt-status", "verified", "--add-proof-refs", "archive://archive.image-output", "--json"], root);
+  run([
+    "work",
+    "order",
+    "update",
+    `root:${order.id}`,
+    "--status",
+    "completed",
+    "--add-input-refs",
+    "archive://archive.prompt,archive://archive.prompt",
+    "--add-artifacts",
+    "artifact://image-output-placeholder,artifact://image-output-placeholder",
+    "--json",
+  ], root);
+  run([
+    "work",
+    "receipt",
+    "update",
+    `root:${receipt.id}`,
+    "--receipt-status",
+    "verified",
+    "--add-artifacts",
+    "artifact://image-output-placeholder,artifact://image-output-placeholder",
+    "--add-proof-refs",
+    "archive://archive.image-output,archive://archive.image-output",
+    "--json",
+  ], root);
+  run([
+    "work",
+    "receipt",
+    "update",
+    `root:${receipt.id}`,
+    "--receipt-status",
+    "superseded",
+    "--add-attestation-refs",
+    "attestation://review/superseded,attestation://review/superseded",
+    "--json",
+  ], root);
   run(["format"], root);
   const orderContent = fs.readFileSync(path.join(root, order.path), "utf8");
+  assert.match(orderContent, /^order_status: completed$/m);
   assert.match(orderContent, /requester: user:\/\/ExampleRequester/);
   assert.match(orderContent, /request_ref: request:\/\/GenerateImage\/1/);
+  assert.equal((orderContent.match(/archive:\/\/archive\.prompt/g) ?? []).length, 1);
+  assert.equal((orderContent.match(/archive:\/\/archive\.supplemental/g) ?? []).length, 1);
+  assert.equal((orderContent.match(/artifact:\/\/image-output-placeholder/g) ?? []).length, 1);
+  const receiptContent = fs.readFileSync(path.join(root, receipt.path), "utf8");
+  assert.match(receiptContent, /^receipt_status: superseded$/m);
+  assert.match(receiptContent, /proof_refs: \[[^\]]*https:\/\/example\.invalid\/proof[^\]]*\]/);
+  assert.match(receiptContent, /proof_refs: \[[^\]]*archive:\/\/archive\.image-output[^\]]*\]/);
+  assert.match(receiptContent, /attestation_refs: \[attestation:\/\/example, attestation:\/\/review\/superseded\]/);
+  assert.equal((receiptContent.match(/artifact:\/\/image-output-placeholder/g) ?? []).length, 1);
+  assert.equal((receiptContent.match(/archive:\/\/archive\.image-output/g) ?? []).length, 2);
+  assert.match(receiptContent, new RegExp(`input_hashes: \\[${outputHash}\\]`));
+  assert.match(receiptContent, new RegExp(`output_hashes: \\[${outputHash}\\]`));
+
+  const invalidNew = runFailure([
+    "work",
+    "receipt",
+    "new",
+    "Invalid Receipt",
+    "--id",
+    "receipt.invalid-status",
+    "--work-order-id",
+    order.id,
+    "--outcome",
+    "success",
+    "--receipt-status",
+    "archived",
+    "--json",
+  ], root);
+  assert.match(invalidNew.stderr, /--receipt-status must be one of recorded, verified, rejected, superseded/);
+  const invalidUpdate = runFailure(["work", "receipt", "update", receipt.id, "--receipt-status", "archived", "--json"], root);
+  assert.match(invalidUpdate.stderr, /--receipt-status must be one of recorded, verified, rejected, superseded/);
 
   run(["validate"], root);
   run(["index"], root);

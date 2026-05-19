@@ -492,16 +492,16 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
     case "order":
       log("Usage:");
       log('  mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]');
-      log("  mdkg work order update <id> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]");
+      log("  mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]");
       break;
     case "receipt":
       log("Usage:");
-      log('  mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected] [--json]');
-      log("  mdkg work receipt update <id> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]");
+      log('  mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--json]');
+      log("  mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]");
       break;
     case "artifact":
       log("Usage:");
-      log("  mdkg work artifact add <order-or-receipt-id> <file> [--id <archive.id>] [--kind source|artifact] [--json]");
+      log("  mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]");
       break;
     default:
       log("Usage:");
@@ -511,7 +511,10 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg work artifact add ...");
       log("\nNotes:");
       log("  - work commands mutate semantic mirror files only");
-      log("  - production order, receipt, payment, ledger, and marketplace state remains canonical outside mdkg");
+      log("  - production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg");
+      log("  - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors");
+      log("  - artifact:// refs identify external/runtime-managed artifacts; archive:// refs identify committed mdkg archive sidecars");
+      log("  - update and artifact commands accept local ids or local qids; imported bundle qids are read-only");
   }
   printGlobalOptions(log);
 }
@@ -1226,7 +1229,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   if (domain === "order" && action === "update") {
     const id = parsed.positionals[3];
     if (!id || parsed.positionals.length > 4) {
-      throw new UsageError("work order update requires <id>");
+      throw new UsageError("work order update requires <id-or-qid>");
     }
     const status = requireFlagValue("--status", parsed.flags["--status"]);
     const addInputRefs = requireFlagValue("--add-input-refs", parsed.flags["--add-input-refs"]);
@@ -1272,7 +1275,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   if (domain === "receipt" && action === "update") {
     const id = parsed.positionals[3];
     if (!id || parsed.positionals.length > 4) {
-      throw new UsageError("work receipt update requires <id>");
+      throw new UsageError("work receipt update requires <id-or-qid>");
     }
     const receiptStatus = requireFlagValue("--receipt-status", parsed.flags["--receipt-status"]);
     const addArtifacts = requireFlagValue("--add-artifacts", parsed.flags["--add-artifacts"]);
@@ -1295,7 +1298,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     const targetId = parsed.positionals[3];
     const file = parsed.positionals[4];
     if (!targetId || !file || parsed.positionals.length > 5) {
-      throw new UsageError("work artifact add requires <order-or-receipt-id> <file>");
+      throw new UsageError("work artifact add requires <order-or-receipt-id-or-qid> <file>");
     }
     const id = requireFlagValue("--id", parsed.flags["--id"]);
     const kind = requireFlagValue("--kind", parsed.flags["--kind"]);

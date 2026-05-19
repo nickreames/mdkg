@@ -27,9 +27,15 @@ updated: {{updated}}
 
 Capture the concrete request against a WORK.md version.
 
+This file is a committed semantic mirror, not the canonical execution database.
+Do not store raw secrets, credentials, live payment state, ledger mutations,
+marketplace inventory, or bulky payloads here.
+
 # Inputs
 
-Record committed input references without secrets.
+Record committed input references without secrets. Use `archive://...` for mdkg
+archive sidecars and `artifact://...` for external or runtime-managed artifact
+identities.
 
 # Requested Outputs
 

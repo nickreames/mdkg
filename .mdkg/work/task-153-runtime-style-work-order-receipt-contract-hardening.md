@@ -2,13 +2,13 @@
 id: task-153
 type: task
 title: runtime style work order receipt contract hardening
-status: todo
+status: done
 priority: 1
 epic: epic-25
 tags: [runtime-contract, work-order, receipt, fixtures, schema]
 owners: []
 links: []
-artifacts: []
+artifacts: [tests/fixtures/agent/valid/runtime-work/WORK.md, tests/fixtures/agent/valid/runtime-order/WORK_ORDER.md, tests/fixtures/agent/valid/runtime-receipt/RECEIPT.md, omni-room-runtime room-trio validate, npm run test]
 relates: [epic-25, epic-24, epic-26, task-132, task-152, task-154]
 blocked_by: [task-152]
 blocks: [task-154, task-155, task-156]
@@ -53,6 +53,20 @@ contract hardening using the room-trio fixture as read-only design evidence.
 Use `/Users/nick/git/omni-room-runtime/tests/fixtures/runtime-images/room-trio/workspace`
 as read-only inspiration only. Do not edit that repository in this task.
 
+# Results
+
+- Confirmed generic runtime-style fixtures cover dependency refs, capability
+  refs, input refs, requested outputs, constraint refs, artifact policy, proof
+  refs, attestation refs, artifacts, and input/output hashes.
+- Confirmed `artifact://...` remains an external/runtime-managed artifact
+  identity while `archive://...` remains a local mdkg archive sidecar ref that
+  validation resolves locally.
+- Confirmed `pack` includes the linked runtime-style spec, work contract, work
+  order, receipt, and archive sidecar context through the existing pack
+  traversal.
+- Compared against the `omni-room-runtime` room-trio fixture read-only; no
+  consumer repo files were modified.
+
 # Test Plan
 
 - Run focused agent workflow fixture tests.
@@ -60,6 +74,12 @@ as read-only inspiration only. Do not edit that repository in this task.
 - Run `npm run test`.
 - Run `node dist/cli.js validate`.
 - Run `git diff --check`.
+
+# Verification
+
+- `npm run test`
+- `node dist/cli.js --root /Users/nick/git/omni-room-runtime/tests/fixtures/runtime-images/room-trio/workspace validate --json`
+- `node dist/cli.js validate`
 
 # Links / Artifacts
 

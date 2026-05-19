@@ -14,6 +14,7 @@ import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { isPortableId } from "../util/id";
+import { formatResolveError, resolveQid } from "../util/qid";
 import { appendAutomaticEvent } from "./event_support";
 import { runArchiveAddCommand } from "./archive";
 
@@ -110,7 +111,7 @@ type WorkMutationReceipt = {
 
 const PRICING_MODELS = new Set(["free", "included", "quoted", "fixed", "metered", "subscription"]);
 const ORDER_STATUSES = new Set(["submitted", "accepted", "running", "completed", "cancelled", "failed"]);
-const RECEIPT_STATUSES = new Set(["recorded", "verified", "rejected"]);
+const RECEIPT_STATUSES = new Set(["recorded", "verified", "rejected", "superseded"]);
 const OUTCOMES = new Set(["success", "partial", "failure"]);
 
 function parseCsvList(raw?: string): string[] {
@@ -290,7 +291,30 @@ function createAgentWorkflowNode(options: {
   };
 }
 
-function loadMutableAgentNode(root: string, id: string, wsRaw: string | undefined, type: string): {
+function resolveWorkNode(
+  index: Index,
+  idOrQid: string,
+  ws: string,
+  allowedTypes: Set<string>,
+  label: string
+): IndexNode {
+  const resolved = resolveQid(index, idOrQid, ws);
+  if (resolved.status !== "ok") {
+    throw new NotFoundError(formatResolveError(label, idOrQid, resolved, ws));
+  }
+  const node = index.nodes[resolved.qid];
+  if (!node || !allowedTypes.has(node.type)) {
+    throw new NotFoundError(`${label} not found: ${idOrQid}`);
+  }
+  if (node.source?.imported) {
+    throw new UsageError(
+      `cannot mutate read-only imported node ${node.qid}; update the source workspace for bundle import ${node.source.import_alias}`
+    );
+  }
+  return node;
+}
+
+function loadMutableAgentNode(root: string, idOrQid: string, wsRaw: string | undefined, type: string): {
   config: ReturnType<typeof loadConfig>;
   node: IndexNode;
   filePath: string;
@@ -300,13 +324,7 @@ function loadMutableAgentNode(root: string, id: string, wsRaw: string | undefine
   const config = loadConfig(root);
   const ws = normalizeWorkspace(wsRaw);
   const { index } = loadIndex({ root, config });
-  const normalizedId = normalizePortableId(id, `<${type}-id>`);
-  const node = requireNodeById(index, ws, normalizedId, type, type);
-  if (node.source?.imported) {
-    throw new UsageError(
-      `cannot mutate read-only imported node ${node.qid}; update the source workspace for bundle import ${node.source.import_alias}`
-    );
-  }
+  const node = resolveWorkNode(index, idOrQid, ws, new Set([type]), type);
   const filePath = path.resolve(root, node.path);
   const parsed = parseFrontmatter(fs.readFileSync(filePath, "utf8"), filePath);
   return { config, node, filePath, frontmatter: { ...parsed.frontmatter }, body: parsed.body };
@@ -456,16 +474,13 @@ export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
-  const targetId = normalizePortableId(options.targetId, "<order-or-receipt-id>");
-  const target = index.nodes[`${ws}:${targetId}`];
-  if (!target || (target.type !== "work_order" && target.type !== "receipt")) {
-    throw new NotFoundError(`work order or receipt not found: ${options.targetId}`);
-  }
-  if (target.source?.imported) {
-    throw new UsageError(
-      `cannot mutate read-only imported node ${target.qid}; update the source workspace for bundle import ${target.source.import_alias}`
-    );
-  }
+  const target = resolveWorkNode(
+    index,
+    options.targetId,
+    ws,
+    new Set(["work_order", "receipt"]),
+    "work order or receipt"
+  );
 
   const archiveLogs: string[] = [];
   const originalLog = console.log;
@@ -476,11 +491,11 @@ export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions
   try {
     runArchiveAddCommand({
       root: options.root,
-      ws,
+      ws: target.ws,
       file: options.file,
       id: options.id,
       kind: options.kind ?? (target.type === "work_order" ? "source" : "artifact"),
-      relates: targetId,
+      relates: target.id,
       json: true,
       now: options.now,
     });
@@ -493,7 +508,7 @@ export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions
   if (!archiveUri) {
     throw new Error("archive add did not return an archive URI");
   }
-  const loaded = loadMutableAgentNode(options.root, targetId, ws, target.type);
+  const loaded = loadMutableAgentNode(options.root, target.qid, target.ws, target.type);
   const archiveKind = (options.kind ?? (target.type === "work_order" ? "source" : "artifact")).toLowerCase();
   if (target.type === "work_order" && archiveKind === "source") {
     loaded.frontmatter.input_refs = appendUnique(toStringList(loaded.frontmatter.input_refs), [archiveUri]);

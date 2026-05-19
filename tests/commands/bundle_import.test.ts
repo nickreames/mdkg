@@ -48,7 +48,49 @@ function createChildBundle(root: string): string {
   fs.mkdirSync(child, { recursive: true });
   run(["init", "--agent"], child);
   run(["new", "spec", "Child Agent", "--id", "agent.child-agent", "--json"], child);
-  run(["new", "work", "Child Work", "--id", "work.child-work", "--json"], child);
+  run([
+    "work",
+    "contract",
+    "new",
+    "Child Work",
+    "--id",
+    "work.child-work",
+    "--agent-id",
+    "agent.child-agent",
+    "--kind",
+    "child_capability",
+    "--inputs",
+    "prompt:text:required",
+    "--outputs",
+    "result:text:required",
+    "--json",
+  ], child);
+  run([
+    "work",
+    "order",
+    "new",
+    "Child Order",
+    "--id",
+    "order.child-order-1",
+    "--work-id",
+    "work.child-work",
+    "--requester",
+    "user://child",
+    "--json",
+  ], child);
+  run([
+    "work",
+    "receipt",
+    "new",
+    "Child Receipt",
+    "--id",
+    "receipt.child-order-1",
+    "--work-order-id",
+    "order.child-order-1",
+    "--outcome",
+    "success",
+    "--json",
+  ], child);
   run(["new", "task", "Child Task", "--status", "todo", "--priority", "1", "--json"], child);
   run(["bundle", "create", "--profile", "private", "--json"], child);
   return "child-repo/.mdkg/bundles/private/all.mdkg.zip";
@@ -126,6 +168,63 @@ test("bundle import projects child bundle nodes into read-only root graph", () =
   run(["bundle", "import", "disable", "child_import", "--json"], root);
   const disabledSearch = json<{ count: number }>(run(["search", "Child Task", "--json"], root).stdout);
   assert.equal(disabledSearch.count, 0);
+});
+
+test("work lifecycle mutations reject imported qids with read-only guidance", () => {
+  const root = makeTempDir("mdkg-bundle-import-work-readonly-");
+  run(["init", "--agent"], root);
+  const bundlePath = createChildBundle(root);
+  run(["bundle", "import", "add", "child_import", bundlePath, "--json"], root);
+
+  const orderUpdate = runFailure([
+    "work",
+    "order",
+    "update",
+    "child_import:order.child-order-1",
+    "--status",
+    "completed",
+    "--json",
+  ], root);
+  assert.equal(orderUpdate.status, 1);
+  assert.match(
+    orderUpdate.stderr,
+    /cannot mutate read-only imported node child_import:order\.child-order-1; update the source workspace for bundle import child_import/
+  );
+
+  const receiptUpdate = runFailure([
+    "work",
+    "receipt",
+    "update",
+    "child_import:receipt.child-order-1",
+    "--receipt-status",
+    "verified",
+    "--json",
+  ], root);
+  assert.equal(receiptUpdate.status, 1);
+  assert.match(
+    receiptUpdate.stderr,
+    /cannot mutate read-only imported node child_import:receipt\.child-order-1; update the source workspace for bundle import child_import/
+  );
+
+  fs.mkdirSync(path.join(root, "inputs"), { recursive: true });
+  fs.writeFileSync(path.join(root, "inputs", "artifact.txt"), "artifact\n", "utf8");
+  const artifactAdd = runFailure([
+    "work",
+    "artifact",
+    "add",
+    "child_import:receipt.child-order-1",
+    "inputs/artifact.txt",
+    "--id",
+    "archive.imported-artifact",
+    "--kind",
+    "artifact",
+    "--json",
+  ], root);
+  assert.equal(artifactAdd.status, 1);
+  assert.match(
+    artifactAdd.stderr,
+    /cannot mutate read-only imported node child_import:receipt\.child-order-1; update the source workspace for bundle import child_import/
+  );
 });
 
 test("bundle import verify fails stale imports while read commands warn and continue", () => {
