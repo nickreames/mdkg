@@ -9,6 +9,7 @@ import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
 import { buildBundleImportsIndex, mergeBundleImportsIntoIndex } from "../graph/bundle_imports";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
+import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
 import { ValidationError } from "../util/errors";
 import { auditSkillMirrors } from "./skill_mirror";
 
@@ -244,6 +245,11 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
 
   const errors: string[] = [];
   const warnings: string[] = [];
+  if (isSqliteBackend(config)) {
+    const health = sqliteHealth(options.root, config);
+    warnings.push(...health.warnings);
+    errors.push(...health.errors);
+  }
   if (templateSchemaInfo.fallbackTypes.length > 0) {
     warnings.push(
       `using bundled template schema fallback for missing local type(s): ${templateSchemaInfo.fallbackTypes.join(", ")}; run \`mdkg upgrade --apply\` to vendor built-in templates`

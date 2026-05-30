@@ -37,14 +37,15 @@ The npm package MUST include:
 
 It MUST NOT include:
 - `.mdkg/` docs
-- `.mdkg/index/`
+- generated `.mdkg/index/` caches
 - source code (optional; can be included later, but not required)
 
 ## Release checklist (v1)
 
 1) Ensure clean working tree
 - no uncommitted changes
-- all `.mdkg/index/` ignored
+- generated JSON index/temp/lock files ignored
+- `.mdkg/index/mdkg.sqlite` either intentionally tracked or absent
 
 2) Rebuild and validate
 - run `mdkg index`

@@ -1,0 +1,82 @@
+---
+id: task-202
+type: task
+title: audit closeout checkpoint
+status: done
+priority: 1
+epic: epic-35
+tags: [audit, checkpoint, release, closeout]
+owners: []
+links: []
+artifacts: [node dist/cli.js validate, node dist/cli.js show epic-35 --json, node dist/cli.js list --type task --epic epic-35 --json, node dist/cli.js pack task-202 --profile concise --dry-run --stats, git diff --check, node dist/cli.js index]
+relates: [epic-35, task-194, task-195, task-196, task-197, task-198, task-199, task-200, task-201]
+blocked_by: [task-194, task-195, task-196, task-197, task-198, task-199, task-200, task-201]
+blocks: []
+refs: [rule-5, rule-6]
+aliases: [release-roadmap-closeout]
+skills: []
+created: 2026-05-30
+updated: 2026-05-30
+---
+
+# Overview
+
+Close the roadmap and release audit with a durable decision record that states
+whether mdkg is ready for commit, publish, and the next implementation phase.
+
+# Acceptance Criteria
+
+- Summarize release blockers, residual risks, and resolved metadata gaps.
+- State the approved next npm version target and release theme.
+- State the exact next work item after the audit.
+- State whether the tree is ready for commit and whether a real npm publish is
+  approved or still blocked.
+- Link full gate evidence and any follow-up tasks.
+
+# Files Affected
+
+- `.mdkg/work/task-202-audit-closeout-checkpoint.md`
+- Optional checkpoint node if the audit creates one during closeout.
+
+# Implementation Notes
+
+Do not mark `epic-35` done until this task has concrete evidence from all
+preceding audit tasks.
+
+# Test Plan
+
+- `node dist/cli.js validate`
+- `node dist/cli.js show epic-35 --json`
+- `node dist/cli.js list --type task --epic epic-35 --json`
+- `node dist/cli.js pack task-202 --profile concise --dry-run --stats`
+- `git diff --check`
+
+# Audit Evidence
+
+- Release blocker status: no package correctness blockers found.
+- Metadata fix applied: `CHANGELOG.md` now records `0.1.3 - 2026-05-20`.
+- Full local release gate passed, including dry-run pack and dry-run publish
+  with clean npm cache.
+- Refreshed `.mdkg/index/mdkg.sqlite` with `node dist/cli.js index` after graph
+  evidence edits; final `node dist/cli.js validate` passed without warnings.
+- Real publish status: not approved for `0.1.3`, because npm already has
+  `mdkg@0.1.3` as `latest`.
+- Commit readiness: ready after final graph validation and diff check.
+- Next work item: `task-172` under `epic-21`.
+
+# Decision
+
+Close `epic-35` as done after final validation. The next npm publish target is
+`0.1.4`, scoped to `epic-21` subgraph orchestration unless a future audit finds
+a blocker.
+
+# Links / Artifacts
+
+- `task-194`
+- `task-195`
+- `task-196`
+- `task-197`
+- `task-198`
+- `task-199`
+- `task-200`
+- `task-201`

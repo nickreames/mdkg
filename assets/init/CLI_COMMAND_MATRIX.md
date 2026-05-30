@@ -22,6 +22,11 @@ Primary commands:
 - `mdkg task`
 - `mdkg validate`
 
+Index backend:
+- fresh mdkg workspaces default to `index.backend: sqlite`
+- `.mdkg/index/mdkg.sqlite` is rebuildable and commit-eligible when intentionally tracked
+- JSON compatibility caches remain generated and ignored by default
+
 Validation commands:
 - `mdkg validate [--out <path>] [--quiet] [--json]`
 

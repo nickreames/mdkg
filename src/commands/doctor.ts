@@ -7,6 +7,7 @@ import { buildBundleImportsIndex } from "../graph/bundle_imports";
 import { ALLOWED_TYPES } from "../graph/node";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
+import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
 import { ValidationError } from "../util/errors";
 
 export type DoctorCommandOptions = {
@@ -23,38 +24,76 @@ type CheckResult = {
   detail: string;
 };
 
-const REQUIRED_NODE_MAJOR = 18;
+const REQUIRED_NODE_MAJOR = 24;
+const REQUIRED_NODE_MINOR = 15;
 const ARCHIVE_RAW_ALLOWED_DIRS = new Set(["source"]);
 
-function parseNodeMajor(version: string): number | null {
-  const major = Number.parseInt(version.split(".")[0] ?? "", 10);
-  if (!Number.isInteger(major)) {
+function parseNodeVersion(version: string): { major: number; minor: number; patch: number } | null {
+  const [majorRaw, minorRaw, patchRaw] = version.split(".");
+  const major = Number.parseInt(majorRaw ?? "", 10);
+  const minor = Number.parseInt(minorRaw ?? "", 10);
+  const patch = Number.parseInt(patchRaw ?? "", 10);
+  if (!Number.isInteger(major) || !Number.isInteger(minor) || !Number.isInteger(patch)) {
     return null;
   }
-  return major;
+  return { major, minor, patch };
 }
 
 function runNodeVersionCheck(): CheckResult {
   const nodeVersion = process.versions.node;
-  const major = parseNodeMajor(nodeVersion);
-  if (major === null) {
+  const parsed = parseNodeVersion(nodeVersion);
+  if (parsed === null) {
     return {
       name: "node-version",
       ok: false,
       detail: `unable to parse Node.js version: ${nodeVersion}`,
     };
   }
-  if (major < REQUIRED_NODE_MAJOR) {
+  if (
+    parsed.major < REQUIRED_NODE_MAJOR ||
+    (parsed.major === REQUIRED_NODE_MAJOR && parsed.minor < REQUIRED_NODE_MINOR)
+  ) {
     return {
       name: "node-version",
       ok: false,
-      detail: `Node.js ${nodeVersion} is unsupported (requires >=${REQUIRED_NODE_MAJOR})`,
+      detail: `Node.js ${nodeVersion} is unsupported (requires >=${REQUIRED_NODE_MAJOR}.${REQUIRED_NODE_MINOR}.0)`,
     };
   }
   return {
     name: "node-version",
     ok: true,
     detail: `Node.js ${nodeVersion} (ok)`,
+  };
+}
+
+function runSqliteCheck(root: string, config: ReturnType<typeof loadConfig>): CheckResult {
+  if (!isSqliteBackend(config)) {
+    return {
+      name: "sqlite-cache",
+      ok: true,
+      detail: "SQLite backend disabled; JSON cache backend active",
+    };
+  }
+  const health = sqliteHealth(root, config);
+  if (health.errors.length > 0) {
+    return {
+      name: "sqlite-cache",
+      ok: false,
+      detail: health.errors.join("; "),
+    };
+  }
+  if (health.warnings.length > 0) {
+    return {
+      name: "sqlite-cache",
+      ok: true,
+      level: "warn",
+      detail: health.warnings.join("; "),
+    };
+  }
+  return {
+    name: "sqlite-cache",
+    ok: true,
+    detail: `.mdkg SQLite cache ok (${health.size} bytes)`,
   };
 }
 
@@ -287,6 +326,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
     results.push(runArchiveStorageCheck(options.root));
     results.push(runArchiveLargeCacheCheck(options.root, config.archive.large_cache_warning_bytes));
     results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
+    results.push(runSqliteCheck(options.root, config));
     results.push(...runBundleImportChecks(options.root, config));
     results.push(runVisibilityPolicyCheck(options.root, config, options));
 

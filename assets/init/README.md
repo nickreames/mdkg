@@ -2,6 +2,8 @@
 
 This repository is initialized for mdkg.
 
+mdkg is pre-v1 public alpha software. Graph, cache, bundle, and DAL contracts may change quickly before v1.
+
 ## Layout
 
 - `core/`: rules, operating guide, and pinned docs
@@ -10,7 +12,7 @@ This repository is initialized for mdkg.
 - `templates/`: default node templates
 - `archive/`: sidecar metadata and deterministic compressed source/artifact caches
 - `bundles/`: optional committed full graph snapshot bundles
-- `index/`: generated index cache (do not commit)
+- `index/`: generated JSON caches plus optional commit-eligible `mdkg.sqlite`
 - `pack/`: generated context packs (do not commit)
 
 ## Next Commands
@@ -51,9 +53,16 @@ Read `AGENT_START.md` first when this repo includes it.
 
 Ensure ignore files include:
 
-- `.mdkg/index/`
+- `.mdkg/index/*.json`
+- `.mdkg/index/*.tmp`
+- `.mdkg/index/write.lock/`
+- `.mdkg/index/*.sqlite-wal`
+- `.mdkg/index/*.sqlite-shm`
+- `.mdkg/index/*.sqlite-journal`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
+
+Fresh mdkg workspaces default to `index.backend: sqlite`; `.mdkg/index/mdkg.sqlite` is a rebuildable cache and may be committed when the repo intentionally tracks it and it stays reasonably small.
 
 Recommended:
 

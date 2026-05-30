@@ -21,7 +21,8 @@ mdkg content may contain sensitive notes and internal project planning. This rul
 
 - `.mdkg/` must not be shipped to production deployments.
 - `.mdkg/` must not be published to npm.
-- `.mdkg/index/` must never be committed.
+- Generated JSON index, temp, lock, WAL, SHM, and journal files under `.mdkg/index/` must not be committed.
+- `.mdkg/index/mdkg.sqlite` is a rebuildable access cache and may be committed when the repo intentionally tracks it and it stays reasonably small.
 - `.mdkg/bundles/` may be committed only when the repo intentionally tracks private or public snapshot bundles.
 
 ## Git ignore requirements
@@ -30,13 +31,22 @@ The repo MUST ignore at minimum:
 
 - `node_modules/`
 - `dist/`
-- `.mdkg/index/`
+- `.mdkg/index/*.json`
+- `.mdkg/index/*.tmp`
+- `.mdkg/index/write.lock/`
+- `.mdkg/index/*.sqlite-wal`
+- `.mdkg/index/*.sqlite-shm`
+- `.mdkg/index/*.sqlite-journal`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
 
 Recommended `.gitignore` entries:
-- `.mdkg/index/`
-- `.mdkg/index/**`
+- `.mdkg/index/*.json`
+- `.mdkg/index/*.tmp`
+- `.mdkg/index/write.lock/`
+- `.mdkg/index/*.sqlite-wal`
+- `.mdkg/index/*.sqlite-shm`
+- `.mdkg/index/*.sqlite-journal`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
 
@@ -60,7 +70,12 @@ Additional belt-and-suspenders:
 If the repo is containerized:
 - `.dockerignore` SHOULD exclude:
   - `.mdkg/`
-  - `.mdkg/index/`
+  - `.mdkg/index/*.json`
+  - `.mdkg/index/*.tmp`
+  - `.mdkg/index/write.lock/`
+  - `.mdkg/index/*.sqlite-wal`
+  - `.mdkg/index/*.sqlite-shm`
+  - `.mdkg/index/*.sqlite-journal`
   - `node_modules/`
   - `dist/` (if built in container)
   - any other local artifacts
@@ -72,8 +87,8 @@ For application builds:
 
 `mdkg init` updates ignore files by default for safety:
 
-- `.gitignore` appends `.mdkg/index/`, `.mdkg/pack/`
-- `.npmignore` appends `.mdkg/`, `.mdkg/index/`, `.mdkg/pack/`
+- `.gitignore` appends generated index cache/temp/lock patterns, `.mdkg/pack/`, and raw archive source ignores.
+- `.npmignore` appends `.mdkg/`, generated index cache/temp/lock patterns, and `.mdkg/pack/`.
 - `--no-update-ignores` disables these default writes
 
 Explicit flags remain available and take precedence:
@@ -84,9 +99,9 @@ Explicit flags remain available and take precedence:
 
 ## Index safety
 
-- `.mdkg/index/` is generated.
-- Index files may contain extracted metadata and could expose sensitive strings.
-- Index files MUST be ignored from git.
+- `.mdkg/index/` contains generated caches.
+- JSON index files may contain extracted metadata and could expose sensitive strings; they MUST be ignored from git.
+- `.mdkg/index/mdkg.sqlite` contains the same rebuildable access data and may be committed only by explicit repo policy; `mdkg doctor` warns when it exceeds `index.sqlite_commit_warning_bytes`.
 - Index rebuild should be deterministic and safe to regenerate at any time.
 
 ## Bundle safety
@@ -115,7 +130,8 @@ Workspace-local `.mdkg/` directories (near code) should follow the same rules:
 
 ## Summary checklist
 
-- ✅ `.mdkg/index/` ignored
+- ✅ generated JSON index/temp/lock files ignored
+- ✅ `.mdkg/index/mdkg.sqlite` committed only by explicit repo policy
 - ✅ event logs are committed by default unless a repo chooses to ignore them manually
 - ✅ npm publishes only `dist/`, `README.md`, `LICENSE`
 - ✅ optional `.npmignore` excludes `.mdkg/`

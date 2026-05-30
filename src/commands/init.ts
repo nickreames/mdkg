@@ -465,7 +465,13 @@ export function runInitCommand(options: InitCommandOptions): void {
   try {
     if (shouldUpdateGitignore) {
       if (appendIgnoreEntries(path.join(root, ".gitignore"), [
-        ".mdkg/index/",
+        ".mdkg/index/*.json",
+        ".mdkg/index/*.tmp",
+        ".mdkg/index/*.lock",
+        ".mdkg/index/write.lock/",
+        ".mdkg/index/*.sqlite-wal",
+        ".mdkg/index/*.sqlite-shm",
+        ".mdkg/index/*.sqlite-journal",
         ".mdkg/pack/",
         ".mdkg/archive/**/source/",
       ])) {

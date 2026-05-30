@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
 import { sortIndexNodes } from "../util/sort";
+import { atomicWriteFile } from "../util/atomic";
 import { buildIndex, Index } from "./indexer";
 import { isIndexStale } from "./staleness";
 import {
@@ -41,8 +42,7 @@ function readIndex(indexPath: string): Index {
 
 export function writeIndex(indexPath: string, index: Index): void {
   const sortedIndex: Index = { ...index, nodes: sortIndexNodes(index.nodes) };
-  fs.mkdirSync(path.dirname(indexPath), { recursive: true });
-  fs.writeFileSync(indexPath, JSON.stringify(sortedIndex, null, 2));
+  atomicWriteFile(indexPath, JSON.stringify(sortedIndex, null, 2));
 }
 
 export function loadIndex(options: LoadIndexOptions): LoadIndexResult {

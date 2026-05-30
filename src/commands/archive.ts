@@ -7,12 +7,15 @@ import {
   hashArchiveBuffer,
 } from "../graph/archive_integrity";
 import { buildIndex, IndexNode } from "../graph/indexer";
-import { loadIndex, writeIndex } from "../graph/index_cache";
+import { loadIndex } from "../graph/index_cache";
+import { writeDerivedIndexes } from "../graph/reindex";
 import { normalizeVisibility, Visibility } from "../graph/visibility";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId } from "../util/id";
 import { archiveIdFromUri } from "../util/refs";
+import { atomicWriteFile } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
 import { createDeterministicZip } from "../util/zip";
 import { appendAutomaticEvent } from "./event_support";
 
@@ -201,8 +204,7 @@ function maybeReindex(root: string): void {
   if (!config.index.auto_reindex) {
     return;
   }
-  const outputPath = path.resolve(root, config.index.global_index_path);
-  writeIndex(outputPath, buildIndex(root, config, { tolerant: config.index.tolerant }));
+  writeDerivedIndexes(root, config, buildIndex(root, config, { tolerant: config.index.tolerant }));
 }
 
 function resolveArchiveNode(root: string, id: string, ws?: string): IndexNode {
@@ -263,7 +265,7 @@ function writeArchiveSidecar(
 ): void {
   const lines = formatFrontmatter(frontmatter);
   const content = ["---", ...lines, "---", body.trimStart()].join("\n");
-  fs.writeFileSync(sidecarPath, content.endsWith("\n") ? content : `${content}\n`, "utf8");
+  atomicWriteFile(sidecarPath, content.endsWith("\n") ? content : `${content}\n`);
 }
 
 function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): ArchiveVerifyResult | undefined {
@@ -369,7 +371,7 @@ function loadArchiveVerifyResults(options: ArchiveVerifyCommandOptions): Archive
   return results;
 }
 
-export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
+function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const workspace = config.workspaces[ws];
@@ -405,7 +407,7 @@ export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
   fs.copyFileSync(sourcePath, rawPath);
   const rawData = fs.readFileSync(rawPath);
   const zipData = createDeterministicZip(basename, rawData);
-  fs.writeFileSync(zipPath, zipData);
+  atomicWriteFile(zipPath, zipData);
 
   const frontmatter: Record<string, FrontmatterValue> = {
     id,
@@ -527,7 +529,7 @@ export function runArchiveVerifyCommand(options: ArchiveVerifyCommandOptions): v
   }
 }
 
-export function runArchiveCompressCommand(options: ArchiveCompressCommandOptions): void {
+function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions): void {
   if (!options.all && !options.id) {
     throw new UsageError("archive compress requires <id-or-archive-uri> or --all");
   }
@@ -546,7 +548,7 @@ export function runArchiveCompressCommand(options: ArchiveCompressCommandOptions
     }
     const rawData = fs.readFileSync(rawPath);
     const zipData = createDeterministicZip(path.basename(rawPath), rawData);
-    fs.writeFileSync(zipPath, zipData);
+    atomicWriteFile(zipPath, zipData);
     const parsed = parseFrontmatter(fs.readFileSync(sidecarPath, "utf8"), sidecarPath);
     const nextFrontmatter: Record<string, FrontmatterValue> = {
       ...parsed.frontmatter,
@@ -579,4 +581,17 @@ export function runArchiveCompressCommand(options: ArchiveCompressCommandOptions
     return;
   }
   console.log(`archive compressed: ${updated.length}`);
+}
+
+function withArchiveLock<T>(root: string, fn: () => T): T {
+  const config = loadConfig(root);
+  return withMutationLock(root, config.index.lock_timeout_ms, fn);
+}
+
+export function runArchiveAddCommand(options: ArchiveAddCommandOptions): void {
+  return withArchiveLock(options.root, () => runArchiveAddCommandLocked(options));
+}
+
+export function runArchiveCompressCommand(options: ArchiveCompressCommandOptions): void {
+  return withArchiveLock(options.root, () => runArchiveCompressCommandLocked(options));
 }

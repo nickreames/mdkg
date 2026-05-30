@@ -59,12 +59,25 @@ function requireBuildFolders() {
   requireFile("dist/templates/builtin.js");
   requireFile("dist/commands/bundle_import.js");
   requireFile("dist/graph/bundle_imports.js");
+  requireFile("dist/graph/sqlite_index.js");
+  requireFile("dist/graph/reindex.js");
   requireFile("dist/graph/visibility.js");
   requireFile("dist/graph/node_body.js");
+  requireFile("dist/util/atomic.js");
+  requireFile("dist/util/lock.js");
 }
 
 function requireInitAssets() {
   const initConfig = JSON.parse(requireFile("dist/init/config.json"));
+  if (
+    !initConfig.index ||
+    initConfig.index.backend !== "sqlite" ||
+    initConfig.index.sqlite_path !== ".mdkg/index/mdkg.sqlite" ||
+    initConfig.index.sqlite_commit_warning_bytes !== 52428800 ||
+    initConfig.index.lock_timeout_ms !== 10000
+  ) {
+    fail("dist/init/config.json is missing the default SQLite index backend config");
+  }
   if (!initConfig.capabilities || initConfig.capabilities.cache_path !== ".mdkg/index/capabilities.json") {
     fail("dist/init/config.json is missing the default capability cache path");
   }

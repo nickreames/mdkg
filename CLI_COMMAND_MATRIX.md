@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-05-17
-package_version_in_source: 0.1.4
+package_version_in_source: 0.1.3
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -47,6 +47,7 @@ Capability cache discovery is read-only and accessed through `mdkg capability ..
 Archive sidecars are accessed through `mdkg archive ...`.
 Full graph snapshot bundles and read-only bundle imports are accessed through `mdkg bundle ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
+Fresh init workspaces default to the SQLite access cache backend; existing migrated configs stay on JSON until opted in.
 
 ## Global usage
 
@@ -762,6 +763,7 @@ Notes:
 - writes `.mdkg/index/skills.json`
 - writes `.mdkg/index/capabilities.json`
 - writes `.mdkg/index/imports.json`
+- writes `.mdkg/index/mdkg.sqlite` when `index.backend` is `sqlite`
 
 ### `mdkg guide`
 
@@ -783,6 +785,7 @@ Checks:
 - config and template availability
 - global node index health
 - capability cache health
+- SQLite cache health when enabled
 - archive sidecar storage hygiene
 - archive large-cache warning threshold
 - bundle snapshot storage guidance

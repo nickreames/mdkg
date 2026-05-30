@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
 import { configPath } from "../core/paths";
+import { atomicWriteFile } from "../util/atomic";
 import { listWorkspaceDocFiles } from "./workspace_files";
 import {
   buildCapabilitiesIndex,
@@ -95,8 +96,7 @@ function readCapabilitiesIndex(indexPath: string): CapabilitiesIndex {
 }
 
 export function writeCapabilitiesIndex(indexPath: string, index: CapabilitiesIndex): void {
-  fs.mkdirSync(path.dirname(indexPath), { recursive: true });
-  fs.writeFileSync(indexPath, JSON.stringify(index, null, 2), "utf8");
+  atomicWriteFile(indexPath, JSON.stringify(index, null, 2));
 }
 
 export function loadCapabilitiesIndex(

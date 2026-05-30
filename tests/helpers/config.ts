@@ -12,7 +12,11 @@ export function writeRootConfig(root: string): void {
     index: {
       auto_reindex: true,
       tolerant: false,
+      backend: "json",
       global_index_path: ".mdkg/index/global.json",
+      sqlite_path: ".mdkg/index/mdkg.sqlite",
+      sqlite_commit_warning_bytes: 52428800,
+      lock_timeout_ms: 10000,
     },
     capabilities: {
       cache_path: ".mdkg/index/capabilities.json",

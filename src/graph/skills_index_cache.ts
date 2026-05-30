@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { configPath } from "../core/paths";
+import { atomicWriteFile } from "../util/atomic";
 import { Config } from "../core/config";
 import {
   buildSkillsIndex,
@@ -85,8 +86,7 @@ export function writeSkillsIndex(indexPath: string, index: SkillsIndex): void {
     ...index,
     skills: sortedSkills,
   };
-  fs.mkdirSync(path.dirname(indexPath), { recursive: true });
-  fs.writeFileSync(indexPath, JSON.stringify(sortedIndex, null, 2), "utf8");
+  atomicWriteFile(indexPath, JSON.stringify(sortedIndex, null, 2));
 }
 
 export function loadSkillsIndex(options: LoadSkillsIndexOptions): LoadSkillsIndexResult {
