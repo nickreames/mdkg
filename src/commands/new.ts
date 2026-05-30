@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
-import { loadIndex, writeIndex } from "../graph/index_cache";
+import { loadIndex } from "../graph/index_cache";
 import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
 import { isAgentFileType, AGENT_FILE_BASENAMES } from "../graph/agent_file_types";
 import { buildIndex, Index } from "../graph/indexer";
@@ -10,6 +10,10 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isCanonicalIdRef, isPortableId } from "../util/id";
+import { writeFileExclusive } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
+import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
+import { writeDerivedIndexes } from "../graph/reindex";
 import { appendAutomaticEvent } from "./event_support";
 
 export type NewCommandOptions = {
@@ -149,6 +153,10 @@ function slugifyTitle(title: string): string {
 }
 
 function nextIdForPrefix(index: Record<string, { ws: string; id: string }>, ws: string, prefix: string): string {
+  return `${prefix}-${maxIdForPrefix(index, ws, prefix) + 1}`;
+}
+
+function maxIdForPrefix(index: Record<string, { ws: string; id: string }>, ws: string, prefix: string): number {
   let max = 0;
   const pattern = new RegExp(`^${prefix}-(\\d+)$`);
   for (const node of Object.values(index)) {
@@ -164,7 +172,7 @@ function nextIdForPrefix(index: Record<string, { ws: string; id: string }>, ws: 
       max = parsed;
     }
   }
-  return `${prefix}-${max + 1}`;
+  return max;
 }
 
 function idPrefixForType(type: string): string {
@@ -207,7 +215,7 @@ function ensureExists(index: Index, value: string, ws: string, label: string): v
   }
 }
 
-export function runNewCommand(options: NewCommandOptions): void {
+function runNewCommandLocked(options: NewCommandOptions): void {
   const title = options.title.trim();
   if (!title) {
     throw new UsageError("title cannot be empty");
@@ -243,7 +251,15 @@ export function runNewCommand(options: NewCommandOptions): void {
   const prefix = idPrefixForType(type);
   const id = options.id !== undefined
     ? normalizeAgentFileId(options.id)
-    : nextIdForPrefix(index.nodes, ws, prefix);
+    : isSqliteBackend(config)
+      ? reserveSqliteNumericId({
+          root: options.root,
+          config,
+          ws,
+          prefix,
+          currentMax: maxIdForPrefix(index.nodes, ws, prefix),
+        }) ?? nextIdForPrefix(index.nodes, ws, prefix)
+      : nextIdForPrefix(index.nodes, ws, prefix);
   if (index.nodes[`${ws}:${id}`]) {
     throw new UsageError(`node already exists: ${ws}:${id}`);
   }
@@ -389,13 +405,19 @@ export function runNewCommand(options: NewCommandOptions): void {
     updated: today,
   });
 
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
+  try {
+    writeFileExclusive(filePath, content);
+  } catch (err) {
+    const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
+    if (code === "EEXIST") {
+      throw new UsageError(`node already exists: ${path.relative(options.root, filePath)}`);
+    }
+    throw err;
+  }
 
   if (config.index.auto_reindex && !noReindex) {
     const updatedIndex = buildIndex(options.root, config, { tolerant: config.index.tolerant });
-    const outputPath = path.resolve(options.root, config.index.global_index_path);
-    writeIndex(outputPath, updatedIndex);
+    writeDerivedIndexes(options.root, config, updatedIndex);
   }
 
   appendAutomaticEvent({
@@ -436,4 +458,9 @@ export function runNewCommand(options: NewCommandOptions): void {
   }
 
   console.log(`node created: ${receipt.qid} (${receipt.path})`);
+}
+
+export function runNewCommand(options: NewCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runNewCommandLocked(options));
 }

@@ -5,6 +5,8 @@ import { migrateConfig } from "../core/migrate";
 import { normalizeContainedWorkspacePath } from "../core/workspace_path";
 import { buildBundleImportsIndex, BundleImportHealth } from "../graph/bundle_imports";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
+import { atomicWriteFile } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
 
 export type BundleImportAddOptions = {
   root: string;
@@ -96,7 +98,7 @@ function readRawConfig(root: string): { configPath: string; raw: Record<string, 
 }
 
 function writeRawConfig(configPath: string, raw: Record<string, unknown>): void {
-  fs.writeFileSync(configPath, `${JSON.stringify(raw, null, 2)}\n`, "utf8");
+  atomicWriteFile(configPath, `${JSON.stringify(raw, null, 2)}\n`);
 }
 
 function getImports(raw: Record<string, unknown>): Record<string, unknown> {
@@ -127,7 +129,12 @@ function healthByAlias(root: string, alias: string): BundleImportHealth {
   return health;
 }
 
-export function runBundleImportAddCommand(options: BundleImportAddOptions): void {
+function withBundleImportLock<T>(root: string, fn: () => T): T {
+  const config = loadConfig(root);
+  return withMutationLock(root, config.index.lock_timeout_ms, fn);
+}
+
+function runBundleImportAddCommandLocked(options: BundleImportAddOptions): void {
   const alias = normalizeAlias(options.alias);
   const bundlePath = normalizeContained(options.bundlePath, "bundle import path");
   const visibility = normalizeVisibility(options.visibility);
@@ -181,6 +188,10 @@ export function runBundleImportAddCommand(options: BundleImportAddOptions): void
   }
 }
 
+export function runBundleImportAddCommand(options: BundleImportAddOptions): void {
+  return withBundleImportLock(options.root, () => runBundleImportAddCommandLocked(options));
+}
+
 export function runBundleImportListCommand(options: BundleImportListOptions): void {
   const config = loadConfig(options.root);
   const imports = buildBundleImportsIndex(options.root, config).index.imports;
@@ -198,7 +209,7 @@ export function runBundleImportListCommand(options: BundleImportListOptions): vo
   }
 }
 
-export function runBundleImportRemoveCommand(options: BundleImportAliasOptions): void {
+function runBundleImportRemoveCommandLocked(options: BundleImportAliasOptions): void {
   const alias = normalizeAlias(options.alias);
   const { configPath, raw } = readRawConfig(options.root);
   const imports = getImports(raw);
@@ -218,7 +229,11 @@ export function runBundleImportRemoveCommand(options: BundleImportAliasOptions):
   console.log(`bundle import removed: ${alias}`);
 }
 
-function setBundleImportEnabled(options: BundleImportAliasOptions, enabled: boolean): void {
+export function runBundleImportRemoveCommand(options: BundleImportAliasOptions): void {
+  return withBundleImportLock(options.root, () => runBundleImportRemoveCommandLocked(options));
+}
+
+function setBundleImportEnabledLocked(options: BundleImportAliasOptions, enabled: boolean): void {
   const alias = normalizeAlias(options.alias);
   const { configPath, raw } = readRawConfig(options.root);
   const imports = getImports(raw);
@@ -240,11 +255,11 @@ function setBundleImportEnabled(options: BundleImportAliasOptions, enabled: bool
 }
 
 export function runBundleImportEnableCommand(options: BundleImportAliasOptions): void {
-  setBundleImportEnabled(options, true);
+  withBundleImportLock(options.root, () => setBundleImportEnabledLocked(options, true));
 }
 
 export function runBundleImportDisableCommand(options: BundleImportAliasOptions): void {
-  setBundleImportEnabled(options, false);
+  withBundleImportLock(options.root, () => setBundleImportEnabledLocked(options, false));
 }
 
 export function runBundleImportVerifyCommand(options: BundleImportVerifyOptions): void {

@@ -2,6 +2,8 @@
 
 This repository uses mdkg for deterministic project memory.
 
+mdkg is pre-v1 public alpha software. Treat generated graph, cache, bundle, and DAL contracts as usable but still stabilizing before v1.
+
 Read these files in order:
 1. `.mdkg/core/SOUL.md` if it exists
 2. `.mdkg/core/HUMAN.md` if it exists
@@ -23,6 +25,7 @@ Agent operating prompt:
 - Use `mdkg search "..."` and `mdkg next` to discover current work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
 - Use `mdkg capability list/search/show` for deterministic skills, `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
+- Use `mdkg index` to refresh JSON compatibility caches and `.mdkg/index/mdkg.sqlite` when SQLite mode is enabled.
 - Use `mdkg archive add/list/show/verify/compress` for committed source and artifact sidecars under `.mdkg/archive`.
 - Use `mdkg work ...` helpers for semantic mirror contracts, work orders, receipts, and artifact registration.
 - Treat work contracts, orders, and receipts as committed semantic mirrors only; never store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in mdkg.

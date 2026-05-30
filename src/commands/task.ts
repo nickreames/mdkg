@@ -2,7 +2,8 @@ import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
 import { buildIndex, Index } from "../graph/indexer";
-import { loadIndex, writeIndex } from "../graph/index_cache";
+import { loadIndex } from "../graph/index_cache";
+import { writeDerivedIndexes } from "../graph/reindex";
 import {
   DEFAULT_FRONTMATTER_KEY_ORDER,
   formatFrontmatter,
@@ -14,6 +15,8 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
+import { atomicWriteFile } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
 import { CheckpointReceipt, createCheckpoint, runCheckpointNewCommand } from "./checkpoint";
 
@@ -167,8 +170,7 @@ function maybeReindex(root: string, config: ReturnType<typeof loadConfig>): void
   if (!config.index.auto_reindex) {
     return;
   }
-  const outputPath = path.resolve(root, config.index.global_index_path);
-  writeIndex(outputPath, buildIndex(root, config, { tolerant: config.index.tolerant }));
+  writeDerivedIndexes(root, config, buildIndex(root, config, { tolerant: config.index.tolerant }));
 }
 
 function loadMutableTaskNode(root: string, idOrQid: string, wsHint?: string): LoadedTaskNode {
@@ -218,7 +220,7 @@ function writeNodeFile(
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const frontmatterBlock = ["---", ...lines, "---"].join("\n");
   const content = body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock;
-  fs.writeFileSync(filePath, content, "utf8");
+  atomicWriteFile(filePath, content);
 }
 
 function ensureStatusAllowed(
@@ -324,7 +326,7 @@ function printTaskMutationReceipt(
   console.log(`task ${action}: ${loaded.qid}`);
 }
 
-export function runTaskStartCommand(options: TaskStartCommandOptions): void {
+function runTaskStartCommandLocked(options: TaskStartCommandOptions): void {
   const loaded = loadMutableTaskNode(options.root, options.id, options.ws);
   const now = options.now ?? new Date();
   loaded.frontmatter.status = ensureStatusAllowed(loaded.config, "progress");
@@ -347,7 +349,7 @@ export function runTaskStartCommand(options: TaskStartCommandOptions): void {
   printTaskMutationReceipt("started", options.root, loaded, options.json);
 }
 
-export function runTaskUpdateCommand(options: TaskUpdateCommandOptions): void {
+function runTaskUpdateCommandLocked(options: TaskUpdateCommandOptions): void {
   const loaded = loadMutableTaskNode(options.root, options.id, options.ws);
   const now = options.now ?? new Date();
 
@@ -403,7 +405,7 @@ export function runTaskUpdateCommand(options: TaskUpdateCommandOptions): void {
   printTaskMutationReceipt("updated", options.root, loaded, options.json);
 }
 
-export function runTaskDoneCommand(options: TaskDoneCommandOptions): void {
+function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
   const loaded = loadMutableTaskNode(options.root, options.id, options.ws);
   const now = options.now ?? new Date();
 
@@ -462,4 +464,19 @@ export function runTaskDoneCommand(options: TaskDoneCommandOptions): void {
   maybeReindex(options.root, loaded.config);
   maybeWarnEventsDisabled(options.root, loaded.config, loaded.ws);
   printTaskMutationReceipt("done", options.root, loaded, options.json, checkpoint);
+}
+
+export function runTaskStartCommand(options: TaskStartCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runTaskStartCommandLocked(options));
+}
+
+export function runTaskUpdateCommand(options: TaskUpdateCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runTaskUpdateCommandLocked(options));
+}
+
+export function runTaskDoneCommand(options: TaskDoneCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runTaskDoneCommandLocked(options));
 }

@@ -4,10 +4,51 @@ All notable changes to mdkg are documented here.
 
 This project follows a pragmatic changelog style inspired by Keep a Changelog. Versions use npm package versions.
 
-## 0.1.4 - Unreleased
+## 0.1.3 - 2026-05-20
 
 ### Added
 
+- Added first-class SQLite access cache support using Node's built-in `node:sqlite`; no third-party SQLite package is introduced.
+- Added `.mdkg/index/mdkg.sqlite` as a rebuildable derived cache for nodes, edges, skills, capabilities, archives, bundle imports, source hashes, and schema metadata when `index.backend` is `sqlite`.
+- Added fresh init defaults for `index.backend: sqlite`, `index.sqlite_path`, `index.sqlite_commit_warning_bytes`, and `index.lock_timeout_ms`.
+- Added a shared mutation lock plus atomic writes for mdkg mutations and index writes.
+- Added SQLite transactional id reservation for numeric node/checkpoint ids in SQLite mode.
+- Added `npm run smoke:sqlite` and `npm run smoke:parallel` packed/temp-repo coverage.
+
+### Changed
+
+- Raised the required Node runtime to `>=24.15.0`.
+- Existing workspaces that are migrated from older configs remain on `index.backend: json` until they explicitly opt in to SQLite.
+- Init ignore policy now keeps JSON indexes, temp files, lock directories, WAL, SHM, and journal files ignored while allowing `.mdkg/index/mdkg.sqlite` to be committed by intentional repo policy.
+- `mdkg index` continues to write JSON compatibility indexes and also rebuilds SQLite when enabled.
+- `mdkg doctor` and `mdkg validate` now report SQLite cache health when SQLite mode is enabled.
+- README and seeded docs now state that mdkg is pre-v1 public alpha software and cache/DAL contracts may churn before v1.
+
+### Fixed
+
+- Removed the accidental self-dependency on `mdkg` from package metadata.
+- Hardened parallel `mdkg new`, checkpoint, task, work, archive, bundle import config, and index writes against naming conflicts and partial cache writes.
+
+## 0.1.2 - 2026-05-19
+
+### Added
+
+- Added `.mdkg/index/capabilities.json` as a derived JSON cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs.
+- Added read-only `mdkg capability list/search/show` commands with JSON output, kind filters, and advisory visibility filters.
+- Added workspace `visibility` metadata for capability cache filtering, defaulting to `private`.
+- Added capability cache health reporting to `mdkg doctor`.
+- Added capability-cache smoke coverage for root plus child workspace aggregation and cache auto-rebuild.
+- Added packed-package init smoke coverage for fresh base init, fresh `mdkg init --agent`, removed flag failures, repeated init idempotency, doctor/validate, upgrade dry-run parity, task creation, and pack generation.
+- Added init preflight checks for seed config parseability and unmanaged skill mirror collisions.
+- Added first-class archive sidecars under `.mdkg/archive` with `mdkg archive add/list/show/verify/compress`.
+- Added deterministic single-file ZIP cache generation for archived source and artifact files.
+- Added `type: archive` graph nodes and `archive://<archive.id>` reference validation.
+- Added `mdkg work contract/order/receipt/artifact` lifecycle helpers for semantic mirror work contracts, work orders, receipts, and artifact registration.
+- Added archive/work packed-package smoke coverage for fresh temp repositories.
+- Added `mdkg bundle create/list/show/verify` for deterministic full `.mdkg` graph snapshot bundles.
+- Added private and public bundle profiles with fail-closed public filtering for private graph and archive refs.
+- Added bundle-local generated indexes (`global.json`, `skills.json`, `capabilities.json`) inside snapshot ZIPs.
+- Added bundle unit and CLI coverage plus packed-package bundle smoke coverage.
 - Added `mdkg bundle import add/list/rm/enable/disable/verify` for read-only child graph snapshot imports.
 - Added `bundle_imports` config with explicit alias, bundle path, visibility, expected profile, source metadata, and optional staleness policy.
 - Added `.mdkg/index/imports.json` as a derived import projection and health cache.
@@ -24,6 +65,20 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 ### Changed
 
+- `mdkg index` now writes the node index, skill index, and capability cache together.
+- Generated bootstrap config now includes the default capability cache path and root workspace visibility.
+- Docs and command matrix now teach capability discovery as separate from normal graph node search.
+- Made `mdkg init --agent` the single canonical AI-agent bootstrap path.
+- `mdkg init --agent` now creates `AGENTS.md` and `CLAUDE.md` alongside `AGENT_START.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, default skills, event log, registry, and skill mirrors.
+- Init manifests are now mode-aware: base init only claims base assets, while agent init claims the full agent bootstrap.
+- Updated generated `.mdkg/README.md` onboarding to guide already-initialized repos toward `upgrade`, `new`, `search`, `pack`, and `validate`.
+- Added first-ingestion guidance to `AGENT_START.md` for imported docs bundles.
+- Hardened `WORK_ORDER.md` and `RECEIPT.md` templates with input refs, requested outputs, constraint refs, proof refs, attestation refs, and input/output hashes.
+- Init ignore updates now ignore raw archive source copies under `.mdkg/archive/**/source/` while leaving sidecar `.md` files and ZIP caches commit-eligible.
+- `mdkg doctor` now reports archive storage hygiene warnings for stray uncompressed archive files.
+- Added default bundle config under `.mdkg/bundles` without making `mdkg index` rewrite bundles.
+- Updated docs, command matrix, and release skills with bundle creation and verification guidance.
+- Updated seeded init/upgrade skills so managed workspaces receive pre-commit archive compression and private bundle refresh guidance.
 - `list`, `search`, `show`, `pack`, and `capability` now include enabled read-only bundle imports by default.
 - Imported nodes use import-alias qids such as `child_repo:task-1` and expose original bundle/source metadata in JSON output.
 - Stale imports warn during planning reads while `mdkg bundle import verify` exits nonzero.
@@ -38,69 +93,16 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 ### Fixed
 
+- Fixed fresh `mdkg init --agent` leaving missing managed wrapper docs that immediately required `mdkg upgrade --apply`.
+- Fixed misleading init summaries by reporting manifest, ignore, registry, event log, core pin, and skill mirror actions.
+- Fixed late init failure UX by printing a partial-init receipt with recovery guidance.
+- Kept bundle output deterministic across repeated creates when only `.mdkg/bundles/` changes.
+- Hardened publish readiness and init smoke checks to assert seeded release skills include archive compression and bundle refresh guidance.
 - Mutating task and work update flows now reject imported qids with explicit read-only import errors.
 - Work lifecycle mutation commands now reject imported order/receipt qids with explicit read-only bundle import guidance.
 - Local graph indexing now allows edges to configured import aliases without treating them as missing local workspace nodes.
 - Public bundle checks now reuse the same fail-closed policy as public/internal pack checks.
 - `mdkg archive verify --json` now emits a verification receipt for corrupt archive ZIP caches instead of being blocked by strict index validation.
-
-## 0.1.3 - 2026-05-17
-
-### Added
-
-- Added `mdkg bundle create/list/show/verify` for deterministic full `.mdkg` graph snapshot bundles.
-- Added private and public bundle profiles with fail-closed public filtering for private graph and archive refs.
-- Added bundle-local generated indexes (`global.json`, `skills.json`, `capabilities.json`) inside snapshot ZIPs.
-- Added bundle unit and CLI coverage plus packed-package bundle smoke coverage.
-
-### Changed
-
-- Added default bundle config under `.mdkg/bundles` without making `mdkg index` rewrite bundles.
-- Updated docs, command matrix, and release skills with bundle creation and verification guidance.
-- Updated seeded init/upgrade skills so managed workspaces receive pre-commit archive compression and private bundle refresh guidance.
-
-### Fixed
-
-- Kept bundle output deterministic across repeated creates when only `.mdkg/bundles/` changes.
-- Hardened publish readiness and init smoke checks to assert seeded release skills include archive compression and bundle refresh guidance.
-
-## 0.1.2 - 2026-05-17
-
-### Added
-
-- Added `.mdkg/index/capabilities.json` as a derived JSON cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs.
-- Added read-only `mdkg capability list/search/show` commands with JSON output, kind filters, and advisory visibility filters.
-- Added workspace `visibility` metadata for capability cache filtering, defaulting to `private`.
-- Added capability cache health reporting to `mdkg doctor`.
-- Added capability-cache smoke coverage for root plus child workspace aggregation and cache auto-rebuild.
-- Added mdkg graph epics for the JSON cache implementation, future optional SQLite DAL, and future hierarchical subgraph aggregation.
-- Added packed-package init smoke coverage for fresh base init, fresh `mdkg init --agent`, removed flag failures, repeated init idempotency, doctor/validate, upgrade dry-run parity, task creation, and pack generation.
-- Added init preflight checks for seed config parseability and unmanaged skill mirror collisions.
-- Added first-class archive sidecars under `.mdkg/archive` with `mdkg archive add/list/show/verify/compress`.
-- Added deterministic single-file ZIP cache generation for archived source and artifact files.
-- Added `type: archive` graph nodes and `archive://<archive.id>` reference validation.
-- Added `mdkg work contract/order/receipt/artifact` lifecycle helpers for semantic mirror work contracts, work orders, receipts, and artifact registration.
-- Added archive/work packed-package smoke coverage for fresh temp repositories.
-
-### Changed
-
-- `mdkg index` now writes the node index, skill index, and capability cache together.
-- Generated bootstrap config now includes the default capability cache path and root workspace visibility.
-- Docs and command matrix now teach capability discovery as separate from normal graph node search.
-- Made `mdkg init --agent` the single canonical AI-agent bootstrap path.
-- `mdkg init --agent` now creates `AGENTS.md` and `CLAUDE.md` alongside `AGENT_START.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, default skills, event log, registry, and skill mirrors.
-- Init manifests are now mode-aware: base init only claims base assets, while agent init claims the full agent bootstrap.
-- Updated generated `.mdkg/README.md` onboarding to guide already-initialized repos toward `upgrade`, `new`, `search`, `pack`, and `validate`.
-- Added first-ingestion guidance to `AGENT_START.md` for imported docs bundles.
-- Hardened `WORK_ORDER.md` and `RECEIPT.md` templates with input refs, requested outputs, constraint refs, proof refs, attestation refs, and input/output hashes.
-- Init ignore updates now ignore raw archive source copies under `.mdkg/archive/**/source/` while leaving sidecar `.md` files and ZIP caches commit-eligible.
-- `mdkg doctor` now reports archive storage hygiene warnings for stray uncompressed archive files.
-
-### Fixed
-
-- Fixed fresh `mdkg init --agent` leaving missing managed wrapper docs that immediately required `mdkg upgrade --apply`.
-- Fixed misleading init summaries by reporting manifest, ignore, registry, event log, core pin, and skill mirror actions.
-- Fixed late init failure UX by printing a partial-init receipt with recovery guidance.
 
 ### Removed
 

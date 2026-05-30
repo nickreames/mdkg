@@ -7,6 +7,9 @@ import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
+import { writeFileExclusive } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
+import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
 import { appendAutomaticEvent } from "./event_support";
 
 export type CheckpointNewCommandOptions = {
@@ -58,6 +61,10 @@ function normalizeIdRef(value: string, key: string): string {
 }
 
 function nextCheckpointId(index: Index, ws: string): string {
+  return `chk-${maxCheckpointId(index, ws) + 1}`;
+}
+
+function maxCheckpointId(index: Index, ws: string): number {
   let max = 0;
   for (const node of Object.values(index.nodes)) {
     if (node.ws !== ws) {
@@ -72,7 +79,7 @@ function nextCheckpointId(index: Index, ws: string): string {
       max = parsed;
     }
   }
-  return `chk-${max + 1}`;
+  return max;
 }
 
 function slugifyTitle(title: string): string {
@@ -102,7 +109,7 @@ function normalizeWorkspace(value?: string): string {
   return normalized;
 }
 
-export function createCheckpoint(options: CheckpointNewCommandOptions): CheckpointReceipt {
+function createCheckpointLocked(options: CheckpointNewCommandOptions): CheckpointReceipt {
   const title = options.title.trim();
   if (!title) {
     throw new UsageError("checkpoint title cannot be empty");
@@ -128,7 +135,15 @@ export function createCheckpoint(options: CheckpointNewCommandOptions): Checkpoi
   }
 
   const { index } = loadIndex({ root: options.root, config });
-  const id = nextCheckpointId(index, ws);
+  const id = isSqliteBackend(config)
+    ? reserveSqliteNumericId({
+        root: options.root,
+        config,
+        ws,
+        prefix: "chk",
+        currentMax: maxCheckpointId(index, ws),
+      }) ?? nextCheckpointId(index, ws)
+    : nextCheckpointId(index, ws);
   const slug = slugifyTitle(title);
   const fileName = `${id}-${slug}.md`;
 
@@ -163,8 +178,15 @@ export function createCheckpoint(options: CheckpointNewCommandOptions): Checkpoi
     scope,
   });
 
-  fs.mkdirSync(workDir, { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
+  try {
+    writeFileExclusive(filePath, content);
+  } catch (err) {
+    const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
+    if (code === "EEXIST") {
+      throw new UsageError(`checkpoint file already exists: ${path.relative(options.root, filePath)}`);
+    }
+    throw err;
+  }
 
   appendAutomaticEvent({
     root: options.root,
@@ -183,6 +205,11 @@ export function createCheckpoint(options: CheckpointNewCommandOptions): Checkpoi
     qid: `${ws}:${id}`,
     path: path.relative(options.root, filePath),
   };
+}
+
+export function createCheckpoint(options: CheckpointNewCommandOptions): CheckpointReceipt {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => createCheckpointLocked(options));
 }
 
 export function runCheckpointNewCommand(options: CheckpointNewCommandOptions): void {

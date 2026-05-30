@@ -229,8 +229,9 @@ The cache is enabled by default.
 
 - Root global index lives at `.mdkg/index/global.json`
 - Root skills index lives at `.mdkg/index/skills.json`
+- Root SQLite access cache lives at `.mdkg/index/mdkg.sqlite` when `index.backend` is `sqlite`.
 - Index is rebuilt automatically when stale unless disabled by flag/config.
-- `.mdkg/index/` is generated and MUST be gitignored.
+- Generated JSON index/temp/lock files are ignored. `.mdkg/index/mdkg.sqlite` is rebuildable and may be committed only by explicit repo policy.
 
 ## Safety guidance (high level)
 

@@ -233,6 +233,8 @@ function printIndexHelp(log: LogFn): void {
   log("  - .mdkg/index/global.json");
   log("  - .mdkg/index/skills.json");
   log("  - .mdkg/index/capabilities.json");
+  log("  - .mdkg/index/imports.json when bundle imports are configured");
+  log("  - .mdkg/index/mdkg.sqlite when index.backend is sqlite");
   printGlobalOptions(log);
 }
 
@@ -623,6 +625,7 @@ function printDoctorHelp(log: LogFn): void {
   log("  - Bundle import health and staleness");
   log("  - Index load/rebuild health");
   log("  - Capability cache load/rebuild health");
+  log("  - SQLite cache health when enabled");
   log("\nOptions:");
   log("  --json                Emit machine-readable JSON output");
   printGlobalOptions(log);

@@ -1,7 +1,14 @@
-.mdkg/index/
+.mdkg/index/*.json
+.mdkg/index/*.tmp
+.mdkg/index/*.lock
+.mdkg/index/write.lock/
+.mdkg/index/*.sqlite-wal
+.mdkg/index/*.sqlite-shm
+.mdkg/index/*.sqlite-journal
 dist/
 node_modules/
 *.tgz
 
 .mdkg/pack/
+.mdkg/archive/**/source/
 .mdkg/work/events/*.jsonl

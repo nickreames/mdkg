@@ -2,20 +2,20 @@
 id: epic-21
 type: epic
 title: hierarchical subgraph snapshot aggregation
-status: backlog
-priority: 4
-tags: [future, subgraph, orchestration, snapshot-bundle, capability-cache]
+status: progress
+priority: 1
+tags: [subgraph, orchestration, snapshot-bundle, capability-cache]
 owners: []
 links: []
 artifacts: []
-relates: [epic-19, epic-20, epic-22, epic-23, epic-27]
-blocked_by: [epic-22, epic-23]
-blocks: []
+relates: [epic-19, epic-20, epic-22, epic-23, epic-27, task-171]
+blocked_by: []
+blocks: [task-172, task-173, task-174, task-175, task-176, task-177, task-178, task-179, task-180]
 refs: []
 aliases: [subgraph-capability-aggregation]
 skills: []
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-27
 ---
 
 # Goal
@@ -27,6 +27,21 @@ The root graph should lazy-load child capabilities and semantic context from
 full `.mdkg` snapshot bundles instead of scanning the full child checkout by
 default.
 
+# Locked Direction
+
+- `mdkg subgraph ...` becomes the public orchestration command family.
+- `mdkg bundle import ...` is removed from the public CLI and docs instead of
+  remaining as a compatibility alias.
+- `subgraphs` replaces `bundle_imports` as the semantic config surface.
+- Each subgraph starts with `permissions: ["read"]`.
+- Default freshness is 60 minutes.
+- `mdkg subgraph refresh` reloads configured bundle sources only; it does not
+  build bundles inside child repos.
+- `mdkg capability resolve` is the first orchestration primitive and ranks
+  deterministically.
+- Stale subgraphs remain visible by default with degraded ranking; `--fresh-only`
+  excludes them.
+
 # Scope
 
 - Aggregate read-only child graph data from snapshot bundles.
@@ -34,6 +49,9 @@ default.
   orchestration models.
 - Preserve cache freshness and source visibility metadata.
 - Avoid mutating child graph state from the root import view.
+- Keep SQLite as a rebuildable local read model, not the durable interchange
+  format.
+- Keep bundle ZIPs as the committed/shareable snapshot artifacts.
 
 # Milestones
 
@@ -44,12 +62,16 @@ default.
 - Higher-level graphs can lazy-load child capabilities and subagents without
   scanning full submodule contents.
 - Child repos remain the mutation owners for their full mdkg graph state.
+- Root orchestration graphs can resolve local and imported capabilities through
+  one deterministic capability resolver.
 
 # Out of Scope
 
 - No direct write-through mutation into child snapshots.
 - No generated semantic summaries unless a later design explicitly approves them.
 - No hosted orchestration service.
+- No request/work-order export protocol in this phase.
+- No receipt-outcome weighted ranking in this phase.
 
 # Risks
 
@@ -65,4 +87,5 @@ default.
 - `epic-20`
 - `epic-22`
 - `epic-23`
-- Future implementation should add subgraph aggregation fixtures and consumer-repo smoke coverage.
+- `epic-27`
+- `task-171`

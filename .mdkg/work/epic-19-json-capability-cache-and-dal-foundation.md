@@ -2,7 +2,7 @@
 id: epic-19
 type: epic
 title: json capability cache and dal foundation
-status: progress
+status: done
 priority: 1
 tags: [0_1_2, capability-cache, index, dal]
 owners: []
@@ -15,7 +15,7 @@ refs: []
 aliases: [capability-cache-json, json-capabilities]
 skills: []
 created: 2026-05-14
-updated: 2026-05-14
+updated: 2026-05-20
 ---
 
 # Goal
@@ -71,3 +71,13 @@ derived access metadata.
 - `CLI_COMMAND_MATRIX.md`
 - `epic-22`
 - `epic-23`
+
+# Closeout
+
+Epic-19 is closed as the JSON capability cache foundation. The cache remains
+the compatibility layer for existing workspaces and the public
+`mdkg capability ...` command surface.
+
+The follow-on DAL work is now tracked under `epic-20`, which adds the
+rebuildable SQLite access cache and parallel mutation hardening while keeping
+Markdown, archive sidecars, bundles, and config as source of truth.

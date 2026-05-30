@@ -8,13 +8,16 @@ import {
   parseFrontmatter,
 } from "../graph/frontmatter";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
-import { loadIndex, writeIndex } from "../graph/index_cache";
+import { loadIndex } from "../graph/index_cache";
+import { writeDerivedIndexes } from "../graph/reindex";
 import { AGENT_FILE_BASENAMES, AgentFileType } from "../graph/agent_file_types";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { isPortableId } from "../util/id";
 import { formatResolveError, resolveQid } from "../util/qid";
+import { atomicWriteFile, writeFileExclusive } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent } from "./event_support";
 import { runArchiveAddCommand } from "./archive";
 
@@ -185,8 +188,7 @@ function maybeReindex(root: string, config: ReturnType<typeof loadConfig>): void
   if (!config.index.auto_reindex) {
     return;
   }
-  const outputPath = path.resolve(root, config.index.global_index_path);
-  writeIndex(outputPath, buildIndex(root, config, { tolerant: config.index.tolerant }));
+  writeDerivedIndexes(root, config, buildIndex(root, config, { tolerant: config.index.tolerant }));
 }
 
 function findNodeById(index: Index, ws: string, id: string, type?: string): IndexNode | undefined {
@@ -226,7 +228,7 @@ function writeFrontmatterFile(
 ): void {
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const content = ["---", ...lines, "---", body.trimStart()].join("\n");
-  fs.writeFileSync(filePath, content.endsWith("\n") ? content : `${content}\n`, "utf8");
+  atomicWriteFile(filePath, content.endsWith("\n") ? content : `${content}\n`);
 }
 
 function createAgentWorkflowNode(options: {
@@ -269,8 +271,15 @@ function createAgentWorkflowNode(options: {
     updated: today,
     ...options.overrides,
   });
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
+  try {
+    writeFileExclusive(filePath, content);
+  } catch (err) {
+    const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
+    if (code === "EEXIST") {
+      throw new UsageError(`node already exists: ${path.relative(options.root, filePath)}`);
+    }
+    throw err;
+  }
   maybeReindex(options.root, config);
   appendAutomaticEvent({
     root: options.root,
@@ -338,7 +347,7 @@ function printReceipt(action: string, receipt: WorkMutationReceipt, json?: boole
   console.log(`work ${action}: ${receipt.qid} (${receipt.path})`);
 }
 
-export function runWorkContractNewCommand(options: WorkContractNewCommandOptions): void {
+function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
@@ -365,7 +374,7 @@ export function runWorkContractNewCommand(options: WorkContractNewCommandOptions
   printReceipt("contract created", receipt, options.json);
 }
 
-export function runWorkOrderNewCommand(options: WorkOrderNewCommandOptions): void {
+function runWorkOrderNewCommandLocked(options: WorkOrderNewCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
@@ -395,7 +404,7 @@ export function runWorkOrderNewCommand(options: WorkOrderNewCommandOptions): voi
   printReceipt("order created", receipt, options.json);
 }
 
-export function runWorkOrderUpdateCommand(options: WorkOrderUpdateCommandOptions): void {
+function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions): void {
   const loaded = loadMutableAgentNode(options.root, options.id, options.ws, "work_order");
   if (options.status) {
     loaded.frontmatter.order_status = normalizeEnum(options.status, "--status", ORDER_STATUSES);
@@ -414,7 +423,7 @@ export function runWorkOrderUpdateCommand(options: WorkOrderUpdateCommandOptions
   printReceipt("order updated", nodeReceipt(options.root, loaded.node), options.json);
 }
 
-export function runWorkReceiptNewCommand(options: WorkReceiptNewCommandOptions): void {
+function runWorkReceiptNewCommandLocked(options: WorkReceiptNewCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
@@ -443,7 +452,7 @@ export function runWorkReceiptNewCommand(options: WorkReceiptNewCommandOptions):
   printReceipt("receipt created", receipt, options.json);
 }
 
-export function runWorkReceiptUpdateCommand(options: WorkReceiptUpdateCommandOptions): void {
+function runWorkReceiptUpdateCommandLocked(options: WorkReceiptUpdateCommandOptions): void {
   const loaded = loadMutableAgentNode(options.root, options.id, options.ws, "receipt");
   if (options.receiptStatus) {
     loaded.frontmatter.receipt_status = normalizeEnum(
@@ -470,7 +479,7 @@ export function runWorkReceiptUpdateCommand(options: WorkReceiptUpdateCommandOpt
   printReceipt("receipt updated", nodeReceipt(options.root, loaded.node), options.json);
 }
 
-export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions): void {
+function runWorkArtifactAddCommandLocked(options: WorkArtifactAddCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
@@ -537,4 +546,33 @@ export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions
     return;
   }
   console.log(`work artifact registered: ${target.qid} -> ${archiveUri}`);
+}
+
+function withWorkLock<T>(root: string, fn: () => T): T {
+  const config = loadConfig(root);
+  return withMutationLock(root, config.index.lock_timeout_ms, fn);
+}
+
+export function runWorkContractNewCommand(options: WorkContractNewCommandOptions): void {
+  return withWorkLock(options.root, () => runWorkContractNewCommandLocked(options));
+}
+
+export function runWorkOrderNewCommand(options: WorkOrderNewCommandOptions): void {
+  return withWorkLock(options.root, () => runWorkOrderNewCommandLocked(options));
+}
+
+export function runWorkOrderUpdateCommand(options: WorkOrderUpdateCommandOptions): void {
+  return withWorkLock(options.root, () => runWorkOrderUpdateCommandLocked(options));
+}
+
+export function runWorkReceiptNewCommand(options: WorkReceiptNewCommandOptions): void {
+  return withWorkLock(options.root, () => runWorkReceiptNewCommandLocked(options));
+}
+
+export function runWorkReceiptUpdateCommand(options: WorkReceiptUpdateCommandOptions): void {
+  return withWorkLock(options.root, () => runWorkReceiptUpdateCommandLocked(options));
+}
+
+export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions): void {
+  return withWorkLock(options.root, () => runWorkArtifactAddCommandLocked(options));
 }

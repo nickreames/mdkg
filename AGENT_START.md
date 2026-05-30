@@ -83,6 +83,7 @@ Capability discovery:
 - `mdkg capability list --kind skill --json`
 - `mdkg capability search "<query>" --kind spec --json`
 - `mdkg capability search "<query>" --kind work --json`
+- `mdkg index` refreshes JSON compatibility caches and `.mdkg/index/mdkg.sqlite` when SQLite mode is enabled.
 
 ## Product-specific conventions
 
@@ -137,6 +138,8 @@ Build and verification:
 - `npm run smoke:bundle`
 - `npm run smoke:bundle-import`
 - `npm run smoke:visibility`
+- `npm run smoke:sqlite`
+- `npm run smoke:parallel`
 
 When you need a full command reference, use `CLI_COMMAND_MATRIX.md` or `mdkg help <command>`.
 

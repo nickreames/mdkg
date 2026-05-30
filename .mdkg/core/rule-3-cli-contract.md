@@ -124,7 +124,7 @@ If a user provides an unqualified ID and it is ambiguous globally:
     - `.agents/skills/`
     - `.claude/skills/`
     - deterministic `core.md` pin insertion (`rule-soul`, then `rule-human`)
-    - ignore policy for `.mdkg/index/`, `.mdkg/pack/`, and raw archive source copies under `.mdkg/archive/**/source/`
+    - ignore policy for generated JSON index/temp/lock files, `.mdkg/pack/`, and raw archive source copies under `.mdkg/archive/**/source/`
   - mirrored skills are append-focused outputs:
     - `.mdkg/skills/` remains canonical
     - unrelated existing folders under `.agents/skills/` and `.claude/skills/` are preserved
@@ -146,6 +146,7 @@ If a user provides an unqualified ID and it is ambiguous globally:
   - rebuild skills cache `.mdkg/index/skills.json` from `.mdkg/skills/<slug>/SKILL.md`
   - rebuild capability cache `.mdkg/index/capabilities.json` from skills, `SPEC.md`, `WORK.md`, core docs, and design docs
   - rebuild bundle import projection cache `.mdkg/index/imports.json` when bundle imports are configured
+  - rebuild SQLite access cache `.mdkg/index/mdkg.sqlite` when `index.backend` is `sqlite`
   - tolerate `.mdkg/skills/<slug>/SKILLS.md` on read with warning
   - fail validation if both `SKILL.md` and `SKILLS.md` exist in one skill directory
   - strict by default (fails on invalid frontmatter)

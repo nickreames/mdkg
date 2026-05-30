@@ -6,6 +6,7 @@ import { Config, BundleImportConfig } from "../core/config";
 import { configPath } from "../core/paths";
 import { FrontmatterValue } from "./frontmatter";
 import { Index, IndexNode } from "./indexer";
+import { atomicWriteFile } from "../util/atomic";
 import { readZipEntries } from "../util/zip";
 
 export type BundleImportHealth = {
@@ -379,8 +380,7 @@ export function buildBundleImportsIndex(root: string, config: Config): BundleImp
 }
 
 export function writeBundleImportsIndex(indexPath: string, index: BundleImportsIndex): void {
-  fs.mkdirSync(path.dirname(indexPath), { recursive: true });
-  fs.writeFileSync(indexPath, JSON.stringify(index, null, 2), "utf8");
+  atomicWriteFile(indexPath, JSON.stringify(index, null, 2));
 }
 
 export function isBundleImportsIndexStale(root: string, config: Config): boolean {

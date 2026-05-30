@@ -34,7 +34,11 @@ export type Config = {
   index: {
     auto_reindex: boolean;
     tolerant: boolean;
+    backend: "json" | "sqlite";
     global_index_path: string;
+    sqlite_path: string;
+    sqlite_commit_warning_bytes: number;
+    lock_timeout_ms: number;
   };
   capabilities: {
     cache_path: string;
@@ -87,7 +91,10 @@ const PACK_EDGE_KEYS = new Set([
 const NEXT_WORK_STRATEGIES = new Set(["chain_then_priority"]);
 const WORKSPACE_VISIBILITY_VALUES = new Set(["private", "internal", "public"]);
 const BUNDLE_PROFILE_VALUES = new Set(["private", "public"]);
+const INDEX_BACKEND_VALUES = new Set(["json", "sqlite"]);
 const DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES = 26214400;
+const DEFAULT_SQLITE_COMMIT_WARNING_BYTES = 52428800;
+const DEFAULT_LOCK_TIMEOUT_MS = 10000;
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -361,11 +368,31 @@ export function validateConfigSchema(raw: unknown): Config {
     ? {
         auto_reindex: requireBoolean(indexRaw.auto_reindex, "index.auto_reindex", errors),
         tolerant: requireBoolean(indexRaw.tolerant, "index.tolerant", errors),
+        backend:
+          indexRaw.backend === undefined
+            ? "json"
+            : requireStringInSet(indexRaw.backend, "index.backend", INDEX_BACKEND_VALUES, errors),
         global_index_path: requireContainedPath(
           indexRaw.global_index_path,
           "index.global_index_path",
           errors
         ),
+        sqlite_path:
+          indexRaw.sqlite_path === undefined
+            ? ".mdkg/index/mdkg.sqlite"
+            : requireContainedPath(indexRaw.sqlite_path, "index.sqlite_path", errors),
+        sqlite_commit_warning_bytes:
+          indexRaw.sqlite_commit_warning_bytes === undefined
+            ? DEFAULT_SQLITE_COMMIT_WARNING_BYTES
+            : requireNonNegativeInteger(
+                indexRaw.sqlite_commit_warning_bytes,
+                "index.sqlite_commit_warning_bytes",
+                errors
+              ),
+        lock_timeout_ms:
+          indexRaw.lock_timeout_ms === undefined
+            ? DEFAULT_LOCK_TIMEOUT_MS
+            : requirePositiveInteger(indexRaw.lock_timeout_ms, "index.lock_timeout_ms", errors),
       }
     : undefined;
 

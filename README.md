@@ -9,11 +9,14 @@ It is built for:
 
 mdkg stays deliberately boring:
 - repo-native under `.mdkg/`
-- TypeScript + Node.js 18+
-- zero runtime dependencies
-- no required sqlite, daemon, hosted index, or vector DB
+- TypeScript + Node.js `>=24.15.0`
+- zero third-party runtime dependencies
+- first-class rebuildable SQLite cache through built-in `node:sqlite`
+- no daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.4`
+Current package version in source: `0.1.3`
+
+mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
 ## The product shape
 
@@ -202,10 +205,11 @@ mdkg lives under a hidden root directory:
 - `.mdkg/skills/` Agent Skills packages
 - `.mdkg/archive/` sidecar metadata plus deterministic compressed source/artifact caches
 - `.mdkg/bundles/` optional committed full graph snapshot bundles
+- `.mdkg/index/mdkg.sqlite` optional committed, rebuildable SQLite access cache
 - `.mdkg/index/imports.json` generated read-only bundle import cache
 - `.agents/skills/` Codex/OpenAI-facing mirrored skills
 - `.claude/skills/` Claude-facing mirrored skills
-- `.mdkg/index/` generated cache files
+- `.mdkg/index/*.json` generated JSON compatibility cache files
 
 ## Primary commands
 
@@ -292,6 +296,14 @@ The capability cache is not the full graph and is not source of truth. Normal ta
 
 Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. Workspace `visibility` also feeds mdkg's export safety checks for public/internal packs and public bundles. This is a CLI safety layer, not secret scanning, body redaction, or a replacement for private git hosting.
 
+## Index backends and parallel safety
+
+Fresh `mdkg init` workspaces default to `index.backend: sqlite`, which writes `.mdkg/index/mdkg.sqlite` as a rebuildable access cache using Node's built-in `node:sqlite`. Existing workspaces that are migrated from older configs default to `index.backend: json` until they opt in. Markdown files, archive sidecars, bundle manifests, and config remain source of truth in both modes.
+
+`mdkg index` still writes JSON compatibility caches (`global.json`, `skills.json`, `capabilities.json`, and import projections when configured). In SQLite mode it also rebuilds the SQLite cache with nodes, edges, skills, capabilities, archive metadata, bundle imports, source hashes, and schema metadata. Deleting the SQLite file is recoverable with `mdkg index`.
+
+Mutating commands use a workspace mutation lock plus atomic writes. SQLite mode additionally reserves numeric ids in a SQLite transaction before writing Markdown so parallel `mdkg new` and checkpoint calls avoid naming conflicts. Skipped ids after failed writes are acceptable because Markdown remains canonical.
+
 ## Agent workflow files
 
 mdkg recognizes a small set of canonical agent workflow documents:
@@ -323,10 +335,12 @@ By default, init/upgrade ignore generated raw archive source copies with `.mdkg/
 
 This release includes:
 - `init --agent`
-- default ignore updates with `--no-update-ignores` for `.mdkg/index/`, `.mdkg/pack/`, and raw archive source copies
+- default ignore updates with `--no-update-ignores` for generated JSON index/temp/lock files, `.mdkg/pack/`, and raw archive source copies
 - root-only published init seed config
 - skills indexing and search/show/list support
 - JSON capability cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs
+- SQLite index backend for fresh workspaces using built-in `node:sqlite`
+- mutation locking and atomic writes for parallel mdkg calls
 - optional `skills: [...]` on work items
 - pack-time skill inclusion
 - latest-checkpoint resolver + index hint
@@ -360,7 +374,8 @@ Design and decision records live in the internal graph under `.mdkg/design/`.
 mdkg is not a secret store.
 
 Use these defaults:
-- keep `.mdkg/index/` gitignored
+- keep generated `.mdkg/index/*.json`, temp, lock, WAL, SHM, and journal files gitignored
+- commit `.mdkg/index/mdkg.sqlite` only when the repo intentionally tracks a reasonably sized rebuildable access cache
 - keep `.mdkg/pack/` gitignored
 - keep `.mdkg/archive/**/source/` gitignored unless a repo intentionally commits raw local copies
 - commit archive sidecar `.md` metadata and deterministic `.zip` caches when they are needed for reviewable evidence
