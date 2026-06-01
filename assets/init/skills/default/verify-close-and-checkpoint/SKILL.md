@@ -30,15 +30,16 @@ Finish work with evidence, validation, and minimal memory drift.
 2. Run `mdkg validate` before closing the task.
 3. For mdkg scaffold or release work, include `mdkg upgrade` dry-run/apply evidence and any package smoke that exercises upgrade behavior.
 4. Use `mdkg task update <id> ...` for additive evidence and structured metadata changes; keep narrative/body edits in markdown.
-5. Use `mdkg task done <id> --checkpoint "<title>"` when the task should close with milestone compression.
-6. Batch durable mdkg writes at one boundary: task status, artifact refs, optional checkpoint, and commit.
-7. Mark tasks done only after evidence exists.
-8. Create a checkpoint only for milestone-level transitions, not every small step.
-9. For feat or epic closeout, prefer a checkpoint body as the durable narrative summary of what changed and what is next.
-10. Use feat closeout scope as direct children with `parent: <feat-id>` and epic closeout scope as descendant work with `epic: <epic-id>`.
-11. Parent status edits remain manual; do not invent a hidden parent-closeout workflow.
-12. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
-13. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
+5. When pursuing a goal, record evidence on the active node and summarize goal evidence before running `mdkg goal evaluate <goal-id>`.
+6. Use `mdkg task done <id> --checkpoint "<title>"` when the task should close with milestone compression.
+7. Batch durable mdkg writes at one boundary: task status, artifact refs, optional checkpoint, goal evidence, and commit.
+8. Mark tasks done only after evidence exists.
+9. Create a checkpoint only for milestone-level transitions, not every small step.
+10. For feat or epic closeout, prefer a checkpoint body as the durable narrative summary of what changed and what is next.
+11. Use feat closeout scope as direct children with `parent: <feat-id>` and epic closeout scope as descendant work with `epic: <epic-id>`.
+12. Parent status edits remain manual; do not invent a hidden parent-closeout workflow.
+13. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
+14. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
 
 ## Pre-Publish Release Gate
 
@@ -46,7 +47,7 @@ Use this local repo-only checklist before publishing mdkg:
 
 1. Confirm package intent and version in `package.json`, `package-lock.json`, `README.md`, `CLI_COMMAND_MATRIX.md`, and `CHANGELOG.md`.
 2. Use a clean npm cache: `export NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache`.
-3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, `npm run smoke:upgrade`, `npm run smoke:init`, `npm run smoke:capabilities`, `npm run smoke:archive-work`, `npm run smoke:bundle`, `npm run smoke:bundle-import`, and `npm run smoke:visibility`.
+3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, `npm run smoke:upgrade`, `npm run smoke:init`, `npm run smoke:capabilities`, `npm run smoke:archive-work`, `npm run smoke:bundle`, `npm run smoke:subgraph`, and `npm run smoke:visibility`.
 4. Run `npm pack --dry-run --json` and confirm the tarball includes `dist/cli.js`, compiled folders, `dist/init/`, release docs, and `scripts/postinstall.js`.
 5. Confirm registry state with `npm view mdkg version --registry=https://registry.npmjs.org/`.
 6. Publish only after the registry still shows the previous version and npm auth is known to have write access.

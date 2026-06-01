@@ -38,7 +38,7 @@ function normalizeWorkspace(value?: string): string | undefined {
 export function runListCommand(options: ListCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  if (ws && !config.workspaces[ws] && !config.bundle_imports[ws]) {
+  if (ws && !config.workspaces[ws] && !config.subgraphs[ws]) {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
   const normalizedType = options.type?.toLowerCase();

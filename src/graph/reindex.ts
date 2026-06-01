@@ -2,7 +2,7 @@ import path from "path";
 import { Config } from "../core/config";
 import { buildCapabilitiesIndex, resolveCapabilitiesIndexPath } from "./capabilities_indexer";
 import { writeCapabilitiesIndex } from "./capabilities_index_cache";
-import { buildBundleImportsIndex, resolveBundleImportsIndexPath, writeBundleImportsIndex } from "./bundle_imports";
+import { buildSubgraphsIndex, resolveSubgraphsIndexPath, writeSubgraphsIndex } from "./subgraphs";
 import { buildIndex, Index } from "./indexer";
 import { writeIndex } from "./index_cache";
 import { writeSkillsIndex } from "./skills_index_cache";
@@ -15,7 +15,7 @@ export type DerivedIndexWriteResult = {
     nodes: string;
     skills: string;
     capabilities: string;
-    imports: string;
+    subgraphs: string;
     sqlite?: string;
   };
 };
@@ -29,23 +29,23 @@ export function writeDerivedIndexes(
   const nextNodeIndex = nodeIndex ?? buildIndex(root, config, { tolerant: options?.tolerant ?? config.index.tolerant });
   const skillsIndex = buildSkillsIndex(root, config);
   const capabilitiesIndex = buildCapabilitiesIndex(root, config, nextNodeIndex);
-  const importsIndex = buildBundleImportsIndex(root, config);
+  const subgraphsIndex = buildSubgraphsIndex(root, config);
 
   const nodesOutputPath = path.resolve(root, config.index.global_index_path);
   const skillsOutputPath = resolveSkillsIndexPath(root);
   const capabilitiesOutputPath = resolveCapabilitiesIndexPath(root, config);
-  const importsOutputPath = resolveBundleImportsIndexPath(root);
+  const subgraphsOutputPath = resolveSubgraphsIndexPath(root);
 
   writeIndex(nodesOutputPath, nextNodeIndex);
   writeSkillsIndex(skillsOutputPath, skillsIndex);
   writeCapabilitiesIndex(capabilitiesOutputPath, capabilitiesIndex);
-  writeBundleImportsIndex(importsOutputPath, importsIndex.index);
+  writeSubgraphsIndex(subgraphsOutputPath, subgraphsIndex.index);
 
   const paths: DerivedIndexWriteResult["paths"] = {
     nodes: nodesOutputPath,
     skills: skillsOutputPath,
     capabilities: capabilitiesOutputPath,
-    imports: importsOutputPath,
+    subgraphs: subgraphsOutputPath,
   };
   if (isSqliteBackend(config)) {
     paths.sqlite = writeSqliteIndex({
@@ -54,7 +54,7 @@ export function writeDerivedIndexes(
       nodeIndex: nextNodeIndex,
       skillsIndex,
       capabilitiesIndex,
-      importsIndex: importsIndex.index,
+      subgraphsIndex: subgraphsIndex.index,
     });
   }
 

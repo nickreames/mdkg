@@ -2,7 +2,7 @@
 id: task-172
 type: task
 title: subgraph config and orchestration contract
-status: todo
+status: done
 priority: 1
 epic: epic-21
 tags: [subgraph, config, orchestration, contract]
@@ -16,7 +16,7 @@ refs: []
 aliases: [subgraph-config-contract]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Overview
@@ -55,6 +55,18 @@ in this contract.
   freshness validation, and source bundle validation.
 - Migration tests for old configs that contain `bundle_imports`.
 - Temp repo test proving fresh init has an empty `subgraphs` object.
+
+# Verification Evidence
+
+Completed in the 0.1.4 implementation pass.
+
+- Added `subgraphs` config defaults to root and seeded init config.
+- Implemented config validation for aliases, workspace collisions, visibility,
+  permissions, freshness, and multi-source bundle entries.
+- Implemented legacy `bundle_imports` in-memory compatibility and upgrade
+  migration into `subgraphs`.
+- Verified with `tests/core/config.test.ts`, `npm run test`, and packed
+  subgraph smoke coverage.
 
 # Links / Artifacts
 

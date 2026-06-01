@@ -278,7 +278,9 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   let status: string | undefined;
   if (WORK_TYPES.has(type)) {
     const allowed = new Set(config.work.status_enum.map((value) => value.toLowerCase()));
-    status = statusInput ?? config.work.status_enum[0]?.toLowerCase();
+    status = statusInput ?? (type === "goal" && allowed.has("progress")
+      ? "progress"
+      : config.work.status_enum[0]?.toLowerCase());
     if (!status || !allowed.has(status)) {
       throw new UsageError(`--status must be one of ${Array.from(allowed).join(", ")}`);
     }
@@ -401,6 +403,10 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     skills: skills.length > 0 ? skills : undefined,
     cases: cases.length > 0 ? cases : undefined,
     supersedes: options.supersedes ? options.supersedes.toLowerCase() : undefined,
+    goal_state: type === "goal" ? (status === "done" ? "achieved" : status === "blocked" ? "blocked" : "active") : undefined,
+    goal_condition: type === "goal" ? title : undefined,
+    max_iterations: type === "goal" ? 25 : undefined,
+    blocked_after_attempts: type === "goal" ? 3 : undefined,
     created: today,
     updated: today,
   });

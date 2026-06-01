@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.3`
+Current package version in source: `0.1.6`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -77,6 +77,17 @@ Create a task:
 mdkg new task "bootstrap cli" --status todo --priority 1 --tags cli,build
 ```
 
+Create a recursive goal for long-running agent work:
+
+```bash
+mdkg new goal "reach prepublish readiness"
+mdkg goal show goal-1 --json
+mdkg goal next goal-1
+mdkg goal evaluate goal-1 --json
+```
+
+Goal nodes capture a measurable end condition, recursive loop state, required skills, required checks, and completion evidence. They guide agent harnesses through repeated graph-backed progress, while tasks, bugs, tests, and features remain the concrete executable work units. In this release `mdkg goal evaluate` is report-only: it lists required checks and evidence state, but does not execute scripts.
+
 Create an agent workflow document with a semantic portable id:
 
 ```bash
@@ -110,20 +121,21 @@ mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
 mdkg bundle list --json
 ```
 
-Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph, archive, or imported bundle records.
+Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph, archive, or subgraph records.
 
-Import a child repo bundle as a read-only planning view:
+Register a child repo bundle as a read-only subgraph planning view:
 
 ```bash
-mdkg bundle import add child_repo child-repo/.mdkg/bundles/private/all.mdkg.zip --source-path child-repo
-mdkg bundle import list --json
+mdkg subgraph add child_repo child-repo/.mdkg/bundles/private/all.mdkg.zip --source-path child-repo
+mdkg subgraph list --json
 mdkg search "child capability"
 mdkg show child_repo:work.example
 mdkg pack child_repo:work.example --dry-run --stats
-mdkg bundle import verify child_repo --json
+mdkg capability resolve "child capability" --json
+mdkg subgraph verify child_repo --json
 ```
 
-Imported bundle nodes are projected under the import alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, and capability discovery, but remain read-only; mutate the child repo and refresh its bundle to change imported content. Stale imports warn during planning reads and fail `mdkg bundle import verify`. Public or internal imports must be backed by public bundle profiles; private imports stay private planning context.
+Subgraph nodes are projected under the subgraph alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, capability discovery, and `capability resolve`, but remain read-only; mutate the child repo and refresh its bundle to change subgraph content. Stale subgraphs warn during planning reads and fail `mdkg subgraph verify`. Public or internal subgraphs must be backed by public bundle profiles; private subgraphs stay private planning context.
 
 Validate before handoff or commit:
 
@@ -158,7 +170,7 @@ mdkg work artifact add receipt.generate-image-1 ./outputs/image.png --id archive
 ```
 
 Receipt statuses are `recorded`, `verified`, `rejected`, and `superseded`.
-Update and artifact commands accept local ids or local qids; imported bundle qids are read-only and must be changed in their source workspace.
+Update and artifact commands accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace.
 
 Update structured task state and evidence while keeping body and narrative edits in markdown:
 
@@ -206,7 +218,7 @@ mdkg lives under a hidden root directory:
 - `.mdkg/archive/` sidecar metadata plus deterministic compressed source/artifact caches
 - `.mdkg/bundles/` optional committed full graph snapshot bundles
 - `.mdkg/index/mdkg.sqlite` optional committed, rebuildable SQLite access cache
-- `.mdkg/index/imports.json` generated read-only bundle import cache
+- `.mdkg/index/subgraphs.json` generated read-only subgraph projection cache
 - `.agents/skills/` Codex/OpenAI-facing mirrored skills
 - `.claude/skills/` Claude-facing mirrored skills
 - `.mdkg/index/*.json` generated JSON compatibility cache files
@@ -225,6 +237,7 @@ These are the commands new users and agents should learn first:
 - `mdkg capability`
 - `mdkg archive`
 - `mdkg work`
+- `mdkg goal`
 - `mdkg task`
 - `mdkg validate`
 
@@ -300,9 +313,19 @@ Capability records aggregate enabled registered workspaces and include determini
 
 Fresh `mdkg init` workspaces default to `index.backend: sqlite`, which writes `.mdkg/index/mdkg.sqlite` as a rebuildable access cache using Node's built-in `node:sqlite`. Existing workspaces that are migrated from older configs default to `index.backend: json` until they opt in. Markdown files, archive sidecars, bundle manifests, and config remain source of truth in both modes.
 
-`mdkg index` still writes JSON compatibility caches (`global.json`, `skills.json`, `capabilities.json`, and import projections when configured). In SQLite mode it also rebuilds the SQLite cache with nodes, edges, skills, capabilities, archive metadata, bundle imports, source hashes, and schema metadata. Deleting the SQLite file is recoverable with `mdkg index`.
+`mdkg index` still writes JSON compatibility caches (`global.json`, `skills.json`, `capabilities.json`, and subgraph projections when configured). In SQLite mode it also rebuilds the SQLite cache with nodes, edges, skills, capabilities, archive metadata, subgraphs, source hashes, and schema metadata. Deleting the SQLite file is recoverable with `mdkg index`.
 
 Mutating commands use a workspace mutation lock plus atomic writes. SQLite mode additionally reserves numeric ids in a SQLite transaction before writing Markdown so parallel `mdkg new` and checkpoint calls avoid naming conflicts. Skipped ids after failed writes are acceptable because Markdown remains canonical.
+
+## Goal nodes
+
+Goal nodes are durable recursive objective contracts. Use `mdkg new goal "<objective>"` when a human or agent needs to keep working across multiple concrete nodes until a measurable end condition is achieved.
+
+`goal` is work-like but distinct from `task`: it can have status, priority, graph links, skills, explicit `scope_refs`, and structured goal fields, but normal `mdkg next` does not select goals. Use `mdkg goal select <goal-id>` once, then `mdkg goal next` to choose the next local feature, task, bug, or test inside that goal. `mdkg goal next <goal-id>` remains available for explicit selection. Epics organize goal scope recursively but are not returned as executable work.
+
+Use `mdkg goal claim [goal-id] <work-id>` to durably set `active_node` after choosing the next scoped item. `goal next` is read-only. Use `mdkg goal pause|resume|done` to update goal state after review.
+
+Required checks are stored as report-only guidance. Agents should run the checks themselves, record evidence in the goal or active work item, then use `mdkg goal evaluate` to summarize the current evidence state. During normal goal execution, skill improvements should be recorded as improvement candidates or proposal nodes; edit `SKILL.md` files only when the active node is explicit skill-maintenance work.
 
 ## Agent workflow files
 
@@ -341,6 +364,7 @@ This release includes:
 - JSON capability cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs
 - SQLite index backend for fresh workspaces using built-in `node:sqlite`
 - mutation locking and atomic writes for parallel mdkg calls
+- first-class `goal` nodes and `mdkg goal show/next/evaluate/pause/resume/done`
 - optional `skills: [...]` on work items
 - pack-time skill inclusion
 - latest-checkpoint resolver + index hint

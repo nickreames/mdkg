@@ -55,13 +55,14 @@ export type CapabilityRecord = {
   source?: {
     imported: boolean;
     read_only: boolean;
-    import_alias: string;
+    subgraph_alias: string;
     original_qid: string;
     original_workspace: string;
     original_path: string;
     bundle_path: string;
     bundle_hash?: string;
     profile?: string;
+    permissions?: string[];
     stale: boolean;
     warnings: string[];
   };

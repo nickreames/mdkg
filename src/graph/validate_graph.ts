@@ -1,5 +1,6 @@
 import { Index } from "./indexer";
 import { archiveIdFromUri } from "../util/refs";
+import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES, GOAL_SCOPE_ALLOWED_TYPES } from "./goal_scope";
 
 export type ValidateGraphOptions = {
   allowMissing?: boolean;
@@ -618,6 +619,54 @@ function validateArchiveUriRefs(
   }
 }
 
+function validateGoalRefs(index: Index, allowMissing: boolean, errors: string[] | null): void {
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "goal") {
+      continue;
+    }
+
+    const scope = collectGoalScope(index, node, { includeCompatibilityRefs: false });
+    for (const ref of scope.missingRefs) {
+      if (allowMissing) {
+        continue;
+      }
+      pushError(errors, `${qid}: scope_refs references missing node ${ref}`);
+    }
+    for (const ref of scope.invalidRefs) {
+      const target = index.nodes[ref];
+      const typeLabel = target ? target.type : "missing";
+      pushError(
+        errors,
+        `${qid}: scope_refs references ${ref} with type ${typeLabel}, expected ${Array.from(GOAL_SCOPE_ALLOWED_TYPES).join(", ")}`
+      );
+    }
+
+    const activeNode = node.attributes.active_node;
+    if (typeof activeNode !== "string") {
+      continue;
+    }
+    const activeQid = activeNode.includes(":") ? activeNode : `${node.ws}:${activeNode}`;
+    const target = index.nodes[activeQid];
+    if (!target) {
+      if (allowMissing) {
+        continue;
+      }
+      pushError(errors, `${qid}: active_node references missing node ${activeNode}`);
+      continue;
+    }
+    if (!GOAL_SCOPE_ACTIONABLE_TYPES.has(target.type)) {
+      pushError(
+        errors,
+        `${qid}: active_node references ${activeQid} with type ${target.type}, expected ${Array.from(GOAL_SCOPE_ACTIONABLE_TYPES).join(", ")}`
+      );
+      continue;
+    }
+    if (scope.qids.size > 0 && !scope.actionableQids.has(activeQid)) {
+      pushError(errors, `${qid}: active_node ${activeQid} is not inside goal scope_refs`);
+    }
+  }
+}
+
 function detectPrevNextCycles(index: Index, errors: string[] | null): void {
   const nodes = index.nodes;
   const seen = new Set<string>();
@@ -667,6 +716,7 @@ export function collectGraphErrors(index: Index, options: ValidateGraphOptions =
   validateAgentWorkflowDisputeRefs(index, allowMissing, errors);
   validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, externalWorkspaces, errors);
   validateArchiveUriRefs(index, allowMissing, errors);
+  validateGoalRefs(index, allowMissing, errors);
   detectPrevNextCycles(index, errors);
   return errors;
 }

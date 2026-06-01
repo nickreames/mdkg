@@ -351,9 +351,9 @@ function exerciseWorkflow(binPath, tempRoot) {
   });
 
   mdkg(binPath, ["index"], root);
-  const emptyImports = JSON.parse(mdkg(binPath, ["bundle", "import", "list", "--json"], root).stdout);
-  if (emptyImports.count !== 0) {
-    throw new Error("fresh matrix workspace should not have bundle imports configured");
+  const emptySubgraphs = JSON.parse(mdkg(binPath, ["subgraph", "list", "--json"], root).stdout);
+  if (emptySubgraphs.count !== 0) {
+    throw new Error("fresh matrix workspace should not have subgraphs configured");
   }
   const workCapabilities = JSON.parse(mdkg(binPath, ["capability", "search", "image", "--kind", "work", "--json"], root).stdout);
   if (!workCapabilities.items.some((item) => item.id === "work.generate-image")) {

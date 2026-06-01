@@ -23,6 +23,7 @@ mdkg content may contain sensitive notes and internal project planning. This rul
 - `.mdkg/` must not be published to npm.
 - Generated JSON index, temp, lock, WAL, SHM, and journal files under `.mdkg/index/` must not be committed.
 - `.mdkg/index/mdkg.sqlite` is a rebuildable access cache and may be committed when the repo intentionally tracks it and it stays reasonably small.
+- `.mdkg/state/` stores local workflow convenience state and must not be committed.
 - `.mdkg/bundles/` may be committed only when the repo intentionally tracks private or public snapshot bundles.
 
 ## Git ignore requirements
@@ -37,6 +38,7 @@ The repo MUST ignore at minimum:
 - `.mdkg/index/*.sqlite-wal`
 - `.mdkg/index/*.sqlite-shm`
 - `.mdkg/index/*.sqlite-journal`
+- `.mdkg/state/`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
 
@@ -47,6 +49,7 @@ Recommended `.gitignore` entries:
 - `.mdkg/index/*.sqlite-wal`
 - `.mdkg/index/*.sqlite-shm`
 - `.mdkg/index/*.sqlite-journal`
+- `.mdkg/state/`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
 
@@ -87,7 +90,7 @@ For application builds:
 
 `mdkg init` updates ignore files by default for safety:
 
-- `.gitignore` appends generated index cache/temp/lock patterns, `.mdkg/pack/`, and raw archive source ignores.
+- `.gitignore` appends generated index cache/temp/lock patterns, `.mdkg/state/`, `.mdkg/pack/`, and raw archive source ignores.
 - `.npmignore` appends `.mdkg/`, generated index cache/temp/lock patterns, and `.mdkg/pack/`.
 - `--no-update-ignores` disables these default writes
 
@@ -102,13 +105,14 @@ Explicit flags remain available and take precedence:
 - `.mdkg/index/` contains generated caches.
 - JSON index files may contain extracted metadata and could expose sensitive strings; they MUST be ignored from git.
 - `.mdkg/index/mdkg.sqlite` contains the same rebuildable access data and may be committed only by explicit repo policy; `mdkg doctor` warns when it exceeds `index.sqlite_commit_warning_bytes`.
+- `.mdkg/state/` contains local workflow convenience state such as selected goals and MUST stay ignored.
 - Index rebuild should be deterministic and safe to regenerate at any time.
 
 ## Bundle safety
 
 - `.mdkg/bundles/` stores explicit snapshot artifacts and is not ignored by default.
 - Private bundles may include sensitive authored mdkg content and should stay in private repos.
-- Public bundles must be created with `mdkg bundle create --profile public` so private graph, archive, and imported bundle refs fail closed.
+- Public bundles must be created with `mdkg bundle create --profile public` so private graph, archive, and subgraph refs fail closed.
 - Public-safe packs must be created with `mdkg pack <id> --visibility public`; internal-safe packs use `--visibility internal`. These filters do not redact Markdown body text.
 - Bundle ZIPs must exclude `.mdkg/pack/`, existing `.mdkg/index/`, nested `.mdkg/bundles/`, and raw `.mdkg/archive/**/source/` files.
 - Repos that track archive caches or bundles should refresh in this order before commit: `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, then bundle verify.
@@ -131,6 +135,7 @@ Workspace-local `.mdkg/` directories (near code) should follow the same rules:
 ## Summary checklist
 
 - ✅ generated JSON index/temp/lock files ignored
+- ✅ local `.mdkg/state/` ignored
 - ✅ `.mdkg/index/mdkg.sqlite` committed only by explicit repo policy
 - ✅ event logs are committed by default unless a repo chooses to ignore them manually
 - ✅ npm publishes only `dist/`, `README.md`, `LICENSE`

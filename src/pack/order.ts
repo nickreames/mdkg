@@ -16,13 +16,14 @@ const FALLBACK_TYPES = [
   "dispute",
   "proposal",
   "archive",
+  "goal",
   "epic",
   "feat",
   "task",
   "bug",
   "checkpoint",
 ] as const;
-const WORK_TYPES = ["epic", "feat", "task", "bug", "checkpoint"] as const;
+const WORK_TYPES = ["goal", "epic", "feat", "task", "bug", "checkpoint"] as const;
 
 type OrderKey = {
   group: number;

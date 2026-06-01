@@ -24,7 +24,7 @@ const BASE_CONFIG = {
     output_dir: ".mdkg/bundles",
     default_profile: "private",
   },
-  bundle_imports: {},
+  subgraphs: {},
   pack: {
     default_depth: 2,
     default_edges: ["parent", "epic", "relates"],
@@ -71,7 +71,7 @@ test("loadConfig reads and validates config", () => {
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
   assert.equal(config.bundles.default_profile, "private");
-  assert.deepEqual(config.bundle_imports, {});
+  assert.deepEqual(config.subgraphs, {});
 });
 
 test("loadConfig migrates legacy config without schema_version and defaults capability and bundle fields", () => {
@@ -82,7 +82,7 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   delete legacyConfig.archive;
   delete legacyConfig.capabilities;
   delete legacyConfig.bundles;
-  delete legacyConfig.bundle_imports;
+  delete legacyConfig.subgraphs;
   const workspaces = JSON.parse(JSON.stringify(legacyConfig.workspaces)) as Record<string, Record<string, unknown>>;
   delete workspaces.root.visibility;
   legacyConfig.workspaces = workspaces;
@@ -96,26 +96,31 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
   assert.equal(config.bundles.default_profile, "private");
-  assert.deepEqual(config.bundle_imports, {});
+  assert.deepEqual(config.subgraphs, {});
 });
 
-test("loadConfig accepts bundle import config and rejects workspace alias collisions", () => {
-  const root = makeTempDir("mdkg-config-bundle-import-");
+test("loadConfig accepts subgraph config and rejects workspace alias collisions", () => {
+  const root = makeTempDir("mdkg-config-subgraph-");
   const configPath = path.join(root, ".mdkg", "config.json");
   writeFile(
     configPath,
     JSON.stringify(
       {
         ...BASE_CONFIG,
-        bundle_imports: {
+        subgraphs: {
           child_repo: {
-            path: ".mdkg/bundles/private/child.mdkg.zip",
             enabled: true,
             visibility: "internal",
-            expected_profile: "public",
+            permissions: ["read"],
             source_path: "children/child-repo",
             source_repo: "git@example.com:child.git",
             max_stale_seconds: 60,
+            sources: [
+              {
+                path: ".mdkg/bundles/private/child.mdkg.zip",
+                expected_profile: "public",
+              },
+            ],
           },
         },
       },
@@ -125,23 +130,30 @@ test("loadConfig accepts bundle import config and rejects workspace alias collis
   );
 
   const config = loadConfig(root);
-  assert.equal(config.bundle_imports.child_repo.path, ".mdkg/bundles/private/child.mdkg.zip");
-  assert.equal(config.bundle_imports.child_repo.visibility, "internal");
-  assert.equal(config.bundle_imports.child_repo.expected_profile, "public");
-  assert.equal(config.bundle_imports.child_repo.source_path, "children/child-repo");
-  assert.equal(config.bundle_imports.child_repo.max_stale_seconds, 60);
+  assert.equal(config.subgraphs.child_repo.sources[0].path, ".mdkg/bundles/private/child.mdkg.zip");
+  assert.equal(config.subgraphs.child_repo.visibility, "internal");
+  assert.equal(config.subgraphs.child_repo.sources[0].expected_profile, "public");
+  assert.deepEqual(config.subgraphs.child_repo.permissions, ["read"]);
+  assert.equal(config.subgraphs.child_repo.source_path, "children/child-repo");
+  assert.equal(config.subgraphs.child_repo.max_stale_seconds, 60);
 
   writeFile(
     configPath,
     JSON.stringify(
       {
         ...BASE_CONFIG,
-        bundle_imports: {
+        subgraphs: {
           root: {
-            path: ".mdkg/bundles/private/root.mdkg.zip",
             enabled: true,
             visibility: "private",
-            expected_profile: "private",
+            permissions: ["read"],
+            max_stale_seconds: 3600,
+            sources: [
+              {
+                path: ".mdkg/bundles/private/root.mdkg.zip",
+                expected_profile: "private",
+              },
+            ],
           },
         },
       },
@@ -149,23 +161,29 @@ test("loadConfig accepts bundle import config and rejects workspace alias collis
       2
     )
   );
-  assert.throws(() => loadConfig(root), /bundle_imports.root must not collide with workspaces.root/);
+  assert.throws(() => loadConfig(root), /subgraphs.root must not collide with workspaces.root/);
 });
 
-test("loadConfig rejects non-private bundle imports backed by private profiles", () => {
-  const root = makeTempDir("mdkg-config-bundle-import-visibility-");
+test("loadConfig rejects non-private subgraphs backed by private profiles", () => {
+  const root = makeTempDir("mdkg-config-subgraph-visibility-");
   const configPath = path.join(root, ".mdkg", "config.json");
   writeFile(
     configPath,
     JSON.stringify(
       {
         ...BASE_CONFIG,
-        bundle_imports: {
+        subgraphs: {
           child_repo: {
-            path: ".mdkg/bundles/private/child.mdkg.zip",
             enabled: true,
             visibility: "public",
-            expected_profile: "private",
+            permissions: ["read"],
+            max_stale_seconds: 3600,
+            sources: [
+              {
+                path: ".mdkg/bundles/private/child.mdkg.zip",
+                expected_profile: "private",
+              },
+            ],
           },
         },
       },
@@ -176,8 +194,34 @@ test("loadConfig rejects non-private bundle imports backed by private profiles",
 
   assert.throws(
     () => loadConfig(root),
-    /bundle_imports\.child_repo\.expected_profile must be public when visibility is public/
+    /subgraphs\.child_repo\.sources\[0\]\.expected_profile must be public when subgraphs\.child_repo\.visibility is public/
   );
+});
+
+test("loadConfig maps legacy bundle_imports into subgraphs", () => {
+  const root = makeTempDir("mdkg-config-legacy-bundle-imports-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const legacyConfig = { ...BASE_CONFIG } as Record<string, unknown>;
+  delete legacyConfig.subgraphs;
+  legacyConfig.bundle_imports = {
+    child_repo: {
+      path: ".mdkg/bundles/private/child.mdkg.zip",
+      enabled: true,
+      visibility: "internal",
+      expected_profile: "public",
+      source_path: "children/child-repo",
+      max_stale_seconds: 60,
+    },
+  };
+  writeFile(configPath, JSON.stringify(legacyConfig, null, 2));
+
+  const config = loadConfig(root);
+  assert.equal(config.subgraphs.child_repo.sources[0].path, ".mdkg/bundles/private/child.mdkg.zip");
+  assert.equal(config.subgraphs.child_repo.visibility, "internal");
+  assert.equal(config.subgraphs.child_repo.sources[0].expected_profile, "public");
+  assert.deepEqual(config.subgraphs.child_repo.permissions, ["read"]);
+  assert.equal(config.subgraphs.child_repo.source_path, "children/child-repo");
+  assert.equal(config.subgraphs.child_repo.max_stale_seconds, 60);
 });
 
 test("loadConfig accepts contained relative registered workspace paths", () => {

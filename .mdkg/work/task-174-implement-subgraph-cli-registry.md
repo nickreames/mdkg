@@ -2,7 +2,7 @@
 id: task-174
 type: task
 title: implement subgraph cli registry
-status: todo
+status: done
 priority: 1
 epic: epic-21
 tags: [subgraph, cli, registry, ux]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-21, task-172, task-173]
-blocked_by: [task-172, task-173]
+blocked_by: []
 blocks: [task-175, task-177, task-178, task-179]
 refs: []
 aliases: [subgraph-cli-registry]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Overview
@@ -53,6 +53,18 @@ state.
 - Error tests for duplicate aliases, workspace collisions, invalid permissions,
   invalid visibility, missing bundle source, and stale bundle source.
 - Temp repo smoke for registering a child bundle as a subgraph.
+
+# Verification Evidence
+
+Completed in the 0.1.4 implementation pass.
+
+- Added `src/commands/subgraph.ts` and top-level CLI dispatch/help for
+  add/list/show/rm/enable/disable/verify/refresh.
+- `refresh` reloads configured bundle sources through derived index rebuilds
+  and never builds child repos.
+- JSON receipts include subgraph alias, visibility, permissions, sources,
+  bundle profile/hash, freshness, warnings, and errors.
+- Verified by `tests/commands/subgraph.test.ts` and `npm run smoke:subgraph`.
 
 # Links / Artifacts
 

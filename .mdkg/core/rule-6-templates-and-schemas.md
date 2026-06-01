@@ -91,11 +91,20 @@ All nodes MAY include the following searchable frontmatter lists:
 List fields SHOULD be written as `[]` when empty.
 Optional scalar graph fields (like `epic`, `parent`, `prev`, `next`) should be omitted when empty.
 
-Work items (`epic/feat/task/bug/checkpoint/test`):
+Work items (`goal/epic/feat/task/bug/checkpoint/test`):
   - `status` (enum)
   - optional `priority` (0..9)
   - optional `skills: [slug, ...]` (kebab-case skill slugs)
   - optional graph edges: `epic`, `parent`, `relates`, `blocked_by`, `blocks`, `prev`, `next`
+
+Goal nodes (`goal-*`):
+- required `goal_state`: `active`, `paused`, `achieved`, `blocked`, or `budget_limited`
+- required `goal_condition` up to 4000 characters for external slash-command compatibility
+- optional `scope_refs: [id-or-qid, ...]` naming explicit goal ownership roots; allowed targets are `epic`, `feat`, `task`, `bug`, and `test`
+- optional `active_node`
+- optional `required_skills: [slug, ...]`
+- optional `required_checks: [command, ...]` as report-only guidance; mdkg does not execute these scripts
+- optional positive integer strings `max_iterations` and `blocked_after_attempts`
 
 Decision records (`dec-*`):
 - `status` (enum: `proposed`, `accepted`, `rejected`, `superseded`)

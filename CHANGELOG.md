@@ -4,6 +4,56 @@ All notable changes to mdkg are documented here.
 
 This project follows a pragmatic changelog style inspired by Keep a Changelog. Versions use npm package versions.
 
+mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL contracts may change quickly while the project converges on a stable v1 surface.
+
+## 0.1.6 - 2026-06-01
+
+### Fixed
+
+- Treat `feat` nodes as task-like for `mdkg task start/update/done`, closing the selected-goal loop when `mdkg goal next` returns a feature as the next scoped work item.
+
+## 0.1.5 - 2026-06-01
+
+### Added
+
+- Added first-class `goal` nodes for recursive long-running objectives with `goal_state`, `goal_condition`, `active_node`, required skills, required checks, iteration limits, stop conditions, and completion evidence.
+- Added `mdkg new goal "<title>"` and the `mdkg goal show/select/current/clear/next/claim/evaluate/pause/resume/done` command family.
+- Added a bundled `goal.md` template so init, upgrade, and template fallback can support goal nodes.
+- Added `scope_refs` for explicit goal ownership roots and recursive goal traversal through epics and features.
+- Added the `pursue-mdkg-goal` skill for skill-guided recursive pursuit with evidence and controlled skill-improvement proposals.
+- Added goal parser, creation, selected-goal, recursive next-selection, claim, pack, and report-only evaluation tests.
+
+### Changed
+
+- Normal `mdkg next` continues to select concrete task, bug, test, and feature work; goal-scoped selection lives under `mdkg goal next`.
+- `mdkg goal next` is read-only and may omit the goal id when a selected local goal exists; `mdkg goal claim` is the explicit mutating path for `active_node`.
+- Goal required checks are report-only guidance in this release. Agents run commands themselves and record evidence back into mdkg.
+- Skill self-improvement during goal execution is recorded as candidates or proposal work unless the active node is explicit skill-maintenance.
+
+## 0.1.4 - 2026-06-01
+
+### Added
+
+- Added `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh` as the public read-only child graph orchestration command family.
+- Added `subgraphs` config with multi-source bundle transport, advisory visibility, read permissions, source metadata, and a default 60 minute freshness policy.
+- Added `.mdkg/index/subgraphs.json` as the derived subgraph projection and health cache.
+- Added `mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]` for deterministic local plus subgraph capability ranking.
+- Added packed-package `smoke:subgraph` coverage for root, child, and grandchild orchestration flows.
+
+### Changed
+
+- Replaced the public `mdkg bundle import ...` surface with `mdkg subgraph ...`; legacy calls now exit with migration guidance.
+- `mdkg upgrade --apply` migrates legacy `bundle_imports` config into `subgraphs`.
+- Read commands, `pack`, and capability discovery now project enabled child bundles as read-only subgraph qids such as `child_repo:work.example`.
+- `mdkg index`, SQLite cache rebuilds, `doctor`, and `validate` now use subgraph naming and metadata instead of bundle-import naming.
+- Stale subgraphs remain usable for planning reads with warnings, fail `mdkg subgraph verify`, and are excluded from `capability resolve --fresh-only`.
+- Public/internal subgraphs require public bundle profiles and public bundle creation fails closed on private/internal subgraph references.
+
+### Fixed
+
+- Mutation commands now reject subgraph qids with explicit guidance to update the source workspace for the owning subgraph.
+- Seeded init docs, command matrix, and release skills now teach `subgraph` and `capability resolve` instead of onboarding users through `bundle import`.
+
 ## 0.1.3 - 2026-05-20
 
 ### Added

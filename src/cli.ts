@@ -15,6 +15,7 @@ import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
 import {
   runCapabilityListCommand,
+  runCapabilityResolveCommand,
   runCapabilitySearchCommand,
   runCapabilityShowCommand,
 } from "./commands/capability";
@@ -32,18 +33,32 @@ import {
   runBundleVerifyCommand,
 } from "./commands/bundle";
 import {
-  runBundleImportAddCommand,
-  runBundleImportDisableCommand,
-  runBundleImportEnableCommand,
-  runBundleImportListCommand,
-  runBundleImportRemoveCommand,
-  runBundleImportVerifyCommand,
-} from "./commands/bundle_import";
+  runSubgraphAddCommand,
+  runSubgraphDisableCommand,
+  runSubgraphEnableCommand,
+  runSubgraphListCommand,
+  runSubgraphRefreshCommand,
+  runSubgraphRemoveCommand,
+  runSubgraphShowCommand,
+  runSubgraphVerifyCommand,
+} from "./commands/subgraph";
 import { runCheckpointNewCommand } from "./commands/checkpoint";
 import { runInitCommand } from "./commands/init";
 import { runNewCommand } from "./commands/new";
 import { runGuideCommand } from "./commands/guide";
 import { runUpgradeCommand } from "./commands/upgrade";
+import {
+  runGoalClaimCommand,
+  runGoalClearCommand,
+  runGoalCurrentCommand,
+  runGoalDoneCommand,
+  runGoalEvaluateCommand,
+  runGoalNextCommand,
+  runGoalPauseCommand,
+  runGoalResumeCommand,
+  runGoalSelectCommand,
+  runGoalShowCommand,
+} from "./commands/goal";
 import { runEventAppendCommand, runEventEnableCommand } from "./commands/event";
 import {
   runSkillListCommand,
@@ -116,10 +131,12 @@ function printUsage(log: LogFn): void {
   log("  search      Search nodes by query");
   log("  pack        Generate a context pack");
   log("  skill       Create, list, show, search, and validate skills");
-  log("  capability  List, search, and show cached capability surfaces");
+  log("  capability  List, search, show, and resolve cached capability surfaces");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
+  log("  subgraph    Register and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
+  log("  goal        Inspect and advance recursive goal nodes");
   log("  task        Start, update, and complete task-like nodes");
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
@@ -184,7 +201,7 @@ function printNewHelp(log: LogFn): void {
   log("Usage:");
   log('  mdkg new <type> "<title>" [options] [--json]');
   log("\nTypes:");
-  log("  rule prd edd dec prop epic feat task bug checkpoint test");
+  log("  rule prd edd dec prop goal epic feat task bug checkpoint test");
   log("\nAgent workflow file types:");
   log("  spec work work_order receipt feedback dispute proposal");
   log("  Use --id <portable-id> with these types for semantic ids like agent.image-worker.");
@@ -233,7 +250,7 @@ function printIndexHelp(log: LogFn): void {
   log("  - .mdkg/index/global.json");
   log("  - .mdkg/index/skills.json");
   log("  - .mdkg/index/capabilities.json");
-  log("  - .mdkg/index/imports.json when bundle imports are configured");
+  log("  - .mdkg/index/subgraphs.json when subgraphs are configured");
   log("  - .mdkg/index/mdkg.sqlite when index.backend is sqlite");
   printGlobalOptions(log);
 }
@@ -391,14 +408,23 @@ function printCapabilityHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg capability show <id-or-qid-or-slug> [--json]");
       printGlobalOptions(log);
       return;
+    case "resolve":
+      log("Usage:");
+      log('  mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]');
+      log("\nNotes:");
+      log("  Resolves local and subgraph capabilities with deterministic ranking.");
+      printGlobalOptions(log);
+      return;
     default:
       log("Usage:");
       log("  mdkg capability list [--kind <kind>] [--visibility <level>] [--json]");
       log('  mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]');
       log("  mdkg capability show <id-or-qid-or-slug> [--json]");
+      log('  mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]');
       log("\nNotes:");
       log("  Capability records are deterministic cache projections from Markdown.");
       log("  Cached kinds: skill, spec, work, core, design.");
+      log("  Resolve includes read-only subgraph capability records when configured.");
       printGlobalOptions(log);
   }
 }
@@ -446,12 +472,8 @@ function printBundleHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "import":
       log("Usage:");
-      log("  mdkg bundle import add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]");
-      log("  mdkg bundle import list [--json]");
-      log("  mdkg bundle import rm <alias> [--json]");
-      log("  mdkg bundle import enable <alias> [--json]");
-      log("  mdkg bundle import disable <alias> [--json]");
-      log("  mdkg bundle import verify [alias|--all] [--json]");
+      log("  mdkg subgraph add/list/show/rm/enable/disable/verify/refresh ...");
+      log("\n`mdkg bundle import` has been replaced by `mdkg subgraph`.");
       break;
     case "create":
       log("Usage:");
@@ -475,12 +497,64 @@ function printBundleHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg bundle verify [bundle-path] [--json]");
       log("  mdkg bundle show <bundle-path> [--json]");
       log("  mdkg bundle list [--json]");
-      log("  mdkg bundle import add/list/rm/enable/disable/verify ...");
       log("\nNotes:");
       log("  - bundles are explicit full .mdkg graph snapshots, not task context packs");
-      log("  - bundle imports are read-only graph views projected under their import alias");
+      log("  - use `mdkg subgraph ...` to register bundle snapshots as read-only planning views");
       log("  - private is the default profile; public bundles fail closed on private refs");
       log("  - .mdkg/bundles/ is commit-eligible when your repo tracks snapshot bundles");
+  }
+  printGlobalOptions(log);
+}
+
+function printSubgraphHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "add":
+      log("Usage:");
+      log("  mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]");
+      break;
+    case "list":
+      log("Usage:");
+      log("  mdkg subgraph list [--json]");
+      break;
+    case "show":
+      log("Usage:");
+      log("  mdkg subgraph show <alias> [--json]");
+      break;
+    case "rm":
+    case "remove":
+      log("Usage:");
+      log("  mdkg subgraph rm <alias> [--json]");
+      break;
+    case "enable":
+      log("Usage:");
+      log("  mdkg subgraph enable <alias> [--json]");
+      break;
+    case "disable":
+      log("Usage:");
+      log("  mdkg subgraph disable <alias> [--json]");
+      break;
+    case "verify":
+      log("Usage:");
+      log("  mdkg subgraph verify [alias|--all] [--json]");
+      break;
+    case "refresh":
+      log("Usage:");
+      log("  mdkg subgraph refresh [alias|--all] [--json]");
+      break;
+    default:
+      log("Usage:");
+      log("  mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]");
+      log("  mdkg subgraph list [--json]");
+      log("  mdkg subgraph show <alias> [--json]");
+      log("  mdkg subgraph rm <alias> [--json]");
+      log("  mdkg subgraph enable <alias> [--json]");
+      log("  mdkg subgraph disable <alias> [--json]");
+      log("  mdkg subgraph verify [alias|--all] [--json]");
+      log("  mdkg subgraph refresh [alias|--all] [--json]");
+      log("\nNotes:");
+      log("  - subgraphs are read-only graph views backed by explicit bundle snapshots");
+      log("  - default permissions are read-only and default freshness is 3600 seconds");
+      log("  - refresh reloads configured bundle sources only; it does not build child bundles");
   }
   printGlobalOptions(log);
 }
@@ -516,7 +590,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("  - production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg");
       log("  - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors");
       log("  - artifact:// refs identify external/runtime-managed artifacts; archive:// refs identify committed mdkg archive sidecars");
-      log("  - update and artifact commands accept local ids or local qids; imported bundle qids are read-only");
+      log("  - update and artifact commands accept local ids or local qids; subgraph qids are read-only");
   }
   printGlobalOptions(log);
 }
@@ -556,8 +630,89 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg task update <id-or-qid> [options] [--json]");
       log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]');
       log("\nNotes:");
-      log("  `mdkg task ...` only supports task, bug, and test nodes in this wave.");
+      log("  `mdkg task ...` only supports feat, task, bug, and test nodes.");
       log("  Feat and epic closeout remain checkpoint-first guidance plus manual parent updates.");
+      printGlobalOptions(log);
+  }
+}
+
+function printGoalHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "show":
+      log("Usage:");
+      log("  mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]");
+      log("\nWhen to use:");
+      log("  Inspect a goal condition, current goal state, active node, required skills, and required checks.");
+      printGlobalOptions(log);
+      return;
+    case "next":
+      log("Usage:");
+      log("  mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]");
+      log("\nWhen to use:");
+      log("  Select the next local feature, task, bug, or test inside a recursive goal without mutating active_node.");
+      log("  If no goal id is supplied, mdkg uses the selected goal or the unique active goal.");
+      printGlobalOptions(log);
+      return;
+    case "select":
+      log("Usage:");
+      log("  mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]");
+      log("\nWhen to use:");
+      log("  Store a local selected goal so `mdkg goal next` can omit the goal id.");
+      printGlobalOptions(log);
+      return;
+    case "current":
+      log("Usage:");
+      log("  mdkg goal current [--ws <alias>] [--json]");
+      log("\nWhen to use:");
+      log("  Inspect the selected goal or unique active goal fallback.");
+      printGlobalOptions(log);
+      return;
+    case "clear":
+      log("Usage:");
+      log("  mdkg goal clear [--json]");
+      log("\nWhen to use:");
+      log("  Remove local selected-goal state.");
+      printGlobalOptions(log);
+      return;
+    case "claim":
+      log("Usage:");
+      log("  mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]");
+      log("  mdkg goal claim <goal-id-or-qid> <work-id-or-qid> [--ws <alias>] [--json]");
+      log("\nWhen to use:");
+      log("  Write active_node explicitly after accepting a goal-scoped next item.");
+      printGlobalOptions(log);
+      return;
+    case "evaluate":
+      log("Usage:");
+      log("  mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]");
+      log("\nNotes:");
+      log("  Evaluation is report-only; mdkg lists required checks but does not execute scripts.");
+      printGlobalOptions(log);
+      return;
+    case "pause":
+    case "resume":
+    case "done":
+      log("Usage:");
+      log(`  mdkg goal ${subcommand} <goal-id-or-qid> [--ws <alias>] [--json]`);
+      log("\nWhen to use:");
+      log("  Update durable goal state after agent or human review.");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log("  mdkg goal show <goal-id-or-qid> [--json]");
+      log("  mdkg goal select <goal-id-or-qid> [--json]");
+      log("  mdkg goal current [--json]");
+      log("  mdkg goal next [goal-id-or-qid] [--json]");
+      log("  mdkg goal claim [goal-id-or-qid] <work-id-or-qid> [--json]");
+      log("  mdkg goal evaluate <goal-id-or-qid> [--json]");
+      log("  mdkg goal clear [--json]");
+      log("  mdkg goal pause|resume|done <goal-id-or-qid> [--json]");
+      log("\nNotes:");
+      log("  - goals orchestrate recursive progress; features, tasks, bugs, and tests are iterable work units");
+      log("  - `mdkg goal next` is read-only; use `mdkg goal claim` to update active_node");
+      log("  - goal evaluation is report-only and never executes required_checks");
+      log("  - subgraph goal qids are read-only; update the source workspace instead");
       printGlobalOptions(log);
   }
 }
@@ -679,11 +834,17 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
     case "bundle":
       printBundleHelp(log, subcommand);
       return;
+    case "subgraph":
+      printSubgraphHelp(log, subcommand);
+      return;
     case "work":
       printWorkHelp(log, subcommand);
       return;
     case "task":
       printTaskHelp(log, subcommand);
+      return;
+    case "goal":
+      printGoalHelp(log, subcommand);
       return;
     case "event":
       printEventHelp(log, subcommand);
@@ -974,8 +1135,20 @@ function runCapabilitySubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runCapabilityShowCommand({ root, id, json, noCache, noReindex });
       return 0;
     }
+    case "resolve": {
+      const query = parsed.positionals.slice(2).join(" ") || undefined;
+      const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
+      const requires = requireFlagValue("--requires", parsed.flags["--requires"]);
+      const freshOnly = parseBooleanFlag("--fresh-only", parsed.flags["--fresh-only"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runCapabilityResolveCommand({ root, query, kind, visibility, requires, freshOnly, json, noCache, noReindex });
+      return 0;
+    }
     default:
-      throw new UsageError("capability requires list/search/show");
+      throw new UsageError("capability requires list/search/show/resolve");
   }
 }
 
@@ -1049,78 +1222,7 @@ function runBundleSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
   switch (subcommand) {
     case "import": {
-      const action = (parsed.positionals[2] ?? "").toLowerCase();
-      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      switch (action) {
-        case "add": {
-          const alias = parsed.positionals[3];
-          const bundlePath = parsed.positionals[4];
-          if (!alias || !bundlePath || parsed.positionals.length > 5) {
-            throw new UsageError("bundle import add requires <alias> <bundle-path>");
-          }
-          const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
-          const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
-          const sourcePath = requireFlagValue("--source-path", parsed.flags["--source-path"]);
-          const sourceRepo = requireFlagValue("--source-repo", parsed.flags["--source-repo"]);
-          const maxStaleRaw = requireFlagValue("--max-stale-seconds", parsed.flags["--max-stale-seconds"]);
-          const maxStaleSeconds = maxStaleRaw === undefined ? undefined : Number.parseInt(maxStaleRaw, 10);
-          runBundleImportAddCommand({
-            root,
-            alias,
-            bundlePath,
-            visibility,
-            profile,
-            sourcePath,
-            sourceRepo,
-            maxStaleSeconds,
-            json,
-          });
-          return 0;
-        }
-        case "list": {
-          if (parsed.positionals.length > 3) {
-            throw new UsageError("bundle import list does not accept positional arguments");
-          }
-          runBundleImportListCommand({ root, json });
-          return 0;
-        }
-        case "rm":
-        case "remove": {
-          const alias = parsed.positionals[3];
-          if (!alias || parsed.positionals.length > 4) {
-            throw new UsageError("bundle import rm requires <alias>");
-          }
-          runBundleImportRemoveCommand({ root, alias, json });
-          return 0;
-        }
-        case "enable": {
-          const alias = parsed.positionals[3];
-          if (!alias || parsed.positionals.length > 4) {
-            throw new UsageError("bundle import enable requires <alias>");
-          }
-          runBundleImportEnableCommand({ root, alias, json });
-          return 0;
-        }
-        case "disable": {
-          const alias = parsed.positionals[3];
-          if (!alias || parsed.positionals.length > 4) {
-            throw new UsageError("bundle import disable requires <alias>");
-          }
-          runBundleImportDisableCommand({ root, alias, json });
-          return 0;
-        }
-        case "verify": {
-          if (parsed.positionals.length > 4) {
-            throw new UsageError("bundle import verify accepts at most one alias");
-          }
-          const alias = parsed.positionals[3];
-          const all = parseBooleanFlag("--all", parsed.flags["--all"]);
-          runBundleImportVerifyCommand({ root, alias, all, json });
-          return 0;
-        }
-        default:
-          throw new UsageError("bundle import requires add/list/rm/enable/disable/verify");
-      }
+      throw new UsageError("mdkg bundle import has been replaced by mdkg subgraph; run `mdkg upgrade --apply` to migrate legacy bundle_imports config");
     }
     case "create": {
       if (parsed.positionals.length > 2) {
@@ -1160,7 +1262,99 @@ function runBundleSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       return 0;
     }
     default:
-      throw new UsageError("bundle requires create/list/show/verify/import");
+      throw new UsageError("bundle requires create/list/show/verify");
+  }
+}
+
+function runSubgraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+  switch (subcommand) {
+    case "add": {
+      const alias = parsed.positionals[2];
+      const bundlePath = parsed.positionals[3];
+      if (!alias || !bundlePath || parsed.positionals.length > 4) {
+        throw new UsageError("subgraph add requires <alias> <bundle-path>");
+      }
+      const visibility = requireFlagValue("--visibility", parsed.flags["--visibility"]);
+      const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
+      const sourcePath = requireFlagValue("--source-path", parsed.flags["--source-path"]);
+      const sourceRepo = requireFlagValue("--source-repo", parsed.flags["--source-repo"]);
+      const maxStaleRaw = requireFlagValue("--max-stale-seconds", parsed.flags["--max-stale-seconds"]);
+      const maxStaleSeconds = maxStaleRaw === undefined ? undefined : Number.parseInt(maxStaleRaw, 10);
+      runSubgraphAddCommand({
+        root,
+        alias,
+        bundlePath,
+        visibility,
+        profile,
+        sourcePath,
+        sourceRepo,
+        maxStaleSeconds,
+        json,
+      });
+      return 0;
+    }
+    case "list": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("subgraph list does not accept positional arguments");
+      }
+      runSubgraphListCommand({ root, json });
+      return 0;
+    }
+    case "show": {
+      const alias = parsed.positionals[2];
+      if (!alias || parsed.positionals.length > 3) {
+        throw new UsageError("subgraph show requires <alias>");
+      }
+      runSubgraphShowCommand({ root, alias, json });
+      return 0;
+    }
+    case "rm":
+    case "remove": {
+      const alias = parsed.positionals[2];
+      if (!alias || parsed.positionals.length > 3) {
+        throw new UsageError("subgraph rm requires <alias>");
+      }
+      runSubgraphRemoveCommand({ root, alias, json });
+      return 0;
+    }
+    case "enable": {
+      const alias = parsed.positionals[2];
+      if (!alias || parsed.positionals.length > 3) {
+        throw new UsageError("subgraph enable requires <alias>");
+      }
+      runSubgraphEnableCommand({ root, alias, json });
+      return 0;
+    }
+    case "disable": {
+      const alias = parsed.positionals[2];
+      if (!alias || parsed.positionals.length > 3) {
+        throw new UsageError("subgraph disable requires <alias>");
+      }
+      runSubgraphDisableCommand({ root, alias, json });
+      return 0;
+    }
+    case "verify": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("subgraph verify accepts at most one alias");
+      }
+      const alias = parsed.positionals[2];
+      const all = parseBooleanFlag("--all", parsed.flags["--all"]);
+      runSubgraphVerifyCommand({ root, alias, all, json });
+      return 0;
+    }
+    case "refresh": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("subgraph refresh accepts at most one alias");
+      }
+      const alias = parsed.positionals[2];
+      const all = parseBooleanFlag("--all", parsed.flags["--all"]);
+      runSubgraphRefreshCommand({ root, alias, all, json });
+      return 0;
+    }
+    default:
+      throw new UsageError("subgraph requires add/list/show/rm/enable/disable/verify/refresh");
   }
 }
 
@@ -1432,6 +1626,93 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   }
 }
 
+function runGoalSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+  switch (subcommand) {
+    case "show": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal show requires <goal-id-or-qid>");
+      }
+      runGoalShowCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "select": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal select requires <goal-id-or-qid>");
+      }
+      runGoalSelectCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "current":
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("goal current does not accept positional arguments");
+      }
+      runGoalCurrentCommand({ root, ws, json });
+      return 0;
+    case "clear":
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("goal clear does not accept positional arguments");
+      }
+      runGoalClearCommand({ root, json });
+      return 0;
+    case "next": {
+      const id = parsed.positionals[2];
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("goal next accepts at most one goal id");
+      }
+      runGoalNextCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "claim": {
+      const first = parsed.positionals[2];
+      const second = parsed.positionals[3];
+      if (!first || parsed.positionals.length > 4) {
+        throw new UsageError("goal claim requires <work-id-or-qid> or <goal-id-or-qid> <work-id-or-qid>");
+      }
+      runGoalClaimCommand({ root, id: second ? first : undefined, workId: second ?? first, ws, json });
+      return 0;
+    }
+    case "evaluate": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal evaluate requires <goal-id-or-qid>");
+      }
+      runGoalEvaluateCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "pause": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal pause requires <goal-id-or-qid>");
+      }
+      runGoalPauseCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "resume": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal resume requires <goal-id-or-qid>");
+      }
+      runGoalResumeCommand({ root, id, ws, json });
+      return 0;
+    }
+    case "done": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal done requires <goal-id-or-qid>");
+      }
+      runGoalDoneCommand({ root, id, ws, json });
+      return 0;
+    }
+    default:
+      throw new UsageError("goal requires show/select/current/clear/next/claim/evaluate/pause/resume/done");
+  }
+}
+
 function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
   switch (subcommand) {
@@ -1699,8 +1980,12 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runArchiveSubcommand(parsed, root);
     case "bundle":
       return runBundleSubcommand(parsed, root);
+    case "subgraph":
+      return runSubgraphSubcommand(parsed, root);
     case "work":
       return runWorkSubcommand(parsed, root);
+    case "goal":
+      return runGoalSubcommand(parsed, root);
     case "task":
       return runTaskSubcommand(parsed, root);
     case "event":

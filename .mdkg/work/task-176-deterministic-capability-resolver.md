@@ -2,7 +2,7 @@
 id: task-176
 type: task
 title: deterministic capability resolver
-status: todo
+status: done
 priority: 1
 epic: epic-21
 tags: [capability, resolve, orchestration, ranking]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-21, epic-19, task-175]
-blocked_by: [task-175]
+blocked_by: []
 blocks: [task-179, task-180]
 refs: []
 aliases: [capability-resolve]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Overview
@@ -54,6 +54,20 @@ summaries, embeddings, receipt-weighted ranking, or remote execution.
 - CLI tests for query-only, requires-only, combined query/requirement, and JSON
   envelope output.
 - Temp root/child smoke proves root resolves child `WORK.md` through a subgraph.
+
+# Verification Evidence
+
+Completed in the 0.1.4 implementation pass.
+
+- Added `mdkg capability resolve [query] [--requires <capability>]
+  [--fresh-only] [--json]`.
+- Resolver includes local and subgraph capability records with deterministic
+  scoring for locality, freshness, read permission, query match, required
+  capability match, spec/work linkage, and stable qid/path tie-breaks.
+- Stale subgraphs remain visible with warnings and degraded ranking, while
+  `--fresh-only` excludes them.
+- Verified with command tests, command help snapshots, and `npm run
+  smoke:subgraph`.
 
 # Links / Artifacts
 

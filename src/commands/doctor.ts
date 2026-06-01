@@ -3,7 +3,7 @@ import path from "path";
 import { loadConfig } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
-import { buildBundleImportsIndex } from "../graph/bundle_imports";
+import { buildSubgraphsIndex } from "../graph/subgraphs";
 import { ALLOWED_TYPES } from "../graph/node";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
@@ -207,45 +207,45 @@ function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
   };
 }
 
-function runBundleImportChecks(root: string, config: ReturnType<typeof loadConfig>): CheckResult[] {
-  const projection = buildBundleImportsIndex(root, config);
-  if (projection.index.imports.length === 0) {
+function runSubgraphChecks(root: string, config: ReturnType<typeof loadConfig>): CheckResult[] {
+  const projection = buildSubgraphsIndex(root, config);
+  if (projection.index.subgraphs.length === 0) {
     return [
       {
-        name: "bundle-imports",
+        name: "subgraphs",
         ok: true,
-        detail: "no bundle imports configured",
+        detail: "no subgraphs configured",
       },
     ];
   }
-  return projection.index.imports.map((item) => {
+  return projection.index.subgraphs.map((item) => {
     if (!item.enabled) {
       return {
-        name: `bundle-import:${item.alias}`,
+        name: `subgraph:${item.alias}`,
         ok: true,
         level: "warn" as const,
-        detail: `disabled import at ${item.path}`,
+        detail: "disabled subgraph",
       };
     }
     if (item.error_count > 0) {
       return {
-        name: `bundle-import:${item.alias}`,
+        name: `subgraph:${item.alias}`,
         ok: false,
         detail: item.errors.join("; "),
       };
     }
     if (item.stale || item.warning_count > 0) {
       return {
-        name: `bundle-import:${item.alias}`,
+        name: `subgraph:${item.alias}`,
         ok: true,
         level: "warn" as const,
-        detail: `import is stale or has warnings; run \`mdkg bundle import verify ${item.alias}\` (${item.warnings.join("; ")})`,
+        detail: `subgraph is stale or has warnings; run \`mdkg subgraph verify ${item.alias}\` (${item.warnings.join("; ")})`,
       };
     }
     return {
-      name: `bundle-import:${item.alias}`,
+      name: `subgraph:${item.alias}`,
       ok: true,
-      detail: `import loaded from ${item.path}`,
+      detail: `subgraph loaded from ${item.sources.map((source) => source.path).join(", ")}`,
     };
   });
 }
@@ -327,7 +327,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
     results.push(runArchiveLargeCacheCheck(options.root, config.archive.large_cache_warning_bytes));
     results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
     results.push(runSqliteCheck(options.root, config));
-    results.push(...runBundleImportChecks(options.root, config));
+    results.push(...runSubgraphChecks(options.root, config));
     results.push(runVisibilityPolicyCheck(options.root, config, options));
 
     try {

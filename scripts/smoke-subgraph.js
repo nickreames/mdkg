@@ -121,7 +121,7 @@ function createChildBundle(binPath, root) {
   return path.join("child-repo", bundle.path);
 }
 
-function exerciseBundleImports(binPath, tempRoot) {
+function exerciseSubgraphs(binPath, tempRoot) {
   const root = path.join(tempRoot, "root-repo");
   fs.mkdirSync(root, { recursive: true });
   mdkg(binPath, ["init", "--agent"], root);
@@ -131,10 +131,9 @@ function exerciseBundleImports(binPath, tempRoot) {
     mdkg(
       binPath,
       [
-        "bundle",
-        "import",
+        "subgraph",
         "add",
-        "child_import",
+        "child_subgraph",
         bundlePath,
         "--source-path",
         "child-repo",
@@ -145,41 +144,48 @@ function exerciseBundleImports(binPath, tempRoot) {
       root
     ).stdout
   );
-  assert(added.import.alias === "child_import", "import add did not return child_import");
+  assert(added.subgraph.alias === "child_subgraph", "subgraph add did not return child_subgraph");
+  mdkg(binPath, ["subgraph", "list", "--json"], root);
+  mdkg(binPath, ["subgraph", "show", "child_subgraph", "--json"], root);
   mdkg(binPath, ["index"], root);
-  assertExists(path.join(root, ".mdkg", "index", "imports.json"));
+  assertExists(path.join(root, ".mdkg", "index", "subgraphs.json"));
 
   const search = parseJson(mdkg(binPath, ["search", "Child Task", "--json"], root).stdout);
-  assert(search.items.some((item) => item.qid === "child_import:task-1"), "search did not find imported task");
-  const shown = parseJson(mdkg(binPath, ["show", "child_import:task-1", "--json"], root).stdout);
-  assert(shown.item.source.imported === true, "show did not include imported source metadata");
-  mdkg(binPath, ["pack", "child_import:task-1", "--dry-run", "--stats"], root);
+  assert(search.items.some((item) => item.qid === "child_subgraph:task-1"), "search did not find subgraph task");
+  const shown = parseJson(mdkg(binPath, ["show", "child_subgraph:task-1", "--json"], root).stdout);
+  assert(shown.item.source.imported === true, "show did not include subgraph source metadata");
+  mdkg(binPath, ["pack", "child_subgraph:task-1", "--dry-run", "--stats"], root);
   const capability = parseJson(mdkg(binPath, ["capability", "search", "Child Work", "--json"], root).stdout);
-  assert(capability.items.some((item) => item.qid === "child_import:work.child-work"), "capability search did not find imported work");
+  assert(capability.items.some((item) => item.qid === "child_subgraph:work.child-work"), "capability search did not find subgraph work");
+  const resolved = parseJson(mdkg(binPath, ["capability", "resolve", "Child Work", "--json"], root).stdout);
+  assert(resolved.items.some((item) => item.item.qid === "child_subgraph:work.child-work"), "capability resolve did not find subgraph work");
 
-  const mutation = mdkgFailure(binPath, ["task", "update", "child_import:task-1", "--status", "review"], root);
-  assert(mutation.stderr.includes("cannot mutate read-only imported node"), "mutation guard did not fire");
+  const mutation = mdkgFailure(binPath, ["task", "update", "child_subgraph:task-1", "--status", "review"], root);
+  assert(mutation.stderr.includes("cannot mutate read-only subgraph node"), "mutation guard did not fire");
 
   const old = new Date(Date.now() - 10_000);
   fs.utimesSync(path.join(root, bundlePath), old, old);
   const staleSearch = mdkg(binPath, ["search", "Child Task", "--json"], root);
-  assert(staleSearch.stderr.includes("bundle import child_import: bundle age"), "stale read did not warn");
-  const staleVerify = mdkgFailure(binPath, ["bundle", "import", "verify", "child_import", "--json"], root);
+  assert(staleSearch.stderr.includes("subgraph child_subgraph: bundle age"), "stale read did not warn");
+  const freshOnly = parseJson(mdkg(binPath, ["capability", "resolve", "Child Work", "--fresh-only", "--json"], root).stdout);
+  assert(freshOnly.count === 0, "fresh-only did not exclude stale subgraph capability");
+  const staleVerify = mdkgFailure(binPath, ["subgraph", "verify", "child_subgraph", "--json"], root);
   assert(staleVerify.status === 2, "stale verify did not fail with validation status");
   assert(parseJson(staleVerify.stdout).ok === false, "stale verify receipt was not ok=false");
+  mdkg(binPath, ["subgraph", "refresh", "child_subgraph", "--json"], root);
 }
 
 function runSmoke() {
   let tempRoot;
   try {
-    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-bundle-import-"));
+    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-subgraph-"));
     const { binPath, tarballPath } = packAndInstall(tempRoot);
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
     if (version !== packageVersion) {
       throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     }
-    exerciseBundleImports(binPath, tempRoot);
-    console.log("bundle import smoke passed");
+    exerciseSubgraphs(binPath, tempRoot);
+    console.log("subgraph smoke passed");
     console.log(`version=${version}`);
     console.log(`tarball=${path.basename(tarballPath)}`);
   } finally {

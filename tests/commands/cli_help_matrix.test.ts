@@ -28,9 +28,10 @@ test("cli help covers the remaining command help surfaces", () => {
     ["validate", /mdkg validate \[--out <path>\] \[--quiet\] \[--json\]/],
     ["format", /mdkg format/],
     ["doctor", /mdkg doctor \[--json\]/],
-    ["capability", /mdkg capability show <id-or-qid-or-slug> \[--json\]/],
+    ["capability", /mdkg capability resolve \[query\] \[--requires <capability>\] \[--fresh-only\] \[--json\]/],
     ["archive", /mdkg archive compress <id-or-archive-uri\|--all> \[--json\]/],
     ["bundle", /mdkg bundle create \[--profile private\|public\] \[--ws <alias\|all>\] \[--output <path>\] \[--json\]/],
+    ["subgraph", /mdkg subgraph verify \[alias\|--all\] \[--json\]/],
     ["work", /mdkg work artifact add/],
     ["skill", /mdkg skill validate \[<slug>\] \[--json\]/],
     ["task", /mdkg task start <id-or-qid> \[--ws <alias>\] \[--run-id <id>\] \[--note "<text>"\] \[--json\]/],
@@ -45,7 +46,7 @@ test("cli help covers the remaining command help surfaces", () => {
 
   const bundleImport = runCli(["help", "bundle", "import"]);
   assert.equal(bundleImport.status, 0);
-  assert.match(bundleImport.stdout, /mdkg bundle import verify \[alias\|--all\] \[--json\]/);
+  assert.match(bundleImport.stdout, /mdkg subgraph add\/list\/show\/rm\/enable\/disable\/verify\/refresh/);
 });
 
 test("cli command --help routes to command-specific help", () => {

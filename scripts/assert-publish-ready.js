@@ -57,8 +57,10 @@ function requireBuildFolders() {
     requireDir(relativePath);
   }
   requireFile("dist/templates/builtin.js");
-  requireFile("dist/commands/bundle_import.js");
-  requireFile("dist/graph/bundle_imports.js");
+  requireFile("dist/commands/goal.js");
+  requireFile("dist/graph/goal_scope.js");
+  requireFile("dist/commands/subgraph.js");
+  requireFile("dist/graph/subgraphs.js");
   requireFile("dist/graph/sqlite_index.js");
   requireFile("dist/graph/reindex.js");
   requireFile("dist/graph/visibility.js");
@@ -87,8 +89,8 @@ function requireInitAssets() {
   if (!initConfig.bundles || initConfig.bundles.output_dir !== ".mdkg/bundles" || initConfig.bundles.default_profile !== "private") {
     fail("dist/init/config.json is missing the default bundle config");
   }
-  if (!initConfig.bundle_imports || Object.keys(initConfig.bundle_imports).length !== 0) {
-    fail("dist/init/config.json is missing empty bundle_imports defaults");
+  if (!initConfig.subgraphs || Object.keys(initConfig.subgraphs).length !== 0) {
+    fail("dist/init/config.json is missing empty subgraphs defaults");
   }
   if (!initConfig.workspaces?.root || initConfig.workspaces.root.visibility !== "private") {
     fail("dist/init/config.json is missing root workspace visibility metadata");
@@ -112,15 +114,24 @@ function requireInitAssets() {
     }
   }
   const seededAgentStart = requireFile("dist/init/AGENT_START.md");
-  if (!seededAgentStart.includes("mdkg bundle import add/list/verify")) {
-    fail("dist/init/AGENT_START.md is missing bundle import onboarding guidance");
+  if (!seededAgentStart.includes("mdkg subgraph add/list/verify")) {
+    fail("dist/init/AGENT_START.md is missing subgraph onboarding guidance");
   }
   if (!seededAgentStart.includes("mdkg pack <id> --visibility public|internal")) {
     fail("dist/init/AGENT_START.md is missing visibility pack guidance");
   }
+  if (!seededAgentStart.includes("mdkg goal select") || !seededAgentStart.includes("mdkg goal claim")) {
+    fail("dist/init/AGENT_START.md is missing goal onboarding guidance");
+  }
   const seededReadme = requireFile("dist/init/README.md");
-  if (!seededReadme.includes("mdkg bundle import add") || !seededReadme.includes("mdkg bundle import verify")) {
-    fail("dist/init/README.md is missing bundle import onboarding guidance");
+  if (!seededReadme.includes("mdkg subgraph add") || !seededReadme.includes("mdkg subgraph verify")) {
+    fail("dist/init/README.md is missing subgraph onboarding guidance");
+  }
+  if (
+    !seededReadme.includes("mdkg new goal") ||
+    !seededReadme.includes("mdkg goal select/current/next/claim/evaluate")
+  ) {
+    fail("dist/init/README.md is missing goal onboarding guidance");
   }
   for (const template of [
     "archive.md",
@@ -132,6 +143,7 @@ function requireInitAssets() {
     "epic.md",
     "feat.md",
     "feedback.md",
+    "goal.md",
     "prd.md",
     "prop.md",
     "proposal.md",
@@ -159,6 +171,10 @@ function requireInitAssets() {
   const seededExecuteSkill = requireFile("dist/init/skills/default/build-pack-and-execute-task/SKILL.md");
   if (!seededExecuteSkill.includes("mdkg archive compress --all") || !seededExecuteSkill.includes("mdkg bundle create --profile private")) {
     fail("dist/init build-pack-and-execute-task skill is missing pre-commit handoff guidance");
+  }
+  const seededGoalSkill = requireFile("dist/init/skills/default/pursue-mdkg-goal/SKILL.md");
+  if (!seededGoalSkill.includes("mdkg goal next") || !seededGoalSkill.includes("Skill Improvement Candidates")) {
+    fail("dist/init pursue-mdkg-goal skill is missing goal pursuit guidance");
   }
 }
 

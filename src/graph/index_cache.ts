@@ -6,13 +6,13 @@ import { atomicWriteFile } from "../util/atomic";
 import { buildIndex, Index } from "./indexer";
 import { isIndexStale } from "./staleness";
 import {
-  buildBundleImportsIndex,
-  importWarnings,
-  isBundleImportsIndexStale,
-  mergeBundleImportsIntoIndex,
-  resolveBundleImportsIndexPath,
-  writeBundleImportsIndex,
-} from "./bundle_imports";
+  buildSubgraphsIndex,
+  isSubgraphsIndexStale,
+  mergeSubgraphsIntoIndex,
+  resolveSubgraphsIndexPath,
+  subgraphWarnings,
+  writeSubgraphsIndex,
+} from "./subgraphs";
 
 export type LoadIndexOptions = {
   root: string;
@@ -52,40 +52,40 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
   const includeImports = options.includeImports ?? true;
 
   const indexPath = path.resolve(options.root, options.config.index.global_index_path);
-  const withImports = (index: Index, rebuilt: boolean, stale: boolean): LoadIndexResult => {
-    if (!includeImports || Object.keys(options.config.bundle_imports).length === 0) {
+  const withSubgraphs = (index: Index, rebuilt: boolean, stale: boolean): LoadIndexResult => {
+    if (!includeImports || Object.keys(options.config.subgraphs).length === 0) {
       return { index, rebuilt, stale, warnings: [] };
     }
-    const imports = buildBundleImportsIndex(options.root, options.config);
+    const subgraphs = buildSubgraphsIndex(options.root, options.config);
     if (allowReindex) {
-      writeBundleImportsIndex(resolveBundleImportsIndexPath(options.root), imports.index);
+      writeSubgraphsIndex(resolveSubgraphsIndexPath(options.root), subgraphs.index);
     }
     return {
-      index: mergeBundleImportsIntoIndex(index, imports),
+      index: mergeSubgraphsIntoIndex(index, subgraphs),
       rebuilt,
-      stale: stale || isBundleImportsIndexStale(options.root, options.config),
-      warnings: importWarnings(imports),
+      stale: stale || isSubgraphsIndexStale(options.root, options.config),
+      warnings: subgraphWarnings(subgraphs),
     };
   };
 
   if (!useCache) {
     const index = buildIndex(options.root, options.config, { tolerant });
-    return withImports(index, true, false);
+    return withSubgraphs(index, true, false);
   }
 
   const stale = isIndexStale(options.root, options.config);
   if (fs.existsSync(indexPath) && !stale) {
-    return withImports(readIndex(indexPath), false, false);
+    return withSubgraphs(readIndex(indexPath), false, false);
   }
 
   if (allowReindex) {
     const index = buildIndex(options.root, options.config, { tolerant });
     writeIndex(indexPath, index);
-    return withImports(index, true, stale);
+    return withSubgraphs(index, true, stale);
   }
 
   if (fs.existsSync(indexPath)) {
-    return withImports(readIndex(indexPath), false, true);
+    return withSubgraphs(readIndex(indexPath), false, true);
   }
 
   throw new Error("index missing and auto-reindex is disabled");

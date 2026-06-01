@@ -20,7 +20,7 @@ import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
 import { CheckpointReceipt, createCheckpoint, runCheckpointNewCommand } from "./checkpoint";
 
-const MUTABLE_TASK_TYPES = new Set(["task", "bug", "test"]);
+const MUTABLE_TASK_TYPES = new Set(["feat", "task", "bug", "test"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export type TaskStartCommandOptions = {
@@ -186,12 +186,12 @@ function loadMutableTaskNode(root: string, idOrQid: string, wsHint?: string): Lo
   }
   if (node.source?.imported) {
     throw new UsageError(
-      `cannot mutate read-only imported node ${node.qid}; update the source workspace for bundle import ${node.source.import_alias}`
+      `cannot mutate read-only subgraph node ${node.qid}; update the source workspace for subgraph ${node.source.subgraph_alias}`
     );
   }
   if (!MUTABLE_TASK_TYPES.has(node.type)) {
     throw new UsageError(
-      `mdkg task only supports task, bug, and test nodes; use markdown editing for ${node.type}:${node.id}`
+      `mdkg task only supports feat, task, bug, and test nodes; use markdown editing for ${node.type}:${node.id}`
     );
   }
 

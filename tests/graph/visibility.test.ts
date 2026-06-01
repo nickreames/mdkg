@@ -46,7 +46,7 @@ function baseConfig() {
       root: { path: ".", enabled: true, mdkg_dir: ".mdkg", visibility: "public" },
       private_ws: { path: "private", enabled: true, mdkg_dir: ".mdkg", visibility: "private" },
     },
-    bundle_imports: {
+    subgraphs: {
       child_private: {
         path: ".mdkg/bundles/private/child.mdkg.zip",
         enabled: true,
@@ -75,15 +75,15 @@ function baseIndex(nodes: Record<string, unknown>) {
     workspaces: {
       root: { path: ".", enabled: true },
       private_ws: { path: "private", enabled: true },
-      child_private: { path: "bundle:private", enabled: true },
-      child_public: { path: "bundle:public", enabled: true },
+      child_private: { path: "subgraph:private", enabled: true },
+      child_public: { path: "subgraph:public", enabled: true },
     },
     nodes,
     reverse_edges: {},
   };
 }
 
-test("effectiveNodeVisibility uses workspace, archive sidecar, and import visibility", () => {
+test("effectiveNodeVisibility uses workspace, archive sidecar, and subgraph visibility", () => {
   const config = baseConfig();
   const publicNode = baseNode({});
   const privateArchive = baseNode({
@@ -92,14 +92,14 @@ test("effectiveNodeVisibility uses workspace, archive sidecar, and import visibi
     type: "archive",
     attributes: { visibility: "private" },
   });
-  const importedNode = baseNode({
+  const subgraphNode = baseNode({
     id: "task-2",
     qid: "child_public:task-2",
     ws: "child_public",
     source: {
       imported: true,
       read_only: true,
-      import_alias: "child_public",
+      subgraph_alias: "child_public",
       original_qid: "root:task-2",
       original_ws: "root",
       original_path: ".mdkg/work/task-2.md",
@@ -113,12 +113,12 @@ test("effectiveNodeVisibility uses workspace, archive sidecar, and import visibi
 
   assert.equal(effectiveNodeVisibility(publicNode, config), "public");
   assert.equal(effectiveNodeVisibility(privateArchive, config), "private");
-  assert.equal(effectiveNodeVisibility(importedNode, config), "public");
+  assert.equal(effectiveNodeVisibility(subgraphNode, config), "public");
   assert.equal(isVisibleAt("internal", "public"), false);
   assert.equal(isVisibleAt("public", "internal"), true);
 });
 
-test("collectVisibilityViolations catches public refs to private archives and imports", () => {
+test("collectVisibilityViolations catches public refs to private archives and subgraphs", () => {
   const config = baseConfig();
   const publicTask = baseNode({
     artifacts: ["archive://archive.secret"],
@@ -144,14 +144,14 @@ test("collectVisibilityViolations catches public refs to private archives and im
     type: "archive",
     attributes: { visibility: "private" },
   });
-  const privateImport = baseNode({
+  const privateSubgraph = baseNode({
     id: "task-9",
     qid: "child_private:task-9",
     ws: "child_private",
     source: {
       imported: true,
       read_only: true,
-      import_alias: "child_private",
+      subgraph_alias: "child_private",
       original_qid: "root:task-9",
       original_ws: "root",
       original_path: ".mdkg/work/task-9.md",
@@ -168,7 +168,7 @@ test("collectVisibilityViolations catches public refs to private archives and im
         "root:task-1": publicTask,
         "private_ws:task-2": privateNode,
         "root:archive.secret": privateArchive,
-        "child_private:task-9": privateImport,
+        "child_private:task-9": privateSubgraph,
       }),
       config
     )

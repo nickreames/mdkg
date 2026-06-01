@@ -1,4 +1,5 @@
 import { Index } from "../graph/indexer";
+import { collectGoalScope } from "../graph/goal_scope";
 import { readNodeBody } from "../graph/node_body";
 import { resolveQid } from "../util/qid";
 import { orderPackNodes } from "./order";
@@ -194,6 +195,22 @@ export function buildPack(options: PackBuildOptions): PackBuildResult {
     options.depth,
     options.edges
   );
+  const rootNode = options.index.nodes[options.rootQid];
+  if (rootNode?.type === "goal") {
+    const scoped = collectGoalScope(options.index, rootNode);
+    for (const qid of scoped.qids) {
+      qids.add(qid);
+      if (!depths.has(qid)) {
+        depths.set(qid, 1);
+      }
+    }
+    for (const missing of scoped.missingRefs) {
+      mergeWarnings(warnings, `goal scope ref missing: ${missing}`);
+    }
+    for (const invalid of scoped.invalidRefs) {
+      mergeWarnings(warnings, `goal scope ref unsupported: ${invalid}`);
+    }
+  }
 
   const workspace = checkpointWorkspaceFromQid(options.rootQid);
   const latestCheckpointHint = options.index.meta.latest_checkpoint_qid?.[workspace];

@@ -54,21 +54,26 @@ preceding audit tasks.
 # Audit Evidence
 
 - Release blocker status: no package correctness blockers found.
-- Metadata fix applied: `CHANGELOG.md` now records `0.1.3 - 2026-05-20`.
-- Full local release gate passed, including dry-run pack and dry-run publish
-  with clean npm cache.
-- Refreshed `.mdkg/index/mdkg.sqlite` with `node dist/cli.js index` after graph
-  evidence edits; final `node dist/cli.js validate` passed without warnings.
-- Real publish status: not approved for `0.1.3`, because npm already has
-  `mdkg@0.1.3` as `latest`.
+- Baseline is now the local `0.1.4` tree: package metadata, lock metadata,
+  docs, help, seeded init assets, and smoke scripts are aligned with the
+  subgraph orchestration release.
+- Full local release gate passed, including isolated-cache dry-run pack and
+  dry-run publish.
+- Subgraph-specific evidence passed: `smoke:subgraph`, `help subgraph`,
+  `help capability`, and legacy `help bundle import` migration guidance.
+- Pack audit confirmed required subgraph artifacts are present in the tarball
+  and stale compiled bundle-import artifacts are absent.
+- Real publish status: `mdkg@0.1.4` was published on 2026-05-31 after
+  explicit approval and the full `prepublishOnly` gate. Direct version lookup
+  confirmed `mdkg@0.1.4`; `npm dist-tag ls mdkg` reports `latest: 0.1.4`.
 - Commit readiness: ready after final graph validation and diff check.
-- Next work item: `task-172` under `epic-21`.
+- Next work item: commit the `0.1.4` subgraph/audit release work.
 
 # Decision
 
-Close `epic-35` as done after final validation. The next npm publish target is
-`0.1.4`, scoped to `epic-21` subgraph orchestration unless a future audit finds
-a blocker.
+The `0.1.4` package has been published as `latest`. The current tree is
+expected to remain dirty until the subgraph release work and audit evidence are
+committed.
 
 # Links / Artifacts
 

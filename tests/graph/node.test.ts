@@ -61,6 +61,51 @@ const TEMPLATE_SCHEMAS = {
     ],
     ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "aliases"]
   ),
+  goal: makeSchema(
+    "goal",
+    [
+      "id",
+      "type",
+      "title",
+      "status",
+      "priority",
+      "goal_state",
+      "goal_condition",
+      "scope_refs",
+      "active_node",
+      "required_skills",
+      "required_checks",
+      "max_iterations",
+      "blocked_after_attempts",
+      "tags",
+      "owners",
+      "links",
+      "artifacts",
+      "relates",
+      "blocked_by",
+      "blocks",
+      "refs",
+      "aliases",
+      "skills",
+      "created",
+      "updated",
+    ],
+    [
+      "required_skills",
+      "required_checks",
+      "scope_refs",
+      "tags",
+      "owners",
+      "links",
+      "artifacts",
+      "relates",
+      "blocked_by",
+      "blocks",
+      "refs",
+      "aliases",
+      "skills",
+    ]
+  ),
   dec: makeSchema(
     "dec",
     [
@@ -118,6 +163,83 @@ test("parseNode parses a valid task", () => {
   assert.equal(node.status, "todo");
   assert.equal(node.priority, 2);
   assert.deepEqual(node.edges.relates, ["task-2"]);
+});
+
+test("parseNode parses goal attributes", () => {
+  const content = [
+    "---",
+    "id: goal-1",
+    "type: goal",
+    "title: recursive goal",
+    "status: progress",
+    "priority: 1",
+    "goal_state: active",
+    "goal_condition: all required checks pass",
+    "scope_refs: [epic-1, feat-2, task-3]",
+    "active_node: task-1",
+    "required_skills: [select-work-and-ground-context]",
+    "required_checks: [npm run build, node dist/cli.js validate]",
+    "max_iterations: 25",
+    "blocked_after_attempts: 3",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+  ].join("\n");
+  const node = parseNode(content, "goal.md", PARSE_OPTIONS);
+  assert.equal(node.id, "goal-1");
+  assert.equal(node.type, "goal");
+  assert.equal(node.status, "progress");
+  assert.deepEqual(node.attributes, {
+    goal_state: "active",
+    goal_condition: "all required checks pass",
+    scope_refs: ["epic-1", "feat-2", "task-3"],
+    active_node: "task-1",
+    required_skills: ["select-work-and-ground-context"],
+    required_checks: ["npm run build", "node dist/cli.js validate"],
+    max_iterations: "25",
+    blocked_after_attempts: "3",
+  });
+});
+
+test("parseNode rejects invalid goal state", () => {
+  const content = [
+    "---",
+    "id: goal-1",
+    "type: goal",
+    "title: bad goal",
+    "status: progress",
+    "priority: 1",
+    "goal_state: drifting",
+    "goal_condition: done",
+    "required_skills: []",
+    "required_checks: []",
+    "max_iterations: 25",
+    "blocked_after_attempts: 3",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+  ].join("\n");
+  assert.throws(() => parseNode(content, "goal.md", PARSE_OPTIONS), /goal_state must be one of/);
 });
 
 test("parseNode requires status for work items", () => {

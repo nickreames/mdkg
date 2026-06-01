@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-05-17
-package_version_in_source: 0.1.3
+as_of: 2026-05-30
+package_version_in_source: 0.1.6
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -27,7 +27,9 @@ Primary commands:
 - `capability`
 - `archive`
 - `bundle`
+- `subgraph`
 - `work`
+- `goal`
 - `task`
 - `next`
 - `validate`
@@ -45,8 +47,10 @@ Skills are first-class and are accessed only through `mdkg skill ...`.
 Generic `list/show/search` do not expose skills.
 Capability cache discovery is read-only and accessed through `mdkg capability ...`.
 Archive sidecars are accessed through `mdkg archive ...`.
-Full graph snapshot bundles and read-only bundle imports are accessed through `mdkg bundle ...`.
+Full graph snapshot bundles are accessed through `mdkg bundle ...`.
+Read-only child graph orchestration is accessed through `mdkg subgraph ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
+Recursive long-running objective contracts are accessed through `mdkg goal ...`.
 Fresh init workspaces default to the SQLite access cache backend; existing migrated configs stay on JSON until opted in.
 
 ## Global usage
@@ -126,6 +130,7 @@ Types:
 - `edd`
 - `dec`
 - `prop`
+- `goal`
 - `epic`
 - `feat`
 - `task`
@@ -150,6 +155,9 @@ Agent workflow file type creation:
 - `mdkg new feedback "<title>" [options] [--json]`
 - `mdkg new dispute "<title>" [options] [--json]`
 - `mdkg new proposal "<title>" [options] [--json]`
+
+Goal node creation:
+- `mdkg new goal "<title>" [options] [--json]`
 
 Primary flags:
 - `--id <portable-id>` agent workflow file types only
@@ -184,6 +192,7 @@ JSON receipt:
 
 Notes:
 - `--id` lets agent workflow files use semantic portable ids such as `agent.image-worker`, `work.generate-image`, or `proposal.review-loop-1`.
+- `goal` nodes capture recursive objective state and required checks, but normal `mdkg next` does not select them.
 - `spec` and `work` scaffold as validation-clean standalone docs. `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` templates contain editable placeholder refs and need real graph or `skill.<slug>` refs before strict validation passes.
 
 ### `mdkg show`
@@ -460,6 +469,7 @@ Usage:
 - `mdkg capability list [--kind <kind>] [--visibility <level>] [--json]`
 - `mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]`
 - `mdkg capability show <id-or-qid-or-slug> [--json]`
+- `mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]`
 
 Kinds:
 - `skill`
@@ -475,6 +485,8 @@ Visibility levels:
 
 Notes:
 - capability records are derived cache projections from Markdown
+- `capability resolve` ranks local and subgraph capabilities deterministically for orchestration planning
+- stale subgraphs remain visible with degraded ranking unless `--fresh-only` is supplied
 - records include deterministic source metadata such as workspace, visibility, kind, id/qid/slug, path, headings, refs, source hash, and `indexed_at`
 - `.mdkg/index/capabilities.json` is rebuilt by `mdkg index` and by capability commands when stale
 - normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
@@ -535,22 +547,12 @@ Usage:
 - `mdkg bundle verify [bundle-path] [--json]`
 - `mdkg bundle show <bundle-path> [--json]`
 - `mdkg bundle list [--json]`
-- `mdkg bundle import add/list/rm/enable/disable/verify ...`
-- `mdkg bundle import add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]`
-- `mdkg bundle import list [--json]`
-- `mdkg bundle import rm <alias> [--json]`
-- `mdkg bundle import enable <alias> [--json]`
-- `mdkg bundle import disable <alias> [--json]`
-- `mdkg bundle import verify [alias|--all] [--json]`
 
 Flags:
 - `--profile private|public`
 - `--ws <alias|all>`
 - `--output <path>`
 - `--json`
-- `--source-path <path>`
-- `--source-repo <ref>`
-- `--max-stale-seconds <seconds>`
 
 Notes:
 - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
@@ -559,24 +561,60 @@ Notes:
 - private bundles include selected authored `.mdkg` content, archive sidecars, archive ZIP caches, and generated bundle-local indexes
 - public bundles include only public workspace content and public archive sidecars
 - public bundles require at least one selected workspace with `visibility: public`
-- public bundle creation fails if public records reference private graph nodes, private archive refs, or private/internal imported graph qids
+- public bundle creation fails if public records reference private graph nodes, private archive refs, or private/internal subgraph qids
 - bundles exclude `.mdkg/pack/`, `.mdkg/bundles/`, existing `.mdkg/index/`, and raw `.mdkg/archive/**/source/` files
-- bundle imports are read-only graph views projected under import-alias qids such as `child_repo:task-1`
-- enabled imports are visible to `list`, `search`, `show`, `pack`, and `capability`
-- public/internal imports require `--profile public`; private bundle profiles cannot be promoted to public/internal import visibility
-- stale imports warn during planning reads; `mdkg bundle import verify` exits nonzero for stale or invalid imports
-- mutating commands reject imported qids with a read-only import error
-- `mdkg index` writes `.mdkg/index/imports.json` in addition to local indexes
 
 JSON receipts:
 - `create`: `{ action: "created", path, profile, selected_workspaces, file_count, source_tree_hash, bundle_hash, zip_sha256, source }`
 - `verify`: `{ action: "verified", ok, path, profile, selected_workspaces, file_count, stale, errors, stale_paths, bundle_hash, zip_sha256 }`
 - `show`: `{ action: "show", bundle, manifest }`
 - `list`: `{ action: "list", count, items }`
-- `import add/enable/disable`: `{ action, import: { alias, path, enabled, visibility, expected_profile, profile, bundle_hash, source_git_head, stale, warnings, errors } }`
-- `import list`: `{ action: "list", count, imports }`
-- `import rm`: `{ action: "removed", import: { alias } }`
-- `import verify`: `{ action: "verified", ok, count, imports }`
+
+### `mdkg subgraph`
+
+When to use:
+- register child graph snapshot bundles as read-only planning context
+- inspect, verify, enable, disable, and refresh configured subgraphs
+- keep root orchestration graph state separate from child repo mutations
+
+Usage:
+- `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh ...`
+- `mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]`
+- `mdkg subgraph list [--json]`
+- `mdkg subgraph show <alias> [--json]`
+- `mdkg subgraph rm <alias> [--json]`
+- `mdkg subgraph enable <alias> [--json]`
+- `mdkg subgraph disable <alias> [--json]`
+- `mdkg subgraph verify [alias|--all] [--json]`
+- `mdkg subgraph refresh [alias|--all] [--json]`
+
+Flags:
+- `--visibility private|internal|public`
+- `--profile private|public`
+- `--source-path <path>`
+- `--source-repo <ref>`
+- `--max-stale-seconds <seconds>`
+- `--json`
+
+Notes:
+- subgraph config lives in `.mdkg/config.json` under `subgraphs`
+- each subgraph defaults to `enabled: true`, `visibility: private`, `permissions: ["read"]`, and `max_stale_seconds: 3600`
+- each subgraph may contain multiple configured sources, but CLI add creates one initial source in this release
+- `mdkg subgraph refresh` reloads configured bundle sources only; it never builds or mutates child repos
+- subgraphs are read-only graph views projected under subgraph-alias qids such as `child_repo:task-1`
+- enabled subgraphs are visible to `list`, `search`, `show`, `pack`, `capability`, and `capability resolve`
+- public/internal subgraphs require public bundle profiles; private bundle profiles cannot be promoted to public/internal visibility
+- stale subgraphs warn during planning reads; `mdkg subgraph verify` exits nonzero for stale or invalid subgraphs
+- mutating commands reject subgraph qids with a read-only subgraph error
+- `mdkg index` writes `.mdkg/index/subgraphs.json` in addition to local indexes
+- legacy `mdkg bundle import ...` exits with guidance to run `mdkg upgrade --apply` and use `mdkg subgraph ...`
+
+JSON receipts:
+- `add/enable/disable/refresh`: `{ action, subgraph: { alias, enabled, visibility, permissions, sources, stale, warnings, errors } }`
+- `list`: `{ action: "list", count, subgraphs }`
+- `show`: `{ action: "show", subgraph }`
+- `rm`: `{ action: "removed", subgraph: { alias } }`
+- `verify`: `{ action: "verified", ok, count, subgraphs }`
 
 ### `mdkg work`
 
@@ -604,11 +642,59 @@ Notes:
 - `work order new` accepts URI-style requester/request refs and archive input refs
 - `work receipt new` accepts URI-style cost/proof/attestation refs and SHA-256 input/output hash refs
 - `work artifact add` calls `mdkg archive add`, then attaches the resulting `archive://...` ref to the target order or receipt
-- `work order update`, `work receipt update`, and `work artifact add` accept local ids or local qids; imported bundle qids are read-only and must be changed in their source workspace
+- `work order update`, `work receipt update`, and `work artifact add` accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace
 
 JSON receipts:
 - `contract new`, `order new`, `order update`, `receipt new`, and `receipt update`: `{ action, node }`
 - `artifact add`: `{ action: "artifact_registered", target, archive }`
+
+### `mdkg goal`
+
+When to use:
+- inspect and guide a recursive long-running objective
+- select the next concrete local work item inside a goal
+- update goal state after human or agent review
+
+Usage:
+- `mdkg goal show <goal-id-or-qid> [--json]`
+- `mdkg goal select <goal-id-or-qid> [--json]`
+- `mdkg goal current [--json]`
+- `mdkg goal clear [--json]`
+- `mdkg goal next [goal-id-or-qid] [--json]`
+- `mdkg goal claim [goal-id-or-qid] <work-id-or-qid> [--json]`
+- `mdkg goal evaluate <goal-id-or-qid> [--json]`
+- `mdkg goal pause|resume|done <goal-id-or-qid> [--json]`
+- `mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal current [--ws <alias>] [--json]`
+- `mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]`
+- `mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal claim <goal-id-or-qid> <work-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]`
+
+Behavior:
+- `goal show` reports goal condition, goal state, scope refs, active node, required skills, required checks, and source path.
+- `goal select` writes local ignored selected-goal state so `goal next` can omit the goal id.
+- `goal current` shows the selected goal or unique active goal fallback.
+- `goal clear` removes local selected-goal state.
+- `goal next` is read-only and selects feature, task, bug, or test work inside explicit `scope_refs`; epics are recursive containers, not executable returns.
+- `goal claim` mutates only `active_node` after the work item is confirmed inside the goal scope.
+- `goal evaluate` is report-only and never runs commands from `required_checks`.
+- `goal pause`, `goal resume`, and `goal done` update `goal_state`, compatible work status, and `updated`.
+- subgraph goal qids are read-only; update the source workspace instead.
+
+JSON receipts:
+- `show`: `{ action: "showed", goal }`
+- `select`: `{ action: "selected_goal", goal, selection }`
+- `current`: `{ action: "current", goal, source, warnings }`
+- `clear`: `{ action: "cleared_goal", path, cleared }`
+- `next`: `{ action: "selected", goal, goal_source, node, warnings }`
+- `claim`: `{ action: "claimed", goal, node }`
+- `evaluate`: `{ action: "evaluated", goal, report_only, runs_scripts, checks, completion_evidence_present }`
+- `pause|resume|done`: `{ action, goal }`
 
 ### `mdkg task`
 
@@ -762,7 +848,7 @@ Notes:
 - writes `.mdkg/index/global.json`
 - writes `.mdkg/index/skills.json`
 - writes `.mdkg/index/capabilities.json`
-- writes `.mdkg/index/imports.json`
+- writes `.mdkg/index/subgraphs.json`
 - writes `.mdkg/index/mdkg.sqlite` when `index.backend` is `sqlite`
 
 ### `mdkg guide`
@@ -826,6 +912,8 @@ Current JSON envelopes:
   - `{ kind: "capability", query?, count, items }`
 - `capability show`
   - `{ kind: "capability", item }`
+- `capability resolve`
+  - `{ kind: "capability_resolve", query?, requires?, fresh_only, count, items, warnings }`
 - `archive add` / `archive list` / `archive show` / `archive verify` / `archive compress`
   - archive-specific JSON receipts documented in the `mdkg archive` section
 - `work ...`

@@ -7,7 +7,7 @@ import {
   CapabilityVisibility,
 } from "../graph/capabilities_indexer";
 import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
-import { buildImportedCapabilityRecords } from "../graph/bundle_imports";
+import { buildSubgraphCapabilityRecords } from "../graph/subgraphs";
 import { NotFoundError, UsageError } from "../util/errors";
 
 type CapabilityListOptions = {
@@ -29,6 +29,12 @@ type CapabilityShowOptions = {
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
+};
+
+type CapabilityResolveOptions = CapabilityListOptions & {
+  query?: string;
+  requires?: string;
+  freshOnly?: boolean;
 };
 
 function normalizeKind(value: string | undefined): CapabilityKind | undefined {
@@ -64,11 +70,11 @@ function loadRecords(options: CapabilityListOptions): CapabilityRecord[] {
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: capabilities index is stale; run mdkg index to refresh");
   }
-  const imported = buildImportedCapabilityRecords(options.root, config);
-  for (const warning of imported.warnings) {
+  const subgraph = buildSubgraphCapabilityRecords(options.root, config);
+  for (const warning of subgraph.warnings) {
     console.error(`warning: ${warning}`);
   }
-  return [...index.records, ...(imported.records as CapabilityRecord[])];
+  return [...index.records, ...(subgraph.records as CapabilityRecord[])];
 }
 
 function applyFilters(records: CapabilityRecord[], options: CapabilityListOptions): CapabilityRecord[] {
@@ -122,6 +128,96 @@ function matchesQuery(record: CapabilityRecord, query: string): boolean {
   }
   const text = capabilitySearchText(record);
   return terms.every((term) => text.includes(term));
+}
+
+function recordSource(record: CapabilityRecord): Record<string, unknown> {
+  const source = (record as unknown as { source?: Record<string, unknown> }).source;
+  return source ?? {};
+}
+
+function isStale(record: CapabilityRecord): boolean {
+  return recordSource(record).stale === true;
+}
+
+function hasReadPermission(record: CapabilityRecord): boolean {
+  const permissions = recordSource(record).permissions;
+  return !Array.isArray(permissions) || permissions.includes("read");
+}
+
+function requirementMatch(record: CapabilityRecord, required: string | undefined): number {
+  if (!required) {
+    return 0;
+  }
+  const normalized = required.toLowerCase();
+  const haystack = [
+    ...record.refs,
+    ...record.tags,
+    JSON.stringify(record.spec ?? {}),
+    JSON.stringify(record.work ?? {}),
+    JSON.stringify(record.skill ?? {}),
+  ]
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(normalized) ? 1 : 0;
+}
+
+function linkageScore(record: CapabilityRecord): number {
+  let score = 0;
+  if (record.kind === "work") {
+    score += 2;
+  }
+  if (record.kind === "spec") {
+    score += 1;
+  }
+  if (record.work || record.spec) {
+    score += 1;
+  }
+  return score;
+}
+
+function resolveScore(record: CapabilityRecord, options: CapabilityResolveOptions): number {
+  let score = 0;
+  if (record.workspace === "root") {
+    score += 1000;
+  }
+  if (!isStale(record)) {
+    score += 500;
+  }
+  if (hasReadPermission(record)) {
+    score += 100;
+  }
+  if (options.query && matchesQuery(record, options.query)) {
+    score += 50;
+  }
+  score += requirementMatch(record, options.requires) * 25;
+  score += linkageScore(record);
+  return score;
+}
+
+function resolveCapabilities(records: CapabilityRecord[], options: CapabilityResolveOptions): CapabilityRecord[] {
+  const filtered = records.filter((record) => {
+    if (options.freshOnly && isStale(record)) {
+      return false;
+    }
+    if (options.query && !matchesQuery(record, options.query)) {
+      return false;
+    }
+    if (options.requires && requirementMatch(record, options.requires) === 0) {
+      return false;
+    }
+    return true;
+  });
+  return filtered.sort((a, b) => {
+    const scoreDelta = resolveScore(b, options) - resolveScore(a, options);
+    if (scoreDelta !== 0) {
+      return scoreDelta;
+    }
+    const qidDelta = a.qid.localeCompare(b.qid);
+    if (qidDelta !== 0) {
+      return qidDelta;
+    }
+    return a.path.localeCompare(b.path);
+  });
 }
 
 function printCapabilityList(records: CapabilityRecord[], json?: boolean, query?: string): void {
@@ -206,4 +302,41 @@ export function runCapabilitySearchCommand(options: CapabilitySearchOptions): vo
 export function runCapabilityShowCommand(options: CapabilityShowOptions): void {
   const records = loadRecords(options);
   printCapability(resolveCapability(records, options.id), options.json);
+}
+
+export function runCapabilityResolveCommand(options: CapabilityResolveOptions): void {
+  const records = applyFilters(loadRecords(options), options);
+  const items = resolveCapabilities(records, options).map((record, rank) => ({
+    rank: rank + 1,
+    score: resolveScore(record, options),
+    stale: isStale(record),
+    item: record,
+  }));
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          kind: "capability.resolve",
+          query: options.query,
+          requires: options.requires,
+          fresh_only: options.freshOnly === true,
+          count: items.length,
+          items,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+  if (items.length === 0) {
+    console.log("no capabilities resolved");
+    return;
+  }
+  console.log(`resolved capabilities: ${items.length}`);
+  for (const result of items) {
+    const record = result.item;
+    const stale = result.stale ? " stale" : "";
+    console.log(`${result.rank}. ${record.qid} | score ${result.score}${stale} | ${record.kind} | ${record.title}`);
+  }
 }

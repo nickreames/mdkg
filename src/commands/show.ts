@@ -46,7 +46,7 @@ function formatAttributeLine(key: string, value: IndexNode["attributes"][string]
 export function runShowCommand(options: ShowCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  if (ws && !config.workspaces[ws] && !config.bundle_imports[ws]) {
+  if (ws && !config.workspaces[ws] && !config.subgraphs[ws]) {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
   const normalizedId = options.id.toLowerCase();

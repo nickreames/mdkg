@@ -207,6 +207,49 @@ test("runNewCommand creates a test node with cases list", () => {
   assert.ok(content.includes("cases: [tc-1, tc-2]"));
 });
 
+test("runNewCommand creates a goal node with recursive defaults", () => {
+  const root = makeTempDir("mdkg-new-goal-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+
+  const output = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "goal",
+      title: "Reach prepublish readiness",
+      json: true,
+      now: new Date(2026, 0, 24),
+    })
+  );
+
+  assert.equal(output.stderr, "");
+  assert.deepEqual(JSON.parse(output.stdout), {
+    action: "created",
+    node: {
+      workspace: "root",
+      id: "goal-1",
+      qid: "root:goal-1",
+      path: ".mdkg/work/goal-1-reach-prepublish-readiness.md",
+      type: "goal",
+      title: "Reach prepublish readiness",
+      status: "progress",
+      priority: 9,
+    },
+  });
+  const content = fs.readFileSync(
+    path.join(root, ".mdkg", "work", "goal-1-reach-prepublish-readiness.md"),
+    "utf8"
+  );
+  assert.ok(content.includes("type: goal"));
+  assert.ok(content.includes("goal_state: active"));
+  assert.ok(content.includes("goal_condition: Reach prepublish readiness"));
+  assert.ok(content.includes("scope_refs: []"));
+  assert.ok(content.includes("required_skills: []"));
+  assert.ok(content.includes("required_checks: []"));
+  assert.ok(content.includes("max_iterations: 25"));
+  assert.ok(content.includes("blocked_after_attempts: 3"));
+});
+
 test("runNewCommand writes skills list for work items", () => {
   const root = makeTempDir("mdkg-new-skills-");
   writeConfig(root);

@@ -7,7 +7,7 @@ import { Index, IndexNode } from "../graph/indexer";
 import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
-import { buildBundleImportsIndex, mergeBundleImportsIntoIndex } from "../graph/bundle_imports";
+import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
 import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
 import { ValidationError } from "../util/errors";
@@ -170,6 +170,45 @@ function buildWorkspaceMap(config: ReturnType<typeof loadConfig>): Record<string
   return workspaces;
 }
 
+function addReverseEdge(
+  reverse: Index["reverse_edges"],
+  edgeKey: string,
+  target: string | undefined,
+  source: string
+): void {
+  if (!target) {
+    return;
+  }
+  reverse[edgeKey] = reverse[edgeKey] ?? {};
+  reverse[edgeKey][target] = reverse[edgeKey][target] ?? [];
+  reverse[edgeKey][target].push(source);
+}
+
+function buildReverseEdges(nodes: Record<string, IndexNode>): Index["reverse_edges"] {
+  const reverse: Index["reverse_edges"] = {};
+  for (const [qid, node] of Object.entries(nodes)) {
+    addReverseEdge(reverse, "epic", node.edges.epic, qid);
+    addReverseEdge(reverse, "parent", node.edges.parent, qid);
+    addReverseEdge(reverse, "prev", node.edges.prev, qid);
+    addReverseEdge(reverse, "next", node.edges.next, qid);
+    for (const target of node.edges.relates) {
+      addReverseEdge(reverse, "relates", target, qid);
+    }
+    for (const target of node.edges.blocked_by) {
+      addReverseEdge(reverse, "blocked_by", target, qid);
+    }
+    for (const target of node.edges.blocks) {
+      addReverseEdge(reverse, "blocks", target, qid);
+    }
+  }
+  for (const targets of Object.values(reverse)) {
+    for (const sources of Object.values(targets)) {
+      sources.sort();
+    }
+  }
+  return reverse;
+}
+
 function listDirectories(dirPath: string): string[] {
   if (!fs.existsSync(dirPath)) {
     return [];
@@ -318,19 +357,19 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     },
     workspaces: buildWorkspaceMap(config),
     nodes,
-    reverse_edges: {},
+    reverse_edges: buildReverseEdges(nodes),
   };
 
-  const importProjection = buildBundleImportsIndex(options.root, config);
-  for (const item of importProjection.index.imports) {
+  const subgraphProjection = buildSubgraphsIndex(options.root, config);
+  for (const item of subgraphProjection.index.subgraphs) {
     for (const warning of item.warnings) {
-      warnings.push(`bundle import ${item.alias}: ${warning}`);
+      warnings.push(`subgraph ${item.alias}: ${warning}`);
     }
     for (const error of item.errors) {
-      errors.push(`bundle import ${item.alias}: ${error}`);
+      errors.push(`subgraph ${item.alias}: ${error}`);
     }
   }
-  const validationIndex = mergeBundleImportsIntoIndex(index, importProjection);
+  const validationIndex = mergeSubgraphsIntoIndex(index, subgraphProjection);
 
   let knownSkills = new Set<string>();
   try {

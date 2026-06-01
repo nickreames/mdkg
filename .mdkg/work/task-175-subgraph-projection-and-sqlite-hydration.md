@@ -2,7 +2,7 @@
 id: task-175
 type: task
 title: subgraph projection and sqlite hydration
-status: todo
+status: done
 priority: 1
 epic: epic-21
 tags: [subgraph, sqlite, index, projection, cache]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-21, epic-20, task-174]
-blocked_by: [task-172, task-174]
+blocked_by: []
 blocks: [task-176, task-177, task-179]
 refs: []
 aliases: [subgraph-sqlite-hydration]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Overview
@@ -54,6 +54,19 @@ sources.
   read-only flags.
 - SQLite rebuild test proves subgraph data is restored after deleting the DB.
 - JSON-mode test proves non-SQLite users receive equivalent read behavior.
+
+# Verification Evidence
+
+Completed in the 0.1.4 implementation pass.
+
+- Replaced import projection internals with `src/graph/subgraphs.ts`.
+- `mdkg index` now writes `.mdkg/index/subgraphs.json`.
+- Subgraph records project under `<alias>:<id>` with read-only source metadata,
+  original qid/path, visibility, permissions, bundle profile/hash, freshness,
+  warnings, and errors.
+- SQLite schema version was bumped and rebuilt with subgraph source metadata.
+- Verified with `npm run smoke:sqlite`, `npm run smoke:subgraph`, and local
+  `node dist/cli.js index` / `node dist/cli.js validate`.
 
 # Links / Artifacts
 

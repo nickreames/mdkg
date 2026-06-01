@@ -202,8 +202,7 @@ function exerciseVisibility(binPath, tempRoot) {
   mdkg(
     binPath,
     [
-      "bundle",
-      "import",
+      "subgraph",
       "add",
       "child_public",
       publicChild.bundlePath,
@@ -215,13 +214,13 @@ function exerciseVisibility(binPath, tempRoot) {
     ],
     root
   );
-  const importTask = parseJson(
+  const subgraphTask = parseJson(
     mdkg(
       binPath,
       [
         "new",
         "task",
-        "Public Import Task",
+        "Public Subgraph Task",
         "--status",
         "todo",
         "--priority",
@@ -233,14 +232,13 @@ function exerciseVisibility(binPath, tempRoot) {
       root
     ).stdout
   ).node;
-  mdkg(binPath, ["pack", importTask.id, "--visibility", "public", "--dry-run"], root);
+  mdkg(binPath, ["pack", subgraphTask.id, "--visibility", "public", "--dry-run"], root);
 
   const privateChild = createChildBundle(binPath, root, "child-private", "private");
-  const rejectedImport = mdkgFailure(
+  const rejectedSubgraph = mdkgFailure(
     binPath,
     [
-      "bundle",
-      "import",
+      "subgraph",
       "add",
       "child_bad",
       privateChild.bundlePath,
@@ -252,16 +250,16 @@ function exerciseVisibility(binPath, tempRoot) {
     ],
     root
   );
-  assert(rejectedImport.status === 1, "public import over private profile should be usage failure");
+  assert(rejectedSubgraph.status === 1, "public subgraph over private profile should be usage failure");
 
-  mdkg(binPath, ["bundle", "import", "add", "child_private", privateChild.bundlePath, "--json"], root);
-  const privateImportTask = parseJson(
+  mdkg(binPath, ["subgraph", "add", "child_private", privateChild.bundlePath, "--json"], root);
+  const privateSubgraphTask = parseJson(
     mdkg(
       binPath,
       [
         "new",
         "task",
-        "Private Import Ref",
+        "Private Subgraph Ref",
         "--status",
         "todo",
         "--priority",
@@ -273,10 +271,10 @@ function exerciseVisibility(binPath, tempRoot) {
       root
     ).stdout
   ).node;
-  const privateImportPack = mdkgFailure(binPath, ["pack", privateImportTask.id, "--visibility", "public", "--dry-run"], root);
-  assert(privateImportPack.status === 2, "public pack with private import did not fail");
+  const privateSubgraphPack = mdkgFailure(binPath, ["pack", privateSubgraphTask.id, "--visibility", "public", "--dry-run"], root);
+  assert(privateSubgraphPack.status === 2, "public pack with private subgraph did not fail");
   const publicBundle = mdkgFailure(binPath, ["bundle", "create", "--profile", "public", "--json"], root);
-  assert(publicBundle.status === 2, "public bundle with private import ref did not fail");
+  assert(publicBundle.status === 2, "public bundle with private subgraph ref did not fail");
 }
 
 function runSmoke() {

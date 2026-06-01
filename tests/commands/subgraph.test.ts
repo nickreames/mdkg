@@ -112,75 +112,85 @@ function removeBundleEntry(bundlePath: string, entryName: string): void {
   fs.writeFileSync(bundlePath, createDeterministicZipFromEntries(nextEntries));
 }
 
-test("bundle import projects child bundle nodes into read-only root graph", () => {
-  const root = makeTempDir("mdkg-bundle-import-");
+test("subgraph projects child bundle nodes into read-only root graph", () => {
+  const root = makeTempDir("mdkg-subgraph-");
   run(["init", "--agent"], root);
   const bundlePath = createChildBundle(root);
 
-  const added = json<{ import: { alias: string; stale: boolean; error_count: number } }>(
+  const added = json<{ subgraph: { alias: string; stale: boolean; error_count: number } }>(
     run([
-      "bundle",
-      "import",
+      "subgraph",
       "add",
-      "child_import",
+      "child_subgraph",
       bundlePath,
       "--source-path",
       "child-repo",
       "--json",
     ], root).stdout
   );
-  assert.equal(added.import.alias, "child_import");
-  assert.equal(added.import.error_count, 0);
+  assert.equal(added.subgraph.alias, "child_subgraph");
+  assert.equal(added.subgraph.error_count, 0);
 
-  const listed = json<{ count: number; imports: Array<{ alias: string }> }>(
-    run(["bundle", "import", "list", "--json"], root).stdout
+  const listed = json<{ count: number; subgraphs: Array<{ alias: string }> }>(
+    run(["subgraph", "list", "--json"], root).stdout
   );
   assert.equal(listed.count, 1);
-  assert.equal(listed.imports[0].alias, "child_import");
+  assert.equal(listed.subgraphs[0].alias, "child_subgraph");
+
+  const shownSubgraph = json<{ subgraph: { alias: string; sources: Array<{ path: string }> } }>(
+    run(["subgraph", "show", "child_subgraph", "--json"], root).stdout
+  );
+  assert.equal(shownSubgraph.subgraph.sources[0].path, bundlePath);
 
   run(["index"], root);
-  assert.equal(fs.existsSync(path.join(root, ".mdkg", "index", "imports.json")), true);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "index", "subgraphs.json")), true);
 
-  const search = json<{ items: Array<{ qid: string; source?: { imported: boolean } }> }>(
+  const search = json<{ items: Array<{ qid: string; source?: { imported: boolean; subgraph_alias?: string } }> }>(
     run(["search", "Child Task", "--json"], root).stdout
   );
-  assert.equal(search.items.some((item) => item.qid === "child_import:task-1" && item.source?.imported), true);
+  assert.equal(search.items.some((item) => item.qid === "child_subgraph:task-1" && item.source?.imported), true);
+  assert.equal(search.items.find((item) => item.qid === "child_subgraph:task-1")?.source?.subgraph_alias, "child_subgraph");
 
   const shown = json<{ item: { qid: string; body: string; source?: { original_qid: string } } }>(
-    run(["show", "child_import:task-1", "--json"], root).stdout
+    run(["show", "child_subgraph:task-1", "--json"], root).stdout
   );
-  assert.equal(shown.item.qid, "child_import:task-1");
+  assert.equal(shown.item.qid, "child_subgraph:task-1");
   assert.match(shown.item.body, /Overview/);
   assert.equal(shown.item.source?.original_qid, "root:task-1");
 
-  const pack = run(["pack", "child_import:task-1", "--dry-run", "--stats"], root);
-  assert.match(pack.stdout, /child_import:task-1/);
+  const pack = run(["pack", "child_subgraph:task-1", "--dry-run", "--stats"], root);
+  assert.match(pack.stdout, /child_subgraph:task-1/);
 
   const capability = json<{ items: Array<{ qid: string; source?: { imported: boolean } }> }>(
     run(["capability", "search", "Child Work", "--json"], root).stdout
   );
-  assert.equal(capability.items.some((item) => item.qid === "child_import:work.child-work" && item.source?.imported), true);
+  assert.equal(capability.items.some((item) => item.qid === "child_subgraph:work.child-work" && item.source?.imported), true);
 
-  const mutation = runFailure(["task", "update", "child_import:task-1", "--status", "review"], root);
+  const resolved = json<{ items: Array<{ item: { qid: string } }> }>(
+    run(["capability", "resolve", "Child Work", "--json"], root).stdout
+  );
+  assert.equal(resolved.items.some((item) => item.item.qid === "child_subgraph:work.child-work"), true);
+
+  const mutation = runFailure(["task", "update", "child_subgraph:task-1", "--status", "review"], root);
   assert.equal(mutation.status, 1);
-  assert.match(mutation.stderr, /cannot mutate read-only imported node child_import:task-1/);
+  assert.match(mutation.stderr, /cannot mutate read-only subgraph node child_subgraph:task-1/);
 
-  run(["bundle", "import", "disable", "child_import", "--json"], root);
+  run(["subgraph", "disable", "child_subgraph", "--json"], root);
   const disabledSearch = json<{ count: number }>(run(["search", "Child Task", "--json"], root).stdout);
   assert.equal(disabledSearch.count, 0);
 });
 
-test("work lifecycle mutations reject imported qids with read-only guidance", () => {
-  const root = makeTempDir("mdkg-bundle-import-work-readonly-");
+test("work lifecycle mutations reject subgraph qids with read-only guidance", () => {
+  const root = makeTempDir("mdkg-subgraph-work-readonly-");
   run(["init", "--agent"], root);
   const bundlePath = createChildBundle(root);
-  run(["bundle", "import", "add", "child_import", bundlePath, "--json"], root);
+  run(["subgraph", "add", "child_subgraph", bundlePath, "--json"], root);
 
   const orderUpdate = runFailure([
     "work",
     "order",
     "update",
-    "child_import:order.child-order-1",
+    "child_subgraph:order.child-order-1",
     "--status",
     "completed",
     "--json",
@@ -188,14 +198,14 @@ test("work lifecycle mutations reject imported qids with read-only guidance", ()
   assert.equal(orderUpdate.status, 1);
   assert.match(
     orderUpdate.stderr,
-    /cannot mutate read-only imported node child_import:order\.child-order-1; update the source workspace for bundle import child_import/
+    /cannot mutate read-only subgraph node child_subgraph:order\.child-order-1; update the source workspace for subgraph child_subgraph/
   );
 
   const receiptUpdate = runFailure([
     "work",
     "receipt",
     "update",
-    "child_import:receipt.child-order-1",
+    "child_subgraph:receipt.child-order-1",
     "--receipt-status",
     "verified",
     "--json",
@@ -203,7 +213,7 @@ test("work lifecycle mutations reject imported qids with read-only guidance", ()
   assert.equal(receiptUpdate.status, 1);
   assert.match(
     receiptUpdate.stderr,
-    /cannot mutate read-only imported node child_import:receipt\.child-order-1; update the source workspace for bundle import child_import/
+    /cannot mutate read-only subgraph node child_subgraph:receipt\.child-order-1; update the source workspace for subgraph child_subgraph/
   );
 
   fs.mkdirSync(path.join(root, "inputs"), { recursive: true });
@@ -212,10 +222,10 @@ test("work lifecycle mutations reject imported qids with read-only guidance", ()
     "work",
     "artifact",
     "add",
-    "child_import:receipt.child-order-1",
+    "child_subgraph:receipt.child-order-1",
     "inputs/artifact.txt",
     "--id",
-    "archive.imported-artifact",
+    "archive.subgraph-artifact",
     "--kind",
     "artifact",
     "--json",
@@ -223,19 +233,18 @@ test("work lifecycle mutations reject imported qids with read-only guidance", ()
   assert.equal(artifactAdd.status, 1);
   assert.match(
     artifactAdd.stderr,
-    /cannot mutate read-only imported node child_import:receipt\.child-order-1; update the source workspace for bundle import child_import/
+    /cannot mutate read-only subgraph node child_subgraph:receipt\.child-order-1; update the source workspace for subgraph child_subgraph/
   );
 });
 
-test("bundle import verify fails stale imports while read commands warn and continue", () => {
-  const root = makeTempDir("mdkg-bundle-import-stale-");
+test("subgraph verify fails stale subgraphs while read commands warn and continue", () => {
+  const root = makeTempDir("mdkg-subgraph-stale-");
   run(["init", "--agent"], root);
   const bundlePath = createChildBundle(root);
   run([
-    "bundle",
-    "import",
+    "subgraph",
     "add",
-    "child_import",
+    "child_subgraph",
     bundlePath,
     "--source-path",
     "child-repo",
@@ -250,51 +259,53 @@ test("bundle import verify fails stale imports while read commands warn and cont
 
   const search = run(["search", "Child Task", "--json"], root);
   assert.equal(search.status, 0);
-  assert.match(search.stderr, /bundle import child_import: bundle age/);
+  assert.match(search.stderr, /subgraph child_subgraph: bundle age/);
 
-  const verify = runFailure(["bundle", "import", "verify", "child_import", "--json"], root);
+  const staleResolve = json<{ count: number }>(run(["capability", "resolve", "Child Work", "--fresh-only", "--json"], root).stdout);
+  assert.equal(staleResolve.count, 0);
+
+  const verify = runFailure(["subgraph", "verify", "child_subgraph", "--json"], root);
   assert.equal(verify.status, 2);
-  const receipt = json<{ ok: boolean; imports: Array<{ stale: boolean }> }>(verify.stdout);
+  const receipt = json<{ ok: boolean; subgraphs: Array<{ stale: boolean }> }>(verify.stdout);
   assert.equal(receipt.ok, false);
-  assert.equal(receipt.imports[0].stale, true);
+  assert.equal(receipt.subgraphs[0].stale, true);
 });
 
-test("public bundles fail when public local nodes reference private imports", () => {
-  const root = makeTempDir("mdkg-bundle-import-public-");
+test("public bundles fail when public local nodes reference private subgraphs", () => {
+  const root = makeTempDir("mdkg-subgraph-public-");
   run(["init", "--agent"], root);
   const bundlePath = createChildBundle(root);
-  run(["bundle", "import", "add", "child_import", bundlePath, "--json"], root);
+  run(["subgraph", "add", "child_subgraph", bundlePath, "--json"], root);
   updateConfig(root, (config) => {
     config.workspaces.root.visibility = "public";
   });
   run([
     "new",
     "task",
-    "Public Import Ref",
+    "Public Subgraph Ref",
     "--status",
     "todo",
     "--priority",
     "1",
     "--relates",
-    "child_import:task-1",
+    "child_subgraph:task-1",
     "--json",
   ], root);
 
   const failure = runFailure(["bundle", "create", "--profile", "public", "--json"], root);
   assert.equal(failure.status, 2);
-  assert.match(failure.stderr, /references private child_import:task-1/);
+  assert.match(failure.stderr, /references private child_subgraph:task-1/);
 });
 
-test("bundle import rejects public visibility over private bundle profiles", () => {
-  const root = makeTempDir("mdkg-bundle-import-profile-visibility-");
+test("subgraph rejects public visibility over private bundle profiles", () => {
+  const root = makeTempDir("mdkg-subgraph-profile-visibility-");
   run(["init", "--agent"], root);
   const bundlePath = createChildBundle(root);
 
   const failure = runFailure([
-    "bundle",
-    "import",
+    "subgraph",
     "add",
-    "child_import",
+    "child_subgraph",
     bundlePath,
     "--visibility",
     "public",
@@ -306,13 +317,21 @@ test("bundle import rejects public visibility over private bundle profiles", () 
   assert.match(failure.stderr, /--profile public is required/);
 });
 
-test("bundle import rejects bundles missing generated skills index", () => {
-  const root = makeTempDir("mdkg-bundle-import-missing-skills-");
+test("subgraph rejects bundles missing generated skills index", () => {
+  const root = makeTempDir("mdkg-subgraph-missing-skills-");
   run(["init", "--agent"], root);
   const bundlePath = createChildBundle(root);
   removeBundleEntry(path.join(root, bundlePath), ".mdkg/index/skills.json");
 
-  const failure = runFailure(["bundle", "import", "add", "child_import", bundlePath, "--json"], root);
+  const failure = runFailure(["subgraph", "add", "child_subgraph", bundlePath, "--json"], root);
   assert.equal(failure.status, 2);
   assert.match(failure.stderr, /missing bundle entry: \.mdkg\/index\/skills\.json/);
+});
+
+test("legacy bundle import command gives subgraph migration guidance", () => {
+  const root = makeTempDir("mdkg-subgraph-legacy-command-");
+  run(["init", "--agent"], root);
+  const failure = runFailure(["bundle", "import", "list"], root);
+  assert.equal(failure.status, 1);
+  assert.match(failure.stderr, /replaced by mdkg subgraph/);
 });
