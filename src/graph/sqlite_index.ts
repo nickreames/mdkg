@@ -5,7 +5,7 @@ import { Config } from "../core/config";
 import { CapabilitiesIndex } from "./capabilities_indexer";
 import { Index } from "./indexer";
 import { SkillsIndex } from "./skills_indexer";
-import { BundleImportsIndex } from "./bundle_imports";
+import { SubgraphsIndex } from "./subgraphs";
 import { isIndexStale } from "./staleness";
 
 type DatabaseSyncType = {
@@ -19,7 +19,7 @@ type DatabaseSyncType = {
 
 type DatabaseCtor = new (filename: string) => DatabaseSyncType;
 
-export const SQLITE_SCHEMA_VERSION = 1;
+export const SQLITE_SCHEMA_VERSION = 2;
 
 function loadDatabaseCtor(): DatabaseCtor {
   try {
@@ -129,7 +129,7 @@ function createSchema(db: DatabaseSyncType): void {
       compressed_sha256 TEXT,
       json TEXT NOT NULL
     );
-    CREATE TABLE bundle_imports (
+    CREATE TABLE subgraphs (
       alias TEXT PRIMARY KEY,
       enabled INTEGER NOT NULL,
       stale INTEGER NOT NULL,
@@ -162,7 +162,7 @@ function buildSourceFingerprint(options: {
   nodeIndex: Index;
   skillsIndex: SkillsIndex;
   capabilitiesIndex: CapabilitiesIndex;
-  importsIndex: BundleImportsIndex;
+  subgraphsIndex: SubgraphsIndex;
   nodeHashes: Map<string, string | undefined>;
 }): string {
   const payload = {
@@ -175,7 +175,7 @@ function buildSourceFingerprint(options: {
       })),
     skills: Object.values(options.skillsIndex.skills).sort((a, b) => a.qid.localeCompare(b.qid)),
     capabilities: options.capabilitiesIndex.records,
-    imports: options.importsIndex.imports,
+    subgraphs: options.subgraphsIndex.subgraphs,
   };
   return `sha256:${crypto.createHash("sha256").update(stableCacheJson(payload)).digest("hex")}`;
 }
@@ -186,7 +186,7 @@ export function writeSqliteIndex(options: {
   nodeIndex: Index;
   skillsIndex: SkillsIndex;
   capabilitiesIndex: CapabilitiesIndex;
-  importsIndex: BundleImportsIndex;
+  subgraphsIndex: SubgraphsIndex;
 }): string {
   const sqlitePath = resolveSqlitePath(options.root, options.config);
   fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
@@ -284,11 +284,11 @@ export function writeSqliteIndex(options: {
       );
     }
 
-    const insertImport = db.prepare(
-      "INSERT INTO bundle_imports (alias, enabled, stale, error_count, warning_count, json) VALUES (?, ?, ?, ?, ?, ?)"
+    const insertSubgraph = db.prepare(
+      "INSERT INTO subgraphs (alias, enabled, stale, error_count, warning_count, json) VALUES (?, ?, ?, ?, ?, ?)"
     );
-    for (const item of options.importsIndex.imports) {
-      insertImport.run(
+    for (const item of options.subgraphsIndex.subgraphs) {
+      insertSubgraph.run(
         item.alias,
         item.enabled ? 1 : 0,
         item.stale ? 1 : 0,

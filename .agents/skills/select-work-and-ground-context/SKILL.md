@@ -26,13 +26,15 @@ Choose the correct work item and load the smallest deterministic context needed 
 ## Steps
 
 1. If a task id is already known, inspect it with `mdkg show <id>`.
-2. If the task is not known, read `AGENT_START.md` and use `mdkg next` or `mdkg search "<query>"` to narrow candidates.
-3. Use `mdkg show <id> --meta` when you only need the card and link metadata.
-4. Confirm the selected node has the right constraints, related design docs, and current status.
-5. If the task is ambiguous, resolve that before building a pack.
-6. If the chosen task is ready to be claimed, hand off to `mdkg task start <id>` in the writer stage for the structured status change.
-7. If resuming closeout work for a feat or epic, inspect the latest relevant checkpoint before deciding what remains open.
-8. Treat this stage as read-only: inspect and decide, but do not mutate mdkg state or commit.
+2. If a goal may be active, run `mdkg goal current`.
+3. If a selected or unique active goal exists, use `mdkg goal next` to surface one scoped feature, task, bug, or test before falling back to global work discovery.
+4. If the task is not known and no goal is active, read `AGENT_START.md` and use `mdkg next` or `mdkg search "<query>"` to narrow candidates.
+5. Use `mdkg show <id> --meta` when you only need the card and link metadata.
+6. Confirm the selected node has the right constraints, related design docs, and current status.
+7. If the task is ambiguous, resolve that before building a pack.
+8. If the chosen task is ready to be claimed in a goal, hand off to `mdkg goal claim <id>` in the writer stage; otherwise hand off to `mdkg task start <id>` for task-like status changes.
+9. If resuming closeout work for a feat or epic, inspect the latest relevant checkpoint before deciding what remains open.
+10. Treat this stage as read-only: inspect and decide, but do not mutate mdkg state or commit.
 
 ## Outputs
 

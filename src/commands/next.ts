@@ -83,7 +83,7 @@ export function runNextCommand(options: NextCommandOptions): void {
     }
     const node = index.nodes[resolved.qid];
     if (node.source?.imported) {
-      console.error("no local next item: imported bundle nodes are read-only planning context");
+      console.error("no local next item: subgraph nodes are read-only planning context");
       return;
     }
     const nextQid = node.edges.next;

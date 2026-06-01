@@ -23,6 +23,11 @@ Agent operating prompt:
 - Treat mdkg rules, EDDs, DECs, PRDs, and work nodes as more authoritative than chat memory.
 - Use `mdkg show <id>` for direct inspection and `mdkg show <id> --meta` for card-only inspection.
 - Use `mdkg search "..."` and `mdkg next` to discover current work.
+- Use `mdkg new goal "..."` for long-running recursive objectives that need an explicit end condition, active node, required skills, required checks, and completion evidence.
+- Use `mdkg goal select <goal-id>` when a goal is active, then `mdkg goal next` to surface one scoped feature, task, bug, or test at a time; normal `mdkg next` remains for non-goal concrete work.
+- Use `mdkg goal claim [goal-id] <work-id>` only after accepting the surfaced work item; `mdkg goal next` is read-only.
+- Treat goal `required_checks` as report-only guidance from mdkg. Run commands yourself, then record evidence in the goal or active work item.
+- Record skill improvement candidates during normal goal execution; edit `SKILL.md` only when the active node is explicit skill-maintenance work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
 - Use `mdkg capability list/search/show` for deterministic skills, `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
 - Use `mdkg index` to refresh JSON compatibility caches and `.mdkg/index/mdkg.sqlite` when SQLite mode is enabled.
@@ -31,12 +36,13 @@ Agent operating prompt:
 - Treat work contracts, orders, and receipts as committed semantic mirrors only; never store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in mdkg.
 - Use `artifact://...` for external/runtime-managed artifacts and `archive://...` for committed mdkg archive sidecars.
 - Use `mdkg bundle create/list/show/verify` for explicit full `.mdkg` graph snapshot bundles.
-- Use `mdkg bundle import add/list/verify` to register child bundle snapshots as read-only planning context.
+- Use `mdkg subgraph add/list/verify` to register child bundle snapshots as read-only planning context.
+- Use `mdkg capability resolve` to rank local and subgraph capabilities for orchestration planning.
 - Use `mdkg pack <id> --visibility public|internal` only when you need a public-safe or internal-safe pack; no flag remains private-capable local behavior.
 - Mark archive sidecars public only with explicit `mdkg archive add --visibility public` intent.
 - Treat sidecar `.md` plus deterministic `.zip` caches as the commit-eligible archive record; validation and `mdkg archive verify` both check ZIP payload integrity.
 - Before committing repos that track archive caches or `.mdkg/bundles/`, run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip`.
-- Use `mdkg task start/update/done` for structured task, bug, and test lifecycle fields.
+- Use `mdkg task start/update/done` for structured feature, task, bug, and test lifecycle fields.
 - Use `mdkg upgrade` to preview scaffold updates; only run `mdkg upgrade --apply` after reviewing the receipt.
 - Keep nuanced summaries, body text, and manual parent closeout edits in markdown.
 - Use `mdkg event enable` only if `events.jsonl` is missing and provenance should be restored.
@@ -49,6 +55,16 @@ If the active task is known:
 - `mdkg task update <id> ...` as evidence accumulates
 - `mdkg task done <id>` when work is complete
 - `mdkg validate`
+
+If an active goal is known:
+- `mdkg goal select <goal-id>`
+- `mdkg goal current`
+- `mdkg goal next`
+- `mdkg goal claim <work-id>`
+- work the selected concrete node to completion
+- run required checks and record evidence
+- `mdkg goal evaluate <goal-id>`
+- repeat until the goal condition is achieved, blocked, paused, or budget-limited
 
 If no task is known:
 - `mdkg search "..."`

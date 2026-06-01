@@ -14,14 +14,21 @@ export type WorkspaceConfig = {
   visibility: "private" | "internal" | "public";
 };
 
-export type BundleImportConfig = {
+export type SubgraphSourceConfig = {
   path: string;
   enabled: boolean;
-  visibility: "private" | "internal" | "public";
   expected_profile: "private" | "public";
+  label?: string;
+};
+
+export type SubgraphConfig = {
+  enabled: boolean;
+  visibility: "private" | "internal" | "public";
+  permissions: string[];
+  max_stale_seconds: number;
   source_path?: string;
   source_repo?: string;
-  max_stale_seconds?: number;
+  sources: SubgraphSourceConfig[];
 };
 
 export type Config = {
@@ -47,7 +54,7 @@ export type Config = {
     output_dir: string;
     default_profile: "private" | "public";
   };
-  bundle_imports: Record<string, BundleImportConfig>;
+  subgraphs: Record<string, SubgraphConfig>;
   pack: {
     default_depth: number;
     default_edges: string[];
@@ -92,9 +99,11 @@ const NEXT_WORK_STRATEGIES = new Set(["chain_then_priority"]);
 const WORKSPACE_VISIBILITY_VALUES = new Set(["private", "internal", "public"]);
 const BUNDLE_PROFILE_VALUES = new Set(["private", "public"]);
 const INDEX_BACKEND_VALUES = new Set(["json", "sqlite"]);
+const SUBGRAPH_PERMISSION_VALUES = new Set(["read", "request", "propose", "mutate"]);
 const DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES = 26214400;
 const DEFAULT_SQLITE_COMMIT_WARNING_BYTES = 52428800;
 const DEFAULT_LOCK_TIMEOUT_MS = 10000;
+const DEFAULT_SUBGRAPH_MAX_STALE_SECONDS = 3600;
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -284,20 +293,20 @@ function validateWorkspaceAlias(alias: string, errors: ValidationErrors): void {
   }
 }
 
-function validateBundleImportAlias(
+function validateSubgraphAlias(
   alias: string,
   workspaces: Record<string, WorkspaceConfig>,
   errors: ValidationErrors
 ): void {
   if (alias === "all") {
-    errors.push("bundle_imports.all alias is reserved");
+    errors.push("subgraphs.all alias is reserved");
     return;
   }
   if (alias !== alias.toLowerCase() || !WORKSPACE_ALIAS_RE.test(alias)) {
-    errors.push(`bundle_imports.${alias} alias must be lowercase and use [a-z0-9_]`);
+    errors.push(`subgraphs.${alias} alias must be lowercase and use [a-z0-9_]`);
   }
   if (workspaces[alias]) {
-    errors.push(`bundle_imports.${alias} must not collide with workspaces.${alias}`);
+    errors.push(`subgraphs.${alias} must not collide with workspaces.${alias}`);
   }
 }
 
@@ -342,10 +351,17 @@ export function validateConfigSchema(raw: unknown): Config {
     raw.bundles === undefined
       ? { output_dir: ".mdkg/bundles", default_profile: "private" }
       : requireObject(raw.bundles, "bundles", errors);
-  const bundleImportsRaw =
-    raw.bundle_imports === undefined
-      ? {}
-      : requireObject(raw.bundle_imports, "bundle_imports", errors);
+  if (raw.bundle_imports !== undefined && raw.subgraphs !== undefined) {
+    errors.push("config must not define both subgraphs and legacy bundle_imports");
+  }
+  const subgraphsFromLegacyBundleImports =
+    raw.subgraphs === undefined && raw.bundle_imports !== undefined;
+  const subgraphsRaw =
+    raw.subgraphs === undefined
+      ? raw.bundle_imports === undefined
+        ? {}
+        : requireObject(raw.bundle_imports, "bundle_imports", errors)
+      : requireObject(raw.subgraphs, "subgraphs", errors);
   const packRaw = requireObject(raw.pack, "pack", errors);
   const templatesRaw = requireObject(raw.templates, "templates", errors);
   const workRaw = requireObject(raw.work, "work", errors);
@@ -602,74 +618,125 @@ export function validateConfigSchema(raw: unknown): Config {
     }
   }
 
-  const bundle_imports: Record<string, BundleImportConfig> = {};
-  if (bundleImportsRaw) {
-    for (const [alias, entry] of Object.entries(bundleImportsRaw)) {
-      validateBundleImportAlias(alias, workspaces, errors);
-      const rawImport = requireObject(entry, `bundle_imports.${alias}`, errors);
-      if (!rawImport) {
+  const subgraphs: Record<string, SubgraphConfig> = {};
+  if (subgraphsRaw) {
+    for (const [alias, entry] of Object.entries(subgraphsRaw)) {
+      validateSubgraphAlias(alias, workspaces, errors);
+      const basePath = subgraphsFromLegacyBundleImports ? `bundle_imports.${alias}` : `subgraphs.${alias}`;
+      const rawSubgraph = requireObject(entry, basePath, errors);
+      if (!rawSubgraph) {
         continue;
       }
-      const importPath = requireContainedPath(rawImport.path, `bundle_imports.${alias}.path`, errors);
       const enabled =
-        rawImport.enabled === undefined
+        rawSubgraph.enabled === undefined
           ? true
-          : requireBoolean(rawImport.enabled, `bundle_imports.${alias}.enabled`, errors);
+          : requireBoolean(rawSubgraph.enabled, `${basePath}.enabled`, errors);
       const visibility =
-        rawImport.visibility === undefined
+        rawSubgraph.visibility === undefined
           ? "private"
           : requireStringInSet(
-              rawImport.visibility,
-              `bundle_imports.${alias}.visibility`,
+              rawSubgraph.visibility,
+              `${basePath}.visibility`,
               WORKSPACE_VISIBILITY_VALUES,
               errors
             );
-      const expectedProfile =
-        rawImport.expected_profile === undefined
-          ? "private"
-          : requireStringInSet(
-              rawImport.expected_profile,
-              `bundle_imports.${alias}.expected_profile`,
-              BUNDLE_PROFILE_VALUES,
+      const permissions =
+        rawSubgraph.permissions === undefined || subgraphsFromLegacyBundleImports
+          ? ["read"]
+          : requireKnownLowercaseUniqueStringArray(
+              rawSubgraph.permissions,
+              `${basePath}.permissions`,
+              SUBGRAPH_PERMISSION_VALUES,
               errors
             );
-      const sourcePath =
-        rawImport.source_path === undefined
-          ? undefined
-          : requireContainedPath(rawImport.source_path, `bundle_imports.${alias}.source_path`, errors);
-      const sourceRepo =
-        rawImport.source_repo === undefined
-          ? undefined
-          : requireString(rawImport.source_repo, `bundle_imports.${alias}.source_repo`, errors);
       const maxStaleSeconds =
-        rawImport.max_stale_seconds === undefined
+        rawSubgraph.max_stale_seconds === undefined
+          ? DEFAULT_SUBGRAPH_MAX_STALE_SECONDS
+          : requirePositiveInteger(rawSubgraph.max_stale_seconds, `${basePath}.max_stale_seconds`, errors);
+      const sourcePath =
+        rawSubgraph.source_path === undefined
           ? undefined
-          : requirePositiveInteger(
-              rawImport.max_stale_seconds,
-              `bundle_imports.${alias}.max_stale_seconds`,
-              errors
-            );
-
-      if (
-        visibility !== undefined &&
-        expectedProfile !== undefined &&
-        visibility !== "private" &&
-        expectedProfile !== "public"
-      ) {
-        errors.push(
-          `bundle_imports.${alias}.expected_profile must be public when visibility is ${visibility}`
-        );
+          : requireContainedPath(rawSubgraph.source_path, `${basePath}.source_path`, errors);
+      const sourceRepo =
+        rawSubgraph.source_repo === undefined
+          ? undefined
+          : requireString(rawSubgraph.source_repo, `${basePath}.source_repo`, errors);
+      const rawSources = subgraphsFromLegacyBundleImports
+        ? [{ path: rawSubgraph.path, enabled: true, expected_profile: rawSubgraph.expected_profile }]
+        : rawSubgraph.sources;
+      if (!Array.isArray(rawSources)) {
+        errors.push(`${basePath}.sources must be an array`);
+        continue;
+      }
+      if (rawSources.length === 0) {
+        errors.push(`${basePath}.sources must not be empty`);
+        continue;
+      }
+      const sources: SubgraphSourceConfig[] = [];
+      const labels = new Set<string>();
+      for (let i = 0; i < rawSources.length; i += 1) {
+        const sourceBasePath = `${basePath}.sources[${i}]`;
+        const rawSource = requireObject(rawSources[i], sourceBasePath, errors);
+        if (!rawSource) {
+          continue;
+        }
+        const sourceBundlePath = requireContainedPath(rawSource.path, `${sourceBasePath}.path`, errors);
+        const sourceEnabled =
+          rawSource.enabled === undefined
+            ? true
+            : requireBoolean(rawSource.enabled, `${sourceBasePath}.enabled`, errors);
+        const expectedProfile =
+          rawSource.expected_profile === undefined
+            ? "private"
+            : requireStringInSet(
+                rawSource.expected_profile,
+                `${sourceBasePath}.expected_profile`,
+                BUNDLE_PROFILE_VALUES,
+                errors
+              );
+        const label =
+          rawSource.label === undefined
+            ? undefined
+            : requireString(rawSource.label, `${sourceBasePath}.label`, errors);
+        if (label !== undefined) {
+          if (label.trim().length === 0) {
+            errors.push(`${sourceBasePath}.label must not be empty`);
+          }
+          if (labels.has(label)) {
+            errors.push(`${basePath}.sources label must be unique: ${label}`);
+          }
+          labels.add(label);
+        }
+        if (
+          visibility !== undefined &&
+          expectedProfile !== undefined &&
+          sourceEnabled !== false &&
+          visibility !== "private" &&
+          expectedProfile !== "public"
+        ) {
+          errors.push(
+            `${sourceBasePath}.expected_profile must be public when ${basePath}.visibility is ${visibility}`
+          );
+        }
+        if (sourceBundlePath && sourceEnabled !== undefined && expectedProfile) {
+          sources.push({
+            path: sourceBundlePath,
+            enabled: sourceEnabled,
+            expected_profile: expectedProfile as SubgraphSourceConfig["expected_profile"],
+            ...(label ? { label } : {}),
+          });
+        }
       }
 
-      if (importPath && enabled !== undefined && visibility && expectedProfile) {
-        bundle_imports[alias] = {
-          path: importPath,
+      if (enabled !== undefined && visibility && permissions && maxStaleSeconds !== undefined && sources.length > 0) {
+        subgraphs[alias] = {
           enabled,
-          visibility: visibility as BundleImportConfig["visibility"],
-          expected_profile: expectedProfile as BundleImportConfig["expected_profile"],
+          visibility: visibility as SubgraphConfig["visibility"],
+          permissions,
+          max_stale_seconds: maxStaleSeconds,
           ...(sourcePath ? { source_path: sourcePath } : {}),
           ...(sourceRepo ? { source_repo: sourceRepo } : {}),
-          ...(maxStaleSeconds !== undefined ? { max_stale_seconds: maxStaleSeconds } : {}),
+          sources,
         };
       }
     }
@@ -687,7 +754,7 @@ export function validateConfigSchema(raw: unknown): Config {
     index: index as Config["index"],
     capabilities: capabilities as Config["capabilities"],
     bundles: bundles as Config["bundles"],
-    bundle_imports,
+    subgraphs,
     pack: pack as Config["pack"],
     templates: templates as Config["templates"],
     work: work as Config["work"],

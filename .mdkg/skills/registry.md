@@ -29,6 +29,11 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - stage: `stage:execute`
   - writer role: `writer:patch-only`
   - description: Build a deterministic mdkg pack for the active work item and use it as the execution handoff when coding or delegating to another AI agent.
+- `pursue-mdkg-goal`
+  - name: `pursue-mdkg-goal`
+  - stage: `stage:execute`
+  - writer role: `writer:orchestrator`
+  - description: Pursue a selected mdkg goal by repeatedly selecting one scoped work item, executing it with evidence, and evaluating the goal until done, blocked, paused, or budget-limited.
 - `select-work-and-ground-context`
   - name: `select-work-and-ground-context`
   - stage: `stage:plan`

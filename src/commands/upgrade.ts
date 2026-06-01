@@ -64,7 +64,7 @@ export type UpgradeReceipt = {
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
 const PROTECTED_CORE_DOCS = new Set([".mdkg/core/SOUL.md", ".mdkg/core/HUMAN.md"]);
 const CREATE_ONLY_PRESERVED = new Set([".mdkg/core/core.md"]);
-const ARCHIVE_RAW_IGNORE_ENTRIES = [".mdkg/archive/**/source/"];
+const LOCAL_STATE_IGNORE_ENTRIES = [".mdkg/state/", ".mdkg/archive/**/source/"];
 
 function seededInitEvent(nowIso: string): string {
   const event = {
@@ -243,12 +243,59 @@ function planSeedFile(options: {
   return false;
 }
 
+function migrateLegacyBundleImportsConfig(input: unknown): { config: unknown; changed: boolean } {
+  if (typeof input !== "object" || input === null || Array.isArray(input)) {
+    return { config: input, changed: false };
+  }
+  const raw = { ...(input as Record<string, unknown>) };
+  if (raw.bundle_imports === undefined) {
+    if (raw.subgraphs === undefined) {
+      raw.subgraphs = {};
+      return { config: raw, changed: true };
+    }
+    return { config: raw, changed: false };
+  }
+  if (raw.subgraphs !== undefined) {
+    return { config: raw, changed: false };
+  }
+
+  const subgraphs: Record<string, unknown> = {};
+  const legacy = raw.bundle_imports;
+  if (legacy && typeof legacy === "object" && !Array.isArray(legacy)) {
+    for (const [alias, value] of Object.entries(legacy as Record<string, unknown>)) {
+      if (!value || typeof value !== "object" || Array.isArray(value)) {
+        continue;
+      }
+      const entry = value as Record<string, unknown>;
+      subgraphs[alias] = {
+        enabled: entry.enabled ?? true,
+        visibility: entry.visibility ?? "private",
+        permissions: ["read"],
+        max_stale_seconds: entry.max_stale_seconds ?? 3600,
+        ...(entry.source_path ? { source_path: entry.source_path } : {}),
+        ...(entry.source_repo ? { source_repo: entry.source_repo } : {}),
+        sources: [
+          {
+            path: entry.path,
+            enabled: true,
+            expected_profile: entry.expected_profile ?? "private",
+          },
+        ],
+      };
+    }
+  }
+  raw.subgraphs = subgraphs;
+  delete raw.bundle_imports;
+  return { config: raw, changed: true };
+}
+
 function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const cfgPath = configPath(root);
   const raw = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
   const migrated = migrateConfig(raw);
-  validateConfigSchema(migrated.config);
-  if (migrated.from === migrated.to) {
+  const nextConfig = migrateLegacyBundleImportsConfig(migrated.config);
+  validateConfigSchema(nextConfig.config);
+  if (migrated.from === migrated.to && !nextConfig.changed) {
     summary.unchanged += 1;
     return;
   }
@@ -256,10 +303,12 @@ function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSu
     path: ".mdkg/config.json",
     category: "config",
     action: "migrate",
-    reason: `config schema_version ${migrated.from} -> ${migrated.to}`,
+    reason: nextConfig.changed
+      ? `config subgraphs migration${migrated.from === migrated.to ? "" : ` and schema_version ${migrated.from} -> ${migrated.to}`}`
+      : `config schema_version ${migrated.from} -> ${migrated.to}`,
   });
   if (!dryRun) {
-    writeFile(cfgPath, `${JSON.stringify(migrated.config, null, 2)}\n`);
+    writeFile(cfgPath, `${JSON.stringify(nextConfig.config, null, 2)}\n`);
   }
 }
 
@@ -336,7 +385,7 @@ function ensureArchiveIgnorePolicy(root: string, dryRun: boolean, summary: Upgra
   const raw = fs.existsSync(ignorePath) ? fs.readFileSync(ignorePath, "utf8") : "";
   const lines = raw.split(/\r?\n/);
   const existing = new Set(lines.map((line) => line.trim()).filter(Boolean));
-  const additions = ARCHIVE_RAW_IGNORE_ENTRIES.filter((entry) => !existing.has(entry));
+  const additions = LOCAL_STATE_IGNORE_ENTRIES.filter((entry) => !existing.has(entry));
   if (additions.length === 0) {
     summary.unchanged += 1;
     return;
@@ -345,7 +394,7 @@ function ensureArchiveIgnorePolicy(root: string, dryRun: boolean, summary: Upgra
     path: ".gitignore",
     category: "ignore_policy",
     action: fs.existsSync(ignorePath) ? "update" : "create",
-    reason: "ignore raw local archive source copies while keeping sidecars and zip caches commit-eligible",
+    reason: "ignore local mdkg state and raw archive source copies while keeping authored graph records commit-eligible",
   });
   if (!dryRun) {
     const suffix = raw.length === 0 || raw.endsWith("\n") ? "" : "\n";

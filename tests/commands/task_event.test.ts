@@ -352,6 +352,62 @@ test("task commands print deterministic json receipts", () => {
   );
 });
 
+test("task commands mutate feature nodes as task-like work", () => {
+  const root = makeTempDir("mdkg-task-feat-flow-");
+  writeRootConfig(root);
+  writeDefaultTemplates(root);
+
+  runNewCommand({
+    root,
+    type: "feat",
+    title: "Ship feature",
+    status: "todo",
+    priority: 1,
+    now: new Date("2026-03-08T05:00:00Z"),
+  });
+
+  const startOutput = captureOutput(() =>
+    runTaskStartCommand({
+      root,
+      id: "feat-1",
+      json: true,
+      now: new Date("2026-03-08T05:05:00Z"),
+    })
+  );
+  assert.deepEqual(JSON.parse(startOutput.stdout).task, {
+    workspace: "root",
+    id: "feat-1",
+    qid: "root:feat-1",
+    path: ".mdkg/work/feat-1-ship-feature.md",
+    type: "feat",
+    status: "progress",
+    priority: 1,
+  });
+
+  const doneOutput = captureOutput(() =>
+    runTaskDoneCommand({
+      root,
+      id: "feat-1",
+      json: true,
+      now: new Date("2026-03-08T05:10:00Z"),
+    })
+  );
+  assert.deepEqual(JSON.parse(doneOutput.stdout).task, {
+    workspace: "root",
+    id: "feat-1",
+    qid: "root:feat-1",
+    path: ".mdkg/work/feat-1-ship-feature.md",
+    type: "feat",
+    status: "done",
+    priority: 1,
+  });
+
+  const featurePath = path.join(root, ".mdkg", "work", "feat-1-ship-feature.md");
+  const featureContent = fs.readFileSync(featurePath, "utf8");
+  assert.match(featureContent, /status: done/);
+  assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
+});
+
 test("automatic event append applies to enabled mutation commands only", () => {
   const root = makeTempDir("mdkg-auto-events-");
   writeRootConfig(root);
@@ -413,7 +469,7 @@ test("task commands reject non-task-like ids with guidance", () => {
 
   assert.throws(
     () => runTaskStartCommand({ root, id: "epic-1" }),
-    /mdkg task only supports task, bug, and test nodes/
+    /mdkg task only supports feat, task, bug, and test nodes/
   );
 });
 

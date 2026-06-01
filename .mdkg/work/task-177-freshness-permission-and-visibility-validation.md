@@ -2,7 +2,7 @@
 id: task-177
 type: task
 title: freshness permission and visibility validation
-status: todo
+status: done
 priority: 1
 epic: epic-21
 tags: [subgraph, validate, doctor, freshness, visibility]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-21, epic-27, task-174, task-175]
-blocked_by: [task-174, task-175]
+blocked_by: []
 blocks: [task-178, task-179]
 refs: []
 aliases: [subgraph-health-validation]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Overview
@@ -53,6 +53,19 @@ permissions control allowed root behavior over the child graph view.
   visibility-unsafe subgraphs.
 - Public pack/bundle tests prove less-visible subgraph references fail closed.
 - Doctor JSON tests prove health details are machine-readable.
+
+# Verification Evidence
+
+Completed in the 0.1.4 implementation pass.
+
+- `mdkg validate` checks malformed subgraph config, missing/corrupt enabled
+  bundles, duplicate projected ids, and public/internal visibility violations.
+- Stale subgraphs warn in planning reads and validation but fail
+  `mdkg subgraph verify`.
+- `mdkg doctor` reports subgraph health and repair guidance.
+- Public packs and public bundles fail closed on private/internal subgraph refs.
+- Verified with `tests/commands/subgraph.test.ts`, `npm run smoke:visibility`,
+  `npm run smoke:subgraph`, and `node dist/cli.js validate`.
 
 # Links / Artifacts
 

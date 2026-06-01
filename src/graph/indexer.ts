@@ -31,7 +31,7 @@ export type IndexNode = {
   source?: {
     imported: boolean;
     read_only: boolean;
-    import_alias: string;
+    subgraph_alias: string;
     original_qid: string;
     original_ws: string;
     original_path: string;
@@ -39,6 +39,7 @@ export type IndexNode = {
     bundle_hash?: string;
     profile?: string;
     visibility?: string;
+    permissions?: string[];
     stale: boolean;
     warnings: string[];
     source_repo?: string;
@@ -213,7 +214,7 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
 
   validateGraph(index, {
     allowMissing: tolerant,
-    externalWorkspaces: new Set(Object.keys(config.bundle_imports ?? {})),
+    externalWorkspaces: new Set(Object.keys(config.subgraphs ?? {})),
   });
 
   const latestCheckpointByWorkspace: Record<string, string> = {};

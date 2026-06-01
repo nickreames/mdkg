@@ -2,7 +2,7 @@
 id: task-173
 type: task
 title: remove public bundle import surface
-status: todo
+status: done
 priority: 1
 epic: epic-21
 tags: [subgraph, bundle-import, cli, docs, migration]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-21, task-139, task-172]
-blocked_by: [task-172]
+blocked_by: []
 blocks: [task-174, task-178]
 refs: []
 aliases: [remove-bundle-import-surface]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Overview
@@ -51,6 +51,17 @@ to shape the user-facing orchestration model.
 - Command matrix parity check proves docs match dispatch.
 - Upgrade tests prove old `bundle_imports` configs are detected and receive
   actionable migration guidance.
+
+# Verification Evidence
+
+Completed in the 0.1.4 implementation pass.
+
+- Replaced the public command surface with `mdkg subgraph ...`.
+- Legacy `mdkg bundle import ...` now exits with explicit guidance to use
+  `mdkg subgraph ...` and run `mdkg upgrade --apply` for legacy config.
+- Updated README, command matrix, init docs, seeded skills, and core rules.
+- Verified with CLI help tests, `npm run cli:check`, upgrade tests, init smoke,
+  and `npm publish --dry-run`.
 
 # Links / Artifacts
 

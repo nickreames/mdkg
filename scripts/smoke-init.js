@@ -254,13 +254,13 @@ function exerciseAgentInit(binPath, tempRoot) {
   );
   assertIncludes(
     fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
-    "mdkg bundle import add/list/verify",
-    "seeded AGENT_START import guidance"
+    "mdkg subgraph add/list/verify",
+    "seeded AGENT_START subgraph guidance"
   );
   assertIncludes(
     fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
-    "mdkg bundle import add",
-    "seeded .mdkg README import guidance"
+    "mdkg subgraph add",
+    "seeded .mdkg README subgraph guidance"
   );
 
   const manifest = assertManifestMatches(root);

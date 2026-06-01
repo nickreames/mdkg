@@ -404,7 +404,7 @@ function printDryRunSummary(
 export function runPackCommand(options: PackCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  if (ws && !config.workspaces[ws] && !config.bundle_imports[ws]) {
+  if (ws && !config.workspaces[ws] && !config.subgraphs[ws]) {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
 

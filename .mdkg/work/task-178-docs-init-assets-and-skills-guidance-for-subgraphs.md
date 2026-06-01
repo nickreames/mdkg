@@ -2,7 +2,7 @@
 id: task-178
 type: task
 title: docs init assets and skills guidance for subgraphs
-status: todo
+status: done
 priority: 2
 epic: epic-21
 tags: [subgraph, docs, init, skills, onboarding]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-21, task-173, task-174, task-176, task-177]
-blocked_by: [task-173, task-174, task-177]
+blocked_by: []
 blocks: [task-180]
 refs: []
 aliases: [subgraph-docs-guidance]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Overview
@@ -51,6 +51,18 @@ tasks such as `task-171`, not in npm-facing docs.
 - CLI command parity check.
 - Init smoke proves generated docs reference `subgraph` and not `bundle import`.
 - Text audit for stale public `mdkg bundle import` onboarding references.
+
+# Verification Evidence
+
+Completed in the 0.1.4 implementation pass.
+
+- Updated README, `CLI_COMMAND_MATRIX.md`, `AGENT_START.md`, seeded init docs,
+  core rules, release skill guidance, and `CHANGELOG.md`.
+- Seeded docs now teach `mdkg subgraph ...` and `mdkg capability resolve`.
+- Public onboarding no longer routes users through `mdkg bundle import ...`;
+  only legacy migration guidance remains.
+- Verified with `npm run cli:check`, `npm run smoke:init`, and
+  `node scripts/assert-publish-ready.js`.
 
 # Links / Artifacts
 

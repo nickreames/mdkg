@@ -8,7 +8,7 @@ function formatStatusPriority(node: IndexNode): string {
 
 export function formatNodeCard(node: IndexNode): string {
   const sourceLabel = node.source?.imported
-    ? ` | import:${node.source.import_alias}${node.source.stale ? ":stale" : ""} | read-only`
+    ? ` | subgraph:${node.source.subgraph_alias}${node.source.stale ? ":stale" : ""} | read-only`
     : "";
   return [
     node.qid,

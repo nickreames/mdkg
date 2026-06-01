@@ -2,7 +2,7 @@
 id: epic-21
 type: epic
 title: hierarchical subgraph snapshot aggregation
-status: progress
+status: done
 priority: 1
 tags: [subgraph, orchestration, snapshot-bundle, capability-cache]
 owners: []
@@ -15,7 +15,7 @@ refs: []
 aliases: [subgraph-capability-aggregation]
 skills: []
 created: 2026-05-14
-updated: 2026-05-27
+updated: 2026-05-30
 ---
 
 # Goal
@@ -80,6 +80,45 @@ default.
 - Private-local snapshots must not be mistaken for public/export-safe bundles.
 - Child repo cache failures should degrade clearly without corrupting root graph
   state.
+
+# Closeout
+
+Completed in the 0.1.4 implementation pass.
+
+Delivered:
+- `subgraphs` config as the semantic orchestration surface over bundle ZIP
+  transport.
+- Public `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh`.
+- Legacy `mdkg bundle import ...` removal from public onboarding with explicit
+  upgrade guidance.
+- `.mdkg/index/subgraphs.json` and SQLite schema v2 subgraph hydration.
+- Read-path integration for list/search/show/pack/capability.
+- Read-only mutation guards for subgraph qids.
+- `mdkg capability resolve` with deterministic local plus subgraph ranking and
+  stale degradation.
+- Validation, doctor, public bundle, and public pack fail-closed behavior for
+  subgraph visibility boundaries.
+- Packed temp root/child/grandchild smoke coverage.
+
+Verification:
+- `npm run test`
+- `npm run cli:check`
+- `node dist/cli.js validate`
+- `npm run smoke:consumer`
+- `npm run smoke:matrix`
+- `npm run smoke:upgrade`
+- `npm run smoke:init`
+- `npm run smoke:capabilities`
+- `npm run smoke:archive-work`
+- `npm run smoke:bundle`
+- `npm run smoke:subgraph`
+- `npm run smoke:visibility`
+- `npm run smoke:sqlite`
+- `npm run smoke:parallel`
+- `node scripts/assert-publish-ready.js`
+- `npm pack --dry-run --json`
+- `npm publish --dry-run`
+- `git diff --check`
 
 # Links / Artifacts
 

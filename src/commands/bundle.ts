@@ -4,7 +4,7 @@ import path from "path";
 import { spawnSync } from "child_process";
 import { loadConfig, Config, WorkspaceConfig } from "../core/config";
 import { buildCapabilitiesIndex } from "../graph/capabilities_indexer";
-import { buildBundleImportsIndex, mergeBundleImportsIntoIndex } from "../graph/bundle_imports";
+import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import {
   buildSkillIndexEntryForWorkspace,
@@ -525,13 +525,13 @@ function collectStringValues(value: unknown, out: string[]): void {
   }
 }
 
-function publicImportReferenceErrors(config: Config, index: Index, includedQids: Set<string>): string[] {
-  const privateImportAliases = new Set(
-    Object.entries(config.bundle_imports)
+function publicSubgraphReferenceErrors(config: Config, index: Index, includedQids: Set<string>): string[] {
+  const privateSubgraphAliases = new Set(
+    Object.entries(config.subgraphs)
       .filter(([, entry]) => entry.enabled && entry.visibility !== "public")
       .map(([alias]) => alias)
   );
-  if (privateImportAliases.size === 0) {
+  if (privateSubgraphAliases.size === 0) {
     return [];
   }
   const errors: string[] = [];
@@ -545,8 +545,8 @@ function publicImportReferenceErrors(config: Config, index: Index, includedQids:
     values.push(...node.links, ...node.artifacts, ...node.refs, ...node.aliases);
     for (const value of values) {
       const [alias] = value.split(":");
-      if (alias && privateImportAliases.has(alias)) {
-        errors.push(`${node.qid} references private bundle import ${value}`);
+      if (alias && privateSubgraphAliases.has(alias)) {
+        errors.push(`${node.qid} references private subgraph ${value}`);
       }
     }
   }
@@ -625,9 +625,9 @@ function buildBundle(options: BundleCreateCommandOptions): BundleBuildResult {
   const filteredIndex = filterIndex(index, config, selectedSet, profile);
   if (profile === "public") {
     const includedQids = new Set(Object.keys(filteredIndex.nodes));
-    const mergedIndex = mergeBundleImportsIntoIndex(
+    const mergedIndex = mergeSubgraphsIntoIndex(
       index,
-      buildBundleImportsIndex(options.root, config)
+      buildSubgraphsIndex(options.root, config)
     );
     const errors = visibilityViolationMessages(
       collectVisibilityViolations(mergedIndex, config, {

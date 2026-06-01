@@ -12,7 +12,7 @@ import {
   isArchiveType,
   validateArchiveFrontmatter,
 } from "./archive_file";
-import { isCanonicalId, isPortableId } from "../util/id";
+import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { validatePortableOrUriRef } from "../util/refs";
 
 export type Node = {
@@ -39,7 +39,7 @@ export type Node = {
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DEC_ID_RE = /^dec-[0-9]+$/;
 
-export const WORK_TYPES = new Set(["epic", "feat", "task", "bug", "checkpoint", "test"]);
+export const WORK_TYPES = new Set(["goal", "epic", "feat", "task", "bug", "checkpoint", "test"]);
 export const DEC_TYPES = new Set(["dec"]);
 export const ALLOWED_TYPES = new Set([
   "rule",
@@ -47,6 +47,7 @@ export const ALLOWED_TYPES = new Set([
   "edd",
   "dec",
   "prop",
+  "goal",
   "epic",
   "feat",
   "task",
@@ -58,7 +59,18 @@ export const ALLOWED_TYPES = new Set([
 ]);
 
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
+const GOAL_STATE = new Set(["active", "paused", "achieved", "blocked", "budget_limited"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const GOAL_ATTRIBUTE_KEYS = [
+  "goal_state",
+  "goal_condition",
+  "scope_refs",
+  "active_node",
+  "required_skills",
+  "required_checks",
+  "max_iterations",
+  "blocked_after_attempts",
+];
 
 export type NodeParseOptions = {
   workStatusEnum: string[];
@@ -216,6 +228,92 @@ function normalizeSkillList(values: string[], filePath: string): string[] {
   });
 }
 
+function parsePositiveIntegerString(
+  value: string,
+  key: string,
+  filePath: string
+): string {
+  if (!/^[1-9][0-9]*$/.test(value)) {
+    throw formatError(filePath, `${key} must be a positive integer`);
+  }
+  return value;
+}
+
+function validateGoalFrontmatter(
+  type: string,
+  frontmatter: Record<string, FrontmatterValue>,
+  filePath: string
+): void {
+  if (type !== "goal") {
+    return;
+  }
+
+  const goalState = requireLowercase(expectString(frontmatter, "goal_state", filePath), "goal_state", filePath);
+  if (!GOAL_STATE.has(goalState)) {
+    throw formatError(filePath, `goal_state must be one of ${Array.from(GOAL_STATE).join(", ")}`);
+  }
+
+  const goalCondition = expectString(frontmatter, "goal_condition", filePath);
+  if (goalCondition.length > 4000) {
+    throw formatError(filePath, "goal_condition must be 4000 characters or fewer");
+  }
+
+  const activeNode = optionalString(frontmatter, "active_node", filePath);
+  if (activeNode !== undefined) {
+    const normalized = requireLowercase(activeNode, "active_node", filePath);
+    if (!isPortableIdRef(normalized)) {
+      throw formatError(filePath, "active_node must be a local id or qid");
+    }
+  }
+
+  const scopeRefs = optionalList(frontmatter, "scope_refs", filePath);
+  for (const [index, value] of scopeRefs.entries()) {
+    if (typeof value !== "string" || value.trim().length === 0) {
+      throw formatError(filePath, `scope_refs[${index}] must not be empty`);
+    }
+    const normalized = requireLowercase(value, `scope_refs[${index}]`, filePath);
+    if (!isPortableIdRef(normalized)) {
+      throw formatError(filePath, `scope_refs[${index}] must be a local id or qid`);
+    }
+  }
+
+  const requiredSkills = optionalList(frontmatter, "required_skills", filePath);
+  normalizeSkillList(requiredSkills, filePath);
+
+  const requiredChecks = optionalList(frontmatter, "required_checks", filePath);
+  for (const [index, value] of requiredChecks.entries()) {
+    if (typeof value !== "string" || value.trim().length === 0) {
+      throw formatError(filePath, `required_checks[${index}] must not be empty`);
+    }
+  }
+
+  const maxIterations = optionalString(frontmatter, "max_iterations", filePath);
+  if (maxIterations !== undefined) {
+    parsePositiveIntegerString(maxIterations, "max_iterations", filePath);
+  }
+  const blockedAfterAttempts = optionalString(frontmatter, "blocked_after_attempts", filePath);
+  if (blockedAfterAttempts !== undefined) {
+    parsePositiveIntegerString(blockedAfterAttempts, "blocked_after_attempts", filePath);
+  }
+}
+
+function extractGoalAttributes(
+  type: string,
+  frontmatter: Record<string, FrontmatterValue>
+): Record<string, FrontmatterValue> {
+  if (type !== "goal") {
+    return {};
+  }
+  const attributes: Record<string, FrontmatterValue> = {};
+  for (const key of GOAL_ATTRIBUTE_KEYS) {
+    const value = frontmatter[key];
+    if (value !== undefined) {
+      attributes[key] = value;
+    }
+  }
+  return attributes;
+}
+
 function requireTemplateSchema(
   type: string,
   templateSchemas: TemplateSchemaMap,
@@ -271,6 +369,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   validateTemplateKeys(frontmatter, schema, filePath);
   validateAgentFrontmatter(type, frontmatter, filePath);
   validateArchiveFrontmatter(type, frontmatter, filePath);
+  validateGoalFrontmatter(type, frontmatter, filePath);
 
   const idValue = requireLowercase(expectString(frontmatter, "id", filePath), "id", filePath);
   const id = isPortableType
@@ -358,6 +457,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
 
   const edges = extractEdges(frontmatter, filePath, { allowPortableRefs: isPortableType });
   const attributes = {
+    ...extractGoalAttributes(type, frontmatter),
     ...extractAgentAttributes(type, frontmatter),
     ...extractArchiveAttributes(type, frontmatter),
   };

@@ -90,6 +90,7 @@ const VALUE_FLAGS = new Set([
   "--source-path",
   "--source-repo",
   "--max-stale-seconds",
+  "--requires",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -124,6 +125,7 @@ const BOOLEAN_FLAGS = new Set([
   "--with-scripts",
   "--clear-blocked-by",
   "--all",
+  "--fresh-only",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {

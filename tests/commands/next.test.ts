@@ -80,6 +80,16 @@ function writeTask(root: string, options: TaskOptions): void {
   if (options.next) {
     lines.push(`next: ${options.next}`);
   }
+  if (options.type === "goal") {
+    lines.push(
+      "goal_state: active",
+      "goal_condition: complete the goal",
+      "required_skills: []",
+      "required_checks: []",
+      "max_iterations: 25",
+      "blocked_after_attempts: 3"
+    );
+  }
   lines.push(
     "tags: []",
     "owners: []",
@@ -154,7 +164,7 @@ test("runNextCommand follows next across workspaces", () => {
   assert.ok(logs[0].includes("alpha:task-2"));
 });
 
-test("runNextCommand falls back to priority selection and excludes epic/checkpoint/done", () => {
+test("runNextCommand falls back to priority selection and excludes goal/epic/checkpoint/done", () => {
   const root = makeTempDir("mdkg-next-fallback-");
   writeConfig(root);
   writeDefaultTemplates(root);
@@ -179,6 +189,13 @@ test("runNextCommand falls back to priority selection and excludes epic/checkpoi
     title: "Lower priority",
     status: "progress",
     priority: 2,
+  });
+  writeTask(root, {
+    id: "goal-1",
+    type: "goal",
+    title: "Goal zero",
+    status: "progress",
+    priority: 0,
   });
   writeTask(root, {
     id: "epic-1",

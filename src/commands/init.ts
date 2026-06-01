@@ -472,6 +472,7 @@ export function runInitCommand(options: InitCommandOptions): void {
         ".mdkg/index/*.sqlite-wal",
         ".mdkg/index/*.sqlite-shm",
         ".mdkg/index/*.sqlite-journal",
+        ".mdkg/state/",
         ".mdkg/pack/",
         ".mdkg/archive/**/source/",
       ])) {

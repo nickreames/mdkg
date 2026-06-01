@@ -189,6 +189,34 @@ function writeTemplates(root: string): void {
       "updated: {{updated}}",
       "---",
     ].join("\n"),
+    goal: [
+      "---",
+      "id: {{id}}",
+      "type: goal",
+      "title: {{title}}",
+      "status: {{status}}",
+      "priority: {{priority}}",
+      "goal_state: active",
+      "goal_condition: {{title}}",
+      "scope_refs: []",
+      "active_node: {{active_node}}",
+      "required_skills: []",
+      "required_checks: []",
+      "max_iterations: 25",
+      "blocked_after_attempts: 3",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
     rule: [
       "---",
       "id: {{id}}",
@@ -450,6 +478,8 @@ type NodeOptions = {
   blocked_by?: string[];
   blocks?: string[];
   skills?: string[];
+  scope_refs?: string[];
+  active_node?: string;
   created?: string;
   updated?: string;
 };
@@ -498,6 +528,18 @@ function writeNode(root: string, options: NodeOptions): void {
   }
   if (options.skills) {
     lines.push(`skills: [${options.skills.join(", ")}]`);
+  }
+  if (options.type === "goal") {
+    lines.push("goal_state: active");
+    lines.push(`goal_condition: ${options.title ?? options.id}`);
+    lines.push(`scope_refs: [${(options.scope_refs ?? []).join(", ")}]`);
+    if (options.active_node) {
+      lines.push(`active_node: ${options.active_node}`);
+    }
+    lines.push("required_skills: []");
+    lines.push("required_checks: []");
+    lines.push("max_iterations: 25");
+    lines.push("blocked_after_attempts: 3");
   }
   lines.push(`created: ${options.created ?? "2026-01-06"}`);
   lines.push(`updated: ${options.updated ?? "2026-01-06"}`);
@@ -772,6 +814,42 @@ test("non-task roots use fallback ordering", () => {
       "root:chk-1",
     ]
   );
+});
+
+test("goal-root pack includes scoped recursive work closure", () => {
+  const root = makeTempDir("mdkg-pack-goal-scope-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, []);
+
+  writeNode(root, { id: "goal-1", type: "goal", status: "progress", priority: 1, scope_refs: ["epic-1"] });
+  writeNode(root, { id: "epic-1", type: "epic", status: "todo" });
+  writeNode(root, { id: "feat-1", type: "feat", status: "todo", epic: "epic-1" });
+  writeNode(root, { id: "task-1", type: "task", status: "todo", parent: "feat-1" });
+  writeNode(root, { id: "test-1", type: "test", status: "todo", epic: "epic-1" });
+  writeNode(root, { id: "task-99", type: "task", status: "todo", priority: 0 });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:goal-1",
+    depth: 0,
+    edges: [],
+    verbose: false,
+    maxNodes: config.pack.limits.max_nodes,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    wsHint: "root",
+    includeLatestCheckpoint: false,
+  });
+
+  assert.deepEqual(
+    result.pack.nodes.map((node: { qid: string }) => node.qid),
+    ["root:goal-1", "root:epic-1", "root:feat-1", "root:task-1", "root:test-1"]
+  );
+  assert.equal(result.pack.nodes.some((node: { qid: string }) => node.qid === "root:task-99"), false);
 });
 
 test("pack truncates by max_nodes", () => {

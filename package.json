@@ -1,14 +1,14 @@
 {
   "name": "mdkg",
-  "version": "0.1.3",
+  "version": "0.1.6",
   "description": "Markdown Knowledge Graph",
   "license": "MIT",
   "bin": {
     "mdkg": "dist/cli.js"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js",
-    "build:test": "tsc -p tsconfig.test.json",
+    "build": "node scripts/clean-build-output.js && tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js",
+    "build:test": "node scripts/clean-build-output.js tests && tsc -p tsconfig.test.json",
     "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js",
     "test:coverage": "npm run build && npm run build:test && node --test --experimental-test-coverage dist/tests/**/*.test.js",
     "smoke:consumer": "npm run build && node scripts/smoke-consumer.js",
@@ -18,15 +18,17 @@
     "smoke:capabilities": "npm run build && node scripts/smoke-capabilities.js",
     "smoke:archive-work": "npm run build && node scripts/smoke-archive-work.js",
     "smoke:bundle": "npm run build && node scripts/smoke-bundle.js",
-    "smoke:bundle-import": "npm run build && node scripts/smoke-bundle-import.js",
+    "smoke:bundle-import": "npm run smoke:subgraph",
     "smoke:visibility": "npm run build && node scripts/smoke-visibility.js",
     "smoke:sqlite": "npm run build && node scripts/smoke-sqlite.js",
     "smoke:parallel": "npm run build && node scripts/smoke-parallel.js",
+    "smoke:goal": "npm run build && node scripts/smoke-goal.js",
     "cli:snapshot": "npm run build && node scripts/cli_help_snapshot.js",
     "cli:check": "npm run build && node scripts/cli_help_snapshot.js --check",
     "prepack": "npm run build && node scripts/assert-publish-ready.js",
-    "prepublishOnly": "npm run test && npm run cli:check && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && npm run smoke:init && npm run smoke:capabilities && npm run smoke:archive-work && npm run smoke:bundle && npm run smoke:bundle-import && npm run smoke:visibility && npm run smoke:sqlite && npm run smoke:parallel && node scripts/assert-publish-ready.js",
-    "postinstall": "node scripts/postinstall.js"
+    "prepublishOnly": "npm run test && npm run cli:check && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && npm run smoke:init && npm run smoke:capabilities && npm run smoke:archive-work && npm run smoke:bundle && npm run smoke:subgraph && npm run smoke:visibility && npm run smoke:sqlite && npm run smoke:parallel && npm run smoke:goal && node scripts/assert-publish-ready.js",
+    "postinstall": "node scripts/postinstall.js",
+    "smoke:subgraph": "npm run build && node scripts/smoke-subgraph.js"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

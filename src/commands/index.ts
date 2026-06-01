@@ -20,7 +20,7 @@ export function runIndexCommand(options: IndexCommandOptions): void {
     console.log(`index written: ${path.relative(options.root, result.paths.nodes)}`);
     console.log(`skills index written: ${path.relative(options.root, result.paths.skills)}`);
     console.log(`capabilities index written: ${path.relative(options.root, result.paths.capabilities)}`);
-    console.log(`bundle imports index written: ${path.relative(options.root, result.paths.imports)}`);
+    console.log(`subgraphs index written: ${path.relative(options.root, result.paths.subgraphs)}`);
     if (result.paths.sqlite) {
       console.log(`sqlite index written: ${path.relative(options.root, result.paths.sqlite)}`);
     }

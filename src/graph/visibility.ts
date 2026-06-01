@@ -65,9 +65,9 @@ export function effectiveNodeVisibility(node: IndexNode, config: Config): Visibi
   if (isVisibility(workspaceVisibility)) {
     return workspaceVisibility;
   }
-  const importVisibility = config.bundle_imports[node.ws]?.visibility;
-  if (isVisibility(importVisibility)) {
-    return importVisibility;
+  const subgraphVisibility = config.subgraphs[node.ws]?.visibility;
+  if (isVisibility(subgraphVisibility)) {
+    return subgraphVisibility;
   }
   return "private";
 }

@@ -270,3 +270,153 @@ test("runValidateCommand fails public records that reference private graph recor
   assert.equal(receipt.ok, false);
   assert.ok(receipt.errors.some((error) => error.includes("visibility: root:task-1")));
 });
+
+test("runValidateCommand accepts recursive goal scope active_node descendants", () => {
+  const root = makeTempDir("mdkg-validate-goal-scope-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(
+    path.join(root, ".mdkg", "work", "goal-1.md"),
+    [
+      "---",
+      "id: goal-1",
+      "type: goal",
+      "title: Scoped goal",
+      "status: progress",
+      "priority: 1",
+      "goal_state: active",
+      "goal_condition: complete scoped task",
+      "scope_refs: [epic-1]",
+      "active_node: task-1",
+      "required_skills: []",
+      "required_checks: []",
+      "max_iterations: 25",
+      "blocked_after_attempts: 3",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-01",
+      "updated: 2026-06-01",
+      "---",
+      "",
+      "# Objective",
+      "",
+      "# End Condition",
+      "",
+      "# Acceptance Criteria",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, ".mdkg", "work", "epic-1.md"),
+    [
+      "---",
+      "id: epic-1",
+      "type: epic",
+      "title: Scope epic",
+      "status: todo",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-01",
+      "updated: 2026-06-01",
+      "---",
+      "",
+      "# Goal",
+      "",
+      "# Scope",
+      "",
+      "# Milestones",
+      "",
+      "# Out of Scope",
+      "",
+      "# Risks",
+      "",
+      "# Links / Artifacts",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, ".mdkg", "work", "feat-1.md"),
+    [
+      "---",
+      "id: feat-1",
+      "type: feat",
+      "title: Scope feature",
+      "status: todo",
+      "priority: 1",
+      "epic: epic-1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-01",
+      "updated: 2026-06-01",
+      "---",
+      "",
+      "# Overview",
+      "",
+      "# Acceptance Criteria",
+      "",
+      "# Notes",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, ".mdkg", "work", "task-1.md"),
+    [
+      "---",
+      "id: task-1",
+      "type: task",
+      "title: Scoped task",
+      "status: todo",
+      "priority: 1",
+      "parent: feat-1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-01",
+      "updated: 2026-06-01",
+      "---",
+      "",
+      "# Overview",
+      "",
+      "# Acceptance Criteria",
+      "",
+      "# Files Affected",
+      "",
+      "# Implementation Notes",
+      "",
+      "# Test Plan",
+      "",
+      "# Links / Artifacts",
+    ].join("\n")
+  );
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true, quiet: true }));
+  const receipt = JSON.parse(output.stdout) as { ok: boolean; errors: string[] };
+  assert.equal(output.error, undefined);
+  assert.equal(receipt.ok, true);
+  assert.deepEqual(receipt.errors, []);
+});

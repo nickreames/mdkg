@@ -317,7 +317,7 @@ function resolveWorkNode(
   }
   if (node.source?.imported) {
     throw new UsageError(
-      `cannot mutate read-only imported node ${node.qid}; update the source workspace for bundle import ${node.source.import_alias}`
+      `cannot mutate read-only subgraph node ${node.qid}; update the source workspace for subgraph ${node.source.subgraph_alias}`
     );
   }
   return node;
