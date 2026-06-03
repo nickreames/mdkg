@@ -78,9 +78,12 @@ active runtime SQLite database. Run `mdkg db migrate` after init to create or
 update the active runtime SQLite database with mdkg-owned generic foundation
 migrations. Use `mdkg db verify` for non-mutating health checks and
 `mdkg db stats` for table counts, DB size, migration state, and receipt-file
-counts. Keep active runtime DB files and transient WAL/SHM/journal, lock, and
-temp files ignored. Commit schema files, manifests, receipts, and sealed state
-snapshots only by explicit repo policy.
+counts. Use `mdkg db snapshot seal` to create an opt-in sealed checkpoint under
+`.mdkg/db/state`, then use `mdkg db snapshot verify/status` for integrity and
+freshness checks. Use `mdkg db snapshot dump/diff` as deterministic review aids
+for SQLite snapshots. Keep active runtime DB files and transient
+WAL/SHM/journal, lock, and temp files ignored. Commit schema files, manifests,
+receipts, and sealed state snapshots only by explicit repo policy.
 
 Recommended:
 

@@ -2,21 +2,21 @@
 id: task-192
 type: task
 title: define privacy redaction git lfs and public export policy
-status: todo
+status: done
 priority: 1
 epic: epic-29
 tags: [project-db, privacy, redaction, git-lfs, export]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/design/edd-13-project-db-sealed-snapshot-and-canonical-dump-architecture.md, .mdkg/work/task-234-design-profile-privacy-export-and-redaction-gates.md, .mdkg/work/task-242-update-db-snapshot-docs-doctor-ignore-and-publish-readiness.md]
 relates: [epic-29, epic-31, epic-34, task-182, task-185, task-186]
-blocked_by: [task-182, task-185, task-186]
+blocked_by: []
 blocks: [task-193]
 refs: [rule-4]
 aliases: [project-db-privacy-policy]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-03
 ---
 
 # Overview
@@ -60,3 +60,10 @@ artifacts, not frequent state mutation history.
 - `epic-31`
 - `epic-34`
 - `rule-4`
+
+# Closeout Evidence
+
+This broad roadmap task is closed as decomposition work. Basic sealed snapshot
+Git/privacy policy is captured in `edd-13` and implementation task `task-242`.
+Profile-level redaction and public export gates remain future work under
+`task-234`.

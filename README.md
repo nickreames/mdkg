@@ -355,6 +355,12 @@ Use `mdkg db verify` for non-mutating health checks over config, layout,
 runtime SQLite integrity, migration metadata, and transient runtime files. Use
 `mdkg db stats` for deterministic table counts, DB size, migration state,
 receipt-file count, and state snapshot presence.
+Use `mdkg db snapshot seal` to create an explicit sealed checkpoint at
+`.mdkg/db/state/project.sqlite` with `.mdkg/db/state/project.manifest.json`.
+Use `mdkg db snapshot verify` and `mdkg db snapshot status` for checkpoint
+health, and use `mdkg db snapshot dump` / `mdkg db snapshot diff` as
+deterministic review aids for SQLite snapshots instead of comparing raw binary
+bytes.
 Schema files, manifests, receipt artifacts, and opt-in sealed snapshots remain
 commit-eligible by explicit repo policy. `mdkg doctor` warns when active runtime
 or transient project DB files are present so they are not accidentally committed

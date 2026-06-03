@@ -2,21 +2,21 @@
 id: task-186
 type: task
 title: define canonical dump and sqlite diff review aids
-status: todo
+status: done
 priority: 1
 epic: epic-29
 tags: [project-db, canonical-dump, diff, review]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/design/edd-13-project-db-sealed-snapshot-and-canonical-dump-architecture.md, .mdkg/work/task-240-implement-db-snapshot-canonical-dump.md, .mdkg/work/task-241-implement-db-snapshot-diff.md]
 relates: [epic-29, epic-31, task-185]
-blocked_by: [task-185]
+blocked_by: []
 blocks: [task-192, task-193]
-refs: []
+refs: [edd-13]
 aliases: [sqlite-canonical-diff]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-03
 ---
 
 # Overview
@@ -54,3 +54,12 @@ and should be reproducible from the sealed snapshot.
 
 - `epic-31`
 - `task-185`
+
+# Closeout Evidence
+
+This broad roadmap task is closed as decomposition work. Canonical dump and
+reviewable diff requirements are now captured in `edd-13` and the granular
+implementation tasks:
+
+- `task-240`: canonical snapshot dump.
+- `task-241`: snapshot diff over canonical dumps.

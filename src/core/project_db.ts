@@ -9,6 +9,7 @@ export const PROJECT_DB_STATE_DIR = ".mdkg/db/state";
 export const PROJECT_DB_RECEIPTS_DIR = ".mdkg/db/receipts";
 export const PROJECT_DB_RUNTIME_FILE = ".mdkg/db/runtime/project.sqlite";
 export const PROJECT_DB_STATE_FILE = ".mdkg/db/state/project.sqlite";
+export const PROJECT_DB_STATE_MANIFEST_FILE = ".mdkg/db/state/project.manifest.json";
 export const PROJECT_DB_MANIFEST_FILE = ".mdkg/db/project-db.json";
 export const PROJECT_DB_CONFIG_SCHEMA_VERSION = 1;
 export const PROJECT_DB_MIGRATION_TABLE = "mdkg_schema_migration";
@@ -65,6 +66,7 @@ export type ConfiguredProjectDbLayout = {
   runtimeFile: string;
   runtimeDir: string;
   stateFile: string;
+  stateManifest: string;
   stateDir: string;
   receipts: string;
   manifest: string;
@@ -109,6 +111,10 @@ export function resolveConfiguredProjectDbLayout(
 ): ConfiguredProjectDbLayout {
   const runtimeFile = path.resolve(root, config.runtime_path);
   const stateFile = path.resolve(root, config.state_path);
+  const stateManifest = path.join(
+    path.dirname(stateFile),
+    `${path.basename(stateFile, path.extname(stateFile))}.manifest.json`
+  );
   return {
     root,
     db: path.resolve(root, config.root_path),
@@ -117,6 +123,7 @@ export function resolveConfiguredProjectDbLayout(
     runtimeFile,
     runtimeDir: path.dirname(runtimeFile),
     stateFile,
+    stateManifest,
     stateDir: path.dirname(stateFile),
     receipts: path.resolve(root, config.receipts_path),
     manifest: path.resolve(root, config.root_path, "project-db.json"),

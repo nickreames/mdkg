@@ -53,6 +53,11 @@ test("cli help covers the remaining command help surfaces", () => {
   assert.equal(dbIndex.status, 0);
   assert.match(dbIndex.stdout, /mdkg db index status \[--json\]/);
   assert.match(dbIndex.stdout, /`mdkg index` remains the compatibility shortcut/);
+
+  const dbSnapshot = runCli(["help", "db", "snapshot"]);
+  assert.equal(dbSnapshot.status, 0);
+  assert.match(dbSnapshot.stdout, /mdkg db snapshot seal \[--json\]/);
+  assert.match(dbSnapshot.stdout, /mdkg db snapshot dump \[--snapshot <path>\] \[--output <path>\] \[--json\]/);
 });
 
 test("cli command --help routes to command-specific help", () => {

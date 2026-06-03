@@ -16,11 +16,12 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 - Added `mdkg db init` to create the generic project DB scaffold, write `.mdkg/db/project-db.json`, and enable `db.enabled` without creating an active runtime SQLite database.
 - Added `mdkg db migrate` using Node's built-in `node:sqlite` for mdkg-owned generic foundation migrations with migration keys, order, checksums, and applied timestamps.
 - Added `mdkg db verify` and `mdkg db stats` for non-mutating project DB health checks and deterministic summaries.
+- Added `mdkg db snapshot seal/verify/status/dump/diff` for opt-in sealed SQLite checkpoints, manifests, canonical dumps, and deterministic review diffs.
 - Added prefix-based cross-subgraph graph references so root-authored nodes can point at configured child graph qids such as `child_repo:work.example`.
 - Added `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]` to rebuild root-owned child bundle snapshots from configured clean child Git repo `source_path` entries.
 - Added `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]` for generated read-only inspection trees extracted from configured subgraph bundles.
 - Added unit and packed-package smoke coverage for subgraph sync dry-runs, child Git cleanliness checks, root-owned bundle refresh, materialization marker safety, and cross-subgraph refs.
-- Added unit, packed-package init, and dedicated `smoke:db` coverage for `db init`, `db migrate`, `db verify`, and `db stats`.
+- Added unit, packed-package init, dedicated `smoke:db`, and `smoke:db-snapshot` coverage for project DB runtime and sealed snapshot workflows.
 
 ### Changed
 

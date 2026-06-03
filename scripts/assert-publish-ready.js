@@ -63,6 +63,7 @@ function requireBuildFolders() {
   requireFile("dist/graph/subgraphs.js");
   requireFile("dist/graph/sqlite_index.js");
   requireFile("dist/core/project_db_migrations.js");
+  requireFile("dist/core/project_db_snapshot.js");
   requireFile("dist/graph/reindex.js");
   requireFile("dist/graph/visibility.js");
   requireFile("dist/graph/node_body.js");
@@ -128,7 +129,8 @@ function requireInitAssets() {
     !seededAgentStart.includes("mdkg db init") ||
     !seededAgentStart.includes("mdkg db migrate") ||
     !seededAgentStart.includes("mdkg db verify") ||
-    !seededAgentStart.includes("mdkg db stats")
+    !seededAgentStart.includes("mdkg db stats") ||
+    !seededAgentStart.includes("mdkg db snapshot seal")
   ) {
     fail("dist/init/AGENT_START.md is missing project DB onboarding guidance");
   }
@@ -146,7 +148,8 @@ function requireInitAssets() {
     !seededReadme.includes("mdkg db init") ||
     !seededReadme.includes("mdkg db migrate") ||
     !seededReadme.includes("mdkg db verify") ||
-    !seededReadme.includes("mdkg db stats")
+    !seededReadme.includes("mdkg db stats") ||
+    !seededReadme.includes("mdkg db snapshot seal")
   ) {
     fail("dist/init/README.md is missing project DB onboarding guidance");
   }

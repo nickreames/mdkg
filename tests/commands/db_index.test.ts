@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import crypto from "crypto";
 import fs from "fs";
 import os from "os";
 import path from "path";
@@ -61,6 +62,10 @@ function readConfig(root: string): any {
 
 function writeConfig(root: string, config: unknown): void {
   fs.writeFileSync(path.join(root, ".mdkg", "config.json"), `${JSON.stringify(config, null, 2)}\n`, "utf8");
+}
+
+function sha256File(filePath: string): string {
+  return `sha256:${crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")}`;
 }
 
 test("db index rebuild status and verify work in json backend", () => {
@@ -394,4 +399,106 @@ test("db index rebuild restores missing sqlite cache and verify detects corrupt 
   const corruptVerify = runCli(root, ["db", "index", "verify", "--json"]);
   assert.notEqual(corruptVerify.status, 0);
   assert.match(parseJson(corruptVerify.stdout).errors.join("\n"), /failed to read SQLite cache|file is not a database/);
+});
+
+test("db snapshot seal verify status dump and diff work", () => {
+  const root = makeRoot("mdkg-db-snapshot-lifecycle-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+
+  const missingVerify = runCli(root, ["db", "snapshot", "verify", "--json"]);
+  assert.notEqual(missingVerify.status, 0);
+  assert.equal(parseJson(missingVerify.stdout).status, "missing");
+
+  const missingStatus = runCli(root, ["db", "snapshot", "status", "--json"]);
+  assert.equal(missingStatus.status, 0, missingStatus.stderr);
+  assert.equal(parseJson(missingStatus.stdout).status, "missing");
+
+  const missingSeal = runCli(root, ["db", "snapshot", "seal", "--json"]);
+  assert.notEqual(missingSeal.status, 0);
+  assert.match(missingSeal.stderr, /db snapshot seal requires a valid project DB/);
+
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  const firstSeal = runCli(root, ["db", "snapshot", "seal", "--json"]);
+  assert.equal(firstSeal.status, 0, firstSeal.stderr);
+  const firstSealPayload = parseJson(firstSeal.stdout);
+  assert.equal(firstSealPayload.action, "db-snapshot-seal");
+  assert.equal(firstSealPayload.snapshot, ".mdkg/db/state/project.sqlite");
+  assert.equal(firstSealPayload.manifest, ".mdkg/db/state/project.manifest.json");
+  assert.equal(firstSealPayload.old_snapshot_sha256, null);
+  assert.equal(firstSealPayload.table_counts.some((table: any) => table.name === "project_meta"), true);
+  const snapshotPath = path.join(root, ".mdkg", "db", "state", "project.sqlite");
+  const manifestPath = path.join(root, ".mdkg", "db", "state", "project.manifest.json");
+  assert.equal(fs.existsSync(snapshotPath), true);
+  assert.equal(fs.existsSync(manifestPath), true);
+
+  const verify = runCli(root, ["db", "snapshot", "verify", "--json"]);
+  assert.equal(verify.status, 0, verify.stderr);
+  const verifyPayload = parseJson(verify.stdout);
+  assert.equal(verifyPayload.status, "valid");
+  assert.equal(verifyPayload.checks.every((check: any) => !String(check.path ?? "").startsWith(root)), true);
+
+  const dump = runCli(root, ["db", "snapshot", "dump", "--output", ".mdkg/db/state/project.dump.txt", "--json"]);
+  assert.equal(dump.status, 0, dump.stderr);
+  const dumpPayload = parseJson(dump.stdout);
+  assert.equal(dumpPayload.action, "db-snapshot-dump");
+  assert.equal(dumpPayload.output, ".mdkg/db/state/project.dump.txt");
+  const dumpText = fs.readFileSync(path.join(root, ".mdkg", "db", "state", "project.dump.txt"), "utf8");
+  assert.match(dumpText, /# mdkg project db canonical dump v1/);
+  assert.match(dumpText, /table project_meta/);
+
+  const firstSnapshotCopy = path.join(root, ".mdkg", "db", "state", "first.sqlite");
+  fs.copyFileSync(snapshotPath, firstSnapshotCopy);
+  const { DatabaseSync } = require("node:sqlite");
+  const db = new DatabaseSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite"));
+  try {
+    db.exec("CREATE TABLE fixture_item (id TEXT PRIMARY KEY, name TEXT NOT NULL, payload BLOB) STRICT;");
+    db.prepare("INSERT INTO fixture_item (id, name, payload) VALUES (?, ?, ?)")
+      .run("fixture-1", "Changed", Buffer.from("payload"));
+  } finally {
+    db.close();
+  }
+
+  const staleStatus = runCli(root, ["db", "snapshot", "status", "--json"]);
+  assert.equal(staleStatus.status, 0, staleStatus.stderr);
+  assert.equal(parseJson(staleStatus.stdout).status, "stale");
+
+  const secondSeal = runCli(root, ["db", "snapshot", "seal", "--json"]);
+  assert.equal(secondSeal.status, 0, secondSeal.stderr);
+  assert.notEqual(parseJson(secondSeal.stdout).old_snapshot_sha256, null);
+
+  const currentDump = runCli(root, ["db", "snapshot", "dump"]);
+  assert.equal(currentDump.status, 0, currentDump.stderr);
+  assert.match(currentDump.stdout, /table fixture_item/);
+  assert.match(currentDump.stdout, /blob_sha256/);
+
+  const diff = runCli(root, ["db", "snapshot", "diff", ".mdkg/db/state/first.sqlite", ".mdkg/db/state/project.sqlite", "--json"]);
+  assert.equal(diff.status, 0, diff.stderr);
+  const diffPayload = parseJson(diff.stdout);
+  assert.equal(diffPayload.action, "db-snapshot-diff");
+  assert.equal(diffPayload.changed_count > 0, true);
+  assert.equal(diffPayload.added.some((line: string) => line.includes("fixture_item")), true);
+});
+
+test("db snapshot verify detects manifest drift and corrupt snapshots", () => {
+  const root = makeRoot("mdkg-db-snapshot-invalid-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "snapshot", "seal", "--json"]).status, 0);
+  const snapshotPath = path.join(root, ".mdkg", "db", "state", "project.sqlite");
+  const manifestPath = path.join(root, ".mdkg", "db", "state", "project.manifest.json");
+
+  const manifest = parseJson(fs.readFileSync(manifestPath, "utf8"));
+  manifest.snapshot_sha256 = "sha256:drift";
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  const drift = runCli(root, ["db", "snapshot", "verify", "--json"]);
+  assert.notEqual(drift.status, 0);
+  assert.match(parseJson(drift.stdout).errors.join("\n"), /snapshot hash mismatch/);
+
+  fs.writeFileSync(snapshotPath, "not sqlite", "utf8");
+  manifest.snapshot_sha256 = sha256File(snapshotPath);
+  manifest.byte_size = fs.statSync(snapshotPath).size;
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  const corrupt = runCli(root, ["db", "snapshot", "verify", "--json"]);
+  assert.notEqual(corrupt.status, 0);
+  assert.match(parseJson(corrupt.stdout).errors.join("\n"), /snapshot SQLite integrity failed|file is not a database/);
 });
