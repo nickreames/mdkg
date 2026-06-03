@@ -2,12 +2,12 @@
 id: epic-30
 type: epic
 title: mdkg db command surface and project db foundation
-status: todo
+status: done
 priority: 1
 tags: [project-db, db-cli, sqlite, foundation]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/commands/db.ts, src/core/project_db_migrations.ts, scripts/smoke-db.js, CLI_COMMAND_MATRIX.md, CHANGELOG.md]
 relates: [epic-29, epic-20, edd-12, goal-1]
 blocked_by: []
 blocks: [task-181, task-182, task-183, task-184, task-223, task-224, task-225, task-226, task-227, task-228, task-229, task-230, task-231]
@@ -15,7 +15,7 @@ refs: [edd-12]
 aliases: [project-db-foundation, mdkg-db-cli]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-03
 ---
 
 # Overview
@@ -75,3 +75,41 @@ application databases.
 - `task-182`
 - `task-183`
 - `task-184`
+- `task-223`
+- `task-224`
+- `task-225`
+- `task-226`
+- `task-227`
+- `task-228`
+- `task-229`
+- `task-230`
+- `task-231`
+
+# Closeout Evidence
+
+`epic-30` is complete for the `0.1.7` DB foundation slice.
+
+Implemented behavior:
+
+- `mdkg db` namespace, help, dispatch, command matrix, and seeded docs.
+- `mdkg db index rebuild|status|verify`, with `mdkg index` preserved as the
+  compatibility shortcut for the same rebuild behavior.
+- `.mdkg/db/{schema,runtime,state,receipts}` layout, ignore policy, and
+  project DB config defaults.
+- `mdkg db init`, `mdkg db migrate`, `mdkg db verify`, and `mdkg db stats`
+  using Node `node:sqlite`.
+- Generic foundation migration files and runtime DB schema checks.
+- Unit tests, CLI parity tests, packed temp smoke coverage, and dry-run publish
+  readiness.
+
+Deferred profile work:
+
+- `task-232`, `task-233`, and `task-234` are linked under `epic-34` for project
+  DB profile contract, first profile fixture/smoke, and privacy export gates.
+
+Final gate evidence recorded on `task-231` includes `npm run test`,
+`npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:db`,
+`node scripts/assert-publish-ready.js`, isolated `npm pack --dry-run --json`,
+isolated `npm publish --dry-run`, and `git diff --check`.
+
+No real npm publish occurred.

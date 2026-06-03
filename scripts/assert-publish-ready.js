@@ -62,6 +62,7 @@ function requireBuildFolders() {
   requireFile("dist/commands/subgraph.js");
   requireFile("dist/graph/subgraphs.js");
   requireFile("dist/graph/sqlite_index.js");
+  requireFile("dist/core/project_db_migrations.js");
   requireFile("dist/graph/reindex.js");
   requireFile("dist/graph/visibility.js");
   requireFile("dist/graph/node_body.js");
@@ -123,6 +124,14 @@ function requireInitAssets() {
   if (!seededAgentStart.includes("mdkg goal select") || !seededAgentStart.includes("mdkg goal claim")) {
     fail("dist/init/AGENT_START.md is missing goal onboarding guidance");
   }
+  if (
+    !seededAgentStart.includes("mdkg db init") ||
+    !seededAgentStart.includes("mdkg db migrate") ||
+    !seededAgentStart.includes("mdkg db verify") ||
+    !seededAgentStart.includes("mdkg db stats")
+  ) {
+    fail("dist/init/AGENT_START.md is missing project DB onboarding guidance");
+  }
   const seededReadme = requireFile("dist/init/README.md");
   if (!seededReadme.includes("mdkg subgraph add") || !seededReadme.includes("mdkg subgraph verify")) {
     fail("dist/init/README.md is missing subgraph onboarding guidance");
@@ -132,6 +141,14 @@ function requireInitAssets() {
     !seededReadme.includes("mdkg goal select/current/next/claim/evaluate")
   ) {
     fail("dist/init/README.md is missing goal onboarding guidance");
+  }
+  if (
+    !seededReadme.includes("mdkg db init") ||
+    !seededReadme.includes("mdkg db migrate") ||
+    !seededReadme.includes("mdkg db verify") ||
+    !seededReadme.includes("mdkg db stats")
+  ) {
+    fail("dist/init/README.md is missing project DB onboarding guidance");
   }
   for (const template of [
     "archive.md",

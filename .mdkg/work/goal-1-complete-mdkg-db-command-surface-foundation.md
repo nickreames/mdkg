@@ -2,12 +2,11 @@
 id: goal-1
 type: goal
 title: Complete mdkg db command surface foundation
-status: todo
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: Complete epic-30 so mdkg has a validated, documented, prepublish-ready db command foundation that clearly separates rebuildable index caches from project application databases.
 scope_refs: [epic-30]
-active_node: task-231
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, node dist/cli.js validate, smoke tests for changed db behavior, node scripts/assert-publish-ready.js, npm pack dry-run, npm publish dry-run, git diff --check]
 max_iterations: 25
@@ -15,7 +14,7 @@ blocked_after_attempts: 3
 tags: [project-db, goal, pre-v1]
 owners: []
 links: []
-artifacts: []
+artifacts: [epic-30, task-231, scripts/smoke-db.js, src/commands/db.ts, src/core/project_db_migrations.ts]
 relates: [epic-30]
 blocked_by: []
 blocks: []
@@ -23,7 +22,7 @@ refs: [edd-12]
 aliases: [db-foundation-goal, mdkg-db-goal]
 skills: [pursue-mdkg-goal]
 created: 2026-06-02
-updated: 2026-06-02
+updated: 2026-06-03
 ---
 # Objective
 
@@ -129,4 +128,17 @@ implementation pass should start with the first granular task under `epic-30`.
 
 # Completion Evidence
 
-- Pending.
+- `task-181` through `task-184` were closed as definition/decomposition work.
+- `task-223` through `task-231` were completed under `epic-30`.
+- `epic-30` is closed with the DB command surface foundation implemented:
+  `mdkg db index rebuild|status|verify`, `mdkg db init`, `mdkg db migrate`,
+  `mdkg db verify`, and `mdkg db stats`.
+- Fresh/packed DB smoke coverage was added through `npm run smoke:db`.
+- Final prepublish dry-run gate passed, including `npm run test`,
+  `npm run cli:check`, `node dist/cli.js validate`,
+  `node scripts/assert-publish-ready.js`, isolated
+  `npm pack --dry-run --json`, isolated `npm publish --dry-run`, and
+  `git diff --check`.
+- Project DB profiles remain intentionally deferred and are now captured by
+  `task-232`, `task-233`, and `task-234` under `epic-34`.
+- No real npm publish occurred.
