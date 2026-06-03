@@ -884,6 +884,12 @@ Boundaries:
 - `mdkg index` remains the compatibility shortcut for index rebuilds
 - no raw SQL, hosted queue, profile, or publish behavior is exposed here
 
+Index behavior:
+- `mdkg db index rebuild` writes the same derived caches as `mdkg index`
+- `mdkg db index status` reports cache health without mutating files
+- `mdkg db index verify` fails on missing, stale, corrupt, schema-mismatched,
+  or SQLite source-fingerprint-mismatched cache state
+
 ### `mdkg guide`
 
 Usage:

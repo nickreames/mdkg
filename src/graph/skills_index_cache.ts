@@ -46,7 +46,7 @@ function listFilesAndDirectories(dir: string): string[] {
   return items;
 }
 
-function isSkillsIndexStale(root: string, config: Config): boolean {
+export function isSkillsIndexStale(root: string, config: Config): boolean {
   const indexPath = resolveSkillsIndexPath(root);
   if (!fs.existsSync(indexPath)) {
     return true;

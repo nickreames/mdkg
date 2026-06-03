@@ -14,6 +14,11 @@ import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
 import {
+  runDbIndexRebuildCommand,
+  runDbIndexStatusCommand,
+  runDbIndexVerifyCommand,
+} from "./commands/db";
+import {
   runCapabilityListCommand,
   runCapabilityResolveCommand,
   runCapabilitySearchCommand,
@@ -1143,19 +1148,32 @@ function runWorkspaceSubcommand(
   }
 }
 
-function runDbSubcommand(parsed: ParsedArgs): ExitCode {
+function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
   switch (subcommand) {
     case "index": {
       const action = (parsed.positionals[2] ?? "").toLowerCase();
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const tolerant = parseBooleanFlag("--tolerant", parsed.flags["--tolerant"]);
       switch (action) {
         case "rebuild":
+          if (parsed.positionals.length > 3) {
+            throw new UsageError(`mdkg db index ${action} does not accept positional arguments`);
+          }
+          runDbIndexRebuildCommand({ root, tolerant, json });
+          return 0;
         case "status":
+          if (parsed.positionals.length > 3) {
+            throw new UsageError(`mdkg db index ${action} does not accept positional arguments`);
+          }
+          runDbIndexStatusCommand({ root, tolerant, json });
+          return 0;
         case "verify":
           if (parsed.positionals.length > 3) {
             throw new UsageError(`mdkg db index ${action} does not accept positional arguments`);
           }
-          throw new UsageError(`mdkg db index ${action} is planned; implementation is scoped to task-224`);
+          runDbIndexVerifyCommand({ root, tolerant, json });
+          return 0;
         default:
           throw new UsageError("mdkg db index requires rebuild/status/verify");
       }
@@ -2077,7 +2095,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
     case "workspace":
       return runWorkspaceSubcommand(parsed, root);
     case "db":
-      return runDbSubcommand(parsed);
+      return runDbSubcommand(parsed, root);
     case "skill":
       return runSkillSubcommand(parsed, root);
     case "capability":

@@ -13,6 +13,7 @@ type DatabaseSyncType = {
   prepare(sql: string): {
     run(...values: unknown[]): unknown;
     get(...values: unknown[]): Record<string, unknown> | undefined;
+    all(...values: unknown[]): Array<Record<string, unknown>>;
   };
   close(): void;
 };
@@ -178,6 +179,36 @@ function buildSourceFingerprint(options: {
     subgraphs: options.subgraphsIndex.subgraphs,
   };
   return `sha256:${crypto.createHash("sha256").update(stableCacheJson(payload)).digest("hex")}`;
+}
+
+export function sqliteSourceFingerprint(options: {
+  root: string;
+  nodeIndex: Index;
+  skillsIndex: SkillsIndex;
+  capabilitiesIndex: CapabilitiesIndex;
+  subgraphsIndex: SubgraphsIndex;
+}): string {
+  const nodeHashes = new Map<string, string | undefined>();
+  for (const node of Object.values(options.nodeIndex.nodes)) {
+    nodeHashes.set(node.qid, nodeSourceHash(options.root, node.path));
+  }
+  return buildSourceFingerprint({ ...options, nodeHashes });
+}
+
+export function readSqliteIndexMeta(root: string, config: Config): Record<string, string> {
+  const sqlitePath = resolveSqlitePath(root, config);
+  const DatabaseSync = loadDatabaseCtor();
+  const db = new DatabaseSync(sqlitePath);
+  try {
+    const rows = db.prepare("SELECT key, value FROM meta").all();
+    const meta: Record<string, string> = {};
+    for (const row of rows) {
+      meta[String(row.key)] = String(row.value);
+    }
+    return meta;
+  } finally {
+    db.close();
+  }
 }
 
 export function writeSqliteIndex(options: {
