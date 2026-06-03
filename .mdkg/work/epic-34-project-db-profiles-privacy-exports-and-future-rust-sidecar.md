@@ -10,7 +10,7 @@ links: []
 artifacts: []
 relates: [epic-29, epic-31, epic-32]
 blocked_by: []
-blocks: [task-183, task-192, task-193]
+blocks: [task-183, task-192, task-193, task-232, task-233, task-234]
 refs: []
 aliases: [project-db-profiles, rust-sidecar-roadmap]
 skills: []
@@ -67,3 +67,6 @@ deterministic sidecar responsibilities.
 - `task-183`
 - `task-192`
 - `task-193`
+- `task-232`
+- `task-233`
+- `task-234`

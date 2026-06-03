@@ -20,7 +20,7 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 - Added `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]` to rebuild root-owned child bundle snapshots from configured clean child Git repo `source_path` entries.
 - Added `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]` for generated read-only inspection trees extracted from configured subgraph bundles.
 - Added unit and packed-package smoke coverage for subgraph sync dry-runs, child Git cleanliness checks, root-owned bundle refresh, materialization marker safety, and cross-subgraph refs.
-- Added unit and packed-package init smoke coverage for `db init`, `db migrate`, `db verify`, and `db stats`.
+- Added unit, packed-package init, and dedicated `smoke:db` coverage for `db init`, `db migrate`, `db verify`, and `db stats`.
 
 ### Changed
 
