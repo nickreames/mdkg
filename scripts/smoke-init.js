@@ -261,6 +261,14 @@ function exerciseDbInit(binPath, tempRoot) {
   if (repeatMigrate.applied_count !== 0 || repeatMigrate.skipped_count !== 1) {
     throw new Error(`repeat db migrate should be idempotent: ${JSON.stringify(repeatMigrate, null, 2)}`);
   }
+  const verify = parseJson(mdkg(binPath, ["db", "verify", "--json"], root).stdout);
+  if (verify.action !== "db-verify" || verify.ok !== true || verify.failure_count !== 0) {
+    throw new Error(`unexpected db verify receipt: ${JSON.stringify(verify, null, 2)}`);
+  }
+  const stats = parseJson(mdkg(binPath, ["db", "stats", "--json"], root).stdout);
+  if (stats.action !== "db-stats" || stats.ok !== true || stats.migration_count !== 1) {
+    throw new Error(`unexpected db stats receipt: ${JSON.stringify(stats, null, 2)}`);
+  }
   mdkg(binPath, ["validate"], root);
 }
 

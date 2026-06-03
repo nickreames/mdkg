@@ -76,9 +76,11 @@ Fresh mdkg workspaces default to `index.backend: sqlite`; `.mdkg/index/mdkg.sqli
 `.mdkg/db/project-db.json`, and enable `db.enabled`; it does not create an
 active runtime SQLite database. Run `mdkg db migrate` after init to create or
 update the active runtime SQLite database with mdkg-owned generic foundation
-migrations. Keep active runtime DB files and transient WAL/SHM/journal, lock,
-and temp files ignored. Commit schema files, manifests, receipts, and sealed
-state snapshots only by explicit repo policy.
+migrations. Use `mdkg db verify` for non-mutating health checks and
+`mdkg db stats` for table counts, DB size, migration state, and receipt-file
+counts. Keep active runtime DB files and transient WAL/SHM/journal, lock, and
+temp files ignored. Commit schema files, manifests, receipts, and sealed state
+snapshots only by explicit repo policy.
 
 Recommended:
 

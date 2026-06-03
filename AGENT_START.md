@@ -105,9 +105,10 @@ Capability discovery:
 - `.mdkg/db` is project application state; use `mdkg db init` to create the
   generic scaffold and enable `db.enabled` without creating an active runtime
   SQLite database. Use `mdkg db migrate` after init to create or update the
-  runtime SQLite database with mdkg-owned generic foundation migrations. Keep
-  `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files ignored unless a
-  sealed artifact policy explicitly says otherwise.
+  runtime SQLite database with mdkg-owned generic foundation migrations. Use
+  `mdkg db verify` and `mdkg db stats` for non-mutating health and summary
+  receipts. Keep `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files ignored
+  unless a sealed artifact policy explicitly says otherwise.
 
 ## Product-specific conventions
 

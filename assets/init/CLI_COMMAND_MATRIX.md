@@ -47,6 +47,10 @@ Project database commands:
   database and applies mdkg-owned generic foundation migrations only
 - `mdkg db migrate` records migration order, checksums, and applied timestamps
   in the configured migration table
+- `mdkg db verify` checks config, layout, runtime SQLite integrity, migration
+  metadata, receipt directory policy, and transient runtime files
+- `mdkg db stats` reports table counts, database size, migration state,
+  transient runtime files, receipt-file count, and state snapshot presence
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:

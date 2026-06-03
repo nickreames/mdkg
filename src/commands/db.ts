@@ -6,7 +6,11 @@ import { configPath } from "../core/paths";
 import {
   resolveConfiguredProjectDbLayout,
 } from "../core/project_db";
-import { runProjectDbMigrations } from "../core/project_db_migrations";
+import {
+  projectDbStats,
+  runProjectDbMigrations,
+  verifyProjectDb,
+} from "../core/project_db_migrations";
 import { readPackageVersion } from "../core/version";
 import { rebuildDerivedIndexCaches } from "./index";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
@@ -57,6 +61,16 @@ export type DbInitCommandOptions = {
 };
 
 export type DbMigrateCommandOptions = {
+  root: string;
+  json?: boolean;
+};
+
+export type DbVerifyCommandOptions = {
+  root: string;
+  json?: boolean;
+};
+
+export type DbStatsCommandOptions = {
   root: string;
   json?: boolean;
 };
@@ -464,6 +478,54 @@ export function runDbMigrateCommand(options: DbMigrateCommandOptions): void {
   return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
     runDbMigrateCommandLocked(options)
   );
+}
+
+function printProjectDbChecks(payload: ReturnType<typeof verifyProjectDb>): void {
+  for (const check of payload.checks) {
+    const location = check.path ? ` (${check.path})` : "";
+    console.log(`${check.level}: ${check.name}${location} - ${check.detail}`);
+  }
+}
+
+export function runDbVerifyCommand(options: DbVerifyCommandOptions): void {
+  const config = loadConfig(options.root);
+  const payload = verifyProjectDb(options.root, config);
+  if (options.json) {
+    console.log(JSON.stringify(payload, null, 2));
+  } else {
+    printProjectDbChecks(payload);
+  }
+  if (!payload.ok) {
+    throw new ValidationError(`db verify failed with ${payload.failure_count} issue(s)`);
+  }
+  if (!options.json) {
+    console.log("db verify ok");
+  }
+}
+
+export function runDbStatsCommand(options: DbStatsCommandOptions): void {
+  const config = loadConfig(options.root);
+  const payload = projectDbStats(options.root, config);
+  if (options.json) {
+    console.log(JSON.stringify(payload, null, 2));
+    return;
+  }
+  console.log("project db stats");
+  console.log(`database: ${payload.database}`);
+  console.log(`db size: ${payload.db_size}`);
+  console.log(`migrations: ${payload.migration_count}`);
+  console.log(`latest migration: ${payload.latest_migration?.key ?? "(none)"}`);
+  console.log(`receipt files: ${payload.receipt_files.count}`);
+  console.log("tables:");
+  for (const table of payload.tables) {
+    console.log(`  ${table.name}: ${table.row_count}`);
+  }
+  if (payload.transient_files.length > 0) {
+    console.log("transient files:");
+    for (const item of payload.transient_files) {
+      console.log(`  ${item.path}: ${item.size}`);
+    }
+  }
 }
 
 export function runDbIndexStatusCommand(options: DbIndexCommandOptions): void {

@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Complete epic-30 so mdkg has a validated, documented, prepublish-ready db command foundation that clearly separates rebuildable index caches from project application databases.
 scope_refs: [epic-30]
-active_node: task-229
+active_node: task-230
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, node dist/cli.js validate, smoke tests for changed db behavior, node scripts/assert-publish-ready.js, npm pack dry-run, npm publish dry-run, git diff --check]
 max_iterations: 25

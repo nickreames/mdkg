@@ -351,6 +351,10 @@ Run `mdkg db migrate` after init to create or update the active runtime
 SQLite database at the configured `db.runtime_path`; the first migration writes
 only mdkg-owned generic foundation tables and records migration order,
 checksums, and applied timestamps.
+Use `mdkg db verify` for non-mutating health checks over config, layout,
+runtime SQLite integrity, migration metadata, and transient runtime files. Use
+`mdkg db stats` for deterministic table counts, DB size, migration state,
+receipt-file count, and state snapshot presence.
 Schema files, manifests, receipt artifacts, and opt-in sealed snapshots remain
 commit-eligible by explicit repo policy. `mdkg doctor` warns when active runtime
 or transient project DB files are present so they are not accidentally committed

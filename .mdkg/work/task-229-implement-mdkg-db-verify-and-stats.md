@@ -2,14 +2,14 @@
 id: task-229
 type: task
 title: implement mdkg db verify and stats
-status: todo
+status: done
 priority: 1
 epic: epic-30
 parent: goal-1
 tags: [project-db, db-cli, verify, stats]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/core/project_db_migrations.ts, src/commands/db.ts, src/cli.ts, tests/commands/db_index.test.ts, scripts/smoke-init.js, CLI_COMMAND_MATRIX.md]
 relates: [goal-1, epic-30, edd-12, task-184, task-227, task-228]
 blocked_by: [task-227, task-228]
 blocks: [task-230, task-231]
@@ -59,7 +59,23 @@ state unless a future command explicitly asks for repair.
 
 # Closeout Evidence
 
-- Record representative JSON receipts and failure diagnostics.
+- Implemented `mdkg db verify [--json]`.
+- `db verify` checks enabled/supported config, scaffold layout, runtime database
+  presence, SQLite integrity, mdkg-owned migration files, migration table
+  metadata, receipt directory presence, and active transient runtime files.
+- `db verify` exits nonzero for disabled DB config, missing runtime databases,
+  corrupt SQLite files, missing/drifted migration metadata, and migration-file
+  checksum drift.
+- Active WAL/SHM/journal files are reported as warnings, not automatic failures.
+- Implemented `mdkg db stats [--json]`.
+- `db stats` reports database size, transient files, table row counts, migration
+  count/latest migration, state snapshot presence, and receipt-file count.
+- Verification passed:
+  - focused `db` and CLI tests
+  - `npm run test` (403 tests)
+  - `npm run cli:check`
+  - `npm run smoke:init`
+  - `npm run smoke:upgrade`
 
 # Links / Artifacts
 

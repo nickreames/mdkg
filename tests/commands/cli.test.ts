@@ -133,6 +133,8 @@ test("cli help db documents project database boundaries", () => {
   assert.match(dbHelp.stdout, /db init` does not create an active runtime SQLite database/);
   assert.match(dbHelp.stdout, /db migrate` creates\/updates the active runtime SQLite database/);
   assert.match(dbHelp.stdout, /db migrate` applies mdkg-owned generic foundation migrations only/);
+  assert.match(dbHelp.stdout, /db verify` checks config, layout, SQLite integrity, migrations, and transient files/);
+  assert.match(dbHelp.stdout, /db stats` reports table counts, migration state, DB size, and receipt counts/);
   assert.match(dbHelp.stdout, /active `\.mdkg\/db\/runtime` and transient DB files are ignored by default/);
 
   const dbIndexHelp = spawnSync(process.execPath, [cliPath, "help", "db", "index"], {

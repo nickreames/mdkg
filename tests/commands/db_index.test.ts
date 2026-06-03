@@ -266,6 +266,80 @@ test("db migrate fails on disabled config missing dirs corrupt db and checksum d
   assert.match(dbDrift.stderr, /migration checksum drift/);
 });
 
+test("db verify and stats report valid project db state and transient warnings", () => {
+  const root = makeRoot("mdkg-db-verify-stats-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+
+  const verify = runCli(root, ["db", "verify", "--json"]);
+  assert.equal(verify.status, 0, verify.stderr);
+  const verifyPayload = parseJson(verify.stdout);
+  assert.equal(verifyPayload.action, "db-verify");
+  assert.equal(verifyPayload.ok, true);
+  assert.equal(verifyPayload.failure_count, 0);
+  assert.equal(verifyPayload.checks.some((check: any) => check.name === "migrations" && check.ok), true);
+
+  const stats = runCli(root, ["db", "stats", "--json"]);
+  assert.equal(stats.status, 0, stats.stderr);
+  const statsPayload = parseJson(stats.stdout);
+  assert.equal(statsPayload.action, "db-stats");
+  assert.equal(statsPayload.ok, true);
+  assert.equal(statsPayload.migration_count, 1);
+  assert.equal(statsPayload.latest_migration.key, "mdkg.project_db.foundation.v1");
+  assert.equal(statsPayload.tables.some((table: any) => table.name === "project_meta"), true);
+  assert.equal(statsPayload.tables.some((table: any) => table.name === "mdkg_schema_migration"), true);
+  assert.equal(statsPayload.receipt_files.count, 0);
+
+  fs.writeFileSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite-wal"), "", "utf8");
+  const walVerify = runCli(root, ["db", "verify", "--json"]);
+  assert.equal(walVerify.status, 0, walVerify.stderr);
+  const walPayload = parseJson(walVerify.stdout);
+  assert.equal(walPayload.ok, true);
+  assert.match(walPayload.warnings.join("\n"), /project\.sqlite-wal/);
+
+  const walStats = parseJson(runCli(root, ["db", "stats", "--json"]).stdout);
+  assert.equal(walStats.transient_files.some((item: any) => item.path.endsWith("project.sqlite-wal")), true);
+});
+
+test("db verify and stats fail for disabled missing corrupt and migration drift states", () => {
+  const disabledRoot = makeRoot("mdkg-db-verify-disabled-");
+  const disabledVerify = runCli(disabledRoot, ["db", "verify", "--json"]);
+  assert.notEqual(disabledVerify.status, 0);
+  assert.equal(parseJson(disabledVerify.stdout).ok, false);
+  assert.match(disabledVerify.stderr, /db verify failed/);
+
+  const missingRoot = makeRoot("mdkg-db-verify-missing-");
+  assert.equal(runCli(missingRoot, ["db", "init", "--json"]).status, 0);
+  const missingVerify = runCli(missingRoot, ["db", "verify", "--json"]);
+  assert.notEqual(missingVerify.status, 0);
+  assert.match(parseJson(missingVerify.stdout).errors.join("\n"), /project\.sqlite missing; run mdkg db migrate/);
+  const missingStats = runCli(missingRoot, ["db", "stats", "--json"]);
+  assert.notEqual(missingStats.status, 0);
+  assert.match(missingStats.stderr, /db stats requires a valid project DB/);
+
+  const corruptRoot = makeRoot("mdkg-db-verify-corrupt-");
+  assert.equal(runCli(corruptRoot, ["db", "init", "--json"]).status, 0);
+  fs.writeFileSync(path.join(corruptRoot, ".mdkg", "db", "runtime", "project.sqlite"), "not sqlite", "utf8");
+  const corruptVerify = runCli(corruptRoot, ["db", "verify", "--json"]);
+  assert.notEqual(corruptVerify.status, 0);
+  assert.match(parseJson(corruptVerify.stdout).errors.join("\n"), /failed to open project DB|failed to read project DB/);
+
+  const driftRoot = makeRoot("mdkg-db-verify-drift-");
+  assert.equal(runCli(driftRoot, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(driftRoot, ["db", "migrate", "--json"]).status, 0);
+  const { DatabaseSync } = require("node:sqlite");
+  const db = new DatabaseSync(path.join(driftRoot, ".mdkg", "db", "runtime", "project.sqlite"));
+  try {
+    db.prepare("UPDATE mdkg_schema_migration SET checksum = ? WHERE migration_key = ?")
+      .run("sha256:drift", "mdkg.project_db.foundation.v1");
+  } finally {
+    db.close();
+  }
+  const driftVerify = runCli(driftRoot, ["db", "verify", "--json"]);
+  assert.notEqual(driftVerify.status, 0);
+  assert.match(parseJson(driftVerify.stdout).errors.join("\n"), /migration checksum drift/);
+});
+
 test("db index status reports and verify fails for missing and stale caches", () => {
   const root = makeRoot("mdkg-db-index-stale-");
   assert.equal(runCli(root, ["db", "index", "rebuild"]).status, 0);
