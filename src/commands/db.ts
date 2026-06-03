@@ -1,6 +1,12 @@
 import fs from "fs";
 import path from "path";
-import { loadConfig } from "../core/config";
+import { loadConfig, validateConfigSchema } from "../core/config";
+import { migrateConfig } from "../core/migrate";
+import { configPath } from "../core/paths";
+import {
+  resolveConfiguredProjectDbLayout,
+} from "../core/project_db";
+import { readPackageVersion } from "../core/version";
 import { rebuildDerivedIndexCaches } from "./index";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
 import { buildCapabilitiesIndex } from "../graph/capabilities_indexer";
@@ -21,7 +27,9 @@ import {
   sqliteHealth,
   sqliteSourceFingerprint,
 } from "../graph/sqlite_index";
-import { ValidationError } from "../util/errors";
+import { atomicWriteFile } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
+import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 
 type DbIndexCheck = {
   name: string;
@@ -42,6 +50,11 @@ export type DbIndexCommandOptions = {
   json?: boolean;
 };
 
+export type DbInitCommandOptions = {
+  root: string;
+  json?: boolean;
+};
+
 function rel(root: string, filePath: string): string {
   return path.relative(root, filePath).split(path.sep).join("/");
 }
@@ -51,6 +64,69 @@ function fileSize(filePath: string): number | undefined {
     return undefined;
   }
   return fs.statSync(filePath).size;
+}
+
+function readRawConfig(root: string): { configPath: string; raw: Record<string, unknown> } {
+  const filePath = configPath(root);
+  if (!fs.existsSync(filePath)) {
+    throw new NotFoundError(`config not found at ${filePath}`);
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch (err) {
+    throw new UsageError(`failed to read config: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  const migrated = migrateConfig(parsed).config;
+  validateConfigSchema(migrated);
+  if (typeof migrated !== "object" || migrated === null || Array.isArray(migrated)) {
+    throw new UsageError("config must be a JSON object");
+  }
+  return { configPath: filePath, raw: migrated as Record<string, unknown> };
+}
+
+function writeRawConfig(filePath: string, raw: Record<string, unknown>): void {
+  atomicWriteFile(filePath, `${JSON.stringify(raw, null, 2)}\n`);
+}
+
+function ensureDirectory(root: string, dirPath: string, created: string[], unchanged: string[]): void {
+  const relative = rel(root, dirPath);
+  if (fs.existsSync(dirPath)) {
+    if (!fs.statSync(dirPath).isDirectory()) {
+      throw new ValidationError(`${relative} exists and is not a directory`);
+    }
+    unchanged.push(relative);
+    return;
+  }
+  fs.mkdirSync(dirPath, { recursive: true });
+  created.push(relative);
+}
+
+function writeJsonIfChanged(
+  root: string,
+  filePath: string,
+  payload: unknown,
+  created: string[],
+  unchanged: string[],
+  updated: string[]
+): void {
+  const relative = rel(root, filePath);
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+    throw new ValidationError(`${relative} exists and is not a file`);
+  }
+  const content = `${JSON.stringify(payload, null, 2)}\n`;
+  if (fs.existsSync(filePath)) {
+    const current = fs.readFileSync(filePath, "utf8");
+    if (current === content) {
+      unchanged.push(relative);
+      return;
+    }
+    atomicWriteFile(filePath, content);
+    updated.push(relative);
+    return;
+  }
+  atomicWriteFile(filePath, content);
+  created.push(relative);
 }
 
 function readJsonCache(filePath: string): string | undefined {
@@ -257,6 +333,107 @@ export function runDbIndexRebuildCommand(options: DbIndexCommandOptions): void {
   if (result.paths.sqlite) {
     console.log(`sqlite index written: ${rel(options.root, result.paths.sqlite)}`);
   }
+}
+
+function runDbInitCommandLocked(options: DbInitCommandOptions): void {
+  const config = loadConfig(options.root);
+  const layout = resolveConfiguredProjectDbLayout(options.root, config.db);
+  const created: string[] = [];
+  const unchanged: string[] = [];
+  const updated: string[] = [];
+
+  for (const dirPath of [
+    layout.db,
+    layout.schema,
+    layout.migrations,
+    layout.runtimeDir,
+    layout.stateDir,
+    layout.receipts,
+  ]) {
+    ensureDirectory(options.root, dirPath, created, unchanged);
+  }
+
+  const manifest = {
+    tool: "mdkg",
+    kind: "project_db",
+    mdkg_version: readPackageVersion(),
+    schema_version: config.db.schema_version,
+    enabled: true,
+    layout: {
+      root_path: config.db.root_path,
+      schema_path: config.db.schema_path,
+      migrations_path: config.db.migrations_path,
+      runtime_path: config.db.runtime_path,
+      state_path: config.db.state_path,
+      receipts_path: config.db.receipts_path,
+    },
+    migration_table: config.db.migration_table,
+    runtime_database_created: false,
+  };
+  writeJsonIfChanged(options.root, layout.manifest, manifest, created, unchanged, updated);
+
+  const rawConfig = readRawConfig(options.root);
+  const nextConfig = { ...rawConfig.raw };
+  const nextDb = { ...config.db, enabled: true };
+  const currentDb = JSON.stringify(nextConfig.db ?? null);
+  const normalizedDb = JSON.stringify(nextDb);
+  const enabledBefore = config.db.enabled;
+  let config_updated = false;
+  if (currentDb !== normalizedDb) {
+    nextConfig.db = nextDb;
+    validateConfigSchema(nextConfig);
+    writeRawConfig(rawConfig.configPath, nextConfig);
+    updated.push(".mdkg/config.json");
+    config_updated = true;
+  } else {
+    unchanged.push(".mdkg/config.json");
+  }
+
+  const receipt = {
+    action: "db-init",
+    ok: true,
+    enabled_before: enabledBefore,
+    enabled_after: true,
+    config_updated,
+    runtime_database_created: false,
+    paths: {
+      root: rel(options.root, layout.db),
+      schema: rel(options.root, layout.schema),
+      migrations: rel(options.root, layout.migrations),
+      runtime_dir: rel(options.root, layout.runtimeDir),
+      runtime_path: config.db.runtime_path,
+      state_dir: rel(options.root, layout.stateDir),
+      state_path: config.db.state_path,
+      receipts: rel(options.root, layout.receipts),
+      manifest: rel(options.root, layout.manifest),
+    },
+    created: created.sort(),
+    updated: updated.sort(),
+    unchanged: unchanged.sort(),
+  };
+
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    return;
+  }
+  console.log("project db initialized");
+  for (const item of receipt.created) {
+    console.log(`created: ${item}`);
+  }
+  for (const item of receipt.updated) {
+    console.log(`updated: ${item}`);
+  }
+  if (receipt.created.length === 0 && receipt.updated.length === 0) {
+    console.log("project db already initialized");
+  }
+  console.log("runtime database created: false");
+}
+
+export function runDbInitCommand(options: DbInitCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
+    runDbInitCommandLocked(options)
+  );
 }
 
 export function runDbIndexStatusCommand(options: DbIndexCommandOptions): void {

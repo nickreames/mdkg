@@ -39,7 +39,10 @@ Project database commands:
 - `mdkg db migrate [--json]`
 - `mdkg db verify [--json]`
 - `mdkg db stats [--json]`
-- `.mdkg/db` is future project application state, separate from `.mdkg/index`
+- `.mdkg/db` is project application state, separate from `.mdkg/index`
+- `mdkg db init` creates the generic `.mdkg/db` scaffold, writes
+  `.mdkg/db/project-db.json`, enables `db.enabled`, and does not create an
+  active runtime SQLite database
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:

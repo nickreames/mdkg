@@ -338,16 +338,19 @@ Mutating commands use a workspace mutation lock plus atomic writes. SQLite mode 
 
 ## Project DB Layout
 
-`.mdkg/db` is reserved for future project application database state, separate
-from the rebuildable `.mdkg/index` graph cache. The generic layout is
-`.mdkg/db/schema`, `.mdkg/db/runtime`, `.mdkg/db/state`, and
-`.mdkg/db/receipts`.
+`.mdkg/db` is reserved for project application database state, separate from
+the rebuildable `.mdkg/index` graph cache. Run `mdkg db init` to create the
+generic scaffold and explicitly enable `db.enabled` in config. The generic
+layout is `.mdkg/db/schema`, `.mdkg/db/runtime`, `.mdkg/db/state`, and
+`.mdkg/db/receipts`; `mdkg db init` also writes a deterministic
+`.mdkg/db/project-db.json` manifest.
 
 Runtime DB files, WAL, SHM, journal, lock, and temp files are ignored by
-default. Schema files, manifests, receipt artifacts, and opt-in sealed snapshots
-remain commit-eligible by explicit repo policy. `mdkg doctor` warns when active
-runtime or transient project DB files are present so they are not accidentally
-committed as sealed state.
+default. `mdkg db init` does not create an active runtime SQLite database.
+Schema files, manifests, receipt artifacts, and opt-in sealed snapshots remain
+commit-eligible by explicit repo policy. `mdkg doctor` warns when active runtime
+or transient project DB files are present so they are not accidentally committed
+as sealed state.
 
 ## Goal nodes
 

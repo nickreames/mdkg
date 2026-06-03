@@ -14,6 +14,7 @@ import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
 import {
+  runDbInitCommand,
   runDbIndexRebuildCommand,
   runDbIndexStatusCommand,
   runDbIndexVerifyCommand,
@@ -287,6 +288,8 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("\nBoundaries:");
       log("  - `.mdkg/index` is the rebuildable graph cache");
       log("  - `.mdkg/db` is future project application state");
+      log("  - `mdkg db init` creates the generic layout and enables db config");
+      log("  - `mdkg db init` does not create an active runtime SQLite database");
       log("  - active `.mdkg/db/runtime` and transient DB files are ignored by default");
       log("  - no raw SQL, hosted queue, profile, or publish behavior is exposed here");
       printGlobalOptions(log);
@@ -1179,14 +1182,21 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
           throw new UsageError("mdkg db index requires rebuild/status/verify");
       }
     }
-    case "init":
+    case "init": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("mdkg db init does not accept positional arguments");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runDbInitCommand({ root, json });
+      return 0;
+    }
     case "migrate":
     case "verify":
     case "stats": {
       if (parsed.positionals.length > 2) {
         throw new UsageError(`mdkg db ${subcommand} does not accept positional arguments`);
       }
-      throw new UsageError(`mdkg db ${subcommand} is planned; implementation is scoped to task-${subcommand === "init" ? "227" : subcommand === "migrate" ? "228" : "229"}`);
+      throw new UsageError(`mdkg db ${subcommand} is planned; implementation is scoped to task-${subcommand === "migrate" ? "228" : "229"}`);
     }
     default:
       throw new UsageError("mdkg db requires index/init/migrate/verify/stats");

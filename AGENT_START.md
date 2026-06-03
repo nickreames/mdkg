@@ -102,9 +102,10 @@ Capability discovery:
 - `mdkg capability search "<query>" --kind spec --json`
 - `mdkg capability search "<query>" --kind work --json`
 - `mdkg index` refreshes JSON compatibility caches and `.mdkg/index/mdkg.sqlite` when SQLite mode is enabled.
-- `.mdkg/db` is future project application state; keep `.mdkg/db/runtime/`
-  and WAL/SHM/journal/lock/temp files ignored unless a sealed artifact policy
-  explicitly says otherwise.
+- `.mdkg/db` is project application state; use `mdkg db init` to create the
+  generic scaffold and enable `db.enabled` without creating an active runtime
+  SQLite database. Keep `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files
+  ignored unless a sealed artifact policy explicitly says otherwise.
 
 ## Product-specific conventions
 

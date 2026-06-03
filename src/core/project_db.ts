@@ -9,6 +9,7 @@ export const PROJECT_DB_STATE_DIR = ".mdkg/db/state";
 export const PROJECT_DB_RECEIPTS_DIR = ".mdkg/db/receipts";
 export const PROJECT_DB_RUNTIME_FILE = ".mdkg/db/runtime/project.sqlite";
 export const PROJECT_DB_STATE_FILE = ".mdkg/db/state/project.sqlite";
+export const PROJECT_DB_MANIFEST_FILE = ".mdkg/db/project-db.json";
 export const PROJECT_DB_CONFIG_SCHEMA_VERSION = 1;
 export const PROJECT_DB_MIGRATION_TABLE = "mdkg_schema_migration";
 
@@ -41,9 +42,32 @@ export type ProjectDbLayout = {
   root: string;
   db: string;
   schema: string;
+  migrations: string;
   runtime: string;
   state: string;
   receipts: string;
+};
+
+export type ProjectDbConfigShape = {
+  root_path: string;
+  schema_path: string;
+  migrations_path: string;
+  runtime_path: string;
+  state_path: string;
+  receipts_path: string;
+};
+
+export type ConfiguredProjectDbLayout = {
+  root: string;
+  db: string;
+  schema: string;
+  migrations: string;
+  runtimeFile: string;
+  runtimeDir: string;
+  stateFile: string;
+  stateDir: string;
+  receipts: string;
+  manifest: string;
 };
 
 function toPosix(relativePath: string): string {
@@ -72,9 +96,30 @@ export function resolveProjectDbLayout(root: string): ProjectDbLayout {
     root,
     db: path.resolve(root, PROJECT_DB_RELATIVE_DIR),
     schema: path.resolve(root, PROJECT_DB_SCHEMA_DIR),
+    migrations: path.resolve(root, PROJECT_DB_MIGRATIONS_DIR),
     runtime: path.resolve(root, PROJECT_DB_RUNTIME_DIR),
     state: path.resolve(root, PROJECT_DB_STATE_DIR),
     receipts: path.resolve(root, PROJECT_DB_RECEIPTS_DIR),
+  };
+}
+
+export function resolveConfiguredProjectDbLayout(
+  root: string,
+  config: ProjectDbConfigShape
+): ConfiguredProjectDbLayout {
+  const runtimeFile = path.resolve(root, config.runtime_path);
+  const stateFile = path.resolve(root, config.state_path);
+  return {
+    root,
+    db: path.resolve(root, config.root_path),
+    schema: path.resolve(root, config.schema_path),
+    migrations: path.resolve(root, config.migrations_path),
+    runtimeFile,
+    runtimeDir: path.dirname(runtimeFile),
+    stateFile,
+    stateDir: path.dirname(stateFile),
+    receipts: path.resolve(root, config.receipts_path),
+    manifest: path.resolve(root, config.root_path, "project-db.json"),
   };
 }
 

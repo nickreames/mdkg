@@ -71,10 +71,12 @@ Ensure ignore files include:
 
 Fresh mdkg workspaces default to `index.backend: sqlite`; `.mdkg/index/mdkg.sqlite` is a rebuildable cache and may be committed when the repo intentionally tracks it and it stays reasonably small.
 
-`.mdkg/db` is reserved for future project application database state, separate
-from `.mdkg/index`. Keep active runtime DB files and transient WAL/SHM/journal,
-lock, and temp files ignored. Commit schema files, manifests, receipts, and
-sealed state snapshots only by explicit repo policy.
+`.mdkg/db` is reserved for project application database state, separate from
+`.mdkg/index`. Run `mdkg db init` to create the generic scaffold, write
+`.mdkg/db/project-db.json`, and enable `db.enabled`; it does not create an
+active runtime SQLite database. Keep active runtime DB files and transient
+WAL/SHM/journal, lock, and temp files ignored. Commit schema files, manifests,
+receipts, and sealed state snapshots only by explicit repo policy.
 
 Recommended:
 

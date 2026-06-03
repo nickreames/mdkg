@@ -219,6 +219,41 @@ function exerciseBaseInit(binPath, tempRoot) {
   mdkg(binPath, ["pack", task.id, "--dry-run"], root);
 }
 
+function exerciseDbInit(binPath, tempRoot) {
+  const root = path.join(tempRoot, "db-init");
+  initGit(root);
+  mdkg(binPath, ["init", "--agent"], root);
+
+  const first = parseJson(mdkg(binPath, ["db", "init", "--json"], root).stdout);
+  if (first.action !== "db-init" || first.ok !== true) {
+    throw new Error(`unexpected db init receipt: ${JSON.stringify(first, null, 2)}`);
+  }
+  if (first.enabled_before !== false || first.enabled_after !== true) {
+    throw new Error(`db init should explicitly enable disabled project db config: ${JSON.stringify(first, null, 2)}`);
+  }
+  for (const relativePath of [
+    ".mdkg/db/schema",
+    ".mdkg/db/schema/migrations",
+    ".mdkg/db/runtime",
+    ".mdkg/db/state",
+    ".mdkg/db/receipts",
+    ".mdkg/db/project-db.json",
+  ]) {
+    assertExists(path.join(root, relativePath));
+  }
+  assertNotExists(path.join(root, ".mdkg", "db", "runtime", "project.sqlite"));
+  const config = parseJson(fs.readFileSync(path.join(root, ".mdkg", "config.json"), "utf8"));
+  if (config.db.enabled !== true) {
+    throw new Error("db init should set config.db.enabled to true");
+  }
+
+  const second = parseJson(mdkg(binPath, ["db", "init", "--json"], root).stdout);
+  if (second.created.length !== 0 || second.updated.length !== 0 || second.config_updated !== false) {
+    throw new Error(`repeat db init should be idempotent: ${JSON.stringify(second, null, 2)}`);
+  }
+  mdkg(binPath, ["validate"], root);
+}
+
 function exerciseAgentInit(binPath, tempRoot) {
   const root = path.join(tempRoot, "agent-init");
   initGit(root);
@@ -295,6 +330,7 @@ function runSmoke() {
     exerciseRemovedFlags(binPath, tempRoot);
     exerciseMirrorCollision(binPath, tempRoot);
     exerciseBaseInit(binPath, tempRoot);
+    exerciseDbInit(binPath, tempRoot);
     exerciseAgentInit(binPath, tempRoot);
     console.log("init smoke passed");
     console.log(`version=${version}`);

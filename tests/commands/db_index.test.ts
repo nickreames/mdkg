@@ -101,6 +101,81 @@ test("db index rebuild status and verify work in json backend", () => {
   assert.match(shortcut.stdout, /index written: \.mdkg\/index\/global\.json/);
 });
 
+test("db init creates generic project db scaffold and is idempotent", () => {
+  const root = makeRoot("mdkg-db-init-");
+
+  const first = runCli(root, ["db", "init", "--json"]);
+  assert.equal(first.status, 0, first.stderr);
+  const receipt = parseJson(first.stdout);
+  assert.equal(receipt.action, "db-init");
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.enabled_before, false);
+  assert.equal(receipt.enabled_after, true);
+  assert.equal(receipt.runtime_database_created, false);
+  assert.equal(receipt.config_updated, true);
+  for (const relativePath of [
+    ".mdkg/db/schema",
+    ".mdkg/db/schema/migrations",
+    ".mdkg/db/runtime",
+    ".mdkg/db/state",
+    ".mdkg/db/receipts",
+    ".mdkg/db/project-db.json",
+  ]) {
+    assert.equal(fs.existsSync(path.join(root, relativePath)), true, relativePath);
+  }
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite")), false);
+  const config = readConfig(root);
+  assert.equal(config.db.enabled, true);
+  assert.equal(config.db.runtime_path, ".mdkg/db/runtime/project.sqlite");
+  const manifest = parseJson(fs.readFileSync(path.join(root, ".mdkg", "db", "project-db.json"), "utf8"));
+  assert.equal(manifest.kind, "project_db");
+  assert.equal(manifest.enabled, true);
+  assert.equal(manifest.runtime_database_created, false);
+
+  const second = runCli(root, ["db", "init", "--json"]);
+  assert.equal(second.status, 0, second.stderr);
+  const repeated = parseJson(second.stdout);
+  assert.equal(repeated.enabled_before, true);
+  assert.equal(repeated.config_updated, false);
+  assert.deepEqual(repeated.created, []);
+  assert.deepEqual(repeated.updated, []);
+  assert.equal(repeated.unchanged.includes(".mdkg/db/project-db.json"), true);
+});
+
+test("db init honors custom contained project db root defaults", () => {
+  const root = makeRoot("mdkg-db-init-custom-");
+  const config = readConfig(root);
+  config.db = {
+    enabled: false,
+    schema_version: 1,
+    root_path: ".project-db",
+    migration_table: "mdkg_schema_migration",
+  };
+  writeConfig(root, config);
+
+  const result = runCli(root, ["db", "init", "--json"]);
+  assert.equal(result.status, 0, result.stderr);
+  const payload = parseJson(result.stdout);
+  assert.equal(payload.paths.root, ".project-db");
+  assert.equal(payload.paths.runtime_path, ".project-db/runtime/project.sqlite");
+  assert.equal(fs.existsSync(path.join(root, ".project-db", "schema", "migrations")), true);
+  assert.equal(fs.existsSync(path.join(root, ".project-db", "runtime", "project.sqlite")), false);
+  const updatedConfig = readConfig(root);
+  assert.equal(updatedConfig.db.enabled, true);
+  assert.equal(updatedConfig.db.schema_path, ".project-db/schema");
+  assert.equal(updatedConfig.db.runtime_path, ".project-db/runtime/project.sqlite");
+});
+
+test("db init rejects invalid existing project db filesystem state", () => {
+  const root = makeRoot("mdkg-db-init-invalid-");
+  fs.mkdirSync(path.join(root, ".mdkg", "db"), { recursive: true });
+  fs.writeFileSync(path.join(root, ".mdkg", "db", "schema"), "not a directory", "utf8");
+
+  const result = runCli(root, ["db", "init", "--json"]);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /\.mdkg\/db\/schema exists and is not a directory/);
+});
+
 test("db index status reports and verify fails for missing and stale caches", () => {
   const root = makeRoot("mdkg-db-index-stale-");
   assert.equal(runCli(root, ["db", "index", "rebuild"]).status, 0);

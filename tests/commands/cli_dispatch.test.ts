@@ -247,9 +247,13 @@ test("cli returns usage errors for unknown and malformed commands", () => {
   assert.match(dbIndex.stderr, /mdkg db index requires rebuild\/status\/verify/);
   assert.match(dbIndex.stdout, /mdkg db index rebuild \[--tolerant\] \[--json\]/);
 
-  const dbInit = runCli(root, ["db", "init"]);
-  assert.equal(dbInit.status, 1);
-  assert.match(dbInit.stderr, /mdkg db init is planned; implementation is scoped to task-227/);
+  const dbInit = runCli(root, ["db", "init", "--json"]);
+  assert.equal(dbInit.status, 0);
+  assert.equal(JSON.parse(dbInit.stdout).action, "db-init");
+
+  const dbMigrate = runCli(root, ["db", "migrate"]);
+  assert.equal(dbMigrate.status, 1);
+  assert.match(dbMigrate.stderr, /mdkg db migrate is planned; implementation is scoped to task-228/);
 
   const badShow = runCli(root, ["show"]);
   assert.equal(badShow.status, 1);
