@@ -2,14 +2,14 @@
 id: task-223
 type: task
 title: implement mdkg db namespace help dispatch and command matrix parity
-status: todo
+status: done
 priority: 1
 epic: epic-30
 parent: goal-1
 tags: [project-db, db-cli, cli, docs]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/cli.ts, CLI_COMMAND_MATRIX.md, scripts/cli_help_snapshot.js, tests/commands/cli.test.ts, tests/commands/cli_dispatch.test.ts, tests/commands/cli_help_matrix.test.ts]
 relates: [goal-1, epic-30, edd-12, task-181]
 blocked_by: []
 blocks: [task-224, task-225, task-226, task-230, task-231]
@@ -61,7 +61,15 @@ belongs to the downstream tasks.
 
 # Closeout Evidence
 
-- Record help output parity and test commands before marking done.
+- Implemented `mdkg db` namespace help and dispatch scaffolding in
+  `src/cli.ts`.
+- Updated `CLI_COMMAND_MATRIX.md` and help snapshot generation targets for
+  `mdkg db` and `mdkg db index`.
+- Added CLI tests for help output, help matrix parity, malformed dispatch, and
+  planned subcommand errors.
+- Verification passed: `npm run build`, `npm run build:test`, `npm run test`
+  with 388 passing tests, `npm run cli:check`, `node dist/cli.js validate`,
+  and `git diff --check`.
 
 # Links / Artifacts
 

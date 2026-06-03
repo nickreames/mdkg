@@ -1,6 +1,6 @@
 # CLI Command Matrix
 
-as_of: 2026-05-30
+as_of: 2026-06-03
 package_version_in_source: 0.1.7
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
@@ -35,6 +35,7 @@ Primary commands:
 - `validate`
 
 Advanced / maintenance commands:
+- `db`
 - `event`
 - `checkpoint`
 - `index`
@@ -52,6 +53,7 @@ Read-only child graph orchestration is accessed through `mdkg subgraph ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 Recursive long-running objective contracts are accessed through `mdkg goal ...`.
 Fresh init workspaces default to the SQLite access cache backend; existing migrated configs stay on JSON until opted in.
+Project application database foundation commands are accessed through `mdkg db ...`; `mdkg index` remains the compatibility shortcut for graph index rebuilds.
 
 ## Global usage
 
@@ -864,6 +866,23 @@ Notes:
 - writes `.mdkg/index/capabilities.json`
 - writes `.mdkg/index/subgraphs.json`
 - writes `.mdkg/index/mdkg.sqlite` when `index.backend` is `sqlite`
+
+### `mdkg db`
+
+Usage:
+- `mdkg db index rebuild [--tolerant] [--json]`
+- `mdkg db index status [--json]`
+- `mdkg db index verify [--json]`
+- `mdkg db init [--json]`
+- `mdkg db migrate [--json]`
+- `mdkg db verify [--json]`
+- `mdkg db stats [--json]`
+
+Boundaries:
+- `.mdkg/index` is the rebuildable graph access cache
+- `.mdkg/db` is future project application state
+- `mdkg index` remains the compatibility shortcut for index rebuilds
+- no raw SQL, hosted queue, profile, or publish behavior is exposed here
 
 ### `mdkg guide`
 

@@ -143,6 +143,7 @@ function printUsage(log: LogFn): void {
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
   log("\nAdvanced / maintenance commands:");
+  log("  db          Project database and index-cache commands");
   log("  event       Enable or append episodic event logs");
   log("  checkpoint  Create a checkpoint node");
   log("  index       Build the global index");
@@ -255,6 +256,35 @@ function printIndexHelp(log: LogFn): void {
   log("  - .mdkg/index/subgraphs.json when subgraphs are configured");
   log("  - .mdkg/index/mdkg.sqlite when index.backend is sqlite");
   printGlobalOptions(log);
+}
+
+function printDbHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "index":
+      log("Usage:");
+      log("  mdkg db index rebuild [--tolerant] [--json]");
+      log("  mdkg db index status [--json]");
+      log("  mdkg db index verify [--json]");
+      log("\nNotes:");
+      log("  - `mdkg index` remains the compatibility shortcut for index rebuilds");
+      log("  - `.mdkg/index` is the rebuildable graph cache, not project application state");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log("  mdkg db index rebuild [--tolerant] [--json]");
+      log("  mdkg db index status [--json]");
+      log("  mdkg db index verify [--json]");
+      log("  mdkg db init [--json]");
+      log("  mdkg db migrate [--json]");
+      log("  mdkg db verify [--json]");
+      log("  mdkg db stats [--json]");
+      log("\nBoundaries:");
+      log("  - `.mdkg/index` is the rebuildable graph cache");
+      log("  - `.mdkg/db` is future project application state");
+      log("  - no raw SQL, hosted queue, profile, or publish behavior is exposed here");
+      printGlobalOptions(log);
+  }
 }
 
 function printShowHelp(log: LogFn): void {
@@ -824,6 +854,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
     case "index":
       printIndexHelp(log);
       return;
+    case "db":
+      printDbHelp(log, subcommand);
+      return;
     case "show":
       printShowHelp(log);
       return;
@@ -1107,6 +1140,37 @@ function runWorkspaceSubcommand(
     }
     default:
       throw new UsageError("workspace requires ls/add/rm/enable/disable");
+  }
+}
+
+function runDbSubcommand(parsed: ParsedArgs): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "index": {
+      const action = (parsed.positionals[2] ?? "").toLowerCase();
+      switch (action) {
+        case "rebuild":
+        case "status":
+        case "verify":
+          if (parsed.positionals.length > 3) {
+            throw new UsageError(`mdkg db index ${action} does not accept positional arguments`);
+          }
+          throw new UsageError(`mdkg db index ${action} is planned; implementation is scoped to task-224`);
+        default:
+          throw new UsageError("mdkg db index requires rebuild/status/verify");
+      }
+    }
+    case "init":
+    case "migrate":
+    case "verify":
+    case "stats": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError(`mdkg db ${subcommand} does not accept positional arguments`);
+      }
+      throw new UsageError(`mdkg db ${subcommand} is planned; implementation is scoped to task-${subcommand === "init" ? "227" : subcommand === "migrate" ? "228" : "229"}`);
+    }
+    default:
+      throw new UsageError("mdkg db requires index/init/migrate/verify/stats");
   }
 }
 
@@ -2012,6 +2076,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
     }
     case "workspace":
       return runWorkspaceSubcommand(parsed, root);
+    case "db":
+      return runDbSubcommand(parsed);
     case "skill":
       return runSkillSubcommand(parsed, root);
     case "capability":

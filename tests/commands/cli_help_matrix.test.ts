@@ -19,6 +19,7 @@ test("cli help covers the remaining command help surfaces", () => {
     ["guide", /mdkg guide/],
     ["new", /Agent workflow file types:\n  spec work work_order receipt feedback dispute proposal/],
     ["workspace", /mdkg workspace ls \[--json\]/],
+    ["db", /mdkg db index rebuild \[--tolerant\] \[--json\]/],
     ["index", /mdkg index \[--tolerant\]/],
     ["show", /mdkg show <id-or-qid> \[--ws <alias>\] \[--meta\] \[--json\|--xml\|--toon\|--md\]/],
     ["list", /--json\|--xml\|--toon\|--md/],
@@ -47,6 +48,11 @@ test("cli help covers the remaining command help surfaces", () => {
   const bundleImport = runCli(["help", "bundle", "import"]);
   assert.equal(bundleImport.status, 0);
   assert.match(bundleImport.stdout, /mdkg subgraph add\/list\/show\/rm\/enable\/disable\/verify\/refresh/);
+
+  const dbIndex = runCli(["help", "db", "index"]);
+  assert.equal(dbIndex.status, 0);
+  assert.match(dbIndex.stdout, /mdkg db index status \[--json\]/);
+  assert.match(dbIndex.stdout, /`mdkg index` remains the compatibility shortcut/);
 });
 
 test("cli command --help routes to command-specific help", () => {

@@ -237,6 +237,20 @@ test("cli returns usage errors for unknown and malformed commands", () => {
   assert.equal(badWorkspace.status, 1);
   assert.match(badWorkspace.stderr, /workspace requires ls\/add\/rm\/enable\/disable/);
 
+  const badDb = runCli(root, ["db"]);
+  assert.equal(badDb.status, 1);
+  assert.match(badDb.stderr, /mdkg db requires index\/init\/migrate\/verify\/stats/);
+  assert.match(badDb.stdout, /mdkg db init \[--json\]/);
+
+  const dbIndex = runCli(root, ["db", "index"]);
+  assert.equal(dbIndex.status, 1);
+  assert.match(dbIndex.stderr, /mdkg db index requires rebuild\/status\/verify/);
+  assert.match(dbIndex.stdout, /mdkg db index rebuild \[--tolerant\] \[--json\]/);
+
+  const dbInit = runCli(root, ["db", "init"]);
+  assert.equal(dbInit.status, 1);
+  assert.match(dbInit.stderr, /mdkg db init is planned; implementation is scoped to task-227/);
+
   const badShow = runCli(root, ["show"]);
   assert.equal(badShow.status, 1);
   assert.match(badShow.stderr, /show requires a single id/);

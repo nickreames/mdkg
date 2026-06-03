@@ -119,6 +119,26 @@ test("cli help capability documents read-only capability discovery", () => {
   assert.match(workspaceHelp.stdout, /--visibility <level>/);
 });
 
+test("cli help db documents project database boundaries", () => {
+  const dbHelp = spawnSync(process.execPath, [cliPath, "help", "db"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(dbHelp.status, 0);
+  assert.match(dbHelp.stdout, /mdkg db index rebuild \[--tolerant\] \[--json\]/);
+  assert.match(dbHelp.stdout, /mdkg db init \[--json\]/);
+  assert.match(dbHelp.stdout, /\.mdkg\/index` is the rebuildable graph cache/);
+  assert.match(dbHelp.stdout, /\.mdkg\/db` is future project application state/);
+
+  const dbIndexHelp = spawnSync(process.execPath, [cliPath, "help", "db", "index"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(dbIndexHelp.status, 0);
+  assert.match(dbIndexHelp.stdout, /mdkg db index verify \[--json\]/);
+  assert.match(dbIndexHelp.stdout, /mdkg index` remains the compatibility shortcut/);
+});
+
 test("cli help init includes agent bootstrap and ignore-default controls", () => {
   const initHelp = spawnSync(process.execPath, [cliPath, "help", "init"], {
     encoding: "utf8",

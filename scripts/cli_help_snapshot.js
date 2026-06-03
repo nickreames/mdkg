@@ -78,6 +78,8 @@ const HELP_TARGETS = [
   ["format"],
   ["doctor"],
   ["workspace"],
+  ["db"],
+  ["db", "index"],
   ["index"],
   ["guide"],
 ];
