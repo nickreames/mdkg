@@ -4,7 +4,7 @@ type: task
 title: define project db config migrations and profile contract
 status: todo
 priority: 1
-epic: epic-29
+epic: epic-30
 tags: [project-db, config, migrations, profiles]
 owners: []
 links: []

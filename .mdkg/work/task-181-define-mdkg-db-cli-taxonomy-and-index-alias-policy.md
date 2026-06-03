@@ -4,7 +4,7 @@ type: task
 title: define mdkg db cli taxonomy and index alias policy
 status: todo
 priority: 1
-epic: epic-29
+epic: epic-30
 tags: [project-db, db-cli, index, taxonomy]
 owners: []
 links: []

@@ -4,7 +4,7 @@ type: task
 title: define project db init migrate verify stats commands
 status: todo
 priority: 1
-epic: epic-29
+epic: epic-30
 tags: [project-db, db-cli, init, migrate, verify]
 owners: []
 links: []

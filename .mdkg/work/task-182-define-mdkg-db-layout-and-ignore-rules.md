@@ -4,7 +4,7 @@ type: task
 title: define mdkg db layout and ignore rules
 status: todo
 priority: 1
-epic: epic-29
+epic: epic-30
 tags: [project-db, filesystem, gitignore, wal]
 owners: []
 links: []
