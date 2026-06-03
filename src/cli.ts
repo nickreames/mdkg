@@ -287,6 +287,7 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("\nBoundaries:");
       log("  - `.mdkg/index` is the rebuildable graph cache");
       log("  - `.mdkg/db` is future project application state");
+      log("  - active `.mdkg/db/runtime` and transient DB files are ignored by default");
       log("  - no raw SQL, hosted queue, profile, or publish behavior is exposed here");
       printGlobalOptions(log);
   }

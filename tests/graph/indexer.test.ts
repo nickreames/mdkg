@@ -162,6 +162,35 @@ test("buildIndex includes registered workspaces and ignores unregistered mdkg fo
   assert.deepEqual(index.meta.workspaces, ["docs", "root"]);
 });
 
+test("buildIndex ignores project DB layout files", () => {
+  const root = makeTempDir("mdkg-index-project-db-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root, "task-1");
+  writeFile(
+    path.join(root, ".mdkg", "db", "schema", "task-999.md"),
+    [
+      "---",
+      "id: task-999",
+      "type: task",
+      "title: should not be indexed",
+      "status: todo",
+      "priority: 1",
+      "---",
+      "",
+      "# Schema note",
+    ].join("\n")
+  );
+  writeFile(path.join(root, ".mdkg", "db", "runtime", "task-998.md"), "# runtime scratch\n");
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+
+  assert.ok(index.nodes["root:task-1"]);
+  assert.equal(index.nodes["root:task-999"], undefined);
+  assert.equal(index.nodes["root:task-998"], undefined);
+});
+
 test("buildIndex excludes disabled registered workspaces", () => {
   const root = makeTempDir("mdkg-index-disabled-");
   writeConfig(root, {

@@ -5,6 +5,7 @@ import { migrateConfig } from "../core/migrate";
 import { validateConfigSchema } from "../core/config";
 import { configPath } from "../core/paths";
 import { readPackageVersion } from "../core/version";
+import { PROJECT_DB_GITIGNORE_ENTRIES } from "../core/project_db";
 import { formatDate } from "../util/date";
 import { NotFoundError } from "../util/errors";
 import {
@@ -64,7 +65,12 @@ export type UpgradeReceipt = {
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
 const PROTECTED_CORE_DOCS = new Set([".mdkg/core/SOUL.md", ".mdkg/core/HUMAN.md"]);
 const CREATE_ONLY_PRESERVED = new Set([".mdkg/core/core.md"]);
-const LOCAL_STATE_IGNORE_ENTRIES = [".mdkg/state/", ".mdkg/subgraphs/", ".mdkg/archive/**/source/"];
+const LOCAL_STATE_IGNORE_ENTRIES = [
+  ".mdkg/state/",
+  ".mdkg/subgraphs/",
+  ".mdkg/archive/**/source/",
+  ...PROJECT_DB_GITIGNORE_ENTRIES,
+];
 
 function seededInitEvent(nowIso: string): string {
   const event = {
@@ -394,7 +400,7 @@ function ensureArchiveIgnorePolicy(root: string, dryRun: boolean, summary: Upgra
     path: ".gitignore",
     category: "ignore_policy",
     action: fs.existsSync(ignorePath) ? "update" : "create",
-    reason: "ignore local mdkg state and raw archive source copies while keeping authored graph records commit-eligible",
+    reason: "ignore local mdkg state, project DB runtime files, and raw archive source copies while keeping authored graph records commit-eligible",
   });
   if (!dryRun) {
     const suffix = raw.length === 0 || raw.endsWith("\n") ? "" : "\n";

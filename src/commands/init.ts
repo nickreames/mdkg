@@ -5,6 +5,7 @@ import { migrateConfig } from "../core/migrate";
 import { NotFoundError } from "../util/errors";
 import { formatDate } from "../util/date";
 import { readPackageVersion } from "../core/version";
+import { PROJECT_DB_GITIGNORE_ENTRIES } from "../core/project_db";
 import { createInitManifest, INIT_MANIFEST_FILE, writeInitManifest } from "./init_manifest";
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { preflightSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
@@ -472,6 +473,7 @@ export function runInitCommand(options: InitCommandOptions): void {
         ".mdkg/index/*.sqlite-wal",
         ".mdkg/index/*.sqlite-shm",
         ".mdkg/index/*.sqlite-journal",
+        ...PROJECT_DB_GITIGNORE_ENTRIES,
         ".mdkg/state/",
         ".mdkg/pack/",
         ".mdkg/subgraphs/",

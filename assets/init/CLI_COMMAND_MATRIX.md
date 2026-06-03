@@ -27,6 +27,20 @@ Index backend:
 - fresh mdkg workspaces default to `index.backend: sqlite`
 - `.mdkg/index/mdkg.sqlite` is rebuildable and commit-eligible when intentionally tracked
 - JSON compatibility caches remain generated and ignored by default
+- `mdkg db index rebuild` writes the same derived caches as `mdkg index`
+- `mdkg db index status` reports graph cache health without mutating files
+- `mdkg db index verify` fails on missing, stale, corrupt, schema-mismatched, or SQLite source-fingerprint-mismatched cache state
+
+Project database commands:
+- `mdkg db index rebuild [--tolerant] [--json]`
+- `mdkg db index status [--json]`
+- `mdkg db index verify [--json]`
+- `mdkg db init [--json]`
+- `mdkg db migrate [--json]`
+- `mdkg db verify [--json]`
+- `mdkg db stats [--json]`
+- `.mdkg/db` is future project application state, separate from `.mdkg/index`
+- active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:
 - `mdkg validate [--out <path>] [--quiet] [--json]`

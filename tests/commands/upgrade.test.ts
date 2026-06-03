@@ -319,4 +319,6 @@ test("runUpgradeCommand skips ignored event logs and reports safe apply metadata
 
   captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
   assert.match(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), /\.mdkg\/archive\/\*\*\/source\//);
+  assert.match(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), /\.mdkg\/db\/runtime\//);
+  assert.match(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), /\.mdkg\/db\/\*\*\/\*\.sqlite-wal/);
 });

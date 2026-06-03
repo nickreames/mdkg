@@ -236,6 +236,7 @@ mdkg lives under a hidden root directory:
 - `.mdkg/bundles/` optional committed full graph snapshot bundles
 - `.mdkg/index/mdkg.sqlite` optional committed, rebuildable SQLite access cache
 - `.mdkg/index/subgraphs.json` generated read-only subgraph projection cache
+- `.mdkg/db/` future project application database layout and receipts
 - `.mdkg/subgraphs/` generated materialized subgraph inspection trees
 - `.agents/skills/` Codex/OpenAI-facing mirrored skills
 - `.claude/skills/` Claude-facing mirrored skills
@@ -335,6 +336,19 @@ Fresh `mdkg init` workspaces default to `index.backend: sqlite`, which writes `.
 
 Mutating commands use a workspace mutation lock plus atomic writes. SQLite mode additionally reserves numeric ids in a SQLite transaction before writing Markdown so parallel `mdkg new` and checkpoint calls avoid naming conflicts. Skipped ids after failed writes are acceptable because Markdown remains canonical.
 
+## Project DB Layout
+
+`.mdkg/db` is reserved for future project application database state, separate
+from the rebuildable `.mdkg/index` graph cache. The generic layout is
+`.mdkg/db/schema`, `.mdkg/db/runtime`, `.mdkg/db/state`, and
+`.mdkg/db/receipts`.
+
+Runtime DB files, WAL, SHM, journal, lock, and temp files are ignored by
+default. Schema files, manifests, receipt artifacts, and opt-in sealed snapshots
+remain commit-eligible by explicit repo policy. `mdkg doctor` warns when active
+runtime or transient project DB files are present so they are not accidentally
+committed as sealed state.
+
 ## Goal nodes
 
 Goal nodes are durable recursive objective contracts. Use `mdkg new goal "<objective>"` when a human or agent needs to keep working across multiple concrete nodes until a measurable end condition is achieved.
@@ -418,6 +432,8 @@ mdkg is not a secret store.
 Use these defaults:
 - keep generated `.mdkg/index/*.json`, temp, lock, WAL, SHM, and journal files gitignored
 - commit `.mdkg/index/mdkg.sqlite` only when the repo intentionally tracks a reasonably sized rebuildable access cache
+- keep `.mdkg/db/runtime/` and `.mdkg/db` WAL/SHM/journal/lock/temp files gitignored
+- commit `.mdkg/db/schema`, manifests, receipts, and sealed state snapshots only by explicit repo policy
 - keep `.mdkg/pack/` gitignored
 - keep `.mdkg/archive/**/source/` gitignored unless a repo intentionally commits raw local copies
 - commit archive sidecar `.md` metadata and deterministic `.zip` caches when they are needed for reviewable evidence

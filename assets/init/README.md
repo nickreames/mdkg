@@ -13,6 +13,7 @@ mdkg is pre-v1 public alpha software. Graph, cache, bundle, and DAL contracts ma
 - `archive/`: sidecar metadata and deterministic compressed source/artifact caches
 - `bundles/`: optional committed full graph snapshot bundles
 - `index/`: generated JSON caches plus optional commit-eligible `mdkg.sqlite`
+- `db/`: future project application database layout and receipts
 - `pack/`: generated context packs (do not commit)
 
 ## Next Commands
@@ -59,10 +60,21 @@ Ensure ignore files include:
 - `.mdkg/index/*.sqlite-wal`
 - `.mdkg/index/*.sqlite-shm`
 - `.mdkg/index/*.sqlite-journal`
+- `.mdkg/db/runtime/`
+- `.mdkg/db/**/*.sqlite-wal`
+- `.mdkg/db/**/*.sqlite-shm`
+- `.mdkg/db/**/*.sqlite-journal`
+- `.mdkg/db/**/*.lock`
+- `.mdkg/db/**/*.tmp`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
 
 Fresh mdkg workspaces default to `index.backend: sqlite`; `.mdkg/index/mdkg.sqlite` is a rebuildable cache and may be committed when the repo intentionally tracks it and it stays reasonably small.
+
+`.mdkg/db` is reserved for future project application database state, separate
+from `.mdkg/index`. Keep active runtime DB files and transient WAL/SHM/journal,
+lock, and temp files ignored. Commit schema files, manifests, receipts, and
+sealed state snapshots only by explicit repo policy.
 
 Recommended:
 

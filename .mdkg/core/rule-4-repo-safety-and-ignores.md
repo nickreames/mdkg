@@ -10,7 +10,7 @@ relates: []
 refs: []
 aliases: []
 created: 2026-01-06
-updated: 2026-01-14
+updated: 2026-06-03
 ---
 
 # Repo safety and ignores
@@ -23,6 +23,8 @@ mdkg content may contain sensitive notes and internal project planning. This rul
 - `.mdkg/` must not be published to npm.
 - Generated JSON index, temp, lock, WAL, SHM, and journal files under `.mdkg/index/` must not be committed.
 - `.mdkg/index/mdkg.sqlite` is a rebuildable access cache and may be committed when the repo intentionally tracks it and it stays reasonably small.
+- `.mdkg/db/runtime/` active project database files and `.mdkg/db` transient WAL, SHM, journal, lock, and temp files must not be committed.
+- `.mdkg/db/schema/`, `.mdkg/db/receipts/`, manifests, and sealed state snapshots are commit-eligible only by explicit repo policy.
 - `.mdkg/state/` stores local workflow convenience state and must not be committed.
 - `.mdkg/bundles/` may be committed only when the repo intentionally tracks private or public snapshot bundles.
 
@@ -38,6 +40,12 @@ The repo MUST ignore at minimum:
 - `.mdkg/index/*.sqlite-wal`
 - `.mdkg/index/*.sqlite-shm`
 - `.mdkg/index/*.sqlite-journal`
+- `.mdkg/db/runtime/`
+- `.mdkg/db/**/*.sqlite-wal`
+- `.mdkg/db/**/*.sqlite-shm`
+- `.mdkg/db/**/*.sqlite-journal`
+- `.mdkg/db/**/*.lock`
+- `.mdkg/db/**/*.tmp`
 - `.mdkg/state/`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
@@ -49,6 +57,12 @@ Recommended `.gitignore` entries:
 - `.mdkg/index/*.sqlite-wal`
 - `.mdkg/index/*.sqlite-shm`
 - `.mdkg/index/*.sqlite-journal`
+- `.mdkg/db/runtime/`
+- `.mdkg/db/**/*.sqlite-wal`
+- `.mdkg/db/**/*.sqlite-shm`
+- `.mdkg/db/**/*.sqlite-journal`
+- `.mdkg/db/**/*.lock`
+- `.mdkg/db/**/*.tmp`
 - `.mdkg/state/`
 - `.mdkg/pack/`
 - `.mdkg/archive/**/source/`
@@ -79,6 +93,12 @@ If the repo is containerized:
   - `.mdkg/index/*.sqlite-wal`
   - `.mdkg/index/*.sqlite-shm`
   - `.mdkg/index/*.sqlite-journal`
+  - `.mdkg/db/runtime/`
+  - `.mdkg/db/**/*.sqlite-wal`
+  - `.mdkg/db/**/*.sqlite-shm`
+  - `.mdkg/db/**/*.sqlite-journal`
+  - `.mdkg/db/**/*.lock`
+  - `.mdkg/db/**/*.tmp`
   - `node_modules/`
   - `dist/` (if built in container)
   - any other local artifacts
@@ -90,7 +110,7 @@ For application builds:
 
 `mdkg init` updates ignore files by default for safety:
 
-- `.gitignore` appends generated index cache/temp/lock patterns, `.mdkg/state/`, `.mdkg/pack/`, and raw archive source ignores.
+- `.gitignore` appends generated index cache/temp/lock patterns, project DB runtime/transient patterns, `.mdkg/state/`, `.mdkg/pack/`, and raw archive source ignores.
 - `.npmignore` appends `.mdkg/`, generated index cache/temp/lock patterns, and `.mdkg/pack/`.
 - `--no-update-ignores` disables these default writes
 
@@ -107,6 +127,19 @@ Explicit flags remain available and take precedence:
 - `.mdkg/index/mdkg.sqlite` contains the same rebuildable access data and may be committed only by explicit repo policy; `mdkg doctor` warns when it exceeds `index.sqlite_commit_warning_bytes`.
 - `.mdkg/state/` contains local workflow convenience state such as selected goals and MUST stay ignored.
 - Index rebuild should be deterministic and safe to regenerate at any time.
+
+## Project DB safety
+
+- `.mdkg/db/` is reserved for project application database state, separate from
+  the rebuildable `.mdkg/index/` graph cache.
+- The generic layout is `.mdkg/db/schema/`, `.mdkg/db/runtime/`,
+  `.mdkg/db/state/`, and `.mdkg/db/receipts/`.
+- Active runtime DB files under `.mdkg/db/runtime/` and transient WAL, SHM,
+  journal, lock, and temp files under `.mdkg/db/` stay ignored by default.
+- Schema files, manifests, receipt artifacts, and opt-in sealed snapshots are
+  commit-eligible only by explicit repo policy.
+- `mdkg doctor` should warn when active project DB runtime/transient files are
+  present so they are not mistaken for sealed state.
 
 ## Bundle safety
 

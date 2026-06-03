@@ -241,7 +241,9 @@ function exerciseAgentInit(binPath, tempRoot) {
     assertExists(path.join(root, relativePath));
   }
   assertNoRemovedInitGuidance(root);
-  assertIncludes(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), ".mdkg/archive/**/source/", ".gitignore");
+  const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
+  assertIncludes(gitignore, ".mdkg/archive/**/source/", ".gitignore");
+  assertIncludes(gitignore, ".mdkg/db/runtime/", ".gitignore");
   assertIncludes(
     fs.readFileSync(path.join(root, ".mdkg/skills/verify-close-and-checkpoint/SKILL.md"), "utf8"),
     "mdkg archive compress --all",

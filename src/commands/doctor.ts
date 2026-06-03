@@ -8,6 +8,7 @@ import { ALLOWED_TYPES } from "../graph/node";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
 import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
+import { listProjectDbRuntimePolicyFiles } from "../core/project_db";
 import { ValidationError } from "../util/errors";
 
 export type DoctorCommandOptions = {
@@ -207,6 +208,23 @@ function runBundleStorageCheck(root: string, outputDir: string): CheckResult {
   };
 }
 
+function runProjectDbRuntimePolicyCheck(root: string): CheckResult {
+  const files = listProjectDbRuntimePolicyFiles(root);
+  if (files.length === 0) {
+    return {
+      name: "project-db-runtime",
+      ok: true,
+      detail: "no active project DB runtime or transient files found",
+    };
+  }
+  return {
+    name: "project-db-runtime",
+    ok: true,
+    level: "warn",
+    detail: `active project DB runtime/transient file(s) are local-only and should not be committed: ${files.join(", ")}`,
+  };
+}
+
 function runSubgraphChecks(root: string, config: ReturnType<typeof loadConfig>): CheckResult[] {
   const projection = buildSubgraphsIndex(root, config);
   if (projection.index.subgraphs.length === 0) {
@@ -326,6 +344,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
     results.push(runArchiveStorageCheck(options.root));
     results.push(runArchiveLargeCacheCheck(options.root, config.archive.large_cache_warning_bytes));
     results.push(runBundleStorageCheck(options.root, config.bundles.output_dir));
+    results.push(runProjectDbRuntimePolicyCheck(options.root));
     results.push(runSqliteCheck(options.root, config));
     results.push(...runSubgraphChecks(options.root, config));
     results.push(runVisibilityPolicyCheck(options.root, config, options));

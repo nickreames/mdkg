@@ -2,14 +2,14 @@
 id: task-225
 type: task
 title: define and validate mdkg db layout ignore policy
-status: todo
+status: done
 priority: 1
 epic: epic-30
 parent: goal-1
 tags: [project-db, filesystem, gitignore, wal]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/core/project_db.ts, src/commands/init.ts, src/commands/upgrade.ts, src/commands/doctor.ts, src/cli.ts, tests/commands/init.test.ts, tests/commands/upgrade.test.ts, tests/commands/doctor.test.ts, tests/graph/indexer.test.ts, scripts/smoke-init.js, scripts/smoke-command-matrix.js, README.md, AGENT_START.md, CLI_COMMAND_MATRIX.md, assets/init/README.md, assets/init/AGENT_START.md, assets/init/CLI_COMMAND_MATRIX.md, .mdkg/core/rule-4-repo-safety-and-ignores.md]
 relates: [goal-1, epic-30, edd-12, task-182, epic-31]
 blocked_by: [task-223]
 blocks: [task-227, task-228, task-229, task-230, task-231]
@@ -56,12 +56,27 @@ Markdown scanning.
 # Test Plan
 
 - Unit tests cover ignore entries and contained paths.
-- Temp repo smoke proves fresh init plus `mdkg db init` creates coherent layout.
+- Temp repo smoke proves fresh init and upgrade-managed ignore policy. Actual
+  `mdkg db init` layout creation is scoped to `task-227`.
 - Validation confirms `.mdkg/db/runtime` is not treated as mdkg graph content.
 
 # Closeout Evidence
 
-- Record temp repo layout and ignore-policy proof.
+- Added `src/core/project_db.ts` with the canonical `.mdkg/db` layout constants
+  and project DB runtime/transient file policy helpers.
+- Updated init and upgrade ignore generation to ignore `.mdkg/db/runtime/` plus
+  `.mdkg/db` WAL, SHM, journal, lock, and temp files while keeping schema,
+  manifests, receipts, and sealed state snapshots commit-eligible by explicit
+  policy.
+- Added `doctor` warning diagnostics for active project DB runtime/transient
+  files.
+- Updated root and seeded docs: `README.md`, `AGENT_START.md`,
+  `CLI_COMMAND_MATRIX.md`, seeded init README/start/matrix, and `rule-4`.
+- Added tests for ignore entries, upgrade repair, doctor warnings, and graph
+  index exclusion for `.mdkg/db` markdown-like files.
+- Verification passed: `npm run test` with 393 passing tests, `npm run
+  cli:check`, `npm run smoke:init`, `npm run smoke:matrix`, `node dist/cli.js
+  db index verify --json`, `node dist/cli.js validate`, and `git diff --check`.
 
 # Links / Artifacts
 

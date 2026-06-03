@@ -142,6 +142,12 @@ test("runInitCommand copies seed assets, creates directories, and updates ignore
 
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assert.match(gitignore, /\.mdkg\/index\//);
+  assert.match(gitignore, /\.mdkg\/db\/runtime\//);
+  assert.match(gitignore, /\.mdkg\/db\/\*\*\/\*\.sqlite-wal/);
+  assert.match(gitignore, /\.mdkg\/db\/\*\*\/\*\.sqlite-shm/);
+  assert.match(gitignore, /\.mdkg\/db\/\*\*\/\*\.sqlite-journal/);
+  assert.match(gitignore, /\.mdkg\/db\/\*\*\/\*\.lock/);
+  assert.match(gitignore, /\.mdkg\/db\/\*\*\/\*\.tmp/);
   assert.match(gitignore, /\.mdkg\/pack\//);
   assert.match(gitignore, /\.mdkg\/archive\/\*\*\/source\//);
   const npmignore = fs.readFileSync(path.join(root, ".npmignore"), "utf8");
@@ -274,6 +280,7 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
 
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assert.match(gitignore, /\.mdkg\/archive\/\*\*\/source\//);
+  assert.match(gitignore, /\.mdkg\/db\/runtime\//);
   assert.doesNotMatch(gitignore, /\.mdkg\/work\/events\/\*\.jsonl/);
 
   const agentStart = fs.readFileSync(agentStartPath, "utf8");

@@ -174,6 +174,21 @@ test("runDoctorCommand reports cached index read failures", () => {
   assert.match(output, /fail: index - failed to read index/);
 });
 
+test("runDoctorCommand warns for active project DB runtime files", () => {
+  const root = makeTempDir("mdkg-doctor-project-db-runtime-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  writeFile(path.join(root, ".mdkg", "db", "runtime", "project.sqlite"), "runtime db");
+  writeFile(path.join(root, ".mdkg", "db", "state", "project.sqlite-wal"), "wal");
+
+  const output = captureOutput(() => runDoctorCommand({ root }));
+  assert.match(output, /warn: project-db-runtime - active project DB runtime\/transient file\(s\) are local-only/);
+  assert.match(output, /\.mdkg\/db\/runtime\/project\.sqlite/);
+  assert.match(output, /\.mdkg\/db\/state\/project\.sqlite-wal/);
+  assert.match(output, /doctor ok/);
+});
+
 test("runDoctorCommand reports visibility policy violations", () => {
   const root = makeTempDir("mdkg-doctor-visibility-");
   writeConfig(root);

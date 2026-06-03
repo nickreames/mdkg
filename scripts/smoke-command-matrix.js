@@ -204,7 +204,9 @@ function exerciseInit(binPath, tempRoot) {
   assertExists(path.join(agentRoot, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md"));
   assertExists(path.join(agentRoot, ".agents", "skills", "select-work-and-ground-context", "SKILL.md"));
   assertExists(path.join(agentRoot, ".claude", "skills", "select-work-and-ground-context", "SKILL.md"));
-  assertIncludes(fs.readFileSync(path.join(agentRoot, ".gitignore"), "utf8"), ".mdkg/archive/**/source/", ".gitignore");
+  const agentGitignore = fs.readFileSync(path.join(agentRoot, ".gitignore"), "utf8");
+  assertIncludes(agentGitignore, ".mdkg/archive/**/source/", ".gitignore");
+  assertIncludes(agentGitignore, ".mdkg/db/runtime/", ".gitignore");
   mdkg(binPath, ["validate"], agentRoot);
   const dryRun = JSON.parse(mdkg(binPath, ["upgrade", "--dry-run", "--json"], agentRoot).stdout);
   if (dryRun.changes.length !== 0) {

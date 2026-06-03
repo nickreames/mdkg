@@ -129,6 +129,7 @@ test("cli help db documents project database boundaries", () => {
   assert.match(dbHelp.stdout, /mdkg db init \[--json\]/);
   assert.match(dbHelp.stdout, /\.mdkg\/index` is the rebuildable graph cache/);
   assert.match(dbHelp.stdout, /\.mdkg\/db` is future project application state/);
+  assert.match(dbHelp.stdout, /active `\.mdkg\/db\/runtime` and transient DB files are ignored by default/);
 
   const dbIndexHelp = spawnSync(process.execPath, [cliPath, "help", "db", "index"], {
     encoding: "utf8",

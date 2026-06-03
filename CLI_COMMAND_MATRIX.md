@@ -883,6 +883,9 @@ Boundaries:
 - `.mdkg/db` is future project application state
 - `mdkg index` remains the compatibility shortcut for index rebuilds
 - no raw SQL, hosted queue, profile, or publish behavior is exposed here
+- active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp
+  files are ignored by default; schema, receipts, manifests, and sealed state
+  snapshots are commit-eligible only by explicit repo policy
 
 Index behavior:
 - `mdkg db index rebuild` writes the same derived caches as `mdkg index`
