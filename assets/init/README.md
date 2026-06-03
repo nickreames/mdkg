@@ -74,9 +74,11 @@ Fresh mdkg workspaces default to `index.backend: sqlite`; `.mdkg/index/mdkg.sqli
 `.mdkg/db` is reserved for project application database state, separate from
 `.mdkg/index`. Run `mdkg db init` to create the generic scaffold, write
 `.mdkg/db/project-db.json`, and enable `db.enabled`; it does not create an
-active runtime SQLite database. Keep active runtime DB files and transient
-WAL/SHM/journal, lock, and temp files ignored. Commit schema files, manifests,
-receipts, and sealed state snapshots only by explicit repo policy.
+active runtime SQLite database. Run `mdkg db migrate` after init to create or
+update the active runtime SQLite database with mdkg-owned generic foundation
+migrations. Keep active runtime DB files and transient WAL/SHM/journal, lock,
+and temp files ignored. Commit schema files, manifests, receipts, and sealed
+state snapshots only by explicit repo policy.
 
 Recommended:
 

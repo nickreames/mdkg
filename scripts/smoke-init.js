@@ -251,6 +251,16 @@ function exerciseDbInit(binPath, tempRoot) {
   if (second.created.length !== 0 || second.updated.length !== 0 || second.config_updated !== false) {
     throw new Error(`repeat db init should be idempotent: ${JSON.stringify(second, null, 2)}`);
   }
+  const migrate = parseJson(mdkg(binPath, ["db", "migrate", "--json"], root).stdout);
+  if (migrate.action !== "db-migrate" || migrate.ok !== true || migrate.applied_count !== 1) {
+    throw new Error(`unexpected db migrate receipt: ${JSON.stringify(migrate, null, 2)}`);
+  }
+  assertExists(path.join(root, ".mdkg", "db", "runtime", "project.sqlite"));
+  assertExists(path.join(root, ".mdkg", "db", "schema", "migrations", "001_mdkg_project_db_foundation.sql"));
+  const repeatMigrate = parseJson(mdkg(binPath, ["db", "migrate", "--json"], root).stdout);
+  if (repeatMigrate.applied_count !== 0 || repeatMigrate.skipped_count !== 1) {
+    throw new Error(`repeat db migrate should be idempotent: ${JSON.stringify(repeatMigrate, null, 2)}`);
+  }
   mdkg(binPath, ["validate"], root);
 }
 

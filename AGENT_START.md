@@ -104,8 +104,10 @@ Capability discovery:
 - `mdkg index` refreshes JSON compatibility caches and `.mdkg/index/mdkg.sqlite` when SQLite mode is enabled.
 - `.mdkg/db` is project application state; use `mdkg db init` to create the
   generic scaffold and enable `db.enabled` without creating an active runtime
-  SQLite database. Keep `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files
-  ignored unless a sealed artifact policy explicitly says otherwise.
+  SQLite database. Use `mdkg db migrate` after init to create or update the
+  runtime SQLite database with mdkg-owned generic foundation migrations. Keep
+  `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files ignored unless a
+  sealed artifact policy explicitly says otherwise.
 
 ## Product-specific conventions
 

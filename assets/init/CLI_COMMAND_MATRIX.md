@@ -43,6 +43,10 @@ Project database commands:
 - `mdkg db init` creates the generic `.mdkg/db` scaffold, writes
   `.mdkg/db/project-db.json`, enables `db.enabled`, and does not create an
   active runtime SQLite database
+- `mdkg db migrate` creates or updates the configured active runtime SQLite
+  database and applies mdkg-owned generic foundation migrations only
+- `mdkg db migrate` records migration order, checksums, and applied timestamps
+  in the configured migration table
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:

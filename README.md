@@ -347,6 +347,10 @@ layout is `.mdkg/db/schema`, `.mdkg/db/runtime`, `.mdkg/db/state`, and
 
 Runtime DB files, WAL, SHM, journal, lock, and temp files are ignored by
 default. `mdkg db init` does not create an active runtime SQLite database.
+Run `mdkg db migrate` after init to create or update the active runtime
+SQLite database at the configured `db.runtime_path`; the first migration writes
+only mdkg-owned generic foundation tables and records migration order,
+checksums, and applied timestamps.
 Schema files, manifests, receipt artifacts, and opt-in sealed snapshots remain
 commit-eligible by explicit repo policy. `mdkg doctor` warns when active runtime
 or transient project DB files are present so they are not accidentally committed

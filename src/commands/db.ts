@@ -6,6 +6,7 @@ import { configPath } from "../core/paths";
 import {
   resolveConfiguredProjectDbLayout,
 } from "../core/project_db";
+import { runProjectDbMigrations } from "../core/project_db_migrations";
 import { readPackageVersion } from "../core/version";
 import { rebuildDerivedIndexCaches } from "./index";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
@@ -51,6 +52,11 @@ export type DbIndexCommandOptions = {
 };
 
 export type DbInitCommandOptions = {
+  root: string;
+  json?: boolean;
+};
+
+export type DbMigrateCommandOptions = {
   root: string;
   json?: boolean;
 };
@@ -433,6 +439,30 @@ export function runDbInitCommand(options: DbInitCommandOptions): void {
   const config = loadConfig(options.root);
   return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
     runDbInitCommandLocked(options)
+  );
+}
+
+function runDbMigrateCommandLocked(options: DbMigrateCommandOptions): void {
+  const config = loadConfig(options.root);
+  const receipt = runProjectDbMigrations(options.root, config);
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    return;
+  }
+  console.log("project db migrated");
+  console.log(`database: ${receipt.database}`);
+  console.log(`migration table: ${receipt.migration_table}`);
+  console.log(`applied: ${receipt.applied_count}`);
+  console.log(`already applied: ${receipt.skipped_count}`);
+  for (const migration of receipt.migrations) {
+    console.log(`${migration.status}: ${migration.ordinal} ${migration.key}`);
+  }
+}
+
+export function runDbMigrateCommand(options: DbMigrateCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
+    runDbMigrateCommandLocked(options)
   );
 }
 

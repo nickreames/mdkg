@@ -884,6 +884,10 @@ Boundaries:
 - `mdkg db init` creates the generic `.mdkg/db` scaffold, writes
   `.mdkg/db/project-db.json`, and enables `db.enabled`
 - `mdkg db init` does not create an active runtime SQLite database
+- `mdkg db migrate` creates or updates the active runtime SQLite database at
+  `db.runtime_path` and applies mdkg-owned generic foundation migrations only
+- `mdkg db migrate` records migration order, checksums, and applied timestamps
+  in the configured migration table
 - `mdkg index` remains the compatibility shortcut for index rebuilds
 - no raw SQL, hosted queue, profile, or publish behavior is exposed here
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp

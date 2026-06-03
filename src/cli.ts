@@ -18,6 +18,7 @@ import {
   runDbIndexRebuildCommand,
   runDbIndexStatusCommand,
   runDbIndexVerifyCommand,
+  runDbMigrateCommand,
 } from "./commands/db";
 import {
   runCapabilityListCommand,
@@ -290,6 +291,8 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("  - `.mdkg/db` is future project application state");
       log("  - `mdkg db init` creates the generic layout and enables db config");
       log("  - `mdkg db init` does not create an active runtime SQLite database");
+      log("  - `mdkg db migrate` creates/updates the active runtime SQLite database");
+      log("  - `mdkg db migrate` applies mdkg-owned generic foundation migrations only");
       log("  - active `.mdkg/db/runtime` and transient DB files are ignored by default");
       log("  - no raw SQL, hosted queue, profile, or publish behavior is exposed here");
       printGlobalOptions(log);
@@ -1191,12 +1194,17 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       return 0;
     }
     case "migrate":
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("mdkg db migrate does not accept positional arguments");
+      }
+      runDbMigrateCommand({ root, json: parseBooleanFlag("--json", parsed.flags["--json"]) });
+      return 0;
     case "verify":
     case "stats": {
       if (parsed.positionals.length > 2) {
         throw new UsageError(`mdkg db ${subcommand} does not accept positional arguments`);
       }
-      throw new UsageError(`mdkg db ${subcommand} is planned; implementation is scoped to task-${subcommand === "migrate" ? "228" : "229"}`);
+      throw new UsageError(`mdkg db ${subcommand} is planned; implementation is scoped to task-229`);
     }
     default:
       throw new UsageError("mdkg db requires index/init/migrate/verify/stats");

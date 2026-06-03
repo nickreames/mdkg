@@ -251,9 +251,13 @@ test("cli returns usage errors for unknown and malformed commands", () => {
   assert.equal(dbInit.status, 0);
   assert.equal(JSON.parse(dbInit.stdout).action, "db-init");
 
-  const dbMigrate = runCli(root, ["db", "migrate"]);
-  assert.equal(dbMigrate.status, 1);
-  assert.match(dbMigrate.stderr, /mdkg db migrate is planned; implementation is scoped to task-228/);
+  const dbMigrate = runCli(root, ["db", "migrate", "--json"]);
+  assert.equal(dbMigrate.status, 0, dbMigrate.stderr);
+  assert.equal(JSON.parse(dbMigrate.stdout).action, "db-migrate");
+
+  const dbVerify = runCli(root, ["db", "verify"]);
+  assert.equal(dbVerify.status, 1);
+  assert.match(dbVerify.stderr, /mdkg db verify is planned; implementation is scoped to task-229/);
 
   const badShow = runCli(root, ["show"]);
   assert.equal(badShow.status, 1);

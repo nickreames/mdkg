@@ -176,6 +176,96 @@ test("db init rejects invalid existing project db filesystem state", () => {
   assert.match(result.stderr, /\.mdkg\/db\/schema exists and is not a directory/);
 });
 
+test("db migrate applies generic foundation migration and is idempotent", () => {
+  const root = makeRoot("mdkg-db-migrate-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+
+  const first = runCli(root, ["db", "migrate", "--json"]);
+  assert.equal(first.status, 0, first.stderr);
+  const receipt = parseJson(first.stdout);
+  assert.equal(receipt.action, "db-migrate");
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.database, ".mdkg/db/runtime/project.sqlite");
+  assert.equal(receipt.migration_table, "mdkg_schema_migration");
+  assert.equal(receipt.applied_count, 1);
+  assert.equal(receipt.skipped_count, 0);
+  assert.equal(receipt.migrations[0].key, "mdkg.project_db.foundation.v1");
+  assert.equal(receipt.migrations[0].status, "applied");
+  assert.equal(receipt.migration_files.created[0], ".mdkg/db/schema/migrations/001_mdkg_project_db_foundation.sql");
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite")), true);
+
+  const { DatabaseSync } = require("node:sqlite");
+  const db = new DatabaseSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite"));
+  try {
+    assert.equal(
+      db.prepare("SELECT value FROM project_meta WHERE key = 'tool'").get().value,
+      "mdkg"
+    );
+    assert.equal(
+      db.prepare("SELECT COUNT(*) AS count FROM mdkg_schema_migration").get().count,
+      1
+    );
+  } finally {
+    db.close();
+  }
+
+  const second = runCli(root, ["db", "migrate", "--json"]);
+  assert.equal(second.status, 0, second.stderr);
+  const repeated = parseJson(second.stdout);
+  assert.equal(repeated.applied_count, 0);
+  assert.equal(repeated.skipped_count, 1);
+  assert.equal(repeated.migrations[0].status, "already_applied");
+  assert.deepEqual(repeated.migration_files.created, []);
+});
+
+test("db migrate fails on disabled config missing dirs corrupt db and checksum drift", () => {
+  const disabledRoot = makeRoot("mdkg-db-migrate-disabled-");
+  const disabled = runCli(disabledRoot, ["db", "migrate", "--json"]);
+  assert.notEqual(disabled.status, 0);
+  assert.match(disabled.stderr, /project db is disabled; run mdkg db init first/);
+
+  const missingRoot = makeRoot("mdkg-db-migrate-missing-");
+  assert.equal(runCli(missingRoot, ["db", "init", "--json"]).status, 0);
+  fs.rmSync(path.join(missingRoot, ".mdkg", "db", "schema"), { recursive: true, force: true });
+  const missing = runCli(missingRoot, ["db", "migrate", "--json"]);
+  assert.notEqual(missing.status, 0);
+  assert.match(missing.stderr, /project db schema directory missing/);
+
+  const corruptRoot = makeRoot("mdkg-db-migrate-corrupt-");
+  assert.equal(runCli(corruptRoot, ["db", "init", "--json"]).status, 0);
+  fs.writeFileSync(path.join(corruptRoot, ".mdkg", "db", "runtime", "project.sqlite"), "not sqlite", "utf8");
+  const corrupt = runCli(corruptRoot, ["db", "migrate", "--json"]);
+  assert.notEqual(corrupt.status, 0);
+  assert.match(corrupt.stderr, /project DB migration failed|file is not a database/);
+
+  const fileDriftRoot = makeRoot("mdkg-db-migrate-file-drift-");
+  assert.equal(runCli(fileDriftRoot, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(fileDriftRoot, ["db", "migrate", "--json"]).status, 0);
+  fs.appendFileSync(
+    path.join(fileDriftRoot, ".mdkg", "db", "schema", "migrations", "001_mdkg_project_db_foundation.sql"),
+    "\n-- drift\n",
+    "utf8"
+  );
+  const fileDrift = runCli(fileDriftRoot, ["db", "migrate", "--json"]);
+  assert.notEqual(fileDrift.status, 0);
+  assert.match(fileDrift.stderr, /migration file checksum drift/);
+
+  const dbDriftRoot = makeRoot("mdkg-db-migrate-db-drift-");
+  assert.equal(runCli(dbDriftRoot, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(dbDriftRoot, ["db", "migrate", "--json"]).status, 0);
+  const { DatabaseSync } = require("node:sqlite");
+  const db = new DatabaseSync(path.join(dbDriftRoot, ".mdkg", "db", "runtime", "project.sqlite"));
+  try {
+    db.prepare("UPDATE mdkg_schema_migration SET checksum = ? WHERE migration_key = ?")
+      .run("sha256:drift", "mdkg.project_db.foundation.v1");
+  } finally {
+    db.close();
+  }
+  const dbDrift = runCli(dbDriftRoot, ["db", "migrate", "--json"]);
+  assert.notEqual(dbDrift.status, 0);
+  assert.match(dbDrift.stderr, /migration checksum drift/);
+});
+
 test("db index status reports and verify fails for missing and stale caches", () => {
   const root = makeRoot("mdkg-db-index-stale-");
   assert.equal(runCli(root, ["db", "index", "rebuild"]).status, 0);
