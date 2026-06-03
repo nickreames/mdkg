@@ -10,13 +10,22 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ### Added
 
+- Added `mdkg db` as the project database command namespace for the pre-v1 DB foundation.
+- Added `mdkg db index rebuild/status/verify` while keeping `mdkg index` as the compatibility shortcut for graph index rebuilds.
+- Added generic project DB config and `.mdkg/db/{schema,runtime,state,receipts}` layout support, separate from the rebuildable `.mdkg/index` graph cache.
+- Added `mdkg db init` to create the generic project DB scaffold, write `.mdkg/db/project-db.json`, and enable `db.enabled` without creating an active runtime SQLite database.
+- Added `mdkg db migrate` using Node's built-in `node:sqlite` for mdkg-owned generic foundation migrations with migration keys, order, checksums, and applied timestamps.
+- Added `mdkg db verify` and `mdkg db stats` for non-mutating project DB health checks and deterministic summaries.
 - Added prefix-based cross-subgraph graph references so root-authored nodes can point at configured child graph qids such as `child_repo:work.example`.
 - Added `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]` to rebuild root-owned child bundle snapshots from configured clean child Git repo `source_path` entries.
 - Added `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]` for generated read-only inspection trees extracted from configured subgraph bundles.
 - Added unit and packed-package smoke coverage for subgraph sync dry-runs, child Git cleanliness checks, root-owned bundle refresh, materialization marker safety, and cross-subgraph refs.
+- Added unit and packed-package init smoke coverage for `db init`, `db migrate`, `db verify`, and `db stats`.
 
 ### Changed
 
+- Init, upgrade, README, command matrix, and agent-start docs now distinguish `.mdkg/index` as rebuildable graph cache state from `.mdkg/db` as project application database state.
+- Project DB runtime SQLite files, WAL/SHM/journal files, locks, and temp files remain ignored by default; schema files, manifests, receipts, and opt-in sealed snapshots remain policy-driven.
 - `mdkg subgraph refresh` remains reload-only; `mdkg subgraph sync` is now the explicit command that builds child bundles.
 - Init and upgrade ignore guidance now treats `.mdkg/subgraphs/` as local generated inspection state.
 - Bundle creation, local graph indexing, search, validate, pack, and SQLite hydration keep ignoring materialized subgraph trees so extracted child files never become root-owned graph nodes.

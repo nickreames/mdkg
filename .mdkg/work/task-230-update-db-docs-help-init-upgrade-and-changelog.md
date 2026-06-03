@@ -2,14 +2,14 @@
 id: task-230
 type: task
 title: update db docs help init upgrade and changelog
-status: todo
+status: done
 priority: 1
 epic: epic-30
 parent: goal-1
 tags: [project-db, docs, help, changelog]
 owners: []
 links: []
-artifacts: []
+artifacts: [README.md, CLI_COMMAND_MATRIX.md, CHANGELOG.md, AGENT_START.md, assets/init/README.md, assets/init/CLI_COMMAND_MATRIX.md, assets/init/AGENT_START.md, src/cli.ts]
 relates: [goal-1, epic-30, edd-12, task-223, task-224, task-225, task-226, task-227, task-228, task-229]
 blocked_by: [task-223, task-224, task-225, task-226, task-227, task-228, task-229]
 blocks: [task-231]
@@ -56,7 +56,24 @@ Keep docs generic and pre-v1. Mention profiles only as deferred follow-up work.
 
 # Closeout Evidence
 
-- Record changed docs and command parity checks.
+- README now documents `.mdkg/index` as rebuildable graph cache state and
+  `.mdkg/db` as project application database state.
+- README documents `mdkg db init`, `mdkg db migrate`, `mdkg db verify`, and
+  `mdkg db stats`, including the active runtime/WAL ignore policy.
+- `CLI_COMMAND_MATRIX.md` and seeded `assets/init/CLI_COMMAND_MATRIX.md` list
+  the complete `mdkg db` command surface and behavior.
+- Root and seeded `AGENT_START.md` explain the init/migrate/verify/stats flow
+  for agents.
+- Seeded `assets/init/README.md` matches the current DB layout, runtime ignore,
+  and policy boundaries.
+- `CHANGELOG.md` records the DB foundation release slice under
+  `0.1.7 - Unreleased`.
+- Help output for `mdkg help db` documents the implemented command family.
+- Verification passed:
+  - `npm run test` (403 tests)
+  - `npm run cli:check`
+  - `npm run smoke:init`
+  - `npm run smoke:upgrade`
 
 # Links / Artifacts
 
