@@ -30,6 +30,17 @@ const BASE_CONFIG = {
     output_dir: ".mdkg/bundles",
     default_profile: "private",
   },
+  db: {
+    enabled: false,
+    schema_version: 1,
+    root_path: ".mdkg/db",
+    schema_path: ".mdkg/db/schema",
+    migrations_path: ".mdkg/db/schema/migrations",
+    runtime_path: ".mdkg/db/runtime/project.sqlite",
+    state_path: ".mdkg/db/state/project.sqlite",
+    receipts_path: ".mdkg/db/receipts",
+    migration_table: "mdkg_schema_migration",
+  },
   pack: {
     default_depth: 2,
     default_edges: ["parent", "epic", "relates"],
@@ -247,6 +258,8 @@ test("runUpgradeCommand migrates legacy config without replacing custom config",
   assert.deepEqual(config.workspaces, {
     root: { path: ".", enabled: true, mdkg_dir: ".mdkg" },
   });
+  assert.equal(config.db.enabled, false);
+  assert.equal(config.db.root_path, ".mdkg/db");
 });
 
 test("runUpgradeCommand does not add skills or events to non-agent workspaces", () => {

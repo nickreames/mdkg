@@ -2,14 +2,14 @@
 id: task-226
 type: task
 title: add project db config defaults and migration validation
-status: todo
+status: done
 priority: 1
 epic: epic-30
 parent: goal-1
 tags: [project-db, config, migration, validation]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/core/config.ts, src/core/project_db.ts, src/commands/upgrade.ts, assets/init/config.json, tests/core/config.test.ts]
 relates: [goal-1, epic-30, edd-12, task-183]
 blocked_by: [task-223]
 blocks: [task-227, task-228, task-229, task-230, task-231]
@@ -59,7 +59,22 @@ cache settings.
 
 # Closeout Evidence
 
-- Record config JSON shape and migration test evidence.
+- Added a normalized `db` config namespace distinct from `index.*`:
+  `enabled`, `schema_version`, `root_path`, `schema_path`,
+  `migrations_path`, `runtime_path`, `state_path`, `receipts_path`, and
+  `migration_table`.
+- Default shape keeps project DB disabled and points to `.mdkg/db/**` without
+  creating runtime state.
+- Existing configs without `db` still load through defaults; `mdkg upgrade
+  --apply` writes the default `db` section when missing.
+- Project DB paths are repo-contained and internally constrained under
+  `db.root_path`; omitted child paths derive from custom `db.root_path`.
+- Future profile fields are rejected with a clear deferred-profile error.
+- Verification passed:
+  - `npm run test` (396 tests)
+  - `npm run smoke:init`
+  - `npm run smoke:upgrade`
+  - `npm run cli:check`
 
 # Links / Artifacts
 

@@ -5,7 +5,17 @@ import { migrateConfig } from "../core/migrate";
 import { validateConfigSchema } from "../core/config";
 import { configPath } from "../core/paths";
 import { readPackageVersion } from "../core/version";
-import { PROJECT_DB_GITIGNORE_ENTRIES } from "../core/project_db";
+import {
+  PROJECT_DB_CONFIG_SCHEMA_VERSION,
+  PROJECT_DB_GITIGNORE_ENTRIES,
+  PROJECT_DB_MIGRATIONS_DIR,
+  PROJECT_DB_MIGRATION_TABLE,
+  PROJECT_DB_RECEIPTS_DIR,
+  PROJECT_DB_RELATIVE_DIR,
+  PROJECT_DB_RUNTIME_FILE,
+  PROJECT_DB_SCHEMA_DIR,
+  PROJECT_DB_STATE_FILE,
+} from "../core/project_db";
 import { formatDate } from "../util/date";
 import { NotFoundError } from "../util/errors";
 import {
@@ -295,23 +305,54 @@ function migrateLegacyBundleImportsConfig(input: unknown): { config: unknown; ch
   return { config: raw, changed: true };
 }
 
+function migrateProjectDbConfig(input: unknown): { config: unknown; changed: boolean } {
+  if (typeof input !== "object" || input === null || Array.isArray(input)) {
+    return { config: input, changed: false };
+  }
+  const raw = { ...(input as Record<string, unknown>) };
+  if (raw.db !== undefined) {
+    return { config: raw, changed: false };
+  }
+  raw.db = {
+    enabled: false,
+    schema_version: PROJECT_DB_CONFIG_SCHEMA_VERSION,
+    root_path: PROJECT_DB_RELATIVE_DIR,
+    schema_path: PROJECT_DB_SCHEMA_DIR,
+    migrations_path: PROJECT_DB_MIGRATIONS_DIR,
+    runtime_path: PROJECT_DB_RUNTIME_FILE,
+    state_path: PROJECT_DB_STATE_FILE,
+    receipts_path: PROJECT_DB_RECEIPTS_DIR,
+    migration_table: PROJECT_DB_MIGRATION_TABLE,
+  };
+  return { config: raw, changed: true };
+}
+
 function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const cfgPath = configPath(root);
   const raw = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
   const migrated = migrateConfig(raw);
-  const nextConfig = migrateLegacyBundleImportsConfig(migrated.config);
+  const bundleConfig = migrateLegacyBundleImportsConfig(migrated.config);
+  const nextConfig = migrateProjectDbConfig(bundleConfig.config);
   validateConfigSchema(nextConfig.config);
-  if (migrated.from === migrated.to && !nextConfig.changed) {
+  if (migrated.from === migrated.to && !bundleConfig.changed && !nextConfig.changed) {
     summary.unchanged += 1;
     return;
+  }
+  const reasons: string[] = [];
+  if (bundleConfig.changed) {
+    reasons.push("config subgraphs migration");
+  }
+  if (nextConfig.changed) {
+    reasons.push("project db config defaults");
+  }
+  if (migrated.from !== migrated.to) {
+    reasons.push(`schema_version ${migrated.from} -> ${migrated.to}`);
   }
   record(summary, changes, {
     path: ".mdkg/config.json",
     category: "config",
     action: "migrate",
-    reason: nextConfig.changed
-      ? `config subgraphs migration${migrated.from === migrated.to ? "" : ` and schema_version ${migrated.from} -> ${migrated.to}`}`
-      : `config schema_version ${migrated.from} -> ${migrated.to}`,
+    reason: reasons.join(" and "),
   });
   if (!dryRun) {
     writeFile(cfgPath, `${JSON.stringify(nextConfig.config, null, 2)}\n`);

@@ -3,12 +3,18 @@ import path from "path";
 
 export const PROJECT_DB_RELATIVE_DIR = ".mdkg/db";
 export const PROJECT_DB_SCHEMA_DIR = ".mdkg/db/schema";
+export const PROJECT_DB_MIGRATIONS_DIR = ".mdkg/db/schema/migrations";
 export const PROJECT_DB_RUNTIME_DIR = ".mdkg/db/runtime";
 export const PROJECT_DB_STATE_DIR = ".mdkg/db/state";
 export const PROJECT_DB_RECEIPTS_DIR = ".mdkg/db/receipts";
+export const PROJECT_DB_RUNTIME_FILE = ".mdkg/db/runtime/project.sqlite";
+export const PROJECT_DB_STATE_FILE = ".mdkg/db/state/project.sqlite";
+export const PROJECT_DB_CONFIG_SCHEMA_VERSION = 1;
+export const PROJECT_DB_MIGRATION_TABLE = "mdkg_schema_migration";
 
 export const PROJECT_DB_SUBDIRS = [
   PROJECT_DB_SCHEMA_DIR,
+  PROJECT_DB_MIGRATIONS_DIR,
   PROJECT_DB_RUNTIME_DIR,
   PROJECT_DB_STATE_DIR,
   PROJECT_DB_RECEIPTS_DIR,

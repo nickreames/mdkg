@@ -25,6 +25,17 @@ const BASE_CONFIG = {
     output_dir: ".mdkg/bundles",
     default_profile: "private",
   },
+  db: {
+    enabled: false,
+    schema_version: 1,
+    root_path: ".mdkg/db",
+    schema_path: ".mdkg/db/schema",
+    migrations_path: ".mdkg/db/schema/migrations",
+    runtime_path: ".mdkg/db/runtime/project.sqlite",
+    state_path: ".mdkg/db/state/project.sqlite",
+    receipts_path: ".mdkg/db/receipts",
+    migration_table: "mdkg_schema_migration",
+  },
   pack: {
     default_depth: 2,
     default_edges: ["parent", "epic", "relates"],
@@ -332,6 +343,9 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
   assert.equal(config.bundles.default_profile, "private");
+  assert.equal(config.db.enabled, false);
+  assert.equal(config.db.root_path, ".mdkg/db");
+  assert.equal(config.db.runtime_path, ".mdkg/db/runtime/project.sqlite");
   assert.equal(config.workspaces.root.visibility, "private");
   assertManifestPathsExistAndMatch(root);
   captureConsole(() => runDoctorCommand({ root }));
@@ -398,5 +412,8 @@ test("published init seed config remains root-only", () => {
   assert.equal(assetConfig.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(assetConfig.bundles.output_dir, ".mdkg/bundles");
   assert.equal(assetConfig.bundles.default_profile, "private");
+  assert.equal(assetConfig.db.enabled, false);
+  assert.equal(assetConfig.db.root_path, ".mdkg/db");
+  assert.equal(assetConfig.db.runtime_path, ".mdkg/db/runtime/project.sqlite");
   assert.equal(assetConfig.workspaces.root.visibility, "private");
 });

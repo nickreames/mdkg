@@ -24,6 +24,17 @@ const BASE_CONFIG = {
     output_dir: ".mdkg/bundles",
     default_profile: "private",
   },
+  db: {
+    enabled: false,
+    schema_version: 1,
+    root_path: ".mdkg/db",
+    schema_path: ".mdkg/db/schema",
+    migrations_path: ".mdkg/db/schema/migrations",
+    runtime_path: ".mdkg/db/runtime/project.sqlite",
+    state_path: ".mdkg/db/state/project.sqlite",
+    receipts_path: ".mdkg/db/receipts",
+    migration_table: "mdkg_schema_migration",
+  },
   subgraphs: {},
   pack: {
     default_depth: 2,
@@ -71,10 +82,20 @@ test("loadConfig reads and validates config", () => {
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
   assert.equal(config.bundles.default_profile, "private");
+  assert.equal(config.db.enabled, false);
+  assert.equal(config.db.schema_version, 1);
+  assert.equal(config.db.root_path, ".mdkg/db");
+  assert.equal(config.db.schema_path, ".mdkg/db/schema");
+  assert.equal(config.db.migrations_path, ".mdkg/db/schema/migrations");
+  assert.equal(config.db.runtime_path, ".mdkg/db/runtime/project.sqlite");
+  assert.equal(config.db.state_path, ".mdkg/db/state/project.sqlite");
+  assert.equal(config.db.receipts_path, ".mdkg/db/receipts");
+  assert.equal(config.db.migration_table, "mdkg_schema_migration");
+  assert.equal(config.index.backend, "json");
   assert.deepEqual(config.subgraphs, {});
 });
 
-test("loadConfig migrates legacy config without schema_version and defaults capability and bundle fields", () => {
+test("loadConfig migrates legacy config without schema_version and defaults capability bundle and db fields", () => {
   const root = makeTempDir("mdkg-config-");
   const configPath = path.join(root, ".mdkg", "config.json");
   const legacyConfig = { ...BASE_CONFIG } as Record<string, unknown>;
@@ -82,6 +103,7 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   delete legacyConfig.archive;
   delete legacyConfig.capabilities;
   delete legacyConfig.bundles;
+  delete legacyConfig.db;
   delete legacyConfig.subgraphs;
   const workspaces = JSON.parse(JSON.stringify(legacyConfig.workspaces)) as Record<string, Record<string, unknown>>;
   delete workspaces.root.visibility;
@@ -96,7 +118,57 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
   assert.equal(config.bundles.default_profile, "private");
+  assert.equal(config.db.enabled, false);
+  assert.equal(config.db.root_path, ".mdkg/db");
+  assert.equal(config.db.runtime_path, ".mdkg/db/runtime/project.sqlite");
   assert.deepEqual(config.subgraphs, {});
+});
+
+test("loadConfig accepts project db config distinct from index backend", () => {
+  const root = makeTempDir("mdkg-config-db-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(JSON.stringify(BASE_CONFIG));
+  config.index.backend = "json";
+  config.db = {
+    enabled: true,
+    schema_version: 2,
+    root_path: ".mdkg/db",
+    schema_path: ".mdkg/db/schema",
+    migrations_path: ".mdkg/db/schema/migrations",
+    runtime_path: ".mdkg/db/runtime/app.sqlite",
+    state_path: ".mdkg/db/state/app.sqlite",
+    receipts_path: ".mdkg/db/receipts",
+    migration_table: "project_schema_migration",
+  };
+  writeFile(configPath, JSON.stringify(config, null, 2));
+
+  const loaded = loadConfig(root);
+  assert.equal(loaded.index.backend, "json");
+  assert.equal(loaded.db.enabled, true);
+  assert.equal(loaded.db.schema_version, 2);
+  assert.equal(loaded.db.runtime_path, ".mdkg/db/runtime/app.sqlite");
+  assert.equal(loaded.db.migration_table, "project_schema_migration");
+});
+
+test("loadConfig derives omitted project db paths from custom root path", () => {
+  const root = makeTempDir("mdkg-config-db-root-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(JSON.stringify(BASE_CONFIG));
+  config.db = {
+    enabled: false,
+    schema_version: 1,
+    root_path: ".project-db",
+    migration_table: "mdkg_schema_migration",
+  };
+  writeFile(configPath, JSON.stringify(config, null, 2));
+
+  const loaded = loadConfig(root);
+  assert.equal(loaded.db.root_path, ".project-db");
+  assert.equal(loaded.db.schema_path, ".project-db/schema");
+  assert.equal(loaded.db.migrations_path, ".project-db/schema/migrations");
+  assert.equal(loaded.db.runtime_path, ".project-db/runtime/project.sqlite");
+  assert.equal(loaded.db.state_path, ".project-db/state/project.sqlite");
+  assert.equal(loaded.db.receipts_path, ".project-db/receipts");
 });
 
 test("loadConfig accepts subgraph config and rejects workspace alias collisions", () => {
@@ -317,6 +389,49 @@ test("loadConfig rejects config paths that escape the repo root", () => {
       /bundles.output_dir cannot contain NUL bytes/,
     ],
     [
+      "db",
+      "root_path",
+      "../db",
+      /db.root_path cannot contain parent-directory components/,
+    ],
+    [
+      "db",
+      "root_path",
+      path.join(root, ".mdkg", "db"),
+      /db.root_path must be relative/,
+    ],
+    ["db", "root_path", " ", /db.root_path cannot be empty/],
+    [
+      "db",
+      "runtime_path",
+      "../runtime/project.sqlite",
+      /db.runtime_path cannot contain parent-directory components/,
+    ],
+    [
+      "db",
+      "runtime_path",
+      path.join(root, ".mdkg", "db", "runtime", "project.sqlite"),
+      /db.runtime_path must be relative/,
+    ],
+    [
+      "db",
+      "runtime_path",
+      ".mdkg/other/project.sqlite",
+      /db.runtime_path must be inside db.root_path/,
+    ],
+    [
+      "db",
+      "state_path",
+      ".mdkg/state/project.sqlite",
+      /db.state_path must be inside db.root_path/,
+    ],
+    [
+      "db",
+      "receipts_path",
+      ".mdkg/receipts",
+      /db.receipts_path must be inside db.root_path/,
+    ],
+    [
       "pack",
       "verbose_core_list_path",
       "../core.md",
@@ -419,6 +534,18 @@ test("loadConfig rejects invalid numeric config invariants", () => {
     ],
     [
       (config: typeof BASE_CONFIG) => {
+        config.db.schema_version = 0;
+      },
+      /db.schema_version must be a positive integer/,
+    ],
+    [
+      (config: typeof BASE_CONFIG) => {
+        config.db.schema_version = 1.5;
+      },
+      /db.schema_version must be an integer/,
+    ],
+    [
+      (config: typeof BASE_CONFIG) => {
         config.pack.default_depth = -1;
       },
       /pack.default_depth must be a non-negative integer/,
@@ -479,6 +606,23 @@ test("loadConfig rejects invalid numeric config invariants", () => {
 
     assert.throws(() => loadConfig(root), pattern);
   }
+});
+
+test("loadConfig rejects unsupported project db profile config and bad migration table names", () => {
+  const root = makeTempDir("mdkg-config-db-profile-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(JSON.stringify(BASE_CONFIG));
+  (config.db as Record<string, unknown>).profile = "wedding_crm";
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  assert.throws(() => loadConfig(root), /db profiles are not supported in this release/);
+
+  delete config.db.profile;
+  config.db.migration_table = "ProjectSchemaMigration";
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  assert.throws(
+    () => loadConfig(root),
+    /db.migration_table must be a lowercase SQL identifier using \[a-z0-9_\]/
+  );
 });
 
 test("loadConfig rejects invalid pack default edge config invariants", () => {

@@ -6,6 +6,16 @@ import {
   normalizeContainedWorkspacePath,
   workspaceDocumentRootKey,
 } from "./workspace_path";
+import {
+  PROJECT_DB_CONFIG_SCHEMA_VERSION,
+  PROJECT_DB_MIGRATIONS_DIR,
+  PROJECT_DB_MIGRATION_TABLE,
+  PROJECT_DB_RECEIPTS_DIR,
+  PROJECT_DB_RELATIVE_DIR,
+  PROJECT_DB_RUNTIME_FILE,
+  PROJECT_DB_SCHEMA_DIR,
+  PROJECT_DB_STATE_FILE,
+} from "./project_db";
 
 export type WorkspaceConfig = {
   path: string;
@@ -54,6 +64,17 @@ export type Config = {
     output_dir: string;
     default_profile: "private" | "public";
   };
+  db: {
+    enabled: boolean;
+    schema_version: number;
+    root_path: string;
+    schema_path: string;
+    migrations_path: string;
+    runtime_path: string;
+    state_path: string;
+    receipts_path: string;
+    migration_table: string;
+  };
   subgraphs: Record<string, SubgraphConfig>;
   pack: {
     default_depth: number;
@@ -100,10 +121,22 @@ const WORKSPACE_VISIBILITY_VALUES = new Set(["private", "internal", "public"]);
 const BUNDLE_PROFILE_VALUES = new Set(["private", "public"]);
 const INDEX_BACKEND_VALUES = new Set(["json", "sqlite"]);
 const SUBGRAPH_PERMISSION_VALUES = new Set(["read", "request", "propose", "mutate"]);
+const SQL_IDENTIFIER_RE = /^[a-z][a-z0-9_]*$/;
 const DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES = 26214400;
 const DEFAULT_SQLITE_COMMIT_WARNING_BYTES = 52428800;
 const DEFAULT_LOCK_TIMEOUT_MS = 10000;
 const DEFAULT_SUBGRAPH_MAX_STALE_SECONDS = 3600;
+const DEFAULT_PROJECT_DB_CONFIG = {
+  enabled: false,
+  schema_version: PROJECT_DB_CONFIG_SCHEMA_VERSION,
+  root_path: PROJECT_DB_RELATIVE_DIR,
+  schema_path: PROJECT_DB_SCHEMA_DIR,
+  migrations_path: PROJECT_DB_MIGRATIONS_DIR,
+  runtime_path: PROJECT_DB_RUNTIME_FILE,
+  state_path: PROJECT_DB_STATE_FILE,
+  receipts_path: PROJECT_DB_RECEIPTS_DIR,
+  migration_table: PROJECT_DB_MIGRATION_TABLE,
+} as const;
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -328,6 +361,53 @@ function requireContainedPath(
   }
 }
 
+function requireSqlIdentifier(value: unknown, path: string, errors: ValidationErrors): string | undefined {
+  const raw = requireString(value, path, errors);
+  if (raw === undefined) {
+    return undefined;
+  }
+  if (!SQL_IDENTIFIER_RE.test(raw)) {
+    errors.push(`${path} must be a lowercase SQL identifier using [a-z0-9_]`);
+    return undefined;
+  }
+  return raw;
+}
+
+function isContainedConfigPath(rootPath: string, candidate: string): boolean {
+  return candidate === rootPath || candidate.startsWith(`${rootPath}/`);
+}
+
+function defaultProjectDbChildPath(
+  rootPath: string | undefined,
+  suffix: string,
+  fallback: string
+): string {
+  if (!rootPath) {
+    return fallback;
+  }
+  if (rootPath === ".") {
+    return suffix;
+  }
+  return `${rootPath}/${suffix}`;
+}
+
+function requireProjectDbPath(
+  value: unknown,
+  path: string,
+  rootPath: string | undefined,
+  errors: ValidationErrors
+): string | undefined {
+  const normalized = requireContainedPath(value, path, errors);
+  if (normalized === undefined || rootPath === undefined) {
+    return normalized;
+  }
+  if (!isContainedConfigPath(rootPath, normalized)) {
+    errors.push(`${path} must be inside db.root_path`);
+    return undefined;
+  }
+  return normalized;
+}
+
 export function validateConfigSchema(raw: unknown): Config {
   const errors: ValidationErrors = [];
   if (!isObject(raw)) {
@@ -351,6 +431,8 @@ export function validateConfigSchema(raw: unknown): Config {
     raw.bundles === undefined
       ? { output_dir: ".mdkg/bundles", default_profile: "private" }
       : requireObject(raw.bundles, "bundles", errors);
+  const dbRaw =
+    raw.db === undefined ? DEFAULT_PROJECT_DB_CONFIG : requireObject(raw.db, "db", errors);
   if (raw.bundle_imports !== undefined && raw.subgraphs !== undefined) {
     errors.push("config must not define both subgraphs and legacy bundle_imports");
   }
@@ -433,6 +515,113 @@ export function validateConfigSchema(raw: unknown): Config {
         ),
       }
     : undefined;
+
+  let db: Config["db"] | undefined;
+  if (dbRaw) {
+    if ("profile" in dbRaw || "profiles" in dbRaw || "profile_name" in dbRaw) {
+      errors.push("db profiles are not supported in this release");
+    }
+    const dbEnabled =
+      dbRaw.enabled === undefined
+        ? DEFAULT_PROJECT_DB_CONFIG.enabled
+        : requireBoolean(dbRaw.enabled, "db.enabled", errors);
+    const dbSchemaVersion =
+      dbRaw.schema_version === undefined
+        ? DEFAULT_PROJECT_DB_CONFIG.schema_version
+        : requirePositiveInteger(dbRaw.schema_version, "db.schema_version", errors);
+    const dbRootPath =
+      dbRaw.root_path === undefined
+        ? DEFAULT_PROJECT_DB_CONFIG.root_path
+        : requireContainedPath(dbRaw.root_path, "db.root_path", errors);
+    const dbSchemaPath =
+      requireProjectDbPath(
+        dbRaw.schema_path === undefined
+          ? defaultProjectDbChildPath(dbRootPath, "schema", DEFAULT_PROJECT_DB_CONFIG.schema_path)
+          : dbRaw.schema_path,
+        "db.schema_path",
+        dbRootPath,
+        errors
+      );
+    const dbMigrationsPath =
+      requireProjectDbPath(
+        dbRaw.migrations_path === undefined
+          ? defaultProjectDbChildPath(
+              dbRootPath,
+              "schema/migrations",
+              DEFAULT_PROJECT_DB_CONFIG.migrations_path
+            )
+          : dbRaw.migrations_path,
+        "db.migrations_path",
+        dbRootPath,
+        errors
+      );
+    const dbRuntimePath =
+      requireProjectDbPath(
+        dbRaw.runtime_path === undefined
+          ? defaultProjectDbChildPath(
+              dbRootPath,
+              "runtime/project.sqlite",
+              DEFAULT_PROJECT_DB_CONFIG.runtime_path
+            )
+          : dbRaw.runtime_path,
+        "db.runtime_path",
+        dbRootPath,
+        errors
+      );
+    const dbStatePath =
+      requireProjectDbPath(
+        dbRaw.state_path === undefined
+          ? defaultProjectDbChildPath(
+              dbRootPath,
+              "state/project.sqlite",
+              DEFAULT_PROJECT_DB_CONFIG.state_path
+            )
+          : dbRaw.state_path,
+        "db.state_path",
+        dbRootPath,
+        errors
+      );
+    const dbReceiptsPath =
+      requireProjectDbPath(
+        dbRaw.receipts_path === undefined
+          ? defaultProjectDbChildPath(
+              dbRootPath,
+              "receipts",
+              DEFAULT_PROJECT_DB_CONFIG.receipts_path
+            )
+          : dbRaw.receipts_path,
+        "db.receipts_path",
+        dbRootPath,
+        errors
+      );
+    const dbMigrationTable =
+      dbRaw.migration_table === undefined
+        ? DEFAULT_PROJECT_DB_CONFIG.migration_table
+        : requireSqlIdentifier(dbRaw.migration_table, "db.migration_table", errors);
+    if (
+      dbEnabled !== undefined &&
+      dbSchemaVersion !== undefined &&
+      dbRootPath &&
+      dbSchemaPath &&
+      dbMigrationsPath &&
+      dbRuntimePath &&
+      dbStatePath &&
+      dbReceiptsPath &&
+      dbMigrationTable
+    ) {
+      db = {
+        enabled: dbEnabled,
+        schema_version: dbSchemaVersion,
+        root_path: dbRootPath,
+        schema_path: dbSchemaPath,
+        migrations_path: dbMigrationsPath,
+        runtime_path: dbRuntimePath,
+        state_path: dbStatePath,
+        receipts_path: dbReceiptsPath,
+        migration_table: dbMigrationTable,
+      };
+    }
+  }
 
   const packLimitsRaw = packRaw ? requireObject(packRaw.limits, "pack.limits", errors) : undefined;
   const pack = packRaw
@@ -754,6 +943,7 @@ export function validateConfigSchema(raw: unknown): Config {
     index: index as Config["index"],
     capabilities: capabilities as Config["capabilities"],
     bundles: bundles as Config["bundles"],
+    db: db as Config["db"],
     subgraphs,
     pack: pack as Config["pack"],
     templates: templates as Config["templates"],

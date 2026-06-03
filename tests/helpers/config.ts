@@ -25,6 +25,17 @@ export function writeRootConfig(root: string): void {
       output_dir: ".mdkg/bundles",
       default_profile: "private",
     },
+    db: {
+      enabled: false,
+      schema_version: 1,
+      root_path: ".mdkg/db",
+      schema_path: ".mdkg/db/schema",
+      migrations_path: ".mdkg/db/schema/migrations",
+      runtime_path: ".mdkg/db/runtime/project.sqlite",
+      state_path: ".mdkg/db/state/project.sqlite",
+      receipts_path: ".mdkg/db/receipts",
+      migration_table: "mdkg_schema_migration",
+    },
     subgraphs: {},
     pack: {
       default_depth: 2,
