@@ -8,10 +8,10 @@ tags: [project-db, db-cli, sqlite, foundation]
 owners: []
 links: []
 artifacts: []
-relates: [epic-29, epic-20]
+relates: [epic-29, epic-20, edd-12, goal-1]
 blocked_by: []
-blocks: [task-181, task-182, task-183, task-184]
-refs: []
+blocks: [task-181, task-182, task-183, task-184, task-223, task-224, task-225, task-226, task-227, task-228, task-229, task-230, task-231]
+refs: [edd-12]
 aliases: [project-db-foundation, mdkg-db-cli]
 skills: []
 created: 2026-05-27
@@ -20,9 +20,9 @@ updated: 2026-05-27
 
 # Overview
 
-Define the generic mdkg project database foundation and the future `mdkg db ...`
-command surface. This layer separates the rebuildable `.mdkg/index` graph cache
-from `.mdkg/db` project application state.
+Implement the generic mdkg project database foundation and the future
+`mdkg db ...` command surface. This layer separates the rebuildable
+`.mdkg/index` graph cache from `.mdkg/db` project application state.
 
 # Goal
 
@@ -31,31 +31,35 @@ application databases.
 
 # Scope
 
-- `mdkg db` command taxonomy.
+- `mdkg db` command taxonomy and implementation.
 - `mdkg index` compatibility shortcut policy.
 - `.mdkg/db` layout and project DB config.
 - Initial migration, verify, and stats command requirements.
 
 # Acceptance Criteria
 
-- `mdkg db` command taxonomy covers index-cache inspection and project DB
-  lifecycle without removing `mdkg index`.
+- `mdkg db` command taxonomy and implementation cover index-cache inspection
+  and project DB lifecycle without removing `mdkg index`.
 - `.mdkg/db/{schema,runtime,state,receipts}` is the default layout.
-- Project DB config, profiles, migration runner, and basic lifecycle commands
-  are scoped for future implementation.
+- Project DB config, migration runner, and basic lifecycle commands are
+  implemented for a generic foundation.
 - Active runtime WAL files are ignored and sealed snapshots are opt-in.
+- Full project DB profiles are deferred to future nodes created at closeout.
 
 # Milestones
 
-- Command taxonomy is defined.
-- Filesystem layout is defined.
-- Project DB config and lifecycle commands are ready for implementation.
+- Command taxonomy is implemented.
+- Filesystem layout and ignore rules are implemented.
+- Project DB config and lifecycle commands are implemented and tested.
+- Future profile artifacts are captured after implementation evidence.
 
 # Out of Scope
 
 - No hosted database service requirement.
 - No arbitrary agent SQL write path.
 - No Rust sidecar requirement in this phase.
+- No profile system in this phase.
+- No real npm publish without separate approval.
 
 # Risks
 
@@ -65,6 +69,8 @@ application databases.
 # Links / Artifacts
 
 - `epic-29`
+- `edd-12`
+- `goal-1`
 - `task-181`
 - `task-182`
 - `task-183`

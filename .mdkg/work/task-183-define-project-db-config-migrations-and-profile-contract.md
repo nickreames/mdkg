@@ -2,7 +2,7 @@
 id: task-183
 type: task
 title: define project db config migrations and profile contract
-status: todo
+status: done
 priority: 1
 epic: epic-30
 tags: [project-db, config, migrations, profiles]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-29, epic-30, epic-34]
-blocked_by: [task-181, task-182]
-blocks: [task-184, task-187, task-189, task-193]
+blocked_by: []
+blocks: [task-226, task-228, task-184, task-187, task-189, task-193]
 refs: []
 aliases: [project-db-profile-contract]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-03
 ---
 
 # Overview
@@ -58,3 +58,13 @@ external services or hosted package registries.
 - `epic-29`
 - `epic-30`
 - `epic-34`
+- `edd-12`
+- `task-226`
+- `task-228`
+
+# Decomposition Evidence
+
+Closed as a planning/decomposition task on 2026-06-03. Generic config and
+migration requirements are captured in `edd-12` and split into implementation
+tasks `task-226` and `task-228`. Full project DB profiles are deferred until
+`task-231` creates evidence-backed follow-up nodes.

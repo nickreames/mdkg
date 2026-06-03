@@ -2,7 +2,7 @@
 id: task-184
 type: task
 title: define project db init migrate verify stats commands
-status: todo
+status: done
 priority: 1
 epic: epic-30
 tags: [project-db, db-cli, init, migrate, verify]
@@ -10,13 +10,13 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-29, epic-30, task-181, task-182, task-183]
-blocked_by: [task-181, task-182, task-183]
-blocks: [task-193]
+blocked_by: []
+blocks: [task-227, task-229, task-231, task-193]
 refs: []
 aliases: [project-db-lifecycle-commands]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-03
 ---
 
 # Overview
@@ -57,3 +57,13 @@ behind typed lifecycle commands rather than raw SQL.
 - `task-181`
 - `task-182`
 - `task-183`
+- `edd-12`
+- `task-227`
+- `task-229`
+- `task-231`
+
+# Decomposition Evidence
+
+Closed as a planning/decomposition task on 2026-06-03. Lifecycle command
+requirements are captured in `edd-12` and split into implementation tasks
+`task-227`, `task-228`, and `task-229`, with closeout coverage in `task-231`.

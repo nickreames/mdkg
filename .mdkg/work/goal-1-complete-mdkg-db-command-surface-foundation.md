@@ -15,10 +15,10 @@ tags: [project-db, goal, pre-v1]
 owners: []
 links: []
 artifacts: []
-relates: [epic-29, epic-30, epic-20]
+relates: [epic-30]
 blocked_by: []
 blocks: []
-refs: []
+refs: [edd-12]
 aliases: [db-foundation-goal, mdkg-db-goal]
 skills: [pursue-mdkg-goal]
 created: 2026-06-02
@@ -27,9 +27,10 @@ updated: 2026-06-02
 # Objective
 
 Complete the mdkg DB command-surface foundation as a scoped, recursive goal.
-The work should move one concrete node at a time through `task-181` through
-`task-184`, preserving the distinction between `.mdkg/index` as a rebuildable
-graph cache and `.mdkg/db` as future project application state.
+The work should move one concrete node at a time through the granular
+implementation tasks under `epic-30`, preserving the distinction between
+`.mdkg/index` as a rebuildable graph cache and `.mdkg/db` as future project
+application state.
 
 # End Condition
 
@@ -110,13 +111,15 @@ cache behavior.
 # Current State
 
 Subgraph orchestration and sync/materialization work is complete and committed.
-The graph's current next item is `task-181`, which starts the project database
-foundation lane.
+`task-181` through `task-184` are broad decomposition tasks. The next
+implementation pass should start with the first granular task under `epic-30`.
 
 # Iteration Log
 
 - 2026-06-02: Created the DB foundation goal after committing subgraph
   sync/materialization work.
+- 2026-06-03: Added `edd-12` and split broad `epic-30` planning work into
+  granular implementation tasks before source changes.
 
 # Skill Improvement Candidates
 

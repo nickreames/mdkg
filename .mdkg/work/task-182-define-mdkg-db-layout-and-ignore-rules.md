@@ -2,7 +2,7 @@
 id: task-182
 type: task
 title: define mdkg db layout and ignore rules
-status: todo
+status: done
 priority: 1
 epic: epic-30
 tags: [project-db, filesystem, gitignore, wal]
@@ -11,12 +11,12 @@ links: []
 artifacts: []
 relates: [epic-29, epic-30, epic-31]
 blocked_by: []
-blocks: [task-184, task-185, task-192]
+blocks: [task-225, task-184, task-185, task-192]
 refs: [rule-4]
 aliases: [project-db-layout]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-03
 ---
 
 # Overview
@@ -57,3 +57,11 @@ as opt-in review artifacts, never active runtime state.
 - `epic-30`
 - `epic-31`
 - `rule-4`
+- `edd-12`
+- `task-225`
+
+# Decomposition Evidence
+
+Closed as a planning/decomposition task on 2026-06-03. The layout and ignore
+policy requirements are captured in `edd-12` and split into implementation
+task `task-225`.

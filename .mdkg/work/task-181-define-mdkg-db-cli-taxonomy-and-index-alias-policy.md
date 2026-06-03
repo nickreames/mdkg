@@ -2,7 +2,7 @@
 id: task-181
 type: task
 title: define mdkg db cli taxonomy and index alias policy
-status: todo
+status: done
 priority: 1
 epic: epic-30
 tags: [project-db, db-cli, index, taxonomy]
@@ -11,12 +11,12 @@ links: []
 artifacts: []
 relates: [epic-29, epic-30, epic-20]
 blocked_by: []
-blocks: [task-184]
+blocks: [task-223, task-224, task-184]
 refs: []
 aliases: [db-cli-taxonomy]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-03
 ---
 
 # Overview
@@ -57,3 +57,12 @@ while `.mdkg/db` is project application state.
 - `epic-29`
 - `epic-30`
 - `epic-20`
+- `edd-12`
+- `task-223`
+- `task-224`
+
+# Decomposition Evidence
+
+Closed as a planning/decomposition task on 2026-06-03. The taxonomy is captured
+in `edd-12` and split into granular implementation tasks `task-223` and
+`task-224`.
