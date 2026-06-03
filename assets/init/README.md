@@ -97,6 +97,10 @@ mdkg capability resolve "child capability" --json
 mdkg subgraph verify child_repo --json
 ```
 
+Use `mdkg subgraph sync child_repo --dry-run --json` before writing a refreshed root-owned child bundle snapshot, then `mdkg subgraph sync child_repo --json` when the receipt is acceptable. `sync` inspects the configured child Git repo `source_path`, refuses dirty tracked changes by default, verifies the new bundle, and records `source_repo` as `<branch>@<sha>` without committing, pulling, pushing, checking out, resetting, or mutating child mdkg Markdown.
+
+Use `mdkg subgraph materialize child_repo --target .mdkg/subgraphs --gitignore --json` only when you need a generated read-only inspection tree. Materialized views are local generated state and are not root graph nodes.
+
 Subgraph nodes use the subgraph alias as their qid prefix and can be inspected or packed, but mutations must happen in the owning child repo.
 
 ## Archive and Work Mirrors

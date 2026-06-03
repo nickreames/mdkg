@@ -474,6 +474,7 @@ export function runInitCommand(options: InitCommandOptions): void {
         ".mdkg/index/*.sqlite-journal",
         ".mdkg/state/",
         ".mdkg/pack/",
+        ".mdkg/subgraphs/",
         ".mdkg/archive/**/source/",
       ])) {
         stats.ignoreFilesUpdated.push(".gitignore");

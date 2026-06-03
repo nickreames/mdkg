@@ -78,14 +78,14 @@ export type BundleManifest = {
   files: BundleManifestFile[];
 };
 
-type BundleBuildResult = {
+export type BundleBuildResult = {
   manifest: BundleManifest;
   zip: Buffer;
   outputPath: string;
   zipSha256: string;
 };
 
-type VerifyResult = {
+export type VerifyResult = {
   action: "verified";
   ok: boolean;
   path: string;
@@ -111,7 +111,7 @@ function toPosixPath(value: string): string {
   return value.split(path.sep).join("/");
 }
 
-function sha256Buffer(buffer: Buffer): string {
+export function sha256Buffer(buffer: Buffer): string {
   return `sha256:${crypto.createHash("sha256").update(buffer).digest("hex")}`;
 }
 
@@ -212,6 +212,8 @@ function isExcludedRelativePath(relative: string): boolean {
     normalized.startsWith(".mdkg/pack/") ||
     normalized.includes("/.mdkg/bundles/") ||
     normalized.startsWith(".mdkg/bundles/") ||
+    normalized.includes("/.mdkg/subgraphs/") ||
+    normalized.startsWith(".mdkg/subgraphs/") ||
     normalized.includes("/.mdkg/index/") ||
     normalized.startsWith(".mdkg/index/") ||
     ((normalized.includes("/.mdkg/archive/") || normalized.startsWith(".mdkg/archive/")) &&
@@ -568,7 +570,7 @@ function resolveBundlePath(root: string, value: string): string {
   return path.isAbsolute(value) ? value : path.resolve(root, value);
 }
 
-function buildBundle(options: BundleCreateCommandOptions): BundleBuildResult {
+export function buildBundle(options: BundleCreateCommandOptions): BundleBuildResult {
   const config = loadConfig(options.root);
   const profile = normalizeProfile(options.profile, config.bundles.default_profile);
   const requestedAliases = selectedWorkspaceAliases(config, options.ws);
@@ -686,7 +688,7 @@ function buildBundle(options: BundleCreateCommandOptions): BundleBuildResult {
   };
 }
 
-function parseBundle(bundlePath: string): { entries: Map<string, Buffer>; manifest: BundleManifest } {
+export function parseBundle(bundlePath: string): { entries: Map<string, Buffer>; manifest: BundleManifest } {
   const zip = fs.readFileSync(bundlePath);
   const entries = new Map<string, Buffer>();
   for (const entry of readZipEntries(zip)) {
@@ -707,7 +709,7 @@ function parseBundle(bundlePath: string): { entries: Map<string, Buffer>; manife
   }
 }
 
-function verifyBundle(root: string, bundlePath: string): VerifyResult {
+export function verifyBundle(root: string, bundlePath: string): VerifyResult {
   const errors: string[] = [];
   const stalePaths: string[] = [];
   let manifest: BundleManifest | undefined;

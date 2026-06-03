@@ -1,6 +1,6 @@
 import path from "path";
 import { FrontmatterValue } from "./frontmatter";
-import { isPortableId } from "../util/id";
+import { isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, validatePortableOrUriRef } from "../util/refs";
 
 export const AGENT_FILE_TYPES = [
@@ -288,6 +288,12 @@ function requirePortableId(value: string, key: string, filePath: string): void {
   }
 }
 
+function requirePortableIdRef(value: string, key: string, filePath: string): void {
+  if (value !== value.toLowerCase() || !isPortableIdRef(value)) {
+    throw formatError(filePath, `${key} must be a lowercase portable id or qid`);
+  }
+}
+
 function requireSemver(value: string, key: string, filePath: string): void {
   if (!SEMVER_RE.test(value)) {
     throw formatError(filePath, `${key} must be a semantic version like 1.0.0`);
@@ -322,8 +328,8 @@ function validatePortableRefs(values: string[], key: string, filePath: string): 
     if (value !== value.toLowerCase()) {
       throw formatError(filePath, `${key}[${index}] must be lowercase`);
     }
-    if (!isPortableId(value)) {
-      throw formatError(filePath, `${key}[${index}] must be a lowercase portable id`);
+    if (!isPortableIdRef(value)) {
+      throw formatError(filePath, `${key}[${index}] must be a lowercase portable id or qid`);
     }
   }
 }
@@ -458,7 +464,7 @@ export function validateAgentFrontmatter(
     }
     case "work": {
       const agentId = expectString(frontmatter, "agent_id", filePath);
-      requirePortableId(agentId, "agent_id", filePath);
+      requirePortableIdRef(agentId, "agent_id", filePath);
       const kind = expectString(frontmatter, "kind", filePath);
       requireLowerToken(kind, "kind", filePath);
       const pricingModel = expectString(frontmatter, "pricing_model", filePath);
@@ -505,7 +511,7 @@ export function validateAgentFrontmatter(
     }
     case "work_order": {
       const workId = expectString(frontmatter, "work_id", filePath);
-      requirePortableId(workId, "work_id", filePath);
+      requirePortableIdRef(workId, "work_id", filePath);
       const workVersion = expectString(frontmatter, "work_version", filePath);
       requireSemver(workVersion, "work_version", filePath);
       const requester = expectRefString(frontmatter, "requester", filePath);
@@ -535,7 +541,7 @@ export function validateAgentFrontmatter(
     }
     case "receipt": {
       const workOrderId = expectString(frontmatter, "work_order_id", filePath);
-      requirePortableId(workOrderId, "work_order_id", filePath);
+      requirePortableIdRef(workOrderId, "work_order_id", filePath);
       const receiptStatus = expectString(frontmatter, "receipt_status", filePath);
       requireEnum(receiptStatus, "receipt_status", RECEIPT_STATUS_VALUES, filePath);
       const outcome = expectString(frontmatter, "outcome", filePath);
@@ -556,7 +562,7 @@ export function validateAgentFrontmatter(
     }
     case "feedback": {
       const targetId = expectString(frontmatter, "target_id", filePath);
-      requirePortableId(targetId, "target_id", filePath);
+      requirePortableIdRef(targetId, "target_id", filePath);
       const sentiment = expectString(frontmatter, "sentiment", filePath);
       requireEnum(sentiment, "sentiment", SENTIMENT_VALUES, filePath);
       const feedbackStatus = expectString(frontmatter, "feedback_status", filePath);
@@ -566,9 +572,9 @@ export function validateAgentFrontmatter(
     }
     case "dispute": {
       const workOrderId = expectString(frontmatter, "work_order_id", filePath);
-      requirePortableId(workOrderId, "work_order_id", filePath);
+      requirePortableIdRef(workOrderId, "work_order_id", filePath);
       const receiptId = expectString(frontmatter, "receipt_id", filePath);
-      requirePortableId(receiptId, "receipt_id", filePath);
+      requirePortableIdRef(receiptId, "receipt_id", filePath);
       const disputeStatus = expectString(frontmatter, "dispute_status", filePath);
       requireEnum(disputeStatus, "dispute_status", DISPUTE_STATUS_VALUES, filePath);
       const severity = expectString(frontmatter, "severity", filePath);
@@ -577,7 +583,7 @@ export function validateAgentFrontmatter(
     }
     case "proposal": {
       const targetId = expectString(frontmatter, "target_id", filePath);
-      requirePortableId(targetId, "target_id", filePath);
+      requirePortableIdRef(targetId, "target_id", filePath);
       const proposalStatus = expectString(frontmatter, "proposal_status", filePath);
       requireEnum(proposalStatus, "proposal_status", PROPOSAL_STATUS_VALUES, filePath);
       const proposalKind = expectString(frontmatter, "proposal_kind", filePath);

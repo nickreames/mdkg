@@ -120,7 +120,7 @@ test("runFormatCommand reports schema and parsing errors deterministically", () 
       "relates: [BAD REF]",
       "blocked_by: []",
       "blocks: []",
-      "refs: [BAD-ID]",
+      "refs: [BAD REF]",
       "aliases: []",
       "skills: []",
       "created: 2026/03/05",
@@ -145,7 +145,7 @@ test("runFormatCommand reports schema and parsing errors deterministically", () 
   assert.ok(errors.some((line) => line.includes("unknown key: unknown_key")));
   assert.ok(errors.some((line) => line.includes("priority must be an integer")));
   assert.ok(errors.some((line) => line.includes("relates entries must be valid id references")));
-  assert.ok(errors.some((line) => line.includes("refs entries must match <prefix>-<number> or reserved id")));
+  assert.ok(errors.some((line) => line.includes("refs entries must be portable ids, qids, or URI refs")));
   assert.ok(errors.some((line) => line.includes("created must be YYYY-MM-DD")));
   assert.ok(errors.some((line) => line.includes("frontmatter closing --- not found")));
 });

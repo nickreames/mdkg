@@ -43,8 +43,10 @@ Operating rules:
 - Treat work contracts, orders, and receipts as committed semantic mirrors only; never store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in mdkg.
 - Use `artifact://...` for external/runtime-managed artifacts and `archive://...` for committed mdkg archive sidecars.
 - Use `mdkg bundle create/list/show/verify` for explicit full `.mdkg` graph snapshot bundles.
-- Use `mdkg subgraph add/list/verify` to register child bundle snapshots as read-only planning context.
+- Use `mdkg subgraph add/list/verify/sync/materialize` to register child bundle snapshots as read-only planning context, refresh root-owned child bundle snapshots, and optionally generate ignored inspection trees.
 - Use `mdkg capability resolve` to rank local and subgraph capabilities for orchestration planning.
+- Use `mdkg subgraph sync --dry-run --json` before refreshing root-owned child bundle snapshots, then `mdkg subgraph sync --json` when the receipt is acceptable.
+- Use `mdkg subgraph materialize ... --target .mdkg/subgraphs --gitignore` only for generated read-only inspection trees; never mutate materialized files.
 - Use `mdkg pack <id> --visibility public|internal` only when you need a public-safe or internal-safe pack; no flag remains private-capable local behavior.
 - Mark archive sidecars public only with explicit `mdkg archive add --visibility public` intent.
 - Treat sidecar `.md` plus deterministic `.zip` caches as the commit-eligible archive record; validation and `mdkg archive verify` both check ZIP payload integrity.

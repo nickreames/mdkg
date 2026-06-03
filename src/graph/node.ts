@@ -427,12 +427,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   );
   const links = optionalList(frontmatter, "links", filePath);
   const artifacts = optionalList(frontmatter, "artifacts", filePath);
-  const refs = normalizeRefsList(
-    optionalList(frontmatter, "refs", filePath),
-    "refs",
-    filePath,
-    isPortableType
-  );
+  const refs = normalizeRefsList(optionalList(frontmatter, "refs", filePath), "refs", filePath, true);
   const aliases = requireLowercaseList(
     optionalList(frontmatter, "aliases", filePath),
     "aliases",
@@ -455,7 +450,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     }
   }
 
-  const edges = extractEdges(frontmatter, filePath, { allowPortableRefs: isPortableType });
+  const edges = extractEdges(frontmatter, filePath, { allowPortableRefs: true });
   const attributes = {
     ...extractGoalAttributes(type, frontmatter),
     ...extractAgentAttributes(type, frontmatter),

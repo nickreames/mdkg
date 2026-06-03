@@ -64,7 +64,7 @@ export type UpgradeReceipt = {
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
 const PROTECTED_CORE_DOCS = new Set([".mdkg/core/SOUL.md", ".mdkg/core/HUMAN.md"]);
 const CREATE_ONLY_PRESERVED = new Set([".mdkg/core/core.md"]);
-const LOCAL_STATE_IGNORE_ENTRIES = [".mdkg/state/", ".mdkg/archive/**/source/"];
+const LOCAL_STATE_IGNORE_ENTRIES = [".mdkg/state/", ".mdkg/subgraphs/", ".mdkg/archive/**/source/"];
 
 function seededInitEvent(nowIso: string): string {
   const event = {

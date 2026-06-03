@@ -133,8 +133,12 @@ Subgraph orchestration:
 - `mdkg subgraph disable <alias> [--json]`
 - `mdkg subgraph verify [alias|--all] [--json]`
 - `mdkg subgraph refresh [alias|--all] [--json]`
+- `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]`
+- `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]`
 - subgraphs are read-only planning views and use subgraph-alias qids such as `child_repo:task-1`
 - subgraph refresh reloads configured bundle sources only and never mutates child repos
+- subgraph sync builds root-owned bundle snapshots from configured clean child Git repo `source_path` entries
+- subgraph materialize extracts generated inspection trees under a target directory; `.mdkg/subgraphs/` is local generated state
 - public/internal subgraphs require public bundle profiles
 
 Work semantic mirrors:

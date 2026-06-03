@@ -14,8 +14,8 @@ import { isArchiveType } from "../graph/archive_file";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { ValidationError } from "../util/errors";
 import { formatDate } from "../util/date";
-import { isCanonicalId, isCanonicalIdRef, isPortableId, isPortableIdRef } from "../util/id";
-import { isSha256Ref, validatePortableOrUriRef } from "../util/refs";
+import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
+import { isSha256Ref, isUriRef, validatePortableOrUriRef } from "../util/refs";
 
 export type FormatCommandOptions = {
   root: string;
@@ -86,16 +86,20 @@ function normalizeList(
 ): string[] {
   const trimmed = values.map((value) => normalizeScalar(value));
   const shouldLowercase = !PRESERVE_CASE_LIST_KEYS.has(key);
-  const normalized = shouldLowercase ? trimmed.map((value) => value.toLowerCase()) : trimmed;
+  const normalized = shouldLowercase
+    ? trimmed.map((value) => (isUriRef(value) ? value : value.toLowerCase()))
+    : trimmed.map((value) => (EXTERNAL_REF_LIST_KEYS.has(key) && !isUriRef(value) ? value.toLowerCase() : value));
   for (const entry of normalized) {
     if (!entry) {
       errors.push(`${filePath}: ${key} entries must be non-empty`);
       continue;
     }
-    if (ID_LIST_KEYS.has(key) && !(allowPortableRefs ? isPortableId(entry) : isValidId(entry))) {
+    if (ID_LIST_KEYS.has(key) && key === "refs" && !validatePortableOrUriRef(entry)) {
+      errors.push(`${filePath}: ${key} entries must be portable ids, qids, or URI refs`);
+    } else if (ID_LIST_KEYS.has(key) && key !== "refs" && !(allowPortableRefs ? isPortableId(entry) : isValidId(entry))) {
       errors.push(`${filePath}: ${key} entries must match <prefix>-<number> or reserved id`);
     }
-    if (ID_REF_LIST_KEYS.has(key) && !(allowPortableRefs ? isPortableIdRef(entry) : isCanonicalIdRef(entry))) {
+    if (ID_REF_LIST_KEYS.has(key) && !isPortableIdRef(entry)) {
       errors.push(`${filePath}: ${key} entries must be valid id references`);
     }
     if (EXTERNAL_REF_LIST_KEYS.has(key) && !validatePortableOrUriRef(entry)) {
@@ -115,7 +119,7 @@ function normalizeIdRef(
   filePath: string
 ): string {
   const normalized = normalizeScalar(value).toLowerCase();
-  if (!isCanonicalIdRef(normalized)) {
+  if (!isPortableIdRef(normalized)) {
     errors.push(`${filePath}: ${key} must be a valid id reference`);
   }
   return normalized;
@@ -135,7 +139,7 @@ function normalizeFrontmatterValue(
       errors.push(`${filePath}: ${key} must be a list`);
       return [];
     }
-    const allowPortableRefs = isAgentFileType(type) || isArchiveType(type);
+    const allowPortableRefs = isAgentFileType(type) || isArchiveType(type) || ID_REF_LIST_KEYS.has(key) || key === "refs";
     return normalizeList(value as string[], key, errors, filePath, allowPortableRefs);
   }
   if (expected === "boolean") {

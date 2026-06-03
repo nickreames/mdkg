@@ -254,8 +254,15 @@ Common flags:
   - `mdkg subgraph disable <alias> [--json]`
   - `mdkg subgraph verify [alias|--all] [--json]`
   - `mdkg subgraph refresh [alias|--all] [--json]`
+  - `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]`
+  - `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]`
   - subgraphs are read-only projected graph views; child repos remain owners of real mutations and commits
   - `subgraph refresh` reloads configured bundle sources only and never builds or mutates child repos
+  - `subgraph sync` is the explicit child-bundle build command; it uses configured root-relative `source_path`, requires a contained child Git repo with `.mdkg`, refuses dirty tracked child changes unless `--allow-dirty` is supplied, writes configured root-owned bundle paths, verifies bundles, and updates `source_repo` to `<branch>@<sha>`
+  - `subgraph sync --dry-run` writes no bundles, config, or indexes and reports intended paths, bundle hashes, dirty state, and source repo
+  - `subgraph materialize` extracts configured bundles into generated read-only inspection trees under `<target>/<alias>`, writes `.mdkg-materialized.json`, and only cleans existing alias directories with both `--clean` and a materialization marker
+  - `.mdkg/subgraphs/` materialized views are ignored by local graph scanning, search, validation, packing, bundle creation, and SQLite hydration
+  - root-authored relationship/reference fields may point at configured subgraph qids; local ownership fields (`epic`, `parent`, `prev`, `next`) remain local-only
   - `subgraph verify` exits nonzero for stale, missing, corrupt, profile-mismatched, or duplicate-id subgraphs
   - public/internal subgraphs require `expected_profile: public`; private bundle profiles cannot be promoted through subgraph visibility
   - legacy `mdkg bundle import ...` exits with guidance to run `mdkg upgrade --apply` and use `mdkg subgraph ...`

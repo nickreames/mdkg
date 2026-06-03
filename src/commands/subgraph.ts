@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { loadConfig, validateConfigSchema } from "../core/config";
+import { spawnSync } from "child_process";
+import { loadConfig, SubgraphConfig, SubgraphSourceConfig, validateConfigSchema } from "../core/config";
 import { migrateConfig } from "../core/migrate";
 import { normalizeContainedWorkspacePath } from "../core/workspace_path";
 import { buildSubgraphsIndex, SubgraphHealth } from "../graph/subgraphs";
@@ -8,6 +9,7 @@ import { writeDerivedIndexes } from "../graph/reindex";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
+import { buildBundle, parseBundle, sha256Buffer, verifyBundle } from "./bundle";
 
 export type SubgraphAddOptions = {
   root: string;
@@ -43,6 +45,25 @@ export type SubgraphRefreshOptions = {
   root: string;
   alias?: string;
   all?: boolean;
+  json?: boolean;
+};
+
+export type SubgraphSyncOptions = {
+  root: string;
+  alias?: string;
+  all?: boolean;
+  dryRun?: boolean;
+  allowDirty?: boolean;
+  json?: boolean;
+};
+
+export type SubgraphMaterializeOptions = {
+  root: string;
+  alias?: string;
+  all?: boolean;
+  target: string;
+  clean?: boolean;
+  gitignore?: boolean;
   json?: boolean;
 };
 
@@ -83,6 +104,28 @@ function normalizeContained(value: string, label: string): string {
     return normalizeContainedWorkspacePath(value, label);
   } catch (err) {
     throw new UsageError(err instanceof Error ? err.message : String(err));
+  }
+}
+
+function toPosixPath(value: string): string {
+  return value.split(path.sep).join("/");
+}
+
+function relativeToRoot(root: string, filePath: string): string {
+  return toPosixPath(path.relative(root, filePath));
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readPackageVersion(): string {
+  const packagePath = path.resolve(__dirname, "..", "..", "package.json");
+  try {
+    const raw = JSON.parse(fs.readFileSync(packagePath, "utf8")) as { version?: unknown };
+    return typeof raw.version === "string" ? raw.version : "unknown";
+  } catch {
+    return "unknown";
   }
 }
 
@@ -138,6 +181,20 @@ function healthByAlias(root: string, alias: string): SubgraphHealth {
     throw new NotFoundError(`subgraph not found: ${alias}`);
   }
   return health;
+}
+
+function selectAliases(config: ReturnType<typeof loadConfig>, alias?: string, all?: boolean): string[] {
+  if (alias && all) {
+    throw new UsageError("choose either an alias or --all, not both");
+  }
+  if (alias) {
+    const normalized = normalizeAlias(alias);
+    if (!config.subgraphs[normalized]) {
+      throw new NotFoundError(`subgraph not found: ${normalized}`);
+    }
+    return [normalized];
+  }
+  return Object.keys(config.subgraphs).sort();
 }
 
 function withSubgraphLock<T>(root: string, fn: () => T): T {
@@ -351,6 +408,455 @@ export function runSubgraphRefreshCommand(options: SubgraphRefreshOptions): void
     }
     if (!ok) {
       throw new ValidationError("subgraph refresh failed");
+    }
+  });
+}
+
+type GitState = {
+  sourceRoot: string;
+  branch: string;
+  head: string;
+  sourceRepo: string;
+  dirtyTracked: boolean;
+  dirtyTrackedPaths: string[];
+};
+
+function gitRun(cwd: string, args: string[]): { ok: boolean; stdout: string; stderr: string } {
+  const result = spawnSync("git", args, { cwd, encoding: "utf8", stdio: "pipe" });
+  return {
+    ok: result.status === 0,
+    stdout: result.stdout.replace(/\r?\n$/, ""),
+    stderr: result.stderr.trim(),
+  };
+}
+
+function sameRealPath(a: string, b: string): boolean {
+  try {
+    return fs.realpathSync(a) === fs.realpathSync(b);
+  } catch {
+    return path.resolve(a) === path.resolve(b);
+  }
+}
+
+function isPathWithin(parent: string, child: string): boolean {
+  const relative = path.relative(path.resolve(parent), path.resolve(child));
+  return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
+}
+
+function inspectSourcePath(root: string, alias: string, subgraph: SubgraphConfig, allowDirty: boolean): GitState {
+  if (!subgraph.source_path) {
+    throw new UsageError(`subgraph ${alias} is missing source_path`);
+  }
+  const sourcePath = normalizeContained(subgraph.source_path, `subgraphs.${alias}.source_path`);
+  const sourceRoot = path.resolve(root, sourcePath);
+  if (!fs.existsSync(sourceRoot) || !fs.statSync(sourceRoot).isDirectory()) {
+    throw new NotFoundError(`subgraph ${alias} source_path does not exist: ${sourcePath}`);
+  }
+  const gitTop = gitRun(sourceRoot, ["rev-parse", "--show-toplevel"]);
+  const gitTopPath = gitTop.stdout.trim();
+  if (!gitTop.ok || !gitTopPath) {
+    throw new UsageError(`subgraph ${alias} source_path is not a Git repo: ${sourcePath}`);
+  }
+  if (!sameRealPath(gitTopPath, sourceRoot)) {
+    throw new UsageError(`subgraph ${alias} source_path must be the child Git repo root: ${sourcePath}`);
+  }
+  const mdkgDir = path.join(sourceRoot, ".mdkg");
+  if (!fs.existsSync(mdkgDir) || !fs.statSync(mdkgDir).isDirectory()) {
+    throw new NotFoundError(`subgraph ${alias} source_path is missing .mdkg: ${sourcePath}`);
+  }
+  const head = gitRun(sourceRoot, ["rev-parse", "HEAD"]);
+  const headValue = head.stdout.trim();
+  if (!head.ok || !headValue) {
+    throw new UsageError(`subgraph ${alias} source Git HEAD could not be read`);
+  }
+  const branchResult = gitRun(sourceRoot, ["rev-parse", "--abbrev-ref", "HEAD"]);
+  const branchValue = branchResult.stdout.trim();
+  const branch = branchResult.ok && branchValue && branchValue !== "HEAD"
+    ? branchValue
+    : "detached";
+  const status = gitRun(sourceRoot, ["status", "--porcelain", "--untracked-files=no"]);
+  if (!status.ok) {
+    throw new UsageError(`subgraph ${alias} tracked dirty state could not be read`);
+  }
+  const dirtyTrackedPaths = status.stdout
+    ? status.stdout.split(/\r?\n/).map((line) => line.slice(3)).filter(Boolean).sort()
+    : [];
+  if (dirtyTrackedPaths.length > 0 && !allowDirty) {
+    throw new UsageError(`subgraph ${alias} source_path has dirty tracked changes: ${dirtyTrackedPaths.join(", ")}`);
+  }
+  return {
+    sourceRoot,
+    branch,
+    head: headValue,
+    sourceRepo: `${branch}@${headValue}`,
+    dirtyTracked: dirtyTrackedPaths.length > 0,
+    dirtyTrackedPaths,
+  };
+}
+
+function existingBundleHash(bundlePath: string): string | undefined {
+  if (!fs.existsSync(bundlePath)) {
+    return undefined;
+  }
+  try {
+    return parseBundle(bundlePath).manifest.bundle_hash;
+  } catch {
+    return undefined;
+  }
+}
+
+type SyncSourceReceipt = {
+  label?: string;
+  path: string;
+  enabled: boolean;
+  expected_profile: string;
+  old_bundle_hash?: string;
+  new_bundle_hash?: string;
+  old_zip_sha256?: string;
+  new_zip_sha256?: string;
+  verified?: boolean;
+  skipped?: boolean;
+  warnings: string[];
+  errors: string[];
+};
+
+type SyncAliasReceipt = {
+  alias: string;
+  enabled: boolean;
+  dry_run: boolean;
+  source_path?: string;
+  old_source_repo?: string;
+  new_source_repo?: string;
+  source_git_head?: string;
+  dirty_tracked?: boolean;
+  dirty_tracked_paths?: string[];
+  updated: boolean;
+  skipped: boolean;
+  warnings: string[];
+  errors: string[];
+  sources: SyncSourceReceipt[];
+};
+
+function enabledSources(subgraph: SubgraphConfig): SubgraphSourceConfig[] {
+  return subgraph.sources.filter((source) => source.enabled);
+}
+
+function syncOneAlias(options: {
+  root: string;
+  alias: string;
+  subgraph: SubgraphConfig;
+  rawSubgraphs: Record<string, unknown>;
+  dryRun: boolean;
+  allowDirty: boolean;
+}): SyncAliasReceipt {
+  const warnings: string[] = [];
+  const errors: string[] = [];
+  const sources: SyncSourceReceipt[] = [];
+  const receipt: SyncAliasReceipt = {
+    alias: options.alias,
+    enabled: options.subgraph.enabled,
+    dry_run: options.dryRun,
+    source_path: options.subgraph.source_path,
+    old_source_repo: options.subgraph.source_repo,
+    updated: false,
+    skipped: false,
+    warnings,
+    errors,
+    sources,
+  };
+  if (!options.subgraph.enabled) {
+    receipt.skipped = true;
+    warnings.push("subgraph is disabled");
+    return receipt;
+  }
+
+  let gitState: GitState;
+  try {
+    gitState = inspectSourcePath(options.root, options.alias, options.subgraph, options.allowDirty);
+    receipt.new_source_repo = gitState.sourceRepo;
+    receipt.source_git_head = gitState.head;
+    receipt.dirty_tracked = gitState.dirtyTracked;
+    receipt.dirty_tracked_paths = gitState.dirtyTrackedPaths;
+  } catch (err) {
+    errors.push(err instanceof Error ? err.message : String(err));
+    return receipt;
+  }
+
+  const activeSources = enabledSources(options.subgraph);
+  if (activeSources.length === 0) {
+    errors.push(`subgraph ${options.alias} has no enabled sources`);
+    return receipt;
+  }
+
+  const planned: Array<{ source: SubgraphSourceConfig; outputPath: string; zip: Buffer; newBundleHash: string; newZipSha256: string }> = [];
+  for (const source of activeSources) {
+    const outputPath = path.resolve(options.root, source.path);
+    const sourceReceipt: SyncSourceReceipt = {
+      label: source.label,
+      path: source.path,
+      enabled: source.enabled,
+      expected_profile: source.expected_profile,
+      old_bundle_hash: existingBundleHash(outputPath),
+      old_zip_sha256: fs.existsSync(outputPath) ? sha256Buffer(fs.readFileSync(outputPath)) : undefined,
+      warnings: [],
+      errors: [],
+    };
+    sources.push(sourceReceipt);
+    if (isPathWithin(gitState.sourceRoot, outputPath)) {
+      sourceReceipt.errors.push(`bundle path must be root-owned and outside source_path: ${source.path}`);
+      errors.push(`source ${source.path}: ${sourceReceipt.errors[sourceReceipt.errors.length - 1]}`);
+      continue;
+    }
+    try {
+      const built = buildBundle({
+        root: gitState.sourceRoot,
+        profile: source.expected_profile,
+        output: outputPath,
+      });
+      sourceReceipt.new_bundle_hash = built.manifest.bundle_hash;
+      sourceReceipt.new_zip_sha256 = built.zipSha256;
+      planned.push({
+        source,
+        outputPath,
+        zip: built.zip,
+        newBundleHash: built.manifest.bundle_hash,
+        newZipSha256: built.zipSha256,
+      });
+    } catch (err) {
+      sourceReceipt.errors.push(err instanceof Error ? err.message : String(err));
+      errors.push(`source ${source.path}: ${sourceReceipt.errors[sourceReceipt.errors.length - 1]}`);
+    }
+  }
+
+  if (errors.length > 0) {
+    return receipt;
+  }
+  if (options.dryRun) {
+    receipt.skipped = true;
+    return receipt;
+  }
+
+  for (const item of planned) {
+    const sourceReceipt = sources.find((source) => source.path === item.source.path);
+    try {
+      atomicWriteFile(item.outputPath, item.zip);
+      const verify = verifyBundle(gitState.sourceRoot, item.outputPath);
+      sourceReceipt!.verified = verify.ok;
+      if (!verify.ok) {
+        sourceReceipt!.errors.push(...verify.errors, ...verify.stale_paths.map((stale) => `stale: ${stale}`));
+        errors.push(`source ${item.source.path}: bundle verify failed`);
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      sourceReceipt!.errors.push(message);
+      errors.push(`source ${item.source.path}: ${message}`);
+    }
+  }
+
+  if (errors.length === 0) {
+    const raw = options.rawSubgraphs[options.alias];
+    if (isObject(raw)) {
+      options.rawSubgraphs[options.alias] = { ...raw, source_repo: gitState.sourceRepo };
+    }
+    receipt.updated = true;
+  }
+  return receipt;
+}
+
+export function runSubgraphSyncCommand(options: SubgraphSyncOptions): void {
+  const dryRun = Boolean(options.dryRun);
+  const allowDirty = Boolean(options.allowDirty);
+  withSubgraphLock(options.root, () => {
+    const config = loadConfig(options.root);
+    const aliases = selectAliases(config, options.alias, options.all);
+    const { configPath, raw } = readRawConfig(options.root);
+    const rawSubgraphs = getSubgraphs(raw);
+    const results = aliases.map((alias) =>
+      syncOneAlias({
+        root: options.root,
+        alias,
+        subgraph: config.subgraphs[alias],
+        rawSubgraphs,
+        dryRun,
+        allowDirty,
+      })
+    );
+    const ok = results.every((item) => item.errors.length === 0);
+    let indexPaths: ReturnType<typeof writeDerivedIndexes>["paths"] | undefined;
+    if (!dryRun && results.some((item) => item.updated)) {
+      raw.subgraphs = rawSubgraphs;
+      validateConfigSchema(raw);
+      writeRawConfig(configPath, raw);
+      indexPaths = writeDerivedIndexes(options.root, loadConfig(options.root)).paths;
+    }
+    const receipt = {
+      action: dryRun ? "sync_dry_run" : "synced",
+      ok,
+      count: results.length,
+      updated: results.filter((item) => item.updated).map((item) => item.alias),
+      skipped: results.filter((item) => item.skipped).map((item) => item.alias),
+      errors: results.flatMap((item) => item.errors.map((error) => `${item.alias}: ${error}`)),
+      warnings: results.flatMap((item) => item.warnings.map((warning) => `${item.alias}: ${warning}`)),
+      ...(indexPaths ? { paths: indexPaths } : {}),
+      subgraphs: results,
+    };
+    if (options.json) {
+      writeJson(receipt);
+    } else {
+      console.log(`${dryRun ? "subgraph sync dry-run" : "subgraphs synced"}: ${results.length}`);
+      for (const item of results) {
+        const status = item.errors.length > 0 ? "error" : item.updated ? "updated" : item.skipped ? "skipped" : "ok";
+        console.log(`${item.alias} | ${status} | ${item.new_source_repo ?? item.old_source_repo ?? "unknown"}`);
+      }
+    }
+    if (!ok) {
+      throw new ValidationError("subgraph sync failed");
+    }
+  });
+}
+
+function safeZipEntryPath(entryName: string): string {
+  const normalized = entryName.replace(/\\/g, "/");
+  const parts = normalized.split("/");
+  if (path.isAbsolute(normalized) || parts.some((part) => part === "..") || parts.some((part) => part.length === 0)) {
+    throw new ValidationError(`unsafe bundle entry path: ${entryName}`);
+  }
+  return normalized;
+}
+
+function writeMaterializeGitignore(targetRoot: string): void {
+  const gitignorePath = path.join(targetRoot, ".gitignore");
+  const required = ["*", "!.gitignore"];
+  const existing = fs.existsSync(gitignorePath)
+    ? fs.readFileSync(gitignorePath, "utf8").split(/\r?\n/)
+    : [];
+  const lines = existing.filter((line) => line.length > 0);
+  for (const line of required) {
+    if (!lines.includes(line)) {
+      lines.push(line);
+    }
+  }
+  atomicWriteFile(gitignorePath, `${lines.join("\n")}\n`);
+}
+
+function materializeOneAlias(options: {
+  root: string;
+  alias: string;
+  subgraph: SubgraphConfig;
+  targetRoot: string;
+  clean: boolean;
+}): Record<string, unknown> {
+  const enabled = enabledSources(options.subgraph);
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const outputDir = path.join(options.targetRoot, options.alias);
+  if (enabled.length !== 1) {
+    errors.push(`materialize requires exactly one enabled source for ${options.alias}; found ${enabled.length}`);
+    return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
+  }
+  const source = enabled[0];
+  const bundlePath = path.resolve(options.root, source.path);
+  if (!fs.existsSync(bundlePath)) {
+    errors.push(`bundle not found: ${source.path}`);
+    return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
+  }
+  if (fs.existsSync(outputDir)) {
+    const marker = path.join(outputDir, ".mdkg-materialized.json");
+    if (!options.clean) {
+      errors.push(`materialized directory already exists: ${relativeToRoot(options.root, outputDir)}; use --clean`);
+      return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
+    }
+    if (!fs.existsSync(marker)) {
+      errors.push(`refusing to clean non-materialized directory: ${relativeToRoot(options.root, outputDir)}`);
+      return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
+    }
+  }
+
+  const tempDir = path.join(options.targetRoot, `.${options.alias}.${process.pid}.${Date.now()}.tmp`);
+  fs.rmSync(tempDir, { recursive: true, force: true });
+  try {
+    const parsed = parseBundle(bundlePath);
+    fs.mkdirSync(tempDir, { recursive: true });
+    for (const [entryName, data] of parsed.entries.entries()) {
+      const safeName = safeZipEntryPath(entryName);
+      const target = path.join(tempDir, safeName);
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      fs.writeFileSync(target, data);
+    }
+    const marker = {
+      tool: "mdkg",
+      kind: "subgraph_materialization",
+      alias: options.alias,
+      bundle_path: source.path,
+      bundle_hash: parsed.manifest.bundle_hash,
+      zip_sha256: sha256Buffer(fs.readFileSync(bundlePath)),
+      profile: parsed.manifest.profile,
+      source_repo: options.subgraph.source_repo ?? parsed.manifest.source.repo,
+      source_git_head: parsed.manifest.source.git_head,
+      generated_at: new Date().toISOString(),
+      mdkg_version: readPackageVersion(),
+    };
+    fs.writeFileSync(path.join(tempDir, ".mdkg-materialized.json"), `${JSON.stringify(marker, null, 2)}\n`, "utf8");
+    if (fs.existsSync(outputDir)) {
+      fs.rmSync(outputDir, { recursive: true, force: true });
+    }
+    fs.mkdirSync(path.dirname(outputDir), { recursive: true });
+    fs.renameSync(tempDir, outputDir);
+    return {
+      alias: options.alias,
+      ok: true,
+      output_path: relativeToRoot(options.root, outputDir),
+      bundle_path: source.path,
+      bundle_hash: parsed.manifest.bundle_hash,
+      profile: parsed.manifest.profile,
+      warnings,
+      errors,
+    };
+  } catch (err) {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    errors.push(err instanceof Error ? err.message : String(err));
+    return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
+  }
+}
+
+export function runSubgraphMaterializeCommand(options: SubgraphMaterializeOptions): void {
+  withSubgraphLock(options.root, () => {
+    const config = loadConfig(options.root);
+    const aliases = selectAliases(config, options.alias, options.all);
+    const targetRoot = path.resolve(options.root, normalizeContained(options.target, "--target"));
+    const results = aliases.map((alias) =>
+      materializeOneAlias({
+        root: options.root,
+        alias,
+        subgraph: config.subgraphs[alias],
+        targetRoot,
+        clean: Boolean(options.clean),
+      })
+    );
+    if (options.gitignore) {
+      fs.mkdirSync(targetRoot, { recursive: true });
+      writeMaterializeGitignore(targetRoot);
+    }
+    const ok = results.every((item) => item.ok === true);
+    const receipt = {
+      action: "materialized",
+      ok,
+      count: results.length,
+      target: relativeToRoot(options.root, targetRoot),
+      results,
+      errors: results.flatMap((item) => (item.errors as string[] | undefined ?? []).map((error) => `${item.alias}: ${error}`)),
+      warnings: results.flatMap((item) => (item.warnings as string[] | undefined ?? []).map((warning) => `${item.alias}: ${warning}`)),
+    };
+    if (options.json) {
+      writeJson(receipt);
+    } else {
+      console.log(`subgraphs materialized: ${results.length}`);
+      for (const item of results) {
+        console.log(`${item.alias} | ${item.ok ? "ok" : "error"} | ${item.output_path}`);
+      }
+    }
+    if (!ok) {
+      throw new ValidationError("subgraph materialize failed");
     }
   });
 }

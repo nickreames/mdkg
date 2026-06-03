@@ -9,7 +9,8 @@ import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { isCanonicalId, isCanonicalIdRef, isPortableId } from "../util/id";
+import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
+import { validatePortableOrUriRef } from "../util/refs";
 import { writeFileExclusive } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
@@ -85,7 +86,7 @@ function normalizeId(value: string, key: string): string {
 
 function normalizeIdRef(value: string, key: string): string {
   const normalized = value.toLowerCase();
-  if (!isCanonicalIdRef(normalized)) {
+  if (!isPortableIdRef(normalized)) {
     throw new UsageError(`${key} entries must match <id> or <ws>:<id>: ${value}`);
   }
   return normalized;
@@ -109,6 +110,18 @@ function normalizeLowercaseList(raw: string | undefined): string[] {
 
 function normalizeIdList(raw: string | undefined, key: string): string[] {
   return parseCsvList(raw).map((value) => normalizeId(value, key));
+}
+
+function normalizeRef(value: string, key: string): string {
+  const normalized = value.includes("://") ? value : value.toLowerCase();
+  if (!validatePortableOrUriRef(normalized)) {
+    throw new UsageError(`${key} entries must be portable ids, qids, or URI refs: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeRefList(raw: string | undefined, key: string): string[] {
+  return parseCsvList(raw).map((value) => normalizeRef(value, key));
 }
 
 function normalizeIdRefList(raw: string | undefined, key: string): string[] {
@@ -212,6 +225,10 @@ function ensureExists(index: Index, value: string, ws: string, label: string): v
   const resolved = resolveQid(index, value, ws);
   if (resolved.status !== "ok") {
     throw new NotFoundError(formatResolveError(label, value, resolved, ws));
+  }
+  const node = index.nodes[resolved.qid];
+  if (["epic", "parent", "prev", "next"].includes(label) && node?.source?.imported) {
+    throw new UsageError(`${label} cannot target read-only subgraph node ${node.qid}`);
   }
 }
 
@@ -326,7 +343,7 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   const relates = normalizeIdRefList(options.relates, "--relates");
   const blockedBy = normalizeIdRefList(options.blockedBy, "--blocked-by");
   const blocks = normalizeIdRefList(options.blocks, "--blocks");
-  const refs = normalizeIdList(options.refs, "--refs");
+  const refs = normalizeRefList(options.refs, "--refs");
   const aliases = normalizeLowercaseList(options.aliases);
   const tags = normalizeLowercaseList(options.tags);
   const owners = normalizeLowercaseList(options.owners);

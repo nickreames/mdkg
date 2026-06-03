@@ -5,6 +5,7 @@
 .mdkg/index/*.sqlite-wal
 .mdkg/index/*.sqlite-shm
 .mdkg/index/*.sqlite-journal
+.mdkg/subgraphs/
 .mdkg/state/
 dist/
 node_modules/

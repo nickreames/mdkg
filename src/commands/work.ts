@@ -14,7 +14,7 @@ import { AGENT_FILE_BASENAMES, AgentFileType } from "../graph/agent_file_types";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
-import { isPortableId } from "../util/id";
+import { isPortableId, isPortableIdRef } from "../util/id";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { atomicWriteFile, writeFileExclusive } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
@@ -146,6 +146,14 @@ function normalizePortableId(value: string, flag: string): string {
   return normalized;
 }
 
+function normalizePortableIdRef(value: string, flag: string): string {
+  const normalized = value.toLowerCase();
+  if (!isPortableIdRef(normalized)) {
+    throw new UsageError(`${flag} must be a lowercase portable id or qid`);
+  }
+  return normalized;
+}
+
 function normalizeEnum(value: string, flag: string, allowed: Set<string>): string {
   const normalized = value.toLowerCase();
   if (!allowed.has(normalized)) {
@@ -191,21 +199,14 @@ function maybeReindex(root: string, config: ReturnType<typeof loadConfig>): void
   writeDerivedIndexes(root, config, buildIndex(root, config, { tolerant: config.index.tolerant }));
 }
 
-function findNodeById(index: Index, ws: string, id: string, type?: string): IndexNode | undefined {
-  const node = index.nodes[`${ws}:${id}`];
-  if (!node) {
-    return undefined;
+function requireReferenceNode(index: Index, ws: string, idOrQid: string, type: string, label: string): IndexNode {
+  const resolved = resolveQid(index, idOrQid, ws);
+  if (resolved.status !== "ok") {
+    throw new NotFoundError(formatResolveError(label, idOrQid, resolved, ws));
   }
-  if (type && node.type !== type) {
-    return undefined;
-  }
-  return node;
-}
-
-function requireNodeById(index: Index, ws: string, id: string, type: string, label: string): IndexNode {
-  const node = findNodeById(index, ws, id, type);
-  if (!node) {
-    throw new NotFoundError(`${label} not found: ${id}`);
+  const node = index.nodes[resolved.qid];
+  if (!node || node.type !== type) {
+    throw new NotFoundError(`${label} not found: ${idOrQid}`);
   }
   return node;
 }
@@ -351,8 +352,10 @@ function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions)
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
-  const agentId = normalizePortableId(options.agentId, "--agent-id");
-  const relates = findNodeById(index, ws, agentId, "spec") ? [agentId] : [];
+  const agentId = normalizePortableIdRef(options.agentId, "--agent-id");
+  const resolvedAgent = resolveQid(index, agentId, ws);
+  const relates =
+    resolvedAgent.status === "ok" && index.nodes[resolvedAgent.qid]?.type === "spec" ? [agentId] : [];
   const receipt = createAgentWorkflowNode({
     root: options.root,
     ws,
@@ -378,8 +381,8 @@ function runWorkOrderNewCommandLocked(options: WorkOrderNewCommandOptions): void
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
-  const workId = normalizePortableId(options.workId, "--work-id");
-  const workNode = requireNodeById(index, ws, workId, "work", "work contract");
+  const workId = normalizePortableIdRef(options.workId, "--work-id");
+  const workNode = requireReferenceNode(index, ws, workId, "work", "work contract");
   const workVersion = String(workNode.attributes.version ?? "0.1.0");
   const receipt = createAgentWorkflowNode({
     root: options.root,
@@ -427,8 +430,8 @@ function runWorkReceiptNewCommandLocked(options: WorkReceiptNewCommandOptions): 
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
-  const workOrderId = normalizePortableId(options.workOrderId, "--work-order-id");
-  requireNodeById(index, ws, workOrderId, "work_order", "work order");
+  const workOrderId = normalizePortableIdRef(options.workOrderId, "--work-order-id");
+  requireReferenceNode(index, ws, workOrderId, "work_order", "work order");
   const receipt = createAgentWorkflowNode({
     root: options.root,
     ws,

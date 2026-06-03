@@ -91,6 +91,7 @@ const VALUE_FLAGS = new Set([
   "--source-repo",
   "--max-stale-seconds",
   "--requires",
+  "--target",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -126,6 +127,9 @@ const BOOLEAN_FLAGS = new Set([
   "--clear-blocked-by",
   "--all",
   "--fresh-only",
+  "--allow-dirty",
+  "--clean",
+  "--gitignore",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {

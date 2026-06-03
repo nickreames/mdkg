@@ -47,7 +47,17 @@ function validateEdgeTargets(
 
     for (const [edgeKey, values] of edgeLists) {
       for (const value of values) {
-        if (!nodes[value]) {
+        const targetNode = nodes[value];
+        if (
+          targetNode &&
+          ["epic", "parent", "prev", "next"].includes(edgeKey) &&
+          !node.source?.imported &&
+          targetNode.source?.imported
+        ) {
+          pushError(errors, `${qid}: ${edgeKey} cannot target read-only subgraph node ${value}`);
+          continue;
+        }
+        if (!targetNode) {
           const [workspace] = value.split(":");
           if (workspace && externalWorkspaces?.has(workspace)) {
             continue;
@@ -137,6 +147,21 @@ function pathEndsWithContractRef(nodePath: string, contractRef: string): boolean
   );
 }
 
+function resolveNodeRef(index: Index, ws: string, value: string): Index["nodes"][string] | undefined {
+  const qid = value.includes(":") ? value : `${ws}:${value}`;
+  return index.nodes[qid];
+}
+
+function resolveTypedNodeRef(index: Index, ws: string, value: string, type: string): Index["nodes"][string] | undefined {
+  const node = resolveNodeRef(index, ws, value);
+  return node?.type === type ? node : undefined;
+}
+
+function isExternalWorkspaceRef(value: string, externalWorkspaces: Set<string> | undefined): boolean {
+  const [workspace] = value.split(":");
+  return Boolean(workspace && value.includes(":") && externalWorkspaces?.has(workspace));
+}
+
 function validateAgentWorkflowSpecWorkContracts(
   index: Index,
   allowMissing: boolean,
@@ -210,24 +235,9 @@ function validateAgentWorkflowSpecWorkContracts(
 function validateAgentWorkflowWorkOrderWorkRefs(
   index: Index,
   allowMissing: boolean,
+  externalWorkspaces: Set<string> | undefined,
   errors: string[] | null
 ): void {
-  const workNodesByWorkspaceAndId: Record<string, Record<string, { qid: string; version?: string }>> =
-    {};
-  for (const node of Object.values(index.nodes)) {
-    if (node.type !== "work") {
-      continue;
-    }
-    if (!workNodesByWorkspaceAndId[node.ws]) {
-      workNodesByWorkspaceAndId[node.ws] = {};
-    }
-    workNodesByWorkspaceAndId[node.ws][node.id] = {
-      qid: node.qid,
-      version:
-        typeof node.attributes.version === "string" ? node.attributes.version : undefined,
-    };
-  }
-
   for (const [qid, node] of Object.entries(index.nodes)) {
     if (node.type !== "work_order") {
       continue;
@@ -236,8 +246,11 @@ function validateAgentWorkflowWorkOrderWorkRefs(
     if (typeof workId !== "string") {
       continue;
     }
-    const workNode = workNodesByWorkspaceAndId[node.ws]?.[workId];
+    const workNode = resolveTypedNodeRef(index, node.ws, workId, "work");
     if (!workNode) {
+      if (isExternalWorkspaceRef(workId, externalWorkspaces)) {
+        continue;
+      }
       if (allowMissing) {
         continue;
       }
@@ -247,12 +260,12 @@ function validateAgentWorkflowWorkOrderWorkRefs(
     const workVersion = node.attributes.work_version;
     if (
       typeof workVersion === "string" &&
-      workNode.version !== undefined &&
-      workVersion !== workNode.version
+      typeof workNode.attributes.version === "string" &&
+      workVersion !== workNode.attributes.version
     ) {
       pushError(
         errors,
-        `${qid}: work_version ${workVersion} does not match ${workNode.qid} version ${workNode.version}`
+        `${qid}: work_version ${workVersion} does not match ${workNode.qid} version ${workNode.attributes.version}`
       );
     }
   }
@@ -261,19 +274,9 @@ function validateAgentWorkflowWorkOrderWorkRefs(
 function validateAgentWorkflowReceiptWorkOrderRefs(
   index: Index,
   allowMissing: boolean,
+  externalWorkspaces: Set<string> | undefined,
   errors: string[] | null
 ): void {
-  const workOrderIdsByWorkspace: Record<string, Set<string>> = {};
-  for (const node of Object.values(index.nodes)) {
-    if (node.type !== "work_order") {
-      continue;
-    }
-    if (!workOrderIdsByWorkspace[node.ws]) {
-      workOrderIdsByWorkspace[node.ws] = new Set();
-    }
-    workOrderIdsByWorkspace[node.ws].add(node.id);
-  }
-
   for (const [qid, node] of Object.entries(index.nodes)) {
     if (node.type !== "receipt") {
       continue;
@@ -282,7 +285,10 @@ function validateAgentWorkflowReceiptWorkOrderRefs(
     if (typeof workOrderId !== "string") {
       continue;
     }
-    if (workOrderIdsByWorkspace[node.ws]?.has(workOrderId)) {
+    if (resolveTypedNodeRef(index, node.ws, workOrderId, "work_order")) {
+      continue;
+    }
+    if (isExternalWorkspaceRef(workOrderId, externalWorkspaces)) {
       continue;
     }
     if (allowMissing) {
@@ -311,9 +317,21 @@ function buildSpecRolesByWorkspace(
   return specRolesByWorkspace;
 }
 
+function resolveSpecRole(index: Index, ws: string, value: string): { qid: string; role?: string } | undefined {
+  const node = resolveTypedNodeRef(index, ws, value, "spec");
+  if (!node) {
+    return undefined;
+  }
+  return {
+    qid: node.qid,
+    role: typeof node.attributes.role === "string" ? node.attributes.role : undefined,
+  };
+}
+
 function validateAgentWorkflowSubagentRefs(
   index: Index,
   allowMissing: boolean,
+  externalWorkspaces: Set<string> | undefined,
   errors: string[] | null
 ): void {
   const specRolesByWorkspace = buildSpecRolesByWorkspace(index);
@@ -330,8 +348,13 @@ function validateAgentWorkflowSubagentRefs(
       if (typeof value !== "string") {
         continue;
       }
-      const specNode = specRolesByWorkspace[node.ws]?.[value];
+      const specNode = value.includes(":")
+        ? resolveSpecRole(index, node.ws, value)
+        : specRolesByWorkspace[node.ws]?.[value];
       if (!specNode) {
+        if (isExternalWorkspaceRef(value, externalWorkspaces)) {
+          continue;
+        }
         if (allowMissing) {
           continue;
         }
@@ -351,35 +374,9 @@ function validateAgentWorkflowSubagentRefs(
 function validateAgentWorkflowDisputeRefs(
   index: Index,
   allowMissing: boolean,
+  externalWorkspaces: Set<string> | undefined,
   errors: string[] | null
 ): void {
-  const workOrderIdsByWorkspace: Record<string, Set<string>> = {};
-  const receiptNodesByWorkspaceAndId: Record<
-    string,
-    Record<string, { qid: string; workOrderId?: string }>
-  > = {};
-
-  for (const node of Object.values(index.nodes)) {
-    if (node.type === "work_order") {
-      if (!workOrderIdsByWorkspace[node.ws]) {
-        workOrderIdsByWorkspace[node.ws] = new Set();
-      }
-      workOrderIdsByWorkspace[node.ws].add(node.id);
-    }
-    if (node.type === "receipt") {
-      if (!receiptNodesByWorkspaceAndId[node.ws]) {
-        receiptNodesByWorkspaceAndId[node.ws] = {};
-      }
-      receiptNodesByWorkspaceAndId[node.ws][node.id] = {
-        qid: node.qid,
-        workOrderId:
-          typeof node.attributes.work_order_id === "string"
-            ? node.attributes.work_order_id
-            : undefined,
-      };
-    }
-  }
-
   for (const [qid, node] of Object.entries(index.nodes)) {
     if (node.type !== "dispute") {
       continue;
@@ -388,7 +385,11 @@ function validateAgentWorkflowDisputeRefs(
     if (typeof workOrderId !== "string") {
       continue;
     }
-    if (!workOrderIdsByWorkspace[node.ws]?.has(workOrderId) && !allowMissing) {
+    if (
+      !resolveTypedNodeRef(index, node.ws, workOrderId, "work_order") &&
+      !isExternalWorkspaceRef(workOrderId, externalWorkspaces) &&
+      !allowMissing
+    ) {
       pushError(errors, `${qid}: work_order_id references missing WORK_ORDER.md ${workOrderId}`);
     }
 
@@ -396,18 +397,28 @@ function validateAgentWorkflowDisputeRefs(
     if (typeof receiptId !== "string") {
       continue;
     }
-    const receiptNode = receiptNodesByWorkspaceAndId[node.ws]?.[receiptId];
+    const receiptNode = resolveTypedNodeRef(index, node.ws, receiptId, "receipt");
     if (!receiptNode) {
+      if (isExternalWorkspaceRef(receiptId, externalWorkspaces)) {
+        continue;
+      }
       if (allowMissing) {
         continue;
       }
       pushError(errors, `${qid}: receipt_id references missing RECEIPT.md ${receiptId}`);
       continue;
     }
-    if (receiptNode.workOrderId !== undefined && receiptNode.workOrderId !== workOrderId) {
+    const receiptWorkOrderId = typeof receiptNode.attributes.work_order_id === "string"
+      ? receiptNode.attributes.work_order_id
+      : undefined;
+    const receiptWorkOrderQid = receiptWorkOrderId
+      ? receiptWorkOrderId.includes(":") ? receiptWorkOrderId : `${receiptNode.ws}:${receiptWorkOrderId}`
+      : undefined;
+    const disputeWorkOrderQid = workOrderId.includes(":") ? workOrderId : `${node.ws}:${workOrderId}`;
+    if (receiptWorkOrderQid !== undefined && receiptWorkOrderQid !== disputeWorkOrderQid) {
       pushError(
         errors,
-        `${qid}: receipt_id ${receiptId} belongs to work_order_id ${receiptNode.workOrderId}, not ${workOrderId}`
+        `${qid}: receipt_id ${receiptId} belongs to work_order_id ${receiptWorkOrderId}, not ${workOrderId}`
       );
     }
   }
@@ -438,6 +449,9 @@ function validateAgentWorkflowNodeIdRef(
 ): void {
   const [workspace] = value.split(":");
   if (workspace && value.includes(":") && externalWorkspaces?.has(workspace)) {
+    return;
+  }
+  if (value.includes(":") && nodeIdsByWorkspace[workspace]?.has(value.split(":").slice(1).join(":"))) {
     return;
   }
   if (nodeIdsByWorkspace[ws]?.has(value)) {
@@ -710,10 +724,10 @@ export function collectGraphErrors(index: Index, options: ValidateGraphOptions =
   validateEdgeTargets(index, allowMissing, knownSkillSlugs, externalWorkspaces, errors);
   validatePrevNextSymmetry(index, allowMissing, errors);
   validateAgentWorkflowSpecWorkContracts(index, allowMissing, errors);
-  validateAgentWorkflowWorkOrderWorkRefs(index, allowMissing, errors);
-  validateAgentWorkflowReceiptWorkOrderRefs(index, allowMissing, errors);
-  validateAgentWorkflowSubagentRefs(index, allowMissing, errors);
-  validateAgentWorkflowDisputeRefs(index, allowMissing, errors);
+  validateAgentWorkflowWorkOrderWorkRefs(index, allowMissing, externalWorkspaces, errors);
+  validateAgentWorkflowReceiptWorkOrderRefs(index, allowMissing, externalWorkspaces, errors);
+  validateAgentWorkflowSubagentRefs(index, allowMissing, externalWorkspaces, errors);
+  validateAgentWorkflowDisputeRefs(index, allowMissing, externalWorkspaces, errors);
   validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, externalWorkspaces, errors);
   validateArchiveUriRefs(index, allowMissing, errors);
   validateGoalRefs(index, allowMissing, errors);

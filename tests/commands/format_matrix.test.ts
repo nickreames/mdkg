@@ -230,7 +230,7 @@ test("runFormatCommand reports id, date, and non-work policy branches", () => {
     "title: Bad id and date",
     "status: waiting",
     "priority: 3",
-    "epic: root:task-x",
+    "epic: BAD REF",
     "tags: []",
     "owners: []",
     "links: []",

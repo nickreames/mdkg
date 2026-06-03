@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.6`
+Current package version in source: `0.1.7`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -126,7 +126,7 @@ Bundles are explicit graph transport artifacts, separate from task context packs
 Register a child repo bundle as a read-only subgraph planning view:
 
 ```bash
-mdkg subgraph add child_repo child-repo/.mdkg/bundles/private/all.mdkg.zip --source-path child-repo
+mdkg subgraph add child_repo .mdkg/bundles/private/subgraphs/child_repo.mdkg.zip --source-path projects/child_repo
 mdkg subgraph list --json
 mdkg search "child capability"
 mdkg show child_repo:work.example
@@ -135,7 +135,24 @@ mdkg capability resolve "child capability" --json
 mdkg subgraph verify child_repo --json
 ```
 
-Subgraph nodes are projected under the subgraph alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, capability discovery, and `capability resolve`, but remain read-only; mutate the child repo and refresh its bundle to change subgraph content. Stale subgraphs warn during planning reads and fail `mdkg subgraph verify`. Public or internal subgraphs must be backed by public bundle profiles; private subgraphs stay private planning context.
+When the child repo is available under a configured root-relative `source_path`, refresh the root-owned bundle snapshot explicitly:
+
+```bash
+mdkg subgraph sync child_repo --dry-run --json
+mdkg subgraph sync child_repo --json
+```
+
+`sync` inspects the child Git repo, refuses dirty tracked changes by default, builds the configured private/public bundle into the root-owned source path, verifies it, and records `<branch>@<sha>` in `source_repo`. It never commits, pulls, pushes, checks out, resets, or mutates child mdkg Markdown. Use `--allow-dirty` only when the dirty state is intentional and must be recorded in the receipt.
+
+Generate a local read-only inspection tree when humans need to browse extracted child graph files:
+
+```bash
+mdkg subgraph materialize child_repo --target .mdkg/subgraphs --clean --gitignore --json
+```
+
+Materialized trees are generated local state, ignored by graph indexing/search/validation/packing/bundles/SQLite hydration, and protected by a `.mdkg-materialized.json` marker before clean replacement.
+
+Subgraph nodes are projected under the subgraph alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, capability discovery, and `capability resolve`, but remain read-only; mutate the child repo and sync its root-owned bundle snapshot to change subgraph content. Root-authored relationship and reference fields can point at configured subgraph qids such as `child_repo:work.example`; local ownership fields such as `epic`, `parent`, `prev`, and `next` stay local-only. Stale subgraphs warn during planning reads and fail `mdkg subgraph verify`. Public or internal subgraphs must be backed by public bundle profiles; private subgraphs stay private planning context.
 
 Validate before handoff or commit:
 
@@ -219,6 +236,7 @@ mdkg lives under a hidden root directory:
 - `.mdkg/bundles/` optional committed full graph snapshot bundles
 - `.mdkg/index/mdkg.sqlite` optional committed, rebuildable SQLite access cache
 - `.mdkg/index/subgraphs.json` generated read-only subgraph projection cache
+- `.mdkg/subgraphs/` generated materialized subgraph inspection trees
 - `.agents/skills/` Codex/OpenAI-facing mirrored skills
 - `.claude/skills/` Claude-facing mirrored skills
 - `.mdkg/index/*.json` generated JSON compatibility cache files

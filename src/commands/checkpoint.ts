@@ -6,7 +6,7 @@ import { Index } from "../graph/indexer";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
-import { isCanonicalId, isCanonicalIdRef } from "../util/id";
+import { isCanonicalId, isPortableIdRef } from "../util/id";
 import { writeFileExclusive } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
@@ -54,7 +54,7 @@ function normalizeId(value: string, key: string): string {
 
 function normalizeIdRef(value: string, key: string): string {
   const normalized = value.toLowerCase();
-  if (!isCanonicalIdRef(normalized)) {
+  if (!isPortableIdRef(normalized)) {
     throw new UsageError(`${key} entries must match <id> or <ws>:<id>: ${value}`);
   }
   return normalized;

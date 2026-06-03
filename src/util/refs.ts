@@ -1,4 +1,4 @@
-import { isPortableId } from "./id";
+import { isPortableIdRef } from "./id";
 
 const URI_RE = /^[a-z][a-z0-9+.-]*:\/\/\S+$/i;
 const ARCHIVE_URI_RE = /^archive:\/\/([a-z][a-z0-9_]*(?:[._-][a-z0-9_]+)*)$/;
@@ -25,7 +25,7 @@ export function isSha256Ref(value: string): boolean {
 }
 
 export function isPortableOrUriRef(value: string): boolean {
-  return isPortableId(value.toLowerCase()) || isUriRef(value);
+  return isPortableIdRef(value.toLowerCase()) || isUriRef(value);
 }
 
 export function validatePortableOrUriRef(value: string): boolean {
@@ -35,5 +35,5 @@ export function validatePortableOrUriRef(value: string): boolean {
     }
     return true;
   }
-  return value === value.toLowerCase() && isPortableId(value);
+  return value === value.toLowerCase() && isPortableIdRef(value);
 }

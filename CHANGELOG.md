@@ -6,6 +6,26 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL contracts may change quickly while the project converges on a stable v1 surface.
 
+## 0.1.7 - Unreleased
+
+### Added
+
+- Added prefix-based cross-subgraph graph references so root-authored nodes can point at configured child graph qids such as `child_repo:work.example`.
+- Added `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]` to rebuild root-owned child bundle snapshots from configured clean child Git repo `source_path` entries.
+- Added `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]` for generated read-only inspection trees extracted from configured subgraph bundles.
+- Added unit and packed-package smoke coverage for subgraph sync dry-runs, child Git cleanliness checks, root-owned bundle refresh, materialization marker safety, and cross-subgraph refs.
+
+### Changed
+
+- `mdkg subgraph refresh` remains reload-only; `mdkg subgraph sync` is now the explicit command that builds child bundles.
+- Init and upgrade ignore guidance now treats `.mdkg/subgraphs/` as local generated inspection state.
+- Bundle creation, local graph indexing, search, validate, pack, and SQLite hydration keep ignoring materialized subgraph trees so extracted child files never become root-owned graph nodes.
+
+### Fixed
+
+- Relationship and reference fields now preserve `alias:id` qids while still treating `scheme://...` values as external URI refs.
+- Local ownership fields such as `epic`, `parent`, `prev`, and `next` reject subgraph qids, preserving child graph ownership boundaries.
+
 ## 0.1.6 - 2026-06-01
 
 ### Fixed

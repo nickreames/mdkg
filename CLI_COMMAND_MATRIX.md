@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-05-30
-package_version_in_source: 0.1.6
+package_version_in_source: 0.1.7
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -574,11 +574,11 @@ JSON receipts:
 
 When to use:
 - register child graph snapshot bundles as read-only planning context
-- inspect, verify, enable, disable, and refresh configured subgraphs
+- inspect, verify, enable, disable, refresh, sync, and materialize configured subgraphs
 - keep root orchestration graph state separate from child repo mutations
 
 Usage:
-- `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh ...`
+- `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh/sync/materialize ...`
 - `mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]`
 - `mdkg subgraph list [--json]`
 - `mdkg subgraph show <alias> [--json]`
@@ -587,6 +587,8 @@ Usage:
 - `mdkg subgraph disable <alias> [--json]`
 - `mdkg subgraph verify [alias|--all] [--json]`
 - `mdkg subgraph refresh [alias|--all] [--json]`
+- `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]`
+- `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]`
 
 Flags:
 - `--visibility private|internal|public`
@@ -594,6 +596,11 @@ Flags:
 - `--source-path <path>`
 - `--source-repo <ref>`
 - `--max-stale-seconds <seconds>`
+- `--dry-run`
+- `--allow-dirty`
+- `--target <path>`
+- `--clean`
+- `--gitignore`
 - `--json`
 
 Notes:
@@ -601,6 +608,11 @@ Notes:
 - each subgraph defaults to `enabled: true`, `visibility: private`, `permissions: ["read"]`, and `max_stale_seconds: 3600`
 - each subgraph may contain multiple configured sources, but CLI add creates one initial source in this release
 - `mdkg subgraph refresh` reloads configured bundle sources only; it never builds or mutates child repos
+- `mdkg subgraph sync` uses configured `source_path`, requires a contained root-relative clean child Git repo by default, builds the configured root-owned bundle path, verifies it, and records `source_repo` as `<branch>@<sha>`
+- `mdkg subgraph sync --dry-run` writes no bundles, config, or indexes; `--allow-dirty` permits dirty tracked child changes and records them visibly
+- `mdkg subgraph materialize` extracts bundles into generated read-only inspection trees under `<target>/<alias>` and protects clean replacement with `.mdkg-materialized.json`
+- `.mdkg/subgraphs/` materialized views are ignored by local graph indexing, search, validation, packing, bundle creation, and SQLite hydration
+- root-authored `refs`, `relates`, blockers, `scope_refs`, and workflow/archive refs may point at configured subgraph qids such as `child_repo:work.example`; ownership fields such as `epic`, `parent`, `prev`, and `next` remain local-only
 - subgraphs are read-only graph views projected under subgraph-alias qids such as `child_repo:task-1`
 - enabled subgraphs are visible to `list`, `search`, `show`, `pack`, `capability`, and `capability resolve`
 - public/internal subgraphs require public bundle profiles; private bundle profiles cannot be promoted to public/internal visibility
@@ -615,6 +627,8 @@ JSON receipts:
 - `show`: `{ action: "show", subgraph }`
 - `rm`: `{ action: "removed", subgraph: { alias } }`
 - `verify`: `{ action: "verified", ok, count, subgraphs }`
+- `sync`: `{ action: "sync_dry_run"|"synced", ok, count, updated, skipped, errors, warnings, subgraphs }`
+- `materialize`: `{ action: "materialized", ok, count, target, results, errors, warnings }`
 
 ### `mdkg work`
 
