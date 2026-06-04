@@ -11,6 +11,13 @@ import {
   runProjectDbMigrations,
   verifyProjectDb,
 } from "../core/project_db_migrations";
+import {
+  diffProjectDbSnapshots,
+  dumpProjectDbSnapshot,
+  projectDbSnapshotStatus,
+  sealProjectDbSnapshot,
+  verifyProjectDbSnapshot,
+} from "../core/project_db_snapshot";
 import { readPackageVersion } from "../core/version";
 import { rebuildDerivedIndexCaches } from "./index";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
@@ -72,6 +79,25 @@ export type DbVerifyCommandOptions = {
 
 export type DbStatsCommandOptions = {
   root: string;
+  json?: boolean;
+};
+
+export type DbSnapshotCommandOptions = {
+  root: string;
+  json?: boolean;
+};
+
+export type DbSnapshotDumpCommandOptions = {
+  root: string;
+  snapshot?: string;
+  output?: string;
+  json?: boolean;
+};
+
+export type DbSnapshotDiffCommandOptions = {
+  root: string;
+  left: string;
+  right: string;
   json?: boolean;
 };
 
@@ -525,6 +551,99 @@ export function runDbStatsCommand(options: DbStatsCommandOptions): void {
     for (const item of payload.transient_files) {
       console.log(`  ${item.path}: ${item.size}`);
     }
+  }
+}
+
+function printSnapshotChecks(payload: { checks: ReturnType<typeof verifyProjectDbSnapshot>["checks"] }): void {
+  for (const check of payload.checks) {
+    const location = check.path ? ` (${path.isAbsolute(check.path) ? rel(process.cwd(), check.path) : check.path})` : "";
+    console.log(`${check.level}: ${check.name}${location} - ${check.detail}`);
+  }
+}
+
+function runDbSnapshotSealCommandLocked(options: DbSnapshotCommandOptions): void {
+  const config = loadConfig(options.root);
+  const payload = sealProjectDbSnapshot(options.root, config);
+  if (options.json) {
+    console.log(JSON.stringify(payload, null, 2));
+    return;
+  }
+  console.log("db snapshot sealed");
+  console.log(`snapshot: ${payload.snapshot}`);
+  console.log(`manifest: ${payload.manifest}`);
+  console.log(`sha256: ${payload.new_snapshot_sha256}`);
+  console.log(`byte size: ${payload.byte_size}`);
+  if (payload.warnings.length > 0) {
+    console.log("warnings:");
+    for (const warning of payload.warnings) {
+      console.log(`  ${warning}`);
+    }
+  }
+}
+
+export function runDbSnapshotSealCommand(options: DbSnapshotCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
+    runDbSnapshotSealCommandLocked(options)
+  );
+}
+
+export function runDbSnapshotVerifyCommand(options: DbSnapshotCommandOptions): void {
+  const config = loadConfig(options.root);
+  const payload = verifyProjectDbSnapshot(options.root, config);
+  if (options.json) {
+    console.log(JSON.stringify(payload, null, 2));
+  } else {
+    printSnapshotChecks(payload);
+  }
+  if (!payload.ok) {
+    throw new ValidationError(`db snapshot verify failed with ${payload.failure_count} issue(s)`);
+  }
+  if (!options.json) {
+    console.log("db snapshot verify ok");
+  }
+}
+
+export function runDbSnapshotStatusCommand(options: DbSnapshotCommandOptions): void {
+  const config = loadConfig(options.root);
+  const payload = projectDbSnapshotStatus(options.root, config);
+  if (options.json) {
+    console.log(JSON.stringify(payload, null, 2));
+    return;
+  }
+  printSnapshotChecks(payload);
+  console.log(`db snapshot status: ${payload.status}`);
+}
+
+export function runDbSnapshotDumpCommand(options: DbSnapshotDumpCommandOptions): void {
+  const config = loadConfig(options.root);
+  const payload = dumpProjectDbSnapshot(options.root, config, options.snapshot, options.output);
+  const { dump, ...receipt } = payload;
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    return;
+  }
+  if (options.output) {
+    console.log("db snapshot dump written");
+    console.log(`output: ${receipt.output}`);
+    console.log(`sha256: ${receipt.sha256}`);
+    return;
+  }
+  process.stdout.write(dump);
+}
+
+export function runDbSnapshotDiffCommand(options: DbSnapshotDiffCommandOptions): void {
+  const payload = diffProjectDbSnapshots(options.root, options.left, options.right);
+  if (options.json) {
+    console.log(JSON.stringify(payload, null, 2));
+    return;
+  }
+  console.log(`db snapshot diff: ${payload.changed_count} change(s)`);
+  for (const line of payload.removed) {
+    console.log(`- ${line}`);
+  }
+  for (const line of payload.added) {
+    console.log(`+ ${line}`);
   }
 }
 

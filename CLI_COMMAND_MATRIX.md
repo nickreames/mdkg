@@ -877,6 +877,11 @@ Usage:
 - `mdkg db migrate [--json]`
 - `mdkg db verify [--json]`
 - `mdkg db stats [--json]`
+- `mdkg db snapshot seal [--json]`
+- `mdkg db snapshot verify [--json]`
+- `mdkg db snapshot status [--json]`
+- `mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]`
+- `mdkg db snapshot diff <left-snapshot> <right-snapshot> [--json]`
 
 Boundaries:
 - `.mdkg/index` is the rebuildable graph access cache
@@ -892,6 +897,13 @@ Boundaries:
   metadata, receipt directory policy, and transient runtime files
 - `mdkg db stats` reports table counts, database size, migration state,
   transient runtime files, receipt-file count, and state snapshot presence
+- `mdkg db snapshot seal` creates an opt-in sealed checkpoint under
+  `.mdkg/db/state` with a deterministic manifest and content hash
+- `mdkg db snapshot verify` and `mdkg db snapshot status` inspect sealed
+  snapshot integrity, manifest drift, runtime freshness, and WAL/transient
+  warning state
+- `mdkg db snapshot dump` and `mdkg db snapshot diff` provide deterministic
+  review aids for SQLite snapshots; they are not a new source of truth
 - `mdkg index` remains the compatibility shortcut for index rebuilds
 - no raw SQL, hosted queue, profile, or publish behavior is exposed here
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp

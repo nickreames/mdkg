@@ -135,6 +135,9 @@ test("cli help db documents project database boundaries", () => {
   assert.match(dbHelp.stdout, /db migrate` applies mdkg-owned generic foundation migrations only/);
   assert.match(dbHelp.stdout, /db verify` checks config, layout, SQLite integrity, migrations, and transient files/);
   assert.match(dbHelp.stdout, /db stats` reports table counts, migration state, DB size, and receipt counts/);
+  assert.match(dbHelp.stdout, /mdkg db snapshot seal \[--json\]/);
+  assert.match(dbHelp.stdout, /mdkg db snapshot dump \[--snapshot <path>\] \[--output <path>\] \[--json\]/);
+  assert.match(dbHelp.stdout, /db snapshot \.\.\.` manages opt-in sealed checkpoints and review dumps/);
   assert.match(dbHelp.stdout, /active `\.mdkg\/db\/runtime` and transient DB files are ignored by default/);
 
   const dbIndexHelp = spawnSync(process.execPath, [cliPath, "help", "db", "index"], {
@@ -144,6 +147,15 @@ test("cli help db documents project database boundaries", () => {
   assert.equal(dbIndexHelp.status, 0);
   assert.match(dbIndexHelp.stdout, /mdkg db index verify \[--json\]/);
   assert.match(dbIndexHelp.stdout, /mdkg index` remains the compatibility shortcut/);
+
+  const dbSnapshotHelp = spawnSync(process.execPath, [cliPath, "help", "db", "snapshot"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(dbSnapshotHelp.status, 0);
+  assert.match(dbSnapshotHelp.stdout, /mdkg db snapshot verify \[--json\]/);
+  assert.match(dbSnapshotHelp.stdout, /mdkg db snapshot diff <left-snapshot> <right-snapshot> \[--json\]/);
+  assert.match(dbSnapshotHelp.stdout, /snapshot dump\/diff are deterministic review aids/);
 });
 
 test("cli help init includes agent bootstrap and ignore-default controls", () => {

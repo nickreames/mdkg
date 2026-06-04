@@ -80,6 +80,7 @@ const HELP_TARGETS = [
   ["workspace"],
   ["db"],
   ["db", "index"],
+  ["db", "snapshot"],
   ["index"],
   ["guide"],
 ];

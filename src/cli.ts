@@ -19,6 +19,11 @@ import {
   runDbIndexStatusCommand,
   runDbIndexVerifyCommand,
   runDbMigrateCommand,
+  runDbSnapshotDiffCommand,
+  runDbSnapshotDumpCommand,
+  runDbSnapshotSealCommand,
+  runDbSnapshotStatusCommand,
+  runDbSnapshotVerifyCommand,
   runDbStatsCommand,
   runDbVerifyCommand,
 } from "./commands/db";
@@ -279,6 +284,20 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("  - `.mdkg/index` is the rebuildable graph cache, not project application state");
       printGlobalOptions(log);
       return;
+    case "snapshot":
+      log("Usage:");
+      log("  mdkg db snapshot seal [--json]");
+      log("  mdkg db snapshot verify [--json]");
+      log("  mdkg db snapshot status [--json]");
+      log("  mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]");
+      log("  mdkg db snapshot diff <left-snapshot> <right-snapshot> [--json]");
+      log("\nBoundaries:");
+      log("  - snapshot seal writes a clean opt-in sealed project DB checkpoint");
+      log("  - snapshot verify/status read `.mdkg/db/state/project.sqlite` and its manifest");
+      log("  - snapshot dump/diff are deterministic review aids, not source of truth");
+      log("  - active runtime/WAL files remain ignored by default");
+      printGlobalOptions(log);
+      return;
     default:
       log("Usage:");
       log("  mdkg db index rebuild [--tolerant] [--json]");
@@ -288,6 +307,11 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg db migrate [--json]");
       log("  mdkg db verify [--json]");
       log("  mdkg db stats [--json]");
+      log("  mdkg db snapshot seal [--json]");
+      log("  mdkg db snapshot verify [--json]");
+      log("  mdkg db snapshot status [--json]");
+      log("  mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]");
+      log("  mdkg db snapshot diff <left-snapshot> <right-snapshot> [--json]");
       log("\nBoundaries:");
       log("  - `.mdkg/index` is the rebuildable graph cache");
       log("  - `.mdkg/db` is future project application state");
@@ -297,6 +321,7 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("  - `mdkg db migrate` applies mdkg-owned generic foundation migrations only");
       log("  - `mdkg db verify` checks config, layout, SQLite integrity, migrations, and transient files");
       log("  - `mdkg db stats` reports table counts, migration state, DB size, and receipt counts");
+      log("  - `mdkg db snapshot ...` manages opt-in sealed checkpoints and review dumps");
       log("  - active `.mdkg/db/runtime` and transient DB files are ignored by default");
       log("  - no raw SQL, hosted queue, profile, or publish behavior is exposed here");
       printGlobalOptions(log);
@@ -1216,8 +1241,52 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runDbStatsCommand({ root, json: parseBooleanFlag("--json", parsed.flags["--json"]) });
       return 0;
     }
+    case "snapshot": {
+      const action = (parsed.positionals[2] ?? "").toLowerCase();
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      switch (action) {
+        case "seal":
+          if (parsed.positionals.length > 3) {
+            throw new UsageError("mdkg db snapshot seal does not accept positional arguments");
+          }
+          runDbSnapshotSealCommand({ root, json });
+          return 0;
+        case "verify":
+          if (parsed.positionals.length > 3) {
+            throw new UsageError("mdkg db snapshot verify does not accept positional arguments");
+          }
+          runDbSnapshotVerifyCommand({ root, json });
+          return 0;
+        case "status":
+          if (parsed.positionals.length > 3) {
+            throw new UsageError("mdkg db snapshot status does not accept positional arguments");
+          }
+          runDbSnapshotStatusCommand({ root, json });
+          return 0;
+        case "dump": {
+          if (parsed.positionals.length > 3) {
+            throw new UsageError("mdkg db snapshot dump does not accept positional arguments");
+          }
+          const snapshot = requireFlagValue("--snapshot", parsed.flags["--snapshot"]);
+          const output = requireFlagValue("--output", parsed.flags["--out"]);
+          runDbSnapshotDumpCommand({ root, snapshot, output, json });
+          return 0;
+        }
+        case "diff": {
+          const left = parsed.positionals[3];
+          const right = parsed.positionals[4];
+          if (!left || !right || parsed.positionals.length > 5) {
+            throw new UsageError("mdkg db snapshot diff requires <left-snapshot> <right-snapshot>");
+          }
+          runDbSnapshotDiffCommand({ root, left, right, json });
+          return 0;
+        }
+        default:
+          throw new UsageError("mdkg db snapshot requires seal/verify/status/dump/diff");
+      }
+    }
     default:
-      throw new UsageError("mdkg db requires index/init/migrate/verify/stats");
+      throw new UsageError("mdkg db requires index/init/migrate/verify/stats/snapshot");
   }
 }
 

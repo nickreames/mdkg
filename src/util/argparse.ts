@@ -92,6 +92,7 @@ const VALUE_FLAGS = new Set([
   "--max-stale-seconds",
   "--requires",
   "--target",
+  "--snapshot",
 ]);
 
 const BOOLEAN_FLAGS = new Set([

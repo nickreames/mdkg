@@ -39,6 +39,11 @@ Project database commands:
 - `mdkg db migrate [--json]`
 - `mdkg db verify [--json]`
 - `mdkg db stats [--json]`
+- `mdkg db snapshot seal [--json]`
+- `mdkg db snapshot verify [--json]`
+- `mdkg db snapshot status [--json]`
+- `mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]`
+- `mdkg db snapshot diff <left-snapshot> <right-snapshot> [--json]`
 - `.mdkg/db` is project application state, separate from `.mdkg/index`
 - `mdkg db init` creates the generic `.mdkg/db` scaffold, writes
   `.mdkg/db/project-db.json`, enables `db.enabled`, and does not create an
@@ -51,6 +56,9 @@ Project database commands:
   metadata, receipt directory policy, and transient runtime files
 - `mdkg db stats` reports table counts, database size, migration state,
   transient runtime files, receipt-file count, and state snapshot presence
+- `mdkg db snapshot seal` writes an opt-in sealed checkpoint and manifest under
+  `.mdkg/db/state`; `snapshot verify/status/dump/diff` inspect and review that
+  checkpoint without treating raw binary diffs as human-readable truth
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:

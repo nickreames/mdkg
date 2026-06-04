@@ -36,8 +36,11 @@ Agent operating prompt:
   runtime SQLite database. Use `mdkg db migrate` after init to create or update
   the runtime SQLite database with mdkg-owned generic foundation migrations.
   Use `mdkg db verify` and `mdkg db stats` for non-mutating health and summary
-  receipts. Keep `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files ignored
-  unless a sealed artifact policy explicitly says otherwise.
+  receipts. Use `mdkg db snapshot seal` for explicit sealed checkpoints,
+  `mdkg db snapshot verify/status` for checkpoint health, and
+  `mdkg db snapshot dump/diff` for deterministic review aids. Keep
+  `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files ignored unless a
+  sealed artifact policy explicitly says otherwise.
 - Use `mdkg archive add/list/show/verify/compress` for committed source and artifact sidecars under `.mdkg/archive`.
 - Use `mdkg work ...` helpers for semantic mirror contracts, work orders, receipts, and artifact registration.
 - Treat work contracts, orders, and receipts as committed semantic mirrors only; never store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in mdkg.
