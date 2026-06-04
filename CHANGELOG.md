@@ -6,7 +6,7 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL contracts may change quickly while the project converges on a stable v1 surface.
 
-## 0.1.7 - Unreleased
+## 0.1.7 - 2026-06-04
 
 ### Added
 
