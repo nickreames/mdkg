@@ -2,7 +2,7 @@
 id: epic-20
 type: epic
 title: sqlite dal and parallel mutation hardening
-status: progress
+status: done
 priority: 1
 tags: [0_1_3, sqlite, dal, parallel-safety, index, cache]
 owners: []
@@ -15,7 +15,7 @@ refs: []
 aliases: [sqlite-capability-cache, sqlite-dal, parallel-mutation-hardening]
 skills: []
 created: 2026-05-14
-updated: 2026-05-20
+updated: 2026-06-04
 ---
 
 # Goal
@@ -62,7 +62,7 @@ truth.
 - SQLite must not make imported bundle snapshots look mutable when they are
   read-only orchestration views.
 
-# Active Child Tasks
+# Child Tasks
 
 - `task-165`: Node runtime, package, and pre-v1 release posture. Done.
 - `task-166`: mutation lock and atomic write hardening. Done.
@@ -70,14 +70,14 @@ truth.
 - `task-168`: transactional id allocation and parallel creation safety. Done.
 - `task-169`: doctor, validate, docs, and upgrade policy. Done.
 - `task-170`: SQLite and parallel packed-package smoke coverage. Done.
-- `task-171`: post-publish repo handoff prompts for SQLite opt-in. Todo until
-  `mdkg@0.1.3` is published.
+- `task-171`: post-publish repo handoff prompts for SQLite, project DB, and
+  queue consumer upgrades. Done after `mdkg@0.1.8`/`0.1.9` release work.
 
 # Current Status
 
-The 0.1.3 implementation slice is code-complete and locally verified. The
-epic remains open only for the post-publish consumer handoff prompts that
-should be created after the npm package is available.
+Done. SQLite index/DAL and parallel mutation hardening shipped before the
+project DB work, and the remaining post-publish handoff prompt task is now
+complete.
 
 # Links / Artifacts
 
