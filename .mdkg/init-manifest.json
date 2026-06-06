@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "tool": "mdkg",
+  "mdkg_version": "0.1.8",
+  "files": [
+    {
+      "path": ".mdkg/core/core.md",
+      "category": "core",
+      "sha256": "d87beecf4229535c0d0feea7deae28b97d0681105a1c282d9961e97918f0bbe8"
+    },
+    {
+      "path": ".mdkg/core/guide.md",
+      "category": "core",
+      "sha256": "ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae"
+    },
+    {
+      "path": ".mdkg/core/HUMAN.md",
+      "category": "core",
+      "sha256": "75d2e015cd5ba61062cb84246017ee4f4221610d4a56e4a0b332271b90694965"
+    },
+    {
+      "path": ".mdkg/core/rule-1-mdkg-conventions.md",
+      "category": "core",
+      "sha256": "15f886e6661046de45ad798c292d74cc1ff3cc14c8cfcc82ed0b8c35635d0477"
+    },
+    {
+      "path": ".mdkg/core/rule-2-context-pack-rules.md",
+      "category": "core",
+      "sha256": "9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f"
+    },
+    {
+      "path": ".mdkg/core/rule-3-cli-contract.md",
+      "category": "core",
+      "sha256": "f61b84ff6e5abae91365c4f623ccbd78f25dfcfef09822fefb3abf0119d65739"
+    },
+    {
+      "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+      "category": "core",
+      "sha256": "3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8"
+    },
+    {
+      "path": ".mdkg/core/rule-5-release-and-versioning.md",
+      "category": "core",
+      "sha256": "e97b00aa3ade29011f1f2b482042ec292f74aad8b1d72e2f8e691cdeca5d4f70"
+    },
+    {
+      "path": ".mdkg/core/rule-6-templates-and-schemas.md",
+      "category": "core",
+      "sha256": "3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f"
+    },
+    {
+      "path": ".mdkg/core/SOUL.md",
+      "category": "core",
+      "sha256": "2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a"
+    },
+    {
+      "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      "category": "default_skill",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae"
+    },
+    {
+      "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      "category": "default_skill",
+      "sha256": "fd64f666fb1329c392ff0979ed9999b71ad948cbca6a191502eb2cdfd76ec825"
+    },
+    {
+      "path": ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+      "category": "default_skill",
+      "sha256": "e50fc3b1a2c79a9a3544ca9df1bf4ca9c312e7c3a51d5e4c6f3314341eca268b"
+    },
+    {
+      "path": ".mdkg/templates/default/archive.md",
+      "category": "template",
+      "sha256": "d442523bbecd91a3c4a436043919117da00c145b368612311e98e628fe30d69b"
+    },
+    {
+      "path": ".mdkg/templates/default/bug.md",
+      "category": "template",
+      "sha256": "88e3f8d67aa3b2156be2006bd1c8139b7b16b46f2c05a4f4d840b3746a40f9c5"
+    },
+    {
+      "path": ".mdkg/templates/default/chk.md",
+      "category": "template",
+      "sha256": "15f793e422009c76f8bda72c3609157acd7f03762d9c9bdb096c4aa2e2c3fb89"
+    },
+    {
+      "path": ".mdkg/templates/default/dec.md",
+      "category": "template",
+      "sha256": "a2f7098fea538c153ac290f2e2edb2e755ca9dd07d17c2a127fb23959517ece9"
+    },
+    {
+      "path": ".mdkg/templates/default/dispute.md",
+      "category": "template",
+      "sha256": "b1c5330fd4a1e3f03dbb4ac8907bd728e55537e053dcf43ebcbdc835ff1d0579"
+    },
+    {
+      "path": ".mdkg/templates/default/edd.md",
+      "category": "template",
+      "sha256": "44828719927cfd31389b9d55b57fc4fa9bc640f3e2475baefe585e4043740f5e"
+    },
+    {
+      "path": ".mdkg/templates/default/epic.md",
+      "category": "template",
+      "sha256": "56697b69af027fe08c00866c0c0670f7d7e2a0857803bd4aabb99f4761311879"
+    },
+    {
+      "path": ".mdkg/templates/default/feat.md",
+      "category": "template",
+      "sha256": "99cfdd97b40b119cf899fd766d816c07b7daaafd8ec8e70e6c6de5c0d37f581c"
+    },
+    {
+      "path": ".mdkg/templates/default/feedback.md",
+      "category": "template",
+      "sha256": "61ad7b8b717d17736ba505f814fa6e4f9ec61f7fe4ae6622359304620a99d649"
+    },
+    {
+      "path": ".mdkg/templates/default/goal.md",
+      "category": "template",
+      "sha256": "710252d8a2dc35be71661d6988007af127052fa8ad24b1fb00374c975ae117a2"
+    },
+    {
+      "path": ".mdkg/templates/default/prd.md",
+      "category": "template",
+      "sha256": "afee167576a4f881ab191867e118864b7b5629e14b9c4a61359c8fbd7ececeee"
+    },
+    {
+      "path": ".mdkg/templates/default/prop.md",
+      "category": "template",
+      "sha256": "839b976a8ddc0d6abddfbe6114dfb87f64471958ae807c011538777b758aa1f0"
+    },
+    {
+      "path": ".mdkg/templates/default/proposal.md",
+      "category": "template",
+      "sha256": "16bfa81b6e665064e93e0d1b625dccc518b9885f87a32a15e5ba5441c2c27ea8"
+    },
+    {
+      "path": ".mdkg/templates/default/receipt.md",
+      "category": "template",
+      "sha256": "f08753cc38e02d73a5df92df58c2d34b0d33749b298eeb31d81aa019c38d43dd"
+    },
+    {
+      "path": ".mdkg/templates/default/rule.md",
+      "category": "template",
+      "sha256": "6321abf72af61a6513d7bfaa2d3122b2aa3bd2b95b662a52d569fb2bf819fda1"
+    },
+    {
+      "path": ".mdkg/templates/default/spec.md",
+      "category": "template",
+      "sha256": "e3e05d8d627c478d2757451f61b5a8fda8a75da9885a9261b2f8f5cb8a3a36dc"
+    },
+    {
+      "path": ".mdkg/templates/default/task.md",
+      "category": "template",
+      "sha256": "f6385dd4f56f1c8df164ac3e79d82c5a3fde3f952dc9cdc78c0b8077caa62277"
+    },
+    {
+      "path": ".mdkg/templates/default/test.md",
+      "category": "template",
+      "sha256": "bdae53e5cb4bd77712da155bbcfc24409ced8162c977e6bc478a9d1e695ddef7"
+    },
+    {
+      "path": ".mdkg/templates/default/work_order.md",
+      "category": "template",
+      "sha256": "6ee6007674f30f88153ce79ed67d8c736b4f0998ceb0c8314a3f2cf9c48ac88c"
+    },
+    {
+      "path": ".mdkg/templates/default/work.md",
+      "category": "template",
+      "sha256": "9d8b971ded7a587105fb8b14bb79f68b612fa6e1962cf06859bab82e2aee57c7"
+    }
+  ]
+}
