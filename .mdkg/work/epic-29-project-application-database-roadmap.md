@@ -2,20 +2,20 @@
 id: epic-29
 type: epic
 title: project application database roadmap
-status: todo
+status: progress
 priority: 1
 tags: [project-db, sqlite, roadmap, application-state, receipts]
 owners: []
 links: []
 artifacts: []
-relates: [epic-20, epic-21, epic-24, epic-25, epic-26]
+relates: [epic-20, epic-21, epic-24, epic-25, epic-26, goal-5]
 blocked_by: []
-blocks: [epic-30, epic-31, epic-32, epic-33, epic-34, task-181, task-182, task-183, task-184, task-185, task-186, task-187, task-188, task-189, task-190, task-191, task-192, task-193]
+blocks: [epic-30, epic-31, epic-32, epic-33, epic-34, goal-5, task-181, task-182, task-183, task-184, task-185, task-186, task-187, task-188, task-189, task-190, task-191, task-192, task-193, task-249, test-85, task-250, task-251, test-86, test-87]
 refs: []
 aliases: [project-db-roadmap, app-db-roadmap]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-04
 ---
 
 # Overview
@@ -73,8 +73,10 @@ into implementable phase epics.
 # Milestones
 
 - Foundation, snapshot, event/receipt, worker, and profile phase epics exist.
-- Child tasks define the first implementation requirements and smoke coverage.
-- A later implementation agent can begin with `task-181`.
+- Foundation, snapshot, queue, event, receipt, reducer, and writer lease/CAS
+  foundations shipped through `mdkg@0.1.9`.
+- The active roadmap now routes through `goal-5` to materializer readiness,
+  then broader project DB smoke/profile/export closeout.
 
 # Out of Scope
 
@@ -90,6 +92,17 @@ into implementable phase epics.
 - Letting active runtime/WAL state become a committed artifact.
 - Letting agents write arbitrary SQL instead of typed reducer-backed changes.
 
+# Current Status
+
+The foundation work is no longer just planned: `epic-30`, `epic-31`, and
+`epic-32` are complete, and `epic-33` has shipped internal queue primitives.
+The remaining active path is queue-backed materializer design and implementation
+under `goal-5`, followed by broader profile/export readiness.
+
+`goal-5` completed the internal materializer helper/smoke and profile
+readiness/deferral contract through dry-run prepublish checks. Future public
+materializer or profile CLI work should start a new goal.
+
 # Links / Artifacts
 
 - `epic-20`
@@ -97,3 +110,4 @@ into implementable phase epics.
 - `epic-24`
 - `epic-25`
 - `epic-26`
+- `goal-5`

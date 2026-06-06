@@ -8,14 +8,14 @@ tags: [project-db, profiles, privacy, exports, rust]
 owners: []
 links: []
 artifacts: []
-relates: [epic-29, epic-31, epic-32]
+relates: [epic-29, epic-31, epic-32, goal-5]
 blocked_by: []
-blocks: [task-183, task-192, task-193, task-232, task-233, task-234]
+blocks: [task-193, task-232, task-233, task-234, test-87]
 refs: []
 aliases: [project-db-profiles, rust-sidecar-roadmap]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-04
 ---
 
 # Overview
@@ -48,6 +48,8 @@ deterministic sidecar responsibilities.
 - Profile contract is defined.
 - Privacy/export policy is defined.
 - Rust sidecar is scoped as future work.
+- Profile/export work remains deferred until materializer readiness is aligned
+  and `task-232` starts the profile contract from shipped foundation evidence.
 
 # Out of Scope
 
@@ -64,9 +66,17 @@ deterministic sidecar responsibilities.
 # Links / Artifacts
 
 - `epic-29`
+- `goal-5`
 - `task-183`
 - `task-192`
 - `task-193`
 - `task-232`
 - `task-233`
 - `task-234`
+
+# Status Notes
+
+- 2026-06-04: `task-232`, `task-233`, `task-234`, and `test-87` recorded the
+  profile contract, future `project-kv.v1` fixture/smoke design, privacy/export
+  redaction gates, and deferral proof. Profile implementation, public profile
+  CLI, and Rust sidecar work remain deferred to a future goal.

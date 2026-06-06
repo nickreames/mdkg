@@ -2,20 +2,20 @@
 id: epic-32
 type: epic
 title: local event store receipts and typed reducer framework
-status: todo
+status: done
 priority: 1
 tags: [project-db, events, receipts, reducers]
 owners: []
 links: []
 artifacts: []
-relates: [epic-29, epic-25, epic-26]
+relates: [epic-29, epic-25, epic-26, goal-4, goal-5]
 blocked_by: []
 blocks: [task-187, task-188, task-189, task-190]
 refs: []
 aliases: [project-event-store, typed-reducers]
 skills: []
 created: 2026-05-27
-updated: 2026-05-27
+updated: 2026-06-04
 ---
 
 # Overview
@@ -48,6 +48,8 @@ transitions.
 - Event schema is defined.
 - Receipt storage is defined.
 - Reducer write policy and replay model are ready for implementation.
+- Local event, receipt, reducer, writer lease, and CAS helpers shipped in
+  `mdkg@0.1.9` with `smoke:db-events` coverage.
 
 # Out of Scope
 
@@ -64,6 +66,8 @@ transitions.
 # Links / Artifacts
 
 - `epic-29`
+- `goal-4`
+- `goal-5`
 - `task-187`
 - `task-188`
 - `task-189`
