@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.1.7`
+Current package version in source: `0.2.0`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -348,15 +348,27 @@ layout is `.mdkg/db/schema`, `.mdkg/db/runtime`, `.mdkg/db/state`, and
 Runtime DB files, WAL, SHM, journal, lock, and temp files are ignored by
 default. `mdkg db init` does not create an active runtime SQLite database.
 Run `mdkg db migrate` after init to create or update the active runtime
-SQLite database at the configured `db.runtime_path`; the first migration writes
-only mdkg-owned generic foundation tables and records migration order,
-checksums, and applied timestamps.
+SQLite database at the configured `db.runtime_path`; built-in migrations write
+mdkg-owned generic foundation tables, public local node:sqlite queue delivery
+tables, internal local event/receipt/reducer tables, writer lease/CAS tables,
+and queue control state, then record migration order, checksums, and applied
+timestamps. Queue state is durable local delivery infrastructure, not canonical
+event history. Use `mdkg db queue create|pause|resume|enqueue|claim|ack|fail|dead-letter|release-expired|stats|list|show`
+to operate local project queues. Paused queues reject enqueue/claim while still
+allowing ack/fail/dead-letter/release-expired so leased work can settle. Event
+rows are durable local project DB history; receipts, reducers, writer leases,
+and materializers remain internal helper surfaces in this release, with no
+public `mdkg db event`, `mdkg db reducer`, `mdkg db lease`, or
+`mdkg db materializer` CLI yet.
 Use `mdkg db verify` for non-mutating health checks over config, layout,
 runtime SQLite integrity, migration metadata, and transient runtime files. Use
 `mdkg db stats` for deterministic table counts, DB size, migration state,
 receipt-file count, and state snapshot presence.
 Use `mdkg db snapshot seal` to create an explicit sealed checkpoint at
 `.mdkg/db/state/project.sqlite` with `.mdkg/db/state/project.manifest.json`.
+The default queue policy is `--queue-policy drain`, which requires no ready or
+leased queue messages. Use `--queue-policy paused` only when ready messages are
+intentionally preserved in paused queues; leased messages always block sealing.
 Use `mdkg db snapshot verify` and `mdkg db snapshot status` for checkpoint
 health, and use `mdkg db snapshot dump` / `mdkg db snapshot diff` as
 deterministic review aids for SQLite snapshots instead of comparing raw binary

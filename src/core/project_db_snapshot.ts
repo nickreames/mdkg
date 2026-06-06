@@ -7,6 +7,10 @@ import { readPackageVersion } from "./version";
 import { atomicWriteFile } from "../util/atomic";
 import { UsageError, ValidationError } from "../util/errors";
 import { verifyProjectDb } from "./project_db_migrations";
+import {
+  ProjectQueueSnapshotSummary,
+  readProjectQueueSnapshotSummary,
+} from "./project_db_queue";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -42,7 +46,11 @@ export type ProjectDbSnapshotManifest = {
   byte_size: number;
   table_counts: Array<{ name: string; row_count: number }>;
   migrations: ProjectDbSnapshotMigration[];
+  queue_policy?: ProjectDbSnapshotQueuePolicy;
+  queue_summary?: ProjectQueueSnapshotSummary;
 };
+
+export type ProjectDbSnapshotQueuePolicy = "drain" | "paused";
 
 export type ProjectDbSnapshotCheck = {
   name: string;
@@ -65,6 +73,8 @@ export type ProjectDbSnapshotSealReceipt = {
   byte_size: number;
   table_counts: Array<{ name: string; row_count: number }>;
   migrations: ProjectDbSnapshotMigration[];
+  queue_policy: ProjectDbSnapshotQueuePolicy;
+  queue_summary: ProjectQueueSnapshotSummary;
   warnings: string[];
 };
 
@@ -276,7 +286,14 @@ function readManifest(filePath: string): ProjectDbSnapshotManifest {
   return manifest as ProjectDbSnapshotManifest;
 }
 
-function buildManifest(root: string, config: Config, snapshotFile: string, runtimeHash: string | null): ProjectDbSnapshotManifest {
+function buildManifest(
+  root: string,
+  config: Config,
+  snapshotFile: string,
+  runtimeHash: string | null,
+  queuePolicy: ProjectDbSnapshotQueuePolicy,
+  queueSummary: ProjectQueueSnapshotSummary
+): ProjectDbSnapshotManifest {
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const metadata = collectSnapshotMetadata(snapshotFile, config.db.migration_table);
   return {
@@ -294,20 +311,51 @@ function buildManifest(root: string, config: Config, snapshotFile: string, runti
     byte_size: fs.statSync(snapshotFile).size,
     table_counts: metadata.table_counts,
     migrations: metadata.migrations,
+    queue_policy: queuePolicy,
+    queue_summary: queueSummary,
   };
+}
+
+function assertQueueSnapshotPolicy(policy: ProjectDbSnapshotQueuePolicy, summary: ProjectQueueSnapshotSummary): void {
+  if (policy === "drain") {
+    if (summary.ready > 0 || summary.leased > 0) {
+      throw new ValidationError(
+        `db snapshot seal requires drained queues; found ready=${summary.ready}, leased=${summary.leased}`
+      );
+    }
+    return;
+  }
+  if (policy === "paused") {
+    if (summary.leased > 0) {
+      throw new ValidationError(`db snapshot seal --queue-policy paused requires no leased messages; found leased=${summary.leased}`);
+    }
+    if (summary.active_ready > 0) {
+      throw new ValidationError(
+        `db snapshot seal --queue-policy paused requires ready messages to be in paused queues; found active_ready=${summary.active_ready}`
+      );
+    }
+    return;
+  }
+  throw new ValidationError(`unsupported queue snapshot policy: ${policy}`);
 }
 
 function warningListFromVerify(root: string, config: Config): string[] {
   return verifyProjectDb(root, config).warnings;
 }
 
-export function sealProjectDbSnapshot(root: string, config: Config): ProjectDbSnapshotSealReceipt {
+export function sealProjectDbSnapshot(
+  root: string,
+  config: Config,
+  queuePolicy: ProjectDbSnapshotQueuePolicy = "drain"
+): ProjectDbSnapshotSealReceipt {
   const verification = verifyProjectDb(root, config);
   if (!verification.ok) {
     throw new ValidationError(`db snapshot seal requires a valid project DB; run mdkg db verify`);
   }
 
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
+  const queueSummary = readProjectQueueSnapshotSummary(layout.runtimeFile);
+  assertQueueSnapshotPolicy(queuePolicy, queueSummary);
   const oldHash = fs.existsSync(layout.stateFile) ? sha256File(layout.stateFile) : null;
   fs.mkdirSync(layout.stateDir, { recursive: true });
   const tempSnapshot = path.join(layout.stateDir, `.project.sqlite.${process.pid}-${Date.now()}.tmp`);
@@ -336,7 +384,7 @@ export function sealProjectDbSnapshot(root: string, config: Config): ProjectDbSn
 
   try {
     const runtimeHash = sha256File(layout.runtimeFile);
-    const manifest = buildManifest(root, config, tempSnapshot, runtimeHash);
+    const manifest = buildManifest(root, config, tempSnapshot, runtimeHash, queuePolicy, queueSummary);
     atomicWriteFile(tempManifest, `${JSON.stringify(manifest, null, 2)}\n`);
     fs.renameSync(tempSnapshot, layout.stateFile);
     fs.renameSync(tempManifest, layout.stateManifest);
@@ -351,6 +399,8 @@ export function sealProjectDbSnapshot(root: string, config: Config): ProjectDbSn
       byte_size: manifest.byte_size,
       table_counts: manifest.table_counts,
       migrations: manifest.migrations,
+      queue_policy: queuePolicy,
+      queue_summary: queueSummary,
       warnings: warningListFromVerify(root, config),
     };
   } catch (err) {

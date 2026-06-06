@@ -6,6 +6,72 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL contracts may change quickly while the project converges on a stable v1 surface.
 
+## 0.2.0 - Unreleased
+
+Release numbering note: future project DB materializer/profile release planning
+should follow `0.1.9 -> 0.2.0` rather than continuing the line as `0.1.10`
+when the release represents a capability-track boundary.
+
+### Added
+
+- Added public `mdkg db queue ...` commands for local project DB queue
+  create/pause/resume/enqueue/claim/ack/fail/dead-letter/release-expired/stats/list/show.
+- Added `mdkg.project_db.queue_control.v1` / `005_mdkg_project_db_queue_control.sql`
+  for first-class queue active/paused state and migration backfill from existing
+  queue messages.
+- Added queue-aware snapshot sealing policies: default `--queue-policy drain`
+  blocks ready/leased messages, while `--queue-policy paused` allows ready
+  messages only in paused queues and always blocks leased messages.
+- Added packed CLI-only `smoke:db-queue-cli` coverage that exercises public
+  queue commands and pause/drain snapshot behavior from an installed tarball.
+
+### Changed
+
+- Source release line now targets `0.2.0` for the next project DB
+  materializer/profile capability track.
+- Project DB queue support is now public under `mdkg db queue`; event, reducer,
+  writer lease, and materializer command surfaces remain internal-only.
+
+## 0.1.10 - 2026-06-05
+
+### Added
+
+- Added an internal queue-backed project DB materializer helper plus packed
+  `smoke:db-materializer` coverage for queue delivery, durable events, reducers,
+  writer lease/CAS conflicts, receipts, snapshots, stats, index, and validate.
+
+### Changed
+
+- Publish readiness now requires the compiled materializer helper and seeded docs
+  that keep materializer support internal-only.
+
+## 0.1.9 - 2026-06-04
+
+### Added
+
+- Added internal local project DB event, receipt, typed reducer, and writer
+  lease/CAS foundations after the queue migration.
+- Added packed `smoke:db-events` coverage for event idempotency, conflict
+  receipts, reducer application/replay, writer lease CAS conflicts, snapshots,
+  stats, index, and validate.
+
+### Changed
+
+- Project DB migration order now includes events/receipts and writer leases
+  after the `0.1.8` queue foundation.
+- Publish readiness now requires the compiled event helper and seeded docs that
+  keep event/reducer/lease support internal-only.
+
+## 0.1.8 - 2026-06-04
+
+### Added
+
+- Added internal local node:sqlite queue foundations for project DB delivery state.
+
+### Changed
+
+- Source release line now targets the next non-published package version after `0.1.7`.
+
 ## 0.1.7 - 2026-06-04
 
 ### Added

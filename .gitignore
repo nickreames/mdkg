@@ -14,3 +14,9 @@ node_modules/
 .mdkg/pack/
 .mdkg/archive/**/source/
 .mdkg/work/events/*.jsonl
+.mdkg/db/runtime/
+.mdkg/db/**/*.sqlite-wal
+.mdkg/db/**/*.sqlite-shm
+.mdkg/db/**/*.sqlite-journal
+.mdkg/db/**/*.lock
+.mdkg/db/**/*.tmp

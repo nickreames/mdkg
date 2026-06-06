@@ -34,9 +34,17 @@ Agent operating prompt:
 - Treat `.mdkg/db` as project application state; use `mdkg db init` to create
   the generic scaffold and enable `db.enabled` without creating an active
   runtime SQLite database. Use `mdkg db migrate` after init to create or update
-  the runtime SQLite database with mdkg-owned generic foundation migrations.
-  Use `mdkg db verify` and `mdkg db stats` for non-mutating health and summary
-  receipts. Use `mdkg db snapshot seal` for explicit sealed checkpoints,
+  the runtime SQLite database with mdkg-owned foundation plus public local
+  node:sqlite queue delivery, internal event/receipt/reducer, writer lease/CAS,
+  and queue control migrations. Queue state is delivery infrastructure, not
+  canonical event history; use `mdkg db queue ...` to create, pause, enqueue,
+  claim, settle, inspect, and drain local queues. Event rows are durable local
+  project DB history; receipts, reducers, writer leases, and materializers are
+  internal local helper surfaces, with no public `mdkg db event`,
+  `mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet. Use `mdkg db verify` and `mdkg db stats` for
+  non-mutating health and summary receipts. Use `mdkg db snapshot seal` for
+  explicit sealed checkpoints; default queue policy is drain, and
+  `--queue-policy paused` is only for intentionally paused queues,
   `mdkg db snapshot verify/status` for checkpoint health, and
   `mdkg db snapshot dump/diff` for deterministic review aids. Keep
   `.mdkg/db/runtime/` and WAL/SHM/journal/lock/temp files ignored unless a

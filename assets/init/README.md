@@ -75,12 +75,19 @@ Fresh mdkg workspaces default to `index.backend: sqlite`; `.mdkg/index/mdkg.sqli
 `.mdkg/index`. Run `mdkg db init` to create the generic scaffold, write
 `.mdkg/db/project-db.json`, and enable `db.enabled`; it does not create an
 active runtime SQLite database. Run `mdkg db migrate` after init to create or
-update the active runtime SQLite database with mdkg-owned generic foundation
-migrations. Use `mdkg db verify` for non-mutating health checks and
+update the active runtime SQLite database with mdkg-owned foundation plus public
+local node:sqlite queue delivery, internal event/receipt/reducer, writer
+lease/CAS, and queue control migrations. Queue state is delivery
+infrastructure, not canonical event history; use `mdkg db queue ...` to create,
+pause, enqueue, claim, settle, inspect, and drain local queues. Event rows are
+durable local project DB history; receipts, reducers, writer leases, and
+materializers are internal local helper surfaces, with no public `mdkg db event`,
+`mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet. Use `mdkg db verify` for non-mutating health checks and
 `mdkg db stats` for table counts, DB size, migration state, and receipt-file
 counts. Use `mdkg db snapshot seal` to create an opt-in sealed checkpoint under
-`.mdkg/db/state`, then use `mdkg db snapshot verify/status` for integrity and
-freshness checks. Use `mdkg db snapshot dump/diff` as deterministic review aids
+`.mdkg/db/state`; the default queue policy is drain, and
+`--queue-policy paused` is only for intentionally paused queues. Then use
+`mdkg db snapshot verify/status` for integrity and freshness checks. Use `mdkg db snapshot dump/diff` as deterministic review aids
 for SQLite snapshots. Keep active runtime DB files and transient
 WAL/SHM/journal, lock, and temp files ignored. Commit schema files, manifests,
 receipts, and sealed state snapshots only by explicit repo policy.

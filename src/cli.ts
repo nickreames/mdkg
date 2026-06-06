@@ -19,6 +19,18 @@ import {
   runDbIndexStatusCommand,
   runDbIndexVerifyCommand,
   runDbMigrateCommand,
+  runDbQueueAckCommand,
+  runDbQueueClaimCommand,
+  runDbQueueCreateCommand,
+  runDbQueueDeadLetterCommand,
+  runDbQueueEnqueueCommand,
+  runDbQueueFailCommand,
+  runDbQueueListCommand,
+  runDbQueuePauseCommand,
+  runDbQueueReleaseExpiredCommand,
+  runDbQueueResumeCommand,
+  runDbQueueShowCommand,
+  runDbQueueStatsCommand,
   runDbSnapshotDiffCommand,
   runDbSnapshotDumpCommand,
   runDbSnapshotSealCommand,
@@ -286,16 +298,39 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       return;
     case "snapshot":
       log("Usage:");
-      log("  mdkg db snapshot seal [--json]");
+      log("  mdkg db snapshot seal [--queue-policy drain|paused] [--json]");
       log("  mdkg db snapshot verify [--json]");
       log("  mdkg db snapshot status [--json]");
       log("  mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]");
       log("  mdkg db snapshot diff <left-snapshot> <right-snapshot> [--json]");
       log("\nBoundaries:");
       log("  - snapshot seal writes a clean opt-in sealed project DB checkpoint");
+      log("  - default queue policy is drain: no ready or leased queue messages");
+      log("  - paused queue policy allows ready messages only in paused queues and never leased messages");
       log("  - snapshot verify/status read `.mdkg/db/state/project.sqlite` and its manifest");
       log("  - snapshot dump/diff are deterministic review aids, not source of truth");
       log("  - active runtime/WAL files remain ignored by default");
+      printGlobalOptions(log);
+      return;
+    case "queue":
+      log("Usage:");
+      log("  mdkg db queue create <queue> [--paused] [--reason <text>] [--json]");
+      log("  mdkg db queue pause <queue> [--reason <text>] [--json]");
+      log("  mdkg db queue resume <queue> [--json]");
+      log("  mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]");
+      log("  mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]");
+      log("  mdkg db queue ack <queue> <message-id> --lease-owner <owner> [--json]");
+      log("  mdkg db queue fail <queue> <message-id> --lease-owner <owner> --error <text> [--retry-after-ms <ms>] [--json]");
+      log("  mdkg db queue dead-letter <queue> <message-id> --lease-owner <owner> --error <text> [--json]");
+      log("  mdkg db queue release-expired [queue] [--json]");
+      log("  mdkg db queue stats [queue] [--json]");
+      log("  mdkg db queue list <queue> [--status ready|leased|acked|dead_letter|all] [--limit <n>] [--json]");
+      log("  mdkg db queue show <queue> <message-id> [--json]");
+      log("\nSemantics:");
+      log("  - queues are durable local delivery state, not canonical event history");
+      log("  - paused queues reject enqueue and claim");
+      log("  - ack, fail, dead-letter, and release-expired are allowed while paused so leased work can settle");
+      log("  - no raw SQL or hosted queue dependency is exposed");
       printGlobalOptions(log);
       return;
     default:
@@ -307,23 +342,33 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg db migrate [--json]");
       log("  mdkg db verify [--json]");
       log("  mdkg db stats [--json]");
-      log("  mdkg db snapshot seal [--json]");
+      log("  mdkg db queue create <queue> [--paused] [--reason <text>] [--json]");
+      log("  mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--json]");
+      log("  mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]");
+      log("  mdkg db queue ack|fail|dead-letter <queue> <message-id> --lease-owner <owner> [--json]");
+      log("  mdkg db queue pause|resume <queue> [--json]");
+      log("  mdkg db queue stats|list|show ... [--json]");
+      log("  mdkg db snapshot seal [--queue-policy drain|paused] [--json]");
       log("  mdkg db snapshot verify [--json]");
       log("  mdkg db snapshot status [--json]");
       log("  mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]");
       log("  mdkg db snapshot diff <left-snapshot> <right-snapshot> [--json]");
       log("\nBoundaries:");
       log("  - `.mdkg/index` is the rebuildable graph cache");
-      log("  - `.mdkg/db` is future project application state");
+      log("  - `.mdkg/db` is project application state");
       log("  - `mdkg db init` creates the generic layout and enables db config");
       log("  - `mdkg db init` does not create an active runtime SQLite database");
       log("  - `mdkg db migrate` creates/updates the active runtime SQLite database");
-      log("  - `mdkg db migrate` applies mdkg-owned generic foundation migrations only");
+      log("  - `mdkg db migrate` applies mdkg-owned foundation plus internal queue, event, receipt, reducer, and lease migrations");
+      log("  - `mdkg db queue ...` exposes local durable queue delivery operations");
+      log("  - paused queues reject enqueue/claim and can be sealed with explicit paused snapshot policy");
+      log("  - event rows are durable local history; receipts, reducers, and writer leases remain internal helper surfaces");
+      log("  - no public `mdkg db event`, `mdkg db reducer`, or `mdkg db lease` CLI is exposed");
       log("  - `mdkg db verify` checks config, layout, SQLite integrity, migrations, and transient files");
       log("  - `mdkg db stats` reports table counts, migration state, DB size, and receipt counts");
       log("  - `mdkg db snapshot ...` manages opt-in sealed checkpoints and review dumps");
       log("  - active `.mdkg/db/runtime` and transient DB files are ignored by default");
-      log("  - no raw SQL, hosted queue, profile, or publish behavior is exposed here");
+      log("  - no raw SQL, hosted queue/event store, profile, public event/reducer/lease command, or publish behavior is exposed here");
       printGlobalOptions(log);
   }
 }
@@ -1038,6 +1083,17 @@ function parseNumberFlag(flag: string, value: string | boolean | undefined): num
   return parsed;
 }
 
+function parseQueuePolicyFlag(value: string | boolean | undefined): "drain" | "paused" | undefined {
+  const raw = requireFlagValue("--queue-policy", value);
+  if (raw === undefined) {
+    return undefined;
+  }
+  if (raw === "drain" || raw === "paused") {
+    return raw;
+  }
+  throw new UsageError("--queue-policy must be drain or paused");
+}
+
 function parseEdgesFlag(value: string | boolean | undefined): string[] | undefined {
   if (value === undefined) {
     return undefined;
@@ -1241,6 +1297,107 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runDbStatsCommand({ root, json: parseBooleanFlag("--json", parsed.flags["--json"]) });
       return 0;
     }
+    case "queue": {
+      const action = (parsed.positionals[2] ?? "").toLowerCase();
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const queueName = parsed.positionals[3];
+      const messageId = parsed.positionals[4];
+      const common = {
+        root,
+        json,
+        queueName,
+        messageId,
+        leaseOwner: requireFlagValue("--lease-owner", parsed.flags["--lease-owner"]),
+        leaseMs: parseNumberFlag("--lease-ms", parsed.flags["--lease-ms"]),
+        payloadJson: requireFlagValue("--payload-json", parsed.flags["--payload-json"]),
+        payloadFile: requireFlagValue("--payload-file", parsed.flags["--payload-file"]),
+        dedupeKey: requireFlagValue("--dedupe-key", parsed.flags["--dedupe-key"]),
+        availableAtMs: parseNumberFlag("--available-at-ms", parsed.flags["--available-at-ms"]),
+        maxAttempts: parseNumberFlag("--max-attempts", parsed.flags["--max-attempts"]),
+        retryAfterMs: parseNumberFlag("--retry-after-ms", parsed.flags["--retry-after-ms"]),
+        error: requireFlagValue("--error", parsed.flags["--error"]),
+        paused: parseBooleanFlag("--paused", parsed.flags["--paused"]),
+        reason: requireFlagValue("--reason", parsed.flags["--reason"]),
+        status: requireFlagValue("--status", parsed.flags["--status"]),
+        limit: parseNumberFlag("--limit", parsed.flags["--limit"]),
+      };
+      switch (action) {
+        case "create":
+          if (!queueName || parsed.positionals.length > 4) {
+            throw new UsageError("mdkg db queue create requires <queue>");
+          }
+          runDbQueueCreateCommand(common);
+          return 0;
+        case "pause":
+          if (!queueName || parsed.positionals.length > 4) {
+            throw new UsageError("mdkg db queue pause requires <queue>");
+          }
+          runDbQueuePauseCommand(common);
+          return 0;
+        case "resume":
+          if (!queueName || parsed.positionals.length > 4) {
+            throw new UsageError("mdkg db queue resume requires <queue>");
+          }
+          runDbQueueResumeCommand(common);
+          return 0;
+        case "enqueue":
+          if (!queueName || !messageId || parsed.positionals.length > 5) {
+            throw new UsageError("mdkg db queue enqueue requires <queue> <message-id>");
+          }
+          runDbQueueEnqueueCommand(common);
+          return 0;
+        case "claim":
+          if (!queueName || parsed.positionals.length > 4) {
+            throw new UsageError("mdkg db queue claim requires <queue>");
+          }
+          runDbQueueClaimCommand(common);
+          return 0;
+        case "ack":
+          if (!queueName || !messageId || parsed.positionals.length > 5) {
+            throw new UsageError("mdkg db queue ack requires <queue> <message-id>");
+          }
+          runDbQueueAckCommand(common);
+          return 0;
+        case "fail":
+          if (!queueName || !messageId || parsed.positionals.length > 5) {
+            throw new UsageError("mdkg db queue fail requires <queue> <message-id>");
+          }
+          runDbQueueFailCommand(common);
+          return 0;
+        case "dead-letter":
+          if (!queueName || !messageId || parsed.positionals.length > 5) {
+            throw new UsageError("mdkg db queue dead-letter requires <queue> <message-id>");
+          }
+          runDbQueueDeadLetterCommand(common);
+          return 0;
+        case "release-expired":
+          if (parsed.positionals.length > 4) {
+            throw new UsageError("mdkg db queue release-expired accepts at most one queue");
+          }
+          runDbQueueReleaseExpiredCommand(common);
+          return 0;
+        case "stats":
+          if (parsed.positionals.length > 4) {
+            throw new UsageError("mdkg db queue stats accepts at most one queue");
+          }
+          runDbQueueStatsCommand(common);
+          return 0;
+        case "list":
+          if (!queueName || parsed.positionals.length > 4) {
+            throw new UsageError("mdkg db queue list requires <queue>");
+          }
+          runDbQueueListCommand(common);
+          return 0;
+        case "show":
+          if (!queueName || !messageId || parsed.positionals.length > 5) {
+            throw new UsageError("mdkg db queue show requires <queue> <message-id>");
+          }
+          runDbQueueShowCommand(common);
+          return 0;
+        default:
+          throw new UsageError("mdkg db queue requires create/pause/resume/enqueue/claim/ack/fail/dead-letter/release-expired/stats/list/show");
+      }
+    }
     case "snapshot": {
       const action = (parsed.positionals[2] ?? "").toLowerCase();
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
@@ -1249,7 +1406,7 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
           if (parsed.positionals.length > 3) {
             throw new UsageError("mdkg db snapshot seal does not accept positional arguments");
           }
-          runDbSnapshotSealCommand({ root, json });
+          runDbSnapshotSealCommand({ root, json, queuePolicy: parseQueuePolicyFlag(parsed.flags["--queue-policy"]) });
           return 0;
         case "verify":
           if (parsed.positionals.length > 3) {
@@ -1286,7 +1443,7 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       }
     }
     default:
-      throw new UsageError("mdkg db requires index/init/migrate/verify/stats/snapshot");
+      throw new UsageError("mdkg db requires index/init/migrate/verify/stats/queue/snapshot");
   }
 }
 

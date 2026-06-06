@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-06-03
-package_version_in_source: 0.1.7
+as_of: 2026-06-05
+package_version_in_source: 0.2.0
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -877,7 +877,23 @@ Usage:
 - `mdkg db migrate [--json]`
 - `mdkg db verify [--json]`
 - `mdkg db stats [--json]`
-- `mdkg db snapshot seal [--json]`
+- `mdkg db queue create <queue> [--paused] [--reason <text>] [--json]`
+- `mdkg db queue pause <queue> [--reason <text>] [--json]`
+- `mdkg db queue resume <queue> [--json]`
+- `mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]`
+- `mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--json]`
+- `mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]`
+- `mdkg db queue ack <queue> <message-id> --lease-owner <owner> [--json]`
+- `mdkg db queue fail <queue> <message-id> --lease-owner <owner> --error <text> [--retry-after-ms <ms>] [--json]`
+- `mdkg db queue dead-letter <queue> <message-id> --lease-owner <owner> --error <text> [--json]`
+- `mdkg db queue ack|fail|dead-letter <queue> <message-id> --lease-owner <owner> [--json]`
+- `mdkg db queue release-expired [queue] [--json]`
+- `mdkg db queue pause|resume <queue> [--json]`
+- `mdkg db queue stats [queue] [--json]`
+- `mdkg db queue list <queue> [--status ready|leased|acked|dead_letter|all] [--limit <n>] [--json]`
+- `mdkg db queue show <queue> <message-id> [--json]`
+- `mdkg db queue stats|list|show ... [--json]`
+- `mdkg db snapshot seal [--queue-policy drain|paused] [--json]`
 - `mdkg db snapshot verify [--json]`
 - `mdkg db snapshot status [--json]`
 - `mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]`
@@ -890,22 +906,35 @@ Boundaries:
   `.mdkg/db/project-db.json`, and enables `db.enabled`
 - `mdkg db init` does not create an active runtime SQLite database
 - `mdkg db migrate` creates or updates the active runtime SQLite database at
-  `db.runtime_path` and applies mdkg-owned generic foundation migrations only
+  `db.runtime_path` and applies mdkg-owned foundation plus internal local
+  node:sqlite queue, event/receipt/reducer, and writer lease/CAS foundation
+  migrations
 - `mdkg db migrate` records migration order, checksums, and applied timestamps
   in the configured migration table
+- `mdkg db queue ...` exposes durable local delivery operations backed by
+  node:sqlite; queue rows are delivery state, not canonical event history
+- paused queues reject enqueue and claim, but ack/fail/dead-letter and
+  release-expired remain available so leased work can settle
+- event tables are durable local history for project DB state transitions;
+  receipts, typed reducers, writer leases, and materializers remain internal
+  helper surfaces in this release, with no public `mdkg db event`,
+  `mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet
 - `mdkg db verify` checks config, layout, runtime SQLite integrity, migration
   metadata, receipt directory policy, and transient runtime files
 - `mdkg db stats` reports table counts, database size, migration state,
   transient runtime files, receipt-file count, and state snapshot presence
 - `mdkg db snapshot seal` creates an opt-in sealed checkpoint under
-  `.mdkg/db/state` with a deterministic manifest and content hash
+  `.mdkg/db/state` with a deterministic manifest and content hash; default
+  `--queue-policy drain` requires no ready or leased messages, while
+  `--queue-policy paused` allows ready messages only in paused queues
 - `mdkg db snapshot verify` and `mdkg db snapshot status` inspect sealed
   snapshot integrity, manifest drift, runtime freshness, and WAL/transient
   warning state
 - `mdkg db snapshot dump` and `mdkg db snapshot diff` provide deterministic
   review aids for SQLite snapshots; they are not a new source of truth
 - `mdkg index` remains the compatibility shortcut for index rebuilds
-- no raw SQL, hosted queue, profile, or publish behavior is exposed here
+- no raw SQL, hosted queue/event store, profile, public
+  event/reducer/lease/materializer command, or publish behavior is exposed here
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp
   files are ignored by default; schema, receipts, manifests, and sealed state
   snapshots are commit-eligible only by explicit repo policy

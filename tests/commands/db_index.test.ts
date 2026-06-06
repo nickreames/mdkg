@@ -10,6 +10,37 @@ import { writeDefaultTemplates } from "../helpers/templates";
 import { writeRootConfig } from "../helpers/config";
 
 const cliPath = path.resolve(__dirname, "..", "..", "cli.js");
+const {
+  ackProjectQueueMessage,
+  claimProjectQueueMessage,
+  createProjectQueue,
+  deadLetterProjectQueueMessage,
+  enqueueProjectQueueMessage,
+  failProjectQueueMessage,
+  listProjectQueueMessages,
+  pauseProjectQueue,
+  readProjectQueue,
+  readProjectQueueMessage,
+  readProjectQueueSnapshotSummary,
+  readProjectQueueStats,
+  releaseExpiredProjectQueueLeases,
+  resumeProjectQueue,
+} = require("../../core/project_db_queue");
+const {
+  acquireProjectWriterLease,
+  applyProjectDbReducer,
+  commitProjectWriterLease,
+  readProjectWriterLeaseStats,
+  recordProjectDbEvent,
+  releaseExpiredProjectWriterLeases,
+  replayProjectDbEvents,
+} = require("../../core/project_db_events");
+const {
+  enqueueProjectDbMaterialization,
+  PROJECT_DB_MATERIALIZER_QUEUE,
+  readProjectDbMaterializerStats,
+  runNextProjectDbMaterializer,
+} = require("../../core/project_db_materializer");
 
 function makeRoot(prefix: string): string {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -192,11 +223,23 @@ test("db migrate applies generic foundation migration and is idempotent", () => 
   assert.equal(receipt.ok, true);
   assert.equal(receipt.database, ".mdkg/db/runtime/project.sqlite");
   assert.equal(receipt.migration_table, "mdkg_schema_migration");
-  assert.equal(receipt.applied_count, 1);
+  assert.equal(receipt.applied_count, 5);
   assert.equal(receipt.skipped_count, 0);
   assert.equal(receipt.migrations[0].key, "mdkg.project_db.foundation.v1");
   assert.equal(receipt.migrations[0].status, "applied");
+  assert.equal(receipt.migrations[1].key, "mdkg.project_db.queue.v1");
+  assert.equal(receipt.migrations[1].status, "applied");
+  assert.equal(receipt.migrations[2].key, "mdkg.project_db.events_receipts.v1");
+  assert.equal(receipt.migrations[2].status, "applied");
+  assert.equal(receipt.migrations[3].key, "mdkg.project_db.writer_leases.v1");
+  assert.equal(receipt.migrations[3].status, "applied");
+  assert.equal(receipt.migrations[4].key, "mdkg.project_db.queue_control.v1");
+  assert.equal(receipt.migrations[4].status, "applied");
   assert.equal(receipt.migration_files.created[0], ".mdkg/db/schema/migrations/001_mdkg_project_db_foundation.sql");
+  assert.equal(receipt.migration_files.created[1], ".mdkg/db/schema/migrations/002_mdkg_project_db_queue.sql");
+  assert.equal(receipt.migration_files.created[2], ".mdkg/db/schema/migrations/003_mdkg_project_db_events_receipts.sql");
+  assert.equal(receipt.migration_files.created[3], ".mdkg/db/schema/migrations/004_mdkg_project_db_writer_leases.sql");
+  assert.equal(receipt.migration_files.created[4], ".mdkg/db/schema/migrations/005_mdkg_project_db_queue_control.sql");
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite")), true);
 
   const { DatabaseSync } = require("node:sqlite");
@@ -208,8 +251,22 @@ test("db migrate applies generic foundation migration and is idempotent", () => 
     );
     assert.equal(
       db.prepare("SELECT COUNT(*) AS count FROM mdkg_schema_migration").get().count,
-      1
+      5
     );
+    for (const tableName of [
+      "project_queue_message",
+      "project_queue",
+      "project_event",
+      "project_receipt",
+      "project_branch_state",
+      "project_writer_lease",
+    ]) {
+      assert.equal(
+        db.prepare("SELECT COUNT(*) AS count FROM sqlite_schema WHERE type = 'table' AND name = ?").get(tableName).count,
+        1,
+        tableName
+      );
+    }
   } finally {
     db.close();
   }
@@ -218,9 +275,770 @@ test("db migrate applies generic foundation migration and is idempotent", () => 
   assert.equal(second.status, 0, second.stderr);
   const repeated = parseJson(second.stdout);
   assert.equal(repeated.applied_count, 0);
-  assert.equal(repeated.skipped_count, 1);
+  assert.equal(repeated.skipped_count, 5);
   assert.equal(repeated.migrations[0].status, "already_applied");
+  assert.equal(repeated.migrations[1].status, "already_applied");
+  assert.equal(repeated.migrations[2].status, "already_applied");
+  assert.equal(repeated.migrations[3].status, "already_applied");
+  assert.equal(repeated.migrations[4].status, "already_applied");
   assert.deepEqual(repeated.migration_files.created, []);
+});
+
+test("project DB queue helpers handle dedupe leases retries dead-letter and stats", () => {
+  const root = makeRoot("mdkg-db-queue-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  const databasePath = path.join(root, ".mdkg", "db", "runtime", "project.sqlite");
+
+  const first = enqueueProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-1",
+    dedupe_key: "event-1",
+    payload: { z: 1, a: 2 },
+    max_attempts: 2,
+    now_ms: 1000,
+  });
+  assert.equal(first.created, true);
+  assert.equal(first.duplicate, false);
+  assert.equal(first.message.status, "ready");
+  assert.equal(first.message.payload_json, '{"a":2,"z":1}');
+  assert.match(first.message.payload_hash, /^sha256:/);
+
+  const duplicate = enqueueProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-duplicate",
+    dedupe_key: "event-1",
+    payload: { different: true },
+    now_ms: 1001,
+  });
+  assert.equal(duplicate.created, false);
+  assert.equal(duplicate.duplicate, true);
+  assert.equal(duplicate.message.message_id, "msg-1");
+
+  enqueueProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-later",
+    payload: { later: true },
+    available_at_ms: 5000,
+    now_ms: 1002,
+  });
+
+  const claimed = claimProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    lease_owner: "worker-1",
+    lease_ms: 100,
+    now_ms: 1100,
+  });
+  assert.equal(claimed?.message_id, "msg-1");
+  assert.equal(claimed?.status, "leased");
+  assert.equal(claimed?.lease_owner, "worker-1");
+
+  assert.throws(
+    () =>
+      ackProjectQueueMessage(databasePath, {
+        queue_name: "materialize",
+        message_id: "msg-1",
+        lease_owner: "wrong-worker",
+        now_ms: 1101,
+      }),
+    /not leased by wrong-worker/
+  );
+  assert.throws(
+    () =>
+      failProjectQueueMessage(databasePath, {
+        queue_name: "materialize",
+        message_id: "msg-1",
+        lease_owner: "wrong-worker",
+        error: "wrong worker",
+        now_ms: 1102,
+      }),
+    /not leased by wrong-worker/
+  );
+
+  const retried = failProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-1",
+    lease_owner: "worker-1",
+    error: "temporary failure",
+    retry_after_ms: 50,
+    now_ms: 1110,
+  });
+  assert.equal(retried.status, "ready");
+  assert.equal(retried.attempt_count, 1);
+  assert.equal(retried.available_at_ms, 1160);
+
+  assert.equal(
+    claimProjectQueueMessage(databasePath, {
+      queue_name: "materialize",
+      lease_owner: "worker-2",
+      lease_ms: 100,
+      now_ms: 1159,
+    }),
+    null
+  );
+
+  const reclaimed = claimProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    lease_owner: "worker-2",
+    lease_ms: 100,
+    now_ms: 1160,
+  });
+  assert.equal(reclaimed?.message_id, "msg-1");
+
+  const deadLetter = failProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-1",
+    lease_owner: "worker-2",
+    error: "permanent failure",
+    now_ms: 1170,
+  });
+  assert.equal(deadLetter.status, "dead_letter");
+  assert.equal(deadLetter.attempt_count, 2);
+
+  enqueueProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-2",
+    payload: { ok: true },
+    now_ms: 2000,
+  });
+  const leased = claimProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    lease_owner: "worker-3",
+    lease_ms: 5,
+    now_ms: 2000,
+  });
+  assert.equal(leased?.message_id, "msg-2");
+  assert.equal(releaseExpiredProjectQueueLeases(databasePath, { queue_name: "materialize", now_ms: 2004 }).released_count, 0);
+  assert.equal(releaseExpiredProjectQueueLeases(databasePath, { queue_name: "materialize", now_ms: 2006 }).released_count, 1);
+
+  const expiredReclaim = claimProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    lease_owner: "worker-4",
+    lease_ms: 100,
+    now_ms: 2007,
+  });
+  assert.equal(expiredReclaim?.message_id, "msg-2");
+  const acked = ackProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-2",
+    lease_owner: "worker-4",
+    now_ms: 2008,
+  });
+  assert.equal(acked.status, "acked");
+
+  const later = claimProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    lease_owner: "worker-5",
+    lease_ms: 100,
+    now_ms: 5000,
+  });
+  assert.equal(later?.message_id, "msg-later");
+  const laterAck = ackProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-later",
+    lease_owner: "worker-5",
+    now_ms: 5001,
+  });
+  assert.equal(laterAck.status, "acked");
+
+  enqueueProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-explicit-dead-letter",
+    payload: { stop: true },
+    now_ms: 6000,
+  });
+  const explicitLease = claimProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    lease_owner: "worker-6",
+    lease_ms: 100,
+    now_ms: 6001,
+  });
+  assert.equal(explicitLease?.message_id, "msg-explicit-dead-letter");
+  const explicitDeadLetter = deadLetterProjectQueueMessage(databasePath, {
+    queue_name: "materialize",
+    message_id: "msg-explicit-dead-letter",
+    lease_owner: "worker-6",
+    error: "manual terminal failure",
+    now_ms: 6002,
+  });
+  assert.equal(explicitDeadLetter.status, "dead_letter");
+
+  const stats = readProjectQueueStats(databasePath, { queue_name: "materialize", now_ms: 5002 });
+  assert.equal(stats.total, 4);
+  assert.equal(stats.by_status.acked, 2);
+  assert.equal(stats.by_status.dead_letter, 2);
+  assert.equal(stats.ready_available, 0);
+  assert.equal(stats.leased_expired, 0);
+
+  const dbStats = parseJson(runCli(root, ["db", "stats", "--json"]).stdout);
+  assert.equal(dbStats.tables.some((table: any) => table.name === "project_queue_message"), true);
+  assert.equal(dbStats.tables.some((table: any) => table.name === "project_queue"), true);
+
+  assert.equal(readProjectQueue(databasePath, "materialize")?.status, "active");
+  const pausedCreate = createProjectQueue(databasePath, {
+    queue_name: "paused-work",
+    paused: true,
+    reason: "snapshot",
+    now_ms: 7000,
+  });
+  assert.equal(pausedCreate.created, true);
+  assert.equal(pausedCreate.queue.status, "paused");
+  assert.equal(pausedCreate.queue.paused_reason, "snapshot");
+  assert.throws(
+    () =>
+      enqueueProjectQueueMessage(databasePath, {
+        queue_name: "paused-work",
+        message_id: "paused-msg",
+        payload: { paused: true },
+        now_ms: 7001,
+      }),
+    /queue paused-work is paused; cannot enqueue/
+  );
+  const resumed = resumeProjectQueue(databasePath, { queue_name: "paused-work", now_ms: 7002 });
+  assert.equal(resumed.status, "active");
+  enqueueProjectQueueMessage(databasePath, {
+    queue_name: "paused-work",
+    message_id: "paused-msg",
+    payload: { paused: false },
+    now_ms: 7003,
+  });
+  const pausedClaim = claimProjectQueueMessage(databasePath, {
+    queue_name: "paused-work",
+    lease_owner: "settler",
+    lease_ms: 100,
+    now_ms: 7004,
+  });
+  assert.equal(pausedClaim?.status, "leased");
+  assert.equal(pauseProjectQueue(databasePath, { queue_name: "paused-work", reason: "settle", now_ms: 7005 }).status, "paused");
+  assert.throws(
+    () =>
+      claimProjectQueueMessage(databasePath, {
+        queue_name: "paused-work",
+        lease_owner: "blocked",
+        lease_ms: 100,
+        now_ms: 7006,
+      }),
+    /queue paused-work is paused; cannot claim/
+  );
+  const settled = ackProjectQueueMessage(databasePath, {
+    queue_name: "paused-work",
+    message_id: "paused-msg",
+    lease_owner: "settler",
+    now_ms: 7007,
+  });
+  assert.equal(settled.status, "acked");
+  assert.equal(readProjectQueueMessage(databasePath, "paused-work", "paused-msg")?.status, "acked");
+  assert.equal(listProjectQueueMessages(databasePath, { queue_name: "paused-work", status: "acked" }).length, 1);
+  const queueSummary = readProjectQueueSnapshotSummary(databasePath);
+  assert.equal(queueSummary.total, 5);
+  assert.equal(queueSummary.leased, 0);
+  assert.equal(queueSummary.active_ready, 0);
+});
+
+test("db queue CLI exposes public lifecycle and paused settlement behavior", () => {
+  const root = makeRoot("mdkg-db-queue-cli-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+
+  const created = runCli(root, ["db", "queue", "create", "work", "--json"]);
+  assert.equal(created.status, 0, created.stderr);
+  const createPayload = parseJson(created.stdout);
+  assert.equal(createPayload.action, "db-queue-create");
+  assert.equal(createPayload.created, true);
+  assert.equal(createPayload.queue.status, "active");
+
+  const enqueued = runCli(root, [
+    "db",
+    "queue",
+    "enqueue",
+    "work",
+    "msg-1",
+    "--payload-json",
+    '{"b":2,"a":1}',
+    "--dedupe-key",
+    "dedupe-1",
+    "--max-attempts",
+    "2",
+    "--json",
+  ]);
+  assert.equal(enqueued.status, 0, enqueued.stderr);
+  assert.equal(parseJson(enqueued.stdout).message.payload_json, '{"a":1,"b":2}');
+
+  const duplicate = runCli(root, [
+    "db",
+    "queue",
+    "enqueue",
+    "work",
+    "msg-duplicate",
+    "--payload-json",
+    '{"ignored":true}',
+    "--dedupe-key",
+    "dedupe-1",
+    "--json",
+  ]);
+  assert.equal(duplicate.status, 0, duplicate.stderr);
+  assert.equal(parseJson(duplicate.stdout).duplicate, true);
+  assert.equal(parseJson(duplicate.stdout).message.message_id, "msg-1");
+
+  const claimed = runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "worker-a", "--lease-ms", "100", "--json"]);
+  assert.equal(claimed.status, 0, claimed.stderr);
+  assert.equal(parseJson(claimed.stdout).message.status, "leased");
+
+  const wrongAck = runCli(root, ["db", "queue", "ack", "work", "msg-1", "--lease-owner", "worker-b", "--json"]);
+  assert.notEqual(wrongAck.status, 0);
+  assert.match(wrongAck.stderr, /not leased by worker-b/);
+
+  const retried = runCli(root, [
+    "db",
+    "queue",
+    "fail",
+    "work",
+    "msg-1",
+    "--lease-owner",
+    "worker-a",
+    "--error",
+    "temporary",
+    "--retry-after-ms",
+    "0",
+    "--json",
+  ]);
+  assert.equal(retried.status, 0, retried.stderr);
+  assert.equal(parseJson(retried.stdout).message.status, "ready");
+
+  const reclaimed = runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "worker-c", "--lease-ms", "100", "--json"]);
+  assert.equal(reclaimed.status, 0, reclaimed.stderr);
+  assert.equal(parseJson(reclaimed.stdout).message.message_id, "msg-1");
+  const dead = runCli(root, [
+    "db",
+    "queue",
+    "fail",
+    "work",
+    "msg-1",
+    "--lease-owner",
+    "worker-c",
+    "--error",
+    "terminal",
+    "--json",
+  ]);
+  assert.equal(dead.status, 0, dead.stderr);
+  assert.equal(parseJson(dead.stdout).message.status, "dead_letter");
+
+  assert.equal(runCli(root, ["db", "queue", "enqueue", "work", "msg-2", "--payload-json", '{"ok":true}', "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "worker-d", "--lease-ms", "100", "--json"]).status, 0);
+  const paused = runCli(root, ["db", "queue", "pause", "work", "--reason", "snapshot", "--json"]);
+  assert.equal(paused.status, 0, paused.stderr);
+  assert.equal(parseJson(paused.stdout).queue.status, "paused");
+
+  const pausedEnqueue = runCli(root, ["db", "queue", "enqueue", "work", "msg-paused", "--payload-json", '{"blocked":true}', "--json"]);
+  assert.notEqual(pausedEnqueue.status, 0);
+  assert.match(pausedEnqueue.stderr, /queue work is paused; cannot enqueue/);
+  const pausedClaim = runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "blocked", "--lease-ms", "100", "--json"]);
+  assert.notEqual(pausedClaim.status, 0);
+  assert.match(pausedClaim.stderr, /queue work is paused; cannot claim/);
+
+  const ackWhilePaused = runCli(root, ["db", "queue", "ack", "work", "msg-2", "--lease-owner", "worker-d", "--json"]);
+  assert.equal(ackWhilePaused.status, 0, ackWhilePaused.stderr);
+  assert.equal(parseJson(ackWhilePaused.stdout).message.status, "acked");
+
+  const resumed = runCli(root, ["db", "queue", "resume", "work", "--json"]);
+  assert.equal(resumed.status, 0, resumed.stderr);
+  assert.equal(parseJson(resumed.stdout).queue.status, "active");
+
+  assert.equal(runCli(root, ["db", "queue", "enqueue", "work", "msg-expire", "--payload-json", '{"expire":true}', "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "worker-e", "--lease-ms", "1", "--json"]).status, 0);
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 10);
+  const released = runCli(root, ["db", "queue", "release-expired", "work", "--json"]);
+  assert.equal(released.status, 0, released.stderr);
+  assert.equal(parseJson(released.stdout).released_count, 1);
+  const expireClaim = runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "worker-f", "--lease-ms", "100", "--json"]);
+  assert.equal(expireClaim.status, 0, expireClaim.stderr);
+  assert.equal(parseJson(expireClaim.stdout).message.message_id, "msg-expire");
+  const explicitDead = runCli(root, [
+    "db",
+    "queue",
+    "dead-letter",
+    "work",
+    "msg-expire",
+    "--lease-owner",
+    "worker-f",
+    "--error",
+    "manual",
+    "--json",
+  ]);
+  assert.equal(explicitDead.status, 0, explicitDead.stderr);
+  assert.equal(parseJson(explicitDead.stdout).message.status, "dead_letter");
+
+  const list = runCli(root, ["db", "queue", "list", "work", "--status", "dead_letter", "--json"]);
+  assert.equal(list.status, 0, list.stderr);
+  assert.equal(parseJson(list.stdout).count, 2);
+  const show = runCli(root, ["db", "queue", "show", "work", "msg-1", "--json"]);
+  assert.equal(show.status, 0, show.stderr);
+  assert.equal(parseJson(show.stdout).message.message_id, "msg-1");
+  const stats = runCli(root, ["db", "queue", "stats", "work", "--json"]);
+  assert.equal(stats.status, 0, stats.stderr);
+  assert.equal(parseJson(stats.stdout).stats.by_status.acked, 1);
+  assert.equal(parseJson(stats.stdout).stats.by_status.dead_letter, 2);
+});
+
+test("project DB events receipts reducers and writer leases handle idempotency replay and CAS", () => {
+  const root = makeRoot("mdkg-db-events-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  const databasePath = path.join(root, ".mdkg", "db", "runtime", "project.sqlite");
+
+  const first = recordProjectDbEvent(databasePath, {
+    event_id: "event-1",
+    project_id: "project",
+    branch_id: "main",
+    event_type: "project_meta.set",
+    schema_version: 1,
+    idempotency_key: "idem-1",
+    payload: { value: "applied", key: "event.reducer.test" },
+    actor: "tester",
+    now_ms: 1000,
+  });
+  assert.equal(first.created, true);
+  assert.equal(first.duplicate, false);
+  assert.equal(first.conflict, false);
+  assert.equal(first.event?.payload_json, '{"key":"event.reducer.test","value":"applied"}');
+
+  const duplicate = recordProjectDbEvent(databasePath, {
+    event_id: "event-duplicate",
+    project_id: "project",
+    branch_id: "main",
+    event_type: "project_meta.set",
+    schema_version: 1,
+    idempotency_key: "idem-1",
+    payload: { key: "event.reducer.test", value: "applied" },
+    actor: "tester",
+    now_ms: 1001,
+  });
+  assert.equal(duplicate.created, false);
+  assert.equal(duplicate.duplicate, true);
+  assert.equal(duplicate.event?.event_id, "event-1");
+
+  const conflict = recordProjectDbEvent(databasePath, {
+    event_id: "event-conflict",
+    project_id: "project",
+    branch_id: "main",
+    event_type: "project_meta.set",
+    schema_version: 1,
+    idempotency_key: "idem-1",
+    payload: { key: "event.reducer.test", value: "conflict" },
+    actor: "tester",
+    now_ms: 1002,
+  });
+  assert.equal(conflict.created, false);
+  assert.equal(conflict.conflict, true);
+  assert.equal(conflict.receipt?.status, "conflict");
+  assert.ok(conflict.receipt?.artifact_path);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "db", conflict.receipt.artifact_path)), true);
+
+  const applied = applyProjectDbReducer(databasePath, {
+    event_id: "event-1",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    actor: "tester",
+    now_ms: 1100,
+  });
+  assert.equal(applied.applied, true);
+  assert.equal(applied.event.status, "applied");
+  assert.equal(applied.receipt.status, "applied");
+
+  const { DatabaseSync } = require("node:sqlite");
+  const db = new DatabaseSync(databasePath);
+  try {
+    assert.equal(db.prepare("SELECT value FROM project_meta WHERE key = ?").get("event.reducer.test").value, "applied");
+    db.prepare("UPDATE project_meta SET value = ? WHERE key = ?").run("stale", "event.reducer.test");
+  } finally {
+    db.close();
+  }
+
+  const replay = replayProjectDbEvents(databasePath, {
+    project_id: "project",
+    branch_id: "main",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    actor: "tester",
+    now_ms: 1200,
+  });
+  assert.equal(replay.replayed_count, 1);
+  assert.equal(replay.receipt.status, "replay");
+
+  const replayDb = new DatabaseSync(databasePath);
+  try {
+    assert.equal(replayDb.prepare("SELECT value FROM project_meta WHERE key = ?").get("event.reducer.test").value, "applied");
+  } finally {
+    replayDb.close();
+  }
+
+  recordProjectDbEvent(databasePath, {
+    event_id: "event-invalid",
+    project_id: "project",
+    branch_id: "main",
+    event_type: "project_meta.set",
+    schema_version: 1,
+    idempotency_key: "idem-invalid",
+    payload: { key: "missing-value" },
+    actor: "tester",
+    now_ms: 1300,
+  });
+  const rejected = applyProjectDbReducer(databasePath, {
+    event_id: "event-invalid",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    actor: "tester",
+    now_ms: 1301,
+  });
+  assert.equal(rejected.applied, false);
+  assert.equal(rejected.event.status, "rejected");
+  assert.equal(rejected.receipt.status, "rejected");
+
+  const lease1 = acquireProjectWriterLease(databasePath, {
+    project_id: "project",
+    branch_id: "main",
+    lease_id: "lease-1",
+    lease_owner: "worker-1",
+    base_snapshot_hash: "sha256:base",
+    lease_ms: 100,
+    now_ms: 2000,
+  });
+  assert.equal(lease1.status, "active");
+  assert.throws(
+    () =>
+      commitProjectWriterLease(databasePath, {
+        project_id: "project",
+        branch_id: "main",
+        lease_id: "lease-1",
+        lease_owner: "wrong-worker",
+        result_snapshot_hash: "sha256:wrong",
+        now_ms: 2001,
+      }),
+    /not owned by wrong-worker/
+  );
+  const commit1 = commitProjectWriterLease(databasePath, {
+    project_id: "project",
+    branch_id: "main",
+    lease_id: "lease-1",
+    lease_owner: "worker-1",
+    result_snapshot_hash: "sha256:one",
+    now_ms: 2010,
+  });
+  assert.equal(commit1.committed, true);
+  assert.equal(commit1.lease.status, "committed");
+  assert.equal(commit1.receipt.status, "applied");
+
+  acquireProjectWriterLease(databasePath, {
+    project_id: "project",
+    branch_id: "main",
+    lease_id: "lease-2",
+    lease_owner: "worker-2",
+    base_snapshot_hash: "sha256:base",
+    lease_ms: 100,
+    now_ms: 2020,
+  });
+  const conflictCommit = commitProjectWriterLease(databasePath, {
+    project_id: "project",
+    branch_id: "main",
+    lease_id: "lease-2",
+    lease_owner: "worker-2",
+    result_snapshot_hash: "sha256:two",
+    now_ms: 2030,
+  });
+  assert.equal(conflictCommit.committed, false);
+  assert.equal(conflictCommit.lease.status, "conflict");
+  assert.equal(conflictCommit.receipt.status, "conflict");
+
+  acquireProjectWriterLease(databasePath, {
+    project_id: "project",
+    branch_id: "main",
+    lease_id: "lease-3",
+    lease_owner: "worker-3",
+    base_snapshot_hash: "sha256:one",
+    lease_ms: 5,
+    now_ms: 3000,
+  });
+  assert.equal(releaseExpiredProjectWriterLeases(databasePath, { now_ms: 3004 }).released_count, 0);
+  assert.equal(releaseExpiredProjectWriterLeases(databasePath, { now_ms: 3006 }).released_count, 1);
+  const leaseStats = readProjectWriterLeaseStats(databasePath, { now_ms: 3007 });
+  assert.equal(leaseStats.by_status.committed, 1);
+  assert.equal(leaseStats.by_status.conflict, 1);
+  assert.equal(leaseStats.by_status.expired, 1);
+
+  const dbStats = parseJson(runCli(root, ["db", "stats", "--json"]).stdout);
+  assert.equal(dbStats.receipt_files.count >= 5, true);
+  for (const tableName of ["project_event", "project_receipt", "project_branch_state", "project_writer_lease"]) {
+    assert.equal(dbStats.tables.some((table: any) => table.name === tableName), true, tableName);
+  }
+});
+
+test("project DB materializer helper processes queue messages through reducers leases and snapshots", () => {
+  const root = makeRoot("mdkg-db-materializer-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  const databasePath = path.join(root, ".mdkg", "db", "runtime", "project.sqlite");
+
+  recordProjectDbEvent(databasePath, {
+    event_id: "event-1",
+    project_id: "project",
+    branch_id: "main",
+    event_type: "project_meta.set",
+    schema_version: 1,
+    idempotency_key: "materializer-1",
+    payload: { key: "materializer.test", value: "applied" },
+    actor: "tester",
+    now_ms: 1000,
+  });
+  const enqueued = enqueueProjectDbMaterialization(databasePath, {
+    message_id: "materializer-msg-1",
+    project_id: "project",
+    branch_id: "main",
+    event_id: "event-1",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    max_attempts: 2,
+    now_ms: 1001,
+  });
+  assert.equal(enqueued.created, true);
+  const duplicateEnqueue = enqueueProjectDbMaterialization(databasePath, {
+    message_id: "materializer-msg-duplicate",
+    project_id: "project",
+    branch_id: "main",
+    event_id: "event-1",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    now_ms: 1002,
+  });
+  assert.equal(duplicateEnqueue.duplicate, true);
+  assert.equal(duplicateEnqueue.message.message_id, "materializer-msg-1");
+
+  const applied = runNextProjectDbMaterializer(databasePath, {
+    lease_owner: "worker-1",
+    lease_ms: 100,
+    repo_root: root,
+    now_ms: 1010,
+  });
+  assert.equal(applied.status, "applied");
+  assert.equal(applied.queue_message?.status, "acked");
+  assert.equal(applied.reducer?.applied, true);
+  assert.equal(applied.lease?.status, "committed");
+  assert.equal(applied.snapshot?.ok, true);
+  const snapshotVerify = parseJson(runCli(root, ["db", "snapshot", "verify", "--json"]).stdout);
+  assert.equal(snapshotVerify.ok, true);
+  assert.equal(snapshotVerify.status, "valid");
+
+  const { DatabaseSync } = require("node:sqlite");
+  const db = new DatabaseSync(databasePath);
+  try {
+    assert.equal(db.prepare("SELECT value FROM project_meta WHERE key = ?").get("materializer.test").value, "applied");
+  } finally {
+    db.close();
+  }
+
+  enqueueProjectDbMaterialization(databasePath, {
+    message_id: "materializer-msg-2",
+    dedupe_key: "materializer-duplicate-second-delivery",
+    project_id: "project",
+    branch_id: "main",
+    event_id: "event-1",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    max_attempts: 2,
+    now_ms: 1020,
+  });
+  const duplicate = runNextProjectDbMaterializer(databasePath, {
+    lease_owner: "worker-2",
+    lease_ms: 100,
+    repo_root: root,
+    now_ms: 1021,
+  });
+  assert.equal(duplicate.status, "duplicate");
+  assert.equal(duplicate.queue_message?.status, "acked");
+  assert.equal(duplicate.reducer?.receipt.status, "duplicate");
+
+  enqueueProjectQueueMessage(databasePath, {
+    queue_name: PROJECT_DB_MATERIALIZER_QUEUE,
+    message_id: "materializer-invalid",
+    payload: { kind: "not-materializer" },
+    max_attempts: 3,
+    now_ms: 1030,
+  });
+  const invalid = runNextProjectDbMaterializer(databasePath, {
+    lease_owner: "worker-invalid",
+    lease_ms: 100,
+    repo_root: root,
+    now_ms: 1031,
+  });
+  assert.equal(invalid.status, "dead_letter");
+  assert.equal(invalid.queue_message?.status, "dead_letter");
+  assert.equal(invalid.receipt?.status, "rejected");
+
+  enqueueProjectDbMaterialization(databasePath, {
+    message_id: "materializer-missing-event",
+    project_id: "project",
+    branch_id: "main",
+    event_id: "event-missing",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    max_attempts: 1,
+    now_ms: 1040,
+  });
+  const missing = runNextProjectDbMaterializer(databasePath, {
+    lease_owner: "worker-missing",
+    lease_ms: 100,
+    repo_root: root,
+    now_ms: 1041,
+  });
+  assert.equal(missing.status, "dead_letter");
+  assert.equal(missing.queue_message?.status, "dead_letter");
+  assert.match(missing.error ?? "", /event-missing/);
+
+  recordProjectDbEvent(databasePath, {
+    event_id: "event-2",
+    project_id: "project",
+    branch_id: "main",
+    event_type: "project_meta.set",
+    schema_version: 1,
+    idempotency_key: "materializer-2",
+    payload: { key: "materializer.conflict", value: "should-not-apply" },
+    actor: "tester",
+    now_ms: 1050,
+  });
+  enqueueProjectDbMaterialization(databasePath, {
+    message_id: "materializer-conflict",
+    project_id: "project",
+    branch_id: "main",
+    event_id: "event-2",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    max_attempts: 2,
+    now_ms: 1051,
+  });
+  const conflict = runNextProjectDbMaterializer(databasePath, {
+    lease_owner: "worker-conflict",
+    lease_ms: 100,
+    repo_root: root,
+    base_snapshot_hash: "sha256:stale",
+    now_ms: 1052,
+  });
+  assert.equal(conflict.status, "conflict");
+  assert.equal(conflict.queue_message?.status, "ready");
+  assert.equal(conflict.lease?.status, "conflict");
+  assert.equal(conflict.receipt?.status, "conflict");
+  const conflictDb = new DatabaseSync(databasePath);
+  try {
+    assert.equal(conflictDb.prepare("SELECT value FROM project_meta WHERE key = ?").get("materializer.conflict"), undefined);
+  } finally {
+    conflictDb.close();
+  }
+
+  const materializerStats = readProjectDbMaterializerStats(databasePath, { now_ms: 1060 });
+  assert.equal(materializerStats.queue.total, 5);
+  assert.equal(materializerStats.queue.by_status.acked, 2);
+  assert.equal(materializerStats.queue.by_status.dead_letter, 2);
+  assert.equal(materializerStats.queue.by_status.ready, 1);
+  assert.equal(materializerStats.writer_leases.by_status.committed >= 2, true);
+  assert.equal(materializerStats.writer_leases.by_status.conflict >= 1, true);
 });
 
 test("db migrate fails on disabled config missing dirs corrupt db and checksum drift", () => {
@@ -289,10 +1107,15 @@ test("db verify and stats report valid project db state and transient warnings",
   const statsPayload = parseJson(stats.stdout);
   assert.equal(statsPayload.action, "db-stats");
   assert.equal(statsPayload.ok, true);
-  assert.equal(statsPayload.migration_count, 1);
-  assert.equal(statsPayload.latest_migration.key, "mdkg.project_db.foundation.v1");
+  assert.equal(statsPayload.migration_count, 5);
+  assert.equal(statsPayload.latest_migration.key, "mdkg.project_db.queue_control.v1");
   assert.equal(statsPayload.tables.some((table: any) => table.name === "project_meta"), true);
   assert.equal(statsPayload.tables.some((table: any) => table.name === "mdkg_schema_migration"), true);
+  assert.equal(statsPayload.tables.some((table: any) => table.name === "project_queue_message"), true);
+  assert.equal(statsPayload.tables.some((table: any) => table.name === "project_queue"), true);
+  assert.equal(statsPayload.tables.some((table: any) => table.name === "project_event"), true);
+  assert.equal(statsPayload.tables.some((table: any) => table.name === "project_receipt"), true);
+  assert.equal(statsPayload.tables.some((table: any) => table.name === "project_writer_lease"), true);
   assert.equal(statsPayload.receipt_files.count, 0);
 
   fs.writeFileSync(path.join(root, ".mdkg", "db", "runtime", "project.sqlite-wal"), "", "utf8");
@@ -477,6 +1300,41 @@ test("db snapshot seal verify status dump and diff work", () => {
   assert.equal(diffPayload.action, "db-snapshot-diff");
   assert.equal(diffPayload.changed_count > 0, true);
   assert.equal(diffPayload.added.some((line: string) => line.includes("fixture_item")), true);
+});
+
+test("db snapshot seal enforces queue drain and paused policies", () => {
+  const root = makeRoot("mdkg-db-snapshot-queue-policy-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "create", "work", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "enqueue", "work", "msg-1", "--payload-json", '{"ready":true}', "--json"]).status, 0);
+
+  const activeDefault = runCli(root, ["db", "snapshot", "seal", "--json"]);
+  assert.notEqual(activeDefault.status, 0);
+  assert.match(activeDefault.stderr, /requires drained queues/);
+
+  assert.equal(runCli(root, ["db", "queue", "pause", "work", "--reason", "snapshot", "--json"]).status, 0);
+  const pausedSeal = runCli(root, ["db", "snapshot", "seal", "--queue-policy", "paused", "--json"]);
+  assert.equal(pausedSeal.status, 0, pausedSeal.stderr);
+  const pausedPayload = parseJson(pausedSeal.stdout);
+  assert.equal(pausedPayload.queue_policy, "paused");
+  assert.equal(pausedPayload.queue_summary.ready, 1);
+  assert.equal(parseJson(runCli(root, ["db", "snapshot", "verify", "--json"]).stdout).status, "valid");
+
+  assert.equal(runCli(root, ["db", "queue", "resume", "work", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "worker", "--lease-ms", "100", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "pause", "work", "--reason", "leased", "--json"]).status, 0);
+  const leasedPaused = runCli(root, ["db", "snapshot", "seal", "--queue-policy", "paused", "--json"]);
+  assert.notEqual(leasedPaused.status, 0);
+  assert.match(leasedPaused.stderr, /requires no leased messages/);
+
+  assert.equal(runCli(root, ["db", "queue", "ack", "work", "msg-1", "--lease-owner", "worker", "--json"]).status, 0);
+  const drainedSeal = runCli(root, ["db", "snapshot", "seal", "--json"]);
+  assert.equal(drainedSeal.status, 0, drainedSeal.stderr);
+  const drainedPayload = parseJson(drainedSeal.stdout);
+  assert.equal(drainedPayload.queue_policy, "drain");
+  assert.equal(drainedPayload.queue_summary.ready, 0);
+  assert.equal(drainedPayload.queue_summary.leased, 0);
 });
 
 test("db snapshot verify detects manifest drift and corrupt snapshots", () => {

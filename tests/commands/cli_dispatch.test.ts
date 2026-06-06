@@ -239,7 +239,7 @@ test("cli returns usage errors for unknown and malformed commands", () => {
 
   const badDb = runCli(root, ["db"]);
   assert.equal(badDb.status, 1);
-  assert.match(badDb.stderr, /mdkg db requires index\/init\/migrate\/verify\/stats\/snapshot/);
+  assert.match(badDb.stderr, /mdkg db requires index\/init\/migrate\/verify\/stats\/queue\/snapshot/);
   assert.match(badDb.stdout, /mdkg db init \[--json\]/);
 
   const dbIndex = runCli(root, ["db", "index"]);
@@ -266,7 +266,7 @@ test("cli returns usage errors for unknown and malformed commands", () => {
   const badDbSnapshot = runCli(root, ["db", "snapshot"]);
   assert.equal(badDbSnapshot.status, 1);
   assert.match(badDbSnapshot.stderr, /mdkg db snapshot requires seal\/verify\/status\/dump\/diff/);
-  assert.match(badDbSnapshot.stdout, /mdkg db snapshot seal \[--json\]/);
+  assert.match(badDbSnapshot.stdout, /mdkg db snapshot seal \[--queue-policy drain\|paused\] \[--json\]/);
 
   const dbSnapshotStatus = runCli(root, ["db", "snapshot", "status", "--json"]);
   assert.equal(dbSnapshotStatus.status, 0);

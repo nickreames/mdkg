@@ -14,10 +14,28 @@ import {
 import {
   diffProjectDbSnapshots,
   dumpProjectDbSnapshot,
+  ProjectDbSnapshotQueuePolicy,
   projectDbSnapshotStatus,
   sealProjectDbSnapshot,
   verifyProjectDbSnapshot,
 } from "../core/project_db_snapshot";
+import {
+  ackProjectQueueMessage,
+  claimProjectQueueMessage,
+  createProjectQueue,
+  deadLetterProjectQueueMessage,
+  enqueueProjectQueueMessage,
+  failProjectQueueMessage,
+  listProjectQueueMessages,
+  listProjectQueues,
+  pauseProjectQueue,
+  readProjectQueue,
+  readProjectQueueMessage,
+  readProjectQueueSnapshotSummary,
+  readProjectQueueStats,
+  releaseExpiredProjectQueueLeases,
+  resumeProjectQueue,
+} from "../core/project_db_queue";
 import { readPackageVersion } from "../core/version";
 import { rebuildDerivedIndexCaches } from "./index";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
@@ -84,6 +102,7 @@ export type DbStatsCommandOptions = {
 
 export type DbSnapshotCommandOptions = {
   root: string;
+  queuePolicy?: ProjectDbSnapshotQueuePolicy;
   json?: boolean;
 };
 
@@ -99,6 +118,26 @@ export type DbSnapshotDiffCommandOptions = {
   left: string;
   right: string;
   json?: boolean;
+};
+
+export type DbQueueCommandOptions = {
+  root: string;
+  json?: boolean;
+  queueName?: string;
+  messageId?: string;
+  leaseOwner?: string;
+  leaseMs?: number;
+  payloadJson?: string;
+  payloadFile?: string;
+  dedupeKey?: string;
+  availableAtMs?: number;
+  maxAttempts?: number;
+  retryAfterMs?: number;
+  error?: string;
+  paused?: boolean;
+  reason?: string;
+  status?: string;
+  limit?: number;
 };
 
 function rel(root: string, filePath: string): string {
@@ -554,6 +593,231 @@ export function runDbStatsCommand(options: DbStatsCommandOptions): void {
   }
 }
 
+function requireQueueName(options: DbQueueCommandOptions): string {
+  if (!options.queueName) {
+    throw new UsageError("queue name is required");
+  }
+  return options.queueName;
+}
+
+function requireMessageId(options: DbQueueCommandOptions): string {
+  if (!options.messageId) {
+    throw new UsageError("message id is required");
+  }
+  return options.messageId;
+}
+
+function requireLeaseOwner(options: DbQueueCommandOptions): string {
+  if (!options.leaseOwner) {
+    throw new UsageError("--lease-owner is required");
+  }
+  return options.leaseOwner;
+}
+
+function requireLeaseMs(options: DbQueueCommandOptions): number {
+  if (options.leaseMs === undefined) {
+    throw new UsageError("--lease-ms is required");
+  }
+  return options.leaseMs;
+}
+
+function loadQueueDatabasePath(root: string): string {
+  const config = loadConfig(root);
+  const verification = verifyProjectDb(root, config);
+  if (!verification.ok) {
+    throw new ValidationError(`db queue requires a valid project DB; run mdkg db verify`);
+  }
+  return resolveConfiguredProjectDbLayout(root, config.db).runtimeFile;
+}
+
+function parseQueuePayload(options: DbQueueCommandOptions): unknown {
+  const hasPayloadJson = options.payloadJson !== undefined;
+  const hasPayloadFile = options.payloadFile !== undefined;
+  if (hasPayloadJson === hasPayloadFile) {
+    throw new UsageError("mdkg db queue enqueue requires exactly one of --payload-json or --payload-file");
+  }
+  const raw = hasPayloadJson
+    ? options.payloadJson
+    : fs.readFileSync(path.resolve(options.root, String(options.payloadFile)), "utf8");
+  try {
+    return JSON.parse(String(raw));
+  } catch (err) {
+    throw new UsageError(`queue payload must be valid JSON: ${err instanceof Error ? err.message : String(err)}`);
+  }
+}
+
+function writeQueueJsonOrText(action: string, payload: Record<string, unknown>, json?: boolean): void {
+  if (json) {
+    console.log(JSON.stringify({ action, ok: true, ...payload }, null, 2));
+    return;
+  }
+  console.log(action);
+  for (const [key, value] of Object.entries(payload)) {
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean" || value === null) {
+      console.log(`${key}: ${value}`);
+    } else {
+      console.log(`${key}: ${JSON.stringify(value)}`);
+    }
+  }
+}
+
+function runQueueMutation(options: DbQueueCommandOptions, fn: (databasePath: string) => Record<string, unknown>, action: string): void {
+  const config = loadConfig(options.root);
+  withMutationLock(options.root, config.index.lock_timeout_ms, () => {
+    const databasePath = loadQueueDatabasePath(options.root);
+    writeQueueJsonOrText(action, fn(databasePath), options.json);
+  });
+}
+
+export function runDbQueueCreateCommand(options: DbQueueCommandOptions): void {
+  runQueueMutation(
+    options,
+    (databasePath) => createProjectQueue(databasePath, {
+      queue_name: requireQueueName(options),
+      paused: options.paused,
+      reason: options.reason,
+    }),
+    "db-queue-create"
+  );
+}
+
+export function runDbQueuePauseCommand(options: DbQueueCommandOptions): void {
+  runQueueMutation(
+    options,
+    (databasePath) => ({ queue: pauseProjectQueue(databasePath, { queue_name: requireQueueName(options), reason: options.reason }) }),
+    "db-queue-pause"
+  );
+}
+
+export function runDbQueueResumeCommand(options: DbQueueCommandOptions): void {
+  runQueueMutation(
+    options,
+    (databasePath) => ({ queue: resumeProjectQueue(databasePath, { queue_name: requireQueueName(options) }) }),
+    "db-queue-resume"
+  );
+}
+
+export function runDbQueueEnqueueCommand(options: DbQueueCommandOptions): void {
+  runQueueMutation(
+    options,
+    (databasePath) => enqueueProjectQueueMessage(databasePath, {
+      queue_name: requireQueueName(options),
+      message_id: requireMessageId(options),
+      dedupe_key: options.dedupeKey,
+      payload: parseQueuePayload(options),
+      available_at_ms: options.availableAtMs,
+      max_attempts: options.maxAttempts,
+    }),
+    "db-queue-enqueue"
+  );
+}
+
+export function runDbQueueClaimCommand(options: DbQueueCommandOptions): void {
+  runQueueMutation(
+    options,
+    (databasePath) => ({
+      message: claimProjectQueueMessage(databasePath, {
+        queue_name: requireQueueName(options),
+        lease_owner: requireLeaseOwner(options),
+        lease_ms: requireLeaseMs(options),
+      }),
+    }),
+    "db-queue-claim"
+  );
+}
+
+export function runDbQueueAckCommand(options: DbQueueCommandOptions): void {
+  runQueueMutation(
+    options,
+    (databasePath) => ({
+      message: ackProjectQueueMessage(databasePath, {
+        queue_name: requireQueueName(options),
+        message_id: requireMessageId(options),
+        lease_owner: requireLeaseOwner(options),
+      }),
+    }),
+    "db-queue-ack"
+  );
+}
+
+export function runDbQueueFailCommand(options: DbQueueCommandOptions): void {
+  if (!options.error) {
+    throw new UsageError("--error is required");
+  }
+  runQueueMutation(
+    options,
+    (databasePath) => ({
+      message: failProjectQueueMessage(databasePath, {
+        queue_name: requireQueueName(options),
+        message_id: requireMessageId(options),
+        lease_owner: requireLeaseOwner(options),
+        error: String(options.error),
+        retry_after_ms: options.retryAfterMs,
+      }),
+    }),
+    "db-queue-fail"
+  );
+}
+
+export function runDbQueueDeadLetterCommand(options: DbQueueCommandOptions): void {
+  if (!options.error) {
+    throw new UsageError("--error is required");
+  }
+  runQueueMutation(
+    options,
+    (databasePath) => ({
+      message: deadLetterProjectQueueMessage(databasePath, {
+        queue_name: requireQueueName(options),
+        message_id: requireMessageId(options),
+        lease_owner: requireLeaseOwner(options),
+        error: String(options.error),
+      }),
+    }),
+    "db-queue-dead-letter"
+  );
+}
+
+export function runDbQueueReleaseExpiredCommand(options: DbQueueCommandOptions): void {
+  runQueueMutation(
+    options,
+    (databasePath) => releaseExpiredProjectQueueLeases(databasePath, { queue_name: options.queueName }),
+    "db-queue-release-expired"
+  );
+}
+
+export function runDbQueueStatsCommand(options: DbQueueCommandOptions): void {
+  const databasePath = loadQueueDatabasePath(options.root);
+  const stats = readProjectQueueStats(databasePath, { queue_name: options.queueName });
+  const queue = options.queueName ? readProjectQueue(databasePath, options.queueName) : null;
+  writeQueueJsonOrText("db-queue-stats", {
+    queue,
+    stats,
+    queues: options.queueName ? undefined : listProjectQueues(databasePath),
+    snapshot_summary: readProjectQueueSnapshotSummary(databasePath),
+  }, options.json);
+}
+
+export function runDbQueueListCommand(options: DbQueueCommandOptions): void {
+  const databasePath = loadQueueDatabasePath(options.root);
+  const messages = listProjectQueueMessages(databasePath, {
+    queue_name: requireQueueName(options),
+    status: (options.status ?? "all") as any,
+    limit: options.limit,
+  });
+  writeQueueJsonOrText("db-queue-list", { queue_name: requireQueueName(options), count: messages.length, messages }, options.json);
+}
+
+export function runDbQueueShowCommand(options: DbQueueCommandOptions): void {
+  const databasePath = loadQueueDatabasePath(options.root);
+  const queueName = requireQueueName(options);
+  const messageId = requireMessageId(options);
+  const message = readProjectQueueMessage(databasePath, queueName, messageId);
+  if (!message) {
+    throw new NotFoundError(`queue message not found: ${queueName}/${messageId}`);
+  }
+  writeQueueJsonOrText("db-queue-show", { message }, options.json);
+}
+
 function printSnapshotChecks(payload: { checks: ReturnType<typeof verifyProjectDbSnapshot>["checks"] }): void {
   for (const check of payload.checks) {
     const location = check.path ? ` (${path.isAbsolute(check.path) ? rel(process.cwd(), check.path) : check.path})` : "";
@@ -563,7 +827,7 @@ function printSnapshotChecks(payload: { checks: ReturnType<typeof verifyProjectD
 
 function runDbSnapshotSealCommandLocked(options: DbSnapshotCommandOptions): void {
   const config = loadConfig(options.root);
-  const payload = sealProjectDbSnapshot(options.root, config);
+  const payload = sealProjectDbSnapshot(options.root, config, options.queuePolicy ?? "drain");
   if (options.json) {
     console.log(JSON.stringify(payload, null, 2));
     return;

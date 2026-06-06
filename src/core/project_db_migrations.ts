@@ -106,12 +106,176 @@ CREATE TABLE IF NOT EXISTS project_meta (
 ) STRICT;
 `;
 
+const QUEUE_MIGRATION_SQL = `
+CREATE TABLE IF NOT EXISTS project_queue_message (
+  queue_name TEXT NOT NULL,
+  message_id TEXT NOT NULL,
+  dedupe_key TEXT,
+  payload_json TEXT NOT NULL,
+  payload_hash TEXT NOT NULL,
+  status TEXT NOT NULL CHECK(status IN ('ready', 'leased', 'acked', 'dead_letter')),
+  available_at_ms INTEGER NOT NULL,
+  attempt_count INTEGER NOT NULL DEFAULT 0 CHECK(attempt_count >= 0),
+  max_attempts INTEGER NOT NULL CHECK(max_attempts > 0),
+  lease_owner TEXT,
+  lease_deadline_ms INTEGER,
+  created_at_ms INTEGER NOT NULL,
+  updated_at_ms INTEGER NOT NULL,
+  last_error TEXT,
+  CHECK (
+    (status = 'leased' AND lease_owner IS NOT NULL AND lease_deadline_ms IS NOT NULL)
+    OR
+    (status <> 'leased' AND lease_owner IS NULL AND lease_deadline_ms IS NULL)
+  ),
+  PRIMARY KEY (queue_name, message_id)
+) STRICT;
+
+CREATE UNIQUE INDEX IF NOT EXISTS project_queue_message_dedupe_unique
+ON project_queue_message(queue_name, dedupe_key)
+WHERE dedupe_key IS NOT NULL;
+
+CREATE INDEX IF NOT EXISTS project_queue_message_ready_idx
+ON project_queue_message(queue_name, status, available_at_ms, created_at_ms, message_id);
+
+CREATE INDEX IF NOT EXISTS project_queue_message_lease_idx
+ON project_queue_message(queue_name, status, lease_deadline_ms, created_at_ms, message_id);
+`;
+
+const QUEUE_CONTROL_MIGRATION_SQL = `
+CREATE TABLE IF NOT EXISTS project_queue (
+  queue_name TEXT PRIMARY KEY,
+  status TEXT NOT NULL CHECK(status IN ('active', 'paused')),
+  paused_reason TEXT,
+  created_at_ms INTEGER NOT NULL,
+  updated_at_ms INTEGER NOT NULL
+) STRICT;
+
+INSERT OR IGNORE INTO project_queue (queue_name, status, paused_reason, created_at_ms, updated_at_ms)
+SELECT DISTINCT
+  queue_name,
+  'active',
+  NULL,
+  CAST((julianday('now') - 2440587.5) * 86400000 AS INTEGER),
+  CAST((julianday('now') - 2440587.5) * 86400000 AS INTEGER)
+FROM project_queue_message;
+`;
+
+const EVENTS_RECEIPTS_MIGRATION_SQL = `
+CREATE TABLE IF NOT EXISTS project_event (
+  event_id TEXT PRIMARY KEY,
+  project_id TEXT NOT NULL,
+  branch_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  schema_version INTEGER NOT NULL CHECK(schema_version > 0),
+  idempotency_key TEXT NOT NULL,
+  payload_json TEXT NOT NULL,
+  payload_hash TEXT NOT NULL,
+  actor TEXT NOT NULL,
+  status TEXT NOT NULL CHECK(status IN ('received', 'validated', 'applied', 'rejected', 'dead_letter')),
+  occurred_at_ms INTEGER NOT NULL,
+  created_at_ms INTEGER NOT NULL,
+  updated_at_ms INTEGER NOT NULL,
+  last_error TEXT
+) STRICT;
+
+CREATE UNIQUE INDEX IF NOT EXISTS project_event_idempotency_unique
+ON project_event(project_id, branch_id, idempotency_key);
+
+CREATE INDEX IF NOT EXISTS project_event_branch_status_idx
+ON project_event(project_id, branch_id, status, occurred_at_ms, event_id);
+
+CREATE TABLE IF NOT EXISTS project_receipt (
+  receipt_id TEXT PRIMARY KEY,
+  project_id TEXT NOT NULL,
+  branch_id TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  status TEXT NOT NULL CHECK(status IN ('applied', 'rejected', 'duplicate', 'conflict', 'replay', 'dead_letter')),
+  event_id TEXT,
+  idempotency_key TEXT,
+  payload_hash TEXT,
+  base_snapshot_hash TEXT,
+  result_snapshot_hash TEXT,
+  reducer_name TEXT,
+  reducer_version TEXT,
+  lease_id TEXT,
+  actor TEXT,
+  artifact_path TEXT NOT NULL,
+  artifact_hash TEXT NOT NULL,
+  details_json TEXT NOT NULL,
+  created_at_ms INTEGER NOT NULL
+) STRICT;
+
+CREATE INDEX IF NOT EXISTS project_receipt_branch_status_idx
+ON project_receipt(project_id, branch_id, status, created_at_ms, receipt_id);
+
+CREATE INDEX IF NOT EXISTS project_receipt_event_idx
+ON project_receipt(event_id, created_at_ms, receipt_id)
+WHERE event_id IS NOT NULL;
+`;
+
+const WRITER_LEASES_MIGRATION_SQL = `
+CREATE TABLE IF NOT EXISTS project_branch_state (
+  project_id TEXT NOT NULL,
+  branch_id TEXT NOT NULL,
+  current_snapshot_hash TEXT NOT NULL,
+  updated_at_ms INTEGER NOT NULL,
+  PRIMARY KEY (project_id, branch_id)
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS project_writer_lease (
+  project_id TEXT NOT NULL,
+  branch_id TEXT NOT NULL,
+  lease_id TEXT NOT NULL,
+  lease_owner TEXT NOT NULL,
+  base_snapshot_hash TEXT NOT NULL,
+  status TEXT NOT NULL CHECK(status IN ('active', 'committed', 'released', 'expired', 'conflict')),
+  lease_deadline_ms INTEGER NOT NULL,
+  result_snapshot_hash TEXT,
+  receipt_id TEXT,
+  created_at_ms INTEGER NOT NULL,
+  updated_at_ms INTEGER NOT NULL,
+  last_error TEXT,
+  PRIMARY KEY (project_id, branch_id, lease_id)
+) STRICT;
+
+CREATE UNIQUE INDEX IF NOT EXISTS project_writer_lease_active_unique
+ON project_writer_lease(project_id, branch_id)
+WHERE status = 'active';
+
+CREATE INDEX IF NOT EXISTS project_writer_lease_status_idx
+ON project_writer_lease(project_id, branch_id, status, lease_deadline_ms, lease_id);
+`;
+
 const BUILTIN_MIGRATIONS: BuiltinMigration[] = [
   {
     ordinal: 1,
     key: "mdkg.project_db.foundation.v1",
     filename: "001_mdkg_project_db_foundation.sql",
     sql: FOUNDATION_MIGRATION_SQL.trim(),
+  },
+  {
+    ordinal: 2,
+    key: "mdkg.project_db.queue.v1",
+    filename: "002_mdkg_project_db_queue.sql",
+    sql: QUEUE_MIGRATION_SQL.trim(),
+  },
+  {
+    ordinal: 3,
+    key: "mdkg.project_db.events_receipts.v1",
+    filename: "003_mdkg_project_db_events_receipts.sql",
+    sql: EVENTS_RECEIPTS_MIGRATION_SQL.trim(),
+  },
+  {
+    ordinal: 4,
+    key: "mdkg.project_db.writer_leases.v1",
+    filename: "004_mdkg_project_db_writer_leases.sql",
+    sql: WRITER_LEASES_MIGRATION_SQL.trim(),
+  },
+  {
+    ordinal: 5,
+    key: "mdkg.project_db.queue_control.v1",
+    filename: "005_mdkg_project_db_queue_control.sql",
+    sql: QUEUE_CONTROL_MIGRATION_SQL.trim(),
   },
 ];
 
@@ -265,7 +429,7 @@ function checkMigrationFiles(root: string, config: Config): ProjectDbCheck {
     ok: errors.length === 0,
     level: errors.length === 0 ? "ok" : "fail",
     path: rel(root, layout.migrations),
-    detail: errors.length === 0 ? "migration files match mdkg-owned foundation migrations" : "migration file issues found",
+    detail: errors.length === 0 ? "migration files match mdkg-owned built-in migrations" : "migration file issues found",
     errors,
     warnings: [],
   };
