@@ -46,7 +46,7 @@ Decision and design nodes only.
 
 - Durable source hierarchy is explicit.
 - Projection-only doctrine is explicit.
-- Draft Omni URI alignment is future-facing and optional.
+- Draft generic capability URI alignment is future-facing and optional.
 
 # Links / Artifacts
 

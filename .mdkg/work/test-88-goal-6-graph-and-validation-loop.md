@@ -2,7 +2,7 @@
 id: test-88
 type: test
 title: goal 6 graph and validation loop
-status: todo
+status: done
 priority: 1
 epic: epic-39
 parent: goal-6
@@ -18,7 +18,7 @@ aliases: [goal-6-loop-validation]
 skills: []
 cases: []
 created: 2026-06-04
-updated: 2026-06-04
+updated: 2026-06-05
 ---
 # Overview
 

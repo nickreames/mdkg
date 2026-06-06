@@ -19,7 +19,7 @@ updated: 2026-06-04
 ---
 # Overview
 
-Create Markdown-first templates for durable Omni capability authoring.
+Create Markdown-first templates for durable generic capability authoring.
 
 # Goal
 

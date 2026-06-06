@@ -28,6 +28,6 @@ Validate that the initial Markdown template taxonomy exists.
 
 - Base SKILL template exists.
 - Base, project, agent, tool, model, runtime image, capability, integration,
-  API, and OmniRuntime agent SPEC templates exist.
+  API, and runtime agent SPEC templates exist.
 - Templates include validation checks, evidence, security boundaries, and
   projection targets.

@@ -45,7 +45,7 @@ Add canonical Markdown-first templates for SPEC and SKILL authoring.
 # Closeout Evidence
 
 - Added base SKILL and base/project/agent/tool/model/runtime image/capability/
-  integration/API/OmniRuntime agent SPEC templates.
+  integration/API/runtime agent SPEC templates.
 
 # Links / Artifacts
 

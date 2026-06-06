@@ -15,7 +15,19 @@ Describe the repo/service responsibility and non-authorities.
 
 # Owned Capabilities
 
-- Capability ids and optional draft Omni URIs.
+- Capability ids and optional generic capability URIs.
+
+# Project-Agent Boundary
+
+- Graph writes owned by this project.
+- Read-only surfaces exposed to parent or sibling orchestrators.
+- Queue/event surfaces accepted from external orchestrators.
+
+# Single-Writer Policy
+
+- Project writer key.
+- Branch or graph write policy.
+- Accepted receipt before external refresh.
 
 # Integration Boundaries
 

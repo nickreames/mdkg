@@ -2,7 +2,7 @@
 id: test-94
 type: test
 title: root follow-up sync plan validation
-status: todo
+status: done
 priority: 1
 epic: epic-45
 parent: goal-6
@@ -18,7 +18,7 @@ aliases: [root-follow-up-sync-validation]
 skills: []
 cases: []
 created: 2026-06-04
-updated: 2026-06-04
+updated: 2026-06-05
 ---
 # Overview
 
