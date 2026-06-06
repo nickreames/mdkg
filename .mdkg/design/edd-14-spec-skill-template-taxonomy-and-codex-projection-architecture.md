@@ -8,7 +8,7 @@ links: []
 artifacts: [.mdkg/templates/specs, .mdkg/templates/skills, .mdkg/skills/author-mdkg-skill/SKILL.md]
 relates: [epic-39, epic-40, epic-41, epic-42, epic-43, epic-44, epic-45]
 refs: [dec-21, dec-22, dec-23, dec-24, dec-25, edd-5, edd-7]
-aliases: [spec-template-taxonomy, skill-template-taxonomy, agent-projection-architecture, codex-projection-architecture, runtime-agent-manifest, skill-factory-backlog]
+aliases: [spec-template-taxonomy, skill-template-taxonomy, spec-section-contract, spec-validation-diagnostics, projection-drift-policy, downstream-spec-adoption, agent-projection-architecture, codex-projection-architecture, runtime-agent-manifest, skill-factory-backlog]
 created: 2026-06-04
 updated: 2026-06-04
 ---
@@ -131,6 +131,11 @@ The first interface is authoring guidance and templates, not a code exporter.
 Future interfaces may include SPEC validation, projection export, and template
 sync commands after the template taxonomy stabilizes.
 
+The next design lane should specify the SPEC validation diagnostics contract
+before source implementation. Diagnostics should distinguish errors, warnings,
+repair suggestions, and informational notes so authors know whether to fix,
+defer, or intentionally accept a SPEC shape.
+
 # Codex Projection Rules
 
 Codex projection validation should check:
@@ -169,6 +174,11 @@ A real `.codex/agents` exporter is deferred. The eventual exporter must link
 generated TOML to source SPECs, detect manual drift, avoid overwriting local
 edits silently, and enforce a no-secret export policy.
 
+Projection drift policy belongs in the SPEC foundation before any exporter is
+built. Durable behavior should be represented in mdkg/SPEC/SKILL source, while
+projection files should be traceable, reviewable, and safe to regenerate or
+repair.
+
 # Future Skill Factory
 
 The skill-factory-agent is backlog. It may later detect repeated workflows,
@@ -188,3 +198,8 @@ searches, and template coverage review.
 2. Commit/publish mdkg assets.
 3. Root consumes the updated mdkg subgraph/package.
 4. Downstream repos adopt SPEC/SKILL templates in a later sync pass.
+
+Downstream SPEC adoption should remain a separate follow-up after mdkg accepts
+or publishes the generic SPEC foundation. Parent/root repos may refresh to an
+accepted local SHA or package release, but downstream product-specific SPECs
+should not be canonical mdkg template content.
