@@ -46,13 +46,14 @@ Finish work with evidence, validation, and minimal memory drift.
 Use this local repo-only checklist before publishing mdkg:
 
 1. Confirm package intent and version in `package.json`, `package-lock.json`, `README.md`, `CLI_COMMAND_MATRIX.md`, and `CHANGELOG.md`.
-2. Use a clean npm cache: `export NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache`.
-3. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, `npm run smoke:upgrade`, `npm run smoke:init`, `npm run smoke:capabilities`, `npm run smoke:archive-work`, `npm run smoke:bundle`, `npm run smoke:bundle-import`, and `npm run smoke:visibility`.
-4. Run `npm pack --dry-run --json` and confirm the tarball includes `dist/cli.js`, compiled folders, `dist/init/`, release docs, and `scripts/postinstall.js`.
-5. Confirm registry state with `npm view mdkg version --registry=https://registry.npmjs.org/`.
-6. Publish only after the registry still shows the previous version and npm auth is known to have write access.
-7. If publishing fails with 2FA or token policy errors, do not commit; fix npm auth or package policy, then rerun publish.
-8. After successful publish, verify `npm view mdkg version` and `npm view mdkg dist-tags`, then commit the release changes.
+2. Confirm release-line intent before bumping: when a change crosses a capability-track boundary, prefer the next minor release line over patch-style continuation. For the current project DB track, follow `0.1.9 -> 0.2.0` rather than naming the next planned source line `0.1.10`.
+3. Use a clean npm cache: `export NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache`.
+4. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, `npm run smoke:upgrade`, `npm run smoke:init`, `npm run smoke:capabilities`, `npm run smoke:archive-work`, `npm run smoke:bundle`, `npm run smoke:bundle-import`, and `npm run smoke:visibility`.
+5. Run `npm pack --dry-run --json` and confirm the tarball includes `dist/cli.js`, compiled folders, `dist/init/`, release docs, and `scripts/postinstall.js`.
+6. Confirm registry state with `npm view mdkg version --registry=https://registry.npmjs.org/`.
+7. Publish only after the registry still shows the previous version and npm auth is known to have write access.
+8. If publishing fails with 2FA or token policy errors, do not commit; fix npm auth or package policy, then rerun publish.
+9. After successful publish, verify `npm view mdkg version` and `npm view mdkg dist-tags`, then commit the release changes.
 
 ## Bundle-Aware Commit Gate
 
