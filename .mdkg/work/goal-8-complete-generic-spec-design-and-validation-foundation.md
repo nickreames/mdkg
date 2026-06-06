@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: The goal is complete when mdkg has a decision-complete generic SPEC design foundation covering section semantics, frontmatter contracts, template and example coverage, validation diagnostics, capability indexing, projection drift policy, agent-orchestration contracts, compatibility, and release/adoption handoff evidence.
 scope_refs: [epic-46, epic-47, epic-48, epic-49, epic-50, epic-51, epic-52, task-266, task-267, task-268, task-269, task-270, task-271, task-272, task-273, task-274, task-275, task-276, task-277, task-278, task-279, test-98, test-99, test-100, test-101, test-102, test-103, test-104, test-105]
-active_node: task-274
+active_node: test-98
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [mdkg index, mdkg validate, mdkg goal show goal-8 --json, mdkg goal next goal-8 --json, mdkg capability search "SPEC section contract" --json, mdkg capability search "SPEC validation diagnostics" --json, mdkg capability search "projection drift policy" --json, mdkg capability search "runtime agent manifest" --json, mdkg capability search "orchestrator agent" --json, git diff --check]
 max_iterations: 24
@@ -112,5 +112,26 @@ next phase: full generic SPEC design and validation planning.
 - `task-273` defined projection metadata, drift detection, no-secret export,
   diagnostics, and repair-work policy; checkpoint `chk-51` records the
   closeout.
-- `active_node` now routes to `task-274` for generic agent role SPEC
-  requirements.
+- `task-274` defined the generic agent role SPEC contract for orchestrator,
+  worker, reviewer, summarizer, and graph/project agents; checkpoint `chk-52`
+  records the closeout.
+- `task-275` defined queue event and receipt semantics for agent and
+  runtime-agent SPECs, including TriggerEvent, AgentRun, AttemptReceipt,
+  ValidationReceipt, FinalReceipt, queue state boundaries, retry/cancellation,
+  dead-letter policy, single-writer invariants, and runtime-agent manifest
+  expectations; checkpoint `chk-53` records the closeout.
+- `task-276` defined the future SPEC parser, index, validation, diagnostics,
+  command, template, upgrade, and projection-check implementation sequence,
+  including source anchors, ordered phases, exit gates, package dry-run checks,
+  and exporter deferral; checkpoint `chk-54` records the closeout.
+- `task-277` defined SPEC template migration and backcompat policy, including
+  current/compat/strict/downstream-local modes, upgrade dry-run receipt
+  expectations, template promotion order, downstream extension preservation,
+  test expectations, and release note boundaries; checkpoint `chk-55` records
+  the closeout.
+- `task-278` defined the root/downstream SPEC adoption handoff, including
+  separate local accepted SHA, package publish, and root subgraph refresh paths,
+  per-repo downstream adoption policy, all-repo sync deferral, handoff
+  checklist, and adoption blockers; checkpoint `chk-56` records the closeout.
+- `active_node` now routes to validation nodes starting with `test-98` before
+  `task-279` closeout.

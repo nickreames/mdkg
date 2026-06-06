@@ -30,3 +30,16 @@ Validate that SPEC discovery and capability-index behavior is specified.
 - `runtime agent manifest` is discoverable.
 - Projection and validation terms are discoverable.
 - Imported subgraph SPECs are read-only.
+
+# Validation Evidence
+
+- `task-272` is done and defines future `kind: spec` capability record fields,
+  read-only search/show/resolve behavior, freshness handling, visibility, and
+  imported subgraph read-only policy.
+- `chk-50` records the capability discovery contract.
+- `node dist/cli.js capability search "SPEC section contract" --json`
+  resolves `edd-14`.
+- `node dist/cli.js capability search "runtime agent manifest" --json`
+  resolves `edd-14`.
+- `node dist/cli.js capability search "SPEC capability index discovery"
+  --json` resolves `edd-14`.

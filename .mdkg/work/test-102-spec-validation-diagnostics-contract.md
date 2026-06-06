@@ -29,3 +29,16 @@ Validate that future SPEC diagnostics are explicit enough to implement.
 - Error, warning, repair, and info classes are defined.
 - Candidate CLI surface is recorded.
 - Source implementation remains deferred.
+
+# Validation Evidence
+
+- `task-271` is done and defines diagnostic classes, stable diagnostic fields,
+  rule families, candidate command surfaces, and future JSON shape.
+- `task-276` is done and defines the ordered implementation sequence for
+  parser, diagnostics, capability index, validation integration, optional
+  focused command, template promotion, and projection checks.
+- `chk-49` and `chk-54` record diagnostics and implementation-sequence
+  closeout evidence.
+- `node dist/cli.js capability search "SPEC validation diagnostics" --json`
+  resolves `edd-14`.
+- `task-276` explicitly defers source implementation and exporter writes.

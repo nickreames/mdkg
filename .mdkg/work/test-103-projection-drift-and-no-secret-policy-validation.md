@@ -29,3 +29,15 @@ Validate that projection drift and no-secret policies are decision-complete.
 - Projection source metadata is required.
 - Manual drift creates diagnostics or repair work.
 - Secrets, credentials, local auth, and provider config are forbidden.
+
+# Validation Evidence
+
+- `task-273` is done and defines projection source metadata, drift classes,
+  no-secret export policy, diagnostics, repair expectations, and future command
+  boundaries.
+- `chk-51` records projection drift/no-secret closeout evidence.
+- `node dist/cli.js capability search "projection drift policy" --json`
+  resolves `edd-14`.
+- The policy forbids raw secrets, credentials, local auth state, provider
+  credential values, production controls, private keys, wallet or ledger state,
+  hidden form values, personal host paths, and runtime database contents.

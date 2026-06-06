@@ -31,3 +31,18 @@ initial SPEC family.
   and integration coverage is required.
 - Positive and negative examples are specified.
 - Template naming remains generic.
+
+# Validation Evidence
+
+- `task-269` is done and defines the SPEC template taxonomy, default scaffold
+  boundary, naming, and promotion policy.
+- `task-270` is done and defines positive/negative fixture expectations for
+  the initial SPEC template family.
+- `chk-47` and `chk-48` record template taxonomy and fixture coverage
+  closeout evidence.
+- `node dist/cli.js capability search "SPEC template taxonomy" --json`
+  resolves `edd-14`.
+- `node dist/cli.js capability search "SPEC example fixtures" --json`
+  resolves `edd-14`.
+- Template names remain generic mdkg names; downstream product names are not
+  required.

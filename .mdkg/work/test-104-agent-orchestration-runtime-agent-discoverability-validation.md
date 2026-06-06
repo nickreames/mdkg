@@ -31,3 +31,19 @@ Validate agent-orchestration and runtime-agent SPEC contract discoverability.
 - `TriggerEvent`, `AgentRun`, `AttemptReceipt`, `ValidationReceipt`, and
   `FinalReceipt` concepts are discoverable.
 - Single-writer policy is recorded.
+
+# Validation Evidence
+
+- `task-274` is done and defines orchestrator, worker, reviewer, summarizer,
+  and graph/project agent SPEC requirements plus single-writer rules.
+- `task-275` is done and defines TriggerEvent, AgentRun, AttemptReceipt,
+  ValidationReceipt, FinalReceipt, queue state boundaries, retry/cancellation,
+  dead-letter policy, and runtime-agent manifest expectations.
+- `chk-52` and `chk-53` record agent role and event/receipt closeout evidence.
+- `node dist/cli.js capability search "orchestrator agent" --json` resolves
+  `edd-14`.
+- `node dist/cli.js capability search "runtime agent manifest" --json`
+  resolves `edd-14`.
+- `node dist/cli.js capability search "TriggerEvent" --json` and
+  `node dist/cli.js capability search "FinalReceipt" --json` resolve
+  `edd-14`.
