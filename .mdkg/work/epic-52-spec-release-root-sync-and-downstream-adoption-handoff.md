@@ -2,7 +2,7 @@
 id: epic-52
 type: epic
 title: SPEC release root sync and downstream adoption handoff
-status: todo
+status: done
 priority: 1
 tags: [release, sync, adoption, handoff]
 owners: []
@@ -50,6 +50,18 @@ Define the release and adoption handoff after SPEC design work is complete.
 # Risks
 
 - Root or downstream repos adopt partial SPEC assets before mdkg is accepted.
+
+# Closeout Evidence
+
+- `task-278` is done and defines separate local SHA, package publish, root
+  subgraph refresh, and downstream adoption paths.
+- `test-105` is done and records release/adoption readiness validation.
+- `task-279` is the active closeout task for final goal evidence.
+- `chk-55` and `chk-56` record backcompat and adoption handoff evidence.
+- `node dist/cli.js capability search "downstream SPEC adoption" --json`
+  resolves `edd-14`.
+- No package publish, root sync, downstream sync, or all-repo sync happened in
+  this mdkg-only planning pass.
 
 # Links / Artifacts
 

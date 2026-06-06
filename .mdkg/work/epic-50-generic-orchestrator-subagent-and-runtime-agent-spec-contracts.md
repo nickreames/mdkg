@@ -2,7 +2,7 @@
 id: epic-50
 type: epic
 title: generic orchestrator subagent and runtime agent SPEC contracts
-status: todo
+status: done
 priority: 1
 tags: [agents, orchestrator, subagent, runtime-agent, receipts]
 owners: []
@@ -53,6 +53,21 @@ runtime integration work.
 # Risks
 
 - Multiple writers inside one graph create conflicts.
+
+# Closeout Evidence
+
+- `task-274` and `task-275` are done.
+- `test-104` is done and records agent-orchestration and runtime-agent
+  discoverability evidence.
+- `chk-52` and `chk-53` record generic agent role and queue/event/receipt
+  closeout summaries.
+- `node dist/cli.js capability search "orchestrator agent" --json`,
+  `node dist/cli.js capability search "runtime agent manifest" --json`,
+  `node dist/cli.js capability search "TriggerEvent" --json`, and
+  `node dist/cli.js capability search "FinalReceipt" --json` resolve
+  `edd-14`.
+- Runtime integration and queue implementation are not part of this design
+  closeout.
 
 # Links / Artifacts
 

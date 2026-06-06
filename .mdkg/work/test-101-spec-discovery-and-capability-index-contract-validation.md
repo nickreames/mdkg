@@ -2,7 +2,7 @@
 id: test-101
 type: test
 title: SPEC discovery and capability index contract validation
-status: todo
+status: done
 priority: 1
 epic: epic-48
 parent: goal-8

@@ -2,7 +2,7 @@
 id: epic-49
 type: epic
 title: projection metadata drift detection and no secret export policy
-status: todo
+status: done
 priority: 1
 tags: [projection, drift, security, privacy]
 owners: []
@@ -50,6 +50,16 @@ Make projection linkage and drift handling safe before any exporter is built.
 # Risks
 
 - Projection files become canonical by accident.
+
+# Closeout Evidence
+
+- `task-273` is done.
+- `test-103` is done and records projection drift/no-secret validation
+  evidence.
+- `chk-51` records the projection drift and no-secret policy closeout summary.
+- `node dist/cli.js capability search "projection drift policy" --json`
+  resolves `edd-14`.
+- Real projection exporter implementation remains deferred.
 
 # Links / Artifacts
 

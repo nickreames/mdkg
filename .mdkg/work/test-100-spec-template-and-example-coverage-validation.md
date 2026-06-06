@@ -2,7 +2,7 @@
 id: test-100
 type: test
 title: SPEC template and example coverage validation
-status: todo
+status: done
 priority: 1
 epic: epic-47
 parent: goal-8

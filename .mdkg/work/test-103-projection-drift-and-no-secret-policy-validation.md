@@ -2,7 +2,7 @@
 id: test-103
 type: test
 title: projection drift and no secret policy validation
-status: todo
+status: done
 priority: 1
 epic: epic-49
 parent: goal-8

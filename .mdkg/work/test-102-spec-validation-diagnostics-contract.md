@@ -2,7 +2,7 @@
 id: test-102
 type: test
 title: SPEC validation diagnostics contract
-status: todo
+status: done
 priority: 1
 epic: epic-48
 parent: goal-8

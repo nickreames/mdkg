@@ -2,7 +2,7 @@
 id: epic-48
 type: epic
 title: SPEC validation diagnostics and capability index requirements
-status: todo
+status: done
 priority: 1
 tags: [spec, validation, diagnostics, capability-index]
 owners: []
@@ -51,6 +51,19 @@ implementation begins.
 # Risks
 
 - Diagnostics become too vague to guide repair work.
+
+# Closeout Evidence
+
+- `task-271` and `task-272` are done.
+- `test-101` and `test-102` are done and record discovery/index and
+  diagnostics validation evidence.
+- `chk-49` and `chk-50` record the diagnostics and capability-discovery
+  closeout summaries.
+- `node dist/cli.js capability search "SPEC validation diagnostics" --json`,
+  `node dist/cli.js capability search "SPEC capability index discovery"
+  --json`, and `node dist/cli.js capability search "runtime agent manifest"
+  --json` resolve `edd-14`.
+- Parser, indexer, and focused CLI implementation remain deferred.
 
 # Links / Artifacts
 
