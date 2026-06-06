@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: The goal is complete when mdkg has a decision-complete generic SPEC design foundation covering section semantics, frontmatter contracts, template and example coverage, validation diagnostics, capability indexing, projection drift policy, agent-orchestration contracts, compatibility, and release/adoption handoff evidence.
 scope_refs: [epic-46, epic-47, epic-48, epic-49, epic-50, epic-51, epic-52, task-266, task-267, task-268, task-269, task-270, task-271, task-272, task-273, task-274, task-275, task-276, task-277, task-278, task-279, test-98, test-99, test-100, test-101, test-102, test-103, test-104, test-105]
-active_node: task-266
+active_node: task-267
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [mdkg index, mdkg validate, mdkg goal show goal-8 --json, mdkg goal next goal-8 --json, mdkg capability search "SPEC section contract" --json, mdkg capability search "SPEC validation diagnostics" --json, mdkg capability search "projection drift policy" --json, mdkg capability search "runtime agent manifest" --json, mdkg capability search "orchestrator agent" --json, git diff --check]
 max_iterations: 24
@@ -89,4 +89,7 @@ next phase: full generic SPEC design and validation planning.
 
 # Completion Evidence
 
-- Pending.
+- `task-266` completed the current SPEC template/default scaffold audit and
+  recorded the first handoff checkpoint at `chk-44`.
+- `active_node` now routes to `task-267` for the required and optional SPEC
+  section contract design pass.
