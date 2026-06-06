@@ -252,13 +252,17 @@ function exerciseDbInit(binPath, tempRoot) {
     throw new Error(`repeat db init should be idempotent: ${JSON.stringify(second, null, 2)}`);
   }
   const migrate = parseJson(mdkg(binPath, ["db", "migrate", "--json"], root).stdout);
-  if (migrate.action !== "db-migrate" || migrate.ok !== true || migrate.applied_count !== 1) {
+  if (migrate.action !== "db-migrate" || migrate.ok !== true || migrate.applied_count !== 5) {
     throw new Error(`unexpected db migrate receipt: ${JSON.stringify(migrate, null, 2)}`);
   }
   assertExists(path.join(root, ".mdkg", "db", "runtime", "project.sqlite"));
   assertExists(path.join(root, ".mdkg", "db", "schema", "migrations", "001_mdkg_project_db_foundation.sql"));
+  assertExists(path.join(root, ".mdkg", "db", "schema", "migrations", "002_mdkg_project_db_queue.sql"));
+  assertExists(path.join(root, ".mdkg", "db", "schema", "migrations", "003_mdkg_project_db_events_receipts.sql"));
+  assertExists(path.join(root, ".mdkg", "db", "schema", "migrations", "004_mdkg_project_db_writer_leases.sql"));
+  assertExists(path.join(root, ".mdkg", "db", "schema", "migrations", "005_mdkg_project_db_queue_control.sql"));
   const repeatMigrate = parseJson(mdkg(binPath, ["db", "migrate", "--json"], root).stdout);
-  if (repeatMigrate.applied_count !== 0 || repeatMigrate.skipped_count !== 1) {
+  if (repeatMigrate.applied_count !== 0 || repeatMigrate.skipped_count !== 5) {
     throw new Error(`repeat db migrate should be idempotent: ${JSON.stringify(repeatMigrate, null, 2)}`);
   }
   const verify = parseJson(mdkg(binPath, ["db", "verify", "--json"], root).stdout);
@@ -266,7 +270,7 @@ function exerciseDbInit(binPath, tempRoot) {
     throw new Error(`unexpected db verify receipt: ${JSON.stringify(verify, null, 2)}`);
   }
   const stats = parseJson(mdkg(binPath, ["db", "stats", "--json"], root).stdout);
-  if (stats.action !== "db-stats" || stats.ok !== true || stats.migration_count !== 1) {
+  if (stats.action !== "db-stats" || stats.ok !== true || stats.migration_count !== 5) {
     throw new Error(`unexpected db stats receipt: ${JSON.stringify(stats, null, 2)}`);
   }
   mdkg(binPath, ["validate"], root);

@@ -35,6 +35,12 @@ function requirePackageVersions() {
       `package version mismatch: package.json=${pkg.version}, package-lock.json=${lock.version}, package-lock root=${lockRootVersion}`
     );
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:db-queue-cli"]) {
+    fail("package.json is missing smoke:db-queue-cli");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
+    fail("prepublishOnly is missing smoke:db-queue-cli");
+  }
 }
 
 function requireCliBuild() {
@@ -63,6 +69,9 @@ function requireBuildFolders() {
   requireFile("dist/graph/subgraphs.js");
   requireFile("dist/graph/sqlite_index.js");
   requireFile("dist/core/project_db_migrations.js");
+  requireFile("dist/core/project_db_queue.js");
+  requireFile("dist/core/project_db_events.js");
+  requireFile("dist/core/project_db_materializer.js");
   requireFile("dist/core/project_db_snapshot.js");
   requireFile("dist/graph/reindex.js");
   requireFile("dist/graph/visibility.js");
@@ -134,6 +143,25 @@ function requireInitAssets() {
   ) {
     fail("dist/init/AGENT_START.md is missing project DB onboarding guidance");
   }
+  if (
+    !seededAgentStart.includes("public local") ||
+    !seededAgentStart.includes("node:sqlite queue") ||
+    !seededAgentStart.includes("mdkg db queue ...") ||
+    !seededAgentStart.includes("--queue-policy paused")
+  ) {
+    fail("dist/init/AGENT_START.md is missing public queue CLI guidance");
+  }
+  if (
+    !seededAgentStart.includes("event/receipt/reducer") ||
+    !seededAgentStart.includes("writer lease/CAS") ||
+    !seededAgentStart.includes("materializer") ||
+    !seededAgentStart.includes("`mdkg db event`") ||
+    !seededAgentStart.includes("`mdkg db reducer`") ||
+    !seededAgentStart.includes("`mdkg db lease`") ||
+    !seededAgentStart.includes("`mdkg db materializer`")
+  ) {
+    fail("dist/init/AGENT_START.md is missing internal event/reducer/lease/materializer boundary guidance");
+  }
   const seededReadme = requireFile("dist/init/README.md");
   if (!seededReadme.includes("mdkg subgraph add") || !seededReadme.includes("mdkg subgraph verify")) {
     fail("dist/init/README.md is missing subgraph onboarding guidance");
@@ -152,6 +180,24 @@ function requireInitAssets() {
     !seededReadme.includes("mdkg db snapshot seal")
   ) {
     fail("dist/init/README.md is missing project DB onboarding guidance");
+  }
+  if (
+    !seededReadme.includes("local node:sqlite queue delivery") ||
+    !seededReadme.includes("mdkg db queue ...") ||
+    !seededReadme.includes("--queue-policy paused")
+  ) {
+    fail("dist/init/README.md is missing public queue CLI guidance");
+  }
+  if (
+    !seededReadme.includes("event/receipt/reducer") ||
+    !seededReadme.includes("lease/CAS") ||
+    !seededReadme.includes("materializer") ||
+    !seededReadme.includes("`mdkg db event`") ||
+    !seededReadme.includes("`mdkg db reducer`") ||
+    !seededReadme.includes("`mdkg db lease`") ||
+    !seededReadme.includes("`mdkg db materializer`")
+  ) {
+    fail("dist/init/README.md is missing internal event/reducer/lease/materializer boundary guidance");
   }
   for (const template of [
     "archive.md",

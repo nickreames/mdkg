@@ -96,22 +96,42 @@ function main() {
   assert(init.runtime_database_created === false, "db init must not create runtime database");
 
   const migrate = parseJson(mdkg(binPath, ["db", "migrate", "--json"], root));
-  assert(migrate.action === "db-migrate" && migrate.applied_count === 1, "db migrate did not apply foundation migration");
+  assert(migrate.action === "db-migrate" && migrate.applied_count === 5, "db migrate did not apply built-in migrations");
   const runtimePath = path.join(root, ".mdkg", "db", "runtime", "project.sqlite");
-  const migrationFile = path.join(root, ".mdkg", "db", "schema", "migrations", "001_mdkg_project_db_foundation.sql");
+  const foundationMigrationFile = path.join(root, ".mdkg", "db", "schema", "migrations", "001_mdkg_project_db_foundation.sql");
+  const queueMigrationFile = path.join(root, ".mdkg", "db", "schema", "migrations", "002_mdkg_project_db_queue.sql");
+  const eventsMigrationFile = path.join(root, ".mdkg", "db", "schema", "migrations", "003_mdkg_project_db_events_receipts.sql");
+  const leasesMigrationFile = path.join(root, ".mdkg", "db", "schema", "migrations", "004_mdkg_project_db_writer_leases.sql");
+  const queueControlMigrationFile = path.join(root, ".mdkg", "db", "schema", "migrations", "005_mdkg_project_db_queue_control.sql");
   assertExists(runtimePath);
-  assertExists(migrationFile);
+  assertExists(foundationMigrationFile);
+  assertExists(queueMigrationFile);
+  assertExists(eventsMigrationFile);
+  assertExists(leasesMigrationFile);
+  assertExists(queueControlMigrationFile);
 
   const runtimeIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/runtime/project.sqlite"], { cwd: root });
   assert(runtimeIgnored.status === 0, "runtime project.sqlite should be ignored by default");
   const schemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/001_mdkg_project_db_foundation.sql"], { cwd: root });
   assert(schemaIgnored.status !== 0, "schema migrations should be commit-eligible");
+  const queueSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/002_mdkg_project_db_queue.sql"], { cwd: root });
+  assert(queueSchemaIgnored.status !== 0, "queue schema migration should be commit-eligible");
+  const eventsSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/003_mdkg_project_db_events_receipts.sql"], { cwd: root });
+  assert(eventsSchemaIgnored.status !== 0, "events schema migration should be commit-eligible");
+  const leasesSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/004_mdkg_project_db_writer_leases.sql"], { cwd: root });
+  assert(leasesSchemaIgnored.status !== 0, "writer lease schema migration should be commit-eligible");
+  const queueControlSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/005_mdkg_project_db_queue_control.sql"], { cwd: root });
+  assert(queueControlSchemaIgnored.status !== 0, "queue control schema migration should be commit-eligible");
 
   const verify = parseJson(mdkg(binPath, ["db", "verify", "--json"], root));
   assert(verify.action === "db-verify" && verify.ok === true, "db verify receipt failed");
   const stats = parseJson(mdkg(binPath, ["db", "stats", "--json"], root));
-  assert(stats.action === "db-stats" && stats.migration_count === 1, "db stats receipt failed");
+  assert(stats.action === "db-stats" && stats.migration_count === 5, "db stats receipt failed");
   assert(stats.tables.some((table) => table.name === "project_meta"), "db stats missing project_meta table");
+  assert(stats.tables.some((table) => table.name === "project_queue_message"), "db stats missing project_queue_message table");
+  assert(stats.tables.some((table) => table.name === "project_event"), "db stats missing project_event table");
+  assert(stats.tables.some((table) => table.name === "project_receipt"), "db stats missing project_receipt table");
+  assert(stats.tables.some((table) => table.name === "project_writer_lease"), "db stats missing project_writer_lease table");
 
   const indexRebuild = parseJson(mdkg(binPath, ["db", "index", "rebuild", "--json"], root));
   assert(indexRebuild.action === "db-index-rebuild" && indexRebuild.ok === true, "db index rebuild failed");

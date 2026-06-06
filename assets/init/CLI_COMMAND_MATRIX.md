@@ -39,7 +39,8 @@ Project database commands:
 - `mdkg db migrate [--json]`
 - `mdkg db verify [--json]`
 - `mdkg db stats [--json]`
-- `mdkg db snapshot seal [--json]`
+- `mdkg db queue create|pause|resume|enqueue|claim|ack|fail|dead-letter|release-expired|stats|list|show ... [--json]`
+- `mdkg db snapshot seal [--queue-policy drain|paused] [--json]`
 - `mdkg db snapshot verify [--json]`
 - `mdkg db snapshot status [--json]`
 - `mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]`
@@ -49,16 +50,27 @@ Project database commands:
   `.mdkg/db/project-db.json`, enables `db.enabled`, and does not create an
   active runtime SQLite database
 - `mdkg db migrate` creates or updates the configured active runtime SQLite
-  database and applies mdkg-owned generic foundation migrations only
+  database and applies mdkg-owned foundation plus internal local node:sqlite
+  queue, event/receipt/reducer, and writer lease/CAS foundation migrations
 - `mdkg db migrate` records migration order, checksums, and applied timestamps
   in the configured migration table
+- `mdkg db queue ...` exposes durable local delivery operations backed by
+  node:sqlite; queue rows are delivery state, not canonical event history
+- paused queues reject enqueue and claim, but ack/fail/dead-letter and
+  release-expired remain available so leased work can settle
+- event tables are durable local history for project DB state transitions;
+  receipts, typed reducers, writer leases, and materializers remain internal
+  helper surfaces in this release, with no public `mdkg db event`,
+  `mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet
 - `mdkg db verify` checks config, layout, runtime SQLite integrity, migration
   metadata, receipt directory policy, and transient runtime files
 - `mdkg db stats` reports table counts, database size, migration state,
   transient runtime files, receipt-file count, and state snapshot presence
 - `mdkg db snapshot seal` writes an opt-in sealed checkpoint and manifest under
-  `.mdkg/db/state`; `snapshot verify/status/dump/diff` inspect and review that
-  checkpoint without treating raw binary diffs as human-readable truth
+  `.mdkg/db/state`; default `--queue-policy drain` requires no ready or leased
+  messages, while `--queue-policy paused` allows ready messages only in paused
+  queues. `snapshot verify/status/dump/diff` inspect and review that checkpoint
+  without treating raw binary diffs as human-readable truth
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:

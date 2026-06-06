@@ -56,7 +56,7 @@ test("cli help covers the remaining command help surfaces", () => {
 
   const dbSnapshot = runCli(["help", "db", "snapshot"]);
   assert.equal(dbSnapshot.status, 0);
-  assert.match(dbSnapshot.stdout, /mdkg db snapshot seal \[--json\]/);
+  assert.match(dbSnapshot.stdout, /mdkg db snapshot seal \[--queue-policy drain\|paused\] \[--json\]/);
   assert.match(dbSnapshot.stdout, /mdkg db snapshot dump \[--snapshot <path>\] \[--output <path>\] \[--json\]/);
 });
 

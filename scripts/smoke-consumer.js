@@ -44,6 +44,13 @@ function assertExists(filePath) {
   }
 }
 
+function extractVersion(output) {
+  return output
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find((line) => /^\d+\.\d+\.\d+([-.].+)?$/.test(line));
+}
+
 function removePath(targetPath) {
   if (!targetPath || !fs.existsSync(targetPath)) {
     return;
@@ -86,7 +93,8 @@ function runSmoke() {
       ["--yes", "--package", tarballPath, "mdkg", "--version"],
       { cwd: tempRoot }
     );
-    if (!/^\d+\.\d+\.\d+([-.].+)?$/.test(version)) {
+    const parsedVersion = extractVersion(version);
+    if (!parsedVersion) {
       throw new Error(`unexpected version output: ${version}`);
     }
 
@@ -136,7 +144,7 @@ function runSmoke() {
     }
 
     console.log("consumer smoke passed");
-    console.log(`version=${version}`);
+    console.log(`version=${parsedVersion}`);
     console.log(`tarball=${path.basename(tarballPath)}`);
   } finally {
     removePath(tempRoot);

@@ -128,16 +128,31 @@ test("cli help db documents project database boundaries", () => {
   assert.match(dbHelp.stdout, /mdkg db index rebuild \[--tolerant\] \[--json\]/);
   assert.match(dbHelp.stdout, /mdkg db init \[--json\]/);
   assert.match(dbHelp.stdout, /\.mdkg\/index` is the rebuildable graph cache/);
-  assert.match(dbHelp.stdout, /\.mdkg\/db` is future project application state/);
+  assert.match(dbHelp.stdout, /\.mdkg\/db` is project application state/);
   assert.match(dbHelp.stdout, /db init` creates the generic layout and enables db config/);
   assert.match(dbHelp.stdout, /db init` does not create an active runtime SQLite database/);
   assert.match(dbHelp.stdout, /db migrate` creates\/updates the active runtime SQLite database/);
-  assert.match(dbHelp.stdout, /db migrate` applies mdkg-owned generic foundation migrations only/);
+  assert.match(
+    dbHelp.stdout,
+    /db migrate` applies mdkg-owned foundation plus internal queue, event, receipt, reducer, and lease migrations/,
+  );
+  assert.match(dbHelp.stdout, /mdkg db queue create <queue> \[--paused\] \[--reason <text>\] \[--json\]/);
+  assert.match(dbHelp.stdout, /`mdkg db queue \.\.\.` exposes local durable queue delivery operations/);
+  assert.match(dbHelp.stdout, /paused queues reject enqueue\/claim and can be sealed with explicit paused snapshot policy/);
+  assert.match(
+    dbHelp.stdout,
+    /event rows are durable local history; receipts, reducers, and writer leases remain internal helper surfaces/,
+  );
+  assert.match(dbHelp.stdout, /no public `mdkg db event`, `mdkg db reducer`, or `mdkg db lease` CLI is exposed/);
   assert.match(dbHelp.stdout, /db verify` checks config, layout, SQLite integrity, migrations, and transient files/);
   assert.match(dbHelp.stdout, /db stats` reports table counts, migration state, DB size, and receipt counts/);
-  assert.match(dbHelp.stdout, /mdkg db snapshot seal \[--json\]/);
+  assert.match(dbHelp.stdout, /mdkg db snapshot seal \[--queue-policy drain\|paused\] \[--json\]/);
   assert.match(dbHelp.stdout, /mdkg db snapshot dump \[--snapshot <path>\] \[--output <path>\] \[--json\]/);
   assert.match(dbHelp.stdout, /db snapshot \.\.\.` manages opt-in sealed checkpoints and review dumps/);
+  assert.match(
+    dbHelp.stdout,
+    /no raw SQL, hosted queue\/event store, profile, public event\/reducer\/lease command, or publish behavior is exposed here/,
+  );
   assert.match(dbHelp.stdout, /active `\.mdkg\/db\/runtime` and transient DB files are ignored by default/);
 
   const dbIndexHelp = spawnSync(process.execPath, [cliPath, "help", "db", "index"], {
@@ -155,7 +170,17 @@ test("cli help db documents project database boundaries", () => {
   assert.equal(dbSnapshotHelp.status, 0);
   assert.match(dbSnapshotHelp.stdout, /mdkg db snapshot verify \[--json\]/);
   assert.match(dbSnapshotHelp.stdout, /mdkg db snapshot diff <left-snapshot> <right-snapshot> \[--json\]/);
+  assert.match(dbSnapshotHelp.stdout, /default queue policy is drain/);
   assert.match(dbSnapshotHelp.stdout, /snapshot dump\/diff are deterministic review aids/);
+
+  const dbQueueHelp = spawnSync(process.execPath, [cliPath, "help", "db", "queue"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(dbQueueHelp.status, 0);
+  assert.match(dbQueueHelp.stdout, /mdkg db queue enqueue <queue> <message-id> --payload-json <json>\|--payload-file <path>/);
+  assert.match(dbQueueHelp.stdout, /mdkg db queue pause <queue>/);
+  assert.match(dbQueueHelp.stdout, /paused queues reject enqueue and claim/);
 });
 
 test("cli help init includes agent bootstrap and ignore-default controls", () => {
