@@ -2,7 +2,7 @@
 id: epic-51
 type: epic
 title: SPEC implementation sequencing and compatibility plan
-status: todo
+status: done
 priority: 1
 tags: [spec, implementation-plan, compatibility, migration]
 owners: []
@@ -49,6 +49,17 @@ Turn the SPEC design into an ordered future implementation plan.
 # Risks
 
 - Implementation begins before diagnostics and compatibility are clear.
+
+# Closeout Evidence
+
+- `task-276` and `task-277` are done.
+- `chk-54` and `chk-55` record implementation sequencing and backcompat
+  closeout summaries.
+- `node dist/cli.js capability search "spec implementation sequence" --json`
+  and `node dist/cli.js capability search "spec backcompat plan" --json`
+  resolve `edd-14`.
+- Source implementation, package publish, and downstream upgrade work remain
+  deferred.
 
 # Links / Artifacts
 

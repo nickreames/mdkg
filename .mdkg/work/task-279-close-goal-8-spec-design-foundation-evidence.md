@@ -2,7 +2,7 @@
 id: task-279
 type: task
 title: close goal 8 SPEC design foundation evidence
-status: todo
+status: done
 priority: 1
 epic: epic-52
 parent: goal-8
@@ -44,6 +44,21 @@ and adoption evidence is recorded.
 # Implementation Notes
 
 - Close only after every scoped task and validation node is complete.
+
+# Closeout Evidence
+
+- Scoped tasks `task-266` through `task-278` are done.
+- Scoped validation nodes `test-98` through `test-105` are done.
+- Scoped epics `epic-46` through `epic-52` have closeout evidence recorded.
+- Required searches resolved the generic `edd-14` design anchor for section
+  contract, validation diagnostics, projection drift policy, runtime-agent
+  manifest, and orchestrator-agent concepts.
+- Additional validation searches resolved SPEC frontmatter, template taxonomy,
+  example fixtures, capability-index discovery, TriggerEvent, FinalReceipt,
+  implementation sequence, backcompat plan, and downstream adoption anchors.
+- Product-name grep over the new goal-8 lane returned no matches.
+- Source implementation, exporter work, package publish, root sync, downstream
+  sync, and all-repo sync remain deferred.
 
 # Links / Artifacts
 

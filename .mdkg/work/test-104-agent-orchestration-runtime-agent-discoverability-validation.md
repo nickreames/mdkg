@@ -2,7 +2,7 @@
 id: test-104
 type: test
 title: agent orchestration runtime agent discoverability validation
-status: todo
+status: done
 priority: 1
 epic: epic-50
 parent: goal-8

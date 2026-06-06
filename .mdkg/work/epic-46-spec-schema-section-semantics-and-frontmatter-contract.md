@@ -2,7 +2,7 @@
 id: epic-46
 type: epic
 title: SPEC schema section semantics and frontmatter contract
-status: todo
+status: done
 priority: 1
 tags: [spec, schema, frontmatter, sections]
 owners: []
@@ -51,6 +51,17 @@ Make SPEC section and frontmatter rules decision-complete before implementation.
 
 - Vague section names create README-like specs instead of enforceable
   contracts.
+
+# Closeout Evidence
+
+- `task-266`, `task-267`, and `task-268` are done.
+- `test-99` is done and records section/frontmatter validation evidence.
+- `chk-44`, `chk-45`, and `chk-46` record the audit, section, and
+  frontmatter closeout summaries.
+- `node dist/cli.js capability search "SPEC section contract" --json` and
+  `node dist/cli.js capability search "SPEC frontmatter contract" --json`
+  resolve the generic `edd-14` design anchor.
+- Source parser/validator implementation remains deferred.
 
 # Links / Artifacts
 

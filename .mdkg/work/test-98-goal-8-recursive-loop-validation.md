@@ -2,7 +2,7 @@
 id: test-98
 type: test
 title: goal 8 recursive loop validation
-status: todo
+status: done
 priority: 1
 epic: epic-46
 parent: goal-8

@@ -2,7 +2,7 @@
 id: epic-47
 type: epic
 title: SPEC template layout naming and example corpus
-status: todo
+status: done
 priority: 1
 tags: [spec, templates, examples, naming]
 owners: []
@@ -52,6 +52,19 @@ and upgrade work.
 # Risks
 
 - Template names become product-specific or too narrow for open-source reuse.
+
+# Closeout Evidence
+
+- `task-269` and `task-270` are done.
+- `test-100` is done and records template taxonomy and example fixture
+  validation evidence.
+- `chk-47` and `chk-48` record the template taxonomy and fixture coverage
+  closeout summaries.
+- `node dist/cli.js capability search "SPEC template taxonomy" --json` and
+  `node dist/cli.js capability search "SPEC example fixtures" --json` resolve
+  `edd-14`.
+- Full source fixture generation remains deferred to a future implementation
+  goal.
 
 # Links / Artifacts
 

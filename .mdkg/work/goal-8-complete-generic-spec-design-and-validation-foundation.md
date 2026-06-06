@@ -2,12 +2,11 @@
 id: goal-8
 type: goal
 title: complete generic SPEC design and validation foundation
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: The goal is complete when mdkg has a decision-complete generic SPEC design foundation covering section semantics, frontmatter contracts, template and example coverage, validation diagnostics, capability indexing, projection drift policy, agent-orchestration contracts, compatibility, and release/adoption handoff evidence.
 scope_refs: [epic-46, epic-47, epic-48, epic-49, epic-50, epic-51, epic-52, task-266, task-267, task-268, task-269, task-270, task-271, task-272, task-273, task-274, task-275, task-276, task-277, task-278, task-279, test-98, test-99, test-100, test-101, test-102, test-103, test-104, test-105]
-active_node: test-98
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [mdkg index, mdkg validate, mdkg goal show goal-8 --json, mdkg goal next goal-8 --json, mdkg capability search "SPEC section contract" --json, mdkg capability search "SPEC validation diagnostics" --json, mdkg capability search "projection drift policy" --json, mdkg capability search "runtime agent manifest" --json, mdkg capability search "orchestrator agent" --json, git diff --check]
 max_iterations: 24
@@ -133,5 +132,20 @@ next phase: full generic SPEC design and validation planning.
   separate local accepted SHA, package publish, and root subgraph refresh paths,
   per-repo downstream adoption policy, all-repo sync deferral, handoff
   checklist, and adoption blockers; checkpoint `chk-56` records the closeout.
-- `active_node` now routes to validation nodes starting with `test-98` before
-  `task-279` closeout.
+- Validation nodes `test-98` through `test-105` are done and record current
+  evidence for recursive routing, section/frontmatter completeness, template
+  and example coverage, capability discovery, diagnostics, projection
+  drift/no-secret policy, agent-orchestration discoverability, and
+  release/adoption readiness.
+- Scoped epics `epic-46` through `epic-52` are done and record child closeout
+  evidence for their goal-8 slices.
+- `task-279` is done and records final closeout evidence for the goal.
+- `chk-57` records the goal-8 design foundation closeout summary.
+- Final checks passed: `node dist/cli.js index`, `node dist/cli.js validate
+  --json`, `node dist/cli.js goal show goal-8 --json`,
+  `node dist/cli.js goal next goal-8 --json`, the required capability
+  searches, product-name grep over the new goal-8 lane, and `git diff --check`.
+- `node dist/cli.js goal next goal-8 --json` returned `node: null` after the
+  scoped tasks and validation nodes were closed.
+- Source implementation, exporter work, package publish, root sync, downstream
+  sync, and all-repo sync remain deferred to separately selected future goals.

@@ -2,7 +2,7 @@
 id: test-105
 type: test
 title: SPEC release and adoption readiness validation
-status: todo
+status: done
 priority: 1
 epic: epic-52
 parent: goal-8

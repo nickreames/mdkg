@@ -2,7 +2,7 @@
 id: test-99
 type: test
 title: SPEC section and frontmatter completeness validation
-status: todo
+status: done
 priority: 1
 epic: epic-46
 parent: goal-8
