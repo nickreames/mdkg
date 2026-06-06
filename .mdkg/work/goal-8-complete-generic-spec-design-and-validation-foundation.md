@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: The goal is complete when mdkg has a decision-complete generic SPEC design foundation covering section semantics, frontmatter contracts, template and example coverage, validation diagnostics, capability indexing, projection drift policy, agent-orchestration contracts, compatibility, and release/adoption handoff evidence.
 scope_refs: [epic-46, epic-47, epic-48, epic-49, epic-50, epic-51, epic-52, task-266, task-267, task-268, task-269, task-270, task-271, task-272, task-273, task-274, task-275, task-276, task-277, task-278, task-279, test-98, test-99, test-100, test-101, test-102, test-103, test-104, test-105]
-active_node: task-267
+active_node: task-274
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [mdkg index, mdkg validate, mdkg goal show goal-8 --json, mdkg goal next goal-8 --json, mdkg capability search "SPEC section contract" --json, mdkg capability search "SPEC validation diagnostics" --json, mdkg capability search "projection drift policy" --json, mdkg capability search "runtime agent manifest" --json, mdkg capability search "orchestrator agent" --json, git diff --check]
 max_iterations: 24
@@ -91,5 +91,26 @@ next phase: full generic SPEC design and validation planning.
 
 - `task-266` completed the current SPEC template/default scaffold audit and
   recorded the first handoff checkpoint at `chk-44`.
-- `active_node` now routes to `task-267` for the required and optional SPEC
-  section contract design pass.
+- `task-267` defined required, conditional, optional, and diagnostic-policy
+  semantics for canonical SPEC body sections and recorded `chk-45`.
+- `task-268` defined canonical SPEC frontmatter and compatibility rules,
+  including required keys, optional keys, unknown-key severity, migration, and
+  downstream-extension policy; checkpoint `chk-46` records the closeout.
+- `task-269` defined SPEC layout, naming, and template taxonomy, including the
+  default-scaffold/rich-template split and future promotion policy; checkpoint
+  `chk-47` records the closeout.
+- `task-270` defined positive and negative SPEC example fixture coverage for
+  the initial template taxonomy and recorded `chk-48`.
+- `task-271` defined future SPEC validation diagnostics and command-surface
+  options, preserving `mdkg validate` as the repo trust gate while recommending
+  focused future `mdkg spec validate`; checkpoint `chk-49` records the
+  closeout.
+- `task-272` defined future SPEC capability index and discovery expectations,
+  including read-only capability commands, `kind: spec` record fields, search,
+  resolve, visibility, freshness, and imported subgraph policy; checkpoint
+  `chk-50` records the closeout.
+- `task-273` defined projection metadata, drift detection, no-secret export,
+  diagnostics, and repair-work policy; checkpoint `chk-51` records the
+  closeout.
+- `active_node` now routes to `task-274` for generic agent role SPEC
+  requirements.

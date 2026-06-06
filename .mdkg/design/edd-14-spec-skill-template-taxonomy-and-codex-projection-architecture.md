@@ -8,9 +8,9 @@ links: []
 artifacts: [.mdkg/templates/specs, .mdkg/templates/skills, .mdkg/skills/author-mdkg-skill/SKILL.md]
 relates: [epic-39, epic-40, epic-41, epic-42, epic-43, epic-44, epic-45]
 refs: [dec-21, dec-22, dec-23, dec-24, dec-25, edd-5, edd-7]
-aliases: [spec-template-taxonomy, skill-template-taxonomy, spec-section-contract, spec-validation-diagnostics, projection-drift-policy, downstream-spec-adoption, agent-projection-architecture, codex-projection-architecture, runtime-agent-manifest, skill-factory-backlog]
+aliases: [spec-template-taxonomy, skill-template-taxonomy, spec-section-contract, spec-frontmatter-contract, spec-example-fixtures, spec-validation-diagnostics, spec-capability-index-discovery, projection-drift-policy, downstream-spec-adoption, agent-projection-architecture, codex-projection-architecture, runtime-agent-manifest, skill-factory-backlog]
 created: 2026-06-04
-updated: 2026-06-04
+updated: 2026-06-06
 ---
 # Overview
 
