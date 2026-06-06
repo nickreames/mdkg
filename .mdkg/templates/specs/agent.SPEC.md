@@ -7,9 +7,29 @@ template_kind: agent
 
 Define the durable agent role and trigger conditions.
 
+Suggested generic roles:
+
+- orchestrator agent.
+- worker agent.
+- reviewer agent.
+- summarizer agent.
+- graph/project agent.
+
+# Trigger Conditions
+
+- Human request.
+- Graph work item.
+- Queue event.
+- Scheduled check.
+- API or runtime event.
+
 # Allowed Resources
 
 - Resources the agent may read or write.
+
+# Allowed Capabilities
+
+- Capability ids and optional generic capability URIs.
 
 # Forbidden Actions
 
@@ -27,13 +47,33 @@ Define the durable agent role and trigger conditions.
 
 - Attempt, validation, and final evidence requirements.
 
+# Queue / Event Semantics
+
+- Accepted trigger events.
+- AgentRun claim rules.
+- AttemptReceipt requirements.
+- ValidationReceipt requirements.
+- FinalReceipt requirements.
+
+# Single-Writer Policy
+
+- The graph, repo, path, branch, queue, or work item key that serializes writes.
+
 # Escalation Behavior
 
 - When to stop, ask, or return a blocker.
 
+# Failure Modes
+
+- Ambiguous scope.
+- Conflicting writers.
+- Invalid or stale context.
+- Validation failure.
+- Missing final receipt.
+
 # Projection Targets
 
 - `.codex/agents` TOML
-- future OmniRuntime AgentManifest
-- future OmniTx capability object
-- future OmniPL agent definition
+- future runtime agent manifest
+- future workflow/runtime capability object
+- future workflow/runtime agent definition

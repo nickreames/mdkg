@@ -7,17 +7,24 @@ template_kind: capability
 
 Stable mdkg capability id.
 
-# Draft Omni URI
+# Optional Capability URI
 
-Optional: `omni://capability/...`
+Optional generic URI: `capability://...`
+
+Optional mdkg URI: `mdkg://capability/...`
 
 # Resource Types
 
-- Optional draft resource URI: `omni://resource/...`
+- Optional generic resource URI: `resource://...`
+- Optional mdkg resource URI: `mdkg://resource/...`
 
 # Allowed Principals
 
 - Roles or agents allowed to use this capability.
+
+# Required Policy Context
+
+- Preconditions, policy refs, scopes, or approval state required before use.
 
 # Delegation Rules
 
@@ -30,3 +37,8 @@ Optional: `omni://capability/...`
 # Audit Events
 
 - Receipts, summaries, or metrics created by use.
+
+# Validation Checks
+
+- Checks that prove capability use remains inside its authority and resource
+  boundaries.

@@ -165,8 +165,11 @@ For SPEC.md output, include:
   projections.
 - Do not create a skill-factory-agent until SKILL/SPEC templates and projection
   doctrine are stable.
-- Draft `omni://` fields are optional future-facing hints, not finalized
-  OmniTx semantics.
+- Optional `draft_uri` fields are future-facing hints, not finalized protocol
+  semantics. Use generic examples such as `capability://repo.inspect` or
+  `mdkg://capability/repo.inspect` in canonical mdkg templates.
+- Do not use downstream product names or product-specific URI schemes as public
+  mdkg template examples.
 
 ## Failure Handling
 
@@ -181,16 +184,16 @@ For SPEC.md output, include:
 
 ## Related SPECs
 
-- Future `agent.*` SPECs for Codex and OmniRuntime agents
+- Future `agent.*` SPECs for Codex and runtime agents
 - Future capability, tool, model, runtime image, integration, and API SPECs
 - Root/child project SPECs discovered through mdkg capability search
 
 ## Projection Targets
 
 - `.codex/agents` TOML
-- future OmniRuntime agent manifests
-- future OmniTx resource/capability objects
-- future OmniPL definitions
+- future runtime agent manifests
+- future workflow/runtime protocol resource and capability objects
+- future workflow/runtime protocol definitions
 
 ## Open Questions
 

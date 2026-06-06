@@ -1,6 +1,6 @@
 ---
 extends: agent.SPEC.md
-template_kind: omniruntime_agent
+template_kind: runtime_agent
 ---
 
 # Queue Ownership
@@ -9,7 +9,8 @@ template_kind: omniruntime_agent
 
 # Trigger Kinds
 
-- User message, scheduled job, API event, mdkg queue event, or internal retry.
+- User message, scheduled job, API event, mdkg queue event, runtime event, or
+  internal retry.
 
 # Sandbox Requirements
 
@@ -23,8 +24,10 @@ template_kind: omniruntime_agent
 
 - Repo, graph, branch, or room keys that serialize writes.
 
-# Receipts
+# Receipt Lifecycle
 
+- TriggerEvent contract.
+- AgentRun contract.
 - AttemptReceipt contract.
 - ValidationReceipt contract.
 - FinalReceipt contract.
@@ -37,3 +40,9 @@ template_kind: omniruntime_agent
 
 - Aggregate-safe stats and improvement proposals only unless a runtime spec says
   otherwise.
+
+# Projection Targets
+
+- Local runtime agent manifest.
+- Workflow/runtime protocol manifest.
+- Product-specific agent manifest in downstream repos.

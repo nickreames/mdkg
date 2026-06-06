@@ -3,8 +3,8 @@ id: {{spec_id}}
 type: spec
 title: {{title}}
 version: 0.1.0
-role: subagent
-runtime_mode: room_orchestrated
+role: {{role}}
+runtime_mode: {{runtime_mode}}
 work_contracts: []
 requested_capabilities: []
 skill_refs: []
@@ -34,21 +34,40 @@ Name, stable id, owner, status, and source mdkg nodes.
 
 What durable capability or contract this SPEC defines.
 
-# Scope
+# Authority Boundary
 
-Included behavior and resources.
+Who or what is allowed to make decisions, mutate state, delegate work, or accept
+evidence under this SPEC.
 
-# Non-goals
+# Resource Boundary
 
-What this SPEC explicitly does not define.
+Included behavior, resources, paths, graph nodes, queues, services, and
+explicit non-authorities.
 
-# Resource URIs
+# Optional Resource URIs
 
-- Optional draft URI: `omni://resource/...`
+- Optional generic draft URI: `resource://...`
+- Optional mdkg draft URI: `mdkg://resource/...`
 
 # Capabilities
 
-- Capability id and optional draft URI: `omni://capability/...`
+- Capability id:
+- Optional generic draft URI: `capability://...`
+- Optional mdkg draft URI: `mdkg://capability/...`
+
+# Queue / Event Semantics
+
+- Trigger events accepted:
+- Queue ownership:
+- Retry, ack, fail, and dead-letter expectations:
+- Ordering or idempotency rules:
+
+# Single-Writer Policy
+
+- Writer key:
+- Allowed write surfaces:
+- Forbidden write surfaces:
+- Conflict handling:
 
 # Inputs
 
@@ -58,13 +77,21 @@ What this SPEC explicitly does not define.
 
 - Required output or receipt contract.
 
+# Receipts / Evidence
+
+- Attempt evidence:
+- Validation evidence:
+- Final receipt or closeout evidence:
+- Aggregate checkpoint policy:
+
 # Dependencies
 
 - Other specs, skills, tools, models, services, or runtime images.
 
-# Security Boundaries
+# Security / Privacy
 
 - Authority, secret, data, and mutation boundaries.
+- No raw secrets, credentials, local auth state, or production controls.
 
 # Validation Checks
 
@@ -80,7 +107,11 @@ What this SPEC explicitly does not define.
 
 # Versioning
 
-- Compatibility and change policy.
+- Compatibility rules.
+
+# Change Policy
+
+- Who can change this SPEC and what validation is required.
 
 # Open Questions
 
