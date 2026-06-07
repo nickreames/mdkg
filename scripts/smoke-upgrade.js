@@ -98,6 +98,13 @@ function parseJson(output) {
   return JSON.parse(output);
 }
 
+function assertSpecCount(binPath, root, expected, label) {
+  const specs = parseJson(mdkg(binPath, ["spec", "list", "--json"], root).stdout);
+  if (specs.count !== expected) {
+    throw new Error(`${label} expected ${expected} SPEC records, got ${JSON.stringify(specs, null, 2)}`);
+  }
+}
+
 function assertNoPendingUpgrade(binPath, root) {
   const receipt = parseJson(mdkg(binPath, ["upgrade", "--json"], root).stdout);
   if (!receipt.dry_run || receipt.changes.length !== 0) {
@@ -171,9 +178,17 @@ function exerciseUpgrade(binPath, tempRoot) {
   const validate = mdkg(binPath, ["validate"], oldTemplateRoot).combined;
   assertIncludes(validate, "bundled template schema fallback", "old-template validate");
   mdkg(binPath, ["show", "task-1", "--meta"], oldTemplateRoot);
+  assertSpecCount(binPath, oldTemplateRoot, 0, "old-template workspace");
   const oldTemplateDryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], oldTemplateRoot).stdout);
-  if (!oldTemplateDryRun.will_write_paths.includes(".mdkg/templates/default/spec.md")) {
-    throw new Error("old-template upgrade did not plan to vendor missing agent workflow templates");
+  for (const relativePath of [
+    ".mdkg/templates/default/spec.md",
+    ".mdkg/templates/default/work.md",
+    ".mdkg/templates/default/work_order.md",
+    ".mdkg/templates/default/receipt.md",
+  ]) {
+    if (!oldTemplateDryRun.will_write_paths.includes(relativePath)) {
+      throw new Error(`old-template upgrade did not plan to vendor missing template ${relativePath}`);
+    }
   }
 
   const ignoredEventsRoot = path.join(tempRoot, "ignored-events-workspace");

@@ -10,7 +10,7 @@ import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
 import { buildSubgraphCapabilityRecords } from "../graph/subgraphs";
 import { NotFoundError, UsageError } from "../util/errors";
 
-type CapabilityListOptions = {
+export type CapabilityListOptions = {
   root: string;
   kind?: string;
   visibility?: string;
@@ -59,7 +59,7 @@ function normalizeVisibility(value: string | undefined): CapabilityVisibility | 
   throw new UsageError(`--visibility must be one of ${CAPABILITY_VISIBILITIES.join(", ")}`);
 }
 
-function loadRecords(options: CapabilityListOptions): CapabilityRecord[] {
+export function loadCapabilityRecords(options: CapabilityListOptions): CapabilityRecord[] {
   const config = loadConfig(options.root);
   const { index, stale, rebuilt } = loadCapabilitiesIndex({
     root: options.root,
@@ -77,7 +77,7 @@ function loadRecords(options: CapabilityListOptions): CapabilityRecord[] {
   return [...index.records, ...(subgraph.records as CapabilityRecord[])];
 }
 
-function applyFilters(records: CapabilityRecord[], options: CapabilityListOptions): CapabilityRecord[] {
+export function filterCapabilityRecords(records: CapabilityRecord[], options: CapabilityListOptions): CapabilityRecord[] {
   const kind = normalizeKind(options.kind);
   const visibility = normalizeVisibility(options.visibility);
   return records.filter((record) => {
@@ -110,6 +110,7 @@ function capabilitySearchText(record: CapabilityRecord): string {
     ...record.headings.map((heading) => heading.text),
     JSON.stringify(record.spec ?? {}),
     JSON.stringify(record.work ?? {}),
+    JSON.stringify(record.linkage ?? {}),
     JSON.stringify(record.skill ?? {}),
   ]
     .filter((value): value is string => typeof value === "string" && value.length > 0)
@@ -154,6 +155,7 @@ function requirementMatch(record: CapabilityRecord, required: string | undefined
     ...record.tags,
     JSON.stringify(record.spec ?? {}),
     JSON.stringify(record.work ?? {}),
+    JSON.stringify(record.linkage ?? {}),
     JSON.stringify(record.skill ?? {}),
   ]
     .join(" ")
@@ -248,7 +250,7 @@ function printCapabilityList(records: CapabilityRecord[], json?: boolean, query?
   }
 }
 
-function resolveCapability(records: CapabilityRecord[], id: string): CapabilityRecord {
+export function resolveCapabilityRecord(records: CapabilityRecord[], id: string): CapabilityRecord {
   const normalized = id.toLowerCase();
   const exact = records.find((record) => record.qid === id || record.id === id);
   if (exact) {
@@ -288,24 +290,24 @@ function printCapability(record: CapabilityRecord, json?: boolean): void {
 }
 
 export function runCapabilityListCommand(options: CapabilityListOptions): void {
-  const records = applyFilters(loadRecords(options), options);
+  const records = filterCapabilityRecords(loadCapabilityRecords(options), options);
   printCapabilityList(records, options.json);
 }
 
 export function runCapabilitySearchCommand(options: CapabilitySearchOptions): void {
-  const records = applyFilters(loadRecords(options), options).filter((record) =>
+  const records = filterCapabilityRecords(loadCapabilityRecords(options), options).filter((record) =>
     matchesQuery(record, options.query)
   );
   printCapabilityList(records, options.json, options.query);
 }
 
 export function runCapabilityShowCommand(options: CapabilityShowOptions): void {
-  const records = loadRecords(options);
-  printCapability(resolveCapability(records, options.id), options.json);
+  const records = loadCapabilityRecords(options);
+  printCapability(resolveCapabilityRecord(records, options.id), options.json);
 }
 
 export function runCapabilityResolveCommand(options: CapabilityResolveOptions): void {
-  const records = applyFilters(loadRecords(options), options);
+  const records = filterCapabilityRecords(loadCapabilityRecords(options), options);
   const items = resolveCapabilities(records, options).map((record, rank) => ({
     rank: rank + 1,
     score: resolveScore(record, options),

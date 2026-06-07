@@ -9,6 +9,7 @@ const { runSearchCommand } = require("../../commands/search");
 const { runShowCommand } = require("../../commands/show");
 const { runValidateCommand } = require("../../commands/validate");
 const { runNewCommand } = require("../../commands/new");
+const { runCapabilityListCommand } = require("../../commands/capability");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -73,6 +74,177 @@ function writeSkill(root: string, slug: string): void {
       "# Goal",
       "",
       "Provide review guidance.",
+    ].join("\n")
+  );
+}
+
+function writeSpecWithKind(root: string, specKind: string, id?: string): string {
+  const normalizedId = id ?? `spec.${specKind.replace(/_/g, "-")}`;
+  const specPath = path.join(root, ".mdkg", "work", normalizedId, "SPEC.md");
+  writeFile(
+    specPath,
+    [
+      "---",
+      `id: ${normalizedId}`,
+      "type: spec",
+      `title: ${specKind} fixture`,
+      "version: 0.1.0",
+      `spec_kind: ${specKind}`,
+      "role: tool_service",
+      "runtime_mode: tool_service",
+      "work_contracts: []",
+      "requested_capabilities: []",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
+      "resource_profile: builder",
+      "update_policy: manual",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-06",
+      "updated: 2026-06-06",
+      "---",
+      "# Purpose",
+      "",
+      "Fixture reusable capability surface.",
+      "",
+      "# Runtime",
+      "",
+      "Tool service runtime.",
+      "",
+      "# Work Contracts",
+      "",
+      "No work contracts in this fixture.",
+      "",
+      "# Capabilities",
+      "",
+      "No requested capabilities in this fixture.",
+    ].join("\n")
+  );
+  return specPath;
+}
+
+function writeWorkOrderValidationFixture(
+  root: string,
+  overrides: Partial<Record<"payload_hash" | "queue_refs" | "trigger_ref", string>>
+): void {
+  writeFile(
+    path.join(root, ".mdkg", "work", "work-fixture", "WORK.md"),
+    [
+      "---",
+      "id: work.fixture",
+      "type: work",
+      "title: Fixture Work",
+      "version: 1.0.0",
+      "agent_id: spec.fixture",
+      "kind: generic",
+      "pricing_model: included",
+      "required_capabilities: [capability.fixture]",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
+      "inputs: [request:text:required]",
+      "outputs: [result:text:required]",
+      "receipt_required: true",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-06",
+      "updated: 2026-06-06",
+      "---",
+      "# Capability",
+      "",
+      "Fixture work contract.",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, ".mdkg", "work", "order-fixture", "WORK_ORDER.md"),
+    [
+      "---",
+      "id: order.fixture",
+      "type: work_order",
+      "title: Fixture Order",
+      "version: 0.1.0",
+      "work_id: work.fixture",
+      "work_version: 1.0.0",
+      "requester: user.fixture",
+      "order_status: submitted",
+      "request_ref: request.fixture",
+      `trigger_ref: ${overrides.trigger_ref ?? "trigger.fixture"}`,
+      `payload_hash: ${overrides.payload_hash ?? "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}`,
+      "input_refs: []",
+      `queue_refs: ${overrides.queue_refs ?? "[queue.fixture]"}`,
+      "requested_outputs: [result:text:required]",
+      "constraint_refs: []",
+      "artifact_policy: commit_sidecar_and_zip",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [work.fixture]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-06",
+      "updated: 2026-06-06",
+      "---",
+      "# Request",
+      "",
+      "Fixture work order.",
+    ].join("\n")
+  );
+}
+
+function writeReceiptValidationFixture(
+  root: string,
+  overrides: Partial<Record<"redaction_policy" | "evidence_hashes", string>>
+): void {
+  writeWorkOrderValidationFixture(root, {});
+  writeFile(
+    path.join(root, ".mdkg", "work", "receipt-fixture", "RECEIPT.md"),
+    [
+      "---",
+      "id: receipt.fixture",
+      "type: receipt",
+      "title: Fixture Receipt",
+      "version: 0.1.0",
+      "work_order_id: order.fixture",
+      "receipt_status: recorded",
+      "outcome: success",
+      "cost_ref: cost.redacted",
+      `redaction_policy: ${overrides.redaction_policy ?? "refs_and_hashes_only"}`,
+      "proof_refs: [proof.fixture]",
+      "attestation_refs: [attestation.fixture]",
+      `evidence_hashes: ${overrides.evidence_hashes ?? "[sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]"}`,
+      "input_hashes: [sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]",
+      "output_hashes: [sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc]",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [order.fixture]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-06",
+      "updated: 2026-06-06",
+      "---",
+      "# Outcome",
+      "",
+      "Fixture receipt.",
     ].join("\n")
   );
 }
@@ -226,6 +398,92 @@ test("validate and index accept valid Agent workflow file fixtures", () => {
   assert.deepEqual(index.nodes["root:receipt.runtime-render-1"].attributes.output_hashes, [
     "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
   ]);
+});
+
+test("validate accepts repos with no SPEC files and capability list reports zero specs", () => {
+  const root = makeTempDir("mdkg-agent-no-spec-");
+  setupWorkspace(root);
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(
+    (Object.values(index.nodes) as Array<{ type: string }>).filter(
+      (node) => node.type === "spec"
+    ).length,
+    0
+  );
+
+  const output = captureOutput(() =>
+    runCapabilityListCommand({ root, kind: "spec", json: true })
+  );
+  const receipt = JSON.parse(output.stdout);
+  assert.equal(receipt.kind, "capability");
+  assert.equal(receipt.count, 0);
+  assert.deepEqual(receipt.items, []);
+});
+
+test("validate accepts all allowed SPEC spec_kind values", () => {
+  const root = makeTempDir("mdkg-agent-spec-kind-valid-");
+  setupWorkspace(root);
+  const allowedKinds = [
+    "cli_tool",
+    "api",
+    "agent",
+    "runtime_agent",
+    "capability",
+    "tool",
+    "model",
+    "runtime_image",
+    "integration",
+    "project_service",
+  ];
+
+  for (const kind of allowedKinds) {
+    writeSpecWithKind(root, kind);
+  }
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  for (const kind of allowedKinds) {
+    const qid = `root:spec.${kind.replace(/_/g, "-")}`;
+    assert.equal(index.nodes[qid].attributes.spec_kind, kind);
+  }
+});
+
+test("validate reports actionable diagnostics for documentation-only SPEC spec_kind values", () => {
+  const documentationOnlyKinds = [
+    "gap_register",
+    "checkpoint",
+    "roadmap",
+    "audit",
+    "go_no_go",
+    "planning_note",
+    "launch_checklist",
+  ];
+
+  for (const kind of documentationOnlyKinds) {
+    const root = makeTempDir(`mdkg-agent-spec-kind-misuse-${kind}-`);
+    setupWorkspace(root);
+    writeSpecWithKind(root, kind);
+
+    const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+    const receipt = JSON.parse(output.stdout);
+
+    assert.match(String(output.error), /validation failed/);
+    assert.equal(output.stderr, "");
+    assert.equal(receipt.ok, false);
+    assert.ok(
+      receipt.errors.some((error: string) =>
+        error.includes(`spec_kind ${kind} is documentation-only`) &&
+        error.includes("SPEC.md must define a reusable invocable capability surface")
+      ),
+      `${kind} did not produce documentation-only SPEC guidance`
+    );
+  }
 });
 
 test("runtime-style work order and receipt fixtures validate and pack deterministic evidence", () => {
@@ -416,6 +674,118 @@ test("validate reports missing WORK_ORDER work references", () => {
   );
 });
 
+test("validate rejects WORK contracts without capabilities or dependency refs", () => {
+  const root = makeTempDir("mdkg-agent-empty-work-contract-");
+  setupWorkspace(root);
+  writeFile(
+    path.join(root, ".mdkg", "work", "empty-work", "WORK.md"),
+    [
+      "---",
+      "id: work.empty-contract",
+      "type: work",
+      "title: Empty Contract",
+      "version: 0.1.0",
+      "agent_id: agent.empty-contract",
+      "kind: generic",
+      "pricing_model: included",
+      "required_capabilities: []",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
+      "inputs: [request:text:required]",
+      "outputs: [result:text:required]",
+      "receipt_required: true",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-06",
+      "updated: 2026-06-06",
+      "---",
+      "# Capability",
+      "",
+      "This fixture intentionally has no capability anchor.",
+    ].join("\n")
+  );
+
+  const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+
+  assert.match(String(output.error), /validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.ok(
+    receipt.errors.some((error: string) =>
+      error.includes(
+        "WORK.md must include at least one required_capabilities entry or dependency ref"
+      )
+    )
+  );
+});
+
+test("validate accepts WORK_ORDER trigger refs payload hashes and queue refs", () => {
+  const root = makeTempDir("mdkg-agent-work-order-valid-trigger-");
+  setupWorkspace(root);
+  writeWorkOrderValidationFixture(root, {
+    trigger_ref: "trigger://manual/work-order",
+    queue_refs: "[queue://project-db/work-order/order.fixture]",
+  });
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(
+    index.nodes["root:order.fixture"].attributes.payload_hash,
+    "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  );
+  assert.deepEqual(index.nodes["root:order.fixture"].attributes.queue_refs, [
+    "queue://project-db/work-order/order.fixture",
+  ]);
+});
+
+test("validate rejects malformed WORK_ORDER payload hashes", () => {
+  const root = makeTempDir("mdkg-agent-work-order-bad-payload-hash-");
+  setupWorkspace(root);
+  writeWorkOrderValidationFixture(root, { payload_hash: "sha256:not-a-hash" });
+
+  const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+
+  assert.match(String(output.error), /validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.ok(
+    receipt.errors.some((error: string) =>
+      error.includes("payload_hash must be sha256:<64 lowercase hex chars>")
+    )
+  );
+});
+
+test("validate rejects malformed WORK_ORDER queue refs", () => {
+  const root = makeTempDir("mdkg-agent-work-order-bad-queue-ref-");
+  setupWorkspace(root);
+  writeWorkOrderValidationFixture(root, { queue_refs: "[not a queue ref]" });
+
+  const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+
+  assert.match(String(output.error), /validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.ok(
+    receipt.errors.some((error: string) =>
+      error.includes("queue_refs[0] must be a portable id or URI ref")
+    )
+  );
+});
+
 test("validate reports WORK_ORDER work version mismatches", () => {
   const root = makeTempDir("mdkg-agent-work-order-version-mismatch-");
   setupWorkspace(root);
@@ -436,6 +806,60 @@ test("validate reports WORK_ORDER work version mismatches", () => {
       error.includes(
         "root:order.version-mismatch: work_version 2.0.0 does not match root:work.version-mismatch version 1.0.0"
       )
+    )
+  );
+});
+
+test("validate accepts RECEIPT evidence hashes and redaction policies", () => {
+  const root = makeTempDir("mdkg-agent-receipt-evidence-valid-");
+  setupWorkspace(root);
+  writeReceiptValidationFixture(root, {
+    redaction_policy: "redacted_summary",
+    evidence_hashes: "[sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd]",
+  });
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.nodes["root:receipt.fixture"].attributes.redaction_policy, "redacted_summary");
+  assert.deepEqual(index.nodes["root:receipt.fixture"].attributes.evidence_hashes, [
+    "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  ]);
+});
+
+test("validate rejects malformed RECEIPT evidence hashes", () => {
+  const root = makeTempDir("mdkg-agent-receipt-bad-evidence-hash-");
+  setupWorkspace(root);
+  writeReceiptValidationFixture(root, { evidence_hashes: "[sha256:not-a-hash]" });
+
+  const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+
+  assert.match(String(output.error), /validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.ok(
+    receipt.errors.some((error: string) =>
+      error.includes("evidence_hashes[0] must be sha256:<64 lowercase hex chars>")
+    )
+  );
+});
+
+test("validate rejects unsupported RECEIPT redaction policies", () => {
+  const root = makeTempDir("mdkg-agent-receipt-bad-redaction-policy-");
+  setupWorkspace(root);
+  writeReceiptValidationFixture(root, { redaction_policy: "raw_runtime_log" });
+
+  const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+
+  assert.match(String(output.error), /validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.ok(
+    receipt.errors.some((error: string) =>
+      error.includes("redaction_policy must be one of refs_and_hashes_only, redacted_summary, external_private")
     )
   );
 });
@@ -712,7 +1136,9 @@ test("new command scaffolds agent workflow spec files with canonical filenames",
   const specPath = path.join(root, ".mdkg", "work", "spec-1-image-worker", "SPEC.md");
   const content = fs.readFileSync(specPath, "utf8");
   assert.match(content, /type: spec/);
-  assert.match(content, /role: subagent/);
+  assert.match(content, /spec_kind: capability/);
+  assert.match(content, /role: tool_service/);
+  assert.match(content, /runtime_mode: tool_service/);
   assert.match(content, /skill_refs: \[\]/);
   assert.match(content, /tool_refs: \[\]/);
   assert.match(content, /model_refs: \[\]/);
@@ -751,7 +1177,8 @@ test("new command uses bundled template fallback when a local agent template is 
   const specPath = path.join(root, ".mdkg", "work", "spec-1-fallback-worker", "SPEC.md");
   const content = fs.readFileSync(specPath, "utf8");
   assert.match(content, /type: spec/);
-  assert.match(content, /role: subagent/);
+  assert.match(content, /spec_kind: capability/);
+  assert.match(content, /role: tool_service/);
 
   const warnings: string[] = [];
   const originalError = console.error;
@@ -854,6 +1281,7 @@ test("new command scaffolds agent workflow work files with dependency refs", () 
   const workPath = path.join(root, ".mdkg", "work", "work-1-image-generation", "WORK.md");
   const content = fs.readFileSync(workPath, "utf8");
   assert.match(content, /type: work/);
+  assert.match(content, /required_capabilities: \[capability\.example\]/);
   assert.match(content, /skill_refs: \[\]/);
   assert.match(content, /tool_refs: \[\]/);
   assert.match(content, /model_refs: \[\]/);

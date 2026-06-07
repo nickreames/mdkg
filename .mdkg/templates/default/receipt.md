@@ -7,8 +7,10 @@ work_order_id: order.example
 receipt_status: recorded
 outcome: success
 cost_ref: cost.redacted
+redaction_policy: refs_and_hashes_only
 proof_refs: []
 attestation_refs: []
+evidence_hashes: []
 input_hashes: []
 output_hashes: []
 tags: []
@@ -38,7 +40,16 @@ archive sidecars.
 
 # Proof
 
-Record non-secret proof, attestation, and hash references.
+Record non-secret proof, attestation, and hash references. `evidence_hashes`
+can hash receipt evidence bundles or redacted proof summaries that are not
+stored directly in this file.
+
+# Redaction
+
+`redaction_policy` records how this mirror avoids raw secrets and canonical
+runtime state. Use refs, hashes, archive refs, artifact refs, and redacted
+summaries instead of credentials, auth headers, live payment state, ledger
+mutations, marketplace inventory, or production runtime state.
 
 # Notes
 

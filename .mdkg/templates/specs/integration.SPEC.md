@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: integration
+spec_kind: integration
 ---
 
 # Integration Boundary

@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: capability
+spec_kind: capability
 ---
 
 # Capability Name

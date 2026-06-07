@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: api
+spec_kind: api
 ---
 
 # Service Name

@@ -21,6 +21,10 @@ const HELP_TARGETS = [
   ["capability", "list"],
   ["capability", "search"],
   ["capability", "show"],
+  ["spec"],
+  ["spec", "list"],
+  ["spec", "show"],
+  ["spec", "validate"],
   ["archive"],
   ["archive", "add"],
   ["archive", "list"],
@@ -316,6 +320,9 @@ function exerciseWorkflow(binPath, tempRoot) {
 
   const workContractRef = `${path.basename(path.dirname(work.path))}/WORK.md`;
   writeUpdatedFrontmatter(path.join(root, spec.path), {
+    spec_kind: "agent",
+    role: "subagent",
+    runtime_mode: "room_orchestrated",
     work_contracts: `[${workContractRef}]`,
     relates: "[work.generate-image]",
   });

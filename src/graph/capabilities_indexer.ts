@@ -52,6 +52,12 @@ export type CapabilityRecord = {
   };
   spec?: Record<string, FrontmatterValue>;
   work?: Record<string, FrontmatterValue>;
+  linkage?: {
+    spec_qids: string[];
+    work_contract_qids: string[];
+    work_order_qids: string[];
+    receipt_qids: string[];
+  };
   source?: {
     imported: boolean;
     read_only: boolean;
@@ -153,9 +159,111 @@ function pickAttributes(
   return picked;
 }
 
+function toStringList(value: FrontmatterValue | undefined): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value.filter((item): item is string => typeof item === "string");
+}
+
+function nodeRefSet(node: IndexNode): Set<string> {
+  return new Set([node.id, node.qid, `${node.ws}:${node.id}`]);
+}
+
+function sortedNodes(nodes: Iterable<IndexNode>): IndexNode[] {
+  return [...nodes].sort((a, b) => a.qid.localeCompare(b.qid));
+}
+
+function resolveSpecWorkContracts(index: Index, specNode: IndexNode): IndexNode[] {
+  const candidates = new Map<string, IndexNode>();
+  const specDir = path.posix.dirname(specNode.path);
+  for (const contractPath of toStringList(specNode.attributes.work_contracts)) {
+    const normalizedPath = path.posix.normalize(path.posix.join(specDir, contractPath));
+    for (const node of Object.values(index.nodes)) {
+      if (node.type === "work" && node.ws === specNode.ws && node.path === normalizedPath) {
+        candidates.set(node.qid, node);
+      }
+    }
+  }
+  for (const qid of specNode.edges.relates) {
+    const node = index.nodes[qid];
+    if (node?.type === "work") {
+      candidates.set(node.qid, node);
+    }
+  }
+  for (const qid of index.reverse_edges.relates?.[specNode.qid] ?? []) {
+    const node = index.nodes[qid];
+    if (node?.type === "work") {
+      candidates.set(node.qid, node);
+    }
+  }
+  return sortedNodes(candidates.values());
+}
+
+function resolveWorkSpecs(index: Index, workNode: IndexNode): IndexNode[] {
+  const candidates = new Map<string, IndexNode>();
+  const workRefs = nodeRefSet(workNode);
+  for (const node of Object.values(index.nodes)) {
+    if (node.type !== "spec" || node.ws !== workNode.ws) {
+      continue;
+    }
+    const agentId = typeof workNode.attributes.agent_id === "string" ? workNode.attributes.agent_id : undefined;
+    if (agentId && nodeRefSet(node).has(agentId)) {
+      candidates.set(node.qid, node);
+    }
+    if (resolveSpecWorkContracts(index, node).some((contract) => contract.qid === workNode.qid)) {
+      candidates.set(node.qid, node);
+    }
+    if (node.edges.relates.some((qid) => workRefs.has(qid))) {
+      candidates.set(node.qid, node);
+    }
+  }
+  return sortedNodes(candidates.values());
+}
+
+function resolveWorkOrders(index: Index, workNode: IndexNode): IndexNode[] {
+  const workRefs = nodeRefSet(workNode);
+  return sortedNodes(
+    Object.values(index.nodes).filter(
+      (node) => node.type === "work_order" && workRefs.has(String(node.attributes.work_id ?? ""))
+    )
+  );
+}
+
+function resolveReceiptsForOrders(index: Index, orderNodes: IndexNode[]): IndexNode[] {
+  const orderRefs = new Set<string>();
+  for (const order of orderNodes) {
+    for (const ref of nodeRefSet(order)) {
+      orderRefs.add(ref);
+    }
+  }
+  return sortedNodes(
+    Object.values(index.nodes).filter(
+      (node) => node.type === "receipt" && orderRefs.has(String(node.attributes.work_order_id ?? ""))
+    )
+  );
+}
+
+function buildCapabilityLinkage(index: Index, node: IndexNode, kind: CapabilityKind): CapabilityRecord["linkage"] | undefined {
+  if (kind !== "spec" && kind !== "work") {
+    return undefined;
+  }
+  const workContracts = kind === "spec" ? resolveSpecWorkContracts(index, node) : [node];
+  const specNodes = kind === "work" ? resolveWorkSpecs(index, node) : [];
+  const workOrders = workContracts.flatMap((workNode) => resolveWorkOrders(index, workNode));
+  const receipts = resolveReceiptsForOrders(index, workOrders);
+  return {
+    spec_qids: specNodes.map((specNode) => specNode.qid),
+    work_contract_qids: workContracts.map((workNode) => workNode.qid),
+    work_order_qids: workOrders.map((orderNode) => orderNode.qid),
+    receipt_qids: receipts.map((receiptNode) => receiptNode.qid),
+  };
+}
+
 function nodeCapabilityRecord(
   root: string,
   config: Config,
+  index: Index,
   node: IndexNode,
   kind: CapabilityKind,
   indexedAt: string
@@ -185,6 +293,7 @@ function nodeCapabilityRecord(
   if (kind === "spec") {
     record.spec = pickAttributes(node.attributes, [
       "version",
+      "spec_kind",
       "role",
       "runtime_mode",
       "work_contracts",
@@ -217,6 +326,7 @@ function nodeCapabilityRecord(
       "receipt_required",
     ]);
   }
+  record.linkage = buildCapabilityLinkage(index, node, kind);
 
   return record;
 }
@@ -322,7 +432,7 @@ export function buildCapabilitiesIndex(
     if (!kind) {
       continue;
     }
-    records.push(nodeCapabilityRecord(root, config, node, kind, generatedAt));
+    records.push(nodeCapabilityRecord(root, config, index, node, kind, generatedAt));
   }
 
   records.push(...buildWorkspaceSkillCapabilities(root, config, generatedAt));

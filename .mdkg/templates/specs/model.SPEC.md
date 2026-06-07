@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: model
+spec_kind: model
 ---
 
 # Model Identity

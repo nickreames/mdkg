@@ -46,6 +46,11 @@ import {
   runCapabilityShowCommand,
 } from "./commands/capability";
 import {
+  runSpecListCommand,
+  runSpecShowCommand,
+  runSpecValidateCommand,
+} from "./commands/spec";
+import {
   runArchiveAddCommand,
   runArchiveCompressCommand,
   runArchiveListCommand,
@@ -101,9 +106,12 @@ import {
   runWorkArtifactAddCommand,
   runWorkContractNewCommand,
   runWorkOrderNewCommand,
+  runWorkOrderStatusCommand,
   runWorkOrderUpdateCommand,
   runWorkReceiptNewCommand,
   runWorkReceiptUpdateCommand,
+  runWorkReceiptVerifyCommand,
+  runWorkTriggerCommand,
 } from "./commands/work";
 import {
   runWorkspaceAddCommand,
@@ -160,6 +168,7 @@ function printUsage(log: LogFn): void {
   log("  pack        Generate a context pack");
   log("  skill       Create, list, show, search, and validate skills");
   log("  capability  List, search, show, and resolve cached capability surfaces");
+  log("  spec        List, show, and validate optional SPEC.md capability records");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  subgraph    Register, sync, materialize, and verify read-only child graph snapshots");
@@ -547,6 +556,42 @@ function printCapabilityHelp(log: LogFn, subcommand?: string): void {
   }
 }
 
+function printSpecHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "list":
+      log("Usage:");
+      log("  mdkg spec list [--json]");
+      log("\nNotes:");
+      log("  SPEC.md is optional and declares reusable capability surfaces.");
+      printGlobalOptions(log);
+      return;
+    case "show":
+      log("Usage:");
+      log("  mdkg spec show <id-or-qid-or-alias> [--json]");
+      log("\nNotes:");
+      log("  Shows one optional SPEC.md capability record from the capability index.");
+      printGlobalOptions(log);
+      return;
+    case "validate":
+      log("Usage:");
+      log("  mdkg spec validate [<id-or-qid-or-alias>] [--json]");
+      log("\nNotes:");
+      log("  With no reference, validates the graph and all optional SPEC.md capability records.");
+      log("  With a reference, also ensures that specific SPEC.md capability exists.");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log("  mdkg spec list [--json]");
+      log("  mdkg spec show <id-or-qid-or-alias> [--json]");
+      log("  mdkg spec validate [<id-or-qid-or-alias>] [--json]");
+      log("\nNotes:");
+      log("  SPEC.md is optional and reusable-capability oriented.");
+      log("  Use `mdkg capability ...` for broader skill, SPEC.md, WORK.md, core-doc, and design-doc discovery.");
+      printGlobalOptions(log);
+  }
+}
+
 function printArchiveHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "add":
@@ -695,15 +740,31 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log('  mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]');
       break;
+    case "trigger":
+      log("Usage:");
+      log('  mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]');
+      log("\nExample:");
+      log("  mdkg work trigger work.example --id order.example-1 --requester user://example --json");
+      log("\nNotes:");
+      log("  Accepted targets: direct WORK.md ref, or SPEC.md ref with exactly one resolvable work contract.");
+      log("  Creates a deterministic WORK_ORDER.md semantic mirror and does not execute work.");
+      log("  Queue enqueue requires a valid project DB plus an explicitly created active queue and never executes work.");
+      break;
     case "order":
       log("Usage:");
-      log('  mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]');
-      log("  mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]");
+      log('  mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]');
+      log("  mdkg work order status <id-or-qid> [--json]");
+      log("  mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]");
+      log("\nNotes:");
+      log("  work order status is read-only and reports deterministic JSON order state plus linked receipts.");
       break;
     case "receipt":
       log("Usage:");
-      log('  mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--json]');
-      log("  mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]");
+      log('  mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]');
+      log("  mdkg work receipt verify <id-or-qid> [--json]");
+      log("  mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]");
+      log("\nNotes:");
+      log("  work receipt verify is read-only and reports deterministic JSON linkage, evidence, hash, outcome, and redaction checks.");
       break;
     case "artifact":
       log("Usage:");
@@ -712,8 +773,9 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
     default:
       log("Usage:");
       log("  mdkg work contract new ...");
-      log("  mdkg work order new|update ...");
-      log("  mdkg work receipt new|update ...");
+      log("  mdkg work trigger <work-or-capability-ref> ...");
+      log("  mdkg work order new|status|update ...");
+      log("  mdkg work receipt new|verify|update ...");
       log("  mdkg work artifact add ...");
       log("\nNotes:");
       log("  - work commands mutate semantic mirror files only");
@@ -960,6 +1022,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "capability":
       printCapabilityHelp(log, subcommand);
+      return;
+    case "spec":
+      printSpecHelp(log, subcommand);
       return;
     case "archive":
       printArchiveHelp(log, subcommand);
@@ -1503,6 +1568,46 @@ function runCapabilitySubcommand(parsed: ParsedArgs, root: string): ExitCode {
   }
 }
 
+function runSpecSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  switch (subcommand) {
+    case "list": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("spec list does not accept positional arguments");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runSpecListCommand({ root, json, noCache, noReindex });
+      return 0;
+    }
+    case "show": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("spec show requires <id-or-qid-or-alias>");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runSpecShowCommand({ root, id, json, noCache, noReindex });
+      return 0;
+    }
+    case "validate": {
+      const id = parsed.positionals[2];
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("spec validate accepts at most one SPEC reference");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+      const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+      runSpecValidateCommand({ root, id, json, noCache, noReindex });
+      return 0;
+    }
+    default:
+      throw new UsageError("spec requires list/show/validate");
+  }
+}
+
 function runArchiveSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
   switch (subcommand) {
@@ -1741,6 +1846,19 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
   const json = parseBooleanFlag("--json", parsed.flags["--json"]);
 
+  if (domain === "trigger") {
+    const targetRef = parsed.positionals[2];
+    if (!targetRef || parsed.positionals.length > 3) {
+      throw new UsageError("work trigger requires <work-or-capability-ref>");
+    }
+    const id = requireFlagValue("--id", parsed.flags["--id"]);
+    const title = requireFlagValue("--title", parsed.flags["--title"]);
+    const requester = requireFlagValue("--requester", parsed.flags["--requester"]);
+    const enqueue = requireFlagValue("--enqueue", parsed.flags["--enqueue"]);
+    runWorkTriggerCommand({ root, ws, targetRef, id, title, requester, enqueue, json });
+    return 0;
+  }
+
   if (domain === "contract" && action === "new") {
     const title = parsed.positionals.slice(3).join(" ");
     const id = requireFlagValue("--id", parsed.flags["--id"]);
@@ -1781,7 +1899,10 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       throw new UsageError("work order new requires title, --id, --work-id, and --requester");
     }
     const requestRef = requireFlagValue("--request-ref", parsed.flags["--request-ref"]);
+    const triggerRef = requireFlagValue("--trigger-ref", parsed.flags["--trigger-ref"]);
+    const payloadHash = requireFlagValue("--payload-hash", parsed.flags["--payload-hash"]);
     const inputRefs = requireFlagValue("--input-refs", parsed.flags["--input-refs"]);
+    const queueRefs = requireFlagValue("--queue-refs", parsed.flags["--queue-refs"]);
     const requestedOutputs = requireFlagValue("--requested-outputs", parsed.flags["--requested-outputs"]);
     const constraintRefs = requireFlagValue("--constraint-refs", parsed.flags["--constraint-refs"]);
     runWorkOrderNewCommand({
@@ -1792,7 +1913,10 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       workId,
       requester,
       requestRef,
+      triggerRef,
+      payloadHash,
       inputRefs,
+      queueRefs,
       requestedOutputs,
       constraintRefs,
       json,
@@ -1807,8 +1931,18 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     }
     const status = requireFlagValue("--status", parsed.flags["--status"]);
     const addInputRefs = requireFlagValue("--add-input-refs", parsed.flags["--add-input-refs"]);
+    const addQueueRefs = requireFlagValue("--add-queue-refs", parsed.flags["--add-queue-refs"]);
     const addArtifacts = requireFlagValue("--add-artifacts", parsed.flags["--add-artifacts"]);
-    runWorkOrderUpdateCommand({ root, ws, id, status, addInputRefs, addArtifacts, json });
+    runWorkOrderUpdateCommand({ root, ws, id, status, addInputRefs, addQueueRefs, addArtifacts, json });
+    return 0;
+  }
+
+  if (domain === "order" && action === "status") {
+    const id = parsed.positionals[3];
+    if (!id || parsed.positionals.length > 4) {
+      throw new UsageError("work order status requires <id-or-qid>");
+    }
+    runWorkOrderStatusCommand({ root, ws, id, json });
     return 0;
   }
 
@@ -1822,9 +1956,11 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     }
     const receiptStatus = requireFlagValue("--receipt-status", parsed.flags["--receipt-status"]);
     const costRef = requireFlagValue("--cost-ref", parsed.flags["--cost-ref"]);
+    const redactionPolicy = requireFlagValue("--redaction-policy", parsed.flags["--redaction-policy"]);
     const artifacts = requireFlagValue("--artifacts", parsed.flags["--artifacts"]);
     const proofRefs = requireFlagValue("--proof-refs", parsed.flags["--proof-refs"]);
     const attestationRefs = requireFlagValue("--attestation-refs", parsed.flags["--attestation-refs"]);
+    const evidenceHashes = requireFlagValue("--evidence-hashes", parsed.flags["--evidence-hashes"]);
     const inputHashes = requireFlagValue("--input-hashes", parsed.flags["--input-hashes"]);
     const outputHashes = requireFlagValue("--output-hashes", parsed.flags["--output-hashes"]);
     runWorkReceiptNewCommand({
@@ -1836,9 +1972,11 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       outcome,
       receiptStatus,
       costRef,
+      redactionPolicy,
       artifacts,
       proofRefs,
       attestationRefs,
+      evidenceHashes,
       inputHashes,
       outputHashes,
       json,
@@ -1855,6 +1993,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     const addArtifacts = requireFlagValue("--add-artifacts", parsed.flags["--add-artifacts"]);
     const addProofRefs = requireFlagValue("--add-proof-refs", parsed.flags["--add-proof-refs"]);
     const addAttestationRefs = requireFlagValue("--add-attestation-refs", parsed.flags["--add-attestation-refs"]);
+    const addEvidenceHashes = requireFlagValue("--add-evidence-hashes", parsed.flags["--add-evidence-hashes"]);
     runWorkReceiptUpdateCommand({
       root,
       ws,
@@ -1863,8 +2002,18 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       addArtifacts,
       addProofRefs,
       addAttestationRefs,
+      addEvidenceHashes,
       json,
     });
+    return 0;
+  }
+
+  if (domain === "receipt" && action === "verify") {
+    const id = parsed.positionals[3];
+    if (!id || parsed.positionals.length > 4) {
+      throw new UsageError("work receipt verify requires <id-or-qid>");
+    }
+    runWorkReceiptVerifyCommand({ root, ws, id, json });
     return 0;
   }
 
@@ -2355,6 +2504,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runSkillSubcommand(parsed, root);
     case "capability":
       return runCapabilitySubcommand(parsed, root);
+    case "spec":
+      return runSpecSubcommand(parsed, root);
     case "archive":
       return runArchiveSubcommand(parsed, root);
     case "bundle":

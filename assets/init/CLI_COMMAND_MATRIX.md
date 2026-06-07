@@ -6,6 +6,9 @@ Verify live help with:
 - `mdkg --help`
 - `mdkg help <command>`
 
+Optional reusable SPEC capability records are accessed through `mdkg spec ...`.
+Repos without SPEC files remain valid.
+
 Primary commands:
 - `mdkg init`
 - `mdkg upgrade [--dry-run] [--apply] [--json]`
@@ -16,6 +19,7 @@ Primary commands:
 - `mdkg pack`
 - `mdkg skill`
 - `mdkg capability`
+- `mdkg spec`
 - `mdkg archive`
 - `mdkg bundle`
 - `mdkg work`
@@ -143,7 +147,18 @@ Capability discovery:
 - `mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]`
 - capability records are deterministic cache projections from Markdown
 - records include source hash, headings, refs, and `indexed_at`
+- SPEC and WORK capability records include read-only `linkage` arrays for related SPECs, work contracts, work orders, and receipts when those graph mirrors exist
 - normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
+
+Spec capability records:
+- `mdkg spec list [--json]`
+- `mdkg spec show <id-or-qid-or-alias> [--json]`
+- `mdkg spec validate [<id-or-qid-or-alias>] [--json]`
+- `SPEC.md` is optional; repos with no SPEC files still validate
+- SPEC records describe reusable capability surfaces, not general planning notes
+- `mdkg spec validate` with no ref validates the graph and all optional SPEC records
+- `mdkg spec validate <ref>` also checks that the target SPEC reference exists
+- `mdkg spec ...` is the focused SPEC command family; `mdkg capability ...` remains broader skill/spec/work/core/design discovery
 
 Archive sidecars:
 - `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
@@ -188,11 +203,19 @@ Subgraph orchestration:
 
 Work semantic mirrors:
 - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+- `mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]`
 - `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
+- `mdkg work order status <id-or-qid> [--json]`
 - `mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]`
 - `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--json]`
+- `mdkg work receipt verify <id-or-qid> [--json]`
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+- `work trigger` accepts a `WORK.md` ref directly or a `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
+- example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
+- `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
+- `work order status` is read-only and reports deterministic order state plus linked receipts
+- `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks
 - work commands mutate mdkg semantic mirror files only; production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg
 - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors
 - `artifact://...` refs identify external/runtime-managed artifacts; `archive://...` refs identify committed mdkg archive sidecars

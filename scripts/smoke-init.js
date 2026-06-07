@@ -102,6 +102,13 @@ function parseJson(output) {
   return JSON.parse(output);
 }
 
+function assertSpecCount(binPath, root, expected, label) {
+  const specs = parseJson(mdkg(binPath, ["spec", "list", "--json"], root).stdout);
+  if (specs.count !== expected) {
+    throw new Error(`${label} expected ${expected} SPEC records, got ${JSON.stringify(specs, null, 2)}`);
+  }
+}
+
 function packAndInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "npm-prefix");
@@ -213,10 +220,30 @@ function exerciseBaseInit(binPath, tempRoot) {
   }
   mdkg(binPath, ["doctor"], root);
   mdkg(binPath, ["validate"], root);
+  assertSpecCount(binPath, root, 0, "base init");
   assertNoImmediateUpgrade(binPath, root);
 
   const task = parseJson(mdkg(binPath, ["new", "task", "Base Init Task", "--status", "todo", "--priority", "1", "--json"], root).stdout).node;
   mdkg(binPath, ["pack", task.id, "--dry-run"], root);
+}
+
+function exerciseOptionalSpecWorkTemplates(binPath, tempRoot) {
+  const root = path.join(tempRoot, "optional-spec-work-templates");
+  initGit(root);
+  mdkg(binPath, ["init"], root);
+  assertSpecCount(binPath, root, 0, "optional template init before SPEC creation");
+
+  const spec = parseJson(
+    mdkg(binPath, ["new", "spec", "Optional Template Spec", "--id", "spec.optional-template", "--json"], root).stdout
+  ).node;
+  mdkg(binPath, ["spec", "show", spec.id, "--json"], root);
+  mdkg(binPath, ["spec", "validate", spec.id, "--json"], root);
+
+  mdkg(binPath, ["new", "work", "Optional Template Work", "--id", "work.optional-template", "--json"], root);
+  mdkg(binPath, ["capability", "list", "--kind", "spec", "--json"], root);
+  mdkg(binPath, ["capability", "list", "--kind", "work", "--json"], root);
+  mdkg(binPath, ["validate"], root);
+  assertNoImmediateUpgrade(binPath, root);
 }
 
 function exerciseDbInit(binPath, tempRoot) {
@@ -317,9 +344,44 @@ function exerciseAgentInit(binPath, tempRoot) {
     "seeded AGENT_START subgraph guidance"
   );
   assertIncludes(
+    fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
+    "mdkg spec list/show/validate",
+    "seeded AGENT_START SPEC guidance"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
+    "deterministic triggers",
+    "seeded AGENT_START work trigger guidance"
+  );
+  assertIncludes(
     fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
     "mdkg subgraph add",
     "seeded .mdkg README subgraph guidance"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
+    "mdkg spec list --json",
+    "seeded .mdkg README SPEC guidance"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
+    "mdkg work trigger",
+    "seeded .mdkg README work trigger guidance"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
+    "mdkg spec list",
+    "seeded CLI matrix SPEC guidance"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
+    "work trigger --enqueue",
+    "seeded CLI matrix queue bridge guidance"
+  );
+  assertIncludes(
+    fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
+    "linkage",
+    "seeded CLI matrix linkage guidance"
   );
 
   const manifest = assertManifestMatches(root);
@@ -352,6 +414,7 @@ function runSmoke() {
     exerciseRemovedFlags(binPath, tempRoot);
     exerciseMirrorCollision(binPath, tempRoot);
     exerciseBaseInit(binPath, tempRoot);
+    exerciseOptionalSpecWorkTemplates(binPath, tempRoot);
     exerciseDbInit(binPath, tempRoot);
     exerciseAgentInit(binPath, tempRoot);
     console.log("init smoke passed");

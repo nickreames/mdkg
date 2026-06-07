@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: tool
+spec_kind: tool
 ---
 
 # Tool Identity

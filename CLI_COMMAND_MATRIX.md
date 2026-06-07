@@ -1,6 +1,6 @@
 # CLI Command Matrix
 
-as_of: 2026-06-05
+as_of: 2026-06-06
 package_version_in_source: 0.2.0
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
@@ -25,6 +25,7 @@ Primary commands:
 - `pack`
 - `skill`
 - `capability`
+- `spec`
 - `archive`
 - `bundle`
 - `subgraph`
@@ -47,6 +48,7 @@ Advanced / maintenance commands:
 Skills are first-class and are accessed only through `mdkg skill ...`.
 Generic `list/show/search` do not expose skills.
 Capability cache discovery is read-only and accessed through `mdkg capability ...`.
+Optional reusable SPEC capability records are accessed through `mdkg spec ...`.
 Archive sidecars are accessed through `mdkg archive ...`.
 Full graph snapshot bundles are accessed through `mdkg bundle ...`.
 Read-only child graph orchestration is accessed through `mdkg subgraph ...`.
@@ -490,9 +492,32 @@ Notes:
 - `capability resolve` ranks local and subgraph capabilities deterministically for orchestration planning
 - stale subgraphs remain visible with degraded ranking unless `--fresh-only` is supplied
 - records include deterministic source metadata such as workspace, visibility, kind, id/qid/slug, path, headings, refs, source hash, and `indexed_at`
+- SPEC and WORK capability records include read-only `linkage` arrays for related SPECs, work contracts, work orders, and receipts when those graph mirrors exist
 - `.mdkg/index/capabilities.json` is rebuilt by `mdkg index` and by capability commands when stale
 - normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
 - visibility is mdkg export metadata used by capability filters, `pack --visibility`, public bundle checks, validation, and doctor diagnostics; it is not secret scanning or body redaction
+
+### `mdkg spec`
+
+When to use:
+- list optional `SPEC.md` reusable capability surfaces
+- show one SPEC capability record by id, qid, path, or alias
+- validate the graph while ensuring a named SPEC capability exists
+
+Usage:
+- `mdkg spec list [--json]`
+- `mdkg spec show <id-or-qid-or-alias> [--json]`
+- `mdkg spec validate [<id-or-qid-or-alias>] [--json]`
+
+Flags:
+- `--json`
+
+Notes:
+- `SPEC.md` is optional; repos with no SPEC files remain valid
+- SPEC records are reusable-capability oriented, not documentation-only planning notes
+- `mdkg spec validate` with no ref validates the graph and all optional SPEC records
+- `mdkg spec validate <ref>` also checks that the target SPEC reference exists
+- use `mdkg capability ...` for broader skill, SPEC, WORK, core-doc, and design-doc capability discovery
 
 ### `mdkg archive`
 
@@ -640,14 +665,18 @@ When to use:
 
 Usage:
 - `mdkg work contract new ...`
-- `mdkg work order new|update ...`
-- `mdkg work receipt new|update ...`
+- `mdkg work trigger <work-or-capability-ref> ...`
+- `mdkg work order new|status|update ...`
+- `mdkg work receipt new|verify|update ...`
 - `mdkg work artifact add ...`
 - `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
-- `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
-- `mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]`
-- `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--json]`
-- `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
+- `mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]`
+- `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]`
+- `mdkg work order status <id-or-qid> [--json]`
+- `mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]`
+- `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]`
+- `mdkg work receipt verify <id-or-qid> [--json]`
+- `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
 
 Notes:
@@ -655,13 +684,21 @@ Notes:
 - production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg
 - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors
 - `artifact://...` refs identify external/runtime-managed artifacts; `archive://...` refs identify committed mdkg archive sidecars
-- `work order new` accepts URI-style requester/request refs and archive input refs
-- `work receipt new` accepts URI-style cost/proof/attestation refs and SHA-256 input/output hash refs
+- `work trigger` accepts a `WORK.md` ref directly or a `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
+- example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
+- `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
+- `work order new` accepts URI-style requester/request/trigger refs, archive input refs, optional queue refs, and stable payload hashes
+- `work order status` is read-only and reports deterministic order state plus linked receipts
+- `work receipt new` accepts URI-style cost/proof/attestation refs, explicit redaction policy, and SHA-256 evidence/input/output hash refs
+- `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks; invalid receipts print JSON before exiting nonzero
 - `work artifact add` calls `mdkg archive add`, then attaches the resulting `archive://...` ref to the target order or receipt
 - `work order update`, `work receipt update`, and `work artifact add` accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace
 
 JSON receipts:
 - `contract new`, `order new`, `order update`, `receipt new`, and `receipt update`: `{ action, node }`
+- `trigger`: `{ action: "triggered", node, trigger: { target_ref, source_qid?, work_qid, payload_hash, executed, enqueue, event_appended } }`
+- `order status`: `{ kind: "work_order_status", order, receipt_count, receipts }`
+- `receipt verify`: `{ kind: "work_receipt_verify", ok, receipt, work_order?, checks, errors, warnings }`
 - `artifact add`: `{ action: "artifact_registered", target, archive }`
 
 ### `mdkg goal`
@@ -1008,6 +1045,12 @@ Current JSON envelopes:
   - `{ kind: "capability", item }`
 - `capability resolve`
   - `{ kind: "capability_resolve", query?, requires?, fresh_only, count, items, warnings }`
+- `spec list`
+  - `{ kind: "spec", count, items }`
+- `spec show`
+  - `{ kind: "spec", item }`
+- `spec validate`
+  - `{ action: "validated", ok, warning_count, error_count, warnings, errors, report_path? }`
 - `archive add` / `archive list` / `archive show` / `archive verify` / `archive compress`
   - archive-specific JSON receipts documented in the `mdkg archive` section
 - `work ...`
@@ -1017,6 +1060,7 @@ Kind values in this wave:
 - node commands: `node`
 - skill commands: `skill`
 - capability commands: `capability`
+- spec commands: `spec`
 - archive commands: `archive`
 
 JSON behavior rules:

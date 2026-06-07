@@ -119,6 +119,58 @@ test("cli help capability documents read-only capability discovery", () => {
   assert.match(workspaceHelp.stdout, /--visibility <level>/);
 });
 
+test("cli help spec documents optional reusable capability records", () => {
+  const specHelp = spawnSync(process.execPath, [cliPath, "help", "spec"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(specHelp.status, 0);
+  assert.match(specHelp.stdout, /mdkg spec list \[--json\]/);
+  assert.match(specHelp.stdout, /mdkg spec show <id-or-qid-or-alias> \[--json\]/);
+  assert.match(specHelp.stdout, /mdkg spec validate \[<id-or-qid-or-alias>\] \[--json\]/);
+  assert.match(specHelp.stdout, /SPEC\.md is optional and reusable-capability oriented/);
+
+  const specValidateHelp = spawnSync(process.execPath, [cliPath, "help", "spec", "validate"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(specValidateHelp.status, 0);
+  assert.match(specValidateHelp.stdout, /With no reference, validates the graph and all optional SPEC\.md capability records/);
+  assert.match(specValidateHelp.stdout, /With a reference, also ensures that specific SPEC\.md capability exists/);
+});
+
+test("cli help work documents trigger status verify polish", () => {
+  const workHelp = spawnSync(process.execPath, [cliPath, "help", "work"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(workHelp.status, 0);
+  assert.match(workHelp.stdout, /mdkg work order new\|status\|update/);
+  assert.match(workHelp.stdout, /mdkg work receipt new\|verify\|update/);
+
+  const triggerHelp = spawnSync(process.execPath, [cliPath, "help", "work", "trigger"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(triggerHelp.status, 0);
+  assert.match(triggerHelp.stdout, /mdkg work trigger work\.example --id order\.example-1 --requester user:\/\/example --json/);
+  assert.match(triggerHelp.stdout, /Accepted targets: direct WORK\.md ref, or SPEC\.md ref with exactly one resolvable work contract/);
+
+  const orderHelp = spawnSync(process.execPath, [cliPath, "help", "work", "order"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(orderHelp.status, 0);
+  assert.match(orderHelp.stdout, /work order status is read-only and reports deterministic JSON order state plus linked receipts/);
+
+  const receiptHelp = spawnSync(process.execPath, [cliPath, "help", "work", "receipt"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(receiptHelp.status, 0);
+  assert.match(receiptHelp.stdout, /work receipt verify is read-only and reports deterministic JSON linkage/);
+});
+
 test("cli help db documents project database boundaries", () => {
   const dbHelp = spawnSync(process.execPath, [cliPath, "help", "db"], {
     encoding: "utf8",

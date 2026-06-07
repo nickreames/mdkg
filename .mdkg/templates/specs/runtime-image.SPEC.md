@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: runtime_image
+spec_kind: runtime_image
 ---
 
 # Runtime Image
