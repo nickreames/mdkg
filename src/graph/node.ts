@@ -326,19 +326,31 @@ function requireTemplateSchema(
   return schema;
 }
 
+const OPTIONAL_COMPAT_TEMPLATE_KEYS: Record<
+  string,
+  Record<string, "scalar" | "list" | "boolean">
+> = {
+  spec: {
+    spec_kind: "scalar",
+  },
+};
+
 function validateTemplateKeys(
   frontmatter: Record<string, FrontmatterValue>,
   schema: TemplateSchema,
   filePath: string
 ): void {
   for (const key of Object.keys(frontmatter)) {
-    if (!schema.allowedKeys.has(key)) {
+    if (
+      !schema.allowedKeys.has(key) &&
+      OPTIONAL_COMPAT_TEMPLATE_KEYS[schema.type]?.[key] === undefined
+    ) {
       throw formatError(filePath, `unknown key: ${key}`);
     }
   }
 
   for (const [key, value] of Object.entries(frontmatter)) {
-    const expected = schema.keyKinds[key];
+    const expected = schema.keyKinds[key] ?? OPTIONAL_COMPAT_TEMPLATE_KEYS[schema.type]?.[key];
     if (!expected) {
       continue;
     }

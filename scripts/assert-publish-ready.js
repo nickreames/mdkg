@@ -41,6 +41,12 @@ function requirePackageVersions() {
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
     fail("prepublishOnly is missing smoke:db-queue-cli");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:cli-ux-polish"]) {
+    fail("package.json is missing smoke:cli-ux-polish");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:work-invocation && npm run smoke:cli-ux-polish")) {
+    fail("prepublishOnly must run smoke:cli-ux-polish immediately after smoke:work-invocation");
+  }
 }
 
 function requireCliBuild() {

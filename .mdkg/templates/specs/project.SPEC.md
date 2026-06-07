@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: project
+spec_kind: project_service
 ---
 
 # Project Role

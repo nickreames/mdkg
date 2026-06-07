@@ -6,7 +6,50 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL contracts may change quickly while the project converges on a stable v1 surface.
 
-## 0.2.0 - Unreleased
+## 0.3.0 - Unreleased
+
+### Added
+
+- Added optional `SPEC.md` reusable capability records with strict validation
+  for supported `spec_kind` values and diagnostics that reject documentation-only
+  misuse while keeping repos without SPEC files valid.
+- Added focused `mdkg spec list/show/validate` commands for optional SPEC
+  capability discovery alongside the broader `mdkg capability ...` surface.
+- Added a dogfood mdkg CLI `SPEC.md` and linked `WORK.md` contract so the CLI's
+  graph, project DB, skill, and tool capabilities are discoverable through the
+  same capability index used by downstream repos.
+- Added deterministic `mdkg work trigger`, `mdkg work order status`, and
+  `mdkg work receipt verify` helpers for creating submitted work-order mirrors,
+  reviewing order/receipt linkage, and validating receipt evidence without
+  executing work.
+- Added optional `mdkg work trigger --enqueue <queue>` delivery bridging to the
+  public local project DB queue surface. The bridge requires an initialized,
+  migrated, verified DB and an explicitly created active queue, records
+  delivery refs, and still does not execute work.
+- Added read-only SPEC/WORK capability linkage arrays for related specs, work
+  contracts, work orders, and receipts.
+- Added packed `smoke:work-invocation` coverage for trigger-to-order-to-receipt
+  verification plus queue bridge delivery from an installed tarball.
+
+### Changed
+
+- Hardened default SPEC, WORK, WORK_ORDER, and RECEIPT templates with capability
+  metadata, payload hashes, queue refs, evidence hashes, redaction policies, and
+  explicit semantic-mirror boundaries.
+- Updated README, command matrix, help snapshots, init assets, and upgrade
+  smokes for optional SPEC adoption, work invocation helpers, queue bridge
+  behavior, capability linkage, and no-SPEC backward compatibility.
+- Strengthened init and upgrade smokes so fresh workspaces can remain SPEC-free
+  while optional SPEC/WORK templates can be created and validated on demand.
+
+### Security
+
+- Audited templates, docs, dogfood mirrors, and work invocation command paths for
+  no-secret and semantic-mirror boundaries before the 0.3.0 release metadata
+  bump. No raw secret, credential, payment, ledger, or canonical production
+  state values were identified.
+
+## 0.2.0 - 2026-06-06
 
 Release numbering note: future project DB materializer/profile release planning
 should follow `0.1.9 -> 0.2.0` rather than continuing the line as `0.1.10`

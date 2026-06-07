@@ -43,7 +43,7 @@ const EXTERNAL_REF_LIST_KEYS = new Set([
   "proof_refs",
   "attestation_refs",
 ]);
-const HASH_REF_LIST_KEYS = new Set(["input_hashes", "output_hashes"]);
+const HASH_REF_LIST_KEYS = new Set(["evidence_hashes", "input_hashes", "output_hashes"]);
 
 function isValidId(value: string): boolean {
   return isCanonicalId(value);

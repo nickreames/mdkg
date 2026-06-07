@@ -25,13 +25,14 @@ mdkg search "..."
 mdkg show <id>
 mdkg pack <id>
 mdkg capability search "..."
+mdkg spec list --json
 mdkg archive list
 mdkg bundle create --profile private
 mdkg subgraph list --json
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal select/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal select/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
 Agent workflow docs can use semantic ids:
 
@@ -39,6 +40,12 @@ Agent workflow docs can use semantic ids:
 mdkg new spec "image worker" --id agent.image-worker
 mdkg new work "generate image" --id work.generate-image
 ```
+
+`SPEC.md` is optional. Repos without SPEC files still validate. When present,
+SPEC records describe reusable capability surfaces rather than general planning
+notes. `mdkg spec list/show/validate` is the focused SPEC command family, while
+`mdkg capability ...` remains the broader read-only discovery surface for
+skills, SPECs, WORK contracts, core docs, and design docs.
 
 Read `AGENT_START.md` first when this repo includes it.
 
@@ -146,12 +153,28 @@ Use work lifecycle helpers for semantic mirrors only:
 
 ```bash
 mdkg work contract new "example capability" --id work.example --agent-id agent.example --kind example --inputs prompt:text:required --outputs result:text:required
-mdkg work order new "example request" --id order.example-1 --work-id work.example --requester user://example
+mdkg work trigger work.example --id order.example-1 --requester user://example
+mdkg work order status order.example-1 --json
 mdkg work receipt new "example receipt" --id receipt.example-1 --work-order-id order.example-1 --outcome success
+mdkg work receipt verify receipt.example-1 --json
+```
+
+Create a manual order instead of a trigger-created order when you need to supply
+input refs at order creation time:
+
+```bash
+mdkg work order new "example request" --id order.example-manual --work-id work.example --requester user://example --input-refs archive://archive.example
 ```
 
 Receipt statuses are `recorded`, `verified`, `rejected`, and `superseded`.
 Update and artifact commands accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace.
+
+`mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a
+WORK contract or a SPEC with exactly one resolvable work contract. `mdkg work
+order status` and `mdkg work receipt verify` are read-only review helpers.
+`mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue
+delivery message after the queue has been explicitly created and is active; it
+still does not execute work.
 
 Production orders, receipts, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg. mdkg stores committed semantic mirrors and reviewable evidence. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
 

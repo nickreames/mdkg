@@ -63,9 +63,45 @@ test("capability command lists searches and shows cached capability records", ()
     skill_refs: "[capability-routing]",
   });
   updateFrontmatter(path.join(root, spec.path), {
+    work_contracts: `[${path.basename(path.dirname(work.path))}/WORK.md]`,
     requested_capabilities: "[capability.routing]",
     skill_refs: "[capability-routing]",
+    relates: "[work.capability-route]",
   });
+  const order = JSON.parse(
+    run([
+      "work",
+      "order",
+      "new",
+      "Capability Route Order",
+      "--id",
+      "order.capability-route",
+      "--work-id",
+      "work.capability-route",
+      "--requester",
+      "user://CapabilityRequester",
+      "--queue-refs",
+      "queue://project-db/capability/order.capability-route",
+      "--json",
+    ], root).stdout
+  ).node;
+  run([
+    "work",
+    "receipt",
+    "new",
+    "Capability Route Receipt",
+    "--id",
+    "receipt.capability-route",
+    "--work-order-id",
+    order.id,
+    "--outcome",
+    "success",
+    "--proof-refs",
+    "proof://capability",
+    "--evidence-hashes",
+    "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "--json",
+  ], root);
 
   const indexOutput = run(["index"], root).stdout;
   assert.match(indexOutput, /capabilities index written/);
@@ -79,6 +115,16 @@ test("capability command lists searches and shows cached capability records", ()
       .stdout
   );
   assert.ok(search.items.some((item: { id: string }) => item.id === "work.capability-route"));
+
+  const chainSearch = JSON.parse(
+    run(["capability", "search", "SPEC WORK_ORDER RECEIPT", "--kind", "work", "--json"], root)
+      .stdout
+  );
+  const chainedWork = chainSearch.items.find((item: { id: string }) => item.id === "work.capability-route");
+  assert.ok(chainedWork);
+  assert.deepEqual(chainedWork.linkage.spec_qids, ["root:agent.capability-worker"]);
+  assert.deepEqual(chainedWork.linkage.work_order_qids, ["root:order.capability-route"]);
+  assert.deepEqual(chainedWork.linkage.receipt_qids, ["root:receipt.capability-route"]);
 
   const shown = JSON.parse(run(["capability", "show", "capability-routing", "--json"], root).stdout);
   assert.equal(shown.item.slug, "capability-routing");

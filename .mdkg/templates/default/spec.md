@@ -3,8 +3,9 @@ id: {{id}}
 type: spec
 title: {{title}}
 version: 0.1.0
-role: subagent
-runtime_mode: room_orchestrated
+spec_kind: capability
+role: tool_service
+runtime_mode: tool_service
 work_contracts: []
 requested_capabilities: []
 skill_refs: []
@@ -13,7 +14,7 @@ model_refs: []
 wasm_component_refs: []
 runtime_image_refs: []
 subagent_refs: []
-resource_profile: builder
+resource_profile: local_cli
 update_policy: manual
 tags: []
 owners: []
@@ -28,11 +29,11 @@ updated: {{updated}}
 
 # Purpose
 
-Define the agent, package, or runtime specification.
+Define the reusable capability surface.
 
 # Runtime
 
-Describe role, runtime mode, resource profile, and update policy.
+Describe the role, runtime mode, resource profile, and update policy.
 
 # Work Contracts
 
@@ -40,4 +41,5 @@ List related WORK.md contracts.
 
 # Capabilities
 
-List requested capabilities and relevant constraints.
+List requested capabilities and the authority/resource constraints that govern
+use.

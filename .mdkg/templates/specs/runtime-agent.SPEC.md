@@ -1,6 +1,7 @@
 ---
 extends: agent.SPEC.md
 template_kind: runtime_agent
+spec_kind: runtime_agent
 ---
 
 # Queue Ownership
@@ -45,4 +46,4 @@ template_kind: runtime_agent
 
 - Local runtime agent manifest.
 - Workflow/runtime protocol manifest.
-- Product-specific agent manifest in downstream repos.
+- Downstream agent manifest owned outside mdkg canonical source.

@@ -356,8 +356,39 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
       "user://ExampleRequester",
       "--request-ref",
       "request://GenerateImage/1",
+      "--trigger-ref",
+      "trigger://manual/generate-image",
       "--input-refs",
       "archive://archive.prompt",
+      "--queue-refs",
+      "queue://project-db/image-generation/order.generate-image-1",
+      "--requested-outputs",
+      "image_url:url:required",
+      "--constraint-refs",
+      "https://example.invalid/constraint",
+      "--json",
+    ], root).stdout
+  ).node;
+  const matchingOrder = JSON.parse(
+    run([
+      "work",
+      "order",
+      "new",
+      "Generate Image Order Copy",
+      "--id",
+      "order.generate-image-2",
+      "--work-id",
+      "work.generate-image",
+      "--requester",
+      "user://ExampleRequester",
+      "--request-ref",
+      "request://GenerateImage/1",
+      "--trigger-ref",
+      "trigger://manual/generate-image",
+      "--input-refs",
+      "archive://archive.prompt",
+      "--queue-refs",
+      "queue://project-db/image-generation/order.generate-image-1",
       "--requested-outputs",
       "image_url:url:required",
       "--constraint-refs",
@@ -388,6 +419,7 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
   const outputPath = path.join(inputDir, "image.txt");
   fs.writeFileSync(outputPath, "artifact placeholder\n", "utf8");
   const outputHash = `sha256:${sha256(outputPath)}`;
+  const supplementalEvidenceHash = "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc";
   const receipt = JSON.parse(
     run([
       "work",
@@ -404,12 +436,16 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
       "superseded",
       "--cost-ref",
       "cost://redacted/generate-image-1",
+      "--redaction-policy",
+      "redacted_summary",
       "--artifacts",
       "artifact://image-output-placeholder",
       "--proof-refs",
       "https://example.invalid/proof",
       "--attestation-refs",
       "attestation://example",
+      "--evidence-hashes",
+      outputHash,
       "--input-hashes",
       outputHash,
       "--output-hashes",
@@ -444,6 +480,8 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
     "completed",
     "--add-input-refs",
     "archive://archive.prompt,archive://archive.prompt",
+    "--add-queue-refs",
+    "queue://project-db/image-generation/order.generate-image-1,queue://project-db/image-generation/order.generate-image-1,queue://project-db/image-generation/manual-checkpoint",
     "--add-artifacts",
     "artifact://image-output-placeholder,artifact://image-output-placeholder",
     "--json",
@@ -459,6 +497,8 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
     "artifact://image-output-placeholder,artifact://image-output-placeholder",
     "--add-proof-refs",
     "archive://archive.image-output,archive://archive.image-output",
+    "--add-evidence-hashes",
+    `${outputHash},${supplementalEvidenceHash},${supplementalEvidenceHash}`,
     "--json",
   ], root);
   run([
@@ -477,18 +517,84 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
   assert.match(orderContent, /^order_status: completed$/m);
   assert.match(orderContent, /requester: user:\/\/ExampleRequester/);
   assert.match(orderContent, /request_ref: request:\/\/GenerateImage\/1/);
+  assert.match(orderContent, /trigger_ref: trigger:\/\/manual\/generate-image/);
+  const payloadHash = orderContent.match(/^payload_hash: (sha256:[a-f0-9]{64})$/m)?.[1];
+  assert.ok(payloadHash, "work order should include a deterministic payload hash");
+  const matchingOrderContent = fs.readFileSync(path.join(root, matchingOrder.path), "utf8");
+  assert.match(matchingOrderContent, new RegExp(`^payload_hash: ${payloadHash}$`, "m"));
+  assert.equal((orderContent.match(/queue:\/\/project-db\/image-generation\/order\.generate-image-1/g) ?? []).length, 1);
+  assert.equal((orderContent.match(/queue:\/\/project-db\/image-generation\/manual-checkpoint/g) ?? []).length, 1);
   assert.equal((orderContent.match(/archive:\/\/archive\.prompt/g) ?? []).length, 1);
   assert.equal((orderContent.match(/archive:\/\/archive\.supplemental/g) ?? []).length, 1);
   assert.equal((orderContent.match(/artifact:\/\/image-output-placeholder/g) ?? []).length, 1);
   const receiptContent = fs.readFileSync(path.join(root, receipt.path), "utf8");
   assert.match(receiptContent, /^receipt_status: superseded$/m);
+  assert.match(receiptContent, /^redaction_policy: redacted_summary$/m);
   assert.match(receiptContent, /proof_refs: \[[^\]]*https:\/\/example\.invalid\/proof[^\]]*\]/);
   assert.match(receiptContent, /proof_refs: \[[^\]]*archive:\/\/archive\.image-output[^\]]*\]/);
   assert.match(receiptContent, /attestation_refs: \[attestation:\/\/example, attestation:\/\/review\/superseded\]/);
   assert.equal((receiptContent.match(/artifact:\/\/image-output-placeholder/g) ?? []).length, 1);
   assert.equal((receiptContent.match(/archive:\/\/archive\.image-output/g) ?? []).length, 2);
+  assert.equal((receiptContent.match(new RegExp(outputHash, "g")) ?? []).length, 3);
+  assert.equal((receiptContent.match(new RegExp(supplementalEvidenceHash, "g")) ?? []).length, 1);
   assert.match(receiptContent, new RegExp(`input_hashes: \\[${outputHash}\\]`));
   assert.match(receiptContent, new RegExp(`output_hashes: \\[${outputHash}\\]`));
+
+  const orderStatus = JSON.parse(run(["work", "order", "status", `root:${order.id}`, "--json"], root).stdout);
+  assert.equal(orderStatus.kind, "work_order_status");
+  assert.equal(orderStatus.order.qid, `root:${order.id}`);
+  assert.equal(orderStatus.order.status, "completed");
+  assert.equal(orderStatus.order.work_qid, `root:${work.id}`);
+  assert.equal(orderStatus.order.requester, "user://ExampleRequester");
+  assert.equal(orderStatus.order.queue_refs.length, 2);
+  assert.equal(orderStatus.order.artifacts.length, 1);
+  assert.equal(orderStatus.receipt_count, 1);
+  assert.equal(orderStatus.receipts[0].qid, `root:${receipt.id}`);
+  assert.equal(orderStatus.receipts[0].receipt_status, "superseded");
+  assert.equal(orderStatus.receipts[0].redaction_policy, "redacted_summary");
+  assert.deepEqual(orderStatus.receipts[0].evidence_hashes.sort(), [
+    outputHash,
+    supplementalEvidenceHash,
+  ].sort());
+  const missingStatus = runFailure(["work", "order", "status", "order.missing", "--json"], root);
+  assert.match(missingStatus.stderr, /work order not found in workspace root: order\.missing/);
+
+  const verifiedReceipt = JSON.parse(run(["work", "receipt", "verify", `root:${receipt.id}`, "--json"], root).stdout);
+  assert.equal(verifiedReceipt.kind, "work_receipt_verify");
+  assert.equal(verifiedReceipt.ok, true);
+  assert.equal(verifiedReceipt.receipt.qid, `root:${receipt.id}`);
+  assert.equal(verifiedReceipt.receipt.work_order_qid, `root:${order.id}`);
+  assert.equal(verifiedReceipt.work_order.qid, `root:${order.id}`);
+  assert.equal(verifiedReceipt.work_order.work_qid, `root:${work.id}`);
+  assert.equal(verifiedReceipt.checks.find((check: { name: string }) => check.name === "evidence_present").ok, true);
+  assert.equal(verifiedReceipt.checks.find((check: { name: string }) => check.name === "archive_refs").ok, true);
+  assert.deepEqual(verifiedReceipt.errors, []);
+
+  const emptyReceipt = JSON.parse(
+    run([
+      "work",
+      "receipt",
+      "new",
+      "Empty Evidence Receipt",
+      "--id",
+      "receipt.empty-evidence",
+      "--work-order-id",
+      order.id,
+      "--outcome",
+      "success",
+      "--json",
+    ], root).stdout
+  ).node;
+  const verifyFailure = runFailure(["work", "receipt", "verify", emptyReceipt.id, "--json"], root);
+  const failedReceipt = JSON.parse(verifyFailure.stdout);
+  assert.equal(failedReceipt.kind, "work_receipt_verify");
+  assert.equal(failedReceipt.ok, false);
+  assert.ok(
+    failedReceipt.errors.some((error: string) =>
+      error.includes("receipt has no artifacts, proof refs, attestations, or hashes")
+    )
+  );
+  assert.match(verifyFailure.stderr, /receipt verification failed/);
 
   const invalidNew = runFailure([
     "work",
@@ -508,9 +614,208 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
   assert.match(invalidNew.stderr, /--receipt-status must be one of recorded, verified, rejected, superseded/);
   const invalidUpdate = runFailure(["work", "receipt", "update", receipt.id, "--receipt-status", "archived", "--json"], root);
   assert.match(invalidUpdate.stderr, /--receipt-status must be one of recorded, verified, rejected, superseded/);
+  const invalidRedactionPolicy = runFailure([
+    "work",
+    "receipt",
+    "new",
+    "Invalid Redaction",
+    "--id",
+    "receipt.invalid-redaction",
+    "--work-order-id",
+    order.id,
+    "--outcome",
+    "success",
+    "--redaction-policy",
+    "raw_runtime_log",
+    "--json",
+  ], root);
+  assert.match(invalidRedactionPolicy.stderr, /--redaction-policy must be one of refs_and_hashes_only, redacted_summary, external_private/);
+  const invalidEvidenceHash = runFailure([
+    "work",
+    "receipt",
+    "update",
+    receipt.id,
+    "--add-evidence-hashes",
+    "sha256:not-a-hash",
+    "--json",
+  ], root);
+  assert.match(invalidEvidenceHash.stderr, /--add-evidence-hashes must be sha256:<64 lowercase hex chars>/);
+  const invalidPayloadHash = runFailure([
+    "work",
+    "order",
+    "new",
+    "Invalid Hash Order",
+    "--id",
+    "order.invalid-hash",
+    "--work-id",
+    work.id,
+    "--requester",
+    "user://ExampleRequester",
+    "--payload-hash",
+    "sha256:not-a-hash",
+    "--json",
+  ], root);
+  assert.match(invalidPayloadHash.stderr, /--payload-hash must be sha256:<64 lowercase hex chars>/);
 
   run(["validate"], root);
   run(["index"], root);
   const pack = run(["pack", receipt.id, "--dry-run", "--stats"], root);
   assert.match(pack.stdout, /archive.image-output/);
+});
+
+test("work trigger creates deterministic submitted order mirrors without executing work", () => {
+  const root = makeTempDir("mdkg-work-trigger-cli-");
+  run(["init", "--agent"], root);
+
+  const spec = JSON.parse(run(["new", "spec", "Image Worker", "--id", "agent.image-worker", "--json"], root).stdout).node;
+  const work = JSON.parse(
+    run([
+      "work",
+      "contract",
+      "new",
+      "Generate Image",
+      "--id",
+      "work.generate-image",
+      "--agent-id",
+      "agent.image-worker",
+      "--kind",
+      "image_generation",
+      "--inputs",
+      "prompt:text:required",
+      "--outputs",
+      "image_url:url:required",
+      "--required-capabilities",
+      "model.image.generate",
+      "--pricing-model",
+      "included",
+      "--json",
+    ], root).stdout
+  ).node;
+  updateFrontmatter(path.join(root, spec.path), {
+    work_contracts: `[${path.basename(path.dirname(work.path))}/WORK.md]`,
+    relates: "[work.generate-image]",
+  });
+
+  const triggered = JSON.parse(
+    run([
+      "work",
+      "trigger",
+      "work.generate-image",
+      "--requester",
+      "user://ExampleRequester",
+      "--json",
+    ], root).stdout
+  );
+  assert.equal(triggered.action, "triggered");
+  assert.equal(triggered.node.type, "work_order");
+  assert.match(triggered.node.id, /^order\.work\.generate\.image\.[a-f0-9]{12}$/);
+  assert.equal(triggered.trigger.work_qid, "root:work.generate-image");
+  assert.equal(triggered.trigger.executed, false);
+  assert.deepEqual(triggered.trigger.enqueue, { requested: false });
+  assert.match(triggered.trigger.payload_hash, /^sha256:[a-f0-9]{64}$/);
+
+  const orderContent = fs.readFileSync(path.join(root, triggered.node.path), "utf8");
+  assert.match(orderContent, /^work_id: work\.generate-image$/m);
+  assert.match(orderContent, /^requester: user:\/\/ExampleRequester$/m);
+  assert.match(orderContent, /^order_status: submitted$/m);
+  assert.match(orderContent, /^trigger_ref: trigger\.mdkg-work-trigger$/m);
+  assert.match(orderContent, new RegExp(`^payload_hash: ${triggered.trigger.payload_hash}$`, "m"));
+  assert.match(orderContent, /requested_outputs: \[image_url:url:required\]/);
+  assert.doesNotMatch(orderContent, /receipt_status:/);
+
+  const repeated = runFailure([
+    "work",
+    "trigger",
+    "work.generate-image",
+    "--requester",
+    "user://ExampleRequester",
+    "--json",
+  ], root);
+  assert.match(repeated.stderr, /node already exists/);
+
+  const missingDbEnqueue = runFailure([
+    "work",
+    "trigger",
+    "agent.image-worker",
+    "--id",
+    "order.spec-trigger-missing-db",
+    "--title",
+    "Spec Triggered Missing Db",
+    "--requester",
+    "user://SpecRequester",
+    "--enqueue",
+    "local_queue",
+    "--json",
+  ], root);
+  assert.match(missingDbEnqueue.stderr, /work trigger --enqueue requires a valid project DB/);
+
+  run(["db", "init", "--json"], root);
+  run(["db", "migrate", "--json"], root);
+  const missingQueueEnqueue = runFailure([
+    "work",
+    "trigger",
+    "agent.image-worker",
+    "--id",
+    "order.spec-trigger-missing-queue",
+    "--title",
+    "Spec Triggered Missing Queue",
+    "--requester",
+    "user://SpecRequester",
+    "--enqueue",
+    "local_queue",
+    "--json",
+  ], root);
+  assert.match(missingQueueEnqueue.stderr, /project DB queue not found: local_queue/);
+
+  run(["db", "queue", "create", "local_queue", "--json"], root);
+  const specTriggered = JSON.parse(
+    run([
+      "work",
+      "trigger",
+      "agent.image-worker",
+      "--id",
+      "order.spec-trigger",
+      "--title",
+      "Spec Triggered Order",
+      "--requester",
+      "user://SpecRequester",
+      "--enqueue",
+      "local_queue",
+      "--json",
+    ], root).stdout
+  );
+  assert.equal(specTriggered.node.id, "order.spec-trigger");
+  assert.equal(specTriggered.node.title, "Spec Triggered Order");
+  assert.equal(specTriggered.trigger.source_qid, "root:agent.image-worker");
+  assert.equal(specTriggered.trigger.work_qid, "root:work.generate-image");
+  assert.equal(specTriggered.trigger.executed, false);
+  assert.deepEqual(specTriggered.trigger.enqueue, {
+    requested: true,
+    queue_name: "local_queue",
+    queue_ref: "queue://project-db/local_queue/order.spec-trigger",
+    message_id: "order.spec-trigger",
+    enqueued: true,
+    created: true,
+    duplicate: false,
+    message_status: "ready",
+    message_payload_hash: specTriggered.trigger.enqueue.message_payload_hash,
+  });
+  assert.match(specTriggered.trigger.enqueue.message_payload_hash, /^sha256:[a-f0-9]{64}$/);
+  const queued = JSON.parse(
+    run(["db", "queue", "show", "local_queue", "order.spec-trigger", "--json"], root).stdout
+  );
+  assert.equal(queued.message.dedupe_key, "root:order.spec-trigger");
+  assert.equal(queued.message.status, "ready");
+  const queuedPayload = JSON.parse(queued.message.payload_json);
+  assert.equal(queuedPayload.kind, "mdkg.work_order.triggered");
+  assert.equal(queuedPayload.work_order_qid, "root:order.spec-trigger");
+  assert.equal(queuedPayload.work_qid, "root:work.generate-image");
+  assert.equal(queuedPayload.source_qid, "root:agent.image-worker");
+  assert.equal(queuedPayload.payload_hash, specTriggered.trigger.payload_hash);
+  assert.equal(queuedPayload.queue_ref, "queue://project-db/local_queue/order.spec-trigger");
+
+  const specOrderContent = fs.readFileSync(path.join(root, specTriggered.node.path), "utf8");
+  assert.match(specOrderContent, /queue_refs: \[queue:\/\/project-db\/local_queue\/order\.spec-trigger\]/);
+
+  run(["validate"], root);
 });

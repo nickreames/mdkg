@@ -3,6 +3,7 @@ id: {{spec_id}}
 type: spec
 title: {{title}}
 version: 0.1.0
+spec_kind: capability
 role: {{role}}
 runtime_mode: {{runtime_mode}}
 work_contracts: []
@@ -103,7 +104,8 @@ explicit non-authorities.
 
 # Projection Targets
 
-- `.codex/agents`, runtime manifest, package, API, or protocol projection.
+- Runtime manifest, package metadata, API contract, tool manifest, or protocol
+  projection.
 
 # Versioning
 

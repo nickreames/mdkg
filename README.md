@@ -167,7 +167,15 @@ mdkg index
 mdkg capability list --kind skill --json
 mdkg capability search "image worker" --kind work --json
 mdkg capability show <id-or-qid-or-slug> --json
+mdkg spec list --json
+mdkg spec show <id-or-qid-or-alias> --json
 ```
+
+`SPEC.md` is optional. Repos with no SPEC files still validate; when present,
+SPEC records describe reusable capability surfaces rather than general planning
+notes. `mdkg spec list/show/validate` is the focused SPEC command family, while
+`mdkg capability ...` remains the broader read-only discovery surface for
+skills, SPECs, WORK contracts, core docs, and design docs.
 
 Register source and artifact files as committed archive sidecars:
 
@@ -181,9 +189,18 @@ Create semantic mirror work contracts, orders, receipts, and artifacts:
 
 ```bash
 mdkg work contract new "generate image" --id work.generate-image --agent-id agent.image-worker --kind image_generation --inputs prompt:text:required --outputs image_url:url:required
-mdkg work order new "generate image request" --id order.generate-image-1 --work-id work.generate-image --requester user://example --input-refs archive://archive.key-input-doc
+mdkg work trigger work.generate-image --id order.generate-image-1 --requester user://example
+mdkg work order status order.generate-image-1 --json
 mdkg work receipt new "generate image receipt" --id receipt.generate-image-1 --work-order-id order.generate-image-1 --outcome success --receipt-status recorded
+mdkg work receipt verify receipt.generate-image-1 --json
 mdkg work artifact add receipt.generate-image-1 ./outputs/image.png --id archive.generated-image --kind artifact
+```
+
+Create a manual order instead of a trigger-created order when you need to supply
+input refs at order creation time:
+
+```bash
+mdkg work order new "generate image request" --id order.generate-image-manual --work-id work.generate-image --requester user://example --input-refs archive://archive.key-input-doc
 ```
 
 Receipt statuses are `recorded`, `verified`, `rejected`, and `superseded`.
@@ -254,6 +271,7 @@ These are the commands new users and agents should learn first:
 - `mdkg pack`
 - `mdkg skill`
 - `mdkg capability`
+- `mdkg spec`
 - `mdkg archive`
 - `mdkg work`
 - `mdkg goal`
@@ -326,7 +344,7 @@ mdkg maintains `.mdkg/index/capabilities.json` as a derived access cache for det
 
 The capability cache is not the full graph and is not source of truth. Normal tasks, epics, bugs, tests, feats, and checkpoints remain in the standard graph index. Markdown remains authoritative; deleting the cache is recoverable with `mdkg index` or by running a capability command when auto-reindex is enabled.
 
-Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. Workspace `visibility` also feeds mdkg's export safety checks for public/internal packs and public bundles. This is a CLI safety layer, not secret scanning, body redaction, or a replacement for private git hosting.
+Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. SPEC and WORK records also expose read-only `linkage` arrays when related work contracts, work orders, and receipts exist, so an orchestrator can discover a capability from reusable surface to invocation evidence without loading the full graph. Workspace `visibility` also feeds mdkg's export safety checks for public/internal packs and public bundles. This is a CLI safety layer, not secret scanning, body redaction, or a replacement for private git hosting.
 
 ## Index backends and parallel safety
 
@@ -360,6 +378,9 @@ rows are durable local project DB history; receipts, reducers, writer leases,
 and materializers remain internal helper surfaces in this release, with no
 public `mdkg db event`, `mdkg db reducer`, `mdkg db lease`, or
 `mdkg db materializer` CLI yet.
+`mdkg work trigger --enqueue <queue>` can bridge a submitted work order mirror
+into an explicitly created active project DB queue; it writes local delivery
+state only and never executes work.
 Use `mdkg db verify` for non-mutating health checks over config, layout,
 runtime SQLite integrity, migration metadata, and transient runtime files. Use
 `mdkg db stats` for deterministic table counts, DB size, migration state,
@@ -401,7 +422,7 @@ Use `mdkg new spec|work|work_order|receipt|feedback|dispute|proposal "<title>"` 
 
 Relational templates contain editable placeholder refs. `spec` and `work` scaffold as validation-clean standalone docs; `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 
-For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. Production order state, receipt state, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg, such as in Postgres or another application database. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
+For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. `mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a WORK contract or a SPEC with exactly one resolvable work contract. `mdkg work order status` and `mdkg work receipt verify` are read-only review helpers for deterministic closeout. `mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue delivery message after the queue has been explicitly created and is active; it still does not execute work. Production order state, receipt state, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg, such as in Postgres or another application database. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
 
 ## Archive sidecars
 
@@ -423,6 +444,7 @@ This release includes:
 - root-only published init seed config
 - skills indexing and search/show/list support
 - JSON capability cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs
+- optional `mdkg spec list/show/validate` for reusable SPEC capability records
 - SQLite index backend for fresh workspaces using built-in `node:sqlite`
 - mutation locking and atomic writes for parallel mdkg calls
 - first-class `goal` nodes and `mdkg goal show/next/evaluate/pause/resume/done`
@@ -436,7 +458,7 @@ This release includes:
 - shared `AGENT_START.md` startup guidance
 - conservative `mdkg upgrade` with mode-aware init manifests
 - archive sidecars with deterministic ZIP caches
-- semantic mirror helpers under `mdkg work ...`
+- semantic mirror helpers under `mdkg work ...`, including trigger/order status/receipt verification
 - explicit public/internal/private visibility enforcement for packs, bundles, archives, imports, validation, and doctor diagnostics
 - strict archive ZIP payload integrity checks during validation
 

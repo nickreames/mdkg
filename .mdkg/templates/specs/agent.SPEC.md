@@ -1,6 +1,7 @@
 ---
 extends: base.SPEC.md
 template_kind: agent
+spec_kind: agent
 ---
 
 # Agent Role
@@ -73,7 +74,7 @@ Suggested generic roles:
 
 # Projection Targets
 
-- `.codex/agents` TOML
-- future runtime agent manifest
-- future workflow/runtime capability object
-- future workflow/runtime agent definition
+- Tool-specific agent manifest.
+- Future runtime agent manifest.
+- Future workflow/runtime capability object.
+- Future workflow/runtime agent definition.

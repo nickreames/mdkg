@@ -167,9 +167,10 @@ function writeSpec(root: string, workspacePath = "."): void {
       "type: spec",
       "title: Capability Worker",
       "version: 0.1.0",
+      "spec_kind: agent",
       "role: subagent",
       "runtime_mode: room_orchestrated",
-      "work_contracts: []",
+      "work_contracts: [contract/WORK.md]",
       "requested_capabilities: [capability.routing]",
       "skill_refs: [capability-skill]",
       "tool_refs: []",
@@ -183,7 +184,7 @@ function writeSpec(root: string, workspacePath = "."): void {
       "owners: []",
       "links: []",
       "artifacts: []",
-      "relates: []",
+      "relates: [work.capability-route]",
       "refs: []",
       "aliases: []",
       "created: 2026-05-14",
@@ -197,7 +198,7 @@ function writeSpec(root: string, workspacePath = "."): void {
 function writeWork(root: string, workspacePath = "."): void {
   const workspaceRoot = workspacePath === "." ? root : path.join(root, workspacePath);
   writeFile(
-    path.join(workspaceRoot, ".mdkg", "work", "contract", "WORK.md"),
+    path.join(workspaceRoot, ".mdkg", "work", "agent", "contract", "WORK.md"),
     [
       "---",
       "id: work.capability-route",
@@ -232,6 +233,78 @@ function writeWork(root: string, workspacePath = "."): void {
   );
 }
 
+function writeWorkOrder(root: string, workspacePath = "."): void {
+  const workspaceRoot = workspacePath === "." ? root : path.join(root, workspacePath);
+  writeFile(
+    path.join(workspaceRoot, ".mdkg", "work", "order.capability-route", "WORK_ORDER.md"),
+    [
+      "---",
+      "id: order.capability-route",
+      "type: work_order",
+      "title: Capability Route Order",
+      "version: 0.1.0",
+      "work_id: work.capability-route",
+      "work_version: 0.1.0",
+      "requester: user://CapabilityRequester",
+      "order_status: submitted",
+      "request_ref: request.redacted",
+      "trigger_ref: trigger.manual",
+      "payload_hash: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "input_refs: []",
+      "queue_refs: [queue://project-db/capability/order.capability-route]",
+      "requested_outputs: [result:text:required]",
+      "constraint_refs: []",
+      "artifact_policy: commit_sidecar_and_zip",
+      "tags: [capability]",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [work.capability-route]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-05-14",
+      "updated: 2026-05-14",
+      "---",
+      "# Capability Route Order",
+    ].join("\n")
+  );
+}
+
+function writeReceipt(root: string, workspacePath = "."): void {
+  const workspaceRoot = workspacePath === "." ? root : path.join(root, workspacePath);
+  writeFile(
+    path.join(workspaceRoot, ".mdkg", "work", "receipt.capability-route", "RECEIPT.md"),
+    [
+      "---",
+      "id: receipt.capability-route",
+      "type: receipt",
+      "title: Capability Route Receipt",
+      "version: 0.1.0",
+      "work_order_id: order.capability-route",
+      "receipt_status: verified",
+      "outcome: success",
+      "cost_ref: cost.redacted",
+      "redaction_policy: refs_and_hashes_only",
+      "artifacts: [artifact://capability-result]",
+      "proof_refs: [proof://capability]",
+      "attestation_refs: []",
+      "evidence_hashes: [sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]",
+      "input_hashes: []",
+      "output_hashes: []",
+      "tags: [capability]",
+      "owners: []",
+      "links: []",
+      "relates: [order.capability-route]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-05-14",
+      "updated: 2026-05-14",
+      "---",
+      "# Capability Route Receipt",
+    ].join("\n")
+  );
+}
+
 test("buildCapabilitiesIndex projects only capability surfaces", () => {
   const root = makeTempDir("mdkg-capabilities-");
   writeConfig(root);
@@ -241,6 +314,8 @@ test("buildCapabilitiesIndex projects only capability surfaces", () => {
   writeDesign(root);
   writeSpec(root);
   writeWork(root);
+  writeWorkOrder(root);
+  writeReceipt(root);
   writeTask(root);
 
   const config = loadConfig(root);
@@ -250,8 +325,20 @@ test("buildCapabilitiesIndex projects only capability surfaces", () => {
   assert.deepEqual([...kinds].sort(), ["core", "design", "skill", "spec", "work"]);
   assert.equal(index.records.some((record: { id: string }) => record.id === "task-1"), false);
   assert.ok(index.records.find((record: { slug?: string }) => record.slug === "capability-skill"));
-  assert.ok(index.records.find((record: { id: string }) => record.id === "agent.capability-worker"));
-  assert.ok(index.records.find((record: { id: string }) => record.id === "work.capability-route"));
+  const specRecord = index.records.find(
+    (record: { id: string }) => record.id === "agent.capability-worker"
+  );
+  assert.ok(specRecord);
+  assert.equal(specRecord.spec.spec_kind, "agent");
+  assert.deepEqual(specRecord.spec.requested_capabilities, ["capability.routing"]);
+  assert.deepEqual(specRecord.linkage.work_contract_qids, ["root:work.capability-route"]);
+  assert.deepEqual(specRecord.linkage.work_order_qids, ["root:order.capability-route"]);
+  assert.deepEqual(specRecord.linkage.receipt_qids, ["root:receipt.capability-route"]);
+  const workRecord = index.records.find((record: { id: string }) => record.id === "work.capability-route");
+  assert.ok(workRecord);
+  assert.deepEqual(workRecord.linkage.spec_qids, ["root:agent.capability-worker"]);
+  assert.deepEqual(workRecord.linkage.work_order_qids, ["root:order.capability-route"]);
+  assert.deepEqual(workRecord.linkage.receipt_qids, ["root:receipt.capability-route"]);
 });
 
 test("buildCapabilitiesIndex aggregates enabled child workspace capabilities with visibility", () => {

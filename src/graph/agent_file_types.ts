@@ -28,6 +28,7 @@ export const AGENT_FILE_BASENAMES: Record<AgentFileType, string> = {
 export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
   spec: [
     "version",
+    "spec_kind",
     "role",
     "runtime_mode",
     "work_contracts",
@@ -64,7 +65,10 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "requester",
     "order_status",
     "request_ref",
+    "trigger_ref",
+    "payload_hash",
     "input_refs",
+    "queue_refs",
     "requested_outputs",
     "constraint_refs",
     "artifact_policy",
@@ -75,8 +79,10 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "receipt_status",
     "outcome",
     "cost_ref",
+    "redaction_policy",
     "proof_refs",
     "attestation_refs",
+    "evidence_hashes",
     "input_hashes",
     "output_hashes",
   ],
@@ -126,6 +132,27 @@ const UPDATE_POLICY_VALUES = new Set([
   "automatic",
   "disabled",
 ]);
+const SPEC_KIND_VALUES = new Set([
+  "cli_tool",
+  "api",
+  "agent",
+  "runtime_agent",
+  "capability",
+  "tool",
+  "model",
+  "runtime_image",
+  "integration",
+  "project_service",
+]);
+const DOCUMENTATION_ONLY_SPEC_KIND_ROUTES: Record<string, string> = {
+  gap_register: "use an EDD, task, checkpoint, or goal for gap registers",
+  checkpoint: "use a checkpoint node for checkpoint evidence",
+  roadmap: "use an epic, goal, EDD, or PRD for roadmaps",
+  audit: "use a task, checkpoint, or EDD for audits",
+  go_no_go: "use a DEC, task, or checkpoint for go/no-go notes",
+  planning_note: "use an EDD, task, or checkpoint for planning notes",
+  launch_checklist: "use a task, test, checkpoint, or DEC for launch checklists",
+};
 const PRICING_MODEL_VALUES = new Set([
   "free",
   "included",
@@ -144,6 +171,11 @@ const ORDER_STATUS_VALUES = new Set([
 ]);
 const RECEIPT_STATUS_VALUES = new Set(["recorded", "verified", "rejected", "superseded"]);
 const OUTCOME_VALUES = new Set(["success", "partial", "failure"]);
+const REDACTION_POLICY_VALUES = new Set([
+  "refs_and_hashes_only",
+  "redacted_summary",
+  "external_private",
+]);
 const ARTIFACT_POLICY_VALUES = new Set([
   "commit_sidecar_and_zip",
   "external_only",
@@ -306,6 +338,23 @@ function requireEnum(value: string, key: string, allowed: Set<string>, filePath:
   }
 }
 
+function validateSpecKind(value: string, filePath: string): void {
+  if (SPEC_KIND_VALUES.has(value)) {
+    return;
+  }
+  const route = DOCUMENTATION_ONLY_SPEC_KIND_ROUTES[value];
+  if (route) {
+    throw formatError(
+      filePath,
+      `spec_kind ${value} is documentation-only; ${route}. SPEC.md must define a reusable invocable capability surface.`
+    );
+  }
+  throw formatError(
+    filePath,
+    `spec_kind must be one of ${Array.from(SPEC_KIND_VALUES).join(", ")}; documentation-only records belong in normal mdkg nodes such as task, test, epic, goal, checkpoint, EDD, PRD, DEC, bug, feedback, dispute, or proposal.`
+  );
+}
+
 function requireLowerToken(value: string, key: string, filePath: string): void {
   if (!LOWER_TOKEN_RE.test(value)) {
     throw formatError(filePath, `${key} must be lowercase snake/kebab style`);
@@ -334,6 +383,22 @@ function validatePortableRefs(values: string[], key: string, filePath: string): 
   }
 }
 
+function validateWorkInvocationAnchor(
+  requiredCapabilities: string[],
+  refsByKey: Record<string, string[]>,
+  filePath: string
+): void {
+  const hasRequiredCapability = requiredCapabilities.length > 0;
+  const hasDependencyRef = Object.values(refsByKey).some((values) => values.length > 0);
+  if (hasRequiredCapability || hasDependencyRef) {
+    return;
+  }
+  throw formatError(
+    filePath,
+    "WORK.md must include at least one required_capabilities entry or dependency ref in skill_refs, tool_refs, model_refs, wasm_component_refs, runtime_image_refs, or subagent_refs"
+  );
+}
+
 function validatePortableOrUriRefs(values: string[], key: string, filePath: string): void {
   for (const [index, value] of values.entries()) {
     if (!validatePortableOrUriRef(value)) {
@@ -360,6 +425,12 @@ function validateHashRefs(values: string[], key: string, filePath: string): void
     if (!isSha256Ref(value)) {
       throw formatError(filePath, `${key}[${index}] must be sha256:<64 lowercase hex chars>`);
     }
+  }
+}
+
+function validateHashRef(value: string, key: string, filePath: string): void {
+  if (!isSha256Ref(value)) {
+    throw formatError(filePath, `${key} must be sha256:<64 lowercase hex chars>`);
   }
 }
 
@@ -409,6 +480,10 @@ export function validateAgentFrontmatter(
 
   switch (type) {
     case "spec": {
+      const specKind = optionalString(frontmatter, "spec_kind", filePath);
+      if (specKind) {
+        validateSpecKind(specKind, filePath);
+      }
       const role = expectString(frontmatter, "role", filePath);
       requireEnum(role, "role", ROLE_VALUES, filePath);
       const runtimeMode = expectString(frontmatter, "runtime_mode", filePath);
@@ -469,39 +544,34 @@ export function validateAgentFrontmatter(
       requireLowerToken(kind, "kind", filePath);
       const pricingModel = expectString(frontmatter, "pricing_model", filePath);
       requireEnum(pricingModel, "pricing_model", PRICING_MODEL_VALUES, filePath);
+      const requiredCapabilities = expectList(frontmatter, "required_capabilities", filePath);
       validateCapabilities(
-        expectList(frontmatter, "required_capabilities", filePath),
+        requiredCapabilities,
         "required_capabilities",
         filePath
       );
-      validatePortableRefs(
-        optionalList(frontmatter, "skill_refs", filePath),
-        "skill_refs",
-        filePath
-      );
-      validatePortableRefs(
-        optionalList(frontmatter, "tool_refs", filePath),
-        "tool_refs",
-        filePath
-      );
-      validatePortableRefs(
-        optionalList(frontmatter, "model_refs", filePath),
-        "model_refs",
-        filePath
-      );
-      validatePortableRefs(
-        optionalList(frontmatter, "wasm_component_refs", filePath),
-        "wasm_component_refs",
-        filePath
-      );
-      validatePortableRefs(
-        optionalList(frontmatter, "runtime_image_refs", filePath),
-        "runtime_image_refs",
-        filePath
-      );
-      validatePortableRefs(
-        optionalList(frontmatter, "subagent_refs", filePath),
-        "subagent_refs",
+      const skillRefs = optionalList(frontmatter, "skill_refs", filePath);
+      validatePortableRefs(skillRefs, "skill_refs", filePath);
+      const toolRefs = optionalList(frontmatter, "tool_refs", filePath);
+      validatePortableRefs(toolRefs, "tool_refs", filePath);
+      const modelRefs = optionalList(frontmatter, "model_refs", filePath);
+      validatePortableRefs(modelRefs, "model_refs", filePath);
+      const wasmComponentRefs = optionalList(frontmatter, "wasm_component_refs", filePath);
+      validatePortableRefs(wasmComponentRefs, "wasm_component_refs", filePath);
+      const runtimeImageRefs = optionalList(frontmatter, "runtime_image_refs", filePath);
+      validatePortableRefs(runtimeImageRefs, "runtime_image_refs", filePath);
+      const subagentRefs = optionalList(frontmatter, "subagent_refs", filePath);
+      validatePortableRefs(subagentRefs, "subagent_refs", filePath);
+      validateWorkInvocationAnchor(
+        requiredCapabilities,
+        {
+          skill_refs: skillRefs,
+          tool_refs: toolRefs,
+          model_refs: modelRefs,
+          wasm_component_refs: wasmComponentRefs,
+          runtime_image_refs: runtimeImageRefs,
+          subagent_refs: subagentRefs,
+        },
         filePath
       );
       validateFieldDescriptors(expectList(frontmatter, "inputs", filePath), "inputs", filePath);
@@ -522,7 +592,16 @@ export function validateAgentFrontmatter(
       if (requestRef) {
         validatePortableOrUriScalar(requestRef, "request_ref", filePath);
       }
+      const triggerRef = optionalRefString(frontmatter, "trigger_ref", filePath);
+      if (triggerRef) {
+        validatePortableOrUriScalar(triggerRef, "trigger_ref", filePath);
+      }
+      const payloadHash = optionalString(frontmatter, "payload_hash", filePath);
+      if (payloadHash) {
+        validateHashRef(payloadHash, "payload_hash", filePath);
+      }
       validatePortableOrUriRefs(optionalList(frontmatter, "input_refs", filePath), "input_refs", filePath);
+      validatePortableOrUriRefs(optionalList(frontmatter, "queue_refs", filePath), "queue_refs", filePath);
       validateOptionalFieldDescriptors(
         optionalList(frontmatter, "requested_outputs", filePath),
         "requested_outputs",
@@ -550,12 +629,17 @@ export function validateAgentFrontmatter(
       if (costRef) {
         validatePortableOrUriScalar(costRef, "cost_ref", filePath);
       }
+      const redactionPolicy = optionalString(frontmatter, "redaction_policy", filePath);
+      if (redactionPolicy) {
+        requireEnum(redactionPolicy, "redaction_policy", REDACTION_POLICY_VALUES, filePath);
+      }
       validatePortableOrUriRefs(optionalList(frontmatter, "proof_refs", filePath), "proof_refs", filePath);
       validatePortableOrUriRefs(
         optionalList(frontmatter, "attestation_refs", filePath),
         "attestation_refs",
         filePath
       );
+      validateHashRefs(optionalList(frontmatter, "evidence_hashes", filePath), "evidence_hashes", filePath);
       validateHashRefs(optionalList(frontmatter, "input_hashes", filePath), "input_hashes", filePath);
       validateHashRefs(optionalList(frontmatter, "output_hashes", filePath), "output_hashes", filePath);
       break;

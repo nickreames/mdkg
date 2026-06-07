@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import { loadConfig } from "../core/config";
 import {
   DEFAULT_FRONTMATTER_KEY_ORDER,
@@ -13,13 +14,21 @@ import { writeDerivedIndexes } from "../graph/reindex";
 import { AGENT_FILE_BASENAMES, AgentFileType } from "../graph/agent_file_types";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
-import { NotFoundError, UsageError } from "../util/errors";
+import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId, isPortableIdRef } from "../util/id";
+import { archiveIdFromUri, isSha256Ref } from "../util/refs";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { atomicWriteFile, writeFileExclusive } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent } from "./event_support";
 import { runArchiveAddCommand } from "./archive";
+import { resolveConfiguredProjectDbLayout } from "../core/project_db";
+import { verifyProjectDb } from "../core/project_db_migrations";
+import {
+  enqueueProjectQueueMessage,
+  ProjectQueueMessage,
+  readProjectQueue,
+} from "../core/project_db_queue";
 
 export type WorkContractNewCommandOptions = {
   root: string;
@@ -44,7 +53,10 @@ export type WorkOrderNewCommandOptions = {
   requester: string;
   ws?: string;
   requestRef?: string;
+  triggerRef?: string;
+  payloadHash?: string;
   inputRefs?: string;
+  queueRefs?: string;
   requestedOutputs?: string;
   constraintRefs?: string;
   json?: boolean;
@@ -57,7 +69,27 @@ export type WorkOrderUpdateCommandOptions = {
   ws?: string;
   status?: string;
   addInputRefs?: string;
+  addQueueRefs?: string;
   addArtifacts?: string;
+  json?: boolean;
+  now?: Date;
+};
+
+export type WorkOrderStatusCommandOptions = {
+  root: string;
+  id: string;
+  ws?: string;
+  json?: boolean;
+};
+
+export type WorkTriggerCommandOptions = {
+  root: string;
+  targetRef: string;
+  ws?: string;
+  id?: string;
+  title?: string;
+  requester?: string;
+  enqueue?: string;
   json?: boolean;
   now?: Date;
 };
@@ -71,9 +103,11 @@ export type WorkReceiptNewCommandOptions = {
   ws?: string;
   receiptStatus?: string;
   costRef?: string;
+  redactionPolicy?: string;
   artifacts?: string;
   proofRefs?: string;
   attestationRefs?: string;
+  evidenceHashes?: string;
   inputHashes?: string;
   outputHashes?: string;
   json?: boolean;
@@ -88,8 +122,16 @@ export type WorkReceiptUpdateCommandOptions = {
   addArtifacts?: string;
   addProofRefs?: string;
   addAttestationRefs?: string;
+  addEvidenceHashes?: string;
   json?: boolean;
   now?: Date;
+};
+
+export type WorkReceiptVerifyCommandOptions = {
+  root: string;
+  id: string;
+  ws?: string;
+  json?: boolean;
 };
 
 export type WorkArtifactAddCommandOptions = {
@@ -112,10 +154,110 @@ type WorkMutationReceipt = {
   title: string;
 };
 
+type WorkOrderCreation = {
+  receipt: WorkMutationReceipt;
+  payloadHash: string;
+  workId: string;
+  workVersion: string;
+};
+
+type WorkTriggerQueueDelivery = {
+  queue_name: string;
+  queue_ref: string;
+  message_id: string;
+  message: ProjectQueueMessage;
+  created: boolean;
+  duplicate: boolean;
+};
+
+type WorkOrderStatusReceipt = {
+  kind: "work_order_status";
+  order: {
+    workspace: string;
+    id: string;
+    qid: string;
+    path: string;
+    title: string;
+    status?: string;
+    work_id?: string;
+    work_qid?: string;
+    requester?: string;
+    request_ref?: string;
+    trigger_ref?: string;
+    payload_hash?: string;
+    input_refs: string[];
+    queue_refs: string[];
+    requested_outputs: string[];
+    constraint_refs: string[];
+    artifact_policy?: string;
+    artifacts: string[];
+    created: string;
+    updated: string;
+  };
+  receipt_count: number;
+  receipts: Array<{
+    id: string;
+    qid: string;
+    path: string;
+    title: string;
+    receipt_status?: string;
+    outcome?: string;
+    redaction_policy?: string;
+    artifacts: string[];
+    proof_refs: string[];
+    attestation_refs: string[];
+    evidence_hashes: string[];
+    input_hashes: string[];
+    output_hashes: string[];
+    updated: string;
+  }>;
+};
+
+type WorkReceiptVerifyReceipt = {
+  kind: "work_receipt_verify";
+  ok: boolean;
+  receipt: {
+    workspace: string;
+    id: string;
+    qid: string;
+    path: string;
+    title: string;
+    receipt_status?: string;
+    outcome?: string;
+    work_order_id?: string;
+    work_order_qid?: string;
+    redaction_policy?: string;
+    artifacts: string[];
+    proof_refs: string[];
+    attestation_refs: string[];
+    evidence_hashes: string[];
+    input_hashes: string[];
+    output_hashes: string[];
+    updated: string;
+  };
+  work_order?: {
+    id: string;
+    qid: string;
+    path: string;
+    status?: string;
+    work_id?: string;
+    work_qid?: string;
+    payload_hash?: string;
+  };
+  checks: Array<{
+    name: string;
+    ok: boolean;
+    detail: string;
+  }>;
+  errors: string[];
+  warnings: string[];
+};
+
 const PRICING_MODELS = new Set(["free", "included", "quoted", "fixed", "metered", "subscription"]);
 const ORDER_STATUSES = new Set(["submitted", "accepted", "running", "completed", "cancelled", "failed"]);
 const RECEIPT_STATUSES = new Set(["recorded", "verified", "rejected", "superseded"]);
 const OUTCOMES = new Set(["success", "partial", "failure"]);
+const REDACTION_POLICIES = new Set(["refs_and_hashes_only", "redacted_summary", "external_private"]);
 
 function parseCsvList(raw?: string): string[] {
   if (!raw) {
@@ -160,6 +302,108 @@ function normalizeEnum(value: string, flag: string, allowed: Set<string>): strin
     throw new UsageError(`${flag} must be one of ${Array.from(allowed).join(", ")}`);
   }
   return normalized;
+}
+
+function normalizeSha256Ref(value: string | undefined, flag: string): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  const normalized = value.toLowerCase();
+  if (!isSha256Ref(normalized)) {
+    throw new UsageError(`${flag} must be sha256:<64 lowercase hex chars>`);
+  }
+  return normalized;
+}
+
+function normalizeSha256Refs(value: string | undefined, flag: string): string[] {
+  return parseCsvList(value).map((hash) => normalizeSha256Ref(hash, flag) as string);
+}
+
+function stableJson(value: unknown): string {
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => stableJson(item)).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    const entries = Object.entries(value as Record<string, unknown>).sort(([a], [b]) =>
+      a.localeCompare(b)
+    );
+    return `{${entries
+      .map(([key, item]) => `${JSON.stringify(key)}:${stableJson(item)}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function hashStablePayload(value: unknown): string {
+  return `sha256:${crypto.createHash("sha256").update(stableJson(value)).digest("hex")}`;
+}
+
+function buildWorkOrderPayloadHash(options: {
+  workId: string;
+  workVersion: string;
+  requester: string;
+  requestRef: string;
+  triggerRef: string;
+  inputRefs: string[];
+  queueRefs: string[];
+  requestedOutputs: string[];
+  constraintRefs: string[];
+}): string {
+  return hashStablePayload({
+    work_id: options.workId,
+    work_version: options.workVersion,
+    requester: options.requester,
+    request_ref: options.requestRef,
+    trigger_ref: options.triggerRef,
+    input_refs: options.inputRefs,
+    queue_refs: options.queueRefs,
+    requested_outputs: options.requestedOutputs,
+    constraint_refs: options.constraintRefs,
+  });
+}
+
+function portableSegment(value: string): string {
+  return (
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9_]+/g, ".")
+      .replace(/^[._-]+|[._-]+$/g, "")
+      .slice(0, 80) || "work"
+  );
+}
+
+function normalizeQueueName(value: string | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  const normalized = value.toLowerCase();
+  if (!isPortableId(normalized)) {
+    throw new UsageError("--enqueue must be a lowercase portable queue name");
+  }
+  return normalized;
+}
+
+function queueRefForWorkOrder(queueName: string, orderId: string): string {
+  return `queue://project-db/${queueName}/${orderId}`;
+}
+
+function loadWorkTriggerQueueDatabase(root: string, queueName: string): string {
+  const config = loadConfig(root);
+  const verification = verifyProjectDb(root, config);
+  if (!verification.ok) {
+    throw new ValidationError(
+      "work trigger --enqueue requires a valid project DB; run mdkg db init, mdkg db migrate, and mdkg db verify"
+    );
+  }
+  const databasePath = resolveConfiguredProjectDbLayout(root, config.db).runtimeFile;
+  const queue = readProjectQueue(databasePath, queueName);
+  if (!queue) {
+    throw new NotFoundError(`project DB queue not found: ${queueName}; run mdkg db queue create ${queueName}`);
+  }
+  if (queue.status !== "active") {
+    throw new ValidationError(`project DB queue ${queueName} is paused; run mdkg db queue resume ${queueName}`);
+  }
+  return databasePath;
 }
 
 function slugifyTitle(title: string): string {
@@ -211,6 +455,76 @@ function requireReferenceNode(index: Index, ws: string, idOrQid: string, type: s
   return node;
 }
 
+function resolveReadableWorkNode(index: Index, idOrQid: string, ws: string, type: string, label: string): IndexNode {
+  const resolved = resolveQid(index, idOrQid, ws);
+  if (resolved.status !== "ok") {
+    throw new NotFoundError(formatResolveError(label, idOrQid, resolved, ws));
+  }
+  const node = index.nodes[resolved.qid];
+  if (!node || node.type !== type) {
+    throw new NotFoundError(`${label} not found: ${idOrQid}`);
+  }
+  return node;
+}
+
+function resolveTriggerWorkNode(index: Index, ws: string, refRaw: string): {
+  workNode: IndexNode;
+  sourceNode?: IndexNode;
+} {
+  const ref = normalizePortableIdRef(refRaw, "<work-or-capability-ref>");
+  const resolved = resolveQid(index, ref, ws);
+  if (resolved.status !== "ok") {
+    throw new NotFoundError(formatResolveError("work contract or capability", refRaw, resolved, ws));
+  }
+  const node = index.nodes[resolved.qid];
+  if (!node) {
+    throw new NotFoundError(`work contract or capability not found: ${refRaw}`);
+  }
+  if (node.type === "work") {
+    return { workNode: node };
+  }
+  if (node.type !== "spec") {
+    throw new UsageError(`work trigger requires a WORK.md or SPEC.md ref, got ${node.type}: ${node.qid}`);
+  }
+
+  const candidates = new Map<string, IndexNode>();
+  const specDir = path.posix.dirname(node.path);
+  for (const contractPath of toStringList(node.attributes.work_contracts)) {
+    const normalizedPath = path.posix.normalize(path.posix.join(specDir, contractPath));
+    for (const candidate of Object.values(index.nodes)) {
+      if (candidate.type === "work" && candidate.ws === node.ws && candidate.path === normalizedPath) {
+        candidates.set(candidate.qid, candidate);
+      }
+    }
+  }
+  for (const qid of node.edges.relates) {
+    const candidate = index.nodes[qid];
+    if (candidate?.type === "work") {
+      candidates.set(candidate.qid, candidate);
+    }
+  }
+  const reverseRelates = index.reverse_edges[node.qid]?.relates ?? [];
+  for (const qid of reverseRelates) {
+    const candidate = index.nodes[qid];
+    if (candidate?.type === "work") {
+      candidates.set(candidate.qid, candidate);
+    }
+  }
+
+  const workNodes = Array.from(candidates.values()).sort((a, b) => a.qid.localeCompare(b.qid));
+  if (workNodes.length === 0) {
+    throw new NotFoundError(`SPEC.md ${node.qid} has no resolvable WORK.md contract`);
+  }
+  if (workNodes.length > 1) {
+    throw new UsageError(
+      `SPEC.md ${node.qid} has multiple work contracts; trigger one explicitly: ${workNodes
+        .map((workNode) => workNode.qid)
+        .join(", ")}`
+    );
+  }
+  return { workNode: workNodes[0], sourceNode: node };
+}
+
 function nodeReceipt(root: string, node: IndexNode): WorkMutationReceipt {
   return {
     workspace: node.ws,
@@ -220,6 +534,271 @@ function nodeReceipt(root: string, node: IndexNode): WorkMutationReceipt {
     type: node.type,
     title: node.title,
   };
+}
+
+function resolveOptionalQid(index: Index, ws: string, idOrQid: string | undefined): string | undefined {
+  if (!idOrQid) {
+    return undefined;
+  }
+  const resolved = resolveQid(index, idOrQid, ws);
+  return resolved.status === "ok" ? resolved.qid : undefined;
+}
+
+function listReceiptsForOrder(index: Index, order: IndexNode): IndexNode[] {
+  const orderRefs = new Set([order.id, order.qid, `${order.ws}:${order.id}`]);
+  return Object.values(index.nodes)
+    .filter((node) => node.type === "receipt" && orderRefs.has(String(node.attributes.work_order_id ?? "")))
+    .sort((a, b) => a.qid.localeCompare(b.qid));
+}
+
+function buildWorkOrderStatusReceipt(index: Index, order: IndexNode): WorkOrderStatusReceipt {
+  const workId = typeof order.attributes.work_id === "string" ? order.attributes.work_id : undefined;
+  const receipts = listReceiptsForOrder(index, order).map((receipt) => ({
+    id: receipt.id,
+    qid: receipt.qid,
+    path: receipt.path,
+    title: receipt.title,
+    receipt_status:
+      typeof receipt.attributes.receipt_status === "string" ? receipt.attributes.receipt_status : undefined,
+    outcome: typeof receipt.attributes.outcome === "string" ? receipt.attributes.outcome : undefined,
+    redaction_policy:
+      typeof receipt.attributes.redaction_policy === "string" ? receipt.attributes.redaction_policy : undefined,
+    artifacts: receipt.artifacts,
+    proof_refs: toStringList(receipt.attributes.proof_refs),
+    attestation_refs: toStringList(receipt.attributes.attestation_refs),
+    evidence_hashes: toStringList(receipt.attributes.evidence_hashes),
+    input_hashes: toStringList(receipt.attributes.input_hashes),
+    output_hashes: toStringList(receipt.attributes.output_hashes),
+    updated: receipt.updated,
+  }));
+  return {
+    kind: "work_order_status",
+    order: {
+      workspace: order.ws,
+      id: order.id,
+      qid: order.qid,
+      path: order.path,
+      title: order.title,
+      status: typeof order.attributes.order_status === "string" ? order.attributes.order_status : undefined,
+      work_id: workId,
+      work_qid: resolveOptionalQid(index, order.ws, workId),
+      requester: typeof order.attributes.requester === "string" ? order.attributes.requester : undefined,
+      request_ref: typeof order.attributes.request_ref === "string" ? order.attributes.request_ref : undefined,
+      trigger_ref: typeof order.attributes.trigger_ref === "string" ? order.attributes.trigger_ref : undefined,
+      payload_hash: typeof order.attributes.payload_hash === "string" ? order.attributes.payload_hash : undefined,
+      input_refs: toStringList(order.attributes.input_refs),
+      queue_refs: toStringList(order.attributes.queue_refs),
+      requested_outputs: toStringList(order.attributes.requested_outputs),
+      constraint_refs: toStringList(order.attributes.constraint_refs),
+      artifact_policy:
+        typeof order.attributes.artifact_policy === "string" ? order.attributes.artifact_policy : undefined,
+      artifacts: order.artifacts,
+      created: order.created,
+      updated: order.updated,
+    },
+    receipt_count: receipts.length,
+    receipts,
+  };
+}
+
+function buildArchiveIdsByWorkspace(index: Index): Record<string, Set<string>> {
+  const byWorkspace: Record<string, Set<string>> = {};
+  for (const node of Object.values(index.nodes)) {
+    if (node.type !== "archive") {
+      continue;
+    }
+    if (!byWorkspace[node.ws]) {
+      byWorkspace[node.ws] = new Set();
+    }
+    byWorkspace[node.ws].add(node.id);
+  }
+  return byWorkspace;
+}
+
+function verifyArchiveRefs(
+  index: Index,
+  ws: string,
+  refsByField: Record<string, string[]>,
+  errors: string[]
+): void {
+  const archiveIdsByWorkspace = buildArchiveIdsByWorkspace(index);
+  for (const [field, refs] of Object.entries(refsByField)) {
+    for (const [indexValue, ref] of refs.entries()) {
+      if (!ref.startsWith("archive://")) {
+        continue;
+      }
+      const archiveId = archiveIdFromUri(ref);
+      if (!archiveId) {
+        errors.push(`${field}[${indexValue}] has malformed archive ref ${ref}`);
+        continue;
+      }
+      if (!archiveIdsByWorkspace[ws]?.has(archiveId)) {
+        errors.push(`${field}[${indexValue}] references missing archive ${ref}`);
+      }
+    }
+  }
+}
+
+function addVerifyCheck(
+  checks: WorkReceiptVerifyReceipt["checks"],
+  errors: string[],
+  name: string,
+  ok: boolean,
+  detail: string
+): void {
+  checks.push({ name, ok, detail });
+  if (!ok) {
+    errors.push(detail);
+  }
+}
+
+function buildWorkReceiptVerifyReceipt(index: Index, receipt: IndexNode): WorkReceiptVerifyReceipt {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const checks: WorkReceiptVerifyReceipt["checks"] = [];
+  const workOrderId =
+    typeof receipt.attributes.work_order_id === "string" ? receipt.attributes.work_order_id : undefined;
+  const workOrder = workOrderId
+    ? resolveTypedReadableNode(index, receipt.ws, workOrderId, "work_order")
+    : undefined;
+  const workId = typeof workOrder?.attributes.work_id === "string" ? workOrder.attributes.work_id : undefined;
+  const workNode = workId ? resolveTypedReadableNode(index, workOrder?.ws ?? receipt.ws, workId, "work") : undefined;
+  const artifacts = receipt.artifacts;
+  const proofRefs = toStringList(receipt.attributes.proof_refs);
+  const attestationRefs = toStringList(receipt.attributes.attestation_refs);
+  const evidenceHashes = toStringList(receipt.attributes.evidence_hashes);
+  const inputHashes = toStringList(receipt.attributes.input_hashes);
+  const outputHashes = toStringList(receipt.attributes.output_hashes);
+  const evidenceCount =
+    artifacts.length +
+    proofRefs.length +
+    attestationRefs.length +
+    evidenceHashes.length +
+    inputHashes.length +
+    outputHashes.length;
+
+  addVerifyCheck(
+    checks,
+    errors,
+    "work_order_link",
+    workOrder !== undefined,
+    workOrder ? `linked to ${workOrder.qid}` : `work_order_id references missing WORK_ORDER.md ${workOrderId ?? ""}`.trim()
+  );
+  addVerifyCheck(
+    checks,
+    errors,
+    "work_link",
+    !workOrder || workNode !== undefined,
+    workNode ? `linked to ${workNode.qid}` : workOrder ? `work_id references missing WORK.md ${workId ?? ""}`.trim() : "work order missing"
+  );
+  addVerifyCheck(
+    checks,
+    errors,
+    "outcome",
+    typeof receipt.attributes.outcome === "string",
+    typeof receipt.attributes.outcome === "string" ? `outcome ${receipt.attributes.outcome}` : "outcome is missing"
+  );
+  addVerifyCheck(
+    checks,
+    errors,
+    "receipt_status",
+    receipt.attributes.receipt_status !== "rejected",
+    receipt.attributes.receipt_status === "rejected"
+      ? "receipt_status is rejected"
+      : `receipt_status ${String(receipt.attributes.receipt_status ?? "unknown")}`
+  );
+  addVerifyCheck(
+    checks,
+    errors,
+    "evidence_present",
+    evidenceCount > 0,
+    evidenceCount > 0 ? `${evidenceCount} evidence reference(s) present` : "receipt has no artifacts, proof refs, attestations, or hashes"
+  );
+  const archiveErrors: string[] = [];
+  verifyArchiveRefs(
+    index,
+    receipt.ws,
+    {
+      artifacts,
+      proof_refs: proofRefs,
+      attestation_refs: attestationRefs,
+    },
+    archiveErrors
+  );
+  addVerifyCheck(
+    checks,
+    errors,
+    "archive_refs",
+    archiveErrors.length === 0,
+    archiveErrors.length === 0 ? "archive refs resolve" : archiveErrors.join("; ")
+  );
+  if (typeof receipt.attributes.redaction_policy !== "string") {
+    warnings.push("redaction_policy is missing; legacy receipt remains readable but not explicitly redaction-scoped");
+  } else {
+    addVerifyCheck(
+      checks,
+      errors,
+      "redaction_policy",
+      true,
+      `redaction_policy ${receipt.attributes.redaction_policy}`
+    );
+  }
+
+  return {
+    kind: "work_receipt_verify",
+    ok: errors.length === 0,
+    receipt: {
+      workspace: receipt.ws,
+      id: receipt.id,
+      qid: receipt.qid,
+      path: receipt.path,
+      title: receipt.title,
+      receipt_status:
+        typeof receipt.attributes.receipt_status === "string" ? receipt.attributes.receipt_status : undefined,
+      outcome: typeof receipt.attributes.outcome === "string" ? receipt.attributes.outcome : undefined,
+      work_order_id: workOrderId,
+      work_order_qid: workOrder?.qid,
+      redaction_policy:
+        typeof receipt.attributes.redaction_policy === "string" ? receipt.attributes.redaction_policy : undefined,
+      artifacts,
+      proof_refs: proofRefs,
+      attestation_refs: attestationRefs,
+      evidence_hashes: evidenceHashes,
+      input_hashes: inputHashes,
+      output_hashes: outputHashes,
+      updated: receipt.updated,
+    },
+    work_order: workOrder
+      ? {
+          id: workOrder.id,
+          qid: workOrder.qid,
+          path: workOrder.path,
+          status:
+            typeof workOrder.attributes.order_status === "string" ? workOrder.attributes.order_status : undefined,
+          work_id: workId,
+          work_qid: workNode?.qid,
+          payload_hash:
+            typeof workOrder.attributes.payload_hash === "string" ? workOrder.attributes.payload_hash : undefined,
+        }
+      : undefined,
+    checks,
+    errors,
+    warnings,
+  };
+}
+
+function resolveTypedReadableNode(
+  index: Index,
+  ws: string,
+  idOrQid: string,
+  type: string
+): IndexNode | undefined {
+  const resolved = resolveQid(index, idOrQid, ws);
+  if (resolved.status !== "ok") {
+    return undefined;
+  }
+  const node = index.nodes[resolved.qid];
+  return node?.type === type ? node : undefined;
 }
 
 function writeFrontmatterFile(
@@ -348,14 +927,82 @@ function printReceipt(action: string, receipt: WorkMutationReceipt, json?: boole
   console.log(`work ${action}: ${receipt.qid} (${receipt.path})`);
 }
 
+function createWorkOrderForWork(options: {
+  root: string;
+  ws: string;
+  title: string;
+  id: string;
+  workId: string;
+  workNode: IndexNode;
+  requester: string;
+  requestRef?: string;
+  triggerRef?: string;
+  payloadHash?: string;
+  inputRefs?: string;
+  queueRefs?: string;
+  requestedOutputs?: string;
+  constraintRefs?: string;
+  now?: Date;
+}): WorkOrderCreation {
+  const workVersion = String(options.workNode.attributes.version ?? "0.1.0");
+  const requestRef = options.requestRef ?? "request.redacted";
+  const triggerRef = options.triggerRef ?? "trigger.manual";
+  const inputRefs = parseCsvList(options.inputRefs);
+  const queueRefs = parseCsvList(options.queueRefs);
+  const requestedOutputs =
+    options.requestedOutputs !== undefined
+      ? parseCsvList(options.requestedOutputs)
+      : toStringList(options.workNode.attributes.outputs);
+  const constraintRefs = parseCsvList(options.constraintRefs);
+  const payloadHash =
+    normalizeSha256Ref(options.payloadHash, "--payload-hash") ??
+    buildWorkOrderPayloadHash({
+      workId: options.workId,
+      workVersion,
+      requester: options.requester,
+      requestRef,
+      triggerRef,
+      inputRefs,
+      queueRefs,
+      requestedOutputs,
+      constraintRefs,
+    });
+  const receipt = createAgentWorkflowNode({
+    root: options.root,
+    ws: options.ws,
+    type: "work_order",
+    title: options.title,
+    id: options.id,
+    now: options.now,
+    overrides: {
+      work_id: options.workId,
+      work_version: workVersion,
+      requester: options.requester,
+      order_status: "submitted",
+      request_ref: requestRef,
+      trigger_ref: triggerRef,
+      payload_hash: payloadHash,
+      input_refs: inputRefs,
+      queue_refs: queueRefs,
+      requested_outputs: requestedOutputs,
+      constraint_refs: constraintRefs,
+      artifact_policy: "commit_sidecar_and_zip",
+      relates: [options.workId],
+    },
+  });
+  return { receipt, payloadHash, workId: options.workId, workVersion };
+}
+
 function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
   const { index } = loadIndex({ root: options.root, config });
   const agentId = normalizePortableIdRef(options.agentId, "--agent-id");
+  const kind = options.kind.toLowerCase();
   const resolvedAgent = resolveQid(index, agentId, ws);
   const relates =
     resolvedAgent.status === "ok" && index.nodes[resolvedAgent.qid]?.type === "spec" ? [agentId] : [];
+  const requiredCapabilities = parseCsvList(options.requiredCapabilities);
   const receipt = createAgentWorkflowNode({
     root: options.root,
     ws,
@@ -365,9 +1012,9 @@ function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions)
     now: options.now,
     overrides: {
       agent_id: agentId,
-      kind: options.kind.toLowerCase(),
+      kind,
       pricing_model: normalizeEnum(options.pricingModel ?? "quoted", "--pricing-model", PRICING_MODELS),
-      required_capabilities: parseCsvList(options.requiredCapabilities),
+      required_capabilities: requiredCapabilities.length > 0 ? requiredCapabilities : [kind],
       inputs: parseCsvList(options.inputs),
       outputs: parseCsvList(options.outputs),
       receipt_required: true,
@@ -383,28 +1030,154 @@ function runWorkOrderNewCommandLocked(options: WorkOrderNewCommandOptions): void
   const { index } = loadIndex({ root: options.root, config });
   const workId = normalizePortableIdRef(options.workId, "--work-id");
   const workNode = requireReferenceNode(index, ws, workId, "work", "work contract");
-  const workVersion = String(workNode.attributes.version ?? "0.1.0");
-  const receipt = createAgentWorkflowNode({
+  const created = createWorkOrderForWork({
     root: options.root,
     ws,
-    type: "work_order",
     title: options.title,
     id: options.id,
+    workId,
+    workNode,
+    requester: options.requester,
+    requestRef: options.requestRef,
+    triggerRef: options.triggerRef,
+    payloadHash: options.payloadHash,
+    inputRefs: options.inputRefs,
+    queueRefs: options.queueRefs,
+    requestedOutputs: options.requestedOutputs,
+    constraintRefs: options.constraintRefs,
     now: options.now,
-    overrides: {
-      work_id: workId,
-      work_version: workVersion,
-      requester: options.requester,
-      order_status: "submitted",
-      request_ref: options.requestRef ?? "request.redacted",
-      input_refs: parseCsvList(options.inputRefs),
-      requested_outputs: parseCsvList(options.requestedOutputs),
-      constraint_refs: parseCsvList(options.constraintRefs),
-      artifact_policy: "commit_sidecar_and_zip",
-      relates: [workId],
-    },
   });
-  printReceipt("order created", receipt, options.json);
+  printReceipt("order created", created.receipt, options.json);
+}
+
+function runWorkTriggerCommandLocked(options: WorkTriggerCommandOptions): void {
+  const config = loadConfig(options.root);
+  const ws = normalizeWorkspace(options.ws);
+  const { index } = loadIndex({ root: options.root, config });
+  const { workNode, sourceNode } = resolveTriggerWorkNode(index, ws, options.targetRef);
+  const requester = options.requester ?? "user.local";
+  const requestRef = "request.redacted";
+  const triggerRef = "trigger.mdkg-work-trigger";
+  const requestedOutputs = toStringList(workNode.attributes.outputs);
+  const payloadHash = buildWorkOrderPayloadHash({
+    workId: workNode.id,
+    workVersion: String(workNode.attributes.version ?? "0.1.0"),
+    requester,
+    requestRef,
+    triggerRef,
+    inputRefs: [],
+    queueRefs: [],
+    requestedOutputs,
+    constraintRefs: [],
+  });
+  const id = options.id
+    ? normalizePortableId(options.id, "--id")
+    : `order.${portableSegment(workNode.id)}.${payloadHash.slice("sha256:".length, "sha256:".length + 12)}`;
+  const title = options.title ?? `Trigger ${workNode.title}`;
+  const enqueueQueue = normalizeQueueName(options.enqueue);
+  const queueRef = enqueueQueue ? queueRefForWorkOrder(enqueueQueue, id) : undefined;
+  const queueDatabasePath = enqueueQueue ? loadWorkTriggerQueueDatabase(options.root, enqueueQueue) : undefined;
+  const created = createWorkOrderForWork({
+    root: options.root,
+    ws,
+    title,
+    id,
+    workId: workNode.id,
+    workNode,
+    requester,
+    requestRef,
+    triggerRef,
+    payloadHash,
+    queueRefs: queueRef,
+    now: options.now,
+  });
+  let queueDelivery: WorkTriggerQueueDelivery | undefined;
+  if (enqueueQueue && queueDatabasePath && queueRef) {
+    const queuePayload: Record<string, unknown> = {
+      kind: "mdkg.work_order.triggered",
+      schema_version: 1,
+      target_ref: options.targetRef,
+      work_id: workNode.id,
+      work_qid: workNode.qid,
+      work_order_id: created.receipt.id,
+      work_order_qid: created.receipt.qid,
+      work_order_path: created.receipt.path,
+      requester,
+      request_ref: requestRef,
+      trigger_ref: triggerRef,
+      payload_hash: created.payloadHash,
+      queue_ref: queueRef,
+      executed: false,
+    };
+    if (sourceNode) {
+      queuePayload.source_qid = sourceNode.qid;
+    }
+    const delivery = enqueueProjectQueueMessage(queueDatabasePath, {
+      queue_name: enqueueQueue,
+      message_id: created.receipt.id,
+      dedupe_key: created.receipt.qid,
+      payload: queuePayload,
+      now_ms: options.now?.getTime(),
+    });
+    queueDelivery = {
+      queue_name: enqueueQueue,
+      queue_ref: queueRef,
+      message_id: created.receipt.id,
+      message: delivery.message,
+      created: delivery.created,
+      duplicate: delivery.duplicate,
+    };
+  }
+  const event = appendAutomaticEvent({
+    root: options.root,
+    ws,
+    kind: queueDelivery ? "WORK_TRIGGER_ENQUEUED" : "WORK_TRIGGERED",
+    status: "ok",
+    refs: [created.receipt.id, workNode.id, ...(queueRef ? [queueRef] : [])],
+    notes: queueDelivery
+      ? `work trigger created order mirror and enqueued ${queueDelivery.message_id} on project DB queue ${queueDelivery.queue_name}; no work executed`
+      : "work trigger created order mirror; no work executed",
+    now: options.now,
+  });
+
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "triggered",
+          node: created.receipt,
+          trigger: {
+            target_ref: options.targetRef,
+            source_qid: sourceNode?.qid,
+            work_qid: workNode.qid,
+            payload_hash: created.payloadHash,
+            executed: false,
+            enqueue: queueDelivery
+              ? {
+                  requested: true,
+                  queue_name: queueDelivery.queue_name,
+                  queue_ref: queueDelivery.queue_ref,
+                  message_id: queueDelivery.message_id,
+                  enqueued: true,
+                  created: queueDelivery.created,
+                  duplicate: queueDelivery.duplicate,
+                  message_status: queueDelivery.message.status,
+                  message_payload_hash: queueDelivery.message.payload_hash,
+                }
+              : { requested: false },
+            event_appended: event !== undefined,
+          },
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+  console.log(`work triggered: ${created.receipt.qid} (${created.receipt.path})`);
+  if (queueDelivery) {
+    console.log(`queue enqueued: ${queueDelivery.queue_name}/${queueDelivery.message_id}`);
+  }
 }
 
 function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions): void {
@@ -416,6 +1189,10 @@ function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions)
     toStringList(loaded.frontmatter.input_refs),
     parseCsvList(options.addInputRefs)
   );
+  loaded.frontmatter.queue_refs = appendUnique(
+    toStringList(loaded.frontmatter.queue_refs),
+    parseCsvList(options.addQueueRefs)
+  );
   loaded.frontmatter.artifacts = appendUnique(
     toStringList(loaded.frontmatter.artifacts),
     parseCsvList(options.addArtifacts)
@@ -424,6 +1201,21 @@ function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions)
   writeFrontmatterFile(loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
   printReceipt("order updated", nodeReceipt(options.root, loaded.node), options.json);
+}
+
+function runWorkOrderStatusCommandLocked(options: WorkOrderStatusCommandOptions): void {
+  const config = loadConfig(options.root);
+  const ws = normalizeWorkspace(options.ws);
+  const { index } = loadIndex({ root: options.root, config });
+  const order = resolveReadableWorkNode(index, options.id, ws, "work_order", "work order");
+  const receipt = buildWorkOrderStatusReceipt(index, order);
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    return;
+  }
+  console.log(`${receipt.order.qid}: ${receipt.order.status ?? "unknown"}`);
+  console.log(`work: ${receipt.order.work_qid ?? receipt.order.work_id ?? "unknown"}`);
+  console.log(`receipts: ${receipt.receipt_count}`);
 }
 
 function runWorkReceiptNewCommandLocked(options: WorkReceiptNewCommandOptions): void {
@@ -444,11 +1236,17 @@ function runWorkReceiptNewCommandLocked(options: WorkReceiptNewCommandOptions): 
       receipt_status: normalizeEnum(options.receiptStatus ?? "recorded", "--receipt-status", RECEIPT_STATUSES),
       outcome: normalizeEnum(options.outcome, "--outcome", OUTCOMES),
       cost_ref: options.costRef ?? "cost.redacted",
+      redaction_policy: normalizeEnum(
+        options.redactionPolicy ?? "refs_and_hashes_only",
+        "--redaction-policy",
+        REDACTION_POLICIES
+      ),
       artifacts: parseCsvList(options.artifacts),
       proof_refs: parseCsvList(options.proofRefs),
       attestation_refs: parseCsvList(options.attestationRefs),
-      input_hashes: parseCsvList(options.inputHashes),
-      output_hashes: parseCsvList(options.outputHashes),
+      evidence_hashes: normalizeSha256Refs(options.evidenceHashes, "--evidence-hashes"),
+      input_hashes: normalizeSha256Refs(options.inputHashes, "--input-hashes"),
+      output_hashes: normalizeSha256Refs(options.outputHashes, "--output-hashes"),
       relates: [workOrderId],
     },
   });
@@ -476,10 +1274,39 @@ function runWorkReceiptUpdateCommandLocked(options: WorkReceiptUpdateCommandOpti
     toStringList(loaded.frontmatter.attestation_refs),
     parseCsvList(options.addAttestationRefs)
   );
+  loaded.frontmatter.evidence_hashes = appendUnique(
+    toStringList(loaded.frontmatter.evidence_hashes),
+    normalizeSha256Refs(options.addEvidenceHashes, "--add-evidence-hashes")
+  );
   loaded.frontmatter.updated = formatDate(options.now ?? new Date());
   writeFrontmatterFile(loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
   printReceipt("receipt updated", nodeReceipt(options.root, loaded.node), options.json);
+}
+
+function runWorkReceiptVerifyCommandLocked(options: WorkReceiptVerifyCommandOptions): void {
+  const config = loadConfig(options.root);
+  const ws = normalizeWorkspace(options.ws);
+  const { index } = loadIndex({ root: options.root, config });
+  const receiptNode = resolveReadableWorkNode(index, options.id, ws, "receipt", "receipt");
+  const receipt = buildWorkReceiptVerifyReceipt(index, receiptNode);
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    if (!receipt.ok) {
+      throw new ValidationError("receipt verification failed");
+    }
+    return;
+  }
+  console.log(`${receipt.receipt.qid}: ${receipt.ok ? "ok" : "failed"}`);
+  for (const check of receipt.checks) {
+    console.log(`- ${check.name}: ${check.ok ? "ok" : "failed"} - ${check.detail}`);
+  }
+  for (const warning of receipt.warnings) {
+    console.log(`warning: ${warning}`);
+  }
+  if (!receipt.ok) {
+    throw new ValidationError("receipt verification failed");
+  }
 }
 
 function runWorkArtifactAddCommandLocked(options: WorkArtifactAddCommandOptions): void {
@@ -568,12 +1395,24 @@ export function runWorkOrderUpdateCommand(options: WorkOrderUpdateCommandOptions
   return withWorkLock(options.root, () => runWorkOrderUpdateCommandLocked(options));
 }
 
+export function runWorkOrderStatusCommand(options: WorkOrderStatusCommandOptions): void {
+  return runWorkOrderStatusCommandLocked(options);
+}
+
+export function runWorkTriggerCommand(options: WorkTriggerCommandOptions): void {
+  return withWorkLock(options.root, () => runWorkTriggerCommandLocked(options));
+}
+
 export function runWorkReceiptNewCommand(options: WorkReceiptNewCommandOptions): void {
   return withWorkLock(options.root, () => runWorkReceiptNewCommandLocked(options));
 }
 
 export function runWorkReceiptUpdateCommand(options: WorkReceiptUpdateCommandOptions): void {
   return withWorkLock(options.root, () => runWorkReceiptUpdateCommandLocked(options));
+}
+
+export function runWorkReceiptVerifyCommand(options: WorkReceiptVerifyCommandOptions): void {
+  return runWorkReceiptVerifyCommandLocked(options);
 }
 
 export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions): void {
