@@ -1,0 +1,17 @@
+{
+  "tool": "mdkg",
+  "kind": "project_db",
+  "mdkg_version": "0.3.0",
+  "schema_version": 1,
+  "enabled": true,
+  "layout": {
+    "root_path": ".mdkg/db",
+    "schema_path": ".mdkg/db/schema",
+    "migrations_path": ".mdkg/db/schema/migrations",
+    "runtime_path": ".mdkg/db/runtime/project.sqlite",
+    "state_path": ".mdkg/db/state/project.sqlite",
+    "receipts_path": ".mdkg/db/receipts"
+  },
+  "migration_table": "mdkg_schema_migration",
+  "runtime_database_created": false
+}
