@@ -22,7 +22,7 @@
     "default_profile": "private"
   },
   "db": {
-    "enabled": false,
+    "enabled": true,
     "schema_version": 1,
     "root_path": ".mdkg/db",
     "schema_path": ".mdkg/db/schema",
