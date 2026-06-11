@@ -14,6 +14,7 @@ import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
 import { runStatusCommand } from "./commands/status";
+import { runFixPlanCommand } from "./commands/fix";
 import {
   runDbInitCommand,
   runDbIndexRebuildCommand,
@@ -179,6 +180,7 @@ function printUsage(log: LogFn): void {
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
   log("  status      Show read-only operator health summary");
+  log("  fix         Plan read-only repairs with receipt-shaped JSON");
   log("\nAdvanced / maintenance commands:");
   log("  db          Project database and index-cache commands");
   log("  event       Enable or append episodic event logs");
@@ -973,6 +975,32 @@ function printStatusHelp(log: LogFn): void {
   printGlobalOptions(log);
 }
 
+function printFixHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "plan":
+      log("Usage:");
+      log("  mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]");
+      log("\nBoundaries:");
+      log("  - read-only repair planning; writes no files and does not rebuild indexes");
+      log("  - emits a deterministic receipt-shaped JSON plan with paths, risks, and reason codes");
+      log("  - initial families are index/cache, graph refs, and duplicate ids");
+      log("  - `fix apply` is intentionally not available in this release slice");
+      log("\nOptions:");
+      log("  --family <family>     Select index, refs, ids, or all (default all)");
+      log("  --target <id-or-qid>  Optional node target for family planners");
+      log("  --json                Emit machine-readable JSON output");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log("  mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]");
+      log("\nNotes:");
+      log("  - fix planning is dry-run only and writes nothing");
+      log("  - apply behavior is deferred until the receipt contract is proven");
+      printGlobalOptions(log);
+  }
+}
+
 function printFormatHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg format");
@@ -1080,6 +1108,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "status":
       printStatusHelp(log);
+      return;
+    case "fix":
+      printFixHelp(log, subcommand);
       return;
     case "format":
       printFormatHelp(log);
@@ -2756,6 +2787,23 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       }
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       runStatusCommand({ root, json });
+      return 0;
+    }
+    case "fix": {
+      const sub = (parsed.positionals[1] ?? "").toLowerCase();
+      if (!sub) {
+        throw new UsageError("fix requires a subcommand");
+      }
+      if (sub !== "plan") {
+        throw new UsageError(`unknown fix subcommand: ${sub}`);
+      }
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("fix plan does not accept positional arguments");
+      }
+      const family = requireFlagValue("--family", parsed.flags["--family"]);
+      const target = requireFlagValue("--target", parsed.flags["--target"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runFixPlanCommand({ root, family, target, json });
       return 0;
     }
     case "format":

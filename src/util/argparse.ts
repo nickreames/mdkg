@@ -101,6 +101,7 @@ const VALUE_FLAGS = new Set([
   "--requires",
   "--target",
   "--snapshot",
+  "--family",
 ]);
 
 const BOOLEAN_FLAGS = new Set([

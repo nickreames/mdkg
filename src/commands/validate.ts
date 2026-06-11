@@ -322,7 +322,7 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
         if (idsByWorkspace[alias].has(node.id)) {
           const firstPath = idsByWorkspace[alias].get(node.id);
           errors.push(
-            `${filePath}: duplicate id ${node.id} in workspace ${alias} (also in ${firstPath})`
+            `${path.relative(options.root, filePath).split(path.sep).join("/")}: duplicate id ${node.id} in workspace ${alias} (also in ${firstPath ? path.relative(options.root, firstPath).split(path.sep).join("/") : "unknown"})`
           );
           continue;
         }
