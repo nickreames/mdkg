@@ -48,3 +48,10 @@ explicit operator approval and no-secret runtime boundaries.
 # Links / Artifacts
 
 - `goal-11`
+
+# Roadmap Alignment
+
+This deferred execution epic is consolidated under the `goal-13` hardening
+umbrella by narrative roadmap alignment only. It is intentionally not related
+to `goal-13` in frontmatter so active hardening goal routing does not select
+paused `goal-11` implementation work.

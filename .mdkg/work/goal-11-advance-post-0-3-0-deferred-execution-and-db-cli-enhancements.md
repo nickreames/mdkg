@@ -17,7 +17,7 @@ owners: []
 links: []
 artifacts: []
 relates: [epic-65, epic-66, epic-67]
-blocked_by: [goal-10]
+blocked_by: []
 blocks: []
 refs: []
 aliases: []
@@ -80,7 +80,9 @@ Resume only after `goal-10` has achieved publish readiness.
 # Current State
 
 Paused. This is a roadmap holding area for work explicitly deferred from
-`0.3.0`.
+`0.3.0`. As of 2026-06-09 it is consolidated under `goal-13`; it remains paused
+until the hardening train explicitly resumes worker execution, public DB CLI,
+or downstream migration automation work.
 
 # Iteration Log
 

@@ -2,27 +2,33 @@
 id: task-148
 type: task
 title: create post publish repo handoff prompts
-status: todo
+status: done
 priority: 2
 epic: epic-25
 tags: [handoff, release, runtime-contract, upgrade, repos]
 owners: []
 links: []
 artifacts: []
-relates: [task-132, epic-24, epic-25, epic-26]
+relates: [task-132, epic-24, epic-25, epic-26, goal-13]
 blocked_by: []
 blocks: []
 refs: [edd-3, edd-8]
 aliases: [post-publish-handoff-prompts]
 skills: []
 created: 2026-05-18
-updated: 2026-05-18
+updated: 2026-06-09
 ---
 
 # Overview
 
 After the next mdkg npm package is published, produce repo-specific upgrade and
 alignment prompts for the core consumer repos.
+
+2026-06-09 closeout: superseded by the post-`0.3.0` orchestrator handoff plus
+`goal-13`, which turns downstream adoption into a safer hardening roadmap
+instead of one-off repo prompts. The next downstream work should use generated
+subgraph audit/upgrade-plan and migration dry-run surfaces rather than bespoke
+manual prompts.
 
 # Acceptance Criteria
 
@@ -59,6 +65,7 @@ adopt the new package behavior.
 # Links / Artifacts
 
 - `task-132`
+- `goal-13`
 - `/Users/nick/git/omni-room-runtime`
 - `/Users/nick/git/omni-web`
 - `/Users/nick/git/ochatr-ai-go`
