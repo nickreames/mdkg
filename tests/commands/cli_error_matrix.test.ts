@@ -109,7 +109,7 @@ test("cli command error matrix covers flag parsing and subcommand usage guidance
     [["next", "task-1", "task-2"], 1, /next accepts at most one id/, /mdkg next \[<id-or-qid>\]/],
     [["checkpoint", "oops"], 1, /unknown checkpoint subcommand: oops/, /mdkg checkpoint new <title>/],
     [["format", "extra"], 1, /format does not accept positional arguments/, /mdkg format/],
-    [["doctor", "extra"], 1, /doctor does not accept positional arguments/, /mdkg doctor \[--json\]/],
+    [["doctor", "extra"], 1, /doctor does not accept positional arguments/, /mdkg doctor \[--strict\] \[--json\]/],
     [["workspace", "ls", "extra"], 1, /workspace ls takes no arguments/, /mdkg workspace ls/],
     [["workspace", "add", "docs"], 1, /workspace add requires <alias> <path>/, /mdkg workspace add <alias> <path>/],
   ];

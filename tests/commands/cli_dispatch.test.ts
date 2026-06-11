@@ -75,7 +75,7 @@ function runCli(root: string, args: string[]): SpawnSyncReturns<string> {
   });
 }
 
-test("cli dispatch covers index, guide, show, list, search, next, validate, format, and doctor", () => {
+test("cli dispatch covers index, guide, show, list, search, next, validate, status, format, and doctor", () => {
   const root = setupRepo();
 
   const index = runCli(root, ["index"]);
@@ -116,6 +116,18 @@ test("cli dispatch covers index, guide, show, list, search, next, validate, form
   assert.equal(receipt.action, "validated");
   assert.equal(receipt.ok, true);
   assert.equal(receipt.error_count, 0);
+
+  const statusJson = runCli(root, ["status", "--json"]);
+  assert.equal(statusJson.status, 0);
+  const status = JSON.parse(statusJson.stdout) as {
+    action: string;
+    ok: boolean;
+    graph: { ok: boolean; node_count: number | null };
+  };
+  assert.equal(status.action, "status");
+  assert.equal(status.ok, true);
+  assert.equal(status.graph.ok, true);
+  assert.equal(status.graph.node_count, 2);
 
   const format = runCli(root, ["format"]);
   assert.equal(format.status, 0);
