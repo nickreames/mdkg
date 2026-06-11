@@ -6,7 +6,50 @@ This project follows a pragmatic changelog style inspired by Keep a Changelog. V
 
 mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL contracts may change quickly while the project converges on a stable v1 surface.
 
-## 0.3.0 - Unreleased
+## Unreleased
+
+### Planned
+
+- No changes yet.
+
+## 0.3.1 - 2026-06-11
+
+### Added
+
+- Added `mdkg status --json` as a read-only operator health summary covering
+  package/release metadata, Git state, graph/index freshness, selected-goal
+  state, project DB verification state, and generated cache health.
+- Added strict typed doctor checks with `mdkg doctor --strict --json`,
+  including stable check ids, status/severity fields, remediation text, selected
+  goal stale/achieved detection, and enabled project DB verification failures.
+- Added dry-run-only `mdkg fix plan --json` with receipt-shaped repair plans for
+  generated index/cache state, missing graph references, and duplicate local ids.
+- Added read-only `mdkg subgraph audit` and `mdkg subgraph upgrade-plan`
+  receipts for child graph source-path health, root-owned bundle safety,
+  materialized-tree safety, dirty child repo refusal, and downstream sync/verify
+  planning.
+- Added generated `dist/command-contract.json` metadata and `npm run
+  cli:contract` so command docs can be generated from mdkg-native command
+  policy metadata before `mdkg.dev` launch.
+
+### Changed
+
+- Hardened mutating command paths with mutation locks and atomic writes for
+  format, skill, and workspace updates.
+- Extended prepublish readiness with operator-health, fix-plan,
+  branch-conflict, and command-docs packed smoke coverage.
+- Updated README, `CLI_COMMAND_MATRIX.md`, init assets, help snapshots, and
+  publish-readiness assertions for the new operator-health, fix-planning,
+  subgraph safety, branch safety, generated command contract, and docs
+  readiness surfaces.
+
+### Security
+
+- Kept repair planning, subgraph upgrade planning, and operator health commands
+  read-only by default; apply behavior, child repo mutation, worker execution,
+  and public event/reducer/lease/materializer CLI remain deferred.
+
+## 0.3.0 - 2026-06-06
 
 ### Added
 
