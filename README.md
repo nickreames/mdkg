@@ -133,6 +133,8 @@ mdkg show child_repo:work.example
 mdkg pack child_repo:work.example --dry-run --stats
 mdkg capability resolve "child capability" --json
 mdkg subgraph verify child_repo --json
+mdkg subgraph audit child_repo --target .mdkg/subgraphs --json
+mdkg subgraph upgrade-plan child_repo --json
 ```
 
 When the child repo is available under a configured root-relative `source_path`, refresh the root-owned bundle snapshot explicitly:
@@ -141,6 +143,8 @@ When the child repo is available under a configured root-relative `source_path`,
 mdkg subgraph sync child_repo --dry-run --json
 mdkg subgraph sync child_repo --json
 ```
+
+`audit` is read-only and reports source-path Git state, dirty tracked child files, bundle validity/freshness, root-owned bundle-path safety, optional materialized-target marker safety, and count-only capability summaries. `upgrade-plan` is also read-only, returns `apply_supported: false`, and proposes safe sync/verify/materialize next steps without writing bundles or child files.
 
 `sync` inspects the child Git repo, refuses dirty tracked changes by default, builds the configured private/public bundle into the root-owned source path, verifies it, and records `<branch>@<sha>` in `source_repo`. It never commits, pulls, pushes, checks out, resets, or mutates child mdkg Markdown. Use `--allow-dirty` only when the dirty state is intentional and must be recorded in the receipt.
 
@@ -277,6 +281,8 @@ These are the commands new users and agents should learn first:
 - `mdkg goal`
 - `mdkg task`
 - `mdkg validate`
+- `mdkg status`
+- `mdkg fix`
 
 Advanced / maintenance commands still exist, but they are not the first-run story:
 - `mdkg event`
@@ -284,8 +290,33 @@ Advanced / maintenance commands still exist, but they are not the first-run stor
 - `mdkg index`
 - `mdkg guide`
 - `mdkg format`
-- `mdkg doctor`
+- `mdkg doctor --strict --json`
+- `mdkg fix plan --json`
 - `mdkg workspace`
+
+## Operator health
+
+Use `mdkg status --json` for a read-only operator summary before mutating a
+repo. It reports package/release state, Git cleanliness, graph validity,
+selected-goal state, project DB verification state, and generated cache
+freshness without rebuilding indexes, running migrations, repairing files, or
+changing selected-goal state.
+
+Use `mdkg doctor --strict --json` when a CI job or agent needs actionable
+typed checks. Strict doctor keeps the existing diagnostic command read-only and
+adds stable check fields: `id`, `status`, `severity`, `message`,
+`remediation`, and optional `refs`. Strict mode fails on invalid graph state,
+stale generated graph/capability cache state, stale or achieved selected-goal
+state, and enabled project DB verification failures. Warnings such as dirty
+runtime DB files, archive size guidance, and bundle handoff guidance remain
+warnings unless their underlying check fails.
+
+Use `mdkg fix plan --json` when you want repair guidance without mutation. It
+emits a receipt-shaped plan for generated index/cache repair, missing graph
+references, and duplicate local ids. Planned changes include affected paths,
+risk, reason codes, command hints, and `apply_supported: false`. `fix apply` is
+not exposed; apply behavior is deferred until the dry-run plan contract has
+enough evidence.
 
 ## Skills
 

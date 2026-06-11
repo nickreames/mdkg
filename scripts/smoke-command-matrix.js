@@ -4,67 +4,10 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { HELP_TARGETS } = require("./cli_help_targets");
 
 const NPM_CMD = process.platform === "win32" ? "npm.cmd" : "npm";
 const GIT_CMD = process.platform === "win32" ? "git.exe" : "git";
-
-const HELP_TARGETS = [
-  ["global"],
-  ["init"],
-  ["upgrade"],
-  ["new"],
-  ["show"],
-  ["list"],
-  ["search"],
-  ["pack"],
-  ["capability"],
-  ["capability", "list"],
-  ["capability", "search"],
-  ["capability", "show"],
-  ["spec"],
-  ["spec", "list"],
-  ["spec", "show"],
-  ["spec", "validate"],
-  ["archive"],
-  ["archive", "add"],
-  ["archive", "list"],
-  ["archive", "show"],
-  ["archive", "verify"],
-  ["archive", "compress"],
-  ["bundle"],
-  ["bundle", "create"],
-  ["bundle", "list"],
-  ["bundle", "show"],
-  ["bundle", "verify"],
-  ["bundle", "import"],
-  ["work"],
-  ["work", "contract"],
-  ["work", "order"],
-  ["work", "receipt"],
-  ["work", "artifact"],
-  ["skill"],
-  ["skill", "new"],
-  ["skill", "list"],
-  ["skill", "show"],
-  ["skill", "search"],
-  ["skill", "validate"],
-  ["skill", "sync"],
-  ["task"],
-  ["task", "start"],
-  ["task", "update"],
-  ["task", "done"],
-  ["event"],
-  ["event", "enable"],
-  ["event", "append"],
-  ["next"],
-  ["checkpoint"],
-  ["validate"],
-  ["format"],
-  ["doctor"],
-  ["workspace"],
-  ["index"],
-  ["guide"],
-];
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;

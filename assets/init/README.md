@@ -29,10 +29,22 @@ mdkg spec list --json
 mdkg archive list
 mdkg bundle create --profile private
 mdkg subgraph list --json
+mdkg status --json
+mdkg fix plan --json
 mdkg validate
 ```
 
 This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal select/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+
+Use `mdkg status --json` for a read-only operator summary of Git, graph,
+selected-goal, project DB, and generated-cache health before mutating work. Use
+`mdkg doctor --strict --json` for typed diagnostic checks in CI or agent
+orchestration. These commands inspect state; they do not apply repairs.
+
+Use `mdkg fix plan --json` for dry-run repair guidance. It reports generated
+index/cache repair hints, missing graph references, and duplicate local ids as
+receipt-shaped planned changes with risk levels and `apply_supported: false`.
+`fix apply` is not exposed; repair application is intentionally deferred.
 
 Agent workflow docs can use semantic ids:
 
@@ -130,7 +142,11 @@ Register child bundle snapshots as read-only subgraphs with:
 mdkg subgraph add child_repo child-repo/.mdkg/bundles/private/all.mdkg.zip --source-path child-repo
 mdkg capability resolve "child capability" --json
 mdkg subgraph verify child_repo --json
+mdkg subgraph audit child_repo --target .mdkg/subgraphs --json
+mdkg subgraph upgrade-plan child_repo --json
 ```
+
+Use `mdkg subgraph audit child_repo --target .mdkg/subgraphs --json` to inspect source-path Git state, dirty tracked child files, bundle validity/freshness, root-owned bundle-path safety, optional materialized-target marker safety, and count-only capability summaries. Use `mdkg subgraph upgrade-plan child_repo --json` for a read-only downstream plan; it returns `apply_supported: false`.
 
 Use `mdkg subgraph sync child_repo --dry-run --json` before writing a refreshed root-owned child bundle snapshot, then `mdkg subgraph sync child_repo --json` when the receipt is acceptable. `sync` inspects the configured child Git repo `source_path`, refuses dirty tracked changes by default, verifies the new bundle, and records `source_repo` as `<branch>@<sha>` without committing, pulling, pushing, checking out, resetting, or mutating child mdkg Markdown.
 

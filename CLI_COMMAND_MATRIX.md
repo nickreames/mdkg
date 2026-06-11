@@ -34,6 +34,8 @@ Primary commands:
 - `task`
 - `next`
 - `validate`
+- `status`
+- `fix`
 
 Advanced / maintenance commands:
 - `db`
@@ -42,6 +44,8 @@ Advanced / maintenance commands:
 - `index`
 - `guide`
 - `format`
+- `status`
+- `fix`
 - `doctor`
 - `workspace`
 
@@ -56,6 +60,8 @@ Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...
 Recursive long-running objective contracts are accessed through `mdkg goal ...`.
 Fresh init workspaces default to the SQLite access cache backend; existing migrated configs stay on JSON until opted in.
 Project application database foundation commands are accessed through `mdkg db ...`; `mdkg index` remains the compatibility shortcut for graph index rebuilds.
+Operator health summaries are accessed through read-only `mdkg status ...`; deeper diagnostics remain under `mdkg doctor ...`.
+Repair planning is accessed through read-only `mdkg fix plan ...`; apply behavior is intentionally deferred.
 
 ## Global usage
 
@@ -601,11 +607,11 @@ JSON receipts:
 
 When to use:
 - register child graph snapshot bundles as read-only planning context
-- inspect, verify, enable, disable, refresh, sync, and materialize configured subgraphs
+- inspect, verify, enable, disable, refresh, audit, upgrade-plan, sync, and materialize configured subgraphs
 - keep root orchestration graph state separate from child repo mutations
 
 Usage:
-- `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh/sync/materialize ...`
+- `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh/audit/upgrade-plan/sync/materialize ...`
 - `mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]`
 - `mdkg subgraph list [--json]`
 - `mdkg subgraph show <alias> [--json]`
@@ -614,6 +620,8 @@ Usage:
 - `mdkg subgraph disable <alias> [--json]`
 - `mdkg subgraph verify [alias|--all] [--json]`
 - `mdkg subgraph refresh [alias|--all] [--json]`
+- `mdkg subgraph audit [alias|--all] [--target <path>] [--json]`
+- `mdkg subgraph upgrade-plan [alias|--all] [--json]`
 - `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]`
 - `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]`
 
@@ -623,9 +631,9 @@ Flags:
 - `--source-path <path>`
 - `--source-repo <ref>`
 - `--max-stale-seconds <seconds>`
+- `--target <path>` for audit materialize-target safety checks and materialize output
 - `--dry-run`
 - `--allow-dirty`
-- `--target <path>`
 - `--clean`
 - `--gitignore`
 - `--json`
@@ -635,6 +643,8 @@ Notes:
 - each subgraph defaults to `enabled: true`, `visibility: private`, `permissions: ["read"]`, and `max_stale_seconds: 3600`
 - each subgraph may contain multiple configured sources, but CLI add creates one initial source in this release
 - `mdkg subgraph refresh` reloads configured bundle sources only; it never builds or mutates child repos
+- `mdkg subgraph audit` is read-only and reports typed checks for source_path Git state, bundle validity/freshness, root-owned bundle paths, dirty tracked child files, and optional materialize target marker safety
+- `mdkg subgraph upgrade-plan` is read-only and returns `apply_supported: false`; it proposes safe sync/verify/materialize next steps and blocks on dirty child repos, invalid bundles, unsafe bundle paths, or unusable source paths
 - `mdkg subgraph sync` uses configured `source_path`, requires a contained root-relative clean child Git repo by default, builds the configured root-owned bundle path, verifies it, and records `source_repo` as `<branch>@<sha>`
 - `mdkg subgraph sync --dry-run` writes no bundles, config, or indexes; `--allow-dirty` permits dirty tracked child changes and records them visibly
 - `mdkg subgraph materialize` extracts bundles into generated read-only inspection trees under `<target>/<alias>` and protects clean replacement with `.mdkg-materialized.json`
@@ -654,6 +664,8 @@ JSON receipts:
 - `show`: `{ action: "show", subgraph }`
 - `rm`: `{ action: "removed", subgraph: { alias } }`
 - `verify`: `{ action: "verified", ok, count, subgraphs }`
+- `audit`: `{ action: "audited", ok, count, target?, errors, warnings, subgraphs: [{ alias, capability_summary, checks, dirty_tracked, source_repo_current, ok }] }`
+- `upgrade-plan`: `{ action: "upgrade_plan", ok, count, apply_supported: false, mutation_policy: "read_only_plan", blockers, subgraphs: [{ alias, capability_summary, actions, blockers }] }`
 - `sync`: `{ action: "sync_dry_run"|"synced", ok, count, updated, skipped, errors, warnings, subgraphs }`
 - `materialize`: `{ action: "materialized", ok, count, target, results, errors, warnings }`
 
@@ -992,20 +1004,90 @@ Usage:
 Usage:
 - `mdkg format`
 
+### `mdkg status`
+
+Usage:
+- `mdkg status [--json]`
+
+When to use:
+- get a read-only operator summary for scripts and agents
+- inspect release/package, git, graph, selected-goal, project DB, and generated-cache health before mutating work
+
+Boundaries:
+- does not rebuild indexes, repair files, run migrations, write graph nodes, mutate selected-goal state, or change project DB state
+- dirty git state and stale generated caches are warnings, not automatic repair instructions
+- use `mdkg doctor` for diagnostic detail and future strict typed checks
+
+JSON receipt shape:
+- `{ action: "status", ok, level, root, mdkg, git, release, graph, goal, db, generated, summary }`
+- `level` is `ok`, `warn`, or `fail`
+- `git` includes `inside`, `branch`, `dirty`, `dirty_count`, `untracked_count`, `ahead`, and `behind`
+- `graph` includes `ok`, `node_count`, `workspace_count`, `stale`, `warning_count`, and `error_count`
+- `goal` includes selected-goal state, existence, achieved-state, active node, goal state, and work status
+- `db` reports disabled state or project DB verification summary
+- `generated` reports index, skills, capabilities, and subgraph cache existence/staleness
+- `summary` includes machine-readable warning and error counts plus messages
+
+### `mdkg fix`
+
+When to use:
+- plan reviewable graph/index repairs before any apply command exists
+- get a receipt-shaped JSON plan for automation and agent review
+
+Usage:
+- `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]`
+
+Flags:
+- `--family <family>`
+- `--target <id-or-qid>`
+- `--json`
+
+Boundaries:
+- dry-run only and writes nothing
+- does not rebuild indexes, edit graph files, rename ids, or update references
+- `fix apply` is intentionally not available in the first repair-planning slice
+- initial families are index/cache, graph refs, and duplicate ids
+
+JSON receipt:
+- `{ action: "fix.plan", ok, schema_version, plan_id, plan_hash, generated_at, root, family, target, dirty, families, risk_counts, proposed_changes, blocked_changes, summary }`
+- each proposed change includes family, risk, status, reason, paths, refs, optional before/after values, command hint, and `apply_supported: false`
+- `summary.apply_deferred` remains true until a future apply design is approved
+
 ### `mdkg doctor`
 
 Usage:
-- `mdkg doctor [--json]`
+- `mdkg doctor [--strict] [--json]`
 
 Checks:
 - Node.js version compatibility
 - config and template availability
+- selected-goal stale, missing, or achieved state
+- project DB verification when project DB is enabled
 - global node index health
 - capability cache health
 - SQLite cache health when enabled
 - archive sidecar storage hygiene
 - archive large-cache warning threshold
 - bundle snapshot storage guidance
+
+Flags:
+- `--strict`
+- `--json`
+
+Strict mode:
+- keeps the command read-only
+- fails on invalid graph/index load, stale achieved selected goal, enabled
+  project DB verification failure, and generated cache failures
+- reports dirty/runtime/storage concerns as typed warnings unless their
+  underlying check already fails
+
+JSON receipt shape:
+- `{ action: "doctor", ok, strict, checks, summary, failure_count }`
+- each check keeps compatibility fields `name`, `ok`, `level`, and `detail`
+- each check also includes typed fields `id`, `status`, `severity`,
+  `message`, `remediation`, and optional `refs`
+- `status` is `pass`, `warn`, `fail`, or `info`
+- `severity` is `info`, `warning`, or `error`
 
 ### `mdkg workspace`
 

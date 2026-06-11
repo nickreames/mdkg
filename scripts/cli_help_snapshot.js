@@ -1,94 +1,11 @@
 const { spawnSync } = require("node:child_process");
 const fs = require("node:fs");
 const path = require("node:path");
+const { HELP_TARGETS, helpTargetKey } = require("./cli_help_targets");
 
 const root = path.resolve(__dirname, "..");
 const cliPath = path.join(root, "dist", "cli.js");
 const matrixPath = path.join(root, "CLI_COMMAND_MATRIX.md");
-
-const HELP_TARGETS = [
-  ["global"],
-  ["init"],
-  ["upgrade"],
-  ["new"],
-  ["show"],
-  ["list"],
-  ["search"],
-  ["pack"],
-  ["capability"],
-  ["capability", "list"],
-  ["capability", "search"],
-  ["capability", "show"],
-  ["spec"],
-  ["spec", "list"],
-  ["spec", "show"],
-  ["spec", "validate"],
-  ["archive"],
-  ["archive", "add"],
-  ["archive", "list"],
-  ["archive", "show"],
-  ["archive", "verify"],
-  ["archive", "compress"],
-  ["bundle"],
-  ["bundle", "create"],
-  ["bundle", "list"],
-  ["bundle", "show"],
-  ["bundle", "verify"],
-  ["bundle", "import"],
-  ["subgraph"],
-  ["subgraph", "add"],
-  ["subgraph", "list"],
-  ["subgraph", "show"],
-  ["subgraph", "rm"],
-  ["subgraph", "enable"],
-  ["subgraph", "disable"],
-  ["subgraph", "verify"],
-  ["subgraph", "refresh"],
-  ["subgraph", "sync"],
-  ["subgraph", "materialize"],
-  ["work"],
-  ["work", "contract"],
-  ["work", "trigger"],
-  ["work", "order"],
-  ["work", "receipt"],
-  ["work", "artifact"],
-  ["goal"],
-  ["goal", "show"],
-  ["goal", "select"],
-  ["goal", "current"],
-  ["goal", "clear"],
-  ["goal", "next"],
-  ["goal", "claim"],
-  ["goal", "evaluate"],
-  ["goal", "pause"],
-  ["goal", "resume"],
-  ["goal", "done"],
-  ["skill"],
-  ["skill", "new"],
-  ["skill", "list"],
-  ["skill", "show"],
-  ["skill", "search"],
-  ["skill", "validate"],
-  ["skill", "sync"],
-  ["task"],
-  ["task", "start"],
-  ["task", "update"],
-  ["task", "done"],
-  ["event"],
-  ["event", "enable"],
-  ["event", "append"],
-  ["next"],
-  ["checkpoint"],
-  ["validate"],
-  ["format"],
-  ["doctor"],
-  ["workspace"],
-  ["db"],
-  ["db", "index"],
-  ["db", "snapshot"],
-  ["index"],
-  ["guide"],
-];
 
 function runHelp(target) {
   const args = target[0] === "global" ? ["--help"] : ["help", ...target];
@@ -133,7 +50,7 @@ function collectUsageLines(helpText) {
 function buildSnapshot() {
   const commands = {};
   for (const target of HELP_TARGETS) {
-    const key = target.join(" ");
+    const key = helpTargetKey(target);
     const help = runHelp(target);
     commands[key] = {
       target,

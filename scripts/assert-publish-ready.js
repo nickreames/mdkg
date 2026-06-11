@@ -47,12 +47,75 @@ function requirePackageVersions() {
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:work-invocation && npm run smoke:cli-ux-polish")) {
     fail("prepublishOnly must run smoke:cli-ux-polish immediately after smoke:work-invocation");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:operator-health"]) {
+    fail("package.json is missing smoke:operator-health");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:operator-health")) {
+    fail("prepublishOnly is missing smoke:operator-health");
+  }
+  if (!pkg.scripts || !pkg.scripts["smoke:fix-plan"]) {
+    fail("package.json is missing smoke:fix-plan");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:operator-health && npm run smoke:fix-plan")) {
+    fail("prepublishOnly must run smoke:fix-plan immediately after smoke:operator-health");
+  }
+  if (!pkg.scripts || !pkg.scripts["smoke:branch-conflicts"]) {
+    fail("package.json is missing smoke:branch-conflicts");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:fix-plan && npm run smoke:branch-conflicts")) {
+    fail("prepublishOnly must run smoke:branch-conflicts immediately after smoke:fix-plan");
+  }
+  if (!pkg.scripts || !pkg.scripts["smoke:command-docs"]) {
+    fail("package.json is missing smoke:command-docs");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:branch-conflicts && npm run smoke:command-docs")) {
+    fail("prepublishOnly must run smoke:command-docs immediately after smoke:branch-conflicts");
+  }
+  if (!pkg.scripts || !pkg.scripts["cli:contract"]) {
+    fail("package.json is missing cli:contract");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run cli:check && npm run cli:contract")) {
+    fail("prepublishOnly must run cli:contract immediately after cli:check");
+  }
+  if (!Array.isArray(pkg.files) || !pkg.files.includes("dist/command-contract.json")) {
+    fail("package files must include dist/command-contract.json");
+  }
 }
 
 function requireCliBuild() {
   const cli = requireFile("dist/cli.js");
   if (!cli.startsWith("#!/usr/bin/env node\n")) {
     fail("dist/cli.js is missing the Node shebang");
+  }
+  const contract = JSON.parse(requireFile("dist/command-contract.json"));
+  if (contract.schema_version !== 1 || contract.tool !== "mdkg" || !/^[a-f0-9]{64}$/.test(contract.contract_hash || "")) {
+    fail("dist/command-contract.json is not a valid mdkg command contract");
+  }
+  if (!Array.isArray(contract.commands) || contract.commands.length < 70) {
+    fail("dist/command-contract.json has too few command records");
+  }
+  const byKey = new Map(contract.commands.map((command) => [command.key, command]));
+  for (const key of ["status", "doctor", "fix plan", "db", "subgraph sync", "workspace", "skill new", "task start"]) {
+    if (!byKey.has(key)) {
+      fail(`dist/command-contract.json is missing ${key}`);
+    }
+  }
+  for (const key of ["db", "subgraph sync", "workspace", "skill new", "task start"]) {
+    const command = byKey.get(key);
+    if (
+      !command ||
+      command.danger_level === "read-only" ||
+      !Array.isArray(command.write_paths) ||
+      command.write_paths.length === 0 ||
+      command.lock_policy === "none-read-only" ||
+      command.atomic_write_policy === "none-read-only"
+    ) {
+      fail(`dist/command-contract.json is missing mutating safety metadata for ${key}`);
+    }
+  }
+  const fixPlan = byKey.get("fix plan");
+  if (!fixPlan || fixPlan.dry_run?.apply_supported !== false || fixPlan.danger_level !== "read-only") {
+    fail("dist/command-contract.json must keep fix plan read-only with apply unsupported");
   }
 }
 
@@ -70,8 +133,18 @@ function requireBuildFolders() {
   }
   requireFile("dist/templates/builtin.js");
   requireFile("dist/commands/goal.js");
+  requireFile("dist/commands/status.js");
+  requireFile("dist/commands/fix.js");
+  const doctor = requireFile("dist/commands/doctor.js");
+  if (!doctor.includes("goal.selected_achieved") || !doctor.includes("db.project_verify")) {
+    fail("dist/commands/doctor.js is missing strict typed operator-health checks");
+  }
   requireFile("dist/graph/goal_scope.js");
   requireFile("dist/commands/subgraph.js");
+  const subgraph = requireFile("dist/commands/subgraph.js");
+  if (!subgraph.includes("runSubgraphAuditCommand") || !subgraph.includes("runSubgraphUpgradePlanCommand")) {
+    fail("dist/commands/subgraph.js is missing audit or upgrade-plan command support");
+  }
   requireFile("dist/graph/subgraphs.js");
   requireFile("dist/graph/sqlite_index.js");
   requireFile("dist/core/project_db_migrations.js");
@@ -169,6 +242,12 @@ function requireInitAssets() {
     fail("dist/init/AGENT_START.md is missing internal event/reducer/lease/materializer boundary guidance");
   }
   const seededReadme = requireFile("dist/init/README.md");
+  if (!seededReadme.includes("mdkg status --json") || !seededReadme.includes("mdkg doctor --strict --json")) {
+    fail("dist/init/README.md is missing operator health guidance");
+  }
+  if (!seededReadme.includes("mdkg fix plan") || !seededReadme.includes("fix apply")) {
+    fail("dist/init/README.md is missing fix plan dry-run guidance");
+  }
   if (!seededReadme.includes("mdkg subgraph add") || !seededReadme.includes("mdkg subgraph verify")) {
     fail("dist/init/README.md is missing subgraph onboarding guidance");
   }
@@ -247,6 +326,51 @@ function requireInitAssets() {
   const seededGoalSkill = requireFile("dist/init/skills/default/pursue-mdkg-goal/SKILL.md");
   if (!seededGoalSkill.includes("mdkg goal next") || !seededGoalSkill.includes("Skill Improvement Candidates")) {
     fail("dist/init pursue-mdkg-goal skill is missing goal pursuit guidance");
+  }
+  const rootReadme = requireFile("README.md");
+  if (!rootReadme.includes("mdkg status --json") || !rootReadme.includes("mdkg doctor --strict --json")) {
+    fail("README.md is missing operator health guidance");
+  }
+  if (!rootReadme.includes("mdkg fix plan") || !rootReadme.includes("fix apply")) {
+    fail("README.md is missing fix plan dry-run guidance");
+  }
+  const matrix = requireFile("CLI_COMMAND_MATRIX.md");
+  if (!matrix.includes("mdkg status [--json]") || !matrix.includes("mdkg doctor [--strict] [--json]")) {
+    fail("CLI_COMMAND_MATRIX.md is missing operator health command references");
+  }
+  if (!matrix.includes("mdkg fix plan [--family index|refs|ids|all]") || !matrix.includes("apply_supported: false")) {
+    fail("CLI_COMMAND_MATRIX.md is missing fix plan command references");
+  }
+  if (!matrix.includes("mdkg subgraph audit [alias|--all]") || !matrix.includes("mdkg subgraph upgrade-plan [alias|--all]")) {
+    fail("CLI_COMMAND_MATRIX.md is missing subgraph audit or upgrade-plan command references");
+  }
+  const smokeOperatorHealth = requireFile("scripts/smoke-operator-health.js");
+  if (!smokeOperatorHealth.includes("doctor --strict") && !smokeOperatorHealth.includes('"doctor", "--strict"')) {
+    fail("scripts/smoke-operator-health.js is missing strict doctor proof");
+  }
+  const smokeFixPlan = requireFile("scripts/smoke-fix-plan.js");
+  for (const expected of ["generated_cache_missing", "generated_cache_stale", "graph_ref_missing", "duplicate_id"]) {
+    if (!smokeFixPlan.includes(expected)) {
+      fail(`scripts/smoke-fix-plan.js is missing ${expected} proof`);
+    }
+  }
+  const smokeSubgraph = requireFile("scripts/smoke-subgraph.js");
+  for (const expected of ["subgraph.bundle.root_owned", "subgraph.materialize.target_safe", "upgrade-plan"]) {
+    if (!smokeSubgraph.includes(expected)) {
+      fail(`scripts/smoke-subgraph.js is missing ${expected} proof`);
+    }
+  }
+  const smokeCommandDocs = requireFile("scripts/smoke-command-docs.js");
+  for (const expected of [
+    "dist/command-contract.json",
+    "generated-from: dist/command-contract.json",
+    "contract_hash",
+    "Do not hand-maintain command metadata here.",
+    "executeDocumentedExamples",
+  ]) {
+    if (!smokeCommandDocs.includes(expected)) {
+      fail(`scripts/smoke-command-docs.js is missing ${expected} proof`);
+    }
   }
 }
 

@@ -26,6 +26,15 @@ Primary commands:
 - `mdkg goal`
 - `mdkg task`
 - `mdkg validate`
+- `mdkg status [--json]`
+- `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]`
+
+Operator health:
+- `mdkg status [--json]` is a read-only summary for scripts and agents
+- reports mdkg version/config, git state, graph/index freshness, selected-goal state, project DB verification summary, and generated cache status
+- does not rebuild indexes, run migrations, repair files, mutate graph nodes, or change selected-goal state
+- `mdkg fix plan ...` is dry-run repair planning only; it writes nothing and `fix apply` is not exposed
+- `fix plan --json` returns a receipt-shaped plan with selected families, risk counts, paths, reason codes, and `apply_supported: false`
 
 Index backend:
 - fresh mdkg workspaces default to `index.backend: sqlite`
@@ -193,10 +202,14 @@ Subgraph orchestration:
 - `mdkg subgraph disable <alias> [--json]`
 - `mdkg subgraph verify [alias|--all] [--json]`
 - `mdkg subgraph refresh [alias|--all] [--json]`
+- `mdkg subgraph audit [alias|--all] [--target <path>] [--json]`
+- `mdkg subgraph upgrade-plan [alias|--all] [--json]`
 - `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]`
 - `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]`
 - subgraphs are read-only planning views and use subgraph-alias qids such as `child_repo:task-1`
 - subgraph refresh reloads configured bundle sources only and never mutates child repos
+- subgraph audit reports read-only source/bundle/materialized-target safety checks
+- subgraph upgrade-plan returns a read-only downstream plan with `apply_supported: false`
 - subgraph sync builds root-owned bundle snapshots from configured clean child Git repo `source_path` entries
 - subgraph materialize extracts generated inspection trees under a target directory; `.mdkg/subgraphs/` is local generated state
 - public/internal subgraphs require public bundle profiles

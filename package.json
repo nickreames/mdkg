@@ -7,7 +7,7 @@
     "mdkg": "dist/cli.js"
   },
   "scripts": {
-    "build": "node scripts/clean-build-output.js && tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js",
+    "build": "node scripts/clean-build-output.js && tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js && node scripts/generate-command-contract.js --write",
     "build:test": "node scripts/clean-build-output.js tests && tsc -p tsconfig.test.json",
     "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js",
     "test:coverage": "npm run build && npm run build:test && node --test --experimental-test-coverage dist/tests/**/*.test.js",
@@ -25,6 +25,10 @@
     "smoke:archive-work": "npm run build && node scripts/smoke-archive-work.js",
     "smoke:work-invocation": "npm run build && node scripts/smoke-work-invocation.js",
     "smoke:cli-ux-polish": "npm run build && node scripts/smoke-cli-ux-polish.js",
+    "smoke:operator-health": "npm run build && node scripts/smoke-operator-health.js",
+    "smoke:fix-plan": "npm run build && node scripts/smoke-fix-plan.js",
+    "smoke:branch-conflicts": "npm run build && node scripts/smoke-branch-conflicts.js",
+    "smoke:command-docs": "npm run build && node scripts/smoke-command-docs.js",
     "smoke:bundle": "npm run build && node scripts/smoke-bundle.js",
     "smoke:bundle-import": "npm run smoke:subgraph",
     "smoke:visibility": "npm run build && node scripts/smoke-visibility.js",
@@ -33,8 +37,9 @@
     "smoke:goal": "npm run build && node scripts/smoke-goal.js",
     "cli:snapshot": "npm run build && node scripts/cli_help_snapshot.js",
     "cli:check": "npm run build && node scripts/cli_help_snapshot.js --check",
+    "cli:contract": "npm run build && node scripts/generate-command-contract.js --check",
     "prepack": "npm run build && node scripts/assert-publish-ready.js",
-    "prepublishOnly": "npm run test && npm run cli:check && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && npm run smoke:init && npm run smoke:capabilities && npm run smoke:db && npm run smoke:db-queue && npm run smoke:db-queue-cli && npm run smoke:db-events && npm run smoke:db-materializer && npm run smoke:db-snapshot && npm run smoke:archive-work && npm run smoke:work-invocation && npm run smoke:cli-ux-polish && npm run smoke:bundle && npm run smoke:subgraph && npm run smoke:visibility && npm run smoke:sqlite && npm run smoke:parallel && npm run smoke:goal && node scripts/assert-publish-ready.js",
+    "prepublishOnly": "npm run test && npm run cli:check && npm run cli:contract && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && npm run smoke:init && npm run smoke:capabilities && npm run smoke:db && npm run smoke:db-queue && npm run smoke:db-queue-cli && npm run smoke:db-events && npm run smoke:db-materializer && npm run smoke:db-snapshot && npm run smoke:archive-work && npm run smoke:work-invocation && npm run smoke:cli-ux-polish && npm run smoke:operator-health && npm run smoke:fix-plan && npm run smoke:branch-conflicts && npm run smoke:command-docs && npm run smoke:bundle && npm run smoke:subgraph && npm run smoke:visibility && npm run smoke:sqlite && npm run smoke:parallel && npm run smoke:goal && node scripts/assert-publish-ready.js",
     "postinstall": "node scripts/postinstall.js",
     "smoke:subgraph": "npm run build && node scripts/smoke-subgraph.js"
   },
@@ -44,6 +49,7 @@
   },
   "files": [
     "dist/cli.js",
+    "dist/command-contract.json",
     "dist/commands/",
     "dist/core/",
     "dist/graph/",
@@ -53,6 +59,7 @@
     "dist/util/",
     "scripts/postinstall.js",
     "README.md",
+    "CLI_COMMAND_MATRIX.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "LICENSE"
