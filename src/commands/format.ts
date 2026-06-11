@@ -16,6 +16,8 @@ import { ValidationError } from "../util/errors";
 import { formatDate } from "../util/date";
 import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, isUriRef, validatePortableOrUriRef } from "../util/refs";
+import { atomicWriteFile } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
 
 export type FormatCommandOptions = {
   root: string;
@@ -292,7 +294,7 @@ function normalizeFrontmatter(
   return { normalized, errors };
 }
 
-export function runFormatCommand(options: FormatCommandOptions): void {
+function runFormatCommandLocked(options: FormatCommandOptions): void {
   const config = loadConfig(options.root);
   const templateSchemas = loadTemplateSchemas(options.root, config, ALLOWED_TYPES);
   const filesByAlias = listWorkspaceDocFilesByAlias(options.root, config);
@@ -384,8 +386,13 @@ export function runFormatCommand(options: FormatCommandOptions): void {
   }
 
   for (const update of updates) {
-    fs.writeFileSync(update.filePath, update.content, "utf8");
+    atomicWriteFile(update.filePath, update.content);
   }
 
   console.log(`format updated ${updates.length} file(s)`);
+}
+
+export function runFormatCommand(options: FormatCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runFormatCommandLocked(options));
 }

@@ -67,6 +67,7 @@ import {
 } from "./commands/bundle";
 import {
   runSubgraphAddCommand,
+  runSubgraphAuditCommand,
   runSubgraphDisableCommand,
   runSubgraphEnableCommand,
   runSubgraphListCommand,
@@ -75,6 +76,7 @@ import {
   runSubgraphRemoveCommand,
   runSubgraphShowCommand,
   runSubgraphSyncCommand,
+  runSubgraphUpgradePlanCommand,
   runSubgraphVerifyCommand,
 } from "./commands/subgraph";
 import { runCheckpointNewCommand } from "./commands/checkpoint";
@@ -173,7 +175,7 @@ function printUsage(log: LogFn): void {
   log("  spec        List, show, and validate optional SPEC.md capability records");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
-  log("  subgraph    Register, sync, materialize, and verify read-only child graph snapshots");
+  log("  subgraph    Register, audit, plan, sync, materialize, and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  goal        Inspect and advance recursive goal nodes");
   log("  task        Start, update, and complete task-like nodes");
@@ -639,7 +641,7 @@ function printBundleHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "import":
       log("Usage:");
-      log("  mdkg subgraph add/list/show/rm/enable/disable/verify/refresh/sync/materialize ...");
+      log("  mdkg subgraph add/list/show/rm/enable/disable/verify/refresh/audit/upgrade-plan/sync/materialize ...");
       log("\n`mdkg bundle import` has been replaced by `mdkg subgraph`.");
       break;
     case "create":
@@ -708,6 +710,20 @@ function printSubgraphHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log("  mdkg subgraph refresh [alias|--all] [--json]");
       break;
+    case "audit":
+      log("Usage:");
+      log("  mdkg subgraph audit [alias|--all] [--target <path>] [--json]");
+      log("\nNotes:");
+      log("  - read-only audit for configured bundle health, source_path Git state, root-owned bundle paths, and optional materialize target safety");
+      log("  - exits nonzero only for error-level safety failures; warning-level drift stays in the receipt");
+      break;
+    case "upgrade-plan":
+      log("Usage:");
+      log("  mdkg subgraph upgrade-plan [alias|--all] [--json]");
+      log("\nNotes:");
+      log("  - read-only downstream upgrade planning receipt; apply_supported is false");
+      log("  - plans safe sync/verify/materialize next steps without mutating child repos or root bundles");
+      break;
     case "sync":
       log("Usage:");
       log("  mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]");
@@ -726,12 +742,15 @@ function printSubgraphHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg subgraph disable <alias> [--json]");
       log("  mdkg subgraph verify [alias|--all] [--json]");
       log("  mdkg subgraph refresh [alias|--all] [--json]");
+      log("  mdkg subgraph audit [alias|--all] [--target <path>] [--json]");
+      log("  mdkg subgraph upgrade-plan [alias|--all] [--json]");
       log("  mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]");
       log("  mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]");
       log("\nNotes:");
       log("  - subgraphs are read-only graph views backed by explicit bundle snapshots");
       log("  - default permissions are read-only and default freshness is 3600 seconds");
       log("  - refresh reloads configured bundle sources only; it does not build child bundles");
+      log("  - audit and upgrade-plan are read-only safety receipts for downstream orchestration");
       log("  - sync builds root-owned bundles from clean configured child source_path repos");
       log("  - materialize extracts bundle contents into generated inspection trees");
   }
@@ -1865,6 +1884,25 @@ function runSubgraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runSubgraphRefreshCommand({ root, alias, all, json });
       return 0;
     }
+    case "audit": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("subgraph audit accepts at most one alias");
+      }
+      const alias = parsed.positionals[2];
+      const all = parseBooleanFlag("--all", parsed.flags["--all"]);
+      const target = requireFlagValue("--target", parsed.flags["--target"]);
+      runSubgraphAuditCommand({ root, alias, all, target, json });
+      return 0;
+    }
+    case "upgrade-plan": {
+      if (parsed.positionals.length > 3) {
+        throw new UsageError("subgraph upgrade-plan accepts at most one alias");
+      }
+      const alias = parsed.positionals[2];
+      const all = parseBooleanFlag("--all", parsed.flags["--all"]);
+      runSubgraphUpgradePlanCommand({ root, alias, all, json });
+      return 0;
+    }
     case "sync": {
       if (parsed.positionals.length > 3) {
         throw new UsageError("subgraph sync accepts at most one alias");
@@ -1892,7 +1930,7 @@ function runSubgraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       return 0;
     }
     default:
-      throw new UsageError("subgraph requires add/list/show/rm/enable/disable/verify/refresh/sync/materialize");
+      throw new UsageError("subgraph requires add/list/show/rm/enable/disable/verify/refresh/audit/upgrade-plan/sync/materialize");
   }
 }
 
