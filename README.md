@@ -48,9 +48,15 @@ Initialize mdkg in a repo:
 
 ```bash
 mdkg init --agent
+mdkg index
 ```
 
 This is the canonical AI-agent bootstrap path. It creates `.mdkg/`, `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node `SOUL.md` / `HUMAN.md`, the three default mdkg usage skills, `events.jsonl`, the skill registry, core pin updates, and mirrored skill folders under `.agents/skills/` and `.claude/skills/`. It also updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out of those ignore-file updates.
+
+Run `mdkg index` after a fresh init before using `mdkg status --json` or
+`mdkg doctor --strict --json` as health gates. Init writes source scaffold
+files; indexing creates the generated graph, skill, capability, subgraph, and
+SQLite caches that strict doctor expects.
 
 For a non-agent markdown graph only, run `mdkg init`.
 

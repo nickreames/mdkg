@@ -109,6 +109,7 @@ Agent workflow notes:
 - `spec` and `work` scaffold as validation-clean standalone docs.
 - `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 - `goal` nodes capture recursive objective state and required checks, but normal `mdkg next` does not select them.
+- after fresh init, run `mdkg index` before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches.
 
 Workspace registry commands:
 - `mdkg workspace ls [--json]`

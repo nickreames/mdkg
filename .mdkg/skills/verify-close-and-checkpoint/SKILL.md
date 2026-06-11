@@ -51,9 +51,23 @@ Use this local repo-only checklist before publishing mdkg:
 4. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`, `npm run test`, `npm run cli:check`, `node dist/cli.js validate`, `npm run smoke:consumer`, `npm run smoke:matrix`, `npm run smoke:upgrade`, `npm run smoke:init`, `npm run smoke:capabilities`, `npm run smoke:archive-work`, `npm run smoke:bundle`, `npm run smoke:bundle-import`, and `npm run smoke:visibility`.
 5. Run `npm pack --dry-run --json` and confirm the tarball includes `dist/cli.js`, compiled folders, `dist/init/`, release docs, and `scripts/postinstall.js`.
 6. Confirm registry state with `npm view mdkg version --registry=https://registry.npmjs.org/`.
-7. Publish only after the registry still shows the previous version and npm auth is known to have write access.
-8. If publishing fails with 2FA or token policy errors, do not commit; fix npm auth or package policy, then rerun publish.
-9. After successful publish, verify `npm view mdkg version` and `npm view mdkg dist-tags`, then commit the release changes.
+7. When publishing with an exported `NPM_TOKEN`, create a temporary npm userconfig that references the environment variable literally, then verify auth before publish:
+
+```bash
+printf '//registry.npmjs.org/:_authToken=${NPM_TOKEN}\nregistry=https://registry.npmjs.org/\n' > /private/tmp/mdkg-npm-publish.npmrc
+NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm whoami --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc
+```
+
+Do not print the token, do not write the expanded token into committed files,
+and do not add unsupported `always-auth` config.
+8. Publish only after the registry still shows the previous version and npm auth is known to have write access. Use the verified userconfig when relying on `NPM_TOKEN`:
+
+```bash
+NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc
+```
+
+9. If publishing fails with 2FA, token policy, or permission errors, do not commit; fix npm auth or package policy, then rerun publish.
+10. After successful publish, verify `npm view mdkg version` and `npm view mdkg dist-tags`, then commit the release changes.
 
 ## Bundle-Aware Commit Gate
 
