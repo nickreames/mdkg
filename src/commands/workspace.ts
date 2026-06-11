@@ -7,7 +7,9 @@ import {
   normalizeContainedWorkspacePath,
   workspaceDocumentRootKey,
 } from "../core/workspace_path";
+import { atomicWriteFile } from "../util/atomic";
 import { NotFoundError, UsageError } from "../util/errors";
+import { withMutationLock } from "../util/lock";
 
 export type WorkspaceListCommandOptions = {
   root: string;
@@ -97,7 +99,7 @@ function readRawConfig(root: string): { path: string; raw: Record<string, unknow
 }
 
 function writeRawConfig(configPath: string, raw: Record<string, unknown>): void {
-  fs.writeFileSync(configPath, JSON.stringify(raw, null, 2), "utf8");
+  atomicWriteFile(configPath, `${JSON.stringify(raw, null, 2)}\n`);
 }
 
 function normalizeAlias(alias: string): string {
@@ -163,7 +165,7 @@ function normalizeVisibility(value: string | undefined): "private" | "internal" 
   throw new UsageError("--visibility must be private, internal, or public");
 }
 
-export function runWorkspaceAddCommand(options: WorkspaceAddCommandOptions): void {
+function runWorkspaceAddCommandLocked(options: WorkspaceAddCommandOptions): void {
   const alias = normalizeAlias(options.alias);
   const workspacePath = normalizeCommandWorkspacePath(options.workspacePath, "workspace path");
   const mdkgDir = normalizeCommandWorkspacePath(options.mdkgDir ?? ".mdkg", "workspace mdkg dir");
@@ -213,7 +215,7 @@ export function runWorkspaceAddCommand(options: WorkspaceAddCommandOptions): voi
   );
 }
 
-export function runWorkspaceRemoveCommand(options: WorkspaceRemoveCommandOptions): void {
+function runWorkspaceRemoveCommandLocked(options: WorkspaceRemoveCommandOptions): void {
   const alias = normalizeAlias(options.alias);
   if (alias === "root") {
     throw new UsageError("cannot remove root workspace");
@@ -270,9 +272,21 @@ function setWorkspaceEnabled(
 }
 
 export function runWorkspaceEnableCommand(options: WorkspaceToggleCommandOptions): void {
-  setWorkspaceEnabled(options, true);
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => setWorkspaceEnabled(options, true));
 }
 
 export function runWorkspaceDisableCommand(options: WorkspaceToggleCommandOptions): void {
-  setWorkspaceEnabled(options, false);
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => setWorkspaceEnabled(options, false));
+}
+
+export function runWorkspaceAddCommand(options: WorkspaceAddCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runWorkspaceAddCommandLocked(options));
+}
+
+export function runWorkspaceRemoveCommand(options: WorkspaceRemoveCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runWorkspaceRemoveCommandLocked(options));
 }

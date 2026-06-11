@@ -27,6 +27,8 @@ import {
 } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
 import { shouldMaintainSkillMirrors, syncSkillMirrors } from "./skill_mirror";
+import { atomicWriteFile } from "../util/atomic";
+import { withMutationLock } from "../util/lock";
 
 export type SkillNewCommandOptions = {
   root: string;
@@ -249,7 +251,7 @@ function matchesSkillQuery(skill: SkillIndexEntry, terms: string[]): boolean {
   return true;
 }
 
-export function runSkillNewCommand(options: SkillNewCommandOptions): void {
+function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
   const root = options.root;
   const config = loadConfig(root);
   const slug = normalizeSlug(options.slug);
@@ -292,7 +294,7 @@ export function runSkillNewCommand(options: SkillNewCommandOptions): void {
     authors,
     links,
   });
-  fs.writeFileSync(canonicalPath, content, "utf8");
+  atomicWriteFile(canonicalPath, content);
 
   ensureSkillsRegistry(root, config);
   refreshSkillsRegistry(root, config);
@@ -342,6 +344,11 @@ export function runSkillNewCommand(options: SkillNewCommandOptions): void {
   }
 
   console.log(`skill created: ${receipt.qid} (${receipt.path})`);
+}
+
+export function runSkillNewCommand(options: SkillNewCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runSkillNewCommandLocked(options));
 }
 
 export function runSkillListCommand(options: SkillListCommandOptions): void {
@@ -579,7 +586,7 @@ export function runSkillValidateCommand(options: SkillValidateCommandOptions): v
   console.log(`skill validation ok: ${checkedCount} skill${checkedCount === 1 ? "" : "s"} checked`);
 }
 
-export function runSkillSyncCommand(options: SkillSyncCommandOptions): void {
+function runSkillSyncCommandLocked(options: SkillSyncCommandOptions): void {
   const config = loadConfig(options.root);
   const result = syncSkillMirrors({
     root: options.root,
@@ -604,4 +611,9 @@ export function runSkillSyncCommand(options: SkillSyncCommandOptions): void {
   console.log(
     `skill mirror sync ok: ${result.synced} synced, ${result.pruned} pruned across ${result.targets} target${result.targets === 1 ? "" : "s"}`
   );
+}
+
+export function runSkillSyncCommand(options: SkillSyncCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runSkillSyncCommandLocked(options));
 }

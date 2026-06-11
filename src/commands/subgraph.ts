@@ -67,6 +67,21 @@ export type SubgraphMaterializeOptions = {
   json?: boolean;
 };
 
+export type SubgraphAuditOptions = {
+  root: string;
+  alias?: string;
+  all?: boolean;
+  target?: string;
+  json?: boolean;
+};
+
+export type SubgraphUpgradePlanOptions = {
+  root: string;
+  alias?: string;
+  all?: boolean;
+  json?: boolean;
+};
+
 const ALIAS_RE = /^[a-z][a-z0-9_]*$/;
 
 function writeJson(value: unknown): void {
@@ -384,6 +399,357 @@ export function runSubgraphVerifyCommand(options: SubgraphVerifyOptions): void {
   }
   if (!ok) {
     throw new ValidationError("subgraph verify failed");
+  }
+}
+
+type SubgraphAuditCheck = {
+  id: string;
+  ok: boolean;
+  severity: "info" | "warning" | "error";
+  message: string;
+  path?: string;
+  details?: Record<string, unknown>;
+};
+
+type SubgraphAuditReceipt = {
+  alias: string;
+  enabled: boolean;
+  visibility: "private" | "internal" | "public";
+  source_path?: string;
+  source_repo?: string;
+  source_git_head?: string;
+  source_repo_current?: string;
+  dirty_tracked?: boolean;
+  dirty_tracked_paths?: string[];
+  capability_summary: {
+    node_count: number;
+    spec_count: number;
+    work_count: number;
+    skill_count: number;
+  };
+  checks: SubgraphAuditCheck[];
+  warnings: string[];
+  errors: string[];
+  ok: boolean;
+};
+
+function pushAuditCheck(receipt: SubgraphAuditReceipt, check: SubgraphAuditCheck): void {
+  receipt.checks.push(check);
+  if (!check.ok && check.severity === "error") {
+    receipt.errors.push(`${check.id}: ${check.message}`);
+  } else if (!check.ok && check.severity === "warning") {
+    receipt.warnings.push(`${check.id}: ${check.message}`);
+  }
+}
+
+function inspectSourcePathForAudit(root: string, alias: string, subgraph: SubgraphConfig): GitState | undefined {
+  try {
+    return inspectSourcePath(root, alias, subgraph, true);
+  } catch {
+    return undefined;
+  }
+}
+
+function auditOneAlias(options: {
+  root: string;
+  alias: string;
+  subgraph: SubgraphConfig;
+  health: SubgraphHealth;
+  nodeTypes: string[];
+  targetRoot?: string;
+}): SubgraphAuditReceipt {
+  const receipt: SubgraphAuditReceipt = {
+    alias: options.alias,
+    enabled: options.health.enabled,
+    visibility: options.health.visibility,
+    source_path: options.health.source_path,
+    source_repo: options.health.source_repo,
+    capability_summary: {
+      node_count: options.nodeTypes.length,
+      spec_count: options.nodeTypes.filter((type) => type === "spec").length,
+      work_count: options.nodeTypes.filter((type) => type === "work").length,
+      skill_count: options.nodeTypes.filter((type) => type === "skill").length,
+    },
+    checks: [],
+    warnings: [],
+    errors: [],
+    ok: true,
+  };
+
+  pushAuditCheck(receipt, {
+    id: "subgraph.enabled",
+    ok: options.subgraph.enabled,
+    severity: options.subgraph.enabled ? "info" : "warning",
+    message: options.subgraph.enabled ? "subgraph is enabled" : "subgraph is disabled",
+  });
+
+  if (!options.subgraph.source_path) {
+    pushAuditCheck(receipt, {
+      id: "subgraph.source_path.configured",
+      ok: false,
+      severity: "warning",
+      message: "source_path is not configured; sync and upgrade planning cannot inspect child Git state",
+    });
+  } else {
+    let gitState: GitState | undefined;
+    try {
+      gitState = inspectSourcePath(options.root, options.alias, options.subgraph, true);
+      receipt.source_git_head = gitState.head;
+      receipt.source_repo_current = gitState.sourceRepo;
+      receipt.dirty_tracked = gitState.dirtyTracked;
+      receipt.dirty_tracked_paths = gitState.dirtyTrackedPaths;
+      pushAuditCheck(receipt, {
+        id: "subgraph.source_path.git_root",
+        ok: true,
+        severity: "info",
+        message: "source_path is a contained child Git repo root with .mdkg",
+        path: options.subgraph.source_path,
+      });
+      pushAuditCheck(receipt, {
+        id: "subgraph.source_path.clean",
+        ok: !gitState.dirtyTracked,
+        severity: "warning",
+        message: gitState.dirtyTracked
+          ? `source_path has dirty tracked changes: ${gitState.dirtyTrackedPaths.join(", ")}`
+          : "source_path has no dirty tracked changes",
+        path: options.subgraph.source_path,
+        details: { dirty_tracked_paths: gitState.dirtyTrackedPaths },
+      });
+      if (options.subgraph.source_repo && options.subgraph.source_repo !== gitState.sourceRepo) {
+        pushAuditCheck(receipt, {
+          id: "subgraph.source_repo.current",
+          ok: false,
+          severity: "warning",
+          message: `configured source_repo differs from child repo head: ${options.subgraph.source_repo} -> ${gitState.sourceRepo}`,
+          details: { configured: options.subgraph.source_repo, current: gitState.sourceRepo },
+        });
+      }
+    } catch (err) {
+      pushAuditCheck(receipt, {
+        id: "subgraph.source_path.git_root",
+        ok: false,
+        severity: "error",
+        message: err instanceof Error ? err.message : String(err),
+        path: options.subgraph.source_path,
+      });
+    }
+
+    if (gitState) {
+      for (const source of options.subgraph.sources) {
+        const bundlePath = path.resolve(options.root, source.path);
+        pushAuditCheck(receipt, {
+          id: "subgraph.bundle.root_owned",
+          ok: !isPathWithin(gitState.sourceRoot, bundlePath),
+          severity: "error",
+          message: isPathWithin(gitState.sourceRoot, bundlePath)
+            ? `bundle path must be root-owned and outside source_path: ${source.path}`
+            : `bundle path is root-owned and outside source_path: ${source.path}`,
+          path: source.path,
+        });
+      }
+    }
+  }
+
+  for (const source of options.health.sources) {
+    pushAuditCheck(receipt, {
+      id: "subgraph.bundle.enabled",
+      ok: source.enabled,
+      severity: source.enabled ? "info" : "warning",
+      message: source.enabled ? `source is enabled: ${source.path}` : `source is disabled: ${source.path}`,
+      path: source.path,
+    });
+    pushAuditCheck(receipt, {
+      id: "subgraph.bundle.valid",
+      ok: source.error_count === 0,
+      severity: "error",
+      message: source.error_count === 0
+        ? `bundle source is valid: ${source.path}`
+        : `bundle source has errors: ${source.errors.join("; ")}`,
+      path: source.path,
+      details: { errors: source.errors },
+    });
+    pushAuditCheck(receipt, {
+      id: "subgraph.bundle.fresh",
+      ok: !source.stale,
+      severity: "warning",
+      message: source.stale
+        ? `bundle source is stale: ${source.warnings.join("; ")}`
+        : `bundle source is fresh: ${source.path}`,
+      path: source.path,
+      details: { warnings: source.warnings },
+    });
+  }
+
+  if (options.targetRoot) {
+    const outputDir = path.join(options.targetRoot, options.alias);
+    const markerPath = path.join(outputDir, ".mdkg-materialized.json");
+    const exists = fs.existsSync(outputDir);
+    const hasMarker = fs.existsSync(markerPath);
+    pushAuditCheck(receipt, {
+      id: "subgraph.materialize.target_safe",
+      ok: !exists || hasMarker,
+      severity: "error",
+      message: !exists
+        ? `materialize target is available: ${relativeToRoot(options.root, outputDir)}`
+        : hasMarker
+          ? `materialize target has mdkg marker: ${relativeToRoot(options.root, outputDir)}`
+          : `materialize target exists without mdkg marker: ${relativeToRoot(options.root, outputDir)}`,
+      path: relativeToRoot(options.root, outputDir),
+    });
+  }
+
+  receipt.ok = receipt.errors.length === 0;
+  return receipt;
+}
+
+export function runSubgraphAuditCommand(options: SubgraphAuditOptions): void {
+  const config = loadConfig(options.root);
+  const aliases = selectAliases(config, options.alias, options.all);
+  const projection = buildSubgraphsIndex(options.root, config).index;
+  const targetRoot = options.target ? path.resolve(options.root, normalizeContained(options.target, "--target")) : undefined;
+  const results = aliases.map((alias) => {
+    const health = projection.subgraphs.find((item) => item.alias === alias);
+    if (!health) {
+      throw new NotFoundError(`subgraph not found: ${alias}`);
+    }
+    const nodeTypes = Object.values(projection.nodes)
+      .filter((node) => node.ws === alias)
+      .map((node) => node.type);
+    return auditOneAlias({ root: options.root, alias, subgraph: config.subgraphs[alias], health, nodeTypes, targetRoot });
+  });
+  const errors = results.flatMap((item) => item.errors.map((error) => `${item.alias}: ${error}`));
+  const warnings = results.flatMap((item) => item.warnings.map((warning) => `${item.alias}: ${warning}`));
+  const receipt = {
+    action: "audited",
+    ok: errors.length === 0,
+    count: results.length,
+    target: targetRoot ? relativeToRoot(options.root, targetRoot) : undefined,
+    errors,
+    warnings,
+    subgraphs: results,
+  };
+  if (options.json) {
+    writeJson(receipt);
+  } else {
+    console.log(`subgraphs audited: ${results.length}`);
+    for (const item of results) {
+      const status = item.errors.length > 0 ? "error" : item.warnings.length > 0 ? "warning" : "ok";
+      console.log(`${item.alias} | ${status} | checks:${item.checks.length}`);
+    }
+  }
+  if (!receipt.ok) {
+    throw new ValidationError("subgraph audit failed");
+  }
+}
+
+function upgradePlanForAlias(options: {
+  root: string;
+  alias: string;
+  subgraph: SubgraphConfig;
+  audit: SubgraphAuditReceipt;
+  health: SubgraphHealth;
+}): Record<string, unknown> {
+  const actions: Array<Record<string, unknown>> = [];
+  const blockers: string[] = [];
+  if (!options.subgraph.enabled) {
+    actions.push({
+      action: "none",
+      status: "skipped",
+      reason: "subgraph is disabled",
+    });
+    return { alias: options.alias, ok: true, capability_summary: options.audit.capability_summary, actions, blockers };
+  }
+  if (!options.subgraph.source_path) {
+    blockers.push("source_path is required for upgrade planning");
+  }
+  const sourceGitError = options.audit.checks.find((check) => check.id === "subgraph.source_path.git_root" && !check.ok && check.severity === "error");
+  if (sourceGitError) {
+    blockers.push(sourceGitError.message);
+  }
+  if (options.audit.dirty_tracked) {
+    blockers.push(`source_path has dirty tracked changes: ${options.audit.dirty_tracked_paths?.join(", ")}`);
+  }
+  const rootOwnedErrors = options.audit.checks.filter((check) => check.id === "subgraph.bundle.root_owned" && !check.ok);
+  blockers.push(...rootOwnedErrors.map((check) => check.message));
+  const bundleErrors = options.health.sources.flatMap((source) => source.errors.map((error) => `${source.path}: ${error}`));
+  blockers.push(...bundleErrors);
+
+  const needsSync =
+    options.health.stale ||
+    !options.subgraph.source_repo ||
+    (options.audit.source_repo_current !== undefined && options.subgraph.source_repo !== options.audit.source_repo_current);
+
+  if (blockers.length > 0) {
+    actions.push({
+      action: "subgraph.sync",
+      status: "blocked",
+      command: `mdkg subgraph sync ${options.alias} --dry-run --json`,
+      blockers,
+    });
+  } else if (needsSync) {
+    actions.push({
+      action: "subgraph.sync",
+      status: "planned",
+      command: `mdkg subgraph sync ${options.alias} --dry-run --json`,
+      apply_command: `mdkg subgraph sync ${options.alias} --json`,
+      reason: options.health.stale ? "bundle is stale or source HEAD changed" : "configured source_repo is missing or behind current child head",
+      current_source_repo: options.audit.source_repo_current,
+      configured_source_repo: options.subgraph.source_repo,
+    });
+  } else {
+    actions.push({
+      action: "subgraph.verify",
+      status: "planned",
+      command: `mdkg subgraph verify ${options.alias} --json`,
+      reason: "bundle snapshot is current; verify before downstream use",
+    });
+  }
+
+  actions.push({
+    action: "subgraph.materialize",
+    status: "optional",
+    command: `mdkg subgraph materialize ${options.alias} --target .mdkg/subgraphs --gitignore --json`,
+    reason: "generate an ignored read-only inspection tree when human review needs file-level child graph context",
+  });
+
+  return { alias: options.alias, ok: blockers.length === 0, capability_summary: options.audit.capability_summary, actions, blockers };
+}
+
+export function runSubgraphUpgradePlanCommand(options: SubgraphUpgradePlanOptions): void {
+  const config = loadConfig(options.root);
+  const aliases = selectAliases(config, options.alias, options.all);
+  const projection = buildSubgraphsIndex(options.root, config).index;
+  const plans = aliases.map((alias) => {
+    const health = projection.subgraphs.find((item) => item.alias === alias);
+    if (!health) {
+      throw new NotFoundError(`subgraph not found: ${alias}`);
+    }
+    const nodeTypes = Object.values(projection.nodes)
+      .filter((node) => node.ws === alias)
+      .map((node) => node.type);
+    const audit = auditOneAlias({ root: options.root, alias, subgraph: config.subgraphs[alias], health, nodeTypes });
+    return upgradePlanForAlias({ root: options.root, alias, subgraph: config.subgraphs[alias], audit, health });
+  });
+  const blockers = plans.flatMap((plan) => (plan.blockers as string[]).map((blocker) => `${plan.alias}: ${blocker}`));
+  const receipt = {
+    action: "upgrade_plan",
+    ok: blockers.length === 0,
+    count: plans.length,
+    apply_supported: false,
+    mutation_policy: "read_only_plan",
+    blockers,
+    subgraphs: plans,
+  };
+  if (options.json) {
+    writeJson(receipt);
+  } else {
+    console.log(`subgraph upgrade plan: ${plans.length}`);
+    for (const plan of plans) {
+      console.log(`${plan.alias} | ${plan.ok ? "ok" : "blocked"} | actions:${(plan.actions as unknown[]).length}`);
+    }
+  }
+  if (!receipt.ok) {
+    throw new ValidationError("subgraph upgrade plan blocked");
   }
 }
 

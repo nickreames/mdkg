@@ -205,11 +205,30 @@ function exerciseSubgraphs(binPath, tempRoot) {
   const dryRun = parseJson(mdkg(binPath, ["subgraph", "sync", "child_subgraph", "--dry-run", "--json"], root).stdout);
   assert(dryRun.ok === true && dryRun.action === "sync_dry_run", "subgraph sync dry-run failed");
   assert(fs.existsSync(child.bundleAbs), "dry-run removed existing bundle");
+  const audit = parseJson(mdkg(binPath, ["subgraph", "audit", "child_subgraph", "--target", ".mdkg/subgraphs", "--json"], root).stdout);
+  assert(audit.ok === true && audit.action === "audited", "subgraph audit failed");
+  assert(audit.subgraphs[0].capability_summary.work_count === 1, "subgraph audit capability summary did not count work records");
+  assert(
+    audit.subgraphs[0].checks.some((check) => check.id === "subgraph.bundle.root_owned" && check.ok === true),
+    "subgraph audit did not prove root-owned bundle path"
+  );
+  const upgradePlan = parseJson(mdkg(binPath, ["subgraph", "upgrade-plan", "child_subgraph", "--json"], root).stdout);
+  assert(upgradePlan.ok === true && upgradePlan.apply_supported === false, "subgraph upgrade-plan did not return read-only ok plan");
+  assert(upgradePlan.subgraphs[0].capability_summary.work_count === 1, "subgraph upgrade-plan capability summary did not count work records");
+  assert(
+    upgradePlan.subgraphs[0].actions.some((action) => action.action === "subgraph.sync" && action.status === "planned"),
+    "subgraph upgrade-plan did not plan a sync for missing source_repo"
+  );
   const materialized = parseJson(
     mdkg(binPath, ["subgraph", "materialize", "child_subgraph", "--target", ".mdkg/subgraphs", "--gitignore", "--json"], root).stdout
   );
   assert(materialized.ok === true, "subgraph materialize failed");
   assertExists(path.join(root, ".mdkg", "subgraphs", "child_subgraph", ".mdkg-materialized.json"));
+  const materializedAudit = parseJson(mdkg(binPath, ["subgraph", "audit", "child_subgraph", "--target", ".mdkg/subgraphs", "--json"], root).stdout);
+  assert(
+    materializedAudit.subgraphs[0].checks.some((check) => check.id === "subgraph.materialize.target_safe" && check.ok === true),
+    "subgraph audit did not prove materialized target marker safety"
+  );
   mdkg(binPath, ["index"], root);
   assertExists(path.join(root, ".mdkg", "index", "subgraphs.json"));
 
@@ -275,6 +294,11 @@ function exerciseSubgraphs(binPath, tempRoot) {
   fs.utimesSync(child.bundleAbs, old, old);
   const staleSearch = mdkg(binPath, ["search", "Child Task", "--json"], root);
   assert(staleSearch.stderr.includes("subgraph child_subgraph: bundle age"), "stale read did not warn");
+  const stalePlan = parseJson(mdkg(binPath, ["subgraph", "upgrade-plan", "child_subgraph", "--json"], root).stdout);
+  assert(
+    stalePlan.subgraphs[0].actions.some((action) => action.action === "subgraph.sync" && action.status === "planned"),
+    "stale subgraph upgrade-plan did not plan sync"
+  );
   const freshOnly = parseJson(mdkg(binPath, ["capability", "resolve", "Child Work", "--fresh-only", "--json"], root).stdout);
   assert(freshOnly.count === 0, "fresh-only did not exclude stale subgraph capability");
   const staleVerify = mdkgFailure(binPath, ["subgraph", "verify", "child_subgraph", "--json"], root);

@@ -7,6 +7,7 @@ import {
   SkillIndexEntry,
   SkillsIndex,
 } from "../graph/skills_indexer";
+import { atomicWriteFile } from "../util/atomic";
 
 export const SKILL_REGISTRY_START = "<!-- mdkg:skill-registry:start -->";
 export const SKILL_REGISTRY_END = "<!-- mdkg:skill-registry:end -->";
@@ -120,8 +121,7 @@ export function ensureSkillsRegistry(root: string, config: Config): string {
   const skillsRoot = resolveSkillsRoot(root, config);
   const registryPath = path.join(skillsRoot, "registry.md");
   if (!fs.existsSync(registryPath)) {
-    fs.mkdirSync(path.dirname(registryPath), { recursive: true });
-    fs.writeFileSync(registryPath, registryTemplate(), "utf8");
+    atomicWriteFile(registryPath, registryTemplate());
   }
   return registryPath;
 }
@@ -131,7 +131,7 @@ export function refreshSkillsRegistry(root: string, config: Config): void {
   const raw = fs.readFileSync(registryPath, "utf8");
   const index = buildSkillsIndex(root, config);
   const updated = replaceManagedSection(raw, renderRegistryLines(index));
-  fs.writeFileSync(registryPath, updated, "utf8");
+  atomicWriteFile(registryPath, updated);
 }
 
 export function formatSkillCard(skill: SkillIndexEntry): string {
