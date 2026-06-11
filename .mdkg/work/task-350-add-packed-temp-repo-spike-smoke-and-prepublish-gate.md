@@ -31,8 +31,13 @@ installed package, then wire that smoke into prepublish readiness.
 - Add `smoke:spike` to `prepublishOnly`.
 - Smoke packs mdkg, installs into a temp prefix, creates a fresh temp repo, and
   uses only the installed CLI.
-- Smoke covers `mdkg new spike`, lifecycle mutation, goal routing, search/show,
-  pack, validate, and command docs recognition.
+- Smoke covers `mdkg init --agent`, `mdkg index`, `mdkg new spike`, lifecycle
+  mutation, goal routing, list/search/show, pack, validate, command docs
+  recognition, and generated-cache health.
+- Smoke proves a spike can record follow-up node recommendations and skill
+  candidates without automatically mutating `SKILL.md`.
+- Smoke verifies `mdkg task ...` remains the lifecycle command family for
+  spikes; no `mdkg spike ...` namespace is required.
 
 # Files Affected
 
@@ -45,6 +50,8 @@ installed package, then wire that smoke into prepublish readiness.
 - The smoke should create at least one follow-up task and record at least one
   skill-authoring candidate from the spike output.
 - Use `/private/tmp/mdkg-spike.XXXXXX` for temp repo evidence.
+- Run from the packed installed CLI, not `node dist/cli.js`, to catch packaging
+  omissions.
 
 # Test Plan
 

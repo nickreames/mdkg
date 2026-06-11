@@ -28,11 +28,14 @@ the findings into explicit follow-up mdkg nodes and skill-authoring candidates.
 
 - Create at least one real spike for mdkg.dev launch readiness after the spike
   node type exists.
-- The dogfood spike covers documentation, SEO/marketing positioning, UX,
-  security, data structures, and algorithms where relevant.
-- Create follow-up tasks/tests/epics from the spike's recommendation section.
+- The dogfood spikes cover documentation, SEO/marketing positioning, UX,
+  security/trust, data structures, algorithms, generated command docs, public
+  examples, and downstream adoption narratives where relevant.
+- Create or update follow-up tasks/tests/epics under paused `goal-15` from the
+  spike recommendation sections.
 - Record any repeatable research or skill-authoring process as a candidate for
   `author-mdkg-skill` or a future mdkg skill update.
+- Do not start mdkg.dev website implementation in this task.
 
 # Files Affected
 
@@ -46,6 +49,8 @@ the findings into explicit follow-up mdkg nodes and skill-authoring candidates.
   structure and follow-up nodes.
 - Keep public docs launch blocked on generated command docs and validated
   capability narratives.
+- Use real spike nodes after implementation, not ordinary task notes, so the
+  workflow dogfoods the new type.
 
 # Test Plan
 
