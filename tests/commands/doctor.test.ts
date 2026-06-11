@@ -2,9 +2,12 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
+import { spawnSync } from "child_process";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 const { runDoctorCommand } = require("../../commands/doctor");
+
+const cliPath = path.resolve(__dirname, "..", "..", "cli.js");
 
 function writeConfig(root: string): void {
   const config = {
@@ -141,8 +144,219 @@ test("runDoctorCommand supports --json output", () => {
   assert.equal(logs.length, 1);
   const payload = JSON.parse(logs[0]);
   assert.equal(payload.ok, true);
+  assert.equal(payload.action, "doctor");
+  assert.equal(payload.strict, false);
   assert.ok(Array.isArray(payload.checks));
   assert.equal(typeof payload.failure_count, "number");
+  assert.equal(typeof payload.summary.errors, "number");
+  assert.equal(typeof payload.checks[0].id, "string");
+  assert.equal(typeof payload.checks[0].status, "string");
+  assert.equal(typeof payload.checks[0].severity, "string");
+  assert.equal(typeof payload.checks[0].message, "string");
+  assert.equal(typeof payload.checks[0].remediation, "string");
+});
+
+test("runDoctorCommand strict json fails on stale generated graph cache", () => {
+  const root = makeTempDir("mdkg-doctor-strict-stale-cache-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  const corePath = path.join(root, ".mdkg", "core", "core.md");
+  writeFile(corePath, "# core\n");
+
+  captureOutput(() => runDoctorCommand({ root }));
+  const future = new Date(Date.now() + 10_000);
+  fs.utimesSync(corePath, future, future);
+
+  const output = captureDoctorFailure(() => runDoctorCommand({ root, strict: true, json: true }));
+  const payload = JSON.parse(output);
+  assert.equal(payload.action, "doctor");
+  assert.equal(payload.strict, true);
+  assert.equal(payload.ok, false);
+  const indexCheck = payload.checks.find((check: any) => check.id === "graph.index_cache");
+  assert.equal(indexCheck.ok, false);
+  assert.equal(indexCheck.status, "fail");
+  assert.equal(indexCheck.severity, "error");
+  assert.match(indexCheck.remediation, /mdkg index/);
+});
+
+test("runDoctorCommand strict json fails on achieved selected goal", () => {
+  const root = makeTempDir("mdkg-doctor-strict-selected-goal-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  writeFile(
+    path.join(root, ".mdkg", "work", "goal-1.md"),
+    [
+      "---",
+      "id: goal-1",
+      "type: goal",
+      "title: Done goal",
+      "status: done",
+      "priority: 1",
+      "goal_condition: Done goal has already achieved its condition.",
+      "goal_state: achieved",
+      "active_node: task-1",
+      "scope_refs: [task-1]",
+      "required_checks: []",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-09",
+      "updated: 2026-06-09",
+      "---",
+      "",
+      "# Done goal",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, ".mdkg", "work", "task-1.md"),
+    [
+      "---",
+      "id: task-1",
+      "type: task",
+      "title: Closed task",
+      "status: done",
+      "priority: 1",
+      "parent: goal-1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-09",
+      "updated: 2026-06-09",
+      "---",
+      "",
+      "# Closed task",
+    ].join("\n")
+  );
+  writeFile(
+    path.join(root, ".mdkg", "state", "selected-goal.json"),
+    JSON.stringify(
+      {
+        qid: "root:goal-1",
+        id: "goal-1",
+        ws: "root",
+        selected_at: "2026-06-09T00:00:00.000Z",
+      },
+      null,
+      2
+    )
+  );
+
+  const nonStrict = captureOutput(() => runDoctorCommand({ root, json: true }));
+  const nonStrictPayload = JSON.parse(nonStrict);
+  assert.equal(nonStrictPayload.ok, true);
+  const nonStrictCheck = nonStrictPayload.checks.find((check: any) => check.id === "goal.selected_achieved");
+  assert.equal(nonStrictCheck.ok, true);
+  assert.equal(nonStrictCheck.status, "warn");
+
+  const strictOutput = captureDoctorFailure(() => runDoctorCommand({ root, strict: true, json: true }));
+  const strictPayload = JSON.parse(strictOutput);
+  assert.equal(strictPayload.ok, false);
+  const strictCheck = strictPayload.checks.find((check: any) => check.id === "goal.selected_achieved");
+  assert.equal(strictCheck.ok, false);
+  assert.equal(strictCheck.status, "fail");
+  assert.match(strictCheck.remediation, /goal select/);
+});
+
+test("runDoctorCommand strict json fails on enabled project DB verification failure", () => {
+  const root = makeTempDir("mdkg-doctor-strict-db-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  updateConfig(root, (config) => {
+    config.db = {
+      enabled: true,
+      schema_version: 1,
+      root_path: ".mdkg/db",
+      schema_path: ".mdkg/db/schema",
+      migrations_path: ".mdkg/db/schema/migrations",
+      runtime_path: ".mdkg/db/runtime/project.sqlite",
+      state_path: ".mdkg/db/state/project.sqlite",
+      receipts_path: ".mdkg/db/receipts",
+      migration_table: "mdkg_schema_migration",
+    };
+  });
+
+  const output = captureDoctorFailure(() => runDoctorCommand({ root, strict: true, json: true }));
+  const payload = JSON.parse(output);
+  assert.equal(payload.ok, false);
+  const dbCheck = payload.checks.find((check: any) => check.id === "db.project_verify");
+  assert.equal(dbCheck.ok, false);
+  assert.equal(dbCheck.status, "fail");
+  assert.equal(dbCheck.severity, "error");
+  assert.match(dbCheck.remediation, /mdkg db verify/);
+});
+
+test("doctor --strict --json prints one JSON object to stdout and no diagnostics to stderr", () => {
+  const root = makeTempDir("mdkg-doctor-strict-cli-json-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  captureOutput(() => runDoctorCommand({ root }));
+
+  const result = spawnSync(process.execPath, [cliPath, "doctor", "--strict", "--json"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stderr, "");
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.action, "doctor");
+  assert.equal(payload.strict, true);
+  assert.equal(payload.ok, true);
+  assert.equal(result.stdout.trim().startsWith("{"), true);
+  assert.equal(result.stdout.trim().endsWith("}"), true);
+});
+
+test("runDoctorCommand strict json fails on invalid graph state", () => {
+  const root = makeTempDir("mdkg-doctor-strict-invalid-graph-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  writeFile(
+    path.join(root, ".mdkg", "work", "task-1.md"),
+    [
+      "---",
+      "id: task-1",
+      "type: task",
+      "title: Invalid task",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-09",
+      "updated: 2026-06-09",
+      "---",
+      "",
+      "# Invalid task",
+    ].join("\n")
+  );
+
+  const output = captureDoctorFailure(() => runDoctorCommand({ root, strict: true, noCache: true, json: true }));
+  const payload = JSON.parse(output);
+  assert.equal(payload.ok, false);
+  const graphCheck = payload.checks.find((check: any) => check.id === "graph.validate");
+  assert.equal(graphCheck.ok, false);
+  assert.equal(graphCheck.status, "fail");
+  assert.match(graphCheck.detail, /status is required/);
 });
 
 test("runDoctorCommand reports no-cache rebuild and stale cached indexes", () => {
@@ -160,7 +374,7 @@ test("runDoctorCommand reports no-cache rebuild and stale cached indexes", () =>
   fs.utimesSync(corePath, future, future);
 
   const stale = captureOutput(() => runDoctorCommand({ root, noReindex: true }));
-  assert.match(stale, /ok: index - index cache is stale \(run mdkg index to refresh\)/);
+  assert.match(stale, /warn: index - index cache is stale \(run mdkg index to refresh\)/);
 });
 
 test("runDoctorCommand reports cached index read failures", () => {

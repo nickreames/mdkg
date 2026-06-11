@@ -13,6 +13,7 @@ import { runNextCommand } from "./commands/next";
 import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
+import { runStatusCommand } from "./commands/status";
 import {
   runDbInitCommand,
   runDbIndexRebuildCommand,
@@ -177,6 +178,7 @@ function printUsage(log: LogFn): void {
   log("  task        Start, update, and complete task-like nodes");
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
+  log("  status      Show read-only operator health summary");
   log("\nAdvanced / maintenance commands:");
   log("  db          Project database and index-cache commands");
   log("  event       Enable or append episodic event logs");
@@ -954,6 +956,23 @@ function printValidateHelp(log: LogFn): void {
   printGlobalOptions(log);
 }
 
+function printStatusHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg status [--json]");
+  log("\nChecks:");
+  log("  - release/package and CHANGELOG summary");
+  log("  - git branch, dirty state, and upstream ahead/behind counts");
+  log("  - graph index load, validation errors, and generated cache freshness");
+  log("  - selected goal existence, achieved state, and active node");
+  log("  - project DB enabled/verify summary");
+  log("\nBoundaries:");
+  log("  - read-only operator summary; does not rebuild indexes or repair files");
+  log("  - use `mdkg doctor` for diagnostic detail and future strict check IDs");
+  log("\nOptions:");
+  log("  --json                Emit machine-readable JSON output");
+  printGlobalOptions(log);
+}
+
 function printFormatHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg format");
@@ -962,10 +981,12 @@ function printFormatHelp(log: LogFn): void {
 
 function printDoctorHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg doctor [--json]");
+  log("  mdkg doctor [--strict] [--json]");
   log("\nChecks:");
   log("  - Node.js version compatibility");
   log("  - mdkg repo root + .mdkg/config.json");
+  log("  - Selected-goal stale or achieved state");
+  log("  - Project DB verification when enabled");
   log("  - Template schema availability");
   log("  - Archive sidecar storage hygiene");
   log("  - Bundle snapshot storage guidance");
@@ -974,6 +995,7 @@ function printDoctorHelp(log: LogFn): void {
   log("  - Capability cache load/rebuild health");
   log("  - SQLite cache health when enabled");
   log("\nOptions:");
+  log("  --strict              Fail on stale selected-goal, DB, and generated cache health issues");
   log("  --json                Emit machine-readable JSON output");
   printGlobalOptions(log);
 }
@@ -1055,6 +1077,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "validate":
       printValidateHelp(log);
+      return;
+    case "status":
+      printStatusHelp(log);
       return;
     case "format":
       printFormatHelp(log);
@@ -2725,6 +2750,14 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       runValidateCommand({ root, out, quiet, json });
       return 0;
     }
+    case "status": {
+      if (parsed.positionals.length > 1) {
+        throw new UsageError("status does not accept positional arguments");
+      }
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runStatusCommand({ root, json });
+      return 0;
+    }
     case "format":
       if (parsed.positionals.length > 1) {
         throw new UsageError("format does not accept positional arguments");
@@ -2738,7 +2771,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runDoctorCommand({ root, noCache, noReindex, json });
+      const strict = parseBooleanFlag("--strict", parsed.flags["--strict"]);
+      runDoctorCommand({ root, noCache, noReindex, json, strict });
       return 0;
     }
     default:
