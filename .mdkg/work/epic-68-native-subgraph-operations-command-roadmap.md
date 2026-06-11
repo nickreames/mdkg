@@ -10,7 +10,7 @@ links: []
 artifacts: []
 relates: [goal-12, edd-16, dec-29]
 blocked_by: []
-blocks: [task-316, task-317, task-318, task-319, task-320, task-321, test-125, test-126, test-127, test-128]
+blocks: [task-316, task-317, task-318, task-319, task-320, task-321, task-329, test-125, test-126, test-127, test-128]
 refs: [edd-16, dec-29]
 aliases: [subgraph-operations-roadmap, subgraph-audit-upgrade-plan-roadmap]
 skills: []
@@ -57,6 +57,14 @@ sync summaries, strict validation, and receipt-backed refresh workflows.
 - `goal-12`
 - `edd-16`
 - `dec-29`
+
+# Roadmap Alignment
+
+This subgraph roadmap is consolidated under the `goal-13` hardening umbrella
+through `goal-12` and the completed `task-329` bridge. It is intentionally not
+related to `goal-13` in frontmatter so active hardening goal routing does not
+resurface older `goal-12` control tasks after the subgraph hardening slice is
+closed.
 
 # Completion Evidence
 
