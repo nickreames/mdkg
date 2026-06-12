@@ -29,7 +29,8 @@ Prove spikes are selectable and discoverable work, not passive notes.
 - `task-348`
 - `mdkg next`
 - `mdkg goal next`
-- `mdkg search`, `mdkg show`, and `mdkg pack`
+- `mdkg list`, `mdkg search`, `mdkg show`, and `mdkg pack`
+- structured output formats
 
 # Preconditions / Environment
 
@@ -40,8 +41,10 @@ Prove spikes are selectable and discoverable work, not passive notes.
 - `mdkg next --json` can return an open spike when it is the best candidate.
 - `mdkg goal next <goal-id> --json` routes to a scoped open spike.
 - `mdkg goal claim <goal-id> <spike-id> --json` accepts the spike.
-- `mdkg search`, `mdkg show`, and `mdkg pack <spike-id>` include spike metadata
-  and body content.
+- `mdkg list --type spike --json`, `mdkg search`, `mdkg show`, and `mdkg pack
+  <spike-id>` include spike metadata and body content.
+- `mdkg show <spike-id> --json|--xml|--toon|--md` remains well-formed.
+- Pack ordering treats spike as actionable work and remains deterministic.
 
 # Results / Evidence
 
@@ -50,3 +53,5 @@ Prove spikes are selectable and discoverable work, not passive notes.
 # Notes / Follow-ups
 
 - Pack ordering should remain deterministic after adding a new work-node type.
+- Lifecycle mutation behavior belongs in `test-142`; packed install proof
+  belongs in `test-144`.

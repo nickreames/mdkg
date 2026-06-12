@@ -31,6 +31,7 @@ same lifecycle as existing task-like work items.
 - Parser/type policy
 - `mdkg new spike`
 - `mdkg task start/update/done`
+- structured lifecycle JSON receipts
 
 # Preconditions / Environment
 
@@ -44,6 +45,7 @@ same lifecycle as existing task-like work items.
 - `mdkg validate --json` accepts the new spike.
 - `mdkg task start spike-1 --json`, `mdkg task update spike-1 ... --json`, and
   `mdkg task done spike-1 --json` work and preserve valid graph state.
+- Lifecycle help text describes spikes as task-like actionable nodes.
 - Malformed spike frontmatter fails validation with actionable diagnostics.
 
 # Results / Evidence
@@ -53,3 +55,5 @@ same lifecycle as existing task-like work items.
 # Notes / Follow-ups
 
 - Keep lifecycle coverage aligned with task-like work nodes.
+- Pack/discovery behavior belongs in `test-143`; packed smoke belongs in
+  `test-144`.
