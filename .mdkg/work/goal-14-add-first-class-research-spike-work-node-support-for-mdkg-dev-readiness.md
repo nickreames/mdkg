@@ -5,9 +5,9 @@ title: Add first-class research spike work-node support for mdkg.dev readiness
 status: todo
 priority: 1
 goal_state: active
-active_node: task-347
 goal_condition: Ship first-class research spike work-node support through implementation, docs, packed temp-repo smoke coverage, and prepublish dry-run readiness for the next mdkg release slice.
 scope_refs: [epic-76, epic-77, task-347, task-348, task-349, task-350, task-351, test-142, test-143, test-144]
+active_node: task-348
 required_skills: [pursue-mdkg-goal, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:spike, npm run smoke:command-docs, npm run prepublishOnly, node scripts/assert-publish-ready.js, npm pack --dry-run --json, npm publish --dry-run, git diff --check]
 max_iterations: 25

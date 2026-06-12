@@ -20,6 +20,7 @@ mdkg is pre-v1 public alpha software. Graph, cache, bundle, and DAL contracts ma
 
 ```bash
 mdkg upgrade
+mdkg index
 mdkg new task "..." --status todo --priority 1
 mdkg search "..."
 mdkg show <id>
@@ -34,12 +35,13 @@ mdkg fix plan --json
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal select/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg index` to create or refresh generated graph/skill/capability/subgraph and SQLite caches after init, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal select/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
 Use `mdkg status --json` for a read-only operator summary of Git, graph,
 selected-goal, project DB, and generated-cache health before mutating work. Use
 `mdkg doctor --strict --json` for typed diagnostic checks in CI or agent
-orchestration. These commands inspect state; they do not apply repairs.
+orchestration. These commands inspect state; they do not apply repairs. After a
+fresh init, run `mdkg index` first so strict doctor can load generated caches.
 
 Use `mdkg fix plan --json` for dry-run repair guidance. It reports generated
 index/cache repair hints, missing graph references, and duplicate local ids as

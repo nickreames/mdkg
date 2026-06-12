@@ -67,10 +67,19 @@ It MUST NOT include:
 - verify `package.json` `"files"` includes only expected files
 - optionally run `npm pack` and inspect tarball contents
 
-7) Publish
-- `npm publish`
+7) Confirm npm auth
+- if using an exported `NPM_TOKEN`, create a temporary npm userconfig that
+  references `${NPM_TOKEN}` literally:
+  `//registry.npmjs.org/:_authToken=${NPM_TOKEN}`
+- run `npm whoami --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc`
+- do not print the token, do not commit the temp userconfig, and do not add
+  unsupported `always-auth` config
 
-8) Tag and push
+8) Publish
+- `npm publish --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc`
+- omit `--userconfig` only when an existing npm login has already been verified
+
+9) Tag and push
 - create git tag matching version (example `v0.1.0`)
 - push commits and tags
 

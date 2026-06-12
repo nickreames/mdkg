@@ -101,6 +101,7 @@ Notes:
 - removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
 - published bootstrap config is root-only by default
 - `--agent` creates `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node core docs, default mdkg usage skills, `events.jsonl`, registry, and skill mirrors
+- run `mdkg index` after fresh init before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches
 
 ### `mdkg upgrade`
 
