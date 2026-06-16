@@ -2,7 +2,7 @@
 id: test-144
 type: test
 title: temp-repo research spike workflow and docs-readiness contract
-status: todo
+status: done
 priority: 1
 epic: epic-77
 parent: goal-14
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [packed smoke creates spike, spike creates follow-up node plan, spike records skill candidate, docs mention mdkg.dev research use]
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Overview
 
@@ -54,7 +54,23 @@ surfaces describe the feature.
 
 # Results / Evidence
 
-- Pending implementation.
+- Passed. Evidence from `task-350`, `task-351`, `task-360`, `chk-130`, and the
+  completed dogfood spikes.
+- `npm run smoke:spike` passed from a packed installed tarball and proved fresh
+  temp-repo spike creation, lifecycle mutation, goal routing, search/show/pack,
+  explicit follow-up task/test creation, skill-candidate recording, and no
+  automatic `SKILL.md` generation.
+- Real repository dogfood created and completed `spike-1` through `spike-5` for
+  mdkg.dev IA/generated docs, outcome examples/downstream adoption,
+  security/trust, SEO/AI search readiness, and architecture/data-structure
+  narrative.
+- Follow-up launch scope was added to paused `goal-15` as `task-370`,
+  `task-371`, and `test-157`, with existing launch tasks wired to spike
+  evidence.
+- `node dist/cli.js validate --json` passed with zero warnings/errors.
+- `node dist/cli.js search "mdkg.dev" --json` finds the goal, spikes, and
+  launch follow-up nodes.
+- `git diff --check` passed.
 
 # Notes / Follow-ups
 

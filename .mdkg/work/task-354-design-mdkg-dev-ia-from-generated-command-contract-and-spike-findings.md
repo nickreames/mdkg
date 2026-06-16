@@ -12,8 +12,8 @@ links: []
 artifacts: []
 relates: []
 blocked_by: [task-351]
-blocks: []
-refs: []
+blocks: [task-355, task-356, task-357, task-358, task-359, task-370]
+refs: [spike-1, spike-2, spike-3, spike-4, spike-5]
 aliases: []
 skills: []
 created: 2026-06-11
@@ -61,3 +61,5 @@ rather than marketing-only copy.
 # Links / Artifacts
 
 - Blocks `task-355`, `task-356`, `task-357`, `task-358`, and `task-359`.
+- Spike evidence: `spike-1`, `spike-2`, `spike-3`, `spike-4`, `spike-5`.
+- Evidence-matrix follow-up: `task-370`.

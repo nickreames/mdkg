@@ -2,12 +2,12 @@
 id: goal-14
 type: goal
 title: Complete first-class research spike system and 0.3.2 RC readiness
-status: todo
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: Ship a first-class, hardened research spike work-node system through implementation, docs, packed temp-repo proof, mdkg.dev dogfood handoff, and 0.3.2 release-candidate dry-run readiness without a real publish.
 scope_refs: [epic-76, epic-77, epic-84, task-347, task-348, task-349, task-350, task-351, task-364, task-365, task-366, task-367, task-368, task-369, test-142, test-143, test-144, test-152, test-153, test-154, test-155, test-156]
-active_node: task-348
+active_node: task-369
 required_skills: [pursue-mdkg-goal, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:init, npm run smoke:upgrade, npm run smoke:spike, npm run smoke:command-docs, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 25
@@ -23,7 +23,7 @@ refs: [goal-11, goal-13]
 aliases: []
 skills: []
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Objective
 
@@ -128,16 +128,25 @@ prepublish readiness.
 
 # Current State
 
-`mdkg@0.3.1` is published and globally installed. Existing work-node types do
-not include `spike`. `task-347` locked the semantics and release boundary, and
-this alignment pass expands the active goal with hardening and `0.3.2` RC
-readiness nodes. During alignment, `active_node` is `task-364`; after successful
-alignment closeout, the goal should claim `task-348`.
+`mdkg@0.3.1` is published and globally installed. Source is now prepared as a
+`0.3.2` release candidate with first-class spike support, but this goal did not
+perform a real npm publish, global install, git tag, or git push.
 
 # Iteration Log
 
 - `task-347` completed and checkpointed the spike semantics contract.
 - `task-364` aligns the expanded hardening scope before implementation resumes.
+- `task-348` implemented first-class spike node parsing, creation, task
+  lifecycle, next/goal traversal, discovery, pack, templates, validation, and
+  command contract support.
+- `task-349` updated user-facing docs, init assets, command matrix/help, and
+  publish-readiness checks for actionable research spikes.
+- `task-350` added packed temp-repo `smoke:spike`.
+- `task-351` dogfooded spikes into paused mdkg.dev planning `goal-15`.
+- `task-365` through `task-367` hardened init/upgrade compatibility,
+  pack/export/visibility behavior, and validation/fix-plan UX.
+- `task-368` prepared and verified the `0.3.2` release candidate through npm
+  pack and publish dry-run gates.
 
 # Skill Improvement Candidates
 
@@ -146,4 +155,66 @@ alignment closeout, the goal should claim `task-348`.
 
 # Completion Evidence
 
-- Pending.
+Completed on 2026-06-16 as release-candidate readiness, not a real publish.
+
+Implementation and docs:
+
+- `mdkg new spike "..." --json` creates validation-clean `spike-#` nodes under
+  `.mdkg/work/`.
+- Spike nodes participate in `mdkg task start/update/done`, `mdkg next`,
+  `mdkg goal next`, `mdkg goal claim`, `list`, `search`, `show`, `pack`,
+  validation, generated command contract, and generated command docs.
+- The default spike template covers research question, context, search plan,
+  findings, options/tradeoffs, recommendation, follow-up nodes, skill
+  candidates, security/UX/data-structure/algorithm notes, and evidence/sources.
+- README, init README, `CLI_COMMAND_MATRIX.md`, init command matrix, help text,
+  command contract, and publish-readiness assertions describe spikes as
+  actionable research work nodes, not autonomous web-search or file-generation
+  agents.
+
+Hardening:
+
+- Fresh init and upgrade flows include the spike template without overwriting
+  local customization.
+- Pack, visibility, JSON/XML/TOON/Markdown exports, list/search/show, command
+  docs, and generated command contract handle spike nodes deterministically.
+- Malformed spikes produce actionable validation diagnostics, and `mdkg fix
+  plan --json` reports non-mutating guidance for missing graph/archive refs and
+  duplicate spike ids.
+
+Dogfood and handoff:
+
+- Packed `smoke:spike` creates a temp repo from an installed tarball and proves
+  spike creation, lifecycle, goal routing, pack/search/show/export behavior,
+  follow-up task/test creation, skill-candidate recording, malformed-spike
+  diagnostics, and fix-plan guidance.
+- `goal-15` is paused with mdkg.dev launch research spikes `spike-1` through
+  `spike-5` and follow-up nodes `task-370`, `task-371`, and `test-157`.
+
+Release-candidate gates:
+
+- `npm run build`
+- `npm run test` passed with 467 tests.
+- `npm run cli:check`
+- `npm run cli:contract`
+- `node dist/cli.js validate --json`
+- `npm run smoke:init`
+- `npm run smoke:upgrade`
+- `npm run smoke:spike`
+- `npm run smoke:command-docs`
+- `npm run prepublishOnly`
+- `node scripts/assert-publish-ready.js`
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
+  reported `mdkg@0.3.2`, 159 package entries, and included
+  `dist/init/templates/default/spike.md`.
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run` reran
+  `prepublishOnly` plus `prepack` and ended with `+ mdkg@0.3.2` under dry-run
+  mode.
+- `git diff --check`
+
+Explicit stop boundary:
+
+- No real npm publish.
+- No global install.
+- No git tag.
+- No git push.

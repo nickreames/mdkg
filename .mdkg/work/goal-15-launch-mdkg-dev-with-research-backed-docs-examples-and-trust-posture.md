@@ -7,7 +7,7 @@ priority: 2
 goal_state: paused
 active_node: task-354
 goal_condition: Launch mdkg.dev only after spike dogfooding, generated command docs, public examples, security posture, and downstream upgrade narratives are validated.
-scope_refs: [epic-78, epic-79, epic-80, epic-81, epic-82, task-354, task-355, task-356, task-357, task-358, task-359, task-360, task-361, task-362, test-147, test-148, test-149, test-150]
+scope_refs: [epic-78, epic-79, epic-80, epic-81, epic-82, spike-1, spike-2, spike-3, spike-4, spike-5, task-354, task-355, task-356, task-357, task-358, task-359, task-360, task-361, task-362, task-370, task-371, test-147, test-148, test-149, test-150, test-157]
 required_skills: [pursue-mdkg-goal, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run cli:contract, npm run smoke:command-docs, node dist/cli.js validate --json, npm run smoke:spike, git diff --check]
 max_iterations: 25
@@ -99,16 +99,43 @@ narratives.
 
 # Current State
 
-Paused until first-class `spike` support exists and can produce launch research
-evidence. Initial future active node is `task-354`.
+Paused until the mdkg.dev launch lane is explicitly resumed. First-class
+`spike` support now exists in the local `0.3.2` release candidate and has
+produced launch research evidence. Initial future active node is `task-354`.
+
+`goal-14` dogfooding has created the first spike-backed launch research set:
+
+- `spike-1`: mdkg.dev IA and generated command docs.
+- `spike-2`: outcome examples and downstream adoption narratives.
+- `spike-3`: security, trust, and no-secret posture.
+- `spike-4`: SEO positioning and AI search readiness.
+- `spike-5`: technical architecture, data structures, and algorithms narrative.
+
+Follow-up scope added from those spikes:
+
+- `task-370`: source-backed page evidence matrix.
+- `task-371`: architecture and state-boundary visuals.
+- `test-157`: source-backed claims and examples contract.
 
 # Iteration Log
 
-- No iterations recorded yet.
+- 2026-06-15: `goal-14` spike dogfood created `spike-1` through `spike-5` and
+  added `task-370`, `task-371`, and `test-157` as launch-readiness follow-up
+  work. `goal-15` remains paused; no website implementation has started.
+- 2026-06-16: `goal-14` closeout confirmed spike support is implemented and
+  `0.3.2` is dry-run publish-ready. `goal-15` still remains paused; resume at
+  `task-354` when mdkg.dev documentation/SEO/site work is explicitly selected.
 
 # Skill Improvement Candidates
 
-- None yet.
+- Research-to-docs IA skill: turn spike findings plus generated command
+  metadata into a page map without starting implementation.
+- Example-from-smoke skill: turn packed/temp-repo smoke scripts into public docs
+  with expected receipts and failure boundaries.
+- Public no-secret docs audit skill: scan generated docs and examples for token
+  patterns, private paths, unsupported execution claims, and missing redactions.
+- SEO claim audit skill: reject public claims not backed by command metadata,
+  smoke evidence, or spike findings.
 
 # Completion Evidence
 

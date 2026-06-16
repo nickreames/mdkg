@@ -2,7 +2,7 @@
 id: task-350
 type: task
 title: add packed temp-repo spike smoke and prepublish gate
-status: todo
+status: done
 priority: 1
 epic: epic-76
 parent: goal-14
@@ -17,7 +17,7 @@ refs: []
 aliases: []
 skills: []
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Overview
 

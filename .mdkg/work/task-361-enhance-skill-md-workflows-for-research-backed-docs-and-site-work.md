@@ -13,7 +13,7 @@ artifacts: []
 relates: []
 blocked_by: [task-360]
 blocks: []
-refs: []
+refs: [spike-1, spike-2, spike-3, spike-4, spike-5]
 aliases: []
 skills: []
 created: 2026-06-11
@@ -55,3 +55,5 @@ durable operator behavior without claiming mdkg itself executes research.
 # Links / Artifacts
 
 - Depends on `task-360`.
+- Skill candidates recorded in `spike-1`, `spike-2`, `spike-3`, `spike-4`, and
+  `spike-5`.
