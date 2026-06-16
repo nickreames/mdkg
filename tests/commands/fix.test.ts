@@ -102,6 +102,54 @@ function taskNode(id: string, title: string): string {
   ].join("\n");
 }
 
+function spikeNode(
+  id: string,
+  title: string,
+  options: { blockedBy?: string[]; artifacts?: string[] } = {}
+): string {
+  return [
+    "---",
+    `id: ${id}`,
+    "type: spike",
+    `title: ${title}`,
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    `artifacts: [${(options.artifacts ?? []).join(", ")}]`,
+    "relates: []",
+    `blocked_by: [${(options.blockedBy ?? []).join(", ")}]`,
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-06-09",
+    "updated: 2026-06-09",
+    "---",
+    "",
+    "# Research Question",
+    "",
+    "What needs research?",
+    "",
+    "# Context And Constraints",
+    "",
+    "# Search Plan",
+    "",
+    "# Findings",
+    "",
+    "# Options And Tradeoffs",
+    "",
+    "# Recommendation",
+    "",
+    "# Follow-Up Nodes To Create",
+    "",
+    "# Skill Candidates",
+    "",
+    "# Evidence And Sources",
+  ].join("\n");
+}
+
 function snapshotFiles(root: string): Map<string, string> {
   const entries = new Map<string, string>();
   const walk = (dir: string): void => {
@@ -472,6 +520,47 @@ test("fix plan refs family supports target filtering and blocked target receipts
   assert.equal(payload.risk_counts.blocked, 1);
 });
 
+test("fix plan refs family reports spike graph and archive reference guidance", () => {
+  const root = createFixRepo("mdkg-fix-refs-spike-");
+  writeFile(
+    path.join(root, ".mdkg", "work", "spike-1.md"),
+    spikeNode("spike-1", "research missing references", {
+      blockedBy: ["task-999"],
+      artifacts: ["archive://archive.missing"],
+    })
+  );
+  const before = snapshotFiles(root);
+  const result = run(root, ["fix", "plan", "--family", "refs", "--target", "spike-1", "--json"]);
+  const after = snapshotFiles(root);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stderr, "");
+  assert.deepEqual(after, before);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.family, "refs");
+  assert.equal(payload.summary.apply_supported, false);
+  assert.equal(payload.summary.apply_deferred, true);
+  const reasons = payload.proposed_changes.map((change: { reason: string }) => change.reason);
+  assert.ok(reasons.includes("graph_ref_missing"));
+  assert.ok(reasons.includes("archive_ref_missing"));
+  const graphChange = payload.proposed_changes.find(
+    (change: { reason: string; refs: string[] }) =>
+      change.reason === "graph_ref_missing" && change.refs.includes("root:task-999")
+  );
+  assert.ok(graphChange);
+  assert.deepEqual(graphChange.paths, [".mdkg/work/spike-1.md"]);
+  assert.equal(graphChange.evidence.source_qid, "root:spike-1");
+  assert.equal(graphChange.evidence.field, "blocked_by");
+  const archiveChange = payload.proposed_changes.find(
+    (change: { reason: string; refs: string[] }) =>
+      change.reason === "archive_ref_missing" && change.refs.includes("archive://archive.missing")
+  );
+  assert.ok(archiveChange);
+  assert.deepEqual(archiveChange.paths, [".mdkg/work/spike-1.md"]);
+  assert.equal(archiveChange.evidence.source_qid, "root:spike-1");
+  assert.equal(archiveChange.command_hint, "mdkg archive show archive://archive.missing");
+});
+
 test("fix plan ids family reports duplicate ids with deterministic candidate rename", () => {
   const root = createFixRepo("mdkg-fix-ids-duplicate-");
   writeFile(
@@ -531,6 +620,35 @@ test("fix plan ids family reports duplicate ids with deterministic candidate ren
   assert.match(change.command_hint, /task-1-dup-2/);
   assert.equal(change.apply_supported, false);
   assert.equal(payload.risk_counts.high, 1);
+});
+
+test("fix plan ids family reports duplicate spike ids with deterministic candidate rename", () => {
+  const root = createFixRepo("mdkg-fix-ids-spike-duplicate-");
+  writeFile(path.join(root, ".mdkg", "work", "spike-1.md"), spikeNode("spike-1", "canonical spike"));
+  writeFile(path.join(root, ".mdkg", "work", "spike-copy.md"), spikeNode("spike-1", "duplicate spike"));
+  const before = snapshotFiles(root);
+  const result = run(root, ["fix", "plan", "--family", "ids", "--target", "spike-1", "--json"]);
+  const after = snapshotFiles(root);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stderr, "");
+  assert.deepEqual(after, before);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.family, "ids");
+  assert.equal(payload.proposed_changes.length, 1);
+  const change = payload.proposed_changes[0];
+  assert.equal(change.family, "ids");
+  assert.equal(change.reason, "duplicate_id");
+  assert.equal(change.risk, "high");
+  assert.deepEqual(change.paths, [".mdkg/work/spike-copy.md"]);
+  assert.equal(change.evidence.duplicate_id, "spike-1");
+  assert.equal(change.evidence.workspace, "root");
+  assert.deepEqual(change.evidence.group_paths, [".mdkg/work/spike-1.md", ".mdkg/work/spike-copy.md"]);
+  assert.equal(change.after.candidate_id, "spike-1-dup-2");
+  assert.equal(change.after.candidate_qid, "root:spike-1-dup-2");
+  assert.equal(change.after.collision_free, true);
+  assert.match(change.command_hint, /spike-1-dup-2/);
+  assert.equal(change.apply_supported, false);
 });
 
 test("fix plan ids family groups two-branch duplicate ids with stable read-only rewrite plan", () => {

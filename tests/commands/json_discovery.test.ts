@@ -41,6 +41,41 @@ function writeTask(root: string): void {
   );
 }
 
+function writeSpike(root: string): void {
+  writeFile(
+    path.join(root, ".mdkg", "work", "spike-1.md"),
+    [
+      "---",
+      "id: spike-1",
+      "type: spike",
+      "title: Spike export fixture",
+      "status: todo",
+      "priority: 1",
+      "tags: [research, docs]",
+      "owners: [team]",
+      "links: [https://example.com/spike]",
+      "artifacts: [artifact://spike-1]",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: [ref-spike]",
+      "aliases: [fixture-spike]",
+      "skills: [plan-run]",
+      "created: 2026-03-05",
+      "updated: 2026-03-05",
+      "---",
+      "",
+      "# Research Question",
+      "",
+      "How should spike records appear in structured exports?",
+      "",
+      "# Findings",
+      "",
+      "Spike records must behave like actionable work nodes.",
+    ].join("\n")
+  );
+}
+
 function writeSkills(root: string): void {
   writeFile(
     path.join(root, ".mdkg", "skills", "plan-run", "SKILL.md"),
@@ -231,6 +266,45 @@ test("node discovery and show support xml, toon, and markdown envelopes", () => 
   assert.match(showMd.stdout, /- kind: node/);
   assert.match(showMd.stdout, /- body:/);
   assert.match(showMd.stdout, /JSON body/);
+});
+
+test("spike discovery and show support typed structured envelopes", () => {
+  const root = setupRepo();
+  writeSpike(root);
+  runIndexCommand({ root });
+
+  const listXml = captureOutput(() => runListCommand({ root, type: "spike", format: "xml" }));
+  assert.equal(listXml.stderr, "");
+  assert.match(listXml.stdout, /<command>list<\/command>/);
+  assert.match(listXml.stdout, /<count>1<\/count>/);
+  assert.match(listXml.stdout, /<id>spike-1<\/id>/);
+  assert.match(listXml.stdout, /<type>spike<\/type>/);
+
+  const searchToon = captureOutput(() =>
+    runSearchCommand({ root, query: "Spike export fixture", type: "spike", format: "toon" })
+  );
+  assert.equal(searchToon.stderr, "");
+  const searchToonPayload = JSON.parse(searchToon.stdout);
+  assert.equal(searchToonPayload.command, "search");
+  assert.equal(searchToonPayload.kind, "node");
+  assert.equal(searchToonPayload.count, 1);
+  assert.equal(searchToonPayload.items[0].qid, "root:spike-1");
+  assert.equal(searchToonPayload.items[0].type, "spike");
+
+  const showMd = captureOutput(() => runShowCommand({ root, id: "spike-1", format: "md" }));
+  assert.equal(showMd.stderr, "");
+  assert.match(showMd.stdout, /# mdkg response/);
+  assert.match(showMd.stdout, /- command: show/);
+  assert.match(showMd.stdout, /- kind: node/);
+  assert.match(showMd.stdout, /- type: spike/);
+  assert.match(showMd.stdout, /# Research Question/);
+
+  const showJson = captureOutput(() => runShowCommand({ root, id: "spike-1", json: true }));
+  assert.equal(showJson.stderr, "");
+  const showJsonPayload = JSON.parse(showJson.stdout);
+  assert.equal(showJsonPayload.item.qid, "root:spike-1");
+  assert.equal(showJsonPayload.item.type, "spike");
+  assert.match(showJsonPayload.item.body, /Spike records must behave like actionable work nodes/);
 });
 
 test("skill discovery and show support xml, toon, and markdown envelopes", () => {

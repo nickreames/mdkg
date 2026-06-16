@@ -51,6 +51,17 @@ const RECOMMENDED_HEADINGS: HeadingMap = {
     "Links / Artifacts",
   ],
   feat: ["Overview", "Acceptance Criteria", "Notes"],
+  spike: [
+    "Research Question",
+    "Context And Constraints",
+    "Search Plan",
+    "Findings",
+    "Options And Tradeoffs",
+    "Recommendation",
+    "Follow-Up Nodes To Create",
+    "Skill Candidates",
+    "Evidence And Sources",
+  ],
   epic: ["Goal", "Scope", "Milestones", "Out of Scope", "Risks", "Links / Artifacts"],
   checkpoint: [
     "Summary",

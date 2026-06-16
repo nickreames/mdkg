@@ -121,6 +121,65 @@ function writeTaskNode(root: string): void {
   writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
 }
 
+function writeSpikeNode(root: string): void {
+  const content = [
+    "---",
+    "id: spike-1",
+    "type: spike",
+    "title: docs research spike",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+    "",
+    "# Research Question",
+    "What should mdkg.dev explain first?",
+    "",
+    "# Findings",
+    "Keep operator workflows concrete.",
+  ].join("\n");
+  writeFile(path.join(root, ".mdkg", "work", "spike-1.md"), content);
+}
+
+function writeSpikeNodeWithArchiveArtifact(root: string, archiveUri: string): void {
+  const content = [
+    "---",
+    "id: spike-1",
+    "type: spike",
+    "title: public archive spike fixture",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    `artifacts: [${archiveUri}]`,
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-05-18",
+    "updated: 2026-05-18",
+    "---",
+    "",
+    "# Research Question",
+    "How should public spike packs handle archive visibility?",
+  ].join("\n");
+  writeFile(path.join(root, ".mdkg", "work", "spike-1.md"), content);
+}
+
 function writeTaskNodeWithArchiveArtifact(root: string, archiveUri: string): void {
   const content = [
     "---",
@@ -249,6 +308,46 @@ test("runPackCommand headers profile emits empty node bodies", () => {
   assert.equal(payload.meta.profile, "headers");
   assert.equal(payload.meta.body_mode, "none");
   assert.equal(payload.nodes[0].body, "");
+});
+
+test("runPackCommand supports a spike as the pack root across formats", () => {
+  const root = makeTempDir("mdkg-pack-spike-root-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeSpikeNode(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+
+  for (const format of ["json", "md", "xml", "toon"] as const) {
+    const out = `.mdkg/pack/spike.${format}`;
+    runPackCommand({
+      root,
+      id: "spike-1",
+      format,
+      out,
+    });
+
+    const content = fs.readFileSync(path.join(root, out), "utf8");
+    if (format === "json" || format === "toon") {
+      const payload = JSON.parse(content);
+      assert.equal(payload.nodes[0].qid, "root:spike-1");
+      assert.equal(payload.nodes[0].type, "spike");
+      assert.match(payload.nodes[0].body, /# Research Question/);
+      continue;
+    }
+
+    if (format === "md") {
+      assert.match(content, /root: root:spike-1/);
+      assert.match(content, /## root:spike-1/);
+      assert.match(content, /type: spike/);
+      assert.match(content, /# Research Question/);
+      continue;
+    }
+
+    assert.match(content, /<root>root:spike-1<\/root>/);
+    assert.match(content, /<qid>root:spike-1<\/qid>/);
+    assert.match(content, /<type>spike<\/type>/);
+    assert.match(content, /# Research Question/);
+  }
 });
 
 test("runPackCommand rejects --verbose with non-standard profile", () => {
@@ -405,6 +504,32 @@ test("runPackCommand --visibility public fails closed on private archive refs", 
   );
 });
 
+test("runPackCommand --visibility public fails closed on private spike archive refs", () => {
+  const root = makeTempDir("mdkg-pack-spike-visibility-fail-");
+  setupPackFixture(root);
+  setRootVisibility(root, "public");
+  writeFile(path.join(root, "inputs", "private.txt"), "private\n");
+  runArchiveAddCommand({
+    root,
+    file: "inputs/private.txt",
+    id: "archive.private-input",
+    kind: "source",
+    now: new Date("2026-05-18T00:00:00.000Z"),
+  });
+  writeSpikeNodeWithArchiveArtifact(root, "archive://archive.private-input");
+
+  assert.throws(
+    () =>
+      runPackCommand({
+        root,
+        id: "spike-1",
+        visibility: "public",
+        dryRun: true,
+      }),
+    /public pack contains less-visible references/
+  );
+});
+
 test("runPackCommand --visibility public records metadata and includes public archives", () => {
   const root = makeTempDir("mdkg-pack-visibility-ok-");
   setupPackFixture(root);
@@ -431,6 +556,38 @@ test("runPackCommand --visibility public records metadata and includes public ar
 
   const payload = JSON.parse(fs.readFileSync(path.join(root, out), "utf8"));
   assert.equal(payload.meta.visibility, "public");
+  assert.equal(JSON.stringify(payload).includes("archive://archive.public-input"), true);
+  assert.equal(JSON.stringify(payload).includes("archive.private-input"), false);
+});
+
+test("runPackCommand --visibility public records metadata and includes public spike archives", () => {
+  const root = makeTempDir("mdkg-pack-spike-visibility-ok-");
+  setupPackFixture(root);
+  setRootVisibility(root, "public");
+  writeFile(path.join(root, "inputs", "public.txt"), "public\n");
+  runArchiveAddCommand({
+    root,
+    file: "inputs/public.txt",
+    id: "archive.public-input",
+    kind: "source",
+    visibility: "public",
+    now: new Date("2026-05-18T00:00:00.000Z"),
+  });
+  writeSpikeNodeWithArchiveArtifact(root, "archive://archive.public-input");
+
+  const out = ".mdkg/pack/public-spike.json";
+  runPackCommand({
+    root,
+    id: "spike-1",
+    visibility: "public",
+    format: "json",
+    out,
+  });
+
+  const payload = JSON.parse(fs.readFileSync(path.join(root, out), "utf8"));
+  assert.equal(payload.meta.visibility, "public");
+  assert.equal(payload.nodes[0].qid, "root:spike-1");
+  assert.equal(payload.nodes[0].type, "spike");
   assert.equal(JSON.stringify(payload).includes("archive://archive.public-input"), true);
   assert.equal(JSON.stringify(payload).includes("archive.private-input"), false);
 });

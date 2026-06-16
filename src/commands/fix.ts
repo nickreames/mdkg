@@ -361,7 +361,43 @@ function frontmatterRefEntries(
 ): RefPlanEntry[] {
   const knownWorkspaces = new Set(index.meta.workspaces);
   const entries: RefPlanEntry[] = [];
+  const pushListEntries = (node: Index["nodes"][string], field: string, raw: string[]): void => {
+    for (const [indexValue, value] of raw.entries()) {
+      const indexedField = `${field}[${indexValue}]`;
+      if (LOCAL_LIST_REF_FIELDS.has(field)) {
+        const target = normalizeGraphRef(value, node.ws, knownWorkspaces, externalWorkspaces);
+        if (target) {
+          entries.push({
+            qid: node.qid,
+            path: node.path,
+            field: indexedField,
+            value,
+            target,
+            refKind: "graph",
+            locationKind: "frontmatter",
+          });
+        }
+      }
+      if (value.startsWith("archive://") && ARCHIVE_REF_LIST_FIELDS.has(field)) {
+        entries.push({
+          qid: node.qid,
+          path: node.path,
+          field: indexedField,
+          value,
+          refKind: "archive",
+          locationKind: "frontmatter",
+        });
+      }
+    }
+  };
   for (const node of Object.values(index.nodes).sort((a, b) => a.qid.localeCompare(b.qid))) {
+    for (const [field, raw] of [
+      ["links", node.links],
+      ["artifacts", node.artifacts],
+      ["refs", node.refs],
+    ] as Array<[string, string[]]>) {
+      pushListEntries(node, field, raw);
+    }
     for (const [field, raw] of Object.entries(node.attributes).sort(([a], [b]) => a.localeCompare(b))) {
       if (typeof raw === "string") {
         if (LOCAL_SCALAR_REF_FIELDS.has(field)) {
@@ -393,33 +429,7 @@ function frontmatterRefEntries(
       if (!Array.isArray(raw)) {
         continue;
       }
-      for (const [indexValue, value] of raw.entries()) {
-        const indexedField = `${field}[${indexValue}]`;
-        if (LOCAL_LIST_REF_FIELDS.has(field)) {
-          const target = normalizeGraphRef(value, node.ws, knownWorkspaces, externalWorkspaces);
-          if (target) {
-            entries.push({
-              qid: node.qid,
-              path: node.path,
-              field: indexedField,
-              value,
-              target,
-              refKind: "graph",
-              locationKind: "frontmatter",
-            });
-          }
-        }
-        if (value.startsWith("archive://") && ARCHIVE_REF_LIST_FIELDS.has(field)) {
-          entries.push({
-            qid: node.qid,
-            path: node.path,
-            field: indexedField,
-            value,
-            refKind: "archive",
-            locationKind: "frontmatter",
-          });
-        }
-      }
+      pushListEntries(node, field, raw);
     }
   }
   return entries;

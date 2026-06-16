@@ -207,6 +207,48 @@ test("runNewCommand creates a test node with cases list", () => {
   assert.ok(content.includes("cases: [tc-1, tc-2]"));
 });
 
+test("runNewCommand creates a spike node as actionable work", () => {
+  const root = makeTempDir("mdkg-new-spike-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+
+  const output = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "spike",
+      title: "Research mdkg docs launch",
+      status: "todo",
+      priority: 1,
+      skills: "author-mdkg-skill",
+      json: true,
+      now: new Date(2026, 0, 22),
+    })
+  );
+
+  assert.equal(output.stderr, "");
+  assert.deepEqual(JSON.parse(output.stdout), {
+    action: "created",
+    node: {
+      workspace: "root",
+      id: "spike-1",
+      qid: "root:spike-1",
+      path: ".mdkg/work/spike-1-research-mdkg-docs-launch.md",
+      type: "spike",
+      title: "Research mdkg docs launch",
+      status: "todo",
+      priority: 1,
+    },
+  });
+  const filePath = path.join(root, ".mdkg", "work", "spike-1-research-mdkg-docs-launch.md");
+  assert.ok(fs.existsSync(filePath));
+  const content = fs.readFileSync(filePath, "utf8");
+  assert.ok(content.includes("type: spike"));
+  assert.ok(content.includes("skills: [author-mdkg-skill]"));
+  assert.ok(content.includes("# Research Question"));
+  assert.ok(content.includes("# Follow-Up Nodes To Create"));
+  assert.ok(content.includes("# Evidence And Sources"));
+});
+
 test("runNewCommand creates a goal node with recursive defaults", () => {
   const root = makeTempDir("mdkg-new-goal-");
   writeConfig(root);
