@@ -12,6 +12,52 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 - No changes yet.
 
+## 0.3.2 - 2026-06-16
+
+### Added
+
+- Added first-class research spike work-node support with `mdkg new spike`,
+  `spike-#` ids, `.mdkg/work/` storage, and compatibility with existing
+  `mdkg task start/update/done` lifecycle commands.
+- Added spike participation in `mdkg next`, `mdkg goal next`, `mdkg goal claim`,
+  list/search/show structured exports, deterministic packs, goal-root pack
+  closure, and generated command contract metadata.
+- Added a default spike template for research question, context, search plan,
+  findings, options/tradeoffs, recommendation, follow-up nodes, skill
+  candidates, domain notes, mdkg.dev launch implications, and evidence/sources.
+- Added packed `smoke:spike` coverage that installs mdkg from a tarball in a
+  temp prefix, creates a fresh repo, exercises spike lifecycle and goal routing,
+  verifies structured exports and pack formats, creates follow-up task/test
+  nodes, and confirms no automatic skill generation occurs.
+- Added mdkg.dev dogfood research spike nodes and follow-up roadmap nodes so
+  launch planning can proceed from evidence-backed spikes after this release.
+
+### Changed
+
+- Updated README, `CLI_COMMAND_MATRIX.md`, init assets, help text, command docs,
+  and publish-readiness assertions to describe spikes as actionable research
+  work nodes, not autonomous web-search or file-generation agents.
+- Hardened init and upgrade compatibility so fresh and upgraded repos receive
+  the bundled spike template while customized spike templates are preserved.
+- Hardened spike pack/export behavior across JSON, Markdown, XML, and toon
+  pack formats plus public visibility filtering for spike archive references.
+- Hardened validation and fix-plan UX for malformed spikes: invalid ids,
+  statuses, priorities, missing refs, duplicate spike ids, and missing spike
+  body sections now have explicit test coverage and read-only repair guidance
+  where existing fix-plan families apply.
+- Extended `mdkg fix plan refs` to inspect indexed `links`, `artifacts`, and
+  `refs` fields in addition to custom attributes, so missing archive refs in
+  normal node metadata appear in repair plans.
+
+### Security
+
+- Kept spikes as human/agent-authored Markdown work nodes only. This release
+  does not add a `mdkg spike ...` namespace, automatic web search, automatic
+  follow-up node creation, automatic `SKILL.md` generation, or repair apply
+  behavior.
+- Preserved dry-run-only repair planning: spike-related fix guidance remains
+  receipt-shaped, non-mutating, and `apply_supported: false`.
+
 ## 0.3.1 - 2026-06-11
 
 ### Added
