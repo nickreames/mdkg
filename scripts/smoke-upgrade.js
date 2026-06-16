@@ -52,6 +52,22 @@ function assertIncludes(value, expected, label) {
   }
 }
 
+function assertSpikeTemplate(root, label) {
+  const templatePath = path.join(root, ".mdkg", "templates", "default", "spike.md");
+  assertExists(templatePath);
+  const content = fs.readFileSync(templatePath, "utf8");
+  for (const expected of [
+    "type: spike",
+    "# Research Question",
+    "# Search Plan",
+    "# Follow-Up Nodes To Create",
+    "# Skill Candidates",
+    "# Evidence And Sources",
+  ]) {
+    assertIncludes(content, expected, `${label} spike template`);
+  }
+}
+
 function initGit(root) {
   fs.mkdirSync(root, { recursive: true });
   run(GIT_CMD, ["init", "-q"], { cwd: root });
@@ -170,7 +186,7 @@ function exerciseUpgrade(binPath, tempRoot) {
   initGit(oldTemplateRoot);
   mdkg(binPath, ["init"], oldTemplateRoot);
   mdkg(binPath, ["new", "task", "Old Template Workspace", "--status", "todo", "--priority", "1"], oldTemplateRoot);
-  for (const name of ["spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal"]) {
+  for (const name of ["spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal", "spike"]) {
     fs.rmSync(path.join(oldTemplateRoot, ".mdkg", "templates", "default", `${name}.md`), { force: true });
   }
   const doctor = mdkg(binPath, ["doctor"], oldTemplateRoot).stdout;
@@ -182,6 +198,7 @@ function exerciseUpgrade(binPath, tempRoot) {
   const oldTemplateDryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], oldTemplateRoot).stdout);
   for (const relativePath of [
     ".mdkg/templates/default/spec.md",
+    ".mdkg/templates/default/spike.md",
     ".mdkg/templates/default/work.md",
     ".mdkg/templates/default/work_order.md",
     ".mdkg/templates/default/receipt.md",
@@ -190,6 +207,34 @@ function exerciseUpgrade(binPath, tempRoot) {
       throw new Error(`old-template upgrade did not plan to vendor missing template ${relativePath}`);
     }
   }
+  const oldTemplateApply = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], oldTemplateRoot).stdout);
+  if (
+    !oldTemplateApply.changes.some(
+      (change) => change.action === "create" && change.path === ".mdkg/templates/default/spike.md"
+    )
+  ) {
+    throw new Error("old-template upgrade did not write missing spike template");
+  }
+  assertSpikeTemplate(oldTemplateRoot, "old-template upgrade");
+  mdkg(binPath, ["validate"], oldTemplateRoot);
+
+  const customTemplateRoot = path.join(tempRoot, "custom-spike-template-workspace");
+  initGit(customTemplateRoot);
+  mdkg(binPath, ["init"], customTemplateRoot);
+  const customSpikeTemplate = "---\nid: {{id}}\ntype: spike\n---\n# Custom Spike\n";
+  const customSpikePath = path.join(customTemplateRoot, ".mdkg", "templates", "default", "spike.md");
+  fs.writeFileSync(customSpikePath, customSpikeTemplate, "utf8");
+  const customSpikeUpgrade = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], customTemplateRoot).stdout);
+  if (!customSpikeUpgrade.changes.some((change) => change.action === "conflict" && change.path === ".mdkg/templates/default/spike.md")) {
+    throw new Error("custom spike template was not reported as a conflict");
+  }
+  if (!customSpikeUpgrade.preserved_customizations.some((change) => change.path === ".mdkg/templates/default/spike.md")) {
+    throw new Error("custom spike template was not reported as preserved");
+  }
+  if (fs.readFileSync(customSpikePath, "utf8") !== customSpikeTemplate) {
+    throw new Error("custom spike template was overwritten");
+  }
+  mdkg(binPath, ["validate"], customTemplateRoot);
 
   const ignoredEventsRoot = path.join(tempRoot, "ignored-events-workspace");
   initGit(ignoredEventsRoot);

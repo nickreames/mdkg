@@ -179,6 +179,22 @@ function assertNoRemovedInitGuidance(root) {
   }
 }
 
+function assertSpikeTemplate(root, label) {
+  const templatePath = path.join(root, ".mdkg", "templates", "default", "spike.md");
+  assertExists(templatePath);
+  const content = fs.readFileSync(templatePath, "utf8");
+  for (const expected of [
+    "type: spike",
+    "# Research Question",
+    "# Search Plan",
+    "# Follow-Up Nodes To Create",
+    "# Skill Candidates",
+    "# Evidence And Sources",
+  ]) {
+    assertIncludes(content, expected, `${label} spike template`);
+  }
+}
+
 function exerciseRemovedFlags(binPath, tempRoot) {
   for (const removedFlag of ["--llm", "--agents", "--claude", "--omni"]) {
     const root = path.join(tempRoot, `removed-${removedFlag.slice(2)}`);
@@ -213,8 +229,12 @@ function exerciseBaseInit(binPath, tempRoot) {
   assertNotExists(path.join(root, "AGENT_START.md"));
   assertNotExists(path.join(root, "AGENTS.md"));
   assertNotExists(path.join(root, ".mdkg", "skills"));
+  assertSpikeTemplate(root, "base init");
 
   const manifest = assertManifestMatches(root);
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/spike.md")) {
+    throw new Error("base init manifest missing spike template");
+  }
   if (manifest.files.some((file) => ["agent_doc", "startup_doc", "default_skill"].includes(file.category))) {
     throw new Error("base init manifest should not claim agent docs, startup docs, or default skills");
   }
@@ -231,6 +251,7 @@ function exerciseOptionalSpecWorkTemplates(binPath, tempRoot) {
   const root = path.join(tempRoot, "optional-spec-work-templates");
   initGit(root);
   mdkg(binPath, ["init"], root);
+  assertSpikeTemplate(root, "optional spec/work template init");
   assertSpecCount(binPath, root, 0, "optional template init before SPEC creation");
 
   const spec = parseJson(
@@ -309,6 +330,7 @@ function exerciseAgentInit(binPath, tempRoot) {
   const init = mdkg(binPath, ["init", "--agent"], root);
   assertIncludes(init.stdout, "agent bootstrap:", "agent init output");
   assertIncludes(init.stdout, "skill mirrors:", "agent init output");
+  assertSpikeTemplate(root, "agent init");
   for (const relativePath of [
     "AGENT_START.md",
     "AGENTS.md",
@@ -385,6 +407,9 @@ function exerciseAgentInit(binPath, tempRoot) {
   );
 
   const manifest = assertManifestMatches(root);
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/spike.md")) {
+    throw new Error("agent init manifest missing spike template");
+  }
   for (const category of ["agent_doc", "startup_doc", "default_skill"]) {
     if (!manifest.files.some((file) => file.category === category)) {
       throw new Error(`agent init manifest missing ${category}`);
