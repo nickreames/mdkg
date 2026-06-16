@@ -16,14 +16,14 @@ tags: [goal, subgraph, audit, upgrade-plan, post-0-3-0]
 owners: []
 links: []
 artifacts: []
-relates: [epic-68, goal-10, goal-11, edd-16, dec-29]
+relates: [epic-68, goal-10, goal-11, edd-16, dec-29, goal-18]
 blocked_by: []
 blocks: []
 refs: [edd-16, dec-29]
 aliases: [native-subgraph-operations, subgraph-audit-upgrade-plan, subgraph-refresh-receipts]
 skills: []
 created: 2026-06-07
-updated: 2026-06-07
+updated: 2026-06-16
 ---
 # Objective
 
@@ -96,3 +96,7 @@ reintroduced as new surfaces.
 # Completion Evidence
 
 Pending.
+
+# Supersession Note
+
+This paused historical roadmap goal is superseded by `goal-18`, which owns graph clone, fork, template import, and related subgraph safety work. It should be marked archived during `goal-16` only after archived goal lifecycle support is implemented.
