@@ -2,7 +2,7 @@
 id: test-160
 type: test
 title: subgraph independent active goal validation contract
-status: todo
+status: done
 priority: 1
 epic: epic-85
 parent: goal-16
@@ -42,8 +42,14 @@ Validate subgraph independent active goal validation contract.
 
 # Expected Evidence
 
-- Temp-repo subgraph smoke receipt.
+- Unit validation output for imported subgraph active goals.
+- Temp-repo subgraph smoke receipt during `task-378`.
+
+# Results / Evidence
+
+- Passed the unit-level contract on 2026-06-16.
+- `node --test dist/tests/graph/validate_graph.test.js` passed 5 tests, including `collectGraphErrors ignores imported subgraph goals for local single-active validation`.
 
 # Notes / Follow-ups
 
-- Record command output, receipts, and linked checkpoints when implemented.
+- `task-378` still owns the packed temp-repo smoke for the broader 0.3.3 lifecycle behavior.

@@ -2,7 +2,7 @@
 id: task-379
 type: task
 title: close 0.3.3 RC evidence and checkpoint
-status: todo
+status: done
 priority: 1
 epic: epic-88
 parent: goal-16
@@ -11,7 +11,7 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-378, test-159, test-160, test-161]
+blocked_by: [task-378]
 blocks: []
 refs: []
 aliases: []
@@ -58,4 +58,20 @@ Collect release-candidate evidence for 0.3.3 and close `goal-16` without publish
 
 # Links / Artifacts
 
-- Add command receipts, validation output, and checkpoint ids during execution.
+- 2026-06-16 RC metadata:
+  - Bumped `package.json` and `package-lock.json` from `0.3.2` to `0.3.3`.
+  - Added `CHANGELOG.md` section `0.3.3 - 2026-06-16` covering `goal activate`, archived goals, single-active root validation, and the packed goal-lifecycle smoke.
+- Required check evidence:
+  - `npm run build` passed for `mdkg@0.3.3`; command contract hash `be42c29b89c1c3e3d059a8f9cbc564908d4dd694d848cf3d1b1800e8b30705e5`.
+  - `npm run test` passed: 475 tests, 0 failures.
+  - `npm run cli:check` passed.
+  - `npm run cli:contract` passed with hash `be42c29b89c1c3e3d059a8f9cbc564908d4dd694d848cf3d1b1800e8b30705e5`.
+  - `node dist/cli.js validate --json` passed with 0 warnings/errors.
+  - `npm run prepublishOnly` passed end to end, including `smoke:goal-lifecycle`.
+  - `node scripts/assert-publish-ready.js` passed.
+  - `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json` passed and reported `mdkg@0.3.3`, filename `mdkg-0.3.3.tgz`, shasum `756397498e9247660b32fe9b2028df162995bb54`, unpacked size `1507598`, and 159 package files.
+  - `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run` passed and reported `+ mdkg@0.3.3`.
+  - `git diff --check` passed.
+- Release boundary:
+  - No real `npm publish` was run.
+  - No git tag, push, deploy, or child repo mutation was performed.
