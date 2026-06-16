@@ -92,6 +92,7 @@ Validation commands:
 Node creation commands:
 - `mdkg new <type> "<title>" [options] [--json]`
 - `mdkg new goal "<title>" [options] [--json]`
+- `mdkg new spike "<research question>" [options] [--json]`
 
 Agent workflow file type creation:
 - `mdkg new spec "<title>" [options] [--json]`
@@ -109,6 +110,8 @@ Agent workflow notes:
 - `spec` and `work` scaffold as validation-clean standalone docs.
 - `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 - `goal` nodes capture recursive objective state and required checks, but normal `mdkg next` does not select them.
+- `spike` nodes are actionable research/planning work under `.mdkg/work/`; use `mdkg task start|update|done` for lifecycle state.
+- Spikes record sources, findings, recommendations, follow-up node ideas, and skill candidates in Markdown body sections; they do not perform web search, execute research, create follow-up nodes, generate `SKILL.md`, or expose a `mdkg spike ...` namespace automatically.
 - after fresh init, run `mdkg index` before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches.
 
 Workspace registry commands:
@@ -126,6 +129,7 @@ Task mutation commands:
 - `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]`
 - `mdkg task update <id-or-qid> [options] [--json]`
 - `mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]`
+- task commands support task-like `feat`, `task`, `bug`, `test`, and `spike` nodes
 
 Checkpoint commands:
 - `mdkg checkpoint new <title> [--ws <alias>] [--json]`
@@ -158,7 +162,7 @@ Capability discovery:
 - capability records are deterministic cache projections from Markdown
 - records include source hash, headings, refs, and `indexed_at`
 - SPEC and WORK capability records include read-only `linkage` arrays for related SPECs, work contracts, work orders, and receipts when those graph mirrors exist
-- normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
+- normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
 
 Spec capability records:
 - `mdkg spec list [--json]`
@@ -254,7 +258,7 @@ Goal nodes:
 - `mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]`
-- goals orchestrate recursive progress through explicit `scope_refs`; tasks, bugs, tests, and features remain concrete executable units
+- goals orchestrate recursive progress through explicit `scope_refs`; tasks, bugs, tests, spikes, and features remain concrete executable units
 - `goal next` is read-only; use `goal claim` to set `active_node`
 - `mdkg goal evaluate` is report-only and never runs commands from `required_checks`
 - skill improvements discovered during normal goal execution should be recorded as candidates or proposals unless the active node is skill-maintenance

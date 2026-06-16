@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-06-06
-package_version_in_source: 0.2.0
+package_version_in_source: 0.3.1
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -146,6 +146,7 @@ Types:
 - `feat`
 - `task`
 - `bug`
+- `spike`
 - `checkpoint`
 - `test`
 
@@ -169,6 +170,16 @@ Agent workflow file type creation:
 
 Goal node creation:
 - `mdkg new goal "<title>" [options] [--json]`
+
+Spike node creation:
+- `mdkg new spike "<research question>" [options] [--json]`
+- spikes are actionable research/planning work nodes under `.mdkg/work/`
+- use `mdkg task start|update|done <spike-id>` for lifecycle state
+- spikes record research, sources, recommendations, follow-up node ideas, and
+  skill candidates in Markdown body sections
+- spikes do not perform web search, execute research, create follow-up nodes,
+  or generate `SKILL.md` files automatically
+- no `mdkg spike ...` namespace is exposed in this release
 
 Primary flags:
 - `--id <portable-id>` agent workflow file types only
@@ -501,7 +512,7 @@ Notes:
 - records include deterministic source metadata such as workspace, visibility, kind, id/qid/slug, path, headings, refs, source hash, and `indexed_at`
 - SPEC and WORK capability records include read-only `linkage` arrays for related SPECs, work contracts, work orders, and receipts when those graph mirrors exist
 - `.mdkg/index/capabilities.json` is rebuilt by `mdkg index` and by capability commands when stale
-- normal task, epic, feat, bug, test, and checkpoint nodes are intentionally excluded
+- normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
 - visibility is mdkg export metadata used by capability filters, `pack --visibility`, public bundle checks, validation, and doctor diagnostics; it is not secret scanning or body redaction
 
 ### `mdkg spec`
@@ -746,7 +757,7 @@ Behavior:
 - `goal select` writes local ignored selected-goal state so `goal next` can omit the goal id.
 - `goal current` shows the selected goal or unique active goal fallback.
 - `goal clear` removes local selected-goal state.
-- `goal next` is read-only and selects feature, task, bug, or test work inside explicit `scope_refs`; epics are recursive containers, not executable returns.
+- `goal next` is read-only and selects feature, task, bug, test, or spike work inside explicit `scope_refs`; epics are recursive containers, not executable returns.
 - `goal claim` mutates only `active_node` after the work item is confirmed inside the goal scope.
 - `goal evaluate` is report-only and never runs commands from `required_checks`.
 - `goal pause`, `goal resume`, and `goal done` update `goal_state`, compatible work status, and `updated`.
@@ -780,7 +791,7 @@ Usage:
 - `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]`
 
 Behavior:
-- supports `task`, `bug`, and `test` only
+- supports task-like `feat`, `task`, `bug`, `test`, and `spike` nodes
 - sets `status: progress`
 - if `events.jsonl` is missing for the workspace, prints a short `stderr` reminder about `mdkg event enable`
 
@@ -796,7 +807,7 @@ Usage:
 - `                   [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]`
 
 Behavior:
-- supports `task`, `bug`, and `test` only
+- supports task-like `feat`, `task`, `bug`, `test`, and `spike` nodes
 - list mutations are additive and unique
 - scalar fields replace existing values
 - `--clear-blocked-by` clears blockers before optional re-add
@@ -811,7 +822,7 @@ Usage:
 - `                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"] [--json]`
 
 Behavior:
-- supports `task`, `bug`, and `test` only
+- supports task-like `feat`, `task`, `bug`, `test`, and `spike` nodes
 - sets `status: done`
 - `--checkpoint` creates a related checkpoint
 - if `events.jsonl` is missing for the workspace, prints a short `stderr` reminder about `mdkg event enable`
