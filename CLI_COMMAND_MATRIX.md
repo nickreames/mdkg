@@ -735,14 +735,16 @@ When to use:
 Usage:
 - `mdkg goal show <goal-id-or-qid> [--json]`
 - `mdkg goal select <goal-id-or-qid> [--json]`
+- `mdkg goal activate <goal-id-or-qid> [--json]`
 - `mdkg goal current [--json]`
 - `mdkg goal clear [--json]`
 - `mdkg goal next [goal-id-or-qid] [--json]`
 - `mdkg goal claim [goal-id-or-qid] <work-id-or-qid> [--json]`
 - `mdkg goal evaluate <goal-id-or-qid> [--json]`
-- `mdkg goal pause|resume|done <goal-id-or-qid> [--json]`
+- `mdkg goal pause|resume|done|archive <goal-id-or-qid> [--json]`
 - `mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal current [--ws <alias>] [--json]`
 - `mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]`
 - `mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]`
@@ -751,27 +753,31 @@ Usage:
 - `mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]`
 
 Behavior:
 - `goal show` reports goal condition, goal state, scope refs, active node, required skills, required checks, and source path.
 - `goal select` writes local ignored selected-goal state so `goal next` can omit the goal id.
+- `goal activate` makes one local root goal active, pauses competing local active goals in the same workspace, and writes selected-goal state.
 - `goal current` shows the selected goal or unique active goal fallback.
 - `goal clear` removes local selected-goal state.
 - `goal next` is read-only and selects feature, task, bug, test, or spike work inside explicit `scope_refs`; epics are recursive containers, not executable returns.
 - `goal claim` mutates only `active_node` after the work item is confirmed inside the goal scope.
 - `goal evaluate` is report-only and never runs commands from `required_checks`.
 - `goal pause`, `goal resume`, and `goal done` update `goal_state`, compatible work status, and `updated`.
+- `goal archive` marks a superseded historical goal as `status: archived` and `goal_state: archived`; archived goals remain show/search/list readable but are excluded from active routing.
 - subgraph goal qids are read-only; update the source workspace instead.
 
 JSON receipts:
 - `show`: `{ action: "showed", goal }`
 - `select`: `{ action: "selected_goal", goal, selection }`
+- `activate`: `{ action: "activated", goal, activated_goal, paused_goals, selection, warnings }`
 - `current`: `{ action: "current", goal, source, warnings }`
 - `clear`: `{ action: "cleared_goal", path, cleared }`
 - `next`: `{ action: "selected", goal, goal_source, node, warnings }`
 - `claim`: `{ action: "claimed", goal, node }`
 - `evaluate`: `{ action: "evaluated", goal, report_only, runs_scripts, checks, completion_evidence_present }`
-- `pause|resume|done`: `{ action, goal }`
+- `pause|resume|done|archive`: `{ action, goal }`
 
 ### `mdkg task`
 

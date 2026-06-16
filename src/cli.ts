@@ -85,6 +85,8 @@ import { runNewCommand } from "./commands/new";
 import { runGuideCommand } from "./commands/guide";
 import { runUpgradeCommand } from "./commands/upgrade";
 import {
+  runGoalActivateCommand,
+  runGoalArchiveCommand,
   runGoalClaimCommand,
   runGoalClearCommand,
   runGoalCurrentCommand,
@@ -879,6 +881,21 @@ function printGoalHelp(log: LogFn, subcommand?: string): void {
       log("  Store a local selected goal so `mdkg goal next` can omit the goal id.");
       printGlobalOptions(log);
       return;
+    case "activate":
+      log("Usage:");
+      log("  mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]");
+      log("\nWhen to use:");
+      log("  Make one local root goal active, pause competing local active goals, and select it for `goal next`.");
+      log("  Imported subgraph goals are read-only and are not mutated by activation.");
+      printGlobalOptions(log);
+      return;
+    case "archive":
+      log("Usage:");
+      log("  mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]");
+      log("\nWhen to use:");
+      log("  Mark a superseded historical goal archived so it remains readable but is excluded from active routing.");
+      printGlobalOptions(log);
+      return;
     case "current":
       log("Usage:");
       log("  mdkg goal current [--ws <alias>] [--json]");
@@ -921,15 +938,17 @@ function printGoalHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log("  mdkg goal show <goal-id-or-qid> [--json]");
       log("  mdkg goal select <goal-id-or-qid> [--json]");
+      log("  mdkg goal activate <goal-id-or-qid> [--json]");
       log("  mdkg goal current [--json]");
       log("  mdkg goal next [goal-id-or-qid] [--json]");
       log("  mdkg goal claim [goal-id-or-qid] <work-id-or-qid> [--json]");
       log("  mdkg goal evaluate <goal-id-or-qid> [--json]");
       log("  mdkg goal clear [--json]");
-      log("  mdkg goal pause|resume|done <goal-id-or-qid> [--json]");
+      log("  mdkg goal pause|resume|done|archive <goal-id-or-qid> [--json]");
       log("\nNotes:");
       log("  - goals orchestrate recursive progress; features, tasks, bugs, tests, and spikes are iterable work units");
       log("  - `mdkg goal next` is read-only; use `mdkg goal claim` to update active_node");
+      log("  - `mdkg goal activate` enforces one active local root goal and pauses competing active goals");
       log("  - goal evaluation is report-only and never executes required_checks");
       log("  - subgraph goal qids are read-only; update the source workspace instead");
       printGlobalOptions(log);
@@ -2271,6 +2290,14 @@ function runGoalSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runGoalSelectCommand({ root, id, ws, json });
       return 0;
     }
+    case "activate": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal activate requires <goal-id-or-qid>");
+      }
+      runGoalActivateCommand({ root, id, ws, json });
+      return 0;
+    }
     case "current":
       if (parsed.positionals.length > 2) {
         throw new UsageError("goal current does not accept positional arguments");
@@ -2332,8 +2359,16 @@ function runGoalSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runGoalDoneCommand({ root, id, ws, json });
       return 0;
     }
+    case "archive": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("goal archive requires <goal-id-or-qid>");
+      }
+      runGoalArchiveCommand({ root, id, ws, json });
+      return 0;
+    }
     default:
-      throw new UsageError("goal requires show/select/current/clear/next/claim/evaluate/pause/resume/done");
+      throw new UsageError("goal requires show/select/activate/current/clear/next/claim/evaluate/pause/resume/done/archive");
   }
 }
 

@@ -76,6 +76,44 @@ function writeSpike(root: string): void {
   );
 }
 
+function writeArchivedGoal(root: string): void {
+  writeFile(
+    path.join(root, ".mdkg", "work", "goal-1.md"),
+    [
+      "---",
+      "id: goal-1",
+      "type: goal",
+      "title: Archived roadmap fixture",
+      "status: archived",
+      "priority: 1",
+      "goal_state: archived",
+      "goal_condition: superseded by a versioned goal",
+      "scope_refs: []",
+      "required_skills: []",
+      "required_checks: []",
+      "max_iterations: 25",
+      "blocked_after_attempts: 3",
+      "tags: [roadmap]",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: [archived-fixture]",
+      "skills: []",
+      "created: 2026-03-05",
+      "updated: 2026-03-05",
+      "---",
+      "",
+      "# Supersession",
+      "",
+      "This goal is historical context only.",
+    ].join("\n")
+  );
+}
+
 function writeSkills(root: string): void {
   writeFile(
     path.join(root, ".mdkg", "skills", "plan-run", "SKILL.md"),
@@ -305,6 +343,37 @@ test("spike discovery and show support typed structured envelopes", () => {
   assert.equal(showJsonPayload.item.qid, "root:spike-1");
   assert.equal(showJsonPayload.item.type, "spike");
   assert.match(showJsonPayload.item.body, /Spike records must behave like actionable work nodes/);
+});
+
+test("archived goals remain discoverable with explicit status filters", () => {
+  const root = setupRepo();
+  writeArchivedGoal(root);
+  runIndexCommand({ root });
+
+  const list = captureOutput(() => runListCommand({ root, type: "goal", status: "archived", json: true }));
+  assert.equal(list.stderr, "");
+  const listPayload = JSON.parse(list.stdout);
+  assert.equal(listPayload.command, "list");
+  assert.equal(listPayload.count, 1);
+  assert.equal(listPayload.items[0].qid, "root:goal-1");
+  assert.equal(listPayload.items[0].status, "archived");
+
+  const search = captureOutput(() =>
+    runSearchCommand({ root, query: "Archived roadmap", type: "goal", status: "archived", json: true })
+  );
+  assert.equal(search.stderr, "");
+  const searchPayload = JSON.parse(search.stdout);
+  assert.equal(searchPayload.command, "search");
+  assert.equal(searchPayload.count, 1);
+  assert.equal(searchPayload.items[0].qid, "root:goal-1");
+  assert.equal(searchPayload.items[0].status, "archived");
+
+  const show = captureOutput(() => runShowCommand({ root, id: "goal-1", json: true }));
+  assert.equal(show.stderr, "");
+  const showPayload = JSON.parse(show.stdout);
+  assert.equal(showPayload.item.qid, "root:goal-1");
+  assert.equal(showPayload.item.status, "archived");
+  assert.match(showPayload.item.body, /historical context only/);
 });
 
 test("skill discovery and show support xml, toon, and markdown envelopes", () => {

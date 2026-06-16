@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
 const {
+  runGoalActivateCommand,
+  runGoalArchiveCommand,
   runGoalClaimCommand,
   runGoalClearCommand,
   runGoalCurrentCommand,
@@ -236,8 +238,100 @@ test("goal next without selection falls back only for a unique active goal", () 
   writeGoal(root, { id: "goal-2", title: "Second active goal", active_node: "", scope_refs: "[task-1]" });
   assert.throws(
     () => runGoalNextCommand({ root, json: true }),
-    /multiple active goals found/
+    /multiple active root goals found: root:goal-1, root:goal-2; run mdkg goal activate <goal-id>/
   );
+});
+
+test("goal activate selects target and pauses competing active root goals", () => {
+  const root = setupRepo();
+  writeGoal(root, { active_node: "", scope_refs: "[task-1]" });
+  writeGoal(root, {
+    id: "goal-2",
+    title: "Second goal",
+    status: "blocked",
+    goal_state: "paused",
+    active_node: "",
+    scope_refs: "[task-2]",
+  });
+  writeWork(root, "task", "task-1", "First scoped task", "todo", 1);
+  writeWork(root, "task", "task-2", "Second scoped task", "todo", 1);
+
+  const activated = captureOutput(() =>
+    runGoalActivateCommand({ root, id: "goal-2", json: true, now: new Date("2026-01-05T00:00:00.000Z") })
+  );
+  assert.equal(activated.stderr, "");
+  const receipt = JSON.parse(activated.stdout);
+  assert.equal(receipt.action, "activated");
+  assert.equal(receipt.goal.qid, "root:goal-2");
+  assert.equal(receipt.goal.status, "progress");
+  assert.equal(receipt.goal.goal_state, "active");
+  assert.deepEqual(receipt.paused_goals.map((goal: { qid: string }) => goal.qid), ["root:goal-1"]);
+  assert.equal(receipt.selection.path, ".mdkg/state/selected-goal.json");
+  assert.match(receipt.warnings[0], /paused 1 competing active goal/);
+
+  const firstGoal = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
+  assert.match(firstGoal, /status: blocked/);
+  assert.match(firstGoal, /goal_state: paused/);
+  const secondGoal = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-2.md"), "utf8");
+  assert.match(secondGoal, /status: progress/);
+  assert.match(secondGoal, /goal_state: active/);
+
+  const current = captureOutput(() => runGoalCurrentCommand({ root, json: true }));
+  assert.equal(JSON.parse(current.stdout).goal.qid, "root:goal-2");
+});
+
+test("goal activate rejects achieved goals before mutation", () => {
+  const root = setupRepo();
+  writeGoal(root, {
+    status: "done",
+    goal_state: "achieved",
+    active_node: "",
+    scope_refs: "[task-1]",
+  });
+  writeWork(root, "task", "task-1", "Scoped task", "todo", 1);
+
+  assert.throws(
+    () => runGoalActivateCommand({ root, id: "goal-1", json: true }),
+    /cannot activate achieved goal root:goal-1/
+  );
+});
+
+test("goal archive marks a goal historical and excludes it from routing", () => {
+  const root = setupRepo();
+  writeGoal(root, { active_node: "", scope_refs: "[task-1]" });
+  writeWork(root, "task", "task-1", "Scoped task", "todo", 1);
+
+  captureOutput(() => runGoalSelectCommand({ root, id: "goal-1", json: true }));
+  const archived = captureOutput(() =>
+    runGoalArchiveCommand({ root, id: "goal-1", json: true, now: new Date(2026, 0, 6) })
+  );
+  assert.equal(archived.stderr, "");
+  const archiveReceipt = JSON.parse(archived.stdout);
+  assert.equal(archiveReceipt.action, "archive");
+  assert.equal(archiveReceipt.goal.qid, "root:goal-1");
+  assert.equal(archiveReceipt.goal.status, "archived");
+  assert.equal(archiveReceipt.goal.goal_state, "archived");
+
+  const content = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
+  assert.match(content, /status: archived/);
+  assert.match(content, /goal_state: archived/);
+  assert.match(content, /updated: 2026-01-06/);
+
+  const current = captureOutput(() => runGoalCurrentCommand({ root, json: true }));
+  const currentReceipt = JSON.parse(current.stdout);
+  assert.equal(currentReceipt.goal, null);
+  assert.equal(currentReceipt.source, "none");
+  assert.match(currentReceipt.warnings[0], /selected goal root:goal-1 is archived/);
+
+  const next = captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true }));
+  const nextReceipt = JSON.parse(next.stdout);
+  assert.equal(nextReceipt.node, null);
+  assert.match(nextReceipt.warnings[0], /root:goal-1 is archived and has no actionable next work/);
+
+  assert.throws(() => runGoalSelectCommand({ root, id: "goal-1", json: true }), /cannot select archived goal root:goal-1/);
+  assert.throws(() => runGoalActivateCommand({ root, id: "goal-1", json: true }), /cannot activate archived goal root:goal-1/);
+  assert.throws(() => runGoalClaimCommand({ root, id: "goal-1", workId: "task-1", json: true }), /cannot claim work for archived goal root:goal-1/);
+  assert.throws(() => runGoalResumeCommand({ root, id: "goal-1", json: true }), /cannot resume archived goal root:goal-1/);
 });
 
 test("goal claim writes active_node only for scoped actionable work", () => {

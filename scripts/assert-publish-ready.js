@@ -77,6 +77,12 @@ function requirePackageVersions() {
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:command-docs && npm run smoke:spike")) {
     fail("prepublishOnly must run smoke:spike immediately after smoke:command-docs");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:goal-lifecycle"]) {
+    fail("package.json is missing smoke:goal-lifecycle");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:spike && npm run smoke:goal-lifecycle")) {
+    fail("prepublishOnly must run smoke:goal-lifecycle immediately after smoke:spike");
+  }
   if (!pkg.scripts || !pkg.scripts["cli:contract"]) {
     fail("package.json is missing cli:contract");
   }
@@ -216,7 +222,7 @@ function requireInitAssets() {
   if (!seededAgentStart.includes("mdkg pack <id> --visibility public|internal")) {
     fail("dist/init/AGENT_START.md is missing visibility pack guidance");
   }
-  if (!seededAgentStart.includes("mdkg goal select") || !seededAgentStart.includes("mdkg goal claim")) {
+  if (!seededAgentStart.includes("mdkg goal activate") || !seededAgentStart.includes("mdkg goal claim")) {
     fail("dist/init/AGENT_START.md is missing goal onboarding guidance");
   }
   if (
@@ -259,7 +265,7 @@ function requireInitAssets() {
   }
   if (
     !seededReadme.includes("mdkg new goal") ||
-    !seededReadme.includes("mdkg goal select/current/next/claim/evaluate")
+    !seededReadme.includes("mdkg goal activate/current/next/claim/evaluate")
   ) {
     fail("dist/init/README.md is missing goal onboarding guidance");
   }

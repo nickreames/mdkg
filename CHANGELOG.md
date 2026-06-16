@@ -12,6 +12,41 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 - No changes yet.
 
+## 0.3.3 - 2026-06-16
+
+### Added
+
+- Added `mdkg goal activate <goal-id>` to make one local root goal active,
+  select it for goal routing, and pause competing active local root goals in the
+  same workspace.
+- Added goal-only archived lifecycle support with `mdkg goal archive`, allowing
+  historical roadmap goals to remain readable through show/list/search while
+  being excluded from actionable current/next routing.
+- Added parser and graph validation support for exactly one active local root
+  goal, while imported subgraph goals keep independent active-goal state in
+  their owning graphs.
+- Added packed `smoke:goal-lifecycle` prepublish coverage for goal activation,
+  archived-goal routing, archived discovery filters, strict doctor behavior, and
+  imported subgraph active-goal independence.
+
+### Changed
+
+- Updated README, init assets, agent startup guidance, command matrix, help
+  surfaces, generated command contract metadata, and publish-readiness assertions
+  to prefer `goal activate` for active goal selection.
+- Archived superseded local roadmap goals `goal-11`, `goal-12`, and `goal-15`
+  in this repository after replacement versioned goals were created.
+- Tightened the 0.3.3 graph hygiene path so the remaining release-candidate
+  sequence is smoke coverage followed by dry-run prepublish closeout.
+
+### Security
+
+- Archived goals are non-actionable historical context: they cannot be selected,
+  activated, claimed, resumed, or paused through the goal lifecycle surface.
+- `goal activate` keeps single-writer planning safer by pausing competing local
+  root goals instead of allowing multiple active local root goals to remain
+  silently actionable.
+
 ## 0.3.2 - 2026-06-16
 
 ### Added
