@@ -61,6 +61,33 @@ const TEMPLATE_SCHEMAS = {
     ],
     ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "aliases"]
   ),
+  spike: makeSchema(
+    "spike",
+    [
+      "id",
+      "type",
+      "title",
+      "status",
+      "priority",
+      "epic",
+      "parent",
+      "prev",
+      "next",
+      "tags",
+      "owners",
+      "links",
+      "artifacts",
+      "relates",
+      "blocked_by",
+      "blocks",
+      "refs",
+      "aliases",
+      "skills",
+      "created",
+      "updated",
+    ],
+    ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "aliases", "skills"]
+  ),
   goal: makeSchema(
     "goal",
     [
@@ -163,6 +190,64 @@ test("parseNode parses a valid task", () => {
   assert.equal(node.status, "todo");
   assert.equal(node.priority, 2);
   assert.deepEqual(node.edges.relates, ["task-2"]);
+});
+
+test("parseNode parses spike work frontmatter", () => {
+  const content = [
+    "---",
+    "id: spike-1",
+    "type: spike",
+    "title: research launch docs",
+    "status: todo",
+    "priority: 1",
+    "tags: [research]",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: [task-1]",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: [author-mdkg-skill]",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+    "",
+    "# Research Question",
+  ].join("\n");
+  const node = parseNode(content, "spike.md", PARSE_OPTIONS);
+  assert.equal(node.id, "spike-1");
+  assert.equal(node.type, "spike");
+  assert.equal(node.status, "todo");
+  assert.equal(node.priority, 1);
+  assert.deepEqual(node.edges.relates, ["task-1"]);
+  assert.deepEqual(node.skills, ["author-mdkg-skill"]);
+});
+
+test("parseNode rejects malformed spike work status", () => {
+  const content = [
+    "---",
+    "id: spike-1",
+    "type: spike",
+    "title: bad spike",
+    "status: researching",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+  ].join("\n");
+  assert.throws(() => parseNode(content, "bad-spike.md", PARSE_OPTIONS), /status must be one of/);
 });
 
 test("parseNode parses goal attributes", () => {

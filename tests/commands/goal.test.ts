@@ -106,7 +106,7 @@ function writeTask(root: string, id: string, title: string, status: string, prio
 
 function writeWork(
   root: string,
-  type: "epic" | "feat" | "task" | "bug" | "test",
+  type: "epic" | "feat" | "task" | "bug" | "test" | "spike",
   id: string,
   title: string,
   status: string,
@@ -262,6 +262,28 @@ test("goal claim writes active_node only for scoped actionable work", () => {
     () => runGoalClaimCommand({ root, id: "goal-1", workId: "task-2", json: true }),
     /is not inside goal scope/
   );
+});
+
+test("goal next and claim support scoped spike work", () => {
+  const root = setupRepo();
+  writeGoal(root, { active_node: "", scope_refs: "[spike-1]" });
+  writeWork(root, "spike", "spike-1", "Research docs launch", "todo", 1);
+  writeWork(root, "task", "task-1", "Outside task", "todo", 0);
+
+  const next = captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true }));
+  assert.equal(next.stderr, "");
+  const selected = JSON.parse(next.stdout);
+  assert.equal(selected.node.qid, "root:spike-1");
+  assert.equal(selected.node.type, "spike");
+
+  const claimed = captureOutput(() =>
+    runGoalClaimCommand({ root, id: "goal-1", workId: "spike-1", json: true, now: new Date(2026, 0, 2) })
+  );
+  const receipt = JSON.parse(claimed.stdout);
+  assert.equal(receipt.action, "claimed");
+  assert.equal(receipt.node.qid, "root:spike-1");
+  const content = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
+  assert.match(content, /active_node: spike-1/);
 });
 
 test("goal clear removes selected goal state", () => {

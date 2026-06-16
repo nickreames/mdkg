@@ -245,7 +245,7 @@ function printNewHelp(log: LogFn): void {
   log("Usage:");
   log('  mdkg new <type> "<title>" [options] [--json]');
   log("\nTypes:");
-  log("  rule prd edd dec prop goal epic feat task bug checkpoint test");
+  log("  rule prd edd dec prop goal epic feat task bug spike checkpoint test");
   log("\nAgent workflow file types:");
   log("  spec work work_order receipt feedback dispute proposal");
   log("  Use --id <portable-id> with these types for semantic ids like agent.image-worker.");
@@ -266,6 +266,9 @@ function printNewHelp(log: LogFn): void {
   log("  --owners <owner,owner,...> Owners");
   log("\nNotes:");
   log("  spec/work scaffold as validation-clean docs; relational workflow docs need real refs.");
+  log("  spike creates actionable research/planning work; use `mdkg task ...` for lifecycle.");
+  log("  record spike research evidence by editing the Markdown body sections.");
+  log("  spikes do not run web search, create follow-up nodes, generate SKILL.md, or expose `mdkg spike ...`.");
   printGlobalOptions(log);
 }
 
@@ -816,7 +819,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]');
       log("\nWhen to use:");
-      log("  Move a task, bug, or test into progress as a structured state change.");
+      log("  Move a task-like node (feat, task, bug, test, or spike) into progress as a structured state change.");
       log("  If `events.jsonl` is missing, mdkg prints a short reminder about `mdkg event enable`.");
       printGlobalOptions(log);
       return;
@@ -845,7 +848,8 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg task update <id-or-qid> [options] [--json]");
       log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]');
       log("\nNotes:");
-      log("  `mdkg task ...` only supports feat, task, bug, and test nodes.");
+      log("  `mdkg task ...` only supports feat, task, bug, test, and spike nodes.");
+      log("  Spikes use this lifecycle; there is no separate `mdkg spike ...` command family.");
       log("  Feat and epic closeout remain checkpoint-first guidance plus manual parent updates.");
       printGlobalOptions(log);
   }
@@ -864,7 +868,7 @@ function printGoalHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log("  mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]");
       log("\nWhen to use:");
-      log("  Select the next local feature, task, bug, or test inside a recursive goal without mutating active_node.");
+      log("  Select the next local feature, task, bug, test, or spike inside a recursive goal without mutating active_node.");
       log("  If no goal id is supplied, mdkg uses the selected goal or the unique active goal.");
       printGlobalOptions(log);
       return;
@@ -924,7 +928,7 @@ function printGoalHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg goal clear [--json]");
       log("  mdkg goal pause|resume|done <goal-id-or-qid> [--json]");
       log("\nNotes:");
-      log("  - goals orchestrate recursive progress; features, tasks, bugs, and tests are iterable work units");
+      log("  - goals orchestrate recursive progress; features, tasks, bugs, tests, and spikes are iterable work units");
       log("  - `mdkg goal next` is read-only; use `mdkg goal claim` to update active_node");
       log("  - goal evaluation is report-only and never executes required_checks");
       log("  - subgraph goal qids are read-only; update the source workspace instead");

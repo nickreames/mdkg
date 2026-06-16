@@ -21,9 +21,10 @@ const FALLBACK_TYPES = [
   "feat",
   "task",
   "bug",
+  "spike",
   "checkpoint",
 ] as const;
-const WORK_TYPES = ["goal", "epic", "feat", "task", "bug", "checkpoint"] as const;
+const WORK_TYPES = ["goal", "epic", "feat", "task", "bug", "spike", "checkpoint"] as const;
 
 type OrderKey = {
   group: number;
@@ -95,7 +96,7 @@ function buildOrderKey(
   const node = index.nodes[qid];
   const root = index.nodes[rootQid];
   const depth = depths.get(qid);
-  const rootIsTask = root.type === "task" || root.type === "bug";
+  const rootIsTask = root.type === "task" || root.type === "bug" || root.type === "spike";
 
   if (qid === rootQid) {
     return {
