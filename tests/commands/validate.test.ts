@@ -75,6 +75,46 @@ function writeTask(root: string): void {
   writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
 }
 
+function spikeFrontmatter(overrides: string[], body: string[] = ["# Research Question", "", "Question."]): string {
+  const lines = [
+    "---",
+    "id: spike-1",
+    "type: spike",
+    "title: Spike fixture",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+  ];
+  const replaced = new Set<string>();
+  const updated = lines.map((line) => {
+    const key = line.split(":", 1)[0];
+    const override = overrides.find((entry) => entry.startsWith(`${key}:`));
+    if (override) {
+      replaced.add(key);
+      return override;
+    }
+    return line;
+  });
+  for (const override of overrides) {
+    const key = override.split(":", 1)[0];
+    if (!replaced.has(key)) {
+      updated.push(override);
+    }
+  }
+  return updated.concat(["---", "", ...body]).join("\n");
+}
+
 function captureOutput(fn: () => void): { stdout: string; stderr: string; error?: unknown } {
   const stdout: string[] = [];
   const stderr: string[] = [];
@@ -178,6 +218,47 @@ test("runValidateCommand emits a failing JSON receipt before throwing", () => {
   assert.equal(receipt.error_count, 1);
   assert.equal(receipt.errors.length, 1);
   assert.match(receipt.errors[0] ?? "", /run_id is required/);
+});
+
+test("runValidateCommand emits actionable JSON diagnostics for malformed spikes", () => {
+  const root = makeTempDir("mdkg-validate-spike-bad-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "work", "spike-bad-id.md"), spikeFrontmatter(["id: spike-alpha"]));
+  writeFile(path.join(root, ".mdkg", "work", "spike-bad-status.md"), spikeFrontmatter(["status: researching"]));
+  writeFile(path.join(root, ".mdkg", "work", "spike-bad-priority.md"), spikeFrontmatter(["id: spike-2", "priority: 99"]));
+  writeFile(
+    path.join(root, ".mdkg", "work", "spike-broken-ref.md"),
+    spikeFrontmatter(["id: spike-3", "relates: [task-404]"])
+  );
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true, quiet: true }));
+  const receipt = JSON.parse(output.stdout) as {
+    ok: boolean;
+    error_count: number;
+    warning_count: number;
+    errors: string[];
+    warnings: string[];
+  };
+
+  assert.match(output.error instanceof Error ? output.error.message : "", /validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.ok(receipt.error_count >= 4);
+  assert.ok(receipt.errors.some((error) => error.includes("spike-bad-id.md") && error.includes("id must match")));
+  assert.ok(receipt.errors.some((error) => error.includes("spike-bad-status.md") && error.includes("status must be one of")));
+  assert.ok(receipt.errors.some((error) => error.includes("spike-bad-priority.md") && error.includes("priority must be between")));
+  assert.ok(
+    receipt.errors.some((error) =>
+      error.includes("root:spike-3: relates references missing node root:task-404")
+    )
+  );
+  assert.ok(receipt.warning_count > 0);
+  assert.ok(
+    receipt.warnings.some((warning) =>
+      warning.includes("root:spike-3") && warning.includes('missing recommended heading "Search Plan"')
+    )
+  );
 });
 
 test("runValidateCommand fails public records that reference private graph records", () => {
