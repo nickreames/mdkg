@@ -408,6 +408,62 @@ test("task commands mutate feature nodes as task-like work", () => {
   assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
 });
 
+test("task commands mutate spike nodes as task-like research work", () => {
+  const root = makeTempDir("mdkg-task-spike-flow-");
+  writeRootConfig(root);
+  writeDefaultTemplates(root);
+
+  runNewCommand({
+    root,
+    type: "spike",
+    title: "Research docs launch",
+    status: "todo",
+    priority: 1,
+    now: new Date("2026-03-08T05:20:00Z"),
+  });
+
+  const startOutput = captureOutput(() =>
+    runTaskStartCommand({
+      root,
+      id: "spike-1",
+      json: true,
+      now: new Date("2026-03-08T05:25:00Z"),
+    })
+  );
+  assert.deepEqual(JSON.parse(startOutput.stdout).task, {
+    workspace: "root",
+    id: "spike-1",
+    qid: "root:spike-1",
+    path: ".mdkg/work/spike-1-research-docs-launch.md",
+    type: "spike",
+    status: "progress",
+    priority: 1,
+  });
+
+  const doneOutput = captureOutput(() =>
+    runTaskDoneCommand({
+      root,
+      id: "spike-1",
+      json: true,
+      now: new Date("2026-03-08T05:30:00Z"),
+    })
+  );
+  assert.deepEqual(JSON.parse(doneOutput.stdout).task, {
+    workspace: "root",
+    id: "spike-1",
+    qid: "root:spike-1",
+    path: ".mdkg/work/spike-1-research-docs-launch.md",
+    type: "spike",
+    status: "done",
+    priority: 1,
+  });
+
+  const spikePath = path.join(root, ".mdkg", "work", "spike-1-research-docs-launch.md");
+  const spikeContent = fs.readFileSync(spikePath, "utf8");
+  assert.match(spikeContent, /status: done/);
+  assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
+});
+
 test("automatic event append applies to enabled mutation commands only", () => {
   const root = makeTempDir("mdkg-auto-events-");
   writeRootConfig(root);
@@ -469,7 +525,7 @@ test("task commands reject non-task-like ids with guidance", () => {
 
   assert.throws(
     () => runTaskStartCommand({ root, id: "epic-1" }),
-    /mdkg task only supports feat, task, bug, and test nodes/
+    /mdkg task only supports feat, task, bug, test, and spike nodes/
   );
 });
 

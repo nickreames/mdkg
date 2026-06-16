@@ -20,7 +20,7 @@ import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
 import { CheckpointReceipt, createCheckpoint, runCheckpointNewCommand } from "./checkpoint";
 
-const MUTABLE_TASK_TYPES = new Set(["feat", "task", "bug", "test"]);
+const MUTABLE_TASK_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export type TaskStartCommandOptions = {
@@ -191,7 +191,7 @@ function loadMutableTaskNode(root: string, idOrQid: string, wsHint?: string): Lo
   }
   if (!MUTABLE_TASK_TYPES.has(node.type)) {
     throw new UsageError(
-      `mdkg task only supports feat, task, bug, and test nodes; use markdown editing for ${node.type}:${node.id}`
+      `mdkg task only supports feat, task, bug, test, and spike nodes; use markdown editing for ${node.type}:${node.id}`
     );
   }
 

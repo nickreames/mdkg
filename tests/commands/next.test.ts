@@ -220,6 +220,35 @@ test("runNextCommand falls back to priority selection and excludes goal/epic/che
   assert.ok(logs[0].includes("root:task-1"));
 });
 
+test("runNextCommand includes spike nodes in priority selection", () => {
+  const root = makeTempDir("mdkg-next-spike-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+
+  writeTask(root, {
+    id: "task-1",
+    type: "task",
+    title: "Regular task",
+    status: "todo",
+    priority: 2,
+  });
+  writeTask(root, {
+    id: "spike-1",
+    type: "spike",
+    title: "Research launch",
+    status: "todo",
+    priority: 1,
+  });
+
+  const { logs, errors } = captureConsole(() => {
+    runNextCommand({ root });
+  });
+
+  assert.equal(errors.length, 0);
+  assert.equal(logs.length, 1);
+  assert.ok(logs[0].includes("root:spike-1"));
+});
+
 test("runNextCommand orders by status preference and treats missing priority as lowest", () => {
   const root = makeTempDir("mdkg-next-status-");
   writeConfig(root);

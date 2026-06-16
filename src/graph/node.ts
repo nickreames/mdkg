@@ -39,7 +39,7 @@ export type Node = {
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DEC_ID_RE = /^dec-[0-9]+$/;
 
-export const WORK_TYPES = new Set(["goal", "epic", "feat", "task", "bug", "checkpoint", "test"]);
+export const WORK_TYPES = new Set(["goal", "epic", "feat", "task", "bug", "spike", "checkpoint", "test"]);
 export const DEC_TYPES = new Set(["dec"]);
 export const ALLOWED_TYPES = new Set([
   "rule",
@@ -52,6 +52,7 @@ export const ALLOWED_TYPES = new Set([
   "feat",
   "task",
   "bug",
+  "spike",
   "checkpoint",
   "test",
   "archive",

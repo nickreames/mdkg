@@ -2,7 +2,7 @@ import type { Index, IndexNode } from "./indexer";
 import { resolveQid } from "../util/qid";
 
 export const GOAL_SCOPE_CONTAINER_TYPES = new Set(["epic", "feat"]);
-export const GOAL_SCOPE_ACTIONABLE_TYPES = new Set(["feat", "task", "bug", "test"]);
+export const GOAL_SCOPE_ACTIONABLE_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
 export const GOAL_SCOPE_ALLOWED_TYPES = new Set([
   ...GOAL_SCOPE_CONTAINER_TYPES,
   ...GOAL_SCOPE_ACTIONABLE_TYPES,

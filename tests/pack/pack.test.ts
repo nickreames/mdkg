@@ -139,6 +139,30 @@ function writeTemplates(root: string): void {
       "updated: {{updated}}",
       "---",
     ].join("\n"),
+    spike: [
+      "---",
+      "id: {{id}}",
+      "type: spike",
+      "title: {{title}}",
+      "status: {{status}}",
+      "priority: {{priority}}",
+      "epic: {{epic}}",
+      "parent: {{parent}}",
+      "prev: {{prev}}",
+      "next: {{next}}",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: {{created}}",
+      "updated: {{updated}}",
+      "---",
+    ].join("\n"),
     test: [
       "---",
       "id: {{id}}",
@@ -786,7 +810,7 @@ test("non-task roots use fallback ordering", () => {
     id: "epic-1",
     type: "epic",
     status: "todo",
-    relates: ["edd-1", "dec-1", "rule-1", "prd-1", "prop-1", "feat-1", "task-1", "bug-1", "chk-1"],
+    relates: ["edd-1", "dec-1", "rule-1", "prd-1", "prop-1", "feat-1", "task-1", "bug-1", "spike-1", "chk-1"],
   });
   writeNode(root, { id: "edd-1", type: "edd" });
   writeNode(root, { id: "dec-1", type: "dec", status: "accepted" });
@@ -796,6 +820,7 @@ test("non-task roots use fallback ordering", () => {
   writeNode(root, { id: "feat-1", type: "feat", status: "todo" });
   writeNode(root, { id: "task-1", type: "task", status: "todo" });
   writeNode(root, { id: "bug-1", type: "bug", status: "todo" });
+  writeNode(root, { id: "spike-1", type: "spike", status: "todo" });
   writeNode(root, { id: "chk-1", type: "checkpoint", status: "done" });
 
   const config = loadConfig(root);
@@ -825,6 +850,7 @@ test("non-task roots use fallback ordering", () => {
       "root:feat-1",
       "root:task-1",
       "root:bug-1",
+      "root:spike-1",
       "root:chk-1",
     ]
   );
@@ -840,6 +866,7 @@ test("goal-root pack includes scoped recursive work closure", () => {
   writeNode(root, { id: "epic-1", type: "epic", status: "todo" });
   writeNode(root, { id: "feat-1", type: "feat", status: "todo", epic: "epic-1" });
   writeNode(root, { id: "task-1", type: "task", status: "todo", parent: "feat-1" });
+  writeNode(root, { id: "spike-1", type: "spike", status: "todo", epic: "epic-1" });
   writeNode(root, { id: "test-1", type: "test", status: "todo", epic: "epic-1" });
   writeNode(root, { id: "task-99", type: "task", status: "todo", priority: 0 });
 
@@ -861,7 +888,7 @@ test("goal-root pack includes scoped recursive work closure", () => {
 
   assert.deepEqual(
     result.pack.nodes.map((node: { qid: string }) => node.qid),
-    ["root:goal-1", "root:epic-1", "root:feat-1", "root:task-1", "root:test-1"]
+    ["root:goal-1", "root:epic-1", "root:feat-1", "root:task-1", "root:spike-1", "root:test-1"]
   );
   assert.equal(result.pack.nodes.some((node: { qid: string }) => node.qid === "root:task-99"), false);
 });

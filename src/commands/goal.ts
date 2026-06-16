@@ -21,7 +21,7 @@ import { sortNodesForNext } from "../util/sort";
 import { appendAutomaticEvent } from "./event_support";
 import { formatNodeCard } from "./node_card";
 
-const CONCRETE_GOAL_NEXT_TYPES = new Set(["feat", "task", "bug", "test"]);
+const CONCRETE_GOAL_NEXT_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
 const SELECTED_GOAL_STATE_PATH = path.join(".mdkg", "state", "selected-goal.json");
 const GOAL_STATE_BY_ACTION: Record<GoalStateMutationAction, string> = {
   pause: "paused",

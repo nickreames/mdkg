@@ -14,9 +14,9 @@ export type NextCommandOptions = {
   noReindex?: boolean;
 };
 
-const NEXT_TYPES = new Set(["feat", "task", "bug", "test"]);
+const NEXT_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
 const NO_MATCH_MESSAGE =
-  'no matching work items found; consider `mdkg new task "..."` or `mdkg new test "..."`';
+  'no matching work items found; consider `mdkg new task "..."`, `mdkg new test "..."`, or `mdkg new spike "..."`';
 
 function normalizeWorkspace(value?: string): string | undefined {
   if (!value || value === "all") {
