@@ -2,7 +2,7 @@
 id: task-348
 type: task
 title: implement spike node type template validation lifecycle goal next pack search show support
-status: todo
+status: done
 priority: 1
 epic: epic-76
 parent: goal-14
@@ -17,7 +17,7 @@ refs: []
 aliases: []
 skills: []
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Overview
 

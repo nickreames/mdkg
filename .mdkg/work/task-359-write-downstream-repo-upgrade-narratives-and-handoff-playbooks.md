@@ -11,9 +11,9 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-354]
+blocked_by: [task-354, task-370]
 blocks: []
-refs: []
+refs: [spike-2, spike-3, task-370]
 aliases: []
 skills: []
 created: 2026-06-11
@@ -56,3 +56,5 @@ cross-repo mutation unless explicitly requested.
 # Links / Artifacts
 
 - Validated by `test-150`.
+- Spike evidence: `spike-2`, `spike-3`.
+- Evidence matrix: `task-370`.

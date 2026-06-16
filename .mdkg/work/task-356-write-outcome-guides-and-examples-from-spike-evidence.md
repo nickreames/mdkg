@@ -11,9 +11,9 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-354]
+blocked_by: [task-354, task-370]
 blocks: []
-refs: []
+refs: [spike-1, spike-2, spike-5, task-370, task-371]
 aliases: []
 skills: []
 created: 2026-06-11
@@ -56,3 +56,5 @@ syntax.
 # Links / Artifacts
 
 - Validated by `test-148`.
+- Spike evidence: `spike-1`, `spike-2`, `spike-5`.
+- Evidence matrix and architecture visuals: `task-370`, `task-371`.

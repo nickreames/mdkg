@@ -2,7 +2,7 @@
 id: test-142
 type: test
 title: spike node validation and lifecycle contract
-status: todo
+status: done
 priority: 1
 epic: epic-76
 parent: goal-14
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [new spike validates, task lifecycle accepts spike, invalid spike frontmatter fails]
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Overview
 
@@ -50,7 +50,18 @@ same lifecycle as existing task-like work items.
 
 # Results / Evidence
 
-- Pending implementation.
+- Passed. Evidence from `task-348`, `chk-128`, and `chk-130`.
+- `tests/graph/node.test.ts` covers spike parsing and malformed status
+  rejection.
+- `tests/commands/new.test.ts` covers `mdkg new spike` receipt/template
+  behavior.
+- `tests/commands/task_event.test.ts` covers `mdkg task start/update/done` on a
+  spike.
+- `tests/commands/cli_help_matrix.test.ts` covers help text and command matrix
+  parity for spike lifecycle behavior.
+- `npm run test` passed with 461 tests.
+- `npm run smoke:spike` passed from a packed installed tarball.
+- `node dist/cli.js validate --json` passed with zero warnings/errors.
 
 # Notes / Follow-ups
 

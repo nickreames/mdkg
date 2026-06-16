@@ -11,9 +11,9 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-354]
+blocked_by: [task-354, task-370]
 blocks: []
-refs: []
+refs: [spike-3, spike-5, task-370, task-371]
 aliases: []
 skills: []
 created: 2026-06-11
@@ -57,3 +57,5 @@ handled, and how subgraph safety works.
 # Links / Artifacts
 
 - Validated by `test-149`.
+- Spike evidence: `spike-3`, `spike-5`.
+- Evidence matrix and architecture visuals: `task-370`, `task-371`.

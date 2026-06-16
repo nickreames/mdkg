@@ -2,7 +2,7 @@
 id: test-155
 type: test
 title: malformed spike validation and repair guidance contract
-status: todo
+status: done
 priority: 1
 epic: epic-84
 parent: goal-14
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [malformed spike fails validate clearly, fix plan reports actionable guidance, json diagnostics remain parseable]
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Overview
 
@@ -46,7 +46,19 @@ Validate malformed spike diagnostics and non-mutating repair guidance.
 
 # Results / Evidence
 
-- Pending implementation.
+- Passed focused validation/fix/help suites:
+  `node --test dist/tests/commands/validate.test.js
+  dist/tests/commands/fix.test.js
+  dist/tests/commands/cli_help_matrix.test.js
+  dist/tests/graph/node.test.js`.
+- Passed full `npm run test` with 467 tests.
+- Passed `npm run smoke:fix-plan`.
+- Passed `npm run smoke:spike`; packed installed CLI malformed repo:
+  `/private/tmp/mdkg-spike.WRqi2V/malformed-repo`.
+- Passed `npm run cli:check`.
+- Passed `npm run cli:contract`.
+- Passed `node dist/cli.js validate --json`.
+- Passed `git diff --check`.
 
 # Notes / Follow-ups
 

@@ -2,7 +2,7 @@
 id: task-368
 type: task
 title: prepare 0.3.2 spike prepublish release candidate
-status: todo
+status: done
 priority: 1
 epic: epic-84
 parent: goal-14
@@ -17,7 +17,7 @@ refs: []
 aliases: []
 skills: []
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Overview
 
@@ -68,3 +68,53 @@ prepublish dry-run proof and does not perform a real npm publish.
 # Links / Artifacts
 
 - `test-156`
+
+# Results / Evidence
+
+Completed on 2026-06-16 as a release-candidate dry-run only. No real npm
+publish, git tag, git push, or global install was performed.
+
+Version and changelog:
+
+- `npm version 0.3.2 --no-git-tag-version` updated `package.json` and
+  `package-lock.json`.
+- `CHANGELOG.md` now contains `## 0.3.2 - 2026-06-16` with spike support,
+  init/upgrade compatibility, pack/export/visibility hardening,
+  validation/fix-plan UX, mdkg.dev dogfood, and no-autonomous-execution
+  boundaries.
+- Registry guard for `mdkg@0.3.2` returned E404 before the bump/publish dry-run
+  path, so the target version was not already published.
+
+Required checks:
+
+- `npm run build` passed; command contract hash
+  `226793aa87d0fd57e187936a5ab17a86413149cbd2d52674324921b1e5051ff7`.
+- `npm run test` passed with 467 tests.
+- `npm run cli:check` passed.
+- `npm run cli:contract` passed.
+- `node dist/cli.js validate --json` passed with zero warnings and zero errors.
+- `npm run smoke:init` passed and reported version `0.3.2`.
+- `npm run smoke:upgrade` passed and reported version `0.3.2`.
+- `npm run smoke:spike` passed against packed tarball
+  `/private/tmp/mdkg-spike.dHc44P/pack/mdkg-0.3.2.tgz`, temp repo
+  `/private/tmp/mdkg-spike.dHc44P/repo`, and malformed-spike repo
+  `/private/tmp/mdkg-spike.dHc44P/malformed-repo`.
+- `npm run smoke:command-docs` passed against packed tarball
+  `/private/tmp/mdkg-command-docs.t5x84P/pack/mdkg-0.3.2.tgz` with 84 commands
+  and the same contract hash.
+- `npm run prepublishOnly` passed through the full package gate, including test,
+  CLI checks, command contract, graph validation, all existing smokes,
+  `smoke:spike`, `smoke:goal`, and publish readiness.
+- `node scripts/assert-publish-ready.js` passed.
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
+  reported `id: mdkg@0.3.2`, `filename: mdkg-0.3.2.tgz`, package size
+  `280018`, unpacked size `1491265`, entry count `159`, and included
+  `dist/init/templates/default/spike.md`.
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run` passed.
+  It reran `prepublishOnly` and `prepack`, printed tarball details for
+  `mdkg@0.3.2`, and ended with `+ mdkg@0.3.2` under npm dry-run mode.
+- `node dist/cli.js index` refreshed generated graph/capability/subgraph and
+  SQLite indexes after the dry-run.
+- `node dist/cli.js validate --json` passed after the dry-run with zero warnings
+  and zero errors.
+- `git diff --check` passed.

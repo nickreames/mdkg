@@ -11,9 +11,9 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-354]
+blocked_by: [task-354, task-370]
 blocks: []
-refs: []
+refs: [spike-1, task-370]
 aliases: []
 skills: []
 created: 2026-06-11
@@ -58,3 +58,5 @@ cannot drift silently from CLI behavior.
 # Links / Artifacts
 
 - Validated by `test-147`.
+- Spike evidence: `spike-1`.
+- Evidence matrix: `task-370`.

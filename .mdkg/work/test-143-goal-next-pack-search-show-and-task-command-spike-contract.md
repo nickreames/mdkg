@@ -2,7 +2,7 @@
 id: test-143
 type: test
 title: goal next pack search show and task command spike contract
-status: todo
+status: done
 priority: 1
 epic: epic-76
 parent: goal-14
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [goal next routes spike, mdkg next routes spike, pack includes spike, search show expose spike]
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-15
 ---
 # Overview
 
@@ -48,7 +48,17 @@ Prove spikes are selectable and discoverable work, not passive notes.
 
 # Results / Evidence
 
-- Pending implementation.
+- Passed. Evidence from `task-348`, `task-350`, `chk-128`, and `chk-130`.
+- `tests/commands/next.test.ts` covers `mdkg next` selecting open spikes.
+- `tests/commands/goal.test.ts` covers `mdkg goal next` and `mdkg goal claim`
+  with scoped spike work.
+- `tests/pack/pack.test.ts` and `tests/commands/pack.test.ts` cover spike pack
+  ordering and spike-root packs.
+- `npm run smoke:spike` covers packed installed CLI behavior for list/search,
+  show, pack, goal routing, and lifecycle mutation.
+- `npm run test` passed with 461 tests.
+- `npm run cli:contract`, `npm run smoke:command-docs`, and
+  `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run` passed.
 
 # Notes / Follow-ups
 

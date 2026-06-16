@@ -11,9 +11,9 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-354]
+blocked_by: [task-354, task-370]
 blocks: []
-refs: []
+refs: [spike-1, spike-2, spike-4, task-370]
 aliases: []
 skills: []
 created: 2026-06-11
@@ -54,3 +54,5 @@ inflated beyond shipped behavior.
 # Links / Artifacts
 
 - Depends on `task-354`.
+- Spike evidence: `spike-1`, `spike-2`, `spike-4`.
+- Evidence matrix: `task-370`.
