@@ -47,6 +47,22 @@ test("cli help covers the remaining command help surfaces", () => {
     assert.match(result.stdout, pattern, command);
   }
 
+  const newHelp = runCli(["help", "new"]);
+  assert.equal(newHelp.status, 0);
+  assert.match(newHelp.stdout, /goal epic feat task bug spike checkpoint test/);
+  assert.match(newHelp.stdout, /spike creates actionable research\/planning work/);
+  assert.match(newHelp.stdout, /record spike research evidence by editing the Markdown body sections/);
+  assert.match(newHelp.stdout, /spikes do not run web search/);
+
+  const taskHelp = runCli(["help", "task"]);
+  assert.equal(taskHelp.status, 0);
+  assert.match(taskHelp.stdout, /feat, task, bug, test, and spike nodes/);
+  assert.match(taskHelp.stdout, /no separate `mdkg spike \.\.\.` command family/);
+
+  const goalNextHelp = runCli(["help", "goal", "next"]);
+  assert.equal(goalNextHelp.status, 0);
+  assert.match(goalNextHelp.stdout, /feature, task, bug, test, or spike/);
+
   const bundleImport = runCli(["help", "bundle", "import"]);
   assert.equal(bundleImport.status, 0);
   assert.match(bundleImport.stdout, /mdkg subgraph add\/list\/show\/rm\/enable\/disable\/verify\/refresh/);

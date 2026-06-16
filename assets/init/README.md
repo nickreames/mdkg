@@ -8,7 +8,7 @@ mdkg is pre-v1 public alpha software. Graph, cache, bundle, and DAL contracts ma
 
 - `core/`: rules, operating guide, and pinned docs
 - `design/`: product/engineering decision records
-- `work/`: epics, tasks, bugs, tests, checkpoints
+- `work/`: epics, tasks, bugs, tests, spikes, checkpoints
 - `templates/`: default node templates
 - `archive/`: sidecar metadata and deterministic compressed source/artifact caches
 - `bundles/`: optional committed full graph snapshot bundles
@@ -47,6 +47,21 @@ Use `mdkg fix plan --json` for dry-run repair guidance. It reports generated
 index/cache repair hints, missing graph references, and duplicate local ids as
 receipt-shaped planned changes with risk levels and `apply_supported: false`.
 `fix apply` is not exposed; repair application is intentionally deferred.
+
+Use research spikes for investigation and planning work that should produce a
+reviewable recommendation before implementation:
+
+```bash
+mdkg new spike "research docs launch workflow" --status todo --priority 1
+mdkg task start spike-1
+mdkg show spike-1
+```
+
+Spikes use the existing task lifecycle and goal routing. They do not perform web
+search, execute research, create follow-up nodes, or generate `SKILL.md` files
+automatically. Record sources, findings, recommendations, follow-up node ideas,
+and skill candidates in the spike body, then create follow-up tasks or tests
+intentionally with `mdkg new task ...` or `mdkg new test ...`.
 
 Agent workflow docs can use semantic ids:
 

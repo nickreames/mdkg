@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.2.0`
+Current package version in source: `0.3.1`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -92,7 +92,28 @@ mdkg goal next goal-1
 mdkg goal evaluate goal-1 --json
 ```
 
-Goal nodes capture a measurable end condition, recursive loop state, required skills, required checks, and completion evidence. They guide agent harnesses through repeated graph-backed progress, while tasks, bugs, tests, and features remain the concrete executable work units. In this release `mdkg goal evaluate` is report-only: it lists required checks and evidence state, but does not execute scripts.
+Goal nodes capture a measurable end condition, recursive loop state, required skills, required checks, and completion evidence. They guide agent harnesses through repeated graph-backed progress, while tasks, bugs, tests, spikes, and features remain the concrete executable work units. In this release `mdkg goal evaluate` is report-only: it lists required checks and evidence state, but does not execute scripts.
+
+Create a research spike when the next useful work is investigation, planning,
+or grounding a future implementation:
+
+```bash
+mdkg new spike "research mdkg.dev launch guide" --status todo --priority 1
+mdkg task start spike-1
+mdkg show spike-1
+```
+
+Spikes are task-like work nodes, not autonomous research agents. mdkg does not
+perform web search, execute research, create follow-up nodes, or generate
+`SKILL.md` files automatically. Record sources, findings, tradeoffs,
+recommendations, follow-up node ideas, and skill candidates in the spike body,
+then create follow-up work intentionally:
+
+```bash
+mdkg new task "write mdkg.dev quickstart guide" --parent spike-1 --status todo --priority 1
+mdkg new test "validate mdkg.dev docs examples" --parent spike-1 --status todo --priority 1
+mdkg new task "author mdkg.dev launch planning skill" --parent spike-1 --status todo --priority 2
+```
 
 Create an agent workflow document with a semantic portable id:
 
@@ -256,7 +277,7 @@ The root docs below are the canonical fast-start set for humans and agents:
 mdkg lives under a hidden root directory:
 - `.mdkg/core/` rules and pinned docs
 - `.mdkg/design/` product, design, and decision docs
-- `.mdkg/work/` tasks, bugs, tests, epics, checkpoints
+- `.mdkg/work/` tasks, bugs, tests, spikes, epics, checkpoints
 - `.mdkg/templates/` templates used by `mdkg new`
 - `.mdkg/skills/` Agent Skills packages
 - `.mdkg/archive/` sidecar metadata plus deterministic compressed source/artifact caches
@@ -440,11 +461,34 @@ as sealed state.
 
 Goal nodes are durable recursive objective contracts. Use `mdkg new goal "<objective>"` when a human or agent needs to keep working across multiple concrete nodes until a measurable end condition is achieved.
 
-`goal` is work-like but distinct from `task`: it can have status, priority, graph links, skills, explicit `scope_refs`, and structured goal fields, but normal `mdkg next` does not select goals. Use `mdkg goal select <goal-id>` once, then `mdkg goal next` to choose the next local feature, task, bug, or test inside that goal. `mdkg goal next <goal-id>` remains available for explicit selection. Epics organize goal scope recursively but are not returned as executable work.
+`goal` is work-like but distinct from `task`: it can have status, priority, graph links, skills, explicit `scope_refs`, and structured goal fields, but normal `mdkg next` does not select goals. Use `mdkg goal select <goal-id>` once, then `mdkg goal next` to choose the next local feature, task, bug, test, or spike inside that goal. `mdkg goal next <goal-id>` remains available for explicit selection. Epics organize goal scope recursively but are not returned as executable work.
 
 Use `mdkg goal claim [goal-id] <work-id>` to durably set `active_node` after choosing the next scoped item. `goal next` is read-only. Use `mdkg goal pause|resume|done` to update goal state after review.
 
 Required checks are stored as report-only guidance. Agents should run the checks themselves, record evidence in the goal or active work item, then use `mdkg goal evaluate` to summarize the current evidence state. During normal goal execution, skill improvements should be recorded as improvement candidates or proposal nodes; edit `SKILL.md` files only when the active node is explicit skill-maintenance work.
+
+## Research spikes
+
+Spikes are first-class actionable work nodes for research and planning. Use
+`mdkg new spike "<question>"` when the right output is a documented
+recommendation, not code. They share the existing task lifecycle:
+
+```bash
+mdkg new spike "research queue-backed materializer UX" --status todo --priority 1
+mdkg task start spike-1
+mdkg task update spike-1 --status review --add-refs task-250
+mdkg task done spike-1
+```
+
+The default spike template includes sections for research question, context,
+search plan, findings, options and tradeoffs, recommendation, follow-up nodes,
+skill candidates, data-structure and algorithm notes, UX notes, security notes,
+mdkg.dev launch implications, and evidence/sources.
+
+Spikes deliberately do not expose a `mdkg spike ...` namespace in this release,
+do not run browser or web-search tools, do not create tasks/tests/goals, and do
+not write `SKILL.md` files. They make the research output reviewable so humans
+or agents can intentionally create the next nodes with normal mdkg commands.
 
 ## Agent workflow files
 
