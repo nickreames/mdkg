@@ -71,6 +71,12 @@ function requirePackageVersions() {
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:branch-conflicts && npm run smoke:command-docs")) {
     fail("prepublishOnly must run smoke:command-docs immediately after smoke:branch-conflicts");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:spike"]) {
+    fail("package.json is missing smoke:spike");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:command-docs && npm run smoke:spike")) {
+    fail("prepublishOnly must run smoke:spike immediately after smoke:command-docs");
+  }
   if (!pkg.scripts || !pkg.scripts["cli:contract"]) {
     fail("package.json is missing cli:contract");
   }
@@ -284,6 +290,15 @@ function requireInitAssets() {
   ) {
     fail("dist/init/README.md is missing internal event/reducer/lease/materializer boundary guidance");
   }
+  if (
+    !seededReadme.includes("mdkg new spike") ||
+    !seededReadme.includes("Spikes use the existing task lifecycle") ||
+    !seededReadme.includes("perform web") ||
+    !seededReadme.includes("SKILL.md") ||
+    !seededReadme.includes("skill candidates")
+  ) {
+    fail("dist/init/README.md is missing spike research-node guidance");
+  }
   for (const template of [
     "archive.md",
     "bug.md",
@@ -300,6 +315,7 @@ function requireInitAssets() {
     "proposal.md",
     "receipt.md",
     "rule.md",
+    "spike.md",
     "spec.md",
     "task.md",
     "test.md",
@@ -307,6 +323,20 @@ function requireInitAssets() {
     "work_order.md",
   ]) {
     requireFile(path.join("dist/init/templates/default", template));
+  }
+  const spikeTemplate = requireFile("dist/init/templates/default/spike.md");
+  for (const expected of [
+    "# Research Question",
+    "# Search Plan",
+    "# Findings",
+    "# Recommendation",
+    "# Follow-Up Nodes To Create",
+    "# Skill Candidates",
+    "# Evidence And Sources",
+  ]) {
+    if (!spikeTemplate.includes(expected)) {
+      fail(`dist/init/templates/default/spike.md is missing ${expected}`);
+    }
   }
   const seededReviewSkill = requireFile("dist/init/skills/default/verify-close-and-checkpoint/SKILL.md");
   for (const expected of [
@@ -334,6 +364,15 @@ function requireInitAssets() {
   if (!rootReadme.includes("mdkg fix plan") || !rootReadme.includes("fix apply")) {
     fail("README.md is missing fix plan dry-run guidance");
   }
+  if (
+    !rootReadme.includes("mdkg new spike") ||
+    !rootReadme.includes("Research spikes") ||
+    !rootReadme.includes("perform web search") ||
+    !rootReadme.includes("SKILL.md") ||
+    !rootReadme.includes("follow-up node ideas")
+  ) {
+    fail("README.md is missing spike research-node guidance");
+  }
   const matrix = requireFile("CLI_COMMAND_MATRIX.md");
   if (!matrix.includes("mdkg status [--json]") || !matrix.includes("mdkg doctor [--strict] [--json]")) {
     fail("CLI_COMMAND_MATRIX.md is missing operator health command references");
@@ -343,6 +382,13 @@ function requireInitAssets() {
   }
   if (!matrix.includes("mdkg subgraph audit [alias|--all]") || !matrix.includes("mdkg subgraph upgrade-plan [alias|--all]")) {
     fail("CLI_COMMAND_MATRIX.md is missing subgraph audit or upgrade-plan command references");
+  }
+  if (
+    !matrix.includes("mdkg new spike") ||
+    !matrix.includes("mdkg task start|update|done <spike-id>") ||
+    !matrix.includes("no `mdkg spike ...` namespace")
+  ) {
+    fail("CLI_COMMAND_MATRIX.md is missing spike command references");
   }
   const smokeOperatorHealth = requireFile("scripts/smoke-operator-health.js");
   if (!smokeOperatorHealth.includes("doctor --strict") && !smokeOperatorHealth.includes('"doctor", "--strict"')) {
