@@ -155,7 +155,7 @@ function assertGeneratedReference(content, contract) {
   assert(content.includes("generated-from: dist/command-contract.json"), "generated reference is missing contract source marker");
   assert(content.includes(`contract-hash: ${contract.contract_hash}`), "generated reference is missing contract hash");
   assert(content.includes("Do not hand-maintain command metadata here."), "generated reference is missing no-hand-maintain warning");
-  for (const key of ["status", "doctor", "fix plan", "db", "subgraph sync", "workspace", "skill new"]) {
+  for (const key of ["status", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "workspace", "skill new"]) {
     assert(content.includes(`## ${key}`), `generated reference missing ${key}`);
   }
   assert(!content.includes(repoRoot), "generated reference leaked repo root path");
@@ -167,7 +167,7 @@ function assertContractReady(contract) {
   assert(contract.tool === "mdkg", "unexpected command contract tool");
   assert(/^[a-f0-9]{64}$/.test(contract.contract_hash), "invalid command contract hash");
   assert(contract.commands.length >= 80, "command contract is missing public commands");
-  for (const key of ["global", "status", "doctor", "fix plan", "db", "subgraph sync", "work trigger"]) {
+  for (const key of ["global", "status", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "work trigger"]) {
     contractCommand(contract, key);
   }
   for (const key of ["db", "subgraph sync", "workspace", "skill new"]) {

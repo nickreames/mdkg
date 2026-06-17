@@ -12,6 +12,45 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 - No changes yet.
 
+## 0.3.4 - 2026-06-17
+
+### Added
+
+- Added IDs-family repair apply support with `mdkg fix apply --family ids`
+  and the focused `mdkg fix ids [--apply]` convenience command.
+- Added `--base-ref` support for duplicate-ID repair planning so mainline IDs
+  can be preserved while incoming duplicate nodes receive the next unused
+  canonical numeric ID.
+- Added unresolved Git add/add conflict-stage repair for mdkg Markdown files:
+  stage 2 remains at the conflicted path, stage 3 is rewritten to a new
+  canonical ID/path, and the Git index conflict stages are resolved with a
+  receipt.
+- Added packed `smoke:id-repair` coverage that installs mdkg from a tarball in
+  a temp prefix, validates clean duplicate repair, base-ref link preservation,
+  unresolved Git conflict-stage repair, and final graph validation.
+
+### Changed
+
+- Updated `mdkg fix plan` receipts so duplicate-ID findings advertise
+  `apply_supported: true` with an explicit `apply_kind`, while index/cache and
+  graph-reference findings remain review-only.
+- Updated command help, README, init assets, command matrix, generated command
+  contract metadata, and publish-readiness assertions to document the new
+  IDs-only apply boundary.
+- Updated branch-conflict and fix-plan smokes to distinguish non-mutating plan
+  behavior from the newly apply-capable duplicate-ID repair family.
+
+### Security
+
+- `fix apply` refuses unsupported families, blocked plans, and non-IDs repair
+  findings instead of silently applying partial graph/reference/index repairs.
+- Duplicate-ID apply writes Markdown atomically under the mdkg mutation lock,
+  rebuilds derived indexes, and emits receipt evidence with touched paths,
+  source plan hash, and ambiguous reference notes.
+- Base-ref link rewriting is conservative: references in files absent from the
+  base ref can be rewritten to the repaired incoming ID, while base-existing
+  references remain on the mainline ID and ambiguous references are reported.
+
 ## 0.3.3 - 2026-06-16
 
 ### Added

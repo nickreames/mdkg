@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-06-06
-package_version_in_source: 0.3.1
+package_version_in_source: 0.3.4
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -61,7 +61,7 @@ Recursive long-running objective contracts are accessed through `mdkg goal ...`.
 Fresh init workspaces default to the SQLite access cache backend; existing migrated configs stay on JSON until opted in.
 Project application database foundation commands are accessed through `mdkg db ...`; `mdkg index` remains the compatibility shortcut for graph index rebuilds.
 Operator health summaries are accessed through read-only `mdkg status ...`; deeper diagnostics remain under `mdkg doctor ...`.
-Repair planning is accessed through read-only `mdkg fix plan ...`; apply behavior is intentionally deferred.
+Repair planning is accessed through read-only `mdkg fix plan ...`; duplicate-ID graph repairs can be applied through `mdkg fix apply --family ids ...` or the convenience `mdkg fix ids --apply ...`. Index/cache and graph-reference findings remain plan/manual-review only.
 
 ## Global usage
 
@@ -1049,27 +1049,38 @@ JSON receipt shape:
 ### `mdkg fix`
 
 When to use:
-- plan reviewable graph/index repairs before any apply command exists
+- plan reviewable graph/index repairs before applying supported duplicate-ID rewrites
 - get a receipt-shaped JSON plan for automation and agent review
+- repair branch-merge duplicate IDs while preserving main/base IDs where possible
 
 Usage:
-- `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]`
+- `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
+- `mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
+- `mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]`
 
 Flags:
 - `--family <family>`
 - `--target <id-or-qid>`
+- `--base-ref <ref>`
+- `--apply`
 - `--json`
 
 Boundaries:
-- dry-run only and writes nothing
-- does not rebuild indexes, edit graph files, rename ids, or update references
-- `fix apply` is intentionally not available in the first repair-planning slice
+- `fix plan` is dry-run only and writes nothing
+- `fix apply` currently supports only IDs-family duplicate-ID graph rewrites
+- `fix ids` without `--apply` is equivalent to `fix plan --family ids`
+- `fix ids --apply` is equivalent to `fix apply --family ids`
+- apply rewrites graph Markdown atomically, rebuilds derived indexes, and emits a receipt
+- unresolved Git add/add conflict stages are handled by keeping stage 2 at the conflicted path and writing stage 3 to a new canonical ID/path
+- graph-reference and index/cache findings remain review-only guidance
 - initial families are index/cache, graph refs, and duplicate ids
 
 JSON receipt:
 - `{ action: "fix.plan", ok, schema_version, plan_id, plan_hash, generated_at, root, family, target, dirty, families, risk_counts, proposed_changes, blocked_changes, summary }`
-- each proposed change includes family, risk, status, reason, paths, refs, optional before/after values, command hint, and `apply_supported: false`
-- `summary.apply_deferred` remains true until a future apply design is approved
+- each proposed change includes family, risk, status, reason, paths, refs, optional before/after values, command hint, and `apply_supported`
+- duplicate-ID changes include candidate ID/path details and `apply_kind`
+- `{ action: "fix.apply", ok, schema_version, receipt_hash, root, family, target, base_ref, plan_id, plan_hash, applied_changes, touched_paths, ambiguous_reference_rewrites, index, summary }`
+- `summary.apply_deferred` remains true when the selected plan includes index/cache, graph-ref, blocked, or otherwise unsupported findings
 
 ### `mdkg doctor`
 

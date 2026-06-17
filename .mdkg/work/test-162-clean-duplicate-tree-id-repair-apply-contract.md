@@ -2,7 +2,7 @@
 id: test-162
 type: test
 title: clean duplicate tree id repair apply contract
-status: todo
+status: done
 priority: 2
 epic: epic-89
 parent: goal-17

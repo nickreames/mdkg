@@ -2,7 +2,7 @@
 id: task-385
 type: task
 title: close 0.3.4 RC evidence and checkpoint
-status: todo
+status: done
 priority: 2
 epic: epic-91
 parent: goal-17
@@ -56,4 +56,15 @@ Close 0.3.4 release-candidate evidence without publishing.
 
 # Links / Artifacts
 
-- Add command receipts, validation output, and checkpoint ids during execution.
+- `chk-152`: 0.3.4 branch-safe ID repair readiness checkpoint.
+- `npm run build`: passed.
+- `npm run test`: passed with 478 tests.
+- `npm run cli:check`: passed.
+- `npm run cli:contract`: passed.
+- `node dist/cli.js validate --json`: passed with zero warnings and zero errors.
+- `npm run smoke:id-repair`: passed from a packed temp install.
+- `npm run prepublishOnly`: passed.
+- `node scripts/assert-publish-ready.js`: passed.
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`: passed and reported `mdkg@0.3.4`.
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run`: passed and reported `+ mdkg@0.3.4`.
+- `git diff --check`: passed.

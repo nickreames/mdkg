@@ -27,14 +27,20 @@ Primary commands:
 - `mdkg task`
 - `mdkg validate`
 - `mdkg status [--json]`
-- `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]`
+- `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
+- `mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
+- `mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]`
 
 Operator health:
 - `mdkg status [--json]` is a read-only summary for scripts and agents
 - reports mdkg version/config, git state, graph/index freshness, selected-goal state, project DB verification summary, and generated cache status
 - does not rebuild indexes, run migrations, repair files, mutate graph nodes, or change selected-goal state
-- `mdkg fix plan ...` is dry-run repair planning only; it writes nothing and `fix apply` is not exposed
-- `fix plan --json` returns a receipt-shaped plan with selected families, risk counts, paths, reason codes, and `apply_supported: false`
+- `mdkg fix plan ...` is dry-run repair planning only; it writes nothing
+- duplicate-ID graph repairs can be applied with `mdkg fix apply --family ids` or `mdkg fix ids --apply`
+- use `--base-ref main` when mainline IDs should win branch-merge repair
+- unresolved Git add/add conflict stages are split by keeping stage 2 at the conflicted path and writing stage 3 to a new canonical ID/path
+- graph-reference and index/cache findings remain review-only guidance
+- `fix plan --json` returns a receipt-shaped plan with selected families, risk counts, paths, reason codes, and per-change `apply_supported` metadata
 
 Index backend:
 - fresh mdkg workspaces default to `index.backend: sqlite`

@@ -65,11 +65,17 @@ function requirePackageVersions() {
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:fix-plan && npm run smoke:branch-conflicts")) {
     fail("prepublishOnly must run smoke:branch-conflicts immediately after smoke:fix-plan");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:id-repair"]) {
+    fail("package.json is missing smoke:id-repair");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:branch-conflicts && npm run smoke:id-repair")) {
+    fail("prepublishOnly must run smoke:id-repair immediately after smoke:branch-conflicts");
+  }
   if (!pkg.scripts || !pkg.scripts["smoke:command-docs"]) {
     fail("package.json is missing smoke:command-docs");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:branch-conflicts && npm run smoke:command-docs")) {
-    fail("prepublishOnly must run smoke:command-docs immediately after smoke:branch-conflicts");
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:id-repair && npm run smoke:command-docs")) {
+    fail("prepublishOnly must run smoke:command-docs immediately after smoke:id-repair");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:spike"]) {
     fail("package.json is missing smoke:spike");
@@ -107,7 +113,7 @@ function requireCliBuild() {
     fail("dist/command-contract.json has too few command records");
   }
   const byKey = new Map(contract.commands.map((command) => [command.key, command]));
-  for (const key of ["status", "doctor", "fix plan", "db", "subgraph sync", "workspace", "skill new", "task start"]) {
+  for (const key of ["status", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "workspace", "skill new", "task start"]) {
     if (!byKey.has(key)) {
       fail(`dist/command-contract.json is missing ${key}`);
     }
@@ -126,8 +132,12 @@ function requireCliBuild() {
     }
   }
   const fixPlan = byKey.get("fix plan");
-  if (!fixPlan || fixPlan.dry_run?.apply_supported !== false || fixPlan.danger_level !== "read-only") {
-    fail("dist/command-contract.json must keep fix plan read-only with apply unsupported");
+  if (!fixPlan || fixPlan.dry_run?.apply_supported !== true || fixPlan.dry_run?.apply_family !== "ids" || fixPlan.danger_level !== "read-only") {
+    fail("dist/command-contract.json must keep fix plan read-only with ids apply metadata");
+  }
+  const fixApply = byKey.get("fix apply");
+  if (!fixApply || fixApply.danger_level !== "high" || fixApply.lock_policy === "none-read-only" || fixApply.dry_run?.apply_family !== "ids") {
+    fail("dist/command-contract.json is missing fix apply mutation safety metadata");
   }
 }
 
@@ -383,7 +393,11 @@ function requireInitAssets() {
   if (!matrix.includes("mdkg status [--json]") || !matrix.includes("mdkg doctor [--strict] [--json]")) {
     fail("CLI_COMMAND_MATRIX.md is missing operator health command references");
   }
-  if (!matrix.includes("mdkg fix plan [--family index|refs|ids|all]") || !matrix.includes("apply_supported: false")) {
+  if (
+    !matrix.includes("mdkg fix plan [--family index|refs|ids|all]") ||
+    !matrix.includes("mdkg fix apply [--family ids]") ||
+    !matrix.includes("mdkg fix ids [--target <id-or-qid>]")
+  ) {
     fail("CLI_COMMAND_MATRIX.md is missing fix plan command references");
   }
   if (!matrix.includes("mdkg subgraph audit [alias|--all]") || !matrix.includes("mdkg subgraph upgrade-plan [alias|--all]")) {
@@ -404,6 +418,12 @@ function requireInitAssets() {
   for (const expected of ["generated_cache_missing", "generated_cache_stale", "graph_ref_missing", "duplicate_id"]) {
     if (!smokeFixPlan.includes(expected)) {
       fail(`scripts/smoke-fix-plan.js is missing ${expected} proof`);
+    }
+  }
+  const smokeIdRepair = requireFile("scripts/smoke-id-repair.js");
+  for (const expected of ["base-mdkg", "git_stage_duplicate_id", "ls-files", "task-901"]) {
+    if (!smokeIdRepair.includes(expected)) {
+      fail(`scripts/smoke-id-repair.js is missing ${expected} proof`);
     }
   }
   const smokeSubgraph = requireFile("scripts/smoke-subgraph.js");

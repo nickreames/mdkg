@@ -198,13 +198,20 @@ function main() {
   before = fileSnapshot(root);
   const allPlan = parseJson(mdkg(binPath, ["fix", "plan", "--family", "all", "--json"], root));
   assert(allPlan.action === "fix.plan", "fix plan action mismatch");
-  assert(allPlan.summary.apply_supported === false, "fix plan should not support apply");
-  assert(allPlan.summary.apply_deferred === true, "fix plan should defer apply");
+  assert(allPlan.summary.apply_supported === true, "duplicate-id findings should support apply");
+  assert(allPlan.summary.apply_deferred === true, "index/ref findings should still defer apply");
   const reasons = allPlan.proposed_changes.map((change) => change.reason);
   assert(reasons.includes("generated_cache_stale"), "stale generated cache was not planned");
   assert(reasons.includes("graph_ref_missing"), "missing graph ref was not planned");
   assert(reasons.includes("duplicate_id"), "duplicate id was not planned");
-  assert(allPlan.proposed_changes.every((change) => change.apply_supported === false), "all changes should be apply unsupported");
+  assert(
+    allPlan.proposed_changes.some((change) => change.reason === "duplicate_id" && change.apply_supported === true),
+    "duplicate id finding should be apply supported"
+  );
+  assert(
+    allPlan.proposed_changes.some((change) => change.reason === "graph_ref_missing" && change.apply_supported === false),
+    "graph ref finding should remain review-only"
+  );
   assert(allPlan.risk_counts.low >= 1, "expected low-risk index finding");
   assert(allPlan.risk_counts.medium >= 1, "expected medium-risk refs finding");
   assert(allPlan.risk_counts.high >= 1, "expected high-risk ids finding");
@@ -217,7 +224,7 @@ function main() {
 
   const targetIds = parseJson(mdkg(binPath, ["fix", "plan", "--family", "ids", "--target", "task-1", "--json"], root));
   assert(targetIds.proposed_changes.length === 1, "ids target should return one finding");
-  assert(targetIds.proposed_changes[0].after.candidate_id === "task-1-dup-2", "duplicate id candidate mismatch");
+  assert(targetIds.proposed_changes[0].after.candidate_id === "task-3", "duplicate id candidate mismatch");
   assertNoMutation(root, before, "targeted ids fix plan");
 
   console.log(

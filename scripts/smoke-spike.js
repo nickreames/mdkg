@@ -289,10 +289,10 @@ function assertMalformedSpikeUx(binPath, tempRoot) {
     "utf8"
   );
   const idsPlan = parseJson(mdkg(binPath, ["fix", "plan", "--family", "ids", "--target", "spike-2", "--json"], root));
-  assert(idsPlan.summary.apply_supported === false, "fix ids plan should remain read-only");
+  assert(idsPlan.summary.apply_supported === true, "fix ids plan should be apply-capable");
   assert(
     idsPlan.proposed_changes.some(
-      (change) => change.reason === "duplicate_id" && change.after.candidate_id === "spike-2-dup-2"
+      (change) => change.reason === "duplicate_id" && change.after.candidate_id === "spike-3"
     ),
     "fix ids plan missing deterministic duplicate spike id guidance"
   );

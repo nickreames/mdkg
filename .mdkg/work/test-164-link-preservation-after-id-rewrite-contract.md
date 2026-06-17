@@ -2,7 +2,7 @@
 id: test-164
 type: test
 title: link preservation after id rewrite contract
-status: todo
+status: done
 priority: 2
 epic: epic-91
 parent: goal-17
