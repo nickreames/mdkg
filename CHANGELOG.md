@@ -8,9 +8,35 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
-### Planned
+## 0.3.6 - 2026-06-17
 
-- No changes yet.
+### Added
+
+- Added `mdkg mcp serve --stdio` as a local read-only MCP server for status,
+  workspace/subgraph discovery, search, show, bounded in-memory packs, goal
+  current/next, and validation.
+- Added packed `smoke:mcp` coverage that installs mdkg from a tarball in a
+  temp prefix, launches the stdio server, exercises root and subgraph reads,
+  and proves mutation-shaped tool calls fail closed.
+
+### Fixed
+
+- Prepared `0.3.6` graph import hardening after the `0.3.5` publish:
+  `mdkg graph import-template --select-goal --apply` now activates the
+  rewritten imported start goal, pauses competing active root goals, validates,
+  and only then writes selected-goal state.
+
+### Changed
+
+- Extended graph import dry-run/apply receipts with activation and paused-goal
+  details, and made active template imports fail before writing when
+  `--select-goal` is omitted and multiple active root goals would result.
+
+### Security
+
+- The MCP server is stdio-only and exposes no task, goal activation, graph
+  import, queue, event, archive, format, SQL, shell, arbitrary file-read,
+  filesystem mutation, environment, or secret-access tools.
 
 ## 0.3.5 - 2026-06-17
 
