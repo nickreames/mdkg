@@ -2,7 +2,7 @@
 id: task-382
 type: task
 title: implement mdkg fix apply
-status: todo
+status: done
 priority: 2
 epic: epic-89
 parent: goal-17

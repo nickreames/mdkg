@@ -45,8 +45,13 @@ fresh init, run `mdkg index` first so strict doctor can load generated caches.
 
 Use `mdkg fix plan --json` for dry-run repair guidance. It reports generated
 index/cache repair hints, missing graph references, and duplicate local ids as
-receipt-shaped planned changes with risk levels and `apply_supported: false`.
-`fix apply` is not exposed; repair application is intentionally deferred.
+receipt-shaped planned changes with risk levels and per-change
+`apply_supported` metadata. Duplicate-ID graph repairs can be applied with
+`mdkg fix apply --family ids --json` or `mdkg fix ids --apply --json`; use
+`--base-ref main` when mainline IDs should win. Index/cache and graph-reference
+findings remain review-only. For unresolved Git add/add conflicts, `fix ids`
+keeps stage 2 at the conflicted path, rewrites stage 3 to the next unused
+canonical ID/path, and records a receipt.
 
 Use research spikes for investigation and planning work that should produce a
 reviewable recommendation before implementation:

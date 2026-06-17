@@ -204,11 +204,11 @@ function main() {
   const second = parseJson(mdkg(binPath, ["fix", "plan", "--family", "ids", "--json"], root));
   assert(first.plan_hash === second.plan_hash, "fix plan hash should be stable");
   assert(first.plan_id === second.plan_id, "fix plan id should be stable");
-  assert(first.summary.apply_supported === false, "fix plan should be read-only");
+  assert(first.summary.apply_supported === true, "duplicate-id fix plan should be apply-capable");
   assert(first.proposed_changes.length === 1, "expected one duplicate-id repair proposal");
   const change = first.proposed_changes[0];
   assert(change.reason === "duplicate_id", "expected duplicate_id proposal");
-  assert(change.after.candidate_id === "task-900-dup-2", "unexpected candidate id");
+  assert(change.after.candidate_id === "task-901", "unexpected candidate id");
   assert(change.evidence.branch_merge_suspected === true, "missing branch merge evidence");
   assert(change.after.reference_rewrite_plan.length >= 2, "missing reference rewrite path counts");
   assertNoMutation(root, before, "fix plan duplicate-id branch conflict check");

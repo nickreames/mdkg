@@ -79,7 +79,7 @@ test("generated command contract check mode detects no drift", () => {
 
 test("mutating commands carry safety metadata and read-only commands stay read-only", () => {
   const contract = readContract();
-  for (const key of ["new", "task start", "goal claim", "workspace", "format", "skill new", "db", "subgraph sync"]) {
+  for (const key of ["new", "task start", "goal claim", "workspace", "format", "skill new", "db", "subgraph sync", "fix apply", "fix ids"]) {
     const command = commandByKey(contract, key);
     assert.notEqual(command.danger_level, "read-only", key);
     assert.notDeepEqual(command.side_effects, ["none"], key);
@@ -92,7 +92,13 @@ test("mutating commands carry safety metadata and read-only commands stay read-o
   assert.equal(fixPlan.danger_level, "read-only");
   assert.deepEqual(fixPlan.side_effects, ["none"]);
   assert.equal(fixPlan.write_paths.length, 0);
-  assert.equal(fixPlan.dry_run.apply_supported, false);
+  assert.equal(fixPlan.dry_run.apply_supported, true);
+  assert.equal(fixPlan.dry_run.apply_family, "ids");
+
+  const fixApply = commandByKey(contract, "fix apply");
+  assert.equal(fixApply.danger_level, "high");
+  assert.equal(fixApply.dry_run.apply_family, "ids");
+  assert.ok(fixApply.receipts.includes("fix-apply-receipt"));
 
   const status = commandByKey(contract, "status");
   assert.equal(status.danger_level, "read-only");

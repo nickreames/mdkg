@@ -1,6 +1,6 @@
 {
   "name": "mdkg",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Markdown Knowledge Graph",
   "license": "MIT",
   "bin": {
@@ -28,6 +28,7 @@
     "smoke:operator-health": "npm run build && node scripts/smoke-operator-health.js",
     "smoke:fix-plan": "npm run build && node scripts/smoke-fix-plan.js",
     "smoke:branch-conflicts": "npm run build && node scripts/smoke-branch-conflicts.js",
+    "smoke:id-repair": "npm run build && node scripts/smoke-id-repair.js",
     "smoke:command-docs": "npm run build && node scripts/smoke-command-docs.js",
     "smoke:spike": "npm run build && node scripts/smoke-spike.js",
     "smoke:goal-lifecycle": "npm run build && node scripts/smoke-goal-lifecycle.js",
@@ -41,7 +42,7 @@
     "cli:check": "npm run build && node scripts/cli_help_snapshot.js --check",
     "cli:contract": "npm run build && node scripts/generate-command-contract.js --check",
     "prepack": "npm run build && node scripts/assert-publish-ready.js",
-    "prepublishOnly": "npm run test && npm run cli:check && npm run cli:contract && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && npm run smoke:init && npm run smoke:capabilities && npm run smoke:db && npm run smoke:db-queue && npm run smoke:db-queue-cli && npm run smoke:db-events && npm run smoke:db-materializer && npm run smoke:db-snapshot && npm run smoke:archive-work && npm run smoke:work-invocation && npm run smoke:cli-ux-polish && npm run smoke:operator-health && npm run smoke:fix-plan && npm run smoke:branch-conflicts && npm run smoke:command-docs && npm run smoke:spike && npm run smoke:goal-lifecycle && npm run smoke:bundle && npm run smoke:subgraph && npm run smoke:visibility && npm run smoke:sqlite && npm run smoke:parallel && npm run smoke:goal && node scripts/assert-publish-ready.js",
+    "prepublishOnly": "npm run test && npm run cli:check && npm run cli:contract && node dist/cli.js validate && npm run smoke:consumer && npm run smoke:matrix && npm run smoke:upgrade && npm run smoke:init && npm run smoke:capabilities && npm run smoke:db && npm run smoke:db-queue && npm run smoke:db-queue-cli && npm run smoke:db-events && npm run smoke:db-materializer && npm run smoke:db-snapshot && npm run smoke:archive-work && npm run smoke:work-invocation && npm run smoke:cli-ux-polish && npm run smoke:operator-health && npm run smoke:fix-plan && npm run smoke:branch-conflicts && npm run smoke:id-repair && npm run smoke:command-docs && npm run smoke:spike && npm run smoke:goal-lifecycle && npm run smoke:bundle && npm run smoke:subgraph && npm run smoke:visibility && npm run smoke:sqlite && npm run smoke:parallel && npm run smoke:goal && node scripts/assert-publish-ready.js",
     "postinstall": "node scripts/postinstall.js",
     "smoke:subgraph": "npm run build && node scripts/smoke-subgraph.js"
   },

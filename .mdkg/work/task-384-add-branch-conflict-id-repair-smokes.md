@@ -2,7 +2,7 @@
 id: task-384
 type: task
 title: add branch conflict id repair smokes
-status: todo
+status: done
 priority: 2
 epic: epic-91
 parent: goal-17

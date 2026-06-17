@@ -14,7 +14,7 @@ import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
 import { runStatusCommand } from "./commands/status";
-import { runFixPlanCommand } from "./commands/fix";
+import { runFixApplyCommand, runFixIdsCommand, runFixPlanCommand } from "./commands/fix";
 import {
   runDbInitCommand,
   runDbIndexRebuildCommand,
@@ -1021,24 +1021,58 @@ function printFixHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "plan":
       log("Usage:");
-      log("  mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]");
+      log("  mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]");
       log("\nBoundaries:");
       log("  - read-only repair planning; writes no files and does not rebuild indexes");
       log("  - emits a deterministic receipt-shaped JSON plan with paths, risks, and reason codes");
       log("  - initial families are index/cache, graph refs, and duplicate ids");
-      log("  - `fix apply` is intentionally not available in this release slice");
+      log("  - ids-family duplicate-id repairs can be applied with `mdkg fix apply --family ids`");
+      log("  - index/cache and graph-ref findings remain review-only guidance");
       log("\nOptions:");
       log("  --family <family>     Select index, refs, ids, or all (default all)");
       log("  --target <id-or-qid>  Optional node target for family planners");
+      log("  --base-ref <ref>      Prefer IDs that already exist at a Git base ref");
+      log("  --json                Emit machine-readable JSON output");
+      printGlobalOptions(log);
+      return;
+    case "apply":
+      log("Usage:");
+      log("  mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]");
+      log("\nBoundaries:");
+      log("  - applies only supported ids-family duplicate-ID rewrites");
+      log("  - refuses index/cache, graph-ref, all-family, blocked, and unsupported repairs");
+      log("  - writes graph Markdown atomically and rebuilds derived indexes");
+      log("  - emits a receipt with plan hash, touched paths, and manual-review reference notes");
+      log("\nOptions:");
+      log("  --family ids          Explicit apply family; ids is the only supported apply family");
+      log("  --target <id-or-qid>  Optional duplicate ID target");
+      log("  --base-ref <ref>      Prefer IDs that already exist at a Git base ref");
+      log("  --json                Emit machine-readable JSON output");
+      printGlobalOptions(log);
+      return;
+    case "ids":
+      log("Usage:");
+      log("  mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]");
+      log("\nBoundaries:");
+      log("  - convenience command for duplicate-ID planning and application");
+      log("  - without --apply it is equivalent to `mdkg fix plan --family ids`");
+      log("  - with --apply it is equivalent to `mdkg fix apply --family ids`");
+      log("\nOptions:");
+      log("  --target <id-or-qid>  Optional duplicate ID target");
+      log("  --base-ref <ref>      Prefer IDs that already exist at a Git base ref");
+      log("  --apply               Apply supported duplicate-ID rewrites");
       log("  --json                Emit machine-readable JSON output");
       printGlobalOptions(log);
       return;
     default:
       log("Usage:");
-      log("  mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--json]");
+      log("  mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]");
+      log("  mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]");
+      log("  mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]");
       log("\nNotes:");
-      log("  - fix planning is dry-run only and writes nothing");
-      log("  - apply behavior is deferred until the receipt contract is proven");
+      log("  - fix plan is dry-run only and writes nothing");
+      log("  - fix apply is limited to duplicate-ID graph repairs with receipt evidence");
+      log("  - index/cache and graph-ref repairs remain plan/manual-review only");
       printGlobalOptions(log);
   }
 }
@@ -2871,16 +2905,26 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       if (!sub) {
         throw new UsageError("fix requires a subcommand");
       }
-      if (sub !== "plan") {
+      if (!["plan", "apply", "ids"].includes(sub)) {
         throw new UsageError(`unknown fix subcommand: ${sub}`);
       }
       if (parsed.positionals.length > 2) {
-        throw new UsageError("fix plan does not accept positional arguments");
+        throw new UsageError(`fix ${sub} does not accept positional arguments`);
       }
       const family = requireFlagValue("--family", parsed.flags["--family"]);
       const target = requireFlagValue("--target", parsed.flags["--target"]);
+      const baseRef = requireFlagValue("--base-ref", parsed.flags["--base-ref"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runFixPlanCommand({ root, family, target, json });
+      if (sub === "plan") {
+        runFixPlanCommand({ root, family, target, baseRef, json });
+        return 0;
+      }
+      if (sub === "apply") {
+        runFixApplyCommand({ root, family, target, baseRef, json });
+        return 0;
+      }
+      const apply = parseBooleanFlag("--apply", parsed.flags["--apply"]);
+      runFixIdsCommand({ root, target, baseRef, json, apply });
       return 0;
     }
     case "format":

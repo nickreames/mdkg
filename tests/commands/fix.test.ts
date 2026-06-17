@@ -186,7 +186,7 @@ test("fix plan --json emits read-only receipt skeleton", () => {
   assert.equal(payload.family, "all");
   assert.deepEqual(payload.summary.selected_families, ["index", "refs", "ids"]);
   assert.equal(payload.summary.apply_supported, false);
-  assert.equal(payload.summary.apply_deferred, true);
+  assert.equal(payload.summary.apply_deferred, false);
   assert.deepEqual(payload.risk_counts, { low: 0, medium: 0, high: 0, blocked: 0 });
   assert.deepEqual(payload.proposed_changes, []);
   assert.deepEqual(payload.blocked_changes, []);
@@ -209,29 +209,38 @@ test("fix plan accepts family and target while keeping plan hash deterministic",
   assert.equal(firstPayload.plan_id, secondPayload.plan_id);
 });
 
-test("fix help documents dry-run repair boundary", () => {
+test("fix help documents dry-run and ids-apply repair boundaries", () => {
   const root = createFixRepo("mdkg-fix-help-");
   const top = run(root, ["help", "fix"]);
   assert.equal(top.status, 0, top.stderr);
   assert.match(top.stdout, /mdkg fix plan/);
-  assert.match(top.stdout, /dry-run only and writes nothing/);
+  assert.match(top.stdout, /fix apply/);
+  assert.match(top.stdout, /duplicate-ID graph repairs/);
 
   const plan = run(root, ["help", "fix", "plan"]);
   assert.equal(plan.status, 0, plan.stderr);
   assert.match(plan.stdout, /read-only repair planning/);
   assert.match(plan.stdout, /receipt-shaped JSON plan/);
-  assert.match(plan.stdout, /fix apply.*not available/);
+  assert.match(plan.stdout, /ids-family duplicate-id repairs can be applied/);
+
+  const apply = run(root, ["help", "fix", "apply"]);
+  assert.equal(apply.status, 0, apply.stderr);
+  assert.match(apply.stdout, /applies only supported ids-family duplicate-ID rewrites/);
+
+  const ids = run(root, ["help", "fix", "ids"]);
+  assert.equal(ids.status, 0, ids.stderr);
+  assert.match(ids.stdout, /without --apply/);
 });
 
-test("fix plan rejects invalid family and no apply command is exposed", () => {
+test("fix plan rejects invalid family and fix apply rejects unsupported families", () => {
   const root = createFixRepo("mdkg-fix-errors-");
   const invalid = run(root, ["fix", "plan", "--family", "everything", "--json"]);
   assert.notEqual(invalid.status, 0);
   assert.match(invalid.stderr, /--family must be one of index, refs, ids, all/);
 
-  const apply = run(root, ["fix", "apply", "--json"]);
+  const apply = run(root, ["fix", "apply", "--family", "refs", "--json"]);
   assert.notEqual(apply.status, 0);
-  assert.match(apply.stderr, /unknown fix subcommand: apply/);
+  assert.match(apply.stderr, /fix apply currently supports only --family ids/);
 });
 
 test("fix plan index family reports missing generated caches without mutation", () => {
@@ -600,7 +609,7 @@ test("fix plan ids family reports duplicate ids with deterministic candidate ren
   const change = payload.proposed_changes[0];
   assert.equal(change.family, "ids");
   assert.equal(change.risk, "high");
-  assert.equal(change.status, "manual_review");
+  assert.equal(change.status, "planned");
   assert.equal(change.reason, "duplicate_id");
   assert.deepEqual(change.paths, [".mdkg/work/task-2.md"]);
   assert.equal(change.evidence.conflict_kind, "duplicate_local_id");
@@ -611,15 +620,89 @@ test("fix plan ids family reports duplicate ids with deterministic candidate ren
   assert.equal(change.evidence.branch_merge_suspected, true);
   assert.equal(change.before.duplicate_id, "task-1");
   assert.equal(change.before.workspace, "root");
-  assert.equal(change.after.candidate_id, "task-1-dup-2");
-  assert.equal(change.after.candidate_qid, "root:task-1-dup-2");
+  assert.equal(change.after.candidate_id, "task-2");
+  assert.equal(change.after.candidate_qid, "root:task-2");
   assert.equal(change.after.collision_free, true);
-  assert.ok(change.after.reference_rewrite_plan.some((item: { path: string }) => item.path === ".mdkg/work/task-1.md"));
+  assert.ok(
+    change.after.ambiguous_reference_rewrites.some((item: { path: string }) => item.path === ".mdkg/work/task-1.md")
+  );
   assert.ok(change.after.reference_paths.includes(".mdkg/work/task-1.md"));
   assert.ok(change.after.reference_paths.includes(".mdkg/work/task-2.md"));
-  assert.match(change.command_hint, /task-1-dup-2/);
-  assert.equal(change.apply_supported, false);
+  assert.match(change.command_hint, /mdkg fix apply --family ids/);
+  assert.equal(change.apply_supported, true);
+  assert.equal(change.apply_kind, "duplicate_id_rewrite");
+  assert.equal(payload.summary.apply_supported, true);
   assert.equal(payload.risk_counts.high, 1);
+});
+
+test("fix apply ids family rewrites duplicate ids and rebuilds indexes", () => {
+  const root = createFixRepo("mdkg-fix-ids-apply-");
+  writeFile(
+    path.join(root, ".mdkg", "work", "task-2.md"),
+    [
+      "---",
+      "id: task-1",
+      "type: task",
+      "title: duplicate id",
+      "status: todo",
+      "priority: 1",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-09",
+      "updated: 2026-06-09",
+      "---",
+      "",
+      "# Duplicate id",
+      "",
+      "Self note for task-1.",
+    ].join("\n")
+  );
+
+  const invalid = run(root, ["validate", "--json"]);
+  assert.notEqual(invalid.status, 0);
+
+  const result = run(root, ["fix", "apply", "--family", "ids", "--json"]);
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stderr, "");
+  const receipt = JSON.parse(result.stdout);
+  assert.equal(receipt.action, "fix.apply");
+  assert.equal(receipt.ok, true);
+  assert.match(receipt.receipt_hash, /^sha256:[a-f0-9]{64}$/);
+  assert.equal(receipt.family, "ids");
+  assert.equal(receipt.summary.applied_count, 1);
+  assert.deepEqual(receipt.touched_paths, [".mdkg/work/task-2.md"]);
+  assert.equal(receipt.applied_changes[0].after.candidate_id, "task-2");
+  assert.equal(receipt.index.rebuilt, true);
+
+  const rewritten = fs.readFileSync(path.join(root, ".mdkg", "work", "task-2.md"), "utf8");
+  assert.match(rewritten, /^id: task-2$/m);
+  assert.match(rewritten, /Self note for task-2\./);
+
+  const validate = run(root, ["validate", "--json"]);
+  assert.equal(validate.status, 0, validate.stderr);
+  assert.equal(JSON.parse(validate.stdout).ok, true);
+});
+
+test("fix ids --apply is an ids-family convenience apply command", () => {
+  const root = createFixRepo("mdkg-fix-ids-convenience-");
+  writeFile(path.join(root, ".mdkg", "work", "task-copy.md"), taskNode("task-1", "duplicate convenience task"));
+
+  const result = run(root, ["fix", "ids", "--apply", "--json"]);
+  assert.equal(result.status, 0, result.stderr);
+  const receipt = JSON.parse(result.stdout);
+  assert.equal(receipt.action, "fix.apply");
+  assert.equal(receipt.family, "ids");
+  assert.deepEqual(receipt.touched_paths, [".mdkg/work/task-copy.md"]);
+
+  const validate = run(root, ["validate", "--json"]);
+  assert.equal(validate.status, 0, validate.stderr);
 });
 
 test("fix plan ids family reports duplicate spike ids with deterministic candidate rename", () => {
@@ -644,14 +727,14 @@ test("fix plan ids family reports duplicate spike ids with deterministic candida
   assert.equal(change.evidence.duplicate_id, "spike-1");
   assert.equal(change.evidence.workspace, "root");
   assert.deepEqual(change.evidence.group_paths, [".mdkg/work/spike-1.md", ".mdkg/work/spike-copy.md"]);
-  assert.equal(change.after.candidate_id, "spike-1-dup-2");
-  assert.equal(change.after.candidate_qid, "root:spike-1-dup-2");
+  assert.equal(change.after.candidate_id, "spike-2");
+  assert.equal(change.after.candidate_qid, "root:spike-2");
   assert.equal(change.after.collision_free, true);
-  assert.match(change.command_hint, /spike-1-dup-2/);
-  assert.equal(change.apply_supported, false);
+  assert.match(change.command_hint, /mdkg fix apply --family ids/);
+  assert.equal(change.apply_supported, true);
 });
 
-test("fix plan ids family groups two-branch duplicate ids with stable read-only rewrite plan", () => {
+test("fix plan ids family groups two-branch duplicate ids with stable apply-capable rewrite plan", () => {
   const root = createFixRepo("mdkg-fix-ids-branch-");
   assertGit(root, ["init", "-q"]);
   assertGit(root, ["add", "."]);
@@ -694,7 +777,7 @@ test("fix plan ids family groups two-branch duplicate ids with stable read-only 
   const secondPayload = JSON.parse(second.stdout);
   assert.equal(firstPayload.plan_hash, secondPayload.plan_hash);
   assert.equal(firstPayload.plan_id, secondPayload.plan_id);
-  assert.equal(firstPayload.summary.apply_supported, false);
+  assert.equal(firstPayload.summary.apply_supported, true);
   assert.equal(firstPayload.proposed_changes.length, 1);
   const change = firstPayload.proposed_changes[0];
   assert.equal(change.family, "ids");
@@ -715,19 +798,74 @@ test("fix plan ids family groups two-branch duplicate ids with stable read-only 
     ".mdkg/work/task-2-branch-a.md",
     ".mdkg/work/task-2-branch-b.md",
   ]);
-  assert.equal(change.after.candidate_id, "task-2-dup-2");
-  assert.equal(change.after.candidate_qid, "root:task-2-dup-2");
+  assert.equal(change.after.candidate_id, "task-3");
+  assert.equal(change.after.candidate_qid, "root:task-3");
   assert.equal(change.after.collision_free, true);
   assert.match(change.after.deterministic_rule, /lexicographically first path/);
   assert.ok(
-    change.after.reference_rewrite_plan.some(
+    change.after.ambiguous_reference_rewrites.some(
       (item: { path: string; replacement_count: number; confidence: string }) =>
         item.path === ".mdkg/work/task-2-branch-a.md" &&
         item.replacement_count > 0 &&
         item.confidence === "manual_review"
     )
   );
-  assert.equal(change.apply_supported, false);
+  assert.equal(change.apply_supported, true);
+});
+
+test("fix ids --apply resolves unresolved git conflict-stage duplicate ids", () => {
+  const root = createFixRepo("mdkg-fix-ids-stage-conflict-");
+  assertGit(root, ["init", "-q"]);
+  assertGit(root, ["add", "."]);
+  assertGit(root, ["commit", "-m", "base"]);
+  const base = git(root, ["rev-parse", "HEAD"]).stdout.trim();
+
+  const conflictPath = path.join(root, ".mdkg", "work", "task-900.md");
+  assertGit(root, ["checkout", "-q", "-b", "branch-a"]);
+  writeFile(conflictPath, taskNode("task-900", "branch a same path duplicate"));
+  assertGit(root, ["add", ".mdkg/work/task-900.md"]);
+  assertGit(root, ["commit", "-m", "branch a same path task"]);
+
+  assertGit(root, ["checkout", "-q", "-b", "branch-b", base]);
+  writeFile(conflictPath, taskNode("task-900", "branch b same path duplicate"));
+  assertGit(root, ["add", ".mdkg/work/task-900.md"]);
+  assertGit(root, ["commit", "-m", "branch b same path task"]);
+
+  assertGit(root, ["checkout", "-q", "branch-a"]);
+  const merge = git(root, ["merge", "--no-edit", "branch-b"]);
+  assert.notEqual(merge.status, 0, merge.stdout || merge.stderr);
+  assert.match(git(root, ["ls-files", "-u", "--", ".mdkg/work/task-900.md"]).stdout, /\t\.mdkg\/work\/task-900\.md/);
+
+  const plan = run(root, ["fix", "ids", "--target", "task-900", "--json"]);
+  assert.equal(plan.status, 0, plan.stderr);
+  const planReceipt = JSON.parse(plan.stdout);
+  assert.equal(planReceipt.summary.apply_supported, true);
+  assert.equal(planReceipt.proposed_changes.length, 1);
+  const change = planReceipt.proposed_changes[0];
+  assert.equal(change.reason, "git_stage_duplicate_id");
+  assert.equal(change.apply_kind, "git_stage_duplicate_id_rewrite");
+  assert.deepEqual(change.paths, [".mdkg/work/task-900.md", ".mdkg/work/task-901.md"]);
+  assert.equal(change.after.candidate_id, "task-901");
+  assert.equal(change.after.candidate_path, ".mdkg/work/task-901.md");
+
+  const apply = run(root, ["fix", "ids", "--target", "task-900", "--apply", "--json"]);
+  assert.equal(apply.status, 0, apply.stderr);
+  const receipt = JSON.parse(apply.stdout);
+  assert.equal(receipt.action, "fix.apply");
+  assert.equal(receipt.summary.applied_count, 1);
+  assert.deepEqual(receipt.touched_paths, [".mdkg/work/task-900.md", ".mdkg/work/task-901.md"]);
+  assert.equal(git(root, ["ls-files", "-u", "--", ".mdkg/work/task-900.md"]).stdout.trim(), "");
+
+  const canonical = fs.readFileSync(path.join(root, ".mdkg", "work", "task-900.md"), "utf8");
+  const incoming = fs.readFileSync(path.join(root, ".mdkg", "work", "task-901.md"), "utf8");
+  assert.match(canonical, /^id: task-900$/m);
+  assert.match(canonical, /branch a same path duplicate/);
+  assert.match(incoming, /^id: task-901$/m);
+  assert.match(incoming, /branch b same path duplicate/);
+
+  const validate = run(root, ["validate", "--json"]);
+  assert.equal(validate.status, 0, validate.stderr);
+  assert.equal(JSON.parse(validate.stdout).ok, true);
 });
 
 test("fix plan ids family supports target filtering and blocked target receipts", () => {

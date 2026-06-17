@@ -2,7 +2,7 @@
 id: test-163
 type: test
 title: unresolved Git conflict stage id repair contract
-status: todo
+status: done
 priority: 2
 epic: epic-90
 parent: goal-17

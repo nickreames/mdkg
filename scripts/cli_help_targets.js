@@ -77,6 +77,8 @@ const HELP_TARGETS = [
   ["status"],
   ["fix"],
   ["fix", "plan"],
+  ["fix", "apply"],
+  ["fix", "ids"],
   ["format"],
   ["doctor"],
   ["workspace"],

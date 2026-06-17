@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.3.1`
+Current package version in source: `0.3.4`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -341,9 +341,13 @@ warnings unless their underlying check fails.
 Use `mdkg fix plan --json` when you want repair guidance without mutation. It
 emits a receipt-shaped plan for generated index/cache repair, missing graph
 references, and duplicate local ids. Planned changes include affected paths,
-risk, reason codes, command hints, and `apply_supported: false`. `fix apply` is
-not exposed; apply behavior is deferred until the dry-run plan contract has
-enough evidence.
+risk, reason codes, command hints, and per-change `apply_supported` metadata.
+Duplicate-ID graph repairs can be applied with
+`mdkg fix apply --family ids --json` or `mdkg fix ids --apply --json`; use
+`--base-ref main` when mainline IDs should win. Index/cache and graph-reference
+findings remain review-only. For unresolved Git add/add conflicts, `fix ids`
+keeps stage 2 at the conflicted path, rewrites stage 3 to the next unused
+canonical ID/path, and records a receipt.
 
 ## Skills
 

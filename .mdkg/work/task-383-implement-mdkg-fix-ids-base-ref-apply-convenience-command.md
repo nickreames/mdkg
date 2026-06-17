@@ -2,7 +2,7 @@
 id: task-383
 type: task
 title: implement mdkg fix ids base-ref apply convenience command
-status: todo
+status: done
 priority: 2
 epic: epic-90
 parent: goal-17
