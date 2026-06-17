@@ -5,9 +5,9 @@ title: Launch mdkg.dev with research-backed docs examples and trust posture
 status: todo
 priority: 2
 goal_state: paused
-active_node: task-354
 goal_condition: Launch mdkg.dev only after spike dogfooding, generated command docs, public examples, security posture, and downstream upgrade narratives are validated.
 scope_refs: [epic-78, epic-79, epic-80, epic-81, epic-82, spike-1, spike-2, spike-3, spike-4, spike-5, task-354, task-355, task-356, task-357, task-358, task-359, task-360, task-361, task-362, task-370, task-371, test-147, test-148, test-149, test-150, test-157]
+active_node: task-354
 required_skills: [pursue-mdkg-goal, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run cli:contract, npm run smoke:command-docs, node dist/cli.js validate --json, npm run smoke:spike, git diff --check]
 max_iterations: 25
@@ -16,14 +16,14 @@ tags: [mdkg-dev, docs, launch, trust, seo, examples]
 owners: []
 links: []
 artifacts: []
-relates: [epic-76, epic-77]
+relates: [epic-76, epic-77, goal-21]
 blocked_by: []
 blocks: []
 refs: [goal-14]
 aliases: []
 skills: []
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-06-16
 ---
 # Objective
 
@@ -140,3 +140,7 @@ Follow-up scope added from those spikes:
 # Completion Evidence
 
 - Pending.
+
+# Supersession Note
+
+This paused historical mdkg.dev launch goal is superseded by `goal-21`, the versioned 0.4.0 canonical mdkg.dev launch readiness goal. It should be marked archived during `goal-16` only after archived goal lifecycle support is implemented.

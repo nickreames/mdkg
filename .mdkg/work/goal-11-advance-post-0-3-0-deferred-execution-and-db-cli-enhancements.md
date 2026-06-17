@@ -16,14 +16,14 @@ tags: [goal, deferred, roadmap, post-0-3-0]
 owners: []
 links: []
 artifacts: []
-relates: [epic-65, epic-66, epic-67]
+relates: [epic-65, epic-66, epic-67, goal-19, goal-21]
 blocked_by: []
 blocks: []
 refs: []
 aliases: []
 skills: []
 created: 2026-06-06
-updated: 2026-06-06
+updated: 2026-06-16
 ---
 # Objective
 
@@ -95,3 +95,7 @@ or downstream migration automation work.
 # Completion Evidence
 
 - Deferred; no functional work is part of the 0.3.0 polish pass.
+
+# Supersession Note
+
+This paused historical roadmap goal is superseded by `goal-19` for local MCP/workspace graph selection and by `goal-21` for public docs and downstream launch narratives. It should be marked archived during `goal-16` only after archived goal lifecycle support is implemented.
