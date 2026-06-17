@@ -2,7 +2,7 @@
 id: test-169
 type: test
 title: mcp read only no mutation contract
-status: todo
+status: done
 priority: 2
 epic: epic-95
 parent: goal-19
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [MCP exposes no broad mutation tools., Mutation attempts fail or are absent., No secrets are exposed.]
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Overview
 

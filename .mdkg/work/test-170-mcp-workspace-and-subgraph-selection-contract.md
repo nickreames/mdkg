@@ -2,7 +2,7 @@
 id: test-170
 type: test
 title: mcp workspace and subgraph selection contract
-status: todo
+status: done
 priority: 2
 epic: epic-96
 parent: goal-19
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [Root workspace selection is explicit., Subgraph selection is read-only., Path containment is enforced.]
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Overview
 

@@ -2,7 +2,7 @@
 id: test-168
 type: test
 title: mcp read only status search show pack contract
-status: todo
+status: done
 priority: 2
 epic: epic-95
 parent: goal-19
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [MCP status/search/show/pack tools return CLI-equivalent data., Outputs are bounded and structured.]
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Overview
 

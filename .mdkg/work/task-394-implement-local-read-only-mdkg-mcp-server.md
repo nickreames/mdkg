@@ -2,7 +2,7 @@
 id: task-394
 type: task
 title: implement local read only mdkg mcp server
-status: todo
+status: done
 priority: 2
 epic: epic-95
 parent: goal-19
@@ -17,7 +17,7 @@ refs: []
 aliases: []
 skills: []
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Overview
 

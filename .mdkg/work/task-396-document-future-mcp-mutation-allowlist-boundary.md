@@ -2,7 +2,7 @@
 id: task-396
 type: task
 title: document future mcp mutation allowlist boundary
-status: todo
+status: done
 priority: 2
 epic: epic-97
 parent: goal-19
@@ -17,7 +17,7 @@ refs: []
 aliases: []
 skills: []
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Overview
 
