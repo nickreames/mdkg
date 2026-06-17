@@ -2,9 +2,9 @@
 id: goal-12
 type: goal
 title: native subgraph audit and upgrade-plan command foundation
-status: todo
+status: archived
 priority: 2
-goal_state: paused
+goal_state: archived
 goal_condition: Complete when mdkg has designed and implemented native subgraph audit, upgrade-plan, capability-sync summary, strict validation, and receipt-backed refresh command foundations with no-cross-repo-mutation safety and tests.
 scope_refs: [epic-68, task-316, task-317, task-318, task-319, task-320, task-321, test-125, test-126, test-127, test-128]
 active_node: task-316

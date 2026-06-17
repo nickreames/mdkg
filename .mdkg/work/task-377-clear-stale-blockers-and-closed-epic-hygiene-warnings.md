@@ -2,7 +2,7 @@
 id: task-377
 type: task
 title: clear stale blockers and closed-epic hygiene warnings
-status: todo
+status: done
 priority: 1
 epic: epic-87
 parent: goal-16
@@ -11,7 +11,7 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-374, task-375]
+blocked_by: []
 blocks: [task-378]
 refs: []
 aliases: []
@@ -47,4 +47,11 @@ Clean stale graph blockers and doctor strictness issues that obscure active rele
 
 # Links / Artifacts
 
-- Add command receipts, validation output, and checkpoint ids during execution.
+- 2026-06-16 execution:
+  - Cleared completed blockers from this active hygiene node.
+  - Reduced `task-378` blockers to the live predecessor `task-377`.
+  - Reduced `task-379` blockers to the live predecessor `task-378`; the supporting contract tests are already done.
+- Verification:
+  - `node dist/cli.js index` refreshed JSON, capability, subgraph, and SQLite indexes.
+  - `node dist/cli.js doctor --strict --json` passed with 0 failures; the only warning is the expected local-only project DB runtime file.
+  - `node dist/cli.js status --json` reported graph stale `false` and no graph warnings/errors; worktree dirtiness remains expected for this in-progress implementation branch.

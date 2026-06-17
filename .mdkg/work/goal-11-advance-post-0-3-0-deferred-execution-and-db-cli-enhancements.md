@@ -2,9 +2,9 @@
 id: goal-11
 type: goal
 title: Advance post-0.3.0 deferred execution and DB CLI enhancements
-status: todo
+status: archived
 priority: 2
-goal_state: paused
+goal_state: archived
 goal_condition: The goal is complete when post-0.3.0 deferred worker execution, public DB CLI, and downstream migration automation have approved designs, implementations, and validation evidence in a later release lane.
 scope_refs: [epic-65, epic-66, epic-67, task-310, task-311, task-312, task-313, task-314, task-315, test-122, test-123, test-124]
 active_node: task-310

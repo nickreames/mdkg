@@ -2,9 +2,9 @@
 id: goal-15
 type: goal
 title: Launch mdkg.dev with research-backed docs examples and trust posture
-status: todo
+status: archived
 priority: 2
-goal_state: paused
+goal_state: archived
 goal_condition: Launch mdkg.dev only after spike dogfooding, generated command docs, public examples, security posture, and downstream upgrade narratives are validated.
 scope_refs: [epic-78, epic-79, epic-80, epic-81, epic-82, spike-1, spike-2, spike-3, spike-4, spike-5, task-354, task-355, task-356, task-357, task-358, task-359, task-360, task-361, task-362, task-370, task-371, test-147, test-148, test-149, test-150, test-157]
 active_node: task-354

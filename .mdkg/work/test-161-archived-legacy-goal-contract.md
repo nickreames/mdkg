@@ -2,7 +2,7 @@
 id: test-161
 type: test
 title: archived legacy goal contract
-status: todo
+status: done
 priority: 1
 epic: epic-86
 parent: goal-16
@@ -46,4 +46,13 @@ Validate archived legacy goal contract.
 
 # Notes / Follow-ups
 
-- Record command output, receipts, and linked checkpoints when implemented.
+- 2026-06-16 evidence:
+  - Parser and command tests cover archived goal-only status/state support, routing exclusion, mutation rejection, and explicit list/search/show access.
+  - `node dist/cli.js goal archive goal-11 --json`, `goal archive goal-12 --json`, and `goal archive goal-15 --json` produced archive receipts.
+  - `node dist/cli.js validate --json` passed with 0 warnings/errors after archival.
+  - `node dist/cli.js list --type goal --status archived --json` returned exactly three archived goals: `goal-11`, `goal-12`, and `goal-15`.
+  - `node dist/cli.js search "deferred execution" --type goal --status archived --json` returned archived `goal-11`.
+  - `node dist/cli.js show goal-15 --json` preserved body and supersession note.
+  - `node dist/cli.js goal next goal-11 --json` returned no actionable node and emitted an archived warning.
+  - `node dist/cli.js goal activate goal-11 --json` failed with `cannot activate archived goal root:goal-11`.
+  - `node dist/cli.js goal current --json` continued to select `goal-16`.
