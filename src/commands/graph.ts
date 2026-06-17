@@ -5,7 +5,7 @@ import { rebuildDerivedIndexCaches } from "./index";
 import { collectValidateReceipt, ValidateReceipt } from "./validate";
 import { loadConfig } from "../core/config";
 import { normalizeContainedWorkspacePath } from "../core/workspace_path";
-import { buildIndex } from "../graph/indexer";
+import { buildIndex, IndexNode } from "../graph/indexer";
 import {
   DEFAULT_FRONTMATTER_KEY_ORDER,
   formatFrontmatter,
@@ -17,6 +17,7 @@ import { formatResolveError, resolveQid } from "../util/qid";
 import { atomicWriteFile } from "../util/atomic";
 import { readZipEntries } from "../util/zip";
 import { withMutationLock } from "../util/lock";
+import { formatDate } from "../util/date";
 
 export type GraphCloneCommandOptions = {
   root: string;
@@ -94,6 +95,8 @@ type ImportNodePlan = {
   from_id: string;
   to_id: string;
   type: string;
+  status?: string;
+  goal_state?: string;
   title?: string;
   content: string;
 };
@@ -144,12 +147,27 @@ type GraphImportTemplateReceipt = {
     path: string;
     planned: boolean;
   };
+  activated_goal?: GoalLifecycleReceipt;
+  paused_goals: GoalLifecycleReceipt[];
   index?: {
     rebuilt: boolean;
     paths: Record<string, string | null>;
   };
   validation?: ValidateReceipt;
   warnings: string[];
+};
+
+type GoalLifecycleReceipt = {
+  workspace: string;
+  id: string;
+  qid: string;
+  path: string;
+  previous_status: string;
+  previous_goal_state: string;
+  status: string;
+  goal_state: string;
+  source: "local" | "imported";
+  planned: boolean;
 };
 
 function writeJson(value: unknown): void {
@@ -322,6 +340,106 @@ function writeSelectedGoal(targetRoot: string, qid: string, id: string, ws: stri
   };
   atomicWriteFile(statePath, `${JSON.stringify(state, null, 2)}\n`);
   return rel(targetRoot, statePath);
+}
+
+function qidForRoot(id: string): string {
+  return `root:${id}`;
+}
+
+function idFromRootQid(qid: string): string {
+  const [workspace, id] = qid.split(":");
+  if (workspace !== "root" || !id) {
+    throw new UsageError(`invalid root qid: ${qid}`);
+  }
+  return id;
+}
+
+function ensureStatusAllowed(config: ReturnType<typeof loadConfig>, status: string): string {
+  const normalized = status.toLowerCase();
+  const allowed = new Set(config.work.status_enum.map((value) => value.toLowerCase()));
+  if (!allowed.has(normalized)) {
+    throw new UsageError(`goal status ${normalized} is not allowed by work.status_enum`);
+  }
+  return normalized;
+}
+
+function isActiveGoalStatus(status?: string, goalState?: string): boolean {
+  return status === "progress" && goalState === "active";
+}
+
+function isClosedGoalStatus(status?: string, goalState?: string): boolean {
+  return status === "done" || status === "archived" || goalState === "achieved" || goalState === "archived";
+}
+
+function activeLocalRootGoals(root: string): IndexNode[] {
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  return Object.values(index.nodes)
+    .filter((node) => !node.source?.imported)
+    .filter((node) => node.ws === "root" && node.type === "goal")
+    .filter((node) => isActiveGoalStatus(node.status, String(node.attributes.goal_state ?? "")))
+    .sort((a, b) => a.qid.localeCompare(b.qid));
+}
+
+function localGoalLifecycleReceipt(
+  node: IndexNode,
+  status: string,
+  goalState: string,
+  planned: boolean
+): GoalLifecycleReceipt {
+  return {
+    workspace: node.ws,
+    id: node.id,
+    qid: node.qid,
+    path: node.path,
+    previous_status: node.status ?? "",
+    previous_goal_state: String(node.attributes.goal_state ?? ""),
+    status,
+    goal_state: goalState,
+    source: "local",
+    planned,
+  };
+}
+
+function importedGoalLifecycleReceipt(
+  plan: ImportNodePlan,
+  status: string,
+  goalState: string,
+  planned: boolean
+): GoalLifecycleReceipt {
+  return {
+    workspace: "root",
+    id: plan.to_id,
+    qid: qidForRoot(plan.to_id),
+    path: plan.target_path,
+    previous_status: plan.status ?? "",
+    previous_goal_state: plan.goal_state ?? "",
+    status,
+    goal_state: goalState,
+    source: "imported",
+    planned,
+  };
+}
+
+function readNodeFile(root: string, nodePath: string): { filePath: string; frontmatter: Record<string, FrontmatterValue>; body: string } {
+  const filePath = path.join(root, nodePath);
+  const parsed = parseFrontmatter(fs.readFileSync(filePath, "utf8"), nodePath);
+  return { filePath, frontmatter: { ...parsed.frontmatter }, body: parsed.body };
+}
+
+function writeRenderedNodeFile(filePath: string, frontmatter: Record<string, FrontmatterValue>, body: string): void {
+  atomicWriteFile(filePath, renderNode(frontmatter, body));
+}
+
+function pauseLocalGoals(root: string, goals: GoalLifecycleReceipt[], config: ReturnType<typeof loadConfig>): void {
+  const today = formatDate(new Date());
+  for (const goal of goals.filter((item) => item.source === "local")) {
+    const loaded = readNodeFile(root, goal.path);
+    loaded.frontmatter.status = ensureStatusAllowed(config, "blocked");
+    loaded.frontmatter.goal_state = "paused";
+    loaded.frontmatter.updated = today;
+    writeRenderedNodeFile(loaded.filePath, loaded.frontmatter, loaded.body);
+  }
 }
 
 function isWorkMarkdownPath(value: string): boolean {
@@ -512,15 +630,48 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
       from_id: node.id,
       to_id: toId,
       type: node.type,
+      status: typeof frontmatter.status === "string" ? frontmatter.status : undefined,
+      goal_state: typeof frontmatter.goal_state === "string" ? frontmatter.goal_state : undefined,
       title: typeof frontmatter.title === "string" ? frontmatter.title : undefined,
       content: renderNode(frontmatter, body),
     };
   });
 
   const startGoalToId = options.startGoal ? (idMap.get(options.startGoal) ?? options.startGoal) : undefined;
-  if (options.startGoal && !plans.some((plan) => plan.to_id === startGoalToId && plan.type === "goal")) {
+  const startGoalPlan = startGoalToId
+    ? plans.find((plan) => plan.to_id === startGoalToId && plan.type === "goal")
+    : undefined;
+  if (options.startGoal && !startGoalPlan) {
     throw new NotFoundError(`start goal not found in imported template graph: ${options.startGoal}`);
   }
+  if (options.selectGoal && startGoalPlan && isClosedGoalStatus(startGoalPlan.status, startGoalPlan.goal_state)) {
+    throw new UsageError(`cannot select achieved or archived imported start goal: ${options.startGoal}`);
+  }
+
+  const localActiveGoals = activeLocalRootGoals(options.root);
+  const importedActiveGoals = plans
+    .filter((plan) => plan.type === "goal")
+    .filter((plan) => isActiveGoalStatus(plan.status, plan.goal_state));
+  if (!options.selectGoal && localActiveGoals.length + importedActiveGoals.length > 1) {
+    throw new UsageError(
+      "import-template would create multiple active root goals; use --select-goal --start-goal <goal-id> or pause active goals before importing"
+    );
+  }
+
+  const activatedGoal =
+    options.selectGoal && startGoalPlan
+      ? importedGoalLifecycleReceipt(startGoalPlan, "progress", "active", !options.apply)
+      : undefined;
+  const pausedGoals =
+    options.selectGoal && startGoalPlan
+      ? [
+          ...localActiveGoals.map((node) => localGoalLifecycleReceipt(node, "blocked", "paused", !options.apply)),
+          ...importedActiveGoals
+            .filter((plan) => plan.to_id !== startGoalPlan.to_id)
+            .map((plan) => importedGoalLifecycleReceipt(plan, "blocked", "paused", !options.apply)),
+        ]
+      : [];
+  const warnings = pausedGoals.length > 0 ? [`paused ${pausedGoals.length} competing active goal(s)`] : [];
 
   const mode = options.apply ? "import_template_applied" : "import_template_dry_run";
   return {
@@ -557,7 +708,9 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
     ...(options.selectGoal && startGoalToId
       ? { selected_goal: { qid: `root:${startGoalToId}`, path: ".mdkg/state/selected-goal.json", planned: !options.apply } }
       : {}),
-    warnings: [],
+    ...(activatedGoal ? { activated_goal: activatedGoal } : {}),
+    paused_goals: pausedGoals,
+    warnings,
   };
 }
 
@@ -617,6 +770,16 @@ function applyImportTemplate(
         frontmatter[field] = rewriteFrontmatterValue(value, idMap, node.sourcePath, field, ignoredRewrites);
       }
       const body = rewriteStringValue(node.parsed.body, idMap, node.sourcePath, "body", ignoredRewrites);
+      if (frontmatter.type === "goal" && options.selectGoal) {
+        if (qidForRoot(toId) === applyPlan.activated_goal?.qid) {
+          frontmatter.status = ensureStatusAllowed(config, "progress");
+          frontmatter.goal_state = "active";
+        } else if (isActiveGoalStatus(String(frontmatter.status ?? ""), String(frontmatter.goal_state ?? ""))) {
+          frontmatter.status = ensureStatusAllowed(config, "blocked");
+          frontmatter.goal_state = "paused";
+        }
+        frontmatter.updated = formatDate(new Date());
+      }
       const targetPath = targetPathForImport(node.sourcePath, node.id, toId, usedPaths);
       contentByTarget.set(targetPath, renderNode(frontmatter, body));
     }
@@ -629,22 +792,24 @@ function applyImportTemplate(
       fs.mkdirSync(path.dirname(targetAbs), { recursive: true });
       atomicWriteFile(targetAbs, content);
     }
+    pauseLocalGoals(options.root, applyPlan.paused_goals, config);
     const indexReceipt = rebuildDerivedIndexCaches({ root: options.root });
+    const validation = collectValidateReceipt({ root: options.root, quiet: true });
+    if (validation.error_count > 0) {
+      throw new ValidationError(`imported graph validation failed with ${validation.error_count} error(s)`);
+    }
     if (options.selectGoal && options.startGoal) {
       const selected = applyPlan.selected_goal?.qid;
       if (!selected) {
         throw new UsageError("--select-goal could not resolve imported start goal");
       }
-      const [, id] = selected.split(":");
-      if (!id) {
-        throw new UsageError(`invalid selected goal qid: ${selected}`);
-      }
+      const id = idFromRootQid(selected);
       writeSelectedGoal(options.root, selected, id, "root");
       applyPlan.selected_goal = { qid: selected, path: ".mdkg/state/selected-goal.json", planned: false };
-    }
-    const validation = collectValidateReceipt({ root: options.root, quiet: true });
-    if (validation.error_count > 0) {
-      throw new ValidationError(`imported graph validation failed with ${validation.error_count} error(s)`);
+      if (applyPlan.activated_goal) {
+        applyPlan.activated_goal.planned = false;
+      }
+      applyPlan.paused_goals = applyPlan.paused_goals.map((goal) => ({ ...goal, planned: false }));
     }
     return {
       ...applyPlan,

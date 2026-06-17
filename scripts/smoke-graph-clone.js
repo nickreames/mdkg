@@ -124,6 +124,7 @@ function createTemplateGraph(binPath, root) {
     "\nMentions root:goal-1 and task-1 for rewrite proof.\n",
     "utf8"
   );
+  mdkg(binPath, ["goal", "activate", "goal-1", "--json"], root);
   mdkg(binPath, ["index"], root);
   const bundle = parseJson(
     mdkg(binPath, ["bundle", "create", "--output", path.join(root, "template.mdkg.zip"), "--json"], root).stdout,
@@ -179,8 +180,14 @@ function main() {
   assert(forkCurrent.goal.id === "goal-1", "fork current goal mismatch");
 
   mdkg(binPath, ["new", "goal", "local existing goal", "--status", "todo", "--priority", "1", "--json"], root);
+  mdkg(binPath, ["goal", "activate", "goal-1", "--json"], root);
   mdkg(binPath, ["new", "task", "local existing task", "--status", "todo", "--priority", "1", "--json"], root);
   const sourceHashBeforeImport = hashTree(template);
+  const noSelect = mdkg(binPath, ["graph", "import-template", "templates/website-template-mdkg", "--apply", "--json"], root, {
+    allowFailure: true,
+  });
+  assert(noSelect.status !== 0, "active template import without --select-goal unexpectedly succeeded");
+  assert(noSelect.stderr.includes("would create multiple active root goals"), "active template import failure was not actionable");
   const dryRun = parseJson(
     mdkg(binPath, [
       "graph",
@@ -197,6 +204,14 @@ function main() {
   assert(dryRun.mode === "import_template_dry_run", "import-template did not dry-run");
   assert(dryRun.files_written.length === 0, "import-template dry-run wrote files");
   assert(dryRun.selected_goal.qid === "root:goal-2" && dryRun.selected_goal.planned === true, "dry-run selected goal plan mismatch");
+  assert(dryRun.activated_goal.qid === "root:goal-2" && dryRun.activated_goal.planned === true, "dry-run activation plan mismatch");
+  assert(
+    dryRun.paused_goals.length === 1 &&
+      dryRun.paused_goals[0].qid === "root:goal-1" &&
+      dryRun.paused_goals[0].source === "local" &&
+      dryRun.paused_goals[0].planned === true,
+    "dry-run paused goal plan mismatch"
+  );
   const applied = parseJson(
     mdkg(binPath, [
       "graph",
@@ -213,9 +228,24 @@ function main() {
   assert(applied.mode === "import_template_applied", "import-template did not apply");
   assert(applied.validation.ok === true, "import-template apply did not validate");
   assert(applied.selected_goal.qid === "root:goal-2" && applied.selected_goal.planned === false, "applied selected goal mismatch");
+  assert(applied.activated_goal.qid === "root:goal-2" && applied.activated_goal.planned === false, "applied activation mismatch");
+  assert(
+    applied.paused_goals.length === 1 &&
+      applied.paused_goals[0].qid === "root:goal-1" &&
+      applied.paused_goals[0].goal_state === "paused" &&
+      applied.paused_goals[0].planned === false,
+    "applied paused goal mismatch"
+  );
   const importedTask = fs.readFileSync(path.join(root, ".mdkg", "work", "task-2-template-linked-task.md"), "utf8");
   assert(importedTask.includes("parent: goal-2"), "imported task parent was not rewritten");
   assert(importedTask.includes("root:goal-2 and task-2"), "imported task body was not rewritten");
+  const localGoal = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1-local-existing-goal.md"), "utf8");
+  assert(localGoal.includes("goal_state: paused"), "local competing goal was not paused");
+  const importedGoal = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-2-template-start-goal.md"), "utf8");
+  assert(importedGoal.includes("status: progress"), "imported start goal was not activated");
+  assert(importedGoal.includes("goal_state: active"), "imported start goal active state missing");
+  const current = parseJson(mdkg(binPath, ["goal", "current", "--json"], root).stdout, "import goal current");
+  assert(current.goal.id === "goal-2", "imported start goal was not selected");
   assert(hashTree(template) === sourceHashBeforeImport, "source template graph changed during import");
 
   mdkg(binPath, ["help", "graph"], root);

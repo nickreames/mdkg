@@ -167,9 +167,11 @@ mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 -
 ```
 
 `graph clone` and `graph fork` preserve IDs; `graph import-template` rewrites
-canonical numeric IDs and internal links to avoid same-repo collisions. Subgraphs
-remain read-only planning views; use `mdkg graph ...` when authored graph state
-should be created.
+canonical numeric IDs and internal links to avoid same-repo collisions. With
+`--select-goal --apply`, import-template activates the rewritten imported start
+goal, pauses competing active root goals, validates the graph, and then writes
+selected-goal state. Subgraphs remain read-only planning views; use
+`mdkg graph ...` when authored graph state should be created.
 
 Register a child repo bundle as a read-only subgraph planning view:
 

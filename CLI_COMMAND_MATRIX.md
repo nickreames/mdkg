@@ -647,13 +647,14 @@ Notes:
 - `graph import-template` defaults to dry-run unless `--apply` is supplied
 - same-repo template import rewrites canonical numeric IDs to the next unused ID by type prefix and rewrites structured refs plus safe body-local id/qid mentions
 - colliding semantic template IDs require `--id-prefix`
-- `--select-goal` requires `--start-goal` and writes selected-goal state only after apply validation
+- `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
+- importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
 - subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 JSON receipts:
 - `clone`: `{ action: "graph.clone", ok, mode, source, target, source_hash, preserved_ids, files_written, skipped_paths, index, validation, warnings }`
 - `fork`: `{ action: "graph.fork", ok, mode, source, target, source_hash, preserved_ids, files_written, skipped_paths, start_goal?, selected_goal?, index, validation, warnings }`
-- `import-template`: `{ action: "graph.import_template", ok, mode, source, source_hash, preserved_ids: false, rewritten_ids, rewritten_refs, planned_paths, files_written, skipped_paths, start_goal?, selected_goal?, index?, validation?, warnings }`
+- `import-template`: `{ action: "graph.import_template", ok, mode, source, source_hash, preserved_ids: false, rewritten_ids, rewritten_refs, planned_paths, files_written, skipped_paths, start_goal?, selected_goal?, activated_goal?, paused_goals, index?, validation?, warnings }`
 
 ### `mdkg subgraph`
 

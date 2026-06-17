@@ -65,7 +65,7 @@ function createSourceGraph(root: string, name: string): string {
   return source;
 }
 
-function createLinkedTemplateGraph(root: string, name: string): string {
+function createLinkedTemplateGraph(root: string, name: string, activateStartGoal = false): string {
   const source = path.join(root, name);
   fs.mkdirSync(source, { recursive: true });
   run(["init", "--agent"], source);
@@ -86,6 +86,9 @@ function createLinkedTemplateGraph(root: string, name: string): string {
   ], source);
   const taskPath = path.join(source, ".mdkg", "work", "task-1-template-linked-task.md");
   fs.appendFileSync(taskPath, "\nMentions root:goal-1 and task-1 for rewrite proof.\n", "utf8");
+  if (activateStartGoal) {
+    run(["goal", "activate", "goal-1", "--json"], source);
+  }
   run(["index"], source);
   return source;
 }
@@ -197,10 +200,15 @@ test("graph import-template rewrites same-repo IDs and links with dry-run then a
   const root = makeTempDir("mdkg-graph-import-");
   run(["init", "--agent"], root);
   run(["new", "goal", "local existing goal", "--status", "todo", "--priority", "1", "--json"], root);
+  run(["goal", "activate", "goal-1", "--json"], root);
   run(["new", "task", "local existing task", "--status", "todo", "--priority", "1", "--json"], root);
-  const source = createLinkedTemplateGraph(root, "templates/source");
+  const source = createLinkedTemplateGraph(root, "templates/source", true);
   const sourceHashBefore = hashTree(source);
   const beforeHash = hashTree(path.join(root, ".mdkg", "work"));
+
+  const noSelect = runFailure(["graph", "import-template", "templates/source", "--apply", "--json"], root);
+  assert.match(noSelect.stderr, /would create multiple active root goals/);
+  assert.equal(hashTree(path.join(root, ".mdkg", "work")), beforeHash, "failed import mutated root work tree");
 
   const dryRun = json<{
     action: string;
@@ -210,6 +218,8 @@ test("graph import-template rewrites same-repo IDs and links with dry-run then a
     rewritten_ids: Array<{ from_id: string; to_id: string }>;
     rewritten_refs: Array<{ field: string; from: string; to: string }>;
     selected_goal?: { qid: string; planned: boolean };
+    activated_goal?: { qid: string; status: string; goal_state: string; planned: boolean };
+    paused_goals: Array<{ qid: string; status: string; goal_state: string; source: string; planned: boolean }>;
   }>(
     run([
       "graph",
@@ -233,6 +243,14 @@ test("graph import-template rewrites same-repo IDs and links with dry-run then a
   assert.ok(dryRun.rewritten_refs.some((item) => item.field === "parent" && item.from === "goal-1" && item.to === "goal-2"));
   assert.equal(dryRun.selected_goal?.qid, "root:goal-2");
   assert.equal(dryRun.selected_goal?.planned, true);
+  assert.equal(dryRun.activated_goal?.qid, "root:goal-2");
+  assert.equal(dryRun.activated_goal?.status, "progress");
+  assert.equal(dryRun.activated_goal?.goal_state, "active");
+  assert.equal(dryRun.activated_goal?.planned, true);
+  assert.deepEqual(
+    dryRun.paused_goals.map((item) => [item.qid, item.status, item.goal_state, item.source, item.planned]),
+    [["root:goal-1", "blocked", "paused", "local", true]]
+  );
   assert.equal(hashTree(path.join(root, ".mdkg", "work")), beforeHash, "dry-run mutated root work tree");
 
   const applied = json<{
@@ -240,6 +258,8 @@ test("graph import-template rewrites same-repo IDs and links with dry-run then a
     files_written: string[];
     validation?: { ok: boolean; error_count: number };
     selected_goal?: { qid: string; planned: boolean };
+    activated_goal?: { qid: string; status: string; goal_state: string; planned: boolean };
+    paused_goals: Array<{ qid: string; status: string; goal_state: string; source: string; planned: boolean }>;
   }>(
     run([
       "graph",
@@ -260,13 +280,54 @@ test("graph import-template rewrites same-repo IDs and links with dry-run then a
   assert.equal(applied.validation?.error_count, 0);
   assert.equal(applied.selected_goal?.qid, "root:goal-2");
   assert.equal(applied.selected_goal?.planned, false);
+  assert.equal(applied.activated_goal?.qid, "root:goal-2");
+  assert.equal(applied.activated_goal?.planned, false);
+  assert.deepEqual(
+    applied.paused_goals.map((item) => [item.qid, item.status, item.goal_state, item.source, item.planned]),
+    [["root:goal-1", "blocked", "paused", "local", false]]
+  );
 
   const importedTask = fs.readFileSync(path.join(root, ".mdkg", "work", "task-2-template-linked-task.md"), "utf8");
   assert.match(importedTask, /parent: goal-2/);
   assert.match(importedTask, /refs: \[goal-2\]/);
   assert.match(importedTask, /Mentions root:goal-2 and task-2/);
+  const localGoal = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1-local-existing-goal.md"), "utf8");
+  assert.match(localGoal, /status: blocked/);
+  assert.match(localGoal, /goal_state: paused/);
+  const importedGoal = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-2-template-start-goal.md"), "utf8");
+  assert.match(importedGoal, /status: progress/);
+  assert.match(importedGoal, /goal_state: active/);
   const current = json<{ goal: { id: string; qid: string } }>(run(["goal", "current", "--json"], root).stdout);
   assert.equal(current.goal.id, "goal-2");
   run(["validate", "--json"], root);
   assert.equal(hashTree(source), sourceHashBefore, "source directory changed during import-template");
+});
+
+test("graph import-template rejects closed selected start goals before writing", () => {
+  for (const action of ["done", "archive"] as const) {
+    const root = makeTempDir(`mdkg-graph-import-${action}-`);
+    run(["init", "--agent"], root);
+    const source = createLinkedTemplateGraph(root, "templates/source");
+    if (action === "done") {
+      run(["goal", "done", "goal-1", "--json"], source);
+    } else {
+      run(["goal", "archive", "goal-1", "--reason", "closed template", "--json"], source);
+    }
+    run(["index"], source);
+    const beforeHash = hashTree(path.join(root, ".mdkg", "work"));
+
+    const failed = runFailure([
+      "graph",
+      "import-template",
+      "templates/source",
+      "--start-goal",
+      "goal-1",
+      "--select-goal",
+      "--apply",
+      "--json",
+    ], root);
+
+    assert.match(failed.stderr, /cannot select achieved or archived imported start goal/);
+    assert.equal(hashTree(path.join(root, ".mdkg", "work")), beforeHash, "closed start-goal import mutated root work tree");
+  }
 });
