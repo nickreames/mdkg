@@ -29,13 +29,14 @@ mdkg capability search "..."
 mdkg spec list --json
 mdkg archive list
 mdkg bundle create --profile private
+mdkg graph clone .mdkg/bundles/private/all.mdkg.zip --target demos/demo-1 --json
 mdkg subgraph list --json
 mdkg status --json
 mdkg fix plan --json
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg index` to create or refresh generated graph/skill/capability/subgraph and SQLite caches after init, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal activate/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg index` to create or refresh generated graph/skill/capability/subgraph and SQLite caches after init, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal activate/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg graph ...` to clone/fork/import authored graph templates, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
 Use `mdkg status --json` for a read-only operator summary of Git, graph,
 selected-goal, project DB, and generated-cache health before mutating work. Use
@@ -157,6 +158,22 @@ mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
 ```
 
 Use this as a pre-commit recommendation only when the repo tracks archive caches or `.mdkg/bundles/`. Private bundles are local graph transport artifacts and may be tracked in private repos when configured. Public bundles require selected workspaces with `visibility: public` and fail closed when public records reference private graph, archive, or subgraph records.
+
+Clone or fork an authored graph into a separate repo/workspace while preserving IDs:
+
+```bash
+mdkg graph clone .mdkg/bundles/private/all.mdkg.zip --target demos/demo-1 --json
+mdkg graph fork templates/website-template-mdkg --target demos/live-build --start-goal goal-1 --json
+```
+
+Import a template graph into the current repo with deterministic ID and link rewrites:
+
+```bash
+mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 --select-goal --dry-run --json
+mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 --select-goal --apply --json
+```
+
+`graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace. `graph import-template` rewrites canonical numeric IDs for same-repo imports and requires `--id-prefix` for colliding semantic IDs. Subgraphs remain read-only planning views; use `mdkg graph ...` when authored graph state should be created.
 
 Register child bundle snapshots as read-only subgraphs with:
 

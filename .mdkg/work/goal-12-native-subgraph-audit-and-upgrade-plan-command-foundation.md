@@ -16,14 +16,14 @@ tags: [goal, subgraph, audit, upgrade-plan, post-0-3-0]
 owners: []
 links: []
 artifacts: []
-relates: [epic-68, goal-10, goal-11, edd-16, dec-29, goal-18]
+relates: [epic-68, goal-10, goal-11, edd-16, dec-29]
 blocked_by: []
 blocks: []
 refs: [edd-16, dec-29]
 aliases: [native-subgraph-operations, subgraph-audit-upgrade-plan, subgraph-refresh-receipts]
 skills: []
 created: 2026-06-07
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Objective
 

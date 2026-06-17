@@ -273,6 +273,9 @@ function requireInitAssets() {
   if (!seededReadme.includes("mdkg subgraph add") || !seededReadme.includes("mdkg subgraph verify")) {
     fail("dist/init/README.md is missing subgraph onboarding guidance");
   }
+  if (!seededReadme.includes("mdkg graph clone") || !seededReadme.includes("mdkg graph import-template")) {
+    fail("dist/init/README.md is missing graph clone/import onboarding guidance");
+  }
   if (
     !seededReadme.includes("mdkg new goal") ||
     !seededReadme.includes("mdkg goal activate/current/next/claim/evaluate")
@@ -380,6 +383,9 @@ function requireInitAssets() {
   if (!rootReadme.includes("mdkg fix plan") || !rootReadme.includes("fix apply")) {
     fail("README.md is missing fix plan dry-run guidance");
   }
+  if (!rootReadme.includes("mdkg graph clone") || !rootReadme.includes("mdkg graph import-template")) {
+    fail("README.md is missing graph clone/import guidance");
+  }
   if (
     !rootReadme.includes("mdkg new spike") ||
     !rootReadme.includes("Research spikes") ||
@@ -402,6 +408,13 @@ function requireInitAssets() {
   }
   if (!matrix.includes("mdkg subgraph audit [alias|--all]") || !matrix.includes("mdkg subgraph upgrade-plan [alias|--all]")) {
     fail("CLI_COMMAND_MATRIX.md is missing subgraph audit or upgrade-plan command references");
+  }
+  if (
+    !matrix.includes("mdkg graph clone <source-bundle-or-mdkg-dir>") ||
+    !matrix.includes("mdkg graph fork <source-bundle-or-mdkg-dir>") ||
+    !matrix.includes("mdkg graph import-template <source-bundle-or-mdkg-dir>")
+  ) {
+    fail("CLI_COMMAND_MATRIX.md is missing graph clone/fork/import-template command references");
   }
   if (
     !matrix.includes("mdkg new spike") ||
@@ -430,6 +443,12 @@ function requireInitAssets() {
   for (const expected of ["subgraph.bundle.root_owned", "subgraph.materialize.target_safe", "upgrade-plan"]) {
     if (!smokeSubgraph.includes(expected)) {
       fail(`scripts/smoke-subgraph.js is missing ${expected} proof`);
+    }
+  }
+  const smokeGraphClone = requireFile("scripts/smoke-graph-clone.js");
+  for (const expected of ["graph clone", "graph fork", "import-template", "--select-goal"]) {
+    if (!smokeGraphClone.includes(expected)) {
+      fail(`scripts/smoke-graph-clone.js is missing ${expected} proof`);
     }
   }
   const smokeCommandDocs = requireFile("scripts/smoke-command-docs.js");

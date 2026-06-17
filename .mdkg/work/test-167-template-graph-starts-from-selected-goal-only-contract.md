@@ -2,7 +2,7 @@
 id: test-167
 type: test
 title: template graph starts from selected goal only contract
-status: todo
+status: done
 priority: 2
 epic: epic-94
 parent: goal-18
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [Template graph contains a selected goal., Agent handoff can start from that goal alone., No hidden chat context is required.]
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Overview
 
@@ -38,11 +38,19 @@ Validate template graph starts from selected goal only contract.
 - Template graph contains a selected goal.
 - Agent handoff can start from that goal alone.
 - No hidden chat context is required.
+- `graph fork --start-goal` selects the preserved start goal in the target.
+- `graph import-template --start-goal --select-goal --apply` selects the
+  rewritten start goal in the current repo.
 
 # Expected Evidence
 
-- Pack and goal-next receipt.
+- `tests/commands/graph.test.ts`
+- `node --test dist/tests/commands/graph.test.js`
+- `goal current --json` receipts from fork/import temp graphs.
 
 # Notes / Follow-ups
 
-- Record command output, receipts, and linked checkpoints when implemented.
+- Passing graph command tests prove the start-from-one-goal contract for both
+  preserved-ID fork and rewritten-ID import-template workflows.
+- The broader website-template-mdkg repo is planned under `goal-20`, not created
+  in this 0.3.5 goal.

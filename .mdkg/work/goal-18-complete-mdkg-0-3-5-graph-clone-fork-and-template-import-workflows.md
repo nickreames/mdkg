@@ -2,12 +2,12 @@
 id: goal-18
 type: goal
 title: Complete mdkg 0.3.5 graph clone fork and template import workflows
-status: todo
+status: done
 priority: 2
-goal_state: paused
+goal_state: achieved
 goal_condition: 0.3.5 is dry-run publish ready after mdkg can clone or fork complete graphs across repos, import templates into the same repo with safe ID rewrites, and dogfood website-template-mdkg bootstrap planning.
 scope_refs: [epic-92, epic-93, epic-94, spike-7, task-386, task-387, task-388, task-389, task-390, task-391, test-165, test-166, test-167]
-active_node: spike-7
+active_node: task-391
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:graph-clone, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30
@@ -23,7 +23,7 @@ refs: []
 aliases: []
 skills: []
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Objective
 
@@ -84,7 +84,13 @@ No real npm publish, git tag, git push, website deploy, or child-repo mutation i
 # Iteration Log
 
 - 2026-06-16: Created during versioned future-goal alignment pass.
+- 2026-06-17: Completed graph template/fork UX research, implemented graph clone/fork/import-template, validated subgraph boundary preservation, prepared 0.3.5 RC metadata, and completed dry-run publish readiness.
 
 # Completion Evidence
 
-- Pending.
+- `spike-7`, `task-386` through `task-391`, and `test-165` through `test-167` are complete.
+- Checkpoints: `chk-153`, `chk-154`, `chk-155`, `chk-156`, `chk-157`, `chk-158`, `chk-159`, `chk-160`, `chk-161`, and `chk-162`.
+- `npm run build`, `npm run test`, `npm run cli:check`, `npm run cli:contract`, `node dist/cli.js validate --json`, `npm run smoke:graph-clone`, `npm run prepublishOnly`, `node scripts/assert-publish-ready.js`, `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`, `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run`, and `git diff --check` all passed.
+- `npm pack --dry-run --json` reported `mdkg@0.3.5`, tarball `mdkg-0.3.5.tgz`, shasum `a8c23d41988f030d377b81231281b658281cf20e`, and `160` files.
+- `npm publish --dry-run` completed with `+ mdkg@0.3.5`.
+- No real npm publish, git tag, git push, global install, website deploy, or downstream repo mutation was performed.

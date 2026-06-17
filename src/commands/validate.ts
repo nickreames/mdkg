@@ -20,7 +20,7 @@ export type ValidateCommandOptions = {
   json?: boolean;
 };
 
-type ValidateReceipt = {
+export type ValidateReceipt = {
   action: "validated";
   ok: boolean;
   warning_count: number;
@@ -287,7 +287,7 @@ function validateEventsJsonl(
   }
 }
 
-export function runValidateCommand(options: ValidateCommandOptions): void {
+export function collectValidateReceipt(options: ValidateCommandOptions): ValidateReceipt {
   const config = loadConfig(options.root);
   const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
   const templateSchemas = templateSchemaInfo.schemas;
@@ -457,33 +457,39 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
     ...(outPath ? { report_path: outPath } : {}),
   };
 
+  return receipt;
+}
+
+export function runValidateCommand(options: ValidateCommandOptions): void {
+  const receipt = collectValidateReceipt(options);
+
   if (options.json) {
     console.log(JSON.stringify(receipt, null, 2));
-    if (uniqueErrors.length > 0) {
-      throw new ValidationError(`validation failed with ${uniqueErrors.length} error(s)`);
+    if (receipt.error_count > 0) {
+      throw new ValidationError(`validation failed with ${receipt.error_count} error(s)`);
     }
     return;
   }
 
   if (!options.quiet) {
-    for (const warning of uniqueWarnings) {
+    for (const warning of receipt.warnings) {
       console.error(`warning: ${warning}`);
     }
   }
 
-  if (uniqueErrors.length > 0) {
-    if (outPath) {
-      console.error(`validation failed: ${uniqueErrors.length} error(s). details written to ${outPath}`);
+  if (receipt.error_count > 0) {
+    if (receipt.report_path) {
+      console.error(`validation failed: ${receipt.error_count} error(s). details written to ${receipt.report_path}`);
     } else {
-      for (const error of uniqueErrors) {
+      for (const error of receipt.errors) {
         console.error(error);
       }
     }
-    throw new ValidationError(`validation failed with ${uniqueErrors.length} error(s)`);
+    throw new ValidationError(`validation failed with ${receipt.error_count} error(s)`);
   }
 
-  if (outPath) {
-    console.log(`validation report written: ${outPath}`);
+  if (receipt.report_path) {
+    console.log(`validation report written: ${receipt.report_path}`);
   }
   console.log("validation ok");
 }
