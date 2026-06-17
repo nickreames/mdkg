@@ -208,6 +208,20 @@ Materialized trees are generated local state, ignored by graph indexing/search/v
 
 Subgraph nodes are projected under the subgraph alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, capability discovery, and `capability resolve`, but remain read-only; mutate the child repo and sync its root-owned bundle snapshot to change subgraph content. Root-authored relationship and reference fields can point at configured subgraph qids such as `child_repo:work.example`; local ownership fields such as `epic`, `parent`, `prev`, and `next` stay local-only. Stale subgraphs warn during planning reads and fail `mdkg subgraph verify`. Public or internal subgraphs must be backed by public bundle profiles; private subgraphs stay private planning context.
 
+Launch a local read-only MCP server when an MCP-capable agent should inspect a
+specific mdkg graph without receiving mutation tools:
+
+```bash
+mdkg mcp serve --stdio --root /path/to/repo
+```
+
+The MCP surface is stdio-only in this release. It exposes read-only tools for
+status, workspace/subgraph listing, search, show, in-memory pack generation,
+goal current/next, and validation. It does not expose task updates, goal
+activation, graph import, queue, event, archive, format, SQL, shell, arbitrary
+file reads, filesystem mutation, environment variables, or secret access.
+Future mutation allowlists remain design work.
+
 Validate before handoff or commit:
 
 ```bash
@@ -332,6 +346,7 @@ These are the commands new users and agents should learn first:
 - `mdkg task`
 - `mdkg validate`
 - `mdkg status`
+- `mdkg mcp`
 - `mdkg fix`
 
 Advanced / maintenance commands still exist, but they are not the first-run story:

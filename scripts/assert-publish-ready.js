@@ -95,6 +95,12 @@ function requirePackageVersions() {
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run cli:check && npm run cli:contract")) {
     fail("prepublishOnly must run cli:contract immediately after cli:check");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:mcp"]) {
+    fail("package.json is missing smoke:mcp");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:graph-clone && npm run smoke:mcp && npm run smoke:subgraph")) {
+    fail("prepublishOnly must run smoke:mcp between smoke:graph-clone and smoke:subgraph");
+  }
   if (!Array.isArray(pkg.files) || !pkg.files.includes("dist/command-contract.json")) {
     fail("package files must include dist/command-contract.json");
   }
@@ -113,7 +119,7 @@ function requireCliBuild() {
     fail("dist/command-contract.json has too few command records");
   }
   const byKey = new Map(contract.commands.map((command) => [command.key, command]));
-  for (const key of ["status", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "workspace", "skill new", "task start"]) {
+  for (const key of ["status", "mcp", "mcp serve", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "workspace", "skill new", "task start"]) {
     if (!byKey.has(key)) {
       fail(`dist/command-contract.json is missing ${key}`);
     }
@@ -139,6 +145,18 @@ function requireCliBuild() {
   if (!fixApply || fixApply.danger_level !== "high" || fixApply.lock_policy === "none-read-only" || fixApply.dry_run?.apply_family !== "ids") {
     fail("dist/command-contract.json is missing fix apply mutation safety metadata");
   }
+  const mcpServe = byKey.get("mcp serve");
+  if (
+    !mcpServe ||
+    mcpServe.danger_level !== "read-only" ||
+    !Array.isArray(mcpServe.write_paths) ||
+    mcpServe.write_paths.length !== 0 ||
+    mcpServe.lock_policy !== "none-read-only" ||
+    !mcpServe.usage.includes("  mdkg mcp serve --stdio") ||
+    !mcpServe.flags.some((flag) => flag.name === "--stdio")
+  ) {
+    fail("dist/command-contract.json must keep mcp serve read-only");
+  }
 }
 
 function requireBuildFolders() {
@@ -157,6 +175,12 @@ function requireBuildFolders() {
   requireFile("dist/commands/goal.js");
   requireFile("dist/commands/status.js");
   requireFile("dist/commands/fix.js");
+  const mcp = requireFile("dist/commands/mcp.js");
+  for (const expected of ["mdkg_status", "mdkg_workspace_list", "mdkg_search", "mdkg_pack", "mdkg_goal_next", "runMcpServeCommand"]) {
+    if (!mcp.includes(expected)) {
+      fail(`dist/commands/mcp.js is missing ${expected}`);
+    }
+  }
   const doctor = requireFile("dist/commands/doctor.js");
   if (!doctor.includes("goal.selected_achieved") || !doctor.includes("db.project_verify")) {
     fail("dist/commands/doctor.js is missing strict typed operator-health checks");
@@ -264,6 +288,7 @@ function requireInitAssets() {
     fail("dist/init/AGENT_START.md is missing internal event/reducer/lease/materializer boundary guidance");
   }
   const seededReadme = requireFile("dist/init/README.md");
+  const normalizedSeededReadme = seededReadme.replace(/\s+/g, " ");
   if (!seededReadme.includes("mdkg status --json") || !seededReadme.includes("mdkg doctor --strict --json")) {
     fail("dist/init/README.md is missing operator health guidance");
   }
@@ -273,7 +298,15 @@ function requireInitAssets() {
   if (!seededReadme.includes("mdkg subgraph add") || !seededReadme.includes("mdkg subgraph verify")) {
     fail("dist/init/README.md is missing subgraph onboarding guidance");
   }
-  if (!seededReadme.includes("mdkg graph clone") || !seededReadme.includes("mdkg graph import-template")) {
+  if (!seededReadme.includes("mdkg mcp serve --stdio") || !seededReadme.includes("read-only tools")) {
+    fail("dist/init/README.md is missing MCP read-only server guidance");
+  }
+  if (
+    !seededReadme.includes("mdkg graph clone") ||
+    !seededReadme.includes("mdkg graph import-template") ||
+    !normalizedSeededReadme.includes("activates the rewritten imported start goal") ||
+    !normalizedSeededReadme.includes("pauses competing active root goals")
+  ) {
     fail("dist/init/README.md is missing graph clone/import onboarding guidance");
   }
   if (
@@ -377,13 +410,26 @@ function requireInitAssets() {
     fail("dist/init pursue-mdkg-goal skill is missing goal pursuit guidance");
   }
   const rootReadme = requireFile("README.md");
+  const normalizedRootReadme = rootReadme.replace(/\s+/g, " ");
   if (!rootReadme.includes("mdkg status --json") || !rootReadme.includes("mdkg doctor --strict --json")) {
     fail("README.md is missing operator health guidance");
   }
   if (!rootReadme.includes("mdkg fix plan") || !rootReadme.includes("fix apply")) {
     fail("README.md is missing fix plan dry-run guidance");
   }
-  if (!rootReadme.includes("mdkg graph clone") || !rootReadme.includes("mdkg graph import-template")) {
+  if (
+    !rootReadme.includes("mdkg mcp serve --stdio") ||
+    !rootReadme.includes("read-only tools") ||
+    !rootReadme.includes("Future mutation allowlists remain design work")
+  ) {
+    fail("README.md is missing MCP read-only server guidance");
+  }
+  if (
+    !rootReadme.includes("mdkg graph clone") ||
+    !rootReadme.includes("mdkg graph import-template") ||
+    !normalizedRootReadme.includes("activates the rewritten imported start goal") ||
+    !normalizedRootReadme.includes("pauses competing active root goals")
+  ) {
     fail("README.md is missing graph clone/import guidance");
   }
   if (
@@ -410,9 +456,18 @@ function requireInitAssets() {
     fail("CLI_COMMAND_MATRIX.md is missing subgraph audit or upgrade-plan command references");
   }
   if (
+    !matrix.includes("mdkg mcp serve --stdio") ||
+    !matrix.includes("mdkg_workspace_list") ||
+    !matrix.includes("no task, goal activation, graph import, queue, event, archive, format, SQL, shell")
+  ) {
+    fail("CLI_COMMAND_MATRIX.md is missing MCP command references");
+  }
+  if (
     !matrix.includes("mdkg graph clone <source-bundle-or-mdkg-dir>") ||
     !matrix.includes("mdkg graph fork <source-bundle-or-mdkg-dir>") ||
-    !matrix.includes("mdkg graph import-template <source-bundle-or-mdkg-dir>")
+    !matrix.includes("mdkg graph import-template <source-bundle-or-mdkg-dir>") ||
+    !matrix.includes("activated_goal?") ||
+    !matrix.includes("paused_goals")
   ) {
     fail("CLI_COMMAND_MATRIX.md is missing graph clone/fork/import-template command references");
   }
@@ -446,9 +501,15 @@ function requireInitAssets() {
     }
   }
   const smokeGraphClone = requireFile("scripts/smoke-graph-clone.js");
-  for (const expected of ["graph clone", "graph fork", "import-template", "--select-goal"]) {
+  for (const expected of ["graph clone", "graph fork", "import-template", "--select-goal", "activated_goal", "paused_goals"]) {
     if (!smokeGraphClone.includes(expected)) {
       fail(`scripts/smoke-graph-clone.js is missing ${expected} proof`);
+    }
+  }
+  const smokeMcp = requireFile("scripts/smoke-mcp.js");
+  for (const expected of ["mcp", "serve", "--stdio", "tools/list", "mdkg_workspace_list", "child_demo", "mdkg_task_update"]) {
+    if (!smokeMcp.includes(expected)) {
+      fail(`scripts/smoke-mcp.js is missing ${expected} proof`);
     }
   }
   const smokeCommandDocs = requireFile("scripts/smoke-command-docs.js");

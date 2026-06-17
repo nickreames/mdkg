@@ -28,6 +28,7 @@ test("cli help covers the remaining command help surfaces", () => {
     ["checkpoint", /mdkg checkpoint new <title> \[--ws <alias>\] \[--json\]/],
     ["validate", /mdkg validate \[--out <path>\] \[--quiet\] \[--json\]/],
     ["status", /mdkg status \[--json\]/],
+    ["mcp", /mdkg mcp serve --stdio/],
     ["format", /mdkg format/],
     ["doctor", /mdkg doctor \[--strict\] \[--json\]/],
     ["capability", /mdkg capability resolve \[query\] \[--requires <capability>\] \[--fresh-only\] \[--json\]/],
@@ -81,6 +82,13 @@ test("cli help covers the remaining command help surfaces", () => {
   assert.equal(dbSnapshot.status, 0);
   assert.match(dbSnapshot.stdout, /mdkg db snapshot seal \[--queue-policy drain\|paused\] \[--json\]/);
   assert.match(dbSnapshot.stdout, /mdkg db snapshot dump \[--snapshot <path>\] \[--output <path>\] \[--json\]/);
+
+  const mcpServe = runCli(["help", "mcp", "serve"]);
+  assert.equal(mcpServe.status, 0);
+  assert.match(mcpServe.stdout, /local Model Context Protocol server/);
+  assert.match(mcpServe.stdout, /stdio is the only transport/);
+  assert.match(mcpServe.stdout, /read-only tools/);
+  assert.match(mcpServe.stdout, /exposes no task, goal, graph, queue, event, archive, format, SQL, shell, filesystem, or environment mutation tools/);
 });
 
 test("cli command --help routes to command-specific help", () => {

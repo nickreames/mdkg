@@ -79,6 +79,8 @@ const HELP_TARGETS = [
   ["checkpoint"],
   ["validate"],
   ["status"],
+  ["mcp"],
+  ["mcp", "serve"],
   ["fix"],
   ["fix", "plan"],
   ["fix", "apply"],

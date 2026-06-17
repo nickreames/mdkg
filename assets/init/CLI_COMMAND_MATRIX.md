@@ -29,6 +29,7 @@ Primary commands:
 - `mdkg task`
 - `mdkg validate`
 - `mdkg status [--json]`
+- `mdkg mcp serve --stdio`
 - `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
 - `mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
 - `mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]`
@@ -43,6 +44,15 @@ Operator health:
 - unresolved Git add/add conflict stages are split by keeping stage 2 at the conflicted path and writing stage 3 to a new canonical ID/path
 - graph-reference and index/cache findings remain review-only guidance
 - `fix plan --json` returns a receipt-shaped plan with selected families, risk counts, paths, reason codes, and per-change `apply_supported` metadata
+
+Local MCP server:
+- `mdkg mcp serve --stdio`
+- starts one local Model Context Protocol server bound to the selected `--root`
+- stdio is the only transport in this release; no HTTP listener is opened
+- exposes read-only tools for status, workspace/subgraph list, search, show, in-memory pack, goal current/next, and validate
+- exposes no task, goal activation, graph import, queue, event, archive, format, SQL, shell, arbitrary file-read, filesystem mutation, environment, or secret-access tools
+- use `--root <path>` when launching from outside the repo
+- stdout is reserved for newline-delimited JSON-RPC MCP messages
 
 Index backend:
 - fresh mdkg workspaces default to `index.backend: sqlite`

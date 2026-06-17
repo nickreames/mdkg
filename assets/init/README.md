@@ -193,6 +193,14 @@ Use `mdkg subgraph materialize child_repo --target .mdkg/subgraphs --gitignore -
 
 Subgraph nodes use the subgraph alias as their qid prefix and can be inspected or packed, but mutations must happen in the owning child repo.
 
+Launch a local read-only MCP server when an MCP-capable agent should inspect this graph without receiving mutation tools:
+
+```bash
+mdkg mcp serve --stdio --root /path/to/repo
+```
+
+The MCP server is stdio-only in this release. It exposes read-only tools for status, workspace/subgraph listing, search, show, in-memory pack generation, goal current/next, and validation. It does not expose task updates, goal activation, graph import, queue, event, archive, format, SQL, shell, arbitrary file reads, filesystem mutation, environment variables, or secret access. Future mutation allowlists remain design work.
+
 ## Archive and Work Mirrors
 
 Archive source/artifact files with:
