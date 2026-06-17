@@ -232,11 +232,13 @@ const SAFETY_OVERRIDES = {
     danger_level: "mixed",
   },
   "goal select": goalStateMutation("select-goal"),
+  "goal activate": goalStateMutation("activate-goal-and-pause-competing-goals"),
   "goal clear": goalStateMutation("clear-selected-goal"),
   "goal claim": goalStateMutation("claim-goal-active-node"),
   "goal pause": goalStateMutation("pause-goal"),
   "goal resume": goalStateMutation("resume-goal"),
   "goal done": goalStateMutation("complete-goal"),
+  "goal archive": goalStateMutation("archive-goal"),
   skill: {
     side_effects: ["read-or-write-skills-and-agent-mirrors"],
     write_paths: READ_WRITE_PATHS.skill,

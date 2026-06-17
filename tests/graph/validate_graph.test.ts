@@ -116,3 +116,82 @@ test("collectGraphErrors validates goal scope_refs and active_node", () => {
   const missingErrors = collectGraphErrors(makeIndex(missingNodes), { allowMissing: false });
   assert.ok(missingErrors.some((error: string) => /scope_refs references missing node epic-99/.test(error)));
 });
+
+test("collectGraphErrors rejects multiple active local root goals", () => {
+  const nodes = {
+    "root:goal-1": makeNode(
+      "root:goal-1",
+      {},
+      {
+        type: "goal",
+        status: "progress",
+        attributes: {
+          goal_state: "active",
+          goal_condition: "first",
+          scope_refs: [],
+        },
+      }
+    ),
+    "root:goal-2": makeNode(
+      "root:goal-2",
+      {},
+      {
+        type: "goal",
+        status: "progress",
+        attributes: {
+          goal_state: "active",
+          goal_condition: "second",
+          scope_refs: [],
+        },
+      }
+    ),
+  };
+
+  const errors = collectGraphErrors(makeIndex(nodes), { allowMissing: false });
+  assert.ok(
+    errors.some((error: string) =>
+      /multiple active root goals found: root:goal-1, root:goal-2; run mdkg goal activate <goal-id>/.test(error)
+    )
+  );
+});
+
+test("collectGraphErrors ignores imported subgraph goals for local single-active validation", () => {
+  const nodes = {
+    "root:goal-1": makeNode(
+      "root:goal-1",
+      {},
+      {
+        type: "goal",
+        status: "progress",
+        attributes: {
+          goal_state: "active",
+          goal_condition: "root",
+          scope_refs: [],
+        },
+      }
+    ),
+    "child:goal-1": makeNode(
+      "child:goal-1",
+      {},
+      {
+        id: "goal-1",
+        qid: "child:goal-1",
+        ws: "child",
+        type: "goal",
+        status: "progress",
+        attributes: {
+          goal_state: "active",
+          goal_condition: "child",
+          scope_refs: [],
+        },
+        source: {
+          imported: true,
+          subgraph_alias: "child",
+        },
+      }
+    ),
+  };
+
+  const errors = collectGraphErrors(makeIndex(nodes), { allowMissing: false });
+  assert.deepEqual(errors, []);
+});

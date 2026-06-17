@@ -242,14 +242,16 @@ Work semantic mirrors:
 Goal nodes:
 - `mdkg goal show <goal-id-or-qid> [--json]`
 - `mdkg goal select <goal-id-or-qid> [--json]`
+- `mdkg goal activate <goal-id-or-qid> [--json]`
 - `mdkg goal current [--json]`
 - `mdkg goal clear [--json]`
 - `mdkg goal next [goal-id-or-qid] [--json]`
 - `mdkg goal claim [goal-id-or-qid] <work-id-or-qid> [--json]`
 - `mdkg goal evaluate <goal-id-or-qid> [--json]`
-- `mdkg goal pause|resume|done <goal-id-or-qid> [--json]`
+- `mdkg goal pause|resume|done|archive <goal-id-or-qid> [--json]`
 - `mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal current [--ws <alias>] [--json]`
 - `mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]`
 - `mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]`
@@ -258,7 +260,10 @@ Goal nodes:
 - `mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]`
 - `mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]`
 - goals orchestrate recursive progress through explicit `scope_refs`; tasks, bugs, tests, spikes, and features remain concrete executable units
+- `goal activate` makes one local root goal active, pauses competing local active goals in the same workspace, and writes selected-goal state
+- `goal archive` marks a superseded historical goal archived so it remains readable but not actionable
 - `goal next` is read-only; use `goal claim` to set `active_node`
 - `mdkg goal evaluate` is report-only and never runs commands from `required_checks`
 - skill improvements discovered during normal goal execution should be recorded as candidates or proposals unless the active node is skill-maintenance

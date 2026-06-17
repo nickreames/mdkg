@@ -27,14 +27,16 @@ const GOAL_STATE_BY_ACTION: Record<GoalStateMutationAction, string> = {
   pause: "paused",
   resume: "active",
   done: "achieved",
+  archive: "archived",
 };
 const STATUS_BY_ACTION: Record<GoalStateMutationAction, string> = {
   pause: "blocked",
   resume: "progress",
   done: "done",
+  archive: "archived",
 };
 
-type GoalStateMutationAction = "pause" | "resume" | "done";
+type GoalStateMutationAction = "pause" | "resume" | "done" | "archive";
 
 export type GoalCommandOptions = {
   root: string;
@@ -126,6 +128,33 @@ function writeSelectedGoalState(root: string, node: IndexNode, now: Date): void 
   atomicWriteFile(selectedGoalPath(root), `${JSON.stringify(state, null, 2)}\n`);
 }
 
+function readNodeFrontmatter(root: string, node: IndexNode): {
+  filePath: string;
+  frontmatter: Record<string, FrontmatterValue>;
+  body: string;
+} {
+  const filePath = path.resolve(root, node.path);
+  const parsed = parseFrontmatter(fs.readFileSync(filePath, "utf8"), filePath);
+  return {
+    filePath,
+    frontmatter: { ...parsed.frontmatter },
+    body: parsed.body,
+  };
+}
+
+function writeNodeFrontmatterFile(
+  filePath: string,
+  frontmatter: Record<string, FrontmatterValue>,
+  body: string,
+  now: Date
+): void {
+  frontmatter.updated = formatDate(now);
+  const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
+  const frontmatterBlock = ["---", ...lines, "---"].join("\n");
+  const content = body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock;
+  atomicWriteFile(filePath, content);
+}
+
 function removeSelectedGoalState(root: string): boolean {
   const filePath = selectedGoalPath(root);
   if (!fs.existsSync(filePath)) {
@@ -160,6 +189,18 @@ function activeGoalCandidates(index: Index, wsHint?: string): IndexNode[] {
     .sort((a, b) => a.qid.localeCompare(b.qid));
 }
 
+function activeGoalConflicts(index: Index, target: IndexNode): IndexNode[] {
+  return activeGoalCandidates(index, target.ws).filter((node) => node.qid !== target.qid);
+}
+
+function isArchivedGoal(node: IndexNode | undefined): boolean {
+  return Boolean(
+    node &&
+    node.type === "goal" &&
+    (node.status === "archived" || node.attributes.goal_state === "archived")
+  );
+}
+
 function resolveGoalSelection(
   root: string,
   index: Index,
@@ -178,10 +219,14 @@ function resolveGoalSelection(
   const selected = readSelectedGoalState(root, warnings);
   if (selected) {
     const node = index.nodes[selected.qid];
-    if (node && node.type === "goal" && !node.source?.imported) {
+    if (node && node.type === "goal" && !node.source?.imported && !isArchivedGoal(node)) {
       return { node, source: "selected", warnings };
     }
-    warnings.push(`selected goal ${selected.qid} is not available; run \`mdkg goal select <goal-id>\``);
+    if (isArchivedGoal(node)) {
+      warnings.push(`selected goal ${selected.qid} is archived; run \`mdkg goal activate <goal-id>\` or \`mdkg goal clear\``);
+    } else {
+      warnings.push(`selected goal ${selected.qid} is not available; run \`mdkg goal select <goal-id>\``);
+    }
   }
 
   const active = activeGoalCandidates(index, wsHint);
@@ -190,10 +235,10 @@ function resolveGoalSelection(
   }
   if (active.length > 1) {
     throw new UsageError(
-      `multiple active goals found: ${active.map((node) => node.qid).join(", ")}; run \`mdkg goal select <goal-id>\``
+      `multiple active goals found: ${active.map((node) => node.qid).join(", ")}; run \`mdkg goal activate <goal-id>\``
     );
   }
-  throw new NotFoundError("no selected goal or unique active goal found; run `mdkg goal select <goal-id>`");
+  throw new NotFoundError("no selected goal or unique active goal found; run `mdkg goal activate <goal-id>`");
 }
 
 function loadGoal(root: string, idOrQid: string | undefined, wsHint?: string): LoadedGoal {
@@ -251,11 +296,7 @@ function goalReceipt(root: string, loaded: LoadedGoal): Record<string, unknown> 
 }
 
 function writeGoalFile(loaded: LoadedGoal, now: Date): void {
-  loaded.frontmatter.updated = formatDate(now);
-  const lines = formatFrontmatter(loaded.frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
-  const frontmatterBlock = ["---", ...lines, "---"].join("\n");
-  const content = loaded.body.length > 0 ? `${frontmatterBlock}\n${loaded.body}` : frontmatterBlock;
-  atomicWriteFile(loaded.filePath, content);
+  writeNodeFrontmatterFile(loaded.filePath, loaded.frontmatter, loaded.body, now);
 }
 
 function maybeReindex(root: string, config: ReturnType<typeof loadConfig>): void {
@@ -267,6 +308,9 @@ function maybeReindex(root: string, config: ReturnType<typeof loadConfig>): void
 
 function ensureStatusAllowed(config: ReturnType<typeof loadConfig>, status: string): string {
   const normalized = status.toLowerCase();
+  if (normalized === "archived") {
+    return normalized;
+  }
   const allowed = new Set(config.work.status_enum.map((value) => value.toLowerCase()));
   if (!allowed.has(normalized)) {
     throw new UsageError(`goal status ${normalized} is not allowed by work.status_enum`);
@@ -359,6 +403,30 @@ export function runGoalEvaluateCommand(options: GoalCommandOptions): void {
 
 export function runGoalNextCommand(options: GoalCommandOptions): void {
   const loaded = loadGoal(options.root, options.id, options.ws);
+  if (isArchivedGoal(loaded.node)) {
+    const warnings = [...loaded.warnings, `${loaded.node.qid} is archived and has no actionable next work`];
+    if (options.json) {
+      console.log(
+        JSON.stringify(
+          {
+            action: "selected",
+            goal: goalReceipt(options.root, loaded),
+            goal_source: loaded.resolutionSource,
+            node: null,
+            warnings,
+          },
+          null,
+          2
+        )
+      );
+      return;
+    }
+    for (const warning of warnings) {
+      console.error(`warning: ${warning}`);
+    }
+    console.error("no actionable local work found for goal");
+    return;
+  }
   const statusPreference = loaded.config.work.next.status_preference.map((status) => status.toLowerCase());
   const statusRanks = new Set(statusPreference);
   const warnings: string[] = [...loaded.warnings];
@@ -437,6 +505,9 @@ export function runGoalSelectCommand(options: GoalCommandOptions): void {
   const config = loadConfig(options.root);
   return withMutationLock(options.root, config.index.lock_timeout_ms, () => {
     const loaded = loadGoal(options.root, options.id, options.ws);
+    if (isArchivedGoal(loaded.node)) {
+      throw new UsageError(`cannot select archived goal ${loaded.node.qid}`);
+    }
     const now = options.now ?? new Date();
     writeSelectedGoalState(options.root, loaded.node, now);
     const receipt = {
@@ -455,6 +526,79 @@ export function runGoalSelectCommand(options: GoalCommandOptions): void {
   });
 }
 
+export function runGoalActivateCommand(options: GoalCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => {
+    const loaded = loadGoal(options.root, options.id, options.ws);
+    const currentState = String(loaded.frontmatter.goal_state ?? "");
+    const currentStatus = String(loaded.frontmatter.status ?? "");
+    if (loaded.node.status === "done" || currentStatus === "done" || currentState === "achieved") {
+      throw new UsageError(`cannot activate achieved goal ${loaded.node.qid}`);
+    }
+    if (loaded.node.status === "archived" || currentStatus === "archived" || currentState === "archived") {
+      throw new UsageError(`cannot activate archived goal ${loaded.node.qid}`);
+    }
+
+    const now = options.now ?? new Date();
+    const pausedGoals: Array<Record<string, unknown>> = [];
+    const conflicts = activeGoalConflicts(loaded.index, loaded.node);
+    for (const conflict of conflicts) {
+      const conflictFile = readNodeFrontmatter(options.root, conflict);
+      conflictFile.frontmatter.goal_state = "paused";
+      conflictFile.frontmatter.status = ensureStatusAllowed(config, "blocked");
+      writeNodeFrontmatterFile(conflictFile.filePath, conflictFile.frontmatter, conflictFile.body, now);
+      pausedGoals.push({
+        workspace: conflict.ws,
+        id: conflict.id,
+        qid: conflict.qid,
+        path: conflict.path,
+        previous_status: conflict.status ?? "",
+        previous_goal_state: String(conflict.attributes.goal_state ?? ""),
+        status: "blocked",
+        goal_state: "paused",
+      });
+    }
+
+    loaded.frontmatter.goal_state = "active";
+    loaded.frontmatter.status = ensureStatusAllowed(config, "progress");
+    writeGoalFile(loaded, now);
+    writeSelectedGoalState(options.root, loaded.node, now);
+    maybeReindex(options.root, loaded.config);
+
+    appendAutomaticEvent({
+      root: options.root,
+      ws: loaded.node.ws,
+      kind: "GOAL_ACTIVATE",
+      status: "ok",
+      refs: [loaded.node.id, ...conflicts.map((node) => node.id)],
+      notes: `goal activate via mdkg goal activate`,
+      now,
+    });
+
+    const receipt = {
+      action: "activated",
+      goal: goalReceipt(options.root, loaded),
+      activated_goal: goalReceipt(options.root, loaded),
+      paused_goals: pausedGoals,
+      selection: {
+        path: SELECTED_GOAL_STATE_PATH,
+        selected_at: now.toISOString(),
+      },
+      warnings: conflicts.length > 0
+        ? [`paused ${conflicts.length} competing active goal(s) in workspace ${loaded.node.ws}`]
+        : [],
+    };
+    if (options.json) {
+      console.log(JSON.stringify(receipt, null, 2));
+      return;
+    }
+    for (const warning of receipt.warnings) {
+      console.error(`warning: ${warning}`);
+    }
+    console.log(`goal activate: ${loaded.node.qid}`);
+  });
+}
+
 export function runGoalCurrentCommand(options: GoalCommandOptions): void {
   const config = loadConfig(options.root);
   const { index } = loadIndex({ root: options.root, config });
@@ -466,11 +610,15 @@ export function runGoalCurrentCommand(options: GoalCommandOptions): void {
   const selected = readSelectedGoalState(options.root, warnings);
   if (selected) {
     const selectedNode = index.nodes[selected.qid];
-    if (selectedNode && selectedNode.type === "goal" && !selectedNode.source?.imported) {
+    if (selectedNode && selectedNode.type === "goal" && !selectedNode.source?.imported && !isArchivedGoal(selectedNode)) {
       node = selectedNode;
       source = "selected";
     } else {
-      warnings.push(`selected goal ${selected.qid} is not available; run \`mdkg goal select <goal-id>\``);
+      if (isArchivedGoal(selectedNode)) {
+        warnings.push(`selected goal ${selected.qid} is archived; run \`mdkg goal activate <goal-id>\` or \`mdkg goal clear\``);
+      } else {
+        warnings.push(`selected goal ${selected.qid} is not available; run \`mdkg goal select <goal-id>\``);
+      }
     }
   }
 
@@ -481,7 +629,7 @@ export function runGoalCurrentCommand(options: GoalCommandOptions): void {
       source = "unique_active";
     } else if (active.length > 1) {
       source = "ambiguous";
-      warnings.push(`multiple active goals found: ${active.map((goal) => goal.qid).join(", ")}`);
+      warnings.push(`multiple active goals found: ${active.map((goal) => goal.qid).join(", ")}; run \`mdkg goal activate <goal-id>\``);
     }
   }
 
@@ -544,6 +692,9 @@ export function runGoalClaimCommand(options: GoalClaimCommandOptions): void {
   const config = loadConfig(options.root);
   return withMutationLock(options.root, config.index.lock_timeout_ms, () => {
     const loaded = loadGoal(options.root, options.id, options.ws);
+    if (isArchivedGoal(loaded.node)) {
+      throw new UsageError(`cannot claim work for archived goal ${loaded.node.qid}`);
+    }
     const resolved = resolveQid(loaded.index, options.workId, loaded.node.ws);
     if (resolved.status !== "ok") {
       throw new NotFoundError(formatResolveError("work", options.workId, resolved, loaded.node.ws));
@@ -596,6 +747,9 @@ function runGoalStateMutationLocked(
   options: GoalCommandOptions
 ): void {
   const loaded = loadGoal(options.root, options.id, options.ws);
+  if (action !== "archive" && isArchivedGoal(loaded.node)) {
+    throw new UsageError(`cannot ${action} archived goal ${loaded.node.qid}`);
+  }
   const now = options.now ?? new Date();
   loaded.frontmatter.goal_state = GOAL_STATE_BY_ACTION[action];
   loaded.frontmatter.status = ensureStatusAllowed(loaded.config, STATUS_BY_ACTION[action]);
@@ -641,5 +795,12 @@ export function runGoalDoneCommand(options: GoalCommandOptions): void {
   const config = loadConfig(options.root);
   return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
     runGoalStateMutationLocked("done", options)
+  );
+}
+
+export function runGoalArchiveCommand(options: GoalCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
+    runGoalStateMutationLocked("archive", options)
   );
 }

@@ -60,7 +60,7 @@ export const ALLOWED_TYPES = new Set([
 ]);
 
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
-const GOAL_STATE = new Set(["active", "paused", "achieved", "blocked", "budget_limited"]);
+const GOAL_STATE = new Set(["active", "paused", "achieved", "blocked", "budget_limited", "archived"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const GOAL_ATTRIBUTE_KEYS = [
   "goal_state",
@@ -396,13 +396,14 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   const statusValue = optionalString(frontmatter, "status", filePath);
   let status: string | undefined = undefined;
   const workStatus = new Set(options.workStatusEnum.map((value) => value.toLowerCase()));
+  const allowedWorkStatus = type === "goal" ? new Set([...workStatus, "archived"]) : workStatus;
   if (WORK_TYPES.has(type)) {
     if (!statusValue) {
       throw formatError(filePath, "status is required for work items");
     }
     const normalized = requireLowercase(statusValue, "status", filePath);
-    if (!workStatus.has(normalized)) {
-      throw formatError(filePath, `status must be one of ${Array.from(workStatus).join(", ")}`);
+    if (!allowedWorkStatus.has(normalized)) {
+      throw formatError(filePath, `status must be one of ${Array.from(allowedWorkStatus).join(", ")}`);
     }
     status = normalized;
   } else if (DEC_TYPES.has(type)) {

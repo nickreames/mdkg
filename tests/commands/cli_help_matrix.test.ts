@@ -63,6 +63,11 @@ test("cli help covers the remaining command help surfaces", () => {
   assert.equal(goalNextHelp.status, 0);
   assert.match(goalNextHelp.stdout, /feature, task, bug, test, or spike/);
 
+  const goalArchiveHelp = runCli(["help", "goal", "archive"]);
+  assert.equal(goalArchiveHelp.status, 0);
+  assert.match(goalArchiveHelp.stdout, /mdkg goal archive <goal-id-or-qid>/);
+  assert.match(goalArchiveHelp.stdout, /excluded from active routing/);
+
   const bundleImport = runCli(["help", "bundle", "import"]);
   assert.equal(bundleImport.status, 0);
   assert.match(bundleImport.stdout, /mdkg subgraph add\/list\/show\/rm\/enable\/disable\/verify\/refresh/);

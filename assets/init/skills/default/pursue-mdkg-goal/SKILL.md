@@ -27,7 +27,8 @@ Move one durable mdkg goal forward without losing scope, evidence, or user inten
 ## Steps
 
 1. Resolve the goal:
-   - If a goal id is provided, run `mdkg goal select <goal-id>`.
+   - If a goal id is provided and you are beginning durable work on it, run `mdkg goal activate <goal-id>`.
+   - Use `mdkg goal select <goal-id>` only when you need a local pointer without changing lifecycle state.
    - Otherwise run `mdkg goal current`.
    - If the result is missing or ambiguous, ask the user to select a goal.
 2. Inspect the goal with `mdkg goal show <goal-id>` and build context with `mdkg pack <goal-id>`.

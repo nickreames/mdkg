@@ -32,7 +32,7 @@ Operating rules:
 - Use `mdkg show <id>` for direct inspection and `mdkg show <id> --meta` for card-only inspection.
 - Use `mdkg search "..."` and `mdkg next` to discover current work.
 - Use `mdkg new goal "..."` for long-running recursive objectives that need an explicit end condition, active node, required skills, required checks, and completion evidence.
-- Use `mdkg goal select <goal-id>` when a goal is active, then `mdkg goal next` to surface one scoped feature, task, bug, or test at a time; normal `mdkg next` remains for non-goal concrete work.
+- Use `mdkg goal activate <goal-id>` to make one local root goal active, then `mdkg goal next` to surface one scoped feature, task, bug, test, or spike at a time; normal `mdkg next` remains for non-goal concrete work.
 - Use `mdkg goal claim [goal-id] <work-id>` only after accepting the surfaced work item; `mdkg goal next` is read-only.
 - Treat goal `required_checks` as report-only guidance from mdkg. Run commands yourself, then record evidence in the goal or active work item.
 - Record skill improvement candidates during normal goal execution; edit `SKILL.md` only when the active node is explicit skill-maintenance work.
@@ -68,7 +68,7 @@ If the active task is known:
 - `mdkg validate` before closeout
 
 If an active goal is known:
-- `mdkg goal select <goal-id>`
+- `mdkg goal activate <goal-id>`
 - `mdkg goal current`
 - `mdkg goal next`
 - `mdkg goal claim <work-id>`

@@ -681,6 +681,31 @@ function validateGoalRefs(index: Index, allowMissing: boolean, errors: string[] 
   }
 }
 
+function validateSingleActiveRootGoals(index: Index, errors: string[] | null): void {
+  const activeByWorkspace: Record<string, string[]> = {};
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "goal" || node.source?.imported) {
+      continue;
+    }
+    if (node.status === "progress" && node.attributes.goal_state === "active") {
+      if (!activeByWorkspace[node.ws]) {
+        activeByWorkspace[node.ws] = [];
+      }
+      activeByWorkspace[node.ws].push(qid);
+    }
+  }
+
+  for (const [workspace, qids] of Object.entries(activeByWorkspace)) {
+    if (qids.length <= 1) {
+      continue;
+    }
+    pushError(
+      errors,
+      `${workspace}: multiple active root goals found: ${qids.sort().join(", ")}; run mdkg goal activate <goal-id> to select exactly one`
+    );
+  }
+}
+
 function detectPrevNextCycles(index: Index, errors: string[] | null): void {
   const nodes = index.nodes;
   const seen = new Set<string>();
@@ -731,6 +756,7 @@ export function collectGraphErrors(index: Index, options: ValidateGraphOptions =
   validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, externalWorkspaces, errors);
   validateArchiveUriRefs(index, allowMissing, errors);
   validateGoalRefs(index, allowMissing, errors);
+  validateSingleActiveRootGoals(index, errors);
   detectPrevNextCycles(index, errors);
   return errors;
 }

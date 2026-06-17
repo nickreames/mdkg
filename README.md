@@ -461,9 +461,9 @@ as sealed state.
 
 Goal nodes are durable recursive objective contracts. Use `mdkg new goal "<objective>"` when a human or agent needs to keep working across multiple concrete nodes until a measurable end condition is achieved.
 
-`goal` is work-like but distinct from `task`: it can have status, priority, graph links, skills, explicit `scope_refs`, and structured goal fields, but normal `mdkg next` does not select goals. Use `mdkg goal select <goal-id>` once, then `mdkg goal next` to choose the next local feature, task, bug, test, or spike inside that goal. `mdkg goal next <goal-id>` remains available for explicit selection. Epics organize goal scope recursively but are not returned as executable work.
+`goal` is work-like but distinct from `task`: it can have status, priority, graph links, skills, explicit `scope_refs`, and structured goal fields, but normal `mdkg next` does not select goals. Use `mdkg goal activate <goal-id>` to make one local root goal active, pause competing local active goals, and select it for future `goal next` calls. Use `mdkg goal select <goal-id>` only when you want to change the local ignored selected-goal pointer without changing lifecycle state. `mdkg goal next <goal-id>` remains available for explicit selection. Epics organize goal scope recursively but are not returned as executable work.
 
-Use `mdkg goal claim [goal-id] <work-id>` to durably set `active_node` after choosing the next scoped item. `goal next` is read-only. Use `mdkg goal pause|resume|done` to update goal state after review.
+Use `mdkg goal claim [goal-id] <work-id>` to durably set `active_node` after choosing the next scoped item. `goal next` is read-only. Use `mdkg goal pause|resume|done` to update goal state after review, and `mdkg goal archive` for superseded historical roadmap goals that should remain readable but non-actionable.
 
 Required checks are stored as report-only guidance. Agents should run the checks themselves, record evidence in the goal or active work item, then use `mdkg goal evaluate` to summarize the current evidence state. During normal goal execution, skill improvements should be recorded as improvement candidates or proposal nodes; edit `SKILL.md` files only when the active node is explicit skill-maintenance work.
 

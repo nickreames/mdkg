@@ -296,6 +296,43 @@ test("parseNode parses goal attributes", () => {
   });
 });
 
+test("parseNode accepts archived goal status and state", () => {
+  const content = [
+    "---",
+    "id: goal-1",
+    "type: goal",
+    "title: historical roadmap goal",
+    "status: archived",
+    "priority: 1",
+    "goal_state: archived",
+    "goal_condition: superseded by a versioned goal",
+    "scope_refs: []",
+    "required_skills: []",
+    "required_checks: []",
+    "max_iterations: 25",
+    "blocked_after_attempts: 3",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: [goal-2]",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+  ].join("\n");
+  const node = parseNode(content, "goal.md", PARSE_OPTIONS);
+  assert.equal(node.id, "goal-1");
+  assert.equal(node.type, "goal");
+  assert.equal(node.status, "archived");
+  assert.equal(node.attributes.goal_state, "archived");
+  assert.deepEqual(node.edges.relates, ["goal-2"]);
+});
+
 test("parseNode rejects invalid goal state", () => {
   const content = [
     "---",
@@ -445,6 +482,30 @@ test("parseNode uses config status enum", () => {
     workStatusEnum: ["backlog"],
   };
   assert.throws(() => parseNode(content, "status.md", options), /status must be one of/);
+});
+
+test("parseNode keeps archived status goal-only", () => {
+  const content = [
+    "---",
+    "id: task-1",
+    "type: task",
+    "title: archived task is invalid",
+    "status: archived",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+  ].join("\n");
+  assert.throws(() => parseNode(content, "archived-task.md", PARSE_OPTIONS), /status must be one of/);
 });
 
 test("parseNode accepts reserved rule ids and id references", () => {
