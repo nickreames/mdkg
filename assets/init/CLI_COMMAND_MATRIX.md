@@ -218,7 +218,8 @@ Graph clone, fork, and template import:
 - `graph import-template` defaults to dry-run unless `--apply` is supplied
 - same-repo template import rewrites canonical numeric IDs to the next unused ID by type prefix and rewrites structured refs plus safe body-local id/qid mentions
 - colliding semantic template IDs require `--id-prefix`
-- `--select-goal` requires `--start-goal` and writes selected-goal state only after apply validation
+- `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
+- importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
 - subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 Subgraph orchestration:

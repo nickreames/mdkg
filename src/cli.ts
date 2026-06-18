@@ -711,7 +711,7 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       log("  - imports authored .mdkg/work template nodes into the current graph");
       log("  - defaults to dry-run unless --apply is supplied");
       log("  - rewrites canonical numeric IDs and structured graph links deterministically");
-      log("  - --select-goal requires --start-goal and writes selected-goal state only after apply validation");
+      log("  - --select-goal requires --start-goal; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state");
       break;
     default:
       log("Usage:");
