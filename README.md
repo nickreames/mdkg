@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.3.4`
+Current package version in source: `0.3.5`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -149,6 +149,27 @@ mdkg bundle list --json
 ```
 
 Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph, archive, or subgraph records.
+
+Clone or fork a reusable graph template into a separate target when the target
+should preserve IDs as its own graph namespace:
+
+```bash
+mdkg graph clone .mdkg/bundles/private/all.mdkg.zip --target demos/demo-1 --json
+mdkg graph fork templates/website-template-mdkg --target demos/live-build --start-goal goal-1 --json
+```
+
+Import a template graph into the current repo only through the rewritten-ID
+path. Review the dry-run receipt first, then apply explicitly:
+
+```bash
+mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 --select-goal --dry-run --json
+mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 --select-goal --apply --json
+```
+
+`graph clone` and `graph fork` preserve IDs; `graph import-template` rewrites
+canonical numeric IDs and internal links to avoid same-repo collisions. Subgraphs
+remain read-only planning views; use `mdkg graph ...` when authored graph state
+should be created.
 
 Register a child repo bundle as a read-only subgraph planning view:
 

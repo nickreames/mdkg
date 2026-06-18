@@ -102,6 +102,8 @@ const VALUE_FLAGS = new Set([
   "--target",
   "--snapshot",
   "--family",
+  "--start-goal",
+  "--id-prefix",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -140,6 +142,7 @@ const BOOLEAN_FLAGS = new Set([
   "--allow-dirty",
   "--clean",
   "--gitignore",
+  "--select-goal",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {

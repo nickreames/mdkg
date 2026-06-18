@@ -2,7 +2,7 @@
 id: test-166
 type: test
 title: same repo graph import rewrites ids and links contract
-status: todo
+status: done
 priority: 2
 epic: epic-93
 parent: goal-18
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [Import into same repo rewrites colliding IDs., All links are rewritten according to receipt., Imported start goal routes correctly.]
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-17
 ---
 # Overview
 
@@ -38,11 +38,19 @@ Validate same repo graph import rewrites ids and links contract.
 - Import into same repo rewrites colliding IDs.
 - All links are rewritten according to receipt.
 - Imported start goal routes correctly.
+- Dry-run reports planned rewrites without writing files.
+- Apply writes imported nodes, rebuilds indexes, validates, and can select the
+  rewritten start goal.
+- Source template directory is not mutated.
 
 # Expected Evidence
 
-- Import receipt and validation output.
+- `tests/commands/graph.test.ts`
+- `node --test dist/tests/commands/graph.test.js`
 
 # Notes / Follow-ups
 
-- Record command output, receipts, and linked checkpoints when implemented.
+- Passing graph command tests prove dry-run no-write behavior, deterministic
+  `goal-1 -> goal-2` and `task-1 -> task-2` rewrites, frontmatter/body ref
+  rewrites, selected-goal behavior, source immutability, and final graph
+  validation.

@@ -12,6 +12,47 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 - No changes yet.
 
+## 0.3.5 - 2026-06-17
+
+### Added
+
+- Added `mdkg graph clone <source> --target <path>` to create a complete
+  authored mdkg graph in a separate contained target directory while preserving
+  source IDs.
+- Added `mdkg graph fork <source> --target <path> --start-goal <goal-id>` to
+  preserve IDs in a separate target graph and optionally select the demo or
+  bootstrap start goal in that target.
+- Added `mdkg graph import-template <source> --dry-run|--apply` for same-repo
+  template graph imports with deterministic canonical ID rewrites, structured
+  reference rewrites, safe body ID/qid rewrites, and optional selected-goal
+  setup.
+- Added packed `smoke:graph-clone` coverage that installs mdkg from a tarball
+  in a temp prefix and validates clone, fork, import-template dry-run/apply,
+  source non-mutation, help text, search, pack, and validation behavior.
+
+### Changed
+
+- Updated README, seeded init README, command matrix, help snapshots,
+  prepublish gates, and publish-readiness assertions to document the
+  distinction between authored graph creation through `mdkg graph ...` and
+  read-only orchestration context through `mdkg subgraph ...`.
+- Added `smoke:graph-clone` to `prepublishOnly` before the existing subgraph
+  smoke so graph template import behavior is proven before release.
+- Consolidated website-template-mdkg dogfood planning under the 0.3.5 graph
+  clone/import goal without mutating downstream repositories or starting
+  website implementation.
+
+### Security
+
+- Clone/fork targets must be empty or absent, root-contained, and not nested
+  inside live directory sources.
+- Same-repo template imports default to dry-run, require `--apply` to write,
+  run under the mdkg mutation lock, rebuild generated indexes, and validate the
+  resulting graph before selecting a start goal.
+- Semantic ID collisions during template import require an explicit
+  `--id-prefix`; numeric canonical IDs are rewritten to the next unused ID so
+  links remain deterministic.
+
 ## 0.3.4 - 2026-06-17
 
 ### Added

@@ -22,6 +22,8 @@ Primary commands:
 - `mdkg spec`
 - `mdkg archive`
 - `mdkg bundle`
+- `mdkg graph`
+- `mdkg subgraph`
 - `mdkg work`
 - `mdkg goal`
 - `mdkg task`
@@ -203,6 +205,21 @@ Graph snapshot bundles:
 - repos that track archive caches or bundles should run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip` before commit
 - public bundles include only public workspace content and public archive sidecars
 - public bundle creation fails when public records reference private graph, archive, or subgraph records
+
+Graph clone, fork, and template import:
+- `mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]`
+- `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
+- `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
+- `graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace
+- clone/fork targets must be empty or absent and stay under the current mdkg root
+- live directory sources are never mutated; clone/fork refuses targets nested inside a live source directory
+- `graph fork --start-goal <goal-id>` writes selected-goal state in the target graph after validation
+- `graph import-template` imports authored `.mdkg/work/*.md` template nodes into the current repo and skips config, generated indexes, archive payloads, bundles, and materialized subgraph views
+- `graph import-template` defaults to dry-run unless `--apply` is supplied
+- same-repo template import rewrites canonical numeric IDs to the next unused ID by type prefix and rewrites structured refs plus safe body-local id/qid mentions
+- colliding semantic template IDs require `--id-prefix`
+- `--select-goal` requires `--start-goal` and writes selected-goal state only after apply validation
+- subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 Subgraph orchestration:
 - `mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--json]`

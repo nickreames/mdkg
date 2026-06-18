@@ -66,6 +66,11 @@ import {
   runBundleVerifyCommand,
 } from "./commands/bundle";
 import {
+  runGraphCloneCommand,
+  runGraphForkCommand,
+  runGraphImportTemplateCommand,
+} from "./commands/graph";
+import {
   runSubgraphAddCommand,
   runSubgraphAuditCommand,
   runSubgraphDisableCommand,
@@ -177,6 +182,7 @@ function printUsage(log: LogFn): void {
   log("  spec        List, show, and validate optional SPEC.md capability records");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
+  log("  graph       Clone and fork whole mdkg graphs");
   log("  subgraph    Register, audit, plan, sync, materialize, and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  goal        Inspect and advance recursive goal nodes");
@@ -680,6 +686,46 @@ function printBundleHelp(log: LogFn, subcommand?: string): void {
   printGlobalOptions(log);
 }
 
+function printGraphHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "clone":
+      log("Usage:");
+      log("  mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]");
+      log("\nNotes:");
+      log("  - clones a complete graph into an empty contained target directory");
+      log("  - preserves IDs because the target is a separate graph namespace");
+      log("  - source bundle or source directory is never mutated");
+      break;
+    case "fork":
+      log("Usage:");
+      log("  mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]");
+      log("\nNotes:");
+      log("  - forks a complete graph into an empty contained target directory");
+      log("  - preserves IDs and can select a start goal in the target graph");
+      log("  - source bundle or source directory is never mutated");
+      break;
+    case "import-template":
+      log("Usage:");
+      log("  mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]");
+      log("\nNotes:");
+      log("  - imports authored .mdkg/work template nodes into the current graph");
+      log("  - defaults to dry-run unless --apply is supplied");
+      log("  - rewrites canonical numeric IDs and structured graph links deterministically");
+      log("  - --select-goal requires --start-goal and writes selected-goal state only after apply validation");
+      break;
+    default:
+      log("Usage:");
+      log("  mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]");
+      log("  mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]");
+      log("  mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]");
+      log("\nNotes:");
+      log("  - graph clone/fork create authored graph state in separate target directories and preserve IDs");
+      log("  - graph import-template imports template work nodes into the current graph with rewritten IDs");
+      log("  - subgraphs remain read-only bundle projections for orchestration context");
+  }
+  printGlobalOptions(log);
+}
+
 function printSubgraphHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "add":
@@ -1157,6 +1203,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "bundle":
       printBundleHelp(log, subcommand);
+      return;
+    case "graph":
+      printGraphHelp(log, subcommand);
       return;
     case "subgraph":
       printSubgraphHelp(log, subcommand);
@@ -1851,6 +1900,50 @@ function runBundleSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     }
     default:
       throw new UsageError("bundle requires create/list/show/verify");
+  }
+}
+
+function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  const source = parsed.positionals[2];
+  const target = requireFlagValue("--target", parsed.flags["--target"]);
+  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+  switch (subcommand) {
+    case "clone": {
+      if (!source || parsed.positionals.length > 3) {
+        throw new UsageError("graph clone requires <source-bundle-or-mdkg-dir>");
+      }
+      if (!target) {
+        throw new UsageError("graph clone requires --target <path>");
+      }
+      runGraphCloneCommand({ root, source, target, json });
+      return 0;
+    }
+    case "fork": {
+      if (!source || parsed.positionals.length > 3) {
+        throw new UsageError("graph fork requires <source-bundle-or-mdkg-dir>");
+      }
+      if (!target) {
+        throw new UsageError("graph fork requires --target <path>");
+      }
+      const startGoal = requireFlagValue("--start-goal", parsed.flags["--start-goal"]);
+      runGraphForkCommand({ root, source, target, startGoal, json });
+      return 0;
+    }
+    case "import-template": {
+      if (!source || parsed.positionals.length > 3) {
+        throw new UsageError("graph import-template requires <source-bundle-or-mdkg-dir>");
+      }
+      const startGoal = requireFlagValue("--start-goal", parsed.flags["--start-goal"]);
+      const idPrefix = requireFlagValue("--id-prefix", parsed.flags["--id-prefix"]);
+      const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
+      const apply = parseBooleanFlag("--apply", parsed.flags["--apply"]);
+      const selectGoal = parseBooleanFlag("--select-goal", parsed.flags["--select-goal"]);
+      runGraphImportTemplateCommand({ root, source, startGoal, idPrefix, dryRun, apply, selectGoal, json });
+      return 0;
+    }
+    default:
+      throw new UsageError("graph requires clone/fork/import-template");
   }
 }
 
@@ -2677,6 +2770,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runArchiveSubcommand(parsed, root);
     case "bundle":
       return runBundleSubcommand(parsed, root);
+    case "graph":
+      return runGraphSubcommand(parsed, root);
     case "subgraph":
       return runSubgraphSubcommand(parsed, root);
     case "work":

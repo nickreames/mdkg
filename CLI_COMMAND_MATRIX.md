@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-06-06
-package_version_in_source: 0.3.4
+as_of: 2026-06-17
+package_version_in_source: 0.3.5
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -28,6 +28,7 @@ Primary commands:
 - `spec`
 - `archive`
 - `bundle`
+- `graph`
 - `subgraph`
 - `work`
 - `goal`
@@ -55,6 +56,7 @@ Capability cache discovery is read-only and accessed through `mdkg capability ..
 Optional reusable SPEC capability records are accessed through `mdkg spec ...`.
 Archive sidecars are accessed through `mdkg archive ...`.
 Full graph snapshot bundles are accessed through `mdkg bundle ...`.
+Whole-graph clone, fork, and same-repo template import workflows are accessed through `mdkg graph ...`.
 Read-only child graph orchestration is accessed through `mdkg subgraph ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 Recursive long-running objective contracts are accessed through `mdkg goal ...`.
@@ -614,6 +616,44 @@ JSON receipts:
 - `verify`: `{ action: "verified", ok, path, profile, selected_workspaces, file_count, stale, errors, stale_paths, bundle_hash, zip_sha256 }`
 - `show`: `{ action: "show", bundle, manifest }`
 - `list`: `{ action: "list", count, items }`
+
+### `mdkg graph`
+
+When to use:
+- clone or fork a complete mdkg graph into a separate target directory while preserving IDs
+- import a template graph into the current repo with deterministic ID/link rewrites
+- prepare selected-goal demo handoffs from reusable graph templates
+
+Usage:
+- `mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]`
+- `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
+- `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
+
+Flags:
+- `--target <path>`
+- `--start-goal <goal-id>`
+- `--select-goal`
+- `--id-prefix <prefix>`
+- `--dry-run`
+- `--apply`
+- `--json`
+
+Notes:
+- `graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace
+- clone/fork targets must be empty or absent and stay under the current mdkg root
+- live directory sources are never mutated; clone/fork refuses targets nested inside a live source directory
+- `graph fork --start-goal <goal-id>` writes selected-goal state in the target graph after validation
+- `graph import-template` imports authored `.mdkg/work/*.md` template nodes into the current repo and skips config, generated indexes, archive payloads, bundles, and materialized subgraph views
+- `graph import-template` defaults to dry-run unless `--apply` is supplied
+- same-repo template import rewrites canonical numeric IDs to the next unused ID by type prefix and rewrites structured refs plus safe body-local id/qid mentions
+- colliding semantic template IDs require `--id-prefix`
+- `--select-goal` requires `--start-goal` and writes selected-goal state only after apply validation
+- subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
+
+JSON receipts:
+- `clone`: `{ action: "graph.clone", ok, mode, source, target, source_hash, preserved_ids, files_written, skipped_paths, index, validation, warnings }`
+- `fork`: `{ action: "graph.fork", ok, mode, source, target, source_hash, preserved_ids, files_written, skipped_paths, start_goal?, selected_goal?, index, validation, warnings }`
+- `import-template`: `{ action: "graph.import_template", ok, mode, source, source_hash, preserved_ids: false, rewritten_ids, rewritten_refs, planned_paths, files_written, skipped_paths, start_goal?, selected_goal?, index?, validation?, warnings }`
 
 ### `mdkg subgraph`
 
