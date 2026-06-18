@@ -36,6 +36,7 @@ Primary commands:
 - `next`
 - `validate`
 - `status`
+- `mcp`
 - `fix`
 
 Advanced / maintenance commands:
@@ -64,6 +65,7 @@ Fresh init workspaces default to the SQLite access cache backend; existing migra
 Project application database foundation commands are accessed through `mdkg db ...`; `mdkg index` remains the compatibility shortcut for graph index rebuilds.
 Operator health summaries are accessed through read-only `mdkg status ...`; deeper diagnostics remain under `mdkg doctor ...`.
 Repair planning is accessed through read-only `mdkg fix plan ...`; duplicate-ID graph repairs can be applied through `mdkg fix apply --family ids ...` or the convenience `mdkg fix ids --apply ...`. Index/cache and graph-reference findings remain plan/manual-review only.
+Local MCP integration is accessed through `mdkg mcp serve --stdio`; it exposes read-only graph/status/workspace/search/show/pack/goal/validate tools only.
 
 ## Global usage
 
@@ -1086,6 +1088,34 @@ JSON receipt shape:
 - `db` reports disabled state or project DB verification summary
 - `generated` reports index, skills, capabilities, and subgraph cache existence/staleness
 - `summary` includes machine-readable warning and error counts plus messages
+
+### `mdkg mcp`
+
+Usage:
+- `mdkg mcp serve --stdio`
+
+When to use:
+- expose one local mdkg root to an MCP-capable agent or orchestrator
+- let an external agent inspect mdkg status, workspace/subgraph aliases, search/show results, in-memory packs, goal current/next, and validation without shelling out to individual CLI commands
+
+Flags:
+- `--stdio`
+- `--root`, `-r <path>`
+
+Boundaries:
+- stdio is the only transport in this release; mdkg opens no HTTP listener
+- bind the server to one graph root with `--root <path>` when launching from outside the repo
+- tool calls are read-only and return MCP `structuredContent` plus text content
+- exposed tools: `mdkg_status`, `mdkg_workspace_list`, `mdkg_search`, `mdkg_show`, `mdkg_pack`, `mdkg_goal_current`, `mdkg_goal_next`, and `mdkg_validate`
+- `mdkg_pack` builds an in-memory bounded pack and does not write `.mdkg/pack`
+- no task, goal activation, graph import, queue, event, archive, format, SQL, shell, arbitrary file-read, filesystem mutation, environment, or secret-access tool is exposed
+- mutation allowlists and broader CLI parity are future design work, not part of this command surface
+- stdout is reserved for newline-delimited JSON-RPC MCP messages; diagnostics must stay off stdout
+
+JSON-RPC receipt shapes:
+- initialize: `{ protocolVersion, capabilities: { tools }, serverInfo, instructions }`
+- `tools/list`: `{ tools: [{ name, title, description, inputSchema, annotations }] }`
+- `tools/call`: MCP tool result with `{ content, structuredContent, isError }`
 
 ### `mdkg fix`
 

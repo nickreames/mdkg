@@ -14,6 +14,7 @@ import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
 import { runDoctorCommand } from "./commands/doctor";
 import { runStatusCommand } from "./commands/status";
+import { runMcpServeCommand } from "./commands/mcp";
 import { runFixApplyCommand, runFixIdsCommand, runFixPlanCommand } from "./commands/fix";
 import {
   runDbInitCommand,
@@ -190,6 +191,7 @@ function printUsage(log: LogFn): void {
   log("  next        Suggest the next work item");
   log("  validate    Validate frontmatter + graph");
   log("  status      Show read-only operator health summary");
+  log("  mcp         Serve local read-only MCP tools over stdio");
   log("  fix         Plan read-only repairs with receipt-shaped JSON");
   log("\nAdvanced / maintenance commands:");
   log("  db          Project database and index-cache commands");
@@ -1063,6 +1065,30 @@ function printStatusHelp(log: LogFn): void {
   printGlobalOptions(log);
 }
 
+function printMcpHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "serve":
+      log("Usage:");
+      log("  mdkg mcp serve --stdio");
+      log("\nBoundary:");
+      log("  - starts one local Model Context Protocol server bound to the selected --root");
+      log("  - stdio is the only transport in this release; no HTTP listener is opened");
+      log("  - exposes read-only tools for status, workspace list, search, show, pack, goal current/next, and validate");
+      log("  - exposes no task, goal, graph, queue, event, archive, format, SQL, shell, filesystem, or environment mutation tools");
+      log("  - stdout is reserved for newline-delimited JSON-RPC MCP messages");
+      printGlobalOptions(log);
+      return;
+    default:
+      log("Usage:");
+      log("  mdkg mcp serve --stdio");
+      log("\nBoundary:");
+      log("  - local read-only MCP server for mdkg graph inspection");
+      log("  - use --root <path> to select the mdkg graph explicitly");
+      log("  - phase one is stdio-only and does not expose mutation tools");
+      printGlobalOptions(log);
+  }
+}
+
 function printFixHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "plan":
@@ -1233,6 +1259,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "status":
       printStatusHelp(log);
+      return;
+    case "mcp":
+      printMcpHelp(log, subcommand);
       return;
     case "fix":
       printFixHelp(log, subcommand);
@@ -2995,6 +3024,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       runStatusCommand({ root, json });
       return 0;
     }
+    case "mcp":
+      throw new UsageError("mcp serve requires the async CLI entrypoint");
     case "fix": {
       const sub = (parsed.positionals[1] ?? "").toLowerCase();
       if (!sub) {
@@ -3046,6 +3077,19 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
   }
 }
 
+async function runMcpSubcommand(parsed: ParsedArgs, root: string): Promise<ExitCode> {
+  const sub = (parsed.positionals[1] ?? "").toLowerCase();
+  if (sub !== "serve") {
+    throw new UsageError("mcp requires serve --stdio");
+  }
+  if (parsed.positionals.length > 2) {
+    throw new UsageError("mcp serve does not accept positional arguments");
+  }
+  const stdio = parseBooleanFlag("--stdio", parsed.flags["--stdio"]);
+  await runMcpServeCommand({ root, stdio });
+  return 0;
+}
+
 export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   const io = resolveRuntime(runtime);
   const parsed = parseArgs(argv);
@@ -3088,8 +3132,58 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   }
 }
 
+export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Promise<ExitCode> {
+  const io = resolveRuntime(runtime);
+  const parsed = parseArgs(argv);
+  if (parsed.error) {
+    io.error(parsed.error);
+    printUsage(io.log);
+    return 1;
+  }
+
+  if (parsed.help) {
+    printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
+    return 0;
+  }
+  if (parsed.version) {
+    io.log(readPackageVersion());
+    return 0;
+  }
+
+  const command = (parsed.positionals[0] ?? "").toLowerCase();
+  if (!command) {
+    printUsage(io.log);
+    return 0;
+  }
+
+  if (command === "help") {
+    printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
+    return 0;
+  }
+
+  const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
+  if (shouldRequireConfig(command, parsed.flags) && !hasConfig(root)) {
+    printRootError(io.error, root);
+    return 1;
+  }
+
+  try {
+    if (command === "mcp") {
+      return await runMcpSubcommand(parsed, root);
+    }
+    return runCommand(parsed, root, io);
+  } catch (err) {
+    return handleCommandError(err, command, io);
+  }
+}
+
 export function main(argv: string[] = process.argv.slice(2)): void {
-  process.exit(runCli(argv, { cwd: () => process.cwd() }));
+  runCliAsync(argv, { cwd: () => process.cwd() })
+    .then((code) => process.exit(code))
+    .catch((err) => {
+      console.error(err instanceof Error ? err.message : String(err));
+      process.exit(4);
+    });
 }
 
 if (require.main === module) {

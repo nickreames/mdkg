@@ -143,6 +143,7 @@ const BOOLEAN_FLAGS = new Set([
   "--clean",
   "--gitignore",
   "--select-goal",
+  "--stdio",
 ]);
 
 const FLAG_ALIASES: Record<string, string> = {
