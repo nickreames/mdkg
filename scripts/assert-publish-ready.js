@@ -38,8 +38,20 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:db-queue-cli"]) {
     fail("package.json is missing smoke:db-queue-cli");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:handoff"]) {
+    fail("package.json is missing smoke:handoff");
+  }
+  if (!pkg.scripts || !pkg.scripts["smoke:integration-ux"]) {
+    fail("package.json is missing smoke:integration-ux");
+  }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
     fail("prepublishOnly is missing smoke:db-queue-cli");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff")) {
+    fail("prepublishOnly is missing smoke:handoff");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff && npm run smoke:integration-ux && npm run smoke:bundle")) {
+    fail("prepublishOnly must run smoke:integration-ux between smoke:handoff and smoke:bundle");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:cli-ux-polish"]) {
     fail("package.json is missing smoke:cli-ux-polish");
@@ -119,7 +131,7 @@ function requireCliBuild() {
     fail("dist/command-contract.json has too few command records");
   }
   const byKey = new Map(contract.commands.map((command) => [command.key, command]));
-  for (const key of ["status", "mcp", "mcp serve", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "workspace", "skill new", "task start"]) {
+  for (const key of ["status", "mcp", "mcp serve", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "workspace", "skill new", "task start", "work validate"]) {
     if (!byKey.has(key)) {
       fail(`dist/command-contract.json is missing ${key}`);
     }
@@ -156,6 +168,17 @@ function requireCliBuild() {
     !mcpServe.flags.some((flag) => flag.name === "--stdio")
   ) {
     fail("dist/command-contract.json must keep mcp serve read-only");
+  }
+  const workValidate = byKey.get("work validate");
+  if (
+    !workValidate ||
+    workValidate.danger_level !== "read-only" ||
+    !Array.isArray(workValidate.write_paths) ||
+    workValidate.write_paths.length !== 0 ||
+    workValidate.lock_policy !== "none-read-only" ||
+    workValidate.json_schema_ref !== "mdkg.work_validate.v1"
+  ) {
+    fail("dist/command-contract.json must keep work validate read-only with typed JSON schema metadata");
   }
 }
 
@@ -272,6 +295,7 @@ function requireInitAssets() {
     !seededAgentStart.includes("public local") ||
     !seededAgentStart.includes("node:sqlite queue") ||
     !seededAgentStart.includes("mdkg db queue ...") ||
+    !seededAgentStart.includes("mdkg db queue contract") ||
     !seededAgentStart.includes("--queue-policy paused")
   ) {
     fail("dist/init/AGENT_START.md is missing public queue CLI guidance");
@@ -327,6 +351,8 @@ function requireInitAssets() {
   if (
     !seededReadme.includes("local node:sqlite queue delivery") ||
     !seededReadme.includes("mdkg db queue ...") ||
+    !seededReadme.includes("mdkg db queue contract --json") ||
+    !seededReadme.includes("canonical payload hashing") ||
     !seededReadme.includes("--queue-policy paused")
   ) {
     fail("dist/init/README.md is missing public queue CLI guidance");
@@ -350,6 +376,12 @@ function requireInitAssets() {
     !seededReadme.includes("skill candidates")
   ) {
     fail("dist/init/README.md is missing spike research-node guidance");
+  }
+  if (!seededReadme.includes("mdkg work validate") || !seededReadme.includes("typed diagnostics")) {
+    fail("dist/init/README.md is missing workflow validation guidance");
+  }
+  if (!seededReadme.includes("mdkg validate --changed-only --json") || !seededReadme.includes("mdkg format --headings --dry-run --json")) {
+    fail("dist/init/README.md is missing warning filter or heading migration guidance");
   }
   for (const template of [
     "archive.md",
@@ -441,6 +473,27 @@ function requireInitAssets() {
   ) {
     fail("README.md is missing spike research-node guidance");
   }
+  if (!rootReadme.includes("mdkg work validate") || !rootReadme.includes("typed diagnostics")) {
+    fail("README.md is missing workflow validation guidance");
+  }
+  if (!rootReadme.includes("mdkg validate --changed-only --json") || !rootReadme.includes("mdkg format --headings --dry-run --json")) {
+    fail("README.md is missing warning filter or heading migration guidance");
+  }
+  if (
+    !rootReadme.includes("mdkg handoff create") ||
+    !rootReadme.includes("sanitized, copy-ready agent") ||
+    !rootReadme.includes("without copying raw node bodies")
+  ) {
+    fail("README.md is missing handoff command guidance");
+  }
+  if (
+    !rootReadme.includes("mdkg db queue contract --json") ||
+    !rootReadme.includes("canonical payload hashing") ||
+    !rootReadme.includes("oldest-ready claim order") ||
+    !rootReadme.includes("lease-owner checked")
+  ) {
+    fail("README.md is missing project DB queue adapter contract guidance");
+  }
   const matrix = requireFile("CLI_COMMAND_MATRIX.md");
   if (!matrix.includes("mdkg status [--json]") || !matrix.includes("mdkg doctor [--strict] [--json]")) {
     fail("CLI_COMMAND_MATRIX.md is missing operator health command references");
@@ -478,6 +531,33 @@ function requireInitAssets() {
   ) {
     fail("CLI_COMMAND_MATRIX.md is missing spike command references");
   }
+  if (!matrix.includes("mdkg work validate [<id-or-qid>]") || !matrix.includes("work-validate-receipt")) {
+    fail("CLI_COMMAND_MATRIX.md is missing workflow validation command references");
+  }
+  if (!matrix.includes("mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]") || !matrix.includes("mdkg format --headings [--dry-run|--apply] [--json]")) {
+    fail("CLI_COMMAND_MATRIX.md is missing warning filter or heading migration command references");
+  }
+  if (
+    !matrix.includes("mdkg handoff create <id-or-qid>") ||
+    !matrix.includes("handoff-created") ||
+    !matrix.includes("raw_marker_warning_count")
+  ) {
+    fail("CLI_COMMAND_MATRIX.md is missing handoff command references");
+  }
+  if (
+    !matrix.includes("mdkg db queue contract [--json]") ||
+    !matrix.includes("canonical payload hashing") ||
+    !matrix.includes("oldest-ready claim order") ||
+    !matrix.includes("lease-owner checked settlement")
+  ) {
+    fail("CLI_COMMAND_MATRIX.md is missing project DB queue adapter contract references");
+  }
+  const smokeWorkInvocation = requireFile("scripts/smoke-work-invocation.js");
+  for (const expected of ["work", "validate", "workflowValidation", "orderValidation"]) {
+    if (!smokeWorkInvocation.includes(expected)) {
+      fail(`scripts/smoke-work-invocation.js is missing workflow validation proof ${expected}`);
+    }
+  }
   const smokeOperatorHealth = requireFile("scripts/smoke-operator-health.js");
   if (!smokeOperatorHealth.includes("doctor --strict") && !smokeOperatorHealth.includes('"doctor", "--strict"')) {
     fail("scripts/smoke-operator-health.js is missing strict doctor proof");
@@ -510,6 +590,32 @@ function requireInitAssets() {
   for (const expected of ["mcp", "serve", "--stdio", "tools/list", "mdkg_workspace_list", "child_demo", "mdkg_task_update"]) {
     if (!smokeMcp.includes(expected)) {
       fail(`scripts/smoke-mcp.js is missing ${expected} proof`);
+    }
+  }
+  const smokeHandoff = requireFile("scripts/smoke-handoff.js");
+  for (const expected of ["handoff", "create", "raw_payload", ".mdkg/handoffs", "proof://handoff/smoke"]) {
+    if (!smokeHandoff.includes(expected)) {
+      fail(`scripts/smoke-handoff.js is missing ${expected} proof`);
+    }
+  }
+  const smokeIntegrationUx = requireFile("scripts/smoke-integration-ux.js");
+  for (const expected of [
+    "integration-ux",
+    "context_refs",
+    "evidence_refs",
+    "checkpointKinds",
+    "work",
+    "validate",
+    "db",
+    "queue",
+    "contract",
+    "handoff",
+    "RAW_PAYLOAD_MARKER",
+    "format",
+    "--headings",
+  ]) {
+    if (!smokeIntegrationUx.includes(expected)) {
+      fail(`scripts/smoke-integration-ux.js is missing ${expected} proof`);
     }
   }
   const smokeCommandDocs = requireFile("scripts/smoke-command-docs.js");

@@ -25,6 +25,7 @@ mdkg new task "..." --status todo --priority 1
 mdkg search "..."
 mdkg show <id>
 mdkg pack <id>
+mdkg handoff create <id-or-qid> --json
 mdkg capability search "..."
 mdkg spec list --json
 mdkg archive list
@@ -36,7 +37,14 @@ mdkg fix plan --json
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg index` to create or refresh generated graph/skill/capability/subgraph and SQLite caches after init, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal activate/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg graph ...` to clone/fork/import authored graph templates, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg index` to create or refresh generated graph/skill/capability/subgraph and SQLite caches after init, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal activate/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg graph ...` to clone/fork/import authored graph templates, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, `mdkg handoff create <id-or-qid> --json` to create a sanitized copy-ready agent handoff prompt, and `mdkg validate` before closeout.
+
+`mdkg handoff create` summarizes goal/work state, included pack nodes, latest
+checkpoint, boundaries, required checks, next actions, and raw-content marker
+warnings without copying raw node bodies into the prompt. Use `--out` to write
+the handoff artifact inside the repo root.
+
+For large historical graphs, `mdkg validate --changed-only --json` keeps warning review focused on changed `.mdkg` files while full graph errors still run. `mdkg format --headings --dry-run --json` previews missing recommended heading additions before `--apply`.
 
 Use `mdkg status --json` for a read-only operator summary of Git, graph,
 selected-goal, project DB, and generated-cache health before mutating work. Use
@@ -124,7 +132,11 @@ infrastructure, not canonical event history; use `mdkg db queue ...` to create,
 pause, enqueue, claim, settle, inspect, and drain local queues. Event rows are
 durable local project DB history; receipts, reducers, writer leases, and
 materializers are internal local helper surfaces, with no public `mdkg db event`,
-`mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet. Use `mdkg db verify` for non-mutating health checks and
+`mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet.
+`mdkg db queue contract --json` returns the read-only public adapter contract
+for canonical payload hashing, dedupe keys, oldest-ready claim order,
+lease-owner checked settlement, retry/dead-letter behavior, release-expired,
+pause/resume, snapshot queue policy, and stats. Use `mdkg db verify` for non-mutating health checks and
 `mdkg db stats` for table counts, DB size, migration state, and receipt-file
 counts. Use `mdkg db snapshot seal` to create an opt-in sealed checkpoint under
 `.mdkg/db/state`; the default queue policy is drain, and
@@ -235,6 +247,9 @@ Update and artifact commands accept local ids or local qids; subgraph qids are r
 `mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a
 WORK contract or a SPEC with exactly one resolvable work contract. `mdkg work
 order status` and `mdkg work receipt verify` are read-only review helpers.
+`mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] --json`
+is a read-only focused validator for agent workflow mirrors with typed diagnostics
+and raw secret, prompt, token, or payload marker warnings.
 `mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue
 delivery message after the queue has been explicitly created and is active; it
 still does not execute work.

@@ -29,8 +29,20 @@ The primary loop is:
 4. build a deterministic pack
 5. validate before closing the loop
 
-If an agent is involved, the default handoff primitive is `mdkg pack <id>`.
+If an agent is involved, use `mdkg pack <id>` for deterministic context and
+`mdkg handoff create <id-or-qid> --json` for a sanitized, copy-ready agent
+handoff prompt. Handoffs summarize goal/work state, included pack nodes, latest
+checkpoint, boundaries, required checks, next actions, and raw-content marker
+warnings without copying raw node bodies into the prompt.
 If a repo needs repeatable procedures, author them as first-class skills under `.mdkg/skills/`.
+
+Work nodes can separate semantic background from executable scope with
+`context_refs` and `evidence_refs`. Use `context_refs` for related plans,
+external docs, subgraph qids, or URI references that explain why work exists.
+Use `evidence_refs` for proof, audit, receipt, checkpoint, archive, or URI
+references. These fields are indexed, validated, shown, and packable, but they
+do not make referenced nodes actionable goal work; keep executable queues in
+goal `scope_refs`.
 
 ## Install
 
@@ -136,6 +148,7 @@ Build deterministic context:
 mdkg pack task-1
 mdkg pack task-1 --profile concise --dry-run --stats
 mdkg pack task-1 --visibility public --dry-run
+mdkg pack task-1 --edges context_refs,evidence_refs --format json
 ```
 
 Create a full `.mdkg` graph snapshot bundle for root or child orchestration:
@@ -208,6 +221,8 @@ Materialized trees are generated local state, ignored by graph indexing/search/v
 
 Subgraph nodes are projected under the subgraph alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, capability discovery, and `capability resolve`, but remain read-only; mutate the child repo and sync its root-owned bundle snapshot to change subgraph content. Root-authored relationship and reference fields can point at configured subgraph qids such as `child_repo:work.example`; local ownership fields such as `epic`, `parent`, `prev`, and `next` stay local-only. Stale subgraphs warn during planning reads and fail `mdkg subgraph verify`. Public or internal subgraphs must be backed by public bundle profiles; private subgraphs stay private planning context.
 
+Use `mdkg graph refs <id-or-qid> --json` to inspect inbound and outbound scope, context, evidence, blocker, related, and structural links for local or read-only subgraph qids without mutating either graph.
+
 Launch a local read-only MCP server when an MCP-capable agent should inspect a
 specific mdkg graph without receiving mutation tools:
 
@@ -226,6 +241,7 @@ Validate before handoff or commit:
 
 ```bash
 mdkg validate
+mdkg handoff create <id-or-qid> --out .mdkg/handoffs/example.md
 ```
 
 Discover cached capability surfaces:
@@ -280,7 +296,10 @@ Update structured task state and evidence while keeping body and narrative edits
 mdkg task start task-1 --run-id run_local_1
 mdkg task update task-1 --add-artifacts tests://unit.txt --add-tags release
 mdkg task done task-1 --checkpoint "release readiness milestone"
+mdkg task done task-1 --checkpoint "goal complete" --checkpoint-kind goal-closeout
 ```
+
+Checkpoint kinds are `implementation`, `test-proof`, `goal-closeout`, `audit`, and `handoff`; generated checkpoint bodies include command evidence, pass/fail status, known warnings, changed surfaces, boundaries, and follow-up refs.
 
 Ensure and append baseline event memory:
 
@@ -358,6 +377,11 @@ Advanced / maintenance commands still exist, but they are not the first-run stor
 - `mdkg doctor --strict --json`
 - `mdkg fix plan --json`
 - `mdkg workspace`
+
+For large historical graphs, use `mdkg validate --changed-only --json` to keep
+warning review focused on changed `.mdkg` files while full graph errors still
+run. Use `mdkg format --headings --dry-run --json` to review missing recommended
+heading additions before applying them with `--apply`.
 
 ## Operator health
 
@@ -478,6 +502,12 @@ rows are durable local project DB history; receipts, reducers, writer leases,
 and materializers remain internal helper surfaces in this release, with no
 public `mdkg db event`, `mdkg db reducer`, `mdkg db lease`, or
 `mdkg db materializer` CLI yet.
+`mdkg db queue contract --json` is the read-only public adapter contract for
+downstream integrations. It documents canonical payload hashing, dedupe keys,
+oldest-ready claim order, lease-owner checked ack/fail/dead-letter, retry
+delay, expired lease reclaim, max-attempt dead-letter behavior, pause/resume,
+snapshot queue policy, and stats without exposing raw SQL or making queue rows
+canonical runtime history.
 `mdkg work trigger --enqueue <queue>` can bridge a submitted work order mirror
 into an explicitly created active project DB queue; it writes local delivery
 state only and never executes work.
@@ -505,7 +535,7 @@ Goal nodes are durable recursive objective contracts. Use `mdkg new goal "<objec
 
 `goal` is work-like but distinct from `task`: it can have status, priority, graph links, skills, explicit `scope_refs`, and structured goal fields, but normal `mdkg next` does not select goals. Use `mdkg goal activate <goal-id>` to make one local root goal active, pause competing local active goals, and select it for future `goal next` calls. Use `mdkg goal select <goal-id>` only when you want to change the local ignored selected-goal pointer without changing lifecycle state. `mdkg goal next <goal-id>` remains available for explicit selection. Epics organize goal scope recursively but are not returned as executable work.
 
-Use `mdkg goal claim [goal-id] <work-id>` to durably set `active_node` after choosing the next scoped item. `goal next` is read-only. Use `mdkg goal pause|resume|done` to update goal state after review, and `mdkg goal archive` for superseded historical roadmap goals that should remain readable but non-actionable.
+Use `mdkg goal claim [goal-id] <work-id>` to durably set `active_node` after choosing the next scoped item. `goal next` is read-only. Use `mdkg goal pause|resume|done` to update goal state after review; closing a goal moves the final `active_node` to `last_active_node` so completed goals keep history without staying actionable. Use `mdkg goal archive` for superseded historical roadmap goals that should remain readable but non-actionable.
 
 Required checks are stored as report-only guidance. Agents should run the checks themselves, record evidence in the goal or active work item, then use `mdkg goal evaluate` to summarize the current evidence state. During normal goal execution, skill improvements should be recorded as improvement candidates or proposal nodes; edit `SKILL.md` files only when the active node is explicit skill-maintenance work.
 
@@ -545,7 +575,7 @@ Use `mdkg new spec|work|work_order|receipt|feedback|dispute|proposal "<title>"` 
 
 Relational templates contain editable placeholder refs. `spec` and `work` scaffold as validation-clean standalone docs; `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 
-For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. `mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a WORK contract or a SPEC with exactly one resolvable work contract. `mdkg work order status` and `mdkg work receipt verify` are read-only review helpers for deterministic closeout. `mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue delivery message after the queue has been explicitly created and is active; it still does not execute work. Production order state, receipt state, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg, such as in Postgres or another application database. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
+For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. `mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a WORK contract or a SPEC with exactly one resolvable work contract. `mdkg work order status` and `mdkg work receipt verify` are read-only review helpers for deterministic closeout. `mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] --json` is a read-only focused validator for agent workflow mirrors; it returns typed diagnostics and warns on obvious raw secret, prompt, token, or payload markers. `mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue delivery message after the queue has been explicitly created and is active; it still does not execute work. Production order state, receipt state, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg, such as in Postgres or another application database. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
 
 ## Archive sidecars
 
