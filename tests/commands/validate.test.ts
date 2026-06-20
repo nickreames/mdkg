@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
+import { spawnSync } from "node:child_process";
 const { runValidateCommand } = require("../../commands/validate");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
@@ -52,9 +53,13 @@ function updateConfig(root: string, mutate: (config: any) => void): void {
 }
 
 function writeTask(root: string): void {
+  writeTaskWithId(root, "task-1");
+}
+
+function writeTaskWithId(root: string, id: string): void {
   const content = [
     "---",
-    "id: task-1",
+    `id: ${id}`,
     "type: task",
     "title: missing headings",
     "status: todo",
@@ -72,7 +77,7 @@ function writeTask(root: string): void {
     "---",
     "",
   ].join("\n");
-  writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
+  writeFile(path.join(root, ".mdkg", "work", `${id}.md`), content);
 }
 
 function spikeFrontmatter(overrides: string[], body: string[] = ["# Research Question", "", "Question."]): string {
@@ -140,6 +145,11 @@ function captureOutput(fn: () => void): { stdout: string; stderr: string; error?
   return { stdout: stdout.join("\n"), stderr: stderr.join("\n"), error };
 }
 
+function git(root: string, args: string[]): void {
+  const result = spawnSync("git", ["-C", root, ...args], { encoding: "utf8" });
+  assert.equal(result.status, 0, `git ${args.join(" ")}\n${result.stderr}\n${result.stdout}`);
+}
+
 test("runValidateCommand writes warnings to --out and respects --quiet", () => {
   const root = makeTempDir("mdkg-validate-");
   writeConfig(root);
@@ -184,6 +194,70 @@ test("runValidateCommand emits a success JSON receipt", () => {
 
   const report = fs.readFileSync(path.join(root, "report.txt"), "utf8");
   assert.ok(report.includes("warning: root:task-1"));
+});
+
+test("runValidateCommand emits typed warning diagnostics", () => {
+  const root = makeTempDir("mdkg-validate-warning-diagnostics-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root);
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout) as {
+    ok: boolean;
+    warning_diagnostics: Array<{
+      id: string;
+      category: string;
+      severity: string;
+      qid?: string;
+      path?: string;
+      remediation: string;
+    }>;
+  };
+
+  assert.equal(output.error, undefined);
+  assert.equal(receipt.ok, true);
+  const diagnostic = receipt.warning_diagnostics.find((warning) => warning.id === "heading.missing");
+  assert.ok(diagnostic);
+  assert.equal(diagnostic?.category, "headings");
+  assert.equal(diagnostic?.severity, "warning");
+  assert.equal(diagnostic?.qid, "root:task-1");
+  assert.equal(diagnostic?.path, ".mdkg/work/task-1.md");
+  assert.match(diagnostic?.remediation ?? "", /format --headings --dry-run/);
+});
+
+test("runValidateCommand changed-only filters warnings but keeps graph errors", () => {
+  const root = makeTempDir("mdkg-validate-changed-only-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTaskWithId(root, "task-1");
+  writeTaskWithId(root, "task-2");
+  writeTaskWithId(root, "task-3");
+  git(root, ["init", "-q"]);
+  git(root, ["add", ".mdkg"]);
+  git(root, ["-c", "user.name=mdkg", "-c", "user.email=mdkg@example.invalid", "commit", "-q", "-m", "seed"]);
+  fs.appendFileSync(path.join(root, ".mdkg", "work", "task-2.md"), "\nchanged\n", "utf8");
+  fs.appendFileSync(path.join(root, ".mdkg", "work", "task-1.md"), "\nchanged\n", "utf8");
+  writeFile(path.join(root, ".mdkg", "work", "events", "events.jsonl"), "{\"ts\":\"2026-01-01T00:00:00.000Z\"}\n");
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true, changedOnly: true }));
+  const receipt = JSON.parse(output.stdout) as {
+    ok: boolean;
+    warning_count: number;
+    warnings: string[];
+    warning_filter?: { mode: string; changed_paths: string[] };
+    errors: string[];
+  };
+
+  assert.match(output.error instanceof Error ? output.error.message : "", /validation failed/);
+  assert.equal(receipt.ok, false);
+  assert.equal(receipt.warning_filter?.mode, "changed-only");
+  assert.ok(receipt.warning_filter?.changed_paths.includes(".mdkg/work/task-1.md"));
+  assert.ok(receipt.warning_filter?.changed_paths.includes(".mdkg/work/task-2.md"));
+  assert.ok(receipt.warnings.some((warning) => warning.includes("root:task-1")));
+  assert.ok(receipt.warnings.some((warning) => warning.includes("root:task-2")));
+  assert.ok(!receipt.warnings.some((warning) => warning.includes("root:task-3")));
+  assert.ok(receipt.errors.some((error) => error.includes("run_id is required")));
 });
 
 test("runValidateCommand emits a failing JSON receipt before throwing", () => {

@@ -181,6 +181,7 @@ function main() {
 
   const archived = parseJson(mdkg(binPath, ["goal", "archive", goalA.id, "--json"], root).stdout);
   assert(archived.goal.status === "archived" && archived.goal.goal_state === "archived", "goal archive did not archive goal");
+  assert(!Object.prototype.hasOwnProperty.call(archived.goal, "active_node"), "archived goal should not retain active_node");
   const archivedList = parseJson(mdkg(binPath, ["list", "--type", "goal", "--status", "archived", "--json"], root).stdout);
   assert(archivedList.items.some((item) => item.id === goalA.id), "archived goal not found by list filter");
   const archivedSearch = parseJson(
@@ -192,6 +193,24 @@ function main() {
   assert(archivedNext.warnings.some((warning) => warning.includes("archived")), "archived next warning missing");
   assert(mdkgFailure(binPath, ["goal", "activate", goalA.id, "--json"], root).stderr.includes("cannot activate archived goal"), "archived goal activate did not fail");
   assert(mdkgFailure(binPath, ["goal", "select", goalA.id, "--json"], root).stderr.includes("cannot select archived goal"), "archived goal select did not fail");
+
+  const closeGoal = parseJson(
+    mdkg(binPath, ["new", "goal", "Closeout Goal", "--status", "todo", "--priority", "1", "--json"], root).stdout
+  ).node;
+  const closeTask = parseJson(
+    mdkg(binPath, ["new", "task", "Closeout Scoped Task", "--status", "todo", "--priority", "1", "--json"], root).stdout
+  ).node;
+  replaceInFile(path.join(root, closeGoal.path), "scope_refs: []", `scope_refs: [${closeTask.id}]`);
+  mdkg(binPath, ["goal", "activate", closeGoal.id, "--json"], root);
+  mdkg(binPath, ["goal", "claim", closeGoal.id, closeTask.id, "--json"], root);
+  const closed = parseJson(mdkg(binPath, ["goal", "done", closeGoal.id, "--json"], root).stdout);
+  assert(closed.goal.status === "done" && closed.goal.goal_state === "achieved", "goal done did not mark goal achieved");
+  assert(!Object.prototype.hasOwnProperty.call(closed.goal, "active_node"), "done goal should not retain active_node");
+  assert(closed.goal.last_active_node === closeTask.id, "goal done did not preserve last_active_node");
+  const closedNext = parseJson(mdkg(binPath, ["goal", "next", closeGoal.id, "--json"], root).stdout);
+  assert(closedNext.node === null, "achieved goal unexpectedly returned actionable work");
+  assert(!closedNext.warnings.some((warning) => warning.includes("active_node")), "achieved goal next emitted stale active_node warning");
+  mdkg(binPath, ["goal", "activate", goalB.id, "--json"], root);
 
   const child = createChildGraph(binPath, root);
   const added = parseJson(

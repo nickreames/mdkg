@@ -66,6 +66,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "created: {{created}}",
       "updated: {{updated}}",
@@ -86,6 +88,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "created: {{created}}",
       "updated: {{updated}}",
@@ -110,6 +114,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "created: {{created}}",
       "updated: {{updated}}",
@@ -134,6 +140,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "created: {{created}}",
       "updated: {{updated}}",
@@ -158,6 +166,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "created: {{created}}",
       "updated: {{updated}}",
@@ -182,6 +192,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "cases: []",
       "created: {{created}}",
@@ -193,6 +205,7 @@ function writeTemplates(root: string): void {
       "id: {{id}}",
       "type: checkpoint",
       "title: {{title}}",
+      "checkpoint_kind: {{checkpoint_kind}}",
       "status: {{status}}",
       "priority: {{priority}}",
       "epic: {{epic}}",
@@ -207,6 +220,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "scope: []",
       "created: {{created}}",
@@ -224,6 +239,7 @@ function writeTemplates(root: string): void {
       "goal_condition: {{title}}",
       "scope_refs: []",
       "active_node: {{active_node}}",
+      "last_active_node: {{last_active_node}}",
       "required_skills: []",
       "required_checks: []",
       "max_iterations: 25",
@@ -236,6 +252,8 @@ function writeTemplates(root: string): void {
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
       "aliases: []",
       "created: {{created}}",
       "updated: {{updated}}",
@@ -515,6 +533,8 @@ type NodeOptions = {
   relates?: string[];
   blocked_by?: string[];
   blocks?: string[];
+  context_refs?: string[];
+  evidence_refs?: string[];
   skills?: string[];
   scope_refs?: string[];
   active_node?: string;
@@ -563,6 +583,12 @@ function writeNode(root: string, options: NodeOptions): void {
   }
   if (options.blocks) {
     lines.push(`blocks: [${options.blocks.join(", ")}]`);
+  }
+  if (options.context_refs) {
+    lines.push(`context_refs: [${options.context_refs.join(", ")}]`);
+  }
+  if (options.evidence_refs) {
+    lines.push(`evidence_refs: [${options.evidence_refs.join(", ")}]`);
   }
   if (options.skills) {
     lines.push(`skills: [${options.skills.join(", ")}]`);
@@ -623,6 +649,43 @@ test("buildPack includes verbose core ids", () => {
     result.pack.nodes.map((node: { qid: string }) => node.qid),
     ["root:task-1", "root:feat-1", "root:epic-1", "root:rule-1", "root:prd-1"]
   );
+});
+
+test("buildPack traverses semantic context and evidence refs when requested", () => {
+  const root = makeTempDir("mdkg-pack-semantic-refs-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeNode(root, {
+    id: "task-1",
+    type: "task",
+    title: "Root task",
+    status: "todo",
+    priority: 1,
+    context_refs: ["task-2"],
+    evidence_refs: ["task-3", "proof://example/evidence"],
+  });
+  writeNode(root, { id: "task-2", type: "task", title: "Context task", status: "todo", priority: 2 });
+  writeNode(root, { id: "task-3", type: "task", title: "Evidence task", status: "done", priority: 3 });
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:task-1",
+    depth: 1,
+    edges: ["context_refs", "evidence_refs"],
+    verbose: false,
+    maxNodes: 10,
+    verboseCoreListPath: path.join(root, ".mdkg", "core", "core.md"),
+  });
+
+  assert.deepEqual(
+    result.pack.nodes.map((node: { qid: string }) => node.qid).sort(),
+    ["root:task-1", "root:task-2", "root:task-3"]
+  );
+  const rootNode = result.pack.nodes.find((node: { qid: string }) => node.qid === "root:task-1");
+  assert.deepEqual(rootNode?.context_refs, ["root:task-2"]);
+  assert.deepEqual(rootNode?.evidence_refs, ["root:task-3", "proof://example/evidence"]);
 });
 
 test("buildPack reports verbose core ambiguity without workspace hint", () => {

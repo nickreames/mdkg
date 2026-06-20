@@ -147,6 +147,8 @@ test("cli help work documents trigger status verify polish", () => {
   assert.equal(workHelp.status, 0);
   assert.match(workHelp.stdout, /mdkg work order new\|status\|update/);
   assert.match(workHelp.stdout, /mdkg work receipt new\|verify\|update/);
+  assert.match(workHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type <workflow-type>\] \[--json\]/);
+  assert.match(workHelp.stdout, /work validate is read-only and reports typed workflow diagnostics/);
 
   const triggerHelp = spawnSync(process.execPath, [cliPath, "help", "work", "trigger"], {
     encoding: "utf8",
@@ -169,6 +171,14 @@ test("cli help work documents trigger status verify polish", () => {
   });
   assert.equal(receiptHelp.status, 0);
   assert.match(receiptHelp.stdout, /work receipt verify is read-only and reports deterministic JSON linkage/);
+
+  const validateHelp = spawnSync(process.execPath, [cliPath, "help", "work", "validate"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(validateHelp.status, 0);
+  assert.match(validateHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type spec\|work\|work_order\|receipt\|feedback\|dispute\|proposal\] \[--json\]/);
+  assert.match(validateHelp.stdout, /Read-only focused validation for agent workflow mirrors/);
 });
 
 test("cli help db documents project database boundaries", () => {
@@ -189,6 +199,7 @@ test("cli help db documents project database boundaries", () => {
     /db migrate` applies mdkg-owned foundation plus internal queue, event, receipt, reducer, and lease migrations/,
   );
   assert.match(dbHelp.stdout, /mdkg db queue create <queue> \[--paused\] \[--reason <text>\] \[--json\]/);
+  assert.match(dbHelp.stdout, /mdkg db queue contract \[--json\]/);
   assert.match(dbHelp.stdout, /`mdkg db queue \.\.\.` exposes local durable queue delivery operations/);
   assert.match(dbHelp.stdout, /paused queues reject enqueue\/claim and can be sealed with explicit paused snapshot policy/);
   assert.match(
@@ -231,7 +242,9 @@ test("cli help db documents project database boundaries", () => {
   });
   assert.equal(dbQueueHelp.status, 0);
   assert.match(dbQueueHelp.stdout, /mdkg db queue enqueue <queue> <message-id> --payload-json <json>\|--payload-file <path>/);
+  assert.match(dbQueueHelp.stdout, /mdkg db queue contract \[--json\]/);
   assert.match(dbQueueHelp.stdout, /mdkg db queue pause <queue>/);
+  assert.match(dbQueueHelp.stdout, /contract is read-only adapter metadata/);
   assert.match(dbQueueHelp.stdout, /paused queues reject enqueue and claim/);
 });
 

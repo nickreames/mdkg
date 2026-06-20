@@ -167,6 +167,21 @@ test("mcp read-only tools inspect local graph state without writes", () => {
   assert.deepEqual(workFilesAfter, beforeFiles);
 });
 
+test("mcp goal next returns null for achieved goals without stale active-node warnings", () => {
+  const root = createMcpRepo();
+  const goalPath = path.join(root, ".mdkg", "work", "goal-1.md");
+  const content = fs.readFileSync(goalPath, "utf8")
+    .replace("status: progress", "status: done")
+    .replace("goal_state: active", "goal_state: achieved");
+  fs.writeFileSync(goalPath, content, "utf8");
+  run(root, ["index"]);
+
+  const next = structured(callTool(root, "mdkg_goal_next", { id: "goal-1" }));
+  assert.equal(next.command, "mcp.goal_next");
+  assert.equal(next.node, null);
+  assert.ok(!next.warnings.some((warning: string) => warning.includes("active_node")));
+});
+
 test("mcp workspace list includes configured subgraphs and unknown mutation tools fail closed", () => {
   const root = createMcpRepo();
   const configPath = path.join(root, ".mdkg", "config.json");

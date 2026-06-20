@@ -87,6 +87,8 @@ function writeFormattedTask(root: string): { filePath: string; content: string }
     "blocked_by: []",
     "blocks: []",
     "refs: []",
+    "context_refs: []",
+    "evidence_refs: []",
     "aliases: []",
     "skills: []",
     "created: 2026-01-06",
@@ -99,6 +101,29 @@ function writeFormattedTask(root: string): { filePath: string; content: string }
   const filePath = path.join(root, ".mdkg", "work", "task-2.md");
   writeFile(filePath, content);
   return { filePath, content };
+}
+
+function captureOutput(fn: () => void): { stdout: string; stderr: string; error?: unknown } {
+  const stdout: string[] = [];
+  const stderr: string[] = [];
+  const originalLog = console.log;
+  const originalError = console.error;
+  let error: unknown;
+  console.log = (...args: unknown[]) => {
+    stdout.push(args.map(String).join(" "));
+  };
+  console.error = (...args: unknown[]) => {
+    stderr.push(args.map(String).join(" "));
+  };
+  try {
+    fn();
+  } catch (err) {
+    error = err;
+  } finally {
+    console.log = originalLog;
+    console.error = originalError;
+  }
+  return { stdout: stdout.join("\n"), stderr: stderr.join("\n"), error };
 }
 
 test("runFormatCommand normalizes frontmatter and updates updated date", () => {
@@ -136,4 +161,40 @@ test("runFormatCommand leaves updated unchanged when already formatted", () => {
 
   assert.equal(content, original);
   assert.equal(parsed.frontmatter.updated, "2026-01-01");
+});
+
+test("runFormatCommand heading migration supports dry-run and apply receipts", () => {
+  const root = makeTempDir("mdkg-format-headings-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  const filePath = writeMessyTask(root);
+
+  const dryRunOutput = captureOutput(() =>
+    runFormatCommand({ root, headings: true, dryRun: true, json: true })
+  );
+  const dryRun = JSON.parse(dryRunOutput.stdout);
+  assert.equal(dryRunOutput.error, undefined);
+  assert.equal(dryRun.dry_run, true);
+  assert.equal(dryRun.applied, false);
+  assert.equal(dryRun.changed_count, 1);
+  assert.deepEqual(dryRun.changes[0].added_headings, [
+    "Acceptance Criteria",
+    "Files Affected",
+    "Implementation Notes",
+    "Test Plan",
+    "Links / Artifacts",
+  ]);
+  assert.doesNotMatch(fs.readFileSync(filePath, "utf8"), /# Acceptance Criteria/);
+
+  const applyOutput = captureOutput(() =>
+    runFormatCommand({ root, headings: true, apply: true, json: true })
+  );
+  const applied = JSON.parse(applyOutput.stdout);
+  assert.equal(applyOutput.error, undefined);
+  assert.equal(applied.dry_run, false);
+  assert.equal(applied.applied, true);
+  assert.equal(applied.changed_count, 1);
+  const content = fs.readFileSync(filePath, "utf8");
+  assert.match(content, /# Acceptance Criteria/);
+  assert.match(content, /# Links \/ Artifacts/);
 });

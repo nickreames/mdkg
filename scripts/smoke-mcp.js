@@ -283,6 +283,14 @@ async function exerciseMcp(binPath, fixture) {
     const next = await call("mdkg_goal_next");
     assert(next.result.structuredContent.node.qid === `root:${fixture.task.id}`, "goal next did not return scoped task");
 
+    mdkg(binPath, ["goal", "done", fixture.goal.id, "--json"], fixture.root);
+    const closedNext = await call("mdkg_goal_next", { goal: fixture.goal.id });
+    assert(closedNext.result.structuredContent.node === null, "achieved goal returned actionable MCP next work");
+    assert(
+      !closedNext.result.structuredContent.warnings.some((warning) => warning.includes("active_node")),
+      "achieved goal MCP next emitted stale active_node warning"
+    );
+
     const validate = await call("mdkg_validate");
     assert(validate.result.structuredContent.action === "validated", "validate action mismatch");
     assert(validate.result.structuredContent.ok === true, "validate reported not ok");

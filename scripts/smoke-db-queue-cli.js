@@ -100,9 +100,16 @@ function main() {
   fs.mkdirSync(root, { recursive: true });
   run(GIT_CMD, ["init", "-q"], { cwd: root });
 
-  assert(/mdkg db queue enqueue/.test(mdkg(binPath, ["help", "db", "queue"], root)), "queue help did not expose enqueue");
-
   mdkg(binPath, ["init", "--agent"], root);
+
+  const queueHelp = mdkg(binPath, ["help", "db", "queue"], root);
+  assert(/mdkg db queue enqueue/.test(queueHelp), "queue help did not expose enqueue");
+  assert(/mdkg db queue contract/.test(queueHelp), "queue help did not expose adapter contract");
+  const contract = parseJson(mdkg(binPath, ["db", "queue", "contract", "--json"], root));
+  assert(contract.contract.contract_id === "mdkg.project_db.queue.adapter.v1", "queue adapter contract id mismatch");
+  assert(contract.contract.claim.selection.includes("available_at_ms"), "queue adapter contract missing claim ordering");
+  assert(contract.contract.settlement.fail.includes("retry_after_ms"), "queue adapter contract missing retry semantics");
+
   assert(parseJson(mdkg(binPath, ["db", "init", "--json"], root)).ok === true, "db init failed");
   const migrate = parseJson(mdkg(binPath, ["db", "migrate", "--json"], root));
   assert(migrate.action === "db-migrate" && migrate.applied_count === 5, "db migrate did not apply queue control migration");

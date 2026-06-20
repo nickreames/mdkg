@@ -318,6 +318,7 @@ test("task commands print deterministic json receipts", () => {
       id: "task-1",
       addArtifacts: "tests://task-done-json.txt",
       checkpoint: "json done checkpoint",
+      checkpointKind: "goal-closeout",
       runId: "run_task_json",
       note: "json done",
       json: true,
@@ -342,6 +343,7 @@ test("task commands print deterministic json receipts", () => {
       id: "chk-1",
       qid: "root:chk-1",
       path: ".mdkg/work/chk-1-json-done-checkpoint.md",
+      kind: "goal-closeout",
     },
   });
 
@@ -684,6 +686,7 @@ test("cli task commands support json receipts", () => {
       id: "chk-1",
       qid: "root:chk-1",
       path: ".mdkg/work/chk-1-cli-json-checkpoint.md",
+      kind: "implementation",
     },
   });
 });

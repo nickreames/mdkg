@@ -185,6 +185,23 @@ function main() {
   if (done.goal.goal_state !== "achieved" || done.goal.status !== "done") {
     throw new Error("goal done did not close goal");
   }
+  if (Object.prototype.hasOwnProperty.call(done.goal, "active_node")) {
+    throw new Error(`goal done should remove active_node: ${JSON.stringify(done)}`);
+  }
+  if (done.goal.last_active_node !== task.id) {
+    throw new Error(`goal done did not preserve last_active_node: ${JSON.stringify(done)}`);
+  }
+  const nextAfterGoalDone = parseJson(mdkg(binPath, ["goal", "next", goal.id, "--json"], root).stdout);
+  if (nextAfterGoalDone.node !== null) {
+    throw new Error(`achieved goal should not route next work: ${JSON.stringify(nextAfterGoalDone)}`);
+  }
+  if (nextAfterGoalDone.warnings.some((warning) => warning.includes("active_node"))) {
+    throw new Error(`achieved goal next should not warn about active_node: ${JSON.stringify(nextAfterGoalDone)}`);
+  }
+  const doneShow = parseJson(mdkg(binPath, ["goal", "show", goal.id, "--json"], root).stdout);
+  if (doneShow.goal.last_active_node !== task.id) {
+    throw new Error(`goal show missing last_active_node: ${JSON.stringify(doneShow)}`);
+  }
 
   mdkg(binPath, ["validate"], root);
   console.log("smoke:goal ok");
