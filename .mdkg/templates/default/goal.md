@@ -8,6 +8,7 @@ goal_state: {{goal_state}}
 goal_condition: {{goal_condition}}
 scope_refs: []
 active_node: {{active_node}}
+last_active_node: {{last_active_node}}
 required_skills: []
 required_checks: []
 max_iterations: {{max_iterations}}
@@ -24,6 +25,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
+context_refs: []
+evidence_refs: []
 aliases: []
 skills: []
 created: {{created}}

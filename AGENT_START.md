@@ -113,7 +113,10 @@ Capability discovery:
   node:sqlite queue delivery, internal event/receipt/reducer, writer lease/CAS,
   and queue control migrations. Queue state is delivery infrastructure, not
   canonical event history; use `mdkg db queue ...` to create, pause, enqueue,
-  claim, settle, inspect, and drain local queues. Event rows are durable local
+  claim, settle, inspect, and drain local queues. Use
+  `mdkg db queue contract --json` for the public adapter contract covering
+  payload hashing, dedupe, claim order, lease-owner settlement, retry,
+  dead-letter, release-expired, pause/resume, snapshot policy, and stats. Event rows are durable local
   project DB history; receipts, reducers, writer leases, and materializers are
   internal local helper surfaces, with no public `mdkg db event`,
   `mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet. Use `mdkg db verify` and `mdkg db stats` for

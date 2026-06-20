@@ -17,6 +17,7 @@ Primary commands:
 - `mdkg list`
 - `mdkg search`
 - `mdkg pack`
+- `mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]`
 - `mdkg skill`
 - `mdkg capability`
 - `mdkg spec`
@@ -33,6 +34,14 @@ Primary commands:
 - `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
 - `mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
 - `mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]`
+
+Semantic refs:
+- work nodes may use `context_refs` for non-executable background and `evidence_refs` for proof/audit refs
+- semantic refs may point at local ids, subgraph qids, or URI refs
+- use `mdkg pack <id> --edges context_refs,evidence_refs` when a handoff should traverse semantic refs
+- use `mdkg handoff create <id-or-qid> --json` for sanitized copy-ready agent handoff prompts
+- handoffs summarize graph state, latest checkpoint, boundaries, required checks, next actions, and raw-marker warnings without copying raw node bodies
+- executable goal queues still belong in goal `scope_refs`
 
 Operator health:
 - `mdkg status [--json]` is a read-only summary for scripts and agents
@@ -71,6 +80,7 @@ Project database commands:
 - `mdkg db verify [--json]`
 - `mdkg db stats [--json]`
 - `mdkg db queue create|pause|resume|enqueue|claim|ack|fail|dead-letter|release-expired|stats|list|show ... [--json]`
+- `mdkg db queue contract [--json]`
 - `mdkg db snapshot seal [--queue-policy drain|paused] [--json]`
 - `mdkg db snapshot verify [--json]`
 - `mdkg db snapshot status [--json]`
@@ -87,6 +97,9 @@ Project database commands:
   in the configured migration table
 - `mdkg db queue ...` exposes durable local delivery operations backed by
   node:sqlite; queue rows are delivery state, not canonical event history
+- `mdkg db queue contract --json` returns the public adapter contract for
+  payload hashes, dedupe, claim order, lease-owner settlement, retries,
+  dead-letter, release-expired, pause/resume, snapshot policy, and stats
 - paused queues reject enqueue and claim, but ack/fail/dead-letter and
   release-expired remain available so leased work can settle
 - event tables are durable local history for project DB state transitions;
@@ -105,7 +118,9 @@ Project database commands:
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:
-- `mdkg validate [--out <path>] [--quiet] [--json]`
+- `mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]`
+- `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
+- JSON receipts include `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
 
 Node creation commands:
 - `mdkg new <type> "<title>" [options] [--json]`
@@ -146,11 +161,12 @@ Event log commands:
 Task mutation commands:
 - `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]`
 - `mdkg task update <id-or-qid> [options] [--json]`
-- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]`
+- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]`
 - task commands support task-like `feat`, `task`, `bug`, `test`, and `spike` nodes
 
 Checkpoint commands:
-- `mdkg checkpoint new <title> [--ws <alias>] [--json]`
+- `mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]`
+- checkpoint kinds render bodies with command evidence, pass/fail status, known warnings, changed surfaces, boundaries, and follow-up refs
 
 Agent bootstrap:
 - `mdkg init --agent`
@@ -220,6 +236,7 @@ Graph clone, fork, and template import:
 - `mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]`
 - `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
 - `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
+- `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
 - `graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace
 - clone/fork targets must be empty or absent and stay under the current mdkg root
 - live directory sources are never mutated; clone/fork refuses targets nested inside a live source directory
@@ -230,6 +247,7 @@ Graph clone, fork, and template import:
 - colliding semantic template IDs require `--id-prefix`
 - `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
 - importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
+- `graph refs` is read-only and summarizes inbound/outbound scope, context, evidence, blocker, related, and structural refs across local and subgraph qids
 - subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 Subgraph orchestration:
@@ -263,11 +281,13 @@ Work semantic mirrors:
 - `mdkg work receipt verify <id-or-qid> [--json]`
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
 - `work trigger` accepts a `WORK.md` ref directly or a `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
 - example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
 - `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
 - `work order status` is read-only and reports deterministic order state plus linked receipts
 - `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks
+- `work validate` is read-only and reports typed diagnostics for agent workflow mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
 - work commands mutate mdkg semantic mirror files only; production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg
 - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors
 - `artifact://...` refs identify external/runtime-managed artifacts; `archive://...` refs identify committed mdkg archive sidecars
@@ -299,6 +319,7 @@ Goal nodes:
 - `goal activate` makes one local root goal active, pauses competing local active goals in the same workspace, and writes selected-goal state
 - `goal archive` marks a superseded historical goal archived so it remains readable but not actionable
 - `goal next` is read-only; use `goal claim` to set `active_node`
+- `goal done` preserves the final actionable item as `last_active_node` and removes actionable `active_node`
 - `mdkg goal evaluate` is report-only and never runs commands from `required_checks`
 - skill improvements discovered during normal goal execution should be recorded as candidates or proposals unless the active node is skill-maintenance
 

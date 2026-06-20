@@ -2,6 +2,7 @@
 id: {{id}}
 type: checkpoint
 title: {{title}}
+checkpoint_kind: {{checkpoint_kind}}
 status: {{status}}
 priority: {{priority}}
 epic: {{epic}}
@@ -16,6 +17,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
+context_refs: []
+evidence_refs: []
 aliases: []
 skills: []
 scope: []

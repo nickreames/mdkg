@@ -23,6 +23,7 @@ Primary commands:
 - `list`
 - `search`
 - `pack`
+- `handoff`
 - `skill`
 - `capability`
 - `spec`
@@ -349,6 +350,10 @@ Allowed formats:
 - `toon`
 - `xml`
 
+Allowed pack edges:
+- `parent`, `epic`, `relates`, `blocked_by`, `blocks`, `prev`, `next`
+- `context_refs` and `evidence_refs` for non-executable semantic references
+
 Profiles:
 - `standard`
 - `concise`
@@ -363,6 +368,26 @@ Visibility:
 - `--visibility internal` includes public/internal records and fails when included records reference private records
 - `--visibility private` records explicit private intent and may include all records
 - visibility filtering does not inspect or redact arbitrary Markdown body text
+- `context_refs` and `evidence_refs` are indexed semantic refs, not executable goal queues; include them with `--edges context_refs,evidence_refs` when a handoff needs background or proof nodes
+
+### `mdkg handoff`
+
+When to use:
+- create a sanitized, copy-ready agent handoff prompt from graph context
+- summarize goal/work state, included pack nodes, latest checkpoint, boundaries, required checks, and next actions
+
+Usage:
+- `mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]`
+
+Notes:
+- uses pack traversal with `context_refs` and `evidence_refs`
+- does not copy raw node bodies into the handoff
+- reports raw secret, prompt, token, or payload marker warnings without including raw marker content
+- `--out` must stay inside the repo root
+- the command does not execute work, mutate graph nodes, or generate detailed node content
+
+Receipts:
+- `handoff-created`: `{ action, ok, mdkg_version, target, output_path, content_sha256, raw_marker_warning_count, raw_marker_warnings, latest_checkpoint_qid, included_qids, pack, content }`
 
 ### `mdkg skill`
 
@@ -624,12 +649,14 @@ JSON receipts:
 When to use:
 - clone or fork a complete mdkg graph into a separate target directory while preserving IDs
 - import a template graph into the current repo with deterministic ID/link rewrites
+- inspect inbound and outbound graph references across local and read-only subgraph qids
 - prepare selected-goal demo handoffs from reusable graph templates
 
 Usage:
 - `mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]`
 - `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
 - `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
+- `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
 
 Flags:
 - `--target <path>`
@@ -638,6 +665,7 @@ Flags:
 - `--id-prefix <prefix>`
 - `--dry-run`
 - `--apply`
+- `--ws <alias>`
 - `--json`
 
 Notes:
@@ -651,12 +679,14 @@ Notes:
 - colliding semantic template IDs require `--id-prefix`
 - `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
 - importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
+- `graph refs` is read-only; it reports `scope_refs`, `context_refs`, `evidence_refs`, blockers, related refs, and structural inbound/outbound links
 - subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 JSON receipts:
 - `clone`: `{ action: "graph.clone", ok, mode, source, target, source_hash, preserved_ids, files_written, skipped_paths, index, validation, warnings }`
 - `fork`: `{ action: "graph.fork", ok, mode, source, target, source_hash, preserved_ids, files_written, skipped_paths, start_goal?, selected_goal?, index, validation, warnings }`
 - `import-template`: `{ action: "graph.import_template", ok, mode, source, source_hash, preserved_ids: false, rewritten_ids, rewritten_refs, planned_paths, files_written, skipped_paths, start_goal?, selected_goal?, activated_goal?, paused_goals, index?, validation?, warnings }`
+- `refs`: `{ action: "graph.refs", ok, target, outgoing, incoming, warnings }`
 
 ### `mdkg subgraph`
 
@@ -745,6 +775,8 @@ Usage:
 - `mdkg work receipt verify <id-or-qid> [--json]`
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
 
 Notes:
 - work commands mutate semantic mirror files only
@@ -758,6 +790,7 @@ Notes:
 - `work order status` is read-only and reports deterministic order state plus linked receipts
 - `work receipt new` accepts URI-style cost/proof/attestation refs, explicit redaction policy, and SHA-256 evidence/input/output hash refs
 - `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks; invalid receipts print JSON before exiting nonzero
+- `work validate` is read-only and reports typed diagnostics for SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
 - `work artifact add` calls `mdkg archive add`, then attaches the resulting `archive://...` ref to the target order or receipt
 - `work order update`, `work receipt update`, and `work artifact add` accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace
 
@@ -767,6 +800,7 @@ JSON receipts:
 - `order status`: `{ kind: "work_order_status", order, receipt_count, receipts }`
 - `receipt verify`: `{ kind: "work_receipt_verify", ok, receipt, work_order?, checks, errors, warnings }`
 - `artifact add`: `{ action: "artifact_registered", target, archive }`
+- `validate` work-validate-receipt: `{ action: "work.validate", ok, type, target?, checked_count, nodes, warning_count, error_count, warnings, errors, diagnostics }`
 
 ### `mdkg goal`
 
@@ -799,7 +833,7 @@ Usage:
 - `mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]`
 
 Behavior:
-- `goal show` reports goal condition, goal state, scope refs, active node, required skills, required checks, and source path.
+- `goal show` reports goal condition, goal state, scope refs, active node, last active node, required skills, required checks, and source path.
 - `goal select` writes local ignored selected-goal state so `goal next` can omit the goal id.
 - `goal activate` makes one local root goal active, pauses competing local active goals in the same workspace, and writes selected-goal state.
 - `goal current` shows the selected goal or unique active goal fallback.
@@ -807,7 +841,7 @@ Behavior:
 - `goal next` is read-only and selects feature, task, bug, test, or spike work inside explicit `scope_refs`; epics are recursive containers, not executable returns.
 - `goal claim` mutates only `active_node` after the work item is confirmed inside the goal scope.
 - `goal evaluate` is report-only and never runs commands from `required_checks`.
-- `goal pause`, `goal resume`, and `goal done` update `goal_state`, compatible work status, and `updated`.
+- `goal pause`, `goal resume`, and `goal done` update `goal_state`, compatible work status, and `updated`; done goals move any current `active_node` to `last_active_node` and no longer emit stale active-node routing warnings.
 - `goal archive` marks a superseded historical goal as `status: archived` and `goal_state: archived`; archived goals remain show/search/list readable but are excluded from active routing.
 - subgraph goal qids are read-only; update the source workspace instead.
 
@@ -832,7 +866,7 @@ When to use:
 Usage:
 - `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]`
 - `mdkg task update <id-or-qid> [options] [--json]`
-- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]`
+- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]`
 
 #### `mdkg task start`
 
@@ -868,12 +902,13 @@ JSON receipt:
 
 Usage:
 - `mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]`
-- `                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"] [--json]`
+- `                 [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]`
 
 Behavior:
 - supports task-like `feat`, `task`, `bug`, `test`, and `spike` nodes
 - sets `status: done`
 - `--checkpoint` creates a related checkpoint
+- `--checkpoint-kind` selects the evidence template for the related checkpoint
 - if `events.jsonl` is missing for the workspace, prints a short `stderr` reminder about `mdkg event enable`
 
 JSON receipt:
@@ -902,7 +937,9 @@ When to use:
 - run the repo trust gate before calling work done
 
 Usage:
-- `mdkg validate [--out <path>] [--quiet] [--json]`
+- `mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]`
+- `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
+- JSON receipts include `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
 
 Flags:
 - `--out <path>`
@@ -959,11 +996,12 @@ JSON receipt:
 ### `mdkg checkpoint`
 
 Usage:
-- `mdkg checkpoint new <title> [--ws <alias>] [--json]`
+- `mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]`
 - `        [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]`
+- checkpoint kinds render bodies with command evidence, pass/fail status, known warnings, changed surfaces, boundaries, and follow-up refs
 
 JSON receipt:
-- `{ action: "created", checkpoint: { workspace, id, qid, path } }`
+- `{ action: "created", checkpoint: { workspace, id, qid, path, kind } }`
 
 ### `mdkg index`
 
@@ -1003,6 +1041,7 @@ Usage:
 - `mdkg db queue list <queue> [--status ready|leased|acked|dead_letter|all] [--limit <n>] [--json]`
 - `mdkg db queue show <queue> <message-id> [--json]`
 - `mdkg db queue stats|list|show ... [--json]`
+- `mdkg db queue contract [--json]`
 - `mdkg db snapshot seal [--queue-policy drain|paused] [--json]`
 - `mdkg db snapshot verify [--json]`
 - `mdkg db snapshot status [--json]`
@@ -1023,6 +1062,10 @@ Boundaries:
   in the configured migration table
 - `mdkg db queue ...` exposes durable local delivery operations backed by
   node:sqlite; queue rows are delivery state, not canonical event history
+- `mdkg db queue contract --json` returns the public adapter contract covering
+  canonical payload hashing, dedupe semantics, oldest-ready claim order,
+  lease-owner checked settlement, retry/dead-letter behavior, release-expired,
+  pause/resume, snapshot queue policy, stats, and boundary guidance
 - paused queues reject enqueue and claim, but ack/fail/dead-letter and
   release-expired remain available so leased work can settle
 - event tables are durable local history for project DB state transitions;
@@ -1064,6 +1107,12 @@ Usage:
 
 Usage:
 - `mdkg format`
+- `mdkg format --headings [--dry-run|--apply] [--json]`
+
+Notes:
+- default `mdkg format` normalizes frontmatter in place
+- `mdkg format --headings` defaults to dry-run and returns planned missing-heading additions
+- `mdkg format --headings --apply` appends missing recommended body headings and returns a migration receipt
 
 ### `mdkg status`
 

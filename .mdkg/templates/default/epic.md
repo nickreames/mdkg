@@ -12,6 +12,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
+context_refs: []
+evidence_refs: []
 aliases: []
 skills: []
 created: {{created}}
