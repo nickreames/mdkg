@@ -18,6 +18,8 @@ import {
 } from "../core/project_db";
 import { formatDate } from "../util/date";
 import { NotFoundError } from "../util/errors";
+import { DEFAULT_FRONTMATTER_KEY_ORDER, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
+import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import {
   createInitManifest,
   InitManifest,
@@ -359,6 +361,64 @@ function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSu
   }
 }
 
+function migrateClosedGoalActiveNodes(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+  const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
+  const filesByAlias = listWorkspaceDocFilesByAlias(root, config);
+  let planned = 0;
+  for (const files of Object.values(filesByAlias)) {
+    for (const filePath of files) {
+      const content = fs.readFileSync(filePath, "utf8");
+      let parsed: ReturnType<typeof parseFrontmatter>;
+      try {
+        parsed = parseFrontmatter(content, filePath);
+      } catch {
+        continue;
+      }
+      const frontmatter = { ...parsed.frontmatter };
+      if (frontmatter.type !== "goal") {
+        continue;
+      }
+      const status = typeof frontmatter.status === "string" ? frontmatter.status : "";
+      const goalState = typeof frontmatter.goal_state === "string" ? frontmatter.goal_state : "";
+      const activeNode = typeof frontmatter.active_node === "string" ? frontmatter.active_node : undefined;
+      if (!activeNode || (status !== "done" && goalState !== "achieved")) {
+        continue;
+      }
+      const relativePath = path.relative(root, filePath).split(path.sep).join("/");
+      const lastActiveNode = typeof frontmatter.last_active_node === "string" ? frontmatter.last_active_node : undefined;
+      if (lastActiveNode && lastActiveNode !== activeNode) {
+        planned += 1;
+        record(summary, changes, {
+          path: relativePath,
+          category: "goal_lifecycle",
+          action: "conflict",
+          reason: `closed goal has active_node ${activeNode} but different last_active_node ${lastActiveNode}; local content preserved`,
+        });
+        continue;
+      }
+      planned += 1;
+      record(summary, changes, {
+        path: relativePath,
+        category: "goal_lifecycle",
+        action: "migrate",
+        reason: "move closed goal active_node to last_active_node",
+      });
+      if (!dryRun) {
+        if (!lastActiveNode) {
+          frontmatter.last_active_node = activeNode;
+        }
+        delete frontmatter.active_node;
+        const frontmatterBlock = ["---", ...formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER), "---"].join("\n");
+        const body = parsed.body.length > 0 ? parsed.body : "";
+        writeFile(filePath, body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock);
+      }
+    }
+  }
+  if (planned === 0) {
+    summary.unchanged += 1;
+  }
+}
+
 function isIgnoredBySimpleGitignore(root: string, relativePath: string): boolean {
   const ignorePath = path.join(root, ".gitignore");
   if (!fs.existsSync(ignorePath)) {
@@ -542,6 +602,7 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   const managedCurrentFiles: InitManifestFile[] = [];
 
   migrateConfigIfNeeded(root, dryRun, summary, changes);
+  migrateClosedGoalActiveNodes(root, dryRun, summary, changes);
 
   for (const file of currentManifest.files) {
     if (!shouldIncludeFile(file, agentWorkspace)) {

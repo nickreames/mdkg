@@ -1,9 +1,11 @@
 import fs from "fs";
 import path from "path";
+import { spawnSync } from "child_process";
 import { loadConfig } from "../core/config";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
 import { Index, IndexNode } from "../graph/indexer";
+import { isAgentFileType } from "../graph/agent_file_types";
 import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
@@ -18,6 +20,18 @@ export type ValidateCommandOptions = {
   out?: string;
   quiet?: boolean;
   json?: boolean;
+  changedOnly?: boolean;
+};
+
+export type ValidateWarningDiagnostic = {
+  id: string;
+  category: string;
+  severity: "warning";
+  message: string;
+  qid?: string;
+  path?: string;
+  ref?: string;
+  remediation: string;
 };
 
 export type ValidateReceipt = {
@@ -26,13 +40,18 @@ export type ValidateReceipt = {
   warning_count: number;
   error_count: number;
   warnings: string[];
+  warning_diagnostics: ValidateWarningDiagnostic[];
   errors: string[];
   report_path?: string;
+  warning_filter?: {
+    mode: "changed-only";
+    changed_paths: string[];
+  };
 };
 
 type HeadingMap = Record<string, string[]>;
 
-const RECOMMENDED_HEADINGS: HeadingMap = {
+export const RECOMMENDED_HEADINGS: HeadingMap = {
   task: [
     "Overview",
     "Acceptance Criteria",
@@ -120,6 +139,152 @@ function extractHeadings(body: string): Set<string> {
   return headings;
 }
 
+const RAW_CONTENT_MARKERS: Array<{ id: string; pattern: RegExp; description: string }> = [
+  { id: "raw_prompt", pattern: /\bRAW_PROMPT_MARKER\b/i, description: "raw prompt marker" },
+  { id: "raw_payload", pattern: /\bRAW_PAYLOAD_MARKER\b/i, description: "raw payload marker" },
+  { id: "raw_secret", pattern: /\bRAW_SECRET_MARKER\b|BEGIN [A-Z ]*PRIVATE KEY|secret\s*=/i, description: "raw secret marker" },
+];
+
+function shouldCheckRawContentWarnings(node: ReturnType<typeof parseNode>): boolean {
+  if (isAgentFileType(node.type)) {
+    return true;
+  }
+  return node.type === "checkpoint" && typeof node.frontmatter.checkpoint_kind === "string";
+}
+
+function collectRawContentWarnings(qid: string, node: ReturnType<typeof parseNode>): string[] {
+  if (!shouldCheckRawContentWarnings(node)) {
+    return [];
+  }
+  const warnings: string[] = [];
+  for (const marker of RAW_CONTENT_MARKERS) {
+    if (marker.pattern.test(node.body)) {
+      warnings.push(
+        `${qid}: raw-content.${marker.id} warning: ${marker.description} detected; use refs, hashes, summaries, or artifact links instead of raw secrets/prompts/payloads`
+      );
+    }
+  }
+  return warnings;
+}
+
+function collectChangedPaths(root: string): Set<string> {
+  const result = spawnSync("git", ["-C", root, "status", "--porcelain", "--", ".mdkg"], {
+    encoding: "utf8",
+  });
+  if (result.status !== 0) {
+    return new Set();
+  }
+  const changed = new Set<string>();
+  for (const line of result.stdout.split(/\r?\n/)) {
+    if (!line.trim()) {
+      continue;
+    }
+    const rawPath = line.slice(3).trim();
+    const filePath = rawPath.includes(" -> ") ? rawPath.split(" -> ").pop() ?? rawPath : rawPath;
+    changed.add(filePath.replace(/\\/g, "/"));
+  }
+  return changed;
+}
+
+function qidFromWarning(message: string): string | undefined {
+  const match = /^([a-z0-9_-]+:[^\s:]+):/.exec(message);
+  return match?.[1];
+}
+
+function warningPath(message: string, nodes: Record<string, IndexNode>): string | undefined {
+  const qid = qidFromWarning(message);
+  if (qid && nodes[qid]) {
+    return nodes[qid].path;
+  }
+  for (const node of Object.values(nodes)) {
+    if (message.includes(node.path)) {
+      return node.path;
+    }
+  }
+  const match = /([.]mdkg\/[^\s:]+\.md|[.]mdkg\/[^\s:]+\/SKILLS?\.md)/.exec(message);
+  return match?.[1];
+}
+
+function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): ValidateWarningDiagnostic {
+  const qid = qidFromWarning(message);
+  const pathValue = warningPath(message, nodes);
+  const rawMatch = /raw-content\.([a-z_]+)/.exec(message);
+  if (rawMatch) {
+    return {
+      id: `raw-content.${rawMatch[1]}`,
+      category: "raw-content",
+      severity: "warning",
+      message,
+      qid,
+      path: pathValue,
+      ref: qid,
+      remediation: "Replace raw secrets, prompts, tokens, or payloads with refs, hashes, redacted summaries, or archive/artifact links.",
+    };
+  }
+  if (message.includes("missing recommended heading")) {
+    return {
+      id: "heading.missing",
+      category: "headings",
+      severity: "warning",
+      message,
+      qid,
+      path: pathValue,
+      ref: qid,
+      remediation: "Run mdkg format --headings --dry-run to review missing heading additions, then --apply if acceptable.",
+    };
+  }
+  if (message.includes("bundled template schema fallback")) {
+    return {
+      id: "template_schema.fallback",
+      category: "templates",
+      severity: "warning",
+      message,
+      path: pathValue,
+      remediation: "Run mdkg upgrade --apply to vendor missing built-in template schemas when the managed asset update is safe.",
+    };
+  }
+  if (message.includes("sqlite") || message.includes("index")) {
+    return {
+      id: "cache.index",
+      category: "cache",
+      severity: "warning",
+      message,
+      path: pathValue,
+      remediation: "Run mdkg index or mdkg db index rebuild when generated cache state should be refreshed.",
+    };
+  }
+  if (message.includes("skill") || message.includes("mirror")) {
+    return {
+      id: "skill_mirror.warning",
+      category: "skills",
+      severity: "warning",
+      message,
+      path: pathValue,
+      remediation: "Run mdkg skill sync after reviewing managed skill mirror drift.",
+    };
+  }
+  if (message.includes("subgraph")) {
+    return {
+      id: "subgraph.warning",
+      category: "subgraph",
+      severity: "warning",
+      message,
+      path: pathValue,
+      remediation: "Run mdkg subgraph verify or refresh the source bundle after reviewing child graph freshness.",
+    };
+  }
+  return {
+    id: "warning.generic",
+    category: "general",
+    severity: "warning",
+    message,
+    qid,
+    path: pathValue,
+    ref: qid,
+    remediation: "Review the warning and apply the focused mdkg command suggested by the message when appropriate.",
+  };
+}
+
 function isCoreListFile(filePath: string): boolean {
   return path.basename(filePath) === "core.md" && path.basename(path.dirname(filePath)) === "core";
 }
@@ -140,6 +305,8 @@ function normalizeEdges(edges: IndexNode["edges"], ws: string): IndexNode["edges
     relates: edges.relates.map((value) => normalizeEdgeTarget(value, ws)),
     blocked_by: edges.blocked_by.map((value) => normalizeEdgeTarget(value, ws)),
     blocks: edges.blocks.map((value) => normalizeEdgeTarget(value, ws)),
+    context_refs: (edges.context_refs ?? []).map((value) => normalizeEdgeTarget(value, ws)),
+    evidence_refs: (edges.evidence_refs ?? []).map((value) => normalizeEdgeTarget(value, ws)),
   };
 }
 
@@ -210,6 +377,12 @@ function buildReverseEdges(nodes: Record<string, IndexNode>): Index["reverse_edg
     }
     for (const target of node.edges.blocks) {
       addReverseEdge(reverse, "blocks", target, qid);
+    }
+    for (const target of node.edges.context_refs ?? []) {
+      addReverseEdge(reverse, "context_refs", target, qid);
+    }
+    for (const target of node.edges.evidence_refs ?? []) {
+      addReverseEdge(reverse, "evidence_refs", target, qid);
     }
   }
   for (const targets of Object.values(reverse)) {
@@ -351,6 +524,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
             }
           }
         }
+        warnings.push(...collectRawContentWarnings(qid, node));
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(message);
@@ -432,7 +606,13 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
 
   validateEventsJsonl(options.root, config, errors);
 
-  const uniqueWarnings = Array.from(new Set(warnings));
+  const allUniqueWarnings = Array.from(new Set(warnings));
+  const allWarningDiagnostics = allUniqueWarnings.map((warning) => warningDiagnostic(warning, nodes));
+  const changedPaths = options.changedOnly ? collectChangedPaths(options.root) : new Set<string>();
+  const filteredWarningDiagnostics = options.changedOnly
+    ? allWarningDiagnostics.filter((warning) => warning.path !== undefined && changedPaths.has(warning.path))
+    : allWarningDiagnostics;
+  const uniqueWarnings = filteredWarningDiagnostics.map((warning) => warning.message);
   const uniqueErrors = Array.from(new Set(errors));
 
   const reportLines = [
@@ -453,8 +633,12 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
     warning_count: uniqueWarnings.length,
     error_count: uniqueErrors.length,
     warnings: uniqueWarnings,
+    warning_diagnostics: filteredWarningDiagnostics,
     errors: uniqueErrors,
     ...(outPath ? { report_path: outPath } : {}),
+    ...(options.changedOnly
+      ? { warning_filter: { mode: "changed-only" as const, changed_paths: Array.from(changedPaths).sort() } }
+      : {}),
   };
 
   return receipt;

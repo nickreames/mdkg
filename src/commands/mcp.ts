@@ -558,6 +558,15 @@ function goalNextTool(root: string, args: JsonObject): JsonObject {
       warnings,
     };
   }
+  if (loaded.node.status === "done" || String(loaded.node.attributes.goal_state ?? "") === "achieved") {
+    return {
+      command: "mcp.goal_next",
+      goal_source: loaded.source,
+      goal: toNodeSummaryJson(loaded.node),
+      node: null,
+      warnings,
+    };
+  }
 
   const statusPreference = config.work.next.status_preference.map((status) => status.toLowerCase());
   const statusRanks = new Set(statusPreference);

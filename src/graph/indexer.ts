@@ -81,6 +81,8 @@ function normalizeEdges(edges: EdgeMap, ws: string): EdgeMap {
     relates: edges.relates.map((value) => normalizeEdgeTarget(value, ws)),
     blocked_by: edges.blocked_by.map((value) => normalizeEdgeTarget(value, ws)),
     blocks: edges.blocks.map((value) => normalizeEdgeTarget(value, ws)),
+    context_refs: (edges.context_refs ?? []).map((value) => normalizeEdgeTarget(value, ws)),
+    evidence_refs: (edges.evidence_refs ?? []).map((value) => normalizeEdgeTarget(value, ws)),
   };
 }
 
@@ -184,6 +186,12 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
     }
     for (const target of edges.blocks) {
       addReverseEdge(reverse_edges, "blocks", target, qid);
+    }
+    for (const target of edges.context_refs ?? []) {
+      addReverseEdge(reverse_edges, "context_refs", target, qid);
+    }
+    for (const target of edges.evidence_refs ?? []) {
+      addReverseEdge(reverse_edges, "evidence_refs", target, qid);
     }
   }
 

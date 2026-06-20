@@ -22,6 +22,10 @@ function listItems(tag: string, itemTag: string, items: string[], indent: string
   return lines;
 }
 
+function listValues(items: string[] | undefined): string[] {
+  return items ?? [];
+}
+
 function attributeLines(
   key: string,
   value: PackResult["nodes"][number]["attributes"][string],
@@ -92,10 +96,12 @@ export function exportXml(pack: PackResult): string {
     }
     lines.push(`      <path>${escapeXml(node.path)}</path>`);
     lines.push("      <frontmatter>");
-    lines.push(...listItems("links", "link", node.links, "        "));
-    lines.push(...listItems("artifacts", "artifact", node.artifacts, "        "));
-    lines.push(...listItems("refs", "ref", node.refs, "        "));
-    lines.push(...listItems("aliases", "alias", node.aliases, "        "));
+    lines.push(...listItems("links", "link", listValues(node.links), "        "));
+    lines.push(...listItems("artifacts", "artifact", listValues(node.artifacts), "        "));
+    lines.push(...listItems("refs", "ref", listValues(node.refs), "        "));
+    lines.push(...listItems("context_refs", "context_ref", listValues(node.context_refs), "        "));
+    lines.push(...listItems("evidence_refs", "evidence_ref", listValues(node.evidence_refs), "        "));
+    lines.push(...listItems("aliases", "alias", listValues(node.aliases), "        "));
     for (const [key, value] of Object.entries(node.attributes ?? {})) {
       lines.push(...attributeLines(key, value, "        "));
     }

@@ -382,6 +382,8 @@ function projectOneSubgraph(
             relates: remapTargets(node.edges.relates, qidMap),
             blocked_by: remapTargets(node.edges.blocked_by, qidMap),
             blocks: remapTargets(node.edges.blocks, qidMap),
+            context_refs: remapTargets(node.edges.context_refs ?? [], qidMap),
+            evidence_refs: remapTargets(node.edges.evidence_refs ?? [], qidMap),
           },
           source: {
             imported: true,

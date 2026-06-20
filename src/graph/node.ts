@@ -67,6 +67,7 @@ const GOAL_ATTRIBUTE_KEYS = [
   "goal_condition",
   "scope_refs",
   "active_node",
+  "last_active_node",
   "required_skills",
   "required_checks",
   "max_iterations",
@@ -267,6 +268,14 @@ function validateGoalFrontmatter(
     }
   }
 
+  const lastActiveNode = optionalString(frontmatter, "last_active_node", filePath);
+  if (lastActiveNode !== undefined) {
+    const normalized = requireLowercase(lastActiveNode, "last_active_node", filePath);
+    if (!isPortableIdRef(normalized)) {
+      throw formatError(filePath, "last_active_node must be a local id or qid");
+    }
+  }
+
   const scopeRefs = optionalList(frontmatter, "scope_refs", filePath);
   for (const [index, value] of scopeRefs.entries()) {
     if (typeof value !== "string" || value.trim().length === 0) {
@@ -464,7 +473,10 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     }
   }
 
-  const edges = extractEdges(frontmatter, filePath, { allowPortableRefs: true });
+  const edges = extractEdges(frontmatter, filePath, {
+    allowPortableRefs: true,
+    includeSemanticRefs: WORK_TYPES.has(type),
+  });
   const attributes = {
     ...extractGoalAttributes(type, frontmatter),
     ...extractAgentAttributes(type, frontmatter),

@@ -262,6 +262,8 @@ export function writeSqliteIndex(options: {
         ["relates", node.edges.relates],
         ["blocked_by", node.edges.blocked_by],
         ["blocks", node.edges.blocks],
+        ["context_refs", node.edges.context_refs ?? []],
+        ["evidence_refs", node.edges.evidence_refs ?? []],
       ] as const) {
         for (const target of values) {
           insertEdge.run(node.qid, kind, target);

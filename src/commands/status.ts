@@ -279,6 +279,7 @@ export function collectStatus(root: string) {
       selected_exists: selected.state === null ? null : !selectedMissing,
       selected_achieved: selected.state === null ? null : selectedAchieved,
       active_node: selectedNode?.attributes.active_node ?? null,
+      last_active_node: selectedNode?.attributes.last_active_node ?? null,
       goal_state: selectedNode?.attributes.goal_state ?? null,
       status: selectedNode?.status ?? null,
     },

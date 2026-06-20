@@ -19,7 +19,7 @@ export type PackBuildOptions = {
   includeLatestCheckpoint?: boolean;
 };
 
-const EDGE_KEYS = ["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next"] as const;
+const EDGE_KEYS = ["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next", "context_refs", "evidence_refs"] as const;
 
 function normalizeEdgeList(edges: string[]): string[] {
   const seen = new Set<string>();
@@ -73,6 +73,12 @@ function getNeighbors(index: Index, qid: string, edges: string[]): string[] {
         break;
       case "blocks":
         neighbors.push(...node.edges.blocks);
+        break;
+      case "context_refs":
+        neighbors.push(...(node.edges.context_refs ?? []));
+        break;
+      case "evidence_refs":
+        neighbors.push(...(node.edges.evidence_refs ?? []));
         break;
       default:
         break;
@@ -139,6 +145,8 @@ function buildPackNode(root: string, index: Index, qid: string): PackNode {
     links: node.links,
     artifacts: node.artifacts,
     refs: node.refs,
+    context_refs: node.edges.context_refs ?? [],
+    evidence_refs: node.edges.evidence_refs ?? [],
     aliases: node.aliases,
     attributes: node.attributes ?? {},
     ...(node.source ? { source: node.source } : {}),

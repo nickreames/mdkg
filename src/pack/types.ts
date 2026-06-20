@@ -41,6 +41,8 @@ export type PackNode = {
   links: string[];
   artifacts: string[];
   refs: string[];
+  context_refs: string[];
+  evidence_refs: string[];
   aliases: string[];
   attributes: Record<string, FrontmatterValue>;
   source?: IndexNode["source"];

@@ -15,6 +15,12 @@ export function estimateTokensFromChars(chars: number): number {
 }
 
 export function renderNodeMetricsText(node: PackNode): string {
+  const links = node.links ?? [];
+  const artifacts = node.artifacts ?? [];
+  const refs = node.refs ?? [];
+  const contextRefs = node.context_refs ?? [];
+  const evidenceRefs = node.evidence_refs ?? [];
+  const aliases = node.aliases ?? [];
   const lines: string[] = [];
   lines.push(`qid: ${node.qid}`);
   lines.push(`id: ${node.id}`);
@@ -28,10 +34,12 @@ export function renderNodeMetricsText(node: PackNode): string {
     lines.push(`priority: ${node.priority}`);
   }
   lines.push(`path: ${node.path}`);
-  lines.push(`links: ${node.links.join(",")}`);
-  lines.push(`artifacts: ${node.artifacts.join(",")}`);
-  lines.push(`refs: ${node.refs.join(",")}`);
-  lines.push(`aliases: ${node.aliases.join(",")}`);
+  lines.push(`links: ${links.join(",")}`);
+  lines.push(`artifacts: ${artifacts.join(",")}`);
+  lines.push(`refs: ${refs.join(",")}`);
+  lines.push(`context_refs: ${contextRefs.join(",")}`);
+  lines.push(`evidence_refs: ${evidenceRefs.join(",")}`);
+  lines.push(`aliases: ${aliases.join(",")}`);
   if (node.body.length > 0) {
     lines.push("");
     lines.push(node.body);
