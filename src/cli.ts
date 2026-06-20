@@ -9,6 +9,7 @@ import { runListCommand } from "./commands/list";
 import { runSearchCommand } from "./commands/search";
 import { runShowCommand } from "./commands/show";
 import { runPackCommand } from "./commands/pack";
+import { runHandoffCreateCommand } from "./commands/handoff";
 import { runNextCommand } from "./commands/next";
 import { runValidateCommand } from "./commands/validate";
 import { runFormatCommand } from "./commands/format";
@@ -24,6 +25,7 @@ import {
   runDbMigrateCommand,
   runDbQueueAckCommand,
   runDbQueueClaimCommand,
+  runDbQueueContractCommand,
   runDbQueueCreateCommand,
   runDbQueueDeadLetterCommand,
   runDbQueueEnqueueCommand,
@@ -70,6 +72,7 @@ import {
   runGraphCloneCommand,
   runGraphForkCommand,
   runGraphImportTemplateCommand,
+  runGraphRefsCommand,
 } from "./commands/graph";
 import {
   runSubgraphAddCommand,
@@ -124,6 +127,7 @@ import {
   runWorkReceiptUpdateCommand,
   runWorkReceiptVerifyCommand,
   runWorkTriggerCommand,
+  runWorkValidateCommand,
 } from "./commands/work";
 import {
   runWorkspaceAddCommand,
@@ -178,12 +182,13 @@ function printUsage(log: LogFn): void {
   log("  list        List nodes with filters");
   log("  search      Search nodes by query");
   log("  pack        Generate a context pack");
+  log("  handoff     Create sanitized agent handoff prompts from graph context");
   log("  skill       Create, list, show, search, and validate skills");
   log("  capability  List, search, show, and resolve cached capability surfaces");
   log("  spec        List, show, and validate optional SPEC.md capability records");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
-  log("  graph       Clone and fork whole mdkg graphs");
+  log("  graph       Clone, fork, import, and inspect mdkg graph references");
   log("  subgraph    Register, audit, plan, sync, materialize, and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  goal        Inspect and advance recursive goal nodes");
@@ -354,8 +359,10 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg db queue stats [queue] [--json]");
       log("  mdkg db queue list <queue> [--status ready|leased|acked|dead_letter|all] [--limit <n>] [--json]");
       log("  mdkg db queue show <queue> <message-id> [--json]");
+      log("  mdkg db queue contract [--json]");
       log("\nSemantics:");
       log("  - queues are durable local delivery state, not canonical event history");
+      log("  - contract is read-only adapter metadata and does not require an initialized project DB");
       log("  - paused queues reject enqueue and claim");
       log("  - ack, fail, dead-letter, and release-expired are allowed while paused so leased work can settle");
       log("  - no raw SQL or hosted queue dependency is exposed");
@@ -376,6 +383,7 @@ function printDbHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg db queue ack|fail|dead-letter <queue> <message-id> --lease-owner <owner> [--json]");
       log("  mdkg db queue pause|resume <queue> [--json]");
       log("  mdkg db queue stats|list|show ... [--json]");
+      log("  mdkg db queue contract [--json]");
       log("  mdkg db snapshot seal [--queue-policy drain|paused] [--json]");
       log("  mdkg db snapshot verify [--json]");
       log("  mdkg db snapshot status [--json]");
@@ -448,12 +456,14 @@ function printPackHelp(log: LogFn): void {
   log("      --list-profiles          List built-in pack profiles and exit");
   log("\nAdvanced shaping / debug flags:");
   log("  --depth --edges --strip-code --max-code-lines --max-chars --max-lines --max-tokens");
+  log("  --edges accepts parent, epic, relates, blocked_by, blocks, prev, next, context_refs, evidence_refs");
   log("  --truncation-report --stats-out");
   log("\nExamples:");
   log("  mdkg pack --list-profiles");
   log("  mdkg pack task-1");
   log("  mdkg pack task-1 --profile concise --dry-run --stats");
   log("  mdkg pack task-1 --visibility public --dry-run");
+  log("  mdkg pack task-1 --edges context_refs,evidence_refs --format json");
   log("  mdkg pack task-1 --skills auto --skills-depth full");
   log("  mdkg pack epic-2 --format json --profile headers");
   printGlobalOptions(log);
@@ -469,6 +479,20 @@ function printPackProfiles(log: LogFn): void {
       log(`  defaults: ${entry.defaults.join(", ")}`);
     }
   }
+}
+
+function printHandoffHelp(log: LogFn): void {
+  log("Usage:");
+  log("  mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]");
+  log("\nPurpose:");
+  log("  - create a sanitized, copy-ready agent handoff from mdkg graph context");
+  log("  - summarize goal/work state, included pack nodes, latest checkpoint, boundaries, required checks, and next actions");
+  log("  - include raw secret, prompt, token, or payload marker warnings without copying raw node bodies into the handoff");
+  log("  - use pack traversal with context_refs and evidence_refs for background and proof nodes");
+  log("\nBoundaries:");
+  log("  - handoff create does not execute work, mutate graph nodes, or generate detailed node content");
+  log("  - --out must stay inside the repo root");
+  printGlobalOptions(log);
 }
 
 function printSkillHelp(log: LogFn, subcommand?: string): void {
@@ -715,14 +739,24 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       log("  - rewrites canonical numeric IDs and structured graph links deterministically");
       log("  - --select-goal requires --start-goal; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state");
       break;
+    case "refs":
+      log("Usage:");
+      log("  mdkg graph refs <id-or-qid> [--ws <alias>] [--json]");
+      log("\nNotes:");
+      log("  - read-only summary of inbound and outbound graph references");
+      log("  - reports scope_refs, context_refs, evidence_refs, blockers, related refs, and structural links");
+      log("  - subgraph qids are inspectable but remain read-only");
+      break;
     default:
       log("Usage:");
       log("  mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]");
       log("  mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]");
       log("  mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]");
+      log("  mdkg graph refs <id-or-qid> [--ws <alias>] [--json]");
       log("\nNotes:");
       log("  - graph clone/fork create authored graph state in separate target directories and preserve IDs");
       log("  - graph import-template imports template work nodes into the current graph with rewritten IDs");
+      log("  - graph refs is read-only and explains local plus subgraph graph relationships");
       log("  - subgraphs remain read-only bundle projections for orchestration context");
   }
   printGlobalOptions(log);
@@ -846,6 +880,14 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log("  mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]");
       break;
+    case "validate":
+      log("Usage:");
+      log("  mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]");
+      log("\nNotes:");
+      log("  Read-only focused validation for agent workflow mirrors.");
+      log("  Reports typed diagnostics for SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md files.");
+      log("  Obvious raw secret, prompt, token, or payload markers are warnings so humans and agents can review boundaries.");
+      break;
     default:
       log("Usage:");
       log("  mdkg work contract new ...");
@@ -853,8 +895,10 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg work order new|status|update ...");
       log("  mdkg work receipt new|verify|update ...");
       log("  mdkg work artifact add ...");
+      log("  mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]");
       log("\nNotes:");
       log("  - work commands mutate semantic mirror files only");
+      log("  - work validate is read-only and reports typed workflow diagnostics");
       log("  - production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg");
       log("  - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors");
       log("  - artifact:// refs identify external/runtime-managed artifacts; archive:// refs identify committed mdkg archive sidecars");
@@ -886,7 +930,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
     case "done":
       log("Usage:");
       log('  mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]');
-      log('                 [--add-refs <id,...>] [--checkpoint "<title>"] [--run-id <id>] [--note "<text>"] [--json]');
+      log('                 [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]');
       log("\nWhen to use:");
       log("  Mark a task-like node done, optionally create a checkpoint, and emit a completion event when enabled.");
       log("  Use `--checkpoint` for milestone compression, not every routine task completion.");
@@ -896,7 +940,7 @@ function printTaskHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log('  mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]');
       log("  mdkg task update <id-or-qid> [options] [--json]");
-      log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [options] [--json]');
+      log('  mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]');
       log("\nNotes:");
       log("  `mdkg task ...` only supports feat, task, bug, test, and spike nodes.");
       log("  Spikes use this lifecycle; there is no separate `mdkg spike ...` command family.");
@@ -911,7 +955,7 @@ function printGoalHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log("  mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]");
       log("\nWhen to use:");
-      log("  Inspect a goal condition, current goal state, active node, required skills, and required checks.");
+      log("  Inspect a goal condition, current goal state, active node, last active node, required skills, and required checks.");
       printGlobalOptions(log);
       return;
     case "next":
@@ -980,6 +1024,9 @@ function printGoalHelp(log: LogFn, subcommand?: string): void {
       log(`  mdkg goal ${subcommand} <goal-id-or-qid> [--ws <alias>] [--json]`);
       log("\nWhen to use:");
       log("  Update durable goal state after agent or human review.");
+      if (subcommand === "done") {
+        log("  Done goals preserve the final active_node as last_active_node and stop routing actionable work.");
+      }
       printGlobalOptions(log);
       return;
     default:
@@ -996,6 +1043,7 @@ function printGoalHelp(log: LogFn, subcommand?: string): void {
       log("\nNotes:");
       log("  - goals orchestrate recursive progress; features, tasks, bugs, tests, and spikes are iterable work units");
       log("  - `mdkg goal next` is read-only; use `mdkg goal claim` to update active_node");
+      log("  - `mdkg goal done` moves active_node to last_active_node so completed goals keep history without staying actionable");
       log("  - `mdkg goal activate` enforces one active local root goal and pauses competing active goals");
       log("  - goal evaluation is report-only and never executes required_checks");
       log("  - subgraph goal qids are read-only; update the source workspace instead");
@@ -1037,14 +1085,19 @@ function printNextHelp(log: LogFn): void {
 
 function printCheckpointHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg checkpoint new <title> [--ws <alias>] [--json]");
+  log("  mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]");
+  log("  Checkpoint bodies include command evidence, pass/fail status, warnings, changed surfaces, boundaries, and follow-up refs.");
   log('        [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]');
   printGlobalOptions(log);
 }
 
 function printValidateHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg validate [--out <path>] [--quiet] [--json]");
+  log("  mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]");
+  log("\nNotes:");
+  log("  Validates frontmatter schemas, graph references, visibility, skills, and events.");
+  log("  --changed-only filters warning presentation to changed .mdkg files while full graph errors still run.");
+  log("  JSON output includes warning_diagnostics with warning ids, categories, severity, paths, refs, and remediation text.");
   printGlobalOptions(log);
 }
 
@@ -1152,6 +1205,10 @@ function printFixHelp(log: LogFn, subcommand?: string): void {
 function printFormatHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg format");
+  log("  mdkg format --headings [--dry-run|--apply] [--json]");
+  log("\nNotes:");
+  log("  Default format normalizes frontmatter in place.");
+  log("  --headings adds missing recommended body headings; it defaults to dry-run and requires --apply to write files.");
   printGlobalOptions(log);
 }
 
@@ -1214,6 +1271,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "pack":
       printPackHelp(log);
+      return;
+    case "handoff":
+      printHandoffHelp(log);
       return;
     case "skill":
       printSkillHelp(log, subcommand);
@@ -1603,6 +1663,12 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
           }
           runDbQueueCreateCommand(common);
           return 0;
+        case "contract":
+          if (parsed.positionals.length > 3) {
+            throw new UsageError("mdkg db queue contract accepts no positional arguments");
+          }
+          runDbQueueContractCommand(common);
+          return 0;
         case "pause":
           if (!queueName || parsed.positionals.length > 4) {
             throw new UsageError("mdkg db queue pause requires <queue>");
@@ -1670,7 +1736,7 @@ function runDbSubcommand(parsed: ParsedArgs, root: string): ExitCode {
           runDbQueueShowCommand(common);
           return 0;
         default:
-          throw new UsageError("mdkg db queue requires create/pause/resume/enqueue/claim/ack/fail/dead-letter/release-expired/stats/list/show");
+          throw new UsageError("mdkg db queue requires create/contract/pause/resume/enqueue/claim/ack/fail/dead-letter/release-expired/stats/list/show");
       }
     }
     case "snapshot": {
@@ -1971,8 +2037,17 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runGraphImportTemplateCommand({ root, source, startGoal, idPrefix, dryRun, apply, selectGoal, json });
       return 0;
     }
+    case "refs": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("graph refs requires <id-or-qid>");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      runGraphRefsCommand({ root, id, ws, json });
+      return 0;
+    }
     default:
-      throw new UsageError("graph requires clone/fork/import-template");
+      throw new UsageError("graph requires clone/fork/import-template/refs");
   }
 }
 
@@ -2129,6 +2204,16 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     const requester = requireFlagValue("--requester", parsed.flags["--requester"]);
     const enqueue = requireFlagValue("--enqueue", parsed.flags["--enqueue"]);
     runWorkTriggerCommand({ root, ws, targetRef, id, title, requester, enqueue, json });
+    return 0;
+  }
+
+  if (domain === "validate") {
+    const id = parsed.positionals[2];
+    if (parsed.positionals.length > 3) {
+      throw new UsageError("work validate accepts at most one workflow reference");
+    }
+    const type = requireFlagValue("--type", parsed.flags["--type"]);
+    runWorkValidateCommand({ root, ws, id, type, json });
     return 0;
   }
 
@@ -2302,7 +2387,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     return 0;
   }
 
-  throw new UsageError("work requires contract new, order new/update, receipt new/update, or artifact add");
+  throw new UsageError("work requires contract new, trigger, order new/update/status, receipt new/update/verify, artifact add, or validate");
 }
 
 function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
@@ -2590,6 +2675,7 @@ function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       const addLinks = requireFlagValue("--add-links", parsed.flags["--add-links"]);
       const addRefs = requireFlagValue("--add-refs", parsed.flags["--add-refs"]);
       const checkpoint = requireFlagValue("--checkpoint", parsed.flags["--checkpoint"]);
+      const checkpointKind = requireFlagValue("--checkpoint-kind", parsed.flags["--checkpoint-kind"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
       const note = requireFlagValue("--note", parsed.flags["--note"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
@@ -2601,6 +2687,7 @@ function runTaskSubcommand(parsed: ParsedArgs, root: string): ExitCode {
         addLinks,
         addRefs,
         checkpoint,
+        checkpointKind,
         runId,
         note,
         json,
@@ -2956,6 +3043,32 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       });
       return 0;
     }
+    case "handoff": {
+      const sub = (parsed.positionals[1] ?? "").toLowerCase();
+      if (!sub) {
+        throw new UsageError("handoff requires a subcommand");
+      }
+      if (sub !== "create") {
+        throw new UsageError(`unknown handoff subcommand: ${sub}`);
+      }
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("mdkg handoff create requires <id-or-qid>");
+      }
+      const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+      const out = requireFlagValue("--out", parsed.flags["--out"]);
+      const depth = parseNumberFlag("--depth", parsed.flags["--depth"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      runHandoffCreateCommand({
+        root,
+        id,
+        ws,
+        out,
+        depth,
+        json,
+      });
+      return 0;
+    }
     case "next": {
       if (parsed.positionals.length > 2) {
         throw new UsageError("next accepts at most one id");
@@ -2985,6 +3098,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
       const relates = requireFlagValue("--relates", parsed.flags["--relates"]);
       const scope = requireFlagValue("--scope", parsed.flags["--scope"]);
+      const kind = requireFlagValue("--kind", parsed.flags["--kind"]);
       const status = requireFlagValue("--status", parsed.flags["--status"]);
       const priority = parseNumberFlag("--priority", parsed.flags["--priority"]);
       const template = requireFlagValue("--template", parsed.flags["--template"]);
@@ -2997,6 +3111,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         ws,
         relates,
         scope,
+        kind,
         status,
         priority,
         template,
@@ -3012,8 +3127,9 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       }
       const out = requireFlagValue("--out", parsed.flags["--out"]);
       const quiet = parseBooleanFlag("--quiet", parsed.flags["--quiet"]);
+      const changedOnly = parseBooleanFlag("--changed-only", parsed.flags["--changed-only"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runValidateCommand({ root, out, quiet, json });
+      runValidateCommand({ root, out, quiet, json, changedOnly });
       return 0;
     }
     case "status": {
@@ -3057,7 +3173,17 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       if (parsed.positionals.length > 1) {
         throw new UsageError("format does not accept positional arguments");
       }
-      runFormatCommand({ root });
+      const headings = parseBooleanFlag("--headings", parsed.flags["--headings"]);
+      const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
+      const apply = parseBooleanFlag("--apply", parsed.flags["--apply"]);
+      const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+      if (!headings && (dryRun || apply || json)) {
+        throw new UsageError("format --dry-run, --apply, and --json require --headings");
+      }
+      if (dryRun && apply) {
+        throw new UsageError("format --headings cannot use --dry-run and --apply together");
+      }
+      runFormatCommand({ root, headings, dryRun, apply, json });
       return 0;
     case "doctor": {
       if (parsed.positionals.length > 1) {

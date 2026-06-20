@@ -11,7 +11,7 @@ import {
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
 import { writeDerivedIndexes } from "../graph/reindex";
-import { AGENT_FILE_BASENAMES, AgentFileType } from "../graph/agent_file_types";
+import { AGENT_FILE_BASENAMES, AGENT_FILE_TYPES, AgentFileType } from "../graph/agent_file_types";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
@@ -29,6 +29,9 @@ import {
   ProjectQueueMessage,
   readProjectQueue,
 } from "../core/project_db_queue";
+import { collectValidateReceipt } from "./validate";
+import { toNodeSummaryJson, writeJson } from "./query_output";
+import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 
 export type WorkContractNewCommandOptions = {
   root: string;
@@ -131,6 +134,14 @@ export type WorkReceiptVerifyCommandOptions = {
   root: string;
   id: string;
   ws?: string;
+  json?: boolean;
+};
+
+export type WorkValidateCommandOptions = {
+  root: string;
+  id?: string;
+  ws?: string;
+  type?: string;
   json?: boolean;
 };
 
@@ -253,11 +264,33 @@ type WorkReceiptVerifyReceipt = {
   warnings: string[];
 };
 
+type WorkValidationDiagnostic = {
+  severity: "warning" | "error";
+  code: string;
+  message: string;
+  qid?: string;
+};
+
+type WorkValidateReceipt = {
+  action: "work.validate";
+  ok: boolean;
+  type: AgentFileType | "all";
+  target?: ReturnType<typeof toNodeSummaryJson>;
+  checked_count: number;
+  nodes: Array<ReturnType<typeof toNodeSummaryJson>>;
+  warning_count: number;
+  error_count: number;
+  warnings: string[];
+  errors: string[];
+  diagnostics: WorkValidationDiagnostic[];
+};
+
 const PRICING_MODELS = new Set(["free", "included", "quoted", "fixed", "metered", "subscription"]);
 const ORDER_STATUSES = new Set(["submitted", "accepted", "running", "completed", "cancelled", "failed"]);
 const RECEIPT_STATUSES = new Set(["recorded", "verified", "rejected", "superseded"]);
 const OUTCOMES = new Set(["success", "partial", "failure"]);
 const REDACTION_POLICIES = new Set(["refs_and_hashes_only", "redacted_summary", "external_private"]);
+const WORKFLOW_VALIDATE_TYPES = new Set<string>(AGENT_FILE_TYPES);
 
 function parseCsvList(raw?: string): string[] {
   if (!raw) {
@@ -465,6 +498,182 @@ function resolveReadableWorkNode(index: Index, idOrQid: string, ws: string, type
     throw new NotFoundError(`${label} not found: ${idOrQid}`);
   }
   return node;
+}
+
+function normalizeWorkflowValidateType(value: string | undefined): AgentFileType | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  const normalized = value.toLowerCase();
+  if (!WORKFLOW_VALIDATE_TYPES.has(normalized)) {
+    throw new UsageError(`--type must be one of ${AGENT_FILE_TYPES.join(", ")}`);
+  }
+  return normalized as AgentFileType;
+}
+
+function isWorkflowNode(node: IndexNode): boolean {
+  return WORKFLOW_VALIDATE_TYPES.has(node.type);
+}
+
+function resolveWorkflowTarget(index: Index, idOrQid: string, ws: string): IndexNode {
+  const resolved = resolveQid(index, idOrQid, ws);
+  if (resolved.status !== "ok") {
+    throw new NotFoundError(formatResolveError("workflow record", idOrQid, resolved, ws));
+  }
+  const node = index.nodes[resolved.qid];
+  if (!node || !isWorkflowNode(node)) {
+    throw new NotFoundError(`workflow record not found: ${idOrQid}`);
+  }
+  return node;
+}
+
+function workflowDiagnosticCode(message: string): string {
+  const rawMatch = /raw-content\.([a-z_]+)/.exec(message);
+  if (rawMatch) {
+    return `raw-content.${rawMatch[1]}`;
+  }
+  if (message.includes("missing recommended heading")) {
+    return "heading.missing";
+  }
+  if (message.includes("references missing") || message.includes("references missing node")) {
+    return "reference.missing";
+  }
+  if (message.includes("must be named")) {
+    return "schema.basename";
+  }
+  if (message.includes("must be") || message.includes("is required")) {
+    return "schema.invalid";
+  }
+  if (message.includes("visibility:")) {
+    return "visibility.policy";
+  }
+  return "validation.message";
+}
+
+function workflowDiagnosticQid(message: string, nodes: IndexNode[]): string | undefined {
+  for (const node of nodes) {
+    if (message.includes(node.qid) || message.includes(node.path)) {
+      return node.qid;
+    }
+  }
+  return undefined;
+}
+
+function workflowCandidatePaths(options: {
+  root: string;
+  config: ReturnType<typeof loadConfig>;
+  ws: string;
+  type?: AgentFileType;
+  target?: IndexNode;
+}): string[] {
+  const values = new Set<string>();
+  if (options.target) {
+    values.add(options.target.path);
+    values.add(path.resolve(options.root, options.target.path));
+    return Array.from(values);
+  }
+  const basenames = options.type
+    ? new Set([AGENT_FILE_BASENAMES[options.type]])
+    : new Set(Object.values(AGENT_FILE_BASENAMES));
+  const filesByAlias = listWorkspaceDocFilesByAlias(options.root, options.config);
+  for (const [alias, files] of Object.entries(filesByAlias)) {
+    if (options.ws !== "root" && alias !== options.ws) {
+      continue;
+    }
+    for (const filePath of files) {
+      if (!basenames.has(path.basename(filePath))) {
+        continue;
+      }
+      values.add(filePath);
+      values.add(path.relative(options.root, filePath).split(path.sep).join("/"));
+    }
+  }
+  return Array.from(values);
+}
+
+function filterWorkflowMessages(messages: string[], nodes: IndexNode[], candidatePaths: string[]): string[] {
+  if (nodes.length === 0 && candidatePaths.length === 0) {
+    return [];
+  }
+  return messages.filter((message) =>
+    nodes.some((node) => message.includes(node.qid) || message.includes(node.path)) ||
+    candidatePaths.some((filePath) => message.includes(filePath))
+  );
+}
+
+function buildWorkValidateReceipt(options: WorkValidateCommandOptions): WorkValidateReceipt {
+  const config = loadConfig(options.root);
+  const ws = normalizeWorkspace(options.ws);
+  const { index } = loadIndex({ root: options.root, config, tolerant: true });
+  const type = normalizeWorkflowValidateType(options.type);
+  let targets: IndexNode[];
+  let target: IndexNode | undefined;
+
+  if (options.id) {
+    target = resolveWorkflowTarget(index, options.id, ws);
+    if (type && target.type !== type) {
+      throw new UsageError(`workflow record ${target.qid} is ${target.type}, not ${type}`);
+    }
+    targets = [target];
+  } else {
+    targets = Object.values(index.nodes)
+      .filter((node) => isWorkflowNode(node) && (!type || node.type === type))
+      .sort((a, b) => a.qid.localeCompare(b.qid));
+  }
+
+  const candidatePaths = workflowCandidatePaths({ root: options.root, config, ws, type, target });
+  const validation = collectValidateReceipt({ root: options.root });
+  const warnings = filterWorkflowMessages(validation.warnings, targets, candidatePaths);
+  const errors = filterWorkflowMessages(validation.errors, targets, candidatePaths);
+  const diagnostics: WorkValidationDiagnostic[] = [
+    ...warnings.map((message) => ({
+      severity: "warning" as const,
+      code: workflowDiagnosticCode(message),
+      message,
+      qid: workflowDiagnosticQid(message, targets),
+    })),
+    ...errors.map((message) => ({
+      severity: "error" as const,
+      code: workflowDiagnosticCode(message),
+      message,
+      qid: workflowDiagnosticQid(message, targets),
+    })),
+  ];
+
+  return {
+    action: "work.validate",
+    ok: errors.length === 0,
+    type: type ?? "all",
+    ...(target ? { target: toNodeSummaryJson(target) } : {}),
+    checked_count: target ? 1 : candidatePaths.filter((value) => !path.isAbsolute(value)).length,
+    nodes: targets.map((node) => toNodeSummaryJson(node)),
+    warning_count: warnings.length,
+    error_count: errors.length,
+    warnings,
+    errors,
+    diagnostics,
+  };
+}
+
+function printWorkValidateReceipt(receipt: WorkValidateReceipt, json?: boolean): void {
+  if (json) {
+    writeJson(receipt);
+    if (!receipt.ok) {
+      throw new ValidationError(`workflow validation failed with ${receipt.error_count} error(s)`);
+    }
+    return;
+  }
+
+  for (const warning of receipt.warnings) {
+    console.error(`warning: ${warning}`);
+  }
+  if (!receipt.ok) {
+    for (const error of receipt.errors) {
+      console.error(error);
+    }
+    throw new ValidationError(`workflow validation failed with ${receipt.error_count} error(s)`);
+  }
+  console.log(`workflow validation ok: ${receipt.checked_count} file(s)`);
 }
 
 function resolveTriggerWorkNode(index: Index, ws: string, refRaw: string): {
@@ -1413,6 +1622,10 @@ export function runWorkReceiptUpdateCommand(options: WorkReceiptUpdateCommandOpt
 
 export function runWorkReceiptVerifyCommand(options: WorkReceiptVerifyCommandOptions): void {
   return runWorkReceiptVerifyCommandLocked(options);
+}
+
+export function runWorkValidateCommand(options: WorkValidateCommandOptions): void {
+  return printWorkValidateReceipt(buildWorkValidateReceipt(options), options.json);
 }
 
 export function runWorkArtifactAddCommand(options: WorkArtifactAddCommandOptions): void {

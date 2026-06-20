@@ -58,6 +58,11 @@ function renderHeader(meta: PackMeta, nodes: PackNode[]): string[] {
 }
 
 function renderNode(node: PackNode): string[] {
+  const links = node.links ?? [];
+  const artifacts = node.artifacts ?? [];
+  const refs = node.refs ?? [];
+  const contextRefs = node.context_refs ?? [];
+  const evidenceRefs = node.evidence_refs ?? [];
   const lines: string[] = [];
   lines.push(`## ${node.qid}`);
   lines.push(`qid: ${node.qid}`);
@@ -71,10 +76,16 @@ function renderNode(node: PackNode): string[] {
   }
   lines.push(`path: ${node.path}`);
 
-  lines.push(formatList("links", node.links));
-  lines.push(formatList("artifacts", node.artifacts));
-  if (node.refs.length > 0) {
-    lines.push(formatList("refs", node.refs));
+  lines.push(formatList("links", links));
+  lines.push(formatList("artifacts", artifacts));
+  if (refs.length > 0) {
+    lines.push(formatList("refs", refs));
+  }
+  if (contextRefs.length > 0) {
+    lines.push(formatList("context_refs", contextRefs));
+  }
+  if (evidenceRefs.length > 0) {
+    lines.push(formatList("evidence_refs", evidenceRefs));
   }
   for (const [key, value] of Object.entries(node.attributes ?? {})) {
     lines.push(formatAttribute(key, value));

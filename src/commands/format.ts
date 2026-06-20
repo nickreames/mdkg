@@ -18,10 +18,22 @@ import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, isUriRef, validatePortableOrUriRef } from "../util/refs";
 import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
+import { RECOMMENDED_HEADINGS } from "./validate";
 
 export type FormatCommandOptions = {
   root: string;
   now?: Date;
+  headings?: boolean;
+  dryRun?: boolean;
+  apply?: boolean;
+  json?: boolean;
+};
+
+type HeadingChange = {
+  path: string;
+  id?: string;
+  type: string;
+  added_headings: string[];
 };
 
 const DEC_ID_RE = /^dec-[0-9]+$/;
@@ -53,6 +65,30 @@ function isValidId(value: string): boolean {
 
 function isCoreListFile(filePath: string): boolean {
   return path.basename(filePath) === "core.md" && path.basename(path.dirname(filePath)) === "core";
+}
+
+function normalizeHeading(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function existingHeadings(body: string): Set<string> {
+  const headings = new Set<string>();
+  for (const line of body.split(/\r?\n/)) {
+    const match = /^#+\s+(.*)$/.exec(line);
+    if (match) {
+      headings.add(normalizeHeading(match[1] ?? ""));
+    }
+  }
+  return headings;
+}
+
+function appendMissingHeadings(body: string, headings: string[]): string {
+  if (headings.length === 0) {
+    return body;
+  }
+  const trimmed = body.replace(/\s+$/g, "");
+  const prefix = trimmed.length > 0 ? `${trimmed}\n\n` : "";
+  return `${prefix}${headings.map((heading) => `# ${heading}\n`).join("\n")}`;
 }
 
 function normalizeScalar(value: string): string {
@@ -294,7 +330,105 @@ function normalizeFrontmatter(
   return { normalized, errors };
 }
 
+function runHeadingFormatCommandLocked(options: FormatCommandOptions): void {
+  if (options.dryRun && options.apply) {
+    throw new ValidationError("format --headings cannot use --dry-run and --apply together");
+  }
+  const config = loadConfig(options.root);
+  const filesByAlias = listWorkspaceDocFilesByAlias(options.root, config);
+  const errors: string[] = [];
+  const changes: Array<HeadingChange & { filePath: string; content: string }> = [];
+
+  for (const files of Object.values(filesByAlias)) {
+    for (const filePath of files) {
+      if (isCoreListFile(filePath)) {
+        continue;
+      }
+      let content = "";
+      try {
+        content = fs.readFileSync(filePath, "utf8");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "unknown error";
+        errors.push(`${filePath}: failed to read file: ${message}`);
+        continue;
+      }
+      let parsed;
+      try {
+        parsed = parseFrontmatter(content, filePath);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "unknown error";
+        errors.push(message);
+        continue;
+      }
+      const typeValue = parsed.frontmatter.type;
+      if (typeof typeValue !== "string") {
+        errors.push(`${filePath}: type is required`);
+        continue;
+      }
+      const type = typeValue.toLowerCase();
+      const recommended = RECOMMENDED_HEADINGS[type];
+      if (!recommended) {
+        continue;
+      }
+      if (!ALLOWED_TYPES.has(type)) {
+        errors.push(`${filePath}: type must be one of ${Array.from(ALLOWED_TYPES).join(", ")}`);
+        continue;
+      }
+      const present = existingHeadings(parsed.body);
+      const addedHeadings = recommended.filter((heading) => !present.has(normalizeHeading(heading)));
+      if (addedHeadings.length === 0) {
+        continue;
+      }
+      const frontmatterEnd = content.indexOf("---", 3);
+      const frontmatterBlock =
+        frontmatterEnd >= 0 ? content.slice(0, frontmatterEnd + 3) : ["---", ...formatFrontmatter(parsed.frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER), "---"].join("\n");
+      const nextBody = appendMissingHeadings(parsed.body, addedHeadings);
+      const nextContent = `${frontmatterBlock}\n${nextBody.endsWith("\n") ? nextBody : `${nextBody}\n`}`;
+      changes.push({
+        filePath,
+        path: path.relative(options.root, filePath).split(path.sep).join("/"),
+        id: typeof parsed.frontmatter.id === "string" ? parsed.frontmatter.id : undefined,
+        type,
+        added_headings: addedHeadings,
+        content: nextContent,
+      });
+    }
+  }
+
+  if (errors.length > 0) {
+    for (const error of errors) {
+      console.error(error);
+    }
+    throw new ValidationError(`format --headings failed with ${errors.length} error(s)`);
+  }
+
+  const apply = options.apply === true;
+  if (apply) {
+    for (const change of changes) {
+      atomicWriteFile(change.filePath, change.content);
+    }
+  }
+
+  const receipt = {
+    action: "format.headings",
+    ok: true,
+    dry_run: !apply,
+    applied: apply,
+    changed_count: changes.length,
+    changes: changes.map(({ filePath: _filePath, content: _content, ...change }) => change),
+  };
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    return;
+  }
+  console.log(`${apply ? "format headings updated" : "format headings dry-run"} ${changes.length} file(s)`);
+}
+
 function runFormatCommandLocked(options: FormatCommandOptions): void {
+  if (options.headings) {
+    runHeadingFormatCommandLocked(options);
+    return;
+  }
   const config = loadConfig(options.root);
   const templateSchemas = loadTemplateSchemas(options.root, config, ALLOWED_TYPES);
   const filesByAlias = listWorkspaceDocFilesByAlias(options.root, config);

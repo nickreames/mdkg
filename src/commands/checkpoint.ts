@@ -18,6 +18,7 @@ export type CheckpointNewCommandOptions = {
   ws?: string;
   relates?: string;
   scope?: string;
+  kind?: string;
   status?: string;
   priority?: number;
   template?: string;
@@ -32,7 +33,26 @@ export type CheckpointReceipt = {
   id: string;
   qid: string;
   path: string;
+  kind: CheckpointKind;
 };
+
+export const CHECKPOINT_KINDS = [
+  "implementation",
+  "test-proof",
+  "goal-closeout",
+  "audit",
+  "handoff",
+] as const;
+
+export type CheckpointKind = (typeof CHECKPOINT_KINDS)[number];
+
+function normalizeCheckpointKind(value?: string): CheckpointKind {
+  const normalized = (value ?? "implementation").toLowerCase();
+  if ((CHECKPOINT_KINDS as readonly string[]).includes(normalized)) {
+    return normalized as CheckpointKind;
+  }
+  throw new UsageError(`--kind must be one of ${CHECKPOINT_KINDS.join(", ")}`);
+}
 
 function parseCsvList(raw?: string): string[] {
   if (!raw) {
@@ -109,6 +129,128 @@ function normalizeWorkspace(value?: string): string {
   return normalized;
 }
 
+function kindSpecificSection(kind: CheckpointKind): string[] {
+  switch (kind) {
+    case "implementation":
+      return [
+        "# Implementation Details",
+        "",
+        "- Code or graph surfaces changed:",
+        "- Architecture or data-shape notes:",
+        "- Compatibility notes:",
+      ];
+    case "test-proof":
+      return [
+        "# Test Proof",
+        "",
+        "- Test target:",
+        "- Fixtures or temp repos:",
+        "- Coverage gaps:",
+      ];
+    case "goal-closeout":
+      return [
+        "# Goal Closeout",
+        "",
+        "- Goal condition result:",
+        "- Scoped nodes closed:",
+        "- Remaining deferred work:",
+      ];
+    case "audit":
+      return [
+        "# Audit Findings",
+        "",
+        "- Reviewed surfaces:",
+        "- Findings:",
+        "- Residual risk:",
+      ];
+    case "handoff":
+      return [
+        "# Handoff Summary",
+        "",
+        "- Recipient/context:",
+        "- Starting node or command:",
+        "- Explicit boundaries:",
+      ];
+  }
+}
+
+function checkpointBody(kind: CheckpointKind): string {
+  return [
+    "# Summary",
+    "",
+    "What was completed in this phase? What is now true?",
+    "",
+    "# Scope Covered",
+    "",
+    "Keep `scope` frontmatter updated when possible.",
+    "",
+    "## Changed Surfaces",
+    "",
+    "- files, commands, nodes, docs, or runtime surfaces changed",
+    "",
+    "## Boundaries",
+    "",
+    "- in scope:",
+    "- out of scope:",
+    "- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded:",
+    "",
+    "# Decisions Captured",
+    "",
+    "Link the most important decision records.",
+    "",
+    "# Implementation Summary",
+    "",
+    "What changed? What patterns or architecture emerged?",
+    "",
+    ...kindSpecificSection(kind),
+    "",
+    "# Verification / Testing",
+    "",
+    "## Command Evidence",
+    "",
+    "- command:",
+    "- result:",
+    "",
+    "## Pass / Fail Status",
+    "",
+    "- status:",
+    "",
+    "## Known Warnings",
+    "",
+    "- warning:",
+    "",
+    "# Known Issues / Follow-ups",
+    "",
+    "- issue 1",
+    "- issue 2",
+    "",
+    "## Follow-up Refs",
+    "",
+    "- task/test/goal refs:",
+    "",
+    "# Links / Artifacts",
+    "",
+    "- packs",
+    "- PRs/commits",
+    "- docs",
+    "- dashboards",
+    "",
+    "# Raw Content Safety",
+    "",
+    "- Summarize evidence and use refs, hashes, and artifact links instead of raw secrets, raw prompts, raw payloads, or bulky execution traces.",
+    "",
+  ].join("\n");
+}
+
+function replaceRenderedBody(content: string, body: string): string {
+  const marker = "\n---\n";
+  const start = content.indexOf(marker);
+  if (!content.startsWith("---\n") || start === -1) {
+    return content;
+  }
+  return `${content.slice(0, start + marker.length)}${body}`;
+}
+
 function createCheckpointLocked(options: CheckpointNewCommandOptions): CheckpointReceipt {
   const title = options.title.trim();
   if (!title) {
@@ -163,6 +305,7 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     }
   }
   const scope = parseCsvList(options.scope).map((value) => normalizeId(value, "--scope"));
+  const kind = normalizeCheckpointKind(options.kind);
 
   const now = options.now ?? new Date();
   const today = formatDate(now);
@@ -170,6 +313,7 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
   const content = renderTemplate(template, {
     id,
     title,
+    checkpoint_kind: kind,
     status,
     priority,
     created: today,
@@ -177,9 +321,10 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     relates,
     scope,
   });
+  const rendered = replaceRenderedBody(content, checkpointBody(kind));
 
   try {
-    writeFileExclusive(filePath, content);
+    writeFileExclusive(filePath, rendered);
   } catch (err) {
     const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
     if (code === "EEXIST") {
@@ -204,6 +349,7 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     id,
     qid: `${ws}:${id}`,
     path: path.relative(options.root, filePath),
+    kind,
   };
 }
 

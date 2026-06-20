@@ -110,6 +110,12 @@ function collectNodeStringReferences(node: IndexNode): Array<{ field: string; va
   for (const [index, value] of node.edges.blocks.entries()) {
     values.push({ field: `blocks[${index}]`, value });
   }
+  for (const [index, value] of (node.edges.context_refs ?? []).entries()) {
+    values.push({ field: `context_refs[${index}]`, value });
+  }
+  for (const [index, value] of (node.edges.evidence_refs ?? []).entries()) {
+    values.push({ field: `evidence_refs[${index}]`, value });
+  }
   for (const [index, value] of node.links.entries()) {
     values.push({ field: `links[${index}]`, value });
   }

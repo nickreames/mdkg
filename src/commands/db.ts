@@ -36,6 +36,7 @@ import {
   releaseExpiredProjectQueueLeases,
   resumeProjectQueue,
 } from "../core/project_db_queue";
+import { projectDbQueueAdapterContract } from "../core/project_db_queue_contract";
 import { readPackageVersion } from "../core/version";
 import { rebuildDerivedIndexCaches } from "./index";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
@@ -679,6 +680,13 @@ export function runDbQueueCreateCommand(options: DbQueueCommandOptions): void {
     }),
     "db-queue-create"
   );
+}
+
+export function runDbQueueContractCommand(options: DbQueueCommandOptions): void {
+  writeQueueJsonOrText("db-queue-contract", {
+    mdkg_version: readPackageVersion(),
+    contract: projectDbQueueAdapterContract(),
+  }, options.json);
 }
 
 export function runDbQueuePauseCommand(options: DbQueueCommandOptions): void {

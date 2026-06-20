@@ -29,7 +29,7 @@ import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { buildDefaultPackPath } from "../util/output";
 import { formatResolveError, resolveQid } from "../util/qid";
 
-const EDGE_KEYS = new Set(["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next"]);
+const EDGE_KEYS = new Set(["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next", "context_refs", "evidence_refs"]);
 const FORMAT_KEYS = new Set(["md", "json", "toon", "xml"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -236,6 +236,8 @@ function appendSkillsToPack(
       links: skill.links,
       artifacts: [],
       refs: [],
+      context_refs: [],
+      evidence_refs: [],
       aliases: [skill.slug, ...skill.tags],
       attributes: {},
       body: depth === "full" ? loadSkillFullBody(root, skill) : renderSkillMetaBody(skill),

@@ -60,6 +60,7 @@ export type TaskDoneCommandOptions = {
   addLinks?: string;
   addRefs?: string;
   checkpoint?: string;
+  checkpointKind?: string;
   runId?: string;
   note?: string;
   json?: boolean;
@@ -444,6 +445,7 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
       ws: loaded.ws,
       relates: loaded.id,
       scope: loaded.id,
+      kind: options.checkpointKind,
       runId: options.runId,
       note: `checkpoint created from mdkg task done for ${loaded.id}`,
       now,
@@ -455,6 +457,7 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
       ws: loaded.ws,
       relates: loaded.id,
       scope: loaded.id,
+      kind: options.checkpointKind,
       runId: options.runId,
       note: `checkpoint created from mdkg task done for ${loaded.id}`,
       now,

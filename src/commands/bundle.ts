@@ -481,6 +481,8 @@ function publicFilteringErrors(index: Index, includedQids: Set<string>): string[
       node.edges.relates,
       node.edges.blocked_by,
       node.edges.blocks,
+      node.edges.context_refs ?? [],
+      node.edges.evidence_refs ?? [],
     ]) {
       for (const target of targets) {
         if (index.nodes[target] && !includedQids.has(target)) {

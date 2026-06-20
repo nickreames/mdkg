@@ -132,6 +132,14 @@ export function runShowCommand(options: ShowCommandOptions): void {
   if (blocksLine) {
     lines.push(blocksLine);
   }
+  const contextRefsLine = maybeLine("context_refs", node.edges.context_refs ?? []);
+  if (contextRefsLine) {
+    lines.push(contextRefsLine);
+  }
+  const evidenceRefsLine = maybeLine("evidence_refs", node.edges.evidence_refs ?? []);
+  if (evidenceRefsLine) {
+    lines.push(evidenceRefsLine);
+  }
 
   if (!options.metaOnly && body.length > 0) {
     lines.push("");

@@ -82,6 +82,8 @@ export function toNodeSummaryJson(node: IndexNode): NodeSummaryJson {
       relates: [...node.edges.relates],
       blocked_by: [...node.edges.blocked_by],
       blocks: [...node.edges.blocks],
+      context_refs: [...(node.edges.context_refs ?? [])],
+      evidence_refs: [...(node.edges.evidence_refs ?? [])],
     },
     ...(node.source ? { source: node.source } : {}),
   };

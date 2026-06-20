@@ -5,7 +5,8 @@ import { rebuildDerivedIndexCaches } from "./index";
 import { collectValidateReceipt, ValidateReceipt } from "./validate";
 import { loadConfig } from "../core/config";
 import { normalizeContainedWorkspacePath } from "../core/workspace_path";
-import { buildIndex, IndexNode } from "../graph/indexer";
+import { buildIndex, Index, IndexNode } from "../graph/indexer";
+import { loadIndex } from "../graph/index_cache";
 import {
   DEFAULT_FRONTMATTER_KEY_ORDER,
   formatFrontmatter,
@@ -18,6 +19,7 @@ import { atomicWriteFile } from "../util/atomic";
 import { readZipEntries } from "../util/zip";
 import { withMutationLock } from "../util/lock";
 import { formatDate } from "../util/date";
+import { isUriRef } from "../util/refs";
 
 export type GraphCloneCommandOptions = {
   root: string;
@@ -38,6 +40,13 @@ export type GraphImportTemplateCommandOptions = {
   idPrefix?: string;
   dryRun?: boolean;
   apply?: boolean;
+  json?: boolean;
+};
+
+export type GraphRefsCommandOptions = {
+  root: string;
+  id: string;
+  ws?: string;
   json?: boolean;
 };
 
@@ -170,8 +179,154 @@ type GoalLifecycleReceipt = {
   planned: boolean;
 };
 
+type RefNodeSummary = {
+  qid: string;
+  id: string;
+  workspace: string;
+  type: string;
+  title: string;
+  status?: string;
+  path: string;
+  read_only: boolean;
+  source?: IndexNode["source"];
+};
+
+type RefSummary = {
+  ref: string;
+  kind: "node" | "uri" | "missing";
+  exists: boolean;
+  qid?: string;
+  node?: RefNodeSummary;
+};
+
+type GraphRefsReceipt = {
+  action: "graph.refs";
+  ok: true;
+  target: RefNodeSummary;
+  outgoing: Record<string, RefSummary[]>;
+  incoming: Record<string, RefSummary[]>;
+  warnings: string[];
+};
+
 function writeJson(value: unknown): void {
   console.log(JSON.stringify(value, null, 2));
+}
+
+function toStringList(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value.filter((item): item is string => typeof item === "string");
+}
+
+function summarizeNode(node: IndexNode): RefNodeSummary {
+  return {
+    qid: node.qid,
+    id: node.id,
+    workspace: node.ws,
+    type: node.type,
+    title: node.title,
+    status: node.status,
+    path: node.path,
+    read_only: Boolean(node.source?.read_only ?? node.source?.imported),
+    source: node.source,
+  };
+}
+
+function summarizeRef(index: Index, value: string, ws: string): RefSummary {
+  if (isUriRef(value)) {
+    return {
+      ref: value,
+      kind: "uri",
+      exists: true,
+    };
+  }
+  const resolved = resolveQid(index, value, ws);
+  if (resolved.status !== "ok") {
+    return {
+      ref: value,
+      kind: "missing",
+      exists: false,
+    };
+  }
+  const node = index.nodes[resolved.qid];
+  if (!node) {
+    return {
+      ref: value,
+      kind: "missing",
+      exists: false,
+      qid: resolved.qid,
+    };
+  }
+  return {
+    ref: value,
+    kind: "node",
+    exists: true,
+    qid: node.qid,
+    node: summarizeNode(node),
+  };
+}
+
+function summarizeRefs(index: Index, values: string[], ws: string): RefSummary[] {
+  return [...new Set(values)].sort().map((value) => summarizeRef(index, value, ws));
+}
+
+function compactOutgoing(node: IndexNode): Record<string, string[]> {
+  return {
+    scope_refs: toStringList(node.attributes.scope_refs),
+    epic: node.edges.epic ? [node.edges.epic] : [],
+    parent: node.edges.parent ? [node.edges.parent] : [],
+    prev: node.edges.prev ? [node.edges.prev] : [],
+    next: node.edges.next ? [node.edges.next] : [],
+    relates: node.edges.relates,
+    blocked_by: node.edges.blocked_by,
+    blocks: node.edges.blocks,
+    context_refs: node.edges.context_refs ?? [],
+    evidence_refs: node.edges.evidence_refs ?? [],
+  };
+}
+
+function incomingScopeRefs(index: Index, targetQid: string): string[] {
+  const sources: string[] = [];
+  for (const node of Object.values(index.nodes)) {
+    for (const ref of toStringList(node.attributes.scope_refs)) {
+      const resolved = resolveQid(index, ref, node.ws);
+      if (resolved.status === "ok" && resolved.qid === targetQid) {
+        sources.push(node.qid);
+      }
+    }
+  }
+  return sources.sort();
+}
+
+function buildGraphRefsReceipt(index: Index, node: IndexNode, warnings: string[]): GraphRefsReceipt {
+  const outgoingRaw = compactOutgoing(node);
+  const incomingRaw: Record<string, string[]> = {
+    scope_refs: incomingScopeRefs(index, node.qid),
+    epic: index.reverse_edges.epic?.[node.qid] ?? [],
+    parent: index.reverse_edges.parent?.[node.qid] ?? [],
+    prev: index.reverse_edges.prev?.[node.qid] ?? [],
+    next: index.reverse_edges.next?.[node.qid] ?? [],
+    relates: index.reverse_edges.relates?.[node.qid] ?? [],
+    blocked_by: index.reverse_edges.blocked_by?.[node.qid] ?? [],
+    blocks: index.reverse_edges.blocks?.[node.qid] ?? [],
+    context_refs: index.reverse_edges.context_refs?.[node.qid] ?? [],
+    evidence_refs: index.reverse_edges.evidence_refs?.[node.qid] ?? [],
+  };
+  const outgoing = Object.fromEntries(
+    Object.entries(outgoingRaw).map(([key, values]) => [key, summarizeRefs(index, values, node.ws)])
+  );
+  const incoming = Object.fromEntries(
+    Object.entries(incomingRaw).map(([key, values]) => [key, summarizeRefs(index, values, node.ws)])
+  );
+  return {
+    action: "graph.refs",
+    ok: true,
+    target: summarizeNode(node),
+    outgoing,
+    incoming,
+    warnings,
+  };
 }
 
 function toPosixPath(value: string): string {
@@ -928,5 +1083,45 @@ export function runGraphImportTemplateCommand(options: GraphImportTemplateComman
   console.log(`rewritten_ids: ${receipt.rewritten_ids.filter((item) => item.from_id !== item.to_id).length}`);
   if (receipt.selected_goal) {
     console.log(`selected_goal: ${receipt.selected_goal.qid}${receipt.selected_goal.planned ? " (planned)" : ""}`);
+  }
+}
+
+export function runGraphRefsCommand(options: GraphRefsCommandOptions): void {
+  const config = loadConfig(options.root);
+  const { index, warnings } = loadIndex({ root: options.root, config });
+  const resolved = resolveQid(index, options.id, options.ws);
+  if (resolved.status !== "ok") {
+    throw new NotFoundError(formatResolveError("node", options.id, resolved, options.ws));
+  }
+  const node = index.nodes[resolved.qid];
+  if (!node) {
+    throw new NotFoundError(`node not found: ${options.id}`);
+  }
+  const receipt = buildGraphRefsReceipt(index, node, warnings);
+  if (options.json) {
+    writeJson(receipt);
+    return;
+  }
+  console.log(`graph refs: ${node.qid}`);
+  if (node.source?.imported) {
+    console.log(`source: subgraph:${node.source.subgraph_alias} read-only`);
+  }
+  for (const [direction, lanes] of Object.entries({ outgoing: receipt.outgoing, incoming: receipt.incoming })) {
+    console.log(`${direction}:`);
+    for (const [lane, refs] of Object.entries(lanes)) {
+      if (refs.length === 0) {
+        continue;
+      }
+      console.log(`  ${lane}:`);
+      for (const ref of refs) {
+        const target = ref.node
+          ? `${ref.node.qid}${ref.node.read_only ? " (read-only)" : ""}`
+          : ref.ref;
+        console.log(`    - ${target}`);
+      }
+    }
+  }
+  for (const warning of warnings) {
+    console.error(`warning: ${warning}`);
   }
 }

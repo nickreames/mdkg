@@ -1,5 +1,5 @@
 import { Index } from "./indexer";
-import { archiveIdFromUri } from "../util/refs";
+import { archiveIdFromUri, isUriRef } from "../util/refs";
 import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES, GOAL_SCOPE_ALLOWED_TYPES } from "./goal_scope";
 
 export type ValidateGraphOptions = {
@@ -30,6 +30,8 @@ function validateEdgeTargets(
       ["relates", edges.relates],
       ["blocked_by", edges.blocked_by],
       ["blocks", edges.blocks],
+      ["context_refs", edges.context_refs ?? []],
+      ["evidence_refs", edges.evidence_refs ?? []],
     ];
 
     if (edges.epic) {
@@ -47,6 +49,9 @@ function validateEdgeTargets(
 
     for (const [edgeKey, values] of edgeLists) {
       for (const value of values) {
+        if ((edgeKey === "context_refs" || edgeKey === "evidence_refs") && isUriRef(value)) {
+          continue;
+        }
         const targetNode = nodes[value];
         if (
           targetNode &&

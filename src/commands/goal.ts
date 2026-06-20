@@ -288,6 +288,7 @@ function goalReceipt(root: string, loaded: LoadedGoal): Record<string, unknown> 
     goal_condition: String(fm.goal_condition ?? ""),
     scope_refs: toStringList(fm.scope_refs),
     active_node: optionalString(fm.active_node),
+    last_active_node: optionalString(fm.last_active_node),
     required_skills: toStringList(fm.required_skills),
     required_checks: toStringList(fm.required_checks),
     max_iterations: optionalString(fm.max_iterations),
@@ -344,12 +345,42 @@ function isConcreteCandidate(node: IndexNode, statusRanks: Set<string>): boolean
   return node.status !== "done";
 }
 
+function isAchievedGoal(node: IndexNode, frontmatter?: Record<string, FrontmatterValue>): boolean {
+  const status = frontmatter ? String(frontmatter.status ?? "") : node.status;
+  const goalState = frontmatter ? String(frontmatter.goal_state ?? "") : String(node.attributes.goal_state ?? "");
+  return status === "done" || goalState === "achieved";
+}
+
 function resolveCandidate(index: Index, idOrQid: string, ws: string): IndexNode | undefined {
   const resolved = resolveQid(index, idOrQid, ws);
   if (resolved.status !== "ok") {
     return undefined;
   }
   return index.nodes[resolved.qid];
+}
+
+function readOnlySubgraphBlockerWarnings(index: Index, qids: Set<string>): string[] {
+  const warnings: string[] = [];
+  const seen = new Set<string>();
+  for (const qid of [...qids].sort()) {
+    const node = index.nodes[qid];
+    if (!node || node.source?.imported || node.status === "done") {
+      continue;
+    }
+    for (const blockerQid of node.edges.blocked_by) {
+      const blocker = index.nodes[blockerQid];
+      if (!blocker?.source?.imported) {
+        continue;
+      }
+      const subgraph = blocker.source.subgraph_alias;
+      const warning = `${node.qid} is blocked by read-only subgraph node ${blocker.qid}; update the source workspace for subgraph ${subgraph} or refresh the subgraph bundle before claiming local work`;
+      if (!seen.has(warning)) {
+        seen.add(warning);
+        warnings.push(warning);
+      }
+    }
+  }
+  return warnings;
 }
 
 export function runGoalShowCommand(options: GoalCommandOptions): void {
@@ -364,6 +395,9 @@ export function runGoalShowCommand(options: GoalCommandOptions): void {
   console.log(`condition: ${loaded.frontmatter.goal_condition}`);
   if (loaded.frontmatter.active_node) {
     console.log(`active_node: ${loaded.frontmatter.active_node}`);
+  }
+  if (loaded.frontmatter.last_active_node) {
+    console.log(`last_active_node: ${loaded.frontmatter.last_active_node}`);
   }
   const checks = toStringList(loaded.frontmatter.required_checks);
   console.log(`required_checks: ${checks.length === 0 ? "none" : checks.join(", ")}`);
@@ -427,6 +461,29 @@ export function runGoalNextCommand(options: GoalCommandOptions): void {
     console.error("no actionable local work found for goal");
     return;
   }
+  if (isAchievedGoal(loaded.node, loaded.frontmatter)) {
+    if (options.json) {
+      console.log(
+        JSON.stringify(
+          {
+            action: "selected",
+            goal: goalReceipt(options.root, loaded),
+            goal_source: loaded.resolutionSource,
+            node: null,
+            warnings: loaded.warnings,
+          },
+          null,
+          2
+        )
+      );
+      return;
+    }
+    for (const warning of loaded.warnings) {
+      console.error(`warning: ${warning}`);
+    }
+    console.error("no actionable local work found for achieved goal");
+    return;
+  }
   const statusPreference = loaded.config.work.next.status_preference.map((status) => status.toLowerCase());
   const statusRanks = new Set(statusPreference);
   const warnings: string[] = [...loaded.warnings];
@@ -438,6 +495,7 @@ export function runGoalNextCommand(options: GoalCommandOptions): void {
   for (const invalid of scope.invalidRefs) {
     warnings.push(`scope contains non-actionable or unsupported node: ${invalid}`);
   }
+  warnings.push(...readOnlySubgraphBlockerWarnings(loaded.index, scope.actionableQids));
 
   if (activeNode) {
     const node = resolveCandidate(loaded.index, activeNode, loaded.node.ws);
@@ -648,6 +706,7 @@ export function runGoalCurrentCommand(options: GoalCommandOptions): void {
       goal_condition: String(node.attributes.goal_condition ?? ""),
       scope_refs: toStringList(node.attributes.scope_refs),
       active_node: optionalString(node.attributes.active_node),
+      last_active_node: optionalString(node.attributes.last_active_node),
       required_skills: toStringList(node.attributes.required_skills),
       required_checks: toStringList(node.attributes.required_checks),
       max_iterations: optionalString(node.attributes.max_iterations),
@@ -751,6 +810,15 @@ function runGoalStateMutationLocked(
     throw new UsageError(`cannot ${action} archived goal ${loaded.node.qid}`);
   }
   const now = options.now ?? new Date();
+  if (action === "done" || action === "archive") {
+    const activeNode = optionalString(loaded.frontmatter.active_node);
+    if (activeNode) {
+      if (!loaded.frontmatter.last_active_node) {
+        loaded.frontmatter.last_active_node = activeNode;
+      }
+      delete loaded.frontmatter.active_node;
+    }
+  }
   loaded.frontmatter.goal_state = GOAL_STATE_BY_ACTION[action];
   loaded.frontmatter.status = ensureStatusAllowed(loaded.config, STATUS_BY_ACTION[action]);
   writeGoalFile(loaded, now);
