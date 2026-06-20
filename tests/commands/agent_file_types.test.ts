@@ -10,6 +10,7 @@ const { runShowCommand } = require("../../commands/show");
 const { runValidateCommand } = require("../../commands/validate");
 const { runNewCommand } = require("../../commands/new");
 const { runCapabilityListCommand } = require("../../commands/capability");
+const { runWorkValidateCommand } = require("../../commands/work");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -536,6 +537,65 @@ test("runtime-style work order and receipt fixtures validate and pack determinis
     "fixture://runtime/constraints",
   ]);
   assert.equal(order.frontmatter.artifact_policy, "commit_sidecar_and_zip");
+});
+
+test("work validate reports typed workflow diagnostics and raw marker warnings", () => {
+  const root = makeTempDir("mdkg-agent-work-validate-");
+  setupWorkspace(root);
+  copyValidFixtures(root);
+  const workPath = path.join(root, ".mdkg", "work", "agent", "runtime-work", "WORK.md");
+  fs.appendFileSync(
+    workPath,
+    [
+      "",
+      "# Boundary Review",
+      "",
+      "RAW_PAYLOAD_MARKER should be replaced with a payload hash or external artifact ref.",
+      "",
+    ].join("\n"),
+    "utf8"
+  );
+
+  const output = captureOutput(() =>
+    runWorkValidateCommand({ root, id: "work.runtime-render", json: true })
+  );
+  assert.equal(output.stderr, "");
+  const receipt = JSON.parse(output.stdout);
+  assert.equal(receipt.action, "work.validate");
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.type, "all");
+  assert.equal(receipt.target.qid, "root:work.runtime-render");
+  assert.equal(receipt.checked_count, 1);
+  assert.equal(receipt.error_count, 0);
+  assert.equal(receipt.warning_count, 1);
+  assert.equal(receipt.diagnostics[0].severity, "warning");
+  assert.equal(receipt.diagnostics[0].code, "raw-content.raw_payload");
+  assert.equal(receipt.diagnostics[0].qid, "root:work.runtime-render");
+});
+
+test("work validate type filters catch malformed workflow files before indexing", () => {
+  const root = makeTempDir("mdkg-agent-work-validate-invalid-");
+  setupWorkspace(root);
+  fs.mkdirSync(path.join(root, ".mdkg", "work", "invalid-work"), { recursive: true });
+  fs.cpSync(
+    path.join(fixtureRoot(), "invalid", "missing-input-schema", "WORK.md"),
+    path.join(root, ".mdkg", "work", "invalid-work", "WORK.md")
+  );
+
+  const output = captureThrownOutput(() =>
+    runWorkValidateCommand({ root, type: "work", json: true })
+  );
+  const receipt = JSON.parse(output.stdout);
+  assert.match(String(output.error), /workflow validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.action, "work.validate");
+  assert.equal(receipt.ok, false);
+  assert.equal(receipt.type, "work");
+  assert.equal(receipt.checked_count, 1);
+  assert.equal(receipt.error_count, 1);
+  assert.ok(receipt.errors[0].includes("inputs is required"));
+  assert.equal(receipt.diagnostics[0].severity, "error");
+  assert.equal(receipt.diagnostics[0].code, "schema.invalid");
 });
 
 test("validate rejects invalid Agent workflow fixtures", () => {

@@ -28,7 +28,7 @@ function setupRepo(): string {
 }
 
 function writeGoal(root: string, overrides: Partial<Record<string, string>> = {}): void {
-  const fields = {
+  const fields: Record<string, string | undefined> = {
     id: "goal-1",
     title: "Reach release readiness",
     status: "progress",
@@ -53,6 +53,7 @@ function writeGoal(root: string, overrides: Partial<Record<string, string>> = {}
       `goal_condition: ${fields.goal_condition}`,
       `scope_refs: ${overrides.scope_refs ?? "[]"}`,
       ...(fields.active_node ? [`active_node: ${fields.active_node}`] : []),
+      ...(fields.last_active_node ? [`last_active_node: ${fields.last_active_node}`] : []),
       "required_skills: [select-work-and-ground-context]",
       "required_checks: [npm run build, node dist/cli.js validate]",
       `max_iterations: ${fields.max_iterations}`,
@@ -176,6 +177,7 @@ test("goal show reports deterministic goal metadata", () => {
   assert.equal(receipt.goal.qid, "root:goal-1");
   assert.equal(receipt.goal.goal_state, "active");
   assert.equal(receipt.goal.active_node, "task-2");
+  assert.equal(receipt.goal.last_active_node, undefined);
   assert.deepEqual(receipt.goal.scope_refs, []);
   assert.deepEqual(receipt.goal.required_checks, ["npm run build", "node dist/cli.js validate"]);
 });
@@ -298,7 +300,7 @@ test("goal activate rejects achieved goals before mutation", () => {
 
 test("goal archive marks a goal historical and excludes it from routing", () => {
   const root = setupRepo();
-  writeGoal(root, { active_node: "", scope_refs: "[task-1]" });
+  writeGoal(root, { active_node: "task-1", scope_refs: "[task-1]" });
   writeWork(root, "task", "task-1", "Scoped task", "todo", 1);
 
   captureOutput(() => runGoalSelectCommand({ root, id: "goal-1", json: true }));
@@ -311,10 +313,14 @@ test("goal archive marks a goal historical and excludes it from routing", () => 
   assert.equal(archiveReceipt.goal.qid, "root:goal-1");
   assert.equal(archiveReceipt.goal.status, "archived");
   assert.equal(archiveReceipt.goal.goal_state, "archived");
+  assert.equal(archiveReceipt.goal.active_node, undefined);
+  assert.equal(archiveReceipt.goal.last_active_node, "task-1");
 
   const content = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
   assert.match(content, /status: archived/);
   assert.match(content, /goal_state: archived/);
+  assert.doesNotMatch(content, /^active_node:/m);
+  assert.match(content, /^last_active_node: task-1$/m);
   assert.match(content, /updated: 2026-01-06/);
 
   const current = captureOutput(() => runGoalCurrentCommand({ root, json: true }));
@@ -433,8 +439,18 @@ test("goal pause resume and done update goal state consistently", () => {
   const done = captureOutput(() =>
     runGoalDoneCommand({ root, id: "goal-1", json: true, now: new Date(2026, 0, 4) })
   );
-  assert.equal(JSON.parse(done.stdout).goal.goal_state, "achieved");
+  const doneReceipt = JSON.parse(done.stdout);
+  assert.equal(doneReceipt.goal.goal_state, "achieved");
+  assert.equal(doneReceipt.goal.active_node, undefined);
+  assert.equal(doneReceipt.goal.last_active_node, "task-2");
   content = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
   assert.match(content, /goal_state: achieved/);
   assert.match(content, /status: done/);
+  assert.doesNotMatch(content, /^active_node:/m);
+  assert.match(content, /^last_active_node: task-2$/m);
+
+  const next = captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true }));
+  const nextReceipt = JSON.parse(next.stdout);
+  assert.equal(nextReceipt.node, null);
+  assert.ok(!nextReceipt.warnings.some((warning: string) => warning.includes("active_node")));
 });

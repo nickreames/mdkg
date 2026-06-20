@@ -104,6 +104,16 @@ test("mutating commands carry safety metadata and read-only commands stay read-o
   assert.equal(status.danger_level, "read-only");
   assert.deepEqual(status.side_effects, ["none"]);
   assert.equal(status.json_schema_ref, "mdkg.status.v1");
+
+  const handoff = commandByKey(contract, "handoff");
+  assert.equal(handoff.json_schema_ref, "mdkg.handoff.v1");
+  assert.ok(handoff.receipts.includes("handoff-receipt"));
+  assert.ok(handoff.write_paths.includes(".mdkg/handoffs/**"));
+
+  const dbQueue = commandByKey(contract, "db queue");
+  assert.equal(dbQueue.json_schema_ref, "mdkg.project_db.queue.adapter.v1");
+  assert.ok(dbQueue.receipts.includes("queue-adapter-contract-receipt"));
+  assert.ok(dbQueue.side_effects.includes("emit-read-only-adapter-contract"));
 });
 
 test("contract hash is stable over canonical command metadata", () => {

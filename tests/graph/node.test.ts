@@ -55,11 +55,14 @@ const TEMPLATE_SCHEMAS = {
       "blocked_by",
       "blocks",
       "refs",
+      "context_refs",
+      "evidence_refs",
       "aliases",
+      "skills",
       "created",
       "updated",
     ],
-    ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "aliases"]
+    ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "context_refs", "evidence_refs", "aliases", "skills"]
   ),
   spike: makeSchema(
     "spike",
@@ -81,12 +84,14 @@ const TEMPLATE_SCHEMAS = {
       "blocked_by",
       "blocks",
       "refs",
+      "context_refs",
+      "evidence_refs",
       "aliases",
       "skills",
       "created",
       "updated",
     ],
-    ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "aliases", "skills"]
+    ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "context_refs", "evidence_refs", "aliases", "skills"]
   ),
   goal: makeSchema(
     "goal",
@@ -100,6 +105,7 @@ const TEMPLATE_SCHEMAS = {
       "goal_condition",
       "scope_refs",
       "active_node",
+      "last_active_node",
       "required_skills",
       "required_checks",
       "max_iterations",
@@ -112,6 +118,8 @@ const TEMPLATE_SCHEMAS = {
       "blocked_by",
       "blocks",
       "refs",
+      "context_refs",
+      "evidence_refs",
       "aliases",
       "skills",
       "created",
@@ -129,6 +137,8 @@ const TEMPLATE_SCHEMAS = {
       "blocked_by",
       "blocks",
       "refs",
+      "context_refs",
+      "evidence_refs",
       "aliases",
       "skills",
     ]
@@ -262,6 +272,7 @@ test("parseNode parses goal attributes", () => {
     "goal_condition: all required checks pass",
     "scope_refs: [epic-1, feat-2, task-3]",
     "active_node: task-1",
+    "last_active_node: task-0",
     "required_skills: [select-work-and-ground-context]",
     "required_checks: [npm run build, node dist/cli.js validate]",
     "max_iterations: 25",
@@ -289,11 +300,68 @@ test("parseNode parses goal attributes", () => {
     goal_condition: "all required checks pass",
     scope_refs: ["epic-1", "feat-2", "task-3"],
     active_node: "task-1",
+    last_active_node: "task-0",
     required_skills: ["select-work-and-ground-context"],
     required_checks: ["npm run build", "node dist/cli.js validate"],
     max_iterations: "25",
     blocked_after_attempts: "3",
   });
+});
+
+test("parseNode parses semantic context and evidence refs on work nodes", () => {
+  const content = [
+    "---",
+    "id: task-1",
+    "type: task",
+    "title: semantic refs",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: [task-2, child:goal-1, https://example.invalid/context]",
+    "evidence_refs: [archive://archive.example, proof://example/evidence]",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+  ].join("\n");
+  const node = parseNode(content, "task.md", PARSE_OPTIONS);
+  assert.deepEqual(node.edges.context_refs, ["task-2", "child:goal-1", "https://example.invalid/context"]);
+  assert.deepEqual(node.edges.evidence_refs, ["archive://archive.example", "proof://example/evidence"]);
+});
+
+test("parseNode rejects malformed semantic refs", () => {
+  const content = [
+    "---",
+    "id: task-1",
+    "type: task",
+    "title: semantic refs",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: [Bad Ref]",
+    "evidence_refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+  ].join("\n");
+  assert.throws(() => parseNode(content, "task.md", PARSE_OPTIONS), /context_refs invalid semantic reference/);
 });
 
 test("parseNode accepts archived goal status and state", () => {

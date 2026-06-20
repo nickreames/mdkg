@@ -99,6 +99,26 @@ function sha256File(filePath: string): string {
   return `sha256:${crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")}`;
 }
 
+test("db queue contract exposes stable adapter semantics without project DB setup", () => {
+  const root = makeRoot("mdkg-db-queue-contract-");
+  const result = runCli(root, ["db", "queue", "contract", "--json"]);
+  assert.equal(result.status, 0, result.stderr);
+  const payload = parseJson(result.stdout);
+  assert.equal(payload.action, "db-queue-contract");
+  assert.equal(payload.ok, true);
+  assert.equal(payload.contract.contract_id, "mdkg.project_db.queue.adapter.v1");
+  assert.equal(payload.contract.stability, "public");
+  assert.equal(payload.contract.boundary.canonical_history, "queue rows are not canonical event history or durable runtime transcripts");
+  assert.equal(payload.contract.payload_hash.algorithm, "sha256");
+  assert.match(payload.contract.payload_hash.canonicalization, /object keys sorted/);
+  assert.equal(payload.contract.dedupe.duplicate_behavior.includes("returns the existing message"), true);
+  assert.equal(payload.contract.claim.selection.includes("available_at_ms"), true);
+  assert.deepEqual(payload.contract.queue_control.paused_behavior.rejects, ["enqueue", "claim"]);
+  assert.equal(payload.contract.settlement.fail.includes("retry_after_ms"), true);
+  assert.equal(payload.contract.snapshot_policy.drain.includes("no ready or leased"), true);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "db")), false);
+});
+
 test("db index rebuild status and verify work in json backend", () => {
   const root = makeRoot("mdkg-db-index-json-");
 

@@ -262,6 +262,64 @@ test("runUpgradeCommand migrates legacy config without replacing custom config",
   assert.equal(config.db.root_path, ".mdkg/db");
 });
 
+test("runUpgradeCommand migrates achieved goal active_node to last_active_node", () => {
+  const root = makeTempDir("mdkg-upgrade-goal-lifecycle-");
+  const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: oldSeed, agent: true });
+  writeFile(
+    path.join(root, ".mdkg", "work", "goal-1.md"),
+    [
+      "---",
+      "id: goal-1",
+      "type: goal",
+      "title: Closed legacy goal",
+      "status: done",
+      "priority: 1",
+      "goal_state: achieved",
+      "goal_condition: already complete",
+      "scope_refs: [task-1]",
+      "active_node: task-1",
+      "required_skills: []",
+      "required_checks: []",
+      "max_iterations: 25",
+      "blocked_after_attempts: 3",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "aliases: []",
+      "skills: []",
+      "created: 2026-06-17",
+      "updated: 2026-06-17",
+      "---",
+      "",
+      "# Closed legacy goal",
+    ].join("\n")
+  );
+
+  const dryRun = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
+    changes: Array<{ action: string; category: string; path: string }>;
+  };
+  assert.ok(
+    dryRun.changes.some(
+      (change) =>
+        change.action === "migrate" &&
+        change.category === "goal_lifecycle" &&
+        change.path === ".mdkg/work/goal-1.md"
+    )
+  );
+  assert.match(fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8"), /^active_node: task-1$/m);
+
+  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  const migrated = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
+  assert.doesNotMatch(migrated, /^active_node:/m);
+  assert.match(migrated, /^last_active_node: task-1$/m);
+});
+
 test("runUpgradeCommand does not add skills or events to non-agent workspaces", () => {
   const root = makeTempDir("mdkg-upgrade-non-agent-");
   const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();

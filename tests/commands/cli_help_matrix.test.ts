@@ -25,18 +25,19 @@ test("cli help covers the remaining command help surfaces", () => {
     ["list", /--json\|--xml\|--toon\|--md/],
     ["search", /mdkg search "<query>"/],
     ["next", /mdkg next \[<id-or-qid>\]/],
-    ["checkpoint", /mdkg checkpoint new <title> \[--ws <alias>\] \[--json\]/],
-    ["validate", /mdkg validate \[--out <path>\] \[--quiet\] \[--json\]/],
+    ["handoff", /mdkg handoff create <id-or-qid> \[--ws <alias>\] \[--depth <n>\] \[--out <path>\] \[--json\]/],
+    ["checkpoint", /mdkg checkpoint new <title> \[--kind implementation\|test-proof\|goal-closeout\|audit\|handoff\] \[--ws <alias>\] \[--json\]/],
+    ["validate", /mdkg validate \[--out <path>\] \[--quiet\] \[--changed-only\] \[--json\]/],
     ["status", /mdkg status \[--json\]/],
     ["mcp", /mdkg mcp serve --stdio/],
-    ["format", /mdkg format/],
+    ["format", /mdkg format --headings \[--dry-run\|--apply\] \[--json\]/],
     ["doctor", /mdkg doctor \[--strict\] \[--json\]/],
     ["capability", /mdkg capability resolve \[query\] \[--requires <capability>\] \[--fresh-only\] \[--json\]/],
     ["spec", /mdkg spec validate \[<id-or-qid-or-alias>\] \[--json\]/],
     ["archive", /mdkg archive compress <id-or-archive-uri\|--all> \[--json\]/],
     ["bundle", /mdkg bundle create \[--profile private\|public\] \[--ws <alias\|all>\] \[--output <path>\] \[--json\]/],
     ["subgraph", /mdkg subgraph verify \[alias\|--all\] \[--json\]/],
-    ["work", /mdkg work receipt new\|verify\|update/],
+    ["work", /mdkg work validate \[<id-or-qid>\] \[--type <workflow-type>\] \[--json\]/],
     ["skill", /mdkg skill validate \[<slug>\] \[--json\]/],
     ["task", /mdkg task start <id-or-qid> \[--ws <alias>\] \[--run-id <id>\] \[--note "<text>"\] \[--json\]/],
     ["event", /mdkg event enable \[--ws <alias>\] \[--json\]/],
@@ -77,6 +78,11 @@ test("cli help covers the remaining command help surfaces", () => {
   assert.equal(dbIndex.status, 0);
   assert.match(dbIndex.stdout, /mdkg db index status \[--json\]/);
   assert.match(dbIndex.stdout, /`mdkg index` remains the compatibility shortcut/);
+
+  const dbQueue = runCli(["help", "db", "queue"]);
+  assert.equal(dbQueue.status, 0);
+  assert.match(dbQueue.stdout, /mdkg db queue contract \[--json\]/);
+  assert.match(dbQueue.stdout, /contract is read-only adapter metadata/);
 
   const dbSnapshot = runCli(["help", "db", "snapshot"]);
   assert.equal(dbSnapshot.status, 0);

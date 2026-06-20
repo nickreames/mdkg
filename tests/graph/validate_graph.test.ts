@@ -117,6 +117,26 @@ test("collectGraphErrors validates goal scope_refs and active_node", () => {
   assert.ok(missingErrors.some((error: string) => /scope_refs references missing node epic-99/.test(error)));
 });
 
+test("collectGraphErrors validates semantic refs while allowing URI evidence", () => {
+  const nodes = {
+    "root:task-1": makeNode("root:task-1", {
+      context_refs: ["root:task-2"],
+      evidence_refs: ["proof://example/evidence"],
+    }),
+    "root:task-2": makeNode("root:task-2", {}),
+  };
+  assert.deepEqual(collectGraphErrors(makeIndex(nodes), { allowMissing: false }), []);
+
+  const missingNodes = {
+    "root:task-1": makeNode("root:task-1", {
+      context_refs: ["root:task-404"],
+      evidence_refs: ["proof://example/evidence"],
+    }),
+  };
+  const errors = collectGraphErrors(makeIndex(missingNodes), { allowMissing: false });
+  assert.ok(errors.some((error: string) => /context_refs references missing node root:task-404/.test(error)));
+});
+
 test("collectGraphErrors rejects multiple active local root goals", () => {
   const nodes = {
     "root:goal-1": makeNode(

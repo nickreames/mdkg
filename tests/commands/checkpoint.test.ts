@@ -13,6 +13,7 @@ const { formatDate } = require("../../util/date");
 const { runCheckpointNewCommand } = require("../../commands/checkpoint");
 const { runSearchCommand } = require("../../commands/search");
 const { runListCommand } = require("../../commands/list");
+const { collectValidateReceipt } = require("../../commands/validate");
 
 function writeConfig(root: string): void {
   const config = {
@@ -230,6 +231,7 @@ test("checkpoint new can print deterministic json receipt", () => {
       id: "chk-1",
       qid: "root:chk-1",
       path: ".mdkg/work/chk-1-json-checkpoint.md",
+      kind: "implementation",
     },
   });
 
@@ -246,6 +248,71 @@ test("checkpoint new can print deterministic json receipt", () => {
   assert.equal(events[0].status, "ok");
   assert.deepEqual(events[0].refs, ["chk-1"]);
   assert.equal(events[0].run_id, "run_json_checkpoint");
+});
+
+test("checkpoint new renders explicit kind templates and validates cleanly", () => {
+  const root = setupCheckpointRepo("mdkg-checkpoint-kinds-");
+  const kinds = ["implementation", "test-proof", "goal-closeout", "audit", "handoff"];
+
+  for (const kind of kinds) {
+    captureStdout(() => {
+      runCheckpointNewCommand({
+        root,
+        title: `${kind} checkpoint`,
+        kind,
+        relates: "task-1",
+        scope: "task-1",
+        json: true,
+      });
+    });
+  }
+
+  for (let index = 0; index < kinds.length; index += 1) {
+    const kind = kinds[index];
+    const id = `chk-${index + 1}`;
+    const fileName = fs
+      .readdirSync(path.join(root, ".mdkg", "work"))
+      .find((name) => name.startsWith(`${id}-`));
+    assert.ok(fileName);
+    const filePath = path.join(root, ".mdkg", "work", fileName ?? "");
+    const content = fs.readFileSync(filePath, "utf8");
+    const { frontmatter, body } = parseFrontmatter(content, filePath);
+    assert.equal(frontmatter.checkpoint_kind, kind);
+    assert.match(body, /# Summary/);
+    assert.match(body, /## Command Evidence/);
+    assert.match(body, /## Pass \/ Fail Status/);
+    assert.match(body, /## Known Warnings/);
+    assert.match(body, /## Changed Surfaces/);
+    assert.match(body, /## Boundaries/);
+    assert.match(body, /## Follow-up Refs/);
+  }
+
+  const receipt = collectValidateReceipt({ root, json: true });
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.error_count, 0);
+  assert.equal(receipt.warnings.some((warning: string) => warning.includes("chk-")), false);
+});
+
+test("checkpoint raw content markers warn without failing validation", () => {
+  const root = setupCheckpointRepo("mdkg-checkpoint-raw-warning-");
+
+  captureStdout(() => {
+    runCheckpointNewCommand({
+      root,
+      title: "Raw marker checkpoint",
+      kind: "audit",
+      relates: "task-1",
+      scope: "task-1",
+    });
+  });
+
+  const filePath = path.join(root, ".mdkg", "work", "chk-1-raw-marker-checkpoint.md");
+  fs.appendFileSync(filePath, "\nRAW_PROMPT_MARKER\n", "utf8");
+
+  const receipt = collectValidateReceipt({ root, json: true });
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.error_count, 0);
+  assert.ok(receipt.warnings.some((warning: string) => warning.includes("raw-content.raw_prompt warning")));
 });
 
 test("checkpoint new rejects validation errors", () => {
@@ -270,6 +337,10 @@ test("checkpoint new rejects validation errors", () => {
   assert.throws(
     () => runCheckpointNewCommand({ root, title: "Bad priority", priority: 10 }),
     /--priority must be between 0 and 9/
+  );
+  assert.throws(
+    () => runCheckpointNewCommand({ root, title: "Bad kind", kind: "daily" }),
+    /--kind must be one of/
   );
   assert.throws(
     () => runCheckpointNewCommand({ root, title: "Bad scope", scope: "bad id" }),
@@ -501,6 +572,8 @@ test("cli checkpoint new supports json receipts", () => {
       "checkpoint",
       "new",
       "CLI JSON checkpoint",
+      "--kind",
+      "test-proof",
       "--relates",
       "TASK-1",
       "--scope",
@@ -518,6 +591,7 @@ test("cli checkpoint new supports json receipts", () => {
       id: "chk-1",
       qid: "root:chk-1",
       path: ".mdkg/work/chk-1-cli-json-checkpoint.md",
+      kind: "test-proof",
     },
   });
 

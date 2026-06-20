@@ -313,6 +313,56 @@ test("work lifecycle mutations reject subgraph qids with read-only guidance", ()
   );
 });
 
+test("goal routing explains read-only subgraph blockers and graph refs summarizes edges", () => {
+  const root = makeTempDir("mdkg-subgraph-refs-");
+  run(["init", "--agent"], root);
+  const bundlePath = createChildBundle(root);
+  run(["subgraph", "add", "child_subgraph", bundlePath, "--json"], root);
+
+  run(["new", "goal", "Local Goal", "--json"], root);
+  run([
+    "new",
+    "task",
+    "Local Task",
+    "--status",
+    "todo",
+    "--priority",
+    "1",
+    "--parent",
+    "goal-1",
+    "--blocked-by",
+    "child_subgraph:task-1",
+    "--json",
+  ], root);
+  run(["goal", "activate", "goal-1", "--json"], root);
+
+  const next = json<{ node: { qid: string } | null; warnings: string[] }>(
+    run(["goal", "next", "goal-1", "--json"], root).stdout
+  );
+  assert.equal(next.node?.qid, "root:task-1");
+  assert.ok(
+    next.warnings.some((warning) =>
+      warning.includes("root:task-1 is blocked by read-only subgraph node child_subgraph:task-1")
+    )
+  );
+
+  const localRefs = json<{
+    outgoing: { blocked_by: Array<{ node?: { qid: string; read_only: boolean; source?: { subgraph_alias?: string } } }> };
+  }>(run(["graph", "refs", "root:task-1", "--json"], root).stdout);
+  assert.equal(localRefs.outgoing.blocked_by[0].node?.qid, "child_subgraph:task-1");
+  assert.equal(localRefs.outgoing.blocked_by[0].node?.read_only, true);
+  assert.equal(localRefs.outgoing.blocked_by[0].node?.source?.subgraph_alias, "child_subgraph");
+
+  const childRefs = json<{
+    target: { qid: string; read_only: boolean };
+    incoming: { blocked_by: Array<{ node?: { qid: string; read_only: boolean } }> };
+  }>(run(["graph", "refs", "child_subgraph:task-1", "--json"], root).stdout);
+  assert.equal(childRefs.target.qid, "child_subgraph:task-1");
+  assert.equal(childRefs.target.read_only, true);
+  assert.equal(childRefs.incoming.blocked_by[0].node?.qid, "root:task-1");
+  assert.equal(childRefs.incoming.blocked_by[0].node?.read_only, false);
+});
+
 test("subgraph verify fails stale subgraphs while read commands warn and continue", () => {
   const root = makeTempDir("mdkg-subgraph-stale-");
   run(["init", "--agent"], root);

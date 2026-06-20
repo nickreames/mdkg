@@ -275,6 +275,17 @@ function main() {
     );
     verifyReceipt(binPath, root, "receipt.invoke-queued");
 
+    const workflowValidation = parseJson(mdkg(binPath, ["work", "validate", "--json"], root));
+    assert(workflowValidation.ok === true, "workflow validation failed");
+    assert(workflowValidation.checked_count >= 5, "workflow validation did not inspect workflow mirrors");
+    assert(workflowValidation.error_count === 0, "workflow validation returned errors");
+    const workValidation = parseJson(mdkg(binPath, ["work", "validate", "work.invoke", "--type", "work", "--json"], root));
+    assert(workValidation.ok === true, "targeted WORK validation failed");
+    assert(workValidation.target.qid === "root:work.invoke", "targeted WORK validation returned wrong target");
+    const orderValidation = parseJson(mdkg(binPath, ["work", "validate", "--type", "work_order", "--json"], root));
+    assert(orderValidation.ok === true, "WORK_ORDER validation failed");
+    assert(orderValidation.checked_count === 2, "WORK_ORDER validation count mismatch");
+
     mdkg(binPath, ["index"], root);
     const chain = parseJson(mdkg(binPath, ["capability", "search", "SPEC WORK_ORDER RECEIPT", "--kind", "work", "--json"], root));
     const workRecord = chain.items.find((item) => item.id === "work.invoke");

@@ -25,6 +25,8 @@ test("extractEdges normalizes scalar and list edges", () => {
     relates: ["root:task-4"],
     blocked_by: ["task-5"],
     blocks: ["task-6"],
+    context_refs: [],
+    evidence_refs: [],
   });
 });
 
