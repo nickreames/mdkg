@@ -8,6 +8,75 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.3.7 - 2026-06-20
+
+### Added
+
+- Added `context_refs` and `evidence_refs` as generic semantic reference
+  fields for mdkg work nodes, with indexing, validation, search/show output,
+  pack traversal, SQLite cache support, subgraph projection, and visibility
+  enforcement.
+- Added `mdkg graph refs <id-or-qid> --json` to summarize inbound and outbound
+  scope, context, evidence, blocker, related, and structural references for
+  local graph nodes and read-only subgraph qids.
+- Added richer checkpoint kinds for implementation milestones, test proof, goal
+  closeout, read-only audits, and handoffs. Generated checkpoint bodies now
+  include sections for evidence, validation, known warnings, changed surfaces,
+  boundaries, and follow-up references.
+- Added `mdkg work validate [<id-or-qid>] --type ... --json` for focused
+  SPEC, WORK, WORK_ORDER, RECEIPT, FEEDBACK, DISPUTE, and PROPOSAL semantic
+  mirror diagnostics.
+- Added validation warning categories plus `mdkg validate --changed-only` for
+  changed-file warning review while preserving full-graph error checking.
+- Added `mdkg format --headings --dry-run|--apply --json` to preview or apply
+  recommended heading migrations for historical mdkg Markdown nodes.
+- Added `mdkg db queue contract --json` as the public project DB queue adapter
+  contract covering payload hashing, dedupe, claim ordering, lease-owner
+  settlement, retry/dead-letter behavior, expired lease release, pause/resume,
+  snapshot policies, and stats semantics.
+- Added `mdkg handoff create <id-or-qid>` for sanitized, copy-ready agent
+  handoff prompts built from pack context, goal state, latest checkpoints,
+  required checks, semantic refs, and raw-content warnings.
+- Added packed temp-repo smokes for semantic refs, checkpoint templates,
+  handoffs, and the full integration UX flow.
+
+### Changed
+
+- Completed goals now move the final `active_node` to `last_active_node` when
+  marked done or archived, so historical routing state is preserved without
+  leaving completed goals actionable.
+- `mdkg goal next <done-goal> --json` now returns `node: null` without
+  misleading stale `active_node` warnings for achieved goals.
+- Goal and pack workflows now distinguish executable `scope_refs` from
+  contextual and evidence references, reducing validation noise when goals cite
+  checkpoints, design evidence, prerequisite goals, or external proof refs.
+- README, init assets, command matrix, generated command contract metadata,
+  help targets, and publish-readiness assertions now document the new semantic
+  refs, handoff, workflow validation, checkpoint, queue contract, and warning
+  migration surfaces.
+- Upgrade behavior now migrates legacy achieved goals that still have
+  `active_node` into the new `last_active_node` shape.
+
+### Fixed
+
+- Reduced false-positive operational friction for completed goals and
+  intentional contextual refs without weakening missing-reference or invalid
+  graph-edge validation.
+- Strengthened cross-subgraph blocker diagnostics so read-only external graph
+  nodes are reported as planning context instead of locally actionable work.
+
+### Security
+
+- Handoff generation omits raw node body content for nodes with obvious raw
+  prompt, payload, or secret markers and reports typed raw-marker warnings
+  instead.
+- Workflow validation and checkpoint validation warn on obvious raw secret,
+  prompt, token, or payload markers without turning mdkg into a broad secret
+  scanner or blocking operator review.
+- The public queue contract explicitly states that queue payloads should be
+  compact refs or redacted envelopes, not raw secrets, prompts, provider
+  payloads, or bulky runtime artifacts.
+
 ## 0.3.6 - 2026-06-17
 
 ### Added
