@@ -7,7 +7,7 @@ priority: 2
 goal_state: achieved
 goal_condition: 0.3.5 is dry-run publish ready after mdkg can clone or fork complete graphs across repos, import templates into the same repo with safe ID rewrites, and dogfood website-template-mdkg bootstrap planning.
 scope_refs: [epic-92, epic-93, epic-94, spike-7, task-386, task-387, task-388, task-389, task-390, task-391, test-165, test-166, test-167]
-active_node: task-391
+last_active_node: task-391
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:graph-clone, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30

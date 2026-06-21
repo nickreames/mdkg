@@ -7,7 +7,7 @@ priority: 1
 goal_state: achieved
 goal_condition: Ship a first-class, hardened research spike work-node system through implementation, docs, packed temp-repo proof, mdkg.dev dogfood handoff, and 0.3.2 release-candidate dry-run readiness without a real publish.
 scope_refs: [epic-76, epic-77, epic-84, task-347, task-348, task-349, task-350, task-351, task-364, task-365, task-366, task-367, task-368, task-369, test-142, test-143, test-144, test-152, test-153, test-154, test-155, test-156]
-active_node: task-369
+last_active_node: task-369
 required_skills: [pursue-mdkg-goal, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:init, npm run smoke:upgrade, npm run smoke:spike, npm run smoke:command-docs, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 25

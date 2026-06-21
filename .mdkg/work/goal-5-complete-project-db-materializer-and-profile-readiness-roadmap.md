@@ -7,7 +7,7 @@ priority: 1
 goal_state: achieved
 goal_condition: Complete the project DB materializer readiness path by consolidating achieved 0.1.9 DB foundations, routing active work through the queue-backed materializer design, and leaving profile/export work clearly deferred behind explicit gates.
 scope_refs: [epic-29, epic-33, epic-34]
-active_node: task-193
+last_active_node: task-193
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, node dist/cli.js validate, npm run smoke:db, npm run smoke:db-queue, npm run smoke:db-events, npm run smoke:db-snapshot, npm run smoke:db-materializer, node scripts/assert-publish-ready.js, npm pack --dry-run --json, npm publish --dry-run, git diff --check]
 max_iterations: 25

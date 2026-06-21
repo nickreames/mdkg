@@ -7,7 +7,7 @@ priority: 2
 goal_state: achieved
 goal_condition: 0.3.6 is dry-run publish ready after graph import selected-goal activation is hardened and mdkg exposes a local read-only MCP server with explicit workspace and subgraph selection plus a documented future mutation boundary.
 scope_refs: [epic-104, epic-95, epic-96, epic-97, task-410, task-411, task-412, test-178, test-179, spike-8, task-392, task-393, task-394, task-395, task-396, task-397, test-168, test-169, test-170]
-active_node: task-397
+last_active_node: task-397
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:graph-clone, npm run smoke:mcp, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30

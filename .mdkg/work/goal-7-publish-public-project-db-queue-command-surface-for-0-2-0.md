@@ -7,7 +7,7 @@ priority: 1
 goal_state: achieved
 goal_condition: Publish mdkg 0.2.0 with a public `mdkg db queue ...` CLI, queue pause/resume control state, snapshot queue-policy gates, packed CLI-only smoke, npm registry verification, global install, and temp-directory E2E proof.
 scope_refs: [epic-29, epic-31, epic-33]
-active_node: task-265
+last_active_node: task-265
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, node dist/cli.js validate, npm run smoke:db, npm run smoke:db-queue, npm run smoke:db-queue-cli, npm run smoke:db-events, npm run smoke:db-materializer, npm run smoke:db-snapshot, node scripts/assert-publish-ready.js, npm pack --dry-run --json, npm publish --dry-run, git diff --check]
 max_iterations: 25

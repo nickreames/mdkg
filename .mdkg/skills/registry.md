@@ -23,7 +23,7 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - name: `author-mdkg-skill`
   - stage: `stage:plan`
   - writer role: `writer:orchestrator`
-  - description: Create or update an mdkg skill when a repeatable repo workflow should be codified or an existing skill has drifted from the current command surface for humans and AI agents.
+  - description: Create or update an mdkg SKILL.md or SPEC.md when a repeatable workflow, capability, agent, tool, runtime, API, or projection contract should become durable mdkg-authored knowledge.
 - `build-pack-and-execute-task`
   - name: `build-pack-and-execute-task`
   - stage: `stage:execute`

@@ -7,7 +7,7 @@ priority: 1
 goal_state: achieved
 goal_condition: 0.3.4 is dry-run publish ready after duplicate IDs and Git conflict-stage ID collisions can be planned, applied, receipted, and verified while preserving links and prioritizing main branch IDs.
 scope_refs: [epic-89, epic-90, epic-91, spike-6, task-380, task-381, task-382, task-383, task-384, task-385, test-162, test-163, test-164]
-active_node: task-385
+last_active_node: task-385
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:id-repair, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30

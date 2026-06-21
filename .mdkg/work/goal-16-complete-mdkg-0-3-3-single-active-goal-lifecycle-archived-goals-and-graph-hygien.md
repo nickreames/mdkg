@@ -7,7 +7,7 @@ priority: 1
 goal_state: achieved
 goal_condition: 0.3.3 is dry-run publish ready after goal activate enforces one active root goal, archived goals are historical and non-actionable, superseded legacy goals can be archived safely, and graph hygiene checks are clean.
 scope_refs: [epic-85, epic-86, epic-87, epic-88, task-372, task-373, task-374, task-375, task-376, task-377, task-378, task-379, test-158, test-159, test-160, test-161]
-active_node: task-379
+last_active_node: task-379
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30

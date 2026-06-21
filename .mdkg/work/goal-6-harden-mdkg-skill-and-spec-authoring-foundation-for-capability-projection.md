@@ -7,7 +7,7 @@ priority: 1
 goal_state: achieved
 goal_condition: The goal is complete when mdkg has durable source/projection doctrine, hardened author-mdkg-skill guidance, canonical Markdown SPEC/SKILL templates, Codex projection validation requirements, safe exporter deferral, future skill-factory backlog, generic agent-orchestration doctrine, and a root follow-up sync plan with validation evidence.
 scope_refs: [epic-39, epic-40, epic-41, epic-42, epic-43, epic-44, epic-45, task-252, task-253, task-254, task-255, task-256, task-257, task-258, task-259, test-88, test-89, test-90, test-91, test-92, test-93, test-94]
-active_node: task-259
+last_active_node: task-259
 required_skills: [select-work-and-ground-context, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [mdkg index, mdkg validate, mdkg skill validate author-mdkg-skill --json, mdkg goal show goal-6 --json, mdkg goal next goal-6 --json, mdkg capability search "SPEC template taxonomy" --json, mdkg capability search "runtime agent manifest" --json, mdkg capability search "orchestrator agent" --json, mdkg capability search "skill factory backlog" --json, git diff --check]
 max_iterations: 20
