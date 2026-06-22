@@ -169,6 +169,10 @@ test("handoff create emits sanitized JSON receipt from pack context", () => {
   assert.equal(payload.content.includes("RAW_SECRET_MARKER"), false);
   assert.equal(payload.raw_marker_warning_count, 1);
   assert.equal(payload.raw_marker_warnings[0].qid, "root:task-1");
+  assert.equal(Array.isArray(payload.index_warnings), true);
+  assert.equal(Array.isArray(payload.pack_warnings), true);
+  assert.equal(payload.pack_warning_count, payload.pack_warnings.length);
+  assert.equal(payload.warning_count, payload.index_warning_count + payload.pack_warning_count);
   assert.match(payload.content_sha256, /^sha256:[a-f0-9]{64}$/);
 });
 
