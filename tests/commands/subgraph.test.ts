@@ -575,12 +575,14 @@ test("subgraph upgrade-plan blocks dirty child repos without mutating state", ()
   assert.equal(audit.ok, true);
   assert.equal(audit.subgraphs[0].dirty_tracked, true);
   assert.equal(audit.warnings.some((warning) => warning.includes("dirty tracked changes")), true);
+  assert.equal(audit.warnings.some((warning) => warning.includes("commit or stash the child repo first")), true);
 
   const failure = runFailure(["subgraph", "upgrade-plan", "child_plan_dirty", "--json"], root);
   assert.equal(failure.status, 2);
   const plan = json<{ ok: boolean; blockers: string[]; subgraphs: Array<{ actions: Array<{ status: string }> }> }>(failure.stdout);
   assert.equal(plan.ok, false);
   assert.equal(plan.blockers.some((blocker) => blocker.includes("dirty tracked changes")), true);
+  assert.equal(plan.blockers.some((blocker) => blocker.includes("clean accepted child commit")), true);
   assert.equal(plan.subgraphs[0].actions.some((action) => action.status === "blocked"), true);
   assert.equal(sha256File(child.bundleAbs), beforeBundleHash);
   assert.equal(fs.readFileSync(path.join(root, ".mdkg", "config.json"), "utf8"), beforeConfig);

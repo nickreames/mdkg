@@ -267,7 +267,9 @@ test("runDoctorCommand strict json fails on achieved selected goal", () => {
   const strictCheck = strictPayload.checks.find((check: any) => check.id === "goal.selected_achieved");
   assert.equal(strictCheck.ok, false);
   assert.equal(strictCheck.status, "fail");
-  assert.match(strictCheck.remediation, /goal select/);
+  assert.match(strictCheck.remediation, /goal clear --json/);
+  assert.match(strictCheck.remediation, /goal activate/);
+  assert.match(strictCheck.remediation, /Root orchestrators should not mutate dirty child repos without approval/);
 });
 
 test("runDoctorCommand strict json fails on enabled project DB verification failure", () => {
@@ -398,9 +400,26 @@ test("runDoctorCommand warns for active project DB runtime files", () => {
 
   const output = captureOutput(() => runDoctorCommand({ root }));
   assert.match(output, /warn: project-db-runtime - active project DB runtime\/transient file\(s\) are local-only/);
+  assert.match(output, /expected local state when `mdkg db verify` passes/);
   assert.match(output, /\.mdkg\/db\/runtime\/project\.sqlite/);
   assert.match(output, /\.mdkg\/db\/state\/project\.sqlite-wal/);
   assert.match(output, /doctor ok/);
+});
+
+test("runDoctorCommand explains archive storage warning cleanup options", () => {
+  const root = makeTempDir("mdkg-doctor-archive-storage-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeFile(path.join(root, ".mdkg", "core", "core.md"), "# core\n");
+  writeFile(path.join(root, ".mdkg", "archive", "raw.txt"), "raw archive fixture\n");
+
+  const output = captureOutput(() => runDoctorCommand({ root, json: true }));
+  const payload = JSON.parse(output);
+  const check = payload.checks.find((item: any) => item.id === "archive.storage");
+  assert.equal(check.status, "warn");
+  assert.match(check.detail, /storage hygiene warnings, not source defects/);
+  assert.match(check.remediation, /mdkg archive add <file>/);
+  assert.match(check.remediation, /remove unintended local files/);
 });
 
 test("runDoctorCommand reports visibility policy violations", () => {

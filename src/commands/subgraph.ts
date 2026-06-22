@@ -411,6 +411,10 @@ type SubgraphAuditCheck = {
   details?: Record<string, unknown>;
 };
 
+function dirtySourceGuidance(paths: string[]): string {
+  return `source_path has dirty tracked changes: ${paths.join(", ")}; commit or stash the child repo first, then refresh the root-owned subgraph bundle from the clean accepted child commit`;
+}
+
 type SubgraphAuditReceipt = {
   alias: string;
   enabled: boolean;
@@ -510,7 +514,7 @@ function auditOneAlias(options: {
         ok: !gitState.dirtyTracked,
         severity: "warning",
         message: gitState.dirtyTracked
-          ? `source_path has dirty tracked changes: ${gitState.dirtyTrackedPaths.join(", ")}`
+          ? dirtySourceGuidance(gitState.dirtyTrackedPaths)
           : "source_path has no dirty tracked changes",
         path: options.subgraph.source_path,
         details: { dirty_tracked_paths: gitState.dirtyTrackedPaths },
@@ -667,7 +671,7 @@ function upgradePlanForAlias(options: {
     blockers.push(sourceGitError.message);
   }
   if (options.audit.dirty_tracked) {
-    blockers.push(`source_path has dirty tracked changes: ${options.audit.dirty_tracked_paths?.join(", ")}`);
+    blockers.push(dirtySourceGuidance(options.audit.dirty_tracked_paths ?? []));
   }
   const rootOwnedErrors = options.audit.checks.filter((check) => check.id === "subgraph.bundle.root_owned" && !check.ok);
   blockers.push(...rootOwnedErrors.map((check) => check.message));
@@ -848,7 +852,7 @@ function inspectSourcePath(root: string, alias: string, subgraph: SubgraphConfig
     ? status.stdout.split(/\r?\n/).map((line) => line.slice(3)).filter(Boolean).sort()
     : [];
   if (dirtyTrackedPaths.length > 0 && !allowDirty) {
-    throw new UsageError(`subgraph ${alias} source_path has dirty tracked changes: ${dirtyTrackedPaths.join(", ")}`);
+    throw new UsageError(`subgraph ${alias} ${dirtySourceGuidance(dirtyTrackedPaths)}`);
   }
   return {
     sourceRoot,

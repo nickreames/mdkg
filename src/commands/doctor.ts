@@ -209,8 +209,8 @@ function runArchiveStorageCheck(root: string): CheckResult {
     name: "archive-storage",
     ok: true,
     level: "warn",
-    detail: `stray uncompressed archive file(s) found without managed sidecars: ${strayRaw.join(", ")}; run \`mdkg archive add <file>\` or move raw files under a managed archive source directory`,
-    remediation: "Run `mdkg archive add <file>` or move raw files under a managed archive source directory.",
+    detail: `stray uncompressed archive file(s) found without managed sidecars: ${strayRaw.join(", ")}; these are storage hygiene warnings, not source defects`,
+    remediation: "Either run `mdkg archive add <file>` to create a managed sidecar, move raw files under an existing managed archive source directory, or remove unintended local files before committing.",
     refs: strayRaw,
   });
 }
@@ -305,8 +305,8 @@ function runProjectDbRuntimePolicyCheck(root: string): CheckResult {
     name: "project-db-runtime",
     ok: true,
     level: "warn",
-    detail: `active project DB runtime/transient file(s) are local-only and should not be committed: ${files.join(", ")}`,
-    remediation: "Keep runtime DB and transient files ignored; commit sealed state only by explicit repo policy.",
+    detail: `active project DB runtime/transient file(s) are local-only and should not be committed: ${files.join(", ")}; this is expected local state when \`mdkg db verify\` passes`,
+    remediation: "Keep runtime DB and transient files ignored, run `mdkg db verify --json` if DB health is in question, and commit sealed state only by explicit repo policy.",
     refs: files,
   });
 }
@@ -448,7 +448,7 @@ function runSelectedGoalChecks(
         ok: true,
         level: "warn",
         detail: selected.warning,
-        remediation: "Run `mdkg goal select <goal-id>` or `mdkg goal clear`.",
+        remediation: "Run `mdkg goal clear --json` when no repo-local goal should be selected, or create/select a repo-local active goal only when work is continuing.",
         strictFail: true,
       }),
     ];
@@ -481,7 +481,7 @@ function runSelectedGoalChecks(
           ok: true,
           level: "warn",
           detail: `selected goal ${selected.state.qid} is missing from the graph`,
-          remediation: "Run `mdkg goal select <active-goal>` or `mdkg goal clear`.",
+          remediation: "Run `mdkg goal clear --json` when no repo-local goal should be selected, or `mdkg goal activate <goal-id> --json` for the next active repo-local goal.",
           refs: [selected.state.qid],
           strictFail: true,
         }),
@@ -496,7 +496,7 @@ function runSelectedGoalChecks(
           ok: true,
           level: "warn",
           detail: `selected goal ${selected.state.qid} is achieved but still current`,
-          remediation: "Run `mdkg goal select <active-goal>` or `mdkg goal clear`.",
+          remediation: "Run `mdkg goal clear --json` for an achieved current goal, or `mdkg goal activate <goal-id> --json` only when a new repo-local goal should become active. Root orchestrators should not mutate dirty child repos without approval.",
           refs: [selected.state.qid],
           strictFail: true,
         }),
