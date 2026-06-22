@@ -44,14 +44,20 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:integration-ux"]) {
     fail("package.json is missing smoke:integration-ux");
   }
+  if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
+    fail("package.json is missing smoke:warning-ux");
+  }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
     fail("prepublishOnly is missing smoke:db-queue-cli");
   }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff")) {
     fail("prepublishOnly is missing smoke:handoff");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff && npm run smoke:integration-ux && npm run smoke:bundle")) {
-    fail("prepublishOnly must run smoke:integration-ux between smoke:handoff and smoke:bundle");
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:warning-ux && npm run smoke:integration-ux && npm run smoke:bundle")) {
+    fail("prepublishOnly must run smoke:warning-ux before smoke:integration-ux before smoke:bundle");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff && npm run smoke:warning-ux && npm run smoke:integration-ux")) {
+    fail("prepublishOnly must run smoke:warning-ux between smoke:handoff and smoke:integration-ux");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:cli-ux-polish"]) {
     fail("package.json is missing smoke:cli-ux-polish");
@@ -380,7 +386,12 @@ function requireInitAssets() {
   if (!seededReadme.includes("mdkg work validate") || !seededReadme.includes("typed diagnostics")) {
     fail("dist/init/README.md is missing workflow validation guidance");
   }
-  if (!seededReadme.includes("mdkg validate --changed-only --json") || !seededReadme.includes("mdkg format --headings --dry-run --json")) {
+  if (
+    !seededReadme.includes("mdkg validate --changed-only --json") ||
+    !seededReadme.includes("mdkg validate --summary --json --limit 20") ||
+    !seededReadme.includes("--json-out <path>") ||
+    !seededReadme.includes("mdkg format --headings --dry-run --summary --json --limit 20")
+  ) {
     fail("dist/init/README.md is missing warning filter or heading migration guidance");
   }
   for (const template of [
@@ -476,7 +487,12 @@ function requireInitAssets() {
   if (!rootReadme.includes("mdkg work validate") || !rootReadme.includes("typed diagnostics")) {
     fail("README.md is missing workflow validation guidance");
   }
-  if (!rootReadme.includes("mdkg validate --changed-only --json") || !rootReadme.includes("mdkg format --headings --dry-run --json")) {
+  if (
+    !rootReadme.includes("mdkg validate --changed-only --json") ||
+    !rootReadme.includes("mdkg validate --summary --json --limit 20") ||
+    !rootReadme.includes("--json-out <path>") ||
+    !rootReadme.includes("mdkg format --headings --dry-run --summary --json --limit 20")
+  ) {
     fail("README.md is missing warning filter or heading migration guidance");
   }
   if (
@@ -534,8 +550,19 @@ function requireInitAssets() {
   if (!matrix.includes("mdkg work validate [<id-or-qid>]") || !matrix.includes("work-validate-receipt")) {
     fail("CLI_COMMAND_MATRIX.md is missing workflow validation command references");
   }
-  if (!matrix.includes("mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]") || !matrix.includes("mdkg format --headings [--dry-run|--apply] [--json]")) {
+  if (
+    !matrix.includes("mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]") ||
+    !matrix.includes("warning_summary") ||
+    !matrix.includes("json_receipt_path") ||
+    !matrix.includes("mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]")
+  ) {
     fail("CLI_COMMAND_MATRIX.md is missing warning filter or heading migration command references");
+  }
+  const warningSmoke = requireFile("scripts/smoke-warning-ux.js");
+  for (const expected of ["--summary", "--json-out", "warning_summary", "format", "--headings"]) {
+    if (!warningSmoke.includes(expected)) {
+      fail(`scripts/smoke-warning-ux.js is missing warning UX proof ${expected}`);
+    }
   }
   if (
     !matrix.includes("mdkg handoff create <id-or-qid>") ||
