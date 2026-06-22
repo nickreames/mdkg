@@ -27,6 +27,8 @@ export type FormatCommandOptions = {
   dryRun?: boolean;
   apply?: boolean;
   json?: boolean;
+  summary?: boolean;
+  limit?: number;
 };
 
 type HeadingChange = {
@@ -34,6 +36,22 @@ type HeadingChange = {
   id?: string;
   type: string;
   added_headings: string[];
+};
+
+type FormatSummaryBucket = {
+  key: string;
+  count: number;
+};
+
+type FormatHeadingsSummary = {
+  total: number;
+  emitted: number;
+  truncated: boolean;
+  omitted_count: number;
+  limit: number | null;
+  affected_file_count: number;
+  by_node_type: FormatSummaryBucket[];
+  top_paths: FormatSummaryBucket[];
 };
 
 const DEC_ID_RE = /^dec-[0-9]+$/;
@@ -89,6 +107,44 @@ function appendMissingHeadings(body: string, headings: string[]): string {
   const trimmed = body.replace(/\s+$/g, "");
   const prefix = trimmed.length > 0 ? `${trimmed}\n\n` : "";
   return `${prefix}${headings.map((heading) => `# ${heading}\n`).join("\n")}`;
+}
+
+function countBuckets(values: string[]): FormatSummaryBucket[] {
+  const counts = new Map<string, number>();
+  for (const value of values) {
+    if (!value) {
+      continue;
+    }
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([key, count]) => ({ key, count }))
+    .sort((a, b) => b.count - a.count || a.key.localeCompare(b.key));
+}
+
+function normalizeLimit(limit?: number): number {
+  if (limit === undefined) {
+    return 50;
+  }
+  if (!Number.isInteger(limit) || limit < 0) {
+    throw new ValidationError("--limit must be a non-negative integer");
+  }
+  return limit;
+}
+
+function buildHeadingsSummary(changes: HeadingChange[], limit?: number | null): FormatHeadingsSummary {
+  const effectiveLimit = limit === null || limit === undefined ? changes.length : limit;
+  const emitted = Math.min(changes.length, effectiveLimit);
+  return {
+    total: changes.length,
+    emitted,
+    truncated: emitted < changes.length,
+    omitted_count: changes.length - emitted,
+    limit: limit === undefined ? null : limit,
+    affected_file_count: new Set(changes.map((change) => change.path)).size,
+    by_node_type: countBuckets(changes.map((change) => change.type)),
+    top_paths: countBuckets(changes.map((change) => change.path)).slice(0, 25),
+  };
 }
 
 function normalizeScalar(value: string): string {
@@ -409,13 +465,17 @@ function runHeadingFormatCommandLocked(options: FormatCommandOptions): void {
     }
   }
 
+  const publicChanges = changes.map(({ filePath: _filePath, content: _content, ...change }) => change);
+  const summaryLimit = options.summary ? normalizeLimit(options.limit) : undefined;
+  const emittedChanges = options.summary ? publicChanges.slice(0, summaryLimit) : publicChanges;
   const receipt = {
     action: "format.headings",
     ok: true,
     dry_run: !apply,
     applied: apply,
     changed_count: changes.length,
-    changes: changes.map(({ filePath: _filePath, content: _content, ...change }) => change),
+    summary: buildHeadingsSummary(publicChanges, summaryLimit),
+    changes: emittedChanges,
   };
   if (options.json) {
     console.log(JSON.stringify(receipt, null, 2));

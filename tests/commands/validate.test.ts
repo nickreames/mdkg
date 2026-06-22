@@ -178,6 +178,12 @@ test("runValidateCommand emits a success JSON receipt", () => {
     warning_count: number;
     error_count: number;
     warnings: string[];
+    warning_summary: {
+      total: number;
+      emitted: number;
+      truncated: boolean;
+      by_id: Array<{ key: string; count: number }>;
+    };
     errors: string[];
     report_path?: string;
   };
@@ -190,10 +196,103 @@ test("runValidateCommand emits a success JSON receipt", () => {
   assert.equal(receipt.error_count, 0);
   assert.equal(receipt.errors.length, 0);
   assert.ok(receipt.warnings.some((warning) => warning.includes("root:task-1")));
+  assert.equal(receipt.warning_summary.total, receipt.warning_count);
+  assert.equal(receipt.warning_summary.emitted, receipt.warning_count);
+  assert.equal(receipt.warning_summary.truncated, false);
+  assert.ok(receipt.warning_summary.by_id.some((bucket) => bucket.key === "heading.missing"));
   assert.equal(receipt.report_path, path.resolve(root, "report.txt"));
 
   const report = fs.readFileSync(path.join(root, "report.txt"), "utf8");
   assert.ok(report.includes("warning: root:task-1"));
+});
+
+test("runValidateCommand summary mode bounds high-volume warning output", () => {
+  const root = makeTempDir("mdkg-validate-summary-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  for (let i = 1; i <= 250; i += 1) {
+    writeTaskWithId(root, `task-${i}`);
+  }
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true, summary: true, limit: 20 }));
+  const receipt = JSON.parse(output.stdout) as {
+    ok: boolean;
+    warning_count: number;
+    warnings: string[];
+    warning_diagnostics: Array<{ id: string; category: string; node_type?: string; path?: string }>;
+    warning_summary: {
+      total: number;
+      emitted: number;
+      truncated: boolean;
+      omitted_count: number;
+      limit: number;
+      affected_file_count: number;
+      by_id: Array<{ key: string; count: number }>;
+      by_category: Array<{ key: string; count: number }>;
+      by_node_type: Array<{ key: string; count: number }>;
+      top_paths: Array<{ key: string; count: number }>;
+    };
+  };
+
+  assert.equal(output.error, undefined);
+  assert.equal(receipt.ok, true);
+  assert.ok(receipt.warning_count >= 1000);
+  assert.equal(receipt.warnings.length, 20);
+  assert.equal(receipt.warning_diagnostics.length, 20);
+  assert.equal(receipt.warning_summary.total, receipt.warning_count);
+  assert.equal(receipt.warning_summary.emitted, 20);
+  assert.equal(receipt.warning_summary.limit, 20);
+  assert.equal(receipt.warning_summary.truncated, true);
+  assert.equal(receipt.warning_summary.omitted_count, receipt.warning_count - 20);
+  assert.equal(receipt.warning_summary.affected_file_count, 250);
+  assert.deepEqual(receipt.warning_summary.by_id[0], { key: "heading.missing", count: receipt.warning_count });
+  assert.deepEqual(receipt.warning_summary.by_category[0], { key: "headings", count: receipt.warning_count });
+  assert.deepEqual(receipt.warning_summary.by_node_type[0], { key: "task", count: receipt.warning_count });
+  assert.ok(receipt.warning_summary.top_paths.length > 0);
+});
+
+test("runValidateCommand writes clean full JSON receipt while preserving --out text report", () => {
+  const root = makeTempDir("mdkg-validate-json-out-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  for (let i = 1; i <= 20; i += 1) {
+    writeTaskWithId(root, `task-${i}`);
+  }
+
+  const output = captureOutput(() =>
+    runValidateCommand({
+      root,
+      out: "reports/validate.txt",
+      jsonOut: "reports/validate.json",
+      json: true,
+      summary: true,
+      limit: 5,
+    })
+  );
+  const stdoutReceipt = JSON.parse(output.stdout) as {
+    warning_count: number;
+    warnings: string[];
+    warning_diagnostics: unknown[];
+    json_receipt_path: string;
+  };
+  const fullReceipt = JSON.parse(fs.readFileSync(path.join(root, "reports", "validate.json"), "utf8")) as {
+    warning_count: number;
+    warnings: string[];
+    warning_diagnostics: unknown[];
+    json_receipt_path: string;
+  };
+  const textReport = fs.readFileSync(path.join(root, "reports", "validate.txt"), "utf8");
+
+  assert.equal(output.error, undefined);
+  assert.equal(stdoutReceipt.warnings.length, 5);
+  assert.equal(stdoutReceipt.warning_diagnostics.length, 5);
+  assert.equal(fullReceipt.warning_count, stdoutReceipt.warning_count);
+  assert.equal(fullReceipt.warnings.length, fullReceipt.warning_count);
+  assert.equal(fullReceipt.warning_diagnostics.length, fullReceipt.warning_count);
+  assert.equal(stdoutReceipt.json_receipt_path, path.join(root, "reports", "validate.json"));
+  assert.equal(fullReceipt.json_receipt_path, path.join(root, "reports", "validate.json"));
+  assert.match(textReport, /^warning: root:task-/);
+  assert.doesNotThrow(() => JSON.parse(fs.readFileSync(path.join(root, "reports", "validate.json"), "utf8")));
 });
 
 test("runValidateCommand emits typed warning diagnostics", () => {

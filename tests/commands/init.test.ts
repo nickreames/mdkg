@@ -302,7 +302,10 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
 
   const cliMatrix = fs.readFileSync(cliMatrixPath, "utf8");
   assert.match(cliMatrix, /mdkg new spec "<title>" \[options\] \[--json\]/);
-  assert.match(cliMatrix, /mdkg validate \[--out <path>\] \[--quiet\] \[--changed-only\] \[--json\]/);
+  assert.match(
+    cliMatrix,
+    /mdkg validate \[--out <path>\] \[--json-out <path>\] \[--quiet\] \[--changed-only\] \[--summary\] \[--limit <n>\] \[--json\]/
+  );
   assert.match(cliMatrix, /mdkg skill validate \[<slug>\] \[--json\]/);
 
   const llms = fs.readFileSync(llmsPath, "utf8");

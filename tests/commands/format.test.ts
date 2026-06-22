@@ -103,6 +103,36 @@ function writeFormattedTask(root: string): { filePath: string; content: string }
   return { filePath, content };
 }
 
+function writeHeadingFixtureTask(root: string, id: string): string {
+  const content = [
+    "---",
+    `id: ${id}`,
+    "type: task",
+    "title: Missing headings",
+    "status: todo",
+    "priority: 1",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-01-06",
+    "updated: 2026-01-06",
+    "---",
+    "",
+    "# Overview",
+    "",
+  ].join("\n");
+  const filePath = path.join(root, ".mdkg", "work", `${id}.md`);
+  writeFile(filePath, content);
+  return filePath;
+}
+
 function captureOutput(fn: () => void): { stdout: string; stderr: string; error?: unknown } {
   const stdout: string[] = [];
   const stderr: string[] = [];
@@ -197,4 +227,54 @@ test("runFormatCommand heading migration supports dry-run and apply receipts", (
   const content = fs.readFileSync(filePath, "utf8");
   assert.match(content, /# Acceptance Criteria/);
   assert.match(content, /# Links \/ Artifacts/);
+});
+
+test("runFormatCommand heading migration summary mode bounds dry-run output without applying", () => {
+  const root = makeTempDir("mdkg-format-headings-summary-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  const paths: string[] = [];
+  for (let i = 1; i <= 30; i += 1) {
+    paths.push(writeHeadingFixtureTask(root, `task-${i}`));
+  }
+  const before = new Map(paths.map((filePath) => [filePath, fs.readFileSync(filePath, "utf8")]));
+
+  const output = captureOutput(() =>
+    runFormatCommand({ root, headings: true, dryRun: true, json: true, summary: true, limit: 7 })
+  );
+  const receipt = JSON.parse(output.stdout) as {
+    action: string;
+    dry_run: boolean;
+    applied: boolean;
+    changed_count: number;
+    summary: {
+      total: number;
+      emitted: number;
+      truncated: boolean;
+      omitted_count: number;
+      limit: number;
+      affected_file_count: number;
+      by_node_type: Array<{ key: string; count: number }>;
+      top_paths: Array<{ key: string; count: number }>;
+    };
+    changes: Array<{ path: string; type: string; added_headings: string[] }>;
+  };
+
+  assert.equal(output.error, undefined);
+  assert.equal(receipt.action, "format.headings");
+  assert.equal(receipt.dry_run, true);
+  assert.equal(receipt.applied, false);
+  assert.equal(receipt.changed_count, 30);
+  assert.equal(receipt.changes.length, 7);
+  assert.equal(receipt.summary.total, 30);
+  assert.equal(receipt.summary.emitted, 7);
+  assert.equal(receipt.summary.truncated, true);
+  assert.equal(receipt.summary.omitted_count, 23);
+  assert.equal(receipt.summary.limit, 7);
+  assert.equal(receipt.summary.affected_file_count, 30);
+  assert.deepEqual(receipt.summary.by_node_type[0], { key: "task", count: 30 });
+  assert.ok(receipt.summary.top_paths.length > 0);
+  for (const filePath of paths) {
+    assert.equal(fs.readFileSync(filePath, "utf8"), before.get(filePath));
+  }
 });

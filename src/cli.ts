@@ -1093,11 +1093,13 @@ function printCheckpointHelp(log: LogFn): void {
 
 function printValidateHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]");
+  log("  mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]");
   log("\nNotes:");
   log("  Validates frontmatter schemas, graph references, visibility, skills, and events.");
   log("  --changed-only filters warning presentation to changed .mdkg files while full graph errors still run.");
-  log("  JSON output includes warning_diagnostics with warning ids, categories, severity, paths, refs, and remediation text.");
+  log("  JSON output includes warning_summary plus warning_diagnostics with warning ids, categories, severity, paths, refs, and remediation text.");
+  log("  --summary emits bounded warning samples for agent/CI logs; --limit controls the sample size.");
+  log("  --out writes the compatibility text report; --json-out writes a clean full JSON receipt.");
   printGlobalOptions(log);
 }
 
@@ -1205,10 +1207,11 @@ function printFixHelp(log: LogFn, subcommand?: string): void {
 function printFormatHelp(log: LogFn): void {
   log("Usage:");
   log("  mdkg format");
-  log("  mdkg format --headings [--dry-run|--apply] [--json]");
+  log("  mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]");
   log("\nNotes:");
   log("  Default format normalizes frontmatter in place.");
   log("  --headings adds missing recommended body headings; it defaults to dry-run and requires --apply to write files.");
+  log("  --summary emits bounded heading-change samples for agent/CI logs; --limit controls the sample size.");
   printGlobalOptions(log);
 }
 
@@ -3126,10 +3129,13 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         throw new UsageError("validate does not accept positional arguments");
       }
       const out = requireFlagValue("--out", parsed.flags["--out"]);
+      const jsonOut = requireFlagValue("--json-out", parsed.flags["--json-out"]);
       const quiet = parseBooleanFlag("--quiet", parsed.flags["--quiet"]);
       const changedOnly = parseBooleanFlag("--changed-only", parsed.flags["--changed-only"]);
+      const summary = parseBooleanFlag("--summary", parsed.flags["--summary"]);
+      const limit = parseNumberFlag("--limit", parsed.flags["--limit"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runValidateCommand({ root, out, quiet, json, changedOnly });
+      runValidateCommand({ root, out, jsonOut, quiet, json, changedOnly, summary, limit });
       return 0;
     }
     case "status": {
@@ -3176,14 +3182,16 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const headings = parseBooleanFlag("--headings", parsed.flags["--headings"]);
       const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
       const apply = parseBooleanFlag("--apply", parsed.flags["--apply"]);
+      const summary = parseBooleanFlag("--summary", parsed.flags["--summary"]);
+      const limit = parseNumberFlag("--limit", parsed.flags["--limit"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      if (!headings && (dryRun || apply || json)) {
-        throw new UsageError("format --dry-run, --apply, and --json require --headings");
+      if (!headings && (dryRun || apply || json || summary || limit !== undefined)) {
+        throw new UsageError("format --dry-run, --apply, --summary, --limit, and --json require --headings");
       }
       if (dryRun && apply) {
         throw new UsageError("format --headings cannot use --dry-run and --apply together");
       }
-      runFormatCommand({ root, headings, dryRun, apply, json });
+      runFormatCommand({ root, headings, dryRun, apply, json, summary, limit });
       return 0;
     case "doctor": {
       if (parsed.positionals.length > 1) {

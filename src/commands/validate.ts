@@ -18,9 +18,12 @@ import { auditSkillMirrors } from "./skill_mirror";
 export type ValidateCommandOptions = {
   root: string;
   out?: string;
+  jsonOut?: string;
   quiet?: boolean;
   json?: boolean;
   changedOnly?: boolean;
+  summary?: boolean;
+  limit?: number;
 };
 
 export type ValidateWarningDiagnostic = {
@@ -29,9 +32,29 @@ export type ValidateWarningDiagnostic = {
   severity: "warning";
   message: string;
   qid?: string;
+  node_type?: string;
   path?: string;
   ref?: string;
   remediation: string;
+};
+
+export type ValidateWarningSummaryBucket = {
+  key: string;
+  count: number;
+};
+
+export type ValidateWarningSummary = {
+  total: number;
+  emitted: number;
+  truncated: boolean;
+  omitted_count: number;
+  limit: number | null;
+  affected_file_count: number;
+  by_id: ValidateWarningSummaryBucket[];
+  by_category: ValidateWarningSummaryBucket[];
+  by_node_type: ValidateWarningSummaryBucket[];
+  top_qids: ValidateWarningSummaryBucket[];
+  top_paths: ValidateWarningSummaryBucket[];
 };
 
 export type ValidateReceipt = {
@@ -41,8 +64,10 @@ export type ValidateReceipt = {
   error_count: number;
   warnings: string[];
   warning_diagnostics: ValidateWarningDiagnostic[];
+  warning_summary: ValidateWarningSummary;
   errors: string[];
   report_path?: string;
+  json_receipt_path?: string;
   warning_filter?: {
     mode: "changed-only";
     changed_paths: string[];
@@ -207,6 +232,7 @@ function warningPath(message: string, nodes: Record<string, IndexNode>): string 
 
 function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): ValidateWarningDiagnostic {
   const qid = qidFromWarning(message);
+  const nodeType = qid && nodes[qid] ? nodes[qid].type : undefined;
   const pathValue = warningPath(message, nodes);
   const rawMatch = /raw-content\.([a-z_]+)/.exec(message);
   if (rawMatch) {
@@ -216,6 +242,7 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       severity: "warning",
       message,
       qid,
+      node_type: nodeType,
       path: pathValue,
       ref: qid,
       remediation: "Replace raw secrets, prompts, tokens, or payloads with refs, hashes, redacted summaries, or archive/artifact links.",
@@ -228,6 +255,7 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       severity: "warning",
       message,
       qid,
+      node_type: nodeType,
       path: pathValue,
       ref: qid,
       remediation: "Run mdkg format --headings --dry-run to review missing heading additions, then --apply if acceptable.",
@@ -239,6 +267,7 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       category: "templates",
       severity: "warning",
       message,
+      node_type: nodeType,
       path: pathValue,
       remediation: "Run mdkg upgrade --apply to vendor missing built-in template schemas when the managed asset update is safe.",
     };
@@ -249,6 +278,7 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       category: "cache",
       severity: "warning",
       message,
+      node_type: nodeType,
       path: pathValue,
       remediation: "Run mdkg index or mdkg db index rebuild when generated cache state should be refreshed.",
     };
@@ -259,6 +289,7 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       category: "skills",
       severity: "warning",
       message,
+      node_type: nodeType,
       path: pathValue,
       remediation: "Run mdkg skill sync after reviewing managed skill mirror drift.",
     };
@@ -269,6 +300,7 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       category: "subgraph",
       severity: "warning",
       message,
+      node_type: nodeType,
       path: pathValue,
       remediation: "Run mdkg subgraph verify or refresh the source bundle after reviewing child graph freshness.",
     };
@@ -279,10 +311,74 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
     severity: "warning",
     message,
     qid,
+    node_type: nodeType,
     path: pathValue,
     ref: qid,
     remediation: "Review the warning and apply the focused mdkg command suggested by the message when appropriate.",
   };
+}
+
+function countBuckets(values: Array<string | undefined>): ValidateWarningSummaryBucket[] {
+  const counts = new Map<string, number>();
+  for (const value of values) {
+    if (!value) {
+      continue;
+    }
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([key, count]) => ({ key, count }))
+    .sort((a, b) => b.count - a.count || a.key.localeCompare(b.key));
+}
+
+function normalizeLimit(limit?: number): number {
+  if (limit === undefined) {
+    return 50;
+  }
+  if (!Number.isInteger(limit) || limit < 0) {
+    throw new ValidationError("--limit must be a non-negative integer");
+  }
+  return limit;
+}
+
+function buildWarningSummary(
+  diagnostics: ValidateWarningDiagnostic[],
+  limit?: number | null
+): ValidateWarningSummary {
+  const effectiveLimit = limit === null || limit === undefined ? diagnostics.length : limit;
+  const emitted = Math.min(diagnostics.length, effectiveLimit);
+  const truncated = emitted < diagnostics.length;
+  return {
+    total: diagnostics.length,
+    emitted,
+    truncated,
+    omitted_count: diagnostics.length - emitted,
+    limit: limit === undefined ? null : limit,
+    affected_file_count: new Set(diagnostics.map((diagnostic) => diagnostic.path).filter(Boolean)).size,
+    by_id: countBuckets(diagnostics.map((diagnostic) => diagnostic.id)),
+    by_category: countBuckets(diagnostics.map((diagnostic) => diagnostic.category)),
+    by_node_type: countBuckets(diagnostics.map((diagnostic) => diagnostic.node_type)),
+    top_qids: countBuckets(diagnostics.map((diagnostic) => diagnostic.qid)).slice(0, 25),
+    top_paths: countBuckets(diagnostics.map((diagnostic) => diagnostic.path)).slice(0, 25),
+  };
+}
+
+function shapeValidateReceiptForSummary(receipt: ValidateReceipt, limit?: number): ValidateReceipt {
+  const effectiveLimit = normalizeLimit(limit);
+  const warningDiagnostics = receipt.warning_diagnostics.slice(0, effectiveLimit);
+  return {
+    ...receipt,
+    warnings: warningDiagnostics.map((warning) => warning.message),
+    warning_diagnostics: warningDiagnostics,
+    warning_summary: buildWarningSummary(receipt.warning_diagnostics, effectiveLimit),
+  };
+}
+
+function writeJsonReceipt(root: string, jsonOut: string, receipt: ValidateReceipt): string {
+  const outPath = path.resolve(root, jsonOut);
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.writeFileSync(outPath, `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
+  return outPath;
 }
 
 function isCoreListFile(filePath: string): boolean {
@@ -634,6 +730,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
     error_count: uniqueErrors.length,
     warnings: uniqueWarnings,
     warning_diagnostics: filteredWarningDiagnostics,
+    warning_summary: buildWarningSummary(filteredWarningDiagnostics),
     errors: uniqueErrors,
     ...(outPath ? { report_path: outPath } : {}),
     ...(options.changedOnly
@@ -645,10 +742,16 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
 }
 
 export function runValidateCommand(options: ValidateCommandOptions): void {
-  const receipt = collectValidateReceipt(options);
+  let receipt = collectValidateReceipt(options);
+  if (options.jsonOut) {
+    const jsonOutPath = path.resolve(options.root, options.jsonOut);
+    receipt = { ...receipt, json_receipt_path: jsonOutPath };
+    writeJsonReceipt(options.root, options.jsonOut, receipt);
+  }
+  const displayReceipt = options.summary ? shapeValidateReceiptForSummary(receipt, options.limit) : receipt;
 
   if (options.json) {
-    console.log(JSON.stringify(receipt, null, 2));
+    console.log(JSON.stringify(displayReceipt, null, 2));
     if (receipt.error_count > 0) {
       throw new ValidationError(`validation failed with ${receipt.error_count} error(s)`);
     }
@@ -656,8 +759,13 @@ export function runValidateCommand(options: ValidateCommandOptions): void {
   }
 
   if (!options.quiet) {
-    for (const warning of receipt.warnings) {
+    for (const warning of displayReceipt.warnings) {
       console.error(`warning: ${warning}`);
+    }
+    if (displayReceipt.warning_summary.truncated) {
+      console.error(
+        `warning summary: omitted ${displayReceipt.warning_summary.omitted_count} warning(s); rerun without --summary or use --json-out <path> for full diagnostics`
+      );
     }
   }
 
