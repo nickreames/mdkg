@@ -8,6 +8,26 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.3.8 - Unreleased
+
+### Added
+
+- Planned and began a warning-scale UX hardening lane for large multi-repo
+  mdkg orchestration runs.
+- Added bounded validation warning summaries, summary-mode output, and a clean
+  JSON receipt artifact path for warning-heavy validation workflows.
+- Added heading formatter summary-mode output for large recommended-heading
+  migration previews.
+- Added a packed warning UX smoke to prepublish automation so high-volume
+  warning output regressions are caught before release.
+
+### Changed
+
+- Improved strict doctor, subgraph, and handoff remediation guidance for
+  multi-repo operators.
+- Updated repo-local skill guidance for child-first commit and root subgraph
+  refresh sequencing.
+
 ## 0.3.7 - 2026-06-20
 
 ### Added

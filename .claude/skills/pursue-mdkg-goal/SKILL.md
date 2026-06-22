@@ -46,6 +46,16 @@ Move one durable mdkg goal forward without losing scope, evidence, or user inten
 - Edit `SKILL.md` files only when the active node is explicitly skill-maintenance work.
 - After intentional skill edits, run `mdkg skill sync`, `mdkg skill validate`, `mdkg index`, and `mdkg validate`.
 
+## Multi-Repo And Subgraph Goals
+
+- Gather read-only baselines before mutating any repo: git status, mdkg status, validation, doctor, and subgraph audit where relevant.
+- Require one explicit matrix approval before applying coordinated upgrades across multiple repos.
+- Apply and verify upgrades one repo at a time.
+- Commit accepted child repo mdkg-only changes locally before refreshing a root-owned subgraph bundle.
+- Refresh root-owned bundles only from clean, accepted child commits; avoid `--allow-dirty` unless the user explicitly approves that risk.
+- Keep root-qualified qids in cross-repo planning so overlapping child ids stay unambiguous.
+- Do not store raw secrets, tokens, provider payloads, raw prompts, or unrelated runtime payloads in graph state, checkpoints, or handoffs.
+
 ## Outputs
 
 - One active scoped work item at a time.
