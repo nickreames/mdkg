@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.3.6`
+Current package version in source: `0.3.7`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -380,8 +380,12 @@ Advanced / maintenance commands still exist, but they are not the first-run stor
 
 For large historical graphs, use `mdkg validate --changed-only --json` to keep
 warning review focused on changed `.mdkg` files while full graph errors still
-run. Use `mdkg format --headings --dry-run --json` to review missing recommended
-heading additions before applying them with `--apply`.
+run. Use `mdkg validate --summary --json --limit 20` for bounded agent or CI
+logs, and add `--json-out <path>` when a clean full JSON receipt should be
+written as an artifact. Use
+`mdkg format --headings --dry-run --summary --json --limit 20` to review missing
+recommended heading additions with bounded output before applying them with
+`--apply`.
 
 ## Operator health
 

@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-06-17
-package_version_in_source: 0.3.6
+as_of: 2026-06-21
+package_version_in_source: 0.3.7
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -937,18 +937,25 @@ When to use:
 - run the repo trust gate before calling work done
 
 Usage:
-- `mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]`
+- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]`
 - `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
-- JSON receipts include `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
+- `--summary` emits bounded warning samples for agent/CI logs; `--limit <n>` controls the sample size
+- `--out <path>` writes the compatibility text report; `--json-out <path>` writes a clean full JSON receipt
+- JSON receipts include `warning_summary` and `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
 
 Flags:
 - `--out <path>`
+- `--json-out <path>`
 - `--quiet`
+- `--changed-only`
+- `--summary`
+- `--limit <n>`
 - `--json`
 
 JSON receipt:
-- `{ action: "validated", ok, warning_count, error_count, warnings, errors, report_path }`
+- `{ action: "validated", ok, warning_count, error_count, warnings, warning_diagnostics, warning_summary, errors, report_path?, json_receipt_path? }`
 - `report_path` is included only when `--out` is used.
+- `json_receipt_path` is included only when `--json-out` is used.
 
 Notes:
 - validates nodes, graph integrity, skills, and event log contracts
@@ -1107,11 +1114,12 @@ Usage:
 
 Usage:
 - `mdkg format`
-- `mdkg format --headings [--dry-run|--apply] [--json]`
+- `mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]`
 
 Notes:
 - default `mdkg format` normalizes frontmatter in place
 - `mdkg format --headings` defaults to dry-run and returns planned missing-heading additions
+- `--summary` emits bounded heading-change samples for agent/CI logs; `--limit <n>` controls the sample size
 - `mdkg format --headings --apply` appends missing recommended body headings and returns a migration receipt
 
 ### `mdkg status`

@@ -42,6 +42,14 @@ Choose the correct work item and load the smallest deterministic context needed 
 - Clear understanding of the active task, related docs, and current state
 - No durable mdkg writes or commits from this stage
 
+## Multi-Repo Grounding
+
+- For root/subgraph work, inspect the root graph and each child graph read-only before choosing a mutation target.
+- Collect a small matrix with repo path, git status, mdkg version, status, validation result, doctor result, and selected goal state.
+- Treat dirty child repos as ownership boundaries; ask before mutating them or before refreshing root bundles from them.
+- Prefer root-qualified qids in packs, handoffs, and cross-repo blockers so same-number child ids cannot be confused.
+- Use compact diagnostics when available: `mdkg validate --summary --json --limit 20`, `mdkg validate --changed-only --json`, and `mdkg format --headings --dry-run --summary --json --limit 20`.
+
 ## Safety
 
 - Do not start coding from chat memory alone.

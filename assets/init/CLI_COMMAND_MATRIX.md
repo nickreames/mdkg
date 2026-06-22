@@ -118,9 +118,11 @@ Project database commands:
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:
-- `mdkg validate [--out <path>] [--quiet] [--changed-only] [--json]`
+- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]`
 - `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
-- JSON receipts include `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
+- `--summary` emits bounded warning samples for agent/CI logs; `--limit <n>` controls the sample size
+- `--out <path>` writes the compatibility text report; `--json-out <path>` writes a clean full JSON receipt
+- JSON receipts include `warning_summary` and `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
 
 Node creation commands:
 - `mdkg new <type> "<title>" [options] [--json]`

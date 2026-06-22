@@ -82,6 +82,18 @@ mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
 
 Skip `mdkg archive compress --all` only when the repo has no `.mdkg/archive` sidecars. Skip bundle refresh only when the repo intentionally does not track `.mdkg/bundles/`. Use `--profile public` or `mdkg pack --visibility public` only for explicit export-safe output after public workspace, archive, and import visibility has been reviewed.
 
+## Multi-Repo Closeout Gate
+
+Use this order for root orchestration, child repo upgrades, and subgraph refresh work:
+
+1. Gather read-only baselines for every involved repo before mutation.
+2. Get one explicit approval matrix for which repos may be updated.
+3. Apply and validate one repo at a time.
+4. Commit accepted child repo mdkg-only changes locally before root subgraph sync.
+5. Sync root-owned bundles only from clean child commits and record the child commit id in the root evidence.
+6. Run root subgraph audit or verify after bundle refresh.
+7. Keep handoffs refs-only and sanitized; never copy raw secrets, tokens, prompts, provider payloads, or unrelated raw runtime payloads into checkpoints or packs.
+
 ## Outputs
 
 - Verified mdkg graph state

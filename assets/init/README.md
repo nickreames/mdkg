@@ -44,7 +44,7 @@ checkpoint, boundaries, required checks, next actions, and raw-content marker
 warnings without copying raw node bodies into the prompt. Use `--out` to write
 the handoff artifact inside the repo root.
 
-For large historical graphs, `mdkg validate --changed-only --json` keeps warning review focused on changed `.mdkg` files while full graph errors still run. `mdkg format --headings --dry-run --json` previews missing recommended heading additions before `--apply`.
+For large historical graphs, `mdkg validate --changed-only --json` keeps warning review focused on changed `.mdkg` files while full graph errors still run. `mdkg validate --summary --json --limit 20` keeps agent and CI logs bounded, and `--json-out <path>` writes a clean full JSON receipt artifact. `mdkg format --headings --dry-run --summary --json --limit 20` previews missing recommended heading additions with bounded output before `--apply`.
 
 Use `mdkg status --json` for a read-only operator summary of Git, graph,
 selected-goal, project DB, and generated-cache health before mutating work. Use

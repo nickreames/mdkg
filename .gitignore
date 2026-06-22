@@ -10,6 +10,7 @@
 dist/
 node_modules/
 *.tgz
+.DS_Store
 
 .mdkg/pack/
 .mdkg/archive/**/source/
