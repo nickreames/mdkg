@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, boundary, tooling]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [spike-14, task-446, task-447, task-448]
 blocked_by: [spike-14]
-blocks: []
-refs: []
-context_refs: []
+blocks: [task-446, task-447, task-448]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-4, prd-5, edd-24, edd-25, dec-30]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,26 +23,34 @@ epic: epic-122
 ---
 # Overview
 
-Design the practical execution boundary for adding /mdkg-dev, /docs, and /examples without destabilizing the CLI package.
+Design the practical execution boundary for adding `/mdkg-dev`, `/docs`, and `/examples` without destabilizing the CLI package, npm publishing, or existing docs.
 
 # Acceptance Criteria
 
-- The task is executed only after goal-25 is explicitly activated.
-- The relevant implementation surface has tests and launch-safety evidence.
-- No public publish, deploy, push, tag, DNS change, or production promotion occurs.
+- Executed only after goal-25 is explicitly activated.
+- Package manager, workspace/package isolation, root script integration, and dependency boundaries are decided before scaffolding.
+- Existing `/docs` files are inventoried with a preservation, migration, or archive plan.
+- npm package inclusion/exclusion policy is decided so site/docs/example sources do not accidentally ship in the CLI package unless intentionally added.
+- Exact GitHub URL, npm URL, and verified install commands are recorded for downstream content.
+- No public publish, deploy, push, tag, DNS change, analytics activation, GitBook production config, or production promotion occurs.
 
 # Files Affected
 
-- Goal 2 implementation paths only after activation
+- `.mdkg` evidence during planning.
+- Future implementation paths only after activation: package metadata/scripts, `/mdkg-dev`, `/docs`, `/examples`, and docs/readiness assertions.
 
 # Implementation Notes
 
 - Use canonical PRD/EDD/DEC records as source planning.
-- Record evidence before closeout.
+- Re-check official docs and current package metadata before locking install/deploy/docs assumptions.
+- Record a checkpoint titled "mdkg.dev boundary and tooling decision accepted" before closing.
 
 # Test Plan
 
-- Run relevant Goal 2 checks before marking done.
+- `git status --short --branch`
+- `node dist/cli.js validate --json`
+- Verify package metadata, current docs inventory, and install command truth.
+- Record checkpoint evidence with decisions, risks, and exact next task boundaries.
 
 # Links / Artifacts
 
@@ -53,6 +61,9 @@ Design the practical execution boundary for adding /mdkg-dev, /docs, and /exampl
 - context: prd-5
 - context: edd-24
 - context: edd-25
-- context: edd-26
-- context: edd-27
+- context: mdkg.dev visual design system contract
+- context: mdkg.dev claims SEO and measurement contract
+- context: mdkg.dev quality gate contract
 - context: dec-30
+- context: GitBook repo-first ownership policy
+- context: Vercel readiness and no-production-launch boundary

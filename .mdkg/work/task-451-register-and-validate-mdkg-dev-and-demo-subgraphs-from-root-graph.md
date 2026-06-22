@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, subgraph, examples]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-450, test-204]
 blocked_by: [task-450]
-blocks: []
-refs: []
-context_refs: []
+blocks: [task-452, test-204]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [edd-24, edd-26, dec-30]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,36 +23,38 @@ epic: epic-125
 ---
 # Overview
 
-Register generated subgraphs from clean validated subproject/example graphs.
+Register mdkg-dev and demo/example graphs as read-only planning subgraphs only after they exist and validate independently.
 
 # Acceptance Criteria
 
-- The task is executed only after goal-25 is explicitly activated.
-- The relevant implementation surface has tests and launch-safety evidence.
-- No public publish, deploy, push, tag, DNS change, or production promotion occurs.
+- Executed only after goal-25 is explicitly activated and task-450 creates valid nested graphs.
+- Root graph registration uses root-qualified qids when referring across graph boundaries.
+- Subgraphs are added only after each source graph validates cleanly.
+- Root-owned bundles or subgraph snapshots are generated from clean accepted child graph states.
+- Dirty child graph states are not synced with unsafe allow-dirty shortcuts.
+- Subgraph materialization, if used, is ignored/read-only inspection output.
+- Mutating commands against subgraph qids are not used.
 
 # Files Affected
 
-- Goal 2 implementation paths only after activation
+- `.mdkg` subgraph registration/bundle metadata.
+- Nested example graph `.mdkg` files created by task-450.
 
 # Implementation Notes
 
-- Use canonical PRD/EDD/DEC records as source planning.
-- Record evidence before closeout.
+- Keep subgraphs as planning context, not a mechanism for root mutation of child work.
+- Record demo/subgraph proof checkpoint before closing with task-450 evidence.
 
 # Test Plan
 
-- Run relevant Goal 2 checks before marking done.
+- `mdkg subgraph add/list/verify` or current equivalent.
+- `mdkg capability resolve` or search/show proof for root-qualified qids if applicable.
+- `npm run smoke:demo-graph`
+- `node dist/cli.js validate --json`
 
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
 - parent: goal-25
 - epic: epic-125
-- context: prd-4
-- context: prd-5
-- context: edd-24
-- context: edd-25
 - context: edd-26
-- context: edd-27
-- context: dec-30

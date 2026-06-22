@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, docs-parity, publish-readiness]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-452, task-454]
 blocked_by: [task-452]
-blocks: []
-refs: []
-context_refs: []
+blocks: [task-454, test-205]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-4, prd-5, edd-25, edd-27]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,36 +23,41 @@ epic: epic-126
 ---
 # Overview
 
-Update repo docs and assertions after implementation is proven.
+Update repo docs and readiness assertions after mdkg.dev implementation is proven.
 
 # Acceptance Criteria
 
-- The task is executed only after goal-25 is explicitly activated.
-- The relevant implementation surface has tests and launch-safety evidence.
-- No public publish, deploy, push, tag, DNS change, or production promotion occurs.
+- README, mdkg.dev homepage, `/docs`, `AGENT_START.md`, `CLI_COMMAND_MATRIX.md`, and generated command docs agree on product positioning, install commands, alpha status, first-run path, and deferred capability boundaries.
+- Stale version references are fixed or documented as blockers.
+- `mdkg init --agent` first-run guidance is reflected in public quickstart: init, index, status, validate.
+- Public docs explain skill source and mirror behavior: canonical `.mdkg/skills`, mirrors in `.agents/skills` and `.claude/skills`, future configurable destinations as deferred.
+- Publish-readiness assertions include mdkg.dev/docs/examples checks only after the smokes exist.
+- No public publish, deploy, push, tag, DNS change, analytics activation, or production promotion occurs.
 
 # Files Affected
 
-- Goal 2 implementation paths only after activation
+- README and repo docs selected by task-445.
+- `AGENT_START.md` or init assets only if needed for parity.
+- publish-readiness assertions and command docs after implementation is proven.
 
 # Implementation Notes
 
-- Use canonical PRD/EDD/DEC records as source planning.
-- Record evidence before closeout.
+- Do not weaken CLI package readiness to accommodate website work.
+- Keep public copy conservative and source-backed.
+- Ensure package tarball contents remain intentional.
 
 # Test Plan
 
-- Run relevant Goal 2 checks before marking done.
+- `npm run cli:check`
+- `npm run cli:contract`
+- `npm run smoke:command-docs`
+- `npm run smoke:mdkg-dev`
+- `npm run smoke:mdkg-dev-docs`
+- `npm run smoke:mdkg-dev-seo`
+- `node scripts/assert-publish-ready.js`
 
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
 - parent: goal-25
 - epic: epic-126
-- context: prd-4
-- context: prd-5
-- context: edd-24
-- context: edd-25
-- context: edd-26
-- context: edd-27
-- context: dec-30

@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev, contract]
+tags: [mdkg-dev, contract, safety, no-secret]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-449, task-452]
 blocked_by: [task-449]
 blocks: []
-refs: []
-context_refs: []
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-4, prd-5, edd-25]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,25 +23,23 @@ epic: epic-124
 ---
 # Overview
 
-Validate public-alpha content safety and claim boundaries.
+Validate public alpha copy, no-secret posture, and safety boundary language.
 
 # Acceptance Criteria
 
-- Contract is executed only during Goal 2.
-- The named launch-readiness behavior passes.
-- No out-of-scope public launch action occurs.
-
-# Files Affected
-
-- .mdkg graph/design/archive files only for Goal 1, Goal 2 paths after future activation only
-
-# Implementation Notes
-
-- Use mdkg CLI receipts and graph validation.
+- Homepage, quickstart, trust, alpha, docs, and `llms.txt` avoid raw secrets, tokens, provider payloads, raw prompts, private graph dumps, and local absolute paths.
+- Trust page states local-first posture, no hosted index, no daemon, no automatic execution, no skill-script execution, read-only MCP, subgraph read-only context, visibility limitations, queue boundaries, and alpha caveats.
+- Claims evidence matrix maps public claims to shipped behavior or safe caveats.
+- Handoff warnings and no-secret checks are described as safety aids, not comprehensive secret scanning.
+- Copy does not imply hosted memory, autonomous runtime, public worker execution, hosted queues, arbitrary SQL, public event/reducer/lease/materializer CLI, or guaranteed agent correctness.
 
 # Test Plan
 
-- Run the commands named in this contract.
+- no-secret scan selected by task-452.
+- `npm run smoke:mdkg-dev`
+- `npm run smoke:mdkg-dev-docs`
+- `npm run smoke:mdkg-dev-seo`
+- `node dist/cli.js validate --json`
 
 # Links / Artifacts
 

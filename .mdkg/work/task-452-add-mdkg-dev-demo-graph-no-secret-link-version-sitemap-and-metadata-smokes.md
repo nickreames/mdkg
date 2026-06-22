@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, smoke, no-secret, launch-gate]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-446, task-447, task-448, task-449, task-450, task-451]
 blocked_by: [task-451]
-blocks: []
-refs: []
-context_refs: []
+blocks: [task-453, test-205]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-5]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,36 +23,43 @@ epic: epic-126
 ---
 # Overview
 
-Add launch-readiness automation for site, docs, and demos.
+Add launch-readiness automation for site, docs, generated references, examples, and graph integrity.
 
 # Acceptance Criteria
 
-- The task is executed only after goal-25 is explicitly activated.
-- The relevant implementation surface has tests and launch-safety evidence.
-- No public publish, deploy, push, tag, DNS change, or production promotion occurs.
+- Executed only after goal-25 is explicitly activated and task-451 has subgraph proof.
+- `smoke:mdkg-dev` proves static site build/render and required route inventory.
+- `smoke:mdkg-dev-docs` proves GitBook source structure, generated reference drift, docs links, and existing docs preservation.
+- `smoke:mdkg-dev-seo` proves metadata, canonical/noindex policy, sitemap, robots, and structured-data sanity.
+- `smoke:demo-graph` proves demo/template graph validation, import/pack/search/show behavior, and no-cross-repo mutation.
+- No-secret scan covers site/docs/examples/generated outputs for obvious token/private-key/raw-prompt/provider-payload markers.
+- Accessibility and performance baseline checks are implemented where practical and documented where manual launch measurement remains required.
+- Link/version checks ensure README, mdkg.dev, docs, npm/package metadata, changelog, and command docs do not contradict each other.
 
 # Files Affected
 
-- Goal 2 implementation paths only after activation
+- npm scripts and smoke scripts allowed by task-445.
+- site/docs/examples test fixtures or generated outputs.
+- publish-readiness assertions after task-453.
 
 # Implementation Notes
 
-- Use canonical PRD/EDD/DEC records as source planning.
-- Record evidence before closeout.
+- Keep checks deterministic and local.
+- Do not add brittle live network checks to prepublish gates.
+- Record launch-smoke proof checkpoint before closing.
 
 # Test Plan
 
-- Run relevant Goal 2 checks before marking done.
+- `npm run smoke:mdkg-dev`
+- `npm run smoke:mdkg-dev-docs`
+- `npm run smoke:mdkg-dev-seo`
+- `npm run smoke:demo-graph`
+- `node dist/cli.js validate --json`
+- `git diff --check`
 
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
 - parent: goal-25
 - epic: epic-126
-- context: prd-4
-- context: prd-5
-- context: edd-24
-- context: edd-25
-- context: edd-26
-- context: edd-27
-- context: dec-30
+- context: mdkg.dev quality gate contract

@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, demo, examples, subgraph]
 owners: []
 links: []
 artifacts: []
-relates: []
-blocked_by: []
-blocks: []
-refs: []
-context_refs: []
+relates: [goal-25, edd-26, dec-30]
+blocked_by: [task-449]
+blocks: [task-450, task-451, test-203, test-204]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [edd-25, edd-26, edd-27, dec-30]
 evidence_refs: []
 aliases: []
 skills: []
@@ -25,25 +25,29 @@ Create demo/template graphs that showcase goal-only agent starts while preservin
 
 # Scope
 
-- Create in-repo demo/template examples.
-- Give examples valid .mdkg graphs.
-- Prove graph import and goal-only starts.
-- Register subgraphs only after validity.
+- `/examples/demo-agentic-coding`
+- `/examples/template-mdkg-dev`
+- Demo deployment policy.
+- Read-only subgraph registration after nested graphs validate.
 
 # Milestones
 
-- Example graphs validate.
-- Template import smoke passes.
-- Root-qualified qid contract passes.
+- `task-450`: examples and demo policy.
+- `task-451`: subgraph registration and root-qualified qid proof.
+- `test-203`: demo/template goal-only agent-start contract.
+- `test-204`: subgraph registration contract.
 
 # Out of Scope
 
-- No Vercel production promotion.
-- No canonical site swapping.
+- No production deploy.
+- No Vercel preview unless separately requested.
+- No durable demo subdomain promotion.
 
 # Risks
 
-- Demo graph IDs can collide without import policy proof.
+- Demo graphs can become stale without smoke coverage.
+- Demo URLs can compete with canonical SEO if not noindexed before promotion.
+- Root graph could accidentally treat child graph nodes as mutable local work.
 
 # Links / Artifacts
 

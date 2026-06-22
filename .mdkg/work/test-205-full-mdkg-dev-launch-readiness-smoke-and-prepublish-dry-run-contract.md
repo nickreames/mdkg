@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev, contract]
+tags: [mdkg-dev, contract, launch-readiness, prepublish]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [goal-25, task-452, task-453, task-454]
 blocked_by: [task-454]
 blocks: []
-refs: []
-context_refs: []
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-5]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,25 +23,32 @@ epic: epic-126
 ---
 # Overview
 
-Validate final pre-release readiness for Goal 2.
+Validate full mdkg.dev pre-release readiness before goal-25 can close.
 
 # Acceptance Criteria
 
-- Contract is executed only during Goal 2.
-- The named launch-readiness behavior passes.
-- No out-of-scope public launch action occurs.
-
-# Files Affected
-
-- .mdkg graph/design/archive files only for Goal 1, Goal 2 paths after future activation only
-
-# Implementation Notes
-
-- Use mdkg CLI receipts and graph validation.
+- Required checkpoints exist for boundary/tooling, site/design, docs/generated reference, public copy/claims/trust, demo/subgraph, launch smoke, and final closeout.
+- Build, test, CLI checks, command contract checks, mdkg validation, command-docs smoke, mdkg-dev smokes, demo-graph smoke, prepublish gate, publish readiness assertions, pack dry-run, publish dry-run, and `git diff --check` pass.
+- Final closeout says no real publish, deploy, DNS change, tag, push, analytics activation, GitBook production config, or Vercel production promotion happened unless separately requested.
+- Remaining launch blockers and manual steps are explicitly listed.
 
 # Test Plan
 
-- Run the commands named in this contract.
+- `npm run build`
+- `npm run test`
+- `npm run cli:check`
+- `npm run cli:contract`
+- `node dist/cli.js validate --json`
+- `npm run smoke:command-docs`
+- `npm run smoke:mdkg-dev`
+- `npm run smoke:mdkg-dev-docs`
+- `npm run smoke:mdkg-dev-seo`
+- `npm run smoke:demo-graph`
+- `npm run prepublishOnly`
+- `node scripts/assert-publish-ready.js`
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run`
+- `git diff --check`
 
 # Links / Artifacts
 

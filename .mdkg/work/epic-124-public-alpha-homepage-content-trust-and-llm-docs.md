@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, public-alpha, trust, llms]
 owners: []
 links: []
 artifacts: []
-relates: []
-blocked_by: []
-blocks: []
-refs: []
-context_refs: []
+relates: [goal-25, prd-4, prd-5, edd-25, edd-27]
+blocked_by: [task-448]
+blocks: [task-449, test-202]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-4, prd-5, edd-25, edd-27]
 evidence_refs: []
 aliases: []
 skills: []
@@ -21,29 +21,31 @@ priority: 1
 ---
 # Goal
 
-Author public-alpha content that is credible, source-backed, safety-conscious, and LLM-readable.
+Author the public alpha website and LLM-facing content from shipped behavior and source-backed claims.
 
 # Scope
 
-- Homepage and quickstart copy.
-- Safety boundaries and origin story.
-- LLM entrypoint content from canonical nodes.
-- No-secret and claim-boundary checks.
+- Homepage, quickstart, trust, alpha, docs link page, `llms.txt`, robots, sitemap, and metadata.
+- Claims evidence matrix.
+- Safety language and deferred capability boundaries.
+- README/site/docs copy parity.
 
 # Milestones
 
-- Public-alpha copy is source-backed.
-- Safety/deferred-capability boundaries are explicit.
-- No-secret check passes.
+- `task-449`: public copy, trust, alpha, and claims evidence checkpoint.
+- `test-202`: no-secret and safety-boundary contract passes.
 
 # Out of Scope
 
-- No unsupported marketing claims.
-- No private graph dump as public content.
+- No full founder/personal-brand section beyond placeholder.
+- No claims that mdkg is an autonomous runtime, hosted memory service, or comprehensive secret scanner.
+- No SEO claim that cannot be tied to shipped behavior or explicit alpha caveat.
 
 # Risks
 
-- Over-claiming capabilities would damage trust; launch gates must block it.
+- Homepage copy can over-focus on advanced surfaces.
+- SEO language can attract users with the wrong expectation.
+- LLM docs can preserve outdated command or safety details.
 
 # Links / Artifacts
 

@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev, contract]
+tags: [mdkg-dev, contract, demo-graph]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-450, edd-26]
 blocked_by: [task-450]
 blocks: []
-refs: []
-context_refs: []
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [edd-25, edd-26]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,25 +23,21 @@ epic: epic-125
 ---
 # Overview
 
-Validate demo/template graph behavior.
+Validate demo/template graph behavior and the goal-only agent-start story.
 
 # Acceptance Criteria
 
-- Contract is executed only during Goal 2.
-- The named launch-readiness behavior passes.
-- No out-of-scope public launch action occurs.
-
-# Files Affected
-
-- .mdkg graph/design/archive files only for Goal 1, Goal 2 paths after future activation only
-
-# Implementation Notes
-
-- Use mdkg CLI receipts and graph validation.
+- `/examples/demo-agentic-coding` and `/examples/template-mdkg-dev` contain valid mdkg graphs.
+- Each demo/template graph has a clear umbrella goal, spike, task, test, checkpoint, decision/design node, and optional skill candidate.
+- `mdkg goal current`, `mdkg goal next`, `mdkg pack <id>`, `mdkg handoff create <id>`, and `mdkg validate` are demonstrable in the example context.
+- Template import/fork behavior is exercised with preserved IDs for separate repos or rewrite behavior for same-repo import where appropriate.
+- Demo policy keeps preview URLs noindexed and prevents unpromoted demos from becoming canonical SEO targets.
 
 # Test Plan
 
-- Run the commands named in this contract.
+- `npm run smoke:demo-graph`
+- Example graph `mdkg validate --json`
+- Pack/search/show proof for the demo start goal.
 
 # Links / Artifacts
 

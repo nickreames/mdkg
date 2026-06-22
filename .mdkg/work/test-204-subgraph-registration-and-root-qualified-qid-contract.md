@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev, contract]
+tags: [mdkg-dev, contract, subgraph]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-451, test-203]
 blocked_by: [task-451]
 blocks: []
-refs: []
-context_refs: []
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [edd-24, edd-26, dec-30]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,25 +23,21 @@ epic: epic-125
 ---
 # Overview
 
-Validate mdkg-dev/demo subgraph behavior.
+Validate mdkg-dev/demo subgraph registration from the root graph.
 
 # Acceptance Criteria
 
-- Contract is executed only during Goal 2.
-- The named launch-readiness behavior passes.
-- No out-of-scope public launch action occurs.
-
-# Files Affected
-
-- .mdkg graph/design/archive files only for Goal 1, Goal 2 paths after future activation only
-
-# Implementation Notes
-
-- Use mdkg CLI receipts and graph validation.
+- Nested mdkg-dev/demo graphs validate before subgraph registration.
+- Root subgraph references use root-qualified qids where needed and do not rely on overlapping unqualified IDs.
+- Subgraph sync or bundle refresh runs only from clean accepted nested graph states.
+- Materialized subgraph trees, if used, are read-only/ignored inspection output.
+- Root planning can search/show/pack read-only subgraph context without mutating child graphs.
 
 # Test Plan
 
-- Run the commands named in this contract.
+- `mdkg subgraph list/verify` or current equivalent.
+- `npm run smoke:demo-graph`
+- `node dist/cli.js validate --json`
 
 # Links / Artifacts
 

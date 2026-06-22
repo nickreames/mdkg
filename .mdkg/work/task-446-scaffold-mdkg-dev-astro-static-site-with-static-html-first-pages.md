@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, astro, design-system, static-site]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-445, task-449]
 blocked_by: [task-445]
-blocks: []
-refs: []
-context_refs: []
+blocks: [task-449, test-200]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-4, prd-5, edd-24, edd-25, edd-27, dec-30]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,36 +23,43 @@ epic: epic-122
 ---
 # Overview
 
-Create the static site foundation after boundary design is accepted.
+Create the mdkg.dev static site foundation after boundary design is accepted.
 
 # Acceptance Criteria
 
-- The task is executed only after goal-25 is explicitly activated.
-- The relevant implementation surface has tests and launch-safety evidence.
-- No public publish, deploy, push, tag, DNS change, or production promotion occurs.
+- Executed only after goal-25 is explicitly activated and task-445 is done.
+- `/mdkg-dev` is an Astro static-site subproject with TypeScript and static output.
+- React islands are used only for useful interaction; core public content renders as static HTML.
+- `mdkg-dev/DESIGN.md` documents visual direction, colors, typography, spacing, components, diagrams, accessibility, and performance constraints.
+- Design tokens are implemented in site CSS and match the visual design system contract.
+- Required routes exist at minimum: `/`, `/quickstart`, `/trust`, `/alpha`, `/docs`, `/llms.txt`, `/robots.txt`, and `/sitemap.xml`.
+- Core components exist: Button, Card, CodeBlock, TerminalBlock, FeatureCard, SectionHeader, CTAGroup, Badge, NavBar, Footer, DiagramCard, and claim/evidence display.
+- No public publish, deploy, push, tag, DNS change, analytics activation, or production promotion occurs.
 
 # Files Affected
 
-- Goal 2 implementation paths only after activation
+- `/mdkg-dev`
+- package/script wiring decided by task-445
 
 # Implementation Notes
 
-- Use canonical PRD/EDD/DEC records as source planning.
-- Record evidence before closeout.
+- Prefer static generation and crawlable HTML.
+- Use white/zinc surfaces with restrained blue, sky, and teal accents.
+- Use Ocean Flow gradient sparingly.
+- Avoid AI glow, cartoon mascots, and hype visuals.
+- Record a site/design scaffold checkpoint before closing.
 
 # Test Plan
 
-- Run relevant Goal 2 checks before marking done.
+- Site build command selected in task-445.
+- Static render smoke or equivalent route inventory.
+- Mobile/code-block spot check if a local browser smoke is available.
+- `node dist/cli.js validate --json`
 
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
 - parent: goal-25
 - epic: epic-122
-- context: prd-4
-- context: prd-5
-- context: edd-24
-- context: edd-25
-- context: edd-26
-- context: edd-27
-- context: dec-30
+- context: mdkg.dev visual design system contract
+- context: mdkg.dev quality gate contract
