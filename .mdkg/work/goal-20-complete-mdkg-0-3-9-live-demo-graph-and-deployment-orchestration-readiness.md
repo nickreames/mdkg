@@ -1,18 +1,18 @@
 ---
 id: goal-20
 type: goal
-title: Complete mdkg 0.3.7 live demo graph and deployment orchestration readiness
+title: Complete mdkg 0.3.9 live demo graph and deployment orchestration readiness
 status: todo
 priority: 2
 goal_state: paused
-goal_condition: 0.3.7 is dry-run publish ready after live demo template graphs can drive preview deployments, durable demo subdomains, teardown, and promotion without destabilizing canonical mdkg.dev SEO.
+goal_condition: 0.3.9 is dry-run publish ready after live demo template graphs can drive preview deployments, durable demo subdomains, teardown, and promotion without destabilizing canonical mdkg.dev SEO.
 scope_refs: [epic-98, epic-99, epic-100, spike-9, task-398, task-399, task-400, task-401, task-402, task-403, test-171, test-172, test-173]
 active_node: spike-9
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:demo-graph, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30
 blocked_after_attempts: 3
-tags: [release, 0.3.7, demo, vercel, mdkg-dev]
+tags: [release, 0.3.9, demo, vercel, mdkg-dev]
 owners: []
 links: []
 artifacts: []
@@ -31,7 +31,7 @@ Prepare mdkg for live agent-coding demos where a cloned template graph can drive
 
 # End Condition
 
-0.3.7 is dry-run publish ready after live demo template graphs can drive preview deployments, durable demo subdomains, teardown, and promotion without destabilizing canonical mdkg.dev SEO.
+0.3.9 is dry-run publish ready after live demo template graphs can drive preview deployments, durable demo subdomains, teardown, and promotion without destabilizing canonical mdkg.dev SEO.
 
 # Non-Goals
 
@@ -71,11 +71,11 @@ Prepare mdkg for live agent-coding demos where a cloned template graph can drive
 
 # Checkpoint Requirement
 
-`task-403` must close with a checkpoint named `0.3.7 live demo orchestration readiness`.
+`task-403` must close with a checkpoint named `0.3.9 live demo orchestration readiness`.
 
 # Current State
 
-Paused until graph clone and template import can safely create the website-template-mdkg demo graph.
+Paused until 0.3.8 warning-scale diagnostics and multi-repo UX hardening is complete.
 
 # Release Boundary
 
@@ -84,6 +84,7 @@ No real npm publish, git tag, git push, website deploy, or child-repo mutation i
 # Iteration Log
 
 - 2026-06-16: Created during versioned future-goal alignment pass.
+- 2026-06-21: Retargeted from 0.3.7 to 0.3.9 because 0.3.7 shipped and 0.3.8 is now the warning-scale diagnostics hardening lane.
 
 # Completion Evidence
 
