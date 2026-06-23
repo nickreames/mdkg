@@ -1,0 +1,690 @@
+{
+  "meta": {
+    "tool": "mdkg",
+    "schema_version": 1,
+    "generated_at": "2026-06-23T02:03:25.614Z",
+    "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/template-mdkg-dev",
+    "workspaces": [
+      "root"
+    ],
+    "latest_checkpoint_qid": {
+      "root": "root:chk-1"
+    }
+  },
+  "workspaces": {
+    "root": {
+      "path": ".",
+      "enabled": true
+    }
+  },
+  "nodes": {
+    "root:chk-1": {
+      "id": "chk-1",
+      "qid": "root:chk-1",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Template graph seed accepted",
+      "status": "backlog",
+      "priority": 9,
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [
+        "template",
+        "checkpoint",
+        "seed"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-1-template-graph-seed-accepted.md",
+      "edges": {
+        "relates": [
+          "root:goal-1"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:epic-1",
+          "root:spike-1",
+          "root:task-1",
+          "root:test-1",
+          "root:edd-3",
+          "root:dec-1"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:dec-1": {
+      "id": "dec-1",
+      "qid": "root:dec-1",
+      "ws": "root",
+      "type": "dec",
+      "title": "Keep template cloneable and no production deploy by default",
+      "status": "accepted",
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [
+        "template",
+        "deploy-boundary",
+        "mdkg-dev"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/dec-1-keep-template-cloneable-and-no-production-deploy-by-default.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:edd-3": {
+      "id": "edd-3",
+      "qid": "root:edd-3",
+      "ws": "root",
+      "type": "edd",
+      "title": "Template website information architecture",
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [
+        "template",
+        "information-architecture",
+        "mdkg-dev"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/edd-3-template-website-information-architecture.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:epic-1": {
+      "id": "epic-1",
+      "qid": "root:epic-1",
+      "ws": "root",
+      "type": "epic",
+      "title": "Template website generation graph",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [
+        "template",
+        "mdkg-dev",
+        "examples"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/epic-1-template-website-generation-graph.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:edd-3",
+          "root:dec-1"
+        ],
+        "evidence_refs": [
+          "root:chk-1"
+        ]
+      }
+    },
+    "root:goal-1": {
+      "id": "goal-1",
+      "qid": "root:goal-1",
+      "ws": "root",
+      "type": "goal",
+      "title": "Generate a candidate mdkg.dev website from a cloned graph",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {
+        "goal_state": "active",
+        "goal_condition": "A local candidate website can be generated from the cloned graph, validated, and closed with evidence while production deploy, analytics, DNS, and promotion remain explicit later choices.",
+        "scope_refs": [
+          "epic-1",
+          "spike-1",
+          "task-1",
+          "test-1"
+        ],
+        "active_node": "spike-1",
+        "required_skills": [
+          "select-work-and-ground-context",
+          "verify-close-and-checkpoint"
+        ],
+        "required_checks": [
+          "mdkg validate --json",
+          "mdkg index",
+          "mdkg search \"candidate website\" --json",
+          "mdkg pack goal-1 --profile concise"
+        ],
+        "max_iterations": "25",
+        "blocked_after_attempts": "3"
+      },
+      "path": ".mdkg/work/goal-1-generate-a-candidate-mdkg-dev-website-from-a-cloned-graph.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:edd-3",
+          "root:dec-1"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-1": {
+      "id": "rule-1",
+      "qid": "root:rule-1",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg conventions (naming, ids, frontmatter, status, priority, templates)",
+      "created": "2026-01-06",
+      "updated": "2026-03-05",
+      "tags": [
+        "conventions",
+        "mdkg",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-1-mdkg-conventions.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-2": {
+      "id": "rule-2",
+      "qid": "root:rule-2",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg context pack rules (selection, ordering, verbose, checkpoints)",
+      "created": "2026-01-06",
+      "updated": "2026-01-14",
+      "tags": [
+        "agents",
+        "mdkg",
+        "pack",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-2-context-pack-rules.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-3": {
+      "id": "rule-3",
+      "qid": "root:rule-3",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg cli contract (root-only, commands, flags, exit codes)",
+      "created": "2026-01-06",
+      "updated": "2026-05-17",
+      "tags": [
+        "cli",
+        "contract",
+        "mdkg",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-3-cli-contract.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-4": {
+      "id": "rule-4",
+      "qid": "root:rule-4",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg repo safety (ignore rules, publish safety, deployment safety)",
+      "created": "2026-01-06",
+      "updated": "2026-06-03",
+      "tags": [
+        "mdkg",
+        "publishing",
+        "safety"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-5": {
+      "id": "rule-5",
+      "qid": "root:rule-5",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg release and versioning (semver, publish checklist)",
+      "created": "2026-01-06",
+      "updated": "2026-01-14",
+      "tags": [
+        "mdkg",
+        "npm",
+        "release",
+        "semver"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-5-release-and-versioning.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-6": {
+      "id": "rule-6",
+      "qid": "root:rule-6",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg templates and schemas (global templates, required frontmatter, body guidance)",
+      "created": "2026-01-06",
+      "updated": "2026-03-05",
+      "tags": [
+        "mdkg",
+        "schema",
+        "templates"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-6-templates-and-schemas.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-guide": {
+      "id": "rule-guide",
+      "qid": "root:rule-guide",
+      "ws": "root",
+      "type": "rule",
+      "title": "agent guide (how to work in this repo using mdkg)",
+      "created": "2026-01-06",
+      "updated": "2026-05-14",
+      "tags": [
+        "agents",
+        "mdkg",
+        "workflow"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/guide.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-human": {
+      "id": "rule-human",
+      "qid": "root:rule-human",
+      "ws": "root",
+      "type": "rule",
+      "title": "human working profile and collaboration preferences",
+      "created": "2026-03-10",
+      "updated": "2026-03-10",
+      "tags": [
+        "human",
+        "collaboration",
+        "preferences"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [
+        "human"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/HUMAN.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-soul": {
+      "id": "rule-soul",
+      "qid": "root:rule-soul",
+      "ws": "root",
+      "type": "rule",
+      "title": "agent soul and execution contract",
+      "created": "2026-03-10",
+      "updated": "2026-03-10",
+      "tags": [
+        "agent",
+        "llm",
+        "memory",
+        "constraints",
+        "context-window"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "edd-3",
+        "edd-6",
+        "rule-3",
+        "rule-4",
+        "rule-5"
+      ],
+      "aliases": [
+        "soul",
+        "system-contract"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/SOUL.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:spike-1": {
+      "id": "spike-1",
+      "qid": "root:spike-1",
+      "ws": "root",
+      "type": "spike",
+      "title": "Research website template audience and visual direction",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [
+        "template",
+        "research",
+        "mdkg-dev"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/spike-1-research-website-template-audience-and-visual-direction.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:edd-3",
+          "root:dec-1"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:task-1": {
+      "id": "task-1",
+      "qid": "root:task-1",
+      "ws": "root",
+      "type": "task",
+      "title": "Build candidate website from cloned mdkg graph",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [
+        "template",
+        "website",
+        "implementation"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/task-1-build-candidate-website-from-cloned-mdkg-graph.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "relates": [],
+        "blocked_by": [
+          "root:spike-1"
+        ],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:spike-1",
+          "root:edd-3",
+          "root:dec-1"
+        ],
+        "evidence_refs": [
+          "root:chk-1"
+        ]
+      }
+    },
+    "root:test-1": {
+      "id": "test-1",
+      "qid": "root:test-1",
+      "ws": "root",
+      "type": "test",
+      "title": "Template graph clone and preview contract",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-22",
+      "updated": "2026-06-22",
+      "tags": [
+        "template",
+        "validation",
+        "preview-boundary"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/test-1-template-graph-clone-and-preview-contract.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "relates": [],
+        "blocked_by": [
+          "root:task-1"
+        ],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:spike-1",
+          "root:task-1",
+          "root:edd-3",
+          "root:dec-1"
+        ],
+        "evidence_refs": [
+          "root:chk-1"
+        ]
+      }
+    }
+  },
+  "reverse_edges": {
+    "relates": {
+      "root:goal-1": [
+        "root:chk-1"
+      ]
+    },
+    "context_refs": {
+      "root:goal-1": [
+        "root:chk-1",
+        "root:epic-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ],
+      "root:epic-1": [
+        "root:chk-1"
+      ],
+      "root:spike-1": [
+        "root:chk-1",
+        "root:task-1",
+        "root:test-1"
+      ],
+      "root:task-1": [
+        "root:chk-1",
+        "root:test-1"
+      ],
+      "root:test-1": [
+        "root:chk-1"
+      ],
+      "root:edd-3": [
+        "root:chk-1",
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ],
+      "root:dec-1": [
+        "root:chk-1",
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ]
+    },
+    "evidence_refs": {
+      "root:chk-1": [
+        "root:epic-1",
+        "root:task-1",
+        "root:test-1"
+      ]
+    },
+    "epic": {
+      "root:epic-1": [
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ]
+    },
+    "parent": {
+      "root:goal-1": [
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ]
+    },
+    "blocked_by": {
+      "root:spike-1": [
+        "root:task-1"
+      ],
+      "root:task-1": [
+        "root:test-1"
+      ]
+    }
+  }
+}

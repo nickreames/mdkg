@@ -1,0 +1,208 @@
+---
+id: rule-6
+type: rule
+title: mdkg templates and schemas (global templates, required frontmatter, body guidance)
+tags: [mdkg, schema, templates]
+owners: []
+links: []
+artifacts: []
+relates: []
+refs: []
+aliases: []
+created: 2026-01-06
+updated: 2026-03-05
+---
+
+# Templates and schemas
+
+This rule defines:
+- global template sets
+- required frontmatter fields per node type
+- recommended body headings for agent-friendly editing
+- the token substitution contract used by `mdkg new`
+
+## Global templates (v1)
+
+Templates are global and live at:
+
+- `.mdkg/templates/<set>/<type>.md`
+
+Workspace overrides are disabled in v1.
+
+### Template sets
+
+Recommended sets:
+- `default` (balanced)
+- `minimal` (lean body headings)
+- `verbose` (more guidance, more sections)
+
+All sets should provide the same set of types.
+
+## Token substitution
+
+Templates are filled using simple token replacement.
+
+Required tokens supported by v1:
+- `{{id}}`
+- `{{type}}`
+- `{{title}}`
+- `{{created}}`
+- `{{updated}}`
+- `{{status}}` (work items only)
+- `{{priority}}` (work items only)
+
+Optional tokens (nice-to-have, may be empty):
+- `{{epic}}`
+- `{{parent}}`
+- `{{prev}}`
+- `{{next}}`
+- `{{relates}}` (list)
+- `{{blocked_by}}` (list)
+- `{{blocks}}` (list)
+- `{{tags}}` (list)
+- `{{owners}}` (list)
+- `{{links}}` (list)
+- `{{artifacts}}` (list)
+- `{{refs}}` (list)
+- `{{aliases}}` (list)
+- `{{skills}}` (list; work items)
+- `{{cases}}` (list)
+
+## Frontmatter requirements by type
+
+All nodes:
+- `id`
+- `type`
+- `title`
+- `created` (YYYY-MM-DD)
+- `updated` (YYYY-MM-DD)
+
+Searchable metadata (optional)
+
+All nodes MAY include the following searchable frontmatter lists:
+- `tags: [a, b, c]`
+- `owners: [a, b, c]`
+- `links: [ref, ref]` (any searchable reference string; may include URLs)
+- `artifacts: [ref, ref]` (build outputs, releases, commits, PRs, tarballs, etc.)
+- `refs: [id, id]` (non-edge references to other nodes)
+- `aliases: [text, text]` (extra searchable terms)
+- `cases: [id, id]` (test case identifiers; for test nodes)
+
+List fields SHOULD be written as `[]` when empty.
+Optional scalar graph fields (like `epic`, `parent`, `prev`, `next`) should be omitted when empty.
+
+Work items (`goal/epic/feat/task/bug/checkpoint/test`):
+  - `status` (enum)
+  - optional `priority` (0..9)
+  - optional `skills: [slug, ...]` (kebab-case skill slugs)
+  - optional graph edges: `epic`, `parent`, `relates`, `blocked_by`, `blocks`, `prev`, `next`
+
+Goal nodes (`goal-*`):
+- required `goal_state`: `active`, `paused`, `achieved`, `blocked`, or `budget_limited`
+- required `goal_condition` up to 4000 characters for external slash-command compatibility
+- optional `scope_refs: [id-or-qid, ...]` naming explicit goal ownership roots; allowed targets are `epic`, `feat`, `task`, `bug`, and `test`
+- optional `active_node`
+- optional `required_skills: [slug, ...]`
+- optional `required_checks: [command, ...]` as report-only guidance; mdkg does not execute these scripts
+- optional positive integer strings `max_iterations` and `blocked_after_attempts`
+
+Decision records (`dec-*`):
+- `status` (enum: `proposed`, `accepted`, `rejected`, `superseded`)
+- optional `supersedes: dec-#`
+
+Design docs (`prd/edd/prop`):
+- no required status field
+- recommended `tags`
+
+Rules (`rule-*`):
+- no required status field
+
+Archives (`archive`):
+- required id starts with `archive.`
+- required fields: `archive_kind`, `source_path`, `stored_path`, `compressed_path`, `mime_type`, `byte_size`, `sha256`, `compressed_sha256`, `visibility`, `provenance`, `ingest_status`
+- `source_path` is repo-relative for in-repo sources or `external:<basename>` for outside-repo sources
+- `stored_path` and `compressed_path` are relative to the sidecar directory
+- `mdkg validate` and `mdkg archive verify` both check deterministic ZIP cache integrity and tolerate a missing raw source copy when the ZIP cache is valid
+
+## Body headings (guidance only)
+
+Body headings are strongly recommended for agent usability but should not be hard requirements.
+
+### Task / bug template headings (recommended)
+
+- Overview
+- Acceptance Criteria
+- Files Affected
+- Implementation Notes
+- Test Plan
+- Links / Artifacts
+
+### Test template headings (recommended)
+
+- Overview
+- Target / Scope
+- Preconditions / Environment
+- Test Cases
+- Results / Evidence
+- Notes / Follow-ups
+
+### Epic template headings (recommended)
+
+- Goal
+- Scope
+- Milestones
+- Out of Scope
+- Risks
+- Links / Artifacts
+
+### Checkpoint template headings (recommended)
+
+- Summary
+- Scope Covered
+- Decisions Captured
+- Implementation Summary
+- Verification / Testing
+- Known Issues / Follow-ups
+- Links / Artifacts
+
+### PRD headings (recommended)
+
+- Problem
+- Goals
+- Non-goals
+- Requirements
+- Acceptance Criteria
+- Metrics / Success
+- Risks
+- Open Questions
+
+### EDD headings (recommended)
+
+- Overview
+- Architecture
+- Data model
+- APIs / interfaces
+- Failure modes
+- Observability
+- Security / privacy
+- Testing strategy
+- Rollout plan
+
+### Decision record headings (recommended)
+
+- Context
+- Decision
+- Alternatives considered
+- Consequences
+- Links / references
+
+## Validation behavior
+
+- Frontmatter: strict, hard fail if invalid.
+- Body headings: warn only (do not break indexing).
+- Node -> skill references in `skills: [...]` are validated against `.mdkg/skills/<slug>/SKILL.md`.
+- `.mdkg/work/events/events.jsonl` is optional; when present, records are schema-validated by `mdkg validate`.
+- If a template is missing:
+  - built-in mdkg node types may use the installed package's bundled default template as a read-only schema fallback.
+  - commands should warn when bundled fallback is used and recommend `mdkg upgrade --apply` to vendor missing templates.
+  - missing non-built-in templates or missing packaged fallback assets must fail with a helpful error.
