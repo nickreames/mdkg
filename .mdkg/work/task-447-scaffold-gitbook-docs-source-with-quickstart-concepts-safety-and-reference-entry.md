@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, docs, gitbook]
 owners: []
 links: []
 artifacts: []
-relates: []
-blocked_by: [task-446]
-blocks: []
-refs: []
-context_refs: []
+relates: [task-445, task-448]
+blocked_by: [task-445]
+blocks: [task-448, test-201]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-4, prd-5, edd-24, edd-25, edd-27, dec-30]
 evidence_refs: []
 aliases: []
 skills: []
@@ -27,32 +27,35 @@ Create documentation source suitable for GitBook rendering while retaining repo 
 
 # Acceptance Criteria
 
-- The task is executed only after goal-25 is explicitly activated.
-- The relevant implementation surface has tests and launch-safety evidence.
-- No public publish, deploy, push, tag, DNS change, or production promotion occurs.
+- Executed only after goal-25 is explicitly activated and task-445 is done.
+- `/docs` remains the canonical source for public documentation.
+- Existing `/docs` files are preserved, linked, migrated, or explicitly archived; they are not silently overwritten.
+- A repo-first GitBook policy is documented from the GitBook ownership decision.
+- Initial docs navigation covers quickstart, concepts, safety, alpha, guides, reference, and advanced-alpha pages.
+- Docs explicitly distinguish Markdown source of truth, rebuildable index, optional project DB, and local queue state.
+- Docs do not claim GitBook is live at `docs.mdkg.dev` unless DNS/custom domain has actually been configured later.
 
 # Files Affected
 
-- Goal 2 implementation paths only after activation
+- `/docs`
+- generated reference entrypoints selected by task-448
 
 # Implementation Notes
 
-- Use canonical PRD/EDD/DEC records as source planning.
-- Record evidence before closeout.
+- Keep stubs acceptable when clearly marked.
+- Do not manually duplicate the full command reference if generated command docs are available.
+- Record docs inventory and GitBook policy evidence.
 
 # Test Plan
 
-- Run relevant Goal 2 checks before marking done.
+- Docs source lint/link check if available.
+- Generated reference entrypoint check after task-448.
+- `node dist/cli.js validate --json`
 
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
 - parent: goal-25
 - epic: epic-123
-- context: prd-4
-- context: prd-5
-- context: edd-24
-- context: edd-25
-- context: edd-26
+- context: GitBook repo-first ownership policy
 - context: edd-27
-- context: dec-30

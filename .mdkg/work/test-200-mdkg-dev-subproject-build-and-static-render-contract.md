@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev, contract]
+tags: [mdkg-dev, contract, static-render]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-446]
 blocked_by: [task-446]
 blocks: []
-refs: []
-context_refs: []
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [edd-24]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,25 +23,22 @@ epic: epic-122
 ---
 # Overview
 
-Validate the mdkg-dev site foundation.
+Validate the mdkg-dev static site foundation.
 
 # Acceptance Criteria
 
-- Contract is executed only during Goal 2.
-- The named launch-readiness behavior passes.
-- No out-of-scope public launch action occurs.
-
-# Files Affected
-
-- .mdkg graph/design/archive files only for Goal 1, Goal 2 paths after future activation only
-
-# Implementation Notes
-
-- Use mdkg CLI receipts and graph validation.
+- Astro site build succeeds from the selected workspace command.
+- Required routes render as static output: `/`, `/quickstart`, `/trust`, `/alpha`, `/docs`, `/llms.txt`, `/robots.txt`, and `/sitemap.xml`.
+- Core HTML content is crawlable without client-only rendering.
+- React islands, if any, are limited to useful interactions.
+- Design tokens and core components from the visual design system contract are present.
+- Mobile/code-block layout does not overflow in the smoke or documented manual proof.
 
 # Test Plan
 
-- Run the commands named in this contract.
+- `npm run smoke:mdkg-dev`
+- Site build command selected by task-445.
+- `node dist/cli.js validate --json`
 
 # Links / Artifacts
 

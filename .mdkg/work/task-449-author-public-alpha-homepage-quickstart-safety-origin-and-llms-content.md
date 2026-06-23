@@ -1,13 +1,13 @@
 ---
-tags: [mdkg-dev]
+tags: [mdkg-dev, public-alpha, content, trust, llms]
 owners: []
 links: []
 artifacts: []
-relates: []
+relates: [task-446, task-448]
 blocked_by: [task-448]
-blocks: []
-refs: []
-context_refs: []
+blocks: [task-450, task-452, test-202]
+refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
+context_refs: [prd-4, prd-5, edd-25, edd-27, dec-30]
 evidence_refs: []
 aliases: []
 skills: []
@@ -23,26 +23,38 @@ epic: epic-124
 ---
 # Overview
 
-Write public-alpha content from canonical graph records.
+Author public-alpha content for the website and docs from shipped mdkg capabilities and canonical graph decisions.
 
 # Acceptance Criteria
 
-- The task is executed only after goal-25 is explicitly activated.
-- The relevant implementation surface has tests and launch-safety evidence.
-- No public publish, deploy, push, tag, DNS change, or production promotion occurs.
+- Executed only after goal-25 is explicitly activated and the site/docs scaffolds exist.
+- Homepage first viewport communicates product value and shows a CLI command.
+- Quickstart uses a verified first-run path: `mdkg init --agent`, `mdkg index`, `mdkg status`, and `mdkg validate`.
+- Trust page covers local-first posture, no hosted index, no daemon, no automatic work execution, no skill-script execution, read-only MCP, subgraph read-only context, visibility limitations, queue boundaries, and alpha caveats.
+- Alpha page states developer preview/pre-v1 public alpha boundaries.
+- `llms.txt`, robots, sitemap, and social metadata are present or explicitly stubbed with follow-up blockers.
+- Claims evidence matrix maps every public homepage claim to evidence or softened wording.
+- Nicholas Reames creator/origin content is a placeholder only unless a later request provides assets/copy.
+- No public publish, deploy, push, tag, DNS change, analytics activation, or production promotion occurs.
 
 # Files Affected
 
-- Goal 2 implementation paths only after activation
+- `/mdkg-dev` public routes
+- `/docs` public-alpha source
+- claims evidence matrix path selected by task-445
 
 # Implementation Notes
 
-- Use canonical PRD/EDD/DEC records as source planning.
-- Record evidence before closeout.
+- Preferred headline: "Git-native project memory for AI-native software engineering."
+- Avoid claims that mdkg is autonomous execution, secret-safe, fully secure, a hosted runtime, or guaranteed agent correctness.
+- Record public copy/claims/trust proof checkpoint before closing.
 
 # Test Plan
 
-- Run relevant Goal 2 checks before marking done.
+- Link check if available.
+- no-secret scan selected by task-452.
+- metadata/sitemap smoke selected by task-452.
+- `node dist/cli.js validate --json`
 
 # Links / Artifacts
 
@@ -50,9 +62,5 @@ Write public-alpha content from canonical graph records.
 - parent: goal-25
 - epic: epic-124
 - context: prd-4
-- context: prd-5
-- context: edd-24
-- context: edd-25
-- context: edd-26
-- context: edd-27
-- context: dec-30
+- context: mdkg.dev claims SEO and measurement contract
+- context: mdkg.dev quality gate contract
