@@ -2,7 +2,7 @@
 id: task-472
 type: task
 title: commit goal-27 create goal-28 and lock implementation boundary
-status: todo
+status: done
 priority: 1
 epic: epic-137
 parent: goal-28

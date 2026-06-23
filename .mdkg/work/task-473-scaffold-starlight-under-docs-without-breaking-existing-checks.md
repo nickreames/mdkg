@@ -2,7 +2,7 @@
 id: task-473
 type: task
 title: scaffold Starlight under docs without breaking existing checks
-status: todo
+status: done
 priority: 1
 epic: epic-138
 parent: goal-28
@@ -53,3 +53,21 @@ List files/directories expected to change.
 
 - `epic-138`
 - `test-219`
+
+# Progress Evidence
+
+- Added `docs/package.json`, `docs/astro.config.mjs`, `docs/tsconfig.json`, and `docs/src/content.config.ts`.
+- Added Starlight content routes under `docs/src/content/docs/` for start-here, concepts, guides, advanced alpha, reference, and project sections.
+- Preserved existing top-level `docs/README.md`, `docs/SUMMARY.md`, and generated reference outputs for existing scripts.
+- Updated `scripts/smoke-mdkg-dev-docs.js` and `scripts/assert-publish-ready.js` to require Starlight/docs.mdkg.dev evidence.
+- `npm run docs:check`: passed after rerunning sequentially.
+- `node scripts/smoke-mdkg-dev-docs.js`: passed with 40 required files.
+- `node dist/cli.js validate --summary --json --limit 20`: passed with 0 warnings and 0 errors.
+- `git diff --check`: passed.
+- `npm install --prefix docs`: passed after updating to `@astrojs/starlight@^0.40.0` and `astro@^6.4.6`, which satisfies Starlight peer constraints and removes the high-severity Astro 5 audit path.
+- `npm audit --prefix docs --json`: reported 4 low-severity advisories, 0 moderate/high/critical findings.
+- `npm --prefix docs run build`: passed, producing 19 static pages plus Pagefind search and sitemap output under `docs/dist/`.
+
+# Remaining
+
+- Close `test-219` after the docs inventory/nav task verifies generated-reference and navigation coverage together.

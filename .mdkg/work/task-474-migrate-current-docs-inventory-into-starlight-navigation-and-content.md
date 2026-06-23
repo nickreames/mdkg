@@ -2,7 +2,7 @@
 id: task-474
 type: task
 title: migrate current docs inventory into Starlight navigation and content
-status: todo
+status: done
 priority: 1
 epic: epic-138
 parent: goal-28
@@ -53,3 +53,12 @@ List files/directories expected to change.
 
 - `docs/SUMMARY.md`
 - `docs/_generated/cli-reference.md`
+
+# Completion Evidence
+
+- Starlight content under `docs/src/content/docs/` covers start-here, concepts, guides, advanced alpha, reference, and project sections.
+- `docs/astro.config.mjs` sidebar mirrors the intent of `docs/SUMMARY.md`.
+- `reference/generated-cli-reference.md` links the generated reference flow without manually duplicating the full command contract.
+- Safety and public-alpha boundary content remains present in Starlight docs.
+- `npm --prefix docs run build`: passed, building 19 static pages and Pagefind search.
+- `node scripts/smoke-mdkg-dev-docs.js`: passed with 40 required files.
