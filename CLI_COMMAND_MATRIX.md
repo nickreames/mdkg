@@ -20,7 +20,7 @@ Verification commands:
 
 mdkg.dev launch-readiness surfaces in this repo:
 - `mdkg-dev/` is the Astro static-site subproject.
-- `docs/` is the repo-first GitBook documentation source plus generated command-reference output.
+- `docs/` is the Starlight docs subproject and repo-first documentation source plus generated command-reference output.
 - `examples/` contains local mdkg demo/template graphs for agentic-coding and website-generation demos.
 - `demo_agentic_coding:goal-1` and `template_mdkg_dev:goal-1` are private read-only subgraph qids after the root bundles are registered.
 - Site/docs/demo assets are not npm runtime payload and must not imply production deploy, DNS change, analytics activation, or durable demo promotion.
