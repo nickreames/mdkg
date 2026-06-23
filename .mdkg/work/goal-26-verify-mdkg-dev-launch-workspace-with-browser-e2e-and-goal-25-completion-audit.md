@@ -2,9 +2,9 @@
 id: goal-26
 type: goal
 title: Verify mdkg.dev launch workspace with Browser E2E and goal-25 completion audit
-status: progress
+status: blocked
 priority: 1
-goal_state: active
+goal_state: paused
 goal_condition: The goal is complete when goal-25 has been independently re-audited as achieved, mdkg-dev has passed local Browser desktop/mobile E2E with selected screenshot and receipt evidence archived, any local defects found by E2E are fixed or explicitly deferred with evidence, full pre-release gates pass through npm publish dry-run, and no public publish, deploy, tag, push, global install, DNS, Vercel production promotion, GitBook production sync, or public launch occurs.
 scope_refs: [epic-127, epic-128, epic-129, epic-130, task-456, task-457, task-458, task-459, task-460, task-461, task-462, test-207, test-208, test-209, test-210, test-211]
 active_node: task-462
@@ -163,9 +163,12 @@ Each checkpoint must record commands run, pass/fail state, route/docs inventory 
 
 Created as the active verification goal after goal-25 implementation. The tree is expected to be dirty with uncommitted goal-25 implementation and mdkg-dev source changes. `active_node` starts at `task-456`.
 
+Paused on 2026-06-22 when `goal-27` became the active Vercel/Starlight preview-hosting alignment lane. Local Browser E2E and evidence archiving were completed; the remaining gate was the already-published package-version dry-run condition recorded in `chk-200`.
+
 # Iteration Log
 
 - 2026-06-22: Created goal-26 as an independent Browser E2E and goal-25 completion audit lane.
+- 2026-06-22: Paused after local evidence was accepted so hosting planning could proceed under `goal-27` without violating the one-active-goal invariant.
 
 # Skill Improvement Candidates
 
