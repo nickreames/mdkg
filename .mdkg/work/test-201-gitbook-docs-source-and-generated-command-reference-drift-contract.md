@@ -1,4 +1,11 @@
 ---
+id: test-201
+type: test
+title: GitBook docs source and generated command-reference drift contract
+status: done
+priority: 1
+epic: epic-123
+parent: goal-25
 tags: [mdkg-dev, contract, gitbook, command-docs]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: test-201
-type: test
-title: GitBook docs source and generated command-reference drift contract
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-123
 ---
 # Overview
 

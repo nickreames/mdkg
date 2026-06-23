@@ -1,4 +1,11 @@
 ---
+id: task-449
+type: task
+title: author public alpha homepage quickstart safety origin and llms content
+status: done
+priority: 1
+epic: epic-124
+parent: goal-25
 tags: [mdkg-dev, public-alpha, content, trust, llms]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: task-449
-type: task
-title: author public alpha homepage quickstart safety origin and llms content
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-124
 ---
 # Overview
 
@@ -49,6 +49,13 @@ Author public-alpha content for the website and docs from shipped mdkg capabilit
 - Avoid claims that mdkg is autonomous execution, secret-safe, fully secure, a hosted runtime, or guaranteed agent correctness.
 - Record public copy/claims/trust proof checkpoint before closing.
 
+# Implementation Summary
+
+- Expanded the mdkg.dev homepage around Git-native project memory, agent workflow, validation gates, advanced-alpha boundaries, and project origin.
+- Added evidence-backed public claims tracking in `mdkg-dev/CLAIMS.md` and `docs/project/claims-evidence-matrix.md`.
+- Added static social metadata, JSON-LD structured data, `llms.txt`, `llms-full.txt`, robots, and sitemap coverage.
+- Preserved alpha posture: the copy avoids claims about autonomous execution, hosted queues, comprehensive secret scanning, or public event/reducer/lease/materializer CLI surfaces.
+
 # Test Plan
 
 - Link check if available.
@@ -59,6 +66,7 @@ Author public-alpha content for the website and docs from shipped mdkg capabilit
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
+- checkpoint: chk-189
 - parent: goal-25
 - epic: epic-124
 - context: prd-4

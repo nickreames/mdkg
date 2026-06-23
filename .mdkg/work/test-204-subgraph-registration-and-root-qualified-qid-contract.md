@@ -1,4 +1,11 @@
 ---
+id: test-204
+type: test
+title: subgraph registration and root-qualified qid contract
+status: done
+priority: 1
+epic: epic-125
+parent: goal-25
 tags: [mdkg-dev, contract, subgraph]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: test-204
-type: test
-title: subgraph registration and root-qualified qid contract
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-125
 ---
 # Overview
 

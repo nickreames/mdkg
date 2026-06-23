@@ -1,4 +1,17 @@
 ---
+id: goal-25
+type: goal
+title: Build mdkg.dev subproject docs pipeline demo graphs and launch readiness
+status: done
+priority: 1
+goal_state: achieved
+goal_condition: The in-repo mdkg.dev split-source implementation is pre-release ready after the Astro site, GitBook docs source, generated docs pipeline, examples/template graphs, subgraph registration, launch smokes, and no-secret checks pass without public launch or deploy.
+scope_refs: [epic-122, epic-123, epic-124, epic-125, epic-126, spike-14, task-455, task-445, task-446, task-447, task-448, task-449, task-450, task-451, task-452, task-453, task-454, test-206, test-200, test-201, test-202, test-203, test-204, test-205]
+last_active_node: task-454
+required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:command-docs, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
+max_iterations: 25
+blocked_after_attempts: 3
 tags: [mdkg-dev, docs, site, examples, launch-readiness]
 owners: []
 links: []
@@ -13,19 +26,6 @@ aliases: [mdkg-dev-implementation-roadmap]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-06-22
 updated: 2026-06-22
-id: goal-25
-type: goal
-title: Build mdkg.dev subproject docs pipeline demo graphs and launch readiness
-status: todo
-priority: 1
-goal_state: paused
-active_node: spike-14
-goal_condition: The in-repo mdkg.dev split-source implementation is pre-release ready after the Astro site, GitBook docs source, generated docs pipeline, examples/template graphs, subgraph registration, launch smokes, and no-secret checks pass without public launch or deploy.
-scope_refs: [epic-122, epic-123, epic-124, epic-125, epic-126, spike-14, task-455, task-445, task-446, task-447, task-448, task-449, task-450, task-451, task-452, task-453, task-454, test-206, test-200, test-201, test-202, test-203, test-204, test-205]
-required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:command-docs, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
-max_iterations: 25
-blocked_after_attempts: 3
 ---
 # Objective
 

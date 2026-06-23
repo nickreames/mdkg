@@ -1,4 +1,11 @@
 ---
+id: test-205
+type: test
+title: full mdkg.dev launch-readiness smoke and prepublish dry-run contract
+status: done
+priority: 1
+epic: epic-126
+parent: goal-25
 tags: [mdkg-dev, contract, launch-readiness, prepublish]
 owners: []
 links: []
@@ -8,18 +15,11 @@ blocked_by: [task-454]
 blocks: []
 refs: [archive://archive.mdkg-dev-planning-docs-2026-06-22]
 context_refs: [prd-5]
-evidence_refs: []
+evidence_refs: [chk-194]
 aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: test-205
-type: test
-title: full mdkg.dev launch-readiness smoke and prepublish dry-run contract
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-126
 ---
 # Overview
 
@@ -53,5 +53,6 @@ Validate full mdkg.dev pre-release readiness before goal-25 can close.
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
+- evidence: chk-194
 - parent: goal-25
 - epic: epic-126

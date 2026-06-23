@@ -1,4 +1,11 @@
 ---
+id: test-200
+type: test
+title: mdkg-dev subproject build and static-render contract
+status: done
+priority: 1
+epic: epic-122
+parent: goal-25
 tags: [mdkg-dev, contract, static-render]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: test-200
-type: test
-title: mdkg-dev subproject build and static-render contract
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-122
 ---
 # Overview
 

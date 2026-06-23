@@ -1,4 +1,11 @@
 ---
+id: task-447
+type: task
+title: scaffold GitBook docs source with quickstart concepts safety and reference entrypoints
+status: done
+priority: 1
+epic: epic-123
+parent: goal-25
 tags: [mdkg-dev, docs, gitbook]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: task-447
-type: task
-title: scaffold GitBook docs source with quickstart concepts safety and reference entrypoints
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-123
 ---
 # Overview
 
@@ -45,6 +45,46 @@ Create documentation source suitable for GitBook rendering while retaining repo 
 - Keep stubs acceptable when clearly marked.
 - Do not manually duplicate the full command reference if generated command docs are available.
 - Record docs inventory and GitBook policy evidence.
+
+# Implementation Summary
+
+Created the initial repo-owned GitBook-ready docs source under `/docs`.
+
+Navigation and entry points:
+
+- `docs/README.md`
+- `docs/SUMMARY.md`
+- `docs/start-here/install.md`
+- `docs/start-here/quickstart.md`
+- `docs/start-here/safety-boundaries.md`
+- `docs/start-here/public-alpha-contract.md`
+- `docs/concepts/source-of-truth.md`
+- `docs/concepts/repository-layout.md`
+- `docs/concepts/work-context-evidence.md`
+- `docs/guides/agent-workflow.md`
+- `docs/guides/packs-and-handoffs.md`
+- `docs/advanced-alpha/overview.md`
+- `docs/advanced-alpha/project-db-queues.md`
+- `docs/reference/README.md`
+- `docs/reference/command-contract.md`
+- `docs/project/changelog.md`
+- `docs/project/roadmap.md`
+- `docs/_generated/README.md`
+
+Existing docs preserved:
+
+- `docs/agent-runtime-0.0.9-handoff.md`
+- `docs/mdkg-0.1.8-db-queue-upgrade-megaprompt.md`
+
+Safety cleanup:
+
+- Sanitized local absolute repo paths in the preserved `docs/mdkg-0.1.8-db-queue-upgrade-megaprompt.md` historical prompt by replacing them with generic repo labels.
+- Verified no `/Users/nick` paths remain in `docs` or `mdkg-dev` source.
+- Verified no obvious key/token markers such as `PRIVATE KEY`, `AKIA`, `BEGIN RSA`, or `npm_...` appear in docs or mdkg-dev source.
+
+Open dependency:
+
+- task-448 still owns generated command-reference docs and drift checks. This task created the landing pages and placeholders only.
 
 # Test Plan
 
