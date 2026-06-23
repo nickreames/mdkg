@@ -9,6 +9,7 @@
 .mdkg/state/
 dist/
 node_modules/
+mdkg-dev/.astro/
 *.tgz
 .DS_Store
 
