@@ -2,7 +2,7 @@
 id: task-478
 type: task
 title: create Vercel mdkg-dev project in Chrome
-status: todo
+status: done
 priority: 1
 epic: epic-140
 parent: goal-28
@@ -59,3 +59,16 @@ List files/directories expected to change.
 
 - `edd-31`
 - `test-221`
+
+# Completion Evidence
+
+- Chrome UI created Vercel project `mdkg-dev` in team `Nicholas Reames' projects` (`team_RkZhrKQs9wWs6PAdTcrwZ87z`).
+- Import source was limited to GitHub repository `nickreames/mdkg`.
+- Root directory selected in Chrome: `mdkg-dev`.
+- Framework preset selected by Vercel: Astro.
+- Build/output defaults confirmed in Chrome: `npm run build`, output `dist`.
+- Vercel project id: `prj_R9FJkRf2FsmcM9cuIyQbPTV9A056`.
+- Deployment id: `dpl_7oq5idj6rjsamgPt1DgXXyiMb2VT`.
+- Deployment state: `READY`.
+- Preview aliases verified by Vercel: `https://mdkg-dev.vercel.app`, `https://mdkg-dev-nicholas-reames-projects.vercel.app`, and `https://mdkg-dev-git-main-nicholas-reames-projects.vercel.app`.
+- Build logs show clone from `github.com/nickreames/mdkg`, branch `main`, commit `1240f86`, static Astro output directory `/vercel/path0/mdkg-dev/dist/`, and `Deployment completed`.

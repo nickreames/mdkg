@@ -2,12 +2,12 @@
 id: goal-28
 type: goal
 title: Deploy mdkg.dev marketing and Starlight docs previews on Vercel
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: This goal is achieved only after a future implementation pass scaffolds Starlight under docs, updates the marketing docs bridge, validates local marketing/docs builds, commits and pushes main to origin/main, creates Vercel preview projects in Chrome, and validates hosted preview URLs for both mdkg-dev and mdkg-docs.
 scope_refs: [epic-137, epic-138, epic-139, epic-140, epic-141, epic-142, task-472, task-473, task-474, task-475, task-476, task-477, task-478, task-479, task-480, task-481, test-218, test-219, test-220, test-221, test-222, test-223]
-active_node: task-477
+last_active_node: task-481
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run build, npm run test, npm run cli:contract, git push origin main, Vercel project mdkg-dev exists, Vercel project mdkg-docs exists, Browser and Chrome preview validation passes, git diff --check]
 max_iterations: 25
@@ -150,4 +150,21 @@ Goal-level `relates` and `context_refs` intentionally stay empty because the cur
 
 # Completion Evidence
 
-- Pending future implementation.
+- Implementation commit pushed to `origin/main`: `4842b51 feat: add Starlight docs preview site`.
+- mdkg evidence commit pushed to `origin/main`: `1240f86 graph: record mdkg dev preview implementation evidence`.
+- Marketing preview project created through Chrome:
+  - Project: `mdkg-dev`
+  - Project id: `prj_R9FJkRf2FsmcM9cuIyQbPTV9A056`
+  - Root: `mdkg-dev`
+  - Preview URL: `https://mdkg-dev.vercel.app`
+  - Deployment: `dpl_7oq5idj6rjsamgPt1DgXXyiMb2VT`, `READY`
+- Docs preview project created through Chrome:
+  - Project: `mdkg-docs`
+  - Project id: `prj_3Aoh90VnkqNmqM6AnX9t72fSULEd`
+  - Root: `docs`
+  - Preview URL: `https://mdkg-docs.vercel.app`
+  - Deployment: `dpl_BSRCqokvScb8Uvot4cHBu27bmKg2`, `READY`
+- Vercel build logs verified both projects build from GitHub repo `nickreames/mdkg`, branch `main`, commit `1240f86`, with Astro static output to `dist`.
+- Browser/Chrome validation passed for marketing and docs preview routes.
+- Final closeout checkpoint: `chk-203`.
+- Deferred: DNS, custom domains, production launch/promotion, analytics activation, npm publish, and git tag.

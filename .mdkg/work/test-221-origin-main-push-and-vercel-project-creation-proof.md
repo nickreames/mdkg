@@ -2,7 +2,7 @@
 id: test-221
 type: test
 title: origin main push and Vercel project creation proof
-status: todo
+status: done
 priority: 1
 epic: epic-140
 parent: goal-28
@@ -50,7 +50,21 @@ Validate that implementation is pushed to `origin/main` and Vercel preview proje
 
 # Results / Evidence
 
-Pending future execution.
+- `git push origin main` succeeded without force and updated `github.com:nickreames/mdkg.git` from `71f291c` to `1240f86`.
+- Vercel project `mdkg-dev` exists in team `team_RkZhrKQs9wWs6PAdTcrwZ87z`.
+  - Project id: `prj_R9FJkRf2FsmcM9cuIyQbPTV9A056`.
+  - Root directory selected in Chrome: `mdkg-dev`.
+  - Framework: Astro.
+  - Build/output: `npm run build`, `dist`.
+  - Source repo: `nickreames/mdkg`, branch `main`, commit `1240f86`.
+  - Latest deployment: `dpl_7oq5idj6rjsamgPt1DgXXyiMb2VT`, state `READY`.
+- Vercel project `mdkg-docs` exists in team `team_RkZhrKQs9wWs6PAdTcrwZ87z`.
+  - Project id: `prj_3Aoh90VnkqNmqM6AnX9t72fSULEd`.
+  - Root directory selected in Chrome: `docs`.
+  - Framework: Astro.
+  - Build/output: `npm run build`, `dist`.
+  - Source repo: `nickreames/mdkg`, branch `main`, commit `1240f86`.
+  - Latest deployment: `dpl_BSRCqokvScb8Uvot4cHBu27bmKg2`, state `READY`.
 
 # Notes / Follow-ups
 

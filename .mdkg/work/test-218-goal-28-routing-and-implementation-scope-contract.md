@@ -2,7 +2,7 @@
 id: test-218
 type: test
 title: goal-28 routing and implementation scope contract
-status: todo
+status: done
 priority: 1
 epic: epic-137
 parent: goal-28
@@ -44,7 +44,14 @@ Validate that `goal-28` is a paused implementation roadmap after creation and ca
 
 # Results / Evidence
 
-Pending future execution.
+- Creation-only contract passed before implementation:
+  - `goal-28` was initially created as paused with `active_node: task-472`.
+  - Creation-only pass did not create Vercel projects, deploy, push, or edit site/docs source.
+- Implementation contract passed after explicit user activation:
+  - Goal-28 was activated and executed as an implementation pass.
+  - The goal condition required source/docs implementation, push to `origin/main`, Chrome-created Vercel projects, and hosted preview validation.
+  - Final goal execution used scoped tasks `task-472` through `task-481` and test nodes `test-218` through `test-223`.
+  - No DNS, custom-domain binding, npm publish, git tag, analytics activation, or public launch occurred.
 
 # Notes / Follow-ups
 

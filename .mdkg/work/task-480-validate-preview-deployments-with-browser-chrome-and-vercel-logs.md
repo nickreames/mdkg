@@ -2,7 +2,7 @@
 id: task-480
 type: task
 title: validate preview deployments with Browser Chrome and Vercel logs
-status: todo
+status: done
 priority: 1
 epic: epic-141
 parent: goal-28
@@ -52,3 +52,26 @@ List files/directories expected to change.
 # Links / Artifacts
 
 - `test-222`
+
+# Completion Evidence
+
+- Vercel project/deployment verification:
+  - `mdkg-dev`: project `prj_R9FJkRf2FsmcM9cuIyQbPTV9A056`, deployment `dpl_7oq5idj6rjsamgPt1DgXXyiMb2VT`, state `READY`, alias `https://mdkg-dev.vercel.app`.
+  - `mdkg-docs`: project `prj_3Aoh90VnkqNmqM6AnX9t72fSULEd`, deployment `dpl_BSRCqokvScb8Uvot4cHBu27bmKg2`, state `READY`, alias `https://mdkg-docs.vercel.app`.
+- Chrome validation:
+  - Marketing routes rendered without page-level console errors: `/`, `/quickstart/`, `/trust/`, `/alpha/`, `/docs/`.
+  - Docs routes rendered without page-level console errors: `/`, `/start-here/quickstart/`, `/start-here/install/`, `/reference/generated-cli-reference/`, `/reference/command-contract/`, `/project/claims-evidence-matrix/`.
+  - Marketing canonical URLs remain `https://mdkg.dev/...`, not Vercel preview URLs.
+  - Docs canonical URLs remain `https://docs.mdkg.dev/...`, not Vercel preview URLs.
+  - Chrome extension blocked direct navigation to `https://mdkg-dev.vercel.app/llms.txt` with `ERR_BLOCKED_BY_CLIENT`; live text assets were then verified by direct network checks.
+- In-app Browser validation:
+  - Opened `https://mdkg-dev.vercel.app/` and verified title `Markdown Knowledge Graph - Git-native project memory` with expected homepage H1.
+  - Opened `https://mdkg-docs.vercel.app/` and verified title `mdkg Docs | mdkg Docs` with expected Starlight homepage H1.
+- Live text asset checks:
+  - `https://mdkg-dev.vercel.app/llms.txt`: HTTP 200, `text/plain`, no high-risk secret pattern.
+  - `https://mdkg-dev.vercel.app/llms-full.txt`: HTTP 200, `text/plain`, no high-risk secret pattern.
+  - `https://mdkg-dev.vercel.app/robots.txt`: HTTP 200, `text/plain`, no high-risk secret pattern.
+  - `https://mdkg-dev.vercel.app/sitemap.xml`: HTTP 200, `application/xml`, no preview URLs in canonical sitemap entries.
+  - `https://mdkg-docs.vercel.app/sitemap-index.xml`: HTTP 200, `application/xml`, canonical sitemap points to `https://docs.mdkg.dev/sitemap-0.xml`.
+- Known validation note:
+  - Naive raw-word matching flags public safety-boundary pages that intentionally mention tokens, raw prompts, or raw payloads as prohibited content. Narrow secret-pattern checks against token/key shapes passed.
