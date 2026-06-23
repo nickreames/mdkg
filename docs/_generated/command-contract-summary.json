@@ -1,0 +1,1352 @@
+{
+  "generated_from": "dist/command-contract.json",
+  "contract_hash": "bb6d15e23a09b9a013aed406eac42e4e90f8ef6cb799759198a7777b3527ca74",
+  "package_version": "0.3.7",
+  "command_count": 98,
+  "categories": {
+    "archive": 6,
+    "bundle": 6,
+    "capability": 4,
+    "checkpoint": 1,
+    "db": 4,
+    "doctor": 1,
+    "event": 3,
+    "fix": 4,
+    "format": 1,
+    "global": 1,
+    "goal": 13,
+    "graph": 5,
+    "guide": 1,
+    "handoff": 1,
+    "index": 1,
+    "init": 1,
+    "list": 1,
+    "mcp": 2,
+    "new": 1,
+    "next": 1,
+    "pack": 1,
+    "search": 1,
+    "show": 1,
+    "skill": 7,
+    "spec": 4,
+    "status": 1,
+    "subgraph": 11,
+    "task": 4,
+    "upgrade": 1,
+    "validate": 1,
+    "work": 7,
+    "workspace": 1
+  },
+  "commands": [
+    {
+      "key": "archive",
+      "category": "archive",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "archive add",
+      "category": "archive",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "archive compress",
+      "category": "archive",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "archive list",
+      "category": "archive",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "archive show",
+      "category": "archive",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "archive verify",
+      "category": "archive",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "bundle",
+      "category": "bundle",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "bundle create",
+      "category": "bundle",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "bundle import",
+      "category": "bundle",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "bundle list",
+      "category": "bundle",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "bundle show",
+      "category": "bundle",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "bundle verify",
+      "category": "bundle",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "capability",
+      "category": "capability",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "capability list",
+      "category": "capability",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "capability search",
+      "category": "capability",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "capability show",
+      "category": "capability",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "checkpoint",
+      "category": "checkpoint",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "db",
+      "category": "db",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "db index",
+      "category": "db",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "db queue",
+      "category": "db",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "db snapshot",
+      "category": "db",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "doctor",
+      "category": "doctor",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "event",
+      "category": "event",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "event append",
+      "category": "event",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "event enable",
+      "category": "event",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "fix",
+      "category": "fix",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "fix apply",
+      "category": "fix",
+      "visibility": "public",
+      "danger_level": "high",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false,
+        "apply_supported": true,
+        "apply_family": "ids"
+      }
+    },
+    {
+      "key": "fix ids",
+      "category": "fix",
+      "visibility": "public",
+      "danger_level": "high",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply",
+        "apply_supported": true,
+        "apply_family": "ids"
+      }
+    },
+    {
+      "key": "fix plan",
+      "category": "fix",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "apply_supported": true,
+        "apply_family": "ids"
+      }
+    },
+    {
+      "key": "format",
+      "category": "format",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": false,
+        "flag": "--dry-run"
+      }
+    },
+    {
+      "key": "global",
+      "category": "global",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal activate",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal archive",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal claim",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal clear",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal current",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal done",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal evaluate",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal next",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal pause",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal resume",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal select",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "goal show",
+      "category": "goal",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "graph",
+      "category": "graph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "graph clone",
+      "category": "graph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "graph fork",
+      "category": "graph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "graph import-template",
+      "category": "graph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "graph refs",
+      "category": "graph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "guide",
+      "category": "guide",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "handoff",
+      "category": "handoff",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "index",
+      "category": "index",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "init",
+      "category": "init",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "list",
+      "category": "list",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json",
+        "xml",
+        "toon",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "mcp",
+      "category": "mcp",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "mcp serve",
+      "category": "mcp",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "new",
+      "category": "new",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "next",
+      "category": "next",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "pack",
+      "category": "pack",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "search",
+      "category": "search",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json",
+        "xml",
+        "toon",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "show",
+      "category": "show",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json",
+        "xml",
+        "toon",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "skill",
+      "category": "skill",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json",
+        "xml",
+        "toon",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "skill list",
+      "category": "skill",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json",
+        "xml",
+        "toon",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "skill new",
+      "category": "skill",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "skill search",
+      "category": "skill",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json",
+        "xml",
+        "toon",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "skill show",
+      "category": "skill",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json",
+        "xml",
+        "toon",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "skill sync",
+      "category": "skill",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "skill validate",
+      "category": "skill",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "spec",
+      "category": "spec",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "spec list",
+      "category": "spec",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "spec show",
+      "category": "spec",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "spec validate",
+      "category": "spec",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "status",
+      "category": "status",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "commands": [
+          "sync",
+          "materialize",
+          "audit",
+          "upgrade-plan"
+        ]
+      }
+    },
+    {
+      "key": "subgraph add",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph disable",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph enable",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph list",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph materialize",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "flag": "--dry-run"
+      }
+    },
+    {
+      "key": "subgraph refresh",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph rm",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph show",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "subgraph sync",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": false,
+        "flag": "--dry-run"
+      }
+    },
+    {
+      "key": "subgraph verify",
+      "category": "subgraph",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "task",
+      "category": "task",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "task done",
+      "category": "task",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "task start",
+      "category": "task",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "task update",
+      "category": "task",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "upgrade",
+      "category": "upgrade",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "default": true,
+        "flag": "--apply"
+      }
+    },
+    {
+      "key": "validate",
+      "category": "validate",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "work",
+      "category": "work",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "work artifact",
+      "category": "work",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "work contract",
+      "category": "work",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "work order",
+      "category": "work",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "work receipt",
+      "category": "work",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "work trigger",
+      "category": "work",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "work validate",
+      "category": "work",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "workspace",
+      "category": "workspace",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json",
+        "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    }
+  ]
+}
