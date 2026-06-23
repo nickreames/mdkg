@@ -696,7 +696,7 @@ function requireInitAssets() {
     }
   }
   const smokeMdkgDevDocs = requireFile("scripts/smoke-mdkg-dev-docs.js");
-  for (const expected of ["docs:check", "SUMMARY.md", "cli-reference.md", "assertMarkdownLinks"]) {
+  for (const expected of ["docs:check", "SUMMARY.md", "cli-reference.md", "assertMarkdownLinks", "astro.config.mjs", "Starlight", "docs.mdkg.dev"]) {
     if (!smokeMdkgDevDocs.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev-docs.js is missing ${expected} proof`);
     }
@@ -719,9 +719,17 @@ function requireInitAssets() {
   requireFile("mdkg-dev/CLAIMS.md");
   requireFile("mdkg-dev/DESIGN.md");
   requireDir("docs");
+  requireFile("docs/package.json");
+  requireFile("docs/astro.config.mjs");
+  requireFile("docs/src/content.config.ts");
+  requireFile("docs/src/content/docs/index.md");
   requireFile("docs/SUMMARY.md");
   requireFile("docs/_generated/cli-reference.md");
   requireFile("docs/project/claims-evidence-matrix.md");
+  const docsReadme = requireFile("docs/README.md");
+  if (!docsReadme.includes("Starlight is the docs renderer for `docs.mdkg.dev`") || docsReadme.includes("GitBook")) {
+    fail("docs/README.md must describe Starlight/docs.mdkg.dev and not GitBook");
+  }
   requireDir("examples/demo-agentic-coding/.mdkg");
   requireDir("examples/template-mdkg-dev/.mdkg");
   requireFile(".mdkg/bundles/private/examples/demo-agentic-coding.mdkg.zip");

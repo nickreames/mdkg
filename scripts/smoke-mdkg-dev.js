@@ -40,6 +40,11 @@ function main() {
   assert(home.includes("<nav"), "homepage missing nav landmark");
   assert(home.includes("<footer"), "homepage missing footer landmark");
 
+  const docsPage = readText(path.join(dist, "docs", "index.html"));
+  assert(docsPage.includes("Repo-owned docs, rendered with Starlight"), "docs bridge missing Starlight heading");
+  assert(docsPage.includes("https://docs.mdkg.dev"), "docs bridge missing docs.mdkg.dev link");
+  assert(!docsPage.includes("GitBook"), "docs bridge still references GitBook");
+
   const generatedJs = walkFiles(path.join(dist, "_astro")).filter((file) => file.endsWith(".js"));
   assert(generatedJs.length === 0, "static site should not emit client JavaScript before React islands are needed");
 
@@ -53,4 +58,3 @@ function main() {
 }
 
 main();
-

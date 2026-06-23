@@ -10,14 +10,49 @@ import FeatureCard from "../components/FeatureCard.astro";
       <SectionHeader
         eyebrow="Docs"
         level="h1"
-        title="Repo-owned docs, GitBook-ready source."
-        text="The mdkg repo remains the canonical docs source. GitBook is the intended renderer/sync target for the public documentation surface."
+        title="Repo-owned docs, rendered with Starlight."
+        text="The mdkg repo remains the canonical docs source. Starlight is the docs renderer for docs.mdkg.dev, while this page remains a marketing bridge to the docs experience."
       />
       <div class="grid three">
         <FeatureCard title="Start here" text="Overview, install, quickstart, safety boundaries, and public alpha contract." />
         <FeatureCard title="Guides" text="Agent workflows, deterministic packs, goals, spikes, checkpoints, handoffs, skills, and validation." />
         <FeatureCard title="Reference" text="Generated CLI command reference, output formats, node fields, config, and generated caches." />
       </div>
+      <div class="docs-actions" aria-label="Documentation actions">
+        <a class="primary-link" href="https://docs.mdkg.dev">Open docs.mdkg.dev</a>
+        <a class="secondary-link" href="https://github.com/nickreames/mdkg/tree/main/docs">View repo docs source</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .docs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .primary-link,
+  .secondary-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .primary-link {
+    color: var(--white);
+    background: var(--zinc-950);
+  }
+
+  .secondary-link {
+    border: 1px solid var(--border);
+    color: var(--zinc-900);
+    background: var(--white);
+  }
+</style>

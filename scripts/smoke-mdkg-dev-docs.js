@@ -20,6 +20,28 @@ function main() {
   const requiredFiles = [
     "README.md",
     "SUMMARY.md",
+    "package.json",
+    "astro.config.mjs",
+    "tsconfig.json",
+    "src/content.config.ts",
+    "src/content/docs/index.md",
+    "src/content/docs/start-here/install.md",
+    "src/content/docs/start-here/quickstart.md",
+    "src/content/docs/start-here/safety-boundaries.md",
+    "src/content/docs/start-here/public-alpha-contract.md",
+    "src/content/docs/concepts/source-of-truth.md",
+    "src/content/docs/concepts/repository-layout.md",
+    "src/content/docs/concepts/work-context-evidence.md",
+    "src/content/docs/guides/agent-workflow.md",
+    "src/content/docs/guides/packs-and-handoffs.md",
+    "src/content/docs/advanced-alpha/overview.md",
+    "src/content/docs/advanced-alpha/project-db-queues.md",
+    "src/content/docs/reference/index.md",
+    "src/content/docs/reference/command-contract.md",
+    "src/content/docs/reference/generated-cli-reference.md",
+    "src/content/docs/project/changelog.md",
+    "src/content/docs/project/claims-evidence-matrix.md",
+    "src/content/docs/project/roadmap.md",
     "start-here/install.md",
     "start-here/quickstart.md",
     "start-here/safety-boundaries.md",
@@ -45,6 +67,20 @@ function main() {
   for (const heading of ["Start Here", "Concepts", "Guides", "Advanced Alpha", "Reference", "Project"]) {
     assert(summary.includes(heading), `SUMMARY.md missing ${heading}`);
   }
+  const readme = readText(path.join(docs, "README.md"));
+  assert(readme.includes("Starlight is the docs renderer for `docs.mdkg.dev`"), "docs README missing Starlight/docs.mdkg.dev boundary");
+  assert(!readme.includes("GitBook"), "docs README still references GitBook");
+
+  const starlightConfig = readText(path.join(docs, "astro.config.mjs"));
+  assert(starlightConfig.includes('site: "https://docs.mdkg.dev"'), "Starlight config missing docs.mdkg.dev site");
+  assert(starlightConfig.includes('title: "mdkg Docs"'), "Starlight config missing docs title");
+  assert(starlightConfig.includes("start-here/quickstart"), "Starlight sidebar missing quickstart");
+  assert(starlightConfig.includes("reference/generated-cli-reference"), "Starlight sidebar missing generated CLI reference");
+
+  const starlightHome = readText(path.join(docs, "src", "content", "docs", "index.md"));
+  assert(starlightHome.includes("future canonical documentation host for `docs.mdkg.dev`"), "Starlight home missing canonical docs host copy");
+  assert(!starlightHome.includes("GitBook"), "Starlight home still references GitBook");
+
   assertMarkdownLinks(docs);
 
   const generated = readText(path.join(docs, "_generated", "cli-reference.md"));

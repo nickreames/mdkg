@@ -200,7 +200,7 @@ When you need a full command reference, use `CLI_COMMAND_MATRIX.md` or `mdkg hel
 
 mdkg.dev launch-readiness source lives in this repo:
 - `mdkg-dev/` is the Astro static-site subproject.
-- `docs/` is the repo-first GitBook source and generated command-reference output.
+- `docs/` is the Starlight docs subproject and repo-first documentation source plus generated command-reference output.
 - `examples/` contains local mdkg demo/template graphs registered as private read-only subgraphs.
 - These directories are source/launch assets, not npm package runtime payload.
 - Do not deploy, activate analytics, change DNS, promote demo subdomains, publish, tag, or push unless explicitly requested.

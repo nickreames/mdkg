@@ -2,7 +2,7 @@
 
 Markdown Knowledge Graph (`mdkg`) is git-native project memory for AI-native software engineering.
 
-These docs are repo-owned source for the future public documentation surface. GitBook can render or sync them, but this repository remains the source of truth.
+These docs are repo-owned source for the future public documentation surface. Starlight is the docs renderer for `docs.mdkg.dev`, and this repository remains the source of truth.
 
 ## Start Here
 
