@@ -190,8 +190,20 @@ Build and verification:
 - `npm run smoke:visibility`
 - `npm run smoke:sqlite`
 - `npm run smoke:parallel`
+- `npm run docs:check`
+- `npm run smoke:mdkg-dev`
+- `npm run smoke:mdkg-dev-docs`
+- `npm run smoke:mdkg-dev-seo`
+- `npm run smoke:demo-graph`
 
 When you need a full command reference, use `CLI_COMMAND_MATRIX.md` or `mdkg help <command>`.
+
+mdkg.dev launch-readiness source lives in this repo:
+- `mdkg-dev/` is the Astro static-site subproject.
+- `docs/` is the repo-first GitBook source and generated command-reference output.
+- `examples/` contains local mdkg demo/template graphs registered as private read-only subgraphs.
+- These directories are source/launch assets, not npm package runtime payload.
+- Do not deploy, activate analytics, change DNS, promote demo subdomains, publish, tag, or push unless explicitly requested.
 
 Discovery and show commands also support structured exports when an agent needs machine-readable output:
 - `--json`

@@ -4,3 +4,8 @@
 node_modules/
 .DS_Store
 .mdkg/pack/
+mdkg-dev/
+docs/
+examples/
+mdkg_planning_docs/
+mdkg_planning_docs.zip
