@@ -2,7 +2,7 @@
 id: task-475
 type: task
 title: update marketing docs bridge and public copy away from GitBook
-status: todo
+status: done
 priority: 1
 epic: epic-139
 parent: goal-28
@@ -52,3 +52,12 @@ List files/directories expected to change.
 
 - `dec-35`
 - `edd-32`
+
+# Completion Evidence
+
+- Updated `mdkg-dev/src/pages/docs.astro` to describe `/docs` as a marketing bridge to Starlight and `docs.mdkg.dev`.
+- Added visible links to `https://docs.mdkg.dev` and the repo docs source.
+- Updated `scripts/smoke-mdkg-dev.js` to assert the rendered docs bridge includes Starlight copy, includes `docs.mdkg.dev`, and does not include `GitBook`.
+- `npm --prefix mdkg-dev run build`: passed.
+- `npm run smoke:mdkg-dev`: passed after the new bridge assertions.
+- `npm run smoke:mdkg-dev-seo`: passed; sitemap and canonical metadata remain production-domain stable and do not include Vercel preview URLs.

@@ -2,7 +2,7 @@
 id: task-476
 type: task
 title: run local builds smokes Browser checks and no-secret scans
-status: todo
+status: done
 priority: 1
 epic: epic-139
 parent: goal-28
@@ -62,3 +62,20 @@ List files/directories expected to change.
 
 - `test-219`
 - `test-220`
+
+# Completion Evidence
+
+- `npm --prefix mdkg-dev run build`: passed.
+- `npm --prefix docs run build`: passed, building 19 static Starlight pages and Pagefind search.
+- `npm run docs:check`: passed.
+- `npm run smoke:mdkg-dev`: passed with Starlight docs bridge assertions.
+- `npm run smoke:mdkg-dev-docs`: passed with 40 required files.
+- `npm run smoke:mdkg-dev-seo`: passed.
+- `npm run smoke:demo-graph`: passed.
+- `npm run build`: passed.
+- `npm run test`: passed, 507 tests, 0 failures.
+- `npm run cli:contract`: passed.
+- `node dist/cli.js validate --summary --json --limit 20`: passed with 0 warnings and 0 errors.
+- `node dist/cli.js doctor --strict --json`: passed with 0 errors and 1 expected warning for ignored local project DB runtime state.
+- `npm audit --prefix docs --audit-level=moderate`: passed; remaining advisories are low severity and the npm-suggested fix requires an incompatible breaking Astro 7 move.
+- `git diff --check`: passed.

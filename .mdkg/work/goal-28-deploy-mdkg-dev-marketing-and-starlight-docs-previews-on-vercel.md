@@ -2,12 +2,12 @@
 id: goal-28
 type: goal
 title: Deploy mdkg.dev marketing and Starlight docs previews on Vercel
-status: todo
+status: progress
 priority: 1
-goal_state: paused
+goal_state: active
 goal_condition: This goal is achieved only after a future implementation pass scaffolds Starlight under docs, updates the marketing docs bridge, validates local marketing/docs builds, commits and pushes main to origin/main, creates Vercel preview projects in Chrome, and validates hosted preview URLs for both mdkg-dev and mdkg-docs.
 scope_refs: [epic-137, epic-138, epic-139, epic-140, epic-141, epic-142, task-472, task-473, task-474, task-475, task-476, task-477, task-478, task-479, task-480, task-481, test-218, test-219, test-220, test-221, test-222, test-223]
-active_node: task-472
+active_node: task-477
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run build, npm run test, npm run cli:contract, git push origin main, Vercel project mdkg-dev exists, Vercel project mdkg-docs exists, Browser and Chrome preview validation passes, git diff --check]
 max_iterations: 25

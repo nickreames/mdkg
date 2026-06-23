@@ -2,7 +2,7 @@
 id: test-219
 type: test
 title: Starlight docs local build nav metadata and generated reference contract
-status: todo
+status: done
 priority: 1
 epic: epic-138
 parent: goal-28
@@ -46,7 +46,9 @@ Validate that the future Starlight docs project builds locally and preserves gen
 
 # Results / Evidence
 
-Pending future implementation.
+- `npm --prefix docs run build`: passed.
+- Build output included start-here, concepts, guides, advanced-alpha, reference, generated CLI reference, and project routes.
+- `node scripts/smoke-mdkg-dev-docs.js`: passed and asserts `docs.mdkg.dev`, Starlight config, sidebar entries, generated CLI reference, and existing docs preservation.
 
 # Notes / Follow-ups
 

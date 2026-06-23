@@ -2,7 +2,7 @@
 id: test-220
 type: test
 title: marketing docs bridge SEO sitemap and no-secret contract
-status: todo
+status: done
 priority: 1
 epic: epic-139
 parent: goal-28
@@ -47,7 +47,10 @@ Validate that the marketing docs bridge points to Starlight/docs.mdkg.dev and ke
 
 # Results / Evidence
 
-Pending future implementation.
+- `mdkg-dev/src/pages/docs.astro` now describes Starlight / `docs.mdkg.dev`.
+- `npm --prefix mdkg-dev run build`: passed.
+- `npm run smoke:mdkg-dev`: passed and now asserts the `/docs/` page includes Starlight and `docs.mdkg.dev` but not GitBook.
+- `npm run smoke:mdkg-dev-seo`: passed.
 
 # Notes / Follow-ups
 

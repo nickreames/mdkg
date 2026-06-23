@@ -2,7 +2,7 @@
 id: task-477
 type: task
 title: commit implementation and push main to origin main
-status: todo
+status: progress
 priority: 1
 epic: epic-140
 parent: goal-28
