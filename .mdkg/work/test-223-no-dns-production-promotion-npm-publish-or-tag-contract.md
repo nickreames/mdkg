@@ -2,7 +2,7 @@
 id: test-223
 type: test
 title: no DNS production promotion npm publish or tag contract
-status: todo
+status: done
 priority: 1
 epic: epic-142
 parent: goal-28
@@ -49,7 +49,16 @@ Validate that the future preview implementation stops before public-launch side 
 
 # Results / Evidence
 
-Pending future execution.
+- No DNS records were changed.
+- No custom domains were bound to Vercel projects.
+- No Vercel production promotion beyond the default imported `main` deployment/preview aliases was performed.
+- No npm publish was performed.
+- No git tag was created.
+- No analytics activation was performed.
+- No public launch announcement was made.
+- Preview URLs are:
+  - `https://mdkg-dev.vercel.app`
+  - `https://mdkg-docs.vercel.app`
 
 # Notes / Follow-ups
 

@@ -2,7 +2,7 @@
 id: task-477
 type: task
 title: commit implementation and push main to origin main
-status: progress
+status: done
 priority: 1
 epic: epic-140
 parent: goal-28
@@ -51,3 +51,11 @@ List files/directories expected to change.
 # Links / Artifacts
 
 - `test-221`
+
+# Completion Evidence
+
+- Local implementation commit: `4842b51 feat: add Starlight docs preview site`.
+- Local mdkg evidence commit: `1240f86 graph: record mdkg dev preview implementation evidence`.
+- `git log --oneline origin/main..HEAD`: reviewed before push and showed the outgoing stack.
+- `git status --short --branch`: clean before push, `main...origin/main [ahead 22]`.
+- `git push origin main`: passed, updating `github.com:nickreames/mdkg.git` from `71f291c` to `1240f86`.

@@ -2,7 +2,7 @@
 id: task-481
 type: task
 title: record evidence commit graph closeout and leave DNS deferred
-status: todo
+status: done
 priority: 1
 epic: epic-142
 parent: goal-28
@@ -52,3 +52,28 @@ List files/directories expected to change.
 # Links / Artifacts
 
 - `test-223`
+
+# Completion Evidence
+
+- Final evidence checkpoint created: `chk-203`.
+- Preview URLs:
+  - `https://mdkg-dev.vercel.app`
+  - `https://mdkg-docs.vercel.app`
+- Vercel projects:
+  - `mdkg-dev` / `prj_R9FJkRf2FsmcM9cuIyQbPTV9A056`
+  - `mdkg-docs` / `prj_3Aoh90VnkqNmqM6AnX9t72fSULEd`
+- Vercel deployments:
+  - `mdkg-dev`: `dpl_7oq5idj6rjsamgPt1DgXXyiMb2VT`, state `READY`.
+  - `mdkg-docs`: `dpl_BSRCqokvScb8Uvot4cHBu27bmKg2`, state `READY`.
+- Live validation:
+  - Chrome route checks passed for marketing and docs HTML routes with no page-level console errors.
+  - In-app Browser opened and verified both preview homepages.
+  - Direct live asset checks passed for LLM docs, robots, marketing sitemap, and docs sitemap index.
+- Boundaries confirmed:
+  - No DNS change.
+  - No custom-domain binding.
+  - No production promotion beyond default Vercel imported `main` deployment/preview aliases.
+  - No npm publish.
+  - No git tag.
+  - No analytics activation.
+  - No public launch announcement.
