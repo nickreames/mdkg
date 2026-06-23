@@ -1,4 +1,11 @@
 ---
+id: task-454
+type: task
+title: close mdkg-dev implementation roadmap with pre-release evidence and handoff
+status: done
+priority: 1
+epic: epic-126
+parent: goal-25
 tags: [mdkg-dev, closeout, handoff]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-22
 updated: 2026-06-22
-id: task-454
-type: task
-title: close mdkg-dev implementation roadmap with pre-release evidence and handoff
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-126
 ---
 # Overview
 

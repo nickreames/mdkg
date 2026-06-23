@@ -1,4 +1,11 @@
 ---
+id: task-453
+type: task
+title: update root docs and publish readiness for mdkg-dev launch surfaces
+status: done
+priority: 1
+epic: epic-126
+parent: goal-25
 tags: [mdkg-dev, docs-parity, publish-readiness]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: task-453
-type: task
-title: update root docs and publish readiness for mdkg-dev launch surfaces
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-126
 ---
 # Overview
 
@@ -46,6 +46,13 @@ Update repo docs and readiness assertions after mdkg.dev implementation is prove
 - Keep public copy conservative and source-backed.
 - Ensure package tarball contents remain intentional.
 
+# Implementation Summary
+
+- Added root README guidance for `mdkg-dev/`, `docs/`, and `examples/` as repo-owned launch-readiness source assets.
+- Added AGENT_START and CLI command matrix references for mdkg.dev smokes and private read-only example subgraph qids.
+- Extended `scripts/assert-publish-ready.js` to require the new smoke scripts, docs/site/example source layout, bundle snapshots, `.npmignore` exclusions, and prepublish script order.
+- Confirmed the new smokes and publish-readiness assertion pass after the docs changes.
+
 # Test Plan
 
 - `npm run cli:check`
@@ -59,5 +66,6 @@ Update repo docs and readiness assertions after mdkg.dev implementation is prove
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
+- checkpoint: chk-193
 - parent: goal-25
 - epic: epic-126

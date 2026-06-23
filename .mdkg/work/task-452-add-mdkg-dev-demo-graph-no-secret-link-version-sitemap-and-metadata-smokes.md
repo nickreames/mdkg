@@ -1,4 +1,11 @@
 ---
+id: task-452
+type: task
+title: add mdkg-dev demo graph no-secret link version sitemap and metadata smokes
+status: done
+priority: 1
+epic: epic-126
+parent: goal-25
 tags: [mdkg-dev, smoke, no-secret, launch-gate]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: task-452
-type: task
-title: add mdkg-dev demo graph no-secret link version sitemap and metadata smokes
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-126
 ---
 # Overview
 
@@ -48,6 +48,15 @@ Add launch-readiness automation for site, docs, generated references, examples, 
 - Do not add brittle live network checks to prepublish gates.
 - Record launch-smoke proof checkpoint before closing.
 
+# Implementation Summary
+
+- Added shared smoke helper `scripts/mdkg-dev-smoke-utils.js`.
+- Added `scripts/smoke-mdkg-dev.js` for static site build/render and route inventory.
+- Added `scripts/smoke-mdkg-dev-docs.js` for GitBook source structure, generated command-reference drift, docs links, and high-risk marker scans.
+- Added `scripts/smoke-mdkg-dev-seo.js` for canonical metadata, sitemap, robots, JSON-LD, social card, and LLM boundary checks.
+- Added `scripts/smoke-demo-graph.js` for nested example validation, goal routing, pack coverage, subgraph verification, root-qualified qid lookup, and high-risk marker scans.
+- Added npm scripts and inserted the new smokes into `prepublishOnly`.
+
 # Test Plan
 
 - `npm run smoke:mdkg-dev`
@@ -60,6 +69,7 @@ Add launch-readiness automation for site, docs, generated references, examples, 
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
+- checkpoint: chk-192
 - parent: goal-25
 - epic: epic-126
 - context: mdkg.dev quality gate contract

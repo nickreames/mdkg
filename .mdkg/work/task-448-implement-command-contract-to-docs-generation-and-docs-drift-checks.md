@@ -1,4 +1,11 @@
 ---
+id: task-448
+type: task
+title: implement command contract to docs generation and docs drift checks
+status: done
+priority: 1
+epic: epic-123
+parent: goal-25
 tags: [mdkg-dev, command-contract, docs-drift]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: task-448
-type: task
-title: implement command contract to docs generation and docs drift checks
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-123
 ---
 # Overview
 
@@ -46,6 +46,39 @@ Implement the command-contract-to-docs path for mdkg.dev and `/docs` so public c
 - Use `npm run cli:contract` as the source drift gate.
 - Keep `CLI_COMMAND_MATRIX.md` authoritative for repo-local command inventory until generated docs are proven.
 - Record command contract hash or generated file inventory in a checkpoint with task-447.
+
+# Implementation Summary
+
+Added deterministic docs generation from `dist/command-contract.json`.
+
+New generator:
+
+- `scripts/generate-docs-reference.js`
+- `npm run docs:generate`
+- `npm run docs:check`
+
+Generated outputs:
+
+- `docs/_generated/cli-reference.md`
+- `docs/_generated/command-contract-summary.json`
+
+Docs integration:
+
+- `docs/SUMMARY.md` links the generated CLI reference under Reference.
+- `docs/reference/README.md` links the generated reference.
+- `docs/reference/command-contract.md` documents the generated outputs and commands.
+
+Drift behavior:
+
+- `npm run docs:generate` rebuilds the CLI, writes the command contract, then writes generated docs.
+- `npm run docs:check` rebuilds the CLI and fails if generated docs differ from the command contract.
+
+Evidence:
+
+- `npm run docs:generate` passed and wrote both generated outputs.
+- `npm run docs:check` passed.
+- Generated docs contain contract hash `bb6d15e23a09b9a013aed406eac42e4e90f8ef6cb799759198a7777b3527ca74`.
+- Generated summary reports 98 commands across 32 categories.
 
 # Test Plan
 

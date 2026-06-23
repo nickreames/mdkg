@@ -1,4 +1,11 @@
 ---
+id: task-450
+type: task
+title: create demo agentic coding and template mdkg-dev example graphs
+status: done
+priority: 1
+epic: epic-125
+parent: goal-25
 tags: [mdkg-dev, examples, demo-graphs]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: task-450
-type: task
-title: create demo agentic coding and template mdkg-dev example graphs
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-125
 ---
 # Overview
 
@@ -47,6 +47,14 @@ Create demo/template graphs for dogfood and presentations without mixing them in
 - Do not include private repo data, raw prompts, provider payloads, tokens, or local absolute paths.
 - Record demo/template graph proof checkpoint before closing.
 
+# Implementation Summary
+
+- Created `/examples/demo-agentic-coding` with a standalone mdkg graph, `README.md`, and `DEMO_BRIEF.md`.
+- Created `/examples/template-mdkg-dev` with a standalone mdkg graph, `README.md`, and `WEBSITE_TEMPLATE_BRIEF.md`.
+- Each example graph includes one active umbrella goal, one epic, one spike, one task, one test, one checkpoint, one design record, and one accepted decision record.
+- Both examples document local-only boundaries: no deploy, DNS, analytics activation, credentials, raw prompt transcript, or production promotion by default.
+- Each nested graph validates with zero validation warnings/errors and routes to `spike-1` from `goal-1`.
+
 # Test Plan
 
 - Validate each example graph with the local mdkg CLI.
@@ -56,6 +64,7 @@ Create demo/template graphs for dogfood and presentations without mixing them in
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
+- checkpoint: chk-190
 - parent: goal-25
 - epic: epic-125
 - context: edd-26

@@ -1,4 +1,11 @@
 ---
+id: test-202
+type: test
+title: public alpha docs no-secret and safety-boundary contract
+status: done
+priority: 1
+epic: epic-124
+parent: goal-25
 tags: [mdkg-dev, contract, safety, no-secret]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: test-202
-type: test
-title: public alpha docs no-secret and safety-boundary contract
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-124
 ---
 # Overview
 

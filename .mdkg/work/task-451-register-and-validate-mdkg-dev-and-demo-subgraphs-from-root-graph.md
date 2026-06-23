@@ -1,4 +1,11 @@
 ---
+id: task-451
+type: task
+title: register and validate mdkg-dev and demo subgraphs from root graph
+status: done
+priority: 1
+epic: epic-125
+parent: goal-25
 tags: [mdkg-dev, subgraph, examples]
 owners: []
 links: []
@@ -13,13 +20,6 @@ aliases: []
 skills: []
 created: 2026-06-22
 updated: 2026-06-22
-id: task-451
-type: task
-title: register and validate mdkg-dev and demo subgraphs from root graph
-status: todo
-priority: 1
-parent: goal-25
-epic: epic-125
 ---
 # Overview
 
@@ -45,6 +45,16 @@ Register mdkg-dev and demo/example graphs as read-only planning subgraphs only a
 - Keep subgraphs as planning context, not a mechanism for root mutation of child work.
 - Record demo/subgraph proof checkpoint before closing with task-450 evidence.
 
+# Implementation Summary
+
+- Created private root-owned bundle snapshots for `examples/demo-agentic-coding` and `examples/template-mdkg-dev`.
+- Registered private read-only subgraphs:
+  - `demo_agentic_coding`
+  - `template_mdkg_dev`
+- Verified `mdkg subgraph verify --all --json` returns `ok: true`.
+- Proved root-qualified qids with `mdkg show demo_agentic_coding:goal-1 --json` and `mdkg show template_mdkg_dev:goal-1 --json`.
+- Avoided `subgraph sync --allow-dirty`; these are explicit snapshot bundles for in-repo examples, not dirty child-repo refreshes.
+
 # Test Plan
 
 - `mdkg subgraph add/list/verify` or current equivalent.
@@ -55,6 +65,9 @@ Register mdkg-dev and demo/example graphs as read-only planning subgraphs only a
 # Links / Artifacts
 
 - archive://archive.mdkg-dev-planning-docs-2026-06-22
+- checkpoint: chk-191
+- bundle: .mdkg/bundles/private/examples/demo-agentic-coding.mdkg.zip
+- bundle: .mdkg/bundles/private/examples/template-mdkg-dev.mdkg.zip
 - parent: goal-25
 - epic: epic-125
 - context: edd-26
