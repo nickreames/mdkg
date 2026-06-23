@@ -31,6 +31,8 @@ updated: 2026-06-22
 
 Execute the live preview-hosting implementation that `goal-27` planned. This is a future implementation goal, not a graph-only alignment lane: when explicitly activated later, it must make code/docs changes, push `main` to `origin/main`, create Vercel preview projects in Chrome, and validate hosted preview URLs.
 
+The future executor has explicit permission to use the Chrome plugin for first-time Vercel project setup and the Vercel plugin for project, deployment, and build-log verification. That permission is scoped to the existing mdkg GitHub repository only: if Vercel or GitHub asks to import, authorize, expose, or grant access to any repository other than `nickreames/mdkg`, stop and ask for explicit approval before continuing.
+
 # End Condition
 
 This goal is achieved only when all of the following are true:
@@ -44,6 +46,7 @@ This goal is achieved only when all of the following are true:
 - Vercel team `Nicholas Reames' projects` (`team_RkZhrKQs9wWs6PAdTcrwZ87z`) has two preview projects:
   - `mdkg-dev`, root `mdkg-dev/`, build `npm run build`, output `dist`.
   - `mdkg-docs`, root `docs/`, build `npm run build`, output `dist`.
+- Both Vercel projects are connected only to GitHub repository `nickreames/mdkg`.
 - Vercel preview deployments for both projects are live and validated in Browser and Chrome.
 - Preview URLs, build/log evidence, and validation notes are recorded in mdkg.
 - DNS cutover, production promotion, npm publish, git tag, analytics activation, and public launch have not occurred.
@@ -64,7 +67,8 @@ This goal is achieved only when all of the following are true:
 2. Claim `task-472`, verify this creation-only pass is committed, and lock the implementation boundary.
 3. Work one scoped node at a time through Starlight implementation, marketing bridge polish, local validation, push, Vercel setup, preview validation, and closeout.
 4. Use Chrome for first Vercel project setup and Vercel tools for read-only inventory, deployments, and build logs afterward.
-5. Stop before DNS, production promotion, npm publish, tag, analytics activation, or public launch.
+5. During Vercel/GitHub setup, select/import/authorize only `nickreames/mdkg`; broader repository access requires a stop-and-ask approval.
+6. Stop before DNS, production promotion, npm publish, tag, analytics activation, or public launch.
 
 # Required Skills
 
@@ -110,6 +114,7 @@ This goal is achieved only when all of the following are true:
 - Chrome/Vercel requires an irreversible production choice, payment/plan change, custom-domain binding, or credential disclosure.
 - `git push origin main` is rejected or would require force-push.
 - Vercel project creation cannot be completed without user authentication or account selection.
+- Vercel or GitHub asks to import, authorize, expose, or grant access to any repository other than `nickreames/mdkg`.
 - Any step would publish npm, create a git tag, change DNS, promote production, activate analytics, or publicly launch the site without explicit later approval.
 
 # Current State

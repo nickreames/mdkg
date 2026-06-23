@@ -30,6 +30,8 @@ Start the future implementation pass from a clean boundary. This task exists so 
 - `goal-28` is activated only when the user explicitly asks to execute it.
 - Current git status and remote/ahead state are recorded before implementation.
 - The executor confirms this creation-only commit exists before editing `docs/` or `mdkg-dev/`.
+- The executor confirms Chrome is approved for first Vercel project setup and Vercel tools are approved for deployment/log verification.
+- The executor confirms GitHub/Vercel setup is limited to repository `nickreames/mdkg`; broader repo access is a stop-and-ask condition.
 - Stop conditions are restated: no DNS, production promotion, npm publish, tag, analytics activation, or public launch.
 
 # Files Affected
