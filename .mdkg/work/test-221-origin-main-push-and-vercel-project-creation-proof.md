@@ -37,12 +37,14 @@ Validate that implementation is pushed to `origin/main` and Vercel preview proje
 - Local implementation gates passed.
 - User has authorized pushing `main` for the future execution pass.
 - Chrome/Vercel auth is available.
+- GitHub/Vercel repository access is limited to `nickreames/mdkg`; broader repo authorization requires explicit approval.
 
 # Test Cases
 
 - `git push origin main` succeeds without force.
 - Vercel team `team_RkZhrKQs9wWs6PAdTcrwZ87z` contains project `mdkg-dev` with root `mdkg-dev`.
 - Vercel team contains project `mdkg-docs` with root `docs`.
+- Both projects are connected only to GitHub repository `nickreames/mdkg`.
 - Both projects use build `npm run build` and output `dist`.
 - Both projects have successful preview deployments.
 
@@ -53,3 +55,4 @@ Pending future execution.
 # Notes / Follow-ups
 
 - If push requires force or Vercel requires irreversible account/payment choices, stop and re-plan.
+- If Vercel or GitHub asks to import, authorize, or expose any repository other than `nickreames/mdkg`, stop and ask for explicit approval.

@@ -30,6 +30,7 @@ Create the marketing Vercel preview project through Chrome UI.
 - Project name is `mdkg-dev`.
 - Team is `Nicholas Reames' projects` / `team_RkZhrKQs9wWs6PAdTcrwZ87z`.
 - Repository is `nickreames/mdkg`.
+- Only GitHub repository `nickreames/mdkg` is selected/imported/authorized for this project setup.
 - Root directory is `mdkg-dev`.
 - Framework preset is Astro if offered.
 - Build command is `npm run build`.
@@ -45,6 +46,7 @@ List files/directories expected to change.
 # Implementation Notes
 
 - Use Chrome for setup because project/root settings need visual confirmation.
+- If Vercel or GitHub asks for broader repository access than `nickreames/mdkg`, stop and ask for explicit approval.
 - Do not bind `mdkg.dev` or `www.mdkg.dev` domains in this task.
 
 # Test Plan
