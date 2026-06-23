@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ClaimEvidenceCard from "../components/ClaimEvidenceCard.astro";
+---
+
+<BaseLayout title="mdkg Trust Boundaries" description="What Markdown Knowledge Graph does and does not do.">
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Trust boundaries"
+        level="h1"
+        title="Durable semantic memory, not an executor."
+        text="The launch site should be direct about boundaries. These statements protect user trust and keep advanced alpha surfaces in the right lane."
+      />
+      <div class="grid two">
+        <ClaimEvidenceCard claim="Markdown remains authoritative" evidence="Graph nodes are committed Markdown and frontmatter. Indexes are rebuildable." />
+        <ClaimEvidenceCard claim="mdkg does not execute work" evidence="Packs and handoffs guide humans or agents; execution happens outside mdkg." />
+        <ClaimEvidenceCard claim="Read-only MCP" evidence="The MCP server exposes inspection tools, not broad mutation, shell, SQL, or environment access." />
+        <ClaimEvidenceCard claim="Safety warnings are not DLP" evidence="Handoff raw-marker warnings and no-secret checks are aids, not comprehensive secret scanning." />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

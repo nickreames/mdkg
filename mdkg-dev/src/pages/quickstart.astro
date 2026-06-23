@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import TerminalBlock from "../components/TerminalBlock.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+---
+
+<BaseLayout title="mdkg Quickstart" description="Install and run the first Markdown Knowledge Graph loop.">
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Quickstart"
+        level="h1"
+        title="Initialize, index, inspect, validate."
+        text="This path is intentionally small. It proves mdkg is installed, creates repo-local project memory, builds the index cache, and verifies graph health."
+      />
+      <div class="grid two">
+        <TerminalBlock
+          title="Install and first run"
+          commands={["npm install -g mdkg", "mdkg --version", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate"]}
+        />
+        <div class="grid">
+          <FeatureCard title="Node requirement" text="mdkg uses modern Node capabilities. Public docs should state Node >=24.15.0." command="node --version" />
+          <FeatureCard title="Build context" text="After the graph exists, use show/search/next to find work and pack to give an agent deterministic context." command="mdkg pack <id>" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

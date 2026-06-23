@@ -1,0 +1,35 @@
+---
+const { tone = "blue" } = Astro.props;
+---
+
+<span class={`badge ${tone}`}>
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px 9px;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .blue {
+    color: var(--blue-700);
+    background: var(--sky-50);
+  }
+
+  .teal {
+    color: #0f766e;
+    background: var(--teal-50);
+  }
+
+  .neutral {
+    color: var(--zinc-700);
+    background: var(--zinc-50);
+  }
+</style>

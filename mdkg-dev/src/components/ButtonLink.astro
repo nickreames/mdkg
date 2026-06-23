@@ -1,0 +1,40 @@
+---
+type Variant = "primary" | "secondary" | "ghost";
+const { href, variant = "primary" } = Astro.props as { href: string; variant?: Variant };
+---
+
+<a class={`button ${variant}`} href={href}>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--radius);
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .primary {
+    color: white;
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--blue-700), var(--sky-500), var(--teal-500));
+  }
+
+  .secondary {
+    color: var(--zinc-950);
+    background: var(--white);
+  }
+
+  .ghost {
+    color: var(--zinc-700);
+    background: transparent;
+  }
+</style>

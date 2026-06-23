@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+---
+
+<BaseLayout title="mdkg Docs" description="Documentation entry points for Markdown Knowledge Graph.">
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Docs"
+        level="h1"
+        title="Repo-owned docs, GitBook-ready source."
+        text="The mdkg repo remains the canonical docs source. GitBook is the intended renderer/sync target for the public documentation surface."
+      />
+      <div class="grid three">
+        <FeatureCard title="Start here" text="Overview, install, quickstart, safety boundaries, and public alpha contract." />
+        <FeatureCard title="Guides" text="Agent workflows, deterministic packs, goals, spikes, checkpoints, handoffs, skills, and validation." />
+        <FeatureCard title="Reference" text="Generated CLI command reference, output formats, node fields, config, and generated caches." />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

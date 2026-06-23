@@ -1,0 +1,87 @@
+---
+const groups = [
+  {
+    title: "Product",
+    links: [
+      { href: "/", label: "Home" },
+      { href: "/quickstart/", label: "Quickstart" },
+      { href: "/docs/", label: "Docs" },
+      { href: "https://www.npmjs.com/package/mdkg", label: "npm" }
+    ]
+  },
+  {
+    title: "Learn",
+    links: [
+      { href: "/trust/", label: "Trust boundaries" },
+      { href: "/alpha/", label: "Public alpha" },
+      { href: "/llms.txt", label: "llms.txt" },
+      { href: "https://github.com/nickreames/mdkg", label: "GitHub" }
+    ]
+  }
+];
+---
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <strong>Markdown Knowledge Graph</strong>
+      <p>Git-native project memory for AI-native software engineering.</p>
+    </div>
+    {groups.map((group) => (
+      <div>
+        <h2>{group.title}</h2>
+        <ul>
+          {group.links.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: 42px 0;
+    border-top: 1px solid var(--border);
+    background: var(--zinc-50);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(160px, 0.5fr));
+    gap: 28px;
+  }
+
+  p,
+  a {
+    color: var(--zinc-600);
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    display: grid;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--blue-700);
+  }
+
+  @media (max-width: 700px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

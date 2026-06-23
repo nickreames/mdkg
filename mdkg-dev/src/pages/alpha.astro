@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import FeatureCard from "../components/FeatureCard.astro";
+---
+
+<BaseLayout title="mdkg Public Alpha" description="Markdown Knowledge Graph public alpha status and caveats.">
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Public alpha"
+        level="h1"
+        title="Usable today, still pre-v1."
+        text="Markdown Knowledge Graph is a developer preview and pre-v1 public alpha. Graph, cache, bundle, and database contracts may change before v1, while Markdown files remain the durable source of truth."
+      />
+      <div class="grid three">
+        <FeatureCard title="Stable enough to try" text="The golden path is install, init, index, status, pack, checkpoint, handoff, and validate." />
+        <FeatureCard title="Advanced surfaces evolve" text="Project DB, queues, subgraphs, bundles, graph movement, workflow mirrors, and MCP are advanced alpha surfaces." />
+        <FeatureCard title="Upgrade deliberately" text="Use mdkg upgrade dry-runs, validation, and changelog notes before changing existing repos." />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

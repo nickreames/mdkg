@@ -1,0 +1,24 @@
+---
+const { claim, evidence, caveat } = Astro.props as { claim: string; evidence: string; caveat?: string };
+---
+
+<article class="claim-card">
+  <h3>{claim}</h3>
+  <p><strong>Evidence:</strong> {evidence}</p>
+  {caveat && <p><strong>Caveat:</strong> {caveat}</p>}
+</article>
+
+<style>
+  .claim-card {
+    display: grid;
+    gap: 10px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--zinc-50);
+  }
+
+  p {
+    color: var(--zinc-700);
+  }
+</style>
