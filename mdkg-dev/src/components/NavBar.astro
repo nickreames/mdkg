@@ -1,0 +1,71 @@
+---
+const links = [
+  { href: "/quickstart/", label: "Quickstart" },
+  { href: "/trust/", label: "Trust" },
+  { href: "/alpha/", label: "Alpha" },
+  { href: "/docs/", label: "Docs" }
+];
+---
+
+<nav class="nav" aria-label="Main navigation">
+  <a class="brand" href="/">
+    <img src="/favicon.svg" alt="" width="28" height="28" />
+    <span>mdkg</span>
+  </a>
+  <div class="links">
+    {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    <a href="https://github.com/nickreames/mdkg">GitHub</a>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    width: min(1120px, calc(100% - 32px));
+    min-height: 68px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .brand,
+  .links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand {
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .links {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .links a {
+    color: var(--zinc-700);
+    font-size: 0.94rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--blue-700);
+  }
+
+  @media (max-width: 680px) {
+    .nav {
+      align-items: flex-start;
+      flex-direction: column;
+      padding: 16px 0;
+    }
+
+    .links {
+      justify-content: flex-start;
+    }
+  }
+</style>

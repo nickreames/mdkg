@@ -1,0 +1,25 @@
+---
+import ButtonLink from "./ButtonLink.astro";
+
+const {
+  primaryHref = "/quickstart/",
+  secondaryHref = "https://github.com/nickreames/mdkg",
+  tertiaryHref = "/docs/"
+} = Astro.props;
+---
+
+<div class="cta-group" aria-label="Primary actions">
+  <ButtonLink href={primaryHref}>Get started</ButtonLink>
+  <ButtonLink href={secondaryHref} variant="secondary">View GitHub</ButtonLink>
+  <ButtonLink href={tertiaryHref} variant="ghost">Read docs</ButtonLink>
+</div>
+
+<style>
+  .cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-top: 28px;
+  }
+</style>

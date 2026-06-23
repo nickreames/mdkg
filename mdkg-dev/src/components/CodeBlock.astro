@@ -1,0 +1,38 @@
+---
+const { title, code } = Astro.props as { title?: string; code: string };
+---
+
+<figure class="code-block">
+  {title && <figcaption>{title}</figcaption>}
+  <pre><code>{code}</code></pre>
+</figure>
+
+<style>
+  .code-block {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    border-radius: var(--radius);
+    background: #0f172a;
+  }
+
+  figcaption {
+    padding: 10px 14px;
+    color: #bae6fd;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  pre {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  code {
+    color: #e0f2fe;
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+</style>

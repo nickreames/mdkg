@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Markdown Knowledge Graph social card">
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <rect x="70" y="70" width="1060" height="490" rx="24" fill="#ffffff" stroke="#d4d4d8" stroke-width="2"/>
+  <path d="M100 126h210l90 150 90-150h210v376H560V238L430 438h-62L240 238v264H100V126z" fill="#0f172a"/>
+  <path d="M740 170h300" stroke="#1d4ed8" stroke-width="22" stroke-linecap="round"/>
+  <path d="M740 240h240" stroke="#0ea5e9" stroke-width="22" stroke-linecap="round"/>
+  <path d="M740 310h270" stroke="#14b8a6" stroke-width="22" stroke-linecap="round"/>
+  <text x="100" y="556" fill="#18181b" font-family="Arial, sans-serif" font-size="46" font-weight="700">Git-native project memory for AI-native software engineering</text>
+</svg>

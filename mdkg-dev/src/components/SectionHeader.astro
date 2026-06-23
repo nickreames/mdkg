@@ -1,0 +1,33 @@
+---
+const {
+  eyebrow,
+  title,
+  text,
+  level = "h2"
+} = Astro.props as { eyebrow?: string; title: string; text?: string; level?: "h1" | "h2" };
+---
+
+<header class="section-header">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  {level === "h1" ? <h1>{title}</h1> : <h2>{title}</h2>}
+  {text && <p>{text}</p>}
+</header>
+
+<style>
+  .section-header {
+    display: grid;
+    gap: 14px;
+    max-width: 780px;
+    margin-bottom: 28px;
+  }
+
+  .section-header > p:not(.eyebrow) {
+    color: var(--zinc-700);
+    font-size: 1.06rem;
+  }
+
+  .section-header h1 {
+    max-width: 14ch;
+    font-size: clamp(2.3rem, 5vw, 4.4rem);
+  }
+</style>

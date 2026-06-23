@@ -1,0 +1,35 @@
+---
+const { title, text, command } = Astro.props as { title: string; text: string; command?: string };
+---
+
+<article class="feature-card">
+  <h3>{title}</h3>
+  <p>{text}</p>
+  {command && <code>{command}</code>}
+</article>
+
+<style>
+  .feature-card {
+    display: grid;
+    gap: 12px;
+    min-height: 180px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  p {
+    color: var(--zinc-600);
+  }
+
+  code {
+    width: fit-content;
+    align-self: end;
+    padding: 7px 9px;
+    border-radius: var(--radius);
+    color: var(--blue-700);
+    background: var(--sky-50);
+    font-size: 0.82rem;
+  }
+</style>
