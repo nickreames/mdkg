@@ -47,17 +47,29 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
     fail("package.json is missing smoke:warning-ux");
   }
+  for (const scriptName of ["smoke:mdkg-dev", "smoke:mdkg-dev-docs", "smoke:mdkg-dev-seo", "smoke:demo-graph", "docs:check"]) {
+    if (!pkg.scripts || !pkg.scripts[scriptName]) {
+      fail(`package.json is missing ${scriptName}`);
+    }
+  }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
     fail("prepublishOnly is missing smoke:db-queue-cli");
   }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff")) {
     fail("prepublishOnly is missing smoke:handoff");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:warning-ux && npm run smoke:integration-ux && npm run smoke:bundle")) {
-    fail("prepublishOnly must run smoke:warning-ux before smoke:integration-ux before smoke:bundle");
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:warning-ux && npm run smoke:integration-ux")) {
+    fail("prepublishOnly must run smoke:warning-ux before smoke:integration-ux");
   }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff && npm run smoke:warning-ux && npm run smoke:integration-ux")) {
     fail("prepublishOnly must run smoke:warning-ux between smoke:handoff and smoke:integration-ux");
+  }
+  if (
+    !String(pkg.scripts.prepublishOnly || "").includes(
+      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:demo-graph && npm run smoke:bundle"
+    )
+  ) {
+    fail("prepublishOnly must run mdkg.dev smokes after smoke:integration-ux and before smoke:bundle");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:cli-ux-polish"]) {
     fail("package.json is missing smoke:cli-ux-polish");
@@ -454,6 +466,16 @@ function requireInitAssets() {
   }
   const rootReadme = requireFile("README.md");
   const normalizedRootReadme = rootReadme.replace(/\s+/g, " ");
+  if (
+    !rootReadme.includes("mdkg-dev/") ||
+    !rootReadme.includes("docs/") ||
+    !rootReadme.includes("examples/") ||
+    !rootReadme.includes("npm run smoke:mdkg-dev") ||
+    !rootReadme.includes("npm run smoke:demo-graph") ||
+    !rootReadme.includes("durable `demo-N.mdkg.dev` promotion")
+  ) {
+    fail("README.md is missing mdkg.dev launch workspace guidance");
+  }
   if (!rootReadme.includes("mdkg status --json") || !rootReadme.includes("mdkg doctor --strict --json")) {
     fail("README.md is missing operator health guidance");
   }
@@ -511,6 +533,16 @@ function requireInitAssets() {
     fail("README.md is missing project DB queue adapter contract guidance");
   }
   const matrix = requireFile("CLI_COMMAND_MATRIX.md");
+  if (
+    !matrix.includes("npm run smoke:mdkg-dev") ||
+    !matrix.includes("npm run smoke:mdkg-dev-docs") ||
+    !matrix.includes("npm run smoke:mdkg-dev-seo") ||
+    !matrix.includes("npm run smoke:demo-graph") ||
+    !matrix.includes("demo_agentic_coding:goal-1") ||
+    !matrix.includes("template_mdkg_dev:goal-1")
+  ) {
+    fail("CLI_COMMAND_MATRIX.md is missing mdkg.dev launch-readiness references");
+  }
   if (!matrix.includes("mdkg status [--json]") || !matrix.includes("mdkg doctor [--strict] [--json]")) {
     fail("CLI_COMMAND_MATRIX.md is missing operator health command references");
   }
@@ -655,6 +687,49 @@ function requireInitAssets() {
   ]) {
     if (!smokeCommandDocs.includes(expected)) {
       fail(`scripts/smoke-command-docs.js is missing ${expected} proof`);
+    }
+  }
+  const smokeMdkgDev = requireFile("scripts/smoke-mdkg-dev.js");
+  for (const expected of ["buildSite", "llms-full.txt", "social-card.svg", "Git-native project memory"]) {
+    if (!smokeMdkgDev.includes(expected)) {
+      fail(`scripts/smoke-mdkg-dev.js is missing ${expected} proof`);
+    }
+  }
+  const smokeMdkgDevDocs = requireFile("scripts/smoke-mdkg-dev-docs.js");
+  for (const expected of ["docs:check", "SUMMARY.md", "cli-reference.md", "assertMarkdownLinks"]) {
+    if (!smokeMdkgDevDocs.includes(expected)) {
+      fail(`scripts/smoke-mdkg-dev-docs.js is missing ${expected} proof`);
+    }
+  }
+  const smokeMdkgDevSeo = requireFile("scripts/smoke-mdkg-dev-seo.js");
+  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt"]) {
+    if (!smokeMdkgDevSeo.includes(expected)) {
+      fail(`scripts/smoke-mdkg-dev-seo.js is missing ${expected} proof`);
+    }
+  }
+  const smokeDemoGraph = requireFile("scripts/smoke-demo-graph.js");
+  for (const expected of ["demo_agentic_coding", "template_mdkg_dev", "goal next", "subgraph", "read_only"]) {
+    if (!smokeDemoGraph.includes(expected)) {
+      fail(`scripts/smoke-demo-graph.js is missing ${expected} proof`);
+    }
+  }
+  requireDir("mdkg-dev");
+  requireFile("mdkg-dev/package.json");
+  requireFile("mdkg-dev/astro.config.mjs");
+  requireFile("mdkg-dev/CLAIMS.md");
+  requireFile("mdkg-dev/DESIGN.md");
+  requireDir("docs");
+  requireFile("docs/SUMMARY.md");
+  requireFile("docs/_generated/cli-reference.md");
+  requireFile("docs/project/claims-evidence-matrix.md");
+  requireDir("examples/demo-agentic-coding/.mdkg");
+  requireDir("examples/template-mdkg-dev/.mdkg");
+  requireFile(".mdkg/bundles/private/examples/demo-agentic-coding.mdkg.zip");
+  requireFile(".mdkg/bundles/private/examples/template-mdkg-dev.mdkg.zip");
+  const npmignore = requireFile(".npmignore");
+  for (const expected of ["mdkg-dev/", "docs/", "examples/", "mdkg_planning_docs/"]) {
+    if (!npmignore.includes(expected)) {
+      fail(`.npmignore is missing ${expected}`);
     }
   }
 }

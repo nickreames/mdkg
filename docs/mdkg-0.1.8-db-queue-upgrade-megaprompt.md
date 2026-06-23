@@ -151,15 +151,15 @@ Execution plan:
 
 Suggested repo-specific emphasis:
 
-- `/Users/nick/git/omni-web`: preserve JSON index mode unless the user opts into
+- `<repo:omni-web>`: preserve JSON index mode unless the user opts into
   SQLite; separate upgrade work from any existing graph validation holes.
-- `/Users/nick/git/ochatr-ai-go`: preserve backend semantic mirror boundaries;
+- `<repo:ochatr-ai-go>`: preserve backend semantic mirror boundaries;
   keep raw secrets, live provider tokens, and runtime observability state out of
   mdkg.
-- `/Users/nick/omni-chat-rooms/projects/omni-room-runtime`: preserve runtime
+- `<repo:omni-room-runtime>`: preserve runtime
   contract fixtures and generated artifacts; validate mdkg graph health without
   rewriting runtime-owned state.
-- `/Users/nick/omni-chat-rooms`: apply root repo changes conservatively and do
+- `<repo:root-orchestrator>`: apply root repo changes conservatively and do
   not mutate child repo submodules unless explicitly requested.
 
 ## Changelog For Consumer Repos

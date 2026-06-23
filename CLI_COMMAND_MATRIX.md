@@ -12,6 +12,18 @@ This file is the one place humans and LLMs should check for the live mdkg comman
 Verification commands:
 - `npm run cli:snapshot`
 - `npm run cli:check`
+- `npm run docs:check`
+- `npm run smoke:mdkg-dev`
+- `npm run smoke:mdkg-dev-docs`
+- `npm run smoke:mdkg-dev-seo`
+- `npm run smoke:demo-graph`
+
+mdkg.dev launch-readiness surfaces in this repo:
+- `mdkg-dev/` is the Astro static-site subproject.
+- `docs/` is the repo-first GitBook documentation source plus generated command-reference output.
+- `examples/` contains local mdkg demo/template graphs for agentic-coding and website-generation demos.
+- `demo_agentic_coding:goal-1` and `template_mdkg_dev:goal-1` are private read-only subgraph qids after the root bundles are registered.
+- Site/docs/demo assets are not npm runtime payload and must not imply production deploy, DNS change, analytics activation, or durable demo promotion.
 
 ## Teaching model
 

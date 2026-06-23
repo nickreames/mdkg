@@ -18,6 +18,26 @@ Current package version in source: `0.3.7`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
+## mdkg.dev launch workspace
+
+This repo now owns the prelaunch mdkg.dev source layout:
+
+- `mdkg-dev/` is the Astro static-site subproject for the canonical public site.
+- `docs/` is the repo-first GitBook documentation source plus generated command-reference output.
+- `examples/` contains local demo/template mdkg graphs for agentic coding and mdkg.dev website-generation demos.
+
+These surfaces are intentionally excluded from the npm package payload. They are source and launch-readiness assets, not runtime CLI dependencies. The launch gates are local and deterministic:
+
+```bash
+npm run docs:check
+npm run smoke:mdkg-dev
+npm run smoke:mdkg-dev-docs
+npm run smoke:mdkg-dev-seo
+npm run smoke:demo-graph
+```
+
+The canonical site remains `mdkg.dev`. Demo graphs and preview deploys are separate from canonical SEO; durable `demo-N.mdkg.dev` promotion and any production deployment require explicit later approval.
+
 ## The product shape
 
 mdkg has one core job: make repo knowledge cheap to retrieve and safe to reuse.
