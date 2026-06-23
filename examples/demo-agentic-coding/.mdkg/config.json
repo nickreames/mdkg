@@ -22,7 +22,7 @@
     "default_profile": "private"
   },
   "db": {
-    "enabled": true,
+    "enabled": false,
     "schema_version": 1,
     "root_path": ".mdkg/db",
     "schema_path": ".mdkg/db/schema",
@@ -32,38 +32,7 @@
     "receipts_path": ".mdkg/db/receipts",
     "migration_table": "mdkg_schema_migration"
   },
-  "subgraphs": {
-    "demo_agentic_coding": {
-      "enabled": true,
-      "visibility": "private",
-      "permissions": [
-        "read"
-      ],
-      "max_stale_seconds": 2592000,
-      "sources": [
-        {
-          "path": ".mdkg/bundles/private/examples/demo-agentic-coding.mdkg.zip",
-          "enabled": true,
-          "expected_profile": "private"
-        }
-      ]
-    },
-    "template_mdkg_dev": {
-      "enabled": true,
-      "visibility": "private",
-      "permissions": [
-        "read"
-      ],
-      "max_stale_seconds": 2592000,
-      "sources": [
-        {
-          "path": ".mdkg/bundles/private/examples/template-mdkg-dev.mdkg.zip",
-          "enabled": true,
-          "expected_profile": "private"
-        }
-      ]
-    }
-  },
+  "subgraphs": {},
   "pack": {
     "default_depth": 2,
     "default_edges": [

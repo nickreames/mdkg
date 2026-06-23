@@ -1,0 +1,1195 @@
+{
+  "meta": {
+    "tool": "mdkg",
+    "schema_version": 1,
+    "cache_version": 1,
+    "generated_at": "2026-06-23T02:03:25.619Z",
+    "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/template-mdkg-dev",
+    "workspaces": [
+      "root"
+    ],
+    "record_count": 15
+  },
+  "records": [
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-1",
+      "qid": "root:rule-1",
+      "path": ".mdkg/core/rule-1-mdkg-conventions.md",
+      "title": "mdkg conventions (naming, ids, frontmatter, status, priority, templates)",
+      "tags": [
+        "conventions",
+        "mdkg",
+        "spec"
+      ],
+      "refs": [],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-03-05",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:15f886e6661046de45ad798c292d74cc1ff3cc14c8cfcc82ed0b8c35635d0477",
+      "headings": [
+        {
+          "level": 1,
+          "text": "mdkg conventions"
+        },
+        {
+          "level": 2,
+          "text": "Principles"
+        },
+        {
+          "level": 2,
+          "text": "Root-only operation"
+        },
+        {
+          "level": 2,
+          "text": "Workspaces"
+        },
+        {
+          "level": 2,
+          "text": "File naming"
+        },
+        {
+          "level": 2,
+          "text": "Node types and prefixes"
+        },
+        {
+          "level": 2,
+          "text": "IDs"
+        },
+        {
+          "level": 2,
+          "text": "Status"
+        },
+        {
+          "level": 2,
+          "text": "Priority"
+        },
+        {
+          "level": 2,
+          "text": "Frontmatter (restricted subset)"
+        },
+        {
+          "level": 2,
+          "text": "Required fields"
+        },
+        {
+          "level": 2,
+          "text": "Graph edges"
+        },
+        {
+          "level": 2,
+          "text": "Templates"
+        },
+        {
+          "level": 2,
+          "text": "Checkpoints"
+        },
+        {
+          "level": 2,
+          "text": "Index and cache"
+        },
+        {
+          "level": 2,
+          "text": "Safety guidance (high level)"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-2",
+      "qid": "root:rule-2",
+      "path": ".mdkg/core/rule-2-context-pack-rules.md",
+      "title": "mdkg context pack rules (selection, ordering, verbose, checkpoints)",
+      "tags": [
+        "agents",
+        "mdkg",
+        "pack",
+        "spec"
+      ],
+      "refs": [],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-01-14",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f",
+      "headings": [
+        {
+          "level": 1,
+          "text": "mdkg context pack rules"
+        },
+        {
+          "level": 2,
+          "text": "Goals"
+        },
+        {
+          "level": 2,
+          "text": "Command (conceptual)"
+        },
+        {
+          "level": 2,
+          "text": "Node selection"
+        },
+        {
+          "level": 3,
+          "text": "Root node"
+        },
+        {
+          "level": 3,
+          "text": "Default depth"
+        },
+        {
+          "level": 3,
+          "text": "Default edges"
+        },
+        {
+          "level": 3,
+          "text": "Traversal method"
+        },
+        {
+          "level": 2,
+          "text": "Ordering rules"
+        },
+        {
+          "level": 3,
+          "text": "Task-root ordering (recommended default)"
+        },
+        {
+          "level": 3,
+          "text": "Non-task root ordering (fallback)"
+        },
+        {
+          "level": 3,
+          "text": "Tie-breakers (stable determinism)"
+        },
+        {
+          "level": 2,
+          "text": "Verbose mode (`--verbose`)"
+        },
+        {
+          "level": 2,
+          "text": "Checkpoints (compression nodes)"
+        },
+        {
+          "level": 3,
+          "text": "Recommended checkpoint frontmatter fields"
+        },
+        {
+          "level": 3,
+          "text": "Pack behavior with checkpoints"
+        },
+        {
+          "level": 2,
+          "text": "Limits"
+        },
+        {
+          "level": 2,
+          "text": "Export formats"
+        },
+        {
+          "level": 3,
+          "text": "Markdown (`--format md`)"
+        },
+        {
+          "level": 3,
+          "text": "JSON (`--format json`)"
+        },
+        {
+          "level": 3,
+          "text": "TOON (`--format toon`)"
+        },
+        {
+          "level": 3,
+          "text": "XML (`--format xml`)"
+        },
+        {
+          "level": 2,
+          "text": "Determinism requirements"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-3",
+      "qid": "root:rule-3",
+      "path": ".mdkg/core/rule-3-cli-contract.md",
+      "title": "mdkg cli contract (root-only, commands, flags, exit codes)",
+      "tags": [
+        "cli",
+        "contract",
+        "mdkg",
+        "spec"
+      ],
+      "refs": [],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-05-17",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:f61b84ff6e5abae91365c4f623ccbd78f25dfcfef09822fefb3abf0119d65739",
+      "headings": [
+        {
+          "level": 1,
+          "text": "mdkg CLI contract"
+        },
+        {
+          "level": 2,
+          "text": "Root-only requirement"
+        },
+        {
+          "level": 3,
+          "text": "`--root`"
+        },
+        {
+          "level": 2,
+          "text": "Case normalization"
+        },
+        {
+          "level": 2,
+          "text": "Cache / auto reindex (default)"
+        },
+        {
+          "level": 3,
+          "text": "Flags"
+        },
+        {
+          "level": 2,
+          "text": "Workspace behavior"
+        },
+        {
+          "level": 2,
+          "text": "Exit codes (v1)"
+        },
+        {
+          "level": 2,
+          "text": "Output conventions"
+        },
+        {
+          "level": 2,
+          "text": "Command set (v1 target)"
+        },
+        {
+          "level": 3,
+          "text": "Initialization"
+        },
+        {
+          "level": 3,
+          "text": "Guide"
+        },
+        {
+          "level": 3,
+          "text": "Workspace management (registered, no discovery)"
+        },
+        {
+          "level": 3,
+          "text": "Indexing"
+        },
+        {
+          "level": 3,
+          "text": "Create nodes"
+        },
+        {
+          "level": 3,
+          "text": "Goal commands"
+        },
+        {
+          "level": 3,
+          "text": "Read/search"
+        },
+        {
+          "level": 3,
+          "text": "Task lifecycle mutation"
+        },
+        {
+          "level": 3,
+          "text": "Packs (core feature)"
+        },
+        {
+          "level": 3,
+          "text": "Next priority"
+        },
+        {
+          "level": 3,
+          "text": "Checkpoints"
+        },
+        {
+          "level": 3,
+          "text": "Events"
+        },
+        {
+          "level": 3,
+          "text": "Validation and formatting"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-4",
+      "qid": "root:rule-4",
+      "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+      "title": "mdkg repo safety (ignore rules, publish safety, deployment safety)",
+      "tags": [
+        "mdkg",
+        "publishing",
+        "safety"
+      ],
+      "refs": [],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-06-03",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Repo safety and ignores"
+        },
+        {
+          "level": 2,
+          "text": "Safety goals"
+        },
+        {
+          "level": 2,
+          "text": "Git ignore requirements"
+        },
+        {
+          "level": 2,
+          "text": "npm publish safety (required)"
+        },
+        {
+          "level": 2,
+          "text": "Container and deployment safety (recommended)"
+        },
+        {
+          "level": 2,
+          "text": "mdkg init behavior"
+        },
+        {
+          "level": 2,
+          "text": "Index safety"
+        },
+        {
+          "level": 2,
+          "text": "Project DB safety"
+        },
+        {
+          "level": 2,
+          "text": "Bundle safety"
+        },
+        {
+          "level": 2,
+          "text": "Archive safety"
+        },
+        {
+          "level": 2,
+          "text": "Workspace safety"
+        },
+        {
+          "level": 2,
+          "text": "Summary checklist"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-5",
+      "qid": "root:rule-5",
+      "path": ".mdkg/core/rule-5-release-and-versioning.md",
+      "title": "mdkg release and versioning (semver, publish checklist)",
+      "tags": [
+        "mdkg",
+        "npm",
+        "release",
+        "semver"
+      ],
+      "refs": [],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-01-14",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Release and versioning"
+        },
+        {
+          "level": 2,
+          "text": "SemVer policy"
+        },
+        {
+          "level": 2,
+          "text": "Release artifacts"
+        },
+        {
+          "level": 2,
+          "text": "Release checklist (v1)"
+        },
+        {
+          "level": 2,
+          "text": "Release notes guidance"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-6",
+      "qid": "root:rule-6",
+      "path": ".mdkg/core/rule-6-templates-and-schemas.md",
+      "title": "mdkg templates and schemas (global templates, required frontmatter, body guidance)",
+      "tags": [
+        "mdkg",
+        "schema",
+        "templates"
+      ],
+      "refs": [],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-03-05",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Templates and schemas"
+        },
+        {
+          "level": 2,
+          "text": "Global templates (v1)"
+        },
+        {
+          "level": 3,
+          "text": "Template sets"
+        },
+        {
+          "level": 2,
+          "text": "Token substitution"
+        },
+        {
+          "level": 2,
+          "text": "Frontmatter requirements by type"
+        },
+        {
+          "level": 2,
+          "text": "Body headings (guidance only)"
+        },
+        {
+          "level": 3,
+          "text": "Task / bug template headings (recommended)"
+        },
+        {
+          "level": 3,
+          "text": "Test template headings (recommended)"
+        },
+        {
+          "level": 3,
+          "text": "Epic template headings (recommended)"
+        },
+        {
+          "level": 3,
+          "text": "Checkpoint template headings (recommended)"
+        },
+        {
+          "level": 3,
+          "text": "PRD headings (recommended)"
+        },
+        {
+          "level": 3,
+          "text": "EDD headings (recommended)"
+        },
+        {
+          "level": 3,
+          "text": "Decision record headings (recommended)"
+        },
+        {
+          "level": 2,
+          "text": "Validation behavior"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-guide",
+      "qid": "root:rule-guide",
+      "path": ".mdkg/core/guide.md",
+      "title": "agent guide (how to work in this repo using mdkg)",
+      "tags": [
+        "agents",
+        "mdkg",
+        "workflow"
+      ],
+      "refs": [],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-05-14",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Agent guide"
+        },
+        {
+          "level": 2,
+          "text": "Quickstart"
+        },
+        {
+          "level": 2,
+          "text": "Core commands"
+        },
+        {
+          "level": 2,
+          "text": "Always start with a pack"
+        },
+        {
+          "level": 2,
+          "text": "Keep frontmatter valid and searchable"
+        },
+        {
+          "level": 2,
+          "text": "Update the right fields"
+        },
+        {
+          "level": 2,
+          "text": "Work item discipline"
+        },
+        {
+          "level": 2,
+          "text": "Use checkpoints to compress phases"
+        },
+        {
+          "level": 2,
+          "text": "Validate frequently"
+        },
+        {
+          "level": 2,
+          "text": "Indexing behavior"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-human",
+      "qid": "root:rule-human",
+      "path": ".mdkg/core/HUMAN.md",
+      "title": "human working profile and collaboration preferences",
+      "tags": [
+        "human",
+        "collaboration",
+        "preferences"
+      ],
+      "refs": [],
+      "aliases": [
+        "human"
+      ],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-03-10",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:75d2e015cd5ba61062cb84246017ee4f4221610d4a56e4a0b332271b90694965",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Purpose"
+        },
+        {
+          "level": 1,
+          "text": "Scope"
+        },
+        {
+          "level": 1,
+          "text": "Requirements"
+        },
+        {
+          "level": 1,
+          "text": "Notes"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "core",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "rule-soul",
+      "qid": "root:rule-soul",
+      "path": ".mdkg/core/SOUL.md",
+      "title": "agent soul and execution contract",
+      "tags": [
+        "agent",
+        "llm",
+        "memory",
+        "constraints",
+        "context-window"
+      ],
+      "refs": [
+        "edd-3",
+        "edd-6",
+        "rule-3",
+        "rule-4",
+        "rule-5"
+      ],
+      "aliases": [
+        "soul",
+        "system-contract"
+      ],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-03-10",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Identity"
+        },
+        {
+          "level": 1,
+          "text": "Scope"
+        },
+        {
+          "level": 1,
+          "text": "Purpose"
+        },
+        {
+          "level": 1,
+          "text": "Core Goals"
+        },
+        {
+          "level": 1,
+          "text": "Working Reality"
+        },
+        {
+          "level": 2,
+          "text": "Context Window"
+        },
+        {
+          "level": 2,
+          "text": "Truth Hierarchy"
+        },
+        {
+          "level": 1,
+          "text": "Memory Model"
+        },
+        {
+          "level": 2,
+          "text": "Semantic Memory"
+        },
+        {
+          "level": 2,
+          "text": "Procedural Memory"
+        },
+        {
+          "level": 2,
+          "text": "Episodic Memory"
+        },
+        {
+          "level": 1,
+          "text": "Retrieval Contract"
+        },
+        {
+          "level": 2,
+          "text": "Default Retrieval Order"
+        },
+        {
+          "level": 2,
+          "text": "Retrieval Discipline"
+        },
+        {
+          "level": 1,
+          "text": "Persistence Contract"
+        },
+        {
+          "level": 2,
+          "text": "Durable Memory"
+        },
+        {
+          "level": 2,
+          "text": "Event Logging"
+        },
+        {
+          "level": 2,
+          "text": "Checkpoints"
+        },
+        {
+          "level": 1,
+          "text": "Single-Writer Discipline"
+        },
+        {
+          "level": 1,
+          "text": "Behavioral Constraints"
+        },
+        {
+          "level": 2,
+          "text": "Always"
+        },
+        {
+          "level": 2,
+          "text": "Never"
+        },
+        {
+          "level": 2,
+          "text": "When Uncertain"
+        },
+        {
+          "level": 1,
+          "text": "Tone and Personality"
+        },
+        {
+          "level": 1,
+          "text": "End State"
+        }
+      ],
+      "node_type": "rule"
+    },
+    {
+      "kind": "design",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "dec-1",
+      "qid": "root:dec-1",
+      "path": ".mdkg/design/dec-1-keep-template-cloneable-and-no-production-deploy-by-default.md",
+      "title": "Keep template cloneable and no production deploy by default",
+      "tags": [
+        "template",
+        "deploy-boundary",
+        "mdkg-dev"
+      ],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-06-22",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:3ab2acc3a08499c43c261cf76c24c8b7191dd6b635454c16e94307adbf6413fc",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Context"
+        },
+        {
+          "level": 1,
+          "text": "Decision"
+        },
+        {
+          "level": 1,
+          "text": "Alternatives considered"
+        },
+        {
+          "level": 1,
+          "text": "Consequences"
+        },
+        {
+          "level": 1,
+          "text": "Links / references"
+        }
+      ],
+      "node_type": "dec"
+    },
+    {
+      "kind": "design",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "edd-3",
+      "qid": "root:edd-3",
+      "path": ".mdkg/design/edd-3-template-website-information-architecture.md",
+      "title": "Template website information architecture",
+      "tags": [
+        "template",
+        "information-architecture",
+        "mdkg-dev"
+      ],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "links": [],
+      "artifacts": [],
+      "updated": "2026-06-22",
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:623ba63ec7669f515ed2bb46b216db7cc0a679c74adebfcfbe9c78a5d61d1bd1",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Overview"
+        },
+        {
+          "level": 1,
+          "text": "Architecture"
+        },
+        {
+          "level": 1,
+          "text": "Data model"
+        },
+        {
+          "level": 1,
+          "text": "APIs / interfaces"
+        },
+        {
+          "level": 1,
+          "text": "Failure modes"
+        },
+        {
+          "level": 1,
+          "text": "Observability"
+        },
+        {
+          "level": 1,
+          "text": "Security / privacy"
+        },
+        {
+          "level": 1,
+          "text": "Testing strategy"
+        },
+        {
+          "level": 1,
+          "text": "Rollout plan"
+        }
+      ],
+      "node_type": "edd"
+    },
+    {
+      "kind": "skill",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "skill:build-pack-and-execute-task",
+      "qid": "root:skill:build-pack-and-execute-task",
+      "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      "title": "build-pack-and-execute-task",
+      "name": "build-pack-and-execute-task",
+      "description": "Build a deterministic mdkg pack for the active work item and use it as the execution handoff when coding or delegating to another AI agent.",
+      "slug": "build-pack-and-execute-task",
+      "tags": [
+        "stage:execute",
+        "writer:patch-only",
+        "mdkg",
+        "pack-first",
+        "context"
+      ],
+      "refs": [],
+      "aliases": [
+        "build-pack-and-execute-task",
+        "stage:execute",
+        "writer:patch-only",
+        "mdkg",
+        "pack-first",
+        "context"
+      ],
+      "links": [
+        "README.md",
+        "PACK_EXAMPLES.md",
+        "llms.txt"
+      ],
+      "artifacts": [],
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Goal"
+        },
+        {
+          "level": 2,
+          "text": "When To Use"
+        },
+        {
+          "level": 2,
+          "text": "Inputs"
+        },
+        {
+          "level": 2,
+          "text": "Steps"
+        },
+        {
+          "level": 2,
+          "text": "Outputs"
+        },
+        {
+          "level": 2,
+          "text": "Safety"
+        },
+        {
+          "level": 2,
+          "text": "Failure Handling"
+        }
+      ],
+      "skill": {
+        "version": "0.1.0",
+        "authors": [
+          "mdkg"
+        ],
+        "has_scripts": false,
+        "has_references": false,
+        "extensions": {}
+      }
+    },
+    {
+      "kind": "skill",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "skill:pursue-mdkg-goal",
+      "qid": "root:skill:pursue-mdkg-goal",
+      "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      "title": "pursue-mdkg-goal",
+      "name": "pursue-mdkg-goal",
+      "description": "Pursue a selected mdkg goal by repeatedly selecting one scoped work item, executing it with evidence, and evaluating the goal until done, blocked, paused, or budget-limited.",
+      "slug": "pursue-mdkg-goal",
+      "tags": [
+        "stage:execute",
+        "writer:orchestrator",
+        "mdkg",
+        "goal",
+        "recursive"
+      ],
+      "refs": [],
+      "aliases": [
+        "pursue-mdkg-goal",
+        "stage:execute",
+        "writer:orchestrator",
+        "mdkg",
+        "goal",
+        "recursive"
+      ],
+      "links": [
+        "AGENT_START.md",
+        "CLI_COMMAND_MATRIX.md",
+        ".mdkg/design/prd-3-mdkg-goal-node-ux-and-agent-harness-contract.md",
+        ".mdkg/design/edd-10-mdkg-goal-node-architecture-and-recursive-agent-loop.md"
+      ],
+      "artifacts": [],
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:2bc888092d95b362e402494af4dbe6909204bd5578613d6159753a84efaae16d",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Goal"
+        },
+        {
+          "level": 2,
+          "text": "When To Use"
+        },
+        {
+          "level": 2,
+          "text": "Inputs"
+        },
+        {
+          "level": 2,
+          "text": "Steps"
+        },
+        {
+          "level": 2,
+          "text": "Skill Improvement Candidates"
+        },
+        {
+          "level": 2,
+          "text": "Outputs"
+        },
+        {
+          "level": 2,
+          "text": "Safety"
+        },
+        {
+          "level": 2,
+          "text": "Failure Handling"
+        }
+      ],
+      "skill": {
+        "version": "0.1.0",
+        "authors": [
+          "mdkg"
+        ],
+        "has_scripts": false,
+        "has_references": false,
+        "extensions": {}
+      }
+    },
+    {
+      "kind": "skill",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "skill:select-work-and-ground-context",
+      "qid": "root:skill:select-work-and-ground-context",
+      "path": ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+      "title": "select-work-and-ground-context",
+      "name": "select-work-and-ground-context",
+      "description": "Select the right mdkg work item and ground execution before coding when the active task or context is still being established.",
+      "slug": "select-work-and-ground-context",
+      "tags": [
+        "stage:plan",
+        "writer:read-only",
+        "mdkg",
+        "onboarding",
+        "context"
+      ],
+      "refs": [],
+      "aliases": [
+        "select-work-and-ground-context",
+        "stage:plan",
+        "writer:read-only",
+        "mdkg",
+        "onboarding",
+        "context"
+      ],
+      "links": [
+        "AGENT_START.md",
+        "README.md",
+        "CLI_COMMAND_MATRIX.md"
+      ],
+      "artifacts": [],
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:e50fc3b1a2c79a9a3544ca9df1bf4ca9c312e7c3a51d5e4c6f3314341eca268b",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Goal"
+        },
+        {
+          "level": 2,
+          "text": "When To Use"
+        },
+        {
+          "level": 2,
+          "text": "Inputs"
+        },
+        {
+          "level": 2,
+          "text": "Steps"
+        },
+        {
+          "level": 2,
+          "text": "Outputs"
+        },
+        {
+          "level": 2,
+          "text": "Safety"
+        },
+        {
+          "level": 2,
+          "text": "Failure Handling"
+        }
+      ],
+      "skill": {
+        "version": "0.1.0",
+        "authors": [
+          "mdkg"
+        ],
+        "has_scripts": false,
+        "has_references": false,
+        "extensions": {}
+      }
+    },
+    {
+      "kind": "skill",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "skill:verify-close-and-checkpoint",
+      "qid": "root:skill:verify-close-and-checkpoint",
+      "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      "title": "verify-close-and-checkpoint",
+      "name": "verify-close-and-checkpoint",
+      "description": "Verify code and mdkg state, attach evidence, and close work cleanly when the single-writer AI agent or human orchestrator is ready to perform durable writes.",
+      "slug": "verify-close-and-checkpoint",
+      "tags": [
+        "stage:review",
+        "writer:orchestrator",
+        "mdkg",
+        "validation",
+        "release"
+      ],
+      "refs": [],
+      "aliases": [
+        "verify-close-and-checkpoint",
+        "stage:review",
+        "writer:orchestrator",
+        "mdkg",
+        "validation",
+        "release"
+      ],
+      "links": [
+        "README.md",
+        "AGENT_START.md"
+      ],
+      "artifacts": [],
+      "indexed_at": "2026-06-23T02:03:25.619Z",
+      "source_hash": "sha256:3e4137b7b6a71f088dee79b5ee2f4743aefa3b43adae07337307db89a24416b6",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Goal"
+        },
+        {
+          "level": 2,
+          "text": "When To Use"
+        },
+        {
+          "level": 2,
+          "text": "Inputs"
+        },
+        {
+          "level": 2,
+          "text": "Steps"
+        },
+        {
+          "level": 2,
+          "text": "Pre-Publish Release Gate"
+        },
+        {
+          "level": 2,
+          "text": "Bundle-Aware Commit Gate"
+        },
+        {
+          "level": 2,
+          "text": "Outputs"
+        },
+        {
+          "level": 2,
+          "text": "Safety"
+        },
+        {
+          "level": 2,
+          "text": "Failure Handling"
+        }
+      ],
+      "skill": {
+        "version": "0.1.0",
+        "authors": [
+          "mdkg"
+        ],
+        "has_scripts": false,
+        "has_references": false,
+        "extensions": {}
+      }
+    }
+  ]
+}
