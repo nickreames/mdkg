@@ -25,11 +25,14 @@ const { title, text, command } = Astro.props as { title: string; text: string; c
 
   code {
     width: fit-content;
+    max-width: 100%;
     align-self: end;
     padding: 7px 9px;
     border-radius: var(--radius);
     color: var(--blue-700);
     background: var(--sky-50);
     font-size: 0.82rem;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 </style>

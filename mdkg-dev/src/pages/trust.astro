@@ -11,14 +11,48 @@ import ClaimEvidenceCard from "../components/ClaimEvidenceCard.astro";
         eyebrow="Trust boundaries"
         level="h1"
         title="Durable semantic memory, not an executor."
-        text="The launch site should be direct about boundaries. These statements protect user trust and keep advanced alpha surfaces in the right lane."
+        text="Trust boundary: mdkg is intentionally local-first and repo-owned. It helps agents understand work, produce deterministic context, and leave auditable handoffs without becoming a hosted memory service or execution runtime."
       />
       <div class="grid two">
-        <ClaimEvidenceCard claim="Markdown remains authoritative" evidence="Graph nodes are committed Markdown and frontmatter. Indexes are rebuildable." />
-        <ClaimEvidenceCard claim="mdkg does not execute work" evidence="Packs and handoffs guide humans or agents; execution happens outside mdkg." />
-        <ClaimEvidenceCard claim="Read-only MCP" evidence="The MCP server exposes inspection tools, not broad mutation, shell, SQL, or environment access." />
-        <ClaimEvidenceCard claim="Safety warnings are not DLP" evidence="Handoff raw-marker warnings and no-secret checks are aids, not comprehensive secret scanning." />
+        <ClaimEvidenceCard claim="Markdown remains authoritative" evidence="Graph nodes are Markdown and frontmatter in your repo. Indexes, packs, generated docs, and runtime SQLite files are rebuildable support artifacts." />
+        <ClaimEvidenceCard claim="mdkg does not execute work" evidence="Goals, tasks, packs, checkpoints, and handoffs guide a human or agent. Code execution, deployments, model calls, and provider actions happen outside mdkg." />
+        <ClaimEvidenceCard claim="No hosted memory requirement" evidence="The public alpha does not require a cloud account, hosted index, vector database, or background daemon to keep the graph usable." />
+        <ClaimEvidenceCard claim="Read-only MCP boundary" evidence="The local MCP server is an inspection surface for status, search, show, pack, goal, and validation workflows, not shell, environment, SQL, or broad mutation access." />
+        <ClaimEvidenceCard claim="Local queue boundary" evidence="Project DB queue commands model local delivery state with dedupe, leases, retry, dead-letter, and stats. They are not a hosted queue or canonical event ledger." />
+        <ClaimEvidenceCard claim="Safety warnings are not DLP" evidence="Raw-marker warnings, no-secret scans, and handoff sanitization are useful review aids. They do not replace code review, secret scanning, or repository policy." />
+      </div>
+      <div class="boundary-panel">
+        <h2>Safe public-alpha posture</h2>
+        <ul>
+          <li>Keep raw secrets, tokens, private keys, provider payloads, and bulky runtime traces out of graph nodes, checkpoints, packs, and handoffs.</li>
+          <li>Review any generated handoff before pasting it into another agent or repository.</li>
+          <li>Use small pilot repos first, then move larger teams through upgrade dry-runs and validation.</li>
+          <li>Treat project DB, subgraph, import, and MCP workflows as advanced alpha surfaces until your repo has explicit tests around them.</li>
+        </ul>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .boundary-panel {
+    margin-top: 32px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--zinc-50);
+  }
+
+  .boundary-panel h2 {
+    margin: 0 0 12px;
+    font-size: 1.08rem;
+  }
+
+  .boundary-panel ul {
+    display: grid;
+    gap: 10px;
+    padding-left: 20px;
+    margin: 0;
+    color: var(--zinc-700);
+  }
+</style>

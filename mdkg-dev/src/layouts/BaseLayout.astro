@@ -12,6 +12,10 @@ const {
 const siteUrl = "https://mdkg.dev";
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const socialImage = new URL("/social-card.svg", siteUrl).toString();
+const previewNoindex =
+  import.meta.env.VERCEL_ENV === "preview" ||
+  String(import.meta.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
+const robotsContent = noindex || previewNoindex ? "noindex, nofollow" : "index, follow";
 ---
 
 <!doctype html>
@@ -21,18 +25,22 @@ const socialImage = new URL("/social-card.svg", siteUrl).toString();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Markdown Knowledge Graph" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content="Markdown Knowledge Graph social card" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content="Markdown Knowledge Graph social card" />
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
   <body>

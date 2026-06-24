@@ -11,13 +11,43 @@ import FeatureCard from "../components/FeatureCard.astro";
         eyebrow="Public alpha"
         level="h1"
         title="Usable today, still pre-v1."
-        text="Markdown Knowledge Graph is a developer preview and pre-v1 public alpha. Graph, cache, bundle, and database contracts may change before v1, while Markdown files remain the durable source of truth."
+        text="Markdown Knowledge Graph is ready for careful early adopters, not frictionless enterprise rollout. Start with a small repo, keep changes in Git, and use validation before trusting larger workflows."
       />
       <div class="grid three">
-        <FeatureCard title="Stable enough to try" text="The golden path is install, init, index, status, pack, checkpoint, handoff, and validate." />
-        <FeatureCard title="Advanced surfaces evolve" text="Project DB, queues, subgraphs, bundles, graph movement, workflow mirrors, and MCP are advanced alpha surfaces." />
-        <FeatureCard title="Upgrade deliberately" text="Use mdkg upgrade dry-runs, validation, and changelog notes before changing existing repos." />
+        <FeatureCard title="Stable enough to try" text="The golden path is install, init, index, status, pack, checkpoint, handoff, and validate in a normal Git repository." />
+        <FeatureCard title="Advanced surfaces evolve" text="Project DB, queues, subgraphs, graph import, workflow mirrors, Starlight docs, and MCP are alpha surfaces that need repo-specific tests." />
+        <FeatureCard title="Upgrade deliberately" text="Use mdkg upgrade dry-runs, changelog notes, local commits, and strict doctor output before changing established repos." />
+      </div>
+      <div class="alpha-roadmap">
+        <h2>What to expect before v1</h2>
+        <p>
+          mdkg will keep tightening command UX, warning summaries, docs, graph import safety,
+          subgraph workflows, and public launch material. Some generated output, templates,
+          and advanced database contracts may still change. Markdown graph files are the
+          durability boundary that should remain reviewable in normal Git history.
+        </p>
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .alpha-roadmap {
+    max-width: 860px;
+    margin-top: 32px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+  }
+
+  .alpha-roadmap h2 {
+    margin: 0 0 10px;
+    font-size: 1.08rem;
+  }
+
+  .alpha-roadmap p {
+    margin: 0;
+    color: var(--zinc-600);
+  }
+</style>

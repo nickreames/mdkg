@@ -30,6 +30,12 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);
@@ -45,6 +51,11 @@ a {
 code,
 pre {
   font-family: var(--font-mono);
+}
+
+img,
+svg {
+  max-width: 100%;
 }
 
 :focus-visible {
@@ -214,5 +225,13 @@ p {
 
   .container {
     width: min(100% - 24px, 1120px);
+  }
+
+  h1 {
+    font-size: clamp(2.35rem, 14vw, 3.55rem);
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 10vw, 2.35rem);
   }
 }
