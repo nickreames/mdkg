@@ -2,12 +2,12 @@
 id: goal-32
 type: goal
 title: Polish mdkg.dev and docs.mdkg.dev public-alpha experience pass 2
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: Goal 32 is achieved when mdkg.dev and docs.mdkg.dev implement all P0, P1, P2, and P3 pass-2 feedback stories, local Browser/Chrome/Product Design QA passes, required smokes pass, logical commits are pushed to origin/main, Vercel previews redeploy successfully, and no DNS, production promotion, npm publish, analytics activation, git tag, or public launch occurs.
 scope_refs: [epic-157, epic-158, epic-159, epic-160, epic-161, epic-162, epic-163, epic-164, task-507, task-508, task-509, task-510, task-511, task-512, task-513, task-514, task-515, task-516, task-517, task-518, test-239, test-240, test-241, test-242, test-243, test-244, test-245, test-246, test-247]
-active_node: task-516
+last_active_node: task-518
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run smoke:mdkg-dev-polish-pass2, npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, git diff --check]
 max_iterations: 30
