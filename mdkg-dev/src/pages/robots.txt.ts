@@ -2,7 +2,9 @@ export const prerender = true;
 
 const previewNoindex =
   import.meta.env.VERCEL_ENV === "preview" ||
-  String(import.meta.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
+  String(import.meta.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true" ||
+  (import.meta.env.VERCEL === "1" &&
+    String(import.meta.env.PUBLIC_MDKG_PRODUCTION_INDEX || "").toLowerCase() !== "true");
 
 export function GET() {
   const body = previewNoindex

@@ -702,7 +702,7 @@ function requireInitAssets() {
     }
   }
   const smokeMdkgDevSeo = requireFile("scripts/smoke-mdkg-dev-seo.js");
-  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt"]) {
+  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt", "PUBLIC_MDKG_PRODUCTION_INDEX"]) {
     if (!smokeMdkgDevSeo.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev-seo.js is missing ${expected} proof`);
     }

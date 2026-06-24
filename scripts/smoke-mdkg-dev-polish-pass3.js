@@ -53,6 +53,8 @@ function main() {
   const githubHandoff = readText(path.join(repoRoot, ".mdkg", "handoffs", "github-metadata-pass-3.md"));
   const demoScriptFollowup = readText(path.join(repoRoot, ".mdkg", "work", "task-532-author-deterministic-mdkg-terminal-demo-script.md"));
   const demoProofFollowup = readText(path.join(repoRoot, ".mdkg", "work", "task-533-harden-demo-graph-public-proof-path-before-canonical-linking.md"));
+  const baseLayoutSource = readText(path.join(repoRoot, "mdkg-dev", "src", "layouts", "BaseLayout.astro"));
+  const docsConfigSource = readText(path.join(repoRoot, "docs", "astro.config.mjs"));
 
   for (const expected of [
     "mdkg --version",
@@ -89,6 +91,8 @@ function main() {
   assertIncludes(docsBridge, "Read the mdkg docs on the dedicated docs site", "marketing /docs bridge");
   assertIncludes(docsBridge, "https://docs.mdkg.dev", "marketing /docs bridge");
   assertIncludes(docsBridge, 'name="robots" content="noindex, nofollow"', "marketing /docs bridge");
+  assertIncludes(baseLayoutSource, "PUBLIC_MDKG_PRODUCTION_INDEX", "marketing Vercel prelaunch noindex policy");
+  assertIncludes(docsConfigSource, "PUBLIC_MDKG_PRODUCTION_INDEX", "docs Vercel prelaunch noindex policy");
   assertExcludes(sitemap, "https://mdkg.dev/docs/", "sitemap");
   assertExcludes(sitemap, "vercel.app", "sitemap");
 
