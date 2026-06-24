@@ -29,11 +29,14 @@ function main() {
     "src/content/docs/start-here/quickstart.md",
     "src/content/docs/start-here/safety-boundaries.md",
     "src/content/docs/start-here/public-alpha-contract.md",
+    "src/content/docs/start-here/troubleshooting.md",
     "src/content/docs/concepts/source-of-truth.md",
     "src/content/docs/concepts/repository-layout.md",
     "src/content/docs/concepts/work-context-evidence.md",
+    "src/content/docs/concepts/glossary.md",
     "src/content/docs/guides/agent-workflow.md",
     "src/content/docs/guides/packs-and-handoffs.md",
+    "src/content/docs/guides/research-spikes.md",
     "src/content/docs/advanced-alpha/overview.md",
     "src/content/docs/advanced-alpha/project-db-queues.md",
     "src/content/docs/reference/index.md",
@@ -46,11 +49,14 @@ function main() {
     "start-here/quickstart.md",
     "start-here/safety-boundaries.md",
     "start-here/public-alpha-contract.md",
+    "start-here/troubleshooting.md",
     "concepts/source-of-truth.md",
     "concepts/repository-layout.md",
     "concepts/work-context-evidence.md",
+    "concepts/glossary.md",
     "guides/agent-workflow.md",
     "guides/packs-and-handoffs.md",
+    "guides/research-spikes.md",
     "advanced-alpha/project-db-queues.md",
     "reference/command-contract.md",
     "_generated/cli-reference.md",
@@ -75,6 +81,8 @@ function main() {
   assert(starlightConfig.includes('site: "https://docs.mdkg.dev"'), "Starlight config missing docs.mdkg.dev site");
   assert(starlightConfig.includes('title: "mdkg Docs"'), "Starlight config missing docs title");
   assert(starlightConfig.includes("start-here/quickstart"), "Starlight sidebar missing quickstart");
+  assert(starlightConfig.includes("start-here/troubleshooting"), "Starlight sidebar missing troubleshooting");
+  assert(starlightConfig.includes("guides/research-spikes"), "Starlight sidebar missing research spikes");
   assert(starlightConfig.includes("reference/generated-cli-reference"), "Starlight sidebar missing generated CLI reference");
 
   const starlightHome = readText(path.join(docs, "src", "content", "docs", "index.md"));
