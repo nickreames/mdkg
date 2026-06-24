@@ -1,18 +1,45 @@
 ---
-title: Generated CLI Reference
-description: Where to find generated mdkg CLI command reference output.
+title: CLI Reference
+description: Useful mdkg command families for the public alpha.
 ---
 
-The generated CLI reference remains committed at:
+CLI reference is expanding during public alpha.
 
-```text
-docs/_generated/cli-reference.md
+The repo generates a full command reference from `dist/command-contract.json` into `docs/_generated/cli-reference.md`. This page is a readable entrypoint for the commands most users should learn first. For complete live behavior, run `mdkg --help` and command-specific help in your installed version.
+
+## Core commands
+
+- `mdkg init --agent` initializes repo-local project memory for human and agent workflows.
+- `mdkg index` rebuilds local search and capability caches.
+- `mdkg status` inspects repo, package, graph, selected-goal, cache, and project DB health.
+- `mdkg new` creates graph nodes and workflow files.
+- `mdkg show` inspects a node.
+- `mdkg search` finds graph nodes.
+- `mdkg goal` manages long-running objectives and active work routing.
+- `mdkg task` starts, updates, and completes task-like work nodes.
+- `mdkg pack` builds deterministic context for a work node.
+- `mdkg handoff create` creates copy-ready agent handoffs.
+- `mdkg validate` validates graph integrity and warning categories.
+- `mdkg skill` manages repo-local agent skills and mirrors.
+- `mdkg fix` plans and applies selected repairs, including ID repair.
+
+## Advanced alpha commands
+
+The CLI also includes advanced graph, archive, bundle, subgraph, project DB queue, MCP, workflow mirror, and graph movement commands. Treat those surfaces as public alpha and validate them in your repo before depending on them.
+
+Use these docs next:
+
+- [Read-only MCP](/advanced-alpha/read-only-mcp/)
+- [Subgraphs and bundles](/advanced-alpha/subgraphs-and-bundles/)
+- [Graph movement](/advanced-alpha/graph-movement/)
+- [Demo graphs](/advanced-alpha/demo-graphs/)
+- [Project DB and queues](/advanced-alpha/project-db-queues/)
+
+Regenerate and check generated command docs with:
+
+```bash
+npm run docs:generate
+npm run docs:check
 ```
 
-The generated summary remains committed at:
-
-```text
-docs/_generated/command-contract-summary.json
-```
-
-Starlight pages should eventually render command-level reference content directly from `dist/command-contract.json`. Until that generator is added, this page is the Starlight entry point for the existing generated reference files.
+For machine-readable command metadata, see `dist/command-contract.json` in the mdkg repository.

@@ -12,8 +12,11 @@
 ## Concepts
 
 - [Source Of Truth](concepts/source-of-truth.md)
+- [Local-first and Low-dependency](concepts/local-first-low-dependency.md)
 - [Repository Layout](concepts/repository-layout.md)
-- [Work, Context, And Evidence](concepts/work-context-evidence.md)
+- [Plan -> Work -> Evidence](concepts/plan-work-evidence.md)
+- [Work Node Types](concepts/work-node-types.md)
+- [Reference Types](concepts/work-context-evidence.md)
 - [Glossary](concepts/glossary.md)
 
 ## Guides
@@ -26,6 +29,10 @@
 
 - [Overview](advanced-alpha/overview.md)
 - [Project DB And Queues](advanced-alpha/project-db-queues.md)
+- [Read-only MCP](advanced-alpha/read-only-mcp.md)
+- [Subgraphs And Bundles](advanced-alpha/subgraphs-and-bundles.md)
+- [Graph Movement](advanced-alpha/graph-movement.md)
+- [Demo Graphs](advanced-alpha/demo-graphs.md)
 
 ## Reference
 
@@ -37,4 +44,3 @@
 
 - [Changelog](project/changelog.md)
 - [Roadmap](project/roadmap.md)
-- [Claims Evidence Matrix](project/claims-evidence-matrix.md)

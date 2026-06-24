@@ -5,6 +5,8 @@ description: What mdkg does and does not do.
 
 Markdown Knowledge Graph is durable semantic memory, not an execution runtime.
 
+The trust model is local-first and low-dependency: Markdown and Git stay authoritative, generated caches are rebuildable, and optional SQLite-backed project DB state stays local.
+
 ## What mdkg does
 
 - Stores graph state in Markdown and frontmatter.
@@ -18,9 +20,23 @@ Markdown Knowledge Graph is durable semantic memory, not an execution runtime.
 - It does not execute agent work automatically.
 - It does not execute skill scripts.
 - It is not a hosted memory service.
+- It is not a hosted queue service.
 - It is not a vector database.
 - It is not a comprehensive secret scanner or DLP product.
+- It is not a package-manager credential manager.
+- It does not expose arbitrary SQL through public CLI commands.
 - It does not make queue state canonical runtime history.
+
+## What not to store
+
+Keep these out of graph nodes, checkpoints, packs, handoffs, docs fixtures, and examples:
+
+- npm tokens and package-manager auth files
+- provider credentials and deployment tokens
+- private keys
+- raw prompts or raw model output
+- provider payloads and production payloads
+- bulky runtime traces
 
 ## Advanced alpha boundaries
 

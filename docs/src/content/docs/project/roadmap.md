@@ -7,9 +7,9 @@ The mdkg graph is the roadmap source of truth for this public alpha.
 
 Current public-docs roadmap themes:
 
-- polish the golden first-run path
+- polish the first-run setup and Plan -> Work -> Evidence path
 - build mdkg.dev as a static product surface
-- publish Starlight docs at `docs.mdkg.dev`
+- deepen docs, quickstarts, and generated reference material
 - generate command reference docs
 - create deterministic demo graphs
 - add launch-readiness smokes
