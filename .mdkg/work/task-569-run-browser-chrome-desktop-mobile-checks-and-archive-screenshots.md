@@ -2,7 +2,7 @@
 id: task-569
 type: task
 title: run Browser Chrome desktop mobile checks and archive screenshots
-status: todo
+status: done
 priority: 1
 epic: epic-192
 parent: goal-36

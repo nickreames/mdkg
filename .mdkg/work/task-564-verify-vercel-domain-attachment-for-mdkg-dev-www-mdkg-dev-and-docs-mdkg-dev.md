@@ -2,20 +2,20 @@
 id: task-564
 type: task
 title: verify Vercel domain attachment for mdkg.dev www.mdkg.dev and docs.mdkg.dev
-status: todo
+status: done
 priority: 1
 epic: epic-190
 parent: goal-36
 tags: []
 owners: []
 links: []
-artifacts: []
+artifacts: [chk-256]
 relates: []
 blocked_by: [task-563]
 blocks: []
 refs: []
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-256]
 aliases: []
 skills: []
 created: 2026-06-24

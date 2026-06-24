@@ -2,7 +2,7 @@
 id: test-287
 type: test
 title: Vercel deployment log verification contract
-status: todo
+status: done
 priority: 1
 epic: epic-192
 parent: goal-36

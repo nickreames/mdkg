@@ -2,7 +2,7 @@
 id: test-282
 type: test
 title: Vercel domain attachment and DNS propagation contract
-status: todo
+status: done
 priority: 1
 epic: epic-190
 parent: goal-36

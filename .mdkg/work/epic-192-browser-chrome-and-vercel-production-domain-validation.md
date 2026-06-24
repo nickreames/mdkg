@@ -2,7 +2,7 @@
 id: epic-192
 type: epic
 title: Browser Chrome and Vercel production-domain validation
-status: todo
+status: done
 priority: 1
 tags: []
 owners: []
@@ -50,3 +50,12 @@ Prove the production domains through live Browser, Chrome, and Vercel evidence.
 
 - `https://mdkg.dev/`
 - `https://docs.mdkg.dev/`
+- `archive://archive.goal36-browser-chrome-production-evidence-2026-06-24`
+- `chk-263`
+- `chk-265`
+
+# Closeout
+
+Completed under `goal-36`. Browser desktop/mobile checks, Chrome checks,
+screenshots, Vercel deployment metadata, and build logs verified the custom
+domains and `/docs` redirect on the final deployed source commit `790060a`.

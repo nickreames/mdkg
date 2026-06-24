@@ -2,7 +2,7 @@
 id: test-286
 type: test
 title: Browser Chrome screenshot and responsive smoke contract
-status: todo
+status: done
 priority: 1
 epic: epic-192
 parent: goal-36

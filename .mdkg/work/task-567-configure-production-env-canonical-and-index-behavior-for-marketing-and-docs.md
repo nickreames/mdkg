@@ -2,7 +2,7 @@
 id: task-567
 type: task
 title: configure production env canonical and index behavior for marketing and docs
-status: todo
+status: done
 priority: 1
 epic: epic-191
 parent: goal-36

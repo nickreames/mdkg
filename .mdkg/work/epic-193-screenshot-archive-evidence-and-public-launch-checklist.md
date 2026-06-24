@@ -2,7 +2,7 @@
 id: epic-193
 type: epic
 title: screenshot archive evidence and public launch checklist
-status: todo
+status: done
 priority: 1
 tags: []
 owners: []
@@ -51,5 +51,12 @@ Archive production evidence and produce a public launch checklist while deferrin
 
 # Links / Artifacts
 
-- Future screenshot archive URIs.
-- Future route receipt checkpoints.
+- `archive://archive.goal36-browser-chrome-production-evidence-2026-06-24`
+- `chk-267`
+- `chk-269`
+
+# Closeout
+
+Completed under `goal-36`. Production evidence was archived, the launch
+checklist was recorded, and announcement, analytics activation, npm publish,
+tagging, and GitHub settings mutation were explicitly deferred.

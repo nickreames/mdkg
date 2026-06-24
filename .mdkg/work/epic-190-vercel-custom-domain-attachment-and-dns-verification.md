@@ -2,7 +2,7 @@
 id: epic-190
 type: epic
 title: Vercel custom-domain attachment and DNS verification
-status: todo
+status: done
 priority: 1
 tags: []
 owners: []
@@ -49,3 +49,11 @@ Verify Vercel custom-domain ownership, DNS delegation, DNS records, SSL issuance
 
 - Vercel project `mdkg-dev`
 - Vercel project `mdkg-docs`
+- `chk-256`
+- `chk-257`
+
+# Closeout
+
+Completed under `goal-36`. Vercel domain attachment, Vercel DNS delegation,
+DNSSEC/DS absence, SSL issuance, and live route propagation were verified for
+`mdkg.dev`, `www.mdkg.dev`, and `docs.mdkg.dev`.

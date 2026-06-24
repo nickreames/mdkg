@@ -2,7 +2,7 @@
 id: task-566
 type: task
 title: update marketing docs route to redirect to docs.mdkg.dev
-status: todo
+status: done
 priority: 1
 epic: epic-191
 parent: goal-36

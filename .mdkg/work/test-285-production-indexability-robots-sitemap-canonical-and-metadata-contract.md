@@ -2,7 +2,7 @@
 id: test-285
 type: test
 title: production indexability robots sitemap canonical and metadata contract
-status: todo
+status: done
 priority: 1
 epic: epic-191
 parent: goal-36

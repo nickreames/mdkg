@@ -2,7 +2,7 @@
 id: test-288
 type: test
 title: launch checklist with no announcement npm publish tag analytics activation or GitHub settings mutation
-status: todo
+status: done
 priority: 1
 epic: epic-193
 parent: goal-36
