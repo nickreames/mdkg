@@ -36,7 +36,10 @@ function main() {
   const siteDist = path.join(repoRoot, "mdkg-dev", "dist");
   const docsDist = path.join(repoRoot, "docs", "dist");
 
-  assert(!fs.existsSync(path.join(siteDist, "docs", "index.html")), "marketing /docs bridge should be deleted");
+  const docsBridge = readText(path.join(siteDist, "docs", "index.html"));
+  assertIncludes(docsBridge, "Read the mdkg docs on the dedicated docs site", "marketing /docs bridge");
+  assertIncludes(docsBridge, "https://docs.mdkg.dev", "marketing /docs bridge");
+  assertIncludes(docsBridge, 'name="robots" content="noindex, nofollow"', "marketing /docs bridge");
   for (const rel of [
     "advanced-alpha/read-only-mcp/index.html",
     "advanced-alpha/subgraphs-and-bundles/index.html",

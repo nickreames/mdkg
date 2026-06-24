@@ -31,6 +31,7 @@ function main() {
     "quickstart/index.html",
     "trust/index.html",
     "alpha/index.html",
+    "docs/index.html",
     "llms.txt",
     "llms-full.txt",
     "robots.txt",
@@ -48,7 +49,10 @@ function main() {
   assert(home.includes("<main"), "homepage missing main landmark");
   assert(home.includes("<nav"), "homepage missing nav landmark");
   assert(home.includes("<footer"), "homepage missing footer landmark");
-  assert(!fs.existsSync(path.join(dist, "docs", "index.html")), "marketing /docs bridge should not be built");
+  const docsBridge = readText(path.join(dist, "docs", "index.html"));
+  assert(docsBridge.includes("Read the mdkg docs on the dedicated docs site"), "marketing /docs bridge missing docs handoff copy");
+  assert(docsBridge.includes("https://docs.mdkg.dev") || docsBridge.includes("https://mdkg-docs.vercel.app"), "marketing /docs bridge missing docs host link");
+  assert(docsBridge.includes('name="robots" content="noindex, nofollow"'), "marketing /docs bridge should be noindex");
 
   const quickstart = readText(path.join(dist, "quickstart", "index.html"));
   const llms = readText(path.join(dist, "llms.txt"));
