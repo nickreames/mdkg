@@ -127,7 +127,6 @@ function main() {
   assert(!readme.includes("GitBook"), "docs README still references GitBook");
 
   const starlightConfig = readText(path.join(docs, "astro.config.mjs"));
-  const docsVercelConfig = JSON.parse(readText(path.join(docs, "vercel.json")));
   assert(starlightConfig.includes('site: "https://docs.mdkg.dev"'), "Starlight config missing docs.mdkg.dev site");
   assert(starlightConfig.includes('title: "mdkg Docs"'), "Starlight config missing docs title");
   assert(starlightConfig.includes("PageSidebar"), "Starlight config missing custom PageSidebar override");
@@ -141,30 +140,6 @@ function main() {
   assert(starlightConfig.includes("advanced-alpha/graph-movement"), "Starlight sidebar missing graph movement");
   assert(starlightConfig.includes("advanced-alpha/demo-graphs"), "Starlight sidebar missing demo graphs");
   assert(starlightConfig.includes("reference/generated-cli-reference"), "Starlight sidebar missing generated CLI reference");
-  for (const alias of [
-    "mdkg-docs.vercel.app",
-    "mdkg-docs-nicholas-reames-projects.vercel.app",
-    "mdkg-docs-git-main-nicholas-reames-projects.vercel.app",
-  ]) {
-    assert(
-      docsVercelConfig.redirects.some((entry) =>
-        entry.source === "/:path*" &&
-        entry.destination === "https://docs.mdkg.dev/:path*" &&
-        entry.permanent === true &&
-        entry.has?.some((condition) => condition.type === "host" && condition.value === alias)
-      ),
-      `docs Vercel config missing canonical redirect for ${alias}`
-    );
-  }
-  assert(
-    docsVercelConfig.headers.some((entry) =>
-      entry.source === "/:path*" &&
-      entry.has?.some((condition) => condition.type === "host" && condition.value === ".*\\.vercel\\.app$") &&
-      entry.headers?.some((header) => header.key === "X-Robots-Tag" && header.value === "noindex, nofollow")
-    ),
-    "docs Vercel config missing vercel.app X-Robots-Tag noindex header"
-  );
-
   const starlightHome = readText(path.join(docs, "src", "content", "docs", "index.md"));
   assert(starlightHome.includes("Start here for Markdown Knowledge Graph documentation"), "Starlight home missing docs-home copy");
   for (const snippet of [

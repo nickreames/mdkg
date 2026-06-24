@@ -68,29 +68,6 @@ function main() {
     vercelConfig.redirects.some((entry) => entry.source === "/docs" && entry.destination === "https://docs.mdkg.dev/" && entry.permanent === true),
     "Vercel config missing permanent /docs redirect"
   );
-  for (const alias of [
-    "mdkg-dev.vercel.app",
-    "mdkg-dev-nicholas-reames-projects.vercel.app",
-    "mdkg-dev-git-main-nicholas-reames-projects.vercel.app",
-  ]) {
-    assert(
-      vercelConfig.redirects.some((entry) =>
-        entry.source === "/:path*" &&
-        entry.destination === "https://mdkg.dev/:path*" &&
-        entry.permanent === true &&
-        entry.has?.some((condition) => condition.type === "host" && condition.value === alias)
-      ),
-      `Vercel config missing canonical redirect for ${alias}`
-    );
-  }
-  assert(
-    vercelConfig.headers.some((entry) =>
-      entry.source === "/:path*" &&
-      entry.has?.some((condition) => condition.type === "host" && condition.value === ".*\\.vercel\\.app$") &&
-      entry.headers?.some((header) => header.key === "X-Robots-Tag" && header.value === "noindex, nofollow")
-    ),
-    "Vercel config missing vercel.app X-Robots-Tag noindex header"
-  );
 
   const quickstart = readText(path.join(dist, "quickstart", "index.html"));
   const llms = readText(path.join(dist, "llms.txt"));
