@@ -2,7 +2,7 @@
 id: test-232
 type: test
 title: SEO metadata link sitemap robots and preview noindex contract
-status: todo
+status: done
 priority: 1
 tags: [mdkg-dev, seo, links, preview]
 owners: []
@@ -27,3 +27,9 @@ SEO metadata, internal/external links, sitemap, robots, canonical policy, and pr
 
 - `npm run smoke:mdkg-dev-seo`
 - Browser route metadata checks.
+
+# Evidence
+
+- Covered by `task-494`, `chk-210`, and `scripts/smoke-mdkg-dev-seo.js`.
+- `npm run smoke:mdkg-dev-seo` passed.
+- Browser and hosted checks validated canonical URLs, route metadata, sitemap/robots behavior, expected public links, and preview-noindex source policy without claiming custom domains are live.
