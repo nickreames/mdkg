@@ -47,7 +47,7 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
     fail("package.json is missing smoke:warning-ux");
   }
-  for (const scriptName of ["smoke:mdkg-dev", "smoke:mdkg-dev-docs", "smoke:mdkg-dev-seo", "smoke:mdkg-dev-polish-pass2", "smoke:demo-graph", "docs:check"]) {
+  for (const scriptName of ["smoke:mdkg-dev", "smoke:mdkg-dev-docs", "smoke:mdkg-dev-seo", "smoke:mdkg-dev-polish-pass2", "smoke:mdkg-dev-polish-pass3", "smoke:demo-graph", "docs:check"]) {
     if (!pkg.scripts || !pkg.scripts[scriptName]) {
       fail(`package.json is missing ${scriptName}`);
     }
@@ -66,7 +66,7 @@ function requirePackageVersions() {
   }
   if (
     !String(pkg.scripts.prepublishOnly || "").includes(
-      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev-polish-pass2 && npm run smoke:demo-graph && npm run smoke:bundle"
+      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev-polish-pass2 && npm run smoke:mdkg-dev-polish-pass3 && npm run smoke:demo-graph && npm run smoke:bundle"
     )
   ) {
     fail("prepublishOnly must run mdkg.dev smokes after smoke:integration-ux and before smoke:bundle");

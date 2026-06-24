@@ -76,7 +76,9 @@ function main() {
     "/trust/": "trust/index.html",
     "/alpha/": "alpha/index.html",
   };
-  assert(!fs.existsSync(path.join(dist, "docs", "index.html")), "marketing /docs bridge should not be built");
+  const docsBridge = readText(path.join(dist, "docs", "index.html"));
+  assert(docsBridge.includes("Read the mdkg docs on the dedicated docs site"), "marketing /docs bridge missing docs handoff copy");
+  assert(docsBridge.includes('name="robots" content="noindex, nofollow"'), "marketing /docs bridge must remain noindex");
   for (const [route, relPath] of Object.entries(routeFiles)) {
     const html = readText(path.join(dist, relPath));
     assert(html.includes(`href="https://mdkg.dev${route}`), `${route} missing canonical URL`);
