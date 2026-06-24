@@ -32,7 +32,7 @@ Markdown Knowledge Graph (mdkg) is git-native project memory for AI coding agent
 3. Use mdkg goal current and mdkg goal next when a goal is selected.
 4. Use mdkg show or mdkg search for inspection.
 5. Use mdkg pack WORK_ID for deterministic context.
-6. Use mdkg goal claim WORK_ID or mdkg task start TASK_ID only when intentionally mutating lifecycle state.
+6. Use mdkg goal claim GOAL_ID WORK_ID or mdkg task start TASK_ID only when intentionally mutating lifecycle state.
 7. Do work outside mdkg.
 8. Run required checks yourself.
 9. Record a checkpoint or handoff.

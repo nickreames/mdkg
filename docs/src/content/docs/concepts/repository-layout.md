@@ -20,6 +20,36 @@ Common mdkg paths:
 | `.agents/skills/` | Agent-facing skill mirror | generated mirror |
 | `.claude/skills/` | Claude-facing skill mirror | generated mirror |
 
+## Durable source
+
+Commit files that carry semantic project memory:
+
+- `.mdkg/core/`
+- `.mdkg/design/`
+- `.mdkg/work/`
+- `.mdkg/skills/`
+- `.mdkg/db/schema/`
+- archive sidecar Markdown and deterministic archive caches when the archive policy says so
+
+## Rebuildable generated output
+
+Do not treat generated access files as authority:
+
+- `.mdkg/index/`
+- `.mdkg/pack/`
+- materialized subgraph inspection trees
+- local build output such as `dist/`
+
+Regenerate these from source when needed.
+
+## Optional local project DB state
+
+The project DB is local infrastructure, not canonical graph memory. Runtime files under `.mdkg/db/runtime/` should stay local. Schema migrations are source. Sealed DB state snapshots are opt-in review artifacts.
+
+## Skill mirrors
+
+`.mdkg/skills/` is canonical. Product-specific mirrors such as `.agents/skills/` and `.claude/skills/` are generated outputs for coding tools. Update canonical skills first, then sync mirrors.
+
 When in doubt, run:
 
 ```bash

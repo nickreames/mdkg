@@ -1,5 +1,6 @@
 {
   "name": "mdkg-docs",
+  "description": "Starlight docs for Markdown Knowledge Graph, Git-native project memory for AI coding agents",
   "version": "0.0.0",
   "private": true,
   "type": "module",

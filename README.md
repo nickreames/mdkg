@@ -1,6 +1,6 @@
 # mdkg
 
-mdkg is git-native project memory for AI coding agents: structured Markdown, deterministic context packs, handoffs, checkpoints, and validation.
+Markdown Knowledge Graph (`mdkg`) is Git-native project memory for AI coding agents: structured Markdown, deterministic context packs, handoffs, checkpoints, and validation.
 
 It is built for:
 - human builders who want project truth and task state in git
@@ -67,12 +67,11 @@ goal `scope_refs`.
 ## Install
 
 ```bash
-npm i -g mdkg
-# or
-pnpm add -g mdkg
-# or
-bun add -g mdkg
+npm install -g mdkg
+mdkg --version
 ```
+
+The npm global install path is the canonical public-alpha path covered by release validation. One-off runners and other package managers may be useful in local tooling, but verify them before documenting them for a team.
 
 ## Quickstart
 

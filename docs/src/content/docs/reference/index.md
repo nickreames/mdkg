@@ -1,15 +1,74 @@
 ---
-title: Reference
-description: Command metadata, generated reference entry points, and CLI matrices.
+title: CLI Reference
+description: User-facing command entry points, generated reference material, and maintainer metadata.
 ---
 
-This section holds generated and semi-generated reference material.
+Use this section when you know what you want to do and need the current command shape.
 
-Initial reference entry points:
+## Common command groups
+
+First-run setup:
+
+```bash
+mdkg init --agent
+mdkg index
+mdkg status
+mdkg validate
+```
+
+Discovery and routing:
+
+```bash
+mdkg search "query"
+mdkg show WORK_ID
+mdkg goal current
+mdkg goal next GOAL_ID
+```
+
+Lifecycle and evidence:
+
+```bash
+mdkg goal claim GOAL_ID WORK_ID
+mdkg task start TASK_ID
+mdkg task done TASK_ID --checkpoint "Meaningful milestone"
+mdkg checkpoint new "Review proof" --kind test-proof
+```
+
+Context transfer:
+
+```bash
+mdkg pack WORK_ID --pack-profile concise
+mdkg handoff create WORK_ID
+```
+
+Validation and repair planning:
+
+```bash
+mdkg doctor --strict --json
+mdkg fix plan --json
+mdkg format --headings --dry-run --summary --json --limit 20
+```
+
+Advanced alpha surfaces:
+
+```bash
+mdkg db queue contract --json
+mdkg mcp serve --stdio
+mdkg subgraph audit --json
+```
+
+## Full reference
+
+Use the generated CLI reference for broader command selection and examples:
+
+- [Generated CLI Reference](generated-cli-reference.md)
+
+## Maintainer metadata
+
+Maintainers and integration authors can use the machine-readable metadata behind the reference:
 
 - [Command Contract](command-contract.md)
-- [Generated CLI Reference](generated-cli-reference.md)
 - `dist/command-contract.json`
 - `CLI_COMMAND_MATRIX.md`
 
-The long-term rule is to generate CLI reference pages from command metadata rather than hand-maintaining a full duplicated command matrix.
+The documentation rule is to generate broad command reference pages from command metadata and keep hand-authored docs focused on the beginner path.
