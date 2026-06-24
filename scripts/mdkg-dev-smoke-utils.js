@@ -68,9 +68,9 @@ function ensureSiteDeps() {
   run(NPM_CMD, ["ci", "--prefix", "mdkg-dev", "--ignore-scripts"]);
 }
 
-function buildSite() {
+function buildSite(env = {}) {
   ensureSiteDeps();
-  run(NPM_CMD, ["--prefix", "mdkg-dev", "run", "build"]);
+  run(NPM_CMD, ["--prefix", "mdkg-dev", "run", "build"], { env });
 }
 
 function walkFiles(dir) {

@@ -60,8 +60,21 @@ function main() {
   const robotsSource = readText(path.join(repoRoot, "mdkg-dev", "src", "pages", "robots.txt.ts"));
   for (const source of [baseLayoutSource, robotsSource]) {
     assert(source.includes("VERCEL_ENV") && source.includes("PUBLIC_MDKG_PREVIEW_NOINDEX"), "preview noindex policy missing from source");
+    assert(source.includes("VERCEL") && source.includes("PUBLIC_MDKG_PRODUCTION_INDEX"), "Vercel prelaunch noindex opt-in policy missing from source");
   }
   assert(robotsSource.includes("Disallow: /"), "preview robots policy must disallow crawling");
+
+  buildSite({ VERCEL: "1" });
+  const vercelPrelaunchHome = readText(path.join(dist, "index.html"));
+  const vercelPrelaunchRobots = readText(path.join(dist, "robots.txt"));
+  assert(vercelPrelaunchHome.includes('name="robots" content="noindex, nofollow"'), "Vercel prelaunch build must noindex pages by default");
+  assert(vercelPrelaunchRobots.includes("Disallow: /"), "Vercel prelaunch robots policy must disallow crawling");
+
+  buildSite({ VERCEL: "1", PUBLIC_MDKG_PRODUCTION_INDEX: "true" });
+  const vercelLaunchHome = readText(path.join(dist, "index.html"));
+  const vercelLaunchRobots = readText(path.join(dist, "robots.txt"));
+  assert(vercelLaunchHome.includes('name="robots" content="index, follow"'), "Vercel launch opt-in build must allow page indexing");
+  assert(vercelLaunchRobots.includes("Allow: /"), "Vercel launch opt-in robots policy must allow crawling");
 
   const llms = readText(path.join(dist, "llms.txt"));
   const llmsFull = readText(path.join(dist, "llms-full.txt"));

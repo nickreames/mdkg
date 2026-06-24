@@ -130,6 +130,20 @@ function main() {
   assertIncludes(previewHome, 'name="robots" content="noindex, nofollow"', "preview marketing");
   assertIncludes(previewDocsHome, 'name="robots" content="noindex, nofollow"', "preview docs");
 
+  buildMarketing({ VERCEL: "1" });
+  buildDocs({ VERCEL: "1" });
+  const vercelPrelaunchHome = readText(path.join(siteDist, "index.html"));
+  const vercelPrelaunchDocsHome = readText(path.join(docsDist, "index.html"));
+  assertIncludes(vercelPrelaunchHome, 'name="robots" content="noindex, nofollow"', "Vercel prelaunch marketing");
+  assertIncludes(vercelPrelaunchDocsHome, 'name="robots" content="noindex, nofollow"', "Vercel prelaunch docs");
+
+  buildMarketing({ VERCEL: "1", PUBLIC_MDKG_PRODUCTION_INDEX: "true" });
+  buildDocs({ VERCEL: "1", PUBLIC_MDKG_PRODUCTION_INDEX: "true" });
+  const vercelLaunchHome = readText(path.join(siteDist, "index.html"));
+  const vercelLaunchDocsHome = readText(path.join(docsDist, "index.html"));
+  assertIncludes(vercelLaunchHome, 'name="robots" content="index, follow"', "Vercel launch marketing");
+  assertExcludes(vercelLaunchDocsHome, 'name="robots" content="noindex, nofollow"', "Vercel launch docs");
+
   buildSite();
   buildDocs();
   const productionHome = readText(path.join(siteDist, "index.html"));
