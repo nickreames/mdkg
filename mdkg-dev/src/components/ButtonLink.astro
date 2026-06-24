@@ -1,9 +1,15 @@
 ---
 type Variant = "primary" | "secondary" | "ghost";
 const { href, variant = "primary" } = Astro.props as { href: string; variant?: Variant };
+const isExternal = /^https?:\/\//.test(href);
 ---
 
-<a class={`button ${variant}`} href={href}>
+<a
+  class={`button ${variant}`}
+  href={href}
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noopener noreferrer" : undefined}
+>
   <slot />
 </a>
 

@@ -16,29 +16,29 @@ const structuredData = {
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS, Linux, Windows",
   softwareVersion: "0.3.7",
-  description: "Git-native project memory for AI-native software engineering.",
+  description: "Git-native project memory for AI coding agents.",
   url: "https://mdkg.dev",
   codeRepository: "https://github.com/nickreames/mdkg"
 };
 ---
 
 <BaseLayout
-  title="Markdown Knowledge Graph - Git-native project memory"
-  description="Markdown Knowledge Graph turns structured Markdown in your repo into deterministic context packs, goals, checkpoints, skills, and handoffs."
+  title="Markdown Knowledge Graph - Git-native project memory for AI coding agents"
+  description="Markdown Knowledge Graph turns structured Markdown in your repo into deterministic context packs, handoffs, checkpoints, and validation without a hosted index."
   structuredData={structuredData}
 >
   <section class="hero">
     <div class="container hero-grid">
       <div>
         <p class="eyebrow">Markdown Knowledge Graph</p>
-        <h1>Git-native project memory for AI-native software engineering.</h1>
-        <p class="lead">Turn structured Markdown in your repo into deterministic context packs, goals, checkpoints, skills, and handoffs for humans and AI agents, without a daemon, hosted index, vector database, or hidden cloud state.</p>
+        <h1>Git-native project memory for AI coding agents.</h1>
+        <p class="lead">Turn structured Markdown in your repo into a Plan -&gt; Work -&gt; Evidence loop that humans and agents can inspect, pack, hand off, and validate.</p>
         <p class="trust-line">Developer preview. Pre-v1 public alpha. Markdown is the durable source of truth; generated indexes are rebuildable.</p>
         <CTAGroup />
       </div>
       <DiagramCard
-        title="Repo memory loop"
-        steps={["Markdown + frontmatter in Git", "mdkg index / validate", "deterministic pack / handoff", "human or AI agent works", "checkpoint + evidence"]}
+        title="Plan -> Work -> Evidence"
+        steps={["Plan the goal", "Execute one work node", "Record evidence", "Validate before moving on"]}
       />
     </div>
   </section>
@@ -47,13 +47,19 @@ const structuredData = {
     <div class="container grid two">
       <div class="stack">
         <Badge>Quickstart</Badge>
-        <h2>Start with the golden loop.</h2>
-        <p class="muted">Initialize repo-local project memory, build the access cache, inspect status, validate graph health, then give an agent a bounded pack or handoff.</p>
+        <h2>First, prove the repo memory layer works.</h2>
+        <p class="muted">Install mdkg, initialize repo-local project memory, build the access cache, inspect status, and validate graph health before handing work to an agent.</p>
       </div>
-      <TerminalBlock
-        title="First run"
-        commands={["npm install -g mdkg", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate", "mdkg pack WORK_ID"]}
-      />
+      <div class="grid">
+        <TerminalBlock
+          title="First-run setup"
+          commands={["npm install -g mdkg", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate"]}
+        />
+        <TerminalBlock
+          title="Operating loop"
+          commands={["mdkg goal current", "mdkg goal next", "mdkg pack WORK_ID", "mdkg task done WORK_ID --checkpoint \"Meaningful milestone\"", "mdkg validate"]}
+        />
+      </div>
     </div>
   </section>
 
@@ -68,6 +74,36 @@ const structuredData = {
         <FeatureCard title="Project memory in Git" text="Keep goals, tasks, decisions, evidence, and handoffs in files that humans and agents can inspect." command=".mdkg/work" />
         <FeatureCard title="Deterministic packs" text="Build focused context from graph state instead of asking an agent to browse randomly." command="mdkg pack WORK_ID" />
         <FeatureCard title="Evidence before closeout" text="Record checkpoints and run validation before moving on to the next node." command="mdkg validate" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Operating model"
+        title="Plan -> Work -> Evidence"
+        text="Plan the goal. Execute one work node. Record evidence. Validate before moving on."
+      />
+      <div class="pwe-grid" aria-label="Plan Work Evidence model">
+        <article class="pwe-card plan-card">
+          <span class="pwe-label">Plan</span>
+          <h3>Capture durable intent.</h3>
+          <p>Goals, epics, PRDs, engineering designs, decisions, and rules describe what matters before an agent starts editing.</p>
+          <code>goal-32 -> epic-157 -> dec-38</code>
+        </article>
+        <article class="pwe-card work-card">
+          <span class="pwe-label">Work</span>
+          <h3>Route one executable node.</h3>
+          <p>Features, tasks, bugs, tests, and research spikes give coding sessions a bounded unit with status, blockers, and checks.</p>
+          <code>mdkg goal next</code>
+        </article>
+        <article class="pwe-card evidence-card">
+          <span class="pwe-label">Evidence</span>
+          <h3>Close with proof.</h3>
+          <p>Checkpoints, receipts, archives, validation output, and handoffs record why the current state is safe to continue from.</p>
+          <code>mdkg task done WORK_ID --checkpoint "..."</code>
+        </article>
       </div>
     </div>
   </section>
@@ -103,12 +139,27 @@ const structuredData = {
   <section class="section alt">
     <div class="container">
       <SectionHeader
+        eyebrow="Work model"
+        title="Built around familiar SDLC shapes."
+        text="mdkg models software work with graph nodes that humans already understand and agents can route through deterministically."
+      />
+      <div class="grid three">
+        <FeatureCard title="Goals and epics" text="Long-running objectives and grouped deliverables preserve intent across sessions, branches, and handoffs." command="mdkg goal current" />
+        <FeatureCard title="Tasks, bugs, tests, and spikes" text="Concrete work nodes let a human or AI agent focus on one actionable slice at a time." command="mdkg goal next" />
+        <FeatureCard title="Checkpoints and evidence" text="Milestone summaries record commands, pass/fail state, known warnings, boundaries, and follow-up refs." command="mdkg checkpoint new" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader
         eyebrow="Five-minute outcome"
         title="What you get after the first run."
         text="A fresh repo can quickly gain visible graph state, validation, and a deterministic handoff path without changing your application code."
       />
       <div class="grid three">
-        <FeatureCard title="Repo scaffold" text="Agent instructions, core docs, work/design folders, and validation rules." command="mdkg init --agent" />
+        <FeatureCard title="Repo memory scaffold" text="Agent instructions, core docs, work/design folders, and validation rules." command="mdkg init --agent" />
         <FeatureCard title="Operator view" text="A scriptable summary of git, graph, selected goal, cache, and project DB state." command="mdkg status --json" />
         <FeatureCard title="Handoff path" text="A compact prompt from graph state, boundaries, checkpoints, and required checks." command="mdkg handoff create WORK_ID" />
       </div>
@@ -290,6 +341,63 @@ const structuredData = {
     align-items: center;
   }
 
+  .pwe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .pwe-card {
+    display: grid;
+    gap: 14px;
+    min-height: 260px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  .pwe-card p {
+    color: var(--zinc-600);
+  }
+
+  .pwe-card code {
+    align-self: end;
+    width: fit-content;
+    max-width: 100%;
+    padding: 7px 9px;
+    border-radius: var(--radius);
+    color: var(--blue-700);
+    background: var(--sky-50);
+    font-size: 0.82rem;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .pwe-label {
+    width: fit-content;
+    padding: 5px 8px;
+    border-radius: var(--radius);
+    color: var(--zinc-950);
+    background: var(--zinc-100);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .plan-card {
+    background: linear-gradient(180deg, var(--white), var(--sky-50));
+  }
+
+  .work-card {
+    background: linear-gradient(180deg, var(--white), var(--teal-50));
+  }
+
+  .evidence-card {
+    background: linear-gradient(180deg, var(--white), var(--zinc-50));
+  }
+
   .proof-card {
     padding: 22px;
     border: 1px solid rgba(14, 165, 233, 0.22);
@@ -376,6 +484,7 @@ const structuredData = {
 
   @media (max-width: 820px) {
     .comparison-grid,
+    .pwe-grid,
     .proof-grid,
     .cta-panel {
       grid-template-columns: 1fr;

@@ -11,10 +11,11 @@ import ClaimEvidenceCard from "../components/ClaimEvidenceCard.astro";
         eyebrow="Trust boundaries"
         level="h1"
         title="Durable semantic memory, not an executor."
-        text="Trust boundary: mdkg is intentionally local-first and repo-owned. It helps agents understand work, produce deterministic context, and leave auditable handoffs without becoming a hosted memory service or execution runtime."
+        text="mdkg is intentionally local-first, low-dependency, and repo-owned. It helps agents understand work, produce deterministic context, and leave auditable handoffs without becoming a hosted memory service, execution runtime, or secret-scanning product."
       />
       <div class="grid two">
         <ClaimEvidenceCard claim="Markdown remains authoritative" evidence="Graph nodes are Markdown and frontmatter in your repo. Indexes, packs, generated docs, and runtime SQLite files are rebuildable support artifacts." />
+        <ClaimEvidenceCard claim="Low dependency is a security posture" evidence="mdkg uses normal CLI tooling, Markdown, Git, modern Node, and local generated artifacts instead of a hosted index, daemon, vector database, or hidden cloud state." />
         <ClaimEvidenceCard claim="mdkg does not execute work" evidence="Goals, tasks, packs, checkpoints, and handoffs guide a human or agent. Code execution, deployments, model calls, and provider actions happen outside mdkg." />
         <ClaimEvidenceCard claim="No hosted memory requirement" evidence="The public alpha does not require a cloud account, hosted index, vector database, or background daemon to keep the graph usable." />
         <ClaimEvidenceCard claim="Read-only MCP boundary" evidence="The local MCP server is an inspection surface for status, search, show, pack, goal, and validation workflows, not shell, environment, SQL, or broad mutation access." />
@@ -25,6 +26,7 @@ import ClaimEvidenceCard from "../components/ClaimEvidenceCard.astro";
         <h2>Safe public-alpha posture</h2>
         <ul>
           <li>Keep raw secrets, tokens, private keys, provider payloads, and bulky runtime traces out of graph nodes, checkpoints, packs, and handoffs.</li>
+          <li>Keep npm tokens, private registry credentials, package-manager auth files, and deployment tokens out of mdkg graph nodes.</li>
           <li>Review any generated handoff before pasting it into another agent or repository.</li>
           <li>Use small pilot repos first, then move larger teams through upgrade dry-runs and validation.</li>
           <li>Treat project DB, subgraph, import, and MCP workflows as advanced alpha surfaces until your repo has explicit tests around them.</li>
