@@ -3,22 +3,49 @@ title: Repository Layout
 description: Common mdkg paths and which files are durable source.
 ---
 
-Common mdkg paths:
+Common mdkg paths fall into four groups. Commit durable semantic source, review opt-in evidence, and keep generated or local runtime files out of normal source commits.
 
-| Path | Purpose | Commit? |
-|---|---|---|
-| `.mdkg/core/` | Rules and pinned project memory | yes |
-| `.mdkg/design/` | PRDs, EDDs, decisions | yes |
-| `.mdkg/work/` | Goals, tasks, tests, checkpoints | yes |
-| `.mdkg/skills/` | Canonical skills | yes |
-| `.mdkg/archive/` | Archive sidecars and deterministic caches | sidecars yes, raw source ignored |
-| `.mdkg/index/` | Generated search/index cache | no |
-| `.mdkg/pack/` | Generated context packs | no |
-| `.mdkg/db/runtime/` | Optional local runtime DB | no |
-| `.mdkg/db/schema/` | Project DB migrations and schema source | yes |
-| `.mdkg/db/state/` | Opt-in sealed project DB state snapshots | review first |
-| `.agents/skills/` | Agent-facing skill mirror | generated mirror |
-| `.claude/skills/` | Claude-facing skill mirror | generated mirror |
+## Commit as durable source
+
+`.mdkg/core/`
+: Rules and pinned project memory.
+
+`.mdkg/design/`
+: PRDs, EDDs, decisions, and architecture notes.
+
+`.mdkg/work/`
+: Goals, epics, tasks, tests, spikes, checkpoints, and closeout evidence.
+
+`.mdkg/skills/`
+: Canonical skill definitions. Tool-specific mirrors are generated from here.
+
+`.mdkg/db/schema/`
+: Project DB migrations and schema source.
+
+## Review before committing
+
+`.mdkg/archive/`
+: Archive sidecar Markdown and deterministic archive caches can be committed when the archive policy says so. Keep raw private source bundles out of public exports.
+
+`.mdkg/db/state/`
+: Opt-in sealed project DB state snapshots. Review queue policy, visibility, and snapshot contents before committing.
+
+`.agents/skills/`
+: Agent-facing skill mirror. Commit only when this repo intentionally tracks the generated mirror.
+
+`.claude/skills/`
+: Claude-facing skill mirror. Commit only when this repo intentionally tracks the generated mirror.
+
+## Keep local or rebuildable
+
+`.mdkg/index/`
+: Generated search, capability, skill, subgraph, and SQLite index cache. Rebuild it with `mdkg index`.
+
+`.mdkg/pack/`
+: Generated context packs. Recreate them with `mdkg pack`.
+
+`.mdkg/db/runtime/`
+: Optional local project DB runtime files. They are local infrastructure, not canonical graph memory.
 
 ## Durable source
 

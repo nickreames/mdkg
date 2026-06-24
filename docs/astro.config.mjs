@@ -34,6 +34,9 @@ export default defineConfig({
           href: "https://github.com/nickreames/mdkg",
         },
       ],
+      components: {
+        PageSidebar: "./src/components/PageSidebar.astro",
+      },
       sidebar: [
         {
           label: "Start Here",

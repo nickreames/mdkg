@@ -6,6 +6,14 @@ description: Separate executable scope from background context and proof.
 mdkg separates actionable work from background context and proof. These refs can appear on goals and other work nodes.
 
 ```yaml
+---
+id: goal-2
+type: goal
+title: Complete docs launch proof
+status: todo
+priority: 1
+goal_state: active
+active_node: task-12
 scope_refs:
   - task-12
   - test-7
@@ -16,6 +24,7 @@ context_refs:
 evidence_refs:
   - chk-8
   - archive://release.audit
+---
 ```
 
 - `scope_refs`: executable work scope. Goal routing can use these refs.
@@ -70,3 +79,10 @@ mdkg graph refs WORK_ID --json
 ```
 
 If `mdkg goal next` warns that a scoped ref is non-actionable, move the ref to `context_refs` or `evidence_refs` unless it truly should be executable work.
+
+## Common mistakes
+
+- Using `scope_refs` as a reading list. Keep scope for local executable nodes.
+- Blocking local work on a read-only subgraph qid without explaining who owns the unblock.
+- Putting checkpoint ids in `context_refs` when they are proof. Use `evidence_refs`.
+- Linking raw evidence directly in a node body. Prefer checkpoint summaries and sanitized archive or artifact refs.
