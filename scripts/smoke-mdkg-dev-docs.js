@@ -31,19 +31,25 @@ function main() {
     "src/content/docs/start-here/public-alpha-contract.md",
     "src/content/docs/start-here/troubleshooting.md",
     "src/content/docs/concepts/source-of-truth.md",
+    "src/content/docs/concepts/local-first-low-dependency.md",
+    "src/content/docs/concepts/plan-work-evidence.md",
     "src/content/docs/concepts/repository-layout.md",
     "src/content/docs/concepts/work-context-evidence.md",
+    "src/content/docs/concepts/work-node-types.md",
     "src/content/docs/concepts/glossary.md",
     "src/content/docs/guides/agent-workflow.md",
     "src/content/docs/guides/packs-and-handoffs.md",
     "src/content/docs/guides/research-spikes.md",
     "src/content/docs/advanced-alpha/overview.md",
     "src/content/docs/advanced-alpha/project-db-queues.md",
+    "src/content/docs/advanced-alpha/read-only-mcp.md",
+    "src/content/docs/advanced-alpha/subgraphs-and-bundles.md",
+    "src/content/docs/advanced-alpha/graph-movement.md",
+    "src/content/docs/advanced-alpha/demo-graphs.md",
     "src/content/docs/reference/index.md",
     "src/content/docs/reference/command-contract.md",
     "src/content/docs/reference/generated-cli-reference.md",
     "src/content/docs/project/changelog.md",
-    "src/content/docs/project/claims-evidence-matrix.md",
     "src/content/docs/project/roadmap.md",
     "start-here/install.md",
     "start-here/quickstart.md",
@@ -51,13 +57,21 @@ function main() {
     "start-here/public-alpha-contract.md",
     "start-here/troubleshooting.md",
     "concepts/source-of-truth.md",
+    "concepts/local-first-low-dependency.md",
+    "concepts/plan-work-evidence.md",
     "concepts/repository-layout.md",
     "concepts/work-context-evidence.md",
+    "concepts/work-node-types.md",
     "concepts/glossary.md",
+    "advanced-alpha/overview.md",
     "guides/agent-workflow.md",
     "guides/packs-and-handoffs.md",
     "guides/research-spikes.md",
     "advanced-alpha/project-db-queues.md",
+    "advanced-alpha/read-only-mcp.md",
+    "advanced-alpha/subgraphs-and-bundles.md",
+    "advanced-alpha/graph-movement.md",
+    "advanced-alpha/demo-graphs.md",
     "reference/command-contract.md",
     "_generated/cli-reference.md",
     "_generated/command-contract-summary.json",
@@ -74,7 +88,7 @@ function main() {
     assert(summary.includes(heading), `SUMMARY.md missing ${heading}`);
   }
   const readme = readText(path.join(docs, "README.md"));
-  assert(readme.includes("Starlight is the docs renderer for `docs.mdkg.dev`"), "docs README missing Starlight/docs.mdkg.dev boundary");
+  assert(readme.includes("repo-owned source"), "docs README missing repo-owned source boundary");
   assert(!readme.includes("GitBook"), "docs README still references GitBook");
 
   const starlightConfig = readText(path.join(docs, "astro.config.mjs"));
@@ -82,12 +96,19 @@ function main() {
   assert(starlightConfig.includes('title: "mdkg Docs"'), "Starlight config missing docs title");
   assert(starlightConfig.includes("start-here/quickstart"), "Starlight sidebar missing quickstart");
   assert(starlightConfig.includes("start-here/troubleshooting"), "Starlight sidebar missing troubleshooting");
+  assert(starlightConfig.includes("concepts/plan-work-evidence"), "Starlight sidebar missing Plan -> Work -> Evidence");
+  assert(starlightConfig.includes("concepts/work-node-types"), "Starlight sidebar missing work node types");
   assert(starlightConfig.includes("guides/research-spikes"), "Starlight sidebar missing research spikes");
+  assert(starlightConfig.includes("advanced-alpha/read-only-mcp"), "Starlight sidebar missing read-only MCP");
+  assert(starlightConfig.includes("advanced-alpha/subgraphs-and-bundles"), "Starlight sidebar missing subgraphs and bundles");
+  assert(starlightConfig.includes("advanced-alpha/graph-movement"), "Starlight sidebar missing graph movement");
+  assert(starlightConfig.includes("advanced-alpha/demo-graphs"), "Starlight sidebar missing demo graphs");
   assert(starlightConfig.includes("reference/generated-cli-reference"), "Starlight sidebar missing generated CLI reference");
 
   const starlightHome = readText(path.join(docs, "src", "content", "docs", "index.md"));
-  assert(starlightHome.includes("future canonical documentation host for `docs.mdkg.dev`"), "Starlight home missing canonical docs host copy");
+  assert(starlightHome.includes("Start here for Markdown Knowledge Graph documentation"), "Starlight home missing docs-home copy");
   assert(!starlightHome.includes("GitBook"), "Starlight home still references GitBook");
+  assert(!summary.includes("Claims Evidence Matrix"), "SUMMARY should not expose internal claims matrix");
 
   assertMarkdownLinks(docs);
 

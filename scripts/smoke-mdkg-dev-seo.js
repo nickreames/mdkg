@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require("node:fs");
 const path = require("node:path");
 const {
   assert,
@@ -41,12 +42,12 @@ function main() {
     "https://mdkg.dev/quickstart/",
     "https://mdkg.dev/trust/",
     "https://mdkg.dev/alpha/",
-    "https://mdkg.dev/docs/",
     "https://mdkg.dev/llms.txt",
     "https://mdkg.dev/llms-full.txt",
   ]) {
     assert(sitemap.includes(`<loc>${loc}</loc>`), `sitemap missing ${loc}`);
   }
+  assert(!sitemap.includes("https://mdkg.dev/docs/"), "sitemap must not include deleted marketing /docs bridge");
   assert(!sitemap.includes("demo-"), "sitemap must not include future demo subdomains");
   assert(!sitemap.includes("vercel.app"), "sitemap must not include preview deployment URLs");
 
@@ -74,8 +75,8 @@ function main() {
     "/quickstart/": "quickstart/index.html",
     "/trust/": "trust/index.html",
     "/alpha/": "alpha/index.html",
-    "/docs/": "docs/index.html",
   };
+  assert(!fs.existsSync(path.join(dist, "docs", "index.html")), "marketing /docs bridge should not be built");
   for (const [route, relPath] of Object.entries(routeFiles)) {
     const html = readText(path.join(dist, relPath));
     assert(html.includes(`href="https://mdkg.dev${route}`), `${route} missing canonical URL`);
@@ -86,12 +87,10 @@ function main() {
   for (const expected of [
     "https://github.com/nickreames/mdkg",
     "https://www.npmjs.com/package/mdkg",
-    "https://mdkg-docs.vercel.app/",
     "https://docs.mdkg.dev",
     "/quickstart/",
     "/trust/",
     "/alpha/",
-    "/docs/",
     "/llms.txt",
   ]) {
     assert(allHtml.includes(expected), `built pages missing expected link: ${expected}`);

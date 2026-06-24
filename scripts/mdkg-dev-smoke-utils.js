@@ -134,6 +134,7 @@ function localMarkdownLinks(markdown) {
       target.startsWith("#") ||
       target.startsWith("http://") ||
       target.startsWith("https://") ||
+      target.startsWith("/") ||
       target.startsWith("mailto:") ||
       target.startsWith("archive://") ||
       target.startsWith("file:")

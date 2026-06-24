@@ -31,7 +31,6 @@ function main() {
     "quickstart/index.html",
     "trust/index.html",
     "alpha/index.html",
-    "docs/index.html",
     "llms.txt",
     "llms-full.txt",
     "robots.txt",
@@ -49,11 +48,7 @@ function main() {
   assert(home.includes("<main"), "homepage missing main landmark");
   assert(home.includes("<nav"), "homepage missing nav landmark");
   assert(home.includes("<footer"), "homepage missing footer landmark");
-
-  const docsPage = readText(path.join(dist, "docs", "index.html"));
-  assert(docsPage.includes("Repo-owned docs, rendered with Starlight"), "docs bridge missing Starlight heading");
-  assert(docsPage.includes("https://docs.mdkg.dev"), "docs bridge missing docs.mdkg.dev link");
-  assert(!docsPage.includes("GitBook"), "docs bridge still references GitBook");
+  assert(!fs.existsSync(path.join(dist, "docs", "index.html")), "marketing /docs bridge should not be built");
 
   const quickstart = readText(path.join(dist, "quickstart", "index.html"));
   const llms = readText(path.join(dist, "llms.txt"));
@@ -73,7 +68,7 @@ function main() {
     {
       label: "docs README",
       source: docsReadme,
-      expected: ["Starlight is the docs renderer for `docs.mdkg.dev`", "source of truth"],
+      expected: ["repo-owned source", "source of truth"],
     },
     {
       label: "Starlight install docs",
@@ -103,7 +98,7 @@ function main() {
     {
       label: "homepage",
       source: home,
-      expected: ["mdkg init --agent", "mdkg pack WORK_ID", "context_refs", "evidence_refs", "mdkg handoff create WORK_ID"],
+      expected: ["mdkg init --agent", "mdkg pack WORK_ID", "Plan", "Work", "Evidence", "context_refs", "evidence_refs", "mdkg handoff create WORK_ID"],
     },
     {
       label: "llms.txt",
