@@ -2,7 +2,7 @@
 id: test-280
 type: test
 title: pushed commits Vercel preview validation and no-launch-side-effects contract
-status: todo
+status: done
 priority: 1
 epic: epic-188
 parent: goal-35
