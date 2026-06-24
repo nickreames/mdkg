@@ -22,6 +22,31 @@ Handoff warnings are safety aids, not comprehensive secret scanning.
 
 Use packs for execution context and handoffs for transfer. Do not paste raw provider payloads, private prompts, logs with tokens, or bulky runtime traces into either surface.
 
+## Use a pack when working
+
+Packs answer: "What context should I load before editing?"
+
+Good pack uses:
+
+- start a task or spike with bounded context
+- inspect related decisions and evidence
+- hand a concise context bundle to a coding agent
+- review what would be included with `--dry-run --stats`
+
+```bash
+mdkg pack WORK_ID --pack-profile concise
+mdkg pack WORK_ID --dry-run --stats
+```
+
+## Use a handoff when transferring
+
+Handoffs answer: "What should the next human or agent do, and what boundaries matter?"
+
+```bash
+mdkg handoff create WORK_ID --json
+mdkg handoff create WORK_ID --out .mdkg/handoffs/example.md
+```
+
 Good handoffs include:
 
 - current goal or work node state
@@ -30,3 +55,7 @@ Good handoffs include:
 - required validation commands
 - known warnings and whether they are accepted
 - next concrete action for the receiving human or agent
+
+## What not to use them for
+
+Do not use packs or handoffs as raw log storage, secret storage, prompt archives, telemetry dumps, or provider payload mirrors. Summarize evidence and use refs to artifacts instead.

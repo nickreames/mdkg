@@ -1,15 +1,17 @@
 ---
 title: Command Contract
-description: How mdkg generates machine-readable command metadata.
+description: Maintainer-facing metadata for generated command reference and integrations.
 ---
 
-mdkg generates a command contract at:
+The command contract is a maintainer and integration surface. Most users should start with the generated CLI reference.
+
+mdkg generates command metadata at:
 
 ```text
 dist/command-contract.json
 ```
 
-The public docs should derive command reference pages from that artifact where possible.
+Public reference pages should derive command coverage from that artifact where possible.
 
 Reference pages should include:
 

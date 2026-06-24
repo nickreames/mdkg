@@ -32,8 +32,8 @@ const structuredData = {
       <div>
         <p class="eyebrow">Markdown Knowledge Graph</p>
         <h1>Git-native project memory for AI coding agents.</h1>
-        <p class="lead">Turn structured Markdown in your repo into a Plan -&gt; Work -&gt; Evidence loop that humans and agents can inspect, pack, hand off, and validate.</p>
-        <p class="trust-line">Developer preview. Pre-v1 public alpha. Markdown is the durable source of truth; generated indexes are rebuildable.</p>
+        <p class="lead">Give AI coding agents durable repo context with a local-first Plan -&gt; Work -&gt; Evidence loop that humans can inspect, pack, hand off, and validate.</p>
+        <p class="trust-line">Developer preview. Pre-v1 public alpha. Markdown is the source of truth; no hosted index, daemon, or vector database is required for the core loop.</p>
         <CTAGroup />
       </div>
       <DiagramCard
@@ -47,17 +47,17 @@ const structuredData = {
     <div class="container grid two">
       <div class="stack">
         <Badge>Quickstart</Badge>
-        <h2>First, prove the repo memory layer works.</h2>
+        <h2>First, prove the local memory layer works.</h2>
         <p class="muted">Install mdkg, initialize repo-local project memory, build the access cache, inspect status, and validate graph health before handing work to an agent.</p>
       </div>
       <div class="grid">
         <TerminalBlock
           title="First-run setup"
-          commands={["npm install -g mdkg", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate"]}
+          commands={["npm install -g mdkg", "mdkg --version", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate"]}
         />
         <TerminalBlock
-          title="Operating loop"
-          commands={["mdkg goal current", "mdkg goal next", "mdkg pack WORK_ID", "mdkg task done WORK_ID --checkpoint \"Meaningful milestone\"", "mdkg validate"]}
+          title="Ongoing Plan -> Work -> Evidence loop"
+          commands={["mdkg goal current", "mdkg goal next", "mdkg show WORK_ID", "mdkg pack WORK_ID", "mdkg handoff create WORK_ID", "mdkg task done TASK_ID --checkpoint \"Meaningful milestone\"", "mdkg validate"]}
         />
       </div>
     </div>
@@ -88,21 +88,21 @@ const structuredData = {
       <div class="pwe-grid" aria-label="Plan Work Evidence model">
         <article class="pwe-card plan-card">
           <span class="pwe-label">Plan</span>
-          <h3>Capture durable intent.</h3>
+          <h3>Plan the goal.</h3>
           <p>Goals, epics, PRDs, engineering designs, decisions, and rules describe what matters before an agent starts editing.</p>
-          <code>goal-32 -> epic-157 -> dec-38</code>
+          <code>goal-1 -> epic-1 -> dec-1</code>
         </article>
         <article class="pwe-card work-card">
           <span class="pwe-label">Work</span>
-          <h3>Route one executable node.</h3>
+          <h3>Execute one work node.</h3>
           <p>Features, tasks, bugs, tests, and research spikes give coding sessions a bounded unit with status, blockers, and checks.</p>
           <code>mdkg goal next</code>
         </article>
         <article class="pwe-card evidence-card">
           <span class="pwe-label">Evidence</span>
-          <h3>Close with proof.</h3>
+          <h3>Record evidence.</h3>
           <p>Checkpoints, receipts, archives, validation output, and handoffs record why the current state is safe to continue from.</p>
-          <code>mdkg task done WORK_ID --checkpoint "..."</code>
+          <code>mdkg task done TASK_ID --checkpoint "..."</code>
         </article>
       </div>
     </div>
@@ -144,7 +144,7 @@ const structuredData = {
         text="mdkg models software work with graph nodes that humans already understand and agents can route through deterministically."
       />
       <div class="grid three">
-        <FeatureCard title="Goals and epics" text="Long-running objectives and grouped deliverables preserve intent across sessions, branches, and handoffs." command="mdkg goal current" />
+        <FeatureCard title="Goals, epics, and features" text="Long-running objectives and grouped deliverables preserve intent across sessions, branches, and handoffs." command="mdkg goal current" />
         <FeatureCard title="Tasks, bugs, tests, and spikes" text="Concrete work nodes let a human or AI agent focus on one actionable slice at a time." command="mdkg goal next" />
         <FeatureCard title="Checkpoints and evidence" text="Milestone summaries record commands, pass/fail state, known warnings, boundaries, and follow-up refs." command="mdkg checkpoint new" />
       </div>
@@ -159,9 +159,9 @@ const structuredData = {
         text="A fresh repo can quickly gain visible graph state, validation, and a deterministic handoff path without changing your application code."
       />
       <div class="grid three">
-        <FeatureCard title="Repo memory scaffold" text="Agent instructions, core docs, work/design folders, and validation rules." command="mdkg init --agent" />
+        <FeatureCard title="Repo memory files" text="Agent instructions, core docs, work/design folders, and validation rules." command="mdkg init --agent" />
         <FeatureCard title="Operator view" text="A scriptable summary of git, graph, selected goal, cache, and project DB state." command="mdkg status --json" />
-        <FeatureCard title="Handoff path" text="A compact prompt from graph state, boundaries, checkpoints, and required checks." command="mdkg handoff create WORK_ID" />
+        <FeatureCard title="No daemon required" text="The core loop runs from Markdown and rebuildable indexes in the repository." command="mdkg validate" />
       </div>
     </div>
   </section>
@@ -178,11 +178,11 @@ const structuredData = {
         />
       </div>
       <div class="proof-card" aria-label="Example mdkg graph shape">
-        <div class="path-line">.mdkg/work/goal-30.md</div>
+        <div class="path-line">.mdkg/work/goal-1-ship-a-feature.md</div>
         <dl>
-          <div><dt>scope_refs</dt><dd>task-490, task-491, test-228</dd></div>
-          <div><dt>context_refs</dt><dd>prd-6, edd-34, archive://feedback</dd></div>
-          <div><dt>evidence_refs</dt><dd>chk-206, smoke receipts, Browser proof</dd></div>
+          <div><dt>scope_refs</dt><dd>task-1, task-2, test-1</dd></div>
+          <div><dt>context_refs</dt><dd>prd-1, dec-1, archive://research-notes</dd></div>
+          <div><dt>evidence_refs</dt><dd>chk-1, test receipts, review notes</dd></div>
         </dl>
         <div class="proof-footer">reviewable in Git, packable for agents</div>
       </div>
@@ -297,8 +297,8 @@ const structuredData = {
     <div class="container">
       <SectionHeader
         eyebrow="Advanced alpha"
-        title="Depth for larger agentic workflows, secondary to the first-run path."
-        text="These surfaces are documented for early adopters, but users do not need them to understand the core value."
+        title="Advanced surfaces stay optional."
+        text="These capabilities help larger agentic workflows, but users do not need them to understand or try the core loop."
       />
       <div class="grid three">
         <FeatureCard title="Read-only MCP" text="Let agents inspect project memory without mutation, shell, SQL, or environment access." />
