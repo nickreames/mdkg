@@ -8,8 +8,8 @@ tags: [mdkg-dev, visuals, demo-video, deferred]
 owners: []
 links: []
 artifacts: []
-relates: [goal-21, goal-32, task-371, test-248]
-blocked_by: [goal-32]
+relates: [goal-21, task-371, test-248]
+blocked_by: []
 blocks: [test-248]
 refs: [archive://archive.mdkg-dev-preview-polish-pass-2-2026-06-24]
 context_refs: [prd-7, edd-36, edd-37, edd-38, dec-37, dec-38, task-371]
@@ -54,6 +54,6 @@ This is intentionally deferred out of goal-32. The immediate pass uses CSS/HTML-
 
 # Links / Artifacts
 
-- `goal-32`
+- Goal 32 created this follow-up after completing public-alpha pass-2 preview proof.
 - `task-371`
 - `test-248`

@@ -2,7 +2,7 @@
 id: test-247
 type: test
 title: no DNS production npm tag analytics or public launch side effects contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, launch-boundary]
 owners: []
@@ -35,4 +35,12 @@ Validate that Goal 32 stops at preview proof.
 
 # Results / Evidence
 
-- Pending.
+- Passed.
+- No DNS records were changed.
+- No custom domains were bound or promoted for `mdkg.dev`, `www.mdkg.dev`, or `docs.mdkg.dev`.
+- No npm publish was run.
+- No git tag was created.
+- No analytics activation was performed.
+- No public launch announcement was made.
+- No Vercel secrets, DNS credentials, GitHub tokens, cookies, or deployment bypass values were written into mdkg graph nodes.
+- Vercel continues to report `.vercel.app` main-branch deployments with target `production`; this is the existing Vercel project-alias behavior, not a DNS cutover or custom-domain production launch.
