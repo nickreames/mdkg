@@ -2,7 +2,7 @@
 id: test-278
 type: test
 title: accessibility reduced-motion contrast performance noindex canonical link and asset-budget contract
-status: todo
+status: done
 priority: 1
 epic: epic-186
 parent: goal-35

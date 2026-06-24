@@ -2,7 +2,7 @@
 id: test-273
 type: test
 title: homepage density thesis before-after narrative CTA and social metadata contract
-status: todo
+status: done
 priority: 1
 epic: epic-184
 parent: goal-35

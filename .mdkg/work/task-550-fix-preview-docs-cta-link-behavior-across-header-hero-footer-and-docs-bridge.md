@@ -2,7 +2,7 @@
 id: task-550
 type: task
 title: fix preview docs CTA link behavior across header hero footer and docs bridge
-status: todo
+status: done
 priority: 1
 epic: epic-182
 parent: goal-35

@@ -2,7 +2,7 @@
 id: test-279
 type: test
 title: Browser Chrome Product Design Creative Production evidence contract
-status: todo
+status: done
 priority: 1
 epic: epic-187
 parent: goal-35

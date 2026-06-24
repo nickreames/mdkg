@@ -2,7 +2,7 @@
 id: spike-20
 type: spike
 title: research pass-5 audit into launch-ready docs DX and QA execution model
-status: todo
+status: done
 priority: 1
 epic: epic-181
 parent: goal-35

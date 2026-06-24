@@ -2,7 +2,7 @@
 id: task-555
 type: task
 title: fix llms txt and llms-full txt formatting and agent-readable content
-status: todo
+status: done
 priority: 1
 epic: epic-185
 parent: goal-35

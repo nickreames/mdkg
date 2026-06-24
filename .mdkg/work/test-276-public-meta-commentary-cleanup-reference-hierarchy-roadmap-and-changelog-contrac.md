@@ -2,7 +2,7 @@
 id: test-276
 type: test
 title: public meta-commentary cleanup reference hierarchy roadmap and changelog contract
-status: todo
+status: done
 priority: 1
 epic: epic-185
 parent: goal-35
