@@ -1,5 +1,5 @@
 ---
-title: mdkg Docs
+title: Markdown Knowledge Graph Docs
 description: Start here for Markdown Knowledge Graph documentation.
 ---
 

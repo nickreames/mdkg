@@ -27,6 +27,7 @@ export default defineConfig({
             { label: "Quickstart", slug: "start-here/quickstart" },
             { label: "Safety Boundaries", slug: "start-here/safety-boundaries" },
             { label: "Public Alpha Contract", slug: "start-here/public-alpha-contract" },
+            { label: "Troubleshooting", slug: "start-here/troubleshooting" },
           ],
         },
         {
@@ -35,6 +36,7 @@ export default defineConfig({
             { label: "Source Of Truth", slug: "concepts/source-of-truth" },
             { label: "Repository Layout", slug: "concepts/repository-layout" },
             { label: "Work, Context, And Evidence", slug: "concepts/work-context-evidence" },
+            { label: "Glossary", slug: "concepts/glossary" },
           ],
         },
         {
@@ -42,6 +44,7 @@ export default defineConfig({
           items: [
             { label: "Agent Workflow", slug: "guides/agent-workflow" },
             { label: "Packs And Handoffs", slug: "guides/packs-and-handoffs" },
+            { label: "Research Spikes", slug: "guides/research-spikes" },
           ],
         },
         {
