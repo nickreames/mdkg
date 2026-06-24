@@ -2,7 +2,7 @@
 id: task-545
 type: task
 title: add measured a11y performance reduced-motion and high-contrast gates
-status: todo
+status: done
 priority: 1
 epic: epic-177
 parent: goal-34

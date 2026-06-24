@@ -2,7 +2,7 @@
 id: test-263
 type: test
 title: deterministic demo graph and first-success expected-output contract
-status: todo
+status: done
 priority: 1
 epic: epic-176
 parent: goal-34

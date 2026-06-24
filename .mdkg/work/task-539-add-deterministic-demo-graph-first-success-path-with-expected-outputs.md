@@ -2,7 +2,7 @@
 id: task-539
 type: task
 title: add deterministic demo graph first-success path with expected outputs
-status: todo
+status: done
 priority: 1
 epic: epic-176
 parent: goal-34

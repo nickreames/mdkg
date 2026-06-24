@@ -2,7 +2,7 @@
 id: test-261
 type: test
 title: public command examples are canonical validated and copy-safe
-status: todo
+status: done
 priority: 1
 epic: epic-173
 parent: goal-34

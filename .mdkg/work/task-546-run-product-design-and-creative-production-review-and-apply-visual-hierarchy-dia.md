@@ -2,14 +2,14 @@
 id: task-546
 type: task
 title: run Product Design and Creative Production review and apply visual hierarchy diagram and copy-direction polish
-status: todo
+status: done
 priority: 1
 epic: epic-178
 parent: goal-34
 tags: [mdkg-dev, product-design, creative-production]
 owners: []
 links: []
-artifacts: []
+artifacts: [archive://archive.mdkg-dev-pass4-design-audit-screenshots-2026-06-24]
 relates: [goal-34, test-267]
 blocked_by: [task-538, task-545]
 blocks: [task-547]

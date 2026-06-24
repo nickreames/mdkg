@@ -2,7 +2,7 @@
 id: test-265
 type: test
 title: generated CLI reference and user-vs-maintainer reference hierarchy contract
-status: todo
+status: done
 priority: 1
 epic: epic-176
 parent: goal-34

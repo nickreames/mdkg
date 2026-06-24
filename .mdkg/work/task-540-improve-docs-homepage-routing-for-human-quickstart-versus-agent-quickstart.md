@@ -2,7 +2,7 @@
 id: task-540
 type: task
 title: improve docs homepage routing for human quickstart versus agent quickstart
-status: todo
+status: done
 priority: 1
 epic: epic-175
 parent: goal-34

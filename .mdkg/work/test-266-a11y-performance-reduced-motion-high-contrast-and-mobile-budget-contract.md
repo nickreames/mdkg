@@ -2,7 +2,7 @@
 id: test-266
 type: test
 title: a11y performance reduced-motion high-contrast and mobile budget contract
-status: todo
+status: done
 priority: 1
 epic: epic-177
 parent: goal-34

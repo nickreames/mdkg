@@ -2,7 +2,7 @@
 id: test-264
 type: test
 title: responsive repository layout command-boundary docs and common-mistakes contract
-status: todo
+status: done
 priority: 1
 epic: epic-175
 parent: goal-34

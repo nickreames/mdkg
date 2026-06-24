@@ -2,7 +2,7 @@
 id: test-260
 type: test
 title: docs TOC heading outline and screen-reader structure contract
-status: todo
+status: done
 priority: 1
 epic: epic-175
 parent: goal-34

@@ -2,7 +2,7 @@
 id: task-548
 type: task
 title: create logical commits push main verify Vercel previews logs and close evidence
-status: todo
+status: progress
 priority: 1
 epic: epic-180
 parent: goal-34

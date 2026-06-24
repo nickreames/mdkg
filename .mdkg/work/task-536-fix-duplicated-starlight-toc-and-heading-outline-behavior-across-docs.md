@@ -2,7 +2,7 @@
 id: task-536
 type: task
 title: fix duplicated Starlight TOC and heading outline behavior across docs
-status: todo
+status: done
 priority: 1
 epic: epic-175
 parent: goal-34
