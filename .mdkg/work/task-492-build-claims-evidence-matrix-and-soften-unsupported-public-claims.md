@@ -2,7 +2,7 @@
 id: task-492
 type: task
 title: build claims evidence matrix and soften unsupported public claims
-status: todo
+status: done
 priority: 1
 tags: [mdkg-dev, claims, trust, no-secret]
 owners: []
@@ -38,6 +38,22 @@ Create a real claims evidence matrix and ensure public copy does not overclaim d
 
 # Files Affected
 
+- `mdkg-dev/CLAIMS.md`
+- `docs/src/content/docs/project/claims-evidence-matrix.md`
+- `docs/project/claims-evidence-matrix.md`
+- `scripts/smoke-mdkg-dev-seo.js`
+
 # Implementation Notes
 
+- Expanded the claims evidence matrix with `Owner` and `Review status` columns.
+- Marked public-alpha claims as approved, preview-only, or blocked from public claim.
+- Added an explicit blocked-claim section for hosted memory, hosted queues, arbitrary SQL, autonomous worker execution, broad MCP mutation parity, universal agent compatibility, production readiness for every team, and comprehensive secret scanning / DLP.
+- Updated Starlight and top-level claims docs to state the required matrix fields and unsupported claim boundaries.
+- Hardened `smoke:mdkg-dev-seo` so it asserts owner/status fields, blocked-claim language, and absence of selected unsafe promotional phrases in generated public pages.
+
 # Links / Artifacts
+
+- `npm run smoke:mdkg-dev-seo` passed.
+- `npm run smoke:mdkg-dev-docs` passed.
+- Targeted unsupported-claim scan found only blocked/safety wording in claims/docs contexts, not unsupported homepage or LLM promotional copy.
+- `git diff --check` passed.

@@ -2,7 +2,7 @@
 id: task-494
 type: task
 title: implement SEO social metadata sitemap robots noindex and link checks
-status: todo
+status: done
 priority: 1
 tags: [mdkg-dev, seo, metadata, links]
 owners: []
@@ -39,6 +39,22 @@ Implement launch-safe metadata and link validation for product and docs previews
 
 # Files Affected
 
+- `mdkg-dev/src/layouts/BaseLayout.astro`
+- `mdkg-dev/src/pages/robots.txt.ts`
+- `scripts/smoke-mdkg-dev-seo.js`
+
 # Implementation Notes
 
+- Added preview noindex support driven by `VERCEL_ENV=preview` or `PUBLIC_MDKG_PREVIEW_NOINDEX=true`.
+- Added `theme-color`, `og:site_name`, `og:image:alt`, and `twitter:image:alt` metadata to the shared site layout.
+- Updated `robots.txt` generation so normal builds allow crawling and preview/noindex builds disallow crawling.
+- Hardened `smoke:mdkg-dev-seo` with route-level canonical/social metadata checks, expected internal/external link coverage, preview noindex source checks, and normal robots assertions.
+
 # Links / Artifacts
+
+- `npm run smoke:mdkg-dev-seo` passed.
+- `npm run smoke:mdkg-dev` passed after rerunning sequentially.
+- Browser metadata check passed for `/`, `/quickstart/`, `/trust/`, `/alpha/`, and `/docs/`: canonical URLs point at `https://mdkg.dev`, robots is `index, follow`, social image metadata is present, and no console errors were observed.
+- `PUBLIC_MDKG_PREVIEW_NOINDEX=true npm --prefix mdkg-dev run build` produced `noindex, nofollow` in `index.html` and `Disallow: /` in `robots.txt`.
+- Normal `npm run smoke:mdkg-dev-seo` was rerun afterward to restore and verify normal public-build output.
+- `git diff --check` passed.

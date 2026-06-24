@@ -2,7 +2,7 @@
 id: task-497
 type: task
 title: create logical commits and push main to origin
-status: todo
+status: progress
 priority: 1
 tags: [mdkg-dev, git, push]
 owners: []

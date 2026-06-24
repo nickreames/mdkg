@@ -2,7 +2,7 @@
 id: task-495
 type: task
 title: add launch polish smokes and parity checks
-status: todo
+status: done
 priority: 1
 tags: [mdkg-dev, smoke-tests, parity]
 owners: []
@@ -37,8 +37,27 @@ Add or update deterministic smokes so future changes cannot regress feedback fix
 - `npm run docs:check`
 - `npm run test`
 
+# Evidence
+
+- Added launch parity assertions to `scripts/smoke-mdkg-dev.js` so `npm run smoke:mdkg-dev` checks README, Starlight source docs, built marketing pages, and LLM docs for shared first-run, placeholder, semantic-ref, handoff, and queue-contract language.
+- Updated the Starlight and mirror handoff docs to explicitly describe handoffs as sanitized, bounded transfer summaries.
+- `npm run smoke:mdkg-dev` passed after catching and fixing the missing sanitized-handoff wording.
+- `npm run smoke:mdkg-dev-docs` passed with 46 required docs files.
+- `npm run smoke:mdkg-dev-seo` passed with route metadata, sitemap, robots, preview-noindex source, claims, and no-secret checks.
+- `npm run docs:check` passed with generated command-reference outputs current.
+- `npm run test` passed: 507 tests, 0 failures.
+- `node dist/cli.js index` refreshed generated graph indexes.
+- `node dist/cli.js validate --summary --json --limit 20` passed with 0 warnings and 0 errors.
+- `git diff --check` passed.
+
 # Files Affected
 
+- `scripts/smoke-mdkg-dev.js`
+- `docs/src/content/docs/guides/packs-and-handoffs.md`
+- `docs/guides/packs-and-handoffs.md`
+
 # Implementation Notes
+
+- The parity smoke intentionally samples stable public-alpha invariants rather than duplicating every page body. It should fail when README, docs, site, and LLM guidance drift on install requirements, `mdkg init --agent`, durable placeholder ids, semantic refs, handoffs, or queue adapter contract language.
 
 # Links / Artifacts

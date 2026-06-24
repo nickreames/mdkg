@@ -2,12 +2,12 @@
 id: goal-30
 type: goal
 title: Polish mdkg.dev public-alpha previews from feedback bundle
-status: todo
+status: progress
 priority: 1
-goal_state: paused
+goal_state: active
 goal_condition: Goal 30 is achieved when mdkg.dev and Starlight docs implement all P0 plus core P1 feedback stories, local Browser/Product Design QA passes, required smokes pass, logical commits are pushed to origin/main, existing Vercel previews redeploy successfully, and no DNS, production promotion, npm publish, analytics activation, git tag, or public launch occurs.
 scope_refs: [epic-147, epic-148, epic-149, epic-150, epic-151, epic-152, task-489, task-490, task-491, task-492, task-493, task-494, task-495, task-496, task-497, task-498, test-228, test-229, test-230, test-231, test-232, test-233, test-234]
-active_node: task-489
+active_node: task-497
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, git diff --check]
 max_iterations: 25
