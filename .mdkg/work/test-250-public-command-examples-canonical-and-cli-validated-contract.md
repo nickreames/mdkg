@@ -2,7 +2,7 @@
 id: test-250
 type: test
 title: public command examples canonical and CLI-validated contract
-status: backlog
+status: done
 priority: 1
 epic: epic-166
 parent: goal-33

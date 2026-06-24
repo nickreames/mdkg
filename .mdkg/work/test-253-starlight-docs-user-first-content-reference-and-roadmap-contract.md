@@ -2,7 +2,7 @@
 id: test-253
 type: test
 title: Starlight docs user-first content reference and roadmap contract
-status: backlog
+status: done
 priority: 1
 epic: epic-168
 parent: goal-33

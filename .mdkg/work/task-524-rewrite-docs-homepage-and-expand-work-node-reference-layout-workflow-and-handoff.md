@@ -2,7 +2,7 @@
 id: task-524
 type: task
 title: rewrite docs homepage and expand work node reference layout workflow and handoff docs
-status: backlog
+status: done
 priority: 1
 epic: epic-168
 parent: goal-33

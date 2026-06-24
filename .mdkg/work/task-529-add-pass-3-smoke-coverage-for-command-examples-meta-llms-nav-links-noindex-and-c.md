@@ -2,7 +2,7 @@
 id: task-529
 type: task
 title: add pass-3 smoke coverage for command examples meta llms nav links noindex and copy parity
-status: backlog
+status: done
 priority: 1
 epic: epic-171
 parent: goal-33

@@ -2,7 +2,7 @@
 id: test-251
 type: test
 title: public meta cleanup docs bridge claims nav TOC and external-link contract
-status: backlog
+status: done
 priority: 1
 epic: epic-166
 parent: goal-33

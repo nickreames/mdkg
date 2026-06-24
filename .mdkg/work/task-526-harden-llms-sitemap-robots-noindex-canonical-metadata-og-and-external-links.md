@@ -2,7 +2,7 @@
 id: task-526
 type: task
 title: harden llms sitemap robots noindex canonical metadata og and external links
-status: backlog
+status: done
 priority: 1
 epic: epic-169
 parent: goal-33

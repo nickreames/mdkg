@@ -2,7 +2,7 @@
 id: task-522
 type: task
 title: remove public scaffold meta commentary and fix docs bridge nav toc and external links
-status: backlog
+status: done
 priority: 1
 epic: epic-166
 parent: goal-33
