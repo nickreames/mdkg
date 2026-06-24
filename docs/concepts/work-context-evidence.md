@@ -1,4 +1,4 @@
-# Work, Context, And Evidence
+# Reference Types
 
 mdkg separates actionable work from background context and proof.
 
@@ -13,8 +13,8 @@ evidence_refs:
   - archive://release.audit
 ```
 
-- `scope_refs`: what is actionable.
-- `context_refs`: what informs the work.
-- `evidence_refs`: what proves or supports state.
+- `scope_refs`: executable work scope.
+- `context_refs`: background information that informs work.
+- `evidence_refs`: proof that supports state.
 
 This distinction helps agents avoid treating every related document as something to execute.

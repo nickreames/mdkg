@@ -17,6 +17,8 @@ It is usable today, but graph, cache, bundle, and database contracts may change 
 - validation/status/doctor/fix planning
 - skill source and mirrors
 
+Stable enough to try does not mean production-ready for every team. Start with a small repo, keep commits reviewable, and run validation before handoff or closeout.
+
 ## Advanced alpha
 
 - project DB and queues
@@ -26,3 +28,7 @@ It is usable today, but graph, cache, bundle, and database contracts may change 
 - workflow mirror files
 
 Advanced alpha surfaces are documented for early adopters, but they are not required for the first five minutes.
+
+## Boundaries
+
+mdkg does not host your repo, run agents, deploy code, call model providers, execute skill scripts, or provide comprehensive secret scanning. Keep secrets and raw production payloads out of mdkg graph state.

@@ -1,13 +1,28 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 
+const previewNoindex =
+  process.env.VERCEL_ENV === "preview" ||
+  String(process.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
+
 export default defineConfig({
   site: "https://docs.mdkg.dev",
   output: "static",
   integrations: [
     starlight({
       title: "mdkg Docs",
-      description: "Documentation for Markdown Knowledge Graph, a git-native project memory CLI for AI-assisted software work.",
+      description: "Documentation for Markdown Knowledge Graph, git-native project memory for AI coding agents.",
+      head: previewNoindex
+        ? [
+            {
+              tag: "meta",
+              attrs: {
+                name: "robots",
+                content: "noindex, nofollow",
+              },
+            },
+          ]
+        : [],
       editLink: {
         baseUrl: "https://github.com/nickreames/mdkg/edit/main/docs/src/content/docs/",
       },
@@ -34,8 +49,11 @@ export default defineConfig({
           label: "Concepts",
           items: [
             { label: "Source Of Truth", slug: "concepts/source-of-truth" },
+            { label: "Local-first And Low-dependency", slug: "concepts/local-first-low-dependency" },
             { label: "Repository Layout", slug: "concepts/repository-layout" },
-            { label: "Work, Context, And Evidence", slug: "concepts/work-context-evidence" },
+            { label: "Plan -> Work -> Evidence", slug: "concepts/plan-work-evidence" },
+            { label: "Work Node Types", slug: "concepts/work-node-types" },
+            { label: "Reference Types", slug: "concepts/work-context-evidence" },
             { label: "Glossary", slug: "concepts/glossary" },
           ],
         },
@@ -52,6 +70,10 @@ export default defineConfig({
           items: [
             { label: "Overview", slug: "advanced-alpha/overview" },
             { label: "Project DB And Queues", slug: "advanced-alpha/project-db-queues" },
+            { label: "Read-only MCP", slug: "advanced-alpha/read-only-mcp" },
+            { label: "Subgraphs And Bundles", slug: "advanced-alpha/subgraphs-and-bundles" },
+            { label: "Graph Movement", slug: "advanced-alpha/graph-movement" },
+            { label: "Demo Graphs", slug: "advanced-alpha/demo-graphs" },
           ],
         },
         {
@@ -66,7 +88,6 @@ export default defineConfig({
           label: "Project",
           items: [
             { label: "Changelog", slug: "project/changelog" },
-            { label: "Claims Evidence Matrix", slug: "project/claims-evidence-matrix" },
             { label: "Roadmap", slug: "project/roadmap" },
           ],
         },

@@ -2,7 +2,7 @@
 
 Markdown Knowledge Graph (`mdkg`) is git-native project memory for AI-native software engineering.
 
-These docs are repo-owned source for the future public documentation surface. Starlight is the docs renderer for `docs.mdkg.dev`, and this repository remains the source of truth.
+These docs are repo-owned source for the public Markdown Knowledge Graph documentation. The repository remains the source of truth for docs content.
 
 ## Start Here
 
@@ -15,8 +15,11 @@ These docs are repo-owned source for the future public documentation surface. St
 ## Concepts
 
 - [Source Of Truth](concepts/source-of-truth.md)
+- [Local-first And Low-dependency](concepts/local-first-low-dependency.md)
 - [Repository Layout](concepts/repository-layout.md)
-- [Work, Context, And Evidence](concepts/work-context-evidence.md)
+- [Plan -> Work -> Evidence](concepts/plan-work-evidence.md)
+- [Work Node Types](concepts/work-node-types.md)
+- [Reference Types](concepts/work-context-evidence.md)
 - [Glossary](concepts/glossary.md)
 
 ## Guides
@@ -29,6 +32,10 @@ These docs are repo-owned source for the future public documentation surface. St
 
 - [Advanced Alpha Overview](advanced-alpha/overview.md)
 - [Project DB And Queues](advanced-alpha/project-db-queues.md)
+- [Read-only MCP](advanced-alpha/read-only-mcp.md)
+- [Subgraphs And Bundles](advanced-alpha/subgraphs-and-bundles.md)
+- [Graph Movement](advanced-alpha/graph-movement.md)
+- [Demo Graphs](advanced-alpha/demo-graphs.md)
 
 ## Reference
 
