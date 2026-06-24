@@ -2,7 +2,7 @@
 id: task-508
 type: task
 title: fix command blocks llms files and mdkg.dev docs route behavior
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, p0]
 owners: []

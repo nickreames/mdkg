@@ -2,7 +2,7 @@
 id: task-511
 type: task
 title: harden local-first trust safety and supply-chain posture
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, trust]
 owners: []

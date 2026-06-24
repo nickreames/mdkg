@@ -2,7 +2,7 @@
 id: task-514
 type: task
 title: add pass 2 polish smokes and launch-quality assertions
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, test]
 owners: []

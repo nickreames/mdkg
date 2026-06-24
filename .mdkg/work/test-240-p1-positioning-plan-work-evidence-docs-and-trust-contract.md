@@ -2,7 +2,7 @@
 id: test-240
 type: test
 title: P1 positioning Plan Work Evidence docs and trust contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, p1]
 owners: []

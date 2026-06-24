@@ -2,7 +2,7 @@
 id: task-516
 type: task
 title: run full local gates and prepare logical commits
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, validation]
 owners: []

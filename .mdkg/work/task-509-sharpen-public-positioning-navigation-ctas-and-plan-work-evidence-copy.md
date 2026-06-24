@@ -2,7 +2,7 @@
 id: task-509
 type: task
 title: sharpen public positioning navigation CTAs and Plan Work Evidence copy
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, copy]
 owners: []

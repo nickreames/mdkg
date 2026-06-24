@@ -2,7 +2,7 @@
 id: test-245
 type: test
 title: local build smoke docs and pass 2 automation contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, smoke]
 owners: []

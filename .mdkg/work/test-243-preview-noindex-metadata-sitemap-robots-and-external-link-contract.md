@@ -2,7 +2,7 @@
 id: test-243
 type: test
 title: preview noindex metadata sitemap robots and external link contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, seo]
 owners: []

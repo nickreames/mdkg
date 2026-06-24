@@ -2,7 +2,7 @@
 id: task-510
 type: task
 title: rewrite Starlight docs IA home install quickstart and core concepts
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, docs]
 owners: []
