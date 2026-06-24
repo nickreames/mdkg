@@ -102,8 +102,16 @@ Each checkpoint must record commands run, pass/fail state, affected routes/docs,
 
 # Current State
 
-`goal-33` is the selected active root goal. The mdkg-only setup node `task-520` and creation contract `test-249` are done. The next implementation node is `task-521`, which validates and normalizes public command examples before broader copy or docs edits.
+`goal-33` is done and achieved. No selected root goal remains, and `mdkg goal next goal-33 --json` returns `node: null` with no warnings. The final active node was `task-531`, now preserved as `last_active_node`.
 
 # Completion Evidence
 
-Pending future implementation.
+- `task-521` through `task-531` are done.
+- `test-250` through `test-257` are done.
+- `chk-225` through `chk-233` record boundary, implementation, docs, SEO, Browser/Chrome, Vercel preview, and final closeout evidence.
+- `chk-232` records local gates, logical commits, pushed commits, and Vercel preview proof.
+- `chk-233` records final goal closeout, deferred launch side effects, known warnings, and follow-up refs.
+- `node dist/cli.js validate --summary --json --limit 20` passes with 0 warnings and 0 errors.
+- `node dist/cli.js doctor --strict --json` passes with only the expected local project DB runtime warning.
+- `origin/main` contains the final closeout commit `fed8361290817be52aa8bee449a9ffb5f40e6002`.
+- Vercel projects `mdkg-dev` and `mdkg-docs` redeployed successfully from the final closeout commit and preview aliases remain noindex.
