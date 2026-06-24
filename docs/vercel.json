@@ -1,16 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/docs",
-      "destination": "https://docs.mdkg.dev/",
-      "permanent": true
-    },
-    {
-      "source": "/docs/",
-      "destination": "https://docs.mdkg.dev/",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/:path*",

@@ -47,7 +47,19 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
     fail("package.json is missing smoke:warning-ux");
   }
-  for (const scriptName of ["smoke:mdkg-dev", "smoke:mdkg-dev-docs", "smoke:mdkg-dev-seo", "smoke:mdkg-dev-polish-pass2", "smoke:mdkg-dev-polish-pass3", "smoke:demo-graph", "docs:check"]) {
+  for (const scriptName of [
+    "smoke:mdkg-dev",
+    "smoke:mdkg-dev-docs",
+    "smoke:mdkg-dev-seo",
+    "smoke:mdkg-dev-polish-pass2",
+    "smoke:mdkg-dev-polish-pass3",
+    "smoke:mdkg-dev-polish-pass4",
+    "smoke:mdkg-dev-polish-pass5",
+    "smoke:mdkg-dev-a11y",
+    "smoke:mdkg-dev-perf",
+    "smoke:demo-graph",
+    "docs:check",
+  ]) {
     if (!pkg.scripts || !pkg.scripts[scriptName]) {
       fail(`package.json is missing ${scriptName}`);
     }
@@ -66,7 +78,7 @@ function requirePackageVersions() {
   }
   if (
     !String(pkg.scripts.prepublishOnly || "").includes(
-      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev-polish-pass2 && npm run smoke:mdkg-dev-polish-pass3 && npm run smoke:demo-graph && npm run smoke:bundle"
+      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev-polish-pass2 && npm run smoke:mdkg-dev-polish-pass3 && npm run smoke:mdkg-dev-polish-pass4 && npm run smoke:mdkg-dev-polish-pass5 && npm run smoke:mdkg-dev-a11y && npm run smoke:mdkg-dev-perf && npm run smoke:demo-graph && npm run smoke:bundle"
     )
   ) {
     fail("prepublishOnly must run mdkg.dev smokes after smoke:integration-ux and before smoke:bundle");
@@ -702,7 +714,7 @@ function requireInitAssets() {
     }
   }
   const smokeMdkgDevSeo = requireFile("scripts/smoke-mdkg-dev-seo.js");
-  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt", "PUBLIC_MDKG_PREVIEW_NOINDEX"]) {
+  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt", "PUBLIC_MDKG_PREVIEW_NOINDEX", "X-Robots-Tag"]) {
     if (!smokeMdkgDevSeo.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev-seo.js is missing ${expected} proof`);
     }

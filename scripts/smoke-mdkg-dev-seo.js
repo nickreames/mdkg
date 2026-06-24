@@ -102,9 +102,17 @@ function main() {
     "/alpha/": "alpha/index.html",
   };
   const docsRedirect = readText(path.join(dist, "docs", "index.html"));
+  const vercelConfig = JSON.parse(readText(path.join(repoRoot, "mdkg-dev", "vercel.json")));
   assert(docsRedirect.includes("Redirecting to: https://docs.mdkg.dev/"), "marketing /docs redirect missing canonical docs target");
   assert(docsRedirect.includes('<link rel="canonical" href="https://docs.mdkg.dev/'), "marketing /docs redirect missing docs canonical URL");
   assert(docsRedirect.includes('name="robots" content="noindex"'), "marketing /docs redirect fallback must remain noindex");
+  assert(
+    vercelConfig.headers.some((entry) =>
+      entry.has?.some((condition) => condition.type === "host" && condition.value?.suf === ".vercel.app") &&
+      entry.headers?.some((header) => header.key === "X-Robots-Tag" && header.value === "noindex, nofollow")
+    ),
+    "marketing Vercel config missing vercel.app X-Robots-Tag noindex header"
+  );
   for (const [route, relPath] of Object.entries(routeFiles)) {
     const html = readText(path.join(dist, relPath));
     assert(html.includes(`href="https://mdkg.dev${route}`), `${route} missing canonical URL`);
