@@ -25,16 +25,28 @@ function main() {
   assert(home.includes('<link rel="canonical" href="https://mdkg.dev/'), "homepage missing canonical URL");
   assert(home.includes('name="robots" content="index, follow"'), "homepage missing index/follow robots metadata for normal build");
   assert(home.includes('name="theme-color" content="#ffffff"'), "homepage missing theme-color metadata");
+  assert(
+    home.includes(
+      'name="description" content="Markdown Knowledge Graph gives AI coding agents a repo-owned Plan -> Work -> Evidence loop with structured Markdown, deterministic packs, handoffs, checkpoints, and validation."'
+    ),
+    "homepage missing launch-ready meta description"
+  );
   assert(home.includes('property="og:site_name" content="Markdown Knowledge Graph"'), "homepage missing og site name");
   assert(home.includes('property="og:image"'), "homepage missing Open Graph image");
   assert(home.includes('property="og:image:alt"'), "homepage missing Open Graph image alt text");
+  assert(home.includes('property="og:description" content="Markdown Knowledge Graph gives AI coding agents a repo-owned Plan -> Work -> Evidence loop'), "homepage missing launch-ready og description");
   assert(home.includes('name="twitter:card" content="summary_large_image"'), "homepage missing Twitter card");
   assert(home.includes('name="twitter:image:alt"'), "homepage missing Twitter image alt text");
+  assert(home.includes('name="twitter:description" content="Markdown Knowledge Graph gives AI coding agents a repo-owned Plan -> Work -> Evidence loop'), "homepage missing launch-ready twitter description");
 
   const jsonLd = extractJsonLd(home);
   assert(jsonLd["@type"] === "SoftwareApplication", "homepage JSON-LD type mismatch");
   assert(jsonLd.name === "Markdown Knowledge Graph", "homepage JSON-LD name mismatch");
   assert(jsonLd.alternateName === "mdkg", "homepage JSON-LD alternateName mismatch");
+  assert(
+    jsonLd.description.includes("structured Markdown, context packs, handoffs, checkpoints, and validation"),
+    "homepage JSON-LD description missing launch-ready product summary"
+  );
 
   const sitemap = readText(path.join(dist, "sitemap.xml"));
   for (const loc of [
@@ -91,6 +103,8 @@ function main() {
   };
   const docsBridge = readText(path.join(dist, "docs", "index.html"));
   assert(docsBridge.includes("Read the mdkg docs on the dedicated docs site"), "marketing /docs bridge missing docs handoff copy");
+  assert(docsBridge.includes("https://mdkg-docs.vercel.app/"), "marketing /docs bridge missing docs preview URL");
+  assert(docsBridge.includes("Until docs.mdkg.dev DNS is live"), "marketing /docs bridge missing future DNS boundary copy");
   assert(docsBridge.includes('name="robots" content="noindex, nofollow"'), "marketing /docs bridge must remain noindex");
   for (const [route, relPath] of Object.entries(routeFiles)) {
     const html = readText(path.join(dist, relPath));
@@ -102,7 +116,7 @@ function main() {
   for (const expected of [
     "https://github.com/nickreames/mdkg",
     "https://www.npmjs.com/package/mdkg",
-    "https://docs.mdkg.dev",
+    "https://mdkg-docs.vercel.app",
     "/quickstart/",
     "/trust/",
     "/alpha/",

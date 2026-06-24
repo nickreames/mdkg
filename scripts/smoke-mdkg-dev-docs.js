@@ -34,8 +34,12 @@ function assertRenderedOutline(distDir) {
     const rel = path.relative(distDir, filePath);
     const h1Count = (html.match(/<h1[\s>]/g) || []).length;
     const onThisPageCount = (html.match(/On this page/g) || []).length;
+    const starlightTocCount = (html.match(/<starlight-toc\b/g) || []).length;
+    const rightSidebarCount = (html.match(/right-sidebar-panel/g) || []).length;
     assert(h1Count === 1, `${rel} should render exactly one H1, got ${h1Count}`);
     assert(onThisPageCount <= 1, `${rel} should not render duplicated On this page labels`);
+    assert(starlightTocCount <= 1, `${rel} should not render duplicated Starlight TOC elements`);
+    assert(rightSidebarCount <= 1, `${rel} should not render duplicated custom right sidebar panels`);
     assert(!html.includes("starlight__mobile-toc"), `${rel} should not render duplicate mobile TOC markup`);
     assert(!html.includes("MobileTableOfContents"), `${rel} should not include mobile TOC script text`);
   }

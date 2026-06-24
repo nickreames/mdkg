@@ -63,7 +63,7 @@ function main() {
     "mdkg handoff create WORK_ID",
     "mdkg task done TASK_ID --checkpoint",
     "no hosted index, daemon, or vector database is required",
-    "Ongoing Plan -&gt; Work -&gt; Evidence loop",
+    "First-success path",
     "Goals, epics, and features",
     "Advanced surfaces stay optional",
     "goal-1",
@@ -89,7 +89,8 @@ function main() {
   }
 
   assertIncludes(docsBridge, "Read the mdkg docs on the dedicated docs site", "marketing /docs bridge");
-  assertIncludes(docsBridge, "https://docs.mdkg.dev", "marketing /docs bridge");
+  assertIncludes(docsBridge, "https://mdkg-docs.vercel.app/", "marketing /docs bridge");
+  assertIncludes(docsBridge, "Until docs.mdkg.dev DNS is live", "marketing /docs bridge");
   assertIncludes(docsBridge, 'name="robots" content="noindex, nofollow"', "marketing /docs bridge");
   assertIncludes(baseLayoutSource, "PUBLIC_MDKG_PRODUCTION_INDEX", "marketing Vercel prelaunch noindex policy");
   assertIncludes(docsConfigSource, "PUBLIC_MDKG_PRODUCTION_INDEX", "docs Vercel prelaunch noindex policy");
