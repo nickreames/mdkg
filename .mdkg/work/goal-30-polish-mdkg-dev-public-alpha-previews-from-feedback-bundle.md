@@ -2,12 +2,12 @@
 id: goal-30
 type: goal
 title: Polish mdkg.dev public-alpha previews from feedback bundle
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: Goal 30 is achieved when mdkg.dev and Starlight docs implement all P0 plus core P1 feedback stories, local Browser/Product Design QA passes, required smokes pass, logical commits are pushed to origin/main, existing Vercel previews redeploy successfully, and no DNS, production promotion, npm publish, analytics activation, git tag, or public launch occurs.
 scope_refs: [epic-147, epic-148, epic-149, epic-150, epic-151, epic-152, task-489, task-490, task-491, task-492, task-493, task-494, task-495, task-496, task-497, task-498, test-228, test-229, test-230, test-231, test-232, test-233, test-234]
-active_node: task-497
+last_active_node: task-498
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, git diff --check]
 max_iterations: 25
@@ -120,4 +120,30 @@ These records inform Goal 30 but intentionally stay in body text instead of trav
 
 # Completion Evidence
 
-Pending future implementation.
+Completed public-alpha polish and preview validation.
+
+- Implemented all scoped P0 and core P1 feedback stories across the marketing site, Starlight docs, claims/trust surfaces, SEO metadata, no-secret posture, and launch-polish smokes.
+- Local Browser/Product Design QA passed for desktop `1440x900` and mobile `390x844` coverage across marketing and docs routes. Evidence receipts: `/private/tmp/mdkg-goal30-task496-browser-e2e.json` and screenshots under `/private/tmp/mdkg-goal30-task496-browser-e2e/`.
+- Required local checks passed:
+  - `npm --prefix mdkg-dev run build`
+  - `npm --prefix docs run build`
+  - `npm run docs:check`
+  - `npm run smoke:mdkg-dev`
+  - `npm run smoke:mdkg-dev-docs`
+  - `npm run smoke:mdkg-dev-seo`
+  - `npm run smoke:demo-graph`
+  - `npm run test`
+  - `npm run cli:check`
+  - `npm run cli:contract`
+  - `node dist/cli.js validate --summary --json --limit 20`
+  - `node dist/cli.js doctor --strict --json`
+  - `git diff --check`
+- Logical commits were pushed to `origin/main` through `64c2925774bc173093217df715247dd294d891b0`.
+- Existing Vercel previews redeployed from commit `64c2925774bc173093217df715247dd294d891b0`:
+  - `mdkg-dev`: `https://mdkg-dev.vercel.app/`, deployment `dpl_CmCzsZiRJughe2D8U6hyGcRmLNjf`, state `READY`.
+  - `mdkg-docs`: `https://mdkg-docs.vercel.app/`, deployment `dpl_HkLmXo6hfNisHPoHp1Ugk6mtnKqg`, state `READY`.
+- Hosted preview validation passed in Chrome and Browser. Receipts: `/private/tmp/mdkg-goal30-task498-hosted-vercel-checks.json` and `/private/tmp/mdkg-goal30-task498-hosted-browser-roots.json`.
+- Closeout checkpoints:
+  - `chk-213`: logical commits pushed to `origin/main`.
+  - `chk-214`: Vercel previews redeployed and validated.
+- Deferred side effects confirmed: no DNS cutover, custom-domain production promotion, npm publish, git tag, analytics activation, GitHub settings mutation, or public launch announcement.

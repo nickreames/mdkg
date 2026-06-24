@@ -2,7 +2,7 @@
 id: test-229
 type: test
 title: docs golden path and generated reference docs contract
-status: todo
+status: done
 priority: 1
 tags: [mdkg-dev, docs, starlight]
 owners: []
@@ -28,3 +28,9 @@ Starlight docs contain a coherent install/quickstart/concepts/guides/reference p
 - `npm --prefix docs run build`
 - `npm run docs:check`
 - `npm run smoke:mdkg-dev-docs`
+
+# Evidence
+
+- Covered by `task-491`, `chk-207`, and final hosted/local docs receipts.
+- `npm --prefix docs run build`, `npm run docs:check`, and `npm run smoke:mdkg-dev-docs` passed.
+- Docs route checks covered install, quickstart, claims matrix, roadmap, and generated reference entrypoints.
