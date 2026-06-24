@@ -2,7 +2,7 @@
 id: task-535
 type: task
 title: fix llms txt formatting and add the canonical agent-readable path
-status: todo
+status: done
 priority: 1
 epic: epic-173
 parent: goal-34

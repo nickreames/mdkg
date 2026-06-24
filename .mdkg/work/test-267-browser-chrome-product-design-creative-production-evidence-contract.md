@@ -2,14 +2,14 @@
 id: test-267
 type: test
 title: Browser Chrome Product Design Creative Production evidence contract
-status: todo
+status: done
 priority: 1
 epic: epic-178
 parent: goal-34
 tags: [mdkg-dev, browser, chrome, product-design, creative-production]
 owners: []
 links: []
-artifacts: []
+artifacts: [archive://archive.mdkg-dev-pass4-browser-chrome-e2e-2026-06-24]
 relates: [goal-34, task-546, task-547]
 blocked_by: []
 blocks: []

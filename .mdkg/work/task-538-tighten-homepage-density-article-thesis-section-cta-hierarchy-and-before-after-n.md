@@ -2,7 +2,7 @@
 id: task-538
 type: task
 title: tighten homepage density article-thesis section CTA hierarchy and before-after narrative
-status: todo
+status: done
 priority: 1
 epic: epic-174
 parent: goal-34

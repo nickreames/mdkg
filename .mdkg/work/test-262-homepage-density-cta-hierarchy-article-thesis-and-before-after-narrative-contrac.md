@@ -2,7 +2,7 @@
 id: test-262
 type: test
 title: homepage density CTA hierarchy article thesis and before-after narrative contract
-status: todo
+status: done
 priority: 1
 epic: epic-174
 parent: goal-34

@@ -2,7 +2,7 @@
 id: task-542
 type: task
 title: remove remaining meta commentary from changelog advanced alpha overview roadmap and reference nav
-status: todo
+status: done
 priority: 1
 epic: epic-175
 parent: goal-34

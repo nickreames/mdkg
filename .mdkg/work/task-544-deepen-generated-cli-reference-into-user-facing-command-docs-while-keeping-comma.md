@@ -2,7 +2,7 @@
 id: task-544
 type: task
 title: deepen generated CLI reference into user-facing command docs while keeping command contract maintainer-facing
-status: todo
+status: done
 priority: 1
 epic: epic-176
 parent: goal-34

@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Goal 34 is achieved when mdkg.dev and docs.mdkg.dev implement the pass-4 preview audit, local Browser/Chrome/Product Design/Creative Production QA passes, local gates pass, logical commits are pushed to origin/main, Vercel previews for mdkg-dev and mdkg-docs are verified live, and no launch side effects occur.
 scope_refs: [epic-172, epic-173, epic-174, epic-175, epic-176, epic-177, epic-178, epic-179, epic-180, spike-19, task-534, task-535, task-536, task-537, task-538, task-539, task-540, task-541, task-542, task-543, task-544, task-545, task-546, task-547, task-548, test-258, test-259, test-260, test-261, test-262, test-263, test-264, test-265, test-266, test-267, test-268]
-active_node: task-535
+active_node: task-548
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run docs:check-commands, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run smoke:mdkg-dev-polish-pass3, npm run smoke:mdkg-dev-polish-pass4, npm run smoke:mdkg-dev-a11y, npm run smoke:mdkg-dev-perf, npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, Browser and Chrome local E2E at desktop tablet and mobile widths, Product Design screenshot-backed audit checkpoint, Creative Production visual direction checkpoint, Vercel deployment and log verification for mdkg-dev and mdkg-docs, git diff --check]
 max_iterations: 25

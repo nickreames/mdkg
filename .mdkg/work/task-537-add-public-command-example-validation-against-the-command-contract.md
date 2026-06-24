@@ -2,7 +2,7 @@
 id: task-537
 type: task
 title: add public command-example validation against the command contract
-status: todo
+status: done
 priority: 1
 epic: epic-173
 parent: goal-34

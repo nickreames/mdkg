@@ -2,7 +2,7 @@
 id: task-541
 type: task
 title: replace cramped tables with responsive docs components for repository layout and command boundaries
-status: todo
+status: done
 priority: 1
 epic: epic-175
 parent: goal-34

@@ -2,7 +2,7 @@
 id: test-259
 type: test
 title: llms txt formatting and canonical agent path contract
-status: todo
+status: done
 priority: 1
 epic: epic-173
 parent: goal-34

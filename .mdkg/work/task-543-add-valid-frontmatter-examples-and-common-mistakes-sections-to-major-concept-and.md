@@ -2,7 +2,7 @@
 id: task-543
 type: task
 title: add valid frontmatter examples and common mistakes sections to major concept and guide docs
-status: todo
+status: done
 priority: 1
 epic: epic-176
 parent: goal-34

@@ -2,14 +2,14 @@
 id: task-547
 type: task
 title: run local Browser Chrome E2E across desktop tablet mobile and update pass-4 smoke coverage
-status: todo
+status: done
 priority: 1
 epic: epic-179
 parent: goal-34
 tags: [mdkg-dev, browser, chrome, smoke]
 owners: []
 links: []
-artifacts: []
+artifacts: [archive://archive.mdkg-dev-pass4-browser-chrome-e2e-2026-06-24]
 relates: [goal-34, test-267]
 blocked_by: [task-544, task-545, task-546]
 blocks: [task-548]
