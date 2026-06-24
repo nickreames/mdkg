@@ -7,6 +7,33 @@ Demo graphs are useful for showing how an agent can start from a goal, read repo
 
 They should be small, deterministic, and explicit about boundaries.
 
+## First-success path
+
+The repo includes `examples/demo-agentic-coding` as a small deterministic demo graph. It is not a public deployment proof. It is a local graph fixture that shows the first mdkg success path.
+
+From `examples/demo-agentic-coding`, run:
+
+```bash
+mdkg validate --json
+mdkg goal next goal-1 --json
+mdkg show spike-1 --json
+mdkg pack spike-1 --profile concise --dry-run --stats
+mdkg show dec-1 --json
+mdkg show chk-1 --json
+mdkg capability search "pack" --kind skill --json
+```
+
+Expected results:
+
+- Validation returns `ok: true`.
+- Goal routing returns `spike-1` first.
+- The pack dry-run includes the spike, task, and test nodes.
+- The decision states that production promotion is out of scope.
+- The checkpoint records accepted seed evidence.
+- Capability search finds the pack-first skill.
+
+Use returned IDs from the command receipts in real repos. Do not hardcode numeric IDs unless you are working in this demo fixture.
+
 ## Recommended shape
 
 - one ambitious umbrella goal

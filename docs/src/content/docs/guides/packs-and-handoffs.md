@@ -59,3 +59,10 @@ Good handoffs include:
 ## What not to use them for
 
 Do not use packs or handoffs as raw log storage, secret storage, prompt archives, telemetry dumps, or provider payload mirrors. Summarize evidence and use refs to artifacts instead.
+
+## Common mistakes
+
+- Packing a broad goal when the next agent only needs one task. Prefer `mdkg pack WORK_ID --pack-profile concise`.
+- Sharing a pack before reviewing visibility. Treat generated packs as transfer artifacts, not permanent source.
+- Using handoffs as a substitute for validation. Run the required checks and record pass/fail state first.
+- Copying raw prompts, tokens, provider payloads, or oversized traces into handoffs. Keep the handoff refs-only and sanitized.

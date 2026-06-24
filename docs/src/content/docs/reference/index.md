@@ -3,7 +3,7 @@ title: CLI Reference
 description: User-facing command entry points, generated reference material, and maintainer metadata.
 ---
 
-Use this section when you know what you want to do and need the current command shape.
+Use this section when you know what you want to do and need the current command shape. If you are new to mdkg, start with [Install](/start-here/install/) and [Quickstart](/start-here/quickstart/) first.
 
 ## Common command groups
 
@@ -63,12 +63,12 @@ Use the generated CLI reference for broader command selection and examples:
 
 - [Generated CLI Reference](generated-cli-reference.md)
 
-## Maintainer metadata
+## Integration metadata
 
-Maintainers and integration authors can use the machine-readable metadata behind the reference:
+Integration authors can use the machine-readable metadata behind the reference:
 
 - [Command Contract](command-contract.md)
 - `dist/command-contract.json`
 - `CLI_COMMAND_MATRIX.md`
 
-The documentation rule is to generate broad command reference pages from command metadata and keep hand-authored docs focused on the beginner path.
+Most readers should use the generated reference. The command contract is for integrations, docs generation, and compatibility checks.

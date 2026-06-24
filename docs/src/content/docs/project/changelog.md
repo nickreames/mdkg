@@ -9,7 +9,7 @@ The package changelog remains canonical in the repository root:
 CHANGELOG.md
 ```
 
-Public docs should summarize product-level changes and link back to the root changelog or generated release metadata to avoid drift.
+This page gives a product-level summary of the public-alpha release line. Use the root changelog for the exact package history.
 
 High-level public-alpha milestones:
 
@@ -22,4 +22,4 @@ High-level public-alpha milestones:
 - `0.3.6`: graph import selected-goal hardening and read-only local MCP server.
 - `0.3.7`: completed-goal `last_active_node`, semantic refs, checkpoint kinds, workflow validation, queue adapter contract, and handoff creation.
 
-Keep this page concise. The root `CHANGELOG.md` remains the release-note authority.
+For exact dates, patch notes, and package bookkeeping, read the root `CHANGELOG.md`.
