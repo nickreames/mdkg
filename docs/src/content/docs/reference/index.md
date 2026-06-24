@@ -1,11 +1,24 @@
 ---
 title: CLI Reference
-description: User-facing command entry points, generated reference material, and maintainer metadata.
+description: User-facing command entry points for common mdkg workflows.
 ---
 
 Use this section when you know what you want to do and need the current command shape. If you are new to mdkg, start with [Install](/start-here/install/) and [Quickstart](/start-here/quickstart/) first.
 
 ## Common command groups
+
+Uppercase placeholders such as `WORK_ID`, `GOAL_ID`, and `TASK_ID` are examples. Replace them with concrete ids from your repo before running the command.
+
+## Choose by job
+
+| Job | Start with | Then use |
+| --- | --- | --- |
+| Initialize a repo | `mdkg init --agent` | `mdkg index`, `mdkg validate` |
+| Find work | `mdkg goal next` | `mdkg show WORK_ID`, `mdkg pack WORK_ID` |
+| Record progress | `mdkg task start TASK_ID` | `mdkg task done TASK_ID --checkpoint "Done"` |
+| Share context | `mdkg pack WORK_ID --pack-profile concise` | `mdkg handoff create WORK_ID` |
+| Diagnose health | `mdkg status` | `mdkg doctor --strict --json`, `mdkg fix plan --json` |
+| Coordinate repos | `mdkg subgraph audit --json` | `mdkg bundle`, `mdkg subgraph sync` |
 
 First-run setup:
 
@@ -57,18 +70,18 @@ mdkg mcp serve --stdio
 mdkg subgraph audit --json
 ```
 
-## Full reference
+## Complete command list
 
-Use the generated CLI reference for broader command selection and examples:
+Use the complete CLI reference when the common groups above do not cover the command you need:
 
 - [Generated CLI Reference](generated-cli-reference.md)
 
 ## Integration metadata
 
-Integration authors can use the machine-readable metadata behind the reference:
+Integrations, docs tooling, and compatibility checks can use the machine-readable metadata behind the reference:
 
 - [Command Contract](command-contract.md)
 - `dist/command-contract.json`
 - `CLI_COMMAND_MATRIX.md`
 
-Most readers should use the generated reference. The command contract is for integrations, docs generation, and compatibility checks.
+Most readers should use the common groups or complete command list. The command contract is not the first-stop user guide.

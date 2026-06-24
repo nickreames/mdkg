@@ -1,12 +1,12 @@
 # Reference
 
-This section will hold generated and semi-generated reference material.
+Use this section to choose the mdkg command family for the job.
 
-Initial reference entry points:
+Reference entry points:
 
 - [Command Contract](command-contract.md)
 - [Generated CLI Reference](../_generated/cli-reference.md)
 - `dist/command-contract.json`
 - `CLI_COMMAND_MATRIX.md`
 
-The long-term rule is to generate CLI reference pages from command metadata rather than hand-maintaining a full duplicated command matrix.
+Most users should start with the generated CLI reference. The command contract and matrix are integration metadata for maintainers and tool authors.

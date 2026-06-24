@@ -5,13 +5,13 @@ description: Maintainer-facing metadata for generated command reference and inte
 
 The command contract is a maintainer and integration surface. Most users should start with the generated CLI reference.
 
-mdkg generates command metadata at:
+mdkg publishes command metadata in the repository build output:
 
 ```text
 dist/command-contract.json
 ```
 
-Public reference pages should derive command coverage from that artifact where possible.
+Reference pages should derive command coverage from that artifact where possible so user docs stay aligned with the CLI.
 
 Reference pages should include:
 
@@ -26,12 +26,12 @@ Reference pages should include:
 - safety notes
 - alpha labels where relevant
 
-Generated outputs:
+Derived docs artifacts:
 
 - `docs/_generated/cli-reference.md`
 - `docs/_generated/command-contract-summary.json`
 
-Regenerate and check:
+Refresh and check:
 
 ```bash
 npm run docs:generate

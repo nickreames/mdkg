@@ -17,8 +17,9 @@ Use this path when you are setting up mdkg or deciding how to introduce it to a 
 
 1. [Install mdkg](/start-here/install/).
 2. [Run the quickstart](/start-here/quickstart/).
-3. Learn [work node types](/concepts/work-node-types/).
-4. Transfer context with [packs and handoffs](/guides/packs-and-handoffs/).
+3. Optional: prove the [demo graph first-success path](/advanced-alpha/demo-graphs/).
+4. Learn [work node types](/concepts/work-node-types/).
+5. Transfer context with [packs and handoffs](/guides/packs-and-handoffs/).
 
 ```bash
 npm install -g mdkg
@@ -41,6 +42,8 @@ Use this path when a coding agent enters a repo that already has mdkg.
 7. Record evidence with checkpoints, handoffs, or task updates.
 8. Validate with `mdkg validate` before closeout.
 
+Replace `WORK_ID` with the concrete id returned by search or routing commands:
+
 ```bash
 mdkg status
 mdkg goal current
@@ -60,6 +63,7 @@ For the longer agent operating loop, read [Agent Workflow](/guides/agent-workflo
 
 - [Install](/start-here/install/): requirements, global install, and first validation.
 - [Quickstart](/start-here/quickstart/): the smallest Plan -> Work -> Evidence loop.
+- [Demo Graphs](/advanced-alpha/demo-graphs/): a deterministic local first-success fixture.
 - [Work Node Types](/concepts/work-node-types/): goals, epics, tasks, tests, spikes, checkpoints, and decisions.
 - [Packs And Handoffs](/guides/packs-and-handoffs/): bounded context for humans and agents.
 - [Agent Workflow](/guides/agent-workflow/): repo-scoped agent startup, claim, evidence, and validation.

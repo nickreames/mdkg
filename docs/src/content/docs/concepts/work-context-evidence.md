@@ -72,7 +72,7 @@ Examples:
 
 ## Review refs
 
-Use graph refs to inspect inbound and outbound relationships without mutating state:
+Use graph refs to inspect inbound and outbound relationships without mutating state. Replace `WORK_ID` with the concrete id you want to inspect:
 
 ```bash
 mdkg graph refs WORK_ID --json

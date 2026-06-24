@@ -5,7 +5,7 @@ description: Use root-qualified graph context without mutating child repositorie
 
 Subgraphs let a parent mdkg graph reason about child graphs without pretending to own them.
 
-Bundles are generated projections of child graph state. They are useful for orchestration, reporting, and planning across repositories.
+Bundles are generated projections of child graph state. They are useful for orchestration, reporting, and planning across repositories. Replace `CHILD_ALIAS` with the configured subgraph alias from `mdkg subgraph list --json`.
 
 ```bash
 mdkg subgraph list --json
