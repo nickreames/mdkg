@@ -2,7 +2,7 @@
 id: test-252
 type: test
 title: homepage Plan Work Evidence low-dependency and work-node explanation contract
-status: backlog
+status: done
 priority: 1
 epic: epic-167
 parent: goal-33

@@ -2,7 +2,7 @@
 id: task-531
 type: task
 title: run full gates create logical commits push main verify Vercel previews and close evidence
-status: backlog
+status: progress
 priority: 1
 epic: epic-171
 parent: goal-33

@@ -2,7 +2,7 @@
 id: test-256
 type: test
 title: Browser Chrome responsive accessibility and local route QA contract
-status: backlog
+status: done
 priority: 1
 epic: epic-171
 parent: goal-33

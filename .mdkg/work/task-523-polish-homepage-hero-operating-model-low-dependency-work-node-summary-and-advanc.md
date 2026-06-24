@@ -2,7 +2,7 @@
 id: task-523
 type: task
 title: polish homepage hero operating model low dependency work-node summary and advanced alpha
-status: backlog
+status: done
 priority: 1
 epic: epic-167
 parent: goal-33

@@ -2,7 +2,7 @@
 id: task-525
 type: task
 title: make CLI reference user-first command contract maintainer-facing and roadmap product-oriented
-status: backlog
+status: done
 priority: 1
 epic: epic-168
 parent: goal-33

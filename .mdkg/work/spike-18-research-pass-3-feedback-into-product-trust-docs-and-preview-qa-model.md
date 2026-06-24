@@ -2,7 +2,7 @@
 id: spike-18
 type: spike
 title: research pass-3 feedback into product trust docs and preview QA model
-status: backlog
+status: done
 priority: 1
 epic: epic-165
 tags: [mdkg-dev, research, product, pass-3]
@@ -44,12 +44,27 @@ How should the pass-3 feedback be translated into a low-risk implementation sequ
 
 # Findings
 
+- Command examples are a trust boundary; public examples need a smoke that checks representative syntax, not only page existence.
+- The marketing homepage carried internal mdkg.dev graph IDs that looked like product syntax. Public examples should use generic `goal-1`, `task-1`, `test-1`, and archive-like refs.
+- `/docs` should not be public scaffold/meta commentary. A small noindex bridge is safer than a broken route while the docs host remains canonical.
+- Product and docs pages should avoid launch-operation chores as public roadmap content.
+
 # Options And Tradeoffs
 
+- Keep all examples hand-authored: readable, but drifts without smoke coverage.
+- Generate all examples from command metadata: robust, but too mechanical for beginner pages.
+- Use hand-authored beginner examples plus smoke-enforced invariants: best fit for pass-3.
+
 # Recommendation
+
+Use hand-authored beginner-safe examples in marketing and start-here docs, keep advanced variants in reference docs, and enforce representative examples with `smoke:mdkg-dev-polish-pass3`.
 
 # Follow-Up Nodes To Create
 
 # Skill Candidates
 
 # Evidence And Sources
+
+- archive://archive.mdkg-dev-polish-pass-3-2026-06-24
+- chk-225
+- chk-226

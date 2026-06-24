@@ -2,7 +2,7 @@
 id: task-528
 type: task
 title: create deterministic demo graph and terminal demo script follow-up docs nodes
-status: backlog
+status: done
 priority: 2
 epic: epic-170
 parent: goal-33

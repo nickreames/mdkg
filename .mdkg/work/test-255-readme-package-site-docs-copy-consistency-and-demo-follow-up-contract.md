@@ -2,7 +2,7 @@
 id: test-255
 type: test
 title: README package site docs copy consistency and demo follow-up contract
-status: backlog
+status: done
 priority: 1
 epic: epic-170
 parent: goal-33

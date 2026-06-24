@@ -2,7 +2,7 @@
 id: task-530
 type: task
 title: run local Browser and Chrome E2E visual QA across marketing and docs
-status: backlog
+status: done
 priority: 1
 epic: epic-171
 parent: goal-33

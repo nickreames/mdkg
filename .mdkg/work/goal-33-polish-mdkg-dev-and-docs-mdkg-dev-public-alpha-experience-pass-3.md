@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Goal 33 is achieved when mdkg.dev and docs.mdkg.dev implement the pass-3 feedback, public command examples are validated, scaffold/meta commentary is removed, Plan -> Work -> Evidence is the single public model, docs are user-first, preview noindex/metadata/link behavior is verified, local Browser/Chrome QA passes, local gates pass, logical commits are pushed to origin/main, Vercel previews redeploy successfully, and no launch side effects occur.
 scope_refs: [epic-165, epic-166, epic-167, epic-168, epic-169, epic-170, epic-171, spike-18, task-520, task-521, task-522, task-523, task-524, task-525, task-526, task-527, task-528, task-529, task-530, task-531, test-249, test-250, test-251, test-252, test-253, test-254, test-255, test-256, test-257]
-active_node: task-521
+active_node: task-531
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run smoke:mdkg-dev-polish-pass2, npm run smoke:mdkg-dev-polish-pass3, npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, Browser local E2E for marketing/docs routes, Chrome local and hosted preview inspection, Vercel deployment/log verification for mdkg-dev and mdkg-docs, git diff --check]
 max_iterations: 30

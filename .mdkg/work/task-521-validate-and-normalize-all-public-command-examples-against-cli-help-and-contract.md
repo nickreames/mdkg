@@ -2,7 +2,7 @@
 id: task-521
 type: task
 title: validate and normalize all public command examples against CLI help and contract
-status: backlog
+status: done
 priority: 1
 epic: epic-166
 parent: goal-33

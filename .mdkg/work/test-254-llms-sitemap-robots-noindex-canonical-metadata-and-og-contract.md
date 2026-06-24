@@ -2,7 +2,7 @@
 id: test-254
 type: test
 title: llms sitemap robots noindex canonical metadata and OG contract
-status: backlog
+status: done
 priority: 1
 epic: epic-169
 parent: goal-33

@@ -2,7 +2,7 @@
 id: task-527
 type: task
 title: align README package npm site docs wording and create GitHub metadata handoff
-status: backlog
+status: done
 priority: 1
 epic: epic-170
 parent: goal-33
