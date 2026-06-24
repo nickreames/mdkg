@@ -1,6 +1,6 @@
 export const prerender = true;
 
-const routes = ["/", "/quickstart/", "/trust/", "/alpha/", "/docs/", "/llms.txt", "/llms-full.txt"];
+const routes = ["/", "/quickstart/", "/trust/", "/alpha/", "/llms.txt", "/llms-full.txt"];
 
 export function GET() {
   const urls = routes

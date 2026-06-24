@@ -1,5 +1,6 @@
 ---
 const { title = "Terminal", commands } = Astro.props as { title?: string; commands: string[] };
+const commandText = commands.join("\n");
 ---
 
 <figure class="terminal">
@@ -7,7 +8,7 @@ const { title = "Terminal", commands } = Astro.props as { title?: string; comman
     <span aria-hidden="true"></span>
     {title}
   </figcaption>
-  <pre>{commands.map((command) => <code><span>$</span> {command}</code>)}</pre>
+  <pre><code>{commandText}</code></pre>
 </figure>
 
 <style>
@@ -39,22 +40,16 @@ const { title = "Terminal", commands } = Astro.props as { title?: string; comman
   }
 
   pre {
-    display: grid;
-    gap: 6px;
     margin: 0;
     padding: 16px;
     overflow-x: auto;
   }
 
   code {
+    display: block;
     color: #e0f2fe;
     font-size: 0.9rem;
     line-height: 1.6;
-    overflow-wrap: anywhere;
-    white-space: pre-wrap;
-  }
-
-  code span {
-    color: #38bdf8;
+    white-space: pre;
   }
 </style>

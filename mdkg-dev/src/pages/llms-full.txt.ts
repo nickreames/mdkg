@@ -3,7 +3,7 @@ export const prerender = true;
 export function GET() {
   const body = `# Markdown Knowledge Graph agent primer
 
-Markdown Knowledge Graph (mdkg) is git-native project memory for AI-native software engineering.
+Markdown Knowledge Graph (mdkg) is git-native project memory for AI coding agents and AI-native software engineering.
 
 ## What mdkg is
 
@@ -25,7 +25,7 @@ Markdown Knowledge Graph (mdkg) is git-native project memory for AI-native softw
 - not a comprehensive secret scanner
 - not a production queue/event ledger
 
-## Golden loop
+## Plan -> Work -> Evidence
 
 1. Read repo instructions such as AGENT_START.md.
 2. Run mdkg status.
@@ -62,7 +62,7 @@ Handoff raw-marker warnings and no-secret checks are safety aids, not comprehens
 - /quickstart
 - /trust
 - /alpha
-- /docs
+- https://docs.mdkg.dev/
 - /llms.txt
 - /sitemap.xml
 

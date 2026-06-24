@@ -1,21 +1,26 @@
 ---
+const docsUrl = String(
+  import.meta.env.PUBLIC_MDKG_DOCS_URL ||
+    (import.meta.env.VERCEL_ENV === "preview" ? "https://mdkg-docs.vercel.app/" : "https://docs.mdkg.dev/")
+);
+
 const groups = [
   {
     title: "Product",
     links: [
       { href: "/", label: "Home" },
       { href: "/quickstart/", label: "Quickstart" },
-      { href: "/docs/", label: "Docs" },
-      { href: "https://www.npmjs.com/package/mdkg", label: "npm" }
+      { href: "/trust/", label: "Trust" },
+      { href: "/alpha/", label: "Alpha" }
     ]
   },
   {
     title: "Learn",
     links: [
-      { href: "/trust/", label: "Trust boundaries" },
-      { href: "/alpha/", label: "Public alpha" },
       { href: "/llms.txt", label: "llms.txt" },
-      { href: "https://github.com/nickreames/mdkg", label: "Star on GitHub" }
+      { href: docsUrl, label: "Docs ↗", external: true },
+      { href: "https://github.com/nickreames/mdkg", label: "GitHub ↗", external: true },
+      { href: "https://www.npmjs.com/package/mdkg", label: "npm ↗", external: true }
     ]
   }
 ];
@@ -25,14 +30,22 @@ const groups = [
   <div class="container footer-grid">
     <div>
       <strong>Markdown Knowledge Graph</strong>
-      <p>Git-native project memory for AI-native software engineering.</p>
+      <p>Git-native project memory for AI coding agents. Developer preview; advanced contracts may change before v1.</p>
     </div>
     {groups.map((group) => (
       <div>
         <h2>{group.title}</h2>
         <ul>
           {group.links.map((link) => (
-            <li><a href={link.href}>{link.label}</a></li>
+            <li>
+              <a
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
           ))}
         </ul>
       </div>

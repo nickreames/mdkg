@@ -4,9 +4,12 @@ import ButtonLink from "./ButtonLink.astro";
 const {
   primaryHref = "/quickstart/",
   secondaryHref = "https://github.com/nickreames/mdkg",
-  tertiaryHref = "/docs/",
+  tertiaryHref = String(
+    import.meta.env.PUBLIC_MDKG_DOCS_URL ||
+      (import.meta.env.VERCEL_ENV === "preview" ? "https://mdkg-docs.vercel.app/" : "https://docs.mdkg.dev/")
+  ),
   primaryLabel = "Get started",
-  secondaryLabel = "Star on GitHub",
+  secondaryLabel = "View GitHub",
   tertiaryLabel = "Read docs"
 } = Astro.props;
 ---

@@ -1,20 +1,31 @@
 ---
+const docsUrl = String(
+  import.meta.env.PUBLIC_MDKG_DOCS_URL ||
+    (import.meta.env.VERCEL_ENV === "preview" ? "https://mdkg-docs.vercel.app/" : "https://docs.mdkg.dev/")
+);
+
 const links = [
   { href: "/quickstart/", label: "Quickstart" },
-  { href: "/trust/", label: "Trust" },
-  { href: "/alpha/", label: "Alpha" },
-  { href: "/docs/", label: "Docs" }
+  { href: docsUrl, label: "Docs ↗", external: true },
+  { href: "https://github.com/nickreames/mdkg", label: "GitHub ↗", external: true },
+  { href: "https://www.npmjs.com/package/mdkg", label: "npm ↗", external: true }
 ];
 ---
 
 <nav class="nav" aria-label="Main navigation">
   <a class="brand" href="/">
-    <img src="/favicon.svg" alt="" width="28" height="28" />
     <span>mdkg</span>
   </a>
   <div class="links">
-    {links.map((link) => <a href={link.href}>{link.label}</a>)}
-    <a href="https://github.com/nickreames/mdkg">Star on GitHub</a>
+    {links.map((link) => (
+      <a
+        href={link.href}
+        target={link.external ? "_blank" : undefined}
+        rel={link.external ? "noopener noreferrer" : undefined}
+      >
+        {link.label}
+      </a>
+    ))}
   </div>
 </nav>
 

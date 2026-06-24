@@ -1,6 +1,6 @@
 # mdkg
 
-mdkg is a local-first CLI for turning structured Markdown into deterministic project memory.
+mdkg is git-native project memory for AI coding agents: structured Markdown, deterministic context packs, handoffs, checkpoints, and validation.
 
 It is built for:
 - human builders who want project truth and task state in git

@@ -6,7 +6,7 @@ import FeatureCard from "../components/FeatureCard.astro";
 import Badge from "../components/Badge.astro";
 ---
 
-<BaseLayout title="mdkg Quickstart" description="Install and run the first Markdown Knowledge Graph loop.">
+<BaseLayout title="mdkg Quickstart" description="Install mdkg, prove the repo memory layer works, and run the Plan -> Work -> Evidence loop.">
   <section class="section">
     <div class="container">
       <SectionHeader
@@ -22,7 +22,7 @@ import Badge from "../components/Badge.astro";
         />
         <div class="grid">
           <FeatureCard title="Node requirement" text="mdkg uses modern Node capabilities. Install Node 24.15.0 or newer before the global npm install." command="node --version" />
-          <FeatureCard title="Start small" text="Run the first pass on a small repo or a fresh branch so graph scaffolding, agent docs, and generated indexes are easy to review." command="git status --short" />
+          <FeatureCard title="Start small" text="Run the first pass on a small repo or a fresh branch so graph memory files, agent docs, and generated indexes are easy to review." command="git status --short" />
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@ import Badge from "../components/Badge.astro";
     <div class="container grid two">
       <div class="stack">
         <Badge tone="teal">Agent handoff</Badge>
-        <h2>Give the next session a bounded work item.</h2>
+        <h2>Then run the Plan -&gt; Work -&gt; Evidence loop.</h2>
         <p class="muted">After initialization, use the graph to select work and build deterministic context. Replace `GOAL_ID`, `WORK_ID`, and `TASK_ID` with real ids from your repo.</p>
       </div>
       <TerminalBlock
