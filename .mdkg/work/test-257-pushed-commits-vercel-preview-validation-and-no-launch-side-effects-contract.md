@@ -2,7 +2,7 @@
 id: test-257
 type: test
 title: pushed commits Vercel preview validation and no-launch-side-effects contract
-status: backlog
+status: done
 priority: 1
 epic: epic-171
 parent: goal-33
