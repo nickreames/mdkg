@@ -2,14 +2,14 @@
 id: test-268
 type: test
 title: pushed commits Vercel preview validation and no-launch-side-effects contract
-status: todo
+status: done
 priority: 1
 epic: epic-180
 parent: goal-34
 tags: [mdkg-dev, vercel, closeout]
 owners: []
 links: []
-artifacts: []
+artifacts: [archive://archive.mdkg-dev-pass4-hosted-preview-e2e-2026-06-24]
 relates: [goal-34, task-548]
 blocked_by: []
 blocks: []

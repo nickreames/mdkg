@@ -2,14 +2,14 @@
 id: task-548
 type: task
 title: create logical commits push main verify Vercel previews logs and close evidence
-status: progress
+status: done
 priority: 1
 epic: epic-180
 parent: goal-34
 tags: [mdkg-dev, vercel, closeout]
 owners: []
 links: []
-artifacts: []
+artifacts: [archive://archive.mdkg-dev-pass4-hosted-preview-e2e-2026-06-24]
 relates: [goal-34, test-268]
 blocked_by: [task-547]
 blocks: []
