@@ -5,9 +5,7 @@
       "has": [
         {
           "type": "host",
-          "value": {
-            "suf": ".vercel.app"
-          }
+          "value": ".*\\.vercel\\.app$"
         }
       ],
       "headers": [

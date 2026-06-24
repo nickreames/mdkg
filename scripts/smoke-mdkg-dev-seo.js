@@ -108,7 +108,7 @@ function main() {
   assert(docsRedirect.includes('name="robots" content="noindex"'), "marketing /docs redirect fallback must remain noindex");
   assert(
     vercelConfig.headers.some((entry) =>
-      entry.has?.some((condition) => condition.type === "host" && condition.value?.suf === ".vercel.app") &&
+      entry.has?.some((condition) => condition.type === "host" && condition.value === ".*\\.vercel\\.app$") &&
       entry.headers?.some((header) => header.key === "X-Robots-Tag" && header.value === "noindex, nofollow")
     ),
     "marketing Vercel config missing vercel.app X-Robots-Tag noindex header"
