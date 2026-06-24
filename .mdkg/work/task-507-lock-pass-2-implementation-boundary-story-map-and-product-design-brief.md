@@ -2,7 +2,7 @@
 id: task-507
 type: task
 title: lock pass 2 implementation boundary story map and Product Design brief
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, implementation]
 owners: []

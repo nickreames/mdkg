@@ -2,7 +2,7 @@
 id: task-515
 type: task
 title: run local Browser Chrome and Product Design responsive QA
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, browser, product-design]
 owners: []

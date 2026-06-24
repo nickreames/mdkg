@@ -2,7 +2,7 @@
 id: test-244
 type: test
 title: responsive accessibility mobile and Product Design QA contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, accessibility]
 owners: []

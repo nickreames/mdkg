@@ -2,7 +2,7 @@
 id: task-512
 type: task
 title: implement SEO metadata noindex sitemap robots and external link polish
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, seo]
 owners: []

@@ -2,7 +2,7 @@
 id: task-513
 type: task
 title: add advanced alpha CLI MCP demo and graph movement docs
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, p3, docs]
 owners: []

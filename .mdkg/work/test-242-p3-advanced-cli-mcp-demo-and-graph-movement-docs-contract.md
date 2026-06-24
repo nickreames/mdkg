@@ -2,7 +2,7 @@
 id: test-242
 type: test
 title: P3 advanced CLI MCP demo and graph movement docs contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, p3]
 owners: []

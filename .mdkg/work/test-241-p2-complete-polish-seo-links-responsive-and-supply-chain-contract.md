@@ -2,7 +2,7 @@
 id: test-241
 type: test
 title: P2 complete polish SEO links responsive and supply-chain contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, p2]
 owners: []

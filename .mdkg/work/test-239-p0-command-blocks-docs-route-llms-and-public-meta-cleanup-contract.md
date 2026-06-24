@@ -2,7 +2,7 @@
 id: test-239
 type: test
 title: P0 command blocks docs route llms and public-meta cleanup contract
-status: backlog
+status: done
 priority: 1
 tags: [mdkg-dev, p0]
 owners: []
