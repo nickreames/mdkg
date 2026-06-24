@@ -2,7 +2,7 @@
 id: epic-152
 type: epic
 title: deferred feedback backlog and closeout
-status: todo
+status: done
 priority: 1
 tags: [mdkg-dev, deferred, closeout]
 owners: []
@@ -34,3 +34,16 @@ P2 deferral list, no-launch proof, preview evidence, final checkpoint, and next-
 # Risks
 
 # Links / Artifacts
+
+- `task-498`
+- `test-234`
+- `chk-213`
+- `chk-214`
+
+# Closeout Evidence
+
+Completed as part of `goal-30`.
+
+- P2 and external-side-effect feedback remained deferred rather than silently implemented.
+- Final closeout checkpoints record pushed commits, Vercel preview validation, and no-launch side-effect boundaries.
+- `test-234` is done and confirms pushed commits occurred without DNS cutover, production promotion, npm publish, analytics activation, GitHub settings mutation, or tag creation.

@@ -2,7 +2,7 @@
 id: epic-150
 type: epic
 title: Product Design responsive visual polish
-status: todo
+status: done
 priority: 1
 tags: [mdkg-dev, product-design, visual-polish, responsive]
 owners: []
@@ -34,3 +34,17 @@ Design system consistency, architecture/product visuals, terminal proof, mobile 
 # Risks
 
 # Links / Artifacts
+
+- `task-493`
+- `task-496`
+- `test-231`
+- `/private/tmp/mdkg-goal30-task496-browser-e2e.json`
+- `/private/tmp/mdkg-goal30-task496-browser-e2e/`
+
+# Closeout Evidence
+
+Completed as part of `goal-30`.
+
+- Restrained OSS design polish, product/architecture visuals, terminal proof, responsive layout, readable code blocks, and focus/contrast basics were implemented.
+- Browser and Product Design QA passed for desktop `1440x900` and mobile `390x844` coverage across marketing and docs routes.
+- `test-231` is done and records responsive design, accessibility, performance, and Product Design QA evidence.
