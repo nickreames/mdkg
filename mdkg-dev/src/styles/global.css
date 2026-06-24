@@ -36,6 +36,26 @@ html {
   }
 }
 
+@media (forced-colors: active) {
+  :root {
+    --border: CanvasText;
+    --shadow: none;
+  }
+
+  body {
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  a {
+    color: LinkText;
+  }
+
+  :focus-visible {
+    outline: 3px solid Highlight;
+  }
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);
