@@ -22,6 +22,16 @@ function assertParity(source, expected, label) {
   }
 }
 
+function assertReadablePlainText(source, label) {
+  const lines = source.split("\n");
+  assert(lines.length >= 20, `${label} should preserve line breaks`);
+  assert(lines.some((line) => line.startsWith("## ")), `${label} missing markdown headings`);
+  assert(lines.some((line) => line.startsWith("- ")), `${label} missing bullet lines`);
+  assert(lines.some((line) => line.startsWith("1. ")), `${label} missing numbered path lines`);
+  const longLines = lines.filter((line) => line.length > 140);
+  assert(longLines.length === 0, `${label} has long collapsed lines: ${longLines.join(" | ")}`);
+}
+
 function main() {
   buildSite();
 
@@ -102,22 +112,45 @@ function main() {
     {
       label: "homepage",
       source: home,
-      expected: ["mdkg init --agent", "mdkg pack WORK_ID", "Plan", "Work", "Evidence", "context_refs", "evidence_refs", "mdkg handoff create WORK_ID"],
+      expected: [
+        "mdkg init --agent",
+        "mdkg pack WORK_ID",
+        "Plan",
+        "Work",
+        "Evidence",
+        "context_refs",
+        "evidence_refs",
+        "mdkg handoff create WORK_ID",
+        "Bigger context helps. It does not replace project memory.",
+    "One concrete change: the agent starts from work, not vibes.",
+    "one reviewable graph, one packable handoff, one validation loop",
+    "Without mdkg",
+        "With mdkg",
+        "Try it on a small repo first.",
+      ],
     },
     {
       label: "llms.txt",
       source: llms,
-      expected: ["mdkg init --agent", "mdkg pack WORK_ID", "mdkg handoff create WORK_ID", "GOAL_ID"],
+      expected: ["mdkg init --agent", "mdkg pack WORK_ID", "mdkg handoff create WORK_ID", "GOAL_ID", "Read AGENT_START.md", "Validate with mdkg validate before closeout"],
     },
     {
       label: "llms-full.txt",
       source: llmsFull,
-      expected: ["Safety boundaries", "not an autonomous execution runtime", "WORK_ID", "TASK_ID"],
+      expected: ["Safety boundaries", "not an autonomous execution runtime", "WORK_ID", "TASK_ID", "Canonical agent path", "mdkg goal claim GOAL_ID WORK_ID"],
     },
   ];
   for (const { source, expected, label } of parityChecks) {
     assertParity(source, expected, label);
   }
+
+  assertReadablePlainText(llms, "llms.txt");
+  assertReadablePlainText(llmsFull, "llms-full.txt");
+  assertContains(llms, "3. Inspect the current goal with mdkg goal current.", "llms.txt canonical agent path");
+  assertContains(llms, "5. Show and pack one work node with mdkg show WORK_ID and mdkg pack WORK_ID.", "llms.txt canonical agent path");
+  assertContains(llmsFull, "7. Record evidence with checkpoints, handoffs, or task updates.", "llms-full.txt canonical agent path");
+  assert(!home.includes("Who it is for"), "homepage should move repetitive audience detail out of the public landing flow");
+  assert(!home.includes("Trust gates"), "homepage should move detailed trust gate content into docs");
 
   const generatedJs = walkFiles(path.join(dist, "_astro")).filter((file) => file.endsWith(".js"));
   assert(generatedJs.length === 0, "static site should not emit client JavaScript before React islands are needed");

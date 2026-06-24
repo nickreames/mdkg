@@ -101,20 +101,21 @@ function main() {
   assertIncludes(referenceHome, "mdkg goal claim GOAL_ID WORK_ID", "reference home");
   assertIncludes(referenceHome, "mdkg db queue contract --json", "reference home");
   assertIncludes(referenceHome, "Generated CLI Reference", "reference home");
-  assertIncludes(referenceHome, "Maintainer metadata", "reference home");
+  assertIncludes(referenceHome, "Integration metadata", "reference home");
   assertIncludes(commandContract, "maintainer and integration surface", "command contract");
   assertIncludes(commandContract, "Most users should start with the generated CLI reference", "command contract");
 
   const coreDocs = [docsHome, workNodeTypes, referenceTypes, repositoryLayout, agentWorkflow, packsHandoffs].join("\n");
   for (const expected of [
-    "The shortest path",
-    "For agents",
+    "Choose your first path",
+    "Human quickstart",
+    "Agent quickstart",
     "mdkg goal claim GOAL_ID WORK_ID",
     "Use scope_refs for work to do",
     "Use context_refs for knowledge",
     "Use evidence_refs for proof",
-    "Durable source",
-    "Rebuildable generated output",
+    "Commit as durable source",
+    "Keep local or rebuildable",
     "Skill mirrors",
     "Copy this into an agent session",
     "Multi-repo rule",

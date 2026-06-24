@@ -6,11 +6,13 @@ const {
   assertNoHighRiskMarkers,
   mdkg,
   parseJson,
+  readText,
   repoRoot,
 } = require("./mdkg-dev-smoke-utils");
 
 function assertExample(rootRel, searchText, expectedTitle) {
   const root = path.join(repoRoot, rootRel);
+  const startedAt = Date.now();
   const validate = parseJson(mdkg(["--root", root, "validate", "--json"]).stdout);
   assert(validate.ok === true, `${rootRel} did not validate`);
   assert(validate.warning_count === 0, `${rootRel} has validation warnings`);
@@ -32,9 +34,45 @@ function assertExample(rootRel, searchText, expectedTitle) {
   for (const qid of ["root:goal-1", "root:spike-1", "root:task-1", "root:test-1"]) {
     assert(packed.includes(qid), `${rootRel} pack missing ${qid}`);
   }
+  if (rootRel === "examples/demo-agentic-coding") {
+    const spike = parseJson(mdkg(["--root", root, "show", "spike-1", "--json"]).stdout);
+    assert(spike.item.title.includes("demo audience"), "demo spike should describe audience research");
+    const decision = parseJson(mdkg(["--root", root, "show", "dec-1", "--json"]).stdout);
+    assert(decision.item.title.includes("local preview"), "demo decision should document local preview boundary");
+    const checkpoint = parseJson(mdkg(["--root", root, "show", "chk-1", "--json"]).stdout);
+    assert(checkpoint.item.title.includes("seed accepted"), "demo checkpoint should record seed evidence");
+    const capabilities = parseJson(mdkg(["--root", root, "capability", "search", "pack", "--kind", "skill", "--json"]).stdout);
+    assert(capabilities.count > 0, "demo capability search should find pack skill");
+    assert(
+      capabilities.items.some((item) => item.id === "build-pack-and-execute-task" || item.slug === "build-pack-and-execute-task"),
+      "demo capability search missing build-pack-and-execute-task skill"
+    );
+    const elapsedMs = Date.now() - startedAt;
+    assert(elapsedMs < 600_000, `demo first-success path took too long: ${elapsedMs}ms`);
+  }
 }
 
 function main() {
+  const demoReadme = readText(path.join(repoRoot, "examples", "demo-agentic-coding", "README.md"));
+  for (const expected of [
+    "First-success path",
+    "Expected results",
+    "mdkg validate --json",
+    "mdkg goal next goal-1 --json",
+    "mdkg capability search \"pack\" --kind skill --json",
+    "under 10 minutes",
+  ]) {
+    assert(demoReadme.includes(expected), `demo README missing ${expected}`);
+  }
+  const demoDocs = readText(path.join(repoRoot, "docs", "src", "content", "docs", "advanced-alpha", "demo-graphs.md"));
+  for (const expected of [
+    "First-success path",
+    "examples/demo-agentic-coding",
+    "Use returned IDs",
+    "Do not hardcode numeric IDs",
+  ]) {
+    assert(demoDocs.includes(expected), `demo docs missing ${expected}`);
+  }
   assertExample(
     "examples/demo-agentic-coding",
     "agentic coding demo",
