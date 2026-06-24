@@ -19,7 +19,9 @@ const { title, steps } = Astro.props as { title: string; steps: string[] };
     padding: 22px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.92);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 249, 255, 0.72)),
+      var(--white);
     box-shadow: var(--shadow);
   }
 
@@ -41,6 +43,7 @@ const { title, steps } = Astro.props as { title: string; steps: string[] };
     border: 1px solid rgba(14, 165, 233, 0.24);
     border-radius: var(--radius);
     background: linear-gradient(90deg, var(--sky-50), var(--white));
+    min-width: 0;
   }
 
   span {
@@ -52,5 +55,9 @@ const { title, steps } = Astro.props as { title: string; steps: string[] };
     color: white;
     background: linear-gradient(135deg, var(--blue-700), var(--teal-500));
     font-family: var(--font-mono);
+  }
+
+  strong {
+    overflow-wrap: anywhere;
   }
 </style>

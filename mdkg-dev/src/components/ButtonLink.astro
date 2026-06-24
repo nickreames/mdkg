@@ -19,7 +19,8 @@ const { href, variant = "primary" } = Astro.props as { href: string; variant?: V
     border: 1px solid var(--border);
     font-weight: 700;
     text-decoration: none;
-    white-space: nowrap;
+    text-align: center;
+    white-space: normal;
   }
 
   .primary {
@@ -36,5 +37,15 @@ const { href, variant = "primary" } = Astro.props as { href: string; variant?: V
   .ghost {
     color: var(--zinc-700);
     background: transparent;
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .button:hover {
+      transform: none;
+    }
   }
 </style>

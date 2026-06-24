@@ -18,8 +18,8 @@ Start:
 - Index: mdkg index
 - Inspect: mdkg status
 - Validate: mdkg validate
-- Pack context: mdkg pack <id>
-- Handoff: mdkg handoff create <id>
+- Pack context: mdkg pack WORK_ID
+- Handoff: mdkg handoff create WORK_ID
 
 Important pages:
 - /quickstart
@@ -28,7 +28,7 @@ Important pages:
 - /docs
 - /sitemap.xml
 
-Agents should prefer mdkg pack <id> over ad hoc file lists when building context for work.
+Agents should prefer mdkg pack WORK_ID over ad hoc file lists when building context for work. Use concrete ids from the repository, such as GOAL_ID, TASK_ID, SPIKE_ID, or CHECKPOINT_ID.
 `;
 
   return new Response(body, {

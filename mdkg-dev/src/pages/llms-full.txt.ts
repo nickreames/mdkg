@@ -31,8 +31,8 @@ Markdown Knowledge Graph (mdkg) is git-native project memory for AI-native softw
 2. Run mdkg status.
 3. Use mdkg goal current and mdkg goal next when a goal is selected.
 4. Use mdkg show or mdkg search for inspection.
-5. Use mdkg pack <id> for deterministic context.
-6. Use mdkg goal claim <id> or mdkg task start <id> only when intentionally mutating lifecycle state.
+5. Use mdkg pack WORK_ID for deterministic context.
+6. Use mdkg goal claim WORK_ID or mdkg task start TASK_ID only when intentionally mutating lifecycle state.
 7. Do work outside mdkg.
 8. Run required checks yourself.
 9. Record a checkpoint or handoff.
@@ -45,11 +45,11 @@ Markdown Knowledge Graph (mdkg) is git-native project memory for AI-native softw
 - mdkg status
 - mdkg validate
 - mdkg search <query>
-- mdkg show <id>
+- mdkg show WORK_ID
 - mdkg goal next
-- mdkg pack <id>
-- mdkg handoff create <id>
-- mdkg task done <id> --checkpoint "Meaningful milestone"
+- mdkg pack WORK_ID
+- mdkg handoff create WORK_ID
+- mdkg task done TASK_ID --checkpoint "Meaningful milestone"
 
 ## Safety boundaries
 

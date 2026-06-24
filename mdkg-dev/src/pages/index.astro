@@ -32,8 +32,8 @@ const structuredData = {
       <div>
         <p class="eyebrow">Markdown Knowledge Graph</p>
         <h1>Git-native project memory for AI-native software engineering.</h1>
-        <p class="lead">Turn structured Markdown in your repo into deterministic context packs, goals, checkpoints, skills, and handoffs for humans and AI agents - without a daemon, hosted index, vector database, or hidden cloud state.</p>
-        <p class="trust-line">Developer preview. Pre-v1 public alpha. Markdown is the source of truth; local indexes are rebuildable.</p>
+        <p class="lead">Turn structured Markdown in your repo into deterministic context packs, goals, checkpoints, skills, and handoffs for humans and AI agents, without a daemon, hosted index, vector database, or hidden cloud state.</p>
+        <p class="trust-line">Developer preview. Pre-v1 public alpha. Markdown is the durable source of truth; generated indexes are rebuildable.</p>
         <CTAGroup />
       </div>
       <DiagramCard
@@ -52,7 +52,7 @@ const structuredData = {
       </div>
       <TerminalBlock
         title="First run"
-        commands={["npm install -g mdkg", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate"]}
+        commands={["npm install -g mdkg", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate", "mdkg pack WORK_ID"]}
       />
     </div>
   </section>
@@ -62,12 +62,78 @@ const structuredData = {
       <SectionHeader
         eyebrow="Why it exists"
         title="AI coding agents lose the thread."
-        text="Goals disappear into chat history. Architecture decisions drift across files and prompts. Agents confuse background context with executable scope. Handoffs become raw context dumps."
+        text="The most frustrating AI coding failures are often memory failures. Agents can inspect files and write code, but across sessions they lose goals, miss decisions, confuse background context with executable scope, and produce plausible work that no longer matches the project."
       />
       <div class="grid three">
         <FeatureCard title="Project memory in Git" text="Keep goals, tasks, decisions, evidence, and handoffs in files that humans and agents can inspect." command=".mdkg/work" />
-        <FeatureCard title="Deterministic packs" text="Build focused context from graph state instead of asking an agent to browse randomly." command="mdkg pack <id>" />
+        <FeatureCard title="Deterministic packs" text="Build focused context from graph state instead of asking an agent to browse randomly." command="mdkg pack WORK_ID" />
         <FeatureCard title="Evidence before closeout" text="Record checkpoints and run validation before moving on to the next node." command="mdkg validate" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid two">
+      <div class="stack">
+        <Badge tone="teal">Context windows</Badge>
+        <h2>Bigger context helps. It does not replace project memory.</h2>
+        <p class="muted">Longer context windows let an agent hold more text at once. Raw context is still temporary, easy to overfill, and hard to review. Project memory should be structured, version-controlled, inspectable, and shared by humans and agents.</p>
+      </div>
+      <div class="comparison-grid" aria-label="Context comparison">
+        <article class="comparison-card">
+          <h3>Raw chat context</h3>
+          <ul>
+            <li>hard to diff</li>
+            <li>easy to overfill</li>
+            <li>lost across handoffs</li>
+          </ul>
+        </article>
+        <article class="comparison-card positive">
+          <h3>mdkg project memory</h3>
+          <ul>
+            <li>Markdown in Git</li>
+            <li>explicit refs and status</li>
+            <li>packable for agents</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Five-minute outcome"
+        title="What you get after the first run."
+        text="A fresh repo can quickly gain visible graph state, validation, and a deterministic handoff path without changing your application code."
+      />
+      <div class="grid three">
+        <FeatureCard title="Repo scaffold" text="Agent instructions, core docs, work/design folders, and validation rules." command="mdkg init --agent" />
+        <FeatureCard title="Operator view" text="A scriptable summary of git, graph, selected goal, cache, and project DB state." command="mdkg status --json" />
+        <FeatureCard title="Handoff path" text="A compact prompt from graph state, boundaries, checkpoints, and required checks." command="mdkg handoff create WORK_ID" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container proof-grid">
+      <div class="stack">
+        <Badge tone="teal">Product proof</Badge>
+        <h2>Concrete files, refs, and commands instead of mystery memory.</h2>
+        <p class="muted">The first public-alpha promise is intentionally practical: create readable graph files, route a work item, pack bounded context, and leave evidence another agent can inspect.</p>
+        <TerminalBlock
+          title="Context pack proof"
+          commands={["mdkg goal next GOAL_ID --json", "mdkg pack WORK_ID --pack-profile concise", "mdkg handoff create WORK_ID --json"]}
+        />
+      </div>
+      <div class="proof-card" aria-label="Example mdkg graph shape">
+        <div class="path-line">.mdkg/work/goal-30.md</div>
+        <dl>
+          <div><dt>scope_refs</dt><dd>task-490, task-491, test-228</dd></div>
+          <div><dt>context_refs</dt><dd>prd-6, edd-34, archive://feedback</dd></div>
+          <div><dt>evidence_refs</dt><dd>chk-206, smoke receipts, Browser proof</dd></div>
+        </dl>
+        <div class="proof-footer">reviewable in Git, packable for agents</div>
       </div>
     </div>
   </section>
@@ -77,12 +143,12 @@ const structuredData = {
       <SectionHeader
         eyebrow="Model"
         title="Work, context, and evidence are different things."
-        text="mdkg separates executable scope from background context and proof, so agents can see what to do, what to know, and what supports the current state."
+        text="mdkg separates what an agent should do, what it should know, and what supports the current state."
       />
       <div class="grid three">
-        <ClaimEvidenceCard claim="scope_refs" evidence="Actionable nodes such as tasks, tests, bugs, features, and spikes." caveat="This is what a goal can route through." />
-        <ClaimEvidenceCard claim="context_refs" evidence="Design records, PRDs, decisions, prior goals, and background sources." caveat="Context informs work but is not automatically actionable." />
-        <ClaimEvidenceCard claim="evidence_refs" evidence="Checkpoints, archive sidecars, receipts, and proof artifacts." caveat="Evidence supports state without dumping raw execution traces." />
+        <ClaimEvidenceCard claim="scope_refs" evidence="Executable work scope: tasks, tests, bugs, features, and spikes a goal can route through." caveat="This is the routeable queue for a goal." />
+        <ClaimEvidenceCard claim="context_refs" evidence="Background knowledge: decisions, PRDs, prior goals, plans, subgraph qids, or URI refs that inform the work." caveat="Context informs work but is not automatically actionable." />
+        <ClaimEvidenceCard claim="evidence_refs" evidence="Proof: checkpoints, audits, receipts, archive sidecars, and artifacts that support the current state." caveat="Evidence supports state without dumping raw execution traces." />
       </div>
     </div>
   </section>
@@ -107,11 +173,11 @@ const structuredData = {
       <div class="stack">
         <Badge tone="teal">Handoffs</Badge>
         <h2>Transfer agent work without raw history dumps.</h2>
-        <p class="muted">`mdkg handoff create` builds a bounded handoff from goal/work state, latest checkpoints, boundaries, required checks, next actions, and safety warnings.</p>
+        <p class="muted">`mdkg handoff create` builds a bounded handoff from goal/work state, latest checkpoints, boundaries, required checks, next actions, and safety warnings. The warnings are aids, not comprehensive data-loss prevention.</p>
       </div>
       <TerminalBlock
         title="Handoff"
-        commands={["mdkg goal next", "mdkg pack <id> --pack-profile concise", "mdkg handoff create <id>", "mdkg task done <id> --checkpoint \"Meaningful milestone\""]}
+        commands={["mdkg goal next", "mdkg pack WORK_ID --pack-profile concise", "mdkg handoff create WORK_ID", "mdkg task done TASK_ID --checkpoint \"Meaningful milestone\""]}
       />
     </div>
   </section>
@@ -124,7 +190,7 @@ const structuredData = {
         text="Goals, tasks, tests, bugs, features, spikes, and checkpoints give AI coding sessions durable shape without turning mdkg into an executor."
       />
       <div class="flow">
-        <div class="flow-step"><span class="flow-index">1</span><div><strong>Find the next node.</strong><p class="muted">Use <code>mdkg goal next</code> and <code>mdkg pack &lt;id&gt;</code> before editing.</p></div></div>
+        <div class="flow-step"><span class="flow-index">1</span><div><strong>Find the next node.</strong><p class="muted">Use <code>mdkg goal next</code> and <code>mdkg pack WORK_ID</code> before editing.</p></div></div>
         <div class="flow-step"><span class="flow-index">2</span><div><strong>Do the work outside mdkg.</strong><p class="muted">A human or agent changes code, docs, tests, or graph nodes.</p></div></div>
         <div class="flow-step"><span class="flow-index">3</span><div><strong>Record evidence.</strong><p class="muted">Close with checkpoints, validation, and handoffs.</p></div></div>
       </div>
@@ -132,6 +198,21 @@ const structuredData = {
   </section>
 
   <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Who it is for"
+        title="Teams and solo builders using AI agents in real repos."
+        text="mdkg is useful when your work spans multiple sessions, branches, agents, or repos and you need durable state that can survive handoffs."
+      />
+      <div class="grid three">
+        <FeatureCard title="Agentic coding sessions" text="Give a coding agent a goal id, a pack, and explicit completion checks instead of a loose paragraph of context." command="mdkg goal next" />
+        <FeatureCard title="Multi-repo planning" text="Use subgraphs and root-qualified qids to plan across repos while keeping ownership local." command="mdkg subgraph audit" />
+        <FeatureCard title="Launch and release work" text="Track decisions, tests, checkpoints, validation, and handoffs around long-running release goals." command="mdkg checkpoint new" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
     <div class="container">
       <SectionHeader
         eyebrow="Trust gates"
@@ -142,6 +223,21 @@ const structuredData = {
         <FeatureCard title="Status" text="Operator summary for graph, git, selected goal, cache, and project DB state." command="mdkg status" />
         <FeatureCard title="Doctor" text="Strict diagnostics with remediation for scriptable health checks." command="mdkg doctor --strict --json" />
         <FeatureCard title="Fix planning" text="Dry-run-first repair planning for index, references, and ID conflicts." command="mdkg fix plan --json" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="What mdkg is not"
+        title="Local project memory, not another execution platform."
+        text="The boundary matters because mdkg is meant to make work auditable, not hide more state behind a service."
+      />
+      <div class="grid three">
+        <FeatureCard title="Not a hosted memory service" text="Markdown in your repo remains the durable source of truth; generated indexes are rebuildable." />
+        <FeatureCard title="Not an autonomous runtime" text="mdkg can describe work, create packs, and produce handoffs. Humans and agents execute outside mdkg." />
+        <FeatureCard title="Not a secret scanner" text="Handoff warnings and no-secret checks are safety aids, not comprehensive DLP." />
       </div>
     </div>
   </section>
@@ -162,17 +258,131 @@ const structuredData = {
   </section>
 
   <section class="section">
-    <div class="container grid two">
+    <div class="container cta-panel">
       <div class="stack">
-        <Badge tone="neutral">Origin</Badge>
-        <h2>Built from the same file-first agent workflow it teaches.</h2>
-        <p class="muted">Markdown Knowledge Graph grew out of Nicholas Reames's own AI coding workflow: durable files, frontmatter, reusable instructions, checkpoints, and deterministic context instead of hidden chat memory.</p>
+        <Badge tone="neutral">Public alpha</Badge>
+        <h2>Try it on a small repo first.</h2>
+        <p class="muted">If this problem feels familiar, try the quickstart and star the repo if mdkg seems useful. If your agents lose context in a different way, open an issue; real workflow pain is shaping the public-alpha roadmap.</p>
       </div>
-      <ClaimEvidenceCard
-        claim="Public-alpha honesty"
-        evidence="The site links core shipped commands to generated reference docs and keeps deferred worker execution, hosted queues, analytics, DNS, and production launch out of scope."
-        caveat="This goal proves local pre-release readiness, not a public deployment."
+      <CTAGroup
+        primaryHref="/quickstart/"
+        primaryLabel="Run the quickstart"
+        secondaryHref="https://github.com/nickreames/mdkg"
+        secondaryLabel="Star on GitHub"
+        tertiaryHref="https://github.com/nickreames/mdkg/issues"
+        tertiaryLabel="Send feedback"
       />
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(280px, 0.98fr);
+    gap: 28px;
+    align-items: center;
+  }
+
+  .proof-card {
+    padding: 22px;
+    border: 1px solid rgba(14, 165, 233, 0.22);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(180deg, var(--white), var(--sky-50)),
+      var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  .path-line,
+  .proof-footer {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+  }
+
+  .path-line {
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--blue-700);
+    background: var(--white);
+    overflow-wrap: anywhere;
+  }
+
+  dl {
+    display: grid;
+    gap: 12px;
+    margin: 18px 0;
+  }
+
+  dt {
+    color: var(--zinc-950);
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  dd {
+    margin: 4px 0 0;
+    color: var(--zinc-600);
+    overflow-wrap: anywhere;
+  }
+
+  .proof-footer {
+    color: #0f766e;
+  }
+
+  .comparison-card {
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--zinc-50);
+  }
+
+  .comparison-card.positive {
+    background: linear-gradient(180deg, var(--teal-50), var(--white));
+    border-color: rgba(20, 184, 166, 0.34);
+  }
+
+  .comparison-card ul {
+    display: grid;
+    gap: 8px;
+    margin: 14px 0 0;
+    padding-left: 18px;
+    color: var(--zinc-700);
+  }
+
+  .cta-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: center;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--sky-50), var(--white), var(--teal-50));
+  }
+
+  .cta-panel :global(.cta-group) {
+    margin-top: 0;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 820px) {
+    .comparison-grid,
+    .proof-grid,
+    .cta-panel {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-panel :global(.cta-group) {
+      justify-content: flex-start;
+    }
+  }
+</style>

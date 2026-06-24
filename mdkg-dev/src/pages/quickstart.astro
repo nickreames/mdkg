@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import TerminalBlock from "../components/TerminalBlock.astro";
 import FeatureCard from "../components/FeatureCard.astro";
+import Badge from "../components/Badge.astro";
 ---
 
 <BaseLayout title="mdkg Quickstart" description="Install and run the first Markdown Knowledge Graph loop.">
@@ -12,7 +13,7 @@ import FeatureCard from "../components/FeatureCard.astro";
         eyebrow="Quickstart"
         level="h1"
         title="Initialize, index, inspect, validate."
-        text="This path is intentionally small. It proves mdkg is installed, creates repo-local project memory, builds the index cache, and verifies graph health."
+        text="Install mdkg, then keep the first path intentionally small. It proves mdkg is installed, creates repo-local project memory, builds the index cache, and verifies graph health."
       />
       <div class="grid two">
         <TerminalBlock
@@ -20,9 +21,38 @@ import FeatureCard from "../components/FeatureCard.astro";
           commands={["npm install -g mdkg", "mdkg --version", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate"]}
         />
         <div class="grid">
-          <FeatureCard title="Node requirement" text="mdkg uses modern Node capabilities. Public docs should state Node >=24.15.0." command="node --version" />
-          <FeatureCard title="Build context" text="After the graph exists, use show/search/next to find work and pack to give an agent deterministic context." command="mdkg pack <id>" />
+          <FeatureCard title="Node requirement" text="mdkg uses modern Node capabilities. Install Node 24.15.0 or newer before the global npm install." command="node --version" />
+          <FeatureCard title="Start small" text="Run the first pass on a small repo or a fresh branch so graph scaffolding, agent docs, and generated indexes are easy to review." command="git status --short" />
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container grid two">
+      <div class="stack">
+        <Badge tone="teal">Agent handoff</Badge>
+        <h2>Give the next session a bounded work item.</h2>
+        <p class="muted">After initialization, use the graph to select work and build deterministic context. Replace `GOAL_ID`, `WORK_ID`, and `TASK_ID` with real ids from your repo.</p>
+      </div>
+      <TerminalBlock
+        title="First agent loop"
+        commands={["mdkg goal current", "mdkg goal next GOAL_ID", "mdkg show WORK_ID", "mdkg pack WORK_ID --pack-profile concise", "mdkg handoff create WORK_ID", "mdkg task done TASK_ID --checkpoint \"Meaningful milestone\"", "mdkg validate"]}
+      />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Success signals"
+        title="What good looks like after five minutes."
+        text="The first run should leave visible, reviewable repo state rather than a hidden service or transient chat instruction."
+      />
+      <div class="grid three">
+        <FeatureCard title="Scaffolded memory" text="A `.mdkg/` folder, agent startup docs, and core project memory conventions are present." command=".mdkg/" />
+        <FeatureCard title="Rebuildable access" text="The index is generated from source files and can be rebuilt when graph files change." command="mdkg index" />
+        <FeatureCard title="Clean validation" text="Validation explains missing refs, stale state, and template issues before closeout." command="mdkg validate --summary" />
       </div>
     </div>
   </section>
