@@ -47,7 +47,7 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
     fail("package.json is missing smoke:warning-ux");
   }
-  for (const scriptName of ["smoke:mdkg-dev", "smoke:mdkg-dev-docs", "smoke:mdkg-dev-seo", "smoke:demo-graph", "docs:check"]) {
+  for (const scriptName of ["smoke:mdkg-dev", "smoke:mdkg-dev-docs", "smoke:mdkg-dev-seo", "smoke:mdkg-dev-polish-pass2", "smoke:demo-graph", "docs:check"]) {
     if (!pkg.scripts || !pkg.scripts[scriptName]) {
       fail(`package.json is missing ${scriptName}`);
     }
@@ -66,7 +66,7 @@ function requirePackageVersions() {
   }
   if (
     !String(pkg.scripts.prepublishOnly || "").includes(
-      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:demo-graph && npm run smoke:bundle"
+      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev-polish-pass2 && npm run smoke:demo-graph && npm run smoke:bundle"
     )
   ) {
     fail("prepublishOnly must run mdkg.dev smokes after smoke:integration-ux and before smoke:bundle");
@@ -707,6 +707,12 @@ function requireInitAssets() {
       fail(`scripts/smoke-mdkg-dev-seo.js is missing ${expected} proof`);
     }
   }
+  const smokeMdkgDevPolishPass2 = requireFile("scripts/smoke-mdkg-dev-polish-pass2.js");
+  for (const expected of ["TerminalBlock", "Plan -> Work -> Evidence", "Read-only MCP", "noindex, nofollow", "https://mdkg.dev/docs"]) {
+    if (!smokeMdkgDevPolishPass2.includes(expected)) {
+      fail(`scripts/smoke-mdkg-dev-polish-pass2.js is missing ${expected} proof`);
+    }
+  }
   const smokeDemoGraph = requireFile("scripts/smoke-demo-graph.js");
   for (const expected of ["demo_agentic_coding", "template_mdkg_dev", "goal next", "subgraph", "read_only"]) {
     if (!smokeDemoGraph.includes(expected)) {
@@ -727,8 +733,8 @@ function requireInitAssets() {
   requireFile("docs/_generated/cli-reference.md");
   requireFile("docs/project/claims-evidence-matrix.md");
   const docsReadme = requireFile("docs/README.md");
-  if (!docsReadme.includes("Starlight is the docs renderer for `docs.mdkg.dev`") || docsReadme.includes("GitBook")) {
-    fail("docs/README.md must describe Starlight/docs.mdkg.dev and not GitBook");
+  if (!docsReadme.includes("repo-owned source") || docsReadme.includes("GitBook")) {
+    fail("docs/README.md must describe repo-owned source docs and not GitBook");
   }
   requireDir("examples/demo-agentic-coding/.mdkg");
   requireDir("examples/template-mdkg-dev/.mdkg");
