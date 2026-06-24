@@ -72,21 +72,21 @@ function main() {
   const robotsSource = readText(path.join(repoRoot, "mdkg-dev", "src", "pages", "robots.txt.ts"));
   for (const source of [baseLayoutSource, robotsSource]) {
     assert(source.includes("VERCEL_ENV") && source.includes("PUBLIC_MDKG_PREVIEW_NOINDEX"), "preview noindex policy missing from source");
-    assert(source.includes("VERCEL") && source.includes("PUBLIC_MDKG_PRODUCTION_INDEX"), "Vercel prelaunch noindex opt-in policy missing from source");
+    assert(!source.includes("PUBLIC_MDKG_PRODUCTION_INDEX"), "production custom domains should not require an index opt-in env var");
   }
   assert(robotsSource.includes("Disallow: /"), "preview robots policy must disallow crawling");
 
-  buildSite({ VERCEL: "1" });
-  const vercelPrelaunchHome = readText(path.join(dist, "index.html"));
-  const vercelPrelaunchRobots = readText(path.join(dist, "robots.txt"));
-  assert(vercelPrelaunchHome.includes('name="robots" content="noindex, nofollow"'), "Vercel prelaunch build must noindex pages by default");
-  assert(vercelPrelaunchRobots.includes("Disallow: /"), "Vercel prelaunch robots policy must disallow crawling");
+  buildSite({ VERCEL_ENV: "preview" });
+  const vercelPreviewHome = readText(path.join(dist, "index.html"));
+  const vercelPreviewRobots = readText(path.join(dist, "robots.txt"));
+  assert(vercelPreviewHome.includes('name="robots" content="noindex, nofollow"'), "Vercel preview build must noindex pages");
+  assert(vercelPreviewRobots.includes("Disallow: /"), "Vercel preview robots policy must disallow crawling");
 
-  buildSite({ VERCEL: "1", PUBLIC_MDKG_PRODUCTION_INDEX: "true" });
-  const vercelLaunchHome = readText(path.join(dist, "index.html"));
-  const vercelLaunchRobots = readText(path.join(dist, "robots.txt"));
-  assert(vercelLaunchHome.includes('name="robots" content="index, follow"'), "Vercel launch opt-in build must allow page indexing");
-  assert(vercelLaunchRobots.includes("Allow: /"), "Vercel launch opt-in robots policy must allow crawling");
+  buildSite({ VERCEL: "1", VERCEL_ENV: "production" });
+  const vercelProductionHome = readText(path.join(dist, "index.html"));
+  const vercelProductionRobots = readText(path.join(dist, "robots.txt"));
+  assert(vercelProductionHome.includes('name="robots" content="index, follow"'), "Vercel production build must allow page indexing");
+  assert(vercelProductionRobots.includes("Allow: /"), "Vercel production robots policy must allow crawling");
 
   const llms = readText(path.join(dist, "llms.txt"));
   const llmsFull = readText(path.join(dist, "llms-full.txt"));
@@ -101,11 +101,10 @@ function main() {
     "/trust/": "trust/index.html",
     "/alpha/": "alpha/index.html",
   };
-  const docsBridge = readText(path.join(dist, "docs", "index.html"));
-  assert(docsBridge.includes("Read the mdkg docs on the dedicated docs site"), "marketing /docs bridge missing docs handoff copy");
-  assert(docsBridge.includes("https://mdkg-docs.vercel.app/"), "marketing /docs bridge missing docs preview URL");
-  assert(docsBridge.includes("Until docs.mdkg.dev DNS is live"), "marketing /docs bridge missing future DNS boundary copy");
-  assert(docsBridge.includes('name="robots" content="noindex, nofollow"'), "marketing /docs bridge must remain noindex");
+  const docsRedirect = readText(path.join(dist, "docs", "index.html"));
+  assert(docsRedirect.includes("Redirecting to: https://docs.mdkg.dev/"), "marketing /docs redirect missing canonical docs target");
+  assert(docsRedirect.includes('<link rel="canonical" href="https://docs.mdkg.dev/'), "marketing /docs redirect missing docs canonical URL");
+  assert(docsRedirect.includes('name="robots" content="noindex"'), "marketing /docs redirect fallback must remain noindex");
   for (const [route, relPath] of Object.entries(routeFiles)) {
     const html = readText(path.join(dist, relPath));
     assert(html.includes(`href="https://mdkg.dev${route}`), `${route} missing canonical URL`);
@@ -116,7 +115,7 @@ function main() {
   for (const expected of [
     "https://github.com/nickreames/mdkg",
     "https://www.npmjs.com/package/mdkg",
-    "https://mdkg-docs.vercel.app",
+    "https://docs.mdkg.dev",
     "/quickstart/",
     "/trust/",
     "/alpha/",

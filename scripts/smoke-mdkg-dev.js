@@ -59,10 +59,15 @@ function main() {
   assert(home.includes("<main"), "homepage missing main landmark");
   assert(home.includes("<nav"), "homepage missing nav landmark");
   assert(home.includes("<footer"), "homepage missing footer landmark");
-  const docsBridge = readText(path.join(dist, "docs", "index.html"));
-  assert(docsBridge.includes("Read the mdkg docs on the dedicated docs site"), "marketing /docs bridge missing docs handoff copy");
-  assert(docsBridge.includes("https://docs.mdkg.dev") || docsBridge.includes("https://mdkg-docs.vercel.app"), "marketing /docs bridge missing docs host link");
-  assert(docsBridge.includes('name="robots" content="noindex, nofollow"'), "marketing /docs bridge should be noindex");
+  const docsRedirect = readText(path.join(dist, "docs", "index.html"));
+  assert(docsRedirect.includes("Redirecting to: https://docs.mdkg.dev/"), "marketing /docs redirect missing canonical docs target");
+  assert(docsRedirect.includes('http-equiv="refresh"'), "marketing /docs redirect missing static redirect fallback");
+  assert(docsRedirect.includes('name="robots" content="noindex"'), "marketing /docs redirect should be noindex");
+  const vercelConfig = JSON.parse(readText(path.join(repoRoot, "mdkg-dev", "vercel.json")));
+  assert(
+    vercelConfig.redirects.some((entry) => entry.source === "/docs" && entry.destination === "https://docs.mdkg.dev/" && entry.permanent === true),
+    "Vercel config missing permanent /docs redirect"
+  );
 
   const quickstart = readText(path.join(dist, "quickstart", "index.html"));
   const llms = readText(path.join(dist, "llms.txt"));

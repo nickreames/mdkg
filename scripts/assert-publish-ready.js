@@ -702,13 +702,13 @@ function requireInitAssets() {
     }
   }
   const smokeMdkgDevSeo = requireFile("scripts/smoke-mdkg-dev-seo.js");
-  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt", "PUBLIC_MDKG_PRODUCTION_INDEX"]) {
+  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt", "PUBLIC_MDKG_PREVIEW_NOINDEX"]) {
     if (!smokeMdkgDevSeo.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev-seo.js is missing ${expected} proof`);
     }
   }
   const smokeMdkgDevPolishPass2 = requireFile("scripts/smoke-mdkg-dev-polish-pass2.js");
-  for (const expected of ["TerminalBlock", "Plan -> Work -> Evidence", "Read-only MCP", "noindex, nofollow", "https://mdkg.dev/docs"]) {
+  for (const expected of ["TerminalBlock", "Plan -> Work -> Evidence", "Read-only MCP", "noindex", "https://docs.mdkg.dev"]) {
     if (!smokeMdkgDevPolishPass2.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev-polish-pass2.js is missing ${expected} proof`);
     }

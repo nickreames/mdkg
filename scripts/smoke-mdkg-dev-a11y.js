@@ -163,7 +163,6 @@ function main() {
     ["marketing quickstart", path.join(siteDist, "quickstart", "index.html")],
     ["marketing trust", path.join(siteDist, "trust", "index.html")],
     ["marketing alpha", path.join(siteDist, "alpha", "index.html")],
-    ["marketing docs bridge", path.join(siteDist, "docs", "index.html")],
     ["docs home", path.join(docsDist, "index.html")],
     ["docs install", path.join(docsDist, "start-here", "install", "index.html")],
     ["docs quickstart", path.join(docsDist, "start-here", "quickstart", "index.html")],

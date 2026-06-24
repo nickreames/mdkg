@@ -52,7 +52,7 @@ export function GET() {
     "- https://mdkg.dev/quickstart",
     "- https://mdkg.dev/trust",
     "- https://mdkg.dev/alpha",
-    "- https://mdkg-docs.vercel.app/ (preview docs; future production DNS: https://docs.mdkg.dev/)",
+    "- https://docs.mdkg.dev/ (canonical docs)",
     "- https://mdkg.dev/llms-full.txt",
     "",
     "## Agent guidance",

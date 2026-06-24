@@ -72,9 +72,9 @@ function main() {
   const planWorkEvidence = readText(path.join(docsDist, "concepts", "plan-work-evidence", "index.html"));
 
   for (const source of [home, docsBridge, llms, llmsFull]) {
-    assertIncludes(source, "https://mdkg-docs.vercel.app/", "preview docs link");
+    assertIncludes(source, "https://docs.mdkg.dev/", "canonical docs link");
   }
-  assertIncludes(docsBridge, "Until docs.mdkg.dev DNS is live", "docs bridge DNS boundary");
+  assertIncludes(docsBridge, "Redirecting to: https://docs.mdkg.dev/", "docs redirect");
 
   for (const source of [quickstartSource, agentWorkflowSource, packsSource, referenceSource]) {
     assertIncludes(source, "Replace", "placeholder replacement guidance");

@@ -12,12 +12,9 @@ const {
 const siteUrl = "https://mdkg.dev";
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const socialImage = new URL("/social-card.svg", siteUrl).toString();
-const productionIndexOptIn = String(import.meta.env.PUBLIC_MDKG_PRODUCTION_INDEX || "").toLowerCase() === "true";
-const vercelPrelaunchNoindex = import.meta.env.VERCEL === "1" && !productionIndexOptIn;
 const previewNoindex =
   import.meta.env.VERCEL_ENV === "preview" ||
-  String(import.meta.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true" ||
-  vercelPrelaunchNoindex;
+  String(import.meta.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
 const robotsContent = noindex || previewNoindex ? "noindex, nofollow" : "index, follow";
 ---
 

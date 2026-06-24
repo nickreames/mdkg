@@ -88,12 +88,11 @@ function main() {
     assertExcludes(home + "\n" + quickstart + "\n" + docsHome, forbidden, "public copy");
   }
 
-  assertIncludes(docsBridge, "Read the mdkg docs on the dedicated docs site", "marketing /docs bridge");
-  assertIncludes(docsBridge, "https://mdkg-docs.vercel.app/", "marketing /docs bridge");
-  assertIncludes(docsBridge, "Until docs.mdkg.dev DNS is live", "marketing /docs bridge");
-  assertIncludes(docsBridge, 'name="robots" content="noindex, nofollow"', "marketing /docs bridge");
-  assertIncludes(baseLayoutSource, "PUBLIC_MDKG_PRODUCTION_INDEX", "marketing Vercel prelaunch noindex policy");
-  assertIncludes(docsConfigSource, "PUBLIC_MDKG_PRODUCTION_INDEX", "docs Vercel prelaunch noindex policy");
+  assertIncludes(docsBridge, "Redirecting to: https://docs.mdkg.dev/", "marketing /docs redirect");
+  assertIncludes(docsBridge, 'http-equiv="refresh"', "marketing /docs redirect");
+  assertIncludes(docsBridge, 'name="robots" content="noindex"', "marketing /docs redirect");
+  assertIncludes(baseLayoutSource, "PUBLIC_MDKG_PREVIEW_NOINDEX", "marketing preview noindex policy");
+  assertIncludes(docsConfigSource, "PUBLIC_MDKG_PREVIEW_NOINDEX", "docs preview noindex policy");
   assertExcludes(sitemap, "https://mdkg.dev/docs/", "sitemap");
   assertExcludes(sitemap, "vercel.app", "sitemap");
 
