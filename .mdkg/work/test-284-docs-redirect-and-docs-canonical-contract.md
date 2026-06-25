@@ -2,7 +2,7 @@
 id: test-284
 type: test
 title: docs redirect and docs-canonical contract
-status: todo
+status: done
 priority: 1
 epic: epic-191
 parent: goal-36

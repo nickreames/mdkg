@@ -2,7 +2,7 @@
 id: task-572
 type: task
 title: close evidence with no DNS production side effects beyond approved domain cutover
-status: todo
+status: done
 priority: 1
 epic: epic-193
 parent: goal-36

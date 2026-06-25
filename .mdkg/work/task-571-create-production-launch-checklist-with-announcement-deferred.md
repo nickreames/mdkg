@@ -2,7 +2,7 @@
 id: task-571
 type: task
 title: create production launch checklist with announcement deferred
-status: todo
+status: done
 priority: 1
 epic: epic-193
 parent: goal-36

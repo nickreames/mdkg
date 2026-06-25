@@ -2,7 +2,7 @@
 id: task-568
 type: task
 title: validate apex www redirect docs domain robots sitemap canonical metadata and noindex removal
-status: todo
+status: done
 priority: 1
 epic: epic-191
 parent: goal-36

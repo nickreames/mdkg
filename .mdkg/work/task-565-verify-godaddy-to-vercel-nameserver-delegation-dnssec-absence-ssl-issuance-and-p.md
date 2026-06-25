@@ -2,7 +2,7 @@
 id: task-565
 type: task
 title: verify GoDaddy to Vercel nameserver delegation DNSSEC absence SSL issuance and propagation
-status: todo
+status: done
 priority: 1
 epic: epic-190
 parent: goal-36

@@ -2,7 +2,7 @@
 id: epic-189
 type: epic
 title: production domain provenance and launch boundary
-status: todo
+status: done
 priority: 1
 tags: []
 owners: []
@@ -50,3 +50,12 @@ Define the production-domain cutover boundary and record baseline evidence befor
 - `goal-36`
 - `task-563`
 - `test-281`
+- `chk-255`
+- `chk-270`
+
+# Closeout
+
+Completed under `goal-36`. The production-domain cutover boundary was kept
+clear: custom-domain deployment and verification were in scope; npm publish,
+tagging, analytics activation, GitHub settings mutation, and public
+announcement were not performed.

@@ -2,12 +2,12 @@
 id: goal-36
 type: goal
 title: Launch mdkg.dev and docs.mdkg.dev production custom domains
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: Goal 36 is achieved when mdkg.dev serves the marketing site, www.mdkg.dev redirects to mdkg.dev, docs.mdkg.dev serves the Starlight docs site, mdkg.dev/docs redirects to docs.mdkg.dev, production custom domains are indexable, Browser/Chrome/Vercel/DNS evidence is archived, and no unrelated launch side effects occur.
 scope_refs: [epic-189, epic-190, epic-191, epic-192, epic-193, spike-21, task-563, task-564, task-565, task-566, task-567, task-568, task-569, task-570, task-571, task-572, test-281, test-282, test-283, test-284, test-285, test-286, test-287, test-288]
-active_node: task-564
+last_active_node: task-572
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, Vercel project domain verification for mdkg-dev and mdkg-docs, DNS NS SOA A CNAME checks for mdkg.dev www.mdkg.dev docs.mdkg.dev, HTTPS route checks for mdkg.dev www.mdkg.dev docs.mdkg.dev, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, Browser and Chrome production-domain QA at desktop and mobile widths, Vercel deployment and build-log verification, archived screenshots and route receipts, git diff --check]
 max_iterations: 25

@@ -2,7 +2,7 @@
 id: epic-191
 type: epic
 title: production redirect canonical robots sitemap and indexability implementation
-status: todo
+status: done
 priority: 1
 tags: []
 owners: []
@@ -51,3 +51,13 @@ Implement the minimal source/config behavior needed for production custom domain
 - `mdkg-dev/src/pages/docs.astro`
 - `mdkg-dev/src/layouts/BaseLayout.astro`
 - `docs/astro.config.mjs`
+- `chk-258`
+- `chk-259`
+- `chk-260`
+
+# Closeout
+
+Completed under `goal-36`. `mdkg.dev/docs` redirects to `docs.mdkg.dev`,
+production canonicals and sitemaps use custom domains, and production custom
+domains are indexable. Unsupported static host-conditioned alias routing was
+removed in commit `790060a`.

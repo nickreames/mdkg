@@ -2,7 +2,7 @@
 id: spike-21
 type: spike
 title: verify production-domain cutover risks Vercel domain state DNS propagation SSL issuance and indexability controls
-status: todo
+status: done
 priority: 1
 parent: goal-36
 tags: []

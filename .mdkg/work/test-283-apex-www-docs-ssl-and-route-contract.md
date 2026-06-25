@@ -2,7 +2,7 @@
 id: test-283
 type: test
 title: apex www docs SSL and route contract
-status: todo
+status: done
 priority: 1
 epic: epic-190
 parent: goal-36
