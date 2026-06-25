@@ -1,12 +1,14 @@
 # Command Contract
 
-mdkg generates a command contract at:
+The command contract is maintainer and integration metadata. Most users should start with the generated CLI reference.
+
+mdkg publishes command metadata at:
 
 ```text
 dist/command-contract.json
 ```
 
-The public docs should derive command reference pages from that artifact where possible.
+Reference pages should derive command coverage from that artifact where possible so user docs stay aligned with the CLI.
 
 Reference pages should include:
 
@@ -21,14 +23,12 @@ Reference pages should include:
 - safety notes
 - alpha labels where relevant
 
-Task-448 owns generated docs and drift checks.
-
-Generated outputs:
+Derived docs artifacts:
 
 - [`docs/_generated/cli-reference.md`](../_generated/cli-reference.md)
 - [`docs/_generated/command-contract-summary.json`](../_generated/command-contract-summary.json)
 
-Regenerate and check:
+Refresh and check:
 
 ```bash
 npm run docs:generate

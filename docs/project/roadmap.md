@@ -1,22 +1,18 @@
 # Roadmap
 
-The mdkg graph is the roadmap source of truth for this public alpha.
+This roadmap summarizes the current public-alpha direction. It is product-facing, so it focuses on user-visible capability themes instead of deployment or release operations.
 
 Current public-docs roadmap themes:
 
-- polish the golden first-run path
-- build mdkg.dev as a static product surface
-- publish Starlight docs at `docs.mdkg.dev`
-- generate command reference docs
+- polish the first-run setup and Plan -> Work -> Evidence path
+- deepen docs, quickstarts, and command reference material
 - create deterministic demo graphs
-- add launch-readiness smokes
-- keep public launch, DNS, analytics activation, and production deployment as explicit later actions
+- improve public examples, local proof, and handoff guidance
+- keep advanced capabilities local-first and explicit about safety boundaries
 
 Deferred until explicitly scoped:
 
 - hosted memory or hosted queue services
 - autonomous worker execution inside mdkg
 - arbitrary SQL exposure
-- production DNS cutover
-- analytics activation
 - broad MCP mutation parity

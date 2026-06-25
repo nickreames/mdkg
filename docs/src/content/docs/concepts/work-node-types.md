@@ -35,6 +35,8 @@ required_checks:
 
 Useful commands:
 
+Replace uppercase placeholders such as `GOAL_ID`, `WORK_ID`, and `TASK_ID` with concrete ids from your repo.
+
 ```bash
 mdkg goal current
 mdkg goal next GOAL_ID
@@ -79,6 +81,8 @@ context_refs:
 evidence_refs: []
 ---
 ```
+
+Use the returned task id in place of `TASK_ID`:
 
 ```bash
 mdkg task start TASK_ID

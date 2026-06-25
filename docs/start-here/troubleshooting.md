@@ -17,6 +17,8 @@ Generated indexes are rebuildable access caches. Markdown graph files remain aut
 
 Check the selected goal:
 
+Replace `GOAL_ID` with a concrete goal id from your repo:
+
 ```bash
 mdkg goal current --json
 mdkg goal next GOAL_ID --json
@@ -27,6 +29,8 @@ Completed, achieved, archived, or paused goals may correctly return no actionabl
 ```bash
 mdkg goal clear --json
 ```
+
+In a fresh repo, `node: null` can simply mean no work exists yet. Continue with [If no work exists yet](quickstart.md#if-no-work-exists-yet) and create a small task before expecting `goal next` to route.
 
 ## There are many heading warnings
 

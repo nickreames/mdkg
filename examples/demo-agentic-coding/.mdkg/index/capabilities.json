@@ -3,7 +3,7 @@
     "tool": "mdkg",
     "schema_version": 1,
     "cache_version": 1,
-    "generated_at": "2026-06-24T19:17:11.663Z",
+    "generated_at": "2026-06-25T00:51:55.402Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/demo-agentic-coding",
     "workspaces": [
       "root"
@@ -29,7 +29,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:15f886e6661046de45ad798c292d74cc1ff3cc14c8cfcc82ed0b8c35635d0477",
       "headings": [
         {
@@ -118,7 +118,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f",
       "headings": [
         {
@@ -235,7 +235,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-17",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:f61b84ff6e5abae91365c4f623ccbd78f25dfcfef09822fefb3abf0119d65739",
       "headings": [
         {
@@ -351,7 +351,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-03",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8",
       "headings": [
         {
@@ -424,7 +424,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03",
       "headings": [
         {
@@ -468,7 +468,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f",
       "headings": [
         {
@@ -548,7 +548,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-14",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae",
       "headings": [
         {
@@ -614,7 +614,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-10",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:75d2e015cd5ba61062cb84246017ee4f4221610d4a56e4a0b332271b90694965",
       "headings": [
         {
@@ -665,7 +665,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-10",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a",
       "headings": [
         {
@@ -791,7 +791,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-22",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:e8e53db7177ed31da8ab509752cd62aa656242233a6199a054feeae3292d1174",
       "headings": [
         {
@@ -837,7 +837,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-22",
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:5af7ee8839c0a77603bc640df41f541c5cb023bd209d01235d1cb46c1ba5eed3",
       "headings": [
         {
@@ -912,7 +912,7 @@
         "llms.txt"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
       "headings": [
         {
@@ -988,7 +988,7 @@
         ".mdkg/design/edd-10-mdkg-goal-node-architecture-and-recursive-agent-loop.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:2bc888092d95b362e402494af4dbe6909204bd5578613d6159753a84efaae16d",
       "headings": [
         {
@@ -1067,7 +1067,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:e50fc3b1a2c79a9a3544ca9df1bf4ca9c312e7c3a51d5e4c6f3314341eca268b",
       "headings": [
         {
@@ -1141,7 +1141,7 @@
         "AGENT_START.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-24T19:17:11.663Z",
+      "indexed_at": "2026-06-25T00:51:55.402Z",
       "source_hash": "sha256:3e4137b7b6a71f088dee79b5ee2f4743aefa3b43adae07337307db89a24416b6",
       "headings": [
         {

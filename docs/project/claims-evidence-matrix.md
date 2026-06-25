@@ -1,10 +1,10 @@
 # Claims Evidence Matrix
 
-Public mdkg.dev copy should map claims to shipped behavior and caveats.
+This is an internal evidence aid for reviewing public mdkg.dev copy. It is not a user-facing docs page.
 
 Unsupported public claims must stay blocked until the corresponding behavior is implemented, validated, and intentionally launched.
 
-Canonical source for the current site scaffold:
+Canonical claim review source:
 
 ```text
 mdkg-dev/CLAIMS.md

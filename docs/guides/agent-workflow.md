@@ -47,3 +47,11 @@ For a larger implementation goal:
 4. Run the checks listed by the goal or task.
 5. Record a checkpoint with commands, pass/fail state, known warnings, and follow-up refs.
 6. Route again with `mdkg goal next GOAL_ID`.
+
+## Common mistakes
+
+- Starting edits before reading repo instructions, current goal state, and one scoped pack.
+- Treating `mdkg goal next` as a claim. Claim only after accepting the node.
+- Closing a task without command evidence in the checkpoint.
+- Mutating a child repo from a parent orchestration context.
+- Copying raw prompts, provider payloads, or secrets into checkpoints or handoffs.

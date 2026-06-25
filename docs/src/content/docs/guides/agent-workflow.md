@@ -20,7 +20,7 @@ If you are still choosing between the human and agent first-run paths, start at 
 
 This is the same path exposed in [`llms.txt`](https://mdkg.dev/llms.txt) for agents that start from the public site instead of a checked-out repository.
 
-Copy this into an agent session when you want a repo-scoped implementation run:
+Copy this into an agent session when you want a repo-scoped implementation run. Replace uppercase placeholders with concrete ids from your repo:
 
 ```text
 Start by reading AGENT_START.md and the current mdkg goal.
@@ -30,6 +30,8 @@ Run the required checks yourself.
 Record a checkpoint with commands, pass/fail state, known warnings, and boundaries.
 Do not store raw secrets, tokens, private prompts, provider payloads, or bulky runtime traces in mdkg nodes.
 ```
+
+Replace `WORK_ID` and `GOAL_ID` with ids returned by the read-only routing commands:
 
 ```bash
 mdkg status
@@ -83,7 +85,7 @@ Mutating commands change graph lifecycle or evidence:
 
 Beginner safety rule: run the read-only commands first, make the code or docs change outside mdkg, then mutate mdkg state only when you have evidence.
 
-Close work with evidence:
+Close work with evidence. Use the concrete `TASK_ID` from the work item you are closing:
 
 ```bash
 mdkg task done TASK_ID --checkpoint "Meaningful milestone"
@@ -102,3 +104,11 @@ For a larger implementation goal:
 ## Multi-repo rule
 
 When a parent repo uses subgraphs, mutate the child repo in the child checkout first. Commit accepted child changes before refreshing a parent-owned bundle snapshot. Root-qualified qids help avoid confusing same-number nodes across repos.
+
+## Common mistakes
+
+- Starting with file edits before reading `AGENT_START.md`, current goal state, and one scoped pack.
+- Treating `mdkg goal next` as a claim. It is read-only; use `mdkg goal claim GOAL_ID WORK_ID` only after accepting the node.
+- Closing a task with "tests passed" when no command evidence is recorded. Include commands, pass/fail state, known warnings, and boundaries in the checkpoint.
+- Mutating a child repo from a parent orchestration context. Work in the owning repo, commit accepted child changes, then refresh the parent bundle.
+- Copying raw prompts, provider payloads, or secrets into checkpoints or handoffs. Keep evidence summarized and refs-only.

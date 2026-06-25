@@ -3,9 +3,7 @@ title: CLI Reference
 description: Useful mdkg command families for the public alpha.
 ---
 
-CLI reference is expanding during public alpha.
-
-The repo generates a full command reference from `dist/command-contract.json` into `docs/_generated/cli-reference.md`. This page is a readable entrypoint for the commands most users should learn first. For complete live behavior, run `mdkg --help` and command-specific help in your installed version.
+This page is the readable entrypoint for the commands most users should learn first. For complete live behavior, run `mdkg --help` and command-specific help in your installed version.
 
 ## Core commands
 
@@ -35,11 +33,11 @@ Use these docs next:
 - [Demo graphs](/advanced-alpha/demo-graphs/)
 - [Project DB and queues](/advanced-alpha/project-db-queues/)
 
-Regenerate and check generated command docs with:
+Maintainers can refresh this reference from the command contract with:
 
 ```bash
 npm run docs:generate
 npm run docs:check
 ```
 
-For machine-readable command metadata, see `dist/command-contract.json` in the mdkg repository.
+For integration metadata, see `dist/command-contract.json` in the mdkg repository.
