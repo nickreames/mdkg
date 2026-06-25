@@ -5,6 +5,7 @@ const path = require("node:path");
 const {
   NPM_CMD,
   assert,
+  assertExists,
   buildSite,
   readText,
   repoRoot,
@@ -31,6 +32,75 @@ function attrValue(tag, name) {
   const pattern = new RegExp(`${name}=["']([^"']*)["']`, "i");
   const match = tag.match(pattern);
   return match ? match[1] : "";
+}
+
+function hexToRgb(hex) {
+  const clean = hex.replace("#", "");
+  const value = Number.parseInt(clean, 16);
+  return {
+    r: (value >> 16) & 255,
+    g: (value >> 8) & 255,
+    b: value & 255,
+  };
+}
+
+function relativeLuminance({ r, g, b }) {
+  const linear = [r, g, b].map((channel) => {
+    const value = channel / 255;
+    return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+}
+
+function contrastRatio(foreground, background) {
+  const fg = relativeLuminance(hexToRgb(foreground));
+  const bg = relativeLuminance(hexToRgb(background));
+  const lighter = Math.max(fg, bg);
+  const darker = Math.min(fg, bg);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function assertContrast(name, foreground, background, minimum = 4.5) {
+  const ratio = contrastRatio(foreground, background);
+  assert(ratio >= minimum, `${name} contrast ${ratio.toFixed(2)} below ${minimum}`);
+}
+
+function localHrefToFile(root, href) {
+  const clean = href.split("#")[0].split("?")[0];
+  if (!clean || clean === "/") {
+    return path.join(root, "index.html");
+  }
+  const withoutSlash = clean.replace(/^\//, "");
+  if (path.extname(withoutSlash)) {
+    return path.join(root, withoutSlash);
+  }
+  return path.join(root, withoutSlash, "index.html");
+}
+
+function assertLinks(html, label, root) {
+  const anchorPattern = /<a\b([^>]*)>/gi;
+  let match;
+  while ((match = anchorPattern.exec(html)) !== null) {
+    const attrs = match[1] || "";
+    const href = attrValue(attrs, "href");
+    if (!href || href.startsWith("#")) {
+      continue;
+    }
+    assert(!href.startsWith("javascript:"), `${label} has javascript href`);
+    assert(!href.startsWith("file:"), `${label} has file href`);
+    if (href.startsWith("/")) {
+      assertExists(localHrefToFile(root, href));
+      continue;
+    }
+    if (/^https?:\/\//.test(href)) {
+      assert(!href.includes("127.0.0.1") && !href.includes("localhost"), `${label} leaks local URL: ${href}`);
+      const target = attrValue(attrs, "target");
+      const rel = attrValue(attrs, "rel");
+      if (target === "_blank") {
+        assert(rel.includes("noopener") && rel.includes("noreferrer"), `${label} external _blank link missing noopener noreferrer: ${href}`);
+      }
+    }
+  }
 }
 
 function assertInteractiveLabels(html, label) {
@@ -78,6 +148,8 @@ function assertPage(filePath, label) {
   assert(!/href=["']#["']/i.test(html), `${label} has a placeholder # link`);
   assertInteractiveLabels(html, label);
   assertImageAlt(html, label);
+  const root = label.startsWith("docs ") ? path.join(repoRoot, "docs", "dist") : path.join(repoRoot, "mdkg-dev", "dist");
+  assertLinks(html, label, root);
 }
 
 function main() {
@@ -110,6 +182,10 @@ function main() {
   assert(marketingCssSource.includes("@media (forced-colors: active)"), "marketing CSS missing forced-colors media query");
   assert(marketingCssSource.includes("CanvasText"), "marketing CSS missing forced-colors text token");
   assert(marketingCssSource.includes("LinkText"), "marketing CSS missing forced-colors link token");
+  assertContrast("body text on white", "#18181b", "#ffffff", 7);
+  assertContrast("muted text on white", "#52525b", "#ffffff", 7);
+  assertContrast("blue link on white", "#1d4ed8", "#ffffff", 4.5);
+  assertContrast("white text on blue", "#ffffff", "#1d4ed8", 4.5);
 
   const builtCss = walkFiles(docsDist)
     .filter((filePath) => filePath.endsWith(".css"))

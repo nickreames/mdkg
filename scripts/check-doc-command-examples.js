@@ -22,6 +22,9 @@ const SHELL_FENCE_LANGS = new Set(["bash", "sh", "shell", "console", "zsh"]);
 const COMMAND_START = /^(mdkg|npm|node|git)\b/;
 const INLINE_COMMAND = /`((?:mdkg|npm|node|git)\s+[^`]+)`/g;
 const PROMPT_PREFIX = /^([$>#])\s+\S/;
+const PLACEHOLDER_TOKEN = /\b(?:WORK|GOAL|TASK|SPIKE|CHILD)_ID\b|\bCHILD_ALIAS\b/;
+const PLACEHOLDER_CONTEXT =
+  /\b(replace|placeholder|concrete id|concrete ids|returned id|from your repo|use the .* id|uppercase placeholders)\b/i;
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -59,10 +62,15 @@ function normalizeCommandLine(line) {
   return line.trim().replace(/\s+/g, " ");
 }
 
+function hasPlaceholderContext(example) {
+  return PLACEHOLDER_CONTEXT.test(example.contextBefore || "") || Boolean(example.documentPlaceholderContext);
+}
+
 function extractFencedCommands(source, filePath) {
   const examples = [];
   const fencePattern = /```([A-Za-z0-9_-]*)\n([\s\S]*?)```/g;
   let match;
+  const documentPlaceholderContext = PLACEHOLDER_CONTEXT.test(source);
   while ((match = fencePattern.exec(source)) !== null) {
     const lang = match[1] || "";
     if (!SHELL_FENCE_LANGS.has(lang)) {
@@ -85,6 +93,8 @@ function extractFencedCommands(source, filePath) {
           line: blockStartLine + i + 1,
           command: trimmed,
           promptPrefixed: true,
+          contextBefore: before.split("\n").slice(-5).join("\n"),
+          documentPlaceholderContext,
         });
         continue;
       }
@@ -96,7 +106,14 @@ function extractFencedCommands(source, filePath) {
       const command = normalizeCommandLine(pending);
       pending = "";
       if (COMMAND_START.test(command)) {
-        examples.push({ source: "fence", filePath, line: blockStartLine + i + 1, command });
+        examples.push({
+          source: "fence",
+          filePath,
+          line: blockStartLine + i + 1,
+          command,
+          contextBefore: before.split("\n").slice(-5).join("\n"),
+          documentPlaceholderContext,
+        });
       }
     }
   }
@@ -203,6 +220,17 @@ function validateCommand(example, commands) {
     return { ok: false, reason: "copyable command examples must omit shell prompts" };
   }
   if (
+    example.source === "fence" &&
+    PLACEHOLDER_TOKEN.test(example.command) &&
+    !hasPlaceholderContext(example)
+  ) {
+    return {
+      ok: false,
+      reason:
+        "copyable command examples with WORK_ID/GOAL_ID/TASK_ID/SPIKE_ID/CHILD_ALIAS placeholders must explain replacement context",
+    };
+  }
+  if (
     example.source === "inline" &&
     /(no\s+public|not\s+public|not\s+exposed|not\s+yet|no\s+.*\s+cli|without\s+adding\s+public)/i.test(example.contextBefore || "")
   ) {
@@ -257,10 +285,19 @@ function main() {
     }
   }
 
+  const placeholderFenceExamples = examples.filter(
+    (example) => example.source === "fence" && PLACEHOLDER_TOKEN.test(example.command)
+  );
   const receipt = {
     ok: failures.length === 0,
     scanned_files: files.length,
     checked_examples: checked.length,
+    placeholder_examples: examples.filter((example) => PLACEHOLDER_TOKEN.test(example.command)).length,
+    placeholder_context_examples: examples.filter(
+      (example) => PLACEHOLDER_TOKEN.test(example.command) && hasPlaceholderContext(example)
+    ).length,
+    placeholder_fence_examples: placeholderFenceExamples.length,
+    placeholder_fence_context_examples: placeholderFenceExamples.filter(hasPlaceholderContext).length,
     skipped_illustrative_examples: skippedIllustrative.length,
     failed_examples: failures.length,
     by_source: {
