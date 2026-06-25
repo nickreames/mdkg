@@ -71,7 +71,7 @@ function main() {
   assert(
     vercelConfig.headers.some((entry) =>
       entry.source === "/:path*" &&
-      entry.has?.some((condition) => condition.type === "host" && condition.value?.suf === ".vercel.app") &&
+      entry.has?.some((condition) => condition.type === "host" && condition.value === ".*\\.vercel\\.app$") &&
       entry.headers?.some((header) => header.key === "X-Robots-Tag" && header.value === "noindex, nofollow")
     ),
     "Vercel config missing vercel.app X-Robots-Tag noindex header"
