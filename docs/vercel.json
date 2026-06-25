@@ -5,7 +5,8 @@
       "has": [
         {
           "type": "host",
-          "value": "mdkg-docs.vercel.app"
+          "value": "mdkg-docs.vercel.app",
+          "key": "host"
         }
       ],
       "destination": "https://docs.mdkg.dev/:path*",
@@ -16,7 +17,8 @@
       "has": [
         {
           "type": "host",
-          "value": "mdkg-docs-nicholas-reames-projects.vercel.app"
+          "value": "mdkg-docs-nicholas-reames-projects.vercel.app",
+          "key": "host"
         }
       ],
       "destination": "https://docs.mdkg.dev/:path*",
@@ -27,7 +29,8 @@
       "has": [
         {
           "type": "host",
-          "value": "mdkg-docs-git-main-nicholas-reames-projects.vercel.app"
+          "value": "mdkg-docs-git-main-nicholas-reames-projects.vercel.app",
+          "key": "host"
         }
       ],
       "destination": "https://docs.mdkg.dev/:path*",
@@ -40,7 +43,8 @@
       "has": [
         {
           "type": "host",
-          "value": ".*\\.vercel\\.app$"
+          "value": ".*\\.vercel\\.app$",
+          "key": "host"
         }
       ],
       "headers": [
