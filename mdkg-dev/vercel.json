@@ -1,6 +1,39 @@
 {
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mdkg-dev.vercel.app"
+        }
+      ],
+      "destination": "https://mdkg.dev/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mdkg-dev-nicholas-reames-projects.vercel.app"
+        }
+      ],
+      "destination": "https://mdkg.dev/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "mdkg-dev-git-main-nicholas-reames-projects.vercel.app"
+        }
+      ],
+      "destination": "https://mdkg.dev/:path*",
+      "permanent": true
+    },
+    {
       "source": "/docs",
       "destination": "https://docs.mdkg.dev/",
       "permanent": true

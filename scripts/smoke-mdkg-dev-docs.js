@@ -141,6 +141,21 @@ function main() {
   assert(starlightConfig.includes("advanced-alpha/graph-movement"), "Starlight sidebar missing graph movement");
   assert(starlightConfig.includes("advanced-alpha/demo-graphs"), "Starlight sidebar missing demo graphs");
   assert(starlightConfig.includes("reference/generated-cli-reference"), "Starlight sidebar missing generated CLI reference");
+  for (const alias of [
+    "mdkg-docs.vercel.app",
+    "mdkg-docs-nicholas-reames-projects.vercel.app",
+    "mdkg-docs-git-main-nicholas-reames-projects.vercel.app",
+  ]) {
+    assert(
+      docsVercelConfig.redirects.some((entry) =>
+        entry.source === "/:path*" &&
+        entry.destination === "https://docs.mdkg.dev/:path*" &&
+        entry.permanent === true &&
+        entry.has?.some((condition) => condition.type === "host" && condition.value === alias)
+      ),
+      `docs Vercel config missing canonical redirect for ${alias}`
+    );
+  }
   assert(
     docsVercelConfig.headers.some((entry) =>
       entry.source === "/:path*" &&

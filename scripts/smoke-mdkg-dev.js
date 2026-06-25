@@ -68,6 +68,21 @@ function main() {
     vercelConfig.redirects.some((entry) => entry.source === "/docs" && entry.destination === "https://docs.mdkg.dev/" && entry.permanent === true),
     "Vercel config missing permanent /docs redirect"
   );
+  for (const alias of [
+    "mdkg-dev.vercel.app",
+    "mdkg-dev-nicholas-reames-projects.vercel.app",
+    "mdkg-dev-git-main-nicholas-reames-projects.vercel.app",
+  ]) {
+    assert(
+      vercelConfig.redirects.some((entry) =>
+        entry.source === "/:path*" &&
+        entry.destination === "https://mdkg.dev/:path*" &&
+        entry.permanent === true &&
+        entry.has?.some((condition) => condition.type === "host" && condition.value === alias)
+      ),
+      `Vercel config missing canonical redirect for ${alias}`
+    );
+  }
   assert(
     vercelConfig.headers.some((entry) =>
       entry.source === "/:path*" &&

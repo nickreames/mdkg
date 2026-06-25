@@ -106,6 +106,21 @@ function main() {
   assert(docsRedirect.includes("Redirecting to: https://docs.mdkg.dev/"), "marketing /docs redirect missing canonical docs target");
   assert(docsRedirect.includes('<link rel="canonical" href="https://docs.mdkg.dev/'), "marketing /docs redirect missing docs canonical URL");
   assert(docsRedirect.includes('name="robots" content="noindex"'), "marketing /docs redirect fallback must remain noindex");
+  for (const alias of [
+    "mdkg-dev.vercel.app",
+    "mdkg-dev-nicholas-reames-projects.vercel.app",
+    "mdkg-dev-git-main-nicholas-reames-projects.vercel.app",
+  ]) {
+    assert(
+      vercelConfig.redirects.some((entry) =>
+        entry.source === "/:path*" &&
+        entry.destination === "https://mdkg.dev/:path*" &&
+        entry.permanent === true &&
+        entry.has?.some((condition) => condition.type === "host" && condition.value === alias)
+      ),
+      `marketing Vercel config missing canonical redirect for ${alias}`
+    );
+  }
   assert(
     vercelConfig.headers.some((entry) =>
       entry.has?.some((condition) => condition.type === "host" && condition.value === ".*\\.vercel\\.app$") &&
