@@ -2,7 +2,7 @@
 id: task-562
 type: task
 title: close goal-35 evidence and confirm no launch side effects
-status: todo
+status: done
 priority: 1
 epic: epic-188
 parent: goal-35
