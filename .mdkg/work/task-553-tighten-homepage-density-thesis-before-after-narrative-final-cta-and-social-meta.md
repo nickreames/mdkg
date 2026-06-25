@@ -2,7 +2,7 @@
 id: task-553
 type: task
 title: tighten homepage density thesis before-after narrative final CTA and social metadata
-status: todo
+status: done
 priority: 1
 epic: epic-184
 parent: goal-35

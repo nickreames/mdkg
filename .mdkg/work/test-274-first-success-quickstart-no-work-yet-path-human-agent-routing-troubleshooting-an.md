@@ -2,7 +2,7 @@
 id: test-274
 type: test
 title: first-success quickstart no-work-yet path human agent routing troubleshooting and demo graph contract
-status: todo
+status: done
 priority: 1
 epic: epic-183
 parent: goal-35

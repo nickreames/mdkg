@@ -2,7 +2,7 @@
 id: test-277
 type: test
 title: generated command docs frontmatter examples common mistakes advanced-alpha consistency and diagram contract
-status: todo
+status: done
 priority: 1
 epic: epic-185
 parent: goal-35

@@ -2,7 +2,7 @@
 id: task-552
 type: task
 title: add public command-example validation and copy-paste command ergonomics
-status: todo
+status: done
 priority: 1
 epic: epic-183
 parent: goal-35

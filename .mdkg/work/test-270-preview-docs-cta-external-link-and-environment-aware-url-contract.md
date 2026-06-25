@@ -2,7 +2,7 @@
 id: test-270
 type: test
 title: preview docs CTA external-link and environment-aware URL contract
-status: todo
+status: done
 priority: 1
 epic: epic-182
 parent: goal-35

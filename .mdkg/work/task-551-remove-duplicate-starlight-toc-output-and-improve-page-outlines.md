@@ -2,7 +2,7 @@
 id: task-551
 type: task
 title: remove duplicate Starlight TOC output and improve page outlines
-status: todo
+status: done
 priority: 1
 epic: epic-182
 parent: goal-35

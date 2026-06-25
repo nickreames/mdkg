@@ -2,7 +2,7 @@
 id: task-556
 type: task
 title: remove public meta commentary and make reference roadmap and changelog user facing
-status: todo
+status: done
 priority: 1
 epic: epic-185
 parent: goal-35

@@ -2,7 +2,7 @@
 id: task-559
 type: task
 title: run Product Design audit and Creative Production review direction gate and apply evidence-backed fixes
-status: todo
+status: done
 priority: 1
 epic: epic-187
 parent: goal-35

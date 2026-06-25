@@ -2,7 +2,7 @@
 id: task-558
 type: task
 title: add accessibility reduced-motion contrast performance noindex canonical link and asset-budget checks
-status: todo
+status: done
 priority: 1
 epic: epic-186
 parent: goal-35

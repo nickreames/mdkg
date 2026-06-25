@@ -2,7 +2,7 @@
 id: test-271
 type: test
 title: Starlight TOC heading outline and screen-reader structure contract
-status: todo
+status: done
 priority: 1
 epic: epic-182
 parent: goal-35

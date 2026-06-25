@@ -2,7 +2,7 @@
 id: task-557
 type: task
 title: expand generated command reference frontmatter examples common mistakes advanced alpha structure and diagrams
-status: todo
+status: done
 priority: 1
 epic: epic-185
 parent: goal-35

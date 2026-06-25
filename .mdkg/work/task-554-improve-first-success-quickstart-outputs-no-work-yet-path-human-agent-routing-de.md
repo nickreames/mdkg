@@ -2,7 +2,7 @@
 id: task-554
 type: task
 title: improve first-success quickstart outputs no-work-yet path human agent routing demo graph and troubleshooting
-status: todo
+status: done
 priority: 1
 epic: epic-183
 parent: goal-35

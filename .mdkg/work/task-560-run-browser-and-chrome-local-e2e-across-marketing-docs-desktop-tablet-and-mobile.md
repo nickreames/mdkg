@@ -2,7 +2,7 @@
 id: task-560
 type: task
 title: run Browser and Chrome local E2E across marketing docs desktop tablet and mobile
-status: todo
+status: done
 priority: 1
 epic: epic-188
 parent: goal-35

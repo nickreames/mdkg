@@ -2,7 +2,7 @@
 id: test-272
 type: test
 title: command-example validation and copy-paste ergonomics contract
-status: todo
+status: done
 priority: 1
 epic: epic-183
 parent: goal-35
