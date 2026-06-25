@@ -94,7 +94,7 @@ export function GET() {
     "- /quickstart",
     "- /trust",
     "- /alpha",
-    "- https://mdkg-docs.vercel.app/ (preview docs; future production DNS: https://docs.mdkg.dev/)",
+    "- https://docs.mdkg.dev/ (canonical docs)",
     "- /llms.txt",
     "- /llms-full.txt",
     "- /sitemap.xml",

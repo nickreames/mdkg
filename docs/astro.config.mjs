@@ -3,8 +3,7 @@ import starlight from "@astrojs/starlight";
 
 const previewNoindex =
   process.env.VERCEL_ENV === "preview" ||
-  String(process.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true" ||
-  (process.env.VERCEL === "1" && String(process.env.PUBLIC_MDKG_PRODUCTION_INDEX || "").toLowerCase() !== "true");
+  String(process.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
 
 export default defineConfig({
   site: "https://docs.mdkg.dev",
