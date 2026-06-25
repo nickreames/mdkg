@@ -1,7 +1,6 @@
 ---
 const docsUrl = String(
-  import.meta.env.PUBLIC_MDKG_DOCS_URL ||
-    (import.meta.env.VERCEL_ENV === "preview" ? "https://mdkg-docs.vercel.app/" : "https://docs.mdkg.dev/")
+  import.meta.env.PUBLIC_MDKG_DOCS_URL || "https://mdkg-docs.vercel.app/"
 );
 
 const groups = [

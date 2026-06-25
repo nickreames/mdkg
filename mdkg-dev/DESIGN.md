@@ -63,6 +63,14 @@ mdkg.dev should feel like serious local-first developer infrastructure: clear, i
 - Lightweight SVG/favicon only.
 - Image-heavy or video assets are deferred until source assets are reviewed.
 
+## Review Notes
+
+- Product Design audit evidence should include current local screenshots for the marketing home, marketing quickstart, docs home, and docs quickstart before large public-copy or layout changes are accepted.
+- Short terminal examples must size to content. Avoid stretched dark panels that add visual weight without more proof.
+- Creative Production direction for public alpha is deterministic and inspectable: use HTML/CSS/SVG diagrams, command cards, node refs, and file-path motifs before introducing generated image or video assets.
+- The strongest visual proof is the Plan -> Work -> Evidence loop. Keep it as the main model and avoid competing diagrams that imply autonomous execution.
+- Marketing pages can use more whitespace than docs, but docs should prioritize dense scanning, code readability, and visible next steps.
+
 ## Safety
 
 - Do not include raw secrets, tokens, private graph dumps, raw prompts, provider payloads, or local absolute paths.

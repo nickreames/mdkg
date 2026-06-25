@@ -5,8 +5,7 @@ import SectionHeader from "../components/SectionHeader.astro";
 import FeatureCard from "../components/FeatureCard.astro";
 
 const docsUrl = String(
-  import.meta.env.PUBLIC_MDKG_DOCS_URL ||
-    (import.meta.env.VERCEL_ENV === "preview" ? "https://mdkg-docs.vercel.app/" : "https://docs.mdkg.dev/")
+  import.meta.env.PUBLIC_MDKG_DOCS_URL || "https://mdkg-docs.vercel.app/"
 );
 ---
 
@@ -22,7 +21,7 @@ const docsUrl = String(
           eyebrow="Docs"
           level="h1"
           title="Read the mdkg docs on the dedicated docs site."
-          text="The marketing site stays focused on the product overview. The documentation site contains install steps, quickstart guidance, concepts, guides, and generated command reference."
+          text="The marketing site stays focused on the product overview. Until docs.mdkg.dev DNS is live, preview docs open on the dedicated Vercel docs preview with install steps, quickstart guidance, concepts, guides, and generated command reference."
         />
         <CTAGroup
           primaryHref={docsUrl}

@@ -15,7 +15,7 @@ const structuredData = {
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS, Linux, Windows",
   softwareVersion: "0.3.7",
-  description: "Git-native project memory for AI coding agents.",
+  description: "Git-native project memory for AI coding agents: structured Markdown, context packs, handoffs, checkpoints, and validation.",
   url: "https://mdkg.dev",
   codeRepository: "https://github.com/nickreames/mdkg"
 };
@@ -23,7 +23,7 @@ const structuredData = {
 
 <BaseLayout
   title="Markdown Knowledge Graph - Git-native project memory for AI coding agents"
-  description="Markdown Knowledge Graph turns structured Markdown in your repo into deterministic context packs, handoffs, checkpoints, and validation without a hosted index."
+  description="Markdown Knowledge Graph gives AI coding agents a repo-owned Plan -> Work -> Evidence loop with structured Markdown, deterministic packs, handoffs, checkpoints, and validation."
   structuredData={structuredData}
 >
   <section class="hero">
@@ -31,7 +31,7 @@ const structuredData = {
       <div>
         <p class="eyebrow">Markdown Knowledge Graph</p>
         <h1>Git-native project memory for AI coding agents.</h1>
-        <p class="lead">Give AI coding agents a durable Plan -&gt; Work -&gt; Evidence loop that humans can inspect, pack, hand off, and validate.</p>
+        <p class="lead">Give agents one durable loop: plan the goal, work one node, record evidence, and validate before the next session continues.</p>
         <p class="trust-line">Pre-v1 public alpha. Markdown in your repo is the source of truth; no hosted index, daemon, or vector database is required.</p>
         <CTAGroup />
       </div>
@@ -46,8 +46,8 @@ const structuredData = {
     <div class="container grid two">
       <div class="stack">
         <Badge>Quickstart</Badge>
-        <h2>First, prove the local memory layer works.</h2>
-        <p class="muted">Install mdkg, initialize repo-local project memory, build the access cache, inspect status, and validate graph health before handing work to an agent.</p>
+        <h2>First, prove the loop locally.</h2>
+        <p class="muted">Install mdkg, initialize repo-local project memory, rebuild the access cache, inspect status, and validate graph health before handing work to an agent.</p>
       </div>
       <div class="grid">
         <TerminalBlock
@@ -55,7 +55,7 @@ const structuredData = {
           commands={["npm install -g mdkg", "mdkg --version", "mdkg init --agent", "mdkg index", "mdkg status", "mdkg validate"]}
         />
         <TerminalBlock
-          title="Ongoing Plan -> Work -> Evidence loop"
+          title="First-success path"
           commands={["mdkg goal current", "mdkg goal next", "mdkg show WORK_ID", "mdkg pack WORK_ID", "mdkg handoff create WORK_ID", "mdkg task done TASK_ID --checkpoint \"Meaningful milestone\"", "mdkg validate"]}
         />
       </div>
@@ -65,59 +65,30 @@ const structuredData = {
   <section class="section alt thesis-section">
     <div class="container grid two">
       <div class="stack">
-        <Badge tone="teal">Article thesis</Badge>
+        <Badge tone="teal">Why it matters</Badge>
         <h2>Bigger context helps. It does not replace project memory.</h2>
-        <p class="muted">Longer context windows let an agent hold more text. Project memory is different: it is structured, version-controlled, inspectable, and shared by humans and agents.</p>
-        <CTAGroup primaryHref="/quickstart/" primaryLabel="Try the quickstart" secondaryHref={String(import.meta.env.PUBLIC_MDKG_DOCS_URL || (import.meta.env.VERCEL_ENV === "preview" ? "https://mdkg-docs.vercel.app/" : "https://docs.mdkg.dev/"))} secondaryLabel="Read docs" tertiaryHref="https://github.com/nickreames/mdkg" tertiaryLabel="View GitHub" />
+        <p class="muted">Longer context windows let an agent hold more text. Project memory gives that text durable shape: goals, decisions, active work, evidence, and checks in Git.</p>
+        <p class="muted">One concrete change: the agent starts from work, not vibes.</p>
+        <CTAGroup primaryHref="/quickstart/" primaryLabel="Try the quickstart" secondaryHref={String(import.meta.env.PUBLIC_MDKG_DOCS_URL || "https://mdkg-docs.vercel.app/")} secondaryLabel="Read docs" tertiaryHref="https://github.com/nickreames/mdkg" tertiaryLabel="View GitHub" />
       </div>
       <div class="comparison-grid" aria-label="Context comparison">
         <article class="comparison-card">
-          <h3>Raw chat context</h3>
+          <h3>Without mdkg</h3>
           <ul>
-            <li>temporary</li>
-            <li>hard to diff</li>
-            <li>easy to overfill</li>
+            <li>current goal lives in chat</li>
+            <li>required checks are easy to miss</li>
+            <li>handoff depends on memory</li>
           </ul>
         </article>
         <article class="comparison-card positive">
-          <h3>mdkg project memory</h3>
+          <h3>With mdkg</h3>
           <ul>
-            <li>Markdown in Git</li>
-            <li>explicit refs and status</li>
-            <li>packable for agents</li>
+            <li>work nodes carry status and refs</li>
+            <li>packs bound agent context</li>
+            <li>checkpoints record proof</li>
           </ul>
         </article>
       </div>
-    </div>
-  </section>
-
-  <section class="section alt">
-    <div class="container">
-      <SectionHeader
-        eyebrow="Why it exists"
-        title="AI coding agents lose the thread."
-        text="The most frustrating AI coding failures are often memory failures. Agents can inspect files and write code, but across sessions they miss goals, decisions, checks, and the latest evidence."
-      />
-      <div class="grid three">
-        <FeatureCard title="Project memory in Git" text="Keep goals, tasks, decisions, evidence, and handoffs in files that humans and agents can inspect." command=".mdkg/work" />
-        <FeatureCard title="Deterministic packs" text="Build focused context from graph state instead of asking an agent to browse randomly." command="mdkg pack WORK_ID" />
-        <FeatureCard title="Evidence before closeout" text="Record checkpoints and run validation before moving on to the next node." command="mdkg validate" />
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container grid two">
-      <div class="stack">
-        <Badge>Before / after</Badge>
-        <h2>One concrete change: the agent starts from work, not vibes.</h2>
-        <p class="muted">Without mdkg, an agent reads files and chat history but can miss the current goal, prior decision, required checks, and latest checkpoint.</p>
-        <p class="muted">With mdkg, the agent starts from one work node, loads a deterministic pack, follows explicit refs, records evidence, and validates before closeout.</p>
-      </div>
-      <TerminalBlock
-        title="First-success path"
-        commands={["mdkg goal next", "mdkg show WORK_ID", "mdkg pack WORK_ID", "mdkg handoff create WORK_ID", "mdkg validate"]}
-      />
     </div>
   </section>
 
@@ -168,9 +139,9 @@ const structuredData = {
         text="mdkg models software work with graph nodes that humans already understand and agents can route through deterministically."
       />
       <div class="grid three">
-        <FeatureCard title="Goals, epics, and features" text="Long-running objectives and grouped deliverables preserve intent across sessions, branches, and handoffs." command="mdkg goal current" />
-        <FeatureCard title="Tasks, bugs, tests, and spikes" text="Concrete work nodes let a human or AI agent focus on one actionable slice at a time." command="mdkg goal next" />
-        <FeatureCard title="Checkpoints and evidence" text="Milestone summaries record commands, pass/fail state, known warnings, boundaries, and follow-up refs." command="mdkg checkpoint new" />
+        <FeatureCard title="Goals, epics, and features" text="Preserve intent across sessions, branches, and handoffs." command="mdkg goal current" />
+        <FeatureCard title="Tasks, bugs, tests, and spikes" text="Give each coding session one actionable slice." command="mdkg goal next" />
+        <FeatureCard title="Checkpoints and evidence" text="Record commands, pass/fail state, warnings, and boundaries." command="mdkg checkpoint new" />
       </div>
     </div>
   </section>
@@ -194,27 +165,12 @@ const structuredData = {
       <div class="stack">
         <Badge tone="teal">Handoffs</Badge>
         <h2>Transfer agent work without raw history dumps.</h2>
-        <p class="muted">`mdkg handoff create` builds a bounded handoff from goal/work state, latest checkpoints, boundaries, required checks, next actions, and safety warnings. The warnings are aids, not comprehensive data-loss prevention.</p>
+        <p class="muted">`mdkg handoff create` builds a bounded handoff from goal/work state, latest checkpoints, boundaries, required checks, next actions, and safety warnings.</p>
       </div>
       <TerminalBlock
         title="Handoff"
         commands={["mdkg goal next", "mdkg pack WORK_ID --pack-profile concise", "mdkg handoff create WORK_ID", "mdkg task done TASK_ID --checkpoint \"Meaningful milestone\""]}
       />
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <SectionHeader
-        eyebrow="What mdkg is not"
-        title="Local project memory, not another execution platform."
-        text="The boundary matters because mdkg is meant to make work auditable, not hide more state behind a service."
-      />
-      <div class="grid three">
-        <FeatureCard title="Not a hosted memory service" text="Markdown in your repo remains the durable source of truth; generated indexes are rebuildable." />
-        <FeatureCard title="Not an autonomous runtime" text="mdkg can describe work, create packs, and produce handoffs. Humans and agents execute outside mdkg." />
-        <FeatureCard title="Not a secret scanner" text="Handoff warnings and no-secret checks are safety aids, not comprehensive DLP." />
-      </div>
     </div>
   </section>
 

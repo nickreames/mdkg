@@ -5,8 +5,7 @@ const {
   primaryHref = "/quickstart/",
   secondaryHref = "https://github.com/nickreames/mdkg",
   tertiaryHref = String(
-    import.meta.env.PUBLIC_MDKG_DOCS_URL ||
-      (import.meta.env.VERCEL_ENV === "preview" ? "https://mdkg-docs.vercel.app/" : "https://docs.mdkg.dev/")
+    import.meta.env.PUBLIC_MDKG_DOCS_URL || "https://mdkg-docs.vercel.app/"
   ),
   primaryLabel = "Get started",
   secondaryLabel = "View GitHub",
