@@ -22,6 +22,10 @@ export type TemplateSchemaLoadResult = {
   fallbackTypes: string[];
 };
 
+const TEMPLATE_SCHEMA_ALIASES: Record<string, string> = {
+  manifest: "spec",
+};
+
 function listMarkdownFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) {
     return [];
@@ -62,6 +66,36 @@ function addKeyToSchema(schema: TemplateSchema, key: string, kind: TemplateKeyKi
   if (kind === "list") {
     schema.listKeys.add(key);
   }
+}
+
+function cloneSchema(schema: TemplateSchema, type: string): TemplateSchema {
+  return {
+    type,
+    allowedKeys: new Set(schema.allowedKeys),
+    keyKinds: { ...schema.keyKinds },
+    listKeys: new Set(schema.listKeys),
+  };
+}
+
+function loadBundledSchema(type: string): TemplateSchema {
+  const bundledPath = requireBundledTemplatePath(type);
+  const content = fs.readFileSync(bundledPath, "utf8");
+  const { frontmatter } = parseFrontmatter(content, bundledPath);
+  const typeValue = frontmatter.type;
+  if (typeValue !== type) {
+    throw new Error(`bundled template fallback type mismatch for ${type}: ${bundledPath}`);
+  }
+  const schema = {
+    type,
+    allowedKeys: new Set<string>(),
+    keyKinds: {},
+    listKeys: new Set<string>(),
+  } as TemplateSchema;
+  for (const [key, value] of Object.entries(frontmatter)) {
+    const kind = getValueKind(value);
+    addKeyToSchema(schema, key, kind, bundledPath);
+  }
+  return schema;
 }
 
 export function loadTemplateSchemas(
@@ -120,24 +154,13 @@ export function loadTemplateSchemasWithInfo(
   if (requiredTypes) {
     const required = Array.from(requiredTypes, (value) => value.toLowerCase());
     for (const missingType of required.filter((value) => !schemas[value])) {
-      const bundledPath = requireBundledTemplatePath(missingType);
-      const content = fs.readFileSync(bundledPath, "utf8");
-      const { frontmatter } = parseFrontmatter(content, bundledPath);
-      const typeValue = frontmatter.type;
-      if (typeValue !== missingType) {
-        throw new Error(`bundled template fallback type mismatch for ${missingType}: ${bundledPath}`);
+      const aliasType = TEMPLATE_SCHEMA_ALIASES[missingType];
+      if (aliasType) {
+        const aliasSchema = schemas[aliasType] ?? loadBundledSchema(aliasType);
+        schemas[missingType] = cloneSchema(aliasSchema, missingType);
+        continue;
       }
-      const schema = {
-        type: missingType,
-        allowedKeys: new Set<string>(),
-        keyKinds: {},
-        listKeys: new Set<string>(),
-      } as TemplateSchema;
-      schemas[missingType] = schema;
-      for (const [key, value] of Object.entries(frontmatter)) {
-        const kind = getValueKind(value);
-        addKeyToSchema(schema, key, kind, bundledPath);
-      }
+      schemas[missingType] = loadBundledSchema(missingType);
       fallbackTypes.push(missingType);
     }
   }

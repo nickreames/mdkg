@@ -4,6 +4,7 @@ import path from "path";
 import { Config, WorkspaceConfig } from "../core/config";
 import { FrontmatterValue } from "./frontmatter";
 import { Index, IndexNode, buildIndex } from "./indexer";
+import { isManifestSemanticType } from "./agent_file_types";
 import {
   buildSkillIndexEntryForWorkspace,
   listSkillMarkdownFiles,
@@ -120,7 +121,7 @@ function workspaceMdkgPrefix(entry: WorkspaceConfig): string {
 }
 
 function classifyNodeCapability(node: IndexNode, config: Config): CapabilityKind | undefined {
-  if (node.type === "spec") {
+  if (isManifestSemanticType(node.type)) {
     return "spec";
   }
   if (node.type === "work") {
@@ -204,7 +205,7 @@ function resolveWorkSpecs(index: Index, workNode: IndexNode): IndexNode[] {
   const candidates = new Map<string, IndexNode>();
   const workRefs = nodeRefSet(workNode);
   for (const node of Object.values(index.nodes)) {
-    if (node.type !== "spec" || node.ws !== workNode.ws) {
+    if (!isManifestSemanticType(node.type) || node.ws !== workNode.ws) {
       continue;
     }
     const agentId = typeof workNode.attributes.agent_id === "string" ? workNode.attributes.agent_id : undefined;

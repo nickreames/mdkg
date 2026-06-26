@@ -185,7 +185,7 @@ function printUsage(log: LogFn): void {
   log("  handoff     Create sanitized agent handoff prompts from graph context");
   log("  skill       Create, list, show, search, and validate skills");
   log("  capability  List, search, show, and resolve cached capability surfaces");
-  log("  spec        List, show, and validate optional SPEC.md capability records");
+  log("  spec        Legacy alias to list, show, and validate MANIFEST.md/SPEC.md capability records");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  graph       Clone, fork, import, and inspect mdkg graph references");
@@ -605,22 +605,22 @@ function printSpecHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log("  mdkg spec list [--json]");
       log("\nNotes:");
-      log("  SPEC.md is optional and declares reusable capability surfaces.");
+      log("  MANIFEST.md is canonical; SPEC.md remains a legacy alias for reusable capability surfaces.");
       printGlobalOptions(log);
       return;
     case "show":
       log("Usage:");
       log("  mdkg spec show <id-or-qid-or-alias> [--json]");
       log("\nNotes:");
-      log("  Shows one optional SPEC.md capability record from the capability index.");
+      log("  Shows one MANIFEST.md/SPEC.md capability record from the capability index.");
       printGlobalOptions(log);
       return;
     case "validate":
       log("Usage:");
       log("  mdkg spec validate [<id-or-qid-or-alias>] [--json]");
       log("\nNotes:");
-      log("  With no reference, validates the graph and all optional SPEC.md capability records.");
-      log("  With a reference, also ensures that specific SPEC.md capability exists.");
+      log("  With no reference, validates the graph and all MANIFEST.md/SPEC.md capability records.");
+      log("  With a reference, also ensures that the specific manifest capability exists.");
       printGlobalOptions(log);
       return;
     default:
@@ -629,8 +629,8 @@ function printSpecHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg spec show <id-or-qid-or-alias> [--json]");
       log("  mdkg spec validate [<id-or-qid-or-alias>] [--json]");
       log("\nNotes:");
-      log("  SPEC.md is optional and reusable-capability oriented.");
-      log("  Use `mdkg capability ...` for broader skill, SPEC.md, WORK.md, core-doc, and design-doc discovery.");
+      log("  MANIFEST.md is canonical and reusable-capability oriented; SPEC.md remains a legacy alias.");
+      log("  Use `mdkg capability ...` for broader skill, MANIFEST.md/SPEC.md, WORK.md, core-doc, and design-doc discovery.");
       printGlobalOptions(log);
   }
 }
@@ -856,7 +856,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("\nExample:");
       log("  mdkg work trigger work.example --id order.example-1 --requester user://example --json");
       log("\nNotes:");
-      log("  Accepted targets: direct WORK.md ref, or SPEC.md ref with exactly one resolvable work contract.");
+      log("  Accepted targets: direct WORK.md ref, or MANIFEST.md/SPEC.md ref with exactly one resolvable work contract.");
       log("  Creates a deterministic WORK_ORDER.md semantic mirror and does not execute work.");
       log("  Queue enqueue requires a valid project DB plus an explicitly created active queue and never executes work.");
       break;
@@ -882,10 +882,10 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       break;
     case "validate":
       log("Usage:");
-      log("  mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]");
+      log("  mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]");
       log("\nNotes:");
       log("  Read-only focused validation for agent workflow mirrors.");
-      log("  Reports typed diagnostics for SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md files.");
+      log("  Reports typed diagnostics for MANIFEST.md, legacy SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md files.");
       log("  Obvious raw secret, prompt, token, or payload markers are warnings so humans and agents can review boundaries.");
       break;
     default:

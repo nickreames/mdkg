@@ -11,7 +11,12 @@ import {
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
 import { writeDerivedIndexes } from "../graph/reindex";
-import { AGENT_FILE_BASENAMES, AGENT_FILE_TYPES, AgentFileType } from "../graph/agent_file_types";
+import {
+  AGENT_FILE_BASENAMES,
+  AGENT_FILE_TYPES,
+  AgentFileType,
+  isManifestSemanticType,
+} from "../graph/agent_file_types";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
@@ -692,8 +697,8 @@ function resolveTriggerWorkNode(index: Index, ws: string, refRaw: string): {
   if (node.type === "work") {
     return { workNode: node };
   }
-  if (node.type !== "spec") {
-    throw new UsageError(`work trigger requires a WORK.md or SPEC.md ref, got ${node.type}: ${node.qid}`);
+  if (!isManifestSemanticType(node.type)) {
+    throw new UsageError(`work trigger requires a WORK.md or MANIFEST.md/SPEC.md ref, got ${node.type}: ${node.qid}`);
   }
 
   const candidates = new Map<string, IndexNode>();
@@ -721,12 +726,13 @@ function resolveTriggerWorkNode(index: Index, ws: string, refRaw: string): {
   }
 
   const workNodes = Array.from(candidates.values()).sort((a, b) => a.qid.localeCompare(b.qid));
+  const manifestLabel = node.type === "spec" ? "legacy SPEC.md" : "MANIFEST.md";
   if (workNodes.length === 0) {
-    throw new NotFoundError(`SPEC.md ${node.qid} has no resolvable WORK.md contract`);
+    throw new NotFoundError(`${manifestLabel} ${node.qid} has no resolvable WORK.md contract`);
   }
   if (workNodes.length > 1) {
     throw new UsageError(
-      `SPEC.md ${node.qid} has multiple work contracts; trigger one explicitly: ${workNodes
+      `${manifestLabel} ${node.qid} has multiple work contracts; trigger one explicitly: ${workNodes
         .map((workNode) => workNode.qid)
         .join(", ")}`
     );
@@ -1210,7 +1216,9 @@ function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions)
   const kind = options.kind.toLowerCase();
   const resolvedAgent = resolveQid(index, agentId, ws);
   const relates =
-    resolvedAgent.status === "ok" && index.nodes[resolvedAgent.qid]?.type === "spec" ? [agentId] : [];
+    resolvedAgent.status === "ok" && isManifestSemanticType(index.nodes[resolvedAgent.qid]?.type ?? "")
+      ? [agentId]
+      : [];
   const requiredCapabilities = parseCsvList(options.requiredCapabilities);
   const receipt = createAgentWorkflowNode({
     root: options.root,
