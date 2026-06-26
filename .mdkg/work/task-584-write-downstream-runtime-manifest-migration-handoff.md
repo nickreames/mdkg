@@ -2,7 +2,7 @@
 id: task-584
 type: task
 title: write downstream runtime MANIFEST migration handoff
-status: todo
+status: done
 priority: 2
 epic: epic-198
 parent: goal-37
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: [downstream-manifest-migration, room-manifest-ref-handoff, spec-driven-to-manifest-driven]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 
@@ -54,7 +54,20 @@ lands canonical `MANIFEST.md` support with a legacy `SPEC.md` alias.
 - `mdkg handoff create goal-37 --json`
 - `mdkg validate --json`
 
+# Results / Evidence
+
+- Created handoff checkpoint `root:chk-278`.
+- `root:chk-278` names the mdkg compatibility release prerequisite, downstream
+  fixture migration from `SPEC.md` to `MANIFEST.md`, gradual type renames
+  including `RoomSpecRef` to `RoomManifestRef` and `SpecDocument` to
+  `ManifestDocument`, user-facing language migration to `manifest-driven
+  startup`, and retained legacy SPEC fixture coverage through the compatibility
+  window.
+- PASS: `node dist/cli.js pack goal-37 --profile concise --dry-run --stats`.
+- PASS: `node dist/cli.js handoff create goal-37 --json`.
+
 # Links / Artifacts
 
 - `goal-37`
 - `edd-54`
+- `chk-278`
