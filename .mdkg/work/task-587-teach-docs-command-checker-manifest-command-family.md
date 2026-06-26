@@ -2,7 +2,7 @@
 id: task-587
 type: task
 title: teach docs command checker manifest command family
-status: todo
+status: done
 priority: 3
 tags: [release, polish, docs, manifest, 0-3-8]
 owners: []

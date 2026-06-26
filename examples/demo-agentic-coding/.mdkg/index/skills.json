@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-06-25T00:51:55.402Z",
+    "generated_at": "2026-06-26T20:59:46.178Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/demo-agentic-coding",
     "skills_root": ".mdkg/skills",
     "skill_count": 4

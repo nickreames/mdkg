@@ -1,8 +1,8 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "7731504607851c08dd0b6fe1c29f58cc47271fdc20073e9ca0a010eefa9c2a77",
+  "contract_hash": "145781176fcd00d6b7c7edd8e013e902acea2ace8764dbf0bb063a8d3913a3e1",
   "package_version": "0.3.8",
-  "command_count": 98,
+  "command_count": 102,
   "categories": {
     "archive": 6,
     "bundle": 6,
@@ -21,6 +21,7 @@
     "index": 1,
     "init": 1,
     "list": 1,
+    "manifest": 4,
     "mcp": 2,
     "new": 1,
     "next": 1,
@@ -745,6 +746,58 @@
         "xml",
         "toon",
         "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "manifest",
+      "category": "manifest",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "manifest list",
+      "category": "manifest",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "manifest show",
+      "category": "manifest",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "manifest validate",
+      "category": "manifest",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
       ],
       "dry_run": {
         "supported": false

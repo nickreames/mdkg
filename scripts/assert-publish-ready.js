@@ -35,6 +35,14 @@ function requirePackageVersions() {
       `package version mismatch: package.json=${pkg.version}, package-lock.json=${lock.version}, package-lock root=${lockRootVersion}`
     );
   }
+  const rootReadme = requireFile("README.md");
+  const matrix = requireFile("CLI_COMMAND_MATRIX.md");
+  if (!rootReadme.includes(`Current package version in source: \`${pkg.version}\``)) {
+    fail(`README.md current package version does not match package.json ${pkg.version}`);
+  }
+  if (!matrix.includes(`package_version_in_source: ${pkg.version}`)) {
+    fail(`CLI_COMMAND_MATRIX.md package_version_in_source does not match package.json ${pkg.version}`);
+  }
   if (!pkg.scripts || !pkg.scripts["smoke:db-queue-cli"]) {
     fail("package.json is missing smoke:db-queue-cli");
   }
@@ -161,7 +169,25 @@ function requireCliBuild() {
     fail("dist/command-contract.json has too few command records");
   }
   const byKey = new Map(contract.commands.map((command) => [command.key, command]));
-  for (const key of ["status", "mcp", "mcp serve", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "workspace", "skill new", "task start", "work validate"]) {
+  for (const key of [
+    "status",
+    "mcp",
+    "mcp serve",
+    "doctor",
+    "fix plan",
+    "fix apply",
+    "fix ids",
+    "manifest",
+    "manifest list",
+    "manifest show",
+    "manifest validate",
+    "db",
+    "subgraph sync",
+    "workspace",
+    "skill new",
+    "task start",
+    "work validate",
+  ]) {
     if (!byKey.has(key)) {
       fail(`dist/command-contract.json is missing ${key}`);
     }
