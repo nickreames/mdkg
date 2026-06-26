@@ -2,7 +2,7 @@
 id: test-289
 type: test
 title: canonical MANIFEST.md recognition and validation contract
-status: todo
+status: done
 priority: 1
 epic: epic-195
 parent: goal-37
@@ -20,7 +20,7 @@ aliases: [manifest-recognition-validation-contract]
 skills: []
 cases: [manifest-basename, type-manifest, manifest-required-fields]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 

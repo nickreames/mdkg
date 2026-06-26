@@ -2,7 +2,7 @@
 id: test-290
 type: test
 title: legacy SPEC.md compatibility and deprecation warning contract
-status: todo
+status: done
 priority: 1
 epic: epic-195
 parent: goal-37
@@ -20,7 +20,7 @@ aliases: [legacy-spec-compatibility-warning, spec-md-deprecation-warning]
 skills: []
 cases: [spec-legacy-valid, spec-warning-text, spec-normalizes-to-manifest]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 

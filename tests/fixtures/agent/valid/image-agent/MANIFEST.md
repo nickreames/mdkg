@@ -1,13 +1,13 @@
 ---
 id: agent.image-generator
-type: spec
+type: manifest
 title: Image Generator Agent
 version: 1.0.0
 role: subagent
 runtime_mode: room_orchestrated
 work_contracts: [generate-image/WORK.md]
 requested_capabilities: [mdkg.read.root_summary, mdkg.write.self]
-skill_refs: [author-agent-spec]
+skill_refs: [author-agent-manifest]
 tool_refs: [tool.mdkg.pack]
 model_refs: [model.image-generate]
 wasm_component_refs: [wasm.image-normalizer]

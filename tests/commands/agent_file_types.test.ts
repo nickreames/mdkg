@@ -435,9 +435,10 @@ test("validate and index accept valid Agent workflow file fixtures", () => {
 
   const config = loadConfig(root);
   const index = buildIndex(root, config);
-  assert.equal(index.nodes["root:agent.image-generator"].type, "spec");
+  assert.equal(index.nodes["root:agent.image-generator"].type, "manifest");
+  assert.equal(index.nodes["root:agent.image-generator"].path, ".mdkg/work/agent/image-agent/MANIFEST.md");
   assert.deepEqual(index.nodes["root:agent.image-generator"].attributes.skill_refs, [
-    "author-agent-spec",
+    "author-agent-manifest",
   ]);
   assert.deepEqual(index.nodes["root:agent.image-generator"].attributes.tool_refs, [
     "tool.mdkg.pack",
@@ -454,6 +455,9 @@ test("validate and index accept valid Agent workflow file fixtures", () => {
   assert.deepEqual(index.nodes["root:agent.image-generator"].attributes.subagent_refs, [
     "agent.image-generator",
   ]);
+  assert.equal(index.nodes["root:agent.legacy-spec-worker"].type, "spec");
+  assert.equal(index.nodes["root:agent.legacy-spec-worker"].path, ".mdkg/work/agent/legacy-spec-agent/SPEC.md");
+  assert.equal(index.nodes["root:work.legacy-spec-render"].attributes.agent_id, "agent.legacy-spec-worker");
   assert.equal(index.nodes["root:work.generate-image"].attributes.kind, "image_generation");
   assert.deepEqual(index.nodes["root:work.generate-image"].attributes.skill_refs, [
     "author-agent-work-contract",
@@ -619,8 +623,8 @@ test("validate rejects sibling MANIFEST and SPEC files in one logical unit", () 
   );
 });
 
-test("validate accepts all allowed SPEC spec_kind values", () => {
-  const root = makeTempDir("mdkg-agent-spec-kind-valid-");
+test("validate accepts all allowed MANIFEST spec_kind values", () => {
+  const root = makeTempDir("mdkg-agent-manifest-kind-valid-");
   setupWorkspace(root);
   const allowedKinds = [
     "cli_tool",
@@ -636,7 +640,7 @@ test("validate accepts all allowed SPEC spec_kind values", () => {
   ];
 
   for (const kind of allowedKinds) {
-    writeSpecWithKind(root, kind);
+    writeManifestWithKind(root, kind);
   }
 
   silenceErrors(() => runValidateCommand({ root, quiet: true }));
@@ -644,12 +648,13 @@ test("validate accepts all allowed SPEC spec_kind values", () => {
   const config = loadConfig(root);
   const index = buildIndex(root, config);
   for (const kind of allowedKinds) {
-    const qid = `root:spec.${kind.replace(/_/g, "-")}`;
+    const qid = `root:manifest.${kind.replace(/_/g, "-")}`;
+    assert.equal(index.nodes[qid].type, "manifest");
     assert.equal(index.nodes[qid].attributes.spec_kind, kind);
   }
 });
 
-test("validate reports actionable diagnostics for documentation-only SPEC spec_kind values", () => {
+test("validate reports actionable diagnostics for documentation-only MANIFEST spec_kind values", () => {
   const documentationOnlyKinds = [
     "gap_register",
     "checkpoint",
@@ -661,9 +666,9 @@ test("validate reports actionable diagnostics for documentation-only SPEC spec_k
   ];
 
   for (const kind of documentationOnlyKinds) {
-    const root = makeTempDir(`mdkg-agent-spec-kind-misuse-${kind}-`);
+    const root = makeTempDir(`mdkg-agent-manifest-kind-misuse-${kind}-`);
     setupWorkspace(root);
-    writeSpecWithKind(root, kind);
+    writeManifestWithKind(root, kind);
 
     const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
     const receipt = JSON.parse(output.stdout);
@@ -677,7 +682,7 @@ test("validate reports actionable diagnostics for documentation-only SPEC spec_k
         error.includes("MANIFEST.md must define a reusable invocable capability surface") &&
         error.includes("legacy SPEC.md follows the same contract")
       ),
-      `${kind} did not produce documentation-only SPEC guidance`
+      `${kind} did not produce documentation-only MANIFEST guidance`
     );
   }
 });
@@ -1320,7 +1325,7 @@ test("search, show, and pack expose Agent workflow file metadata through existin
   assert.ok(logs.some((line) => line.includes("root:work.generate-image")));
   assert.ok(logs.some((line) => line.includes("root:agent.image-generator")));
   assert.ok(logs.some((line) => line.includes("kind: image_generation")));
-  assert.ok(logs.some((line) => line.includes("skill_refs: author-agent-spec")));
+  assert.ok(logs.some((line) => line.includes("skill_refs: author-agent-manifest")));
   assert.ok(logs.some((line) => line.includes("wasm_component_refs: wasm.image-normalizer")));
   assert.ok(logs.some((line) => line.includes("runtime_image_refs: image.agent-image-generator.1.0.0")));
   assert.ok(logs.some((line) => line.includes("inputs: source_image:file:optional, prompt:text:required")));
@@ -1346,7 +1351,7 @@ test("search, show, and pack expose Agent workflow file metadata through existin
   const receipt = payload.nodes.find((node: { qid: string }) => node.qid === "root:receipt.generate-image-1");
   assert.equal(receipt.frontmatter.work_order_id, "order.generate-image-1");
   const spec = payload.nodes.find((node: { qid: string }) => node.qid === "root:agent.image-generator");
-  assert.deepEqual(spec.frontmatter.skill_refs, ["author-agent-spec"]);
+  assert.deepEqual(spec.frontmatter.skill_refs, ["author-agent-manifest"]);
   assert.deepEqual(spec.frontmatter.tool_refs, ["tool.mdkg.pack"]);
   assert.deepEqual(spec.frontmatter.model_refs, ["model.image-generate"]);
   assert.deepEqual(spec.frontmatter.wasm_component_refs, ["wasm.image-normalizer"]);

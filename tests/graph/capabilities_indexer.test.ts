@@ -157,14 +157,14 @@ function writeTask(root: string): void {
   );
 }
 
-function writeSpec(root: string, workspacePath = "."): void {
+function writeManifest(root: string, workspacePath = "."): void {
   const workspaceRoot = workspacePath === "." ? root : path.join(root, workspacePath);
   writeFile(
-    path.join(workspaceRoot, ".mdkg", "work", "agent", "SPEC.md"),
+    path.join(workspaceRoot, ".mdkg", "work", "agent", "MANIFEST.md"),
     [
       "---",
       "id: agent.capability-worker",
-      "type: spec",
+      "type: manifest",
       "title: Capability Worker",
       "version: 0.1.0",
       "spec_kind: agent",
@@ -312,7 +312,7 @@ test("buildCapabilitiesIndex projects only capability surfaces", () => {
   writeSkill(root, "capability-skill");
   writeCore(root);
   writeDesign(root);
-  writeSpec(root);
+  writeManifest(root);
   writeWork(root);
   writeWorkOrder(root);
   writeReceipt(root);
@@ -330,6 +330,9 @@ test("buildCapabilitiesIndex projects only capability surfaces", () => {
   );
   assert.ok(specRecord);
   assert.equal(specRecord.spec.spec_kind, "agent");
+  assert.equal(specRecord.node_type, "manifest");
+  assert.equal(specRecord.manifest.source_basename, "MANIFEST.md");
+  assert.equal(specRecord.manifest.compatibility_mode, "canonical");
   assert.deepEqual(specRecord.spec.requested_capabilities, ["capability.routing"]);
   assert.deepEqual(specRecord.linkage.work_contract_qids, ["root:work.capability-route"]);
   assert.deepEqual(specRecord.linkage.work_order_qids, ["root:order.capability-route"]);
@@ -349,7 +352,7 @@ test("buildCapabilitiesIndex aggregates enabled child workspace capabilities wit
   });
   writeDefaultTemplates(root);
   writeSkill(root, "capability-skill", "child");
-  writeSpec(root, "child");
+  writeManifest(root, "child");
   writeWork(root, "child");
 
   const config = loadConfig(root);

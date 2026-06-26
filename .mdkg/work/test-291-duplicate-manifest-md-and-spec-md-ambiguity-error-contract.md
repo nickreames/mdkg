@@ -2,7 +2,7 @@
 id: test-291
 type: test
 title: duplicate MANIFEST.md and SPEC.md ambiguity error contract
-status: todo
+status: done
 priority: 1
 epic: epic-195
 parent: goal-37
@@ -20,7 +20,7 @@ aliases: [manifest-spec-duplicate-error, manifest-ambiguity-contract]
 skills: []
 cases: [duplicate-same-directory, explicit-error-message, no-silent-precedence]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 

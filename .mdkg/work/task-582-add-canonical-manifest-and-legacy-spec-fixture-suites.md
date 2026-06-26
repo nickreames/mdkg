@@ -2,7 +2,7 @@
 id: task-582
 type: task
 title: add canonical MANIFEST and legacy SPEC fixture suites
-status: todo
+status: done
 priority: 1
 epic: epic-198
 parent: goal-37
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: [manifest-fixtures, legacy-spec-fixtures, manifest-spec-test-fixtures]
 skills: [select-work-and-ground-context]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 
