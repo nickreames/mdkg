@@ -429,6 +429,7 @@ function requireInitAssets() {
     "feat.md",
     "feedback.md",
     "goal.md",
+    "manifest.md",
     "prd.md",
     "prop.md",
     "proposal.md",

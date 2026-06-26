@@ -1409,6 +1409,46 @@ test("new command scaffolds agent workflow spec files with canonical filenames",
   assert.deepEqual(index.nodes["root:spec-1"].attributes.skill_refs, []);
 });
 
+test("new command scaffolds canonical manifest files", () => {
+  const root = makeTempDir("mdkg-agent-new-manifest-");
+  setupWorkspace(root);
+
+  const output = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "manifest",
+      title: "Manifest Worker",
+      json: true,
+      now: new Date("2026-03-11T00:00:00Z"),
+    })
+  );
+
+  assert.equal(output.stderr, "");
+  assert.deepEqual(JSON.parse(output.stdout), {
+    action: "created",
+    node: {
+      workspace: "root",
+      id: "manifest-1",
+      qid: "root:manifest-1",
+      path: ".mdkg/work/manifest-1-manifest-worker/MANIFEST.md",
+      type: "manifest",
+      title: "Manifest Worker",
+    },
+  });
+
+  const manifestPath = path.join(root, ".mdkg", "work", "manifest-1-manifest-worker", "MANIFEST.md");
+  const content = fs.readFileSync(manifestPath, "utf8");
+  assert.match(content, /type: manifest/);
+  assert.match(content, /spec_kind: capability/);
+  assert.match(content, /role: tool_service/);
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.nodes["root:manifest-1"].type, "manifest");
+  assert.equal(index.nodes["root:manifest-1"].path, ".mdkg/work/manifest-1-manifest-worker/MANIFEST.md");
+});
+
 test("new command uses bundled template fallback when a local agent template is missing", () => {
   const root = makeTempDir("mdkg-agent-new-bundled-template-");
   setupWorkspace(root);
