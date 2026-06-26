@@ -2,7 +2,7 @@
 id: task-581
 type: task
 title: update docs generated help command matrix and skills for MANIFEST terminology
-status: todo
+status: done
 priority: 1
 epic: epic-197
 parent: goal-37
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: [manifest-docs-help-skills, spec-deprecation-docs, author-manifest-skill-update]
 skills: [select-work-and-ground-context]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 

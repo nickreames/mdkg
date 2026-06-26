@@ -102,9 +102,9 @@ Capability discovery:
 - `mdkg capability list --kind skill --json`
 - `mdkg capability search "<query>" --kind spec --json`
 - `mdkg capability search "<query>" --kind work --json`
-- `mdkg spec list --json`
-- `mdkg spec show <id-or-qid-or-alias> --json`
-- `mdkg spec validate <id-or-qid-or-alias> --json`
+- `mdkg manifest list --json`
+- `mdkg manifest show <id-or-qid-or-alias> --json`
+- `mdkg manifest validate <id-or-qid-or-alias> --json`
 - `mdkg index` refreshes JSON compatibility caches and `.mdkg/index/mdkg.sqlite` when SQLite mode is enabled.
 - `.mdkg/db` is project application state; use `mdkg db init` to create the
   generic scaffold and enable `db.enabled` without creating an active runtime

@@ -2,7 +2,7 @@
 id: test-295
 type: test
 title: manifest docs help command matrix and skill terminology contract
-status: todo
+status: done
 priority: 1
 epic: epic-197
 parent: goal-37
@@ -20,7 +20,7 @@ aliases: [manifest-docs-help-contract, manifest-skill-terminology-contract]
 skills: []
 cases: [docs-prefer-manifest, legacy-spec-note, skill-manifest-language, generated-cli-reference]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 

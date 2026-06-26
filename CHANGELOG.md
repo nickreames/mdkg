@@ -8,6 +8,13 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+### Changed
+
+- Renamed the reusable capability surface to canonical `MANIFEST.md`
+  terminology across scaffolds, help, command references, init assets, and
+  skills. `SPEC.md` and `mdkg spec ...` remain explicit legacy aliases for one
+  compatibility release, with manifest-first warnings and migration guidance.
+
 ## 0.3.8 - 2026-06-25
 
 ### Added
