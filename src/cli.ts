@@ -266,7 +266,8 @@ function printNewHelp(log: LogFn): void {
   log("\nTypes:");
   log("  rule prd edd dec prop goal epic feat task bug spike checkpoint test");
   log("\nAgent workflow file types:");
-  log("  spec work work_order receipt feedback dispute proposal");
+  log("  manifest work work_order receipt feedback dispute proposal");
+  log("  spec is a legacy alias for manifest and emits MANIFEST.md during the compatibility bridge.");
   log("  Use --id <portable-id> with these types for semantic ids like agent.image-worker.");
   log("  Use `mdkg archive add` for archive sidecars instead of `mdkg new archive`.");
   log("\nOptions:");
@@ -284,7 +285,8 @@ function printNewHelp(log: LogFn): void {
   log("  --links --artifacts --refs --aliases --owners --cases --supersedes");
   log("  --owners <owner,owner,...> Owners");
   log("\nNotes:");
-  log("  spec/work scaffold as validation-clean docs; relational workflow docs need real refs.");
+  log("  manifest/work scaffold as validation-clean docs; relational workflow docs need real refs.");
+  log("  mdkg new spec is deprecated; use mdkg new manifest for new reusable capability manifests.");
   log("  spike creates actionable research/planning work; use `mdkg task ...` for lifecycle.");
   log("  record spike research evidence by editing the Markdown body sections.");
   log("  spikes do not run web search, create follow-up nodes, generate SKILL.md, or expose `mdkg spike ...`.");

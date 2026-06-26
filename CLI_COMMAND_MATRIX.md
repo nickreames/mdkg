@@ -169,22 +169,26 @@ Types:
 - `test`
 
 Agent workflow file types:
-- `spec`
+- `manifest`
 - `work`
 - `work_order`
 - `receipt`
 - `feedback`
 - `dispute`
 - `proposal`
+- `spec` is a legacy alias for `manifest` during the compatibility bridge and
+  emits `MANIFEST.md`.
 
 Agent workflow file type creation:
-- `mdkg new spec "<title>" [options] [--json]`
+- `mdkg new manifest "<title>" [options] [--json]`
 - `mdkg new work "<title>" [options] [--json]`
 - `mdkg new work_order "<title>" [options] [--json]`
 - `mdkg new receipt "<title>" [options] [--json]`
 - `mdkg new feedback "<title>" [options] [--json]`
 - `mdkg new dispute "<title>" [options] [--json]`
 - `mdkg new proposal "<title>" [options] [--json]`
+- `mdkg new spec "<title>" [options] [--json]` is a deprecated alias for
+  `mdkg new manifest` and creates `MANIFEST.md` with `type: manifest`.
 
 Goal node creation:
 - `mdkg new goal "<title>" [options] [--json]`
@@ -527,7 +531,7 @@ Notes:
 
 When to use:
 - discover deterministic capability surfaces across enabled workspaces
-- query skills, `SPEC.md`, `WORK.md`, core docs, and design docs without loading the whole graph body set
+- query skills, canonical `MANIFEST.md`, legacy `SPEC.md`, `WORK.md`, core docs, and design docs without loading the whole graph body set
 
 Usage:
 - `mdkg capability list [--kind <kind>] [--visibility <level>] [--json]`
@@ -552,7 +556,7 @@ Notes:
 - `capability resolve` ranks local and subgraph capabilities deterministically for orchestration planning
 - stale subgraphs remain visible with degraded ranking unless `--fresh-only` is supplied
 - records include deterministic source metadata such as workspace, visibility, kind, id/qid/slug, path, headings, refs, source hash, and `indexed_at`
-- SPEC and WORK capability records include read-only `linkage` arrays for related SPECs, work contracts, work orders, and receipts when those graph mirrors exist
+- MANIFEST/SPEC and WORK capability records include read-only `linkage` arrays for related manifests, work contracts, work orders, and receipts when those graph mirrors exist
 - `.mdkg/index/capabilities.json` is rebuilt by `mdkg index` and by capability commands when stale
 - normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
 - visibility is mdkg export metadata used by capability filters, `pack --visibility`, public bundle checks, validation, and doctor diagnostics; it is not secret scanning or body redaction

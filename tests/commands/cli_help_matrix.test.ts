@@ -17,7 +17,7 @@ function runCli(args: string[], cwd?: string) {
 test("cli help covers the remaining command help surfaces", () => {
   const cases: Array<[string, RegExp]> = [
     ["guide", /mdkg guide/],
-    ["new", /Agent workflow file types:\n  spec work work_order receipt feedback dispute proposal/],
+    ["new", /Agent workflow file types:\n  manifest work work_order receipt feedback dispute proposal/],
     ["workspace", /mdkg workspace ls \[--json\]/],
     ["db", /mdkg db index rebuild \[--tolerant\] \[--json\]/],
     ["index", /mdkg index \[--tolerant\]/],

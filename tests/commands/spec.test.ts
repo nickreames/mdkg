@@ -48,13 +48,24 @@ function upsertFrontmatter(filePath: string, replacements: Record<string, string
   fs.writeFileSync(filePath, next, "utf8");
 }
 
+function convertManifestScaffoldToLegacySpec(root: string, node: { path: string }): { path: string } {
+  const manifestPath = path.join(root, node.path);
+  const specPath = path.join(path.dirname(manifestPath), "SPEC.md");
+  fs.renameSync(manifestPath, specPath);
+  upsertFrontmatter(specPath, { type: "spec" });
+  return { ...node, path: path.relative(root, specPath).split(path.sep).join("/") };
+}
+
 test("spec command lists shows and validates optional SPEC capability records", () => {
   const root = makeTempDir("mdkg-spec-cli-");
   run(["init", "--agent"], root);
-  const spec = JSON.parse(
-    run(["new", "spec", "Capability Worker", "--id", "agent.capability-worker", "--json"], root)
-      .stdout
-  ).node;
+  const spec = convertManifestScaffoldToLegacySpec(
+    root,
+    JSON.parse(
+      run(["new", "manifest", "Capability Worker", "--id", "agent.capability-worker", "--json"], root)
+        .stdout
+    ).node
+  );
   upsertFrontmatter(path.join(root, spec.path), {
     spec_kind: "cli_tool",
     requested_capabilities: "[capability.routing]",

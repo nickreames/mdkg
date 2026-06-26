@@ -144,14 +144,14 @@ function assertHelp(packageRoot, binPath, root) {
   assertIncludes(workHelp, "mdkg work receipt new|verify|update", "work help");
   const triggerHelp = mdkg(binPath, ["help", "work", "trigger"], root);
   assertIncludes(triggerHelp, "mdkg work trigger work.example --id order.example-1 --requester user://example --json", "work trigger help");
-  assertIncludes(triggerHelp, "Accepted targets: direct WORK.md ref, or SPEC.md ref with exactly one resolvable work contract.", "work trigger help");
+  assertIncludes(triggerHelp, "Accepted targets: direct WORK.md ref, or MANIFEST.md/SPEC.md ref with exactly one resolvable work contract.", "work trigger help");
   const orderHelp = mdkg(binPath, ["help", "work", "order"], root);
   assertIncludes(orderHelp, "work order status is read-only and reports deterministic JSON order state plus linked receipts.", "work order help");
   const receiptHelp = mdkg(binPath, ["help", "work", "receipt"], root);
   assertIncludes(receiptHelp, "work receipt verify is read-only and reports deterministic JSON linkage", "work receipt help");
   const specHelp = mdkg(binPath, ["help", "spec", "validate"], root);
-  assertIncludes(specHelp, "With no reference, validates the graph and all optional SPEC.md capability records.", "spec validate help");
-  assertIncludes(specHelp, "With a reference, also ensures that specific SPEC.md capability exists.", "spec validate help");
+  assertIncludes(specHelp, "With no reference, validates the graph and all MANIFEST.md/SPEC.md capability records.", "spec validate help");
+  assertIncludes(specHelp, "With a reference, also ensures that the specific manifest capability exists.", "spec validate help");
 }
 
 function createSpecAndWork(binPath, root) {

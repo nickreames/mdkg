@@ -53,6 +53,14 @@ function updateFrontmatter(filePath: string, replacements: Record<string, string
   fs.writeFileSync(filePath, next, "utf8");
 }
 
+function convertManifestScaffoldToLegacySpec(root: string, node: { path: string }): { path: string } {
+  const manifestPath = path.join(root, node.path);
+  const specPath = path.join(path.dirname(manifestPath), "SPEC.md");
+  fs.renameSync(manifestPath, specPath);
+  updateFrontmatter(specPath, { type: "spec" });
+  return { ...node, path: path.relative(root, specPath).split(path.sep).join("/") };
+}
+
 function listFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) {
     return [];
@@ -187,9 +195,12 @@ test("graph refs reports canonical manifest and legacy spec workflow relationshi
     relates: "[work.manifest]",
   });
 
-  const legacy = json<{ node: { path: string } }>(
-    run(["new", "spec", "Legacy Worker", "--id", "agent.legacy-worker", "--json"], root).stdout
-  ).node;
+  const legacy = convertManifestScaffoldToLegacySpec(
+    root,
+    json<{ node: { path: string } }>(
+      run(["new", "manifest", "Legacy Worker", "--id", "agent.legacy-worker", "--json"], root).stdout
+    ).node
+  );
   const legacyWork = json<{ node: { path: string } }>(
     run([
       "work",

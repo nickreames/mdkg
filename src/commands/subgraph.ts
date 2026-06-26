@@ -470,7 +470,7 @@ function auditOneAlias(options: {
     source_repo: options.health.source_repo,
     capability_summary: {
       node_count: options.nodeTypes.length,
-      spec_count: options.nodeTypes.filter((type) => type === "spec").length,
+      spec_count: options.nodeTypes.filter((type) => type === "manifest" || type === "spec").length,
       work_count: options.nodeTypes.filter((type) => type === "work").length,
       skill_count: options.nodeTypes.filter((type) => type === "skill").length,
     },

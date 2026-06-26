@@ -27,7 +27,7 @@ mdkg show <id>
 mdkg pack <id>
 mdkg handoff create <id-or-qid> --json
 mdkg capability search "..."
-mdkg spec list --json
+mdkg manifest list --json
 mdkg archive list
 mdkg bundle create --profile private
 mdkg graph clone .mdkg/bundles/private/all.mdkg.zip --target demos/demo-1 --json
@@ -37,7 +37,7 @@ mdkg fix plan --json
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg index` to create or refresh generated graph/skill/capability/subgraph and SQLite caches after init, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal activate/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg spec ...` for focused optional SPEC records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg graph ...` to clone/fork/import authored graph templates, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, `mdkg handoff create <id-or-qid> --json` to create a sanitized copy-ready agent handoff prompt, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg index` to create or refresh generated graph/skill/capability/subgraph and SQLite caches after init, `mdkg new` to create work, `mdkg new goal "..."` plus `mdkg goal activate/current/next/claim/evaluate` for recursive long-running objectives, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/manifest/spec/work/core/design capabilities, `mdkg manifest ...` for focused optional manifest records, `mdkg capability resolve ...` to rank local and subgraph capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors and deterministic trigger/verification records, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg graph ...` to clone/fork/import authored graph templates, `mdkg subgraph ...` to register read-only child graph planning views, `mdkg pack <id>` to build deterministic context, `mdkg handoff create <id-or-qid> --json` to create a sanitized copy-ready agent handoff prompt, and `mdkg validate` before closeout.
 
 `mdkg handoff create` summarizes goal/work state, included pack nodes, latest
 checkpoint, boundaries, required checks, next actions, and raw-content marker
@@ -80,15 +80,17 @@ intentionally with `mdkg new task ...` or `mdkg new test ...`.
 Agent workflow docs can use semantic ids:
 
 ```bash
-mdkg new spec "image worker" --id agent.image-worker
+mdkg new manifest "image worker" --id agent.image-worker
 mdkg new work "generate image" --id work.generate-image
 ```
 
-`SPEC.md` is optional. Repos without SPEC files still validate. When present,
-SPEC records describe reusable capability surfaces rather than general planning
-notes. `mdkg spec list/show/validate` is the focused SPEC command family, while
-`mdkg capability ...` remains the broader read-only discovery surface for
-skills, SPECs, WORK contracts, core docs, and design docs.
+`MANIFEST.md` is optional. Repos without manifest files still validate. When
+present, manifest records describe reusable capability surfaces rather than
+general planning notes. `SPEC.md` remains a legacy alias for one compatibility
+release, and `mdkg spec list/show/validate` remains a deprecated alias for
+`mdkg manifest list/show/validate`. `mdkg capability ...` remains the broader
+read-only discovery surface for skills, manifests, WORK contracts, core docs,
+and design docs.
 
 Read `AGENT_START.md` first when this repo includes it.
 

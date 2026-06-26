@@ -149,7 +149,7 @@ mdkg new task "author mdkg.dev launch planning skill" --parent spike-1 --status 
 Create an agent workflow document with a semantic portable id:
 
 ```bash
-mdkg new spec "image worker" --id agent.image-worker
+mdkg new manifest "image worker" --id agent.image-worker
 mdkg new work "generate image" --id work.generate-image
 ```
 
@@ -270,15 +270,17 @@ mdkg index
 mdkg capability list --kind skill --json
 mdkg capability search "image worker" --kind work --json
 mdkg capability show <id-or-qid-or-slug> --json
-mdkg spec list --json
-mdkg spec show <id-or-qid-or-alias> --json
+mdkg manifest list --json
+mdkg manifest show <id-or-qid-or-alias> --json
 ```
 
-`SPEC.md` is optional. Repos with no SPEC files still validate; when present,
-SPEC records describe reusable capability surfaces rather than general planning
-notes. `mdkg spec list/show/validate` is the focused SPEC command family, while
-`mdkg capability ...` remains the broader read-only discovery surface for
-skills, SPECs, WORK contracts, core docs, and design docs.
+`MANIFEST.md` is optional. Repos with no manifest files still validate; when
+present, manifest records describe reusable capability surfaces rather than
+general planning notes. `SPEC.md` remains a legacy alias for one compatibility
+release, and `mdkg spec list/show/validate` remains a deprecated alias for
+`mdkg manifest list/show/validate`. `mdkg capability ...` remains the broader
+read-only discovery surface for skills, manifests, WORK contracts, core docs,
+and design docs.
 
 Register source and artifact files as committed archive sidecars:
 
@@ -484,14 +486,14 @@ Optional skill metadata with prefixes such as `ochatr_*` is treated as vendor ex
 
 mdkg maintains `.mdkg/index/capabilities.json` as a derived access cache for deterministic capability surfaces:
 - skills from `.mdkg/skills/**/SKILL.md`
-- `SPEC.md`
+- canonical `MANIFEST.md` and legacy `SPEC.md`
 - `WORK.md`
 - core docs
 - design docs
 
 The capability cache is not the full graph and is not source of truth. Normal tasks, epics, bugs, tests, feats, and checkpoints remain in the standard graph index. Markdown remains authoritative; deleting the cache is recoverable with `mdkg index` or by running a capability command when auto-reindex is enabled.
 
-Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. SPEC and WORK records also expose read-only `linkage` arrays when related work contracts, work orders, and receipts exist, so an orchestrator can discover a capability from reusable surface to invocation evidence without loading the full graph. Workspace `visibility` also feeds mdkg's export safety checks for public/internal packs and public bundles. This is a CLI safety layer, not secret scanning, body redaction, or a replacement for private git hosting.
+Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. MANIFEST/SPEC and WORK records also expose read-only `linkage` arrays when related work contracts, work orders, and receipts exist, so an orchestrator can discover a capability from reusable surface to invocation evidence without loading the full graph. Workspace `visibility` also feeds mdkg's export safety checks for public/internal packs and public bundles. This is a CLI safety layer, not secret scanning, body redaction, or a replacement for private git hosting.
 
 ## Index backends and parallel safety
 
@@ -588,17 +590,17 @@ or agents can intentionally create the next nodes with normal mdkg commands.
 ## Agent workflow files
 
 mdkg recognizes a small set of canonical agent workflow documents:
-- `SPEC.md` for agent, package, or runtime specifications
+- `MANIFEST.md` for agent, package, or runtime capability manifests
 - `WORK.md` for reusable work contracts
 - `WORK_ORDER.md` for concrete requests against work contracts
 - `RECEIPT.md` for completed work output and artifacts
 - `FEEDBACK.md`, `DISPUTE.md`, and `PROPOSAL.md` for review loops
 
-Use `mdkg new spec|work|work_order|receipt|feedback|dispute|proposal "<title>"` to scaffold them. `--id <portable-id>` is available for these types when semantic ids such as `agent.image-worker` or `work.generate-image` are preferred.
+Use `mdkg new manifest|work|work_order|receipt|feedback|dispute|proposal "<title>"` to scaffold them. `mdkg new spec` remains a deprecated alias that emits `MANIFEST.md` during the compatibility bridge. `--id <portable-id>` is available for these types when semantic ids such as `agent.image-worker` or `work.generate-image` are preferred.
 
-Relational templates contain editable placeholder refs. `spec` and `work` scaffold as validation-clean standalone docs; `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
+Relational templates contain editable placeholder refs. `manifest` and `work` scaffold as validation-clean standalone docs; `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 
-For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. `mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a WORK contract or a SPEC with exactly one resolvable work contract. `mdkg work order status` and `mdkg work receipt verify` are read-only review helpers for deterministic closeout. `mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] --json` is a read-only focused validator for agent workflow mirrors; it returns typed diagnostics and warns on obvious raw secret, prompt, token, or payload markers. `mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue delivery message after the queue has been explicitly created and is active; it still does not execute work. Production order state, receipt state, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg, such as in Postgres or another application database. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
+For executable or purchasable capability mirrors, prefer the lifecycle helpers under `mdkg work ...`. They create and update `WORK.md`, `WORK_ORDER.md`, and `RECEIPT.md` semantic mirror files only. `mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a WORK contract or a MANIFEST with exactly one resolvable work contract; legacy SPEC refs remain supported during the compatibility bridge. `mdkg work order status` and `mdkg work receipt verify` are read-only review helpers for deterministic closeout. `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] --json` is a read-only focused validator for agent workflow mirrors; it returns typed diagnostics and warns on obvious raw secret, prompt, token, or payload markers. `mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue delivery message after the queue has been explicitly created and is active; it still does not execute work. Production order state, receipt state, feedback, disputes, payments, ledgers, marketplace inventory, fulfillment records, and execution state remain canonical outside mdkg, such as in Postgres or another application database. Do not store raw secrets, credentials, live payment state, ledger mutations, canonical marketplace state, or bulky raw payloads in these mirrors.
 
 ## Archive sidecars
 
@@ -619,7 +621,7 @@ This release includes:
 - default ignore updates with `--no-update-ignores` for generated JSON index/temp/lock files, `.mdkg/pack/`, and raw archive source copies
 - root-only published init seed config
 - skills indexing and search/show/list support
-- JSON capability cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs
+- JSON capability cache for skills, `MANIFEST.md` / legacy `SPEC.md`, `WORK.md`, core docs, and design docs
 - optional `mdkg spec list/show/validate` for reusable SPEC capability records
 - SQLite index backend for fresh workspaces using built-in `node:sqlite`
 - mutation locking and atomic writes for parallel mdkg calls
