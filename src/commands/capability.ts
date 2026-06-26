@@ -108,6 +108,7 @@ function capabilitySearchText(record: CapabilityRecord): string {
     ...record.aliases,
     ...record.links,
     ...record.headings.map((heading) => heading.text),
+    JSON.stringify(record.manifest ?? {}),
     JSON.stringify(record.spec ?? {}),
     JSON.stringify(record.work ?? {}),
     JSON.stringify(record.linkage ?? {}),

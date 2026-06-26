@@ -130,6 +130,55 @@ test("capability command lists searches and shows cached capability records", ()
   assert.equal(shown.item.slug, "capability-routing");
 });
 
+test("capability index exposes manifest metadata and bridge search aliases", () => {
+  const root = makeTempDir("mdkg-capability-manifest-cli-");
+  run(["init", "--agent"], root);
+  const manifest = JSON.parse(
+    run(["new", "manifest", "Manifest Capability", "--id", "agent.manifest-capability", "--json"], root)
+      .stdout
+  ).node;
+  const legacy = JSON.parse(
+    run(["new", "spec", "Legacy Spec Capability", "--id", "agent.legacy-capability", "--json"], root)
+      .stdout
+  ).node;
+  updateFrontmatter(path.join(root, manifest.path), {
+    spec_kind: "agent",
+    requested_capabilities: "[capability.manifest]",
+  });
+  updateFrontmatter(path.join(root, legacy.path), {
+    spec_kind: "agent",
+    requested_capabilities: "[capability.legacy]",
+  });
+
+  run(["index"], root);
+
+  const listed = JSON.parse(run(["capability", "list", "--kind", "spec", "--json"], root).stdout);
+  const manifestRecord = listed.items.find((item: { id: string }) => item.id === "agent.manifest-capability");
+  const legacyRecord = listed.items.find((item: { id: string }) => item.id === "agent.legacy-capability");
+  assert.ok(manifestRecord);
+  assert.ok(legacyRecord);
+  assert.equal(manifestRecord.kind, "spec");
+  assert.equal(manifestRecord.node_type, "manifest");
+  assert.equal(manifestRecord.manifest.compatibility_mode, "canonical");
+  assert.equal(manifestRecord.manifest.source_basename, "MANIFEST.md");
+  assert.equal(legacyRecord.kind, "spec");
+  assert.equal(legacyRecord.node_type, "spec");
+  assert.equal(legacyRecord.manifest.compatibility_mode, "legacy");
+  assert.equal(legacyRecord.manifest.source_basename, "SPEC.md");
+
+  const bridgeSearch = JSON.parse(
+    run(["capability", "search", "MANIFEST.md legacy SPEC.md", "--kind", "spec", "--json"], root).stdout
+  );
+  assert.ok(bridgeSearch.items.some((item: { id: string }) => item.id === "agent.manifest-capability"));
+  assert.ok(bridgeSearch.items.some((item: { id: string }) => item.id === "agent.legacy-capability"));
+
+  const aliasSearch = JSON.parse(
+    run(["capability", "search", "spec.md compatibility alias", "--kind", "spec", "--json"], root).stdout
+  );
+  assert.ok(aliasSearch.items.some((item: { id: string }) => item.id === "agent.manifest-capability"));
+  assert.ok(aliasSearch.items.some((item: { id: string }) => item.id === "agent.legacy-capability"));
+});
+
 test("capability command auto-restores a missing capability cache", () => {
   const root = makeTempDir("mdkg-capability-cli-missing-cache-");
   run(["init", "--agent"], root);

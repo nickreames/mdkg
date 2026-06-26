@@ -33,6 +33,7 @@ test("cli help covers the remaining command help surfaces", () => {
     ["format", /mdkg format --headings \[--dry-run\|--apply\] \[--summary\] \[--limit <n>\] \[--json\]/],
     ["doctor", /mdkg doctor \[--strict\] \[--json\]/],
     ["capability", /mdkg capability resolve \[query\] \[--requires <capability>\] \[--fresh-only\] \[--json\]/],
+    ["manifest", /mdkg manifest validate \[<id-or-qid-or-alias>\] \[--json\]/],
     ["spec", /mdkg spec validate \[<id-or-qid-or-alias>\] \[--json\]/],
     ["archive", /mdkg archive compress <id-or-archive-uri\|--all> \[--json\]/],
     ["bundle", /mdkg bundle create \[--profile private\|public\] \[--ws <alias\|all>\] \[--output <path>\] \[--json\]/],

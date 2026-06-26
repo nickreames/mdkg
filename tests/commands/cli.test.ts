@@ -119,7 +119,17 @@ test("cli help capability documents read-only capability discovery", () => {
   assert.match(workspaceHelp.stdout, /--visibility <level>/);
 });
 
-test("cli help spec documents optional reusable capability records", () => {
+test("cli help manifest and spec document optional reusable capability records", () => {
+  const manifestHelp = spawnSync(process.execPath, [cliPath, "help", "manifest"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(manifestHelp.status, 0);
+  assert.match(manifestHelp.stdout, /mdkg manifest list \[--json\]/);
+  assert.match(manifestHelp.stdout, /mdkg manifest show <id-or-qid-or-alias> \[--json\]/);
+  assert.match(manifestHelp.stdout, /mdkg manifest validate \[<id-or-qid-or-alias>\] \[--json\]/);
+  assert.match(manifestHelp.stdout, /MANIFEST\.md is canonical and reusable-capability oriented; SPEC\.md remains a legacy alias/);
+
   const specHelp = spawnSync(process.execPath, [cliPath, "help", "spec"], {
     encoding: "utf8",
     cwd: repoRoot,
@@ -129,6 +139,7 @@ test("cli help spec documents optional reusable capability records", () => {
   assert.match(specHelp.stdout, /mdkg spec show <id-or-qid-or-alias> \[--json\]/);
   assert.match(specHelp.stdout, /mdkg spec validate \[<id-or-qid-or-alias>\] \[--json\]/);
   assert.match(specHelp.stdout, /MANIFEST\.md is canonical and reusable-capability oriented; SPEC\.md remains a legacy alias/);
+  assert.match(specHelp.stdout, /`mdkg spec` is the legacy alias for `mdkg manifest`/);
 
   const specValidateHelp = spawnSync(process.execPath, [cliPath, "help", "spec", "validate"], {
     encoding: "utf8",

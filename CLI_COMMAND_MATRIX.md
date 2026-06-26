@@ -67,7 +67,8 @@ Advanced / maintenance commands:
 Skills are first-class and are accessed only through `mdkg skill ...`.
 Generic `list/show/search` do not expose skills.
 Capability cache discovery is read-only and accessed through `mdkg capability ...`.
-Optional reusable SPEC capability records are accessed through `mdkg spec ...`.
+Reusable manifest capability records are accessed through `mdkg manifest ...`;
+`mdkg spec ...` remains a one-compatibility-release legacy alias.
 Archive sidecars are accessed through `mdkg archive ...`.
 Full graph snapshot bundles are accessed through `mdkg bundle ...`.
 Whole-graph clone, fork, and same-repo template import workflows are accessed through `mdkg graph ...`.
@@ -556,13 +557,43 @@ Notes:
 - normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
 - visibility is mdkg export metadata used by capability filters, `pack --visibility`, public bundle checks, validation, and doctor diagnostics; it is not secret scanning or body redaction
 
-### `mdkg spec`
+### `mdkg manifest`
 
 When to use:
 - list reusable capability surfaces from canonical `MANIFEST.md` or legacy
   `SPEC.md`
 - show one manifest capability record by id, qid, path, or alias
 - validate the graph while ensuring a named manifest capability exists
+
+Usage:
+- `mdkg manifest list [--json]`
+- `mdkg manifest show <id-or-qid-or-alias> [--json]`
+- `mdkg manifest validate [<id-or-qid-or-alias>] [--json]`
+
+Flags:
+- `--json`
+
+Notes:
+- `MANIFEST.md` is canonical and `SPEC.md` remains a legacy alias; repos with no
+  manifest/spec files remain valid
+- manifest records are reusable-capability oriented, not documentation-only
+  planning notes
+- `mdkg manifest validate` with no ref validates the graph and all
+  manifest/spec records
+- `mdkg manifest validate <ref>` also checks that the target manifest reference
+  exists
+- JSON records keep capability `kind: spec` for compatibility and include
+  manifest metadata describing canonical, legacy, or transitional source mode
+- use `mdkg capability ...` for broader skill, MANIFEST/SPEC, WORK, core-doc,
+  and design-doc capability discovery
+
+### `mdkg spec`
+
+When to use:
+- temporarily support existing scripts during the one-compatibility-release
+  bridge to `mdkg manifest ...`
+- list, show, or validate the same MANIFEST/SPEC capability records with legacy
+  command labeling
 
 Usage:
 - `mdkg spec list [--json]`
@@ -573,16 +604,14 @@ Flags:
 - `--json`
 
 Notes:
-- `MANIFEST.md` is canonical and `SPEC.md` remains a legacy alias; repos with no
-  manifest/spec files remain valid
-- manifest records are reusable-capability oriented, not documentation-only
-  planning notes
+- `mdkg spec` is a legacy alias for `mdkg manifest` during the compatibility
+  bridge
 - `mdkg spec validate` with no ref validates the graph and all manifest/spec
   records
 - `mdkg spec validate <ref>` also checks that the target manifest reference
   exists
-- use `mdkg capability ...` for broader skill, MANIFEST/SPEC, WORK, core-doc,
-  and design-doc capability discovery
+- JSON receipts keep `kind: spec` and add `canonical_kind: manifest`,
+  `legacy_alias: true`, and deprecation metadata
 
 ### `mdkg archive`
 
