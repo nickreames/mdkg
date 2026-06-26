@@ -1,6 +1,6 @@
 {
   "name": "mdkg",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Git-native project memory for AI coding agents",
   "license": "MIT",
   "bin": {

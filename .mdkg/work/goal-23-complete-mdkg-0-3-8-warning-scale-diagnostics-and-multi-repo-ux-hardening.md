@@ -2,12 +2,12 @@
 id: goal-23
 type: goal
 title: Complete mdkg 0.3.8 warning-scale diagnostics and multi-repo UX hardening
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: 0.3.8 is dry-run publish ready for warning-scale diagnostics and multi-repo UX hardening after bounded validation summaries, clean JSON receipts, strict-doctor/subgraph/handoff remediation guidance, safe multi-repo skills, and prepublish warning-scale automation are implemented and verified.
 scope_refs: [epic-113, epic-114, epic-115, epic-116, epic-117, spike-12, task-427, task-428, task-429, task-430, task-431, task-432, task-433, task-434, task-435, task-436, test-190, test-191, test-192, test-193, test-194, test-195]
-active_node: task-436
+last_active_node: task-436
 required_skills: [pursue-mdkg-goal, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:warning-ux, npm run smoke:subgraph, npm run smoke:handoff, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 25
@@ -109,4 +109,13 @@ Fresh active goal created after the 0.3.7 all-repo upgrade exposed warning-volum
 
 # Completion Evidence
 
-- Pending.
+- 2026-06-25: `task-436` closed with `chk-273` after all goal required checks passed through dry-run release proof.
+- Version metadata is `0.3.8` in `package.json` and `package-lock.json`; `CHANGELOG.md` is dated `0.3.8 - 2026-06-25`.
+- `npm run build`, `npm run test` (507/507 passing), `npm run cli:check`, `npm run cli:contract`, and `node dist/cli.js validate --json` passed.
+- Focused goal checks passed: `npm run smoke:warning-ux`, `npm run smoke:subgraph`, and `npm run smoke:handoff`.
+- Full `npm run prepublishOnly` passed after regenerating generated command docs caught by the first dry-run attempt.
+- `node scripts/assert-publish-ready.js` passed.
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json` passed for `mdkg@0.3.8`, 163 files, package size about 327.6 kB.
+- `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run` passed and printed `+ mdkg@0.3.8`.
+- `git diff --check` passed.
+- No real npm publish, tag, push, global install, child-repo mutation, DNS, Vercel, or public launch action was performed.

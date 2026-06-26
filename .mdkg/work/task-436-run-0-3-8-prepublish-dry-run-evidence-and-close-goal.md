@@ -2,7 +2,7 @@
 id: task-436
 type: task
 title: run 0.3.8 prepublish dry-run evidence and close goal
-status: todo
+status: done
 priority: 1
 epic: epic-116
 parent: goal-23
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-06-21
-updated: 2026-06-21
+updated: 2026-06-25
 ---
 # Overview
 
