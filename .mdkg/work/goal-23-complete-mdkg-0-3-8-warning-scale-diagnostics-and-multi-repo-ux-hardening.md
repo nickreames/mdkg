@@ -2,9 +2,9 @@
 id: goal-23
 type: goal
 title: Complete mdkg 0.3.8 warning-scale diagnostics and multi-repo UX hardening
-status: blocked
+status: progress
 priority: 1
-goal_state: paused
+goal_state: active
 goal_condition: 0.3.8 is dry-run publish ready for warning-scale diagnostics and multi-repo UX hardening after bounded validation summaries, clean JSON receipts, strict-doctor/subgraph/handoff remediation guidance, safe multi-repo skills, and prepublish warning-scale automation are implemented and verified.
 scope_refs: [epic-113, epic-114, epic-115, epic-116, epic-117, spike-12, task-427, task-428, task-429, task-430, task-431, task-432, task-433, task-434, task-435, task-436, test-190, test-191, test-192, test-193, test-194, test-195]
 active_node: task-436
@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: [pursue-mdkg-goal, author-mdkg-skill, verify-close-and-checkpoint]
 created: 2026-06-21
-updated: 2026-06-21
+updated: 2026-06-25
 ---
 # Objective
 
