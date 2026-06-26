@@ -30,6 +30,29 @@ function json<T>(output: string): T {
   return JSON.parse(output) as T;
 }
 
+function updateFrontmatter(filePath: string, replacements: Record<string, string>): void {
+  const content = fs.readFileSync(filePath, "utf8");
+  const next = content.replace(/^---\n([\s\S]*?)\n---/, (_match, rawFrontmatter) => {
+    const seen = new Set<string>();
+    const lines = rawFrontmatter.split(/\r?\n/).map((line: string) => {
+      for (const [key, value] of Object.entries(replacements)) {
+        if (line.startsWith(`${key}:`)) {
+          seen.add(key);
+          return `${key}: ${value}`;
+        }
+      }
+      return line;
+    });
+    for (const [key, value] of Object.entries(replacements)) {
+      if (!seen.has(key)) {
+        lines.push(`${key}: ${value}`);
+      }
+    }
+    return `---\n${lines.join("\n")}\n---`;
+  });
+  fs.writeFileSync(filePath, next, "utf8");
+}
+
 function listFiles(dir: string): string[] {
   if (!fs.existsSync(dir)) {
     return [];
@@ -132,6 +155,85 @@ test("graph clone preserves IDs from a bundle into an empty target", () => {
   assert.equal(goal.item.title, "demo start goal");
   assert.equal(task.item.id, "task-1");
   assert.equal(task.item.title, "demo implementation task");
+});
+
+test("graph refs reports canonical manifest and legacy spec workflow relationships", () => {
+  const root = makeTempDir("mdkg-graph-manifest-refs-");
+  run(["init", "--agent"], root);
+  const manifest = json<{ node: { path: string } }>(
+    run(["new", "manifest", "Manifest Worker", "--id", "agent.manifest-worker", "--json"], root).stdout
+  ).node;
+  const manifestWork = json<{ node: { path: string } }>(
+    run([
+      "work",
+      "contract",
+      "new",
+      "Manifest Work",
+      "--id",
+      "work.manifest",
+      "--agent-id",
+      "agent.manifest-worker",
+      "--kind",
+      "analysis",
+      "--inputs",
+      "request:text:required",
+      "--outputs",
+      "result:text:required",
+      "--json",
+    ], root).stdout
+  ).node;
+  updateFrontmatter(path.join(root, manifest.path), {
+    work_contracts: `[${path.basename(path.dirname(manifestWork.path))}/WORK.md]`,
+    relates: "[work.manifest]",
+  });
+
+  const legacy = json<{ node: { path: string } }>(
+    run(["new", "spec", "Legacy Worker", "--id", "agent.legacy-worker", "--json"], root).stdout
+  ).node;
+  const legacyWork = json<{ node: { path: string } }>(
+    run([
+      "work",
+      "contract",
+      "new",
+      "Legacy Work",
+      "--id",
+      "work.legacy",
+      "--agent-id",
+      "agent.legacy-worker",
+      "--kind",
+      "analysis",
+      "--inputs",
+      "request:text:required",
+      "--outputs",
+      "result:text:required",
+      "--json",
+    ], root).stdout
+  ).node;
+  updateFrontmatter(path.join(root, legacy.path), {
+    work_contracts: `[${path.basename(path.dirname(legacyWork.path))}/WORK.md]`,
+    relates: "[work.legacy]",
+  });
+  run(["index"], root);
+
+  const manifestRefs = json<{
+    target: { type: string; path: string };
+    incoming: { relates: Array<{ node?: { qid: string; type: string; path: string } }> };
+    outgoing: { relates: Array<{ node?: { qid: string; type: string; path: string } }> };
+  }>(run(["graph", "refs", "agent.manifest-worker", "--json"], root).stdout);
+  assert.equal(manifestRefs.target.type, "manifest");
+  assert.equal(manifestRefs.target.path, ".mdkg/work/agent.manifest-worker-manifest-worker/MANIFEST.md");
+  assert.ok(manifestRefs.incoming.relates.some((ref) => ref.node?.qid === "root:work.manifest"));
+  assert.ok(manifestRefs.outgoing.relates.some((ref) => ref.node?.qid === "root:work.manifest"));
+
+  const legacyRefs = json<{
+    target: { type: string; path: string };
+    incoming: { relates: Array<{ node?: { qid: string; type: string; path: string } }> };
+    outgoing: { relates: Array<{ node?: { qid: string; type: string; path: string } }> };
+  }>(run(["graph", "refs", "agent.legacy-worker", "--json"], root).stdout);
+  assert.equal(legacyRefs.target.type, "spec");
+  assert.equal(legacyRefs.target.path, ".mdkg/work/agent.legacy-worker-legacy-worker/SPEC.md");
+  assert.ok(legacyRefs.incoming.relates.some((ref) => ref.node?.qid === "root:work.legacy"));
+  assert.ok(legacyRefs.outgoing.relates.some((ref) => ref.node?.qid === "root:work.legacy"));
 });
 
 test("graph fork preserves IDs from a directory and selects the requested start goal", () => {

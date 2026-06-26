@@ -2,7 +2,7 @@
 id: test-293
 type: test
 title: manifest pack graph refs work trigger and legacy ref compatibility contract
-status: todo
+status: done
 priority: 1
 epic: epic-196
 parent: goal-37
@@ -20,7 +20,7 @@ aliases: [manifest-pack-work-trigger-contract, legacy-spec-ref-pack-contract]
 skills: []
 cases: [pack-manifest, pack-legacy-spec, work-trigger-manifest, work-trigger-spec, graph-refs-manifest]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 
@@ -49,7 +49,19 @@ legacy spec.
 
 # Results / Evidence
 
-Pending implementation.
+- PASS: `node --test dist/tests/pack/pack.test.js` verifies canonical
+  `MANIFEST.md` and legacy `SPEC.md` records are included through pack
+  traversal from related work nodes.
+- PASS: `node --test dist/tests/commands/graph.test.js` verifies
+  `mdkg graph refs` reports inbound/outbound relationships for canonical
+  manifests and legacy specs.
+- PASS: `node --test dist/tests/commands/archive_work.test.js` verifies direct
+  work triggers, canonical manifest triggers, legacy spec triggers, and
+  manifest-first missing/ambiguous contract errors.
+- PASS: `npm run smoke:bundle`, `npm run smoke:subgraph`, and
+  `npm run smoke:visibility`.
+- PASS: direct temp-repo `mdkg pack work.pack-manifest --format json --out ...`
+  receipt contained the canonical `MANIFEST.md` node.
 
 # Notes / Follow-ups
 

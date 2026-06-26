@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: mdkg treats MANIFEST.md as the canonical Omni semantic file for reusable capability, agent, runtime, and project manifests while preserving SPEC.md as an explicit legacy alias for one compatibility release, with validation, indexing, search, pack, CLI scaffold, docs, skills, fixtures, and release gates proving both canonical and legacy behavior.
 scope_refs: [epic-194, epic-195, epic-196, epic-197, epic-198, task-573, task-574, task-575, task-576, task-577, task-578, task-579, task-580, task-581, task-582, task-583, task-584, test-289, test-290, test-291, test-292, test-293, test-294, test-295, test-296]
-active_node: task-578
+active_node: task-579
 required_skills: [pursue-mdkg-goal, select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, rg -n "SPEC\\.md|MANIFEST\\.md|type: spec|type: manifest|OmniFileKind|WORK_ORDER\\.md|WORK\\.md|manifest" src tests docs .mdkg README.md CLI_COMMAND_MATRIX.md, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run smoke:capabilities, npm run smoke:archive-work, npm run smoke:bundle, npm run smoke:subgraph, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js capability search "MANIFEST.md legacy SPEC.md" --json, node dist/cli.js pack task-573 --profile concise --dry-run --stats, git diff --check]
 max_iterations: 25
