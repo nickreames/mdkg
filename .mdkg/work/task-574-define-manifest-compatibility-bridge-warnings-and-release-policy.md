@@ -2,7 +2,7 @@
 id: task-574
 type: task
 title: define MANIFEST compatibility bridge warnings and release policy
-status: todo
+status: done
 priority: 1
 epic: epic-194
 parent: goal-37
@@ -14,7 +14,7 @@ artifacts: []
 relates: []
 blocked_by: []
 blocks: []
-refs: [edd-54, dec-26, task-276]
+refs: [edd-54, dec-50, dec-26, task-276]
 context_refs: []
 evidence_refs: []
 aliases: [manifest-compatibility-bridge, spec-deprecation-policy, manifest-release-policy]
@@ -58,6 +58,25 @@ names, warning text, transitional frontmatter, and release-window expectations.
   compatibility release closes.`
 - Do not use "spec" as the primary noun in new public docs unless describing
   the legacy bridge.
+
+# Policy Evidence
+
+- `dec-50` is accepted and records the selected bridge policy.
+- Canonical command family: `mdkg manifest ...`.
+- Legacy command family: `mdkg spec ...` remains for one compatibility release
+  as an alias with manifest-first output and deprecation labeling.
+- Legacy file warning text:
+  `SPEC.md is legacy; MANIFEST.md is the canonical manifest filename. Rename
+  this file before the compatibility release closes.`
+- Transitional frontmatter warning text:
+  `MANIFEST.md uses legacy type: spec; use type: manifest before the
+  compatibility release closes.`
+- `MANIFEST.md` plus sibling `SPEC.md` in the same logical Omni unit is a
+  validation error, not a warning.
+- Compatibility window: one compatibility release after canonical MANIFEST
+  support ships.
+- Source behavior is intentionally deferred to the next implementation tasks;
+  this node only removes policy ambiguity.
 
 # Test Plan
 
