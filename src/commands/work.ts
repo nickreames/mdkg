@@ -540,6 +540,10 @@ function workflowDiagnosticCode(message: string): string {
   if (message.includes("missing recommended heading")) {
     return "heading.missing";
   }
+  const manifestCompatMatch = /manifest\.compat\.([a-z_]+)/.exec(message);
+  if (manifestCompatMatch) {
+    return `manifest.compat.${manifestCompatMatch[1]}`;
+  }
   if (message.includes("references missing") || message.includes("references missing node")) {
     return "reference.missing";
   }

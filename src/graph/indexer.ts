@@ -7,6 +7,7 @@ import { EdgeMap } from "./edges";
 import { listWorkspaceDocFilesByAlias } from "./workspace_files";
 import { validateGraph } from "./validate_graph";
 import { loadTemplateSchemas } from "./template_schema";
+import { collectManifestSiblingConflicts } from "./agent_file_types";
 
 export type IndexNode = {
   id: string;
@@ -112,6 +113,12 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
   for (const alias of workspaceAliases) {
     idsByWorkspace[alias] = new Set();
     const files = docFilesByAlias[alias];
+    const manifestConflicts = collectManifestSiblingConflicts(files, (dirPath) =>
+      path.relative(root, dirPath).split(path.sep).join("/") || "."
+    );
+    if (manifestConflicts.length > 0 && !tolerant) {
+      throw new Error(manifestConflicts[0]);
+    }
     for (const filePath of files) {
       if (path.basename(filePath) === "core.md" && path.basename(path.dirname(filePath)) === "core") {
         continue;

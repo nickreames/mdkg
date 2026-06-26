@@ -133,7 +133,12 @@ function writeSpecWithKind(root: string, specKind: string, id?: string): string 
   return specPath;
 }
 
-function writeManifestWithKind(root: string, manifestKind: string, id?: string): string {
+function writeManifestWithKind(
+  root: string,
+  manifestKind: string,
+  id?: string,
+  frontmatterType = "manifest"
+): string {
   const normalizedId = id ?? `manifest.${manifestKind.replace(/_/g, "-")}`;
   const manifestPath = path.join(root, ".mdkg", "work", normalizedId, "MANIFEST.md");
   writeFile(
@@ -141,7 +146,7 @@ function writeManifestWithKind(root: string, manifestKind: string, id?: string):
     [
       "---",
       `id: ${normalizedId}`,
-      "type: manifest",
+      `type: ${frontmatterType}`,
       `title: ${manifestKind} fixture`,
       "version: 0.1.0",
       `spec_kind: ${manifestKind}`,
@@ -185,6 +190,57 @@ function writeManifestWithKind(root: string, manifestKind: string, id?: string):
     ].join("\n")
   );
   return manifestPath;
+}
+
+function writeManifestSemanticDocument(filePath: string, id: string, type: "manifest" | "spec"): void {
+  writeFile(
+    filePath,
+    [
+      "---",
+      `id: ${id}`,
+      `type: ${type}`,
+      "title: Duplicate Bridge Fixture",
+      "version: 0.1.0",
+      "spec_kind: agent",
+      "role: tool_service",
+      "runtime_mode: tool_service",
+      "work_contracts: []",
+      "requested_capabilities: []",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
+      "resource_profile: builder",
+      "update_policy: manual",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-25",
+      "updated: 2026-06-25",
+      "---",
+      "# Purpose",
+      "",
+      "Fixture reusable capability surface.",
+      "",
+      "# Runtime",
+      "",
+      "Tool service runtime.",
+      "",
+      "# Work Contracts",
+      "",
+      "No work contracts in this fixture.",
+      "",
+      "# Capabilities",
+      "",
+      "No requested capabilities in this fixture.",
+    ].join("\n")
+  );
 }
 
 function writeWorkOrderValidationFixture(
@@ -504,6 +560,63 @@ test("validate accepts canonical MANIFEST files as manifest semantic records", (
   assert.equal(receipt.items[0].node_type, "manifest");
   assert.equal(receipt.items[0].path, ".mdkg/work/agent.manifest-worker/MANIFEST.md");
   assert.equal(receipt.items[0].spec.spec_kind, "agent");
+});
+
+test("validate warns for legacy SPEC files during the compatibility release", () => {
+  const root = makeTempDir("mdkg-agent-legacy-spec-warning-");
+  setupWorkspace(root);
+  writeSpecWithKind(root, "agent", "agent.legacy-worker");
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.error_count, 0);
+  assert.equal(receipt.warning_count, 1);
+  assert.equal(receipt.warning_diagnostics[0].id, "manifest.compat.spec_legacy");
+  assert.match(receipt.warnings[0], /SPEC\.md is legacy; MANIFEST\.md is the canonical manifest filename/);
+});
+
+test("validate warns for transitional MANIFEST files using legacy type spec", () => {
+  const root = makeTempDir("mdkg-agent-transitional-manifest-");
+  setupWorkspace(root);
+  writeManifestWithKind(root, "agent", "agent.transitional-worker", "spec");
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+  assert.equal(receipt.ok, true);
+  assert.equal(receipt.error_count, 0);
+  assert.equal(receipt.warning_count, 1);
+  assert.equal(receipt.warning_diagnostics[0].id, "manifest.compat.type_spec");
+  assert.match(receipt.warnings[0], /MANIFEST\.md uses legacy type: spec; use type: manifest/);
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.nodes["root:agent.transitional-worker"].type, "spec");
+  assert.equal(index.nodes["root:agent.transitional-worker"].path, ".mdkg/work/agent.transitional-worker/MANIFEST.md");
+});
+
+test("validate rejects sibling MANIFEST and SPEC files in one logical unit", () => {
+  const root = makeTempDir("mdkg-agent-manifest-spec-duplicate-");
+  setupWorkspace(root);
+  const unitDir = path.join(root, ".mdkg", "work", "agent-duplicate");
+  writeManifestSemanticDocument(path.join(unitDir, "MANIFEST.md"), "agent.duplicate-manifest", "manifest");
+  writeManifestSemanticDocument(path.join(unitDir, "SPEC.md"), "agent.duplicate-spec", "spec");
+
+  const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+  assert.equal(receipt.ok, false);
+  assert.ok(
+    receipt.errors.some((error: string) =>
+      error.includes(".mdkg/work/agent-duplicate") &&
+      error.includes("MANIFEST.md and SPEC.md cannot both exist")
+    )
+  );
+
+  const config = loadConfig(root);
+  assert.throws(
+    () => buildIndex(root, config),
+    /MANIFEST\.md and SPEC\.md cannot both exist/
+  );
 });
 
 test("validate accepts all allowed SPEC spec_kind values", () => {
