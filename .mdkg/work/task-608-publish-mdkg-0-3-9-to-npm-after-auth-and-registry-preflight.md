@@ -2,7 +2,7 @@
 id: task-608
 type: task
 title: publish mdkg 0.3.9 to npm after auth and registry preflight
-status: todo
+status: done
 priority: 1
 parent: goal-43
 tags: [release, 0.3.9, npm, publish]

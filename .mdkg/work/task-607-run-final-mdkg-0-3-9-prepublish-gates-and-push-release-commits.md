@@ -2,7 +2,7 @@
 id: task-607
 type: task
 title: run final mdkg 0.3.9 prepublish gates and push release commits
-status: todo
+status: done
 priority: 1
 parent: goal-43
 tags: [release, 0.3.9, prepublish, push]
