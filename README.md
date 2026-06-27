@@ -622,7 +622,7 @@ This release includes:
 - root-only published init seed config
 - skills indexing and search/show/list support
 - JSON capability cache for skills, `MANIFEST.md` / legacy `SPEC.md`, `WORK.md`, core docs, and design docs
-- optional `mdkg spec list/show/validate` for reusable SPEC capability records
+- optional `mdkg manifest list/show/validate` for reusable manifest capability records, with `mdkg spec ...` retained as a legacy alias for one compatibility release
 - SQLite index backend for fresh workspaces using built-in `node:sqlite`
 - mutation locking and atomic writes for parallel mdkg calls
 - first-class `goal` nodes and `mdkg goal show/next/evaluate/pause/resume/done`

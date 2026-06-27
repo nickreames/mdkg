@@ -1,6 +1,6 @@
 ---
 name: author-mdkg-skill
-description: Create or update an mdkg SKILL.md or SPEC.md when a repeatable workflow, capability, agent, tool, runtime, API, or projection contract should become durable mdkg-authored knowledge.
+description: Create or update an mdkg SKILL.md or MANIFEST.md when a repeatable workflow, capability, agent, tool, runtime, API, or projection contract should become durable mdkg-authored knowledge.
 tags: [stage:plan, writer:orchestrator, mdkg, skills, authoring]
 version: 0.2.0
 authors: [mdkg]
@@ -9,7 +9,7 @@ links: [AGENT_START.md, CLI_COMMAND_MATRIX.md, .mdkg/design/edd-5-mdkg-skills-in
 
 # Goal
 
-Create or update focused mdkg-authored SKILL.md and SPEC.md assets that make
+Create or update focused mdkg-authored SKILL.md and MANIFEST.md assets that make
 repeatable workflows and durable capabilities explicit without creating
 duplicated procedures or projection-only behavior.
 
@@ -19,9 +19,9 @@ duplicated procedures or projection-only behavior.
 - When an existing skill no longer matches the current command surface or docs
 - When a builder asks to codify a procedure for future humans or agents
 - When a capability, agent, tool, runtime image, API, model, or integration
-  needs a durable SPEC before it is projected into a runtime-specific config
+  needs a durable MANIFEST before it is projected into a runtime-specific config
 - When `.codex/agents` or another projection surface contains behavior that
-  should be mirrored into durable mdkg/SPEC/SKILL state
+  should be mirrored into durable mdkg/MANIFEST/SKILL state
 
 ## Inputs
 
@@ -47,11 +47,11 @@ For SKILL.md output, include:
 - Closeout evidence
 - Failure modes
 - Safety rules
-- Related SPECs
+- Related manifests
 - Projection targets
 - Open questions
 
-For SPEC.md output, include:
+For MANIFEST.md output, include:
 
 - Identity
 - Purpose
@@ -77,7 +77,7 @@ For SPEC.md output, include:
 
 1. Check for an existing fit first with `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>`.
 2. If an existing skill already covers the workflow, update it instead of creating a near-duplicate.
-3. If a SPEC already covers the capability, update that SPEC or create a
+3. If a manifest already covers the capability, update that MANIFEST or create a
    repair task instead of adding behavior only to a projection file.
 4. Use existing templates from `.mdkg/templates/skills/` and
    `.mdkg/templates/specs/` before proposing a new template family.
@@ -92,10 +92,10 @@ For SPEC.md output, include:
 9. Keep the body concise and procedural; move detailed reference material into
    `references/` only when needed.
 10. Distinguish durable source from projection:
-    mdkg/SPEC/SKILL is source; `.codex/agents`, future runtime manifests, and
+    mdkg/MANIFEST/SKILL is source; `.codex/agents`, future runtime manifests, and
     protocol resources are projections.
 11. Add validation checks and closeout evidence to every authored or revised
-    SKILL/SPEC.
+    SKILL/MANIFEST.
 12. If input is incomplete, create repair tasks instead of guessing.
 13. Validate the new or updated skill with `mdkg skill validate <slug>`.
 14. If the skill changes the public workflow, update `AGENT_START.md`,
@@ -108,7 +108,7 @@ For SPEC.md output, include:
 ## Outputs
 
 - One valid `SKILL.md` using the mdkg canonical section shape
-- One valid `SPEC.md` when the work is a durable capability, agent, project,
+- One valid `MANIFEST.md` when the work is a durable capability, agent, project,
   tool, runtime, API, model, or integration contract
 - Any needed `references/`, `assets/`, or opt-in `scripts/` scaffolding
 - Updated docs and registry entries when the workflow surface changed
@@ -129,13 +129,14 @@ For SPEC.md output, include:
 - `.mdkg/skills/<slug>/SKILL.md`
 - `.mdkg/templates/skills/`
 - `.mdkg/templates/specs/`
-- relevant `SPEC.md` nodes or template files
+- relevant `MANIFEST.md` nodes or template files, with legacy `SPEC.md`
+  references retained only for compatibility
 - `.agents/skills/` and `.claude/skills/` only through `mdkg skill sync`
 
 ## Validation Checks
 
 - `mdkg skill validate <slug>`
-- `mdkg capability search "<skill or spec concept>" --json`
+- `mdkg capability search "<skill or manifest concept>" --json`
 - `mdkg validate`
 - Template coverage check when template files are changed
 - Projection validation report when `.codex/agents` or another projection
@@ -143,7 +144,7 @@ For SPEC.md output, include:
 
 ## Closeout Evidence
 
-- Changed skill or SPEC paths
+- Changed skill or MANIFEST paths
 - Checks run and results
 - Related mdkg nodes
 - Projection targets reviewed
@@ -163,7 +164,7 @@ For SPEC.md output, include:
 - Do not export secrets, provider credentials, raw auth state, production
   controls, wallet/ledger state, or local-only user paths into templates or
   projections.
-- Do not create a skill-factory-agent until SKILL/SPEC templates and projection
+- Do not create a skill-factory-agent until SKILL/MANIFEST templates and projection
   doctrine are stable.
 - Optional `draft_uri` fields are future-facing hints, not finalized protocol
   semantics. Use generic examples such as `capability://repo.inspect` or
@@ -176,17 +177,17 @@ For SPEC.md output, include:
 - If the trigger or writer role is unclear, stop and resolve that before authoring the skill.
 - If multiple skills overlap, merge or narrow them instead of creating redundant procedures.
 - If the workflow still feels too broad, split it into smaller skills before finalizing.
-- If durable behavior exists only in a projection file, create or update a SPEC
+- If durable behavior exists only in a projection file, create or update a MANIFEST
   and record projection repair work.
 - If a requested template family is missing, propose a template backlog task
   before inventing a one-off shape.
 - If validation cannot run, record the exact blocker and keep the work open.
 
-## Related SPECs
+## Related Manifests
 
-- Future `agent.*` SPECs for Codex and runtime agents
-- Future capability, tool, model, runtime image, integration, and API SPECs
-- Root/child project SPECs discovered through mdkg capability search
+- Future `agent.*` manifests for Codex and runtime agents
+- Future capability, tool, model, runtime image, integration, and API manifests
+- Root/child project manifests discovered through mdkg capability search
 
 ## Projection Targets
 
@@ -197,8 +198,8 @@ For SPEC.md output, include:
 
 ## Open Questions
 
-- Which SPEC template families should be promoted into public seeded assets
+- Which MANIFEST template families should be promoted into public seeded assets
   first?
 - Which projection fields should be generated versus manually maintained?
-- What validation command should become the canonical SPEC template coverage
+- What validation command should become the canonical MANIFEST template coverage
   check?
