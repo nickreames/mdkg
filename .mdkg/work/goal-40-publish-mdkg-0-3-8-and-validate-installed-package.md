@@ -2,12 +2,12 @@
 id: goal-40
 type: goal
 title: Publish mdkg 0.3.8 and validate installed package
-status: blocked
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: mdkg 0.3.8 is published only after the SPEC.md to MANIFEST.md upgrade migration is implemented and proven, explicit publish approval is given, npm latest becomes 0.3.8, and an isolated tmp global install validates init, manifest capabilities, upgrade rename behavior, and graph health from the published package.
 scope_refs: [task-590, task-592, test-301, task-589, task-591, test-300]
-active_node: task-589
+last_active_node: task-589
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git fetch origin main, git rev-list --left-right --count origin/main...HEAD, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.3.8 version --registry=https://registry.npmjs.org/, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, after explicit approval npm publish --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, NPM_CONFIG_PREFIX=/private/tmp/mdkg-0.3.8-global npm install -g mdkg@latest --registry=https://registry.npmjs.org/, /private/tmp/mdkg-0.3.8-global/bin/mdkg --version, /private/tmp/mdkg-0.3.8-global/bin/mdkg validate --json, git diff --check]
 max_iterations: 25
@@ -21,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: [goal-37, goal-39, chk-280]
 context_refs: [dec-50, edd-54, goal-37, goal-39, chk-280]
-evidence_refs: []
+evidence_refs: [chk-282]
 aliases: [publish-0-3-8, post-publish-0-3-8, npm-0-3-8-validation, manifest-upgrade-publish-gate]
 skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-06-26
@@ -153,9 +153,8 @@ This goal is achieved when:
     `type: manifest`;
   - sibling `MANIFEST.md` conflicts are blocking and non-destructive;
   - temp proof at `/private/tmp/mdkg-upgrade-spec-proof` validates cleanly.
-- Remaining goal work starts at `task-589`: final pre-publish gate, explicit
-  approval for public side effects, real npm publish, and post-publish isolated
-  tmp global install validation.
+- `task-589`, `task-591`, and `test-300` completed the approved publish and
+  post-publish validation phase. The closeout receipt is `chk-282`.
 
 # Iteration Log
 
@@ -171,18 +170,29 @@ This goal is achieved when:
 
 # Completion Evidence
 
-- Not complete yet. Partial evidence:
-  - `task-590` is done with runtime handoff artifact
-    `.mdkg/handoffs/runtime-manifest-0-3-8-upgrade-megaprompt.md`.
-  - `task-592` is done after source implementation and verification.
-  - `test-301` is done after unit, smoke, full-test, and temp CLI proof.
-  - PASS: `npm run test` with 521 passing tests and 0 failures.
-  - PASS: `npm run smoke:upgrade`.
-  - PASS: `npm run cli:check`.
-  - PASS: `npm run cli:contract`.
-  - PASS: `npm run docs:check`.
-  - PASS: `node scripts/assert-publish-ready.js`.
-  - PASS: `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run
-    --json` for `mdkg-0.3.8.tgz` with 174 entries.
-  - Publication, npm latest verification, isolated installed-package
-    validation, and goal closeout checkpoint remain pending.
+- PASS: `task-590` produced the runtime handoff artifact
+  `.mdkg/handoffs/runtime-manifest-0-3-8-upgrade-megaprompt.md`.
+- PASS: `task-592` and `test-301` implemented and proved safe legacy
+  `SPEC.md` to `MANIFEST.md` upgrade migration behavior.
+- PASS: pre-publish release gate passed with `npm run test` reporting 521
+  passing tests, plus `npm run smoke:upgrade`, `npm run cli:check`, `npm run
+  cli:contract`, `npm run docs:check`, `node scripts/assert-publish-ready.js`,
+  `npm pack --dry-run --json`, and final `npm publish --dry-run`.
+- PASS: human approval authorized public side effects in the execution turn.
+- PASS: `git push origin main` put
+  `13b8fb2a49dc5fe667893ae2ea49ffa37a4de2cc` on `origin/main` before publish.
+- PASS: real `npm publish --registry=https://registry.npmjs.org/` completed
+  and published `mdkg@0.3.8`.
+- PASS: post-publish registry checks show npm latest `0.3.8`, dist-tag
+  `latest: 0.3.8`, tarball
+  `https://registry.npmjs.org/mdkg/-/mdkg-0.3.8.tgz`, shasum
+  `0ace673026344fffea616ca793144d9a07f81382`, and integrity
+  `sha512-A1g5+OXHtaQSVmF3m0xU+89dRy+u8FAwG7pzSUvzBiG5yekGzeNuUwHb3SIS1aPoJrUKoJSkEJXiekrMGwOMyQ==`.
+- PASS: isolated install validation used
+  `/private/tmp/mdkg-0.3.8-global/bin/mdkg` and
+  `/private/tmp/mdkg-0.3.8-postpublish/workspace`; the installed binary
+  reported `0.3.8`, created canonical `MANIFEST.md` records, migrated a
+  legacy `SPEC.md` fixture, and ended with installed `mdkg validate --json`
+  and `mdkg status --json` clean.
+- PASS: closeout checkpoint `chk-282` records bounded evidence without raw
+  credentials, raw prompts, raw payloads, or bulky logs.
