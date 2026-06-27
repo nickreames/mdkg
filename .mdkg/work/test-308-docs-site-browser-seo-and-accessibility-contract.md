@@ -54,6 +54,11 @@ Run local builds/servers or approved preview URLs during launch validation.
   source-current; see `chk-302`.
 - Read-only Vercel metadata explained the currentness gap as production
   deployments built from an older pushed commit; see `chk-303`.
+- A refreshed read-only fetch of `origin/main`, `https://mdkg.dev/`, and
+  `https://docs.mdkg.dev/project/changelog/` still shows the same blocker:
+  local `main` is ahead of `origin/main` by 6, mdkg.dev still reports
+  `softwareVersion: "0.3.7"`, and the live docs changelog still lacks
+  release-card/grid markers.
 - This test must remain open until an explicitly approved push/redeploy
   completes and live mdkg.dev/docs.mdkg.dev Browser or Chrome verification
   passes against current production.
