@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-602, task-603, task-605]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304]
 aliases: []
 skills: []
 cases: []
@@ -54,11 +54,14 @@ Run local builds/servers or approved preview URLs during launch validation.
   source-current; see `chk-302`.
 - Read-only Vercel metadata explained the currentness gap as production
   deployments built from an older pushed commit; see `chk-303`.
+- Read-only goal-42 readiness audit found the same exact gaps and added
+  Product Design plus Browser evidence; see `chk-304`.
 - A refreshed read-only fetch of `origin/main`, `https://mdkg.dev/`, and
-  `https://docs.mdkg.dev/project/changelog/` still shows the same blocker:
-  local `main` is ahead of `origin/main` by 6, mdkg.dev still reports
-  `softwareVersion: "0.3.7"`, and the live docs changelog still lacks
-  release-card/grid markers.
+  `https://docs.mdkg.dev/project/changelog/` after commit `5eccba7` still
+  shows the same blocker: local `main` is ahead of `origin/main` by 8,
+  mdkg.dev still reports `softwareVersion: "0.3.7"` with no 0.3.9
+  customization markers, and the live docs changelog still lacks
+  release-card/grid and `.mdkg/config.json` markers.
 - This test must remain open until an explicitly approved push/redeploy
   completes and live mdkg.dev/docs.mdkg.dev Browser or Chrome verification
   passes against current production.
