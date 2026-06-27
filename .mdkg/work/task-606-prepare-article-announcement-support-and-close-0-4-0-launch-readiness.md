@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -36,12 +36,14 @@ evidence.
   payload.
 - Full package pre-publish gates, npm pack dry-run, and npm publish dry-run
   pass before any ready recommendation.
+- Public deploy verification proves mdkg.dev and docs.mdkg.dev are live-current
+  for 0.3.9 capability facts before any 0.4.0 launch-ready recommendation.
 - A closeout checkpoint records public launch readiness, known boundaries, and
   any required follow-ups.
 - The closeout recommends either `publish/launch ready pending explicit
   approval` or lists exact remaining gaps.
-- No real npm publish, tag, push, deploy, DNS, or analytics mutation happens
-  unless explicitly approved in that execution pass.
+- No real `0.4.0` npm publish, tag, push, deploy, DNS, or analytics mutation
+  happens unless explicitly approved in that execution pass.
 
 # Files Affected
 
@@ -70,6 +72,9 @@ evidence.
 - `node scripts/assert-publish-ready.js`
 - `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
 - `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/`
+- Product Design audit receipt
+- Browser local desktop/mobile receipts
+- Chrome live production verification receipts
 - `git diff --check`
 - `test-311`
 - `test-312`

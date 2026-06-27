@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -37,6 +37,8 @@ Run after release notes page implementation.
 # Test Cases
 
 - Each public release card maps to a changelog version/date.
+- Published `0.3.9` capabilities appear in release notes/changelog surfaces,
+  not only in internal or source-only notes.
 - Detail pages or sections include the correct compatibility notes.
 - Publish-bound changes are not left only under `Unreleased`.
 - Docs/site builds pass.

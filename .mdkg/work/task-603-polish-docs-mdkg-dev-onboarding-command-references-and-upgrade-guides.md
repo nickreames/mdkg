@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task]
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -32,6 +32,11 @@ the current CLI and the `0.3.9` customization model.
 - Docs explain arbitrary skill mirror paths while preserving canonical
   `.mdkg/skills/`.
 - Docs cover `COLLABORATION.md` as canonical with `HUMAN.md` as a legacy alias.
+- Docs explain 0.3.9 MANIFEST/SPEC and COLLABORATION/HUMAN compatibility
+  bridges in task-oriented upgrade language.
+- The source docs and live `docs.mdkg.dev/project/changelog/` expose 0.3.9
+  capabilities with more than a one-line mention before launch-ready
+  recommendation.
 - Command examples pass the docs command checker.
 
 # Files Affected
@@ -50,6 +55,8 @@ the current CLI and the `0.3.9` customization model.
 - `npm --prefix docs run build`
 - `npm run docs:check`
 - `npm run smoke:mdkg-dev-docs`
+- Browser local desktop/mobile docs verification and Chrome live docs
+  verification in `task-605`
 - `test-308`
 
 # Links / Artifacts

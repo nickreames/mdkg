@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -37,6 +37,9 @@ Run local builds/servers or approved preview URLs during launch validation.
 # Test Cases
 
 - Desktop and mobile browser checks pass for key launch pages.
+- Product Design audit findings are reconciled with the final page structure.
+- Chrome or Browser live checks prove deployed mdkg.dev and docs.mdkg.dev are
+  current after any approved deploy or promotion.
 - SEO smoke passes for canonical routes, sitemap/robots/llms text, and metadata.
 - Accessibility and reduced-motion expectations pass.
 - No console errors or broken primary navigation.

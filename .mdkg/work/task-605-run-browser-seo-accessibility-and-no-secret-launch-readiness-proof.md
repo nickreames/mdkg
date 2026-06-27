@@ -9,7 +9,7 @@ parent: goal-42
 tags: [0.4.0, browser, seo, a11y, no-secrets, launch-proof]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs]
 relates: []
 blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
@@ -19,16 +19,22 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
-Run final local/browser launch-readiness proof for mdkg.dev and docs.mdkg.dev.
+Run final Product Design, local Browser, live Chrome/Browser, SEO,
+accessibility, and no-secret launch-readiness proof for mdkg.dev and
+docs.mdkg.dev.
 
 # Acceptance Criteria
 
 - Marketing and docs builds pass.
-- Browser desktop/mobile checks cover key public launch pages.
+- Product Design audit findings are reviewed, addressed, or explicitly accepted.
+- Browser desktop/mobile checks cover key local public launch pages.
+- Chrome or Browser live checks prove deployed mdkg.dev and docs.mdkg.dev
+  reflect current 0.3.9/0.4.0 source-backed requirements, including structured
+  version metadata and changelog/release-notes freshness.
 - SEO, accessibility, and no-secret checks pass.
 - Screenshots/receipts are reviewed before any archive or checkpoint reference.
 
@@ -39,8 +45,12 @@ Run final local/browser launch-readiness proof for mdkg.dev and docs.mdkg.dev.
 
 # Implementation Notes
 
-- Do not include private provider UI or secrets in artifacts.
+- Do not include private provider UI, deployment tokens, npm auth state, or
+  secrets in artifacts.
 - Treat deploy/DNS/public launch as separate approval boundaries.
+- Prefer a local temp artifact folder for Product Design and browser evidence;
+  commit only mdkg checkpoint summaries unless a later task explicitly approves
+  archived artifacts.
 
 # Test Plan
 
@@ -50,6 +60,8 @@ Run final local/browser launch-readiness proof for mdkg.dev and docs.mdkg.dev.
 - `npm run smoke:mdkg-dev-docs`
 - `npm run smoke:mdkg-dev-seo`
 - Browser desktop/mobile E2E receipts
+- Product Design audit receipt
+- Chrome live production verification receipt
 - `test-308`
 - `test-310`
 

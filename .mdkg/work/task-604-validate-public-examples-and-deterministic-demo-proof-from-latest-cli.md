@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task]
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -29,7 +29,8 @@ CLI before the public launch claim is made.
 # Acceptance Criteria
 
 - Public examples initialize and validate from the latest local package or
-  installed package appropriate for the release gate.
+  installed package appropriate for the release gate, including `mdkg@0.3.9`
+  where the launch claim depends on published behavior.
 - Demo proof uses deterministic commands and bounded artifacts.
 - Claims made on mdkg.dev/docs are backed by example evidence.
 

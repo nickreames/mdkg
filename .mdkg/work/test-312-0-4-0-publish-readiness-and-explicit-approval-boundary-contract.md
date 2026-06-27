@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -48,8 +48,8 @@ known and recorded.
   gates pass before any ready recommendation.
 - Final closeout recommends either `publish/launch ready pending explicit
   approval` or lists exact remaining gaps.
-- No real npm publish, git tag, push, deploy, DNS, analytics, or downstream repo
-  mutation occurs without explicit approval.
+- No real `0.4.0` npm publish, git tag, push, deploy, DNS, analytics, or
+  downstream repo mutation occurs without explicit approval.
 
 # Results / Evidence
 
