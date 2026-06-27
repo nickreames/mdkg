@@ -334,6 +334,12 @@ function writeTemplates(root: string): void {
       "runtime_mode: tool_service",
       "work_contracts: []",
       "requested_capabilities: []",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
       "resource_profile: local_cli",
       "update_policy: manual",
       "tags: []",
@@ -357,6 +363,12 @@ function writeTemplates(root: string): void {
       "kind: generic",
       "pricing_model: quoted",
       "required_capabilities: [capability.example]",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
       "inputs: [request:text:required]",
       "outputs: [result:text:required]",
       "receipt_required: true",
@@ -617,6 +629,93 @@ function writeNode(root: string, options: NodeOptions): void {
   writeFile(path.join(root, ".mdkg", area, `${options.id}.md`), lines.join("\n"));
 }
 
+function writeManifestWorkflow(root: string, options: {
+  id: string;
+  basename: "MANIFEST.md" | "SPEC.md";
+  type: "manifest" | "spec";
+  workId: string;
+  workDir: string;
+}): void {
+  const dir = path.join(root, ".mdkg", "work", options.id);
+  writeFile(
+    path.join(dir, options.basename),
+    [
+      "---",
+      `id: ${options.id}`,
+      `type: ${options.type}`,
+      `title: ${options.id}`,
+      "version: 0.1.0",
+      "spec_kind: capability",
+      "role: tool_service",
+      "runtime_mode: tool_service",
+      `work_contracts: [${options.workDir}/WORK.md]`,
+      "requested_capabilities: [capability.example]",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
+      "resource_profile: local_cli",
+      "update_policy: manual",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      `relates: [${options.workId}]`,
+      "refs: []",
+      "aliases: []",
+      "created: 2026-01-06",
+      "updated: 2026-01-06",
+      "---",
+      "",
+      "# Purpose",
+      "",
+      "Reusable capability surface.",
+    ].join("\n")
+  );
+}
+
+function writeWorkflowWork(root: string, options: { id: string; agentId: string; workDir: string }): void {
+  writeFile(
+    path.join(root, ".mdkg", "work", options.agentId, options.workDir, "WORK.md"),
+    [
+      "---",
+      `id: ${options.id}`,
+      "type: work",
+      `title: ${options.id}`,
+      "version: 0.1.0",
+      `agent_id: ${options.agentId}`,
+      "kind: generic",
+      "pricing_model: quoted",
+      "required_capabilities: [capability.example]",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
+      "inputs: [request:text:required]",
+      "outputs: [result:text:required]",
+      "receipt_required: true",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      `relates: [${options.agentId}]`,
+      "refs: []",
+      "aliases: []",
+      "created: 2026-01-06",
+      "updated: 2026-01-06",
+      "---",
+      "",
+      "# Work",
+      "",
+      "Work contract.",
+    ].join("\n")
+  );
+}
+
 test("buildPack includes verbose core ids", () => {
   const root = makeTempDir("mdkg-pack-");
   writeConfig(root);
@@ -649,6 +748,60 @@ test("buildPack includes verbose core ids", () => {
     result.pack.nodes.map((node: { qid: string }) => node.qid),
     ["root:task-1", "root:feat-1", "root:epic-1", "root:rule-1", "root:prd-1"]
   );
+});
+
+test("buildPack traverses canonical manifest and legacy spec workflow refs", () => {
+  const root = makeTempDir("mdkg-pack-manifest-refs-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeManifestWorkflow(root, {
+    id: "agent.manifest-worker",
+    basename: "MANIFEST.md",
+    type: "manifest",
+    workId: "work.manifest",
+    workDir: "manifest-work",
+  });
+  writeWorkflowWork(root, { id: "work.manifest", agentId: "agent.manifest-worker", workDir: "manifest-work" });
+  writeManifestWorkflow(root, {
+    id: "agent.legacy-worker",
+    basename: "SPEC.md",
+    type: "spec",
+    workId: "work.legacy",
+    workDir: "legacy-work",
+  });
+  writeWorkflowWork(root, { id: "work.legacy", agentId: "agent.legacy-worker", workDir: "legacy-work" });
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  const manifestPack = buildPack({
+    root,
+    index,
+    rootQid: "root:work.manifest",
+    depth: 1,
+    edges: ["relates"],
+    verbose: false,
+    maxNodes: 10,
+    verboseCoreListPath: path.join(root, ".mdkg", "core", "core.md"),
+    includeLatestCheckpoint: false,
+  });
+  const legacyPack = buildPack({
+    root,
+    index,
+    rootQid: "root:work.legacy",
+    depth: 1,
+    edges: ["relates"],
+    verbose: false,
+    maxNodes: 10,
+    verboseCoreListPath: path.join(root, ".mdkg", "core", "core.md"),
+    includeLatestCheckpoint: false,
+  });
+
+  const manifestNode = manifestPack.pack.nodes.find((node: { qid: string }) => node.qid === "root:agent.manifest-worker");
+  assert.equal(manifestNode?.type, "manifest");
+  assert.equal(manifestNode?.path, ".mdkg/work/agent.manifest-worker/MANIFEST.md");
+  const legacyNode = legacyPack.pack.nodes.find((node: { qid: string }) => node.qid === "root:agent.legacy-worker");
+  assert.equal(legacyNode?.type, "spec");
+  assert.equal(legacyNode?.path, ".mdkg/work/agent.legacy-worker/SPEC.md");
 });
 
 test("buildPack traverses semantic context and evidence refs when requested", () => {
