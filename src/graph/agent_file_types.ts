@@ -3,6 +3,9 @@ import { FrontmatterValue } from "./frontmatter";
 import { isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, validatePortableOrUriRef } from "../util/refs";
 
+export const CANONICAL_MANIFEST_BASENAME = "MANIFEST.md";
+export const LEGACY_SPEC_BASENAME = "SPEC.md";
+
 export const AGENT_FILE_TYPES = [
   "manifest",
   "spec",
@@ -17,8 +20,8 @@ export const AGENT_FILE_TYPES = [
 export type AgentFileType = (typeof AGENT_FILE_TYPES)[number];
 
 export const AGENT_FILE_BASENAMES: Record<AgentFileType, string> = {
-  manifest: "MANIFEST.md",
-  spec: "SPEC.md",
+  manifest: CANONICAL_MANIFEST_BASENAME,
+  spec: LEGACY_SPEC_BASENAME,
   work: "WORK.md",
   work_order: "WORK_ORDER.md",
   receipt: "RECEIPT.md",
@@ -217,9 +220,40 @@ export function isManifestSemanticType(type: string): type is "manifest" | "spec
   return type === "manifest" || type === "spec";
 }
 
+export function collectManifestSiblingConflicts(
+  filePaths: string[],
+  formatDir: (dirPath: string) => string
+): string[] {
+  const basenamesByDir = new Map<string, Set<string>>();
+  for (const filePath of filePaths) {
+    const basename = path.basename(filePath);
+    if (basename !== CANONICAL_MANIFEST_BASENAME && basename !== LEGACY_SPEC_BASENAME) {
+      continue;
+    }
+    const dirPath = path.dirname(filePath);
+    const basenames = basenamesByDir.get(dirPath) ?? new Set<string>();
+    basenames.add(basename);
+    basenamesByDir.set(dirPath, basenames);
+  }
+
+  const conflicts: string[] = [];
+  for (const [dirPath, basenames] of Array.from(basenamesByDir.entries()).sort()) {
+    if (basenames.has(CANONICAL_MANIFEST_BASENAME) && basenames.has(LEGACY_SPEC_BASENAME)) {
+      conflicts.push(
+        `${formatDir(dirPath)}: MANIFEST.md and SPEC.md cannot both exist in the same logical Omni unit; keep MANIFEST.md and remove the legacy SPEC.md alias`
+      );
+    }
+  }
+  return conflicts;
+}
+
 export function validateAgentFileName(type: AgentFileType, filePath: string): void {
+  const basename = path.basename(filePath);
+  if (type === "spec" && basename === CANONICAL_MANIFEST_BASENAME) {
+    return;
+  }
   const expected = AGENT_FILE_BASENAMES[type];
-  if (path.basename(filePath) !== expected) {
+  if (basename !== expected) {
     if (isManifestSemanticType(type)) {
       throw formatError(
         filePath,

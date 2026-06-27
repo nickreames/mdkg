@@ -5,7 +5,12 @@ import { loadConfig } from "../core/config";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
 import { Index, IndexNode } from "../graph/indexer";
-import { isAgentFileType } from "../graph/agent_file_types";
+import {
+  CANONICAL_MANIFEST_BASENAME,
+  LEGACY_SPEC_BASENAME,
+  collectManifestSiblingConflicts,
+  isAgentFileType,
+} from "../graph/agent_file_types";
 import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
@@ -192,6 +197,25 @@ function collectRawContentWarnings(qid: string, node: ReturnType<typeof parseNod
   return warnings;
 }
 
+function collectManifestCompatibilityWarnings(
+  qid: string,
+  filePath: string,
+  node: ReturnType<typeof parseNode>
+): string[] {
+  const basename = path.basename(filePath);
+  if (basename === LEGACY_SPEC_BASENAME && node.type === "spec") {
+    return [
+      `${qid}: manifest.compat.spec_legacy warning: SPEC.md is legacy; MANIFEST.md is the canonical manifest filename. Rename this file before the compatibility release closes.`,
+    ];
+  }
+  if (basename === CANONICAL_MANIFEST_BASENAME && node.type === "spec") {
+    return [
+      `${qid}: manifest.compat.type_spec warning: MANIFEST.md uses legacy type: spec; use type: manifest before the compatibility release closes.`,
+    ];
+  }
+  return [];
+}
+
 function collectChangedPaths(root: string): Set<string> {
   const result = spawnSync("git", ["-C", root, "status", "--porcelain", "--", ".mdkg"], {
     encoding: "utf8",
@@ -270,6 +294,20 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       node_type: nodeType,
       path: pathValue,
       remediation: "Run mdkg upgrade --apply to vendor missing built-in template schemas when the managed asset update is safe.",
+    };
+  }
+  const manifestCompatMatch = /manifest\.compat\.([a-z_]+)/.exec(message);
+  if (manifestCompatMatch) {
+    return {
+      id: `manifest.compat.${manifestCompatMatch[1]}`,
+      category: "manifest-compatibility",
+      severity: "warning",
+      message,
+      qid,
+      node_type: nodeType,
+      path: pathValue,
+      ref: qid,
+      remediation: "Rename legacy SPEC.md files to MANIFEST.md and update transitional type: spec frontmatter to type: manifest before the compatibility release closes.",
     };
   }
   if (message.includes("sqlite") || message.includes("index")) {
@@ -579,6 +617,11 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
 
   for (const [alias, files] of Object.entries(filesByAlias)) {
     idsByWorkspace[alias] = new Map();
+    errors.push(
+      ...collectManifestSiblingConflicts(files, (dirPath) =>
+        path.relative(options.root, dirPath).split(path.sep).join("/") || "."
+      )
+    );
     for (const filePath of files) {
       if (isCoreListFile(filePath)) {
         continue;
@@ -621,6 +664,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
           }
         }
         warnings.push(...collectRawContentWarnings(qid, node));
+        warnings.push(...collectManifestCompatibilityWarnings(qid, filePath, node));
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(message);
