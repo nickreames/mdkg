@@ -133,6 +133,60 @@ function writeSpecWithKind(root: string, specKind: string, id?: string): string 
   return specPath;
 }
 
+function writeManifestWithKind(root: string, manifestKind: string, id?: string): string {
+  const normalizedId = id ?? `manifest.${manifestKind.replace(/_/g, "-")}`;
+  const manifestPath = path.join(root, ".mdkg", "work", normalizedId, "MANIFEST.md");
+  writeFile(
+    manifestPath,
+    [
+      "---",
+      `id: ${normalizedId}`,
+      "type: manifest",
+      `title: ${manifestKind} fixture`,
+      "version: 0.1.0",
+      `spec_kind: ${manifestKind}`,
+      "role: tool_service",
+      "runtime_mode: tool_service",
+      "work_contracts: []",
+      "requested_capabilities: []",
+      "skill_refs: []",
+      "tool_refs: []",
+      "model_refs: []",
+      "wasm_component_refs: []",
+      "runtime_image_refs: []",
+      "subagent_refs: []",
+      "resource_profile: builder",
+      "update_policy: manual",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-25",
+      "updated: 2026-06-25",
+      "---",
+      "# Purpose",
+      "",
+      "Fixture reusable manifest capability surface.",
+      "",
+      "# Runtime",
+      "",
+      "Tool service runtime.",
+      "",
+      "# Work Contracts",
+      "",
+      "No work contracts in this fixture.",
+      "",
+      "# Capabilities",
+      "",
+      "No requested capabilities in this fixture.",
+    ].join("\n")
+  );
+  return manifestPath;
+}
+
 function writeWorkOrderValidationFixture(
   root: string,
   overrides: Partial<Record<"payload_hash" | "queue_refs" | "trigger_ref", string>>
@@ -425,6 +479,33 @@ test("validate accepts repos with no SPEC files and capability list reports zero
   assert.deepEqual(receipt.items, []);
 });
 
+test("validate accepts canonical MANIFEST files as manifest semantic records", () => {
+  const root = makeTempDir("mdkg-agent-manifest-");
+  setupWorkspace(root);
+  writeManifestWithKind(root, "agent", "agent.manifest-worker");
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  const manifest = index.nodes["root:agent.manifest-worker"];
+  assert.equal(manifest.type, "manifest");
+  assert.equal(manifest.path, ".mdkg/work/agent.manifest-worker/MANIFEST.md");
+  assert.equal(manifest.attributes.spec_kind, "agent");
+  assert.equal(manifest.attributes.role, "tool_service");
+
+  const output = captureOutput(() =>
+    runCapabilityListCommand({ root, kind: "spec", json: true })
+  );
+  const receipt = JSON.parse(output.stdout);
+  assert.equal(receipt.kind, "capability");
+  assert.equal(receipt.count, 1);
+  assert.equal(receipt.items[0].kind, "spec");
+  assert.equal(receipt.items[0].node_type, "manifest");
+  assert.equal(receipt.items[0].path, ".mdkg/work/agent.manifest-worker/MANIFEST.md");
+  assert.equal(receipt.items[0].spec.spec_kind, "agent");
+});
+
 test("validate accepts all allowed SPEC spec_kind values", () => {
   const root = makeTempDir("mdkg-agent-spec-kind-valid-");
   setupWorkspace(root);
@@ -480,7 +561,8 @@ test("validate reports actionable diagnostics for documentation-only SPEC spec_k
     assert.ok(
       receipt.errors.some((error: string) =>
         error.includes(`spec_kind ${kind} is documentation-only`) &&
-        error.includes("SPEC.md must define a reusable invocable capability surface")
+        error.includes("MANIFEST.md must define a reusable invocable capability surface") &&
+        error.includes("legacy SPEC.md follows the same contract")
       ),
       `${kind} did not produce documentation-only SPEC guidance`
     );

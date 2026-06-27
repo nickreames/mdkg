@@ -1,5 +1,7 @@
 import { Index } from "./indexer";
+import { isManifestSemanticType } from "./agent_file_types";
 import { archiveIdFromUri, isUriRef } from "../util/refs";
+import { resolveQid } from "../util/qid";
 import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES, GOAL_SCOPE_ALLOWED_TYPES } from "./goal_scope";
 
 export type ValidateGraphOptions = {
@@ -191,7 +193,7 @@ function validateAgentWorkflowSpecWorkContracts(
   }
 
   for (const [qid, node] of Object.entries(index.nodes)) {
-    if (node.type !== "spec") {
+    if (!isManifestSemanticType(node.type)) {
       continue;
     }
     const workContracts = node.attributes.work_contracts;
@@ -308,7 +310,7 @@ function buildSpecRolesByWorkspace(
 ): Record<string, Record<string, { qid: string; role?: string }>> {
   const specRolesByWorkspace: Record<string, Record<string, { qid: string; role?: string }>> = {};
   for (const node of Object.values(index.nodes)) {
-    if (node.type !== "spec") {
+    if (!isManifestSemanticType(node.type)) {
       continue;
     }
     if (!specRolesByWorkspace[node.ws]) {
@@ -323,8 +325,12 @@ function buildSpecRolesByWorkspace(
 }
 
 function resolveSpecRole(index: Index, ws: string, value: string): { qid: string; role?: string } | undefined {
-  const node = resolveTypedNodeRef(index, ws, value, "spec");
-  if (!node) {
+  const resolved = resolveQid(index, value, ws);
+  if (resolved.status !== "ok") {
+    return undefined;
+  }
+  const node = index.nodes[resolved.qid];
+  if (!node || !isManifestSemanticType(node.type)) {
     return undefined;
   }
   return {
@@ -342,7 +348,7 @@ function validateAgentWorkflowSubagentRefs(
   const specRolesByWorkspace = buildSpecRolesByWorkspace(index);
 
   for (const [qid, node] of Object.entries(index.nodes)) {
-    if (node.type !== "spec" && node.type !== "work") {
+    if (!isManifestSemanticType(node.type) && node.type !== "work") {
       continue;
     }
     const subagentRefs = node.attributes.subagent_refs;

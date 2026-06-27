@@ -4,6 +4,7 @@ import { isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, validatePortableOrUriRef } from "../util/refs";
 
 export const AGENT_FILE_TYPES = [
+  "manifest",
   "spec",
   "work",
   "work_order",
@@ -16,6 +17,7 @@ export const AGENT_FILE_TYPES = [
 export type AgentFileType = (typeof AGENT_FILE_TYPES)[number];
 
 export const AGENT_FILE_BASENAMES: Record<AgentFileType, string> = {
+  manifest: "MANIFEST.md",
   spec: "SPEC.md",
   work: "WORK.md",
   work_order: "WORK_ORDER.md",
@@ -25,23 +27,26 @@ export const AGENT_FILE_BASENAMES: Record<AgentFileType, string> = {
   proposal: "PROPOSAL.md",
 };
 
+const MANIFEST_ATTRIBUTE_KEYS = [
+  "version",
+  "spec_kind",
+  "role",
+  "runtime_mode",
+  "work_contracts",
+  "requested_capabilities",
+  "skill_refs",
+  "tool_refs",
+  "model_refs",
+  "wasm_component_refs",
+  "runtime_image_refs",
+  "subagent_refs",
+  "resource_profile",
+  "update_policy",
+];
+
 export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
-  spec: [
-    "version",
-    "spec_kind",
-    "role",
-    "runtime_mode",
-    "work_contracts",
-    "requested_capabilities",
-    "skill_refs",
-    "tool_refs",
-    "model_refs",
-    "wasm_component_refs",
-    "runtime_image_refs",
-    "subagent_refs",
-    "resource_profile",
-    "update_policy",
-  ],
+  manifest: MANIFEST_ATTRIBUTE_KEYS,
+  spec: MANIFEST_ATTRIBUTE_KEYS,
   work: [
     "version",
     "agent_id",
@@ -208,9 +213,19 @@ export function isAgentFileType(type: string): type is AgentFileType {
   return (AGENT_FILE_TYPES as readonly string[]).includes(type);
 }
 
+export function isManifestSemanticType(type: string): type is "manifest" | "spec" {
+  return type === "manifest" || type === "spec";
+}
+
 export function validateAgentFileName(type: AgentFileType, filePath: string): void {
   const expected = AGENT_FILE_BASENAMES[type];
   if (path.basename(filePath) !== expected) {
+    if (isManifestSemanticType(type)) {
+      throw formatError(
+        filePath,
+        `manifest files must be named MANIFEST.md (canonical) or SPEC.md (legacy alias); ${type} files must be named ${expected}`
+      );
+    }
     throw formatError(filePath, `${type} files must be named ${expected}`);
   }
 }
@@ -346,7 +361,7 @@ function validateSpecKind(value: string, filePath: string): void {
   if (route) {
     throw formatError(
       filePath,
-      `spec_kind ${value} is documentation-only; ${route}. SPEC.md must define a reusable invocable capability surface.`
+      `spec_kind ${value} is documentation-only; ${route}. MANIFEST.md must define a reusable invocable capability surface; legacy SPEC.md follows the same contract.`
     );
   }
   throw formatError(
@@ -479,6 +494,7 @@ export function validateAgentFrontmatter(
   requireSemver(version, "version", filePath);
 
   switch (type) {
+    case "manifest":
     case "spec": {
       const specKind = optionalString(frontmatter, "spec_kind", filePath);
       if (specKind) {

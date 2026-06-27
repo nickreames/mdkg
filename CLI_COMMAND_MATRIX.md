@@ -559,9 +559,10 @@ Notes:
 ### `mdkg spec`
 
 When to use:
-- list optional `SPEC.md` reusable capability surfaces
-- show one SPEC capability record by id, qid, path, or alias
-- validate the graph while ensuring a named SPEC capability exists
+- list reusable capability surfaces from canonical `MANIFEST.md` or legacy
+  `SPEC.md`
+- show one manifest capability record by id, qid, path, or alias
+- validate the graph while ensuring a named manifest capability exists
 
 Usage:
 - `mdkg spec list [--json]`
@@ -572,11 +573,16 @@ Flags:
 - `--json`
 
 Notes:
-- `SPEC.md` is optional; repos with no SPEC files remain valid
-- SPEC records are reusable-capability oriented, not documentation-only planning notes
-- `mdkg spec validate` with no ref validates the graph and all optional SPEC records
-- `mdkg spec validate <ref>` also checks that the target SPEC reference exists
-- use `mdkg capability ...` for broader skill, SPEC, WORK, core-doc, and design-doc capability discovery
+- `MANIFEST.md` is canonical and `SPEC.md` remains a legacy alias; repos with no
+  manifest/spec files remain valid
+- manifest records are reusable-capability oriented, not documentation-only
+  planning notes
+- `mdkg spec validate` with no ref validates the graph and all manifest/spec
+  records
+- `mdkg spec validate <ref>` also checks that the target manifest reference
+  exists
+- use `mdkg capability ...` for broader skill, MANIFEST/SPEC, WORK, core-doc,
+  and design-doc capability discovery
 
 ### `mdkg archive`
 
@@ -788,21 +794,21 @@ Usage:
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
 - `mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]`
-- `mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
 
 Notes:
 - work commands mutate semantic mirror files only
 - production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg
 - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors
 - `artifact://...` refs identify external/runtime-managed artifacts; `archive://...` refs identify committed mdkg archive sidecars
-- `work trigger` accepts a `WORK.md` ref directly or a `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
+- `work trigger` accepts a `WORK.md` ref directly or a `MANIFEST.md` / legacy `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
 - example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
 - `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
 - `work order new` accepts URI-style requester/request/trigger refs, archive input refs, optional queue refs, and stable payload hashes
 - `work order status` is read-only and reports deterministic order state plus linked receipts
 - `work receipt new` accepts URI-style cost/proof/attestation refs, explicit redaction policy, and SHA-256 evidence/input/output hash refs
 - `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks; invalid receipts print JSON before exiting nonzero
-- `work validate` is read-only and reports typed diagnostics for SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
+- `work validate` is read-only and reports typed diagnostics for MANIFEST.md, legacy SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
 - `work artifact add` calls `mdkg archive add`, then attaches the resulting `archive://...` ref to the target order or receipt
 - `work order update`, `work receipt update`, and `work artifact add` accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace
 

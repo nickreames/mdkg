@@ -89,11 +89,11 @@ test("spec command help explains optional reusable capability semantics", () => 
   assert.match(help, /mdkg spec list \[--json\]/);
   assert.match(help, /mdkg spec show <id-or-qid-or-alias> \[--json\]/);
   assert.match(help, /mdkg spec validate \[<id-or-qid-or-alias>\] \[--json\]/);
-  assert.match(help, /SPEC\.md is optional and reusable-capability oriented/);
+  assert.match(help, /MANIFEST\.md is canonical and reusable-capability oriented; SPEC\.md remains a legacy alias/);
 
   const validateHelp = run(["help", "spec", "validate"], root).stdout;
-  assert.match(validateHelp, /With no reference, validates the graph and all optional SPEC\.md capability records/);
-  assert.match(validateHelp, /With a reference, also ensures that specific SPEC\.md capability exists/);
+  assert.match(validateHelp, /With no reference, validates the graph and all MANIFEST\.md\/SPEC\.md capability records/);
+  assert.match(validateHelp, /With a reference, also ensures that the specific manifest capability exists/);
 });
 
 test("spec show rejects missing SPEC references", () => {

@@ -128,15 +128,15 @@ test("cli help spec documents optional reusable capability records", () => {
   assert.match(specHelp.stdout, /mdkg spec list \[--json\]/);
   assert.match(specHelp.stdout, /mdkg spec show <id-or-qid-or-alias> \[--json\]/);
   assert.match(specHelp.stdout, /mdkg spec validate \[<id-or-qid-or-alias>\] \[--json\]/);
-  assert.match(specHelp.stdout, /SPEC\.md is optional and reusable-capability oriented/);
+  assert.match(specHelp.stdout, /MANIFEST\.md is canonical and reusable-capability oriented; SPEC\.md remains a legacy alias/);
 
   const specValidateHelp = spawnSync(process.execPath, [cliPath, "help", "spec", "validate"], {
     encoding: "utf8",
     cwd: repoRoot,
   });
   assert.equal(specValidateHelp.status, 0);
-  assert.match(specValidateHelp.stdout, /With no reference, validates the graph and all optional SPEC\.md capability records/);
-  assert.match(specValidateHelp.stdout, /With a reference, also ensures that specific SPEC\.md capability exists/);
+  assert.match(specValidateHelp.stdout, /With no reference, validates the graph and all MANIFEST\.md\/SPEC\.md capability records/);
+  assert.match(specValidateHelp.stdout, /With a reference, also ensures that the specific manifest capability exists/);
 });
 
 test("cli help work documents trigger status verify polish", () => {
@@ -156,7 +156,7 @@ test("cli help work documents trigger status verify polish", () => {
   });
   assert.equal(triggerHelp.status, 0);
   assert.match(triggerHelp.stdout, /mdkg work trigger work\.example --id order\.example-1 --requester user:\/\/example --json/);
-  assert.match(triggerHelp.stdout, /Accepted targets: direct WORK\.md ref, or SPEC\.md ref with exactly one resolvable work contract/);
+  assert.match(triggerHelp.stdout, /Accepted targets: direct WORK\.md ref, or MANIFEST\.md\/SPEC\.md ref with exactly one resolvable work contract/);
 
   const orderHelp = spawnSync(process.execPath, [cliPath, "help", "work", "order"], {
     encoding: "utf8",
@@ -177,7 +177,7 @@ test("cli help work documents trigger status verify polish", () => {
     cwd: repoRoot,
   });
   assert.equal(validateHelp.status, 0);
-  assert.match(validateHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type spec\|work\|work_order\|receipt\|feedback\|dispute\|proposal\] \[--json\]/);
+  assert.match(validateHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type manifest\|spec\|work\|work_order\|receipt\|feedback\|dispute\|proposal\] \[--json\]/);
   assert.match(validateHelp.stdout, /Read-only focused validation for agent workflow mirrors/);
 });
 
