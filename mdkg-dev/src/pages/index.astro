@@ -8,8 +8,7 @@ import DiagramCard from "../components/DiagramCard.astro";
 import Badge from "../components/Badge.astro";
 import packageJson from "../../../package.json";
 
-const publishedPackageVersion = packageJson.version;
-const launchTrackVersion = "0.4.0";
+const releaseTargetVersion = packageJson.version;
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -18,7 +17,7 @@ const structuredData = {
   alternateName: "mdkg",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS, Linux, Windows",
-  softwareVersion: publishedPackageVersion,
+  softwareVersion: releaseTargetVersion,
   description: "Git-native project memory for AI coding agents: structured Markdown, context packs, handoffs, checkpoints, and validation.",
   url: "https://mdkg.dev",
   codeRepository: "https://github.com/nickreames/mdkg"
@@ -167,12 +166,12 @@ const structuredData = {
   <section class="section alt">
     <div class="container grid two">
       <div class="stack">
-        <Badge tone="neutral">{launchTrackVersion} launch track</Badge>
+        <Badge tone="neutral">{releaseTargetVersion} launch track</Badge>
         <h2>Customize standards without forking the kernel.</h2>
-        <p class="muted">The {launchTrackVersion} web launch presents capabilities already available in `mdkg@{publishedPackageVersion}` while structured package metadata stays tied to the published npm version. Local validation is pre-publish; live validation is post-publish and post-deploy after approval.</p>
+        <p class="muted">The {releaseTargetVersion} launch track presents the source-backed customization and release-readiness surface while npm availability, live site claims, and production verification stay gated on explicit postpublish and postdeploy evidence.</p>
       </div>
       <div class="grid">
-        <FeatureCard title="Published package baseline" text={`Install and structured metadata stay anchored to mdkg@${publishedPackageVersion} until the next npm package is actually published.`} command="mdkg --version" />
+        <FeatureCard title="Release target" text={`Source metadata and structured data are aligned to mdkg@${releaseTargetVersion}; production launch still waits for npm postpublish validation.`} command="mdkg --version" />
         <FeatureCard title="Config overlays" text="Use `.mdkg/config.json` to preserve local standards, custom core docs, and managed upgrade behavior." command=".mdkg/config.json" />
         <FeatureCard title="Custom skill mirrors" text="Mirror canonical `.mdkg/skills` into arbitrary contained agent-local skill roots. `.agents/skills` and `.claude/skills` remain defaults." command="mdkg skill sync" />
         <FeatureCard title="Collaboration profile" text="Use `COLLABORATION.md` as the canonical operator profile while `HUMAN.md` remains a one-release legacy alias." command="COLLABORATION.md" />

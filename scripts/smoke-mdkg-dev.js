@@ -56,10 +56,10 @@ function main() {
   const home = readText(path.join(dist, "index.html"));
   assert(home.includes("Git-native project memory"), "homepage missing primary product copy");
   assert(home.includes("mdkg init --agent"), "homepage missing first-run CLI command");
-  assert(home.includes("Customize standards without forking the kernel"), "homepage missing 0.3.9 customization section");
+  assert(home.includes("Customize standards without forking the kernel"), "homepage missing customization section");
   assert(home.includes("0.4.0 launch track"), "homepage missing 0.4.0 launch-track language");
-  assert(home.includes("mdkg@0.3.9"), "homepage missing published package baseline language");
-  assert(home.includes("Local validation is pre-publish; live validation is post-publish and post-deploy after approval"), "homepage missing local/live validation boundary language");
+  assert(home.includes("mdkg@0.4.0"), "homepage missing release-target package language");
+  assert(home.includes("postpublish and postdeploy evidence"), "homepage missing postpublish/postdeploy boundary language");
   assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
   assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
   assert(home.includes("COLLABORATION.md"), "homepage missing collaboration profile copy");
@@ -139,8 +139,8 @@ function main() {
         "Without mdkg",
         "With mdkg",
         "0.4.0 launch track",
-        "mdkg@0.3.9",
-        "Published package baseline",
+        "mdkg@0.4.0",
+        "Release target",
         "Customize standards without forking the kernel.",
         ".mdkg/config.json",
         "Custom skill mirrors",

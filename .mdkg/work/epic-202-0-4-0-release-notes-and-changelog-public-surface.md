@@ -10,7 +10,7 @@ links: []
 artifacts: [CHANGELOG.md, docs, mdkg-dev]
 relates: []
 blocked_by: []
-blocks: [spike-22, task-601, test-307]
+blocks: [spike-22, task-601, task-612, test-307, test-316]
 refs: []
 context_refs: []
 evidence_refs: []
@@ -29,12 +29,16 @@ per-release cards and details.
 - Release-notes IA research.
 - Changelog-derived public page implementation.
 - Drift contract tying public release notes back to `CHANGELOG.md`.
+- `0.4.0` package metadata, changelog, generated docs, release cards, and
+  public-copy alignment before publish dry-run.
 
 # Milestones
 
 - `spike-22`: release notes IA and article support research.
 - `task-601`: public page implementation.
+- `task-612`: `0.4.0` package metadata, changelog, and generated docs prep.
 - `test-307`: changelog consistency contract.
+- `test-316`: version and release-note drift contract.
 
 # Out of Scope
 
