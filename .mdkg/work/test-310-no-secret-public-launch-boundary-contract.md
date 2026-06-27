@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-605]
 context_refs: []
-evidence_refs: [chk-300, chk-305]
+evidence_refs: [chk-300, chk-305, chk-306]
 aliases: []
 skills: []
 cases: []
@@ -56,6 +56,9 @@ Run after public launch pages and browser evidence exist.
   promotion occurred.
 - Follow-up local web-language validation in `chk-305` also stayed inside the
   no-push/no-deploy/no-publish boundary and used only summarized local artifact
+  paths.
+- Follow-up public command-syntax validation in `chk-306` also stayed inside
+  the no-push/no-deploy/no-publish boundary and stored only local artifact
   paths.
 
 # Notes / Follow-ups

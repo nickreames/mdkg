@@ -7,7 +7,7 @@ Use a pack when an agent needs deterministic context to work. Replace `WORK_ID` 
 
 ```bash
 mdkg pack WORK_ID
-mdkg pack WORK_ID --pack-profile concise
+mdkg pack WORK_ID --profile concise
 ```
 
 Use a handoff when transferring work between sessions, agents, or humans. Replace `WORK_ID` with the concrete id being handed off.
@@ -36,7 +36,7 @@ Good pack uses:
 Use the same concrete `WORK_ID` for previewing and creating the pack:
 
 ```bash
-mdkg pack WORK_ID --pack-profile concise
+mdkg pack WORK_ID --profile concise
 mdkg pack WORK_ID --dry-run --stats
 ```
 
@@ -66,7 +66,7 @@ Do not use packs or handoffs as raw log storage, secret storage, prompt archives
 
 ## Common mistakes
 
-- Packing a broad goal when the next agent only needs one task. Prefer `mdkg pack WORK_ID --pack-profile concise`.
+- Packing a broad goal when the next agent only needs one task. Prefer `mdkg pack WORK_ID --profile concise`.
 - Sharing a pack before reviewing visibility. Treat generated packs as transfer artifacts, not permanent source.
 - Using handoffs as a substitute for validation. Run the required checks and record pass/fail state first.
 - Copying raw prompts, tokens, provider payloads, or oversized traces into handoffs. Keep the handoff refs-only and sanitized.

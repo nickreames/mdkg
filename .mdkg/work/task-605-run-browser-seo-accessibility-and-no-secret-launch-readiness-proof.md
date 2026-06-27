@@ -9,13 +9,13 @@ parent: goal-42
 tags: [0.4.0, browser, seo, a11y, no-secrets, launch-proof]
 owners: []
 links: []
-artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png, /private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html, /private/tmp/mdkg-goal42-live-refresh-docs-changelog.html, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-refresh-040-launch-track-section.png]
+artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png, /private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html, /private/tmp/mdkg-goal42-live-refresh-docs-changelog.html, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/browser-profile-syntax-validation.json, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/chrome-profile-syntax-validation.json, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/chrome-docs-packs-and-handoffs.png]
 relates: []
 blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
 refs: [task-601, task-602, task-603, task-604]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -78,6 +78,10 @@ docs.mdkg.dev.
   web-launch language passed; `softwareVersion` remains `0.3.9`, the page
   makes `mdkg@0.3.9` the published package baseline, and no unsupported
   `mdkg@0.4.0` published-package claim is present; see `chk-305`.
+- Local pre-publish public command-syntax alignment passed for the current
+  `--profile concise` pack example across mdkg.dev, docs.mdkg.dev, demo
+  READMEs, init scaffold README, smokes, Browser HTML validation, Chrome HTML
+  validation, and built-file checks; see `chk-306`.
 - A refreshed read-only `git fetch origin main` plus public HTML fetch on
   2026-06-27 after commit `5eccba7` still shows
   `main...origin/main [ahead 8]`, npm package metadata at `0.3.9`, live

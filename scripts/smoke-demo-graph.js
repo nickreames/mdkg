@@ -30,7 +30,7 @@ function assertExample(rootRel, searchText, expectedTitle) {
   assert(search.count > 0, `${rootRel} search returned no results`);
   assert(search.items.some((item) => item.title === expectedTitle), `${rootRel} search missing expected goal`);
 
-  const packed = mdkg(["--root", root, "pack", "goal-1", "--pack-profile", "concise", "--dry-run", "--stats"]).stdout;
+  const packed = mdkg(["--root", root, "pack", "goal-1", "--profile", "concise", "--dry-run", "--stats"]).stdout;
   for (const qid of ["root:goal-1", "root:spike-1", "root:task-1", "root:test-1"]) {
     assert(packed.includes(qid), `${rootRel} pack missing ${qid}`);
   }
@@ -59,7 +59,7 @@ function main() {
     "Expected results",
     "mdkg validate --json",
     "mdkg goal next goal-1 --json",
-    "mdkg pack spike-1 --pack-profile concise --dry-run --stats",
+    "mdkg pack spike-1 --profile concise --dry-run --stats",
     "mdkg capability search \"pack\" --kind skill --json",
     "under 10 minutes",
   ]) {

@@ -18,7 +18,7 @@ cd examples/demo-agentic-coding
 mdkg validate --json
 mdkg goal next goal-1 --json
 mdkg show spike-1 --json
-mdkg pack spike-1 --pack-profile concise --dry-run --stats
+mdkg pack spike-1 --profile concise --dry-run --stats
 mdkg show dec-1 --json
 mdkg show chk-1 --json
 mdkg capability search "pack" --kind skill --json

@@ -96,9 +96,9 @@ Read `AGENT_START.md` first when this repo includes it.
 
 ## Pack Profiles
 
-- `--pack-profile standard`: full body (current default behavior)
-- `--pack-profile concise`: summary body with code stripped by default
-- `--pack-profile headers`: metadata-only body (`none`)
+- `--profile standard`: full body (current default behavior)
+- `--profile concise`: summary body with code stripped by default
+- `--profile headers`: metadata-only body (`none`)
 
 `--max-tokens` is a heuristic limit based on `chars / 4`.
 

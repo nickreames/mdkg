@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-602, task-603, task-605]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306]
 aliases: []
 skills: []
 cases: []
@@ -60,6 +60,9 @@ Run local builds/servers or approved preview URLs during launch validation.
   homepage language passed; JSON-LD remains on `0.3.9`, the page names
   `mdkg@0.3.9` as the published package baseline, and there are zero captured
   console issues; see `chk-305`.
+- Local Browser and Chrome HTML validation plus built-file checks prove current
+  public docs/site routes use `--profile concise` and do not expose stale
+  `--pack-profile concise` examples; see `chk-306`.
 - A refreshed read-only fetch of `origin/main`, `https://mdkg.dev/`, and
   `https://docs.mdkg.dev/project/changelog/` after commit `5eccba7` still
   shows the same blocker: local `main` is ahead of `origin/main` by 8,
