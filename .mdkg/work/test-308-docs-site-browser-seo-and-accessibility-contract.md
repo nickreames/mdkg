@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-602, task-603, task-605]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-301, chk-302, chk-303]
 aliases: []
 skills: []
 cases: []
@@ -46,7 +46,17 @@ Run local builds/servers or approved preview URLs during launch validation.
 
 # Results / Evidence
 
-Pending implementation.
+- Partially proven locally; not done.
+- Local Product Design, Browser viewport, SEO, accessibility, performance,
+  docs/site smoke, and public no-secret checks passed for built source output;
+  see `chk-301`.
+- Read-only production Browser verification found live pages were not
+  source-current; see `chk-302`.
+- Read-only Vercel metadata explained the currentness gap as production
+  deployments built from an older pushed commit; see `chk-303`.
+- This test must remain open until an explicitly approved push/redeploy
+  completes and live mdkg.dev/docs.mdkg.dev Browser or Chrome verification
+  passes against current production.
 
 # Notes / Follow-ups
 
