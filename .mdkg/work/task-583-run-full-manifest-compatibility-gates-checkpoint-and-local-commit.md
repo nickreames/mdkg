@@ -2,7 +2,7 @@
 id: task-583
 type: task
 title: run full MANIFEST compatibility gates checkpoint and local commit
-status: todo
+status: done
 priority: 1
 epic: epic-198
 parent: goal-37
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: [manifest-full-gates, manifest-compatibility-closeout, manifest-local-commit]
 skills: [verify-close-and-checkpoint]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 

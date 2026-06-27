@@ -2,7 +2,7 @@
 id: test-296
 type: test
 title: full MANIFEST compatibility regression and release gate contract
-status: todo
+status: blocked
 priority: 1
 epic: epic-198
 parent: goal-37
@@ -11,7 +11,7 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: []
+blocked_by: [task-584]
 blocks: []
 refs: [edd-54, task-582, task-583, task-584]
 context_refs: []
@@ -20,7 +20,7 @@ aliases: [manifest-full-regression-contract, manifest-release-gate-contract]
 skills: []
 cases: [focused-unit-tests, smoke-capabilities, smoke-archive-work, smoke-bundle, smoke-subgraph, docs-check, prepublish-dry-run]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 
@@ -52,7 +52,10 @@ All implementation tasks are complete and generated docs/indexes are refreshed.
 
 # Results / Evidence
 
-Pending implementation.
+- PARTIAL PASS: full release-gate commands passed during `task-583` and
+  checkpoint `root:chk-277` records the gate evidence.
+- BLOCKED: downstream handoff `task-584` remains open, so the final release-gate
+  contract is not complete yet.
 
 # Notes / Follow-ups
 
