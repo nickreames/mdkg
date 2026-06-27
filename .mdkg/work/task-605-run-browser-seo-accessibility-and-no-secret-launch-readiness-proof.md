@@ -15,7 +15,7 @@ blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
 refs: [task-601, task-602, task-603, task-604]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -72,10 +72,14 @@ docs.mdkg.dev.
   source-current; see `chk-302`.
 - Read-only Vercel inspection traced the live-current gap to production
   deployments built from an older pushed commit; see `chk-303`.
-- A refreshed read-only `git fetch origin main` plus public HTML fetch still
-  shows `main...origin/main [ahead 6]`, live mdkg.dev
-  `softwareVersion: "0.3.7"`, and no live docs release-card/grid markers; this
-  refresh is folded into `chk-303`.
+- Read-only goal-42 readiness audit found the same exact gaps and added
+  Product Design plus Browser evidence; see `chk-304`.
+- A refreshed read-only `git fetch origin main` plus public HTML fetch on
+  2026-06-27 after commit `5eccba7` still shows
+  `main...origin/main [ahead 8]`, npm package metadata at `0.3.9`, live
+  mdkg.dev `softwareVersion: "0.3.7"` with no 0.3.9 customization markers, and
+  live docs changelog containing some 0.3.9 text but no release-card/grid or
+  `.mdkg/config.json` markers.
 - Do not close this task until an approved push/redeploy produces current
   production deployments and live Browser/Chrome verification passes.
 
