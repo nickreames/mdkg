@@ -67,6 +67,14 @@ function updateFrontmatter(filePath: string, replacements: Record<string, string
   fs.writeFileSync(filePath, next, "utf8");
 }
 
+function convertManifestScaffoldToLegacySpec(root: string, node: { path: string }): { path: string } {
+  const manifestPath = path.join(root, node.path);
+  const specPath = path.join(path.dirname(manifestPath), "SPEC.md");
+  fs.renameSync(manifestPath, specPath);
+  updateFrontmatter(specPath, { type: "spec" });
+  return { ...node, path: path.relative(root, specPath).split(path.sep).join("/") };
+}
+
 test("archive commands create deterministic sidecars and verify zip caches without raw source", () => {
   const root = makeTempDir("mdkg-archive-cli-");
   run(["init", "--agent"], root);
@@ -307,7 +315,7 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
   const root = makeTempDir("mdkg-work-cli-");
   run(["init", "--agent"], root);
 
-  const spec = JSON.parse(run(["new", "spec", "Image Worker", "--id", "agent.image-worker", "--json"], root).stdout).node;
+  const manifest = JSON.parse(run(["new", "manifest", "Image Worker", "--id", "agent.image-worker", "--json"], root).stdout).node;
   const work = JSON.parse(
     run([
       "work",
@@ -331,7 +339,7 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
       "--json",
     ], root).stdout
   ).node;
-  updateFrontmatter(path.join(root, spec.path), {
+  updateFrontmatter(path.join(root, manifest.path), {
     work_contracts: `[${path.basename(path.dirname(work.path))}/WORK.md]`,
     relates: "[work.generate-image]",
   });
@@ -667,7 +675,7 @@ test("work trigger creates deterministic submitted order mirrors without executi
   const root = makeTempDir("mdkg-work-trigger-cli-");
   run(["init", "--agent"], root);
 
-  const spec = JSON.parse(run(["new", "spec", "Image Worker", "--id", "agent.image-worker", "--json"], root).stdout).node;
+  const manifest = JSON.parse(run(["new", "manifest", "Image Worker", "--id", "agent.image-worker", "--json"], root).stdout).node;
   const work = JSON.parse(
     run([
       "work",
@@ -691,7 +699,7 @@ test("work trigger creates deterministic submitted order mirrors without executi
       "--json",
     ], root).stdout
   ).node;
-  updateFrontmatter(path.join(root, spec.path), {
+  updateFrontmatter(path.join(root, manifest.path), {
     work_contracts: `[${path.basename(path.dirname(work.path))}/WORK.md]`,
     relates: "[work.generate-image]",
   });
@@ -738,11 +746,11 @@ test("work trigger creates deterministic submitted order mirrors without executi
     "trigger",
     "agent.image-worker",
     "--id",
-    "order.spec-trigger-missing-db",
+    "order.manifest-trigger-missing-db",
     "--title",
-    "Spec Triggered Missing Db",
+    "Manifest Triggered Missing Db",
     "--requester",
-    "user://SpecRequester",
+    "user://ManifestRequester",
     "--enqueue",
     "local_queue",
     "--json",
@@ -756,11 +764,11 @@ test("work trigger creates deterministic submitted order mirrors without executi
     "trigger",
     "agent.image-worker",
     "--id",
-    "order.spec-trigger-missing-queue",
+    "order.manifest-trigger-missing-queue",
     "--title",
-    "Spec Triggered Missing Queue",
+    "Manifest Triggered Missing Queue",
     "--requester",
-    "user://SpecRequester",
+    "user://ManifestRequester",
     "--enqueue",
     "local_queue",
     "--json",
@@ -768,54 +776,136 @@ test("work trigger creates deterministic submitted order mirrors without executi
   assert.match(missingQueueEnqueue.stderr, /project DB queue not found: local_queue/);
 
   run(["db", "queue", "create", "local_queue", "--json"], root);
-  const specTriggered = JSON.parse(
+  const manifestTriggered = JSON.parse(
     run([
       "work",
       "trigger",
       "agent.image-worker",
       "--id",
-      "order.spec-trigger",
+      "order.manifest-trigger",
       "--title",
-      "Spec Triggered Order",
+      "Manifest Triggered Order",
       "--requester",
-      "user://SpecRequester",
+      "user://ManifestRequester",
       "--enqueue",
       "local_queue",
       "--json",
     ], root).stdout
   );
-  assert.equal(specTriggered.node.id, "order.spec-trigger");
-  assert.equal(specTriggered.node.title, "Spec Triggered Order");
-  assert.equal(specTriggered.trigger.source_qid, "root:agent.image-worker");
-  assert.equal(specTriggered.trigger.work_qid, "root:work.generate-image");
-  assert.equal(specTriggered.trigger.executed, false);
-  assert.deepEqual(specTriggered.trigger.enqueue, {
+  assert.equal(manifestTriggered.node.id, "order.manifest-trigger");
+  assert.equal(manifestTriggered.node.title, "Manifest Triggered Order");
+  assert.equal(manifestTriggered.trigger.source_qid, "root:agent.image-worker");
+  assert.equal(manifestTriggered.trigger.work_qid, "root:work.generate-image");
+  assert.equal(manifestTriggered.trigger.executed, false);
+  assert.deepEqual(manifestTriggered.trigger.enqueue, {
     requested: true,
     queue_name: "local_queue",
-    queue_ref: "queue://project-db/local_queue/order.spec-trigger",
-    message_id: "order.spec-trigger",
+    queue_ref: "queue://project-db/local_queue/order.manifest-trigger",
+    message_id: "order.manifest-trigger",
     enqueued: true,
     created: true,
     duplicate: false,
     message_status: "ready",
-    message_payload_hash: specTriggered.trigger.enqueue.message_payload_hash,
+    message_payload_hash: manifestTriggered.trigger.enqueue.message_payload_hash,
   });
-  assert.match(specTriggered.trigger.enqueue.message_payload_hash, /^sha256:[a-f0-9]{64}$/);
+  assert.match(manifestTriggered.trigger.enqueue.message_payload_hash, /^sha256:[a-f0-9]{64}$/);
   const queued = JSON.parse(
-    run(["db", "queue", "show", "local_queue", "order.spec-trigger", "--json"], root).stdout
+    run(["db", "queue", "show", "local_queue", "order.manifest-trigger", "--json"], root).stdout
   );
-  assert.equal(queued.message.dedupe_key, "root:order.spec-trigger");
+  assert.equal(queued.message.dedupe_key, "root:order.manifest-trigger");
   assert.equal(queued.message.status, "ready");
   const queuedPayload = JSON.parse(queued.message.payload_json);
   assert.equal(queuedPayload.kind, "mdkg.work_order.triggered");
-  assert.equal(queuedPayload.work_order_qid, "root:order.spec-trigger");
+  assert.equal(queuedPayload.work_order_qid, "root:order.manifest-trigger");
   assert.equal(queuedPayload.work_qid, "root:work.generate-image");
   assert.equal(queuedPayload.source_qid, "root:agent.image-worker");
-  assert.equal(queuedPayload.payload_hash, specTriggered.trigger.payload_hash);
-  assert.equal(queuedPayload.queue_ref, "queue://project-db/local_queue/order.spec-trigger");
+  assert.equal(queuedPayload.payload_hash, manifestTriggered.trigger.payload_hash);
+  assert.equal(queuedPayload.queue_ref, "queue://project-db/local_queue/order.manifest-trigger");
 
-  const specOrderContent = fs.readFileSync(path.join(root, specTriggered.node.path), "utf8");
-  assert.match(specOrderContent, /queue_refs: \[queue:\/\/project-db\/local_queue\/order\.spec-trigger\]/);
+  const manifestOrderContent = fs.readFileSync(path.join(root, manifestTriggered.node.path), "utf8");
+  assert.match(manifestOrderContent, /queue_refs: \[queue:\/\/project-db\/local_queue\/order\.manifest-trigger\]/);
+
+  run(["validate"], root);
+});
+
+test("work trigger accepts legacy SPEC refs during the compatibility release", () => {
+  const root = makeTempDir("mdkg-work-trigger-legacy-spec-cli-");
+  run(["init", "--agent"], root);
+
+  const legacySpec = convertManifestScaffoldToLegacySpec(
+    root,
+    JSON.parse(
+      run(["new", "manifest", "Legacy Spec Worker", "--id", "agent.legacy-spec-worker", "--json"], root)
+        .stdout
+    ).node
+  );
+  const work = JSON.parse(
+    run([
+      "work",
+      "contract",
+      "new",
+      "Legacy Spec Render",
+      "--id",
+      "work.legacy-spec-render",
+      "--agent-id",
+      "agent.legacy-spec-worker",
+      "--kind",
+      "artifact_rendering",
+      "--inputs",
+      "prompt:text:required",
+      "--outputs",
+      "artifact_uri:uri:required",
+      "--required-capabilities",
+      "model.runtime.generate",
+      "--pricing-model",
+      "included",
+      "--json",
+    ], root).stdout
+  ).node;
+  updateFrontmatter(path.join(root, legacySpec.path), {
+    work_contracts: `[${path.basename(path.dirname(work.path))}/WORK.md]`,
+    relates: "[work.legacy-spec-render]",
+  });
+
+  const triggered = JSON.parse(
+    run([
+      "work",
+      "trigger",
+      "agent.legacy-spec-worker",
+      "--id",
+      "order.legacy-spec-trigger",
+      "--title",
+      "Legacy SPEC Triggered Order",
+      "--requester",
+      "user://LegacySpecRequester",
+      "--json",
+    ], root).stdout
+  );
+  assert.equal(triggered.node.id, "order.legacy-spec-trigger");
+  assert.equal(triggered.trigger.source_qid, "root:agent.legacy-spec-worker");
+  assert.equal(triggered.trigger.work_qid, "root:work.legacy-spec-render");
+  assert.equal(triggered.trigger.executed, false);
+  assert.equal(legacySpec.path.endsWith("/SPEC.md"), true);
+
+  const orphan = convertManifestScaffoldToLegacySpec(
+    root,
+    JSON.parse(
+      run(["new", "manifest", "Legacy Orphan Worker", "--id", "agent.legacy-orphan", "--json"], root)
+        .stdout
+    ).node
+  );
+  const orphanFailure = runFailure([
+    "work",
+    "trigger",
+    "agent.legacy-orphan",
+    "--id",
+    "order.legacy-orphan-trigger",
+    "--requester",
+    "user://LegacySpecRequester",
+    "--json",
+  ], root);
+  assert.match(orphanFailure.stderr, /legacy SPEC\.md root:agent\.legacy-orphan has no resolvable WORK\.md contract/);
+  assert.equal(orphan.path.endsWith("/SPEC.md"), true);
 
   run(["validate"], root);
 });

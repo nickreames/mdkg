@@ -1,6 +1,6 @@
 ---
 id: agent.runtime-worker
-type: spec
+type: manifest
 title: Runtime Worker Agent
 version: 1.0.0
 role: subagent
