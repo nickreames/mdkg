@@ -169,13 +169,14 @@ const structuredData = {
       <div class="stack">
         <Badge tone="neutral">{launchTrackVersion} launch track</Badge>
         <h2>Customize standards without forking the kernel.</h2>
-        <p class="muted">The {launchTrackVersion} web launch presents capabilities already available in `mdkg@{publishedPackageVersion}` while structured package metadata stays tied to the published npm version. Local validation happens before publish; live validation follows the approved publish and deploy.</p>
+        <p class="muted">The {launchTrackVersion} web launch presents capabilities already available in `mdkg@{publishedPackageVersion}` while structured package metadata stays tied to the published npm version. Local validation is pre-publish; live validation is post-publish and post-deploy after approval.</p>
       </div>
       <div class="grid">
         <FeatureCard title="Published package baseline" text={`Install and structured metadata stay anchored to mdkg@${publishedPackageVersion} until the next npm package is actually published.`} command="mdkg --version" />
         <FeatureCard title="Config overlays" text="Use `.mdkg/config.json` to preserve local standards, custom core docs, and managed upgrade behavior." command=".mdkg/config.json" />
         <FeatureCard title="Custom skill mirrors" text="Mirror canonical `.mdkg/skills` into arbitrary contained agent-local skill roots. `.agents/skills` and `.claude/skills` remain defaults." command="mdkg skill sync" />
         <FeatureCard title="Collaboration profile" text="Use `COLLABORATION.md` as the canonical operator profile while `HUMAN.md` remains a one-release legacy alias." command="COLLABORATION.md" />
+        <FeatureCard title="Manifest naming" text="Author new reusable capability records as `MANIFEST.md`; `SPEC.md` remains a one-release compatibility alias with warnings." command="mdkg manifest list" />
       </div>
     </div>
   </section>

@@ -47,7 +47,7 @@ function main() {
   assert(jsonLd.softwareVersion === pkg.version, "homepage JSON-LD softwareVersion must match package.json");
   assert(home.includes("0.4.0 launch track"), "homepage missing 0.4.0 launch-track copy");
   assert(home.includes(`mdkg@${pkg.version}`), "homepage launch-track copy must name the current published package baseline");
-  assert(home.includes("live validation follows the approved publish and deploy"), "homepage missing post-publish live-validation boundary copy");
+  assert(home.includes("live validation is post-publish and post-deploy after approval"), "homepage missing post-publish live-validation boundary copy");
   assert(
     jsonLd.description.includes("structured Markdown, context packs, handoffs, checkpoints, and validation"),
     "homepage JSON-LD description missing launch-ready product summary"

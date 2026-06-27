@@ -59,7 +59,7 @@ function main() {
   assert(home.includes("Customize standards without forking the kernel"), "homepage missing 0.3.9 customization section");
   assert(home.includes("0.4.0 launch track"), "homepage missing 0.4.0 launch-track language");
   assert(home.includes("mdkg@0.3.9"), "homepage missing published package baseline language");
-  assert(home.includes("Local validation happens before publish; live validation follows the approved publish and deploy"), "homepage missing local/live validation boundary language");
+  assert(home.includes("Local validation is pre-publish; live validation is post-publish and post-deploy after approval"), "homepage missing local/live validation boundary language");
   assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
   assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
   assert(home.includes("COLLABORATION.md"), "homepage missing collaboration profile copy");
@@ -145,6 +145,7 @@ function main() {
         ".mdkg/config.json",
         "Custom skill mirrors",
         "COLLABORATION.md",
+        "MANIFEST.md",
         "Try it on a small repo first.",
       ],
     },

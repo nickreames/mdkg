@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-602, task-603, task-605]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307, chk-308]
 aliases: []
 skills: []
 cases: []
@@ -70,6 +70,10 @@ Run local builds/servers or approved preview URLs during launch validation.
   `main...origin/main [ahead 11]` at `419db20`; no new live Browser/Chrome
   production validation has been run because live validation is reserved for
   the post-push/post-deploy boundary.
+- Current local Browser desktop/mobile and Chrome desktop validation passed for
+  the homepage, docs changelog, and docs packs/handoffs routes after the
+  homepage validation-boundary and `MANIFEST.md` copy was tightened; see
+  `chk-308`.
 - This test must remain open until an explicitly approved push/redeploy
   completes and live mdkg.dev/docs.mdkg.dev Browser or Chrome verification
   passes against current production.
