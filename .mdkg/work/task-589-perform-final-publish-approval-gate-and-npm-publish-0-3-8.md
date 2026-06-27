@@ -2,7 +2,7 @@
 id: task-589
 type: task
 title: perform final publish approval gate and npm publish 0.3.8
-status: backlog
+status: progress
 priority: 1
 parent: goal-40
 tags: [release, publish, npm, 0-3-8]
