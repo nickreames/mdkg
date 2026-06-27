@@ -92,6 +92,9 @@ Reserved rule IDs allowed by contract:
 - `rule-soul`
 - `rule-human`
 
+`rule-7` is the current canonical collaboration profile. `rule-human` remains a
+one-release legacy alias through `HUMAN.md`.
+
 Examples:
 - `task-183`
 - `edd-14`

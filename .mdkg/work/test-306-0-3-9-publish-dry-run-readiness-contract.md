@@ -2,7 +2,7 @@
 id: test-306
 type: test
 title: 0.3.9 publish dry run readiness contract
-status: todo
+status: done
 priority: 1
 epic: epic-201
 parent: goal-41
@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -51,7 +51,20 @@ All prerequisite `0.3.9` tasks/tests are done.
 
 # Results / Evidence
 
-Pending implementation.
+Passed.
+
+- Build/test/CLI/docs gates passed through individual runs and through
+  `npm publish --dry-run`.
+- Registry checks showed npm latest at `0.3.8` and `mdkg@0.3.9` unavailable
+  with npm `E404`.
+- `npm pack --dry-run --json` produced `mdkg-0.3.9.tgz` with 176 files and all
+  required runtime/init/release docs present.
+- `npm publish --dry-run --registry=https://registry.npmjs.org/` passed with
+  isolated cache and ended with `+ mdkg@0.3.9`.
+- Full validation passed with one accepted legacy `SPEC.md` compatibility
+  warning; changed-only validation had 0 warnings and 0 errors.
+- No real publish, tag, push, deploy, or downstream mutation occurred.
+- Final recommendation: publish ready pending explicit approval.
 
 # Notes / Follow-ups
 

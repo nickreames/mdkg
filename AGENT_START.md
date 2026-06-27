@@ -6,9 +6,10 @@ This repository uses mdkg as durable project memory for humans and AI agents.
 
 Start here, then read in this order:
 1. `.mdkg/core/SOUL.md`
-2. `.mdkg/core/HUMAN.md`
-3. `.mdkg/README.md`
-4. `CLI_COMMAND_MATRIX.md`
+2. `.mdkg/core/COLLABORATION.md`
+3. `.mdkg/core/HUMAN.md` if it exists as a legacy alias
+4. `.mdkg/README.md`
+5. `CLI_COMMAND_MATRIX.md`
 
 If those files disagree, trust the source code and current CLI behavior first, then update the docs.
 
@@ -17,7 +18,7 @@ If those files disagree, trust the source code and current CLI behavior first, t
 Use this order of trust:
 - source code and tests
 - mdkg rules, design docs, decision records, and work nodes
-- `SOUL.md` and `HUMAN.md`
+- `SOUL.md`, `COLLABORATION.md`, and legacy `HUMAN.md`
 - relevant skills
 - prior chat history
 

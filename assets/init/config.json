@@ -32,6 +32,21 @@
     "receipts_path": ".mdkg/db/receipts",
     "migration_table": "mdkg_schema_migration"
   },
+  "customization": {
+    "standards": {
+      "profile": "default",
+      "refs": []
+    },
+    "core_docs": {
+      "custom_paths": []
+    },
+    "skill_mirrors": {
+      "targets": [
+        ".agents/skills",
+        ".claude/skills"
+      ]
+    }
+  },
   "subgraphs": {},
   "pack": {
     "default_depth": 2,

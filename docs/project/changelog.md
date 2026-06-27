@@ -18,5 +18,7 @@ High-level public-alpha milestones:
 - `0.3.5`: graph clone, fork, and template import workflows.
 - `0.3.6`: graph import selected-goal hardening and read-only local MCP server.
 - `0.3.7`: completed-goal `last_active_node`, semantic refs, checkpoint kinds, workflow validation, queue adapter contract, and handoff creation.
+- `0.3.8`: MANIFEST naming, SPEC compatibility warnings, warning-scale validation summaries, and multi-repo closeout guidance.
+- `0.3.9`: config overlays, configurable skill mirrors, COLLABORATION.md, refreshed first-party skills, and release-note automation.
 
 For exact dates and patch notes, read the root `CHANGELOG.md`.

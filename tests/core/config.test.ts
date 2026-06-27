@@ -93,6 +93,18 @@ test("loadConfig reads and validates config", () => {
   assert.equal(config.db.migration_table, "mdkg_schema_migration");
   assert.equal(config.index.backend, "json");
   assert.deepEqual(config.subgraphs, {});
+  assert.deepEqual(config.customization, {
+    standards: {
+      profile: "default",
+      refs: [],
+    },
+    core_docs: {
+      custom_paths: [],
+    },
+    skill_mirrors: {
+      targets: [".agents/skills", ".claude/skills"],
+    },
+  });
 });
 
 test("loadConfig migrates legacy config without schema_version and defaults capability bundle and db fields", () => {
@@ -122,6 +134,56 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   assert.equal(config.db.root_path, ".mdkg/db");
   assert.equal(config.db.runtime_path, ".mdkg/db/runtime/project.sqlite");
   assert.deepEqual(config.subgraphs, {});
+  assert.deepEqual(config.customization.skill_mirrors.targets, [".agents/skills", ".claude/skills"]);
+});
+
+test("loadConfig accepts organization customization overlays and custom mirror targets", () => {
+  const root = makeTempDir("mdkg-config-customization-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(JSON.stringify(BASE_CONFIG));
+  config.customization = {
+    standards: {
+      profile: "acme",
+      refs: ["standards/acme.md", "archive://standards.acme"],
+    },
+    core_docs: {
+      custom_paths: ["standards/COLLABORATION.md"],
+    },
+    skill_mirrors: {
+      targets: [".agents/skills", ".claude/skills", ".codex/skills"],
+    },
+  };
+  writeFile(configPath, JSON.stringify(config, null, 2));
+
+  const loaded = loadConfig(root);
+  assert.equal(loaded.customization.standards.profile, "acme");
+  assert.deepEqual(loaded.customization.standards.refs, ["standards/acme.md", "archive://standards.acme"]);
+  assert.deepEqual(loaded.customization.core_docs.custom_paths, ["standards/COLLABORATION.md"]);
+  assert.deepEqual(loaded.customization.skill_mirrors.targets, [".agents/skills", ".claude/skills", ".codex/skills"]);
+});
+
+test("loadConfig rejects unsafe customization overlay paths", () => {
+  const root = makeTempDir("mdkg-config-customization-invalid-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(JSON.stringify(BASE_CONFIG));
+  config.customization = {
+    standards: {
+      profile: "acme",
+      refs: [],
+    },
+    core_docs: {
+      custom_paths: ["../outside.md"],
+    },
+    skill_mirrors: {
+      targets: [".agents/skills", "/tmp/skills"],
+    },
+  };
+  writeFile(configPath, JSON.stringify(config, null, 2));
+
+  assert.throws(
+    () => loadConfig(root),
+    /customization\.core_docs\.custom_paths\[0\] cannot contain parent-directory components[\s\S]*customization\.skill_mirrors\.targets\[1\] must be relative/
+  );
 });
 
 test("loadConfig accepts project db config distinct from index backend", () => {

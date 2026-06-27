@@ -1,21 +1,19 @@
 import fs from "fs";
 import path from "path";
-import { Config } from "../core/config";
+import { Config, defaultCustomizationConfig } from "../core/config";
 import { buildSkillsIndex, resolveSkillsRoot, SkillsIndex } from "../graph/skills_indexer";
 import { UsageError } from "../util/errors";
 
-const MIRROR_PRODUCTS = ["agents", "claude"] as const;
 const MANIFEST_FILE = ".mdkg-managed.json";
 const MANAGED_ROOT_MARKERS = [
   path.join(".mdkg", "core", "SOUL.md"),
+  path.join(".mdkg", "core", "COLLABORATION.md"),
   path.join(".mdkg", "core", "HUMAN.md"),
 ];
 const ALLOWED_ROOT_ENTRIES = ["SKILL.md", "references", "assets", "scripts"];
 
-type MirrorProduct = (typeof MIRROR_PRODUCTS)[number];
-
 type MirrorTarget = {
-  product: MirrorProduct;
+  configuredPath: string;
   rootDir: string;
   skillsRoot: string;
   manifestPath: string;
@@ -47,16 +45,21 @@ export type SyncSkillMirrorsResult = {
 export type PreflightSkillMirrorTargetsOptions = {
   root: string;
   slugs: string[];
+  config?: Config;
   force?: boolean;
 };
 
-function resolveMirrorTargets(root: string): MirrorTarget[] {
-  return MIRROR_PRODUCTS.map((product) => {
-    const rootDir = path.join(root, `.${product}`);
-    const skillsRoot = path.join(rootDir, "skills");
+export function configuredSkillMirrorTargets(config?: Config): string[] {
+  const configured = config?.customization.skill_mirrors.targets ?? defaultCustomizationConfig().skill_mirrors.targets;
+  return Array.from(new Set(configured.map((value) => value.trim()).filter(Boolean)));
+}
+
+function resolveMirrorTargets(root: string, config?: Config): MirrorTarget[] {
+  return configuredSkillMirrorTargets(config).map((configuredPath) => {
+    const skillsRoot = path.join(root, configuredPath);
     return {
-      product,
-      rootDir,
+      configuredPath,
+      rootDir: path.dirname(skillsRoot),
       skillsRoot,
       manifestPath: path.join(skillsRoot, MANIFEST_FILE),
     };
@@ -90,11 +93,11 @@ function writeManifest(target: MirrorTarget, managed: Iterable<string>): void {
   fs.writeFileSync(target.manifestPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
 
-function shouldCreateMirrorRoots(root: string): boolean {
+function shouldCreateMirrorRoots(root: string, config?: Config): boolean {
   if (MANAGED_ROOT_MARKERS.some((relPath) => fs.existsSync(path.join(root, relPath)))) {
     return true;
   }
-  return resolveMirrorTargets(root).some((target) => fs.existsSync(target.rootDir) || fs.existsSync(target.skillsRoot));
+  return resolveMirrorTargets(root, config).some((target) => fs.existsSync(target.rootDir) || fs.existsSync(target.skillsRoot));
 }
 
 function listAllowedEntries(dirPath: string): string[] {
@@ -284,7 +287,7 @@ export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMir
   const sources = loadCanonicalSources(options.root, options.config);
   const createRoots = Boolean(options.createRoots);
   const force = Boolean(options.force);
-  const targets = resolveMirrorTargets(options.root);
+  const targets = resolveMirrorTargets(options.root, options.config);
   let synced = 0;
   let pruned = 0;
   let touchedTargets = 0;
@@ -337,7 +340,7 @@ export function preflightSkillMirrorTargets(options: PreflightSkillMirrorTargets
   if (slugs.length === 0) {
     return;
   }
-  for (const target of resolveMirrorTargets(options.root)) {
+  for (const target of resolveMirrorTargets(options.root, options.config)) {
     if (!fs.existsSync(target.rootDir) && !fs.existsSync(target.skillsRoot)) {
       continue;
     }
@@ -353,12 +356,12 @@ export function preflightSkillMirrorTargets(options: PreflightSkillMirrorTargets
   }
 }
 
-export function shouldMaintainSkillMirrors(root: string): boolean {
-  return shouldCreateMirrorRoots(root);
+export function shouldMaintainSkillMirrors(root: string, config?: Config): boolean {
+  return shouldCreateMirrorRoots(root, config);
 }
 
 export function auditSkillMirrors(root: string, config: Config): string[] {
-  const shouldAudit = shouldCreateMirrorRoots(root);
+  const shouldAudit = shouldCreateMirrorRoots(root, config);
   if (!shouldAudit) {
     return [];
   }
@@ -367,7 +370,7 @@ export function auditSkillMirrors(root: string, config: Config): string[] {
   const sources = loadCanonicalSources(root, config);
   const sourceBySlug = new Map(sources.map((source) => [source.slug, source]));
 
-  for (const target of resolveMirrorTargets(root)) {
+  for (const target of resolveMirrorTargets(root, config)) {
     if (!fs.existsSync(target.skillsRoot)) {
       warnings.push(`${path.relative(root, target.skillsRoot)}: mirror root missing; run \`mdkg skill sync\``);
       continue;
@@ -403,8 +406,8 @@ export function auditSkillMirrors(root: string, config: Config): string[] {
   return warnings;
 }
 
-export function scaffoldMirrorRoots(root: string): void {
-  for (const target of resolveMirrorTargets(root)) {
+export function scaffoldMirrorRoots(root: string, config?: Config): void {
+  for (const target of resolveMirrorTargets(root, config)) {
     fs.mkdirSync(target.skillsRoot, { recursive: true });
     if (!fs.existsSync(target.manifestPath)) {
       writeManifest(target, []);

@@ -545,7 +545,8 @@ function printSkillHelp(log: LogFn, subcommand?: string): void {
       log("Usage:");
       log("  mdkg skill sync [--force] [--json]");
       log("\nWhen to use:");
-      log("  Rebuild .agents/skills and .claude/skills from canonical .mdkg/skills.");
+      log("  Rebuild configured skill mirror targets from canonical .mdkg/skills.");
+      log("  Defaults are .agents/skills and .claude/skills; add custom targets in .mdkg/config.json.");
       printGlobalOptions(log);
       return;
     default:

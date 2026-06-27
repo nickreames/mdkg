@@ -10,8 +10,14 @@ relates: []
 refs: []
 aliases: [human]
 created: 2026-03-10
-updated: 2026-03-10
+updated: 2026-06-27
 ---
+
+# Compatibility
+
+`HUMAN.md` is a one-release legacy alias. Read
+`.mdkg/core/COLLABORATION.md` first when it exists, then use this file only for
+older local notes that have not yet moved to the canonical collaboration profile.
 
 # Purpose
 

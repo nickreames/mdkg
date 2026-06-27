@@ -356,10 +356,13 @@ function exerciseAgentInit(binPath, tempRoot) {
     "CLAUDE.md",
     "llms.txt",
     "CLI_COMMAND_MATRIX.md",
+    ".mdkg/skills/author-mdkg-skill/SKILL.md",
     ".mdkg/skills/select-work-and-ground-context/SKILL.md",
     ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
     ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+    ".agents/skills/author-mdkg-skill/SKILL.md",
     ".agents/skills/select-work-and-ground-context/SKILL.md",
+    ".claude/skills/author-mdkg-skill/SKILL.md",
     ".claude/skills/select-work-and-ground-context/SKILL.md",
     ".mdkg/work/events/events.jsonl",
   ]) {
@@ -369,6 +372,11 @@ function exerciseAgentInit(binPath, tempRoot) {
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assertIncludes(gitignore, ".mdkg/archive/**/source/", ".gitignore");
   assertIncludes(gitignore, ".mdkg/db/runtime/", ".gitignore");
+  assertIncludes(
+    fs.readFileSync(path.join(root, ".mdkg/skills/author-mdkg-skill/SKILL.md"), "utf8"),
+    "customization.skill_mirrors.targets",
+    "seeded author-mdkg-skill skill"
+  );
   assertIncludes(
     fs.readFileSync(path.join(root, ".mdkg/skills/verify-close-and-checkpoint/SKILL.md"), "utf8"),
     "mdkg archive compress --all",

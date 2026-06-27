@@ -2,7 +2,7 @@
 id: test-304
 type: test
 title: collaboration human and spec compatibility bridge contract
-status: todo
+status: done
 priority: 1
 epic: epic-200
 parent: goal-41
@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -46,7 +46,16 @@ Use fresh init and legacy fixture repos.
 
 # Results / Evidence
 
-Pending implementation.
+- `node --test dist/tests/commands/init.test.js` passed: 9 tests.
+- `node --test dist/tests/commands/upgrade.test.js` passed: 13 tests.
+- Coverage includes fresh `mdkg init --agent` seeding `COLLABORATION.md`,
+  `rule-soul` / `rule-7` / `rule-human` core pin order, HUMAN as one-release
+  legacy alias, startup guidance preferring COLLABORATION, upgrade creation of
+  missing COLLABORATION, preservation of customized HUMAN content, and accurate
+  init-manifest hashes after managed pin insertion.
+- Existing MANIFEST/SPEC compatibility tests in `upgrade.test.js` still pass:
+  dry-run migration, apply rename to `MANIFEST.md` with `type: manifest`, and
+  sibling `MANIFEST.md` conflict preservation.
 
 # Notes / Follow-ups
 

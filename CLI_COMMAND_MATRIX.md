@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-06-21
-package_version_in_source: 0.3.8
+package_version_in_source: 0.3.9
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -118,7 +118,7 @@ Notes:
 - `--agent` is the canonical complete AI-agent bootstrap path
 - removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
 - published bootstrap config is root-only by default
-- `--agent` creates `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node core docs, default mdkg usage skills, `events.jsonl`, registry, and skill mirrors
+- `--agent` creates `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node `SOUL.md` / `COLLABORATION.md` core docs, legacy `HUMAN.md`, default mdkg usage skills, `events.jsonl`, registry, and configured skill mirrors
 - run `mdkg index` after fresh init before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches
 
 ### `mdkg upgrade`
@@ -443,7 +443,9 @@ JSON receipt:
 - `{ action: "synced", sync: { synced, pruned, targets } }`
 
 Notes:
-- syncs canonical `.mdkg/skills/` into `.agents/skills/` and `.claude/skills/`
+- syncs canonical `.mdkg/skills/` into configured
+  `customization.skill_mirrors.targets` paths from `.mdkg/config.json`
+- defaults are `.agents/skills` and `.claude/skills`
 - preserves unrelated existing folders
 - same-slug collisions fail unless forced
 

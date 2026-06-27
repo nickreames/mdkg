@@ -101,9 +101,11 @@ For MANIFEST.md output, include:
 14. If the skill changes the public workflow, update `AGENT_START.md`,
     `CLI_COMMAND_MATRIX.md`, root onboarding docs, and the skill registry in the
     same pass.
-15. When mirrored product-specific skill folders are enabled, run
-    `mdkg skill sync` after broad manual changes so `.agents/skills/` and
-    `.claude/skills/` stay current.
+15. When mirrored skill folders are enabled, run `mdkg skill sync` after broad
+    manual changes so every configured `.mdkg/config.json`
+    `customization.skill_mirrors.targets` path stays current. The default
+    targets are `.agents/skills/` and `.claude/skills/`; other agent-local
+    skill roots may be configured by the repo.
 
 ## Outputs
 
@@ -131,12 +133,14 @@ For MANIFEST.md output, include:
 - `.mdkg/templates/specs/`
 - relevant `MANIFEST.md` nodes or template files, with legacy `SPEC.md`
   references retained only for compatibility
-- `.agents/skills/` and `.claude/skills/` only through `mdkg skill sync`
+- configured mirrored skill roots only through `mdkg skill sync`
 
 ## Validation Checks
 
 - `mdkg skill validate <slug>`
+- `mdkg skill sync --json` when mirror targets are present
 - `mdkg capability search "<skill or manifest concept>" --json`
+- `mdkg validate --changed-only --json`
 - `mdkg validate`
 - Template coverage check when template files are changed
 - Projection validation report when `.codex/agents` or another projection
@@ -161,6 +165,8 @@ For MANIFEST.md output, include:
 - mdkg indexes and discovers skills, but does not execute skill scripts.
 - Do not treat `.codex/agents`, future runtime manifests, or package exports as
   durable source of truth.
+- Do not create new `SPEC.md` capability docs; use `MANIFEST.md`. Keep legacy
+  `SPEC.md` references only when documenting compatibility or migration repair.
 - Do not export secrets, provider credentials, raw auth state, production
   controls, wallet/ledger state, or local-only user paths into templates or
   projections.

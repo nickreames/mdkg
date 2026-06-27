@@ -2,12 +2,12 @@
 id: goal-41
 type: goal
 title: Complete mdkg 0.3.9 CLI extensibility and release polish foundation
-status: todo
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: 0.3.9 is ready for an explicit npm publish approval decision after mdkg supports config-overlay customization, arbitrary skill mirror target paths, an upgradable kernel policy, the COLLABORATION.md compatibility bridge, refreshed first-party skills, docs/release-note drift automation, full change audit, full pre-publish gates, npm pack/publish dry-run, and a final recommendation that states publish-ready or lists remaining gaps.
 scope_refs: [epic-199, epic-200, epic-201, task-594, task-595, task-596, task-597, task-598, task-599, task-600, test-302, test-303, test-304, test-305, test-306]
-active_node: task-594
+last_active_node: task-600
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, changelog and release notes mapping for every publish-bound change, visible version-reference drift audit, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.3.9 version --registry=https://registry.npmjs.org/, node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, npm run smoke:upgrade, npm run smoke:init, custom overlay temp-repo smoke, custom skill mirror temp-repo smoke, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, publish-readiness recommendation or remaining-gaps report, git diff --check]
 max_iterations: 25
@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Objective
 
@@ -144,4 +144,16 @@ the next npm release.
 
 # Completion Evidence
 
-- Pending.
+- `task-594` through `task-600` completed the source audit, config overlay
+  foundation, arbitrary skill mirrors, `COLLABORATION.md` bridge, first-party
+  skill refresh, docs/release-note automation, and release-readiness closeout.
+- `test-302` through `test-306` passed the config/upgradable-kernel, custom
+  mirrors, compatibility bridge, docs automation, and publish dry-run
+  readiness contracts.
+- `npm publish --dry-run --registry=https://registry.npmjs.org/` passed with
+  isolated cache and no real publish.
+- Registry checks showed `mdkg` latest at `0.3.8` and `mdkg@0.3.9` not already
+  published.
+- Final recommendation: `mdkg@0.3.9` is publish ready pending explicit approval.
+- Boundary: no real npm publish, tag, push, deploy, or downstream repo mutation
+  occurred in this goal execution.
