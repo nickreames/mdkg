@@ -2,20 +2,20 @@
 id: task-606
 type: task
 title: prepare article announcement support and close 0.4.0 launch readiness
-status: todo
+status: done
 priority: 2
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, article, announcement, closeout, launch]
 owners: []
 links: []
-artifacts: []
+artifacts: [https://mdkg.dev/, https://docs.mdkg.dev/project/changelog/, /private/tmp/mdkg-0.4.0-chrome-live-20260627/chrome-live-validation-receipt.json]
 relates: []
 blocked_by: [task-601, task-602, task-603, task-604, task-605, task-612, test-316, task-613, test-317, task-614, task-615, test-318, task-616, test-319, task-617, test-320, test-307, test-308, test-309, test-310]
 blocks: [test-311, test-312]
-refs: [task-601, task-602, task-603, task-604, task-605, task-612, test-316, task-613, test-317, task-614, task-615, test-318, task-616, test-319, task-617, test-320]
+refs: [task-601, task-602, task-603, task-604, task-605, task-612, test-316, task-613, test-317, task-614, task-615, test-318, task-616, test-319, task-617, test-320, chk-311, chk-312, chk-313, chk-314, chk-315, chk-316, chk-317, chk-318, chk-319, chk-320, chk-321, chk-322, chk-323]
 context_refs: []
-evidence_refs: [chk-307, chk-310]
+evidence_refs: [chk-307, chk-310, chk-324]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -90,6 +90,36 @@ validation, Vercel deployment/currentness, and Chrome live proof are complete.
 - `git diff --check`
 - `test-311`
 - `test-312`
+
+# Launch Readiness Recommendation
+
+Recommended status: `launch ready`.
+
+The `0.4.0` package and public launch surfaces have the required evidence:
+source release prep, full local gates, npm pack/publish dry-run, real npm
+publish after approval, postpublish temp install/probes, Vercel currentness,
+live Chrome desktop/mobile validation, docs changelog coverage, SEO metadata,
+CTA polish, and public no-secret sanity.
+
+# Article Support
+
+Article-safe claims for the June 28, 2026 announcement:
+
+- mdkg is a local-first, Git-native project memory loop for AI coding agents.
+- The 0.4.0 release makes `mdkg.dev` and `docs.mdkg.dev` launch-current for the
+  public alpha surface.
+- Public pages now describe config overlays, arbitrary skill mirror paths,
+  `COLLABORATION.md`, and canonical `MANIFEST.md` naming with legacy bridge
+  behavior.
+- The release has npm publish/postpublish proof, Vercel production currentness,
+  Chrome live validation, and public no-secret sanity evidence.
+
+Boundaries for article copy:
+
+- Do not claim hosted execution, analytics activation, DNS changes, demo
+  subdomain promotion, or downstream repo upgrades unless separately completed.
+- Treat June 28, 2026 as announcement timing context, not an authorization for
+  any further publish/deploy/publication side effect.
 
 # Links / Artifacts
 

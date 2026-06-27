@@ -2,20 +2,20 @@
 id: test-320
 type: test
 title: 0.4.0 end to end publish and launch contract
-status: todo
+status: done
 priority: 1
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, end-to-end, publish, launch, chrome, vercel, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-0.4.0-chrome-live-20260627, /private/tmp/mdkg-0.4.0-chrome-live-20260627/chrome-live-validation-receipt.json, https://mdkg.dev/, https://docs.mdkg.dev/project/changelog/]
 relates: []
 blocked_by: [task-617]
 blocks: [task-606, test-312]
-refs: [task-617, task-606, test-312]
+refs: [task-617, task-606, test-312, chk-316, chk-317, chk-318, chk-319, chk-320]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-321]
 aliases: []
 skills: []
 cases: []
@@ -54,7 +54,7 @@ evidence.
 
 # Results / Evidence
 
-Pending implementation.
+Passed. See `chk-321`.
 
 # Notes / Follow-ups
 

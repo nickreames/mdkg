@@ -2,20 +2,20 @@
 id: test-308
 type: test
 title: docs site browser SEO and accessibility contract
-status: todo
+status: done
 priority: 2
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, browser, seo, a11y, docs, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-goal42-current-local-validation-20260627, /private/tmp/mdkg-0.4.0-chrome-live-20260627, /private/tmp/mdkg-0.4.0-chrome-live-20260627/chrome-live-validation-receipt.json, https://mdkg.dev/, https://docs.mdkg.dev/project/changelog/]
 relates: []
 blocked_by: [task-605]
 blocks: []
-refs: [task-602, task-603, task-605]
+refs: [task-602, task-603, task-605, chk-301, chk-304, chk-308, chk-318, chk-319, chk-320, chk-321, chk-322]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307, chk-308]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307, chk-308, chk-323]
 aliases: []
 skills: []
 cases: []
@@ -46,7 +46,7 @@ Run local builds/servers or approved preview URLs during launch validation.
 
 # Results / Evidence
 
-- Partially proven locally; not done.
+- Passed. See `chk-323`.
 - Local Product Design, Browser viewport, SEO, accessibility, performance,
   docs/site smoke, and public no-secret checks passed for built source output;
   see `chk-301`.
@@ -74,9 +74,11 @@ Run local builds/servers or approved preview URLs during launch validation.
   the homepage, docs changelog, and docs packs/handoffs routes after the
   homepage validation-boundary and `MANIFEST.md` copy was tightened; see
   `chk-308`.
-- This test must remain open until an explicitly approved push/redeploy
-  completes and live mdkg.dev/docs.mdkg.dev Browser or Chrome verification
-  passes against current production.
+- Approved publish/push/deploy evidence completed after the earlier local proof:
+  Vercel production currentness and custom-domain checks passed in `chk-318`
+  and `chk-319`; live Chrome desktop/mobile validation passed in `chk-320`;
+  end-to-end publish and launch contract passed in `chk-321`; umbrella
+  launch-proof synthesis is recorded in `chk-322`.
 
 # Notes / Follow-ups
 

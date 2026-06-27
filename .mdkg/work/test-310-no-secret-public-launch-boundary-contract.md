@@ -9,13 +9,13 @@ parent: goal-42
 tags: [0.4.0, no-secrets, launch-boundary, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-0.4.0-chrome-live-20260627/chrome-live-validation-receipt.json, https://mdkg.dev/, https://docs.mdkg.dev/project/changelog/]
 relates: []
 blocked_by: [task-605]
 blocks: []
-refs: [task-605]
+refs: [task-605, chk-320, chk-322]
 context_refs: []
-evidence_refs: [chk-300, chk-305, chk-306, chk-308]
+evidence_refs: [chk-300, chk-305, chk-306, chk-308, chk-320, chk-322]
 aliases: []
 skills: []
 cases: []
@@ -62,6 +62,10 @@ Run after public launch pages and browser evidence exist.
   paths.
 - Follow-up current local web validation in `chk-308` also stayed inside the
   no-push/no-deploy/no-publish boundary and stored only local artifact paths.
+- Postpublish live Chrome validation in `chk-320` found no high-confidence
+  public secret patterns on `mdkg.dev` or
+  `docs.mdkg.dev/project/changelog/`, and `chk-322` records that no additional
+  side effects occurred during launch-proof closeout.
 
 # Notes / Follow-ups
 
