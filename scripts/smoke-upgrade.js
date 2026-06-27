@@ -233,6 +233,82 @@ function exerciseUpgrade(binPath, tempRoot) {
   assertManifestTemplate(oldTemplateRoot, "old-template upgrade");
   mdkg(binPath, ["validate"], oldTemplateRoot);
 
+  const legacySpecRoot = path.join(tempRoot, "legacy-spec-workspace");
+  initGit(legacySpecRoot);
+  mdkg(binPath, ["init", "--agent"], legacySpecRoot);
+  const createdLegacyManifest = parseJson(
+    mdkg(
+      binPath,
+      ["new", "manifest", "Legacy Upgrade Capability", "--id", "agent.legacy-upgrade", "--json"],
+      legacySpecRoot
+    ).stdout
+  );
+  const legacyManifestPath = path.join(legacySpecRoot, createdLegacyManifest.node.path);
+  const legacySpecPath = path.join(path.dirname(legacyManifestPath), "SPEC.md");
+  fs.renameSync(legacyManifestPath, legacySpecPath);
+  fs.writeFileSync(
+    legacySpecPath,
+    fs.readFileSync(legacySpecPath, "utf8").replace(/^type: manifest$/m, "type: spec"),
+    "utf8"
+  );
+  const legacySpecDryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], legacySpecRoot).stdout);
+  const legacySpecMigration = legacySpecDryRun.changes.find(
+    (change) => change.action === "migrate" && change.category === "manifest_migration"
+  );
+  if (!legacySpecMigration || legacySpecMigration.target_path !== createdLegacyManifest.node.path) {
+    throw new Error(`legacy SPEC migration was not planned: ${JSON.stringify(legacySpecDryRun, null, 2)}`);
+  }
+  if (!legacySpecDryRun.will_write_paths.includes(createdLegacyManifest.node.path)) {
+    throw new Error("legacy SPEC migration target missing from will_write_paths");
+  }
+  const legacySpecApply = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], legacySpecRoot).stdout);
+  if (
+    !legacySpecApply.changes.some(
+      (change) => change.action === "migrate" && change.category === "manifest_migration"
+    )
+  ) {
+    throw new Error("legacy SPEC migration was not applied");
+  }
+  if (fs.existsSync(legacySpecPath)) {
+    throw new Error("legacy SPEC.md still exists after upgrade apply");
+  }
+  assertExists(legacyManifestPath);
+  assertIncludes(fs.readFileSync(legacyManifestPath, "utf8"), "type: manifest", "legacy SPEC migrated manifest");
+  mdkg(binPath, ["manifest", "validate", "agent.legacy-upgrade", "--json"], legacySpecRoot);
+  mdkg(binPath, ["validate", "--json"], legacySpecRoot);
+
+  const siblingConflictRoot = path.join(tempRoot, "sibling-conflict-workspace");
+  initGit(siblingConflictRoot);
+  mdkg(binPath, ["init", "--agent"], siblingConflictRoot);
+  const createdConflictManifest = parseJson(
+    mdkg(
+      binPath,
+      ["new", "manifest", "Sibling Conflict Capability", "--id", "agent.sibling-conflict", "--json"],
+      siblingConflictRoot
+    ).stdout
+  );
+  const conflictManifestPath = path.join(siblingConflictRoot, createdConflictManifest.node.path);
+  const conflictSpecPath = path.join(path.dirname(conflictManifestPath), "SPEC.md");
+  fs.writeFileSync(
+    conflictSpecPath,
+    fs.readFileSync(conflictManifestPath, "utf8").replace(/^type: manifest$/m, "type: spec"),
+    "utf8"
+  );
+  const conflictDryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], siblingConflictRoot).stdout);
+  if (conflictDryRun.safe_to_apply !== false) {
+    throw new Error("sibling MANIFEST/SPEC conflict should make upgrade unsafe to apply");
+  }
+  if (
+    !conflictDryRun.blocking_conflicts.some(
+      (change) => change.action === "conflict" && change.category === "manifest_migration"
+    )
+  ) {
+    throw new Error("sibling MANIFEST/SPEC conflict did not appear in blocking_conflicts");
+  }
+  if (!fs.existsSync(conflictManifestPath) || !fs.existsSync(conflictSpecPath)) {
+    throw new Error("sibling conflict dry-run should not remove either manifest file");
+  }
+
   const customTemplateRoot = path.join(tempRoot, "custom-spike-template-workspace");
   initGit(customTemplateRoot);
   mdkg(binPath, ["init"], customTemplateRoot);

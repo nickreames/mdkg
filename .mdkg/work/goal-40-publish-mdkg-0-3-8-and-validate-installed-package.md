@@ -2,12 +2,12 @@
 id: goal-40
 type: goal
 title: Publish mdkg 0.3.8 and validate installed package
-status: todo
+status: blocked
 priority: 1
 goal_state: paused
 goal_condition: mdkg 0.3.8 is published only after the SPEC.md to MANIFEST.md upgrade migration is implemented and proven, explicit publish approval is given, npm latest becomes 0.3.8, and an isolated tmp global install validates init, manifest capabilities, upgrade rename behavior, and graph health from the published package.
 scope_refs: [task-590, task-592, test-301, task-589, task-591, test-300]
-active_node: task-592
+active_node: task-589
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git fetch origin main, git rev-list --left-right --count origin/main...HEAD, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.3.8 version --registry=https://registry.npmjs.org/, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, after explicit approval npm publish --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, NPM_CONFIG_PREFIX=/private/tmp/mdkg-0.3.8-global npm install -g mdkg@latest --registry=https://registry.npmjs.org/, /private/tmp/mdkg-0.3.8-global/bin/mdkg --version, /private/tmp/mdkg-0.3.8-global/bin/mdkg validate --json, git diff --check]
 max_iterations: 25
@@ -144,18 +144,26 @@ This goal is achieved when:
 
 - Local readiness commit `3175fd1` made the previous publish dry-run path pass.
 - As of the recheck, npm latest is `0.3.7` and `mdkg@0.3.8` returns E404.
-- A temp probe at `/private/tmp/mdkg-upgrade-spec-probe` showed that current
-  `mdkg upgrade --apply` leaves legacy `SPEC.md` in place, creates no
-  `MANIFEST.md`, and reports `migrated: 0`. This is a pre-publish blocker for
-  the newly requested upgrade-rename requirement.
-- This goal is paused and unselected until a future execution turn explicitly
-  starts the publish lane.
+- The original temp probe at `/private/tmp/mdkg-upgrade-spec-probe` showed that
+  the prior `mdkg upgrade --apply` left legacy `SPEC.md` in place, created no
+  `MANIFEST.md`, and reported `migrated: 0`.
+- `task-592` and `test-301` resolved that blocker locally:
+  - upgrade dry-run now reports safe `SPEC.md` to `MANIFEST.md` migrations;
+  - upgrade apply renames eligible files and normalizes `type: spec` to
+    `type: manifest`;
+  - sibling `MANIFEST.md` conflicts are blocking and non-destructive;
+  - temp proof at `/private/tmp/mdkg-upgrade-spec-proof` validates cleanly.
+- Remaining goal work starts at `task-589`: final pre-publish gate, explicit
+  approval for public side effects, real npm publish, and post-publish isolated
+  tmp global install validation.
 
 # Iteration Log
 
 - Created publish/post-publish lane after `goal-39` readiness closeout.
 - Added explicit upgrade migration blocker based on local temp probe evidence.
 - Created runtime handoff megaprompt artifact for downstream MANIFEST adoption.
+- Implemented and proved the `SPEC.md` to `MANIFEST.md` upgrade migration in
+  `task-592` / `test-301`.
 
 # Skill Improvement Candidates
 
@@ -163,4 +171,18 @@ This goal is achieved when:
 
 # Completion Evidence
 
-- Pending.
+- Not complete yet. Partial evidence:
+  - `task-590` is done with runtime handoff artifact
+    `.mdkg/handoffs/runtime-manifest-0-3-8-upgrade-megaprompt.md`.
+  - `task-592` is done after source implementation and verification.
+  - `test-301` is done after unit, smoke, full-test, and temp CLI proof.
+  - PASS: `npm run test` with 521 passing tests and 0 failures.
+  - PASS: `npm run smoke:upgrade`.
+  - PASS: `npm run cli:check`.
+  - PASS: `npm run cli:contract`.
+  - PASS: `npm run docs:check`.
+  - PASS: `node scripts/assert-publish-ready.js`.
+  - PASS: `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run
+    --json` for `mdkg-0.3.8.tgz` with 174 entries.
+  - Publication, npm latest verification, isolated installed-package
+    validation, and goal closeout checkpoint remain pending.

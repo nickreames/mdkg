@@ -2,7 +2,7 @@
 id: test-301
 type: test
 title: upgrade renames legacy SPEC files to MANIFEST files
-status: backlog
+status: done
 priority: 1
 parent: goal-40
 tags: [manifest, spec, upgrade, migration, contract]
@@ -57,10 +57,26 @@ legacy `SPEC.md` capability files without data loss.
 
 # Results / Evidence
 
-- Pending.
-- Pre-task blocker probe: current local `mdkg upgrade --apply` left
+- Pre-task blocker probe: previous local `mdkg upgrade --apply` left
   `/private/tmp/mdkg-upgrade-spec-probe/.mdkg/work/agent.legacy-probe-legacy-capability-probe/SPEC.md`
   in place, created no `MANIFEST.md`, and reported `migrated: 0`.
+- Implemented proof now passes:
+  - dry-run reports a `manifest_migration` with source `SPEC.md` and target
+    `MANIFEST.md`;
+  - apply renames `SPEC.md` to `MANIFEST.md`;
+  - apply rewrites `type: spec` to `type: manifest`;
+  - metadata and body content are preserved;
+  - sibling `MANIFEST.md` conflicts are blocking and non-destructive;
+  - validation is clean after migration.
+- PASS: `node --test dist/tests/commands/upgrade.test.js` with 11 passing
+  upgrade tests.
+- PASS: temp CLI proof at `/private/tmp/mdkg-upgrade-spec-proof` with
+  `dry_run.safe_to_apply: true`, `dry_run.migrated: 1`, `apply.migrated: 1`,
+  zero remaining `SPEC.md` files, one `MANIFEST.md`, `type: manifest`, and
+  `validate.ok: true`.
+- PASS: `npm run smoke:upgrade` with package-level coverage through a packed
+  install.
+- PASS: `npm run test` with 521 passing tests and 0 failures.
 
 # Notes / Follow-ups
 
