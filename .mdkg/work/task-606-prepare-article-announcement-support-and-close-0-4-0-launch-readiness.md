@@ -11,11 +11,11 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-601, task-602, task-603, task-604, task-605, test-307, test-308, test-309, test-310, test-311, test-312]
-blocks: [test-312]
+blocked_by: [task-601, task-602, task-603, task-604, task-605, test-307, test-308, test-309, test-310]
+blocks: [test-311, test-312]
 refs: [task-601, task-602, task-603, task-604, task-605]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-307]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -56,6 +56,9 @@ evidence.
 - Keep article claims aligned with `CHANGELOG.md` and validated public pages.
 - Treat npm publish and public deploy/launch as separate approval boundaries
   after the readiness recommendation.
+- `test-311` and `test-312` validate this closeout task after it runs; they do
+  not block this task from becoming actionable once upstream website/docs,
+  Browser/Chrome, SEO, no-secret, and example proof is complete.
 
 # Test Plan
 

@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-602, task-603, task-605]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307]
 aliases: []
 skills: []
 cases: []
@@ -63,12 +63,13 @@ Run local builds/servers or approved preview URLs during launch validation.
 - Local Browser and Chrome HTML validation plus built-file checks prove current
   public docs/site routes use `--profile concise` and do not expose stale
   `--pack-profile concise` examples; see `chk-306`.
-- A refreshed read-only fetch of `origin/main`, `https://mdkg.dev/`, and
-  `https://docs.mdkg.dev/project/changelog/` after commit `5eccba7` still
-  shows the same blocker: local `main` is ahead of `origin/main` by 8,
-  mdkg.dev still reports `softwareVersion: "0.3.7"` with no 0.3.9
-  customization markers, and the live docs changelog still lacks
-  release-card/grid and `.mdkg/config.json` markers.
+- Latest recorded live production currentness evidence remains `chk-302`,
+  `chk-303`, and `chk-304`, which found production stale before the later
+  local-only language/profile-syntax commits.
+- Current local branch state after those local commits is
+  `main...origin/main [ahead 11]` at `419db20`; no new live Browser/Chrome
+  production validation has been run because live validation is reserved for
+  the post-push/post-deploy boundary.
 - This test must remain open until an explicitly approved push/redeploy
   completes and live mdkg.dev/docs.mdkg.dev Browser or Chrome verification
   passes against current production.
