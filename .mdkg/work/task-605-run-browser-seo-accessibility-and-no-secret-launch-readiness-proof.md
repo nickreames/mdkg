@@ -9,7 +9,7 @@ parent: goal-42
 tags: [0.4.0, browser, seo, a11y, no-secrets, launch-proof]
 owners: []
 links: []
-artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png]
+artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png, /private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html, /private/tmp/mdkg-goal42-live-refresh-docs-changelog.html]
 relates: []
 blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
@@ -72,6 +72,10 @@ docs.mdkg.dev.
   source-current; see `chk-302`.
 - Read-only Vercel inspection traced the live-current gap to production
   deployments built from an older pushed commit; see `chk-303`.
+- A refreshed read-only `git fetch origin main` plus public HTML fetch still
+  shows `main...origin/main [ahead 6]`, live mdkg.dev
+  `softwareVersion: "0.3.7"`, and no live docs release-card/grid markers; this
+  refresh is folded into `chk-303`.
 - Do not close this task until an approved push/redeploy produces current
   production deployments and live Browser/Chrome verification passes.
 

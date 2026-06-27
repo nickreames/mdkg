@@ -41,6 +41,9 @@ next approved push/deploy verification pass.
 
 - mdkg checkpoint evidence only.
 - Generated mdkg index refreshed by `mdkg checkpoint new`.
+- Later refresh added read-only public HTML snapshots:
+  `/private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html` and
+  `/private/tmp/mdkg-goal42-live-refresh-docs-changelog.html`.
 - No source, docs, package, deploy, DNS, analytics, tag, or npm state changed.
 
 ## Boundaries
@@ -87,6 +90,16 @@ auto-deploy production from pushed commits.
 
 ## Command Evidence
 
+- Refresh after local graph-only evidence commits:
+  - `git fetch origin main`: completed without push or remote mutation.
+  - `git status --short --branch`: `main...origin/main [ahead 6]`.
+  - `git rev-list --left-right --count origin/main...HEAD`: `0 6`.
+  - `https://mdkg.dev/` public HTML snapshot:
+    `softwareVersion` is still `0.3.7`; the page does not contain `0.3.9`,
+    `COLLABORATION.md`, config overlay copy, or custom skill mirror copy.
+  - `https://docs.mdkg.dev/project/changelog/` public HTML snapshot contains
+    `0.3.9`, `0.3.8`, `COLLABORATION.md`, and custom mirror text, but still
+    lacks release-card/grid markers from the current source.
 - `git rev-list --left-right --count origin/main...HEAD` at inspection time:
   `0 3`.
 - `git log --oneline origin/main..HEAD` at inspection time: local ahead commits
