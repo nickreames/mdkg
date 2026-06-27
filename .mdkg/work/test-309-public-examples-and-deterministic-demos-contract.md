@@ -15,7 +15,7 @@ blocked_by: [task-604]
 blocks: []
 refs: [task-604]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-299]
 aliases: []
 skills: []
 cases: []
@@ -42,7 +42,12 @@ Use latest appropriate mdkg CLI build or installed package for the release gate.
 
 # Results / Evidence
 
-Pending implementation.
+- Passed on 2026-06-27.
+- Evidence checkpoint: `chk-299`.
+- `npm run smoke:demo-graph` passed and covered public examples,
+  deterministic first-success routing, bounded pack stats, capability search,
+  read-only subgraph verification, and no high-risk marker checks.
+- No demo subdomain deployment or production promotion was performed.
 
 # Notes / Follow-ups
 

@@ -23,67 +23,79 @@ updated: 2026-06-27
 ---
 # Summary
 
-What was completed in this phase? What is now true?
+The release-notes/changelog contract passed for the source docs surface.
+Public changelog content now has release cards and 0.3.9 details, while
+automation checks reconcile the public data with `CHANGELOG.md`.
 
 # Scope Covered
 
-Keep `scope` frontmatter updated when possible.
+Scope is `test-307`: prove public release notes are reconciled with
+`CHANGELOG.md`.
 
 ## Changed Surfaces
 
-- files, commands, nodes, docs, or runtime surfaces changed
+- test evidence for `test-307`
+- docs release-note/changelog smoke coverage
 
 ## Boundaries
 
-- in scope:
-- out of scope:
-- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded:
+- in scope: local source/build contract.
+- out of scope: production deploy, live browser verification, npm publish,
+  git tag, DNS, and analytics.
+- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded.
 
 # Decisions Captured
 
-Link the most important decision records.
+- `CHANGELOG.md` remains the canonical release-fact source for public release
+  notes.
+- Live currentness remains a separate `task-605` verification item.
 
 # Implementation Summary
 
-What changed? What patterns or architecture emerged?
+The test confirmed that the public changelog source includes release cards and
+0.3.9 details. The docs checker verifies changelog-derived release-note data,
+and the docs smoke verifies card/detail snippets.
 
 # Test Proof
 
-- Test target:
-- Fixtures or temp repos:
-- Coverage gaps:
+- Test target: `task-601`, `CHANGELOG.md`, and the docs changelog surface.
+- Fixtures or temp repos: none.
+- Coverage gaps: production `docs.mdkg.dev` freshness requires approved deploy.
 
 # Verification / Testing
 
 ## Command Evidence
 
-- command:
-- result:
+- command: `npm run docs:check`
+- result: passed during the goal-42 local proof sequence.
+- command: `npm run smoke:mdkg-dev-docs`
+- result: passed and verified release-card/detail snippets.
 
 ## Pass / Fail Status
 
-- status:
+- status: pass for source/build contract.
 
 ## Known Warnings
 
-- warning:
+- warning: live docs verification remains open under `task-605`.
 
 # Known Issues / Follow-ups
 
-- issue 1
-- issue 2
+- verify production docs changelog after approved push/deploy.
 
 ## Follow-up Refs
 
-- task/test/goal refs:
+- `task-601`
+- `task-605`
+- `goal-42`
 
 # Links / Artifacts
 
-- packs
-- PRs/commits
-- docs
-- dashboards
+- `test-307`
+- `CHANGELOG.md`
+- `docs/`
 
 # Raw Content Safety
 
-- Summarize evidence and use refs, hashes, and artifact links instead of raw secrets, raw prompts, raw payloads, or bulky execution traces.
+- Summarized command receipts only; no raw secrets, raw prompts, raw payloads,
+  or bulky logs are stored here.

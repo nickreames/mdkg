@@ -15,7 +15,7 @@ blocked_by: [task-601]
 blocks: []
 refs: [task-601]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-298]
 aliases: []
 skills: []
 cases: []
@@ -45,7 +45,13 @@ Run after release notes page implementation.
 
 # Results / Evidence
 
-Pending implementation.
+- Passed on 2026-06-27.
+- Evidence checkpoint: `chk-298`.
+- `docs:check` verifies the CHANGELOG-derived release-note data.
+- `smoke:mdkg-dev-docs` verifies release-card and detail snippets for the
+  public docs changelog surface.
+- Follow-up live verification remains under `task-605`; this test covers the
+  source/build contract, not production deployment freshness.
 
 # Notes / Follow-ups
 

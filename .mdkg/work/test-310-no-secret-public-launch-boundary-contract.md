@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-605]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-300]
 aliases: []
 skills: []
 cases: []
@@ -45,7 +45,15 @@ Run after public launch pages and browser evidence exist.
 
 # Results / Evidence
 
-Pending implementation.
+- Passed locally on 2026-06-27.
+- Evidence checkpoint: `chk-300`.
+- Public source and built-output scans for local paths, npm tokens, sk-style
+  keys, private keys, and raw prompt/provider markers returned no matches.
+- Product Design and Browser artifacts under
+  `/private/tmp/mdkg-goal42-product-design-audit-20260627` were reviewed before
+  checkpoint references were added.
+- No `0.4.0` publish, tag, push, deploy, DNS, analytics, or production
+  promotion occurred.
 
 # Notes / Follow-ups
 

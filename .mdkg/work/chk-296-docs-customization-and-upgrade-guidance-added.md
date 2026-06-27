@@ -23,67 +23,85 @@ updated: 2026-06-27
 ---
 # Summary
 
-What was completed in this phase? What is now true?
+Docs onboarding and repository-layout guidance now describe the 0.3.9
+customization model: `.mdkg/config.json` overlays, arbitrary contained skill
+mirror paths, `COLLABORATION.md` with legacy `HUMAN.md`, MANIFEST/SPEC
+compatibility, and `mdkg upgrade --apply` behavior.
 
 # Scope Covered
 
-Keep `scope` frontmatter updated when possible.
+Scope is `task-603`: polish docs.mdkg.dev onboarding, command references, and
+upgrade guidance around current CLI behavior.
 
 ## Changed Surfaces
 
-- files, commands, nodes, docs, or runtime surfaces changed
+- `docs/` onboarding and repository-layout content.
+- docs smoke expectations.
 
 ## Boundaries
 
-- in scope:
-- out of scope:
-- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded:
+- in scope: source docs and local docs smoke coverage.
+- out of scope: production deploy, DNS, analytics, npm publish, git tag, and
+  final `0.4.0` release approval.
+- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded.
 
 # Decisions Captured
 
-Link the most important decision records.
+- Org customization is documented as config-overlay driven after init plus
+  upgrade application.
+- Arbitrary skill mirrors are documented as contained paths while
+  `.agents/skills` and `.claude/skills` remain defaults.
+- `COLLABORATION.md` is the canonical operator/collaboration doc with
+  one-release `HUMAN.md` bridge context.
 
 # Implementation Summary
 
-What changed? What patterns or architecture emerged?
+Docs now give task-oriented upgrade and customization guidance for the 0.3.9
+CLI facts that goal-42 depends on. The release narrative stays in release
+notes; guides focus on how to apply the capabilities.
 
 # Implementation Details
 
-- Code or graph surfaces changed:
-- Architecture or data-shape notes:
-- Compatibility notes:
+- Code or graph surfaces changed: docs source and smoke assertions.
+- Architecture or data-shape notes: source docs explain overlays and mirrors as
+  upgradable kernel configuration rather than forks.
+- Compatibility notes: MANIFEST/SPEC and COLLABORATION/HUMAN bridges are
+  documented as transitional compatibility behavior.
 
 # Verification / Testing
 
 ## Command Evidence
 
-- command:
-- result:
+- command: `npm run smoke:mdkg-dev-docs`
+- result: passed.
 
 ## Pass / Fail Status
 
-- status:
+- status: pass for local docs guidance coverage.
 
 ## Known Warnings
 
-- warning:
+- warning: live `docs.mdkg.dev` requires approved push/deploy verification
+  before launch-ready can be claimed.
 
 # Known Issues / Follow-ups
 
-- issue 1
-- issue 2
+- verify live docs after approved deploy.
+- keep generated command references aligned through `docs:check`.
 
 ## Follow-up Refs
 
-- task/test/goal refs:
+- `task-605`
+- `test-308`
+- `goal-42`
 
 # Links / Artifacts
 
-- packs
-- PRs/commits
-- docs
-- dashboards
+- `docs/`
+- `CLI_COMMAND_MATRIX.md`
+- `README.md`
 
 # Raw Content Safety
 
-- Summarize evidence and use refs, hashes, and artifact links instead of raw secrets, raw prompts, raw payloads, or bulky execution traces.
+- Summarized command receipts only; no raw secrets, raw prompts, raw payloads,
+  or bulky logs are stored here.
