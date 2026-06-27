@@ -2,7 +2,7 @@
 id: test-310
 type: test
 title: no secret public launch boundary contract
-status: todo
+status: done
 priority: 2
 epic: epic-204
 parent: goal-42

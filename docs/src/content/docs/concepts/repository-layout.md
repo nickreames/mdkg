@@ -19,6 +19,11 @@ Common mdkg paths fall into four groups. Commit durable semantic source, review 
 `.mdkg/skills/`
 : Canonical skill definitions. Tool-specific mirrors are generated from here.
 
+`.mdkg/config.json`
+: Local workspace configuration, including customization overlays and configured
+skill mirror targets. Commit it when the repo intentionally owns those
+standards.
+
 `.mdkg/db/schema/`
 : Project DB migrations and schema source.
 
@@ -35,6 +40,10 @@ Common mdkg paths fall into four groups. Commit durable semantic source, review 
 
 `.claude/skills/`
 : Claude-facing skill mirror. Commit only when this repo intentionally tracks the generated mirror.
+
+Configured skill mirror paths
+: Additional contained mirror targets declared in `.mdkg/config.json`. Treat
+them as generated outputs unless the repo explicitly tracks them.
 
 ## Keep local or rebuildable
 
@@ -55,6 +64,7 @@ Commit files that carry semantic project memory:
 - `.mdkg/design/`
 - `.mdkg/work/`
 - `.mdkg/skills/`
+- `.mdkg/config.json`
 - `.mdkg/db/schema/`
 - archive sidecar Markdown and deterministic archive caches when the archive policy says so
 
@@ -75,7 +85,20 @@ The project DB is local infrastructure, not canonical graph memory. Runtime file
 
 ## Skill mirrors
 
-`.mdkg/skills/` is canonical. Product-specific mirrors such as `.agents/skills/` and `.claude/skills/` are generated outputs for coding tools. Update canonical skills first, then sync mirrors.
+`.mdkg/skills/` is canonical. Product-specific mirrors such as `.agents/skills/`
+and `.claude/skills/` are defaults, and repos can add arbitrary contained mirror
+paths through `.mdkg/config.json`. These arbitrary contained mirror paths stay
+generated from canonical skills. Update canonical skills first, then sync
+mirrors.
+
+## Collaboration and capability naming
+
+`COLLABORATION.md` is the canonical operator profile. `HUMAN.md` remains a
+one-release legacy alias for older prompts and should fade out as repos upgrade.
+
+`MANIFEST.md` is the canonical reusable capability file. `SPEC.md` remains a
+one-release compatibility alias; new docs, skills, and examples should use
+`MANIFEST.md` and `mdkg manifest ...`.
 
 When in doubt, run:
 

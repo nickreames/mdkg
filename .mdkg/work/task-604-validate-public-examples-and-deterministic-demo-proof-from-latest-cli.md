@@ -2,7 +2,7 @@
 id: task-604
 type: task
 title: validate public examples and deterministic demo proof from latest CLI
-status: todo
+status: done
 priority: 2
 epic: epic-204
 parent: goal-42

@@ -56,6 +56,10 @@ function main() {
   const home = readText(path.join(dist, "index.html"));
   assert(home.includes("Git-native project memory"), "homepage missing primary product copy");
   assert(home.includes("mdkg init --agent"), "homepage missing first-run CLI command");
+  assert(home.includes("Customize standards without forking the kernel"), "homepage missing 0.3.9 customization section");
+  assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
+  assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
+  assert(home.includes("COLLABORATION.md"), "homepage missing collaboration profile copy");
   assert(home.includes("<main"), "homepage missing main landmark");
   assert(home.includes("<nav"), "homepage missing nav landmark");
   assert(home.includes("<footer"), "homepage missing footer landmark");
@@ -131,6 +135,10 @@ function main() {
     "one reviewable graph, one packable handoff, one validation loop",
     "Without mdkg",
         "With mdkg",
+        "Customize standards without forking the kernel.",
+        ".mdkg/config.json",
+        "Custom skill mirrors",
+        "COLLABORATION.md",
         "Try it on a small repo first.",
       ],
     },

@@ -780,19 +780,19 @@ function requireInitAssets() {
     }
   }
   const smokeMdkgDev = requireFile("scripts/smoke-mdkg-dev.js");
-  for (const expected of ["buildSite", "llms-full.txt", "social-card.svg", "Git-native project memory"]) {
+  for (const expected of ["buildSite", "llms-full.txt", "social-card.svg", "Git-native project memory", "Customize standards without forking the kernel"]) {
     if (!smokeMdkgDev.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev.js is missing ${expected} proof`);
     }
   }
   const smokeMdkgDevDocs = requireFile("scripts/smoke-mdkg-dev-docs.js");
-  for (const expected of ["docs:check", "SUMMARY.md", "cli-reference.md", "assertMarkdownLinks", "astro.config.mjs", "Starlight", "docs.mdkg.dev"]) {
+  for (const expected of ["docs:check", "SUMMARY.md", "cli-reference.md", "assertMarkdownLinks", "astro.config.mjs", "Starlight", "docs.mdkg.dev", "release-grid"]) {
     if (!smokeMdkgDevDocs.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev-docs.js is missing ${expected} proof`);
     }
   }
   const smokeMdkgDevSeo = requireFile("scripts/smoke-mdkg-dev-seo.js");
-  for (const expected of ["JSON-LD", "sitemap.xml", "robots.txt", "llms-full.txt", "PUBLIC_MDKG_PREVIEW_NOINDEX", "vercel.app"]) {
+  for (const expected of ["JSON-LD", "softwareVersion", "sitemap.xml", "robots.txt", "llms-full.txt", "PUBLIC_MDKG_PREVIEW_NOINDEX", "vercel.app"]) {
     if (!smokeMdkgDevSeo.includes(expected)) {
       fail(`scripts/smoke-mdkg-dev-seo.js is missing ${expected} proof`);
     }

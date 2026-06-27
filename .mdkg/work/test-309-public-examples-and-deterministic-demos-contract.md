@@ -2,7 +2,7 @@
 id: test-309
 type: test
 title: public examples and deterministic demos contract
-status: todo
+status: done
 priority: 2
 epic: epic-204
 parent: goal-42
@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 

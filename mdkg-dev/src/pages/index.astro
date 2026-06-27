@@ -6,6 +6,7 @@ import TerminalBlock from "../components/TerminalBlock.astro";
 import FeatureCard from "../components/FeatureCard.astro";
 import DiagramCard from "../components/DiagramCard.astro";
 import Badge from "../components/Badge.astro";
+import packageJson from "../../../package.json";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -14,7 +15,7 @@ const structuredData = {
   alternateName: "mdkg",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS, Linux, Windows",
-  softwareVersion: "0.3.7",
+  softwareVersion: packageJson.version,
   description: "Git-native project memory for AI coding agents: structured Markdown, context packs, handoffs, checkpoints, and validation.",
   url: "https://mdkg.dev",
   codeRepository: "https://github.com/nickreames/mdkg"
@@ -156,6 +157,21 @@ const structuredData = {
       <div class="grid">
         <FeatureCard title="Source files" text="Rules, decisions, PRDs, work nodes, checkpoints, skills, and archive sidecars live in the repo." command=".mdkg/" />
         <FeatureCard title="Generated access" text="Indexes and packs make retrieval fast without becoming hidden authority." command="mdkg index" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container grid two">
+      <div class="stack">
+        <Badge tone="neutral">0.3.9</Badge>
+        <h2>Customize standards without forking the kernel.</h2>
+        <p class="muted">mdkg now lets teams keep organization standards, collaboration docs, and agent-local skill mirrors in repo config while `mdkg upgrade --apply` continues to update mdkg-managed assets.</p>
+      </div>
+      <div class="grid">
+        <FeatureCard title="Config overlays" text="Use `.mdkg/config.json` to preserve local standards, custom core docs, and managed upgrade behavior." command=".mdkg/config.json" />
+        <FeatureCard title="Custom skill mirrors" text="Mirror canonical `.mdkg/skills` into arbitrary contained agent-local skill roots. `.agents/skills` and `.claude/skills` remain defaults." command="mdkg skill sync" />
+        <FeatureCard title="Collaboration profile" text="Use `COLLABORATION.md` as the canonical operator profile while `HUMAN.md` remains a one-release legacy alias." command="COLLABORATION.md" />
       </div>
     </div>
   </section>

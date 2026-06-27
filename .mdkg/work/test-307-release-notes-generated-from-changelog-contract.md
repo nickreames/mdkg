@@ -2,7 +2,7 @@
 id: test-307
 type: test
 title: release notes generated from changelog contract
-status: todo
+status: done
 priority: 2
 epic: epic-202
 parent: goal-42

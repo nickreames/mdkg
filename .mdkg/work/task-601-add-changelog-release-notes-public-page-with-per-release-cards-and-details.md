@@ -2,7 +2,7 @@
 id: task-601
 type: task
 title: add changelog release notes public page with per release cards and details
-status: todo
+status: done
 priority: 2
 epic: epic-202
 parent: goal-42
