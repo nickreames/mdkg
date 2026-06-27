@@ -24,7 +24,8 @@ updated: 2026-06-26
 ---
 # Overview
 
-Validate the full `0.3.9` dry-run publish readiness ladder.
+Validate the full `0.3.9` change audit, dry-run publish readiness ladder, and
+explicit approval boundary.
 
 # Target / Scope
 
@@ -37,10 +38,16 @@ All prerequisite `0.3.9` tasks/tests are done.
 # Test Cases
 
 - Build/test/CLI/docs gates pass.
+- Git/changelog audit maps every publish-bound change to release notes, version
+  references, tests, docs, and package payload.
+- Registry checks prove whether `0.3.9` is available and what npm currently
+  reports as latest.
 - Package pack dry-run succeeds.
 - Publish dry-run succeeds with isolated cache.
 - mdkg validation passes and accepted warnings are recorded.
 - No real publish, tag, push, deploy, or downstream mutation occurs.
+- Final recommendation says either `publish ready pending explicit approval` or
+  lists exact remaining gaps.
 
 # Results / Evidence
 

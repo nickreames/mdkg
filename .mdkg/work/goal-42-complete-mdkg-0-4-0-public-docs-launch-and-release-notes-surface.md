@@ -5,11 +5,11 @@ title: Complete mdkg 0.4.0 public docs launch and release notes surface
 status: todo
 priority: 2
 goal_state: paused
-goal_condition: 0.4.0 is launch ready after mdkg.dev and docs.mdkg.dev expose a polished public launch surface, release notes/changelog pages with per-release cards and details, validated public examples, browser/SEO/accessibility/no-secret proof, and article announcement support informed by the finalized 0.3.9 CLI capabilities.
-scope_refs: [epic-202, epic-203, epic-204, spike-22, task-601, task-602, task-603, task-604, task-605, task-606, test-307, test-308, test-309, test-310, test-311]
+goal_condition: 0.4.0 is ready for explicit npm publish and public launch approval decisions after mdkg.dev and docs.mdkg.dev expose a polished public launch surface, release notes/changelog pages with per-release cards and details, validated public examples, browser/SEO/accessibility/no-secret proof, article announcement support, full change audit, full pre-publish gates, npm pack/publish dry-run, and a final recommendation that states publish/launch-ready or lists remaining gaps.
+scope_refs: [epic-202, epic-203, epic-204, spike-22, task-601, task-602, task-603, task-604, task-605, task-606, test-307, test-308, test-309, test-310, test-311, test-312]
 active_node: spike-22
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
-required_checks: [git status --short --branch, node dist/cli.js index, node dist/cli.js validate --json, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, Browser desktop/mobile E2E receipts for mdkg.dev and docs.mdkg.dev, no-secret public content audit, git diff --check]
+required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, changelog and release notes mapping for every publish-bound change, visible version-reference drift audit, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.4.0 version --registry=https://registry.npmjs.org/, node dist/cli.js index, node dist/cli.js validate --json, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, Browser desktop/mobile E2E receipts for mdkg.dev and docs.mdkg.dev, no-secret public content audit, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, publish and launch readiness recommendation or remaining-gaps report, git diff --check]
 max_iterations: 25
 blocked_after_attempts: 3
 tags: [release, 0.4.0, mdkg-dev, docs, release-notes, launch]
@@ -35,7 +35,8 @@ preserving its useful docs, SEO, trust, and public-example context.
 
 # End Condition
 
-`0.4.0` is launch ready when:
+`0.4.0` is ready for explicit npm publish and public launch approval decisions
+when:
 
 - release notes and `CHANGELOG.md` content are available as a public docs or
   site page with per-release cards and detailed entries;
@@ -44,13 +45,19 @@ preserving its useful docs, SEO, trust, and public-example context.
 - docs.mdkg.dev onboarding, command references, upgrade guides, and public
   examples validate against the current CLI;
 - browser, SEO, accessibility, and no-secret checks pass for the launch surface;
-- article announcement support is ready for the June 28, 2026 release post.
+- article announcement support is ready for the June 28, 2026 release post;
+- the final audit maps every publish-bound change to release notes/changelog,
+  version references, tests, docs/site changes, package payload, and browser
+  proof;
+- npm pack and publish dry-run pass, and the final checkpoint recommends either
+  "publish/launch ready pending explicit approval" or lists exact remaining
+  gaps.
 
 # Non-Goals
 
 - Do not implement CLI kernel/config behavior here; `goal-41` owns that.
-- Do not publish npm, tag git, push, deploy, change DNS, or activate analytics
-  unless a later request explicitly widens scope.
+- Do not run real `npm publish`, tag git, push, deploy, change DNS, or activate
+  analytics unless a later request explicitly approves that side effect.
 - Do not invent claims that are not backed by current source, CLI behavior,
   changelog entries, examples, or mdkg evidence.
 
@@ -76,6 +83,8 @@ preserving its useful docs, SEO, trust, and public-example context.
 - Docs check and mdkg.dev smoke suite.
 - Browser desktop/mobile receipts for public launch pages.
 - No-secret public content audit.
+- Full package pre-publish gates, registry checks, pack dry-run, and publish
+  dry-run before any publish-ready recommendation.
 
 # Acceptance Criteria
 

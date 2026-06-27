@@ -23,17 +23,21 @@ updated: 2026-06-26
 ---
 # Overview
 
-Run the full `0.3.9` release-readiness ladder after implementation tasks and
-contracts pass.
+Run the full `0.3.9` change audit and release-readiness ladder after
+implementation tasks and contracts pass.
 
 # Acceptance Criteria
 
 - Build, tests, CLI checks, docs checks, publish-readiness assertions, pack
   dry-run, and publish dry-run pass.
+- Git/changelog audit maps every publish-bound change to release notes,
+  version references, tests, docs, and package payload.
 - Temp-repo proof covers config overlays, custom mirror targets,
   `COLLABORATION.md`/`HUMAN.md`, and MANIFEST/SPEC compatibility.
 - A checkpoint records command evidence, known warnings, package payload
-  summary, and no-publish/no-tag/no-push boundaries.
+  summary, registry state, and no-publish/no-tag/no-push boundaries.
+- The closeout recommends either `publish ready pending explicit approval` or
+  lists exact remaining gaps.
 - `goal-41` can be marked achieved only after the dry-run ladder is clean.
 
 # Files Affected
@@ -43,8 +47,8 @@ contracts pass.
 
 # Implementation Notes
 
-- This task may run publish dry-run only; real publish is a later approval
-  boundary.
+- This task may run publish dry-run only; real npm publish is a later explicit
+  approval boundary.
 - Use isolated npm cache under `/private/tmp/mdkg-npm-cache`.
 
 # Test Plan
@@ -55,6 +59,11 @@ contracts pass.
 - `npm run cli:contract`
 - `npm run docs:check`
 - `node scripts/assert-publish-ready.js`
+- `git log --oneline origin/main..HEAD`
+- `git diff --name-status origin/main..HEAD`
+- changelog/release note mapping for every publish-bound change
+- `npm view mdkg version --registry=https://registry.npmjs.org/`
+- `npm view mdkg@0.3.9 version --registry=https://registry.npmjs.org/`
 - `npm pack --dry-run --json`
 - `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/`
 - `node dist/cli.js validate --json`
