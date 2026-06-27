@@ -176,4 +176,53 @@ docs, skills, templates, and fixtures. Live selected goal remains `goal-23`;
 
 # Completion Evidence
 
-- Pending.
+- ACHIEVED on 2026-06-26 with local-only commits through `230a9f5`.
+- Source behavior:
+  - `MANIFEST.md` is the canonical manifest basename and `type: manifest` is
+    the canonical frontmatter type for reusable capability/runtime manifests.
+  - `SPEC.md` with `type: spec` remains a one-compatibility-release legacy
+    alias that validates with a deprecation warning.
+  - Transitional `MANIFEST.md` with `type: spec` validates with a deprecation
+    warning and normalizes through the manifest semantic bridge.
+  - Sibling `MANIFEST.md` and `SPEC.md` in one logical unit fail validation as
+    an ambiguity error.
+- Scope evidence:
+  - `test-289` through `test-296` are done.
+  - `task-573` through `task-584` are done.
+  - `chk-277` records the full MANIFEST compatibility gate closeout.
+  - `chk-278` records the downstream runtime migration handoff; no downstream
+    repo was mutated.
+- Verification evidence from `chk-277` / `test-296`:
+  - `npm run build`
+  - `npm run test` (518/518)
+  - `npm run cli:check`
+  - `npm run cli:contract`
+  - `npm run smoke:capabilities`
+  - `npm run smoke:archive-work`
+  - `npm run smoke:bundle`
+  - `npm run smoke:subgraph`
+  - `npm run docs:check`
+  - `node dist/cli.js validate --json` returned `ok: true` with the one
+    accepted dogfood legacy `SPEC.md` compatibility warning.
+  - `node dist/cli.js capability search "MANIFEST.md legacy SPEC.md" --json`
+    returned `dec-50`, `edd-54`, and `spec.mdkg-cli`.
+  - `node dist/cli.js pack task-573 --profile concise --dry-run --stats`
+    succeeded.
+  - `git diff --check` passed.
+- Local commit evidence:
+  - `1e90f4c graph: accept goal-37 manifest compatibility plan`
+  - `bf5cbd8 graph: close goal-37 audit and policy nodes`
+  - `8d3676c feat: recognize manifest agent files`
+  - `1369287 feat: warn on manifest compatibility bridge`
+  - `0321c45 feat: cover manifest work trigger compatibility`
+  - `052b5eb feat: add manifest capability command bridge`
+  - `833dd11 test: cover manifest pack graph refs`
+  - `77e6d5d feat: emit manifest scaffolds by default`
+  - `db92b2e docs: make manifest terminology canonical`
+  - `a87d06c test: add manifest compatibility fixture suites`
+  - `5b498c9 chore: record manifest compatibility gate checkpoint`
+  - `230a9f5 chore: add downstream manifest migration handoff`
+- Boundary evidence:
+  - No npm publish, tag, push, deploy, or downstream repo mutation occurred for
+    this goal; `git status --short --branch` showed local `main` ahead of
+    `origin/main`.
