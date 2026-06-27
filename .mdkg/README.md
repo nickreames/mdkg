@@ -28,7 +28,7 @@ mdkg subgraph list --json
 mdkg validate
 ```
 
-This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register and refresh read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
+This repo is already initialized. Use `mdkg upgrade` to preview safe scaffold updates, `mdkg new` to create work, `mdkg search`/`mdkg show` to inspect graph state, `mdkg capability ...` to inspect cached skill/manifest/spec/work/core/design capabilities, `mdkg archive ...` to register source/artifact sidecars, `mdkg work ...` to create work contract/order/receipt semantic mirrors, `mdkg bundle ...` to create full graph snapshot bundles, `mdkg subgraph ...` to register and refresh read-only child graph planning views, `mdkg pack <id>` to build deterministic context, and `mdkg validate` before closeout.
 
 Read `../AGENT_START.md` first when the repo includes it. Treat it as the instant-start guide before scanning the wider graph.
 

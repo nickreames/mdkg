@@ -65,6 +65,8 @@ const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const CORE_TYPES = new Set(["rule"]);
 const DESIGN_TYPES = new Set(["prd", "edd", "dec", "prop"]);
+const LEGACY_NEW_SPEC_WARNING =
+  "warning: mdkg new spec is legacy; use mdkg new manifest. This alias creates MANIFEST.md with type: manifest during the compatibility release.";
 
 function parseCsvList(raw?: string): string[] {
   if (!raw) {
@@ -221,6 +223,10 @@ function fileNameForType(type: string, id: string, slug: string): string {
   return `${id}-${slug}.md`;
 }
 
+function canonicalCreationType(requestedType: string): string {
+  return requestedType === "spec" ? "manifest" : requestedType;
+}
+
 function ensureExists(index: Index, value: string, ws: string, label: string): void {
   const resolved = resolveQid(index, value, ws);
   if (resolved.status !== "ok") {
@@ -238,13 +244,15 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     throw new UsageError("title cannot be empty");
   }
 
-  const type = options.type.toLowerCase();
-  if (type === "archive") {
+  const requestedType = options.type.toLowerCase();
+  if (requestedType === "archive") {
     throw new UsageError("use `mdkg archive add <file>` to create archive sidecars");
   }
-  if (!ALLOWED_TYPES.has(type)) {
+  if (!ALLOWED_TYPES.has(requestedType)) {
     throw new UsageError(`type must be one of ${Array.from(ALLOWED_TYPES).join(", ")}`);
   }
+  const type = canonicalCreationType(requestedType);
+  const legacySpecAlias = requestedType === "spec";
 
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
@@ -466,6 +474,10 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     ...(status ? { status } : {}),
     ...(priority !== undefined ? { priority } : {}),
   };
+
+  if (legacySpecAlias) {
+    console.error(LEGACY_NEW_SPEC_WARNING);
+  }
 
   if (options.json) {
     console.log(

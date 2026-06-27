@@ -2,7 +2,7 @@
 id: task-580
 type: task
 title: update CLI scaffolds init upgrade templates and aliases to emit MANIFEST.md
-status: todo
+status: done
 priority: 1
 epic: epic-197
 parent: goal-37
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: [manifest-cli-scaffold, manifest-template-upgrade, mdkg-new-spec-legacy-alias]
 skills: [select-work-and-ground-context]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 

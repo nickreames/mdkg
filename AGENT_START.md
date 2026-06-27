@@ -37,8 +37,8 @@ Operating rules:
 - Treat goal `required_checks` as report-only guidance from mdkg. Run commands yourself, then record evidence in the goal or active work item.
 - Record skill improvement candidates during normal goal execution; edit `SKILL.md` only when the active node is explicit skill-maintenance work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
-- Use `mdkg capability list/search/show` for deterministic skills, `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
-- Use `mdkg spec list/show/validate` for focused optional `SPEC.md` capability records.
+- Use `mdkg capability list/search/show` for deterministic skills, `MANIFEST.md` / legacy `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
+- Use `mdkg manifest list/show/validate` for focused optional `MANIFEST.md` capability records; `mdkg spec ...` remains a legacy alias for one compatibility release.
 - Use `mdkg archive add/list/show/verify/compress` for committed source and artifact sidecars under `.mdkg/archive`.
 - Use `mdkg work ...` helpers for semantic mirror contracts, deterministic triggers, work order status, receipt verification, and artifact registration.
 - Treat work contracts, orders, and receipts as committed semantic mirrors only; never store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in mdkg.

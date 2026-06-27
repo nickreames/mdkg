@@ -32,6 +32,14 @@ function updateFrontmatter(filePath: string, replacements: Record<string, string
   fs.writeFileSync(filePath, next, "utf8");
 }
 
+function convertManifestScaffoldToLegacySpec(root: string, node: { path: string }): { path: string } {
+  const manifestPath = path.join(root, node.path);
+  const specPath = path.join(path.dirname(manifestPath), "SPEC.md");
+  fs.renameSync(manifestPath, specPath);
+  updateFrontmatter(specPath, { type: "spec" });
+  return { ...node, path: path.relative(root, specPath).split(path.sep).join("/") };
+}
+
 test("capability command lists searches and shows cached capability records", () => {
   const root = makeTempDir("mdkg-capability-cli-");
   run(["init", "--agent"], root);
@@ -137,10 +145,13 @@ test("capability index exposes manifest metadata and bridge search aliases", () 
     run(["new", "manifest", "Manifest Capability", "--id", "agent.manifest-capability", "--json"], root)
       .stdout
   ).node;
-  const legacy = JSON.parse(
-    run(["new", "spec", "Legacy Spec Capability", "--id", "agent.legacy-capability", "--json"], root)
-      .stdout
-  ).node;
+  const legacy = convertManifestScaffoldToLegacySpec(
+    root,
+    JSON.parse(
+      run(["new", "manifest", "Legacy Spec Capability", "--id", "agent.legacy-capability", "--json"], root)
+        .stdout
+    ).node
+  );
   updateFrontmatter(path.join(root, manifest.path), {
     spec_kind: "agent",
     requested_capabilities: "[capability.manifest]",

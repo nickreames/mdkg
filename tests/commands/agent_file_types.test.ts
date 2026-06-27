@@ -1361,7 +1361,7 @@ test("search, show, and pack expose Agent workflow file metadata through existin
   assert.deepEqual(work.frontmatter.subagent_refs, ["agent.image-generator"]);
 });
 
-test("new command scaffolds agent workflow spec files with canonical filenames", () => {
+test("new command treats spec as a legacy alias for canonical manifest files", () => {
   const root = makeTempDir("mdkg-agent-new-spec-");
   setupWorkspace(root);
 
@@ -1375,22 +1375,22 @@ test("new command scaffolds agent workflow spec files with canonical filenames",
     })
   );
 
-  assert.equal(output.stderr, "");
+  assert.match(output.stderr, /mdkg new spec is legacy; use mdkg new manifest/);
   assert.deepEqual(JSON.parse(output.stdout), {
     action: "created",
     node: {
       workspace: "root",
-      id: "spec-1",
-      qid: "root:spec-1",
-      path: ".mdkg/work/spec-1-image-worker/SPEC.md",
-      type: "spec",
+      id: "manifest-1",
+      qid: "root:manifest-1",
+      path: ".mdkg/work/manifest-1-image-worker/MANIFEST.md",
+      type: "manifest",
       title: "Image Worker",
     },
   });
 
-  const specPath = path.join(root, ".mdkg", "work", "spec-1-image-worker", "SPEC.md");
-  const content = fs.readFileSync(specPath, "utf8");
-  assert.match(content, /type: spec/);
+  const manifestPath = path.join(root, ".mdkg", "work", "manifest-1-image-worker", "MANIFEST.md");
+  const content = fs.readFileSync(manifestPath, "utf8");
+  assert.match(content, /type: manifest/);
   assert.match(content, /spec_kind: capability/);
   assert.match(content, /role: tool_service/);
   assert.match(content, /runtime_mode: tool_service/);
@@ -1404,9 +1404,9 @@ test("new command scaffolds agent workflow spec files with canonical filenames",
   silenceErrors(() => runValidateCommand({ root, quiet: true }));
   const config = loadConfig(root);
   const index = buildIndex(root, config);
-  assert.equal(index.nodes["root:spec-1"].type, "spec");
-  assert.equal(index.nodes["root:spec-1"].path, ".mdkg/work/spec-1-image-worker/SPEC.md");
-  assert.deepEqual(index.nodes["root:spec-1"].attributes.skill_refs, []);
+  assert.equal(index.nodes["root:manifest-1"].type, "manifest");
+  assert.equal(index.nodes["root:manifest-1"].path, ".mdkg/work/manifest-1-image-worker/MANIFEST.md");
+  assert.deepEqual(index.nodes["root:manifest-1"].attributes.skill_refs, []);
 });
 
 test("new command scaffolds canonical manifest files", () => {
@@ -1452,7 +1452,7 @@ test("new command scaffolds canonical manifest files", () => {
 test("new command uses bundled template fallback when a local agent template is missing", () => {
   const root = makeTempDir("mdkg-agent-new-bundled-template-");
   setupWorkspace(root);
-  fs.rmSync(path.join(root, ".mdkg", "templates", "default", "spec.md"));
+  fs.rmSync(path.join(root, ".mdkg", "templates", "default", "manifest.md"));
 
   const output = captureOutput(() =>
     runNewCommand({
@@ -1464,14 +1464,15 @@ test("new command uses bundled template fallback when a local agent template is 
     })
   );
 
-  assert.match(output.stderr, /using bundled template fallback for spec/);
+  assert.match(output.stderr, /using bundled template fallback for manifest/);
+  assert.match(output.stderr, /mdkg new spec is legacy; use mdkg new manifest/);
   const payload = JSON.parse(output.stdout);
-  assert.equal(payload.node.id, "spec-1");
-  assert.equal(payload.node.path, ".mdkg/work/spec-1-fallback-worker/SPEC.md");
+  assert.equal(payload.node.id, "manifest-1");
+  assert.equal(payload.node.path, ".mdkg/work/manifest-1-fallback-worker/MANIFEST.md");
 
-  const specPath = path.join(root, ".mdkg", "work", "spec-1-fallback-worker", "SPEC.md");
-  const content = fs.readFileSync(specPath, "utf8");
-  assert.match(content, /type: spec/);
+  const manifestPath = path.join(root, ".mdkg", "work", "manifest-1-fallback-worker", "MANIFEST.md");
+  const content = fs.readFileSync(manifestPath, "utf8");
+  assert.match(content, /type: manifest/);
   assert.match(content, /spec_kind: capability/);
   assert.match(content, /role: tool_service/);
 
@@ -1505,9 +1506,9 @@ test("new command does not silently fallback for an explicit missing template se
 
   assert.equal(output.stdout, "");
   assert.equal(output.stderr, "");
-  assert.match(String(output.error), /template not found: custom\/spec\.md/);
+  assert.match(String(output.error), /template not found: custom\/manifest\.md/);
   assert.equal(
-    fs.existsSync(path.join(root, ".mdkg", "work", "spec-1-custom-template-worker", "SPEC.md")),
+    fs.existsSync(path.join(root, ".mdkg", "work", "manifest-1-custom-template-worker", "MANIFEST.md")),
     false
   );
 });
@@ -1527,15 +1528,15 @@ test("new command accepts explicit portable ids for agent workflow files", () =>
     })
   );
 
-  assert.equal(output.stderr, "");
+  assert.match(output.stderr, /mdkg new spec is legacy; use mdkg new manifest/);
   assert.deepEqual(JSON.parse(output.stdout), {
     action: "created",
     node: {
       workspace: "root",
       id: "agent.room-trio-image-worker",
       qid: "root:agent.room-trio-image-worker",
-      path: ".mdkg/work/agent.room-trio-image-worker-room-trio-image-worker/SPEC.md",
-      type: "spec",
+      path: ".mdkg/work/agent.room-trio-image-worker-room-trio-image-worker/MANIFEST.md",
+      type: "manifest",
       title: "Room Trio Image Worker",
     },
   });
@@ -1543,7 +1544,7 @@ test("new command accepts explicit portable ids for agent workflow files", () =>
   silenceErrors(() => runValidateCommand({ root, quiet: true }));
   const config = loadConfig(root);
   const index = buildIndex(root, config);
-  assert.equal(index.nodes["root:agent.room-trio-image-worker"].type, "spec");
+  assert.equal(index.nodes["root:agent.room-trio-image-worker"].type, "manifest");
 });
 
 test("new command scaffolds agent workflow work files with dependency refs", () => {

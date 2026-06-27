@@ -444,6 +444,34 @@ function requireInitAssets() {
   ]) {
     requireFile(path.join("dist/init/templates/default", template));
   }
+  for (const template of [
+    "agent.MANIFEST.md",
+    "api.MANIFEST.md",
+    "base.MANIFEST.md",
+    "capability.MANIFEST.md",
+    "integration.MANIFEST.md",
+    "model.MANIFEST.md",
+    "project.MANIFEST.md",
+    "runtime-agent.MANIFEST.md",
+    "runtime-image.MANIFEST.md",
+    "tool.MANIFEST.md",
+  ]) {
+    requireFile(path.join("dist/init/templates/specs", template));
+  }
+  for (const legacyTemplate of [
+    "agent.SPEC.md",
+    "api.SPEC.md",
+    "base.SPEC.md",
+    "capability.SPEC.md",
+    "integration.SPEC.md",
+    "model.SPEC.md",
+    "project.SPEC.md",
+    "runtime-agent.SPEC.md",
+    "runtime-image.SPEC.md",
+    "tool.SPEC.md",
+  ]) {
+    requireFile(path.join("dist/init/templates/specs", legacyTemplate));
+  }
   const spikeTemplate = requireFile("dist/init/templates/default/spike.md");
   for (const expected of [
     "# Research Question",

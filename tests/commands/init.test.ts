@@ -301,7 +301,7 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.match(agentStart, /markdown edits for narrative\/body updates/);
 
   const cliMatrix = fs.readFileSync(cliMatrixPath, "utf8");
-  assert.match(cliMatrix, /mdkg new spec "<title>" \[options\] \[--json\]/);
+  assert.match(cliMatrix, /mdkg new manifest "<title>" \[options\] \[--json\]/);
   assert.match(
     cliMatrix,
     /mdkg validate \[--out <path>\] \[--json-out <path>\] \[--quiet\] \[--changed-only\] \[--summary\] \[--limit <n>\] \[--json\]/

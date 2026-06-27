@@ -23,7 +23,7 @@ export type TemplateSchemaLoadResult = {
 };
 
 const TEMPLATE_SCHEMA_ALIASES: Record<string, string> = {
-  manifest: "spec",
+  spec: "manifest",
 };
 
 function listMarkdownFiles(dir: string): string[] {

@@ -6,8 +6,9 @@ Verify live help with:
 - `mdkg --help`
 - `mdkg help <command>`
 
-Optional reusable SPEC capability records are accessed through `mdkg spec ...`.
-Repos without SPEC files remain valid.
+Optional reusable manifest capability records are accessed through `mdkg manifest ...`.
+Repos without MANIFEST/SPEC files remain valid. `mdkg spec ...` remains a
+legacy alias for one compatibility release.
 
 Primary commands:
 - `mdkg init`
@@ -20,6 +21,7 @@ Primary commands:
 - `mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]`
 - `mdkg skill`
 - `mdkg capability`
+- `mdkg manifest`
 - `mdkg spec`
 - `mdkg archive`
 - `mdkg bundle`
@@ -130,19 +132,21 @@ Node creation commands:
 - `mdkg new spike "<research question>" [options] [--json]`
 
 Agent workflow file type creation:
-- `mdkg new spec "<title>" [options] [--json]`
+- `mdkg new manifest "<title>" [options] [--json]`
 - `mdkg new work "<title>" [options] [--json]`
 - `mdkg new work_order "<title>" [options] [--json]`
 - `mdkg new receipt "<title>" [options] [--json]`
 - `mdkg new feedback "<title>" [options] [--json]`
 - `mdkg new dispute "<title>" [options] [--json]`
 - `mdkg new proposal "<title>" [options] [--json]`
-- `mdkg new spec "image worker" --id agent.image-worker`
+- `mdkg new spec "<title>" [options] [--json]` is a deprecated alias for
+  `mdkg new manifest` and creates `MANIFEST.md` with `type: manifest`
+- `mdkg new manifest "image worker" --id agent.image-worker`
 - `mdkg new work "generate image" --id work.generate-image`
 
 Agent workflow notes:
 - `--id <portable-id>` is only for agent workflow file types.
-- `spec` and `work` scaffold as validation-clean standalone docs.
+- `manifest` and `work` scaffold as validation-clean standalone docs.
 - `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 - `goal` nodes capture recursive objective state and required checks, but normal `mdkg next` does not select them.
 - `spike` nodes are actionable research/planning work under `.mdkg/work/`; use `mdkg task start|update|done` for lifecycle state.
@@ -197,18 +201,25 @@ Capability discovery:
 - `mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]`
 - capability records are deterministic cache projections from Markdown
 - records include source hash, headings, refs, and `indexed_at`
-- SPEC and WORK capability records include read-only `linkage` arrays for related SPECs, work contracts, work orders, and receipts when those graph mirrors exist
+- MANIFEST/SPEC and WORK capability records include read-only `linkage` arrays for related manifests, work contracts, work orders, and receipts when those graph mirrors exist
 - normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
 
-Spec capability records:
+Manifest capability records:
+- `mdkg manifest list [--json]`
+- `mdkg manifest show <id-or-qid-or-alias> [--json]`
+- `mdkg manifest validate [<id-or-qid-or-alias>] [--json]`
+- `MANIFEST.md` is optional; repos with no manifest files still validate
+- manifest records describe reusable capability surfaces, not general planning notes
+- `mdkg manifest validate` with no ref validates the graph and all optional manifest records
+- `mdkg manifest validate <ref>` also checks that the target manifest reference exists
+- `mdkg manifest ...` is the focused manifest command family; `mdkg capability ...` remains broader skill/manifest/work/core/design discovery
+
+Legacy spec capability records:
 - `mdkg spec list [--json]`
 - `mdkg spec show <id-or-qid-or-alias> [--json]`
 - `mdkg spec validate [<id-or-qid-or-alias>] [--json]`
-- `SPEC.md` is optional; repos with no SPEC files still validate
-- SPEC records describe reusable capability surfaces, not general planning notes
-- `mdkg spec validate` with no ref validates the graph and all optional SPEC records
-- `mdkg spec validate <ref>` also checks that the target SPEC reference exists
-- `mdkg spec ...` is the focused SPEC command family; `mdkg capability ...` remains broader skill/spec/work/core/design discovery
+- `mdkg spec ...` is a deprecated alias for `mdkg manifest ...` during the compatibility bridge
+- legacy `SPEC.md` files remain valid for one compatibility release
 
 Archive sidecars:
 - `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
@@ -283,8 +294,8 @@ Work semantic mirrors:
 - `mdkg work receipt verify <id-or-qid> [--json]`
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
-- `mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
-- `work trigger` accepts a `WORK.md` ref directly or a `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
+- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
+- `work trigger` accepts a `WORK.md` ref directly or a `MANIFEST.md` / legacy `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
 - example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
 - `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
 - `work order status` is read-only and reports deterministic order state plus linked receipts

@@ -68,6 +68,19 @@ function assertSpikeTemplate(root, label) {
   }
 }
 
+function assertManifestTemplate(root, label) {
+  const templatePath = path.join(root, ".mdkg", "templates", "default", "manifest.md");
+  assertExists(templatePath);
+  const content = fs.readFileSync(templatePath, "utf8");
+  for (const expected of [
+    "type: manifest",
+    "spec_kind: capability",
+    "# Work Contracts",
+  ]) {
+    assertIncludes(content, expected, `${label} manifest template`);
+  }
+}
+
 function initGit(root) {
   fs.mkdirSync(root, { recursive: true });
   run(GIT_CMD, ["init", "-q"], { cwd: root });
@@ -186,7 +199,7 @@ function exerciseUpgrade(binPath, tempRoot) {
   initGit(oldTemplateRoot);
   mdkg(binPath, ["init"], oldTemplateRoot);
   mdkg(binPath, ["new", "task", "Old Template Workspace", "--status", "todo", "--priority", "1"], oldTemplateRoot);
-  for (const name of ["spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal", "spike"]) {
+  for (const name of ["manifest", "spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal", "spike"]) {
     fs.rmSync(path.join(oldTemplateRoot, ".mdkg", "templates", "default", `${name}.md`), { force: true });
   }
   const doctor = mdkg(binPath, ["doctor"], oldTemplateRoot).stdout;
@@ -197,6 +210,7 @@ function exerciseUpgrade(binPath, tempRoot) {
   assertSpecCount(binPath, oldTemplateRoot, 0, "old-template workspace");
   const oldTemplateDryRun = parseJson(mdkg(binPath, ["upgrade", "--dry-run", "--json"], oldTemplateRoot).stdout);
   for (const relativePath of [
+    ".mdkg/templates/default/manifest.md",
     ".mdkg/templates/default/spec.md",
     ".mdkg/templates/default/spike.md",
     ".mdkg/templates/default/work.md",
@@ -216,6 +230,7 @@ function exerciseUpgrade(binPath, tempRoot) {
     throw new Error("old-template upgrade did not write missing spike template");
   }
   assertSpikeTemplate(oldTemplateRoot, "old-template upgrade");
+  assertManifestTemplate(oldTemplateRoot, "old-template upgrade");
   mdkg(binPath, ["validate"], oldTemplateRoot);
 
   const customTemplateRoot = path.join(tempRoot, "custom-spike-template-workspace");

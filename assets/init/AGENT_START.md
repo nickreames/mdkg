@@ -29,8 +29,8 @@ Agent operating prompt:
 - Treat goal `required_checks` as report-only guidance from mdkg. Run commands yourself, then record evidence in the goal or active work item.
 - Record skill improvement candidates during normal goal execution; edit `SKILL.md` only when the active node is explicit skill-maintenance work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
-- Use `mdkg capability list/search/show` for deterministic skills, `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
-- Use `mdkg spec list/show/validate` for focused optional `SPEC.md` capability records.
+- Use `mdkg capability list/search/show` for deterministic skills, `MANIFEST.md` / legacy `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
+- Use `mdkg manifest list/show/validate` for focused optional `MANIFEST.md` capability records; `mdkg spec ...` remains a legacy alias for one compatibility release.
 - Use `mdkg index` to refresh JSON compatibility caches and `.mdkg/index/mdkg.sqlite` when SQLite mode is enabled.
 - Treat `.mdkg/db` as project application state; use `mdkg db init` to create
   the generic scaffold and enable `db.enabled` without creating an active
@@ -111,9 +111,9 @@ Capability discovery:
 - `mdkg capability list --kind skill --json`
 - `mdkg capability search "<query>" --kind spec --json`
 - `mdkg capability search "<query>" --kind work --json`
-- `mdkg spec list --json`
-- `mdkg spec show <id-or-qid-or-alias> --json`
-- `mdkg spec validate <id-or-qid-or-alias> --json`
+- `mdkg manifest list --json`
+- `mdkg manifest show <id-or-qid-or-alias> --json`
+- `mdkg manifest validate <id-or-qid-or-alias> --json`
 
 Conventions:
 - `AGENTS.md` is the Codex/OpenAI-oriented wrapper doc.

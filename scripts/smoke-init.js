@@ -195,6 +195,19 @@ function assertSpikeTemplate(root, label) {
   }
 }
 
+function assertManifestTemplate(root, label) {
+  const templatePath = path.join(root, ".mdkg", "templates", "default", "manifest.md");
+  assertExists(templatePath);
+  const content = fs.readFileSync(templatePath, "utf8");
+  for (const expected of [
+    "type: manifest",
+    "spec_kind: capability",
+    "# Work Contracts",
+  ]) {
+    assertIncludes(content, expected, `${label} manifest template`);
+  }
+}
+
 function exerciseRemovedFlags(binPath, tempRoot) {
   for (const removedFlag of ["--llm", "--agents", "--claude", "--omni"]) {
     const root = path.join(tempRoot, `removed-${removedFlag.slice(2)}`);
@@ -230,10 +243,14 @@ function exerciseBaseInit(binPath, tempRoot) {
   assertNotExists(path.join(root, "AGENTS.md"));
   assertNotExists(path.join(root, ".mdkg", "skills"));
   assertSpikeTemplate(root, "base init");
+  assertManifestTemplate(root, "base init");
 
   const manifest = assertManifestMatches(root);
   if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/spike.md")) {
     throw new Error("base init manifest missing spike template");
+  }
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/manifest.md")) {
+    throw new Error("base init manifest missing manifest template");
   }
   if (manifest.files.some((file) => ["agent_doc", "startup_doc", "default_skill"].includes(file.category))) {
     throw new Error("base init manifest should not claim agent docs, startup docs, or default skills");
@@ -252,6 +269,7 @@ function exerciseOptionalSpecWorkTemplates(binPath, tempRoot) {
   initGit(root);
   mdkg(binPath, ["init"], root);
   assertSpikeTemplate(root, "optional spec/work template init");
+  assertManifestTemplate(root, "optional spec/work template init");
   assertSpecCount(binPath, root, 0, "optional template init before SPEC creation");
 
   const spec = parseJson(
@@ -331,6 +349,7 @@ function exerciseAgentInit(binPath, tempRoot) {
   assertIncludes(init.stdout, "agent bootstrap:", "agent init output");
   assertIncludes(init.stdout, "skill mirrors:", "agent init output");
   assertSpikeTemplate(root, "agent init");
+  assertManifestTemplate(root, "agent init");
   for (const relativePath of [
     "AGENT_START.md",
     "AGENTS.md",
@@ -367,8 +386,8 @@ function exerciseAgentInit(binPath, tempRoot) {
   );
   assertIncludes(
     fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
-    "mdkg spec list/show/validate",
-    "seeded AGENT_START SPEC guidance"
+    "mdkg manifest list/show/validate",
+    "seeded AGENT_START manifest guidance"
   );
   assertIncludes(
     fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
@@ -382,8 +401,8 @@ function exerciseAgentInit(binPath, tempRoot) {
   );
   assertIncludes(
     fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
-    "mdkg spec list --json",
-    "seeded .mdkg README SPEC guidance"
+    "mdkg manifest list --json",
+    "seeded .mdkg README manifest guidance"
   );
   assertIncludes(
     fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
@@ -392,8 +411,8 @@ function exerciseAgentInit(binPath, tempRoot) {
   );
   assertIncludes(
     fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
-    "mdkg spec list",
-    "seeded CLI matrix SPEC guidance"
+    "mdkg new manifest",
+    "seeded CLI matrix manifest guidance"
   );
   assertIncludes(
     fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
@@ -409,6 +428,9 @@ function exerciseAgentInit(binPath, tempRoot) {
   const manifest = assertManifestMatches(root);
   if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/spike.md")) {
     throw new Error("agent init manifest missing spike template");
+  }
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/manifest.md")) {
+    throw new Error("agent init manifest missing manifest template");
   }
   for (const category of ["agent_doc", "startup_doc", "default_skill"]) {
     if (!manifest.files.some((file) => file.category === category)) {

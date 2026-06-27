@@ -2,7 +2,7 @@
 id: test-294
 type: test
 title: manifest scaffold template init and upgrade compatibility contract
-status: todo
+status: done
 priority: 1
 epic: epic-197
 parent: goal-37
@@ -20,7 +20,7 @@ aliases: [manifest-scaffold-template-contract, mdkg-new-spec-legacy-contract]
 skills: []
 cases: [new-manifest-scaffold, new-spec-alias, init-agent-manifest, upgrade-dry-run-manifest]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 
