@@ -298,7 +298,7 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
 
   ensureSkillsRegistry(root, config);
   refreshSkillsRegistry(root, config);
-  if (shouldMaintainSkillMirrors(root)) {
+  if (shouldMaintainSkillMirrors(root, config)) {
     syncSkillMirrors({ root, config, createRoots: true, force });
   }
 

@@ -41,6 +41,19 @@ export type SubgraphConfig = {
   sources: SubgraphSourceConfig[];
 };
 
+export type CustomizationConfig = {
+  standards: {
+    profile: string;
+    refs: string[];
+  };
+  core_docs: {
+    custom_paths: string[];
+  };
+  skill_mirrors: {
+    targets: string[];
+  };
+};
+
 export type Config = {
   schema_version: number;
   tool: string;
@@ -75,6 +88,7 @@ export type Config = {
     receipts_path: string;
     migration_table: string;
   };
+  customization: CustomizationConfig;
   subgraphs: Record<string, SubgraphConfig>;
   pack: {
     default_depth: number;
@@ -126,6 +140,7 @@ const DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES = 26214400;
 const DEFAULT_SQLITE_COMMIT_WARNING_BYTES = 52428800;
 const DEFAULT_LOCK_TIMEOUT_MS = 10000;
 const DEFAULT_SUBGRAPH_MAX_STALE_SECONDS = 3600;
+export const DEFAULT_SKILL_MIRROR_TARGETS = [".agents/skills", ".claude/skills"] as const;
 const DEFAULT_PROJECT_DB_CONFIG = {
   enabled: false,
   schema_version: PROJECT_DB_CONFIG_SCHEMA_VERSION,
@@ -137,6 +152,21 @@ const DEFAULT_PROJECT_DB_CONFIG = {
   receipts_path: PROJECT_DB_RECEIPTS_DIR,
   migration_table: PROJECT_DB_MIGRATION_TABLE,
 } as const;
+
+export function defaultCustomizationConfig(): CustomizationConfig {
+  return {
+    standards: {
+      profile: "default",
+      refs: [],
+    },
+    core_docs: {
+      custom_paths: [],
+    },
+    skill_mirrors: {
+      targets: [...DEFAULT_SKILL_MIRROR_TARGETS],
+    },
+  };
+}
 
 function isObject(value: unknown): value is JsonObject {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -308,6 +338,42 @@ function requireKnownLowercaseUniqueStringArray(
   return items;
 }
 
+function requireUniqueStringArray(
+  value: unknown,
+  path: string,
+  errors: ValidationErrors,
+  allowEmpty = false
+): string[] | undefined {
+  const items = requireStringArray(value, path, errors);
+  if (items === undefined) {
+    return undefined;
+  }
+  if (items.length === 0) {
+    if (!allowEmpty) {
+      errors.push(`${path} must not be empty`);
+    }
+    return items;
+  }
+
+  const seen = new Set<string>();
+  for (let i = 0; i < items.length; i += 1) {
+    const item = items[i];
+    if (item.trim().length === 0) {
+      errors.push(`${path}[${i}] must not be empty`);
+      continue;
+    }
+    if (item !== item.trim()) {
+      errors.push(`${path}[${i}] must not include surrounding whitespace`);
+    }
+    if (seen.has(item)) {
+      errors.push(`${path} must not contain duplicate value "${item}"`);
+      continue;
+    }
+    seen.add(item);
+  }
+  return items;
+}
+
 function requireObject(value: unknown, path: string, errors: ValidationErrors): JsonObject | undefined {
   if (!isObject(value)) {
     errors.push(`${path} must be an object`);
@@ -359,6 +425,39 @@ function requireContainedPath(
     errors.push(message);
     return undefined;
   }
+}
+
+function requireContainedPathArray(
+  value: unknown,
+  path: string,
+  errors: ValidationErrors,
+  allowEmpty = true
+): string[] | undefined {
+  if (!Array.isArray(value)) {
+    errors.push(`${path} must be an array of relative paths`);
+    return undefined;
+  }
+  if (value.length === 0) {
+    if (!allowEmpty) {
+      errors.push(`${path} must not be empty`);
+    }
+    return [];
+  }
+  const items: string[] = [];
+  const seen = new Set<string>();
+  for (let i = 0; i < value.length; i += 1) {
+    const normalized = requireContainedPath(value[i], `${path}[${i}]`, errors);
+    if (!normalized) {
+      continue;
+    }
+    if (seen.has(normalized)) {
+      errors.push(`${path} must not contain duplicate path "${normalized}"`);
+      continue;
+    }
+    seen.add(normalized);
+    items.push(normalized);
+  }
+  return items;
 }
 
 function requireSqlIdentifier(value: unknown, path: string, errors: ValidationErrors): string | undefined {
@@ -433,6 +532,11 @@ export function validateConfigSchema(raw: unknown): Config {
       : requireObject(raw.bundles, "bundles", errors);
   const dbRaw =
     raw.db === undefined ? DEFAULT_PROJECT_DB_CONFIG : requireObject(raw.db, "db", errors);
+  const customizationDefaults = defaultCustomizationConfig();
+  const customizationRaw =
+    raw.customization === undefined
+      ? customizationDefaults
+      : requireObject(raw.customization, "customization", errors);
   if (raw.bundle_imports !== undefined && raw.subgraphs !== undefined) {
     errors.push("config must not define both subgraphs and legacy bundle_imports");
   }
@@ -619,6 +723,66 @@ export function validateConfigSchema(raw: unknown): Config {
         state_path: dbStatePath,
         receipts_path: dbReceiptsPath,
         migration_table: dbMigrationTable,
+      };
+    }
+  }
+
+  let customization: Config["customization"] | undefined;
+  if (customizationRaw) {
+    const standardsRaw =
+      customizationRaw.standards === undefined
+        ? customizationDefaults.standards
+        : requireObject(customizationRaw.standards, "customization.standards", errors);
+    const coreDocsRaw =
+      customizationRaw.core_docs === undefined
+        ? customizationDefaults.core_docs
+        : requireObject(customizationRaw.core_docs, "customization.core_docs", errors);
+    const skillMirrorsRaw =
+      customizationRaw.skill_mirrors === undefined
+        ? customizationDefaults.skill_mirrors
+        : requireObject(customizationRaw.skill_mirrors, "customization.skill_mirrors", errors);
+
+    const standardsProfile = standardsRaw
+      ? standardsRaw.profile === undefined
+        ? customizationDefaults.standards.profile
+        : requireString(standardsRaw.profile, "customization.standards.profile", errors)
+      : undefined;
+    const standardsRefs = standardsRaw
+      ? standardsRaw.refs === undefined
+        ? customizationDefaults.standards.refs
+        : requireUniqueStringArray(standardsRaw.refs, "customization.standards.refs", errors, true)
+      : undefined;
+    const coreDocPaths = coreDocsRaw
+      ? coreDocsRaw.custom_paths === undefined
+        ? customizationDefaults.core_docs.custom_paths
+        : requireContainedPathArray(coreDocsRaw.custom_paths, "customization.core_docs.custom_paths", errors, true)
+      : undefined;
+    const mirrorTargets = skillMirrorsRaw
+      ? skillMirrorsRaw.targets === undefined
+        ? customizationDefaults.skill_mirrors.targets
+        : requireContainedPathArray(skillMirrorsRaw.targets, "customization.skill_mirrors.targets", errors, true)
+      : undefined;
+    if (standardsProfile !== undefined) {
+      if (standardsProfile.trim().length === 0) {
+        errors.push("customization.standards.profile must not be empty");
+      }
+      if (standardsProfile !== standardsProfile.trim()) {
+        errors.push("customization.standards.profile must not include surrounding whitespace");
+      }
+    }
+
+    if (standardsProfile && standardsRefs && coreDocPaths && mirrorTargets) {
+      customization = {
+        standards: {
+          profile: standardsProfile,
+          refs: standardsRefs,
+        },
+        core_docs: {
+          custom_paths: coreDocPaths,
+        },
+        skill_mirrors: {
+          targets: mirrorTargets,
+        },
       };
     }
   }
@@ -944,6 +1108,7 @@ export function validateConfigSchema(raw: unknown): Config {
     capabilities: capabilities as Config["capabilities"],
     bundles: bundles as Config["bundles"],
     db: db as Config["db"],
+    customization: customization as Config["customization"],
     subgraphs,
     pack: pack as Config["pack"],
     templates: templates as Config["templates"],

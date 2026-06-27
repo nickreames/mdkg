@@ -2,7 +2,7 @@
 id: test-302
 type: test
 title: config overlay and upgradable kernel preservation contract
-status: todo
+status: done
 priority: 1
 epic: epic-199
 parent: goal-41
@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -44,7 +44,15 @@ Use a temp repo under `/private/tmp` with local package or built CLI.
 
 # Results / Evidence
 
-Pending implementation.
+- `node --test dist/tests/core/config.test.js` passed: 27 tests.
+- `node --test dist/tests/commands/upgrade.test.js` passed: 13 tests.
+- Coverage includes organization customization overlays, unsafe path rejection,
+  customization defaults migration, operator customization overlay preservation,
+  managed init asset upgrade behavior, customized core-doc preservation, and
+  missing COLLABORATION creation during upgrade.
+- `task-595` evidence also includes temp-repo upgrade smoke coverage proving
+  custom overlay content is preserved while mdkg-managed kernel assets remain
+  upgradable.
 
 # Notes / Follow-ups
 

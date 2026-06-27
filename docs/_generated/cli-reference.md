@@ -1,14 +1,14 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 145781176fcd00d6b7c7edd8e013e902acea2ace8764dbf0bb063a8d3913a3e1 -->
+<!-- contract-hash: 3c13c572c740f1e40db33fa5867fa227a8347df0750ef3beb0696d5931761a6c -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
 The page is generated from current command metadata in `dist/command-contract.json`, which keeps usage, flags, output formats, and safety notes aligned with the CLI.
 
 - Tool: mdkg
-- Package version: 0.3.8
+- Package version: 0.3.9
 - Schema version: 1
 - Command count: 102
 - Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, global, goal, graph, guide, handoff, index, init, list, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace

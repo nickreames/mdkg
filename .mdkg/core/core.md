@@ -4,6 +4,7 @@
 # This list is included by `mdkg pack --verbose`.
 
 rule-soul
+rule-7
 rule-human
 rule-1
 rule-2

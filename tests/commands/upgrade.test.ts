@@ -69,6 +69,54 @@ const BASE_CONFIG = {
 function setupSeed(seed: string, marker: string): void {
   writeFile(path.join(seed, "config.json"), JSON.stringify(BASE_CONFIG, null, 2));
   writeFile(path.join(seed, "core", "core.md"), `# core ${marker}\n\nrule-1\n`);
+  if (marker === "current") {
+    writeFile(
+      path.join(seed, "core", "COLLABORATION.md"),
+      [
+        "---",
+        "id: rule-7",
+        "type: rule",
+        "title: collaboration profile",
+        "tags: [collaboration]",
+        "owners: []",
+        "links: []",
+        "artifacts: []",
+        "relates: [rule-human]",
+        "refs: []",
+        "aliases: [collaboration]",
+        "created: 2026-06-27",
+        "updated: 2026-06-27",
+        "---",
+        "",
+        "# Purpose",
+        "",
+        "Current collaboration seed.",
+      ].join("\n")
+    );
+    writeFile(
+      path.join(seed, "core", "HUMAN.md"),
+      [
+        "---",
+        "id: rule-human",
+        "type: rule",
+        "title: human working profile legacy alias",
+        "tags: [human, collaboration]",
+        "owners: []",
+        "links: []",
+        "artifacts: []",
+        "relates: [rule-7]",
+        "refs: []",
+        "aliases: [human]",
+        "created: 2026-06-27",
+        "updated: 2026-06-27",
+        "---",
+        "",
+        "# Compatibility",
+        "",
+        "HUMAN.md is a one-release legacy alias for COLLABORATION.md.",
+      ].join("\n")
+    );
+  }
   writeFile(path.join(seed, "templates", "default", "task.md"), `---\nid: {{id}}\ntype: task\nmarker: ${marker}\n---\n`);
   writeFile(path.join(seed, "README.md"), `# mdkg ${marker}\n`);
   writeFile(path.join(seed, "AGENT_START.md"), `# AGENT_START ${marker}\n`);
@@ -283,6 +331,31 @@ test("runUpgradeCommand preserves customized docs and default skills", () => {
   );
 });
 
+test("runUpgradeCommand creates collaboration doc and preserves customized human alias", () => {
+  const root = makeTempDir("mdkg-upgrade-collaboration-");
+  const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: oldSeed, agent: true });
+  fs.rmSync(path.join(root, ".mdkg", "core", "COLLABORATION.md"), { force: true });
+  writeFile(path.join(root, ".mdkg", "core", "HUMAN.md"), "# Custom legacy human profile\n");
+
+  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+    changes: Array<{ action: string; category: string; path: string }>;
+    preserved_customizations: Array<{ path: string }>;
+  };
+
+  assert.ok(
+    receipt.changes.some(
+      (change) =>
+        change.action === "create" &&
+        change.category === "core" &&
+        change.path === ".mdkg/core/COLLABORATION.md"
+    )
+  );
+  assert.ok(receipt.preserved_customizations.some((change) => change.path === ".mdkg/core/HUMAN.md"));
+  assert.match(fs.readFileSync(path.join(root, ".mdkg", "core", "COLLABORATION.md"), "utf8"), /id: rule-7/);
+  assert.equal(fs.readFileSync(path.join(root, ".mdkg", "core", "HUMAN.md"), "utf8"), "# Custom legacy human profile\n");
+});
+
 test("runUpgradeCommand migrates legacy config without replacing custom config", () => {
   const root = makeTempDir("mdkg-upgrade-config-");
   const { currentSeed } = setupCurrentAndLegacySeeds();
@@ -303,6 +376,51 @@ test("runUpgradeCommand migrates legacy config without replacing custom config",
   });
   assert.equal(config.db.enabled, false);
   assert.equal(config.db.root_path, ".mdkg/db");
+  assert.deepEqual(config.customization.skill_mirrors.targets, [".agents/skills", ".claude/skills"]);
+});
+
+test("runUpgradeCommand reports and preserves operator customization overlays", () => {
+  const root = makeTempDir("mdkg-upgrade-customization-overlay-");
+  const { currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: currentSeed, agent: true });
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  config.subgraphs = {};
+  config.customization = {
+    standards: {
+      profile: "acme",
+      refs: ["standards/acme.md"],
+    },
+    core_docs: {
+      custom_paths: ["standards/COLLABORATION.md"],
+    },
+    skill_mirrors: {
+      targets: [".agents/skills", ".claude/skills", ".codex/skills"],
+    },
+  };
+  writeFile(configPath, JSON.stringify(config, null, 2));
+
+  const dryRun = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
+    safe_to_apply: boolean;
+    will_write_paths: string[];
+    preserved_customizations: Array<{ category: string; path: string; reason: string }>;
+    changes: Array<{ action: string; category: string; path: string }>;
+  };
+
+  assert.equal(dryRun.safe_to_apply, true);
+  assert.equal(dryRun.will_write_paths.includes(".mdkg/config.json"), false);
+  assert.ok(
+    dryRun.changes.some(
+      (change) => change.action === "skip" && change.category === "customization_overlay" && change.path === ".mdkg/config.json"
+    )
+  );
+  assert.ok(dryRun.preserved_customizations.some((change) => change.category === "customization_overlay"));
+
+  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  const appliedConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  assert.deepEqual(appliedConfig.customization.skill_mirrors.targets, [".agents/skills", ".claude/skills", ".codex/skills"]);
+  assert.deepEqual(appliedConfig.customization.core_docs.custom_paths, ["standards/COLLABORATION.md"]);
+  assert.equal(appliedConfig.customization.standards.profile, "acme");
 });
 
 test("runUpgradeCommand migrates achieved goal active_node to last_active_node", () => {

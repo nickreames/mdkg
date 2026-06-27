@@ -6,7 +6,7 @@ import { NotFoundError } from "../util/errors";
 import { formatDate } from "../util/date";
 import { readPackageVersion } from "../core/version";
 import { PROJECT_DB_GITIGNORE_ENTRIES } from "../core/project_db";
-import { createInitManifest, INIT_MANIFEST_FILE, writeInitManifest } from "./init_manifest";
+import { createInitManifest, INIT_MANIFEST_FILE, sha256File, writeInitManifest } from "./init_manifest";
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { preflightSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 
@@ -35,6 +35,7 @@ type CopyStats = {
 
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
 const SOUL_PIN_ID = "rule-soul";
+const COLLABORATION_PIN_ID = "rule-7";
 const HUMAN_PIN_ID = "rule-human";
 const DEFAULT_CORE_LIST_HEADER = [
   "# mdkg verbose core list",
@@ -209,6 +210,53 @@ function humanTemplate(created: string): string {
   ].join("\n");
 }
 
+function collaborationTemplate(created: string): string {
+  return [
+    "---",
+    `id: ${COLLABORATION_PIN_ID}`,
+    "type: rule",
+    "title: collaboration profile and operator preferences",
+    "tags: [collaboration, preferences, operator]",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: [rule-human]",
+    "refs: [dec-53]",
+    "aliases: [collaboration, operator-profile]",
+    `created: ${created}`,
+    `updated: ${created}`,
+    "---",
+    "",
+    "# Purpose",
+    "",
+    "Capture stable collaboration preferences, operating boundaries, and repo-specific human expectations so agents can work with less ambiguity.",
+    "",
+    "# Scope",
+    "",
+    "Applies to planning, implementation, review, release, and handoff interactions in this repository.",
+    "",
+    "# Compatibility",
+    "",
+    "`COLLABORATION.md` is canonical. `HUMAN.md` remains a one-release legacy alias for repos and agent prompts that still reference it; read `COLLABORATION.md` first and then use `HUMAN.md` only for compatibility notes not yet migrated.",
+    "",
+    "# Requirements",
+    "",
+    "- Keep top goals, boundaries, and style preferences current.",
+    "- Include ask-before-doing constraints for risky or high-impact actions.",
+    "- Record preferred environment assumptions and validation commands.",
+    "- Preserve local operator customizations during `mdkg upgrade --apply`.",
+    "",
+    "# Notes",
+    "",
+    "Suggested prompts:",
+    "- What are your top 3 goals in this repo right now?",
+    "- What should never happen without confirmation?",
+    "- What coding/review style should the agent prefer?",
+    "- What OS/runtime/test commands should be assumed?",
+    "",
+  ].join("\n");
+}
+
 function seededInitEvent(nowIso: string): string {
   const event = {
     ts: nowIso,
@@ -322,6 +370,38 @@ function ensureCorePins(coreListPath: string, requiredPins: string[]): void {
   fs.writeFileSync(coreListPath, output, "utf8");
 }
 
+function refreshManifestHash(root: string, manifest: ReturnType<typeof createInitManifest>, relPath: string): void {
+  const entry = manifest.files.find((file) => file.path === relPath);
+  if (!entry) {
+    return;
+  }
+  const targetPath = path.join(root, relPath);
+  if (fs.existsSync(targetPath) && fs.statSync(targetPath).isFile()) {
+    entry.sha256 = sha256File(targetPath);
+  }
+}
+
+function ensureCreatedCoreManifestEntry(
+  root: string,
+  manifest: ReturnType<typeof createInitManifest>,
+  relPath: string,
+  stats: CopyStats
+): void {
+  if (manifest.files.some((file) => file.path === relPath) || !stats.createdPaths.includes(relPath)) {
+    return;
+  }
+  const targetPath = path.join(root, relPath);
+  if (!fs.existsSync(targetPath) || !fs.statSync(targetPath).isFile()) {
+    return;
+  }
+  manifest.files.push({
+    path: relPath,
+    category: "core",
+    sha256: sha256File(targetPath),
+  });
+  manifest.files.sort((a, b) => a.path.localeCompare(b.path));
+}
+
 export function runInitCommand(options: InitCommandOptions): void {
   const root = path.resolve(options.root);
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
@@ -341,6 +421,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedReadme = path.join(seedRoot, "README.md");
   const seedDefaultSkills = path.join(seedRoot, "skills", "default");
   const seedSoul = path.join(seedCore, "SOUL.md");
+  const seedCollaboration = path.join(seedCore, "COLLABORATION.md");
   const seedHuman = path.join(seedCore, "HUMAN.md");
   const seedManifest = createInitManifest(seedRoot, readPackageVersion(), {
     includeAgentDocs: Boolean(options.agent),
@@ -419,6 +500,7 @@ export function runInitCommand(options: InitCommandOptions): void {
     if (options.agent) {
       const today = formatDate(new Date());
       const soulPath = path.join(mdkgDir, "core", "SOUL.md");
+      const collaborationPath = path.join(mdkgDir, "core", "COLLABORATION.md");
       const humanPath = path.join(mdkgDir, "core", "HUMAN.md");
       const skillsDir = path.join(mdkgDir, "skills");
       const registryPath = path.join(skillsDir, "registry.md");
@@ -430,6 +512,9 @@ export function runInitCommand(options: InitCommandOptions): void {
       if (!fs.existsSync(seedSoul)) {
         writeFileIfMissing(root, soulPath, soulTemplate(today), force, stats);
       }
+      if (!fs.existsSync(seedCollaboration)) {
+        writeFileIfMissing(root, collaborationPath, collaborationTemplate(today), force, stats);
+      }
       if (!fs.existsSync(seedHuman)) {
         writeFileIfMissing(root, humanPath, humanTemplate(today), force, stats);
       }
@@ -439,10 +524,14 @@ export function runInitCommand(options: InitCommandOptions): void {
       }
 
       const coreListPath = path.join(mdkgDir, "core", "core.md");
-      ensureCorePins(coreListPath, [SOUL_PIN_ID, HUMAN_PIN_ID]);
+      ensureCorePins(coreListPath, [SOUL_PIN_ID, COLLABORATION_PIN_ID, HUMAN_PIN_ID]);
+      refreshManifestHash(root, seedManifest, ".mdkg/core/core.md");
+      ensureCreatedCoreManifestEntry(root, seedManifest, ".mdkg/core/SOUL.md", stats);
+      ensureCreatedCoreManifestEntry(root, seedManifest, ".mdkg/core/COLLABORATION.md", stats);
+      ensureCreatedCoreManifestEntry(root, seedManifest, ".mdkg/core/HUMAN.md", stats);
 
-      scaffoldMirrorRoots(root);
       const config = loadConfig(root);
+      scaffoldMirrorRoots(root, config);
       refreshSkillsRegistry(root, config);
       stats.registryRefreshed = true;
       const mirrorResult = syncSkillMirrors({ root, config, createRoots: true, force });
@@ -510,7 +599,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   }
   if (options.agent) {
     console.log("agent bootstrap: AGENT_START.md, AGENTS.md, CLAUDE.md, llms.txt, CLI_COMMAND_MATRIX.md");
-    console.log("agent core pins: rule-soul, rule-human");
+    console.log("agent core pins: rule-soul, rule-7, rule-human");
     console.log("agent event log: .mdkg/work/events/events.jsonl");
     console.log(`skill mirrors: ${stats.mirroredSkills} sync operation(s) across ${stats.mirrorTargets} target(s)`);
     if (stats.registryRefreshed) {

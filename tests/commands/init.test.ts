@@ -224,8 +224,10 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   runInitCommand({ root, agent: true });
 
   const soulPath = path.join(root, ".mdkg", "core", "SOUL.md");
+  const collaborationPath = path.join(root, ".mdkg", "core", "COLLABORATION.md");
   const humanPath = path.join(root, ".mdkg", "core", "HUMAN.md");
   const registryPath = path.join(root, ".mdkg", "skills", "registry.md");
+  const authorSkillPath = path.join(root, ".mdkg", "skills", "author-mdkg-skill", "SKILL.md");
   const planSkillPath = path.join(root, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md");
   const executeSkillPath = path.join(root, ".mdkg", "skills", "build-pack-and-execute-task", "SKILL.md");
   const reviewSkillPath = path.join(root, ".mdkg", "skills", "verify-close-and-checkpoint", "SKILL.md");
@@ -240,8 +242,10 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   const llmsPath = path.join(root, "llms.txt");
 
   assert.ok(fs.existsSync(soulPath));
+  assert.ok(fs.existsSync(collaborationPath));
   assert.ok(fs.existsSync(humanPath));
   assert.ok(fs.existsSync(registryPath));
+  assert.ok(fs.existsSync(authorSkillPath));
   assert.ok(fs.existsSync(planSkillPath));
   assert.ok(fs.existsSync(executeSkillPath));
   assert.ok(fs.existsSync(reviewSkillPath));
@@ -258,9 +262,14 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.match(soul, /id: rule-soul/);
   assert.match(soul, /type: rule/);
 
+  const collaboration = fs.readFileSync(collaborationPath, "utf8");
+  assert.match(collaboration, /id: rule-7/);
+  assert.match(collaboration, /COLLABORATION\.md` is canonical/);
+
   const human = fs.readFileSync(humanPath, "utf8");
   assert.match(human, /id: rule-human/);
   assert.match(human, /type: rule/);
+  assert.match(human, /one-release legacy alias/);
 
   const eventsLine = fs.readFileSync(eventsPath, "utf8").split(/\r?\n/).find((line) => line.trim().length > 0);
   assert.ok(eventsLine);
@@ -275,9 +284,14 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.match(String(parsed.notes), /init agent scaffold target initialized/);
 
   const registry = fs.readFileSync(registryPath, "utf8");
+  assert.match(registry, /author-mdkg-skill/);
   assert.match(registry, /select-work-and-ground-context/);
   assert.match(registry, /build-pack-and-execute-task/);
   assert.match(registry, /verify-close-and-checkpoint/);
+
+  const authorSkill = fs.readFileSync(authorSkillPath, "utf8");
+  assert.match(authorSkill, /MANIFEST\.md/);
+  assert.match(authorSkill, /customization\.skill_mirrors\.targets/);
 
   const executeSkill = fs.readFileSync(executeSkillPath, "utf8");
   assert.match(executeSkill, /mdkg archive compress --all/);
@@ -296,7 +310,8 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
 
   const agentStart = fs.readFileSync(agentStartPath, "utf8");
   assert.match(agentStart, /\.mdkg\/core\/SOUL\.md/);
-  assert.match(agentStart, /\.mdkg\/core\/HUMAN\.md/);
+  assert.match(agentStart, /\.mdkg\/core\/COLLABORATION\.md/);
+  assert.match(agentStart, /\.mdkg\/core\/HUMAN\.md.*legacy alias/);
   assert.match(agentStart, /select-work-and-ground-context/);
   assert.match(agentStart, /markdown edits for narrative\/body updates/);
 
@@ -322,14 +337,17 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line && !line.startsWith("#"));
-  assert.deepEqual(coreLines.slice(0, 2), ["rule-soul", "rule-human"]);
+  assert.deepEqual(coreLines.slice(0, 3), ["rule-soul", "rule-7", "rule-human"]);
   assert.equal(coreLines.filter((value) => value === "rule-soul").length, 1);
+  assert.equal(coreLines.filter((value) => value === "rule-7").length, 1);
   assert.equal(coreLines.filter((value) => value === "rule-human").length, 1);
 
   assert.ok(fs.existsSync(path.join(root, ".agents", "skills", "select-work-and-ground-context", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(root, ".agents", "skills", "author-mdkg-skill", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".agents", "skills", "build-pack-and-execute-task", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".agents", "skills", "verify-close-and-checkpoint", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "select-work-and-ground-context", "SKILL.md")));
+  assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "author-mdkg-skill", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "build-pack-and-execute-task", "SKILL.md")));
   assert.ok(fs.existsSync(path.join(root, ".claude", "skills", "verify-close-and-checkpoint", "SKILL.md")));
   assert.match(
@@ -349,6 +367,7 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.equal(config.db.enabled, false);
   assert.equal(config.db.root_path, ".mdkg/db");
   assert.equal(config.db.runtime_path, ".mdkg/db/runtime/project.sqlite");
+  assert.deepEqual(config.customization.skill_mirrors.targets, [".agents/skills", ".claude/skills"]);
   assert.equal(config.workspaces.root.visibility, "private");
   assertManifestPathsExistAndMatch(root);
   captureConsole(() => runDoctorCommand({ root }));

@@ -2,7 +2,7 @@
 id: task-595
 type: task
 title: design and implement config overlay loading and upgrade preservation
-status: todo
+status: done
 priority: 1
 epic: epic-199
 parent: goal-41
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task]
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -48,6 +48,33 @@ upgradable.
 - Do not introduce a forkable starter repo as the primary path.
 - Keep schema additions conservative and backward compatible.
 - Upgrade receipts should explain preserve/update/skip decisions.
+
+# Implementation Summary
+
+- Added a backward-compatible `customization` config section with standards
+  profile/refs, custom core-doc paths, and configured skill mirror target paths.
+  Missing sections default in memory, and seeded init config now exposes the
+  defaults explicitly.
+- Added config validation for unsafe customization paths, duplicate refs/paths,
+  and empty standards profile names.
+- Extended `mdkg upgrade` to migrate older configs by adding customization
+  overlay defaults and to report non-default operator overlays as preserved
+  customization instead of replacing them.
+- Added focused tests for config parsing, unsafe path rejection, init seed
+  coverage, and upgrade preservation of custom overlay policy.
+
+# Verification Evidence
+
+- `npm run build`: passed.
+- `npm run build:test`: passed.
+- `node --test dist/tests/core/config.test.js`: 27 passed.
+- `node --test dist/tests/commands/upgrade.test.js`: 12 passed.
+- `node --test dist/tests/commands/init.test.js`: 9 passed.
+- `npm run smoke:upgrade`: passed.
+- `npm run smoke:init`: passed when rerun serially after a parallel build-race
+  false start.
+- `node dist/cli.js validate --changed-only --json`: `ok: true`.
+- `git diff --check`: clean.
 
 # Test Plan
 

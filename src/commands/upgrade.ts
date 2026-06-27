@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { spawnSync } from "child_process";
 import { migrateConfig } from "../core/migrate";
-import { validateConfigSchema } from "../core/config";
+import { CustomizationConfig, defaultCustomizationConfig, validateConfigSchema } from "../core/config";
 import { configPath } from "../core/paths";
 import { readPackageVersion } from "../core/version";
 import {
@@ -34,7 +34,7 @@ import {
   writeInitManifest,
 } from "./init_manifest";
 import { refreshSkillsRegistry } from "./skill_support";
-import { scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
+import { configuredSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 
 export type UpgradeCommandOptions = {
   root: string;
@@ -78,7 +78,7 @@ export type UpgradeReceipt = {
 };
 
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
-const PROTECTED_CORE_DOCS = new Set([".mdkg/core/SOUL.md", ".mdkg/core/HUMAN.md"]);
+const PROTECTED_CORE_DOCS = new Set([".mdkg/core/SOUL.md", ".mdkg/core/COLLABORATION.md", ".mdkg/core/HUMAN.md"]);
 const CREATE_ONLY_PRESERVED = new Set([".mdkg/core/core.md"]);
 const LOCAL_STATE_IGNORE_ENTRIES = [
   ".mdkg/state/",
@@ -111,12 +111,11 @@ function requireSeedAssets(seedRoot: string): void {
   }
 }
 
-function isAgentWorkspace(root: string): boolean {
+function isAgentWorkspace(root: string, config: ReturnType<typeof validateConfigSchema>): boolean {
   return [
     path.join(root, ".mdkg", "skills"),
-    path.join(root, ".agents", "skills"),
-    path.join(root, ".claude", "skills"),
     path.join(root, ".mdkg", "work", "events", "events.jsonl"),
+    ...configuredSkillMirrorTargets(config).map((target) => path.join(root, target)),
   ].some((candidate) => fs.existsSync(candidate));
 }
 
@@ -239,16 +238,6 @@ function planSeedFile(options: {
     return false;
   }
 
-  if (PROTECTED_CORE_DOCS.has(options.file.path)) {
-    record(options.summary, options.changes, {
-      path: options.file.path,
-      category: options.file.category,
-      action: "conflict",
-      reason: "protected core document exists; local content preserved",
-    });
-    return false;
-  }
-
   const known = options.knownHashes.get(options.file.path);
   if (known?.has(currentHash)) {
     record(options.summary, options.changes, {
@@ -262,6 +251,16 @@ function planSeedFile(options: {
     }
     options.managedCurrentFiles.push(options.file);
     return true;
+  }
+
+  if (PROTECTED_CORE_DOCS.has(options.file.path)) {
+    record(options.summary, options.changes, {
+      path: options.file.path,
+      category: options.file.category,
+      action: "conflict",
+      reason: "protected core document exists; local content preserved",
+    });
+    return false;
   }
 
   record(options.summary, options.changes, {
@@ -341,14 +340,27 @@ function migrateProjectDbConfig(input: unknown): { config: unknown; changed: boo
   return { config: raw, changed: true };
 }
 
+function migrateCustomizationConfig(input: unknown): { config: unknown; changed: boolean } {
+  if (typeof input !== "object" || input === null || Array.isArray(input)) {
+    return { config: input, changed: false };
+  }
+  const raw = { ...(input as Record<string, unknown>) };
+  if (raw.customization !== undefined) {
+    return { config: raw, changed: false };
+  }
+  raw.customization = defaultCustomizationConfig();
+  return { config: raw, changed: true };
+}
+
 function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const cfgPath = configPath(root);
   const raw = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
   const migrated = migrateConfig(raw);
   const bundleConfig = migrateLegacyBundleImportsConfig(migrated.config);
   const nextConfig = migrateProjectDbConfig(bundleConfig.config);
-  validateConfigSchema(nextConfig.config);
-  if (migrated.from === migrated.to && !bundleConfig.changed && !nextConfig.changed) {
+  const customizationConfig = migrateCustomizationConfig(nextConfig.config);
+  validateConfigSchema(customizationConfig.config);
+  if (migrated.from === migrated.to && !bundleConfig.changed && !nextConfig.changed && !customizationConfig.changed) {
     summary.unchanged += 1;
     return;
   }
@@ -358,6 +370,9 @@ function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSu
   }
   if (nextConfig.changed) {
     reasons.push("project db config defaults");
+  }
+  if (customizationConfig.changed) {
+    reasons.push("customization overlay defaults");
   }
   if (migrated.from !== migrated.to) {
     reasons.push(`schema_version ${migrated.from} -> ${migrated.to}`);
@@ -369,8 +384,36 @@ function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSu
     reason: reasons.join(" and "),
   });
   if (!dryRun) {
-    writeFile(cfgPath, `${JSON.stringify(nextConfig.config, null, 2)}\n`);
+    writeFile(cfgPath, `${JSON.stringify(customizationConfig.config, null, 2)}\n`);
   }
+}
+
+function sameStringArray(left: string[], right: readonly string[]): boolean {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function hasOperatorCustomization(customization: CustomizationConfig): boolean {
+  const defaults = defaultCustomizationConfig();
+  return (
+    customization.standards.profile !== defaults.standards.profile ||
+    customization.standards.refs.length > 0 ||
+    customization.core_docs.custom_paths.length > 0 ||
+    !sameStringArray(customization.skill_mirrors.targets, defaults.skill_mirrors.targets)
+  );
+}
+
+function reportPreservedCustomizationOverlay(root: string, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+  const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
+  if (!hasOperatorCustomization(config.customization)) {
+    summary.unchanged += 1;
+    return;
+  }
+  record(summary, changes, {
+    path: ".mdkg/config.json",
+    category: "customization_overlay",
+    action: "skip",
+    reason: "operator customization overlay is preserved; upgrade does not replace organization standards, custom core docs, or configured skill mirror targets",
+  });
 }
 
 function migrateClosedGoalActiveNodes(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
@@ -584,6 +627,7 @@ function writablePathForChange(change: UpgradeChange): string {
 function buildApplySideEffects(options: {
   existingManifest: InitManifest | undefined;
   agentWorkspace: boolean;
+  mirrorTargets: string[];
   changes: UpgradeChange[];
 }): UpgradeChange[] {
   const hasDirectWrites = options.changes.some(isWritableChange);
@@ -599,20 +643,20 @@ function buildApplySideEffects(options: {
     },
   ];
   if (options.agentWorkspace) {
-    effects.push(
-      {
-        path: ".mdkg/skills/registry.md",
-        category: "skill_registry",
-        action: "update",
-        reason: "refreshes canonical skill registry after apply",
-      },
-      {
-        path: ".agents/skills,.claude/skills",
+    effects.push({
+      path: ".mdkg/skills/registry.md",
+      category: "skill_registry",
+      action: "update",
+      reason: "refreshes canonical skill registry after apply",
+    });
+    if (options.mirrorTargets.length > 0) {
+      effects.push({
+        path: options.mirrorTargets.join(","),
         category: "skill_mirror",
         action: "sync",
-        reason: "syncs managed skill mirrors after apply",
-      }
-    );
+        reason: "syncs configured managed skill mirrors after apply",
+      });
+    }
   }
   return effects;
 }
@@ -667,10 +711,12 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   const knownHashes = buildKnownHashes([existingManifest, ...legacyManifests]);
   const summary = createSummary();
   const changes: UpgradeChange[] = [];
-  const agentWorkspace = isAgentWorkspace(root);
+  const initialConfig = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
+  const agentWorkspace = isAgentWorkspace(root, initialConfig);
   const managedCurrentFiles: InitManifestFile[] = [];
 
   migrateConfigIfNeeded(root, dryRun, summary, changes);
+  reportPreservedCustomizationOverlay(root, summary, changes);
   migrateClosedGoalActiveNodes(root, dryRun, summary, changes);
   migrateLegacySpecManifests(root, dryRun, summary, changes);
 
@@ -698,6 +744,7 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   const applySideEffects = buildApplySideEffects({
     existingManifest,
     agentWorkspace,
+    mirrorTargets: configuredSkillMirrorTargets(initialConfig),
     changes,
   });
   for (const effect of applySideEffects) {
@@ -715,12 +762,14 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
     if (agentWorkspace && applySideEffects.length > 0) {
       const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
       refreshSkillsRegistry(root, config);
-      scaffoldMirrorRoots(root);
+      scaffoldMirrorRoots(root, config);
       syncSkillMirrors({ root, config, createRoots: true });
     }
   }
 
-  const preservedCustomizations = changes.filter((change) => change.action === "conflict");
+  const preservedCustomizations = changes.filter(
+    (change) => change.action === "conflict" || change.category === "customization_overlay"
+  );
   const blockingConflicts = changes.filter(
     (change) => change.action === "conflict" && change.category === "manifest_migration"
   );

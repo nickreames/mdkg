@@ -1,0 +1,736 @@
+{
+  "generated_from": "CHANGELOG.md",
+  "package_version": "0.3.9",
+  "latest_release": "0.3.9",
+  "unreleased": {
+    "sections": {},
+    "item_count": 0
+  },
+  "releases": [
+    {
+      "version": "0.3.9",
+      "date": "2026-06-27",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `.mdkg/config.json` customization overlays for organization standards, custom core docs, and configured skill mirror target paths while keeping the mdkg CLI kernel upgradable through `mdkg upgrade --apply`.",
+          "Added configurable skill mirror support so repos can mirror canonical `.mdkg/skills` into arbitrary contained agent-local skill roots, with `.agents/skills` and `.claude/skills` preserved as defaults.",
+          "Added `COLLABORATION.md` as the canonical collaboration/operator profile core doc while keeping `HUMAN.md` as a one-release legacy alias.",
+          "Added deterministic release-notes data generation from `CHANGELOG.md` for public docs and future per-release cards."
+        ],
+        "Changed": [
+          "Updated `mdkg init --agent` and `mdkg upgrade --apply` to seed and preserve customization overlays, configurable mirrors, `COLLABORATION.md`, legacy `HUMAN.md`, and accurate managed init-manifest hashes.",
+          "Refreshed first-party mdkg skills and default init seed skills for current CLI coverage, MANIFEST authoring, configured mirror targets, pre-publish gates, and explicit no-publish/no-tag/no-push approval boundaries.",
+          "Expanded `npm run docs:check` and `prepublishOnly` to verify generated CLI docs, generated release-note data, and public command examples before publish."
+        ]
+      },
+      "item_count": 7,
+      "highlights": [
+        "Added `.mdkg/config.json` customization overlays for organization standards, custom core docs, and configured skill mirror target paths while keeping the mdkg CLI kernel upgradable through `mdkg upgrade --apply`.",
+        "Added configurable skill mirror support so repos can mirror canonical `.mdkg/skills` into arbitrary contained agent-local skill roots, with `.agents/skills` and `.claude/skills` preserved as defaults.",
+        "Added `COLLABORATION.md` as the canonical collaboration/operator profile core doc while keeping `HUMAN.md` as a one-release legacy alias."
+      ]
+    },
+    {
+      "version": "0.3.8",
+      "date": "2026-06-25",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Planned and began a warning-scale UX hardening lane for large multi-repo mdkg orchestration runs.",
+          "Added bounded validation warning summaries, summary-mode output, and a clean JSON receipt artifact path for warning-heavy validation workflows.",
+          "Added heading formatter summary-mode output for large recommended-heading migration previews.",
+          "Added a packed warning UX smoke to prepublish automation so high-volume warning output regressions are caught before release."
+        ],
+        "Changed": [
+          "Renamed the reusable capability surface to canonical `MANIFEST.md` terminology across scaffolds, help, command references, init assets, and skills. `SPEC.md` and `mdkg spec ...` remain explicit legacy aliases for one compatibility release, with manifest-first warnings and migration guidance.",
+          "Improved strict doctor, subgraph, and handoff remediation guidance for multi-repo operators.",
+          "Updated repo-local skill guidance for child-first commit and root subgraph refresh sequencing."
+        ]
+      },
+      "item_count": 7,
+      "highlights": [
+        "Planned and began a warning-scale UX hardening lane for large multi-repo mdkg orchestration runs.",
+        "Added bounded validation warning summaries, summary-mode output, and a clean JSON receipt artifact path for warning-heavy validation workflows.",
+        "Added heading formatter summary-mode output for large recommended-heading migration previews."
+      ]
+    },
+    {
+      "version": "0.3.7",
+      "date": "2026-06-20",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `context_refs` and `evidence_refs` as generic semantic reference fields for mdkg work nodes, with indexing, validation, search/show output, pack traversal, SQLite cache support, subgraph projection, and visibility enforcement.",
+          "Added `mdkg graph refs <id-or-qid> --json` to summarize inbound and outbound scope, context, evidence, blocker, related, and structural references for local graph nodes and read-only subgraph qids.",
+          "Added richer checkpoint kinds for implementation milestones, test proof, goal closeout, read-only audits, and handoffs. Generated checkpoint bodies now include sections for evidence, validation, known warnings, changed surfaces, boundaries, and follow-up references.",
+          "Added `mdkg work validate [<id-or-qid>] --type ... --json` for focused SPEC, WORK, WORK_ORDER, RECEIPT, FEEDBACK, DISPUTE, and PROPOSAL semantic mirror diagnostics.",
+          "Added validation warning categories plus `mdkg validate --changed-only` for changed-file warning review while preserving full-graph error checking.",
+          "Added `mdkg format --headings --dry-run|--apply --json` to preview or apply recommended heading migrations for historical mdkg Markdown nodes.",
+          "Added `mdkg db queue contract --json` as the public project DB queue adapter contract covering payload hashing, dedupe, claim ordering, lease-owner settlement, retry/dead-letter behavior, expired lease release, pause/resume, snapshot policies, and stats semantics.",
+          "Added `mdkg handoff create <id-or-qid>` for sanitized, copy-ready agent handoff prompts built from pack context, goal state, latest checkpoints, required checks, semantic refs, and raw-content warnings.",
+          "Added packed temp-repo smokes for semantic refs, checkpoint templates, handoffs, and the full integration UX flow."
+        ],
+        "Changed": [
+          "Completed goals now move the final `active_node` to `last_active_node` when marked done or archived, so historical routing state is preserved without leaving completed goals actionable.",
+          "`mdkg goal next <done-goal> --json` now returns `node: null` without misleading stale `active_node` warnings for achieved goals.",
+          "Goal and pack workflows now distinguish executable `scope_refs` from contextual and evidence references, reducing validation noise when goals cite checkpoints, design evidence, prerequisite goals, or external proof refs.",
+          "README, init assets, command matrix, generated command contract metadata, help targets, and publish-readiness assertions now document the new semantic refs, handoff, workflow validation, checkpoint, queue contract, and warning migration surfaces.",
+          "Upgrade behavior now migrates legacy achieved goals that still have `active_node` into the new `last_active_node` shape."
+        ],
+        "Fixed": [
+          "Reduced false-positive operational friction for completed goals and intentional contextual refs without weakening missing-reference or invalid graph-edge validation.",
+          "Strengthened cross-subgraph blocker diagnostics so read-only external graph nodes are reported as planning context instead of locally actionable work."
+        ],
+        "Security": [
+          "Handoff generation omits raw node body content for nodes with obvious raw prompt, payload, or secret markers and reports typed raw-marker warnings instead.",
+          "Workflow validation and checkpoint validation warn on obvious raw secret, prompt, token, or payload markers without turning mdkg into a broad secret scanner or blocking operator review.",
+          "The public queue contract explicitly states that queue payloads should be compact refs or redacted envelopes, not raw secrets, prompts, provider payloads, or bulky runtime artifacts."
+        ]
+      },
+      "item_count": 19,
+      "highlights": [
+        "Added `context_refs` and `evidence_refs` as generic semantic reference fields for mdkg work nodes, with indexing, validation, search/show output, pack traversal, SQLite cache support, subgraph projection, and visibility enforcement.",
+        "Added `mdkg graph refs <id-or-qid> --json` to summarize inbound and outbound scope, context, evidence, blocker, related, and structural references for local graph nodes and read-only subgraph qids.",
+        "Added richer checkpoint kinds for implementation milestones, test proof, goal closeout, read-only audits, and handoffs. Generated checkpoint bodies now include sections for evidence, validation, known warnings, changed surfaces, boundaries, and follow-up references."
+      ]
+    },
+    {
+      "version": "0.3.6",
+      "date": "2026-06-17",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `mdkg mcp serve --stdio` as a local read-only MCP server for status, workspace/subgraph discovery, search, show, bounded in-memory packs, goal current/next, and validation.",
+          "Added packed `smoke:mcp` coverage that installs mdkg from a tarball in a temp prefix, launches the stdio server, exercises root and subgraph reads, and proves mutation-shaped tool calls fail closed."
+        ],
+        "Fixed": [
+          "Prepared `0.3.6` graph import hardening after the `0.3.5` publish: `mdkg graph import-template --select-goal --apply` now activates the rewritten imported start goal, pauses competing active root goals, validates, and only then writes selected-goal state."
+        ],
+        "Changed": [
+          "Extended graph import dry-run/apply receipts with activation and paused-goal details, and made active template imports fail before writing when `--select-goal` is omitted and multiple active root goals would result."
+        ],
+        "Security": [
+          "The MCP server is stdio-only and exposes no task, goal activation, graph import, queue, event, archive, format, SQL, shell, arbitrary file-read, filesystem mutation, environment, or secret-access tools."
+        ]
+      },
+      "item_count": 5,
+      "highlights": [
+        "Added `mdkg mcp serve --stdio` as a local read-only MCP server for status, workspace/subgraph discovery, search, show, bounded in-memory packs, goal current/next, and validation.",
+        "Added packed `smoke:mcp` coverage that installs mdkg from a tarball in a temp prefix, launches the stdio server, exercises root and subgraph reads, and proves mutation-shaped tool calls fail closed.",
+        "Prepared `0.3.6` graph import hardening after the `0.3.5` publish: `mdkg graph import-template --select-goal --apply` now activates the rewritten imported start goal, pauses competing active root goals, validates, and only then writes selected-goal state."
+      ]
+    },
+    {
+      "version": "0.3.5",
+      "date": "2026-06-17",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `mdkg graph clone <source> --target <path>` to create a complete authored mdkg graph in a separate contained target directory while preserving source IDs.",
+          "Added `mdkg graph fork <source> --target <path> --start-goal <goal-id>` to preserve IDs in a separate target graph and optionally select the demo or bootstrap start goal in that target.",
+          "Added `mdkg graph import-template <source> --dry-run|--apply` for same-repo template graph imports with deterministic canonical ID rewrites, structured reference rewrites, safe body ID/qid rewrites, and optional selected-goal setup.",
+          "Added packed `smoke:graph-clone` coverage that installs mdkg from a tarball in a temp prefix and validates clone, fork, import-template dry-run/apply, source non-mutation, help text, search, pack, and validation behavior."
+        ],
+        "Changed": [
+          "Updated README, seeded init README, command matrix, help snapshots, prepublish gates, and publish-readiness assertions to document the distinction between authored graph creation through `mdkg graph ...` and read-only orchestration context through `mdkg subgraph ...`.",
+          "Added `smoke:graph-clone` to `prepublishOnly` before the existing subgraph smoke so graph template import behavior is proven before release.",
+          "Consolidated website-template-mdkg dogfood planning under the 0.3.5 graph clone/import goal without mutating downstream repositories or starting website implementation."
+        ],
+        "Security": [
+          "Clone/fork targets must be empty or absent, root-contained, and not nested inside live directory sources.",
+          "Same-repo template imports default to dry-run, require `--apply` to write, run under the mdkg mutation lock, rebuild generated indexes, and validate the resulting graph before selecting a start goal.",
+          "Semantic ID collisions during template import require an explicit `--id-prefix`; numeric canonical IDs are rewritten to the next unused ID so links remain deterministic."
+        ]
+      },
+      "item_count": 10,
+      "highlights": [
+        "Added `mdkg graph clone <source> --target <path>` to create a complete authored mdkg graph in a separate contained target directory while preserving source IDs.",
+        "Added `mdkg graph fork <source> --target <path> --start-goal <goal-id>` to preserve IDs in a separate target graph and optionally select the demo or bootstrap start goal in that target.",
+        "Added `mdkg graph import-template <source> --dry-run|--apply` for same-repo template graph imports with deterministic canonical ID rewrites, structured reference rewrites, safe body ID/qid rewrites, and optional selected-goal setup."
+      ]
+    },
+    {
+      "version": "0.3.4",
+      "date": "2026-06-17",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added IDs-family repair apply support with `mdkg fix apply --family ids` and the focused `mdkg fix ids [--apply]` convenience command.",
+          "Added `--base-ref` support for duplicate-ID repair planning so mainline IDs can be preserved while incoming duplicate nodes receive the next unused canonical numeric ID.",
+          "Added unresolved Git add/add conflict-stage repair for mdkg Markdown files: stage 2 remains at the conflicted path, stage 3 is rewritten to a new canonical ID/path, and the Git index conflict stages are resolved with a receipt.",
+          "Added packed `smoke:id-repair` coverage that installs mdkg from a tarball in a temp prefix, validates clean duplicate repair, base-ref link preservation, unresolved Git conflict-stage repair, and final graph validation."
+        ],
+        "Changed": [
+          "Updated `mdkg fix plan` receipts so duplicate-ID findings advertise `apply_supported: true` with an explicit `apply_kind`, while index/cache and graph-reference findings remain review-only.",
+          "Updated command help, README, init assets, command matrix, generated command contract metadata, and publish-readiness assertions to document the new IDs-only apply boundary.",
+          "Updated branch-conflict and fix-plan smokes to distinguish non-mutating plan behavior from the newly apply-capable duplicate-ID repair family."
+        ],
+        "Security": [
+          "`fix apply` refuses unsupported families, blocked plans, and non-IDs repair findings instead of silently applying partial graph/reference/index repairs.",
+          "Duplicate-ID apply writes Markdown atomically under the mdkg mutation lock, rebuilds derived indexes, and emits receipt evidence with touched paths, source plan hash, and ambiguous reference notes.",
+          "Base-ref link rewriting is conservative: references in files absent from the base ref can be rewritten to the repaired incoming ID, while base-existing references remain on the mainline ID and ambiguous references are reported."
+        ]
+      },
+      "item_count": 10,
+      "highlights": [
+        "Added IDs-family repair apply support with `mdkg fix apply --family ids` and the focused `mdkg fix ids [--apply]` convenience command.",
+        "Added `--base-ref` support for duplicate-ID repair planning so mainline IDs can be preserved while incoming duplicate nodes receive the next unused canonical numeric ID.",
+        "Added unresolved Git add/add conflict-stage repair for mdkg Markdown files: stage 2 remains at the conflicted path, stage 3 is rewritten to a new canonical ID/path, and the Git index conflict stages are resolved with a receipt."
+      ]
+    },
+    {
+      "version": "0.3.3",
+      "date": "2026-06-16",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `mdkg goal activate <goal-id>` to make one local root goal active, select it for goal routing, and pause competing active local root goals in the same workspace.",
+          "Added goal-only archived lifecycle support with `mdkg goal archive`, allowing historical roadmap goals to remain readable through show/list/search while being excluded from actionable current/next routing.",
+          "Added parser and graph validation support for exactly one active local root goal, while imported subgraph goals keep independent active-goal state in their owning graphs.",
+          "Added packed `smoke:goal-lifecycle` prepublish coverage for goal activation, archived-goal routing, archived discovery filters, strict doctor behavior, and imported subgraph active-goal independence."
+        ],
+        "Changed": [
+          "Updated README, init assets, agent startup guidance, command matrix, help surfaces, generated command contract metadata, and publish-readiness assertions to prefer `goal activate` for active goal selection.",
+          "Archived superseded local roadmap goals `goal-11`, `goal-12`, and `goal-15` in this repository after replacement versioned goals were created.",
+          "Tightened the 0.3.3 graph hygiene path so the remaining release-candidate sequence is smoke coverage followed by dry-run prepublish closeout."
+        ],
+        "Security": [
+          "Archived goals are non-actionable historical context: they cannot be selected, activated, claimed, resumed, or paused through the goal lifecycle surface.",
+          "`goal activate` keeps single-writer planning safer by pausing competing local root goals instead of allowing multiple active local root goals to remain silently actionable."
+        ]
+      },
+      "item_count": 9,
+      "highlights": [
+        "Added `mdkg goal activate <goal-id>` to make one local root goal active, select it for goal routing, and pause competing active local root goals in the same workspace.",
+        "Added goal-only archived lifecycle support with `mdkg goal archive`, allowing historical roadmap goals to remain readable through show/list/search while being excluded from actionable current/next routing.",
+        "Added parser and graph validation support for exactly one active local root goal, while imported subgraph goals keep independent active-goal state in their owning graphs."
+      ]
+    },
+    {
+      "version": "0.3.2",
+      "date": "2026-06-16",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added first-class research spike work-node support with `mdkg new spike`, `spike-#` ids, `.mdkg/work/` storage, and compatibility with existing `mdkg task start/update/done` lifecycle commands.",
+          "Added spike participation in `mdkg next`, `mdkg goal next`, `mdkg goal claim`, list/search/show structured exports, deterministic packs, goal-root pack closure, and generated command contract metadata.",
+          "Added a default spike template for research question, context, search plan, findings, options/tradeoffs, recommendation, follow-up nodes, skill candidates, domain notes, mdkg.dev launch implications, and evidence/sources.",
+          "Added packed `smoke:spike` coverage that installs mdkg from a tarball in a temp prefix, creates a fresh repo, exercises spike lifecycle and goal routing, verifies structured exports and pack formats, creates follow-up task/test nodes, and confirms no automatic skill generation occurs.",
+          "Added mdkg.dev dogfood research spike nodes and follow-up roadmap nodes so launch planning can proceed from evidence-backed spikes after this release."
+        ],
+        "Changed": [
+          "Updated README, `CLI_COMMAND_MATRIX.md`, init assets, help text, command docs, and publish-readiness assertions to describe spikes as actionable research work nodes, not autonomous web-search or file-generation agents.",
+          "Hardened init and upgrade compatibility so fresh and upgraded repos receive the bundled spike template while customized spike templates are preserved.",
+          "Hardened spike pack/export behavior across JSON, Markdown, XML, and toon pack formats plus public visibility filtering for spike archive references.",
+          "Hardened validation and fix-plan UX for malformed spikes: invalid ids, statuses, priorities, missing refs, duplicate spike ids, and missing spike body sections now have explicit test coverage and read-only repair guidance where existing fix-plan families apply.",
+          "Extended `mdkg fix plan refs` to inspect indexed `links`, `artifacts`, and `refs` fields in addition to custom attributes, so missing archive refs in normal node metadata appear in repair plans."
+        ],
+        "Security": [
+          "Kept spikes as human/agent-authored Markdown work nodes only. This release does not add a `mdkg spike ...` namespace, automatic web search, automatic follow-up node creation, automatic `SKILL.md` generation, or repair apply behavior.",
+          "Preserved dry-run-only repair planning: spike-related fix guidance remains receipt-shaped, non-mutating, and `apply_supported: false`."
+        ]
+      },
+      "item_count": 12,
+      "highlights": [
+        "Added first-class research spike work-node support with `mdkg new spike`, `spike-#` ids, `.mdkg/work/` storage, and compatibility with existing `mdkg task start/update/done` lifecycle commands.",
+        "Added spike participation in `mdkg next`, `mdkg goal next`, `mdkg goal claim`, list/search/show structured exports, deterministic packs, goal-root pack closure, and generated command contract metadata.",
+        "Added a default spike template for research question, context, search plan, findings, options/tradeoffs, recommendation, follow-up nodes, skill candidates, domain notes, mdkg.dev launch implications, and evidence/sources."
+      ]
+    },
+    {
+      "version": "0.3.1",
+      "date": "2026-06-11",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `mdkg status --json` as a read-only operator health summary covering package/release metadata, Git state, graph/index freshness, selected-goal state, project DB verification state, and generated cache health.",
+          "Added strict typed doctor checks with `mdkg doctor --strict --json`, including stable check ids, status/severity fields, remediation text, selected goal stale/achieved detection, and enabled project DB verification failures.",
+          "Added dry-run-only `mdkg fix plan --json` with receipt-shaped repair plans for generated index/cache state, missing graph references, and duplicate local ids.",
+          "Added read-only `mdkg subgraph audit` and `mdkg subgraph upgrade-plan` receipts for child graph source-path health, root-owned bundle safety, materialized-tree safety, dirty child repo refusal, and downstream sync/verify planning.",
+          "Added generated `dist/command-contract.json` metadata and `npm run cli:contract` so command docs can be generated from mdkg-native command policy metadata before `mdkg.dev` launch."
+        ],
+        "Changed": [
+          "Hardened mutating command paths with mutation locks and atomic writes for format, skill, and workspace updates.",
+          "Extended prepublish readiness with operator-health, fix-plan, branch-conflict, and command-docs packed smoke coverage.",
+          "Updated README, `CLI_COMMAND_MATRIX.md`, init assets, help snapshots, and publish-readiness assertions for the new operator-health, fix-planning, subgraph safety, branch safety, generated command contract, and docs readiness surfaces."
+        ],
+        "Security": [
+          "Kept repair planning, subgraph upgrade planning, and operator health commands read-only by default; apply behavior, child repo mutation, worker execution, and public event/reducer/lease/materializer CLI remain deferred."
+        ]
+      },
+      "item_count": 9,
+      "highlights": [
+        "Added `mdkg status --json` as a read-only operator health summary covering package/release metadata, Git state, graph/index freshness, selected-goal state, project DB verification state, and generated cache health.",
+        "Added strict typed doctor checks with `mdkg doctor --strict --json`, including stable check ids, status/severity fields, remediation text, selected goal stale/achieved detection, and enabled project DB verification failures.",
+        "Added dry-run-only `mdkg fix plan --json` with receipt-shaped repair plans for generated index/cache state, missing graph references, and duplicate local ids."
+      ]
+    },
+    {
+      "version": "0.3.0",
+      "date": "2026-06-06",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added optional `SPEC.md` reusable capability records with strict validation for supported `spec_kind` values and diagnostics that reject documentation-only misuse while keeping repos without SPEC files valid.",
+          "Added focused `mdkg spec list/show/validate` commands for optional SPEC capability discovery alongside the broader `mdkg capability ...` surface.",
+          "Added a dogfood mdkg CLI `SPEC.md` and linked `WORK.md` contract so the CLI's graph, project DB, skill, and tool capabilities are discoverable through the same capability index used by downstream repos.",
+          "Added deterministic `mdkg work trigger`, `mdkg work order status`, and `mdkg work receipt verify` helpers for creating submitted work-order mirrors, reviewing order/receipt linkage, and validating receipt evidence without executing work.",
+          "Added optional `mdkg work trigger --enqueue <queue>` delivery bridging to the public local project DB queue surface. The bridge requires an initialized, migrated, verified DB and an explicitly created active queue, records delivery refs, and still does not execute work.",
+          "Added read-only SPEC/WORK capability linkage arrays for related specs, work contracts, work orders, and receipts.",
+          "Added packed `smoke:work-invocation` coverage for trigger-to-order-to-receipt verification plus queue bridge delivery from an installed tarball."
+        ],
+        "Changed": [
+          "Hardened default SPEC, WORK, WORK_ORDER, and RECEIPT templates with capability metadata, payload hashes, queue refs, evidence hashes, redaction policies, and explicit semantic-mirror boundaries.",
+          "Updated README, command matrix, help snapshots, init assets, and upgrade smokes for optional SPEC adoption, work invocation helpers, queue bridge behavior, capability linkage, and no-SPEC backward compatibility.",
+          "Strengthened init and upgrade smokes so fresh workspaces can remain SPEC-free while optional SPEC/WORK templates can be created and validated on demand."
+        ],
+        "Security": [
+          "Audited templates, docs, dogfood mirrors, and work invocation command paths for no-secret and semantic-mirror boundaries before the 0.3.0 release metadata bump. No raw secret, credential, payment, ledger, or canonical production state values were identified."
+        ]
+      },
+      "item_count": 11,
+      "highlights": [
+        "Added optional `SPEC.md` reusable capability records with strict validation for supported `spec_kind` values and diagnostics that reject documentation-only misuse while keeping repos without SPEC files valid.",
+        "Added focused `mdkg spec list/show/validate` commands for optional SPEC capability discovery alongside the broader `mdkg capability ...` surface.",
+        "Added a dogfood mdkg CLI `SPEC.md` and linked `WORK.md` contract so the CLI's graph, project DB, skill, and tool capabilities are discoverable through the same capability index used by downstream repos."
+      ]
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-06-06",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added public `mdkg db queue ...` commands for local project DB queue create/pause/resume/enqueue/claim/ack/fail/dead-letter/release-expired/stats/list/show.",
+          "Added `mdkg.project_db.queue_control.v1` / `005_mdkg_project_db_queue_control.sql` for first-class queue active/paused state and migration backfill from existing queue messages.",
+          "Added queue-aware snapshot sealing policies: default `--queue-policy drain` blocks ready/leased messages, while `--queue-policy paused` allows ready messages only in paused queues and always blocks leased messages.",
+          "Added packed CLI-only `smoke:db-queue-cli` coverage that exercises public queue commands and pause/drain snapshot behavior from an installed tarball."
+        ],
+        "Changed": [
+          "Source release line now targets `0.2.0` for the next project DB materializer/profile capability track.",
+          "Project DB queue support is now public under `mdkg db queue`; event, reducer, writer lease, and materializer command surfaces remain internal-only."
+        ]
+      },
+      "item_count": 6,
+      "highlights": [
+        "Added public `mdkg db queue ...` commands for local project DB queue create/pause/resume/enqueue/claim/ack/fail/dead-letter/release-expired/stats/list/show.",
+        "Added `mdkg.project_db.queue_control.v1` / `005_mdkg_project_db_queue_control.sql` for first-class queue active/paused state and migration backfill from existing queue messages.",
+        "Added queue-aware snapshot sealing policies: default `--queue-policy drain` blocks ready/leased messages, while `--queue-policy paused` allows ready messages only in paused queues and always blocks leased messages."
+      ]
+    },
+    {
+      "version": "0.1.10",
+      "date": "2026-06-05",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added an internal queue-backed project DB materializer helper plus packed `smoke:db-materializer` coverage for queue delivery, durable events, reducers, writer lease/CAS conflicts, receipts, snapshots, stats, index, and validate."
+        ],
+        "Changed": [
+          "Publish readiness now requires the compiled materializer helper and seeded docs that keep materializer support internal-only."
+        ]
+      },
+      "item_count": 2,
+      "highlights": [
+        "Added an internal queue-backed project DB materializer helper plus packed `smoke:db-materializer` coverage for queue delivery, durable events, reducers, writer lease/CAS conflicts, receipts, snapshots, stats, index, and validate.",
+        "Publish readiness now requires the compiled materializer helper and seeded docs that keep materializer support internal-only."
+      ]
+    },
+    {
+      "version": "0.1.9",
+      "date": "2026-06-04",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added internal local project DB event, receipt, typed reducer, and writer lease/CAS foundations after the queue migration.",
+          "Added packed `smoke:db-events` coverage for event idempotency, conflict receipts, reducer application/replay, writer lease CAS conflicts, snapshots, stats, index, and validate."
+        ],
+        "Changed": [
+          "Project DB migration order now includes events/receipts and writer leases after the `0.1.8` queue foundation.",
+          "Publish readiness now requires the compiled event helper and seeded docs that keep event/reducer/lease support internal-only."
+        ]
+      },
+      "item_count": 4,
+      "highlights": [
+        "Added internal local project DB event, receipt, typed reducer, and writer lease/CAS foundations after the queue migration.",
+        "Added packed `smoke:db-events` coverage for event idempotency, conflict receipts, reducer application/replay, writer lease CAS conflicts, snapshots, stats, index, and validate.",
+        "Project DB migration order now includes events/receipts and writer leases after the `0.1.8` queue foundation."
+      ]
+    },
+    {
+      "version": "0.1.8",
+      "date": "2026-06-04",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added internal local node:sqlite queue foundations for project DB delivery state."
+        ],
+        "Changed": [
+          "Source release line now targets the next non-published package version after `0.1.7`."
+        ]
+      },
+      "item_count": 2,
+      "highlights": [
+        "Added internal local node:sqlite queue foundations for project DB delivery state.",
+        "Source release line now targets the next non-published package version after `0.1.7`."
+      ]
+    },
+    {
+      "version": "0.1.7",
+      "date": "2026-06-04",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `mdkg db` as the project database command namespace for the pre-v1 DB foundation.",
+          "Added `mdkg db index rebuild/status/verify` while keeping `mdkg index` as the compatibility shortcut for graph index rebuilds.",
+          "Added generic project DB config and `.mdkg/db/{schema,runtime,state,receipts}` layout support, separate from the rebuildable `.mdkg/index` graph cache.",
+          "Added `mdkg db init` to create the generic project DB scaffold, write `.mdkg/db/project-db.json`, and enable `db.enabled` without creating an active runtime SQLite database.",
+          "Added `mdkg db migrate` using Node's built-in `node:sqlite` for mdkg-owned generic foundation migrations with migration keys, order, checksums, and applied timestamps.",
+          "Added `mdkg db verify` and `mdkg db stats` for non-mutating project DB health checks and deterministic summaries.",
+          "Added `mdkg db snapshot seal/verify/status/dump/diff` for opt-in sealed SQLite checkpoints, manifests, canonical dumps, and deterministic review diffs.",
+          "Added prefix-based cross-subgraph graph references so root-authored nodes can point at configured child graph qids such as `child_repo:work.example`.",
+          "Added `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]` to rebuild root-owned child bundle snapshots from configured clean child Git repo `source_path` entries.",
+          "Added `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]` for generated read-only inspection trees extracted from configured subgraph bundles.",
+          "Added unit and packed-package smoke coverage for subgraph sync dry-runs, child Git cleanliness checks, root-owned bundle refresh, materialization marker safety, and cross-subgraph refs.",
+          "Added unit, packed-package init, dedicated `smoke:db`, and `smoke:db-snapshot` coverage for project DB runtime and sealed snapshot workflows."
+        ],
+        "Changed": [
+          "Init, upgrade, README, command matrix, and agent-start docs now distinguish `.mdkg/index` as rebuildable graph cache state from `.mdkg/db` as project application database state.",
+          "Project DB runtime SQLite files, WAL/SHM/journal files, locks, and temp files remain ignored by default; schema files, manifests, receipts, and opt-in sealed snapshots remain policy-driven.",
+          "`mdkg subgraph refresh` remains reload-only; `mdkg subgraph sync` is now the explicit command that builds child bundles.",
+          "Init and upgrade ignore guidance now treats `.mdkg/subgraphs/` as local generated inspection state.",
+          "Bundle creation, local graph indexing, search, validate, pack, and SQLite hydration keep ignoring materialized subgraph trees so extracted child files never become root-owned graph nodes."
+        ],
+        "Fixed": [
+          "Relationship and reference fields now preserve `alias:id` qids while still treating `scheme://...` values as external URI refs.",
+          "Local ownership fields such as `epic`, `parent`, `prev`, and `next` reject subgraph qids, preserving child graph ownership boundaries."
+        ]
+      },
+      "item_count": 19,
+      "highlights": [
+        "Added `mdkg db` as the project database command namespace for the pre-v1 DB foundation.",
+        "Added `mdkg db index rebuild/status/verify` while keeping `mdkg index` as the compatibility shortcut for graph index rebuilds.",
+        "Added generic project DB config and `.mdkg/db/{schema,runtime,state,receipts}` layout support, separate from the rebuildable `.mdkg/index` graph cache."
+      ]
+    },
+    {
+      "version": "0.1.6",
+      "date": "2026-06-01",
+      "legacy": false,
+      "sections": {
+        "Fixed": [
+          "Treat `feat` nodes as task-like for `mdkg task start/update/done`, closing the selected-goal loop when `mdkg goal next` returns a feature as the next scoped work item."
+        ]
+      },
+      "item_count": 1,
+      "highlights": [
+        "Treat `feat` nodes as task-like for `mdkg task start/update/done`, closing the selected-goal loop when `mdkg goal next` returns a feature as the next scoped work item."
+      ]
+    },
+    {
+      "version": "0.1.5",
+      "date": "2026-06-01",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added first-class `goal` nodes for recursive long-running objectives with `goal_state`, `goal_condition`, `active_node`, required skills, required checks, iteration limits, stop conditions, and completion evidence.",
+          "Added `mdkg new goal \"<title>\"` and the `mdkg goal show/select/current/clear/next/claim/evaluate/pause/resume/done` command family.",
+          "Added a bundled `goal.md` template so init, upgrade, and template fallback can support goal nodes.",
+          "Added `scope_refs` for explicit goal ownership roots and recursive goal traversal through epics and features.",
+          "Added the `pursue-mdkg-goal` skill for skill-guided recursive pursuit with evidence and controlled skill-improvement proposals.",
+          "Added goal parser, creation, selected-goal, recursive next-selection, claim, pack, and report-only evaluation tests."
+        ],
+        "Changed": [
+          "Normal `mdkg next` continues to select concrete task, bug, test, and feature work; goal-scoped selection lives under `mdkg goal next`.",
+          "`mdkg goal next` is read-only and may omit the goal id when a selected local goal exists; `mdkg goal claim` is the explicit mutating path for `active_node`.",
+          "Goal required checks are report-only guidance in this release. Agents run commands themselves and record evidence back into mdkg.",
+          "Skill self-improvement during goal execution is recorded as candidates or proposal work unless the active node is explicit skill-maintenance."
+        ]
+      },
+      "item_count": 10,
+      "highlights": [
+        "Added first-class `goal` nodes for recursive long-running objectives with `goal_state`, `goal_condition`, `active_node`, required skills, required checks, iteration limits, stop conditions, and completion evidence.",
+        "Added `mdkg new goal \"<title>\"` and the `mdkg goal show/select/current/clear/next/claim/evaluate/pause/resume/done` command family.",
+        "Added a bundled `goal.md` template so init, upgrade, and template fallback can support goal nodes."
+      ]
+    },
+    {
+      "version": "0.1.4",
+      "date": "2026-06-01",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh` as the public read-only child graph orchestration command family.",
+          "Added `subgraphs` config with multi-source bundle transport, advisory visibility, read permissions, source metadata, and a default 60 minute freshness policy.",
+          "Added `.mdkg/index/subgraphs.json` as the derived subgraph projection and health cache.",
+          "Added `mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]` for deterministic local plus subgraph capability ranking.",
+          "Added packed-package `smoke:subgraph` coverage for root, child, and grandchild orchestration flows."
+        ],
+        "Changed": [
+          "Replaced the public `mdkg bundle import ...` surface with `mdkg subgraph ...`; legacy calls now exit with migration guidance.",
+          "`mdkg upgrade --apply` migrates legacy `bundle_imports` config into `subgraphs`.",
+          "Read commands, `pack`, and capability discovery now project enabled child bundles as read-only subgraph qids such as `child_repo:work.example`.",
+          "`mdkg index`, SQLite cache rebuilds, `doctor`, and `validate` now use subgraph naming and metadata instead of bundle-import naming.",
+          "Stale subgraphs remain usable for planning reads with warnings, fail `mdkg subgraph verify`, and are excluded from `capability resolve --fresh-only`.",
+          "Public/internal subgraphs require public bundle profiles and public bundle creation fails closed on private/internal subgraph references."
+        ],
+        "Fixed": [
+          "Mutation commands now reject subgraph qids with explicit guidance to update the source workspace for the owning subgraph.",
+          "Seeded init docs, command matrix, and release skills now teach `subgraph` and `capability resolve` instead of onboarding users through `bundle import`."
+        ]
+      },
+      "item_count": 13,
+      "highlights": [
+        "Added `mdkg subgraph add/list/show/rm/enable/disable/verify/refresh` as the public read-only child graph orchestration command family.",
+        "Added `subgraphs` config with multi-source bundle transport, advisory visibility, read permissions, source metadata, and a default 60 minute freshness policy.",
+        "Added `.mdkg/index/subgraphs.json` as the derived subgraph projection and health cache."
+      ]
+    },
+    {
+      "version": "0.1.3",
+      "date": "2026-05-20",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added first-class SQLite access cache support using Node's built-in `node:sqlite`; no third-party SQLite package is introduced.",
+          "Added `.mdkg/index/mdkg.sqlite` as a rebuildable derived cache for nodes, edges, skills, capabilities, archives, bundle imports, source hashes, and schema metadata when `index.backend` is `sqlite`.",
+          "Added fresh init defaults for `index.backend: sqlite`, `index.sqlite_path`, `index.sqlite_commit_warning_bytes`, and `index.lock_timeout_ms`.",
+          "Added a shared mutation lock plus atomic writes for mdkg mutations and index writes.",
+          "Added SQLite transactional id reservation for numeric node/checkpoint ids in SQLite mode.",
+          "Added `npm run smoke:sqlite` and `npm run smoke:parallel` packed/temp-repo coverage."
+        ],
+        "Changed": [
+          "Raised the required Node runtime to `>=24.15.0`.",
+          "Existing workspaces that are migrated from older configs remain on `index.backend: json` until they explicitly opt in to SQLite.",
+          "Init ignore policy now keeps JSON indexes, temp files, lock directories, WAL, SHM, and journal files ignored while allowing `.mdkg/index/mdkg.sqlite` to be committed by intentional repo policy.",
+          "`mdkg index` continues to write JSON compatibility indexes and also rebuilds SQLite when enabled.",
+          "`mdkg doctor` and `mdkg validate` now report SQLite cache health when SQLite mode is enabled.",
+          "README and seeded docs now state that mdkg is pre-v1 public alpha software and cache/DAL contracts may churn before v1."
+        ],
+        "Fixed": [
+          "Removed the accidental self-dependency on `mdkg` from package metadata.",
+          "Hardened parallel `mdkg new`, checkpoint, task, work, archive, bundle import config, and index writes against naming conflicts and partial cache writes."
+        ]
+      },
+      "item_count": 14,
+      "highlights": [
+        "Added first-class SQLite access cache support using Node's built-in `node:sqlite`; no third-party SQLite package is introduced.",
+        "Added `.mdkg/index/mdkg.sqlite` as a rebuildable derived cache for nodes, edges, skills, capabilities, archives, bundle imports, source hashes, and schema metadata when `index.backend` is `sqlite`.",
+        "Added fresh init defaults for `index.backend: sqlite`, `index.sqlite_path`, `index.sqlite_commit_warning_bytes`, and `index.lock_timeout_ms`."
+      ]
+    },
+    {
+      "version": "0.1.2",
+      "date": "2026-05-19",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `.mdkg/index/capabilities.json` as a derived JSON cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs.",
+          "Added read-only `mdkg capability list/search/show` commands with JSON output, kind filters, and advisory visibility filters.",
+          "Added workspace `visibility` metadata for capability cache filtering, defaulting to `private`.",
+          "Added capability cache health reporting to `mdkg doctor`.",
+          "Added capability-cache smoke coverage for root plus child workspace aggregation and cache auto-rebuild.",
+          "Added packed-package init smoke coverage for fresh base init, fresh `mdkg init --agent`, removed flag failures, repeated init idempotency, doctor/validate, upgrade dry-run parity, task creation, and pack generation.",
+          "Added init preflight checks for seed config parseability and unmanaged skill mirror collisions.",
+          "Added first-class archive sidecars under `.mdkg/archive` with `mdkg archive add/list/show/verify/compress`.",
+          "Added deterministic single-file ZIP cache generation for archived source and artifact files.",
+          "Added `type: archive` graph nodes and `archive://<archive.id>` reference validation.",
+          "Added `mdkg work contract/order/receipt/artifact` lifecycle helpers for semantic mirror work contracts, work orders, receipts, and artifact registration.",
+          "Added archive/work packed-package smoke coverage for fresh temp repositories.",
+          "Added `mdkg bundle create/list/show/verify` for deterministic full `.mdkg` graph snapshot bundles.",
+          "Added private and public bundle profiles with fail-closed public filtering for private graph and archive refs.",
+          "Added bundle-local generated indexes (`global.json`, `skills.json`, `capabilities.json`) inside snapshot ZIPs.",
+          "Added bundle unit and CLI coverage plus packed-package bundle smoke coverage.",
+          "Added `mdkg bundle import add/list/rm/enable/disable/verify` for read-only child graph snapshot imports.",
+          "Added `bundle_imports` config with explicit alias, bundle path, visibility, expected profile, source metadata, and optional staleness policy.",
+          "Added `.mdkg/index/imports.json` as a derived import projection and health cache.",
+          "Added packed-package bundle import smoke coverage.",
+          "Added shared visibility policy enforcement for workspace nodes, archive sidecars, and imported bundle nodes.",
+          "Added `mdkg pack --visibility public|internal|private` for explicit public-safe and internal-safe packs.",
+          "Added `mdkg archive add --visibility private|internal|public` and `mdkg archive list --visibility ...`.",
+          "Added packed-package visibility smoke coverage.",
+          "Added `receipt_status: superseded` support for committed receipt mirrors.",
+          "Added `mdkg work receipt new|update --receipt-status superseded` CLI parity with graph validation.",
+          "Added runtime-style work/order/receipt fixture coverage with input refs, requested outputs, proof refs, artifacts, and hashes.",
+          "Added local qid support for `mdkg work order update`, `mdkg work receipt update`, and `mdkg work artifact add`.",
+          "Added `archive.large_cache_warning_bytes` config and `mdkg doctor` warnings for large committed archive ZIP caches."
+        ],
+        "Changed": [
+          "`mdkg index` now writes the node index, skill index, and capability cache together.",
+          "Generated bootstrap config now includes the default capability cache path and root workspace visibility.",
+          "Docs and command matrix now teach capability discovery as separate from normal graph node search.",
+          "Made `mdkg init --agent` the single canonical AI-agent bootstrap path.",
+          "`mdkg init --agent` now creates `AGENTS.md` and `CLAUDE.md` alongside `AGENT_START.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, default skills, event log, registry, and skill mirrors.",
+          "Init manifests are now mode-aware: base init only claims base assets, while agent init claims the full agent bootstrap.",
+          "Updated generated `.mdkg/README.md` onboarding to guide already-initialized repos toward `upgrade`, `new`, `search`, `pack`, and `validate`.",
+          "Added first-ingestion guidance to `AGENT_START.md` for imported docs bundles.",
+          "Hardened `WORK_ORDER.md` and `RECEIPT.md` templates with input refs, requested outputs, constraint refs, proof refs, attestation refs, and input/output hashes.",
+          "Init ignore updates now ignore raw archive source copies under `.mdkg/archive/**/source/` while leaving sidecar `.md` files and ZIP caches commit-eligible.",
+          "`mdkg doctor` now reports archive storage hygiene warnings for stray uncompressed archive files.",
+          "Added default bundle config under `.mdkg/bundles` without making `mdkg index` rewrite bundles.",
+          "Updated docs, command matrix, and release skills with bundle creation and verification guidance.",
+          "Updated seeded init/upgrade skills so managed workspaces receive pre-commit archive compression and private bundle refresh guidance.",
+          "`list`, `search`, `show`, `pack`, and `capability` now include enabled read-only bundle imports by default.",
+          "Imported nodes use import-alias qids such as `child_repo:task-1` and expose original bundle/source metadata in JSON output.",
+          "Stale imports warn during planning reads while `mdkg bundle import verify` exits nonzero.",
+          "Public bundle creation now fails when public local nodes reference private or internal imported graphs.",
+          "Public/internal bundle imports now require public bundle profiles.",
+          "`mdkg validate` and `mdkg doctor` now report public/internal references to less-visible mdkg records.",
+          "Archive JSON receipts now include sidecar visibility.",
+          "Archive sidecars created from outside-repo files now redact `source_path` to `external:<basename>` instead of storing absolute local paths.",
+          "`mdkg validate` and `mdkg archive verify` now share strict ZIP cache integrity checks for ZIP hash, readability, payload SHA-256, and payload byte size.",
+          "Work mirror docs and templates now state the canonical-system boundary for production order, receipt, feedback, dispute, payment, ledger, marketplace, fulfillment, and execution state.",
+          "Work lifecycle packed-package smoke now proves local qid mutation, order status updates, final superseded receipts, archive verification, indexing, show, and pack."
+        ],
+        "Fixed": [
+          "Fixed fresh `mdkg init --agent` leaving missing managed wrapper docs that immediately required `mdkg upgrade --apply`.",
+          "Fixed misleading init summaries by reporting manifest, ignore, registry, event log, core pin, and skill mirror actions.",
+          "Fixed late init failure UX by printing a partial-init receipt with recovery guidance.",
+          "Kept bundle output deterministic across repeated creates when only `.mdkg/bundles/` changes.",
+          "Hardened publish readiness and init smoke checks to assert seeded release skills include archive compression and bundle refresh guidance.",
+          "Mutating task and work update flows now reject imported qids with explicit read-only import errors.",
+          "Work lifecycle mutation commands now reject imported order/receipt qids with explicit read-only bundle import guidance.",
+          "Local graph indexing now allows edges to configured import aliases without treating them as missing local workspace nodes.",
+          "Public bundle checks now reuse the same fail-closed policy as public/internal pack checks.",
+          "`mdkg archive verify --json` now emits a verification receipt for corrupt archive ZIP caches instead of being blocked by strict index validation."
+        ],
+        "Removed": [
+          "Removed `mdkg init --llm`, `mdkg init --agents`, `mdkg init --claude`, and `mdkg init --omni`; each now fails before mutation with guidance to use `mdkg init --agent`."
+        ]
+      },
+      "item_count": 65,
+      "highlights": [
+        "Added `.mdkg/index/capabilities.json` as a derived JSON cache for skills, `SPEC.md`, `WORK.md`, core docs, and design docs.",
+        "Added read-only `mdkg capability list/search/show` commands with JSON output, kind filters, and advisory visibility filters.",
+        "Added workspace `visibility` metadata for capability cache filtering, defaulting to `private`."
+      ]
+    },
+    {
+      "version": "0.1.1",
+      "date": "2026-05-12",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added bundled template schema fallback so older workspaces can keep using graph inspection while missing newly introduced built-in templates.",
+          "Added `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects` fields to `mdkg upgrade --json`."
+        ],
+        "Changed": [
+          "`mdkg new <built-in-type>` can use the installed package template when the workspace has not yet vendored that local template.",
+          "`mdkg doctor` and `mdkg validate` warn, rather than fail, when packaged fallback schemas cover missing local built-in templates.",
+          "`mdkg upgrade` human output now states whether the receipt is safe to apply and what paths would be written.",
+          "`mdkg upgrade` skips ignored event logs and points users to `mdkg event enable` instead of creating ignored `.mdkg/work/events/events.jsonl` files."
+        ]
+      },
+      "item_count": 6,
+      "highlights": [
+        "Added bundled template schema fallback so older workspaces can keep using graph inspection while missing newly introduced built-in templates.",
+        "Added `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects` fields to `mdkg upgrade --json`.",
+        "`mdkg new <built-in-type>` can use the installed package template when the workspace has not yet vendored that local template."
+      ]
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-05-12",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added conservative `mdkg upgrade` for existing workspaces.",
+          "Added `.mdkg/init-manifest.json` ownership tracking for managed init assets.",
+          "Added v0.0.9 seed fingerprints so clean older workspaces can safely adopt current init docs, templates, and default skills.",
+          "Added `npm run smoke:upgrade` for packed-package upgrade verification in temporary workspaces."
+        ],
+        "Changed": [
+          "`mdkg upgrade` defaults to dry-run; `mdkg upgrade --apply` is the only mutating upgrade path.",
+          "Agent-enabled workspaces can receive safe managed default skill upgrades and mirror refreshes during upgrade.",
+          "Publish readiness now checks packaged init manifests and runs upgrade smoke before publish."
+        ]
+      },
+      "item_count": 7,
+      "highlights": [
+        "Added conservative `mdkg upgrade` for existing workspaces.",
+        "Added `.mdkg/init-manifest.json` ownership tracking for managed init assets.",
+        "Added v0.0.9 seed fingerprints so clean older workspaces can safely adopt current init docs, templates, and default skills."
+      ]
+    },
+    {
+      "version": "0.0.9",
+      "date": "2026-05-12",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added generic agent workflow file support for `SPEC.md`, `WORK.md`, `WORK_ORDER.md`, `RECEIPT.md`, `FEEDBACK.md`, `DISPUTE.md`, and `PROPOSAL.md`.",
+          "Added `mdkg new <agent-file-type> ... --id <portable-id>` for semantic ids such as `agent.image-worker` and `work.generate-image`.",
+          "Added validation support for `pricing_model: included`.",
+          "Added validation support for `proposal_kind: skill_update` targeting `skill.<slug>` refs.",
+          "Added generic skill extension output under `extensions`, with `ochatr_*` metadata mapped to `extensions.ochatr`.",
+          "Added a non-mutating npm `postinstall` hint that points users to `mdkg --help` and prints shell PATH guidance only when needed.",
+          "Added `docs/agent-runtime-0.0.9-handoff.md` to document the runtime migration path from implementation-specific naming to generic agent workflow naming.",
+          "Added `npm run smoke:matrix` to pack mdkg, install it into an isolated temporary npm prefix, and exercise the command matrix plus onboarding workflows from the packaged CLI."
+        ],
+        "Changed": [
+          "Renamed the remaining public Omni file-type surface to generic agent workflow language.",
+          "Kept `mdkg init --omni` only as hidden migration guidance to `mdkg init --agent`.",
+          "Updated README and command matrix version references to `0.0.9`.",
+          "Removed stale prepublish wording and absolute local README links.",
+          "Removed `AGENT_PROMPT_SNIPPET.md` and distilled its startup rules into `AGENT_START.md`, making `AGENT_START.md` the single first-hop agent onboarding doc.",
+          "Treated ochatr.ai metadata as a vendor extension pattern rather than the base mdkg schema name.",
+          "Added npm `prepack` and `prepublishOnly` guards so release commands fail if the built CLI or init assets are missing.",
+          "Included `CHANGELOG.md` and `CONTRIBUTING.md` in the npm package because README links to them."
+        ],
+        "Fixed": [
+          "Fixed strict validation gaps for room-runtime-style skill proposals and included pricing.",
+          "Fixed docs drift between published `0.0.8`, local source version, and the 0.0.9 release target."
+        ],
+        "Verification Status": [
+          "Passed: `npm ci` with `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache`.",
+          "Passed: `npm run build`.",
+          "Passed: `npm run test` with 306 tests.",
+          "Passed: `npm run cli:check`.",
+          "Passed: `node dist/cli.js validate`.",
+          "Passed: `npm run smoke:consumer`.",
+          "Passed: `npm run smoke:matrix`.",
+          "Passed: `npm pack --dry-run --json`; tarball includes `dist/cli.js`, compiled command/core/graph/pack/template/util files, `dist/init/`, `CHANGELOG.md`, `CONTRIBUTING.md`, `README.md`, `LICENSE`, package metadata, and `scripts/postinstall.js`.",
+          "Passed: `npm publish --dry-run`; `prepublishOnly` and `prepack` both completed successfully.",
+          "Confirmed before publish: npm registry latest remains `mdkg@0.0.8`."
+        ]
+      },
+      "item_count": 28,
+      "highlights": [
+        "Added generic agent workflow file support for `SPEC.md`, `WORK.md`, `WORK_ORDER.md`, `RECEIPT.md`, `FEEDBACK.md`, `DISPUTE.md`, and `PROPOSAL.md`.",
+        "Added `mdkg new <agent-file-type> ... --id <portable-id>` for semantic ids such as `agent.image-worker` and `work.generate-image`.",
+        "Added validation support for `pricing_model: included`."
+      ]
+    },
+    {
+      "version": "0.0.8",
+      "date": null,
+      "legacy": true,
+      "sections": {
+        "Notes": [
+          "Published npm baseline before the 0.0.9 agent workflow release work.",
+          "Does not include agent workflow file types, mutation JSON receipt expansion, workspace enable/disable, or postinstall guidance."
+        ]
+      },
+      "item_count": 2,
+      "highlights": [
+        "Published npm baseline before the 0.0.9 agent workflow release work.",
+        "Does not include agent workflow file types, mutation JSON receipt expansion, workspace enable/disable, or postinstall guidance."
+      ]
+    },
+    {
+      "version": "0.0.7",
+      "date": null,
+      "legacy": true,
+      "sections": {
+        "Notes": [
+          "Historical local and published release line for mdkg's initial CLI, graph, pack, skill, and agent-bootstrap work."
+        ]
+      },
+      "item_count": 1,
+      "highlights": [
+        "Historical local and published release line for mdkg's initial CLI, graph, pack, skill, and agent-bootstrap work."
+      ]
+    }
+  ]
+}

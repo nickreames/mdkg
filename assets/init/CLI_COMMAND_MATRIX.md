@@ -177,7 +177,7 @@ Checkpoint commands:
 Agent bootstrap:
 - `mdkg init --agent`
 - published bootstrap config is root-only by default
-- `mdkg init --agent` creates the complete startup docs, wrapper docs, default mdkg skills, event log, registry, and skill mirrors
+- `mdkg init --agent` creates the complete startup docs, wrapper docs, `SOUL.md` / `COLLABORATION.md` core docs, legacy `HUMAN.md`, default mdkg skills, event log, registry, and configured skill mirrors
 - removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
 
 Upgrade:

@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.3.8`
+Current package version in source: `0.3.9`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -82,7 +82,7 @@ mdkg init --agent
 mdkg index
 ```
 
-This is the canonical AI-agent bootstrap path. It creates `.mdkg/`, `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node `SOUL.md` / `HUMAN.md`, the three default mdkg usage skills, `events.jsonl`, the skill registry, core pin updates, and mirrored skill folders under `.agents/skills/` and `.claude/skills/`. It also updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out of those ignore-file updates.
+This is the canonical AI-agent bootstrap path. It creates `.mdkg/`, `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node `SOUL.md` / `COLLABORATION.md`, legacy `HUMAN.md` for one release, the default mdkg usage skills, `events.jsonl`, the skill registry, core pin updates, and configured skill mirrors under `.agents/skills/` and `.claude/skills/` by default. It also updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out of those ignore-file updates.
 
 Run `mdkg index` after a fresh init before using `mdkg status --json` or
 `mdkg doctor --strict --json` as health gates. Init writes source scaffold

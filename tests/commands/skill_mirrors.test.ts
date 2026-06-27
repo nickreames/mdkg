@@ -57,6 +57,24 @@ function seedAgentBootstrap(root: string): void {
   );
 }
 
+function configureMirrorTargets(root: string, targets: string[]): void {
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  config.customization = {
+    standards: {
+      profile: "default",
+      refs: [],
+    },
+    core_docs: {
+      custom_paths: [],
+    },
+    skill_mirrors: {
+      targets,
+    },
+  };
+  writeFile(configPath, JSON.stringify(config, null, 2));
+}
+
 function captureOutput(fn: () => void): { stdout: string; stderr: string } {
   const logLines: string[] = [];
   const errLines: string[] = [];
@@ -148,6 +166,30 @@ test("skill sync can print deterministic json receipt", () => {
   });
 });
 
+test("skill sync respects configured custom mirror targets with defaults preserved", () => {
+  const root = makeTempDir("mdkg-skill-mirror-custom-target-");
+  seedAgentBootstrap(root);
+  configureMirrorTargets(root, [".agents/skills", ".claude/skills", ".codex/skills"]);
+
+  runSkillNewCommand({
+    root,
+    slug: "release-readiness",
+    name: "release-readiness",
+    description: "audit release readiness when preparing a release",
+  });
+
+  for (const relPath of [
+    ".agents/skills/release-readiness/SKILL.md",
+    ".claude/skills/release-readiness/SKILL.md",
+    ".codex/skills/release-readiness/SKILL.md",
+  ]) {
+    assert.ok(fs.existsSync(path.join(root, relPath)), `${relPath} should exist`);
+  }
+
+  const output = captureOutput(() => runSkillSyncCommand({ root }));
+  assert.match(output.stdout, /skill mirror sync ok: 3 synced, 0 pruned across 3 targets/);
+});
+
 test("validate warns when mirrored skills drift from canonical content", () => {
   const root = makeTempDir("mdkg-skill-mirror-drift-");
   seedAgentBootstrap(root);
@@ -185,6 +227,24 @@ test("validate warns when agent bootstrap mirror roots are missing", () => {
   const output = captureOutput(() => runValidateCommand({ root }));
   assert.match(output.stderr, /warning: \.agents\/skills: mirror root missing; run `mdkg skill sync`/);
   assert.match(output.stderr, /warning: \.claude\/skills: mirror root missing; run `mdkg skill sync`/);
+  assert.match(output.stdout, /validation ok/);
+});
+
+test("validate audits configured custom mirror targets", () => {
+  const root = makeTempDir("mdkg-skill-mirror-custom-audit-");
+  seedAgentBootstrap(root);
+  configureMirrorTargets(root, [".agents/skills", ".claude/skills", ".codex/skills"]);
+  runSkillNewCommand({
+    root,
+    slug: "release-readiness",
+    name: "release-readiness",
+    description: "audit release readiness when preparing a release",
+  });
+
+  fs.rmSync(path.join(root, ".codex", "skills", "release-readiness"), { recursive: true, force: true });
+
+  const output = captureOutput(() => runValidateCommand({ root }));
+  assert.match(output.stderr, /warning: \.codex\/skills\/release-readiness: missing mirrored skill/);
   assert.match(output.stdout, /validation ok/);
 });
 
@@ -251,6 +311,23 @@ test("skill mirror helpers skip unmanaged repos and scaffold mirror manifests", 
   for (const product of ["agents", "claude"]) {
     const manifestPath = path.join(root, `.${product}`, "skills", ".mdkg-managed.json");
     assert.deepEqual(JSON.parse(fs.readFileSync(manifestPath, "utf8")).managed_slugs, []);
+  }
+});
+
+test("skill mirror helpers scaffold configured custom targets", () => {
+  const root = makeTempDir("mdkg-skill-mirror-custom-helpers-");
+  writeRootConfig(root);
+  writeDefaultTemplates(root);
+  configureMirrorTargets(root, [".agents/skills", ".claude/skills", ".codex/skills"]);
+  const config = loadConfig(root);
+
+  scaffoldMirrorRoots(root, config);
+  for (const relPath of [
+    ".agents/skills/.mdkg-managed.json",
+    ".claude/skills/.mdkg-managed.json",
+    ".codex/skills/.mdkg-managed.json",
+  ]) {
+    assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root, relPath), "utf8")).managed_slugs, []);
   }
 });
 

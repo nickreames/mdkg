@@ -114,20 +114,20 @@ If a user provides an unqualified ID and it is ambiguous globally:
     - `llms.txt`
     - `CLI_COMMAND_MATRIX.md`
     - `.mdkg/core/SOUL.md` (`id: rule-soul`)
-    - `.mdkg/core/HUMAN.md` (`id: rule-human`)
+    - `.mdkg/core/COLLABORATION.md` (`id: rule-7`)
+    - `.mdkg/core/HUMAN.md` (`id: rule-human`, one-release legacy alias)
     - seeded canonical skills:
       - `.mdkg/skills/select-work-and-ground-context/SKILL.md`
       - `.mdkg/skills/build-pack-and-execute-task/SKILL.md`
       - `.mdkg/skills/verify-close-and-checkpoint/SKILL.md`
     - `.mdkg/skills/registry.md`
     - `.mdkg/work/events/events.jsonl`
-    - `.agents/skills/`
-    - `.claude/skills/`
-    - deterministic `core.md` pin insertion (`rule-soul`, then `rule-human`)
+    - configured skill mirror targets, defaulting to `.agents/skills/` and `.claude/skills/`
+    - deterministic `core.md` pin insertion (`rule-soul`, then `rule-7`, then `rule-human`)
     - ignore policy for generated JSON index/temp/lock files, `.mdkg/pack/`, and raw archive source copies under `.mdkg/archive/**/source/`
   - mirrored skills are append-focused outputs:
     - `.mdkg/skills/` remains canonical
-    - unrelated existing folders under `.agents/skills/` and `.claude/skills/` are preserved
+    - unrelated existing folders under configured mirror targets are preserved
     - same-slug collisions fail by default unless explicitly forced through `mdkg skill sync --force`
 
 ### Guide

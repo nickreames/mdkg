@@ -4,7 +4,8 @@ Read `AGENT_START.md` first.
 
 Key files:
 - `.mdkg/core/SOUL.md`
-- `.mdkg/core/HUMAN.md`
+- `.mdkg/core/COLLABORATION.md`
+- `.mdkg/core/HUMAN.md` (legacy alias for one release)
 - `.mdkg/README.md`
 - `CLI_COMMAND_MATRIX.md`
 

@@ -67,10 +67,22 @@ function requirePackageVersions() {
     "smoke:mdkg-dev-perf",
     "smoke:demo-graph",
     "docs:check",
+    "docs:release-notes",
+    "docs:release-notes:check",
   ]) {
     if (!pkg.scripts || !pkg.scripts[scriptName]) {
       fail(`package.json is missing ${scriptName}`);
     }
+  }
+  const docsCheck = String(pkg.scripts["docs:check"] || "");
+  if (!docsCheck.includes("generate-docs-reference.js --check")) {
+    fail("docs:check must verify generated CLI docs");
+  }
+  if (!docsCheck.includes("generate-release-notes-data.js --check")) {
+    fail("docs:check must verify generated release notes data");
+  }
+  if (!docsCheck.includes("check-doc-command-examples.js")) {
+    fail("docs:check must validate public command examples");
   }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
     fail("prepublishOnly is missing smoke:db-queue-cli");
@@ -144,6 +156,9 @@ function requirePackageVersions() {
   }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run cli:check && npm run cli:contract")) {
     fail("prepublishOnly must run cli:contract immediately after cli:check");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run cli:contract && npm run docs:check && node dist/cli.js validate")) {
+    fail("prepublishOnly must run docs:check between cli:contract and graph validation");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:mcp"]) {
     fail("package.json is missing smoke:mcp");
@@ -518,9 +533,17 @@ function requireInitAssets() {
     "mdkg archive compress --all",
     "mdkg archive verify --json",
     "mdkg bundle create --profile private",
+    "npm publish --dry-run",
+    "explicit user approval",
   ]) {
     if (!seededReviewSkill.includes(expected)) {
       fail(`dist/init verify-close-and-checkpoint skill is missing ${expected}`);
+    }
+  }
+  const seededAuthorSkill = requireFile("dist/init/skills/default/author-mdkg-skill/SKILL.md");
+  for (const expected of ["MANIFEST.md", "customization.skill_mirrors.targets", "mdkg skill sync --json"]) {
+    if (!seededAuthorSkill.includes(expected)) {
+      fail(`dist/init author-mdkg-skill skill is missing ${expected}`);
     }
   }
   const seededExecuteSkill = requireFile("dist/init/skills/default/build-pack-and-execute-task/SKILL.md");

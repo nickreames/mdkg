@@ -2,7 +2,7 @@
 id: task-594
 type: task
 title: audit current init config skill mirror and standards surfaces for 0.3.9
-status: todo
+status: done
 priority: 1
 epic: epic-199
 parent: goal-41
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context]
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -48,6 +48,49 @@ extensibility.
 - Treat config overlays as selected policy from `dec-51`.
 - Treat arbitrary mirror target paths as selected policy from `dec-52`.
 - Treat `COLLABORATION.md` as selected policy from `dec-53`.
+
+# Audit Findings
+
+- `src/commands/skill_mirror.ts` still hard-codes `MIRROR_PRODUCTS =
+  ["agents", "claude"]` and derives target roots as `.${product}/skills`.
+  `syncSkillMirrors`, `preflightSkillMirrorTargets`, `auditSkillMirrors`, and
+  `scaffoldMirrorRoots` all call that resolver, so arbitrary mirror paths need a
+  config-backed resolver shared by sync, validation, init preflight, and upgrade
+  side effects.
+- `src/core/config.ts` has no enterprise overlay or skill-mirror model. The
+  current validated config includes archive, index, capabilities, bundles, db,
+  subgraphs, pack, templates, work, and workspaces only. `assets/init/config.json`
+  likewise seeds no standards, core-doc, overlay, or mirror-target section.
+- `src/commands/init.ts` treats `--agent` as the single switch for `AGENTS.md`,
+  `CLAUDE.md`, startup docs, default skills, `SOUL.md`, `HUMAN.md`, registry,
+  events, and mirror roots. It seeds and pins `rule-human`, but has no
+  `COLLABORATION.md` asset, pin, or alias bridge yet.
+- `src/commands/upgrade.ts` protects only `.mdkg/core/SOUL.md` and
+  `.mdkg/core/HUMAN.md`, detects agent workspaces through fixed `.agents/skills`
+  and `.claude/skills` paths, and reports the skill-mirror apply side effect as
+  `.agents/skills,.claude/skills`. It already preserves customized docs and
+  managed assets by hash, which is the right base for overlay-safe upgrade
+  behavior.
+- Current tests cover the fixed mirror topology in
+  `tests/commands/skill_mirrors.test.ts`, init bootstrap expectations in
+  `tests/commands/init.test.ts`, and upgrade preservation plus mirror sync in
+  `tests/commands/upgrade.test.ts`. These are the main regression suites to
+  extend for config overlays, custom mirror paths, and the collaboration bridge.
+- First-party skill/docs update surface is small and explicit:
+  `.mdkg/skills/{select-work-and-ground-context,build-pack-and-execute-task,
+  pursue-mdkg-goal,verify-close-and-checkpoint,author-mdkg-skill}/SKILL.md`,
+  `.mdkg/skills/registry.md`, `AGENT_START.md`, `README.md`,
+  `CLI_COMMAND_MATRIX.md`, and generated docs. Existing text still describes
+  `.agents/skills` and `.claude/skills` as the only mirror targets.
+
+# Audit Conclusion
+
+`task-595` should add the config/upgrade overlay model first, `task-596` should
+replace hard-coded mirror resolution with safe repo-relative configured targets,
+`task-597` should add `COLLABORATION.md` while preserving `HUMAN.md` for one
+compatibility release, and `task-598`/`task-599` should update the skills and
+docs automation after the CLI behavior is stable. This task made graph evidence
+only and intentionally left source behavior unchanged.
 
 # Test Plan
 

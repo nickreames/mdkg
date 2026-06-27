@@ -6,14 +6,15 @@ mdkg is pre-v1 public alpha software. Treat generated graph, cache, bundle, and 
 
 Read these files in order:
 1. `.mdkg/core/SOUL.md` if it exists
-2. `.mdkg/core/HUMAN.md` if it exists
-3. `.mdkg/README.md`
-4. `CLI_COMMAND_MATRIX.md`
+2. `.mdkg/core/COLLABORATION.md` if it exists
+3. `.mdkg/core/HUMAN.md` if it exists as a legacy alias
+4. `.mdkg/README.md`
+5. `CLI_COMMAND_MATRIX.md`
 
 Trust order:
 - source code
 - mdkg rules, design docs, decisions, and work nodes
-- SOUL/HUMAN collaboration anchors
+- SOUL/COLLABORATION anchors and legacy HUMAN notes
 - relevant skills
 - chat history
 

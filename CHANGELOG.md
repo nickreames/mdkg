@@ -8,6 +8,32 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.3.9 - 2026-06-27
+
+### Added
+
+- Added `.mdkg/config.json` customization overlays for organization standards,
+  custom core docs, and configured skill mirror target paths while keeping the
+  mdkg CLI kernel upgradable through `mdkg upgrade --apply`.
+- Added configurable skill mirror support so repos can mirror canonical
+  `.mdkg/skills` into arbitrary contained agent-local skill roots, with
+  `.agents/skills` and `.claude/skills` preserved as defaults.
+- Added `COLLABORATION.md` as the canonical collaboration/operator profile core
+  doc while keeping `HUMAN.md` as a one-release legacy alias.
+- Added deterministic release-notes data generation from `CHANGELOG.md` for
+  public docs and future per-release cards.
+
+### Changed
+
+- Updated `mdkg init --agent` and `mdkg upgrade --apply` to seed and preserve
+  customization overlays, configurable mirrors, `COLLABORATION.md`, legacy
+  `HUMAN.md`, and accurate managed init-manifest hashes.
+- Refreshed first-party mdkg skills and default init seed skills for current CLI
+  coverage, MANIFEST authoring, configured mirror targets, pre-publish gates,
+  and explicit no-publish/no-tag/no-push approval boundaries.
+- Expanded `npm run docs:check` and `prepublishOnly` to verify generated CLI
+  docs, generated release-note data, and public command examples before publish.
+
 ## 0.3.8 - 2026-06-25
 
 ### Added
