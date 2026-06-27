@@ -2,20 +2,20 @@
 id: task-615
 type: task
 title: validate mdkg 0.4.0 npm postpublish install and registry
-status: todo
+status: done
 priority: 1
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, npm, postpublish, registry, temp-install, validation]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-0.4.0-postpublish.g9HJiz, /private/tmp/mdkg-0.4.0-workspace.wNjwcV]
 relates: []
 blocked_by: [task-614]
 blocks: [test-318, task-616, task-606, test-312]
 refs: [task-614, task-606, test-312]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-316]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-27

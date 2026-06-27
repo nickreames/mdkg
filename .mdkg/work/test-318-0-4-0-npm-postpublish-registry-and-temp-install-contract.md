@@ -2,20 +2,20 @@
 id: test-318
 type: test
 title: 0.4.0 npm postpublish registry and temp install contract
-status: todo
+status: done
 priority: 1
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, npm, postpublish, registry, temp-install, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-0.4.0-postpublish.g9HJiz, /private/tmp/mdkg-0.4.0-workspace.wNjwcV]
 relates: []
 blocked_by: [task-615]
 blocks: [task-616, task-606, test-312]
 refs: [task-615, task-606, test-312]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-317]
 aliases: []
 skills: []
 cases: []
@@ -47,7 +47,7 @@ workspace behavior from the published package.
 
 # Results / Evidence
 
-Pending implementation.
+Passed. See `chk-317`.
 
 # Notes / Follow-ups
 
