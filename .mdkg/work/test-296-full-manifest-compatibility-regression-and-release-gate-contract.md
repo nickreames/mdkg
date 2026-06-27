@@ -2,7 +2,7 @@
 id: test-296
 type: test
 title: full MANIFEST compatibility regression and release gate contract
-status: blocked
+status: done
 priority: 1
 epic: epic-198
 parent: goal-37
@@ -11,7 +11,7 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-584]
+blocked_by: []
 blocks: []
 refs: [edd-54, task-582, task-583, task-584]
 context_refs: []
@@ -52,10 +52,17 @@ All implementation tasks are complete and generated docs/indexes are refreshed.
 
 # Results / Evidence
 
-- PARTIAL PASS: full release-gate commands passed during `task-583` and
-  checkpoint `root:chk-277` records the gate evidence.
-- BLOCKED: downstream handoff `task-584` remains open, so the final release-gate
-  contract is not complete yet.
+- PASS: focused parser, validation, capability, pack, work trigger, scaffold,
+  docs, and fixture tests passed as part of `npm run test`.
+- PASS: `npm run build`, `npm run test` (518/518), `npm run cli:check`, and
+  `npm run cli:contract`.
+- PASS: `npm run smoke:capabilities`, `npm run smoke:archive-work`,
+  `npm run smoke:bundle`, `npm run smoke:subgraph`, and `npm run docs:check`.
+- PASS: `node dist/cli.js validate --json` returned `ok: true` with the one
+  accepted dogfood legacy `SPEC.md` compatibility warning.
+- PASS: `git diff --check`.
+- PASS: closeout checkpoint `root:chk-277` and downstream handoff checkpoint
+  `root:chk-278` exist.
 
 # Notes / Follow-ups
 
