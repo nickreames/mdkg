@@ -2,7 +2,7 @@
 id: task-577
 type: task
 title: preserve WORK mirror validation and trigger compatibility for legacy spec refs
-status: todo
+status: done
 priority: 1
 epic: epic-196
 parent: goal-37
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: [manifest-work-trigger-compatibility, legacy-spec-work-ref-compatibility, work-md-manifest-refs]
 skills: [select-work-and-ground-context]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 
@@ -42,17 +42,45 @@ capability refs.
 
 # Files Affected
 
-- `src/commands/work.ts`
-- `src/graph/agent_file_types.ts`
-- `src/graph/validate_graph.ts`
+- `.mdkg/templates/default/manifest.md`
+- `scripts/assert-publish-ready.js`
+- `tests/helpers/templates.ts`
+- `tests/commands/agent_file_types.test.ts`
 - `tests/commands/archive_work.test.ts`
-- `tests/fixtures/agent/**`
 
 # Implementation Notes
 
 - Keep production order state and execution state outside mdkg. This task only
   updates semantic mirror validation and deterministic trigger creation.
 - Do not widen validation to accept arbitrary manifest-like files.
+- The existing trigger resolver already handled direct `WORK.md`, canonical
+  manifest, transitional manifest, and legacy spec semantic nodes. This pass
+  added regression coverage and the missing canonical manifest template asset
+  needed by pack heading summaries and packaged init fallback.
+
+# Results / Evidence
+
+- Added `.mdkg/templates/default/manifest.md` so canonical manifest scaffolds
+  have a repo-local source template; build copies it to ignored
+  `dist/init/templates/default/manifest.md`.
+- Added `mdkg new manifest` scaffold coverage in
+  `tests/commands/agent_file_types.test.ts`.
+- Added canonical `MANIFEST.md` `mdkg work trigger` coverage in
+  `tests/commands/archive_work.test.ts`, including manifest-first missing and
+  ambiguous contract diagnostics.
+- Added `manifest.md` to the publish-ready seeded-template contract.
+- `node dist/cli.js pack task-577 --profile concise --dry-run --stats` passes
+  after the manifest template exists.
+- `node --test dist/tests/commands/archive_work.test.js`: 11 passing.
+- `node --test dist/tests/commands/agent_file_types.test.js`: 39 passing.
+- `node scripts/assert-publish-ready.js`: `publish readiness ok`.
+- `npm run smoke:archive-work`: `archive/work smoke passed`.
+- `npm run smoke:work-invocation`: `work invocation smoke passed`.
+- A first parallel run of `npm run smoke:archive-work` and
+  `npm run smoke:work-invocation` raced their shared `dist/init` rebuild and
+  failed in build/package setup. Rebuilding once and rerunning the same smokes
+  sequentially passed, so the recorded failure is a command-concurrency caveat,
+  not a product regression.
 
 # Test Plan
 

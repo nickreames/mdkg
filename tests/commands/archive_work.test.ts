@@ -819,3 +819,132 @@ test("work trigger creates deterministic submitted order mirrors without executi
 
   run(["validate"], root);
 });
+
+test("work trigger accepts canonical manifest refs and reports manifest-first contract errors", () => {
+  const root = makeTempDir("mdkg-work-trigger-manifest-cli-");
+  run(["init", "--agent"], root);
+
+  const manifest = JSON.parse(
+    run(["new", "manifest", "Manifest Worker", "--id", "agent.manifest-worker", "--json"], root).stdout
+  ).node;
+  const work = JSON.parse(
+    run([
+      "work",
+      "contract",
+      "new",
+      "Render Thumbnail",
+      "--id",
+      "work.render-thumbnail",
+      "--agent-id",
+      "agent.manifest-worker",
+      "--kind",
+      "image_generation",
+      "--inputs",
+      "source:image:required",
+      "--outputs",
+      "thumbnail_url:url:required",
+      "--required-capabilities",
+      "model.image.generate",
+      "--pricing-model",
+      "included",
+      "--json",
+    ], root).stdout
+  ).node;
+  updateFrontmatter(path.join(root, manifest.path), {
+    work_contracts: `[${path.basename(path.dirname(work.path))}/WORK.md]`,
+    relates: "[work.render-thumbnail]",
+  });
+
+  const manifestTriggered = JSON.parse(
+    run([
+      "work",
+      "trigger",
+      "agent.manifest-worker",
+      "--id",
+      "order.manifest-trigger",
+      "--title",
+      "Manifest Triggered Order",
+      "--requester",
+      "user://ManifestRequester",
+      "--json",
+    ], root).stdout
+  );
+  assert.equal(manifestTriggered.node.id, "order.manifest-trigger");
+  assert.equal(manifestTriggered.trigger.source_qid, "root:agent.manifest-worker");
+  assert.equal(manifestTriggered.trigger.work_qid, "root:work.render-thumbnail");
+  assert.equal(manifestTriggered.trigger.executed, false);
+
+  const orphan = JSON.parse(
+    run(["new", "manifest", "Orphan Manifest Worker", "--id", "agent.orphan-worker", "--json"], root).stdout
+  ).node;
+  const orphanFailure = runFailure([
+    "work",
+    "trigger",
+    "agent.orphan-worker",
+    "--id",
+    "order.orphan-trigger",
+    "--requester",
+    "user://ManifestRequester",
+    "--json",
+  ], root);
+  assert.match(orphanFailure.stderr, /MANIFEST\.md root:agent\.orphan-worker has no resolvable WORK\.md contract/);
+  assert.equal(orphan.path.endsWith("/MANIFEST.md"), true);
+
+  const multi = JSON.parse(
+    run(["new", "manifest", "Multi Manifest Worker", "--id", "agent.multi-worker", "--json"], root).stdout
+  ).node;
+  const multiA = JSON.parse(run([
+    "work",
+    "contract",
+    "new",
+    "Multi Work A",
+    "--id",
+    "work.multi-a",
+    "--agent-id",
+    "agent.multi-worker",
+    "--kind",
+    "analysis",
+    "--inputs",
+    "request:text:required",
+    "--outputs",
+    "result:text:required",
+    "--json",
+  ], root).stdout).node;
+  const multiB = JSON.parse(run([
+    "work",
+    "contract",
+    "new",
+    "Multi Work B",
+    "--id",
+    "work.multi-b",
+    "--agent-id",
+    "agent.multi-worker",
+    "--kind",
+    "analysis",
+    "--inputs",
+    "request:text:required",
+    "--outputs",
+    "result:text:required",
+    "--json",
+  ], root).stdout).node;
+  updateFrontmatter(path.join(root, multi.path), {
+    work_contracts: `[${path.basename(path.dirname(multiA.path))}/WORK.md, ${path.basename(path.dirname(multiB.path))}/WORK.md]`,
+    relates: "[work.multi-a, work.multi-b]",
+  });
+  const multiFailure = runFailure([
+    "work",
+    "trigger",
+    "agent.multi-worker",
+    "--id",
+    "order.multi-trigger",
+    "--requester",
+    "user://ManifestRequester",
+    "--json",
+  ], root);
+  assert.match(
+    multiFailure.stderr,
+    /MANIFEST\.md root:agent\.multi-worker has multiple work contracts; trigger one explicitly: root:work\.multi-a, root:work\.multi-b/
+  );
+
+  run(["validate"], root);
+});
