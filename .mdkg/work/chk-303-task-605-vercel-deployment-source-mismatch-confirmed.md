@@ -23,11 +23,13 @@ updated: 2026-06-27
 ---
 # Summary
 
-Read-only Vercel inspection confirmed the production projects are healthy but
-not source-current with the local goal-42 work. Both `mdkg-dev` and `mdkg-docs`
-latest production deployments are `READY`, but both are built from commit
-`5e425eeb21a856e5110bf2ee5c89d3773fbd402d`, while local `main` is ahead by
-three commits and current local `HEAD` is `ee74f77`.
+Read-only Vercel inspection confirmed the production projects were healthy but
+not source-current with the local goal-42 work. At inspection time, both
+`mdkg-dev` and `mdkg-docs` latest production deployments were `READY`, but both
+were built from commit `5e425eeb21a856e5110bf2ee5c89d3773fbd402d`, while local
+`main` was ahead by three commits and local `HEAD` was `ee74f77`. Later
+graph-only evidence commits increased the local ahead count; the deployment
+source mismatch remains unresolved until `main` is pushed and Vercel rebuilds.
 
 # Scope Covered
 
@@ -52,9 +54,9 @@ next approved push/deploy verification pass.
 
 # Decisions Captured
 
-- The live-current gap is explained by deployment source mismatch: production is
-  still built from pushed commit `5e425ee`, not from local commits `7050eba`,
-  `f0ab3a1`, and `ee74f77`.
+- The live-current gap is explained by deployment source mismatch: production
+  was still built from pushed commit `5e425ee`, not from the local goal-42
+  source commit `7050eba` or later graph evidence commits.
 - The next meaningful task-605 execution needs explicit approval to push local
   commits and allow Vercel production deployments to rebuild before Browser or
   Chrome live verification can pass.
@@ -85,8 +87,10 @@ auto-deploy production from pushed commits.
 
 ## Command Evidence
 
-- `git rev-list --left-right --count origin/main...HEAD`: `0 3`.
-- `git log --oneline origin/main..HEAD`: local ahead commits are:
+- `git rev-list --left-right --count origin/main...HEAD` at inspection time:
+  `0 3`.
+- `git log --oneline origin/main..HEAD` at inspection time: local ahead commits
+  were:
   - `ee74f77 graph: record goal-42 live currentness gap`
   - `f0ab3a1 graph: record goal-42 local launch proof`
   - `7050eba docs: advance goal-42 launch readiness`
@@ -142,6 +146,8 @@ auto-deploy production from pushed commits.
   `dpl_GLHR1LZ8LZcpbhe95QWpMsfWQArz`
 - local source commits awaiting push/deploy: `7050eba`, `f0ab3a1`,
   `ee74f77`
+- later graph-only evidence commits may appear above these in local history;
+  they do not change the deployment-source requirement.
 
 # Raw Content Safety
 

@@ -15,7 +15,7 @@ blocked_by: []
 blocks: [task-601, task-602, task-603, task-604, task-606]
 refs: []
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-293]
 aliases: []
 skills: []
 created: 2026-06-26

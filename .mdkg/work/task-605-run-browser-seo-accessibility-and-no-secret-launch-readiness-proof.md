@@ -15,7 +15,7 @@ blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
 refs: [task-601, task-602, task-603, task-604]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-301, chk-302, chk-303]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -64,6 +64,16 @@ docs.mdkg.dev.
 - Chrome live production verification receipt
 - `test-308`
 - `test-310`
+
+# Current Evidence State
+
+- Local launch proof passed and is recorded in `chk-301`.
+- Read-only production Browser proof found live mdkg.dev/docs.mdkg.dev were not
+  source-current; see `chk-302`.
+- Read-only Vercel inspection traced the live-current gap to production
+  deployments built from an older pushed commit; see `chk-303`.
+- Do not close this task until an approved push/redeploy produces current
+  production deployments and live Browser/Chrome verification passes.
 
 # Links / Artifacts
 

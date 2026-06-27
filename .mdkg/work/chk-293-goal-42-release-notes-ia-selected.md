@@ -23,67 +23,107 @@ updated: 2026-06-27
 ---
 # Summary
 
-What was completed in this phase? What is now true?
+The goal-42 release-notes and launch IA spike selected docs.mdkg.dev as the
+canonical public release-notes surface, with mdkg.dev carrying compact
+source-backed 0.3.9 capability messaging. It also fixed the execution sequence:
+release-note cards/details first, homepage and docs source updates next, local
+Product Design/Browser proof next, and live Browser/Chrome verification only
+after explicit push/deploy approval.
 
 # Scope Covered
 
-Keep `scope` frontmatter updated when possible.
+Scope is `spike-22`: research release notes IA, docs IA, Product Design audit
+scope, Browser/Chrome verification plan, and article-support implications for
+the `0.4.0` public launch lane.
 
 ## Changed Surfaces
 
-- files, commands, nodes, docs, or runtime surfaces changed
+- goal-42 execution plan and follow-up node guidance.
+- source surfaces inspected: `mdkg-dev/src/pages/index.astro`,
+  `docs/src/content/docs/project/changelog.md`, `docs/project/changelog.md`,
+  and `docs/_generated/release-notes.json`.
 
 ## Boundaries
 
-- in scope:
-- out of scope:
-- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded:
+- in scope: IA, source-grounded planning, live-current gap analysis, and
+  verification sequencing.
+- out of scope: production deploy, git push, DNS, analytics, real `0.4.0`
+  npm publish, git tag, and public launch announcement.
+- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded.
 
 # Decisions Captured
 
-Link the most important decision records.
+- Public release notes belong under `docs.mdkg.dev/project/changelog/` for this
+  pass.
+- `CHANGELOG.md` and generated release-note data remain the canonical facts.
+- mdkg.dev should derive structured version metadata from package data and only
+  summarize current 0.3.9 capabilities.
+- Browser handles local desktop/mobile proof; Chrome/Browser live production
+  proof waits for approved deploy.
 
 # Implementation Summary
 
-What changed? What patterns or architecture emerged?
+The spike produced the implementation order for `task-601` through `task-606`
+and the test gates `test-307` through `test-312`. It also identified the
+article support need: claims must map back to changelog/release-note facts,
+examples, browser proof, and final package dry-run evidence.
 
 # Audit Findings
 
-- Reviewed surfaces:
-- Findings:
-- Residual risk:
+- Reviewed surfaces: changelog, generated release notes, docs changelog source,
+  mdkg.dev homepage source, live mdkg.dev/docs snapshots, and existing launch
+  proof requirements.
+- Findings: docs should own detailed release-note history; mdkg.dev needed
+  current structured metadata and compact customization copy; live verification
+  must remain separate from local source proof.
+- Residual risk: production may remain stale until the local commits are pushed
+  and Vercel rebuilds from the current source.
 
 # Verification / Testing
 
 ## Command Evidence
 
-- command:
-- result:
+- command: focused source/live inspection captured in the spike body.
+- result: implementation plan accepted into goal-42 follow-up nodes.
+- command: sequential focused smokes after implementation:
+  `npm run smoke:mdkg-dev`, `npm run smoke:mdkg-dev-docs`, and
+  `npm run smoke:mdkg-dev-seo`.
+- result: passed; an earlier parallel smoke attempt was rejected as a build
+  output race and rerun sequentially.
 
 ## Pass / Fail Status
 
-- status:
+- status: pass for planning/IA selection; production live proof remains open.
 
 ## Known Warnings
 
-- warning:
+- warning: deploy, live production verification, `0.4.0` npm publish, git tag,
+  DNS, and analytics changes remain explicit approval boundaries.
 
 # Known Issues / Follow-ups
 
-- issue 1
-- issue 2
+- Execute `task-601` through `task-605` with source-backed claims and local
+  proof.
+- Close `task-606` only after live currentness, article support, package
+  dry-run, and final readiness recommendation evidence exist.
 
 ## Follow-up Refs
 
-- task/test/goal refs:
+- `task-601`
+- `task-602`
+- `task-603`
+- `task-604`
+- `task-605`
+- `task-606`
 
 # Links / Artifacts
 
-- packs
-- PRs/commits
-- docs
-- dashboards
+- `/private/tmp/mdkg-goal42-mdkg-dev.html`
+- `/private/tmp/mdkg-goal42-docs-changelog.html`
+- `/private/tmp/mdkg-goal42-docs-home.html`
+- `/private/tmp/mdkg-goal42-product-design-audit-20260627`
 
 # Raw Content Safety
 
-- Summarize evidence and use refs, hashes, and artifact links instead of raw secrets, raw prompts, raw payloads, or bulky execution traces.
+- Summarized findings and local artifact paths only; no raw secrets, raw
+  prompts, raw payloads, private provider UI, or bulky logs are stored here.
