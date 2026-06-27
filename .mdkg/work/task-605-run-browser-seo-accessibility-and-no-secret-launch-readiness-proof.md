@@ -2,14 +2,14 @@
 id: task-605
 type: task
 title: run browser SEO accessibility and no secret launch readiness proof
-status: todo
+status: progress
 priority: 2
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, browser, seo, a11y, no-secrets, launch-proof]
 owners: []
 links: []
-artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs]
+artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json]
 relates: []
 blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]

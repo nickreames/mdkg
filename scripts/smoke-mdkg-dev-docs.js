@@ -57,6 +57,7 @@ function main() {
     "package.json",
     "astro.config.mjs",
     "tsconfig.json",
+    "public/favicon.svg",
     "src/components/PageSidebar.astro",
     "src/content.config.ts",
     "src/content/docs/index.md",
@@ -141,6 +142,8 @@ function main() {
   assert(starlightConfig.includes("advanced-alpha/demo-graphs"), "Starlight sidebar missing demo graphs");
   assert(starlightConfig.includes("reference/generated-cli-reference"), "Starlight sidebar missing generated CLI reference");
   const starlightHome = readText(path.join(docs, "src", "content", "docs", "index.md"));
+  const docsInstallSource = readText(path.join(docs, "src", "content", "docs", "start-here", "install.md"));
+  const repositoryLayoutSource = readText(path.join(docs, "src", "content", "docs", "concepts", "repository-layout.md"));
   assert(starlightHome.includes("Start here for Markdown Knowledge Graph documentation"), "Starlight home missing docs-home copy");
   for (const snippet of [
     "Choose your first path",
@@ -162,6 +165,18 @@ function main() {
     assert(starlightHome.includes(snippet), `Starlight home missing routing snippet: ${snippet}`);
   }
   assert(!starlightHome.includes("GitBook"), "Starlight home still references GitBook");
+  for (const snippet of [
+    "Customize after init",
+    ".mdkg/config.json",
+    "arbitrary contained skill mirror target paths",
+    "COLLABORATION.md",
+    "HUMAN.md",
+    "MANIFEST.md",
+    "SPEC.md",
+    "mdkg upgrade --apply",
+  ]) {
+    assert(docsInstallSource.includes(snippet), `Install docs missing customization/upgrade snippet: ${snippet}`);
+  }
   const agentWorkflow = readText(path.join(docs, "src", "content", "docs", "guides", "agent-workflow.md"));
   assert(agentWorkflow.includes("[docs overview](/)"), "Agent workflow should link back to docs overview routing");
   assert(!agentWorkflow.includes("| Command | Boundary |"), "Agent workflow should not use the cramped command-boundary table");
@@ -173,17 +188,20 @@ function main() {
   ]) {
     assert(agentWorkflow.includes(snippet), `Agent workflow missing command-boundary section: ${snippet}`);
   }
-  const repositoryLayout = readText(path.join(docs, "src", "content", "docs", "concepts", "repository-layout.md"));
-  assert(!repositoryLayout.includes("| Path | Purpose | Commit? |"), "Repository layout should not use the cramped path table");
+  assert(!repositoryLayoutSource.includes("| Path | Purpose | Commit? |"), "Repository layout should not use the cramped path table");
   for (const snippet of [
     "Commit as durable source",
     "Review before committing",
     "Keep local or rebuildable",
+    "`.mdkg/config.json`",
     "`.mdkg/db/runtime/`",
     "`.mdkg/db/state/`",
     "`.agents/skills/`",
+    "arbitrary contained mirror paths",
+    "`COLLABORATION.md`",
+    "`MANIFEST.md`",
   ]) {
-    assert(repositoryLayout.includes(snippet), `Repository layout missing responsive section: ${snippet}`);
+    assert(repositoryLayoutSource.includes(snippet), `Repository layout missing responsive section: ${snippet}`);
   }
   const advancedOverview = readText(path.join(docs, "src", "content", "docs", "advanced-alpha", "overview.md"));
   assert(advancedOverview.includes("## Use when"), "Advanced alpha overview missing use-when guidance");
@@ -194,6 +212,11 @@ function main() {
   assert(!publicRoadmap.includes("roadmap source of truth"), "Roadmap still has internal source-of-truth phrasing");
   const publicChangelog = readText(path.join(docs, "src", "content", "docs", "project", "changelog.md"));
   assert(publicChangelog.includes("product-level summary"), "Changelog should read as product-level release notes");
+  assert(publicChangelog.includes("release-grid"), "Changelog should render recent release cards");
+  assert(publicChangelog.includes("0.3.9 details"), "Changelog should expose latest release details");
+  for (const snippet of ["`.mdkg/config.json` customization overlays", "arbitrary contained agent-local skill roots", "`COLLABORATION.md`"]) {
+    assert(publicChangelog.includes(snippet), `Changelog missing 0.3.9 capability detail: ${snippet}`);
+  }
   assert(!publicChangelog.includes("Public docs should"), "Changelog still has docs-author meta commentary");
   const referenceHome = readText(path.join(docs, "src", "content", "docs", "reference", "index.md"));
   assert(referenceHome.includes("Integration metadata"), "Reference home should label command contract as integration metadata");

@@ -20,6 +20,7 @@ function extractJsonLd(html) {
 function main() {
   buildSite();
 
+  const pkg = JSON.parse(readText(path.join(repoRoot, "package.json")));
   const dist = path.join(repoRoot, "mdkg-dev", "dist");
   const home = readText(path.join(dist, "index.html"));
   assert(home.includes('<link rel="canonical" href="https://mdkg.dev/'), "homepage missing canonical URL");
@@ -43,6 +44,7 @@ function main() {
   assert(jsonLd["@type"] === "SoftwareApplication", "homepage JSON-LD type mismatch");
   assert(jsonLd.name === "Markdown Knowledge Graph", "homepage JSON-LD name mismatch");
   assert(jsonLd.alternateName === "mdkg", "homepage JSON-LD alternateName mismatch");
+  assert(jsonLd.softwareVersion === pkg.version, "homepage JSON-LD softwareVersion must match package.json");
   assert(
     jsonLd.description.includes("structured Markdown, context packs, handoffs, checkpoints, and validation"),
     "homepage JSON-LD description missing launch-ready product summary"

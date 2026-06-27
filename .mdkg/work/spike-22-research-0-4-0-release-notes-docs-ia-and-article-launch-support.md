@@ -2,7 +2,7 @@
 id: spike-22
 type: spike
 title: research 0.4.0 release notes docs IA product design audit and article launch support
-status: todo
+status: done
 priority: 2
 epic: epic-202
 parent: goal-42
@@ -54,15 +54,50 @@ plan, and article-support package should mdkg.dev/docs.mdkg.dev ship for the
 
 # Findings
 
-- Pending research.
+- `docs.mdkg.dev/project/changelog/` live evidence now includes the `0.3.9`
+  summary, so the earlier live-current docs gap is partially resolved.
+- `mdkg-dev/src/pages/index.astro` still carried stale structured
+  `softwareVersion: "0.3.7"` at spike start; local source now derives the
+  homepage JSON-LD version from root `package.json`.
+- The docs changelog source had only a terse milestone list. It did not yet meet
+  the release-card/detail requirement for article support and public launch
+  scanning.
+- `docs/_generated/release-notes.json` is already generated from
+  `CHANGELOG.md` and `docs:check` verifies the data is fresh, so the public
+  release notes IA should use `CHANGELOG.md` as canonical facts instead of
+  inventing a separate release database.
+- The public homepage should only summarize current capabilities. Detailed
+  release facts belong under docs.mdkg.dev so public claims remain inspectable
+  against the changelog and generated release-note data.
 
 # Options And Tradeoffs
 
-- Pending research.
+- Put release notes only on `docs.mdkg.dev/project/changelog/`: lowest
+  duplication and best source-truth alignment, but the marketing homepage needs
+  enough current copy to avoid looking stale after 0.3.9.
+- Put a full release page on `mdkg.dev`: stronger launch storytelling, but it
+  duplicates docs IA and increases the risk of version drift before `0.4.0`.
+- Use `docs/_generated/release-notes.json` directly at runtime: best data
+  discipline, but Starlight Markdown pages currently work well with static
+  checked content and local smoke assertions; dynamic integration can wait until
+  the release-note surface needs filtering or deep linking per version.
 
 # Recommendation
 
-Pending research-backed recommendation.
+- Treat docs.mdkg.dev as the canonical public release-notes surface for `0.4.0`.
+- Keep mdkg.dev homepage current by deriving JSON-LD `softwareVersion` from
+  `package.json` and adding a compact `0.3.9` customization section covering
+  config overlays, custom skill mirrors, and `COLLABORATION.md`.
+- Convert the docs changelog into recent release cards plus a detailed `0.3.9`
+  section, with existing generated release-note checks and public smoke tests
+  guarding against drift.
+- Use Product Design audit artifacts under
+  `/private/tmp/mdkg-goal42-product-design-audit-20260627` during execution.
+- Use Browser for local desktop/mobile checks after the site/docs builds pass,
+  then use Chrome/Browser for live production verification only after explicit
+  deploy approval.
+- Keep `0.4.0` npm publish, tag, DNS, analytics, and production promotion out
+  of this implementation pass unless separately approved.
 
 # Required Execution Tools
 
@@ -104,5 +139,15 @@ Pending research-backed recommendation.
 
 # Evidence And Sources
 
-- Add local files, command receipts, external documentation, and citations during
-  spike execution.
+- Live fetch snapshots:
+  `/private/tmp/mdkg-goal42-mdkg-dev.html`,
+  `/private/tmp/mdkg-goal42-docs-changelog.html`, and
+  `/private/tmp/mdkg-goal42-docs-home.html`.
+- Source files inspected and updated: `mdkg-dev/src/pages/index.astro`,
+  `docs/src/content/docs/project/changelog.md`,
+  `docs/project/changelog.md`, and `docs/_generated/release-notes.json`.
+- Focused verification after implementation:
+  `npm run smoke:mdkg-dev`, `npm run smoke:mdkg-dev-docs`, and
+  `npm run smoke:mdkg-dev-seo` pass sequentially. An earlier parallel smoke
+  attempt failed because multiple `npm run build` invocations raced while
+  cleaning/copying `dist/`; the same gates passed when rerun sequentially.

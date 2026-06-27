@@ -2,7 +2,7 @@
 id: task-602
 type: task
 title: polish mdkg.dev narrative for config overlays and plan work evidence launch
-status: todo
+status: done
 priority: 2
 epic: epic-203
 parent: goal-42

@@ -117,6 +117,9 @@ function main() {
     assertExcludes(source, "production deployment", "public roadmap launch chores");
   }
   assertExcludes(changelogSource + "\n" + legacyChangelogSource, "bookkeeping", "public changelog meta commentary");
+  assertIncludes(changelogSource, "release-grid", "public changelog release cards");
+  assertIncludes(changelogSource, "0.3.9 details", "public changelog release details");
+  assertIncludes(changelogSource, ".mdkg/config.json", "public changelog 0.3.9 configuration detail");
   assertIncludes(planWorkEvidenceSource, "role=\"img\"", "deterministic accessible diagram source");
   assertIncludes(planWorkEvidenceSource, "Minimal goal frontmatter", "goal frontmatter example");
   assertIncludes(planWorkEvidenceSource, "Minimal task frontmatter", "task frontmatter example");

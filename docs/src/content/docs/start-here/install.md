@@ -51,4 +51,35 @@ Expected result:
 - `mdkg status` reports graph, git, selected-goal, cache, and optional project DB state.
 - `mdkg validate` either passes or gives actionable warnings/errors to fix before closeout.
 
+## Customize after init
+
+Use `.mdkg/config.json` for organization-specific overlays after the first
+init. Keep the mdkg CLI kernel installed from npm, then let repo config describe
+local standards and generated mirror targets.
+
+Common customization surfaces:
+
+- organization standards and local core-doc preferences in `.mdkg/config.json`
+- canonical skills under `.mdkg/skills/`
+- arbitrary contained skill mirror target paths configured from `.mdkg/config.json`
+- `COLLABORATION.md` as the canonical operator profile
+- `HUMAN.md` as a one-release legacy alias for older prompts
+
+Preview scaffold changes before applying them:
+
+```bash
+mdkg upgrade
+mdkg upgrade --json
+mdkg upgrade --apply
+```
+
+`mdkg upgrade --apply` updates mdkg-managed assets only after the dry-run receipt
+is reviewable. It preserves local overlays, customized docs, customized skills,
+and configured mirror paths instead of turning every repo into a fork of mdkg.
+
+For capability files, use canonical `MANIFEST.md` naming in new work. Legacy
+`SPEC.md` files and `mdkg spec ...` commands remain compatibility aliases for
+one release, but new docs and skills should prefer `mdkg manifest ...` and
+`mdkg new manifest`.
+
 Next, run the [quickstart](/start-here/quickstart/) or read [Local-first and Low-dependency](/concepts/local-first-low-dependency/) before introducing mdkg to a larger repo.

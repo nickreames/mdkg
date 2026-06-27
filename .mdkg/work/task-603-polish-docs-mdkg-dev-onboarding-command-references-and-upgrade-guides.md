@@ -2,7 +2,7 @@
 id: task-603
 type: task
 title: polish docs.mdkg.dev onboarding command references and upgrade guides
-status: todo
+status: done
 priority: 2
 epic: epic-203
 parent: goal-42
