@@ -5,11 +5,11 @@ title: Complete mdkg 0.3.9 CLI extensibility and release polish foundation
 status: todo
 priority: 1
 goal_state: paused
-goal_condition: 0.3.9 is dry-run publish ready after mdkg supports config-overlay customization, arbitrary skill mirror target paths, an upgradable kernel policy, the COLLABORATION.md compatibility bridge, refreshed first-party skills, docs/release-note drift automation, and full package/readiness gates without requiring company forks as the primary customization path.
+goal_condition: 0.3.9 is ready for an explicit npm publish approval decision after mdkg supports config-overlay customization, arbitrary skill mirror target paths, an upgradable kernel policy, the COLLABORATION.md compatibility bridge, refreshed first-party skills, docs/release-note drift automation, full change audit, full pre-publish gates, npm pack/publish dry-run, and a final recommendation that states publish-ready or lists remaining gaps.
 scope_refs: [epic-199, epic-200, epic-201, task-594, task-595, task-596, task-597, task-598, task-599, task-600, test-302, test-303, test-304, test-305, test-306]
 active_node: task-594
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, author-mdkg-skill, verify-close-and-checkpoint]
-required_checks: [git status --short --branch, node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, npm run smoke:upgrade, npm run smoke:init, custom overlay temp-repo smoke, custom skill mirror temp-repo smoke, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, git diff --check]
+required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, changelog and release notes mapping for every publish-bound change, visible version-reference drift audit, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.3.9 version --registry=https://registry.npmjs.org/, node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, npm run smoke:upgrade, npm run smoke:init, custom overlay temp-repo smoke, custom skill mirror temp-repo smoke, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, publish-readiness recommendation or remaining-gaps report, git diff --check]
 max_iterations: 25
 blocked_after_attempts: 3
 tags: [release, 0.3.9, cli, config-overlays, skills, upgrade]
@@ -36,7 +36,7 @@ the next npm release.
 
 # End Condition
 
-`mdkg@0.3.9` is dry-run publish ready after:
+`mdkg@0.3.9` is ready for an explicit npm publish approval decision after:
 
 - companies can customize standards through `.mdkg/config.json` overlays instead
   of primarily forking a starter repo;
@@ -48,15 +48,19 @@ the next npm release.
   `HUMAN.md` remains a one-release legacy alias;
 - first-party skills explain the current CLI surface, including MANIFEST,
   upgrade, validation, docs, archive, bundle, subgraph, work, and db commands;
-- docs/release-note maintenance catches CLI drift before publish.
+- docs/release-note maintenance catches CLI drift before publish;
+- a final audit maps every publish-bound change to release notes/changelog,
+  version references, tests, and package payload;
+- the final checkpoint recommends either "publish ready pending explicit
+  approval" or lists exact remaining gaps.
 
 # Non-Goals
 
 - Do not create an official forkable starter repo in this release lane.
 - Do not make mdkg.dev or docs.mdkg.dev public-site polish the blocking
   implementation scope; that belongs to `goal-42`.
-- Do not publish, tag, push, deploy, or mutate downstream repos until a later
-  explicit release execution request.
+- Do not run a real `npm publish`, tag, push, deploy, or mutate downstream repos
+  until a later explicit approval request.
 
 # Recursive Algorithm
 
@@ -82,6 +86,8 @@ the next npm release.
 - Build, tests, CLI contract, docs check, and publish-readiness assertions.
 - Temp-repo upgrade proof preserving overlays and custom mirror targets.
 - Package pack and publish dry-runs with an isolated npm cache.
+- Registry availability and local change audit before any publish-ready
+  recommendation.
 
 # Acceptance Criteria
 
@@ -99,7 +105,7 @@ the next npm release.
 
 - Goal condition is achieved.
 - Required checks have evidence in a checkpoint.
-- `0.3.9` remains unpublished until a separate approved publish step.
+- `0.3.9` remains unpublished until a separate explicit approved publish step.
 
 # Stop Conditions
 
