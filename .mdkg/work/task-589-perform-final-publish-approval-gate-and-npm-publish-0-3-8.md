@@ -2,7 +2,7 @@
 id: task-589
 type: task
 title: perform final publish approval gate and npm publish 0.3.8
-status: progress
+status: done
 priority: 1
 parent: goal-40
 tags: [release, publish, npm, 0-3-8]
@@ -14,7 +14,7 @@ blocked_by: [task-592, test-301]
 blocks: []
 refs: [goal-39, chk-280]
 context_refs: [goal-39, chk-280]
-evidence_refs: []
+evidence_refs: [chk-282]
 aliases: [publish-0-3-8-gate, npm-publish-0-3-8]
 skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-06-26
@@ -83,3 +83,25 @@ the upgrade migrator proves safe `SPEC.md` to `MANIFEST.md` renames.
 - `chk-280`
 - `task-592`
 - `test-301`
+
+# Results / Evidence
+
+- Human approval for public side effects was given in the execution turn.
+- `git push origin main` passed and pushed
+  `13b8fb2a49dc5fe667893ae2ea49ffa37a4de2cc` to `origin/main`.
+- Pre-publish registry state: npm latest was `0.3.7` and `mdkg@0.3.8`
+  returned expected E404.
+- npm auth was verified as `nickreames` through
+  `/private/tmp/mdkg-npm-publish.npmrc`; no raw token was recorded.
+- Final `npm publish --dry-run --registry=https://registry.npmjs.org/` passed
+  immediately before the real publish and ended with dry-run `+ mdkg@0.3.8`.
+- Real `npm publish --registry=https://registry.npmjs.org/` passed and ended
+  with `+ mdkg@0.3.8`.
+- Published registry state: npm latest is `0.3.8`; dist-tags report
+  `{ "latest": "0.3.8" }`.
+- Published tarball:
+  `https://registry.npmjs.org/mdkg/-/mdkg-0.3.8.tgz`.
+- Published tarball shasum:
+  `0ace673026344fffea616ca793144d9a07f81382`.
+- Published tarball integrity:
+  `sha512-A1g5+OXHtaQSVmF3m0xU+89dRy+u8FAwG7pzSUvzBiG5yekGzeNuUwHb3SIS1aPoJrUKoJSkEJXiekrMGwOMyQ==`.

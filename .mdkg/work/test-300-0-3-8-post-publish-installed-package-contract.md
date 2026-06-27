@@ -2,7 +2,7 @@
 id: test-300
 type: test
 title: 0.3.8 post publish installed package contract
-status: backlog
+status: done
 priority: 1
 parent: goal-40
 tags: [release, post-publish, contract, tmp]
@@ -14,7 +14,7 @@ blocked_by: [task-591]
 blocks: []
 refs: [task-591]
 context_refs: [goal-39, chk-280]
-evidence_refs: []
+evidence_refs: [chk-282]
 aliases: [post-publish-installed-contract, npm-latest-tmp-validation]
 skills: [verify-close-and-checkpoint]
 cases: [installed binary reports 0.3.8, init validates in tmp repo, new manifest uses MANIFEST.md type manifest, manifest commands work from installed binary, capability search finds installed manifest, upgrade migrates legacy SPEC.md to MANIFEST.md, validate and status are clean from installed binary]
@@ -58,7 +58,21 @@ health from a tmp workspace.
 
 # Results / Evidence
 
-- Pending until after npm publish.
+- PASS: public npm latest resolved to `mdkg@0.3.8`.
+- PASS: `/private/tmp/mdkg-0.3.8-global/bin/mdkg --version` returned `0.3.8`.
+- PASS: installed `mdkg init --agent --json` created a validation-clean tmp
+  workspace under `/private/tmp/mdkg-0.3.8-postpublish/workspace`.
+- PASS: installed `mdkg new manifest ... --id agent.post-publish-sample
+  --json` created `MANIFEST.md` with `type: manifest`, not `SPEC.md`.
+- PASS: installed `mdkg manifest list/show/validate --json` and capability
+  search worked from the tmp workspace.
+- PASS: installed `mdkg upgrade --dry-run --json` planned one safe legacy
+  `SPEC.md` to `MANIFEST.md` migration.
+- PASS: installed `mdkg upgrade --apply --json` migrated the legacy fixture to
+  `MANIFEST.md` with `type: manifest` and left no `SPEC.md` under
+  `.mdkg/work`.
+- PASS: installed `mdkg validate --json` returned `ok: true`, 0 warnings, and
+  0 errors; installed `mdkg status --json` returned level `ok`.
 
 # Notes / Follow-ups
 

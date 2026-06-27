@@ -2,7 +2,7 @@
 id: task-591
 type: task
 title: validate mdkg 0.3.8 from isolated global npm install
-status: backlog
+status: done
 priority: 1
 parent: goal-40
 tags: [release, post-publish, npm, tmp, 0-3-8]
@@ -14,7 +14,7 @@ blocked_by: [task-589]
 blocks: [test-300]
 refs: [task-589]
 context_refs: [goal-39, chk-280]
-evidence_refs: []
+evidence_refs: [chk-282]
 aliases: [isolated-global-install-validation, tmp-global-mdkg-0-3-8, post-publish-mdkg-latest]
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -88,3 +88,26 @@ installation-path assumptions.
 
 - `task-589`
 - `test-300`
+
+# Results / Evidence
+
+- Installed `mdkg@latest` from the public npm registry into isolated prefix
+  `/private/tmp/mdkg-0.3.8-global`.
+- Installed binary path:
+  `/private/tmp/mdkg-0.3.8-global/bin/mdkg`.
+- Installed binary reported `0.3.8`.
+- Temp validation workspace:
+  `/private/tmp/mdkg-0.3.8-postpublish/workspace`.
+- Installed `mdkg init --agent --json` passed in the temp workspace.
+- Installed `mdkg new manifest "Post publish sample capability" --id
+  agent.post-publish-sample --json` created a canonical `MANIFEST.md` with
+  `type: manifest`; no generated `SPEC.md` remained for that capability.
+- Installed `mdkg manifest list/show/validate --json` and `mdkg capability
+  search` passed against the temp workspace.
+- A legacy `SPEC.md` fixture with `type: spec` produced an upgrade dry-run with
+  `safe_to_apply: true` and `migrated: 1`.
+- Installed `mdkg upgrade --apply --json` renamed the legacy fixture to
+  `MANIFEST.md` and normalized frontmatter to `type: manifest`.
+- Installed `mdkg index`, `mdkg validate --json`, and `mdkg status --json`
+  passed after migration; validation reported 0 warnings and 0 errors.
+- Detailed bounded evidence is recorded in `chk-282`.
