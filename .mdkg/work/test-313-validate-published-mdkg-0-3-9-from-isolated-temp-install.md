@@ -2,7 +2,7 @@
 id: test-313
 type: test
 title: validate published mdkg 0.3.9 from isolated temp install
-status: todo
+status: done
 priority: 1
 parent: goal-43
 tags: [release, 0.3.9, post-publish, temp-install, test]

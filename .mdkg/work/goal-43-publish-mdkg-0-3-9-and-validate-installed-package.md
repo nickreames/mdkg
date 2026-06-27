@@ -2,12 +2,12 @@
 id: goal-43
 type: goal
 title: Publish mdkg 0.3.9 and validate installed package
-status: todo
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: mdkg@0.3.9 is published to npm, origin/main contains the release commit history, the published package is validated from an isolated temp global install and temp workspace, a durable mdkg checkpoint records registry/install evidence and the no-0.4.0 boundary, and annotated tag v0.3.9 is pushed to origin pointing at the published commit.
 scope_refs: [task-607, task-608, test-313, task-609]
-active_node: task-607
+last_active_node: task-607
 required_skills: [verify-close-and-checkpoint]
 required_checks: [git fetch origin main, git status --short --branch, git rev-list --left-right --count origin/main...HEAD, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.3.9 version --registry=https://registry.npmjs.org/, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, git push origin main, npm whoami --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc, npm publish --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc, post-publish npm view mdkg version, post-publish npm view mdkg dist-tags --json, isolated npm install -g mdkg@latest --prefix /private/tmp/mdkg-0.3.9-postpublish, temp workspace init status validate manifest skill sync upgrade probes, mdkg checkpoint evidence, git tag -a v0.3.9, git push origin v0.3.9]
 max_iterations: 25
