@@ -18,8 +18,10 @@ import {
 } from "../core/project_db";
 import { formatDate } from "../util/date";
 import { NotFoundError } from "../util/errors";
-import { DEFAULT_FRONTMATTER_KEY_ORDER, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
+import { DEFAULT_FRONTMATTER_KEY_ORDER, formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
+import { CANONICAL_MANIFEST_BASENAME, LEGACY_SPEC_BASENAME } from "../graph/agent_file_types";
+import { atomicWriteFile } from "../util/atomic";
 import {
   createInitManifest,
   InitManifest,
@@ -46,6 +48,7 @@ export type UpgradeChangeAction = "create" | "update" | "migrate" | "sync" | "co
 
 export type UpgradeChange = {
   path: string;
+  target_path?: string;
   category: string;
   action: UpgradeChangeAction;
   reason: string;
@@ -125,6 +128,15 @@ function copyFile(src: string, dest: string): void {
 function writeFile(filePath: string, content: string): void {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, "utf8");
+}
+
+function repoRelativePath(root: string, filePath: string): string {
+  return path.relative(root, filePath).split(path.sep).join("/");
+}
+
+function renderFrontmatterDocument(frontmatter: Record<string, FrontmatterValue>, body: string): string {
+  const frontmatterBlock = ["---", ...formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER), "---"].join("\n");
+  return body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock;
 }
 
 function createSummary(): UpgradeSummary {
@@ -408,9 +420,61 @@ function migrateClosedGoalActiveNodes(root: string, dryRun: boolean, summary: Up
           frontmatter.last_active_node = activeNode;
         }
         delete frontmatter.active_node;
-        const frontmatterBlock = ["---", ...formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER), "---"].join("\n");
-        const body = parsed.body.length > 0 ? parsed.body : "";
-        writeFile(filePath, body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock);
+        writeFile(filePath, renderFrontmatterDocument(frontmatter, parsed.body.length > 0 ? parsed.body : ""));
+      }
+    }
+  }
+  if (planned === 0) {
+    summary.unchanged += 1;
+  }
+}
+
+function migrateLegacySpecManifests(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+  const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
+  const filesByAlias = listWorkspaceDocFilesByAlias(root, config);
+  let planned = 0;
+  for (const files of Object.values(filesByAlias)) {
+    for (const filePath of files) {
+      if (path.basename(filePath) !== LEGACY_SPEC_BASENAME) {
+        continue;
+      }
+      const content = fs.readFileSync(filePath, "utf8");
+      let parsed: ReturnType<typeof parseFrontmatter>;
+      try {
+        parsed = parseFrontmatter(content, filePath);
+      } catch {
+        continue;
+      }
+      if (parsed.frontmatter.type !== "spec") {
+        continue;
+      }
+
+      planned += 1;
+      const targetPath = path.join(path.dirname(filePath), CANONICAL_MANIFEST_BASENAME);
+      const relativePath = repoRelativePath(root, filePath);
+      const relativeTargetPath = repoRelativePath(root, targetPath);
+      if (fs.existsSync(targetPath)) {
+        record(summary, changes, {
+          path: relativePath,
+          target_path: relativeTargetPath,
+          category: "manifest_migration",
+          action: "conflict",
+          reason: "sibling MANIFEST.md already exists; legacy SPEC.md content preserved",
+        });
+        continue;
+      }
+
+      record(summary, changes, {
+        path: relativePath,
+        target_path: relativeTargetPath,
+        category: "manifest_migration",
+        action: "migrate",
+        reason: "rename legacy SPEC.md to MANIFEST.md and normalize type: spec to type: manifest",
+      });
+      if (!dryRun) {
+        const frontmatter = { ...parsed.frontmatter, type: "manifest" };
+        atomicWriteFile(filePath, renderFrontmatterDocument(frontmatter, parsed.body));
+        fs.renameSync(filePath, targetPath);
       }
     }
   }
@@ -513,6 +577,10 @@ function isWritableChange(change: UpgradeChange): boolean {
   return change.action === "create" || change.action === "update" || change.action === "migrate" || change.action === "sync";
 }
 
+function writablePathForChange(change: UpgradeChange): string {
+  return change.target_path ?? change.path;
+}
+
 function buildApplySideEffects(options: {
   existingManifest: InitManifest | undefined;
   agentWorkspace: boolean;
@@ -568,7 +636,8 @@ function emitHumanReceipt(receipt: UpgradeReceipt): void {
     console.log("no upgrade changes pending");
   } else {
     for (const change of receipt.changes) {
-      console.log(`  ${change.action}: ${change.path} (${change.reason})`);
+      const target = change.target_path ? ` -> ${change.target_path}` : "";
+      console.log(`  ${change.action}: ${change.path}${target} (${change.reason})`);
     }
   }
   if (receipt.apply_side_effects.length > 0) {
@@ -603,6 +672,7 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
 
   migrateConfigIfNeeded(root, dryRun, summary, changes);
   migrateClosedGoalActiveNodes(root, dryRun, summary, changes);
+  migrateLegacySpecManifests(root, dryRun, summary, changes);
 
   for (const file of currentManifest.files) {
     if (!shouldIncludeFile(file, agentWorkspace)) {
@@ -651,8 +721,10 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   }
 
   const preservedCustomizations = changes.filter((change) => change.action === "conflict");
-  const blockingConflicts: UpgradeChange[] = [];
-  const willWritePaths = changes.filter(isWritableChange).map((change) => change.path);
+  const blockingConflicts = changes.filter(
+    (change) => change.action === "conflict" && change.category === "manifest_migration"
+  );
+  const willWritePaths = changes.filter(isWritableChange).map(writablePathForChange);
   const receipt: UpgradeReceipt = {
     action: "upgrade",
     dry_run: dryRun,

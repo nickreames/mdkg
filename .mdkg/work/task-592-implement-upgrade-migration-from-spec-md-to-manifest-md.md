@@ -2,7 +2,7 @@
 id: task-592
 type: task
 title: implement upgrade migration from SPEC.md to MANIFEST.md
-status: backlog
+status: done
 priority: 1
 parent: goal-40
 tags: [manifest, spec, upgrade, migration, blocker, 0-3-8]
@@ -88,6 +88,37 @@ in place, created no `MANIFEST.md`, and returned a summary with `migrated: 0`.
 - `npm run cli:contract`
 - `node dist/cli.js validate --changed-only --json`
 - `git diff --check`
+
+# Results / Evidence
+
+- Implemented `migrateLegacySpecManifests` in `src/commands/upgrade.ts`.
+- Upgrade dry-run receipts now include `manifest_migration` changes with
+  source `path`, destination `target_path`, and destination entries in
+  `will_write_paths`.
+- Upgrade apply rewrites frontmatter from `type: spec` to `type: manifest` and
+  renames the file from `SPEC.md` to `MANIFEST.md`.
+- Sibling `MANIFEST.md` conflicts are reported under `blocking_conflicts`, set
+  `safe_to_apply: false`, and preserve both files.
+- Added unit coverage in `tests/commands/upgrade.test.ts` for dry-run, apply,
+  idempotence, and sibling conflict behavior.
+- Added package-level smoke coverage in `scripts/smoke-upgrade.js` for the
+  migration and conflict paths through a packed install.
+- PASS: temp proof at `/private/tmp/mdkg-upgrade-spec-proof` migrated one
+  legacy `SPEC.md` to `MANIFEST.md`, left zero `SPEC.md` files, produced
+  `type: manifest`, and validated with `ok: true`, 0 warnings, 0 errors.
+- PASS: `npm run build`.
+- PASS: `node --test dist/tests/commands/upgrade.test.js` with 11 passing
+  upgrade tests.
+- PASS: `npm run test` with 521 passing tests and 0 failures.
+- PASS: `npm run smoke:upgrade`.
+- PASS: `npm run cli:check`.
+- PASS: `npm run cli:contract` with command contract hash
+  `145781176fcd00d6b7c7edd8e013e902acea2ace8764dbf0bb063a8d3913a3e1`.
+- PASS: `npm run docs:check`.
+- PASS: `node scripts/assert-publish-ready.js`.
+- PASS: `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run
+  --json`; tarball `mdkg-0.3.8.tgz`, 174 entries, shasum
+  `0ace673026344fffea616ca793144d9a07f81382`.
 
 # Links / Artifacts
 

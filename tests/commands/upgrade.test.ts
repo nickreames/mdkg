@@ -128,6 +128,49 @@ function captureUpgrade(fn: () => unknown): unknown {
   }
 }
 
+function legacySpecContent(title = "Legacy probe capability"): string {
+  return [
+    "---",
+    "id: agent.legacy-probe",
+    "type: spec",
+    `title: ${title}`,
+    "version: 0.1.0",
+    "spec_kind: agent",
+    "role: subagent",
+    "runtime_mode: standalone",
+    "work_contracts: []",
+    "requested_capabilities: []",
+    "resource_profile: default",
+    "update_policy: manual",
+    "tags: [manifest, legacy]",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "refs: []",
+    "aliases: [legacy-probe]",
+    "skills: []",
+    "created: 2026-06-26",
+    "updated: 2026-06-26",
+    "---",
+    "",
+    "# Purpose",
+    "",
+    "Preserve this body during migration.",
+  ].join("\n");
+}
+
+function manifestContent(): string {
+  return legacySpecContent("Canonical probe capability").replace("type: spec", "type: manifest");
+}
+
+function writeLegacySpecFixture(root: string): { sourcePath: string; targetPath: string } {
+  const dir = path.join(root, ".mdkg", "work", "agent.legacy-probe");
+  const sourcePath = path.join(dir, "SPEC.md");
+  const targetPath = path.join(dir, "MANIFEST.md");
+  writeFile(sourcePath, legacySpecContent());
+  return { sourcePath, targetPath };
+}
+
 test("runUpgradeCommand defaults to dry-run and does not write files", () => {
   const root = makeTempDir("mdkg-upgrade-dry-run-");
   const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
@@ -318,6 +361,104 @@ test("runUpgradeCommand migrates achieved goal active_node to last_active_node",
   const migrated = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
   assert.doesNotMatch(migrated, /^active_node:/m);
   assert.match(migrated, /^last_active_node: task-1$/m);
+});
+
+test("runUpgradeCommand dry-run reports legacy SPEC to MANIFEST migrations without writing files", () => {
+  const root = makeTempDir("mdkg-upgrade-spec-dry-run-");
+  const { currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: currentSeed, agent: true });
+  const { sourcePath, targetPath } = writeLegacySpecFixture(root);
+
+  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
+    dry_run: boolean;
+    safe_to_apply: boolean;
+    will_write_paths: string[];
+    changes: Array<{ action: string; category: string; path: string; target_path?: string }>;
+  };
+
+  assert.equal(receipt.dry_run, true);
+  assert.equal(receipt.safe_to_apply, true);
+  assert.ok(
+    receipt.changes.some(
+      (change) =>
+        change.action === "migrate" &&
+        change.category === "manifest_migration" &&
+        change.path === ".mdkg/work/agent.legacy-probe/SPEC.md" &&
+        change.target_path === ".mdkg/work/agent.legacy-probe/MANIFEST.md"
+    )
+  );
+  assert.ok(receipt.will_write_paths.includes(".mdkg/work/agent.legacy-probe/MANIFEST.md"));
+  assert.ok(fs.existsSync(sourcePath));
+  assert.equal(fs.existsSync(targetPath), false);
+});
+
+test("runUpgradeCommand apply renames legacy SPEC to MANIFEST and normalizes type", () => {
+  const root = makeTempDir("mdkg-upgrade-spec-apply-");
+  const { currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: currentSeed, agent: true });
+  const { sourcePath, targetPath } = writeLegacySpecFixture(root);
+
+  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+    dry_run: boolean;
+    safe_to_apply: boolean;
+    changes: Array<{ action: string; category: string; path: string; target_path?: string }>;
+  };
+
+  assert.equal(receipt.dry_run, false);
+  assert.equal(receipt.safe_to_apply, true);
+  assert.ok(
+    receipt.changes.some(
+      (change) =>
+        change.action === "migrate" &&
+        change.category === "manifest_migration" &&
+        change.path === ".mdkg/work/agent.legacy-probe/SPEC.md" &&
+        change.target_path === ".mdkg/work/agent.legacy-probe/MANIFEST.md"
+    )
+  );
+  assert.equal(fs.existsSync(sourcePath), false);
+  assert.ok(fs.existsSync(targetPath));
+  const migrated = fs.readFileSync(targetPath, "utf8");
+  assert.match(migrated, /^id: agent\.legacy-probe$/m);
+  assert.match(migrated, /^type: manifest$/m);
+  assert.doesNotMatch(migrated, /^type: spec$/m);
+  assert.match(migrated, /^title: Legacy probe capability$/m);
+  assert.match(migrated, /Preserve this body during migration\./);
+
+  const secondReceipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
+    changes: Array<{ category: string }>;
+  };
+  assert.equal(secondReceipt.changes.some((change) => change.category === "manifest_migration"), false);
+});
+
+test("runUpgradeCommand blocks legacy SPEC migration when sibling MANIFEST exists", () => {
+  const root = makeTempDir("mdkg-upgrade-spec-conflict-");
+  const { currentSeed } = setupCurrentAndLegacySeeds();
+  runInitCommand({ root, seedRoot: currentSeed, agent: true });
+  const { sourcePath, targetPath } = writeLegacySpecFixture(root);
+  writeFile(targetPath, manifestContent());
+
+  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+    safe_to_apply: boolean;
+    will_write_paths: string[];
+    blocking_conflicts: Array<{ action: string; category: string; path: string; target_path?: string }>;
+    changes: Array<{ action: string; category: string; path: string; target_path?: string }>;
+  };
+
+  assert.equal(receipt.safe_to_apply, false);
+  assert.ok(
+    receipt.blocking_conflicts.some(
+      (change) =>
+        change.action === "conflict" &&
+        change.category === "manifest_migration" &&
+        change.path === ".mdkg/work/agent.legacy-probe/SPEC.md" &&
+        change.target_path === ".mdkg/work/agent.legacy-probe/MANIFEST.md"
+    )
+  );
+  assert.equal(receipt.will_write_paths.includes(".mdkg/work/agent.legacy-probe/MANIFEST.md"), false);
+  assert.ok(fs.existsSync(sourcePath));
+  assert.ok(fs.existsSync(targetPath));
+  assert.match(fs.readFileSync(sourcePath, "utf8"), /^type: spec$/m);
+  assert.match(fs.readFileSync(targetPath, "utf8"), /^type: manifest$/m);
 });
 
 test("runUpgradeCommand does not add skills or events to non-agent workspaces", () => {
