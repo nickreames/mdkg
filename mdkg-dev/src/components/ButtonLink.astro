@@ -30,9 +30,22 @@ const isExternal = /^https?:\/\//.test(href);
   }
 
   .primary {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     color: white;
     border-color: transparent;
-    background: linear-gradient(135deg, var(--blue-700), var(--sky-500), var(--teal-500));
+    background: transparent;
+  }
+
+  .primary::before {
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--cta-ocean-gradient);
+    content: "";
+    pointer-events: none;
   }
 
   .secondary {

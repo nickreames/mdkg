@@ -15,6 +15,7 @@
   --sky-50: #f0f9ff;
   --teal-500: #14b8a6;
   --teal-50: #f0fdfa;
+  --cta-ocean-gradient: linear-gradient(135deg, var(--blue-700), var(--sky-500), var(--teal-500));
   --white: #ffffff;
   --border: rgba(24, 24, 27, 0.12);
   --shadow: 0 18px 60px rgba(15, 23, 42, 0.08);

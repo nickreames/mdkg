@@ -8,6 +8,37 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.4.0 - 2026-06-27
+
+### Added
+
+- Added the `0.4.0` public launch-readiness lane for mdkg.dev and
+  docs.mdkg.dev with explicit source metadata, changelog, generated-doc,
+  npm prepublish, npm postpublish, Vercel production, and Chrome live-validation
+  blockers.
+- Added public release-note and docs coverage for the `0.4.0` launch surface,
+  including per-release changelog cards, launch-track copy, and source-backed
+  currentness requirements.
+- Added Vercel production currentness and Chrome postpublish validation as
+  required evidence before mdkg.dev or docs.mdkg.dev can claim the `0.4.0`
+  launch is live.
+
+### Changed
+
+- Updated mdkg.dev and docs.mdkg.dev source copy for the `0.4.0` release target,
+  including config overlays, custom skill mirrors, `COLLABORATION.md`,
+  MANIFEST/SPEC compatibility, and Plan -> Work -> Evidence launch messaging.
+- Updated public docs and examples to use the current `mdkg pack --profile
+  concise` syntax instead of stale `--pack-profile concise` examples.
+- Aligned source-visible package references, generated release-note data, and
+  generated CLI docs with the `0.4.0` release target.
+
+### Fixed
+
+- Fixed mdkg.dev primary CTA gradient rendering by moving the ocean gradient to
+  an overscanned clipped layer instead of painting it directly on the rounded
+  button surface.
+
 ## 0.3.9 - 2026-06-27
 
 ### Added

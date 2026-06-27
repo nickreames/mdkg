@@ -10,15 +10,43 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 Recent release cards:
 
-- `0.3.9` latest public alpha, 2026-06-27: config overlays, configurable skill
+- `0.4.0` latest public alpha, 2026-06-27: public launch readiness for
+  mdkg.dev and docs.mdkg.dev, source-backed release metadata, npm gates, Vercel
+  currentness, and Chrome live-validation blockers.
+- `0.3.9` public alpha, 2026-06-27: config overlays, configurable skill
   mirrors, COLLABORATION.md, refreshed first-party skills, and release-note
   automation.
 - `0.3.8` public alpha, 2026-06-25: MANIFEST naming, SPEC compatibility
   warnings, warning-scale validation summaries, and multi-repo closeout
   guidance.
-- `0.3.7` public alpha, 2026-06-20: completed-goal `last_active_node`,
-  semantic refs, checkpoint kinds, workflow validation, queue adapter contract,
-  and handoff creation.
+
+## 0.4.0 details
+
+`0.4.0` turns the website/docs launch track into a release-ready surface with
+package metadata, generated docs, npm gates, Vercel proof, and Chrome live
+validation wired into the mdkg graph.
+
+### Added
+
+- `0.4.0` public launch-readiness blockers for source metadata, changelog,
+  generated docs, npm prepublish gates, npm postpublish validation, Vercel
+  production currentness, and Chrome live validation.
+- Public release-note and docs coverage for the launch surface, including
+  per-release cards and source-backed currentness requirements.
+- Vercel and Chrome evidence requirements before the production site/docs can
+  claim the `0.4.0` launch is live.
+
+### Changed
+
+- mdkg.dev and docs.mdkg.dev source copy now present the `0.4.0` release target
+  while keeping publish/deploy approval boundaries explicit.
+- Public docs examples use `mdkg pack --profile concise`.
+- Source-visible package references and generated docs align with `0.4.0`.
+
+### Fixed
+
+- mdkg.dev primary CTA buttons use an overscanned clipped gradient layer for
+  smoother rounded corners.
 
 ## 0.3.9 details
 
@@ -49,6 +77,8 @@ into a fork of the CLI kernel.
 
 Earlier public-alpha milestones:
 
+- `0.3.7`: completed-goal `last_active_node`, semantic refs, checkpoint kinds,
+  workflow validation, queue adapter contract, and handoff creation.
 - `0.3.6`: graph import selected-goal hardening and read-only local MCP server.
 - `0.3.5`: graph clone, fork, and template import workflows.
 - `0.3.4`: branch-safe id repair planning and apply flows.
