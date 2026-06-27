@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task]
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -29,11 +29,15 @@ views, reconciled with `CHANGELOG.md`.
 # Acceptance Criteria
 
 - Public page includes per-release cards and detail content.
-- `0.3.8` and future `0.3.9`/`0.4.0` entries are represented consistently with
-  `CHANGELOG.md`.
+- `0.3.8`, published `0.3.9`, and future `0.4.0` entries are represented
+  consistently with `CHANGELOG.md`.
+- Public docs/release notes include details for 0.3.9 config overlays,
+  arbitrary skill mirror paths, `COLLABORATION.md`, legacy `HUMAN.md`, and
+  MANIFEST/SPEC bridge capabilities.
 - The implementation does not duplicate unreconciled release copy.
 - Public page is included in docs/site navigation only if the IA research
-  supports it.
+  supports it, and live `docs.mdkg.dev/project/changelog/` no longer lags at
+  0.3.7 before launch-ready recommendation.
 
 # Files Affected
 

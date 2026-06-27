@@ -20,7 +20,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -40,8 +40,8 @@ Run after public launch pages and browser evidence exist.
 - Public pages contain no raw secrets, tokens, private prompts, or private
   provider UI.
 - Screenshots/receipts are reviewed before archive/checkpoint reference.
-- No publish, deploy, tag, push, DNS, or analytics side effect occurs without
-  explicit approval.
+- No `0.4.0` publish, deploy, tag, push, DNS, or analytics side effect occurs
+  without explicit approval.
 
 # Results / Evidence
 
