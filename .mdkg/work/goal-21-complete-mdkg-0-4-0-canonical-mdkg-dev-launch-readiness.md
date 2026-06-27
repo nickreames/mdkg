@@ -2,12 +2,12 @@
 id: goal-21
 type: goal
 title: Complete mdkg 0.4.0 canonical mdkg.dev launch readiness
-status: todo
+status: archived
 priority: 2
-goal_state: paused
+goal_state: archived
 goal_condition: 0.4.0 is launch ready after canonical mdkg.dev docs, generated command reference, SEO-oriented guides, trust posture, public examples, and downstream upgrade narratives are validated.
 scope_refs: [epic-101, epic-102, epic-103, spike-10, task-404, task-405, task-406, task-407, task-408, task-409, test-174, test-175, test-176, test-177]
-active_node: spike-10
+last_active_node: spike-10
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:mdkg-dev, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30
@@ -19,11 +19,12 @@ artifacts: []
 relates: []
 blocked_by: []
 blocks: []
-refs: []
+refs: [chk-283]
+evidence_refs: [chk-283]
 aliases: []
 skills: []
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-26
 ---
 # Objective
 
@@ -77,6 +78,11 @@ Launch canonical mdkg.dev as stable public documentation, marketing, and LLM-opt
 
 Paused until spike dogfooding, generated docs, and demo readiness mature. The matching legacy mdkg.dev launch roadmap remains historical context until archived support ships.
 
+Archived on 2026-06-26 by `chk-283`. The broad launch-readiness context remains
+useful, but replacement ownership now lives in `goal-42`, which adds the public
+release notes/changelog surface, article support, browser/SEO/accessibility
+proof, and current `0.3.9` capability dependency.
+
 # Release Boundary
 
 No real npm publish, git tag, git push, website deploy, or child-repo mutation is included unless separately requested.
@@ -87,4 +93,4 @@ No real npm publish, git tag, git push, website deploy, or child-repo mutation i
 
 # Completion Evidence
 
-- Pending.
+- Superseded by `goal-42`; see `chk-283`.

@@ -2,7 +2,7 @@
 id: test-211
 type: test
 title: final pre-release gates and no-public-side-effect contract
-status: blocked
+status: done
 priority: 1
 epic: epic-130
 parent: goal-26
@@ -15,7 +15,7 @@ blocked_by: [task-461]
 blocks: []
 refs: []
 context_refs: [chk-194]
-evidence_refs: []
+evidence_refs: [chk-282, chk-283]
 aliases: []
 skills: []
 cases: []
@@ -59,8 +59,14 @@ Validate final goal-26 pre-release readiness through full local gates while pres
 # Results / Evidence
 
 - Blocked by `chk-200`: all local gates and package scripts passed, but `npm publish --dry-run` cannot pass while source version `0.3.7` is already published on npm.
+- Closed as historical/superseded on 2026-06-26 after `chk-282` validated the
+  real `mdkg@0.3.8` publish and installed package. This test did not pass under
+  the original no-public-side-effect contract; the archived parent goal now
+  points to `goal-41` and `goal-42` for replacement lanes.
 
 # Notes / Follow-ups
 
 - Real publish and deploy remain separate explicit requests.
 - Decide whether to bump release metadata for this verification lane or revise the acceptance rule for already-published versions.
+- Current replacement work: `goal-41` for `0.3.9` CLI release polish and
+  `goal-42` for `0.4.0` public docs/site launch polish.

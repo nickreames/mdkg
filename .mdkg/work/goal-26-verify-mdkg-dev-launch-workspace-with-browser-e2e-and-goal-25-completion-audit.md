@@ -2,12 +2,12 @@
 id: goal-26
 type: goal
 title: Verify mdkg.dev launch workspace with Browser E2E and goal-25 completion audit
-status: blocked
+status: archived
 priority: 1
-goal_state: paused
+goal_state: archived
 goal_condition: The goal is complete when goal-25 has been independently re-audited as achieved, mdkg-dev has passed local Browser desktop/mobile E2E with selected screenshot and receipt evidence archived, any local defects found by E2E are fixed or explicitly deferred with evidence, full pre-release gates pass through npm publish dry-run, and no public publish, deploy, tag, push, global install, DNS, Vercel production promotion, GitBook production sync, or public launch occurs.
 scope_refs: [epic-127, epic-128, epic-129, epic-130, task-456, task-457, task-458, task-459, task-460, task-461, task-462, test-207, test-208, test-209, test-210, test-211]
-active_node: task-462
+last_active_node: task-462
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, node dist/cli.js index, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js doctor --strict --json, node dist/cli.js goal show goal-25 --json, node dist/cli.js goal next goal-25 --json, npm --prefix mdkg-dev run build, Browser E2E receipt with desktop/mobile screenshots archived, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 25
@@ -21,11 +21,11 @@ blocked_by: []
 blocks: []
 refs: []
 context_refs: [chk-194, prd-4, prd-5, edd-24, edd-25, edd-26, edd-27, edd-28, edd-29, edd-30, dec-30, dec-31, dec-32]
-evidence_refs: []
+evidence_refs: [chk-282, chk-283]
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-06-22
-updated: 2026-06-22
+updated: 2026-06-26
 ---
 # Objective
 
@@ -165,6 +165,12 @@ Created as the active verification goal after goal-25 implementation. The tree i
 
 Paused on 2026-06-22 when `goal-27` became the active Vercel/Starlight preview-hosting alignment lane. Local Browser E2E and evidence archiving were completed; the remaining gate was the already-published package-version dry-run condition recorded in `chk-200`.
 
+Archived on 2026-06-26 by `chk-283` after `mdkg@0.3.8` was actually published
+and validated from an isolated global install in `chk-282`. The original
+no-public-side-effect pre-release lane is now historical evidence; current CLI
+release polish belongs to `goal-41`, and public docs/site launch work belongs
+to `goal-42`.
+
 # Iteration Log
 
 - 2026-06-22: Created goal-26 as an independent Browser E2E and goal-25 completion audit lane.
@@ -176,4 +182,5 @@ Paused on 2026-06-22 when `goal-27` became the active Vercel/Starlight preview-h
 
 # Completion Evidence
 
-- Pending.
+- Superseded by the completed `0.3.8` publish/post-publish validation in
+  `chk-282` and by the 0.3.9/0.4.0 roadmap consolidation in `chk-283`.
