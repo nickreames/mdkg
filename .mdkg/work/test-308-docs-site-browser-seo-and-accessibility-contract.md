@@ -15,7 +15,7 @@ blocked_by: [task-605]
 blocks: []
 refs: [task-602, task-603, task-605]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305]
 aliases: []
 skills: []
 cases: []
@@ -56,6 +56,10 @@ Run local builds/servers or approved preview URLs during launch validation.
   deployments built from an older pushed commit; see `chk-303`.
 - Read-only goal-42 readiness audit found the same exact gaps and added
   Product Design plus Browser evidence; see `chk-304`.
+- Local pre-publish Browser and Chrome validation for the updated `0.4.0`
+  homepage language passed; JSON-LD remains on `0.3.9`, the page names
+  `mdkg@0.3.9` as the published package baseline, and there are zero captured
+  console issues; see `chk-305`.
 - A refreshed read-only fetch of `origin/main`, `https://mdkg.dev/`, and
   `https://docs.mdkg.dev/project/changelog/` after commit `5eccba7` still
   shows the same blocker: local `main` is ahead of `origin/main` by 8,

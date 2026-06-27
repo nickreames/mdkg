@@ -57,6 +57,9 @@ function main() {
   assert(home.includes("Git-native project memory"), "homepage missing primary product copy");
   assert(home.includes("mdkg init --agent"), "homepage missing first-run CLI command");
   assert(home.includes("Customize standards without forking the kernel"), "homepage missing 0.3.9 customization section");
+  assert(home.includes("0.4.0 launch track"), "homepage missing 0.4.0 launch-track language");
+  assert(home.includes("mdkg@0.3.9"), "homepage missing published package baseline language");
+  assert(home.includes("Local validation happens before publish; live validation follows the approved publish and deploy"), "homepage missing local/live validation boundary language");
   assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
   assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
   assert(home.includes("COLLABORATION.md"), "homepage missing collaboration profile copy");
@@ -131,10 +134,13 @@ function main() {
         "evidence_refs",
         "mdkg handoff create WORK_ID",
         "Bigger context helps. It does not replace project memory.",
-    "One concrete change: the agent starts from work, not vibes.",
-    "one reviewable graph, one packable handoff, one validation loop",
-    "Without mdkg",
+        "One concrete change: the agent starts from work, not vibes.",
+        "one reviewable graph, one packable handoff, one validation loop",
+        "Without mdkg",
         "With mdkg",
+        "0.4.0 launch track",
+        "mdkg@0.3.9",
+        "Published package baseline",
         "Customize standards without forking the kernel.",
         ".mdkg/config.json",
         "Custom skill mirrors",
