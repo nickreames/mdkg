@@ -114,7 +114,7 @@ function main() {
   for (const expected of [
     "mdkg validate --json",
     "mdkg goal next goal-1 --json",
-    "mdkg pack spike-1 --pack-profile concise --dry-run --stats",
+    "mdkg pack spike-1 --profile concise --dry-run --stats",
     "Validation returns `ok: true`.",
     "Capability search finds the pack-first skill.",
   ]) {

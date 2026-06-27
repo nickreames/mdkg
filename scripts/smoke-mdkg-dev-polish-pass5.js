@@ -95,10 +95,10 @@ function main() {
     assertIncludes(quickstartSource, expected, "first-success quickstart");
   }
   assertIncludes(docsHomeSource, "demo graph first-success path", "docs home demo routing");
-  assertIncludes(demoGraphsSource, "mdkg pack spike-1 --pack-profile concise --dry-run --stats", "demo graph canonical pack command");
+  assertIncludes(demoGraphsSource, "mdkg pack spike-1 --profile concise --dry-run --stats", "demo graph canonical pack command");
   assertIncludes(demoGraphsSource, "not canonical public launch proof", "demo graph launch boundary");
   assertIncludes(troubleshootingSource, "`node: null` can simply mean no work exists yet", "no-work-yet troubleshooting");
-  assertExcludes(quickstartSource + "\n" + demoGraphsSource, "--profile concise", "hand-authored public examples");
+  assertExcludes(quickstartSource + "\n" + demoGraphsSource, "--pack-profile concise", "hand-authored public examples");
 
   assertIncludes(referenceSource, "Common command groups", "user-facing reference home");
   assertIncludes(referenceSource, "Choose by job", "user-facing reference job chooser");

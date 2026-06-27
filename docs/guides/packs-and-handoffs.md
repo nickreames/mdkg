@@ -4,7 +4,7 @@ Use a pack when an agent needs deterministic context to work.
 
 ```bash
 mdkg pack WORK_ID
-mdkg pack WORK_ID --pack-profile concise
+mdkg pack WORK_ID --profile concise
 ```
 
 Use a handoff when transferring work between sessions, agents, or humans.

@@ -53,7 +53,7 @@ mdkg show WORK_ID
 mdkg pack WORK_ID
 ```
 
-Use `mdkg pack WORK_ID --pack-profile concise` when you want a shorter transfer pack.
+Use `mdkg pack WORK_ID --profile concise` when you want a shorter transfer pack.
 
 When a human or AI agent does work, record evidence before moving on:
 

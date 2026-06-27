@@ -16,7 +16,7 @@ Uppercase placeholders such as `WORK_ID`, `GOAL_ID`, and `TASK_ID` are examples.
 | Initialize a repo | `mdkg init --agent` | `mdkg index`, `mdkg validate` |
 | Find work | `mdkg goal next` | `mdkg show WORK_ID`, `mdkg pack WORK_ID` |
 | Record progress | `mdkg task start TASK_ID` | `mdkg task done TASK_ID --checkpoint "Done"` |
-| Share context | `mdkg pack WORK_ID --pack-profile concise` | `mdkg handoff create WORK_ID` |
+| Share context | `mdkg pack WORK_ID --profile concise` | `mdkg handoff create WORK_ID` |
 | Diagnose health | `mdkg status` | `mdkg doctor --strict --json`, `mdkg fix plan --json` |
 | Coordinate repos | `mdkg subgraph audit --json` | `mdkg bundle`, `mdkg subgraph sync` |
 
@@ -50,7 +50,7 @@ mdkg checkpoint new "Review proof" --kind test-proof
 Context transfer:
 
 ```bash
-mdkg pack WORK_ID --pack-profile concise
+mdkg pack WORK_ID --profile concise
 mdkg handoff create WORK_ID
 ```
 

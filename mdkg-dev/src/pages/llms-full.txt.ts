@@ -64,7 +64,7 @@ export function GET() {
     "- mdkg goal current",
     "- mdkg goal next",
     "- mdkg goal claim GOAL_ID WORK_ID",
-    "- mdkg pack WORK_ID --pack-profile concise",
+    "- mdkg pack WORK_ID --profile concise",
     "- mdkg handoff create WORK_ID",
     "- mdkg task done TASK_ID --checkpoint \"Meaningful milestone\"",
     "",
