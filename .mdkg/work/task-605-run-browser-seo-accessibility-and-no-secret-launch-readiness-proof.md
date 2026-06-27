@@ -15,7 +15,7 @@ blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
 refs: [task-601, task-602, task-603, task-604]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -82,12 +82,14 @@ docs.mdkg.dev.
   `--profile concise` pack example across mdkg.dev, docs.mdkg.dev, demo
   READMEs, init scaffold README, smokes, Browser HTML validation, Chrome HTML
   validation, and built-file checks; see `chk-306`.
-- A refreshed read-only `git fetch origin main` plus public HTML fetch on
-  2026-06-27 after commit `5eccba7` still shows
-  `main...origin/main [ahead 8]`, npm package metadata at `0.3.9`, live
-  mdkg.dev `softwareVersion: "0.3.7"` with no 0.3.9 customization markers, and
-  live docs changelog containing some 0.3.9 text but no release-card/grid or
-  `.mdkg/config.json` markers.
+- Latest recorded live production currentness evidence remains `chk-302`,
+  `chk-303`, and `chk-304`: before the later local language/profile-syntax
+  commits, live mdkg.dev/docs.mdkg.dev were still built from older pushed
+  source and were not source-current.
+- Current local branch state after the local-only language/profile-syntax
+  commits is `main...origin/main [ahead 11]` at `419db20`; no new live
+  Browser/Chrome production validation has been run after those local commits
+  because live validation is reserved for the post-push/post-deploy boundary.
 - Do not close this task until an approved push/redeploy produces current
   production deployments and live Browser/Chrome verification passes.
 
