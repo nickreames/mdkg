@@ -2,20 +2,20 @@
 id: task-614
 type: task
 title: publish mdkg 0.4.0 after explicit approval
-status: todo
+status: done
 priority: 1
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, npm, publish, approval, release]
 owners: []
 links: []
-artifacts: []
+artifacts: [https://www.npmjs.com/package/mdkg/v/0.4.0]
 relates: []
 blocked_by: [task-613, test-317]
 blocks: [task-615, task-606, test-312]
 refs: [task-613, test-317, task-606, test-312]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-315]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-27
