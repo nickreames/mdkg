@@ -9,13 +9,13 @@ parent: goal-42
 tags: [0.4.0, browser, seo, a11y, no-secrets, launch-proof]
 owners: []
 links: []
-artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png, /private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html, /private/tmp/mdkg-goal42-live-refresh-docs-changelog.html]
+artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png, /private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html, /private/tmp/mdkg-goal42-live-refresh-docs-changelog.html, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-refresh-040-launch-track-section.png]
 relates: []
 blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
 refs: [task-601, task-602, task-603, task-604]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -74,6 +74,10 @@ docs.mdkg.dev.
   deployments built from an older pushed commit; see `chk-303`.
 - Read-only goal-42 readiness audit found the same exact gaps and added
   Product Design plus Browser evidence; see `chk-304`.
+- Local pre-publish Browser and Chrome validation for the revised `0.4.0`
+  web-launch language passed; `softwareVersion` remains `0.3.9`, the page
+  makes `mdkg@0.3.9` the published package baseline, and no unsupported
+  `mdkg@0.4.0` published-package claim is present; see `chk-305`.
 - A refreshed read-only `git fetch origin main` plus public HTML fetch on
   2026-06-27 after commit `5eccba7` still shows
   `main...origin/main [ahead 8]`, npm package metadata at `0.3.9`, live
