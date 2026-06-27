@@ -15,7 +15,7 @@ blocked_by: [spike-22]
 blocks: [task-605, task-606]
 refs: [spike-22]
 context_refs: []
-evidence_refs: [chk-295, chk-301, chk-302, chk-303]
+evidence_refs: [chk-295, chk-301, chk-302, chk-303, chk-308]
 aliases: []
 skills: [build-pack-and-execute-task]
 created: 2026-06-26

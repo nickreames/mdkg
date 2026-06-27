@@ -9,13 +9,13 @@ parent: goal-42
 tags: [0.4.0, browser, seo, a11y, no-secrets, launch-proof]
 owners: []
 links: []
-artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png, /private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html, /private/tmp/mdkg-goal42-live-refresh-docs-changelog.html, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/browser-profile-syntax-validation.json, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/chrome-profile-syntax-validation.json, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/chrome-docs-packs-and-handoffs.png]
+artifacts: [/private/tmp/mdkg-goal42-product-design-audit, mdkg-dev, docs, /private/tmp/mdkg-goal42-product-design-audit-20260627/product-design-audit.md, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-viewport-receipts.json, /private/tmp/mdkg-goal42-product-design-audit-20260627/browser-docs-polished-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/live-readonly-receipts.json, /private/tmp/mdkg-goal42-live-readonly-20260627/mdkg-dev-live-home.png, /private/tmp/mdkg-goal42-live-readonly-20260627/docs-mdkg-dev-live-changelog.png, /private/tmp/mdkg-goal42-live-refresh-mdkg-dev.html, /private/tmp/mdkg-goal42-live-refresh-docs-changelog.html, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/browser-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-local-validation.json, /private/tmp/mdkg-goal42-040-web-language-20260627/chrome-refresh-040-launch-track-section.png, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/browser-profile-syntax-validation.json, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/chrome-profile-syntax-validation.json, /private/tmp/mdkg-goal42-profile-syntax-validation-20260627/chrome-docs-packs-and-handoffs.png, /private/tmp/mdkg-goal42-current-local-validation-20260627, /private/tmp/mdkg-goal42-current-local-validation-20260627/browser-local-validation-final.json, /private/tmp/mdkg-goal42-current-local-validation-20260627/chrome-local-validation-final.json]
 relates: []
 blocked_by: [task-601, task-602, task-603, task-604, test-307, test-309]
 blocks: [test-308, test-310, task-606]
 refs: [task-601, task-602, task-603, task-604]
 context_refs: []
-evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307]
+evidence_refs: [chk-301, chk-302, chk-303, chk-304, chk-305, chk-306, chk-307, chk-308]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-26
@@ -90,6 +90,10 @@ docs.mdkg.dev.
   commits is `main...origin/main [ahead 11]` at `419db20`; no new live
   Browser/Chrome production validation has been run after those local commits
   because live validation is reserved for the post-push/post-deploy boundary.
+- Current local pre-publish Browser and Chrome validation passed after the
+  homepage language was tightened to say local validation is pre-publish, live
+  validation is post-publish/post-deploy after approval, and `MANIFEST.md`
+  naming is visible in the launch-track section; see `chk-308`.
 - Do not close this task until an approved push/redeploy produces current
   production deployments and live Browser/Chrome verification passes.
 
