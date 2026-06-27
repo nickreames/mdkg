@@ -25,6 +25,7 @@ const PROMPT_PREFIX = /^([$>#])\s+\S/;
 const PLACEHOLDER_TOKEN = /\b(?:WORK|GOAL|TASK|SPIKE|CHILD)_ID\b|\bCHILD_ALIAS\b/;
 const PLACEHOLDER_CONTEXT =
   /\b(replace|placeholder|concrete id|concrete ids|returned id|from your repo|use the .* id|uppercase placeholders)\b/i;
+const REQUIRED_MDKG_COMMAND_KEYS = ["manifest", "manifest list", "manifest show", "manifest validate"];
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -139,6 +140,13 @@ function contractIndex() {
     commands.set(command.key, command);
   }
   return commands;
+}
+
+function requireCommandKeys(commands) {
+  const missing = REQUIRED_MDKG_COMMAND_KEYS.filter((key) => !commands.has(key));
+  if (missing.length > 0) {
+    throw new Error(`command contract is missing required mdkg command keys: ${missing.join(", ")}`);
+  }
 }
 
 function matchMdkgCommand(command, commands) {
@@ -263,6 +271,7 @@ function main() {
     throw new Error(`missing command contract: ${contractPath}`);
   }
   const commands = contractIndex();
+  requireCommandKeys(commands);
   const files = PUBLIC_ROOTS.flatMap(walkFiles).sort();
   const examples = [];
   for (const filePath of files) {

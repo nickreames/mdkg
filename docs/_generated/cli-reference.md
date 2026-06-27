@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 7731504607851c08dd0b6fe1c29f58cc47271fdc20073e9ca0a010eefa9c2a77 -->
+<!-- contract-hash: 145781176fcd00d6b7c7edd8e013e902acea2ace8764dbf0bb063a8d3913a3e1 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -10,8 +10,8 @@ The page is generated from current command metadata in `dist/command-contract.js
 - Tool: mdkg
 - Package version: 0.3.8
 - Schema version: 1
-- Command count: 98
-- Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, global, goal, graph, guide, handoff, index, init, list, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
+- Command count: 102
+- Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, global, goal, graph, guide, handoff, index, init, list, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
 
 ## Categories
 
@@ -32,6 +32,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - index: 1
 - init: 1
 - list: 1
+- manifest: 4
 - mcp: 2
 - new: 1
 - next: 1
@@ -2781,6 +2782,202 @@ mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 ### Related commands
 
 none
+
+## manifest
+
+mdkg manifest command
+
+- Command: `mdkg manifest`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg manifest list [--json]
+mdkg manifest show <id-or-qid-or-alias> [--json]
+mdkg manifest validate [<id-or-qid-or-alias>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg manifest list [--json]
+mdkg manifest show <id-or-qid-or-alias> [--json]
+mdkg manifest validate [<id-or-qid-or-alias>] [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg manifest list`, `mdkg manifest show`, `mdkg manifest validate`
+
+## manifest list
+
+mdkg manifest list command
+
+- Command: `mdkg manifest list`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg manifest list [--json]
+```
+
+### Examples
+
+```bash
+mdkg manifest list [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg manifest`, `mdkg manifest show`, `mdkg manifest validate`
+
+## manifest show
+
+mdkg manifest show command
+
+- Command: `mdkg manifest show`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg manifest show <id-or-qid-or-alias> [--json]
+```
+
+### Examples
+
+```bash
+mdkg manifest show <id-or-qid-or-alias> [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg manifest`, `mdkg manifest list`, `mdkg manifest validate`
+
+## manifest validate
+
+mdkg manifest validate command
+
+- Command: `mdkg manifest validate`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use this command when the matching command family is the current workflow surface.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg manifest validate [<id-or-qid-or-alias>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg manifest validate [<id-or-qid-or-alias>] [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: none
+
+### Related commands
+
+`mdkg manifest`, `mdkg manifest list`, `mdkg manifest show`
 
 ## mcp
 

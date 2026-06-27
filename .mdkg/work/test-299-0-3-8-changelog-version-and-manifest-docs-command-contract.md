@@ -2,7 +2,7 @@
 id: test-299
 type: test
 title: 0.3.8 changelog version and manifest docs command contract
-status: todo
+status: done
 priority: 4
 tags: [release, polish, test, publish-readiness, 0-3-8]
 owners: []

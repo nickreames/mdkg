@@ -167,7 +167,21 @@ function assertContractReady(contract) {
   assert(contract.tool === "mdkg", "unexpected command contract tool");
   assert(/^[a-f0-9]{64}$/.test(contract.contract_hash), "invalid command contract hash");
   assert(contract.commands.length >= 80, "command contract is missing public commands");
-  for (const key of ["global", "status", "doctor", "fix plan", "fix apply", "fix ids", "db", "subgraph sync", "work trigger"]) {
+  for (const key of [
+    "global",
+    "status",
+    "doctor",
+    "fix plan",
+    "fix apply",
+    "fix ids",
+    "manifest",
+    "manifest list",
+    "manifest show",
+    "manifest validate",
+    "db",
+    "subgraph sync",
+    "work trigger",
+  ]) {
     contractCommand(contract, key);
   }
   for (const key of ["db", "subgraph sync", "workspace", "skill new"]) {
@@ -211,6 +225,14 @@ function executeDocumentedExamples(binPath, root) {
       assertOutput: (stdout) => {
         const parsed = parseJson(stdout);
         assert(parsed.count === 0, "fresh repo should have no SPEC records");
+      },
+    },
+    {
+      label: "manifest list json",
+      args: ["manifest", "list", "--json"],
+      assertOutput: (stdout) => {
+        const parsed = parseJson(stdout);
+        assert(parsed.count === 0, "fresh repo should have no MANIFEST records");
       },
     },
     {

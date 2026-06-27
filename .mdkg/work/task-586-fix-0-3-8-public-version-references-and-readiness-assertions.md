@@ -2,7 +2,7 @@
 id: task-586
 type: task
 title: fix 0.3.8 public version references and readiness assertions
-status: todo
+status: done
 priority: 2
 tags: [release, polish, version, publish-readiness, 0-3-8]
 owners: []

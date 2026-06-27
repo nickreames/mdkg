@@ -2,7 +2,7 @@
 id: test-298
 type: test
 title: 0.3.8 full publish dry-run recheck
-status: todo
+status: done
 priority: 5
 tags: [release, polish, test, publish-readiness, 0-3-8]
 owners: []

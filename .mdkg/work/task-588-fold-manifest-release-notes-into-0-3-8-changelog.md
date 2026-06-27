@@ -2,7 +2,7 @@
 id: task-588
 type: task
 title: fold MANIFEST release notes into 0.3.8 changelog
-status: todo
+status: done
 priority: 1
 tags: [release, polish, changelog, manifest, 0-3-8]
 owners: []
