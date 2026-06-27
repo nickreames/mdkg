@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 98ef16eca953806c0636c4a2f05bffb8b9089935f711f81cf4bddfd93dcffc1a -->
+<!-- contract-hash: 7731504607851c08dd0b6fe1c29f58cc47271fdc20073e9ca0a010eefa9c2a77 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -4918,13 +4918,13 @@ Beginner safety: Safe for initial grounding. It should not change repository fil
 ### Usage
 
 ```text
-mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
+mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
+mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
 ```
 
 ### Common flags

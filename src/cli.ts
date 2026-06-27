@@ -51,6 +51,9 @@ import {
   runCapabilityShowCommand,
 } from "./commands/capability";
 import {
+  runManifestListCommand,
+  runManifestShowCommand,
+  runManifestValidateCommand,
   runSpecListCommand,
   runSpecShowCommand,
   runSpecValidateCommand,
@@ -185,7 +188,8 @@ function printUsage(log: LogFn): void {
   log("  handoff     Create sanitized agent handoff prompts from graph context");
   log("  skill       Create, list, show, search, and validate skills");
   log("  capability  List, search, show, and resolve cached capability surfaces");
-  log("  spec        Legacy alias to list, show, and validate MANIFEST.md/SPEC.md capability records");
+  log("  manifest    List, show, and validate MANIFEST.md/SPEC.md capability records");
+  log("  spec        Legacy alias for `mdkg manifest` during the compatibility bridge");
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  graph       Clone, fork, import, and inspect mdkg graph references");
@@ -599,37 +603,54 @@ function printCapabilityHelp(log: LogFn, subcommand?: string): void {
   }
 }
 
-function printSpecHelp(log: LogFn, subcommand?: string): void {
+function printSpecHelp(log: LogFn, subcommand?: string, surface: "manifest" | "spec" = "spec"): void {
+  const command = surface === "manifest" ? "manifest" : "spec";
+  const legacyNote =
+    surface === "spec"
+      ? "  `mdkg spec` is the legacy alias for `mdkg manifest` during the compatibility bridge."
+      : undefined;
   switch ((subcommand ?? "").toLowerCase()) {
     case "list":
       log("Usage:");
-      log("  mdkg spec list [--json]");
+      log(`  mdkg ${command} list [--json]`);
       log("\nNotes:");
       log("  MANIFEST.md is canonical; SPEC.md remains a legacy alias for reusable capability surfaces.");
+      if (legacyNote) {
+        log(legacyNote);
+      }
       printGlobalOptions(log);
       return;
     case "show":
       log("Usage:");
-      log("  mdkg spec show <id-or-qid-or-alias> [--json]");
+      log(`  mdkg ${command} show <id-or-qid-or-alias> [--json]`);
       log("\nNotes:");
       log("  Shows one MANIFEST.md/SPEC.md capability record from the capability index.");
+      if (legacyNote) {
+        log(legacyNote);
+      }
       printGlobalOptions(log);
       return;
     case "validate":
       log("Usage:");
-      log("  mdkg spec validate [<id-or-qid-or-alias>] [--json]");
+      log(`  mdkg ${command} validate [<id-or-qid-or-alias>] [--json]`);
       log("\nNotes:");
       log("  With no reference, validates the graph and all MANIFEST.md/SPEC.md capability records.");
       log("  With a reference, also ensures that the specific manifest capability exists.");
+      if (legacyNote) {
+        log(legacyNote);
+      }
       printGlobalOptions(log);
       return;
     default:
       log("Usage:");
-      log("  mdkg spec list [--json]");
-      log("  mdkg spec show <id-or-qid-or-alias> [--json]");
-      log("  mdkg spec validate [<id-or-qid-or-alias>] [--json]");
+      log(`  mdkg ${command} list [--json]`);
+      log(`  mdkg ${command} show <id-or-qid-or-alias> [--json]`);
+      log(`  mdkg ${command} validate [<id-or-qid-or-alias>] [--json]`);
       log("\nNotes:");
       log("  MANIFEST.md is canonical and reusable-capability oriented; SPEC.md remains a legacy alias.");
+      if (legacyNote) {
+        log(legacyNote);
+      }
       log("  Use `mdkg capability ...` for broader skill, MANIFEST.md/SPEC.md, WORK.md, core-doc, and design-doc discovery.");
       printGlobalOptions(log);
   }
@@ -1284,6 +1305,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
     case "capability":
       printCapabilityHelp(log, subcommand);
       return;
+    case "manifest":
+      printSpecHelp(log, subcommand, "manifest");
+      return;
     case "spec":
       printSpecHelp(log, subcommand);
       return;
@@ -1847,43 +1871,47 @@ function runCapabilitySubcommand(parsed: ParsedArgs, root: string): ExitCode {
   }
 }
 
-function runSpecSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+function runSpecSubcommand(parsed: ParsedArgs, root: string, surface: "manifest" | "spec" = "spec"): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  const command = surface === "manifest" ? "manifest" : "spec";
   switch (subcommand) {
     case "list": {
       if (parsed.positionals.length > 2) {
-        throw new UsageError("spec list does not accept positional arguments");
+        throw new UsageError(`${command} list does not accept positional arguments`);
       }
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      runSpecListCommand({ root, json, noCache, noReindex });
+      const runList = surface === "manifest" ? runManifestListCommand : runSpecListCommand;
+      runList({ root, json, noCache, noReindex });
       return 0;
     }
     case "show": {
       const id = parsed.positionals[2];
       if (!id || parsed.positionals.length > 3) {
-        throw new UsageError("spec show requires <id-or-qid-or-alias>");
+        throw new UsageError(`${command} show requires <id-or-qid-or-alias>`);
       }
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      runSpecShowCommand({ root, id, json, noCache, noReindex });
+      const runShow = surface === "manifest" ? runManifestShowCommand : runSpecShowCommand;
+      runShow({ root, id, json, noCache, noReindex });
       return 0;
     }
     case "validate": {
       const id = parsed.positionals[2];
       if (parsed.positionals.length > 3) {
-        throw new UsageError("spec validate accepts at most one SPEC reference");
+        throw new UsageError(`${command} validate accepts at most one manifest reference`);
       }
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
-      runSpecValidateCommand({ root, id, json, noCache, noReindex });
+      const runValidate = surface === "manifest" ? runManifestValidateCommand : runSpecValidateCommand;
+      runValidate({ root, id, json, noCache, noReindex });
       return 0;
     }
     default:
-      throw new UsageError("spec requires list/show/validate");
+      throw new UsageError(`${command} requires list/show/validate`);
   }
 }
 
@@ -2883,6 +2911,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runSkillSubcommand(parsed, root);
     case "capability":
       return runCapabilitySubcommand(parsed, root);
+    case "manifest":
+      return runSpecSubcommand(parsed, root, "manifest");
     case "spec":
       return runSpecSubcommand(parsed, root);
     case "archive":

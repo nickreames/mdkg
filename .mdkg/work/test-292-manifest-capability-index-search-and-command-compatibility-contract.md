@@ -2,7 +2,7 @@
 id: test-292
 type: test
 title: manifest capability index search and command compatibility contract
-status: todo
+status: done
 priority: 1
 epic: epic-196
 parent: goal-37
@@ -20,7 +20,7 @@ aliases: [manifest-index-search-contract, spec-command-compatibility-contract, m
 skills: []
 cases: [capability-kind-manifest, legacy-kind-spec, search-manifest-md, search-spec-md]
 created: 2026-06-25
-updated: 2026-06-25
+updated: 2026-06-26
 ---
 # Overview
 
@@ -48,9 +48,26 @@ Build and index are current after canonical and legacy fixtures are added.
 
 # Results / Evidence
 
-Pending implementation.
+- PASS: `node --test dist/tests/commands/capability.test.js` covers
+  canonical `MANIFEST.md` capability records, legacy `SPEC.md` records,
+  manifest metadata, and bridge search aliases.
+- PASS: `node --test dist/tests/commands/spec.test.js` covers
+  `mdkg manifest list/show/validate`, retained `mdkg spec list/show/validate`,
+  manifest-first JSON metadata, and legacy alias help text.
+- PASS: `node --test dist/tests/commands/cli.test.js` and
+  `node --test dist/tests/commands/cli_help_matrix.test.js` cover CLI help
+  routing for `manifest` and `spec`.
+- PASS: `npm run smoke:capabilities`.
+- PASS: `node dist/cli.js capability search "MANIFEST.md legacy SPEC.md" --json`
+  returned `dec-50`, `edd-54`, and the dogfood `spec.mdkg-cli` record.
+- PASS: `node dist/cli.js capability search "spec.md compatibility alias" --json`
+  returned `dec-50`, `edd-54`, and the dogfood `spec.mdkg-cli` record.
+- PASS: `node dist/cli.js manifest list --json` returned the dogfood
+  manifest capability record through the canonical command surface.
 
 # Notes / Follow-ups
 
-- If `kind: spec` must remain in JSON for compatibility, record the migration
-  shape and expose manifest metadata alongside it.
+- Compatibility shape selected: capability records keep `kind: spec` for
+  existing consumers and expose `manifest.semantic_kind`,
+  `manifest.source_basename`, `manifest.compatibility_mode`, `manifest.legacy`,
+  `manifest.deprecated`, and command-family metadata alongside it.

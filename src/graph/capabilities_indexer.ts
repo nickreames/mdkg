@@ -4,7 +4,11 @@ import path from "path";
 import { Config, WorkspaceConfig } from "../core/config";
 import { FrontmatterValue } from "./frontmatter";
 import { Index, IndexNode, buildIndex } from "./indexer";
-import { isManifestSemanticType } from "./agent_file_types";
+import {
+  CANONICAL_MANIFEST_BASENAME,
+  LEGACY_SPEC_BASENAME,
+  isManifestSemanticType,
+} from "./agent_file_types";
 import {
   buildSkillIndexEntryForWorkspace,
   listSkillMarkdownFiles,
@@ -52,6 +56,18 @@ export type CapabilityRecord = {
     extensions: Record<string, Record<string, FrontmatterValue>>;
   };
   spec?: Record<string, FrontmatterValue>;
+  manifest?: {
+    semantic_kind: "manifest";
+    source_basename: string;
+    source_type: string;
+    canonical_basename: typeof CANONICAL_MANIFEST_BASENAME;
+    legacy_basename: typeof LEGACY_SPEC_BASENAME;
+    compatibility_mode: "canonical" | "legacy" | "transitional";
+    legacy: boolean;
+    deprecated: boolean;
+    command_family: "manifest";
+    legacy_command_family: "spec";
+  };
   work?: Record<string, FrontmatterValue>;
   linkage?: {
     spec_qids: string[];
@@ -261,6 +277,48 @@ function buildCapabilityLinkage(index: Index, node: IndexNode, kind: CapabilityK
   };
 }
 
+function manifestCapabilityMetadata(node: IndexNode): CapabilityRecord["manifest"] | undefined {
+  if (!isManifestSemanticType(node.type)) {
+    return undefined;
+  }
+  const sourceBasename = path.posix.basename(node.path);
+  const compatibilityMode =
+    sourceBasename === LEGACY_SPEC_BASENAME
+      ? "legacy"
+      : node.type === "spec"
+        ? "transitional"
+        : "canonical";
+  return {
+    semantic_kind: "manifest",
+    source_basename: sourceBasename,
+    source_type: node.type,
+    canonical_basename: CANONICAL_MANIFEST_BASENAME,
+    legacy_basename: LEGACY_SPEC_BASENAME,
+    compatibility_mode: compatibilityMode,
+    legacy: compatibilityMode !== "canonical",
+    deprecated: compatibilityMode !== "canonical",
+    command_family: "manifest",
+    legacy_command_family: "spec",
+  };
+}
+
+function manifestSearchAliases(metadata: CapabilityRecord["manifest"]): string[] {
+  if (!metadata) {
+    return [];
+  }
+  return [
+    "manifest",
+    "manifest.md",
+    "MANIFEST.md",
+    "manifest capability",
+    "MANIFEST.md legacy SPEC.md",
+    "spec.md compatibility alias",
+    "legacy spec.md",
+    metadata.compatibility_mode,
+    metadata.source_basename,
+  ];
+}
+
 function nodeCapabilityRecord(
   root: string,
   config: Config,
@@ -271,6 +329,7 @@ function nodeCapabilityRecord(
 ): CapabilityRecord {
   const absolutePath = path.resolve(root, node.path);
   const content = fs.readFileSync(absolutePath, "utf8");
+  const manifest = kind === "spec" ? manifestCapabilityMetadata(node) : undefined;
   const record: CapabilityRecord = {
     kind,
     workspace: node.ws,
@@ -281,7 +340,7 @@ function nodeCapabilityRecord(
     title: node.title,
     tags: [...node.tags],
     refs: [...node.refs],
-    aliases: [...node.aliases],
+    aliases: Array.from(new Set([...node.aliases, ...manifestSearchAliases(manifest)])),
     links: [...node.links],
     artifacts: [...node.artifacts],
     updated: node.updated,
@@ -292,6 +351,7 @@ function nodeCapabilityRecord(
   };
 
   if (kind === "spec") {
+    record.manifest = manifest;
     record.spec = pickAttributes(node.attributes, [
       "version",
       "spec_kind",
