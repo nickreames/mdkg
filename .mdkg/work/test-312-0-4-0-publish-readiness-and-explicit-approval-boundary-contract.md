@@ -2,20 +2,20 @@
 id: test-312
 type: test
 title: 0.4.0 publish readiness and explicit approval boundary contract
-status: todo
+status: done
 priority: 2
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, publish-readiness, npm, approval, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [https://www.npmjs.com/package/mdkg/v/0.4.0, https://mdkg.dev/, https://docs.mdkg.dev/project/changelog/, /private/tmp/mdkg-0.4.0-chrome-live-20260627/chrome-live-validation-receipt.json]
 relates: []
 blocked_by: [task-606, task-612, test-316, task-613, test-317, task-614, task-615, test-318, task-616, test-319, task-617, test-320]
 blocks: []
-refs: [task-606, task-612, test-316, task-613, test-317, task-614, task-615, test-318, task-616, test-319, task-617, test-320]
+refs: [task-606, task-612, test-316, task-613, test-317, task-614, task-615, test-318, task-616, test-319, task-617, test-320, chk-315, chk-316, chk-317, chk-318, chk-319, chk-320, chk-321, chk-322, chk-323, chk-324, chk-325]
 context_refs: []
-evidence_refs: [chk-310]
+evidence_refs: [chk-310, chk-326]
 aliases: []
 skills: []
 cases: []
@@ -60,7 +60,7 @@ contracts are complete or their gaps are known and recorded.
 
 # Results / Evidence
 
-Pending implementation.
+Passed. See `chk-326`.
 
 # Notes / Follow-ups
 

@@ -2,20 +2,20 @@
 id: task-616
 type: task
 title: deploy and verify mdkg.dev and docs.mdkg.dev on Vercel after npm publish
-status: todo
+status: done
 priority: 1
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, vercel, mdkg-dev, docs, deploy, approval, production]
 owners: []
 links: []
-artifacts: []
+artifacts: [https://mdkg.dev/, https://www.mdkg.dev/, https://docs.mdkg.dev/project/changelog/, https://vercel.com/nicholas-reames-projects/mdkg-dev/2FeaoHwN9daYMreGoD97oufN7i7d, https://vercel.com/nicholas-reames-projects/mdkg-docs/HoDTghjzwAkK66QLjGKjAkLEracQ]
 relates: []
 blocked_by: [task-615, test-318]
 blocks: [test-319, task-617, task-605, task-606, test-312]
 refs: [task-615, test-318, task-605, task-606, test-312]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-318]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-27

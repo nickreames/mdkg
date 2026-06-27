@@ -2,20 +2,20 @@
 id: test-319
 type: test
 title: Vercel production currentness and domain contract
-status: todo
+status: done
 priority: 1
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, vercel, production, domains, currentness, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [https://mdkg.dev/, https://www.mdkg.dev/, https://docs.mdkg.dev/project/changelog/, https://vercel.com/nicholas-reames-projects/mdkg-dev/2FeaoHwN9daYMreGoD97oufN7i7d, https://vercel.com/nicholas-reames-projects/mdkg-docs/HoDTghjzwAkK66QLjGKjAkLEracQ]
 relates: []
 blocked_by: [task-616]
 blocks: [task-617, task-605, task-606, test-312]
 refs: [task-616, task-605, task-606, test-312]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-319]
 aliases: []
 skills: []
 cases: []
@@ -51,7 +51,7 @@ approval.
 
 # Results / Evidence
 
-Pending implementation.
+Passed. See `chk-319`.
 
 # Notes / Follow-ups
 

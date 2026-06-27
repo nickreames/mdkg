@@ -2,25 +2,25 @@
 id: test-311
 type: test
 title: article launch support contract
-status: todo
+status: done
 priority: 2
 epic: epic-203
 parent: goal-42
 tags: [0.4.0, article, announcement, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [https://mdkg.dev/, https://docs.mdkg.dev/project/changelog/]
 relates: []
 blocked_by: [task-606]
 blocks: []
-refs: [task-606]
+refs: [task-606, chk-324]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-325]
 aliases: []
 skills: []
 cases: []
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 ---
 # Overview
 
@@ -46,7 +46,7 @@ Run after article-support materials and launch readiness evidence exist.
 
 # Results / Evidence
 
-Pending implementation.
+Passed. See `chk-325`.
 
 # Notes / Follow-ups
 

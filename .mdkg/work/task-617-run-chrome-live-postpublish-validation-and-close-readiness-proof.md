@@ -2,20 +2,20 @@
 id: task-617
 type: task
 title: run Chrome live postpublish validation and close readiness proof
-status: todo
+status: done
 priority: 1
 epic: epic-204
 parent: goal-42
 tags: [0.4.0, chrome, live-validation, postpublish, mdkg-dev, docs]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-0.4.0-chrome-live-20260627, /private/tmp/mdkg-0.4.0-chrome-live-20260627/chrome-live-validation-receipt.json, /private/tmp/mdkg-0.4.0-chrome-live-20260627/mdkg-dev-home-desktop.png, /private/tmp/mdkg-0.4.0-chrome-live-20260627/mdkg-dev-home-mobile.png, /private/tmp/mdkg-0.4.0-chrome-live-20260627/docs-changelog-desktop.png, /private/tmp/mdkg-0.4.0-chrome-live-20260627/docs-changelog-mobile.png]
 relates: []
 blocked_by: [task-616, test-319]
 blocks: [test-320, task-605, task-606, test-312]
 refs: [task-616, test-319, task-605, task-606, test-312]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-320]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-27

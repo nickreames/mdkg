@@ -2,12 +2,12 @@
 id: goal-42
 type: goal
 title: Complete mdkg 0.4.0 public docs launch and release notes surface
-status: progress
+status: done
 priority: 2
-goal_state: active
+goal_state: achieved
 goal_condition: 0.4.0 is ready only after package metadata, changelog, generated docs, mdkg.dev, and docs.mdkg.dev are aligned to the 0.4.0 target; full local prepublish gates, npm pack dry-run, and npm publish dry-run pass; mdkg@0.4.0 is published only after explicit approval; npm postpublish registry and clean temp-install validation pass; mdkg.dev and docs.mdkg.dev are pushed/deployed through Vercel only after explicit approval; Chrome live production validation proves current 0.4.0 public pages; and a final checkpoint recommends launch-ready or lists exact remaining blockers.
 scope_refs: [epic-202, epic-203, epic-204, spike-22, task-601, task-602, task-603, task-604, task-605, task-606, task-610, task-611, task-612, task-613, task-614, task-615, task-616, task-617, test-307, test-308, test-309, test-310, test-311, test-312, test-314, test-316, test-317, test-318, test-319, test-320]
-active_node: task-616
+last_active_node: task-606
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint, product-design-audit, browser-control-in-app-browser, chrome-control-chrome]
 required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, 0.4.0 changelog and release notes mapping for every publish-bound change, visible version-reference drift audit including package lock generated docs mdkg-dev structured metadata and docs changelog cards, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.4.0 version --registry=https://registry.npmjs.org/, node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:demo-graph, required plugin skill product-design:audit, required plugin skill browser:control-in-app-browser, required plugin skill chrome:control-chrome, Vercel project inspection for team_RkZhrKQs9wWs6PAdTcrwZ87z projects prj_R9FJkRf2FsmcM9cuIyQbPTV9A056 and prj_3Aoh90VnkqNmqM6AnX9t72fSULEd, Product Design audit artifact folder for mdkg.dev and docs.mdkg.dev, Browser local desktop/mobile E2E receipts for mdkg.dev and docs.mdkg.dev, Chrome live production verification receipts for mdkg.dev and docs.mdkg.dev after npm postpublish validation, live docs.mdkg.dev changelog includes 0.4.0 release coverage, no-secret public content audit, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm postpublish registry dist-tag and temp global install validation for mdkg@0.4.0, Vercel production deployment currentness and domain verification for mdkg.dev and docs.mdkg.dev, publish and launch readiness recommendation or remaining-gaps report, explicit approval before real 0.4.0 npm publish git tag push Vercel deploy DNS analytics or production promotion, git diff --check]
 max_iterations: 25
@@ -15,13 +15,13 @@ blocked_after_attempts: 3
 tags: [release, 0.4.0, mdkg-dev, docs, release-notes, launch]
 owners: []
 links: []
-artifacts: []
+artifacts: [https://www.npmjs.com/package/mdkg/v/0.4.0, https://mdkg.dev/, https://docs.mdkg.dev/project/changelog/, /private/tmp/mdkg-0.4.0-chrome-live-20260627/chrome-live-validation-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
 refs: []
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-324, chk-326]
 aliases: []
 skills: []
 created: 2026-06-26
@@ -157,13 +157,10 @@ preserving its useful docs, SEO, trust, and public-example context.
 
 # Current State
 
-- Created by the graph-only 0.3.9/0.4.0 consolidation pass.
-- Current first actionable node is `task-612`.
-- `goal-43` owns the completed 0.3.9 npm publish and post-publish validation
-  lane.
-- Inherits the stable `0.3.9` published baseline, but final launch proof now
-  depends on `0.4.0` package metadata, npm publish/postpublish validation,
-  Vercel production currentness, and Chrome live proof.
+- Completed on 2026-06-27.
+- `mdkg@0.4.0` is published and npm `latest`.
+- `mdkg.dev` and `docs.mdkg.dev` are live-current for 0.4.0 release facts.
+- Final recommendation: `launch ready`.
 
 # Context Refs
 
@@ -187,6 +184,10 @@ preserving its useful docs, SEO, trust, and public-example context.
   release notes drift, prepublish dry-runs, approval-gated npm publish,
   npm postpublish validation, Vercel production currentness, and Chrome live
   postpublish validation. First actionable node is `task-612`.
+- 2026-06-27: Completed source/package/docs/site preparation, local gates,
+  npm publish/postpublish validation, Vercel production currentness, Chrome
+  live validation, no-secret checks, article-support contract, and final
+  approval-boundary contract.
 
 # Skill Improvement Candidates
 
@@ -194,4 +195,17 @@ preserving its useful docs, SEO, trust, and public-example context.
 
 # Completion Evidence
 
-- Pending.
+- `chk-315`: real `mdkg@0.4.0` npm publish completed after explicit approval.
+- `chk-316` and `chk-317`: npm registry, dist-tag, temp global install, and
+  temp workspace probes passed for the published package.
+- `chk-318` and `chk-319`: Vercel production deployments and custom domains
+  are current for `mdkg.dev` and `docs.mdkg.dev`.
+- `chk-320`: Chrome live desktop/mobile validation passed for the live homepage
+  and docs changelog.
+- `chk-321`: end-to-end publish and launch contract passed.
+- `chk-322` and `chk-323`: Browser/Product Design/SEO/accessibility/no-secret
+  launch proof passed.
+- `chk-324`: final recommendation recorded as `launch ready`.
+- `chk-325`: article launch support contract passed.
+- `chk-326`: publish-readiness and explicit approval-boundary contract passed;
+  final npm registry refresh returned latest `0.4.0`.
