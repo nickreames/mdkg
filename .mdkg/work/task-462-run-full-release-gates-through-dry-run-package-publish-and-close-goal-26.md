@@ -2,7 +2,7 @@
 id: task-462
 type: task
 title: run full release gates through dry-run package publish and close goal-26
-status: blocked
+status: done
 priority: 1
 epic: epic-130
 parent: goal-26
@@ -15,7 +15,7 @@ blocked_by: [task-461]
 blocks: []
 refs: []
 context_refs: [chk-194]
-evidence_refs: []
+evidence_refs: [chk-282, chk-283]
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-06-22
@@ -66,3 +66,11 @@ Run the full goal-26 release-readiness gate chain through dry-run package/publis
 - goal-26
 - test-211
 - chk-200
+
+# Supersession Note
+
+Closed as historical/superseded on 2026-06-26. This task was not revived or
+rerun under its original no-public-side-effect pre-release boundary. The
+remaining blocker became obsolete after the approved `mdkg@0.3.8` publish and
+isolated installed-package validation recorded in `chk-282`; `goal-26` is now
+archived and replacement release work is under `goal-41`.

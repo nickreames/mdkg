@@ -2,12 +2,12 @@
 id: goal-20
 type: goal
 title: Complete mdkg 0.3.9 live demo graph and deployment orchestration readiness
-status: todo
+status: archived
 priority: 2
-goal_state: paused
+goal_state: archived
 goal_condition: 0.3.9 is dry-run publish ready after live demo template graphs can drive preview deployments, durable demo subdomains, teardown, and promotion without destabilizing canonical mdkg.dev SEO.
 scope_refs: [epic-98, epic-99, epic-100, spike-9, task-398, task-399, task-400, task-401, task-402, task-403, test-171, test-172, test-173]
-active_node: spike-9
+last_active_node: spike-9
 required_skills: [pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run cli:contract, node dist/cli.js validate --json, npm run smoke:demo-graph, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run, git diff --check]
 max_iterations: 30
@@ -19,11 +19,12 @@ artifacts: []
 relates: []
 blocked_by: []
 blocks: []
-refs: []
+refs: [chk-283]
+evidence_refs: [chk-283]
 aliases: []
 skills: []
 created: 2026-06-16
-updated: 2026-06-16
+updated: 2026-06-26
 ---
 # Objective
 
@@ -77,6 +78,13 @@ Prepare mdkg for live agent-coding demos where a cloned template graph can drive
 
 Paused until 0.3.8 warning-scale diagnostics and multi-repo UX hardening is complete.
 
+Archived on 2026-06-26 by `chk-283`. The goal's demo/Vercel scope was too
+narrow and stale for the next `0.3.9` release lane after the real `0.3.8`
+publish. Replacement ownership is split:
+
+- `goal-41` owns the `0.3.9` CLI/kernel extensibility and release-polish lane.
+- `goal-42` owns public examples, demo proof, and mdkg.dev/docs launch polish.
+
 # Release Boundary
 
 No real npm publish, git tag, git push, website deploy, or child-repo mutation is included unless separately requested.
@@ -88,4 +96,4 @@ No real npm publish, git tag, git push, website deploy, or child-repo mutation i
 
 # Completion Evidence
 
-- Pending.
+- Superseded by `goal-41` and `goal-42`; see `chk-283`.
