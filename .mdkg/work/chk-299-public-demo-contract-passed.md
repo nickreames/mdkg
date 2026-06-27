@@ -23,67 +23,76 @@ updated: 2026-06-27
 ---
 # Summary
 
-What was completed in this phase? What is now true?
+The public examples and deterministic demo contract passed. The demo smoke
+validated the examples and launch-support claims with bounded local checks.
 
 # Scope Covered
 
-Keep `scope` frontmatter updated when possible.
+Scope is `test-309`: prove public examples and deterministic demos support the
+launch claims.
 
 ## Changed Surfaces
 
-- files, commands, nodes, docs, or runtime surfaces changed
+- test evidence for `test-309`
+- example/demo smoke coverage
 
 ## Boundaries
 
-- in scope:
-- out of scope:
-- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded:
+- in scope: local public examples and demo graph contract.
+- out of scope: hosted demo subdomains, production promotion, DNS, analytics,
+  npm publish, and git tag.
+- raw secrets, raw prompts, raw payloads, and bulky execution traces excluded.
 
 # Decisions Captured
 
-Link the most important decision records.
+- Demo readiness is proven by deterministic local smoke here; hosted demo
+  promotion remains a separate approval boundary.
 
 # Implementation Summary
 
-What changed? What patterns or architecture emerged?
+`npm run smoke:demo-graph` passed. It validates examples, deterministic
+first-success path behavior, bounded pack stats, capability search, read-only
+subgraphs, and no high-risk markers.
 
 # Test Proof
 
-- Test target:
-- Fixtures or temp repos:
-- Coverage gaps:
+- Test target: `task-604`, examples, and demo graph smoke.
+- Fixtures or temp repos: local `examples/` workspaces.
+- Coverage gaps: no hosted demo verification.
 
 # Verification / Testing
 
 ## Command Evidence
 
-- command:
-- result:
+- command: `npm run smoke:demo-graph`
+- result: passed.
 
 ## Pass / Fail Status
 
-- status:
+- status: pass for local demo contract.
 
 ## Known Warnings
 
-- warning:
+- warning: demo subdomain deployment remains out of scope without explicit
+  approval.
 
 # Known Issues / Follow-ups
 
-- issue 1
-- issue 2
+- preserve bounded, public-safe demo receipts for final launch closeout.
 
 ## Follow-up Refs
 
-- task/test/goal refs:
+- `task-604`
+- `task-605`
+- `goal-42`
 
 # Links / Artifacts
 
-- packs
-- PRs/commits
-- docs
-- dashboards
+- `test-309`
+- `examples/`
+- `scripts/`
 
 # Raw Content Safety
 
-- Summarize evidence and use refs, hashes, and artifact links instead of raw secrets, raw prompts, raw payloads, or bulky execution traces.
+- Summarized command receipts only; no raw secrets, raw prompts, raw payloads,
+  or bulky logs are stored here.
