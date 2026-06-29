@@ -2,14 +2,14 @@
 id: test-321
 type: test
 title: website demo template goal only startup contract
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, template, goal, next, pack]
 owners: []
 links: []
-artifacts: []
+artifacts: [examples/demo-runs/demo-001/DEMO_RUN_RECEIPT.md, scripts/smoke-demo-graph.js]
 relates: []
 blocked_by: [task-618, task-620]
 blocks: [task-621]

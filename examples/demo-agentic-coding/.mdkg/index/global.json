@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-06-27T22:42:30.274Z",
+    "generated_at": "2026-06-29T17:18:12.082Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/demo-agentic-coding",
     "workspaces": [
       "root"
