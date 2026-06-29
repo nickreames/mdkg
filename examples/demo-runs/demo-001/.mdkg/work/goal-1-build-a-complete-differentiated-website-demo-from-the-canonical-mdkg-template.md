@@ -2,12 +2,12 @@
 id: goal-1
 type: goal
 title: Build a complete differentiated website demo from the canonical mdkg template
-status: todo
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: A complete, local, differentiated Astro plus React Islands website demo is built from this template, follows the Ocean Flow design system, records the creative direction and validation evidence, and closes with a recommendation to discard, polish, or request a Vercel preview under the parent repo workflow.
 scope_refs: [epic-1, spike-1, task-1, test-1]
-active_node: spike-1
+last_active_node: test-1
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [mdkg validate --json, mdkg index, mdkg goal next goal-1 --json, mdkg pack spike-1 --profile concise --dry-run --stats]
 max_iterations: 25

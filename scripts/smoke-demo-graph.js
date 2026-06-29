@@ -10,7 +10,7 @@ const {
   repoRoot,
 } = require("./mdkg-dev-smoke-utils");
 
-function assertExample(rootRel, searchText, expectedTitle) {
+function assertExample(rootRel, searchText, expectedTitle, options = {}) {
   const root = path.join(repoRoot, rootRel);
   const startedAt = Date.now();
   const validate = parseJson(mdkg(["--root", root, "validate", "--json"]).stdout);
@@ -19,7 +19,14 @@ function assertExample(rootRel, searchText, expectedTitle) {
 
   mdkg(["--root", root, "index"]);
   const next = parseJson(mdkg(["--root", root, "goal", "next", "goal-1", "--json"]).stdout);
-  assert(next.node && next.node.id === "spike-1", `${rootRel} goal next did not route to spike-1`);
+  if (options.allowAchievedGoal) {
+    assert(
+      (next.node && next.node.id === "spike-1") || (next.node === null && next.goal.goal_state === "achieved"),
+      `${rootRel} goal next did not route to spike-1 or an achieved goal`
+    );
+  } else {
+    assert(next.node && next.node.id === "spike-1", `${rootRel} goal next did not route to spike-1`);
+  }
   const allowedWarning = "scope contains non-actionable or unsupported node: root:chk-1";
   assert(
     (next.warnings || []).every((warning) => warning === allowedWarning),
@@ -92,7 +99,8 @@ function main() {
   assertExample(
     "examples/demo-runs/demo-001",
     "differentiated website demo",
-    "Build a complete differentiated website demo from the canonical mdkg template"
+    "Build a complete differentiated website demo from the canonical mdkg template",
+    { allowAchievedGoal: true }
   );
 
   const subgraphs = parseJson(mdkg(["subgraph", "verify", "--all", "--json"]).stdout);

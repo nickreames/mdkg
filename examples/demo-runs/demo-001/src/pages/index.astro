@@ -1,0 +1,164 @@
+---
+import flowMap from "../assets/ocean-flow-map.svg";
+import GoalRunConsole from "../components/GoalRunConsole";
+import "../styles/global.css";
+
+const steps = [
+  {
+    title: "Fork the graph",
+    body: "Start from the canonical template and preserve the one-goal namespace for the run."
+  },
+  {
+    title: "Shape the direction",
+    body: "Use the creative intake to choose audience, offer, structure, and motion without storing raw prompts."
+  },
+  {
+    title: "Build locally",
+    body: "Generate the Astro page and focused React Islands before any preview request."
+  },
+  {
+    title: "Gate the preview",
+    body: "Browser, Chrome, no-secret, and public-claims evidence decide whether a Vercel preview is worth approval."
+  }
+];
+
+const safety = [
+  {
+    title: "Source-backed copy",
+    body: "The page describes mdkg graph, pack, validation, and preview boundaries without inventing production claims."
+  },
+  {
+    title: "No raw payloads",
+    body: "Creative direction is summarized; raw prompts, provider payloads, credentials, and private context stay out."
+  },
+  {
+    title: "Local first",
+    body: "The demo builds and verifies locally before requesting Vercel project or deployment approval."
+  },
+  {
+    title: "Forkable by design",
+    body: "A run can be compared, discarded, polished, or promoted without rewriting the canonical template."
+  }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta
+      name="description"
+      content="A forked mdkg website demo run showing one-goal startup, Ocean Flow design, Astro plus React Islands, and local preview gating."
+    />
+    <title>mdkg Demo 001</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="nav">
+        <div class="nav-inner">
+          <a class="brand" href="#top" aria-label="mdkg demo home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>mdkg demo 001</span>
+          </a>
+          <nav class="nav-links" aria-label="Demo sections">
+            <a href="#workflow">Workflow</a>
+            <a href="#console">Console</a>
+            <a href="#safety">Safety</a>
+          </nav>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-inner">
+            <div class="hero-copy">
+              <h1 id="hero-title">Agent-ready demo websites from one mdkg goal</h1>
+              <p>
+                This forked run turns a reusable mdkg graph into a complete local website candidate:
+                Ocean Flow design, Astro static structure, a focused React Island, and preview gates
+                that keep public hosting approval separate.
+              </p>
+              <div class="actions" aria-label="Primary actions">
+                <a class="button primary" href="#console">Inspect the run</a>
+                <a class="button secondary" href="#safety">Review safety gates</a>
+              </div>
+            </div>
+            <div class="hero-visual" aria-label="Demo graph flow">
+              <img src={flowMap.src} width="980" height="620" alt="Ocean Flow graph map showing goal, creative direction, build, local proof, and preview gate." />
+            </div>
+          </div>
+        </section>
+
+        <section id="workflow" class="section" aria-labelledby="workflow-title">
+          <h2 id="workflow-title">A forked run stays structured while the website idea changes.</h2>
+          <p class="section-lede">
+            The template fixes the operational rails. The creative direction can change every run,
+            which is how repeated demo attempts produce different websites instead of one cloned page.
+          </p>
+          <div class="flow-grid">
+            {steps.map((step, index) => (
+              <article class="flow-step">
+                <strong>{index + 1}</strong>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="console" class="section split" aria-labelledby="console-title">
+          <div>
+            <h2 id="console-title">The React Island makes the graph run inspectable.</h2>
+            <p class="section-lede">
+              A small island shows the selected stage, command, node, and evidence posture without
+              turning the whole page into a client app.
+            </p>
+            <ul class="proof-list" aria-label="Local proof points">
+              <li><span>1</span><p><strong>Goal-only startup.</strong> `goal-1` routes to `spike-1` without hidden chat context.</p></li>
+              <li><span>2</span><p><strong>Concise pack handoff.</strong> The first pack includes the graph, decisions, EDD, test, and skills.</p></li>
+              <li><span>3</span><p><strong>Preview boundary.</strong> Vercel remains approval-gated after local proof.</p></li>
+            </ul>
+          </div>
+          <GoalRunConsole client:load />
+        </section>
+
+        <section id="safety" class="section safety-band" aria-labelledby="safety-title">
+          <h2 id="safety-title">The demo is public-safe before it is preview-worthy.</h2>
+          <p class="section-lede">
+            Every retained artifact should help a reviewer decide whether to discard, polish, or request
+            preview approval. Nothing here promotes durable hosting or claims a production launch.
+          </p>
+          <div class="safety-grid">
+            {safety.map((item) => (
+              <article class="safety-item">
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="next-title">
+          <div class="final-cta">
+            <div>
+              <h2 id="next-title">Next move: validate locally, then decide whether preview approval is worth requesting.</h2>
+              <p class="section-lede">
+                This run is intentionally local-first. Vercel project creation, preview deployment,
+                DNS, aliases, analytics, tags, pushes, and npm publishing all require separate approval.
+              </p>
+            </div>
+            <a class="button primary" href="#top">Return to top</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="section" style="padding: 0;">
+          <p>mdkg demo 001. Local preview candidate only.</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
