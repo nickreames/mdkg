@@ -21,6 +21,8 @@ while preserving a recognizable visual baseline and safe demo boundaries.
 
 - `DESIGN.md` defines the Ocean Flow visual system.
 - `WEBSITE_DEMO_TEMPLATE_BRIEF.md` defines the operator-facing brief.
+- `CREATIVE_PRODUCTION_INTAKE.md` defines the optional Creative Production
+  ideation contract and retained summary shape.
 - `goal-1` drives a complete local website run.
 - `spike-1` chooses audience, offer, structure, and creative direction.
 - `task-1` implements the site using Astro plus React Islands.
@@ -29,7 +31,8 @@ while preserving a recognizable visual baseline and safe demo boundaries.
 # Data model
 
 - Creative direction: audience, offer, page structure, motion/interaction
-  concept, and asset needs.
+  concept, React Island candidates, asset needs, source-backed content facts,
+  explicit non-goals, and validation risks.
 - Website candidate: local source, screenshots, build result, and closeout
   recommendation.
 - Closeout recommendation: discard, polish, or request parent Vercel preview

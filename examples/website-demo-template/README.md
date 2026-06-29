@@ -18,6 +18,8 @@ The template fixes the operating contract:
 
 - Ocean Flow is the baseline design system.
 - Astro plus React Islands is the implementation stack.
+- Creative Production may shape the direction through
+  `CREATIVE_PRODUCTION_INTAKE.md`.
 - Creative direction can vary by run.
 - Local validation comes before any preview request.
 - Vercel preview and durable `demo-N.mdkg.dev` hosting are parent-repo approval
@@ -45,6 +47,8 @@ Expected results:
 - `dec-1` records Astro plus React Islands as the stack.
 - `dec-2` records preview-gated public-safety boundaries.
 - `edd-1` records the Ocean Flow and Creative Production contract.
+- `CREATIVE_PRODUCTION_INTAKE.md` explains optional ideation input and the
+  summary that `spike-1` must retain before implementation.
 
 ## Boundaries
 

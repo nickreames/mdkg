@@ -18,7 +18,7 @@ context_refs: [edd-1, dec-1, dec-2]
 evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
-cases: [template validates from one goal id., generated site builds locally., browser and chrome checks pass when implementation reaches local preview., no secrets raw prompts provider payloads or unsupported mdkg claims are retained., preview deployment remains approval gated.]
+cases: [template validates from one goal id., generated site builds locally., browser and chrome checks pass when implementation reaches local preview., creative production input is retained only as a compact public-safe direction summary., no secrets raw prompts provider payloads or unsupported mdkg claims are retained., preview deployment remains approval gated.]
 created: 2026-06-29
 updated: 2026-06-29
 ---
@@ -45,6 +45,8 @@ recommendation.
 - Browser and Chrome checks pass when implementation reaches local preview.
 - No secrets, raw prompts, provider payloads, or unsupported mdkg claims are
   retained.
+- Any Creative Production input is represented by a compact public-safe
+  direction summary, not raw prompts or provider payloads.
 - Preview deployment remains approval-gated.
 
 # Results / Evidence

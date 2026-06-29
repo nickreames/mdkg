@@ -2,14 +2,14 @@
 id: task-619
 type: task
 title: add Creative Production website demo intake and freedom contract
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, creative-production, intake, website, design]
 owners: []
 links: []
-artifacts: []
+artifacts: [examples/website-demo-template/CREATIVE_PRODUCTION_INTAKE.md, examples/website-demo-template/DEMO_HANDOFF_PROMPT.md, examples/website-demo-template/WEBSITE_DEMO_TEMPLATE_BRIEF.md, examples/website-demo-template/.mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md]
 relates: []
 blocked_by: [task-618]
 blocks: [task-620, test-323]
