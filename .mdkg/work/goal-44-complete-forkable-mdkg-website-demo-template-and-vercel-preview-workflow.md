@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: A canonical website demo template exists at examples/website-demo-template, a first branch-path run can be forked into examples/demo-runs/demo-001, an agent can start from one selected goal and build a complete differentiated Astro plus React Islands website with Ocean Flow design guidance and Creative Production freedom, local validation passes, and an explicitly approved Vercel preview workflow records preview evidence without DNS, durable demo-N hosting, production promotion, push, tag, or npm publish side effects.
 scope_refs: [epic-205, task-618, task-619, task-620, task-621, task-622, test-321, test-322, test-323, test-324, test-325]
-active_node: task-618
+active_node: task-619
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, mdkg graph fork examples/website-demo-template --target examples/demo-runs/demo-001 --start-goal goal-1 --json, mdkg goal next goal-1 --json from forked run, mdkg pack <first-node> --profile concise --dry-run --stats from forked run, generated demo local build, Browser desktop and mobile local validation, Chrome desktop and mobile local validation, no-secret and public-claims audit, Vercel preview project and deployment evidence only after explicit approval, git diff --check]
 max_iterations: 25

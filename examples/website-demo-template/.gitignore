@@ -1,0 +1,17 @@
+.mdkg/index/*.json
+.mdkg/index/*.tmp
+.mdkg/index/*.lock
+.mdkg/index/write.lock/
+.mdkg/index/*.sqlite-wal
+.mdkg/index/*.sqlite-shm
+.mdkg/index/*.sqlite-journal
+.mdkg/db/runtime/
+.mdkg/db/**/*.sqlite-wal
+.mdkg/db/**/*.sqlite-shm
+.mdkg/db/**/*.sqlite-journal
+.mdkg/db/**/*.lock
+.mdkg/db/**/*.tmp
+.mdkg/state/
+.mdkg/pack/
+.mdkg/subgraphs/
+.mdkg/archive/**/source/

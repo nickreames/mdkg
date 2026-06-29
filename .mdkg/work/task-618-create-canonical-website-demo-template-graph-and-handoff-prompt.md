@@ -2,14 +2,14 @@
 id: task-618
 type: task
 title: create canonical website demo template graph and handoff prompt
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, template, website, graph, handoff]
 owners: []
 links: []
-artifacts: []
+artifacts: [examples/website-demo-template, examples/website-demo-template/DESIGN.md, examples/website-demo-template/DEMO_HANDOFF_PROMPT.md, examples/website-demo-template/WEBSITE_DEMO_TEMPLATE_BRIEF.md]
 relates: []
 blocked_by: []
 blocks: [task-619, task-620, test-321]
