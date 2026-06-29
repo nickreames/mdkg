@@ -23,67 +23,92 @@ updated: 2026-06-29
 ---
 # Summary
 
-What was completed in this phase? What is now true?
+`test-1` passed for `demo-001`: the generated site builds locally, validates in
+mdkg, renders cleanly in Browser and Chrome desktop/mobile captures, and is
+ready to request parent Vercel preview approval.
 
 # Scope Covered
 
-Keep `scope` frontmatter updated when possible.
+- `test-1`
+- `goal-1`
+- local website candidate in `examples/demo-runs/demo-001`
 
 ## Changed Surfaces
 
-- files, commands, nodes, docs, or runtime surfaces changed
+- No additional source changes beyond `task-1`.
+- Validation evidence lives in `/private/tmp/mdkg-demo-001-validation`.
 
 ## Boundaries
 
-- in scope:
-- out of scope:
+- in scope: local mdkg validation, local build evidence, Browser/Chrome visual
+  checks, noindex/public-claim review.
+- out of scope: Vercel project creation, preview deployment, DNS, durable
+  hosting, analytics, git push, tag, and npm publish.
 - raw secrets, raw prompts, raw payloads, and bulky execution traces excluded:
+  yes.
 
 # Decisions Captured
 
-Link the most important decision records.
+- `dec-1`
+- `dec-2`
+- `edd-1`
 
 # Implementation Summary
 
-What changed? What patterns or architecture emerged?
+The completed run is a local preview candidate. It should be either kept as
+local proof or handed to the parent `goal-44` preview workflow for explicit
+Vercel approval.
 
 # Test Proof
 
-- Test target:
-- Fixtures or temp repos:
-- Coverage gaps:
+- Test target: `goal-1` / `test-1`.
+- Fixtures or temp repos: local `dist/index.html`; Browser/Chrome screenshots
+  in `/private/tmp/mdkg-demo-001-validation`.
+- Coverage gaps: no live preview URL exists yet, so no Vercel build-log,
+  deployment-id, or preview noindex check has run.
 
 # Verification / Testing
 
 ## Command Evidence
 
-- command:
-- result:
+- `node dist/cli.js --root examples/demo-runs/demo-001 validate --json`:
+  `ok: true`, zero warnings.
+- `npm run build`: passed with one static page.
+- Browser desktop/mobile: hero, nav, React Island interaction, no horizontal
+  overflow, and empty console logs verified.
+- Chrome desktop/mobile: responsive rendering and React Island interaction
+  captured.
 
 ## Pass / Fail Status
 
-- status:
+- status: pass
 
 ## Known Warnings
 
-- warning:
+- warning: Vite/React deprecation warnings during build only; no app error.
 
 # Known Issues / Follow-ups
 
-- issue 1
-- issue 2
+- Parent `task-621` must remain approval-gated before any Vercel mutation.
+- Parent `test-324` must verify preview evidence after a preview exists.
 
 ## Follow-up Refs
 
-- task/test/goal refs:
+- parent `task-621`
+- parent `test-324`
+- parent `task-622`
 
 # Links / Artifacts
 
-- packs
-- PRs/commits
-- docs
-- dashboards
+- `/private/tmp/mdkg-demo-001-validation/browser-desktop-top.png`
+- `/private/tmp/mdkg-demo-001-validation/browser-desktop-console-verify.png`
+- `/private/tmp/mdkg-demo-001-validation/browser-mobile-top.png`
+- `/private/tmp/mdkg-demo-001-validation/chrome-desktop-top.png`
+- `/private/tmp/mdkg-demo-001-validation/chrome-desktop-console-build.png`
+- `/private/tmp/mdkg-demo-001-validation/chrome-mobile-top.png`
 
 # Raw Content Safety
 
-- Summarize evidence and use refs, hashes, and artifact links instead of raw secrets, raw prompts, raw payloads, or bulky execution traces.
+- Evidence is summarized with artifact paths and command outcomes only. No raw
+  prompts, provider payloads, credentials, cookies, tokens, or bulky execution
+  traces are stored.

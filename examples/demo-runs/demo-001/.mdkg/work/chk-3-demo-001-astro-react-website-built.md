@@ -23,67 +23,89 @@ updated: 2026-06-29
 ---
 # Summary
 
-What was completed in this phase? What is now true?
+`task-1` built a complete local website candidate for `demo-001` from the
+forked mdkg website demo graph.
 
 # Scope Covered
 
-Keep `scope` frontmatter updated when possible.
+- `task-1`
+- local Astro + React Islands implementation under `examples/demo-runs/demo-001`
 
 ## Changed Surfaces
 
-- files, commands, nodes, docs, or runtime surfaces changed
+- `package.json`
+- `package-lock.json`
+- `astro.config.mjs`
+- `tsconfig.json`
+- `src/pages/index.astro`
+- `src/components/GoalRunConsole.tsx`
+- `src/styles/global.css`
+- `src/assets/ocean-flow-map.svg`
 
 ## Boundaries
 
-- in scope:
-- out of scope:
+- in scope: local website implementation, local build readiness, public-safe
+  copy.
+- out of scope: Vercel deploy, DNS, durable hosting, push, tag, npm publish,
+  analytics, raw Creative Production prompts, and provider payloads.
 - raw secrets, raw prompts, raw payloads, and bulky execution traces excluded:
+  yes.
 
 # Decisions Captured
 
-Link the most important decision records.
+- `dec-1`: Astro plus React Islands is the demo stack.
+- `dec-2`: preview deployment remains parent-repo approval-gated.
+- `edd-1`: Ocean Flow website demo design and Creative Production contract.
 
 # Implementation Summary
 
-What changed? What patterns or architecture emerged?
+The implementation uses Astro for the static page and one focused React Island
+for the graph-run console. The visual system follows Ocean Flow colors and the
+copy keeps mdkg claims source-backed and local-first.
 
 # Implementation Details
 
-- Code or graph surfaces changed:
-- Architecture or data-shape notes:
-- Compatibility notes:
+- Code or graph surfaces changed: page, island component, CSS, SVG visual,
+  package metadata, and lockfile.
+- Architecture or data-shape notes: the React Island exposes selected stages
+  and commands without turning the page into a full client app.
+- Compatibility notes: the page is a local preview candidate and includes
+  `noindex,nofollow`; no deployment config or credentials are added.
 
 # Verification / Testing
 
 ## Command Evidence
 
-- command:
-- result:
+- `npm install`: passed with 0 vulnerabilities.
+- `npm run build`: passed and generated a static `dist/index.html`.
 
 ## Pass / Fail Status
 
-- status:
+- status: pass
 
 ## Known Warnings
 
-- warning:
+- warning: Astro/Vite emitted upstream React plugin deprecation warnings for
+  `esbuild` and `optimizeDeps.esbuildOptions`.
 
 # Known Issues / Follow-ups
 
-- issue 1
-- issue 2
+- Local Browser/Chrome validation is recorded in `chk-4`.
+- Vercel preview deployment remains parent-goal work.
 
 ## Follow-up Refs
 
-- task/test/goal refs:
+- `test-1`
+- parent `goal-44`
 
 # Links / Artifacts
 
-- packs
-- PRs/commits
-- docs
-- dashboards
+- `src/pages/index.astro`
+- `src/components/GoalRunConsole.tsx`
+- `src/styles/global.css`
+- `src/assets/ocean-flow-map.svg`
 
 # Raw Content Safety
 
-- Summarize evidence and use refs, hashes, and artifact links instead of raw secrets, raw prompts, raw payloads, or bulky execution traces.
+- Evidence is summarized with file refs and command outcomes only. No raw
+  prompts, provider payloads, credentials, cookies, or tokens are stored.
