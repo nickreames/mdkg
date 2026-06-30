@@ -2,14 +2,14 @@
 id: task-620
 type: task
 title: prove branch path demo fork workflow from this repo
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, graph-fork, branch-path, workflow, template]
 owners: []
 links: []
-artifacts: []
+artifacts: [examples/demo-runs/demo-001, examples/demo-runs/demo-001/DEMO_RUN_RECEIPT.md, scripts/smoke-demo-graph.js]
 relates: []
 blocked_by: [task-618, task-619]
 blocks: [task-621, test-321, test-322, test-323]

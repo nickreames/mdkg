@@ -84,6 +84,16 @@ function main() {
     "candidate website",
     "Generate a candidate mdkg.dev website from a cloned graph"
   );
+  assertExample(
+    "examples/website-demo-template",
+    "differentiated website demo",
+    "Build a complete differentiated website demo from the canonical mdkg template"
+  );
+  assertExample(
+    "examples/demo-runs/demo-001",
+    "differentiated website demo",
+    "Build a complete differentiated website demo from the canonical mdkg template"
+  );
 
   const subgraphs = parseJson(mdkg(["subgraph", "verify", "--all", "--json"]).stdout);
   assert(subgraphs.ok === true, "root subgraph verification failed");
@@ -104,6 +114,8 @@ function main() {
   assertNoHighRiskMarkers([
     path.join(repoRoot, "examples", "demo-agentic-coding"),
     path.join(repoRoot, "examples", "template-mdkg-dev"),
+    path.join(repoRoot, "examples", "website-demo-template"),
+    path.join(repoRoot, "examples", "demo-runs", "demo-001"),
   ]);
   console.log("demo graph smoke passed");
 }
