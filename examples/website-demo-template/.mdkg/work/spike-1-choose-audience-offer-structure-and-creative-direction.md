@@ -31,6 +31,7 @@ source-backed mdkg claims?
 
 - Start from the current `goal-1` and this graph only.
 - Use `DESIGN.md` as the visual baseline.
+- Use `CREATIVE_PRODUCTION_INTAKE.md` when Creative Production is available.
 - Use Astro plus React Islands for the eventual implementation.
 - Creative Production may propose differentiated structure, animation, visuals,
   and interaction ideas.
@@ -43,9 +44,13 @@ source-backed mdkg claims?
 
 - Read `WEBSITE_DEMO_TEMPLATE_BRIEF.md`.
 - Read `DESIGN.md`.
+- Read `CREATIVE_PRODUCTION_INTAKE.md`.
 - Inspect `dec-1`, `dec-2`, and `edd-1`.
 - Use Creative Production when available to explore visual direction; otherwise
   write a concise local creative direction in the spike findings.
+- Record audience, offer, page structure, visual territory, motion/interaction
+  ideas, React Island candidates, asset plan, source-backed content facts,
+  explicit non-goals, and risks for `test-1`.
 
 # Findings
 

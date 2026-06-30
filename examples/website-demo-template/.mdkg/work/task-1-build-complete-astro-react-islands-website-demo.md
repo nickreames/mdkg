@@ -43,6 +43,8 @@ Islands and the Ocean Flow design system.
 # Implementation Notes
 
 - Use the creative direction from `spike-1`.
+- If Creative Production was used, rely on the compact direction summary rather
+  than raw prompts or provider payloads.
 - Favor rich, differentiated structure and interaction while keeping the site
   inspectable and fast.
 - Do not add secrets, provider payloads, raw prompt logs, analytics, or

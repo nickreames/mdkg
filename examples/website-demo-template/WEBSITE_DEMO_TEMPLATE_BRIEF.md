@@ -10,6 +10,8 @@ or handed back to the parent repo for Vercel preview approval.
 - Start from `goal-1`.
 - Use `spike-1` to choose audience, offer, website structure, visual direction,
   animation ideas, and interaction ideas.
+- Use `CREATIVE_PRODUCTION_INTAKE.md` when Creative Production is available, and
+  record only a compact public-safe direction summary.
 - Use Astro plus React Islands for implementation.
 - Use `DESIGN.md` as the Ocean Flow baseline.
 - Build a complete local website candidate.
@@ -22,6 +24,10 @@ or handed back to the parent repo for Vercel preview approval.
 The run may produce different website ideas each time. It can change the
 message, structure, visual rhythm, animations, interactive sections, and layout
 as long as it preserves the fixed constraints.
+
+Creative Production may help explore Positioning, Mood boards, Offers, Scenes,
+Ads, Shots, or later Assets. The selected direction should make the final site
+more differentiated, not merely more decorative.
 
 ## Fixed Constraints
 
