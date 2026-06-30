@@ -1,0 +1,185 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Badge from "../components/Badge.astro";
+import ButtonLink from "../components/ButtonLink.astro";
+import { demoSnapshots } from "../data/demoSnapshots";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "mdkg demos",
+  description: "Accepted mdkg demo runs with graph, source snapshot, and output evidence.",
+  url: "https://mdkg.dev/demos"
+};
+---
+
+<BaseLayout
+  title="mdkg demos - graph to website proof"
+  description="Browse accepted mdkg demo runs that show the graph, selected source snapshot, and final output from a local proof run."
+  structuredData={structuredData}
+>
+  <section class="demo-hero">
+    <div class="container demo-hero-grid">
+      <div class="stack">
+        <Badge>Demos</Badge>
+        <h1>See a goal become a website.</h1>
+        <p class="lead">Accepted demo runs show the mdkg graph, selected read-only files, and final output together so the workflow is inspectable without hidden chat context.</p>
+      </div>
+      <div class="demo-count" aria-label={`${demoSnapshots.length} accepted demo`}>
+        <strong>{demoSnapshots.length}</strong>
+        <span>accepted local proof</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container demo-list" aria-label="Accepted demos">
+      {demoSnapshots.map((demo) => (
+        <article class="demo-card">
+          <div class="demo-copy">
+            <div class="meta-row">
+              <span>{demo.status}</span>
+              <span>{demo.sourcePath}</span>
+            </div>
+            <h2>{demo.title}</h2>
+            <p>{demo.summary}</p>
+            <div class="tag-row" aria-label="Demo stack">
+              {demo.stack.map((item) => <span>{item}</span>)}
+            </div>
+            <div class="actions">
+              <ButtonLink href={`/demo/${demo.id}/`}>Inspect demo {demo.id}</ButtonLink>
+              <ButtonLink href={demo.outputRoute} variant="secondary">Open output</ButtonLink>
+            </div>
+          </div>
+          <a class="demo-visual" href={`/demo/${demo.id}/`} aria-label={`Inspect ${demo.title}`}>
+            <img src={demo.image} alt={demo.imageAlt} width="980" height="620" loading="lazy" />
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .demo-hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    background:
+      linear-gradient(135deg, rgba(240, 249, 255, 0.95), rgba(255, 255, 255, 0.78) 50%, rgba(240, 253, 250, 0.95)),
+      var(--white);
+  }
+
+  .demo-hero-grid,
+  .demo-card {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .demo-hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(180px, 260px);
+  }
+
+  h1 {
+    max-width: 12ch;
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+  }
+
+  .lead {
+    max-width: 62ch;
+  }
+
+  .demo-count {
+    display: grid;
+    min-height: 180px;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .demo-count strong {
+    color: var(--blue-700);
+    font-size: 4rem;
+    line-height: 1;
+  }
+
+  .demo-count span {
+    color: var(--zinc-600);
+    font-weight: 700;
+  }
+
+  .demo-list {
+    display: grid;
+    gap: 24px;
+  }
+
+  .demo-card {
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  .demo-copy {
+    display: grid;
+    gap: 18px;
+  }
+
+  .demo-copy h2 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+  }
+
+  .demo-copy p {
+    color: var(--zinc-600);
+  }
+
+  .meta-row,
+  .tag-row,
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .meta-row span,
+  .tag-row span {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    color: var(--zinc-700);
+    background: var(--zinc-50);
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+
+  .demo-visual {
+    display: block;
+    border: 1px solid rgba(14, 165, 233, 0.22);
+    border-radius: var(--radius);
+    background: var(--sky-50);
+    overflow: hidden;
+  }
+
+  .demo-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 820px) {
+    .demo-hero-grid,
+    .demo-card {
+      grid-template-columns: 1fr;
+    }
+
+    .demo-count {
+      min-height: 140px;
+    }
+  }
+</style>

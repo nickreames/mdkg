@@ -2,14 +2,14 @@
 id: task-622
 type: task
 title: record short path demo closeout and next-step recommendation
-status: todo
+status: done
 priority: 2
 epic: epic-205
 parent: goal-44
 tags: [demo, mdkg-dev, checkpoint, promotion, closeout]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-goal44-demo-routes, mdkg-dev/src/pages/demos.astro, mdkg-dev/src/pages/demo/[id].astro, mdkg-dev/src/pages/demo/[id]/output.astro]
 relates: []
 blocked_by: [task-630, test-324, test-329]
 blocks: [test-325, goal-47]

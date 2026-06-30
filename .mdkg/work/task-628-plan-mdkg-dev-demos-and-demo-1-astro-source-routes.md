@@ -2,7 +2,7 @@
 id: task-628
 type: task
 title: plan mdkg dev demos and demo 1 Astro source routes
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44

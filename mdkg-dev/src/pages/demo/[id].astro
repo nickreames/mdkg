@@ -1,0 +1,354 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Badge from "../../components/Badge.astro";
+import ButtonLink from "../../components/ButtonLink.astro";
+import { demoSnapshots, type DemoSnapshot } from "../../data/demoSnapshots";
+
+export function getStaticPaths() {
+  return demoSnapshots.map((demo) => ({
+    params: { id: demo.id },
+    props: { demo }
+  }));
+}
+
+const { demo } = Astro.props as { demo: DemoSnapshot };
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: demo.title,
+  description: demo.summary,
+  url: `https://mdkg.dev/demo/${demo.id}`
+};
+---
+
+<BaseLayout
+  title={`${demo.title} - mdkg demo ${demo.id}`}
+  description={demo.summary}
+  structuredData={structuredData}
+>
+  <section class="demo-detail-hero">
+    <div class="container detail-hero-grid">
+      <div class="stack">
+        <Badge>Demo {demo.id}</Badge>
+        <h1>{demo.title}</h1>
+        <p class="lead">{demo.summary}</p>
+        <div class="actions">
+          <ButtonLink href={demo.outputRoute}>Open output</ButtonLink>
+          <ButtonLink href="/demos/" variant="secondary">All demos</ButtonLink>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <img src={demo.image} alt={demo.imageAlt} width="980" height="620" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container surface-layout">
+      <aside class="surface-nav" aria-label="Demo surfaces">
+        <a href="#graph">Graph</a>
+        <a href="#files">Files</a>
+        <a href="#output">Output</a>
+        <a href="#safety">Safety</a>
+      </aside>
+      <div class="surface-stack">
+        <section id="graph" class="surface-section" aria-labelledby="graph-title">
+          <div class="section-kicker">Surface 1</div>
+          <h2 id="graph-title">Sanitized mdkg graph</h2>
+          <div class="graph-grid">
+            {demo.graphNodes.map((node) => (
+              <article class="node-card">
+                <div class="node-meta">
+                  <span>{node.type}</span>
+                  <strong>{node.status}</strong>
+                </div>
+                <h3>{node.id}</h3>
+                <p class="node-title">{node.title}</p>
+                <p>{node.detail}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="files" class="surface-section" aria-labelledby="files-title">
+          <div class="section-kicker">Surface 2</div>
+          <h2 id="files-title">Selected read-only files</h2>
+          <div class="file-list">
+            {demo.files.map((file) => (
+              <article class="file-card">
+                <div class="file-heading">
+                  <span>{file.kind}</span>
+                  <h3>{file.path}</h3>
+                </div>
+                <p>{file.role}</p>
+                <pre><code>{file.excerpt}</code></pre>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="output" class="surface-section" aria-labelledby="output-title">
+          <div class="section-kicker">Surface 3</div>
+          <h2 id="output-title">Final output preview</h2>
+          <p class="muted">The output route is rendered separately and noindexed as a preview surface.</p>
+          <div class="output-frame">
+            <iframe src={demo.outputRoute} title={`Demo ${demo.id} output preview`} loading="lazy"></iframe>
+          </div>
+          <div class="highlight-grid" aria-label="Output highlights">
+            {demo.outputHighlights.map((highlight) => <span>{highlight}</span>)}
+          </div>
+        </section>
+
+        <section id="safety" class="surface-section" aria-labelledby="safety-title">
+          <div class="section-kicker">Acceptance gates</div>
+          <h2 id="safety-title">Validation and public-safety record</h2>
+          <div class="gate-grid">
+            <div>
+              <h3>Validation</h3>
+              <ul>
+                {demo.validation.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h3>Boundaries</h3>
+              <ul>
+                {demo.safety.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .demo-detail-hero {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--border);
+    background:
+      linear-gradient(135deg, rgba(240, 249, 255, 0.96), rgba(255, 255, 255, 0.78) 50%, rgba(240, 253, 250, 0.96)),
+      var(--white);
+  }
+
+  .detail-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(340px, 1.1fr);
+    gap: 36px;
+    align-items: center;
+  }
+
+  h1 {
+    max-width: 12ch;
+    font-size: clamp(2.7rem, 6vw, 5.1rem);
+  }
+
+  .lead {
+    max-width: 64ch;
+  }
+
+  .actions,
+  .highlight-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .hero-panel,
+  .output-frame,
+  .surface-section {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  .hero-panel {
+    overflow: hidden;
+  }
+
+  .hero-panel img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .surface-layout {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .surface-nav {
+    position: sticky;
+    top: 18px;
+    display: grid;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--zinc-50);
+  }
+
+  .surface-nav a {
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    color: var(--zinc-700);
+    font-weight: 750;
+    text-decoration: none;
+  }
+
+  .surface-nav a:hover {
+    color: var(--blue-700);
+    background: var(--white);
+  }
+
+  .surface-stack {
+    display: grid;
+    gap: 24px;
+  }
+
+  .surface-section {
+    display: grid;
+    gap: 18px;
+    padding: 24px;
+  }
+
+  .section-kicker {
+    color: var(--blue-700);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .graph-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .node-card,
+  .file-card,
+  .gate-grid > div {
+    display: grid;
+    gap: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    background: var(--zinc-50);
+  }
+
+  .node-meta,
+  .file-heading {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .node-meta span,
+  .node-meta strong,
+  .file-heading span,
+  .highlight-grid span {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 5px 8px;
+    background: var(--white);
+    color: var(--zinc-700);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .node-card h3,
+  .file-heading h3 {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    overflow-wrap: anywhere;
+  }
+
+  .node-card p,
+  .file-card p,
+  .muted,
+  li {
+    color: var(--zinc-600);
+  }
+
+  .node-title {
+    color: var(--zinc-900) !important;
+    font-weight: 750;
+  }
+
+  .file-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  pre {
+    margin: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius);
+    padding: 14px;
+    color: var(--zinc-100);
+    background: var(--zinc-950);
+    white-space: pre-wrap;
+  }
+
+  code {
+    font-size: 0.84rem;
+  }
+
+  .output-frame {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .output-frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--white);
+  }
+
+  .gate-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  ul {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  @media (max-width: 880px) {
+    .detail-hero-grid,
+    .surface-layout,
+    .graph-grid,
+    .gate-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .surface-nav {
+      position: static;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .surface-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .surface-section {
+      padding: 18px;
+    }
+  }
+</style>

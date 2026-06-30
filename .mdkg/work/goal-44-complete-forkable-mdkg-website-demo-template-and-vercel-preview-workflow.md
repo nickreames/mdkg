@@ -2,12 +2,12 @@
 id: goal-44
 type: goal
 title: Complete forkable mdkg website demo template and short path demo integration
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: A canonical website demo template exists at examples/website-demo-template, the first run at examples/demo-runs/demo-001 is validated, accepted Demo 1 is integrated into the existing mdkg-dev Astro source plan at /demos, /demo/1, and /demo/1/output using sanitized graph/filesystem/output snapshots, local mdkg-dev build plus Browser/Chrome validation passes, and no push, deploy, DNS, tag, npm publish, analytics activation, or provider mutation occurs without explicit approval.
 scope_refs: [epic-205, task-618, task-619, task-620, task-621, task-622, task-628, task-629, task-630, test-321, test-322, test-323, test-324, test-325, test-329]
-active_node: task-628
+last_active_node: test-325
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, mdkg graph fork examples/website-demo-template --target examples/demo-runs/demo-001 --start-goal goal-1 --json, mdkg goal next goal-1 --json from forked run, mdkg pack <first-node> --profile concise --dry-run --stats from forked run, generated demo local build, npm --prefix mdkg-dev run build, npm run smoke:mdkg-dev, Browser desktop and mobile local validation for /demos /demo/1 /demo/1/output, Chrome desktop and mobile local validation for /demos /demo/1 /demo/1/output, no-secret and public-claims audit, homepage and docs route lazy-load isolation proof, git diff --check]
 max_iterations: 25

@@ -2,14 +2,14 @@
 id: test-324
 type: test
 title: short path demo route evidence contract
-status: todo
+status: done
 priority: 2
 epic: epic-205
 parent: goal-44
 tags: [demo, mdkg-dev, astro, route, evidence]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-goal44-demo-routes, mdkg-dev/dist/demos/index.html, mdkg-dev/dist/demo/1/index.html, mdkg-dev/dist/demo/1/output/index.html]
 relates: []
 blocked_by: [task-630]
 blocks: [task-622, test-325]
