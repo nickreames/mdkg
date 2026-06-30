@@ -2,14 +2,14 @@
 id: test-323
 type: test
 title: website demo no secret and public claims contract
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, no-secret, claims, public-safety]
 owners: []
 links: []
-artifacts: []
+artifacts: [examples/website-demo-template/README.md, examples/website-demo-template/WEBSITE_DEMO_TEMPLATE_BRIEF.md, examples/website-demo-template/CREATIVE_PRODUCTION_INTAKE.md, examples/demo-runs/demo-001/src/pages/index.astro, examples/demo-runs/demo-001/src/components/GoalRunConsole.tsx, examples/demo-runs/demo-001/src/assets/ocean-flow-map.svg, examples/demo-runs/demo-001/DEMO_HANDOFF_PROMPT.md, examples/demo-runs/demo-001/README.md]
 relates: []
 blocked_by: [task-619, task-620]
 blocks: [task-621]

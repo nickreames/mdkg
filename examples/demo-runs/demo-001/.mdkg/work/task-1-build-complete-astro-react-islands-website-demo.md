@@ -2,14 +2,14 @@
 id: task-1
 type: task
 title: build complete Astro React Islands website demo
-status: todo
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
 tags: [demo, website, astro, react-islands, implementation]
 owners: []
 links: []
-artifacts: []
+artifacts: [package.json, package-lock.json, astro.config.mjs, tsconfig.json, src/pages/index.astro, src/components/GoalRunConsole.tsx, src/styles/global.css, src/assets/ocean-flow-map.svg, /private/tmp/mdkg-demo-001-validation/browser-desktop-top.png, /private/tmp/mdkg-demo-001-validation/browser-mobile-top.png, /private/tmp/mdkg-demo-001-validation/chrome-desktop-top.png, /private/tmp/mdkg-demo-001-validation/chrome-mobile-top.png]
 relates: []
 blocked_by: [spike-1]
 blocks: []

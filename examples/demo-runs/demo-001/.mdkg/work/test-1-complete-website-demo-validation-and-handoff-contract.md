@@ -2,14 +2,14 @@
 id: test-1
 type: test
 title: complete website demo validation and handoff contract
-status: todo
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
 tags: [demo, website, validation, browser, chrome]
 owners: []
 links: []
-artifacts: []
+artifacts: [package.json, package-lock.json, src/pages/index.astro, src/components/GoalRunConsole.tsx, src/styles/global.css, dist/index.html, /private/tmp/mdkg-demo-001-validation/browser-desktop-top.png, /private/tmp/mdkg-demo-001-validation/browser-desktop-console-verify.png, /private/tmp/mdkg-demo-001-validation/browser-mobile-top.png, /private/tmp/mdkg-demo-001-validation/chrome-desktop-top.png, /private/tmp/mdkg-demo-001-validation/chrome-desktop-console-build.png, /private/tmp/mdkg-demo-001-validation/chrome-mobile-top.png]
 relates: []
 blocked_by: [task-1]
 blocks: []

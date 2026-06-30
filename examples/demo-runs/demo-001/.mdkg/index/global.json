@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-06-29T17:18:13.564Z",
+    "generated_at": "2026-06-29T17:54:14.171Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/demo-runs/demo-001",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-1"
+      "root": "root:chk-4"
     }
   },
   "workspaces": {
@@ -39,6 +39,93 @@
       "path": ".mdkg/work/chk-1-website-demo-template-seed-accepted.md",
       "edges": {
         "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:chk-2": {
+      "id": "chk-2",
+      "qid": "root:chk-2",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "demo-001 creative direction selected",
+      "status": "backlog",
+      "priority": 9,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-2-demo-001-creative-direction-selected.md",
+      "edges": {
+        "relates": [
+          "root:spike-1"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:chk-3": {
+      "id": "chk-3",
+      "qid": "root:chk-3",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "demo-001 Astro React website built",
+      "status": "backlog",
+      "priority": 9,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-3-demo-001-astro-react-website-built.md",
+      "edges": {
+        "relates": [
+          "root:task-1"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:chk-4": {
+      "id": "chk-4",
+      "qid": "root:chk-4",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "demo-001 validation passed and preview approval recommended",
+      "status": "backlog",
+      "priority": 9,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-4-demo-001-validation-passed-and-preview-approval-recommended.md",
+      "edges": {
+        "relates": [
+          "root:test-1"
+        ],
         "blocked_by": [],
         "blocks": [],
         "context_refs": [],
@@ -194,7 +281,7 @@
       "ws": "root",
       "type": "goal",
       "title": "Build a complete differentiated website demo from the canonical mdkg template",
-      "status": "todo",
+      "status": "done",
       "priority": 1,
       "created": "2026-06-29",
       "updated": "2026-06-29",
@@ -216,7 +303,7 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {
-        "goal_state": "active",
+        "goal_state": "achieved",
         "goal_condition": "A complete, local, differentiated Astro plus React Islands website demo is built from this template, follows the Ocean Flow design system, records the creative direction and validation evidence, and closes with a recommendation to discard, polish, or request a Vercel preview under the parent repo workflow.",
         "scope_refs": [
           "epic-1",
@@ -224,7 +311,7 @@
           "task-1",
           "test-1"
         ],
-        "active_node": "spike-1",
+        "last_active_node": "test-1",
         "required_skills": [
           "select-work-and-ground-context",
           "verify-close-and-checkpoint"
@@ -570,7 +657,7 @@
       "ws": "root",
       "type": "spike",
       "title": "choose audience offer structure and creative direction",
-      "status": "todo",
+      "status": "done",
       "priority": 1,
       "created": "2026-06-29",
       "updated": "2026-06-29",
@@ -582,7 +669,11 @@
       ],
       "owners": [],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "CREATIVE_PRODUCTION_INTAKE.md",
+        "DESIGN.md",
+        "DEMO_RUN_RECEIPT.md"
+      ],
       "refs": [],
       "aliases": [],
       "skills": [
@@ -620,7 +711,7 @@
       "ws": "root",
       "type": "task",
       "title": "build complete Astro React Islands website demo",
-      "status": "todo",
+      "status": "done",
       "priority": 1,
       "created": "2026-06-29",
       "updated": "2026-06-29",
@@ -633,7 +724,20 @@
       ],
       "owners": [],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "package.json",
+        "package-lock.json",
+        "astro.config.mjs",
+        "tsconfig.json",
+        "src/pages/index.astro",
+        "src/components/GoalRunConsole.tsx",
+        "src/styles/global.css",
+        "src/assets/ocean-flow-map.svg",
+        "/private/tmp/mdkg-demo-001-validation/browser-desktop-top.png",
+        "/private/tmp/mdkg-demo-001-validation/browser-mobile-top.png",
+        "/private/tmp/mdkg-demo-001-validation/chrome-desktop-top.png",
+        "/private/tmp/mdkg-demo-001-validation/chrome-mobile-top.png"
+      ],
       "refs": [
         "goal-1"
       ],
@@ -666,7 +770,7 @@
       "ws": "root",
       "type": "test",
       "title": "complete website demo validation and handoff contract",
-      "status": "todo",
+      "status": "done",
       "priority": 1,
       "created": "2026-06-29",
       "updated": "2026-06-29",
@@ -679,7 +783,20 @@
       ],
       "owners": [],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "package.json",
+        "package-lock.json",
+        "src/pages/index.astro",
+        "src/components/GoalRunConsole.tsx",
+        "src/styles/global.css",
+        "dist/index.html",
+        "/private/tmp/mdkg-demo-001-validation/browser-desktop-top.png",
+        "/private/tmp/mdkg-demo-001-validation/browser-desktop-console-verify.png",
+        "/private/tmp/mdkg-demo-001-validation/browser-mobile-top.png",
+        "/private/tmp/mdkg-demo-001-validation/chrome-desktop-top.png",
+        "/private/tmp/mdkg-demo-001-validation/chrome-desktop-console-build.png",
+        "/private/tmp/mdkg-demo-001-validation/chrome-mobile-top.png"
+      ],
       "refs": [
         "goal-1"
       ],
@@ -711,10 +828,15 @@
       "root:rule-human": [
         "root:rule-7"
       ],
+      "root:spike-1": [
+        "root:chk-2"
+      ],
       "root:task-1": [
+        "root:chk-3",
         "root:spike-1"
       ],
       "root:test-1": [
+        "root:chk-4",
         "root:spike-1"
       ],
       "root:dec-1": [
