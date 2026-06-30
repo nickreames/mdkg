@@ -1,0 +1,789 @@
+{
+  "meta": {
+    "tool": "mdkg",
+    "schema_version": 1,
+    "generated_at": "2026-06-29T17:05:28.561Z",
+    "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/website-demo-template",
+    "workspaces": [
+      "root"
+    ],
+    "latest_checkpoint_qid": {
+      "root": "root:chk-1"
+    }
+  },
+  "workspaces": {
+    "root": {
+      "path": ".",
+      "enabled": true
+    }
+  },
+  "nodes": {
+    "root:chk-1": {
+      "id": "chk-1",
+      "qid": "root:chk-1",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "website demo template seed accepted",
+      "status": "backlog",
+      "priority": 9,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-1-website-demo-template-seed-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:dec-1": {
+      "id": "dec-1",
+      "qid": "root:dec-1",
+      "ws": "root",
+      "type": "dec",
+      "title": "Astro plus React Islands is the demo stack",
+      "status": "accepted",
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "stack",
+        "astro",
+        "react-islands"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/dec-1-astro-plus-react-islands-is-the-demo-stack.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:dec-2": {
+      "id": "dec-2",
+      "qid": "root:dec-2",
+      "ws": "root",
+      "type": "dec",
+      "title": "demo template remains preview gated and public safe",
+      "status": "accepted",
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "preview",
+        "boundary",
+        "no-secret"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/dec-2-demo-template-remains-preview-gated-and-public-safe.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:edd-1": {
+      "id": "edd-1",
+      "qid": "root:edd-1",
+      "ws": "root",
+      "type": "edd",
+      "title": "Ocean Flow website demo design and creative production contract",
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "design",
+        "ocean-flow",
+        "creative-production",
+        "website"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/edd-1-ocean-flow-website-demo-design-and-creative-production-contract.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:epic-1": {
+      "id": "epic-1",
+      "qid": "root:epic-1",
+      "ws": "root",
+      "type": "epic",
+      "title": "complete creative website demo build",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "website",
+        "creative-production",
+        "astro"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/epic-1-complete-creative-website-demo-build.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [
+          "root:spike-1",
+          "root:task-1",
+          "root:test-1"
+        ],
+        "context_refs": [
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:goal-1": {
+      "id": "goal-1",
+      "qid": "root:goal-1",
+      "ws": "root",
+      "type": "goal",
+      "title": "Build a complete differentiated website demo from the canonical mdkg template",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "website",
+        "template",
+        "astro",
+        "react-islands",
+        "creative-production"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [
+        "select-work-and-ground-context",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {
+        "goal_state": "active",
+        "goal_condition": "A complete, local, differentiated Astro plus React Islands website demo is built from this template, follows the Ocean Flow design system, records the creative direction and validation evidence, and closes with a recommendation to discard, polish, or request a Vercel preview under the parent repo workflow.",
+        "scope_refs": [
+          "epic-1",
+          "spike-1",
+          "task-1",
+          "test-1"
+        ],
+        "active_node": "spike-1",
+        "required_skills": [
+          "select-work-and-ground-context",
+          "verify-close-and-checkpoint"
+        ],
+        "required_checks": [
+          "mdkg validate --json",
+          "mdkg index",
+          "mdkg goal next goal-1 --json",
+          "mdkg pack spike-1 --profile concise --dry-run --stats"
+        ],
+        "max_iterations": "25",
+        "blocked_after_attempts": "3"
+      },
+      "path": ".mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-1": {
+      "id": "rule-1",
+      "qid": "root:rule-1",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg conventions (naming, ids, frontmatter, status, priority, templates)",
+      "created": "2026-01-06",
+      "updated": "2026-03-05",
+      "tags": [
+        "conventions",
+        "mdkg",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-1-mdkg-conventions.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-2": {
+      "id": "rule-2",
+      "qid": "root:rule-2",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg context pack rules (selection, ordering, verbose, checkpoints)",
+      "created": "2026-01-06",
+      "updated": "2026-01-14",
+      "tags": [
+        "agents",
+        "mdkg",
+        "pack",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-2-context-pack-rules.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-3": {
+      "id": "rule-3",
+      "qid": "root:rule-3",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg cli contract (root-only, commands, flags, exit codes)",
+      "created": "2026-01-06",
+      "updated": "2026-05-17",
+      "tags": [
+        "cli",
+        "contract",
+        "mdkg",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-3-cli-contract.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-4": {
+      "id": "rule-4",
+      "qid": "root:rule-4",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg repo safety (ignore rules, publish safety, deployment safety)",
+      "created": "2026-01-06",
+      "updated": "2026-06-03",
+      "tags": [
+        "mdkg",
+        "publishing",
+        "safety"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-5": {
+      "id": "rule-5",
+      "qid": "root:rule-5",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg release and versioning (semver, publish checklist)",
+      "created": "2026-01-06",
+      "updated": "2026-01-14",
+      "tags": [
+        "mdkg",
+        "npm",
+        "release",
+        "semver"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-5-release-and-versioning.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-6": {
+      "id": "rule-6",
+      "qid": "root:rule-6",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg templates and schemas (global templates, required frontmatter, body guidance)",
+      "created": "2026-01-06",
+      "updated": "2026-03-05",
+      "tags": [
+        "mdkg",
+        "schema",
+        "templates"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-6-templates-and-schemas.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-7": {
+      "id": "rule-7",
+      "qid": "root:rule-7",
+      "ws": "root",
+      "type": "rule",
+      "title": "collaboration profile and operator preferences",
+      "created": "2026-06-27",
+      "updated": "2026-06-27",
+      "tags": [
+        "collaboration",
+        "preferences",
+        "operator"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "dec-53"
+      ],
+      "aliases": [
+        "collaboration",
+        "operator-profile"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/COLLABORATION.md",
+      "edges": {
+        "relates": [
+          "root:rule-human"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-guide": {
+      "id": "rule-guide",
+      "qid": "root:rule-guide",
+      "ws": "root",
+      "type": "rule",
+      "title": "agent guide (how to work in this repo using mdkg)",
+      "created": "2026-01-06",
+      "updated": "2026-05-14",
+      "tags": [
+        "agents",
+        "mdkg",
+        "workflow"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/guide.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-human": {
+      "id": "rule-human",
+      "qid": "root:rule-human",
+      "ws": "root",
+      "type": "rule",
+      "title": "human working profile and collaboration preferences",
+      "created": "2026-03-10",
+      "updated": "2026-06-27",
+      "tags": [
+        "human",
+        "collaboration",
+        "preferences"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [
+        "human"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/HUMAN.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-soul": {
+      "id": "rule-soul",
+      "qid": "root:rule-soul",
+      "ws": "root",
+      "type": "rule",
+      "title": "agent soul and execution contract",
+      "created": "2026-03-10",
+      "updated": "2026-03-10",
+      "tags": [
+        "agent",
+        "llm",
+        "memory",
+        "constraints",
+        "context-window"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "edd-3",
+        "edd-6",
+        "rule-3",
+        "rule-4",
+        "rule-5"
+      ],
+      "aliases": [
+        "soul",
+        "system-contract"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/SOUL.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:spike-1": {
+      "id": "spike-1",
+      "qid": "root:spike-1",
+      "ws": "root",
+      "type": "spike",
+      "title": "choose audience offer structure and creative direction",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "creative-production",
+        "website",
+        "strategy"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [
+        "select-work-and-ground-context",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "relates": [
+          "root:task-1",
+          "root:test-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:edd-1"
+        ],
+        "blocked_by": [],
+        "blocks": [
+          "root:task-1",
+          "root:test-1"
+        ],
+        "context_refs": [
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:task-1": {
+      "id": "task-1",
+      "qid": "root:task-1",
+      "ws": "root",
+      "type": "task",
+      "title": "build complete Astro React Islands website demo",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "website",
+        "astro",
+        "react-islands",
+        "implementation"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "skills": [
+        "build-pack-and-execute-task",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/task-1-build-complete-astro-react-islands-website-demo.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "relates": [],
+        "blocked_by": [
+          "root:spike-1"
+        ],
+        "blocks": [],
+        "context_refs": [
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:test-1": {
+      "id": "test-1",
+      "qid": "root:test-1",
+      "ws": "root",
+      "type": "test",
+      "title": "complete website demo validation and handoff contract",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [
+        "demo",
+        "website",
+        "validation",
+        "browser",
+        "chrome"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1"
+      ],
+      "aliases": [],
+      "skills": [
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/test-1-complete-website-demo-validation-and-handoff-contract.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "relates": [],
+        "blocked_by": [
+          "root:task-1"
+        ],
+        "blocks": [],
+        "context_refs": [
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    }
+  },
+  "reverse_edges": {
+    "relates": {
+      "root:rule-human": [
+        "root:rule-7"
+      ],
+      "root:task-1": [
+        "root:spike-1"
+      ],
+      "root:test-1": [
+        "root:spike-1"
+      ],
+      "root:dec-1": [
+        "root:spike-1"
+      ],
+      "root:dec-2": [
+        "root:spike-1"
+      ],
+      "root:edd-1": [
+        "root:spike-1"
+      ]
+    },
+    "blocks": {
+      "root:spike-1": [
+        "root:epic-1"
+      ],
+      "root:task-1": [
+        "root:epic-1",
+        "root:spike-1"
+      ],
+      "root:test-1": [
+        "root:epic-1",
+        "root:spike-1"
+      ]
+    },
+    "context_refs": {
+      "root:edd-1": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ],
+      "root:dec-1": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ],
+      "root:dec-2": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ]
+    },
+    "epic": {
+      "root:epic-1": [
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ]
+    },
+    "parent": {
+      "root:goal-1": [
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ]
+    },
+    "blocked_by": {
+      "root:spike-1": [
+        "root:task-1"
+      ],
+      "root:task-1": [
+        "root:test-1"
+      ]
+    }
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "tool": "mdkg",
+    "schema_version": 1,
+    "generated_at": "2026-06-29T17:05:28.567Z",
+    "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/website-demo-template",
+    "skills_root": ".mdkg/skills",
+    "skill_count": 5
+  },
+  "skills": {
+    "author-mdkg-skill": {
+      "slug": "author-mdkg-skill",
+      "id": "skill:author-mdkg-skill",
+      "qid": "root:skill:author-mdkg-skill",
+      "ws": "root",
+      "type": "skill",
+      "name": "author-mdkg-skill",
+      "description": "Create or update an mdkg SKILL.md or MANIFEST.md when a repeatable workflow, capability, agent, tool, runtime, API, or projection contract should become durable mdkg-authored knowledge.",
+      "tags": [
+        "stage:plan",
+        "writer:orchestrator",
+        "mdkg",
+        "skills",
+        "authoring"
+      ],
+      "version": "0.2.0",
+      "authors": [
+        "mdkg"
+      ],
+      "links": [
+        "AGENT_START.md",
+        "CLI_COMMAND_MATRIX.md",
+        ".mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md"
+      ],
+      "path": ".mdkg/skills/author-mdkg-skill/SKILL.md",
+      "has_scripts": false,
+      "has_references": false,
+      "extensions": {},
+      "ochatr": {}
+    },
+    "build-pack-and-execute-task": {
+      "slug": "build-pack-and-execute-task",
+      "id": "skill:build-pack-and-execute-task",
+      "qid": "root:skill:build-pack-and-execute-task",
+      "ws": "root",
+      "type": "skill",
+      "name": "build-pack-and-execute-task",
+      "description": "Build a deterministic mdkg pack for the active work item and use it as the execution handoff when coding or delegating to another AI agent.",
+      "tags": [
+        "stage:execute",
+        "writer:patch-only",
+        "mdkg",
+        "pack-first",
+        "context"
+      ],
+      "version": "0.1.0",
+      "authors": [
+        "mdkg"
+      ],
+      "links": [
+        "README.md",
+        "PACK_EXAMPLES.md",
+        "llms.txt"
+      ],
+      "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      "has_scripts": false,
+      "has_references": false,
+      "extensions": {},
+      "ochatr": {}
+    },
+    "pursue-mdkg-goal": {
+      "slug": "pursue-mdkg-goal",
+      "id": "skill:pursue-mdkg-goal",
+      "qid": "root:skill:pursue-mdkg-goal",
+      "ws": "root",
+      "type": "skill",
+      "name": "pursue-mdkg-goal",
+      "description": "Pursue a selected mdkg goal by repeatedly selecting one scoped work item, executing it with evidence, and evaluating the goal until done, blocked, paused, or budget-limited.",
+      "tags": [
+        "stage:execute",
+        "writer:orchestrator",
+        "mdkg",
+        "goal",
+        "recursive"
+      ],
+      "version": "0.1.0",
+      "authors": [
+        "mdkg"
+      ],
+      "links": [
+        "AGENT_START.md",
+        "CLI_COMMAND_MATRIX.md",
+        ".mdkg/design/prd-3-mdkg-goal-node-ux-and-agent-harness-contract.md",
+        ".mdkg/design/edd-10-mdkg-goal-node-architecture-and-recursive-agent-loop.md"
+      ],
+      "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      "has_scripts": false,
+      "has_references": false,
+      "extensions": {},
+      "ochatr": {}
+    },
+    "select-work-and-ground-context": {
+      "slug": "select-work-and-ground-context",
+      "id": "skill:select-work-and-ground-context",
+      "qid": "root:skill:select-work-and-ground-context",
+      "ws": "root",
+      "type": "skill",
+      "name": "select-work-and-ground-context",
+      "description": "Select the right mdkg work item and ground execution before coding when the active task or context is still being established.",
+      "tags": [
+        "stage:plan",
+        "writer:read-only",
+        "mdkg",
+        "onboarding",
+        "context"
+      ],
+      "version": "0.1.0",
+      "authors": [
+        "mdkg"
+      ],
+      "links": [
+        "AGENT_START.md",
+        "README.md",
+        "CLI_COMMAND_MATRIX.md"
+      ],
+      "path": ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+      "has_scripts": false,
+      "has_references": false,
+      "extensions": {},
+      "ochatr": {}
+    },
+    "verify-close-and-checkpoint": {
+      "slug": "verify-close-and-checkpoint",
+      "id": "skill:verify-close-and-checkpoint",
+      "qid": "root:skill:verify-close-and-checkpoint",
+      "ws": "root",
+      "type": "skill",
+      "name": "verify-close-and-checkpoint",
+      "description": "Verify code and mdkg state, attach evidence, and close work cleanly when the single-writer AI agent or human orchestrator is ready to perform durable writes.",
+      "tags": [
+        "stage:review",
+        "writer:orchestrator",
+        "mdkg",
+        "validation",
+        "release"
+      ],
+      "version": "0.1.0",
+      "authors": [
+        "mdkg"
+      ],
+      "links": [
+        "README.md",
+        "AGENT_START.md"
+      ],
+      "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      "has_scripts": false,
+      "has_references": false,
+      "extensions": {},
+      "ochatr": {}
+    }
+  }
+}
