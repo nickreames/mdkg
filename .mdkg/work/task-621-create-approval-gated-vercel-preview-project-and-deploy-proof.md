@@ -1,20 +1,20 @@
 ---
 id: task-621
 type: task
-title: create approval gated Vercel preview project and deploy proof
-status: blocked
-priority: 2
+title: supersede dedicated Vercel preview project proof
+status: done
+priority: 3
 epic: epic-205
 parent: goal-44
-tags: [demo, vercel, preview, approval, deploy]
+tags: [demo, vercel, preview, approval, deploy, superseded]
 owners: []
 links: []
 artifacts: [/private/tmp/mdkg-task-621-vercel-preview-pack.md, /private/tmp/mdkg-task-621-vercel-preview-pack.md.stats.json, examples/demo-runs/demo-001/dist/index.html]
 relates: []
 blocked_by: []
-blocks: [task-622, test-324]
-refs: [dec-57, edd-59]
-context_refs: [dec-57, edd-59]
+blocks: []
+refs: [dec-57, dec-58, dec-59, edd-59, edd-60, edd-61]
+context_refs: [dec-57, dec-58, dec-59, edd-59, edd-60, edd-61]
 evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
@@ -23,48 +23,45 @@ updated: 2026-06-29
 ---
 # Overview
 
-After explicit approval, create or verify the dedicated Vercel preview project
-and deploy the first demo preview from this repo.
+This task is closed as superseded. The dedicated `mdkg-demo-previews` Vercel
+project path is no longer the next proof for `goal-44`; the accepted direction
+is local source integration in the existing mdkg-dev Astro app at `/demos`,
+`/demo/1`, and `/demo/1/output`.
 
 # Acceptance Criteria
 
-- The intended project name is `mdkg-demo-previews`.
-- The deployment source is this repo and the branch-path demo run.
-- Vercel project id, deployment id, preview URL, commit SHA, build logs,
-  screenshots, and noindex state are recorded.
-- The task does not create DNS records, aliases, custom domains, durable
-  `demo-N` hosting, git tags, npm publishes, or analytics activation.
-- If approval or Vercel access is missing, the task records a blocker instead
-  of improvising.
+- `dec-58` selects `/demo/1`, `/demo/2`, and `/demos` as the public accepted
+  demo URL model.
+- `dec-59` selects existing mdkg-dev Astro routes and the existing mdkg-dev
+  Vercel project as the default implementation path.
+- No Vercel project, deployment, DNS, alias, custom domain, git tag, npm
+  publish, analytics activation, push, or production promotion occurred in this
+  task.
+- Historical local preflight artifacts remain attached for reference.
 
 # Files Affected
 
-- mdkg evidence/checkpoint nodes
-- local artifact receipts under `/private/tmp` when Browser/Chrome/Vercel proof
-  is collected
+- mdkg graph state only
 
 # Implementation Notes
 
-- Real Vercel mutation must be separately approved at execution time.
-- Treat preview URLs as public unless protected by Vercel access.
-- Local preflight is complete:
+- Local preflight from the older model remains available:
   `/private/tmp/mdkg-task-621-vercel-preview-pack.md`,
   `/private/tmp/mdkg-task-621-vercel-preview-pack.md.stats.json`, and
   `examples/demo-runs/demo-001/dist/index.html` are attached artifacts.
-- The remaining blocker is explicit approval to use Vercel project/deployment
-  mutation paths. Without that approval, this task must remain blocked.
-- Any approved execution must record the Vercel project id, deployment id,
-  preview URL, commit SHA, build-log summary, screenshots, console health,
-  responsive checks, noindex state, no-secret/public-claims result, and a
-  closeout recommendation.
+- Future implementation should continue with `task-628`, `task-629`, and
+  `task-630`.
 
 # Test Plan
 
-- Vercel project/deployment inspection
-- Browser/Chrome preview validation
-- `test-324`
+- `node dist/cli.js goal next goal-44 --json` should no longer select this
+  task.
+- `test-324` now validates local short-path route evidence rather than Vercel
+  preview evidence.
 
 # Links / Artifacts
 
-- `dec-57`
-- `edd-59`
+- `dec-58`
+- `dec-59`
+- `edd-60`
+- `edd-61`

@@ -1,20 +1,20 @@
 ---
 id: test-324
 type: test
-title: Vercel preview URL evidence contract
+title: short path demo route evidence contract
 status: todo
 priority: 2
 epic: epic-205
 parent: goal-44
-tags: [demo, vercel, preview, evidence]
+tags: [demo, mdkg-dev, astro, route, evidence]
 owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-621]
+blocked_by: [task-630]
 blocks: [task-622, test-325]
-refs: [dec-57, edd-59]
-context_refs: [dec-57, edd-59]
+refs: [dec-58, dec-59, edd-60, edd-61]
+context_refs: [dec-58, dec-59, edd-60, edd-61]
 evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
@@ -24,26 +24,33 @@ updated: 2026-06-29
 ---
 # Overview
 
-Validate that any Vercel preview deployment has enough evidence for review
-without becoming durable hosting.
+Validate that the local mdkg-dev short-path demo routes have enough evidence for
+review before any push or deployment.
 
 # Target / Scope
 
-- `task-621`
-- Vercel preview deployment evidence
+- `task-630`
+- `/demos`
+- `/demo/1`
+- `/demo/1/output`
 
 # Preconditions / Environment
 
-- Explicit approval for Vercel preview project/deploy work exists.
-- Local demo run gates have passed.
+- Demo route implementation exists locally.
+- Sanitized Demo 1 snapshot exists.
+- mdkg-dev local build is available.
 
 # Test Cases
 
-- Preview deploy runs only after explicit approval.
-- Evidence records Vercel project and deployment ids.
-- Evidence records preview URL, commit SHA, build logs, screenshots, and noindex
-  state.
-- Preview is not promoted to `demo-N` hosting in this goal.
+- `npm --prefix mdkg-dev run build` passes.
+- `npm run smoke:mdkg-dev` passes.
+- Browser and Chrome can open `/demos`, `/demo/1`, and `/demo/1/output`
+  locally at desktop and mobile widths.
+- Evidence records screenshots, console health, responsive rendering, route
+  status, no-secret result, public-claims result, and noindex/canonical behavior
+  where relevant.
+- No Vercel project, deployment, DNS, push, tag, npm publish, alias, custom
+  domain, provider mutation, or production promotion occurs.
 
 # Results / Evidence
 
@@ -51,4 +58,5 @@ Pending.
 
 # Notes / Follow-ups
 
-- If approval is missing, record a blocker rather than running Vercel mutation.
+- This test is local-only. Live validation belongs to a separately approved
+  push/deploy lane.

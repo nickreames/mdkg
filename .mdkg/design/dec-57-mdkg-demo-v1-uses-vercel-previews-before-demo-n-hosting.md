@@ -19,6 +19,11 @@ The long-term direction is a moderately structured `demo-N.mdkg.dev` hosting
 model, but the immediate demo workflow needs low-risk iteration with Vercel
 preview URLs first.
 
+Supersession note, 2026-06-29: this decision remains historical context for the
+preview/subdomain idea, but the active accepted-demo URL model is now `dec-58`
+and `dec-59`: `/demos`, `/demo/1`, `/demo/2`, etc. inside the existing
+mdkg-dev Astro app.
+
 # Decision
 
 For v1, demo runs use Vercel preview links only. Durable `demo-N.mdkg.dev`
@@ -40,10 +45,14 @@ from `goal-44`.
 - `goal-44` does not authorize DNS, custom domains, aliases, production
   promotion, or durable hosting.
 - `goal-46` is blocked until an accepted preview exists.
+- Current active work should use `task-628`, `task-629`, and `task-630` instead
+  of this preview-project path.
 
 # Links / references
 
 - `goal-44`
 - `goal-46`
+- `dec-58`
+- `dec-59`
 - `edd-33`
 - `dec-32`

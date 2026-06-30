@@ -18,6 +18,11 @@ Vercel preview demos should be review surfaces for generated mdkg website runs,
 not durable public hosting. Each preview needs enough evidence to decide whether
 to reject, polish, or promote later.
 
+Supersession note, 2026-06-29: this EDD remains historical context for Vercel
+preview evidence. The active goal-44 path now proves accepted demos through
+local mdkg-dev routes `/demos`, `/demo/1`, and `/demo/1/output` using
+`edd-60` and `edd-61`.
+
 # Architecture
 
 - Dedicated preview project name: `mdkg-demo-previews`.
@@ -73,3 +78,6 @@ build logs, no-secret posture, and closeout classification.
 
 Preview deployment is optional and approval-gated in `goal-44`. Durable hosting,
 DNS, aliases, and canonical links are deferred to `goal-46`.
+
+For current execution, continue with `task-628`, `task-629`, and `task-630`
+instead of preview deployment.
