@@ -133,14 +133,31 @@ The goal is achieved when:
 - Created on 2026-06-29 as the replacement demo-template and preview lane.
 - `goal-20` remains archived and historical.
 - `goal-42` is achieved and should not be reopened for this work.
-- The next actionable node is `task-618`.
 - Context decisions/design records are `dec-56`, `dec-57`, `edd-58`, and
   `edd-59`; they are linked from concrete nodes to keep goal routing focused on
   actionable work.
+- Canonical template creation, Creative Production intake, branch-path fork
+  proof, local website implementation, Browser/Chrome validation, and
+  no-secret/public-claims audit are complete.
+- `examples/demo-runs/demo-001` is the first completed local proof run and is
+  ready to request preview approval.
+- The current selected node is `task-621`, blocked on explicit approval for
+  Vercel project verification/creation and preview deployment.
+- No Vercel provider mutation, DNS, custom domain, alias, durable hosting,
+  production promotion, git push, tag, npm publish, or analytics activation has
+  occurred in this goal.
 
 # Iteration Log
 
 - 2026-06-29: Created by graph-only enhancement pass after `mdkg@0.4.0` launch.
+- 2026-06-29: Seeded `examples/website-demo-template` with Ocean Flow design,
+  Astro plus React Islands stack guidance, Creative Production intake, and
+  preview/no-secret boundaries.
+- 2026-06-29: Forked and completed `examples/demo-runs/demo-001`; local build,
+  Browser/Chrome screenshots, mdkg validation, demo graph smoke, and
+  no-secret/public-claims audit passed.
+- 2026-06-29: Prepared `task-621` pack and local preflight, then blocked on the
+  explicit Vercel preview approval boundary.
 
 # Skill Improvement Candidates
 
@@ -149,4 +166,10 @@ The goal is achieved when:
 # Completion Evidence
 
 - Planning checkpoint: `chk-327`.
-- Implementation evidence pending.
+- Template seed and graph proof: `task-618`, `task-619`, `task-620`,
+  `test-321`.
+- Local demo build and Browser/Chrome validation: `test-322`, `chk-332`,
+  `examples/demo-runs/demo-001/.mdkg/work/chk-3-demo-001-astro-react-website-built.md`,
+  `examples/demo-runs/demo-001/.mdkg/work/chk-4-demo-001-validation-passed-and-preview-approval-recommended.md`.
+- No-secret and public-claims audit: `test-323`, `chk-333`.
+- Vercel preview evidence is pending and explicitly blocked at `task-621`.

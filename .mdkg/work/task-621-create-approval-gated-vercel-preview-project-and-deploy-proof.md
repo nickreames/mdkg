@@ -11,7 +11,7 @@ owners: []
 links: []
 artifacts: [/private/tmp/mdkg-task-621-vercel-preview-pack.md, /private/tmp/mdkg-task-621-vercel-preview-pack.md.stats.json, examples/demo-runs/demo-001/dist/index.html]
 relates: []
-blocked_by: [task-620]
+blocked_by: []
 blocks: [task-622, test-324]
 refs: [dec-57, edd-59]
 context_refs: [dec-57, edd-59]
@@ -47,6 +47,16 @@ and deploy the first demo preview from this repo.
 
 - Real Vercel mutation must be separately approved at execution time.
 - Treat preview URLs as public unless protected by Vercel access.
+- Local preflight is complete:
+  `/private/tmp/mdkg-task-621-vercel-preview-pack.md`,
+  `/private/tmp/mdkg-task-621-vercel-preview-pack.md.stats.json`, and
+  `examples/demo-runs/demo-001/dist/index.html` are attached artifacts.
+- The remaining blocker is explicit approval to use Vercel project/deployment
+  mutation paths. Without that approval, this task must remain blocked.
+- Any approved execution must record the Vercel project id, deployment id,
+  preview URL, commit SHA, build-log summary, screenshots, console health,
+  responsive checks, noindex state, no-secret/public-claims result, and a
+  closeout recommendation.
 
 # Test Plan
 
