@@ -2,14 +2,14 @@
 id: test-329
 type: test
 title: read only demo viewer lazy load and homepage isolation contract
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, viewer, performance, lazy-load, homepage]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-goal44-demo-routes, mdkg-dev/dist/_astro]
 relates: []
 blocked_by: [task-630]
 blocks: [task-622, test-325]

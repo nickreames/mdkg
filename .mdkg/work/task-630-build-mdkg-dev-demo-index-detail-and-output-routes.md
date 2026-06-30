@@ -2,14 +2,14 @@
 id: task-630
 type: task
 title: build mdkg dev demo index detail and output routes
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, mdkg-dev, astro, viewer, routes]
 owners: []
 links: []
-artifacts: []
+artifacts: [mdkg-dev/src/pages/demos.astro, mdkg-dev/src/pages/demo/[id].astro, mdkg-dev/src/pages/demo/[id]/output.astro, mdkg-dev/src/components/NavBar.astro, mdkg-dev/src/components/Footer.astro, mdkg-dev/src/pages/sitemap.xml.ts, /private/tmp/mdkg-goal44-demo-routes]
 relates: []
 blocked_by: [task-628, task-629]
 blocks: [test-324, test-329, task-622]

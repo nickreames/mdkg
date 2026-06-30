@@ -2,14 +2,14 @@
 id: task-629
 type: task
 title: create sanitized demo 1 graph filesystem and output snapshot
-status: todo
+status: done
 priority: 1
 epic: epic-205
 parent: goal-44
 tags: [demo, snapshot, no-secret, graph, filesystem, output]
 owners: []
 links: []
-artifacts: []
+artifacts: [mdkg-dev/src/data/demoSnapshots.ts, mdkg-dev/public/demo-001/ocean-flow-map.svg]
 relates: []
 blocked_by: [task-628]
 blocks: [task-630, test-324, task-622]

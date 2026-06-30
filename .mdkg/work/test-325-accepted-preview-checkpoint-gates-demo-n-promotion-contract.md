@@ -2,14 +2,14 @@
 id: test-325
 type: test
 title: accepted short path demo checkpoint gates advanced viewer contract
-status: todo
+status: done
 priority: 2
 epic: epic-205
 parent: goal-44
 tags: [demo, checkpoint, viewer, mdkg-dev, lazy-load]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-goal44-demo-routes, .mdkg/work/chk-340-short-path-demo-proof-accepted.md, .mdkg/work/chk-339-short-path-demo-route-evidence-passed.md, .mdkg/work/chk-338-demo-viewer-lazy-load-isolation-passed.md]
 relates: []
 blocked_by: [task-622, test-324, test-329]
 blocks: [goal-47, epic-207, spike-24]
@@ -48,7 +48,14 @@ short-path read-only demo proof has an explicit accepted checkpoint.
 
 # Results / Evidence
 
-Pending.
+- Pass. `chk-340` explicitly classifies the local short-path Demo 1 proof as
+  accepted.
+- Browser/Chrome route evidence is recorded in `chk-339` with screenshots under
+  `/private/tmp/mdkg-goal44-demo-routes`.
+- Lazy-load/homepage isolation proof is recorded in `chk-338`.
+- `goal-47` advanced workspace viewer research may proceed later from this
+  accepted checkpoint. External hosting, DNS, push, deploy, tag, npm publish,
+  analytics activation, and provider mutation remain out of scope for `goal-44`.
 
 # Notes / Follow-ups
 

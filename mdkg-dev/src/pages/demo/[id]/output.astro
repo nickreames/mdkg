@@ -1,0 +1,428 @@
+---
+import { demoSnapshots, type DemoSnapshot } from "../../../data/demoSnapshots";
+
+export function getStaticPaths() {
+  return demoSnapshots.map((demo) => ({
+    params: { id: demo.id },
+    props: { demo }
+  }));
+}
+
+const { demo } = Astro.props as { demo: DemoSnapshot };
+
+const steps = [
+  {
+    title: "Fork the graph",
+    body: "Fork the canonical graph template into a run path."
+  },
+  {
+    title: "Select the node",
+    body: "Select one goal and pack the first work node."
+  },
+  {
+    title: "Shape the direction",
+    body: "Shape the creative direction with Ocean Flow as the baseline."
+  },
+  {
+    title: "Build and gate locally",
+    body: "Build the Astro site locally, then validate before any Vercel preview request."
+  }
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content={demo.summary} />
+    <title>{demo.title} output</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="nav">
+        <a class="brand" href={`/demo/${demo.id}/`} aria-label="Back to demo detail">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>mdkg demo {demo.id}</span>
+        </a>
+        <nav aria-label="Output sections">
+          <a href="#workflow">Workflow</a>
+          <a href="#proof">Proof</a>
+          <a href="#safety">Safety</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="output-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Output preview</p>
+            <h1 id="output-title">Agent-ready demo websites from one mdkg goal.</h1>
+            <p>{demo.summary}</p>
+            <div class="actions">
+              <a class="button primary" href="#proof">Inspect proof</a>
+              <a class="button secondary" href={`/demo/${demo.id}/`}>Back to graph</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <img src={demo.image} alt={demo.imageAlt} width="980" height="620" />
+          </div>
+        </section>
+
+        <section id="workflow" class="section" aria-labelledby="workflow-title">
+          <h2 id="workflow-title">A forked run stays structured while the website idea changes.</h2>
+          <div class="step-grid">
+            {steps.map((step, index) => (
+              <article>
+                <strong>{index + 1}</strong>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="proof" class="section split" aria-labelledby="proof-title">
+          <div>
+            <h2 id="proof-title">The graph run is inspectable.</h2>
+            <p class="section-lede">This output is paired with a sanitized graph and file snapshot on the parent demo detail page.</p>
+          </div>
+          <div class="console-panel">
+            <div class="console-tabs" aria-label="Run stages">
+              {demo.graphNodes.slice(0, 4).map((node) => <span>{node.id}</span>)}
+            </div>
+            <div class="console-output">
+              <p class="console-status">{demo.status}</p>
+              <h3>{demo.graphNodes[0].title}</h3>
+              <p>{demo.graphNodes[0].detail}</p>
+              <pre><code>mdkg goal next goal-1 --json</code></pre>
+            </div>
+            <div class="console-metrics" aria-label="Run evidence summary">
+              <div><strong>1</strong><span>goal start</span></div>
+              <div><strong>{demo.graphNodes.length}</strong><span>graph records</span></div>
+              <div><strong>0</strong><span>warnings</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="safety" class="section safety-band" aria-labelledby="safety-title">
+          <h2 id="safety-title">The demo is public-safe before it is preview-worthy.</h2>
+          <div class="safety-grid">
+            {demo.safety.map((item, index) => (
+              <article>
+                <h3>Gate {index + 1}</h3>
+                <p>{item}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  :root {
+    --blue-700: #0f5fd6;
+    --cyan-500: #12aeea;
+    --teal-500: #20c7b5;
+    --ink: #102033;
+    --slate: #526173;
+    --mist: #eef7fb;
+    --line: #cfe3ee;
+    --paper: #ffffff;
+    --citrine: #f4c451;
+    --coral: #ff7a59;
+    --gradient: linear-gradient(135deg, #0f5fd6 0%, #12aeea 55%, #20c7b5 100%);
+    --shadow: 0 22px 60px rgba(15, 95, 214, 0.14);
+    color: var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    background: #f7fbfd;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background:
+      linear-gradient(180deg, rgba(238, 247, 251, 0.8) 0%, rgba(255, 255, 255, 0) 44rem),
+      #ffffff;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .site-shell {
+    min-height: 100vh;
+  }
+
+  .nav,
+  .hero,
+  .section {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 72px;
+  }
+
+  .brand,
+  nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand,
+  nav a,
+  .button {
+    text-decoration: none;
+  }
+
+  .brand {
+    font-weight: 800;
+  }
+
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: var(--gradient);
+    box-shadow: 0 10px 22px rgba(18, 174, 234, 0.22);
+  }
+
+  nav {
+    color: var(--slate);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(380px, 1.08fr);
+    align-items: center;
+    gap: 48px;
+    padding: 78px 0 52px;
+  }
+
+  .eyebrow {
+    margin: 0 0 14px;
+    color: var(--blue-700);
+    font-weight: 800;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h1 {
+    max-width: 12ch;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.96;
+    letter-spacing: 0;
+  }
+
+  h2 {
+    max-width: 760px;
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  .hero-copy p:not(.eyebrow),
+  .section-lede,
+  article p,
+  .console-output p {
+    color: var(--slate);
+  }
+
+  .hero-copy p:not(.eyebrow) {
+    max-width: 600px;
+    margin-top: 24px;
+    font-size: 1.15rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    border-radius: 8px;
+    padding: 0 20px;
+    font-weight: 760;
+  }
+
+  .button.primary {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: #ffffff;
+    box-shadow: 0 16px 38px rgba(18, 174, 234, 0.24);
+  }
+
+  .button.primary::before {
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--gradient);
+    content: "";
+  }
+
+  .button.secondary {
+    border: 1px solid var(--line);
+    background: #ffffff;
+  }
+
+  .hero-visual img {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--mist);
+    box-shadow: var(--shadow);
+  }
+
+  .section {
+    padding: 72px 0;
+  }
+
+  .step-grid,
+  .safety-grid,
+  .split {
+    display: grid;
+    gap: 16px;
+  }
+
+  .step-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 34px;
+  }
+
+  .split {
+    grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+    align-items: start;
+  }
+
+  article,
+  .console-panel {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px;
+    background: #ffffff;
+    box-shadow: 0 10px 26px rgba(16, 32, 51, 0.06);
+  }
+
+  article strong {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 8px;
+    color: #ffffff;
+    background: var(--gradient);
+  }
+
+  article h3 {
+    margin-top: 18px;
+  }
+
+  .console-panel {
+    display: grid;
+    gap: 16px;
+  }
+
+  .console-tabs,
+  .console-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .console-tabs span,
+  .console-metrics div {
+    border-radius: 8px;
+    padding: 10px;
+    background: var(--mist);
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .console-output {
+    display: grid;
+    gap: 12px;
+    border-radius: 8px;
+    padding: 18px;
+    background: #102033;
+    color: #ffffff;
+  }
+
+  .console-output p {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .console-status {
+    color: #20c7b5 !important;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    color: #eef7fb;
+  }
+
+  .console-metrics div {
+    display: grid;
+    gap: 4px;
+  }
+
+  .console-metrics strong {
+    color: var(--blue-700);
+    font-size: 2rem;
+  }
+
+  .console-metrics span {
+    color: var(--slate);
+    font-size: 0.82rem;
+  }
+
+  .safety-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 34px;
+  }
+
+  @media (max-width: 860px) {
+    .hero,
+    .split,
+    .step-grid,
+    .safety-grid {
+      grid-template-columns: 1fr;
+    }
+
+    nav {
+      display: none;
+    }
+  }
+</style>
