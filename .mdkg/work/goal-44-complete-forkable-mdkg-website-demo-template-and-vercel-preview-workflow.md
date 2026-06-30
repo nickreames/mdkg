@@ -1,25 +1,25 @@
 ---
 id: goal-44
 type: goal
-title: Complete forkable mdkg website demo template and Vercel preview workflow
+title: Complete forkable mdkg website demo template and short path demo integration
 status: progress
 priority: 1
 goal_state: active
-goal_condition: A canonical website demo template exists at examples/website-demo-template, a first branch-path run can be forked into examples/demo-runs/demo-001, an agent can start from one selected goal and build a complete differentiated Astro plus React Islands website with Ocean Flow design guidance and Creative Production freedom, local validation passes, and an explicitly approved Vercel preview workflow records preview evidence without DNS, durable demo-N hosting, production promotion, push, tag, or npm publish side effects.
-scope_refs: [epic-205, task-618, task-619, task-620, task-621, task-622, test-321, test-322, test-323, test-324, test-325]
-active_node: task-621
+goal_condition: A canonical website demo template exists at examples/website-demo-template, the first run at examples/demo-runs/demo-001 is validated, accepted Demo 1 is integrated into the existing mdkg-dev Astro source plan at /demos, /demo/1, and /demo/1/output using sanitized graph/filesystem/output snapshots, local mdkg-dev build plus Browser/Chrome validation passes, and no push, deploy, DNS, tag, npm publish, analytics activation, or provider mutation occurs without explicit approval.
+scope_refs: [epic-205, task-618, task-619, task-620, task-621, task-622, task-628, task-629, task-630, test-321, test-322, test-323, test-324, test-325, test-329]
+active_node: task-628
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
-required_checks: [node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, mdkg graph fork examples/website-demo-template --target examples/demo-runs/demo-001 --start-goal goal-1 --json, mdkg goal next goal-1 --json from forked run, mdkg pack <first-node> --profile concise --dry-run --stats from forked run, generated demo local build, Browser desktop and mobile local validation, Chrome desktop and mobile local validation, no-secret and public-claims audit, Vercel preview project and deployment evidence only after explicit approval, git diff --check]
+required_checks: [node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, mdkg graph fork examples/website-demo-template --target examples/demo-runs/demo-001 --start-goal goal-1 --json, mdkg goal next goal-1 --json from forked run, mdkg pack <first-node> --profile concise --dry-run --stats from forked run, generated demo local build, npm --prefix mdkg-dev run build, npm run smoke:mdkg-dev, Browser desktop and mobile local validation for /demos /demo/1 /demo/1/output, Chrome desktop and mobile local validation for /demos /demo/1 /demo/1/output, no-secret and public-claims audit, homepage and docs route lazy-load isolation proof, git diff --check]
 max_iterations: 25
 blocked_after_attempts: 3
-tags: [demo, template, vercel, preview, website, creative-production, mdkg-dev]
+tags: [demo, template, website, creative-production, mdkg-dev, astro]
 owners: []
 links: []
 artifacts: []
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-20]
+refs: [goal-20, goal-46, goal-47, dec-58, dec-59, edd-60, edd-61]
 context_refs: []
 evidence_refs: []
 aliases: []
@@ -31,8 +31,9 @@ updated: 2026-06-29
 
 Build a reusable mdkg demo lane where this repo can fork one canonical website
 template graph into repeated demo runs, let an agent build a differentiated
-website from the selected goal, and validate a Vercel preview workflow without
-turning preview work into durable hosting.
+website from the selected goal, and publish accepted demo proof into mdkg-dev
+source routes after local validation without mutating Vercel or production
+state.
 
 # End Condition
 
@@ -50,23 +51,27 @@ The goal is achieved when:
 - An agent can start from one selected goal in the forked run, inspect
   `goal next`, build a concise pack, create the site, validate locally, and
   close with evidence.
-- A dedicated Vercel preview project named `mdkg-demo-previews` is created or
-  verified only after explicit approval, and a preview deployment records URL,
-  project/deployment ids, build logs, commit SHA, screenshots, noindex state,
-  and an accept/reject/polish recommendation.
-- No durable `demo-N.mdkg.dev` hosting, DNS, custom domain, Vercel alias,
-  production promotion, git push, tag, npm publish, or analytics activation
-  occurs in this goal.
+- Demo 1 is planned and implemented in the existing mdkg-dev Astro app using
+  `/demos`, `/demo/1`, and `/demo/1/output`.
+- Demo 1 uses a committed sanitized snapshot derived from
+  `examples/demo-runs/demo-001` for graph, filesystem, and final output proof.
+- Local mdkg-dev build, Browser validation, Chrome validation, no-secret audit,
+  public-claims audit, and homepage/docs lazy-load isolation checks pass.
+- No dedicated Vercel project, durable `demo-N.mdkg.dev` hosting, DNS, custom
+  domain, Vercel alias, production promotion, git push, tag, npm publish,
+  analytics activation, or provider mutation occurs in this goal without
+  explicit approval.
 
 # Non-Goals
 
 - Do not publish a new mdkg npm version unless implementation proves the
   current CLI cannot support the workflow.
 - Do not mutate Vercel, deploy, create projects, push, change DNS, add custom
-  domains, or promote previews without explicit approval during execution.
+  domains, or promote demos without explicit approval during execution.
 - Do not re-open `goal-42` or revive archived `goal-20`; use them only as
   historical context.
-- Do not make accepted demos canonical mdkg.dev content in this goal.
+- Do not add embedded VS Code-style workspace behavior in this goal; keep that
+  as `goal-47`.
 
 # Recursive Algorithm
 
@@ -74,13 +79,15 @@ The goal is achieved when:
 2. Add Creative Production intake and freedom constraints from `task-619`.
 3. Prove branch-path fork/run mechanics through `task-620`, `test-321`,
    `test-322`, and `test-323`.
-4. Only after explicit approval, use `task-621` and `test-324` to create or
-   verify the dedicated Vercel preview project and record preview deployment
-   evidence.
-5. Use `task-622` and `test-325` to classify the preview as accepted,
-   rejected, or needs-polish and decide whether the follow-up hosting goal can
-   proceed.
-6. Re-evaluate the goal after every claimed node until the end condition is met
+4. Use `task-628` to plan mdkg-dev `/demos`, `/demo/1`, and `/demo/1/output`
+   source integration.
+5. Use `task-629` to create the sanitized Demo 1 graph/filesystem/output
+   snapshot.
+6. Use `task-630`, `test-324`, and `test-329` to implement and validate the
+   local short-path routes.
+7. Use `task-622` and `test-325` to classify the route proof as accepted,
+   rejected, or needs-polish and decide whether `goal-47` can proceed.
+8. Re-evaluate the goal after every claimed node until the end condition is met
    or blockers are explicit.
 
 # Required Skills
@@ -102,19 +109,23 @@ The goal is achieved when:
 - local Astro plus React Islands build for the generated demo
 - Browser and Chrome desktop/mobile local validation
 - no-secret and public-claims audit
-- Vercel preview evidence only after explicit approval
+- Browser/Chrome local route validation for `/demos`, `/demo/1`, and
+  `/demo/1/output`
+- homepage/docs lazy-load isolation proof
 - `git diff --check`
 
 # Acceptance Criteria
 
-- `node dist/cli.js goal next goal-44 --json` selects `task-618` first.
+- `node dist/cli.js goal next goal-44 --json` selects `task-628` after the
+  completed template/fork/local proof work.
 - The canonical template path is `examples/website-demo-template/`.
 - The first run path is `examples/demo-runs/demo-001/`.
-- The dedicated preview project name is `mdkg-demo-previews`.
+- Accepted public demo URLs are `/demo/1`, `/demo/2`, etc., with `/demos` as
+  the directory page.
 - The first run is forkable and repeatable without hidden chat context.
-- Preview evidence is sufficient to decide accept/reject/polish.
-- `goal-46` remains blocked until `test-325` records an accepted preview
-  checkpoint.
+- Local route evidence is sufficient to decide accept/reject/polish.
+- `goal-47` remains blocked until `test-325` records an accepted short-path
+  demo checkpoint.
 
 # Definition Of Done
 
@@ -133,16 +144,17 @@ The goal is achieved when:
 - Created on 2026-06-29 as the replacement demo-template and preview lane.
 - `goal-20` remains archived and historical.
 - `goal-42` is achieved and should not be reopened for this work.
-- Context decisions/design records are `dec-56`, `dec-57`, `edd-58`, and
-  `edd-59`; they are linked from concrete nodes to keep goal routing focused on
-  actionable work.
+- Context decisions/design records are `dec-56`, `dec-57`, `dec-58`, `dec-59`,
+  `edd-58`, `edd-59`, `edd-60`, and `edd-61`; `dec-58` and `dec-59` supersede
+  the default dedicated-preview/subdomain model for this lane.
 - Canonical template creation, Creative Production intake, branch-path fork
   proof, local website implementation, Browser/Chrome validation, and
   no-secret/public-claims audit are complete.
 - `examples/demo-runs/demo-001` is the first completed local proof run and is
-  ready to request preview approval.
-- The current selected node is `task-621`, blocked on explicit approval for
-  Vercel project verification/creation and preview deployment.
+  ready to become the Demo 1 source/snapshot input.
+- The old Vercel preview project lane is superseded at `task-621`; the current
+  selected node is `task-628` for mdkg-dev `/demos` and `/demo/1` source
+  planning.
 - No Vercel provider mutation, DNS, custom domain, alias, durable hosting,
   production promotion, git push, tag, npm publish, or analytics activation has
   occurred in this goal.
@@ -158,6 +170,9 @@ The goal is achieved when:
   no-secret/public-claims audit passed.
 - 2026-06-29: Prepared `task-621` pack and local preflight, then blocked on the
   explicit Vercel preview approval boundary.
+- 2026-06-29: Re-aligned the goal on short mdkg-dev paths after the operator
+  chose `/demo/1`, `/demo/2`, and `/demos`; created `task-628`, `task-629`,
+  `task-630`, `test-329`, and follow-up `goal-47`.
 
 # Skill Improvement Candidates
 
@@ -172,4 +187,5 @@ The goal is achieved when:
   `examples/demo-runs/demo-001/.mdkg/work/chk-3-demo-001-astro-react-website-built.md`,
   `examples/demo-runs/demo-001/.mdkg/work/chk-4-demo-001-validation-passed-and-preview-approval-recommended.md`.
 - No-secret and public-claims audit: `test-323`, `chk-333`.
-- Vercel preview evidence is pending and explicitly blocked at `task-621`.
+- Vercel preview evidence from the old lane is superseded at `task-621`.
+- mdkg-dev short-path source integration is pending at `task-628`.
