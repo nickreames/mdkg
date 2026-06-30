@@ -2,14 +2,14 @@
 id: task-621
 type: task
 title: create approval gated Vercel preview project and deploy proof
-status: todo
+status: blocked
 priority: 2
 epic: epic-205
 parent: goal-44
 tags: [demo, vercel, preview, approval, deploy]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-task-621-vercel-preview-pack.md, /private/tmp/mdkg-task-621-vercel-preview-pack.md.stats.json, examples/demo-runs/demo-001/dist/index.html]
 relates: []
 blocked_by: [task-620]
 blocks: [task-622, test-324]
