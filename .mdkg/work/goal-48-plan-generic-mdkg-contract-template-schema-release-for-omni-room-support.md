@@ -2,11 +2,12 @@
 id: goal-48
 type: goal
 title: plan generic mdkg contract template schema release for Omni Room support
-status: todo
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: Goal 48 is complete when mdkg has a decision-complete release plan for generic MANIFEST/WORK/WORK_ORDER/RECEIPT contract template, schema, validator, CLI, scaffold, docs, and package validation changes needed by Omni Room consumers, without hardcoding a future version and without changing source, package metadata, public docs, seed/default assets, or downstream repos in the planning pass.
 scope_refs: [task-633, task-631, task-632, task-634, task-635, task-636, test-330, test-331, test-332]
+last_active_node: test-332
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, mdkg status --json, mdkg index, mdkg validate --changed-only --json, mdkg validate --summary --limit 20 --json, git diff --check, git diff --cached --name-status]
 max_iterations: 25
@@ -20,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: []
 context_refs: [task-633, task-631, task-632, task-634, task-635, task-636, test-330, test-331, test-332]
-evidence_refs: [chk-342]
+evidence_refs: [chk-342, chk-343]
 aliases: [contract-template-schema-release-plan, omni-room-contract-profile-release-plan]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-02
@@ -148,9 +149,11 @@ sync adds the slug locally.
 
 # Current State
 
-Seeded by the root:goal-42 mdkg-internal child pass on 2026-07-02 and
-intentionally paused/todo. The seed pass created only mdkg work/checkpoint
-planning nodes and mdkg event-log entries.
+Seeded by the root:goal-42 mdkg-internal child pass on 2026-07-02 and resumed
+for mdkg-internal planning execution. The resumed pass completed the planning
+lane without source, package metadata, public docs, generated docs, template,
+skill, init asset, seed/default asset, downstream repo, publish, tag, push, or
+provider mutation.
 
 Source evidence reviewed during seeding:
 
@@ -170,6 +173,10 @@ Source evidence reviewed during seeding:
 
 - 2026-07-02: Seeded paused planning lane with tasks `task-631` through
   `task-636`, tests `test-330` through `test-332`, and checkpoint `chk-342`.
+- 2026-07-02: Resumed and completed the planning lane. `task-633`, `task-631`,
+  `task-632`, `task-634`, `task-635`, `task-636`, `test-330`, `test-331`, and
+  `test-332` are done. Closeout checkpoint `chk-343` records the decision
+  posture and remaining future implementation/release gates.
 
 # Skill Improvement Candidates
 
@@ -177,4 +184,19 @@ Source evidence reviewed during seeding:
 
 # Completion Evidence
 
-- Pending; this goal is intentionally todo/paused after seeding.
+- `task-633`: source-grounded inventory from root handoffs, root task/checkpoint
+  evidence, and current mdkg source/templates/docs.
+- `task-631`: release-surface classification across MANIFEST, WORK,
+  WORK_ORDER, RECEIPT, CLI/scaffold, upgrade, docs, tests, and release gates.
+- `task-632`: candidate field decisions and profile-aware warning/error plan.
+- `task-634`: scaffold, upgrade, docs, generated-reference, and seed/default
+  asset gate plan.
+- `task-635`: runtime consumer dependency boundaries for unreleased or
+  experimental fields.
+- `task-636`: warning-output, strict-doctor, prepublish, npm pack/publish
+  dry-run, post-release validation, and closeout evidence plan.
+- `test-330`, `test-331`, and `test-332`: planning contract proofs for
+  validation behavior, scaffold/upgrade/default-asset gates, and release/
+  consumer handoff boundaries.
+- `chk-343`: goal closeout checkpoint. No hardcoded future version and no
+  source/package/public-docs/template/default-asset/downstream mutation.
