@@ -2,7 +2,7 @@
 id: test-330
 type: test
 title: validate contract profile fields and redaction warnings before release
-status: todo
+status: done
 priority: 1
 tags: [goal-48, validation, profiles]
 owners: []
@@ -49,9 +49,22 @@ generic mdkg release claims support for Omni Room contract profiles.
 
 # Results / Evidence
 
-Pending. This test is intentionally todo with the seeded planning goal.
+Pass for the planning contract.
+
+- `task-632` accepts `contract_profile`, `receipt_kind`, and `redaction_class`
+  only as optional additive future fields and rejects bare `profile`.
+- `task-632` preserves current `resource_profile`, WORK `kind`, WORK_ORDER
+  `artifact_policy`, and RECEIPT `redaction_policy`.
+- `task-632` defines generic warning versus explicit profile/strict error
+  behavior for unknown profiles, unknown receipt kinds, invalid redaction
+  classes, missing redaction policy, raw-content markers, runtime-only fields,
+  missing refs, and invalid hashes.
+- `task-636` defines stable future diagnostic categories for profile, kind,
+  class, raw-content, runtime-only field, ref, and hash conditions.
+- Fixture creation is intentionally deferred to a later implementation goal so
+  this planning pass does not edit source/test/template files.
 
 # Notes / Follow-ups
 
-- Do not add fixture files until a later execution goal authorizes source/test
-  changes.
+- A later implementation goal must add valid/invalid fixtures before declaring
+  package readiness.

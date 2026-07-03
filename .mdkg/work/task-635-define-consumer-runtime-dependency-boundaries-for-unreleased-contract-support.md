@@ -2,7 +2,7 @@
 id: task-635
 type: task
 title: define consumer runtime dependency boundaries for unreleased contract support
-status: todo
+status: done
 priority: 1
 tags: [goal-48, runtime-boundary, release]
 owners: []
@@ -60,6 +60,80 @@ consumer repo.
 - `test-332`
 - Review downstream handoff language for no hardcoded future version and no
   unreleased hard dependency.
+
+# Dependency Boundary Plan
+
+## Stable Dependency Rule
+
+Omni Room runtime, root execution, sandbox/vault, backend, or downstream demos
+may treat generic mdkg contract-profile behavior as stable only after all of the
+following are true:
+
+- the behavior is implemented in `projects/mdkg`;
+- source, tests, CLI help, command matrix, generated docs, and release notes are
+  aligned;
+- package/build/docs/smoke gates pass;
+- npm pack/publish dry-run gates pass;
+- the actual package version is resolved from live `package.json` and registry
+  state during the later execution pass;
+- the package is published only after explicit approval if real publish is in
+  scope;
+- post-publish install validation proves the released CLI exposes the behavior.
+
+This planning goal intentionally names no future package version.
+
+## Experimental/Local Consumption Rule
+
+Before a stable mdkg release, runtime may use local or experimental fields only
+when all caveats are present:
+
+- field use is labeled `experimental`, `local`, or `runtime-profile-only`;
+- runtime has its own parser/validator and does not depend on unreleased mdkg
+  CLI flags;
+- mdkg handoffs state that generic mdkg may rename, reject, or narrow the field;
+- public docs and npm package claims do not advertise the behavior as released;
+- root/subgraph evidence records the local child SHA and no-push/no-publish
+  boundary.
+
+## Ownership Boundary
+
+| Area | Stable owner | Runtime may do before mdkg release | Runtime must not do |
+| --- | --- | --- | --- |
+| Generic file names and core fields | mdkg | Consume existing released MANIFEST/WORK/WORK_ORDER/RECEIPT fields. | Require unreleased mdkg fields or flags as stable. |
+| `contract_profile` syntax | mdkg once implemented | Carry local experimental marker with fallback. | Publish downstream docs that require the field before mdkg release. |
+| `receipt_kind` syntax | mdkg once implemented | Use runtime-local receipt kind internally. | Claim generic mdkg receipt-kind validation exists before release. |
+| `redaction_class` syntax | mdkg once implemented | Enforce runtime-local classes for its own receipts. | Replace mdkg `redaction_policy` or omit redaction handling. |
+| Omni Room room lifecycle | omni-room-runtime | Own parser, queue/lifecycle, AgentBrain, final receipt normalization. | Push runtime-only lifecycle fields into generic mdkg templates. |
+| Sandbox/vault descriptors | omni-sandbox-control-plane | Export refs-only descriptors for runtime/root. | Expect mdkg to validate provider semantics beyond refs/hashes. |
+| Backend fixture/economics | backend/product lane | Remain fixture/local until explicitly advanced. | Store live ledger, wallet, billing, or tenant state in mdkg. |
+| Root orchestration/subgraphs | root repo | Record sanitized handoffs and accepted SHAs. | Refresh subgraphs from dirty/unaccepted child states without gates. |
+
+## Handoff Language For Downstream Repos
+
+Use this wording until release execution proves otherwise:
+
+```text
+This repo may carry local experimental mdkg contract-profile fields for Omni
+Room proof work. They are not a stable public mdkg contract until a later mdkg
+release implements, tests, documents, packs, and publishes them. Consumers must
+keep fallback parsing or treat the fields as runtime-profile-only.
+```
+
+Stable downstream handoffs must instead cite the actual released package version
+and post-publish validation evidence gathered at execution time.
+
+## Gate Separation
+
+- mdkg source implementation gate: source/tests/docs/package dry-run pass in
+  `projects/mdkg`.
+- npm release gate: explicit approval, registry currentness, real publish, and
+  post-publish install validation.
+- runtime adoption gate: runtime updates dependency to the released package or
+  records an explicit local experimental caveat.
+- root/subgraph gate: root records child accepted SHAs and refreshes subgraphs
+  only after child repos are clean and accepted.
+- downstream deployment gate: separate from mdkg package release; no deploy or
+  provider mutation belongs to this planning goal.
 
 # Links / Artifacts
 

@@ -2,7 +2,7 @@
 id: test-332
 type: test
 title: validate package release gates and consumer dependency handoff
-status: todo
+status: done
 priority: 1
 tags: [goal-48, release, consumer-boundary]
 owners: []
@@ -49,9 +49,23 @@ mdkg declares generic contract-profile support ready for Omni Room consumers.
 
 # Results / Evidence
 
-Pending. This test is intentionally todo with the seeded planning goal.
+Pass for the planning contract.
+
+- `task-635` states that stable Omni Room/runtime consumption requires an
+  actual released mdkg package version resolved during a later execution pass,
+  not a hardcoded future version from this planning goal.
+- `task-635` permits pre-release local/experimental use only with explicit
+  caveats, fallback parsing, no public contract promise, and runtime-owned
+  validation.
+- `task-635` separates mdkg source implementation, npm release, runtime
+  adoption, root/subgraph refresh, and downstream deployment gates.
+- `task-636` lists the future prepublish gates, npm pack/publish dry-run
+  checks, registry checks, post-release install validation, and closeout
+  evidence requirements.
+- This planning pass performed no real publish, version bump, tag, push, npm
+  package mutation, or downstream repo mutation.
 
 # Notes / Follow-ups
 
-- Publishing, version bumping, tagging, pushing, or downstream mutation require
-  a later explicit release execution goal.
+- A later release execution goal must rerun package/build/registry gates live
+  before recommending publish readiness.

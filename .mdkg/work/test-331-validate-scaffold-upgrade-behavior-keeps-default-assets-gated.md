@@ -2,7 +2,7 @@
 id: test-331
 type: test
 title: validate scaffold upgrade behavior keeps default assets gated
-status: todo
+status: done
 priority: 1
 tags: [goal-48, upgrade, scaffold]
 owners: []
@@ -51,8 +51,23 @@ assets.
 
 # Results / Evidence
 
-Pending. This test is intentionally todo with the seeded planning goal.
+Pass for the planning contract.
+
+- `task-634` requires validator/schema support before CLI flags, scaffold
+  output, docs, generated references, or seed/default assets change.
+- `task-634` classifies future `mdkg new` and `mdkg work` flags as optional
+  and gated behind validator fixtures.
+- `task-634` preserves current `mdkg upgrade` semantics: dry-run first,
+  explicit `--apply`, `safe_to_apply`, `will_write_paths`,
+  `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects`.
+- `task-634` states that `.mdkg/templates/default`, `dist/init`,
+  `assets/init`, and `assets/init/skills/default` changes require a later
+  explicit blast-radius approval with fresh init, customized repo, and skill
+  mirror coverage.
+- This planning pass did not edit source, public docs, package files,
+  generated docs, templates, init assets, default skills, or downstream repos.
 
 # Notes / Follow-ups
 
-- Keep seed/default edits out of scope until a later explicit mdkg-owned goal.
+- A later implementation goal must run `mdkg upgrade --dry-run --json` and any
+  authorized `--apply` proof in temp repos before changing managed assets.
