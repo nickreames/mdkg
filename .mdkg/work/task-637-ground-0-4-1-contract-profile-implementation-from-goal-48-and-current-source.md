@@ -2,13 +2,13 @@
 id: task-637
 type: task
 title: ground 0.4.1 contract-profile implementation from goal-48 and current source
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, grounding, source-audit]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/graph/agent_file_types.ts, src/commands/validate.ts, src/commands/work.ts, src/commands/new.ts, src/cli.ts, .mdkg/templates/default/manifest.md, .mdkg/templates/default/work.md, .mdkg/templates/default/work_order.md, .mdkg/templates/default/receipt.md, tests/commands/agent_file_types.test.ts, tests/commands/archive_work.test.ts, tests/helpers/templates.ts]
 relates: []
 blocked_by: []
 blocks: [task-639]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context, build-pack-and-execute-task]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

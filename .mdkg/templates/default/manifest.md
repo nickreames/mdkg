@@ -7,6 +7,9 @@ spec_kind: capability
 role: tool_service
 runtime_mode: tool_service
 work_contracts: []
+contract_profile: generic
+validation_policy_ref: policy.validation.default
+evidence_policy_ref: policy.evidence.default
 requested_capabilities: []
 skill_refs: []
 tool_refs: []

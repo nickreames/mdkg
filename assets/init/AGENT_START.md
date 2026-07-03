@@ -57,6 +57,12 @@ Agent operating prompt:
 - Use `mdkg archive add/list/show/verify/compress` for committed source and artifact sidecars under `.mdkg/archive`.
 - Use `mdkg work ...` helpers for semantic mirror contracts, deterministic triggers, work order status, receipt verification, and artifact registration.
 - Treat work contracts, orders, and receipts as committed semantic mirrors only; never store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in mdkg.
+- Treat optional `contract_profile`, policy refs, receipt kind, and redaction
+  class fields as generic semantic mirror metadata. Use `mdkg validate --profile
+  omni-room` or `mdkg work validate --profile omni-room` only when a downstream
+  profile-specific check is intended; mdkg validates mirrors, while downstream
+  runtimes own execution, provider state, billing or ledger state, and final
+  receipt authority.
 - Use `artifact://...` for external/runtime-managed artifacts and `archive://...` for committed mdkg archive sidecars.
 - Use `mdkg bundle create/list/show/verify` for explicit full `.mdkg` graph snapshot bundles.
 - Use `mdkg subgraph add/list/verify/sync/materialize` to register child bundle snapshots as read-only planning context, refresh root-owned child bundle snapshots, and optionally generate ignored inspection trees.

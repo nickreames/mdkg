@@ -62,6 +62,8 @@ For MANIFEST.md output, include:
 - Source mdkg nodes
 - Resource URIs
 - Capabilities
+- Contract profile, validation policy refs, and evidence policy refs when a
+  downstream runtime or workflow profile needs generic semantic mirrors
 - Inputs
 - Outputs
 - Dependencies
@@ -94,14 +96,17 @@ For MANIFEST.md output, include:
 10. Distinguish durable source from projection:
     mdkg/MANIFEST/SKILL is source; `.codex/agents`, future runtime manifests, and
     protocol resources are projections.
-11. Add validation checks and closeout evidence to every authored or revised
+11. Treat contract-profile fields as generic mdkg validation mirrors only.
+    Downstream runtimes own execution semantics, queue state, provider state, and
+    final receipt authority.
+12. Add validation checks and closeout evidence to every authored or revised
     SKILL/MANIFEST.
-12. If input is incomplete, create repair tasks instead of guessing.
-13. Validate the new or updated skill with `mdkg skill validate <slug>`.
-14. If the skill changes the public workflow, update `AGENT_START.md`,
+13. If input is incomplete, create repair tasks instead of guessing.
+14. Validate the new or updated skill with `mdkg skill validate <slug>`.
+15. If the skill changes the public workflow, update `AGENT_START.md`,
     `CLI_COMMAND_MATRIX.md`, root onboarding docs, and the skill registry in the
     same pass.
-15. When mirrored skill folders are enabled, run `mdkg skill sync` after broad
+16. When mirrored skill folders are enabled, run `mdkg skill sync` after broad
     manual changes so every configured `.mdkg/config.json`
     `customization.skill_mirrors.targets` path stays current. The default
     targets are `.agents/skills/` and `.claude/skills/`; other agent-local

@@ -2,13 +2,13 @@
 id: task-640
 type: task
 title: add profile validation CLI flags and profile fixtures
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, cli, profile, fixtures]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/commands/validate.ts, src/commands/work.ts, src/cli.ts, CLI_COMMAND_MATRIX.md, scripts/assert-publish-ready.js, tests/commands/agent_file_types.test.ts, tests/commands/cli.test.ts, tests/commands/cli_help_matrix.test.ts]
 relates: []
 blocked_by: [task-639]
 blocks: [task-641, test-333]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

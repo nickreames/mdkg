@@ -2,7 +2,7 @@
 id: task-643
 type: task
 title: update contract-profile docs generated references changelog and release notes
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, docs, changelog, release-notes]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

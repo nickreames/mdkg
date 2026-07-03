@@ -213,7 +213,11 @@ function main() {
   const publicChangelog = readText(path.join(docs, "src", "content", "docs", "project", "changelog.md"));
   assert(publicChangelog.includes("product-level summary"), "Changelog should read as product-level release notes");
   assert(publicChangelog.includes("release-grid"), "Changelog should render recent release cards");
-  assert(publicChangelog.includes("0.3.9 details"), "Changelog should expose latest release details");
+  assert(publicChangelog.includes("0.4.1 details"), "Changelog should expose latest release details");
+  for (const snippet of ["contract_profile", "mdkg validate --profile omni-room", "receipt_kind", "runtime policy"]) {
+    assert(publicChangelog.includes(snippet), `Changelog missing 0.4.1 capability detail: ${snippet}`);
+  }
+  assert(publicChangelog.includes("0.3.9 details"), "Changelog should retain 0.3.9 release details");
   for (const snippet of ["`.mdkg/config.json` customization overlays", "arbitrary contained agent-local skill roots", "`COLLABORATION.md`"]) {
     assert(publicChangelog.includes(snippet), `Changelog missing 0.3.9 capability detail: ${snippet}`);
   }

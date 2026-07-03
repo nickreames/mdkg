@@ -118,7 +118,9 @@ function main() {
   }
   assertExcludes(changelogSource + "\n" + legacyChangelogSource, "bookkeeping", "public changelog meta commentary");
   assertIncludes(changelogSource, "release-grid", "public changelog release cards");
-  assertIncludes(changelogSource, "0.3.9 details", "public changelog release details");
+  assertIncludes(changelogSource, "0.4.1 details", "public changelog latest release details");
+  assertIncludes(changelogSource, "contract_profile", "public changelog 0.4.1 contract-profile detail");
+  assertIncludes(changelogSource, "0.3.9 details", "public changelog retained 0.3.9 release details");
   assertIncludes(changelogSource, ".mdkg/config.json", "public changelog 0.3.9 configuration detail");
   assertIncludes(planWorkEvidenceSource, "role=\"img\"", "deterministic accessible diagram source");
   assertIncludes(planWorkEvidenceSource, "Minimal goal frontmatter", "goal frontmatter example");

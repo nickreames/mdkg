@@ -340,8 +340,36 @@ const OPTIONAL_COMPAT_TEMPLATE_KEYS: Record<
   string,
   Record<string, "scalar" | "list" | "boolean">
 > = {
+  manifest: {
+    contract_profile: "scalar",
+    validation_policy_ref: "scalar",
+    evidence_policy_ref: "scalar",
+    profile: "scalar",
+  },
   spec: {
     spec_kind: "scalar",
+    contract_profile: "scalar",
+    validation_policy_ref: "scalar",
+    evidence_policy_ref: "scalar",
+    profile: "scalar",
+  },
+  work: {
+    contract_profile: "scalar",
+    profile: "scalar",
+  },
+  work_order: {
+    contract_profile: "scalar",
+    validation_policy_ref: "scalar",
+    evidence_policy_ref: "scalar",
+    profile: "scalar",
+  },
+  receipt: {
+    contract_profile: "scalar",
+    receipt_kind: "scalar",
+    redaction_class: "scalar",
+    validation_policy_ref: "scalar",
+    evidence_policy_ref: "scalar",
+    profile: "scalar",
   },
 };
 

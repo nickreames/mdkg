@@ -2,7 +2,7 @@
 id: test-335
 type: test
 title: 0.4.1 contract-profile implementation publish-readiness contract
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, publish-readiness, release]
@@ -19,7 +19,7 @@ aliases: []
 skills: [verify-close-and-checkpoint]
 cases: []
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

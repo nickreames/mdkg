@@ -5,6 +5,7 @@ title: {{title}}
 version: 0.1.0
 agent_id: agent.example
 kind: generic
+contract_profile: generic
 pricing_model: quoted
 required_capabilities: [capability.example]
 skill_refs: []

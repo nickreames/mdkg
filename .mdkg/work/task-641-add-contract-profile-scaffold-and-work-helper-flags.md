@@ -2,13 +2,13 @@
 id: task-641
 type: task
 title: add contract-profile scaffold and work helper flags
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, cli, scaffold, work-helpers]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/commands/new.ts, src/commands/work.ts, src/cli.ts, src/graph/frontmatter.ts, CLI_COMMAND_MATRIX.md, tests/commands/agent_file_types.test.ts]
 relates: []
 blocked_by: [task-639, task-640]
 blocks: [task-642, task-643, test-334]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

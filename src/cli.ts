@@ -280,6 +280,11 @@ function printNewHelp(log: LogFn): void {
   log("  --skills <slug,slug,...>   Skill slugs for work items");
   log("  --template <set>           Template set");
   log("  --run-id <id>              Optional event run id when event logging is enabled");
+  log("  --contract-profile <name>  Optional MANIFEST/WORK/WORK_ORDER/RECEIPT validation profile metadata");
+  log("  --validation-policy-ref <ref> Optional MANIFEST/WORK_ORDER/RECEIPT validation policy ref");
+  log("  --evidence-policy-ref <ref> Optional MANIFEST/WORK_ORDER/RECEIPT evidence policy ref");
+  log("  --receipt-kind <kind>      Optional RECEIPT kind metadata");
+  log("  --redaction-class <class>  Optional RECEIPT redaction class metadata");
   log("\nAdvanced metadata flags:");
   log("  --parent --prev --next --relates --blocked-by --blocks");
   log("  --links --artifacts --refs --aliases --owners --cases --supersedes");
@@ -872,7 +877,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "contract":
       log("Usage:");
-      log('  mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]');
+      log('  mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]');
       break;
     case "trigger":
       log("Usage:");
@@ -886,7 +891,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       break;
     case "order":
       log("Usage:");
-      log('  mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]');
+      log('  mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]');
       log("  mdkg work order status <id-or-qid> [--json]");
       log("  mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]");
       log("\nNotes:");
@@ -894,7 +899,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       break;
     case "receipt":
       log("Usage:");
-      log('  mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]');
+      log('  mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]');
       log("  mdkg work receipt verify <id-or-qid> [--json]");
       log("  mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]");
       log("\nNotes:");
@@ -906,10 +911,11 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       break;
     case "validate":
       log("Usage:");
-      log("  mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]");
+      log("  mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]");
       log("\nNotes:");
       log("  Read-only focused validation for agent workflow mirrors.");
       log("  Reports typed diagnostics for MANIFEST.md, legacy SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md files.");
+      log("  --profile omni-room applies explicit contract-profile validation after generic mirror validation; this is separate from mdkg pack --profile.");
       log("  Obvious raw secret, prompt, token, or payload markers are warnings so humans and agents can review boundaries.");
       break;
     default:
@@ -919,7 +925,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg work order new|status|update ...");
       log("  mdkg work receipt new|verify|update ...");
       log("  mdkg work artifact add ...");
-      log("  mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]");
+      log("  mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]");
       log("\nNotes:");
       log("  - work commands mutate semantic mirror files only");
       log("  - work validate is read-only and reports typed workflow diagnostics");
@@ -1117,10 +1123,11 @@ function printCheckpointHelp(log: LogFn): void {
 
 function printValidateHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]");
+  log("  mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]");
   log("\nNotes:");
   log("  Validates frontmatter schemas, graph references, visibility, skills, and events.");
   log("  --changed-only filters warning presentation to changed .mdkg files while full graph errors still run.");
+  log("  --profile omni-room applies explicit contract-profile validation after generic validation; this is separate from mdkg pack --profile.");
   log("  JSON output includes warning_summary plus warning_diagnostics with warning ids, categories, severity, paths, refs, and remediation text.");
   log("  --summary emits bounded warning samples for agent/CI logs; --limit controls the sample size.");
   log("  --out writes the compatibility text report; --json-out writes a clean full JSON receipt.");
@@ -2247,7 +2254,8 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       throw new UsageError("work validate accepts at most one workflow reference");
     }
     const type = requireFlagValue("--type", parsed.flags["--type"]);
-    runWorkValidateCommand({ root, ws, id, type, json });
+    const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
+    runWorkValidateCommand({ root, ws, id, type, profile, json });
     return 0;
   }
 
@@ -2266,6 +2274,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       parsed.flags["--required-capabilities"]
     );
     const pricingModel = requireFlagValue("--pricing-model", parsed.flags["--pricing-model"]);
+    const contractProfile = requireFlagValue("--contract-profile", parsed.flags["--contract-profile"]);
     runWorkContractNewCommand({
       root,
       ws,
@@ -2277,6 +2286,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       outputs,
       requiredCapabilities,
       pricingModel,
+      contractProfile,
       json,
     });
     return 0;
@@ -2297,6 +2307,9 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     const queueRefs = requireFlagValue("--queue-refs", parsed.flags["--queue-refs"]);
     const requestedOutputs = requireFlagValue("--requested-outputs", parsed.flags["--requested-outputs"]);
     const constraintRefs = requireFlagValue("--constraint-refs", parsed.flags["--constraint-refs"]);
+    const contractProfile = requireFlagValue("--contract-profile", parsed.flags["--contract-profile"]);
+    const validationPolicyRef = requireFlagValue("--validation-policy-ref", parsed.flags["--validation-policy-ref"]);
+    const evidencePolicyRef = requireFlagValue("--evidence-policy-ref", parsed.flags["--evidence-policy-ref"]);
     runWorkOrderNewCommand({
       root,
       ws,
@@ -2311,6 +2324,9 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       queueRefs,
       requestedOutputs,
       constraintRefs,
+      contractProfile,
+      validationPolicyRef,
+      evidencePolicyRef,
       json,
     });
     return 0;
@@ -2355,6 +2371,11 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     const evidenceHashes = requireFlagValue("--evidence-hashes", parsed.flags["--evidence-hashes"]);
     const inputHashes = requireFlagValue("--input-hashes", parsed.flags["--input-hashes"]);
     const outputHashes = requireFlagValue("--output-hashes", parsed.flags["--output-hashes"]);
+    const contractProfile = requireFlagValue("--contract-profile", parsed.flags["--contract-profile"]);
+    const receiptKind = requireFlagValue("--receipt-kind", parsed.flags["--receipt-kind"]);
+    const redactionClass = requireFlagValue("--redaction-class", parsed.flags["--redaction-class"]);
+    const validationPolicyRef = requireFlagValue("--validation-policy-ref", parsed.flags["--validation-policy-ref"]);
+    const evidencePolicyRef = requireFlagValue("--evidence-policy-ref", parsed.flags["--evidence-policy-ref"]);
     runWorkReceiptNewCommand({
       root,
       ws,
@@ -2365,6 +2386,11 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       receiptStatus,
       costRef,
       redactionPolicy,
+      contractProfile,
+      receiptKind,
+      redactionClass,
+      validationPolicyRef,
+      evidencePolicyRef,
       artifacts,
       proofRefs,
       attestationRefs,
@@ -2870,6 +2896,11 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const owners = requireFlagValue("--owners", parsed.flags["--owners"]);
       const supersedes = requireFlagValue("--supersedes", parsed.flags["--supersedes"]);
       const template = requireFlagValue("--template", parsed.flags["--template"]);
+      const contractProfile = requireFlagValue("--contract-profile", parsed.flags["--contract-profile"]);
+      const validationPolicyRef = requireFlagValue("--validation-policy-ref", parsed.flags["--validation-policy-ref"]);
+      const evidencePolicyRef = requireFlagValue("--evidence-policy-ref", parsed.flags["--evidence-policy-ref"]);
+      const receiptKind = requireFlagValue("--receipt-kind", parsed.flags["--receipt-kind"]);
+      const redactionClass = requireFlagValue("--redaction-class", parsed.flags["--redaction-class"]);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
       const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
@@ -2899,6 +2930,11 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         owners,
         supersedes,
         template,
+        contractProfile,
+        validationPolicyRef,
+        evidencePolicyRef,
+        receiptKind,
+        redactionClass,
         noCache,
         noReindex,
         runId,
@@ -3167,8 +3203,9 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const changedOnly = parseBooleanFlag("--changed-only", parsed.flags["--changed-only"]);
       const summary = parseBooleanFlag("--summary", parsed.flags["--summary"]);
       const limit = parseNumberFlag("--limit", parsed.flags["--limit"]);
+      const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runValidateCommand({ root, out, jsonOut, quiet, json, changedOnly, summary, limit });
+      runValidateCommand({ root, out, jsonOut, quiet, json, changedOnly, summary, limit, profile });
       return 0;
     }
     case "status": {

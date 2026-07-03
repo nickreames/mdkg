@@ -673,7 +673,7 @@ function requireInitAssets() {
     fail("CLI_COMMAND_MATRIX.md is missing workflow validation command references");
   }
   if (
-    !matrix.includes("mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]") ||
+    !matrix.includes("mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]") ||
     !matrix.includes("warning_summary") ||
     !matrix.includes("json_receipt_path") ||
     !matrix.includes("mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]")

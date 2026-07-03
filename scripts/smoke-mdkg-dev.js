@@ -35,6 +35,7 @@ function assertReadablePlainText(source, label) {
 function main() {
   buildSite();
 
+  const pkg = JSON.parse(readText(path.join(repoRoot, "package.json")));
   const dist = path.join(repoRoot, "mdkg-dev", "dist");
   const requiredFiles = [
     "index.html",
@@ -57,8 +58,8 @@ function main() {
   assert(home.includes("Git-native project memory"), "homepage missing primary product copy");
   assert(home.includes("mdkg init --agent"), "homepage missing first-run CLI command");
   assert(home.includes("Customize standards without forking the kernel"), "homepage missing customization section");
-  assert(home.includes("0.4.0 launch track"), "homepage missing 0.4.0 launch-track language");
-  assert(home.includes("mdkg@0.4.0"), "homepage missing release-target package language");
+  assert(home.includes(`${pkg.version} launch track`), "homepage missing release-track language");
+  assert(home.includes(`mdkg@${pkg.version}`), "homepage missing release-target package language");
   assert(home.includes("postpublish and postdeploy evidence"), "homepage missing postpublish/postdeploy boundary language");
   assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
   assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
@@ -138,8 +139,8 @@ function main() {
         "one reviewable graph, one packable handoff, one validation loop",
         "Without mdkg",
         "With mdkg",
-        "0.4.0 launch track",
-        "mdkg@0.4.0",
+        `${pkg.version} launch track`,
+        `mdkg@${pkg.version}`,
         "Release target",
         "Customize standards without forking the kernel.",
         ".mdkg/config.json",

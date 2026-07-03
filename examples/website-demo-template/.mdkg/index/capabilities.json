@@ -3,7 +3,7 @@
     "tool": "mdkg",
     "schema_version": 1,
     "cache_version": 1,
-    "generated_at": "2026-06-30T02:56:35.217Z",
+    "generated_at": "2026-07-03T22:30:29.342Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/website-demo-template",
     "workspaces": [
       "root"
@@ -29,7 +29,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7",
       "headings": [
         {
@@ -118,7 +118,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f",
       "headings": [
         {
@@ -235,7 +235,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-17",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45",
       "headings": [
         {
@@ -351,7 +351,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-03",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8",
       "headings": [
         {
@@ -424,7 +424,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03",
       "headings": [
         {
@@ -468,7 +468,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f",
       "headings": [
         {
@@ -553,7 +553,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:ef60b65b54a57ed54984a49f5ed14453cb4e47170a5660be94eceec26b92b01f",
       "headings": [
         {
@@ -597,7 +597,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-14",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae",
       "headings": [
         {
@@ -663,7 +663,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:945fb5cb47945735b9529f2b0a322630b3e8aef1c3e69c4ce85dd2db3e905cca",
       "headings": [
         {
@@ -718,7 +718,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-10",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a",
       "headings": [
         {
@@ -845,7 +845,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-29",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:f79d939c33521b22da6bb51f25914ba1f09d4dd38cbf2947a9aa2be0faedb262",
       "headings": [
         {
@@ -892,7 +892,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-29",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:0e2418c88d7eff56a7e36fd5fa5ae78e07785273f87b71a028031d1ad6e39d5b",
       "headings": [
         {
@@ -942,7 +942,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-29",
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:220a2f22aca7592d4e2177d5348667963f59c51b8b5bdccf04a9fd879cdea2af",
       "headings": [
         {
@@ -1017,7 +1017,7 @@
         ".mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873",
       "headings": [
         {
@@ -1124,7 +1124,7 @@
         "llms.txt"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
       "headings": [
         {
@@ -1200,7 +1200,7 @@
         ".mdkg/design/edd-10-mdkg-goal-node-architecture-and-recursive-agent-loop.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5",
       "headings": [
         {
@@ -1283,7 +1283,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
       "headings": [
         {
@@ -1361,7 +1361,7 @@
         "AGENT_START.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-06-30T02:56:35.217Z",
+      "indexed_at": "2026-07-03T22:30:29.342Z",
       "source_hash": "sha256:1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
       "headings": [
         {
