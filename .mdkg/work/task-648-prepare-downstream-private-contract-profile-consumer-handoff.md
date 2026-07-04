@@ -34,6 +34,9 @@ making consumer-specific runtime policy part of mdkg public behavior.
   downstream runtime-owned.
 - If a downstream consumer is product-specific, the handoff names it only as
   downstream-private context, not mdkg public feature branding.
+- Remote Git/project-memory primitive work, if mentioned, is clearly deferred to
+  generic mdkg successor planning and not represented as released 0.4.1
+  behavior.
 - Handoff does not hardcode unreleased fields or require local source behavior.
 - No downstream consumer, root, sandbox, backend, deploy, provider, or DNS
   mutation occurs.

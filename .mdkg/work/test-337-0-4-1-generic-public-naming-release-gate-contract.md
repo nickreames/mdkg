@@ -13,7 +13,7 @@ relates: []
 blocked_by: [task-649]
 blocks: [task-645]
 refs: [goal-50, task-649, task-645, task-647, task-648, test-336, task-636]
-context_refs: []
+context_refs: [goal-51, task-650, test-338]
 evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
@@ -55,6 +55,10 @@ until public release claims describe only generic mdkg capabilities.
   product-specific runtime policy as public mdkg behavior.
 - Historical/internal downstream mentions remain allowed only when clearly
   prior context, private handoff context, or downstream-owned policy.
+- Remote Git repositories, authenticated Git access refs, `.mdkg` graph
+  discovery, accepted revisions, history/why/next-work queries, and agent
+  working-loop primitives are allowed only as generic mdkg successor planning
+  references, not as 0.4.1 publish-bound claims.
 
 # Results / Evidence
 
@@ -65,3 +69,5 @@ Pending.
 - This test is a graph/readiness gate. It does not authorize source/docs/package
   changes, real npm publish, tags, pushes, deploys, DNS, provider mutations, or
   downstream repo mutation.
+- Successor planning for remote Git/project-memory primitives lives in
+  `goal-51` / `task-650` / `test-338`.

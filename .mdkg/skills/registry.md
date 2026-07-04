@@ -39,6 +39,11 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - stage: `stage:plan`
   - writer role: `writer:read-only`
   - description: Select the right mdkg work item and ground execution before coding when the active task or context is still being established.
+- `service-boundary-ownership-check`
+  - name: `service-boundary-ownership-check`
+  - stage: `stage:plan`
+  - writer role: `writer:orchestrator`
+  - description: Classify mdkg/runtime/sandbox/root ownership before boundary-sensitive planning so generic mdkg primitives are not given product-specific public names.
 - `verify-close-and-checkpoint`
   - name: `verify-close-and-checkpoint`
   - stage: `stage:review`

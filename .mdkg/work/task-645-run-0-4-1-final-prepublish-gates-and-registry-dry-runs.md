@@ -33,6 +33,8 @@ Run final local, registry, npm pack, and npm publish dry-run gates for
   generated references, and package metadata are audited.
 - Public package/docs/readiness claims do not present downstream product names
   or runtime policy as mdkg public behavior.
+- Remote Git/project-memory primitive claims are out of scope for this
+  prepublish gate unless referenced only as deferred generic successor planning.
 - Full prepublish suite passes or exact gaps are recorded.
 - Registry latest is below `0.4.1` and `mdkg@0.4.1` is unpublished.
 - Npm pack dry-run and publish dry-run pass with isolated cache.

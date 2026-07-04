@@ -4,6 +4,7 @@
     "build-pack-and-execute-task",
     "pursue-mdkg-goal",
     "select-work-and-ground-context",
+    "service-boundary-ownership-check",
     "verify-close-and-checkpoint"
   ]
 }

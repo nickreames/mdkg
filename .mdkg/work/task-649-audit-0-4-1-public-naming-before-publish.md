@@ -41,6 +41,8 @@ deployments, DNS, or provider configuration.
 - Historical/internal graph mentions of downstream product names are not
   broadly rewritten when they are clearly prior context or downstream-owned
   boundary records.
+- Remote Git/project-memory primitives are not treated as current 0.4.1
+  publish-bound behavior; they are routed to generic successor `goal-51`.
 - `test-337` records a strict naming gate that blocks `task-645` until this
   audit is complete.
 
@@ -77,6 +79,9 @@ deployments, DNS, or provider configuration.
 # Links / Artifacts
 
 - `goal-50`
+- `goal-51`
 - `test-337`
+- `task-650`
+- `test-338`
 - `test-335`
 - `task-636`

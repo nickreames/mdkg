@@ -19,8 +19,8 @@ artifacts: []
 relates: []
 blocked_by: [test-337]
 blocks: []
-refs: [goal-49, goal-48, task-635, task-636, task-649, test-332, test-337]
-context_refs: []
+refs: [goal-49, goal-48, goal-51, task-635, task-636, task-649, test-332, test-337]
+context_refs: [goal-51, task-650, test-338]
 evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
@@ -58,6 +58,8 @@ This goal is achieved when:
   provider mutation, or downstream repo mutation without explicit approval.
 - Do not treat dry-run or local-link behavior as stable downstream release
   evidence.
+- Do not claim remote Git/project-memory primitives as 0.4.1 publish-bound
+  behavior. That generic mdkg successor planning lives in `goal-51`.
 
 # Recursive Algorithm
 
@@ -104,6 +106,10 @@ This goal is achieved when:
   receipt/redaction metadata, and generic profile validation.
 - Handoff language separates generic mdkg contract-profile support from
   downstream-private runtime policy.
+- Remote Git repositories, authenticated Git access refs, `.mdkg` graph
+  discovery, accepted revisions, history/why/next-work queries, and agent
+  working-loop primitives are treated as generic successor mdkg capabilities in
+  `goal-51`, not as current 0.4.1 publish claims.
 
 # Definition Of Done
 
@@ -128,6 +134,8 @@ node is `task-649`, which must prove generic-only public naming posture before
 - 2026-07-02: Created as blocked publish/post-publish lane for `mdkg@0.4.1`.
 - 2026-07-03: Inserted `task-649` / `test-337` as the strict generic public
   naming audit before publish readiness.
+- 2026-07-03: Clarified that remote Git/project-memory primitive planning is a
+  generic successor lane in `goal-51`, not part of the 0.4.1 publish scope.
 
 # Skill Improvement Candidates
 
