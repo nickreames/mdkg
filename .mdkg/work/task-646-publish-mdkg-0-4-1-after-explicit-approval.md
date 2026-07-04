@@ -10,7 +10,7 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-645]
+blocked_by: []
 blocks: [task-647]
 refs: [task-645]
 context_refs: []
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

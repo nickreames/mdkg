@@ -2,7 +2,7 @@
 id: task-649
 type: task
 title: audit 0.4.1 public naming before publish
-status: todo
+status: done
 priority: 1
 parent: goal-50
 tags: [0.4.1, contract-profile, naming-audit, publish-readiness]

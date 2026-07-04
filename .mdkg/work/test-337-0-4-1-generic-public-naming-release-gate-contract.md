@@ -2,7 +2,7 @@
 id: test-337
 type: test
 title: 0.4.1 generic public naming release gate contract
-status: blocked
+status: done
 priority: 1
 parent: goal-50
 tags: [0.4.1, contract-profile, naming-audit, publish-readiness, consumer-boundary]

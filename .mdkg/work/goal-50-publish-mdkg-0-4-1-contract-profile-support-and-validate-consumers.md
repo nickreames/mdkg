@@ -2,12 +2,12 @@
 id: goal-50
 type: goal
 title: Publish mdkg 0.4.1 contract-profile support and validate consumers
-status: blocked
+status: progress
 priority: 1
-goal_state: blocked
+goal_state: active
 goal_condition: mdkg 0.4.1 contract-profile support is published only after explicit approval, npm registry state and dry-runs prove readiness, a strict public naming audit confirms publish-bound mdkg claims are generic, post-publish temp install and workflow probes pass, and any downstream-private consumer handoff cites the actual published version and evidence without making product-specific runtime policy part of mdkg public behavior.
 scope_refs: [task-649, test-337, task-645, task-646, task-647, task-648, test-336]
-active_node: task-649
+active_node: task-646
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git fetch origin main, git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, targeted public naming audit over publish-bound mdkg work nodes, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm pack --dry-run --json, npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.4.1 version --registry=https://registry.npmjs.org/]
 max_iterations: 25
