@@ -29,8 +29,9 @@ validation exists.
 
 - `mdkg validate --profile <name>` is documented and implemented.
 - `mdkg work validate --profile <name>` is documented and implemented.
-- `omni-room` is the first fixture/profile value for validation behavior, while
-  runtime execution semantics remain downstream-owned.
+- Profile fixtures exercise validation behavior without making any
+  product-specific profile name a public mdkg primitive; runtime execution
+  semantics remain downstream-owned.
 - Profile mode escalates unknown or incompatible profile, receipt-kind, and
   redaction-class values according to the implemented allowlist.
 - Generic validation remains compatible for repos that do not opt into
@@ -51,8 +52,8 @@ validation exists.
 
 # Test Plan
 
-- `mdkg validate --profile omni-room --json` fixture probe
-- `mdkg work validate --profile omni-room --json` fixture probe
+- `mdkg validate --profile <fixture-profile> --json` fixture probe
+- `mdkg work validate --profile <fixture-profile> --json` fixture probe
 - `npm run cli:check`
 - `npm run cli:contract`
 - `npm run test`
