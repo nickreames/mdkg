@@ -53,6 +53,8 @@ generic public naming gate, and downstream-private consumer handoff.
   package.
 - Downstream-private handoff cites stable generic behavior and leaves consumer
   runtime policy downstream-owned.
+- Remote Git/project-memory primitive claims are absent from public 0.4.1
+  release evidence except as deferred generic successor planning.
 - Any git push or tag push has separate explicit approval evidence.
 
 # Results / Evidence
