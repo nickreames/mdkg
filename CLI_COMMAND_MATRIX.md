@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-06-27
-package_version_in_source: 0.4.0
+as_of: 2026-07-03
+package_version_in_source: 0.4.1
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -213,6 +213,11 @@ Primary flags:
 - `--skills <slug,slug,...>`
 - `--template <set>`
 - `--run-id <id>`
+- `--contract-profile <name>` for MANIFEST, WORK, WORK_ORDER, and RECEIPT
+- `--validation-policy-ref <ref>` for MANIFEST, WORK_ORDER, and RECEIPT
+- `--evidence-policy-ref <ref>` for MANIFEST, WORK_ORDER, and RECEIPT
+- `--receipt-kind <kind>` for RECEIPT
+- `--redaction-class <class>` for RECEIPT
 - `--json`
 
 Advanced metadata flags:
@@ -819,17 +824,17 @@ Usage:
 - `mdkg work order new|status|update ...`
 - `mdkg work receipt new|verify|update ...`
 - `mdkg work artifact add ...`
-- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]`
 - `mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]`
-- `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]`
+- `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]`
 - `mdkg work order status <id-or-qid> [--json]`
 - `mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]`
-- `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]`
+- `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]`
 - `mdkg work receipt verify <id-or-qid> [--json]`
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
-- `mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]`
-- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]`
 
 Notes:
 - work commands mutate semantic mirror files only
@@ -840,10 +845,13 @@ Notes:
 - example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
 - `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
 - `work order new` accepts URI-style requester/request/trigger refs, archive input refs, optional queue refs, and stable payload hashes
+- `work order new` accepts optional contract-profile and validation/evidence policy refs without executing work
 - `work order status` is read-only and reports deterministic order state plus linked receipts
 - `work receipt new` accepts URI-style cost/proof/attestation refs, explicit redaction policy, and SHA-256 evidence/input/output hash refs
+- `work receipt new` accepts optional contract-profile, receipt-kind, redaction-class, and validation/evidence policy refs without becoming canonical runtime receipt state
 - `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks; invalid receipts print JSON before exiting nonzero
 - `work validate` is read-only and reports typed diagnostics for MANIFEST.md, legacy SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
+- `work validate --profile omni-room` applies explicit contract-profile validation after generic mirror validation; it is separate from `mdkg pack --profile`
 - `work artifact add` calls `mdkg archive add`, then attaches the resulting `archive://...` ref to the target order or receipt
 - `work order update`, `work receipt update`, and `work artifact add` accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace
 
@@ -990,10 +998,11 @@ When to use:
 - run the repo trust gate before calling work done
 
 Usage:
-- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]`
+- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]`
 - `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
 - `--summary` emits bounded warning samples for agent/CI logs; `--limit <n>` controls the sample size
 - `--out <path>` writes the compatibility text report; `--json-out <path>` writes a clean full JSON receipt
+- `--profile omni-room` applies explicit contract-profile validation after generic validation; it is separate from `mdkg pack --profile`
 - JSON receipts include `warning_summary` and `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
 
 Flags:
@@ -1003,10 +1012,11 @@ Flags:
 - `--changed-only`
 - `--summary`
 - `--limit <n>`
+- `--profile <name>`
 - `--json`
 
 JSON receipt:
-- `{ action: "validated", ok, warning_count, error_count, warnings, warning_diagnostics, warning_summary, errors, report_path?, json_receipt_path? }`
+- `{ action: "validated", ok, warning_count, error_count, warnings, warning_diagnostics, warning_summary, errors, validation_profile?, report_path?, json_receipt_path? }`
 - `report_path` is included only when `--out` is used.
 - `json_receipt_path` is included only when `--json-out` is used.
 

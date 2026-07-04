@@ -1,12 +1,35 @@
 {
   "generated_from": "CHANGELOG.md",
-  "package_version": "0.4.0",
-  "latest_release": "0.4.0",
+  "package_version": "0.4.1",
+  "latest_release": "0.4.1",
   "unreleased": {
     "sections": {},
     "item_count": 0
   },
   "releases": [
+    {
+      "version": "0.4.1",
+      "date": "2026-07-03",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added generic contract-profile metadata for MANIFEST, WORK, WORK_ORDER, and RECEIPT semantic mirrors, including `contract_profile`, policy refs, `receipt_kind`, and `redaction_class` validation.",
+          "Added explicit profile validation through `mdkg validate --profile omni-room` and `mdkg work validate --profile omni-room`, while keeping Omni Room execution semantics runtime-owned.",
+          "Added scaffold and helper flags for contract-profile metadata across `mdkg new manifest|work|work_order|receipt` and `mdkg work contract|order|receipt new`."
+        ],
+        "Changed": [
+          "Updated default templates, init assets, seeded skills, and generated command references to demonstrate generic contract-profile fields without adding runtime-only queue, provider, billing, ledger, or final-receipt state.",
+          "Documented the distinction between `contract_profile`, MANIFEST `resource_profile`, WORK `kind`, WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`, `receipt_kind`, `redaction_class`, and pack/bundle `--profile` flags.",
+          "Expanded release-readiness documentation and checks for `0.4.1` so the implementation can hand off to a separate approval-gated publish goal."
+        ]
+      },
+      "item_count": 6,
+      "highlights": [
+        "Added generic contract-profile metadata for MANIFEST, WORK, WORK_ORDER, and RECEIPT semantic mirrors, including `contract_profile`, policy refs, `receipt_kind`, and `redaction_class` validation.",
+        "Added explicit profile validation through `mdkg validate --profile omni-room` and `mdkg work validate --profile omni-room`, while keeping Omni Room execution semantics runtime-owned.",
+        "Added scaffold and helper flags for contract-profile metadata across `mdkg new manifest|work|work_order|receipt` and `mdkg work contract|order|receipt new`."
+      ]
+    },
     {
       "version": "0.4.0",
       "date": "2026-06-27",

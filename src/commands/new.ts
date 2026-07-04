@@ -6,6 +6,7 @@ import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
 import { isAgentFileType, AGENT_FILE_BASENAMES } from "../graph/agent_file_types";
 import { buildIndex, Index } from "../graph/indexer";
 import { loadTemplate, renderTemplate } from "../templates/loader";
+import { formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
@@ -42,6 +43,11 @@ export type NewCommandOptions = {
   skills?: string;
   supersedes?: string;
   template?: string;
+  contractProfile?: string;
+  validationPolicyRef?: string;
+  evidencePolicyRef?: string;
+  receiptKind?: string;
+  redactionClass?: string;
   noCache?: boolean;
   noReindex?: boolean;
   runId?: string;
@@ -63,6 +69,7 @@ type NewNodeReceipt = {
 const DEC_ID_RE = /^dec-[0-9]+$/;
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const CONTRACT_METADATA_RE = /^[a-z][a-z0-9_]*(?:-[a-z0-9_]+)*$/;
 const CORE_TYPES = new Set(["rule"]);
 const DESIGN_TYPES = new Set(["prd", "edd", "dec", "prop"]);
 const LEGACY_NEW_SPEC_WARNING =
@@ -124,6 +131,17 @@ function normalizeRef(value: string, key: string): string {
 
 function normalizeRefList(raw: string | undefined, key: string): string[] {
   return parseCsvList(raw).map((value) => normalizeRef(value, key));
+}
+
+function normalizeContractMetadataToken(raw: string | undefined, key: string): string | undefined {
+  if (raw === undefined) {
+    return undefined;
+  }
+  const normalized = raw.toLowerCase();
+  if (!CONTRACT_METADATA_RE.test(normalized)) {
+    throw new UsageError(`${key} must be lowercase snake/kebab style`);
+  }
+  return normalized;
 }
 
 function normalizeIdRefList(raw: string | undefined, key: string): string[] {
@@ -238,6 +256,23 @@ function ensureExists(index: Index, value: string, ws: string, label: string): v
   }
 }
 
+function mergeRenderedFrontmatter(
+  content: string,
+  filePath: string,
+  additions: Record<string, FrontmatterValue | undefined>
+): string {
+  const entries = Object.entries(additions).filter((entry): entry is [string, FrontmatterValue] => entry[1] !== undefined);
+  if (entries.length === 0) {
+    return content;
+  }
+  const { frontmatter, body } = parseFrontmatter(content, filePath);
+  for (const [key, value] of entries) {
+    frontmatter[key] = value;
+  }
+  const lines = ["---", ...formatFrontmatter(frontmatter), "---", body.trimStart()];
+  return lines.join("\n").endsWith("\n") ? lines.join("\n") : `${lines.join("\n")}\n`;
+}
+
 function runNewCommandLocked(options: NewCommandOptions): void {
   const title = options.title.trim();
   if (!title) {
@@ -343,6 +378,24 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   if (options.cases && type !== "test") {
     throw new UsageError("--cases is only valid for test nodes");
   }
+  const contractProfile = normalizeContractMetadataToken(options.contractProfile, "--contract-profile");
+  const validationPolicyRef = options.validationPolicyRef
+    ? normalizeRef(options.validationPolicyRef, "--validation-policy-ref")
+    : undefined;
+  const evidencePolicyRef = options.evidencePolicyRef
+    ? normalizeRef(options.evidencePolicyRef, "--evidence-policy-ref")
+    : undefined;
+  const receiptKind = normalizeContractMetadataToken(options.receiptKind, "--receipt-kind");
+  const redactionClass = normalizeContractMetadataToken(options.redactionClass, "--redaction-class");
+  if (contractProfile && !["manifest", "work", "work_order", "receipt"].includes(type)) {
+    throw new UsageError("--contract-profile is only valid for manifest, work, work_order, and receipt");
+  }
+  if ((validationPolicyRef || evidencePolicyRef) && !["manifest", "work_order", "receipt"].includes(type)) {
+    throw new UsageError("--validation-policy-ref and --evidence-policy-ref are only valid for manifest, work_order, and receipt");
+  }
+  if ((receiptKind || redactionClass) && type !== "receipt") {
+    throw new UsageError("--receipt-kind and --redaction-class are only valid for receipt");
+  }
 
   const epic = options.epic ? normalizeIdRef(options.epic, "--epic") : undefined;
   const parent = options.parent ? normalizeIdRef(options.parent, "--parent") : undefined;
@@ -407,7 +460,7 @@ function runNewCommandLocked(options: NewCommandOptions): void {
       `warning: using bundled template fallback for ${type}; run \`mdkg upgrade --apply\` to vendor missing local templates`
     );
   }
-  const content = renderTemplate(template, {
+  const renderedContent = renderTemplate(template, {
     id,
     type,
     title,
@@ -435,6 +488,13 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     blocked_after_attempts: type === "goal" ? 3 : undefined,
     created: today,
     updated: today,
+  });
+  const content = mergeRenderedFrontmatter(renderedContent, filePath, {
+    contract_profile: contractProfile,
+    validation_policy_ref: validationPolicyRef,
+    evidence_policy_ref: evidencePolicyRef,
+    receipt_kind: receiptKind,
+    redaction_class: redactionClass,
   });
 
   try {

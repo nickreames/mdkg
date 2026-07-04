@@ -47,6 +47,7 @@ export type WorkContractNewCommandOptions = {
   inputs: string;
   outputs: string;
   ws?: string;
+  contractProfile?: string;
   requiredCapabilities?: string;
   pricingModel?: string;
   json?: boolean;
@@ -67,6 +68,9 @@ export type WorkOrderNewCommandOptions = {
   queueRefs?: string;
   requestedOutputs?: string;
   constraintRefs?: string;
+  contractProfile?: string;
+  validationPolicyRef?: string;
+  evidencePolicyRef?: string;
   json?: boolean;
   now?: Date;
 };
@@ -112,6 +116,11 @@ export type WorkReceiptNewCommandOptions = {
   receiptStatus?: string;
   costRef?: string;
   redactionPolicy?: string;
+  contractProfile?: string;
+  receiptKind?: string;
+  redactionClass?: string;
+  validationPolicyRef?: string;
+  evidencePolicyRef?: string;
   artifacts?: string;
   proofRefs?: string;
   attestationRefs?: string;
@@ -147,6 +156,7 @@ export type WorkValidateCommandOptions = {
   id?: string;
   ws?: string;
   type?: string;
+  profile?: string;
   json?: boolean;
 };
 
@@ -280,6 +290,7 @@ type WorkValidateReceipt = {
   action: "work.validate";
   ok: boolean;
   type: AgentFileType | "all";
+  validation_profile?: string;
   target?: ReturnType<typeof toNodeSummaryJson>;
   checked_count: number;
   nodes: Array<ReturnType<typeof toNodeSummaryJson>>;
@@ -296,6 +307,7 @@ const RECEIPT_STATUSES = new Set(["recorded", "verified", "rejected", "supersede
 const OUTCOMES = new Set(["success", "partial", "failure"]);
 const REDACTION_POLICIES = new Set(["refs_and_hashes_only", "redacted_summary", "external_private"]);
 const WORKFLOW_VALIDATE_TYPES = new Set<string>(AGENT_FILE_TYPES);
+const CONTRACT_METADATA_RE = /^[a-z][a-z0-9_]*(?:-[a-z0-9_]+)*$/;
 
 function parseCsvList(raw?: string): string[] {
   if (!raw) {
@@ -338,6 +350,17 @@ function normalizeEnum(value: string, flag: string, allowed: Set<string>): strin
   const normalized = value.toLowerCase();
   if (!allowed.has(normalized)) {
     throw new UsageError(`${flag} must be one of ${Array.from(allowed).join(", ")}`);
+  }
+  return normalized;
+}
+
+function normalizeContractMetadataToken(value: string | undefined, flag: string): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+  const normalized = value.toLowerCase();
+  if (!CONTRACT_METADATA_RE.test(normalized)) {
+    throw new UsageError(`${flag} must be lowercase snake/kebab style`);
   }
   return normalized;
 }
@@ -544,6 +567,10 @@ function workflowDiagnosticCode(message: string): string {
   if (manifestCompatMatch) {
     return `manifest.compat.${manifestCompatMatch[1]}`;
   }
+  const contractProfileMatch = /(contract-profile|receipt-kind|redaction-class)\.([a-z-]+)/.exec(message);
+  if (contractProfileMatch) {
+    return `${contractProfileMatch[1]}.${contractProfileMatch[2]}`;
+  }
   if (message.includes("references missing") || message.includes("references missing node")) {
     return "reference.missing";
   }
@@ -631,7 +658,7 @@ function buildWorkValidateReceipt(options: WorkValidateCommandOptions): WorkVali
   }
 
   const candidatePaths = workflowCandidatePaths({ root: options.root, config, ws, type, target });
-  const validation = collectValidateReceipt({ root: options.root });
+  const validation = collectValidateReceipt({ root: options.root, profile: options.profile });
   const warnings = filterWorkflowMessages(validation.warnings, targets, candidatePaths);
   const errors = filterWorkflowMessages(validation.errors, targets, candidatePaths);
   const diagnostics: WorkValidationDiagnostic[] = [
@@ -653,6 +680,7 @@ function buildWorkValidateReceipt(options: WorkValidateCommandOptions): WorkVali
     action: "work.validate",
     ok: errors.length === 0,
     type: type ?? "all",
+    ...(options.profile ? { validation_profile: options.profile } : {}),
     ...(target ? { target: toNodeSummaryJson(target) } : {}),
     checked_count: target ? 1 : candidatePaths.filter((value) => !path.isAbsolute(value)).length,
     nodes: targets.map((node) => toNodeSummaryJson(node)),
@@ -1030,13 +1058,31 @@ function writeFrontmatterFile(
   atomicWriteFile(filePath, content.endsWith("\n") ? content : `${content}\n`);
 }
 
+function mergeRenderedFrontmatter(
+  content: string,
+  filePath: string,
+  additions: Record<string, FrontmatterValue | undefined>
+): string {
+  const entries = Object.entries(additions).filter((entry): entry is [string, FrontmatterValue] => entry[1] !== undefined);
+  if (entries.length === 0) {
+    return content;
+  }
+  const { frontmatter, body } = parseFrontmatter(content, filePath);
+  for (const [key, value] of entries) {
+    frontmatter[key] = value;
+  }
+  const lines = ["---", ...formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER), "---", body.trimStart()];
+  const merged = lines.join("\n");
+  return merged.endsWith("\n") ? merged : `${merged}\n`;
+}
+
 function createAgentWorkflowNode(options: {
   root: string;
   type: AgentFileType;
   title: string;
   id: string;
   ws?: string;
-  overrides: Record<string, FrontmatterValue>;
+  overrides: Record<string, FrontmatterValue | undefined>;
   now?: Date;
 }): WorkMutationReceipt {
   const config = loadConfig(options.root);
@@ -1062,7 +1108,7 @@ function createAgentWorkflowNode(options: {
     AGENT_FILE_BASENAMES[options.type]
   );
   const template = loadTemplate(options.root, config, options.type);
-  const content = renderTemplate(template, {
+  const renderedContent = renderTemplate(template, {
     id,
     type: options.type,
     title: options.title,
@@ -1070,6 +1116,7 @@ function createAgentWorkflowNode(options: {
     updated: today,
     ...options.overrides,
   });
+  const content = mergeRenderedFrontmatter(renderedContent, filePath, options.overrides);
   try {
     writeFileExclusive(filePath, content);
   } catch (err) {
@@ -1161,6 +1208,9 @@ function createWorkOrderForWork(options: {
   queueRefs?: string;
   requestedOutputs?: string;
   constraintRefs?: string;
+  contractProfile?: string;
+  validationPolicyRef?: string;
+  evidencePolicyRef?: string;
   now?: Date;
 }): WorkOrderCreation {
   const workVersion = String(options.workNode.attributes.version ?? "0.1.0");
@@ -1201,6 +1251,9 @@ function createWorkOrderForWork(options: {
       request_ref: requestRef,
       trigger_ref: triggerRef,
       payload_hash: payloadHash,
+      contract_profile: normalizeContractMetadataToken(options.contractProfile, "--contract-profile"),
+      validation_policy_ref: options.validationPolicyRef,
+      evidence_policy_ref: options.evidencePolicyRef,
       input_refs: inputRefs,
       queue_refs: queueRefs,
       requested_outputs: requestedOutputs,
@@ -1224,6 +1277,7 @@ function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions)
       ? [agentId]
       : [];
   const requiredCapabilities = parseCsvList(options.requiredCapabilities);
+  const contractProfile = normalizeContractMetadataToken(options.contractProfile, "--contract-profile");
   const receipt = createAgentWorkflowNode({
     root: options.root,
     ws,
@@ -1234,6 +1288,7 @@ function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions)
     overrides: {
       agent_id: agentId,
       kind,
+      contract_profile: contractProfile,
       pricing_model: normalizeEnum(options.pricingModel ?? "quoted", "--pricing-model", PRICING_MODELS),
       required_capabilities: requiredCapabilities.length > 0 ? requiredCapabilities : [kind],
       inputs: parseCsvList(options.inputs),
@@ -1266,6 +1321,9 @@ function runWorkOrderNewCommandLocked(options: WorkOrderNewCommandOptions): void
     queueRefs: options.queueRefs,
     requestedOutputs: options.requestedOutputs,
     constraintRefs: options.constraintRefs,
+    contractProfile: options.contractProfile,
+    validationPolicyRef: options.validationPolicyRef,
+    evidencePolicyRef: options.evidencePolicyRef,
     now: options.now,
   });
   printReceipt("order created", created.receipt, options.json);
@@ -1462,6 +1520,11 @@ function runWorkReceiptNewCommandLocked(options: WorkReceiptNewCommandOptions): 
         "--redaction-policy",
         REDACTION_POLICIES
       ),
+      contract_profile: normalizeContractMetadataToken(options.contractProfile, "--contract-profile"),
+      receipt_kind: normalizeContractMetadataToken(options.receiptKind, "--receipt-kind"),
+      redaction_class: normalizeContractMetadataToken(options.redactionClass, "--redaction-class"),
+      validation_policy_ref: options.validationPolicyRef,
+      evidence_policy_ref: options.evidencePolicyRef,
       artifacts: parseCsvList(options.artifacts),
       proof_refs: parseCsvList(options.proofRefs),
       attestation_refs: parseCsvList(options.attestationRefs),

@@ -85,6 +85,28 @@ Mutating commands change graph lifecycle or evidence:
 
 Beginner safety rule: run the read-only commands first, make the code or docs change outside mdkg, then mutate mdkg state only when you have evidence.
 
+## Contract-profile metadata
+
+Agent workflow files may include optional generic profile metadata when a
+downstream runtime needs a clearer semantic mirror:
+
+- `contract_profile` on MANIFEST, WORK, WORK_ORDER, and RECEIPT
+- `validation_policy_ref` and `evidence_policy_ref` on MANIFEST, WORK_ORDER, and RECEIPT
+- `receipt_kind` and `redaction_class` on RECEIPT only
+
+These fields are separate from MANIFEST `resource_profile`, WORK `kind`,
+WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`, and pack/bundle
+`--profile` flags. Generic validation accepts well-shaped custom values with
+warnings for unknown profiles, receipt kinds, or redaction classes. Use
+`mdkg validate --profile omni-room` or
+`mdkg work validate --profile omni-room` when you need explicit profile checks.
+The bare field name `profile` is ambiguous and is diagnosed rather than treated
+as an alias.
+
+mdkg owns the generic mirror fields and validation. Omni Room and other
+downstream runtimes own runtime policy, queue execution, final receipt
+normalization, and downstream adoption.
+
 Close work with evidence. Use the concrete `TASK_ID` from the work item you are closing:
 
 ```bash

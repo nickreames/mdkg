@@ -1,14 +1,14 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 35018c8d8e9827545d061882bc55ea42d3bdbfff1224ab6414aa8e53a443e4a0 -->
+<!-- contract-hash: 65408d40dd065dfadcaa9bfe3626df5703dce2fe08ce1dd500e371899a8c4f7a -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
 The page is generated from current command metadata in `dist/command-contract.json`, which keeps usage, flags, output formats, and safety notes aligned with the CLI.
 
 - Tool: mdkg
-- Package version: 0.4.0
+- Package version: 0.4.1
 - Schema version: 1
 - Command count: 102
 - Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, global, goal, graph, guide, handoff, index, init, list, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
@@ -3107,7 +3107,9 @@ mdkg new <type> "<title>" [options] [--json]
 ### Common flags
 
 - `--blocked-by`: --parent --prev --next --relates --blocked-by --blocks
+- `--contract-profile <name>`: --contract-profile <name>  Optional MANIFEST/WORK/WORK_ORDER/RECEIPT validation profile metadata
 - `--epic <id>`: --epic <id>                Epic id
+- `--evidence-policy-ref <ref>`: --evidence-policy-ref <ref> Optional MANIFEST/WORK_ORDER/RECEIPT evidence policy ref
 - `--help`: --help, -h          Show help
 - `--id <portable-id>`: Use --id <portable-id> with these types for semantic ids like agent.image-worker.
 - `--links`: --links --artifacts --refs --aliases --owners --cases --supersedes
@@ -3115,10 +3117,8 @@ mdkg new <type> "<title>" [options] [--json]
 - `--owners`: --links --artifacts --refs --aliases --owners --cases --supersedes
 - `--parent`: --parent --prev --next --relates --blocked-by --blocks
 - `--priority <0..9>`: --priority <0..9>          Work item priority
-- `--refs`: --links --artifacts --refs --aliases --owners --cases --supersedes
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--run-id <id>`: --run-id <id>              Optional event run id when event logging is enabled
-- 7 additional flags omitted from this generated summary.
+- `--receipt-kind <kind>`: --receipt-kind <kind>      Optional RECEIPT kind metadata
+- 12 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -4745,13 +4745,13 @@ Beginner safety: Safe for initial grounding. It should not change repository fil
 ### Usage
 
 ```text
-mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]
+mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]
+mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
 ```
 
 ### Common flags
@@ -4761,6 +4761,7 @@ mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--s
 - `--json-out writes`: --out writes the compatibility text report; --json-out writes a clean full JSON receipt.
 - `--limit controls`: --summary emits bounded warning samples for agent/CI logs; --limit controls the sample size.
 - `--out writes`: --out writes the compatibility text report; --json-out writes a clean full JSON receipt.
+- `--profile omni-room`: --profile omni-room applies explicit contract-profile validation after generic validation; this is separate from mdkg pack --profile.
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--summary emits`: --summary emits bounded warning samples for agent/CI logs; --limit controls the sample size.
 - `--version`: --version, -V       Show version
@@ -4791,7 +4792,7 @@ mdkg work command
 
 ### When to use
 
-Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
+Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -4803,7 +4804,7 @@ mdkg work trigger <work-or-capability-ref> ...
 mdkg work order new|status|update ...
 mdkg work receipt new|verify|update ...
 mdkg work artifact add ...
-mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]
+mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]
 ```
 
 ### Examples
@@ -4846,7 +4847,7 @@ mdkg work artifact command
 
 ### When to use
 
-Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
+Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -4894,30 +4895,30 @@ mdkg work contract command
 
 ### When to use
 
-Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
+Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
 ```text
-mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]
+mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]
+mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 ```
 
 ### Common flags
 
-- `--agent-id <agent.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--agent-id <agent.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 - `--help`: --help, -h          Show help
-- `--id <work.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]
-- `--inputs <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]
-- `--kind <kind>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]
-- `--outputs <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--id <work.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--inputs <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--kind <kind>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--outputs <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4947,14 +4948,14 @@ mdkg work order command
 
 ### When to use
 
-Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
+Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
 Beginner safety: Safe for initial grounding. It should not change repository files.
 
 ### Usage
 
 ```text
-mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 mdkg work order status <id-or-qid> [--json]
 mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
 ```
@@ -4962,7 +4963,7 @@ mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] 
 ### Examples
 
 ```bash
-mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 mdkg work order status <id-or-qid> [--json]
 mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
 ```
@@ -4970,11 +4971,11 @@ mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] 
 ### Common flags
 
 - `--help`: --help, -h          Show help
-- `--id <order.id>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
-- `--requester <ref>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--id <order.id>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--requester <ref>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--work-id <work.id>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--work-id <work.id>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 
 ### Output and safety
 
@@ -5002,14 +5003,14 @@ mdkg work receipt command
 
 ### When to use
 
-Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
+Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
 ```text
-mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]
+mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
 mdkg work receipt verify <id-or-qid> [--json]
 mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
 ```
@@ -5017,7 +5018,7 @@ mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifact
 ### Examples
 
 ```bash
-mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]
+mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
 mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
 mdkg work receipt verify <id-or-qid> [--json]
 ```
@@ -5025,11 +5026,11 @@ mdkg work receipt verify <id-or-qid> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
-- `--id <receipt.id>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]
-- `--outcome success|partial|failure`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]
+- `--id <receipt.id>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
+- `--outcome success|partial|failure`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--work-order-id <order.id>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--evidence-hashes <sha256:...>] [--json]
+- `--work-order-id <order.id>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
 
 ### Output and safety
 
@@ -5057,7 +5058,7 @@ mdkg work trigger command
 
 ### When to use
 
-Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
+Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -5108,25 +5109,26 @@ mdkg work validate command
 
 ### When to use
 
-Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
+Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
 Beginner safety: Safe for initial grounding. It should not change repository files.
 
 ### Usage
 
 ```text
-mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
+mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]
+mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]
 ```
 
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--profile omni-room`: --profile omni-room applies explicit contract-profile validation after generic mirror validation; this is separate from mdkg pack --profile.
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 

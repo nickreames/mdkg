@@ -10,15 +10,43 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 Recent release cards:
 
-- `0.4.0` latest public alpha, 2026-06-27: public launch readiness for
+- `0.4.1` latest public alpha, 2026-07-03: generic contract-profile metadata,
+  profile validation, scaffold/helper flags, and runtime-boundary docs for
+  agent workflow mirrors.
+- `0.4.0` public alpha, 2026-06-27: public launch readiness for
   mdkg.dev and docs.mdkg.dev, source-backed release metadata, npm gates, Vercel
   currentness, and Chrome live-validation blockers.
 - `0.3.9` public alpha, 2026-06-27: config overlays, configurable skill
   mirrors, COLLABORATION.md, refreshed first-party skills, and release-note
   automation.
-- `0.3.8` public alpha, 2026-06-25: MANIFEST naming, SPEC compatibility
-  warnings, warning-scale validation summaries, and multi-repo closeout
-  guidance.
+
+## 0.4.1 details
+
+`0.4.1` adds generic contract-profile metadata for agent workflow mirrors while
+keeping runtime execution and final receipt authority outside mdkg.
+
+### Added
+
+- `contract_profile` for MANIFEST, WORK, WORK_ORDER, and RECEIPT semantic
+  mirrors.
+- `validation_policy_ref` and `evidence_policy_ref` for MANIFEST, WORK_ORDER,
+  and RECEIPT.
+- RECEIPT-only `receipt_kind` and `redaction_class`.
+- Explicit profile validation with `mdkg validate --profile omni-room` and
+  `mdkg work validate --profile omni-room`.
+- Scaffold/helper flags for `mdkg new manifest|work|work_order|receipt` and
+  `mdkg work contract|order|receipt new`.
+
+### Changed
+
+- Default templates, init assets, seeded skills, and generated command
+  references demonstrate generic profile metadata without adding runtime-only
+  queue, provider, billing, ledger, or final-receipt state.
+- Public docs distinguish `contract_profile`, MANIFEST `resource_profile`, WORK
+  `kind`, WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`,
+  `receipt_kind`, `redaction_class`, and pack/bundle `--profile` flags.
+- Omni Room remains responsible for runtime policy, queue execution, final
+  receipt normalization, and downstream adoption.
 
 ## 0.4.0 details
 
@@ -77,6 +105,8 @@ into a fork of the CLI kernel.
 
 Earlier public-alpha milestones:
 
+- `0.3.8`: MANIFEST naming, SPEC compatibility warnings, warning-scale
+  validation summaries, and multi-repo closeout guidance.
 - `0.3.7`: completed-goal `last_active_node`, semantic refs, checkpoint kinds,
   workflow validation, queue adapter contract, and handoff creation.
 - `0.3.6`: graph import selected-goal hardening and read-only local MCP server.

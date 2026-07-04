@@ -8,6 +8,11 @@ receipt_status: recorded
 outcome: success
 cost_ref: cost.redacted
 redaction_policy: refs_and_hashes_only
+contract_profile: generic
+receipt_kind: worker
+redaction_class: internal
+validation_policy_ref: policy.validation.default
+evidence_policy_ref: policy.evidence.default
 proof_refs: []
 attestation_refs: []
 evidence_hashes: []

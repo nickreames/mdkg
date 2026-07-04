@@ -2,7 +2,7 @@
 id: task-642
 type: task
 title: update full default init assets and upgrade preservation coverage
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, init-assets, upgrade, templates]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

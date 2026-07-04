@@ -60,7 +60,7 @@ function categoryGuidance(command) {
     subgraph: "Use to inspect and refresh child graph bundles from a parent repo.",
     task: "Use to start, update, and close task-like work nodes with evidence.",
     validate: "Use before closeout to check graph integrity and warning categories.",
-    work: "Use for SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.",
+  work: "Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.",
   };
   return guidance[category] || "Use this command when the matching command family is the current workflow surface.";
 }

@@ -2,13 +2,13 @@
 id: task-639
 type: task
 title: implement contract-profile validators and stable diagnostics
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, validation, diagnostics]
 owners: []
 links: []
-artifacts: []
+artifacts: [src/graph/agent_file_types.ts, src/graph/node.ts, src/commands/validate.ts, src/commands/work.ts, tests/commands/agent_file_types.test.ts]
 relates: []
 blocked_by: [task-637]
 blocks: [task-640, test-333]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

@@ -2,12 +2,12 @@
 id: goal-49
 type: goal
 title: Implement mdkg 0.4.1 generic contract-profile support
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: mdkg 0.4.1 generic contract-profile support is implemented across MANIFEST, WORK, WORK_ORDER, and RECEIPT validators, profile validation CLI, scaffolds/helpers, full default/init assets, docs, generated references, changelog, and release-readiness evidence; no npm publish, tag, push, deploy, DNS, provider mutation, or downstream repo mutation occurs in this implementation goal.
 scope_refs: [task-637, task-639, task-640, task-641, task-642, task-643, task-644, test-333, test-334, test-335]
-active_node: task-637
+last_active_node: task-644
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [node dist/cli.js index, node dist/cli.js validate --changed-only --json, node dist/cli.js validate --summary --limit 20 --json, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, npm run smoke:upgrade, npm run smoke:init, npm run smoke:capabilities, npm run smoke:archive-work, npm run smoke:work-invocation, npm run smoke:warning-ux, npm run smoke:integration-ux, npm run smoke:mdkg-dev-docs, npm run smoke:demo-graph, git diff --check]
 max_iterations: 25
@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Objective
 

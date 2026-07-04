@@ -10,6 +10,9 @@ order_status: submitted
 request_ref: request.example
 trigger_ref: trigger.manual
 payload_hash: sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+contract_profile: generic
+validation_policy_ref: policy.validation.default
+evidence_policy_ref: policy.evidence.default
 input_refs: []
 queue_refs: []
 requested_outputs: [result:text:required]

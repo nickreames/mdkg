@@ -39,6 +39,22 @@ mdkg task done TASK_ID --checkpoint "Meaningful milestone"
 mdkg validate
 ```
 
+## Contract-profile metadata
+
+Agent workflow files may include optional generic profile metadata when a
+downstream runtime needs a clearer semantic mirror:
+
+- `contract_profile` on MANIFEST, WORK, WORK_ORDER, and RECEIPT
+- `validation_policy_ref` and `evidence_policy_ref` on MANIFEST, WORK_ORDER, and RECEIPT
+- `receipt_kind` and `redaction_class` on RECEIPT only
+
+These fields are separate from MANIFEST `resource_profile`, WORK `kind`,
+WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`, and pack/bundle
+`--profile` flags. Use `mdkg validate --profile omni-room` or
+`mdkg work validate --profile omni-room` when you need explicit profile checks.
+mdkg owns generic mirror validation; downstream runtimes own runtime policy,
+queue execution, final receipt normalization, and adoption.
+
 For a larger implementation goal:
 
 1. Claim one scoped node.

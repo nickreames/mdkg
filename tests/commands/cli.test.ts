@@ -158,7 +158,7 @@ test("cli help work documents trigger status verify polish", () => {
   assert.equal(workHelp.status, 0);
   assert.match(workHelp.stdout, /mdkg work order new\|status\|update/);
   assert.match(workHelp.stdout, /mdkg work receipt new\|verify\|update/);
-  assert.match(workHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type <workflow-type>\] \[--json\]/);
+  assert.match(workHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type <workflow-type>\] \[--profile <name>\] \[--json\]/);
   assert.match(workHelp.stdout, /work validate is read-only and reports typed workflow diagnostics/);
 
   const triggerHelp = spawnSync(process.execPath, [cliPath, "help", "work", "trigger"], {
@@ -188,8 +188,9 @@ test("cli help work documents trigger status verify polish", () => {
     cwd: repoRoot,
   });
   assert.equal(validateHelp.status, 0);
-  assert.match(validateHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type manifest\|spec\|work\|work_order\|receipt\|feedback\|dispute\|proposal\] \[--json\]/);
+  assert.match(validateHelp.stdout, /mdkg work validate \[<id-or-qid>\] \[--type manifest\|spec\|work\|work_order\|receipt\|feedback\|dispute\|proposal\] \[--profile <name>\] \[--json\]/);
   assert.match(validateHelp.stdout, /Read-only focused validation for agent workflow mirrors/);
+  assert.match(validateHelp.stdout, /--profile omni-room applies explicit contract-profile validation/);
 });
 
 test("cli help db documents project database boundaries", () => {

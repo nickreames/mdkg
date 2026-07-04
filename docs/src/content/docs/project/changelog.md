@@ -11,12 +11,22 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
-Recent release cards cover `0.4.0`, `0.3.9`, and `0.3.8`; earlier milestones
+Recent release cards cover `0.4.1`, `0.4.0`, and `0.3.9`; earlier milestones
 remain listed below for continuity.
 
 <div class="release-grid" aria-label="Recent mdkg release cards">
   <article class="release-card current">
-    <p class="release-meta">Latest public alpha - 2026-06-27 - 7 notes</p>
+    <p class="release-meta">Latest public alpha - 2026-07-03 - 6 notes</p>
+    <h2>0.4.1</h2>
+    <p>Generic contract-profile metadata and profile validation for agent workflow mirrors, with runtime execution still owned by downstream systems.</p>
+    <ul>
+      <li>Add <code>contract_profile</code>, policy refs, <code>receipt_kind</code>, and <code>redaction_class</code> validation to MANIFEST, WORK, WORK_ORDER, and RECEIPT surfaces.</li>
+      <li>Expose <code>mdkg validate --profile omni-room</code> and <code>mdkg work validate --profile omni-room</code> for explicit profile checks.</li>
+      <li>Update scaffolds, helpers, templates, init assets, docs, and generated references without adding runtime-only queue, provider, billing, ledger, or final-receipt state.</li>
+    </ul>
+  </article>
+  <article class="release-card">
+    <p class="release-meta">Public alpha - 2026-06-27 - 7 notes</p>
     <h2>0.4.0</h2>
     <p>Public launch readiness for mdkg.dev and docs.mdkg.dev, with source-backed release metadata, npm gates, Vercel currentness, and Chrome live-validation blockers.</p>
     <ul>
@@ -30,12 +40,35 @@ remain listed below for continuity.
     <h2>0.3.9</h2>
     <p>Config overlays, configurable skill mirrors, <code>COLLABORATION.md</code>, refreshed first-party skills, and release-note automation.</p>
   </article>
-  <article class="release-card">
-    <p class="release-meta">Public alpha - 2026-06-25 - 7 notes</p>
-    <h2>0.3.8</h2>
-    <p>MANIFEST naming, SPEC compatibility warnings, warning-scale validation summaries, and multi-repo closeout guidance.</p>
-  </article>
 </div>
+
+## 0.4.1 details
+
+`0.4.1` adds generic contract-profile metadata for agent workflow mirrors while
+keeping runtime execution and final receipt authority outside mdkg.
+
+### Added
+
+- `contract_profile` for MANIFEST, WORK, WORK_ORDER, and RECEIPT semantic
+  mirrors.
+- `validation_policy_ref` and `evidence_policy_ref` for MANIFEST, WORK_ORDER,
+  and RECEIPT.
+- RECEIPT-only `receipt_kind` and `redaction_class`.
+- Explicit profile validation with `mdkg validate --profile omni-room` and
+  `mdkg work validate --profile omni-room`.
+- Scaffold/helper flags for `mdkg new manifest|work|work_order|receipt` and
+  `mdkg work contract|order|receipt new`.
+
+### Changed
+
+- Default templates, init assets, seeded skills, and generated command
+  references demonstrate generic profile metadata without adding runtime-only
+  queue, provider, billing, ledger, or final-receipt state.
+- Public docs distinguish `contract_profile`, MANIFEST `resource_profile`, WORK
+  `kind`, WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`,
+  `receipt_kind`, `redaction_class`, and pack/bundle `--profile` flags.
+- Omni Room remains responsible for runtime policy, queue execution, final
+  receipt normalization, and downstream adoption.
 
 ## 0.4.0 details
 
@@ -94,6 +127,8 @@ into a fork of the CLI kernel.
 
 ## Earlier public-alpha milestones
 
+- `0.3.8`: MANIFEST naming, SPEC compatibility warnings, warning-scale
+  validation summaries, and multi-repo closeout guidance.
 - `0.3.7`: completed-goal `last_active_node`, semantic refs, checkpoint kinds,
   workflow validation, queue adapter contract, and handoff creation.
 - `0.3.6`: graph import selected-goal hardening and read-only local MCP server.

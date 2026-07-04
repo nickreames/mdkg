@@ -36,6 +36,9 @@ const MANIFEST_ATTRIBUTE_KEYS = [
   "role",
   "runtime_mode",
   "work_contracts",
+  "contract_profile",
+  "validation_policy_ref",
+  "evidence_policy_ref",
   "requested_capabilities",
   "skill_refs",
   "tool_refs",
@@ -54,6 +57,7 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "version",
     "agent_id",
     "kind",
+    "contract_profile",
     "pricing_model",
     "required_capabilities",
     "skill_refs",
@@ -75,6 +79,9 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "request_ref",
     "trigger_ref",
     "payload_hash",
+    "contract_profile",
+    "validation_policy_ref",
+    "evidence_policy_ref",
     "input_refs",
     "queue_refs",
     "requested_outputs",
@@ -88,6 +95,11 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "outcome",
     "cost_ref",
     "redaction_policy",
+    "contract_profile",
+    "receipt_kind",
+    "redaction_class",
+    "validation_policy_ref",
+    "evidence_policy_ref",
     "proof_refs",
     "attestation_refs",
     "evidence_hashes",
@@ -120,6 +132,10 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
 const SEMVER_RE = /^\d+\.\d+\.\d+(?:[-+][a-z0-9.-]+)?$/;
 const LOWER_TOKEN_RE = /^[a-z][a-z0-9_]*(?:-[a-z0-9_]+)*$/;
 const FIELD_DESCRIPTOR_RE = /^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*(?::(?:required|optional))?$/;
+
+export const KNOWN_CONTRACT_PROFILES = new Set(["generic", "omni-room"]);
+export const KNOWN_RECEIPT_KINDS = new Set(["worker", "final", "cleanup", "audit"]);
+export const KNOWN_REDACTION_CLASSES = new Set(["public", "internal", "private", "restricted"]);
 
 const ROLE_VALUES = new Set([
   "orchestrator",
@@ -462,6 +478,64 @@ function validatePortableOrUriScalar(value: string, key: string, filePath: strin
   }
 }
 
+function requireContractMetadataToken(value: string, key: string, filePath: string): void {
+  if (LOWER_TOKEN_RE.test(value)) {
+    return;
+  }
+  const id =
+    key === "receipt_kind"
+      ? "receipt-kind.invalid"
+      : key === "redaction_class"
+        ? "redaction-class.invalid"
+        : "contract-profile.invalid";
+  throw formatError(filePath, `${id}: ${key} must be lowercase snake/kebab style`);
+}
+
+function optionalContractMetadataString(
+  frontmatter: Record<string, FrontmatterValue>,
+  key: string,
+  filePath: string
+): string | undefined {
+  const value = frontmatter[key];
+  if (value === undefined) {
+    return undefined;
+  }
+  const id =
+    key === "receipt_kind"
+      ? "receipt-kind.invalid"
+      : key === "redaction_class"
+        ? "redaction-class.invalid"
+        : "contract-profile.invalid";
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw formatError(filePath, `${id}: ${key} must be a non-empty string`);
+  }
+  return value;
+}
+
+function validateOptionalContractProfile(
+  frontmatter: Record<string, FrontmatterValue>,
+  filePath: string
+): void {
+  const contractProfile = optionalContractMetadataString(frontmatter, "contract_profile", filePath);
+  if (contractProfile) {
+    requireContractMetadataToken(contractProfile, "contract_profile", filePath);
+  }
+}
+
+function validateOptionalPolicyRefs(
+  frontmatter: Record<string, FrontmatterValue>,
+  filePath: string
+): void {
+  const validationPolicyRef = optionalRefString(frontmatter, "validation_policy_ref", filePath);
+  if (validationPolicyRef) {
+    validatePortableOrUriScalar(validationPolicyRef, "validation_policy_ref", filePath);
+  }
+  const evidencePolicyRef = optionalRefString(frontmatter, "evidence_policy_ref", filePath);
+  if (evidencePolicyRef) {
+    validatePortableOrUriScalar(evidencePolicyRef, "evidence_policy_ref", filePath);
+  }
+}
+
 function validateOptionalFieldDescriptors(values: string[], key: string, filePath: string): void {
   if (values.length === 0) {
     return;
@@ -540,6 +614,8 @@ export function validateAgentFrontmatter(
       requireEnum(runtimeMode, "runtime_mode", RUNTIME_MODE_VALUES, filePath);
       const updatePolicy = expectString(frontmatter, "update_policy", filePath);
       requireEnum(updatePolicy, "update_policy", UPDATE_POLICY_VALUES, filePath);
+      validateOptionalContractProfile(frontmatter, filePath);
+      validateOptionalPolicyRefs(frontmatter, filePath);
       validateRelativeMarkdownPaths(
         optionalList(frontmatter, "work_contracts", filePath),
         "work_contracts",
@@ -592,6 +668,7 @@ export function validateAgentFrontmatter(
       requirePortableIdRef(agentId, "agent_id", filePath);
       const kind = expectString(frontmatter, "kind", filePath);
       requireLowerToken(kind, "kind", filePath);
+      validateOptionalContractProfile(frontmatter, filePath);
       const pricingModel = expectString(frontmatter, "pricing_model", filePath);
       requireEnum(pricingModel, "pricing_model", PRICING_MODEL_VALUES, filePath);
       const requiredCapabilities = expectList(frontmatter, "required_capabilities", filePath);
@@ -638,6 +715,8 @@ export function validateAgentFrontmatter(
       validatePortableOrUriScalar(requester, "requester", filePath);
       const orderStatus = expectString(frontmatter, "order_status", filePath);
       requireEnum(orderStatus, "order_status", ORDER_STATUS_VALUES, filePath);
+      validateOptionalContractProfile(frontmatter, filePath);
+      validateOptionalPolicyRefs(frontmatter, filePath);
       const requestRef = optionalRefString(frontmatter, "request_ref", filePath);
       if (requestRef) {
         validatePortableOrUriScalar(requestRef, "request_ref", filePath);
@@ -683,6 +762,16 @@ export function validateAgentFrontmatter(
       if (redactionPolicy) {
         requireEnum(redactionPolicy, "redaction_policy", REDACTION_POLICY_VALUES, filePath);
       }
+      validateOptionalContractProfile(frontmatter, filePath);
+      const receiptKind = optionalContractMetadataString(frontmatter, "receipt_kind", filePath);
+      if (receiptKind) {
+        requireContractMetadataToken(receiptKind, "receipt_kind", filePath);
+      }
+      const redactionClass = optionalContractMetadataString(frontmatter, "redaction_class", filePath);
+      if (redactionClass) {
+        requireContractMetadataToken(redactionClass, "redaction_class", filePath);
+      }
+      validateOptionalPolicyRefs(frontmatter, filePath);
       validatePortableOrUriRefs(optionalList(frontmatter, "proof_refs", filePath), "proof_refs", filePath);
       validatePortableOrUriRefs(
         optionalList(frontmatter, "attestation_refs", filePath),

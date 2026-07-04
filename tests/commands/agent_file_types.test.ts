@@ -10,7 +10,12 @@ const { runShowCommand } = require("../../commands/show");
 const { runValidateCommand } = require("../../commands/validate");
 const { runNewCommand } = require("../../commands/new");
 const { runCapabilityListCommand } = require("../../commands/capability");
-const { runWorkValidateCommand } = require("../../commands/work");
+const {
+  runWorkContractNewCommand,
+  runWorkOrderNewCommand,
+  runWorkReceiptNewCommand,
+  runWorkValidateCommand,
+} = require("../../commands/work");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -369,6 +374,16 @@ function copyValidFixtures(root: string): void {
   writeSkill(root, "review-loop");
 }
 
+function replaceInFile(filePath: string, search: string, replacement: string): void {
+  const content = fs.readFileSync(filePath, "utf8");
+  assert.ok(content.includes(search), `expected ${filePath} to include ${search}`);
+  writeFile(filePath, content.replace(search, replacement));
+}
+
+function insertAfterLine(filePath: string, line: string, insertedLines: string[]): void {
+  replaceInFile(filePath, line, [line, ...insertedLines].join("\n"));
+}
+
 function silenceErrors<T>(fn: () => T): T {
   const originalError = console.error;
   console.error = () => {};
@@ -513,6 +528,247 @@ test("validate and index accept valid Agent workflow file fixtures", () => {
   assert.deepEqual(index.nodes["root:receipt.runtime-render-1"].attributes.output_hashes, [
     "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
   ]);
+});
+
+test("validate and index accept contract profile metadata on workflow surfaces", () => {
+  const root = makeTempDir("mdkg-agent-contract-profile-valid-");
+  setupWorkspace(root);
+  const manifestPath = writeManifestWithKind(root, "agent", "agent.profiled");
+  insertAfterLine(manifestPath, "work_contracts: []", [
+    "contract_profile: omni-room",
+    "validation_policy_ref: policy.validation",
+    "evidence_policy_ref: policy.evidence",
+  ]);
+  writeReceiptValidationFixture(root, {});
+
+  const workPath = path.join(root, ".mdkg", "work", "work-fixture", "WORK.md");
+  insertAfterLine(workPath, "kind: generic", ["contract_profile: omni-room"]);
+  const orderPath = path.join(root, ".mdkg", "work", "order-fixture", "WORK_ORDER.md");
+  insertAfterLine(orderPath, "order_status: submitted", [
+    "contract_profile: omni-room",
+    "validation_policy_ref: policy.validation",
+    "evidence_policy_ref: policy.evidence",
+  ]);
+  const receiptPath = path.join(root, ".mdkg", "work", "receipt-fixture", "RECEIPT.md");
+  insertAfterLine(receiptPath, "redaction_policy: refs_and_hashes_only", [
+    "contract_profile: omni-room",
+    "receipt_kind: worker",
+    "redaction_class: internal",
+    "validation_policy_ref: policy.validation",
+    "evidence_policy_ref: policy.evidence",
+  ]);
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.nodes["root:agent.profiled"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:agent.profiled"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:agent.profiled"].attributes.evidence_policy_ref, "policy.evidence");
+  assert.equal(index.nodes["root:work.fixture"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:order.fixture"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:order.fixture"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:order.fixture"].attributes.evidence_policy_ref, "policy.evidence");
+  assert.equal(index.nodes["root:receipt.fixture"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:receipt.fixture"].attributes.receipt_kind, "worker");
+  assert.equal(index.nodes["root:receipt.fixture"].attributes.redaction_class, "internal");
+  assert.equal(index.nodes["root:receipt.fixture"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:receipt.fixture"].attributes.evidence_policy_ref, "policy.evidence");
+});
+
+test("validate and work validate accept omni-room profile mode for compatible metadata", () => {
+  const root = makeTempDir("mdkg-agent-contract-profile-mode-valid-");
+  setupWorkspace(root);
+  const manifestPath = writeManifestWithKind(root, "agent", "agent.profile-mode");
+  insertAfterLine(manifestPath, "work_contracts: []", ["contract_profile: omni-room"]);
+  writeReceiptValidationFixture(root, {});
+  const receiptPath = path.join(root, ".mdkg", "work", "receipt-fixture", "RECEIPT.md");
+  insertAfterLine(receiptPath, "redaction_policy: refs_and_hashes_only", [
+    "contract_profile: omni-room",
+    "receipt_kind: final",
+    "redaction_class: public",
+  ]);
+
+  const validateOutput = captureOutput(() =>
+    runValidateCommand({ root, profile: "omni-room", json: true })
+  );
+  const validateReceipt = JSON.parse(validateOutput.stdout);
+  assert.equal(validateOutput.stderr, "");
+  assert.equal(validateReceipt.ok, true);
+  assert.equal(validateReceipt.validation_profile, "omni-room");
+
+  const workOutput = captureOutput(() =>
+    runWorkValidateCommand({ root, id: "receipt.fixture", profile: "omni-room", json: true })
+  );
+  const workReceipt = JSON.parse(workOutput.stdout);
+  assert.equal(workOutput.stderr, "");
+  assert.equal(workReceipt.ok, true);
+  assert.equal(workReceipt.validation_profile, "omni-room");
+  assert.equal(workReceipt.error_count, 0);
+});
+
+test("validate warns for ambiguous and unknown contract profile metadata in generic mode", () => {
+  const root = makeTempDir("mdkg-agent-contract-profile-warnings-");
+  setupWorkspace(root);
+  const manifestPath = writeManifestWithKind(root, "agent", "agent.profile-warnings");
+  insertAfterLine(manifestPath, "work_contracts: []", [
+    "profile: runtime-owned",
+    "contract_profile: custom-room",
+  ]);
+  writeReceiptValidationFixture(root, {});
+  const receiptPath = path.join(root, ".mdkg", "work", "receipt-fixture", "RECEIPT.md");
+  replaceInFile(
+    receiptPath,
+    "redaction_policy: refs_and_hashes_only",
+    [
+      "contract_profile: custom-room",
+      "receipt_kind: reviewer",
+      "redaction_class: sensitive",
+    ].join("\n")
+  );
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+  const warningIds = receipt.warning_diagnostics.map(
+    (diagnostic: { id: string }) => diagnostic.id
+  );
+
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, true);
+  assert.ok(warningIds.includes("contract-profile.ambiguous-field"));
+  assert.ok(warningIds.includes("contract-profile.unknown"));
+  assert.ok(warningIds.includes("receipt-kind.unknown"));
+  assert.ok(warningIds.includes("redaction-class.unknown"));
+  assert.ok(warningIds.includes("redaction-class.missing-policy"));
+});
+
+test("profile mode escalates incompatible contract profile metadata to errors", () => {
+  const root = makeTempDir("mdkg-agent-contract-profile-mode-invalid-");
+  setupWorkspace(root);
+  const manifestPath = writeManifestWithKind(root, "agent", "agent.profile-mode-invalid");
+  insertAfterLine(manifestPath, "work_contracts: []", [
+    "profile: runtime-owned",
+    "contract_profile: custom-room",
+  ]);
+  writeReceiptValidationFixture(root, {});
+  const receiptPath = path.join(root, ".mdkg", "work", "receipt-fixture", "RECEIPT.md");
+  replaceInFile(
+    receiptPath,
+    "redaction_policy: refs_and_hashes_only",
+    [
+      "contract_profile: custom-room",
+      "receipt_kind: reviewer",
+      "redaction_class: sensitive",
+    ].join("\n")
+  );
+
+  const validateOutput = captureThrownOutput(() =>
+    runValidateCommand({ root, profile: "omni-room", json: true })
+  );
+  const validateReceipt = JSON.parse(validateOutput.stdout);
+
+  assert.match(String(validateOutput.error), /validation failed/);
+  assert.equal(validateOutput.stderr, "");
+  assert.equal(validateReceipt.ok, false);
+  assert.equal(validateReceipt.validation_profile, "omni-room");
+  assert.ok(
+    validateReceipt.errors.some((error: string) =>
+      error.includes("contract-profile.ambiguous-field")
+    )
+  );
+  assert.ok(
+    validateReceipt.errors.some((error: string) =>
+      error.includes("contract-profile.incompatible")
+    )
+  );
+  assert.ok(
+    validateReceipt.errors.some((error: string) => error.includes("receipt-kind.incompatible"))
+  );
+  assert.ok(
+    validateReceipt.errors.some((error: string) =>
+      error.includes("redaction-class.incompatible")
+    )
+  );
+  assert.ok(
+    validateReceipt.errors.some((error: string) =>
+      error.includes("redaction-class.missing-policy")
+    )
+  );
+
+  const workOutput = captureThrownOutput(() =>
+    runWorkValidateCommand({ root, id: "receipt.fixture", profile: "omni-room", json: true })
+  );
+  const workReceipt = JSON.parse(workOutput.stdout);
+  const errorCodes = workReceipt.diagnostics
+    .filter((diagnostic: { severity: string }) => diagnostic.severity === "error")
+    .map((diagnostic: { code: string }) => diagnostic.code);
+
+  assert.match(String(workOutput.error), /workflow validation failed/);
+  assert.equal(workOutput.stderr, "");
+  assert.equal(workReceipt.ok, false);
+  assert.equal(workReceipt.validation_profile, "omni-room");
+  assert.ok(errorCodes.includes("contract-profile.incompatible"));
+  assert.ok(errorCodes.includes("receipt-kind.incompatible"));
+  assert.ok(errorCodes.includes("redaction-class.incompatible"));
+  assert.ok(errorCodes.includes("redaction-class.missing-policy"));
+});
+
+test("validate rejects malformed contract profile metadata with stable ids", () => {
+  const root = makeTempDir("mdkg-agent-contract-profile-invalid-");
+  setupWorkspace(root);
+  const manifestPath = writeManifestWithKind(root, "agent", "agent.profile-invalid");
+  insertAfterLine(manifestPath, "work_contracts: []", ["contract_profile: Omni Room"]);
+  writeReceiptValidationFixture(root, {});
+  const receiptPath = path.join(root, ".mdkg", "work", "receipt-fixture", "RECEIPT.md");
+  insertAfterLine(receiptPath, "redaction_policy: refs_and_hashes_only", [
+    "receipt_kind: Worker",
+    "redaction_class: Secret Class",
+  ]);
+  writeFile(
+    path.join(root, ".mdkg", "work", "receipt-class-invalid", "RECEIPT.md"),
+    [
+      "---",
+      "id: receipt.class-invalid",
+      "type: receipt",
+      "title: Fixture Receipt Class Invalid",
+      "version: 0.1.0",
+      "work_order_id: order.fixture",
+      "receipt_status: recorded",
+      "outcome: success",
+      "redaction_policy: refs_and_hashes_only",
+      "redaction_class: Secret Class",
+      "proof_refs: []",
+      "attestation_refs: []",
+      "evidence_hashes: []",
+      "input_hashes: []",
+      "output_hashes: []",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [order.fixture]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-06-06",
+      "updated: 2026-06-06",
+      "---",
+      "# Outcome",
+      "",
+      "Fixture invalid redaction class.",
+    ].join("\n")
+  );
+
+  const output = captureThrownOutput(() => runValidateCommand({ root, json: true }));
+  const receipt = JSON.parse(output.stdout);
+
+  assert.match(String(output.error), /validation failed/);
+  assert.equal(output.stderr, "");
+  assert.equal(receipt.ok, false);
+  assert.ok(
+    receipt.errors.some((error: string) => error.includes("contract-profile.invalid"))
+  );
+  assert.ok(receipt.errors.some((error: string) => error.includes("receipt-kind.invalid")));
+  assert.ok(receipt.errors.some((error: string) => error.includes("redaction-class.invalid")));
 });
 
 test("validate accepts repos with no SPEC files and capability list reports zero specs", () => {
@@ -1596,4 +1852,129 @@ test("new command scaffolds agent workflow work files with dependency refs", () 
   assert.equal(index.nodes["root:work-1"].type, "work");
   assert.equal(index.nodes["root:work-1"].path, ".mdkg/work/work-1-image-generation/WORK.md");
   assert.deepEqual(index.nodes["root:work-1"].attributes.skill_refs, []);
+});
+
+test("new command scaffolds contract profile metadata for workflow file types", () => {
+  const root = makeTempDir("mdkg-agent-new-contract-profile-");
+  setupWorkspace(root);
+
+  runNewCommand({
+    root,
+    type: "manifest",
+    title: "Profile Worker",
+    id: "agent.profile-worker",
+    contractProfile: "omni-room",
+    validationPolicyRef: "policy.validation",
+    evidencePolicyRef: "policy.evidence",
+    now: new Date("2026-03-11T00:00:00Z"),
+  });
+  runNewCommand({
+    root,
+    type: "work",
+    title: "Profile Work",
+    id: "work.example",
+    contractProfile: "omni-room",
+    now: new Date("2026-03-11T00:00:00Z"),
+  });
+  runNewCommand({
+    root,
+    type: "work_order",
+    title: "Profile Order",
+    id: "order.example",
+    contractProfile: "omni-room",
+    validationPolicyRef: "policy.validation",
+    evidencePolicyRef: "policy.evidence",
+    now: new Date("2026-03-11T00:00:00Z"),
+  });
+  runNewCommand({
+    root,
+    type: "receipt",
+    title: "Profile Receipt",
+    id: "receipt.example",
+    contractProfile: "omni-room",
+    receiptKind: "final",
+    redactionClass: "public",
+    validationPolicyRef: "policy.validation",
+    evidencePolicyRef: "policy.evidence",
+    now: new Date("2026-03-11T00:00:00Z"),
+  });
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true, profile: "omni-room" }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.nodes["root:agent.profile-worker"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:agent.profile-worker"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:agent.profile-worker"].attributes.evidence_policy_ref, "policy.evidence");
+  assert.equal(index.nodes["root:work.example"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:order.example"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:order.example"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:order.example"].attributes.evidence_policy_ref, "policy.evidence");
+  assert.equal(index.nodes["root:receipt.example"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:receipt.example"].attributes.receipt_kind, "final");
+  assert.equal(index.nodes["root:receipt.example"].attributes.redaction_class, "public");
+  assert.equal(index.nodes["root:receipt.example"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:receipt.example"].attributes.evidence_policy_ref, "policy.evidence");
+});
+
+test("work helper new commands scaffold contract profile metadata", () => {
+  const root = makeTempDir("mdkg-agent-work-helper-contract-profile-");
+  setupWorkspace(root);
+  writeManifestWithKind(root, "agent", "agent.helper-worker");
+
+  captureOutput(() =>
+    runWorkContractNewCommand({
+      root,
+      title: "Helper Work",
+      id: "work.helper",
+      agentId: "agent.helper-worker",
+      kind: "helper",
+      inputs: "request:text:required",
+      outputs: "result:text:required",
+      contractProfile: "omni-room",
+      json: true,
+    })
+  );
+  captureOutput(() =>
+    runWorkOrderNewCommand({
+      root,
+      title: "Helper Order",
+      id: "order.helper",
+      workId: "work.helper",
+      requester: "user.example",
+      contractProfile: "omni-room",
+      validationPolicyRef: "policy.validation",
+      evidencePolicyRef: "policy.evidence",
+      json: true,
+    })
+  );
+  captureOutput(() =>
+    runWorkReceiptNewCommand({
+      root,
+      title: "Helper Receipt",
+      id: "receipt.helper",
+      workOrderId: "order.helper",
+      outcome: "success",
+      contractProfile: "omni-room",
+      receiptKind: "worker",
+      redactionClass: "internal",
+      validationPolicyRef: "policy.validation",
+      evidencePolicyRef: "policy.evidence",
+      json: true,
+    })
+  );
+
+  silenceErrors(() => runValidateCommand({ root, quiet: true, profile: "omni-room" }));
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+  assert.equal(index.nodes["root:work.helper"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:order.helper"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:order.helper"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:order.helper"].attributes.evidence_policy_ref, "policy.evidence");
+  assert.equal(index.nodes["root:receipt.helper"].attributes.contract_profile, "omni-room");
+  assert.equal(index.nodes["root:receipt.helper"].attributes.receipt_kind, "worker");
+  assert.equal(index.nodes["root:receipt.helper"].attributes.redaction_class, "internal");
+  assert.equal(index.nodes["root:receipt.helper"].attributes.validation_policy_ref, "policy.validation");
+  assert.equal(index.nodes["root:receipt.helper"].attributes.evidence_policy_ref, "policy.evidence");
 });

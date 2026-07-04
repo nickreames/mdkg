@@ -2,7 +2,7 @@
 id: task-644
 type: task
 title: close 0.4.1 contract-profile implementation readiness proof
-status: todo
+status: done
 priority: 1
 parent: goal-49
 tags: [0.4.1, contract-profile, readiness, closeout]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 

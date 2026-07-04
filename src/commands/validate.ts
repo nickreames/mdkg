@@ -8,6 +8,9 @@ import { Index, IndexNode } from "../graph/indexer";
 import {
   CANONICAL_MANIFEST_BASENAME,
   LEGACY_SPEC_BASENAME,
+  KNOWN_CONTRACT_PROFILES,
+  KNOWN_RECEIPT_KINDS,
+  KNOWN_REDACTION_CLASSES,
   collectManifestSiblingConflicts,
   isAgentFileType,
 } from "../graph/agent_file_types";
@@ -17,7 +20,7 @@ import { collectGraphErrors } from "../graph/validate_graph";
 import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
 import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
-import { ValidationError } from "../util/errors";
+import { UsageError, ValidationError } from "../util/errors";
 import { auditSkillMirrors } from "./skill_mirror";
 
 export type ValidateCommandOptions = {
@@ -29,6 +32,7 @@ export type ValidateCommandOptions = {
   changedOnly?: boolean;
   summary?: boolean;
   limit?: number;
+  profile?: string;
 };
 
 export type ValidateWarningDiagnostic = {
@@ -71,6 +75,7 @@ export type ValidateReceipt = {
   warning_diagnostics: ValidateWarningDiagnostic[];
   warning_summary: ValidateWarningSummary;
   errors: string[];
+  validation_profile?: string;
   report_path?: string;
   json_receipt_path?: string;
   warning_filter?: {
@@ -78,6 +83,8 @@ export type ValidateReceipt = {
     changed_paths: string[];
   };
 };
+
+const VALIDATION_PROFILES = new Set(["omni-room"]);
 
 type HeadingMap = Record<string, string[]>;
 
@@ -216,6 +223,96 @@ function collectManifestCompatibilityWarnings(
   return [];
 }
 
+function collectContractProfileWarnings(qid: string, node: ReturnType<typeof parseNode>): string[] {
+  if (!isAgentFileType(node.type)) {
+    return [];
+  }
+  const warnings: string[] = [];
+  if (node.frontmatter.profile !== undefined) {
+    warnings.push(
+      `${qid}: contract-profile.ambiguous-field warning: profile is ambiguous and is not a supported alias; use contract_profile for mdkg contract surfaces`
+    );
+  }
+  const contractProfile = node.frontmatter.contract_profile;
+  if (typeof contractProfile === "string" && !KNOWN_CONTRACT_PROFILES.has(contractProfile)) {
+    warnings.push(
+      `${qid}: contract-profile.unknown warning: unknown contract_profile ${contractProfile}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+    );
+  }
+  if (node.type === "receipt") {
+    const receiptKind = node.frontmatter.receipt_kind;
+    if (typeof receiptKind === "string" && !KNOWN_RECEIPT_KINDS.has(receiptKind)) {
+      warnings.push(
+        `${qid}: receipt-kind.unknown warning: unknown receipt_kind ${receiptKind}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+      );
+    }
+    const redactionClass = node.frontmatter.redaction_class;
+    if (typeof redactionClass === "string" && !KNOWN_REDACTION_CLASSES.has(redactionClass)) {
+      warnings.push(
+        `${qid}: redaction-class.unknown warning: unknown redaction_class ${redactionClass}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+      );
+    }
+    if (typeof redactionClass === "string" && node.frontmatter.redaction_policy === undefined) {
+      warnings.push(
+        `${qid}: redaction-class.missing-policy warning: redaction_class should be paired with redaction_policy so receipt handling and sensitivity are both explicit`
+      );
+    }
+  }
+  return warnings;
+}
+
+function normalizeValidationProfile(profile?: string): string | undefined {
+  if (profile === undefined) {
+    return undefined;
+  }
+  if (!VALIDATION_PROFILES.has(profile)) {
+    throw new UsageError("--profile must be one of omni-room");
+  }
+  return profile;
+}
+
+function collectContractProfileErrors(
+  qid: string,
+  node: ReturnType<typeof parseNode>,
+  profile: string
+): string[] {
+  if (!isAgentFileType(node.type)) {
+    return [];
+  }
+  const errors: string[] = [];
+  if (node.frontmatter.profile !== undefined) {
+    errors.push(
+      `${qid}: contract-profile.ambiguous-field error: profile is ambiguous and is not a supported alias; use contract_profile for ${profile} validation`
+    );
+  }
+  const contractProfile = node.frontmatter.contract_profile;
+  if (typeof contractProfile === "string" && contractProfile !== profile) {
+    errors.push(
+      `${qid}: contract-profile.incompatible error: contract_profile ${contractProfile} is incompatible with validation profile ${profile}`
+    );
+  }
+  if (node.type === "receipt") {
+    const receiptKind = node.frontmatter.receipt_kind;
+    if (typeof receiptKind === "string" && !KNOWN_RECEIPT_KINDS.has(receiptKind)) {
+      errors.push(
+        `${qid}: receipt-kind.incompatible error: receipt_kind ${receiptKind} is incompatible with validation profile ${profile}`
+      );
+    }
+    const redactionClass = node.frontmatter.redaction_class;
+    if (typeof redactionClass === "string" && !KNOWN_REDACTION_CLASSES.has(redactionClass)) {
+      errors.push(
+        `${qid}: redaction-class.incompatible error: redaction_class ${redactionClass} is incompatible with validation profile ${profile}`
+      );
+    }
+    if (typeof redactionClass === "string" && node.frontmatter.redaction_policy === undefined) {
+      errors.push(
+        `${qid}: redaction-class.missing-policy error: redaction_class requires redaction_policy for validation profile ${profile}`
+      );
+    }
+  }
+  return errors;
+}
+
 function collectChangedPaths(root: string): Set<string> {
   const result = spawnSync("git", ["-C", root, "status", "--porcelain", "--", ".mdkg"], {
     encoding: "utf8",
@@ -308,6 +405,20 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       path: pathValue,
       ref: qid,
       remediation: "Rename legacy SPEC.md files to MANIFEST.md and update transitional type: spec frontmatter to type: manifest before the compatibility release closes.",
+    };
+  }
+  const contractProfileMatch = /(contract-profile|receipt-kind|redaction-class)\.([a-z-]+)/.exec(message);
+  if (contractProfileMatch) {
+    return {
+      id: `${contractProfileMatch[1]}.${contractProfileMatch[2]}`,
+      category: "contract-profile",
+      severity: "warning",
+      message,
+      qid,
+      node_type: nodeType,
+      path: pathValue,
+      ref: qid,
+      remediation: "Use contract_profile and explicit policy/kind/class fields only when they are intentional generic mdkg contract metadata.",
     };
   }
   if (message.includes("sqlite") || message.includes("index")) {
@@ -595,6 +706,7 @@ function validateEventsJsonl(
 }
 
 export function collectValidateReceipt(options: ValidateCommandOptions): ValidateReceipt {
+  const validationProfile = normalizeValidationProfile(options.profile);
   const config = loadConfig(options.root);
   const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
   const templateSchemas = templateSchemaInfo.schemas;
@@ -665,6 +777,10 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
         }
         warnings.push(...collectRawContentWarnings(qid, node));
         warnings.push(...collectManifestCompatibilityWarnings(qid, filePath, node));
+        warnings.push(...collectContractProfileWarnings(qid, node));
+        if (validationProfile) {
+          errors.push(...collectContractProfileErrors(qid, node, validationProfile));
+        }
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(message);
@@ -776,6 +892,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
     warning_diagnostics: filteredWarningDiagnostics,
     warning_summary: buildWarningSummary(filteredWarningDiagnostics),
     errors: uniqueErrors,
+    ...(validationProfile ? { validation_profile: validationProfile } : {}),
     ...(outPath ? { report_path: outPath } : {}),
     ...(options.changedOnly
       ? { warning_filter: { mode: "changed-only" as const, changed_paths: Array.from(changedPaths).sort() } }

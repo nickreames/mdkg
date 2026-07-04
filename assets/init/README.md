@@ -80,8 +80,9 @@ intentionally with `mdkg new task ...` or `mdkg new test ...`.
 Agent workflow docs can use semantic ids:
 
 ```bash
-mdkg new manifest "image worker" --id agent.image-worker
-mdkg new work "generate image" --id work.generate-image
+mdkg new manifest "image worker" --id agent.image-worker --contract-profile generic
+mdkg new work "generate image" --id work.generate-image --contract-profile generic
+mdkg work validate --profile omni-room --json
 ```
 
 `MANIFEST.md` is optional. Repos without manifest files still validate. When
@@ -91,6 +92,14 @@ release, and `mdkg spec list/show/validate` remains a deprecated alias for
 `mdkg manifest list/show/validate`. `mdkg capability ...` remains the broader
 read-only discovery surface for skills, manifests, WORK contracts, core docs,
 and design docs.
+
+Agent workflow files may include optional generic mirror fields such as
+`contract_profile`, `validation_policy_ref`, `evidence_policy_ref`,
+`receipt_kind`, and `redaction_class`. mdkg validates those mirrors and can run
+profile checks such as `mdkg validate --profile omni-room` and
+`mdkg work validate --profile omni-room`; downstream runtimes still own queue
+execution, room ids, provider state, billing or ledger state, and final receipt
+authority.
 
 Read `AGENT_START.md` first when this repo includes it.
 
@@ -229,10 +238,10 @@ mdkg archive verify archive://archive.example
 Use work lifecycle helpers for semantic mirrors only:
 
 ```bash
-mdkg work contract new "example capability" --id work.example --agent-id agent.example --kind example --inputs prompt:text:required --outputs result:text:required
+mdkg work contract new "example capability" --id work.example --agent-id agent.example --kind example --contract-profile generic --inputs prompt:text:required --outputs result:text:required
 mdkg work trigger work.example --id order.example-1 --requester user://example
 mdkg work order status order.example-1 --json
-mdkg work receipt new "example receipt" --id receipt.example-1 --work-order-id order.example-1 --outcome success
+mdkg work receipt new "example receipt" --id receipt.example-1 --work-order-id order.example-1 --outcome success --contract-profile generic --receipt-kind worker --redaction-class internal
 mdkg work receipt verify receipt.example-1 --json
 ```
 
@@ -249,7 +258,7 @@ Update and artifact commands accept local ids or local qids; subgraph qids are r
 `mdkg work trigger` creates a deterministic submitted `WORK_ORDER.md` from a
 WORK contract or a SPEC with exactly one resolvable work contract. `mdkg work
 order status` and `mdkg work receipt verify` are read-only review helpers.
-`mdkg work validate [<id-or-qid>] [--type spec|work|work_order|receipt|feedback|dispute|proposal] --json`
+`mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile omni-room] --json`
 is a read-only focused validator for agent workflow mirrors with typed diagnostics
 and raw secret, prompt, token, or payload marker warnings.
 `mdkg work trigger --enqueue <queue>` optionally writes a local project DB queue
