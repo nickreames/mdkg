@@ -256,7 +256,7 @@ export function collectManifestSiblingConflicts(
   for (const [dirPath, basenames] of Array.from(basenamesByDir.entries()).sort()) {
     if (basenames.has(CANONICAL_MANIFEST_BASENAME) && basenames.has(LEGACY_SPEC_BASENAME)) {
       conflicts.push(
-        `${formatDir(dirPath)}: MANIFEST.md and SPEC.md cannot both exist in the same logical Omni unit; keep MANIFEST.md and remove the legacy SPEC.md alias`
+        `${formatDir(dirPath)}: MANIFEST.md and SPEC.md cannot both exist in the same logical unit; keep MANIFEST.md and remove the legacy SPEC.md alias`
       );
     }
   }

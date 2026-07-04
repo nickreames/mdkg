@@ -868,14 +868,14 @@ test("validate rejects sibling MANIFEST and SPEC files in one logical unit", () 
   assert.ok(
     receipt.errors.some((error: string) =>
       error.includes(".mdkg/work/agent-duplicate") &&
-      error.includes("MANIFEST.md and SPEC.md cannot both exist")
+      error.includes("MANIFEST.md and SPEC.md cannot both exist in the same logical unit")
     )
   );
 
   const config = loadConfig(root);
   assert.throws(
     () => buildIndex(root, config),
-    /MANIFEST\.md and SPEC\.md cannot both exist/
+    /MANIFEST\.md and SPEC\.md cannot both exist in the same logical unit/
   );
 });
 

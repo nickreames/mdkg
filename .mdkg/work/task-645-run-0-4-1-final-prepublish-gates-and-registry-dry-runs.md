@@ -2,7 +2,7 @@
 id: task-645
 type: task
 title: run 0.4.1 final prepublish gates and registry dry-runs
-status: blocked
+status: done
 priority: 1
 parent: goal-50
 tags: [0.4.1, npm, prepublish, registry, dry-run]
@@ -10,7 +10,7 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [test-335, test-337]
+blocked_by: []
 blocks: [task-646]
 refs: [goal-49, test-335, test-337, task-636, task-649]
 context_refs: []
