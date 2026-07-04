@@ -1,11 +1,11 @@
 ---
 id: task-648
 type: task
-title: prepare downstream Omni Room contract-profile handoff
+title: prepare downstream-private contract-profile consumer handoff
 status: blocked
 priority: 1
 parent: goal-50
-tags: [0.4.1, omni-room, handoff, consumer-boundary]
+tags: [0.4.1, handoff, consumer-boundary, downstream-private]
 owners: []
 links: []
 artifacts: []
@@ -18,21 +18,24 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 
-Prepare a downstream Omni Room handoff that cites the actual released package
-version and post-publish evidence without mutating downstream repos.
+Prepare a downstream-private consumer handoff that cites the actual released
+package version and post-publish evidence without mutating downstream repos or
+making consumer-specific runtime policy part of mdkg public behavior.
 
 # Acceptance Criteria
 
 - Handoff cites `mdkg@0.4.1`, npm registry/dist-tag evidence, temp install
   evidence, workflow probes, and upgrade probes.
 - Handoff states what is now stable generic mdkg behavior and what remains
-  Omni Room runtime-owned.
+  downstream runtime-owned.
+- If a downstream consumer is product-specific, the handoff names it only as
+  downstream-private context, not mdkg public feature branding.
 - Handoff does not hardcode unreleased fields or require local source behavior.
-- No downstream Omni Room, root, sandbox, backend, deploy, provider, or DNS
+- No downstream consumer, root, sandbox, backend, deploy, provider, or DNS
   mutation occurs.
 
 # Files Affected

@@ -43,8 +43,9 @@ scaffold or release readiness is accepted.
 - Malformed fields error.
 - Unknown well-shaped profiles, receipt kinds, and redaction classes warn in
   generic mode.
-- `--profile omni-room` escalates unknown or incompatible values according to
-  the implemented allowlist.
+- Profile validation escalates unknown or incompatible values according to the
+  implemented allowlist without making fixture profile names public mdkg
+  primitives.
 - Bare `profile` is diagnosed as ambiguous and is not treated as an alias.
 - Raw-content and runtime-only field diagnostics do not expose raw content.
 

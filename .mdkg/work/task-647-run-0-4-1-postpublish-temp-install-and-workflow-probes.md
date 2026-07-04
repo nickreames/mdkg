@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 
@@ -31,8 +31,8 @@ global install.
 - Dist-tags show `latest` as `0.4.1`.
 - A clean temp global install of `mdkg@latest` reports version `0.4.1`.
 - Fresh temp workspace probes validate init, workflow-file creation with
-  accepted fields, `mdkg validate --profile omni-room`, `mdkg work validate
-  --profile omni-room`, helper commands, and upgrade behavior.
+  accepted fields, generic profile validation, work helper validation, helper
+  commands, and upgrade behavior.
 - No raw secrets or runtime payloads appear in generated probes or evidence.
 
 # Files Affected
@@ -55,7 +55,8 @@ global install.
 - temp `mdkg init --agent`
 - temp `mdkg validate --json`
 - temp `mdkg new manifest|work|work_order|receipt` probes
-- temp `mdkg work validate --profile omni-room --json`
+- temp generic `mdkg validate --profile <accepted-fixture-profile> --json`
+- temp generic `mdkg work validate --profile <accepted-fixture-profile> --json`
 - temp `mdkg upgrade --dry-run --json`
 
 # Links / Artifacts

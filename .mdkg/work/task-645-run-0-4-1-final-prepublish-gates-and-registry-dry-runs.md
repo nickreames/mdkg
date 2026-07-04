@@ -10,15 +10,15 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [test-335]
+blocked_by: [test-335, test-337]
 blocks: [task-646]
-refs: [goal-49, test-335, task-636]
+refs: [goal-49, test-335, test-337, task-636, task-649]
 context_refs: []
 evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-02
+updated: 2026-07-03
 ---
 # Overview
 
@@ -28,8 +28,11 @@ Run final local, registry, npm pack, and npm publish dry-run gates for
 # Acceptance Criteria
 
 - `test-335` is done and records implementation publish-readiness.
+- `test-337` is done and records that publish-bound public naming is generic.
 - Git freshness, ahead commits, release diff, package version, changelog, docs,
   generated references, and package metadata are audited.
+- Public package/docs/readiness claims do not present downstream product names
+  or runtime policy as mdkg public behavior.
 - Full prepublish suite passes or exact gaps are recorded.
 - Registry latest is below `0.4.1` and `mdkg@0.4.1` is unpublished.
 - Npm pack dry-run and publish dry-run pass with isolated cache.
@@ -52,6 +55,7 @@ Run final local, registry, npm pack, and npm publish dry-run gates for
 - `git status --short --branch`
 - `git log --oneline origin/main..HEAD`
 - `git diff --name-status origin/main..HEAD`
+- targeted public naming audit from `test-337`
 - `npm ci`
 - full package/docs/CLI/smoke gate suite
 - `npm view mdkg version --registry=https://registry.npmjs.org/`
@@ -62,4 +66,5 @@ Run final local, registry, npm pack, and npm publish dry-run gates for
 # Links / Artifacts
 
 - `test-335`
+- `test-337`
 - `task-636`
