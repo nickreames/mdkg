@@ -2,11 +2,12 @@
 id: goal-51
 type: goal
 title: plan generic remote Git project-memory primitives
-status: blocked
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: Generic mdkg remote Git/project-memory primitive planning is ready when mdkg-owned capabilities for remote repository descriptors, authenticated Git access refs, .mdkg graph discovery, accepted revision evidence, history/why/next-work queries, and agent working-loop primitives are specified with generic public names, product-specific runtime policy is assigned to downstream consumers, credential and raw payload storage is forbidden, and follow-up implementation/release gates are explicit.
 scope_refs: [task-650, test-338]
+last_active_node: task-650
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, mdkg status --json, targeted generic public naming audit over successor remote Git/project-memory nodes, mdkg index, mdkg validate --changed-only --json, mdkg validate --summary --limit 20 --json, git diff --check]
 max_iterations: 25
@@ -17,9 +18,9 @@ links: []
 artifacts: []
 relates: []
 blocked_by: []
-blocks: []
-refs: [goal-48, goal-50, task-649, test-337]
-context_refs: []
+blocks: [goal-52]
+refs: [goal-48, goal-50, task-649, test-337, task-650, test-338, dec-61, dec-62, edd-62, edd-63, goal-52]
+context_refs: [dec-61, dec-62, edd-62, edd-63, goal-52]
 evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context, service-boundary-ownership-check, verify-close-and-checkpoint]
@@ -132,4 +133,19 @@ publish lane and does not block approval-gated `task-646`.
 
 # Completion Evidence
 
-- Pending.
+- `task-650` done with `chk-356`, defining generic remote source descriptors,
+  accepted revision evidence, refs-only authenticated Git access, graph
+  discovery, history/why/next-work queries, and generic agent working-loop
+  primitives.
+- `test-338` done with `chk-357`, proving the successor lane uses generic
+  public names, forbids credential/raw-payload storage, keeps downstream
+  runtime policy consumer-owned, and routes implementation/release work to
+  `goal-52`.
+- Durable design records created: `dec-61`, `dec-62`, `edd-62`, and `edd-63`.
+- Required checks run: `git status --short --branch`, `mdkg status --json`,
+  targeted public naming/credential-safety audit, `mdkg index`,
+  `mdkg validate --changed-only --json`, `mdkg validate --summary --limit 20
+  --json`, and `git diff --check`.
+- No TypeScript/source, package metadata, public docs, generated docs, default
+  templates, init assets, dist, publish, tag, push, deploy, provider, root
+  bundle, or downstream repo mutation occurred.

@@ -2,9 +2,9 @@
 id: goal-50
 type: goal
 title: Publish mdkg 0.4.1 contract-profile support and validate consumers
-status: progress
+status: blocked
 priority: 1
-goal_state: active
+goal_state: paused
 goal_condition: mdkg 0.4.1 contract-profile support is published only after explicit approval, npm registry state and dry-runs prove readiness, a strict public naming audit confirms publish-bound mdkg claims are generic, post-publish temp install and workflow probes pass, and any downstream-private consumer handoff cites the actual published version and evidence without making product-specific runtime policy part of mdkg public behavior.
 scope_refs: [task-649, test-337, task-645, task-646, task-647, task-648, test-336]
 active_node: task-646
@@ -17,7 +17,7 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [test-337]
+blocked_by: [task-646]
 blocks: []
 refs: [goal-49, goal-48, goal-51, task-635, task-636, task-649, test-332, test-337]
 context_refs: [goal-51, task-650, test-338]
