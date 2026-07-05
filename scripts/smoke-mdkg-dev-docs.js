@@ -268,6 +268,23 @@ function main() {
   assert(generated.includes("## status"), "generated CLI reference missing status command");
   assert(generated.includes("## handoff"), "generated CLI reference missing handoff command");
   assert(generated.includes("mdkg handoff create <id-or-qid>"), "generated CLI reference missing handoff create usage");
+  assert(generated.includes("## git"), "generated CLI reference missing git command family");
+  assert(generated.includes("mdkg git push-ready --remote <name> --branch <name>"), "generated CLI reference missing git push-ready usage");
+  assert(generated.includes("external auth"), "generated CLI reference missing git auth boundary");
+
+  const generatedReferenceSource = readText(path.join(docs, "src", "content", "docs", "reference", "generated-cli-reference.md"));
+  for (const snippet of [
+    "## Git lifecycle commands",
+    "mdkg git inspect --json",
+    "mdkg git clone <repository-ref>",
+    "mdkg git fetch --remote origin --branch main --json",
+    "mdkg git closeout --json",
+    "mdkg git push-ready --remote origin --branch main --json",
+    "mdkg git push --remote origin --branch main --stage-all",
+    "authentication stays external",
+  ]) {
+    assert(generatedReferenceSource.includes(snippet), `public generated CLI reference missing git lifecycle snippet: ${snippet}`);
+  }
 
   const summaryJson = JSON.parse(readText(path.join(docs, "_generated", "command-contract-summary.json")));
   assert(summaryJson.command_count >= 90, "generated command summary has too few commands");

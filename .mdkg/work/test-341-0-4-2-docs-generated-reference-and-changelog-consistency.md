@@ -2,7 +2,7 @@
 id: test-341
 type: test
 title: 0.4.2 docs generated reference and changelog consistency
-status: todo
+status: progress
 priority: 1
 parent: goal-54
 tags: [docs, generated-cli-reference, changelog, 0.4.2]
@@ -59,13 +59,29 @@ Document environment, data, and setup requirements.
 
 Record outcomes and link evidence in `artifacts` or `links`.
 
-- Pending implementation.
-- Known post-publish gap: live generated CLI reference fetched to
-  `/private/tmp/mdkg-live-docs-cli-reference-postpublish.html` omitted `mdkg git`
-  and `push-ready` markers on 2026-07-05.
+- 2026-07-05 local source check passed:
+  `CHANGELOG.md`, `CLI_COMMAND_MATRIX.md`, `README.md`,
+  `docs/src/content/docs/project/changelog.md`, and
+  `docs/src/content/docs/reference/generated-cli-reference.md` include the
+  expected `0.4.2`, `mdkg git`, `push-ready`, and closeout markers.
+- 2026-07-05 local rendered docs check passed:
+  `docs/dist/reference/generated-cli-reference/index.html` includes
+  `Git lifecycle commands`, `mdkg git inspect`, `mdkg git closeout`, and
+  `mdkg git push-ready`.
+- 2026-07-05 live `mdkg.dev` check passed:
+  `/private/tmp/mdkg-live-home-goal54.html` includes
+  `softwareVersion":"0.4.2"` and the `Git closeout` card.
+- 2026-07-05 live docs changelog check passed:
+  `/private/tmp/mdkg-live-docs-changelog-goal54.html` includes `0.4.2`,
+  `mdkg git`, `push-ready`, and closeout content.
+- 2026-07-05 live generated CLI reference check failed as expected before
+  push/deploy:
+  `/private/tmp/mdkg-live-docs-cli-reference-goal54.html` does not include
+  `Git lifecycle commands`, `mdkg git`, `push-ready`, or closeout markers.
 
 # Notes / Follow-ups
 
-- If this test finds the generated CLI reference can drift from
-  `CLI_COMMAND_MATRIX.md`, harden docs automation or SKILL.md closeout guidance
-  so new CLI command families cannot ship without generated docs coverage.
+- Drift hardening was added in `scripts/smoke-mdkg-dev-docs.js` for the public
+  route source and generated backing reference.
+- Remaining work: push/deploy the docs source change after explicit approval,
+  then rerun live generated-reference verification.
