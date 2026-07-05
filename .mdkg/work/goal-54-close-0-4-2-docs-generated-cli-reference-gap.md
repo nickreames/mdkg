@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Close 0.4.2 docs generated CLI reference gap
 scope_refs: []
-active_node: test-341
+active_node: task-661
 required_skills: []
 required_checks: []
 max_iterations: 25
