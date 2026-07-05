@@ -2,7 +2,7 @@
 id: task-658
 type: task
 title: verify live docs and mdkg.dev 0.4.2 currentness
-status: todo
+status: done
 priority: 2
 parent: goal-54
 tags: [docs, mdkg-dev, live-validation, 0.4.2, browser, vercel]
@@ -68,3 +68,23 @@ List files/directories expected to change.
 - `/private/tmp/mdkg-live-home-postpublish.html`
 - `/private/tmp/mdkg-live-docs-changelog-postpublish.html`
 - `/private/tmp/mdkg-live-docs-cli-reference-postpublish.html`
+- `/private/tmp/mdkg-live-home-after-mdkg-git-push-closeout.html`
+- `/private/tmp/mdkg-live-docs-changelog-after-mdkg-git-push-closeout.html`
+- `/private/tmp/mdkg-live-docs-cli-reference-after-mdkg-git-push-closeout.html`
+
+# Verification Evidence
+
+2026-07-05 live read-only checks after the real `mdkg git push` passed:
+
+- `https://mdkg.dev/` reports `softwareVersion":"0.4.2"` in structured data
+  and includes `0.4.2 launch track`, `Git closeout`, and
+  `mdkg git push-ready`.
+- `https://docs.mdkg.dev/project/changelog/` includes the `0.4.2` release card
+  and details for `mdkg git`, `push-ready`, and closeout receipts.
+- `https://docs.mdkg.dev/reference/generated-cli-reference/` includes the new
+  `Git lifecycle commands` section, `mdkg git inspect --json`,
+  `mdkg git closeout --json`,
+  `mdkg git push-ready --remote origin --branch main --json`,
+  `authentication stays external`, and `system Git`.
+
+The original stale generated CLI reference gap is closed.

@@ -2,7 +2,7 @@
 id: test-341
 type: test
 title: 0.4.2 docs generated reference and changelog consistency
-status: progress
+status: done
 priority: 1
 parent: goal-54
 tags: [docs, generated-cli-reference, changelog, 0.4.2]
@@ -86,10 +86,18 @@ Record outcomes and link evidence in `artifacts` or `links`.
   `/private/tmp/mdkg-live-docs-cli-reference-goal54-refresh.html` still omits
   `Git lifecycle commands`, `mdkg git`, `push-ready`, and closeout markers
   because the local docs commit has not been pushed/deployed.
+- 2026-07-05 live checks passed after the real `mdkg git push` to
+  `origin/main` at `01afd36804f1810d9de79d66af20574325351a5f`.
+  `https://docs.mdkg.dev/reference/generated-cli-reference/` now includes
+  `Git lifecycle commands`, `mdkg git inspect --json`,
+  `mdkg git closeout --json`,
+  `mdkg git push-ready --remote origin --branch main --json`,
+  `authentication stays external`, and `system Git`; the changelog and homepage
+  remain aligned to `0.4.2`.
 
 # Notes / Follow-ups
 
 - Drift hardening was added in `scripts/smoke-mdkg-dev-docs.js` for the public
   route source and generated backing reference.
-- Remaining work: push/deploy the docs source change after explicit approval,
-  then rerun live generated-reference verification.
+- No remaining generated-reference consistency gap is known after the real
+  push/deploy/live verification cycle.

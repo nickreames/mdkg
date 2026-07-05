@@ -2,7 +2,7 @@
 id: task-661
 type: task
 title: prove real mdkg git origin push for goal-54
-status: progress
+status: done
 priority: 0
 parent: goal-54
 tags: [git, origin, push, goal-54, docs, live-validation]
@@ -85,3 +85,27 @@ List files/directories expected to change.
   `.mdkg/db/state/project.sqlite`, manifest `.mdkg/db/state/project.manifest.json`,
   and deterministic dump
   `.mdkg/git/closeouts/goal-54-real-origin-proof/project-db.dump.md`.
+- `mdkg git closeout --output /private/tmp/mdkg-goal54-real-origin-closeout --json`
+  failed with the expected boundary error: closeout output must stay inside the
+  repository.
+- `mdkg git push-ready --remote origin --branch main --json` passed at
+  `01afd36804f1810d9de79d66af20574325351a5f` with a clean worktree,
+  validation ok, valid DB snapshot status, explicit remote/branch checks, and
+  zero warnings/failures.
+- `mdkg git push --remote origin --branch main --json` pushed
+  `HEAD -> main` to real `git@github.com:nickreames/mdkg.git` with external Git
+  auth, no staged changes, no generated commit, and embedded push-readiness ok.
+- Post-push `git status --short --branch` reported `## main...origin/main`, and
+  both `HEAD` and `origin/main` resolved to
+  `01afd36804f1810d9de79d66af20574325351a5f`.
+- Fresh live read-only fetches after the real push:
+  - `/private/tmp/mdkg-live-docs-cli-reference-after-mdkg-git-push-closeout.html`
+    contains `Git lifecycle commands`, `mdkg git inspect --json`,
+    `mdkg git closeout --json`,
+    `mdkg git push-ready --remote origin --branch main --json`,
+    `authentication stays external`, and `system Git`.
+  - `/private/tmp/mdkg-live-docs-changelog-after-mdkg-git-push-closeout.html`
+    contains `0.4.2`, `mdkg git`, `push-ready`, and closeout details.
+  - `/private/tmp/mdkg-live-home-after-mdkg-git-push-closeout.html` contains
+    `softwareVersion":"0.4.2"`, `0.4.2 launch track`, `Git closeout`, and
+    `mdkg git push-ready`.
