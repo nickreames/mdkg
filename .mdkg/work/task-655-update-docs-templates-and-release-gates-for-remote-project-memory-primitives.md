@@ -2,7 +2,7 @@
 id: task-655
 type: task
 title: update docs templates and release gates for remote project-memory primitives
-status: todo
+status: done
 priority: 1
 parent: goal-52
 tags: [remote-git, docs, templates, release-gates, credential-safety]

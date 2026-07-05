@@ -70,6 +70,23 @@ mdkg handoff create WORK_ID
 
 Required checks in a goal are not executed automatically. Treat them as the checklist a human or agent must run, then record the evidence in a checkpoint, task note, or handoff.
 
+## Git closeout
+
+When an agent run is ready to become a Git checkpoint, keep the closeout
+explicit:
+
+```bash
+mdkg validate
+mdkg git closeout --json
+mdkg git push-ready --remote origin --branch main --json
+```
+
+`mdkg git closeout` writes static JSON/Markdown receipts and seals DB snapshot
+evidence when project DB state participated. `mdkg git push-ready` is read-only
+and checks the explicit remote, branch, clean worktree, validation state, DB
+snapshot state, and credential boundary. Run `mdkg git push ...` only when a
+human or runtime has explicitly approved a real remote push.
+
 ## First principle
 
 Use mdkg to make work state explicit. Let the repository, not a chat transcript, carry the durable plan, context, evidence, and closeout.

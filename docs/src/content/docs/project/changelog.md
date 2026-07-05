@@ -11,12 +11,22 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
-Recent release cards cover `0.4.1`, `0.4.0`, and `0.3.9`; earlier milestones
+Recent release cards cover `0.4.2`, `0.4.1`, and `0.4.0`; earlier milestones
 remain listed below for continuity.
 
 <div class="release-grid" aria-label="Recent mdkg release cards">
   <article class="release-card current">
-    <p class="release-meta">Latest public alpha - 2026-07-04 - 6 notes</p>
+    <p class="release-meta">Latest public alpha - 2026-07-05 - 9 notes</p>
+    <h2>0.4.2</h2>
+    <p>Low-level Git remote lifecycle primitives for agent closeout, push-readiness, and explicit remote push workflows.</p>
+    <ul>
+      <li>Expose <code>mdkg git inspect|clone|fetch|closeout|push-ready|push</code> through the system Git CLI.</li>
+      <li>Record sanitized source descriptors, accepted revisions, static closeout receipts, and DB snapshot evidence when project DB state participated.</li>
+      <li>Keep Git auth external and reject embedded URL credentials before writing receipts or pushing.</li>
+    </ul>
+  </article>
+  <article class="release-card">
+    <p class="release-meta">Public alpha - 2026-07-04 - 6 notes</p>
     <h2>0.4.1</h2>
     <p>Generic contract-profile metadata and profile validation for agent workflow mirrors, with runtime execution still owned by downstream systems.</p>
     <ul>
@@ -35,12 +45,36 @@ remain listed below for continuity.
       <li>Preserve explicit approval boundaries for npm publish, git push/tag, Vercel deploy, DNS, and analytics.</li>
     </ul>
   </article>
-  <article class="release-card">
-    <p class="release-meta">Public alpha - 2026-06-27 - 7 notes</p>
-    <h2>0.3.9</h2>
-    <p>Config overlays, configurable skill mirrors, <code>COLLABORATION.md</code>, refreshed first-party skills, and release-note automation.</p>
-  </article>
 </div>
+
+## 0.4.2 details
+
+`0.4.2` adds direct Git lifecycle primitives for repos where an agent run needs
+to clone or fetch source, close out mdkg state, prove push readiness, and push a
+checkpoint after explicit approval.
+
+### Added
+
+- `mdkg git inspect`, `clone`, `fetch`, `closeout`, `push-ready`, and `push`.
+- Sanitized Git source descriptors and accepted-revision receipts with branch,
+  commit SHA, tree hash, and external-auth metadata.
+- Static JSON/Markdown closeout receipts, plus sealed SQLite snapshot and
+  deterministic dump evidence when project DB state participated.
+
+### Changed
+
+- Push readiness requires explicit remote and branch, clean worktree, passing
+  mdkg validation, credential-free remote config, and valid DB snapshot evidence
+  when DB state participated.
+- Git authentication is external to mdkg through system Git, credential
+  helpers, SSH, `gh`, CI/runtime environment, or shell state.
+- Project-memory semantic query UX is deferred to a later CocoIndex-grounded
+  design lane.
+
+### Security
+
+- Repository refs and push remotes with embedded URL credentials are rejected,
+  and inspected remote URLs are redacted before they reach receipts.
 
 ## 0.4.1 details
 

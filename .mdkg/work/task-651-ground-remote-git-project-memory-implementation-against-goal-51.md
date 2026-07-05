@@ -2,7 +2,7 @@
 id: task-651
 type: task
 title: ground remote Git project-memory implementation against goal-51
-status: todo
+status: done
 priority: 1
 parent: goal-52
 tags: [remote-git, project-memory, source-grounding]

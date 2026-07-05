@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-07-03
-package_version_in_source: 0.4.1
+as_of: 2026-07-05
+package_version_in_source: 0.4.2
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -42,6 +42,7 @@ Primary commands:
 - `archive`
 - `bundle`
 - `graph`
+- `git`
 - `subgraph`
 - `work`
 - `goal`
@@ -72,6 +73,7 @@ Reusable manifest capability records are accessed through `mdkg manifest ...`;
 Archive sidecars are accessed through `mdkg archive ...`.
 Full graph snapshot bundles are accessed through `mdkg bundle ...`.
 Whole-graph clone, fork, and same-repo template import workflows are accessed through `mdkg graph ...`.
+Low-level Git remote lifecycle primitives are accessed through `mdkg git ...`.
 Read-only child graph orchestration is accessed through `mdkg subgraph ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 Recursive long-running objective contracts are accessed through `mdkg goal ...`.
@@ -745,6 +747,54 @@ JSON receipts:
 - `fork`: `{ action: "graph.fork", ok, mode, source, target, source_hash, preserved_ids, files_written, skipped_paths, start_goal?, selected_goal?, index, validation, warnings }`
 - `import-template`: `{ action: "graph.import_template", ok, mode, source, source_hash, preserved_ids: false, rewritten_ids, rewritten_refs, planned_paths, files_written, skipped_paths, start_goal?, selected_goal?, activated_goal?, paused_goals, index?, validation?, warnings }`
 - `refs`: `{ action: "graph.refs", ok, target, outgoing, incoming, warnings }`
+
+### `mdkg git`
+
+When to use:
+- inspect the current Git-backed mdkg project and accepted revision evidence
+- clone or fetch real Git remotes through the system Git CLI with external auth
+- close out mdkg state to static receipts before an agent checkpoint commit
+- prove push readiness before any approval-gated real remote push
+
+Usage:
+- `mdkg git inspect [--json]`
+- `mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]`
+- `mdkg git fetch [--remote <name>] [--branch <name>] [--json]`
+- `mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]`
+- `mdkg git push-ready --remote <name> --branch <name> [--json]`
+- `mdkg git push --remote <name> --branch <name> [--json]`
+- `mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]`
+- `mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]`
+
+Flags:
+- `--target <path>`
+- `--branch <name>`
+- `--remote <name>`
+- `--queue-policy drain|paused`
+- `--output <path>`
+- `--stage-all`
+- `--message <text>`
+- `--json`
+
+Notes:
+- `mdkg git` is a low-level lifecycle surface, not project-memory semantic search
+- v1 uses the system Git CLI; authentication stays external through credential helpers, SSH, `gh`, CI/runtime env, or shell state
+- mdkg rejects repository refs and push remotes with embedded URL credentials; inspected remotes with userinfo are redacted before receipts are printed
+- `git inspect` is read-only and emits sanitized source descriptors plus accepted-revision hashes
+- `git clone` writes only to an empty or absent contained `--target`; use `mdkg graph clone|fork` for bundle/template graph transport
+- `git closeout` validates mdkg state and writes static JSON and Markdown receipts under `.mdkg/git/closeouts` by default
+- when the project DB participated, `git closeout` also seals `.mdkg/db/state/project.sqlite` and writes a deterministic dump
+- `git push-ready` is read-only and requires explicit remote and branch, clean worktree, passing mdkg validation, external-auth-safe remote config, and a valid DB snapshot when DB state participated
+- `git push --stage-all` writes closeout evidence, stages all changes, commits with `--message`, reruns push-ready, then pushes `HEAD` to the explicit remote branch
+- real `git push` should remain approval-gated by the calling runtime or human operator
+
+JSON receipts:
+- `inspect`: `{ action: "git.inspect", ok, root, inside_work_tree, branch, head_sha, tree_hash, remotes, status, source_descriptor, accepted_revision, warnings }`
+- `clone`: `{ action: "git.clone", ok, repository_ref, target, branch, source_descriptor, accepted_revision, inspect, warnings }`
+- `fetch`: `{ action: "git.fetch", ok, remote, branch, fetch_output, inspect, warnings }`
+- `closeout`: `{ action: "git.closeout", ok, root, output_dir, generated_at, git, validation, db_participated, db_snapshot_status, db_snapshot_seal, db_snapshot_dump, static_receipts, warnings }`
+- `push-ready`: `{ action: "git.push_ready", ok, root, remote, branch, remote_url, git, validation, db_snapshot_status, checks, warning_count, failure_count, warnings, errors }`
+- `push`: `{ action: "git.push", ok, remote, branch, head_sha, pushed_ref, stage_all, closeout, commit, push_ready, push_output, warnings }`
 
 ### `mdkg subgraph`
 

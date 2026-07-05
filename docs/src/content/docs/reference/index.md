@@ -19,6 +19,7 @@ Uppercase placeholders such as `WORK_ID`, `GOAL_ID`, and `TASK_ID` are examples.
 | Share context | `mdkg pack WORK_ID --profile concise` | `mdkg handoff create WORK_ID` |
 | Diagnose health | `mdkg status` | `mdkg doctor --strict --json`, `mdkg fix plan --json` |
 | Coordinate repos | `mdkg subgraph audit --json` | `mdkg bundle`, `mdkg subgraph sync` |
+| Close out Git work | `mdkg git closeout --json` | `mdkg git push-ready --remote origin --branch main --json` |
 
 First-run setup:
 
@@ -66,6 +67,7 @@ Advanced alpha surfaces:
 
 ```bash
 mdkg db queue contract --json
+mdkg git inspect --json
 mdkg mcp serve --stdio
 mdkg subgraph audit --json
 ```

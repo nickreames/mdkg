@@ -2,7 +2,7 @@
 id: test-340
 type: test
 title: mdkg git closeout push-readiness and credential safety contract
-status: blocked
+status: done
 priority: 1
 parent: goal-52
 tags: [0.4.2, git, remote-git, push-readiness, credential-safety, release-gate]

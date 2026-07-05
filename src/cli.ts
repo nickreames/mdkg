@@ -78,6 +78,14 @@ import {
   runGraphRefsCommand,
 } from "./commands/graph";
 import {
+  runGitCloneCommand,
+  runGitCloseoutCommand,
+  runGitFetchCommand,
+  runGitInspectCommand,
+  runGitPushCommand,
+  runGitPushReadyCommand,
+} from "./commands/git";
+import {
   runSubgraphAddCommand,
   runSubgraphAuditCommand,
   runSubgraphDisableCommand,
@@ -193,6 +201,7 @@ function printUsage(log: LogFn): void {
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  graph       Clone, fork, import, and inspect mdkg graph references");
+  log("  git         Clone, fetch, inspect, close out, and push Git-backed mdkg projects");
   log("  subgraph    Register, audit, plan, sync, materialize, and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  goal        Inspect and advance recursive goal nodes");
@@ -791,6 +800,71 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
   printGlobalOptions(log);
 }
 
+function printGitHelp(log: LogFn, subcommand?: string): void {
+  switch ((subcommand ?? "").toLowerCase()) {
+    case "inspect":
+      log("Usage:");
+      log("  mdkg git inspect [--json]");
+      log("\nNotes:");
+      log("  - read-only Git worktree, remote, branch, status, descriptor, and accepted-revision receipt");
+      log("  - remote URLs are redacted when userinfo is present");
+      break;
+    case "clone":
+      log("Usage:");
+      log("  mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]");
+      log("\nNotes:");
+      log("  - uses the system Git CLI and external Git auth");
+      log("  - --target must be empty or absent and stay inside the current repo");
+      log("  - repository refs must not embed credentials");
+      break;
+    case "fetch":
+      log("Usage:");
+      log("  mdkg git fetch [--remote <name>] [--branch <name>] [--json]");
+      log("\nNotes:");
+      log("  - defaults to remote origin");
+      log("  - auth stays external through Git credential helpers, SSH, gh, CI env, or shell state");
+      break;
+    case "closeout":
+      log("Usage:");
+      log("  mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]");
+      log("\nNotes:");
+      log("  - validates mdkg state before writing closeout receipts");
+      log("  - when the project DB participated, seals SQLite state and writes a deterministic dump");
+      log("  - writes static JSON and Markdown receipts under .mdkg/git/closeouts by default");
+      break;
+    case "push-ready":
+      log("Usage:");
+      log("  mdkg git push-ready --remote <name> --branch <name> [--json]");
+      log("\nNotes:");
+      log("  - read-only high-bar preflight for explicit Git remote/branch push");
+      log("  - requires clean worktree, valid mdkg graph, external auth boundary, and valid DB snapshot when DB state participated");
+      break;
+    case "push":
+      log("Usage:");
+      log("  mdkg git push --remote <name> --branch <name> [--json]");
+      log("  mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]");
+      log("\nNotes:");
+      log("  - real Git push via system Git; requires explicit remote and branch");
+      log("  - --stage-all writes closeout evidence, stages all changes, commits with --message, then runs push-ready before pushing");
+      log("  - no raw credentials, tokens, SSH keys, prompts, payloads, or provider auth are stored in receipts");
+      break;
+    default:
+      log("Usage:");
+      log("  mdkg git inspect [--json]");
+      log("  mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]");
+      log("  mdkg git fetch [--remote <name>] [--branch <name>] [--json]");
+      log("  mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]");
+      log("  mdkg git push-ready --remote <name> --branch <name> [--json]");
+      log("  mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]");
+      log("\nBoundaries:");
+      log("  - mdkg git is a low-level Git lifecycle surface, not project-memory semantic search");
+      log("  - system Git is the v1 execution backend");
+      log("  - authentication stays external; mdkg records only refs, hashes, policy names, and receipts");
+      log("  - real push operations require explicit remote and branch and should be approval-gated by the caller");
+  }
+  printGlobalOptions(log);
+}
+
 function printSubgraphHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "add":
@@ -1329,6 +1403,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "graph":
       printGraphHelp(log, subcommand);
+      return;
+    case "git":
+      printGitHelp(log, subcommand);
       return;
     case "subgraph":
       printSubgraphHelp(log, subcommand);
@@ -2089,6 +2166,74 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     }
     default:
       throw new UsageError("graph requires clone/fork/import-template/refs");
+  }
+}
+
+function runGitSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+  switch (subcommand) {
+    case "inspect": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("git inspect does not accept positional arguments");
+      }
+      runGitInspectCommand({ root, json });
+      return 0;
+    }
+    case "clone": {
+      const repository = parsed.positionals[2];
+      if (!repository || parsed.positionals.length > 3) {
+        throw new UsageError("git clone requires <repository-ref>");
+      }
+      const target = requireFlagValue("--target", parsed.flags["--target"]);
+      if (!target) {
+        throw new UsageError("git clone requires --target <path>");
+      }
+      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
+      runGitCloneCommand({ root, repository, target, branch, json });
+      return 0;
+    }
+    case "fetch": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("git fetch does not accept positional arguments");
+      }
+      const remote = requireFlagValue("--remote", parsed.flags["--remote"]);
+      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
+      runGitFetchCommand({ root, remote, branch, json });
+      return 0;
+    }
+    case "closeout": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("git closeout does not accept positional arguments");
+      }
+      const queuePolicy = parseQueuePolicyFlag(parsed.flags["--queue-policy"]);
+      const output = requireFlagValue("--output", parsed.flags["--out"]);
+      runGitCloseoutCommand({ root, queuePolicy, output, json });
+      return 0;
+    }
+    case "push-ready": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("git push-ready does not accept positional arguments");
+      }
+      const remote = requireFlagValue("--remote", parsed.flags["--remote"]);
+      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
+      runGitPushReadyCommand({ root, remote, branch, json });
+      return 0;
+    }
+    case "push": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("git push does not accept positional arguments");
+      }
+      const remote = requireFlagValue("--remote", parsed.flags["--remote"]);
+      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
+      const message = requireFlagValue("--message", parsed.flags["--message"]);
+      const stageAll = parseBooleanFlag("--stage-all", parsed.flags["--stage-all"]);
+      const queuePolicy = parseQueuePolicyFlag(parsed.flags["--queue-policy"]);
+      runGitPushCommand({ root, remote, branch, message, stageAll, queuePolicy, json });
+      return 0;
+    }
+    default:
+      throw new UsageError("git requires inspect/clone/fetch/closeout/push-ready/push");
   }
 }
 
@@ -2960,6 +3105,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runBundleSubcommand(parsed, root);
     case "graph":
       return runGraphSubcommand(parsed, root);
+    case "git":
+      return runGitSubcommand(parsed, root);
     case "subgraph":
       return runSubgraphSubcommand(parsed, root);
     case "work":
