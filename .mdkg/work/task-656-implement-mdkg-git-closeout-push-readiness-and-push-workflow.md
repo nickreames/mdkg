@@ -2,7 +2,7 @@
 id: task-656
 type: task
 title: implement mdkg git closeout push-readiness and push workflow
-status: todo
+status: done
 priority: 1
 parent: goal-52
 tags: [0.4.2, git, remote-git, sqlite-closeout, push-readiness, git-push]

@@ -8,6 +8,38 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.4.2 - 2026-07-05
+
+### Added
+
+- Added the low-level `mdkg git` command family for Git-backed project
+  lifecycle primitives: `inspect`, `clone`, `fetch`, `closeout`,
+  `push-ready`, and approval-gated real `push` execution.
+- Added Git source descriptors and accepted-revision evidence in command
+  receipts, including sanitized remote refs, branch, commit SHA, tree hash, and
+  the external-auth boundary.
+- Added `mdkg git closeout` static JSON/Markdown receipts, plus sealed project
+  DB snapshot and deterministic dump evidence when SQLite project state
+  participated in the run.
+
+### Changed
+
+- Made push readiness a high-bar preflight: explicit remote and branch,
+  credential-free remote config, clean worktree, passing mdkg validation, and a
+  valid DB snapshot when DB state participated.
+- Documented Git auth as external to mdkg through system Git, credential
+  helpers, SSH, `gh`, CI/runtime env, or shell state; mdkg stores only refs,
+  hashes, policy names, and receipts.
+- Deferred project-memory semantic query UX (`history`, `why`, and
+  `next-work`) to a separate CocoIndex-grounded design lane instead of shipping
+  it in the `0.4.2` Git lifecycle release.
+
+### Security
+
+- Rejects embedded URL credentials for repository refs and push remotes, and
+  redacts any userinfo that appears in inspected remote URLs before writing
+  receipts or JSON output.
+
 ## 0.4.1 - 2026-07-04
 
 ### Added

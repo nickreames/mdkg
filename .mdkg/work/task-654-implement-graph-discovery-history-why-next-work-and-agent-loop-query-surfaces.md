@@ -2,7 +2,7 @@
 id: task-654
 type: task
 title: implement mdkg git clone fetch inspect and graph discovery surfaces
-status: todo
+status: done
 priority: 1
 parent: goal-52
 tags: [0.4.2, git, remote-git, graph-discovery, clone, fetch, inspect, cli]

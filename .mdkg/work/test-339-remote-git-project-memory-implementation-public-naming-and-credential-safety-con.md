@@ -2,7 +2,7 @@
 id: test-339
 type: test
 title: remote Git project-memory implementation public naming and credential safety contract
-status: blocked
+status: done
 priority: 1
 parent: goal-52
 tags: [remote-git, project-memory, naming-audit, credential-safety, release-gate]

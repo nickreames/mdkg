@@ -2,12 +2,12 @@
 id: goal-52
 type: goal
 title: Implement mdkg 0.4.2 git remote lifecycle primitives
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: mdkg@0.4.2 implements low-level `mdkg git` remote lifecycle primitives for source descriptors, accepted revisions, external-auth clone/fetch/inspect, SQLite sealed snapshot plus static Markdown/JSON closeout, high-bar push readiness, and explicit-authority push to origin, with docs/templates/release gates validated and project-memory semantic query design deferred to goal-53.
 scope_refs: [task-651, task-653, task-654, task-656, task-655, test-339, test-340]
-active_node: task-651
+last_active_node: task-651
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, targeted public naming and credential-safety audit, targeted git auth and push-readiness boundary audit, npm pack --dry-run --json]
 max_iterations: 25

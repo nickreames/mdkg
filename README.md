@@ -14,7 +14,7 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.4.1`
+Current package version in source: `0.4.2`
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -241,6 +241,26 @@ Materialized trees are generated local state, ignored by graph indexing/search/v
 Subgraph nodes are projected under the subgraph alias, for example `child_repo:task-1`. They are available to `list`, `search`, `show`, `pack`, capability discovery, and `capability resolve`, but remain read-only; mutate the child repo and sync its root-owned bundle snapshot to change subgraph content. Root-authored relationship and reference fields can point at configured subgraph qids such as `child_repo:work.example`; local ownership fields such as `epic`, `parent`, `prev`, and `next` stay local-only. Stale subgraphs warn during planning reads and fail `mdkg subgraph verify`. Public or internal subgraphs must be backed by public bundle profiles; private subgraphs stay private planning context.
 
 Use `mdkg graph refs <id-or-qid> --json` to inspect inbound and outbound scope, context, evidence, blocker, related, and structural links for local or read-only subgraph qids without mutating either graph.
+
+Use low-level Git lifecycle receipts when an agent run needs to close out local
+mdkg state and prove push readiness before an explicit remote update:
+
+```bash
+mdkg git inspect --json
+mdkg git clone git@github.com:org/repo.git --target worktrees/repo --branch main --json
+mdkg git fetch --remote origin --branch main --json
+mdkg git closeout --json
+mdkg git push-ready --remote origin --branch main --json
+mdkg git push --remote origin --branch main --stage-all --message "agent checkpoint" --json
+```
+
+`mdkg git` uses the system Git CLI. Authentication stays external through SSH,
+credential helpers, `gh`, CI/runtime environment, or shell state; mdkg rejects
+embedded URL credentials and records only sanitized refs, hashes, policy names,
+and receipts. `closeout` validates mdkg state before writing static JSON and
+Markdown receipts, and when the project DB participated it also seals the
+SQLite state and writes a deterministic dump. Treat real `mdkg git push` as an
+approval-gated operation in agent runtimes.
 
 Launch a local read-only MCP server when an MCP-capable agent should inspect a
 specific mdkg graph without receiving mutation tools:

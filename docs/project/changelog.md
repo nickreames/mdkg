@@ -10,15 +10,44 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 Recent release cards:
 
-- `0.4.1` latest public alpha, 2026-07-04: generic contract-profile metadata,
+- `0.4.2` latest public alpha, 2026-07-05: low-level `mdkg git`
+  clone/fetch/inspect/closeout/push-readiness/push primitives, sanitized Git
+  descriptors, static closeout receipts, and external-auth safety boundaries.
+- `0.4.1` public alpha, 2026-07-04: generic contract-profile metadata,
   profile validation, scaffold/helper flags, and runtime-boundary docs for
   agent workflow mirrors.
 - `0.4.0` public alpha, 2026-06-27: public launch readiness for
   mdkg.dev and docs.mdkg.dev, source-backed release metadata, npm gates, Vercel
   currentness, and Chrome live-validation blockers.
-- `0.3.9` public alpha, 2026-06-27: config overlays, configurable skill
-  mirrors, COLLABORATION.md, refreshed first-party skills, and release-note
-  automation.
+
+## 0.4.2 details
+
+`0.4.2` adds direct Git lifecycle primitives for repos where an agent run needs
+to clone or fetch source, close out mdkg state, prove push readiness, and push a
+checkpoint after explicit approval.
+
+### Added
+
+- `mdkg git inspect`, `clone`, `fetch`, `closeout`, `push-ready`, and `push`.
+- Sanitized Git source descriptors and accepted-revision receipts with branch,
+  commit SHA, tree hash, and external-auth metadata.
+- Static JSON/Markdown closeout receipts, plus sealed SQLite snapshot and
+  deterministic dump evidence when project DB state participated.
+
+### Changed
+
+- Push readiness requires explicit remote and branch, clean worktree, passing
+  mdkg validation, credential-free remote config, and valid DB snapshot evidence
+  when DB state participated.
+- Git authentication is external to mdkg through system Git, credential
+  helpers, SSH, `gh`, CI/runtime environment, or shell state.
+- Project-memory semantic query UX is deferred to a later CocoIndex-grounded
+  design lane.
+
+### Security
+
+- Repository refs and push remotes with embedded URL credentials are rejected,
+  and inspected remote URLs are redacted before they reach receipts.
 
 ## 0.4.1 details
 

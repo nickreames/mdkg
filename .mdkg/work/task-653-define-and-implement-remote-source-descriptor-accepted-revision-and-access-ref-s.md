@@ -2,7 +2,7 @@
 id: task-653
 type: task
 title: define and implement remote source descriptor accepted revision and access-ref schemas
-status: todo
+status: done
 priority: 1
 parent: goal-52
 tags: [remote-git, source-descriptor, accepted-revision, access-ref, validation]

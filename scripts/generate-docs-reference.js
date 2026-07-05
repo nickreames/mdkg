@@ -47,6 +47,7 @@ function categoryGuidance(command) {
     db: "Use for local project DB, queue, snapshot, and verification workflows.",
     fix: "Use for dry-run repair planning and selected graph repairs.",
     goal: "Use for long-running objectives, active-node routing, and goal lifecycle.",
+    git: "Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.",
     graph: "Use for graph references, clone/fork/import, and graph movement workflows.",
     handoff: "Use for sanitized transfer prompts between humans and agents.",
     index: "Use to rebuild generated search, skill, capability, and subgraph indexes.",
