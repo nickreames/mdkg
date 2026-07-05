@@ -8,7 +8,7 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
-## 0.4.1 - 2026-07-03
+## 0.4.1 - 2026-07-04
 
 ### Added
 

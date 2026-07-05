@@ -10,7 +10,7 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 Recent release cards:
 
-- `0.4.1` latest public alpha, 2026-07-03: generic contract-profile metadata,
+- `0.4.1` latest public alpha, 2026-07-04: generic contract-profile metadata,
   profile validation, scaffold/helper flags, and runtime-boundary docs for
   agent workflow mirrors.
 - `0.4.0` public alpha, 2026-06-27: public launch readiness for

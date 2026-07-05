@@ -16,7 +16,7 @@ remain listed below for continuity.
 
 <div class="release-grid" aria-label="Recent mdkg release cards">
   <article class="release-card current">
-    <p class="release-meta">Latest public alpha - 2026-07-03 - 6 notes</p>
+    <p class="release-meta">Latest public alpha - 2026-07-04 - 6 notes</p>
     <h2>0.4.1</h2>
     <p>Generic contract-profile metadata and profile validation for agent workflow mirrors, with runtime execution still owned by downstream systems.</p>
     <ul>
