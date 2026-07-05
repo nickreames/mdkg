@@ -111,5 +111,20 @@
       "mdkg_dir": ".mdkg",
       "visibility": "private"
     }
+  },
+  "customization": {
+    "standards": {
+      "profile": "default",
+      "refs": []
+    },
+    "core_docs": {
+      "custom_paths": []
+    },
+    "skill_mirrors": {
+      "targets": [
+        ".agents/skills",
+        ".claude/skills"
+      ]
+    }
   }
 }
