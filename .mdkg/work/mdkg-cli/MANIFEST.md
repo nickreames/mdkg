@@ -1,6 +1,6 @@
 ---
 id: spec.mdkg-cli
-type: spec
+type: manifest
 title: mdkg CLI tool
 version: 0.3.0
 spec_kind: cli_tool
@@ -8,12 +8,6 @@ role: tool_service
 runtime_mode: tool_service
 work_contracts: [validate/WORK.md]
 requested_capabilities: [mdkg.graph.read, mdkg.graph.write, mdkg.project_db.local]
-skill_refs: [pursue-mdkg-goal, verify-close-and-checkpoint]
-tool_refs: [tool.node, tool.npm]
-model_refs: []
-wasm_component_refs: []
-runtime_image_refs: []
-subagent_refs: []
 resource_profile: local_cli
 update_policy: proposal_required
 tags: [spec, cli, dogfood, mdkg]
@@ -25,6 +19,12 @@ refs: [edd-15, dec-26, dec-27, dec-28]
 aliases: [mdkg-cli-tool-spec, dogfood-cli-spec, mdkg cli tool spec]
 created: 2026-06-06
 updated: 2026-06-06
+model_refs: []
+runtime_image_refs: []
+skill_refs: [pursue-mdkg-goal, verify-close-and-checkpoint]
+subagent_refs: []
+tool_refs: [tool.node, tool.npm]
+wasm_component_refs: []
 ---
 
 # Purpose
