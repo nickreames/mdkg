@@ -1,0 +1,91 @@
+{
+  "manifest_version": 1,
+  "tool": "mdkg",
+  "kind": "project_db_snapshot",
+  "mdkg_version": "0.4.2",
+  "generated_at": "2026-07-05T23:46:08.857Z",
+  "schema_version": 1,
+  "migration_table": "mdkg_schema_migration",
+  "runtime_path": ".mdkg/db/runtime/project.sqlite",
+  "snapshot_path": ".mdkg/db/state/project.sqlite",
+  "source_runtime_sha256": "sha256:b1d06d3b973ca329e621294d5fd5bd5ac7c461d751b0ac7c248d213f30ce71ad",
+  "snapshot_sha256": "sha256:22d30967b8b85c69e747baa9d663318b963adbbb6db1d96aa6d37521a9ea2a7f",
+  "byte_size": 118784,
+  "table_counts": [
+    {
+      "name": "mdkg_schema_migration",
+      "row_count": 5
+    },
+    {
+      "name": "project_branch_state",
+      "row_count": 0
+    },
+    {
+      "name": "project_event",
+      "row_count": 0
+    },
+    {
+      "name": "project_meta",
+      "row_count": 5
+    },
+    {
+      "name": "project_queue",
+      "row_count": 0
+    },
+    {
+      "name": "project_queue_message",
+      "row_count": 0
+    },
+    {
+      "name": "project_receipt",
+      "row_count": 0
+    },
+    {
+      "name": "project_writer_lease",
+      "row_count": 0
+    }
+  ],
+  "migrations": [
+    {
+      "migration_key": "mdkg.project_db.foundation.v1",
+      "ordinal": 1,
+      "checksum": "sha256:90245c6932d9a1bfddafd89365de8859667ce1bed825cfabf81003df167a98ae",
+      "applied_at_ms": 1780967938466
+    },
+    {
+      "migration_key": "mdkg.project_db.queue.v1",
+      "ordinal": 2,
+      "checksum": "sha256:c2439de64131f3183591cd3144d3a196962ed049452cc148ef44fc72997a7111",
+      "applied_at_ms": 1780967938467
+    },
+    {
+      "migration_key": "mdkg.project_db.events_receipts.v1",
+      "ordinal": 3,
+      "checksum": "sha256:543e4713ecd52005ff301d121d877486dfc962d1c374fd2ec65d5b93fde2f2da",
+      "applied_at_ms": 1780967938468
+    },
+    {
+      "migration_key": "mdkg.project_db.writer_leases.v1",
+      "ordinal": 4,
+      "checksum": "sha256:e2a37376fb5afa056d636fb2b2fc11334c233e71cb921da88e4f57fba8e6113f",
+      "applied_at_ms": 1780967938469
+    },
+    {
+      "migration_key": "mdkg.project_db.queue_control.v1",
+      "ordinal": 5,
+      "checksum": "sha256:4a3082a1bc71644a1235b1dc55e841021880f5a448348c8904efa12d5a40adac",
+      "applied_at_ms": 1780967938470
+    }
+  ],
+  "queue_policy": "drain",
+  "queue_summary": {
+    "queues": [],
+    "total": 0,
+    "ready": 0,
+    "leased": 0,
+    "acked": 0,
+    "dead_letter": 0,
+    "paused_ready": 0,
+    "active_ready": 0
+  }
+}

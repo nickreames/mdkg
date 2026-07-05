@@ -1,0 +1,258 @@
+{
+  "action": "git.closeout",
+  "ok": true,
+  "root": "/Users/nick/omni-chat-rooms/projects/mdkg",
+  "output_dir": ".mdkg/git/closeouts/goal-54-real-origin-proof",
+  "generated_at": "2026-07-05T23:46:08.867Z",
+  "git": {
+    "action": "git.inspect",
+    "ok": true,
+    "root": "/Users/nick/omni-chat-rooms/projects/mdkg",
+    "inside_work_tree": true,
+    "branch": "main",
+    "head_sha": "84a6fe979f5667c7a9ca07b008987da52fbc5a7b",
+    "tree_hash": "965beaa7d74f4c949eeab3abe0d575f599d32797",
+    "remotes": [
+      {
+        "name": "origin",
+        "fetch_url": "git@github.com:nickreames/mdkg.git",
+        "push_url": "git@github.com:nickreames/mdkg.git"
+      }
+    ],
+    "status": {
+      "clean": true,
+      "entry_count": 0,
+      "entries": []
+    },
+    "source_descriptor": {
+      "kind": "git",
+      "repository_ref": "git@github.com:nickreames/mdkg.git",
+      "remote": "origin",
+      "branch": "main",
+      "access_ref": "external-git-auth"
+    },
+    "accepted_revision": {
+      "commit_sha": "84a6fe979f5667c7a9ca07b008987da52fbc5a7b",
+      "tree_hash": "965beaa7d74f4c949eeab3abe0d575f599d32797",
+      "branch": "main"
+    },
+    "warnings": []
+  },
+  "validation": {
+    "action": "validated",
+    "ok": true,
+    "warning_count": 0,
+    "error_count": 0,
+    "warnings": [],
+    "warning_diagnostics": [],
+    "warning_summary": {
+      "total": 0,
+      "emitted": 0,
+      "truncated": false,
+      "omitted_count": 0,
+      "limit": null,
+      "affected_file_count": 0,
+      "by_id": [],
+      "by_category": [],
+      "by_node_type": [],
+      "top_qids": [],
+      "top_paths": []
+    },
+    "errors": []
+  },
+  "db_participated": true,
+  "db_snapshot_status": {
+    "action": "db-snapshot-status",
+    "ok": true,
+    "status": "valid",
+    "snapshot": ".mdkg/db/state/project.sqlite",
+    "manifest": ".mdkg/db/state/project.manifest.json",
+    "checks": [
+      {
+        "name": "snapshot-file",
+        "ok": true,
+        "level": "ok",
+        "path": ".mdkg/db/state/project.sqlite",
+        "detail": "snapshot file exists",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "manifest-file",
+        "ok": true,
+        "level": "ok",
+        "path": ".mdkg/db/state/project.manifest.json",
+        "detail": "snapshot manifest exists",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "manifest-shape",
+        "ok": true,
+        "level": "ok",
+        "path": ".mdkg/db/state/project.manifest.json",
+        "detail": "snapshot manifest shape is supported",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "sqlite-integrity",
+        "ok": true,
+        "level": "ok",
+        "path": ".mdkg/db/state/project.sqlite",
+        "detail": "snapshot SQLite integrity check ok",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "snapshot-hash",
+        "ok": true,
+        "level": "ok",
+        "path": ".mdkg/db/state/project.sqlite",
+        "detail": "snapshot hash matches manifest",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "snapshot-size",
+        "ok": true,
+        "level": "ok",
+        "path": ".mdkg/db/state/project.sqlite",
+        "detail": "snapshot byte size matches manifest",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "table-counts",
+        "ok": true,
+        "level": "ok",
+        "detail": "table counts match manifest",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "migrations",
+        "ok": true,
+        "level": "ok",
+        "detail": "migration metadata matches manifest",
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "name": "runtime-freshness",
+        "ok": true,
+        "level": "ok",
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "detail": "snapshot matches current runtime hash",
+        "errors": [],
+        "warnings": []
+      }
+    ],
+    "warning_count": 0,
+    "failure_count": 0,
+    "warnings": [],
+    "errors": []
+  },
+  "db_snapshot_seal": {
+    "action": "db-snapshot-seal",
+    "ok": true,
+    "snapshot": ".mdkg/db/state/project.sqlite",
+    "manifest": ".mdkg/db/state/project.manifest.json",
+    "old_snapshot_sha256": null,
+    "new_snapshot_sha256": "sha256:22d30967b8b85c69e747baa9d663318b963adbbb6db1d96aa6d37521a9ea2a7f",
+    "source_runtime_sha256": "sha256:b1d06d3b973ca329e621294d5fd5bd5ac7c461d751b0ac7c248d213f30ce71ad",
+    "byte_size": 118784,
+    "table_counts": [
+      {
+        "name": "mdkg_schema_migration",
+        "row_count": 5
+      },
+      {
+        "name": "project_branch_state",
+        "row_count": 0
+      },
+      {
+        "name": "project_event",
+        "row_count": 0
+      },
+      {
+        "name": "project_meta",
+        "row_count": 5
+      },
+      {
+        "name": "project_queue",
+        "row_count": 0
+      },
+      {
+        "name": "project_queue_message",
+        "row_count": 0
+      },
+      {
+        "name": "project_receipt",
+        "row_count": 0
+      },
+      {
+        "name": "project_writer_lease",
+        "row_count": 0
+      }
+    ],
+    "migrations": [
+      {
+        "migration_key": "mdkg.project_db.foundation.v1",
+        "ordinal": 1,
+        "checksum": "sha256:90245c6932d9a1bfddafd89365de8859667ce1bed825cfabf81003df167a98ae",
+        "applied_at_ms": 1780967938466
+      },
+      {
+        "migration_key": "mdkg.project_db.queue.v1",
+        "ordinal": 2,
+        "checksum": "sha256:c2439de64131f3183591cd3144d3a196962ed049452cc148ef44fc72997a7111",
+        "applied_at_ms": 1780967938467
+      },
+      {
+        "migration_key": "mdkg.project_db.events_receipts.v1",
+        "ordinal": 3,
+        "checksum": "sha256:543e4713ecd52005ff301d121d877486dfc962d1c374fd2ec65d5b93fde2f2da",
+        "applied_at_ms": 1780967938468
+      },
+      {
+        "migration_key": "mdkg.project_db.writer_leases.v1",
+        "ordinal": 4,
+        "checksum": "sha256:e2a37376fb5afa056d636fb2b2fc11334c233e71cb921da88e4f57fba8e6113f",
+        "applied_at_ms": 1780967938469
+      },
+      {
+        "migration_key": "mdkg.project_db.queue_control.v1",
+        "ordinal": 5,
+        "checksum": "sha256:4a3082a1bc71644a1235b1dc55e841021880f5a448348c8904efa12d5a40adac",
+        "applied_at_ms": 1780967938470
+      }
+    ],
+    "queue_policy": "drain",
+    "queue_summary": {
+      "queues": [],
+      "total": 0,
+      "ready": 0,
+      "leased": 0,
+      "acked": 0,
+      "dead_letter": 0,
+      "paused_ready": 0,
+      "active_ready": 0
+    },
+    "warnings": []
+  },
+  "db_snapshot_dump": {
+    "action": "db-snapshot-dump",
+    "ok": true,
+    "snapshot": ".mdkg/db/state/project.sqlite",
+    "output": ".mdkg/git/closeouts/goal-54-real-origin-proof/project-db.dump.md",
+    "line_count": 57,
+    "sha256": "sha256:ea120730858f50f61f5ff0ae8133b4ba4884cf4a4d5c2f81c44867462f01ac51",
+    "dump_sha256": "sha256:ea120730858f50f61f5ff0ae8133b4ba4884cf4a4d5c2f81c44867462f01ac51"
+  },
+  "warnings": [],
+  "static_receipts": {
+    "json": ".mdkg/git/closeouts/goal-54-real-origin-proof/closeout.json",
+    "markdown": ".mdkg/git/closeouts/goal-54-real-origin-proof/closeout.md"
+  }
+}

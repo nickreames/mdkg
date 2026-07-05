@@ -76,3 +76,12 @@ List files/directories expected to change.
 - `task-660`
 - `test-341`
 - `goal-54`
+- `mdkg git inspect --json` against real `origin` passed at
+  `84a6fe979f5667c7a9ca07b008987da52fbc5a7b`, branch `main`, tree
+  `965beaa7d74f4c949eeab3abe0d575f599d32797`, remote
+  `git@github.com:nickreames/mdkg.git`, clean status.
+- `mdkg git closeout --output .mdkg/git/closeouts/goal-54-real-origin-proof --json`
+  passed with validation ok, static JSON/Markdown receipts, DB snapshot
+  `.mdkg/db/state/project.sqlite`, manifest `.mdkg/db/state/project.manifest.json`,
+  and deterministic dump
+  `.mdkg/git/closeouts/goal-54-real-origin-proof/project-db.dump.md`.
