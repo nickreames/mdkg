@@ -21,6 +21,30 @@ This page is the readable entrypoint for the commands most users should learn fi
 - `mdkg skill` manages repo-local agent skills and mirrors.
 - `mdkg fix` plans and applies selected repairs, including ID repair.
 
+## Git lifecycle commands
+
+Use `mdkg git` when an agent run needs low-level Git lifecycle receipts around a
+repo-backed mdkg checkpoint. The command family uses the system Git CLI;
+authentication stays external through SSH, credential helpers, `gh`, CI/runtime
+environment, or existing shell state. mdkg records sanitized refs, hashes,
+policy names, and receipts rather than credentials or provider payloads.
+
+- `mdkg git inspect --json` reports the current repo, remotes, working-tree
+  state, source descriptor, accepted commit, and tree hash.
+- `mdkg git clone <repository-ref> --target <path> --branch <name> --json`
+  clones a real Git remote into an explicit contained target.
+- `mdkg git fetch --remote origin --branch main --json` fetches an explicit
+  remote and branch through system Git.
+- `mdkg git closeout --json` validates mdkg state and writes static JSON and
+  Markdown closeout receipts. When project DB state participated, closeout also
+  seals SQLite snapshot evidence and writes a deterministic dump.
+- `mdkg git push-ready --remote origin --branch main --json` is read-only and
+  requires explicit remote/branch, a clean worktree, passing mdkg validation,
+  credential-safe remote configuration, and required DB snapshot evidence.
+- `mdkg git push --remote origin --branch main --stage-all --message "agent checkpoint" --json`
+  writes closeout evidence, stages changes, commits, reruns push readiness, and
+  pushes only after the caller or runtime has approved the real remote update.
+
 ## Advanced alpha commands
 
 The CLI also includes advanced graph, archive, bundle, subgraph, project DB queue, MCP, workflow mirror, and graph movement commands. Treat those surfaces as public alpha and validate them in your repo before depending on them.

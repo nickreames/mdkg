@@ -2,7 +2,7 @@
 id: task-660
 type: task
 title: add mdkg git coverage to docs generated CLI reference
-status: todo
+status: done
 priority: 1
 parent: goal-54
 tags: [docs, generated-cli-reference, mdkg-git, 0.4.2]
@@ -70,3 +70,21 @@ List files/directories expected to change.
 - `CHANGELOG.md`
 - `docs/src/content/docs/project/changelog.md`
 - `/private/tmp/mdkg-live-docs-cli-reference-postpublish.html`
+
+# Completion Evidence
+
+Completed locally on 2026-07-05.
+
+- Added the public `Git lifecycle commands` section to
+  `docs/src/content/docs/reference/generated-cli-reference.md`.
+- Updated `scripts/generate-docs-reference.js` so generated Git command-family
+  guidance states the system-Git/external-auth boundary.
+- Regenerated `docs/_generated/cli-reference.md`.
+- Hardened `scripts/smoke-mdkg-dev-docs.js` so the public source page and
+  generated backing file must include the `mdkg git` command family.
+- Verification passed: `npm run docs:check`, `npm --prefix docs run build`,
+  rendered HTML marker search for the local generated-reference route,
+  `npm run smoke:mdkg-dev-docs`, `node dist/cli.js validate --changed-only --json`,
+  `node dist/cli.js validate --summary --limit 20 --json`, and
+  `git diff --check`.
+- Checkpoint: `chk-371`.

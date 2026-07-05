@@ -1604,7 +1604,7 @@ mdkg git command
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -1663,7 +1663,7 @@ mdkg git clone command
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -1712,7 +1712,7 @@ mdkg git closeout command
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -1760,7 +1760,7 @@ mdkg git fetch command
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -1808,7 +1808,7 @@ mdkg git inspect command
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
 
 Beginner safety: Safe for initial grounding. It should not change repository files.
 
@@ -1856,7 +1856,7 @@ mdkg git push command
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
 
 Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
@@ -1910,7 +1910,7 @@ mdkg git push-ready command
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows.
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
 
 Beginner safety: Safe for initial grounding. It should not change repository files.
 

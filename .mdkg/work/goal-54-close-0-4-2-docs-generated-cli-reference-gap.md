@@ -7,6 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Close 0.4.2 docs generated CLI reference gap
 scope_refs: []
+active_node: test-341
 required_skills: []
 required_checks: []
 max_iterations: 25
@@ -114,6 +115,11 @@ Artifacts captured locally:
 
 - 2026-07-05: Created as a follow-up gap after `mdkg@0.4.2` publish and
   post-publish validation.
+- 2026-07-05: Completed local implementation for `task-660`; `chk-371`
+  records docs source, generator guidance, generated backing reference, and
+  docs-smoke hardening. Local docs checks pass. Live homepage and live changelog
+  remain current for `0.4.2`; live generated CLI reference remains stale until
+  an approved push/deploy publishes the docs route update.
 
 # Skill Improvement Candidates
 
@@ -121,4 +127,4 @@ Artifacts captured locally:
 
 # Completion Evidence
 
-- Pending.
+- Pending live generated CLI reference deployment and verification.
