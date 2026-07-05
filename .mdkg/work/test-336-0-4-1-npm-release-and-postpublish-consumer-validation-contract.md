@@ -2,7 +2,7 @@
 id: test-336
 type: test
 title: 0.4.1 npm release and downstream-private consumer validation contract
-status: blocked
+status: done
 priority: 1
 parent: goal-50
 tags: [0.4.1, npm, postpublish, consumer-validation]
@@ -19,7 +19,7 @@ aliases: []
 skills: [verify-close-and-checkpoint]
 cases: []
 created: 2026-07-02
-updated: 2026-07-03
+updated: 2026-07-04
 ---
 # Overview
 

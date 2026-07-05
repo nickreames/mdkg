@@ -2,7 +2,7 @@
 id: task-648
 type: task
 title: prepare downstream-private contract-profile consumer handoff
-status: blocked
+status: done
 priority: 1
 parent: goal-50
 tags: [0.4.1, handoff, consumer-boundary, downstream-private]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-03
+updated: 2026-07-04
 ---
 # Overview
 

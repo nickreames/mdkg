@@ -2,7 +2,7 @@
 id: task-647
 type: task
 title: run 0.4.1 postpublish temp install and workflow probes
-status: blocked
+status: done
 priority: 1
 parent: goal-50
 tags: [0.4.1, npm, postpublish, temp-install, workflow-probes]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-03
+updated: 2026-07-04
 ---
 # Overview
 

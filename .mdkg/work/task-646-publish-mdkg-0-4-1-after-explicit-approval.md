@@ -2,7 +2,7 @@
 id: task-646
 type: task
 title: publish mdkg 0.4.1 after explicit approval
-status: blocked
+status: done
 priority: 1
 parent: goal-50
 tags: [0.4.1, npm, publish, approval-gated]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-03
+updated: 2026-07-04
 ---
 # Overview
 
