@@ -2,12 +2,12 @@
 id: goal-50
 type: goal
 title: Publish mdkg 0.4.1 contract-profile support and validate consumers
-status: blocked
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: mdkg 0.4.1 contract-profile support is published only after explicit approval, npm registry state and dry-runs prove readiness, a strict public naming audit confirms publish-bound mdkg claims are generic, post-publish temp install and workflow probes pass, and any downstream-private consumer handoff cites the actual published version and evidence without making product-specific runtime policy part of mdkg public behavior.
 scope_refs: [task-649, test-337, task-645, task-646, task-647, task-648, test-336]
-active_node: task-646
+last_active_node: task-646
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [git fetch origin main, git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, targeted public naming audit over publish-bound mdkg work nodes, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm pack --dry-run --json, npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.4.1 version --registry=https://registry.npmjs.org/]
 max_iterations: 25
@@ -17,15 +17,15 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-646]
+blocked_by: []
 blocks: []
 refs: [goal-49, goal-48, goal-51, task-635, task-636, task-649, test-332, test-337]
 context_refs: [goal-51, task-650, test-338]
-evidence_refs: []
+evidence_refs: [chk-358, chk-359, chk-360, chk-361]
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-02
-updated: 2026-07-03
+updated: 2026-07-04
 ---
 # Objective
 
@@ -136,6 +136,9 @@ node is `task-649`, which must prove generic-only public naming posture before
   naming audit before publish readiness.
 - 2026-07-03: Clarified that remote Git/project-memory primitive planning is a
   generic successor lane in `goal-51`, not part of the 0.4.1 publish scope.
+- 2026-07-05: Published `mdkg@0.4.1` after explicit user approval, validated
+  npm registry state, verified a clean temp global install and published-package
+  workflow probes, prepared the downstream-private handoff, and closed the goal.
 
 # Skill Improvement Candidates
 
@@ -143,4 +146,27 @@ node is `task-649`, which must prove generic-only public naming posture before
 
 # Completion Evidence
 
-- Pending.
+- `chk-358`: real npm publish completed after explicit user approval. `main`
+  was pushed to `origin/main` at
+  `88a3cb433a40b8fbd6ecefc25e5668dc4e2ad26b`; npm auth preflight succeeded as
+  `nickreames`; real `npm publish` completed with `+ mdkg@0.4.1` after the full
+  `prepublishOnly` gate.
+- `chk-359`: post-publish validation passed. `npm view mdkg version` returned
+  `0.4.1`; `npm view mdkg dist-tags --json` returned latest `0.4.1`; isolated
+  temp install at `/private/tmp/mdkg-0.4.1-postpublish.Hil88q` reported
+  `mdkg --version` as `0.4.1`.
+- Published-package workflow probes passed in
+  `/private/tmp/mdkg-0.4.1-workspace-valid.66mnhk`: `mdkg init --agent`,
+  `mdkg validate --json`, `mdkg validate --profile omni-room --json`,
+  `mdkg work validate --profile omni-room --json`, `mdkg skill sync --json`,
+  `mdkg upgrade --dry-run --json`, `mdkg upgrade --apply --json`, final
+  `mdkg status --json`, and final `mdkg validate --json`.
+- `chk-360`: downstream-private handoff prepared at
+  `.mdkg/handoffs/mdkg-0.4.1-contract-profile-consumer-handoff.md`, citing the
+  actual published version, registry/dist-tag evidence, temp install proof,
+  workflow probes, upgrade probes, generic mdkg behavior, and runtime-owned
+  downstream boundaries.
+- `chk-361`: final release contract passed. Public naming gate and prepublish
+  readiness evidence remain in `task-649`, `test-337`, `task-645`, and
+  `test-335`; no tag, deploy, DNS, provider, sandbox, or downstream repo
+  mutation occurred in this closeout.
