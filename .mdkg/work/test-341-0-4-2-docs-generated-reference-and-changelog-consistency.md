@@ -78,6 +78,14 @@ Record outcomes and link evidence in `artifacts` or `links`.
   push/deploy:
   `/private/tmp/mdkg-live-docs-cli-reference-goal54.html` does not include
   `Git lifecycle commands`, `mdkg git`, `push-ready`, or closeout markers.
+- 2026-07-05 refresh check confirms the same live boundary:
+  `/private/tmp/mdkg-live-home-goal54-refresh.html` includes
+  `softwareVersion":"0.4.2"` and `Git closeout`;
+  `/private/tmp/mdkg-live-docs-changelog-goal54-refresh.html` includes
+  `0.4.2`, `mdkg git`, `push-ready`, and closeout content; and
+  `/private/tmp/mdkg-live-docs-cli-reference-goal54-refresh.html` still omits
+  `Git lifecycle commands`, `mdkg git`, `push-ready`, and closeout markers
+  because the local docs commit has not been pushed/deployed.
 
 # Notes / Follow-ups
 
