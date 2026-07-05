@@ -2,12 +2,12 @@
 id: goal-54
 type: goal
 title: Close 0.4.2 docs generated CLI reference gap
-status: todo
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: Close 0.4.2 docs generated CLI reference gap
 scope_refs: []
-active_node: task-661
+last_active_node: task-661
 required_skills: []
 required_checks: []
 max_iterations: 25
@@ -120,6 +120,17 @@ Artifacts captured locally:
   docs-smoke hardening. Local docs checks pass. Live homepage and live changelog
   remain current for `0.4.2`; live generated CLI reference remains stale until
   an approved push/deploy publishes the docs route update.
+- 2026-07-05: Added and executed `task-661` to prove the real `mdkg git`
+  lifecycle against `origin/main`. `mdkg git inspect`, in-repo `mdkg git
+  closeout`, `mdkg git push-ready --remote origin --branch main --json`, and
+  `mdkg git push --remote origin --branch main --json` all passed with external
+  Git auth and no credential output. The push moved `origin/main` to
+  `01afd36804f1810d9de79d66af20574325351a5f`.
+- 2026-07-05: Fresh live fetches verified `mdkg.dev`, docs changelog, and docs
+  generated CLI reference are current for `0.4.2`. The generated CLI reference
+  now includes `Git lifecycle commands`, `mdkg git inspect --json`, `mdkg git
+  closeout --json`, and
+  `mdkg git push-ready --remote origin --branch main --json`.
 
 # Skill Improvement Candidates
 
@@ -127,4 +138,15 @@ Artifacts captured locally:
 
 # Completion Evidence
 
-- Pending live generated CLI reference deployment and verification.
+- `task-660`: source docs/generated reference implementation passed locally and
+  was pushed to `origin/main`.
+- `task-661`: real `mdkg git` inspect, closeout, push-ready, and push proof
+  passed against `git@github.com:nickreames/mdkg.git`.
+- `task-658`: live `mdkg.dev`, docs changelog, and docs generated CLI reference
+  currentness checks passed after deployment.
+- `test-341`: generated CLI reference, changelog, and homepage consistency
+  passed for `0.4.2`.
+- Live artifacts:
+  - `/private/tmp/mdkg-live-home-after-mdkg-git-push-closeout.html`
+  - `/private/tmp/mdkg-live-docs-changelog-after-mdkg-git-push-closeout.html`
+  - `/private/tmp/mdkg-live-docs-cli-reference-after-mdkg-git-push-closeout.html`
