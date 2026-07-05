@@ -11,7 +11,7 @@ links: []
 artifacts: []
 relates: []
 blocked_by: [task-650]
-blocks: [goal-52]
+blocks: []
 refs: [goal-51, goal-50, task-649, test-337, task-650, dec-61, dec-62, edd-62, edd-63, goal-52]
 context_refs: [dec-61, dec-62, edd-62, edd-63, goal-52]
 evidence_refs: []
@@ -19,7 +19,7 @@ aliases: []
 skills: [service-boundary-ownership-check, verify-close-and-checkpoint]
 cases: [generic-public-names, opaque-access-refs, accepted-revision-evidence, project-memory-queries, generic-agent-loop, downstream-policy-boundary, successor-goal-routing]
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-05
 ---
 # Overview
 

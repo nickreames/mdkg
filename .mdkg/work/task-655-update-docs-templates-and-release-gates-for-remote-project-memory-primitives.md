@@ -10,15 +10,15 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: []
-blocks: [test-339]
-refs: [goal-51, task-650, test-338, dec-61, dec-62, edd-62, edd-63]
+blocked_by: [task-653, task-654, task-656]
+blocks: [test-339, test-340]
+refs: [goal-51, goal-53, task-650, test-338, dec-61, dec-62, dec-63, dec-64, edd-62, edd-63, edd-64]
 context_refs: []
 evidence_refs: []
 aliases: []
 skills: [service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-05
 ---
 # Overview
 
@@ -33,8 +33,12 @@ then run release gates for the generic remote Git/project-memory capability.
 - Public wording uses generic names and does not imply downstream runtime
   policy.
 - Examples use opaque access refs, policy refs, and hashes, never credentials.
+- Docs explain `mdkg git` as the low-level command family for clone, fetch,
+  inspect, closeout, push readiness, and explicit-authority push.
+- Docs state that project-memory semantic queries are deferred to `goal-53`.
 - Release gates include build, test, CLI, docs, mdkg validation, pack dry-run,
-  public naming audit, and credential-safety audit.
+  public naming audit, push-readiness boundary audit, and credential-safety
+  audit.
 
 # Files Affected
 
@@ -62,4 +66,6 @@ then run release gates for the generic remote Git/project-memory capability.
 # Links / Artifacts
 
 - `test-339`
+- `test-340`
 - `goal-52`
+- `goal-53`

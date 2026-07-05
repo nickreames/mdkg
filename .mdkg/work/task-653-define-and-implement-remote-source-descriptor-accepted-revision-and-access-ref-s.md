@@ -10,15 +10,15 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: []
-blocks: [test-339]
-refs: [goal-51, task-650, test-338, dec-61, dec-62, edd-62]
+blocked_by: [task-651]
+blocks: [task-654, test-339]
+refs: [goal-51, task-650, test-338, dec-61, dec-62, dec-64, edd-62, edd-64]
 context_refs: []
 evidence_refs: []
 aliases: []
 skills: [service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-05
 ---
 # Overview
 
@@ -32,6 +32,8 @@ descriptors, accepted revision evidence, and opaque authenticated access refs.
 - Accepted revision evidence records branch/tag/commit/hash/actor/ref/timestamp
   and validation receipt refs without implying deployment policy.
 - Access refs and policy refs are accepted as opaque references only.
+- Access refs are validated as external Git auth handles, capability refs,
+  policy refs, or proof hashes; mdkg does not resolve or store credentials.
 - Raw credentials, PATs, SSH key material, agent socket paths, and provider auth
   payloads are rejected or diagnosed before release.
 - Fixtures cover valid generic values, unknown-but-shaped custom values,
@@ -59,5 +61,7 @@ descriptors, accepted revision evidence, and opaque authenticated access refs.
 
 - `dec-61`
 - `dec-62`
+- `dec-64`
 - `edd-62`
+- `edd-64`
 - `test-339`

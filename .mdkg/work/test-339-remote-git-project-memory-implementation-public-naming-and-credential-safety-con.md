@@ -10,16 +10,16 @@ owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-653, task-654, task-655]
+blocked_by: [task-653, task-654, task-656, task-655]
 blocks: []
-refs: [goal-51, task-650, test-338, dec-61, dec-62, edd-62, edd-63]
+refs: [goal-51, goal-53, task-650, test-338, dec-61, dec-62, dec-63, dec-64, edd-62, edd-63, edd-64, test-340]
 context_refs: []
 evidence_refs: []
 aliases: []
 skills: [service-boundary-ownership-check, verify-close-and-checkpoint]
 cases: []
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-05
 ---
 # Overview
 
@@ -31,6 +31,7 @@ project-memory primitives.
 - `goal-52`
 - `task-653`
 - `task-654`
+- `task-656`
 - `task-655`
 - source, docs, templates, generated references, fixtures, and release notes
   changed by the implementation lane
@@ -43,17 +44,19 @@ project-memory primitives.
 
 # Test Cases
 
-- Public names are generic: source descriptor, remote source ref, access ref,
-  policy ref, accepted revision, graph discovery, history query, why query,
-  next-work query, and agent working loop.
+- Public names are generic: `mdkg git`, source descriptor, remote source ref,
+  access ref, policy ref, accepted revision, graph discovery, closeout, push
+  readiness, and push receipt.
 - No public CLI/docs/template/fixture/release-note surface brands these
   primitives around a downstream product/runtime.
 - Credential-shaped values are rejected or diagnosed: PATs, SSH keys, agent
   sockets, bearer tokens, provider auth payloads, and live secret values.
 - Accepted revision evidence contains refs/hashes/timestamps/validation
   receipts without implying deployment or runtime policy.
-- Remote graph inspection remains read-only unless an explicit writable local
-  repo operation is authorized.
+- Project-memory semantic query UX for `history`, `why`, and `next-work` is not
+  implemented or release-claimed in this lane.
+- `mdkg git` push requires explicit writable authority, external Git auth, push
+  readiness evidence, and refs-first receipts.
 - Full package and docs gates pass before any publish recommendation.
 
 # Results / Evidence
