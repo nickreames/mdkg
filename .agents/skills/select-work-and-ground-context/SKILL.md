@@ -31,10 +31,16 @@ Choose the correct work item and load the smallest deterministic context needed 
 4. If the task is not known and no goal is active, read `AGENT_START.md` and use `mdkg next` or `mdkg search "<query>"` to narrow candidates.
 5. Use `mdkg show <id> --meta` when you only need the card and link metadata.
 6. Confirm the selected node has the right constraints, related design docs, and current status.
-7. If the task is ambiguous, resolve that before building a pack.
-8. If the chosen task is ready to be claimed in a goal, hand off to `mdkg goal claim <id>` in the writer stage; otherwise hand off to `mdkg task start <id>` for task-like status changes.
-9. If resuming closeout work for a feat or epic, inspect the latest relevant checkpoint before deciding what remains open.
-10. Treat this stage as read-only: inspect and decide, but do not mutate mdkg state or commit.
+7. When release evidence, website copy, docs, or changelog state are involved,
+   classify the target surface before choosing work: package/runtime truth,
+   docs/reference truth, public positioning, or internal operational evidence.
+8. If internal release evidence appears to conflict with public positioning
+   copy, create or select a docs/reference/open-question node unless the active
+   node explicitly owns public copy and the user has approved that direction.
+9. If the task is ambiguous, resolve that before building a pack.
+10. If the chosen task is ready to be claimed in a goal, hand off to `mdkg goal claim <id>` in the writer stage; otherwise hand off to `mdkg task start <id>` for task-like status changes.
+11. If resuming closeout work for a feat or epic, inspect the latest relevant checkpoint before deciding what remains open.
+12. Treat this stage as read-only: inspect and decide, but do not mutate mdkg state or commit.
 
 ## Outputs
 
