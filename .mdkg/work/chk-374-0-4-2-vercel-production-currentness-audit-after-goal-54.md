@@ -28,10 +28,13 @@ After `goal-54` closed and `origin/main` reached
 both public projects reached `READY` and live production-domain route checks
 passed.
 
-The generated CLI reference gap is closed live. The audit did find one separate
-copy gap on `mdkg.dev`: homepage 0.4.2 launch-track text still says production
-launch waits for npm postpublish validation, even though `chk-370` records that
-0.4.2 publish and postpublish validation are complete.
+The generated CLI reference gap is closed live. A later review corrected one
+classification error in this checkpoint: homepage launch-track copy was treated
+as a release-contract gap, but `mdkg.dev` homepage copy is a public positioning
+surface, not an automatic projection of internal npm, Vercel, or checkpoint
+evidence. Current capability facts and release-validation details belong in
+`docs.mdkg.dev`, generated CLI reference, and `CHANGELOG.md` unless a
+public-copy task explicitly owns homepage wording.
 
 # Scope Covered
 
@@ -46,7 +49,7 @@ Keep `scope` frontmatter updated when possible.
   `dpl_5Wg4YU2M6WfkdbiutjK1GKtqcv3M`, project
   `prj_3Aoh90VnkqNmqM6AnX9t72fSULEd`, commit `57733b67`.
 - Live artifacts captured under `/private/tmp/mdkg-vercel-live-57733b67/`.
-- New follow-up node: `task-662`.
+- Corrective follow-up node: `task-662`.
 
 ## Boundaries
 
@@ -60,10 +63,11 @@ Keep `scope` frontmatter updated when possible.
 
 # Decisions Captured
 
-- Do not call the public web surface 100% complete while stale postpublish
-  gating copy remains visible on the live homepage.
-- Track that gap as a small mdkg-dev follow-up (`task-662`) instead of changing
-  source inside this validation pass.
+- Do not change `mdkg.dev` homepage copy solely because internal npm
+  postpublish, Vercel, or checkpoint evidence advanced.
+- Treat docs/reference/changelog surfaces as the release evidence surfaces.
+- Track the original homepage-copy finding as a false positive and close it
+  through `task-662` with docs and skill guardrails.
 
 # Implementation Summary
 
@@ -90,11 +94,12 @@ searched real production routes on `mdkg.dev` and `docs.mdkg.dev`.
   - pass: live demo routes `/demos/`, `/demo/1/`, and `/demo/1/output/` render
     accepted demo, sanitized graph/file/output surfaces, Ocean Flow, Astro,
     React Island, noindex output route, and public-safety copy.
-  - gap: live homepage still says production launch waits for npm postpublish
-    validation in the release target card.
-- Residual risk: public copy is mostly current, but the stale gating sentence
-  should be removed or rewritten before claiming 100% public-surface
-  completeness.
+  - corrected: the homepage postpublish sentence was reclassified as public
+    positioning copy, not a release-currentness blocker. No `mdkg.dev`
+    homepage source change is required by this audit.
+- Residual risk: future release audits can over-route internal operational
+  evidence into public positioning copy unless skills and docs explain the
+  surface boundary.
 
 # Verification / Testing
 
@@ -109,22 +114,24 @@ searched real production routes on `mdkg.dev` and `docs.mdkg.dev`.
   under `/private/tmp/mdkg-vercel-live-57733b67/`.
 - command: `rg` marker checks against fetched HTML/text artifacts
 - result: expected version, Git lifecycle, docs, demo, noindex, sitemap, and
-  safety markers passed; stale homepage postpublish copy was detected.
+  safety markers passed. The homepage postpublish-copy finding was later
+  reclassified as a false-positive release-currentness gap.
 
 ## Pass / Fail Status
 
-- status: not 100% complete due to one copy gap; deployment/build/route health
-  otherwise passed.
+- status: deployment/build/route health passed. The previous copy-gap
+  classification is superseded by `task-662`.
 
 ## Known Warnings
 
-- warning: `mdkg-dev/src/pages/index.astro` still contains pre-postpublish
-  gating language:
-  `production launch still waits for npm postpublish validation`.
+- warning: none for `mdkg-dev` homepage source from this audit. Future audits
+  should classify public surfaces before turning internal evidence into copy
+  work.
 
 # Known Issues / Follow-ups
 
-- `task-662`: refresh mdkg.dev postpublish launch-track copy.
+- `task-662`: correct public-surface copy boundary and docs release evidence
+  policy.
 
 ## Follow-up Refs
 

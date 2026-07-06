@@ -45,16 +45,31 @@ Finish work with evidence, validation, and minimal memory drift.
 
 Use this local repo-only checklist before publishing mdkg:
 
-1. Confirm package intent and version in `package.json`, `package-lock.json`,
+1. Classify public surfaces before turning release evidence into copy work:
+   package/runtime truth, docs/reference truth, public positioning, and
+   internal operational evidence are different surfaces.
+2. Confirm package intent and version in `package.json`, `package-lock.json`,
    `README.md`, `CLI_COMMAND_MATRIX.md`, generated docs, and `CHANGELOG.md`.
-2. Map every publish-bound change in `origin/main..HEAD` to release notes. Treat
-   missing changelog coverage, stale public version strings, and generated-doc
-   drift as publish blockers, not cosmetic notes.
-3. Confirm release-line intent before bumping: when a change crosses a
+3. Map every publish-bound change in `origin/main..HEAD` to release notes. Treat
+   missing changelog coverage, stale package/docs/reference version strings, and
+   generated-doc drift as publish blockers, not cosmetic notes.
+4. Treat public positioning surfaces such as `mdkg.dev` homepage, demo pages, and
+   trust pages as copy/positioning surfaces, not automatic projections of
+   internal release, npm, Vercel, or checkpoint evidence. Change them only when
+   the current copy is objectively false for users, an active public-copy task
+   explicitly owns the wording, or the user approves the positioning change.
+5. Route current capability facts, command details, changelog entries, and
+   release validation evidence to docs/reference/changelog surfaces first. Do
+   not promote internal provider ids, postpublish state, or operator workflow
+   details into homepage copy by default.
+6. If a release audit finds ambiguous public copy, record it as an open question
+   or docs/reference follow-up instead of a prescriptive homepage implementation
+   task.
+7. Confirm release-line intent before bumping: when a change crosses a
    capability-track boundary, prefer the next minor release line over patch-style
    continuation.
-4. Use a clean npm cache path such as `/private/tmp/mdkg-npm-cache`.
-5. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`,
+8. Use a clean npm cache path such as `/private/tmp/mdkg-npm-cache`.
+9. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`,
    `npm run test`, `npm run cli:check`, `npm run cli:contract`,
    `npm run docs:check`, `node dist/cli.js validate --json`,
    `node dist/cli.js validate --changed-only --json`, `npm run smoke:consumer`,
@@ -62,16 +77,16 @@ Use this local repo-only checklist before publishing mdkg:
    `npm run smoke:capabilities`, `npm run smoke:archive-work`,
    `npm run smoke:bundle`, `npm run smoke:bundle-import`,
    `npm run smoke:subgraph`, and `npm run smoke:visibility`.
-6. Run `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
+10. Run `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
    and confirm the tarball includes `dist/cli.js`, compiled folders,
    `dist/init/`, release docs, and `scripts/postinstall.js`.
-7. Run the publish dry-run before recommending publish readiness:
+11. Run the publish dry-run before recommending publish readiness:
 
 ```bash
 NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/
 ```
 
-8. Confirm registry state with these checks; readiness requires latest below the
+12. Confirm registry state with these checks; readiness requires latest below the
    target and the target version not already published:
 
 ```bash
@@ -79,10 +94,10 @@ npm view mdkg version --registry=https://registry.npmjs.org/
 npm view mdkg@<version> version --registry=https://registry.npmjs.org/
 ```
 
-9. Stop with either a publish-readiness recommendation or an exact gaps list.
+13. Stop with either a publish-readiness recommendation or an exact gaps list.
    Do not run real `npm publish`, create a tag, or push release commits without
    explicit user approval after the dry-run gates.
-10. When publishing with an exported `NPM_TOKEN`, create a temporary npm
+14. When publishing with an exported `NPM_TOKEN`, create a temporary npm
    userconfig that references the environment variable literally, then verify
    auth before publish:
 
@@ -93,7 +108,7 @@ NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm whoami --registry=https://regis
 
 Do not print the token, do not write the expanded token into committed files,
 and do not add unsupported `always-auth` config.
-11. Publish only after explicit user approval, the registry still shows the
+15. Publish only after explicit user approval, the registry still shows the
     previous version, and npm auth is known to have write access. Use the
     verified userconfig when relying on `NPM_TOKEN`:
 
@@ -101,9 +116,9 @@ and do not add unsupported `always-auth` config.
 NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc
 ```
 
-12. If publishing fails with 2FA, token policy, or permission errors, do not
+16. If publishing fails with 2FA, token policy, or permission errors, do not
     commit; fix npm auth or package policy, then rerun publish.
-13. After successful publish, verify `npm view mdkg version`, `npm view mdkg dist-tags`,
+17. After successful publish, verify `npm view mdkg version`, `npm view mdkg dist-tags`,
     and a temp-dir global install of the latest package before closing
     post-publish validation.
 

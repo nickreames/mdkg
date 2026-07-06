@@ -22,6 +22,8 @@ runtime policy does not leak into public mdkg naming.
   sandbox, backend, template, or product-specific public surface.
 - Before writing release, publish-readiness, handoff, or skill language that
   could accidentally brand generic mdkg behavior around one downstream product.
+- Before creating or closing a task that would change public website copy from
+  internal release, deploy, npm, provider, or checkpoint evidence.
 
 ## Inputs
 
@@ -46,6 +48,9 @@ runtime policy does not leak into public mdkg naming.
   handoffs, coordination evidence, and follow-up graph routing.
 - `templates/examples`: starter content and fixture catalogs consumed by
   runtimes through independent source descriptors.
+- `public positioning`: homepage, demo, trust, and launch narrative copy. These
+  pages can mention released capabilities, but they are not automatic mirrors of
+  internal operational evidence.
 
 ## Steps
 
@@ -56,14 +61,21 @@ runtime policy does not leak into public mdkg naming.
 4. For mdkg-owned primitives, keep names generic and public-safe:
    remote/source descriptors, access refs, accepted revision proofs, graph
    discovery, history/why/next-work queries, and agent working-loop operations.
-5. For authenticated Git access, store only opaque refs, capability names,
+5. Classify each public surface before creating copy work:
+   package/runtime truth, docs/reference truth, public positioning, and
+   internal operational evidence are different ownership surfaces.
+6. For authenticated Git access, store only opaque refs, capability names,
    hashes, or policy references. Do not store credentials, PATs, SSH key
    material, agent socket paths, raw provider payloads, or live secret values.
-6. If product-specific runtime behavior is needed, record it as downstream
+7. If product-specific runtime behavior is needed, record it as downstream
    consumer policy or private handoff context, not as a public mdkg primitive.
-7. If the active publish/release node is not ready to own a primitive, create or
+8. If internal release/deploy evidence needs to be public, route command truth,
+   release facts, and validation evidence to docs/reference/changelog first.
+   Change public positioning only when it is objectively false for users, an
+   active public-copy node owns it, or the user approves the positioning change.
+9. If the active publish/release node is not ready to own a primitive, create or
    update a separate mdkg-only planning node instead of overloading the release.
-8. At closeout, record owner, consumer, forbidden surfaces, validation gates,
+10. At closeout, record owner, consumer, forbidden surfaces, validation gates,
    and any intentionally deferred successor work.
 
 ## Outputs
@@ -83,6 +95,8 @@ runtime policy does not leak into public mdkg naming.
   or run live runtime/sandbox work unless the active node explicitly authorizes
   it.
 - Do not add product-specific names to public mdkg primitives.
+- Do not turn internal Vercel/npm/provider/checkpoint status into homepage or
+  launch-narrative copy by default.
 - Do not store raw Git credentials, access tokens, SSH key material, raw prompts,
   raw model output, queue bodies, provider dumps, or runtime state roots in
   mdkg.
