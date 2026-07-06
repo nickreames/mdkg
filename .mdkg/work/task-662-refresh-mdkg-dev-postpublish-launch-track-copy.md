@@ -36,8 +36,8 @@ coverage belong in `docs.mdkg.dev`, generated references, and `CHANGELOG.md`.
 - No `mdkg-dev/src/pages/index.astro` or other homepage source is changed.
 - `chk-374` is corrected so the homepage copy finding is recorded as a
   false-positive classification, not a remaining launch blocker.
-- `docs.mdkg.dev` explains that docs/reference/changelog surfaces carry release
-  evidence while homepage/demo/trust pages are public positioning surfaces.
+- Public docs stay reader-facing and do not expose internal release-copy
+  governance or agent-process meta commentary.
 - First-party skills are hardened so future release audits classify surfaces
   before creating public-copy implementation tasks from internal npm, Vercel,
   provider, or checkpoint evidence.
@@ -49,7 +49,6 @@ coverage belong in `docs.mdkg.dev`, generated references, and `CHANGELOG.md`.
 
 List files/directories expected to change.
 
-- `docs/src/content/docs/start-here/safety-boundaries.md`
 - `.mdkg/skills/verify-close-and-checkpoint/SKILL.md`
 - `.mdkg/skills/service-boundary-ownership-check/SKILL.md`
 - `.mdkg/skills/select-work-and-ground-context/SKILL.md`
