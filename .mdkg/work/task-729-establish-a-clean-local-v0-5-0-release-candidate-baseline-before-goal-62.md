@@ -2,13 +2,13 @@
 id: task-729
 type: task
 title: Establish a clean local v0.5.0 release candidate baseline before Goal 62
-status: todo
+status: done
 priority: 1
 next: test-400
 tags: [release, baseline, git, local-only]
 owners: []
 links: []
-artifacts: []
+artifacts: [commit:f28b1f74, commit:a4e17899]
 relates: [goal-56, goal-61, goal-62]
 blocked_by: []
 blocks: [test-400]

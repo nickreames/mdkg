@@ -8,10 +8,10 @@ owners: []
 links: []
 artifacts: []
 relates: [goal-62, goal-63, goal-64]
-refs: [goal-61, goal-62, goal-63, goal-64, edd-71, dec-73, prd-11]
+refs: [goal-61, goal-62, goal-63, goal-64, edd-71, dec-73, dec-74, prd-11]
 aliases: [package-first-loop-release-messaging]
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Context
 
@@ -32,6 +32,8 @@ and activation order before public implementation begins.
 - Package publication and verification precede website activation.
 - `dec-73` owns the accepted incremental announcement placement, security-first
   walkthrough, top-level Loops docs, and dormant-route behavior.
+- `dec-74` owns the accepted Process Rail composition, exact announcement copy,
+  explicit mdkg-versus-harness boundary, and shared release-state contract.
 
 # Alternatives considered
 
@@ -54,6 +56,7 @@ separate in `dec-73` so this audience and evidence policy stays stable.
 - `edd-71`
 - `prd-11`
 - `dec-73`
+- `dec-74`
 - `goal-62`
 - `goal-63`
 - `goal-64`

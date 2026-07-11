@@ -2,18 +2,18 @@
 id: test-400
 type: test
 title: Clean committed release candidate baseline precedes Goal 62 activation
-status: todo
+status: done
 priority: 1
 prev: task-729
 next: task-710
 tags: [release, baseline, git, contract]
 owners: []
 links: []
-artifacts: []
+artifacts: [commit:f28b1f74, commit:a4e17899, package:0.4.2]
 relates: [goal-56, goal-61, goal-62, task-729]
 blocked_by: [task-729]
 blocks: [goal-62, task-710]
-refs: [task-729, chk-382, chk-426]
+refs: [task-729, chk-382, chk-426, chk-427, goal-62, task-710]
 context_refs: [goal-56, goal-61, goal-62, dec-73]
 evidence_refs: []
 aliases: []

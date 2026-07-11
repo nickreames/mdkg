@@ -18,13 +18,13 @@ artifacts: []
 relates: [goal-61, goal-62, goal-63]
 blocked_by: [goal-63]
 blocks: []
-refs: [goal-61, chk-426, goal-62, goal-63, dec-73, goal-42, goal-50]
-context_refs: [goal-61, chk-426, goal-62, goal-63, edd-70, dec-67, edd-71, dec-68, dec-73, prd-11, edd-72, dec-69, goal-42, goal-50]
+refs: [goal-61, chk-426, goal-62, goal-63, dec-73, dec-74, prop-8, goal-42, goal-50]
+context_refs: [goal-61, chk-426, goal-62, goal-63, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50]
 evidence_refs: []
 aliases: [v0-5-0-publish-and-production-verification]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Objective
 

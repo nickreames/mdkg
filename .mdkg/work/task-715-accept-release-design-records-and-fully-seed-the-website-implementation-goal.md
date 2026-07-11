@@ -2,7 +2,7 @@
 id: task-715
 type: task
 title: Accept release design records and fully seed the website implementation goal
-status: todo
+status: done
 priority: 1
 epic: epic-231
 prev: task-714
@@ -12,14 +12,14 @@ links: []
 artifacts: []
 relates: [goal-62, goal-63, test-387]
 blocked_by: [task-714]
-blocks: []
-refs: [goal-63, test-387, edd-71, dec-68, dec-73, prd-11]
-context_refs: [goal-62, goal-63, epic-231, dec-73, task-714]
+blocks: [test-387]
+refs: [goal-63, test-387, edd-71, dec-68, dec-73, dec-74, prd-11, prop-7, prop-8, epic-236, epic-237, epic-238, epic-239, epic-240]
+context_refs: [goal-62, goal-63, epic-231, edd-71, dec-68, dec-73, dec-74, prd-11, prop-7, prop-8, task-714]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Overview
 
@@ -55,10 +55,27 @@ List files/directories expected to change.
 Run `test-387`, validate the graph, show/next Goal 63, and dry-run a concise pack
 for its first implementation task.
 
+# Results / Evidence
+
+- Accepted planning state is mutually consistent across `edd-71`, `dec-68`,
+  `dec-73`, `dec-74`, `prd-11`, `prop-7`, and `prop-8`.
+- Allocated five epics (`epic-236` through `epic-240`), thirteen tasks
+  (`task-730` through `task-742`), and seven tests (`test-401` through
+  `test-407`) through `mdkg new`.
+- Goal 63 now contains exact manifest, Process Rail, Loops IA, security
+  walkthrough, upgrade/reference, smoke, browser, accessibility, local-commit,
+  and Goal 64 handoff contracts.
+- Goal 63 points to `task-730` first and remains paused behind Goal 62 until
+  `test-387` passes and Goal 62 closes.
+- Package, website, docs, generated command, test, release, and deployment source
+  files remain untouched in this mdkg-only planning task.
+
 # Links / Artifacts
 
 - `goal-63`
 - `edd-71`
 - `dec-68`
 - `dec-73`
+- `dec-74`
+- `prop-8`
 - `prd-11`

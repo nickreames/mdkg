@@ -2,7 +2,7 @@
 id: test-383
 type: test
 title: v0.5.0 public capability claims are source backed
-status: todo
+status: done
 priority: 1
 epic: epic-229
 tags: [release, claims, evidence, capabilities]
@@ -49,8 +49,27 @@ built/package inspection outputs.
 
 # Results / Evidence
 
-Pending Goal 1 and `task-710`.
+PASS on 2026-07-10.
+
+- `task-710` traces every candidate public capability to parser/validation
+  source, command descriptors, packaged CLI help, package metadata, seven seed
+  files, release tests, or corrected dogfood.
+- The inventory covers loop creation and command discovery, typed readiness,
+  evidence and closeout, continuation routing, provenance drift, observational
+  read/dry-run behavior, all seven seeds, compatibility, and runtime ownership.
+- Installed-package and compatibility claims reconcile with `chk-426` and
+  `test-382`; package availability remains Missing until Goal 64 publishes and
+  verifies v0.5.0.
+- `read-only audit` is explicitly bounded to no functional source changes while
+  allowing mdkg findings, tasks, decisions, checkpoints, waivers, and evidence.
+- Autonomous execution, self-healing, scanner, hosted-runtime, ROI, adoption,
+  scale, superiority, and current v0.5.0 availability claims are classified
+  Missing and excluded from downstream copy.
+- Public examples must be purpose-built from the verified workflow and cannot
+  copy private dogfood receipts.
 
 # Notes / Follow-ups
 
 - Missing claims cannot enter final copy.
+- `task-711` may translate Known capabilities into intended value, but any
+  Inferred value must remain qualified and cannot be promoted to measured proof.
