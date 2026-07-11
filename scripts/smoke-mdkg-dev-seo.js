@@ -21,6 +21,7 @@ function main() {
   buildSite();
 
   const pkg = JSON.parse(readText(path.join(repoRoot, "package.json")));
+  const releaseManifest = JSON.parse(readText(path.join(repoRoot, "release", "public-release.json")));
   const dist = path.join(repoRoot, "mdkg-dev", "dist");
   const home = readText(path.join(dist, "index.html"));
   assert(home.includes('<link rel="canonical" href="https://mdkg.dev/'), "homepage missing canonical URL");
@@ -44,7 +45,11 @@ function main() {
   assert(jsonLd["@type"] === "SoftwareApplication", "homepage JSON-LD type mismatch");
   assert(jsonLd.name === "Markdown Knowledge Graph", "homepage JSON-LD name mismatch");
   assert(jsonLd.alternateName === "mdkg", "homepage JSON-LD alternateName mismatch");
-  assert(jsonLd.softwareVersion === pkg.version, "homepage JSON-LD softwareVersion must match package.json");
+  if (releaseManifest.state === "published") {
+    assert(jsonLd.softwareVersion === pkg.version, "published homepage JSON-LD softwareVersion must match package.json");
+  } else {
+    assert(!Object.hasOwn(jsonLd, "softwareVersion"), "draft homepage JSON-LD must not advertise the unpublished package version");
+  }
   assert(home.includes("Team customization"), "homepage missing user-facing customization badge");
   assert(home.includes("Upgradable kernel"), "homepage missing upgradable kernel copy");
   for (const forbidden of ["launch track", "postpublish", "postdeploy", "production launch", "release-readiness surface"]) {

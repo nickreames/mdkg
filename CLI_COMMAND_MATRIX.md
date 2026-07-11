@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
-as_of: 2026-07-05
-package_version_in_source: 0.4.2
+as_of: 2026-07-11
+package_version_in_source: 0.5.0
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 

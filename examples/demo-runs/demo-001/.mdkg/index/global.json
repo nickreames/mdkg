@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-03T22:30:29.709Z",
+    "generated_at": "2026-07-11T18:36:58.116Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/demo-runs/demo-001",
     "workspaces": [
       "root"

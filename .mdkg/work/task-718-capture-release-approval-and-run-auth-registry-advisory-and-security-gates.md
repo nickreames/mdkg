@@ -2,7 +2,7 @@
 id: task-718
 type: task
 title: Capture release approval and run auth registry advisory and security gates
-status: todo
+status: progress
 priority: 1
 epic: epic-233
 prev: task-717
@@ -20,7 +20,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Overview
 

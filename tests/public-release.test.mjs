@@ -30,7 +30,7 @@ test("canonical manifest is strict and remains draft", () => {
   const after = sha256(publicReleasePaths.manifest);
 
   assert.deepEqual(projection.manifest, canonicalManifest);
-  assert.equal(projection.package_version, "0.4.2");
+  assert.equal(projection.package_version, "0.5.0");
   assert.equal(projection.published, false);
   assert.equal(projection.preview_visible, false);
   assert.equal(projection.visible, false);

@@ -1,12 +1,51 @@
 {
   "generated_from": "CHANGELOG.md",
-  "package_version": "0.4.2",
-  "latest_release": "0.4.2",
+  "package_version": "0.5.0",
+  "latest_release": "0.5.0",
   "unreleased": {
     "sections": {},
     "item_count": 0
   },
   "releases": [
+    {
+      "version": "0.5.0",
+      "date": "2026-07-11",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `loop` as a first-class mdkg work node for reusable, durable agentic processes that can coordinate goals, tasks, tests, spikes, proposals, decisions, checkpoints, receipts, evidence, and repeated attempts.",
+          "Added the semantic `mdkg loop list`, `show`, `fork`, `plan`, `next`, and `runs` command family, plus deterministic `mdkg new loop` guidance for raw loops versus bundled templates.",
+          "Added identity-bound loop readiness metadata for pre-run questions, action approvals, evidence lanes, and paired decision/approval waivers.",
+          "Added immutable template provenance, content hashes, stale-fork warnings, default child materialization, and an explicit planning-only fork mode.",
+          "Added seven bundled read-only or planning loop templates for security, frontend design, backend/API/CLI design, tech-stack practices, duplication and linting, test/CI/skill infrastructure, and user-story audits.",
+          "Added the reusable `pursue-mdkg-loop` agent skill to keep authorized child lanes moving, recover blockers through grounded spikes and proposals, and close only against the loop definition of done.",
+          "Added a gated mdkg.dev announcement and top-level Loops documentation with a purpose-built read-only security audit walkthrough. Public promotion remains controlled by the shared source release manifest."
+        ],
+        "Changed": [
+          "Integrated loops into parser/template validation, generic discovery, SQLite/JSON indexes, search/show/list output, deterministic pack traversal, generated help, command contracts, init assets, and upgrade fallback paths.",
+          "Made loop fork dry-runs observational across JSON and SQLite backends: no ID reservation, event write, index persistence, or graph/filesystem mutation.",
+          "Made read-only loop commands use non-persisting index projections and made `loop next` exhaust authorized nested work and blocker-recovery lanes before reporting the whole loop blocked.",
+          "Kept loop templates, scoped forks, and run-bearing state under one `loop` node type; mdkg preserves orchestration state while the coding-agent harness remains responsible for executing agents and tools.",
+          "Added installed-package smoke coverage for every bundled loop template and a public-repository release-readiness workflow across the minimum supported Node version and current Node line.",
+          "Cleaned mdkg.dev/docs public copy and demo proof surfaces while preserving the existing quickstart-first product journey and Pre-v1 public-alpha scope."
+        ],
+        "Fixed": [
+          "Fixed readiness projection so unrelated decisions, approvals, evidence, and waivers cannot satisfy a different question, action, or evidence lane.",
+          "Fixed loop routing so one blocked child does not halt other authorized work, and whole-loop blocking occurs only after useful work and recovery paths are exhausted.",
+          "Fixed stale-template handling to warn from recorded template identity and content hash without silently rewriting scoped forks."
+        ],
+        "Security": [
+          "Hardened graph target writes against symlink containment escapes before any destination mutation.",
+          "Bounded ZIP entry count, compressed size, declared output, total output, and expansion ratio before bundle or subgraph inflation."
+        ]
+      },
+      "item_count": 18,
+      "highlights": [
+        "Added `loop` as a first-class mdkg work node for reusable, durable agentic processes that can coordinate goals, tasks, tests, spikes, proposals, decisions, checkpoints, receipts, evidence, and repeated attempts.",
+        "Added the semantic `mdkg loop list`, `show`, `fork`, `plan`, `next`, and `runs` command family, plus deterministic `mdkg new loop` guidance for raw loops versus bundled templates.",
+        "Added identity-bound loop readiness metadata for pre-run questions, action approvals, evidence lanes, and paired decision/approval waivers."
+      ]
+    },
     {
       "version": "0.4.2",
       "date": "2026-07-05",

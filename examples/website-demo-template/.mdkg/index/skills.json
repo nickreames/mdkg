@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-03T22:30:29.342Z",
+    "generated_at": "2026-07-11T18:36:57.736Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/website-demo-template",
     "skills_root": ".mdkg/skills",
     "skill_count": 5

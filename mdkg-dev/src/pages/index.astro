@@ -10,7 +10,6 @@ import LoopAnnouncement from "../components/LoopAnnouncement.astro";
 import { publicRelease } from "../data/publicRelease.mjs";
 import packageJson from "../../../package.json";
 
-const releaseTargetVersion = packageJson.version;
 const docsBaseUrl = String(import.meta.env.PUBLIC_MDKG_DOCS_URL || "https://docs.mdkg.dev").replace(/\/$/, "");
 
 const structuredData = {
@@ -20,7 +19,7 @@ const structuredData = {
   alternateName: "mdkg",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "macOS, Linux, Windows",
-  softwareVersion: releaseTargetVersion,
+  ...(publicRelease.published ? { softwareVersion: packageJson.version } : {}),
   description: "Git-native project memory for AI coding agents: structured Markdown, context packs, handoffs, checkpoints, and validation.",
   url: "https://mdkg.dev",
   codeRepository: "https://github.com/nickreames/mdkg"

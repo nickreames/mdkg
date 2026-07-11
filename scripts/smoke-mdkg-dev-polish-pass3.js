@@ -54,7 +54,10 @@ function main() {
   const demoScriptFollowup = readText(path.join(repoRoot, ".mdkg", "work", "task-532-author-deterministic-mdkg-terminal-demo-script.md"));
   const demoProofFollowup = readText(path.join(repoRoot, ".mdkg", "work", "task-533-harden-demo-graph-public-proof-path-before-canonical-linking.md"));
   const baseLayoutSource = readText(path.join(repoRoot, "mdkg-dev", "src", "layouts", "BaseLayout.astro"));
+  const marketingReleaseSource = readText(path.join(repoRoot, "mdkg-dev", "src", "data", "publicRelease.mjs"));
   const docsConfigSource = readText(path.join(repoRoot, "docs", "astro.config.mjs"));
+  const docsReleaseSource = readText(path.join(repoRoot, "docs", "src", "data", "publicRelease.mjs"));
+  const releasePolicySource = readText(path.join(repoRoot, "release", "public-release.mjs"));
 
   for (const expected of [
     "mdkg --version",
@@ -91,8 +94,11 @@ function main() {
   assertIncludes(docsBridge, "Redirecting to: https://docs.mdkg.dev/", "marketing /docs redirect");
   assertIncludes(docsBridge, 'http-equiv="refresh"', "marketing /docs redirect");
   assertIncludes(docsBridge, 'name="robots" content="noindex"', "marketing /docs redirect");
-  assertIncludes(baseLayoutSource, "PUBLIC_MDKG_PREVIEW_NOINDEX", "marketing preview noindex policy");
-  assertIncludes(docsConfigSource, "PUBLIC_MDKG_PREVIEW_NOINDEX", "docs preview noindex policy");
+  assertIncludes(releasePolicySource, "PUBLIC_MDKG_PREVIEW_NOINDEX", "shared preview noindex policy");
+  assertIncludes(marketingReleaseSource, "loadPublicReleaseProjection", "marketing release projection");
+  assertIncludes(docsReleaseSource, "loadPublicReleaseProjection", "docs release projection");
+  assertIncludes(baseLayoutSource, "publicRelease.site_noindex", "marketing preview noindex projection");
+  assertIncludes(docsConfigSource, "publicRelease.site_noindex", "docs preview noindex projection");
   assertExcludes(sitemap, "https://mdkg.dev/docs/", "sitemap");
   assertExcludes(sitemap, "vercel.app", "sitemap");
 

@@ -355,6 +355,10 @@ test("task commands print deterministic json receipts", () => {
   assert.match(checkpointContent, /tests:\/\/task-done-json\.txt/);
   assert.match(checkpointContent, /^# Decisions Captured$/m);
   assert.match(checkpointContent, /^# Implementation Summary$/m);
+  assert.match(checkpointContent, /^## Changed Surfaces$/m);
+  assert.match(checkpointContent, /^## Boundaries$/m);
+  assert.match(checkpointContent, /^## Known Warnings$/m);
+  assert.match(checkpointContent, /^## Follow-up Refs$/m);
   assert.match(checkpointContent, /^# Links \/ Artifacts$/m);
   assert.doesNotMatch(checkpointContent, /What was completed in this phase\?/);
 

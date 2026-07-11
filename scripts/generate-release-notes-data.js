@@ -6,7 +6,9 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const changelogPath = path.join(root, "CHANGELOG.md");
 const packagePath = path.join(root, "package.json");
+const publicReleasePath = path.join(root, "release", "public-release.json");
 const outputPath = path.join(root, "docs", "_generated", "release-notes.json");
+const gatedReleaseSummaryPath = path.join(root, "docs", "src", "components", "ReleaseV050Supplement.astro");
 const publicChangelogPaths = [
   path.join(root, "docs", "src", "content", "docs", "project", "changelog.md"),
   path.join(root, "docs", "project", "changelog.md"),
@@ -136,13 +138,28 @@ function buildReleaseNotesData() {
 }
 
 function verifyPublicChangelogMentions(data) {
-  const requiredVersions = data.releases.slice(0, Math.min(5, data.releases.length)).map((release) => release.version);
+  const publicRelease = JSON.parse(readText(publicReleasePath));
+  const gatedDraftVersion =
+    publicRelease.state === "draft" && publicRelease.target_version === data.package_version
+      ? data.package_version
+      : null;
+  const requiredVersions = data.releases
+    .filter((release) => release.version !== gatedDraftVersion)
+    .slice(0, Math.min(5, data.releases.length))
+    .map((release) => release.version);
   for (const filePath of publicChangelogPaths) {
     const content = readText(filePath);
     for (const version of requiredVersions) {
       if (!content.includes(`\`${version}\``)) {
         fail(`${path.relative(root, filePath)} is missing public changelog summary for ${version}`);
       }
+    }
+  }
+
+  if (gatedDraftVersion) {
+    const gatedSummary = readText(gatedReleaseSummaryPath);
+    if (!gatedSummary.includes(`v${gatedDraftVersion}`)) {
+      fail(`${path.relative(root, gatedReleaseSummaryPath)} is missing gated release summary for ${gatedDraftVersion}`);
     }
   }
 }
