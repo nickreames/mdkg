@@ -2,12 +2,12 @@
 id: goal-63
 type: goal
 title: Implement the mdkg v0.5.0 website and documentation release experience
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: The accepted v0.5.0 release experience is implemented locally with exact content design accessibility SEO responsive and browser evidence from goal-62 while release promotion remains dormant and no push or production deployment occurs.
 scope_refs: [epic-236, epic-237, epic-238, epic-239, epic-240, task-730, task-731, task-732, task-733, task-734, task-735, task-736, task-737, task-738, task-739, task-740, task-741, task-742, test-401, test-402, test-403, test-404, test-405, test-406, test-407]
-active_node: task-742
+last_active_node: task-742
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:mdkg-dev-a11y, node dist/cli.js validate --changed-only --json, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js goal show goal-63 --json, node dist/cli.js goal next goal-63 --json, node dist/cli.js pack task-730 --profile concise --dry-run --stats, git diff --check]
 max_iterations: 25
@@ -15,13 +15,13 @@ blocked_after_attempts: 3
 tags: [release, implementation, mdkg-dev, docs, 0.5.0]
 owners: []
 links: []
-artifacts: [.mdkg/artifacts/goal-62/announcement-directions/01-process-rail.png, .mdkg/artifacts/goal-62/product-design-audit-2026-07-10]
+artifacts: [.mdkg/artifacts/goal-62/announcement-directions/01-process-rail.png, .mdkg/artifacts/goal-62/product-design-audit-2026-07-10, design-qa.md, .mdkg/artifacts/goal-63/browser/process-rail-reference-comparison.png, .mdkg/artifacts/goal-63/browser/process-rail-focused-comparison.png]
 relates: [goal-61, goal-62, goal-64]
 blocked_by: []
 blocks: [goal-64]
-refs: [goal-61, goal-62, chk-440, goal-64, edd-71, dec-68, dec-73, dec-74, prd-11, prop-7, prop-8, test-387, chk-439]
+refs: [goal-61, goal-62, chk-440, goal-64, edd-71, dec-68, dec-73, dec-74, prd-11, prop-7, prop-8, test-387, chk-439, chk-489, chk-490, chk-491]
 context_refs: [goal-61, goal-62, goal-64, edd-70, edd-71, dec-67, dec-68, dec-73, dec-74, prd-11, prop-7, prop-8, task-710, task-711, task-712, task-713, task-714, task-715, test-387]
-evidence_refs: [chk-439, chk-440]
+evidence_refs: [chk-439, chk-440, chk-489, chk-490, chk-491]
 aliases: [v0-5-0-release-experience-implementation]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
@@ -130,11 +130,13 @@ global install, or production activation.
 
 # Current State
 
-Fully seeded by achieved Goal 62 with five epics, thirteen implementation tasks,
-and seven acceptance tests. `test-387`, `chk-439`, and `chk-440` prove the
-handoff. The prerequisite blocker is cleared; Goal 63 is active and has claimed
-`task-730` as the first implementation node. No Goal 63 functional work has
-started yet.
+Implementation and local verification are complete. All thirteen tasks and all
+seven acceptance tests are done with checkpoints. The shared release manifest
+remains `draft`, root package truth remains 0.4.2, and local commit
+`e28c1c0f5e3929008068e0504a118e01b92de3e8` contains the dormant website/docs
+implementation. `chk-489` and `chk-490` preserve the Goal 64 handoff and final
+acceptance receipt. No push, publish, deployment, tag, global install, or release
+activation occurred.
 
 # Iteration Log
 
@@ -146,6 +148,15 @@ started yet.
   Goal 63 ready for explicit activation at `task-730`.
 - 2026-07-11: Activated Goal 63 and claimed `task-730`; implementation remains
   untouched until the next execution pass.
+- 2026-07-11: Implemented the strict shared draft/published projection, gated
+  both Astro sites, added the accepted Process Rail and four-page Loops docs
+  journey, and kept canonical output dormant.
+- 2026-07-11: Passed the full build/test/CLI/docs/site/SEO/accessibility/loop
+  smoke ladder plus Product Design side-by-side browser QA; corrected one P2
+  command-wrap issue and closed with no remaining P0/P1/P2 finding.
+- 2026-07-11: Created dormant implementation commit
+  `e28c1c0f5e3929008068e0504a118e01b92de3e8`; retained package 0.4.2 and draft
+  manifest state for Goal 64.
 
 # Skill Improvement Candidates
 
@@ -154,3 +165,11 @@ started yet.
 # Completion Evidence
 
 - Planning handoff: passed `test-387`, `chk-439`, and Goal 62 closeout `chk-440`.
+- Implementation handoff: `chk-489`, commit
+  `e28c1c0f5e3929008068e0504a118e01b92de3e8`, and manifest SHA-256
+  `7c08cbcb6da2fce73c3945378786f1dd64192c976e155a0e79eabd7bde4a7f3a`.
+- Final acceptance: `test-401` through `test-407`, `chk-490`, `chk-491`, full required-check
+  ladder, and `design-qa.md` with `final result: passed`.
+- Release boundary: no external mutation; Goal 64 exclusively owns 0.5.0
+  versioning, publish, push, activation, deployment, global install, and
+  production verification.

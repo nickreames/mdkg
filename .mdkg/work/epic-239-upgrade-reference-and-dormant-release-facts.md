@@ -2,7 +2,7 @@
 id: epic-239
 type: epic
 title: Upgrade reference and dormant release facts
-status: todo
+status: done
 priority: 1
 tags: [release, implementation, goal-63]
 owners: []
@@ -13,7 +13,7 @@ blocked_by: []
 blocks: []
 refs: [task-738, task-739, test-406, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8]
 context_refs: [goal-61, goal-62, goal-63, goal-64, dec-73, dec-74, prd-11, prop-8]
-evidence_refs: []
+evidence_refs: [chk-449, chk-450, chk-488]
 aliases: []
 skills: []
 created: 2026-07-11

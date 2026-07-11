@@ -16,11 +16,11 @@ owners: []
 links: []
 artifacts: []
 relates: [goal-61, goal-62, goal-63]
-blocked_by: [goal-63]
+blocked_by: []
 blocks: []
-refs: [goal-61, chk-426, goal-62, goal-63, dec-73, dec-74, prop-8, goal-42, goal-50]
-context_refs: [goal-61, chk-426, goal-62, goal-63, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50]
-evidence_refs: []
+refs: [goal-61, chk-426, goal-62, goal-63, chk-491, dec-73, dec-74, prop-8, goal-42, goal-50]
+context_refs: [goal-61, chk-426, goal-62, goal-63, chk-489, chk-490, chk-491, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50]
+evidence_refs: [chk-491]
 aliases: [v0-5-0-publish-and-production-verification]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
@@ -102,16 +102,20 @@ and the final receipt records all side effects, evidence, and residual risks.
 
 # Current State
 
-Paused and blocked by `goal-63`. `goal-61` is achieved and its verified local
-release-candidate receipt is `chk-426`. When the website implementation closes,
-`task-716` is the first release mutation. Public package/site/provider side
-effects remain approval-gated.
+Paused and implementation-ready with both prerequisite goals achieved.
+`chk-426` proves the verified release candidate and `chk-491` proves the dormant
+website/docs handoff at implementation commit
+`e28c1c0f5e3929008068e0504a118e01b92de3e8`. Explicit operator activation must
+route to `task-716`; all public package/site/provider side effects remain behind
+the single bounded release approval.
 
 # Iteration Log
 
 - 2026-07-10: Created as the final gated lane of the v0.5.0 release program.
 - 2026-07-10: Removed achieved `goal-61` from unresolved blockers; `goal-63`
   remains the sole prerequisite blocker.
+- 2026-07-11: Goal 63 achieved with dormant handoff `chk-491`; cleared the final
+  prerequisite while keeping Goal 64 paused for explicit release activation.
 
 # Skill Improvement Candidates
 
