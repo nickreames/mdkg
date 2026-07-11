@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+const crypto = require("node:crypto");
+const fs = require("node:fs");
+const os = require("node:os");
 const path = require("node:path");
 const {
   assert,
@@ -10,8 +13,42 @@ const {
   repoRoot,
 } = require("./mdkg-dev-smoke-utils");
 
+const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
+const exampleRoots = [
+  "examples/demo-agentic-coding",
+  "examples/template-mdkg-dev",
+  "examples/website-demo-template",
+  "examples/demo-runs/demo-001",
+];
+
+function snapshotExampleIndexes() {
+  const snapshot = {};
+  const visit = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const filePath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        visit(filePath);
+      } else if (entry.isFile()) {
+        const relativePath = path.relative(repoRoot, filePath).split(path.sep).join("/");
+        snapshot[relativePath] = crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+      }
+    }
+  };
+  for (const rootRel of exampleRoots) {
+    visit(path.join(repoRoot, rootRel, ".mdkg", "index"));
+  }
+  return snapshot;
+}
+
+function copyExample(tempRoot, rootRel) {
+  const target = path.join(tempRoot, rootRel);
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.cpSync(path.join(repoRoot, rootRel), target, { recursive: true });
+  return target;
+}
+
 function assertExample(rootRel, searchText, expectedTitle, options = {}) {
-  const root = path.join(repoRoot, rootRel);
+  const root = options.root || path.join(repoRoot, rootRel);
   const startedAt = Date.now();
   const validate = parseJson(mdkg(["--root", root, "validate", "--json"]).stdout);
   assert(validate.ok === true, `${rootRel} did not validate`);
@@ -60,72 +97,91 @@ function assertExample(rootRel, searchText, expectedTitle, options = {}) {
 }
 
 function main() {
-  const demoReadme = readText(path.join(repoRoot, "examples", "demo-agentic-coding", "README.md"));
-  for (const expected of [
-    "First-success path",
-    "Expected results",
-    "mdkg validate --json",
-    "mdkg goal next goal-1 --json",
-    "mdkg pack spike-1 --profile concise --dry-run --stats",
-    "mdkg capability search \"pack\" --kind skill --json",
-    "under 10 minutes",
-  ]) {
-    assert(demoReadme.includes(expected), `demo README missing ${expected}`);
-  }
-  const demoDocs = readText(path.join(repoRoot, "docs", "src", "content", "docs", "advanced-alpha", "demo-graphs.md"));
-  for (const expected of [
-    "First-success path",
-    "examples/demo-agentic-coding",
-    "Use returned IDs",
-    "Do not hardcode numeric IDs",
-  ]) {
-    assert(demoDocs.includes(expected), `demo docs missing ${expected}`);
-  }
-  assertExample(
-    "examples/demo-agentic-coding",
-    "agentic coding demo",
-    "Build a one-shot agentic coding demo from mdkg context"
-  );
-  assertExample(
-    "examples/template-mdkg-dev",
-    "candidate website",
-    "Generate a candidate mdkg.dev website from a cloned graph"
-  );
-  assertExample(
-    "examples/website-demo-template",
-    "differentiated website demo",
-    "Build a complete differentiated website demo from the canonical mdkg template"
-  );
-  assertExample(
-    "examples/demo-runs/demo-001",
-    "differentiated website demo",
-    "Build a complete differentiated website demo from the canonical mdkg template",
-    { allowAchievedGoal: true }
-  );
+  const sourceIndexSnapshot = snapshotExampleIndexes();
+  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-demo-graph-smoke-"));
 
-  const subgraphs = parseJson(mdkg(["subgraph", "verify", "--all", "--json"]).stdout);
-  assert(subgraphs.ok === true, "root subgraph verification failed");
-  assert(subgraphs.count >= 2, "expected at least two registered subgraphs");
-  for (const alias of ["demo_agentic_coding", "template_mdkg_dev"]) {
-    const entry = subgraphs.subgraphs.find((item) => item.alias === alias);
-    assert(entry, `missing subgraph ${alias}`);
-    assert(entry.visibility === "private", `${alias} should be private`);
-    assert(entry.permissions.includes("read"), `${alias} should be read-only`);
-    assert(entry.error_count === 0, `${alias} has errors`);
+  try {
+    const copiedRoots = Object.fromEntries(
+      exampleRoots.map((rootRel) => [rootRel, copyExample(tempRoot, rootRel)])
+    );
+    const demoReadme = readText(path.join(repoRoot, "examples", "demo-agentic-coding", "README.md"));
+    for (const expected of [
+      "First-success path",
+      "Expected results",
+      "mdkg validate --json",
+      "mdkg goal next goal-1 --json",
+      "mdkg pack spike-1 --profile concise --dry-run --stats",
+      "mdkg capability search \"pack\" --kind skill --json",
+      "under 10 minutes",
+    ]) {
+      assert(demoReadme.includes(expected), `demo README missing ${expected}`);
+    }
+    const demoDocs = readText(
+      path.join(repoRoot, "docs", "src", "content", "docs", "advanced-alpha", "demo-graphs.md")
+    );
+    for (const expected of [
+      "First-success path",
+      "examples/demo-agentic-coding",
+      "Use returned IDs",
+      "Do not hardcode numeric IDs",
+    ]) {
+      assert(demoDocs.includes(expected), `demo docs missing ${expected}`);
+    }
+    assertExample(
+      "examples/demo-agentic-coding",
+      "agentic coding demo",
+      "Build a one-shot agentic coding demo from mdkg context",
+      { root: copiedRoots["examples/demo-agentic-coding"] }
+    );
+    assertExample(
+      "examples/template-mdkg-dev",
+      "candidate website",
+      "Generate a candidate mdkg.dev website from a cloned graph",
+      { root: copiedRoots["examples/template-mdkg-dev"] }
+    );
+    assertExample(
+      "examples/website-demo-template",
+      "differentiated website demo",
+      "Build a complete differentiated website demo from the canonical mdkg template",
+      { root: copiedRoots["examples/website-demo-template"] }
+    );
+    assertExample(
+      "examples/demo-runs/demo-001",
+      "differentiated website demo",
+      "Build a complete differentiated website demo from the canonical mdkg template",
+      { allowAchievedGoal: true, root: copiedRoots["examples/demo-runs/demo-001"] }
+    );
+
+    const subgraphs = parseJson(mdkg(["subgraph", "verify", "--all", "--json"]).stdout);
+    assert(subgraphs.ok === true, "root subgraph verification failed");
+    assert(subgraphs.count >= 2, "expected at least two registered subgraphs");
+    for (const alias of ["demo_agentic_coding", "template_mdkg_dev"]) {
+      const entry = subgraphs.subgraphs.find((item) => item.alias === alias);
+      assert(entry, `missing subgraph ${alias}`);
+      assert(entry.visibility === "private", `${alias} should be private`);
+      assert(entry.permissions.includes("read"), `${alias} should be read-only`);
+      assert(entry.error_count === 0, `${alias} has errors`);
+    }
+
+    const demoGoal = parseJson(mdkg(["show", "demo_agentic_coding:goal-1", "--json"]).stdout);
+    assert(demoGoal.item.source.read_only === true, "demo subgraph goal should be read-only");
+    const templateGoal = parseJson(mdkg(["show", "template_mdkg_dev:goal-1", "--json"]).stdout);
+    assert(templateGoal.item.source.read_only === true, "template subgraph goal should be read-only");
+
+    assertNoHighRiskMarkers([
+      path.join(repoRoot, "examples", "demo-agentic-coding"),
+      path.join(repoRoot, "examples", "template-mdkg-dev"),
+      path.join(repoRoot, "examples", "website-demo-template"),
+      path.join(repoRoot, "examples", "demo-runs", "demo-001"),
+    ]);
+    assert(
+      JSON.stringify(snapshotExampleIndexes()) === JSON.stringify(sourceIndexSnapshot),
+      "demo graph smoke mutated committed example index caches"
+    );
+    console.log("demo graph smoke passed");
+  } finally {
+    fs.rmSync(tempRoot, { recursive: true, force: true });
   }
-
-  const demoGoal = parseJson(mdkg(["show", "demo_agentic_coding:goal-1", "--json"]).stdout);
-  assert(demoGoal.item.source.read_only === true, "demo subgraph goal should be read-only");
-  const templateGoal = parseJson(mdkg(["show", "template_mdkg_dev:goal-1", "--json"]).stdout);
-  assert(templateGoal.item.source.read_only === true, "template subgraph goal should be read-only");
-
-  assertNoHighRiskMarkers([
-    path.join(repoRoot, "examples", "demo-agentic-coding"),
-    path.join(repoRoot, "examples", "template-mdkg-dev"),
-    path.join(repoRoot, "examples", "website-demo-template"),
-    path.join(repoRoot, "examples", "demo-runs", "demo-001"),
-  ]);
-  console.log("demo graph smoke passed");
 }
 
 main();

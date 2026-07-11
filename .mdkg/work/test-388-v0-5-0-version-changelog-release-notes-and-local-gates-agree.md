@@ -14,7 +14,7 @@ blocked_by: [task-717]
 blocks: []
 refs: [task-716, task-717]
 context_refs: [goal-64, epic-232, edd-72, dec-69]
-evidence_refs: []
+evidence_refs: [chk-494, chk-495]
 aliases: []
 skills: []
 cases: []
@@ -64,6 +64,10 @@ Clean release commit candidate, temporary npm cache, local site servers/browser.
   layout; the operator retained final manual visual review.
 - Three failures discovered by prepublish validation were repaired and rerun in
   one final uninterrupted green lifecycle. No release mutation occurred.
+- A later manual route check added 19-page active-preview accessibility/link
+  coverage and corrected the demo smoke so repeated prepublish runs do not
+  rewrite committed index timestamps. `chk-495` records the focused checks and
+  final uninterrupted full rerun evidence.
 
 # Notes / Follow-ups
 

@@ -16,7 +16,7 @@ blocked_by: [task-716]
 blocks: [task-718]
 refs: [test-388]
 context_refs: [goal-64, epic-232, edd-72, dec-69, task-716]
-evidence_refs: []
+evidence_refs: [chk-493, chk-495]
 aliases: []
 skills: []
 created: 2026-07-10
@@ -88,6 +88,12 @@ receipt and exact remaining side effects.
   all passed; the operator is performing the final manual visual audit.
 - `git diff --check` passed. No push, publish, global replacement, release
   activation, deployment, or Git tag occurred.
+- Post-prepublish manual audit found that the local docs process had stopped,
+  not that `/loops/` was absent. All four loop routes returned `200` after the
+  active preview restarted. The audit then expanded accessibility/link coverage
+  to all preview-only loop pages and moved demo indexing into temporary copies
+  so the release lifecycle leaves committed example indexes unchanged. See
+  `chk-495` for the final uninterrupted dry-run receipt.
 
 # Remaining Approval-Gated Side Effects
 

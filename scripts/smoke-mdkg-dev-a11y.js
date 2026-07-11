@@ -13,8 +13,8 @@ const {
   walkFiles,
 } = require("./mdkg-dev-smoke-utils");
 
-function buildDocs() {
-  run(NPM_CMD, ["--prefix", "docs", "run", "build"]);
+function buildDocs(env = {}) {
+  run(NPM_CMD, ["--prefix", "docs", "run", "build"], { env });
 }
 
 function stripTags(html) {
@@ -221,6 +221,27 @@ function main() {
     "loop announcement source order or homepage insertion order is incorrect"
   );
 
+  buildDocs({ PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
+  const releasePreviewPages = [
+    ["docs release preview home", path.join(docsDist, "index.html")],
+    ["docs release preview install", path.join(docsDist, "start-here", "install", "index.html")],
+    ["docs loop overview", path.join(docsDist, "loops", "index.html")],
+    ["docs loop templates", path.join(docsDist, "loops", "templates-and-forks", "index.html")],
+    [
+      "docs loop readiness",
+      path.join(docsDist, "loops", "readiness-routing-evidence-closeout", "index.html"),
+    ],
+    ["docs loop security walkthrough", path.join(docsDist, "loops", "security-audit", "index.html")],
+    ["docs release preview changelog", path.join(docsDist, "project", "changelog", "index.html")],
+    [
+      "docs release preview reference",
+      path.join(docsDist, "reference", "generated-cli-reference", "index.html"),
+    ],
+  ];
+  for (const [label, filePath] of releasePreviewPages) {
+    assertPage(filePath, label);
+  }
+
   const builtCss = walkFiles(docsDist)
     .filter((filePath) => filePath.endsWith(".css"))
     .map(readText)
@@ -228,7 +249,13 @@ function main() {
   assert(builtCss.includes("prefers-reduced-motion"), "docs CSS missing reduced-motion support");
   assert(builtCss.includes("forced-colors"), "docs CSS missing forced-colors support");
 
-  console.log(JSON.stringify({ ok: true, checked_pages: checkedPages.length }, null, 2));
+  console.log(
+    JSON.stringify(
+      { ok: true, checked_pages: checkedPages.length + 1 + releasePreviewPages.length },
+      null,
+      2,
+    ),
+  );
 }
 
 main();
