@@ -11,8 +11,8 @@ type CommandRecord = {
   key: string;
   path: string[];
   usage: string[];
-  args: unknown[];
-  flags: unknown[];
+  args: Array<{ name: string; required?: boolean; source?: string; description?: string }>;
+  flags: Array<{ name: string; value?: string | null; required?: boolean; description?: string }>;
   output_formats: string[];
   json_schema_ref: string | null;
   side_effects: string[];
@@ -24,6 +24,9 @@ type CommandRecord = {
   lock_policy: string;
   atomic_write_policy: string;
   danger_level: string;
+  descriptor_source?: string;
+  handler?: string;
+  help_notes?: string[];
 };
 
 function readContract(): { schema_version: number; tool: string; contract_hash: string; commands: CommandRecord[] } {
@@ -114,6 +117,79 @@ test("mutating commands carry safety metadata and read-only commands stay read-o
   assert.equal(dbQueue.json_schema_ref, "mdkg.project_db.queue.adapter.v1");
   assert.ok(dbQueue.receipts.includes("queue-adapter-contract-receipt"));
   assert.ok(dbQueue.side_effects.includes("emit-read-only-adapter-contract"));
+});
+
+test("loop command contract records are backed by typed descriptors", () => {
+  const contract = readContract();
+  const loopNext = commandByKey(contract, "loop next");
+  assert.equal(loopNext.descriptor_source, "src/commands/loop_descriptors.ts");
+  assert.equal(loopNext.handler, "runLoopNextCommand");
+  assert.equal(loopNext.danger_level, "read-only");
+  assert.deepEqual(loopNext.side_effects, ["none"]);
+  assert.ok(loopNext.receipts.includes("loop-next-receipt"));
+  assert.ok(loopNext.flags.some((flag) => flag.name === "--json" && flag.description?.includes("deterministic JSON")));
+  assert.ok(loopNext.flags.some((flag) => flag.name === "--ws" && flag.value === "<alias>"));
+  assert.ok(loopNext.args.some((arg) => arg.name === "loop" && arg.required === true));
+  assert.ok(loopNext.help_notes?.some((note) => note.includes("Read-only routing")));
+
+  const loopFork = commandByKey(contract, "loop fork");
+  assert.equal(loopFork.descriptor_source, "src/commands/loop_descriptors.ts");
+  assert.equal(loopFork.handler, "runLoopForkCommand");
+  assert.equal(loopFork.danger_level, "moderate");
+  assert.ok(loopFork.side_effects.includes("create-scoped-loop-and-optional-child-nodes"));
+  assert.ok(loopFork.write_paths.includes(".mdkg/**/*.md"));
+  assert.ok(loopFork.flags.some((flag) => flag.name === "--scope" && flag.required === true));
+  assert.ok(loopFork.flags.some((flag) => flag.name === "--dry-run"));
+  assert.ok(loopFork.flags.some((flag) => flag.name === "--run-id" && flag.value === "<id>"));
+  assert.ok(loopFork.flags.some((flag) => flag.name === "--ws" && flag.value === "<alias>"));
+  assert.ok(loopFork.flags.some((flag) => flag.name === "--no-cache"));
+  assert.ok(loopFork.flags.some((flag) => flag.name === "--no-reindex"));
+  assert.ok(loopFork.side_effects.includes("reserve-sqlite-node-ids-when-configured"));
+  assert.ok(loopFork.side_effects.includes("append-loop-fork-event-when-event-logging-is-enabled"));
+  assert.ok(loopFork.write_paths.includes(".mdkg/events/*.jsonl"));
+  assert.deepEqual(loopFork.dry_run.side_effects, ["none"]);
+  assert.deepEqual(loopFork.dry_run.write_paths, []);
+  assert.equal(loopFork.dry_run.reserves_ids, false);
+});
+
+test("loop descriptor flags match parser branches and generated help", () => {
+  const contract = readContract();
+  const expectedFlags: Record<string, string[]> = {
+    "loop": ["--root", "--ws", "--json", "--no-cache", "--no-reindex", "--run-id"],
+    "loop list": ["--root", "--ws", "--json", "--no-cache", "--no-reindex"],
+    "loop show": ["--meta", "--root", "--ws", "--json", "--no-cache", "--no-reindex"],
+    "loop fork": [
+      "--scope",
+      "--title",
+      "--materialization",
+      "--planning-only",
+      "--no-children",
+      "--dry-run",
+      "--run-id",
+      "--root",
+      "--ws",
+      "--json",
+      "--no-cache",
+      "--no-reindex",
+    ],
+    "loop plan": ["--root", "--ws", "--json", "--no-cache", "--no-reindex"],
+    "loop next": ["--root", "--ws", "--json", "--no-cache", "--no-reindex"],
+    "loop runs": ["--root", "--ws", "--json", "--no-cache", "--no-reindex"],
+  };
+
+  for (const [key, flags] of Object.entries(expectedFlags)) {
+    const command = commandByKey(contract, key);
+    assert.deepEqual(command.flags.map((flag) => flag.name), flags, key);
+    const helpTarget = key.split(" ");
+    const help = spawnSync(process.execPath, [path.join(repoRoot, "dist", "cli.js"), "help", ...helpTarget], {
+      cwd: repoRoot,
+      encoding: "utf8",
+    });
+    assert.equal(help.status, 0, help.stderr || key);
+    for (const flag of flags) {
+      assert.match(help.stdout, new RegExp(flag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${key} ${flag}`);
+    }
+  }
 });
 
 test("contract hash is stable over canonical command metadata", () => {

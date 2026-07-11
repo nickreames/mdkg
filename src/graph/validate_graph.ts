@@ -3,6 +3,7 @@ import { isManifestSemanticType } from "./agent_file_types";
 import { archiveIdFromUri, isUriRef } from "../util/refs";
 import { resolveQid } from "../util/qid";
 import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES, GOAL_SCOPE_ALLOWED_TYPES } from "./goal_scope";
+import { parseLoopRefBindings } from "./loop_bindings";
 
 export type ValidateGraphOptions = {
   allowMissing?: boolean;
@@ -692,6 +693,124 @@ function validateGoalRefs(index: Index, allowMissing: boolean, errors: string[] 
   }
 }
 
+function loopAttributeList(node: Index["nodes"][string], key: string): string[] {
+  const value = node.attributes[key];
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function resolveLoopEvidenceNode(index: Index, ws: string, ref: string): Index["nodes"][string] | undefined {
+  const resolved = resolveQid(index, ref, ws);
+  return resolved.status === "ok" ? index.nodes[resolved.qid] : undefined;
+}
+
+function isAcceptedLoopDecision(node: Index["nodes"][string]): boolean {
+  return node.type === "dec" && node.status === "accepted";
+}
+
+function isVerifiedLoopApproval(node: Index["nodes"][string]): boolean {
+  if (node.type === "dec") {
+    return node.status === "accepted";
+  }
+  if (node.type === "checkpoint") {
+    return node.status === "done";
+  }
+  return node.type === "receipt" && node.attributes.receipt_status === "verified";
+}
+
+function validateLoopTypedRefs(index: Index, allowMissing: boolean, errors: string[] | null): void {
+  for (const [qid, node] of Object.entries(index.nodes)) {
+    if (node.type !== "loop") {
+      continue;
+    }
+
+    for (const ref of loopAttributeList(node, "decision_refs")) {
+      if (isUriRef(ref)) {
+        pushError(errors, `${qid}: decision_refs requires a local accepted dec ref, got ${ref}`);
+        continue;
+      }
+      const target = resolveLoopEvidenceNode(index, node.ws, ref);
+      if (!target) {
+        if (!allowMissing) {
+          pushError(errors, `${qid}: decision_refs references missing node ${ref}`);
+        }
+        continue;
+      }
+      if (!isAcceptedLoopDecision(target)) {
+        pushError(errors, `${qid}: decision_refs ${ref} must target an accepted dec, got ${target.type}:${target.status ?? "none"}`);
+      }
+    }
+
+    for (const ref of loopAttributeList(node, "approval_refs")) {
+      if (isUriRef(ref)) {
+        continue;
+      }
+      const target = resolveLoopEvidenceNode(index, node.ws, ref);
+      if (!target) {
+        if (!allowMissing) {
+          pushError(errors, `${qid}: approval_refs references missing node ${ref}`);
+        }
+        continue;
+      }
+      if (!isVerifiedLoopApproval(target)) {
+        pushError(
+          errors,
+          `${qid}: approval_refs ${ref} must target an accepted dec, done checkpoint, or verified receipt, got ${target.type}:${target.status ?? target.attributes.receipt_status ?? "none"}`
+        );
+      }
+    }
+
+    const checks: Array<{
+      key: string;
+      kind: "decision" | "approval" | "evidence";
+    }> = [
+      { key: "question_answer_refs", kind: "decision" },
+      { key: "action_approval_refs", kind: "approval" },
+      { key: "evidence_lane_refs", kind: "evidence" },
+      { key: "lane_waiver_decision_refs", kind: "decision" },
+      { key: "lane_waiver_approval_refs", kind: "approval" },
+    ];
+    for (const check of checks) {
+      const bindings = parseLoopRefBindings(loopAttributeList(node, check.key));
+      for (const binding of bindings) {
+        if (isUriRef(binding.ref)) {
+          if (check.kind === "decision") {
+            pushError(errors, `${qid}: ${check.key} ${binding.identity} requires a local accepted dec ref, got ${binding.ref}`);
+          }
+          continue;
+        }
+        const target = resolveLoopEvidenceNode(index, node.ws, binding.ref);
+        if (!target) {
+          if (!allowMissing) {
+            pushError(errors, `${qid}: ${check.key} ${binding.identity} references missing node ${binding.ref}`);
+          }
+          continue;
+        }
+        if (check.kind === "decision" && !isAcceptedLoopDecision(target)) {
+          pushError(errors, `${qid}: ${check.key} ${binding.identity} must target an accepted dec`);
+        }
+        if (check.kind === "approval" && !isVerifiedLoopApproval(target)) {
+          pushError(
+            errors,
+            `${qid}: ${check.key} ${binding.identity} must target an accepted dec, done checkpoint, or verified receipt`
+          );
+        }
+      }
+    }
+
+    const waiverDecisionIdentities = new Set(
+      parseLoopRefBindings(loopAttributeList(node, "lane_waiver_decision_refs")).map((binding) => binding.identity)
+    );
+    const waiverApprovalIdentities = new Set(
+      parseLoopRefBindings(loopAttributeList(node, "lane_waiver_approval_refs")).map((binding) => binding.identity)
+    );
+    for (const identity of new Set([...waiverDecisionIdentities, ...waiverApprovalIdentities])) {
+      if (!waiverDecisionIdentities.has(identity) || !waiverApprovalIdentities.has(identity)) {
+        pushError(errors, `${qid}: lane waiver ${identity} requires both decision and approval bindings`);
+      }
+    }
+  }
+}
+
 function validateSingleActiveRootGoals(index: Index, errors: string[] | null): void {
   const activeByWorkspace: Record<string, string[]> = {};
   for (const [qid, node] of Object.entries(index.nodes)) {
@@ -766,6 +885,7 @@ export function collectGraphErrors(index: Index, options: ValidateGraphOptions =
   validateAgentWorkflowDisputeRefs(index, allowMissing, externalWorkspaces, errors);
   validateAgentWorkflowFeedbackProposalRefs(index, allowMissing, knownSkillSlugs, externalWorkspaces, errors);
   validateArchiveUriRefs(index, allowMissing, errors);
+  validateLoopTypedRefs(index, allowMissing, errors);
   validateGoalRefs(index, allowMissing, errors);
   validateSingleActiveRootGoals(index, errors);
   detectPrevNextCycles(index, errors);

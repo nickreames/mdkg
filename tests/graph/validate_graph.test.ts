@@ -137,6 +137,50 @@ test("collectGraphErrors validates semantic refs while allowing URI evidence", (
   assert.ok(errors.some((error: string) => /context_refs references missing node root:task-404/.test(error)));
 });
 
+test("collectGraphErrors validates typed loop readiness and paired waiver evidence", () => {
+  const validNodes = {
+    "root:loop-1": makeNode("root:loop-1", {}, {
+      type: "loop",
+      status: "progress",
+      attributes: {
+        decision_refs: ["dec-1", "dec-2"],
+        approval_refs: ["chk-1", "chk-2"],
+        question_answer_refs: ["scope_authority=dec-1"],
+        action_approval_refs: ["external_checks=chk-1"],
+        evidence_lane_refs: ["source_review=chk-1"],
+        lane_waiver_decision_refs: ["dependency_review=dec-2"],
+        lane_waiver_approval_refs: ["dependency_review=chk-2"],
+      },
+    }),
+    "root:dec-1": makeNode("root:dec-1", {}, { type: "dec", status: "accepted" }),
+    "root:dec-2": makeNode("root:dec-2", {}, { type: "dec", status: "accepted" }),
+    "root:chk-1": makeNode("root:chk-1", {}, { type: "checkpoint", status: "done" }),
+    "root:chk-2": makeNode("root:chk-2", {}, { type: "checkpoint", status: "done" }),
+  };
+  assert.deepEqual(collectGraphErrors(makeIndex(validNodes), { allowMissing: false }), []);
+
+  const invalidNodes = {
+    "root:loop-1": makeNode("root:loop-1", {}, {
+      type: "loop",
+      status: "progress",
+      attributes: {
+        decision_refs: ["task-1", "dec-404"],
+        approval_refs: ["chk-1"],
+        question_answer_refs: ["scope_authority=dec-404"],
+        lane_waiver_decision_refs: ["dependency_review=task-1"],
+        lane_waiver_approval_refs: [],
+      },
+    }),
+    "root:task-1": makeNode("root:task-1", {}),
+    "root:chk-1": makeNode("root:chk-1", {}, { type: "checkpoint", status: "progress" }),
+  };
+  const errors = collectGraphErrors(makeIndex(invalidNodes), { allowMissing: false });
+  assert.ok(errors.some((error: string) => /decision_refs task-1 must target an accepted dec/.test(error)));
+  assert.ok(errors.some((error: string) => /decision_refs references missing node dec-404/.test(error)));
+  assert.ok(errors.some((error: string) => /approval_refs chk-1 must target an accepted dec, done checkpoint, or verified receipt/.test(error)));
+  assert.ok(errors.some((error: string) => /lane waiver dependency_review requires both decision and approval bindings/.test(error)));
+});
+
 test("collectGraphErrors rejects multiple active local root goals", () => {
   const nodes = {
     "root:goal-1": makeNode(

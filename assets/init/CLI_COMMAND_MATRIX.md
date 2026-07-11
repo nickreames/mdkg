@@ -29,6 +29,7 @@ Primary commands:
 - `mdkg subgraph`
 - `mdkg work`
 - `mdkg goal`
+- `mdkg loop`
 - `mdkg task`
 - `mdkg validate`
 - `mdkg status [--json]`
@@ -130,6 +131,7 @@ Validation commands:
 Node creation commands:
 - `mdkg new <type> "<title>" [options] [--json]`
 - `mdkg new goal "<title>" [options] [--json]`
+- `mdkg new loop "<title>" [options] [--json]`
 - `mdkg new spike "<research question>" [options] [--json]`
 
 Agent workflow file type creation:
@@ -153,9 +155,21 @@ Agent workflow notes:
 - `manifest` and `work` scaffold as validation-clean standalone docs.
 - `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
 - `goal` nodes capture recursive objective state and required checks, but normal `mdkg next` does not select them.
+- `loop` nodes capture reusable process state, fork lineage, child refs, run/evidence refs, blocker-continuation policy, and a high-bar definition of done; runtime execution remains outside mdkg.
 - `spike` nodes are actionable research/planning work under `.mdkg/work/`; use `mdkg task start|update|done` for lifecycle state.
 - Spikes record sources, findings, recommendations, follow-up node ideas, and skill candidates in Markdown body sections; they do not perform web search, execute research, create follow-up nodes, generate `SKILL.md`, or expose a `mdkg spike ...` namespace automatically.
 - after fresh init, run `mdkg index` before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches.
+
+Loop commands:
+- `mdkg loop list [--json]`
+- `mdkg loop show <loop-or-template> [--json]`
+- `mdkg loop fork <template> --scope <scope> [--materialization default_children|planning_only|manual] [--planning-only] [--no-children] [--dry-run] [--json]`
+- `mdkg loop plan <loop> [--json]`
+- `mdkg loop next <loop> [--json]`
+- `mdkg loop runs <loop> [--json]`
+- `loop` is one first-class node type; templates, scoped forks, and run-bearing loops are represented through metadata and links
+- seed templates live under `.mdkg/templates/loops/*.loop.md`
+- mdkg defines durable declarative process state and graph context; runtimes execute agents, tools, sandboxes, traces, and model routing
 
 Workspace registry commands:
 - `mdkg workspace ls [--json]`

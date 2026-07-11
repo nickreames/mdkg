@@ -199,9 +199,10 @@ function exerciseUpgrade(binPath, tempRoot) {
   initGit(oldTemplateRoot);
   mdkg(binPath, ["init"], oldTemplateRoot);
   mdkg(binPath, ["new", "task", "Old Template Workspace", "--status", "todo", "--priority", "1"], oldTemplateRoot);
-  for (const name of ["manifest", "spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal", "spike"]) {
+  for (const name of ["manifest", "spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal", "spike", "loop"]) {
     fs.rmSync(path.join(oldTemplateRoot, ".mdkg", "templates", "default", `${name}.md`), { force: true });
   }
+  fs.rmSync(path.join(oldTemplateRoot, ".mdkg", "templates", "loops", "security-audit.loop.md"), { force: true });
   const doctor = mdkg(binPath, ["doctor"], oldTemplateRoot).stdout;
   assertIncludes(doctor, "warn: local-templates", "old-template doctor");
   const validate = mdkg(binPath, ["validate"], oldTemplateRoot).combined;
@@ -213,6 +214,8 @@ function exerciseUpgrade(binPath, tempRoot) {
     ".mdkg/templates/default/manifest.md",
     ".mdkg/templates/default/spec.md",
     ".mdkg/templates/default/spike.md",
+    ".mdkg/templates/default/loop.md",
+    ".mdkg/templates/loops/security-audit.loop.md",
     ".mdkg/templates/default/work.md",
     ".mdkg/templates/default/work_order.md",
     ".mdkg/templates/default/receipt.md",
@@ -228,6 +231,20 @@ function exerciseUpgrade(binPath, tempRoot) {
     )
   ) {
     throw new Error("old-template upgrade did not write missing spike template");
+  }
+  if (
+    !oldTemplateApply.changes.some(
+      (change) => change.action === "create" && change.path === ".mdkg/templates/default/loop.md"
+    )
+  ) {
+    throw new Error("old-template upgrade did not write missing loop template");
+  }
+  if (
+    !oldTemplateApply.changes.some(
+      (change) => change.action === "create" && change.path === ".mdkg/templates/loops/security-audit.loop.md"
+    )
+  ) {
+    throw new Error("old-template upgrade did not write missing seeded security audit loop");
   }
   assertSpikeTemplate(oldTemplateRoot, "old-template upgrade");
   assertManifestTemplate(oldTemplateRoot, "old-template upgrade");

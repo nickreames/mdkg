@@ -138,6 +138,61 @@ function normalizeIdRefList(raw: string | undefined, flag: string): string[] {
   return parseCsvList(raw).map((value) => normalizeIdRef(value, flag));
 }
 
+function taskCompletionCheckpointBody(
+  loaded: LoadedTaskNode,
+  artifacts: string[],
+  note?: string
+): string {
+  const title = typeof loaded.frontmatter.title === "string" ? loaded.frontmatter.title : loaded.id;
+  const artifactLines = artifacts.length > 0
+    ? artifacts.map((artifact) => `- ${artifact}`)
+    : ["- No artifacts were attached by the completion command."];
+  return [
+    "# Summary",
+    "",
+    note?.trim() || `${loaded.id} was marked done through the mdkg task lifecycle.`,
+    "",
+    "# Scope Covered",
+    "",
+    `- Completed node: ${loaded.id} (${title})`,
+    `- Node type: ${loaded.type}`,
+    "- Checkpoint source: `mdkg task done --checkpoint`",
+    "",
+    "# Decisions Captured",
+    "",
+    "- See decision and approval refs on the completed node and checkpoint frontmatter.",
+    "",
+    "# Implementation Summary",
+    "",
+    `- Completion of ${loaded.id} was recorded through the structured task lifecycle.`,
+    "- Detailed implementation or test evidence remains on the completed node and linked refs.",
+    "",
+    "# Verification / Testing",
+    "",
+    "## Command Evidence",
+    "",
+    "- command: `mdkg task done --checkpoint`",
+    "- result: completed node and evidence checkpoint written",
+    "",
+    "## Pass / Fail Status",
+    "",
+    "- status: done",
+    "",
+    "# Known Issues / Follow-ups",
+    "",
+    "- Inspect the completed node and linked refs for any explicitly recorded residual work.",
+    "",
+    "# Links / Artifacts",
+    "",
+    ...artifactLines,
+    "",
+    "# Raw Content Safety",
+    "",
+    "- This checkpoint stores the completion summary and artifact refs, not raw prompts, secrets, payloads, or bulky traces.",
+    "",
+  ].join("\n");
+}
+
 function normalizeSkillList(raw?: string): string[] {
   return parseCsvList(raw).map((value) => {
     const normalized = value.toLowerCase();
@@ -438,6 +493,7 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
   });
 
   let checkpoint: CheckpointReceipt | undefined;
+  const checkpointBody = taskCompletionCheckpointBody(loaded, nextArtifacts, options.note);
   if (options.checkpoint && options.json) {
     checkpoint = createCheckpoint({
       root: options.root,
@@ -446,6 +502,8 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
       relates: loaded.id,
       scope: loaded.id,
       kind: options.checkpointKind,
+      status: "done",
+      body: checkpointBody,
       runId: options.runId,
       note: `checkpoint created from mdkg task done for ${loaded.id}`,
       now,
@@ -458,6 +516,8 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
       relates: loaded.id,
       scope: loaded.id,
       kind: options.checkpointKind,
+      status: "done",
+      body: checkpointBody,
       runId: options.runId,
       note: `checkpoint created from mdkg task done for ${loaded.id}`,
       now,

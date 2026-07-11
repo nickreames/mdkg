@@ -69,6 +69,51 @@ function writeExistingTask(root: string): void {
   writeFile(path.join(root, ".mdkg", "work", "task-1.md"), content);
 }
 
+function writeSeedLoopTemplate(root: string): void {
+  writeFile(
+    path.join(root, ".mdkg", "templates", "loops", "security-audit.loop.md"),
+    [
+      "---",
+      "id: loop-1",
+      "type: loop",
+      "title: Security Audit",
+      "status: todo",
+      "priority: 1",
+      "loop_mode: readonly",
+      "loop_role: template",
+      "scope_refs: []",
+      "scope_description: repo security scope",
+      "template_refs: []",
+      "materialization_mode: default_children",
+      "child_refs: []",
+      "run_refs: []",
+      "decision_refs: []",
+      "output_refs: []",
+      "approval_refs: []",
+      "evaluation_refs: []",
+      "definition_of_done: Security audit template remains discoverable.",
+      "blocker_policy: spike_proposal_recommendation_continue",
+      "tags: [loop-template, security]",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: []",
+      "blocked_by: []",
+      "blocks: []",
+      "refs: []",
+      "context_refs: []",
+      "evidence_refs: []",
+      "aliases: []",
+      "skills: []",
+      "created: 2026-07-06",
+      "updated: 2026-07-06",
+      "---",
+      "",
+      "# Security Audit",
+    ].join("\n")
+  );
+}
+
 function captureOutput(fn: () => void): { stdout: string; stderr: string } {
   const stdout: string[] = [];
   const stderr: string[] = [];
@@ -247,6 +292,85 @@ test("runNewCommand creates a spike node as actionable work", () => {
   assert.ok(content.includes("# Research Question"));
   assert.ok(content.includes("# Follow-Up Nodes To Create"));
   assert.ok(content.includes("# Evidence And Sources"));
+});
+
+test("runNewCommand creates a loop node with lifecycle defaults", () => {
+  const root = makeTempDir("mdkg-new-loop-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeSeedLoopTemplate(root);
+
+  const output = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "loop",
+      title: "Security Audit Loop",
+      status: "todo",
+      priority: 1,
+      skills: "select-work-and-ground-context",
+      json: true,
+      now: new Date(2026, 6, 6),
+    })
+  );
+
+  assert.equal(output.stderr, "");
+  assert.deepEqual(JSON.parse(output.stdout), {
+    action: "created",
+    node: {
+      workspace: "root",
+      id: "loop-1",
+      qid: "root:loop-1",
+      path: ".mdkg/work/loop-1-security-audit-loop.md",
+      type: "loop",
+      title: "Security Audit Loop",
+      status: "todo",
+      priority: 1,
+    },
+    next_actions: [
+      "Review reusable loop templates with mdkg loop list",
+      "Fork a reusable template with mdkg loop fork <template> --scope <scope>",
+      "Inspect raw loop readiness with mdkg loop plan <loop-id>",
+    ],
+    suggested_templates: [
+      {
+        ref: "template://loops/security-audit",
+        title: "Security Audit",
+        path: ".mdkg/templates/loops/security-audit.loop.md",
+      },
+    ],
+  });
+  const filePath = path.join(root, ".mdkg", "work", "loop-1-security-audit-loop.md");
+  assert.ok(fs.existsSync(filePath));
+  const content = fs.readFileSync(filePath, "utf8");
+  assert.ok(content.includes("type: loop"));
+  assert.ok(content.includes("loop_mode: planning"));
+  assert.ok(content.includes("loop_role: scoped"));
+  assert.ok(content.includes("materialization_mode: default_children"));
+  assert.ok(content.includes("blocker_policy: spike_proposal_recommendation_continue"));
+  assert.ok(content.includes("skills: [select-work-and-ground-context]"));
+  assert.ok(content.includes("# Blocker Continuation Policy"));
+});
+
+test("runNewCommand prints loop fork guidance for raw loop text output", () => {
+  const root = makeTempDir("mdkg-new-loop-text-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+
+  const output = captureOutput(() =>
+    runNewCommand({
+      root,
+      type: "loop",
+      title: "Custom Planning Loop",
+      status: "todo",
+      now: new Date(2026, 6, 6),
+    })
+  );
+
+  assert.equal(output.stderr, "");
+  assert.match(output.stdout, /node created: root:loop-1/);
+  assert.match(output.stdout, /mdkg loop list/);
+  assert.match(output.stdout, /mdkg loop fork <template> --scope <scope>/);
+  assert.match(output.stdout, /mdkg loop plan loop-1/);
 });
 
 test("runNewCommand creates a goal node with recursive defaults", () => {

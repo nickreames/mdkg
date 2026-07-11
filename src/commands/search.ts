@@ -20,11 +20,14 @@ export type SearchCommandOptions = {
   status?: string;
   tags?: string[];
   tagsMode?: "any" | "all";
+  limit?: number;
   format?: QueryOutputFormat;
   json?: boolean;
   noCache?: boolean;
   noReindex?: boolean;
 };
+
+const DEFAULT_STRUCTURED_SEARCH_LIMIT = 50;
 
 function normalizeWorkspace(value?: string): string | undefined {
   if (!value || value === "all") {
@@ -110,11 +113,19 @@ export function runSearchCommand(options: SearchCommandOptions): void {
   const sorted = sortNodesByQid(nodeResults);
   const format = options.format ?? (options.json ? "json" : undefined);
   if (format) {
+    const limit = options.limit ?? DEFAULT_STRUCTURED_SEARCH_LIMIT;
+    if (!Number.isInteger(limit) || limit < 1) {
+      throw new UsageError("--limit must be a positive integer");
+    }
+    const items = sorted.slice(0, limit);
     writeStructuredOutput({
       command: "search",
       kind: "node",
       count: sorted.length,
-      items: sorted.map(toNodeSummaryJson),
+      returned_count: items.length,
+      limit,
+      truncated: items.length < sorted.length,
+      items: items.map(toNodeSummaryJson),
     }, format);
     return;
   }

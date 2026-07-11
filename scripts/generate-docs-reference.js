@@ -51,6 +51,7 @@ function categoryGuidance(command) {
     graph: "Use for graph references, clone/fork/import, and graph movement workflows.",
     handoff: "Use for sanitized transfer prompts between humans and agents.",
     index: "Use to rebuild generated search, skill, capability, and subgraph indexes.",
+    loop: "Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.",
     mcp: "Use for the local read-only MCP server surface.",
     new: "Use to create graph nodes and workflow records.",
     pack: "Use to assemble deterministic context for one bounded work item.",

@@ -37,6 +37,24 @@ export type ZipEntry = {
   data: Buffer;
 };
 
+export type ZipReadLimits = {
+  maxArchiveBytes: number;
+  maxEntries: number;
+  maxEntryNameBytes: number;
+  maxEntryUncompressedBytes: number;
+  maxTotalUncompressedBytes: number;
+  maxExpansionRatio: number;
+};
+
+export const DEFAULT_ZIP_READ_LIMITS: ZipReadLimits = {
+  maxArchiveBytes: 128 * 1024 * 1024,
+  maxEntries: 10_000,
+  maxEntryNameBytes: 4 * 1024,
+  maxEntryUncompressedBytes: 64 * 1024 * 1024,
+  maxTotalUncompressedBytes: 256 * 1024 * 1024,
+  maxExpansionRatio: 1_000,
+};
+
 function normalizeEntryName(entryName: string): string {
   const normalizedName = entryName.split(/[\\/]/).filter(Boolean).join("/");
   if (!normalizedName || normalizedName.includes("..")) {
@@ -123,36 +141,164 @@ export function createDeterministicZipFromEntries(entries: ZipEntry[]): Buffer {
   return Buffer.concat([localPayload, centralPayload, end]);
 }
 
-export function readZipEntries(zip: Buffer): ZipEntry[] {
-  const entries: ZipEntry[] = [];
-  let offset = 0;
-  while (offset + 4 <= zip.length) {
-    const signature = zip.readUInt32LE(offset);
-    if (signature === 0x02014b50 || signature === 0x06054b50) {
-      break;
+function resolveZipReadLimits(overrides: Partial<ZipReadLimits>): ZipReadLimits {
+  const limits = { ...DEFAULT_ZIP_READ_LIMITS, ...overrides };
+  for (const [key, value] of Object.entries(limits)) {
+    if (!Number.isFinite(value) || value <= 0) {
+      throw new Error(`zip read limit must be positive: ${key}`);
     }
+  }
+  if (limits.maxExpansionRatio < 1) {
+    throw new Error("zip read limit maxExpansionRatio must be at least 1");
+  }
+  return limits;
+}
+
+function readCentralDirectoryBounds(
+  zip: Buffer,
+  limits: ZipReadLimits
+): { offset: number; entryCount: number } {
+  if (zip.length < 22) {
+    throw new Error("zip end of central directory missing or truncated");
+  }
+  const minimumOffset = Math.max(0, zip.length - (22 + 0xffff));
+  for (let offset = zip.length - 22; offset >= minimumOffset; offset -= 1) {
+    if (zip.readUInt32LE(offset) !== 0x06054b50) {
+      continue;
+    }
+    const commentLength = zip.readUInt16LE(offset + 20);
+    if (offset + 22 + commentLength !== zip.length) {
+      continue;
+    }
+    const diskNumber = zip.readUInt16LE(offset + 4);
+    const centralDisk = zip.readUInt16LE(offset + 6);
+    const diskEntries = zip.readUInt16LE(offset + 8);
+    const entryCount = zip.readUInt16LE(offset + 10);
+    const centralSize = zip.readUInt32LE(offset + 12);
+    const centralOffset = zip.readUInt32LE(offset + 16);
+    if (
+      diskNumber !== 0 ||
+      centralDisk !== 0 ||
+      diskEntries !== entryCount ||
+      entryCount === 0xffff ||
+      centralSize === 0xffffffff ||
+      centralOffset === 0xffffffff
+    ) {
+      throw new Error("multi-disk and ZIP64 archives are not supported");
+    }
+    if (entryCount > limits.maxEntries) {
+      throw new Error(`zip entry count exceeds configured limit: ${limits.maxEntries}`);
+    }
+    if (centralOffset + centralSize > offset || centralOffset > zip.length) {
+      throw new Error("zip central directory bounds are invalid");
+    }
+    return { offset: centralOffset, entryCount };
+  }
+  throw new Error("zip end of central directory missing or truncated");
+}
+
+function exceedsExpansionRatio(uncompressedSize: number, compressedSize: number, limit: number): boolean {
+  if (uncompressedSize === 0) {
+    return false;
+  }
+  return compressedSize === 0 || uncompressedSize / compressedSize > limit;
+}
+
+export function readZipEntries(zip: Buffer, overrides: Partial<ZipReadLimits> = {}): ZipEntry[] {
+  const limits = resolveZipReadLimits(overrides);
+  if (zip.length > limits.maxArchiveBytes) {
+    throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
+  }
+  const centralDirectory = readCentralDirectoryBounds(zip, limits);
+  const entries: ZipEntry[] = [];
+  const seenNames = new Set<string>();
+  let totalUncompressedBytes = 0;
+  let offset = 0;
+  while (offset < centralDirectory.offset) {
+    if (offset + 30 > centralDirectory.offset) {
+      throw new Error("zip local header is truncated");
+    }
+    const signature = zip.readUInt32LE(offset);
     if (signature !== 0x04034b50) {
       throw new Error("zip local header missing");
     }
+    const flags = zip.readUInt16LE(offset + 6);
     const method = zip.readUInt16LE(offset + 8);
     const compressedSize = zip.readUInt32LE(offset + 18);
     const uncompressedSize = zip.readUInt32LE(offset + 22);
     const nameLength = zip.readUInt16LE(offset + 26);
     const extraLength = zip.readUInt16LE(offset + 28);
+    if ((flags & ~0x0806) !== 0) {
+      throw new Error(`unsupported zip general-purpose flags: ${flags}`);
+    }
+    if (method !== 0 && method !== 8) {
+      throw new Error(`unsupported zip compression method: ${method}`);
+    }
+    if (nameLength === 0 || nameLength > limits.maxEntryNameBytes) {
+      throw new Error(`zip entry name exceeds configured limit: ${limits.maxEntryNameBytes}`);
+    }
     const nameStart = offset + 30;
     const dataOffset = nameStart + nameLength + extraLength;
+    const dataEnd = dataOffset + compressedSize;
+    if (dataOffset > centralDirectory.offset || dataEnd > centralDirectory.offset) {
+      throw new Error("zip entry data is truncated");
+    }
     const entryName = zip.slice(nameStart, nameStart + nameLength).toString("utf8");
+    if (seenNames.has(entryName)) {
+      throw new Error(`duplicate zip entry: ${entryName}`);
+    }
+    if (uncompressedSize > limits.maxEntryUncompressedBytes) {
+      throw new Error(
+        `zip entry exceeds configured uncompressed byte limit: ${entryName} (${limits.maxEntryUncompressedBytes})`
+      );
+    }
+    if (totalUncompressedBytes + uncompressedSize > limits.maxTotalUncompressedBytes) {
+      throw new Error(
+        `zip total uncompressed bytes exceed configured limit: ${limits.maxTotalUncompressedBytes}`
+      );
+    }
+    if (exceedsExpansionRatio(uncompressedSize, compressedSize, limits.maxExpansionRatio)) {
+      throw new Error(`zip entry exceeds configured expansion ratio: ${entryName}`);
+    }
     const compressed = zip.slice(dataOffset, dataOffset + compressedSize);
-    const data =
-      method === 8 ? zlib.inflateRawSync(compressed) : method === 0 ? compressed : undefined;
-    if (!data) {
-      throw new Error(`unsupported zip compression method: ${method}`);
+    let data: Buffer;
+    if (method === 0) {
+      data = compressed;
+    } else {
+      const remainingTotal = limits.maxTotalUncompressedBytes - totalUncompressedBytes;
+      const maxOutputLength = Math.max(1, Math.min(limits.maxEntryUncompressedBytes, remainingTotal));
+      try {
+        data = zlib.inflateRawSync(compressed, { maxOutputLength });
+      } catch (err) {
+        const code = (err as NodeJS.ErrnoException).code;
+        const message = err instanceof Error ? err.message : String(err);
+        if (code === "ERR_BUFFER_TOO_LARGE" || /maxOutputLength|larger than/i.test(message)) {
+          throw new Error(`zip entry output exceeds configured limit: ${entryName}`);
+        }
+        throw new Error(`zip entry inflation failed for ${entryName}: ${message}`);
+      }
     }
     if (data.length !== uncompressedSize) {
       throw new Error("zip uncompressed size mismatch");
     }
+    if (data.length > limits.maxEntryUncompressedBytes) {
+      throw new Error(`zip entry output exceeds configured limit: ${entryName}`);
+    }
+    if (totalUncompressedBytes + data.length > limits.maxTotalUncompressedBytes) {
+      throw new Error(
+        `zip total uncompressed bytes exceed configured limit: ${limits.maxTotalUncompressedBytes}`
+      );
+    }
+    if (exceedsExpansionRatio(data.length, compressedSize, limits.maxExpansionRatio)) {
+      throw new Error(`zip entry exceeds configured expansion ratio: ${entryName}`);
+    }
+    seenNames.add(entryName);
+    totalUncompressedBytes += data.length;
     entries.push({ name: entryName, data });
-    offset = dataOffset + compressedSize;
+    offset = dataEnd;
+  }
+  if (offset !== centralDirectory.offset || entries.length !== centralDirectory.entryCount) {
+    throw new Error("zip local and central directory entry counts do not match");
   }
   return entries;
 }

@@ -11,6 +11,22 @@ const cliPath = path.join(root, "dist", "cli.js");
 const packagePath = path.join(root, "package.json");
 const outputPath = path.join(root, "dist", "command-contract.json");
 
+function loadLoopCommandDescriptors() {
+  const modulePath = path.join(root, "dist", "commands", "loop_descriptors.js");
+  if (!fs.existsSync(modulePath)) {
+    return new Map();
+  }
+  try {
+    const loaded = require(modulePath);
+    const descriptors = Array.isArray(loaded.LOOP_COMMAND_DESCRIPTORS) ? loaded.LOOP_COMMAND_DESCRIPTORS : [];
+    return new Map(descriptors.map((descriptor) => [descriptor.key, descriptor]));
+  } catch (error) {
+    throw new Error(`failed to load loop command descriptors from ${path.relative(root, modulePath)}: ${error.message}`);
+  }
+}
+
+const LOOP_COMMAND_DESCRIPTOR_BY_KEY = loadLoopCommandDescriptors();
+
 const READ_WRITE_PATHS = {
   graph: [".mdkg/**/*.md", ".mdkg/index/**"],
   config: [".mdkg/config.json", ".mdkg/index/**"],
@@ -332,6 +348,69 @@ const SAFETY_OVERRIDES = {
   "goal resume": goalStateMutation("resume-goal"),
   "goal done": goalStateMutation("complete-goal"),
   "goal archive": goalStateMutation("archive-goal"),
+  loop: {
+    side_effects: ["read-or-write-loop-graph-state"],
+    write_paths: READ_WRITE_PATHS.graph,
+    lock_policy: "mutation-lock-required-for-fork",
+    atomic_write_policy: "exclusive-create-and-atomic-file-writes",
+    dry_run: { supported: true, commands: ["fork"] },
+    receipts: ["loop-receipt"],
+    danger_level: "mixed",
+  },
+  "loop list": {
+    side_effects: ["none"],
+    write_paths: [],
+    lock_policy: "none-read-only",
+    atomic_write_policy: "none-read-only",
+    dry_run: { supported: false },
+    receipts: ["loop-list-receipt"],
+    danger_level: "read-only",
+  },
+  "loop show": {
+    side_effects: ["none"],
+    write_paths: [],
+    lock_policy: "none-read-only",
+    atomic_write_policy: "none-read-only",
+    dry_run: { supported: false },
+    receipts: ["loop-show-receipt"],
+    danger_level: "read-only",
+  },
+  "loop fork": {
+    side_effects: ["create-scoped-loop-and-optional-child-nodes"],
+    write_paths: READ_WRITE_PATHS.graph,
+    lock_policy: "mutation-lock-required",
+    atomic_write_policy: "exclusive-create-and-atomic-file-writes",
+    dry_run: { supported: true, flag: "--dry-run" },
+    receipts: ["loop-fork-receipt"],
+    danger_level: "moderate",
+  },
+  "loop plan": {
+    side_effects: ["none"],
+    write_paths: [],
+    lock_policy: "none-read-only",
+    atomic_write_policy: "none-read-only",
+    dry_run: { supported: false },
+    receipts: ["loop-plan-receipt"],
+    danger_level: "read-only",
+  },
+  "loop next": {
+    side_effects: ["none"],
+    write_paths: [],
+    lock_policy: "none-read-only",
+    atomic_write_policy: "none-read-only",
+    dry_run: { supported: false },
+    receipts: ["loop-next-receipt"],
+    danger_level: "read-only",
+  },
+  "loop runs": {
+    side_effects: ["none"],
+    write_paths: [],
+    lock_policy: "none-read-only",
+    atomic_write_policy: "none-read-only",
+    dry_run: { supported: false },
+    receipts: ["loop-runs-receipt"],
+    danger_level: "read-only",
+  },
   skill: {
     side_effects: ["read-or-write-skills-and-agent-mirrors"],
     write_paths: READ_WRITE_PATHS.skill,
@@ -668,13 +747,42 @@ function normalizeRecord(record) {
   return normalized;
 }
 
+function applyLoopDescriptor(record) {
+  const descriptor = LOOP_COMMAND_DESCRIPTOR_BY_KEY.get(record.key);
+  if (!descriptor) {
+    return record;
+  }
+  const safety = descriptor.safety || {};
+  return {
+    ...record,
+    summary: descriptor.summary,
+    usage: descriptor.usage,
+    args: descriptor.args,
+    flags: descriptor.flags,
+    output_formats: descriptor.output_formats,
+    json_schema_ref: safety.json_schema_ref ?? null,
+    side_effects: safety.side_effects,
+    read_paths: safety.read_paths,
+    write_paths: safety.write_paths,
+    dry_run: safety.dry_run,
+    lock_policy: safety.lock_policy,
+    atomic_write_policy: safety.atomic_write_policy,
+    receipts: safety.receipts,
+    danger_level: safety.danger_level,
+    examples: descriptor.usage.slice(0, 3),
+    descriptor_source: "src/commands/loop_descriptors.ts",
+    handler: descriptor.handler,
+    help_notes: descriptor.notes,
+  };
+}
+
 function commandRecord(target) {
   const key = helpTargetKey(target);
   const help = runHelp(target);
   const usage = collectUsageLines(help);
   const base = defaultSafety(help);
   const override = SAFETY_OVERRIDES[key] || {};
-  const record = {
+  const record = applyLoopDescriptor({
     key,
     path: target,
     category: categoryFor(target),
@@ -704,7 +812,7 @@ function commandRecord(target) {
       help_target: target[0] === "global" ? "mdkg --help" : `mdkg help ${key}`,
       command_matrix: "CLI_COMMAND_MATRIX.md",
     },
-  };
+  });
   return normalizeRecord(record);
 }
 

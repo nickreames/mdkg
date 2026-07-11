@@ -346,6 +346,17 @@ test("task commands print deterministic json receipts", () => {
       kind: "goal-closeout",
     },
   });
+  const checkpointContent = fs.readFileSync(
+    path.join(root, ".mdkg", "work", "chk-1-json-done-checkpoint.md"),
+    "utf8"
+  );
+  assert.match(checkpointContent, /^status: done$/m);
+  assert.match(checkpointContent, /json done/);
+  assert.match(checkpointContent, /tests:\/\/task-done-json\.txt/);
+  assert.match(checkpointContent, /^# Decisions Captured$/m);
+  assert.match(checkpointContent, /^# Implementation Summary$/m);
+  assert.match(checkpointContent, /^# Links \/ Artifacts$/m);
+  assert.doesNotMatch(checkpointContent, /What was completed in this phase\?/);
 
   const events = readEvents(root);
   assert.deepEqual(

@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: b6ce5590f19cd90b00820a9488c5773f2824c6525730d83d5f32d6e04612327c -->
+<!-- contract-hash: adfd7e2b99e7071b95d6db7b983ce2daba512eb61ec7851855c3739755e6147a -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -10,8 +10,8 @@ The page is generated from current command metadata in `dist/command-contract.js
 - Tool: mdkg
 - Package version: 0.4.2
 - Schema version: 1
-- Command count: 109
-- Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
+- Command count: 116
+- Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, loop, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
 
 ## Categories
 
@@ -33,6 +33,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - index: 1
 - init: 1
 - list: 1
+- loop: 7
 - manifest: 4
 - mcp: 2
 - new: 1
@@ -3139,6 +3140,372 @@ mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 ### Related commands
 
 none
+
+## loop
+
+mdkg loop command
+
+- Command: `mdkg loop`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: mixed
+
+### When to use
+
+Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg loop list [--ws <alias>] [--json]
+mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--json]
+mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization default_children|planning_only|manual] [--planning-only] [--no-children] [--dry-run] [--run-id <id>] [--ws <alias>] [--json]
+mdkg loop plan <loop> [--ws <alias>] [--json]
+mdkg loop next <loop> [--ws <alias>] [--json]
+mdkg loop runs <loop> [--ws <alias>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization default_children|planning_only|manual] [--planning-only] [--no-children] [--dry-run] [--run-id <id>] [--ws <alias>] [--json]
+mdkg loop list [--ws <alias>] [--json]
+mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--json]
+```
+
+### Common flags
+
+- `--root <path>`: Run against a specific repository root; -r is the short alias.
+- `--ws <alias>`: Resolve the command against one workspace alias.
+- `--json`: Emit deterministic JSON instead of text.
+- `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
+- `--no-reindex`: Do not rebuild a stale or missing index projection.
+- `--run-id <id>`: Attach an optional run id to the fork event when event logging is enabled.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"commands":["fork"]}
+- Side effects: read-or-write-loop-graph-state
+- Read paths: .mdkg/**
+- Write paths: .mdkg/**/*.md, .mdkg/events/*.jsonl, .mdkg/index/**
+- Lock policy: mutation-lock-required-for-fork
+- Atomic write policy: exclusive-create-and-atomic-file-writes
+- Receipts: loop-receipt
+
+### Related commands
+
+`mdkg loop fork`, `mdkg loop list`, `mdkg loop next`, `mdkg loop plan`, `mdkg loop runs`
+
+## loop fork
+
+mdkg loop fork command
+
+- Command: `mdkg loop fork`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization <mode>] [--planning-only] [--no-children] [--dry-run] [--run-id <id>] [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Examples
+
+```bash
+mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization <mode>] [--planning-only] [--no-children] [--dry-run] [--run-id <id>] [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Common flags
+
+- `--scope <scope>`: Scope ref, qid, URI, path, or description for the scoped loop.
+- `--title <title>`: Override the generated scoped loop title.
+- `--materialization <mode>`: Child materialization mode: default_children, planning_only, or manual.
+- `--planning-only`: Create only the scoped loop shell.
+- `--no-children`: Alias for planning-only materialization.
+- `--dry-run`: Plan the fork without writing loop or child nodes.
+- `--run-id <id>`: Attach an optional run id to the fork event when event logging is enabled.
+- `--root <path>`: Run against a specific repository root; -r is the short alias.
+- `--ws <alias>`: Resolve the command against one workspace alias.
+- `--json`: Emit deterministic JSON instead of text.
+- `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
+- `--no-reindex`: Do not rebuild a stale or missing index projection.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"flag":"--dry-run","side_effects":["none"],"write_paths":[],"reserves_ids":false}
+- Side effects: append-loop-fork-event-when-event-logging-is-enabled, create-scoped-loop-and-optional-child-nodes, rebuild-derived-indexes-when-auto-reindex-is-enabled, reserve-sqlite-node-ids-when-configured
+- Read paths: .mdkg/**
+- Write paths: .mdkg/**/*.md, .mdkg/events/*.jsonl, .mdkg/index/**
+- Lock policy: mutation-lock-required
+- Atomic write policy: exclusive-create-and-atomic-file-writes
+- Receipts: loop-fork-receipt
+
+### Related commands
+
+`mdkg loop`, `mdkg loop list`, `mdkg loop next`, `mdkg loop plan`, `mdkg loop runs`
+
+## loop list
+
+mdkg loop list command
+
+- Command: `mdkg loop list`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg loop list [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Examples
+
+```bash
+mdkg loop list [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Common flags
+
+- `--root <path>`: Run against a specific repository root; -r is the short alias.
+- `--ws <alias>`: Resolve the command against one workspace alias.
+- `--json`: Emit deterministic JSON instead of text.
+- `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
+- `--no-reindex`: Do not rebuild a stale or missing index projection.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: loop-list-receipt
+
+### Related commands
+
+`mdkg loop`, `mdkg loop fork`, `mdkg loop next`, `mdkg loop plan`, `mdkg loop runs`
+
+## loop next
+
+mdkg loop next command
+
+- Command: `mdkg loop next`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg loop next <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Examples
+
+```bash
+mdkg loop next <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Common flags
+
+- `--root <path>`: Run against a specific repository root; -r is the short alias.
+- `--ws <alias>`: Resolve the command against one workspace alias.
+- `--json`: Emit deterministic JSON instead of text.
+- `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
+- `--no-reindex`: Do not rebuild a stale or missing index projection.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: loop-next-receipt
+
+### Related commands
+
+`mdkg loop`, `mdkg loop fork`, `mdkg loop list`, `mdkg loop plan`, `mdkg loop runs`
+
+## loop plan
+
+mdkg loop plan command
+
+- Command: `mdkg loop plan`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg loop plan <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Examples
+
+```bash
+mdkg loop plan <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Common flags
+
+- `--root <path>`: Run against a specific repository root; -r is the short alias.
+- `--ws <alias>`: Resolve the command against one workspace alias.
+- `--json`: Emit deterministic JSON instead of text.
+- `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
+- `--no-reindex`: Do not rebuild a stale or missing index projection.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: loop-plan-receipt
+
+### Related commands
+
+`mdkg loop`, `mdkg loop fork`, `mdkg loop list`, `mdkg loop next`, `mdkg loop runs`
+
+## loop runs
+
+mdkg loop runs command
+
+- Command: `mdkg loop runs`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg loop runs <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Examples
+
+```bash
+mdkg loop runs <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Common flags
+
+- `--root <path>`: Run against a specific repository root; -r is the short alias.
+- `--ws <alias>`: Resolve the command against one workspace alias.
+- `--json`: Emit deterministic JSON instead of text.
+- `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
+- `--no-reindex`: Do not rebuild a stale or missing index projection.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: loop-runs-receipt
+
+### Related commands
+
+`mdkg loop`, `mdkg loop fork`, `mdkg loop list`, `mdkg loop next`, `mdkg loop plan`
+
+## loop show
+
+mdkg loop show command
+
+- Command: `mdkg loop show`
+- Mode: Read-only command
+- Public status: stable / public
+- Danger level: read-only
+
+### When to use
+
+Use for reusable loop templates, scoped loop forks, readiness planning, next-action routing, and loop run/evidence inspection.
+
+Beginner safety: Safe for initial grounding. It should not change repository files.
+
+### Usage
+
+```text
+mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Examples
+
+```bash
+mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--no-cache] [--no-reindex] [--json]
+```
+
+### Common flags
+
+- `--meta`: Show metadata without the full body.
+- `--root <path>`: Run against a specific repository root; -r is the short alias.
+- `--ws <alias>`: Resolve the command against one workspace alias.
+- `--json`: Emit deterministic JSON instead of text.
+- `--no-cache`: Build a non-persisting in-memory index projection instead of reading the cache.
+- `--no-reindex`: Do not rebuild a stale or missing index projection.
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: none
+- Read paths: .mdkg/**
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
+- Receipts: loop-show-receipt
+
+### Related commands
+
+`mdkg loop`, `mdkg loop fork`, `mdkg loop list`, `mdkg loop next`, `mdkg loop plan`
 
 ## manifest
 

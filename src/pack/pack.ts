@@ -20,6 +20,17 @@ export type PackBuildOptions = {
 };
 
 const EDGE_KEYS = ["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next", "context_refs", "evidence_refs"] as const;
+const LOOP_REF_FIELDS = [
+  "scope_refs",
+  "child_refs",
+  "lane_waiver_refs",
+  "run_refs",
+  "decision_refs",
+  "output_refs",
+  "approval_refs",
+  "evaluation_refs",
+] as const;
+const LOOP_REVERSE_CHILD_EDGES = ["parent", "epic", "relates"] as const;
 
 function normalizeEdgeList(edges: string[]): string[] {
   const seen = new Set<string>();
@@ -127,6 +138,145 @@ function collectNodes(
   return { qids: visited, depths };
 }
 
+function toStringList(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value.filter((item): item is string => typeof item === "string");
+}
+
+function isUriRef(value: string): boolean {
+  return value.includes("://");
+}
+
+function resolveLoopGraphRef(
+  index: Index,
+  loopQid: string,
+  field: string,
+  ref: string,
+  wsHint: string,
+  warnings: string[]
+): string | undefined {
+  if (isUriRef(ref)) {
+    return undefined;
+  }
+  const resolved = resolveQid(index, ref, wsHint);
+  if (resolved.status === "ok") {
+    return resolved.qid;
+  }
+  if (resolved.status === "ambiguous") {
+    mergeWarnings(
+      warnings,
+      `loop scope ref ambiguous: ${loopQid} ${field} ${ref} (${resolved.candidates.join(", ")})`
+    );
+    return undefined;
+  }
+  mergeWarnings(warnings, `loop scope ref missing: ${loopQid} ${field} ${ref}`);
+  return undefined;
+}
+
+function addLoopPackClosure(
+  index: Index,
+  rootLoopQid: string,
+  qids: Set<string>,
+  depths: Map<string, number>,
+  warnings: string[]
+): void {
+  const visited = new Set<string>();
+  const queued = new Set<string>();
+  const queue: Array<{ qid: string; depth: number }> = [];
+
+  function enqueue(qid: string, depth: number): void {
+    if (queued.has(qid)) {
+      return;
+    }
+    queued.add(qid);
+    queue.push({ qid, depth });
+  }
+
+  function addDeclaredLoopRefs(loopQid: string, depth: number): void {
+    const loop = index.nodes[loopQid];
+    if (!loop) {
+      return;
+    }
+    for (const field of LOOP_REF_FIELDS) {
+      for (const ref of toStringList(loop.attributes[field])) {
+        const resolved = resolveLoopGraphRef(index, loop.qid, field, ref, loop.ws, warnings);
+        if (resolved) {
+          enqueue(resolved, depth);
+        }
+      }
+    }
+  }
+
+  function addReverseChildren(qid: string, depth: number): void {
+    for (const edge of LOOP_REVERSE_CHILD_EDGES) {
+      for (const childQid of index.reverse_edges[edge]?.[qid] ?? []) {
+        enqueue(childQid, depth);
+      }
+    }
+  }
+
+  function addSemanticEdges(loopQid: string, depth: number): void {
+    const loop = index.nodes[loopQid];
+    if (!loop) {
+      return;
+    }
+    for (const field of ["context_refs", "evidence_refs"] as const) {
+      for (const ref of loop.edges[field] ?? []) {
+        if (index.nodes[ref]) {
+          enqueue(ref, depth);
+        } else if (!isUriRef(ref)) {
+          mergeWarnings(warnings, `loop scope ref missing: ${loop.qid} ${field} ${ref}`);
+        }
+      }
+    }
+  }
+
+  addDeclaredLoopRefs(rootLoopQid, 1);
+  addSemanticEdges(rootLoopQid, 1);
+  addReverseChildren(rootLoopQid, 1);
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current || visited.has(current.qid)) {
+      continue;
+    }
+    visited.add(current.qid);
+    const node = index.nodes[current.qid];
+    if (!node) {
+      continue;
+    }
+    qids.add(current.qid);
+    if (!depths.has(current.qid)) {
+      depths.set(current.qid, current.depth);
+    }
+
+    if (node.type === "goal") {
+      const scoped = collectGoalScope(index, node);
+      for (const scopedQid of scoped.qids) {
+        enqueue(scopedQid, current.depth + 1);
+      }
+      for (const missing of scoped.missingRefs) {
+        mergeWarnings(warnings, `loop goal scope ref missing: ${node.qid} ${missing}`);
+      }
+      for (const invalid of scoped.invalidRefs) {
+        mergeWarnings(warnings, `loop goal scope ref unsupported: ${node.qid} ${invalid}`);
+      }
+    }
+
+    if (node.type === "loop") {
+      addDeclaredLoopRefs(node.qid, current.depth + 1);
+      addSemanticEdges(node.qid, current.depth + 1);
+      addReverseChildren(node.qid, current.depth + 1);
+    }
+
+    if (node.type === "epic" || node.type === "feat") {
+      addReverseChildren(node.qid, current.depth + 1);
+    }
+  }
+}
+
 function buildPackNode(root: string, index: Index, qid: string): PackNode {
   const node = index.nodes[qid];
   if (!node) {
@@ -218,6 +368,9 @@ export function buildPack(options: PackBuildOptions): PackBuildResult {
     for (const invalid of scoped.invalidRefs) {
       mergeWarnings(warnings, `goal scope ref unsupported: ${invalid}`);
     }
+  }
+  if (rootNode?.type === "loop") {
+    addLoopPackClosure(options.index, rootNode.qid, qids, depths, warnings);
   }
 
   const workspace = checkpointWorkspaceFromQid(options.rootQid);

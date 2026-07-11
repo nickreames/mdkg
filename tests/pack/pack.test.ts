@@ -549,6 +549,19 @@ type NodeOptions = {
   evidence_refs?: string[];
   skills?: string[];
   scope_refs?: string[];
+  scope_description?: string;
+  template_refs?: string[];
+  child_refs?: string[];
+  run_refs?: string[];
+  decision_refs?: string[];
+  output_refs?: string[];
+  approval_refs?: string[];
+  evaluation_refs?: string[];
+  loop_mode?: string;
+  loop_role?: string;
+  materialization_mode?: string;
+  definition_of_done?: string;
+  blocker_policy?: string;
   active_node?: string;
   created?: string;
   updated?: string;
@@ -617,6 +630,22 @@ function writeNode(root: string, options: NodeOptions): void {
     lines.push("max_iterations: 25");
     lines.push("blocked_after_attempts: 3");
   }
+  if (options.type === "loop") {
+    lines.push(`loop_mode: ${options.loop_mode ?? "planning"}`);
+    lines.push(`loop_role: ${options.loop_role ?? "scoped"}`);
+    lines.push(`scope_refs: [${(options.scope_refs ?? []).join(", ")}]`);
+    lines.push(`scope_description: ${options.scope_description ?? "Pack test scope"}`);
+    lines.push(`template_refs: [${(options.template_refs ?? []).join(", ")}]`);
+    lines.push(`materialization_mode: ${options.materialization_mode ?? "default_children"}`);
+    lines.push(`child_refs: [${(options.child_refs ?? []).join(", ")}]`);
+    lines.push(`run_refs: [${(options.run_refs ?? []).join(", ")}]`);
+    lines.push(`decision_refs: [${(options.decision_refs ?? []).join(", ")}]`);
+    lines.push(`output_refs: [${(options.output_refs ?? []).join(", ")}]`);
+    lines.push(`approval_refs: [${(options.approval_refs ?? []).join(", ")}]`);
+    lines.push(`evaluation_refs: [${(options.evaluation_refs ?? []).join(", ")}]`);
+    lines.push(`definition_of_done: ${options.definition_of_done ?? "Loop pack test definition of done"}`);
+    lines.push(`blocker_policy: ${options.blocker_policy ?? "spike_proposal_recommendation_continue"}`);
+  }
   lines.push(`created: ${options.created ?? "2026-01-06"}`);
   lines.push(`updated: ${options.updated ?? "2026-01-06"}`);
   lines.push("---");
@@ -627,6 +656,91 @@ function writeNode(root: string, options: NodeOptions): void {
 
   const area = areaForType(options.type);
   writeFile(path.join(root, ".mdkg", area, `${options.id}.md`), lines.join("\n"));
+}
+
+function writeMinimalReceiptWorkflow(root: string): void {
+  writeFile(
+    path.join(root, ".mdkg", "work", "work-loop-pack", "WORK.md"),
+    [
+      "---",
+      "id: work.loop-pack",
+      "type: work",
+      "title: loop pack work",
+      "version: 1.0.0",
+      "agent_id: agent.loop-pack",
+      "kind: loop_pack",
+      "pricing_model: included",
+      "required_capabilities: [loop_pack]",
+      "inputs: [scope:text:required]",
+      "outputs: [receipt:text:required]",
+      "receipt_required: true",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [loop-1]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-01-06",
+      "updated: 2026-01-06",
+      "---",
+      "",
+      "# loop pack work",
+    ].join("\n")
+  );
+
+  writeFile(
+    path.join(root, ".mdkg", "work", "order-loop-pack", "WORK_ORDER.md"),
+    [
+      "---",
+      "id: order.loop-pack",
+      "type: work_order",
+      "title: loop pack order",
+      "version: 1.0.0",
+      "work_id: work.loop-pack",
+      "work_version: 1.0.0",
+      "requester: user://loop-pack-test",
+      "order_status: completed",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [loop-1, work.loop-pack]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-01-06",
+      "updated: 2026-01-06",
+      "---",
+      "",
+      "# loop pack order",
+    ].join("\n")
+  );
+
+  writeFile(
+    path.join(root, ".mdkg", "work", "receipt-loop-pack", "RECEIPT.md"),
+    [
+      "---",
+      "id: receipt.loop-pack",
+      "type: receipt",
+      "title: loop pack receipt",
+      "version: 1.0.0",
+      "work_order_id: order.loop-pack",
+      "receipt_status: verified",
+      "outcome: success",
+      "tags: []",
+      "owners: []",
+      "links: []",
+      "artifacts: []",
+      "relates: [loop-1, order.loop-pack]",
+      "refs: []",
+      "aliases: []",
+      "created: 2026-01-06",
+      "updated: 2026-01-06",
+      "---",
+      "",
+      "# loop pack receipt",
+    ].join("\n")
+  );
 }
 
 function writeManifestWorkflow(root: string, options: {
@@ -1107,6 +1221,108 @@ test("goal-root pack includes scoped recursive work closure", () => {
     ["root:goal-1", "root:epic-1", "root:feat-1", "root:task-1", "root:spike-1", "root:test-1"]
   );
   assert.equal(result.pack.nodes.some((node: { qid: string }) => node.qid === "root:task-99"), false);
+});
+
+test("loop-root pack includes scoped closure and linked subnodes in deterministic order", () => {
+  const root = makeTempDir("mdkg-pack-loop-scope-");
+  writeConfig(root);
+  writeTemplates(root);
+  writeCoreList(root, []);
+
+  writeNode(root, {
+    id: "loop-1",
+    type: "loop",
+    status: "progress",
+    priority: 1,
+    scope_refs: ["goal-1"],
+    template_refs: ["template://loops/security-audit"],
+    child_refs: ["task-1", "spike-1", "test-1", "prop-1", "chk-1"],
+    run_refs: ["chk-1"],
+    decision_refs: ["dec-1"],
+    output_refs: ["artifact://loop-pack/report"],
+    evaluation_refs: ["test-1"],
+    context_refs: ["feat-1"],
+    evidence_refs: ["receipt.loop-pack"],
+  });
+  writeNode(root, { id: "goal-1", type: "goal", status: "progress", priority: 1, scope_refs: ["epic-1"] });
+  writeNode(root, { id: "epic-1", type: "epic", status: "todo" });
+  writeNode(root, { id: "feat-1", type: "feat", status: "todo", epic: "epic-1" });
+  writeNode(root, { id: "task-1", type: "task", status: "todo", parent: "loop-1" });
+  writeNode(root, { id: "task-2", type: "task", status: "todo", parent: "feat-1" });
+  writeNode(root, { id: "spike-1", type: "spike", status: "todo", parent: "loop-1" });
+  writeNode(root, { id: "test-1", type: "test", status: "todo", parent: "loop-1" });
+  writeNode(root, { id: "chk-1", type: "checkpoint", status: "done", relates: ["loop-1"] });
+  writeNode(root, { id: "prop-1", type: "prop", relates: ["loop-1"] });
+  writeNode(root, { id: "dec-1", type: "dec", status: "accepted" });
+  writeMinimalReceiptWorkflow(root);
+
+  const config = loadConfig(root);
+  const index = buildIndex(root, config);
+
+  const result = buildPack({
+    root,
+    index,
+    rootQid: "root:loop-1",
+    depth: 0,
+    edges: [],
+    verbose: false,
+    maxNodes: config.pack.limits.max_nodes,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    wsHint: "root",
+    includeLatestCheckpoint: false,
+  });
+
+  assert.deepEqual(result.warnings, []);
+  assert.deepEqual(
+    result.pack.nodes.map((node: { qid: string }) => node.qid),
+    [
+      "root:loop-1",
+      "root:dec-1",
+      "root:prop-1",
+      "root:work.loop-pack",
+      "root:order.loop-pack",
+      "root:receipt.loop-pack",
+      "root:goal-1",
+      "root:epic-1",
+      "root:feat-1",
+      "root:task-1",
+      "root:task-2",
+      "root:spike-1",
+      "root:chk-1",
+      "root:test-1",
+    ]
+  );
+  assert.equal(result.pack.meta.truncated.max_nodes, false);
+
+  const limited = buildPack({
+    root,
+    index,
+    rootQid: "root:loop-1",
+    depth: 0,
+    edges: [],
+    verbose: false,
+    maxNodes: 5,
+    verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+    wsHint: "root",
+    includeLatestCheckpoint: false,
+  });
+
+  assert.deepEqual(
+    limited.pack.nodes.map((node: { qid: string }) => node.qid),
+    ["root:loop-1", "root:dec-1", "root:prop-1", "root:work.loop-pack", "root:order.loop-pack"]
+  );
+  assert.equal(limited.pack.meta.truncated.max_nodes, true);
+  assert.deepEqual(limited.pack.meta.truncated.dropped, [
+    "root:receipt.loop-pack",
+    "root:goal-1",
+    "root:epic-1",
+    "root:feat-1",
+    "root:task-1",
+    "root:task-2",
+    "root:spike-1",
+    "root:chk-1",
+    "root:test-1",
+  ]);
 });
 
 test("pack truncates by max_nodes", () => {

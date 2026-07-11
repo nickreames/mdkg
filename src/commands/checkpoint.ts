@@ -24,6 +24,7 @@ export type CheckpointNewCommandOptions = {
   template?: string;
   runId?: string;
   note?: string;
+  body?: string;
   json?: boolean;
   now?: Date;
 };
@@ -321,7 +322,7 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     relates,
     scope,
   });
-  const rendered = replaceRenderedBody(content, checkpointBody(kind));
+  const rendered = replaceRenderedBody(content, options.body ?? checkpointBody(kind));
 
   try {
     writeFileExclusive(filePath, rendered);

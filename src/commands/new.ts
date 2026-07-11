@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { loadConfig } from "../core/config";
+import { loadConfig, Config } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
 import { isAgentFileType, AGENT_FILE_BASENAMES } from "../graph/agent_file_types";
@@ -66,6 +66,12 @@ type NewNodeReceipt = {
   priority?: number;
 };
 
+type LoopTemplateSuggestion = {
+  ref: string;
+  title: string;
+  path: string;
+};
+
 const DEC_ID_RE = /^dec-[0-9]+$/;
 const DEC_STATUS = new Set(["proposed", "accepted", "rejected", "superseded"]);
 const SKILL_SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -74,6 +80,41 @@ const CORE_TYPES = new Set(["rule"]);
 const DESIGN_TYPES = new Set(["prd", "edd", "dec", "prop"]);
 const LEGACY_NEW_SPEC_WARNING =
   "warning: mdkg new spec is legacy; use mdkg new manifest. This alias creates MANIFEST.md with type: manifest during the compatibility release.";
+
+const NEW_LOOP_NEXT_ACTIONS = [
+  "Review reusable loop templates with mdkg loop list",
+  "Fork a reusable template with mdkg loop fork <template> --scope <scope>",
+  "Inspect raw loop readiness with mdkg loop plan <loop-id>",
+];
+
+function toPosix(value: string): string {
+  return value.split(path.sep).join("/");
+}
+
+function loopTemplateSuggestions(root: string, config: Config): LoopTemplateSuggestion[] {
+  const dir = path.resolve(root, config.templates.root_path, "loops");
+  if (!fs.existsSync(dir)) {
+    return [];
+  }
+  return fs
+    .readdirSync(dir)
+    .filter((entry) => entry.endsWith(".loop.md"))
+    .sort()
+    .map((entry) => {
+      const filePath = path.join(dir, entry);
+      const content = fs.readFileSync(filePath, "utf8");
+      const { frontmatter } = parseFrontmatter(content, filePath);
+      const slug = entry.replace(/\.loop\.md$/, "");
+      const title = typeof frontmatter.title === "string" && frontmatter.title.trim().length > 0
+        ? frontmatter.title
+        : slug;
+      return {
+        ref: `template://loops/${slug}`,
+        title,
+        path: toPosix(path.relative(root, filePath)),
+      };
+    });
+}
 
 function parseCsvList(raw?: string): string[] {
   if (!raw) {
@@ -539,12 +580,20 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     console.error(LEGACY_NEW_SPEC_WARNING);
   }
 
+  const loopGuidance = type === "loop"
+    ? {
+        next_actions: NEW_LOOP_NEXT_ACTIONS,
+        suggested_templates: loopTemplateSuggestions(options.root, config),
+      }
+    : undefined;
+
   if (options.json) {
     console.log(
       JSON.stringify(
         {
           action: "created",
           node: receipt,
+          ...(loopGuidance ? loopGuidance : {}),
         },
         null,
         2
@@ -554,6 +603,11 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   }
 
   console.log(`node created: ${receipt.qid} (${receipt.path})`);
+  if (loopGuidance) {
+    console.log("next: review reusable loop templates with `mdkg loop list`");
+    console.log("next: fork a reusable template with `mdkg loop fork <template> --scope <scope>`");
+    console.log(`next: inspect raw loop readiness with \`mdkg loop plan ${receipt.id}\``);
+  }
 }
 
 export function runNewCommand(options: NewCommandOptions): void {

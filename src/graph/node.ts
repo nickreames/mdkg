@@ -14,6 +14,7 @@ import {
 } from "./archive_file";
 import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { validatePortableOrUriRef } from "../util/refs";
+import { isLoopIdentity, parseLoopRefBinding } from "./loop_bindings";
 
 export type Node = {
   id: string;
@@ -39,7 +40,7 @@ export type Node = {
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DEC_ID_RE = /^dec-[0-9]+$/;
 
-export const WORK_TYPES = new Set(["goal", "epic", "feat", "task", "bug", "spike", "checkpoint", "test"]);
+export const WORK_TYPES = new Set(["goal", "loop", "epic", "feat", "task", "bug", "spike", "checkpoint", "test"]);
 export const DEC_TYPES = new Set(["dec"]);
 export const ALLOWED_TYPES = new Set([
   "rule",
@@ -48,6 +49,7 @@ export const ALLOWED_TYPES = new Set([
   "dec",
   "prop",
   "goal",
+  "loop",
   "epic",
   "feat",
   "task",
@@ -72,6 +74,45 @@ const GOAL_ATTRIBUTE_KEYS = [
   "required_checks",
   "max_iterations",
   "blocked_after_attempts",
+];
+const LOOP_MODES = new Set([
+  "readonly",
+  "planning",
+  "patch_proposal",
+  "write_with_approval",
+  "autonomous_local",
+]);
+const LOOP_ROLES = new Set(["template", "scoped", "run_bearing"]);
+const LOOP_MATERIALIZATION_MODES = new Set(["default_children", "planning_only", "manual"]);
+const LOOP_BLOCKER_POLICIES = new Set(["spike_proposal_recommendation_continue"]);
+const LOOP_ATTRIBUTE_KEYS = [
+  "loop_mode",
+  "loop_role",
+  "scope_refs",
+  "scope_description",
+  "template_refs",
+  "materialization_mode",
+  "child_refs",
+  "pre_run_questions",
+  "question_answer_refs",
+  "pre_approved_actions",
+  "approval_gated_actions",
+  "required_actions",
+  "requested_actions",
+  "prohibited_actions",
+  "action_approval_refs",
+  "evidence_lanes",
+  "evidence_lane_refs",
+  "lane_waiver_refs",
+  "lane_waiver_decision_refs",
+  "lane_waiver_approval_refs",
+  "run_refs",
+  "decision_refs",
+  "output_refs",
+  "approval_refs",
+  "evaluation_refs",
+  "definition_of_done",
+  "blocker_policy",
 ];
 
 export type NodeParseOptions = {
@@ -307,6 +348,212 @@ function validateGoalFrontmatter(
   }
 }
 
+function validateLoopRefList(
+  frontmatter: Record<string, FrontmatterValue>,
+  key: string,
+  filePath: string
+): void {
+  const values = optionalList(frontmatter, key, filePath);
+  for (const [index, value] of values.entries()) {
+    if (typeof value !== "string" || value.trim().length === 0) {
+      throw formatError(filePath, `${key}[${index}] must not be empty`);
+    }
+    const normalized = value.includes("://") ? value : requireLowercase(value, `${key}[${index}]`, filePath);
+    if (!validatePortableOrUriRef(normalized)) {
+      throw formatError(filePath, `${key}[${index}] must be a portable id, qid, or URI ref`);
+    }
+  }
+}
+
+function validateLoopStringList(
+  frontmatter: Record<string, FrontmatterValue>,
+  key: string,
+  filePath: string
+): void {
+  const values = optionalList(frontmatter, key, filePath);
+  for (const [index, value] of values.entries()) {
+    if (typeof value !== "string" || value.trim().length === 0) {
+      throw formatError(filePath, `${key}[${index}] must not be empty`);
+    }
+    const normalized = value.trim().toLowerCase();
+    if (!isLoopIdentity(normalized)) {
+      throw formatError(filePath, `${key}[${index}] must be a stable lowercase identity`);
+    }
+    if (values.slice(0, index).some((candidate) => candidate.trim().toLowerCase() === normalized)) {
+      throw formatError(filePath, `${key}[${index}] duplicates identity ${normalized}`);
+    }
+  }
+}
+
+function validateLoopBindingList(
+  frontmatter: Record<string, FrontmatterValue>,
+  key: string,
+  identityKey: string,
+  refKeys: string[],
+  filePath: string,
+  requireEveryRefKey = false
+): void {
+  const values = optionalList(frontmatter, key, filePath);
+  const identities = new Set(optionalList(frontmatter, identityKey, filePath).map((value) => value.toLowerCase()));
+  const refsByKey = refKeys.map((refKey) => new Set(optionalList(frontmatter, refKey, filePath)));
+  const seen = new Set<string>();
+  for (const [index, value] of values.entries()) {
+    if (typeof value !== "string") {
+      throw formatError(filePath, `${key}[${index}] must use <identity>=<ref>`);
+    }
+    const binding = parseLoopRefBinding(value);
+    if (!binding) {
+      throw formatError(filePath, `${key}[${index}] must use <identity>=<ref>`);
+    }
+    if (!identities.has(binding.identity)) {
+      throw formatError(filePath, `${key}[${index}] references undeclared ${identityKey} identity ${binding.identity}`);
+    }
+    const normalizedRef = binding.ref.includes("://")
+      ? binding.ref
+      : requireLowercase(binding.ref, `${key}[${index}]`, filePath);
+    if (!validatePortableOrUriRef(normalizedRef)) {
+      throw formatError(filePath, `${key}[${index}] must reference a portable id, qid, or URI ref`);
+    }
+    const included = requireEveryRefKey
+      ? refsByKey.every((refs) => refs.has(binding.ref))
+      : refsByKey.some((refs) => refs.has(binding.ref));
+    if (!included) {
+      const operator = requireEveryRefKey ? "each of" : "one of";
+      throw formatError(filePath, `${key}[${index}] ref ${binding.ref} must also appear in ${operator} ${refKeys.join(", ")}`);
+    }
+    const pair = `${binding.identity}\u0000${binding.ref}`;
+    if (seen.has(pair)) {
+      throw formatError(filePath, `${key}[${index}] duplicates ${binding.identity}=${binding.ref}`);
+    }
+    seen.add(pair);
+  }
+}
+
+function validateLoopActionSets(frontmatter: Record<string, FrontmatterValue>, filePath: string): void {
+  const preApproved = new Set(optionalList(frontmatter, "pre_approved_actions", filePath));
+  const approvalGated = new Set(optionalList(frontmatter, "approval_gated_actions", filePath));
+  const required = optionalList(frontmatter, "required_actions", filePath);
+  const requested = optionalList(frontmatter, "requested_actions", filePath);
+  const prohibited = new Set(optionalList(frontmatter, "prohibited_actions", filePath));
+
+  for (const action of preApproved) {
+    if (approvalGated.has(action)) {
+      throw formatError(filePath, `action ${action} cannot be both pre_approved_actions and approval_gated_actions`);
+    }
+    if (prohibited.has(action)) {
+      throw formatError(filePath, `action ${action} cannot be both pre_approved_actions and prohibited_actions`);
+    }
+  }
+  for (const action of approvalGated) {
+    if (prohibited.has(action)) {
+      throw formatError(filePath, `action ${action} cannot be both approval_gated_actions and prohibited_actions`);
+    }
+  }
+  for (const [key, actions] of [["required_actions", required], ["requested_actions", requested]] as const) {
+    for (const action of actions) {
+      if (!preApproved.has(action) && !approvalGated.has(action)) {
+        throw formatError(filePath, `${key} references undeclared action ${action}`);
+      }
+      if (prohibited.has(action)) {
+        throw formatError(filePath, `${key} cannot include prohibited action ${action}`);
+      }
+    }
+  }
+}
+
+function validateLoopFrontmatter(
+  type: string,
+  frontmatter: Record<string, FrontmatterValue>,
+  filePath: string
+): void {
+  if (type !== "loop") {
+    return;
+  }
+
+  const loopMode = requireLowercase(expectString(frontmatter, "loop_mode", filePath), "loop_mode", filePath);
+  if (!LOOP_MODES.has(loopMode)) {
+    throw formatError(filePath, `loop_mode must be one of ${Array.from(LOOP_MODES).join(", ")}`);
+  }
+
+  const loopRole = requireLowercase(expectString(frontmatter, "loop_role", filePath), "loop_role", filePath);
+  if (!LOOP_ROLES.has(loopRole)) {
+    throw formatError(filePath, `loop_role must be one of ${Array.from(LOOP_ROLES).join(", ")}`);
+  }
+
+  const materializationMode = requireLowercase(
+    expectString(frontmatter, "materialization_mode", filePath),
+    "materialization_mode",
+    filePath
+  );
+  if (!LOOP_MATERIALIZATION_MODES.has(materializationMode)) {
+    throw formatError(
+      filePath,
+      `materialization_mode must be one of ${Array.from(LOOP_MATERIALIZATION_MODES).join(", ")}`
+    );
+  }
+
+  const blockerPolicy = requireLowercase(
+    expectString(frontmatter, "blocker_policy", filePath),
+    "blocker_policy",
+    filePath
+  );
+  if (!LOOP_BLOCKER_POLICIES.has(blockerPolicy)) {
+    throw formatError(filePath, `blocker_policy must be one of ${Array.from(LOOP_BLOCKER_POLICIES).join(", ")}`);
+  }
+
+  expectString(frontmatter, "definition_of_done", filePath);
+  optionalString(frontmatter, "scope_description", filePath);
+  for (const key of [
+    "pre_run_questions",
+    "pre_approved_actions",
+    "approval_gated_actions",
+    "required_actions",
+    "requested_actions",
+    "prohibited_actions",
+    "evidence_lanes",
+  ]) {
+    validateLoopStringList(frontmatter, key, filePath);
+  }
+  validateLoopActionSets(frontmatter, filePath);
+  for (const key of [
+    "scope_refs",
+    "template_refs",
+    "child_refs",
+    "lane_waiver_refs",
+    "run_refs",
+    "decision_refs",
+    "output_refs",
+    "approval_refs",
+    "evaluation_refs",
+  ]) {
+    validateLoopRefList(frontmatter, key, filePath);
+  }
+  validateLoopBindingList(frontmatter, "question_answer_refs", "pre_run_questions", ["decision_refs"], filePath);
+  validateLoopBindingList(frontmatter, "action_approval_refs", "approval_gated_actions", ["approval_refs"], filePath);
+  validateLoopBindingList(
+    frontmatter,
+    "evidence_lane_refs",
+    "evidence_lanes",
+    ["run_refs", "output_refs", "evaluation_refs", "evidence_refs"],
+    filePath
+  );
+  validateLoopBindingList(
+    frontmatter,
+    "lane_waiver_decision_refs",
+    "evidence_lanes",
+    ["lane_waiver_refs", "decision_refs"],
+    filePath,
+    true
+  );
+  validateLoopBindingList(
+    frontmatter,
+    "lane_waiver_approval_refs",
+    "evidence_lanes",
+    ["approval_refs"],
+    filePath
+  );
+}
+
 function extractGoalAttributes(
   type: string,
   frontmatter: Record<string, FrontmatterValue>
@@ -316,6 +563,23 @@ function extractGoalAttributes(
   }
   const attributes: Record<string, FrontmatterValue> = {};
   for (const key of GOAL_ATTRIBUTE_KEYS) {
+    const value = frontmatter[key];
+    if (value !== undefined) {
+      attributes[key] = value;
+    }
+  }
+  return attributes;
+}
+
+function extractLoopAttributes(
+  type: string,
+  frontmatter: Record<string, FrontmatterValue>
+): Record<string, FrontmatterValue> {
+  if (type !== "loop") {
+    return {};
+  }
+  const attributes: Record<string, FrontmatterValue> = {};
+  for (const key of LOOP_ATTRIBUTE_KEYS) {
     const value = frontmatter[key];
     if (value !== undefined) {
       attributes[key] = value;
@@ -420,6 +684,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   validateAgentFrontmatter(type, frontmatter, filePath);
   validateArchiveFrontmatter(type, frontmatter, filePath);
   validateGoalFrontmatter(type, frontmatter, filePath);
+  validateLoopFrontmatter(type, frontmatter, filePath);
 
   const idValue = requireLowercase(expectString(frontmatter, "id", filePath), "id", filePath);
   const id = isPortableType
@@ -507,6 +772,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   });
   const attributes = {
     ...extractGoalAttributes(type, frontmatter),
+    ...extractLoopAttributes(type, frontmatter),
     ...extractAgentAttributes(type, frontmatter),
     ...extractArchiveAttributes(type, frontmatter),
   };

@@ -307,6 +307,65 @@ test("runCli covers inline flag values and structured output parser branches", (
   assert.match(defaultEdges.stdout, /dry-run: no files written/);
 });
 
+test("runCli dispatches loop list show plan and runs with json output", () => {
+  const root = setupRepo();
+
+  const created = captureRun(["new", "loop", "Runtime loop", "--json"], root);
+  assert.equal(created.code, 0);
+  const createdPayload = JSON.parse(created.stdout) as { node: { id: string; type: string } };
+  assert.equal(createdPayload.node.id, "loop-1");
+  assert.equal(createdPayload.node.type, "loop");
+
+  const list = captureRun(["loop", "list", "--ws", "root", "--no-cache", "--json"], root);
+  assert.equal(list.code, 0);
+  const listPayload = JSON.parse(list.stdout) as { loops: Array<{ qid: string; type: string }> };
+  assert.ok(listPayload.loops.some((item) => item.qid === "root:loop-1" && item.type === "loop"));
+
+  const show = captureRun(["loop", "show", "loop-1", "--no-reindex", "--json"], root);
+  assert.equal(show.code, 0);
+  const showPayload = JSON.parse(show.stdout) as { loop: { qid: string; attributes: { loop_mode?: string } } };
+  assert.equal(showPayload.loop.qid, "root:loop-1");
+  assert.equal(showPayload.loop.attributes.loop_mode, "planning");
+
+  const plan = captureRun(["loop", "plan", "loop-1", "--json"], root);
+  assert.equal(plan.code, 0);
+  const planPayload = JSON.parse(plan.stdout) as {
+    action: string;
+    pending_materialization: string[];
+    blocker_continuation: { proposal: { minimum_viable_options: number } };
+  };
+  assert.equal(planPayload.action, "planned");
+  assert.equal(planPayload.pending_materialization.length, 1);
+  assert.equal(planPayload.blocker_continuation.proposal.minimum_viable_options, 3);
+
+  const fork = captureRun([
+    "loop",
+    "fork",
+    "loop-1",
+    "--scope",
+    "loop-1",
+    "--planning-only",
+    "--dry-run",
+    "--run-id",
+    "descriptor-parser-test",
+    "--ws",
+    "root",
+    "--json",
+  ], root);
+  assert.equal(fork.code, 0);
+  const forkPayload = JSON.parse(fork.stdout) as { action: string; dry_run: boolean; loop: { id: string } };
+  assert.equal(forkPayload.action, "planned");
+  assert.equal(forkPayload.dry_run, true);
+  assert.equal(forkPayload.loop.id, "loop-2");
+
+  const runs = captureRun(["loop", "runs", "loop-1", "--json"], root);
+  assert.equal(runs.code, 0);
+  const runsPayload = JSON.parse(runs.stdout) as { action: string; run_refs: string[]; evidence_refs: string[] };
+  assert.equal(runsPayload.action, "listed");
+  assert.deepEqual(runsPayload.run_refs, []);
+  assert.deepEqual(runsPayload.evidence_refs, []);
+});
+
 test("runCli covers skill, task, event, and new dispatch success paths", () => {
   const root = setupRepo();
 
