@@ -2,7 +2,7 @@
 id: task-663
 type: task
 title: replace mdkg.dev homepage launch-track process copy
-status: todo
+status: done
 priority: 1
 parent: goal-56
 tags: [mdkg-dev, homepage, public-copy, copy-boundary, 0.4.2]

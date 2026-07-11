@@ -46,7 +46,7 @@
         "Changed": [
           "Updated default templates, init assets, seeded skills, and generated command references to demonstrate generic contract-profile fields without adding runtime-only queue, provider, billing, ledger, or final-receipt state.",
           "Documented the distinction between `contract_profile`, MANIFEST `resource_profile`, WORK `kind`, WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`, `receipt_kind`, `redaction_class`, and pack/bundle `--profile` flags.",
-          "Expanded release-readiness documentation and checks for `0.4.1` so the implementation can hand off to a separate approval-gated publish goal."
+          "Expanded documentation and validation checks for `0.4.1` so package readiness can be verified before publication."
         ]
       },
       "item_count": 6,
@@ -62,14 +62,14 @@
       "legacy": false,
       "sections": {
         "Added": [
-          "Added the `0.4.0` public launch-readiness lane for mdkg.dev and docs.mdkg.dev with explicit source metadata, changelog, generated-doc, npm prepublish, npm postpublish, Vercel production, and Chrome live-validation blockers.",
-          "Added public release-note and docs coverage for the `0.4.0` launch surface, including per-release changelog cards, launch-track copy, and source-backed currentness requirements.",
-          "Added Vercel production currentness and Chrome postpublish validation as required evidence before mdkg.dev or docs.mdkg.dev can claim the `0.4.0` launch is live."
+          "Added public release cards and changelog detail pages for recent public-alpha versions.",
+          "Added docs coverage for config overlays, custom skill mirrors, `COLLABORATION.md`, MANIFEST naming, and public-alpha customization guidance.",
+          "Added mdkg.dev and docs.mdkg.dev copy updates that keep public claims bounded to documented capabilities."
         ],
         "Changed": [
-          "Updated mdkg.dev and docs.mdkg.dev source copy for the `0.4.0` release target, including config overlays, custom skill mirrors, `COLLABORATION.md`, MANIFEST/SPEC compatibility, and Plan -> Work -> Evidence launch messaging.",
+          "Updated mdkg.dev and docs.mdkg.dev source copy for the `0.4.0` public alpha, including config overlays, custom skill mirrors, `COLLABORATION.md`, MANIFEST/SPEC compatibility, and Plan -> Work -> Evidence messaging.",
           "Updated public docs and examples to use the current `mdkg pack --profile concise` syntax instead of stale `--pack-profile concise` examples.",
-          "Aligned source-visible package references, generated release-note data, and generated CLI docs with the `0.4.0` release target."
+          "Aligned source-visible package references, generated release-note data, and generated CLI docs with `0.4.0`."
         ],
         "Fixed": [
           "Fixed mdkg.dev primary CTA gradient rendering by moving the ocean gradient to an overscanned clipped layer instead of painting it directly on the rounded button surface."
@@ -77,9 +77,9 @@
       },
       "item_count": 7,
       "highlights": [
-        "Added the `0.4.0` public launch-readiness lane for mdkg.dev and docs.mdkg.dev with explicit source metadata, changelog, generated-doc, npm prepublish, npm postpublish, Vercel production, and Chrome live-validation blockers.",
-        "Added public release-note and docs coverage for the `0.4.0` launch surface, including per-release changelog cards, launch-track copy, and source-backed currentness requirements.",
-        "Added Vercel production currentness and Chrome postpublish validation as required evidence before mdkg.dev or docs.mdkg.dev can claim the `0.4.0` launch is live."
+        "Added public release cards and changelog detail pages for recent public-alpha versions.",
+        "Added docs coverage for config overlays, custom skill mirrors, `COLLABORATION.md`, MANIFEST naming, and public-alpha customization guidance.",
+        "Added mdkg.dev and docs.mdkg.dev copy updates that keep public claims bounded to documented capabilities."
       ]
     },
     {

@@ -1,6 +1,6 @@
 ---
 title: Demo Graphs
-description: Plan reusable mdkg demo templates without turning demos into production launch state.
+description: Plan reusable mdkg demo templates without turning demos into public site state.
 ---
 
 Demo graphs are useful for showing how an agent can start from a goal, read repo-local skills, build context, execute work, and record evidence.

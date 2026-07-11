@@ -2,12 +2,12 @@
 id: goal-56
 type: goal
 title: Clean public copy meta language across mdkg.dev and docs.mdkg.dev
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: Homepage, public changelog, demo proof language, and install wording are cleaned locally; generated release notes are aligned from CHANGELOG.md; local builds and smokes pass; Product Design and Browser evidence confirms no remaining weird public meta/process language across the audited mdkg.dev and docs.mdkg.dev surfaces.
 scope_refs: [task-663, task-664, task-665, test-342, test-343]
-active_node: task-663
+last_active_node: test-343
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, product-design-audit, browser-control-in-app-browser, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm run docs:release-notes, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run docs:check, Product Design public-copy audit with fresh local screenshots, Browser local rendered-page audit for mdkg.dev and docs pages, git diff --check]
 max_iterations: 25

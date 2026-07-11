@@ -16,6 +16,10 @@ function assertContains(text, expected, label) {
   assert(text.includes(expected), `${label} missing ${expected}`);
 }
 
+function assertNotContains(text, forbidden, label) {
+  assert(!text.includes(forbidden), `${label} should not contain ${forbidden}`);
+}
+
 function assertParity(source, expected, label) {
   for (const item of expected) {
     assertContains(source, item, label);
@@ -35,7 +39,6 @@ function assertReadablePlainText(source, label) {
 function main() {
   buildSite();
 
-  const pkg = JSON.parse(readText(path.join(repoRoot, "package.json")));
   const dist = path.join(repoRoot, "mdkg-dev", "dist");
   const requiredFiles = [
     "index.html",
@@ -58,9 +61,12 @@ function main() {
   assert(home.includes("Git-native project memory"), "homepage missing primary product copy");
   assert(home.includes("mdkg init --agent"), "homepage missing first-run CLI command");
   assert(home.includes("Customize standards without forking the kernel"), "homepage missing customization section");
-  assert(home.includes(`${pkg.version} launch track`), "homepage missing release-track language");
-  assert(home.includes(`mdkg@${pkg.version}`), "homepage missing release-target package language");
-  assert(home.includes("postpublish and postdeploy evidence"), "homepage missing postpublish/postdeploy boundary language");
+  assert(home.includes("Team customization"), "homepage missing customization badge");
+  assert(home.includes("Use repo-local config overlays, managed skills, and core docs"), "homepage missing user-facing customization copy");
+  assert(home.includes("Upgradable kernel"), "homepage missing upgradable kernel card");
+  for (const forbidden of ["launch track", "postpublish", "postdeploy", "production launch", "release-readiness surface"]) {
+    assertNotContains(home, forbidden, "homepage public copy");
+  }
   assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
   assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
   assert(home.includes("COLLABORATION.md"), "homepage missing collaboration profile copy");
@@ -139,9 +145,8 @@ function main() {
         "one reviewable graph, one packable handoff, one validation loop",
         "Without mdkg",
         "With mdkg",
-        `${pkg.version} launch track`,
-        `mdkg@${pkg.version}`,
-        "Release target",
+        "Team customization",
+        "Upgradable kernel",
         "Customize standards without forking the kernel.",
         ".mdkg/config.json",
         "Custom skill mirrors",

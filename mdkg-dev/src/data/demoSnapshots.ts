@@ -42,7 +42,7 @@ export const demoSnapshots: DemoSnapshot[] = [
     outputRoute: "/demo/1/output/",
     image: "/demo-001/ocean-flow-map.svg",
     imageAlt:
-      "Ocean Flow graph map showing goal, creative direction, Astro plus React, local proof, and preview gate.",
+      "Ocean Flow graph map showing goal, creative direction, Astro plus React, and local proof.",
     stack: ["mdkg graph fork", "Astro", "React Island", "Ocean Flow"],
     validation: [
       "mdkg validation passed with zero warnings in the demo run",
@@ -56,14 +56,14 @@ export const demoSnapshots: DemoSnapshot[] = [
         type: "goal",
         title: "Build a complete differentiated website demo from the canonical mdkg template",
         status: "achieved",
-        detail: "The run starts from one selected goal and closes with local proof before any preview approval."
+        detail: "The run starts from one selected goal and closes with local proof before any optional preview deployment."
       },
       {
         id: "spike-1",
         type: "spike",
         title: "Choose audience offer structure and creative direction",
         status: "done",
-        detail: "Creative direction is summarized into durable graph state instead of retained as raw prompt payload."
+        detail: "Creative direction is summarized into durable graph state instead of retained as private prompt text."
       },
       {
         id: "task-1",
@@ -82,9 +82,9 @@ export const demoSnapshots: DemoSnapshot[] = [
       {
         id: "chk-4",
         type: "checkpoint",
-        title: "demo-001 validation passed and preview approval recommended",
+        title: "demo-001 validation passed for optional preview",
         status: "recorded",
-        detail: "The checkpoint recommends parent approval for preview only after local proof."
+        detail: "The checkpoint records local proof before the run is considered for an optional preview."
       }
     ],
     files: [
@@ -107,7 +107,7 @@ export const demoSnapshots: DemoSnapshot[] = [
         kind: "checkpoint",
         role: "Closeout evidence",
         excerpt:
-          "The generated site builds locally, validates in mdkg, renders cleanly in Browser and Chrome desktop/mobile captures, and is ready to request parent Vercel preview approval."
+          "The generated site builds locally, validates in mdkg, renders cleanly in Browser and Chrome desktop/mobile captures, and is ready for optional preview deployment."
       },
       {
         path: "src/pages/index.astro",
@@ -129,13 +129,13 @@ export const demoSnapshots: DemoSnapshot[] = [
       "Select one goal and pack the first work node.",
       "Shape the creative direction with Ocean Flow as the baseline.",
       "Build the Astro site locally with a focused React island.",
-      "Validate locally before any Vercel preview request."
+      "Validate locally before any optional preview deployment."
     ],
     safety: [
-      "No raw prompts, credentials, cookies, provider payloads, or Vercel bypass data are included.",
+      "No credentials, cookies, private prompts, provider data, or private artifacts are included.",
       "The public snapshot is intentionally bounded to selected graph, file, and output evidence.",
       "The output route is noindexed as a preview surface even though the demo detail page is public.",
-      "No push, deploy, DNS, tag, npm publish, analytics activation, or provider mutation is implied."
+      "The snapshot does not imply deployment, DNS, publishing, analytics, or provider-side changes."
     ],
     outputHighlights: [
       "Ocean Flow visual map",

@@ -63,33 +63,29 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
   `resource_profile`, WORK `kind`, WORK_ORDER `artifact_policy`, RECEIPT
   `redaction_policy`, `receipt_kind`, `redaction_class`, and pack/bundle
   `--profile` flags.
-- Expanded release-readiness documentation and checks for `0.4.1` so the
-  implementation can hand off to a separate approval-gated publish goal.
+- Expanded documentation and validation checks for `0.4.1` so package readiness
+  can be verified before publication.
 
 ## 0.4.0 - 2026-06-27
 
 ### Added
 
-- Added the `0.4.0` public launch-readiness lane for mdkg.dev and
-  docs.mdkg.dev with explicit source metadata, changelog, generated-doc,
-  npm prepublish, npm postpublish, Vercel production, and Chrome live-validation
-  blockers.
-- Added public release-note and docs coverage for the `0.4.0` launch surface,
-  including per-release changelog cards, launch-track copy, and source-backed
-  currentness requirements.
-- Added Vercel production currentness and Chrome postpublish validation as
-  required evidence before mdkg.dev or docs.mdkg.dev can claim the `0.4.0`
-  launch is live.
+- Added public release cards and changelog detail pages for recent public-alpha
+  versions.
+- Added docs coverage for config overlays, custom skill mirrors,
+  `COLLABORATION.md`, MANIFEST naming, and public-alpha customization guidance.
+- Added mdkg.dev and docs.mdkg.dev copy updates that keep public claims bounded
+  to documented capabilities.
 
 ### Changed
 
-- Updated mdkg.dev and docs.mdkg.dev source copy for the `0.4.0` release target,
+- Updated mdkg.dev and docs.mdkg.dev source copy for the `0.4.0` public alpha,
   including config overlays, custom skill mirrors, `COLLABORATION.md`,
-  MANIFEST/SPEC compatibility, and Plan -> Work -> Evidence launch messaging.
+  MANIFEST/SPEC compatibility, and Plan -> Work -> Evidence messaging.
 - Updated public docs and examples to use the current `mdkg pack --profile
   concise` syntax instead of stale `--pack-profile concise` examples.
 - Aligned source-visible package references, generated release-note data, and
-  generated CLI docs with the `0.4.0` release target.
+  generated CLI docs with `0.4.0`.
 
 ### Fixed
 

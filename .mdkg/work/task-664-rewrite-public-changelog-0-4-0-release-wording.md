@@ -2,7 +2,7 @@
 id: task-664
 type: task
 title: rewrite public changelog 0.4.0 release wording
-status: todo
+status: done
 priority: 1
 parent: goal-56
 tags: [docs-mdkg-dev, changelog, release-notes, public-copy, 0.4.0]

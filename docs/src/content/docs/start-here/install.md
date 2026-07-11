@@ -23,11 +23,11 @@ npm install -g mdkg
 mdkg --version
 ```
 
-The public-alpha install path promotes the globally installed CLI because that is the path covered by release validation. One-off runners such as `npx`, `pnpm dlx`, and `bunx` may be useful later, but verify them in your own tooling before documenting them for a team.
+The supported public-alpha install path uses the globally installed CLI. One-off runners such as `npx`, `pnpm dlx`, and `bunx` may be useful later, but verify them in your own tooling before documenting them for a team.
 
 Package-manager notes:
 
-- The npm package publishes the `mdkg` binary and validates global install in release smoke tests.
+- The npm package publishes the `mdkg` binary and validates global install in package smoke tests.
 - Keep one canonical global CLI on your machine when comparing behavior across repos.
 - If a repo pins a local toolchain, use the repo docs first and then compare with `mdkg --version`.
 - Do not put npm tokens, registry credentials, or private package config in mdkg graph nodes or checkpoints.

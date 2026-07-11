@@ -2,7 +2,7 @@
 id: test-342
 type: test
 title: public-copy meta-language regression contract
-status: todo
+status: done
 priority: 1
 parent: goal-56
 tags: [mdkg-dev, docs-mdkg-dev, public-copy, regression, browser, product-design]
@@ -65,9 +65,18 @@ Document environment, data, and setup requirements.
 
 Record outcomes and link evidence in `artifacts` or `links`.
 
-Pending.
+Passed. See `chk-380` and `chk-382`.
+
+- Public source/build phrase scan found no forbidden-term matches in
+  `mdkg-dev/src`, `mdkg-dev/public`, `mdkg-dev/dist`, `docs/src`, `docs/dist`,
+  `docs/_generated/release-notes.json`, or `CHANGELOG.md`.
+- Negative assertion strings remain intentionally in smoke-test code only.
+- Browser audit reported 18 desktop/mobile page checks, 0 forbidden phrase
+  failures, and 0 console error pages.
 
 # Notes / Follow-ups
 
 - If a phrase is technically necessary in reference docs, classify it as
   docs/reference truth and record why it is acceptable.
+- Non-rendered demo template fixture wording is deferred to a separate
+  template-copy pass if it becomes public-facing documentation.

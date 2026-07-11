@@ -2,7 +2,7 @@
 id: task-665
 type: task
 title: soften demo proof and install validation wording
-status: todo
+status: done
 priority: 1
 parent: goal-56
 tags: [mdkg-dev, docs-mdkg-dev, demo, install, public-copy, copy-boundary]
