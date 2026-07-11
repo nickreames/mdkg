@@ -3,6 +3,7 @@
     "author-mdkg-skill",
     "build-pack-and-execute-task",
     "pursue-mdkg-goal",
+    "pursue-mdkg-loop",
     "select-work-and-ground-context",
     "service-boundary-ownership-check",
     "verify-close-and-checkpoint"

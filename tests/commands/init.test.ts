@@ -65,6 +65,8 @@ function setupSeed(seed: string, includeAgentDocs = true): void {
   writeFile(path.join(seed, "config.json"), JSON.stringify(BASE_CONFIG, null, 2));
   writeFile(path.join(seed, "core", "core.md"), "# core\n\nrule-soul\nrule-human\nrule-1\nrule-2\n");
   writeFile(path.join(seed, "templates", "default", "task.md"), "---\nid: {{id}}\n---\n");
+  writeFile(path.join(seed, "templates", "default", "loop.md"), "---\nid: {{id}}\ntype: loop\n---\n");
+  writeFile(path.join(seed, "templates", "loops", "security-audit.loop.md"), "---\nid: loop-1\ntype: loop\n---\n");
   writeFile(path.join(seed, "README.md"), "# mdkg\n");
   writeFile(path.join(seed, "AGENT_START.md"), "# AGENT_START\n");
   writeFile(path.join(seed, "CLI_COMMAND_MATRIX.md"), "# CLI Command Matrix\n");
@@ -134,6 +136,8 @@ test("runInitCommand copies seed assets, creates directories, and updates ignore
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "README.md")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "core", "core.md")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "templates", "default", "task.md")));
+  assert.ok(fs.existsSync(path.join(root, ".mdkg", "templates", "default", "loop.md")));
+  assert.ok(fs.existsSync(path.join(root, ".mdkg", "templates", "loops", "security-audit.loop.md")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "init-manifest.json")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "work")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "design")));
@@ -143,6 +147,8 @@ test("runInitCommand copies seed assets, creates directories, and updates ignore
   assert.equal(manifest.tool, "mdkg");
   assert.ok(manifest.files.some((file: { path: string }) => file.path === ".mdkg/config.json"));
   assert.ok(manifest.files.some((file: { path: string }) => file.path === ".mdkg/templates/default/task.md"));
+  assert.ok(manifest.files.some((file: { path: string }) => file.path === ".mdkg/templates/default/loop.md"));
+  assert.ok(manifest.files.some((file: { path: string }) => file.path === ".mdkg/templates/loops/security-audit.loop.md"));
   assert.equal(manifest.files.some((file: { category: string }) => file.category === "agent_doc"), false);
   assert.equal(manifest.files.some((file: { category: string }) => file.category === "startup_doc"), false);
   assert.equal(manifest.files.some((file: { category: string }) => file.category === "default_skill"), false);

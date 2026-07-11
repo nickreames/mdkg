@@ -21,6 +21,7 @@ export type LoadIndexOptions = {
   allowReindex?: boolean;
   tolerant?: boolean;
   includeImports?: boolean;
+  persistReindex?: boolean;
 };
 
 export type LoadIndexResult = {
@@ -50,6 +51,7 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
   const allowReindex = options.allowReindex ?? options.config.index.auto_reindex;
   const tolerant = options.tolerant ?? options.config.index.tolerant;
   const includeImports = options.includeImports ?? true;
+  const persistReindex = options.persistReindex ?? true;
 
   const indexPath = path.resolve(options.root, options.config.index.global_index_path);
   const withSubgraphs = (index: Index, rebuilt: boolean, stale: boolean): LoadIndexResult => {
@@ -57,7 +59,7 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
       return { index, rebuilt, stale, warnings: [] };
     }
     const subgraphs = buildSubgraphsIndex(options.root, options.config);
-    if (allowReindex) {
+    if (allowReindex && persistReindex) {
       writeSubgraphsIndex(resolveSubgraphsIndexPath(options.root), subgraphs.index);
     }
     return {
@@ -80,7 +82,9 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
 
   if (allowReindex) {
     const index = buildIndex(options.root, options.config, { tolerant });
-    writeIndex(indexPath, index);
+    if (persistReindex) {
+      writeIndex(indexPath, index);
+    }
     return withSubgraphs(index, true, stale);
   }
 

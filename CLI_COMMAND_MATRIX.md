@@ -46,6 +46,7 @@ Primary commands:
 - `subgraph`
 - `work`
 - `goal`
+- `loop`
 - `task`
 - `next`
 - `validate`
@@ -77,6 +78,7 @@ Low-level Git remote lifecycle primitives are accessed through `mdkg git ...`.
 Read-only child graph orchestration is accessed through `mdkg subgraph ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 Recursive long-running objective contracts are accessed through `mdkg goal ...`.
+Reusable process-state loops are accessed through `mdkg loop ...`; mdkg stores loop graph state while runtimes execute agents and tools.
 Fresh init workspaces default to the SQLite access cache backend; existing migrated configs stay on JSON until opted in.
 Project application database foundation commands are accessed through `mdkg db ...`; `mdkg index` remains the compatibility shortcut for graph index rebuilds.
 Operator health summaries are accessed through read-only `mdkg status ...`; deeper diagnostics remain under `mdkg doctor ...`.
@@ -162,6 +164,7 @@ Types:
 - `dec`
 - `prop`
 - `goal`
+- `loop`
 - `epic`
 - `feat`
 - `task`
@@ -194,6 +197,13 @@ Agent workflow file type creation:
 
 Goal node creation:
 - `mdkg new goal "<title>" [options] [--json]`
+
+Loop node creation:
+- `mdkg new loop "<title>" [options] [--json]`
+- loops are durable declarative graph process state, not runtime execution jobs
+- a loop may be a reusable template, scoped fork, or run-bearing loop through metadata and links
+- loop metadata records mode, scope, lineage, materialization, child refs, evidence/run refs, definition of done, and blocker-continuation policy
+- default seeded loops are read-only or planning-oriented audit/recommendation templates
 
 Spike node creation:
 - `mdkg new spike "<research question>" [options] [--json]`
@@ -244,6 +254,7 @@ JSON receipt:
 Notes:
 - `--id` lets agent workflow files use semantic portable ids such as `agent.image-worker`, `work.generate-image`, or `proposal.review-loop-1`.
 - `goal` nodes capture recursive objective state and required checks, but normal `mdkg next` does not select them.
+- `loop` nodes capture reusable process state, fork lineage, child refs, run/evidence refs, blocker-continuation policy, and a high-bar definition of done; runtime execution remains outside mdkg.
 - `spec` and `work` scaffold as validation-clean standalone docs. `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` templates contain editable placeholder refs and need real graph or `skill.<slug>` refs before strict validation passes.
 
 ### `mdkg show`
@@ -966,6 +977,48 @@ JSON receipts:
 - `claim`: `{ action: "claimed", goal, node }`
 - `evaluate`: `{ action: "evaluated", goal, report_only, runs_scripts, checks, completion_evidence_present }`
 - `pause|resume|done|archive`: `{ action, goal }`
+
+### `mdkg loop`
+
+When to use:
+- inspect reusable loop templates and scoped loop nodes
+- fork a reusable loop template for a concrete project scope
+- inspect loop planning state, child refs, run refs, and evidence refs without executing agents
+
+Usage:
+- `mdkg loop list [--ws <alias>] [--json]`
+- `mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--json]`
+- `mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization default_children|planning_only|manual] [--planning-only] [--no-children] [--dry-run] [--run-id <id>] [--ws <alias>] [--json]`
+- `mdkg loop plan <loop> [--ws <alias>] [--json]`
+- `mdkg loop next <loop> [--ws <alias>] [--json]`
+- `mdkg loop runs <loop> [--ws <alias>] [--json]`
+- `mdkg loop list [--ws <alias>] [--no-cache] [--no-reindex] [--json]`
+- `mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--no-cache] [--no-reindex] [--json]`
+- `mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization <mode>] [--planning-only] [--no-children] [--dry-run] [--run-id <id>] [--ws <alias>] [--no-cache] [--no-reindex] [--json]`
+- `mdkg loop plan <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]`
+- `mdkg loop next <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]`
+- `mdkg loop runs <loop> [--ws <alias>] [--no-cache] [--no-reindex] [--json]`
+
+Behavior:
+- `loop` is one first-class node type; template, scoped fork, and run-bearing behavior is represented through metadata and links, not separate node types.
+- seed templates resolve from `.mdkg/templates/loops/<name>.loop.md`.
+- `loop list` reports indexed loop nodes plus reusable seed templates.
+- `loop show` reports either an indexed loop node or a seed template body/frontmatter.
+- `loop fork` creates a scoped loop; default materialization creates linked spike/task/test child nodes, while `planning_only` or `--no-children` creates only the scoped loop shell.
+- `loop fork --dry-run` is observational: it writes no nodes, indexes, events, or SQLite reservations, and the next real fork reuses the previewed ids.
+- forked loops retain template identity and content hash; list/show/plan report current, stale, missing-template, or unknown provenance without rewriting forks.
+- `loop plan` reports readiness state, materialization state, child/run/output refs, evidence lanes, blockers, closeout readiness, and blocker-continuation guidance without executing agents.
+- `loop next` is read-only and routes to the next actionable child, readiness lane, or blocker recovery step without claiming work.
+- `loop runs` reports linked `run_refs` and graph `evidence_refs` without executing runtime jobs.
+- mdkg defines reusable process state and graph context; omni-room-runtime or other runtimes execute agents, tools, sandboxes, traces, and model routing.
+
+JSON receipts:
+- `list`: `{ action: "listed", loops, templates, warnings }`
+- `show`: `{ action: "showed", loop, warnings }` or `{ action: "showed", template, warnings }`
+- `fork`: `{ action: "forked"|"planned", loop, template, materialization_mode, materialized_children, pending_materialization, blocker_continuation, warnings }`
+- `plan`: `{ action: "planned", loop, materialization_mode, child_refs, pending_materialization, readiness, blocker_continuation, warnings }`
+- `next`: `{ action: "selected", loop, selected, rationale, skipped, readiness, warnings }`
+- `runs`: `{ action: "listed", loop, run_refs, evidence_refs, warnings }`
 
 ### `mdkg task`
 

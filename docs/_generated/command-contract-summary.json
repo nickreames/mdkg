@@ -1,8 +1,8 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "b6ce5590f19cd90b00820a9488c5773f2824c6525730d83d5f32d6e04612327c",
+  "contract_hash": "adfd7e2b99e7071b95d6db7b983ce2daba512eb61ec7851855c3739755e6147a",
   "package_version": "0.4.2",
-  "command_count": 109,
+  "command_count": 116,
   "categories": {
     "archive": 6,
     "bundle": 6,
@@ -22,6 +22,7 @@
     "index": 1,
     "init": 1,
     "list": 1,
+    "loop": 7,
     "manifest": 4,
     "mcp": 2,
     "new": 1,
@@ -838,6 +839,106 @@
         "xml",
         "toon",
         "md"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "loop",
+      "category": "loop",
+      "visibility": "public",
+      "danger_level": "mixed",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "commands": [
+          "fork"
+        ]
+      }
+    },
+    {
+      "key": "loop fork",
+      "category": "loop",
+      "visibility": "public",
+      "danger_level": "moderate",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": true,
+        "flag": "--dry-run",
+        "side_effects": [
+          "none"
+        ],
+        "write_paths": [],
+        "reserves_ids": false
+      }
+    },
+    {
+      "key": "loop list",
+      "category": "loop",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "loop next",
+      "category": "loop",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "loop plan",
+      "category": "loop",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "loop runs",
+      "category": "loop",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "loop show",
+      "category": "loop",
+      "visibility": "public",
+      "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
       ],
       "dry_run": {
         "supported": false

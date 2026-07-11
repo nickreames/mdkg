@@ -177,5 +177,5 @@ test("bundle verify reports stale source changes and malformed bundles", () => {
   fs.writeFileSync(badBundle, "not a zip", "utf8");
   const malformed = runFailure(["bundle", "verify", ".mdkg/bundles/private/bad.mdkg.zip", "--json"], root);
   assert.equal(malformed.status, 2);
-  assert.match(malformed.stdout, /zip local header missing/);
+  assert.match(malformed.stdout, /zip end of central directory missing or truncated/);
 });

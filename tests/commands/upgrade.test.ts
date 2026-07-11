@@ -118,6 +118,13 @@ function setupSeed(seed: string, marker: string): void {
     );
   }
   writeFile(path.join(seed, "templates", "default", "task.md"), `---\nid: {{id}}\ntype: task\nmarker: ${marker}\n---\n`);
+  if (marker === "current") {
+    writeFile(path.join(seed, "templates", "default", "loop.md"), `---\nid: {{id}}\ntype: loop\nmarker: ${marker}\n---\n`);
+    writeFile(
+      path.join(seed, "templates", "loops", "security-audit.loop.md"),
+      `---\nid: loop-1\ntype: loop\nmarker: ${marker}\n---\n`
+    );
+  }
   writeFile(path.join(seed, "README.md"), `# mdkg ${marker}\n`);
   writeFile(path.join(seed, "AGENT_START.md"), `# AGENT_START ${marker}\n`);
   writeFile(path.join(seed, "CLI_COMMAND_MATRIX.md"), `# CLI Command Matrix ${marker}\n`);
@@ -251,10 +258,21 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
   assert.equal(receipt.dry_run, false);
   assert.equal(receipt.safe_to_apply, true);
   assert.ok(receipt.changes.some((change) => change.action === "update" && change.path === "AGENT_START.md"));
+  assert.ok(receipt.changes.some((change) => change.action === "create" && change.path === ".mdkg/templates/default/loop.md"));
+  assert.ok(
+    receipt.changes.some(
+      (change) => change.action === "create" && change.path === ".mdkg/templates/loops/security-audit.loop.md"
+    )
+  );
   assert.ok(receipt.changes.some((change) => change.action === "sync"));
   assert.ok(receipt.will_write_paths.includes(".mdkg/init-manifest.json"));
   assert.ok(receipt.apply_side_effects.some((change) => change.category === "skill_mirror"));
   assert.match(fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"), /current/);
+  assert.match(fs.readFileSync(path.join(root, ".mdkg", "templates", "default", "loop.md"), "utf8"), /type: loop/);
+  assert.match(
+    fs.readFileSync(path.join(root, ".mdkg", "templates", "loops", "security-audit.loop.md"), "utf8"),
+    /type: loop/
+  );
   assert.match(
     fs.readFileSync(
       path.join(root, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md"),

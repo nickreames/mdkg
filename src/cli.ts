@@ -105,6 +105,16 @@ import { runNewCommand } from "./commands/new";
 import { runGuideCommand } from "./commands/guide";
 import { runUpgradeCommand } from "./commands/upgrade";
 import {
+  runLoopForkCommand,
+  runLoopListCommand,
+  runLoopNextCommand,
+  runLoopPlanCommand,
+  runLoopRunsCommand,
+  runLoopShowCommand,
+} from "./commands/loop";
+import { loopDescriptorForSubcommand } from "./commands/loop_descriptors";
+import type { LoopCommandDescriptor } from "./commands/loop_descriptors";
+import {
   runGoalActivateCommand,
   runGoalArchiveCommand,
   runGoalClaimCommand,
@@ -204,6 +214,7 @@ function printUsage(log: LogFn): void {
   log("  git         Clone, fetch, inspect, close out, and push Git-backed mdkg projects");
   log("  subgraph    Register, audit, plan, sync, materialize, and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
+  log("  loop        List, show, fork, plan, and inspect first-class loop nodes");
   log("  goal        Inspect and advance recursive goal nodes");
   log("  task        Start, update, and complete task-like nodes");
   log("  next        Suggest the next work item");
@@ -273,7 +284,7 @@ function printNewHelp(log: LogFn): void {
   log("Usage:");
   log('  mdkg new <type> "<title>" [options] [--json]');
   log("\nTypes:");
-  log("  rule prd edd dec prop goal epic feat task bug spike checkpoint test");
+  log("  rule prd edd dec prop loop goal epic feat task bug spike checkpoint test");
   log("\nAgent workflow file types:");
   log("  manifest work work_order receipt feedback dispute proposal");
   log("  spec is a legacy alias for manifest and emits MANIFEST.md during the compatibility bridge.");
@@ -304,6 +315,36 @@ function printNewHelp(log: LogFn): void {
   log("  spike creates actionable research/planning work; use `mdkg task ...` for lifecycle.");
   log("  record spike research evidence by editing the Markdown body sections.");
   log("  spikes do not run web search, create follow-up nodes, generate SKILL.md, or expose `mdkg spike ...`.");
+  printGlobalOptions(log);
+}
+
+function printLoopHelp(log: LogFn, subcommand?: string): void {
+  printLoopDescriptorHelp(log, loopDescriptorForSubcommand(subcommand));
+}
+
+function printLoopDescriptorHelp(log: LogFn, descriptor: LoopCommandDescriptor): void {
+  log("Usage:");
+  for (const usage of descriptor.usage) {
+    log(`  ${usage}`);
+  }
+  if (descriptor.key === "loop fork") {
+    log("\nMaterialization modes:");
+    log("  default_children planning_only manual");
+  }
+  const commandFlags = descriptor.flags.filter((flag) => flag.name !== "--root");
+  if (commandFlags.length > 0) {
+    log("\nOptions:");
+    for (const flag of commandFlags) {
+      const syntax = flag.value ? `${flag.name} ${flag.value}` : flag.name;
+      log(`  ${syntax.padEnd(28)} ${flag.description}`);
+    }
+  }
+  if (descriptor.notes.length > 0) {
+    log("\nNotes:");
+    for (const note of descriptor.notes) {
+      log(`  ${note}`);
+    }
+  }
   printGlobalOptions(log);
 }
 
@@ -452,9 +493,10 @@ function printListHelp(log: LogFn): void {
 function printSearchHelp(log: LogFn): void {
   log("Usage:");
   log('  mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]');
-  log("               [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]");
+  log("               [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]");
   log("\nWhen to use:");
   log("  Search mdkg nodes by metadata. Use `mdkg skill search` for skills.");
+  log("  Structured output defaults to a bounded page and reports count, returned_count, limit, and truncated.");
   printGlobalOptions(log);
 }
 
@@ -1412,6 +1454,9 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
       return;
     case "work":
       printWorkHelp(log, subcommand);
+      return;
+    case "loop":
+      printLoopHelp(log, subcommand);
       return;
     case "task":
       printTaskHelp(log, subcommand);
@@ -2715,6 +2760,91 @@ function runSkillSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   }
 }
 
+function runLoopSubcommand(parsed: ParsedArgs, root: string): ExitCode {
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
+  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+  const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
+  const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
+
+  switch (subcommand) {
+    case "list": {
+      if (parsed.positionals.length > 2) {
+        throw new UsageError("loop list does not accept positional arguments");
+      }
+      runLoopListCommand({ root, ws, json, noCache, noReindex });
+      return 0;
+    }
+    case "show": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("loop show requires <loop-or-template>");
+      }
+      const metaOnly = parseBooleanFlag("--meta", parsed.flags["--meta"]);
+      runLoopShowCommand({ root, id, ws, metaOnly, json, noCache, noReindex });
+      return 0;
+    }
+    case "fork": {
+      const template = parsed.positionals[2];
+      if (!template || parsed.positionals.length > 3) {
+        throw new UsageError("loop fork requires <template>");
+      }
+      const scope = requireFlagValue("--scope", parsed.flags["--scope"]);
+      if (!scope) {
+        throw new UsageError("loop fork requires --scope");
+      }
+      const title = requireFlagValue("--title", parsed.flags["--title"]);
+      const materializationMode = requireFlagValue("--materialization", parsed.flags["--materialization"]);
+      const planningOnly = parseBooleanFlag("--planning-only", parsed.flags["--planning-only"]);
+      const noChildren = parseBooleanFlag("--no-children", parsed.flags["--no-children"]);
+      const dryRun = parseBooleanFlag("--dry-run", parsed.flags["--dry-run"]);
+      const runId = requireFlagValue("--run-id", parsed.flags["--run-id"]);
+      runLoopForkCommand({
+        root,
+        template,
+        scope,
+        title,
+        ws,
+        materializationMode: materializationMode as "default_children" | "planning_only" | "manual" | undefined,
+        planningOnly,
+        noChildren,
+        dryRun,
+        runId,
+        json,
+        noCache,
+        noReindex,
+      });
+      return 0;
+    }
+    case "plan": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("loop plan requires <loop>");
+      }
+      runLoopPlanCommand({ root, id, ws, json, noCache, noReindex });
+      return 0;
+    }
+    case "next": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("loop next requires <loop>");
+      }
+      runLoopNextCommand({ root, id, ws, json, noCache, noReindex });
+      return 0;
+    }
+    case "runs": {
+      const id = parsed.positionals[2];
+      if (!id || parsed.positionals.length > 3) {
+        throw new UsageError("loop runs requires <loop>");
+      }
+      runLoopRunsCommand({ root, id, ws, json, noCache, noReindex });
+      return 0;
+    }
+    default:
+      throw new UsageError("loop requires list/show/fork/plan/next/runs");
+  }
+}
+
 function runGoalSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
   const ws = requireFlagValue("--ws", parsed.flags["--ws"]);
@@ -3111,6 +3241,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       return runSubgraphSubcommand(parsed, root);
     case "work":
       return runWorkSubcommand(parsed, root);
+    case "loop":
+      return runLoopSubcommand(parsed, root);
     case "goal":
       return runGoalSubcommand(parsed, root);
     case "task":
@@ -3179,6 +3311,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const status = requireFlagValue("--status", parsed.flags["--status"]);
       const tags = parseCsvFlag("--tags", parsed.flags["--tags"]);
       const tagsMode = parseTagsModeFlag(parsed.flags["--tags-mode"]);
+      const limit = parseNumberFlag("--limit", parsed.flags["--limit"]);
       const format = parseQueryOutputFormat(parsed);
       const noCache = parseBooleanFlag("--no-cache", parsed.flags["--no-cache"]);
       const noReindex = parseBooleanFlag("--no-reindex", parsed.flags["--no-reindex"]);
@@ -3190,6 +3323,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         status,
         tags,
         tagsMode,
+        limit,
         format,
         noCache,
         noReindex,

@@ -28,6 +28,11 @@ Agent operating prompt:
 - Use `mdkg goal activate <goal-id>` to make one local root goal active, then `mdkg goal next` to surface one scoped feature, task, bug, test, or spike at a time; normal `mdkg next` remains for non-goal concrete work.
 - Use `mdkg goal claim [goal-id] <work-id>` only after accepting the surfaced work item; `mdkg goal next` is read-only.
 - Treat goal `required_checks` as report-only guidance from mdkg. Run commands yourself, then record evidence in the goal or active work item.
+- Use `mdkg loop show <loop>`, `mdkg loop plan <loop>`, and
+  `mdkg pack <loop>` for first-class loop nodes. Use
+  `mdkg skill show pursue-mdkg-loop` before executing a loop so the agent works
+  every authorized linked lane, records blocker recovery, and closes only when
+  the loop definition of done is satisfied or explicitly waived.
 - Record skill improvement candidates during normal goal execution; edit `SKILL.md` only when the active node is explicit skill-maintenance work.
 - Use `mdkg skill list`, `mdkg skill search`, and `mdkg skill show <slug>` for skill discovery.
 - Use `mdkg capability list/search/show` for deterministic skills, `MANIFEST.md` / legacy `SPEC.md`, `WORK.md`, core-doc, and design-doc capability discovery.
@@ -97,6 +102,16 @@ If an active goal is known:
 - `mdkg goal evaluate <goal-id>`
 - repeat until the goal condition is achieved, blocked, paused, or budget-limited
 
+If an active loop is known:
+- `mdkg loop show <loop-id> --json`
+- `mdkg skill show pursue-mdkg-loop`
+- `mdkg loop plan <loop-id> --json`
+- `mdkg pack <loop-id> --pack-profile concise --dry-run --stats`
+- answer or record pre-run questions and approval requirements
+- work every authorized linked lane before marking the loop done or blocked
+- keep the loop open while required lanes are incomplete and not explicitly
+  waived
+
 If no task is known:
 - `mdkg search "..."`
 - `mdkg show <id>`
@@ -113,6 +128,7 @@ Skill discovery:
 - `mdkg skill list --tags stage:execute --json`
 - `mdkg skill list --tags stage:review --json`
 - `mdkg skill show select-work-and-ground-context`
+- `mdkg skill show pursue-mdkg-loop`
 
 Capability discovery:
 - `mdkg capability list --kind skill --json`

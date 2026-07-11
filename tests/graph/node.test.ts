@@ -93,6 +93,96 @@ const TEMPLATE_SCHEMAS = {
     ],
     ["tags", "owners", "links", "artifacts", "relates", "blocked_by", "blocks", "refs", "context_refs", "evidence_refs", "aliases", "skills"]
   ),
+  loop: makeSchema(
+    "loop",
+    [
+      "id",
+      "type",
+      "title",
+      "status",
+      "priority",
+      "loop_mode",
+      "loop_role",
+      "scope_refs",
+      "scope_description",
+      "template_refs",
+      "materialization_mode",
+      "child_refs",
+      "pre_run_questions",
+      "question_answer_refs",
+      "pre_approved_actions",
+      "approval_gated_actions",
+      "required_actions",
+      "requested_actions",
+      "prohibited_actions",
+      "action_approval_refs",
+      "evidence_lanes",
+      "evidence_lane_refs",
+      "lane_waiver_refs",
+      "lane_waiver_decision_refs",
+      "lane_waiver_approval_refs",
+      "run_refs",
+      "decision_refs",
+      "output_refs",
+      "approval_refs",
+      "evaluation_refs",
+      "definition_of_done",
+      "blocker_policy",
+      "epic",
+      "parent",
+      "prev",
+      "next",
+      "tags",
+      "owners",
+      "links",
+      "artifacts",
+      "relates",
+      "blocked_by",
+      "blocks",
+      "refs",
+      "context_refs",
+      "evidence_refs",
+      "aliases",
+      "skills",
+      "created",
+      "updated",
+    ],
+    [
+      "scope_refs",
+      "template_refs",
+      "child_refs",
+      "pre_run_questions",
+      "question_answer_refs",
+      "pre_approved_actions",
+      "approval_gated_actions",
+      "required_actions",
+      "requested_actions",
+      "prohibited_actions",
+      "action_approval_refs",
+      "evidence_lanes",
+      "evidence_lane_refs",
+      "lane_waiver_refs",
+      "lane_waiver_decision_refs",
+      "lane_waiver_approval_refs",
+      "run_refs",
+      "decision_refs",
+      "output_refs",
+      "approval_refs",
+      "evaluation_refs",
+      "tags",
+      "owners",
+      "links",
+      "artifacts",
+      "relates",
+      "blocked_by",
+      "blocks",
+      "refs",
+      "context_refs",
+      "evidence_refs",
+      "aliases",
+      "skills",
+    ]
+  ),
   goal: makeSchema(
     "goal",
     [
@@ -258,6 +348,325 @@ test("parseNode rejects malformed spike work status", () => {
     "---",
   ].join("\n");
   assert.throws(() => parseNode(content, "bad-spike.md", PARSE_OPTIONS), /status must be one of/);
+});
+
+test("parseNode parses loop frontmatter and attributes", () => {
+  const content = [
+    "---",
+    "id: loop-1",
+    "type: loop",
+    "title: security audit loop",
+    "status: todo",
+    "priority: 1",
+    "loop_mode: readonly",
+    "loop_role: template",
+    "scope_refs: [goal-1]",
+    "scope_description: repo security scope",
+    "template_refs: []",
+    "materialization_mode: default_children",
+    "child_refs: [spike-1, task-2]",
+    "pre_run_questions: [scope_authority, local_checks_approved]",
+    "question_answer_refs: [scope_authority=dec-1]",
+    "pre_approved_actions: [read_source, run_local_checks]",
+    "approval_gated_actions: [functional_changes, external_calls]",
+    "required_actions: [read_source, run_local_checks]",
+    "requested_actions: [read_source, run_local_checks, external_calls]",
+    "prohibited_actions: [push_publish_deploy]",
+    "action_approval_refs: [external_calls=chk-1]",
+    "evidence_lanes: [source_review, closeout]",
+    "evidence_lane_refs: [source_review=archive://audit-report]",
+    "lane_waiver_refs: [dec-2]",
+    "lane_waiver_decision_refs: [closeout=dec-2]",
+    "lane_waiver_approval_refs: [closeout=chk-1]",
+    "run_refs: []",
+    "decision_refs: [dec-1, dec-2]",
+    "output_refs: [archive://audit-report]",
+    "approval_refs: [chk-1]",
+    "evaluation_refs: [test-1]",
+    "definition_of_done: risks reviewed with evidence",
+    "blocker_policy: spike_proposal_recommendation_continue",
+    "tags: [audit]",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: [goal-1]",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: []",
+    "evidence_refs: []",
+    "aliases: [security-loop]",
+    "skills: [select-work-and-ground-context]",
+    "created: 2026-07-06",
+    "updated: 2026-07-06",
+    "---",
+    "",
+    "# Operating Model",
+  ].join("\n");
+  const node = parseNode(content, "loop.md", PARSE_OPTIONS);
+  assert.equal(node.id, "loop-1");
+  assert.equal(node.type, "loop");
+  assert.equal(node.status, "todo");
+  assert.equal(node.priority, 1);
+  assert.deepEqual(node.edges.relates, ["goal-1"]);
+  assert.deepEqual(node.skills, ["select-work-and-ground-context"]);
+  assert.deepEqual(node.attributes.loop_mode, "readonly");
+  assert.deepEqual(node.attributes.loop_role, "template");
+  assert.deepEqual(node.attributes.child_refs, ["spike-1", "task-2"]);
+  assert.deepEqual(node.attributes.pre_run_questions, ["scope_authority", "local_checks_approved"]);
+  assert.deepEqual(node.attributes.question_answer_refs, ["scope_authority=dec-1"]);
+  assert.deepEqual(node.attributes.pre_approved_actions, ["read_source", "run_local_checks"]);
+  assert.deepEqual(node.attributes.approval_gated_actions, ["functional_changes", "external_calls"]);
+  assert.deepEqual(node.attributes.required_actions, ["read_source", "run_local_checks"]);
+  assert.deepEqual(node.attributes.requested_actions, ["read_source", "run_local_checks", "external_calls"]);
+  assert.deepEqual(node.attributes.prohibited_actions, ["push_publish_deploy"]);
+  assert.deepEqual(node.attributes.action_approval_refs, ["external_calls=chk-1"]);
+  assert.deepEqual(node.attributes.evidence_lanes, ["source_review", "closeout"]);
+  assert.deepEqual(node.attributes.evidence_lane_refs, ["source_review=archive://audit-report"]);
+  assert.deepEqual(node.attributes.lane_waiver_refs, ["dec-2"]);
+  assert.deepEqual(node.attributes.lane_waiver_decision_refs, ["closeout=dec-2"]);
+  assert.deepEqual(node.attributes.lane_waiver_approval_refs, ["closeout=chk-1"]);
+  assert.deepEqual(node.attributes.output_refs, ["archive://audit-report"]);
+  assert.equal(node.attributes.blocker_policy, "spike_proposal_recommendation_continue");
+});
+
+test("parseNode accepts legacy loop frontmatter without readiness metadata", () => {
+  const content = [
+    "---",
+    "id: loop-1",
+    "type: loop",
+    "title: legacy loop",
+    "status: todo",
+    "priority: 1",
+    "loop_mode: planning",
+    "loop_role: scoped",
+    "scope_refs: []",
+    "scope_description: legacy scope",
+    "template_refs: []",
+    "materialization_mode: planning_only",
+    "child_refs: []",
+    "run_refs: []",
+    "decision_refs: []",
+    "output_refs: []",
+    "approval_refs: []",
+    "evaluation_refs: []",
+    "definition_of_done: legacy loop remains valid",
+    "blocker_policy: spike_proposal_recommendation_continue",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: []",
+    "evidence_refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-07-06",
+    "updated: 2026-07-06",
+    "---",
+  ].join("\n");
+  const node = parseNode(content, "legacy-loop.md", PARSE_OPTIONS);
+  assert.equal(node.type, "loop");
+  assert.equal(node.attributes.pre_run_questions, undefined);
+});
+
+test("parseNode rejects scalar loop readiness metadata", () => {
+  const content = [
+    "---",
+    "id: loop-1",
+    "type: loop",
+    "title: invalid readiness loop",
+    "status: todo",
+    "priority: 1",
+    "loop_mode: planning",
+    "loop_role: scoped",
+    "scope_refs: []",
+    "scope_description: readiness scope",
+    "template_refs: []",
+    "materialization_mode: planning_only",
+    "child_refs: []",
+    "pre_run_questions: scope_authority",
+    "run_refs: []",
+    "decision_refs: []",
+    "output_refs: []",
+    "approval_refs: []",
+    "evaluation_refs: []",
+    "definition_of_done: done",
+    "blocker_policy: spike_proposal_recommendation_continue",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: []",
+    "evidence_refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-07-06",
+    "updated: 2026-07-06",
+    "---",
+  ].join("\n");
+  assert.throws(() => parseNode(content, "invalid-readiness-loop.md", PARSE_OPTIONS), /pre_run_questions must be a list/);
+});
+
+test("parseNode rejects malformed loop lane waiver refs", () => {
+  const content = [
+    "---",
+    "id: loop-1",
+    "type: loop",
+    "title: invalid waiver loop",
+    "status: todo",
+    "priority: 1",
+    "loop_mode: planning",
+    "loop_role: scoped",
+    "scope_refs: []",
+    "scope_description: waiver scope",
+    "template_refs: []",
+    "materialization_mode: planning_only",
+    "child_refs: []",
+    "lane_waiver_refs: [bad ref]",
+    "run_refs: []",
+    "decision_refs: []",
+    "output_refs: []",
+    "approval_refs: []",
+    "evaluation_refs: []",
+    "definition_of_done: done",
+    "blocker_policy: spike_proposal_recommendation_continue",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: []",
+    "evidence_refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-07-06",
+    "updated: 2026-07-06",
+    "---",
+  ].join("\n");
+  assert.throws(() => parseNode(content, "invalid-waiver-loop.md", PARSE_OPTIONS), /lane_waiver_refs\[0\] must be a portable id, qid, or URI ref/);
+});
+
+test("parseNode validates loop readiness binding identities and aggregate refs", () => {
+  const content = [
+    "---",
+    "id: loop-1",
+    "type: loop",
+    "title: bound loop",
+    "status: todo",
+    "priority: 1",
+    "loop_mode: readonly",
+    "loop_role: scoped",
+    "scope_refs: []",
+    "scope_description: bound scope",
+    "template_refs: []",
+    "materialization_mode: planning_only",
+    "child_refs: []",
+    "pre_run_questions: [scope_authority]",
+    "question_answer_refs: [scope_authority=dec-1]",
+    "pre_approved_actions: [read_source]",
+    "approval_gated_actions: [external_checks]",
+    "required_actions: [read_source]",
+    "requested_actions: [read_source, external_checks]",
+    "prohibited_actions: [functional_changes]",
+    "action_approval_refs: [external_checks=chk-1]",
+    "evidence_lanes: [source_review]",
+    "evidence_lane_refs: [source_review=chk-1]",
+    "lane_waiver_refs: []",
+    "lane_waiver_decision_refs: []",
+    "lane_waiver_approval_refs: []",
+    "run_refs: [chk-1]",
+    "decision_refs: [dec-1]",
+    "output_refs: []",
+    "approval_refs: [chk-1]",
+    "evaluation_refs: []",
+    "definition_of_done: done",
+    "blocker_policy: spike_proposal_recommendation_continue",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: []",
+    "evidence_refs: [chk-1]",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-07-06",
+    "updated: 2026-07-06",
+    "---",
+  ].join("\n");
+
+  assert.doesNotThrow(() => parseNode(content, "bound-loop.md", PARSE_OPTIONS));
+  assert.throws(
+    () => parseNode(content.replace("scope_authority=dec-1", "bad"), "bad-binding-loop.md", PARSE_OPTIONS),
+    /question_answer_refs\[0\] must use <identity>=<ref>/
+  );
+  assert.throws(
+    () => parseNode(content.replace("scope_authority=dec-1", "other_question=dec-1"), "unknown-binding-loop.md", PARSE_OPTIONS),
+    /references undeclared pre_run_questions identity other_question/
+  );
+  assert.throws(
+    () => parseNode(content.replace("decision_refs: [dec-1]", "decision_refs: []"), "unclosed-binding-loop.md", PARSE_OPTIONS),
+    /ref dec-1 must also appear in one of decision_refs/
+  );
+  assert.throws(
+    () => parseNode(content.replace("prohibited_actions: [functional_changes]", "prohibited_actions: [read_source]"), "conflicting-action-loop.md", PARSE_OPTIONS),
+    /action read_source cannot be both pre_approved_actions and prohibited_actions/
+  );
+});
+
+test("parseNode rejects invalid loop mode", () => {
+  const content = [
+    "---",
+    "id: loop-1",
+    "type: loop",
+    "title: invalid loop",
+    "status: todo",
+    "priority: 1",
+    "loop_mode: exploratory",
+    "loop_role: template",
+    "scope_refs: []",
+    "scope_description: repo scope",
+    "template_refs: []",
+    "materialization_mode: default_children",
+    "child_refs: []",
+    "run_refs: []",
+    "decision_refs: []",
+    "output_refs: []",
+    "approval_refs: []",
+    "evaluation_refs: []",
+    "definition_of_done: done",
+    "blocker_policy: spike_proposal_recommendation_continue",
+    "tags: []",
+    "owners: []",
+    "links: []",
+    "artifacts: []",
+    "relates: []",
+    "blocked_by: []",
+    "blocks: []",
+    "refs: []",
+    "context_refs: []",
+    "evidence_refs: []",
+    "aliases: []",
+    "skills: []",
+    "created: 2026-07-06",
+    "updated: 2026-07-06",
+    "---",
+  ].join("\n");
+  assert.throws(() => parseNode(content, "invalid-loop.md", PARSE_OPTIONS), /loop_mode must be one of/);
 });
 
 test("parseNode parses goal attributes", () => {

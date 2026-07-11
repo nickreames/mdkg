@@ -494,10 +494,12 @@ Current source behavior:
 - `mdkg skill sync` refreshes the product-specific mirrors from canonical `.mdkg/skills/`
 - mirrored skill folders are append-focused outputs; preserve unrelated existing folders and fail on same-slug collisions unless explicitly forced
 
-This repo now dogfoods three internal skills:
+This repo now dogfoods mdkg-authored internal skills:
 - `author-mdkg-skill`
 - `select-work-and-ground-context`
 - `build-pack-and-execute-task`
+- `pursue-mdkg-goal`
+- `pursue-mdkg-loop`
 - `verify-close-and-checkpoint`
 
 Optional skill metadata with prefixes such as `ochatr_*` is treated as vendor extension data. Structured skill output exposes it under `extensions.ochatr` while keeping the top-level `ochatr` field as a compatibility alias introduced in 0.0.9. ochatr.ai is a pioneering adopter of this extension pattern, not the name of the base mdkg standard.
@@ -584,6 +586,14 @@ Use `mdkg goal claim [goal-id] <work-id>` to durably set `active_node` after cho
 
 Required checks are stored as report-only guidance. Agents should run the checks themselves, record evidence in the goal or active work item, then use `mdkg goal evaluate` to summarize the current evidence state. During normal goal execution, skill improvements should be recorded as improvement candidates or proposal nodes; edit `SKILL.md` files only when the active node is explicit skill-maintenance work.
 
+## Loop nodes
+
+Loop nodes are durable declarative process state for reusable agentic workflows. Use `mdkg new loop "<process>"` for a loop record, or `mdkg loop fork <template> --scope <scope>` to instantiate a seeded template for a concrete repo, folder, or goal.
+
+`loop` is one first-class node type. A loop can act as a reusable template, scoped fork, or run-bearing loop through metadata and links; mdkg does not create separate `loop_template` or `loop_run` node types in this release. Loop metadata records mode, scope, lineage, materialization mode, child refs, run/evidence refs, definition of done, and blocker-continuation policy.
+
+`mdkg loop list|show|plan|runs` inspect loop state without executing agents. `mdkg loop fork` creates graph state; by default it materializes linked spike/task/test child nodes, while `--planning-only` or `--no-children` creates only the scoped loop shell. mdkg defines reusable process state and graph context; omni-room-runtime or another runtime owns agent/tool execution, sandboxes, traces, and model routing.
+
 ## Research spikes
 
 Spikes are first-class actionable work nodes for research and planning. Use
@@ -650,6 +660,7 @@ This release includes:
 - SQLite index backend for fresh workspaces using built-in `node:sqlite`
 - mutation locking and atomic writes for parallel mdkg calls
 - first-class `goal` nodes and `mdkg goal show/next/evaluate/pause/resume/done`
+- first-class `loop` nodes and `mdkg loop list/show/fork/plan/runs`
 - optional `skills: [...]` on work items
 - pack-time skill inclusion
 - latest-checkpoint resolver + index hint

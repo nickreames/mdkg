@@ -244,6 +244,8 @@ function exerciseBaseInit(binPath, tempRoot) {
   assertNotExists(path.join(root, ".mdkg", "skills"));
   assertSpikeTemplate(root, "base init");
   assertManifestTemplate(root, "base init");
+  assertExists(path.join(root, ".mdkg", "templates", "default", "loop.md"));
+  assertExists(path.join(root, ".mdkg", "templates", "loops", "security-audit.loop.md"));
 
   const manifest = assertManifestMatches(root);
   if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/spike.md")) {
@@ -251,6 +253,12 @@ function exerciseBaseInit(binPath, tempRoot) {
   }
   if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/manifest.md")) {
     throw new Error("base init manifest missing manifest template");
+  }
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/loop.md")) {
+    throw new Error("base init manifest missing loop template");
+  }
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/loops/security-audit.loop.md")) {
+    throw new Error("base init manifest missing seeded security audit loop");
   }
   if (manifest.files.some((file) => ["agent_doc", "startup_doc", "default_skill"].includes(file.category))) {
     throw new Error("base init manifest should not claim agent docs, startup docs, or default skills");
@@ -439,6 +447,12 @@ function exerciseAgentInit(binPath, tempRoot) {
   }
   if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/manifest.md")) {
     throw new Error("agent init manifest missing manifest template");
+  }
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/default/loop.md")) {
+    throw new Error("agent init manifest missing loop template");
+  }
+  if (!manifest.files.some((file) => file.path === ".mdkg/templates/loops/security-audit.loop.md")) {
+    throw new Error("agent init manifest missing seeded security audit loop");
   }
   for (const category of ["agent_doc", "startup_doc", "default_skill"]) {
     if (!manifest.files.some((file) => file.category === category)) {

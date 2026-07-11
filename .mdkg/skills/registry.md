@@ -34,6 +34,11 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - stage: `stage:execute`
   - writer role: `writer:orchestrator`
   - description: Pursue a selected mdkg goal by repeatedly selecting one scoped work item, executing it with evidence, and evaluating the goal until done, blocked, paused, or budget-limited.
+- `pursue-mdkg-loop`
+  - name: `pursue-mdkg-loop`
+  - stage: `stage:execute`
+  - writer role: `writer:orchestrator`
+  - description: Pursue a selected mdkg loop by exhausting authorized linked work lanes, recording blocker recovery, and closing only when the loop definition of done is satisfied or explicitly waived.
 - `select-work-and-ground-context`
   - name: `select-work-and-ground-context`
   - stage: `stage:plan`

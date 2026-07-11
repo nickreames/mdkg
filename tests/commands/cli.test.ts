@@ -193,6 +193,25 @@ test("cli help work documents trigger status verify polish", () => {
   assert.match(validateHelp.stdout, /--profile omni-room applies explicit contract-profile validation/);
 });
 
+test("cli help loop documents semantic command family and execution boundary", () => {
+  const loopHelp = spawnSync(process.execPath, [cliPath, "help", "loop"], {
+    encoding: "utf8",
+    cwd: repoRoot,
+  });
+  assert.equal(loopHelp.status, 0);
+  assert.match(loopHelp.stdout, /mdkg loop list \[--ws <alias>\] \[--json\]/);
+  assert.match(loopHelp.stdout, /mdkg loop show <loop-or-template> \[--meta\] \[--ws <alias>\] \[--json\]/);
+  assert.match(loopHelp.stdout, /mdkg loop fork <template> --scope <scope>/);
+  assert.match(loopHelp.stdout, /mdkg loop plan <loop> \[--ws <alias>\] \[--json\]/);
+  assert.match(loopHelp.stdout, /mdkg loop next <loop> \[--ws <alias>\] \[--json\]/);
+  assert.match(loopHelp.stdout, /mdkg loop runs <loop> \[--ws <alias>\] \[--json\]/);
+  assert.match(loopHelp.stdout, /--no-cache/);
+  assert.match(loopHelp.stdout, /--no-reindex/);
+  assert.match(loopHelp.stdout, /--run-id <id>/);
+  assert.match(loopHelp.stdout, /loop is one first-class node type/);
+  assert.match(loopHelp.stdout, /mdkg defines reusable process state and graph context; runtimes execute agents, tools, sandboxes, traces, and model routing/);
+});
+
 test("cli help db documents project database boundaries", () => {
   const dbHelp = spawnSync(process.execPath, [cliPath, "help", "db"], {
     encoding: "utf8",

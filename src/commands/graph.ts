@@ -346,6 +346,48 @@ function isInside(parent: string, child: string): boolean {
   return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
 }
 
+function lstatIfPresent(target: string): fs.Stats | undefined {
+  try {
+    return fs.lstatSync(target);
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      return undefined;
+    }
+    throw err;
+  }
+}
+
+function assertTargetPathContainment(root: string, targetRoot: string): void {
+  // Preflight existing components before writes. Node does not expose an
+  // openat-style atomic directory walk, so concurrent path replacement remains
+  // an operating-system race rather than a guarantee this check can eliminate.
+  const absoluteRoot = path.resolve(root);
+  const relativeTarget = path.relative(absoluteRoot, targetRoot);
+  const canonicalRoot = fs.realpathSync(absoluteRoot);
+  let nearestExisting = absoluteRoot;
+  let current = absoluteRoot;
+
+  for (const segment of relativeTarget.split(path.sep).filter(Boolean)) {
+    current = path.join(current, segment);
+    const stat = lstatIfPresent(current);
+    if (!stat) {
+      break;
+    }
+    if (stat.isSymbolicLink()) {
+      throw new UsageError(`--target must not contain symbolic links: ${rel(absoluteRoot, current)}`);
+    }
+    if (current !== targetRoot && !stat.isDirectory()) {
+      throw new UsageError(`--target ancestor must be a directory: ${rel(absoluteRoot, current)}`);
+    }
+    nearestExisting = current;
+  }
+
+  const canonicalExisting = fs.realpathSync(nearestExisting);
+  if (!isInside(canonicalRoot, canonicalExisting)) {
+    throw new UsageError("--target must resolve inside the current mdkg root");
+  }
+}
+
 function resolveSourcePath(root: string, source: string): string {
   if (source.includes("\0")) {
     throw new UsageError("source cannot contain NUL bytes");
@@ -421,7 +463,12 @@ function resolveTargetRoot(root: string, target: string): string {
   if (!isInside(root, targetRoot)) {
     throw new UsageError("--target must stay inside the current mdkg root");
   }
-  if (fs.existsSync(targetRoot)) {
+  assertTargetPathContainment(root, targetRoot);
+  const targetStat = lstatIfPresent(targetRoot);
+  if (targetStat) {
+    if (!targetStat.isDirectory()) {
+      throw new UsageError(`target must be an empty directory or absent: ${rel(root, targetRoot)}`);
+    }
     const entries = fs.readdirSync(targetRoot);
     if (entries.length > 0) {
       throw new UsageError(`target must be empty or absent: ${rel(root, targetRoot)}`);

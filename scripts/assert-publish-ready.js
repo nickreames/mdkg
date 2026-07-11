@@ -43,6 +43,20 @@ function requirePackageVersions() {
   if (!matrix.includes(`package_version_in_source: ${pkg.version}`)) {
     fail(`CLI_COMMAND_MATRIX.md package_version_in_source does not match package.json ${pkg.version}`);
   }
+  const changelog = requireFile("CHANGELOG.md");
+  const escapedVersion = pkg.version.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (!new RegExp(`^## ${escapedVersion}(?:\\s+-|$)`, "m").test(changelog)) {
+    fail(`CHANGELOG.md is missing a release section for package version ${pkg.version}`);
+  }
+  const releaseNotes = JSON.parse(requireFile("docs/_generated/release-notes.json"));
+  if (releaseNotes.package_version !== pkg.version || releaseNotes.latest_release !== pkg.version) {
+    fail(
+      `generated release notes version mismatch: package=${pkg.version}, generated package=${releaseNotes.package_version}, latest=${releaseNotes.latest_release}`
+    );
+  }
+  if (!Array.isArray(releaseNotes.releases) || !releaseNotes.releases.some((release) => release.version === pkg.version)) {
+    fail(`generated release notes are missing package version ${pkg.version}`);
+  }
   if (!pkg.scripts || !pkg.scripts["smoke:db-queue-cli"]) {
     fail("package.json is missing smoke:db-queue-cli");
   }
@@ -51,6 +65,12 @@ function requirePackageVersions() {
   }
   if (!pkg.scripts || !pkg.scripts["smoke:integration-ux"]) {
     fail("package.json is missing smoke:integration-ux");
+  }
+  if (!pkg.scripts || !pkg.scripts["smoke:loop"]) {
+    fail("package.json is missing smoke:loop");
+  }
+  if (!pkg.scripts || !pkg.scripts["ci:release"]) {
+    fail("package.json is missing ci:release");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
     fail("package.json is missing smoke:warning-ux");
@@ -86,6 +106,15 @@ function requirePackageVersions() {
   }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
     fail("prepublishOnly is missing smoke:db-queue-cli");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:consumer && npm run smoke:loop && npm run smoke:matrix")) {
+    fail("prepublishOnly must run installed loop smoke between consumer and command-matrix smokes");
+  }
+  const ciRelease = String(pkg.scripts["ci:release"] || "");
+  for (const requiredGate of ["npm run test", "npm run cli:check", "npm run cli:contract", "npm run docs:check", "npm run smoke:loop", "node scripts/assert-publish-ready.js"]) {
+    if (!ciRelease.includes(requiredGate)) {
+      fail(`ci:release is missing ${requiredGate}`);
+    }
   }
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff")) {
     fail("prepublishOnly is missing smoke:handoff");
@@ -169,6 +198,11 @@ function requirePackageVersions() {
   if (!Array.isArray(pkg.files) || !pkg.files.includes("dist/command-contract.json")) {
     fail("package files must include dist/command-contract.json");
   }
+  for (const requiredPayloadRoot of ["dist/commands/", "dist/graph/", "dist/init/", "dist/pack/"]) {
+    if (!Array.isArray(pkg.files) || !pkg.files.includes(requiredPayloadRoot)) {
+      fail(`package files must include ${requiredPayloadRoot}`);
+    }
+  }
 }
 
 function requireCliBuild() {
@@ -182,6 +216,18 @@ function requireCliBuild() {
   }
   if (!Array.isArray(contract.commands) || contract.commands.length < 70) {
     fail("dist/command-contract.json has too few command records");
+  }
+  const generatedSummary = JSON.parse(requireFile("docs/_generated/command-contract-summary.json"));
+  const generatedReference = requireFile("docs/_generated/cli-reference.md");
+  const pkg = JSON.parse(requireFile("package.json"));
+  if (generatedSummary.contract_hash !== contract.contract_hash || generatedSummary.package_version !== pkg.version) {
+    fail("generated command contract summary is stale");
+  }
+  if (
+    !generatedReference.includes(`<!-- contract-hash: ${contract.contract_hash} -->`) ||
+    !generatedReference.includes(`- Package version: ${pkg.version}`)
+  ) {
+    fail("generated CLI reference is stale");
   }
   const byKey = new Map(contract.commands.map((command) => [command.key, command]));
   for (const key of [
@@ -202,6 +248,13 @@ function requireCliBuild() {
     "skill new",
     "task start",
     "work validate",
+    "loop",
+    "loop list",
+    "loop show",
+    "loop fork",
+    "loop plan",
+    "loop next",
+    "loop runs",
   ]) {
     if (!byKey.has(key)) {
       fail(`dist/command-contract.json is missing ${key}`);
@@ -251,6 +304,23 @@ function requireCliBuild() {
   ) {
     fail("dist/command-contract.json must keep work validate read-only with typed JSON schema metadata");
   }
+  for (const key of ["loop list", "loop show", "loop plan", "loop next", "loop runs"]) {
+    const command = byKey.get(key);
+    if (!command || command.danger_level !== "read-only" || command.write_paths.length !== 0 || !command.side_effects.includes("none")) {
+      fail(`dist/command-contract.json must keep ${key} observational`);
+    }
+  }
+  const loopFork = byKey.get("loop fork");
+  if (
+    !loopFork ||
+    !loopFork.side_effects.includes("reserve-sqlite-node-ids-when-configured") ||
+    !loopFork.write_paths.includes(".mdkg/events/*.jsonl") ||
+    loopFork.dry_run?.reserves_ids !== false ||
+    !Array.isArray(loopFork.dry_run?.write_paths) ||
+    loopFork.dry_run.write_paths.length !== 0
+  ) {
+    fail("dist/command-contract.json is missing truthful loop fork and dry-run safety metadata");
+  }
 }
 
 function requireBuildFolders() {
@@ -267,6 +337,9 @@ function requireBuildFolders() {
   }
   requireFile("dist/templates/builtin.js");
   requireFile("dist/commands/goal.js");
+  requireFile("dist/commands/loop.js");
+  requireFile("dist/commands/loop_descriptors.js");
+  requireFile("dist/graph/loop_bindings.js");
   requireFile("dist/commands/status.js");
   requireFile("dist/commands/fix.js");
   const mcp = requireFile("dist/commands/mcp.js");
@@ -470,6 +543,7 @@ function requireInitAssets() {
     "feat.md",
     "feedback.md",
     "goal.md",
+    "loop.md",
     "manifest.md",
     "prd.md",
     "prop.md",
@@ -484,6 +558,23 @@ function requireInitAssets() {
     "work_order.md",
   ]) {
     requireFile(path.join("dist/init/templates/default", template));
+  }
+  for (const template of [
+    "security-audit.loop.md",
+    "design-frontend-ux-audit.loop.md",
+    "backend-api-cli-bloat-audit.loop.md",
+    "tech-stack-best-practices-audit.loop.md",
+    "duplicate-code-and-linting-audit.loop.md",
+    "test-ci-skill-infrastructure-audit.loop.md",
+    "user-story-audit-and-recommendations.loop.md",
+  ]) {
+    requireFile(path.join("dist/init/templates/loops", template));
+  }
+  const seededLoopSkill = requireFile("dist/init/skills/default/pursue-mdkg-loop/SKILL.md");
+  for (const expected of ["mdkg loop plan", "mdkg loop next", "whole_loop_blocked", "proposal"]) {
+    if (!seededLoopSkill.includes(expected)) {
+      fail(`dist/init pursue-mdkg-loop skill is missing ${expected}`);
+    }
   }
   for (const template of [
     "agent.MANIFEST.md",
@@ -807,6 +898,29 @@ function requireInitAssets() {
   for (const expected of ["demo_agentic_coding", "template_mdkg_dev", "goal next", "subgraph", "read_only"]) {
     if (!smokeDemoGraph.includes(expected)) {
       fail(`scripts/smoke-demo-graph.js is missing ${expected} proof`);
+    }
+  }
+  const smokeLoop = requireFile("scripts/smoke-loop.js");
+  for (const expected of [
+    "security-audit",
+    "design-frontend-ux-audit",
+    "backend-api-cli-bloat-audit",
+    "tech-stack-best-practices-audit",
+    "duplicate-code-and-linting-audit",
+    "test-ci-skill-infrastructure-audit",
+    "user-story-audit-and-recommendations",
+    "--dry-run",
+    "whole_loop_blocked",
+    "SQLite backend",
+  ]) {
+    if (!smokeLoop.includes(expected)) {
+      fail(`scripts/smoke-loop.js is missing ${expected} proof`);
+    }
+  }
+  const releaseWorkflow = requireFile(".github/workflows/release-readiness.yml");
+  for (const expected of ["24.15.0", "24.x", "npm ci", "npm run ci:release"]) {
+    if (!releaseWorkflow.includes(expected)) {
+      fail(`release-readiness workflow is missing ${expected}`);
     }
   }
   requireDir("mdkg-dev");

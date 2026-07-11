@@ -309,6 +309,51 @@ test("graph clone refuses unsafe targets and live-source self nesting", () => {
   assert.match(nestedTarget.stderr, /target must not be inside the live directory source/);
 });
 
+test(
+  "graph clone and fork reject target symlink escapes before writing",
+  { skip: process.platform === "win32" ? "symlink creation requires elevated Windows privileges" : false },
+  () => {
+    const root = makeTempDir("mdkg-graph-target-symlink-");
+    run(["init", "--agent"], root);
+    createSourceGraph(root, "source");
+
+    const directOutside = makeTempDir("mdkg-graph-target-direct-outside-");
+    const directTarget = path.join(root, "clones", "demo");
+    fs.mkdirSync(path.dirname(directTarget), { recursive: true });
+    fs.symlinkSync(directOutside, directTarget, "dir");
+
+    const directFailure = runFailure(
+      ["graph", "clone", "source", "--target", "clones/demo", "--json"],
+      root
+    );
+    assert.match(directFailure.stderr, /--target must not contain symbolic links/);
+    assert.deepEqual(fs.readdirSync(directOutside), []);
+
+    const ancestorOutside = makeTempDir("mdkg-graph-target-ancestor-outside-");
+    fs.symlinkSync(ancestorOutside, path.join(root, "forks"), "dir");
+    const ancestorFailure = runFailure(
+      [
+        "graph",
+        "fork",
+        "source",
+        "--target",
+        "forks/demo",
+        "--start-goal",
+        "goal-1",
+        "--json",
+      ],
+      root
+    );
+    assert.match(ancestorFailure.stderr, /--target must not contain symbolic links/);
+    assert.deepEqual(fs.readdirSync(ancestorOutside), []);
+
+    const validTarget = path.join(root, "valid", "empty");
+    fs.mkdirSync(validTarget, { recursive: true });
+    run(["graph", "clone", "source", "--target", "valid/empty", "--json"], root);
+    assert.equal(fs.existsSync(path.join(validTarget, ".mdkg", "config.json")), true);
+  }
+);
+
 test("graph import-template rewrites same-repo IDs and links with dry-run then apply", () => {
   const root = makeTempDir("mdkg-graph-import-");
   run(["init", "--agent"], root);
