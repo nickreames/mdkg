@@ -441,7 +441,7 @@ function main() {
   assert(!/\bchk-(?:4\d{2}|[5-9]\d{2,})\b/.test(previewPublicHtml), "preview public docs should not expose internal checkpoint ids");
   assert(!/sha256:[a-f0-9]{64}/i.test(previewPublicHtml), "preview public docs should not expose content hashes");
   const packageJson = JSON.parse(readText(path.join(repoRoot, "package.json")));
-  assert(packageJson.version === "0.4.2", "Goal 63 must preserve package version 0.4.2");
+  assert(packageJson.version === "0.5.0", "Goal 64 release candidate must use package version 0.5.0");
   const previewPagefind = JSON.parse(readText(path.join(previewDist, "pagefind", "pagefind-entry.json")));
   assert(
     previewPagefind.languages.en.page_count === canonicalPageCount + loopRouteFiles.length,

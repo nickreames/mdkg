@@ -2,7 +2,7 @@
 id: task-716
 type: task
 title: Finalize package version lockfile changelog and release notes for v0.5.0
-status: todo
+status: done
 priority: 1
 epic: epic-232
 next: task-717
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Overview
 
@@ -51,6 +51,32 @@ List files/directories expected to change.
 
 Run the version/changelog drift scan in `test-388`, generated checks, and inspect
 the full publish-bound diff.
+
+# Results / Evidence
+
+- Bumped `package.json`, the root lockfile package, README source-version fact,
+  CLI matrix header, generated CLI reference, and generated release-note data
+  to `0.5.0` without creating a tag.
+- Finalized the 2026-07-11 `0.5.0` changelog with 18 source-backed Added,
+  Changed, Fixed, and Security notes covering first-class loops, all seven
+  templates, readiness/provenance/routing behavior, packaged validation, public
+  release surfaces, graph target containment, and bounded ZIP parsing.
+- Kept `Unreleased` empty. Git materialization and linked-upgrade graph planning
+  from `626e0b61` is classified as non-user-facing future planning and is not
+  presented as shipped `0.5.0` functionality.
+- Preserved `release/public-release.json` as `draft`. Draft mdkg.dev JSON-LD now
+  omits `softwareVersion` so the first dormant push cannot advertise 0.5.0
+  before npm proof; the version is projected only after state becomes
+  `published`.
+- Updated release-note generation to accept the gated v0.5.0 supplement as the
+  draft public summary while still requiring the normal public changelog page
+  to mention 0.5.0 after activation.
+- `npm run test:public-release`, `npm run docs:check`, `npm run cli:check`,
+  `npm run cli:contract`, `npm run smoke:mdkg-dev`,
+  `npm run smoke:mdkg-dev-docs`, `npm run smoke:mdkg-dev-seo`,
+  `node scripts/assert-publish-ready.js`, and `git diff --check` passed.
+- Generated command-contract hash:
+  `e9bd2d82d340887bc58d518c7e67541996f4b7744b2d1981763060575265aa29`.
 
 # Links / Artifacts
 
