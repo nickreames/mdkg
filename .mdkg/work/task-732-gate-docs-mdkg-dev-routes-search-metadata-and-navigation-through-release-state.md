@@ -2,7 +2,7 @@
 id: task-732
 type: task
 title: Gate docs.mdkg.dev routes search metadata and navigation through release state
-status: todo
+status: done
 priority: 1
 epic: epic-236
 tags: [release, implementation, goal-63]
@@ -56,6 +56,23 @@ navigation, metadata, search, sitemap, or LLM output are emitted.
 
 Run `test-402`; inspect direct routes and built sitemap, Pagefind, robots,
 metadata, and LLM files in draft and active-preview modes.
+
+# Results / Evidence
+
+- Replaced the default Starlight loader with Astro's native glob loader using
+  the same Markdown extensions and an explicit dormant `!loops/**` exclusion.
+- Both docs content loading and Starlight configuration consume the root shared
+  projection; no docs-only release flag exists.
+- The conditional top-level Loops group is enabled only when release content is
+  visible and all four source pages exist, preventing partial-preview broken
+  navigation.
+- Added generated docs `robots.txt`: normal draft builds allow crawling;
+  release previews and Vercel previews disallow crawling.
+- Normal docs build passes with no Loops route, sidebar, sitemap, Pagefind, or
+  release metadata output.
+- Active-preview docs build passes, adds global `noindex, nofollow`, and emits a
+  disallowing robots file. Route/content assertions complete with tasks 735-737
+  and tests 402/404 after the four source pages exist.
 
 # Links / Artifacts
 

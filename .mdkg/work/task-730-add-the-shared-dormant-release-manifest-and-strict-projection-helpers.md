@@ -2,7 +2,7 @@
 id: task-730
 type: task
 title: Add the shared dormant release manifest and strict projection helpers
-status: todo
+status: done
 priority: 1
 epic: epic-236
 tags: [release, implementation, goal-63]
@@ -73,6 +73,19 @@ CTA `Run a security audit loop` -> `/loops/security-audit/`, link
 Run `test-401`; cover valid draft, valid preview, valid published/version-match,
 invalid schema/state, package mismatch, production override, and manifest hash
 before/after builds.
+
+# Results / Evidence
+
+- Added canonical `release/public-release.json` in `draft` state with target
+  version `0.5.0` while root package truth remains `0.4.2`.
+- Added one side-effect-free `release/public-release.mjs` loader, validator, and
+  projection for both Astro sites.
+- The projection exposes `published`, `preview_visible`, `visible`, `indexable`,
+  and `site_noindex`, preserves existing deployment-preview noindex behavior,
+  and rejects unsafe release-preview production overrides.
+- `npm run test:public-release`: 8 tests passed, 0 failed.
+- Canonical and malformed-fixture hash/content checks prove the loader does not
+  write its inputs.
 
 # Links / Artifacts
 

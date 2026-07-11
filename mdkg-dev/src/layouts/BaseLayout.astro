@@ -1,6 +1,7 @@
 ---
 import NavBar from "../components/NavBar.astro";
 import Footer from "../components/Footer.astro";
+import { publicRelease } from "../data/publicRelease.mjs";
 import "../styles/global.css";
 
 const {
@@ -12,10 +13,7 @@ const {
 const siteUrl = "https://mdkg.dev";
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const socialImage = new URL("/social-card.svg", siteUrl).toString();
-const previewNoindex =
-  import.meta.env.VERCEL_ENV === "preview" ||
-  String(import.meta.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
-const robotsContent = noindex || previewNoindex ? "noindex, nofollow" : "index, follow";
+const robotsContent = noindex || publicRelease.site_noindex ? "noindex, nofollow" : "index, follow";
 ---
 
 <!doctype html>

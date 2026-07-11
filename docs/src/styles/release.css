@@ -1,0 +1,7 @@
+@media (max-width: 50rem) {
+  button[aria-label="Menu"],
+  button[aria-label="Search"] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

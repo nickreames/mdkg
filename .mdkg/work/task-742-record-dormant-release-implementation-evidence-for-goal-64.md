@@ -2,7 +2,7 @@
 id: task-742
 type: task
 title: Record dormant release implementation evidence for Goal 64
-status: todo
+status: progress
 priority: 1
 epic: epic-240
 tags: [release, implementation, goal-63]

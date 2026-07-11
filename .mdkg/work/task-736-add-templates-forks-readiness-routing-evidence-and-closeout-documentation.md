@@ -2,7 +2,7 @@
 id: task-736
 type: task
 title: Add templates forks readiness routing evidence and closeout documentation
-status: todo
+status: done
 priority: 1
 epic: epic-238
 tags: [release, implementation, goal-63]
@@ -66,6 +66,20 @@ provenance, readiness, continuation, evidence, waivers, and honest closeout.
 Run `test-404`; verify both routes across draft and preview modes, all seven
 template names, provenance/continuation/waiver accuracy, Pagefind/sitemap state,
 desktop/mobile navigation, headings, links, code overflow, and themes.
+
+# Results / Evidence
+
+- Added gated Templates and forks documentation covering all seven bundled
+  templates, raw loop creation, default/planning-only/manual materialization,
+  provenance hashes, stale warnings, and the explicit no-auto-rewrite rule.
+- Added gated lifecycle documentation for identity-bound questions, requested
+  approvals, evidence lanes, paired decision/approval waivers, `plan`, `next`,
+  `runs`, blocker recovery, exhaustion, and honest closeout.
+- Kept exact exhaustive syntax in the generated reference and retained the
+  backend/API/CLI bloat template as a secondary documentation example.
+- Active-preview docs build, sitemap, Pagefind page-count, and focused content
+  assertions passed; draft output emits no loop routes or sitemap entries.
+  Browser navigation/theme/reflow proof remains in `task-741` and `test-404`.
 
 # Links / Artifacts
 

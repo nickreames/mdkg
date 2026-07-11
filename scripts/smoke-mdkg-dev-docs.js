@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
+const crypto = require("node:crypto");
 const path = require("node:path");
 const {
   NPM_CMD,
@@ -46,6 +47,9 @@ function assertRenderedOutline(distDir) {
 }
 
 function main() {
+  const releaseManifestPath = path.join(repoRoot, "release", "public-release.json");
+  const releaseManifestBefore = fs.readFileSync(releaseManifestPath);
+  const releaseManifestHashBefore = crypto.createHash("sha256").update(releaseManifestBefore).digest("hex");
   run(NPM_CMD, ["run", "docs:check"]);
   run(NPM_CMD, ["run", "docs:check-commands"]);
   run(NPM_CMD, ["--prefix", "docs", "run", "build"]);
@@ -58,7 +62,9 @@ function main() {
     "astro.config.mjs",
     "tsconfig.json",
     "public/favicon.svg",
+    "src/components/Footer.astro",
     "src/components/PageSidebar.astro",
+    "src/components/ReleaseV050Supplement.astro",
     "src/content.config.ts",
     "src/content/docs/index.md",
     "src/content/docs/start-here/install.md",
@@ -76,6 +82,10 @@ function main() {
     "src/content/docs/guides/agent-workflow.md",
     "src/content/docs/guides/packs-and-handoffs.md",
     "src/content/docs/guides/research-spikes.md",
+    "src/content/docs/loops/index.md",
+    "src/content/docs/loops/templates-and-forks.md",
+    "src/content/docs/loops/readiness-routing-evidence-closeout.md",
+    "src/content/docs/loops/security-audit.md",
     "src/content/docs/advanced-alpha/overview.md",
     "src/content/docs/advanced-alpha/project-db-queues.md",
     "src/content/docs/advanced-alpha/read-only-mcp.md",
@@ -291,6 +301,157 @@ function main() {
   assert(/^[a-f0-9]{64}$/.test(summaryJson.contract_hash), "generated command summary has invalid hash");
 
   assertRenderedOutline(path.join(docs, "dist"));
+
+  const canonicalDist = path.join(docs, "dist");
+  assert(!fs.existsSync(path.join(canonicalDist, "loops")), "draft docs build must not emit loop routes");
+  const canonicalSitemap = readText(path.join(canonicalDist, "sitemap-0.xml"));
+  assert(!canonicalSitemap.includes("/loops/"), "draft docs sitemap must not include loop routes");
+  for (const [label, relPath] of [
+    ["install", "start-here/install/index.html"],
+    ["changelog", "project/changelog/index.html"],
+    ["reference", "reference/generated-cli-reference/index.html"],
+  ]) {
+    const html = readText(path.join(canonicalDist, relPath));
+    assert(!html.includes("Target v0.5.0"), `draft ${label} page must not include target release facts`);
+    assert(!html.includes("release-v050-"), `draft ${label} page must not render release supplement`);
+  }
+  const canonicalPagefind = JSON.parse(readText(path.join(canonicalDist, "pagefind", "pagefind-entry.json")));
+  const canonicalPageCount = canonicalPagefind.languages.en.page_count;
+
+  run(NPM_CMD, ["--prefix", "docs", "run", "build"], {
+    env: { PUBLIC_MDKG_RELEASE_PREVIEW: "1" },
+  });
+
+  const previewDist = path.join(docs, "dist");
+  const loopRouteFiles = [
+    ["overview", "loops/index.html"],
+    ["templates", "loops/templates-and-forks/index.html"],
+    ["lifecycle", "loops/readiness-routing-evidence-closeout/index.html"],
+    ["security", "loops/security-audit/index.html"],
+  ];
+  for (const [label, relPath] of loopRouteFiles) {
+    const filePath = path.join(previewDist, relPath);
+    assertExists(filePath);
+    const html = readText(filePath);
+    assert(html.includes('name="robots" content="noindex, nofollow"'), `${label} preview route must be noindex`);
+    assert((html.match(/<h1[\s>]/g) || []).length === 1, `${label} preview route must have one h1`);
+  }
+
+  const overviewHtml = readText(path.join(previewDist, "loops", "index.html"));
+  for (const snippet of [
+    "Goals and loops",
+    "one node type",
+    "coding-agent harness executes agents and tools",
+    "patch_proposal",
+    "write_with_approval",
+  ]) {
+    assert(overviewHtml.toLowerCase().includes(snippet.toLowerCase()), `loop overview missing ${snippet}`);
+  }
+
+  const templatesHtml = readText(path.join(previewDist, "loops", "templates-and-forks", "index.html"));
+  for (const template of [
+    "security-audit",
+    "design-frontend-ux-audit",
+    "backend-api-cli-bloat-audit",
+    "tech-stack-best-practices-audit",
+    "duplicate-code-and-linting-audit",
+    "test-ci-skill-infrastructure-audit",
+    "user-story-audit-and-recommendations",
+  ]) {
+    assert(templatesHtml.includes(template), `templates page missing ${template}`);
+  }
+  for (const snippet of ["default_children", "planning_only", "manual", "stale warning", "never rewrites"]) {
+    assert(templatesHtml.includes(snippet), `templates page missing ${snippet}`);
+  }
+
+  const lifecycleHtml = readText(path.join(previewDist, "loops", "readiness-routing-evidence-closeout", "index.html"));
+  for (const snippet of [
+    "question_answer_refs",
+    "action_approval_refs",
+    "evidence_lane_refs",
+    "lane_waiver_decision_refs",
+    "lane_waiver_approval_refs",
+    "at least three viable options",
+    "no authorized child work",
+  ]) {
+    assert(lifecycleHtml.includes(snippet), `loop lifecycle page missing ${snippet}`);
+  }
+
+  const securityHtml = readText(path.join(previewDist, "loops", "security-audit", "index.html"));
+  for (const command of [
+    "mdkg loop list",
+    "mdkg loop show security-audit",
+    "mdkg loop fork security-audit --scope . --dry-run --json",
+    "mdkg loop fork security-audit --scope . --json",
+    "mdkg loop plan LOOP_ID --json",
+    "mdkg pack LOOP_ID --profile concise",
+    "mdkg loop next LOOP_ID --json",
+    "mdkg loop runs LOOP_ID --json",
+  ]) {
+    assert(securityHtml.includes(command), `security walkthrough missing ${command}`);
+  }
+  for (const forbiddenCommand of ["mdkg loop run ", "mdkg loop resume", "mdkg loop execute", "mdkg note add"]) {
+    assert(!securityHtml.includes(forbiddenCommand), `security walkthrough includes unsupported command ${forbiddenCommand}`);
+  }
+  for (const forbiddenPublicData of ["/Users/", "loop-5", "goal-61", "chk-", "sha256:"]) {
+    assert(!securityHtml.includes(forbiddenPublicData), `security walkthrough leaks ${forbiddenPublicData}`);
+  }
+
+  const previewSitemap = readText(path.join(previewDist, "sitemap-0.xml"));
+  for (const route of [
+    "https://docs.mdkg.dev/loops/",
+    "https://docs.mdkg.dev/loops/templates-and-forks/",
+    "https://docs.mdkg.dev/loops/readiness-routing-evidence-closeout/",
+    "https://docs.mdkg.dev/loops/security-audit/",
+  ]) {
+    assert(previewSitemap.includes(route), `preview docs sitemap missing ${route}`);
+  }
+  const previewRobots = readText(path.join(previewDist, "robots.txt"));
+  assert(previewRobots.includes("Disallow: /"), "preview docs robots must disallow crawling");
+  const previewInstall = readText(path.join(previewDist, "start-here", "install", "index.html"));
+  const previewChangelog = readText(path.join(previewDist, "project", "changelog", "index.html"));
+  const previewReference = readText(path.join(previewDist, "reference", "generated-cli-reference", "index.html"));
+  for (const [label, html, snippets] of [
+    ["install", previewInstall, ["Prepare an existing repo for loops", "mdkg upgrade --apply", "Legacy SPEC compatibility remains unchanged"]],
+    ["changelog", previewChangelog, ["First-class reusable loops", "Seven bundled read-only or planning templates", "Draft release facts for local verification only", "npm availability"]],
+    ["reference", previewReference, ["Loop command family", "mdkg new loop", "mdkg loop runs LOOP_ID"]],
+  ]) {
+    for (const snippet of snippets) {
+      assert(html.includes(snippet), `preview ${label} release supplement missing ${snippet}`);
+    }
+  }
+  const previewPublicHtml = [
+    overviewHtml,
+    templatesHtml,
+    lifecycleHtml,
+    securityHtml,
+    previewInstall,
+    previewChangelog,
+    previewReference,
+  ].join("\n");
+  for (const forbidden of [
+    "/Users/",
+    "loop-5",
+    "goal-61",
+    "v0.5.0 is available",
+    "npm install -g mdkg@0.5.0",
+  ]) {
+    assert(!previewPublicHtml.includes(forbidden), `preview public docs leak or overclaim ${forbidden}`);
+  }
+  assert(!/\bchk-(?:4\d{2}|[5-9]\d{2,})\b/.test(previewPublicHtml), "preview public docs should not expose internal checkpoint ids");
+  assert(!/sha256:[a-f0-9]{64}/i.test(previewPublicHtml), "preview public docs should not expose content hashes");
+  const packageJson = JSON.parse(readText(path.join(repoRoot, "package.json")));
+  assert(packageJson.version === "0.4.2", "Goal 63 must preserve package version 0.4.2");
+  const previewPagefind = JSON.parse(readText(path.join(previewDist, "pagefind", "pagefind-entry.json")));
+  assert(
+    previewPagefind.languages.en.page_count === canonicalPageCount + loopRouteFiles.length,
+    "preview Pagefind index must add exactly the four loop routes"
+  );
+
+  const releaseManifestAfter = fs.readFileSync(releaseManifestPath);
+  const releaseManifestHashAfter = crypto.createHash("sha256").update(releaseManifestAfter).digest("hex");
+  assert(releaseManifestBefore.equals(releaseManifestAfter), "docs builds mutated release manifest bytes");
+  assert(releaseManifestHashBefore === releaseManifestHashAfter, "docs builds changed release manifest hash");
 
   assertNoHighRiskMarkers([docs]);
   console.log(`mdkg-dev docs smoke passed: ${requiredFiles.length} required files`);

@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: The accepted v0.5.0 release experience is implemented locally with exact content design accessibility SEO responsive and browser evidence from goal-62 while release promotion remains dormant and no push or production deployment occurs.
 scope_refs: [epic-236, epic-237, epic-238, epic-239, epic-240, task-730, task-731, task-732, task-733, task-734, task-735, task-736, task-737, task-738, task-739, task-740, task-741, task-742, test-401, test-402, test-403, test-404, test-405, test-406, test-407]
-active_node: task-730
+active_node: task-742
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, npm run smoke:mdkg-dev-a11y, node dist/cli.js validate --changed-only --json, node dist/cli.js validate --summary --json --limit 20, node dist/cli.js goal show goal-63 --json, node dist/cli.js goal next goal-63 --json, node dist/cli.js pack task-730 --profile concise --dry-run --stats, git diff --check]
 max_iterations: 25

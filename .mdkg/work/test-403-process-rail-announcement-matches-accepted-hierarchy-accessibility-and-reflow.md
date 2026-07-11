@@ -2,13 +2,13 @@
 id: test-403
 type: test
 title: Process Rail announcement matches accepted hierarchy accessibility and reflow
-status: todo
+status: done
 priority: 1
 epic: epic-237
 tags: [release, test, goal-63]
 owners: []
 links: []
-artifacts: []
+artifacts: [design-qa.md, .mdkg/artifacts/goal-63/browser/marketing-process-rail-desktop.png, .mdkg/artifacts/goal-63/browser/marketing-process-rail-mobile-390x844.png, .mdkg/artifacts/goal-63/browser/process-rail-reference-comparison.png, .mdkg/artifacts/goal-63/browser/process-rail-focused-comparison.png]
 relates: [goal-63]
 blocked_by: [task-734]
 blocks: [test-407]
@@ -54,7 +54,19 @@ Marketing active-preview build, selected Process Rail artifact, desktop plus
 
 # Results / Evidence
 
-Pending Goal 63 implementation and browser evidence.
+- Exact accepted qualifier, headline, body, four stages, supported commands,
+  security CTA, and loop-overview link render immediately after quickstart.
+- Browser verification passed at 1488x1058, 390x844, 320px, and simulated 200%
+  layout zoom with no horizontal page overflow. The mobile CTA is 366x47.6 CSS
+  pixels and the secondary action retains a 44px interaction area.
+- Keyboard focus, accessible naming, ordered source structure, contrast smoke,
+  reduced motion, and forced colors passed. The CTA completed the round trip to
+  the local security walkthrough.
+- One initial P2 command-clipping issue was fixed and recaptured. Side-by-side
+  full and focused comparisons now have no remaining P0/P1/P2 finding;
+  `design-qa.md` records `final result: passed`.
+- Unsupported commands remain absent and canonical draft output contains no
+  announcement markup.
 
 # Notes / Follow-ups
 

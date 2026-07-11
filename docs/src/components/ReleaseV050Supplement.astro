@@ -1,0 +1,147 @@
+---
+type Variant = "install" | "changelog" | "reference";
+
+const { variant, published } = Astro.props as {
+  variant: Variant;
+  published: boolean;
+};
+
+const releaseLabel = published
+  ? "v0.5.0 · Pre-v1 public alpha"
+  : "Target v0.5.0 · Pre-v1 public alpha preview";
+---
+
+<section class="release-supplement" aria-labelledby={`release-v050-${variant}`}>
+  <p class="release-label">{releaseLabel}</p>
+
+  {variant === "install" && (
+    <>
+      <h2 id="release-v050-install">Prepare an existing repo for loops</h2>
+      <p>
+        Preview mdkg-managed scaffold changes before applying them. The upgrade
+        path adds the loop scaffold, bundled templates, and loop-execution skill
+        while preserving repo-local overlays and canonical MANIFEST naming.
+      </p>
+      <pre><code>mdkg upgrade
+mdkg upgrade --apply
+mdkg validate
+mdkg loop list</code></pre>
+      <p>
+        <a href="/loops/">Review the loop model</a> before forking a template.
+        Legacy SPEC compatibility remains unchanged for this release.
+      </p>
+      {!published && (
+        <p class="preview-note">
+          This is a local release preview. It does not claim that v0.5.0 is
+          available from npm.
+        </p>
+      )}
+    </>
+  )}
+
+  {variant === "changelog" && (
+    <>
+      <h2 id="release-v050-changelog">First-class reusable loops</h2>
+      <p>
+        v0.5.0 adds durable process nodes for audits and planning work that can
+        span goals, decisions, evidence lanes, blocker recovery, and attempts.
+      </p>
+      <h3>Release highlights</h3>
+      <ul>
+        <li>One first-class <code>loop</code> node type for templates, scoped forks, and run-bearing process state.</li>
+        <li>Seven bundled read-only or planning templates, led by the security audit.</li>
+        <li>Identity-bound readiness questions, approvals, evidence, and typed waivers.</li>
+        <li>Observational fork dry-runs plus goal-like <code>plan</code>, <code>next</code>, and <code>runs</code> inspection.</li>
+        <li>Blocker continuation that keeps other authorized lanes moving before the whole loop blocks.</li>
+      </ul>
+      <p>
+        Start with the <a href="/loops/security-audit/">read-only security audit walkthrough</a>.
+        mdkg preserves process state; the coding-agent harness executes agents
+        and tools.
+      </p>
+      {!published && (
+        <p class="preview-note">
+          Draft release facts for local verification only. This preview does not
+          claim npm availability; Goal 64 owns final version and changelog
+          publication.
+        </p>
+      )}
+    </>
+  )}
+
+  {variant === "reference" && (
+    <>
+      <h2 id="release-v050-reference">Loop command family</h2>
+      <p>
+        Use raw loop creation for a custom process, or inspect and fork a bundled
+        template. The inspection commands do not execute agents or tools.
+      </p>
+      <pre><code>mdkg new loop "TITLE"
+mdkg loop list
+mdkg loop show LOOP_OR_TEMPLATE
+mdkg loop fork TEMPLATE --scope SCOPE --dry-run
+mdkg loop plan LOOP_ID
+mdkg loop next LOOP_ID
+mdkg loop runs LOOP_ID</code></pre>
+      <p>
+        Run <code>mdkg loop --help</code> for the installed command contract, or
+        read <a href="/loops/templates-and-forks/">Templates and forks</a> for the
+        operating model.
+      </p>
+      {!published && (
+        <p class="preview-note">
+          This reference supplement is visible only in the local v0.5.0 preview.
+        </p>
+      )}
+    </>
+  )}
+</section>
+
+<style>
+  .release-supplement {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .release-label {
+    width: fit-content;
+    margin: 0 0 1rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--sl-color-accent);
+    border-radius: 0.25rem;
+    color: var(--sl-color-text-accent);
+    font-family: var(--__sl-font-mono);
+    font-size: var(--sl-text-xs);
+    font-weight: 700;
+  }
+
+  .release-supplement h2,
+  .release-supplement h3 {
+    margin-top: 1.5rem;
+  }
+
+  .release-supplement p,
+  .release-supplement ul,
+  .release-supplement pre {
+    margin-top: 1rem;
+  }
+
+  .release-supplement pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .preview-note {
+    padding-inline-start: 1rem;
+    border-inline-start: 3px solid var(--sl-color-orange);
+    color: var(--sl-color-gray-2);
+  }
+
+  @media (forced-colors: active) {
+    .release-label,
+    .preview-note {
+      border-color: CanvasText;
+    }
+  }
+</style>

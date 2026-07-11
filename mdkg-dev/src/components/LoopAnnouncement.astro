@@ -1,0 +1,269 @@
+---
+import ButtonLink from "./ButtonLink.astro";
+
+const { docsBaseUrl = "https://docs.mdkg.dev" } = Astro.props as {
+  docsBaseUrl?: string;
+};
+
+const normalizedDocsBaseUrl = docsBaseUrl.replace(/\/$/, "");
+
+const stages = [
+  {
+    title: "Fork a template",
+    text: "Start from the bundled read-only security audit template.",
+    command: "mdkg loop fork security-audit --scope . --dry-run"
+  },
+  {
+    title: "Resolve readiness",
+    text: "Confirm scope, permissions, and approval-gated actions.",
+    command: "mdkg loop plan LOOP_ID"
+  },
+  {
+    title: "Route authorized work",
+    text: "Select the next useful lane the loop is authorized to pursue.",
+    command: "mdkg loop next LOOP_ID"
+  },
+  {
+    title: "Inspect evidence and closeout",
+    text: "Review run evidence before required lanes are closed or waived.",
+    command: "mdkg loop runs LOOP_ID"
+  }
+];
+---
+
+<section class="loop-announcement" aria-labelledby="loop-announcement-title">
+  <div class="container loop-announcement-grid">
+    <div class="loop-announcement-copy">
+      <p class="loop-announcement-eyebrow">New in v0.5.0 · Pre-v1 public alpha</p>
+      <h2 id="loop-announcement-title">Reusable loops for work that spans more than one goal.</h2>
+      <p class="loop-announcement-body">
+        Fork a read-only audit template, answer readiness questions, route the next authorized work, and keep decisions and evidence in your mdkg graph. mdkg preserves the process; your coding-agent harness executes agents and tools.
+      </p>
+      <div class="loop-announcement-actions">
+        <ButtonLink href={`${normalizedDocsBaseUrl}/loops/security-audit/`}>Run a security audit loop</ButtonLink>
+        <a class="loop-announcement-secondary" href={`${normalizedDocsBaseUrl}/loops/`}>Learn how loops work</a>
+      </div>
+    </div>
+
+    <ol class="process-rail" aria-label="Loop workflow">
+      {stages.map((stage, index) => (
+        <li class="process-stage">
+          <span class="process-stage-number" aria-hidden="true">{index + 1}</span>
+          <div class="process-stage-copy">
+            <h3>{stage.title}</h3>
+            <p>{stage.text}</p>
+          </div>
+          <code>{stage.command}</code>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .loop-announcement {
+    padding: 72px 0;
+    border-block: 1px solid var(--border);
+    background: var(--sky-50);
+  }
+
+  .loop-announcement-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(520px, 1.12fr);
+    gap: 56px;
+    align-items: center;
+  }
+
+  .loop-announcement-copy {
+    display: grid;
+    gap: 20px;
+  }
+
+  .loop-announcement-eyebrow {
+    width: fit-content;
+    margin: 0;
+    padding: 5px 9px;
+    border: 1px solid rgba(29, 78, 216, 0.24);
+    border-radius: var(--radius);
+    color: var(--blue-700);
+    background: rgba(255, 255, 255, 0.72);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .loop-announcement h2 {
+    max-width: 14ch;
+  }
+
+  .loop-announcement-body {
+    max-width: 60ch;
+    color: var(--zinc-700);
+    font-size: 1.05rem;
+  }
+
+  .loop-announcement-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    align-items: center;
+    margin-top: 4px;
+  }
+
+  .loop-announcement-secondary {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--blue-700);
+    font-weight: 700;
+    text-underline-offset: 4px;
+  }
+
+  .process-rail {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 20px;
+    list-style: none;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    border-radius: var(--radius);
+    color: white;
+    background: #0f172a;
+    box-shadow: var(--shadow);
+  }
+
+  .process-stage {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) minmax(210px, 0.9fr);
+    gap: 16px;
+    align-items: center;
+    min-width: 0;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+  }
+
+  .process-stage:first-child {
+    padding-top: 0;
+  }
+
+  .process-stage:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .process-stage-number {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: var(--radius);
+    color: white;
+    background: var(--blue-700);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .process-stage-copy {
+    min-width: 0;
+  }
+
+  .process-stage-copy h3 {
+    color: white;
+    font-size: 1rem;
+  }
+
+  .process-stage-copy p {
+    margin-top: 5px;
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .process-stage code {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    padding: 10px 12px;
+    overflow-x: auto;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: var(--radius);
+    color: #e2e8f0;
+    background: #111827;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    scrollbar-width: thin;
+  }
+
+  @media (forced-colors: active) {
+    .loop-announcement-eyebrow,
+    .process-rail,
+    .process-stage code {
+      border-color: CanvasText;
+    }
+
+    .process-rail,
+    .process-stage-number,
+    .process-stage code {
+      color: CanvasText;
+      background: Canvas;
+    }
+
+    .process-stage-copy h3,
+    .process-stage-copy p {
+      color: CanvasText;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .loop-announcement-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .loop-announcement h2 {
+      max-width: 18ch;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .process-stage {
+      grid-template-columns: 44px minmax(0, 1fr);
+    }
+
+    .process-stage code {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .loop-announcement {
+      padding: 48px 0;
+    }
+
+    .loop-announcement-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .loop-announcement-actions :global(.button) {
+      width: 100%;
+      min-height: 44px;
+    }
+
+    .loop-announcement-secondary {
+      width: fit-content;
+    }
+
+    .process-rail {
+      padding: 16px;
+    }
+
+    .process-stage {
+      gap: 12px;
+    }
+  }
+</style>

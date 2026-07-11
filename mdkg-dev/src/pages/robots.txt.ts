@@ -1,11 +1,9 @@
 export const prerender = true;
 
-const previewNoindex =
-  import.meta.env.VERCEL_ENV === "preview" ||
-  String(import.meta.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
+import { publicRelease } from "../data/publicRelease.mjs";
 
 export function GET() {
-  const body = previewNoindex
+  const body = publicRelease.site_noindex
     ? `User-agent: *
 Disallow: /
 

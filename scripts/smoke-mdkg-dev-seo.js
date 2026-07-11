@@ -78,7 +78,7 @@ function main() {
   const baseLayoutSource = readText(path.join(repoRoot, "mdkg-dev", "src", "layouts", "BaseLayout.astro"));
   const robotsSource = readText(path.join(repoRoot, "mdkg-dev", "src", "pages", "robots.txt.ts"));
   for (const source of [baseLayoutSource, robotsSource]) {
-    assert(source.includes("VERCEL_ENV") && source.includes("PUBLIC_MDKG_PREVIEW_NOINDEX"), "preview noindex policy missing from source");
+    assert(source.includes("publicRelease.site_noindex"), "shared release noindex projection missing from source");
     assert(!source.includes("PUBLIC_MDKG_PRODUCTION_INDEX"), "production custom domains should not require an index opt-in env var");
   }
   assert(robotsSource.includes("Disallow: /"), "preview robots policy must disallow crawling");
@@ -89,11 +89,23 @@ function main() {
   assert(vercelPreviewHome.includes('name="robots" content="noindex, nofollow"'), "Vercel preview build must noindex pages");
   assert(vercelPreviewRobots.includes("Disallow: /"), "Vercel preview robots policy must disallow crawling");
 
+  buildSite({ PUBLIC_MDKG_PREVIEW_NOINDEX: "1" });
+  const explicitPreviewHome = readText(path.join(dist, "index.html"));
+  const explicitPreviewRobots = readText(path.join(dist, "robots.txt"));
+  assert(explicitPreviewHome.includes('name="robots" content="noindex, nofollow"'), "explicit preview policy must noindex pages");
+  assert(explicitPreviewRobots.includes("Disallow: /"), "explicit preview robots policy must disallow crawling");
+
   buildSite({ VERCEL: "1", VERCEL_ENV: "production" });
   const vercelProductionHome = readText(path.join(dist, "index.html"));
   const vercelProductionRobots = readText(path.join(dist, "robots.txt"));
   assert(vercelProductionHome.includes('name="robots" content="index, follow"'), "Vercel production build must allow page indexing");
   assert(vercelProductionRobots.includes("Allow: /"), "Vercel production robots policy must allow crawling");
+
+  buildSite({ PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
+  const releasePreviewHome = readText(path.join(dist, "index.html"));
+  const releasePreviewRobots = readText(path.join(dist, "robots.txt"));
+  assert(releasePreviewHome.includes('name="robots" content="noindex, nofollow"'), "release preview must noindex pages");
+  assert(releasePreviewRobots.includes("Disallow: /"), "release preview robots policy must disallow crawling");
 
   const llms = readText(path.join(dist, "llms.txt"));
   const llmsFull = readText(path.join(dist, "llms-full.txt"));

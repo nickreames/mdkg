@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
+const crypto = require("node:crypto");
 const path = require("node:path");
 const {
   assert,
@@ -37,6 +38,10 @@ function assertReadablePlainText(source, label) {
 }
 
 function main() {
+  const releaseManifestPath = path.join(repoRoot, "release", "public-release.json");
+  const releaseManifestBefore = fs.readFileSync(releaseManifestPath);
+  const releaseManifestHashBefore = crypto.createHash("sha256").update(releaseManifestBefore).digest("hex");
+
   buildSite();
 
   const dist = path.join(repoRoot, "mdkg-dev", "dist");
@@ -67,6 +72,14 @@ function main() {
   for (const forbidden of ["launch track", "postpublish", "postdeploy", "production launch", "release-readiness surface"]) {
     assertNotContains(home, forbidden, "homepage public copy");
   }
+  for (const dormantReleaseText of [
+    "New in v0.5.0",
+    "Reusable loops for work that spans more than one goal.",
+    "Run a security audit loop",
+    "https://docs.mdkg.dev/loops/",
+  ]) {
+    assertNotContains(home, dormantReleaseText, "dormant homepage");
+  }
   assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
   assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
   assert(home.includes("COLLABORATION.md"), "homepage missing collaboration profile copy");
@@ -86,6 +99,10 @@ function main() {
   const quickstart = readText(path.join(dist, "quickstart", "index.html"));
   const llms = readText(path.join(dist, "llms.txt"));
   const llmsFull = readText(path.join(dist, "llms-full.txt"));
+  for (const dormantReleaseText of ["## Reusable loops", "v0.5.0", "docs.mdkg.dev/loops/"]) {
+    assertNotContains(llms, dormantReleaseText, "dormant llms.txt");
+    assertNotContains(llmsFull, dormantReleaseText, "dormant llms-full.txt");
+  }
   const readme = readText(path.join(repoRoot, "README.md"));
   const docsReadme = readText(path.join(repoRoot, "docs", "README.md"));
   const docsInstall = readText(path.join(repoRoot, "docs", "src", "content", "docs", "start-here", "install.md"));
@@ -186,6 +203,48 @@ function main() {
     path.join(repoRoot, "mdkg-dev", "public"),
     dist,
   ]);
+
+  buildSite({ PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
+  const previewHome = readText(path.join(dist, "index.html"));
+  const previewLlms = readText(path.join(dist, "llms.txt"));
+  const previewLlmsFull = readText(path.join(dist, "llms-full.txt"));
+  const previewRobots = readText(path.join(dist, "robots.txt"));
+  assertContains(previewHome, 'name="robots" content="noindex, nofollow"', "release preview homepage");
+  for (const releaseAnnouncementText of [
+    "New in v0.5.0 · Pre-v1 public alpha",
+    "Reusable loops for work that spans more than one goal.",
+    "Run a security audit loop",
+    "Learn how loops work",
+    "mdkg loop fork security-audit --scope . --dry-run",
+    "mdkg loop plan LOOP_ID",
+    "mdkg loop next LOOP_ID",
+    "mdkg loop runs LOOP_ID",
+  ]) {
+    assertContains(previewHome, releaseAnnouncementText, "release preview homepage announcement");
+  }
+  assertNotContains(previewHome, "mdkg note add", "release preview homepage announcement");
+  assertContains(previewRobots, "Disallow: /", "release preview robots");
+  assertContains(previewLlms, "## Reusable loops", "release preview llms.txt");
+  assertContains(previewLlms, "This preview does not claim npm availability.", "release preview llms.txt");
+  assertContains(previewLlmsFull, "## Reusable loop process model", "release preview llms-full.txt");
+  assertContains(previewLlmsFull, "coding-agent harness executes agents and tools", "release preview llms-full.txt");
+  for (const [label, source] of [
+    ["release preview homepage", previewHome],
+    ["release preview llms.txt", previewLlms],
+    ["release preview llms-full.txt", previewLlmsFull],
+  ]) {
+    for (const forbidden of ["/Users/", "loop-5", "goal-61", "v0.5.0 is available", "npm install -g mdkg@0.5.0"]) {
+      assertNotContains(source, forbidden, label);
+    }
+    assert(!/\bchk-(?:4\d{2}|[5-9]\d{2,})\b/.test(source), `${label} should not expose internal checkpoint ids`);
+    assert(!/sha256:[a-f0-9]{64}/i.test(source), `${label} should not expose content hashes`);
+  }
+
+  const releaseManifestAfter = fs.readFileSync(releaseManifestPath);
+  const releaseManifestHashAfter = crypto.createHash("sha256").update(releaseManifestAfter).digest("hex");
+  assert(releaseManifestBefore.equals(releaseManifestAfter), "marketing builds mutated release manifest bytes");
+  assert(releaseManifestHashBefore === releaseManifestHashAfter, "marketing builds changed release manifest hash");
+  assertNoHighRiskMarkers([dist]);
 
   console.log(`mdkg-dev site smoke passed: ${requiredFiles.length} required files`);
 }

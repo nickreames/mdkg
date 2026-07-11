@@ -2,13 +2,13 @@
 id: test-404
 type: test
 title: Loops documentation routes navigation search and indexing obey release state
-status: todo
+status: done
 priority: 1
 epic: epic-238
 tags: [release, test, goal-63]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-63/browser/docs-security-desktop-1440x900.png, .mdkg/artifacts/goal-63/browser/docs-security-mobile-390x844.png, .mdkg/artifacts/goal-63/browser/docs-security-content-mobile-390x844.png]
 relates: [goal-63]
 blocked_by: [task-736]
 blocks: [test-407]
@@ -54,7 +54,18 @@ sitemap, LLM files, and Starlight light/dark/auto modes.
 
 # Results / Evidence
 
-Pending Goal 63 implementation.
+- Canonical docs omit the Loops navigation group, all four routes, sitemap
+  entries, and Pagefind records. Active preview exposes exactly four top-level
+  Loops pages after Concepts and before Guides.
+- Overview, templates/forks, lifecycle, and security walkthrough content passed
+  source and rendered-output assertions for ownership boundaries, all seven
+  seeds, provenance, materialization, typed readiness, approvals, evidence,
+  waivers, blocker recovery, and closeout.
+- Browser checks passed on all four routes at desktop plus the mobile security
+  journey. Navigation, one-H1 outlines, current-page state, links, code
+  containment, mobile menu semantics, and light/dark themes are clean.
+- Preview routes remain noindex/nofollow and robots-disallowed. Draft and
+  preview Pagefind counts prove only the planned four routes are added.
 
 # Notes / Follow-ups
 

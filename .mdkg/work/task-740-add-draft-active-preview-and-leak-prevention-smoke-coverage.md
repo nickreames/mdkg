@@ -2,7 +2,7 @@
 id: task-740
 type: task
 title: Add draft active-preview and leak-prevention smoke coverage
-status: todo
+status: done
 priority: 1
 epic: epic-240
 tags: [release, implementation, goal-63]
@@ -62,6 +62,25 @@ both sites before browser review or Goal 64 handoff.
 
 Run all focused release-state tests plus the full mdkg.dev/docs/SEO/a11y smoke
 ladder. Preserve receipts for all four modes and the forbidden-content scan.
+
+# Results / Evidence
+
+- Added byte-for-byte release-manifest guards to the marketing smoke, matching
+  the existing docs guard across canonical and active-preview builds.
+- Expanded built-output leak and overclaim checks across the homepage, LLM
+  projections, all four loop routes, and the install/changelog/reference
+  supplements. Purpose-built `chk-1` example content remains allowed while
+  current internal checkpoint ids, dogfood ids, local paths, content hashes,
+  and premature npm-install claims fail the smoke.
+- The shared release-state unit suite passed all 8 draft, preview, production,
+  schema, parity, and immutability cases.
+- `node scripts/smoke-mdkg-dev.js`,
+  `node scripts/smoke-mdkg-dev-docs.js`,
+  `node scripts/smoke-mdkg-dev-seo.js`, and
+  `node scripts/smoke-mdkg-dev-a11y.js` passed. The docs smoke verified 68
+  required files and the accessibility smoke checked 10 pages.
+- Package truth remains `0.4.2`; the canonical manifest remains `draft` and no
+  release activation, publish, push, or deployment occurred.
 
 # Links / Artifacts
 

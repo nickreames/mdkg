@@ -2,7 +2,7 @@
 id: task-733
 type: task
 title: Implement the accepted Process Rail loop announcement
-status: todo
+status: done
 priority: 1
 epic: epic-237
 tags: [release, implementation, goal-63]
@@ -60,6 +60,22 @@ after the existing generic quickstart. The bitmap is a hierarchy reference;
 Run the active-preview marketing build and `test-403`; compare desktop hierarchy
 to the selected artifact and assert exact copy, links, source order, semantics,
 state gating, and absence of unsupported syntax.
+
+# Results / Evidence
+
+- Added `mdkg-dev/src/components/LoopAnnouncement.astro` as one semantic gated
+  section with the accepted `h2`, two actions, and ordered four-stage process
+  rail.
+- Inserted the announcement immediately after the existing quickstart without
+  changing the hero, quickstart, navigation, or following section.
+- Used only the accepted `fork --dry-run`, `plan`, `next`, and `runs` commands;
+  the unsupported `mdkg note add` command is absent.
+- Canonical and `PUBLIC_MDKG_RELEASE_PREVIEW=1` marketing builds passed. The
+  canonical build omits all announcement content; the preview build renders the
+  exact release copy and remains `noindex, nofollow`.
+- `node scripts/smoke-mdkg-dev.js` passed with focused preview and dormant-output
+  assertions. Responsive and browser proof remains owned by `task-734` and
+  `test-403`.
 
 # Links / Artifacts
 
