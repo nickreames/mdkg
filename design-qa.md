@@ -74,8 +74,9 @@ details were too small to evaluate reliably in the full-page composition.
 - Intended docs menu and search targets were corrected to at least 44x44 CSS
   pixels and reverified in the browser.
 - Reduced-motion and forced-colors modes were exercised. Starlight light and
-  dark themes rendered without overflow. Automated accessibility smoke checked
-  10 pages successfully.
+  dark themes rendered without overflow. Automated accessibility smoke checks
+  19 pages successfully, including all four preview-only loop routes and the
+  release-modified install, changelog, and generated-reference surfaces.
 - Browser console warnings and errors were checked after the primary marketing
   and docs journeys; none remained.
 
