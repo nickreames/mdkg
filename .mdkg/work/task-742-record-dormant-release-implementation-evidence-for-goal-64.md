@@ -2,13 +2,13 @@
 id: task-742
 type: task
 title: Record dormant release implementation evidence for Goal 64
-status: progress
+status: done
 priority: 1
 epic: epic-240
 tags: [release, implementation, goal-63]
 owners: []
 links: []
-artifacts: []
+artifacts: [design-qa.md, .mdkg/artifacts/goal-63/browser/process-rail-reference-comparison.png, .mdkg/artifacts/goal-63/browser/process-rail-focused-comparison.png]
 relates: [goal-63]
 blocked_by: [task-741]
 blocks: [test-407]
@@ -62,6 +62,28 @@ audit, versioning, publication, push, activation, and production verification.
 Run `test-407`, `git status --short --branch`, the full goal checks, commit
 inspection, manifest/package assertions, and `git diff --check`; then dry-run a
 Goal 64 pack without activating or executing it.
+
+# Results / Evidence
+
+- The full Goal 63 verifier passed: build; 577 core tests; 8 shared release-state
+  tests; CLI snapshot and descriptor-contract parity; 459 documentation command
+  examples; marketing, docs, SEO, accessibility, and all-seven-seed installed
+  loop smokes; publish-readiness assertions; graph changed-only/summary
+  validation; deterministic pack dry-run; and `git diff --check`.
+- Browser and Product Design evidence covers the accepted Process Rail at
+  desktop/mobile, all four loop routes, CTA round trip, keyboard focus, 320px
+  reflow, 200% layout zoom, light/dark themes, reduced motion, forced colors,
+  console checks, and the corrected command-wrap regression. `design-qa.md`
+  records `final result: passed`.
+- `release/public-release.json` remains byte-for-byte `draft` at SHA-256
+  `7c08cbcb6da2fce73c3945378786f1dd64192c976e155a0e79eabd7bde4a7f3a`.
+  Root package truth remains `0.4.2`.
+- The scoped dormant website/docs implementation commit is
+  `e28c1c0f5e3929008068e0504a118e01b92de3e8`
+  (`docs(release): implement dormant v0.5.0 loop experience`).
+- No push, deployment, npm publish, tag, global install, DNS/analytics change,
+  release activation, or production check occurred. Goal 64 remains the sole
+  owner of those operations and the 0.5.0 package/changelog mutation.
 
 # Links / Artifacts
 

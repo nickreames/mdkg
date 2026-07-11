@@ -2,7 +2,7 @@
 id: epic-236
 type: epic
 title: Shared v0.5.0 release-state foundation
-status: todo
+status: done
 priority: 1
 tags: [release, implementation, goal-63]
 owners: []
@@ -13,7 +13,7 @@ blocked_by: []
 blocks: []
 refs: [task-730, task-731, task-732, test-401, test-402, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8]
 context_refs: [goal-61, goal-62, goal-63, goal-64, edd-71, dec-73, dec-74, prd-11, prop-8]
-evidence_refs: []
+evidence_refs: [chk-441, chk-442, chk-443, chk-444, chk-484]
 aliases: []
 skills: []
 created: 2026-07-11

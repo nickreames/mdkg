@@ -2,7 +2,7 @@
 id: epic-240
 type: epic
 title: Dormant release experience verification and closeout
-status: todo
+status: done
 priority: 1
 tags: [release, implementation, goal-63]
 owners: []
@@ -13,7 +13,7 @@ blocked_by: []
 blocks: []
 refs: [task-740, task-741, task-742, test-407, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8]
 context_refs: [goal-62, goal-63, goal-64, dec-74, prd-11, prop-8, task-712]
-evidence_refs: []
+evidence_refs: [chk-482, chk-483, chk-489, chk-490, chk-491]
 aliases: []
 skills: []
 created: 2026-07-11
