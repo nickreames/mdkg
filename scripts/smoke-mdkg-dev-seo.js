@@ -45,9 +45,11 @@ function main() {
   assert(jsonLd.name === "Markdown Knowledge Graph", "homepage JSON-LD name mismatch");
   assert(jsonLd.alternateName === "mdkg", "homepage JSON-LD alternateName mismatch");
   assert(jsonLd.softwareVersion === pkg.version, "homepage JSON-LD softwareVersion must match package.json");
-  assert(home.includes(`${pkg.version} launch track`), "homepage missing release-track copy");
-  assert(home.includes(`mdkg@${pkg.version}`), "homepage launch-track copy must name the current release target");
-  assert(home.includes("postpublish and postdeploy evidence"), "homepage missing postpublish/postdeploy boundary copy");
+  assert(home.includes("Team customization"), "homepage missing user-facing customization badge");
+  assert(home.includes("Upgradable kernel"), "homepage missing upgradable kernel copy");
+  for (const forbidden of ["launch track", "postpublish", "postdeploy", "production launch", "release-readiness surface"]) {
+    assert(!home.includes(forbidden), `homepage should not contain ${forbidden}`);
+  }
   assert(
     jsonLd.description.includes("structured Markdown, context packs, handoffs, checkpoints, and validation"),
     "homepage JSON-LD description missing launch-ready product summary"

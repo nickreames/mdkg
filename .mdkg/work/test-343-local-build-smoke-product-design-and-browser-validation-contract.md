@@ -2,7 +2,7 @@
 id: test-343
 type: test
 title: local build smoke product design and browser validation contract
-status: todo
+status: done
 priority: 1
 parent: goal-56
 tags: [mdkg-dev, docs-mdkg-dev, build, smoke, product-design, browser]
@@ -62,8 +62,18 @@ Document environment, data, and setup requirements.
 
 Record outcomes and link evidence in `artifacts` or `links`.
 
-Pending.
+Passed. See `chk-381` and `chk-382`.
+
+- `node dist/cli.js index`, full validation, changed-only validation, and
+  `git diff --check` passed.
+- `npm run docs:release-notes`, `npm --prefix mdkg-dev run build`,
+  `npm --prefix docs run build`, `npm run smoke:mdkg-dev`,
+  `npm run smoke:mdkg-dev-docs`, `npm run smoke:mdkg-dev-seo`, and
+  `npm run docs:check` passed.
+- Fresh local Browser/Product Design artifacts are under
+  `/private/tmp/mdkg-public-copy-cleanup-20260706/`.
 
 # Notes / Follow-ups
 
 - No push, deploy, DNS, tag, or npm publish is authorized by this test.
+- Live validation remains deferred until a later explicit push/deploy request.

@@ -166,12 +166,12 @@ const structuredData = {
   <section class="section alt">
     <div class="container grid two">
       <div class="stack">
-        <Badge tone="neutral">{releaseTargetVersion} launch track</Badge>
+        <Badge tone="neutral">Team customization</Badge>
         <h2>Customize standards without forking the kernel.</h2>
-        <p class="muted">The {releaseTargetVersion} launch track presents the source-backed customization and release-readiness surface while npm availability, live site claims, and production verification stay gated on explicit postpublish and postdeploy evidence.</p>
+        <p class="muted">Use repo-local config overlays, managed skills, and core docs to adapt mdkg to your team while keeping the npm-installed CLI kernel upgradable.</p>
       </div>
       <div class="grid">
-        <FeatureCard title="Release target" text={`Source metadata and structured data are aligned to mdkg@${releaseTargetVersion}; production launch still waits for npm postpublish validation.`} command="mdkg --version" />
+        <FeatureCard title="Upgradable kernel" text="Keep mdkg installed from npm while repo-local config preserves standards, skill mirrors, and collaboration docs." command="mdkg upgrade" />
         <FeatureCard title="Config overlays" text="Use `.mdkg/config.json` to preserve local standards, custom core docs, and managed upgrade behavior." command=".mdkg/config.json" />
         <FeatureCard title="Custom skill mirrors" text="Mirror canonical `.mdkg/skills` into arbitrary contained agent-local skill roots. `.agents/skills` and `.claude/skills` remain defaults." command="mdkg skill sync" />
         <FeatureCard title="Collaboration profile" text="Use `COLLABORATION.md` as the canonical operator profile while `HUMAN.md` remains a one-release legacy alias." command="COLLABORATION.md" />

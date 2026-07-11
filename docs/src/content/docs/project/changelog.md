@@ -38,11 +38,11 @@ remain listed below for continuity.
   <article class="release-card">
     <p class="release-meta">Public alpha - 2026-06-27 - 7 notes</p>
     <h2>0.4.0</h2>
-    <p>Public launch readiness for mdkg.dev and docs.mdkg.dev, with source-backed release metadata, npm gates, Vercel currentness, and Chrome live-validation blockers.</p>
+    <p>Website and docs refresh for the 0.4.0 public alpha, with clearer customization guidance, release cards, generated references, and smoother mdkg.dev CTA rendering.</p>
     <ul>
-      <li>Align package metadata, generated docs, changelog data, and public launch copy to the <code>0.4.0</code> release target.</li>
-      <li>Require npm dry-run, npm postpublish install proof, Vercel production currentness, and Chrome live receipts before final launch readiness.</li>
-      <li>Preserve explicit approval boundaries for npm publish, git push/tag, Vercel deploy, DNS, and analytics.</li>
+      <li>Add public release cards and changelog detail pages for recent public-alpha versions.</li>
+      <li>Update docs and examples for config overlays, custom skill mirrors, <code>COLLABORATION.md</code>, and MANIFEST naming.</li>
+      <li>Refresh mdkg.dev copy and CTA rendering while keeping public claims bounded to documented capabilities.</li>
     </ul>
   </article>
 </div>
@@ -106,26 +106,27 @@ keeping runtime execution and final receipt authority outside mdkg.
 
 ## 0.4.0 details
 
-`0.4.0` turns the website/docs launch track into a release-ready surface with
-package metadata, generated docs, npm gates, Vercel proof, and Chrome live
-validation wired into the mdkg graph.
+`0.4.0` refreshed the website and docs for the public alpha, with clearer
+customization guidance, release cards, generated references, and smoother
+mdkg.dev CTA rendering.
 
 ### Added
 
-- `0.4.0` public launch-readiness blockers for source metadata, changelog,
-  generated docs, npm prepublish gates, npm postpublish validation, Vercel
-  production currentness, and Chrome live validation.
-- Public release-note and docs coverage for the launch surface, including
-  per-release cards and source-backed currentness requirements.
-- Vercel and Chrome evidence requirements before the production site/docs can
-  claim the `0.4.0` launch is live.
+- Public release cards and changelog detail pages for recent public-alpha
+  versions.
+- Docs coverage for config overlays, custom skill mirrors, `COLLABORATION.md`,
+  MANIFEST naming, and public-alpha customization guidance.
+- mdkg.dev and docs.mdkg.dev copy updates that keep public claims bounded to
+  documented capabilities.
 
 ### Changed
 
-- mdkg.dev and docs.mdkg.dev source copy now present the `0.4.0` release target
-  while keeping publish/deploy approval boundaries explicit.
+- mdkg.dev and docs.mdkg.dev source copy now presents the `0.4.0` public-alpha
+  capabilities with reader-facing customization and Plan -> Work -> Evidence
+  guidance.
 - Public docs examples use `mdkg pack --profile concise`.
-- Source-visible package references and generated docs align with `0.4.0`.
+- Source-visible package references, generated release-note data, and generated
+  CLI docs align with `0.4.0`.
 
 ### Fixed
 

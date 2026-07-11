@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 620" role="img" aria-labelledby="title desc">
   <title id="title">Ocean Flow demo graph map</title>
-  <desc id="desc">A stylized mdkg demo workflow connecting goal, creative direction, local build, validation, and preview approval.</desc>
+  <desc id="desc">A stylized mdkg demo workflow connecting goal, creative direction, local build, validation, and optional preview readiness.</desc>
   <defs>
     <linearGradient id="flow" x1="80" y1="90" x2="860" y2="540" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#0f5fd6"/>
