@@ -2,7 +2,7 @@
 id: task-731
 type: task
 title: Gate mdkg.dev release output through shared release state
-status: todo
+status: done
 priority: 1
 epic: epic-236
 tags: [release, implementation, goal-63]
@@ -57,6 +57,21 @@ only in local active preview or published state.
 
 Run `test-402` plus draft and active-preview mdkg.dev builds. Scan built output
 for accepted dormant terms, target version, CTA routes, and structured metadata.
+
+# Results / Evidence
+
+- Added one mdkg.dev adapter that loads the root shared projection; no
+  marketing-only state or flag exists.
+- Base layout and robots now consume `publicRelease.site_noindex`, preserving
+  normal draft indexing while forcing active release previews and Vercel
+  previews to `noindex, nofollow` / `Disallow: /`.
+- Draft `llms.txt` and `llms-full.txt` contain no v0.5.0 loop-release content;
+  active previews add source-backed loop guidance and the harness boundary
+  without claiming npm availability.
+- Homepage JSON-LD continues to read root package version `0.4.2`.
+- Canonical and active-preview Astro builds pass.
+- `node scripts/smoke-mdkg-dev.js` passes, including dormant absence and active
+  preview robots/LLM assertions.
 
 # Links / Artifacts
 

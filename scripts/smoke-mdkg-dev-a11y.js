@@ -185,6 +185,41 @@ function main() {
   assertContrast("muted text on white", "#52525b", "#ffffff", 7);
   assertContrast("blue link on white", "#1d4ed8", "#ffffff", 4.5);
   assertContrast("white text on blue", "#ffffff", "#1d4ed8", 4.5);
+  assertContrast("loop body on sky", "#3f3f46", "#f0f9ff", 7);
+  assertContrast("loop rail body on navy", "#cbd5e1", "#0f172a", 7);
+  assertContrast("loop command on command surface", "#e2e8f0", "#111827", 7);
+
+  const announcementSource = readText(path.join(repoRoot, "mdkg-dev", "src", "components", "LoopAnnouncement.astro"));
+  for (const requiredSource of [
+    'aria-labelledby="loop-announcement-title"',
+    '<ol class="process-rail"',
+    "overflow-x: auto",
+    "@media (max-width: 900px)",
+    "@media (max-width: 560px)",
+    "@media (forced-colors: active)",
+    "min-height: 44px",
+  ]) {
+    assert(announcementSource.includes(requiredSource), `loop announcement missing accessibility contract: ${requiredSource}`);
+  }
+
+  buildSite({ PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
+  const previewHome = readText(path.join(siteDist, "index.html"));
+  assertPage(path.join(siteDist, "index.html"), "marketing release preview home");
+  assert(previewHome.includes('<section class="loop-announcement" aria-labelledby="loop-announcement-title"'), "loop announcement missing labeled section");
+  assert(previewHome.includes('<h2 id="loop-announcement-title"'), "loop announcement missing h2 label target");
+  assert(previewHome.includes('<ol class="process-rail" aria-label="Loop workflow"'), "loop announcement missing ordered process list");
+  assert(previewHome.includes('href="https://docs.mdkg.dev/loops/security-audit/"'), "loop announcement missing security walkthrough CTA");
+  assert(previewHome.includes('href="https://docs.mdkg.dev/loops/"'), "loop announcement missing overview link");
+  const quickstartIndex = previewHome.indexOf("First, prove the loop locally.");
+  const copyIndex = previewHome.indexOf("Reusable loops for work that spans more than one goal.");
+  const primaryIndex = previewHome.indexOf("Run a security audit loop");
+  const secondaryIndex = previewHome.indexOf("Learn how loops work");
+  const railIndex = previewHome.indexOf('<ol class="process-rail"');
+  const followingIndex = previewHome.indexOf("Bigger context helps. It does not replace project memory.");
+  assert(
+    quickstartIndex < copyIndex && copyIndex < primaryIndex && primaryIndex < secondaryIndex && secondaryIndex < railIndex && railIndex < followingIndex,
+    "loop announcement source order or homepage insertion order is incorrect"
+  );
 
   const builtCss = walkFiles(docsDist)
     .filter((filePath) => filePath.endsWith(".css"))

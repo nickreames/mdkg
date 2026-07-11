@@ -2,7 +2,7 @@
 id: test-402
 type: test
 title: Draft builds expose no dormant loop release content or metadata
-status: todo
+status: done
 priority: 1
 epic: epic-236
 tags: [release, test, goal-63]
@@ -52,7 +52,16 @@ marketing/docs build output, and deterministic forbidden-term corpus.
 
 # Results / Evidence
 
-Pending Goal 63 implementation.
+- Canonical marketing and docs builds passed with the shared manifest in
+  `draft`. The homepage, LLM projections, navigation, metadata, sitemap,
+  Pagefind, and built docs contain no dormant loop-release route or copy.
+- Canonical docs emit no `dist/loops` directory. The active preview adds exactly
+  the four planned loop pages to Pagefind while all preview pages remain
+  noindex/nofollow and robots-disallowed.
+- Marketing and docs smokes hash and compare `release/public-release.json`
+  before and after both build modes. The bytes and SHA-256 remain unchanged.
+- Public package/version truth remains 0.4.2. Existing hero, quickstart, docs
+  routes, and deployment-preview noindex behavior passed regression checks.
 
 # Notes / Follow-ups
 

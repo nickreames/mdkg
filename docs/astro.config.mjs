@@ -1,9 +1,32 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { loadPublicReleaseProjection } from "../release/public-release.mjs";
 
-const previewNoindex =
-  process.env.VERCEL_ENV === "preview" ||
-  String(process.env.PUBLIC_MDKG_PREVIEW_NOINDEX || "").toLowerCase() === "true";
+const publicRelease = loadPublicReleaseProjection({ env: process.env });
+const loopsContentReady = [
+  "./src/content/docs/loops/index.md",
+  "./src/content/docs/loops/templates-and-forks.md",
+  "./src/content/docs/loops/readiness-routing-evidence-closeout.md",
+  "./src/content/docs/loops/security-audit.md",
+].every((path) => existsSync(fileURLToPath(new URL(path, import.meta.url))));
+const loopsSidebar = publicRelease.visible && loopsContentReady
+  ? [
+      {
+        label: "Loops",
+        items: [
+          { label: "Overview", slug: "loops" },
+          { label: "Templates And Forks", slug: "loops/templates-and-forks" },
+          {
+            label: "Readiness, Routing, Evidence, And Closeout",
+            slug: "loops/readiness-routing-evidence-closeout",
+          },
+          { label: "Security Audit Walkthrough", slug: "loops/security-audit" },
+        ],
+      },
+    ]
+  : [];
 
 export default defineConfig({
   site: "https://docs.mdkg.dev",
@@ -12,7 +35,8 @@ export default defineConfig({
     starlight({
       title: "mdkg Docs",
       description: "Documentation for Markdown Knowledge Graph, git-native project memory for AI coding agents.",
-      head: previewNoindex
+      customCss: ["./src/styles/release.css"],
+      head: publicRelease.site_noindex
         ? [
             {
               tag: "meta",
@@ -34,6 +58,7 @@ export default defineConfig({
         },
       ],
       components: {
+        Footer: "./src/components/Footer.astro",
         PageSidebar: "./src/components/PageSidebar.astro",
       },
       sidebar: [
@@ -60,6 +85,7 @@ export default defineConfig({
             { label: "Glossary", slug: "concepts/glossary" },
           ],
         },
+        ...loopsSidebar,
         {
           label: "Guides",
           items: [

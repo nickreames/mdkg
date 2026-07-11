@@ -2,7 +2,7 @@
 id: test-405
 type: test
 title: Security walkthrough uses supported CLI safe placeholders and read-only boundaries
-status: todo
+status: done
 priority: 1
 epic: epic-238
 tags: [release, test, goal-63]
@@ -56,7 +56,19 @@ active-preview docs builds, and no external advisory/provider authorization.
 
 # Results / Evidence
 
-Pending Goal 63 implementation.
+- The purpose-built walkthrough uses the supported sequence: list, show, fork
+  dry-run, real fork, plan, concise pack, next, and runs. It uses `LOOP_ID` and
+  stable question identities rather than copied dogfood output.
+- Installed-package `smoke:loop` exercised all seven seeds on SQLite, proved
+  fork dry-run purity and stable real-fork identity, bound the accepted security
+  answers, wrote and dry-ran concise packs, inspected plan/next/runs, and ended
+  with graph validation.
+- The walkthrough distinguishes mdkg state/orchestration from coding-harness
+  execution and explains that read-only functional-source work may still write
+  mdkg findings and evidence.
+- Generated/docs checks reject invented run/resume/execute/note commands. Built
+  output contains no local path, dogfood id, current checkpoint id, content
+  hash, private receipt, or provider claim.
 
 # Notes / Follow-ups
 

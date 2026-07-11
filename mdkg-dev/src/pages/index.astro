@@ -6,9 +6,12 @@ import TerminalBlock from "../components/TerminalBlock.astro";
 import FeatureCard from "../components/FeatureCard.astro";
 import DiagramCard from "../components/DiagramCard.astro";
 import Badge from "../components/Badge.astro";
+import LoopAnnouncement from "../components/LoopAnnouncement.astro";
+import { publicRelease } from "../data/publicRelease.mjs";
 import packageJson from "../../../package.json";
 
 const releaseTargetVersion = packageJson.version;
+const docsBaseUrl = String(import.meta.env.PUBLIC_MDKG_DOCS_URL || "https://docs.mdkg.dev").replace(/\/$/, "");
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -64,6 +67,8 @@ const structuredData = {
       </div>
     </div>
   </section>
+
+  {publicRelease.visible && <LoopAnnouncement docsBaseUrl={docsBaseUrl} />}
 
   <section class="section alt thesis-section">
     <div class="container grid two">

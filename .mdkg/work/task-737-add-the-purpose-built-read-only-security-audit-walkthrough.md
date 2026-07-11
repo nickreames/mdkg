@@ -2,7 +2,7 @@
 id: task-737
 type: task
 title: Add the purpose-built read-only security audit walkthrough
-status: todo
+status: done
 priority: 1
 epic: epic-238
 tags: [release, implementation, goal-63]
@@ -66,6 +66,21 @@ boundaries verified by Goal 61.
 Run `test-405`; parse every command, compare documented fields to structured
 CLI output, scan for forbidden internal data/claims, and verify draft/preview
 route behavior, links, mobile code overflow, and runtime boundaries.
+
+# Results / Evidence
+
+- Added the gated purpose-built security walkthrough with the accepted list,
+  show, fork dry-run, real fork, plan, decision binding, pack, next, and runs
+  sequence.
+- Documented dry-run non-mutation and identity preservation, four first-class
+  question bindings, optional external checks, approved local cache writes,
+  read-only mdkg evidence writes, and the external execution-harness boundary.
+- Public excerpts use only `LOOP_ID`, `DECISION_ID`, neutral scope, and shortened
+  current-contract fields; unsupported commands and dogfood ids/paths/hashes are
+  absent.
+- `npm run docs:check` and the focused docs smoke passed. Temporary-workspace
+  command execution remains part of `task-739`/`test-405`; browser code-overflow
+  proof remains in `task-741`.
 
 # Links / Artifacts
 

@@ -2,7 +2,7 @@
 id: task-738
 type: task
 title: Update install upgrade and dormant v0.5.0 release facts
-status: todo
+status: done
 priority: 1
 epic: epic-239
 tags: [release, implementation, goal-63]
@@ -58,6 +58,21 @@ v0.5.0 while the public build remains dormant and package truth remains 0.4.2.
 Run `test-406`; compare package/version sources, draft and active-preview built
 output, install/upgrade links, changelog gating, and prohibited availability
 language.
+
+# Results / Evidence
+
+- Added one release-state-aware Starlight supplement shared by the existing
+  Install, Changelog, and generated CLI Reference routes.
+- Active preview now shows upgrade guidance, source-backed v0.5.0 loop release
+  highlights, and the loop command family while explicitly stating that the
+  preview does not claim npm availability.
+- Draft builds render no supplement markup or target-version facts on those
+  routes; the shared release manifest remains byte-for-byte unchanged.
+- Root `package.json`, generated release notes, and public structured package
+  truth remain at 0.4.2. MANIFEST canonical and SPEC legacy compatibility text
+  remains unchanged.
+- `node scripts/smoke-mdkg-dev-docs.js` passed across draft/preview routes,
+  release supplements, sitemap, Pagefind, noindex, and manifest immutability.
 
 # Links / Artifacts
 

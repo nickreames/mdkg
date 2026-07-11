@@ -2,7 +2,7 @@
 id: task-735
 type: task
 title: Add Loops overview and goals-versus-loops documentation
-status: todo
+status: done
 priority: 1
 epic: epic-238
 tags: [release, implementation, goal-63]
@@ -59,6 +59,19 @@ boundary between mdkg process state and agent-harness execution unambiguous.
 
 Run docs build/reference checks and `test-404`; verify headings, links,
 navigation placement, runtime boundary, dormant suppression, and preview noindex.
+
+# Results / Evidence
+
+- Added the gated `/loops/` overview with the goal-versus-loop decision model,
+  one-node-type lifecycle, five metadata modes, and the exact mdkg versus
+  execution-harness ownership boundary.
+- Linked the overview to templates/forks, lifecycle, security walkthrough, and
+  generated CLI reference without duplicating exhaustive syntax.
+- The active-preview Starlight build renders the complete top-level Loops group
+  after Concepts and before Guides; the draft build emits no loop routes.
+- `node scripts/smoke-mdkg-dev-docs.js` passed with route, noindex, sitemap,
+  Pagefind-count, content, link, and release-manifest immutability assertions.
+  Browser/theme proof remains in `task-741` and `test-404`.
 
 # Links / Artifacts
 

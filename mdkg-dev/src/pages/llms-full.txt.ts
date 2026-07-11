@@ -1,6 +1,25 @@
 export const prerender = true;
 
+import { publicRelease } from "../data/publicRelease.mjs";
+
 export function GET() {
+  const loopRelease = publicRelease.visible
+    ? [
+        "## Reusable loop process model",
+        "",
+        `Target release: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. Preview content does not claim npm availability.`,
+        "",
+        "- Loops are one first-class mdkg node type. Templates, scoped forks, and run-bearing loops use metadata and graph links.",
+        "- A loop can coordinate several goals, readiness questions, typed approvals, evidence lanes, decisions, and closeout requirements.",
+        "- mdkg routes the next authorized work around gated lanes when another useful path remains.",
+        "- mdkg preserves process state; Codex, Claude Code, or another coding-agent harness executes agents and tools.",
+        "- Read-only audit loops prohibit functional source edits but may record mdkg findings, tasks, decisions, checkpoints, waivers, and evidence.",
+        "- External advisories and provider-backed checks remain approval-gated.",
+        "- Security audit walkthrough: https://docs.mdkg.dev/loops/security-audit/",
+        "- Loop overview: https://docs.mdkg.dev/loops/",
+        "",
+      ]
+    : [];
   const body = [
     "# Markdown Knowledge Graph agent primer",
     "",
@@ -26,6 +45,7 @@ export function GET() {
     "- read-only local MCP server",
     "- graph clone, template import, branch-safe ID repair, subgraphs, and bundles",
     "",
+    ...loopRelease,
     "## What mdkg is not",
     "",
     "- not an autonomous coding agent",

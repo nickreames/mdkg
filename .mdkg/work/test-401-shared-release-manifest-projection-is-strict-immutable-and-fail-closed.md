@@ -2,7 +2,7 @@
 id: test-401
 type: test
 title: Shared release manifest projection is strict immutable and fail closed
-status: todo
+status: done
 priority: 1
 epic: epic-236
 tags: [release, test, goal-63]
@@ -51,7 +51,17 @@ published-version-mismatch manifests; root package remains 0.4.2.
 
 # Results / Evidence
 
-Pending Goal 63 implementation.
+PASS on 2026-07-11.
+
+- Canonical draft projection is invisible, release-non-indexable, and does not
+  make the normal existing site noindex.
+- Local `PUBLIC_MDKG_RELEASE_PREVIEW=1` is visible but site-wide noindex.
+- Vercel production plus a draft release override fails closed.
+- Published fixtures require package-version parity; mismatches fail.
+- Unknown/missing keys, malformed JSON, invalid states/versions/ids/qualifiers,
+  and non-binary release-preview flags fail with actionable errors.
+- Manifest SHA-256 and malformed fixture bytes remain unchanged after loading.
+- Command: `npm run test:public-release`; result: 8 passed, 0 failed.
 
 # Notes / Follow-ups
 

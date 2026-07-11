@@ -2,7 +2,7 @@
 id: test-406
 type: test
 title: Upgrade reference and version facts remain generated gated and truthful
-status: todo
+status: done
 priority: 1
 epic: epic-239
 tags: [release, test, goal-63]
@@ -50,7 +50,19 @@ active-preview site outputs.
 
 # Results / Evidence
 
-Pending Goal 63 implementation.
+- Root package truth remains 0.4.2 and the shared manifest remains draft. Active
+  preview labels v0.5.0 as a target Pre-v1 public alpha release and explicitly
+  avoids claiming npm availability.
+- Upgrade guidance is projected into the existing install page; version facts
+  are projected into the existing changelog, and the loop command overview is
+  projected into the generated-reference route only in active preview.
+- `npm run docs:generate`, `npm run cli:check`, `npm run cli:contract`, and
+  `npm run docs:check` passed. The descriptor contract hash is
+  `adfd7e2b99e7071b95d6db7b983ce2daba512eb61ec7851855c3739755e6147a` and
+  459 documentation command examples passed with zero failures.
+- Goal and Omni semantic-file behavior remained covered by the full test/smoke
+  ladder; Goal 64 remains the sole owner of the version bump and availability
+  language.
 
 # Notes / Follow-ups
 

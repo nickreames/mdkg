@@ -2,13 +2,13 @@
 id: task-741
 type: task
 title: Run desktop mobile accessibility and responsive browser verification
-status: todo
+status: done
 priority: 1
 epic: epic-240
 tags: [release, implementation, goal-63]
 owners: []
 links: []
-artifacts: []
+artifacts: [design-qa.md, .mdkg/artifacts/goal-63/browser/marketing-process-rail-desktop.png, .mdkg/artifacts/goal-63/browser/marketing-process-rail-mobile-390x844.png, .mdkg/artifacts/goal-63/browser/docs-security-desktop-1440x900.png, .mdkg/artifacts/goal-63/browser/docs-security-content-mobile-390x844.png, .mdkg/artifacts/goal-63/browser/process-rail-reference-comparison.png, .mdkg/artifacts/goal-63/browser/process-rail-focused-comparison.png]
 relates: [goal-63]
 blocked_by: [task-740]
 blocks: [task-742, test-407]
@@ -62,6 +62,27 @@ the viewports and interaction modes users will encounter.
 Record browser URLs, viewport sizes, screenshots, accessibility output, keyboard
 results, contrast evidence, theme coverage, and any corrected regressions in
 `test-407` and a checkpoint.
+
+# Results / Evidence
+
+- Captured the active-preview homepage at 1488x1058 and 390x844, the docs
+  security walkthrough at desktop/mobile, and both full-view and focused
+  side-by-side comparisons against the accepted Process Rail direction.
+- Verified the homepage at 320px, 390x844, desktop, and simulated 200% layout
+  zoom with no horizontal page overflow. All four command rows remain contained;
+  the mobile CTA is 366x47.6 CSS pixels and the secondary action has a 44px
+  interaction area.
+- Exercised the security CTA round trip, docs mobile menu, current-page state,
+  keyboard focus, skip/navigation landmarks, reduced motion, forced colors,
+  and Starlight light/dark rendering. Browser console warnings/errors were empty.
+- Found and fixed one P2 command-clipping issue, then recaptured and recombined
+  the implementation with the source. The final report at `design-qa.md` records
+  `final result: passed` with no remaining P0/P1/P2 finding.
+- Raised Starlight mobile search/menu controls to the intended 44x44 CSS-pixel
+  target and reverified them in-browser. Automated accessibility smoke also
+  passed across 10 pages.
+- Draft release content remains unavailable from canonical builds; all browser
+  inspection used explicit local preview state and made no production request.
 
 # Links / Artifacts
 

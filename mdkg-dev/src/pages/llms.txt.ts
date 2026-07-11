@@ -1,6 +1,22 @@
 export const prerender = true;
 
+import { publicRelease } from "../data/publicRelease.mjs";
+
 export function GET() {
+  const loopRelease = publicRelease.visible
+    ? [
+        "## Reusable loops",
+        "",
+        `Target release: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. This preview does not claim npm availability.`,
+        "",
+        "- A loop is a durable reusable process that can span more than one goal.",
+        "- mdkg preserves loop readiness, provenance, linked work, evidence, and closeout state.",
+        "- A coding-agent harness executes agents and tools; mdkg does not launch the work.",
+        "- Start with the read-only security audit walkthrough: https://docs.mdkg.dev/loops/security-audit/",
+        "- Learn the loop model: https://docs.mdkg.dev/loops/",
+        "",
+      ]
+    : [];
   const body = [
     "# Markdown Knowledge Graph",
     "",
@@ -17,6 +33,7 @@ export function GET() {
     "- MCP is read-only in the current public alpha.",
     "- Advanced graph, cache, bundle, and database contracts may change before v1.",
     "",
+    ...loopRelease,
     "## Start",
     "",
     "- Install: npm install -g mdkg",

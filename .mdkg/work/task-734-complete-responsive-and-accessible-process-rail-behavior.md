@@ -2,13 +2,13 @@
 id: task-734
 type: task
 title: Complete responsive and accessible Process Rail behavior
-status: todo
+status: done
 priority: 1
 epic: epic-237
 tags: [release, implementation, goal-63]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-63/browser/marketing-process-rail-desktop.png, .mdkg/artifacts/goal-63/browser/marketing-process-rail-mobile-390x844.png, .mdkg/artifacts/goal-63/browser/marketing-process-rail-mobile-390x844-part2.png, .mdkg/artifacts/goal-63/browser/process-rail-reference-comparison.png, .mdkg/artifacts/goal-63/browser/process-rail-focused-comparison.png]
 relates: [goal-63]
 blocked_by: [task-733]
 blocks: [task-740, test-403]
@@ -61,6 +61,26 @@ existing homepage.
 Run `test-403`, automated accessibility checks, keyboard traversal, 320px and
 390px browser checks, 200% zoom, reduced-motion, forced-colors, and overflow
 assertions in draft and active-preview modes.
+
+# Results / Evidence
+
+- Active-preview desktop and 390x844 browser captures preserve the selected
+  Process Rail hierarchy, exact copy/actions, quickstart boundary, and following
+  section. Full-view and focused side-by-side reference comparisons are linked
+  in `artifacts`.
+- Corrected the long fork command from visually clipped scrolling to contained
+  wrapping; all four commands remain complete and one-per-row.
+- At 390px the section is 1.467 viewports high, the primary CTA is 366x47.6px,
+  the secondary link is 44px high, source/visual order is correct, and page
+  width remains 390px. At 320px page `scrollWidth` equals `clientWidth` and every
+  command remains contained.
+- Simulated 200% layout zoom at a 640x400 CSS viewport with DPR 2; page width
+  remained bounded and all command surfaces fit.
+- Both CTAs expose a solid 3px visible focus indicator. Browser emulation proved
+  reduced-motion `scroll-behavior: auto`, forced-colors rendering, no overflow,
+  and 44px intended targets. Marketing console reported no warnings/errors.
+- `node scripts/smoke-mdkg-dev-a11y.js` passed the corresponding semantic,
+  contrast, source-order, breakpoint, and release-gate assertions.
 
 # Links / Artifacts
 

@@ -2,7 +2,7 @@
 id: task-739
 type: task
 title: Regenerate CLI reference and verify every loop command example
-status: todo
+status: done
 priority: 1
 epic: epic-239
 tags: [release, implementation, goal-63]
@@ -60,6 +60,22 @@ documented.
 Run `npm run cli:check`, `npm run cli:contract`, `npm run docs:check`,
 `test-405`, and `test-406`; compare generated output and execute examples in a
 temporary fixture with ID/dry-run assertions.
+
+# Results / Evidence
+
+- Regenerated descriptor-backed CLI reference and release-note data with
+  `npm run docs:generate`; generated contract hash remains
+  `adfd7e2b99e7071b95d6db7b983ce2daba512eb61ec7851855c3739755e6147a`
+  at package version 0.4.2.
+- Extended installed-package `smoke:loop` to verify raw `new loop`, catalog,
+  template `show`, all seven default fork dry-runs and real forks, stable ids,
+  accepted security question bindings, concise pack write/dry-run, `plan`,
+  `next`, `runs`, provenance, and final validation on SQLite.
+- `npm run smoke:loop`, `npm run cli:check`, `npm run cli:contract`, and
+  `npm run docs:check` passed. The docs checker scanned 459 examples with zero
+  failures.
+- Public examples use current `--profile concise` syntax; unsupported loop
+  execution, resume, note, and answer commands are absent.
 
 # Links / Artifacts
 

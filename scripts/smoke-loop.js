@@ -170,6 +170,12 @@ function main() {
     for (const slug of SEED_SLUGS) {
       assert(templateRefs.has(`template://loops/${slug}`), `installed loop catalog is missing ${slug}`);
     }
+    const shownTemplate = JSON.parse(mdkg(binPath, ["loop", "show", "security-audit", "--json"], root));
+    assert(shownTemplate.action === "showed", "installed template show did not complete");
+    assert(
+      shownTemplate.template.ref === "template://loops/security-audit",
+      "installed template show resolved the wrong template"
+    );
 
     for (const slug of SEED_SLUGS) {
       const title = `${slug} installed smoke`;
@@ -187,7 +193,12 @@ function main() {
         "--json",
       ], root));
       assert(preview.action === "planned" && preview.dry_run === true, `${slug} dry-run receipt is not observational`);
+      assert(preview.template.ref === `template://loops/${slug}`, `${slug} dry-run lost template identity`);
       assert(preview.materialized_children.length === 3, `${slug} dry-run did not plan default children`);
+      assert(
+        JSON.stringify(preview.materialized_children.map((child) => child.type)) === JSON.stringify(["spike", "task", "test"]),
+        `${slug} dry-run planned unexpected child types`
+      );
       assert(
         JSON.stringify(snapshotFiles(mdkgRoot)) === JSON.stringify(beforeDryRun),
         `${slug} dry-run changed installed SQLite or filesystem state`
@@ -219,13 +230,61 @@ function main() {
         `${slug} installed fork provenance is not current`
       );
 
+      if (slug === "security-audit") {
+        const decision = JSON.parse(mdkg(binPath, [
+          "new",
+          "dec",
+          "Authorize the local read-only security audit",
+          "--status",
+          "accepted",
+          "--json",
+        ], root));
+        const decisionId = decision.node.id;
+        const loopPath = path.join(root, forked.loop.path);
+        let loopSource = fs.readFileSync(loopPath, "utf8");
+        const questionBindings = plan.readiness.questions.pre_run_questions
+          .map((question) => `${question}=${decisionId}`)
+          .join(", ");
+        loopSource = loopSource
+          .replace(/^question_answer_refs: \[\]$/m, `question_answer_refs: [${questionBindings}]`)
+          .replace(/^decision_refs: \[\]$/m, `decision_refs: [${decisionId}]`);
+        fs.writeFileSync(loopPath, loopSource);
+        mdkg(binPath, ["index"], root);
+
+        const resolvedPlan = JSON.parse(mdkg(binPath, ["loop", "plan", forked.loop.id, "--json"], root));
+        assert(
+          resolvedPlan.readiness.questions.unanswered_pre_run_questions.length === 0,
+          "security walkthrough question bindings did not resolve readiness"
+        );
+        assert(
+          resolvedPlan.readiness.approvals.pending_approval_actions.length === 0,
+          "unrequested external security actions should remain optional"
+        );
+        const packedWrite = mdkg(binPath, ["pack", forked.loop.id, "--profile", "concise"], root);
+        assert(packedWrite.includes("pack written:"), "security walkthrough concise pack did not write in the temp workspace");
+      }
+
       const next = JSON.parse(mdkg(binPath, ["loop", "next", forked.loop.id, "--json"], root));
       assert(next.selected && next.selected.kind === "child", `${slug} next did not route to authorized child work`);
       assert(next.exhaustion.whole_loop_blocked === false, `${slug} was incorrectly reported whole-loop blocked`);
 
+      const runs = JSON.parse(mdkg(binPath, ["loop", "runs", forked.loop.id, "--json"], root));
+      assert(runs.action === "listed", `${slug} runs inspection did not complete`);
+      assert(Array.isArray(runs.run_refs) && Array.isArray(runs.evidence_refs), `${slug} runs output is not structured`);
+
       const packed = mdkg(binPath, ["pack", forked.loop.id, "--profile", "concise", "--dry-run", "--stats"], root);
       assert(packed.includes("dry-run: no files written"), `${slug} pack dry-run did not complete`);
     }
+
+    const rawLoop = JSON.parse(mdkg(binPath, [
+      "new",
+      "loop",
+      "Review release support policy",
+      "--json",
+    ], root));
+    assert(rawLoop.action === "created" && rawLoop.node.type === "loop", "raw loop creation did not complete");
+    assert(rawLoop.next_actions.some((action) => action.includes("mdkg loop list")), "raw loop output lacks template guidance");
+    assert(rawLoop.suggested_templates.length === SEED_SLUGS.length, "raw loop output lacks the complete template catalog");
 
     mdkg(binPath, ["validate", "--json"], root);
     console.log(`loop smoke passed (${SEED_SLUGS.length} installed seed templates, SQLite backend)`);
