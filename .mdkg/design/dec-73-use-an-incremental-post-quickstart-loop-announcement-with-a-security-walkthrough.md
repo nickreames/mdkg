@@ -8,10 +8,10 @@ owners: []
 links: []
 artifacts: []
 relates: [goal-62, goal-63, goal-64]
-refs: [dec-68, edd-71, prd-11, goal-62, goal-63, goal-64, test-393]
+refs: [dec-68, dec-74, edd-71, prd-11, goal-62, goal-63, goal-64, test-393]
 aliases: [pre-v1-public-alpha-loop-release]
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Context
 
@@ -47,6 +47,9 @@ not yet give first-class loops a coherent conceptual and procedural home.
   before npm verification.
 - Do not add a dedicated marketing release page or broaden this release into a
   general site redesign.
+- Implement the accepted Process Rail hierarchy and exact copy in `dec-74`.
+  Retain its runtime-boundary sentence and exclude unsupported illustrative
+  commands from the selected bitmap.
 
 # Alternatives considered
 
@@ -71,6 +74,7 @@ before changing the shared release state and verifying both production sites.
 # Links / references
 
 - `dec-68`
+- `dec-74`
 - `edd-71`
 - `prd-11`
 - `goal-62`

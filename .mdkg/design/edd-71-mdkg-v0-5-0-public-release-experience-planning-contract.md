@@ -7,10 +7,10 @@ owners: []
 links: []
 artifacts: []
 relates: [goal-62, goal-63]
-refs: [goal-56, goal-61, goal-62, goal-63, goal-64, edd-70, dec-67, dec-68, dec-73, prd-11, task-729, test-400]
+refs: [goal-56, goal-61, goal-62, goal-63, goal-64, edd-70, dec-67, dec-68, dec-73, dec-74, prd-11, prop-7, prop-8, task-729, test-400]
 aliases: [v0-5-0-public-release-experience-contract]
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-11
 ---
 # Overview
 
@@ -26,7 +26,8 @@ release operations or unsupported claims.
 3. Evidence-labeled audience and value narrative routed through Sales.
 4. Fresh desktop/mobile Product Design audit of both current sites.
 5. Exactly three post-quickstart announcement-section directions and explicit
-   operator choice, with no broader homepage redesign.
+   operator choice, with Process Rail accepted as the base and no broader
+   homepage redesign.
 6. Accepted top-level Loops information architecture, exact copy,
    accessibility, SEO, public-alpha, and dormant activation decisions.
 7. Fully populated local implementation handoff in `goal-63`.
@@ -39,6 +40,9 @@ release operations or unsupported claims.
   notes, metadata, and navigation.
 - Homepage surface: existing hero and quickstart followed immediately by one
   incremental v0.5.0 loop announcement with a security-audit CTA.
+- Announcement composition: section-scale Process Rail with exact accepted
+  eyebrow, headline, two-sentence body, one primary CTA, one secondary text
+  link, and four ordered workflow stages from `dec-74`.
 - Documentation surface: top-level Loops group for overview, templates/forks,
   readiness/routing/evidence/closeout, and the security walkthrough.
 - Example: purpose-built commands and representative output; no copied dogfood
@@ -57,11 +61,14 @@ release operations or unsupported claims.
 - Generated CLI reference remains authoritative for exact syntax.
 - A local-only preview override may render published state without changing the
   committed draft manifest.
+- mdkg preserves and validates process state; Codex, Claude Code, or another
+  coding-agent harness executes agents and tools.
 
 # Failure modes
 
 - Unverified capability claims remain Missing and cannot enter final copy.
-- Design work cannot infer operator selection; unresolved options stay open.
+- Design work cannot infer operator selection; the explicit 2026-07-11 Process
+  Rail selection is recorded in accepted `dec-74`.
 - Public positioning cannot expose provider IDs, credentials, or internal
   release receipts.
 - Draft production builds cannot expose release routes, navigation, metadata,
@@ -85,6 +92,10 @@ into public copy or design artifacts.
 Tests verify claim provenance, evidence labels, screenshot-backed audit, exactly
 three directions, explicit selection, complete IA and activation contract, and
 an implementation-ready but non-executed Goal 3.
+
+The Goal 3 implementation must treat audit findings B1 through B5 as release
+blockers, implement recommendations R1 through R6 within the accepted scope,
+and leave F1 through F4 as follow-up work rather than widening v0.5.0.
 
 # Rollout plan
 
