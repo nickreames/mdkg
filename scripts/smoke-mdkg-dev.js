@@ -41,6 +41,8 @@ function main() {
   const releaseManifestPath = path.join(repoRoot, "release", "public-release.json");
   const releaseManifestBefore = fs.readFileSync(releaseManifestPath);
   const releaseManifestHashBefore = crypto.createHash("sha256").update(releaseManifestBefore).digest("hex");
+  const releaseManifest = JSON.parse(releaseManifestBefore.toString("utf8"));
+  const releasePublished = releaseManifest.state === "published";
 
   buildSite();
 
@@ -72,13 +74,18 @@ function main() {
   for (const forbidden of ["launch track", "postpublish", "postdeploy", "production launch", "release-readiness surface"]) {
     assertNotContains(home, forbidden, "homepage public copy");
   }
-  for (const dormantReleaseText of [
+  const releaseAnnouncementText = [
     "New in v0.5.0",
     "Reusable loops for work that spans more than one goal.",
     "Run a security audit loop",
     "https://docs.mdkg.dev/loops/",
-  ]) {
-    assertNotContains(home, dormantReleaseText, "dormant homepage");
+  ];
+  for (const releaseText of releaseAnnouncementText) {
+    if (releasePublished) {
+      assertContains(home, releaseText, "published homepage");
+    } else {
+      assertNotContains(home, releaseText, "dormant homepage");
+    }
   }
   assert(home.includes(".mdkg/config.json"), "homepage missing config overlay copy");
   assert(home.includes("Custom skill mirrors"), "homepage missing custom skill mirror copy");
@@ -99,9 +106,23 @@ function main() {
   const quickstart = readText(path.join(dist, "quickstart", "index.html"));
   const llms = readText(path.join(dist, "llms.txt"));
   const llmsFull = readText(path.join(dist, "llms-full.txt"));
-  for (const dormantReleaseText of ["## Reusable loops", "v0.5.0", "docs.mdkg.dev/loops/"]) {
-    assertNotContains(llms, dormantReleaseText, "dormant llms.txt");
-    assertNotContains(llmsFull, dormantReleaseText, "dormant llms-full.txt");
+  for (const [label, source, releaseHeading] of [
+    ["llms.txt", llms, "## Reusable loops"],
+    ["llms-full.txt", llmsFull, "## Reusable loop process model"],
+  ]) {
+    for (const releaseText of [releaseHeading, "v0.5.0", "docs.mdkg.dev/loops/"]) {
+      if (releasePublished) {
+        assertContains(source, releaseText, `published ${label}`);
+      } else {
+        assertNotContains(source, releaseText, `dormant ${label}`);
+      }
+    }
+  }
+  if (releasePublished) {
+    assertContains(llms, "The npm package is available.", "published llms.txt");
+    assertContains(llmsFull, "The npm package is available.", "published llms-full.txt");
+    assertNotContains(llms, "This preview does not claim npm availability.", "published llms.txt");
+    assertNotContains(llmsFull, "Preview content does not claim npm availability.", "published llms-full.txt");
   }
   const readme = readText(path.join(repoRoot, "README.md"));
   const docsReadme = readText(path.join(repoRoot, "docs", "README.md"));
@@ -204,13 +225,13 @@ function main() {
     dist,
   ]);
 
-  buildSite({ PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
+  buildSite(releasePublished ? { VERCEL_ENV: "preview" } : { PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
   const previewHome = readText(path.join(dist, "index.html"));
   const previewLlms = readText(path.join(dist, "llms.txt"));
   const previewLlmsFull = readText(path.join(dist, "llms-full.txt"));
   const previewRobots = readText(path.join(dist, "robots.txt"));
   assertContains(previewHome, 'name="robots" content="noindex, nofollow"', "release preview homepage");
-  for (const releaseAnnouncementText of [
+  for (const releaseText of [
     "New in v0.5.0 · Pre-v1 public alpha",
     "Reusable loops for work that spans more than one goal.",
     "Run a security audit loop",
@@ -220,12 +241,16 @@ function main() {
     "mdkg loop next LOOP_ID",
     "mdkg loop runs LOOP_ID",
   ]) {
-    assertContains(previewHome, releaseAnnouncementText, "release preview homepage announcement");
+    assertContains(previewHome, releaseText, "release preview homepage announcement");
   }
   assertNotContains(previewHome, "mdkg note add", "release preview homepage announcement");
   assertContains(previewRobots, "Disallow: /", "release preview robots");
   assertContains(previewLlms, "## Reusable loops", "release preview llms.txt");
-  assertContains(previewLlms, "This preview does not claim npm availability.", "release preview llms.txt");
+  assertContains(
+    previewLlms,
+    releasePublished ? "The npm package is available." : "This preview does not claim npm availability.",
+    "release preview llms.txt",
+  );
   assertContains(previewLlmsFull, "## Reusable loop process model", "release preview llms-full.txt");
   assertContains(previewLlmsFull, "coding-agent harness executes agents and tools", "release preview llms-full.txt");
   for (const [label, source] of [
@@ -233,7 +258,11 @@ function main() {
     ["release preview llms.txt", previewLlms],
     ["release preview llms-full.txt", previewLlmsFull],
   ]) {
-    for (const forbidden of ["/Users/", "loop-5", "goal-61", "v0.5.0 is available", "npm install -g mdkg@0.5.0"]) {
+    const forbiddenValues = ["/Users/", "loop-5", "goal-61", "npm install -g mdkg@0.5.0"];
+    if (!releasePublished) {
+      forbiddenValues.push("v0.5.0 is available");
+    }
+    for (const forbidden of forbiddenValues) {
       assertNotContains(source, forbidden, label);
     }
     assert(!/\bchk-(?:4\d{2}|[5-9]\d{2,})\b/.test(source), `${label} should not expose internal checkpoint ids`);

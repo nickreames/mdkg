@@ -2,24 +2,24 @@
 id: test-390
 type: test
 title: Release commit is on origin with green CI before npm publish
-status: todo
+status: done
 priority: 1
 epic: epic-233
 tags: [release, origin, ci, npm]
 owners: []
 links: []
-artifacts: []
+artifacts: [artifact://npm/mdkg/0.5.0, artifact://github-actions/run/29254216004]
 relates: [goal-64, task-719]
 blocked_by: [task-719]
 blocks: []
-refs: [task-719]
+refs: [task-719, chk-513]
 context_refs: [goal-64, epic-233, edd-72, dec-69]
-evidence_refs: []
+evidence_refs: [chk-513]
 aliases: []
 skills: []
 cases: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Overview
 
@@ -43,7 +43,13 @@ Approved release commit and valid npm auth with target version absent.
 
 # Results / Evidence
 
-Pending `task-719`.
+Passed. Local `HEAD`, `origin/main`, both GitHub Actions package gates, and the
+publish candidate all used
+`7afbf6d8df58279f70c6257b65437791fec59e63`. The shared release manifest was
+still `draft` during the first push and publication. Npm owner/auth, target
+absence, and advisories were rechecked immediately before the successful
+single publication. Npm `latest` now resolves to `0.5.0`; registry SHA-1 and
+integrity are recorded in `chk-513`. No Git tag exists.
 
 # Notes / Follow-ups
 

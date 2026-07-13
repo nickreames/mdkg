@@ -2,7 +2,7 @@
 id: task-722
 type: task
 title: Activate and push the website release then verify production deployments
-status: todo
+status: progress
 priority: 1
 epic: epic-235
 prev: task-721
@@ -20,7 +20,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Overview
 

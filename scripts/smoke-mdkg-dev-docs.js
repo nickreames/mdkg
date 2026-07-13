@@ -50,6 +50,8 @@ function main() {
   const releaseManifestPath = path.join(repoRoot, "release", "public-release.json");
   const releaseManifestBefore = fs.readFileSync(releaseManifestPath);
   const releaseManifestHashBefore = crypto.createHash("sha256").update(releaseManifestBefore).digest("hex");
+  const releaseManifest = JSON.parse(releaseManifestBefore.toString("utf8"));
+  const releasePublished = releaseManifest.state === "published";
   run(NPM_CMD, ["run", "docs:check"]);
   run(NPM_CMD, ["run", "docs:check-commands"]);
   run(NPM_CMD, ["--prefix", "docs", "run", "build"]);
@@ -303,23 +305,40 @@ function main() {
   assertRenderedOutline(path.join(docs, "dist"));
 
   const canonicalDist = path.join(docs, "dist");
-  assert(!fs.existsSync(path.join(canonicalDist, "loops")), "draft docs build must not emit loop routes");
+  if (releasePublished) {
+    assertExists(path.join(canonicalDist, "loops", "index.html"));
+  } else {
+    assert(!fs.existsSync(path.join(canonicalDist, "loops")), "draft docs build must not emit loop routes");
+  }
   const canonicalSitemap = readText(path.join(canonicalDist, "sitemap-0.xml"));
-  assert(!canonicalSitemap.includes("/loops/"), "draft docs sitemap must not include loop routes");
+  assert(
+    canonicalSitemap.includes("/loops/") === releasePublished,
+    releasePublished
+      ? "published docs sitemap must include loop routes"
+      : "draft docs sitemap must not include loop routes",
+  );
   for (const [label, relPath] of [
     ["install", "start-here/install/index.html"],
     ["changelog", "project/changelog/index.html"],
     ["reference", "reference/generated-cli-reference/index.html"],
   ]) {
     const html = readText(path.join(canonicalDist, relPath));
-    assert(!html.includes("Target v0.5.0"), `draft ${label} page must not include target release facts`);
-    assert(!html.includes("release-v050-"), `draft ${label} page must not render release supplement`);
+    if (releasePublished) {
+      assert(html.includes("v0.5.0 · Pre-v1 public alpha"), `published ${label} page must include release facts`);
+      assert(html.includes("release-v050-"), `published ${label} page must render release supplement`);
+      assert(!html.includes("Draft release facts for local verification only"), `published ${label} page must not include preview copy`);
+    } else {
+      assert(!html.includes("Target v0.5.0"), `draft ${label} page must not include target release facts`);
+      assert(!html.includes("release-v050-"), `draft ${label} page must not render release supplement`);
+    }
   }
   const canonicalPagefind = JSON.parse(readText(path.join(canonicalDist, "pagefind", "pagefind-entry.json")));
   const canonicalPageCount = canonicalPagefind.languages.en.page_count;
 
   run(NPM_CMD, ["--prefix", "docs", "run", "build"], {
-    env: { PUBLIC_MDKG_RELEASE_PREVIEW: "1" },
+    env: releasePublished
+      ? { VERCEL_ENV: "preview" }
+      : { PUBLIC_MDKG_RELEASE_PREVIEW: "1" },
   });
 
   const previewDist = path.join(docs, "dist");
@@ -413,7 +432,13 @@ function main() {
   const previewReference = readText(path.join(previewDist, "reference", "generated-cli-reference", "index.html"));
   for (const [label, html, snippets] of [
     ["install", previewInstall, ["Prepare an existing repo for loops", "mdkg upgrade --apply", "Legacy SPEC compatibility remains unchanged"]],
-    ["changelog", previewChangelog, ["First-class reusable loops", "Seven bundled read-only or planning templates", "Draft release facts for local verification only", "npm availability"]],
+    [
+      "changelog",
+      previewChangelog,
+      releasePublished
+        ? ["First-class reusable loops", "Seven bundled read-only or planning templates", "v0.5.0 · Pre-v1 public alpha"]
+        : ["First-class reusable loops", "Seven bundled read-only or planning templates", "Draft release facts for local verification only", "npm availability"],
+    ],
     ["reference", previewReference, ["Loop command family", "mdkg new loop", "mdkg loop runs LOOP_ID"]],
   ]) {
     for (const snippet of snippets) {
@@ -444,8 +469,11 @@ function main() {
   assert(packageJson.version === "0.5.0", "Goal 64 release candidate must use package version 0.5.0");
   const previewPagefind = JSON.parse(readText(path.join(previewDist, "pagefind", "pagefind-entry.json")));
   assert(
-    previewPagefind.languages.en.page_count === canonicalPageCount + loopRouteFiles.length,
-    "preview Pagefind index must add exactly the four loop routes"
+    previewPagefind.languages.en.page_count ===
+      canonicalPageCount + (releasePublished ? 0 : loopRouteFiles.length),
+    releasePublished
+      ? "published preview Pagefind index must retain the canonical route count"
+      : "draft preview Pagefind index must add exactly the four loop routes"
   );
 
   const releaseManifestAfter = fs.readFileSync(releaseManifestPath);

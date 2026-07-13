@@ -11,12 +11,22 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
-Recent release cards cover `0.4.2`, `0.4.1`, and `0.4.0`; earlier milestones
+Recent release cards cover `0.5.0`, `0.4.2`, and `0.4.1`; earlier milestones
 remain listed below for continuity.
 
 <div class="release-grid" aria-label="Recent mdkg release cards">
   <article class="release-card current">
-    <p class="release-meta">Latest public alpha - 2026-07-05 - 9 notes</p>
+    <p class="release-meta">Latest public alpha - 2026-07-11 - 18 notes</p>
+    <h2>0.5.0</h2>
+    <p>First-class reusable loops for durable audit and planning processes that span goals, readiness decisions, evidence lanes, and blocker recovery.</p>
+    <ul>
+      <li>Create raw loops or fork seven bundled read-only and planning templates with stable provenance.</li>
+      <li>Inspect readiness and route authorized work with <code>mdkg loop plan</code>, <code>next</code>, and <code>runs</code>.</li>
+      <li>Use observational fork dry-runs across JSON and SQLite without consuming IDs or mutating graph state.</li>
+    </ul>
+  </article>
+  <article class="release-card">
+    <p class="release-meta">Public alpha - 2026-07-05 - 9 notes</p>
     <h2>0.4.2</h2>
     <p>Low-level Git remote lifecycle primitives for agent closeout, push-readiness, and explicit remote push workflows.</p>
     <ul>
@@ -35,17 +45,44 @@ remain listed below for continuity.
       <li>Update scaffolds, helpers, templates, init assets, docs, and generated references without adding runtime-only queue, provider, billing, ledger, or final-receipt state.</li>
     </ul>
   </article>
-  <article class="release-card">
-    <p class="release-meta">Public alpha - 2026-06-27 - 7 notes</p>
-    <h2>0.4.0</h2>
-    <p>Website and docs refresh for the 0.4.0 public alpha, with clearer customization guidance, release cards, generated references, and smoother mdkg.dev CTA rendering.</p>
-    <ul>
-      <li>Add public release cards and changelog detail pages for recent public-alpha versions.</li>
-      <li>Update docs and examples for config overlays, custom skill mirrors, <code>COLLABORATION.md</code>, and MANIFEST naming.</li>
-      <li>Refresh mdkg.dev copy and CTA rendering while keeping public claims bounded to documented capabilities.</li>
-    </ul>
-  </article>
 </div>
+
+## 0.5.0 details
+
+`0.5.0` adds one first-class `loop` node type for reusable, inspectable
+processes that can coordinate goals, tasks, tests, spikes, decisions,
+checkpoints, receipts, evidence, and repeated attempts.
+
+### Added
+
+- `mdkg loop list`, `show`, `fork`, `plan`, `next`, and `runs`, plus guided raw
+  creation through `mdkg new loop`.
+- Identity-bound readiness questions, action approvals, evidence lanes, and
+  paired decision/approval waivers.
+- Stable template identity, content hashes, stale-fork warnings, default child
+  materialization, and a planning-only fork mode.
+- Seven bundled read-only or planning templates, led by the security audit.
+- The `pursue-mdkg-loop` skill for exhausting authorized lanes and recording
+  grounded blocker recovery before the whole loop blocks.
+
+### Changed
+
+- Loops participate in parsing, validation, search, show/list output, JSON and
+  SQLite indexes, deterministic packs, init, upgrade, help, and command
+  contracts.
+- Fork dry-runs are observational: they do not reserve IDs, append events,
+  persist indexes, or write graph files.
+- `loop next` continues authorized work around gated lanes while useful work or
+  blocker-recovery paths remain.
+- mdkg preserves loop process state; the coding-agent harness remains
+  responsible for executing agents and tools.
+
+### Security
+
+- Graph target writes reject symlink containment escapes before destination
+  mutation.
+- Bundle and subgraph ZIP inflation is bounded by entry count, compressed size,
+  output size, total output, and expansion ratio.
 
 ## 0.4.2 details
 

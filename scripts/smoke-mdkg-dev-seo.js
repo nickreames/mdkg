@@ -109,8 +109,19 @@ function main() {
   buildSite({ PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
   const releasePreviewHome = readText(path.join(dist, "index.html"));
   const releasePreviewRobots = readText(path.join(dist, "robots.txt"));
-  assert(releasePreviewHome.includes('name="robots" content="noindex, nofollow"'), "release preview must noindex pages");
-  assert(releasePreviewRobots.includes("Disallow: /"), "release preview robots policy must disallow crawling");
+  if (releaseManifest.state === "published") {
+    assert(
+      releasePreviewHome.includes('name="robots" content="index, follow"'),
+      "release preview flag must not de-index an already published release",
+    );
+    assert(
+      releasePreviewRobots.includes("Allow: /"),
+      "release preview flag must not disallow an already published release",
+    );
+  } else {
+    assert(releasePreviewHome.includes('name="robots" content="noindex, nofollow"'), "release preview must noindex pages");
+    assert(releasePreviewRobots.includes("Disallow: /"), "release preview robots policy must disallow crawling");
+  }
 
   const llms = readText(path.join(dist, "llms.txt"));
   const llmsFull = readText(path.join(dist, "llms-full.txt"));

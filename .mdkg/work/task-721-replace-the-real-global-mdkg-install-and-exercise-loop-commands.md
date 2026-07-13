@@ -2,7 +2,7 @@
 id: task-721
 type: task
 title: Replace the real global mdkg install and exercise loop commands
-status: todo
+status: done
 priority: 1
 epic: epic-234
 prev: task-720
@@ -10,17 +10,17 @@ next: task-722
 tags: [release, global-install, loop, verification]
 owners: []
 links: []
-artifacts: []
+artifacts: [artifact://npm/mdkg/0.5.0]
 relates: [goal-64, test-392]
 blocked_by: [task-720]
 blocks: [task-722]
-refs: [test-392]
-context_refs: [goal-64, epic-234, edd-72, dec-69, task-720]
-evidence_refs: []
+refs: [test-392, chk-514, chk-515]
+context_refs: [goal-64, epic-234, edd-72, dec-69, task-720, chk-514]
+evidence_refs: [chk-514, chk-515]
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Overview
 
@@ -53,7 +53,17 @@ List files/directories expected to change.
 Run `test-392` with absolute-path and `command -v` receipts plus before/after
 graph/ID evidence.
 
+# Results / Evidence
+
+- `/opt/homebrew/bin/mdkg` and the resolved global package now report `0.5.0`.
+- Clean init/index/validate passed before user nodes were created.
+- Raw creation, seven-template discovery, security fork dry-run/real, plan,
+  next, and pack passed through the absolute global binary.
+- Dry-run and real fork both selected `loop-2`; no ID was consumed.
+- Full sanitized command evidence is recorded in `chk-515`; `test-392` passed.
+
 # Links / Artifacts
 
 - `dec-69`
 - `task-702`
+- `chk-515`
