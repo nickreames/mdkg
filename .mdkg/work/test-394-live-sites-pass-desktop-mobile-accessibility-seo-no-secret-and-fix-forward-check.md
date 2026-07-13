@@ -13,8 +13,8 @@ relates: [goal-64, task-723]
 blocked_by: [task-723]
 blocks: []
 refs: [task-723]
-context_refs: [goal-64, epic-235, edd-72, dec-69]
-evidence_refs: []
+context_refs: [goal-64, epic-235, edd-72, dec-69, dec-81, task-722, test-393, chk-516]
+evidence_refs: [chk-513, chk-514, chk-515, chk-516]
 aliases: []
 skills: []
 cases: []
@@ -32,7 +32,8 @@ Homepage, loop docs, install/upgrade, CLI examples, release notes, metadata, lin
 
 # Preconditions / Environment
 
-Current production deployments, Product Design/Browser/Chrome access, npm proof.
+Current production deployments at `b265da71`, Product Design/Browser/Chrome
+access, npm proof, and completed activation receipt `chk-516`.
 
 # Test Cases
 
@@ -49,3 +50,5 @@ Pending `task-723` and live deployment.
 # Notes / Follow-ups
 
 - Goal remains open for any release-blocking live defect.
+- No additional security scan, npm publish, global install, or approval cycle is
+  part of this test.

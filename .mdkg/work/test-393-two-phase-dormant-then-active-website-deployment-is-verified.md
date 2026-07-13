@@ -2,7 +2,7 @@
 id: test-393
 type: test
 title: Two phase dormant then active website deployment is verified
-status: todo
+status: done
 priority: 1
 epic: epic-235
 tags: [release, activation, deploy, two-phase]
@@ -10,16 +10,16 @@ owners: []
 links: []
 artifacts: []
 relates: [goal-64, task-722]
-blocked_by: [task-722]
+blocked_by: []
 blocks: []
 refs: [task-722, dec-74, prop-8]
 context_refs: [goal-62, goal-63, goal-64, epic-235, edd-71, dec-69, dec-73, dec-74, prop-8, test-386]
-evidence_refs: []
+evidence_refs: [chk-513, chk-516]
 aliases: []
 skills: []
 cases: []
 created: 2026-07-10
-updated: 2026-07-11
+updated: 2026-07-13
 ---
 # Overview
 
@@ -59,9 +59,10 @@ Published npm 0.5.0, passing `test-392`, approved deployment scope.
 
 # Results / Evidence
 
-Pending `task-722`. The release is already published and activated in source;
-remaining evidence is the green fix-forward CI SHA, matching production
-deployments, and custom-domain verification.
+Passed. Dormant npm publication is recorded in `chk-513`. Activation commit
+`b337ff8d` was followed by fix-forward repair commit `b265da71`; exact-SHA
+GitHub Actions run `29258600632` passed and both Vercel project deployments
+completed successfully at the repair SHA. See `chk-516`.
 
 # Notes / Follow-ups
 

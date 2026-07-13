@@ -48,7 +48,7 @@ export default defineConfig({
           ]
         : [],
       editLink: {
-        baseUrl: "https://github.com/nickreames/mdkg/edit/main/",
+        baseUrl: "https://github.com/nickreames/mdkg/edit/main/docs/",
       },
       social: [
         {

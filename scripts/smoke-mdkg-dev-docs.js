@@ -332,6 +332,22 @@ function main() {
       assert(!html.includes("release-v050-"), `draft ${label} page must not render release supplement`);
     }
   }
+  const canonicalInstall = readText(path.join(canonicalDist, "start-here", "install", "index.html"));
+  assert(
+    canonicalInstall.includes(
+      "https://github.com/nickreames/mdkg/edit/main/docs/src/content/docs/start-here/install.md",
+    ),
+    "docs Edit page link must include the monorepo docs path",
+  );
+  if (releasePublished) {
+    const canonicalSecurity = readText(path.join(canonicalDist, "loops", "security-audit", "index.html"));
+    assert(
+      canonicalSecurity.includes(
+        "https://github.com/nickreames/mdkg/edit/main/docs/src/content/docs/loops/security-audit.md",
+      ),
+      "security walkthrough Edit page link must include the monorepo docs path",
+    );
+  }
   const canonicalPagefind = JSON.parse(readText(path.join(canonicalDist, "pagefind", "pagefind-entry.json")));
   const canonicalPageCount = canonicalPagefind.languages.en.page_count;
 
