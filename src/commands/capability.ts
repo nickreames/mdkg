@@ -66,6 +66,7 @@ export function loadCapabilityRecords(options: CapabilityListOptions): Capabilit
     config,
     useCache: !options.noCache,
     allowReindex: !options.noReindex,
+    persistReindex: false,
   });
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: capabilities index is stale; run mdkg index to refresh");

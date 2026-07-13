@@ -1,7 +1,7 @@
-import readline from "readline";
 import fs from "fs";
 import path from "path";
 import { Readable, Writable } from "stream";
+import { StringDecoder } from "string_decoder";
 import { collectStatus } from "./status";
 import { collectValidateReceipt } from "./validate";
 import { loadConfig } from "../core/config";
@@ -28,6 +28,12 @@ const DEFAULT_SEARCH_LIMIT = 20;
 const MAX_PACK_NODES = 100;
 const DEFAULT_PACK_NODES = 20;
 const DEFAULT_PACK_MAX_CHARS = 120_000;
+const MAX_MCP_LINE_BYTES = 1024 * 1024;
+const MAX_MCP_JSON_DEPTH = 64;
+const MAX_MCP_BATCH_ITEMS = 50;
+const MAX_MCP_SHOW_BODY_BYTES = 256 * 1024;
+const MAX_MCP_TOOL_PAYLOAD_BYTES = 512 * 1024;
+const MAX_MCP_RESPONSE_BYTES = 1024 * 1024;
 
 type JsonRpcId = string | number | null;
 type JsonObject = Record<string, unknown>;
@@ -395,6 +401,10 @@ function isConcreteGoalCandidate(node: IndexNode, statusRanks: Set<string>): boo
 }
 
 function toolResult(payload: unknown, isError = false): JsonObject {
+  const compact = JSON.stringify(payload);
+  if (Buffer.byteLength(compact, "utf8") > MAX_MCP_TOOL_PAYLOAD_BYTES) {
+    throw new UsageError(`MCP tool payload exceeds byte limit: ${MAX_MCP_TOOL_PAYLOAD_BYTES}`);
+  }
   return {
     content: [
       {
@@ -478,7 +488,10 @@ function showTool(root: string, args: JsonObject): JsonObject {
   }
   return {
     command: "mcp.show",
-    item: toNodeDetailJson(node, metaOnly ? undefined : readNodeBody(root, node)),
+    item: toNodeDetailJson(
+      node,
+      metaOnly ? undefined : readNodeBody(root, node, MAX_MCP_SHOW_BODY_BYTES)
+    ),
   };
 }
 
@@ -505,6 +518,8 @@ function packTool(root: string, args: JsonObject): JsonObject {
     verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
     wsHint: ws,
     includeLatestCheckpoint: true,
+    maxTraversalNodes: MAX_PACK_NODES * 10,
+    maxBodyBytes: maxChars,
   });
   const headingMap =
     resolvedProfile.bodyMode === "summary"
@@ -725,6 +740,9 @@ export function handleMcpRequest(context: McpContext, raw: JsonRpcRequest): Json
 
 export function handleMcpMessage(context: McpContext, message: unknown): JsonRpcResponse[] {
   if (Array.isArray(message)) {
+    if (message.length === 0 || message.length > MAX_MCP_BATCH_ITEMS) {
+      return [jsonRpcError(null, -32600, `batch item count must be between 1 and ${MAX_MCP_BATCH_ITEMS}`)];
+    }
     return message
       .map((item) => handleMcpRequest(context, item as JsonRpcRequest))
       .filter((item): item is JsonRpcResponse => Boolean(item));
@@ -733,32 +751,107 @@ export function handleMcpMessage(context: McpContext, message: unknown): JsonRpc
   return response ? [response] : [];
 }
 
+function jsonNestingWithinLimit(input: string): boolean {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (const character of input) {
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (character === "\\") {
+        escaped = true;
+      } else if (character === '"') {
+        inString = false;
+      }
+      continue;
+    }
+    if (character === '"') {
+      inString = true;
+    } else if (character === "{" || character === "[") {
+      depth += 1;
+      if (depth > MAX_MCP_JSON_DEPTH) {
+        return false;
+      }
+    } else if (character === "}" || character === "]") {
+      depth -= 1;
+    }
+  }
+  return true;
+}
+
+function writeBoundedMcpResponse(output: Writable, response: JsonRpcResponse): void {
+  let serialized = JSON.stringify(response);
+  if (Buffer.byteLength(serialized, "utf8") > MAX_MCP_RESPONSE_BYTES) {
+    serialized = JSON.stringify(
+      jsonRpcError(response.id, -32000, `MCP response exceeds byte limit: ${MAX_MCP_RESPONSE_BYTES}`)
+    );
+  }
+  output.write(`${serialized}\n`);
+}
+
 export async function runMcpServeCommand(options: McpServeCommandOptions): Promise<0> {
   if (!options.stdio) {
     throw new UsageError("mdkg mcp serve requires --stdio");
   }
   const input = options.input ?? process.stdin;
   const output = options.output ?? process.stdout;
-  const lines = readline.createInterface({
-    input,
-    crlfDelay: Infinity,
-  });
   const context: McpContext = { root: options.root };
-  for await (const line of lines) {
+  const decoder = new StringDecoder("utf8");
+  let pending = "";
+  let discardingOversizedLine = false;
+
+  const processLine = (line: string): void => {
     const trimmed = line.trim();
     if (!trimmed) {
-      continue;
+      return;
+    }
+    if (!jsonNestingWithinLimit(trimmed)) {
+      writeBoundedMcpResponse(output, jsonRpcError(null, -32600, `JSON nesting exceeds limit: ${MAX_MCP_JSON_DEPTH}`));
+      return;
     }
     let parsed: unknown;
     try {
       parsed = JSON.parse(trimmed);
     } catch {
-      output.write(`${JSON.stringify(jsonRpcError(null, -32700, "Parse error"))}\n`);
-      continue;
+      writeBoundedMcpResponse(output, jsonRpcError(null, -32700, "Parse error"));
+      return;
     }
     for (const response of handleMcpMessage(context, parsed)) {
-      output.write(`${JSON.stringify(response)}\n`);
+      writeBoundedMcpResponse(output, response);
     }
+  };
+
+  for await (const chunk of input) {
+    const text = decoder.write(Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk)));
+    let start = 0;
+    for (let index = 0; index < text.length; index += 1) {
+      if (text[index] !== "\n") {
+        continue;
+      }
+      const segment = text.slice(start, index).replace(/\r$/, "");
+      if (discardingOversizedLine) {
+        discardingOversizedLine = false;
+      } else if (Buffer.byteLength(pending, "utf8") + Buffer.byteLength(segment, "utf8") > MAX_MCP_LINE_BYTES) {
+        writeBoundedMcpResponse(output, jsonRpcError(null, -32600, `request line exceeds byte limit: ${MAX_MCP_LINE_BYTES}`));
+      } else {
+        processLine(pending + segment);
+      }
+      pending = "";
+      start = index + 1;
+    }
+    if (start < text.length && !discardingOversizedLine) {
+      pending += text.slice(start);
+      if (Buffer.byteLength(pending, "utf8") > MAX_MCP_LINE_BYTES) {
+        pending = "";
+        discardingOversizedLine = true;
+        writeBoundedMcpResponse(output, jsonRpcError(null, -32600, `request line exceeds byte limit: ${MAX_MCP_LINE_BYTES}`));
+      }
+    }
+  }
+  pending += decoder.end();
+  if (!discardingOversizedLine && pending.trim()) {
+    processLine(pending);
   }
   return 0;
 }

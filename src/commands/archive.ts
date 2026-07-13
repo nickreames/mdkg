@@ -1,6 +1,14 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  readContainedFile,
+  withContainedPathSink,
+  writeContainedFileExclusive,
+} from "../core/filesystem_authority";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
 import {
   checkArchiveIntegrity,
@@ -14,7 +22,6 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId } from "../util/id";
 import { archiveIdFromUri } from "../util/refs";
-import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { createDeterministicZip } from "../util/zip";
 import { appendAutomaticEvent } from "./event_support";
@@ -259,13 +266,17 @@ function stringAttribute(value: FrontmatterValue | undefined): string | undefine
 }
 
 function writeArchiveSidecar(
+  root: string,
   sidecarPath: string,
   frontmatter: Record<string, FrontmatterValue>,
   body: string
 ): void {
   const lines = formatFrontmatter(frontmatter);
   const content = ["---", ...lines, "---", body.trimStart()].join("\n");
-  atomicWriteFile(sidecarPath, content.endsWith("\n") ? content : `${content}\n`);
+  atomicReplaceContainedFile(
+    { root, relativePath: toPosixPath(path.relative(root, sidecarPath)) },
+    content.endsWith("\n") ? content : `${content}\n`
+  );
 }
 
 function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): ArchiveVerifyResult | undefined {
@@ -396,18 +407,31 @@ function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
   const visibility = normalizeVisibility(options.visibility);
   const today = formatDate(options.now ?? new Date());
   const archiveDir = path.resolve(options.root, workspace.path, workspace.mdkg_dir, "archive", id);
+  const archiveRelativeDir = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "archive", id);
   const rawDir = path.join(archiveDir, "source");
   const rawPath = path.join(rawDir, basename);
   const zipPath = path.join(archiveDir, `${basename}.zip`);
   const sidecarPath = path.join(archiveDir, `${basename}.md`);
-  if (fs.existsSync(sidecarPath)) {
+  const sidecarRelativePath = `${archiveRelativeDir}/${basename}.md`;
+  const rawRelativePath = `${archiveRelativeDir}/source/${basename}`;
+  const zipRelativePath = `${archiveRelativeDir}/${basename}.zip`;
+  if (containedPathExists({ root: options.root, relativePath: sidecarRelativePath })) {
     throw new UsageError(`archive sidecar already exists: ${path.relative(options.root, sidecarPath)}`);
   }
-  fs.mkdirSync(rawDir, { recursive: true });
-  fs.copyFileSync(sourcePath, rawPath);
-  const rawData = fs.readFileSync(rawPath);
+  for (const [relativePath, operation] of [
+    [rawRelativePath, "create"],
+    [zipRelativePath, "replace"],
+    [sidecarRelativePath, "create"],
+  ] as const) {
+    withContainedPathSink(
+      { root: options.root, relativePath, operation, createParents: true },
+      () => undefined
+    );
+  }
+  const rawData = fs.readFileSync(sourcePath);
+  writeContainedFileExclusive({ root: options.root, relativePath: rawRelativePath }, rawData);
   const zipData = createDeterministicZip(basename, rawData);
-  atomicWriteFile(zipPath, zipData);
+  atomicReplaceContainedFile({ root: options.root, relativePath: zipRelativePath }, zipData);
 
   const frontmatter: Record<string, FrontmatterValue> = {
     id,
@@ -435,6 +459,7 @@ function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
     updated: today,
   };
   writeArchiveSidecar(
+    options.root,
     sidecarPath,
     frontmatter,
     ["# Archive Entry", "", `Archived ${archiveKind}: ${basename}`, "", "# Provenance", "", "Copied from local workspace input."].join("\n")
@@ -543,13 +568,25 @@ function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions)
 
   for (const node of nodes) {
     const { sidecarPath, rawPath, zipPath } = archiveNodePaths(options.root, node);
-    if (!fs.existsSync(rawPath)) {
+    const rawRelativePath = toPosixPath(path.relative(options.root, rawPath));
+    const zipRelativePath = toPosixPath(path.relative(options.root, zipPath));
+    const sidecarRelativePath = toPosixPath(path.relative(options.root, sidecarPath));
+    for (const relativePath of [rawRelativePath, zipRelativePath, sidecarRelativePath]) {
+      withContainedPathSink(
+        { root: options.root, relativePath, operation: relativePath === rawRelativePath ? "read" : "replace" },
+        () => undefined
+      );
+    }
+    if (!containedPathExists({ root: options.root, relativePath: rawRelativePath })) {
       throw new NotFoundError(`raw archive file missing for ${node.qid}: ${path.relative(options.root, rawPath)}`);
     }
-    const rawData = fs.readFileSync(rawPath);
+    const rawData = readContainedFile({ root: options.root, relativePath: rawRelativePath }, null);
     const zipData = createDeterministicZip(path.basename(rawPath), rawData);
-    atomicWriteFile(zipPath, zipData);
-    const parsed = parseFrontmatter(fs.readFileSync(sidecarPath, "utf8"), sidecarPath);
+    atomicReplaceContainedFile({ root: options.root, relativePath: zipRelativePath }, zipData);
+    const parsed = parseFrontmatter(
+      readContainedFile({ root: options.root, relativePath: sidecarRelativePath }),
+      sidecarPath
+    );
     const nextFrontmatter: Record<string, FrontmatterValue> = {
       ...parsed.frontmatter,
       byte_size: String(rawData.length),
@@ -558,7 +595,7 @@ function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions)
       ingest_status: "compressed",
       updated: today,
     };
-    writeArchiveSidecar(sidecarPath, nextFrontmatter, parsed.body);
+    writeArchiveSidecar(options.root, sidecarPath, nextFrontmatter, parsed.body);
     updated.push({
       workspace: node.ws,
       id: node.id,

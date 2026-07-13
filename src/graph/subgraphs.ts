@@ -7,7 +7,7 @@ import { configPath } from "../core/paths";
 import { FrontmatterValue } from "./frontmatter";
 import { Index, IndexNode } from "./indexer";
 import { atomicWriteFile } from "../util/atomic";
-import { readZipEntries } from "../util/zip";
+import { readZipFileEntries } from "../util/zip";
 
 export type SubgraphSourceHealth = {
   label?: string;
@@ -60,15 +60,28 @@ export type SubgraphProjection = {
 };
 
 type BundleManifest = {
-  manifest_version: number;
+  manifest_version: 1;
+  tool: "mdkg";
+  mdkg_version: string;
   profile: "private" | "public";
-  source?: {
-    repo?: string;
-    git_head?: string | null;
-    dirty?: boolean;
+  selected_workspaces: string[];
+  source: {
+    repo: string;
+    git_head: string | null;
+    dirty: boolean;
   };
-  bundle_hash?: string;
-  files?: Array<{ path: string; sha256: string; size: number; kind?: string }>;
+  source_tree_hash: string;
+  bundle_hash: string;
+  file_count: number;
+  index_hashes: Record<string, string>;
+  files: Array<{
+    path: string;
+    sha256: string;
+    size: number;
+    kind: "authored" | "archive_cache" | "generated_index";
+    workspace?: string;
+    visibility?: string;
+  }>;
 };
 
 type LoadedSource = {
@@ -85,6 +98,118 @@ const MANIFEST_ENTRY = "manifest.json";
 const GLOBAL_INDEX_ENTRY = ".mdkg/index/global.json";
 const SKILLS_INDEX_ENTRY = ".mdkg/index/skills.json";
 const CAPABILITIES_INDEX_ENTRY = ".mdkg/index/capabilities.json";
+const REQUIRED_INDEX_ENTRIES = [GLOBAL_INDEX_ENTRY, SKILLS_INDEX_ENTRY, CAPABILITIES_INDEX_ENTRY];
+const SHA256_PATTERN = /^sha256:[a-f0-9]{64}$/;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function requireString(value: unknown, field: string): string {
+  if (typeof value !== "string" || value.length === 0) throw new Error(`bundle manifest invalid: ${field} must be a non-empty string`);
+  return value;
+}
+
+function requireHash(value: unknown, field: string): string {
+  const result = requireString(value, field);
+  if (!SHA256_PATTERN.test(result)) throw new Error(`bundle manifest invalid: ${field} must be a sha256 digest`);
+  return result;
+}
+
+function requireSafePath(value: unknown, field: string): string {
+  const result = requireString(value, field).replace(/\\/g, "/");
+  if (path.posix.isAbsolute(result) || result.split("/").some((part) => part === "" || part === "." || part === "..")) {
+    throw new Error(`bundle manifest invalid: ${field} must be a safe relative path`);
+  }
+  return result;
+}
+
+function manifestFilesHash(files: BundleManifest["files"]): string {
+  const data = `${JSON.stringify(files.map((file) => ({
+    path: file.path,
+    kind: file.kind,
+    workspace: file.workspace,
+    visibility: file.visibility,
+    size: file.size,
+    sha256: file.sha256,
+  })), null, 2)}\n`;
+  return sha256Buffer(Buffer.from(data, "utf8"));
+}
+
+function validateForeignManifest(value: unknown): BundleManifest {
+  if (!isRecord(value)) throw new Error("bundle manifest invalid: root must be an object");
+  if (value.manifest_version !== 1 || value.tool !== "mdkg") throw new Error("bundle manifest invalid: unsupported version or tool");
+  const mdkgVersion = requireString(value.mdkg_version, "mdkg_version");
+  if (value.profile !== "private" && value.profile !== "public") throw new Error("bundle manifest invalid: profile must be private or public");
+  if (!Array.isArray(value.selected_workspaces) || value.selected_workspaces.length === 0) {
+    throw new Error("bundle manifest invalid: selected_workspaces must be a non-empty array");
+  }
+  const selectedWorkspaces = value.selected_workspaces.map((item, index) => requireString(item, `selected_workspaces[${index}]`));
+  if (new Set(selectedWorkspaces).size !== selectedWorkspaces.length) throw new Error("bundle manifest invalid: duplicate selected workspace");
+  if (!isRecord(value.source)) throw new Error("bundle manifest invalid: source must be an object");
+  const repo = requireString(value.source.repo, "source.repo");
+  const gitHead = value.source.git_head;
+  if (gitHead !== null && (typeof gitHead !== "string" || !/^[a-f0-9]{40}$/.test(gitHead))) {
+    throw new Error("bundle manifest invalid: source.git_head must be null or a Git SHA");
+  }
+  if (typeof value.source.dirty !== "boolean") throw new Error("bundle manifest invalid: source.dirty must be boolean");
+  if (!Number.isSafeInteger(value.file_count) || Number(value.file_count) < 0) throw new Error("bundle manifest invalid: file_count");
+  if (!isRecord(value.index_hashes) || !Array.isArray(value.files)) throw new Error("bundle manifest invalid: indexes and files are required");
+  const indexHashes: Record<string, string> = {};
+  for (const [entryPath, hash] of Object.entries(value.index_hashes)) indexHashes[requireSafePath(entryPath, "index hash path")] = requireHash(hash, `index_hashes.${entryPath}`);
+  const seen = new Set<string>();
+  const files = value.files.map((item, index): BundleManifest["files"][number] => {
+    if (!isRecord(item)) throw new Error(`bundle manifest invalid: files[${index}] must be an object`);
+    const filePath = requireSafePath(item.path, `files[${index}].path`);
+    if (seen.has(filePath)) throw new Error(`bundle manifest invalid: duplicate file ${filePath}`);
+    seen.add(filePath);
+    if (item.kind !== "authored" && item.kind !== "archive_cache" && item.kind !== "generated_index") throw new Error(`bundle manifest invalid: files[${index}].kind`);
+    if (!Number.isSafeInteger(item.size) || Number(item.size) < 0) throw new Error(`bundle manifest invalid: files[${index}].size`);
+    const workspace = item.workspace === undefined ? undefined : requireString(item.workspace, `files[${index}].workspace`);
+    if (item.visibility !== undefined && item.visibility !== "private" && item.visibility !== "internal" && item.visibility !== "public") throw new Error(`bundle manifest invalid: files[${index}].visibility`);
+    return { path: filePath, kind: item.kind, size: Number(item.size), sha256: requireHash(item.sha256, `files[${index}].sha256`), ...(workspace ? { workspace } : {}), ...(item.visibility ? { visibility: item.visibility } : {}) };
+  });
+  if (Number(value.file_count) !== files.length) throw new Error("bundle manifest invalid: file_count mismatch");
+  for (const required of REQUIRED_INDEX_ENTRIES) {
+    const row = files.find((file) => file.path === required);
+    if (!row || row.kind !== "generated_index" || row.sha256 !== indexHashes[required]) throw new Error(`bundle manifest invalid: required index contract mismatch for ${required}`);
+  }
+  return {
+    manifest_version: 1,
+    tool: "mdkg",
+    mdkg_version: mdkgVersion,
+    profile: value.profile,
+    selected_workspaces: selectedWorkspaces,
+    source: { repo, git_head: gitHead, dirty: value.source.dirty },
+    source_tree_hash: requireHash(value.source_tree_hash, "source_tree_hash"),
+    bundle_hash: requireHash(value.bundle_hash, "bundle_hash"),
+    file_count: files.length,
+    index_hashes: indexHashes,
+    files,
+  };
+}
+
+function validateIndexShape(value: unknown): Index {
+  if (!isRecord(value) || !isRecord(value.meta) || !isRecord(value.nodes) || !isRecord(value.reverse_edges) || !isRecord(value.workspaces)) {
+    throw new Error("generated global index has an invalid shape");
+  }
+  return value as unknown as Index;
+}
+
+function publicProjectionErrors(index: Index, manifest: BundleManifest): string[] {
+  if (manifest.profile !== "public") return [];
+  const selected = new Set(manifest.selected_workspaces);
+  const rows = new Map(manifest.files.map((file) => [file.path, file]));
+  const errors: string[] = [];
+  for (const alias of Object.keys(index.workspaces)) {
+    if (!selected.has(alias)) errors.push(`public bundle contains unselected workspace ${alias}`);
+  }
+  for (const node of Object.values(index.nodes)) {
+    const row = rows.get(toPosixPath(node.path));
+    if (!selected.has(node.ws) || !row || row.visibility !== "public") errors.push(`public bundle contains non-public node ${node.qid}`);
+  }
+  return errors;
+}
 
 function toPosixPath(value: string): string {
   return value.split(path.sep).join("/");
@@ -103,7 +228,7 @@ function readJsonEntry<T>(entries: Map<string, Buffer>, entryPath: string): T {
 }
 
 function readBundleEntries(bundlePath: string): Map<string, Buffer> {
-  return new Map(readZipEntries(fs.readFileSync(bundlePath)).map((entry) => [entry.name, entry.data]));
+  return new Map(readZipFileEntries(bundlePath).map((entry) => [entry.name, entry.data]));
 }
 
 function resolveBundlePath(root: string, source: SubgraphSourceConfig): string {
@@ -213,6 +338,12 @@ function entryHashErrors(entries: Map<string, Buffer>, manifest: BundleManifest)
       errors.push(`size mismatch for ${file.path}`);
     }
   }
+  for (const required of REQUIRED_INDEX_ENTRIES) {
+    const data = entries.get(required);
+    if (data && sha256Buffer(data) !== manifest.index_hashes[required]) errors.push(`generated index hash mismatch: ${required}`);
+  }
+  if (manifestFilesHash(manifest.files.filter((file) => file.kind !== "generated_index")) !== manifest.source_tree_hash) errors.push("source_tree_hash mismatch");
+  if (manifestFilesHash(manifest.files) !== manifest.bundle_hash) errors.push("bundle_hash mismatch");
   return errors;
 }
 
@@ -253,11 +384,12 @@ function projectOneSource(
       throw new Error(`bundle not found: ${source.path}`);
     }
     entries = readBundleEntries(bundlePath);
-    manifest = readJsonEntry<BundleManifest>(entries, MANIFEST_ENTRY);
-    index = readJsonEntry<Index>(entries, GLOBAL_INDEX_ENTRY);
-    readJsonEntry<Record<string, unknown>>(entries, SKILLS_INDEX_ENTRY);
-    readJsonEntry<Record<string, unknown>>(entries, CAPABILITIES_INDEX_ENTRY);
+    manifest = validateForeignManifest(readJsonEntry<unknown>(entries, MANIFEST_ENTRY));
+    index = validateIndexShape(readJsonEntry<unknown>(entries, GLOBAL_INDEX_ENTRY));
+    if (!isRecord(readJsonEntry<unknown>(entries, SKILLS_INDEX_ENTRY))) throw new Error("generated skills index has an invalid shape");
+    if (!isRecord(readJsonEntry<unknown>(entries, CAPABILITIES_INDEX_ENTRY))) throw new Error("generated capabilities index has an invalid shape");
     errors.push(...entryHashErrors(entries, manifest));
+    errors.push(...publicProjectionErrors(index, manifest));
     if (manifest.profile !== source.expected_profile) {
       errors.push(`expected ${source.expected_profile} bundle but found ${manifest.profile}`);
     }

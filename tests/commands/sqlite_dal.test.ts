@@ -5,6 +5,8 @@ import os from "os";
 import path from "path";
 import { spawn } from "node:child_process";
 const { runCli } = require("../../cli");
+const { loadConfig } = require("../../core/config");
+const { reserveSqliteNumericId, writeSqliteIndex } = require("../../graph/sqlite_index");
 
 const binPath = path.resolve(__dirname, "..", "..", "cli.js");
 
@@ -83,6 +85,41 @@ test("fresh init defaults to sqlite backend and index writes mdkg.sqlite", () =>
   }
   assert.equal(captureRun(["doctor"], root).code, 0);
   assert.equal(captureRun(["validate"], root).code, 0);
+});
+
+test("SQLite rebuild and ID reservation reject linked index ancestry", (t) => {
+  const root = makeRoot("mdkg-sqlite-linked-index-");
+  const outside = makeRoot("mdkg-sqlite-linked-outside-");
+  assert.equal(captureRun(["init", "--agent"], root).code, 0);
+  fs.rmSync(path.join(root, ".mdkg", "index"), { recursive: true, force: true });
+  try {
+    fs.symlinkSync(outside, path.join(root, ".mdkg", "index"), "dir");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EPERM") {
+      t.skip("symbolic links unavailable");
+      return;
+    }
+    throw error;
+  }
+  const config = loadConfig(root);
+
+  assert.throws(
+    () =>
+      writeSqliteIndex({
+        root,
+        config,
+        nodeIndex: { nodes: {} },
+        skillsIndex: { skills: {} },
+        capabilitiesIndex: { records: [] },
+        subgraphsIndex: { subgraphs: [] },
+      }),
+    (error: unknown) => (error as { code?: string }).code === "ERR_CONTAINED_PATH_LINK"
+  );
+  assert.throws(
+    () => reserveSqliteNumericId({ root, config, ws: "root", prefix: "task", currentMax: 0 }),
+    (error: unknown) => (error as { code?: string }).code === "ERR_CONTAINED_PATH_LINK"
+  );
+  assert.equal(fs.existsSync(path.join(outside, "mdkg.sqlite")), false);
 });
 
 test("legacy config without sqlite fields remains json backend", () => {

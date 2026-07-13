@@ -4,6 +4,7 @@ import { buildBundle, BundleManifest, parseBundle, sha256Buffer } from "./bundle
 import { rebuildDerivedIndexCaches } from "./index";
 import { collectValidateReceipt, ValidateReceipt } from "./validate";
 import { loadConfig } from "../core/config";
+import { withContainedPathSink, writeContainedFileExclusive } from "../core/filesystem_authority";
 import { normalizeContainedWorkspacePath } from "../core/workspace_path";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
@@ -20,6 +21,7 @@ import { readZipEntries } from "../util/zip";
 import { withMutationLock } from "../util/lock";
 import { formatDate } from "../util/date";
 import { isUriRef } from "../util/refs";
+import { isCanonicalId, isPortableId } from "../util/id";
 
 export type GraphCloneCommandOptions = {
   root: string;
@@ -754,6 +756,21 @@ function renderNode(frontmatter: Record<string, FrontmatterValue>, body: string)
   return ["---", ...formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER), "---", body].join("\n");
 }
 
+function requireImportedIdentity(
+  sourcePath: string,
+  frontmatter: Record<string, FrontmatterValue>
+): { id: string; type: string } {
+  const id = typeof frontmatter.id === "string" ? frontmatter.id : undefined;
+  const type = typeof frontmatter.type === "string" ? frontmatter.type : undefined;
+  if (!id || !type) {
+    throw new ValidationError(`${sourcePath}: imported node requires string id and type`);
+  }
+  if (!isCanonicalId(id) && !isPortableId(id)) {
+    throw new ValidationError(`${sourcePath}: imported node id is invalid: ${id}`);
+  }
+  return { id, type };
+}
+
 function localIdsAndPaths(root: string): { ids: Set<string>; paths: Set<string> } {
   const config = loadConfig(root);
   const index = buildIndex(root, config);
@@ -787,11 +804,7 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
       throw new ValidationError(`graph source missing bundled file: ${sourcePath}`);
     }
     const parsed = parseFrontmatter(data.toString("utf8"), sourcePath);
-    const id = typeof parsed.frontmatter.id === "string" ? parsed.frontmatter.id : undefined;
-    const type = typeof parsed.frontmatter.type === "string" ? parsed.frontmatter.type : undefined;
-    if (!id || !type) {
-      throw new ValidationError(`${sourcePath}: imported node requires string id and type`);
-    }
+    const { id, type } = requireImportedIdentity(sourcePath, parsed.frontmatter);
     return { sourcePath, parsed, id, type };
   });
 
@@ -944,7 +957,7 @@ function applyImportTemplate(
         throw new ValidationError(`graph source missing bundled file: ${sourcePath}`);
       }
       const parsed = parseFrontmatter(data.toString("utf8"), sourcePath);
-      const id = String(parsed.frontmatter.id);
+      const { id } = requireImportedIdentity(sourcePath, parsed.frontmatter);
       return { sourcePath, parsed, id };
     });
     const idMap = new Map<string, string>();
@@ -986,13 +999,17 @@ function applyImportTemplate(
       contentByTarget.set(targetPath, renderNode(frontmatter, body));
     }
     for (const targetPath of files) {
+      withContainedPathSink(
+        { root: options.root, relativePath: targetPath, operation: "create", createParents: true },
+        () => undefined
+      );
+    }
+    for (const targetPath of files) {
       const content = contentByTarget.get(targetPath);
       if (!content) {
         throw new UsageError(`import plan content missing for ${targetPath}`);
       }
-      const targetAbs = path.resolve(options.root, targetPath);
-      fs.mkdirSync(path.dirname(targetAbs), { recursive: true });
-      atomicWriteFile(targetAbs, content);
+      writeContainedFileExclusive({ root: options.root, relativePath: targetPath }, content);
     }
     pauseLocalGoals(options.root, applyPlan.paused_goals, config);
     const indexReceipt = rebuildDerivedIndexCaches({ root: options.root });

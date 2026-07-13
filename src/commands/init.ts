@@ -1,5 +1,11 @@
 import fs from "fs";
 import path from "path";
+import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  ensureContainedDirectory,
+  readContainedFile,
+} from "../core/filesystem_authority";
 import { loadConfig, validateConfigSchema } from "../core/config";
 import { migrateConfig } from "../core/migrate";
 import { NotFoundError } from "../util/errors";
@@ -77,12 +83,12 @@ function recordSkipped(root: string, dest: string, stats: CopyStats): void {
 }
 
 function copySeedFile(root: string, src: string, dest: string, force: boolean, stats: CopyStats): void {
-  if (fs.existsSync(dest) && !force) {
+  const relativePath = displayPath(root, dest);
+  if (containedPathExists({ root, relativePath }) && !force) {
     recordSkipped(root, dest, stats);
     return;
   }
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.copyFileSync(src, dest);
+  atomicReplaceContainedFile({ root, relativePath }, fs.readFileSync(src));
   recordCreated(root, dest, stats);
 }
 
@@ -98,8 +104,11 @@ function copySeedDir(root: string, srcDir: string, destDir: string, force: boole
   }
 }
 
-function appendIgnoreEntries(filePath: string, entries: string[]): boolean {
-  const raw = fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : "";
+function appendIgnoreEntries(root: string, filePath: string, entries: string[]): boolean {
+  const relativePath = displayPath(root, filePath);
+  const raw = containedPathExists({ root, relativePath })
+    ? readContainedFile({ root, relativePath })
+    : "";
   const lines = raw.split(/\r?\n/);
   const existing = new Set(lines.map((line) => line.trim()).filter(Boolean));
   const additions = entries.filter((entry) => !existing.has(entry));
@@ -108,8 +117,7 @@ function appendIgnoreEntries(filePath: string, entries: string[]): boolean {
   }
   const suffix = raw.length === 0 || raw.endsWith("\n") ? "" : "\n";
   const updated = `${raw}${suffix}${additions.join("\n")}\n`;
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, updated, "utf8");
+  atomicReplaceContainedFile({ root, relativePath }, updated);
   return true;
 }
 
@@ -120,12 +128,12 @@ function writeFileIfMissing(
   force: boolean,
   stats: CopyStats
 ): void {
-  if (fs.existsSync(filePath) && !force) {
+  const relativePath = displayPath(root, filePath);
+  if (containedPathExists({ root, relativePath }) && !force) {
     recordSkipped(root, filePath, stats);
     return;
   }
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
+  atomicReplaceContainedFile({ root, relativePath }, content);
   recordCreated(root, filePath, stats);
 }
 
@@ -341,8 +349,11 @@ function parseCoreList(raw: string): { header: string[]; ids: string[] } {
   return { header, ids };
 }
 
-function ensureCorePins(coreListPath: string, requiredPins: string[]): void {
-  const raw = fs.existsSync(coreListPath) ? fs.readFileSync(coreListPath, "utf8") : "";
+function ensureCorePins(root: string, coreListPath: string, requiredPins: string[]): void {
+  const relativePath = displayPath(root, coreListPath);
+  const raw = containedPathExists({ root, relativePath })
+    ? readContainedFile({ root, relativePath })
+    : "";
   const { header, ids } = parseCoreList(raw);
 
   const seen = new Set<string>();
@@ -366,8 +377,7 @@ function ensureCorePins(coreListPath: string, requiredPins: string[]): void {
   }
 
   const output = [...normalizedHeader, "", ...finalIds, ""].join("\n");
-  fs.mkdirSync(path.dirname(coreListPath), { recursive: true });
-  fs.writeFileSync(coreListPath, output, "utf8");
+  atomicReplaceContainedFile({ root, relativePath }, output);
 }
 
 function refreshManifestHash(root: string, manifest: ReturnType<typeof createInitManifest>, relPath: string): void {
@@ -477,9 +487,9 @@ export function runInitCommand(options: InitCommandOptions): void {
   };
   const mdkgDir = path.join(root, ".mdkg");
   try {
-    fs.mkdirSync(mdkgDir, { recursive: true });
-    fs.mkdirSync(path.join(mdkgDir, "work"), { recursive: true });
-    fs.mkdirSync(path.join(mdkgDir, "design"), { recursive: true });
+    ensureContainedDirectory({ root, relativePath: ".mdkg" });
+    ensureContainedDirectory({ root, relativePath: ".mdkg/work" });
+    ensureContainedDirectory({ root, relativePath: ".mdkg/design" });
 
     copySeedFile(root, seedConfig, path.join(mdkgDir, "config.json"), force, stats);
     copySeedFile(root, seedReadme, path.join(mdkgDir, "README.md"), force, stats);
@@ -506,8 +516,8 @@ export function runInitCommand(options: InitCommandOptions): void {
       const registryPath = path.join(skillsDir, "registry.md");
       const eventsDir = path.join(mdkgDir, "work", "events");
       const eventsPath = path.join(eventsDir, "events.jsonl");
-      fs.mkdirSync(skillsDir, { recursive: true });
-      fs.mkdirSync(eventsDir, { recursive: true });
+      ensureContainedDirectory({ root, relativePath: ".mdkg/skills" });
+      ensureContainedDirectory({ root, relativePath: ".mdkg/work/events" });
       copySeedDir(root, seedDefaultSkills, skillsDir, force, stats);
       if (!fs.existsSync(seedSoul)) {
         writeFileIfMissing(root, soulPath, soulTemplate(today), force, stats);
@@ -524,7 +534,7 @@ export function runInitCommand(options: InitCommandOptions): void {
       }
 
       const coreListPath = path.join(mdkgDir, "core", "core.md");
-      ensureCorePins(coreListPath, [SOUL_PIN_ID, COLLABORATION_PIN_ID, HUMAN_PIN_ID]);
+      ensureCorePins(root, coreListPath, [SOUL_PIN_ID, COLLABORATION_PIN_ID, HUMAN_PIN_ID]);
       refreshManifestHash(root, seedManifest, ".mdkg/core/core.md");
       ensureCreatedCoreManifestEntry(root, seedManifest, ".mdkg/core/SOUL.md", stats);
       ensureCreatedCoreManifestEntry(root, seedManifest, ".mdkg/core/COLLABORATION.md", stats);
@@ -554,7 +564,7 @@ export function runInitCommand(options: InitCommandOptions): void {
 
   try {
     if (shouldUpdateGitignore) {
-      if (appendIgnoreEntries(path.join(root, ".gitignore"), [
+      if (appendIgnoreEntries(root, path.join(root, ".gitignore"), [
         ".mdkg/index/*.json",
         ".mdkg/index/*.tmp",
         ".mdkg/index/*.lock",
@@ -572,12 +582,12 @@ export function runInitCommand(options: InitCommandOptions): void {
       }
     }
     if (shouldUpdateNpmignore) {
-      if (appendIgnoreEntries(path.join(root, ".npmignore"), [".mdkg/", ".mdkg/index/", ".mdkg/pack/"])) {
+      if (appendIgnoreEntries(root, path.join(root, ".npmignore"), [".mdkg/", ".mdkg/index/", ".mdkg/pack/"])) {
         stats.ignoreFilesUpdated.push(".npmignore");
       }
     }
     if (options.updateDockerignore) {
-      if (appendIgnoreEntries(path.join(root, ".dockerignore"), [".mdkg/"])) {
+      if (appendIgnoreEntries(root, path.join(root, ".dockerignore"), [".mdkg/"])) {
         stats.ignoreFilesUpdated.push(".dockerignore");
       }
     }

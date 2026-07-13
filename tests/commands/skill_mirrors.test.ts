@@ -433,3 +433,54 @@ test("skill sync prunes stale managed mirrors and cleans unexpected root entries
     assert.deepEqual(manifest.managed_slugs, ["release-readiness"]);
   }
 });
+
+test("skill sync rejects linked mirror ancestry without touching outside sentinels", (t) => {
+  const root = makeTempDir("mdkg-skill-mirror-link-");
+  const outside = makeTempDir("mdkg-skill-mirror-outside-");
+  seedAgentBootstrap(root);
+  configureMirrorTargets(root, []);
+  runSkillNewCommand({
+    root,
+    slug: "release-readiness",
+    name: "release-readiness",
+    description: "audit release readiness when preparing a release",
+  });
+  configureMirrorTargets(root, [".agents/skills"]);
+  writeFile(path.join(outside, "sentinel.txt"), "outside\n");
+  try {
+    fs.symlinkSync(outside, path.join(root, ".agents"), "dir");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EPERM") {
+      t.skip("symbolic links unavailable");
+      return;
+    }
+    throw error;
+  }
+
+  assert.throws(
+    () => runSkillSyncCommand({ root }),
+    (error: unknown) => (error as { code?: string }).code === "ERR_CONTAINED_PATH_LINK"
+  );
+  assert.equal(fs.readFileSync(path.join(outside, "sentinel.txt"), "utf8"), "outside\n");
+  assert.equal(fs.existsSync(path.join(outside, "skills")), false);
+});
+
+test("invalid managed manifest slugs cannot become recursive deletion operands", () => {
+  const root = makeTempDir("mdkg-skill-mirror-slug-");
+  seedAgentBootstrap(root);
+  runSkillNewCommand({
+    root,
+    slug: "release-readiness",
+    name: "release-readiness",
+    description: "audit release readiness when preparing a release",
+  });
+  const protectedDir = path.join(root, "protected");
+  writeFile(path.join(protectedDir, "sentinel.txt"), "protected\n");
+  writeFile(
+    path.join(root, ".agents", "skills", ".mdkg-managed.json"),
+    `${JSON.stringify({ managed_slugs: ["release-readiness", "../../../protected"] }, null, 2)}\n`
+  );
+
+  assert.throws(() => runSkillSyncCommand({ root }), /already exists and is not mdkg-managed/);
+  assert.equal(fs.readFileSync(path.join(protectedDir, "sentinel.txt"), "utf8"), "protected\n");
+});

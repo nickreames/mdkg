@@ -193,7 +193,6 @@ test("runPackCommand handles empty skills policy and missing full skill body fal
     })
   );
   assert.match(captured.stderr, /warning: skills index is stale; run mdkg index to refresh/);
-
   const fallbackPayload = JSON.parse(
     fs.readFileSync(path.join(root, ".mdkg", "pack", "missing-full-skill.json"), "utf8")
   );
@@ -281,4 +280,75 @@ test("runPackCommand warns when cached indexes are stale and reindex is disabled
   );
   assert.match(captured.stderr, /warning: index is stale; run mdkg index to refresh/);
   assert.match(captured.stderr, /warning: skills index is stale; run mdkg index to refresh/);
+});
+
+test("cand-review-010-005 forged graph cache paths and visibility cannot disclose external bodies", () => {
+  const root = makeTempDir("mdkg-pack-forged-node-cache-");
+  const outside = makeTempDir("mdkg-pack-forged-node-outside-");
+  setup(root);
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  config.workspaces.root.visibility = "public";
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  runIndexCommand({ root, tolerant: false });
+
+  const externalNode = path.join(outside, "task.md");
+  writeFile(
+    externalNode,
+    fs.readFileSync(path.join(root, ".mdkg", "work", "task-1.md"), "utf8").replace("Pack body", "EXTERNAL_NODE_SECRET")
+  );
+  const indexPath = path.join(root, ".mdkg", "index", "global.json");
+  const cached = JSON.parse(fs.readFileSync(indexPath, "utf8"));
+  cached.nodes["root:task-1"].path = path.relative(root, externalNode);
+  cached.nodes["root:task-1"].attributes.visibility = "public";
+  fs.writeFileSync(indexPath, `${JSON.stringify(cached, null, 2)}\n`);
+  const future = new Date(Date.now() + 5000);
+  fs.utimesSync(indexPath, future, future);
+
+  runPackCommand({
+    root,
+    id: "task-1",
+    format: "json",
+    visibility: "public",
+    noReindex: true,
+    out: ".mdkg/pack/public-node.json",
+  });
+  const output = fs.readFileSync(path.join(root, ".mdkg", "pack", "public-node.json"), "utf8");
+  assert.match(output, /Pack body/);
+  assert.doesNotMatch(output, /EXTERNAL_NODE_SECRET/);
+});
+
+test("cand-review-010-006 forged skill cache paths cannot disclose external SKILL bodies", () => {
+  const root = makeTempDir("mdkg-pack-forged-skill-cache-");
+  const outside = makeTempDir("mdkg-pack-forged-skill-outside-");
+  setup(root, ["deploy-service"]);
+  writeSkill(root, "deploy-service");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  config.workspaces.root.visibility = "public";
+  writeFile(configPath, JSON.stringify(config, null, 2));
+  runIndexCommand({ root, tolerant: false });
+
+  const externalSkill = path.join(outside, "SKILL.md");
+  writeFile(externalSkill, fs.readFileSync(path.join(root, ".mdkg", "skills", "deploy-service", "SKILL.md"), "utf8").replace("1. Do the thing.", "EXTERNAL_SKILL_SECRET"));
+  const skillsPath = path.join(root, ".mdkg", "index", "skills.json");
+  const cached = JSON.parse(fs.readFileSync(skillsPath, "utf8"));
+  cached.skills["deploy-service"].path = path.relative(root, externalSkill);
+  cached.skills["deploy-service"].ws = "root";
+  fs.writeFileSync(skillsPath, `${JSON.stringify(cached, null, 2)}\n`);
+  const future = new Date(Date.now() + 5000);
+  fs.utimesSync(skillsPath, future, future);
+
+  runPackCommand({
+    root,
+    id: "task-1",
+    format: "json",
+    visibility: "public",
+    skillsDepth: "full",
+    noReindex: true,
+    out: ".mdkg/pack/public-skill.json",
+  });
+  const output = fs.readFileSync(path.join(root, ".mdkg", "pack", "public-skill.json"), "utf8");
+  assert.match(output, /1\. Do the thing\./);
+  assert.doesNotMatch(output, /EXTERNAL_SKILL_SECRET/);
 });

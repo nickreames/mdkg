@@ -436,13 +436,12 @@ function validateAgentWorkflowDisputeRefs(
   }
 }
 
-function buildNodeIdsByWorkspace(index: Index): Record<string, Set<string>> {
-  const nodeIdsByWorkspace: Record<string, Set<string>> = {};
+function buildNodeIdsByWorkspace(index: Index): Map<string, Set<string>> {
+  const nodeIdsByWorkspace = new Map<string, Set<string>>();
   for (const node of Object.values(index.nodes)) {
-    if (!nodeIdsByWorkspace[node.ws]) {
-      nodeIdsByWorkspace[node.ws] = new Set();
-    }
-    nodeIdsByWorkspace[node.ws].add(node.id);
+    const ids = nodeIdsByWorkspace.get(node.ws) ?? new Set<string>();
+    ids.add(node.id);
+    nodeIdsByWorkspace.set(node.ws, ids);
   }
   return nodeIdsByWorkspace;
 }
@@ -452,7 +451,7 @@ function validateAgentWorkflowNodeIdRef(
   ws: string,
   field: string,
   value: string,
-  nodeIdsByWorkspace: Record<string, Set<string>>,
+  nodeIdsByWorkspace: Map<string, Set<string>>,
   allowSkillRef: boolean,
   knownSkillSlugs: Set<string> | undefined,
   externalWorkspaces: Set<string> | undefined,
@@ -463,10 +462,10 @@ function validateAgentWorkflowNodeIdRef(
   if (workspace && value.includes(":") && externalWorkspaces?.has(workspace)) {
     return;
   }
-  if (value.includes(":") && nodeIdsByWorkspace[workspace]?.has(value.split(":").slice(1).join(":"))) {
+  if (value.includes(":") && nodeIdsByWorkspace.get(workspace)?.has(value.split(":").slice(1).join(":"))) {
     return;
   }
-  if (nodeIdsByWorkspace[ws]?.has(value)) {
+  if (nodeIdsByWorkspace.get(ws)?.has(value)) {
     return;
   }
   if (
@@ -538,16 +537,15 @@ function validateAgentWorkflowFeedbackProposalRefs(
   }
 }
 
-function buildArchiveIdsByWorkspace(index: Index): Record<string, Set<string>> {
-  const archiveIdsByWorkspace: Record<string, Set<string>> = {};
+function buildArchiveIdsByWorkspace(index: Index): Map<string, Set<string>> {
+  const archiveIdsByWorkspace = new Map<string, Set<string>>();
   for (const node of Object.values(index.nodes)) {
     if (node.type !== "archive") {
       continue;
     }
-    if (!archiveIdsByWorkspace[node.ws]) {
-      archiveIdsByWorkspace[node.ws] = new Set();
-    }
-    archiveIdsByWorkspace[node.ws].add(node.id);
+    const ids = archiveIdsByWorkspace.get(node.ws) ?? new Set<string>();
+    ids.add(node.id);
+    archiveIdsByWorkspace.set(node.ws, ids);
   }
   return archiveIdsByWorkspace;
 }
@@ -557,7 +555,7 @@ function validateArchiveUriValue(
   ws: string,
   field: string,
   value: string,
-  archiveIdsByWorkspace: Record<string, Set<string>>,
+  archiveIdsByWorkspace: Map<string, Set<string>>,
   allowMissing: boolean,
   errors: string[] | null
 ): void {
@@ -569,7 +567,7 @@ function validateArchiveUriValue(
     pushError(errors, `${qid}: ${field} has malformed archive ref ${value}`);
     return;
   }
-  if (archiveIdsByWorkspace[ws]?.has(archiveId)) {
+  if (archiveIdsByWorkspace.get(ws)?.has(archiveId)) {
     return;
   }
   if (allowMissing) {

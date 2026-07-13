@@ -1,7 +1,14 @@
 import fs from "fs";
 import path from "path";
 import { Config, defaultCustomizationConfig } from "../core/config";
-import { buildSkillsIndex, resolveSkillsRoot, SkillsIndex } from "../graph/skills_indexer";
+import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  ensureContainedDirectory,
+  readContainedFile,
+  withContainedTreeSink,
+} from "../core/filesystem_authority";
+import { buildSkillsIndex, resolveSkillsRoot, SKILL_SLUG_RE, SkillsIndex } from "../graph/skills_indexer";
 import { UsageError } from "../util/errors";
 
 const MANIFEST_FILE = ".mdkg-managed.json";
@@ -13,7 +20,9 @@ const MANAGED_ROOT_MARKERS = [
 const ALLOWED_ROOT_ENTRIES = ["SKILL.md", "references", "assets", "scripts"];
 
 type MirrorTarget = {
+  boundaryRoot: string;
   configuredPath: string;
+  relativeSkillsRoot: string;
   rootDir: string;
   skillsRoot: string;
   manifestPath: string;
@@ -58,7 +67,9 @@ function resolveMirrorTargets(root: string, config?: Config): MirrorTarget[] {
   return configuredSkillMirrorTargets(config).map((configuredPath) => {
     const skillsRoot = path.join(root, configuredPath);
     return {
+      boundaryRoot: root,
       configuredPath,
+      relativeSkillsRoot: configuredPath.split(/[\\/]/).join("/"),
       rootDir: path.dirname(skillsRoot),
       skillsRoot,
       manifestPath: path.join(skillsRoot, MANIFEST_FILE),
@@ -67,19 +78,22 @@ function resolveMirrorTargets(root: string, config?: Config): MirrorTarget[] {
 }
 
 function readManifest(target: MirrorTarget): Set<string> {
-  if (!fs.existsSync(target.manifestPath)) {
+  const relativeManifest = `${target.relativeSkillsRoot}/${MANIFEST_FILE}`;
+  if (!containedPathExists({ root: target.boundaryRoot, relativePath: relativeManifest })) {
     return new Set();
   }
   try {
-    const parsed = JSON.parse(fs.readFileSync(target.manifestPath, "utf8")) as MirrorManifest;
+    const parsed = JSON.parse(
+      readContainedFile({ root: target.boundaryRoot, relativePath: relativeManifest })
+    ) as MirrorManifest;
     if (!Array.isArray(parsed.managed_slugs)) {
       return new Set();
     }
-    return new Set(
-      parsed.managed_slugs
-        .map((value) => String(value).trim().toLowerCase())
-        .filter(Boolean)
-    );
+    const slugs = parsed.managed_slugs.map((value) => String(value).trim().toLowerCase());
+    if (slugs.some((slug) => !SKILL_SLUG_RE.test(slug))) {
+      return new Set();
+    }
+    return new Set(slugs);
   } catch {
     return new Set();
   }
@@ -89,8 +103,11 @@ function writeManifest(target: MirrorTarget, managed: Iterable<string>): void {
   const payload: MirrorManifest = {
     managed_slugs: Array.from(new Set(Array.from(managed).map((value) => value.toLowerCase()))).sort(),
   };
-  fs.mkdirSync(target.skillsRoot, { recursive: true });
-  fs.writeFileSync(target.manifestPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  ensureContainedDirectory({ root: target.boundaryRoot, relativePath: target.relativeSkillsRoot });
+  atomicReplaceContainedFile(
+    { root: target.boundaryRoot, relativePath: `${target.relativeSkillsRoot}/${MANIFEST_FILE}` },
+    `${JSON.stringify(payload, null, 2)}\n`
+  );
 }
 
 function shouldCreateMirrorRoots(root: string, config?: Config): boolean {
@@ -298,35 +315,40 @@ export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMir
       continue;
     }
     touchedTargets += 1;
-    fs.mkdirSync(target.skillsRoot, { recursive: true });
-    const managed = readManifest(target);
+    ensureContainedDirectory({ root: options.root, relativePath: target.relativeSkillsRoot });
+    withContainedTreeSink(
+      { root: options.root, relativePath: target.relativeSkillsRoot, operation: "replace" },
+      () => {
+        const managed = readManifest(target);
 
-    for (const source of sources) {
-      const destDir = path.join(target.skillsRoot, source.slug);
-      const exists = fs.existsSync(destDir);
-      if (exists && !managed.has(source.slug) && !force) {
-        throw new UsageError(
-          `${path.relative(options.root, destDir)} already exists and is not mdkg-managed; rerun \`mdkg skill sync --force\` to replace it`
-        );
-      }
-      materializeSkillMirror(source, destDir);
-      managed.add(source.slug);
-      synced += 1;
-    }
+        for (const source of sources) {
+          const destDir = path.join(target.skillsRoot, source.slug);
+          const exists = fs.existsSync(destDir);
+          if (exists && !managed.has(source.slug) && !force) {
+            throw new UsageError(
+              `${path.relative(options.root, destDir)} already exists and is not mdkg-managed; rerun \`mdkg skill sync --force\` to replace it`
+            );
+          }
+          materializeSkillMirror(source, destDir);
+          managed.add(source.slug);
+          synced += 1;
+        }
 
-    for (const slug of Array.from(managed)) {
-      if (sources.some((source) => source.slug === slug)) {
-        continue;
-      }
-      const destDir = path.join(target.skillsRoot, slug);
-      if (fs.existsSync(destDir)) {
-        fs.rmSync(destDir, { recursive: true, force: true });
-        pruned += 1;
-      }
-      managed.delete(slug);
-    }
+        for (const slug of Array.from(managed)) {
+          if (sources.some((source) => source.slug === slug)) {
+            continue;
+          }
+          const destDir = path.join(target.skillsRoot, slug);
+          if (fs.existsSync(destDir)) {
+            fs.rmSync(destDir, { recursive: true, force: true });
+            pruned += 1;
+          }
+          managed.delete(slug);
+        }
 
-    writeManifest(target, managed);
+        writeManifest(target, managed);
+      }
+    );
   }
 
   return { synced, pruned, targets: touchedTargets };
@@ -408,8 +430,8 @@ export function auditSkillMirrors(root: string, config: Config): string[] {
 
 export function scaffoldMirrorRoots(root: string, config?: Config): void {
   for (const target of resolveMirrorTargets(root, config)) {
-    fs.mkdirSync(target.skillsRoot, { recursive: true });
-    if (!fs.existsSync(target.manifestPath)) {
+    ensureContainedDirectory({ root, relativePath: target.relativeSkillsRoot });
+    if (!containedPathExists({ root, relativePath: `${target.relativeSkillsRoot}/${MANIFEST_FILE}` })) {
       writeManifest(target, []);
     }
   }

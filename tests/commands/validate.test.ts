@@ -359,6 +359,32 @@ test("runValidateCommand changed-only filters warnings but keeps graph errors", 
   assert.ok(receipt.errors.some((error) => error.includes("run_id is required")));
 });
 
+test("changed-only validation expands untracked workflow directories to file paths", () => {
+  const root = makeTempDir("mdkg-validate-changed-untracked-directory-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTaskWithId(root, "task-1");
+  git(root, ["init", "-q"]);
+  git(root, ["add", ".mdkg"]);
+  git(root, ["-c", "user.name=mdkg", "-c", "user.email=mdkg@example.invalid", "commit", "-q", "-m", "seed"]);
+
+  const nestedPath = path.join(root, ".mdkg", "work", "nested", "RECEIPT.md");
+  fs.mkdirSync(path.dirname(nestedPath), { recursive: true });
+  fs.copyFileSync(
+    path.resolve(__dirname, "..", "..", "..", "tests", "fixtures", "agent", "valid", "runtime-receipt", "RECEIPT.md"),
+    nestedPath
+  );
+  fs.appendFileSync(nestedPath, "\nRAW_SECRET_MARKER\n", "utf8");
+
+  const output = captureOutput(() => runValidateCommand({ root, json: true, changedOnly: true }));
+  const receipt = JSON.parse(output.stdout) as {
+    warnings: string[];
+    warning_filter: { changed_paths: string[] };
+  };
+  assert.ok(receipt.warning_filter.changed_paths.includes(".mdkg/work/nested/RECEIPT.md"));
+  assert.ok(receipt.warnings.some((warning) => warning.includes("root:receipt.runtime-render-1") && warning.includes("raw-content")));
+});
+
 test("runValidateCommand emits a failing JSON receipt before throwing", () => {
   const root = makeTempDir("mdkg-validate-json-fail-");
   writeConfig(root);

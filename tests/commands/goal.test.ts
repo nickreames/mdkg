@@ -182,6 +182,26 @@ test("goal show reports deterministic goal metadata", () => {
   assert.deepEqual(receipt.goal.required_checks, ["npm run build", "node dist/cli.js validate"]);
 });
 
+test("read-only goal commands rebuild missing indexes without persisting them", () => {
+  const root = setupRepo();
+  writeGoal(root, { active_node: "", scope_refs: "[task-1]" });
+  writeTask(root, "task-1", "Next task", "todo", 1);
+  const indexDir = path.join(root, ".mdkg", "index");
+  fs.rmSync(indexDir, { recursive: true, force: true });
+
+  const commands = [
+    () => runGoalShowCommand({ root, id: "goal-1", json: true }),
+    () => runGoalCurrentCommand({ root, json: true }),
+    () => runGoalNextCommand({ root, id: "goal-1", json: true }),
+    () => runGoalEvaluateCommand({ root, id: "goal-1", json: true }),
+  ];
+  for (const command of commands) {
+    const output = captureOutput(command);
+    assert.notEqual(output.stdout, "");
+    assert.equal(fs.existsSync(indexDir), false);
+  }
+});
+
 test("goal next prefers active concrete local work and never returns goal node", () => {
   const root = setupRepo();
   writeGoal(root);

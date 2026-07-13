@@ -2,6 +2,15 @@ import fs from "fs";
 import path from "path";
 import { spawnSync } from "child_process";
 import { loadConfig, SubgraphConfig, SubgraphSourceConfig, validateConfigSchema } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  ensureContainedDirectory,
+  readContainedFile,
+  removeContainedPath,
+  writeContainedFileExclusive,
+  withContainedPathSink,
+} from "../core/filesystem_authority";
 import { migrateConfig } from "../core/migrate";
 import { normalizeContainedWorkspacePath } from "../core/workspace_path";
 import { buildSubgraphsIndex, SubgraphHealth } from "../graph/subgraphs";
@@ -91,6 +100,9 @@ function writeJson(value: unknown): void {
 function normalizeAlias(alias: string): string {
   if (alias === "all") {
     throw new UsageError("subgraph alias cannot be 'all'");
+  }
+  if (alias === "__proto__" || alias === "constructor" || alias === "prototype") {
+    throw new UsageError(`subgraph alias is reserved: ${alias}`);
   }
   if (alias !== alias.toLowerCase() || !ALIAS_RE.test(alias)) {
     throw new UsageError("subgraph alias must be lowercase and use [a-z0-9_]");
@@ -818,10 +830,15 @@ function inspectSourcePath(root: string, alias: string, subgraph: SubgraphConfig
     throw new UsageError(`subgraph ${alias} is missing source_path`);
   }
   const sourcePath = normalizeContained(subgraph.source_path, `subgraphs.${alias}.source_path`);
-  const sourceRoot = path.resolve(root, sourcePath);
-  if (!fs.existsSync(sourceRoot) || !fs.statSync(sourceRoot).isDirectory()) {
-    throw new NotFoundError(`subgraph ${alias} source_path does not exist: ${sourcePath}`);
-  }
+  const sourceRoot = withContainedPathSink(
+    { root, relativePath: sourcePath, operation: "read" },
+    ({ absolutePath }) => {
+      if (!fs.existsSync(absolutePath) || !fs.lstatSync(absolutePath).isDirectory()) {
+        throw new NotFoundError(`subgraph ${alias} source_path does not exist: ${sourcePath}`);
+      }
+      return absolutePath;
+    }
+  );
   const gitTop = gitRun(sourceRoot, ["rev-parse", "--show-toplevel"]);
   const gitTopPath = gitTop.stdout.trim();
   if (!gitTop.ok || !gitTopPath) {
@@ -961,13 +978,36 @@ function syncOneAlias(options: {
   const planned: Array<{ source: SubgraphSourceConfig; outputPath: string; zip: Buffer; newBundleHash: string; newZipSha256: string }> = [];
   for (const source of activeSources) {
     const outputPath = path.resolve(options.root, source.path);
+    let oldBundleHash: string | undefined;
+    let oldZipSha256: string | undefined;
+    try {
+      withContainedPathSink(
+        { root: options.root, relativePath: source.path, operation: "replace", createParents: true },
+        ({ absolutePath }) => {
+          oldBundleHash = existingBundleHash(absolutePath);
+          oldZipSha256 = fs.existsSync(absolutePath) ? sha256Buffer(fs.readFileSync(absolutePath)) : undefined;
+        }
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      sources.push({
+        label: source.label,
+        path: source.path,
+        enabled: source.enabled,
+        expected_profile: source.expected_profile,
+        warnings: [],
+        errors: [message],
+      });
+      errors.push(`source ${source.path}: ${message}`);
+      continue;
+    }
     const sourceReceipt: SyncSourceReceipt = {
       label: source.label,
       path: source.path,
       enabled: source.enabled,
       expected_profile: source.expected_profile,
-      old_bundle_hash: existingBundleHash(outputPath),
-      old_zip_sha256: fs.existsSync(outputPath) ? sha256Buffer(fs.readFileSync(outputPath)) : undefined,
+      old_bundle_hash: oldBundleHash,
+      old_zip_sha256: oldZipSha256,
       warnings: [],
       errors: [],
     };
@@ -1009,7 +1049,10 @@ function syncOneAlias(options: {
   for (const item of planned) {
     const sourceReceipt = sources.find((source) => source.path === item.source.path);
     try {
-      atomicWriteFile(item.outputPath, item.zip);
+      atomicReplaceContainedFile(
+        { root: options.root, relativePath: relativeToRoot(options.root, item.outputPath) },
+        item.zip
+      );
       const verify = verifyBundle(gitState.sourceRoot, item.outputPath);
       sourceReceipt!.verified = verify.ok;
       if (!verify.ok) {
@@ -1094,11 +1137,11 @@ function safeZipEntryPath(entryName: string): string {
   return normalized;
 }
 
-function writeMaterializeGitignore(targetRoot: string): void {
-  const gitignorePath = path.join(targetRoot, ".gitignore");
+function writeMaterializeGitignore(root: string, targetRoot: string): void {
+  const gitignoreRelative = relativeToRoot(root, path.join(targetRoot, ".gitignore"));
   const required = ["*", "!.gitignore"];
-  const existing = fs.existsSync(gitignorePath)
-    ? fs.readFileSync(gitignorePath, "utf8").split(/\r?\n/)
+  const existing = containedPathExists({ root, relativePath: gitignoreRelative })
+    ? readContainedFile({ root, relativePath: gitignoreRelative }, "utf8").split(/\r?\n/)
     : [];
   const lines = existing.filter((line) => line.length > 0);
   for (const line of required) {
@@ -1106,7 +1149,7 @@ function writeMaterializeGitignore(targetRoot: string): void {
       lines.push(line);
     }
   }
-  atomicWriteFile(gitignorePath, `${lines.join("\n")}\n`);
+  atomicReplaceContainedFile({ root, relativePath: gitignoreRelative }, `${lines.join("\n")}\n`);
 }
 
 function materializeOneAlias(options: {
@@ -1120,6 +1163,16 @@ function materializeOneAlias(options: {
   const errors: string[] = [];
   const warnings: string[] = [];
   const outputDir = path.join(options.targetRoot, options.alias);
+  const outputRelative = relativeToRoot(options.root, outputDir);
+  try {
+    withContainedPathSink(
+      { root: options.root, relativePath: outputRelative, operation: "replace", createParents: true },
+      () => undefined
+    );
+  } catch (error) {
+    errors.push(error instanceof Error ? error.message : String(error));
+    return { alias: options.alias, ok: false, output_path: outputRelative, warnings, errors };
+  }
   if (enabled.length !== 1) {
     errors.push(`materialize requires exactly one enabled source for ${options.alias}; found ${enabled.length}`);
     return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
@@ -1143,15 +1196,20 @@ function materializeOneAlias(options: {
   }
 
   const tempDir = path.join(options.targetRoot, `.${options.alias}.${process.pid}.${Date.now()}.tmp`);
-  fs.rmSync(tempDir, { recursive: true, force: true });
+  const tempRelative = relativeToRoot(options.root, tempDir);
+  removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
   try {
-    const parsed = parseBundle(bundlePath);
-    fs.mkdirSync(tempDir, { recursive: true });
+    const parsed = withContainedPathSink(
+      { root: options.root, relativePath: source.path, operation: "read" },
+      ({ absolutePath }) => parseBundle(absolutePath)
+    );
+    ensureContainedDirectory({ root: options.root, relativePath: tempRelative });
     for (const [entryName, data] of parsed.entries.entries()) {
       const safeName = safeZipEntryPath(entryName);
-      const target = path.join(tempDir, safeName);
-      fs.mkdirSync(path.dirname(target), { recursive: true });
-      fs.writeFileSync(target, data);
+      writeContainedFileExclusive(
+        { root: options.root, relativePath: `${tempRelative}/${safeName}` },
+        data
+      );
     }
     const marker = {
       tool: "mdkg",
@@ -1159,19 +1217,28 @@ function materializeOneAlias(options: {
       alias: options.alias,
       bundle_path: source.path,
       bundle_hash: parsed.manifest.bundle_hash,
-      zip_sha256: sha256Buffer(fs.readFileSync(bundlePath)),
+      zip_sha256: sha256Buffer(readContainedFile({ root: options.root, relativePath: source.path }, null)),
       profile: parsed.manifest.profile,
       source_repo: options.subgraph.source_repo ?? parsed.manifest.source.repo,
       source_git_head: parsed.manifest.source.git_head,
       generated_at: new Date().toISOString(),
       mdkg_version: readPackageVersion(),
     };
-    fs.writeFileSync(path.join(tempDir, ".mdkg-materialized.json"), `${JSON.stringify(marker, null, 2)}\n`, "utf8");
+    writeContainedFileExclusive(
+      { root: options.root, relativePath: `${tempRelative}/.mdkg-materialized.json` },
+      `${JSON.stringify(marker, null, 2)}\n`
+    );
     if (fs.existsSync(outputDir)) {
-      fs.rmSync(outputDir, { recursive: true, force: true });
+      removeContainedPath({ root: options.root, relativePath: outputRelative, recursive: true, force: true });
     }
-    fs.mkdirSync(path.dirname(outputDir), { recursive: true });
-    fs.renameSync(tempDir, outputDir);
+    withContainedPathSink(
+      { root: options.root, relativePath: outputRelative, operation: "replace", createParents: true },
+      ({ absolutePath: safeOutput }) =>
+        withContainedPathSink(
+          { root: options.root, relativePath: tempRelative, operation: "read" },
+          ({ absolutePath: safeTemp }) => fs.renameSync(safeTemp, safeOutput)
+        )
+    );
     return {
       alias: options.alias,
       ok: true,
@@ -1183,7 +1250,7 @@ function materializeOneAlias(options: {
       errors,
     };
   } catch (err) {
-    fs.rmSync(tempDir, { recursive: true, force: true });
+    removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
     errors.push(err instanceof Error ? err.message : String(err));
     return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
   }
@@ -1204,8 +1271,8 @@ export function runSubgraphMaterializeCommand(options: SubgraphMaterializeOption
       })
     );
     if (options.gitignore) {
-      fs.mkdirSync(targetRoot, { recursive: true });
-      writeMaterializeGitignore(targetRoot);
+      ensureContainedDirectory({ root: options.root, relativePath: relativeToRoot(options.root, targetRoot) });
+      writeMaterializeGitignore(options.root, targetRoot);
     }
     const ok = results.every((item) => item.ok === true);
     const receipt = {

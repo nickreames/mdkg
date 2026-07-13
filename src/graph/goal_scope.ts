@@ -18,6 +18,7 @@ export type GoalScopeResult = {
 
 export type GoalScopeOptions = {
   includeCompatibilityRefs?: boolean;
+  maxNodes?: number;
 };
 
 function toStringList(value: unknown): string[] {
@@ -98,6 +99,9 @@ export function collectGoalScope(
   function enqueue(qid: string): void {
     if (queued.has(qid)) {
       return;
+    }
+    if (options.maxNodes !== undefined && queued.size >= options.maxNodes) {
+      throw new Error(`goal scope traversal exceeds node limit: ${options.maxNodes}`);
     }
     queued.add(qid);
     queue.push(qid);

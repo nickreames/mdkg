@@ -1,0 +1,836 @@
+{
+  "schema_version": 1,
+  "release": "0.5.0",
+  "source_scan": {
+    "mode": "standard",
+    "target_kind": "repository",
+    "revision": "8ac683599cd2765e7f33fa93113dbace8ed77543",
+    "disposition_source": "attack-path reconciliation",
+    "limitation": "The classifier/reporting capability did not complete; these 51 reportable candidates are the durable provisional reconciliation set and require a fresh release-qualification scan."
+  },
+  "expected_counts": {
+    "total": 51,
+    "high": 5,
+    "medium": 28,
+    "low": 18
+  },
+  "findings": [
+    {
+      "id": "cand-review-001-004",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "read-only-persistent-reindex",
+      "affected_sink": "src/cli.ts:2881",
+      "owner_task": "task-770",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-505",
+        "src/cli.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/read_only_observational.test.ts#read-only command families leave SQLite"
+      ]
+    },
+    {
+      "id": "cand-review-002-001",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "bundle-profile-confusion",
+      "affected_sink": "src/commands/bundle.ts:738",
+      "owner_task": "task-766",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-501",
+        "src/commands/bundle.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/bundle.test.ts#foreign bundle manifests are validated",
+        "tests/commands/bundle.test.ts#payload hashes and required generated indexes"
+      ]
+    },
+    {
+      "id": "cand-review-002-003",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "path-traversal",
+      "affected_sink": "src/commands/graph.ts:740",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/graph.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-002-003"
+      ]
+    },
+    {
+      "id": "cand-review-002-004",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/archive.ts:407",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/archive.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-002-004"
+      ]
+    },
+    {
+      "id": "cand-review-002-005",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "derived-index-path-trust",
+      "affected_sink": "src/commands/archive.ts:551",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/archive.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-002-005"
+      ]
+    },
+    {
+      "id": "cand-review-002-006",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/bundle.ts:829",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/bundle.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-002-006"
+      ]
+    },
+    {
+      "id": "cand-review-002-007",
+      "severity": "low",
+      "priority": "P3",
+      "category": "resource-bound-bypass",
+      "affected_sink": "src/util/zip.ts:217",
+      "owner_task": "task-772",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-507",
+        "src/util/zip.ts"
+      ],
+      "regression_refs": [
+        "tests/util/zip.test.ts#local entry count exceeds declared or configured limit"
+      ]
+    },
+    {
+      "id": "cand-review-004-001",
+      "severity": "low",
+      "priority": "P3",
+      "category": "path-traversal",
+      "affected_sink": "src/templates/builtin.ts:21",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/templates/builtin.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-004-001"
+      ]
+    },
+    {
+      "id": "cand-review-004-003",
+      "severity": "high",
+      "priority": "P1",
+      "category": "path-traversal",
+      "affected_sink": "src/commands/skill_mirror.ts:321",
+      "owner_task": "task-764",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-499",
+        "src/commands/skill_mirror.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/skill_mirrors.test.ts#skill sync rejects linked mirror ancestry"
+      ]
+    },
+    {
+      "id": "cand-review-004-004",
+      "severity": "high",
+      "priority": "P1",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/skill_mirror.ts:191",
+      "owner_task": "task-764",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-499",
+        "src/commands/skill_mirror.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/skill_mirrors.test.ts#skill sync rejects linked mirror ancestry"
+      ]
+    },
+    {
+      "id": "cand-review-004-005",
+      "severity": "high",
+      "priority": "P1",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/workspace.ts:206",
+      "owner_task": "task-764",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-499",
+        "src/commands/workspace.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/workspace.test.ts#workspace add rejects linked ancestry"
+      ]
+    },
+    {
+      "id": "cand-review-005-001",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "git-argument-injection",
+      "affected_sink": "src/commands/git.ts:487",
+      "owner_task": "task-773",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-508",
+        "src/commands/git.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/git.test.ts#git commands reject option-like remote repository"
+      ]
+    },
+    {
+      "id": "cand-review-005-003",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/git.ts:442",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/git.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-005-003"
+      ]
+    },
+    {
+      "id": "cand-review-005-004",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/git.ts:621",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/git.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-005-004"
+      ]
+    },
+    {
+      "id": "cand-review-005-006",
+      "severity": "low",
+      "priority": "P3",
+      "category": "lock-owner-symlink-read",
+      "affected_sink": "src/util/lock.ts:71",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/util/lock.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-005-006"
+      ]
+    },
+    {
+      "id": "cand-review-006-001",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/core/project_db_migrations.ts:401",
+      "owner_task": "task-764",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-499",
+        "src/core/project_db_migrations.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/db_index.test.ts#db migrate rejects linked migration and runtime paths"
+      ]
+    },
+    {
+      "id": "cand-review-008-001",
+      "severity": "high",
+      "priority": "P1",
+      "category": "snapshot-path-containment",
+      "affected_sink": "src/core/project_db_snapshot.ts:147",
+      "owner_task": "task-764",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-499",
+        "src/core/project_db_snapshot.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/db_index.test.ts#db snapshot dump and diff reject linked inputs"
+      ]
+    },
+    {
+      "id": "cand-review-008-002",
+      "severity": "high",
+      "priority": "P1",
+      "category": "sqlite-index-path-containment",
+      "affected_sink": "src/graph/sqlite_index.ts:72",
+      "owner_task": "task-764",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-499",
+        "src/graph/sqlite_index.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/sqlite_dal.test.ts#SQLite rebuild and ID reservation reject linked index ancestry"
+      ]
+    },
+    {
+      "id": "cand-review-008-003",
+      "severity": "low",
+      "priority": "P3",
+      "category": "queue-policy-toctou",
+      "affected_sink": "src/core/project_db_snapshot.ts:357",
+      "owner_task": "task-768",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-503",
+        "src/core/project_db_snapshot.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/db_index.test.ts#snapshot verification requires runtime identity"
+      ]
+    },
+    {
+      "id": "cand-review-008-004",
+      "severity": "low",
+      "priority": "P3",
+      "category": "snapshot-freshness-bypass",
+      "affected_sink": "src/core/project_db_snapshot.ts:522",
+      "owner_task": "task-768",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-503",
+        "src/core/project_db_snapshot.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/db_index.test.ts#snapshot verification requires runtime identity"
+      ]
+    },
+    {
+      "id": "cand-review-009-002",
+      "severity": "low",
+      "priority": "P3",
+      "category": "case-folded-authorization",
+      "affected_sink": "src/graph/node.ts:433",
+      "owner_task": "task-769",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-504",
+        "src/graph/node.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/loop.test.ts#loop readiness binds decisions approvals evidence and waivers"
+      ]
+    },
+    {
+      "id": "cand-review-009-003",
+      "severity": "low",
+      "priority": "P3",
+      "category": "unbounded-graph-input",
+      "affected_sink": "src/graph/indexer.ts:127",
+      "owner_task": "task-772",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-507",
+        "src/graph/indexer.ts"
+      ],
+      "regression_refs": [
+        "tests/graph/indexer.test.ts#buildIndex rejects graph count and byte budgets"
+      ]
+    },
+    {
+      "id": "cand-review-009-004",
+      "severity": "low",
+      "priority": "P3",
+      "category": "repeated-bundle-inflation",
+      "affected_sink": "src/graph/node_body.ts:17",
+      "owner_task": "task-772",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-507",
+        "src/graph/node_body.ts"
+      ],
+      "regression_refs": [
+        "tests/graph/node_body.test.ts#inflates each imported bundle once"
+      ]
+    },
+    {
+      "id": "cand-review-009-005",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "algorithmic-complexity",
+      "affected_sink": "src/graph/node.ts:382",
+      "owner_task": "task-772",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-507",
+        "src/graph/node.ts"
+      ],
+      "regression_refs": [
+        "tests/graph/node.test.ts#parseNode validates loop readiness binding identities"
+      ]
+    },
+    {
+      "id": "cand-review-009-006",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "prototype-key-collision",
+      "affected_sink": "src/graph/validate_graph.ts:445",
+      "owner_task": "task-773",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-508",
+        "src/graph/validate_graph.ts"
+      ],
+      "regression_refs": [
+        "tests/graph/validate_graph.test.ts#prototype-safe workspace identity maps"
+      ]
+    },
+    {
+      "id": "cand-review-010-004",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/handoff.ts:52",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/handoff.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-010-004"
+      ]
+    },
+    {
+      "id": "cand-review-010-005",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "cache-path-read",
+      "affected_sink": "src/pack/pack.ts:303",
+      "owner_task": "task-767",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-502",
+        "src/pack/pack.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/pack_additional.test.ts#forged graph cache paths"
+      ]
+    },
+    {
+      "id": "cand-review-010-006",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "cache-path-read",
+      "affected_sink": "src/commands/pack.ts:179",
+      "owner_task": "task-767",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-502",
+        "src/commands/pack.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/pack_additional.test.ts#forged skill cache paths"
+      ]
+    },
+    {
+      "id": "cand-review-010-007",
+      "severity": "low",
+      "priority": "P3",
+      "category": "resource-exhaustion",
+      "affected_sink": "src/pack/pack.ts:241",
+      "owner_task": "task-772",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-507",
+        "src/pack/pack.ts"
+      ],
+      "regression_refs": [
+        "tests/pack/pack.test.ts#loop-root pack includes scoped closure"
+      ]
+    },
+    {
+      "id": "cand-review-010-009",
+      "severity": "low",
+      "priority": "P3",
+      "category": "resource-exhaustion",
+      "affected_sink": "src/commands/mcp.ts:481",
+      "owner_task": "task-772",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-507",
+        "src/commands/mcp.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/mcp.test.ts#mcp bounds request lines nesting batches and node bodies"
+      ]
+    },
+    {
+      "id": "cand-review-010-010",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "resource-exhaustion",
+      "affected_sink": "src/commands/mcp.ts:514",
+      "owner_task": "task-772",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-507",
+        "src/commands/mcp.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/mcp.test.ts#mcp bounds request lines nesting batches and node bodies"
+      ]
+    },
+    {
+      "id": "cand-review-011-001",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/new.ts:542",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/new.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-011-001"
+      ]
+    },
+    {
+      "id": "cand-review-011-002",
+      "severity": "low",
+      "priority": "P3",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/event_support.ts:149",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/event_support.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-011-002"
+      ]
+    },
+    {
+      "id": "cand-review-011-004",
+      "severity": "low",
+      "priority": "P3",
+      "category": "incorrect-reference-resolution",
+      "affected_sink": "src/commands/work.ts:1364",
+      "owner_task": "task-771",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-506",
+        "src/commands/work.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/subgraph.test.ts#work trigger preserves imported contract identity"
+      ]
+    },
+    {
+      "id": "cand-review-011-005",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "read-only-persistent-reindex",
+      "affected_sink": "src/commands/work.ts:643",
+      "owner_task": "task-770",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-505",
+        "src/commands/work.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/read_only_observational.test.ts#read-only command families leave SQLite"
+      ]
+    },
+    {
+      "id": "cand-review-011-006",
+      "severity": "low",
+      "priority": "P3",
+      "category": "incomplete-changed-path-set",
+      "affected_sink": "src/commands/validate.ts:317",
+      "owner_task": "task-771",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-506",
+        "src/commands/validate.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/validate.test.ts#changed-only validation expands untracked workflow directories"
+      ]
+    },
+    {
+      "id": "cand-review-012-001",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/loop.ts:699",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/loop.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-012-001"
+      ]
+    },
+    {
+      "id": "cand-review-012-002",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/skill.ts:283",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/skill.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-012-002"
+      ]
+    },
+    {
+      "id": "cand-review-012-003",
+      "severity": "low",
+      "priority": "P3",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/loop.ts:419",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/loop.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-012-003"
+      ]
+    },
+    {
+      "id": "cand-review-012-004",
+      "severity": "low",
+      "priority": "P3",
+      "category": "symlink-containment",
+      "affected_sink": "src/commands/skill.ts:411",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/skill.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#cand-review-012-004"
+      ]
+    },
+    {
+      "id": "cand-review-012-006",
+      "severity": "low",
+      "priority": "P3",
+      "category": "unowned-child-readiness",
+      "affected_sink": "src/commands/loop.ts:1228",
+      "owner_task": "task-769",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-504",
+        "src/commands/loop.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/loop.test.ts#loop readiness binds decisions approvals evidence and waivers"
+      ]
+    },
+    {
+      "id": "cand-review-012-007",
+      "severity": "low",
+      "priority": "P3",
+      "category": "unverified-evidence",
+      "affected_sink": "src/commands/loop.ts:1192",
+      "owner_task": "task-769",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-504",
+        "src/commands/loop.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/loop.test.ts#loop readiness binds decisions approvals evidence and waivers"
+      ]
+    },
+    {
+      "id": "cand-review-012-008",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "unverified-approval",
+      "affected_sink": "src/commands/loop.ts:1175",
+      "owner_task": "task-769",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-504",
+        "src/commands/loop.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/loop.test.ts#loop readiness binds decisions approvals evidence and waivers"
+      ]
+    },
+    {
+      "id": "cand-review-012-009",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "approval-blind-routing",
+      "affected_sink": "src/commands/loop.ts:1572",
+      "owner_task": "task-769",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-504",
+        "src/commands/loop.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/loop.test.ts#loop next selects actionable child and explains skipped lanes"
+      ]
+    },
+    {
+      "id": "review-003-cand-001",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "bundle-integrity",
+      "affected_sink": "src/graph/subgraphs.ts:201",
+      "owner_task": "task-766",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-501",
+        "src/graph/subgraphs.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/subgraph.test.ts#public subgraph projection revalidates foreign index visibility"
+      ]
+    },
+    {
+      "id": "review-003-cand-003",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "path-containment",
+      "affected_sink": "src/commands/subgraph.ts:963",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/subgraph.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#review-003-cand-003"
+      ]
+    },
+    {
+      "id": "review-003-cand-004",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "path-containment",
+      "affected_sink": "src/commands/subgraph.ts:1196",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/subgraph.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#review-003-cand-004"
+      ]
+    },
+    {
+      "id": "review-003-cand-005",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "path-containment",
+      "affected_sink": "src/commands/init.ts:478",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/init.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#review-003-cand-005"
+      ]
+    },
+    {
+      "id": "review-003-cand-006",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "path-containment",
+      "affected_sink": "src/commands/upgrade.ts:211",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/upgrade.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#review-003-cand-006"
+      ]
+    },
+    {
+      "id": "review-003-cand-008",
+      "severity": "medium",
+      "priority": "P2",
+      "category": "path-containment",
+      "affected_sink": "src/commands/fix.ts:859",
+      "owner_task": "task-765",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-500",
+        "src/commands/fix.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/security_containment.test.ts#review-003-cand-008"
+      ]
+    },
+    {
+      "id": "review-007-cand-001",
+      "severity": "low",
+      "priority": "P3",
+      "category": "materializer-event-lease-binding",
+      "affected_sink": "src/core/project_db_materializer.ts:481",
+      "owner_task": "task-768",
+      "closure": "fixed",
+      "evidence_refs": [
+        "chk-503",
+        "src/core/project_db_materializer.ts"
+      ],
+      "regression_refs": [
+        "tests/commands/db_index.test.ts#project DB materializer helper processes queue messages"
+      ]
+    }
+  ]
+}

@@ -6,6 +6,10 @@ import { spawnSync } from "child_process";
 const { handleMcpRequest } = require("../../commands/mcp") as {
   handleMcpRequest: (context: { root: string }, raw: Record<string, unknown>) => any;
 };
+const { runMcpServeCommand } = require("../../commands/mcp") as {
+  runMcpServeCommand: (options: { root: string; stdio: boolean; input: NodeJS.ReadableStream; output: NodeJS.WritableStream }) => Promise<number>;
+};
+import { Readable, Writable } from "node:stream";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
@@ -218,4 +222,34 @@ test("mcp workspace list includes configured subgraphs and unknown mutation tool
   const invalid = handleMcpRequest({ root }, { jsonrpc: "2.0", id: 9, method: "tools/call", params: {} });
   assert.equal(invalid.error.code, -32602);
   assert.match(invalid.error.message, /params.name/);
+});
+
+test("mcp bounds request lines nesting batches and node bodies", async () => {
+  const root = createMcpRepo();
+  const taskPath = path.join(root, ".mdkg", "work", "task-1.md");
+  fs.appendFileSync(taskPath, `\n${"x".repeat(256 * 1024)}\n`, "utf8");
+  const oversizedBody = callTool(root, "mdkg_show", { id: "task-1" });
+  assert.ok(oversizedBody.error);
+  assert.match(oversizedBody.error.message, /byte limit/);
+
+  const deep = `${"[".repeat(65)}0${"]".repeat(65)}`;
+  const batch = JSON.stringify(Array.from({ length: 51 }, (_, id) => ({ jsonrpc: "2.0", id, method: "ping" })));
+  const oversizedLine = `${" ".repeat(1024 * 1024 + 1)}\n`;
+  const chunks: string[] = [];
+  const output = new Writable({
+    write(chunk, _encoding, callback) {
+      chunks.push(chunk.toString());
+      callback();
+    },
+  });
+  await runMcpServeCommand({
+    root,
+    stdio: true,
+    input: Readable.from([`${deep}\n${batch}\n`, oversizedLine]),
+    output,
+  });
+  const responses = chunks.join("").trim().split(/\r?\n/).map((line) => JSON.parse(line));
+  assert.ok(responses.some((response) => /nesting exceeds/.test(response.error?.message ?? "")));
+  assert.ok(responses.some((response) => /batch item count/.test(response.error?.message ?? "")));
+  assert.ok(responses.some((response) => /request line exceeds/.test(response.error?.message ?? "")));
 });

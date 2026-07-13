@@ -2,6 +2,12 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { loadConfig, Config } from "../core/config";
+import {
+  containedPathExists,
+  readContainedFile,
+  withContainedTreeSink,
+  writeContainedFileExclusive,
+} from "../core/filesystem_authority";
 import { formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
@@ -12,7 +18,6 @@ import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
 import { formatDate } from "../util/date";
 import { validatePortableOrUriRef } from "../util/refs";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { writeFileExclusive } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatNodeCard } from "./node_card";
@@ -407,16 +412,19 @@ function seedTemplatePath(root: string, config: Config, slug: string): string {
 
 function loadSeedTemplates(root: string, config: Config): LoopTemplate[] {
   const dir = path.resolve(root, config.templates.root_path, "loops");
-  if (!fs.existsSync(dir)) {
+  const relativeDir = relativeNodePath(root, dir);
+  if (!containedPathExists({ root, relativePath: relativeDir })) {
     return [];
   }
-  return fs
-    .readdirSync(dir)
+  return withContainedTreeSink(
+    { root, relativePath: relativeDir, operation: "read" },
+    ({ absolutePath }) => fs.readdirSync(absolutePath)
+  )
     .filter((entry) => entry.endsWith(".loop.md"))
     .sort()
     .map((entry) => {
       const filePath = path.join(dir, entry);
-      const content = fs.readFileSync(filePath, "utf8");
+      const content = readContainedFile({ root, relativePath: relativeNodePath(root, filePath) });
       const { frontmatter, body } = parseFrontmatter(content, filePath);
       if (frontmatter.type !== "loop") {
         throw new UsageError(`seed loop template must use type: loop: ${path.relative(root, filePath)}`);
@@ -447,7 +455,7 @@ function resolveLoopTemplate(root: string, config: Config, index: Index, raw: st
       throw new UsageError(`template must resolve to a loop node, got ${node.type}: ${node.qid}`);
     }
     const filePath = path.resolve(root, node.path);
-    const content = fs.readFileSync(filePath, "utf8");
+    const content = readContainedFile({ root, relativePath: node.path });
     const { frontmatter, body } = parseFrontmatter(content, filePath);
     return {
       kind: "node",
@@ -464,8 +472,9 @@ function resolveLoopTemplate(root: string, config: Config, index: Index, raw: st
 
   const slug = seedSlugFromInput(raw);
   const filePath = seedTemplatePath(root, config, slug);
-  if (fs.existsSync(filePath)) {
-    const content = fs.readFileSync(filePath, "utf8");
+  const relativeTemplatePath = relativeNodePath(root, filePath);
+  if (containedPathExists({ root, relativePath: relativeTemplatePath })) {
+    const content = readContainedFile({ root, relativePath: relativeTemplatePath });
     const { frontmatter, body } = parseFrontmatter(content, filePath);
     if (frontmatter.type !== "loop") {
       throw new UsageError(`seed loop template must use type: loop: ${path.relative(root, filePath)}`);
@@ -937,9 +946,9 @@ function nodePlan(
   };
 }
 
-function writePlannedNode(node: PlannedNode): void {
+function writePlannedNode(root: string, node: PlannedNode): void {
   try {
-    writeFileExclusive(node.absolutePath, renderNodeFile(node.frontmatter, node.body));
+    writeContainedFileExclusive({ root, relativePath: node.path }, renderNodeFile(node.frontmatter, node.body));
   } catch (err) {
     const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
     if (code === "EEXIST") {
@@ -1080,9 +1089,9 @@ export function runLoopForkCommand(options: LoopForkCommandOptions): void {
       return;
     }
 
-    writePlannedNode(plan.loop);
+    writePlannedNode(options.root, plan.loop);
     for (const child of plan.children) {
-      writePlannedNode(child);
+      writePlannedNode(options.root, child);
     }
 
     if (plan.config.index.auto_reindex && !options.noReindex) {
@@ -1174,7 +1183,7 @@ function isAcceptedDecisionRef(index: Index, loop: IndexNode, ref: string): bool
 
 function isVerifiedApprovalRef(index: Index, loop: IndexNode, ref: string): boolean {
   if (ref.includes("://")) {
-    return true;
+    return false;
   }
   const target = resolveLoopRefNode(index, loop, ref);
   if (!target) {
@@ -1190,7 +1199,18 @@ function isVerifiedApprovalRef(index: Index, loop: IndexNode, ref: string): bool
 }
 
 function isExistingEvidenceRef(index: Index, loop: IndexNode, ref: string): boolean {
-  return ref.includes("://") || resolveLoopRefNode(index, loop, ref) !== undefined;
+  if (ref.includes("://")) {
+    return false;
+  }
+  const target = resolveLoopRefNode(index, loop, ref);
+  if (!target) return false;
+  if (target.type === "receipt") return target.attributes.receipt_status === "verified";
+  if (target.type === "dec") return target.status === "accepted";
+  return target.status === "done" || target.attributes.goal_state === "achieved";
+}
+
+function isOwnedLoopChild(loop: IndexNode, child: IndexNode): boolean {
+  return child.edges.parent === loop.qid || child.edges.epic === loop.qid || child.edges.relates.includes(loop.qid);
 }
 
 function explicitBindingMap(node: IndexNode, key: string): Map<string, string[]> {
@@ -1328,7 +1348,8 @@ function buildLoopReadinessProjection(
 
   const children = childRefs.map((ref) => {
     const child = resolveLoopRefNode(index, node, ref);
-    const state = childLaneState(child);
+    const owned = child ? isOwnedLoopChild(node, child) : false;
+    const state = owned ? childLaneState(child) : "missing" as const;
     return {
       ref,
       qid: child?.qid ?? qidForLoopRef(node, ref),
@@ -1336,6 +1357,7 @@ function buildLoopReadinessProjection(
       title: child?.title,
       status: child?.status,
       state,
+      owned,
       blocked_by: child ? [...child.edges.blocked_by] : [],
     };
   });
@@ -1566,6 +1588,17 @@ function buildLoopNextSelection(readiness: LoopReadinessProjection): {
       selected: null,
       skipped,
       rationale: "loop closeout is ready; no actionable lane remains",
+    };
+  }
+
+  if (readiness.approvals.pending_approval_actions.length > 0) {
+    for (const action of readiness.approvals.pending_approval_actions) {
+      skipped.push({ ref: action, state: "approval_pending", reason: "required approval-gated action remains pending" });
+    }
+    return {
+      selected: null,
+      skipped,
+      rationale: "required approval-gated work is pending typed approval",
     };
   }
 

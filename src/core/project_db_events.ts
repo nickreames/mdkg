@@ -107,6 +107,8 @@ export type WriteProjectDbReceiptInput = {
 
 export type ApplyProjectDbReducerInput = {
   event_id: string;
+  expected_project_id?: string;
+  expected_branch_id?: string;
   reducer_name: "project_meta.set";
   reducer_version: "v1";
   actor: string;
@@ -556,6 +558,14 @@ export function applyProjectDbReducer(
       const event = getEvent(db, input.event_id);
       if (!event) {
         throw new Error(`project DB event not found: ${input.event_id}`);
+      }
+      if (
+        (input.expected_project_id && event.project_id !== input.expected_project_id) ||
+        (input.expected_branch_id && event.branch_id !== input.expected_branch_id)
+      ) {
+        throw new Error(
+          `project DB event scope mismatch: expected ${input.expected_project_id ?? event.project_id}/${input.expected_branch_id ?? event.branch_id}, found ${event.project_id}/${event.branch_id}`
+        );
       }
       if (event.status === "applied") {
         const receipt = writeReceiptWithDb(db, databasePath, {

@@ -2,12 +2,12 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import { atomicReplaceContainedFile } from "../core/filesystem_authority";
 import { loadIndex } from "../graph/index_cache";
 import { IndexNode } from "../graph/indexer";
 import { buildPack } from "../pack/pack";
 import { measurePack } from "../pack/metrics";
 import { PackNode, PackResult } from "../pack/types";
-import { atomicWriteFile } from "../util/atomic";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { readPackageVersion } from "../core/version";
@@ -263,6 +263,11 @@ export function runHandoffCreateCommand(options: HandoffCreateCommandOptions): v
     edges: ["parent", "epic", "relates", "blocked_by", "blocks", "context_refs", "evidence_refs"],
     verbose: false,
     maxNodes: config.pack.limits.max_nodes,
+    maxTraversalNodes: Math.min(
+      config.index.limits.max_files,
+      Math.max(1_000, config.pack.limits.max_nodes * 10)
+    ),
+    maxBodyBytes: config.pack.limits.max_bytes,
     verboseCoreListPath: path.resolve(options.root, config.pack.verbose_core_list_path),
     wsHint: ws,
     includeLatestCheckpoint: true,
@@ -284,7 +289,10 @@ export function runHandoffCreateCommand(options: HandoffCreateCommandOptions): v
   const contentHash = sha256(content);
   const outPath = outputPath(options.root, options.out);
   if (outPath) {
-    atomicWriteFile(outPath, content);
+    atomicReplaceContainedFile(
+      { root: options.root, relativePath: path.relative(options.root, outPath).split(path.sep).join("/") },
+      content
+    );
   }
   const receipt = {
     action: "handoff-created",

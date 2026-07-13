@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { verifyMatrix } = require("./verify-security-remediation.js");
 
 const root = path.resolve(__dirname, "..");
 
@@ -72,6 +73,15 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["ci:release"]) {
     fail("package.json is missing ci:release");
   }
+  if (!pkg.scripts || pkg.scripts["security:verify"] !== "node scripts/verify-security-remediation.js") {
+    fail("package.json is missing the canonical security:verify command");
+  }
+  if (!String(pkg.scripts.prepack || "").includes("npm run security:verify")) {
+    fail("prepack is missing security:verify");
+  }
+  if (!String(pkg.scripts.prepublishOnly || "").includes("node dist/cli.js validate && npm run security:verify")) {
+    fail("prepublishOnly must run security:verify immediately after graph validation");
+  }
   if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
     fail("package.json is missing smoke:warning-ux");
   }
@@ -111,7 +121,7 @@ function requirePackageVersions() {
     fail("prepublishOnly must run installed loop smoke between consumer and command-matrix smokes");
   }
   const ciRelease = String(pkg.scripts["ci:release"] || "");
-  for (const requiredGate of ["npm run test", "npm run cli:check", "npm run cli:contract", "npm run docs:check", "npm run smoke:loop", "node scripts/assert-publish-ready.js"]) {
+  for (const requiredGate of ["npm run test", "npm run cli:check", "npm run cli:contract", "npm run docs:check", "npm run smoke:loop", "npm run security:verify", "node scripts/assert-publish-ready.js"]) {
     if (!ciRelease.includes(requiredGate)) {
       fail(`ci:release is missing ${requiredGate}`);
     }
@@ -956,6 +966,12 @@ requirePackageVersions();
 requireCliBuild();
 requireBuildFolders();
 requireInitAssets();
+
+try {
+  verifyMatrix(path.join(root, "security", "v0.5.0-remediation-matrix.json"), root);
+} catch (error) {
+  fail(`security remediation matrix: ${error instanceof Error ? error.message : String(error)}`);
+}
 
 if (process.exitCode) {
   process.exit(process.exitCode);

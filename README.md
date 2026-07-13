@@ -523,6 +523,13 @@ Fresh `mdkg init` workspaces default to `index.backend: sqlite`, which writes `.
 
 `mdkg index` still writes JSON compatibility caches (`global.json`, `skills.json`, `capabilities.json`, and subgraph projections when configured). In SQLite mode it also rebuilds the SQLite cache with nodes, edges, skills, capabilities, archive metadata, subgraphs, source hashes, and schema metadata. Deleting the SQLite file is recoverable with `mdkg index`.
 
+Graph ingestion is bounded before Markdown bodies are read. New workspaces expose
+`index.limits.max_files`, `max_file_bytes`, `max_total_bytes`, and `max_depth` in
+`.mdkg/config.json`; older configs receive the same conservative defaults in
+memory. Pack traversal and body reads are bounded before construction, ZIP input
+is bounded before allocation and inflation, and the local read-only MCP server
+rejects oversized lines, batches, nesting, bodies, tool payloads, and responses.
+
 Mutating commands use a workspace mutation lock plus atomic writes. SQLite mode additionally reserves numeric ids in a SQLite transaction before writing Markdown so parallel `mdkg new` and checkpoint calls avoid naming conflicts. Skipped ids after failed writes are acceptable because Markdown remains canonical.
 
 ## Project DB Layout

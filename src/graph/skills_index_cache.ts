@@ -3,6 +3,7 @@ import path from "path";
 import { configPath } from "../core/paths";
 import { atomicWriteFile } from "../util/atomic";
 import { Config } from "../core/config";
+import { readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import {
   buildSkillsIndex,
   resolveSkillsIndexPath,
@@ -15,6 +16,7 @@ export type LoadSkillsIndexOptions = {
   config: Config;
   useCache?: boolean;
   allowReindex?: boolean;
+  persistReindex?: boolean;
 };
 
 export type LoadSkillsIndexResult = {
@@ -67,14 +69,39 @@ export function isSkillsIndexStale(root: string, config: Config): boolean {
   return false;
 }
 
-function readSkillsIndex(indexPath: string): SkillsIndex {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readSkillsIndex(root: string, indexPath: string): SkillsIndex {
   try {
-    const raw = fs.readFileSync(indexPath, "utf8");
-    return JSON.parse(raw) as SkillsIndex;
+    const relativePath = path.relative(root, indexPath).split(path.sep).join("/");
+    const parsed = JSON.parse(readContainedFile({ root, relativePath }, "utf8")) as unknown;
+    if (!isRecord(parsed) || !isRecord(parsed.meta) || !isRecord(parsed.skills)) {
+      throw new Error("skills index cache has an invalid shape");
+    }
+    return parsed as unknown as SkillsIndex;
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     throw new Error(`failed to read skills index: ${message}`);
   }
+}
+
+function validateCachedSkillPaths(root: string, config: Config, cached: SkillsIndex): SkillsIndex {
+  const skillsRoot = resolveSkillsRoot(root, config);
+  for (const [slug, skill] of Object.entries(cached.skills)) {
+    if (skill.slug !== slug || skill.id !== `skill:${slug}` || skill.qid !== `${skill.ws}:skill:${slug}`) {
+      throw new Error(`invalid cached skill identity: ${slug}`);
+    }
+    const absolutePath = path.resolve(root, skill.path);
+    const relativeSkillsPath = path.relative(skillsRoot, absolutePath);
+    if (path.isAbsolute(skill.path) || relativeSkillsPath.startsWith("..") || path.isAbsolute(relativeSkillsPath)) {
+      throw new Error(`cached skill path escapes skills root: ${slug}`);
+    }
+    const normalized = path.relative(root, absolutePath).split(path.sep).join("/");
+    withContainedPathSink({ root, relativePath: normalized, operation: "read" }, () => undefined);
+  }
+  return cached;
 }
 
 export function writeSkillsIndex(indexPath: string, index: SkillsIndex): void {
@@ -92,6 +119,7 @@ export function writeSkillsIndex(indexPath: string, index: SkillsIndex): void {
 export function loadSkillsIndex(options: LoadSkillsIndexOptions): LoadSkillsIndexResult {
   const useCache = options.useCache ?? true;
   const allowReindex = options.allowReindex ?? options.config.index.auto_reindex;
+  const persistReindex = options.persistReindex ?? true;
   const indexPath = resolveSkillsIndexPath(options.root);
 
   if (!useCache) {
@@ -101,17 +129,27 @@ export function loadSkillsIndex(options: LoadSkillsIndexOptions): LoadSkillsInde
 
   const stale = isSkillsIndexStale(options.root, options.config);
   if (fs.existsSync(indexPath) && !stale) {
-    return { index: readSkillsIndex(indexPath), rebuilt: false, stale: false };
+    return {
+      index: validateCachedSkillPaths(options.root, options.config, readSkillsIndex(options.root, indexPath)),
+      rebuilt: false,
+      stale: false,
+    };
   }
 
   if (allowReindex) {
     const index = buildSkillsIndex(options.root, options.config);
-    writeSkillsIndex(indexPath, index);
+    if (persistReindex) {
+      writeSkillsIndex(indexPath, index);
+    }
     return { index, rebuilt: true, stale };
   }
 
   if (fs.existsSync(indexPath)) {
-    return { index: readSkillsIndex(indexPath), rebuilt: false, stale: true };
+    return {
+      index: validateCachedSkillPaths(options.root, options.config, readSkillsIndex(options.root, indexPath)),
+      rebuilt: false,
+      stale: true,
+    };
   }
 
   throw new Error("skills index missing and auto-reindex is disabled");

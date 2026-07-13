@@ -1,6 +1,6 @@
-import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import { atomicReplaceContainedFile, readContainedFile } from "../core/filesystem_authority";
 import { buildIndex, Index } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
 import { writeDerivedIndexes } from "../graph/reindex";
@@ -15,7 +15,6 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
-import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
 import { CheckpointReceipt, createCheckpoint, runCheckpointNewCommand } from "./checkpoint";
@@ -271,7 +270,7 @@ function loadMutableTaskNode(root: string, idOrQid: string, wsHint?: string): Lo
   }
 
   const filePath = path.resolve(root, node.path);
-  const content = fs.readFileSync(filePath, "utf8");
+  const content = readContainedFile({ root, relativePath: node.path });
   const parsed = parseFrontmatter(content, filePath);
   return {
     config,
@@ -295,7 +294,10 @@ function writeNodeFile(
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const frontmatterBlock = ["---", ...lines, "---"].join("\n");
   const content = body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock;
-  atomicWriteFile(filePath, content);
+  atomicReplaceContainedFile(
+    { root, relativePath: path.relative(root, filePath).split(path.sep).join("/") },
+    content
+  );
 }
 
 function ensureStatusAllowed(

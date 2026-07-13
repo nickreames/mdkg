@@ -60,6 +60,14 @@ test("collectGraphErrors reports prev/next mismatch", () => {
   assert.ok(errors.some((error: string) => /missing matching prev/.test(error)));
 });
 
+test("collectGraphErrors uses prototype-safe workspace identity maps", () => {
+  const node = makeNode("constructor:task-1", {}, { ws: "constructor" });
+  const index = makeIndex({ "constructor:task-1": node });
+  index.meta.workspaces = ["constructor"];
+  index.workspaces = { constructor: { path: "constructor", enabled: true } };
+  assert.doesNotThrow(() => collectGraphErrors(index, { allowMissing: false }));
+});
+
 test("collectGraphErrors reports prev/next cycles", () => {
   const nodes = {
     "root:task-1": makeNode("root:task-1", {

@@ -371,6 +371,7 @@ function validateLoopStringList(
   filePath: string
 ): void {
   const values = optionalList(frontmatter, key, filePath);
+  const seen = new Set<string>();
   for (const [index, value] of values.entries()) {
     if (typeof value !== "string" || value.trim().length === 0) {
       throw formatError(filePath, `${key}[${index}] must not be empty`);
@@ -379,9 +380,13 @@ function validateLoopStringList(
     if (!isLoopIdentity(normalized)) {
       throw formatError(filePath, `${key}[${index}] must be a stable lowercase identity`);
     }
-    if (values.slice(0, index).some((candidate) => candidate.trim().toLowerCase() === normalized)) {
+    if (value.trim() !== normalized) {
+      throw formatError(filePath, `${key}[${index}] must be lowercase; use ${normalized}`);
+    }
+    if (seen.has(normalized)) {
       throw formatError(filePath, `${key}[${index}] duplicates identity ${normalized}`);
     }
+    seen.add(normalized);
   }
 }
 
@@ -430,11 +435,12 @@ function validateLoopBindingList(
 }
 
 function validateLoopActionSets(frontmatter: Record<string, FrontmatterValue>, filePath: string): void {
-  const preApproved = new Set(optionalList(frontmatter, "pre_approved_actions", filePath));
-  const approvalGated = new Set(optionalList(frontmatter, "approval_gated_actions", filePath));
-  const required = optionalList(frontmatter, "required_actions", filePath);
-  const requested = optionalList(frontmatter, "requested_actions", filePath);
-  const prohibited = new Set(optionalList(frontmatter, "prohibited_actions", filePath));
+  const normalized = (key: string): string[] => optionalList(frontmatter, key, filePath).map((value) => value.trim().toLowerCase());
+  const preApproved = new Set(normalized("pre_approved_actions"));
+  const approvalGated = new Set(normalized("approval_gated_actions"));
+  const required = normalized("required_actions");
+  const requested = normalized("requested_actions");
+  const prohibited = new Set(normalized("prohibited_actions"));
 
   for (const action of preApproved) {
     if (approvalGated.has(action)) {

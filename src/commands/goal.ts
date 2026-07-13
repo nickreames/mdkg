@@ -1,6 +1,11 @@
-import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  readContainedFile,
+  removeContainedPath,
+} from "../core/filesystem_authority";
 import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES } from "../graph/goal_scope";
 import { Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
@@ -12,7 +17,6 @@ import {
 } from "../graph/frontmatter";
 import { buildIndex } from "../graph/indexer";
 import { writeDerivedIndexes } from "../graph/reindex";
-import { atomicWriteFile } from "../util/atomic";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { withMutationLock } from "../util/lock";
@@ -92,11 +96,11 @@ function selectedGoalPath(root: string): string {
 
 function readSelectedGoalState(root: string, warnings: string[]): SelectedGoalState | undefined {
   const filePath = selectedGoalPath(root);
-  if (!fs.existsSync(filePath)) {
+  if (!containedPathExists({ root, relativePath: ".mdkg/state/selected-goal.json" })) {
     return undefined;
   }
   try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, "utf8")) as Partial<SelectedGoalState>;
+    const parsed = JSON.parse(readContainedFile({ root, relativePath: ".mdkg/state/selected-goal.json" })) as Partial<SelectedGoalState>;
     if (
       typeof parsed.qid === "string" &&
       typeof parsed.id === "string" &&
@@ -125,7 +129,10 @@ function writeSelectedGoalState(root: string, node: IndexNode, now: Date): void 
     ws: node.ws,
     selected_at: now.toISOString(),
   };
-  atomicWriteFile(selectedGoalPath(root), `${JSON.stringify(state, null, 2)}\n`);
+  atomicReplaceContainedFile(
+    { root, relativePath: ".mdkg/state/selected-goal.json" },
+    `${JSON.stringify(state, null, 2)}\n`
+  );
 }
 
 function readNodeFrontmatter(root: string, node: IndexNode): {
@@ -134,7 +141,8 @@ function readNodeFrontmatter(root: string, node: IndexNode): {
   body: string;
 } {
   const filePath = path.resolve(root, node.path);
-  const parsed = parseFrontmatter(fs.readFileSync(filePath, "utf8"), filePath);
+  const relativePath = path.relative(root, filePath).split(path.sep).join("/");
+  const parsed = parseFrontmatter(readContainedFile({ root, relativePath }), filePath);
   return {
     filePath,
     frontmatter: { ...parsed.frontmatter },
@@ -143,6 +151,7 @@ function readNodeFrontmatter(root: string, node: IndexNode): {
 }
 
 function writeNodeFrontmatterFile(
+  root: string,
   filePath: string,
   frontmatter: Record<string, FrontmatterValue>,
   body: string,
@@ -152,15 +161,18 @@ function writeNodeFrontmatterFile(
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const frontmatterBlock = ["---", ...lines, "---"].join("\n");
   const content = body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock;
-  atomicWriteFile(filePath, content);
+  atomicReplaceContainedFile(
+    { root, relativePath: path.relative(root, filePath).split(path.sep).join("/") },
+    content
+  );
 }
 
 function removeSelectedGoalState(root: string): boolean {
   const filePath = selectedGoalPath(root);
-  if (!fs.existsSync(filePath)) {
+  if (!containedPathExists({ root, relativePath: ".mdkg/state/selected-goal.json" })) {
     return false;
   }
-  fs.rmSync(filePath, { force: true });
+  removeContainedPath({ root, relativePath: ".mdkg/state/selected-goal.json", force: true });
   return true;
 }
 
@@ -241,9 +253,14 @@ function resolveGoalSelection(
   throw new NotFoundError("no selected goal or unique active goal found; run `mdkg goal activate <goal-id>`");
 }
 
-function loadGoal(root: string, idOrQid: string | undefined, wsHint?: string): LoadedGoal {
+function loadGoal(
+  root: string,
+  idOrQid: string | undefined,
+  wsHint?: string,
+  persistReindex = true
+): LoadedGoal {
   const config = loadConfig(root);
-  const { index } = loadIndex({ root, config });
+  const { index } = loadIndex({ root, config, persistReindex });
   const ws = normalizeWorkspace(wsHint);
   const selection = resolveGoalSelection(root, index, idOrQid, ws);
   const node = selection.node;
@@ -257,7 +274,7 @@ function loadGoal(root: string, idOrQid: string | undefined, wsHint?: string): L
   }
 
   const filePath = path.resolve(root, node.path);
-  const content = fs.readFileSync(filePath, "utf8");
+  const content = readContainedFile({ root, relativePath: node.path });
   const parsed = parseFrontmatter(content, filePath);
   return {
     config,
@@ -296,8 +313,8 @@ function goalReceipt(root: string, loaded: LoadedGoal): Record<string, unknown> 
   };
 }
 
-function writeGoalFile(loaded: LoadedGoal, now: Date): void {
-  writeNodeFrontmatterFile(loaded.filePath, loaded.frontmatter, loaded.body, now);
+function writeGoalFile(root: string, loaded: LoadedGoal, now: Date): void {
+  writeNodeFrontmatterFile(root, loaded.filePath, loaded.frontmatter, loaded.body, now);
 }
 
 function maybeReindex(root: string, config: ReturnType<typeof loadConfig>): void {
@@ -384,7 +401,7 @@ function readOnlySubgraphBlockerWarnings(index: Index, qids: Set<string>): strin
 }
 
 export function runGoalShowCommand(options: GoalCommandOptions): void {
-  const loaded = loadGoal(options.root, options.id, options.ws);
+  const loaded = loadGoal(options.root, options.id, options.ws, false);
   const receipt = { action: "showed", goal: goalReceipt(options.root, loaded) };
   if (options.json) {
     console.log(JSON.stringify(receipt, null, 2));
@@ -404,7 +421,7 @@ export function runGoalShowCommand(options: GoalCommandOptions): void {
 }
 
 export function runGoalEvaluateCommand(options: GoalCommandOptions): void {
-  const loaded = loadGoal(options.root, options.id, options.ws);
+  const loaded = loadGoal(options.root, options.id, options.ws, false);
   const checks = toStringList(loaded.frontmatter.required_checks).map((command) => ({
     command,
     status: "report_only",
@@ -436,7 +453,7 @@ export function runGoalEvaluateCommand(options: GoalCommandOptions): void {
 }
 
 export function runGoalNextCommand(options: GoalCommandOptions): void {
-  const loaded = loadGoal(options.root, options.id, options.ws);
+  const loaded = loadGoal(options.root, options.id, options.ws, false);
   if (isArchivedGoal(loaded.node)) {
     const warnings = [...loaded.warnings, `${loaded.node.qid} is archived and has no actionable next work`];
     if (options.json) {
@@ -604,7 +621,7 @@ export function runGoalActivateCommand(options: GoalCommandOptions): void {
       const conflictFile = readNodeFrontmatter(options.root, conflict);
       conflictFile.frontmatter.goal_state = "paused";
       conflictFile.frontmatter.status = ensureStatusAllowed(config, "blocked");
-      writeNodeFrontmatterFile(conflictFile.filePath, conflictFile.frontmatter, conflictFile.body, now);
+      writeNodeFrontmatterFile(options.root, conflictFile.filePath, conflictFile.frontmatter, conflictFile.body, now);
       pausedGoals.push({
         workspace: conflict.ws,
         id: conflict.id,
@@ -619,7 +636,7 @@ export function runGoalActivateCommand(options: GoalCommandOptions): void {
 
     loaded.frontmatter.goal_state = "active";
     loaded.frontmatter.status = ensureStatusAllowed(config, "progress");
-    writeGoalFile(loaded, now);
+    writeGoalFile(options.root, loaded, now);
     writeSelectedGoalState(options.root, loaded.node, now);
     maybeReindex(options.root, loaded.config);
 
@@ -659,7 +676,7 @@ export function runGoalActivateCommand(options: GoalCommandOptions): void {
 
 export function runGoalCurrentCommand(options: GoalCommandOptions): void {
   const config = loadConfig(options.root);
-  const { index } = loadIndex({ root: options.root, config });
+  const { index } = loadIndex({ root: options.root, config, persistReindex: false });
   const ws = normalizeWorkspace(options.ws);
   const warnings: string[] = [];
   let source: LoadedGoal["resolutionSource"] | "none" | "ambiguous" = "none";
@@ -777,7 +794,7 @@ export function runGoalClaimCommand(options: GoalClaimCommandOptions): void {
     }
     const now = options.now ?? new Date();
     loaded.frontmatter.active_node = node.ws === loaded.node.ws ? node.id : node.qid;
-    writeGoalFile(loaded, now);
+    writeGoalFile(options.root, loaded, now);
     maybeReindex(options.root, loaded.config);
     appendAutomaticEvent({
       root: options.root,
@@ -821,7 +838,7 @@ function runGoalStateMutationLocked(
   }
   loaded.frontmatter.goal_state = GOAL_STATE_BY_ACTION[action];
   loaded.frontmatter.status = ensureStatusAllowed(loaded.config, STATUS_BY_ACTION[action]);
-  writeGoalFile(loaded, now);
+  writeGoalFile(options.root, loaded, now);
   maybeReindex(options.root, loaded.config);
 
   appendAutomaticEvent({

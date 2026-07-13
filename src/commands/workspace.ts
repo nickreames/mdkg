@@ -2,9 +2,11 @@ import fs from "fs";
 import path from "path";
 import { loadConfig, validateConfigSchema } from "../core/config";
 import { migrateConfig } from "../core/migrate";
+import { ensureContainedDirectory } from "../core/filesystem_authority";
 import {
   isRootWorkspacePath,
   normalizeContainedWorkspacePath,
+  workspaceDocumentRelativePath,
   workspaceDocumentRootKey,
 } from "../core/workspace_path";
 import { atomicWriteFile } from "../util/atomic";
@@ -106,6 +108,9 @@ function normalizeAlias(alias: string): string {
   if (alias.toLowerCase() === "all") {
     throw new UsageError("workspace alias cannot be 'all'");
   }
+  if (alias === "__proto__" || alias === "constructor" || alias === "prototype") {
+    throw new UsageError(`workspace alias is reserved: ${alias}`);
+  }
   if (alias !== alias.toLowerCase() || !ALIAS_RE.test(alias)) {
     throw new UsageError("workspace alias must be lowercase and use [a-z0-9_]");
   }
@@ -198,15 +203,17 @@ function runWorkspaceAddCommandLocked(options: WorkspaceAddCommandOptions): void
     }
   }
 
+  for (const folder of ["core", "design", "work"]) {
+    ensureContainedDirectory({
+      root: options.root,
+      relativePath: workspaceDocumentRelativePath(workspacePath, mdkgDir, folder),
+    });
+  }
+
   const workspace = { path: workspacePath, enabled: true, mdkg_dir: mdkgDir, visibility };
   workspaces[alias] = workspace;
   raw.workspaces = workspaces;
   writeRawConfig(configPath, raw);
-
-  const wsRoot = path.resolve(options.root, workspacePath, mdkgDir);
-  fs.mkdirSync(path.join(wsRoot, "core"), { recursive: true });
-  fs.mkdirSync(path.join(wsRoot, "design"), { recursive: true });
-  fs.mkdirSync(path.join(wsRoot, "work"), { recursive: true });
 
   printWorkspaceMutationReceipt(
     "added",

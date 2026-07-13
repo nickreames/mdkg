@@ -2,7 +2,7 @@
 id: task-719
 type: task
 title: Push the dormant release commit require CI and publish mdkg v0.5.0
-status: todo
+status: progress
 priority: 1
 epic: epic-233
 prev: task-718
@@ -12,15 +12,15 @@ owners: []
 links: []
 artifacts: []
 relates: [goal-64, test-390]
-blocked_by: [task-718]
+blocked_by: []
 blocks: [task-720]
-refs: [test-390]
-context_refs: [goal-64, epic-233, edd-72, dec-69, task-718]
-evidence_refs: []
+refs: [test-390, dec-81, chk-511, chk-512]
+context_refs: [goal-64, goal-69, epic-233, edd-72, dec-69, edd-75, dec-80, dec-81, task-718, test-389, test-434]
+evidence_refs: [chk-511, chk-512]
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 # Overview
 
@@ -45,6 +45,10 @@ List files/directories expected to change.
 # Implementation Notes
 
 - Stop on changed origin, CI failure, auth drift, or target-version appearance.
+- Stop while `goal-69` or `test-389` is incomplete; audit transfer is not a
+  security waiver.
+- Both prerequisites are complete. `dec-81` is the accepted v0.5.0 security
+  requalification contract; do not schedule another Codex Security scan.
 - Successful npm publication is irreversible for this plan; fix forward.
 
 # Test Plan

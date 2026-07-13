@@ -7,25 +7,25 @@ priority: 1
 goal_state: active
 goal_condition: mdkg v0.5.0 is released only after version and changelog finalization, complete local and security gates, one explicit bounded approval, a dormant first push with green CI, npm publication and registry proof, clean temporary and real global install verification, a second website activation push, production deployment and live browser validation, and a fix-forward release receipt with no Git tag by default.
 scope_refs: [epic-232, epic-233, epic-234, epic-235, task-716, task-717, task-718, task-719, task-720, task-721, task-722, task-723, test-388, test-389, test-390, test-391, test-392, test-393, test-394]
-active_node: task-718
+active_node: task-719
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
-required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, npm run smoke:loop, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, node scripts/assert-publish-ready.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.5.0 version --registry=https://registry.npmjs.org/, required repository security scan, required plugin skill product-design:audit, required plugin skill browser:control-in-app-browser, required plugin skill chrome:control-chrome, explicit single release approval, git diff --check]
+required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, npm run smoke:loop, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, node scripts/assert-publish-ready.js, node scripts/verify-security-remediation.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.5.0 version --registry=https://registry.npmjs.org/, manual source-backed security requalification under dec-81, required plugin skill product-design:audit, required plugin skill browser:control-in-app-browser, required plugin skill chrome:control-chrome, explicit single release approval, git diff --check]
 max_iterations: 25
 blocked_after_attempts: 3
 tags: [release, npm, publish, deploy, verification, 0.5.0]
 owners: []
 links: []
 artifacts: []
-relates: [goal-61, goal-62, goal-63]
+relates: [goal-61, goal-62, goal-63, goal-69, dec-81]
 blocked_by: []
 blocks: []
-refs: [goal-61, chk-426, goal-62, goal-63, chk-491, dec-73, dec-74, prop-8, goal-42, goal-50]
-context_refs: [goal-61, chk-426, goal-62, goal-63, chk-489, chk-490, chk-491, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50]
-evidence_refs: [chk-491]
+refs: [goal-61, chk-426, goal-62, goal-63, chk-491, dec-73, dec-74, prop-8, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497]
+context_refs: [goal-61, chk-426, goal-62, goal-63, chk-489, chk-490, chk-491, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497, chk-509, chk-510, test-434]
+evidence_refs: [chk-491, chk-497, chk-509, chk-510, chk-511, chk-512]
 aliases: [v0-5-0-publish-and-production-verification]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
-updated: 2026-07-11
+updated: 2026-07-12
 ---
 # Objective
 
@@ -83,6 +83,7 @@ and the final receipt records all side effects, evidence, and residual risks.
 
 - `task-716` through `task-723` and `test-388` through `test-394` close with
   evidence.
+- `goal-69` and `test-434` close before `test-389` or `task-719` can proceed.
 - Goal 4 alone owns the version bump and finalized changelog.
 - One approval receipt enumerates every authorized external mutation.
 - Npm publication precedes public release activation.
@@ -103,12 +104,15 @@ and the final receipt records all side effects, evidence, and residual risks.
 
 # Current State
 
-Paused and implementation-ready with both prerequisite goals achieved.
-`chk-426` proves the verified release candidate and `chk-491` proves the dormant
-website/docs handoff at implementation commit
-`e28c1c0f5e3929008068e0504a118e01b92de3e8`. Explicit operator activation must
-route to `task-716`; all public package/site/provider side effects remain behind
-the single bounded release approval.
+Active at `task-719`. Goal 69 fixed and directly tested all 51 original
+findings, `test-434` passed under the accepted manual requalification decision
+`dec-81`, and `test-389` revalidated the bounded release approval and no-tag
+policy. Checkpoint `chk-512` is the completed security closeout handoff. Goal 64
+and `task-719` have no unresolved blockers; the next execution pass should claim
+`task-719`, prepare one immutable dormant release commit, require green CI, and
+then publish the identical package. No additional Codex Security scan is
+required for v0.5.0. No push, publish, global install, activation, deployment,
+or tag occurred during remediation.
 
 # Iteration Log
 
@@ -117,6 +121,15 @@ the single bounded release approval.
   remains the sole prerequisite blocker.
 - 2026-07-11: Goal 63 achieved with dormant handoff `chk-491`; cleared the final
   prerequisite while keeping Goal 64 paused for explicit release activation.
+- 2026-07-12: Completed the security audit execution as a failed-closed gate,
+  transferred 51 findings to `goal-69`, and paused release mutation until a clean
+  immutable-revision rescan requalifies `task-719`.
+- 2026-07-12: Operator selected manual source-backed requalification in `dec-81`
+  instead of a second plugin scan; release remains paused until Goal 69 records
+  exact closure and Goal 64 routing is revalidated.
+- 2026-07-12: Goal 69 achieved, manual requalification and release approval
+  evidence passed, `chk-512` completed the handoff, and Goal 64 was confirmed
+  active and unblocked at `task-719`.
 
 # Skill Improvement Candidates
 

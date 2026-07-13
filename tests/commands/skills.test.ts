@@ -206,6 +206,26 @@ test("skill list supports tag filtering and count output", () => {
   assert.match(anyStage.stderr, /count: 2/);
 });
 
+test("read-only skill commands rebuild a missing skills index without persisting it", () => {
+  const root = makeTempDir("mdkg-skill-observational-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root);
+  writeSkills(root);
+  const indexPath = path.join(root, ".mdkg", "index", "skills.json");
+  fs.rmSync(indexPath, { force: true });
+
+  const commands = [
+    () => runSkillListCommand({ root }),
+    () => runSkillSearchCommand({ root, query: "plan" }),
+    () => runSkillShowCommand({ root, slug: "plan-run", metaOnly: true }),
+  ];
+  for (const command of commands) {
+    captureOutput(command);
+    assert.equal(fs.existsSync(indexPath), false);
+  }
+});
+
 test("skill list prints empty-state note", () => {
   const root = makeTempDir("mdkg-skill-list-empty-");
   writeConfig(root);

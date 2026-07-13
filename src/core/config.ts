@@ -69,6 +69,12 @@ export type Config = {
     sqlite_path: string;
     sqlite_commit_warning_bytes: number;
     lock_timeout_ms: number;
+    limits: {
+      max_files: number;
+      max_file_bytes: number;
+      max_total_bytes: number;
+      max_depth: number;
+    };
   };
   capabilities: {
     cache_path: string;
@@ -121,6 +127,7 @@ type ValidationErrors = string[];
 type JsonObject = Record<string, unknown>;
 
 const WORKSPACE_ALIAS_RE = /^[a-z][a-z0-9_]*$/;
+const RESERVED_OBJECT_ALIASES = new Set(["__proto__", "constructor", "prototype"]);
 const PACK_EDGE_KEYS = new Set([
   "parent",
   "epic",
@@ -139,6 +146,12 @@ const SQL_IDENTIFIER_RE = /^[a-z][a-z0-9_]*$/;
 const DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES = 26214400;
 const DEFAULT_SQLITE_COMMIT_WARNING_BYTES = 52428800;
 const DEFAULT_LOCK_TIMEOUT_MS = 10000;
+const DEFAULT_INDEX_LIMITS = {
+  max_files: 100_000,
+  max_file_bytes: 8 * 1024 * 1024,
+  max_total_bytes: 512 * 1024 * 1024,
+  max_depth: 64,
+} as const;
 const DEFAULT_SUBGRAPH_MAX_STALE_SECONDS = 3600;
 export const DEFAULT_SKILL_MIRROR_TARGETS = [".agents/skills", ".claude/skills"] as const;
 const DEFAULT_PROJECT_DB_CONFIG = {
@@ -387,6 +400,10 @@ function validateWorkspaceAlias(alias: string, errors: ValidationErrors): void {
     errors.push("workspaces.all alias is reserved");
     return;
   }
+  if (RESERVED_OBJECT_ALIASES.has(alias)) {
+    errors.push(`workspaces.${alias} alias is reserved`);
+    return;
+  }
   if (alias !== alias.toLowerCase() || !WORKSPACE_ALIAS_RE.test(alias)) {
     errors.push(`workspaces.${alias} alias must be lowercase and use [a-z0-9_]`);
   }
@@ -399,6 +416,10 @@ function validateSubgraphAlias(
 ): void {
   if (alias === "all") {
     errors.push("subgraphs.all alias is reserved");
+    return;
+  }
+  if (RESERVED_OBJECT_ALIASES.has(alias)) {
+    errors.push(`subgraphs.${alias} alias is reserved`);
     return;
   }
   if (alias !== alias.toLowerCase() || !WORKSPACE_ALIAS_RE.test(alias)) {
@@ -567,7 +588,11 @@ export function validateConfigSchema(raw: unknown): Config {
     : undefined;
 
   const index = indexRaw
-    ? {
+    ? (() => {
+        const limitsRaw = indexRaw.limits === undefined
+          ? undefined
+          : requireObject(indexRaw.limits, "index.limits", errors);
+        return {
         auto_reindex: requireBoolean(indexRaw.auto_reindex, "index.auto_reindex", errors),
         tolerant: requireBoolean(indexRaw.tolerant, "index.tolerant", errors),
         backend:
@@ -595,7 +620,16 @@ export function validateConfigSchema(raw: unknown): Config {
           indexRaw.lock_timeout_ms === undefined
             ? DEFAULT_LOCK_TIMEOUT_MS
             : requirePositiveInteger(indexRaw.lock_timeout_ms, "index.lock_timeout_ms", errors),
-      }
+        limits: limitsRaw
+          ? {
+              max_files: requirePositiveInteger(limitsRaw.max_files, "index.limits.max_files", errors),
+              max_file_bytes: requirePositiveInteger(limitsRaw.max_file_bytes, "index.limits.max_file_bytes", errors),
+              max_total_bytes: requirePositiveInteger(limitsRaw.max_total_bytes, "index.limits.max_total_bytes", errors),
+              max_depth: requirePositiveInteger(limitsRaw.max_depth, "index.limits.max_depth", errors),
+            }
+          : { ...DEFAULT_INDEX_LIMITS },
+        };
+      })()
     : undefined;
 
   const capabilities = capabilitiesRaw

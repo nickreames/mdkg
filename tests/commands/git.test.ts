@@ -9,6 +9,7 @@ import { writeRootConfig } from "../helpers/config";
 import { makeTempDir } from "../helpers/fs";
 
 const cliPath = path.resolve(__dirname, "..", "..", "cli.js");
+const { runGitFetchCommand, runGitCloneCommand, runGitPushReadyCommand } = require("../../commands/git");
 
 function runCli(root: string, args: string[]): SpawnSyncReturns<string> {
   return spawnSync(process.execPath, [cliPath, ...args], {
@@ -212,6 +213,29 @@ test("git fetch blocks configured remotes with embedded credentials before invok
   assert.match(result.stderr, /external Git auth/);
   assert.doesNotMatch(result.stdout, /secret/);
   assert.doesNotMatch(result.stderr, /secret/);
+});
+
+test("git commands reject option-like remote repository and branch operands", () => {
+  const root = makeMdkgRoot("mdkg-git-operands-");
+  initGitRepo(root);
+  commitAll(root, "initial");
+
+  assert.throws(
+    () => runGitFetchCommand({ root, remote: "--all", json: true }),
+    /non-option Git operand/
+  );
+  assert.throws(
+    () => runGitFetchCommand({ root, remote: "origin", branch: "--prune", json: true }),
+    /non-option Git operand/
+  );
+  assert.throws(
+    () => runGitCloneCommand({ root, repository: "--upload-pack=fixture", target: "clone-target", json: true }),
+    /non-option Git operand/
+  );
+  assert.throws(
+    () => runGitPushReadyCommand({ root, remote: "--all", branch: "main", json: true }),
+    /non-option Git operand/
+  );
 });
 
 test("git push --stage-all writes closeout evidence, commits, and pushes to a local bare remote", () => {

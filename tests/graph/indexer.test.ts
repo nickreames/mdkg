@@ -90,6 +90,23 @@ test("buildIndex creates qids and reverse edges", () => {
   assert.deepEqual(index.reverse_edges.relates["root:task-2"], ["root:task-1"]);
 });
 
+test("buildIndex rejects graph count and byte budgets before reading files", () => {
+  const root = makeTempDir("mdkg-index-budget-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTask(root, "task-1");
+  writeTask(root, "task-2");
+
+  const countConfig = loadConfig(root);
+  countConfig.index.limits.max_files = 1;
+  assert.throws(() => buildIndex(root, countConfig), /graph file count exceeds/);
+
+  const byteConfig = loadConfig(root);
+  const taskBytes = Buffer.byteLength(require("node:fs").readFileSync(path.join(root, ".mdkg", "work", "task-1.md")));
+  byteConfig.index.limits.max_file_bytes = taskBytes - 1;
+  assert.throws(() => buildIndex(root, byteConfig), /graph file exceeds/);
+});
+
 test("buildIndex tolerates invalid nodes when tolerant", () => {
   const root = makeTempDir("mdkg-index-");
   writeConfig(root);

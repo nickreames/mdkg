@@ -304,6 +304,43 @@ test("db migrate applies generic foundation migration and is idempotent", () => 
   assert.deepEqual(repeated.migration_files.created, []);
 });
 
+test("db migrate rejects linked migration and runtime paths before outside writes", (t) => {
+  const migrationRoot = makeRoot("mdkg-db-migrate-linked-dir-");
+  const runtimeRoot = makeRoot("mdkg-db-migrate-linked-runtime-");
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-db-migrate-outside-"));
+  assert.equal(runCli(migrationRoot, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(runtimeRoot, ["db", "init", "--json"]).status, 0);
+  const migrationsDir = path.join(migrationRoot, ".mdkg", "db", "schema", "migrations");
+  fs.rmSync(migrationsDir, { recursive: true, force: true });
+  const outsideMigrations = path.join(outside, "migrations");
+  fs.mkdirSync(outsideMigrations);
+  const outsideRuntime = path.join(outside, "runtime.sqlite");
+  fs.writeFileSync(outsideRuntime, "outside-runtime\n", "utf8");
+  try {
+    fs.symlinkSync(outsideMigrations, migrationsDir, "dir");
+    fs.symlinkSync(outsideRuntime, path.join(runtimeRoot, ".mdkg", "db", "runtime", "project.sqlite"), "file");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EPERM") {
+      t.skip("symbolic links unavailable");
+      return;
+    }
+    throw error;
+  }
+
+  const linkedMigrations = runCli(migrationRoot, ["db", "migrate", "--json"]);
+  assert.notEqual(linkedMigrations.status, 0);
+  assert.match(linkedMigrations.stderr, /linked ancestor|symbolic link/);
+  assert.deepEqual(fs.readdirSync(outsideMigrations), []);
+
+  const linkedRuntime = runCli(runtimeRoot, ["db", "migrate", "--json"]);
+  assert.notEqual(linkedRuntime.status, 0);
+  assert.match(linkedRuntime.stderr, /symbolic link/);
+  assert.equal(fs.readFileSync(outsideRuntime, "utf8"), "outside-runtime\n");
+  const verify = runCli(runtimeRoot, ["db", "verify", "--json"]);
+  assert.notEqual(verify.status, 0);
+  assert.match(verify.stdout, /not safely contained/);
+});
+
 test("project DB queue helpers handle dedupe leases retries dead-letter and stats", () => {
   const root = makeRoot("mdkg-db-queue-");
   assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
@@ -1014,6 +1051,42 @@ test("project DB materializer helper processes queue messages through reducers l
   assert.match(missing.error ?? "", /event-missing/);
 
   recordProjectDbEvent(databasePath, {
+    event_id: "event-cross-scope",
+    project_id: "other-project",
+    branch_id: "other-branch",
+    event_type: "project_meta.set",
+    schema_version: 1,
+    idempotency_key: "materializer-cross-scope",
+    payload: { key: "materializer.cross-scope", value: "must-not-apply" },
+    actor: "tester",
+    now_ms: 1042,
+  });
+  enqueueProjectDbMaterialization(databasePath, {
+    message_id: "materializer-cross-scope",
+    project_id: "project",
+    branch_id: "main",
+    event_id: "event-cross-scope",
+    reducer_name: "project_meta.set",
+    reducer_version: "v1",
+    max_attempts: 1,
+    now_ms: 1043,
+  });
+  const crossScope = runNextProjectDbMaterializer(databasePath, {
+    lease_owner: "worker-cross-scope",
+    lease_ms: 100,
+    repo_root: root,
+    now_ms: 1044,
+  });
+  assert.equal(crossScope.status, "dead_letter");
+  assert.match(crossScope.error ?? "", /event scope mismatch/);
+  const crossScopeDb = new DatabaseSync(databasePath);
+  try {
+    assert.equal(crossScopeDb.prepare("SELECT value FROM project_meta WHERE key = ?").get("materializer.cross-scope"), undefined);
+  } finally {
+    crossScopeDb.close();
+  }
+
+  recordProjectDbEvent(databasePath, {
     event_id: "event-2",
     project_id: "project",
     branch_id: "main",
@@ -1053,9 +1126,9 @@ test("project DB materializer helper processes queue messages through reducers l
   }
 
   const materializerStats = readProjectDbMaterializerStats(databasePath, { now_ms: 1060 });
-  assert.equal(materializerStats.queue.total, 5);
+  assert.equal(materializerStats.queue.total, 6);
   assert.equal(materializerStats.queue.by_status.acked, 2);
-  assert.equal(materializerStats.queue.by_status.dead_letter, 2);
+  assert.equal(materializerStats.queue.by_status.dead_letter, 3);
   assert.equal(materializerStats.queue.by_status.ready, 1);
   assert.equal(materializerStats.writer_leases.by_status.committed >= 2, true);
   assert.equal(materializerStats.writer_leases.by_status.conflict >= 1, true);
@@ -1322,6 +1395,40 @@ test("db snapshot seal verify status dump and diff work", () => {
   assert.equal(diffPayload.added.some((line: string) => line.includes("fixture_item")), true);
 });
 
+test("db snapshot dump and diff reject linked inputs and output ancestry", (t) => {
+  const root = makeRoot("mdkg-db-snapshot-linked-");
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-db-snapshot-outside-"));
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "snapshot", "seal", "--json"]).status, 0);
+  const snapshot = path.join(root, ".mdkg", "db", "state", "project.sqlite");
+  const outsideSnapshot = path.join(outside, "outside.sqlite");
+  fs.copyFileSync(snapshot, outsideSnapshot);
+  writeFile(path.join(outside, "sentinel.txt"), "outside\n");
+  try {
+    fs.symlinkSync(outsideSnapshot, path.join(root, ".mdkg", "db", "state", "linked.sqlite"), "file");
+    fs.symlinkSync(outside, path.join(root, ".mdkg", "db", "state", "linked-output"), "dir");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EPERM") {
+      t.skip("symbolic links unavailable");
+      return;
+    }
+    throw error;
+  }
+
+  const linkedDump = runCli(root, ["db", "snapshot", "dump", "--snapshot", ".mdkg/db/state/linked.sqlite", "--json"]);
+  assert.notEqual(linkedDump.status, 0);
+  assert.match(linkedDump.stderr, /symbolic link/);
+  const linkedOutput = runCli(root, ["db", "snapshot", "dump", "--output", ".mdkg/db/state/linked-output/dump.txt", "--json"]);
+  assert.notEqual(linkedOutput.status, 0);
+  assert.match(linkedOutput.stderr, /linked ancestor/);
+  const linkedDiff = runCli(root, ["db", "snapshot", "diff", ".mdkg/db/state/project.sqlite", ".mdkg/db/state/linked.sqlite", "--json"]);
+  assert.notEqual(linkedDiff.status, 0);
+  assert.match(linkedDiff.stderr, /symbolic link/);
+  assert.equal(fs.readFileSync(path.join(outside, "sentinel.txt"), "utf8"), "outside\n");
+  assert.equal(fs.existsSync(path.join(outside, "dump.txt")), false);
+});
+
 test("db snapshot seal enforces queue drain and paused policies", () => {
   const root = makeRoot("mdkg-db-snapshot-queue-policy-");
   assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
@@ -1379,4 +1486,39 @@ test("db snapshot verify detects manifest drift and corrupt snapshots", () => {
   const corrupt = runCli(root, ["db", "snapshot", "verify", "--json"]);
   assert.notEqual(corrupt.status, 0);
   assert.match(parseJson(corrupt.stdout).errors.join("\n"), /snapshot SQLite integrity failed|file is not a database/);
+});
+
+test("snapshot verification requires runtime identity and validates queue policy from sealed bytes", () => {
+  const root = makeRoot("mdkg-db-snapshot-proof-");
+  assert.equal(runCli(root, ["db", "init", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "migrate", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "create", "work", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "enqueue", "work", "msg-1", "--payload-json", '{"ready":true}', "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "claim", "work", "--lease-owner", "worker", "--lease-ms", "100", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "queue", "ack", "work", "msg-1", "--lease-owner", "worker", "--json"]).status, 0);
+  assert.equal(runCli(root, ["db", "snapshot", "seal", "--json"]).status, 0);
+
+  const snapshotPath = path.join(root, ".mdkg", "db", "state", "project.sqlite");
+  const manifestPath = path.join(root, ".mdkg", "db", "state", "project.manifest.json");
+  const manifest = parseJson(fs.readFileSync(manifestPath, "utf8"));
+  manifest.source_runtime_sha256 = null;
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  const missingSource = runCli(root, ["db", "snapshot", "verify", "--json"]);
+  assert.notEqual(missingSource.status, 0);
+  assert.match(parseJson(missingSource.stdout).errors.join("\n"), /source_runtime_sha256/);
+
+  const { DatabaseSync } = require("node:sqlite");
+  const snapshotDb = new DatabaseSync(snapshotPath);
+  try {
+    snapshotDb.prepare("UPDATE project_queue_message SET status = 'ready', available_at_ms = 0 WHERE queue_name = 'work' AND message_id = 'msg-1'").run();
+  } finally {
+    snapshotDb.close();
+  }
+  manifest.source_runtime_sha256 = sha256File(path.join(root, ".mdkg", "db", "runtime", "project.sqlite"));
+  manifest.snapshot_sha256 = sha256File(snapshotPath);
+  manifest.byte_size = fs.statSync(snapshotPath).size;
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  const queueDrift = runCli(root, ["db", "snapshot", "verify", "--json"]);
+  assert.notEqual(queueDrift.status, 0);
+  assert.match(parseJson(queueDrift.stdout).errors.join("\n"), /requires drained queues|queue summary/);
 });

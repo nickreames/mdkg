@@ -1323,6 +1323,23 @@ test("loop-root pack includes scoped closure and linked subnodes in deterministi
     "root:chk-1",
     "root:test-1",
   ]);
+
+  assert.throws(
+    () => buildPack({
+      root,
+      index,
+      rootQid: "root:loop-1",
+      depth: 0,
+      edges: [],
+      verbose: false,
+      maxNodes: 5,
+      maxTraversalNodes: 3,
+      verboseCoreListPath: path.resolve(root, config.pack.verbose_core_list_path),
+      wsHint: "root",
+      includeLatestCheckpoint: false,
+    }),
+    /loop pack closure exceeds node limit|goal scope traversal exceeds node limit/
+  );
 });
 
 test("pack truncates by max_nodes", () => {

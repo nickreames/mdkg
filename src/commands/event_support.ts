@@ -1,6 +1,12 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig, Config as MdkgConfig } from "../core/config";
+import {
+  appendContainedFile,
+  containedPathExists,
+  writeContainedFileExclusive,
+} from "../core/filesystem_authority";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { UsageError, NotFoundError } from "../util/errors";
 
 export type EventStatus = "ok" | "error" | "retry" | "skipped";
@@ -58,6 +64,14 @@ export function resolveEventsPath(root: string, config: MdkgConfig, ws = "root")
   return path.resolve(root, entry.path, entry.mdkg_dir, "work", "events", "events.jsonl");
 }
 
+function resolveEventsRelativePath(config: MdkgConfig, ws: string): string {
+  const entry = config.workspaces[ws];
+  if (!entry) {
+    throw new NotFoundError(`workspace not found: ${ws}`);
+  }
+  return workspaceDocumentRelativePath(entry.path, entry.mdkg_dir, "work", "events", "events.jsonl");
+}
+
 function formatRunIdTimestamp(now: Date): string {
   const iso = now.toISOString().replace(/[-:]/g, "").replace(/\./g, "").replace("Z", "Z");
   return iso;
@@ -70,7 +84,7 @@ export function createLocalRunId(kind: string, now = new Date()): string {
 
 export function isEventLoggingEnabled(root: string, config: MdkgConfig, ws?: string): boolean {
   const normalizedWs = normalizeWorkspaceForEvents(config, ws);
-  return fs.existsSync(resolveEventsPath(root, config, normalizedWs));
+  return containedPathExists({ root, relativePath: resolveEventsRelativePath(config, normalizedWs) });
 }
 
 export function ensureEventsEnabled(options: EnsureEventsEnabledOptions): {
@@ -81,11 +95,11 @@ export function ensureEventsEnabled(options: EnsureEventsEnabledOptions): {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspaceForEvents(config, options.ws);
   const eventsPath = resolveEventsPath(options.root, config, ws);
+  const relativePath = resolveEventsRelativePath(config, ws);
 
   let created = false;
-  if (!fs.existsSync(eventsPath)) {
-    fs.mkdirSync(path.dirname(eventsPath), { recursive: true });
-    fs.writeFileSync(eventsPath, "", "utf8");
+  if (!containedPathExists({ root: options.root, relativePath })) {
+    writeContainedFileExclusive({ root: options.root, relativePath }, "");
     created = true;
   }
 
@@ -141,12 +155,13 @@ export function appendEvent(options: AppendEventOptions): EventRecord {
     throw new UsageError("--refs requires at least one id or qid");
   }
   const eventsPath = resolveEventsPath(options.root, config, record.workspace);
-  if (!fs.existsSync(eventsPath)) {
+  const relativePath = resolveEventsRelativePath(config, record.workspace);
+  if (!containedPathExists({ root: options.root, relativePath })) {
     throw new NotFoundError(
       `events.jsonl is missing for workspace ${record.workspace}; run \`mdkg event enable --ws ${record.workspace}\``
     );
   }
-  fs.appendFileSync(eventsPath, `${JSON.stringify(record)}\n`, "utf8");
+  appendContainedFile({ root: options.root, relativePath }, `${JSON.stringify(record)}\n`);
   return record;
 }
 

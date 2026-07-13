@@ -166,6 +166,34 @@ test("runNewCommand creates next id and writes to work folder", () => {
   assert.ok(content.includes("updated: 2026-01-21"));
 });
 
+test("stored workspace aliases cannot route node writes through linked ancestry", (t) => {
+  const root = makeTempDir("mdkg-new-linked-workspace-");
+  const outside = makeTempDir("mdkg-new-linked-outside-");
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  config.workspaces.docs = { path: "docs", enabled: true, mdkg_dir: ".mdkg", visibility: "private" };
+  fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
+  writeFile(path.join(outside, "sentinel.txt"), "outside\n");
+  try {
+    fs.symlinkSync(outside, path.join(root, "docs"), "dir");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EPERM") {
+      t.skip("symbolic links unavailable");
+      return;
+    }
+    throw error;
+  }
+
+  assert.throws(
+    () => runNewCommand({ root, ws: "docs", type: "task", title: "must stay contained" }),
+    (error: unknown) => (error as { code?: string }).code === "ERR_CONTAINED_PATH_LINK"
+  );
+  assert.equal(fs.readFileSync(path.join(outside, "sentinel.txt"), "utf8"), "outside\n");
+  assert.equal(fs.existsSync(path.join(outside, ".mdkg")), false);
+});
+
 test("runNewCommand can print deterministic json receipt", () => {
   const root = makeTempDir("mdkg-new-json-");
   writeConfig(root);
