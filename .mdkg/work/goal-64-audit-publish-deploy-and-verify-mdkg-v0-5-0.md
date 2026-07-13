@@ -2,12 +2,12 @@
 id: goal-64
 type: goal
 title: Audit publish deploy and verify mdkg v0.5.0
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: mdkg v0.5.0 is released only after version and changelog finalization, complete local and security gates, one explicit bounded approval, a dormant first push with green CI, npm publication and registry proof, clean temporary and real global install verification, a second website activation push, production deployment and live browser validation, and a fix-forward release receipt with no Git tag by default.
 scope_refs: [epic-232, epic-233, epic-234, epic-235, task-716, task-717, task-718, task-719, task-720, task-721, task-722, task-723, test-388, test-389, test-390, test-391, test-392, test-393, test-394]
-active_node: task-723
+last_active_node: task-723
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, npm run smoke:loop, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, node scripts/assert-publish-ready.js, node scripts/verify-security-remediation.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.5.0 version --registry=https://registry.npmjs.org/, manual source-backed security requalification under dec-81, required plugin skill product-design:audit, required plugin skill browser:control-in-app-browser, required plugin skill chrome:control-chrome, explicit single release approval, git diff --check]
 max_iterations: 25
@@ -21,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: [goal-61, chk-426, goal-62, goal-63, chk-491, dec-73, dec-74, prop-8, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497]
 context_refs: [goal-61, chk-426, goal-62, goal-63, chk-489, chk-490, chk-491, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497, chk-509, chk-510, test-434]
-evidence_refs: [chk-491, chk-496, chk-497, chk-509, chk-510, chk-511, chk-512, chk-513, chk-514, chk-515, chk-516]
+evidence_refs: [chk-491, chk-496, chk-497, chk-509, chk-510, chk-511, chk-512, chk-513, chk-514, chk-515, chk-516, chk-517]
 aliases: [v0-5-0-publish-and-production-verification]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
@@ -83,6 +83,18 @@ and the final receipt records all side effects, evidence, and residual risks.
 - Registry, integrity, temporary install, upgrade, and real global install proof.
 - Two-phase dormant/active website push and live production proof.
 
+# Remaining Closeout Contract
+
+- Consume `dec-81`, `chk-511`, and `chk-512` as final v0.5.0 security
+  evidence. Do not start or require another Codex Security scan.
+- Resume directly at `task-723`; all publication, registry, installation,
+  approval, and package-mutation lanes are complete.
+- Run `test-394` as the acceptance lane for `task-723`, not as a prerequisite
+  that prevents the live audit from starting.
+- Verify the exact fix-forward commit deployed to both public sites, complete
+  the live desktop/mobile and metadata checks, record one final checkpoint,
+  then evaluate Goal 64.
+
 # Acceptance Criteria
 
 - `task-716` through `task-723` and `test-388` through `test-394` close with
@@ -110,16 +122,13 @@ and the final receipt records all side effects, evidence, and residual risks.
 
 # Current State
 
-Active and fully unblocked at `task-723`. Npm publication, immutable registry
-proof, disposable install and upgrade, real global installation, website
-activation, fix-forward CI, and both production deployments are complete under
-`chk-513` through `chk-516`. Repair commit
-`b265da717ee5365bd83362db6b83150cb603da5c` is on `origin/main`; GitHub Actions
-run `29258600632` and Vercel deployments `5426067587` and `5426071286` passed
-for that exact SHA. No additional Codex Security scan, npm publication, global
-replacement, release approval, or implementation change is required. The next
-pass should run the observational live desktop/mobile audit in `task-723`, close
-`test-394`, record the final release receipt, and evaluate Goal 64.
+Achieved. `mdkg@0.5.0` is npm `latest` with verified integrity; disposable and
+real global consumer probes pass; the release is active on mdkg.dev and
+docs.mdkg.dev; final fix-forward commit `32245512` passed exact-SHA CI and both
+production deployments; current-run desktop/mobile, metadata, link, keyboard,
+SEO, accessibility, performance, and no-secret checks pass; no Git tag exists;
+and `chk-517` records the final fix-forward release receipt. No additional
+Codex Security scan or release mutation is required.
 
 # Iteration Log
 
@@ -154,6 +163,13 @@ pass should run the observational live desktop/mobile audit in `task-723`, close
 - 2026-07-13: Fix-forward repair commit `b265da71` passed exact-SHA CI and both
   Vercel deployments. `task-722` and `test-393` closed under `chk-516`; Goal 64
   now routes directly and unblocked to the final live audit in `task-723`.
+- 2026-07-13: The live audit found and fixed the docs Edit page repository-path
+  prefix. Commit `32245512` is on `origin/main` with exact-SHA CI green; the
+  remaining lane is production-currentness confirmation, live recheck,
+  `test-394`, and the final checkpoint. No earlier release gate is reopened.
+- 2026-07-13: Exact-SHA production deployments, final live acceptance,
+  registry/global refresh, and serial site smoke checks passed. `task-723`,
+  `test-394`, and `epic-235` closed under `chk-517`; Goal 64 achieved.
 
 # Skill Improvement Candidates
 
@@ -161,4 +177,11 @@ pass should run the observational live desktop/mobile audit in `task-723`, close
 
 # Completion Evidence
 
-- Pending.
+- `chk-513`: dormant release commit, exact-SHA CI, npm publication, and registry
+  integrity.
+- `chk-514`: registry-fetched clean install, loop commands, and `0.4.2` upgrade.
+- `chk-515`: real `/opt/homebrew` global `0.5.0` install and dry-run ID proof.
+- `chk-516`: two-phase website activation, CI, and initial production deploys.
+- `chk-517`: final Edit-page fix-forward SHA, CI, exact production deployments,
+  current-run browser/metadata/accessibility/SEO/no-secret proof, residual risks,
+  and no-tag confirmation.

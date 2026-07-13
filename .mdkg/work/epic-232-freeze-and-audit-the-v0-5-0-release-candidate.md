@@ -2,7 +2,7 @@
 id: epic-232
 type: epic
 title: Freeze and audit the v0.5.0 release candidate
-status: todo
+status: done
 priority: 1
 tags: [release, audit, package, prepublish]
 owners: []
@@ -13,11 +13,11 @@ blocked_by: []
 blocks: []
 refs: [task-716, task-717, test-388]
 context_refs: [goal-61, goal-63, goal-64, edd-72, dec-69]
-evidence_refs: []
+evidence_refs: [chk-493, chk-494, chk-495]
 aliases: [v0-5-0-release-candidate-freeze]
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Goal
 
@@ -50,3 +50,8 @@ Network security checks, push, npm publish, global replacement, and deployment.
 - `edd-72`
 - `dec-69`
 - external links
+
+# Current State
+
+Complete. Release metadata and the full local candidate preflight passed under
+`chk-493` through `chk-495`.
