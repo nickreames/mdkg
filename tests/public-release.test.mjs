@@ -16,25 +16,26 @@ const canonicalManifest = {
   schema_version: 1,
   release_id: "mdkg-v0.5.0-loops",
   target_version: "0.5.0",
-  state: "draft",
+  state: "published",
   qualifier: "Pre-v1 public alpha",
 };
+const draftManifest = { ...canonicalManifest, state: "draft" };
 
 function sha256(filePath) {
   return createHash("sha256").update(readFileSync(filePath)).digest("hex");
 }
 
-test("canonical manifest is strict and remains draft", () => {
+test("canonical manifest is strict and published", () => {
   const before = sha256(publicReleasePaths.manifest);
   const projection = loadPublicReleaseProjection({ env: {} });
   const after = sha256(publicReleasePaths.manifest);
 
   assert.deepEqual(projection.manifest, canonicalManifest);
   assert.equal(projection.package_version, "0.5.0");
-  assert.equal(projection.published, false);
+  assert.equal(projection.published, true);
   assert.equal(projection.preview_visible, false);
-  assert.equal(projection.visible, false);
-  assert.equal(projection.indexable, false);
+  assert.equal(projection.visible, true);
+  assert.equal(projection.indexable, true);
   assert.equal(projection.site_noindex, false);
   assert.equal(after, before);
 });
@@ -61,7 +62,7 @@ test("manifest validation rejects missing, unknown, and malformed values", () =>
 
 test("local release preview is visible but never indexable", () => {
   const projection = projectPublicRelease({
-    manifest: canonicalManifest,
+    manifest: draftManifest,
     packageVersion: "0.4.2",
     env: { PUBLIC_MDKG_RELEASE_PREVIEW: "1" },
   });
@@ -75,7 +76,7 @@ test("local release preview is visible but never indexable", () => {
 test("draft release preview fails closed in Vercel production", () => {
   assert.throws(
     () => projectPublicRelease({
-      manifest: canonicalManifest,
+      manifest: draftManifest,
       packageVersion: "0.4.2",
       env: { PUBLIC_MDKG_RELEASE_PREVIEW: "1", VERCEL_ENV: "production" },
     }),
@@ -84,9 +85,8 @@ test("draft release preview fails closed in Vercel production", () => {
 });
 
 test("published release requires package version parity", () => {
-  const publishedManifest = { ...canonicalManifest, state: "published" };
   const projection = projectPublicRelease({
-    manifest: publishedManifest,
+    manifest: canonicalManifest,
     packageVersion: "0.5.0",
     env: {},
   });
@@ -96,15 +96,14 @@ test("published release requires package version parity", () => {
   assert.equal(projection.indexable, true);
   assert.equal(projection.site_noindex, false);
   assert.throws(
-    () => projectPublicRelease({ manifest: publishedManifest, packageVersion: "0.4.2", env: {} }),
+    () => projectPublicRelease({ manifest: canonicalManifest, packageVersion: "0.4.2", env: {} }),
     /targets 0\.5\.0, but package\.json is 0\.4\.2/,
   );
 });
 
 test("deployment previews retain site-wide noindex behavior", () => {
-  const publishedManifest = { ...canonicalManifest, state: "published" };
   const projection = projectPublicRelease({
-    manifest: publishedManifest,
+    manifest: canonicalManifest,
     packageVersion: "0.5.0",
     env: { VERCEL_ENV: "preview" },
   });
@@ -114,10 +113,24 @@ test("deployment previews retain site-wide noindex behavior", () => {
   assert.equal(projection.site_noindex, true);
 });
 
+test("release preview flag does not de-index a published release", () => {
+  const projection = projectPublicRelease({
+    manifest: canonicalManifest,
+    packageVersion: "0.5.0",
+    env: { PUBLIC_MDKG_RELEASE_PREVIEW: "1" },
+  });
+
+  assert.equal(projection.published, true);
+  assert.equal(projection.preview_visible, false);
+  assert.equal(projection.visible, true);
+  assert.equal(projection.indexable, true);
+  assert.equal(projection.site_noindex, false);
+});
+
 test("preview flag accepts only explicit binary values", () => {
   assert.throws(
     () => projectPublicRelease({
-      manifest: canonicalManifest,
+      manifest: draftManifest,
       packageVersion: "0.4.2",
       env: { PUBLIC_MDKG_RELEASE_PREVIEW: "true" },
     }),

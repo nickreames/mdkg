@@ -21,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: [goal-61, chk-426, goal-62, goal-63, chk-491, dec-73, dec-74, prop-8, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497]
 context_refs: [goal-61, chk-426, goal-62, goal-63, chk-489, chk-490, chk-491, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497, chk-509, chk-510, test-434]
-evidence_refs: [chk-491, chk-497, chk-509, chk-510, chk-511, chk-512, chk-513, chk-514, chk-515]
+evidence_refs: [chk-491, chk-496, chk-497, chk-509, chk-510, chk-511, chk-512, chk-513, chk-514, chk-515]
 aliases: [v0-5-0-publish-and-production-verification]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
@@ -47,6 +47,8 @@ and the final receipt records all side effects, evidence, and residual risks.
 - Do not create or push a Git tag unless a later explicit request changes
   `dec-69`.
 - Do not roll back or unpublish a released npm version; fix forward.
+- Do not run another Codex Security scan for v0.5.0. `dec-81`, `chk-511`, and
+  `chk-512` are the accepted security requalification evidence for this release.
 
 # Recursive Algorithm
 
@@ -116,9 +118,16 @@ SQLite, loop commands, non-consuming dry-run, packaged assets, idempotent
 `0.4.2` upgrade, canonical MANIFEST migration, and legacy SPEC compatibility.
 `chk-515` proves the real `/opt/homebrew` installation now resolves to registry
 `0.5.0` and passes the complete loop command and non-consuming dry-run probe.
-No additional Codex Security scan is required. The release manifest remains
-dormant. The next lane activates and pushes the website release, followed by
-production and live browser verification.
+No additional Codex Security scan is required. Activation commit
+`b337ff8d69664908ddf0690a7878cba0ec145a6d` is on `origin/main`, and the shared
+release manifest is now `published`. The activation CI run exposed one stale
+draft-state assertion in `tests/public-release.test.mjs`; its local fix is an
+existing non-mdkg worktree change and is intentionally preserved for the next
+execution pass. That pass starts by reviewing the diff, running the complete
+release CI gate, committing and pushing the fix forward under `chk-496` and
+`dec-69`, then proving the exact origin SHA and both production deployments
+before closing `test-393`. `task-723` remains correctly sequenced after that
+proof for the final live browser audit and release receipt.
 
 # Iteration Log
 
@@ -145,6 +154,11 @@ production and live browser verification.
 - 2026-07-13: The real `/opt/homebrew` global installation and `test-392` passed;
   `chk-515` records absolute-path and dry-run ID evidence. Goal 64 now routes to
   website activation in `task-722`.
+- 2026-07-13: Activation commit `b337ff8d` reached `origin/main` and the release
+  manifest is published. A stale draft-state release test is the only known CI
+  repair in the active lane; Goal 64 remains unblocked at `task-722`, with no
+  additional security scan or approval cycle required for the accepted
+  fix-forward sequence.
 
 # Skill Improvement Candidates
 
