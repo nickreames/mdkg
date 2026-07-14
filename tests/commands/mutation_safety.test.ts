@@ -63,8 +63,8 @@ const MUTATING_COMMAND_AUDIT = [
     file: "src/commands/skill.ts",
     mutation_kind: "skill-and-mirror-update",
     lock_required: true,
-    atomic_write: "atomicWriteFile",
-    notes: "Skill creation and mirror sync are command-level lock-wrapped.",
+    atomic_write: "atomicReplaceContainedFile",
+    notes: "Skill creation uses contained atomic replacement and mirror sync is command-level lock-wrapped.",
   },
   {
     command: "mdkg archive add/compress",
@@ -114,7 +114,7 @@ test("high-risk graph config and skill mutation paths are lock-wrapped and atomi
 
   const skill = source("src/commands/skill.ts");
   assert.match(skill, /withMutationLock/);
-  assert.match(skill, /atomicWriteFile\(canonicalPath/);
+  assert.match(skill, /atomicReplaceContainedFile/);
 
   const skillSupport = source("src/commands/skill_support.ts");
   assert.match(skillSupport, /atomicWriteFile\(registryPath/);

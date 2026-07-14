@@ -35,3 +35,14 @@ export function workspaceDocumentRootKey(workspacePath: string, mdkgDir: string)
     .filter((part) => part && part !== ".")
     .join("/");
 }
+
+export function workspaceDocumentRelativePath(
+  workspacePath: string,
+  mdkgDir: string,
+  ...suffix: string[]
+): string {
+  return [workspacePath, mdkgDir, ...suffix]
+    .flatMap((value) => value.trim().split(/[\\/]+/))
+    .filter((part) => part && part !== ".")
+    .join("/");
+}

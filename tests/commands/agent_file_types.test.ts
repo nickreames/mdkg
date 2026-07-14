@@ -13,7 +13,9 @@ const { runCapabilityListCommand } = require("../../commands/capability");
 const {
   runWorkContractNewCommand,
   runWorkOrderNewCommand,
+  runWorkOrderStatusCommand,
   runWorkReceiptNewCommand,
+  runWorkReceiptVerifyCommand,
   runWorkValidateCommand,
 } = require("../../commands/work");
 import { makeTempDir, writeFile } from "../helpers/fs";
@@ -605,6 +607,25 @@ test("validate and work validate accept omni-room profile mode for compatible me
   assert.equal(workReceipt.ok, true);
   assert.equal(workReceipt.validation_profile, "omni-room");
   assert.equal(workReceipt.error_count, 0);
+});
+
+test("read-only work commands rebuild a missing graph index without persisting it", () => {
+  const root = makeTempDir("mdkg-agent-work-observational-");
+  setupWorkspace(root);
+  writeReceiptValidationFixture(root, {});
+  const indexDir = path.join(root, ".mdkg", "index");
+  fs.rmSync(indexDir, { recursive: true, force: true });
+
+  const commands = [
+    () => runWorkValidateCommand({ root, id: "receipt.fixture", json: true }),
+    () => runWorkOrderStatusCommand({ root, id: "order.fixture", json: true }),
+    () => runWorkReceiptVerifyCommand({ root, id: "receipt.fixture", json: true }),
+  ];
+  for (const command of commands) {
+    const output = captureOutput(command);
+    assert.notEqual(output.stdout, "");
+    assert.equal(fs.existsSync(indexDir), false);
+  }
 });
 
 test("validate warns for ambiguous and unknown contract profile metadata in generic mode", () => {

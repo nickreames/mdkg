@@ -47,6 +47,23 @@ function sha256File(filePath: string): string {
   return `sha256:${crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")}`;
 }
 
+function sha256Buffer(data: Buffer): string {
+  const crypto = require("node:crypto") as typeof import("node:crypto");
+  return `sha256:${crypto.createHash("sha256").update(data).digest("hex")}`;
+}
+
+function manifestFilesHash(files: any[]): string {
+  const payload = `${JSON.stringify(files.map((file) => ({
+    path: file.path,
+    kind: file.kind,
+    workspace: file.workspace,
+    visibility: file.visibility,
+    size: file.size,
+    sha256: file.sha256,
+  })), null, 2)}\n`;
+  return sha256Buffer(Buffer.from(payload));
+}
+
 function updateConfig(root: string, mutate: (config: any) => void): void {
   const configPath = path.join(root, ".mdkg", "config.json");
   const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
@@ -699,6 +716,38 @@ test("cross-subgraph qid refs validate against enabled subgraph targets", () => 
   assert.match(failure.stderr, /references missing node child_b:work\.child_b-work/);
 });
 
+test("work trigger preserves imported contract identity in orders and events", () => {
+  const root = makeTempDir("mdkg-subgraph-trigger-");
+  run(["init", "--agent"], root);
+  const child = createGitChildBundle(root, "child_trigger");
+  run([
+    "subgraph", "add", "child_trigger", child.bundlePath,
+    "--source-path", "projects/child_trigger", "--json",
+  ], root);
+
+  const triggered = json<{
+    node: { path: string };
+    trigger: { work_qid: string; event_appended: boolean };
+  }>(run([
+    "work", "trigger", "child_trigger:work.child_trigger-work",
+    "--id", "order.imported-trigger", "--json",
+  ], root).stdout);
+  assert.equal(triggered.trigger.work_qid, "child_trigger:work.child_trigger-work");
+  assert.equal(triggered.trigger.event_appended, true);
+
+  const order = fs.readFileSync(path.join(root, triggered.node.path), "utf8");
+  assert.match(order, /^work_id: child_trigger:work\.child_trigger-work$/m);
+  assert.match(order, /^relates: \[child_trigger:work\.child_trigger-work\]$/m);
+  const events = fs.readFileSync(path.join(root, ".mdkg", "work", "events", "events.jsonl"), "utf8")
+    .trim()
+    .split(/\r?\n/)
+    .map((line) => JSON.parse(line));
+  const event = events.find((entry) => entry.kind === "WORK_TRIGGERED" && entry.refs.includes("order.imported-trigger"));
+  assert.ok(event);
+  assert.ok(event.refs.includes("child_trigger:work.child_trigger-work"));
+  run(["validate"], root);
+});
+
 test("public bundles fail when public local nodes reference private subgraphs", () => {
   const root = makeTempDir("mdkg-subgraph-public-");
   run(["init", "--agent"], root);
@@ -753,7 +802,50 @@ test("subgraph rejects bundles missing generated skills index", () => {
 
   const failure = runFailure(["subgraph", "add", "child_subgraph", bundlePath, "--json"], root);
   assert.equal(failure.status, 2);
-  assert.match(failure.stderr, /missing bundle entry: \.mdkg\/index\/skills\.json/);
+  assert.match(failure.stderr, /file_count mismatch|required index contract mismatch|missing bundle entry/);
+});
+
+test("review-003-cand-001 public subgraph projection revalidates foreign index visibility", () => {
+  const root = makeTempDir("mdkg-subgraph-public-contract-");
+  run(["init", "--agent"], root);
+  const child = path.join(root, "child-public");
+  fs.mkdirSync(child, { recursive: true });
+  run(["init", "--agent"], child);
+  updateConfig(child, (config) => {
+    config.workspaces.root.visibility = "public";
+  });
+  run(["new", "task", "Public Child Task", "--status", "todo", "--priority", "1", "--json"], child);
+  const created = json<{ path: string }>(run(["bundle", "create", "--profile", "public", "--json"], child).stdout);
+  const bundlePath = path.join(child, created.path);
+  run([
+    "subgraph", "add", "child_public", "child-public/.mdkg/bundles/public/all.mdkg.zip",
+    "--visibility", "public", "--profile", "public", "--json",
+  ], root);
+  const entries = new Map(readZipEntries(fs.readFileSync(bundlePath)).map((entry) => [entry.name, entry.data]));
+  const manifest = JSON.parse(entries.get("manifest.json")!.toString("utf8"));
+  const globalPath = ".mdkg/index/global.json";
+  const globalIndex = JSON.parse(entries.get(globalPath)!.toString("utf8"));
+  const projectedNode = Object.values(globalIndex.nodes)[0] as { ws: string };
+  projectedNode.ws = "private_workspace";
+  const globalData = Buffer.from(`${JSON.stringify(globalIndex, null, 2)}\n`);
+  entries.set(globalPath, globalData);
+  const globalRow = manifest.files.find((file: { path: string }) => file.path === globalPath);
+  globalRow.sha256 = sha256Buffer(globalData);
+  globalRow.size = globalData.length;
+  manifest.index_hashes[globalPath] = globalRow.sha256;
+  manifest.source_tree_hash = manifestFilesHash(manifest.files.filter((file: { kind: string }) => file.kind !== "generated_index"));
+  manifest.bundle_hash = manifestFilesHash(manifest.files);
+  entries.set("manifest.json", Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`));
+  fs.writeFileSync(
+    bundlePath,
+    createDeterministicZipFromEntries(Array.from(entries, ([name, data]) => ({ name, data })))
+  );
+
+  const failure = runFailure(["subgraph", "verify", "child_public", "--json"], root);
+  assert.equal(failure.status, 2);
+  assert.match(failure.stdout, /public bundle contains non-public node/);
+  const search = json<{ count: number }>(run(["search", "Public Child Task", "--json"], root).stdout);
+  assert.equal(search.count, 0);
 });
 
 test("legacy bundle import command gives subgraph migration guidance", () => {

@@ -15,6 +15,7 @@ export type LoadCapabilitiesIndexOptions = {
   config: Config;
   useCache?: boolean;
   allowReindex?: boolean;
+  persistReindex?: boolean;
 };
 
 export type LoadCapabilitiesIndexResult = {
@@ -104,6 +105,7 @@ export function loadCapabilitiesIndex(
 ): LoadCapabilitiesIndexResult {
   const useCache = options.useCache ?? true;
   const allowReindex = options.allowReindex ?? options.config.index.auto_reindex;
+  const persistReindex = options.persistReindex ?? true;
   const indexPath = resolveCapabilitiesIndexPath(options.root, options.config);
 
   if (!useCache) {
@@ -118,7 +120,9 @@ export function loadCapabilitiesIndex(
 
   if (allowReindex) {
     const index = buildCapabilitiesIndex(options.root, options.config);
-    writeCapabilitiesIndex(indexPath, index);
+    if (persistReindex) {
+      writeCapabilitiesIndex(indexPath, index);
+    }
     return { index, rebuilt: true, stale };
   }
 

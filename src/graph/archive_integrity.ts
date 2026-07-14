@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import { readSingleFileZip } from "../util/zip";
+import { readSingleFileZipPath } from "../util/zip";
 
 export type ArchiveIntegrityOptions = {
   root: string;
@@ -48,7 +48,7 @@ export function checkArchiveIntegrity(options: ArchiveIntegrityOptions): Archive
       result.errors.push(`compressed_sha256 mismatch: ${actualCompressedHash}`);
     }
     try {
-      const unzipped = readSingleFileZip(fs.readFileSync(options.zipPath));
+      const unzipped = readSingleFileZipPath(options.zipPath);
       const unzippedHash = hashArchiveBuffer(unzipped.data);
       if (unzippedHash !== options.expectedRawHash) {
         result.errors.push(`zip payload sha256 mismatch: ${unzippedHash}`);

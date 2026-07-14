@@ -480,6 +480,8 @@ export function runNextProjectDbMaterializer(
 
     const reducer = applyProjectDbReducer(databasePath, {
       event_id: payload.event_id,
+      expected_project_id: payload.project_id,
+      expected_branch_id: payload.branch_id,
       reducer_name: payload.reducer_name,
       reducer_version: payload.reducer_version,
       actor: input.lease_owner,

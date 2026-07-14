@@ -78,6 +78,12 @@ test("loadConfig reads and validates config", () => {
   assert.equal(config.schema_version, LATEST_SCHEMA_VERSION);
   assert.equal(config.workspaces.root.path, ".");
   assert.equal(config.workspaces.root.visibility, "private");
+  assert.deepEqual(config.index.limits, {
+    max_files: 100000,
+    max_file_bytes: 8388608,
+    max_total_bytes: 536870912,
+    max_depth: 64,
+  });
   assert.equal(config.archive.large_cache_warning_bytes, 26214400);
   assert.equal(config.capabilities.cache_path, ".mdkg/index/capabilities.json");
   assert.equal(config.bundles.output_dir, ".mdkg/bundles");
@@ -970,6 +976,23 @@ test("loadConfig rejects malformed registered workspace aliases", () => {
     );
 
     assert.throws(() => loadConfig(root), pattern);
+  }
+});
+
+test("loadConfig rejects prototype-colliding workspace and subgraph aliases", () => {
+  const root = makeTempDir("mdkg-config-prototype-alias-");
+  const configPath = path.join(root, ".mdkg", "config.json");
+  for (const [kind, alias] of [
+    ["workspaces", "constructor"],
+    ["workspaces", "prototype"],
+    ["subgraphs", "constructor"],
+  ] as const) {
+    const config: any = JSON.parse(JSON.stringify(BASE_CONFIG));
+    config[kind][alias] = kind === "workspaces"
+      ? { path: alias, enabled: true, mdkg_dir: ".mdkg", visibility: "private" }
+      : { enabled: true, visibility: "private", permissions: ["read"], sources: [] };
+    writeFile(configPath, JSON.stringify(config, null, 2));
+    assert.throws(() => loadConfig(root), new RegExp(`${kind}\\.${alias} alias is reserved`));
   }
 });
 

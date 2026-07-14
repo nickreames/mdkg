@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
+import { readContainedFile } from "../core/filesystem_authority";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 
 export const SKILLS_INDEX_RELATIVE_PATH = ".mdkg/index/skills.json";
@@ -145,7 +146,8 @@ function hasDirectory(dirPath: string): boolean {
   if (!fs.existsSync(dirPath)) {
     return false;
   }
-  return fs.statSync(dirPath).isDirectory();
+  const stat = fs.lstatSync(dirPath);
+  return !stat.isSymbolicLink() && stat.isDirectory();
 }
 
 function rootWorkspaceMdkgPath(root: string, config: Config): string {
@@ -174,7 +176,8 @@ export function buildSkillIndexEntryForWorkspace(
     throw new Error(`${filePath}: skill slug must be kebab-case`);
   }
 
-  const content = fs.readFileSync(filePath, "utf8");
+  const relativePath = path.relative(root, filePath).split(path.sep).join("/");
+  const content = readContainedFile({ root, relativePath });
   const { frontmatter } = parseFrontmatter(content, filePath);
   const name = requireString(frontmatter, "name", filePath);
   const description = requireString(frontmatter, "description", filePath);

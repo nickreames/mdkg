@@ -2,6 +2,12 @@ import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
 import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  ensureContainedDirectory,
+  readContainedFile,
+} from "../core/filesystem_authority";
+import {
   buildSkillIndexEntry,
   buildSkillsIndex,
   resolveSkillsIndexPath,
@@ -27,7 +33,6 @@ import {
 } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
 import { shouldMaintainSkillMirrors, syncSkillMirrors } from "./skill_mirror";
-import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 
 export type SkillNewCommandOptions = {
@@ -280,11 +285,12 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
     throw new UsageError(`skill already exists: ${path.relative(root, canonicalPath)} (use --force to overwrite)`);
   }
 
-  fs.mkdirSync(skillDir, { recursive: true });
-  fs.mkdirSync(path.join(skillDir, "references"), { recursive: true });
-  fs.mkdirSync(path.join(skillDir, "assets"), { recursive: true });
+  const relativeSkillDir = path.relative(root, skillDir).split(path.sep).join("/");
+  ensureContainedDirectory({ root, relativePath: relativeSkillDir });
+  ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/references` });
+  ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/assets` });
   if (options.withScripts) {
-    fs.mkdirSync(path.join(skillDir, "scripts"), { recursive: true });
+    ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/scripts` });
   }
 
   const content = renderSkillTemplate({
@@ -294,7 +300,7 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
     authors,
     links,
   });
-  atomicWriteFile(canonicalPath, content);
+  atomicReplaceContainedFile({ root, relativePath: `${relativeSkillDir}/SKILL.md` }, content);
 
   ensureSkillsRegistry(root, config);
   refreshSkillsRegistry(root, config);
@@ -358,6 +364,7 @@ export function runSkillListCommand(options: SkillListCommandOptions): void {
     config,
     useCache: !options.noCache,
     allowReindex: !options.noReindex,
+    persistReindex: false,
   });
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: skills index is stale; run mdkg index to refresh");
@@ -393,6 +400,7 @@ export function runSkillShowCommand(options: SkillShowCommandOptions): void {
     config,
     useCache: !options.noCache,
     allowReindex: !options.noReindex,
+    persistReindex: false,
   });
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: skills index is stale; run mdkg index to refresh");
@@ -402,13 +410,12 @@ export function runSkillShowCommand(options: SkillShowCommandOptions): void {
     throw new NotFoundError(`skill not found: ${slug}`);
   }
 
-  const skillPath = path.resolve(options.root, skill.path);
   let body = "";
   if (!options.metaOnly) {
-    if (!fs.existsSync(skillPath)) {
+    if (!containedPathExists({ root: options.root, relativePath: skill.path })) {
       throw new NotFoundError(`file not found for ${skill.id}: ${skill.path}`);
     }
-    body = fs.readFileSync(skillPath, "utf8").trimEnd();
+    body = readContainedFile({ root: options.root, relativePath: skill.path }).trimEnd();
   }
 
   const format = options.format ?? (options.json ? "json" : undefined);
@@ -487,6 +494,7 @@ export function runSkillSearchCommand(options: SkillSearchCommandOptions): void 
     config,
     useCache: !options.noCache,
     allowReindex: !options.noReindex,
+    persistReindex: false,
   });
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: skills index is stale; run mdkg index to refresh");

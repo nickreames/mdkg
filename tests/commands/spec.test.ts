@@ -99,6 +99,21 @@ test("spec command lists shows and validates optional SPEC capability records", 
   assert.equal(validation.error_count, 0);
 });
 
+test("read-only manifest and spec commands rebuild capabilities without persisting the cache", () => {
+  const root = makeTempDir("mdkg-spec-observational-");
+  run(["init", "--agent"], root);
+  run(["new", "manifest", "Observed Worker", "--id", "agent.observed", "--json"], root);
+  const indexPath = path.join(root, ".mdkg", "index", "capabilities.json");
+  fs.rmSync(indexPath, { force: true });
+
+  run(["manifest", "list", "--json"], root);
+  assert.equal(fs.existsSync(indexPath), false);
+  run(["manifest", "show", "agent.observed", "--json"], root);
+  assert.equal(fs.existsSync(indexPath), false);
+  run(["spec", "list", "--json"], root);
+  assert.equal(fs.existsSync(indexPath), false);
+});
+
 test("manifest command lists shows and validates canonical manifest records", () => {
   const root = makeTempDir("mdkg-manifest-cli-");
   run(["init", "--agent"], root);

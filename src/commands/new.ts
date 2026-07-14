@@ -12,7 +12,8 @@ import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { validatePortableOrUriRef } from "../util/refs";
-import { writeFileExclusive } from "../util/atomic";
+import { containedPathExists, writeContainedFileExclusive } from "../core/filesystem_authority";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { withMutationLock } from "../util/lock";
 import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
 import { writeDerivedIndexes } from "../graph/reindex";
@@ -369,9 +370,10 @@ function runNewCommandLocked(options: NewCommandOptions): void {
 
   const wsEntry = config.workspaces[ws];
   const folder = folderForType(type);
+  const relativeFilePath = workspaceDocumentRelativePath(wsEntry.path, wsEntry.mdkg_dir, folder, fileName);
   const targetDir = path.resolve(options.root, wsEntry.path, wsEntry.mdkg_dir, folder);
   const filePath = path.join(targetDir, fileName);
-  if (fs.existsSync(filePath)) {
+  if (containedPathExists({ root: options.root, relativePath: relativeFilePath })) {
     throw new UsageError(`node already exists: ${path.relative(options.root, filePath)}`);
   }
 
@@ -539,7 +541,7 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   });
 
   try {
-    writeFileExclusive(filePath, content);
+    writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, content);
   } catch (err) {
     const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
     if (code === "EEXIST") {

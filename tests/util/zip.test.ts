@@ -151,4 +151,10 @@ test("zip reader rejects malformed and ambiguous local entries", () => {
   const sizeMismatch = Buffer.from(base);
   sizeMismatch.writeUInt32LE(sizeMismatch.readUInt32LE(22) + 1, 22);
   assert.throws(() => readZipEntries(sizeMismatch), /uncompressed size mismatch/);
+
+  const understatedCount = Buffer.from(base);
+  const endOffset = understatedCount.length - 22;
+  understatedCount.writeUInt16LE(1, endOffset + 8);
+  understatedCount.writeUInt16LE(1, endOffset + 10);
+  assert.throws(() => readZipEntries(understatedCount), /local entry count exceeds declared or configured limit/);
 });

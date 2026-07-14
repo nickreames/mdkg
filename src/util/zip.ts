@@ -1,3 +1,4 @@
+import fs from "fs";
 import zlib from "zlib";
 
 const CRC_TABLE = new Uint32Array(256);
@@ -213,8 +214,13 @@ export function readZipEntries(zip: Buffer, overrides: Partial<ZipReadLimits> = 
   const entries: ZipEntry[] = [];
   const seenNames = new Set<string>();
   let totalUncompressedBytes = 0;
+  let localEntryCount = 0;
   let offset = 0;
   while (offset < centralDirectory.offset) {
+    localEntryCount += 1;
+    if (localEntryCount > limits.maxEntries || localEntryCount > centralDirectory.entryCount) {
+      throw new Error(`zip local entry count exceeds declared or configured limit: ${limits.maxEntries}`);
+    }
     if (offset + 30 > centralDirectory.offset) {
       throw new Error("zip local header is truncated");
     }
@@ -297,14 +303,38 @@ export function readZipEntries(zip: Buffer, overrides: Partial<ZipReadLimits> = 
     entries.push({ name: entryName, data });
     offset = dataEnd;
   }
-  if (offset !== centralDirectory.offset || entries.length !== centralDirectory.entryCount) {
+  if (
+    offset !== centralDirectory.offset ||
+    localEntryCount !== centralDirectory.entryCount ||
+    entries.length !== centralDirectory.entryCount
+  ) {
     throw new Error("zip local and central directory entry counts do not match");
   }
   return entries;
 }
 
+export function readZipFileEntries(filePath: string, overrides: Partial<ZipReadLimits> = {}): ZipEntry[] {
+  const limits = resolveZipReadLimits(overrides);
+  const stat = fs.statSync(filePath);
+  if (!stat.isFile()) {
+    throw new Error(`zip path is not a regular file: ${filePath}`);
+  }
+  if (stat.size > limits.maxArchiveBytes) {
+    throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
+  }
+  return readZipEntries(fs.readFileSync(filePath), limits);
+}
+
 export function readSingleFileZip(zip: Buffer): { entryName: string; data: Buffer } {
   const entries = readZipEntries(zip);
+  if (entries.length !== 1) {
+    throw new Error("zip must contain exactly one file");
+  }
+  return { entryName: entries[0].name, data: entries[0].data };
+}
+
+export function readSingleFileZipPath(filePath: string): { entryName: string; data: Buffer } {
+  const entries = readZipFileEntries(filePath);
   if (entries.length !== 1) {
     throw new Error("zip must contain exactly one file");
   }

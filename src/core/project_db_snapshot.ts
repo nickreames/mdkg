@@ -2,6 +2,10 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { Config } from "./config";
+import {
+  atomicReplaceContainedFile,
+  withContainedPathSink,
+} from "./filesystem_authority";
 import { resolveConfiguredProjectDbLayout } from "./project_db";
 import { readPackageVersion } from "./version";
 import { atomicWriteFile } from "../util/atomic";
@@ -46,8 +50,8 @@ export type ProjectDbSnapshotManifest = {
   byte_size: number;
   table_counts: Array<{ name: string; row_count: number }>;
   migrations: ProjectDbSnapshotMigration[];
-  queue_policy?: ProjectDbSnapshotQueuePolicy;
-  queue_summary?: ProjectQueueSnapshotSummary;
+  queue_policy: ProjectDbSnapshotQueuePolicy;
+  queue_summary: ProjectQueueSnapshotSummary;
 };
 
 export type ProjectDbSnapshotQueuePolicy = "drain" | "paused";
@@ -279,7 +283,11 @@ function readManifest(filePath: string): ProjectDbSnapshotManifest {
     typeof manifest.snapshot_sha256 !== "string" ||
     typeof manifest.byte_size !== "number" ||
     !Array.isArray(manifest.table_counts) ||
-    !Array.isArray(manifest.migrations)
+    !Array.isArray(manifest.migrations) ||
+    (manifest.queue_policy !== "drain" && manifest.queue_policy !== "paused") ||
+    typeof manifest.queue_summary !== "object" ||
+    manifest.queue_summary === null ||
+    Array.isArray(manifest.queue_summary)
   ) {
     throw new ValidationError("snapshot manifest has unsupported shape");
   }
@@ -384,7 +392,9 @@ export function sealProjectDbSnapshot(
 
   try {
     const runtimeHash = sha256File(layout.runtimeFile);
-    const manifest = buildManifest(root, config, tempSnapshot, runtimeHash, queuePolicy, queueSummary);
+    const sealedQueueSummary = readProjectQueueSnapshotSummary(tempSnapshot);
+    assertQueueSnapshotPolicy(queuePolicy, sealedQueueSummary);
+    const manifest = buildManifest(root, config, tempSnapshot, runtimeHash, queuePolicy, sealedQueueSummary);
     atomicWriteFile(tempManifest, `${JSON.stringify(manifest, null, 2)}\n`);
     fs.renameSync(tempSnapshot, layout.stateFile);
     fs.renameSync(tempManifest, layout.stateManifest);
@@ -400,7 +410,7 @@ export function sealProjectDbSnapshot(
       table_counts: manifest.table_counts,
       migrations: manifest.migrations,
       queue_policy: queuePolicy,
-      queue_summary: queueSummary,
+      queue_summary: sealedQueueSummary,
       warnings: warningListFromVerify(root, config),
     };
   } catch (err) {
@@ -519,7 +529,17 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
         warnings: [],
       });
     }
-    if (manifest.source_runtime_sha256 && fs.existsSync(layout.runtimeFile)) {
+    if (fs.existsSync(layout.runtimeFile) && !manifest.source_runtime_sha256) {
+      checks.push({
+        name: "runtime-freshness",
+        ok: false,
+        level: "fail",
+        path: rel(root, layout.runtimeFile),
+        detail: "snapshot source runtime hash is missing",
+        errors: ["snapshot manifest must include source_runtime_sha256 when the runtime database exists"],
+        warnings: [],
+      });
+    } else if (manifest.source_runtime_sha256 && fs.existsSync(layout.runtimeFile)) {
       const runtimeHash = sha256File(layout.runtimeFile);
       checks.push({
         name: "runtime-freshness",
@@ -529,6 +549,29 @@ export function verifyProjectDbSnapshot(root: string, config: Config): ProjectDb
         detail: runtimeHash === manifest.source_runtime_sha256 ? "snapshot matches current runtime hash" : "runtime changed since snapshot seal",
         errors: [],
         warnings: runtimeHash === manifest.source_runtime_sha256 ? [] : ["runtime database hash differs from sealed snapshot source hash"],
+      });
+    }
+    try {
+      const sealedQueueSummary = readProjectQueueSnapshotSummary(layout.stateFile);
+      assertQueueSnapshotPolicy(manifest.queue_policy, sealedQueueSummary);
+      const matchesManifest = compareJson(sealedQueueSummary, manifest.queue_summary);
+      checks.push({
+        name: "queue-policy",
+        ok: matchesManifest,
+        level: matchesManifest ? "ok" : "fail",
+        detail: matchesManifest ? "sealed queue state satisfies policy and matches manifest" : "sealed queue summary differs from manifest",
+        errors: matchesManifest ? [] : ["sealed queue summary does not match snapshot manifest"],
+        warnings: [],
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      checks.push({
+        name: "queue-policy",
+        ok: false,
+        level: "fail",
+        detail: "sealed queue state violates snapshot policy",
+        errors: [message],
+        warnings: [],
       });
     }
   }
@@ -584,7 +627,7 @@ function canonicalValue(value: unknown): unknown {
   return value;
 }
 
-export function canonicalDumpForSnapshot(root: string, snapshotPath: string): string {
+function canonicalDumpForSnapshot(root: string, snapshotPath: string): string {
   if (!fs.existsSync(snapshotPath) || fs.statSync(snapshotPath).isDirectory()) {
     throw new ValidationError(`${rel(root, snapshotPath)} missing or not a file`);
   }
@@ -626,17 +669,36 @@ export function canonicalDumpForSnapshot(root: string, snapshotPath: string): st
   }
 }
 
+function canonicalDumpForContainedSnapshot(
+  root: string,
+  rawPath: string,
+  label: string
+): { absolutePath: string; dump: string } {
+  const resolved = resolveContainedProjectDbPath(root, rawPath, label);
+  const relativePath = rel(root, resolved);
+  return withContainedPathSink(
+    { root, relativePath, operation: "read" },
+    ({ absolutePath }) => ({
+      absolutePath,
+      dump: canonicalDumpForSnapshot(root, absolutePath),
+    })
+  );
+}
+
 export function dumpProjectDbSnapshot(root: string, config: Config, snapshotPath?: string, outputPath?: string): ProjectDbSnapshotDumpReceipt & { dump: string } {
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
-  const resolvedSnapshot = snapshotPath
-    ? resolveContainedProjectDbPath(root, snapshotPath, "--snapshot")
-    : layout.stateFile;
-  const dump = canonicalDumpForSnapshot(root, resolvedSnapshot);
+  const snapshot = canonicalDumpForContainedSnapshot(
+    root,
+    snapshotPath ?? layout.stateFile,
+    "--snapshot"
+  );
+  const resolvedSnapshot = snapshot.absolutePath;
+  const dump = snapshot.dump;
   const dumpHash = sha256Buffer(dump);
   let output: string | null = null;
   if (outputPath) {
     const resolvedOutput = resolveContainedProjectDbPath(root, outputPath, "--output");
-    atomicWriteFile(resolvedOutput, dump);
+    atomicReplaceContainedFile({ root, relativePath: rel(root, resolvedOutput) }, dump);
     output = rel(root, resolvedOutput);
   }
   return {
@@ -651,10 +713,12 @@ export function dumpProjectDbSnapshot(root: string, config: Config, snapshotPath
 }
 
 export function diffProjectDbSnapshots(root: string, leftPath: string, rightPath: string): ProjectDbSnapshotDiffReceipt {
-  const left = resolveContainedProjectDbPath(root, leftPath, "left snapshot");
-  const right = resolveContainedProjectDbPath(root, rightPath, "right snapshot");
-  const leftDump = canonicalDumpForSnapshot(root, left);
-  const rightDump = canonicalDumpForSnapshot(root, right);
+  const leftSnapshot = canonicalDumpForContainedSnapshot(root, leftPath, "left snapshot");
+  const rightSnapshot = canonicalDumpForContainedSnapshot(root, rightPath, "right snapshot");
+  const left = leftSnapshot.absolutePath;
+  const right = rightSnapshot.absolutePath;
+  const leftDump = leftSnapshot.dump;
+  const rightDump = rightSnapshot.dump;
   const leftLines = leftDump.trimEnd().split("\n");
   const rightLines = rightDump.trimEnd().split("\n");
   const leftSet = new Set(leftLines);

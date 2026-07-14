@@ -1,6 +1,6 @@
 import { Index } from "../graph/indexer";
 import { collectGoalScope } from "../graph/goal_scope";
-import { readNodeBody } from "../graph/node_body";
+import { createNodeBodyReader } from "../graph/node_body";
 import { resolveQid } from "../util/qid";
 import { orderPackNodes } from "./order";
 import { readVerboseCoreList } from "./verbose_core";
@@ -17,6 +17,8 @@ export type PackBuildOptions = {
   verboseCoreListPath: string;
   wsHint?: string;
   includeLatestCheckpoint?: boolean;
+  maxTraversalNodes?: number;
+  maxBodyBytes?: number;
 };
 
 const EDGE_KEYS = ["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next", "context_refs", "evidence_refs"] as const;
@@ -102,7 +104,8 @@ function collectNodes(
   index: Index,
   rootQid: string,
   depth: number,
-  edges: string[]
+  edges: string[],
+  maxNodes: number
 ): { qids: Set<string>; depths: Map<string, number> } {
   const selectedEdges = normalizeEdgeList(edges);
   const visited = new Set<string>();
@@ -128,6 +131,9 @@ function collectNodes(
       }
       if (visited.has(neighbor)) {
         continue;
+      }
+      if (visited.size >= maxNodes) {
+        throw new Error(`pack graph traversal exceeds node limit: ${maxNodes}`);
       }
       visited.add(neighbor);
       depths.set(neighbor, current.depth + 1);
@@ -180,7 +186,8 @@ function addLoopPackClosure(
   rootLoopQid: string,
   qids: Set<string>,
   depths: Map<string, number>,
-  warnings: string[]
+  warnings: string[],
+  maxNodes: number
 ): void {
   const visited = new Set<string>();
   const queued = new Set<string>();
@@ -189,6 +196,9 @@ function addLoopPackClosure(
   function enqueue(qid: string, depth: number): void {
     if (queued.has(qid)) {
       return;
+    }
+    if (queued.size >= maxNodes) {
+      throw new Error(`loop pack closure exceeds node limit: ${maxNodes}`);
     }
     queued.add(qid);
     queue.push({ qid, depth });
@@ -253,7 +263,7 @@ function addLoopPackClosure(
     }
 
     if (node.type === "goal") {
-      const scoped = collectGoalScope(index, node);
+      const scoped = collectGoalScope(index, node, { maxNodes });
       for (const scopedQid of scoped.qids) {
         enqueue(scopedQid, current.depth + 1);
       }
@@ -277,7 +287,7 @@ function addLoopPackClosure(
   }
 }
 
-function buildPackNode(root: string, index: Index, qid: string): PackNode {
+function buildPackNode(index: Index, qid: string, readBody: (node: Index["nodes"][string]) => string): PackNode {
   const node = index.nodes[qid];
   if (!node) {
     throw new Error(`node not found: ${qid}`);
@@ -300,7 +310,7 @@ function buildPackNode(root: string, index: Index, qid: string): PackNode {
     aliases: node.aliases,
     attributes: node.attributes ?? {},
     ...(node.source ? { source: node.source } : {}),
-    body: readNodeBody(root, node),
+    body: readBody(node),
   };
 }
 
@@ -346,16 +356,18 @@ function applyMaxNodes(
 
 export function buildPack(options: PackBuildOptions): PackBuildResult {
   const warnings: string[] = [];
+  const maxTraversalNodes = options.maxTraversalNodes ?? Math.max(1_000, options.maxNodes * 10);
   const includeLatestCheckpoint = options.includeLatestCheckpoint ?? true;
   const { qids, depths } = collectNodes(
     options.index,
     options.rootQid,
     options.depth,
-    options.edges
+    options.edges,
+    maxTraversalNodes
   );
   const rootNode = options.index.nodes[options.rootQid];
   if (rootNode?.type === "goal") {
-    const scoped = collectGoalScope(options.index, rootNode);
+    const scoped = collectGoalScope(options.index, rootNode, { maxNodes: maxTraversalNodes });
     for (const qid of scoped.qids) {
       qids.add(qid);
       if (!depths.has(qid)) {
@@ -370,7 +382,7 @@ export function buildPack(options: PackBuildOptions): PackBuildResult {
     }
   }
   if (rootNode?.type === "loop") {
-    addLoopPackClosure(options.index, rootNode.qid, qids, depths, warnings);
+    addLoopPackClosure(options.index, rootNode.qid, qids, depths, warnings, maxTraversalNodes);
   }
 
   const workspace = checkpointWorkspaceFromQid(options.rootQid);
@@ -417,7 +429,8 @@ export function buildPack(options: PackBuildOptions): PackBuildResult {
 
   const { included } = applyMaxNodes(ordered, options.maxNodes, truncation);
 
-  const nodes: PackNode[] = included.map((qid) => buildPackNode(options.root, options.index, qid));
+  const readBody = createNodeBodyReader(options.root, options.maxBodyBytes);
+  const nodes: PackNode[] = included.map((qid) => buildPackNode(options.index, qid, readBody));
 
   const pack: PackResult = {
     meta: {

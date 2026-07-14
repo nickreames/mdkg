@@ -1,13 +1,13 @@
-import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import { containedPathExists, writeContainedFileExclusive } from "../core/filesystem_authority";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { loadIndex } from "../graph/index_cache";
 import { Index } from "../graph/indexer";
 import { loadTemplate, renderTemplate } from "../templates/loader";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { isCanonicalId, isPortableIdRef } from "../util/id";
-import { writeFileExclusive } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
 import { appendAutomaticEvent } from "./event_support";
@@ -293,8 +293,9 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
   const wsEntry = config.workspaces[ws];
   const workDir = path.resolve(options.root, wsEntry.path, wsEntry.mdkg_dir, "work");
   const filePath = path.join(workDir, fileName);
+  const relativeFilePath = workspaceDocumentRelativePath(wsEntry.path, wsEntry.mdkg_dir, "work", fileName);
 
-  if (fs.existsSync(filePath)) {
+  if (containedPathExists({ root: options.root, relativePath: relativeFilePath })) {
     throw new UsageError(`checkpoint file already exists: ${path.relative(options.root, filePath)}`);
   }
 
@@ -325,7 +326,7 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
   const rendered = replaceRenderedBody(content, options.body ?? checkpointBody(kind));
 
   try {
-    writeFileExclusive(filePath, rendered);
+    writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, rendered);
   } catch (err) {
     const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
     if (code === "EEXIST") {

@@ -1,5 +1,7 @@
 import fs from "fs";
+import path from "path";
 import { Config } from "../core/config";
+import { containedPathExists, readContainedFile } from "../core/filesystem_authority";
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
 import { NotFoundError } from "../util/errors";
 import { resolveLocalTemplatePath, requireBundledTemplatePath, templateNameForType } from "./builtin";
@@ -21,13 +23,17 @@ export function loadTemplate(
   templateSet?: string
 ): LoadedTemplate {
   const templatePath = resolveLocalTemplatePath(root, config, type, templateSet);
-  if (!fs.existsSync(templatePath) && templateSet !== undefined) {
+  const templateRelativePath = path.relative(root, templatePath).split(path.sep).join("/");
+  const localExists = containedPathExists({ root, relativePath: templateRelativePath });
+  if (!localExists && templateSet !== undefined) {
     throw new NotFoundError(`template not found: ${templateSet.toLowerCase()}/${templateNameForType(type)}.md`);
   }
-  const source = fs.existsSync(templatePath) ? "local" : "bundled";
+  const source = localExists ? "local" : "bundled";
   const resolvedPath = source === "local" ? templatePath : requireBundledTemplatePath(type);
 
-  const content = fs.readFileSync(resolvedPath, "utf8");
+  const content = source === "local"
+    ? readContainedFile({ root, relativePath: templateRelativePath })
+    : fs.readFileSync(resolvedPath, "utf8");
   const { frontmatter, body } = parseFrontmatter(content, resolvedPath);
   return { templatePath: resolvedPath, source, frontmatter, body };
 }

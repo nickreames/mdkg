@@ -3,11 +3,16 @@ import fs from "fs";
 import path from "path";
 import { Config } from "./config";
 import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  readContainedFile,
+  withContainedPathSink,
+} from "./filesystem_authority";
+import {
   PROJECT_DB_CONFIG_SCHEMA_VERSION,
   resolveConfiguredProjectDbLayout,
 } from "./project_db";
 import { readPackageVersion } from "./version";
-import { atomicWriteFile } from "../util/atomic";
 import { ValidationError } from "../util/errors";
 
 type DatabaseSyncType = {
@@ -315,47 +320,73 @@ function checksumContent(content: string): string {
 
 function assertDirectory(root: string, dirPath: string, label: string): void {
   const relative = rel(root, dirPath);
-  if (!fs.existsSync(dirPath)) {
-    throw new ValidationError(`${label} missing at ${relative}; run mdkg db init`);
-  }
-  if (!fs.statSync(dirPath).isDirectory()) {
-    throw new ValidationError(`${relative} exists and is not a directory`);
+  try {
+    withContainedPathSink({ root, relativePath: relative, operation: "read" }, ({ absolutePath }) => {
+      if (!fs.existsSync(absolutePath)) {
+        throw new ValidationError(`${label} missing at ${relative}; run mdkg db init`);
+      }
+      if (!fs.lstatSync(absolutePath).isDirectory()) {
+        throw new ValidationError(`${relative} exists and is not a directory`);
+      }
+    });
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      throw error;
+    }
+    throw new ValidationError(`${relative} is not a safe contained directory: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
 function directoryCheck(root: string, dirPath: string, name: string): ProjectDbCheck {
   const relative = rel(root, dirPath);
-  if (!fs.existsSync(dirPath)) {
+  try {
+    return withContainedPathSink(
+      { root, relativePath: relative, operation: "read" },
+      ({ absolutePath }) => {
+        if (!fs.existsSync(absolutePath)) {
+          return {
+            name,
+            ok: false,
+            level: "fail" as const,
+            path: relative,
+            detail: `${name} missing`,
+            errors: [`${relative} missing; run mdkg db init`],
+            warnings: [],
+          };
+        }
+        if (!fs.lstatSync(absolutePath).isDirectory()) {
+          return {
+            name,
+            ok: false,
+            level: "fail" as const,
+            path: relative,
+            detail: `${name} is not a directory`,
+            errors: [`${relative} exists and is not a directory`],
+            warnings: [],
+          };
+        }
+        return {
+          name,
+          ok: true,
+          level: "ok" as const,
+          path: relative,
+          detail: `${name} exists`,
+          errors: [],
+          warnings: [],
+        };
+      }
+    );
+  } catch (error) {
     return {
       name,
       ok: false,
       level: "fail",
       path: relative,
-      detail: `${name} missing`,
-      errors: [`${relative} missing; run mdkg db init`],
+      detail: `${name} is not safely contained`,
+      errors: [`${relative} is not safely contained: ${error instanceof Error ? error.message : String(error)}`],
       warnings: [],
     };
   }
-  if (!fs.statSync(dirPath).isDirectory()) {
-    return {
-      name,
-      ok: false,
-      level: "fail",
-      path: relative,
-      detail: `${name} is not a directory`,
-      errors: [`${relative} exists and is not a directory`],
-      warnings: [],
-    };
-  }
-  return {
-    name,
-    ok: true,
-    level: "ok",
-    path: relative,
-    detail: `${name} exists`,
-    errors: [],
-    warnings: [],
-  };
 }
 
 function assertProjectDbReady(root: string, config: Config): void {
@@ -374,8 +405,20 @@ function assertProjectDbReady(root: string, config: Config): void {
   assertDirectory(root, layout.runtimeDir, "project db runtime directory");
   assertDirectory(root, layout.stateDir, "project db state directory");
   assertDirectory(root, layout.receipts, "project db receipts directory");
-  if (fs.existsSync(layout.runtimeFile) && fs.statSync(layout.runtimeFile).isDirectory()) {
-    throw new ValidationError(`${rel(root, layout.runtimeFile)} exists and is not a file`);
+  try {
+    withContainedPathSink(
+      { root, relativePath: config.db.runtime_path, operation: "replace" },
+      ({ absolutePath }) => {
+        if (fs.existsSync(absolutePath) && fs.lstatSync(absolutePath).isDirectory()) {
+          throw new ValidationError(`${rel(root, absolutePath)} exists and is not a file`);
+        }
+      }
+    );
+  } catch (error) {
+    if (error instanceof ValidationError) {
+      throw error;
+    }
+    throw new ValidationError(`project db runtime path is not safely contained: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
@@ -383,23 +426,24 @@ function ensureMigrationFiles(root: string, config: Config): { created: string[]
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const created: string[] = [];
   const unchanged: string[] = [];
+  const missing: Array<{ relative: string; expectedContent: string }> = [];
   for (const migration of BUILTIN_MIGRATIONS) {
     const filePath = path.join(layout.migrations, migration.filename);
     const expectedContent = `${migration.sql.trim()}\n`;
     const relative = rel(root, filePath);
-    if (fs.existsSync(filePath)) {
-      if (fs.statSync(filePath).isDirectory()) {
-        throw new ValidationError(`${relative} exists and is not a file`);
-      }
-      const current = fs.readFileSync(filePath, "utf8");
+    if (containedPathExists({ root, relativePath: relative })) {
+      const current = readContainedFile({ root, relativePath: relative });
       if (checksumContent(current) !== checksumContent(expectedContent)) {
         throw new ValidationError(`migration file checksum drift at ${relative}`);
       }
       unchanged.push(relative);
       continue;
     }
-    atomicWriteFile(filePath, expectedContent);
-    created.push(relative);
+    missing.push({ relative, expectedContent });
+  }
+  for (const item of missing) {
+    atomicReplaceContainedFile({ root, relativePath: item.relative }, item.expectedContent);
+    created.push(item.relative);
   }
   return { created, unchanged };
 }
@@ -411,17 +455,17 @@ function checkMigrationFiles(root: string, config: Config): ProjectDbCheck {
     const filePath = path.join(layout.migrations, migration.filename);
     const relative = rel(root, filePath);
     const expectedContent = `${migration.sql.trim()}\n`;
-    if (!fs.existsSync(filePath)) {
-      errors.push(`${relative} missing; run mdkg db migrate`);
-      continue;
-    }
-    if (fs.statSync(filePath).isDirectory()) {
-      errors.push(`${relative} exists and is not a file`);
-      continue;
-    }
-    const current = fs.readFileSync(filePath, "utf8");
-    if (checksumContent(current) !== checksumContent(expectedContent)) {
-      errors.push(`migration file checksum drift at ${relative}`);
+    try {
+      if (!containedPathExists({ root, relativePath: relative })) {
+        errors.push(`${relative} missing; run mdkg db migrate`);
+        continue;
+      }
+      const current = readContainedFile({ root, relativePath: relative });
+      if (checksumContent(current) !== checksumContent(expectedContent)) {
+        errors.push(`migration file checksum drift at ${relative}`);
+      }
+    } catch (error) {
+      errors.push(`${relative} is not safely contained: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
   return {
@@ -623,82 +667,85 @@ export function runProjectDbMigrations(root: string, config: Config): ProjectDbM
   assertProjectDbReady(root, config);
   const migrationFiles = ensureMigrationFiles(root, config);
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
-  fs.mkdirSync(path.dirname(layout.runtimeFile), { recursive: true });
-
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(layout.runtimeFile);
   const statuses: ProjectDbMigrationStatus[] = [];
   let appliedCount = 0;
-  try {
-    db.exec("PRAGMA foreign_keys = ON;");
-    db.exec("PRAGMA synchronous = FULL;");
-    assertIntegrity(db);
-    db.exec(createMigrationTableSql(config.db.migration_table));
-    db.exec("BEGIN IMMEDIATE");
-    try {
-      const applied = readAppliedMigrations(db, config.db.migration_table);
-      const knownKeys = new Set(BUILTIN_MIGRATIONS.map((migration) => migration.key));
-      for (const appliedKey of applied.keys()) {
-        if (!knownKeys.has(appliedKey)) {
-          throw new ValidationError(`project DB contains unsupported migration ${appliedKey}`);
-        }
-      }
-      const now = Date.now();
-      for (const migration of BUILTIN_MIGRATIONS) {
-        const checksum = checksumMigration(migration);
-        const row = applied.get(migration.key);
-        if (row) {
-          if (row.ordinal !== migration.ordinal) {
-            throw new ValidationError(`migration order drift for ${migration.key}`);
-          }
-          if (row.checksum !== checksum) {
-            throw new ValidationError(`migration checksum drift for ${migration.key}`);
-          }
-          statuses.push({
-            key: migration.key,
-            ordinal: migration.ordinal,
-            checksum,
-            status: "already_applied",
-            applied_at_ms: row.applied_at_ms,
-          });
-          continue;
-        }
-        db.exec(migration.sql);
-        const appliedAt = now + appliedCount;
-        db
-          .prepare(
-            `INSERT INTO ${config.db.migration_table} (migration_key, ordinal, checksum, applied_at_ms, mdkg_version) VALUES (?, ?, ?, ?, ?)`
-          )
-          .run(migration.key, migration.ordinal, checksum, appliedAt, readPackageVersion());
-        statuses.push({
-          key: migration.key,
-          ordinal: migration.ordinal,
-          checksum,
-          status: "applied",
-          applied_at_ms: appliedAt,
-        });
-        appliedCount += 1;
-      }
-      syncProjectMeta(db, config);
-      db.exec("COMMIT");
-    } catch (err) {
+  withContainedPathSink(
+    { root, relativePath: config.db.runtime_path, operation: "replace", createParents: true },
+    ({ absolutePath }) => {
+      const db = new DatabaseSync(absolutePath);
       try {
-        db.exec("ROLLBACK");
-      } catch {
-        // ignore rollback failures when no transaction is active
+        db.exec("PRAGMA foreign_keys = ON;");
+        db.exec("PRAGMA synchronous = FULL;");
+        assertIntegrity(db);
+        db.exec(createMigrationTableSql(config.db.migration_table));
+        db.exec("BEGIN IMMEDIATE");
+        try {
+          const applied = readAppliedMigrations(db, config.db.migration_table);
+          const knownKeys = new Set(BUILTIN_MIGRATIONS.map((migration) => migration.key));
+          for (const appliedKey of applied.keys()) {
+            if (!knownKeys.has(appliedKey)) {
+              throw new ValidationError(`project DB contains unsupported migration ${appliedKey}`);
+            }
+          }
+          const now = Date.now();
+          for (const migration of BUILTIN_MIGRATIONS) {
+            const checksum = checksumMigration(migration);
+            const row = applied.get(migration.key);
+            if (row) {
+              if (row.ordinal !== migration.ordinal) {
+                throw new ValidationError(`migration order drift for ${migration.key}`);
+              }
+              if (row.checksum !== checksum) {
+                throw new ValidationError(`migration checksum drift for ${migration.key}`);
+              }
+              statuses.push({
+                key: migration.key,
+                ordinal: migration.ordinal,
+                checksum,
+                status: "already_applied",
+                applied_at_ms: row.applied_at_ms,
+              });
+              continue;
+            }
+            db.exec(migration.sql);
+            const appliedAt = now + appliedCount;
+            db
+              .prepare(
+                `INSERT INTO ${config.db.migration_table} (migration_key, ordinal, checksum, applied_at_ms, mdkg_version) VALUES (?, ?, ?, ?, ?)`
+              )
+              .run(migration.key, migration.ordinal, checksum, appliedAt, readPackageVersion());
+            statuses.push({
+              key: migration.key,
+              ordinal: migration.ordinal,
+              checksum,
+              status: "applied",
+              applied_at_ms: appliedAt,
+            });
+            appliedCount += 1;
+          }
+          syncProjectMeta(db, config);
+          db.exec("COMMIT");
+        } catch (err) {
+          try {
+            db.exec("ROLLBACK");
+          } catch {
+            // ignore rollback failures when no transaction is active
+          }
+          throw err;
+        }
+        assertIntegrity(db);
+      } catch (err) {
+        if (err instanceof ValidationError) {
+          throw err;
+        }
+        const message = err instanceof Error ? err.message : String(err);
+        throw new ValidationError(`project DB migration failed: ${message}`);
+      } finally {
+        db.close();
       }
-      throw err;
     }
-    assertIntegrity(db);
-  } catch (err) {
-    if (err instanceof ValidationError) {
-      throw err;
-    }
-    const message = err instanceof Error ? err.message : String(err);
-    throw new ValidationError(`project DB migration failed: ${message}`);
-  } finally {
-    db.close();
-  }
+  );
 
   return {
     action: "db-migrate",
@@ -745,34 +792,48 @@ export function verifyProjectDb(root: string, config: Config): ProjectDbVerifyRe
   checks.push(directoryCheck(root, layout.receipts, "project db receipts directory"));
 
   const databasePath = rel(root, layout.runtimeFile);
-  if (!fs.existsSync(layout.runtimeFile)) {
+  try {
+    withContainedPathSink({ root, relativePath: config.db.runtime_path, operation: "read" }, ({ absolutePath }) => {
+      if (!fs.existsSync(absolutePath)) {
+        checks.push({
+          name: "runtime-database",
+          ok: false,
+          level: "fail",
+          path: databasePath,
+          detail: "runtime database missing",
+          errors: [`${databasePath} missing; run mdkg db migrate`],
+          warnings: [],
+        });
+      } else if (fs.lstatSync(absolutePath).isDirectory()) {
+        checks.push({
+          name: "runtime-database",
+          ok: false,
+          level: "fail",
+          path: databasePath,
+          detail: "runtime database path is not a file",
+          errors: [`${databasePath} exists and is not a file`],
+          warnings: [],
+        });
+      } else {
+        checks.push({
+          name: "runtime-database",
+          ok: true,
+          level: "ok",
+          path: databasePath,
+          detail: "runtime database exists",
+          errors: [],
+          warnings: [],
+        });
+      }
+    });
+  } catch (error) {
     checks.push({
       name: "runtime-database",
       ok: false,
       level: "fail",
       path: databasePath,
-      detail: "runtime database missing",
-      errors: [`${databasePath} missing; run mdkg db migrate`],
-      warnings: [],
-    });
-  } else if (fs.statSync(layout.runtimeFile).isDirectory()) {
-    checks.push({
-      name: "runtime-database",
-      ok: false,
-      level: "fail",
-      path: databasePath,
-      detail: "runtime database path is not a file",
-      errors: [`${databasePath} exists and is not a file`],
-      warnings: [],
-    });
-  } else {
-    checks.push({
-      name: "runtime-database",
-      ok: true,
-      level: "ok",
-      path: databasePath,
-      detail: "runtime database exists",
-      errors: [],
+      detail: "runtime database is not safely contained",
+      errors: [`${databasePath} is not safely contained: ${error instanceof Error ? error.message : String(error)}`],
       warnings: [],
     });
   }
@@ -783,13 +844,18 @@ export function verifyProjectDb(root: string, config: Config): ProjectDbVerifyRe
     checks.push(checkMigrationFiles(root, config));
     const DatabaseSync = loadDatabaseCtor();
     try {
-      const db = new DatabaseSync(layout.runtimeFile);
-      try {
-        checks.push(integrityCheck(db));
-        checks.push(migrationTableCheck(db, config));
-      } finally {
-        db.close();
-      }
+      withContainedPathSink(
+        { root, relativePath: config.db.runtime_path, operation: "read" },
+        ({ absolutePath }) => {
+          const db = new DatabaseSync(absolutePath);
+          try {
+            checks.push(integrityCheck(db));
+            checks.push(migrationTableCheck(db, config));
+          } finally {
+            db.close();
+          }
+        }
+      );
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
       checks.push({
@@ -828,48 +894,53 @@ export function projectDbStats(root: string, config: Config): ProjectDbStatsRece
   }
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(layout.runtimeFile);
-  try {
-    const applied = readAppliedMigrations(db, config.db.migration_table);
-    const migrationStatuses: ProjectDbMigrationStatus[] = BUILTIN_MIGRATIONS
-      .map((migration): ProjectDbMigrationStatus | undefined => {
-        const row = applied.get(migration.key);
-        return row
-          ? {
-              key: migration.key,
-              ordinal: migration.ordinal,
-              checksum: row.checksum,
-              status: "already_applied" as const,
-              applied_at_ms: row.applied_at_ms,
-            }
-          : undefined;
-      })
-      .filter((item): item is ProjectDbMigrationStatus => item !== undefined);
-    const latestMigration = migrationStatuses[migrationStatuses.length - 1] ?? null;
-    const receiptFiles = walkFiles(layout.receipts);
-    return {
-      action: "db-stats",
-      ok: true,
-      enabled: config.db.enabled,
-      database: rel(root, layout.runtimeFile),
-      schema_version: config.db.schema_version,
-      migration_table: config.db.migration_table,
-      db_size: fs.statSync(layout.runtimeFile).size,
-      transient_files: transientFiles(root, layout.runtimeFile),
-      migration_count: migrationStatuses.length,
-      latest_migration: latestMigration,
-      tables: tableCounts(db),
-      state_snapshot: {
-        path: rel(root, layout.stateFile),
-        exists: fs.existsSync(layout.stateFile),
-        size: fs.existsSync(layout.stateFile) ? fs.statSync(layout.stateFile).size : 0,
-      },
-      receipt_files: {
-        path: rel(root, layout.receipts),
-        count: receiptFiles.length,
-      },
-    };
-  } finally {
-    db.close();
-  }
+  return withContainedPathSink(
+    { root, relativePath: config.db.runtime_path, operation: "read" },
+    ({ absolutePath }) => {
+      const db = new DatabaseSync(absolutePath);
+      try {
+        const applied = readAppliedMigrations(db, config.db.migration_table);
+        const migrationStatuses: ProjectDbMigrationStatus[] = BUILTIN_MIGRATIONS
+          .map((migration): ProjectDbMigrationStatus | undefined => {
+            const row = applied.get(migration.key);
+            return row
+              ? {
+                  key: migration.key,
+                  ordinal: migration.ordinal,
+                  checksum: row.checksum,
+                  status: "already_applied" as const,
+                  applied_at_ms: row.applied_at_ms,
+                }
+              : undefined;
+          })
+          .filter((item): item is ProjectDbMigrationStatus => item !== undefined);
+        const latestMigration = migrationStatuses[migrationStatuses.length - 1] ?? null;
+        const receiptFiles = walkFiles(layout.receipts);
+        return {
+          action: "db-stats",
+          ok: true,
+          enabled: config.db.enabled,
+          database: rel(root, absolutePath),
+          schema_version: config.db.schema_version,
+          migration_table: config.db.migration_table,
+          db_size: fs.statSync(absolutePath).size,
+          transient_files: transientFiles(root, absolutePath),
+          migration_count: migrationStatuses.length,
+          latest_migration: latestMigration,
+          tables: tableCounts(db),
+          state_snapshot: {
+            path: rel(root, layout.stateFile),
+            exists: fs.existsSync(layout.stateFile),
+            size: fs.existsSync(layout.stateFile) ? fs.statSync(layout.stateFile).size : 0,
+          },
+          receipt_files: {
+            path: rel(root, layout.receipts),
+            count: receiptFiles.length,
+          },
+        };
+      } finally {
+        db.close();
+      }
+    }
+  );
 }

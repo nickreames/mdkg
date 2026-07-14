@@ -3,6 +3,11 @@ import fs from "fs";
 import path from "path";
 import { spawnSync } from "child_process";
 import { loadConfig } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  ensureContainedDirectory,
+  withContainedPathSink,
+} from "../core/filesystem_authority";
 import { resolveConfiguredProjectDbLayout } from "../core/project_db";
 import {
   dumpProjectDbSnapshot,
@@ -14,7 +19,6 @@ import {
   sealProjectDbSnapshot,
 } from "../core/project_db_snapshot";
 import { collectValidateReceipt, ValidateReceipt } from "./validate";
-import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { UsageError, ValidationError } from "../util/errors";
 
@@ -262,6 +266,24 @@ function assertNoEmbeddedCredentials(label: string, value: string): void {
   }
 }
 
+function assertGitOperand(label: string, value: string): void {
+  if (value.length === 0 || value !== value.trim() || value.startsWith("-") || /[\0\r\n\t ]/.test(value)) {
+    throw new UsageError(`${label} must be a non-option Git operand without whitespace or control characters`);
+  }
+}
+
+function assertGitBranch(root: string, branch: string): void {
+  assertGitOperand("--branch", branch);
+  const result = spawnSync("git", ["check-ref-format", "--branch", branch], {
+    cwd: root,
+    encoding: "utf8",
+    stdio: "pipe",
+  });
+  if (result.status !== 0) {
+    throw new UsageError(`--branch is not a valid Git branch name: ${branch}`);
+  }
+}
+
 function sanitizeOutput(value: string): string {
   return value
     .split(/\r?\n/)
@@ -439,15 +461,25 @@ export function runGitInspectCommand(options: GitInspectCommandOptions): void {
 
 export function runGitCloneCommand(options: GitCloneCommandOptions): void {
   assertNoEmbeddedCredentials("repository", options.repository);
-  const target = containedPath(options.root, options.target, "--target");
-  if (fs.existsSync(target) && fs.readdirSync(target).length > 0) {
-    throw new UsageError("--target must be empty or absent");
+  assertGitOperand("repository", options.repository);
+  if (options.branch) {
+    assertGitBranch(options.root, options.branch);
   }
+  const target = containedPath(options.root, options.target, "--target");
+  const targetRelative = rel(options.root, target);
+  withContainedPathSink(
+    { root: options.root, relativePath: targetRelative, operation: "create" },
+    ({ absolutePath }) => {
+      if (fs.existsSync(absolutePath) && fs.readdirSync(absolutePath).length > 0) {
+        throw new UsageError("--target must be empty or absent");
+      }
+    }
+  );
   const args = ["clone"];
   if (options.branch) {
     args.push("--branch", options.branch);
   }
-  args.push(options.repository, target);
+  args.push("--", options.repository, target);
   git(options.root, args);
   const inspect = collectInspectReceipt(target);
   const receipt: GitCloneReceipt = {
@@ -479,12 +511,16 @@ export function runGitCloneCommand(options: GitCloneCommandOptions): void {
 export function runGitFetchCommand(options: GitFetchCommandOptions): void {
   requireGitWorkTree(options.root);
   const remote = options.remote ?? "origin";
+  assertGitOperand("--remote", remote);
+  if (options.branch) {
+    assertGitBranch(options.root, options.branch);
+  }
   assertNoEmbeddedCredentials("--remote", remote);
   const configuredRemoteUrl = rawRemoteUrl(options.root, remote);
   if (configuredRemoteUrl && hasEmbeddedUrlCredentials(configuredRemoteUrl)) {
     throw new UsageError(`remote ${remote} must not contain embedded credentials; use external Git auth`);
   }
-  const args = ["fetch", remote];
+  const args = ["fetch", "--", remote];
   if (options.branch) {
     args.push(options.branch);
   }
@@ -594,7 +630,7 @@ function collectCloseoutReceipt(options: GitCloseoutCommandOptions): GitCloseout
     warnings.push("project DB did not participate in this closeout; no DB snapshot was sealed");
   }
 
-  fs.mkdirSync(outputDir, { recursive: true });
+  ensureContainedDirectory({ root: options.root, relativePath: outputRel });
   const baseReceipt: Omit<GitCloseoutReceipt, "static_receipts"> = {
     action: "git.closeout",
     ok: true,
@@ -618,8 +654,11 @@ function collectCloseoutReceipt(options: GitCloseoutCommandOptions): GitCloseout
       markdown: rel(options.root, markdownPath),
     },
   };
-  atomicWriteFile(jsonPath, stableJson(receipt));
-  atomicWriteFile(markdownPath, closeoutMarkdown(baseReceipt));
+  atomicReplaceContainedFile({ root: options.root, relativePath: rel(options.root, jsonPath) }, stableJson(receipt));
+  atomicReplaceContainedFile(
+    { root: options.root, relativePath: rel(options.root, markdownPath) },
+    closeoutMarkdown(baseReceipt)
+  );
   return receipt;
 }
 
@@ -660,6 +699,8 @@ function collectPushReadyReceipt(options: GitPushReadyCommandOptions): GitPushRe
   if (!branch) {
     throw new UsageError("mdkg git push-ready requires --branch <name>");
   }
+  assertGitOperand("--remote", remote);
+  assertGitBranch(options.root, branch);
   assertNoEmbeddedCredentials("--remote", remote);
   requireGitWorkTree(options.root);
 
@@ -786,6 +827,8 @@ function collectPushReceipt(options: GitPushCommandOptions): GitPushReceipt {
   if (!branch) {
     throw new UsageError("mdkg git push requires --branch <name>");
   }
+  assertGitOperand("--remote", remote);
+  assertGitBranch(options.root, branch);
   assertNoEmbeddedCredentials("--remote", remote);
   requireGitWorkTree(options.root);
 
@@ -817,7 +860,7 @@ function collectPushReceipt(options: GitPushCommandOptions): GitPushReceipt {
   if (!pushReady.ok) {
     throw new ValidationError(`git push-ready failed with ${pushReady.failure_count} issue(s)`);
   }
-  const push = git(options.root, ["push", remote, `HEAD:refs/heads/${branch}`]);
+  const push = git(options.root, ["push", "--", remote, `HEAD:refs/heads/${branch}`]);
   const inspect = collectInspectReceipt(options.root);
   return {
     action: "git.push",

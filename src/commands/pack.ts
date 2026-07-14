@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import { readContainedFile } from "../core/filesystem_authority";
 import { loadIndex } from "../graph/index_cache";
 import { parseFrontmatter } from "../graph/frontmatter";
 import { loadSkillsIndex } from "../graph/skills_index_cache";
@@ -180,8 +181,12 @@ function loadSkillFullBody(root: string, skill: SkillIndexEntry): string {
   if (!fs.existsSync(skillPath)) {
     return renderSkillMetaBody(skill);
   }
-  const content = fs.readFileSync(skillPath, "utf8");
-  return parseFrontmatter(content, skillPath).body.trimEnd();
+  const content = readContainedFile({ root, relativePath: skill.path }, "utf8");
+  const parsed = parseFrontmatter(content, skillPath);
+  if (parsed.frontmatter.name !== skill.name) {
+    throw new Error(`cached skill identity mismatch for ${skill.qid}`);
+  }
+  return parsed.body.trimEnd();
 }
 
 function uniqueSkillOrder(slugs: string[]): string[] {
@@ -410,10 +415,13 @@ export function runPackCommand(options: PackCommandOptions): void {
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
 
+  const visibility = options.visibility
+    ? normalizeVisibility(options.visibility)
+    : undefined;
   const { index, rebuilt, stale, warnings } = loadIndex({
     root: options.root,
     config,
-    useCache: !options.noCache,
+    useCache: !options.noCache && !visibility,
     allowReindex: !options.noReindex,
   });
 
@@ -438,10 +446,6 @@ export function runPackCommand(options: PackCommandOptions): void {
   const edges = normalizeEdges([...config.pack.default_edges, ...extraEdges]);
   const skillsPolicy = resolveSkillsPolicy(options.skills);
   const skillsDepth = resolveSkillsDepth(options.skillsDepth);
-  const visibility = options.visibility
-    ? normalizeVisibility(options.visibility)
-    : undefined;
-
   let resolvedProfile;
   try {
     resolvedProfile = resolvePackProfile({
@@ -467,6 +471,11 @@ export function runPackCommand(options: PackCommandOptions): void {
     edges,
     verbose: Boolean(options.verbose),
     maxNodes: config.pack.limits.max_nodes,
+    maxTraversalNodes: Math.min(
+      config.index.limits.max_files,
+      Math.max(1_000, config.pack.limits.max_nodes * 10)
+    ),
+    maxBodyBytes: config.pack.limits.max_bytes,
     verboseCoreListPath: path.resolve(options.root, config.pack.verbose_core_list_path),
     wsHint: ws,
     includeLatestCheckpoint: true,
@@ -481,7 +490,7 @@ export function runPackCommand(options: PackCommandOptions): void {
     const skillsLoad = loadSkillsIndex({
       root: options.root,
       config,
-      useCache: !options.noCache,
+      useCache: !options.noCache && !visibility,
       allowReindex: !options.noReindex,
     });
     if (skillsLoad.stale && !skillsLoad.rebuilt && !options.noCache) {

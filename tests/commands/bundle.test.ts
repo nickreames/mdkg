@@ -41,6 +41,13 @@ function readBundleEntries(bundlePath: string): Map<string, Buffer> {
   return new Map(readZipEntries(fs.readFileSync(bundlePath)).map((entry) => [entry.name, entry.data]));
 }
 
+function writeBundleEntries(bundlePath: string, entries: Map<string, Buffer>): void {
+  fs.writeFileSync(
+    bundlePath,
+    createDeterministicZipFromEntries(Array.from(entries, ([name, data]) => ({ name, data })))
+  );
+}
+
 function updateConfig(root: string, mutate: (config: any) => void): void {
   const configPath = path.join(root, ".mdkg", "config.json");
   const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
@@ -178,4 +185,46 @@ test("bundle verify reports stale source changes and malformed bundles", () => {
   const malformed = runFailure(["bundle", "verify", ".mdkg/bundles/private/bad.mdkg.zip", "--json"], root);
   assert.equal(malformed.status, 2);
   assert.match(malformed.stdout, /zip end of central directory missing or truncated/);
+});
+
+test("cand-review-002-001 foreign bundle manifests are validated from unknown", () => {
+  const root = makeTempDir("mdkg-bundle-contract-");
+  run(["init", "--agent"], root);
+  const created = JSON.parse(run(["bundle", "create", "--json"], root).stdout);
+  const original = readBundleEntries(path.join(root, created.path));
+  const originalManifest = JSON.parse(original.get("manifest.json")!.toString("utf8"));
+  const variants: Array<[string, (manifest: any) => void, RegExp]> = [
+    ["wrong-tool", (manifest) => { manifest.tool = "other"; }, /tool must be mdkg/],
+    ["wrong-profile", (manifest) => { manifest.profile = "trusted"; }, /profile must be private or public/],
+    ["count-mismatch", (manifest) => { manifest.file_count += 1; }, /file_count does not match/],
+    ["missing-index", (manifest) => { delete manifest.index_hashes[".mdkg\/index\/skills.json"]; }, /missing required index/],
+    ["unsafe-path", (manifest) => { manifest.files[0].path = "..\/outside"; }, /safe relative path/],
+  ];
+
+  for (const [name, mutate, expected] of variants) {
+    const entries = new Map(original);
+    const manifest = structuredClone(originalManifest);
+    mutate(manifest);
+    entries.set("manifest.json", Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`));
+    const relative = `.mdkg/bundles/private/${name}.mdkg.zip`;
+    writeBundleEntries(path.join(root, relative), entries);
+    const failure = runFailure(["bundle", "verify", relative, "--json"], root);
+    assert.equal(failure.status, 2);
+    assert.match(failure.stdout, expected, name);
+  }
+});
+
+test("cand-review-002-001 payload hashes and required generated indexes are bound before verification", () => {
+  const root = makeTempDir("mdkg-bundle-payload-contract-");
+  run(["init", "--agent"], root);
+  const created = JSON.parse(run(["bundle", "create", "--json"], root).stdout);
+  const entries = readBundleEntries(path.join(root, created.path));
+  entries.set(".mdkg/index/global.json", Buffer.from("{}\n"));
+  const relative = ".mdkg/bundles/private/tampered-index.mdkg.zip";
+  writeBundleEntries(path.join(root, relative), entries);
+
+  const failure = runFailure(["bundle", "verify", relative, "--json"], root);
+  assert.equal(failure.status, 2);
+  assert.match(failure.stdout, /hash mismatch for \.mdkg\/index\/global\.json/);
+  assert.match(failure.stdout, /generated index hash mismatch: \.mdkg\/index\/global\.json/);
 });

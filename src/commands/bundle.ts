@@ -3,6 +3,11 @@ import fs from "fs";
 import path from "path";
 import { spawnSync } from "child_process";
 import { loadConfig, Config, WorkspaceConfig } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  authorizeOperatorSelectedExternalPath,
+} from "../core/filesystem_authority";
+import { atomicWriteFile } from "../util/atomic";
 import { buildCapabilitiesIndex } from "../graph/capabilities_indexer";
 import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
@@ -12,7 +17,7 @@ import {
   SkillsIndex,
 } from "../graph/skills_indexer";
 import { FrontmatterValue } from "../graph/frontmatter";
-import { createDeterministicZipFromEntries, readZipEntries, ZipEntry } from "../util/zip";
+import { createDeterministicZipFromEntries, readZipFileEntries, ZipEntry } from "../util/zip";
 import { UsageError, ValidationError, NotFoundError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
 import {
@@ -106,6 +111,161 @@ const INDEX_ENTRY_PATHS = {
   skills: ".mdkg/index/skills.json",
   capabilities: ".mdkg/index/capabilities.json",
 };
+const REQUIRED_INDEX_PATHS = Object.values(INDEX_ENTRY_PATHS);
+const SHA256_PATTERN = /^sha256:[a-f0-9]{64}$/;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function manifestError(message: string): never {
+  throw new ValidationError(`bundle manifest invalid: ${message}`);
+}
+
+function manifestString(value: unknown, field: string): string {
+  if (typeof value !== "string" || value.length === 0) {
+    manifestError(`${field} must be a non-empty string`);
+  }
+  return value;
+}
+
+function manifestHash(value: unknown, field: string): string {
+  const hash = manifestString(value, field);
+  if (!SHA256_PATTERN.test(hash)) {
+    manifestError(`${field} must be a sha256 digest`);
+  }
+  return hash;
+}
+
+function safeManifestPath(value: unknown, field: string): string {
+  const candidate = manifestString(value, field).replace(/\\/g, "/");
+  const parts = candidate.split("/");
+  if (path.posix.isAbsolute(candidate) || parts.some((part) => part === "" || part === "." || part === "..")) {
+    manifestError(`${field} must be a safe relative path`);
+  }
+  return candidate;
+}
+
+export function validateBundleManifest(value: unknown): BundleManifest {
+  if (!isRecord(value)) manifestError("root must be an object");
+  if (value.manifest_version !== 1) manifestError("manifest_version must be 1");
+  if (value.tool !== "mdkg") manifestError("tool must be mdkg");
+  const mdkgVersion = manifestString(value.mdkg_version, "mdkg_version");
+  if (value.profile !== "private" && value.profile !== "public") {
+    manifestError("profile must be private or public");
+  }
+  if (!Array.isArray(value.selected_workspaces) || value.selected_workspaces.length === 0) {
+    manifestError("selected_workspaces must be a non-empty string array");
+  }
+  const selectedWorkspaces = value.selected_workspaces.map((item, index) =>
+    manifestString(item, `selected_workspaces[${index}]`)
+  );
+  if (new Set(selectedWorkspaces).size !== selectedWorkspaces.length) {
+    manifestError("selected_workspaces must not contain duplicates");
+  }
+  if (!isRecord(value.source)) manifestError("source must be an object");
+  const repo = manifestString(value.source.repo, "source.repo");
+  const gitHead = value.source.git_head;
+  if (gitHead !== null && (typeof gitHead !== "string" || !/^[a-f0-9]{40}$/.test(gitHead))) {
+    manifestError("source.git_head must be null or a 40-character lowercase Git SHA");
+  }
+  if (typeof value.source.dirty !== "boolean") manifestError("source.dirty must be boolean");
+  const sourceTreeHash = manifestHash(value.source_tree_hash, "source_tree_hash");
+  const bundleHash = manifestHash(value.bundle_hash, "bundle_hash");
+  if (!Number.isSafeInteger(value.file_count) || Number(value.file_count) < 0) {
+    manifestError("file_count must be a non-negative safe integer");
+  }
+  if (!isRecord(value.index_hashes)) manifestError("index_hashes must be an object");
+  const indexHashes: Record<string, string> = {};
+  for (const [rawPath, rawHash] of Object.entries(value.index_hashes)) {
+    const indexPath = safeManifestPath(rawPath, "index_hashes key");
+    indexHashes[indexPath] = manifestHash(rawHash, `index_hashes.${indexPath}`);
+  }
+  for (const requiredPath of REQUIRED_INDEX_PATHS) {
+    if (!indexHashes[requiredPath]) manifestError(`index_hashes missing required index ${requiredPath}`);
+  }
+  if (!Array.isArray(value.files)) manifestError("files must be an array");
+  const seenPaths = new Set<string>();
+  const files = value.files.map((rawFile, index): BundleManifestFile => {
+    if (!isRecord(rawFile)) manifestError(`files[${index}] must be an object`);
+    const filePath = safeManifestPath(rawFile.path, `files[${index}].path`);
+    if (seenPaths.has(filePath)) manifestError(`duplicate file path: ${filePath}`);
+    seenPaths.add(filePath);
+    if (rawFile.kind !== "authored" && rawFile.kind !== "archive_cache" && rawFile.kind !== "generated_index") {
+      manifestError(`files[${index}].kind is invalid`);
+    }
+    if (!Number.isSafeInteger(rawFile.size) || Number(rawFile.size) < 0) {
+      manifestError(`files[${index}].size must be a non-negative safe integer`);
+    }
+    const workspace = rawFile.workspace === undefined
+      ? undefined
+      : manifestString(rawFile.workspace, `files[${index}].workspace`);
+    const visibility = rawFile.visibility;
+    if (visibility !== undefined && visibility !== "private" && visibility !== "internal" && visibility !== "public") {
+      manifestError(`files[${index}].visibility is invalid`);
+    }
+    return {
+      path: filePath,
+      kind: rawFile.kind,
+      ...(workspace ? { workspace } : {}),
+      ...(visibility ? { visibility } : {}),
+      size: Number(rawFile.size),
+      sha256: manifestHash(rawFile.sha256, `files[${index}].sha256`),
+    };
+  });
+  if (Number(value.file_count) !== files.length) manifestError("file_count does not match files length");
+  for (const requiredPath of REQUIRED_INDEX_PATHS) {
+    const row = files.find((file) => file.path === requiredPath);
+    if (!row || row.kind !== "generated_index") {
+      manifestError(`files missing required generated index ${requiredPath}`);
+    }
+    if (row.sha256 !== indexHashes[requiredPath]) {
+      manifestError(`index hash does not match file row for ${requiredPath}`);
+    }
+  }
+  return {
+    manifest_version: 1,
+    tool: "mdkg",
+    mdkg_version: mdkgVersion,
+    profile: value.profile,
+    selected_workspaces: selectedWorkspaces,
+    source: { repo, git_head: gitHead, dirty: value.source.dirty },
+    source_tree_hash: sourceTreeHash,
+    bundle_hash: bundleHash,
+    file_count: files.length,
+    index_hashes: indexHashes,
+    files,
+  };
+}
+
+export function bundlePayloadErrors(entries: Map<string, Buffer>, manifest: BundleManifest): string[] {
+  const errors: string[] = [];
+  const manifestPaths = new Set(manifest.files.map((file) => file.path));
+  for (const entryPath of entries.keys()) {
+    if (entryPath !== MANIFEST_ENTRY && !manifestPaths.has(entryPath)) errors.push(`unexpected bundle entry: ${entryPath}`);
+  }
+  for (const file of manifest.files) {
+    const data = entries.get(file.path);
+    if (!data) {
+      errors.push(`missing bundle entry: ${file.path}`);
+      continue;
+    }
+    if (sha256Buffer(data) !== file.sha256) errors.push(`hash mismatch for ${file.path}`);
+    if (data.length !== file.size) errors.push(`size mismatch for ${file.path}`);
+  }
+  for (const requiredPath of REQUIRED_INDEX_PATHS) {
+    const data = entries.get(requiredPath);
+    if (!data) continue;
+    if (sha256Buffer(data) !== manifest.index_hashes[requiredPath]) {
+      errors.push(`generated index hash mismatch: ${requiredPath}`);
+    }
+  }
+  if (hashManifestFiles(manifest.files.filter((file) => file.kind !== "generated_index")) !== manifest.source_tree_hash) {
+    errors.push("source_tree_hash mismatch");
+  }
+  if (hashManifestFiles(manifest.files) !== manifest.bundle_hash) errors.push("bundle_hash mismatch");
+  return Array.from(new Set(errors));
+}
 
 function toPosixPath(value: string): string {
   return value.split(path.sep).join("/");
@@ -691,9 +851,8 @@ export function buildBundle(options: BundleCreateCommandOptions): BundleBuildRes
 }
 
 export function parseBundle(bundlePath: string): { entries: Map<string, Buffer>; manifest: BundleManifest } {
-  const zip = fs.readFileSync(bundlePath);
   const entries = new Map<string, Buffer>();
-  for (const entry of readZipEntries(zip)) {
+  for (const entry of readZipFileEntries(bundlePath)) {
     entries.set(entry.name, entry.data);
   }
   const manifestData = entries.get(MANIFEST_ENTRY);
@@ -701,10 +860,7 @@ export function parseBundle(bundlePath: string): { entries: Map<string, Buffer>;
     throw new ValidationError("bundle manifest missing");
   }
   try {
-    return {
-      entries,
-      manifest: JSON.parse(manifestData.toString("utf8")) as BundleManifest,
-    };
+    return { entries, manifest: validateBundleManifest(JSON.parse(manifestData.toString("utf8")) as unknown) };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     throw new ValidationError(`bundle manifest is invalid JSON: ${message}`);
@@ -735,25 +891,8 @@ export function verifyBundle(root: string, bundlePath: string): VerifyResult {
     };
   }
 
-  const manifestPaths = new Set(manifest.files.map((file) => file.path));
-  for (const entryPath of entries.keys()) {
-    if (entryPath !== MANIFEST_ENTRY && !manifestPaths.has(entryPath)) {
-      errors.push(`unexpected bundle entry: ${entryPath}`);
-    }
-  }
+  errors.push(...bundlePayloadErrors(entries, manifest));
   for (const file of manifest.files) {
-    const data = entries.get(file.path);
-    if (!data) {
-      errors.push(`missing bundle entry: ${file.path}`);
-      continue;
-    }
-    const hash = sha256Buffer(data);
-    if (hash !== file.sha256) {
-      errors.push(`hash mismatch for ${file.path}`);
-    }
-    if (data.length !== file.size) {
-      errors.push(`size mismatch for ${file.path}`);
-    }
     if (file.kind !== "generated_index") {
       const sourcePath = path.resolve(root, file.path);
       if (!fs.existsSync(sourcePath)) {
@@ -765,27 +904,6 @@ export function verifyBundle(root: string, bundlePath: string): VerifyResult {
       }
     }
   }
-  for (const [indexPath, expectedHash] of Object.entries(manifest.index_hashes)) {
-    const data = entries.get(indexPath);
-    if (!data) {
-      errors.push(`missing generated index: ${indexPath}`);
-      continue;
-    }
-    if (sha256Buffer(data) !== expectedHash) {
-      errors.push(`generated index hash mismatch: ${indexPath}`);
-    }
-  }
-  const computedSourceHash = hashManifestFiles(
-    manifest.files.filter((file) => file.kind !== "generated_index")
-  );
-  if (computedSourceHash !== manifest.source_tree_hash) {
-    errors.push("source_tree_hash mismatch");
-  }
-  const computedBundleHash = hashManifestFiles(manifest.files);
-  if (computedBundleHash !== manifest.bundle_hash) {
-    errors.push("bundle_hash mismatch");
-  }
-
   const currentHead = gitOutput(root, ["rev-parse", "HEAD"]);
   if (manifest.source.git_head && currentHead && manifest.source.git_head !== currentHead) {
     stalePaths.push("git:HEAD");
@@ -825,8 +943,19 @@ function bundleSummary(manifest: BundleManifest, bundlePath: string, zipSha256?:
 
 export function runBundleCreateCommand(options: BundleCreateCommandOptions): void {
   const result = buildBundle(options);
-  fs.mkdirSync(path.dirname(result.outputPath), { recursive: true });
-  fs.writeFileSync(result.outputPath, result.zip);
+  if (options.output && path.isAbsolute(options.output)) {
+    const external = authorizeOperatorSelectedExternalPath({
+      operation: "replace",
+      path: options.output,
+      operatorSelected: true,
+    });
+    atomicWriteFile(external.absolutePath, result.zip);
+  } else {
+    atomicReplaceContainedFile(
+      { root: options.root, relativePath: path.relative(options.root, result.outputPath).split(path.sep).join("/") },
+      result.zip
+    );
+  }
   const receipt = {
     action: "created",
     ...bundleSummary(result.manifest, path.relative(options.root, result.outputPath), result.zipSha256),

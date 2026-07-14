@@ -1268,33 +1268,27 @@ test("loop next selects actionable child and explains skipped lanes without muta
   const output = captureOutput(() => runLoopNextCommand({ root, id: "loop-1", json: true }));
   const receipt = JSON.parse(output.stdout) as {
     action: string;
-    selected: { kind: string; qid: string; ref: string; state: string; reason: string };
+    selected: { kind: string; qid: string; ref: string; state: string; reason: string } | null;
     rationale: string;
     skipped: Array<{ ref: string; state: string; reason: string }>;
     readiness: { pending_approval_actions: string[] };
   };
 
   assert.equal(receipt.action, "selected");
-  assert.equal(receipt.selected.kind, "child");
-  assert.equal(receipt.selected.qid, "root:spike-1");
-  assert.equal(receipt.selected.ref, "spike-1");
-  assert.equal(receipt.selected.state, "actionable");
-  assert.match(receipt.selected.reason, /actionable child lane/);
-  assert.match(receipt.rationale, /unblocked actionable child lane/);
+  assert.equal(receipt.selected, null);
+  assert.match(receipt.rationale, /pending typed approval/);
   assert.deepEqual(receipt.readiness.pending_approval_actions, ["external_advisory_checks"]);
   assert.ok(receipt.skipped.some((entry) =>
     entry.ref === "external_advisory_checks" &&
     entry.state === "approval_pending" &&
-    /another child lane is actionable/.test(entry.reason)
+    /required approval-gated action remains pending/.test(entry.reason)
   ));
-  assert.ok(receipt.skipped.some((entry) => entry.ref === "root:task-2" && entry.state === "blocked"));
-  assert.ok(receipt.skipped.some((entry) => entry.ref === "root:test-1" && entry.state === "waiting"));
   assert.equal(fs.readFileSync(loopPath, "utf8"), before);
 
   const textOutput = captureOutput(() => runLoopNextCommand({ root, id: "loop-1" }));
   assert.match(textOutput.stdout, /loop next: root:loop-1/);
-  assert.match(textOutput.stdout, /selected: child root:spike-1/);
-  assert.match(textOutput.stdout, /reason: first unblocked actionable child lane/);
+  assert.match(textOutput.stdout, /selected: none/);
+  assert.match(textOutput.stdout, /pending typed approval/);
 });
 
 test("loop next exhausts nested goal work and recovery before whole-loop blocking", () => {

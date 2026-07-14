@@ -3,6 +3,7 @@ import path from "path";
 import { spawnSync } from "child_process";
 import { migrateConfig } from "../core/migrate";
 import { CustomizationConfig, defaultCustomizationConfig, validateConfigSchema } from "../core/config";
+import { atomicReplaceContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import { configPath } from "../core/paths";
 import { readPackageVersion } from "../core/version";
 import {
@@ -21,7 +22,6 @@ import { NotFoundError } from "../util/errors";
 import { DEFAULT_FRONTMATTER_KEY_ORDER, formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { CANONICAL_MANIFEST_BASENAME, LEGACY_SPEC_BASENAME } from "../graph/agent_file_types";
-import { atomicWriteFile } from "../util/atomic";
 import {
   createInitManifest,
   InitManifest,
@@ -119,14 +119,12 @@ function isAgentWorkspace(root: string, config: ReturnType<typeof validateConfig
   ].some((candidate) => fs.existsSync(candidate));
 }
 
-function copyFile(src: string, dest: string): void {
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.copyFileSync(src, dest);
+function copyFile(root: string, src: string, dest: string): void {
+  atomicReplaceContainedFile({ root, relativePath: repoRelativePath(root, dest) }, fs.readFileSync(src));
 }
 
-function writeFile(filePath: string, content: string): void {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
+function writeFile(root: string, filePath: string, content: string): void {
+  atomicReplaceContainedFile({ root, relativePath: repoRelativePath(root, filePath) }, content);
 }
 
 function repoRelativePath(root: string, filePath: string): string {
@@ -221,7 +219,7 @@ function planSeedFile(options: {
       reason: "missing managed init asset",
     });
     if (!options.dryRun) {
-      copyFile(srcPath, destPath);
+      copyFile(options.root, srcPath, destPath);
     }
     options.managedCurrentFiles.push(options.file);
     return true;
@@ -247,7 +245,7 @@ function planSeedFile(options: {
       reason: "matches a managed seed hash",
     });
     if (!options.dryRun) {
-      copyFile(srcPath, destPath);
+      copyFile(options.root, srcPath, destPath);
     }
     options.managedCurrentFiles.push(options.file);
     return true;
@@ -384,7 +382,7 @@ function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSu
     reason: reasons.join(" and "),
   });
   if (!dryRun) {
-    writeFile(cfgPath, `${JSON.stringify(customizationConfig.config, null, 2)}\n`);
+    writeFile(root, cfgPath, `${JSON.stringify(customizationConfig.config, null, 2)}\n`);
   }
 }
 
@@ -463,7 +461,7 @@ function migrateClosedGoalActiveNodes(root: string, dryRun: boolean, summary: Up
           frontmatter.last_active_node = activeNode;
         }
         delete frontmatter.active_node;
-        writeFile(filePath, renderFrontmatterDocument(frontmatter, parsed.body.length > 0 ? parsed.body : ""));
+        writeFile(root, filePath, renderFrontmatterDocument(frontmatter, parsed.body.length > 0 ? parsed.body : ""));
       }
     }
   }
@@ -516,8 +514,18 @@ function migrateLegacySpecManifests(root: string, dryRun: boolean, summary: Upgr
       });
       if (!dryRun) {
         const frontmatter = { ...parsed.frontmatter, type: "manifest" };
-        atomicWriteFile(filePath, renderFrontmatterDocument(frontmatter, parsed.body));
-        fs.renameSync(filePath, targetPath);
+        atomicReplaceContainedFile(
+          { root, relativePath: repoRelativePath(root, filePath) },
+          renderFrontmatterDocument(frontmatter, parsed.body)
+        );
+        withContainedPathSink(
+          { root, relativePath: repoRelativePath(root, targetPath), operation: "create", createParents: true },
+          ({ absolutePath: safeTarget }) =>
+            withContainedPathSink(
+              { root, relativePath: repoRelativePath(root, filePath), operation: "delete" },
+              ({ absolutePath: safeSource }) => fs.renameSync(safeSource, safeTarget)
+            )
+        );
       }
     }
   }
@@ -587,7 +595,7 @@ function ensureAgentRuntimeFiles(root: string, dryRun: boolean, summary: Upgrade
       reason: "agent workspace is missing event log",
     });
     if (!dryRun) {
-      writeFile(eventsPath, seededInitEvent(new Date().toISOString()));
+      writeFile(root, eventsPath, seededInitEvent(new Date().toISOString()));
     }
   } else {
     summary.unchanged += 1;
@@ -612,7 +620,7 @@ function ensureArchiveIgnorePolicy(root: string, dryRun: boolean, summary: Upgra
   });
   if (!dryRun) {
     const suffix = raw.length === 0 || raw.endsWith("\n") ? "" : "\n";
-    writeFile(ignorePath, `${raw}${suffix}${additions.join("\n")}\n`);
+    writeFile(root, ignorePath, `${raw}${suffix}${additions.join("\n")}\n`);
   }
 }
 

@@ -2,6 +2,11 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
+import {
+  containedPathExists,
+  removeContainedPath,
+  withContainedPathSink,
+} from "../core/filesystem_authority";
 import { CapabilitiesIndex } from "./capabilities_indexer";
 import { Index } from "./indexer";
 import { SkillsIndex } from "./skills_indexer";
@@ -73,10 +78,11 @@ export function resolveSqlitePath(root: string, config: Config): string {
   return path.resolve(root, config.index.sqlite_path);
 }
 
-function sqliteTempPath(sqlitePath: string): string {
-  return path.join(
-    path.dirname(sqlitePath),
-    `.${path.basename(sqlitePath)}.${process.pid}.${Date.now()}.tmp`
+function sqliteTempRelativePath(sqliteRelativePath: string): string {
+  const normalized = sqliteRelativePath.replace(/\\/g, "/");
+  return path.posix.join(
+    path.posix.dirname(normalized),
+    `.${path.posix.basename(normalized)}.${process.pid}.${Date.now()}.tmp`
   );
 }
 
@@ -196,19 +202,23 @@ export function sqliteSourceFingerprint(options: {
 }
 
 export function readSqliteIndexMeta(root: string, config: Config): Record<string, string> {
-  const sqlitePath = resolveSqlitePath(root, config);
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(sqlitePath);
-  try {
-    const rows = db.prepare("SELECT key, value FROM meta").all();
-    const meta: Record<string, string> = {};
-    for (const row of rows) {
-      meta[String(row.key)] = String(row.value);
+  return withContainedPathSink(
+    { root, relativePath: config.index.sqlite_path, operation: "read" },
+    ({ absolutePath }) => {
+      const db = new DatabaseSync(absolutePath);
+      try {
+        const rows = db.prepare("SELECT key, value FROM meta").all();
+        const meta: Record<string, string> = {};
+        for (const row of rows) {
+          meta[String(row.key)] = String(row.value);
+        }
+        return meta;
+      } finally {
+        db.close();
+      }
     }
-    return meta;
-  } finally {
-    db.close();
-  }
+  );
 }
 
 export function writeSqliteIndex(options: {
@@ -219,121 +229,141 @@ export function writeSqliteIndex(options: {
   capabilitiesIndex: CapabilitiesIndex;
   subgraphsIndex: SubgraphsIndex;
 }): string {
+  const sqliteRelativePath = options.config.index.sqlite_path;
   const sqlitePath = resolveSqlitePath(options.root, options.config);
-  fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
-  const tempPath = sqliteTempPath(sqlitePath);
-  fs.rmSync(tempPath, { force: true });
+  const tempRelativePath = sqliteTempRelativePath(sqliteRelativePath);
+  withContainedPathSink(
+    { root: options.root, relativePath: sqliteRelativePath, operation: "replace", createParents: true },
+    () => undefined
+  );
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(tempPath);
   try {
-    const nodeHashes = new Map<string, string | undefined>();
-    for (const node of Object.values(options.nodeIndex.nodes)) {
-      nodeHashes.set(node.qid, nodeSourceHash(options.root, node.path));
-    }
-    createSchema(db);
-    insertMeta(db, "tool", "mdkg");
-    insertMeta(db, "schema_version", String(SQLITE_SCHEMA_VERSION));
-    insertMeta(db, "package_schema_version", String(options.config.schema_version));
-    insertMeta(db, "backend", options.config.index.backend);
-    insertMeta(db, "source_fingerprint", buildSourceFingerprint({ ...options, nodeHashes }));
-    insertMeta(db, "root", ".");
+    withContainedPathSink(
+      { root: options.root, relativePath: tempRelativePath, operation: "create", createParents: true },
+      ({ absolutePath: tempPath }) => {
+        const db = new DatabaseSync(tempPath);
+        try {
+          const nodeHashes = new Map<string, string | undefined>();
+          for (const node of Object.values(options.nodeIndex.nodes)) {
+            nodeHashes.set(node.qid, nodeSourceHash(options.root, node.path));
+          }
+          createSchema(db);
+          insertMeta(db, "tool", "mdkg");
+          insertMeta(db, "schema_version", String(SQLITE_SCHEMA_VERSION));
+          insertMeta(db, "package_schema_version", String(options.config.schema_version));
+          insertMeta(db, "backend", options.config.index.backend);
+          insertMeta(db, "source_fingerprint", buildSourceFingerprint({ ...options, nodeHashes }));
+          insertMeta(db, "root", ".");
 
-    const insertNode = db.prepare(
-      "INSERT INTO nodes (qid, id, ws, type, title, path, status, priority, updated, source_hash, json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-    );
-    const insertEdge = db.prepare(
-      "INSERT OR IGNORE INTO edges (source_qid, kind, target_qid) VALUES (?, ?, ?)"
-    );
-    for (const node of Object.values(options.nodeIndex.nodes).sort((a, b) => a.qid.localeCompare(b.qid))) {
-      insertNode.run(
-        node.qid,
-        node.id,
-        node.ws,
-        node.type,
-        node.title,
-        toPosixPath(node.path),
-        node.status ?? null,
-        node.priority ?? null,
-        node.updated ?? null,
-        nodeHashes.get(node.qid) ?? null,
-        stableCacheJson(node)
-      );
-      for (const [kind, values] of [
-        ["relates", node.edges.relates],
-        ["blocked_by", node.edges.blocked_by],
-        ["blocks", node.edges.blocks],
-        ["context_refs", node.edges.context_refs ?? []],
-        ["evidence_refs", node.edges.evidence_refs ?? []],
-      ] as const) {
-        for (const target of values) {
-          insertEdge.run(node.qid, kind, target);
+          const insertNode = db.prepare(
+            "INSERT INTO nodes (qid, id, ws, type, title, path, status, priority, updated, source_hash, json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+          );
+          const insertEdge = db.prepare(
+            "INSERT OR IGNORE INTO edges (source_qid, kind, target_qid) VALUES (?, ?, ?)"
+          );
+          for (const node of Object.values(options.nodeIndex.nodes).sort((a, b) => a.qid.localeCompare(b.qid))) {
+            insertNode.run(
+              node.qid,
+              node.id,
+              node.ws,
+              node.type,
+              node.title,
+              toPosixPath(node.path),
+              node.status ?? null,
+              node.priority ?? null,
+              node.updated ?? null,
+              nodeHashes.get(node.qid) ?? null,
+              stableCacheJson(node)
+            );
+            for (const [kind, values] of [
+              ["relates", node.edges.relates],
+              ["blocked_by", node.edges.blocked_by],
+              ["blocks", node.edges.blocks],
+              ["context_refs", node.edges.context_refs ?? []],
+              ["evidence_refs", node.edges.evidence_refs ?? []],
+            ] as const) {
+              for (const target of values) {
+                insertEdge.run(node.qid, kind, target);
+              }
+            }
+            for (const [kind, target] of [
+              ["epic", node.edges.epic],
+              ["parent", node.edges.parent],
+              ["prev", node.edges.prev],
+              ["next", node.edges.next],
+            ] as const) {
+              if (target) {
+                insertEdge.run(node.qid, kind, target);
+              }
+            }
+          }
+
+          const insertSkill = db.prepare(
+            "INSERT INTO skills (qid, slug, ws, name, path, json) VALUES (?, ?, ?, ?, ?, ?)"
+          );
+          for (const skill of Object.values(options.skillsIndex.skills).sort((a, b) => a.qid.localeCompare(b.qid))) {
+            insertSkill.run(skill.qid, skill.slug, skill.ws, skill.name, skill.path, stableCacheJson(skill));
+          }
+
+          const insertCapability = db.prepare(
+            "INSERT INTO capabilities (qid, kind, workspace, visibility, id, path, source_hash, json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+          );
+          for (const record of options.capabilitiesIndex.records) {
+            insertCapability.run(
+              record.qid,
+              record.kind,
+              record.workspace,
+              record.visibility,
+              record.id,
+              record.path,
+              record.source_hash,
+              stableCacheJson(record)
+            );
+          }
+
+          const insertArchive = db.prepare(
+            "INSERT INTO archives (qid, visibility, compressed_path, compressed_sha256, json) VALUES (?, ?, ?, ?, ?)"
+          );
+          for (const node of Object.values(options.nodeIndex.nodes).filter((item) => item.type === "archive")) {
+            insertArchive.run(
+              node.qid,
+              String(node.attributes.visibility ?? "private"),
+              String(node.attributes.compressed_path ?? ""),
+              String(node.attributes.compressed_sha256 ?? ""),
+              stableCacheJson(node)
+            );
+          }
+
+          const insertSubgraph = db.prepare(
+            "INSERT INTO subgraphs (alias, enabled, stale, error_count, warning_count, json) VALUES (?, ?, ?, ?, ?, ?)"
+          );
+          for (const item of options.subgraphsIndex.subgraphs) {
+            insertSubgraph.run(
+              item.alias,
+              item.enabled ? 1 : 0,
+              item.stale ? 1 : 0,
+              item.error_count,
+              item.warning_count,
+              stableCacheJson(item)
+            );
+          }
+        } finally {
+          db.close();
         }
       }
-      for (const [kind, target] of [
-        ["epic", node.edges.epic],
-        ["parent", node.edges.parent],
-        ["prev", node.edges.prev],
-        ["next", node.edges.next],
-      ] as const) {
-        if (target) {
-          insertEdge.run(node.qid, kind, target);
-        }
-      }
-    }
-
-    const insertSkill = db.prepare(
-      "INSERT INTO skills (qid, slug, ws, name, path, json) VALUES (?, ?, ?, ?, ?, ?)"
     );
-    for (const skill of Object.values(options.skillsIndex.skills).sort((a, b) => a.qid.localeCompare(b.qid))) {
-      insertSkill.run(skill.qid, skill.slug, skill.ws, skill.name, skill.path, stableCacheJson(skill));
-    }
-
-    const insertCapability = db.prepare(
-      "INSERT INTO capabilities (qid, kind, workspace, visibility, id, path, source_hash, json) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    withContainedPathSink(
+      { root: options.root, relativePath: sqliteRelativePath, operation: "replace", createParents: true },
+      ({ absolutePath: targetPath }) =>
+        withContainedPathSink(
+          { root: options.root, relativePath: tempRelativePath, operation: "read" },
+          ({ absolutePath: tempPath }) => fs.renameSync(tempPath, targetPath)
+        )
     );
-    for (const record of options.capabilitiesIndex.records) {
-      insertCapability.run(
-        record.qid,
-        record.kind,
-        record.workspace,
-        record.visibility,
-        record.id,
-        record.path,
-        record.source_hash,
-        stableCacheJson(record)
-      );
-    }
-
-    const insertArchive = db.prepare(
-      "INSERT INTO archives (qid, visibility, compressed_path, compressed_sha256, json) VALUES (?, ?, ?, ?, ?)"
-    );
-    for (const node of Object.values(options.nodeIndex.nodes).filter((item) => item.type === "archive")) {
-      insertArchive.run(
-        node.qid,
-        String(node.attributes.visibility ?? "private"),
-        String(node.attributes.compressed_path ?? ""),
-        String(node.attributes.compressed_sha256 ?? ""),
-        stableCacheJson(node)
-      );
-    }
-
-    const insertSubgraph = db.prepare(
-      "INSERT INTO subgraphs (alias, enabled, stale, error_count, warning_count, json) VALUES (?, ?, ?, ?, ?, ?)"
-    );
-    for (const item of options.subgraphsIndex.subgraphs) {
-      insertSubgraph.run(
-        item.alias,
-        item.enabled ? 1 : 0,
-        item.stale ? 1 : 0,
-        item.error_count,
-        item.warning_count,
-        stableCacheJson(item)
-      );
-    }
-  } finally {
-    db.close();
+  } catch (error) {
+    removeContainedPath({ root: options.root, relativePath: tempRelativePath, force: true });
+    throw error;
   }
-  fs.renameSync(tempPath, sqlitePath);
   return sqlitePath;
 }
 
@@ -347,33 +377,36 @@ export function reserveSqliteNumericId(options: {
   if (!isSqliteBackend(options.config)) {
     return undefined;
   }
-  const sqlitePath = resolveSqlitePath(options.root, options.config);
-  fs.mkdirSync(path.dirname(sqlitePath), { recursive: true });
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(sqlitePath);
-  try {
-    db.exec("CREATE TABLE IF NOT EXISTS id_allocations (ws TEXT NOT NULL, prefix TEXT NOT NULL, next_value INTEGER NOT NULL, PRIMARY KEY (ws, prefix));");
-    db.exec("BEGIN IMMEDIATE");
-    const row = db
-      .prepare("SELECT next_value FROM id_allocations WHERE ws = ? AND prefix = ?")
-      .get(options.ws, options.prefix);
-    const existing = typeof row?.next_value === "number" ? row.next_value : undefined;
-    const nextValue = Math.max(existing ?? 1, options.currentMax + 1);
-    db.prepare(
-      "INSERT INTO id_allocations (ws, prefix, next_value) VALUES (?, ?, ?) ON CONFLICT(ws, prefix) DO UPDATE SET next_value = excluded.next_value"
-    ).run(options.ws, options.prefix, nextValue + 1);
-    db.exec("COMMIT");
-    return `${options.prefix}-${nextValue}`;
-  } catch (err) {
-    try {
-      db.exec("ROLLBACK");
-    } catch {
-      // ignore rollback failures when no transaction is active
+  return withContainedPathSink(
+    { root: options.root, relativePath: options.config.index.sqlite_path, operation: "replace", createParents: true },
+    ({ absolutePath }) => {
+      const db = new DatabaseSync(absolutePath);
+      try {
+        db.exec("CREATE TABLE IF NOT EXISTS id_allocations (ws TEXT NOT NULL, prefix TEXT NOT NULL, next_value INTEGER NOT NULL, PRIMARY KEY (ws, prefix));");
+        db.exec("BEGIN IMMEDIATE");
+        const row = db
+          .prepare("SELECT next_value FROM id_allocations WHERE ws = ? AND prefix = ?")
+          .get(options.ws, options.prefix);
+        const existing = typeof row?.next_value === "number" ? row.next_value : undefined;
+        const nextValue = Math.max(existing ?? 1, options.currentMax + 1);
+        db.prepare(
+          "INSERT INTO id_allocations (ws, prefix, next_value) VALUES (?, ?, ?) ON CONFLICT(ws, prefix) DO UPDATE SET next_value = excluded.next_value"
+        ).run(options.ws, options.prefix, nextValue + 1);
+        db.exec("COMMIT");
+        return `${options.prefix}-${nextValue}`;
+      } catch (err) {
+        try {
+          db.exec("ROLLBACK");
+        } catch {
+          // ignore rollback failures when no transaction is active
+        }
+        throw err;
+      } finally {
+        db.close();
+      }
     }
-    throw err;
-  } finally {
-    db.close();
-  }
+  );
 }
 
 export function sqliteHealth(root: string, config: Config): {
@@ -386,7 +419,7 @@ export function sqliteHealth(root: string, config: Config): {
   const sqlitePath = resolveSqlitePath(root, config);
   const warnings: string[] = [];
   const errors: string[] = [];
-  if (!fs.existsSync(sqlitePath)) {
+  if (!containedPathExists({ root, relativePath: config.index.sqlite_path })) {
     warnings.push(`SQLite cache missing at ${toPosixPath(path.relative(root, sqlitePath))}; run mdkg index`);
     return { path: sqlitePath, exists: false, size: 0, warnings, errors };
   }
@@ -404,15 +437,20 @@ export function sqliteHealth(root: string, config: Config): {
   }
   try {
     const DatabaseSync = loadDatabaseCtor();
-    const db = new DatabaseSync(sqlitePath);
-    try {
-      const row = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get();
-      if (String(row?.value ?? "") !== String(SQLITE_SCHEMA_VERSION)) {
-        errors.push(`SQLite schema mismatch; run mdkg index`);
+    withContainedPathSink(
+      { root, relativePath: config.index.sqlite_path, operation: "read" },
+      ({ absolutePath }) => {
+        const db = new DatabaseSync(absolutePath);
+        try {
+          const row = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get();
+          if (String(row?.value ?? "") !== String(SQLITE_SCHEMA_VERSION)) {
+            errors.push(`SQLite schema mismatch; run mdkg index`);
+          }
+        } finally {
+          db.close();
+        }
       }
-    } finally {
-      db.close();
-    }
+    );
   } catch (err) {
     errors.push(`failed to read SQLite cache: ${err instanceof Error ? err.message : String(err)}`);
   }

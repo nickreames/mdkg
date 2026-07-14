@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
+import { readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import { sortIndexNodes } from "../util/sort";
 import { atomicWriteFile } from "../util/atomic";
 import { buildIndex, Index } from "./indexer";
@@ -31,14 +32,39 @@ export type LoadIndexResult = {
   warnings: string[];
 };
 
-function readIndex(indexPath: string): Index {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function readIndex(root: string, indexPath: string): Index {
   try {
-    const raw = fs.readFileSync(indexPath, "utf8");
-    return JSON.parse(raw) as Index;
+    const relativePath = path.relative(root, indexPath).split(path.sep).join("/");
+    const parsed = JSON.parse(readContainedFile({ root, relativePath }, "utf8")) as unknown;
+    if (!isRecord(parsed) || !isRecord(parsed.meta) || !isRecord(parsed.workspaces) || !isRecord(parsed.nodes) || !isRecord(parsed.reverse_edges)) {
+      throw new Error("index cache has an invalid shape");
+    }
+    return parsed as unknown as Index;
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     throw new Error(`failed to read index: ${message}`);
   }
+}
+
+function validateCachedNodePaths(root: string, config: Config, cached: Index): Index {
+  for (const node of Object.values(cached.nodes)) {
+    if (node.qid !== `${node.ws}:${node.id}` || node.source?.imported) throw new Error(`invalid cached node identity: ${node.qid}`);
+    const workspace = config.workspaces[node.ws];
+    if (!workspace?.enabled) throw new Error(`invalid cached node workspace: ${node.ws}`);
+    const normalized = node.path.split(path.sep).join("/");
+    const workspaceRoot = path.resolve(root, workspace.path, workspace.mdkg_dir);
+    const absolutePath = path.resolve(root, normalized);
+    const relativeWorkspacePath = path.relative(workspaceRoot, absolutePath);
+    if (path.isAbsolute(normalized) || relativeWorkspacePath.startsWith("..") || path.isAbsolute(relativeWorkspacePath)) {
+      throw new Error(`cached node path escapes workspace root: ${node.qid}`);
+    }
+    withContainedPathSink({ root, relativePath: normalized, operation: "read" }, () => undefined);
+  }
+  return cached;
 }
 
 export function writeIndex(indexPath: string, index: Index): void {
@@ -77,7 +103,7 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
 
   const stale = isIndexStale(options.root, options.config);
   if (fs.existsSync(indexPath) && !stale) {
-    return withSubgraphs(readIndex(indexPath), false, false);
+    return withSubgraphs(validateCachedNodePaths(options.root, options.config, readIndex(options.root, indexPath)), false, false);
   }
 
   if (allowReindex) {
@@ -89,7 +115,8 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
   }
 
   if (fs.existsSync(indexPath)) {
-    return withSubgraphs(readIndex(indexPath), false, true);
+    const cached = validateCachedNodePaths(options.root, options.config, readIndex(options.root, indexPath));
+    return withSubgraphs(cached, false, true);
   }
 
   throw new Error("index missing and auto-reindex is disabled");

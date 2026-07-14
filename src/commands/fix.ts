@@ -3,6 +3,12 @@ import { spawnSync } from "child_process";
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  readContainedFile,
+  withContainedPathSink,
+} from "../core/filesystem_authority";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
 import { isCapabilitiesIndexStale } from "../graph/capabilities_index_cache";
 import { isIndexStale } from "../graph/staleness";
@@ -16,7 +22,6 @@ import { loadTemplateSchemas } from "../graph/template_schema";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
-import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { rebuildDerivedIndexCaches } from "./index";
 
@@ -1355,12 +1360,12 @@ function applyDuplicateIdChange(root: string, change: FixPlanChange): FixApplyCh
   if (!fromId || !toId) {
     throw new UsageError(`fix apply change ${change.id} is missing duplicate id rewrite details`);
   }
-  const current = fs.readFileSync(absPath, "utf8");
+  const current = readContainedFile({ root, relativePath });
   const rewritten = rewriteIdInNodeContent(current, fromId, toId);
   if (rewritten === current) {
     throw new UsageError(`fix apply change ${change.id} produced no file changes`);
   }
-  atomicWriteFile(absPath, rewritten);
+  atomicReplaceContainedFile({ root, relativePath }, rewritten);
   const afterDetails = change.after as { safe_reference_rewrites?: unknown };
   const safeReferenceRewrites = Array.isArray(afterDetails.safe_reference_rewrites)
     ? (afterDetails.safe_reference_rewrites as Array<{ path?: unknown; from?: unknown; to?: unknown }>)
@@ -1371,13 +1376,13 @@ function applyDuplicateIdChange(root: string, change: FixPlanChange): FixApplyCh
       continue;
     }
     const rewriteAbs = path.resolve(root, rewrite.path);
-    if (!isInsideRoot(root, rewriteAbs) || !fs.existsSync(rewriteAbs)) {
+    if (!isInsideRoot(root, rewriteAbs) || !containedPathExists({ root, relativePath: rewrite.path })) {
       continue;
     }
-    const rewriteCurrent = fs.readFileSync(rewriteAbs, "utf8");
+    const rewriteCurrent = readContainedFile({ root, relativePath: rewrite.path });
     const rewriteNext = rewriteCurrent.split(rewrite.from).join(rewrite.to);
     if (rewriteNext !== rewriteCurrent) {
-      atomicWriteFile(rewriteAbs, rewriteNext);
+      atomicReplaceContainedFile({ root, relativePath: rewrite.path }, rewriteNext);
       touchedPaths.add(rewrite.path);
     }
   }
@@ -1423,8 +1428,14 @@ function applyGitStageDuplicateIdChange(root: string, change: FixPlanChange): Fi
     throw new UsageError(`fix apply refused path outside repo while resolving ${conflictPath}`);
   }
   const rewrittenDuplicate = rewriteIdInNodeContent(duplicateContent, fromId, candidateId);
-  atomicWriteFile(canonicalAbs, canonicalContent);
-  atomicWriteFile(candidateAbs, rewrittenDuplicate);
+  for (const relativePath of [conflictPath, candidatePath]) {
+    withContainedPathSink(
+      { root, relativePath, operation: "replace", createParents: true },
+      () => undefined
+    );
+  }
+  atomicReplaceContainedFile({ root, relativePath: conflictPath }, canonicalContent);
+  atomicReplaceContainedFile({ root, relativePath: candidatePath }, rewrittenDuplicate);
   runGitStrict(root, ["add", "--", conflictPath, candidatePath]);
   return {
     id: change.id,

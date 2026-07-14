@@ -151,6 +151,42 @@ test("workspace add rejects paths that escape the repo root before writing", () 
   assert.equal(fs.existsSync(path.join(root, "docs")), false);
 });
 
+test("workspace add rejects prototype-colliding aliases", () => {
+  const root = makeTempDir("mdkg-workspace-prototype-alias-");
+  writeConfig(root);
+  for (const alias of ["__proto__", "constructor", "prototype"]) {
+    assert.throws(
+      () => runWorkspaceAddCommand({ root, alias, workspacePath: `projects/${alias}` }),
+      /alias is reserved|lowercase and use/
+    );
+  }
+});
+
+test("workspace add rejects linked ancestry before config or external writes", (t) => {
+  const root = makeTempDir("mdkg-workspace-add-link-");
+  const outside = makeTempDir("mdkg-workspace-outside-");
+  writeConfig(root);
+  writeFile(path.join(outside, "sentinel.txt"), "outside\n");
+  try {
+    fs.symlinkSync(outside, path.join(root, "docs"), "dir");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EPERM") {
+      t.skip("symbolic links unavailable");
+      return;
+    }
+    throw error;
+  }
+
+  assert.throws(
+    () => runWorkspaceAddCommand({ root, alias: "docs", workspacePath: "docs" }),
+    (error: unknown) => (error as { code?: string }).code === "ERR_CONTAINED_PATH_LINK"
+  );
+  const raw = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "config.json"), "utf8"));
+  assert.equal(raw.workspaces.docs, undefined);
+  assert.equal(fs.readFileSync(path.join(outside, "sentinel.txt"), "utf8"), "outside\n");
+  assert.equal(fs.existsSync(path.join(outside, ".mdkg")), false);
+});
+
 test("workspace rm deletes entry", () => {
   const root = makeTempDir("mdkg-workspace-rm-");
   writeConfig(root);

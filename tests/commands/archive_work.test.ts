@@ -828,6 +828,33 @@ test("work trigger creates deterministic submitted order mirrors without executi
   run(["validate"], root);
 });
 
+test("workflow creation rolls back when its automatic event cannot be appended", () => {
+  const root = makeTempDir("mdkg-work-event-rollback-");
+  run(["init", "--agent"], root);
+  const outside = makeTempDir("mdkg-work-event-rollback-outside-");
+  const sentinel = path.join(outside, "events.jsonl");
+  fs.writeFileSync(sentinel, "sentinel\n", "utf8");
+  const eventsPath = path.join(root, ".mdkg", "work", "events", "events.jsonl");
+  fs.rmSync(eventsPath);
+  fs.symlinkSync(sentinel, eventsPath);
+
+  const failure = runFailure([
+    "work", "contract", "new", "Rollback Work",
+    "--id", "work.rollback",
+    "--agent-id", "agent.rollback",
+    "--kind", "generic",
+    "--inputs", "prompt:text:required",
+    "--outputs", "result:text:required",
+    "--json",
+  ], root);
+  assert.match(failure.stderr, /symbolic link|linked/i);
+  assert.equal(
+    fs.existsSync(path.join(root, ".mdkg", "work", "work.rollback-rollback-work", "WORK.md")),
+    false
+  );
+  assert.equal(fs.readFileSync(sentinel, "utf8"), "sentinel\n");
+});
+
 test("work trigger accepts legacy SPEC refs during the compatibility release", () => {
   const root = makeTempDir("mdkg-work-trigger-legacy-spec-cli-");
   run(["init", "--agent"], root);

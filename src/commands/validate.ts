@@ -314,20 +314,39 @@ function collectContractProfileErrors(
 }
 
 function collectChangedPaths(root: string): Set<string> {
-  const result = spawnSync("git", ["-C", root, "status", "--porcelain", "--", ".mdkg"], {
+  const result = spawnSync(
+    "git",
+    ["-C", root, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ".mdkg"],
+    {
     encoding: "utf8",
-  });
+    }
+  );
   if (result.status !== 0) {
-    return new Set();
+    const detail = result.stderr.trim();
+    throw new ValidationError(
+      `changed-only validation could not enumerate Git paths${detail ? `: ${detail}` : ""}`
+    );
   }
   const changed = new Set<string>();
-  for (const line of result.stdout.split(/\r?\n/)) {
-    if (!line.trim()) {
+  const records = result.stdout.split("\0");
+  for (let index = 0; index < records.length; index += 1) {
+    const record = records[index];
+    if (!record) {
       continue;
     }
-    const rawPath = line.slice(3).trim();
-    const filePath = rawPath.includes(" -> ") ? rawPath.split(" -> ").pop() ?? rawPath : rawPath;
-    changed.add(filePath.replace(/\\/g, "/"));
+    if (record.length < 4 || record[2] !== " ") {
+      throw new ValidationError("changed-only validation received malformed Git status output");
+    }
+    const status = record.slice(0, 2);
+    changed.add(record.slice(3).replace(/\\/g, "/"));
+    if (status.includes("R") || status.includes("C")) {
+      const sourcePath = records[index + 1];
+      if (!sourcePath) {
+        throw new ValidationError("changed-only validation received an incomplete Git rename record");
+      }
+      changed.add(sourcePath.replace(/\\/g, "/"));
+      index += 1;
+    }
   }
   return changed;
 }

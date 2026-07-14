@@ -37,3 +37,15 @@ test("parseFrontmatter rejects invalid list", () => {
   const content = ["---", "tags: [a, , b]", "---"].join("\n");
   assert.throws(() => parseFrontmatter(content, "badlist.md"), /list items must be non-empty/);
 });
+
+test("parseFrontmatter rejects over-budget lines and lists", () => {
+  assert.throws(
+    () => parseFrontmatter(`---\ntitle: ${"a".repeat(64 * 1024)}\n---\n`, "large-line.md"),
+    /frontmatter line exceeds/
+  );
+  const items = Array.from({ length: 10_001 }, () => "a").join(",");
+  assert.throws(
+    () => parseFrontmatter(`---\nrefs: [${items}]\n---\n`, "large-list.md"),
+    /list exceeds 10000 items/
+  );
+});

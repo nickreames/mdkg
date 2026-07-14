@@ -80,6 +80,10 @@ Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...
 Recursive long-running objective contracts are accessed through `mdkg goal ...`.
 Reusable process-state loops are accessed through `mdkg loop ...`; mdkg stores loop graph state while runtimes execute agents and tools.
 Fresh init workspaces default to the SQLite access cache backend; existing migrated configs stay on JSON until opted in.
+Graph discovery enforces configurable `index.limits` for file count, per-file
+bytes, total bytes, and directory depth before reading Markdown. ZIP, pack, and
+local MCP surfaces apply additional fixed protocol-safe ceilings and return
+deterministic errors when a request or graph exceeds them.
 Project application database foundation commands are accessed through `mdkg db ...`; `mdkg index` remains the compatibility shortcut for graph index rebuilds.
 Operator health summaries are accessed through read-only `mdkg status ...`; deeper diagnostics remain under `mdkg doctor ...`.
 Repair planning is accessed through read-only `mdkg fix plan ...`; duplicate-ID graph repairs can be applied through `mdkg fix apply --family ids ...` or the convenience `mdkg fix ids --apply ...`. Index/cache and graph-reference findings remain plan/manual-review only.

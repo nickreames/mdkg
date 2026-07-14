@@ -190,7 +190,7 @@ test("capability index exposes manifest metadata and bridge search aliases", () 
   assert.ok(aliasSearch.items.some((item: { id: string }) => item.id === "agent.legacy-capability"));
 });
 
-test("capability command auto-restores a missing capability cache", () => {
+test("capability command rebuilds a missing capability cache in memory", () => {
   const root = makeTempDir("mdkg-capability-cli-missing-cache-");
   run(["init", "--agent"], root);
   run(["index"], root);
@@ -198,5 +198,5 @@ test("capability command auto-restores a missing capability cache", () => {
 
   const list = JSON.parse(run(["capability", "list", "--kind", "core", "--json"], root).stdout);
   assert.ok(list.count > 0);
-  assert.equal(fs.existsSync(path.join(root, ".mdkg", "index", "capabilities.json")), true);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "index", "capabilities.json")), false);
 });

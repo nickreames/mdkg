@@ -1,7 +1,12 @@
-import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { loadConfig } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  readContainedFile,
+  removeContainedPath,
+  writeContainedFileExclusive,
+} from "../core/filesystem_authority";
 import {
   DEFAULT_FRONTMATTER_KEY_ORDER,
   formatFrontmatter,
@@ -23,7 +28,6 @@ import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId, isPortableIdRef } from "../util/id";
 import { archiveIdFromUri, isSha256Ref } from "../util/refs";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { atomicWriteFile, writeFileExclusive } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent } from "./event_support";
 import { runArchiveAddCommand } from "./archive";
@@ -640,7 +644,12 @@ function filterWorkflowMessages(messages: string[], nodes: IndexNode[], candidat
 function buildWorkValidateReceipt(options: WorkValidateCommandOptions): WorkValidateReceipt {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  const { index } = loadIndex({ root: options.root, config, tolerant: true });
+  const { index } = loadIndex({
+    root: options.root,
+    config,
+    tolerant: true,
+    persistReindex: false,
+  });
   const type = normalizeWorkflowValidateType(options.type);
   let targets: IndexNode[];
   let target: IndexNode | undefined;
@@ -1049,13 +1058,17 @@ function resolveTypedReadableNode(
 }
 
 function writeFrontmatterFile(
+  root: string,
   filePath: string,
   frontmatter: Record<string, FrontmatterValue>,
   body: string
 ): void {
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const content = ["---", ...lines, "---", body.trimStart()].join("\n");
-  atomicWriteFile(filePath, content.endsWith("\n") ? content : `${content}\n`);
+  atomicReplaceContainedFile(
+    { root, relativePath: path.relative(root, filePath).split(path.sep).join("/") },
+    content.endsWith("\n") ? content : `${content}\n`
+  );
 }
 
 function mergeRenderedFrontmatter(
@@ -1117,8 +1130,9 @@ function createAgentWorkflowNode(options: {
     ...options.overrides,
   });
   const content = mergeRenderedFrontmatter(renderedContent, filePath, options.overrides);
+  const relativeFilePath = path.relative(options.root, filePath).split(path.sep).join("/");
   try {
-    writeFileExclusive(filePath, content);
+    writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, content);
   } catch (err) {
     const code = typeof err === "object" && err !== null && "code" in err ? String((err as { code?: unknown }).code) : "";
     if (code === "EEXIST") {
@@ -1126,16 +1140,26 @@ function createAgentWorkflowNode(options: {
     }
     throw err;
   }
-  maybeReindex(options.root, config);
-  appendAutomaticEvent({
-    root: options.root,
-    ws,
-    kind: "WORK_NODE_CREATED",
-    status: "ok",
-    refs: [id],
-    notes: `${options.type} semantic mirror created via mdkg work`,
-    now: options.now,
-  });
+  try {
+    maybeReindex(options.root, config);
+    appendAutomaticEvent({
+      root: options.root,
+      ws,
+      kind: "WORK_NODE_CREATED",
+      status: "ok",
+      refs: [id],
+      notes: `${options.type} semantic mirror created via mdkg work`,
+      now: options.now,
+    });
+  } catch (error) {
+    removeContainedPath({ root: options.root, relativePath: relativeFilePath, force: true });
+    try {
+      maybeReindex(options.root, config);
+    } catch {
+      // Canonical state is rolled back; a later explicit index rebuild repairs derived caches.
+    }
+    throw error;
+  }
   return {
     workspace: ws,
     id,
@@ -1181,7 +1205,7 @@ function loadMutableAgentNode(root: string, idOrQid: string, wsRaw: string | und
   const { index } = loadIndex({ root, config });
   const node = resolveWorkNode(index, idOrQid, ws, new Set([type]), type);
   const filePath = path.resolve(root, node.path);
-  const parsed = parseFrontmatter(fs.readFileSync(filePath, "utf8"), filePath);
+  const parsed = parseFrontmatter(readContainedFile({ root, relativePath: node.path }), filePath);
   return { config, node, filePath, frontmatter: { ...parsed.frontmatter }, body: parsed.body };
 }
 
@@ -1337,9 +1361,10 @@ function runWorkTriggerCommandLocked(options: WorkTriggerCommandOptions): void {
   const requester = options.requester ?? "user.local";
   const requestRef = "request.redacted";
   const triggerRef = "trigger.mdkg-work-trigger";
+  const workRef = workNode.source?.imported ? workNode.qid : workNode.id;
   const requestedOutputs = toStringList(workNode.attributes.outputs);
   const payloadHash = buildWorkOrderPayloadHash({
-    workId: workNode.id,
+    workId: workRef,
     workVersion: String(workNode.attributes.version ?? "0.1.0"),
     requester,
     requestRef,
@@ -1361,7 +1386,7 @@ function runWorkTriggerCommandLocked(options: WorkTriggerCommandOptions): void {
     ws,
     title,
     id,
-    workId: workNode.id,
+    workId: workRef,
     workNode,
     requester,
     requestRef,
@@ -1376,7 +1401,7 @@ function runWorkTriggerCommandLocked(options: WorkTriggerCommandOptions): void {
       kind: "mdkg.work_order.triggered",
       schema_version: 1,
       target_ref: options.targetRef,
-      work_id: workNode.id,
+      work_id: workRef,
       work_qid: workNode.qid,
       work_order_id: created.receipt.id,
       work_order_qid: created.receipt.qid,
@@ -1412,7 +1437,7 @@ function runWorkTriggerCommandLocked(options: WorkTriggerCommandOptions): void {
     ws,
     kind: queueDelivery ? "WORK_TRIGGER_ENQUEUED" : "WORK_TRIGGERED",
     status: "ok",
-    refs: [created.receipt.id, workNode.id, ...(queueRef ? [queueRef] : [])],
+    refs: [created.receipt.id, workRef, ...(queueRef ? [queueRef] : [])],
     notes: queueDelivery
       ? `work trigger created order mirror and enqueued ${queueDelivery.message_id} on project DB queue ${queueDelivery.queue_name}; no work executed`
       : "work trigger created order mirror; no work executed",
@@ -1477,7 +1502,7 @@ function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions)
     parseCsvList(options.addArtifacts)
   );
   loaded.frontmatter.updated = formatDate(options.now ?? new Date());
-  writeFrontmatterFile(loaded.filePath, loaded.frontmatter, loaded.body);
+  writeFrontmatterFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
   printReceipt("order updated", nodeReceipt(options.root, loaded.node), options.json);
 }
@@ -1485,7 +1510,7 @@ function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions)
 function runWorkOrderStatusCommandLocked(options: WorkOrderStatusCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  const { index } = loadIndex({ root: options.root, config });
+  const { index } = loadIndex({ root: options.root, config, persistReindex: false });
   const order = resolveReadableWorkNode(index, options.id, ws, "work_order", "work order");
   const receipt = buildWorkOrderStatusReceipt(index, order);
   if (options.json) {
@@ -1563,7 +1588,7 @@ function runWorkReceiptUpdateCommandLocked(options: WorkReceiptUpdateCommandOpti
     normalizeSha256Refs(options.addEvidenceHashes, "--add-evidence-hashes")
   );
   loaded.frontmatter.updated = formatDate(options.now ?? new Date());
-  writeFrontmatterFile(loaded.filePath, loaded.frontmatter, loaded.body);
+  writeFrontmatterFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
   printReceipt("receipt updated", nodeReceipt(options.root, loaded.node), options.json);
 }
@@ -1571,7 +1596,7 @@ function runWorkReceiptUpdateCommandLocked(options: WorkReceiptUpdateCommandOpti
 function runWorkReceiptVerifyCommandLocked(options: WorkReceiptVerifyCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  const { index } = loadIndex({ root: options.root, config });
+  const { index } = loadIndex({ root: options.root, config, persistReindex: false });
   const receiptNode = resolveReadableWorkNode(index, options.id, ws, "receipt", "receipt");
   const receipt = buildWorkReceiptVerifyReceipt(index, receiptNode);
   if (options.json) {
@@ -1642,7 +1667,7 @@ function runWorkArtifactAddCommandLocked(options: WorkArtifactAddCommandOptions)
     loaded.frontmatter.relates = appendUnique(toStringList(loaded.frontmatter.relates), [archivePayload.archive.id]);
   }
   loaded.frontmatter.updated = formatDate(options.now ?? new Date());
-  writeFrontmatterFile(loaded.filePath, loaded.frontmatter, loaded.body);
+  writeFrontmatterFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
 
   if (options.json) {

@@ -115,8 +115,9 @@ function main() {
     );
 
     fs.rmSync(capabilitiesPath, { force: true });
-    JSON.parse(run(["capability", "show", "child-capability", "--json"], root));
-    assert(fs.existsSync(capabilitiesPath), "capability show did not restore missing cache");
+    const uncached = JSON.parse(run(["capability", "show", "child-capability", "--json"], root));
+    assert(uncached.item.slug === "child-capability", "capability show did not rebuild missing cache in memory");
+    assert(!fs.existsSync(capabilitiesPath), "read-only capability show persisted a missing cache");
 
     run(["doctor", "--json"], root);
     run(["validate"], root);

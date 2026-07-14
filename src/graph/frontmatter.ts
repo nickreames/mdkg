@@ -5,6 +5,9 @@ export type ParsedFrontmatter = {
 };
 
 const KEY_RE = /^[a-z][a-z0-9_]*$/;
+const MAX_FRONTMATTER_LINES = 1_000;
+const MAX_FRONTMATTER_LINE_BYTES = 64 * 1024;
+const MAX_FRONTMATTER_LIST_ITEMS = 10_000;
 
 export const DEFAULT_FRONTMATTER_KEY_ORDER = [
   "id",
@@ -148,6 +151,9 @@ function parseList(valueRaw: string, filePath: string, lineNumber: number): stri
   }
 
   const parts = inner.split(",");
+  if (parts.length > MAX_FRONTMATTER_LIST_ITEMS) {
+    throw formatError(filePath, lineNumber, `list exceeds ${MAX_FRONTMATTER_LIST_ITEMS} items`);
+  }
   const items: string[] = [];
   for (let i = 0; i < parts.length; i += 1) {
     const item = parts[i].trim();
@@ -197,11 +203,17 @@ export function parseFrontmatter(content: string, filePath: string): ParsedFront
   if (endIndex === -1) {
     throw formatError(filePath, 1, "frontmatter closing --- not found");
   }
+  if (endIndex > MAX_FRONTMATTER_LINES) {
+    throw formatError(filePath, 1, `frontmatter exceeds ${MAX_FRONTMATTER_LINES} lines`);
+  }
 
   const frontmatter: Record<string, FrontmatterValue> = {};
   for (let i = 1; i < endIndex; i += 1) {
     const line = lines[i];
     const lineNumber = i + 1;
+    if (Buffer.byteLength(line, "utf8") > MAX_FRONTMATTER_LINE_BYTES) {
+      throw formatError(filePath, lineNumber, `frontmatter line exceeds ${MAX_FRONTMATTER_LINE_BYTES} bytes`);
+    }
 
     if (line.trim().length === 0) {
       throw formatError(filePath, lineNumber, "frontmatter lines must not be blank");
