@@ -83,17 +83,15 @@ and the final receipt records all side effects, evidence, and residual risks.
 - Registry, integrity, temporary install, upgrade, and real global install proof.
 - Two-phase dormant/active website push and live production proof.
 
-# Remaining Closeout Contract
+# Completed Closeout Contract
 
-- Consume `dec-81`, `chk-511`, and `chk-512` as final v0.5.0 security
+- `dec-81`, `chk-511`, and `chk-512` remain the accepted final v0.5.0 security
   evidence. Do not start or require another Codex Security scan.
-- Resume directly at `task-723`; all publication, registry, installation,
-  approval, and package-mutation lanes are complete.
-- Run `test-394` as the acceptance lane for `task-723`, not as a prerequisite
-  that prevents the live audit from starting.
-- Verify the exact fix-forward commit deployed to both public sites, complete
-  the live desktop/mobile and metadata checks, record one final checkpoint,
-  then evaluate Goal 64.
+- `task-723` and its acceptance lane `test-394` are complete under `chk-517`;
+  no publication, registry, installation, approval, deployment, or browser lane
+  remains actionable in this goal.
+- Goal 64 is terminal release history. Do not reactivate or rerun it. Create a
+  separate follow-up goal for any post-release defect or future release work.
 
 # Acceptance Criteria
 
