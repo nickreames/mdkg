@@ -8,6 +8,21 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+### Changed
+
+- Archive compression now derives writable ownership from enabled local
+  workspaces. `archive compress --all --ws <local-alias>` limits bulk selection,
+  and exact workspace-qualified archive qids are supported for direct targets.
+- Archive compression JSON receipts preserve existing fields and add selected
+  workspace and read-only imported-projection exclusion evidence.
+
+### Fixed
+
+- Fixed `archive compress --all` traversing imported subgraph ZIP-fragment paths
+  and potentially mutating earlier local archives before a later invalid target
+  failed. Imported archives remain discoverable but fail closed for direct
+  compression, and the complete local selection is preflighted before writes.
+
 ## 0.5.0 - 2026-07-11
 
 ### Added

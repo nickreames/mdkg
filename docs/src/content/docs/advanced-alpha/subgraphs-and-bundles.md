@@ -43,3 +43,16 @@ mdkg validate --summary --json --limit 20
 ```
 
 Use subgraph warnings as routing context. A read-only subgraph node can block local work, but it is not locally actionable unless you switch into the owning repo.
+
+## Archive compression ownership
+
+Imported archive nodes remain available to `archive list`, `archive show`,
+search, and capability discovery, but their source workspace owns compression.
+`mdkg archive compress --all` selects archives from enabled local workspaces and
+reports imported projections under `selection.excluded_read_only`. Use
+`--all --ws <local-alias>` to limit a bulk refresh or a qid such as
+`root:archive.example` for one exact local archive.
+
+An imported qid or `--ws <imported-alias>` fails before any filesystem path or
+archive output is touched. Run compression in the child source repository, then
+refresh the root-owned subgraph bundle through the normal reviewed sync flow.

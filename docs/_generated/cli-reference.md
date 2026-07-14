@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: e9bd2d82d340887bc58d518c7e67541996f4b7744b2d1981763060575265aa29 -->
+<!-- contract-hash: 3e0c2ccbf65229f799a35160b5875bc85e3c1db5b8add5e9c6cb036d5b07ace6 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -73,7 +73,7 @@ mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibili
 mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--json]
 mdkg archive show <id-or-archive-uri> [--json]
 mdkg archive verify [id-or-archive-uri] [--json]
-mdkg archive compress <id-or-archive-uri|--all> [--json]
+mdkg archive compress <id-or-archive-uri-or-qid|--all> [--ws <local-alias>] [--json]
 ```
 
 ### Examples
@@ -171,34 +171,35 @@ Beginner safety: Run read-only grounding commands first, then use this only when
 ### Usage
 
 ```text
-mdkg archive compress <id-or-archive-uri> [--ws <alias>] [--json]
-mdkg archive compress --all [--json]
+mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
+mdkg archive compress --all [--ws <local-alias>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg archive compress --all [--json]
-mdkg archive compress <id-or-archive-uri> [--ws <alias>] [--json]
+mdkg archive compress --all [--ws <local-alias>] [--json]
+mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
 ```
 
 ### Common flags
 
-- `--all [--json]`: mdkg archive compress --all [--json]
+- `--all [--ws <local-alias>]`: mdkg archive compress --all [--ws <local-alias>] [--json]
 - `--help`: --help, -h          Show help
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <imported-alias>`: - direct imported qids and --ws <imported-alias> fail with source-workspace guidance
 
 ### Output and safety
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: refresh-archive-zip-cache
+- Side effects: refresh-local-workspace-archive-zip-caches
 - Read paths: .mdkg/**
 - Write paths: .mdkg/archive/**, .mdkg/index/**
 - Lock policy: mutation-lock-required
-- Atomic write policy: zip-temp-rename
-- Receipts: archive-compress-receipt
+- Atomic write policy: full-selection-preflight-then-per-file-atomic-replacement
+- Receipts: archive-compress-receipt, archive-workspace-selection-receipt, read-only-exclusion-receipt
 
 ### Related commands
 

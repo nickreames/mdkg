@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { loadConfig } from "../core/config";
+import { Config, loadConfig } from "../core/config";
 import {
   atomicReplaceContainedFile,
   containedPathExists,
@@ -14,7 +14,7 @@ import {
   checkArchiveIntegrity,
   hashArchiveBuffer,
 } from "../graph/archive_integrity";
-import { buildIndex, IndexNode } from "../graph/indexer";
+import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
 import { writeDerivedIndexes } from "../graph/reindex";
 import { normalizeVisibility, Visibility } from "../graph/visibility";
@@ -94,6 +94,26 @@ type ArchiveVerifyResult = {
   errors: string[];
 };
 
+type ArchiveCompressionExclusion = {
+  workspace: string;
+  qid: string;
+  reason: "read_only_imported_subgraph";
+};
+
+type ArchiveCompressionSelection = {
+  requested_workspace: string | null;
+  selected_workspaces: string[];
+  excluded_read_only: ArchiveCompressionExclusion[];
+};
+
+type ArchiveCompressionPlan = {
+  zipRelativePath: string;
+  sidecarRelativePath: string;
+  zipData: Buffer;
+  sidecarContent: string;
+  receipt: ArchiveReceipt;
+};
+
 const ARCHIVE_KINDS = new Set(["source", "artifact"]);
 const MIME_BY_EXT: Record<string, string> = {
   ".csv": "text/csv",
@@ -158,6 +178,23 @@ function normalizeArchiveId(raw: string): string {
   return normalized;
 }
 
+function archiveTargetFromInput(value: string, ws?: string): { id: string; workspace: string } {
+  const uriId = archiveIdFromUri(value);
+  if (uriId) {
+    return { id: normalizeArchiveId(uriId), workspace: normalizeWorkspace(ws) };
+  }
+  const separator = value.indexOf(":");
+  if (separator > 0) {
+    const workspace = normalizeWorkspace(value.slice(0, separator));
+    const id = normalizeArchiveId(value.slice(separator + 1));
+    if (ws && normalizeWorkspace(ws) !== workspace) {
+      throw new UsageError(`archive qid ${value} conflicts with --ws ${normalizeWorkspace(ws)}`);
+    }
+    return { id, workspace };
+  }
+  return { id: normalizeArchiveId(value), workspace: normalizeWorkspace(ws) };
+}
+
 function archiveIdFromInput(value: string): string {
   return normalizeArchiveId(archiveIdFromUri(value) ?? value);
 }
@@ -217,9 +254,8 @@ function maybeReindex(root: string): void {
 function resolveArchiveNode(root: string, id: string, ws?: string): IndexNode {
   const config = loadConfig(root);
   const { index } = loadIndex({ root, config });
-  const archiveId = archiveIdFromInput(id);
-  const wsHint = normalizeWorkspace(ws);
-  const qid = archiveId.includes(":") ? archiveId : `${wsHint}:${archiveId}`;
+  const target = archiveTargetFromInput(id, ws);
+  const qid = `${target.workspace}:${target.id}`;
   const node = index.nodes[qid];
   if (!node || node.type !== "archive") {
     throw new NotFoundError(`archive not found: ${id}`);
@@ -232,6 +268,9 @@ function archiveNodePaths(root: string, node: IndexNode): {
   rawPath: string;
   zipPath: string;
 } {
+  if (node.source?.imported || node.source?.read_only || node.path.includes("#")) {
+    throw new ValidationError(`refusing to derive filesystem paths for read-only archive projection ${node.qid}`);
+  }
   const sidecarPath = path.resolve(root, node.path);
   const sidecarDir = path.dirname(sidecarPath);
   return {
@@ -271,12 +310,19 @@ function writeArchiveSidecar(
   frontmatter: Record<string, FrontmatterValue>,
   body: string
 ): void {
-  const lines = formatFrontmatter(frontmatter);
-  const content = ["---", ...lines, "---", body.trimStart()].join("\n");
   atomicReplaceContainedFile(
     { root, relativePath: toPosixPath(path.relative(root, sidecarPath)) },
-    content.endsWith("\n") ? content : `${content}\n`
+    formatArchiveSidecar(frontmatter, body)
   );
+}
+
+function formatArchiveSidecar(
+  frontmatter: Record<string, FrontmatterValue>,
+  body: string
+): string {
+  const lines = formatFrontmatter(frontmatter);
+  const content = ["---", ...lines, "---", body.trimStart()].join("\n");
+  return content.endsWith("\n") ? content : `${content}\n`;
 }
 
 function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): ArchiveVerifyResult | undefined {
@@ -554,49 +600,166 @@ export function runArchiveVerifyCommand(options: ArchiveVerifyCommandOptions): v
   }
 }
 
-function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions): void {
-  if (!options.all && !options.id) {
-    throw new UsageError("archive compress requires <id-or-archive-uri> or --all");
-  }
-  const config = loadConfig(options.root);
-  const { index } = loadIndex({ root: options.root, config });
-  const nodes = options.all
-    ? Object.values(index.nodes).filter((node) => node.type === "archive")
-    : [resolveArchiveNode(options.root, String(options.id), options.ws)];
-  const updated: ArchiveReceipt[] = [];
-  const today = formatDate(options.now ?? new Date());
+function isReadOnlyArchiveProjection(config: Config, node: IndexNode): boolean {
+  return Boolean(
+    node.source?.imported ||
+    node.source?.read_only ||
+    config.subgraphs[node.source?.subgraph_alias ?? node.ws]
+  );
+}
 
-  for (const node of nodes) {
-    const { sidecarPath, rawPath, zipPath } = archiveNodePaths(options.root, node);
-    const rawRelativePath = toPosixPath(path.relative(options.root, rawPath));
-    const zipRelativePath = toPosixPath(path.relative(options.root, zipPath));
-    const sidecarRelativePath = toPosixPath(path.relative(options.root, sidecarPath));
-    for (const relativePath of [rawRelativePath, zipRelativePath, sidecarRelativePath]) {
-      withContainedPathSink(
-        { root: options.root, relativePath, operation: relativePath === rawRelativePath ? "read" : "replace" },
-        () => undefined
-      );
-    }
-    if (!containedPathExists({ root: options.root, relativePath: rawRelativePath })) {
-      throw new NotFoundError(`raw archive file missing for ${node.qid}: ${path.relative(options.root, rawPath)}`);
-    }
-    const rawData = readContainedFile({ root: options.root, relativePath: rawRelativePath }, null);
-    const zipData = createDeterministicZip(path.basename(rawPath), rawData);
-    atomicReplaceContainedFile({ root: options.root, relativePath: zipRelativePath }, zipData);
-    const parsed = parseFrontmatter(
-      readContainedFile({ root: options.root, relativePath: sidecarRelativePath }),
-      sidecarPath
+function readOnlyArchiveError(node: IndexNode): ValidationError {
+  const alias = node.source?.subgraph_alias ?? node.ws;
+  return new ValidationError(
+    `cannot compress read-only archive ${node.qid} from imported workspace ${alias}; ` +
+      "run compression in the source workspace and refresh the subgraph bundle"
+  );
+}
+
+function readOnlyWorkspaceError(alias: string): ValidationError {
+  return new ValidationError(
+    `cannot compress archives in read-only imported workspace ${alias}; ` +
+      "run compression in the source workspace and refresh the subgraph bundle"
+  );
+}
+
+function assertWritableArchiveOwner(config: Config, node: IndexNode): void {
+  if (isReadOnlyArchiveProjection(config, node)) {
+    throw readOnlyArchiveError(node);
+  }
+  const workspace = config.workspaces[node.ws];
+  if (!workspace) {
+    throw new ValidationError(`archive ${node.qid} has no configured local workspace owner`);
+  }
+  if (!workspace.enabled) {
+    throw new ValidationError(`archive workspace ${node.ws} is disabled and not writable`);
+  }
+  const archiveRoot = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "archive");
+  const nodePath = toPosixPath(node.path);
+  if (!nodePath.startsWith(`${archiveRoot}/`)) {
+    throw new ValidationError(
+      `archive ${node.qid} path is outside its configured local archive root: ${archiveRoot}`
     );
-    const nextFrontmatter: Record<string, FrontmatterValue> = {
-      ...parsed.frontmatter,
-      byte_size: String(rawData.length),
-      sha256: hashArchiveBuffer(rawData),
-      compressed_sha256: hashArchiveBuffer(zipData),
-      ingest_status: "compressed",
-      updated: today,
-    };
-    writeArchiveSidecar(options.root, sidecarPath, nextFrontmatter, parsed.body);
-    updated.push({
+  }
+}
+
+function resolveArchiveNodeFromIndex(index: Index, id: string, ws?: string): IndexNode {
+  const target = archiveTargetFromInput(id, ws);
+  const qid = `${target.workspace}:${target.id}`;
+  const node = index.nodes[qid];
+  if (!node || node.type !== "archive") {
+    throw new NotFoundError(`archive not found: ${id}`);
+  }
+  return node;
+}
+
+function selectArchiveCompressionNodes(
+  options: ArchiveCompressCommandOptions,
+  config: Config,
+  index: Index
+): { nodes: IndexNode[]; selection: ArchiveCompressionSelection } {
+  if (options.all && options.id) {
+    throw new UsageError("archive compress accepts either <id-or-archive-uri-or-qid> or --all, not both");
+  }
+  const requestedWorkspace = options.ws ? normalizeWorkspace(options.ws) : null;
+  const excluded: ArchiveCompressionExclusion[] = [];
+  let nodes: IndexNode[];
+
+  if (options.all) {
+    if (requestedWorkspace && config.subgraphs[requestedWorkspace]) {
+      throw readOnlyWorkspaceError(requestedWorkspace);
+    }
+    if (requestedWorkspace) {
+      const workspace = config.workspaces[requestedWorkspace];
+      if (!workspace) {
+        throw new NotFoundError(`workspace not found: ${requestedWorkspace}`);
+      }
+      if (!workspace.enabled) {
+        throw new ValidationError(`archive workspace ${requestedWorkspace} is disabled and not writable`);
+      }
+    }
+    nodes = Object.values(index.nodes)
+      .filter((node) => node.type === "archive")
+      .sort((a, b) => a.qid.localeCompare(b.qid))
+      .filter((node) => {
+        if (requestedWorkspace && node.ws !== requestedWorkspace) {
+          return false;
+        }
+        if (isReadOnlyArchiveProjection(config, node)) {
+          if (!requestedWorkspace) {
+            excluded.push({
+              workspace: node.ws,
+              qid: node.qid,
+              reason: "read_only_imported_subgraph",
+            });
+          }
+          return false;
+        }
+        assertWritableArchiveOwner(config, node);
+        return true;
+      });
+  } else {
+    const node = resolveArchiveNodeFromIndex(index, String(options.id), options.ws);
+    assertWritableArchiveOwner(config, node);
+    nodes = [node];
+  }
+
+  return {
+    nodes,
+    selection: {
+      requested_workspace: requestedWorkspace,
+      selected_workspaces: Array.from(new Set(nodes.map((node) => node.ws))).sort(),
+      excluded_read_only: excluded.sort((a, b) => a.qid.localeCompare(b.qid)),
+    },
+  };
+}
+
+function preflightArchiveCompression(
+  root: string,
+  node: IndexNode,
+  today: string
+): ArchiveCompressionPlan {
+  for (const attribute of ["stored_path", "compressed_path"] as const) {
+    if (typeof node.attributes[attribute] !== "string" || !String(node.attributes[attribute]).trim()) {
+      throw new ValidationError(`${node.qid}: ${attribute} is required before archive compression`);
+    }
+  }
+  const { sidecarPath, rawPath, zipPath } = archiveNodePaths(root, node);
+  const rawRelativePath = toPosixPath(path.relative(root, rawPath));
+  const zipRelativePath = toPosixPath(path.relative(root, zipPath));
+  const sidecarRelativePath = toPosixPath(path.relative(root, sidecarPath));
+  for (const relativePath of [rawRelativePath, zipRelativePath, sidecarRelativePath]) {
+    withContainedPathSink(
+      { root, relativePath, operation: relativePath === rawRelativePath ? "read" : "replace" },
+      () => undefined
+    );
+  }
+  if (!containedPathExists({ root, relativePath: rawRelativePath })) {
+    throw new NotFoundError(`raw archive file missing for ${node.qid}: ${path.relative(root, rawPath)}`);
+  }
+  const rawData = readContainedFile({ root, relativePath: rawRelativePath }, null);
+  const parsed = parseFrontmatter(
+    readContainedFile({ root, relativePath: sidecarRelativePath }),
+    sidecarPath
+  );
+  if (parsed.frontmatter.type !== "archive" || parsed.frontmatter.id !== node.id) {
+    throw new ValidationError(`${node.qid}: archive sidecar identity changed before compression`);
+  }
+  const zipData = createDeterministicZip(path.basename(rawPath), rawData);
+  const nextFrontmatter: Record<string, FrontmatterValue> = {
+    ...parsed.frontmatter,
+    byte_size: String(rawData.length),
+    sha256: hashArchiveBuffer(rawData),
+    compressed_sha256: hashArchiveBuffer(zipData),
+    ingest_status: "compressed",
+    updated: today,
+  };
+  return {
+    zipRelativePath,
+    sidecarRelativePath,
+    zipData,
+    sidecarContent: formatArchiveSidecar(nextFrontmatter, parsed.body),
+    receipt: {
       workspace: node.ws,
       id: node.id,
       qid: node.qid,
@@ -610,14 +773,44 @@ function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions)
         typeof nextFrontmatter.visibility === "string" ? nextFrontmatter.visibility : undefined,
         "archive visibility"
       ),
-    });
+    },
+  };
+}
+
+function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions): void {
+  if (!options.all && !options.id) {
+    throw new UsageError("archive compress requires <id-or-archive-uri-or-qid> or --all");
+  }
+  const config = loadConfig(options.root);
+  const { index } = loadIndex({ root: options.root, config });
+  const { nodes, selection } = selectArchiveCompressionNodes(options, config, index);
+  const today = formatDate(options.now ?? new Date());
+  const plans = nodes.map((node) => preflightArchiveCompression(options.root, node, today));
+  const updated: ArchiveReceipt[] = [];
+  for (const plan of plans) {
+    atomicReplaceContainedFile(
+      { root: options.root, relativePath: plan.zipRelativePath },
+      plan.zipData
+    );
+    atomicReplaceContainedFile(
+      { root: options.root, relativePath: plan.sidecarRelativePath },
+      plan.sidecarContent
+    );
+    updated.push(plan.receipt);
   }
   maybeReindex(options.root);
   if (options.json) {
-    console.log(JSON.stringify({ action: "compressed", count: updated.length, archives: updated }, null, 2));
+    console.log(
+      JSON.stringify({ action: "compressed", count: updated.length, archives: updated, selection }, null, 2)
+    );
     return;
   }
   console.log(`archive compressed: ${updated.length}`);
+  console.log(`selected workspaces: ${selection.selected_workspaces.join(", ") || "none"}`);
+  console.log(`excluded read-only projections: ${selection.excluded_read_only.length}`);
+  for (const excluded of selection.excluded_read_only) {
+    console.log(`  - ${excluded.qid} (${excluded.reason})`);
+  }
 }
 
 function withArchiveLock<T>(root: string, fn: () => T): T {

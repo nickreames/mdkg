@@ -87,12 +87,12 @@ const SAFETY_OVERRIDES = {
     danger_level: "moderate",
   },
   "archive compress": {
-    side_effects: ["refresh-archive-zip-cache"],
+    side_effects: ["refresh-local-workspace-archive-zip-caches"],
     write_paths: READ_WRITE_PATHS.archive,
     lock_policy: "mutation-lock-required",
-    atomic_write_policy: "zip-temp-rename",
+    atomic_write_policy: "full-selection-preflight-then-per-file-atomic-replacement",
     dry_run: { supported: false },
-    receipts: ["archive-compress-receipt"],
+    receipts: ["archive-compress-receipt", "archive-workspace-selection-receipt", "read-only-exclusion-receipt"],
     danger_level: "moderate",
   },
   bundle: {

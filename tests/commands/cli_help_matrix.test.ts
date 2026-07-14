@@ -35,7 +35,7 @@ test("cli help covers the remaining command help surfaces", () => {
     ["capability", /mdkg capability resolve \[query\] \[--requires <capability>\] \[--fresh-only\] \[--json\]/],
     ["manifest", /mdkg manifest validate \[<id-or-qid-or-alias>\] \[--json\]/],
     ["spec", /mdkg spec validate \[<id-or-qid-or-alias>\] \[--json\]/],
-    ["archive", /mdkg archive compress <id-or-archive-uri\|--all> \[--json\]/],
+    ["archive", /mdkg archive compress <id-or-archive-uri-or-qid\|--all> \[--ws <local-alias>\] \[--json\]/],
     ["bundle", /mdkg bundle create \[--profile private\|public\] \[--ws <alias\|all>\] \[--output <path>\] \[--json\]/],
     ["subgraph", /mdkg subgraph verify \[alias\|--all\] \[--json\]/],
     ["work", /mdkg work validate \[<id-or-qid>\] \[--type <workflow-type>\] \[--profile <name>\] \[--json\]/],
@@ -74,6 +74,12 @@ test("cli help covers the remaining command help surfaces", () => {
   const bundleImport = runCli(["help", "bundle", "import"]);
   assert.equal(bundleImport.status, 0);
   assert.match(bundleImport.stdout, /mdkg subgraph add\/list\/show\/rm\/enable\/disable\/verify\/refresh/);
+
+  const archiveCompress = runCli(["help", "archive", "compress"]);
+  assert.equal(archiveCompress.status, 0);
+  assert.match(archiveCompress.stdout, /mdkg archive compress --all \[--ws <local-alias>\] \[--json\]/);
+  assert.match(archiveCompress.stdout, /enabled local workspaces only/);
+  assert.match(archiveCompress.stdout, /excludes read-only imported archive projections/);
 
   const dbIndex = runCli(["help", "db", "index"]);
   assert.equal(dbIndex.status, 0);

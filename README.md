@@ -653,6 +653,16 @@ When the source passed to `mdkg archive add` is inside the repo, `source_path` i
 
 Archive sidecar visibility defaults to `private`. Use `mdkg archive add --visibility public` only when the sidecar metadata and ZIP cache are safe for public packs or public bundles.
 
+Archive compression follows workspace ownership. `mdkg archive compress --all`
+compresses archives from enabled local workspaces and reports read-only imported
+archive projections as exclusions; it never treats bundle ZIP fragments as
+filesystem paths. Use `--all --ws <local-alias>` to limit bulk compression or a
+workspace-qualified qid such as `root:archive.example` for an exact local
+target. Direct imported qids and imported `--ws` aliases fail before writes with
+guidance to compress in the source workspace and refresh its subgraph bundle.
+The JSON receipt preserves `action`, `count`, and `archives` and adds the
+requested workspace, selected local workspaces, and excluded read-only qids.
+
 By default, init/upgrade ignore generated raw archive source copies with `.mdkg/archive/**/source/`; sidecar `.md` files and compressed `.zip` caches remain commit-eligible. `mdkg doctor` warns when a committed archive ZIP cache exceeds `archive.large_cache_warning_bytes` in `.mdkg/config.json` (default `26214400`; set `0` to disable). Large-cache warnings do not block archive add or validation.
 
 ## Current direction
