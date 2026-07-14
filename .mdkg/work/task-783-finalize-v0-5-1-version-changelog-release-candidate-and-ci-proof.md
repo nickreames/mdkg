@@ -2,7 +2,7 @@
 id: task-783
 type: task
 title: Finalize v0.5.1 version changelog release candidate and CI proof
-status: todo
+status: progress
 priority: 0
 epic: epic-250
 tags: [release, v0.5.1, versioning, ci]
@@ -35,15 +35,17 @@ release approval, push the release commit, and require exact-SHA CI.
 
 # Files Affected
 
-List files/directories expected to change.
-
 - Package/version/changelog metadata and generated release facts.
+- Shared published-release manifest parity and its tests.
+- Public changelog summaries for mdkg.dev/docs.mdkg.dev source.
 - Release checkpoint evidence.
 
 # Implementation Notes
 
 - Stop before push until approval is recorded.
 - Website/docs content may be committed, but deployment occurs in `task-787`.
+- Local release gates and publication dry-run passed on 2026-07-14. Keep this
+  task in progress until the approved push and exact-SHA CI run both pass.
 
 # Test Plan
 

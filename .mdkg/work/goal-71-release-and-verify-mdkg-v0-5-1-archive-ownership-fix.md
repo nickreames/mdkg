@@ -2,11 +2,12 @@
 id: goal-71
 type: goal
 title: Release and verify mdkg v0.5.1 archive ownership fix
-status: todo
+status: progress
 priority: 1
-goal_state: paused
+goal_state: active
 goal_condition: mdkg v0.5.1 is published only after Goal 70 supplies a clean implementation commit and full prepublish proof, one explicit approval authorizes external mutations, npm and CI evidence pass, a clean install and the real global/root consumer workflow prove the ownership fix, public documentation is deployed and verified, and a final fix-forward receipt confirms no Git tag was created.
 scope_refs: [epic-250, epic-251, epic-252, epic-253, task-783, task-784, task-785, task-786, task-787, task-788, test-444, test-445, test-446, test-447, test-448, test-449]
+active_node: task-783
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, npm ci, npm run build, npm run test, npm run smoke:archive-work, npm run smoke:subgraph, npm run smoke:bundle, npm run cli:check, npm run cli:contract, npm run docs:check, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg@0.5.1 version --registry=https://registry.npmjs.org/, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, node dist/cli.js validate --changed-only --json, node dist/cli.js validate --summary --json --limit 20, explicit single release approval, live desktop and mobile documentation verification, git diff --check]
 max_iterations: 25

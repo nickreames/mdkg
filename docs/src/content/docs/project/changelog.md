@@ -11,12 +11,22 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
-Recent release cards cover `0.5.0`, `0.4.2`, and `0.4.1`; earlier milestones
+Recent release cards cover `0.5.1`, `0.5.0`, and `0.4.2`; earlier milestones
 remain listed below for continuity.
 
 <div class="release-grid" aria-label="Recent mdkg release cards">
   <article class="release-card current">
-    <p class="release-meta">Latest public alpha - 2026-07-11 - 18 notes</p>
+    <p class="release-meta">Latest public alpha - 2026-07-14 - 3 notes</p>
+    <h2>0.5.1</h2>
+    <p>Archive compression now has an explicit local-workspace mutation boundary in graphs that include read-only imported subgraphs.</p>
+    <ul>
+      <li>Use <code>archive compress --all --ws &lt;local-alias&gt;</code> to limit bulk mutation to one enabled local workspace.</li>
+      <li>Target exact archive qids while imported qids fail closed with source-workspace guidance.</li>
+      <li>Preflight the complete local selection before writing and inspect selected/excluded workspaces in command receipts.</li>
+    </ul>
+  </article>
+  <article class="release-card">
+    <p class="release-meta">Public alpha - 2026-07-11 - 18 notes</p>
     <h2>0.5.0</h2>
     <p>First-class reusable loops for durable audit and planning processes that span goals, readiness decisions, evidence lanes, and blocker recovery.</p>
     <ul>
@@ -35,17 +45,27 @@ remain listed below for continuity.
       <li>Keep Git auth external and reject embedded URL credentials before writing receipts or pushing.</li>
     </ul>
   </article>
-  <article class="release-card">
-    <p class="release-meta">Public alpha - 2026-07-04 - 6 notes</p>
-    <h2>0.4.1</h2>
-    <p>Generic contract-profile metadata and profile validation for agent workflow mirrors, with runtime execution still owned by downstream systems.</p>
-    <ul>
-      <li>Add <code>contract_profile</code>, policy refs, <code>receipt_kind</code>, and <code>redaction_class</code> validation to MANIFEST, WORK, WORK_ORDER, and RECEIPT surfaces.</li>
-      <li>Expose <code>mdkg validate --profile omni-room</code> and <code>mdkg work validate --profile omni-room</code> for explicit profile checks.</li>
-      <li>Update scaffolds, helpers, templates, init assets, docs, and generated references without adding runtime-only queue, provider, billing, ledger, or final-receipt state.</li>
-    </ul>
-  </article>
 </div>
+
+## 0.5.1 details
+
+`0.5.1` makes archive compression ownership explicit for repositories whose
+merged graph contains both writable local workspaces and read-only imported
+subgraphs.
+
+### Changed
+
+- `archive compress --all` selects archives owned by enabled local workspaces;
+  `--ws <local-alias>` limits that writable selection.
+- Direct compression accepts exact workspace-qualified archive qids, and JSON
+  and text receipts identify selected workspaces and excluded read-only
+  projections.
+
+### Fixed
+
+- Imported ZIP-fragment projection paths are rejected before filesystem path
+  construction, and the complete local selection passes ownership, containment,
+  symlink, raw-input, sidecar, and destination preflight before the first write.
 
 ## 0.5.0 details
 

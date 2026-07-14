@@ -110,7 +110,11 @@ function main() {
     ["llms.txt", llms, "## Reusable loops"],
     ["llms-full.txt", llmsFull, "## Reusable loop process model"],
   ]) {
-    for (const releaseText of [releaseHeading, "v0.5.0", "docs.mdkg.dev/loops/"]) {
+    for (const releaseText of [
+      releaseHeading,
+      `v${releaseManifest.target_version}`,
+      "docs.mdkg.dev/loops/",
+    ]) {
       if (releasePublished) {
         assertContains(source, releaseText, `published ${label}`);
       } else {
