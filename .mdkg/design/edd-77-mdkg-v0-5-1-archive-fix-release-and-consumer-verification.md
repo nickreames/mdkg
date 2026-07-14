@@ -23,7 +23,9 @@ and production documentation.
 Use four ordered gates: release candidate and CI, npm publication and clean
 consumer install, real global/root no-touch proof, and public documentation
 deployment. Goal 70 supplies the implementation commit; Goal 71 owns every
-version and external mutation.
+version and external mutation. The candidate is pushed to a release branch and
+validated through a draft pull request; `main` advances only at the fourth gate
+because its Git integration deploys both production websites.
 
 # Data model
 
@@ -67,5 +69,7 @@ verify production docs on desktop and mobile.
 
 # Rollout plan
 
-Keep Goal 71 paused until Goal 70 is achieved. Do not tag by default. Publish
-once, then fix forward if post-publication evidence reveals a defect.
+Keep Goal 71 paused until Goal 70 is achieved. Do not tag by default. Keep the
+candidate off `main` until npm and root proof pass, then fast-forward `main` to
+trigger the documentation deployments. Publish once, then fix forward if
+post-publication evidence reveals a defect.

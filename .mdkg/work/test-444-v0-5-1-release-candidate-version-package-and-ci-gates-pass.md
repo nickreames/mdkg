@@ -38,7 +38,8 @@ Goal 70 achieved with clean checkpoint and local commit.
 
 - All version facts equal 0.5.1.
 - Full release gates and package inspection pass.
-- Approval predates push; exact pushed SHA has green CI; no tag exists.
+- Approval predates the release-branch push; the exact candidate SHA has green
+  pull-request CI; `main` remains unchanged and no tag exists.
 
 # Results / Evidence
 
@@ -52,8 +53,9 @@ Goal 70 achieved with clean checkpoint and local commit.
   `5601a5337c8e795a1c58397f0b807ed204f8be9a`.
 - The public registry reports `latest` as `0.5.0` and returns `E404` for
   `mdkg@0.5.1`, proving the target version is not already published.
-- Pending: explicit release approval, origin push, exact-SHA CI proof, and
-  confirmation that no tag was created.
+- Pending: explicit release approval, release-branch push, draft pull request,
+  exact-SHA CI proof, unchanged `main`, and confirmation that no tag was
+  created.
 
 # Notes / Follow-ups
 

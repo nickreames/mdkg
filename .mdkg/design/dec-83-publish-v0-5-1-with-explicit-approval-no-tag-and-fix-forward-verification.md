@@ -25,9 +25,14 @@ deployment are irreversible or externally visible operations.
 - Goal 71 alone bumps package/lockfile/changelog to 0.5.1.
 - One explicit approval must enumerate push, npm publication, real global
   replacement, root command execution, and documentation deployment.
-- Require exact-SHA CI before npm publication.
+- Push the immutable candidate to a release branch and open a draft pull
+  request so exact-SHA CI can pass without advancing `main`.
+- Keep `main` unchanged until npm publication and the real root proof pass,
+  because both Vercel production projects auto-deploy Git pushes to `main`.
+- Require exact-SHA pull-request CI before npm publication.
 - Publish to npm `latest`, verify integrity and clean installation, then perform
-  the real root proof and documentation deployment.
+  the real root proof. Fast-forward `main` to the same candidate SHA only at the
+  documentation gate, then verify both Git-triggered production deployments.
 - Create no Git tag by default.
 - Never unpublish or roll back 0.5.1; repair post-publication defects forward.
 
@@ -42,6 +47,8 @@ deployment are irreversible or externally visible operations.
 # Consequences
 
 The release lane has an explicit approval boundary and complete consumer proof.
+The release branch prevents source publication from implicitly becoming an
+early production documentation deployment.
 Unrelated root state may remain only after operator classification and must be
 shown unchanged. A post-publication failure creates a fix-forward follow-up.
 

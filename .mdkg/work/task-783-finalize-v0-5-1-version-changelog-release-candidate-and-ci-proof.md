@@ -23,7 +23,8 @@ updated: 2026-07-14
 # Overview
 
 Consume Goal 70's clean commit, finalize v0.5.1 metadata, obtain the one bounded
-release approval, push the release commit, and require exact-SHA CI.
+release approval, push the candidate to a release branch, open a draft pull
+request, and require exact-SHA CI without advancing `main`.
 
 # Acceptance Criteria
 
@@ -31,7 +32,8 @@ release approval, push the release commit, and require exact-SHA CI.
 - Package contents and all local release gates pass.
 - Approval explicitly covers push, npm publication, global/root mutation, and
   docs deployment.
-- Release commit reaches origin and exact-SHA CI passes; no tag exists.
+- Candidate reaches an origin release branch and exact-SHA pull-request CI
+  passes; `main` remains unchanged and no tag exists.
 
 # Files Affected
 
@@ -44,6 +46,8 @@ release approval, push the release commit, and require exact-SHA CI.
 
 - Stop before push until approval is recorded.
 - Website/docs content may be committed, but deployment occurs in `task-787`.
+- Do not push local `main` during this task. A draft pull request supplies CI
+  while preserving the production deployment boundary.
 - Local release gates and publication dry-run passed on 2026-07-14. Keep this
   task in progress until the approved push and exact-SHA CI run both pass.
 
