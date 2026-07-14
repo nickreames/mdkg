@@ -2,7 +2,7 @@
 id: epic-234
 type: epic
 title: Verify npm package and real global consumer behavior
-status: todo
+status: done
 priority: 1
 tags: [release, postpublish, install, verification]
 owners: []
@@ -13,11 +13,11 @@ blocked_by: []
 blocks: []
 refs: [task-720, task-721, test-391, test-392]
 context_refs: [goal-64, edd-72, dec-69]
-evidence_refs: []
+evidence_refs: [chk-513, chk-514, chk-515]
 aliases: [v0-5-0-postpublish-consumer-proof]
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Goal
 
@@ -50,3 +50,8 @@ Source-checkout-only proof and website activation before consumer success.
 - `edd-72`
 - `dec-69`
 - external links
+
+# Current State
+
+Complete. Registry integrity, disposable install and upgrade, and real global
+consumer behavior passed under `chk-513` through `chk-515`.

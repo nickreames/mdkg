@@ -2,7 +2,7 @@
 id: epic-233
 type: epic
 title: Run approval gated security registry and publish sequence
-status: todo
+status: done
 priority: 1
 tags: [release, approval, security, npm]
 owners: []
@@ -13,11 +13,11 @@ blocked_by: []
 blocks: []
 refs: [task-718, task-719, test-389, test-390]
 context_refs: [goal-64, edd-72, dec-69]
-evidence_refs: []
+evidence_refs: [chk-496, chk-497, chk-511, chk-512, chk-513]
 aliases: [v0-5-0-approval-and-publish]
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Goal
 
@@ -50,3 +50,10 @@ Git tag creation, website activation, and unpublishing/rewriting npm history.
 - `edd-72`
 - `dec-69`
 - external links
+
+# Current State
+
+Complete. Bounded approval, manual source-backed security requalification,
+origin CI, npm publication, and registry proof are recorded in `chk-496`,
+`chk-497`, and `chk-511` through `chk-513`. No additional security scan is
+required for v0.5.0.

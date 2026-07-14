@@ -2,7 +2,7 @@
 id: task-723
 type: task
 title: Run live browser audit and record final v0.5.0 release receipt
-status: progress
+status: done
 priority: 1
 epic: epic-235
 prev: task-722
@@ -14,8 +14,8 @@ relates: [goal-64, test-394]
 blocked_by: []
 blocks: []
 refs: [test-394]
-context_refs: [goal-64, epic-235, edd-72, dec-69, dec-81, task-722, test-393, chk-516]
-evidence_refs: [chk-513, chk-514, chk-515, chk-516]
+context_refs: [goal-64, epic-235, edd-72, dec-69, dec-81, task-722, test-393, test-394, chk-516]
+evidence_refs: [chk-513, chk-514, chk-515, chk-516, chk-517]
 aliases: []
 skills: []
 created: 2026-07-10
@@ -51,8 +51,12 @@ List files/directories expected to change.
 - Do not rerun Codex Security, republish npm, replace the global installation,
   or request a new release approval. Those lanes are complete and evidenced by
   `chk-512` through `chk-516`.
-- Start from the exact production repair SHA `b265da71` and treat only a newly
-  discovered release-blocking live defect as a reason to reopen implementation.
+- Verify fix-forward SHA `3224551243e5d58ce9f5b5198b602b7d87d63f38`
+  is production-current on both sites. Its exact-SHA GitHub Actions run
+  `29261414020` is already green.
+- Confirm the corrected docs Edit page URL includes the monorepo `docs/`
+  prefix. Treat only a newly discovered release-blocking live defect as a
+  reason to reopen implementation.
 
 # Test Plan
 
@@ -61,10 +65,10 @@ pack the final release receipt.
 
 # Current State
 
-Ready and unblocked. Package publication, registry integrity, disposable and
-global installs, activation CI, and both production deployments are complete.
-The remaining work is observational live desktop/mobile verification, final
-receipt creation, and Goal 64 closeout.
+Done. Exact-SHA CI and Vercel deployment confirmation, corrected Edit-page live
+verification, desktop/mobile browser acceptance, registry/global refresh,
+metadata/link/no-secret checks, and serial site smoke checks passed. `test-394`
+and `chk-517` record the final release-complete recommendation.
 
 # Links / Artifacts
 
@@ -72,3 +76,4 @@ receipt creation, and Goal 64 closeout.
 - `dec-69`
 - `dec-81`
 - `chk-516`
+- `chk-517`

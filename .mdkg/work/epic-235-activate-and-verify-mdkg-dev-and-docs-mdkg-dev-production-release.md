@@ -2,7 +2,7 @@
 id: epic-235
 type: epic
 title: Activate and verify mdkg.dev and docs.mdkg.dev production release
-status: todo
+status: done
 priority: 1
 tags: [release, deploy, mdkg-dev, docs]
 owners: []
@@ -13,11 +13,11 @@ blocked_by: []
 blocks: []
 refs: [task-722, task-723, test-393, test-394]
 context_refs: [goal-62, goal-63, goal-64, edd-72, dec-69]
-evidence_refs: []
+evidence_refs: [chk-513, chk-514, chk-515, chk-516, chk-517]
 aliases: [v0-5-0-public-release-activation]
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Goal
 
@@ -50,3 +50,9 @@ Npm unpublish, history rewrite, automatic Git tag, DNS changes, and unrelated re
 - `edd-72`
 - `dec-69`
 - external links
+
+# Current State
+
+Complete. Activation, exact-SHA CI and production deployments, final
+desktop/mobile acceptance, corrected live Edit-page links, and the release
+receipt passed under `chk-516` and `chk-517`.
