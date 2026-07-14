@@ -41,7 +41,15 @@ Published npm 0.5.0, passing `test-392`, approved deployment scope.
   release navigation, metadata, sitemap/LLM entries, indexing, and premature
   v0.5.0 version claims across both sites.
 - Inspect activation-only diff and second push SHA.
+- Prove activation commit `b337ff8d` reached `origin/main`, and preserve the
+  published release-state source contract while repairing the stale canonical
+  draft assertion.
+- Run the complete release CI gate against the local repair, push it under the
+  accepted fix-forward policy, and require green CI for the exact repair SHA.
 - Verify both production deployments match the second commit.
+- If a fix-forward CI repair commit follows the activation commit, verify both
+  production deployments match that final repair commit instead of accepting
+  the earlier activation SHA as sufficient.
 - Confirm the one shared release-state change exposes the accepted announcement,
   top-level Loops docs, security walkthrough, and active 0.5.0 metadata on both
   custom domains.
@@ -51,8 +59,12 @@ Published npm 0.5.0, passing `test-392`, approved deployment scope.
 
 # Results / Evidence
 
-Pending `task-722`.
+Pending `task-722`. The release is already published and activated in source;
+remaining evidence is the green fix-forward CI SHA, matching production
+deployments, and custom-domain verification.
 
 # Notes / Follow-ups
 
 - Deployment failure is fixed forward.
+- No additional Codex Security scan or release approval cycle is required for
+  this accepted v0.5.0 fix-forward lane.
