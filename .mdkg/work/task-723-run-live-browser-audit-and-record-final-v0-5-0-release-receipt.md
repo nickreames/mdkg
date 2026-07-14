@@ -2,7 +2,7 @@
 id: task-723
 type: task
 title: Run live browser audit and record final v0.5.0 release receipt
-status: todo
+status: progress
 priority: 1
 epic: epic-235
 prev: task-722
@@ -11,15 +11,15 @@ owners: []
 links: []
 artifacts: []
 relates: [goal-64, test-394]
-blocked_by: [task-722]
+blocked_by: []
 blocks: []
 refs: [test-394]
-context_refs: [goal-64, epic-235, edd-72, dec-69, task-722]
-evidence_refs: []
+context_refs: [goal-64, epic-235, edd-72, dec-69, dec-81, task-722, test-393, chk-516]
+evidence_refs: [chk-513, chk-514, chk-515, chk-516]
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Overview
 
@@ -48,13 +48,27 @@ List files/directories expected to change.
 
 - Do not unpublish npm if the website fails; keep the goal open and fix forward.
 - Separate internal provider receipts from public-facing copy.
+- Do not rerun Codex Security, republish npm, replace the global installation,
+  or request a new release approval. Those lanes are complete and evidenced by
+  `chk-512` through `chk-516`.
+- Start from the exact production repair SHA `b265da71` and treat only a newly
+  discovered release-blocking live defect as a reason to reopen implementation.
 
 # Test Plan
 
 Run `test-394`, final graph validation, goal evaluation, registry refresh, and
 pack the final release receipt.
 
+# Current State
+
+Ready and unblocked. Package publication, registry integrity, disposable and
+global installs, activation CI, and both production deployments are complete.
+The remaining work is observational live desktop/mobile verification, final
+receipt creation, and Goal 64 closeout.
+
 # Links / Artifacts
 
 - `edd-72`
 - `dec-69`
+- `dec-81`
+- `chk-516`

@@ -2,7 +2,7 @@
 id: task-722
 type: task
 title: Activate and push the website release then verify production deployments
-status: progress
+status: done
 priority: 1
 epic: epic-235
 prev: task-721
@@ -16,7 +16,7 @@ blocked_by: []
 blocks: [task-723]
 refs: [test-393]
 context_refs: [goal-62, goal-63, goal-64, epic-235, edd-72, dec-69, dec-81, task-721, chk-496, chk-513, chk-514, chk-515]
-evidence_refs: [chk-496, chk-513, chk-514, chk-515]
+evidence_refs: [chk-496, chk-513, chk-514, chk-515, chk-516]
 aliases: []
 skills: []
 created: 2026-07-10
@@ -66,16 +66,11 @@ domain receipts.
 
 # Current State
 
-- `mdkg@0.5.0`, registry integrity, disposable install/upgrade, and the real
-  global installation are complete under `chk-513` through `chk-515`.
-- Activation commit `b337ff8d` is on `origin/main`; the release manifest is
-  `published`.
-- The active worktree contains one pre-existing functional change in
-  `tests/public-release.test.mjs` that updates the canonical test fixture from
-  draft to published and adds published-preview coverage.
-- This task is explicitly unblocked. The next runner should validate that diff,
-  complete the fix-forward CI/push/deployment proof, and then route to
-  `task-723`.
+Done. Repair commit `b265da717ee5365bd83362db6b83150cb603da5c` is on
+`origin/main`; GitHub Actions run `29258600632` passed both supported Node lanes;
+and Vercel deployments `5426067587` and `5426071286` succeeded for the exact
+repair SHA. `chk-516` records the complete activation receipt. Continue with
+the unblocked live production audit in `task-723`.
 
 # Links / Artifacts
 
@@ -85,4 +80,5 @@ domain receipts.
 - `chk-513`
 - `chk-514`
 - `chk-515`
+- `chk-516`
 - `goal-42`

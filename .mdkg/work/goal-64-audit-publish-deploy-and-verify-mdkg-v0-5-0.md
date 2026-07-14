@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: mdkg v0.5.0 is released only after version and changelog finalization, complete local and security gates, one explicit bounded approval, a dormant first push with green CI, npm publication and registry proof, clean temporary and real global install verification, a second website activation push, production deployment and live browser validation, and a fix-forward release receipt with no Git tag by default.
 scope_refs: [epic-232, epic-233, epic-234, epic-235, task-716, task-717, task-718, task-719, task-720, task-721, task-722, task-723, test-388, test-389, test-390, test-391, test-392, test-393, test-394]
-active_node: task-722
+active_node: task-723
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, npm run smoke:loop, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, node scripts/assert-publish-ready.js, node scripts/verify-security-remediation.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.5.0 version --registry=https://registry.npmjs.org/, manual source-backed security requalification under dec-81, required plugin skill product-design:audit, required plugin skill browser:control-in-app-browser, required plugin skill chrome:control-chrome, explicit single release approval, git diff --check]
 max_iterations: 25
@@ -21,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: [goal-61, chk-426, goal-62, goal-63, chk-491, dec-73, dec-74, prop-8, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497]
 context_refs: [goal-61, chk-426, goal-62, goal-63, chk-489, chk-490, chk-491, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497, chk-509, chk-510, test-434]
-evidence_refs: [chk-491, chk-496, chk-497, chk-509, chk-510, chk-511, chk-512, chk-513, chk-514, chk-515]
+evidence_refs: [chk-491, chk-496, chk-497, chk-509, chk-510, chk-511, chk-512, chk-513, chk-514, chk-515, chk-516]
 aliases: [v0-5-0-publish-and-production-verification]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
@@ -110,24 +110,16 @@ and the final receipt records all side effects, evidence, and residual risks.
 
 # Current State
 
-Active and unblocked at `task-722`. The dormant release commit
-`7afbf6d8df58279f70c6257b65437791fec59e63` passed CI and was published once as
-`mdkg@0.5.0`; `chk-513` records registry SHA-1, integrity, `latest`, approval,
-and no-tag evidence. `chk-514` proves the registry-fetched package, fresh init,
-SQLite, loop commands, non-consuming dry-run, packaged assets, idempotent
-`0.4.2` upgrade, canonical MANIFEST migration, and legacy SPEC compatibility.
-`chk-515` proves the real `/opt/homebrew` installation now resolves to registry
-`0.5.0` and passes the complete loop command and non-consuming dry-run probe.
-No additional Codex Security scan is required. Activation commit
-`b337ff8d69664908ddf0690a7878cba0ec145a6d` is on `origin/main`, and the shared
-release manifest is now `published`. The activation CI run exposed one stale
-draft-state assertion in `tests/public-release.test.mjs`; its local fix is an
-existing non-mdkg worktree change and is intentionally preserved for the next
-execution pass. That pass starts by reviewing the diff, running the complete
-release CI gate, committing and pushing the fix forward under `chk-496` and
-`dec-69`, then proving the exact origin SHA and both production deployments
-before closing `test-393`. `task-723` remains correctly sequenced after that
-proof for the final live browser audit and release receipt.
+Active and fully unblocked at `task-723`. Npm publication, immutable registry
+proof, disposable install and upgrade, real global installation, website
+activation, fix-forward CI, and both production deployments are complete under
+`chk-513` through `chk-516`. Repair commit
+`b265da717ee5365bd83362db6b83150cb603da5c` is on `origin/main`; GitHub Actions
+run `29258600632` and Vercel deployments `5426067587` and `5426071286` passed
+for that exact SHA. No additional Codex Security scan, npm publication, global
+replacement, release approval, or implementation change is required. The next
+pass should run the observational live desktop/mobile audit in `task-723`, close
+`test-394`, record the final release receipt, and evaluate Goal 64.
 
 # Iteration Log
 
@@ -159,6 +151,9 @@ proof for the final live browser audit and release receipt.
   repair in the active lane; Goal 64 remains unblocked at `task-722`, with no
   additional security scan or approval cycle required for the accepted
   fix-forward sequence.
+- 2026-07-13: Fix-forward repair commit `b265da71` passed exact-SHA CI and both
+  Vercel deployments. `task-722` and `test-393` closed under `chk-516`; Goal 64
+  now routes directly and unblocked to the final live audit in `task-723`.
 
 # Skill Improvement Candidates
 
