@@ -16,6 +16,7 @@ docs/.astro/
 
 .mdkg/pack/
 .mdkg/archive/**/source/
+.mdkg/bundles/private/all.mdkg.zip
 .mdkg/work/events/*.jsonl
 .mdkg/db/runtime/
 .mdkg/db/**/*.sqlite-wal
