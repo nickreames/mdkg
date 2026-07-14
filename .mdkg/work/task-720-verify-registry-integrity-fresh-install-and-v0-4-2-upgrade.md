@@ -2,7 +2,7 @@
 id: task-720
 type: task
 title: Verify registry integrity fresh install and v0.4.2 upgrade
-status: todo
+status: done
 priority: 1
 epic: epic-234
 prev: task-719
@@ -10,17 +10,17 @@ next: task-721
 tags: [release, registry, install, upgrade]
 owners: []
 links: []
-artifacts: []
+artifacts: [artifact://npm/mdkg/0.5.0, artifact://github-actions/run/29254216004]
 relates: [goal-64, test-391]
-blocked_by: [task-719]
+blocked_by: []
 blocks: [task-721]
-refs: [test-391]
-context_refs: [goal-64, epic-234, edd-72, dec-69, task-719]
-evidence_refs: []
+refs: [test-391, chk-513, chk-514]
+context_refs: [goal-64, epic-234, edd-72, dec-69, task-719, chk-513]
+evidence_refs: [chk-513, chk-514]
 aliases: []
 skills: []
 created: 2026-07-10
-updated: 2026-07-10
+updated: 2026-07-13
 ---
 # Overview
 
@@ -46,6 +46,22 @@ List files/directories expected to change.
 
 - Execute the installed binary by absolute path to avoid checkout shadowing.
 - Do not activate websites yet.
+- `task-719` is complete and `chk-513` is the authoritative publication handoff;
+  this task has no remaining approval, security-scan, CI, or publish blocker.
+
+# Results / Evidence
+
+- Registry `latest`, version, SHA-1, integrity, and tarball identity match the
+  published `0.5.0` candidate recorded in `chk-513`.
+- A fresh registry install initialized and validated with SQLite, exposed all
+  seven loop seeds and the loop skill/help surface, and preserved the fork ID
+  across dry-run followed by the real fork.
+- `plan`, `next`, and concise pack passed through the installed absolute binary.
+- The preserved `0.4.2` fixture upgraded without conflicts, preserved goal/loop/
+  canonical-MANIFEST hashes, migrated legacy SPEC to canonical MANIFEST, and
+  produced an empty second dry-run.
+- A post-upgrade legacy `SPEC.md` remains valid with its intended deprecation
+  warning. Full sanitized evidence is recorded in `chk-514`; `test-391` passed.
 
 # Test Plan
 
@@ -56,3 +72,4 @@ init, validate, and upgrade receipts.
 
 - `edd-72`
 - `goal-50`
+- `chk-514`

@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: mdkg v0.5.0 is released only after version and changelog finalization, complete local and security gates, one explicit bounded approval, a dormant first push with green CI, npm publication and registry proof, clean temporary and real global install verification, a second website activation push, production deployment and live browser validation, and a fix-forward release receipt with no Git tag by default.
 scope_refs: [epic-232, epic-233, epic-234, epic-235, task-716, task-717, task-718, task-719, task-720, task-721, task-722, task-723, test-388, test-389, test-390, test-391, test-392, test-393, test-394]
-active_node: task-719
+active_node: task-722
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, git diff --name-status origin/main..HEAD, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, npm run smoke:loop, npm --prefix mdkg-dev run build, npm --prefix docs run build, npm run smoke:mdkg-dev, npm run smoke:mdkg-dev-docs, npm run smoke:mdkg-dev-seo, node scripts/assert-publish-ready.js, node scripts/verify-security-remediation.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.5.0 version --registry=https://registry.npmjs.org/, manual source-backed security requalification under dec-81, required plugin skill product-design:audit, required plugin skill browser:control-in-app-browser, required plugin skill chrome:control-chrome, explicit single release approval, git diff --check]
 max_iterations: 25
@@ -21,11 +21,11 @@ blocked_by: []
 blocks: []
 refs: [goal-61, chk-426, goal-62, goal-63, chk-491, dec-73, dec-74, prop-8, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497]
 context_refs: [goal-61, chk-426, goal-62, goal-63, chk-489, chk-490, chk-491, edd-70, dec-67, edd-71, dec-68, dec-73, dec-74, prd-11, prop-8, edd-72, dec-69, goal-42, goal-50, goal-69, edd-75, dec-80, dec-81, chk-497, chk-509, chk-510, test-434]
-evidence_refs: [chk-491, chk-497, chk-509, chk-510, chk-511, chk-512]
+evidence_refs: [chk-491, chk-497, chk-509, chk-510, chk-511, chk-512, chk-513, chk-514, chk-515]
 aliases: [v0-5-0-publish-and-production-verification]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-10
-updated: 2026-07-12
+updated: 2026-07-13
 ---
 # Objective
 
@@ -68,8 +68,10 @@ and the final receipt records all side effects, evidence, and residual risks.
 # Required Skills
 
 - Local planning, ownership, pack, and release verification skills in frontmatter.
-- Repository security scanning plus Product Design, Browser, and Chrome plugin
-  verification where specified by the scoped tasks.
+- Manual source-backed security requalification is complete under `dec-81` and
+  must be consumed as accepted evidence; do not run another Codex Security scan.
+- Product Design, Browser, and Chrome plugin verification remains required only
+  for the live website lanes where specified by the scoped tasks.
 
 # Required Checks
 
@@ -100,19 +102,23 @@ and the final receipt records all side effects, evidence, and residual risks.
 - Either prerequisite goal is incomplete.
 - Local preflight, security, registry, CI, or auth evidence fails.
 - Approval is absent or narrower than the requested mutation sequence.
-- `mdkg@0.5.0` already exists unexpectedly; stop and re-plan the version.
+- Before the authorized publication step, `mdkg@0.5.0` exists unexpectedly or
+  does not match the candidate. After `chk-513`, registry existence is expected
+  and must be verified rather than treated as a blocker.
 
 # Current State
 
-Active at `task-719`. Goal 69 fixed and directly tested all 51 original
-findings, `test-434` passed under the accepted manual requalification decision
-`dec-81`, and `test-389` revalidated the bounded release approval and no-tag
-policy. Checkpoint `chk-512` is the completed security closeout handoff. Goal 64
-and `task-719` have no unresolved blockers; the next execution pass should claim
-`task-719`, prepare one immutable dormant release commit, require green CI, and
-then publish the identical package. No additional Codex Security scan is
-required for v0.5.0. No push, publish, global install, activation, deployment,
-or tag occurred during remediation.
+Active and unblocked at `task-722`. The dormant release commit
+`7afbf6d8df58279f70c6257b65437791fec59e63` passed CI and was published once as
+`mdkg@0.5.0`; `chk-513` records registry SHA-1, integrity, `latest`, approval,
+and no-tag evidence. `chk-514` proves the registry-fetched package, fresh init,
+SQLite, loop commands, non-consuming dry-run, packaged assets, idempotent
+`0.4.2` upgrade, canonical MANIFEST migration, and legacy SPEC compatibility.
+`chk-515` proves the real `/opt/homebrew` installation now resolves to registry
+`0.5.0` and passes the complete loop command and non-consuming dry-run probe.
+No additional Codex Security scan is required. The release manifest remains
+dormant. The next lane activates and pushes the website release, followed by
+production and live browser verification.
 
 # Iteration Log
 
@@ -130,6 +136,15 @@ or tag occurred during remediation.
 - 2026-07-12: Goal 69 achieved, manual requalification and release approval
   evidence passed, `chk-512` completed the handoff, and Goal 64 was confirmed
   active and unblocked at `task-719`.
+- 2026-07-13: Dormant commit `7afbf6d8` passed CI and published as
+  `mdkg@0.5.0`; `chk-513` records immutable registry evidence. Goal 64 now routes
+  unblocked to `task-720`, with later lanes intentionally sequenced.
+- 2026-07-13: Registry consumer and `0.4.2` upgrade verification passed under
+  `test-391` and `chk-514`; Goal 64 now routes to global-install proof in
+  `task-721`.
+- 2026-07-13: The real `/opt/homebrew` global installation and `test-392` passed;
+  `chk-515` records absolute-path and dry-run ID evidence. Goal 64 now routes to
+  website activation in `task-722`.
 
 # Skill Improvement Candidates
 

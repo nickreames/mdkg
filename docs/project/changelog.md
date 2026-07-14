@@ -10,7 +10,10 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 Recent release cards:
 
-- `0.4.2` latest public alpha, 2026-07-05: low-level `mdkg git`
+- `0.5.0` latest public alpha, 2026-07-11: first-class reusable loops, seven
+  bundled read-only or planning templates, identity-bound readiness and
+  evidence, observational fork dry-runs, provenance, and blocker continuation.
+- `0.4.2` public alpha, 2026-07-05: low-level `mdkg git`
   clone/fetch/inspect/closeout/push-readiness/push primitives, sanitized Git
   descriptors, static closeout receipts, and external-auth safety boundaries.
 - `0.4.1` public alpha, 2026-07-04: generic contract-profile metadata,
@@ -19,6 +22,39 @@ Recent release cards:
 - `0.4.0` public alpha, 2026-06-27: public launch readiness for
   mdkg.dev and docs.mdkg.dev, source-backed release metadata, npm gates, Vercel
   currentness, and Chrome live-validation blockers.
+
+## 0.5.0 details
+
+`0.5.0` adds one first-class `loop` node type for reusable processes that can
+coordinate goals, work nodes, decisions, checkpoints, receipts, evidence, and
+repeated attempts while preserving durable process state in the graph.
+
+### Added
+
+- `mdkg loop list`, `show`, `fork`, `plan`, `next`, and `runs`, plus guided raw
+  creation with `mdkg new loop`.
+- Identity-bound readiness questions, action approvals, evidence lanes, and
+  typed decision/approval waivers.
+- Stable fork provenance, stale-template warnings, default child
+  materialization, and planning-only forks.
+- Seven bundled read-only or planning templates and the `pursue-mdkg-loop`
+  execution skill.
+
+### Changed
+
+- Loops participate in validation, discovery, JSON and SQLite indexes,
+  deterministic packs, init, upgrade, help, and generated command contracts.
+- Fork dry-runs do not consume IDs or mutate graph, event, index, or filesystem
+  state.
+- `loop next` continues other authorized lanes before reporting the whole loop
+  blocked.
+- Coding-agent harnesses execute agents and tools; mdkg preserves the process,
+  readiness, provenance, and evidence graph.
+
+### Security
+
+- Graph target writes reject symlink containment escapes before mutation.
+- Bundle and subgraph ZIP inflation enforces bounded entry and output budgets.
 
 ## 0.4.2 details
 

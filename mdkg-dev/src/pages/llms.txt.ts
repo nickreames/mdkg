@@ -3,11 +3,14 @@ export const prerender = true;
 import { publicRelease } from "../data/publicRelease.mjs";
 
 export function GET() {
+  const releaseStatus = publicRelease.published
+    ? `Released: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. The npm package is available.`
+    : `Target release: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. This preview does not claim npm availability.`;
   const loopRelease = publicRelease.visible
     ? [
         "## Reusable loops",
         "",
-        `Target release: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. This preview does not claim npm availability.`,
+        releaseStatus,
         "",
         "- A loop is a durable reusable process that can span more than one goal.",
         "- mdkg preserves loop readiness, provenance, linked work, evidence, and closeout state.",

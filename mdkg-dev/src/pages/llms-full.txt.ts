@@ -3,11 +3,14 @@ export const prerender = true;
 import { publicRelease } from "../data/publicRelease.mjs";
 
 export function GET() {
+  const releaseStatus = publicRelease.published
+    ? `Released: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. The npm package is available.`
+    : `Target release: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. Preview content does not claim npm availability.`;
   const loopRelease = publicRelease.visible
     ? [
         "## Reusable loop process model",
         "",
-        `Target release: v${publicRelease.manifest.target_version} - ${publicRelease.manifest.qualifier}. Preview content does not claim npm availability.`,
+        releaseStatus,
         "",
         "- Loops are one first-class mdkg node type. Templates, scoped forks, and run-bearing loops use metadata and graph links.",
         "- A loop can coordinate several goals, readiness questions, typed approvals, evidence lanes, decisions, and closeout requirements.",
