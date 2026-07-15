@@ -2,7 +2,7 @@
 id: task-787
 type: task
 title: Deploy v0.5.1 archive documentation and verify production
-status: todo
+status: done
 priority: 1
 epic: epic-253
 tags: [release, docs, deployment, browser]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 

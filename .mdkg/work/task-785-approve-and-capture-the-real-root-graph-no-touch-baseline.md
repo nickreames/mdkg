@@ -2,7 +2,7 @@
 id: task-785
 type: task
 title: Approve and capture the real root graph no-touch baseline
-status: todo
+status: done
 priority: 0
 epic: epic-252
 tags: [release, approval, root-graph, baseline]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 

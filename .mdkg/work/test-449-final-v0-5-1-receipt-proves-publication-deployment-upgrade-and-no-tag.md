@@ -2,7 +2,7 @@
 id: test-449
 type: test
 title: Final v0.5.1 receipt proves publication deployment upgrade and no tag
-status: todo
+status: done
 priority: 1
 epic: epic-253
 tags: [release, checkpoint, no-tag, fix-forward]
@@ -19,7 +19,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 

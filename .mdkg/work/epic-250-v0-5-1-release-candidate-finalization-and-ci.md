@@ -2,7 +2,7 @@
 id: epic-250
 type: epic
 title: v0.5.1 release candidate finalization and CI
-status: todo
+status: done
 priority: 1
 tags: [release, v0.5.1, ci, versioning]
 owners: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Goal
 

@@ -2,7 +2,7 @@
 id: epic-251
 type: epic
 title: npm publication and clean consumer proof
-status: todo
+status: done
 priority: 1
 tags: [release, npm, registry, consumer]
 owners: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Goal
 

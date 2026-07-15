@@ -2,7 +2,7 @@
 id: test-447
 type: test
 title: Global v0.5.1 compress all proof mutates only root-owned archive outputs
-status: todo
+status: done
 priority: 0
 epic: epic-252
 tags: [release, root-graph, archive, ownership]
@@ -19,7 +19,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 
