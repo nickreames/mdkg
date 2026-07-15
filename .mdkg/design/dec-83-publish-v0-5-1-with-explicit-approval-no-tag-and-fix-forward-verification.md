@@ -1,0 +1,73 @@
+---
+id: dec-83
+type: dec
+title: Publish v0.5.1 with explicit approval no tag and fix-forward verification
+status: accepted
+tags: [release, v0.5.1, approval, no-tag, fix-forward]
+owners: []
+links: []
+artifacts: []
+relates: [goal-71, goal-70, edd-77, goal-64]
+refs: [goal-71, goal-70, edd-77, goal-64]
+aliases: []
+created: 2026-07-14
+updated: 2026-07-14
+---
+# Context
+
+The ownership fix changes mutation selection and needs real consumer proof, but
+versioning, push, npm publication, global replacement, root mutation, and public
+deployment are irreversible or externally visible operations.
+
+# Decision
+
+- Goal 70 keeps package version 0.5.0 and produces a local implementation commit.
+- Goal 71 alone bumps package/lockfile/changelog to 0.5.1.
+- One explicit approval must enumerate push, npm publication, real global
+  replacement, root command execution, and documentation deployment.
+- Require exact-SHA CI before npm publication.
+- Publish to npm `latest`, verify integrity and clean installation, then perform
+  the real root proof and documentation deployment.
+- Create no Git tag by default.
+- Never unpublish or roll back 0.5.1; repair post-publication defects forward.
+
+# Alternatives considered
+
+- Bump the version in Goal 70. Rejected to keep implementation readiness
+  reversible and publication ownership isolated.
+- Skip the real root proof. Rejected because mixed local/imported ownership is
+  the motivating consumer topology.
+- Reuse Goal 64. Rejected because it is terminal v0.5.0 release history.
+
+# Consequences
+
+The release lane has an explicit approval boundary and complete consumer proof.
+Unrelated root state may remain only after operator classification and must be
+shown unchanged. A post-publication failure creates a fix-forward follow-up.
+
+# References
+
+- `goal-70`
+- `goal-71`
+- `edd-77`
+- `goal-64`
+
+What is the situation? Why do we need a decision?
+
+# Decision
+
+What we decided and why.
+
+# Alternatives considered
+
+- alternative 1
+- alternative 2
+
+# Consequences
+
+What changes because of this decision?
+
+# Links / references
+
+- related docs
+- related tasks

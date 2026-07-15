@@ -3,8 +3,16 @@
   "package_version": "0.5.0",
   "latest_release": "0.5.0",
   "unreleased": {
-    "sections": {},
-    "item_count": 0
+    "sections": {
+      "Changed": [
+        "Archive compression now derives writable ownership from enabled local workspaces. `archive compress --all --ws <local-alias>` limits bulk selection, and exact workspace-qualified archive qids are supported for direct targets.",
+        "Archive compression JSON receipts preserve existing fields and add selected workspace and read-only imported-projection exclusion evidence."
+      ],
+      "Fixed": [
+        "Fixed `archive compress --all` traversing imported subgraph ZIP-fragment paths and potentially mutating earlier local archives before a later invalid target failed. Imported archives remain discoverable but fail closed for direct compression, and the complete local selection is preflighted before writes."
+      ]
+    },
+    "item_count": 3
   },
   "releases": [
     {

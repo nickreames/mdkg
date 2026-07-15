@@ -735,8 +735,13 @@ function printArchiveHelp(log: LogFn, subcommand?: string): void {
       break;
     case "compress":
       log("Usage:");
-      log("  mdkg archive compress <id-or-archive-uri> [--ws <alias>] [--json]");
-      log("  mdkg archive compress --all [--json]");
+      log("  mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]");
+      log("  mdkg archive compress --all [--ws <local-alias>] [--json]");
+      log("\nNotes:");
+      log("  - compression mutates archives owned by enabled local workspaces only");
+      log("  - --all excludes read-only imported archive projections and reports them in the receipt");
+      log("  - direct imported qids and --ws <imported-alias> fail with source-workspace guidance");
+      log("  - all selected archives pass ownership and path preflight before the first write");
       break;
     default:
       log("Usage:");
@@ -744,7 +749,7 @@ function printArchiveHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--json]");
       log("  mdkg archive show <id-or-archive-uri> [--json]");
       log("  mdkg archive verify [id-or-archive-uri] [--json]");
-      log("  mdkg archive compress <id-or-archive-uri|--all> [--json]");
+      log("  mdkg archive compress <id-or-archive-uri-or-qid|--all> [--ws <local-alias>] [--json]");
       log("\nNotes:");
       log("  - archive add copies the source, writes a sidecar, and writes a deterministic zip cache");
       log("  - archive visibility defaults to private");

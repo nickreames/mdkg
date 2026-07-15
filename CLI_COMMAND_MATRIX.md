@@ -657,9 +657,9 @@ Usage:
 - `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
 - `mdkg archive verify [id-or-archive-uri] [--json]`
 - `mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]`
-- `mdkg archive compress <id-or-archive-uri|--all> [--json]`
-- `mdkg archive compress <id-or-archive-uri> [--ws <alias>] [--json]`
-- `mdkg archive compress --all [--json]`
+- `mdkg archive compress <id-or-archive-uri-or-qid|--all> [--ws <local-alias>] [--json]`
+- `mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]`
+- `mdkg archive compress --all [--ws <local-alias>] [--json]`
 
 Fields:
 - archive sidecars use `type: archive`
@@ -673,6 +673,18 @@ Notes:
 - archive visibility defaults to `private`
 - `archive://<archive.id>` refs are validated against local archive sidecars
 - `archive verify` and `validate` both check the ZIP hash, ZIP readability, payload SHA-256, and payload byte size
+- archive compression is owned exclusively by enabled local workspaces; imported
+  archive projections remain visible to list/show/search but are read-only
+- `archive compress --all` selects every locally writable archive, while
+  `--all --ws <local-alias>` limits selection to one enabled local workspace
+- direct workspace-qualified qids such as `root:archive.example` are supported;
+  imported qids and `--ws <imported-alias>` fail before filesystem path
+  construction with source-workspace and bundle-refresh guidance
+- compression preflights ownership, identity, containment, symlinks, raw input,
+  and destinations for the complete selected set before the first write
+- JSON keeps `action`, `count`, and `archives`, and adds
+  `selection: { requested_workspace, selected_workspaces,
+  excluded_read_only: [{ workspace, qid, reason }] }`
 - `archive verify` passes when the raw local source file is missing but the committed sidecar and ZIP cache are valid
 - generated raw source copies live under `.mdkg/archive/**/source/` and are ignored by default
 - `doctor` warns when archive ZIP caches exceed `archive.large_cache_warning_bytes` (default `26214400`; `0` disables)
