@@ -1,53 +1,65 @@
 ---
 id: task-757
 type: task
-title: record release closeout and downstream upgrade handoff
+title: record v0.5.2 release closeout and downstream upgrade handoff
 status: todo
 priority: 1
 parent: goal-67
-prev: task-756
-tags: [goal-67, closeout, downstream-handoff]
+prev: test-451
+tags: [goal-67, closeout, downstream-handoff, 0.5.2]
 owners: []
 links: []
 artifacts: []
 relates: [goal-67]
-blocked_by: [task-756]
-blocks: []
-refs: [goal-67]
+blocked_by: [test-451]
+blocks: [test-419]
+refs: [goal-67, goal-66]
 context_refs: [goal-66, edd-73]
 evidence_refs: []
 aliases: [materialize-release-closeout]
 skills: [verify-close-and-checkpoint]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
 
-Close the release with exact immutable evidence and a product-neutral handoff
-for repositories that need to upgrade and consume materialization.
+Close the release with immutable evidence and a product-neutral handoff for
+repositories that need to upgrade to `mdkg@0.5.2` and consume generic Git
+materialization.
 
 # Acceptance Criteria
 
-- Checkpoint records version, commits, registry integrity, installs, validation,
-  dirty state, approved side effects, no-tag status, and residual risks.
-- Handoff names the command/schema/receipt capability and compatibility floor
-  without downstream product policy.
-- Goal evaluation returns achieved with no remaining scoped work.
-
-# Files Affected
-
-- Release checkpoint and downstream handoff nodes.
-
-# Implementation Notes
-
-Downstream upgrades and runtime execution are separate repository-owned goals.
+- Final checkpoint records Goal-66 and release commits, npm integrity/time,
+  temp/global installs, real-root upgrade, validation, origin/CI/Vercel/docs
+  evidence, approved side effects, no-tag status, fix-forward policy, warnings,
+  and residual risks.
+- Handoff names `mdkg git materialize`, request/receipt schemas, compatibility
+  floor, external-auth boundary, no-push behavior, and conservative upgrade
+  commands without downstream runtime policy.
+- `test-419` verifies all evidence is mutually consistent.
+- Create and push one final graph closeout commit directly to `origin/main`
+  without force; verify local/remote parity.
+- Goal show/next/evaluate reports achieved with no scoped work remaining.
 
 # Test Plan
 
 - `test-419`
-- Goal show/next/evaluate and final validation.
+- final graph/status/Git parity and no-tag checks
+
+# Completion Evidence
+
+- One final release checkpoint and sanitized downstream handoff.
+
+# Files Affected
+
+- Final Goal-67 checkpoint/handoff state and one local graph closeout commit.
+
+# Implementation Notes
+
+- Push the closeout commit only after `test-419` confirms every evidence lane;
+  preserve no-tag and fix-forward policy.
 
 # Links / Artifacts
 
-- Published package receipt
+- `test-419`, npm/install/root/CI/Vercel/docs receipts, and downstream handoff.

@@ -6,7 +6,7 @@ status: todo
 priority: 1
 parent: goal-66
 next: task-747
-tags: [goal-66, preflight, schema, json]
+tags: [goal-66, preflight, schema, json, 0.5.2]
 owners: []
 links: []
 artifacts: []
@@ -14,43 +14,63 @@ relates: [goal-66]
 blocked_by: []
 blocks: [task-747]
 refs: [goal-66, edd-73, dec-75, dec-76, dec-77, dec-78]
-context_refs: [goal-52, goal-64, edd-73]
+context_refs: [goal-52, goal-64, goal-65, goal-71, edd-73]
 evidence_refs: []
 aliases: [materialize-schema-preflight]
 skills: [select-work-and-ground-context, service-boundary-ownership-check]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
 
-Confirm the current publication program is achieved, re-audit the installed
-and source Git command contract, and freeze the strict v1 JSON request/receipt
-schemas before source implementation.
+Record the current source, global, registry, and published-package baseline,
+then freeze the strict v1 request and bounded receipt contracts before source
+implementation begins.
 
 # Acceptance Criteria
 
-- `goal-64` is achieved and npm/source/package baselines are recorded.
-- Every field and enum in `edd-73` has one strict schema representation.
-- Unknown fields, YAML, embedded credentials, absolute destinations, and
-  unsupported policies fail with bounded reason codes.
-- Receipt version, success/failure shape, exit behavior, and redaction rules
-  are frozen without product-specific identifiers.
-
-# Files Affected
-
-- Generic schema, Git command, tests, docs, and generated-contract surfaces
-  selected after source re-audit.
+- Confirm `goal-64`, `goal-65`, and `goal-71` are achieved; source/global/npm
+  latest remain `0.5.1`; and `mdkg@0.5.2` is absent at execution time.
+- Freeze `schema: mdkg.git.materialize.request.v1` with stable source/access
+  refs, credential-free `repository_ref`, declared auth capability, full
+  `target_ref`, required expected commit, optional expected tree, contained
+  relative destination, full-or-positive depth, `deny|ignore` submodules,
+  `required|optional|forbidden` project memory, and optional correlation and
+  refs-only evidence fields.
+- Freeze `mdkg.git.materialize.receipt.v1` success/failure behavior, bounded
+  reason codes, request hash, identity/policy/auth/cleanup evidence, JSON exit
+  semantics, output limits, and redaction rules.
+- Reject unknown fields, YAML, controls, embedded credentials, option-shaped
+  refs, unsupported transports/policies, malformed object ids, absolute or
+  escaping destinations, and unsafe local path shapes before Git runs.
+- Define auth availability checks for unauthenticated, `gh`, SSH agent,
+  credential helper, and Git-native environment-mediated access without
+  resolving or recording secret values.
 
 # Implementation Notes
 
-Do not hardcode a release version. Detect Git object format through system Git.
+- Do not hardcode `0.5.2` into the wire schema or receipt.
+- Detect SHA-1/SHA-256 object format through system Git.
+- `access_ref` remains opaque correlation evidence, not a secret resolver.
+- Caller-owned cancellation/timeout semantics must be explicit before engine
+  implementation starts.
 
 # Test Plan
 
 - `test-411`
+- `test-414`
 - `test-415`
+
+# Completion Evidence
+
+- Attach the accepted schema/receipt field table and baseline command receipt.
+
+# Files Affected
+
+- Generic Git schema, command, tests, docs, and generated-contract surfaces
+  selected after the source/package baseline audit.
 
 # Links / Artifacts
 
-- `edd-73`
+- `goal-66`, `edd-73`, and accepted decisions `dec-75` through `dec-78`.

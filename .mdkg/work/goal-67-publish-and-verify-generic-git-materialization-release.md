@@ -1,99 +1,130 @@
 ---
 id: goal-67
 type: goal
-title: publish and verify generic Git materialization release
+title: publish and verify mdkg v0.5.2 generic Git materialization release
 status: todo
 priority: 1
 goal_state: paused
-goal_condition: The generic Git materialization release is complete only after an execution-time version is selected, package changelog generated contract docs public naming security registry and auth gates pass, one explicit bounded approval authorizes external mutations, origin is updated without force, npm publication and integrity are verified, clean temporary and real global installs pass materialization and compatibility probes, downstream consumers receive a product-neutral handoff, and no Git tag is created by default.
-scope_refs: [task-753, task-754, task-755, task-756, task-757, test-416, test-417, test-418, test-419]
+goal_condition: mdkg v0.5.2 is complete only after goal-66 supplies a clean locally publish-ready implementation, version changelog generated contract and docs release metadata agree, all final gates pass, the pre-approved npm publication succeeds, registry integrity and temporary global and real-root upgrade behavior are verified, the exact published commit is pushed without force to origin main, post-push CI and Vercel production health pass, docs.mdkg.dev exposes current materialization documentation, mdkg.dev receives no authored source changes, and the final receipt confirms fix-forward and no-tag state.
+scope_refs: [task-753, task-754, test-416, test-417, task-755, task-756, task-789, test-418, task-790, test-451, task-757, test-419]
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
-required_checks: [git status --short --branch, git log --oneline origin/main..HEAD, npm ci, npm run build, npm run test, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, npm pack --dry-run --json, npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg dist-tags --json, required repository security scan, explicit release approval, git diff --check]
-max_iterations: 25
+required_checks: [goal-66 achieved with publish-readiness checkpoint, git status --short --branch, git fetch origin main, git rev-list --left-right --count origin/main...HEAD, npm ci, npm run prepublishOnly, npm run security:verify, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.5.2 version --registry=https://registry.npmjs.org/, npm whoami through temporary npmrc, npm postpublish registry dist-tag shasum integrity and time proof, isolated temporary install of mdkg@0.5.2, real global mdkg@0.5.2 install, real-root upgrade preview safe apply index status skill validation graph validation doctor and diff proof, non-force git push origin main after npm verification, post-push GitHub CI, Vercel deployment SHA and READY proof, docs.mdkg.dev HTTP content link SEO robots and sitemap proof, basic mdkg.dev deployment health only, no Browser or Chrome, no Git tag, git diff --check]
+max_iterations: 30
 blocked_after_attempts: 3
-tags: [git, materialization, release, npm, verification]
+tags: [git, materialization, release, npm, verification, 0.5.2, docs]
 owners: []
 links: []
 artifacts: []
 relates: []
 blocked_by: [goal-66]
 blocks: []
-refs: [edd-73, dec-75, dec-76, dec-77, dec-78]
-context_refs: [goal-66, edd-73, dec-69, dec-75, dec-76, dec-77, dec-78]
+refs: [edd-73, dec-75, dec-76, dec-77, dec-78, goal-66]
+context_refs: [goal-66, goal-71, edd-73, dec-69, dec-75, dec-76, dec-77, dec-78]
 evidence_refs: []
-aliases: [generic-git-materialization-release]
+aliases: [generic-git-materialization-release, mdkg-v0-5-2-release]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Objective
 
-Publish the implementation accepted by `goal-66` as a verified generic mdkg
-release and prove installed-package behavior before downstream upgrades begin.
+Finalize, publish, install, upgrade, push, and independently verify
+`mdkg@0.5.2` after `goal-66` proves the local generic materialization release
+candidate.
 
 # End Condition
 
-Npm metadata and integrity identify the released version, temporary and real
-global installs pass materialize/clone/upgrade probes, and a sanitized consumer
-handoff records exact capability and compatibility evidence.
+Npm metadata and integrity identify `0.5.2`; temporary and real global installs
+pass materialize/clone/init/loop/pack/upgrade probes; the real root graph is
+safely upgraded and validated; the exact published commit is on `origin/main`;
+CI and Vercel are healthy; docs.mdkg.dev is current; and the final checkpoint
+records every approved side effect and no-tag/fix-forward state.
 
-# Non-Goals
+# Approved Release Boundary
 
-- No implementation work that belongs to `goal-66`.
-- No downstream repository upgrade or runtime execution.
-- No Git tag unless a later explicit instruction changes the default.
-- No rollback or unpublish; failures after publication are fixed forward.
+The operator pre-approved these actions after all gates pass:
+
+- publish `mdkg@0.5.2` to npm;
+- install it in an isolated prefix and replace the real global mdkg install;
+- preview and apply the real-root managed upgrade only when `safe_to_apply` is
+  true and no blocking conflicts exist;
+- push the exact published commit and final closeout commit directly to
+  `origin/main` without force;
+- allow the resulting Vercel deployments and verify them through provider,
+  CI, HTTP, and repository smoke evidence.
+
+No additional approval prompt is required for those bounded actions. This does
+not authorize tags, force pushes, PRs, Browser/Chrome use, npm unpublish,
+rollback, unrelated provider mutation, or authored mdkg-dev changes.
 
 # Recursive Algorithm
 
-1. Select the next valid version from package compatibility evidence.
-2. Finalize package metadata and run complete local/security/public gates.
-3. Stop for one explicit approval covering push, publish, and global install.
-4. Push without force, verify CI, publish, and prove registry integrity.
-5. Validate clean temporary and real global installs.
-6. Record the downstream upgrade handoff and release checkpoint.
+1. Wait for achieved `goal-66` and consume its immutable readiness checkpoint.
+2. In `task-753`, move `Unreleased` materialization notes into `0.5.2`, bump
+   package/lock and source-visible version metadata, refresh generated release
+   data and docs changelog, set the release manifest to published `0.5.2`, and
+   create one local release commit on `main`.
+3. In `task-754`, replay final version-specific local, security, pack, and
+   publish dry-run gates; close `test-416` and `test-417`.
+4. In `task-755`, verify the recorded approval, remote freshness, npm auth,
+   latest `0.5.1`, and expected `0.5.2` absence immediately before mutation.
+5. In `task-756`, publish npm and verify registry metadata and artifact
+   integrity before any push.
+6. In `task-789`, validate a clean temporary install, replace the real global
+   install, preview/apply the safe root upgrade, and close `test-418`.
+7. In `task-790`, push the exact published commit to `origin/main`, verify CI
+   and Vercel, validate docs.mdkg.dev without Browser/Chrome, and close
+   `test-451`.
+8. In `task-757`, record the downstream handoff and final checkpoint; close
+   `test-419`, push the closeout commit, and evaluate the goal.
 
-# Required Skills
+# Release Ordering
 
-Use frontmatter skills and approval-gated release guidance.
+- Work directly on local `main`; create no branch or PR.
+- Publish npm before the first release push so production documentation cannot
+  claim an unpublished version.
+- Local exhaustive gates are the prepublish authority. GitHub CI is mandatory
+  post-publish confirmation because the main-only sequence cannot provide
+  remote exact-SHA CI without deploying production early.
+- If remote drift appears before publish, stop, reconcile, and rerun all gates.
+  If it appears after publish, preserve the published commit and reconcile only
+  with a normal fix-forward commit; never force-push or rewrite history.
+- After publication, never unpublish or roll back. Package-affecting failures
+  require a new fix-forward release lane.
 
-# Required Checks
+# Documentation Boundary
 
-Run frontmatter checks plus installed-package materialization fixtures and
-source/package help parity.
-
-# Acceptance Criteria
-
-- The goal title and static task names do not hardcode a version.
-- Public package and docs contain no downstream product identifiers.
-- Registry absence and auth are verified before publication.
-- Published JSON request/receipt behavior matches `goal-66` evidence.
-- No tag, force push, downstream mutation, or implicit deployment occurs.
+- Goal-66 owns the materialization guide and command/reference/safety docs.
+- Goal-67 owns the `0.5.2` changelog card/detail, generated release notes, and
+  shared published release metadata.
+- Do not edit mdkg-dev source or copy. Its automatic deployment and
+  package-derived version metadata change are accepted; validate basic health
+  only.
+- Verify docs.mdkg.dev through CI, Vercel deployment state, HTTP, link, SEO,
+  robots, sitemap, and existing smoke checks. Do not use Browser or Chrome.
 
 # Definition Of Done
 
-- Goal condition is achieved with a durable release receipt.
-- Downstream upgrade can resolve the release through npm `latest`.
+- Every scoped task and test is done with mutually consistent evidence.
+- npm, installs, root upgrade, origin, CI, Vercel, docs, no-tag, and
+  fix-forward evidence are recorded in one final checkpoint.
+- The downstream handoff names only generic command/schema/receipt capability
+  and compatibility facts.
 
 # Stop Conditions
 
-- `goal-66` is incomplete.
-- Any local, security, naming, auth, registry, CI, or approval gate fails.
-- The selected version already exists unexpectedly.
+- Stop before publication on any implementation, security, naming, auth,
+  registry, package, docs, validation, or remote-freshness failure.
+- After publication, keep the goal open and fix forward if registry, install,
+  root upgrade, push, CI, deployment, or docs evidence fails.
 
 # Current State
 
-Paused behind `goal-66`. First node is `task-753`.
-
-# Iteration Log
-
-- 2026-07-11: Seeded as a release-only successor.
-
-# Skill Improvement Candidates
-
-- None yet.
+Paused behind `goal-66`. Target version is fixed at `0.5.2`; npm publication,
+bounded local validation, post-publish main pushes, and resulting deployment
+verification are pre-approved once all gates pass. First node is `task-753`.
 
 # Completion Evidence
 
-- Pending.
+- Pending `goal-66` handoff and release execution.
