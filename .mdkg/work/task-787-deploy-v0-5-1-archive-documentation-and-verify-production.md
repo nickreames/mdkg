@@ -23,12 +23,15 @@ updated: 2026-07-14
 # Overview
 
 Deploy source-backed v0.5.1 archive ownership documentation only after registry
-and real consumer behavior are proven.
+and real consumer behavior are proven by fast-forwarding `main` to the exact
+candidate SHA and observing both Git-triggered Vercel production deployments.
 
 # Acceptance Criteria
 
 - Local mdkg.dev/docs builds and smoke checks pass.
-- Deployment corresponds to the intended release commit.
+- `main` is fast-forwarded to the exact candidate SHA only after `task-786` and
+  `test-447` pass.
+- Both Vercel production deployments correspond to that candidate SHA.
 - Live desktop/mobile pages accurately show `--all --ws`, qid targeting,
   imported read-only behavior, receipts, version/install facts, and links.
 - Accessibility, metadata, indexing, and no-secret checks pass.
@@ -42,6 +45,8 @@ List files/directories expected to change.
 # Implementation Notes
 
 - Do not broaden into a site redesign.
+- Do not invoke a separate manual deployment when the Git-triggered production
+  deployments are healthy and correspond to the candidate SHA.
 - Fix production defects forward from the published release state.
 
 # Test Plan
