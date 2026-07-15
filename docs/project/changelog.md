@@ -10,7 +10,10 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 Recent release cards:
 
-- `0.5.0` latest public alpha, 2026-07-11: first-class reusable loops, seven
+- `0.5.1` latest public alpha, 2026-07-14: local-workspace archive compression
+  ownership, exact qid targeting, full-set preflight, and transparent
+  selected/excluded workspace receipts for graphs with read-only imports.
+- `0.5.0` public alpha, 2026-07-11: first-class reusable loops, seven
   bundled read-only or planning templates, identity-bound readiness and
   evidence, observational fork dry-runs, provenance, and blocker continuation.
 - `0.4.2` public alpha, 2026-07-05: low-level `mdkg git`
@@ -22,6 +25,26 @@ Recent release cards:
 - `0.4.0` public alpha, 2026-06-27: public launch readiness for
   mdkg.dev and docs.mdkg.dev, source-backed release metadata, npm gates, Vercel
   currentness, and Chrome live-validation blockers.
+
+## 0.5.1 details
+
+`0.5.1` makes archive compression ownership explicit for repositories whose
+merged graph contains both writable local workspaces and read-only imported
+subgraphs.
+
+### Changed
+
+- `archive compress --all` selects archives owned by enabled local workspaces;
+  `--ws <local-alias>` limits that writable selection.
+- Direct compression accepts exact workspace-qualified archive qids, and JSON
+  and text receipts identify selected workspaces and excluded read-only
+  projections.
+
+### Fixed
+
+- Imported ZIP-fragment projection paths are rejected before filesystem path
+  construction, and the complete local selection passes ownership, containment,
+  symlink, raw-input, sidecar, and destination preflight before the first write.
 
 ## 0.5.0 details
 

@@ -45,29 +45,9 @@ The release lane has an explicit approval boundary and complete consumer proof.
 Unrelated root state may remain only after operator classification and must be
 shown unchanged. A post-publication failure creates a fix-forward follow-up.
 
-# References
+# Links / references
 
 - `goal-70`
 - `goal-71`
 - `edd-77`
 - `goal-64`
-
-What is the situation? Why do we need a decision?
-
-# Decision
-
-What we decided and why.
-
-# Alternatives considered
-
-- alternative 1
-- alternative 2
-
-# Consequences
-
-What changes because of this decision?
-
-# Links / references
-
-- related docs
-- related tasks

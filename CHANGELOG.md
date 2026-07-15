@@ -8,6 +8,8 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.5.1 - 2026-07-14
+
 ### Changed
 
 - Archive compression now derives writable ownership from enabled local
