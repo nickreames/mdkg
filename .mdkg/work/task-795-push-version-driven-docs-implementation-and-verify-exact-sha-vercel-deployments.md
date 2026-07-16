@@ -2,7 +2,7 @@
 id: task-795
 type: task
 title: Push version-driven docs implementation and verify exact-SHA Vercel deployments
-status: todo
+status: done
 priority: 1
 parent: goal-73
 prev: test-456
@@ -60,6 +60,24 @@ exact Git SHA.
 
 Vercel exact-SHA readiness and logs gate `task-796`; the combined production
 contract closes in `test-457`.
+
+# Results / Evidence
+
+- Refreshed `origin/main` immediately before commit: behind/ahead was `0/1`,
+  and the intentional diff contained only goal-73 graph state plus the planned
+  docs/release projection implementation.
+- Created implementation commit
+  `27005ece67a27bb9fcfb1a2b1ada45dc054ddddd` (`docs: make current release
+  supplement version driven`) and pushed `main` non-force. Local and origin
+  `main` were synchronized after the push.
+- `mdkg-docs` production deployment
+  `dpl_HV13PifDwM6heBwuwC7krCs4TFJt` is `READY`, targets `main`, aliases
+  `docs.mdkg.dev`, and reports the exact implementation SHA.
+- `mdkg-dev` production deployment
+  `dpl_LdQHRUtgyJssUxooLMLEvmRe875y` is `READY`, targets `main`, aliases
+  `mdkg.dev`, and reports the exact implementation SHA.
+- Both Vercel build logs completed successfully with no build failure; no
+  manual deployment, provider configuration, domain, or DNS mutation occurred.
 
 # Links / Artifacts
 
