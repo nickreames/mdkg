@@ -30,6 +30,7 @@
 - [Overview](advanced-alpha/overview.md)
 - [Project DB And Queues](advanced-alpha/project-db-queues.md)
 - [Read-only MCP](advanced-alpha/read-only-mcp.md)
+- [Verified Git Materialization](advanced-alpha/git-materialization.md)
 - [Subgraphs And Bundles](advanced-alpha/subgraphs-and-bundles.md)
 - [Graph Movement](advanced-alpha/graph-movement.md)
 - [Demo Graphs](advanced-alpha/demo-graphs.md)

@@ -39,6 +39,7 @@ const HELP_TARGETS = [
   ["graph", "refs"],
   ["git"],
   ["git", "inspect"],
+  ["git", "materialize"],
   ["git", "clone"],
   ["git", "fetch"],
   ["git", "closeout"],

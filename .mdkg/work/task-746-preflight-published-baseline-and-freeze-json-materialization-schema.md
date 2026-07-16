@@ -2,7 +2,7 @@
 id: task-746
 type: task
 title: preflight published baseline and freeze JSON materialization schema
-status: todo
+status: done
 priority: 1
 parent: goal-66
 next: task-747
@@ -64,7 +64,29 @@ implementation begins.
 
 # Completion Evidence
 
-- Attach the accepted schema/receipt field table and baseline command receipt.
+- Baseline on 2026-07-15: source package, global `mdkg`, and npm latest all
+  report `0.5.1`; `npm view mdkg@0.5.2 version` returns the expected registry
+  404. Goals `goal-64`, `goal-65`, and `goal-71` are achieved.
+- Frozen request schema `mdkg.git.materialize.request.v1` is a strict JSON
+  object with required fields `schema`, `source_ref`, `repository_ref`,
+  `access_ref`, `auth_capability`, `target_ref`, `expected_commit`,
+  `destination`, `depth`, `submodule_policy`, and
+  `project_memory_policy`. Optional fields are `expected_tree`,
+  `correlation_ref`, and bounded unique `evidence_refs`.
+- Frozen enums are `unauthenticated|gh|ssh-agent|credential-helper|git-environment`,
+  `deny|ignore`, and `required|optional|forbidden`; depth is `full` or a
+  positive integer. Object IDs are full lowercase SHA-1 or SHA-256 values and
+  target refs are full `refs/heads/*` or `refs/tags/*` refs.
+- Frozen receipt schema `mdkg.git.materialize.receipt.v1` contains only the
+  request hash, bounded source/access/correlation/evidence refs, expected and
+  observed object identities, object format, policy outcomes, relative
+  destination state, cleanup state, bounded reason code, and constant
+  warnings. It excludes `repository_ref`, raw Git/helper output, environment
+  values, absolute paths, socket paths, and repository content.
+- Focused compiled test evidence: 10/10 materialization tests pass for
+  file/stdin equivalence, strict rejection before Git, identity mismatch,
+  containment, auth availability, depth, SHA-256, submodules, project memory,
+  hook/no-push boundaries, redaction, and cancellation cleanup.
 
 # Files Affected
 

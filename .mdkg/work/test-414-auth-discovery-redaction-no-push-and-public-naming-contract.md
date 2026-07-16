@@ -2,7 +2,7 @@
 id: test-414
 type: test
 title: auth discovery redaction no push and public naming contract
-status: todo
+status: done
 priority: 1
 parent: goal-66
 tags: [goal-66, test, auth, discovery, redaction, naming]
@@ -19,7 +19,7 @@ aliases: [materialize-auth-discovery-safety-test]
 skills: []
 cases: [auth-capabilities, credential-rejection, discovery-required, discovery-optional, discovery-forbidden, no-push, naming]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
@@ -46,7 +46,16 @@ absence of push, and product-neutral public surfaces.
 
 # Results / Evidence
 
-- Pending implementation.
+- Focused compiled tests cover available/unavailable `unauthenticated`, `gh`,
+  `ssh-agent`, `credential-helper`, and `git-environment` capability evidence;
+  receipts contain status/reason only and exclude environment values, helper
+  output, socket paths, raw Git stderr, credentials, and absolute local paths.
+- Required/optional/forbidden project-memory modes validate in-process without
+  indexing or executing hostile scripts/hooks/skills. Git argv audits prove no
+  push, hook execution, or recursive submodule operation.
+- The packed-consumer smoke scans materialization help/contract surfaces for
+  downstream product identifiers and proves the package has no downstream
+  runtime dependency.
 
 # Notes / Follow-ups
 

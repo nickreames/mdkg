@@ -86,6 +86,11 @@ import {
   runGitPushReadyCommand,
 } from "./commands/git";
 import {
+  collectGitMaterializeReceipt,
+  GitMaterializeError,
+  GitMaterializeReceipt,
+} from "./commands/git_materialize";
+import {
   runSubgraphAddCommand,
   runSubgraphAuditCommand,
   runSubgraphDisableCommand,
@@ -211,7 +216,7 @@ function printUsage(log: LogFn): void {
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  graph       Clone, fork, import, and inspect mdkg graph references");
-  log("  git         Clone, fetch, inspect, close out, and push Git-backed mdkg projects");
+  log("  git         Materialize, clone, fetch, inspect, close out, and push Git-backed projects");
   log("  subgraph    Register, audit, plan, sync, materialize, and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  loop        List, show, fork, plan, and inspect first-class loop nodes");
@@ -864,6 +869,14 @@ function printGitHelp(log: LogFn, subcommand?: string): void {
       log("  - --target must be empty or absent and stay inside the current repo");
       log("  - repository refs must not embed credentials");
       break;
+    case "materialize":
+      log("Usage:");
+      log("  mdkg git materialize --request <file|-> [--json]");
+      log("\nNotes:");
+      log("  - accepts only schema mdkg.git.materialize.request.v1 JSON");
+      log("  - verifies the full target ref, expected commit, optional tree, and policy checks before publishing");
+      log("  - uses external auth and an atomic contained destination; receipts never include credentials or raw Git output");
+      break;
     case "fetch":
       log("Usage:");
       log("  mdkg git fetch [--remote <name>] [--branch <name>] [--json]");
@@ -898,6 +911,7 @@ function printGitHelp(log: LogFn, subcommand?: string): void {
     default:
       log("Usage:");
       log("  mdkg git inspect [--json]");
+      log("  mdkg git materialize --request <file|-> [--json]");
       log("  mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]");
       log("  mdkg git fetch [--remote <name>] [--branch <name>] [--json]");
       log("  mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]");
@@ -2230,6 +2244,8 @@ function runGitSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       runGitInspectCommand({ root, json });
       return 0;
     }
+    case "materialize":
+      throw new UsageError("git materialize requires the asynchronous CLI entrypoint");
     case "clone": {
       const repository = parsed.positionals[2];
       if (!repository || parsed.positionals.length > 3) {
@@ -2283,7 +2299,52 @@ function runGitSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       return 0;
     }
     default:
-      throw new UsageError("git requires inspect/clone/fetch/closeout/push-ready/push");
+      throw new UsageError("git requires inspect/materialize/clone/fetch/closeout/push-ready/push");
+  }
+}
+
+function printGitMaterializeReceipt(
+  receipt: GitMaterializeReceipt,
+  json: boolean,
+  runtime: ResolvedCliRuntime
+): void {
+  if (json) {
+    runtime.log(JSON.stringify(receipt, null, 2));
+    return;
+  }
+  if (receipt.ok) {
+    runtime.log("git materialize accepted");
+    runtime.log(`destination: ${receipt.destination.path ?? "(none)"}`);
+    runtime.log(`commit: ${receipt.observed_revision.commit ?? "(none)"}`);
+    runtime.log(`tree: ${receipt.observed_revision.tree ?? "(none)"}`);
+    return;
+  }
+  runtime.error(`git materialize failed: ${receipt.reason_code}`);
+  runtime.error(`destination: ${receipt.destination.state}`);
+  runtime.error(`cleanup: ${receipt.cleanup.state}`);
+}
+
+async function runGitMaterializeSubcommand(
+  parsed: ParsedArgs,
+  root: string,
+  runtime: ResolvedCliRuntime
+): Promise<ExitCode> {
+  if (parsed.positionals.length > 2) {
+    throw new UsageError("git materialize does not accept positional arguments");
+  }
+  const request = requireFlagValue("--request", parsed.flags["--request"]);
+  if (!request) throw new UsageError("git materialize requires --request <file|->");
+  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+  try {
+    const receipt = await collectGitMaterializeReceipt({ root, request });
+    printGitMaterializeReceipt(receipt, json, runtime);
+    return 0;
+  } catch (error) {
+    if (error instanceof GitMaterializeError) {
+      printGitMaterializeReceipt(error.receipt, json, runtime);
+      return 2;
+    }
+    throw error;
   }
 }
 
@@ -3660,6 +3721,9 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
   try {
     if (command === "mcp") {
       return await runMcpSubcommand(parsed, root);
+    }
+    if (command === "git" && (parsed.positionals[1] ?? "").toLowerCase() === "materialize") {
+      return await runGitMaterializeSubcommand(parsed, root, io);
     }
     return runCommand(parsed, root, io);
   } catch (err) {

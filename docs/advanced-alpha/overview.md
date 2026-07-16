@@ -7,7 +7,8 @@ Advanced alpha surfaces are useful for larger agentic workflows, but they are no
 - [Graph movement](graph-movement.md)
 - [Project DB and queues](project-db-queues.md)
 - [Read-only MCP](read-only-mcp.md)
+- [Verified Git materialization](git-materialization.md)
 
-Start with the lowest-risk surface: demo graphs, then subgraphs, then graph movement, then project DB queues, then read-only MCP.
+Start with the lowest-risk surface: demo graphs, then subgraphs, then graph movement, then project DB queues, then read-only MCP. Use verified Git materialization only when a caller can provide an exact accepted revision and policy request.
 
 Use these surfaces only after `mdkg init --agent`, `mdkg index`, `mdkg validate`, and the basic Plan -> Work -> Evidence loop are comfortable in a small repository.

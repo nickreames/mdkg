@@ -2,7 +2,7 @@
 id: task-747
 type: task
 title: implement JSON request parsing and external auth capability preflight
-status: todo
+status: done
 priority: 1
 parent: goal-66
 prev: task-746
@@ -56,8 +56,25 @@ auth availability checks before any Git subprocess starts.
 
 # Completion Evidence
 
-- Attach focused parser/auth tests and a Git-not-invoked receipt for every
-  preflight rejection class.
+- Implemented a bounded 64 KiB strict JSON parser with duplicate-key and
+  trailing-value rejection, exact field allowlisting, portable path/ref
+  validation, full SHA-1/SHA-256 identities, and deterministic canonical
+  request hashing for file and stdin input.
+- Invalid YAML, missing/unknown/wrong-type fields, controls, embedded URL
+  userinfo, credential-like query parameters, remote helpers, option operands,
+  unsupported protocols, invalid full refs, malformed object IDs, policy
+  values, depth, and destination paths all produce one bounded
+  `invalid_request` receipt before any Git invocation.
+- HTTPS, SSH/SCP-like, Git, file, and local path forms are accepted without
+  shell interpolation. Git commands use argv and disable interactive prompts,
+  extension transports, hooks, and recursive submodules.
+- Auth evidence is limited to capability, availability, bounded status, and
+  bounded reason code for unauthenticated, `gh`, SSH-agent, credential-helper,
+  and Git-environment classes. Helper/`gh` output, environment values, and SSH
+  socket paths are discarded and absent from receipts.
+- Compiled focused test evidence: 11/11 tests pass, including a Git-wrapper
+  proof that all strict rejection classes execute no Git subprocess and
+  auth-output redaction checks for every deterministic local capability case.
 
 # Files Affected
 

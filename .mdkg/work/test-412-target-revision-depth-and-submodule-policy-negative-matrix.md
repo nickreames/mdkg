@@ -2,7 +2,7 @@
 id: test-412
 type: test
 title: target revision depth and submodule policy negative matrix
-status: todo
+status: done
 priority: 1
 parent: goal-66
 tags: [goal-66, test, revision, submodule]
@@ -19,7 +19,7 @@ aliases: [materialize-revision-policy-test]
 skills: []
 cases: [exact-commit, exact-tree, moved-ref, missing-ref, mismatch, shallow, submodule-deny, submodule-ignore]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
@@ -44,7 +44,13 @@ behavior against neutral local bare fixtures.
 
 # Results / Evidence
 
-- Pending implementation.
+- Focused compiled tests pass exact commit/tree acceptance, missing and moved
+  full refs, commit/tree mismatch, annotated tag peeling, partial-ref rejection,
+  SHA-1 and supported SHA-256 repositories, full/positive depth, and proof that
+  depth mode never fetches an expected object id directly.
+- Submodule fixtures prove `deny` closes with bounded gitlink evidence and
+  `ignore` accepts with the same count/hash while never initializing or
+  recursively fetching the child repository.
 
 # Notes / Follow-ups
 
