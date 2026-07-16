@@ -31,6 +31,10 @@ policy names, and receipts rather than credentials or provider payloads.
 
 - `mdkg git inspect --json` reports the current repo, remotes, working-tree
   state, source descriptor, accepted commit, and tree hash.
+- `mdkg git materialize --request materialize-request.json --json` verifies a
+  strict request, exact commit and optional tree, then atomically publishes a
+  contained source with a bounded receipt. See [Verified Git
+  materialization](/advanced-alpha/git-materialization/).
 - `mdkg git clone <repository-ref> --target <path> --branch <name> --json`
   clones a real Git remote into an explicit contained target.
 - `mdkg git fetch --remote origin --branch main --json` fetches an explicit
@@ -52,6 +56,7 @@ The CLI also includes advanced graph, archive, bundle, subgraph, project DB queu
 Use these docs next:
 
 - [Read-only MCP](/advanced-alpha/read-only-mcp/)
+- [Verified Git materialization](/advanced-alpha/git-materialization/)
 - [Subgraphs and bundles](/advanced-alpha/subgraphs-and-bundles/)
 - [Graph movement](/advanced-alpha/graph-movement/)
 - [Demo graphs](/advanced-alpha/demo-graphs/)

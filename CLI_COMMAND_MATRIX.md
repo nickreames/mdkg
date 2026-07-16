@@ -779,12 +779,14 @@ JSON receipts:
 
 When to use:
 - inspect the current Git-backed mdkg project and accepted revision evidence
+- materialize a strict caller-selected Git ref only after commit, tree, and policy verification
 - clone or fetch real Git remotes through the system Git CLI with external auth
 - close out mdkg state to static receipts before an agent checkpoint commit
 - prove push readiness before any approval-gated real remote push
 
 Usage:
 - `mdkg git inspect [--json]`
+- `mdkg git materialize --request <file|-> [--json]`
 - `mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]`
 - `mdkg git fetch [--remote <name>] [--branch <name>] [--json]`
 - `mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]`
@@ -794,6 +796,7 @@ Usage:
 - `mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]`
 
 Flags:
+- `--request <file|->`
 - `--target <path>`
 - `--branch <name>`
 - `--remote <name>`
@@ -808,6 +811,10 @@ Notes:
 - v1 uses the system Git CLI; authentication stays external through credential helpers, SSH, `gh`, CI/runtime env, or shell state
 - mdkg rejects repository refs and push remotes with embedded URL credentials; inspected remotes with userinfo are redacted before receipts are printed
 - `git inspect` is read-only and emits sanitized source descriptors plus accepted-revision hashes
+- `git materialize` accepts only `mdkg.git.materialize.request.v1` JSON, rejects unsafe input before Git, verifies a full ref and exact commit/tree, and atomically renames a same-parent temporary tree into a contained destination
+- materialization disables prompts, repository hooks, push, and recursive submodules; project-memory checks do not index or execute repository-controlled behavior
+- `deny|ignore` controls submodule acceptance and `required|optional|forbidden` controls project-memory presence
+- materialization receipts never retain credentials, environment values, helper output, socket paths, raw Git output, repository contents, or absolute local paths
 - `git clone` writes only to an empty or absent contained `--target`; use `mdkg graph clone|fork` for bundle/template graph transport
 - `git closeout` validates mdkg state and writes static JSON and Markdown receipts under `.mdkg/git/closeouts` by default
 - when the project DB participated, `git closeout` also seals `.mdkg/db/state/project.sqlite` and writes a deterministic dump
@@ -817,6 +824,7 @@ Notes:
 
 JSON receipts:
 - `inspect`: `{ action: "git.inspect", ok, root, inside_work_tree, branch, head_sha, tree_hash, remotes, status, source_descriptor, accepted_revision, warnings }`
+- `materialize`: `{ schema: "mdkg.git.materialize.receipt.v1", action: "git.materialize", ok, reason_code, request_hash, repository, source_ref, access_ref, correlation_ref, evidence_refs, target_ref, expected_revision, observed_revision, policies, destination, cleanup, warnings }`
 - `clone`: `{ action: "git.clone", ok, repository_ref, target, branch, source_descriptor, accepted_revision, inspect, warnings }`
 - `fetch`: `{ action: "git.fetch", ok, remote, branch, fetch_output, inspect, warnings }`
 - `closeout`: `{ action: "git.closeout", ok, root, output_dir, generated_at, git, validation, db_participated, db_snapshot_status, db_snapshot_seal, db_snapshot_dump, static_receipts, warnings }`

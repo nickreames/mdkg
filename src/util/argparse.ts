@@ -106,6 +106,7 @@ const VALUE_FLAGS = new Set([
   "--queue-policy",
   "--requires",
   "--target",
+  "--request",
   "--snapshot",
   "--family",
   "--start-goal",

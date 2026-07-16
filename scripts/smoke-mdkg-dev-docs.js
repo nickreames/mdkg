@@ -218,7 +218,20 @@ function main() {
   const advancedOverview = readText(path.join(docs, "src", "content", "docs", "advanced-alpha", "overview.md"));
   assert(advancedOverview.includes("## Use when"), "Advanced alpha overview missing use-when guidance");
   assert(advancedOverview.includes("## Do not use when"), "Advanced alpha overview missing do-not-use guidance");
+  assert(advancedOverview.includes("/advanced-alpha/git-materialization/"), "Advanced alpha overview missing Git materialization guide");
   assert(!advancedOverview.includes("should be documented"), "Advanced alpha overview still has documentation meta commentary");
+  const gitMaterialization = readText(path.join(docs, "src", "content", "docs", "advanced-alpha", "git-materialization.md"));
+  for (const snippet of [
+    "mdkg.git.materialize.request.v1",
+    "mdkg.git.materialize.receipt.v1",
+    "mdkg git materialize --request materialize-request.json --json",
+    "same-parent atomic rename",
+    "Authentication remains external",
+    "Project-memory policy",
+    "Clone compatibility",
+  ]) {
+    assert(gitMaterialization.includes(snippet), `Git materialization guide missing contract detail: ${snippet}`);
+  }
   const publicRoadmap = readText(path.join(docs, "src", "content", "docs", "project", "roadmap.md"));
   assert(publicRoadmap.includes("product-facing"), "Roadmap should explain product-facing boundary");
   assert(!publicRoadmap.includes("roadmap source of truth"), "Roadmap still has internal source-of-truth phrasing");
@@ -236,6 +249,7 @@ function main() {
   assert(!publicChangelog.includes("Public docs should"), "Changelog still has docs-author meta commentary");
   const referenceHome = readText(path.join(docs, "src", "content", "docs", "reference", "index.md"));
   assert(referenceHome.includes("Integration metadata"), "Reference home should label command contract as integration metadata");
+  assert(referenceHome.includes("mdkg git materialize --request REQUEST.json --json"), "Reference home missing Git materialization command");
   assert(!referenceHome.includes("The documentation rule"), "Reference home still has docs-author meta commentary");
   const workNodeTypes = readText(path.join(docs, "src", "content", "docs", "concepts", "work-node-types.md"));
   for (const snippet of [
@@ -281,6 +295,8 @@ function main() {
   assert(generated.includes("## handoff"), "generated CLI reference missing handoff command");
   assert(generated.includes("mdkg handoff create <id-or-qid>"), "generated CLI reference missing handoff create usage");
   assert(generated.includes("## git"), "generated CLI reference missing git command family");
+  assert(generated.includes("## git materialize"), "generated CLI reference missing git materialize command");
+  assert(generated.includes("mdkg.git.materialize.receipt.v1"), "generated CLI reference missing materialize receipt schema");
   assert(generated.includes("mdkg git push-ready --remote <name> --branch <name>"), "generated CLI reference missing git push-ready usage");
   assert(generated.includes("external auth"), "generated CLI reference missing git auth boundary");
 
@@ -288,6 +304,7 @@ function main() {
   for (const snippet of [
     "## Git lifecycle commands",
     "mdkg git inspect --json",
+    "mdkg git materialize --request materialize-request.json --json",
     "mdkg git clone <repository-ref>",
     "mdkg git fetch --remote origin --branch main --json",
     "mdkg git closeout --json",
@@ -305,6 +322,7 @@ function main() {
   assertRenderedOutline(path.join(docs, "dist"));
 
   const canonicalDist = path.join(docs, "dist");
+  assertExists(path.join(canonicalDist, "advanced-alpha", "git-materialization", "index.html"));
   if (releasePublished) {
     assertExists(path.join(canonicalDist, "loops", "index.html"));
   } else {

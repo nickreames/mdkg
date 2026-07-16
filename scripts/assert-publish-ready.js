@@ -70,6 +70,9 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:loop"]) {
     fail("package.json is missing smoke:loop");
   }
+  if (!pkg.scripts || pkg.scripts["smoke:git-materialize"] !== "npm run build && node scripts/smoke-git-materialize.js") {
+    fail("package.json is missing the canonical smoke:git-materialize command");
+  }
   if (!pkg.scripts || !pkg.scripts["ci:release"]) {
     fail("package.json is missing ci:release");
   }
@@ -117,11 +120,11 @@ function requirePackageVersions() {
   if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
     fail("prepublishOnly is missing smoke:db-queue-cli");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:consumer && npm run smoke:loop && npm run smoke:matrix")) {
-    fail("prepublishOnly must run installed loop smoke between consumer and command-matrix smokes");
+  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:consumer && npm run smoke:git-materialize && npm run smoke:loop && npm run smoke:matrix")) {
+    fail("prepublishOnly must run installed materialization and loop smokes between consumer and command-matrix smokes");
   }
   const ciRelease = String(pkg.scripts["ci:release"] || "");
-  for (const requiredGate of ["npm run test", "npm run cli:check", "npm run cli:contract", "npm run docs:check", "npm run smoke:loop", "npm run security:verify", "node scripts/assert-publish-ready.js"]) {
+  for (const requiredGate of ["npm run test", "npm run cli:check", "npm run cli:contract", "npm run docs:check", "npm run smoke:git-materialize", "npm run smoke:loop", "npm run security:verify", "node scripts/assert-publish-ready.js"]) {
     if (!ciRelease.includes(requiredGate)) {
       fail(`ci:release is missing ${requiredGate}`);
     }
@@ -265,6 +268,7 @@ function requireCliBuild() {
     "loop plan",
     "loop next",
     "loop runs",
+    "git materialize",
   ]) {
     if (!byKey.has(key)) {
       fail(`dist/command-contract.json is missing ${key}`);
@@ -331,6 +335,31 @@ function requireCliBuild() {
   ) {
     fail("dist/command-contract.json is missing truthful loop fork and dry-run safety metadata");
   }
+  const gitMaterialize = byKey.get("git materialize");
+  if (
+    !gitMaterialize ||
+    gitMaterialize.danger_level !== "moderate" ||
+    !gitMaterialize.write_paths.includes("<destination>/**") ||
+    gitMaterialize.lock_policy !== "not-required-for-contained-destination" ||
+    gitMaterialize.atomic_write_policy !== "same-parent-temporary-tree-rename-after-verification" ||
+    gitMaterialize.dry_run?.supported !== false ||
+    gitMaterialize.json_schema_ref !== "mdkg.git.materialize.receipt.v1" ||
+    !gitMaterialize.receipts.includes("mdkg.git.materialize.receipt.v1")
+  ) {
+    fail("dist/command-contract.json is missing truthful git materialize safety metadata");
+  }
+  const materializeRequestFlag = gitMaterialize && gitMaterialize.flags.find((flag) => flag.name === "--request");
+  const materializeJsonFlag = gitMaterialize && gitMaterialize.flags.find((flag) => flag.name === "--json");
+  if (
+    !materializeRequestFlag ||
+    materializeRequestFlag.value !== "<file|->" ||
+    materializeRequestFlag.required !== true
+  ) {
+    fail("dist/command-contract.json must mark git materialize --request <file|-> as required");
+  }
+  if (!materializeJsonFlag || materializeJsonFlag.value !== null || materializeJsonFlag.required !== false) {
+    fail("dist/command-contract.json must keep bracketed git materialize --json optional and discoverable");
+  }
 }
 
 function requireBuildFolders() {
@@ -364,6 +393,12 @@ function requireBuildFolders() {
   }
   requireFile("dist/graph/goal_scope.js");
   requireFile("dist/commands/subgraph.js");
+  const gitMaterialize = requireFile("dist/commands/git_materialize.js");
+  for (const expected of ["mdkg.git.materialize.request.v1", "mdkg.git.materialize.receipt.v1", "collectGitMaterializeReceipt"]) {
+    if (!gitMaterialize.includes(expected)) {
+      fail(`dist/commands/git_materialize.js is missing ${expected}`);
+    }
+  }
   const subgraph = requireFile("dist/commands/subgraph.js");
   if (!subgraph.includes("runSubgraphAuditCommand") || !subgraph.includes("runSubgraphUpgradePlanCommand")) {
     fail("dist/commands/subgraph.js is missing audit or upgrade-plan command support");

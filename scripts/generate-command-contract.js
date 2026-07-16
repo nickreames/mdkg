@@ -158,6 +158,17 @@ const SAFETY_OVERRIDES = {
     receipts: ["git-clone-receipt"],
     danger_level: "moderate",
   },
+  "git materialize": {
+    side_effects: ["materialize-verified-git-source-into-contained-destination"],
+    read_paths: ["<request-file-or-stdin>", "<remote-git-objects>"],
+    write_paths: ["<destination>/**"],
+    lock_policy: "not-required-for-contained-destination",
+    atomic_write_policy: "same-parent-temporary-tree-rename-after-verification",
+    dry_run: { supported: false },
+    receipts: ["mdkg.git.materialize.receipt.v1"],
+    danger_level: "moderate",
+    json_schema_ref: "mdkg.git.materialize.receipt.v1",
+  },
   "git fetch": {
     side_effects: ["fetch-remote-git-refs"],
     write_paths: [".git/**"],
@@ -658,22 +669,45 @@ function extractSummary(helpText, key) {
   return boundary ? boundary.replace(/:$/, "") : "mdkg command";
 }
 
+function flagOccurrences(line) {
+  const occurrences = [];
+  const flagPattern = /(^|[\s[])(--[a-z0-9][a-z0-9-]*)(?:[ =](<[^>]+>|\[[^\]]+\]|[^\s\]]+))?/gi;
+  for (const match of line.matchAll(flagPattern)) {
+    const nameIndex = (match.index ?? 0) + match[1].length;
+    let optionalDepth = 0;
+    for (let index = 0; index < nameIndex; index += 1) {
+      if (line[index] === "[") optionalDepth += 1;
+      else if (line[index] === "]" && optionalDepth > 0) optionalDepth -= 1;
+    }
+    occurrences.push({
+      name: match[2],
+      value: match[3] && !match[3].startsWith("--") ? match[3] : null,
+      optional: optionalDepth > 0,
+    });
+  }
+  return occurrences;
+}
+
 function extractFlags(helpText) {
   const flags = new Map();
-  const flagPattern = /(^|\s)(--[a-z0-9][a-z0-9-]*)(?:[ =](<[^>]+>|\[[^\]]+\]|\S+))?/gi;
+  const usageLines = collectUsageLines(helpText);
   for (const line of helpText.split(/\r?\n/)) {
-    for (const match of line.matchAll(flagPattern)) {
-      const name = match[2];
-      const value = match[3] && !match[3].startsWith("--") ? match[3] : null;
+    for (const occurrence of flagOccurrences(line)) {
+      const { name, value } = occurrence;
       if (!flags.has(name)) {
         flags.set(name, {
           name,
           value,
-          required: line.includes(`${name} <`) && line.includes("|") && line.includes("Usage:") ? true : false,
+          required: false,
           description: line.trim(),
         });
       }
     }
+  }
+  for (const flag of flags.values()) {
+    flag.required = usageLines.length > 0 && usageLines.every((line) =>
+      flagOccurrences(line).some((occurrence) => occurrence.name === flag.name && !occurrence.optional)
+    );
   }
   return Array.from(flags.values()).sort((a, b) => a.name.localeCompare(b.name));
 }

@@ -1,8 +1,8 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "1d137b3c750bc1d8b9bcb863123719d070291266582c8aec20f8e21529434d54",
+  "contract_hash": "35e7a82190d09c19eb3c8823980d8f2b33b6a3aadfc4cf7f8c6f8249fadcdd71",
   "package_version": "0.5.1",
-  "command_count": 116,
+  "command_count": 117,
   "categories": {
     "archive": 6,
     "bundle": 6,
@@ -13,7 +13,7 @@
     "event": 3,
     "fix": 4,
     "format": 1,
-    "git": 7,
+    "git": 8,
     "global": 1,
     "goal": 13,
     "graph": 5,
@@ -498,6 +498,19 @@
       "category": "git",
       "visibility": "public",
       "danger_level": "read-only",
+      "output_formats": [
+        "text",
+        "json"
+      ],
+      "dry_run": {
+        "supported": false
+      }
+    },
+    {
+      "key": "git materialize",
+      "category": "git",
+      "visibility": "public",
+      "danger_level": "moderate",
       "output_formats": [
         "text",
         "json"

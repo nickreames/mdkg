@@ -12,6 +12,7 @@ Advanced alpha surfaces are useful for larger agentic workflows, but they are no
 - [Graph movement](/advanced-alpha/graph-movement/): clone, fork, import, or repair graph state while preserving links and ownership boundaries.
 - [Project DB and queues](/advanced-alpha/project-db-queues/): add local queue delivery state or project DB checks without turning mdkg into hosted runtime storage.
 - [Read-only MCP](/advanced-alpha/read-only-mcp/): expose mdkg graph reads to a local MCP client while keeping mutation in the CLI.
+- [Verified Git materialization](/advanced-alpha/git-materialization/): accept one exact Git revision into a contained destination with strict request policy, atomic publication, and bounded receipts.
 
 ## How to choose
 

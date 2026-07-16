@@ -2,7 +2,7 @@
 id: test-411
 type: test
 title: JSON materialization request help schema and clone compatibility contract
-status: todo
+status: done
 priority: 1
 parent: goal-66
 tags: [goal-66, test, json, compatibility]
@@ -19,7 +19,7 @@ aliases: [materialize-json-contract-test]
 skills: []
 cases: [file-input, stdin-input, unknown-fields, yaml-rejection, help-parity, clone-regression]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
@@ -44,7 +44,14 @@ clone behavior.
 
 # Results / Evidence
 
-- Pending implementation.
+- Passed in `tests/commands/git_materialize.test.ts`: file and stdin requests
+  produce the same canonical hash; malformed JSON, duplicate keys, YAML-like
+  input, missing/unknown/wrong-type fields, invalid enums, credentials, partial
+  refs, abbreviated ids, and unsafe destinations fail before Git executes.
+- `node dist/cli.js help git materialize`, `npm run cli:check`, and
+  `npm run cli:contract` pass with schema and usage parity.
+- `npm run smoke:git-materialize` confirms the installed tarball retains
+  existing `mdkg git clone` behavior from the same neutral Git fixture.
 
 # Notes / Follow-ups
 

@@ -2,7 +2,7 @@
 id: test-415
 type: test
 title: packed package neutral consumer materialization contract
-status: todo
+status: done
 priority: 1
 parent: goal-66
 tags: [goal-66, test, package, consumer]
@@ -19,7 +19,7 @@ aliases: [materialize-packed-consumer-test]
 skills: []
 cases: [tarball-files, installed-help, local-bare-success, negative-matrix, clone-compatibility, no-product-dependency]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
@@ -45,7 +45,16 @@ generic materialization contract.
 
 # Results / Evidence
 
-- Pending implementation.
+- `npm run smoke:git-materialize` creates a real npm tarball, installs it under
+  an isolated `/private/tmp` prefix, and verifies the compiled CLI,
+  materialization command module, generated command contract, README, command
+  matrix, and changelog payload files.
+- The installed package help/contract match source; a neutral local source is
+  accepted at the exact commit/tree; a wrong commit closes with
+  `commit_mismatch` and no destination; existing `mdkg git clone` succeeds from
+  the same install.
+- The receipt omits the absolute source path, materialization public metadata is
+  product-neutral, and installed package dependencies remain empty.
 
 # Notes / Follow-ups
 

@@ -15,7 +15,7 @@ blocked_by: [test-450]
 blocks: []
 refs: [goal-66]
 context_refs: [edd-73, dec-75, dec-76, dec-77, dec-78]
-evidence_refs: []
+evidence_refs: [chk-530, chk-531]
 aliases: [materialize-implementation-closeout]
 skills: [verify-close-and-checkpoint]
 created: 2026-07-11
@@ -33,8 +33,10 @@ to the fixed `mdkg@0.5.2` release lane.
 - Every scoped implementation task and test is done with command evidence.
 - Source, generated contract, docs, package, and installed-tarball behavior
   agree; clone compatibility and no-push invariants pass.
-- Security diff audit has zero unresolved findings and every local gate in
-  `test-450` passes.
+- Built-in security verification and focused materialization regressions have
+  zero unresolved known findings, and every local gate in `test-450` passes.
+- The failed Codex Security attempt is recorded as out of scope and is not
+  represented as a completed clean scan.
 - Checkpoint records baseline and implementation commits, package/tarball hash,
   request/receipt schema refs, changed surfaces, validation, dirty state,
   no-push/no-publish/no-version-bump status, known warnings, and residual risks.

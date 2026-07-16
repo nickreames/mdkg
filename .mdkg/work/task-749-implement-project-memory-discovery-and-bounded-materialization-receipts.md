@@ -2,7 +2,7 @@
 id: task-749
 type: task
 title: implement project memory discovery and bounded materialization receipts
-status: todo
+status: done
 priority: 1
 parent: goal-66
 prev: task-748
@@ -51,7 +51,28 @@ content.
 
 # Completion Evidence
 
-- Attach discovery-mode, mutation-absence, receipt-bound, and redaction proof.
+- Implemented exact `required|optional|forbidden` discovery. Required demands a
+  regular non-linked `.mdkg/config.json` and passing in-process validation;
+  optional accepts absence and rejects malformed discovered memory; forbidden
+  rejects any discovered `.mdkg` entry.
+- Validation uses `collectValidateReceipt` directly, with no CLI invocation,
+  index write, event append, pack/bundle generation, DB migration, skill sync,
+  package manager, provider command, or repository-controlled executable. A
+  bounded materialization ceiling rejects hostile validation limits before
+  graph discovery.
+- Receipts deterministically expose only bounded refs, canonical request hash,
+  a credential-free repository transport/label/ref-hash descriptor, accepted
+  object identities, policy results, relative destination, cleanup state,
+  reason code, and constant warnings. Absolute local/file source paths appear
+  only as basename-derived labels plus SHA-256 hashes.
+- Success and failure tests prove receipts remain below 8 KiB for the covered
+  contract, raw repository/Git/helper/environment/socket content is absent,
+  project-memory failures retain only presence/validity/error counts, and
+  validation creates no tracked, untracked, or ignored generated files.
+- Compiled focused test evidence: 13/13 pass, including valid required memory,
+  optional absence, malformed optional memory, forbidden memory, inert package
+  and shell-script fixtures, absolute-local source redaction, and clean Git
+  state after accepted validation.
 
 # Files Affected
 

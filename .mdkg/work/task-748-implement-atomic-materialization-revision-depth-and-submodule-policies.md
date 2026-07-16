@@ -2,7 +2,7 @@
 id: task-748
 type: task
 title: implement atomic materialization revision depth and submodule policies
-status: todo
+status: done
 priority: 1
 parent: goal-66
 prev: task-747
@@ -54,8 +54,28 @@ publication gates.
 
 # Completion Evidence
 
-- Attach invocation, identity, containment, cancellation, and before/after
-  filesystem receipts.
+- Implemented an argv-only system-Git transaction that clones without checkout
+  or recursive submodules into a random sibling temporary directory, fetches
+  only the declared full target ref at the declared depth, verifies its peeled
+  commit, detects SHA-1/SHA-256 object format, verifies the tree when supplied,
+  and checks out the accepted commit with global/system config and hooks
+  disabled.
+- `deny` rejects `.gitmodules` or gitlinks. `ignore` leaves gitlinks
+  uninitialized and records only a bounded count plus deterministic SHA-256
+  identity hash; no path or tree output enters the receipt.
+- Destination and every temporary/hook path use contained ancestry checks.
+  Existing targets fail closed, the destination is rechecked immediately
+  before one same-parent rename, and failure paths remove temporary state and
+  newly created empty parents.
+- SIGINT/SIGTERM are handled across the transaction, terminate the detached Git
+  process group, and produce a nonzero bounded `cancelled` receipt only after
+  cleanup. Output-limit, Git, identity, policy, cleanup, and atomic-publication
+  failures are distinct bounded reason codes and cannot become acceptance.
+- Compiled focused test evidence: 12/12 pass, including moved/missing refs,
+  commit/tree mismatch, annotated tag peeling, depth propagation without a
+  direct object fetch, SHA-256, existing and symlinked destinations,
+  submodule deny/ignore, hook suppression, no push/recursion, raw-output
+  redaction, and process-group cancellation with no destination or leftovers.
 
 # Files Affected
 

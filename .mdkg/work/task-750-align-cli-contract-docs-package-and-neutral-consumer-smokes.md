@@ -2,7 +2,7 @@
 id: task-750
 type: task
 title: align CLI contract docs package and neutral consumer smokes
-status: todo
+status: done
 priority: 1
 parent: goal-66
 prev: task-749
@@ -56,7 +56,24 @@ behavior agree before the final local release-candidate audit.
 
 # Completion Evidence
 
-- Attach help/contract/docs/package parity and clean installed-tarball receipts.
+- `node dist/cli.js help git materialize` exposes the exact request form and
+  strict-schema/external-auth/atomic-publication boundaries; existing clone
+  help and command-matrix parity remain clean.
+- Generated command contract hash
+  `0737a8a7eafc028591c10773fc9ef80e659407ed243f262a4881b87a61459183`
+  records the contained destination, no-lock policy, same-parent atomic rename,
+  unsupported dry-run, moderate danger, and v1 bounded receipt schema.
+- `npm run docs:check`, `npm --prefix docs run build`, and
+  `npm run smoke:mdkg-dev-docs` pass with the new advanced-alpha route,
+  navigation, safety guidance, reference links, generated CLI docs, and
+  `Unreleased` notes.
+- `npm run smoke:git-materialize` packs and installs `mdkg@0.5.1` under an
+  isolated prefix, verifies required payload files, accepts an exact commit and
+  tree, rejects a commit mismatch with no destination, and confirms existing
+  `mdkg git clone` compatibility without a downstream product dependency.
+- The 13 focused compiled materialization tests pass after CLI/docs/package
+  integration. No package version, `mdkg-dev` source, remote, registry, global
+  install, deployment, or root-upgrade state changed.
 
 # Files Affected
 

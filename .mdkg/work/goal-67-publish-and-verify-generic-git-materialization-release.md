@@ -19,8 +19,8 @@ relates: []
 blocked_by: [goal-66]
 blocks: []
 refs: [edd-73, dec-75, dec-76, dec-77, dec-78, goal-66]
-context_refs: [goal-66, goal-71, edd-73, dec-69, dec-75, dec-76, dec-77, dec-78]
-evidence_refs: []
+context_refs: [goal-66, goal-71, edd-73, dec-69, dec-75, dec-76, dec-77, dec-78, bug-2, test-452, bug-3, test-453, task-791, test-454]
+evidence_refs: [chk-530, chk-531]
 aliases: [generic-git-materialization-release, mdkg-v0-5-2-release]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-11
@@ -116,14 +116,23 @@ rollback, unrelated provider mutation, or authored mdkg-dev changes.
 
 - Stop before publication on any implementation, security, naming, auth,
   registry, package, docs, validation, or remote-freshness failure.
+- The failed partial scan in `chk-530` is historical discovery evidence, not a
+  clean audit and not a release gate. Do not enter `task-753` until Goal 66
+  closes both validated candidate families, fixes generated command-contract
+  parity, passes its local security/prepublish contract, and records the release
+  handoff.
 - After publication, keep the goal open and fix forward if registry, install,
   root upgrade, push, CI, deployment, or docs evidence fails.
 
 # Current State
 
-Paused behind `goal-66`. Target version is fixed at `0.5.2`; npm publication,
-bounded local validation, post-publish main pushes, and resulting deployment
-verification are pre-approved once all gates pass. First node is `task-753`.
+Paused behind `goal-66`. The two candidate families and command-contract
+fidelity gap recorded by `chk-530` are remediated, and Goal 66's local
+security, prepublish, pack, publish-dry-run, and installed-consumer ladder
+passes. Codex Security is explicitly out of scope after its runtime failed;
+Goal 66 now needs only its local release handoff and achieved evaluation.
+Target version remains fixed at `0.5.2`; publication and approved post-publish
+mutations remain gated. First release node remains `task-753`.
 
 # Completion Evidence
 

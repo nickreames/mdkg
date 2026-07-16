@@ -46,3 +46,5 @@ Keep these out of graph nodes, checkpoints, packs, handoffs, docs fixtures, and 
 - Visibility filtering is metadata enforcement, not arbitrary body redaction.
 - Handoff raw-marker warnings are safety aids, not comprehensive scanning.
 - Internal project DB events, reducers, leases, and materializers are not public CLI surfaces.
+- `mdkg git materialize` executes system Git but disables prompts, repository hooks, and recursive submodules; it validates candidates without executing repository-controlled scripts, skills, or commands.
+- Git materialization receipts record bounded identities and policy outcomes, never credentials, helper output, raw Git output, repository contents, or absolute local paths.

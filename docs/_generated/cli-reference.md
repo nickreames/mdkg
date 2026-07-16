@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 1d137b3c750bc1d8b9bcb863123719d070291266582c8aec20f8e21529434d54 -->
+<!-- contract-hash: 35e7a82190d09c19eb3c8823980d8f2b33b6a3aadfc4cf7f8c6f8249fadcdd71 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -10,7 +10,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - Tool: mdkg
 - Package version: 0.5.1
 - Schema version: 1
-- Command count: 116
+- Command count: 117
 - Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, loop, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
 
 ## Categories
@@ -24,7 +24,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - event: 3
 - fix: 4
 - format: 1
-- git: 7
+- git: 8
 - global: 1
 - goal: 13
 - graph: 5
@@ -87,8 +87,13 @@ mdkg archive show <id-or-archive-uri> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--id <archive.id>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
+- `--json`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
+- `--kind source|artifact`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--visibility private|internal|public`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--json]
+- `--ws <local-alias>`: mdkg archive compress <id-or-archive-uri-or-qid|--all> [--ws <local-alias>] [--json]
 
 ### Output and safety
 
@@ -135,8 +140,15 @@ mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibili
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--id <archive.id>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
+- `--json`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
+- `--kind source|artifact`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
+- `--refs <...>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
+- `--relates <...>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--title <title>`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
 - `--version`: --version, -V       Show version
+- `--visibility private|internal|public`: mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]
 
 ### Output and safety
 
@@ -186,9 +198,10 @@ mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
 
 - `--all [--ws <local-alias>]`: mdkg archive compress --all [--ws <local-alias>] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
-- `--ws <imported-alias>`: - direct imported qids and --ws <imported-alias> fail with source-workspace guidance
+- `--ws <local-alias>`: mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
 
 ### Output and safety
 
@@ -235,8 +248,12 @@ mdkg archive list [--kind source|artifact] [--visibility private|internal|public
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]
+- `--kind source|artifact`: mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--visibility private|internal|public`: mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]
+- `--ws <alias>`: mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -283,8 +300,10 @@ mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -331,8 +350,10 @@ mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -384,8 +405,12 @@ mdkg bundle verify [bundle-path] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
+- `--output <path>`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
+- `--profile private|public`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias|all>`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
 
 ### Output and safety
 
@@ -432,8 +457,12 @@ mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
+- `--output <path>`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
+- `--profile private|public`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias|all>`: mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]
 
 ### Output and safety
 
@@ -528,6 +557,7 @@ mdkg bundle list [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg bundle list [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -576,6 +606,7 @@ mdkg bundle show <bundle-path> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg bundle show <bundle-path> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -624,6 +655,7 @@ mdkg bundle verify [bundle-path] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg bundle verify [bundle-path] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -676,9 +708,14 @@ mdkg capability show <id-or-qid-or-slug> [--json]
 
 ### Common flags
 
+- `--fresh-only`: mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
+- `--kind <kind>`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
+- `--requires <capability>`: mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--visibility <level>`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
 
 ### Output and safety
 
@@ -725,8 +762,11 @@ mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
+- `--kind <kind>`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--visibility <level>`: mdkg capability list [--kind <kind>] [--visibility <level>] [--json]
 
 ### Output and safety
 
@@ -773,8 +813,11 @@ mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
+- `--kind <kind>`: mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--visibility <level>`: mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]
 
 ### Output and safety
 
@@ -821,6 +864,7 @@ mdkg capability show <id-or-qid-or-slug> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg capability show <id-or-qid-or-slug> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -869,8 +913,15 @@ mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audi
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]
+- `--kind implementation|test-proof|goal-closeout|audit|handoff`: mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]
+- `--note "<text>"`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
+- `--relates <id,id,...>`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--run-id <id>`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
+- `--scope <id,id,...>`: [--relates <id,id,...>] [--scope <id,id,...>] [--run-id <id>] [--note "<text>"]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -937,11 +988,18 @@ mdkg db index verify [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg db index rebuild [--tolerant] [--json]
 - `--lease-ms <ms>`: mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]
 - `--lease-owner <owner>`: mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]
+- `--output <path>`: mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]
+- `--paused`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
 - `--payload-json <json>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--json]
+- `--queue-policy drain|paused`: mdkg db snapshot seal [--queue-policy drain|paused] [--json]
+- `--reason <text>`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
+- `--snapshot <path>`: mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]
+- `--tolerant`: mdkg db index rebuild [--tolerant] [--json]
+- 1 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -992,7 +1050,9 @@ mdkg db index verify [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg db index rebuild [--tolerant] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--tolerant`: mdkg db index rebuild [--tolerant] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1053,13 +1113,19 @@ mdkg db queue resume <queue> [--json]
 
 ### Common flags
 
+- `--available-at-ms <ms>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
+- `--dedupe-key <key>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
 - `--error <text>`: mdkg db queue fail <queue> <message-id> --lease-owner <owner> --error <text> [--retry-after-ms <ms>] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
 - `--lease-ms <ms>`: mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]
 - `--lease-owner <owner>`: mdkg db queue claim <queue> --lease-owner <owner> --lease-ms <ms> [--json]
+- `--limit <n>`: mdkg db queue list <queue> [--status ready|leased|acked|dead_letter|all] [--limit <n>] [--json]
+- `--max-attempts <n>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
+- `--paused`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
 - `--payload-json <json>`: mdkg db queue enqueue <queue> <message-id> --payload-json <json>|--payload-file <path> [--dedupe-key <key>] [--available-at-ms <ms>] [--max-attempts <n>] [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
+- `--reason <text>`: mdkg db queue create <queue> [--paused] [--reason <text>] [--json]
+- 4 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -1112,7 +1178,11 @@ mdkg db snapshot verify [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg db snapshot seal [--queue-policy drain|paused] [--json]
+- `--output <path>`: mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]
+- `--queue-policy drain|paused`: mdkg db snapshot seal [--queue-policy drain|paused] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--snapshot <path>`: mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1160,9 +1230,9 @@ mdkg doctor [--strict] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
-- `--json`: --json                Emit machine-readable JSON output
+- `--json`: mdkg doctor [--strict] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--strict`: --strict              Fail on stale selected-goal, DB, and generated cache health issues
+- `--strict`: mdkg doctor [--strict] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1212,11 +1282,13 @@ mdkg event enable [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg event enable [--ws <alias>] [--json]
 - `--kind <kind>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]
 - `--refs <id,...>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--status <ok|error|retry|skipped>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg event enable [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -1262,12 +1334,19 @@ mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...
 
 ### Common flags
 
+- `--agent <name>`: [--agent <name>] [--skill <slug>] [--tool <id>]
+- `--artifacts <a,...>`: [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]
 - `--kind <kind>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...>
+- `--notes "<text>"`: [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]
 - `--refs <id,...>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...>
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--run-id <id>`: [--ws <alias>] [--artifacts <a,...>] [--notes "<text>"] [--run-id <id>] [--json]
+- `--skill <slug>`: [--agent <name>] [--skill <slug>] [--tool <id>]
 - `--status <ok|error|retry|skipped>`: mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...>
-- `--version`: --version, -V       Show version
+- `--tool <id>`: [--agent <name>] [--skill <slug>] [--tool <id>]
+- 2 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -1314,8 +1393,10 @@ mdkg event enable [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg event enable [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg event enable [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -1365,8 +1446,13 @@ mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <
 
 ### Common flags
 
+- `--apply`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
+- `--base-ref <ref>`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
+- `--family index|refs|ids|all`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--target <id-or-qid>`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1413,12 +1499,12 @@ mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 
 ### Common flags
 
-- `--base-ref <ref>`: --base-ref <ref>      Prefer IDs that already exist at a Git base ref
-- `--family ids`: --family ids          Explicit apply family; ids is the only supported apply family
+- `--base-ref <ref>`: mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
+- `--family ids`: mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: --json                Emit machine-readable JSON output
+- `--json`: mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--target <id-or-qid>`: --target <id-or-qid>  Optional duplicate ID target
+- `--target <id-or-qid>`: mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1465,13 +1551,13 @@ mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 
 ### Common flags
 
-- `--apply it`: - without --apply it is equivalent to `mdkg fix plan --family ids`
-- `--base-ref <ref>`: --base-ref <ref>      Prefer IDs that already exist at a Git base ref
+- `--apply`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
+- `--base-ref <ref>`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 - `--family ids``: - without --apply it is equivalent to `mdkg fix plan --family ids`
 - `--help`: --help, -h          Show help
-- `--json`: --json                Emit machine-readable JSON output
+- `--json`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--target <id-or-qid>`: --target <id-or-qid>  Optional duplicate ID target
+- `--target <id-or-qid>`: mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1518,12 +1604,12 @@ mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <
 
 ### Common flags
 
-- `--base-ref <ref>`: --base-ref <ref>      Prefer IDs that already exist at a Git base ref
-- `--family ids``: - ids-family duplicate-id repairs can be applied with `mdkg fix apply --family ids`
+- `--base-ref <ref>`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
+- `--family index|refs|ids|all`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: --json                Emit machine-readable JSON output
+- `--json`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--target <id-or-qid>`: --target <id-or-qid>  Optional node target for family planners
+- `--target <id-or-qid>`: mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1575,9 +1661,10 @@ mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
 - `--apply to`: --headings adds missing recommended body headings; it defaults to dry-run and requires --apply to write files.
 - `--headings [--dry-run|--apply]`: mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
 - `--help`: --help, -h          Show help
-- `--limit controls`: --summary emits bounded heading-change samples for agent/CI logs; --limit controls the sample size.
+- `--json`: mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
+- `--limit <n>`: mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--summary emits`: --summary emits bounded heading-change samples for agent/CI logs; --limit controls the sample size.
+- `--summary`: mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -1614,6 +1701,7 @@ Beginner safety: Run read-only grounding commands first, then use this only when
 
 ```text
 mdkg git inspect [--json]
+mdkg git materialize --request <file|-> [--json]
 mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 mdkg git fetch [--remote <name>] [--branch <name>] [--json]
 mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
@@ -1625,17 +1713,21 @@ mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--
 
 ```bash
 mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-mdkg git fetch [--remote <name>] [--branch <name>] [--json]
 mdkg git inspect [--json]
+mdkg git materialize --request <file|-> [--json]
 ```
 
 ### Common flags
 
-- `--branch <name>`: mdkg git push-ready --remote <name> --branch <name> [--json]
+- `--branch <name>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 - `--help`: --help, -h          Show help
-- `--message <text>`: mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]
-- `--remote <name>`: mdkg git push-ready --remote <name> --branch <name> [--json]
+- `--json`: mdkg git inspect [--json]
+- `--output <path>`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
+- `--queue-policy drain|paused`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
+- `--remote <name>`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
+- `--request <file|->`: mdkg git materialize --request <file|-> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--stage-all`: mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]
 - `--target <path>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 - `--version`: --version, -V       Show version
 
@@ -1652,7 +1744,7 @@ mdkg git inspect [--json]
 
 ### Related commands
 
-`mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git push`
+`mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git materialize`
 
 ## git clone
 
@@ -1683,7 +1775,9 @@ mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 
 ### Common flags
 
+- `--branch <name>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--target <path>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 - `--version`: --version, -V       Show version
@@ -1701,7 +1795,7 @@ mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
 
 ### Related commands
 
-`mdkg git`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git push`
+`mdkg git`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git materialize`
 
 ## git closeout
 
@@ -1733,6 +1827,9 @@ mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
+- `--output <path>`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
+- `--queue-policy drain|paused`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -1749,7 +1846,7 @@ mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
 
 ### Related commands
 
-`mdkg git`, `mdkg git clone`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git push`
+`mdkg git`, `mdkg git clone`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git materialize`
 
 ## git fetch
 
@@ -1780,7 +1877,10 @@ mdkg git fetch [--remote <name>] [--branch <name>] [--json]
 
 ### Common flags
 
+- `--branch <name>`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
+- `--remote <name>`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -1797,7 +1897,7 @@ mdkg git fetch [--remote <name>] [--branch <name>] [--json]
 
 ### Related commands
 
-`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git inspect`, `mdkg git push`
+`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git inspect`, `mdkg git materialize`
 
 ## git inspect
 
@@ -1829,6 +1929,7 @@ mdkg git inspect [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg git inspect [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -1845,7 +1946,57 @@ mdkg git inspect [--json]
 
 ### Related commands
 
-`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git push`
+`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git materialize`
+
+## git materialize
+
+mdkg git materialize command
+
+- Command: `mdkg git materialize`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
+
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
+
+### Usage
+
+```text
+mdkg git materialize --request <file|-> [--json]
+```
+
+### Examples
+
+```bash
+mdkg git materialize --request <file|-> [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--json`: mdkg git materialize --request <file|-> [--json]
+- `--request <file|->`: mdkg git materialize --request <file|-> [--json]
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":false}
+- Side effects: materialize-verified-git-source-into-contained-destination
+- Read paths: <remote-git-objects>, <request-file-or-stdin>
+- Write paths: <destination>/**
+- Lock policy: not-required-for-contained-destination
+- Atomic write policy: same-parent-temporary-tree-rename-after-verification
+- Receipts: mdkg.git.materialize.receipt.v1
+
+### Related commands
+
+`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`
 
 ## git push
 
@@ -1880,7 +2031,9 @@ mdkg git push --remote <name> --branch <name> [--json]
 
 - `--branch <name>`: mdkg git push --remote <name> --branch <name> [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg git push --remote <name> --branch <name> [--json]
 - `--message`: - --stage-all writes closeout evidence, stages all changes, commits with --message, then runs push-ready before pushing
+- `--queue-policy drain|paused`: mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]
 - `--remote <name>`: mdkg git push --remote <name> --branch <name> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--stage-all`: mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]
@@ -1932,6 +2085,7 @@ mdkg git push-ready --remote <name> --branch <name> [--json]
 
 - `--branch <name>`: mdkg git push-ready --remote <name> --branch <name> [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg git push-ready --remote <name> --branch <name> [--json]
 - `--remote <name>`: mdkg git push-ready --remote <name> --branch <name> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
@@ -2048,6 +2202,7 @@ mdkg goal show <goal-id-or-qid> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal show <goal-id-or-qid> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -2096,8 +2251,10 @@ mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2144,8 +2301,10 @@ mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2194,8 +2353,10 @@ mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2242,6 +2403,7 @@ mdkg goal clear [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal clear [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -2290,8 +2452,10 @@ mdkg goal current [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal current [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal current [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2338,8 +2502,10 @@ mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2386,8 +2552,10 @@ mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2434,8 +2602,10 @@ mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2482,8 +2652,10 @@ mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2530,8 +2702,10 @@ mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2578,8 +2752,10 @@ mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2626,8 +2802,10 @@ mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2678,10 +2856,17 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 
 ### Common flags
 
+- `--apply`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--dry-run`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--help`: --help, -h          Show help
+- `--id-prefix <prefix>`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--json`: mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--select-goal`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--start-goal <goal-id>`: mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]
 - `--target <path>`: mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2728,6 +2913,7 @@ mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--target <path>`: mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 - `--version`: --version, -V       Show version
@@ -2777,7 +2963,9 @@ mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--start-goal <goal-id>`: mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]
 - `--target <path>`: mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]
 - `--version`: --version, -V       Show version
 
@@ -2825,11 +3013,14 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 
 ### Common flags
 
-- `--apply is`: - defaults to dry-run unless --apply is supplied
+- `--apply`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--dry-run`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--help`: --help, -h          Show help
+- `--id-prefix <prefix>`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--json`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--select-goal requires`: - --select-goal requires --start-goal; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
-- `--start-goal`: - --select-goal requires --start-goal; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
+- `--select-goal`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--start-goal <goal-id>`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -2877,8 +3068,10 @@ mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 
 ### Output and safety
 
@@ -2972,10 +3165,13 @@ mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--j
 
 ### Common flags
 
+- `--depth <n>`: mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]
 - `--help`: --help, -h          Show help
-- `--out must`: - --out must stay inside the repo root
+- `--json`: mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]
+- `--out <path>`: mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]
 
 ### Output and safety
 
@@ -3023,6 +3219,7 @@ mdkg index [--tolerant]
 
 - `--help`: --help, -h          Show help
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--tolerant`: mdkg index [--tolerant]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -3123,9 +3320,18 @@ mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 
 ### Common flags
 
+- `--blocked`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
+- `--epic <id>`: mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 - `--help`: --help, -h          Show help
+- `--json`: [--json|--xml|--toon|--md]
+- `--priority <n>`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--status <status>`: mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
+- `--tags <tag,tag,...>`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
+- `--tags-mode any|all`: [--priority <n>] [--blocked] [--tags <tag,tag,...>] [--tags-mode any|all]
+- `--type <type>`: mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg list [--type <type>] [--status <status>] [--ws <alias>] [--epic <id>]
 
 ### Output and safety
 
@@ -3542,6 +3748,7 @@ mdkg manifest validate [<id-or-qid-or-alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg manifest list [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3590,6 +3797,7 @@ mdkg manifest list [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg manifest list [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3638,6 +3846,7 @@ mdkg manifest show <id-or-qid-or-alias> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg manifest show <id-or-qid-or-alias> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3686,6 +3895,7 @@ mdkg manifest validate [<id-or-qid-or-alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg manifest validate [<id-or-qid-or-alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3837,13 +4047,13 @@ mdkg new <type> "<title>" [options] [--json]
 - `--evidence-policy-ref <ref>`: --evidence-policy-ref <ref> Optional MANIFEST/WORK_ORDER/RECEIPT evidence policy ref
 - `--help`: --help, -h          Show help
 - `--id <portable-id>`: Use --id <portable-id> with these types for semantic ids like agent.image-worker.
+- `--json`: mdkg new <type> "<title>" [options] [--json]
 - `--links`: --links --artifacts --refs --aliases --owners --cases --supersedes
 - `--next`: --parent --prev --next --relates --blocked-by --blocks
 - `--owners`: --links --artifacts --refs --aliases --owners --cases --supersedes
 - `--parent`: --parent --prev --next --relates --blocked-by --blocks
 - `--priority <0..9>`: --priority <0..9>          Work item priority
-- `--receipt-kind <kind>`: --receipt-kind <kind>      Optional RECEIPT kind metadata
-- 12 additional flags omitted from this generated summary.
+- 13 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -3892,6 +4102,7 @@ mdkg next [<id-or-qid>] [--ws <alias>]
 - `--help`: --help, -h          Show help
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg next [<id-or-qid>] [--ws <alias>]
 
 ### Output and safety
 
@@ -3998,8 +4209,15 @@ mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
+- `--limit <n>`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--status <status>`: mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]
+- `--tags <tag,tag,...>`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
+- `--tags-mode any|all`: [--tags <tag,tag,...>] [--tags-mode any|all] [--limit <n>] [--json|--xml|--toon|--md]
+- `--type <type>`: mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg search "<query>" [--type <type>] [--status <status>] [--ws <alias>]
 
 ### Output and safety
 
@@ -4046,9 +4264,11 @@ mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
 ### Common flags
 
 - `--help`: --help, -h          Show help
-- `--meta for`: Shows full body content. Use --meta for card + metadata only.
+- `--json`: mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
+- `--meta`: mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg show <id-or-qid> [--ws <alias>] [--meta] [--json|--xml|--toon|--md]
 
 ### Output and safety
 
@@ -4102,9 +4322,13 @@ mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 ### Common flags
 
 - `--description "<description>"`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
+- `--force`: mdkg skill sync [--force] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
+- `--meta`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--tags`: Use stage tags like `stage:plan`, `stage:execute`, and `stage:review` with --tags.
+- `--tags <tag,tag,...>`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
+- `--tags-mode any|all`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -4152,7 +4376,10 @@ mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--too
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--tags <tag,tag,...>`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
+- `--tags-mode any|all`: mdkg skill list [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -4203,6 +4430,7 @@ mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - `--description "<description>"`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - `--force`: --force                      Overwrite existing SKILL.md
 - `--help`: --help, -h          Show help
+- `--json`: mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - `--links <url,url,...>`: --links <url,url,...>        Optional links list
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--run-id <id>`: --run-id <id>                Optional event run id when event logging is enabled
@@ -4255,7 +4483,10 @@ mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--tags <tag,tag,...>`: mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
+- `--tags-mode any|all`: mdkg skill search "<query>" [--tags <tag,tag,...>] [--tags-mode any|all] [--json|--xml|--toon|--md]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -4303,6 +4534,8 @@ mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
+- `--meta`: mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4350,7 +4583,9 @@ mdkg skill sync [--force] [--json]
 
 ### Common flags
 
+- `--force`: mdkg skill sync [--force] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg skill sync [--force] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4399,6 +4634,7 @@ mdkg skill validate [<slug>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg skill validate [<slug>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4451,6 +4687,7 @@ mdkg spec validate [<id-or-qid-or-alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg spec list [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4499,6 +4736,7 @@ mdkg spec list [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg spec list [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4547,6 +4785,7 @@ mdkg spec show <id-or-qid-or-alias> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg spec show <id-or-qid-or-alias> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4595,6 +4834,7 @@ mdkg spec validate [<id-or-qid-or-alias>] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg spec validate [<id-or-qid-or-alias>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4643,7 +4883,7 @@ mdkg status [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
-- `--json`: --json                Emit machine-readable JSON output
+- `--json`: mdkg status [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4704,10 +4944,19 @@ mdkg subgraph show <alias> [--json]
 
 ### Common flags
 
+- `--allow-dirty`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
+- `--clean`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
+- `--dry-run`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
+- `--gitignore`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
+- `--max-stale-seconds <seconds>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
+- `--profile private|public`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--target <path>`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
-- `--version`: --version, -V       Show version
+- `--source-path <path>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
+- `--source-repo <ref>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
+- `--target <path>`: mdkg subgraph audit [alias|--all] [--target <path>] [--json]
+- 2 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -4754,8 +5003,14 @@ mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
+- `--max-stale-seconds <seconds>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
+- `--profile private|public`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--source-path <path>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
+- `--source-repo <ref>`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 - `--version`: --version, -V       Show version
+- `--visibility private|internal|public`: mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--source-repo <ref>] [--max-stale-seconds <seconds>] [--json]
 
 ### Output and safety
 
@@ -4802,6 +5057,7 @@ mdkg subgraph disable <alias> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph disable <alias> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4850,6 +5106,7 @@ mdkg subgraph enable <alias> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph enable <alias> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4898,6 +5155,7 @@ mdkg subgraph list [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph list [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -4945,7 +5203,10 @@ mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] 
 
 ### Common flags
 
+- `--clean`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
+- `--gitignore`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--target <path>`: mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]
 - `--version`: --version, -V       Show version
@@ -4995,6 +5256,7 @@ mdkg subgraph refresh [alias|--all] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph refresh [alias|--all] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5043,6 +5305,7 @@ mdkg subgraph rm <alias> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph rm <alias> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5091,6 +5354,7 @@ mdkg subgraph show <alias> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph show <alias> [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5138,7 +5402,10 @@ mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 
 ### Common flags
 
+- `--allow-dirty`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
+- `--dry-run`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5187,6 +5454,7 @@ mdkg subgraph verify [alias|--all] [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg subgraph verify [alias|--all] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5238,9 +5506,15 @@ mdkg task update <id-or-qid> [options] [--json]
 
 ### Common flags
 
+- `--checkpoint "<title>"`: mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]
+- `--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff`: mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
+- `--note "<text>"`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--run-id <id>`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
 
 ### Output and safety
 
@@ -5286,9 +5560,18 @@ mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links
 
 ### Common flags
 
+- `--add-artifacts <a,...>`: mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]
+- `--add-links <l,...>`: mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]
+- `--add-refs <id,...>`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
+- `--checkpoint "<title>"`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
+- `--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
+- `--note "<text>"`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--run-id <id>`: [--add-refs <id,...>] [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [--run-id <id>] [--note "<text>"] [--json]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links <l,...>]
 
 ### Output and safety
 
@@ -5335,8 +5618,12 @@ mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
+- `--note "<text>"`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--run-id <id>`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
 - `--version`: --version, -V       Show version
+- `--ws <alias>`: mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]
 
 ### Output and safety
 
@@ -5382,9 +5669,19 @@ mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]
 
 ### Common flags
 
+- `--add-artifacts <a,...>`: [--add-artifacts <a,...>] [--add-links <l,...>] [--add-refs <id,...>]
+- `--add-blocked-by <id,...>`: [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]
+- `--add-links <l,...>`: [--add-artifacts <a,...>] [--add-links <l,...>] [--add-refs <id,...>]
+- `--add-refs <id,...>`: [--add-artifacts <a,...>] [--add-links <l,...>] [--add-refs <id,...>]
+- `--add-skills <slug,...>`: [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]
+- `--add-tags <tag,...>`: [--add-skills <slug,...>] [--add-tags <tag,...>] [--add-blocked-by <id,...>]
+- `--clear-blocked-by`: [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]
 - `--help`: --help, -h          Show help
+- `--json`: [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]
+- `--note "<text>"`: [--clear-blocked-by] [--run-id <id>] [--note "<text>"] [--json]
+- `--priority <n>`: mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
+- 4 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -5430,10 +5727,10 @@ mdkg upgrade [--dry-run] [--apply] [--json]
 
 ### Common flags
 
-- `--apply`: --apply               Apply safe managed init asset upgrades
-- `--dry-run`: --dry-run             Preview upgrade changes without writing files (default)
+- `--apply`: mdkg upgrade [--dry-run] [--apply] [--json]
+- `--dry-run`: mdkg upgrade [--dry-run] [--apply] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: --json                Emit machine-readable upgrade receipt
+- `--json`: mdkg upgrade [--dry-run] [--apply] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5481,14 +5778,16 @@ mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--s
 
 ### Common flags
 
-- `--changed-only filters`: --changed-only filters warning presentation to changed .mdkg files while full graph errors still run.
+- `--changed-only`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
 - `--help`: --help, -h          Show help
-- `--json-out writes`: --out writes the compatibility text report; --json-out writes a clean full JSON receipt.
-- `--limit controls`: --summary emits bounded warning samples for agent/CI logs; --limit controls the sample size.
-- `--out writes`: --out writes the compatibility text report; --json-out writes a clean full JSON receipt.
-- `--profile omni-room`: --profile omni-room applies explicit contract-profile validation after generic validation; this is separate from mdkg pack --profile.
+- `--json`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
+- `--json-out <path>`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
+- `--limit <n>`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
+- `--out <path>`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
+- `--profile <name>`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
+- `--quiet`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
-- `--summary emits`: --summary emits bounded warning samples for agent/CI logs; --limit controls the sample size.
+- `--summary`: mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -5543,7 +5842,10 @@ mdkg work trigger <work-or-capability-ref> ...
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]
+- `--profile <name>`: mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--type <workflow-type>`: mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -5591,6 +5893,9 @@ mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--id <archive.id>`: mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]
+- `--json`: mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]
+- `--kind source|artifact`: mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5639,11 +5944,15 @@ mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <ki
 ### Common flags
 
 - `--agent-id <agent.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--contract-profile <name>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 - `--help`: --help, -h          Show help
 - `--id <work.id>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 - `--inputs <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--json`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 - `--kind <kind>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 - `--outputs <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--pricing-model <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
+- `--required-capabilities <...>`: mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -5695,12 +6004,19 @@ mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] 
 
 ### Common flags
 
+- `--add-artifacts <...>`: mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
+- `--add-input-refs <...>`: mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
+- `--add-queue-refs <...>`: mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-queue-refs <...>] [--add-artifacts <...>] [--json]
+- `--contract-profile <name>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--evidence-policy-ref <ref>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
 - `--help`: --help, -h          Show help
 - `--id <order.id>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
-- `--requester <ref>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
-- `--work-id <work.id>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--input-refs <...>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--json`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--payload-hash <sha256:...>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--queue-refs <...>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- `--request-ref <ref>`: mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]
+- 8 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -5750,12 +6066,19 @@ mdkg work receipt verify <id-or-qid> [--json]
 
 ### Common flags
 
+- `--add-artifacts <...>`: mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
+- `--add-attestation-refs <...>`: mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
+- `--add-evidence-hashes <sha256:...>`: mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
+- `--add-proof-refs <...>`: mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]
+- `--contract-profile <name>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
+- `--evidence-hashes <sha256:...>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
+- `--evidence-policy-ref <ref>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
 - `--help`: --help, -h          Show help
 - `--id <receipt.id>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
+- `--json`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
 - `--outcome success|partial|failure`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
-- `--work-order-id <order.id>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
+- `--receipt-kind <kind>`: mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--redaction-policy refs_and_hashes_only|redacted_summary|external_private] [--contract-profile <name>] [--receipt-kind <kind>] [--redaction-class <class>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--evidence-hashes <sha256:...>] [--json]
+- 7 additional flags omitted from this generated summary.
 
 ### Output and safety
 
@@ -5801,11 +6124,13 @@ mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"]
 
 ### Common flags
 
+- `--enqueue <queue>`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
 - `--help`: --help, -h          Show help
-- `--id order.example-1`: mdkg work trigger work.example --id order.example-1 --requester user://example --json
-- `--json`: mdkg work trigger work.example --id order.example-1 --requester user://example --json
-- `--requester user://example`: mdkg work trigger work.example --id order.example-1 --requester user://example --json
+- `--id <order.id>`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
+- `--json`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
+- `--requester <ref>`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--title "<title>"`: mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -5853,8 +6178,10 @@ mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|f
 ### Common flags
 
 - `--help`: --help, -h          Show help
-- `--profile omni-room`: --profile omni-room applies explicit contract-profile validation after generic mirror validation; this is separate from mdkg pack --profile.
+- `--json`: mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]
+- `--profile <name>`: mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
+- `--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal`: mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]
 - `--version`: --version, -V       Show version
 
 ### Output and safety
@@ -5908,8 +6235,11 @@ mdkg workspace rm <alias> [--json]
 ### Common flags
 
 - `--help`: --help, -h          Show help
+- `--json`: mdkg workspace ls [--json]
+- `--mdkg-dir <dir>`: mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--visibility <level>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
+- `--visibility <level>`: mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--visibility <level>] [--json]
 
 ### Output and safety
 

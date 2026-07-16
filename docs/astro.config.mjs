@@ -100,6 +100,7 @@ export default defineConfig({
             { label: "Overview", slug: "advanced-alpha/overview" },
             { label: "Project DB And Queues", slug: "advanced-alpha/project-db-queues" },
             { label: "Read-only MCP", slug: "advanced-alpha/read-only-mcp" },
+            { label: "Verified Git Materialization", slug: "advanced-alpha/git-materialization" },
             { label: "Subgraphs And Bundles", slug: "advanced-alpha/subgraphs-and-bundles" },
             { label: "Graph Movement", slug: "advanced-alpha/graph-movement" },
             { label: "Demo Graphs", slug: "advanced-alpha/demo-graphs" },
