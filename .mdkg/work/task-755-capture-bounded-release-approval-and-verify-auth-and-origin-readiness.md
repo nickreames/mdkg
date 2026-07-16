@@ -2,7 +2,7 @@
 id: task-755
 type: task
 title: verify pre-approved v0.5.2 auth registry and origin readiness boundary
-status: todo
+status: done
 priority: 1
 parent: goal-67
 next: task-756
