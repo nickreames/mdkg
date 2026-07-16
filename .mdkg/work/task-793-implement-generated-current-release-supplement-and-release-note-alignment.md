@@ -2,7 +2,7 @@
 id: task-793
 type: task
 title: Implement generated current-release supplement and release-note alignment
-status: todo
+status: done
 priority: 1
 parent: goal-73
 prev: task-792
@@ -60,6 +60,22 @@ version-driven projection while retaining all three docs route variants.
 
 Run targeted public-release and release-note checks while implementing; closure
 is blocked on `test-455`.
+
+# Results / Evidence
+
+- Added `docs/src/data/currentRelease.mjs` as the pure manifest plus generated
+  release-note projector. Published state requires exact package, latest-release,
+  release entry, item-count, and highlight agreement; draft previews select
+  `Unreleased`; hidden drafts do not resolve visible release data.
+- Replaced the release-specific Astro component with
+  `CurrentReleaseSupplement.astro`, retained the three Footer route variants,
+  and rendered generated inline-code spans structurally without raw HTML.
+- Removed release-specific generator coupling, added the Unreleased Fixed note,
+  regenerated `docs/_generated/release-notes.json`, and changed smoke assertions
+  to derive labels, dates, counts, and highlights from the manifest and JSON.
+- `npm run test:public-release`, `npm run docs:release-notes:check`,
+  `npm --prefix docs run build`, and `npm run smoke:mdkg-dev-docs` passed.
+- Package metadata remains `0.5.2`; no CLI or `mdkg-dev` source behavior changed.
 
 # Links / Artifacts
 

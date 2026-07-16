@@ -1,0 +1,172 @@
+---
+type Variant = "install" | "changelog" | "reference";
+
+type ReleaseProjection = {
+  visible: boolean;
+  published: boolean;
+  preview: boolean;
+  version: string;
+  qualifier: string;
+  label?: string;
+  date?: string | null;
+  item_count?: number;
+  highlights?: readonly string[];
+};
+
+const { variant, release } = Astro.props as {
+  variant: Variant;
+  release: ReleaseProjection;
+};
+
+const headingId = `release-current-${variant}`;
+const highlights = release.highlights ?? [];
+
+function inlineParts(value: string) {
+  return value.split(/(`[^`]+`)/g).filter(Boolean).map((part) => ({
+    code: part.startsWith("`") && part.endsWith("`"),
+    value: part.startsWith("`") && part.endsWith("`") ? part.slice(1, -1) : part,
+  }));
+}
+---
+
+<section class="release-supplement" aria-labelledby={headingId}>
+  <p class="release-label">{release.label}</p>
+
+  {variant === "install" && (
+    <>
+      <h2 id={headingId}>Install or upgrade mdkg</h2>
+      <p>
+        Install the current package, then preview mdkg-managed changes before
+        applying them to an existing repository.
+      </p>
+      <pre><code>npm install -g mdkg@latest
+mdkg upgrade
+mdkg upgrade --apply
+mdkg validate</code></pre>
+      <p><a href="/project/changelog/">Review the current release notes</a>.</p>
+      {release.preview && (
+        <p class="preview-note">
+          This is a local release preview. It does not claim that the target
+          version is available from npm.
+        </p>
+      )}
+    </>
+  )}
+
+  {variant === "changelog" && (
+    <>
+      <h2 id={headingId}>{release.published ? "Current release" : "Release preview"}</h2>
+      <p class="release-meta">
+        {release.published
+          ? `Released ${release.date} · ${release.item_count} release-note items`
+          : `${release.item_count} unreleased release-note items`}
+      </p>
+      {highlights.length > 0 ? (
+        <>
+          <h3>Release highlights</h3>
+          <ul>
+            {highlights.map((highlight) => (
+              <li>
+                {inlineParts(highlight).map((part) => part.code ? <code>{part.value}</code> : part.value)}
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>No release-note items are recorded yet.</p>
+      )}
+      <p>
+        <a href="https://github.com/nickreames/mdkg/blob/main/CHANGELOG.md">
+          Read the complete changelog
+        </a>.
+      </p>
+      {release.preview && (
+        <p class="preview-note">
+          Draft release facts for local verification only. This preview does
+          not claim npm availability.
+        </p>
+      )}
+    </>
+  )}
+
+  {variant === "reference" && (
+    <>
+      <h2 id={headingId}>Command reference for {release.published ? `v${release.version}` : `target v${release.version}`}</h2>
+      <p>
+        Confirm the installed version, then use command help for the exact local
+        contract.
+      </p>
+      <pre><code>mdkg --version
+mdkg help &lt;command&gt;</code></pre>
+      <p class="release-links">
+        <a href="/reference/generated-cli-reference/">Browse the generated command reference</a>
+        <span aria-hidden="true">·</span>
+        <a href="/project/changelog/">Review the changelog</a>
+      </p>
+      {release.preview && (
+        <p class="preview-note">
+          This reference supplement describes the local release preview only.
+        </p>
+      )}
+    </>
+  )}
+</section>
+
+<style>
+  .release-supplement {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .release-label {
+    width: fit-content;
+    margin: 0 0 1rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--sl-color-accent);
+    border-radius: 0.25rem;
+    color: var(--sl-color-text-accent);
+    font-family: var(--__sl-font-mono);
+    font-size: var(--sl-text-xs);
+    font-weight: 700;
+  }
+
+  .release-supplement h2,
+  .release-supplement h3 {
+    margin-top: 1.5rem;
+  }
+
+  .release-supplement p,
+  .release-supplement ul,
+  .release-supplement pre {
+    margin-top: 1rem;
+  }
+
+  .release-supplement pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .release-meta {
+    color: var(--sl-color-gray-2);
+  }
+
+  .release-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .preview-note {
+    padding-inline-start: 1rem;
+    border-inline-start: 3px solid var(--sl-color-orange);
+    color: var(--sl-color-gray-2);
+  }
+
+  @media (forced-colors: active) {
+    .release-label,
+    .preview-note {
+      border-color: CanvasText;
+    }
+  }
+</style>

@@ -8,6 +8,13 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+### Fixed
+
+- Made docs current-release supplements derive version, state, qualifier, date,
+  note count, and highlights from the shared release manifest and generated
+  changelog data so future releases do not require component or smoke-test
+  version literals.
+
 ## 0.5.2 - 2026-07-15
 
 ### Added

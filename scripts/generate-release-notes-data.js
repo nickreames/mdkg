@@ -8,7 +8,6 @@ const changelogPath = path.join(root, "CHANGELOG.md");
 const packagePath = path.join(root, "package.json");
 const publicReleasePath = path.join(root, "release", "public-release.json");
 const outputPath = path.join(root, "docs", "_generated", "release-notes.json");
-const gatedReleaseSummaryPath = path.join(root, "docs", "src", "components", "ReleaseV050Supplement.astro");
 const publicChangelogPaths = [
   path.join(root, "docs", "src", "content", "docs", "project", "changelog.md"),
   path.join(root, "docs", "project", "changelog.md"),
@@ -153,13 +152,6 @@ function verifyPublicChangelogMentions(data) {
       if (!content.includes(`\`${version}\``)) {
         fail(`${path.relative(root, filePath)} is missing public changelog summary for ${version}`);
       }
-    }
-  }
-
-  if (gatedDraftVersion) {
-    const gatedSummary = readText(gatedReleaseSummaryPath);
-    if (!gatedSummary.includes(`v${gatedDraftVersion}`)) {
-      fail(`${path.relative(root, gatedReleaseSummaryPath)} is missing gated release summary for ${gatedDraftVersion}`);
     }
   }
 }

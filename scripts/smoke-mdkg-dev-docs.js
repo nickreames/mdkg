@@ -27,6 +27,22 @@ function walkHtmlIndexFiles(dir) {
   return out;
 }
 
+function htmlToText(html) {
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function markdownInlineToText(value) {
+  return value.replace(/`([^`]+)`/g, "$1").replace(/\s+/g, " ").trim();
+}
+
 function assertRenderedOutline(distDir) {
   const pages = walkHtmlIndexFiles(distDir);
   assert(pages.length >= 20, "Starlight build produced too few docs pages");
@@ -52,6 +68,22 @@ function main() {
   const releaseManifestHashBefore = crypto.createHash("sha256").update(releaseManifestBefore).digest("hex");
   const releaseManifest = JSON.parse(releaseManifestBefore.toString("utf8"));
   const releasePublished = releaseManifest.state === "published";
+  const releaseNotes = JSON.parse(
+    readText(path.join(repoRoot, "docs", "_generated", "release-notes.json")),
+  );
+  const targetRelease = releaseNotes.releases.find(
+    (release) => release.version === releaseManifest.target_version,
+  );
+  const releaseLabel = releasePublished
+    ? `v${releaseManifest.target_version} · ${releaseManifest.qualifier}`
+    : `Target v${releaseManifest.target_version} · ${releaseManifest.qualifier} preview`;
+  const previewFacts = releasePublished ? targetRelease : releaseNotes.unreleased;
+  const previewHighlights = releasePublished
+    ? targetRelease?.highlights ?? []
+    : Object.values(releaseNotes.unreleased.sections).flat().slice(0, 3);
+  if (releasePublished) {
+    assert(targetRelease, `generated release notes are missing ${releaseManifest.target_version}`);
+  }
   run(NPM_CMD, ["run", "docs:check"]);
   run(NPM_CMD, ["run", "docs:check-commands"]);
   run(NPM_CMD, ["--prefix", "docs", "run", "build"]);
@@ -66,7 +98,8 @@ function main() {
     "public/favicon.svg",
     "src/components/Footer.astro",
     "src/components/PageSidebar.astro",
-    "src/components/ReleaseV050Supplement.astro",
+    "src/components/CurrentReleaseSupplement.astro",
+    "src/data/currentRelease.mjs",
     "src/content.config.ts",
     "src/content/docs/index.md",
     "src/content/docs/start-here/install.md",
@@ -342,12 +375,12 @@ function main() {
   ]) {
     const html = readText(path.join(canonicalDist, relPath));
     if (releasePublished) {
-      assert(html.includes("v0.5.0 · Pre-v1 public alpha"), `published ${label} page must include release facts`);
-      assert(html.includes("release-v050-"), `published ${label} page must render release supplement`);
+      assert(htmlToText(html).includes(releaseLabel), `published ${label} page must include release facts`);
+      assert(html.includes(`release-current-${label}`), `published ${label} page must render release supplement`);
       assert(!html.includes("Draft release facts for local verification only"), `published ${label} page must not include preview copy`);
     } else {
-      assert(!html.includes("Target v0.5.0"), `draft ${label} page must not include target release facts`);
-      assert(!html.includes("release-v050-"), `draft ${label} page must not render release supplement`);
+      assert(!htmlToText(html).includes(releaseLabel), `draft ${label} page must not include target release facts`);
+      assert(!html.includes("release-current-"), `draft ${label} page must not render release supplement`);
     }
   }
   const canonicalInstall = readText(path.join(canonicalDist, "start-here", "install", "index.html"));
@@ -465,20 +498,32 @@ function main() {
   const previewChangelog = readText(path.join(previewDist, "project", "changelog", "index.html"));
   const previewReference = readText(path.join(previewDist, "reference", "generated-cli-reference", "index.html"));
   for (const [label, html, snippets] of [
-    ["install", previewInstall, ["Prepare an existing repo for loops", "mdkg upgrade --apply", "Legacy SPEC compatibility remains unchanged"]],
+    ["install", previewInstall, [releaseLabel, "Install or upgrade mdkg", "npm install -g mdkg@latest", "mdkg upgrade --apply"]],
     [
       "changelog",
       previewChangelog,
       releasePublished
-        ? ["First-class reusable loops", "Seven bundled read-only or planning templates", "v0.5.0 · Pre-v1 public alpha"]
-        : ["First-class reusable loops", "Seven bundled read-only or planning templates", "Draft release facts for local verification only", "npm availability"],
+        ? [releaseLabel, "Current release", `Released ${targetRelease.date}`, `${targetRelease.item_count} release-note items`]
+        : [releaseLabel, "Release preview", `${releaseNotes.unreleased.item_count} unreleased release-note items`, "npm availability"],
     ],
-    ["reference", previewReference, ["Loop command family", "mdkg new loop", "mdkg loop runs LOOP_ID"]],
+    ["reference", previewReference, [releaseLabel, "Command reference for", "mdkg --version", "mdkg help <command>"]],
   ]) {
+    const text = htmlToText(html);
     for (const snippet of snippets) {
-      assert(html.includes(snippet), `preview ${label} release supplement missing ${snippet}`);
+      assert(text.includes(snippet), `preview ${label} release supplement missing ${snippet}`);
     }
   }
+  const previewChangelogText = htmlToText(previewChangelog);
+  for (const highlight of previewHighlights) {
+    assert(
+      previewChangelogText.includes(markdownInlineToText(highlight)),
+      `preview changelog release supplement missing generated highlight: ${highlight}`,
+    );
+  }
+  assert(
+    previewFacts.item_count === previewHighlights.length || previewFacts.item_count > previewHighlights.length,
+    "release supplement highlights must be bounded by the generated item count",
+  );
   const previewPublicHtml = [
     overviewHtml,
     templatesHtml,

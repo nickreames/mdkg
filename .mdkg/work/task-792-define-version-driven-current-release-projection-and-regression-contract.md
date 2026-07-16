@@ -2,7 +2,7 @@
 id: task-792
 type: task
 title: Define version-driven current-release projection and regression contract
-status: todo
+status: done
 priority: 1
 parent: goal-73
 next: task-793
@@ -52,6 +52,21 @@ implementation begins.
 
 Review the accepted projection against `dec-84`, `edd-78`, and the cases in
 `test-455`; no source mutation closes this design task.
+
+# Results / Evidence
+
+- Confirmed package, manifest target, and generated latest release all equal
+  published `0.5.2`.
+- Confirmed `ReleaseV050Supplement.astro` hardcodes the published/preview
+  label, DOM ids, install copy, changelog highlights, and reference commands.
+- Confirmed `Footer.astro` already owns the correct three-route visibility
+  boundary and can retain it with a version-neutral component.
+- Confirmed `generate-release-notes-data.js` already produces published and
+  Unreleased sections but still checks a v0.5.0 component path for draft facts.
+- Confirmed `smoke-mdkg-dev-docs.js` asserts v0.5.0 labels and feature copy in
+  canonical and preview output; these become data-driven assertions.
+- Accepted the pure projector and fail-closed published/draft/hidden contract in
+  `dec-84` and `edd-78`; no additional design decision remains.
 
 # Links / Artifacts
 
