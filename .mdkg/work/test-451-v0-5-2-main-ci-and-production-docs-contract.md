@@ -2,7 +2,7 @@
 id: test-451
 type: test
 title: v0.5.2 main CI and production docs contract
-status: todo
+status: done
 priority: 1
 parent: goal-67
 next: task-757
@@ -13,7 +13,7 @@ artifacts: []
 relates: [task-790]
 blocked_by: [task-790]
 blocks: [task-757]
-refs: [goal-67, goal-66]
+refs: [goal-67, goal-66, chk-537, task-757]
 context_refs: [goal-71]
 evidence_refs: []
 aliases: [v0-5-2-production-docs-contract]

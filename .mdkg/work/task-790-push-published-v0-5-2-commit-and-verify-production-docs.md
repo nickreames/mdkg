@@ -2,18 +2,18 @@
 id: task-790
 type: task
 title: push published v0.5.2 commit and verify production docs
-status: todo
+status: done
 priority: 1
 parent: goal-67
 prev: test-418
 tags: [goal-67, push, ci, vercel, docs, production, 0.5.2]
 owners: []
-links: []
+links: [https://github.com/nickreames/mdkg/actions/runs/29473265920, https://docs.mdkg.dev/advanced-alpha/git-materialization/, https://docs.mdkg.dev/reference/generated-cli-reference/, https://docs.mdkg.dev/project/changelog/, https://mdkg.dev/]
 artifacts: []
 relates: [goal-67]
 blocked_by: [test-418]
 blocks: [test-451]
-refs: [goal-67, goal-66]
+refs: [goal-67, goal-66, test-451, task-757, chk-535, chk-536]
 context_refs: [goal-71]
 evidence_refs: []
 aliases: [v0-5-2-production-docs-proof]
