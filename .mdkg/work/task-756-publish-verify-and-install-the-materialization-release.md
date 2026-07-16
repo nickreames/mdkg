@@ -2,7 +2,7 @@
 id: task-756
 type: task
 title: publish mdkg v0.5.2 and verify registry artifact integrity
-status: todo
+status: progress
 priority: 1
 parent: goal-67
 prev: task-755
