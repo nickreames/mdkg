@@ -2,7 +2,7 @@
 id: task-753
 type: task
 title: finalize mdkg v0.5.2 materialization release metadata and local commit
-status: todo
+status: progress
 priority: 1
 parent: goal-67
 next: task-754

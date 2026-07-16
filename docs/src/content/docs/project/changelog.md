@@ -11,12 +11,22 @@ CHANGELOG.md
 
 This page gives a product-level summary of the public-alpha release line. Use the root changelog for exact dates and patch-level details.
 
-Recent release cards cover `0.5.1`, `0.5.0`, and `0.4.2`; earlier milestones
+Recent release cards cover `0.5.2`, `0.5.1`, and `0.5.0`; earlier milestones
 remain listed below for continuity.
 
 <div class="release-grid" aria-label="Recent mdkg release cards">
   <article class="release-card current">
-    <p class="release-meta">Latest public alpha - 2026-07-14 - 3 notes</p>
+    <p class="release-meta">Latest public alpha - 2026-07-15 - 4 notes</p>
+    <h2>0.5.2</h2>
+    <p>Strict generic Git source materialization with accepted-revision verification and bounded redacted receipts.</p>
+    <ul>
+      <li>Materialize a credential-free repository request with <code>mdkg git materialize --request &lt;file|-&gt; --json</code>.</li>
+      <li>Verify the required commit and optional tree before a contained destination is published atomically.</li>
+      <li>Disable prompts, hooks, push, recursive submodules, and repository-controlled execution while keeping receipts bounded.</li>
+    </ul>
+  </article>
+  <article class="release-card">
+    <p class="release-meta">Public alpha - 2026-07-14 - 3 notes</p>
     <h2>0.5.1</h2>
     <p>Archive compression now has an explicit local-workspace mutation boundary in graphs that include read-only imported subgraphs.</p>
     <ul>
@@ -35,17 +45,34 @@ remain listed below for continuity.
       <li>Use observational fork dry-runs across JSON and SQLite without consuming IDs or mutating graph state.</li>
     </ul>
   </article>
-  <article class="release-card">
-    <p class="release-meta">Public alpha - 2026-07-05 - 9 notes</p>
-    <h2>0.4.2</h2>
-    <p>Low-level Git remote lifecycle primitives for agent closeout, push-readiness, and explicit remote push workflows.</p>
-    <ul>
-      <li>Expose <code>mdkg git inspect|clone|fetch|closeout|push-ready|push</code> through the system Git CLI.</li>
-      <li>Record sanitized source descriptors, accepted revisions, static closeout receipts, and DB snapshot evidence when project DB state participated.</li>
-      <li>Keep Git auth external and reject embedded URL credentials before writing receipts or pushing.</li>
-    </ul>
-  </article>
 </div>
+
+## 0.5.2 details
+
+`0.5.2` adds a generic Git materialization primitive for callers that need to
+turn a credential-free repository request into a verified local source tree
+without accepting a moved ref, executing repository-controlled behavior, or
+leaking operational details into receipts.
+
+### Added
+
+- `mdkg git materialize --request <file|-> --json` accepts the strict
+  `mdkg.git.materialize.request.v1` JSON contract and verifies the required
+  commit plus an optional tree across SHA-1 and SHA-256 repositories.
+- Requests declare bounded auth, depth, submodule, project-memory, destination,
+  and accepted-revision policy; successful destinations are published only by
+  a same-parent atomic rename after every check passes.
+- `mdkg.git.materialize.receipt.v1` records bounded identity, policy, cleanup,
+  destination, reason-code, and warning evidence, with installed-tarball
+  consumer coverage and a dedicated advanced-alpha guide.
+
+### Security
+
+- Materialization invokes system Git with argv and no shell, disables prompts
+  and hooks, prohibits push and recursive submodules, and never indexes or
+  executes repository scripts, hooks, skills, or commands.
+- Receipts exclude credentials, environment values, helper output, socket
+  paths, raw Git output, repository contents, and absolute local paths.
 
 ## 0.5.1 details
 

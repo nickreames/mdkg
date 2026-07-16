@@ -8,6 +8,8 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.5.2 - 2026-07-15
+
 ### Added
 
 - Added `mdkg git materialize --request <file|-> --json` with strict

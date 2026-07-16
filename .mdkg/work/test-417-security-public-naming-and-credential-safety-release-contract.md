@@ -30,8 +30,11 @@ controlled behavior.
 
 # Test Cases
 
-- Goal-66 Codex Security and `security:verify` receipts have zero unresolved
-  findings and remain applicable to the candidate.
+- The failed partial Codex Security scan is historical, terminal, and out of
+  scope; it is neither required nor accepted as clean release evidence.
+- Goal-66 `security:verify`, focused materialization regressions, the complete
+  local test ladder, and installed-tarball audit remain applicable to the
+  candidate and have zero unresolved findings.
 - Focused release-metadata delta review finds no new secret, credential,
   absolute local path, provider payload, or downstream product identifier.
 - Published source, docs, schemas, generated files, tests, and tarball use only
