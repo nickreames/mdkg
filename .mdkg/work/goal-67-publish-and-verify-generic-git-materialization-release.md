@@ -21,7 +21,7 @@ blocked_by: [goal-66]
 blocks: []
 refs: [edd-73, dec-75, dec-76, dec-77, dec-78, goal-66]
 context_refs: [goal-66, goal-71, edd-73, dec-69, dec-75, dec-76, dec-77, dec-78, bug-2, test-452, bug-3, test-453, task-791, test-454]
-evidence_refs: [chk-530, chk-531, chk-532]
+evidence_refs: [chk-530, chk-531, chk-532, chk-533, chk-534, chk-535, chk-536, chk-537, chk-538]
 aliases: [generic-git-materialization-release, mdkg-v0-5-2-release]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-11
@@ -127,17 +127,39 @@ rollback, unrelated provider mutation, or authored mdkg-dev changes.
 
 # Current State
 
-Paused pending Goal-67 execution. Goal 66 is achieved with implementation
-commit `f657a1b3e82388050aeeef39a188d4eaca0a2bf9` and handoff `chk-532`.
-The two candidate families and command-contract fidelity gap recorded by
-`chk-530` are remediated, and Goal 66's local
-security, prepublish, pack, publish-dry-run, and installed-consumer ladder
-passes. Codex Security is explicitly out of scope after its runtime failed.
-The handoff recommendation is `ready for goal-67 v0.5.2 release execution`.
-Target version remains fixed at `0.5.2`;
-publication and approved post-publish mutations remain gated until this goal is
-activated and its ordered checks pass. First release node remains `task-753`.
+Achieved. Every scoped task and test is done, `goal next goal-67` returns no
+actionable node, and full plus changed-only graph validation passes without
+warnings or errors.
+
+`mdkg@0.5.2` is published as npm `latest`; the registry artifact matches the
+sealed dry-run identity. Isolated and real global installs report `0.5.2`, the
+installed materialization and clone compatibility probes pass, and the safe
+real-root upgrade preserved local customizations without writes or blocking
+conflicts. The release history and graph closeout are on `origin/main` without
+force or a `v0.5.2` tag. GitHub Release readiness, exact-SHA Vercel production
+deployments, production docs HTTP/content checks, and repository docs/site
+smokes pass.
+
+Codex Security remains explicitly failed and out of scope; it is not claimed
+as a clean scan. The repository-owned security verifier and the complete local
+prepublish contract are the recorded release authority. Post-publication policy
+is fix-forward only.
 
 # Completion Evidence
 
-- Pending `goal-66` handoff and release execution.
+- `chk-532`: Goal-66 implementation and local publish-readiness handoff.
+- `chk-533`: `0.5.2` package, changelog, generated docs, and release metadata
+  sealed at release commit `867ac709`.
+- `chk-534`: complete version-specific prepublish, security, package, docs,
+  graph, pack, and publish-dry-run ladder passed.
+- `chk-535`: npm publication and registry artifact verified at 191 files,
+  shasum `8226872a6c797382265a13382edea5b7a9c1e033`, and integrity
+  `sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==`.
+- `chk-536`: isolated/global installs, materialization success and bounded
+  failures, clone compatibility, and safe no-write root upgrade verified.
+- `chk-537`: non-force main push, GitHub CI, exact-SHA Vercel production
+  readiness, docs.mdkg.dev content/SEO/robots/sitemap, and basic mdkg.dev health
+  verified without authored mdkg-dev changes or Browser/Chrome.
+- `chk-538`: final release closeout and product-neutral downstream upgrade and
+  materialization handoff, including approved side effects, accepted warnings,
+  no-tag state, external-auth boundary, no-push behavior, and fix-forward policy.
