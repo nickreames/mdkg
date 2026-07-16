@@ -2,7 +2,7 @@
 id: task-754
 type: task
 title: replay v0.5.2 prepublish security naming and registry dry-run gates
-status: progress
+status: done
 priority: 1
 parent: goal-67
 prev: task-753
