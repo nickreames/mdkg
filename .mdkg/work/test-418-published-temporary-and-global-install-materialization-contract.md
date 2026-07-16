@@ -2,7 +2,7 @@
 id: test-418
 type: test
 title: published v0.5.2 registry installs commands and real-root upgrade contract
-status: todo
+status: done
 priority: 1
 parent: goal-67
 next: task-790
@@ -13,7 +13,7 @@ artifacts: []
 relates: [task-756, task-789]
 blocked_by: [task-789]
 blocks: [task-790]
-refs: [goal-67, goal-66]
+refs: [goal-67, goal-66, chk-535, chk-536, task-790]
 context_refs: [goal-66, goal-71]
 evidence_refs: []
 aliases: [published-materialize-install-test]

@@ -2,18 +2,18 @@
 id: task-789
 type: task
 title: validate published v0.5.2 installs and upgrade the real root graph
-status: todo
+status: done
 priority: 1
 parent: goal-67
 prev: task-756
 tags: [goal-67, postpublish, install, upgrade, root, 0.5.2]
 owners: []
 links: []
-artifacts: []
+artifacts: [/private/tmp/mdkg-0.5.2-postpublish, /private/tmp/mdkg-0.5.2-installed-validation-4VIviC]
 relates: [goal-67]
 blocked_by: [task-756]
 blocks: [test-418]
-refs: [goal-67, goal-66]
+refs: [goal-67, goal-66, test-418, chk-535]
 context_refs: [goal-71]
 evidence_refs: []
 aliases: [v0-5-2-installed-consumer-validation]
