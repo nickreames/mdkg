@@ -2,19 +2,19 @@
 id: task-756
 type: task
 title: publish mdkg v0.5.2 and verify registry artifact integrity
-status: progress
+status: done
 priority: 1
 parent: goal-67
 prev: task-755
 next: task-789
 tags: [goal-67, publish, registry, integrity, 0.5.2]
 owners: []
-links: []
+links: [https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz]
 artifacts: []
 relates: [goal-67]
 blocked_by: [task-755]
 blocks: [task-789]
-refs: [goal-67, goal-66]
+refs: [goal-67, goal-66, test-418, task-789]
 context_refs: [goal-66]
 evidence_refs: []
 aliases: [materialize-release-publish]
