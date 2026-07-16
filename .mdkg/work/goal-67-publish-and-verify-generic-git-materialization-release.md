@@ -2,11 +2,12 @@
 id: goal-67
 type: goal
 title: publish and verify mdkg v0.5.2 generic Git materialization release
-status: todo
+status: progress
 priority: 1
-goal_state: paused
+goal_state: active
 goal_condition: mdkg v0.5.2 is complete only after goal-66 supplies a clean locally publish-ready implementation, version changelog generated contract and docs release metadata agree, all final gates pass, the pre-approved npm publication succeeds, registry integrity and temporary global and real-root upgrade behavior are verified, the exact published commit is pushed without force to origin main, post-push CI and Vercel production health pass, docs.mdkg.dev exposes current materialization documentation, mdkg.dev receives no authored source changes, and the final receipt confirms fix-forward and no-tag state.
 scope_refs: [task-753, task-754, test-416, test-417, task-755, task-756, task-789, test-418, task-790, test-451, task-757, test-419]
+active_node: task-753
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [goal-66 achieved with publish-readiness checkpoint, git status --short --branch, git fetch origin main, git rev-list --left-right --count origin/main...HEAD, npm ci, npm run prepublishOnly, npm run security:verify, npm run cli:check, npm run cli:contract, npm run docs:check, node scripts/assert-publish-ready.js, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, npm view mdkg version --registry=https://registry.npmjs.org/, npm view mdkg@0.5.2 version --registry=https://registry.npmjs.org/, npm whoami through temporary npmrc, npm postpublish registry dist-tag shasum integrity and time proof, isolated temporary install of mdkg@0.5.2, real global mdkg@0.5.2 install, real-root upgrade preview safe apply index status skill validation graph validation doctor and diff proof, non-force git push origin main after npm verification, post-push GitHub CI, Vercel deployment SHA and READY proof, docs.mdkg.dev HTTP content link SEO robots and sitemap proof, basic mdkg.dev deployment health only, no Browser or Chrome, no Git tag, git diff --check]
 max_iterations: 30

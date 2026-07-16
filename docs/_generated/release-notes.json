@@ -1,21 +1,33 @@
 {
   "generated_from": "CHANGELOG.md",
-  "package_version": "0.5.1",
-  "latest_release": "0.5.1",
+  "package_version": "0.5.2",
+  "latest_release": "0.5.2",
   "unreleased": {
-    "sections": {
-      "Added": [
-        "Added `mdkg git materialize --request <file|-> --json` with strict `mdkg.git.materialize.request.v1` parsing, full-ref accepted-revision verification, SHA-1/SHA-256 support, bounded auth capability checks, explicit submodule/project-memory policies, and atomic contained publication.",
-        "Added bounded `mdkg.git.materialize.receipt.v1` success and failure evidence, installed-tarball consumer coverage, generated CLI contract metadata, and a dedicated docs.mdkg.dev advanced-alpha guide."
-      ],
-      "Security": [
-        "Disabled Git prompts, repository hooks, push, and recursive submodules during materialization; candidate project-memory validation does not index or execute repository-controlled scripts, hooks, skills, or commands.",
-        "Redacted credentials, environment values, helper output, socket paths, raw Git output, repository contents, and absolute local paths from materialization receipts while preserving bounded identity, policy, destination, and cleanup evidence."
-      ]
-    },
-    "item_count": 4
+    "sections": {},
+    "item_count": 0
   },
   "releases": [
+    {
+      "version": "0.5.2",
+      "date": "2026-07-15",
+      "legacy": false,
+      "sections": {
+        "Added": [
+          "Added `mdkg git materialize --request <file|-> --json` with strict `mdkg.git.materialize.request.v1` parsing, full-ref accepted-revision verification, SHA-1/SHA-256 support, bounded auth capability checks, explicit submodule/project-memory policies, and atomic contained publication.",
+          "Added bounded `mdkg.git.materialize.receipt.v1` success and failure evidence, installed-tarball consumer coverage, generated CLI contract metadata, and a dedicated docs.mdkg.dev advanced-alpha guide."
+        ],
+        "Security": [
+          "Disabled Git prompts, repository hooks, push, and recursive submodules during materialization; candidate project-memory validation does not index or execute repository-controlled scripts, hooks, skills, or commands.",
+          "Redacted credentials, environment values, helper output, socket paths, raw Git output, repository contents, and absolute local paths from materialization receipts while preserving bounded identity, policy, destination, and cleanup evidence."
+        ]
+      },
+      "item_count": 4,
+      "highlights": [
+        "Added `mdkg git materialize --request <file|-> --json` with strict `mdkg.git.materialize.request.v1` parsing, full-ref accepted-revision verification, SHA-1/SHA-256 support, bounded auth capability checks, explicit submodule/project-memory policies, and atomic contained publication.",
+        "Added bounded `mdkg.git.materialize.receipt.v1` success and failure evidence, installed-tarball consumer coverage, generated CLI contract metadata, and a dedicated docs.mdkg.dev advanced-alpha guide.",
+        "Disabled Git prompts, repository hooks, push, and recursive submodules during materialization; candidate project-memory validation does not index or execute repository-controlled scripts, hooks, skills, or commands."
+      ]
+    },
     {
       "version": "0.5.1",
       "date": "2026-07-14",

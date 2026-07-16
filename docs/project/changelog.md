@@ -10,7 +10,10 @@ This page gives a product-level summary of the public-alpha release line. Use th
 
 Recent release cards:
 
-- `0.5.1` latest public alpha, 2026-07-14: local-workspace archive compression
+- `0.5.2` latest public alpha, 2026-07-15: strict generic Git source
+  materialization with accepted commit/tree verification, bounded redacted
+  receipts, contained atomic publication, and installed-package proof.
+- `0.5.1` public alpha, 2026-07-14: local-workspace archive compression
   ownership, exact qid targeting, full-set preflight, and transparent
   selected/excluded workspace receipts for graphs with read-only imports.
 - `0.5.0` public alpha, 2026-07-11: first-class reusable loops, seven
@@ -25,6 +28,33 @@ Recent release cards:
 - `0.4.0` public alpha, 2026-06-27: public launch readiness for
   mdkg.dev and docs.mdkg.dev, source-backed release metadata, npm gates, Vercel
   currentness, and Chrome live-validation blockers.
+
+## 0.5.2 details
+
+`0.5.2` adds a generic Git materialization primitive for callers that need to
+turn a credential-free repository request into a verified local source tree
+without accepting a moved ref, executing repository-controlled behavior, or
+leaking operational details into receipts.
+
+### Added
+
+- `mdkg git materialize --request <file|-> --json` accepts the strict
+  `mdkg.git.materialize.request.v1` JSON contract and verifies the required
+  commit plus an optional tree across SHA-1 and SHA-256 repositories.
+- Requests declare bounded auth, depth, submodule, project-memory, destination,
+  and accepted-revision policy; successful destinations are published only by
+  a same-parent atomic rename after every check passes.
+- `mdkg.git.materialize.receipt.v1` records bounded identity, policy, cleanup,
+  destination, reason-code, and warning evidence, with installed-tarball
+  consumer coverage and a dedicated advanced-alpha guide.
+
+### Security
+
+- Materialization invokes system Git with argv and no shell, disables prompts
+  and hooks, prohibits push and recursive submodules, and never indexes or
+  executes repository scripts, hooks, skills, or commands.
+- Receipts exclude credentials, environment values, helper output, socket
+  paths, raw Git output, repository contents, and absolute local paths.
 
 ## 0.5.1 details
 
