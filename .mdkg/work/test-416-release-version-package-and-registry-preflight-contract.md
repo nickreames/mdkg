@@ -2,7 +2,7 @@
 id: test-416
 type: test
 title: v0.5.2 package registry origin and approval preflight contract
-status: todo
+status: done
 priority: 1
 parent: goal-67
 tags: [goal-67, test, version, registry, origin, approval, 0.5.2]
