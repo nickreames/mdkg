@@ -2,12 +2,12 @@
 id: goal-66
 type: goal
 title: harden generic Git source materialization and accepted revision enforcement
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: A locally publish-ready generic mdkg Git materialization primitive accepts the strict v1 JSON request contract, verifies caller-selected commit and optional tree identity, enforces auth depth submodule containment and project-memory policies, atomically publishes only accepted destinations, emits bounded redacted receipts, preserves git clone compatibility, documents the capability for docs.mdkg.dev, and passes the complete local security package installed-consumer and prepublish ladder without bumping publishing pushing globally installing deploying or applying a real-root upgrade.
 scope_refs: [task-746, task-747, task-748, task-749, task-750, test-411, test-412, test-413, test-414, test-415, bug-2, test-452, bug-3, test-453, task-791, test-454, test-450, task-751]
-active_node: task-751
+last_active_node: task-751
 required_skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, node dist/cli.js git --help, npm ci, npm run build, npm run test, npm run smoke:git-materialize, npm run cli:check, npm run cli:contract, npm run docs:check, npm --prefix docs run build, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, npm run security:verify, focused materialization security regressions, npm run prepublishOnly, node scripts/assert-publish-ready.js, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json, NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/, clean temporary tarball install and materialization probes, git diff --check]
 max_iterations: 30
@@ -21,7 +21,7 @@ blocked_by: []
 blocks: [goal-67]
 refs: [edd-73, dec-61, dec-63, dec-64, dec-75, dec-76, dec-77, dec-78]
 context_refs: [goal-52, goal-60, goal-64, goal-65, edd-73, dec-61, dec-63, dec-64, dec-75, dec-76, dec-77, dec-78]
-evidence_refs: [chk-530, chk-531]
+evidence_refs: [chk-530, chk-531, chk-532]
 aliases: [generic-git-materialization-hardening]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-11
@@ -129,12 +129,15 @@ broken for this workflow. The abandoned post-remediation setup session
 further action. Goal-66 readiness relies on the passing built-in security
 verifier, focused regressions for both validated candidate families, full
 source/package/docs tests, prepublish gates, dry-runs, and installed-consumer
-proof. `test-450` is done with audit checkpoint `chk-531`; `task-751` is the
-claimed final release-handoff node.
+proof. `test-450` is done with audit checkpoint `chk-531`; `task-751` is done
+with release handoff `chk-532`. Every scoped work node is complete and the
+implementation is committed locally as
+`f657a1b3e82388050aeeef39a188d4eaca0a2bf9`.
 
 # Completion Evidence
 
 - Implementation checkpoints: `chk-525` through `chk-529`.
 - Failed partial scan disposition and remediation handoff: `chk-530`.
 - Local security and prepublish acceptance: `chk-531`.
-- Final implementation/release handoff remains in `task-751`.
+- Final implementation and `0.5.2` release handoff: `chk-532`.
+- Recommendation: `ready for goal-67 v0.5.2 release execution`.

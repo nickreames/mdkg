@@ -20,7 +20,7 @@ blocked_by: [goal-66]
 blocks: []
 refs: [edd-73, dec-75, dec-76, dec-77, dec-78, goal-66]
 context_refs: [goal-66, goal-71, edd-73, dec-69, dec-75, dec-76, dec-77, dec-78, bug-2, test-452, bug-3, test-453, task-791, test-454]
-evidence_refs: [chk-530, chk-531]
+evidence_refs: [chk-530, chk-531, chk-532]
 aliases: [generic-git-materialization-release, mdkg-v0-5-2-release]
 skills: [select-work-and-ground-context, service-boundary-ownership-check, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-11
@@ -126,13 +126,16 @@ rollback, unrelated provider mutation, or authored mdkg-dev changes.
 
 # Current State
 
-Paused behind `goal-66`. The two candidate families and command-contract
-fidelity gap recorded by `chk-530` are remediated, and Goal 66's local
+Paused pending Goal-67 execution. Goal 66 is achieved with implementation
+commit `f657a1b3e82388050aeeef39a188d4eaca0a2bf9` and handoff `chk-532`.
+The two candidate families and command-contract fidelity gap recorded by
+`chk-530` are remediated, and Goal 66's local
 security, prepublish, pack, publish-dry-run, and installed-consumer ladder
-passes. Codex Security is explicitly out of scope after its runtime failed;
-Goal 66 now needs only its local release handoff and achieved evaluation.
-Target version remains fixed at `0.5.2`; publication and approved post-publish
-mutations remain gated. First release node remains `task-753`.
+passes. Codex Security is explicitly out of scope after its runtime failed.
+The handoff recommendation is `ready for goal-67 v0.5.2 release execution`.
+Target version remains fixed at `0.5.2`;
+publication and approved post-publish mutations remain gated until this goal is
+activated and its ordered checks pass. First release node remains `task-753`.
 
 # Completion Evidence
 
