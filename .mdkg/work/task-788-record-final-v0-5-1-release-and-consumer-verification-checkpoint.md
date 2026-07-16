@@ -2,7 +2,7 @@
 id: task-788
 type: task
 title: Record final v0.5.1 release and consumer verification checkpoint
-status: todo
+status: done
 priority: 1
 epic: epic-253
 tags: [release, checkpoint, closeout, fix-forward]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 

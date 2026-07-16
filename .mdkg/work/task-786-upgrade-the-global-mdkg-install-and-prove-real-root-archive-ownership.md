@@ -2,7 +2,7 @@
 id: task-786
 type: task
 title: Upgrade the global mdkg install and prove real root archive ownership
-status: todo
+status: done
 priority: 0
 epic: epic-252
 tags: [release, upgrade, root-graph, archive]
@@ -18,7 +18,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 

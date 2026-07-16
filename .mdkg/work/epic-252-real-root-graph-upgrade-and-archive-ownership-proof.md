@@ -2,7 +2,7 @@
 id: epic-252
 type: epic
 title: Real root graph upgrade and archive ownership proof
-status: todo
+status: done
 priority: 1
 tags: [release, upgrade, root-graph, archive]
 owners: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Goal
 

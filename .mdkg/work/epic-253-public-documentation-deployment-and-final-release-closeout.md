@@ -2,7 +2,7 @@
 id: epic-253
 type: epic
 title: Public documentation deployment and final release closeout
-status: todo
+status: done
 priority: 1
 tags: [release, documentation, deployment, verification]
 owners: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Goal
 

@@ -2,7 +2,7 @@
 id: test-446
 type: test
 title: Real root baseline classifies unrelated state and proves no-touch hashes
-status: todo
+status: done
 priority: 0
 epic: epic-252
 tags: [release, root-graph, baseline, no-touch]
@@ -19,7 +19,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 

@@ -2,7 +2,7 @@
 id: test-448
 type: test
 title: Production archive documentation is current accessible and link-clean
-status: todo
+status: done
 priority: 1
 epic: epic-253
 tags: [release, documentation, accessibility, production]
@@ -19,7 +19,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 

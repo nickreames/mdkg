@@ -2,12 +2,12 @@
 id: test-444
 type: test
 title: v0.5.1 release candidate version package and CI gates pass
-status: progress
+status: done
 priority: 0
 epic: epic-250
 tags: [release, v0.5.1, ci]
 owners: []
-links: []
+links: [https://github.com/nickreames/mdkg/pull/8, https://github.com/nickreames/mdkg/actions/runs/29361299646]
 artifacts: []
 relates: []
 blocked_by: [task-783]

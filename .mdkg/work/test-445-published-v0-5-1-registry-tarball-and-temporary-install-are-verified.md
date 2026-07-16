@@ -2,12 +2,12 @@
 id: test-445
 type: test
 title: Published v0.5.1 registry tarball and temporary install are verified
-status: todo
+status: done
 priority: 0
 epic: epic-251
 tags: [release, npm, registry, install]
 owners: []
-links: []
+links: [https://www.npmjs.com/package/mdkg/v/0.5.1, https://registry.npmjs.org/mdkg/-/mdkg-0.5.1.tgz]
 artifacts: []
 relates: []
 blocked_by: [task-784]
@@ -19,7 +19,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-07-14
-updated: 2026-07-14
+updated: 2026-07-15
 ---
 # Overview
 
