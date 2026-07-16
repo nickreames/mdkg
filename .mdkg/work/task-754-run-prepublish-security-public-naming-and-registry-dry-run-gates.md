@@ -1,54 +1,66 @@
 ---
 id: task-754
 type: task
-title: run prepublish security public naming and registry dry run gates
+title: replay v0.5.2 prepublish security naming and registry dry-run gates
 status: todo
 priority: 1
 parent: goal-67
 prev: task-753
-next: task-755
-tags: [goal-67, prepublish, security, naming]
+tags: [goal-67, prepublish, security, naming, 0.5.2]
 owners: []
 links: []
 artifacts: []
 relates: [goal-67]
 blocked_by: [task-753]
-blocks: [task-755]
-refs: [goal-67]
+blocks: [test-416, test-417]
+refs: [goal-67, goal-66]
 context_refs: [goal-66, edd-73]
 evidence_refs: []
 aliases: [materialize-release-gates]
 skills: [service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
 
-Run all local package, graph, docs, generated-contract, security, credential,
-public naming, tarball, and registry dry-run gates before requesting approval.
+Replay every version-sensitive local, package, graph, docs, security, public
+naming, tarball, registry, and publish dry-run gate against the exact local
+`0.5.2` release commit.
 
 # Acceptance Criteria
 
-- Full prepublish and source validation ladders pass.
-- Security review and credential/public naming scans pass.
-- Registry confirms the selected version is absent.
-- Tarball contents and integrity are recorded from dry-run/pack evidence.
-- No push, publish, global replacement, or external deployment occurs.
-
-# Files Affected
-
-- Evidence/checkpoint updates only after release metadata is finalized.
-
-# Implementation Notes
-
-Stop instead of waiving any failed gate.
+- `npm ci`, `npm run prepublishOnly`, security verification, CLI checks and
+  contract, docs checks/build, graph validation, readiness assertion, and
+  `git diff --check` pass from the release commit.
+- The Goal-66 security receipt remains applicable; a focused review of the
+  release-only metadata delta finds no new security, secret, local-path, public
+  naming, or downstream-product issue.
+- Npm latest is `0.5.1`; `0.5.2` returns the expected 404.
+- Isolated-cache pack and publish dry-runs pass and record exact file inventory,
+  size, shasum/integrity inputs, and no unintended payload.
+- The release commit remains local and `origin/main` has not advanced since the
+  freshness baseline.
+- No push, real publish, global replacement, root apply, or deployment occurs.
 
 # Test Plan
 
 - `test-416`
 - `test-417`
 
+# Completion Evidence
+
+- Attach bounded gate, registry, tarball, and release-delta audit receipts.
+
+# Files Affected
+
+- Evidence/checkpoint nodes only after release metadata is finalized.
+
+# Implementation Notes
+
+- Stop rather than waive any failed gate; do not mutate registry, origin,
+  global installation, real root, or providers.
+
 # Links / Artifacts
 
-- Prepublish and security receipts
+- `test-416`, `test-417`, and Goal-66 security/readiness receipts.

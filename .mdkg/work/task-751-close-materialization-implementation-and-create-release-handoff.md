@@ -1,17 +1,17 @@
 ---
 id: task-751
 type: task
-title: close materialization implementation and create release handoff
+title: close materialization implementation and create v0.5.2 release handoff
 status: todo
 priority: 1
 parent: goal-66
-prev: task-750
-tags: [goal-66, closeout, release-handoff]
+prev: test-450
+tags: [goal-66, closeout, release-handoff, 0.5.2]
 owners: []
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-750]
+blocked_by: [test-450]
 blocks: []
 refs: [goal-66]
 context_refs: [edd-73, dec-75, dec-76, dec-77, dec-78]
@@ -19,35 +19,49 @@ evidence_refs: []
 aliases: [materialize-implementation-closeout]
 skills: [verify-close-and-checkpoint]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
 
-Run the complete release-candidate ladder, record the implementation
-checkpoint, close `goal-66`, and produce the exact sanitized input for
-`goal-67`.
+Consume the completed implementation and `test-450` audit, record the local
+release-candidate checkpoint, close `goal-66`, and hand exact sanitized inputs
+to the fixed `mdkg@0.5.2` release lane.
 
 # Acceptance Criteria
 
-- Every scoped task/test is done with command evidence.
-- Source, generated, docs, package, and installed-temp behavior agree.
-- Git clone compatibility and no-push regression gates pass.
-- Release handoff records commit, package hash, request/receipt schema refs,
-  dirty state, validation, no-push status, and remaining risks.
-
-# Files Affected
-
-- Goal closeout and checkpoint nodes plus intended implementation surfaces.
+- Every scoped implementation task and test is done with command evidence.
+- Source, generated contract, docs, package, and installed-tarball behavior
+  agree; clone compatibility and no-push invariants pass.
+- Security diff audit has zero unresolved findings and every local gate in
+  `test-450` passes.
+- Checkpoint records baseline and implementation commits, package/tarball hash,
+  request/receipt schema refs, changed surfaces, validation, dirty state,
+  no-push/no-publish/no-version-bump status, known warnings, and residual risks.
+- Final recommendation is exactly `ready for goal-67 v0.5.2 release execution`
+  or `not ready` with blocking gaps.
+- Goal evaluation is achieved only for the ready outcome.
 
 # Implementation Notes
 
-Do not bump version, publish, push, tag, deploy, or replace global install.
+Do not bump version, publish, push, tag, deploy, replace the global install, or
+apply the real-root upgrade.
 
 # Test Plan
 
-- Full `goal-66` required checks and goal evaluation.
+- `test-450`
+- `node dist/cli.js goal evaluate goal-66 --json`
+- final graph validation and `git diff --check`
+
+# Completion Evidence
+
+- Create one milestone checkpoint linked from both goals.
+
+# Files Affected
+
+- Goal-66 closeout state, release-handoff evidence, and one milestone
+  checkpoint only.
 
 # Links / Artifacts
 
-- `goal-67`
+- `goal-67`, `test-450`, and the final packed-package/security receipts.

@@ -1,56 +1,65 @@
 ---
 id: task-756
 type: task
-title: publish verify and install the materialization release
+title: publish mdkg v0.5.2 and verify registry artifact integrity
 status: todo
 priority: 1
 parent: goal-67
 prev: task-755
-next: task-757
-tags: [goal-67, publish, install, verification]
+next: task-789
+tags: [goal-67, publish, registry, integrity, 0.5.2]
 owners: []
 links: []
 artifacts: []
 relates: [goal-67]
 blocked_by: [task-755]
-blocks: [task-757]
-refs: [goal-67]
+blocks: [task-789]
+refs: [goal-67, goal-66]
 context_refs: [goal-66]
 evidence_refs: []
 aliases: [materialize-release-publish]
 skills: [verify-close-and-checkpoint]
 created: 2026-07-11
-updated: 2026-07-11
+updated: 2026-07-15
 ---
 
 # Overview
 
-Execute only the approved release mutations, verify registry and integrity,
-then prove clean temporary and real global installs.
+Publish only the approved `mdkg@0.5.2` package from the exact sealed local
+release commit, then verify immutable npm registry and tarball evidence before
+any Git push or local installation replacement.
 
 # Acceptance Criteria
 
-- Origin receives the approved release commit without force and CI passes.
-- Npm publication, dist-tag, version, shasum/integrity, and timestamp agree.
-- A clean temporary install passes materialize positive/negative and clone
-  compatibility probes.
-- The real global install reports the released version and passes the same
-  bounded core probes.
-- No tag or unapproved provider mutation occurs.
-
-# Files Affected
-
-- Approved Git/npm/global install state and release evidence.
-
-# Implementation Notes
-
-Fix forward after publication; never unpublish or rewrite history.
+- Recheck candidate commit/tree, clean worktree, npm auth, registry absence, and
+  dry-run artifact identity immediately before the real command.
+- Publish with isolated cache and the verified temporary npmrc; never expose the
+  token or modify the operator npm configuration.
+- Verify npm latest/dist-tags equal `0.5.2` and record version, publication time,
+  shasum, integrity, unpacked size, file count, and tarball file inventory.
+- Download/inspect the registry tarball and prove it matches the expected
+  package contract and contains the materialization implementation/docs.
+- Do not push, install globally, apply root upgrades, deploy directly, or tag.
+- After success, all failures are fix-forward; never unpublish or rewrite the
+  published commit.
 
 # Test Plan
 
-- `test-418`
-- `test-419`
+- Registry and sealed-artifact portion of `test-418`
+
+# Completion Evidence
+
+- Attach npm publication and immutable artifact receipt.
+
+# Files Affected
+
+- Approved npm registry state and bounded release evidence only.
+
+# Implementation Notes
+
+- Use the verified temporary npmrc and isolated cache. After success, preserve
+  the published commit and fix forward.
 
 # Links / Artifacts
 
-- Registry and installed-package receipts
+- `task-789`, `test-418`, and registry tarball metadata.
