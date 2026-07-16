@@ -2,18 +2,18 @@
 id: task-757
 type: task
 title: record v0.5.2 release closeout and downstream upgrade handoff
-status: todo
+status: done
 priority: 1
 parent: goal-67
 prev: test-451
 tags: [goal-67, closeout, downstream-handoff, 0.5.2]
 owners: []
-links: []
+links: [https://www.npmjs.com/package/mdkg/v/0.5.2, https://docs.mdkg.dev/advanced-alpha/git-materialization/, https://github.com/nickreames/mdkg/actions/runs/29473265920]
 artifacts: []
 relates: [goal-67]
 blocked_by: [test-451]
 blocks: [test-419]
-refs: [goal-67, goal-66]
+refs: [goal-67, goal-66, test-419, chk-532, chk-533, chk-534, chk-535, chk-536, chk-537, edd-73]
 context_refs: [goal-66, edd-73]
 evidence_refs: []
 aliases: [materialize-release-closeout]

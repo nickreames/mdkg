@@ -2,7 +2,7 @@
 id: test-419
 type: test
 title: v0.5.2 downstream handoff and final release evidence contract
-status: todo
+status: done
 priority: 1
 parent: goal-67
 tags: [goal-67, test, handoff, closeout, 0.5.2]
@@ -12,7 +12,7 @@ artifacts: []
 relates: [task-756, task-789, task-790, task-757]
 blocked_by: [task-757]
 blocks: []
-refs: [goal-67, goal-66]
+refs: [goal-67, goal-66, chk-538]
 context_refs: [edd-73, goal-66]
 evidence_refs: []
 aliases: [materialize-release-handoff-test]
