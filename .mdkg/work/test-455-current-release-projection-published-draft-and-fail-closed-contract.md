@@ -2,7 +2,7 @@
 id: test-455
 type: test
 title: Current-release projection published draft and fail-closed contract
-status: todo
+status: done
 priority: 1
 parent: goal-73
 prev: task-793
@@ -52,7 +52,16 @@ published `0.5.2`.
 
 # Results / Evidence
 
-Pending. Attach targeted test output and literal-audit results before closure.
+- `npm run test:public-release` passed 18 tests, including exact published
+  selection, enabled draft preview from `Unreleased`, hidden draft behavior,
+  missing/mismatched data failures, item-count validation, and source-literal
+  guards.
+- `npm run docs:release-notes:check` passed against the regenerated JSON.
+- Literal audit found no semantic-version literals in
+  `CurrentReleaseSupplement.astro` or `currentRelease.mjs`; stale component and
+  identifier patterns are covered by version-neutral regular expressions.
+- The component renders generated changelog text as escaped text and explicit
+  `<code>` nodes; it contains no unrestricted raw-HTML directive.
 
 # Notes / Follow-ups
 

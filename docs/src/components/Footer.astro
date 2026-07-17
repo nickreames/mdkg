@@ -1,7 +1,7 @@
 ---
 import DefaultFooter from "@astrojs/starlight/components/Footer.astro";
-import { publicRelease } from "../data/publicRelease.mjs";
-import ReleaseV050Supplement from "./ReleaseV050Supplement.astro";
+import { currentRelease } from "../data/currentRelease.mjs";
+import CurrentReleaseSupplement from "./CurrentReleaseSupplement.astro";
 
 const routeVariants = new Map([
   ["/start-here/install/", "install"],
@@ -11,7 +11,7 @@ const routeVariants = new Map([
 const variant = routeVariants.get(Astro.url.pathname);
 ---
 
-{publicRelease.visible && variant && (
-  <ReleaseV050Supplement variant={variant} published={publicRelease.published} />
+{currentRelease.visible && variant && (
+  <CurrentReleaseSupplement variant={variant} release={currentRelease} />
 )}
 <DefaultFooter />

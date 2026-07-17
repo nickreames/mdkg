@@ -3,8 +3,12 @@
   "package_version": "0.5.2",
   "latest_release": "0.5.2",
   "unreleased": {
-    "sections": {},
-    "item_count": 0
+    "sections": {
+      "Fixed": [
+        "Made docs current-release supplements derive version, state, qualifier, date, note count, and highlights from the shared release manifest and generated changelog data so future releases do not require component or smoke-test version literals."
+      ]
+    },
+    "item_count": 1
   },
   "releases": [
     {

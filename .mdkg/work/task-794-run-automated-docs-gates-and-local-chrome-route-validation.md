@@ -2,7 +2,7 @@
 id: task-794
 type: task
 title: Run automated docs gates and local Chrome route validation
-status: todo
+status: done
 priority: 1
 parent: goal-73
 prev: test-455
@@ -54,6 +54,22 @@ built docs before any production-triggering push.
 # Test Plan
 
 `test-456` is the blocking local route and responsive contract.
+
+# Results / Evidence
+
+- `npm run test` passed all 658 compiled tests plus the 18-test public-release
+  and security-remediation suite.
+- Release-note generation/check, docs checks/build, docs smoke, full and
+  changed-only mdkg validation, and `git diff --check` passed; mdkg validation
+  reported zero warnings and zero errors.
+- Chrome validated Install, Changelog, and Generated CLI Reference at
+  `1440x900` and `390x844`. Every route rendered one `release-current-*`
+  supplement with generated `v0.5.2` facts, no stale scoped v0.5.0 marker,
+  no draft-only claim, no document overflow, and no console errors.
+- Historical v0.5.0 changelog content remained visible outside the supplement.
+- DOM receipt: `/private/tmp/mdkg-goal73-current-release/local-dom-receipt.json`.
+  Six route/viewport screenshots are stored beside it as
+  `local-{install,changelog,reference}-{desktop,mobile}.png`.
 
 # Links / Artifacts
 

@@ -2,7 +2,7 @@
 id: test-456
 type: test
 title: Local generated supplement route and responsive Chrome contract
-status: todo
+status: done
 priority: 1
 parent: goal-73
 prev: task-794
@@ -51,7 +51,14 @@ fresh `docs/dist` output.
 
 # Results / Evidence
 
-Pending. Attach command receipts, DOM result JSON, and screenshot paths.
+- Chrome DOM checks passed for all six route/viewport combinations. Each route
+  had one expected heading ID, generated version label, valid supplement links,
+  zero scoped stale markers, zero preview claims, and zero horizontal overflow.
+- The Changelog page retained historical v0.5.0 content while its current
+  supplement rendered generated v0.5.2 date, count, and three highlights.
+- `local-dom-receipt.json` records the bounded DOM fields and an empty console
+  error list; six full-page PNGs in the same temporary folder provide visual
+  evidence for desktop and mobile rendering.
 
 # Notes / Follow-ups
 
