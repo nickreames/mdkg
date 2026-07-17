@@ -33,12 +33,17 @@ Keep narrative body edits, nuanced summaries, and manual parent closeout updates
   - name: `pursue-mdkg-goal`
   - stage: `stage:execute`
   - writer role: `writer:orchestrator`
-  - description: Pursue a selected mdkg goal by repeatedly selecting one scoped work item, executing it with evidence, and evaluating the goal until done, blocked, paused, or budget-limited.
+  - description: Pursue an explicit mdkg goal QID through owned scoped work, durable evidence, evaluation, and supported local-only closure while treating selected state as a hint.
 - `pursue-mdkg-loop`
   - name: `pursue-mdkg-loop`
   - stage: `stage:execute`
   - writer role: `writer:orchestrator`
   - description: Pursue a selected mdkg loop by exhausting authorized linked work lanes, recording blocker recovery, and closing only when the loop definition of done is satisfied or explicitly waived.
+- `release-mdkg-package`
+  - name: `release-mdkg-package`
+  - stage: `stage:release`
+  - writer role: `writer:orchestrator`
+  - description: Release the mdkg package only under an explicit release goal and current publication approval while separating push tag deploy and upgrade authority.
 - `select-work-and-ground-context`
   - name: `select-work-and-ground-context`
   - stage: `stage:plan`
