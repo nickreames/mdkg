@@ -2,12 +2,12 @@
 id: goal-73
 type: goal
 title: Make the docs current-release supplement version-driven
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: The docs current-release supplement is complete when release/public-release.json and generated changelog data select every visible version fact without component or test version literals, published and draft-preview states fail closed on inconsistent data, Install Changelog and Generated CLI Reference pass automated and local Chrome checks, the pre-approved implementation and closeout commits reach origin/main without force, exact-SHA Vercel production deployments are READY, and canonical production Chrome validation passes with durable evidence.
 scope_refs: [task-792, task-793, test-455, task-794, test-456, task-795, task-796, test-457, task-797]
-active_node: task-795
+last_active_node: task-797
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, git fetch origin main, git rev-list --left-right --count origin/main...HEAD, npm run test:public-release, npm run docs:release-notes, npm run docs:release-notes:check, npm run docs:check, npm --prefix docs run build, npm run smoke:mdkg-dev-docs, npm run test, node dist/cli.js index, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, local Chrome desktop and mobile validation for Install Changelog and Generated CLI Reference, Vercel exact-SHA READY proof for mdkg-docs and mdkg-dev, live Chrome validation for docs.mdkg.dev and basic mdkg.dev health, git diff --check]
 max_iterations: 25

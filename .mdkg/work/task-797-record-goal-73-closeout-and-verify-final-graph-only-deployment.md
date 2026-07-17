@@ -2,7 +2,7 @@
 id: task-797
 type: task
 title: Record goal-73 closeout and verify final graph-only deployment
-status: todo
+status: done
 priority: 1
 parent: goal-73
 prev: test-457
@@ -57,6 +57,19 @@ the resulting automatic deployments without creating another evidence commit.
 
 Use `test-457`, goal evaluation, exact-SHA Vercel inspection, canonical Chrome
 spot validation, and final local/origin parity.
+
+# Results / Evidence
+
+- Created goal-closeout checkpoint `chk-539` with implementation SHA,
+  deployment identities/readiness/log results, command gates, local/live Chrome
+  receipts and screenshots, canonical URLs, approved side effects, and excluded
+  npm/tag/DNS/manual-deploy boundaries.
+- All preceding scoped tasks/tests are done and all required local and
+  implementation-production checks passed.
+- The graph-only closeout commit is pushed non-force under the existing
+  pre-approval. Its exact-SHA deployments and final canonical Chrome spot check
+  are intentionally reported in the execution closeout without another graph
+  mutation, per this task's non-recursive evidence boundary.
 
 # Links / Artifacts
 

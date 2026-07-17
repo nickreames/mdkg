@@ -2,7 +2,7 @@
 id: test-457
 type: test
 title: Production exact-SHA Vercel and Chrome release-supplement contract
-status: todo
+status: done
 priority: 1
 parent: goal-73
 prev: task-796
@@ -54,7 +54,20 @@ has fresh canonical Chrome receipts.
 
 # Results / Evidence
 
-Pending. Any identity, readiness, log, or browser mismatch blocks `task-797`.
+- Implementation SHA `27005ece67a27bb9fcfb1a2b1ada45dc054ddddd`
+  reached exact-SHA `READY` production deployments for `mdkg-docs`
+  (`dpl_HV13PifDwM6heBwuwC7krCs4TFJt`) and `mdkg-dev`
+  (`dpl_LdQHRUtgyJssUxooLMLEvmRe875y`). Both target `main`; build logs
+  completed successfully.
+- Canonical Chrome results matched the local desktop/mobile contract on all
+  three docs routes, with no console errors or overflow, and basic mdkg.dev
+  homepage health passed.
+- Local and live DOM/screenshot evidence is bounded under
+  `/private/tmp/mdkg-goal73-current-release/`; no npm, tag, DNS, or manual
+  Vercel action occurred.
+- The final graph-only deployment case is intentionally executed as the last
+  acceptance step of `task-797` after its closeout push and reported externally,
+  as required by that task's no-recursive-evidence-commit boundary.
 
 # Notes / Follow-ups
 
