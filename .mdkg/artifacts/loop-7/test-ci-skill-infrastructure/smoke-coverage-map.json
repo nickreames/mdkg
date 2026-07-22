@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "loop": "root:loop-7",
+  "captured_on": "2026-07-17",
+  "declared_alias_count": 47,
+  "ci_release_direct_count": 2,
+  "prepublish_direct_count": 46,
+  "prepublish_effective_count": 47,
+  "network_classification": "Source inspection found local package tarballs, local fixtures, local site builds, and URL string assertions. One mdkg-dev smoke conditionally invokes nested npm ci when dependencies are absent; docs smokes assume preinstalled dependencies. The approved run is forced offline so any missing-cache or registry dependency fails as evidence.",
+  "process_inventory": {
+    "physical_smoke_scripts": 46,
+    "npm_pack_call_sites": 34,
+    "local_tarball_global_install_call_sites": 33,
+    "local_tarball_npx_call_sites": 5,
+    "conditional_nested_npm_ci_call_sites": 1,
+    "docs_build_invocations_in_prepublish": 12,
+    "mdkg_dev_build_invocations_in_prepublish": 17,
+    "local_tarball_global_installs_without_explicit_no_audit_or_no_fund": 32,
+    "local_tarball_npx_without_explicit_offline": 5
+  },
+  "aliases": [
+    {"alias":"smoke:consumer","entrypoint":"scripts/smoke-consumer.js","domain":"package_consumer","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:git-materialize","entrypoint":"scripts/smoke-git-materialize.js","domain":"git_materialization","profile":"local_tarball_fixture","ci_release":true,"prepublish":"direct"},
+    {"alias":"smoke:loop","entrypoint":"scripts/smoke-loop.js","domain":"loop_lifecycle","profile":"local_tarball_fixture","ci_release":true,"prepublish":"direct"},
+    {"alias":"smoke:matrix","entrypoint":"scripts/smoke-command-matrix.js","domain":"command_contract","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:upgrade","entrypoint":"scripts/smoke-upgrade.js","domain":"upgrade","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:init","entrypoint":"scripts/smoke-init.js","domain":"initialization","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:capabilities","entrypoint":"scripts/smoke-capabilities.js","domain":"capability_registry","profile":"local_built_cli","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:db","entrypoint":"scripts/smoke-db.js","domain":"application_db","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:db-queue","entrypoint":"scripts/smoke-db-queue.js","domain":"application_db_queue","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:db-queue-cli","entrypoint":"scripts/smoke-db-queue-cli.js","domain":"application_db_queue_cli","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:db-events","entrypoint":"scripts/smoke-db-events.js","domain":"application_db_events","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:db-materializer","entrypoint":"scripts/smoke-db-materializer.js","domain":"application_db_materializer","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:db-snapshot","entrypoint":"scripts/smoke-db-snapshot.js","domain":"application_db_snapshot","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:archive-work","entrypoint":"scripts/smoke-archive-work.js","domain":"archive_and_work","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:work-invocation","entrypoint":"scripts/smoke-work-invocation.js","domain":"work_invocation","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:cli-ux-polish","entrypoint":"scripts/smoke-cli-ux-polish.js","domain":"cli_ux","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:operator-health","entrypoint":"scripts/smoke-operator-health.js","domain":"operator_health","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:fix-plan","entrypoint":"scripts/smoke-fix-plan.js","domain":"fix_planning","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:branch-conflicts","entrypoint":"scripts/smoke-branch-conflicts.js","domain":"branch_conflicts","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:id-repair","entrypoint":"scripts/smoke-id-repair.js","domain":"id_repair","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:command-docs","entrypoint":"scripts/smoke-command-docs.js","domain":"command_docs","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:spike","entrypoint":"scripts/smoke-spike.js","domain":"spike_lifecycle","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:goal-lifecycle","entrypoint":"scripts/smoke-goal-lifecycle.js","domain":"goal_lifecycle","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:semantic-refs","entrypoint":"scripts/smoke-semantic-refs.js","domain":"semantic_refs","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:checkpoint-templates","entrypoint":"scripts/smoke-checkpoint-templates.js","domain":"checkpoint_templates","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:handoff","entrypoint":"scripts/smoke-handoff.js","domain":"handoff","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:warning-ux","entrypoint":"scripts/smoke-warning-ux.js","domain":"warning_ux","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:integration-ux","entrypoint":"scripts/smoke-integration-ux.js","domain":"integration_ux","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev","entrypoint":"scripts/smoke-mdkg-dev.js","domain":"public_site","profile":"local_site_and_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-docs","entrypoint":"scripts/smoke-mdkg-dev-docs.js","domain":"docs_site","profile":"local_site_build","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-seo","entrypoint":"scripts/smoke-mdkg-dev-seo.js","domain":"public_site_seo","profile":"local_source_or_build_assertions","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-polish-pass2","entrypoint":"scripts/smoke-mdkg-dev-polish-pass2.js","domain":"public_site_polish","profile":"local_site_build","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-polish-pass3","entrypoint":"scripts/smoke-mdkg-dev-polish-pass3.js","domain":"public_site_polish","profile":"local_site_build","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-polish-pass4","entrypoint":"scripts/smoke-mdkg-dev-polish-pass4.js","domain":"public_site_polish","profile":"local_site_build","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-polish-pass5","entrypoint":"scripts/smoke-mdkg-dev-polish-pass5.js","domain":"public_site_polish","profile":"local_site_build","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-a11y","entrypoint":"scripts/smoke-mdkg-dev-a11y.js","domain":"public_site_accessibility","profile":"local_site_build","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mdkg-dev-perf","entrypoint":"scripts/smoke-mdkg-dev-perf.js","domain":"public_site_performance","profile":"local_site_build","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:demo-graph","entrypoint":"scripts/smoke-demo-graph.js","domain":"demo_graph","profile":"local_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:bundle","entrypoint":"scripts/smoke-bundle.js","domain":"bundle","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:graph-clone","entrypoint":"scripts/smoke-graph-clone.js","domain":"graph_clone","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:mcp","entrypoint":"scripts/smoke-mcp.js","domain":"mcp","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:bundle-import","entrypoint":"npm run smoke:subgraph","domain":"bundle_import_compatibility_alias","profile":"delegates_to_smoke_subgraph","ci_release":false,"prepublish":"indirect"},
+    {"alias":"smoke:visibility","entrypoint":"scripts/smoke-visibility.js","domain":"visibility","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:sqlite","entrypoint":"scripts/smoke-sqlite.js","domain":"sqlite_index","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:parallel","entrypoint":"scripts/smoke-parallel.js","domain":"parallel_execution","profile":"local_built_cli","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:goal","entrypoint":"scripts/smoke-goal.js","domain":"goal_commands","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"},
+    {"alias":"smoke:subgraph","entrypoint":"scripts/smoke-subgraph.js","domain":"subgraph_and_bundle_import","profile":"local_tarball_fixture","ci_release":false,"prepublish":"direct"}
+  ],
+  "static_gaps": [
+    {
+      "severity": "P1",
+      "finding": "The site-smoke portion of prepublishOnly depends on nested dependency state that root npm ci does not own; mdkg-dev may attempt a hidden nested npm ci while docs has no install fallback.",
+      "decision_needed": "Define and test a deterministic clean-install contract for root, docs, and mdkg-dev before treating prepublishOnly as an offline or reproducible release gate."
+    },
+    {
+      "severity": "P1",
+      "finding": "The 30-minute CI gate executes only two smoke aliases; 45 aliases are deferred to the publication ladder.",
+      "decision_needed": "Define a risk-based PR/push smoke tier instead of relying only on historical breadth or the full prepublish ladder."
+    },
+    {
+      "severity": "P2",
+      "finding": "smoke:bundle-import is a compatibility alias for smoke:subgraph, so raw token counts can under-report effective coverage unless aliases are expanded.",
+      "decision_needed": "Make smoke inventory checks alias-aware."
+    },
+    {
+      "severity": "P2",
+      "finding": "Smoke-level offline, audit, fund, and timeout behavior is mostly inherited from the caller rather than encoded in the scripts.",
+      "decision_needed": "Define release-smoke environment and timeout policy centrally and prove it in the gate."
+    }
+  ]
+}
