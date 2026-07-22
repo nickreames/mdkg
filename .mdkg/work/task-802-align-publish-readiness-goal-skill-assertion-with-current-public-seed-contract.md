@@ -2,10 +2,10 @@
 id: task-802
 type: task
 title: align publish readiness goal skill assertion with current public seed contract
-status: backlog
+status: done
 priority: 0
 tags: [audit-followup, release, skills, ci]
-owners: []
+owners: [root]
 links: []
 artifacts: []
 relates: [loop-7]
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-07-17
-updated: 2026-07-17
+updated: 2026-07-21
 ---
 # Overview
 
@@ -68,3 +68,25 @@ heading `Skill Improvement Candidates`.
 - `root:test-461`
 - `root:chk-542`
 - `.mdkg/artifacts/loop-7/test-ci-skill-infrastructure/command-receipts.md`
+
+# Results / Evidence
+
+Implemented on Node 24.18.0 after reproducing the exact baseline failure:
+
+- Before the repair, `node scripts/assert-publish-ready.js` failed with
+  `dist/init pursue-mdkg-goal skill is missing goal pursuit guidance` even
+  though the built skill contained the current lifecycle behavior.
+- The cause was the literal `Skill Improvement Candidates` heading check at
+  `scripts/assert-publish-ready.js`; the heading had been removed while its
+  behavior remained.
+- Added a small behavior contract covering explicit goal QID routing,
+  `goal next`, ownership before claim, checkpoint evidence before commit,
+  evaluation, and conditional goal completion.
+- Publish readiness now applies the contract to canonical, Codex mirror,
+  Claude mirror, public seed, and built public seed content, and requires exact
+  canonical projection equality.
+- Added eight focused Node tests: one heading-insensitive positive case, one
+  precise negative case per behavior identity, and canonical-skill coverage.
+- `npm run build` and `node scripts/assert-publish-ready.js` pass after the
+  change. No skill content, workflow, dependency, lockfile, package version,
+  tag, release, or publication surface changed.

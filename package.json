@@ -10,7 +10,7 @@
     "build": "node scripts/clean-build-output.js && tsc -p tsconfig.build.json && node scripts/add-shebang.js && node scripts/copy-init-assets.js && node scripts/generate-command-contract.js --write",
     "build:test": "node scripts/clean-build-output.js tests && tsc -p tsconfig.test.json",
     "test": "npm run build && npm run build:test && node --test dist/tests/**/*.test.js && npm run test:public-release",
-    "test:public-release": "node --test tests/public-release.test.mjs tests/security-remediation.test.mjs",
+    "test:public-release": "node --test tests/public-release.test.mjs tests/publish-readiness-goal-contract.test.mjs tests/security-remediation.test.mjs",
     "security:verify": "node scripts/verify-security-remediation.js",
     "test:coverage": "npm run build && npm run build:test && node --test --experimental-test-coverage dist/tests/**/*.test.js",
     "smoke:consumer": "npm run build && node scripts/smoke-consumer.js",

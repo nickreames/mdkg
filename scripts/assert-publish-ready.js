@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const { validateGoalPursuitContract } = require("./goal-pursuit-contract.js");
 const { verifyMatrix } = require("./verify-security-remediation.js");
 
 const root = path.resolve(__dirname, "..");
@@ -686,9 +687,30 @@ function requireInitAssets() {
   if (!seededExecuteSkill.includes("mdkg archive compress --all") || !seededExecuteSkill.includes("mdkg bundle create --profile private")) {
     fail("dist/init build-pack-and-execute-task skill is missing pre-commit handoff guidance");
   }
-  const seededGoalSkill = requireFile("dist/init/skills/default/pursue-mdkg-goal/SKILL.md");
-  if (!seededGoalSkill.includes("mdkg goal next") || !seededGoalSkill.includes("Skill Improvement Candidates")) {
-    fail("dist/init pursue-mdkg-goal skill is missing goal pursuit guidance");
+  const goalSkillProjections = [
+    ["canonical", ".mdkg/skills/pursue-mdkg-goal/SKILL.md"],
+    ["Codex mirror", ".agents/skills/pursue-mdkg-goal/SKILL.md"],
+    ["Claude mirror", ".claude/skills/pursue-mdkg-goal/SKILL.md"],
+    ["public seed", "assets/init/skills/default/pursue-mdkg-goal/SKILL.md"],
+    ["built public seed", "dist/init/skills/default/pursue-mdkg-goal/SKILL.md"],
+  ].map(([identity, relativePath]) => ({
+    identity,
+    relativePath,
+    content: requireFile(relativePath),
+  }));
+  const canonicalGoalSkill = goalSkillProjections[0].content;
+  for (const projection of goalSkillProjections) {
+    const contract = validateGoalPursuitContract(projection.content);
+    if (!contract.ok) {
+      fail(
+        `${projection.identity} pursue-mdkg-goal skill is missing lifecycle behavior: ${contract.missing.join(", ")}`
+      );
+    }
+    if (projection.content !== canonicalGoalSkill) {
+      fail(
+        `${projection.identity} pursue-mdkg-goal skill does not match canonical .mdkg/skills/pursue-mdkg-goal/SKILL.md`
+      );
+    }
   }
   const rootReadme = requireFile("README.md");
   const normalizedRootReadme = rootReadme.replace(/\s+/g, " ");
