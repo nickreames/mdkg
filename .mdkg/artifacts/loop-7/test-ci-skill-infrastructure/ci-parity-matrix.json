@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "loop": "root:loop-7",
+  "captured_on": "2026-07-17",
+  "workflow": ".github/workflows/release-readiness.yml",
+  "workflow_inventory": {
+    "triggers": ["push:main", "pull_request", "workflow_dispatch"],
+    "permissions": {"contents": "read"},
+    "concurrency": {"group": "release-readiness-${{ github.workflow }}-${{ github.ref }}", "cancel_in_progress": true},
+    "job": "package",
+    "runner": "ubuntu-latest",
+    "timeout_minutes": 30,
+    "fail_fast": false,
+    "node_matrix": ["24.15.0", "24.x"],
+    "matrix_job_count": 2,
+    "steps": ["actions/checkout@v4", "actions/setup-node@v4 with npm cache", "npm ci", "npm run ci:release"],
+    "step_timeouts": false,
+    "runs_test_coverage": false,
+    "runs_prepublish_only": false,
+    "final_tracked_drift_assertion": false
+  },
+  "rows": [
+    {
+      "workflow_surface": "checkout",
+      "workflow_value": "actions/checkout@v4",
+      "local_evidence": "current checked-out source plus before/after Git receipts",
+      "parity": "semantic_only",
+      "execution_state": "source_inspected"
+    },
+    {
+      "workflow_surface": "operating_system",
+      "workflow_value": "ubuntu-latest",
+      "local_evidence": "macOS local host",
+      "parity": "not_reproduced",
+      "execution_state": "source_inspected"
+    },
+    {
+      "workflow_surface": "node_exact",
+      "workflow_value": "24.15.0",
+      "local_evidence": "Node 24.16.0",
+      "parity": "engine_compatible_not_exact",
+      "execution_state": "source_inspected"
+    },
+    {
+      "workflow_surface": "node_floating",
+      "workflow_value": "24.x",
+      "local_evidence": "Node 24.16.0",
+      "parity": "compatible_local_member",
+      "execution_state": "pending_receipt"
+    },
+    {
+      "workflow_surface": "dependency_install",
+      "workflow_value": "npm ci",
+      "local_evidence": "offline npm dependency-tree inspection for root, docs, and mdkg-dev",
+      "parity": "not_executed_by_policy",
+      "execution_state": "source_inspected",
+      "reason": "dependency replacement and registry access are outside authority; root npm ci does not install the independent docs or mdkg-dev trees"
+    },
+    {
+      "workflow_surface": "release_gate",
+      "workflow_value": "npm run ci:release",
+      "local_evidence": "same package script under Node 24.16.0 with offline, audit-disabled, fund-disabled environment",
+      "parity": "command_exact_host_different",
+      "execution_state": "pending_receipt"
+    }
+  ],
+  "ci_release_components": [
+    {"component": "npm run test", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "npm run cli:check", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "npm run cli:contract", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "npm run docs:check", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "npm run smoke:git-materialize", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "npm run smoke:loop", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "npm run security:verify", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "node scripts/assert-publish-ready.js", "ci": true, "prepublish": true, "coverage": false},
+    {"component": "node dist/cli.js validate", "ci": false, "prepublish": true, "coverage": false},
+    {"component": "remaining smoke aliases", "ci": false, "prepublish": true, "coverage": false},
+    {"component": "npm run test:coverage", "ci": false, "prepublish": false, "coverage": true}
+  ],
+  "network_policy": {
+    "provider_calls": "not_requested_and_not_authorized",
+    "registry_calls": "not_requested_and_not_authorized",
+    "npm_ci": "not_executed",
+    "local_commands": "NPM_CONFIG_OFFLINE=true; hidden network dependencies fail as audit evidence",
+    "discovered_hidden_dependency": "A clean mdkg-dev smoke can conditionally invoke npm ci --prefix mdkg-dev --ignore-scripts; docs smokes have no nested install path and require an already populated docs/node_modules."
+  },
+  "timeout_inventory": {
+    "workflow_job_minutes": 30,
+    "step_timeouts": 0,
+    "package_script_timeout_wrappers": 0,
+    "only_internal_smoke_timeout": "scripts/smoke-mcp.js: request 10000ms, shutdown 5000ms"
+  },
+  "contract_guardrail": {
+    "source": "scripts/assert-publish-ready.js",
+    "workflow_substrings_checked": ["24.15.0", "24.x", "npm ci", "npm run ci:release"],
+    "limitation": "Substring checks do not parse workflow semantics, timeout/permission policy, or exact gate parity."
+  },
+  "interpretation": [
+    "A passing local ci:release receipt demonstrates command parity, not Ubuntu runner parity or remote provider state.",
+    "The exact 24.15.0 matrix row remains source-inspected and historically contextualized only.",
+    "A failing or timed-out local command is evidence and does not authorize edits or retries.",
+    "Workflow success cannot prove clean full-prepublish reproducibility because CI runs only root npm ci and ci:release, not the site-heavy prepublish ladder."
+  ]
+}

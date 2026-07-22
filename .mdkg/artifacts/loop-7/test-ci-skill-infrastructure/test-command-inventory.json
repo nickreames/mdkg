@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "loop": "root:loop-7",
+  "captured_on": "2026-07-17",
+  "evidence_kind": "source_inventory",
+  "execution_receipts": ".mdkg/artifacts/loop-7/test-ci-skill-infrastructure/command-receipts.md",
+  "runtime_contract": {
+    "package_engine": ">=24.15.0",
+    "workflow_matrix": ["24.15.0", "24.x"],
+    "approved_local_runtime": {
+      "node": "24.16.0",
+      "npm": "11.13.0"
+    },
+    "parity_limit": "The local runtime satisfies the engine and floating 24.x matrix row. It is not evidence that the exact 24.15.0 row ran."
+  },
+  "packages": [
+    {
+      "path": "package.json",
+      "name": "mdkg",
+      "private": false,
+      "script_count": 65,
+      "dependency_count": 0,
+      "dev_dependency_count": 2,
+      "roles": ["package", "build", "unit_tests", "release_gate", "prepublish_ladder", "smoke_orchestration"]
+    },
+    {
+      "path": "docs/package.json",
+      "name": "mdkg-docs",
+      "private": true,
+      "script_count": 3,
+      "dependency_count": 2,
+      "dev_dependency_count": 0,
+      "scripts": ["dev", "build", "preview"],
+      "roles": ["astro_starlight_docs", "smoke_invoked_build"]
+    },
+    {
+      "path": "mdkg-dev/package.json",
+      "name": "mdkg-dev-site",
+      "private": true,
+      "script_count": 3,
+      "dependency_count": 1,
+      "dev_dependency_count": 0,
+      "scripts": ["dev", "build", "preview"],
+      "roles": ["astro_public_site", "smoke_invoked_build"]
+    }
+  ],
+  "source_surface_counts": {
+    "src_typescript_files": 105,
+    "script_javascript_files": 59,
+    "physical_smoke_script_files": 46,
+    "smoke_alias_only_entries": 1,
+    "non_smoke_support_script_files": 13
+  },
+  "root_script_categories": {
+    "smoke_aliases": 47,
+    "docs": 5,
+    "test": 3,
+    "cli": 3,
+    "build": 2,
+    "lifecycle_ci_security_other": 5
+  },
+  "root_script_names": [
+    "build",
+    "build:test",
+    "test",
+    "test:public-release",
+    "security:verify",
+    "test:coverage",
+    "smoke:consumer",
+    "smoke:git-materialize",
+    "smoke:loop",
+    "smoke:matrix",
+    "smoke:upgrade",
+    "smoke:init",
+    "smoke:capabilities",
+    "smoke:db",
+    "smoke:db-queue",
+    "smoke:db-queue-cli",
+    "smoke:db-events",
+    "smoke:db-materializer",
+    "smoke:db-snapshot",
+    "smoke:archive-work",
+    "smoke:work-invocation",
+    "smoke:cli-ux-polish",
+    "smoke:operator-health",
+    "smoke:fix-plan",
+    "smoke:branch-conflicts",
+    "smoke:id-repair",
+    "smoke:command-docs",
+    "smoke:spike",
+    "smoke:goal-lifecycle",
+    "smoke:semantic-refs",
+    "smoke:checkpoint-templates",
+    "smoke:handoff",
+    "smoke:warning-ux",
+    "smoke:integration-ux",
+    "docs:generate",
+    "docs:release-notes",
+    "docs:release-notes:check",
+    "docs:check",
+    "docs:check-commands",
+    "smoke:mdkg-dev",
+    "smoke:mdkg-dev-docs",
+    "smoke:mdkg-dev-seo",
+    "smoke:mdkg-dev-polish-pass2",
+    "smoke:mdkg-dev-polish-pass3",
+    "smoke:mdkg-dev-polish-pass4",
+    "smoke:mdkg-dev-polish-pass5",
+    "smoke:mdkg-dev-a11y",
+    "smoke:mdkg-dev-perf",
+    "smoke:demo-graph",
+    "smoke:bundle",
+    "smoke:graph-clone",
+    "smoke:mcp",
+    "smoke:bundle-import",
+    "smoke:visibility",
+    "smoke:sqlite",
+    "smoke:parallel",
+    "smoke:goal",
+    "cli:snapshot",
+    "cli:check",
+    "cli:contract",
+    "ci:release",
+    "prepack",
+    "prepublishOnly",
+    "postinstall",
+    "smoke:subgraph"
+  ],
+  "test_inventory": {
+    "tests_tree_file_count": 142,
+    "extensions": {"ts": 91, "md": 49, "mjs": 2},
+    "executable_test_file_count": 90,
+    "syntactic_test_or_it_calls": 674,
+    "source_defined_runtime_test_identities": 676,
+    "families": {
+      "commands": {"files": 61, "syntactic_test_or_it_calls": 494, "source_defined_runtime_test_identities": 496},
+      "core": {"files": 4, "syntactic_test_or_it_calls": 40},
+      "graph": {"files": 11, "syntactic_test_or_it_calls": 62},
+      "pack": {"files": 4, "syntactic_test_or_it_calls": 29},
+      "util": {"files": 8, "syntactic_test_or_it_calls": 31},
+      "root_mjs": {"files": 2, "syntactic_test_or_it_calls": 18}
+    },
+    "typescript_compile_scope": {"files": 91, "test_files": 88, "helper_files": 3},
+    "fixture_inventory": {"total": 48, "invalid": 33, "valid": 14, "readme": 1},
+    "root_mjs_tests": [
+      "tests/public-release.test.mjs",
+      "tests/security-remediation.test.mjs"
+    ],
+    "execution_mapping": {
+      "compiled_ts_tests": "npm run build:test then node --test dist/tests/**/*.test.js",
+      "root_mjs_tests": "npm run test:public-release",
+      "coverage": "88 compiled TS test files with 656 syntactic test/it calls and 658 source-defined runtime identities under Node experimental coverage; the two root MJS files with 18 calls are excluded",
+      "parameterization_note": "Two test definitions in tests/commands/loop.test.ts each instantiate for json and sqlite, adding two runtime identities beyond syntactic call-site count."
+    }
+  },
+  "typescript_configuration": [
+    {"path":"tsconfig.json","role":"strict root source typecheck","include":["src/**/*.ts"],"emit":false},
+    {"path":"tsconfig.build.json","role":"package emit","out_dir":"dist","emit":true},
+    {"path":"tsconfig.test.json","role":"compiled test emit","include":["tests/**/*.ts"],"out_dir":"dist/tests","no_emit_on_error":true},
+    {"path":"docs/tsconfig.json","role":"Astro strict preset"},
+    {"path":"mdkg-dev/tsconfig.json","role":"Astro strict preset","exclude":["dist"]}
+  ],
+  "script_ladders": {
+    "test": ["build", "build:test", "compiled_node_tests", "test:public-release"],
+    "test:coverage": ["build", "build:test", "compiled_node_tests_with_experimental_coverage"],
+    "ci:release": ["test", "cli:check", "cli:contract", "docs:check", "smoke:git-materialize", "smoke:loop", "security:verify", "assert-publish-ready"],
+    "prepublishOnly": ["test", "cli:check", "cli:contract", "docs:check", "mdkg_validate", "security:verify", "46_direct_smoke_aliases_covering_47_aliases", "assert-publish-ready"]
+  },
+  "recursive_expansion": {
+    "ci:release": {
+      "direct_gates": 8,
+      "recursive_npm_script_invocations": 16,
+      "package_script_primitives": 43,
+      "unique_package_script_primitives": 18,
+      "build_invocations": 6
+    },
+    "prepublishOnly": {
+      "direct_gates": 53,
+      "recursive_npm_script_invocations": 104,
+      "package_script_primitives": 308,
+      "unique_package_script_primitives": 63,
+      "build_invocations": 50
+    },
+    "direct_gate_comparison": {
+      "shared": 8,
+      "ci_only": 0,
+      "prepublish_only": 45,
+      "prepublish_only_detail": "one direct graph validation command plus 44 direct smoke commands"
+    },
+    "standard_npm_lifecycle_amplification": {
+      "smoke_npm_pack_call_sites": 34,
+      "local_tarball_global_install_call_sites": 33,
+      "local_tarball_npx_call_sites": 5,
+      "conditional_mdkg_dev_npm_ci_call_sites": 1,
+      "docs_builds_in_prepublish": 12,
+      "mdkg_dev_builds_in_prepublish": 17,
+      "effective_root_builds_in_ci_release": 8,
+      "effective_root_builds_in_prepublish": 87,
+      "calculation_note": "Effective root builds include npm pack triggering the package prepack lifecycle and nested docs-check builds; declared-script expansion alone yields six and fifty."
+    }
+  },
+  "smoke_summary": {
+    "declared_aliases": 47,
+    "prepublish_direct_aliases": 46,
+    "prepublish_effective_aliases": 47,
+    "indirect_alias": "smoke:bundle-import delegates to smoke:subgraph",
+    "ci_release_direct_aliases": ["smoke:git-materialize", "smoke:loop"]
+  },
+  "approved_execution": [
+    {"command": "npm run test:coverage", "timeout_minutes": 30, "max_attempts": 1},
+    {"command": "npm run ci:release", "timeout_minutes": 30, "max_attempts": 1},
+    {"command": "npm run prepublishOnly", "timeout_minutes": 60, "max_attempts": 1}
+  ],
+  "dependency_policy": {
+    "inspect": ["root", "docs", "mdkg-dev"],
+    "npm_ci": "source_inspection_only",
+    "reason": "npm ci replaces dependencies and requires registry authority, both outside this local-only audit",
+    "offline_environment": true,
+    "clean_environment_gap": "Root is not an npm workspace and root npm ci does not install docs or mdkg-dev dependency trees. docs smokes assume preinstalled nested dependencies; mdkg-dev has one conditional nested npm ci that would require cached packages or registry access.",
+    "source_counts": {
+      "root_lock_entries": 4,
+      "root_node_modules_entries": 3,
+      "docs_lock_entries": 426,
+      "docs_node_modules_entries": 425,
+      "mdkg_dev_lock_entries": 298,
+      "mdkg_dev_node_modules_entries": 297
+    }
+  },
+  "generated_output_policy": {
+    "allowed": ["ignored dist output", "site build output", "caches", "dedicated /private/tmp fixtures"],
+    "forbidden": ["tracked non-mdkg changes", "dependency changes", "lockfile changes"],
+    "stop_rule": "If a lane creates a tracked non-mdkg change, stop that lane and preserve and record the diff without reset or restore."
+  },
+  "inventory_findings": [
+    {
+      "severity": "P1",
+      "finding": "The full publication ladder is not self-contained after a clean root npm ci: docs has no nested install step, mdkg-dev may conditionally invoke npm ci, and neither nested dependency tree belongs to the root lockfile/workspace.",
+      "classification": "clean_environment_and_hidden_registry_dependency_gap"
+    },
+    {
+      "severity": "P1",
+      "finding": "Recursive composition plus npm pack lifecycle hooks produces an estimated eight root builds in ci:release and eighty-seven in prepublishOnly, plus twelve docs and seventeen mdkg-dev builds in prepublishOnly.",
+      "classification": "release_ladder_redundant_build_amplification"
+    },
+    {
+      "severity": "P1",
+      "finding": "test:coverage covers 88 TS test files but excludes the two root MJS release/security regression files, declares no threshold or durable artifact, and is referenced by neither CI nor prepublish gates",
+      "classification": "coverage_scope_and_enforcement_gap"
+    },
+    {
+      "severity": "informational",
+      "finding": "ci:release is intentionally narrower than prepublishOnly: two of 47 smoke aliases run in CI while the complete effective set runs before publication",
+      "classification": "gate_layering"
+    },
+    {
+      "severity": "P2",
+      "finding": "Network closure is caller-dependent: workflow npm ci, one conditional mdkg-dev npm ci, local-tarball installs, and local npx calls do not set offline/no-audit/no-fund themselves.",
+      "classification": "caller_inherited_network_policy"
+    }
+  ]
+}

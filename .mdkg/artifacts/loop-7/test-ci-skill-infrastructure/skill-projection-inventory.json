@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "loop": "root:loop-7",
+  "captured_on": "2026-07-17",
+  "canonical_root": ".mdkg/skills",
+  "configured_managed_mirrors": [".agents/skills", ".claude/skills"],
+  "public_seed_root": "assets/init/skills/default",
+  "canonical_skill_count": 8,
+  "configured_mirror_result": "All eight canonical SKILL.md bodies are byte-identical in both configured mirrors.",
+  "public_seed_policy": {
+    "source": "root:dec-19",
+    "contract": "Public defaults are copied from init assets at init time and are create-if-missing; they are not live reads of this repository's canonical tree.",
+    "release_boundary": "root:dec-85 intentionally excludes release-mdkg-package from portable public defaults.",
+    "explicit_exact_equality": "root:goal-74 required exact equality only for pursue-mdkg-goal while preserving the release skill absence."
+  },
+  "skills": [
+    {"slug":"author-mdkg-skill","canonical":"ffacd8b8412ab5453b53d91a192f27e0458da4591f80d82d4933805a6fb5a05d","agents":"ffacd8b8412ab5453b53d91a192f27e0458da4591f80d82d4933805a6fb5a05d","claude":"ffacd8b8412ab5453b53d91a192f27e0458da4591f80d82d4933805a6fb5a05d","public":"ffacd8b8412ab5453b53d91a192f27e0458da4591f80d82d4933805a6fb5a05d","public_classification":"present_equal"},
+    {"slug":"build-pack-and-execute-task","canonical":"3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae","agents":"3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae","claude":"3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae","public":"3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae","public_classification":"present_equal"},
+    {"slug":"pursue-mdkg-goal","canonical":"3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776","agents":"3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776","claude":"3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776","public":"3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776","public_classification":"present_equal_explicit_contract"},
+    {"slug":"pursue-mdkg-loop","canonical":"6a6f4f1ac60a66632079993946a63d2668dcaf7a25b305f7f71e69824ecbef02","agents":"6a6f4f1ac60a66632079993946a63d2668dcaf7a25b305f7f71e69824ecbef02","claude":"6a6f4f1ac60a66632079993946a63d2668dcaf7a25b305f7f71e69824ecbef02","public":"65dae2a6e79f2f7e4265b7057287db0308ac6ac59e6ebe9a6b6cd50b5d90176b","public_classification":"present_divergent_no_explicit_currentness_rule"},
+    {"slug":"release-mdkg-package","canonical":"50da6658a755a842051f6d39d33f7face3a0947d8a570280e4ebe28b7ef714f4","agents":"50da6658a755a842051f6d39d33f7face3a0947d8a570280e4ebe28b7ef714f4","claude":"50da6658a755a842051f6d39d33f7face3a0947d8a570280e4ebe28b7ef714f4","public":null,"public_classification":"intentionally_absent_by_root_dec_85"},
+    {"slug":"select-work-and-ground-context","canonical":"7380d51dd2dbe918c693b6fea54f02e48f425f95d24d122058ff8e6be5b5de8e","agents":"7380d51dd2dbe918c693b6fea54f02e48f425f95d24d122058ff8e6be5b5de8e","claude":"7380d51dd2dbe918c693b6fea54f02e48f425f95d24d122058ff8e6be5b5de8e","public":"95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409","public_classification":"present_divergent_no_explicit_currentness_rule"},
+    {"slug":"service-boundary-ownership-check","canonical":"37ef904c0bc5f05da7035c77450f267b96e91bfc3e302ffdf3fe738f16df518c","agents":"37ef904c0bc5f05da7035c77450f267b96e91bfc3e302ffdf3fe738f16df518c","claude":"37ef904c0bc5f05da7035c77450f267b96e91bfc3e302ffdf3fe738f16df518c","public":null,"public_classification":"repository_local_absent_no_public_membership_requirement_found"},
+    {"slug":"verify-close-and-checkpoint","canonical":"9a8f772a9db536591b6cc863ec2a7fac6d11845b5ac1fc2d5a98a1c0b7bc570d","agents":"9a8f772a9db536591b6cc863ec2a7fac6d11845b5ac1fc2d5a98a1c0b7bc570d","claude":"9a8f772a9db536591b6cc863ec2a7fac6d11845b5ac1fc2d5a98a1c0b7bc570d","public":"1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107","public_classification":"present_divergent_no_explicit_currentness_rule"}
+  ],
+  "history": [
+    {"ref":"root:task-598","fact":"Five public seed bodies were mechanically synchronized with canonical skills and seed guardrails were added."},
+    {"ref":"root:chk-375","fact":"Canonical select, verify, and service-boundary skills and configured mirrors were later updated while assets/init was explicitly out of scope."},
+    {"ref":"root:goal-74","fact":"A later bounded goal required exact public equality for pursue-mdkg-goal only and preserved release-mdkg-package as repository-local."}
+  ],
+  "guardrail_inventory": {
+    "tests/commands/init.test.ts": "asserts seeded membership and selected content, not a declared per-skill equality/divergence policy",
+    "scripts/smoke-init.js": "asserts initialized skill presence and selected behavior, not full currentness",
+    "scripts/assert-publish-ready.js": "asserts publication boundaries and required seed content, not full projection equality"
+  },
+  "findings": [
+    {
+      "severity": "P1",
+      "finding": "Three public seed bodies diverge from canonical without a declared per-skill exact-versus-intentional-divergence contract, while existing checks cannot distinguish accepted snapshots from stale projections.",
+      "affected": ["pursue-mdkg-loop", "select-work-and-ground-context", "verify-close-and-checkpoint"],
+      "recommended_control": "Declare public membership and currentness mode per skill, then enforce exact hashes or an explicitly reviewed divergence marker."
+    },
+    {
+      "severity": "pass",
+      "finding": "Configured .agents and .claude mirrors are complete and byte-identical to all eight canonical skills."
+    }
+  ]
+}
