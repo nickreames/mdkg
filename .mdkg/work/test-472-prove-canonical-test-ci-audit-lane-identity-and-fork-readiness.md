@@ -3,7 +3,7 @@ id: test-472
 type: test
 title: Prove canonical test CI audit lane identity and fork readiness
 status: backlog
-priority: 1
+priority: 4
 parent: goal-78
 prev: task-813
 tags: [loops, templates, tests, ci, test]
@@ -18,9 +18,9 @@ context_refs: [goal-78, task-813, loop-7, dec-86, chk-544]
 evidence_refs: []
 aliases: []
 skills: [verify-close-and-checkpoint, pursue-mdkg-loop]
-cases: [six_frontmatter_identities, six_body_identities, one_to_one_mapping, negative_lane_drift, observational_dry_run, disposable_real_fork, plan_next_pack_readiness, completed_loop_unchanged]
+cases: [five_pre_run_question_identities, six_frontmatter_identities, six_body_identities, one_to_one_mapping, action_authority_vocabulary, negative_lane_drift, observational_dry_run, disposable_real_fork, plan_next_pack_readiness, completed_loop_unchanged]
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Overview
 
@@ -45,12 +45,20 @@ changing completed Loop 7.
 
 - Frontmatter declares exactly the six accepted stable identities.
 - The body matrix declares exactly those six identities once each.
+- Frontmatter declares exactly the five accepted pre-run question identities,
+  and a real disposable fork binds all five to accepted answers.
+- Required/requested/pre-approved actions are exactly the seven accepted local
+  inspection, verification, and mdkg-evidence actions. Provider and network
+  actions remain approval-gated and unrequested; prohibited actions remain
+  generic and non-repository-specific.
 - Removing, duplicating, renaming, or adding a lane fails with the lane
   identity.
 - `loop fork --dry-run` writes no node, index, event, SQLite reservation, or
   selected-goal state.
-- A disposable real fork can bind all pre-run questions and all six lanes.
-- `loop plan` has no invalid binding; `loop next` selects the grounding spike;
+- A disposable real fork can bind all five pre-run questions while leaving all
+  six evidence lanes waiting, not completed or waived.
+- `loop plan` has no unanswered questions, pending approvals, invalid
+  bindings, or readiness blockers; `loop next` selects the grounding spike;
   concise pack dry-run succeeds.
 - Completed `root:loop-7` content, evidence, status, and stored template hash
   remain unchanged in this repository.
@@ -65,3 +73,5 @@ final Git boundary to a test-proof checkpoint.
 
 - Template lineage for existing forks remains historical; currentness is
   reported rather than silently rewritten.
+- This focused proof does not run `ci:release` or `prepublishOnly`; both are
+  shared once at Goal 78 closeout.

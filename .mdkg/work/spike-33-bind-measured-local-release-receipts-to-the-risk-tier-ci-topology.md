@@ -9,17 +9,17 @@ next: task-811
 tags: [ci, smoke, release, decision]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json]
 relates: [prop-9, loop-7]
 blocked_by: [test-464]
 blocks: [task-811]
-refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88]
-context_refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88]
-evidence_refs: []
+refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88, chk-549, chk-550, chk-551]
+context_refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88, chk-549, chk-550, chk-551]
+evidence_refs: [chk-549, chk-550, chk-551]
 aliases: []
 skills: [select-work-and-ground-context, service-boundary-ownership-check]
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Research Question
 
@@ -42,10 +42,11 @@ the measured latency and build budgets produced by Goal 1?
 
 # Search Plan
 
-- Review the Goal 1 test-proof checkpoints and ignored machine-readable
-  receipts.
-- Expand the source-owned smoke manifest and verify 47 aliases map to 46
-  canonical identities.
+- Review the Goal 1 test-proof checkpoints and the compact durable measurement
+  artifact; use temporary receipts only as optional corroboration.
+- Inspect and extend the existing source-owned `scripts/smoke-manifest.json`;
+  do not create a second smoke catalog. Verify 47 aliases map to 46 canonical
+  identities.
 - Group identities by package consumer, init/upgrade, loop/goal, DB/SQLite,
   bundle/subgraph, docs/site, and remaining risk domains.
 - Compare measured durations against the provisional 15-minute fast and
@@ -57,7 +58,20 @@ the measured latency and build budgets produced by Goal 1?
 
 # Findings
 
-- Pending Goal 1 receipts.
+- Goal 77 passed an optimized prepublish ladder in `291.843s` and
+  `ci:release` in `122.416s` under Node `24.18.0`.
+- Coverage passed 711 tests across 95 files and measured 105 runtime files at
+  `89.30/77.43/96.26` against `89/77/96` thresholds.
+- The release ladder resolved 47 aliases to 46 canonical smokes in
+  `161.690s`, reused one `428,186`-byte package SHA across 34 consumers, and
+  bounded actual builds to two root builds plus one per four docs and five
+  mdkg-dev profiles.
+- The exact per-smoke timings, build/cache counts, receipt hashes, and
+  provenance are preserved in
+  `.mdkg/artifacts/goal-78/ci-topology-measurements.json`.
+- These are local measurements, not provider execution proof. Node `24.15.0`
+  is an exact source-owned workflow requirement and must not be described as a
+  runtime executed by Goal 77.
 
 # Options And Tradeoffs
 
@@ -70,23 +84,37 @@ the measured latency and build budgets produced by Goal 1?
 
 # Recommendation
 
-Accept a durable decision after measurements that binds:
+Accept a durable decision after measurements that binds all of:
 
-- fast-tier canonical identities and a 15-minute target;
-- full-release shard membership and a 30-minute target;
-- Node `24.15.0` and `24.x` fast rows;
-- Node `24.15.0` manual exact-SHA full release;
-- artifact names and retention;
-- one aggregate release authority job;
-- workflow validation strategy; and
-- final tracked-drift proof.
+- the exact fast-tier canonical identities and target budget;
+- full-release shard count, exact membership, measured shard load, and target
+  budget;
+- the complete job dependency graph and one aggregate release authority job;
+- one immutable tarball producer and SHA-verifying artifact consumers;
+- docs and mdkg-dev profile/cache behavior;
+- Node `24.15.0` and `24.x` fast rows plus Node `24.15.0` manual full release,
+  while stating that the exact version is source-inspected rather than locally
+  or remotely executed by this spike;
+- pull-request, `main` push, and manual trigger semantics;
+- exact-SHA input validation and verification of the detached checkout before
+  release work;
+- job and step timeouts, artifact names, retention, and `if: always()` failure
+  evidence;
+- concurrency groups and cancellation semantics;
+- final tracked-drift proof; and
+- the structured workflow parser or deterministic generator/checker strategy.
+
+Default to no new dependency or registry access. Prefer deterministic
+generation/checking; choosing a YAML parser dependency requires separate
+dependency and registry authority.
 
 If measurements exceed those targets, adjust shard membership or latency in the
 decision with evidence rather than silently weakening smoke coverage.
 
 # Follow-Up Nodes To Create
 
-- Create one accepted CI-topology decision derived from `root:prop-9`.
+- Create one accepted CI-topology decision derived from `root:prop-9` and link
+  it to this spike, `root:task-811`, and `root:test-470` before implementation.
 - Use existing `root:task-811` and `root:test-470` for implementation/proof;
   do not create duplicate workflow work.
 

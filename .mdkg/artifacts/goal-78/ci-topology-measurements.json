@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "artifact": "goal-78-ci-topology-measurements",
+  "purpose": "Compact durable Goal 77 measurements for the Goal 78 risk-tier CI decision",
+  "source_commit": "a690038b93d9667a3262862e9a7ed3e4d7d8d4ad",
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "release_receipts": {
+    "optimized_prepublish": {
+      "duration_ms": 291843,
+      "receipt_sha256": "8a332bedff2c7c288f322f8479746c61daa2d58167e20e341b254f4d0b208391",
+      "temporary_path": "/private/tmp/mdkg-goal77-prepublish-coverage-v1/receipt.json"
+    },
+    "ci_release": {
+      "duration_ms": 122416,
+      "receipt_sha256": "400226288abfeb34d1236a5ca5eb8685d172170061f293316994a8d1a71f2316",
+      "temporary_path": "/private/tmp/mdkg-goal77-ci-coverage-v1/receipt.json"
+    }
+  },
+  "package_artifact": {
+    "sha256": "f387f93d18d44db99ffb090734079beeb149fd7294f3203fd851f0ceeb652aa3",
+    "bytes": 428186,
+    "consumer_count": 34
+  },
+  "coverage": {
+    "test_files": 95,
+    "tests": 711,
+    "runtime_files": 105,
+    "lines": {
+      "covered": 32044,
+      "total": 35885,
+      "percent": 89.3,
+      "threshold": 89
+    },
+    "branches": {
+      "covered": 6942,
+      "total": 8966,
+      "percent": 77.43,
+      "threshold": 77
+    },
+    "functions": {
+      "covered": 2448,
+      "total": 2543,
+      "percent": 96.26,
+      "threshold": 96
+    }
+  },
+  "build_amplification": {
+    "root_actual_builds": 2,
+    "docs": {
+      "profiles": 4,
+      "actual_builds_per_profile": 1,
+      "cache_hits": 8
+    },
+    "mdkg_dev": {
+      "profiles": 5,
+      "actual_builds_per_profile": 1,
+      "cache_hits": 12
+    }
+  },
+  "smoke_execution": {
+    "alias_count": 47,
+    "canonical_count": 46,
+    "total_duration_ms": 161690,
+    "canonical": [
+      {"id": "consumer", "subsystem": "package_consumer", "duration_ms": 3561},
+      {"id": "git-materialize", "subsystem": "git_materialization", "duration_ms": 1619},
+      {"id": "loop", "subsystem": "loop_lifecycle", "duration_ms": 6064},
+      {"id": "matrix", "subsystem": "command_contract", "duration_ms": 16331},
+      {"id": "upgrade", "subsystem": "upgrade", "duration_ms": 5957},
+      {"id": "init", "subsystem": "initialization", "duration_ms": 5366},
+      {"id": "capabilities", "subsystem": "capability_registry", "duration_ms": 1906},
+      {"id": "db", "subsystem": "application_db", "duration_ms": 2246},
+      {"id": "db-queue", "subsystem": "application_db_queue", "duration_ms": 1780},
+      {"id": "db-queue-cli", "subsystem": "application_db_queue_cli", "duration_ms": 4724},
+      {"id": "db-events", "subsystem": "application_db_events", "duration_ms": 2151},
+      {"id": "db-materializer", "subsystem": "application_db_materializer", "duration_ms": 2165},
+      {"id": "db-snapshot", "subsystem": "application_db_snapshot", "duration_ms": 2149},
+      {"id": "archive-work", "subsystem": "archive_and_work", "duration_ms": 3733},
+      {"id": "work-invocation", "subsystem": "work_invocation", "duration_ms": 3633},
+      {"id": "cli-ux-polish", "subsystem": "cli_ux", "duration_ms": 4017},
+      {"id": "operator-health", "subsystem": "operator_health", "duration_ms": 3560},
+      {"id": "fix-plan", "subsystem": "fix_planning", "duration_ms": 2274},
+      {"id": "branch-conflicts", "subsystem": "branch_conflicts", "duration_ms": 1866},
+      {"id": "id-repair", "subsystem": "id_repair", "duration_ms": 2849},
+      {"id": "command-docs", "subsystem": "command_docs", "duration_ms": 2376},
+      {"id": "spike", "subsystem": "spike_lifecycle", "duration_ms": 4482},
+      {"id": "goal-lifecycle", "subsystem": "goal_lifecycle", "duration_ms": 5437},
+      {"id": "semantic-refs", "subsystem": "semantic_refs", "duration_ms": 3027},
+      {"id": "checkpoint-templates", "subsystem": "checkpoint_templates", "duration_ms": 2416},
+      {"id": "handoff", "subsystem": "handoff", "duration_ms": 2156},
+      {"id": "warning-ux", "subsystem": "warning_ux", "duration_ms": 2042},
+      {"id": "integration-ux", "subsystem": "integration_ux", "duration_ms": 3830},
+      {"id": "mdkg-dev", "subsystem": "public_site", "duration_ms": 1664},
+      {"id": "mdkg-dev-docs", "subsystem": "docs_site", "duration_ms": 4758},
+      {"id": "mdkg-dev-seo", "subsystem": "public_site_seo", "duration_ms": 2248},
+      {"id": "mdkg-dev-polish-pass2", "subsystem": "public_site_polish", "duration_ms": 2513},
+      {"id": "pass3", "subsystem": "public_site_polish", "duration_ms": 226},
+      {"id": "pass4", "subsystem": "public_site_polish", "duration_ms": 431},
+      {"id": "pass5", "subsystem": "public_site_polish", "duration_ms": 275},
+      {"id": "mdkg-dev-a11y", "subsystem": "public_site_accessibility", "duration_ms": 2233},
+      {"id": "mdkg-dev-perf", "subsystem": "public_site_performance", "duration_ms": 223},
+      {"id": "demo-graph", "subsystem": "demo_graph", "duration_ms": 5569},
+      {"id": "bundle", "subsystem": "bundle", "duration_ms": 3291},
+      {"id": "graph-clone", "subsystem": "graph_clone", "duration_ms": 4194},
+      {"id": "mcp", "subsystem": "mcp", "duration_ms": 3219},
+      {"id": "subgraph", "subsystem": "subgraph_and_bundle_import", "duration_ms": 6427},
+      {"id": "visibility", "subsystem": "visibility", "duration_ms": 4137},
+      {"id": "sqlite", "subsystem": "sqlite_index", "duration_ms": 1887},
+      {"id": "parallel", "subsystem": "parallel_execution", "duration_ms": 10632},
+      {"id": "goal", "subsystem": "goal_commands", "duration_ms": 4046}
+    ]
+  },
+  "provenance": {
+    "graph_refs": ["root:goal-77", "root:chk-549", "root:chk-550", "root:chk-551"],
+    "manifest": "scripts/smoke-manifest.json",
+    "temporary_receipts_may_expire": true,
+    "receipt_hashes_are_the_durable_integrity_anchors": true
+  }
+}

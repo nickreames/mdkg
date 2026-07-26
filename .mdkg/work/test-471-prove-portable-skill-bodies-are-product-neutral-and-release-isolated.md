@@ -3,7 +3,7 @@ id: test-471
 type: test
 title: Prove portable skill bodies are product-neutral and release-isolated
 status: backlog
-priority: 1
+priority: 2
 parent: goal-78
 prev: task-812
 next: task-805
@@ -21,7 +21,7 @@ aliases: []
 skills: [verify-close-and-checkpoint]
 cases: [six_portable_behaviors_preserved, no_package_release_authority, no_repository_specific_qids, no_dangling_local_links, canonical_mirrors_exact, public_candidates_ready]
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Overview
 
@@ -51,7 +51,9 @@ excluding repository-specific references and package-release authority.
 - Public candidates contain no root-qualified internal QID, named internal
   product/customer, or dangling repository-local design/work link.
 - Generic `.mdkg` path concepts and non-authorizing safety language remain
-  valid.
+  valid. Keyword presence alone is not a failure: statements that prohibit or
+  separately gate publish, push, tag, deployment, or provider authority must
+  pass.
 - All eight canonical skills exactly match configured `.agents` and `.claude`
   mirrors.
 - The six reconciled public candidates are ready for exact-mode projection;
@@ -67,3 +69,5 @@ configured-mirror hashes, and final Git boundary to a test-proof checkpoint.
 - This proof does not force-update existing consumer repositories.
 - Projection policy schema and negative membership/hash fixtures remain owned
   by `root:task-805` and `root:test-465`.
+- This focused proof does not run `ci:release` or `prepublishOnly`; those
+  commands run once at Goal 78 closeout.

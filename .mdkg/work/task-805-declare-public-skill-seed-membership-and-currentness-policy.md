@@ -3,7 +3,7 @@ id: task-805
 type: task
 title: enforce public skill seed membership and currentness policy
 status: backlog
-priority: 1
+priority: 2
 parent: goal-78
 prev: test-471
 next: test-465
@@ -20,7 +20,7 @@ evidence_refs: []
 aliases: []
 skills: [author-mdkg-skill, service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-17
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Overview
 
@@ -71,7 +71,9 @@ source, build, validation, publish readiness, and fresh init.
 - Initialize a disposable repo and assert exact membership/exclusions/hashes.
 - Exercise missing, extra, drifted, excluded, embedded-release, and preserved
   customization cases.
-- Run init/publish smokes, graph validation, and Git hygiene checks.
+- Run focused init/publish projection smokes, graph validation, and Git hygiene
+  checks. Defer `ci:release` and `prepublishOnly` to the one shared Goal 78
+  closeout execution.
 
 # Links / Artifacts
 

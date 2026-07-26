@@ -3,7 +3,7 @@ id: task-813
 type: task
 title: Align the canonical test CI skill audit template to six evidence lanes
 status: backlog
-priority: 1
+priority: 4
 parent: goal-78
 next: test-472
 tags: [loops, templates, tests, ci]
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [build-pack-and-execute-task, pursue-mdkg-loop]
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Overview
 
@@ -40,6 +40,22 @@ frontmatter declares five evidence identities while its body requires six rows.
   body/frontmatter lane fails with its identity.
 - Update pre-run question identities only where needed to match the proven
   local-only fork contract; do not force provider or skill-edit authority.
+- Declare exactly five pre-run question identities:
+  `scope_and_exclusions`, `ci_evidence_source_policy`,
+  `local_execution_budget`, `authoritative_skill_projection_contract`, and
+  `generated_output_policy`.
+- Preserve the dogfooded action vocabulary. Required, requested, and
+  pre-approved actions are exactly:
+  `inspect_tests_and_build_configuration`, `inspect_ci_configuration`,
+  `inspect_automation_scripts`, `inspect_skill_registry_and_projections`,
+  `inspect_harness_guidance`, `run_local_node24_verification`, and
+  `create_mdkg_evidence_and_followups`.
+- Keep `external_ci_provider_calls` and
+  `external_network_or_registry_calls` approval-gated and unrequested. Keep
+  prohibited actions generic and template-safe: functional implementation,
+  dependency replacement, tracked generated-output mutation, existing
+  consumer mutation, unrelated graph/selection mutation, and
+  publication/deployment are never implied by the read-only template.
 - Do not mutate completed `root:loop-7`; its stored lineage remains historical.
 - No source outside the canonical template and focused template/loop tests.
 
@@ -65,6 +81,8 @@ frontmatter declares five evidence identities while its body requires six rows.
 - Create a disposable real fork in an isolated fixture, bind six lanes, and
   verify loop show/plan/next plus concise-pack readiness.
 - Run full template/loop tests, graph validation, and Git hygiene checks.
+- Do not run the repository release ladder for this focused template proof; it
+  shares the one Goal 78 closeout execution.
 
 # Links / Artifacts
 
