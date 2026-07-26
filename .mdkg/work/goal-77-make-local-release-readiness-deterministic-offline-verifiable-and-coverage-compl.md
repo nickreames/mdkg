@@ -2,11 +2,12 @@
 id: goal-77
 type: goal
 title: Make local release readiness deterministic offline-verifiable and coverage-complete
-status: todo
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: Goal 77 is achieved when goal next honors local blockers and configured chain-first routing, root docs and mdkg-dev dependency ownership is explicit, no smoke performs a hidden install, one post-bootstrap network-closed prepublish run maps all 47 aliases to 46 canonical executions, one immutable package tarball is reused, profile-aware build bounds and the 60-minute budget are met, publishable-runtime coverage executes the complete test contract and enforces evidence-backed non-regressing thresholds exactly once before publication, ci:release remains green, all eight scoped bug task and test nodes are done with checkpoint evidence, approved changes are committed locally on main, and no push tag publish deploy provider or selected-goal mutation occurs.
 scope_refs: [bug-4, test-469, task-810, test-468, task-803, test-463, task-804, test-464]
+last_active_node: test-464
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, service-boundary-ownership-check, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, focused goal-next blocker chain and CLI-MCP parity tests, explicit root docs and mdkg-dev dependency preflight, focused bootstrap and offline-boundary tests, focused smoke-manifest artifact-reuse and build-counter tests, one bounded offline npm run prepublishOnly, one npm run ci:release, complete scoped coverage with raw V8 manifest and concise JSON summary, mdkg skill validate --json, mdkg index, mdkg validate --changed-only --json, mdkg validate --summary --json --limit 20, mdkg goal evaluate root:goal-77 --json, git diff --check]
 max_iterations: 25
@@ -18,9 +19,9 @@ artifacts: []
 relates: []
 blocked_by: []
 blocks: []
-refs: [loop-7, task-802, test-462, chk-544, chk-545, chk-546, dec-6, dec-85, dec-86, dec-87, dec-88, bug-4, test-469]
+refs: [loop-7, task-802, test-462, chk-544, chk-545, chk-546, chk-547, chk-548, chk-549, chk-550, chk-551, dec-6, dec-85, dec-86, dec-87, dec-88, bug-4, test-469]
 context_refs: [loop-7, task-802, test-462, chk-544, chk-545, chk-546, dec-6, dec-85, dec-86, dec-87, dec-88, bug-4, test-469]
-evidence_refs: [chk-545, chk-546]
+evidence_refs: [chk-545, chk-546, chk-547, chk-548, chk-549, chk-550, chk-551]
 aliases: [deterministic-local-release-readiness]
 skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-25
@@ -143,6 +144,26 @@ outside scope.
   chain-first strategy.
 - 2026-07-25: `root:chk-546` records the two-goal planning boundary, exact
   explicit scope, validation receipts, and local commit authority.
+- 2026-07-25: `root:bug-4` and `root:test-469` completed the blocker-aware,
+  chain-first CLI/MCP routing contract. `root:chk-547` records focused proof
+  and the real Goal 77 route to `root:task-810`.
+- 2026-07-25: `root:task-810` and `root:test-468` completed explicit
+  three-lockfile ownership, fail-closed preflight, no-hidden-install, and
+  hostile-network focused verification. `root:chk-548` records the boundary
+  and the intentionally unexecuted registry-capable bootstrap.
+- 2026-07-25: After explicit approval for one replacement attempt,
+  `root:test-463` passed the complete offline prepublish ladder in `275.557s`.
+  `root:chk-549` records all 47 aliases, 46 canonical executions, immutable
+  artifact reuse, bounded profile builds, and unchanged Git, lockfile, and
+  selected-goal state.
+- 2026-07-25: `root:task-804` and `root:test-464` completed the dynamic
+  95-file coverage contract and its `89/77/96` source-owned ratchet.
+  `root:chk-550` records 711 passing tests, exact Decision 88 scope, threshold
+  negative fixtures, one integrated `291.843s` prepublish run, and the final
+  green `122.416s` CI release run.
+- 2026-07-25: All eight scoped nodes are done. `root:chk-551` consolidates the
+  local-only goal condition, required command receipts, accepted warning
+  baseline, unchanged selected goal, and final local-commit boundary.
 
 # Skill Improvement Candidates
 
@@ -150,4 +171,16 @@ outside scope.
 
 # Completion Evidence
 
-- Pending.
+- `root:chk-547`: blocker-aware chain-first goal routing and CLI/MCP parity.
+- `root:chk-548`: explicit root/docs/mdkg-dev dependency ownership and
+  fail-closed offline verification.
+- `root:chk-549`: user-approved complete offline prepublish proof with all 47
+  aliases, 46 canonical smokes, immutable package reuse, and build bounds.
+- `root:chk-550`: complete Decision 88 coverage contract, `89/77/96` ratchet,
+  integrated prepublish proof, and green final CI release.
+- `root:chk-551`: final eight-node scope, graph/Git boundaries, accepted stale
+  warnings, local-only authority, and closeout commit handoff.
+- The closeout commit containing this achieved goal state is
+  `feat(release): harden deterministic local readiness` on local `main`.
+  Nothing is pushed, tagged, published, deployed, or mutated through a
+  provider.

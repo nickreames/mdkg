@@ -74,17 +74,48 @@ function requirePackageVersions() {
   if (!pkg.scripts || pkg.scripts["smoke:git-materialize"] !== "npm run build && node scripts/smoke-git-materialize.js") {
     fail("package.json is missing the canonical smoke:git-materialize command");
   }
-  if (!pkg.scripts || !pkg.scripts["ci:release"]) {
-    fail("package.json is missing ci:release");
+  if (pkg.scripts["ci:release"] !== "node scripts/release-ladder.js ci") {
+    fail("package.json is missing the canonical bounded ci:release runner");
+  }
+  if (pkg.scripts.prepublishOnly !== "node scripts/release-ladder.js prepublish") {
+    fail("package.json is missing the canonical bounded prepublishOnly runner");
+  }
+  if (pkg.scripts["test:coverage"] !== "npm run build && npm run build:test && npm run test:coverage:built") {
+    fail("package.json is missing the canonical complete coverage wrapper");
+  }
+  if (pkg.scripts["test:coverage:built"] !== "node scripts/coverage-contract.js run") {
+    fail("package.json is missing the build-free coverage contract runner");
+  }
+  if (pkg.scripts["deps:preflight"] !== "node scripts/dependency-boundary.js preflight") {
+    fail("package.json is missing the canonical local-only deps:preflight command");
+  }
+  if (pkg.scripts["deps:bootstrap"] !== "node scripts/dependency-boundary.js bootstrap") {
+    fail("package.json is missing the canonical explicit deps:bootstrap command");
+  }
+  if (!String(pkg.scripts.prepack || "").startsWith("npm run deps:preflight && ")) {
+    fail("prepack must fail closed through deps:preflight before other gates");
+  }
+  if (!String(pkg.scripts.build || "").startsWith("npm run deps:preflight && ")) {
+    fail("build must fail closed through deps:preflight before smoke-visible output changes");
+  }
+  const dependencyBoundary = requireFile("scripts/dependency-boundary.js");
+  for (const expected of ["root", "docs", "mdkg-dev", "npm run deps:bootstrap", "NPM_CONFIG_OFFLINE=true"]) {
+    if (!dependencyBoundary.includes(expected)) {
+      fail(`scripts/dependency-boundary.js is missing ${expected}`);
+    }
+  }
+  const siteSmokeUtils = requireFile("scripts/mdkg-dev-smoke-utils.js");
+  if (!siteSmokeUtils.includes("assertDependencyTreesReady(repoRoot)")) {
+    fail("mdkg-dev smoke utilities must preflight all dependency owners before building");
+  }
+  if (siteSmokeUtils.includes('["ci", "--prefix", "mdkg-dev"') || siteSmokeUtils.includes("ensureSiteDeps")) {
+    fail("mdkg-dev smoke utilities must not install dependencies implicitly");
   }
   if (!pkg.scripts || pkg.scripts["security:verify"] !== "node scripts/verify-security-remediation.js") {
     fail("package.json is missing the canonical security:verify command");
   }
   if (!String(pkg.scripts.prepack || "").includes("npm run security:verify")) {
     fail("prepack is missing security:verify");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("node dist/cli.js validate && npm run security:verify")) {
-    fail("prepublishOnly must run security:verify immediately after graph validation");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:warning-ux"]) {
     fail("package.json is missing smoke:warning-ux");
@@ -109,105 +140,138 @@ function requirePackageVersions() {
     }
   }
   const docsCheck = String(pkg.scripts["docs:check"] || "");
-  if (!docsCheck.includes("generate-docs-reference.js --check")) {
+  const docsCheckBuilt = String(pkg.scripts["docs:check:built"] || "");
+  if (!docsCheck.includes("npm run build && npm run docs:check:built")) {
+    fail("standalone docs:check must build before using the built-only gate");
+  }
+  if (!docsCheckBuilt.includes("generate-docs-reference.js --check")) {
     fail("docs:check must verify generated CLI docs");
   }
-  if (!docsCheck.includes("generate-release-notes-data.js --check")) {
+  if (!docsCheckBuilt.includes("generate-release-notes-data.js --check")) {
     fail("docs:check must verify generated release notes data");
   }
-  if (!docsCheck.includes("check-doc-command-examples.js")) {
+  if (!docsCheckBuilt.includes("check-doc-command-examples.js")) {
     fail("docs:check must validate public command examples");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:db-queue-cli")) {
-    fail("prepublishOnly is missing smoke:db-queue-cli");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:consumer && npm run smoke:git-materialize && npm run smoke:loop && npm run smoke:matrix")) {
-    fail("prepublishOnly must run installed materialization and loop smokes between consumer and command-matrix smokes");
-  }
-  const ciRelease = String(pkg.scripts["ci:release"] || "");
-  for (const requiredGate of ["npm run test", "npm run cli:check", "npm run cli:contract", "npm run docs:check", "npm run smoke:git-materialize", "npm run smoke:loop", "npm run security:verify", "node scripts/assert-publish-ready.js"]) {
-    if (!ciRelease.includes(requiredGate)) {
-      fail(`ci:release is missing ${requiredGate}`);
-    }
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff")) {
-    fail("prepublishOnly is missing smoke:handoff");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:warning-ux && npm run smoke:integration-ux")) {
-    fail("prepublishOnly must run smoke:warning-ux before smoke:integration-ux");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:handoff && npm run smoke:warning-ux && npm run smoke:integration-ux")) {
-    fail("prepublishOnly must run smoke:warning-ux between smoke:handoff and smoke:integration-ux");
-  }
-  if (
-    !String(pkg.scripts.prepublishOnly || "").includes(
-      "npm run smoke:integration-ux && npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-docs && npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev-polish-pass2 && npm run smoke:mdkg-dev-polish-pass3 && npm run smoke:mdkg-dev-polish-pass4 && npm run smoke:mdkg-dev-polish-pass5 && npm run smoke:mdkg-dev-a11y && npm run smoke:mdkg-dev-perf && npm run smoke:demo-graph && npm run smoke:bundle"
-    )
-  ) {
-    fail("prepublishOnly must run mdkg.dev smokes after smoke:integration-ux and before smoke:bundle");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:cli-ux-polish"]) {
     fail("package.json is missing smoke:cli-ux-polish");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:work-invocation && npm run smoke:cli-ux-polish")) {
-    fail("prepublishOnly must run smoke:cli-ux-polish immediately after smoke:work-invocation");
-  }
   if (!pkg.scripts || !pkg.scripts["smoke:operator-health"]) {
     fail("package.json is missing smoke:operator-health");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:operator-health")) {
-    fail("prepublishOnly is missing smoke:operator-health");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:fix-plan"]) {
     fail("package.json is missing smoke:fix-plan");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:operator-health && npm run smoke:fix-plan")) {
-    fail("prepublishOnly must run smoke:fix-plan immediately after smoke:operator-health");
-  }
   if (!pkg.scripts || !pkg.scripts["smoke:branch-conflicts"]) {
     fail("package.json is missing smoke:branch-conflicts");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:fix-plan && npm run smoke:branch-conflicts")) {
-    fail("prepublishOnly must run smoke:branch-conflicts immediately after smoke:fix-plan");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:id-repair"]) {
     fail("package.json is missing smoke:id-repair");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:branch-conflicts && npm run smoke:id-repair")) {
-    fail("prepublishOnly must run smoke:id-repair immediately after smoke:branch-conflicts");
-  }
   if (!pkg.scripts || !pkg.scripts["smoke:command-docs"]) {
     fail("package.json is missing smoke:command-docs");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:id-repair && npm run smoke:command-docs")) {
-    fail("prepublishOnly must run smoke:command-docs immediately after smoke:id-repair");
   }
   if (!pkg.scripts || !pkg.scripts["smoke:spike"]) {
     fail("package.json is missing smoke:spike");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:command-docs && npm run smoke:spike")) {
-    fail("prepublishOnly must run smoke:spike immediately after smoke:command-docs");
-  }
   if (!pkg.scripts || !pkg.scripts["smoke:goal-lifecycle"]) {
     fail("package.json is missing smoke:goal-lifecycle");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:spike && npm run smoke:goal-lifecycle")) {
-    fail("prepublishOnly must run smoke:goal-lifecycle immediately after smoke:spike");
   }
   if (!pkg.scripts || !pkg.scripts["cli:contract"]) {
     fail("package.json is missing cli:contract");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run cli:check && npm run cli:contract")) {
-    fail("prepublishOnly must run cli:contract immediately after cli:check");
-  }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run cli:contract && npm run docs:check && node dist/cli.js validate")) {
-    fail("prepublishOnly must run docs:check between cli:contract and graph validation");
-  }
   if (!pkg.scripts || !pkg.scripts["smoke:mcp"]) {
     fail("package.json is missing smoke:mcp");
   }
-  if (!String(pkg.scripts.prepublishOnly || "").includes("npm run smoke:graph-clone && npm run smoke:mcp && npm run smoke:subgraph")) {
-    fail("prepublishOnly must run smoke:mcp between smoke:graph-clone and smoke:subgraph");
+
+  const releaseLadder = requireFile("scripts/release-ladder.js");
+  for (const expected of [
+    "dependency-preflight",
+    "cli:check:built",
+    "cli:contract:built",
+    "docs:check:built",
+    "graph-validate",
+    "security-verify",
+    "package-artifact",
+    "publish-readiness",
+    "NPM_CONFIG_OFFLINE",
+    "http://127.0.0.1:9",
+    "root build count",
+    "profile coverage mismatch",
+    "captureTrackedBoundary",
+    "compareTrackedBoundaries",
+    "selected_goal_unchanged",
+    "lockfiles_unchanged",
+    "diff_check_clean",
+    "test:coverage",
+    "coverage gate did not produce its concise summary",
+  ]) {
+    if (!releaseLadder.includes(expected)) {
+      fail(`scripts/release-ladder.js is missing ${expected}`);
+    }
+  }
+  const coverageContract = requireFile("scripts/coverage-contract.js");
+  const coverageReporter = requireFile("scripts/coverage-reporter.js");
+  const coverageConfig = JSON.parse(requireFile("scripts/coverage-contract.json"));
+  const coverageBaseline = JSON.parse(requireFile("scripts/coverage-baseline.json"));
+  for (const expected of [
+    "discoverTestContract",
+    "NODE_V8_COVERAGE",
+    "summary.json",
+    "manifest.json",
+    "validateThresholdRatchet",
+    "root:dec-88",
+  ]) {
+    if (!coverageContract.includes(expected) && expected !== "root:dec-88") {
+      fail(`scripts/coverage-contract.js is missing ${expected}`);
+    }
+  }
+  if (!coverageReporter.includes("test:coverage") || !coverageReporter.includes("test:summary")) {
+    fail("coverage reporter must capture structured coverage and test-summary events");
+  }
+  if (
+    coverageConfig.decision_ref !== "root:dec-88" ||
+    coverageBaseline.decision_ref !== "root:dec-88" ||
+    JSON.stringify(coverageConfig.thresholds) !== JSON.stringify(coverageBaseline.thresholds)
+  ) {
+    fail("coverage config and measured baseline must remain bound to root:dec-88");
+  }
+  const prepublishCoverageOccurrences = (releaseLadder.match(/run\(\"coverage\"/g) || []).length;
+  if (prepublishCoverageOccurrences !== 1 || !releaseLadder.includes('mode === "prepublish"')) {
+    fail("prepublish ladder must execute the coverage contract exactly once");
+  }
+  const smokeManifest = JSON.parse(requireFile("scripts/smoke-manifest.json"));
+  const smokeAliases = Object.keys(pkg.scripts).filter((name) => name.startsWith("smoke:")).sort();
+  const manifestAliases = smokeManifest.aliases.map((entry) => entry.alias).sort();
+  const canonicalSmokes = new Set(smokeManifest.aliases.map((entry) => entry.canonical));
+  if (smokeManifest.alias_count !== 47 || manifestAliases.length !== 47) {
+    fail("smoke manifest must map all 47 aliases");
+  }
+  if (smokeManifest.canonical_execution_count !== 46 || canonicalSmokes.size !== 46) {
+    fail("smoke manifest must map aliases to 46 canonical executions");
+  }
+  if (JSON.stringify(smokeAliases) !== JSON.stringify(manifestAliases)) {
+    fail("smoke manifest aliases must match package.json");
+  }
+  const bundleImport = smokeManifest.aliases.find((entry) => entry.alias === "smoke:bundle-import");
+  if (!bundleImport || bundleImport.canonical !== "smoke:subgraph") {
+    fail("smoke:bundle-import must remain an alias of smoke:subgraph");
+  }
+  const currentCi = smokeManifest.aliases
+    .filter((entry) => entry.future_ci_tier === "current")
+    .map((entry) => entry.alias)
+    .sort();
+  if (JSON.stringify(currentCi) !== JSON.stringify(["smoke:git-materialize", "smoke:loop"])) {
+    fail("smoke manifest current CI membership must preserve git-materialize and loop");
+  }
+  if (smokeManifest.profiles?.docs?.length !== 4 || smokeManifest.profiles?.["mdkg-dev"]?.length !== 5) {
+    fail("smoke manifest must bind four docs and five mdkg-dev behavior profiles");
+  }
+  const artifactConsumers = smokeManifest.aliases.filter(
+    (entry) => entry.prerequisites.includes("immutable_package_artifact"),
+  );
+  if (artifactConsumers.length !== 35) {
+    fail(`smoke manifest must identify 35 artifact-consuming aliases including the compatibility alias; got ${artifactConsumers.length}`);
   }
   if (!Array.isArray(pkg.files) || !pkg.files.includes("dist/command-contract.json")) {
     fail("package files must include dist/command-contract.json");

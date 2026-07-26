@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "contract": "publishable-runtime-v1",
+  "decision_ref": "root:dec-88",
+  "output_dir": ".coverage/publishable-runtime",
+  "measured_paths": [
+    {
+      "id": "cli",
+      "include": "dist/cli.js"
+    },
+    {
+      "id": "commands",
+      "include": "dist/commands/**/*.js"
+    },
+    {
+      "id": "core",
+      "include": "dist/core/**/*.js"
+    },
+    {
+      "id": "graph",
+      "include": "dist/graph/**/*.js"
+    },
+    {
+      "id": "pack",
+      "include": "dist/pack/**/*.js"
+    },
+    {
+      "id": "templates",
+      "include": "dist/templates/**/*.js"
+    },
+    {
+      "id": "util",
+      "include": "dist/util/**/*.js"
+    }
+  ],
+  "exclusions": [
+    "dist/tests/**",
+    "dist/init/**",
+    "scripts/**",
+    "tests/**",
+    "node_modules/**",
+    "docs/**",
+    "mdkg-dev/**"
+  ],
+  "provisional_audit_floors": {
+    "lines": 89,
+    "branches": 77,
+    "functions": 96
+  },
+  "baseline_file": "scripts/coverage-baseline.json",
+  "thresholds": {
+    "lines": 89,
+    "branches": 77,
+    "functions": 96
+  }
+}

@@ -8,6 +8,7 @@
 .mdkg/subgraphs/
 .mdkg/state/
 dist/
+.coverage/
 node_modules/
 mdkg-dev/.astro/
 docs/.astro/

@@ -171,6 +171,47 @@ test("mcp read-only tools inspect local graph state without writes", () => {
   assert.deepEqual(workFilesAfter, beforeFiles);
 });
 
+test("mcp and CLI goal next share blocker-aware chain-first routing without writes", () => {
+  const root = createMcpRepo();
+  const goalPath = path.join(root, ".mdkg", "work", "goal-1.md");
+  const taskPath = path.join(root, ".mdkg", "work", "task-1.md");
+  const spikePath = path.join(root, ".mdkg", "work", "spike-1.md");
+  fs.writeFileSync(
+    goalPath,
+    fs.readFileSync(goalPath, "utf8").replace("active_node: task-1\n", ""),
+    "utf8"
+  );
+  fs.writeFileSync(
+    taskPath,
+    fs.readFileSync(taskPath, "utf8")
+      .replace("priority: 1", "priority: 0")
+      .replace("parent: goal-1", "parent: goal-1\nprev: spike-1")
+      .replace("blocked_by: []", "blocked_by: [spike-1]"),
+    "utf8"
+  );
+  fs.writeFileSync(
+    spikePath,
+    fs.readFileSync(spikePath, "utf8")
+      .replace("priority: 1", "priority: 9")
+      .replace("parent: goal-1", "parent: goal-1\nnext: task-1"),
+    "utf8"
+  );
+  run(root, ["index"]);
+  const before = [goalPath, taskPath, spikePath].map((filePath) => fs.readFileSync(filePath, "utf8"));
+
+  const cli = run(root, ["goal", "next", "goal-1", "--json"]);
+  const cliReceipt = JSON.parse(cli.stdout);
+  const mcpReceipt = structured(callTool(root, "mdkg_goal_next", { id: "goal-1" }));
+
+  assert.equal(cliReceipt.node.qid, "root:spike-1");
+  assert.equal(mcpReceipt.node.qid, cliReceipt.node.qid);
+  assert.deepEqual(mcpReceipt.warnings, cliReceipt.warnings);
+  assert.deepEqual(
+    [goalPath, taskPath, spikePath].map((filePath) => fs.readFileSync(filePath, "utf8")),
+    before
+  );
+});
+
 test("mcp goal next returns null for achieved goals without stale active-node warnings", () => {
   const root = createMcpRepo();
   const goalPath = path.join(root, ".mdkg", "work", "goal-1.md");

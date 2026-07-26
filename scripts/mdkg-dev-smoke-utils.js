@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { assertDependencyTreesReady } = require("./dependency-boundary");
 
 const repoRoot = path.resolve(__dirname, "..");
 const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : require("node:os").tmpdir();
@@ -25,7 +26,7 @@ function run(command, args, options = {}) {
     encoding: "utf8",
     stdio: "pipe",
   });
-  if (result.status !== 0) {
+  if (result.status !== 0 && !options.allowFailure) {
     throw new Error(
       [
         `command failed: ${command} ${args.join(" ")}`,
@@ -39,6 +40,7 @@ function run(command, args, options = {}) {
   return {
     stdout: result.stdout.trim(),
     stderr: result.stderr.trim(),
+    status: result.status,
   };
 }
 
@@ -60,16 +62,8 @@ function parseJson(output) {
   return JSON.parse(output);
 }
 
-function ensureSiteDeps() {
-  const astroPackage = path.join(repoRoot, "mdkg-dev", "node_modules", "astro", "package.json");
-  if (fs.existsSync(astroPackage)) {
-    return;
-  }
-  run(NPM_CMD, ["ci", "--prefix", "mdkg-dev", "--ignore-scripts"]);
-}
-
 function buildSite(env = {}) {
-  ensureSiteDeps();
+  assertDependencyTreesReady(repoRoot);
   run(NPM_CMD, ["--prefix", "mdkg-dev", "run", "build"], { env });
 }
 
@@ -155,8 +149,8 @@ function assertMarkdownLinks(rootDir) {
   }
 }
 
-function mdkg(args, cwd = repoRoot) {
-  return run(NODE_CMD, [path.join(repoRoot, "dist", "cli.js"), ...args], { cwd });
+function mdkg(args, cwd = repoRoot, options = {}) {
+  return run(NODE_CMD, [path.join(repoRoot, "dist", "cli.js"), ...args], { cwd, ...options });
 }
 
 module.exports = {

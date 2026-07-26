@@ -330,7 +330,7 @@ test("work lifecycle mutations reject subgraph qids with read-only guidance", ()
   );
 });
 
-test("goal routing explains read-only subgraph blockers and graph refs summarizes edges", () => {
+test("goal routing fails closed on read-only subgraph blockers and graph refs summarizes edges", () => {
   const root = makeTempDir("mdkg-subgraph-refs-");
   run(["init", "--agent"], root);
   const bundlePath = createChildBundle(root);
@@ -356,7 +356,7 @@ test("goal routing explains read-only subgraph blockers and graph refs summarize
   const next = json<{ node: { qid: string } | null; warnings: string[] }>(
     run(["goal", "next", "goal-1", "--json"], root).stdout
   );
-  assert.equal(next.node?.qid, "root:task-1");
+  assert.equal(next.node, null);
   assert.ok(
     next.warnings.some((warning) =>
       warning.includes("root:task-1 is blocked by read-only subgraph node child_subgraph:task-1")

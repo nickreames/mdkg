@@ -114,7 +114,7 @@ function writeWork(
   title: string,
   status: string,
   priority: number,
-  extras: Partial<Record<"relates" | "epic" | "parent", string>> = {}
+  extras: Partial<Record<"relates" | "epic" | "parent" | "prev" | "next" | "blocked_by" | "blocks", string>> = {}
 ): void {
   writeFile(
     path.join(root, ".mdkg", "work", `${id}.md`),
@@ -127,13 +127,15 @@ function writeWork(
       `priority: ${priority}`,
       ...(extras.epic ? [`epic: ${extras.epic}`] : []),
       ...(extras.parent ? [`parent: ${extras.parent}`] : []),
+      ...(extras.prev ? [`prev: ${extras.prev}`] : []),
+      ...(extras.next ? [`next: ${extras.next}`] : []),
       "tags: []",
       "owners: []",
       "links: []",
       "artifacts: []",
       `relates: ${extras.relates ? `[${extras.relates}]` : "[]"}`,
-      "blocked_by: []",
-      "blocks: []",
+      `blocked_by: ${extras.blocked_by ? `[${extras.blocked_by}]` : "[]"}`,
+      `blocks: ${extras.blocks ? `[${extras.blocks}]` : "[]"}`,
       "refs: []",
       "aliases: []",
       "skills: []",
@@ -245,6 +247,66 @@ test("goal next skips completed scoped work and returns the next scoped item", (
   const output = captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true }));
   const receipt = JSON.parse(output.stdout);
   assert.equal(receipt.node.qid, "root:task-1");
+});
+
+test("goal next skips unresolved blockers and advances through a valid local chain", () => {
+  const root = setupRepo();
+  writeGoal(root, { active_node: "", scope_refs: "[test-9, task-1]" });
+  writeWork(root, "test", "test-9", "Definition proof", "todo", 9, {
+    next: "task-1",
+    blocks: "task-1",
+  });
+  writeWork(root, "task", "task-1", "Blocked implementation", "todo", 0, {
+    prev: "test-9",
+    blocked_by: "test-9",
+  });
+
+  const first = captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true }));
+  const firstReceipt = JSON.parse(first.stdout);
+  assert.equal(firstReceipt.node.qid, "root:test-9");
+  assert.deepEqual(firstReceipt.warnings, []);
+
+  const proofPath = path.join(root, ".mdkg", "work", "test-9.md");
+  fs.writeFileSync(
+    proofPath,
+    fs.readFileSync(proofPath, "utf8").replace("status: todo", "status: done"),
+    "utf8"
+  );
+  const advanced = captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true }));
+  const advancedReceipt = JSON.parse(advanced.stdout);
+  assert.equal(advancedReceipt.node.qid, "root:task-1");
+  assert.deepEqual(advancedReceipt.warnings, []);
+});
+
+test("goal next does not let a blocked active node bypass its dependency", () => {
+  const root = setupRepo();
+  writeGoal(root, { active_node: "task-1", scope_refs: "[test-9, task-1]" });
+  writeWork(root, "test", "test-9", "Definition proof", "todo", 9, {
+    next: "task-1",
+    blocks: "task-1",
+  });
+  writeWork(root, "task", "task-1", "Blocked active implementation", "progress", 0, {
+    prev: "test-9",
+    blocked_by: "test-9",
+  });
+
+  const output = captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true }));
+  const receipt = JSON.parse(output.stdout);
+  assert.equal(receipt.node.qid, "root:test-9");
+  assert.ok(receipt.warnings.some((warning: string) =>
+    warning.includes("active_node is blocked by unresolved dependencies: root:test-9")
+  ));
+});
+
+test("goal next falls back deterministically for disconnected work", () => {
+  const disconnected = setupRepo();
+  writeGoal(disconnected, { active_node: "", scope_refs: "[task-1, task-2]" });
+  writeWork(disconnected, "task", "task-1", "Later disconnected work", "todo", 7);
+  writeWork(disconnected, "task", "task-2", "Urgent disconnected work", "todo", 0);
+  const disconnectedOutput = captureOutput(() =>
+    runGoalNextCommand({ root: disconnected, id: "goal-1", json: true })
+  );
+  assert.equal(JSON.parse(disconnectedOutput.stdout).node.qid, "root:task-2");
 });
 
 test("goal next without selection falls back only for a unique active goal", () => {

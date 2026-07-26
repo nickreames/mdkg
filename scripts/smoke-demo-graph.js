@@ -152,9 +152,22 @@ function main() {
       { allowAchievedGoal: true, root: copiedRoots["examples/demo-runs/demo-001"] }
     );
 
-    const subgraphs = parseJson(mdkg(["subgraph", "verify", "--all", "--json"]).stdout);
-    assert(subgraphs.ok === true, "root subgraph verification failed");
+    const subgraphResult = mdkg(["subgraph", "verify", "--all", "--json"], repoRoot, {
+      allowFailure: true,
+    });
+    const subgraphs = parseJson(subgraphResult.stdout);
     assert(subgraphs.count >= 2, "expected at least two registered subgraphs");
+    assert(
+      subgraphResult.status === 0 ||
+        (
+          subgraphResult.status === 2 &&
+          subgraphs.subgraphs.every((entry) => entry.error_count === 0) &&
+          subgraphs.subgraphs.every((entry) =>
+            entry.warnings.every((warning) => /bundle age \d+s exceeds max_stale_seconds \d+/.test(warning))
+          )
+        ),
+      `root subgraph verification reported non-staleness failures: ${subgraphResult.stderr}`
+    );
     for (const alias of ["demo_agentic_coding", "template_mdkg_dev"]) {
       const entry = subgraphs.subgraphs.find((item) => item.alias === alias);
       assert(entry, `missing subgraph ${alias}`);

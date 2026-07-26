@@ -8,7 +8,8 @@ import { loadConfig } from "../core/config";
 import { readPackageVersion } from "../core/version";
 import { loadIndex } from "../graph/index_cache";
 import { readNodeBody } from "../graph/node_body";
-import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES } from "../graph/goal_scope";
+import { collectGoalScope } from "../graph/goal_scope";
+import { selectGoalNextCandidate } from "../graph/goal_next";
 import { Index, IndexNode } from "../graph/indexer";
 import { ALLOWED_TYPES } from "../graph/node";
 import { loadTemplateHeadingMap } from "../templates/headings";
@@ -18,7 +19,7 @@ import { resolvePackProfile, shapePackBodies } from "../pack/profile";
 import { filterNodes } from "../util/filter";
 import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { sortNodesByQid, sortNodesForNext } from "../util/sort";
+import { sortNodesByQid } from "../util/sort";
 import { toNodeDetailJson, toNodeSummaryJson } from "./query_output";
 
 const MCP_PROTOCOL_VERSION = "2025-06-18";
@@ -387,19 +388,6 @@ function resolveGoal(
   throw new NotFoundError("no selected or active local goal found");
 }
 
-function isConcreteGoalCandidate(node: IndexNode, statusRanks: Set<string>): boolean {
-  if (node.source?.imported) {
-    return false;
-  }
-  if (!GOAL_SCOPE_ACTIONABLE_TYPES.has(node.type)) {
-    return false;
-  }
-  if (!node.status || !statusRanks.has(node.status)) {
-    return false;
-  }
-  return node.status !== "done" && node.status !== "archived";
-}
-
 function toolResult(payload: unknown, isError = false): JsonObject {
   const compact = JSON.stringify(payload);
   if (Buffer.byteLength(compact, "utf8") > MAX_MCP_TOOL_PAYLOAD_BYTES) {
@@ -584,7 +572,6 @@ function goalNextTool(root: string, args: JsonObject): JsonObject {
   }
 
   const statusPreference = config.work.next.status_preference.map((status) => status.toLowerCase());
-  const statusRanks = new Set(statusPreference);
   const scope = collectGoalScope(index, loaded.node);
   for (const missing of scope.missingRefs) {
     warnings.push(`scope_refs references missing node: ${missing}`);
@@ -595,29 +582,17 @@ function goalNextTool(root: string, args: JsonObject): JsonObject {
   const activeNode = typeof loaded.node.attributes.active_node === "string"
     ? loaded.node.attributes.active_node
     : undefined;
-  if (activeNode) {
-    const resolved = resolveQid(index, activeNode, loaded.node.ws);
-    const node = resolved.status === "ok" ? index.nodes[resolved.qid] : undefined;
-    if (node && scope.actionableQids.has(node.qid) && isConcreteGoalCandidate(node, statusRanks)) {
-      return {
-        command: "mcp.goal_next",
-        goal_source: loaded.source,
-        goal: toNodeSummaryJson(loaded.node),
-        node: toNodeSummaryJson(node),
-        warnings,
-      };
-    }
-    warnings.push(`active_node is not an actionable local concrete item: ${activeNode}`);
-  }
-
-  const candidates = Array.from(scope.actionableQids)
-    .map((qid) => index.nodes[qid])
-    .filter((node): node is IndexNode => Boolean(node))
-    .filter((node) => isConcreteGoalCandidate(node, statusRanks));
-  const selected = sortNodesForNext(candidates, {
+  const selection = selectGoalNextCandidate({
+    index,
+    goal: loaded.node,
+    actionableQids: scope.actionableQids,
+    activeNode,
+    strategy: config.work.next.strategy,
     statusPreference,
     priorityMax: config.work.priority_max,
-  })[0];
+  });
+  warnings.push(...selection.warnings);
+  const selected = selection.node;
   return {
     command: "mcp.goal_next",
     goal_source: loaded.source,

@@ -2,13 +2,13 @@
 id: task-803
 type: task
 title: reuse one package artifact and bound profile-specific build execution
-status: backlog
+status: done
 priority: 1
 parent: goal-77
 prev: test-468
 next: test-463
 tags: [audit-followup, release, prepublish, build]
-owners: []
+owners: [root]
 links: []
 artifacts: []
 relates: [loop-7]
@@ -76,6 +76,55 @@ root/docs/mdkg-dev build amplification.
 - Use a disposable snapshot to prove one artifact hash reaches every
   installed-package consumer and each profile assertion still executes.
 - Hand the complete offline 60-minute proof to `root:test-463`.
+
+# Results / Evidence
+
+## Ownership boundary
+
+- `scripts/smoke-manifest.json` owns release-ladder alias, canonical execution,
+  prerequisite, profile, timeout, and future-CI membership metadata.
+- Package artifact construction remains root-package owned.
+- Docs and mdkg-dev retain their own source, lockfile, and Astro output
+  ownership. The ladder caches only ignored build output keyed by owner source,
+  owner lockfile, Node version, and a declared normalized profile.
+- Standalone `smoke:*` package scripts remain unchanged and continue to build
+  before their physical entrypoint. Only the integrated runners bypass repeated
+  wrapper builds.
+
+## Implementation
+
+- Added a bounded local release runner for `ci` and `prepublish` modes.
+- Added built-output variants for test, CLI contract, and docs checks so a
+  composed ladder does not recompile unchanged root source.
+- The manifest binds all 47 package aliases to 46 canonical executions;
+  `smoke:bundle-import` and `smoke:subgraph` share one execution.
+- One validated `npm pack` artifact is chmod-bound read-only, SHA-256 recorded,
+  and supplied to legacy local-pack call sites through a private npm/npx proxy.
+  Each consumer receives a hard link or byte-identical fallback copy and
+  records the canonical hash.
+- The same proxy caches docs and mdkg-dev `dist` by exact normalized profile.
+  Four docs profiles and five mdkg-dev profiles are declared.
+- Root compiler and site-build events stay under the selected `/private/tmp`
+  receipt directory. Time budgets are enforced inside the runner.
+- Publish-readiness assertions validate manifest parity, alias deduplication,
+  profile inventory, runner contracts, and artifact-consumer classification.
+
+## Verification
+
+- Focused release-ladder tests passed `4/4`: 47-to-46 expansion, immutable
+  artifact reuse, profile cache hit/invalidation, and standalone compatibility.
+- Built-only CLI, contract, and docs checks passed.
+- `npm run ci:release` passed once under Node `24.18.0`, forced offline mode,
+  an empty dedicated cache, and unreachable registry in `123.974s`.
+- CI mode performed two root builds, executed the two existing CI smokes once,
+  and recorded two uses of one `428170`-byte artifact with SHA-256
+  `53e2d7a33398a7cbcaaab8d6468f7ca93e30d25fc7b4edcdaf5ba30fd0ea80d8`.
+- The CI receipt is `/private/tmp/mdkg-goal77-ci-v1/receipt.json`; raw logs
+  remain beside it.
+- No lockfile, workflow, skill, package-version, selected-goal, or tracked
+  generated-output change occurred.
+- The complete 46-execution, nine-profile, 60-minute proof remains owned by
+  `root:test-463`.
 
 # Links / Artifacts
 
