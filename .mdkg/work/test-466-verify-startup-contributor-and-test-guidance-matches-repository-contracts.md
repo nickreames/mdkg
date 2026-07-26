@@ -3,7 +3,7 @@ id: test-466
 type: test
 title: verify startup contributor and test guidance matches repository contracts
 status: backlog
-priority: 1
+priority: 3
 parent: goal-78
 prev: task-806
 tags: [audit-followup, harness, docs, test]
@@ -20,7 +20,7 @@ aliases: []
 skills: [verify-close-and-checkpoint, pursue-mdkg-loop]
 cases: [active_loop_ordering, tracked_index_contract, test_family_contract]
 created: 2026-07-17
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Overview
 
@@ -61,3 +61,5 @@ to a test-proof checkpoint.
 # Notes / Follow-ups
 
 - Public seed skill currentness remains owned by `root:task-805`.
+- This focused guidance proof does not rerun `ci:release` or
+  `prepublishOnly`; both are shared once at Goal 78 closeout.

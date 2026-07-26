@@ -3,7 +3,7 @@ id: task-806
 type: task
 title: correct loop index and test harness guidance contradictions
 status: backlog
-priority: 1
+priority: 3
 parent: goal-78
 prev: test-465
 next: test-466
@@ -20,7 +20,7 @@ evidence_refs: []
 aliases: []
 skills: [pursue-mdkg-loop, verify-close-and-checkpoint]
 created: 2026-07-17
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Overview
 
@@ -71,6 +71,8 @@ audience-specific startup wrappers into exact mirrors.
 - Derive current first-level TypeScript families and root MJS paths and compare
   them with documented commands.
 - Run docs/CLI checks, graph validation, and `git diff --check`.
+- Do not run `ci:release` or `prepublishOnly`; this lane uses focused semantic
+  checks and shares the one Goal 78 closeout ladder.
 
 # Links / Artifacts
 

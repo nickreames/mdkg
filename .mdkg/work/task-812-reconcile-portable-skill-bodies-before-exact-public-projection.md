@@ -3,7 +3,7 @@ id: task-812
 type: task
 title: Reconcile portable skill bodies before exact public projection
 status: backlog
-priority: 1
+priority: 2
 parent: goal-78
 next: test-471
 tags: [skills, public-seed, portability, release-boundary]
@@ -19,7 +19,7 @@ evidence_refs: []
 aliases: []
 skills: [author-mdkg-skill, service-boundary-ownership-check]
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-07-26
 ---
 # Overview
 
@@ -42,6 +42,9 @@ package-publication behavior or dangling repository-specific references.
   six public candidates, including already-equal bodies.
 - Generic `.mdkg` concepts, generic path patterns, and non-authorizing safety
   boundaries remain allowed.
+- Scans distinguish an executable release procedure from non-authorizing
+  safety language. Words such as `publish`, `push`, or `tag` are not failures
+  when they explicitly prohibit or separate that authority.
 - Edit only canonical `.mdkg/skills` bodies; update configured mirrors only
   through `mdkg skill sync`.
 - Do not create the projection policy or validator here; that remains
@@ -66,6 +69,10 @@ package-publication behavior or dangling repository-specific references.
 - Keep exact package command truth in package scripts/CI and reference it from
   the repository-local release skill rather than duplicating it in portable
   closeout.
+- Apply operations in this order: edit canonical bodies; run
+  `mdkg skill sync` exactly once for configured mirrors; update the approved
+  six public source bodies; then validate built and disposable fresh-init
+  projections. Do not hand-edit configured mirrors.
 
 # Test Plan
 
@@ -76,6 +83,8 @@ package-publication behavior or dangling repository-specific references.
 - Validate canonical/configured mirror equality after sync.
 - Hand exact public projection and init proof to `root:task-805` and
   `root:test-465`.
+- Do not run `ci:release` or `prepublishOnly`; focused skill checks belong to
+  this lane and the shared expensive ladder belongs to Goal 78 closeout.
 
 # Links / Artifacts
 
