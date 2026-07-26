@@ -3,7 +3,9 @@ id: test-466
 type: test
 title: verify startup contributor and test guidance matches repository contracts
 status: backlog
-priority: 2
+priority: 1
+parent: goal-78
+prev: task-806
 tags: [audit-followup, harness, docs, test]
 owners: []
 links: []
@@ -11,14 +13,14 @@ artifacts: []
 relates: [loop-7, task-806]
 blocked_by: [task-806]
 blocks: []
-refs: [loop-7, spike-32, test-461, chk-541, chk-542, task-806]
-context_refs: []
+refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-89, test-465, task-806]
+context_refs: [goal-78, loop-7, chk-544, dec-89, test-465, task-806]
 evidence_refs: []
 aliases: []
-skills: []
-cases: []
+skills: [verify-close-and-checkpoint, pursue-mdkg-loop]
+cases: [active_loop_ordering, tracked_index_contract, test_family_contract]
 created: 2026-07-17
-updated: 2026-07-17
+updated: 2026-07-25
 ---
 # Overview
 
@@ -34,22 +36,27 @@ guidance contradictions corrected by `root:task-806`.
 # Preconditions / Environment
 
 - `root:task-806` is done.
+- `root:test-465` has proven the final public skill projection semantics.
 - Use the current repository and one disposable initialized agent fixture.
 
 # Test Cases
 
-- Both active-loop quickstarts contain show, skill, plan, `loop next`, and
-  concise-pack steps in deterministic order.
-- Contributor guidance matches `git ls-files .mdkg/index` and `.gitignore`,
-  including the tracked SQLite exception and ignored transient files.
-- Test guidance names all six current families and maps the compiled and root
-  MJS execution paths without claiming command tests are deferred.
+- Root, public source, built public source, and disposable initialized
+  quickstarts contain show, skill, plan, `loop next`, concise pack,
+  answer/gate, and authorized execution steps in deterministic order.
+- `git ls-files .mdkg/index` includes the tracked SQLite database;
+  `.gitignore` covers transient forms but not that tracked file; contributor
+  guidance states the exception and forbids blanket cleanup.
+- Dynamic test-family discovery matches documented command, core, graph, pack,
+  util, and root-MJS execution paths without claiming CLI tests are deferred.
+- Each case fails independently when its owned semantic contract is removed.
 - Whole-file equality is not required for audience-specific wrappers.
 
 # Results / Evidence
 
-Attach root/public semantic check output, Git tracking receipt, and test-family
-inventory to a test-proof checkpoint.
+Attach startup-order output for all four surfaces, Git tracking/ignore receipt,
+dynamic test-family inventory, focused negative cases, and final Git boundary
+to a test-proof checkpoint.
 
 # Notes / Follow-ups
 

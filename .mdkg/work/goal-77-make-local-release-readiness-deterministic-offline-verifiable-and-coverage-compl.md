@@ -15,12 +15,12 @@ tags: [release, prepublish, coverage, local-only]
 owners: []
 links: []
 artifacts: []
-relates: [loop-7]
+relates: []
 blocked_by: []
 blocks: []
-refs: [loop-7, task-802, test-462, chk-544, chk-545, dec-6, dec-85, dec-86, dec-87, dec-88, bug-4, test-469]
-context_refs: [loop-7, task-802, test-462, chk-544, chk-545, dec-6, dec-85, dec-86, dec-87, dec-88, bug-4, test-469]
-evidence_refs: [chk-545]
+refs: [loop-7, task-802, test-462, chk-544, chk-545, chk-546, dec-6, dec-85, dec-86, dec-87, dec-88, bug-4, test-469]
+context_refs: [loop-7, task-802, test-462, chk-544, chk-545, chk-546, dec-6, dec-85, dec-86, dec-87, dec-88, bug-4, test-469]
+evidence_refs: [chk-545, chk-546]
 aliases: [deterministic-local-release-readiness]
 skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-25
@@ -141,6 +141,8 @@ outside scope.
 - 2026-07-25: Added a definition-blocking goal-next bug/test after live
   verification proved the selector ignores local blockers and the configured
   chain-first strategy.
+- 2026-07-25: `root:chk-546` records the two-goal planning boundary, exact
+  explicit scope, validation receipts, and local commit authority.
 
 # Skill Improvement Candidates
 
