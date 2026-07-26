@@ -1,71 +1,84 @@
 ---
 id: task-805
 type: task
-title: declare public skill seed membership and currentness policy
+title: enforce public skill seed membership and currentness policy
 status: backlog
 priority: 1
+parent: goal-78
+prev: test-471
+next: test-465
 tags: [audit-followup, skills, public-seed, policy]
 owners: []
 links: []
 artifacts: []
 relates: [loop-7]
-blocked_by: []
+blocked_by: [test-471]
 blocks: [test-465]
-refs: [loop-7, spike-32, test-461, chk-541, chk-542, dec-85]
-context_refs: []
+refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-19, dec-85, dec-89, task-812, test-471]
+context_refs: [goal-78, loop-7, chk-544, dec-19, dec-85, dec-89, task-812, test-471]
 evidence_refs: []
 aliases: []
-skills: []
+skills: [author-mdkg-skill, service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-17
-updated: 2026-07-17
+updated: 2026-07-25
 ---
 # Overview
 
-Make public init skill projection policy machine-readable. Managed mirrors are
-currently exact, but three of six public seed bodies diverge from canonical and
-existing checks cannot tell an approved snapshot from accidental staleness.
+After `root:test-471` proves the six public bodies portable, make their exact
+membership/currentness policy machine-readable and enforce it consistently in
+source, build, validation, publish readiness, and fresh init.
 
 # Acceptance Criteria
 
-- Declare the six portable public members explicitly:
-  `author-mdkg-skill`, `build-pack-and-execute-task`, `pursue-mdkg-goal`,
-  `pursue-mdkg-loop`, `select-work-and-ground-context`, and
-  `verify-close-and-checkpoint`.
-- Declare those six exact canonical projections and reconcile their public
-  bodies after reviewing portability; keep configured `.agents`/`.claude`
-  mirrors exact.
-- Declare `release-mdkg-package` intentionally repository-local under
-  `root:dec-85`; declare `service-boundary-ownership-check` repository-local
-  unless a separate accepted decision broadens public membership.
-- Future public divergence requires a per-skill `reviewed_snapshot` mode,
-  accepted decision ref, rationale, and expected hash; unannotated divergence
-  fails validation.
-- Fresh `mdkg init --agent` discovers exactly the declared public members and
-  never exposes the release skill.
+- Add `assets/init/skills/public-seed-policy.json` and copy it to
+  `dist/init/skills/public-seed-policy.json`; do not place policy inside the
+  installable `skills/default/` directory.
+- Declare the six exact members and two repository-local exclusions from
+  `root:dec-89`.
+- V1 supports only `exact` and `excluded`; do not implement
+  `reviewed_snapshot`.
+- One reusable projection validator enforces canonical/configured mirrors for
+  all eight and canonical/public-source/built-seed/fresh-init equality for the
+  six exact members.
+- The validator rejects missing/extra members, hash drift, excluded membership,
+  and excluded release behavior embedded under another slug.
+- Build and init behavior consume or validate the policy rather than infer it
+  from directory contents.
+- Fresh `mdkg init --agent` discovers exactly six public members and never
+  exposes either repository-local skill.
+- Existing customized upgrade targets remain preserved.
 
 # Files Affected
 
-- machine-readable skill projection policy/manifest
-- approved public seed bodies under `assets/init/skills/default/`
-- init, smoke-init, and publish-readiness projection tests
-- configured mirrors only through canonical `mdkg skill sync`
+- `assets/init/skills/public-seed-policy.json`
+- built policy under `dist/init/skills/`
+- reusable projection validator
+- init, smoke-init, skill-validation, and publish-readiness integration
+- focused schema, membership, hash, behavior, and upgrade-preservation tests
 
 # Implementation Notes
 
-- Review canonical bodies for product neutrality before exact projection.
-- Preserve create-if-missing init behavior from `root:dec-19` and publication
-  separation from `root:dec-85`.
-- Do not infer policy from directory presence alone.
+- Portability reconciliation is complete before this task begins.
+- Preserve create-if-missing behavior from `root:dec-19`.
+- Preserve publication separation from `root:dec-85`.
+- Do not maintain separate membership/hash logic in init, validation, smoke,
+  and publish-readiness code.
 
 # Test Plan
 
-- Validate canonical and managed skills, compare policy-bound hashes, initialize
-  a disposable repo, assert membership/exclusions, and run init/publish smokes,
-  graph validation, and Git hygiene checks.
+- Validate policy schema and canonical/configured mirrors.
+- Compare six exact projections across public source and built seed.
+- Initialize a disposable repo and assert exact membership/exclusions/hashes.
+- Exercise missing, extra, drifted, excluded, embedded-release, and preserved
+  customization cases.
+- Run init/publish smokes, graph validation, and Git hygiene checks.
 
 # Links / Artifacts
 
 - `root:dec-19`
 - `root:dec-85`
+- `root:dec-89`
+- `root:goal-78`
+- `root:test-471`
 - `root:loop-7`
 - `.mdkg/artifacts/loop-7/test-ci-skill-infrastructure/skill-projection-inventory.json`
