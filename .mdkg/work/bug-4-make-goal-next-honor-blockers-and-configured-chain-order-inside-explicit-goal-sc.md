@@ -2,12 +2,12 @@
 id: bug-4
 type: bug
 title: Make goal next honor blockers and configured chain order inside explicit goal scope
-status: backlog
+status: done
 priority: 1
 parent: goal-77
 next: test-469
 tags: [goal-routing, graph, cli, audit-followup]
-owners: []
+owners: [root]
 links: []
 artifacts: []
 relates: [loop-7]
@@ -15,7 +15,7 @@ blocked_by: []
 blocks: [test-469]
 refs: [goal-77, loop-7, dec-6, chk-545]
 context_refs: [goal-77, dec-6, chk-545]
-evidence_refs: []
+evidence_refs: [chk-547]
 aliases: []
 skills: [build-pack-and-execute-task]
 created: 2026-07-25
@@ -78,6 +78,25 @@ edge, but explicit goal routing does not.
 - Re-run the real paused `root:goal-77`; it must select `root:bug-4` before the
   fix and `root:test-469` after this bug is done.
 - Run command, CLI contract, graph validation, and Git boundary checks.
+
+# Results / Evidence
+
+- Implemented one pure selector shared by CLI and MCP.
+- Valid linear chains collapse to their first unfinished frontier; priority,
+  status, and QID order apply across independent frontiers and disconnected or
+  invalid-chain fallback work.
+- Unresolved local, missing, and imported blockers are ineligible. Missing and
+  imported blockers emit deterministic repair warnings without mutation.
+- A valid active node retains precedence; a blocked active node cannot bypass
+  its dependencies; a completed active node advances without a stale warning.
+- Node `24.18.0` build passed.
+- Focused receipts passed: goal command `17/17`, selector `3/3`, MCP `6/6`.
+- `npm run cli:check` and `npm run cli:contract` passed.
+- Real `root:goal-77` selected this owned progress node with zero warnings.
+- Selected-goal SHA-256 remained
+  `f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab`;
+  selected achieved `root:goal-73` was unchanged.
+- Changed-only graph validation and `git diff --check` passed.
 
 # Links / Artifacts
 

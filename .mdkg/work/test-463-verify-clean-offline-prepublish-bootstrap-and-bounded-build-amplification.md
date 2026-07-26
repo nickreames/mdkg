@@ -2,13 +2,13 @@
 id: test-463
 type: test
 title: verify clean offline prepublish bootstrap and bounded build amplification
-status: backlog
+status: done
 priority: 1
 parent: goal-77
 prev: task-803
 next: task-804
 tags: [audit-followup, release, prepublish, test]
-owners: []
+owners: [root]
 links: []
 artifacts: []
 relates: [loop-7, task-803]
@@ -39,9 +39,10 @@ reproducible, network-closed after bootstrap, and bounded in build work.
 
 - `root:task-803` is done.
 - `root:test-468` has proven the explicit bootstrap/preflight boundary.
-- Use a disposable snapshot of HEAD plus the owned Goal 1 diff under
-  `/private/tmp`; exclude `.git`, dependencies, generated builds, caches, and
-  unrelated untracked files.
+- Run the verification from the real checkout against the already-installed
+  dependency trees, while keeping its cache, temporary files, artifact, and
+  raw receipts under a dedicated `/private/tmp` directory. The runner records
+  and compares the complete tracked worktree boundary before and after.
 - Network, when separately authorized, is allowed only during the explicit
   lockfile install phase; the verification phase is forced offline.
 
@@ -62,9 +63,66 @@ reproducible, network-closed after bootstrap, and bounded in build work.
 
 # Results / Evidence
 
-Attach install, offline, alias expansion, tarball hash, per-profile build,
-duration, and tracked-path receipts to a test-proof checkpoint. Raw logs and
-temporary installs remain under `/private/tmp`.
+## One-shot result
+
+- The single automatic `npm run prepublishOnly` attempt used Node `24.18.0`,
+  forced offline mode, an empty cache, registry `http://127.0.0.1:9`, and an
+  isolated `TMPDIR`.
+- It passed preflight, the complete test gate, built-only CLI/docs gates, graph
+  validation, security verification, package construction, and canonical
+  smokes 1–29 in `226.138s`.
+- Both root compiler invocations were recorded before the smoke suffix.
+- The run stopped at `smoke:mdkg-dev-docs`. Astro rejected symlinked
+  `docs/node_modules` in the disposable snapshot because virtual-module
+  metadata resolved across the snapshot and original absolute paths. This is a
+  fixture isolation defect, not a registry request or docs-source failure.
+- The failed receipt and raw logs are under
+  `/private/tmp/mdkg-goal77-prepublish-v1/`. No automatic whole-ladder retry was
+  performed.
+
+## Targeted recovery evidence
+
+- Reusing the same immutable artifact against the real dependency paths,
+  `smoke:mdkg-dev-docs` passed immediately, followed by the previously
+  unexecuted smoke suffix.
+- The suffix exposed a real baseline incompatibility:
+  `smoke:demo-graph` rejected the two accepted stale-subgraph warnings despite
+  zero errors. The smoke now accepts only warning-only bundle-age staleness and
+  still fails any subgraph error or other warning; its targeted rerun passed.
+- Focused runner tests now pass `6/6`, including the warning-only stale
+  subgraph contract and tracked-boundary drift detection.
+- Across the original prefix and targeted suffix, all 46 canonical identities
+  executed, all 34 artifact-consuming canonical smokes used SHA-256
+  `53e2d7a33398a7cbcaaab8d6468f7ca93e30d25fc7b4edcdaf5ba30fd0ea80d8`,
+  and no nested install or registry request occurred.
+- Targeted site receipts performed one actual build for each of four docs
+  profiles and five mdkg-dev profiles; every repeated build was a cache hit.
+- Root/docs/mdkg-dev lockfile hashes, selected achieved `root:goal-73`, and
+  tracked non-owned paths remain unchanged.
+- The release runner now fails closed unless branch, HEAD, exact Git porcelain
+  status, the aggregate content hash of every tracked path, all three lockfile
+  hashes, the selected `root:goal-73` hash, and `git diff --check` remain
+  unchanged. Successful and failed receipts both retain the comparison.
+
+## Authorized replacement result
+
+- After explicit user approval, exactly one replacement
+  `npm run prepublishOnly` ran from the real checkout under Node `24.18.0`.
+  The runner remained offline with an empty dedicated cache, registry
+  `http://127.0.0.1:9`, and isolated `/private/tmp` outputs.
+- The command passed in `275.557s`, within the 60-minute budget. Its receipt is
+  `/private/tmp/mdkg-goal77-prepublish-v2/receipt.json`.
+- All 47 aliases mapped to 46 successful canonical executions. All 34
+  artifact-consuming canonical smokes used the same immutable package artifact,
+  SHA-256
+  `53e2d7a33398a7cbcaaab8d6468f7ca93e30d25fc7b4edcdaf5ba30fd0ea80d8`.
+- Root compiled twice. Each of four docs profiles and five mdkg-dev profiles
+  performed exactly one actual build; subsequent requests were cache hits.
+- The receipt proves unchanged branch, HEAD, exact Git porcelain status, the
+  aggregate content hash of all 3,490 tracked paths, all three lockfiles,
+  selected achieved `root:goal-73`, and clean `git diff --check`.
+- No additional retry, install, registry request, tracked change, goal
+  selection change, or remote/publication action occurred.
 
 # Notes / Follow-ups
 

@@ -2,13 +2,13 @@
 id: task-804
 type: task
 title: gate release readiness on a complete coverage contract
-status: backlog
+status: done
 priority: 1
 parent: goal-77
 prev: test-463
 next: test-464
 tags: [audit-followup, coverage, release, tests]
-owners: []
+owners: [root]
 links: []
 artifacts: []
 relates: [loop-7]
@@ -33,7 +33,7 @@ summary, and did not run before publication.
 # Acceptance Criteria
 
 - One coverage contract discovers and executes every compiled TypeScript test
-  family and both root MJS paths without permanently hard-coding today's exact
+  family and every root MJS test without permanently hard-coding today's exact
   test count.
 - Measure only the publishable runtime surface declared by `root:dec-88`.
 - Capture the scoped baseline before binding thresholds.
@@ -53,9 +53,14 @@ summary, and did not run before publication.
 # Files Affected
 
 - `package.json`
-- coverage runner/summary helpers
-- focused local release and coverage contract tests
-- ignore/config paths for local V8 coverage output if needed
+- `scripts/coverage-contract.js`
+- `scripts/coverage-reporter.js`
+- `scripts/coverage-contract.json`
+- `scripts/coverage-baseline.json`
+- `scripts/release-ladder.js`
+- `scripts/assert-publish-ready.js`
+- `tests/coverage-contract.test.ts`
+- `.gitignore`
 
 # Implementation Notes
 
@@ -74,6 +79,41 @@ summary, and did not run before publication.
   integration causes a focused failure.
 - Run one optimized `prepublishOnly`, `ci:release`, graph validation, and Git
   hygiene checks.
+
+# Implementation / Evidence
+
+- The contract dynamically discovers 92 compiled TypeScript test files across
+  command, core, graph, pack, root, and utility families plus all three current
+  root MJS tests. Exact counts are evidence, not selection policy.
+- Node 24's structured `test:coverage` event supplies file and total counts.
+  The contract never parses the human table and adds no coverage dependency.
+- Decision 88's denominator is encoded as CLI, commands, core, graph, pack,
+  templates, and utilities. Tests, init payloads, scripts, dependencies,
+  docs, and mdkg-dev are explicit exclusions.
+- The first scoped measurement passed the provisional stop condition at
+  `89.28%` lines, `77.41%` branches, and `96.26%` functions. The final
+  thresholded receipt after focused guardrails measured 105 runtime files,
+  711 passing tests, `89.31%` lines, `77.48%` branches, and `96.26%`
+  functions.
+- Source-owned `scripts/coverage-baseline.json` records the measured counts,
+  runtime, evidence hashes, and whole-number ratchet `89/77/96`. Validation
+  rejects identity drift, missing evidence, thresholds below provisional
+  floors, or thresholds that do not equal the measured baseline floor.
+- The build-free runner writes raw per-process V8 JSON, a raw-file manifest,
+  the structured Node event, and deterministic concise summary under the
+  ignored `.coverage/publishable-runtime/` path. The convenience wrapper owns
+  build and test compilation.
+- `release-ladder.js` runs that coverage wrapper exactly once in prepublish
+  mode, records its concise summary in the final ladder receipt, and keeps the
+  ordinary CI mode on the non-coverage test command.
+- Focused coverage and release guardrails pass `12/12`;
+  `node scripts/assert-publish-ready.js` passes; the thresholded build-free
+  coverage command passes on Node `24.18.0`; and `git diff --check` is clean.
+
+# Remaining Verification
+
+- `root:test-464` owns the integrated optimized `prepublishOnly`, `ci:release`,
+  negative-contract, graph, and tracked-output closeout proof.
 
 # Links / Artifacts
 

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "contract": "publishable-runtime-v1",
+  "decision_ref": "root:dec-88",
+  "measured_on": "2026-07-25",
+  "runtime": {
+    "node": "v24.18.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "test_contract": {
+    "typescript_source_count": 92,
+    "compiled_typescript_count": 92,
+    "root_mjs_count": 3,
+    "total_test_files": 95,
+    "test_count": 711
+  },
+  "measured_file_count": 105,
+  "metrics": {
+    "lines": {
+      "total": 35885,
+      "covered": 32050,
+      "percent": 89.31
+    },
+    "branches": {
+      "total": 8960,
+      "covered": 6942,
+      "percent": 77.48
+    },
+    "functions": {
+      "total": 2543,
+      "covered": 2448,
+      "percent": 96.26
+    }
+  },
+  "thresholds": {
+    "lines": 89,
+    "branches": 77,
+    "functions": 96
+  },
+  "measurement_evidence": {
+    "summary_sha256": "04cc910ca16f871ee0193a022e45426522a5eec6a8419a7bb881c47ac434304e",
+    "manifest_sha256": "f7d71119db45f8063eef85f30ab11c1b31bf1616a3cf888f205c538af76f016e",
+    "structured_event_sha256": "cfe6de940a7bc05e80cc7a7641c57882201e06c504c843f21b3323facfc5c5f7",
+    "raw_file_count": 1724
+  }
+}

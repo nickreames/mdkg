@@ -7,6 +7,7 @@ import {
   removeContainedPath,
 } from "../core/filesystem_authority";
 import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES } from "../graph/goal_scope";
+import { selectGoalNextCandidate } from "../graph/goal_next";
 import { Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
 import {
@@ -21,7 +22,6 @@ import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
 import { withMutationLock } from "../util/lock";
 import { formatResolveError, resolveQid } from "../util/qid";
-import { sortNodesForNext } from "../util/sort";
 import { appendAutomaticEvent } from "./event_support";
 import { formatNodeCard } from "./node_card";
 
@@ -376,30 +376,6 @@ function resolveCandidate(index: Index, idOrQid: string, ws: string): IndexNode 
   return index.nodes[resolved.qid];
 }
 
-function readOnlySubgraphBlockerWarnings(index: Index, qids: Set<string>): string[] {
-  const warnings: string[] = [];
-  const seen = new Set<string>();
-  for (const qid of [...qids].sort()) {
-    const node = index.nodes[qid];
-    if (!node || node.source?.imported || node.status === "done") {
-      continue;
-    }
-    for (const blockerQid of node.edges.blocked_by) {
-      const blocker = index.nodes[blockerQid];
-      if (!blocker?.source?.imported) {
-        continue;
-      }
-      const subgraph = blocker.source.subgraph_alias;
-      const warning = `${node.qid} is blocked by read-only subgraph node ${blocker.qid}; update the source workspace for subgraph ${subgraph} or refresh the subgraph bundle before claiming local work`;
-      if (!seen.has(warning)) {
-        seen.add(warning);
-        warnings.push(warning);
-      }
-    }
-  }
-  return warnings;
-}
-
 export function runGoalShowCommand(options: GoalCommandOptions): void {
   const loaded = loadGoal(options.root, options.id, options.ws, false);
   const receipt = { action: "showed", goal: goalReceipt(options.root, loaded) };
@@ -502,7 +478,6 @@ export function runGoalNextCommand(options: GoalCommandOptions): void {
     return;
   }
   const statusPreference = loaded.config.work.next.status_preference.map((status) => status.toLowerCase());
-  const statusRanks = new Set(statusPreference);
   const warnings: string[] = [...loaded.warnings];
   const activeNode = optionalString(loaded.frontmatter.active_node);
   const scope = collectGoalScope(loaded.index, loaded.node);
@@ -512,42 +487,17 @@ export function runGoalNextCommand(options: GoalCommandOptions): void {
   for (const invalid of scope.invalidRefs) {
     warnings.push(`scope contains non-actionable or unsupported node: ${invalid}`);
   }
-  warnings.push(...readOnlySubgraphBlockerWarnings(loaded.index, scope.actionableQids));
-
-  if (activeNode) {
-    const node = resolveCandidate(loaded.index, activeNode, loaded.node.ws);
-    if (node && scope.actionableQids.has(node.qid) && isConcreteCandidate(node, statusRanks)) {
-      if (options.json) {
-        console.log(
-          JSON.stringify(
-            {
-              action: "selected",
-              goal: goalReceipt(options.root, loaded),
-              goal_source: loaded.resolutionSource,
-              node,
-              warnings,
-            },
-            null,
-            2
-          )
-        );
-        return;
-      }
-      console.log(formatNodeCard(node));
-      return;
-    }
-    warnings.push(`active_node is not an actionable local concrete item: ${activeNode}`);
-  }
-
-  const candidates = Array.from(scope.actionableQids)
-    .map((qid) => loaded.index.nodes[qid])
-    .filter((node): node is IndexNode => Boolean(node))
-    .filter((node) => isConcreteCandidate(node, statusRanks));
-  const sorted = sortNodesForNext(candidates, {
+  const selection = selectGoalNextCandidate({
+    index: loaded.index,
+    goal: loaded.node,
+    actionableQids: scope.actionableQids,
+    activeNode,
+    strategy: loaded.config.work.next.strategy,
     statusPreference,
     priorityMax: loaded.config.work.priority_max,
   });
-  const selected = sorted[0];
+  warnings.push(...selection.warnings);
+  const selected = selection.node;
 
   if (options.json) {
     console.log(
