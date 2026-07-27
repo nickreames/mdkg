@@ -1,7 +1,8 @@
 import { demo1 } from "./demo-1";
+import { demo2 } from "./demo-2";
 import type { DemoRouteInventory, DemoSnapshot } from "./types";
 
-const records = [demo1] satisfies DemoSnapshot[];
+const records = [demo1, demo2] satisfies DemoSnapshot[];
 
 function assertDemoRegistry(items: readonly DemoSnapshot[]) {
   const ids = new Set<string>();

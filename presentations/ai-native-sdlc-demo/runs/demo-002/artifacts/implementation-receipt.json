@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-local-implementation-receipt",
+  "state": "pass",
+  "recorded_at": "2026-07-27T17:46:43Z",
+  "work_qid": "root:task-1",
+  "creative_direction": "artifacts/creative-direction.md",
+  "changed_paths": [
+    "site/.gitignore",
+    "site/package.json",
+    "site/src/pages/index.astro"
+  ],
+  "build": {
+    "command": "npm --prefix presentations/ai-native-sdlc-demo/runs/demo-002/site run build",
+    "attempts": [
+      {
+        "attempt": 1,
+        "result": "fail",
+        "classification": "dependency_resolution",
+        "detail": "The external Astro CLI could not resolve astro/config from the isolated site root."
+      },
+      {
+        "attempt": 2,
+        "result": "fail",
+        "classification": "dependency_link_shape",
+        "detail": "A generated cache directory existed before the local dependency link was placed."
+      },
+      {
+        "attempt": 3,
+        "result": "pass",
+        "detail": "Astro 7 built one static page with the repository's existing local dependency installation."
+      }
+    ],
+    "page_count": 1,
+    "output_bytes": 30205,
+    "budget_bytes": 512000
+  },
+  "source": {
+    "package_sha256": "c91703884549a432434f175b8fea61e74a28385048d1057a9cf87f44c07d62f0",
+    "page_sha256": "475b83b57b443235ab49269592880f70b760893ca2a7af3295ed0d80a1a27747"
+  },
+  "output_inventory": [
+    {
+      "path": "site/dist/index.html",
+      "bytes": 11731,
+      "sha256": "b31086be04aa2057e0f776491e014207f392cb45a73ab5f0f3a42724ca893447"
+    },
+    {
+      "path": "site/dist/_astro/index.DtT7AR6C.css",
+      "bytes": 18474,
+      "sha256": "5db32ac7ec2f18c9909dcefae0abccce1e2d2dc0b02af76991f3f7683e68a941"
+    }
+  ],
+  "story": {
+    "hero": "Keep the plan when the agent changes.",
+    "stages": [
+      "Plan",
+      "Work",
+      "Evidence"
+    ],
+    "proof": "Reusable goal-1 versus specialized Demo 2 goal-1",
+    "handoff": [
+      "What completed",
+      "Why",
+      "What comes next"
+    ],
+    "calls_to_action": [
+      "https://mdkg.dev/quickstart/",
+      "https://github.com/nickreames/mdkg/issues"
+    ]
+  },
+  "runtime_assets": {
+    "client_javascript": 0,
+    "scripts": 0,
+    "remote_fonts": 0,
+    "forms": 0,
+    "trackers": 0,
+    "raster_assets": 0
+  },
+  "contrast": {
+    "standard": "WCAG 2.x AA",
+    "minimum_ratio": 4.5,
+    "pairs": [
+      {
+        "foreground": "#0d2033",
+        "background": "#ffffff",
+        "ratio": 16.52
+      },
+      {
+        "foreground": "#3f5568",
+        "background": "#ffffff",
+        "ratio": 7.75
+      },
+      {
+        "foreground": "#5f7485",
+        "background": "#f6fbfd",
+        "ratio": 4.66
+      },
+      {
+        "foreground": "#0f5fd6",
+        "background": "#ffffff",
+        "ratio": 5.79
+      },
+      {
+        "foreground": "#c14d35",
+        "background": "#ffffff",
+        "ratio": 4.79
+      },
+      {
+        "foreground": "#b8c9d5",
+        "background": "#0d2033",
+        "ratio": 9.72
+      }
+    ]
+  },
+  "authority": {
+    "local_only": true,
+    "canonical_integration": false,
+    "git_index_mutation": false,
+    "publication": false,
+    "provider_inspection": false
+  }
+}

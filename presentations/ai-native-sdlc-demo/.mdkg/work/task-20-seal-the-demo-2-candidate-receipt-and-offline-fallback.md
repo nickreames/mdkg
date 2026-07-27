@@ -2,7 +2,7 @@
 id: task-20
 type: task
 title: Seal the Demo 2 candidate receipt and offline fallback
-status: backlog
+status: done
 priority: 1
 epic: epic-4
 parent: goal-4
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-4-step-7]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview

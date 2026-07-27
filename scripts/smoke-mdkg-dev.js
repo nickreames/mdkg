@@ -189,6 +189,8 @@ function main() {
     "demos/index.html",
     "demo/1/index.html",
     "demo/1/output/index.html",
+    "demo/2/index.html",
+    "demo/2/output/index.html",
     "llms.txt",
     "llms-full.txt",
     "robots.txt",
@@ -254,9 +256,13 @@ function main() {
   const demos = readText(path.join(dist, "demos", "index.html"));
   const demo1Detail = readText(path.join(dist, "demo", "1", "index.html"));
   const demo1Output = readText(path.join(dist, "demo", "1", "output", "index.html"));
+  const demo2Detail = readText(path.join(dist, "demo", "2", "index.html"));
+  const demo2Output = readText(path.join(dist, "demo", "2", "output", "index.html"));
   assertStaticDemoHtml(demos, "demo gallery", ["application/ld+json"]);
   assertStaticDemoHtml(demo1Detail, "Demo 1 detail", ["application/ld+json"]);
   assertStaticDemoHtml(demo1Output, "Demo 1 output");
+  assertStaticDemoHtml(demo2Detail, "Demo 2 detail", ["application/ld+json"]);
+  assertStaticDemoHtml(demo2Output, "Demo 2 output");
   assertContains(demos, "Agent-ready website demo", "demo gallery");
   assertContains(demos, "/demo/1/", "demo gallery");
   assertNotContains(demos, "/demo/2/", "demo gallery");
@@ -289,7 +295,36 @@ function main() {
     "Demo 1 detail must show exactly two sanitized goal provenance hashes"
   );
   assertContains(demo1Output, "Agent-ready demo websites from one mdkg goal.", "Demo 1 output");
-  for (const reserved of demoFixtures.reserved_records) {
+  assertContains(demo2Detail, 'name="robots" content="noindex, nofollow"', "Demo 2 detail");
+  assertContains(demo2Output, 'name="robots" content="noindex,nofollow"', "Demo 2 output");
+  for (const expected of [
+    "Reusable starting specification",
+    "Specialized executed specification",
+    "Plan → Work → Evidence",
+    "What completed, why it mattered, and what comes next.",
+    "Goal condition",
+    "Requirements",
+    "Authority",
+    "Tests",
+    "Source hash",
+    "Why:",
+    "What comes next",
+  ]) {
+    assertContains(demo2Detail, expected, "Demo 2 source/execution evidence");
+  }
+  assert(
+    (demo2Detail.match(/goal-1/g) || []).length >= 2,
+    "Demo 2 detail must show goal-1 at both reusable and specialized grains"
+  );
+  assert(
+    (demo2Detail.match(/sha256:[a-f0-9]{64}/g) || []).length === 2,
+    "Demo 2 detail must show exactly two sanitized goal provenance hashes"
+  );
+  assertContains(demo2Output, "Keep the plan when the agent changes.", "Demo 2 output");
+  assertContains(demo2Output, "What completed", "Demo 2 output");
+  assertContains(demo2Output, "Continuity beats reconstruction", "Demo 2 output");
+  assertContains(demo2Output, "What comes next", "Demo 2 output");
+  for (const reserved of demoFixtures.reserved_records.filter((record) => record.id !== "2")) {
     assert(
       !fs.existsSync(path.join(dist, "demo", reserved.id)),
       `fixture-only Demo ${reserved.id} must not produce public routes`
@@ -302,7 +337,9 @@ function main() {
   for (const rel of [
     ["mdkg-dev", "src", "data", "demos", "types.ts"],
     ["mdkg-dev", "src", "data", "demos", "demo-1.ts"],
+    ["mdkg-dev", "src", "data", "demos", "demo-2.ts"],
     ["mdkg-dev", "src", "data", "demos", "index.ts"],
+    ["mdkg-dev", "src", "components", "demos", "Demo2Output.astro"],
   ]) {
     assertExists(path.join(repoRoot, ...rel));
   }
@@ -315,12 +352,17 @@ function main() {
   const demo1OutputSource = readText(
     path.join(repoRoot, "mdkg-dev", "src", "components", "demos", "Demo1Output.astro")
   );
+  const demo2OutputSource = readText(
+    path.join(repoRoot, "mdkg-dev", "src", "components", "demos", "Demo2Output.astro")
+  );
   assertContains(outputRegistrySource, 'import Demo1Output from "./Demo1Output.astro"', "output registry");
+  assertContains(outputRegistrySource, 'import Demo2Output from "./Demo2Output.astro"', "output registry");
   assertContains(outputRegistrySource, '"demo-1": Demo1Output', "output registry");
+  assertContains(outputRegistrySource, '"demo-2": Demo2Output', "output registry");
   assertNotContains(outputRegistrySource, "import(", "output registry");
   assertContains(outputRouteSource, "getDemoOutputComponent", "output route");
   assertContains(outputRouteSource, "<OutputComponent demo={demo} />", "output route");
-  for (const source of [outputRegistrySource, outputRouteSource, demo1OutputSource]) {
+  for (const source of [outputRegistrySource, outputRouteSource, demo1OutputSource, demo2OutputSource]) {
     assertNotContains(source, "client:", "static output component source");
   }
   const demoSourceFiles = walkFiles(path.join(repoRoot, "mdkg-dev", "src"))

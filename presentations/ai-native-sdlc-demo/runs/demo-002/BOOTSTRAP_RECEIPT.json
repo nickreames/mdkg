@@ -1,0 +1,588 @@
+{
+  "schema_version": "1.0",
+  "kind": "website-demo-bootstrap-receipt",
+  "state": "pass",
+  "mode": "verify-only",
+  "command": "node scripts/bootstrap-website-demo-run.js --source examples/website-demo-template --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --manifest presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json --receipt presentations/ai-native-sdlc-demo/runs/demo-002/BOOTSTRAP_RECEIPT.json",
+  "canonical_fork_command": "mdkg graph fork examples/website-demo-template/.mdkg --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --json",
+  "source_root": "examples/website-demo-template",
+  "source_tree_hash": "sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3",
+  "cli_source_tree_hash": "sha256:0f05e8de0b4b42aaa84e461b27abf6073bde0597e2559edc769e5471925c3e24",
+  "target_root": "presentations/ai-native-sdlc-demo/runs/demo-002",
+  "start_goal": "goal-1",
+  "preserved_ids": true,
+  "selected_goal_qid": "root:goal-1",
+  "manifest_path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json",
+  "manifest_sha256": "3ac248cb5f49bc65c1ec5fd73281b8a075d83710f1414ef82914c60db6f2963f",
+  "generated_inventory": [
+    {
+      "path": ".agents/skills/.mdkg-managed.json",
+      "sha256": "f0084a99b711e68ca12c95db4dea67078002343a5dbd3ab577fc0993cf952a49",
+      "mode": "0644"
+    },
+    {
+      "path": ".agents/skills/author-mdkg-skill/SKILL.md",
+      "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873",
+      "mode": "0644"
+    },
+    {
+      "path": ".agents/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
+      "mode": "0644"
+    },
+    {
+      "path": ".agents/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5",
+      "mode": "0644"
+    },
+    {
+      "path": ".agents/skills/select-work-and-ground-context/SKILL.md",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
+      "mode": "0644"
+    },
+    {
+      "path": ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
+      "mode": "0644"
+    },
+    {
+      "path": ".claude/skills/.mdkg-managed.json",
+      "sha256": "f0084a99b711e68ca12c95db4dea67078002343a5dbd3ab577fc0993cf952a49",
+      "mode": "0644"
+    },
+    {
+      "path": ".claude/skills/author-mdkg-skill/SKILL.md",
+      "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873",
+      "mode": "0644"
+    },
+    {
+      "path": ".claude/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
+      "mode": "0644"
+    },
+    {
+      "path": ".claude/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5",
+      "mode": "0644"
+    },
+    {
+      "path": ".claude/skills/select-work-and-ground-context/SKILL.md",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
+      "mode": "0644"
+    },
+    {
+      "path": ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/config.json",
+      "sha256": "715e2f55843dc31f66d4b7d333b5f89ea2aeeacc30f5dfaf7d3fd9f2c41e5fb0",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/COLLABORATION.md",
+      "sha256": "ef60b65b54a57ed54984a49f5ed14453cb4e47170a5660be94eceec26b92b01f",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/core.md",
+      "sha256": "7d8a5ee16433ac8057234c84c2603a9d568d538f17f0488572da15f59603ca0f",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/guide.md",
+      "sha256": "ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/HUMAN.md",
+      "sha256": "945fb5cb47945735b9529f2b0a322630b3e8aef1c3e69c4ce85dd2db3e905cca",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/rule-1-mdkg-conventions.md",
+      "sha256": "03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/rule-2-context-pack-rules.md",
+      "sha256": "9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/rule-3-cli-contract.md",
+      "sha256": "362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+      "sha256": "3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/rule-5-release-and-versioning.md",
+      "sha256": "d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/rule-6-templates-and-schemas.md",
+      "sha256": "3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/core/SOUL.md",
+      "sha256": "2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/design/dec-1-static-astro-and-zero-client-javascript-is-the-demo-stack.md",
+      "sha256": "537d9f716a8c566ac60e8e7bf9aaa9d4db5839963335ceb99f4421bf93b59dc0",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/design/dec-2-demo-template-remains-preview-gated-and-public-safe.md",
+      "sha256": "4e2ba5cbcf0bee4c4ae8b81425295c857cab231ab34e012974c3b98c2da81417",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/design/edd-1-ocean-flow-website-demo-design-and-creative-production-contract.md",
+      "sha256": "782d85d6dace67f9b2c7b9daac922053d91d62cbf67d596eeb595438c9120ea9",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/design/prd-2-reusable-static-astro-website-demo-platform.md",
+      "sha256": "a089216da42dae737becb1da714be3cab51e8c5f2c2a23ff9c3c11f3282accf9",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/index/capabilities.json",
+      "sha256": "6fd6f98de2d8eca8ad908237735c218baa1d539ae3bc27c6397c18fe6222fd09",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/index/global.json",
+      "sha256": "d792bf178f61be8f4b6f947111e8cd186c7f3833d8c86a8e7673f874b91ec6a5",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/index/mdkg.sqlite",
+      "sha256": "b7ebe0824c1d799efe1a7f71267f3ce062adda59abb1b53d9c3a991087e69e95",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/index/skills.json",
+      "sha256": "555388bc3b7bbdd30bce54251770d7d158b2525b7968af09a316b7beda2c5849",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/index/subgraphs.json",
+      "sha256": "754e92a08426dd1d687502a751db3ddc44ace979177343e2a0148376cb41cad2",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/init-manifest.json",
+      "sha256": "2a0414ddb4ae7c9cef8c6ebc5e680c674f73b6710bd57de00bc25b404d118d5b",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/README.md",
+      "sha256": "faaf4bb697eded7c6baf6cb44a2a6c04feabfc250cac3bcb4be6b95e7a3bb02a",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/skills/author-mdkg-skill/SKILL.md",
+      "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/skills/registry.md",
+      "sha256": "f8a38e87c7d8f6cf2f1d70dcc5ff9ff012c271f8fda8b1f160b95e8622bb1ff1",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/state/selected-goal.json",
+      "sha256": "bd6257069fd613d022e945cc746f958e11b5ff3111cd98fdb1dec59a9a680482",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/archive.md",
+      "sha256": "d442523bbecd91a3c4a436043919117da00c145b368612311e98e628fe30d69b",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/bug.md",
+      "sha256": "27ed977c67030befccfc469d9db257fadc9ad5331963e259c489ba03754194cb",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/chk.md",
+      "sha256": "9e32f46665fc7cc582c4695772f5d99799f574229e740fa8892c7b9e75324de9",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/dec.md",
+      "sha256": "a2f7098fea538c153ac290f2e2edb2e755ca9dd07d17c2a127fb23959517ece9",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/dispute.md",
+      "sha256": "b1c5330fd4a1e3f03dbb4ac8907bd728e55537e053dcf43ebcbdc835ff1d0579",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/edd.md",
+      "sha256": "44828719927cfd31389b9d55b57fc4fa9bc640f3e2475baefe585e4043740f5e",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/epic.md",
+      "sha256": "0f515c046064771e3f9abaa3689634bfae3ffcf2ffe9825e8e3b7dc15c24fc50",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/feat.md",
+      "sha256": "25c04ce41d8cf519d5c3009219eeed48f76c23600c6b7999264831aa92cefc4b",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/feedback.md",
+      "sha256": "61ad7b8b717d17736ba505f814fa6e4f9ec61f7fe4ae6622359304620a99d649",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/goal.md",
+      "sha256": "8f984580aefd02b34639fa7f5d2a834662656bbf2e12f14a285f5ae31aff74ce",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/loop.md",
+      "sha256": "6e8f280c3375b9ec18e09fdb263665b2e3da45ca09b2547378fdd4c9bc015d89",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/manifest.md",
+      "sha256": "2ff2af58cae6a0381a66949d7d9e997fac6486da85171b09096c43663889da95",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/prd.md",
+      "sha256": "afee167576a4f881ab191867e118864b7b5629e14b9c4a61359c8fbd7ececeee",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/prop.md",
+      "sha256": "839b976a8ddc0d6abddfbe6114dfb87f64471958ae807c011538777b758aa1f0",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/proposal.md",
+      "sha256": "16bfa81b6e665064e93e0d1b625dccc518b9885f87a32a15e5ba5441c2c27ea8",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/receipt.md",
+      "sha256": "516faf98abe421f154d162b18006c7875f1a0025ac4d35cc16df744c13548d9d",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/rule.md",
+      "sha256": "6321abf72af61a6513d7bfaa2d3122b2aa3bd2b95b662a52d569fb2bf819fda1",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/spec.md",
+      "sha256": "8c96e0b6dafa65acb83a2d84519e05a7354896aec8991c148650e9ec58196c77",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/spike.md",
+      "sha256": "56e881fad20bd4fda8ae53cc78ce6f30f4dacd083f4eda40f9f2ba3723d52e0e",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/task.md",
+      "sha256": "2db6e56298b22e9da9121e2ac31f2fd68e370211218c5bcaae1014a9e63b7cde",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/test.md",
+      "sha256": "59484d4cf397707d738ccbc2f788c08eab58d3d73f37591f7bde8f1533b828ce",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/work_order.md",
+      "sha256": "5fe376413035f2afe406d13491a597f103a2fce29d137951fe55ae042a1082f5",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/default/work.md",
+      "sha256": "cfc53d3be1d2c31576448d071a579bc3d5d2f6851755e29c20825f6b6764c0aa",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/skills/base.SKILL.md",
+      "sha256": "08a1bd65297173a1dc9df95776775d406337a419d4bc51863593b6f28777ebdb",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/agent.MANIFEST.md",
+      "sha256": "79fb755c95747d3f673e1333ec3f039d08f76488ba268b7fa32f457d8638ee64",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/agent.SPEC.md",
+      "sha256": "dab10c0ed12aa10a752ee3bd61f263065644826eb950c71a9e3458673edb0ca5",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/api.MANIFEST.md",
+      "sha256": "dd342ab2bd331b716e4b7de9f8c7cfa503703422a4cc88c21fe90ff49b11aa83",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/api.SPEC.md",
+      "sha256": "aee86cadcca31a5a015d7e15ad7503c4aa30f2af0079ec03f857b82b3ecbae59",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/base.MANIFEST.md",
+      "sha256": "056c4ccf8285db72c8befdc6acd165d625dbe892d70e89ce586f081db8e250fc",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/base.SPEC.md",
+      "sha256": "6d4171fac00c2f3d8f2a2ac746b8a47c59aaecebe224c3a0046dd6e6974a1d08",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/capability.MANIFEST.md",
+      "sha256": "0ab2c2f90c6bdcddaafd77ac6cc36422d6ee10cc935942d8f80728f5b184d5cc",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/capability.SPEC.md",
+      "sha256": "68a91e8bbd80d1ff1972e4c31e29f26451d5a1be1d25d414170fdd670010066f",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/integration.MANIFEST.md",
+      "sha256": "7af890bdac5515600661c241dd488c2bc270248ae6fba9afb0307d7a643022a4",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/integration.SPEC.md",
+      "sha256": "e907ce6ebc1fa5a455e31e39036e3f8699dccb3d9e45288c8ea025eaec4ca4a2",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/model.MANIFEST.md",
+      "sha256": "3fe36a424b6eba8542bd08d3e2728ffd7f35d2c72037f2e565757cea15da2e1f",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/model.SPEC.md",
+      "sha256": "56061a241819dfda4d3022c075f744cf6650f5f52c58cd15b0af9d1f613af4f2",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/project.MANIFEST.md",
+      "sha256": "e1f68306a9cff3d73e65a2fea38d52b49dd76921b5d7c7ea9710eb2c23cb6f89",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/project.SPEC.md",
+      "sha256": "386c41852cbb46e7a6ba583a7b0c4126262a56618d8e214aaa601b68d55818b9",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-agent.MANIFEST.md",
+      "sha256": "4ba2013362597f101fb225bc6a3369a47a0c1cac3de78220efea4e53d42f0393",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-agent.SPEC.md",
+      "sha256": "53af7c3e172f5ed1297f340aca0be5e53302613d2e6bb9145915067d7b0004c8",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-image.MANIFEST.md",
+      "sha256": "098debed22f274c9f408defcf330ef27c760e1a3166876f2a6e16cb28cfb4757",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-image.SPEC.md",
+      "sha256": "37416b045cd7733d1f5e1cc629ac9b6616024d5fa52f2bdcd90110267151e593",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/tool.MANIFEST.md",
+      "sha256": "79e45600a3b83d70e2791cbdff0138b57018a30b7e277d9017b7ba142deccb91",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/templates/specs/tool.SPEC.md",
+      "sha256": "05b827bbce4f721ea25beda62850688aff3db644aec65e71b9cf76cad8e5f46f",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/chk-1-website-demo-template-seed-accepted.md",
+      "sha256": "7216f8cca53805a0dcdf2ac14c2bb80f0e93e13730250f88a0800291de663ba0",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/chk-2-static-astro-zero-client-javascript-template-contract-accepted.md",
+      "sha256": "aec281aa7ea7b0a8b071ee12b9987080ce1aab95c14528641e088a41a936833b",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/epic-1-complete-creative-website-demo-build.md",
+      "sha256": "b5cb93248bc7118ec801678eb308b5ebc8649d2cfd59f08392adbca04e065d37",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/events/events.jsonl",
+      "sha256": "5de998356ba35703cd0df5b839f7589be8c6a5028b570acd3cfb6f6386ebb11b",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md",
+      "sha256": "c662c047b9501fa1c3aacc6fab274177e745851fe21d21e2caae98d62f8188ec",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/task-1-build-complete-static-astro-website-demo.md",
+      "sha256": "f2e37afad5cbf5b30686c20be30c27cdf2259a0947f51fb623aa5b645323ec70",
+      "mode": "0644"
+    },
+    {
+      "path": ".mdkg/work/test-1-complete-website-demo-validation-and-handoff-contract.md",
+      "sha256": "1a6943e32cf0495f992ccab1bba07bcc0e5047dc78dd693a3a214f8ce229d014",
+      "mode": "0644"
+    },
+    {
+      "path": "AGENT_START.md",
+      "sha256": "91e31ae818b29f62ebe77ac24f7e1a2bd10a4fedfc1684da935f0849aaf6d200",
+      "mode": "0644"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "9e33a1c20320e317e1e37dbb09fd0303e355b9e7d49cf2128fe791aaa2ce2fb1",
+      "mode": "0644"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "3ff3ec5560968f7f1bf6f7d34a3c4b6e636edc9f0d45f717cdebc4df3b76403a",
+      "mode": "0644"
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "82c509b91498131304ff2bc94bb7eb2f29c3c207a00bc8bcaf8a6ab52ff9e689",
+      "mode": "0644"
+    },
+    {
+      "path": "CREATIVE_PRODUCTION_INTAKE.md",
+      "sha256": "265f826c3e461177050711b31f54abbd2a19f8f5c98b76451c4ddf15f0c32329",
+      "mode": "0644"
+    },
+    {
+      "path": "DEMO_HANDOFF_PROMPT.md",
+      "sha256": "d7e4e2c4c3ed03e25f47a385872f20feb35f2b40973111b4f14628301eb9a64d",
+      "mode": "0644"
+    },
+    {
+      "path": "DESIGN.md",
+      "sha256": "61259e6145df763b86a55c342f1e9559df98822c12577de916ec82b8d8bbc269",
+      "mode": "0644"
+    },
+    {
+      "path": "llms.txt",
+      "sha256": "108ac1feb3e11824c9cfc5116aaa83355cb461ad9b0ec5c4bb244f6a70276f31",
+      "mode": "0644"
+    },
+    {
+      "path": "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+      "sha256": "e571b6e5062807f176b432d51ea5fe75d98249dd9cf1e21aea5c113b4d532bfb",
+      "mode": "0644"
+    }
+  ],
+  "generated_file_count": 103,
+  "validation": {
+    "ok": true,
+    "warning_count": 0,
+    "error_count": 0
+  },
+  "routing": {
+    "goal_qid": "root:goal-1",
+    "first_actionable_qid": "root:spike-1",
+    "warning_count": 0
+  },
+  "packs": {
+    "edge_list": "parent,epic,relates,blocked_by,blocks,prev,next,context_refs,evidence_refs",
+    "concise": {
+      "root_qid": "root:spike-1",
+      "node_count": 13,
+      "included_qids": [
+        "root:spike-1",
+        "root:goal-1",
+        "root:epic-1",
+        "root:task-1",
+        "root:test-1",
+        "root:edd-1",
+        "root:dec-1",
+        "root:dec-2",
+        "root:prd-2",
+        "root:chk-2",
+        "root:skill:select-work-and-ground-context",
+        "root:skill:verify-close-and-checkpoint",
+        "root:skill:build-pack-and-execute-task"
+      ]
+    },
+    "standard": {
+      "root_qid": "root:spike-1",
+      "node_count": 13,
+      "included_qids": [
+        "root:spike-1",
+        "root:goal-1",
+        "root:epic-1",
+        "root:task-1",
+        "root:test-1",
+        "root:edd-1",
+        "root:dec-1",
+        "root:dec-2",
+        "root:prd-2",
+        "root:chk-2",
+        "root:skill:select-work-and-ground-context",
+        "root:skill:verify-close-and-checkpoint",
+        "root:skill:build-pack-and-execute-task"
+      ]
+    }
+  },
+  "repeat_result": "identical inventory and hashes",
+  "failure_classification": null
+}

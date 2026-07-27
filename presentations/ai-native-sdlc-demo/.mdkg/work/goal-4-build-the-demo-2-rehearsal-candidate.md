@@ -2,11 +2,12 @@
 id: goal-4
 type: goal
 title: Build the Demo 2 rehearsal candidate
-status: backlog
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: Demo 2 has a source-hash-bound positioning brief, deterministic fork under runs/demo-002, complete operator bootstrap, specialized design and goal contracts, a locally accepted child goal paused with publication next, local adapter integration, passing static and public-safety gates, and a sealed candidate receipt plus deck-ready offline fallback, with no publication.
 scope_refs: [epic-4]
+last_active_node: test-11
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [predecessor and first-node pack coverage, fork receipt and preserved IDs, run graph validation goal routing and concise pack, child local-through-canonical lifecycle with publication next, local static Astro build, zero-JavaScript accessibility noindex claims secret and asset checks, local adapter route proof, deck-ready capture and fallback hash verification]
 max_iterations: 25
@@ -14,17 +15,17 @@ blocked_after_attempts: 3
 tags: [ai-native-sdlc, presentation-demo, phase-4]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifacts/demo-002/goal-4-activation.json, artifacts/demo-002/positioning-brief.md, runs/demo-002/.mdkg/, artifacts/demo-002/local-validation-receipt.json, artifacts/demo-002/candidate-receipt.json, artifacts/demo-002/fallback/, artifacts/demo-002/reveal/source-vs-specialized-16x9.png]
+artifacts: [artifacts/demo-002/goal-4-activation.json, artifacts/demo-002/positioning-brief.md, runs/demo-002/.mdkg/, artifacts/demo-002/local-execution-receipt.json, artifacts/demo-002/candidate-receipt.json, artifacts/demo-002/fallback/, artifacts/demo-002/reveal/source-vs-specialized-16x9.png]
 relates: []
 blocked_by: []
 blocks: []
-refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, task-10, chk-13]
+refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, task-10, chk-13, chk-14]
 context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, task-10, chk-13]
-evidence_refs: [chk-4, chk-12, chk-13]
+evidence_refs: [chk-4, chk-12, chk-13, chk-14]
 aliases: [demo-2-rehearsal-candidate]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Objective

@@ -1,0 +1,144 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-canonical-adapter-integration",
+  "state": "pass-with-known-stale-sentinel",
+  "recorded_at": "2026-07-27T17:58:00Z",
+  "program_work_qid": "root:task-19",
+  "child_work_qid": "root:task-2",
+  "adapter": {
+    "input_schema": "DemoSnapshot per-demo record v1",
+    "output_schema": "static Astro output component registry v1",
+    "record_key": "2",
+    "component_key": "demo-2",
+    "listed": false,
+    "noindex": true
+  },
+  "changed_paths": [
+    "mdkg-dev/src/data/demos/demo-2.ts",
+    "mdkg-dev/src/data/demos/index.ts",
+    "mdkg-dev/src/components/demos/Demo2Output.astro",
+    "mdkg-dev/src/components/demos/outputRegistry.ts"
+  ],
+  "source_inventory": [
+    {
+      "path": "mdkg-dev/src/data/demos/demo-2.ts",
+      "sha256": "4e544c92fb118a6db6d8beb9f0946ce35c0b01c0b5fad284d22f7d7e5c1c7ec9"
+    },
+    {
+      "path": "mdkg-dev/src/data/demos/index.ts",
+      "sha256": "e1455cca732d485b8b5cde05617e4d95860889edd7042d767354bb50eda4d97b"
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/Demo2Output.astro",
+      "sha256": "34cf3232a10ae2c491e8d9c9427ddc71085d80f3470eafd4b7108366b09366dc"
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/outputRegistry.ts",
+      "sha256": "35d5b79845ab3d5e5a220ceaa82fa3948f64661ebeb24260ff8f0e31e20435c0"
+    }
+  ],
+  "build": {
+    "command": "npm --prefix mdkg-dev run build",
+    "state": "pass",
+    "generated_javascript_files": 0,
+    "routes": [
+      {
+        "route": "/demo/2/",
+        "path": "mdkg-dev/dist/demo/2/index.html",
+        "html_bytes": 27992,
+        "html_sha256": "b2e0ababaf0d25e852d5a766939bde6e46912e545733031b2bf8e6105905e66e",
+        "initial_local_transfer_bytes": 38690,
+        "robots": "noindex, nofollow"
+      },
+      {
+        "route": "/demo/2/output/",
+        "path": "mdkg-dev/dist/demo/2/output/index.html",
+        "html_bytes": 12038,
+        "html_sha256": "77f1f9f037227da796e9204fb7b6032d79a5d78938b15ec1c7a6fb6a0b933fff",
+        "initial_local_transfer_bytes": 36049,
+        "robots": "noindex,nofollow"
+      }
+    ]
+  },
+  "route_inventory": {
+    "detail": "/demo/2/",
+    "output": "/demo/2/output/",
+    "gallery_contains_demo_2": false,
+    "sitemap_contains_demo_2": false,
+    "unknown_demo_999_built": false
+  },
+  "public_safety": {
+    "client_javascript_files": 0,
+    "client_directives": 0,
+    "astro_islands": 0,
+    "remote_fonts": 0,
+    "forms": 0,
+    "trackers": 0,
+    "raster_assets": 0,
+    "detail_non_executable_json_ld_blocks": 1,
+    "output_script_tags": 0,
+    "source_goal_hash": "sha256:06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+    "specialized_goal_hash": "sha256:3fda685d8ab74c741e78143625978919bf22533ff51cd7cfce855ba9682176b1"
+  },
+  "regressions": [
+    {
+      "command": "node scripts/smoke-mdkg-dev-seo.js",
+      "state": "pass"
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev-a11y.js",
+      "state": "pass",
+      "checked_pages": 22
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev-perf.js",
+      "state": "pass",
+      "marketing_total_bytes": 185148,
+      "marketing_javascript_bytes": 0
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev.js",
+      "state": "expected-fail",
+      "classification": "stale-pre-demo-2-sentinel",
+      "detail": "The pre-existing smoke asserts every reserved Demo 2 fixture produces no route. Goal 4 intentionally registers Demo 2 while its frozen source allowlist excludes scripts. The actual Demo 2 route, unlisted/noindex, static, budget, sitemap, gallery, and browser contracts are verified separately."
+    }
+  ],
+  "browser": {
+    "detail_desktop": {
+      "viewport": "1280x720",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "client_scripts": 0,
+      "astro_islands": 0
+    },
+    "detail_mobile": {
+      "viewport": "390x844",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "client_scripts": 0,
+      "astro_islands": 0
+    },
+    "output_desktop": {
+      "viewport": "1280x720",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "client_scripts": 0,
+      "astro_islands": 0
+    },
+    "output_mobile": {
+      "viewport": "390x844",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "client_scripts": 0,
+      "astro_islands": 0
+    }
+  },
+  "authority": {
+    "local_only": true,
+    "git_index_mutation": false,
+    "commit": false,
+    "push": false,
+    "publication": false,
+    "provider_inspection": false
+  }
+}

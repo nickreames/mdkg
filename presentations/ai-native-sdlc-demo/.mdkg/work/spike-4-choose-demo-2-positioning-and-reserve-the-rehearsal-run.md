@@ -2,7 +2,7 @@
 id: spike-4
 type: spike
 title: Choose Demo 2 positioning and reserve the rehearsal run
-status: todo
+status: done
 priority: 1
 epic: epic-4
 parent: goal-4
@@ -20,7 +20,7 @@ evidence_refs: [chk-4, chk-12, chk-13]
 aliases: [phase-4-step-1]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Research Question
@@ -54,21 +54,36 @@ platform, presentation, and publication boundaries?
 
 # Findings
 
-Pending activation. Required findings:
-
-- Current-state evidence and exact source locations.
-- At least two viable options when a material choice remains.
-- Recommended option with consequences, owner, validation, and follow-up.
-- Explicit confirmation that the next node may start or an exact blocker.
+- The canonical source graph remains at the accepted
+  `sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3`
+  tree hash, and `runs/demo-002/` was absent at activation.
+- Goal 2 exposes the required static-Astro per-demo record and compile-time
+  output-component interfaces without requiring a Demo 2-only route.
+- The user delegated the visual and bounded marketing direction while fixing
+  the product, stack, routes, palette, required story, safety constraints, and
+  CTA.
+- “Durable continuity” is the strongest rehearsal position because it speaks to
+  personal-project builders and teams without over-indexing on enterprise
+  governance or treating prompts as obsolete.
+- The exact local ownership, hashes, invalidation conditions, and forbidden
+  operations are accepted in `artifacts/demo-002/goal-4-activation.json`.
 
 # Recommendation
 
-Pending activation and evidence collection.
+Proceed with the promise “Keep the plan when the agent changes.” Use a bright
+Ocean Flow navigation-chart metaphor to show Plan -> Work -> Evidence and the
+source-versus-specialized goal contrast. Keep the result explicitly local and
+public-safe. `task-15` may start; any source, contract, ownership, or target
+precondition drift stops the run.
 
 # Options And Tradeoffs
 
-- Record at least two viable options and their consequences when a material choice remains.
-- Prefer the option that preserves scope, authority, evidence, and recovery.
+- Durable continuity — selected. Concrete, inclusive, and directly provable
+  through the retained goal and evidence contrast.
+- Agentic SDLC control plane — credible future framing, but too
+  enterprise-heavy for this bounded rehearsal.
+- Prompt replacement — memorable but misleading; mdkg complements prompts by
+  making project context durable.
 
 # Follow-Up Nodes To Create
 
@@ -85,4 +100,10 @@ Pending activation and evidence collection.
 
 # Evidence and Sources
 
-- Pending.
+- `artifacts/demo-002/goal-4-activation.json`
+- `artifacts/demo-002/positioning-brief.md`
+- `artifacts/demo-platform/interface-contract.json`
+- `artifacts/demo-platform/route-registry-contract.json`
+- `artifacts/demo-platform/output-component-registry-contract.json`
+- `artifacts/demo-platform/rehearsal-specialization-contract.md`
+- Git base `e2af9e9ec5b2e0e8912671ed54b1a2082dd19988`

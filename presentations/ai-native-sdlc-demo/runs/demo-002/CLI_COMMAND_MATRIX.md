@@ -1,0 +1,343 @@
+# CLI Command Matrix
+
+This file is the canonical command reference for mdkg in this repository.
+
+Verify live help with:
+- `mdkg --help`
+- `mdkg help <command>`
+
+Optional reusable manifest capability records are accessed through `mdkg manifest ...`.
+Repos without MANIFEST/SPEC files remain valid. `mdkg spec ...` remains a
+legacy alias for one compatibility release.
+
+Primary commands:
+- `mdkg init`
+- `mdkg upgrade [--dry-run] [--apply] [--json]`
+- `mdkg new`
+- `mdkg show`
+- `mdkg list`
+- `mdkg search`
+- `mdkg pack`
+- `mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--json]`
+- `mdkg skill`
+- `mdkg capability`
+- `mdkg manifest`
+- `mdkg spec`
+- `mdkg archive`
+- `mdkg bundle`
+- `mdkg graph`
+- `mdkg subgraph`
+- `mdkg work`
+- `mdkg goal`
+- `mdkg task`
+- `mdkg validate`
+- `mdkg status [--json]`
+- `mdkg mcp serve --stdio`
+- `mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
+- `mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]`
+- `mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]`
+
+Semantic refs:
+- work nodes may use `context_refs` for non-executable background and `evidence_refs` for proof/audit refs
+- semantic refs may point at local ids, subgraph qids, or URI refs
+- use `mdkg pack <id> --edges context_refs,evidence_refs` when a handoff should traverse semantic refs
+- use `mdkg handoff create <id-or-qid> --json` for sanitized copy-ready agent handoff prompts
+- handoffs summarize graph state, latest checkpoint, boundaries, required checks, next actions, and raw-marker warnings without copying raw node bodies
+- executable goal queues still belong in goal `scope_refs`
+
+Operator health:
+- `mdkg status [--json]` is a read-only summary for scripts and agents
+- reports mdkg version/config, git state, graph/index freshness, selected-goal state, project DB verification summary, and generated cache status
+- does not rebuild indexes, run migrations, repair files, mutate graph nodes, or change selected-goal state
+- `mdkg fix plan ...` is dry-run repair planning only; it writes nothing
+- duplicate-ID graph repairs can be applied with `mdkg fix apply --family ids` or `mdkg fix ids --apply`
+- use `--base-ref main` when mainline IDs should win branch-merge repair
+- unresolved Git add/add conflict stages are split by keeping stage 2 at the conflicted path and writing stage 3 to a new canonical ID/path
+- graph-reference and index/cache findings remain review-only guidance
+- `fix plan --json` returns a receipt-shaped plan with selected families, risk counts, paths, reason codes, and per-change `apply_supported` metadata
+
+Local MCP server:
+- `mdkg mcp serve --stdio`
+- starts one local Model Context Protocol server bound to the selected `--root`
+- stdio is the only transport in this release; no HTTP listener is opened
+- exposes read-only tools for status, workspace/subgraph list, search, show, in-memory pack, goal current/next, and validate
+- exposes no task, goal activation, graph import, queue, event, archive, format, SQL, shell, arbitrary file-read, filesystem mutation, environment, or secret-access tools
+- use `--root <path>` when launching from outside the repo
+- stdout is reserved for newline-delimited JSON-RPC MCP messages
+
+Index backend:
+- fresh mdkg workspaces default to `index.backend: sqlite`
+- `.mdkg/index/mdkg.sqlite` is rebuildable and commit-eligible when intentionally tracked
+- JSON compatibility caches remain generated and ignored by default
+- `mdkg db index rebuild` writes the same derived caches as `mdkg index`
+- `mdkg db index status` reports graph cache health without mutating files
+- `mdkg db index verify` fails on missing, stale, corrupt, schema-mismatched, or SQLite source-fingerprint-mismatched cache state
+
+Project database commands:
+- `mdkg db index rebuild [--tolerant] [--json]`
+- `mdkg db index status [--json]`
+- `mdkg db index verify [--json]`
+- `mdkg db init [--json]`
+- `mdkg db migrate [--json]`
+- `mdkg db verify [--json]`
+- `mdkg db stats [--json]`
+- `mdkg db queue create|pause|resume|enqueue|claim|ack|fail|dead-letter|release-expired|stats|list|show ... [--json]`
+- `mdkg db queue contract [--json]`
+- `mdkg db snapshot seal [--queue-policy drain|paused] [--json]`
+- `mdkg db snapshot verify [--json]`
+- `mdkg db snapshot status [--json]`
+- `mdkg db snapshot dump [--snapshot <path>] [--output <path>] [--json]`
+- `mdkg db snapshot diff <left-snapshot> <right-snapshot> [--json]`
+- `.mdkg/db` is project application state, separate from `.mdkg/index`
+- `mdkg db init` creates the generic `.mdkg/db` scaffold, writes
+  `.mdkg/db/project-db.json`, enables `db.enabled`, and does not create an
+  active runtime SQLite database
+- `mdkg db migrate` creates or updates the configured active runtime SQLite
+  database and applies mdkg-owned foundation plus internal local node:sqlite
+  queue, event/receipt/reducer, and writer lease/CAS foundation migrations
+- `mdkg db migrate` records migration order, checksums, and applied timestamps
+  in the configured migration table
+- `mdkg db queue ...` exposes durable local delivery operations backed by
+  node:sqlite; queue rows are delivery state, not canonical event history
+- `mdkg db queue contract --json` returns the public adapter contract for
+  payload hashes, dedupe, claim order, lease-owner settlement, retries,
+  dead-letter, release-expired, pause/resume, snapshot policy, and stats
+- paused queues reject enqueue and claim, but ack/fail/dead-letter and
+  release-expired remain available so leased work can settle
+- event tables are durable local history for project DB state transitions;
+  receipts, typed reducers, writer leases, and materializers remain internal
+  helper surfaces in this release, with no public `mdkg db event`,
+  `mdkg db reducer`, `mdkg db lease`, or `mdkg db materializer` CLI yet
+- `mdkg db verify` checks config, layout, runtime SQLite integrity, migration
+  metadata, receipt directory policy, and transient runtime files
+- `mdkg db stats` reports table counts, database size, migration state,
+  transient runtime files, receipt-file count, and state snapshot presence
+- `mdkg db snapshot seal` writes an opt-in sealed checkpoint and manifest under
+  `.mdkg/db/state`; default `--queue-policy drain` requires no ready or leased
+  messages, while `--queue-policy paused` allows ready messages only in paused
+  queues. `snapshot verify/status/dump/diff` inspect and review that checkpoint
+  without treating raw binary diffs as human-readable truth
+- active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
+
+Validation commands:
+- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]`
+- `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
+- `--summary` emits bounded warning samples for agent/CI logs; `--limit <n>` controls the sample size
+- `--out <path>` writes the compatibility text report; `--json-out <path>` writes a clean full JSON receipt
+- JSON receipts include `warning_summary` and `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
+
+Node creation commands:
+- `mdkg new <type> "<title>" [options] [--json]`
+- `mdkg new goal "<title>" [options] [--json]`
+- `mdkg new spike "<research question>" [options] [--json]`
+
+Agent workflow file type creation:
+- `mdkg new manifest "<title>" [options] [--json]`
+- `mdkg new work "<title>" [options] [--json]`
+- `mdkg new work_order "<title>" [options] [--json]`
+- `mdkg new receipt "<title>" [options] [--json]`
+- `mdkg new feedback "<title>" [options] [--json]`
+- `mdkg new dispute "<title>" [options] [--json]`
+- `mdkg new proposal "<title>" [options] [--json]`
+- `mdkg new spec "<title>" [options] [--json]` is a deprecated alias for
+  `mdkg new manifest` and creates `MANIFEST.md` with `type: manifest`
+- `mdkg new manifest "image worker" --id agent.image-worker`
+- `mdkg new work "generate image" --id work.generate-image`
+
+Agent workflow notes:
+- `--id <portable-id>` is only for agent workflow file types.
+- `manifest` and `work` scaffold as validation-clean standalone docs.
+- `work_order`, `receipt`, `feedback`, `dispute`, and `proposal` need real refs before strict `mdkg validate` passes.
+- `goal` nodes capture recursive objective state and required checks, but normal `mdkg next` does not select them.
+- `spike` nodes are actionable research/planning work under `.mdkg/work/`; use `mdkg task start|update|done` for lifecycle state.
+- Spikes record sources, findings, recommendations, follow-up node ideas, and skill candidates in Markdown body sections; they do not perform web search, execute research, create follow-up nodes, generate `SKILL.md`, or expose a `mdkg spike ...` namespace automatically.
+- after fresh init, run `mdkg index` before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches.
+
+Workspace registry commands:
+- `mdkg workspace ls [--json]`
+- `mdkg workspace add <alias> <path> [--mdkg-dir <dir>] [--visibility <level>] [--json]`
+- `mdkg workspace rm <alias> [--json]`
+- `mdkg workspace enable <alias> [--json]`
+- `mdkg workspace disable <alias> [--json]`
+
+Event log commands:
+- `mdkg event enable [--ws <alias>] [--json]`
+- `mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...> [options] [--json]`
+
+Task mutation commands:
+- `mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--json]`
+- `mdkg task update <id-or-qid> [options] [--json]`
+- `mdkg task done <id-or-qid> [--checkpoint "<title>"] [--checkpoint-kind implementation|test-proof|goal-closeout|audit|handoff] [options] [--json]`
+- task commands support task-like `feat`, `task`, `bug`, `test`, and `spike` nodes
+
+Checkpoint commands:
+- `mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]`
+- checkpoint kinds render bodies with command evidence, pass/fail status, known warnings, changed surfaces, boundaries, and follow-up refs
+
+Agent bootstrap:
+- `mdkg init --agent`
+- published bootstrap config is root-only by default
+- `mdkg init --agent` creates the complete startup docs, wrapper docs, `SOUL.md` / `COLLABORATION.md` core docs, legacy `HUMAN.md`, default mdkg skills, event log, registry, and configured skill mirrors
+- removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
+
+Upgrade:
+- `mdkg upgrade` previews safe scaffold updates and writes nothing by default
+- `mdkg upgrade --apply` updates only managed or unchanged init assets
+- JSON receipts include `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects`
+- customized docs, templates, skills, and core files are preserved and reported
+- ignored event logs are skipped with guidance to run `mdkg event enable`
+
+Skill discovery:
+- `mdkg skill list --tags stage:plan --json`
+- `mdkg skill search "<query>" --json`
+- `mdkg skill show <slug> --json`
+- `mdkg skill validate [<slug>] [--json]`
+- `mdkg skill sync [--force] [--json]`
+
+Capability discovery:
+- `mdkg capability list [--kind <skill|spec|work|core|design>] [--visibility <private|internal|public>] [--json]`
+- `mdkg capability search "<query>" [--kind <kind>] [--visibility <level>] [--json]`
+- `mdkg capability show <id-or-qid-or-slug> [--json]`
+- `mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]`
+- capability records are deterministic cache projections from Markdown
+- records include source hash, headings, refs, and `indexed_at`
+- MANIFEST/SPEC and WORK capability records include read-only `linkage` arrays for related manifests, work contracts, work orders, and receipts when those graph mirrors exist
+- normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
+
+Manifest capability records:
+- `mdkg manifest list [--json]`
+- `mdkg manifest show <id-or-qid-or-alias> [--json]`
+- `mdkg manifest validate [<id-or-qid-or-alias>] [--json]`
+- `MANIFEST.md` is optional; repos with no manifest files still validate
+- manifest records describe reusable capability surfaces, not general planning notes
+- `mdkg manifest validate` with no ref validates the graph and all optional manifest records
+- `mdkg manifest validate <ref>` also checks that the target manifest reference exists
+- `mdkg manifest ...` is the focused manifest command family; `mdkg capability ...` remains broader skill/manifest/work/core/design discovery
+
+Legacy spec capability records:
+- `mdkg spec list [--json]`
+- `mdkg spec show <id-or-qid-or-alias> [--json]`
+- `mdkg spec validate [<id-or-qid-or-alias>] [--json]`
+- `mdkg spec ...` is a deprecated alias for `mdkg manifest ...` during the compatibility bridge
+- legacy `SPEC.md` files remain valid for one compatibility release
+
+Archive sidecars:
+- `mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibility private|internal|public] [--title <title>] [--refs <...>] [--relates <...>] [--json]`
+- `mdkg archive list [--kind source|artifact] [--visibility private|internal|public] [--ws <alias>] [--json]`
+- `mdkg archive show <id-or-archive-uri> [--ws <alias>] [--json]`
+- `mdkg archive verify [id-or-archive-uri] [--ws <alias>] [--json]`
+- `mdkg archive compress <id-or-archive-uri|--all> [--json]`
+- archive sidecars are `type: archive` nodes under `.mdkg/archive`
+- archive visibility defaults to `private`
+- `mdkg validate` and `mdkg archive verify` both check ZIP hash, ZIP readability, payload SHA-256, and payload byte size
+- outside-repo archive sources are recorded as `external:<basename>` instead of absolute local paths
+- `mdkg doctor` warns about ZIP caches larger than `archive.large_cache_warning_bytes`; `0` disables the warning
+- committed sidecar `.md` files and ZIP caches are source-of-truth evidence; raw source copies under `.mdkg/archive/**/source/` are ignored by default
+
+Graph snapshot bundles:
+- `mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path>] [--json]`
+- `mdkg bundle verify [bundle-path] [--json]`
+- `mdkg bundle show <bundle-path> [--json]`
+- `mdkg bundle list [--json]`
+- default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
+- private bundles are explicit local graph transport artifacts
+- repos that track archive caches or bundles should run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip` before commit
+- public bundles include only public workspace content and public archive sidecars
+- public bundle creation fails when public records reference private graph, archive, or subgraph records
+
+Graph clone, fork, and template import:
+- `mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]`
+- `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
+- `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
+- `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
+- `graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace
+- clone/fork targets must be empty or absent and stay under the current mdkg root
+- live directory sources are never mutated; clone/fork refuses targets nested inside a live source directory
+- `graph fork --start-goal <goal-id>` writes selected-goal state in the target graph after validation
+- `graph import-template` imports authored `.mdkg/work/*.md` template nodes into the current repo and skips config, generated indexes, archive payloads, bundles, and materialized subgraph views
+- `graph import-template` defaults to dry-run unless `--apply` is supplied
+- same-repo template import rewrites canonical numeric IDs to the next unused ID by type prefix and rewrites structured refs plus safe body-local id/qid mentions
+- colliding semantic template IDs require `--id-prefix`
+- `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
+- importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
+- `graph refs` is read-only and summarizes inbound/outbound scope, context, evidence, blocker, related, and structural refs across local and subgraph qids
+- subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
+
+Subgraph orchestration:
+- `mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [--profile private|public] [--source-path <path>] [--json]`
+- `mdkg subgraph list [--json]`
+- `mdkg subgraph show <alias> [--json]`
+- `mdkg subgraph rm <alias> [--json]`
+- `mdkg subgraph enable <alias> [--json]`
+- `mdkg subgraph disable <alias> [--json]`
+- `mdkg subgraph verify [alias|--all] [--json]`
+- `mdkg subgraph refresh [alias|--all] [--json]`
+- `mdkg subgraph audit [alias|--all] [--target <path>] [--json]`
+- `mdkg subgraph upgrade-plan [alias|--all] [--json]`
+- `mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]`
+- `mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] [--json]`
+- subgraphs are read-only planning views and use subgraph-alias qids such as `child_repo:task-1`
+- subgraph refresh reloads configured bundle sources only and never mutates child repos
+- subgraph audit reports read-only source/bundle/materialized-target safety checks
+- subgraph upgrade-plan returns a read-only downstream plan with `apply_supported: false`
+- subgraph sync builds root-owned bundle snapshots from configured clean child Git repo `source_path` entries
+- subgraph materialize extracts generated inspection trees under a target directory; `.mdkg/subgraphs/` is local generated state
+- public/internal subgraphs require public bundle profiles
+
+Work semantic mirrors:
+- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+- `mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]`
+- `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
+- `mdkg work order status <id-or-qid> [--json]`
+- `mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] [--add-artifacts <...>] [--json]`
+- `mdkg work receipt new "<title>" --id <receipt.id> --work-order-id <order.id> --outcome success|partial|failure [--receipt-status recorded|verified|rejected|superseded] [--json]`
+- `mdkg work receipt verify <id-or-qid> [--json]`
+- `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
+- `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
+- `work trigger` accepts a `WORK.md` ref directly or a `MANIFEST.md` / legacy `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
+- example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
+- `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
+- `work order status` is read-only and reports deterministic order state plus linked receipts
+- `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks
+- `work validate` is read-only and reports typed diagnostics for agent workflow mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
+- work commands mutate mdkg semantic mirror files only; production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg
+- do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors
+- `artifact://...` refs identify external/runtime-managed artifacts; `archive://...` refs identify committed mdkg archive sidecars
+- work update and artifact commands accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace
+
+Goal nodes:
+- `mdkg goal show <goal-id-or-qid> [--json]`
+- `mdkg goal select <goal-id-or-qid> [--json]`
+- `mdkg goal activate <goal-id-or-qid> [--json]`
+- `mdkg goal current [--json]`
+- `mdkg goal clear [--json]`
+- `mdkg goal next [goal-id-or-qid] [--json]`
+- `mdkg goal claim [goal-id-or-qid] <work-id-or-qid> [--json]`
+- `mdkg goal evaluate <goal-id-or-qid> [--json]`
+- `mdkg goal pause|resume|done|archive <goal-id-or-qid> [--json]`
+- `mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal current [--ws <alias>] [--json]`
+- `mdkg goal next [goal-id-or-qid] [--ws <alias>] [--json]`
+- `mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal claim <goal-id-or-qid> <work-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal evaluate <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]`
+- `mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]`
+- goals orchestrate recursive progress through explicit `scope_refs`; tasks, bugs, tests, spikes, and features remain concrete executable units
+- `goal activate` makes one local root goal active, pauses competing local active goals in the same workspace, and writes selected-goal state
+- `goal archive` marks a superseded historical goal archived so it remains readable but not actionable
+- `goal next` is read-only; use `goal claim` to set `active_node`
+- `goal done` preserves the final actionable item as `last_active_node` and removes actionable `active_node`
+- `mdkg goal evaluate` is report-only and never runs commands from `required_checks`
+- skill improvements discovered during normal goal execution should be recorded as candidates or proposals unless the active node is skill-maintenance
+
+Discovery/show export flags:
+- `--json`
+- `--xml`
+- `--toon`
+- `--md`

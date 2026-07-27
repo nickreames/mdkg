@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-program-local-execution-receipt",
+  "state": "pass",
+  "recorded_at": "2026-07-27T17:52:00Z",
+  "program_work_qid": "root:task-18",
+  "run_root": "presentations/ai-native-sdlc-demo/runs/demo-002",
+  "child_goal_qid": "root:goal-1",
+  "completed_child_nodes": [
+    {
+      "qid": "root:spike-1",
+      "title": "Choose the Demo 2 durable-continuity audience and creative direction",
+      "status": "done"
+    },
+    {
+      "qid": "root:task-1",
+      "title": "Build the local Demo 2 durable-continuity Astro site",
+      "status": "done"
+    },
+    {
+      "qid": "root:test-1",
+      "title": "Verify the local Demo 2 candidate and public-safety contract",
+      "status": "done"
+    }
+  ],
+  "source_to_specialized_rationale": {
+    "source_promise": "Build a differentiated local Astro candidate within fixed design and safety boundaries.",
+    "specialized_promise": "Build a durable-continuity landing page for AI-native builders, integrate it locally, and stop at the separate publication gate.",
+    "creative_position": "Keep the plan when the agent changes.",
+    "source_goal_sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+    "specialized_goal_snapshot_sha256": "3fda685d8ab74c741e78143625978919bf22533ff51cd7cfce855ba9682176b1"
+  },
+  "commands": [
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 goal current --json",
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 goal next goal-1 --json",
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 pack <selected-node> --profile concise --dry-run",
+    "npm --prefix presentations/ai-native-sdlc-demo/runs/demo-002/site run build",
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 validate --json",
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 index --json",
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 goal evaluate goal-1 --json"
+  ],
+  "changed_paths": [
+    "runs/demo-002/.mdkg/**",
+    "runs/demo-002/artifacts/creative-direction.md",
+    "runs/demo-002/artifacts/implementation-receipt.json",
+    "runs/demo-002/artifacts/local-validation.json",
+    "runs/demo-002/site/.gitignore",
+    "runs/demo-002/site/package.json",
+    "runs/demo-002/site/src/pages/index.astro"
+  ],
+  "artifacts": [
+    {
+      "path": "runs/demo-002/artifacts/creative-direction.md",
+      "sha256": "3d32c829d379976fde5b263587221c10710ee52ed37fa06155fb7bb5df3c258d"
+    },
+    {
+      "path": "runs/demo-002/artifacts/implementation-receipt.json",
+      "sha256": "3b9c86892de7507eb1cea5ce4d7efe90cfab8ae533193cef42dee7a50607b964"
+    },
+    {
+      "path": "runs/demo-002/artifacts/local-validation.json",
+      "sha256": "fa947b2b52ec5f38d9d5a7fb1cb302ee139d95222c0ee3084981514bd341d724"
+    }
+  ],
+  "local_results": {
+    "astro_build": "pass",
+    "page_count": 1,
+    "output_bytes": 30205,
+    "javascript_files": 0,
+    "script_tags": 0,
+    "client_directives": 0,
+    "astro_islands": 0,
+    "remote_fonts": 0,
+    "forms": 0,
+    "trackers": 0,
+    "secret_assignments": 0,
+    "raster_assets": 0,
+    "desktop_horizontal_overflow": false,
+    "mobile_horizontal_overflow": false,
+    "minimum_measured_text_contrast": 4.66,
+    "nested_validation_errors": 0
+  },
+  "routing": {
+    "goal_achieved": false,
+    "next_child_qid": "root:task-2",
+    "next_child_title": "Integrate Demo 2 through the canonical static Astro adapter",
+    "canonical_integration_started": false
+  },
+  "authority": {
+    "local_only": true,
+    "canonical_integration": false,
+    "git_index_mutation": false,
+    "commit": false,
+    "push": false,
+    "publication": false,
+    "provider_inspection": false
+  }
+}
