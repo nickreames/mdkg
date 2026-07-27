@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Badge from "../components/Badge.astro";
 import ButtonLink from "../components/ButtonLink.astro";
-import { demoSnapshots } from "../data/demoSnapshots";
+import { listedDemos } from "../data/demos";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -25,8 +25,8 @@ const structuredData = {
         <h1>See a goal become a website.</h1>
         <p class="lead">Accepted demo runs show the mdkg graph, selected read-only files, and final output together so the workflow is inspectable without hidden chat context.</p>
       </div>
-      <div class="demo-count" aria-label={`${demoSnapshots.length} accepted demo`}>
-        <strong>{demoSnapshots.length}</strong>
+      <div class="demo-count" aria-label={`${listedDemos.length} accepted demo`}>
+        <strong>{listedDemos.length}</strong>
         <span>accepted local proof</span>
       </div>
     </div>
@@ -34,7 +34,7 @@ const structuredData = {
 
   <section class="section">
     <div class="container demo-list" aria-label="Accepted demos">
-      {demoSnapshots.map((demo) => (
+      {listedDemos.map((demo) => (
         <article class="demo-card">
           <div class="demo-copy">
             <div class="meta-row">

@@ -37,6 +37,139 @@ function assertReadablePlainText(source, label) {
   assert(longLines.length === 0, `${label} has long collapsed lines: ${longLines.join(" | ")}`);
 }
 
+function validateDemoFixtureRecords(records) {
+  const ids = new Set();
+  for (const record of records) {
+    assert(record.id, "missing id");
+    assert(!ids.has(record.id), `duplicate id: ${record.id}`);
+    ids.add(record.id);
+    assert(record.detailRoute === `/demo/${record.id}/`, `detail route drift: ${record.id}`);
+    assert(record.outputRoute === `/demo/${record.id}/output/`, `output route drift: ${record.id}`);
+    assert(!(record.listed === false && record.renderedInGallery === true), `listed policy drift: ${record.id}`);
+    assert(!(record.noindex === true && record.renderedInSitemap === true), `noindex policy drift: ${record.id}`);
+  }
+}
+
+function setFixturePath(target, dottedPath, value) {
+  const parts = dottedPath.split(".");
+  const leaf = parts.pop();
+  let current = target;
+  for (const part of parts) {
+    current = current[Number.isInteger(Number(part)) ? Number(part) : part];
+  }
+  current[Number.isInteger(Number(leaf)) ? Number(leaf) : leaf] = value;
+}
+
+function validateProvenanceFixture(record) {
+  const forbiddenKeys = /^(rawPrompt|rawPrompts|credentials|tokens|cookies|providerPayload|providerPayloads|privateContext)$/i;
+  const visit = (value, label) => {
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => visit(item, `${label}[${index}]`));
+      return;
+    }
+    if (!value || typeof value !== "object") return;
+    for (const [key, item] of Object.entries(value)) {
+      assert(!forbiddenKeys.test(key), `forbidden field: ${label}.${key}`);
+      visit(item, `${label}.${key}`);
+    }
+  };
+  for (const label of ["sourceGoal", "executedGoal"]) {
+    const goal = record[label];
+    assert(
+      goal &&
+        goal.id &&
+        goal.title &&
+        goal.condition &&
+        goal.summary &&
+        goal.requirements.length > 0 &&
+        goal.authority.length > 0 &&
+        goal.tests.length > 0 &&
+        goal.checkpoint.id &&
+        goal.checkpoint.title &&
+        /^sha256:[a-f0-9]{64}$/.test(goal.sourceHash),
+      `incomplete ${label} provenance`
+    );
+  }
+  assert(
+    record.sourceGoal.sourceHash !== record.executedGoal.sourceHash,
+    "source and executed goal provenance must be distinct"
+  );
+  assert(record.work.length > 0 && record.evidence.length > 0, "missing work or evidence");
+  assert(!record.evidence.some((item) => item.status === "pending"), "pending public evidence");
+  visit(record, "record");
+}
+
+function validateOutputComponentFixture(fixture) {
+  const keys = new Set();
+  for (const registration of fixture.registrations) {
+    assert(!keys.has(registration.key), `duplicate component: ${registration.key}`);
+    keys.add(registration.key);
+    assert(registration.staticImport === true, `dynamic component: ${registration.key}`);
+    assert(registration.clientHydrated === false, `client hydration: ${registration.key}`);
+    assert(registration.source.endsWith(".astro"), `component must be Astro: ${registration.key}`);
+  }
+  for (const record of fixture.records) {
+    assert(keys.has(record.outputComponent), `missing component: ${record.outputComponent}`);
+  }
+}
+
+function validateVisibilityFixture(fixture) {
+  const galleryIds = fixture.records.filter((record) => record.listed).map((record) => record.id);
+  const sitemapRoutes = fixture.records
+    .filter((record) => !record.noindex)
+    .map((record) => record.detailRoute);
+  const noindexIds = fixture.records.filter((record) => record.noindex).map((record) => record.id);
+  const directRouteIds = fixture.records.map((record) => record.id);
+  assert(
+    JSON.stringify(galleryIds) === JSON.stringify(fixture.expectedGalleryIds),
+    "visibility fixture gallery projection drift"
+  );
+  assert(
+    JSON.stringify(sitemapRoutes) === JSON.stringify(fixture.expectedSitemapRoutes),
+    "visibility fixture sitemap projection drift"
+  );
+  assert(
+    JSON.stringify(noindexIds) === JSON.stringify(fixture.expectedNoindexIds),
+    "visibility fixture noindex projection drift"
+  );
+  assert(
+    JSON.stringify(directRouteIds) === JSON.stringify(fixture.expectedDirectRouteIds),
+    "visibility fixture direct-route projection drift"
+  );
+}
+
+function assertStaticDemoHtml(html, label, allowedScriptTypes = []) {
+  for (const forbidden of [
+    "astro-island",
+    "component-url=",
+    "renderer-url=",
+    "data-astro-transition",
+    "client:load",
+    "client:idle",
+    "client:visible",
+    "client:media",
+    "client:only",
+  ]) {
+    assertNotContains(html, forbidden, label);
+  }
+  const scriptTags = [...html.matchAll(/<script\b([^>]*)>/gi)].map((match) => match[1] || "");
+  for (const attrs of scriptTags) {
+    const typeMatch = attrs.match(/\btype=["']([^"']+)["']/i);
+    const type = typeMatch ? typeMatch[1] : "";
+    assert(
+      allowedScriptTypes.includes(type),
+      `${label} contains unexpected script type: ${type || "<missing>"}`
+    );
+    assert(!/\bsrc=["']/i.test(attrs), `${label} contains a runtime script source`);
+  }
+  for (const match of html.matchAll(/<(?:script|link|img|iframe)\b[^>]*(?:src|href)=["'](https?:\/\/[^"']+)["']/gi)) {
+    assert(
+      match[1].startsWith("https://mdkg.dev/"),
+      `${label} contains a remote runtime asset: ${match[1]}`
+    );
+  }
+}
+
 function main() {
   const releaseManifestPath = path.join(repoRoot, "release", "public-release.json");
   const releaseManifestBefore = fs.readFileSync(releaseManifestPath);
@@ -53,6 +186,9 @@ function main() {
     "trust/index.html",
     "alpha/index.html",
     "docs/index.html",
+    "demos/index.html",
+    "demo/1/index.html",
+    "demo/1/output/index.html",
     "llms.txt",
     "llms-full.txt",
     "robots.txt",
@@ -62,6 +198,139 @@ function main() {
   ];
   for (const rel of requiredFiles) {
     assertExists(path.join(dist, rel));
+  }
+
+  const demoFixtures = JSON.parse(
+    readText(path.join(repoRoot, "scripts", "fixtures", "demo-registry-fixtures.json"))
+  );
+  validateVisibilityFixture(demoFixtures.visibility_matrix);
+  validateDemoFixtureRecords(demoFixtures.reserved_records);
+  for (const fixture of demoFixtures.negative_cases) {
+    let error = null;
+    try {
+      validateDemoFixtureRecords(fixture.records);
+    } catch (caught) {
+      error = caught;
+    }
+    assert(error, `negative demo fixture did not fail: ${fixture.name}`);
+    assert(
+      error.message.toLowerCase().includes(fixture.expectedError),
+      `negative demo fixture ${fixture.name} failed with unexpected error: ${error.message}`
+    );
+  }
+  validateProvenanceFixture(demoFixtures.provenance_baseline);
+  for (const fixture of demoFixtures.provenance_negative_cases) {
+    const record = JSON.parse(JSON.stringify(demoFixtures.provenance_baseline));
+    setFixturePath(record, fixture.mutation.path, fixture.mutation.value);
+    let error = null;
+    try {
+      validateProvenanceFixture(record);
+    } catch (caught) {
+      error = caught;
+    }
+    assert(error, `negative provenance fixture did not fail: ${fixture.name}`);
+    assert(
+      error.message.toLowerCase().includes(fixture.expectedError.toLowerCase()),
+      `negative provenance fixture ${fixture.name} failed with unexpected error: ${error.message}`
+    );
+  }
+  validateOutputComponentFixture(demoFixtures.output_component_baseline);
+  for (const fixture of demoFixtures.output_component_negative_cases) {
+    const componentFixture = JSON.parse(JSON.stringify(demoFixtures.output_component_baseline));
+    setFixturePath(componentFixture, fixture.mutation.path, fixture.mutation.value);
+    let error = null;
+    try {
+      validateOutputComponentFixture(componentFixture);
+    } catch (caught) {
+      error = caught;
+    }
+    assert(error, `negative output-component fixture did not fail: ${fixture.name}`);
+    assert(
+      error.message.toLowerCase().includes(fixture.expectedError.toLowerCase()),
+      `negative output-component fixture ${fixture.name} failed with unexpected error: ${error.message}`
+    );
+  }
+
+  const demos = readText(path.join(dist, "demos", "index.html"));
+  const demo1Detail = readText(path.join(dist, "demo", "1", "index.html"));
+  const demo1Output = readText(path.join(dist, "demo", "1", "output", "index.html"));
+  assertStaticDemoHtml(demos, "demo gallery", ["application/ld+json"]);
+  assertStaticDemoHtml(demo1Detail, "Demo 1 detail", ["application/ld+json"]);
+  assertStaticDemoHtml(demo1Output, "Demo 1 output");
+  assertContains(demos, "Agent-ready website demo", "demo gallery");
+  assertContains(demos, "/demo/1/", "demo gallery");
+  assertNotContains(demos, "/demo/2/", "demo gallery");
+  assertNotContains(demos, "/demo/3/", "demo gallery");
+  assertContains(demo1Detail, "Sanitized mdkg graph", "Demo 1 detail");
+  assertContains(demo1Detail, "/demo/1/output/", "Demo 1 detail");
+  for (const expected of [
+    "Reusable starting specification",
+    "Specialized executed specification",
+    "Plan",
+    "Work",
+    "Evidence",
+    "What completed, why it mattered, and what comes next.",
+    "Goal condition",
+    "Requirements",
+    "Authority",
+    "Tests",
+    "Source hash",
+    "Why:",
+    "What comes next",
+  ]) {
+    assertContains(demo1Detail, expected, "Demo 1 source/execution evidence");
+  }
+  assert(
+    (demo1Detail.match(/goal-1/g) || []).length >= 2,
+    "Demo 1 detail must show goal-1 at both reusable and specialized grains"
+  );
+  assert(
+    (demo1Detail.match(/sha256:[a-f0-9]{64}/g) || []).length === 2,
+    "Demo 1 detail must show exactly two sanitized goal provenance hashes"
+  );
+  assertContains(demo1Output, "Agent-ready demo websites from one mdkg goal.", "Demo 1 output");
+  for (const reserved of demoFixtures.reserved_records) {
+    assert(
+      !fs.existsSync(path.join(dist, "demo", reserved.id)),
+      `fixture-only Demo ${reserved.id} must not produce public routes`
+    );
+  }
+  assert(
+    !fs.existsSync(path.join(repoRoot, "mdkg-dev", "src", "data", "demoSnapshots.ts")),
+    "monolithic Demo 1 registry should be removed"
+  );
+  for (const rel of [
+    ["mdkg-dev", "src", "data", "demos", "types.ts"],
+    ["mdkg-dev", "src", "data", "demos", "demo-1.ts"],
+    ["mdkg-dev", "src", "data", "demos", "index.ts"],
+  ]) {
+    assertExists(path.join(repoRoot, ...rel));
+  }
+  const outputRegistrySource = readText(
+    path.join(repoRoot, "mdkg-dev", "src", "components", "demos", "outputRegistry.ts")
+  );
+  const outputRouteSource = readText(
+    path.join(repoRoot, "mdkg-dev", "src", "pages", "demo", "[id]", "output.astro")
+  );
+  const demo1OutputSource = readText(
+    path.join(repoRoot, "mdkg-dev", "src", "components", "demos", "Demo1Output.astro")
+  );
+  assertContains(outputRegistrySource, 'import Demo1Output from "./Demo1Output.astro"', "output registry");
+  assertContains(outputRegistrySource, '"demo-1": Demo1Output', "output registry");
+  assertNotContains(outputRegistrySource, "import(", "output registry");
+  assertContains(outputRouteSource, "getDemoOutputComponent", "output route");
+  assertContains(outputRouteSource, "<OutputComponent demo={demo} />", "output route");
+  for (const source of [outputRegistrySource, outputRouteSource, demo1OutputSource]) {
+    assertNotContains(source, "client:", "static output component source");
+  }
+  const demoSourceFiles = walkFiles(path.join(repoRoot, "mdkg-dev", "src"))
+    .filter((filePath) => {
+      const normalized = filePath.split(path.sep).join("/");
+      return normalized.includes("/pages/demo/") || normalized.includes("/components/demos/");
+    })
+    .map(readText);
+  for (const source of demoSourceFiles) {
+    assertNotContains(source, "client:", "demo source");
   }
 
   const home = readText(path.join(dist, "index.html"));

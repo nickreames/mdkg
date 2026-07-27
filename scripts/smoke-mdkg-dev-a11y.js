@@ -163,6 +163,9 @@ function main() {
     ["marketing quickstart", path.join(siteDist, "quickstart", "index.html")],
     ["marketing trust", path.join(siteDist, "trust", "index.html")],
     ["marketing alpha", path.join(siteDist, "alpha", "index.html")],
+    ["marketing demo gallery", path.join(siteDist, "demos", "index.html")],
+    ["marketing demo 1 detail", path.join(siteDist, "demo", "1", "index.html")],
+    ["marketing demo 1 output", path.join(siteDist, "demo", "1", "output", "index.html")],
     ["docs home", path.join(docsDist, "index.html")],
     ["docs install", path.join(docsDist, "start-here", "install", "index.html")],
     ["docs quickstart", path.join(docsDist, "start-here", "quickstart", "index.html")],
@@ -188,6 +191,10 @@ function main() {
   assertContrast("loop body on sky", "#3f3f46", "#f0f9ff", 7);
   assertContrast("loop rail body on navy", "#cbd5e1", "#0f172a", 7);
   assertContrast("loop command on command surface", "#e2e8f0", "#111827", 7);
+  assertContrast("Ocean Flow ink on paper", "#102033", "#ffffff", 7);
+  assertContrast("Ocean Flow slate on paper", "#526173", "#ffffff", 4.5);
+  assertContrast("Ocean Flow white on blue", "#ffffff", "#0f5fd6", 4.5);
+  assertContrast("Ocean Flow console text on ink", "#eef7fb", "#102033", 7);
 
   const announcementSource = readText(path.join(repoRoot, "mdkg-dev", "src", "components", "LoopAnnouncement.astro"));
   for (const requiredSource of [
@@ -201,6 +208,66 @@ function main() {
   ]) {
     assert(announcementSource.includes(requiredSource), `loop announcement missing accessibility contract: ${requiredSource}`);
   }
+
+  const demoDetailSource = readText(
+    path.join(repoRoot, "mdkg-dev", "src", "pages", "demo", "[id].astro"),
+  );
+  for (const requiredSource of [
+    'aria-label="Demo surfaces"',
+    'aria-labelledby="specifications-title"',
+    'aria-labelledby="lifecycle-title"',
+    'title={`Demo ${demo.id} output preview`}',
+    "@media (max-width: 880px)",
+    "@media (max-width: 560px)",
+    "overflow-wrap: anywhere",
+    "overflow-x: auto",
+  ]) {
+    assert(
+      demoDetailSource.includes(requiredSource),
+      `demo detail missing accessibility contract: ${requiredSource}`,
+    );
+  }
+
+  const demoOutputSource = readText(
+    path.join(repoRoot, "mdkg-dev", "src", "components", "demos", "Demo1Output.astro"),
+  );
+  for (const requiredSource of [
+    '<nav aria-label="Output sections">',
+    'aria-labelledby="output-title"',
+    'aria-labelledby="workflow-title"',
+    'aria-labelledby="proof-title"',
+    'aria-labelledby="safety-title"',
+    ":focus-visible",
+    "@media (max-width: 860px)",
+    "@media (prefers-reduced-motion: reduce)",
+    "@media (forced-colors: active)",
+    "overflow-x: auto",
+  ]) {
+    assert(
+      demoOutputSource.includes(requiredSource),
+      `demo output missing accessibility contract: ${requiredSource}`,
+    );
+  }
+
+  const demoDetail = readText(path.join(siteDist, "demo", "1", "index.html"));
+  const demoOutput = readText(path.join(siteDist, "demo", "1", "output", "index.html"));
+  assert(demoDetail.includes("<main"), "demo detail missing main landmark");
+  assert(demoDetail.includes("<nav"), "demo detail missing navigation landmark");
+  assert(demoDetail.includes("<footer"), "demo detail missing footer landmark");
+  assert(
+    demoDetail.includes('title="Demo 1 output preview"'),
+    "demo detail iframe missing descriptive title",
+  );
+  assert(
+    demoDetail.includes('name="robots" content="index, follow"'),
+    "Demo 1 detail should preserve its configured index policy",
+  );
+  assert(demoOutput.includes("<main"), "demo output missing main landmark");
+  assert(demoOutput.includes("<nav"), "demo output missing navigation landmark");
+  assert(
+    demoOutput.includes('name="robots" content="noindex,nofollow"'),
+    "demo output missing noindex policy",
+  );
 
   buildSite({ PUBLIC_MDKG_RELEASE_PREVIEW: "1" });
   const previewHome = readText(path.join(siteDist, "index.html"));

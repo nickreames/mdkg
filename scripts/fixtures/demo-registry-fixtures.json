@@ -1,0 +1,289 @@
+{
+  "schema_version": "1.0",
+  "route_convention": "/demo/N/ and /demo/N/output/",
+  "reserved_records": [
+    {
+      "id": "2",
+      "detailRoute": "/demo/2/",
+      "outputRoute": "/demo/2/output/",
+      "listed": false,
+      "noindex": true
+    },
+    {
+      "id": "3",
+      "detailRoute": "/demo/3/",
+      "outputRoute": "/demo/3/output/",
+      "listed": false,
+      "noindex": true
+    }
+  ],
+  "visibility_matrix": {
+    "records": [
+      {
+        "id": "1",
+        "listed": true,
+        "noindex": false,
+        "detailRoute": "/demo/1/"
+      },
+      {
+        "id": "2",
+        "listed": false,
+        "noindex": true,
+        "detailRoute": "/demo/2/"
+      },
+      {
+        "id": "3",
+        "listed": false,
+        "noindex": true,
+        "detailRoute": "/demo/3/"
+      },
+      {
+        "id": "4",
+        "listed": true,
+        "noindex": true,
+        "detailRoute": "/demo/4/"
+      },
+      {
+        "id": "5",
+        "listed": false,
+        "noindex": false,
+        "detailRoute": "/demo/5/"
+      }
+    ],
+    "expectedGalleryIds": ["1", "4"],
+    "expectedSitemapRoutes": ["/demo/1/", "/demo/5/"],
+    "expectedNoindexIds": ["2", "3", "4"],
+    "expectedDirectRouteIds": ["1", "2", "3", "4", "5"]
+  },
+  "negative_cases": [
+    {
+      "name": "duplicate-id",
+      "records": [
+        {
+          "id": "2",
+          "detailRoute": "/demo/2/",
+          "outputRoute": "/demo/2/output/",
+          "listed": false,
+          "noindex": true
+        },
+        {
+          "id": "2",
+          "detailRoute": "/demo/2/",
+          "outputRoute": "/demo/2/output/",
+          "listed": false,
+          "noindex": true
+        }
+      ],
+      "expectedError": "duplicate id"
+    },
+    {
+      "name": "missing-id",
+      "records": [
+        {
+          "id": "",
+          "detailRoute": "/demo//",
+          "outputRoute": "/demo//output/",
+          "listed": false,
+          "noindex": true
+        }
+      ],
+      "expectedError": "missing id"
+    },
+    {
+      "name": "output-route-drift",
+      "records": [
+        {
+          "id": "3",
+          "detailRoute": "/demo/3/",
+          "outputRoute": "/demos/3/output/",
+          "listed": false,
+          "noindex": true
+        }
+      ],
+      "expectedError": "output route"
+    },
+    {
+      "name": "listed-navigation-drift",
+      "records": [
+        {
+          "id": "2",
+          "detailRoute": "/demo/2/",
+          "outputRoute": "/demo/2/output/",
+          "listed": false,
+          "noindex": true,
+          "renderedInGallery": true
+        }
+      ],
+      "expectedError": "listed policy"
+    },
+    {
+      "name": "noindex-sitemap-drift",
+      "records": [
+        {
+          "id": "3",
+          "detailRoute": "/demo/3/",
+          "outputRoute": "/demo/3/output/",
+          "listed": false,
+          "noindex": true,
+          "renderedInSitemap": true
+        }
+      ],
+      "expectedError": "noindex policy"
+    }
+  ],
+  "provenance_baseline": {
+    "sourceGoal": {
+      "id": "goal-1",
+      "title": "Reusable source",
+      "condition": "Choose a direction and build locally.",
+      "summary": "Reusable source specification.",
+      "requirements": ["Choose a direction."],
+      "authority": ["Local work only."],
+      "tests": ["Validate locally."],
+      "checkpoint": {
+        "id": "chk-1",
+        "title": "source accepted"
+      },
+      "sourceHash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "executedGoal": {
+      "id": "goal-1",
+      "title": "Specialized execution",
+      "condition": "Build the selected direction locally.",
+      "summary": "Specialized executed specification.",
+      "requirements": ["Build the selected direction."],
+      "authority": ["Local work only."],
+      "tests": ["Build and validate."],
+      "checkpoint": {
+        "id": "chk-2",
+        "title": "execution accepted"
+      },
+      "sourceHash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "work": [
+      {
+        "id": "task-1",
+        "status": "done"
+      }
+    ],
+    "evidence": [
+      {
+        "label": "Build",
+        "status": "pass"
+      }
+    ]
+  },
+  "provenance_negative_cases": [
+    {
+      "name": "forbidden-raw-prompt-field",
+      "mutation": {
+        "path": "rawPrompt",
+        "value": "redacted fixture"
+      },
+      "expectedError": "forbidden field"
+    },
+    {
+      "name": "missing-source-hash",
+      "mutation": {
+        "path": "sourceGoal.sourceHash",
+        "value": ""
+      },
+      "expectedError": "incomplete sourceGoal provenance"
+    },
+    {
+      "name": "missing-requirements",
+      "mutation": {
+        "path": "executedGoal.requirements",
+        "value": []
+      },
+      "expectedError": "incomplete executedGoal provenance"
+    },
+    {
+      "name": "identical-provenance",
+      "mutation": {
+        "path": "executedGoal.sourceHash",
+        "value": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "expectedError": "provenance must be distinct"
+    },
+    {
+      "name": "unsupported-pending-evidence",
+      "mutation": {
+        "path": "evidence.0.status",
+        "value": "pending"
+      },
+      "expectedError": "pending public evidence"
+    }
+  ],
+  "output_component_baseline": {
+    "records": [
+      {
+        "id": "1",
+        "outputComponent": "demo-1",
+        "listed": true,
+        "noindex": false
+      },
+      {
+        "id": "2",
+        "outputComponent": "demo-2",
+        "listed": false,
+        "noindex": true
+      }
+    ],
+    "registrations": [
+      {
+        "key": "demo-1",
+        "source": "Demo1Output.astro",
+        "staticImport": true,
+        "clientHydrated": false
+      },
+      {
+        "key": "demo-2",
+        "source": "FixtureDemo2Output.astro",
+        "staticImport": true,
+        "clientHydrated": false
+      }
+    ]
+  },
+  "output_component_negative_cases": [
+    {
+      "name": "missing-component",
+      "mutation": {
+        "path": "registrations",
+        "value": [
+          {
+            "key": "demo-1",
+            "source": "Demo1Output.astro",
+            "staticImport": true,
+            "clientHydrated": false
+          }
+        ]
+      },
+      "expectedError": "missing component"
+    },
+    {
+      "name": "duplicate-component-key",
+      "mutation": {
+        "path": "registrations.1.key",
+        "value": "demo-1"
+      },
+      "expectedError": "duplicate component"
+    },
+    {
+      "name": "dynamic-component-import",
+      "mutation": {
+        "path": "registrations.1.staticImport",
+        "value": false
+      },
+      "expectedError": "dynamic component"
+    },
+    {
+      "name": "client-hydrated-component",
+      "mutation": {
+        "path": "registrations.1.clientHydrated",
+        "value": true
+      },
+      "expectedError": "client hydration"
+    }
+  ]
+}

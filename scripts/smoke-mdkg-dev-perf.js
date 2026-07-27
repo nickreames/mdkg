@@ -34,6 +34,38 @@ function assertBudget(label, actual, limit) {
   assert(actual <= limit, `${label} budget exceeded: ${actual} > ${limit}`);
 }
 
+function localAssetReferences(html) {
+  const references = new Set();
+  const pattern = /(?:src|href)=["']([^"'?#]+)(?:[?#][^"']*)?["']/gi;
+  let match;
+  while ((match = pattern.exec(html)) !== null) {
+    const reference = match[1];
+    if (
+      reference.startsWith("/") &&
+      !reference.endsWith("/") &&
+      !reference.endsWith(".html")
+    ) {
+      references.add(reference);
+    }
+  }
+  return [...references];
+}
+
+function routeTransferBytes(siteDist, relativeHtmlPath) {
+  const htmlPath = path.join(siteDist, relativeHtmlPath);
+  const html = fs.readFileSync(htmlPath, "utf8");
+  const assetFiles = localAssetReferences(html)
+    .map((reference) => path.join(siteDist, reference.replace(/^\//, "")))
+    .filter((filePath) => fs.existsSync(filePath) && fs.statSync(filePath).isFile());
+  return {
+    route: `/${relativeHtmlPath.replace(/index\.html$/, "")}`,
+    html_bytes: fs.statSync(htmlPath).size,
+    local_asset_bytes: bytesFor(assetFiles),
+    initial_transfer_bytes: fs.statSync(htmlPath).size + bytesFor(assetFiles),
+    local_assets: assetFiles.map((filePath) => path.relative(siteDist, filePath)),
+  };
+}
+
 function main() {
   buildSite();
   buildDocs();
@@ -48,6 +80,15 @@ function main() {
   const docsJs = filesWithExt(docsDist, ".js");
   const siteCss = filesWithExt(siteDist, ".css");
   const docsCss = filesWithExt(docsDist, ".css");
+  const rasterExtensions = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"]);
+  const rasterFiles = siteFiles.filter((filePath) =>
+    rasterExtensions.has(path.extname(filePath).toLowerCase())
+  );
+  const demoRouteTransfers = [
+    "demos/index.html",
+    "demo/1/index.html",
+    "demo/1/output/index.html",
+  ].map((relativePath) => routeTransferBytes(siteDist, relativePath));
 
   const metrics = {
     marketing_total_bytes: bytesFor(siteFiles),
@@ -56,6 +97,8 @@ function main() {
     docs_js_bytes: bytesFor(docsJs),
     marketing_css_bytes: bytesFor(siteCss),
     docs_css_bytes: bytesFor(docsCss),
+    demo_route_transfers: demoRouteTransfers,
+    marketing_raster_assets: largest(rasterFiles),
     largest_marketing_files: largest(siteFiles),
     largest_docs_files: largest(docsFiles),
   };
@@ -72,6 +115,16 @@ function main() {
   }
   for (const filePath of docsHtml) {
     assertBudget(path.relative(repoRoot, filePath), fs.statSync(filePath).size, 300_000);
+  }
+  for (const route of demoRouteTransfers) {
+    assertBudget(`${route.route} initial transfer`, route.initial_transfer_bytes, 500 * 1024);
+  }
+  for (const filePath of rasterFiles) {
+    assertBudget(
+      `${path.relative(repoRoot, filePath)} raster asset`,
+      fs.statSync(filePath).size,
+      250 * 1024,
+    );
   }
 
   console.log(JSON.stringify({ ok: true, ...metrics }, null, 2));
