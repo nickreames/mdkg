@@ -31,11 +31,14 @@ Prepare live kickoff reveal fallback and recovery cues. This is step 5 of 8 in G
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-3.
-- Put the Demo 3 kickoff in the opening segment and make the frozen sendoff copy-ready without explaining graph mechanics.
+- Put the Demo 3 kickoff within the opening minute and make the frozen sendoff copy-ready without explaining graph mechanics.
 - Define timed transitions for capability evolution, context engineering, mdkg motivation, Plan -> Work -> Evidence, live reveal, CTA, and questions.
-- Script separate success, still-running, and hard-blocker reveal branches; the hard-blocker branch names Demo 3 honestly and shows sealed Demo 2.
+- Treat Goal 3 as an offline cue-and-timing rehearsal against Goal 2 fixtures and interface contracts; do not create or claim a real Demo 2 or Demo 3.
+- Script separate simulated success, still-running, and hard-blocker reveal branches. The hard-blocker branch names Demo 3 honestly and identifies sealed Demo 2 as a future Goal 5 production fallback, not current evidence.
 - Provide recovery cues for missing provider visibility, origin drift, failed URLs, presentation-display issues, and time compression.
-- Keep the target at 30–32 minutes and define explicit cuts that preserve the conclusion before the 35-minute stop.
+- Keep the narrated deck at 30–32 minutes, allocate no more than the remaining time before minute 35 to the fixture-backed reveal plus CTA, and place audience Q&A afterward.
+- Define explicit cuts to supporting examples if the narrative overruns; never cut the context-engineering conclusion, reveal, or CTA.
+- Leave real Demo 2 fallback verification and production rehearsal exclusively to Goal 5.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor test-7 does not begin until this node is verified.
 
@@ -55,8 +58,9 @@ Prepare live kickoff reveal fallback and recovery cues. This is step 5 of 8 in G
 # Test Plan
 
 - Notes contain a cue, expected state, fallback branch, and time budget for every live interaction.
-- A cold rehearsal can reach the CTA by 35 minutes under both Demo 3 success and Demo 2 fallback branches.
+- An offline cold rehearsal can reach the CTA by minute 35 under simulated Demo 3 success, still-running, and hard-blocker branches.
 - No cue instructs the presenter to claim success without exact-SHA and live-route evidence.
+- The rehearsal receipt states that no Demo 2, Demo 3, exact-SHA, deployment, or live-route readiness was proved.
 
 # Links / Artifacts
 

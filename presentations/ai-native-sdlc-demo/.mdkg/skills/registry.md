@@ -26,6 +26,11 @@ Use `CLI_COMMAND_MATRIX.md` as the canonical command and flag reference when upd
   - stage: `stage:execute`
   - writer role: `writer:patch-only`
   - description: Build a deterministic mdkg pack for the active work item and use it as the execution handoff when coding or delegating to another AI agent.
+- `produce-powerpoint-with-artifact-tool`
+  - name: `Produce PowerPoint with Artifact Tool`
+  - stage: `stage:execute`
+  - writer role: `writer:patch-only`
+  - description: Plan, build, render, and visually verify a source-backed editable PowerPoint with Artifact Tool when Goal 3 or another approved presentation task requires a deterministic local deck.
 - `pursue-mdkg-goal`
   - name: `pursue-mdkg-goal`
   - stage: `stage:execute`

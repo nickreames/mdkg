@@ -19,7 +19,7 @@ refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, t
 context_refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-12]
 evidence_refs: []
 aliases: [phase-3-step-4]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -31,10 +31,13 @@ Build PowerPoint source assets notes citations and final PPTX. This is step 4 of
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-3.
-- Build the complete 16:9 deck from `deck/source/ai-native-sdlc.mjs` using the accepted prototype system.
+- Require the explicit user-accepted task-12 prototype review before writing the full deck.
+- Build the complete custom Ocean Flow 16:9 deck from `deck/source/ai-native-sdlc.mjs` as a JavaScript ES module using `@oai/artifact-tool`; do not use `python-pptx`, Remotion, or a substituted deck library.
 - Keep factual slide copy traceable to `deck/citations/claim-matrix.md`; never place an unsupported paraphrase into generated slides.
-- Produce editable slide elements where practical, locally retained public-safe assets, slide-specific speaker notes, and the final PPTX.
-- Generate a rendered image for every slide, a contact sheet, and a QA report that records overflow, contrast, hierarchy, citation, and legibility review.
+- Produce editable slide elements where practical, locally retained public-safe assets, slide-specific speaker notes with complete claim and asset `[Sources]` blocks, and the final PPTX.
+- Add compact numbered source markers to claim-heavy slides and one final unspoken appendix sources slide; keep full URLs in the speaker notes and claim matrix.
+- Generate local closing QR codes for the mdkg quickstart and `https://github.com/nickreames/mdkg/issues`, retain readable text URLs, and scan-test both destinations.
+- Generate a rendered image for every slide, a contact sheet, and a QA report that records overflow, contrast, hierarchy, wrapping, minimum typography, citation, asset provenance, and individual full-size legibility review.
 - Keep presentation generation deterministic and do not introduce a Remotion dependency.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-14 does not begin until this node is verified.
@@ -57,6 +60,7 @@ Build PowerPoint source assets notes citations and final PPTX. This is step 4 of
 - Source generation produces the expected PPTX, notes, citations, assets, per-slide renders, contact sheet, and QA report.
 - Every slide is visually inspected at presentation resolution; automated overflow checks supplement but do not replace review.
 - Re-running from the accepted source produces the same slide count and equivalent layout/content.
+- Every numbered marker maps to the appendix, speaker-note `[Sources]` block, and claim matrix; both QR codes scan to the displayed approved URLs.
 
 # Links / Artifacts
 

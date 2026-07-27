@@ -2,10 +2,10 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T04:18:14.878Z",
+    "generated_at": "2026-07-27T04:53:22.506Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "skills_root": ".mdkg/skills",
-    "skill_count": 6
+    "skill_count": 7
   },
   "skills": {
     "author-mdkg-skill": {
@@ -65,6 +65,34 @@
       "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
       "has_scripts": false,
       "has_references": false,
+      "extensions": {},
+      "ochatr": {}
+    },
+    "produce-powerpoint-with-artifact-tool": {
+      "slug": "produce-powerpoint-with-artifact-tool",
+      "id": "skill:produce-powerpoint-with-artifact-tool",
+      "qid": "root:skill:produce-powerpoint-with-artifact-tool",
+      "ws": "root",
+      "type": "skill",
+      "name": "Produce PowerPoint with Artifact Tool",
+      "description": "Plan, build, render, and visually verify a source-backed editable PowerPoint with Artifact Tool when Goal 3 or another approved presentation task requires a deterministic local deck.",
+      "tags": [
+        "stage:execute",
+        "writer:patch-only",
+        "presentation",
+        "powerpoint",
+        "artifact-tool"
+      ],
+      "version": "0.1.0",
+      "authors": [
+        "mdkg"
+      ],
+      "links": [
+        "AGENT_START.md"
+      ],
+      "path": ".mdkg/skills/produce-powerpoint-with-artifact-tool/SKILL.md",
+      "has_scripts": false,
+      "has_references": true,
       "extensions": {},
       "ochatr": {}
     },

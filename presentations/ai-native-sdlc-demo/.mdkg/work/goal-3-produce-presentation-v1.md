@@ -5,10 +5,10 @@ title: Produce presentation v1
 status: backlog
 priority: 1
 goal_state: paused
-goal_condition: A source-backed 30–32 minute presentation with a 35-minute hard stop exists as editable source and PPTX, three representative visual prototypes precede full production, every factual claim has primary-source support, every slide passes rendered visual QA, and a timed rehearsal proves kickoff, reveal, fallback, recovery, and CTA cues.
+goal_condition: A source-backed 30–32 minute narrated presentation exists as editable source and PPTX, three representative visual prototypes receive explicit human approval before full production, every factual claim has primary-source support, every slide passes rendered visual QA, and an offline cue rehearsal proves that the reveal plus CTA can finish within the 35-minute content hard stop before audience Q&A.
 scope_refs: [epic-3]
-required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-required_checks: [primary-source claim matrix review, three-slide visual prototype review, PowerPoint generation, full slide render and contact-sheet review, overflow contrast hierarchy and legibility checks, timed rehearsal under 35 minutes]
+required_skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
+required_checks: [first-node context and evidence pack coverage without truncation, primary-source claim matrix review, explicit three-slide visual prototype approval, Artifact Tool PowerPoint generation, full slide render and individual full-size review, overflow contrast hierarchy and legibility checks, 30-32 minute narrated rehearsal plus reveal and CTA within 35 minutes]
 max_iterations: 25
 blocked_after_attempts: 3
 tags: [ai-native-sdlc, presentation-demo, phase-3]
@@ -18,11 +18,11 @@ artifacts: [deck/source/ai-native-sdlc.mjs, deck/citations/claim-matrix.md, deck
 relates: []
 blocked_by: []
 blocks: []
-refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2]
+refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, chk-4, chk-5]
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4]
 evidence_refs: []
 aliases: [ai-native-sdlc-presentation-v1]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -33,7 +33,12 @@ Produce presentation v1 under the accepted program requirements, ownership model
 
 # End Condition
 
-A source-backed 30–32 minute presentation with a 35-minute hard stop exists as editable source and PPTX, three representative visual prototypes precede full production, every factual claim has primary-source support, every slide passes rendered visual QA, and a timed rehearsal proves kickoff, reveal, fallback, recovery, and CTA cues.
+A source-backed 30–32 minute narrated presentation exists as editable source and
+PPTX, three representative visual prototypes receive explicit human approval
+before full production, every factual claim has primary-source support, every
+slide passes rendered visual QA, and an offline cue rehearsal proves that the
+reveal plus CTA can finish within the 35-minute content hard stop before
+audience Q&A.
 
 # Activation Conditions
 
@@ -48,33 +53,42 @@ Goal 2 is achieved and its accepted interface checkpoint freezes the route names
 # Recursive Algorithm
 
 1. Re-read this goal, its accepted design context, predecessor evidence, and current writer lease.
-2. Use goal next and a concise pack to select the first unfinished scoped node.
-3. Complete one node at a time in the declared prev/next chain.
-4. Run the node-specific and goal-level checks; record compact public-safe evidence.
-5. Stop on authority, ownership, scope, safety, or prerequisite drift.
-6. Evaluate the goal and close only when the end condition is fully evidenced.
+2. Select the first unfinished scoped node with `mdkg --root presentations/ai-native-sdlc-demo goal next goal-3 --json`.
+3. Preview the execution handoff with `mdkg --root presentations/ai-native-sdlc-demo pack <node-id> --profile concise --depth 1 --edges context_refs,evidence_refs --skills auto --skills-depth full --dry-run --stats`.
+4. Require the preview to include the selected node, goal-3, epic-3, prd-1, edd-1, dec-1 through dec-6, goal-2, chk-4, and all required skills without truncation.
+5. Build the same pack without `--dry-run` and use it as the execution handoff.
+6. Complete one node at a time in the declared prev/next chain; task-12 remains open until explicit human prototype approval.
+7. Run the node-specific and goal-level checks; record compact public-safe evidence.
+8. Stop on authority, ownership, scope, safety, prerequisite, or context-pack drift.
+9. Evaluate the goal and close only when the end condition is fully evidenced.
 
 # Required Skills
 
 - select-work-and-ground-context
+- produce-powerpoint-with-artifact-tool
 - verify-close-and-checkpoint
 
 # Required Checks
 
+- first-node context and evidence pack coverage without truncation
 - primary-source claim matrix review
-- three-slide visual prototype review
-- PowerPoint generation
-- full slide render and contact-sheet review
+- explicit three-slide visual prototype approval
+- Artifact Tool PowerPoint generation
+- full slide render and individual full-size review
 - overflow contrast hierarchy and legibility checks
-- timed rehearsal under 35 minutes
+- 30–32 minute narrated rehearsal plus reveal and CTA within 35 minutes
 
 # Acceptance Criteria
 
-- Timeline anchors Autocomplete in GitHub Copilot; Prompt engineering in conversational generate/explain/refine; Reasoning in OpenAI o1; Tool-using agents in Claude Code, Cursor, and comparable harnesses; Conditional context in Agent Skills and `SKILL.md`; and Long-horizon goal-driven agents in primary-source multi-hour evidence, including 8+ hours only when directly supported.
+- The capability sequence is a loose pedagogical progression with explicitly overlapping product dates, not a claim of strict chronological handoffs.
+- Timeline anchors Autocomplete in GitHub Copilot; Prompt engineering in conversational generate/explain/refine; Reasoning in OpenAI o1; Tool-using agents in Claude Code, Cursor, and comparable harnesses; Conditional context in Agent Skills and `SKILL.md`; and Long-horizon goal-driven agents in Codex, Claude Code, and other products only where primary-source multi-hour evidence directly supports the wording.
 - Every externally checkable claim records source, publication date, support, approved paraphrase, confidence, and slide use.
 - The story explains improving model capability, reasoning effort, harnesses, and context length while showing why context engineering remains necessary.
 - The story connects spec-driven design, requirements, architecture decisions, guardrails, Plan -> Work -> Evidence, and what completed, why, and what comes next.
+- The central takeaway is that capable coding agents still need durable specifications, guardrails, and evidence to form a dependable software-development lifecycle.
+- One brief first-person transition explains the gaps in AI coding tools and the desire to increase development velocity on personal projects that motivated mdkg.
 - mdkg is described as public alpha and pre-v1 with active improvements underway, without unsupported benchmarks, dates, or roadmap claims.
+- The narrated deck targets 30–32 minutes; the fixture-backed reveal plus CTA uses no more than the remaining time before minute 35; audience Q&A follows.
 - The closing CTA is Try mdkg on one real project and send me feedback.
 
 # Definition Of Done
@@ -93,11 +107,13 @@ Goal 2 is achieved and its accepted interface checkpoint freezes the route names
 
 # Current State
 
-Fully specified and paused. Do not execute until Activation Conditions are accepted.
+Pre-activation execution hardening is accepted in chk-5. Goal 3 remains paused;
+do not execute until the user explicitly activates it.
 
 # Iteration Log
 
 - 2026-07-26: Created as phase 3 of the AI-native SDLC presentation and live-demo program.
+- 2026-07-26: Added the deterministic context/evidence pack, Artifact Tool skill, explicit prototype approval, focused test lanes, and fixture-only rehearsal boundary; accepted in chk-5 without activating the goal.
 
 # Skill Improvement Candidates
 
@@ -105,4 +121,5 @@ Fully specified and paused. Do not execute until Activation Conditions are accep
 
 # Completion Evidence
 
-- Pending.
+- chk-4
+- chk-5
