@@ -10,20 +10,20 @@ tags: [demo, creative-production, website, strategy]
 owners: []
 links: []
 artifacts: []
-relates: [task-1, test-1, dec-1, dec-2, edd-1]
+relates: [task-1, test-1, prd-2, dec-1, dec-2, edd-1]
 blocked_by: []
 blocks: [task-1, test-1]
 refs: []
-context_refs: [edd-1, dec-1, dec-2]
+context_refs: [prd-2, edd-1, dec-1, dec-2]
 evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-06-29
-updated: 2026-06-29
+updated: 2026-07-26
 ---
 # Research Question
 
-What audience, offer, page structure, interaction model, and creative direction
+What audience, offer, page structure, static proof model, and creative direction
 should this demo run use while preserving the Ocean Flow design system and
 source-backed mdkg claims?
 
@@ -32,25 +32,26 @@ source-backed mdkg claims?
 - Start from the current `goal-1` and this graph only.
 - Use `DESIGN.md` as the visual baseline.
 - Use `CREATIVE_PRODUCTION_INTAKE.md` when Creative Production is available.
-- Use Astro plus React Islands for the eventual implementation.
-- Creative Production may propose differentiated structure, animation, visuals,
-  and interaction ideas.
+- Use static Astro with zero client-side JavaScript for the eventual
+  implementation.
+- Creative Production may propose differentiated structure, CSS-only motion,
+  visuals, and static proof ideas.
 - Do not store secrets, raw prompt transcripts, provider payloads, credentials,
   or private repo context.
-- Do not deploy, push, change DNS, activate analytics, or promote durable
-  hosting from this template.
+- Do not integrate, commit, deploy, push, change DNS, activate analytics, or
+  promote durable hosting from this template.
 
 # Search Plan
 
 - Read `WEBSITE_DEMO_TEMPLATE_BRIEF.md`.
 - Read `DESIGN.md`.
 - Read `CREATIVE_PRODUCTION_INTAKE.md`.
-- Inspect `dec-1`, `dec-2`, and `edd-1`.
+- Inspect `prd-2`, `dec-1`, `dec-2`, and `edd-1`.
 - Use Creative Production when available to explore visual direction; otherwise
   write a concise local creative direction in the spike findings.
-- Record audience, offer, page structure, visual territory, motion/interaction
-  ideas, React Island candidates, asset plan, source-backed content facts,
-  explicit non-goals, and risks for `test-1`.
+- Record audience, offer, page structure, visual territory, CSS-only motion,
+  static proof concepts, asset plan, source-backed content facts, explicit
+  non-goals, and risks for `test-1`.
 
 # Findings
 
@@ -90,8 +91,8 @@ template graph, generated website, or checkpoints.
 
 # mdkg.dev Launch Implications
 
-Preview and promotion decisions happen in the parent mdkg repo goals, not in
-this template by default.
+Integration and publication decisions happen in the caller's explicitly
+authorized workflow, not in this template by default.
 
 # Evidence And Sources
 

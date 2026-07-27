@@ -1,33 +1,34 @@
 ---
 id: dec-2
 type: dec
-title: demo template remains preview gated and public safe
+title: Demo template remains caller gated and public safe
 status: accepted
-tags: [demo, preview, boundary, no-secret]
+tags: [demo, authority, boundary, no-secret]
 owners: []
 links: []
 artifacts: []
 relates: []
-refs: [goal-1]
+refs: [goal-1, prd-2]
 aliases: []
 created: 2026-06-29
-updated: 2026-06-29
+updated: 2026-07-26
 ---
 # Context
 
-The template is designed to generate shareable website candidates, but preview
-deployment and durable hosting are parent-repo responsibilities.
+The template is designed to generate reviewable website candidates, but Git
+integration, publication, and provider operations belong to the invoking
+workflow.
 
 # Decision
 
-Keep the template local-first and public-safe by default. The template may
-recommend Vercel preview approval during closeout, but it must not deploy,
-change DNS, activate analytics, publish packages, push commits, or promote
-durable hosting on its own.
+Keep the template local-first and public-safe by default. The template may hand
+an accepted candidate back to its caller, but it must not integrate, commit,
+deploy, change DNS, activate analytics, publish packages, push commits, or
+promote durable hosting on its own.
 
 # Alternatives considered
 
-- Deploy directly from the template: rejected because it would blur approval and
+- Deploy directly from the template: rejected because it would blur authority and
   provider boundaries.
 - Store deployment credentials in the template: rejected because mdkg evidence
   must not contain secrets.
@@ -35,10 +36,13 @@ durable hosting on its own.
 # Consequences
 
 - Generated candidates can be reviewed safely.
-- Parent `goal-44` owns preview deployment approval and evidence.
-- Parent `goal-46` owns durable `demo-N.mdkg.dev` hosting.
+- The caller must grant a separate, explicit authority gate for integration,
+  commit, push, deployment, and public verification.
+- A fork remains portable because it does not name a parent goal, hosting
+  provider, domain, or repository-specific publication workflow.
 
 # Links / references
 
 - `goal-1`
+- `prd-2`
 - `test-1`

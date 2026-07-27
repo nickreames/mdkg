@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-11T18:36:57.730Z",
+    "generated_at": "2026-07-27T04:04:10.985Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/website-demo-template",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-1"
+      "root": "root:chk-2"
     }
   },
   "workspaces": {
@@ -45,31 +45,66 @@
         "evidence_refs": []
       }
     },
+    "root:chk-2": {
+      "id": "chk-2",
+      "qid": "root:chk-2",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Static Astro zero client JavaScript template contract accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [
+        "README.md",
+        "DESIGN.md",
+        "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+        "DEMO_HANDOFF_PROMPT.md",
+        "CREATIVE_PRODUCTION_INTAKE.md"
+      ],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-2-static-astro-zero-client-javascript-template-contract-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
     "root:dec-1": {
       "id": "dec-1",
       "qid": "root:dec-1",
       "ws": "root",
       "type": "dec",
-      "title": "Astro plus React Islands is the demo stack",
+      "title": "Static Astro and zero client JavaScript is the demo stack",
       "status": "accepted",
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
         "stack",
         "astro",
-        "react-islands"
+        "static",
+        "zero-javascript"
       ],
       "owners": [],
       "links": [],
       "artifacts": [],
       "refs": [
-        "goal-1"
+        "goal-1",
+        "prd-2"
       ],
       "aliases": [],
       "skills": [],
       "attributes": {},
-      "path": ".mdkg/design/dec-1-astro-plus-react-islands-is-the-demo-stack.md",
+      "path": ".mdkg/design/dec-1-static-astro-and-zero-client-javascript-is-the-demo-stack.md",
       "edges": {
         "relates": [],
         "blocked_by": [],
@@ -83,13 +118,13 @@
       "qid": "root:dec-2",
       "ws": "root",
       "type": "dec",
-      "title": "demo template remains preview gated and public safe",
+      "title": "Demo template remains caller gated and public safe",
       "status": "accepted",
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
-        "preview",
+        "authority",
         "boundary",
         "no-secret"
       ],
@@ -97,7 +132,8 @@
       "links": [],
       "artifacts": [],
       "refs": [
-        "goal-1"
+        "goal-1",
+        "prd-2"
       ],
       "aliases": [],
       "skills": [],
@@ -118,7 +154,7 @@
       "type": "edd",
       "title": "Ocean Flow website demo design and creative production contract",
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
         "design",
@@ -131,6 +167,7 @@
       "artifacts": [],
       "refs": [
         "goal-1",
+        "prd-2",
         "dec-1",
         "dec-2"
       ],
@@ -155,7 +192,7 @@
       "status": "todo",
       "priority": 1,
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
         "website",
@@ -166,7 +203,8 @@
       "links": [],
       "artifacts": [],
       "refs": [
-        "goal-1"
+        "goal-1",
+        "prd-2"
       ],
       "aliases": [],
       "skills": [],
@@ -181,6 +219,7 @@
           "root:test-1"
         ],
         "context_refs": [
+          "root:prd-2",
           "root:edd-1",
           "root:dec-1",
           "root:dec-2"
@@ -197,19 +236,22 @@
       "status": "todo",
       "priority": 1,
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
         "website",
         "template",
         "astro",
-        "react-islands",
+        "static",
+        "zero-javascript",
         "creative-production"
       ],
       "owners": [],
       "links": [],
       "artifacts": [],
-      "refs": [],
+      "refs": [
+        "prd-2"
+      ],
       "aliases": [],
       "skills": [
         "select-work-and-ground-context",
@@ -217,7 +259,7 @@
       ],
       "attributes": {
         "goal_state": "active",
-        "goal_condition": "A complete, local, differentiated Astro plus React Islands website demo is built from this template, follows the Ocean Flow design system, records the creative direction and validation evidence, and closes with a recommendation to discard, polish, or request a Vercel preview under the parent repo workflow.",
+        "goal_condition": "A complete, local, differentiated static Astro website demo is built from this template with zero client-side JavaScript, follows the Ocean Flow design system, records the creative direction and validation evidence, and closes with a recommendation to discard, rework, or return the accepted candidate for a separately authorized integration decision.",
         "scope_refs": [
           "epic-1",
           "spike-1",
@@ -244,10 +286,53 @@
         "blocked_by": [],
         "blocks": [],
         "context_refs": [
+          "root:prd-2",
           "root:edd-1",
           "root:dec-1",
           "root:dec-2"
         ],
+        "evidence_refs": []
+      }
+    },
+    "root:prd-2": {
+      "id": "prd-2",
+      "qid": "root:prd-2",
+      "ws": "root",
+      "type": "prd",
+      "title": "Reusable static Astro website demo platform",
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [
+        "website-demo",
+        "static-astro",
+        "source-template"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [
+        "README.md",
+        "DESIGN.md",
+        "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+        "DEMO_HANDOFF_PROMPT.md"
+      ],
+      "refs": [
+        "goal-1",
+        "epic-1",
+        "edd-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [
+        "reusable-website-demo-platform"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/prd-2-reusable-static-astro-website-demo-platform.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
         "evidence_refs": []
       }
     },
@@ -573,7 +658,7 @@
       "status": "todo",
       "priority": 1,
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
         "creative-production",
@@ -597,6 +682,7 @@
         "relates": [
           "root:task-1",
           "root:test-1",
+          "root:prd-2",
           "root:dec-1",
           "root:dec-2",
           "root:edd-1"
@@ -607,6 +693,7 @@
           "root:test-1"
         ],
         "context_refs": [
+          "root:prd-2",
           "root:edd-1",
           "root:dec-1",
           "root:dec-2"
@@ -619,23 +706,25 @@
       "qid": "root:task-1",
       "ws": "root",
       "type": "task",
-      "title": "build complete Astro React Islands website demo",
+      "title": "Build complete static Astro website demo",
       "status": "todo",
       "priority": 1,
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
         "website",
         "astro",
-        "react-islands",
+        "static",
+        "zero-javascript",
         "implementation"
       ],
       "owners": [],
       "links": [],
       "artifacts": [],
       "refs": [
-        "goal-1"
+        "goal-1",
+        "prd-2"
       ],
       "aliases": [],
       "skills": [
@@ -643,7 +732,7 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
-      "path": ".mdkg/work/task-1-build-complete-astro-react-islands-website-demo.md",
+      "path": ".mdkg/work/task-1-build-complete-static-astro-website-demo.md",
       "edges": {
         "epic": "root:epic-1",
         "parent": "root:goal-1",
@@ -653,6 +742,7 @@
         ],
         "blocks": [],
         "context_refs": [
+          "root:prd-2",
           "root:edd-1",
           "root:dec-1",
           "root:dec-2"
@@ -669,19 +759,21 @@
       "status": "todo",
       "priority": 1,
       "created": "2026-06-29",
-      "updated": "2026-06-29",
+      "updated": "2026-07-26",
       "tags": [
         "demo",
         "website",
         "validation",
         "browser",
-        "chrome"
+        "static",
+        "zero-javascript"
       ],
       "owners": [],
       "links": [],
       "artifacts": [],
       "refs": [
-        "goal-1"
+        "goal-1",
+        "prd-2"
       ],
       "aliases": [],
       "skills": [
@@ -698,6 +790,7 @@
         ],
         "blocks": [],
         "context_refs": [
+          "root:prd-2",
           "root:edd-1",
           "root:dec-1",
           "root:dec-2"
@@ -715,6 +808,9 @@
         "root:spike-1"
       ],
       "root:test-1": [
+        "root:spike-1"
+      ],
+      "root:prd-2": [
         "root:spike-1"
       ],
       "root:dec-1": [
@@ -741,6 +837,13 @@
       ]
     },
     "context_refs": {
+      "root:prd-2": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:test-1"
+      ],
       "root:edd-1": [
         "root:epic-1",
         "root:goal-1",

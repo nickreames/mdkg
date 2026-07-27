@@ -3,14 +3,14 @@
 ## Ocean Flow
 
 Ocean Flow is the baseline visual system for this template. Each forked demo run
-may choose different structure, pacing, imagery, and interaction ideas, but it
+may choose different structure, pacing, imagery, and static visual metaphors, but it
 should preserve this core feel:
 
 - clear technical confidence;
-- fluid motion and layered depth;
+- fluid visual rhythm and layered depth;
 - bright ocean blues and teals balanced by neutral surfaces;
 - crisp text and readable contrast;
-- purposeful animation rather than decorative noise.
+- purposeful CSS-only motion rather than decorative noise.
 
 ## Palette
 
@@ -28,11 +28,14 @@ Primary CTAs should use an Ocean Flow gradient such as
 
 ## Interface Rules
 
-- Use Astro layouts for static structure and React Islands only where
-  interaction benefits from client-side state.
+- Use Astro components and layouts to emit static semantic HTML and CSS.
+- Do not use `client:*` directives, framework hydration, inline or external
+  runtime scripts, remote fonts, or third-party runtime assets.
 - Keep content readable on mobile before adding visual density.
-- Prefer real section structure, concrete examples, and interactive proof over
+- Prefer real section structure, concrete examples, and inspectable proof over
   generic marketing claims.
+- Keep keyboard navigation, focus visibility, reduced-motion support, and WCAG
+  AA contrast intact.
 - Avoid unsupported claims about mdkg capabilities.
 - Avoid storing raw creative prompts in committed files.
 
@@ -42,9 +45,9 @@ Creative Production and the coding agent may vary:
 
 - page structure;
 - hero concept;
-- animation style;
+- CSS-only motion style;
 - section order;
-- interactive modules;
+- static proof modules;
 - supporting imagery or generated assets;
 - tone and rhythm.
 
@@ -52,5 +55,5 @@ They may not vary:
 
 - the stack decision;
 - the no-secret boundary;
-- the preview-gated deployment boundary;
+- the caller-gated integration and publication boundary;
 - the requirement that public claims remain source-backed.
