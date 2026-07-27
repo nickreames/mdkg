@@ -20,11 +20,20 @@ A live demo must continue beyond local implementation, but push and production p
 
 # Decision
 
-Goal 5 may publish Demo 2 only after its candidate checkpoint and a separate
-human-accepted publication receipt. The receipt binds the complete
-`origin/main..HEAD` push range, exact path-and-operation allowlist, owner,
-validity window, and forbidden actions. Local Goal 4 authority and this
-decision do not implicitly grant that approval.
+Goal 5 may perform explicitly authorized local preparation after its accepted
+candidate checkpoint: repair stale validation expectations, create an exact
+local integration allowlist, and create bounded logical commits without push.
+It may publish Demo 2 only after those commits exist, origin is freshly fetched,
+and a separate human-accepted receipt binds the actual complete
+`origin/main..HEAD` commit/path range, local evidence-only dirty exception,
+owner, validity window, and forbidden actions. Local Goal 4 authority, Goal 5
+activation, commit authority, and this decision do not grant push or provider
+read authority.
+
+The approval receipt remains local evidence and is not silently added to the
+approved range. Immediately before push the integration owner must re-fetch and
+prove that origin, HEAD, the range manifest, lease, expiry, staged-empty state,
+and local-evidence exception are unchanged. Drift invalidates approval.
 
 Goal 6 uses the completed Demo 2 evidence to evaluate the reusable source
 template and live sendoff. Only explicitly accepted refinements may be applied

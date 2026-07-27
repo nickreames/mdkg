@@ -2,13 +2,14 @@
 id: goal-5
 type: goal
 title: Publish and rehearse Demo 2
-status: backlog
+status: progress
 priority: 1
-goal_state: paused
-goal_condition: After a separate human-accepted publication receipt approves the complete push range and allowlist, the paused Demo 2 child goal is resumed and achieved, its accepted candidate is published by a non-force origin/main push, both existing production deployments are READY for the exact final SHA, /demo/2/ and /demo/2/output/ pass desktop/mobile static, visibility, accessibility, claim, and privacy gates, the full talk rehearses within 35 minutes, and Demo 2 is sealed as an immutable public-safe fallback.
+goal_state: active
+goal_condition: The accepted Demo 2 candidate has a green canonical smoke contract and bounded local commits; a separate human publication receipt approves the actual fetched origin/main..HEAD commit/path range; that exact range is normal-pushed without force; the same child goal is achieved; both existing production deployments are READY for the exact final SHA; /demo/2/ and /demo/2/output/ pass desktop/mobile static, visibility, accessibility, claim, and privacy gates; the full talk rehearses within 35 minutes; and Demo 2 is sealed as an immutable public-safe fallback.
 scope_refs: [epic-5]
-required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-required_checks: [separate human Demo 2 publication approval, complete origin/main-to-HEAD push-range review, Git ownership staged paths fetch and zero-behind preflight, resumed and achieved Demo 2 child goal, approved logical commit and non-force push receipt, both Vercel production projects READY for exact SHA, desktop and mobile live route checks, noindex accessibility zero-JavaScript claim secret and budget checks, 30-32 minute rehearsal with 35-minute hard stop, fallback reproducibility]
+active_node: task-22
+required_skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
+required_checks: [accepted chk-14 candidate and green canonical Demo 2 smoke contract, exact local-integration allowlist and bounded local commits, separate human approval of the actual fetched push range, fetched zero-behind state immediately before normal push, resumed and achieved Demo 2 child goal, non-force push receipt, both Vercel production projects READY for exact SHA, desktop and mobile live route checks, noindex accessibility zero-JavaScript claim secret and budget checks, 30-32 minute rehearsal with 35-minute hard stop, fallback reproducibility]
 max_iterations: 25
 blocked_after_attempts: 3
 tags: [ai-native-sdlc, presentation-demo, phase-5]
@@ -19,12 +20,12 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-4, chk-13]
-evidence_refs: [chk-13]
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-4, chk-13, chk-14, chk-15]
+evidence_refs: [chk-14, chk-15]
 aliases: [demo-2-publication-and-rehearsal]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Objective
@@ -33,21 +34,26 @@ Publish and rehearse Demo 2 under the accepted program requirements, ownership m
 
 # End Condition
 
-After a separate human-accepted publication receipt approves the complete push
-range and allowlist, the paused Demo 2 child goal is resumed and achieved, its
-accepted candidate is published by a non-force `origin/main` push, both
-existing production deployments are READY for the exact final SHA, both Demo 2
-routes pass, the full talk rehearses within 35 minutes, and Demo 2 is sealed as
-an immutable public-safe fallback.
+The accepted candidate first passes the repaired canonical smoke contract and
+is integrated into bounded local commits. A separate human-accepted receipt
+then binds the actual fetched `origin/main..HEAD` commit/path range. That exact
+range is normal-pushed without force; the paused Demo 2 child is resumed and
+achieved; both existing production deployments are READY for the exact final
+SHA; both Demo 2 routes pass; the full talk rehearses within 35 minutes; and
+Demo 2 is sealed as an immutable public-safe fallback.
 
 # Activation Conditions
 
-Goal 4 has an accepted candidate checkpoint; its child goal is paused with the
-publish task next; and the user separately accepts
-`artifacts/demo-002/publication-approval.json`, which binds the complete
-fetched `origin/main..HEAD` push range, exact path allowlist, owner, validity
-window, and forbidden actions. The integration owner then grants the exclusive
-Demo 2 publication window.
+Goal 4 is achieved at accepted `chk-14`; its child goal is paused with
+publication `task-3` next; the Goal 5 pre-activation checkpoint is accepted;
+and the user authorizes the local preparation phase plus an exclusive root
+integration-owner window. This activation permits task-48, task-21, and
+task-22 only. It does not authorize push or provider inspection.
+
+Task-49 must separately freeze the actual post-commit, fetched
+`origin/main..HEAD` range and obtain explicit human publication approval.
+Only that still-valid receipt authorizes task-50's normal push and task-23/24's
+read-only provider and public-URL inspections.
 
 # Non-Goals
 
@@ -55,25 +61,38 @@ Demo 2 publication window.
 
 # Recursive Algorithm
 
-1. Re-read this goal, its accepted design context, predecessor evidence, and current writer lease.
-2. Use goal next and a concise pack to select the first unfinished scoped node.
-3. Complete one node at a time in the declared prev/next chain.
-4. Run the node-specific and goal-level checks; record compact public-safe evidence.
-5. Stop on authority, ownership, scope, safety, or prerequisite drift.
-6. Evaluate the goal and close only when the end condition is fully evidenced.
+1. Re-read this goal, `chk-14`, its accepted design context, child publication
+   nodes, pre-activation checkpoint, and current writer lease.
+2. Use `goal next goal-5`, preview coverage with `--profile concise`, and build
+   the execution handoff with `--profile standard`; both use
+   `--edges context_refs,evidence_refs --skills auto --skills-depth full
+   --depth 1`.
+3. Require both task-48 pack receipts to include task-48, goal-5, epic-5, PRD,
+   EDD, decisions 1–6, goal-4, chk-13, chk-14, chk-15, test-10, test-11, and
+   every required skill without node truncation. Require the standard pack to
+   contain the full skill bodies; concise is selection/size preview only.
+4. Complete one node at a time in the 12-node prev/next chain.
+5. Stop task-49 for human approval after actual local commits and a fresh
+   fetched push-range manifest. Do not infer approval from activation.
+6. Run node and goal checks; record compact public-safe evidence.
+7. Stop on authority, ownership, scope, safety, source, Git, provider, or
+   prerequisite drift.
+8. Evaluate and close only when the end condition is fully evidenced.
 
 # Required Skills
 
 - select-work-and-ground-context
+- publish-static-demo-with-exact-sha
 - verify-close-and-checkpoint
 
 # Required Checks
 
-- Git ownership staged paths fetch and zero-behind preflight
-- separate human Demo 2 publication approval
-- complete origin/main-to-HEAD push-range review
+- accepted chk-14 candidate and green canonical Demo 2 smoke contract
+- exact local integration allowlist and bounded local commits without push
+- separate human approval of the actual post-commit push range
+- fetched zero-behind state immediately before normal push
 - resumed and achieved Demo 2 child goal
-- approved logical commit and non-force push receipt
+- normal non-force push receipt
 - both Vercel production projects READY for exact SHA
 - desktop and mobile live route checks
 - noindex accessibility zero-JavaScript claim secret and budget checks
@@ -84,10 +103,14 @@ Demo 2 publication window.
 
 - Both production projects and both demo routes bind to the same final pushed SHA.
 - No unrelated path enters the commit or push.
-- Only the root integration owner stages, commits, and pushes. Every commit
-  already ahead of fetched `origin/main`, every newly planned commit, and every
-  changed path must appear in the human-accepted publication receipt; approval
-  of newly staged Demo 2 files alone is insufficient.
+- The obsolete fixture-only Demo 2 smoke sentinel is replaced by a positive
+  unlisted/noindexed Demo 2 contract before any local integration commit.
+- Only the root integration owner stages, commits, and pushes. Local commits
+  are completed before approval so every actual commit and changed path in
+  fetched `origin/main..HEAD` appears in the human-accepted receipt; approval
+  of “Demo 2” or newly staged files alone is insufficient.
+- Approval and preflight receipts remain local evidence-only dirty exceptions,
+  are never silently added to the approved range, and invalidate on drift.
 - Goal 5 resumes the same Demo 2 child `goal-1`, executes its publish and
   exact-SHA/live-URL nodes through their named owners, creates its accepted
   child checkpoint, and only then marks the child achieved.
@@ -111,13 +134,18 @@ Demo 2 publication window.
 
 # Current State
 
-Fully specified and paused. Do not execute until Activation Conditions are accepted.
+Enhanced and paused at accepted `chk-15`. Do not execute until the user grants
+local preparation authority and the exclusive writer window. Activation still
+does not authorize publication.
 
 # Iteration Log
 
 - 2026-07-26: Created as phase 5 of the AI-native SDLC presentation and live-demo program.
 - 2026-07-27: Added separate Demo 2 publication approval, complete push-range
   review, and child-goal resume/achievement semantics.
+- 2026-07-27: Split local smoke repair and commits from exact-range approval
+  and push, bound the accepted chk-14 evidence, and added the portable
+  exact-SHA publication skill.
 
 # Skill Improvement Candidates
 

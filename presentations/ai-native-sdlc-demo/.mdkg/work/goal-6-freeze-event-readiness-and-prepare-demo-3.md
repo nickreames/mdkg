@@ -19,8 +19,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-3, chk-12, goal-5, chk-13]
-evidence_refs: [chk-12, chk-13]
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-3, chk-12, goal-4, chk-14, goal-5]
+evidence_refs: [chk-12, chk-14]
 aliases: [demo-3-event-readiness]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -46,6 +46,8 @@ Goal 5 has an accepted rehearsal and immutable-fallback checkpoint. Its
 production screenshots, reveal image, child receipts, prompt observations,
 timings, and golden fallback are available. Any template/sendoff mutation
 recommended by spike-6 requires explicit user acceptance before task-47.
+The Goal 5 closeout checkpoint must be attached to this goal at activation;
+`chk-14` proves only the accepted local candidate, not production completion.
 
 # Non-Goals
 

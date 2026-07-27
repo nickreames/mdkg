@@ -2,10 +2,10 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T17:18:39.949Z",
+    "generated_at": "2026-07-27T22:20:30.603Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "skills_root": ".mdkg/skills",
-    "skill_count": 7
+    "skill_count": 8
   },
   "skills": {
     "author-mdkg-skill": {
@@ -91,6 +91,37 @@
         "AGENT_START.md"
       ],
       "path": ".mdkg/skills/produce-powerpoint-with-artifact-tool/SKILL.md",
+      "has_scripts": false,
+      "has_references": true,
+      "extensions": {},
+      "ochatr": {}
+    },
+    "publish-static-demo-with-exact-sha": {
+      "slug": "publish-static-demo-with-exact-sha",
+      "id": "skill:publish-static-demo-with-exact-sha",
+      "qid": "root:skill:publish-static-demo-with-exact-sha",
+      "ws": "root",
+      "type": "skill",
+      "name": "Publish Static Demo with Exact-SHA Proof",
+      "description": "Prepare, authorize, non-force publish, and verify a static demo against exact Git and deployment SHAs when a goal crosses from accepted local evidence into public production.",
+      "tags": [
+        "stage:execute",
+        "writer:orchestrator",
+        "git",
+        "vercel",
+        "exact-sha",
+        "publication"
+      ],
+      "version": "0.1.0",
+      "authors": [
+        "mdkg"
+      ],
+      "links": [
+        "AGENT_START.md",
+        ".mdkg/design/dec-4-use-graph-only-writer-leases-with-one-root-integration-owner.md",
+        ".mdkg/design/dec-5-use-exact-sha-publication-gates-bounded-fix-forward-and-a-sealed-fallback.md"
+      ],
+      "path": ".mdkg/skills/publish-static-demo-with-exact-sha/SKILL.md",
       "has_scripts": false,
       "has_references": true,
       "extensions": {},

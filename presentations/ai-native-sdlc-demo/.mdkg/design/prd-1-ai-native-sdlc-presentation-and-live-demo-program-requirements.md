@@ -54,8 +54,10 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
 
 - Demo 2 is the full production rehearsal and immutable fallback.
 - Demo 3 is a fresh specialized event run.
-- Demo 2 requires a separate explicit publication approval after its local
-  candidate is accepted; local candidate authority does not imply commit,
+- Demo 2 local preparation first reconciles the canonical smoke contract and
+  creates bounded local commits under a dedicated integration-owner gate.
+  It then requires separate explicit publication approval bound to the actual
+  fetched commit/path range. Local candidate or commit authority does not imply
   push, deployment observation, or public verification authority.
 - Goal 6 must use Demo 2 execution, prompt, route, and rehearsal evidence to
   evaluate the reusable source template and live sendoff. It applies only
@@ -81,7 +83,9 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
 
 - Graph-only separation provides path ownership, not Git isolation.
 - The program writer owns this directory; one integration owner owns root mdkg, bundles, Git, commits, and pushes.
-- Shared-source and publication goals require an accepted base SHA, exact allowlist, and exclusive quiet window.
+- Shared-source and publication goals require an accepted base SHA, exact
+  allowlist, and exclusive quiet window. Demo 2 commits precede its push-range
+  approval so the human accepts actual SHAs and paths rather than planned work.
 - Commit, push, provider observation, provider mutation, DNS, tags, analytics, and package publication are separate authority levels.
 - Goal 7 alone may authorize bounded allowlisted event commits and a non-force push after activation.
 - Goal 7 activation consumes a separate, human-accepted, hash-bound event

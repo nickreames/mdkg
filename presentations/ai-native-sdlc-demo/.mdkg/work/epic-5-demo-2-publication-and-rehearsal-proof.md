@@ -15,7 +15,7 @@ refs: [goal-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 context_refs: [goal-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 evidence_refs: []
 aliases: [phase-5-epic]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -28,8 +28,11 @@ Publish the accepted Demo 2 candidate, prove exact-SHA production, rehearse, and
 
 Owned actionable chain:
 
+- task-48
 - task-21
 - task-22
+- task-49
+- task-50
 - task-23
 - task-24
 - task-25
@@ -42,7 +45,9 @@ All listed nodes use epic-5, parent goal-5, and symmetric prev/next links. The g
 
 # Milestones
 
-- Activation conditions and writer authority accepted.
+- Local preparation activation and writer authority accepted.
+- Canonical smoke repaired and bounded local commits accepted without push.
+- Actual push range frozen and separately approved by the human.
 - Every actionable node completed in deterministic order.
 - Required checks and public-safe evidence recorded.
 - One accepted phase checkpoint records the outcome and next activation.

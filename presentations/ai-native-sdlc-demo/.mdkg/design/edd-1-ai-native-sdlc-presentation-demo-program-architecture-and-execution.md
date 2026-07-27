@@ -112,8 +112,10 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 - Goal 3: primary sources, rendered QA, notes, and timing.
 - Goal 4: child local segment completion, local integration, publication-gate
   pause, and fallback capture.
-- Goal 5: separate Demo 2 publication approval, complete push-range review,
-  child publication completion, exact-SHA deployments, routes, and rehearsal.
+- Goal 5: reconcile the canonical Demo 2 smoke contract; create bounded local
+  commits; freeze and separately approve the actual fetched push range; then
+  complete the child publication, exact-SHA deployments, routes, rehearsal,
+  and immutable fallback.
 - Goal 6: evidence-backed final deck polish, Demo 2 source/prompt evaluation,
   accepted template/sendoff refinement, deterministic fresh-bootstrap proof,
   unexecuted Demo 3 readiness, event pre-authorization, provider preflight,

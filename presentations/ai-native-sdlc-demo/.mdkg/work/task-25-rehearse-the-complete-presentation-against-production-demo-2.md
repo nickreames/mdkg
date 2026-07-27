@@ -8,7 +8,7 @@ epic: epic-5
 parent: goal-5
 prev: task-24
 next: task-26
-tags: [ai-native-sdlc, presentation-demo, phase-5, step-5]
+tags: [ai-native-sdlc, presentation-demo, phase-5, step-8]
 owners: [program-orchestrator]
 links: []
 artifacts: [artifacts/demo-002/rehearsal-receipt.json]
@@ -18,15 +18,16 @@ blocks: []
 refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-24]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-24]
 evidence_refs: []
-aliases: [phase-5-step-5]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+aliases: [phase-5-step-8]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Rehearse the complete presentation against production Demo 2. This is step 5 of 9 in Goal 5; it owns only the outcome named here and the authority granted by goal-5.
+Rehearse the complete presentation against production Demo 2. This is step 8
+of 12 in Goal 5.
 
 # Acceptance Criteria
 

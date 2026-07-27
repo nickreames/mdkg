@@ -8,7 +8,7 @@ epic: epic-5
 parent: goal-5
 prev: task-23
 next: task-25
-tags: [ai-native-sdlc, presentation-demo, phase-5, step-4]
+tags: [ai-native-sdlc, presentation-demo, phase-5, step-7]
 owners: [program-orchestrator]
 links: []
 artifacts: [artifacts/demo-002/live-route-receipt.json, artifacts/demo-002/production-reveal/source-vs-specialized-16x9.png, artifacts/demo-002/screenshots/detail-desktop.png, artifacts/demo-002/screenshots/detail-mobile.png, artifacts/demo-002/screenshots/output-desktop.png, artifacts/demo-002/screenshots/output-mobile.png]
@@ -18,15 +18,15 @@ blocks: []
 refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-23]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-23]
 evidence_refs: []
-aliases: [phase-5-step-4]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+aliases: [phase-5-step-7]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Verify Demo 2 live detail and output routes. This is step 4 of 9 in Goal 5; it owns only the outcome named here and the authority granted by goal-5.
+Verify Demo 2 live detail and output routes. This is step 7 of 12 in Goal 5.
 
 # Acceptance Criteria
 

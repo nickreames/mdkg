@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-smoke-contract-repair",
+  "recorded_at": "2026-07-27T22:15:23Z",
+  "program_goal_qid": "root:goal-5",
+  "task_qid": "root:task-48",
+  "state": "pass",
+  "authority": {
+    "local_only": true,
+    "shared_source_writer": "root-integration-owner",
+    "commit": false,
+    "push": false,
+    "provider_action": false,
+    "publication": false
+  },
+  "reproduction": {
+    "command": "npm run smoke:mdkg-dev",
+    "result": "fail",
+    "error": "fixture-only Demo 2 must not produce public routes",
+    "location": "scripts/smoke-mdkg-dev.js:293",
+    "classification": "stale pre-Demo-2 smoke sentinel"
+  },
+  "repair": {
+    "changed_paths": [
+      "scripts/smoke-mdkg-dev.js"
+    ],
+    "fixture_changed": false,
+    "before_git_blob": "0e5fca68",
+    "after_sha256": "2cce042064ce10aa5969f9a5e423b1b98eecaa57d7a70446e1496262813dc8b4",
+    "before_intent": "Every reserved Demo 2 and Demo 3 record must have no generated route.",
+    "after_intent": "Demo 2 is a materialized direct-only candidate with static noindexed detail and output routes; Demo 3 remains fixture-only; both remain excluded from the public gallery.",
+    "positive_contract": [
+      "/demo/2/ and /demo/2/output/ are required build outputs",
+      "both Demo 2 routes use noindex,nofollow",
+      "the detail route exposes reusable and specialized goal-1 provenance plus Plan, Work, Evidence, authority, tests, hashes, why, and next",
+      "the distinct Demo2Output static Astro component is present and registered",
+      "Demo 2 remains absent from the public gallery",
+      "Demo 2 source and built output contain no client directives, Astro islands, runtime script sources, or JavaScript assets"
+    ],
+    "preserved_negative_contract": [
+      "duplicate IDs fail",
+      "route drift fails",
+      "listed and gallery visibility mismatch fails",
+      "noindex and sitemap visibility mismatch fails",
+      "incomplete or unsafe provenance fails",
+      "missing, duplicate, dynamic, or hydrated output registrations fail",
+      "Demo 3 remains route-absent",
+      "unknown ID and missing-output behavior remain covered by the unchanged smoke suite"
+    ]
+  },
+  "validation": [
+    {
+      "command": "node scripts/smoke-mdkg-dev.js",
+      "result": "pass",
+      "summary": "mdkg-dev site smoke passed: 16 required files"
+    },
+    {
+      "command": "npm run smoke:mdkg-dev",
+      "result": "pass",
+      "summary": "site build and canonical smoke passed"
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-seo",
+      "result": "pass",
+      "summary": "Demo 2 remains absent from sitemap and carries noindex metadata"
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-a11y",
+      "result": "pass",
+      "summary": "22 pages checked"
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-perf",
+      "result": "pass",
+      "summary": "marketing JavaScript bytes 0; marketing raster assets empty"
+    },
+    {
+      "command": "npm run smoke:demo-graph",
+      "result": "pass",
+      "summary": "deterministic source graph, preserved IDs, zero validation warnings"
+    },
+    {
+      "command": "mdkg --root presentations/ai-native-sdlc-demo validate --json",
+      "result": "pass",
+      "summary": "0 errors, 0 warnings"
+    },
+    {
+      "command": "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 validate --json",
+      "result": "pass",
+      "summary": "0 errors, 0 warnings"
+    },
+    {
+      "command": "git diff --check -- scripts/smoke-mdkg-dev.js",
+      "result": "pass"
+    }
+  ],
+  "validation_warning": {
+    "observation": "An initial concurrent smoke attempt raced because each npm script rebuilds the same dist tree.",
+    "resolution": "The complete smoke family was rerun serially under the single-writer contract and every command passed.",
+    "product_defect": false
+  },
+  "public_safety": {
+    "raw_prompts": false,
+    "credentials": false,
+    "tokens": false,
+    "cookies": false,
+    "provider_payloads": false,
+    "private_context": false
+  }
+}
