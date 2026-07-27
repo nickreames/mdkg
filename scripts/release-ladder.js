@@ -26,6 +26,32 @@ function hashFile(filePath) {
   return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
 }
 
+function hashDirectory(directory) {
+  const files = [];
+  function visit(current, relative) {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const entryPath = path.join(current, entry.name);
+      const relativePath = relative ? `${relative}/${entry.name}` : entry.name;
+      if (entry.isSymbolicLink()) {
+        throw new Error(`immutable context cannot contain symbolic link: ${relativePath}`);
+      }
+      if (entry.isDirectory()) {
+        visit(entryPath, relativePath);
+      } else if (entry.isFile()) {
+        files.push({ path: relativePath, sha256: hashFile(entryPath) });
+      } else {
+        throw new Error(`immutable context has unsupported entry: ${relativePath}`);
+      }
+    }
+  }
+  visit(directory, "");
+  const sha256 = crypto
+    .createHash("sha256")
+    .update(files.map((file) => `${file.path}\0${file.sha256}\n`).join(""))
+    .digest("hex");
+  return { sha256, file_count: files.length };
+}
+
 function hashText(value) {
   return crypto.createHash("sha256").update(value).digest("hex");
 }
@@ -178,6 +204,97 @@ function writeLog(receiptDir, id, result) {
   );
 }
 
+function canonicalEntryMap(manifest) {
+  const grouped = new Map();
+  for (const entry of manifest.aliases) {
+    const current = grouped.get(entry.canonical);
+    if (current) {
+      current.aliases.push(entry.alias);
+      if (current.entrypoint !== entry.entrypoint) {
+        throw new Error(`canonical smoke ${entry.canonical} has inconsistent entrypoints`);
+      }
+    } else {
+      grouped.set(entry.canonical, { ...entry, aliases: [entry.alias] });
+    }
+  }
+  return grouped;
+}
+
+function validateCiTopology(manifest, grouped) {
+  const topology = manifest.ci_topology;
+  if (!topology || topology.decision_ref !== "root:dec-91") {
+    throw new Error("smoke manifest CI topology must remain bound to root:dec-91");
+  }
+  if (
+    JSON.stringify(topology.fast?.runtimes) !== JSON.stringify([
+      { id: "minimum", version: "24.15.0" },
+      { id: "floating", version: "24.x" },
+    ])
+  ) {
+    throw new Error("fast CI runtime matrix must be Node 24.15.0 and 24.x");
+  }
+  for (const [field, value] of [
+    ["fast timeout", topology.fast?.timeout_minutes],
+    ["full prepare timeout", topology.full?.prepare_timeout_minutes],
+    ["full shard timeout", topology.full?.shard_timeout_minutes],
+    ["full aggregate timeout", topology.full?.aggregate_timeout_minutes],
+    ["fast artifact retention", topology.fast?.artifact_retention_days],
+    ["full context retention", topology.full?.context_retention_days],
+    ["full evidence retention", topology.full?.evidence_retention_days],
+  ]) {
+    if (!Number.isInteger(value) || value <= 0) {
+      throw new Error(`smoke manifest has invalid ${field}`);
+    }
+  }
+  if (
+    topology.full.runtime !== "24.15.0" ||
+    topology.full.exact_sha_pattern !== "^[a-f0-9]{40}$"
+  ) {
+    throw new Error("full CI must use Node 24.15.0 and a strict lowercase full SHA");
+  }
+  const canonicalIds = [...grouped.keys()].sort();
+  const fastIds = topology.fast.canonical;
+  if (
+    !Array.isArray(fastIds) ||
+    fastIds.length !== 13 ||
+    new Set(fastIds).size !== fastIds.length ||
+    fastIds.some((id) => !grouped.has(id))
+  ) {
+    throw new Error("fast CI must contain 13 unique canonical smoke identities");
+  }
+  if (!Array.isArray(topology.full.shards) || topology.full.shards.length !== 5) {
+    throw new Error("full CI must contain five shards");
+  }
+  const shardIds = new Set();
+  const fullIds = [];
+  for (const shard of topology.full.shards) {
+    if (
+      typeof shard.id !== "string" ||
+      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(shard.id) ||
+      shardIds.has(shard.id) ||
+      !Array.isArray(shard.canonical) ||
+      shard.canonical.length === 0
+    ) {
+      throw new Error(`full CI has invalid shard ${shard.id || "unknown"}`);
+    }
+    shardIds.add(shard.id);
+    fullIds.push(...shard.canonical);
+  }
+  const fullUnique = [...new Set(fullIds)].sort();
+  if (
+    fullIds.length !== canonicalIds.length ||
+    fullUnique.length !== canonicalIds.length ||
+    JSON.stringify(fullUnique) !== JSON.stringify(canonicalIds)
+  ) {
+    throw new Error("full CI shards must partition all 46 canonical smokes exactly once");
+  }
+  const siteIds = canonicalIds.filter((id) => grouped.get(id).prerequisites.includes("site_profile_cache"));
+  const siteShard = topology.full.shards.find((shard) => siteIds.every((id) => shard.canonical.includes(id)));
+  if (!siteShard) {
+    throw new Error("all site profile smokes must share one full CI shard");
+  }
+}
+
 function validateManifest(manifest, packageJson) {
   if (manifest.schema_version !== 1 || !Array.isArray(manifest.aliases)) {
     throw new Error("unsupported smoke manifest");
@@ -192,7 +309,7 @@ function validateManifest(manifest, packageJson) {
   }
   const canonical = new Set();
   for (const entry of manifest.aliases) {
-    for (const field of ["alias", "canonical", "entrypoint", "subsystem", "future_ci_tier"]) {
+    for (const field of ["alias", "canonical", "entrypoint", "subsystem"]) {
       if (typeof entry[field] !== "string" || !entry[field]) {
         throw new Error(`smoke manifest ${entry.alias || "entry"} is missing ${field}`);
       }
@@ -222,23 +339,28 @@ function validateManifest(manifest, packageJson) {
   if (canonical.size !== manifest.canonical_execution_count || canonical.size !== 46) {
     throw new Error(`smoke manifest must contain 46 canonical executions, got ${canonical.size}`);
   }
+  validateCiTopology(manifest, canonicalEntryMap(manifest));
 }
 
-function canonicalEntries(manifest, mode) {
-  const grouped = new Map();
-  for (const entry of manifest.aliases) {
-    const current = grouped.get(entry.canonical);
-    if (current) {
-      current.aliases.push(entry.alias);
-      if (current.entrypoint !== entry.entrypoint) {
-        throw new Error(`canonical smoke ${entry.canonical} has inconsistent entrypoints`);
-      }
-    } else {
-      grouped.set(entry.canonical, { ...entry, aliases: [entry.alias] });
-    }
+function canonicalEntries(manifest, mode, shardId) {
+  const grouped = canonicalEntryMap(manifest);
+  if (mode === "prepublish") {
+    return [...grouped.values()];
   }
-  const entries = [...grouped.values()];
-  return mode === "ci" ? entries.filter((entry) => entry.future_ci_tier === "current") : entries;
+  if (mode === "ci") {
+    return manifest.ci_topology.fast.canonical.map((id) => grouped.get(id));
+  }
+  if (mode === "full-prepare") {
+    return [];
+  }
+  if (mode === "full-shard") {
+    const shard = manifest.ci_topology.full.shards.find((item) => item.id === shardId);
+    if (!shard) {
+      throw new Error(`unknown full CI shard: ${shardId || "missing"}`);
+    }
+    return shard.canonical.map((id) => grouped.get(id));
+  }
+  throw new Error(`unsupported release ladder mode: ${mode}`);
 }
 
 function createProxyBin(receiptDir) {
@@ -295,6 +417,99 @@ function releaseEnvironment(receiptDir, tools) {
   return env;
 }
 
+function writeFullContext(contextDir, tarballPath, artifactHash, trackedBefore, root = repoRoot) {
+  if (!contextDir) {
+    throw new Error("full-prepare requires MDKG_RELEASE_CONTEXT_DIR");
+  }
+  fs.rmSync(contextDir, { recursive: true, force: true });
+  fs.mkdirSync(contextDir, { recursive: true });
+  const contextTarball = path.join(contextDir, "package.tgz");
+  fs.copyFileSync(tarballPath, contextTarball);
+  fs.chmodSync(contextTarball, 0o444);
+  const distSource = path.join(root, "dist");
+  if (!fs.existsSync(distSource)) {
+    throw new Error("full release context is missing built dist output");
+  }
+  const distIdentity = hashDirectory(distSource);
+  fs.cpSync(distSource, path.join(contextDir, "dist"), { recursive: true });
+  const context = {
+    schema_version: 1,
+    decision_ref: "root:dec-91",
+    source_head: trackedBefore.head,
+    package: {
+      file: "package.tgz",
+      sha256: artifactHash,
+      bytes: fs.statSync(contextTarball).size,
+    },
+    dist: {
+      directory: "dist",
+      ...distIdentity,
+    },
+  };
+  fs.writeFileSync(path.join(contextDir, "context.json"), `${JSON.stringify(context, null, 2)}\n`, "utf8");
+  return context;
+}
+
+function loadFullContext(contextDir, expectedHead, root = repoRoot) {
+  if (!contextDir) {
+    throw new Error("full-shard requires MDKG_RELEASE_CONTEXT_DIR");
+  }
+  const contextPath = path.join(contextDir, "context.json");
+  if (!fs.existsSync(contextPath)) {
+    throw new Error("full release context manifest is missing");
+  }
+  const context = JSON.parse(fs.readFileSync(contextPath, "utf8"));
+  if (
+    context.schema_version !== 1 ||
+    context.decision_ref !== "root:dec-91" ||
+    context.source_head !== expectedHead ||
+    context.package?.file !== "package.tgz" ||
+    !/^[a-f0-9]{64}$/.test(context.package.sha256 || "") ||
+    !Number.isInteger(context.package.bytes) ||
+    context.package.bytes <= 0 ||
+    context.dist?.directory !== "dist" ||
+    !/^[a-f0-9]{64}$/.test(context.dist.sha256 || "") ||
+    !Number.isInteger(context.dist.file_count) ||
+    context.dist.file_count <= 0
+  ) {
+    throw new Error("full release context identity does not match the checked-out source");
+  }
+  const tarballPath = path.join(contextDir, context.package.file || "");
+  if (
+    !fs.existsSync(tarballPath) ||
+    hashFile(tarballPath) !== context.package.sha256 ||
+    fs.statSync(tarballPath).size !== context.package.bytes
+  ) {
+    throw new Error("full release context package hash or size mismatch");
+  }
+  const contextDist = path.join(contextDir, context.dist?.directory || "");
+  if (!fs.existsSync(contextDist)) {
+    throw new Error("full release context dist output is missing");
+  }
+  const contextDistIdentity = hashDirectory(contextDist);
+  if (
+    contextDistIdentity.sha256 !== context.dist.sha256 ||
+    contextDistIdentity.file_count !== context.dist.file_count
+  ) {
+    throw new Error("full release context dist hash or file count mismatch");
+  }
+  const targetDist = path.join(root, "dist");
+  fs.rmSync(targetDist, { recursive: true, force: true });
+  fs.cpSync(contextDist, targetDist, { recursive: true });
+  const restoredIdentity = hashDirectory(targetDist);
+  if (
+    restoredIdentity.sha256 !== context.dist.sha256 ||
+    restoredIdentity.file_count !== context.dist.file_count
+  ) {
+    throw new Error("restored full release context does not match its identity");
+  }
+  return {
+    context,
+    tarballPath,
+    artifactHash: context.package.sha256,
+  };
+}
+
 function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBoundary(repoRoot)) {
   const tools = resolveTools();
   const env = releaseEnvironment(receiptDir, tools);
@@ -304,7 +519,10 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
   const gateReceipts = [];
   const smokeReceipts = [];
   let coverageSummary;
+  let fullContext;
   const progressPath = path.join(receiptDir, "progress.json");
+  const isFullShard = mode === "full-shard";
+  const shardId = isFullShard ? process.env.MDKG_RELEASE_SHARD : undefined;
 
   function writeProgress() {
     fs.writeFileSync(progressPath, `${JSON.stringify({
@@ -348,7 +566,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
   }
 
   run("dependency-preflight", process.execPath, [path.join(repoRoot, "scripts", "dependency-boundary.js"), "preflight", "--json"]);
-  if (mode === "prepublish") {
+  if (!isFullShard) {
     run("coverage", tools.npm, ["run", "test:coverage"], { timeoutMs: 30 * 60 * 1000 });
     const coverageSummaryPath = path.join(env.MDKG_COVERAGE_DIR, "summary.json");
     if (!fs.existsSync(coverageSummaryPath)) {
@@ -358,42 +576,55 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     if (!coverageSummary.ok || coverageSummary.thresholds === null) {
       throw new Error("coverage gate did not produce a passing thresholded receipt");
     }
-  } else {
-    run("test", tools.npm, ["run", "test"], { timeoutMs: 20 * 60 * 1000 });
-  }
-  run("cli-check", tools.npm, ["run", "cli:check:built"]);
-  run("cli-contract", tools.npm, ["run", "cli:contract:built"]);
-  run("docs-check", tools.npm, ["run", "docs:check:built"]);
-  if (mode === "prepublish") {
+    run("cli-check", tools.npm, ["run", "cli:check:built"]);
+    run("cli-contract", tools.npm, ["run", "cli:contract:built"]);
+    run("docs-check", tools.npm, ["run", "docs:check:built"]);
     run("graph-validate", process.execPath, [path.join(repoRoot, "dist", "cli.js"), "validate"]);
+    run("security-verify", tools.npm, ["run", "security:verify"]);
   }
-  run("security-verify", tools.npm, ["run", "security:verify"]);
 
-  const artifactDir = path.join(receiptDir, "artifact");
-  fs.mkdirSync(artifactDir, { recursive: true });
-  const packed = run("package-artifact", tools.npm, [
-    "pack",
-    "--silent",
-    "--dry-run=false",
-    "--pack-destination",
-    artifactDir,
-  ], { timeoutMs: 15 * 60 * 1000 });
-  const tarballName = packed.stdout.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).pop();
-  if (!tarballName) {
-    throw new Error("npm pack did not report the immutable package artifact");
+  let tarballPath;
+  let artifactHash;
+  if (isFullShard) {
+    const loaded = loadFullContext(process.env.MDKG_RELEASE_CONTEXT_DIR, trackedBefore.head);
+    tarballPath = loaded.tarballPath;
+    artifactHash = loaded.artifactHash;
+    fullContext = loaded.context;
+  } else {
+    const artifactDir = path.join(receiptDir, "artifact");
+    fs.mkdirSync(artifactDir, { recursive: true });
+    const packed = run("package-artifact", tools.npm, [
+      "pack",
+      "--silent",
+      "--dry-run=false",
+      "--pack-destination",
+      artifactDir,
+    ], { timeoutMs: 15 * 60 * 1000 });
+    const tarballName = packed.stdout.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).pop();
+    if (!tarballName) {
+      throw new Error("npm pack did not report the immutable package artifact");
+    }
+    tarballPath = path.join(artifactDir, path.basename(tarballName));
+    if (!fs.existsSync(tarballPath)) {
+      throw new Error(`immutable package artifact is missing: ${tarballPath}`);
+    }
+    artifactHash = hashFile(tarballPath);
+    fs.chmodSync(tarballPath, 0o444);
+    fs.writeFileSync(path.join(receiptDir, "artifact.json"), `${JSON.stringify({
+      path: tarballPath,
+      sha256: artifactHash,
+      bytes: fs.statSync(tarballPath).size,
+      mode: "0444",
+    }, null, 2)}\n`, "utf8");
+    if (mode === "full-prepare") {
+      fullContext = writeFullContext(
+        process.env.MDKG_RELEASE_CONTEXT_DIR,
+        tarballPath,
+        artifactHash,
+        trackedBefore,
+      );
+    }
   }
-  const tarballPath = path.join(artifactDir, path.basename(tarballName));
-  if (!fs.existsSync(tarballPath)) {
-    throw new Error(`immutable package artifact is missing: ${tarballPath}`);
-  }
-  const artifactHash = hashFile(tarballPath);
-  fs.chmodSync(tarballPath, 0o444);
-  fs.writeFileSync(path.join(receiptDir, "artifact.json"), `${JSON.stringify({
-    path: tarballPath,
-    sha256: artifactHash,
-    bytes: fs.statSync(tarballPath).size,
-    mode: "0444",
-  }, null, 2)}\n`, "utf8");
 
   const proxyBin = createProxyBin(receiptDir);
   const smokeEnv = {
@@ -403,7 +634,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     MDKG_SMOKE_TARBALL: tarballPath,
     MDKG_SMOKE_TARBALL_SHA256: artifactHash,
   };
-  const executions = canonicalEntries(manifest, mode);
+  const executions = canonicalEntries(manifest, mode, shardId);
   for (const entry of executions) {
     const result = run(
       entry.canonical,
@@ -423,7 +654,9 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     process.stdout.write(`smoke passed: ${entry.canonical} (${last.duration_ms}ms)\n`);
     void result;
   }
-  run("publish-readiness", process.execPath, [path.join(repoRoot, "scripts", "assert-publish-ready.js")]);
+  if (!isFullShard) {
+    run("publish-readiness", process.execPath, [path.join(repoRoot, "scripts", "assert-publish-ready.js")]);
+  }
 
   const buildEvents = readJsonLines(path.join(receiptDir, "build-events.jsonl"));
   const artifactUsages = readJsonLines(path.join(receiptDir, "artifact-usages.jsonl"));
@@ -436,7 +669,13 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     const ownerEvents = buildEvents.filter((event) => event.kind === "site" && event.owner === owner);
     const declaredProfiles = manifest.profiles[owner].map((profile) => profile.id).sort();
     const observedProfiles = [...new Set(ownerEvents.map((event) => event.profile))].sort();
-    if (mode === "prepublish" && JSON.stringify(declaredProfiles) !== JSON.stringify(observedProfiles)) {
+    const shardRequiresOwner = isFullShard && executions.some((entry) =>
+      entry.environment_profiles.some((profile) => profile.startsWith(`${owner}:`)),
+    );
+    if (
+      (mode === "prepublish" || shardRequiresOwner) &&
+      JSON.stringify(declaredProfiles) !== JSON.stringify(observedProfiles)
+    ) {
       throw new Error(`${owner} profile coverage mismatch: declared ${declaredProfiles}, observed ${observedProfiles}`);
     }
     const actualByProfile = Object.fromEntries(declaredProfiles.map((profile) => [
@@ -471,6 +710,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     action: "release-ladder",
     ok: true,
     mode,
+    shard: shardId,
     offline: true,
     registry: env.NPM_CONFIG_REGISTRY,
     receipt_dir: receiptDir,
@@ -487,6 +727,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     },
     artifact_usage_count: artifactUsages.length,
     coverage: coverageSummary,
+    full_context: fullContext,
     git_boundary: gitBoundary,
     gates: gateReceipts,
     smokes: smokeReceipts,
@@ -495,12 +736,18 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
 
 function main() {
   const mode = process.argv[2];
-  if (mode !== "ci" && mode !== "prepublish") {
-    process.stderr.write("Usage: node scripts/release-ladder.js <ci|prepublish>\n");
+  if (!["ci", "prepublish", "full-prepare", "full-shard"].includes(mode)) {
+    process.stderr.write("Usage: node scripts/release-ladder.js <ci|prepublish|full-prepare|full-shard>\n");
     return 2;
   }
   const started = Date.now();
-  const timeoutMs = mode === "ci" ? 30 * 60 * 1000 : 60 * 60 * 1000;
+  const timeoutMinutes = {
+    ci: 15,
+    prepublish: 60,
+    "full-prepare": 30,
+    "full-shard": 20,
+  }[mode];
+  const timeoutMs = timeoutMinutes * 60 * 1000;
   const base = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
   const receiptDir = path.resolve(
     process.env.MDKG_RELEASE_RECEIPT_DIR ||
@@ -549,10 +796,15 @@ if (require.main === module) {
 }
 
 module.exports = {
+  canonicalEntryMap,
   canonicalEntries,
   captureTrackedBoundary,
   compareTrackedBoundaries,
+  hashDirectory,
+  loadFullContext,
   main,
   summarizeTrackedBoundary,
+  validateCiTopology,
   validateManifest,
+  writeFullContext,
 };

@@ -2,20 +2,20 @@
 id: test-470
 type: test
 title: Verify fast-matrix and full exact-SHA release topology from the smoke manifest
-status: backlog
+status: done
 priority: 1
 parent: goal-78
 prev: task-811
 tags: [ci, smoke, release, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/ci-topology-verification.json]
 relates: [task-811, prop-9]
 blocked_by: [task-811]
 blocks: []
-refs: [goal-78, prop-9, spike-33, task-811, dec-91]
+refs: [goal-78, prop-9, spike-33, task-811, dec-91, chk-554]
 context_refs: [goal-78, prop-9, spike-33, task-811]
-evidence_refs: []
+evidence_refs: [chk-554]
 aliases: []
 skills: [verify-close-and-checkpoint]
 cases: [manifest_47_to_46, fast_runtime_matrix, curated_fast_membership, full_release_all_canonical, exact_sha_manual_trigger, exact_sha_detached_checkout, shard_partition_and_load, artifact_timeout_and_failure_evidence, immutable_tarball_consumers, concurrency_and_cancellation, aggregate_release_gate, final_tracked_drift, local_only_receipt]

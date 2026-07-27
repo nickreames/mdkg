@@ -13,7 +13,11 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8"));
 const ladder = require(path.join(repoRoot, "scripts", "release-ladder.js")) as {
   validateManifest(manifest: unknown, packageJson: unknown): void;
-  canonicalEntries(manifest: unknown, mode: "ci" | "prepublish"): Array<{
+  canonicalEntries(
+    manifest: unknown,
+    mode: "ci" | "prepublish" | "full-prepare" | "full-shard",
+    shardId?: string,
+  ): Array<{
     canonical: string;
     aliases: string[];
     prerequisites: string[];
@@ -63,8 +67,8 @@ test("smoke manifest maps package aliases to 46 canonical executions", () => {
 
   assert.equal(manifest.alias_count, 47);
   assert.equal(full.length, 46);
-  assert.equal(ci.length, 2);
-  assert.deepEqual(ci.map((entry) => entry.canonical), ["smoke:git-materialize", "smoke:loop"]);
+  assert.equal(ci.length, 13);
+  assert.deepEqual(ci.map((entry) => entry.canonical), manifest.ci_topology.fast.canonical);
   assert.deepEqual(subgraph?.aliases.sort(), ["smoke:bundle-import", "smoke:subgraph"]);
   assert.equal(
     full.filter((entry) => entry.prerequisites.includes("immutable_package_artifact")).length,
@@ -72,6 +76,29 @@ test("smoke manifest maps package aliases to 46 canonical executions", () => {
   );
   assert.equal(manifest.profiles.docs.length, 4);
   assert.equal(manifest.profiles["mdkg-dev"].length, 5);
+});
+
+test("full CI shards partition all canonical smokes exactly once", () => {
+  const full = ladder.canonicalEntries(manifest, "prepublish");
+  const sharded: Array<{ canonical: string; prerequisites: string[] }> =
+    manifest.ci_topology.full.shards.flatMap((shard: { id: string }) =>
+    ladder.canonicalEntries(manifest, "full-shard", shard.id),
+  );
+  const siteSmokes = full
+    .filter((entry) => entry.prerequisites.includes("site_profile_cache"))
+    .map((entry) => entry.canonical);
+  const siteShard = manifest.ci_topology.full.shards.find((shard: { canonical: string[] }) =>
+    siteSmokes.every((id) => shard.canonical.includes(id)),
+  );
+
+  assert.equal(manifest.ci_topology.decision_ref, "root:dec-91");
+  assert.equal(manifest.ci_topology.full.shards.length, 5);
+  assert.deepEqual(
+    sharded.map((entry) => entry.canonical).sort(),
+    full.map((entry) => entry.canonical).sort(),
+  );
+  assert.equal(new Set(sharded.map((entry) => entry.canonical)).size, 46);
+  assert.ok(siteShard);
 });
 
 test("npm smoke proxy supplies the same immutable artifact and records its hash", () => {

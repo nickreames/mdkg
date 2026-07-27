@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "goal_ref": "root:goal-78",
+  "implementation_ref": "root:task-811",
+  "test_ref": "root:test-470",
+  "decision_ref": "root:dec-91",
+  "verified_at": "2026-07-26",
+  "scope": "local source-owned CI topology and focused contract tests",
+  "runtime": {
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "exact_node_24_15_0_executed": false,
+    "provider_workflow_executed": false
+  },
+  "projection": {
+    "manifest": "scripts/smoke-manifest.json",
+    "manifest_sha256": "1370a7f073d48bd0d6743b2af68cf2e14ce13e9e06dd4f94f3baa9053f2a53a7",
+    "workflow": ".github/workflows/release-readiness.yml",
+    "workflow_sha256": "0544ff91f890fe68dbf10a0d63010599a1459d58c849ad3e378ab3e2c11eed43",
+    "alias_count": 47,
+    "canonical_execution_count": 46,
+    "fast_canonical_count": 13,
+    "full_shards": [
+      {
+        "id": "package-command",
+        "canonical_count": 6
+      },
+      {
+        "id": "lifecycle-agent",
+        "canonical_count": 10
+      },
+      {
+        "id": "db-work",
+        "canonical_count": 9
+      },
+      {
+        "id": "graph-concurrency",
+        "canonical_count": 8
+      },
+      {
+        "id": "sites-git-repair",
+        "canonical_count": 13
+      }
+    ]
+  },
+  "source_inspected_contract": {
+    "fast_runtimes": [
+      "24.15.0",
+      "24.x"
+    ],
+    "full_runtime": "24.15.0",
+    "full_trigger": "manual exact lowercase 40-character SHA",
+    "full_checkout": "detached HEAD must equal requested SHA",
+    "dag": [
+      "full_prepare",
+      "full_smoke",
+      "full_release"
+    ],
+    "immutable_context": [
+      "package.tgz sha256 and byte count",
+      "dist deterministic path-content sha256 and file count"
+    ],
+    "failure_evidence": "fast, full preparation, and every full shard upload bounded evidence with if: always()",
+    "aggregate_authority": "full_release requires successful full_prepare and full_smoke matrix"
+  },
+  "focused_receipts": [
+    {
+      "command": "npm run build",
+      "result": "pass"
+    },
+    {
+      "command": "npm run build:test",
+      "result": "pass"
+    },
+    {
+      "command": "node --test dist/tests/ci-topology.test.js dist/tests/release-ladder.test.js dist/tests/dependency-boundary.test.js",
+      "result": "21 passed, 0 failed",
+      "duration_ms": 693.305708
+    },
+    {
+      "command": "npm run test:public-release",
+      "result": "26 passed, 0 failed"
+    },
+    {
+      "command": "npm run ci:workflow:check",
+      "result": "pass, generated workflow byte-matches manifest-owned projection"
+    },
+    {
+      "command": "node scripts/assert-publish-ready.js",
+      "result": "pass"
+    },
+    {
+      "command": "mdkg validate --changed-only --json",
+      "result": "0 warnings, 0 errors"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "negative_contracts": [
+    "invalid or missing fast runtime",
+    "non-positive timeout",
+    "fast membership count drift",
+    "duplicate or incomplete full-shard partition",
+    "split site profile/cache ownership",
+    "removed generated timeout",
+    "removed always-upload evidence gate",
+    "removed aggregate dependency",
+    "removed immutable-context artifact",
+    "ambiguous SHA input",
+    "non-detached or mismatched SHA checkout",
+    "tampered package bytes",
+    "tampered dist path-content tree"
+  ],
+  "git_boundary": {
+    "status_porcelain_sha256_before": "89c082094d2380ce1fe364afdd79cac7d847f768c44e59fd95f9b907a401d2fa",
+    "status_porcelain_sha256_after": "89c082094d2380ce1fe364afdd79cac7d847f768c44e59fd95f9b907a401d2fa",
+    "unchanged_during_focused_verification": true
+  },
+  "deferred_shared_receipts": [
+    "npm run ci:release",
+    "npm run prepublishOnly"
+  ],
+  "authority_exclusions": [
+    "GitHub provider execution",
+    "branch-protection mutation",
+    "provider retention administration",
+    "network or registry calls",
+    "push, tag, publish, or deploy"
+  ]
+}
