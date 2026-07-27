@@ -2,20 +2,20 @@
 id: test-466
 type: test
 title: verify startup contributor and test guidance matches repository contracts
-status: backlog
+status: done
 priority: 3
 parent: goal-78
 prev: task-806
 tags: [audit-followup, harness, docs, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/harness-guidance-verification.json]
 relates: [loop-7, task-806]
 blocked_by: [task-806]
 blocks: []
-refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-89, test-465, task-806]
+refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-89, test-465, task-806, chk-557]
 context_refs: [goal-78, loop-7, chk-544, dec-89, test-465, task-806]
-evidence_refs: []
+evidence_refs: [chk-557]
 aliases: []
 skills: [verify-close-and-checkpoint, pursue-mdkg-loop]
 cases: [active_loop_ordering, tracked_index_contract, test_family_contract]
