@@ -3,7 +3,7 @@ id: task-50
 type: task
 title: Non-force push the approved Demo 2 range to origin main
 status: backlog
-priority: 1
+priority: 0
 epic: epic-5
 parent: goal-5
 prev: task-49
@@ -13,8 +13,8 @@ owners: [root-integration-owner]
 links: []
 artifacts: [artifacts/demo-002/push-receipt.json]
 relates: []
-blocked_by: []
-blocks: []
+blocked_by: [task-49]
+blocks: [task-23]
 refs: [goal-5, epic-5, prd-1, edd-1, dec-4, dec-5, dec-6, task-49]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-4, dec-5, dec-6, task-49]
 evidence_refs: [task-49]

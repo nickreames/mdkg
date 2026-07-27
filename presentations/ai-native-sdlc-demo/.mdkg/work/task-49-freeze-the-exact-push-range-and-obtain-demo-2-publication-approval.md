@@ -3,7 +3,7 @@ id: task-49
 type: task
 title: Freeze the exact push range and obtain Demo 2 publication approval
 status: backlog
-priority: 1
+priority: 0
 epic: epic-5
 parent: goal-5
 prev: task-22
@@ -13,8 +13,8 @@ owners: [root-integration-owner]
 links: []
 artifacts: [artifacts/demo-002/push-range-manifest.json, artifacts/demo-002/publication-approval.json, artifacts/demo-002/publication-preflight.json]
 relates: []
-blocked_by: []
-blocks: []
+blocked_by: [task-22]
+blocks: [task-50]
 refs: [goal-5, epic-5, prd-1, edd-1, dec-4, dec-5, dec-6, goal-4, chk-14, task-22]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-4, dec-5, dec-6, goal-4, chk-14, task-22]
 evidence_refs: [chk-14, task-22]

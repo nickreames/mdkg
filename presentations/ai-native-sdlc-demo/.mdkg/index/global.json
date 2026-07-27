@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T22:20:30.596Z",
+    "generated_at": "2026-07-27T22:27:01.663Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
@@ -4237,7 +4237,7 @@
       "ws": "root",
       "type": "task",
       "title": "Commit the accepted Demo 2 surfaces locally without push",
-      "status": "progress",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-27",
@@ -4288,7 +4288,9 @@
         "next": "root:task-49",
         "relates": [],
         "blocked_by": [],
-        "blocks": [],
+        "blocks": [
+          "root:task-49"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -4362,8 +4364,12 @@
         "prev": "root:task-50",
         "next": "root:task-24",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:task-50"
+        ],
+        "blocks": [
+          "root:task-24"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -4439,8 +4445,12 @@
         "prev": "root:task-23",
         "next": "root:task-25",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:task-23"
+        ],
+        "blocks": [
+          "root:task-25"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -4509,8 +4519,12 @@
         "prev": "root:task-24",
         "next": "root:task-26",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:task-24"
+        ],
+        "blocks": [
+          "root:task-26"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -4581,8 +4595,12 @@
         "prev": "root:task-25",
         "next": "root:test-12",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:task-25"
+        ],
+        "blocks": [
+          "root:test-12"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -6325,7 +6343,7 @@
       "type": "task",
       "title": "Freeze the exact push range and obtain Demo 2 publication approval",
       "status": "backlog",
-      "priority": 1,
+      "priority": 0,
       "created": "2026-07-27",
       "updated": "2026-07-27",
       "tags": [
@@ -6374,8 +6392,12 @@
         "prev": "root:task-22",
         "next": "root:task-50",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:task-22"
+        ],
+        "blocks": [
+          "root:task-50"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -6471,7 +6493,7 @@
       "type": "task",
       "title": "Non-force push the approved Demo 2 range to origin main",
       "status": "backlog",
-      "priority": 1,
+      "priority": 0,
       "created": "2026-07-27",
       "updated": "2026-07-27",
       "tags": [
@@ -6515,8 +6537,12 @@
         "prev": "root:task-49",
         "next": "root:task-23",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:task-49"
+        ],
+        "blocks": [
+          "root:task-23"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -7063,8 +7089,12 @@
         "prev": "root:task-26",
         "next": "root:test-13",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:task-26"
+        ],
+        "blocks": [
+          "root:test-13"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -7131,8 +7161,12 @@
         "prev": "root:test-12",
         "next": "root:test-14",
         "relates": [],
-        "blocked_by": [],
-        "blocks": [],
+        "blocked_by": [
+          "root:test-12"
+        ],
+        "blocks": [
+          "root:test-14"
+        ],
         "context_refs": [
           "root:goal-5",
           "root:epic-5",
@@ -7198,7 +7232,9 @@
         "parent": "root:goal-5",
         "prev": "root:test-13",
         "relates": [],
-        "blocked_by": [],
+        "blocked_by": [
+          "root:test-13"
+        ],
         "blocks": [],
         "context_refs": [
           "root:goal-5",
@@ -10732,6 +10768,64 @@
       ],
       "root:test-8": [
         "root:test-9"
+      ]
+    },
+    "blocks": {
+      "root:task-49": [
+        "root:task-22"
+      ],
+      "root:task-24": [
+        "root:task-23"
+      ],
+      "root:task-25": [
+        "root:task-24"
+      ],
+      "root:task-26": [
+        "root:task-25"
+      ],
+      "root:test-12": [
+        "root:task-26"
+      ],
+      "root:task-50": [
+        "root:task-49"
+      ],
+      "root:task-23": [
+        "root:task-50"
+      ],
+      "root:test-13": [
+        "root:test-12"
+      ],
+      "root:test-14": [
+        "root:test-13"
+      ]
+    },
+    "blocked_by": {
+      "root:task-50": [
+        "root:task-23"
+      ],
+      "root:task-23": [
+        "root:task-24"
+      ],
+      "root:task-24": [
+        "root:task-25"
+      ],
+      "root:task-25": [
+        "root:task-26"
+      ],
+      "root:task-22": [
+        "root:task-49"
+      ],
+      "root:task-49": [
+        "root:task-50"
+      ],
+      "root:task-26": [
+        "root:test-12"
+      ],
+      "root:test-12": [
+        "root:test-13"
+      ],
+      "root:test-13": [
+        "root:test-14"
       ]
     }
   }
