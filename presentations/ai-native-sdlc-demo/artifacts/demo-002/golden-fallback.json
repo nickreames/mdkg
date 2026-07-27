@@ -1,0 +1,227 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-immutable-golden-fallback",
+  "seal_version": "demo-002-production-v1",
+  "sealed_at": "2026-07-27T23:20:00Z",
+  "sealed_by": "program-orchestrator",
+  "accepted_commit": {
+    "remote": "origin",
+    "branch": "main",
+    "sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "normal_non_force_push": true,
+    "stable_range_sha256": "da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d"
+  },
+  "production_observations": {
+    "observed_at": "2026-07-27T22:57:59Z",
+    "identity_policy": "Remote observations are time-stamped expected identities and remain separate from the local artifact hash seal.",
+    "projects": [
+      {
+        "canonical_domain": "mdkg.dev",
+        "project": "mdkg-dev",
+        "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+        "deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+        "deployment_url": "https://mdkg-l213f13c4-nicholas-reames-projects.vercel.app",
+        "state": "READY",
+        "provider_git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+        "exact_sha_match": true
+      },
+      {
+        "canonical_domain": "docs.mdkg.dev",
+        "project": "mdkg-docs",
+        "project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
+        "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
+        "deployment_url": "https://mdkg-docs-9z78wlsq1-nicholas-reames-projects.vercel.app",
+        "state": "READY",
+        "provider_git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+        "exact_sha_match": true
+      }
+    ],
+    "routes": [
+      {
+        "url": "https://mdkg.dev/demo/2/",
+        "status": 200,
+        "noindex": true,
+        "desktop_mobile_verified": true
+      },
+      {
+        "url": "https://mdkg.dev/demo/2/output/",
+        "status": 200,
+        "noindex": true,
+        "desktop_mobile_verified": true
+      }
+    ]
+  },
+  "candidate_and_offline_seals": {
+    "candidate_receipt_sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82",
+    "accepted_candidate_checkpoint_sha256": "577332e4c3b1ad61b39654c4d1c4e2de9dae5eb8e56299be43da8e70c3aa96de",
+    "offline_manifest_sha256": "79d969e3c4bf1d1949ade31adb4e6d04b3a486e09ad99a99becc827619952186",
+    "offline_manifest_entry_count": 17
+  },
+  "rehearsal": {
+    "narrated_deck": "31:05",
+    "reveal_plus_cta": "2:50",
+    "total_content": "33:55",
+    "hard_stop": "35:00",
+    "hard_stop_margin": "1:05",
+    "normal_delayed_blocker_and_offline_branches_passed": true
+  },
+  "local_artifacts": [
+    {
+      "path": ".mdkg/work/chk-14-demo-2-rehearsal-candidate-accepted-locally.md",
+      "sha256": "577332e4c3b1ad61b39654c4d1c4e2de9dae5eb8e56299be43da8e70c3aa96de",
+      "role": "accepted local candidate checkpoint"
+    },
+    {
+      "path": "artifacts/demo-002/candidate-receipt.json",
+      "sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82",
+      "role": "candidate seal"
+    },
+    {
+      "path": "artifacts/demo-002/deployment-receipt.json",
+      "sha256": "14c19d29a81d6ae004aef68df64b6946f6f1500f94de55a4e4b07b1d3f45c830",
+      "role": "exact-SHA provider proof"
+    },
+    {
+      "path": "artifacts/demo-002/fallback/README.md",
+      "sha256": "fe2659d506a6d64b41b307adfcb1b7eed1ee0dbd239e44db98aebe381205ccf4",
+      "role": "offline fallback instructions"
+    },
+    {
+      "path": "artifacts/demo-002/fallback/manifest.sha256",
+      "sha256": "79d969e3c4bf1d1949ade31adb4e6d04b3a486e09ad99a99becc827619952186",
+      "role": "17-file offline fallback seal"
+    },
+    {
+      "path": "artifacts/demo-002/golden-fallback-recovery.md",
+      "sha256": "a27d2a890505aaf3302f32acf9657fcbf7eec4fed22c1b36096ae81e1601cce2",
+      "role": "read-only event recovery guide"
+    },
+    {
+      "path": "artifacts/demo-002/live-route-receipt.json",
+      "sha256": "b48d104f006f3274ee651817bd4f22ef6fd27c87b0c15629200bb06ed9322f5d",
+      "role": "desktop/mobile production route proof"
+    },
+    {
+      "path": "artifacts/demo-002/local-commit-receipt.json",
+      "sha256": "3e23759a4abca5920781e626eece8a6a7023d487f1276bdf045e8967120c8bf7",
+      "role": "bounded local integration receipt"
+    },
+    {
+      "path": "artifacts/demo-002/production-reveal/source-vs-specialized-16x9.png",
+      "sha256": "43eb63c44800b7d7ad842dc5b3f71addc1142d75a9fcc2798707bd7e8b56f2ec",
+      "role": "production-backed 16:9 reveal"
+    },
+    {
+      "path": "artifacts/demo-002/publication-approval.json",
+      "sha256": "25ba9269de71be9bcdc34e0357466218065e9d9f1500baaf852aa64e760e80a1",
+      "role": "human exact-range approval"
+    },
+    {
+      "path": "artifacts/demo-002/push-range-manifest.json",
+      "sha256": "0fbb11fb7a6706fa3a840408e51fe24661ca35828cdf80c91e9b1bec6bf38328",
+      "role": "complete approved Git range"
+    },
+    {
+      "path": "artifacts/demo-002/push-receipt.json",
+      "sha256": "0de14e67689e4f0117b70414f45d72ab3f41621c7e899d2711297d827548f928",
+      "role": "normal non-force push proof"
+    },
+    {
+      "path": "artifacts/demo-002/rehearsal-receipt.json",
+      "sha256": "cf63110923cc879954a70fad2495382e933f1c0d644fdcac51be1231b2cd47da",
+      "role": "production cue-and-timing rehearsal"
+    },
+    {
+      "path": "artifacts/demo-002/screenshots/detail-desktop.png",
+      "sha256": "4cd8dc5b32e8fbe5be4d3565a576f05b55bffb4b69aa483743e689f3bbc3a158",
+      "role": "production detail desktop"
+    },
+    {
+      "path": "artifacts/demo-002/screenshots/detail-mobile.png",
+      "sha256": "fa424d8645d26e8eaaf66bc586dc44db5df6a005b0369a8596590272bf9de5f9",
+      "role": "production detail mobile"
+    },
+    {
+      "path": "artifacts/demo-002/screenshots/output-desktop.png",
+      "sha256": "bc4a09fe0be10726cb6d33f412736e8d605b8fc07d6181f0b19b77b8398c41f4",
+      "role": "production output desktop"
+    },
+    {
+      "path": "artifacts/demo-002/screenshots/output-mobile.png",
+      "sha256": "868a866b8f3f13204e5d0b160094c0cd1509f670cac25d63d7daa54f5fcb680b",
+      "role": "production output mobile"
+    },
+    {
+      "path": "artifacts/demo-002/source-goal-1.md",
+      "sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+      "role": "reusable source snapshot"
+    },
+    {
+      "path": "artifacts/demo-002/specialized-goal-1.md",
+      "sha256": "3fda685d8ab74c741e78143625978919bf22533ff51cd7cfce855ba9682176b1",
+      "role": "specialized goal snapshot"
+    },
+    {
+      "path": "deck/ai-native-sdlc.pptx",
+      "sha256": "7cf122ccea42a98ab2538f103dc80678d093ba32719c6a5039f85e5fdc91bdcc",
+      "role": "frozen rehearsal deck"
+    },
+    {
+      "path": "deck/citations/claim-matrix.md",
+      "sha256": "7037fdade57ba211b5cb25953e049474ccfa17d8dd3c2b9e38e8607fa3e860db",
+      "role": "claim provenance"
+    },
+    {
+      "path": "deck/rendered/qa-report.md",
+      "sha256": "1a1cca5fd1e57c64bcbe08316d835c7cfeed33d89860de1f8ce71904b778fd3a",
+      "role": "deck QA"
+    },
+    {
+      "path": "deck/rendered/rehearsal-receipt.md",
+      "sha256": "3419ba17c4a227b23209a6b466a4ac20f2940d7e6846a7cd5c501a7c61946f1b",
+      "role": "Goal 3 offline cue baseline"
+    },
+    {
+      "path": "deck/source/ai-native-sdlc.mjs",
+      "sha256": "2218965d880a0b892ebb7889336602f6b9879c43970f643340a405e52d2be572",
+      "role": "editable deterministic deck source"
+    },
+    {
+      "path": "deck/speaker-notes.md",
+      "sha256": "2d22d3b729440d24c2820a22bd21fa8bbe2003c2c633834dec056087792ea220",
+      "role": "speaker notes and cue matrix"
+    },
+    {
+      "path": "runs/demo-002/.mdkg/work/chk-3-demo-2-exact-sha-production-proof-accepted.md",
+      "sha256": "dab75e4419b014c001c1bdc09942ff5f420523e255c8b3e821f35889f047f065",
+      "role": "accepted child production checkpoint"
+    },
+    {
+      "path": "runs/demo-002/.mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "sha256": "8b0ab288edeffb467ba2d8342a9115b9f8c1604cd6b564414c1a49eaa71820fa",
+      "role": "achieved specialized child goal"
+    },
+    {
+      "path": "runs/demo-002/artifacts/live-verification-receipt.json",
+      "sha256": "1cfa6e54e4cf2ef7396b373e9dd84f86ecc3a538b0bcb24626edac5a158a8dd2",
+      "role": "child live verification"
+    },
+    {
+      "path": "runs/demo-002/artifacts/publication-receipt.json",
+      "sha256": "e63d67c18d70f0eee220b27b01f4d892b6a3e88e69a13c9bee5225bc59364888",
+      "role": "child publication receipt"
+    }
+  ],
+  "immutability_policy": {
+    "consumer_goals": [
+      "goal-6",
+      "goal-7"
+    ],
+    "mode": "read-only hash consumption",
+    "changed_artifact_policy": "Create a newly versioned fallback and repeat Goal 5 acceptance; never overwrite this seal and call it equivalent.",
+    "provider_mutation_required_for_recovery": false,
+    "git_mutation_required_for_recovery": false
+  },
+  "recovery_guide": "artifacts/demo-002/golden-fallback-recovery.md",
+  "hash_manifest": "artifacts/demo-002/golden-fallback.sha256"
+}

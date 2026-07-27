@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T22:27:01.663Z",
+    "generated_at": "2026-07-27T23:28:19.800Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
@@ -444,6 +444,86 @@
         "blocks": [],
         "context_refs": [],
         "evidence_refs": []
+      }
+    },
+    "root:chk-17": {
+      "id": "chk-17",
+      "qid": "root:chk-17",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Demo 2 publication rehearsal and golden fallback accepted",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-5",
+        "goal-closeout"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-002/push-receipt.json",
+        "artifacts/demo-002/deployment-receipt.json",
+        "artifacts/demo-002/live-route-receipt.json",
+        "artifacts/demo-002/rehearsal-receipt.json",
+        "artifacts/demo-002/golden-fallback.json",
+        "artifacts/demo-002/golden-fallback.sha256",
+        "artifacts/demo-002/golden-fallback-recovery.md"
+      ],
+      "refs": [
+        "goal-5",
+        "epic-5",
+        "prd-1",
+        "edd-1",
+        "dec-4",
+        "dec-5",
+        "task-26",
+        "test-12",
+        "test-13",
+        "test-14"
+      ],
+      "aliases": [
+        "demo-2-production-golden-fallback-accepted"
+      ],
+      "skills": [
+        "publish-static-demo-with-exact-sha",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/chk-17-demo-2-publication-rehearsal-and-golden-fallback-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-5",
+          "root:epic-5",
+          "root:prd-1",
+          "root:edd-1",
+          "root:dec-4",
+          "root:dec-5",
+          "root:chk-14",
+          "root:chk-15"
+        ],
+        "evidence_refs": [
+          "root:task-48",
+          "root:task-21",
+          "root:task-22",
+          "root:task-49",
+          "root:task-50",
+          "root:task-23",
+          "root:task-24",
+          "root:task-25",
+          "root:task-26",
+          "root:test-12",
+          "root:test-13",
+          "root:test-14"
+        ]
       }
     },
     "root:chk-2": {
@@ -2052,7 +2132,7 @@
       "ws": "root",
       "type": "goal",
       "title": "Publish and rehearse Demo 2",
-      "status": "progress",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-27",
@@ -2089,12 +2169,12 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {
-        "goal_state": "active",
+        "goal_state": "achieved",
         "goal_condition": "The accepted Demo 2 candidate has a green canonical smoke contract and bounded local commits; a separate human publication receipt approves the actual fetched origin/main..HEAD commit/path range; that exact range is normal-pushed without force; the same child goal is achieved; both existing production deployments are READY for the exact final SHA; /demo/2/ and /demo/2/output/ pass desktop/mobile static, visibility, accessibility, claim, and privacy gates; the full talk rehearses within 35 minutes; and Demo 2 is sealed as an immutable public-safe fallback.",
         "scope_refs": [
           "epic-5"
         ],
-        "active_node": "task-22",
+        "last_active_node": "test-14",
         "required_skills": [
           "select-work-and-ground-context",
           "publish-static-demo-with-exact-sha",
@@ -2137,7 +2217,11 @@
         ],
         "evidence_refs": [
           "root:chk-14",
-          "root:chk-15"
+          "root:chk-15",
+          "root:chk-17",
+          "root:test-12",
+          "root:test-13",
+          "root:test-14"
         ]
       }
     },
@@ -4318,10 +4402,10 @@
       "ws": "root",
       "type": "task",
       "title": "Verify exact-SHA READY deployments for mdkg.dev and docs.mdkg.dev",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -4394,10 +4478,10 @@
       "ws": "root",
       "type": "task",
       "title": "Verify Demo 2 live detail and output routes",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -4427,7 +4511,8 @@
         "dec-4",
         "dec-5",
         "dec-6",
-        "task-23"
+        "task-23",
+        "chk-14"
       ],
       "aliases": [
         "phase-5-step-7"
@@ -4473,10 +4558,10 @@
       "ws": "root",
       "type": "task",
       "title": "Rehearse the complete presentation against production Demo 2",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -4501,7 +4586,8 @@
         "dec-4",
         "dec-5",
         "dec-6",
-        "task-24"
+        "task-24",
+        "task-27"
       ],
       "aliases": [
         "phase-5-step-8"
@@ -4547,10 +4633,10 @@
       "ws": "root",
       "type": "task",
       "title": "Seal Demo 2 as the immutable golden fallback",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6342,7 +6428,7 @@
       "ws": "root",
       "type": "task",
       "title": "Freeze the exact push range and obtain Demo 2 publication approval",
-      "status": "backlog",
+      "status": "done",
       "priority": 0,
       "created": "2026-07-27",
       "updated": "2026-07-27",
@@ -6492,7 +6578,7 @@
       "ws": "root",
       "type": "task",
       "title": "Non-force push the approved Demo 2 range to origin main",
-      "status": "backlog",
+      "status": "done",
       "priority": 0,
       "created": "2026-07-27",
       "updated": "2026-07-27",
@@ -7045,10 +7131,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify Demo 2 commit push and exact-SHA deployment evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -7059,7 +7145,15 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-002/local-commit-receipt.json",
+        "artifacts/demo-002/publication-approval.json",
+        "artifacts/demo-002/push-range-manifest.json",
+        "artifacts/demo-002/push-receipt.json",
+        "artifacts/demo-002/deployment-receipt.json",
+        "runs/demo-002/artifacts/publication-receipt.json",
+        "runs/demo-002/artifacts/live-verification-receipt.json"
+      ],
       "refs": [
         "goal-5",
         "epic-5",
@@ -7108,7 +7202,15 @@
           "root:dec-6",
           "root:task-26"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:task-21",
+          "root:task-22",
+          "root:task-49",
+          "root:task-50",
+          "root:task-23",
+          "root:task-24",
+          "root:task-26"
+        ]
       }
     },
     "root:test-13": {
@@ -7117,10 +7219,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify Demo 2 noindex accessibility responsive and zero-JavaScript behavior",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -7131,7 +7233,14 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-002/live-route-receipt.json",
+        "artifacts/demo-002/screenshots/detail-desktop.png",
+        "artifacts/demo-002/screenshots/detail-mobile.png",
+        "artifacts/demo-002/screenshots/output-desktop.png",
+        "artifacts/demo-002/screenshots/output-mobile.png",
+        "artifacts/demo-002/production-reveal/source-vs-specialized-16x9.png"
+      ],
       "refs": [
         "goal-5",
         "epic-5",
@@ -7180,7 +7289,11 @@
           "root:dec-6",
           "root:test-12"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:task-23",
+          "root:task-24",
+          "root:test-12"
+        ]
       }
     },
     "root:test-14": {
@@ -7189,10 +7302,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify timed rehearsal and golden fallback recovery",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -7203,7 +7316,13 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-002/rehearsal-receipt.json",
+        "artifacts/demo-002/golden-fallback.json",
+        "artifacts/demo-002/golden-fallback.sha256",
+        "artifacts/demo-002/golden-fallback-recovery.md",
+        "artifacts/demo-002/fallback/manifest.sha256"
+      ],
       "refs": [
         "goal-5",
         "epic-5",
@@ -7249,7 +7368,11 @@
           "root:dec-6",
           "root:test-13"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:task-25",
+          "root:task-26",
+          "root:test-13"
+        ]
       }
     },
     "root:test-15": {
@@ -8646,6 +8769,7 @@
         "root:chk-1",
         "root:chk-13",
         "root:chk-15",
+        "root:chk-17",
         "root:chk-2",
         "root:chk-3",
         "root:chk-4",
@@ -8751,6 +8875,7 @@
         "root:chk-1",
         "root:chk-13",
         "root:chk-15",
+        "root:chk-17",
         "root:chk-2",
         "root:chk-3",
         "root:chk-4",
@@ -9146,6 +9271,7 @@
       "root:dec-4": [
         "root:chk-1",
         "root:chk-15",
+        "root:chk-17",
         "root:chk-2",
         "root:chk-3",
         "root:chk-4",
@@ -9248,6 +9374,7 @@
         "root:chk-1",
         "root:chk-13",
         "root:chk-15",
+        "root:chk-17",
         "root:chk-4",
         "root:epic-1",
         "root:epic-2",
@@ -9500,6 +9627,7 @@
       "root:goal-5": [
         "root:chk-13",
         "root:chk-15",
+        "root:chk-17",
         "root:epic-5",
         "root:goal-6",
         "root:spike-6",
@@ -9599,6 +9727,7 @@
       ],
       "root:epic-5": [
         "root:chk-15",
+        "root:chk-17",
         "root:task-21",
         "root:task-22",
         "root:task-23",
@@ -9614,12 +9743,18 @@
       ],
       "root:chk-14": [
         "root:chk-15",
+        "root:chk-17",
         "root:goal-5",
         "root:goal-6",
         "root:task-21",
         "root:task-22",
         "root:task-48",
         "root:task-49"
+      ],
+      "root:chk-15": [
+        "root:chk-17",
+        "root:goal-5",
+        "root:task-48"
       ],
       "root:epic-2": [
         "root:chk-2",
@@ -9682,10 +9817,6 @@
         "root:task-47",
         "root:test-4",
         "root:test-6"
-      ],
-      "root:chk-15": [
-        "root:goal-5",
-        "root:task-48"
       ],
       "root:task-31": [
         "root:goal-7",
@@ -10067,6 +10198,63 @@
         "root:task-48",
         "root:task-49"
       ],
+      "root:task-48": [
+        "root:chk-17",
+        "root:task-21"
+      ],
+      "root:task-21": [
+        "root:chk-17",
+        "root:task-22",
+        "root:test-12"
+      ],
+      "root:task-22": [
+        "root:chk-17",
+        "root:task-49",
+        "root:test-12"
+      ],
+      "root:task-49": [
+        "root:chk-17",
+        "root:task-50",
+        "root:test-12"
+      ],
+      "root:task-50": [
+        "root:chk-17",
+        "root:task-23",
+        "root:test-12"
+      ],
+      "root:task-23": [
+        "root:chk-17",
+        "root:test-12",
+        "root:test-13"
+      ],
+      "root:task-24": [
+        "root:chk-17",
+        "root:test-12",
+        "root:test-13"
+      ],
+      "root:task-25": [
+        "root:chk-17",
+        "root:test-14"
+      ],
+      "root:task-26": [
+        "root:chk-17",
+        "root:test-12",
+        "root:test-14"
+      ],
+      "root:test-12": [
+        "root:chk-17",
+        "root:goal-5",
+        "root:test-13"
+      ],
+      "root:test-13": [
+        "root:chk-17",
+        "root:goal-5",
+        "root:test-14"
+      ],
+      "root:test-14": [
+        "root:chk-17",
+        "root:goal-5"
+      ],
       "root:chk-1": [
         "root:chk-2",
         "root:chk-3",
@@ -10106,28 +10294,16 @@
         "root:goal-5",
         "root:task-48"
       ],
+      "root:chk-17": [
+        "root:goal-5"
+      ],
       "root:test-17": [
         "root:goal-7",
         "root:task-34"
       ],
-      "root:task-48": [
-        "root:task-21"
-      ],
-      "root:task-21": [
-        "root:task-22"
-      ],
-      "root:task-50": [
-        "root:task-23"
-      ],
       "root:test-25": [
         "root:task-28",
         "root:task-31"
-      ],
-      "root:task-22": [
-        "root:task-49"
-      ],
-      "root:task-49": [
-        "root:task-50"
       ]
     },
     "epic": {

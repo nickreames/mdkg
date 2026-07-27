@@ -1,0 +1,500 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-local-integration-allowlist",
+  "recorded_at": "2026-07-27T22:27:30Z",
+  "program_goal_qid": "root:goal-5",
+  "task_qid": "root:task-21",
+  "state": "accepted-local-preflight",
+  "checkout": "/Users/nick/omni-chat-rooms/projects/mdkg",
+  "authority": {
+    "owner": "root-integration-owner",
+    "local_commit_only": true,
+    "fetch": false,
+    "push": false,
+    "provider_action": false,
+    "publication": false
+  },
+  "lease": {
+    "owner": "root-integration-owner",
+    "checkout": "/Users/nick/omni-chat-rooms/projects/mdkg",
+    "acquired_at": "2026-07-27T22:27:30Z",
+    "expires_at": "2026-07-28T00:30:00Z",
+    "base_sha": "34bae9520452ee087ba958c92bcf0716bd59f282",
+    "allowed_path_manifest_sha256": "bf836c967a68d5093f74638153abe21158184b154dd397dfc741d1ca938471f1",
+    "conflict_check": "No unrelated dirty or staged paths; no parallel root writer is active or authorized during this lease.",
+    "parallel_writer_acknowledgement": "The root integration owner is the sole Git-index and root-mdkg writer for the integration window.",
+    "release_condition": "Release after the bounded local commits and empty-index verification, or immediately on path, hash, owner, HEAD, or expiry drift."
+  },
+  "logical_commit_groups": [
+    {
+      "id": "demo2-candidate",
+      "message": "feat(demo): add the accepted Demo 2 rehearsal candidate",
+      "intent": "Accepted Demo 2 canonical integration, forked run graph, public-safe evidence, immutable fallback, and smoke repair."
+    },
+    {
+      "id": "goal5-contract",
+      "message": "plan(presentation): harden Demo 2 publication workflow",
+      "intent": "Goal 5 publication contract, exact-SHA skill, smoke revalidation evidence, generated graph projection, and private root bundle."
+    }
+  ],
+  "path_count": 22,
+  "commit_eligible_count": 17,
+  "local_only_count": 5,
+  "commit_path_manifest_sha256": "bf836c967a68d5093f74638153abe21158184b154dd397dfc741d1ca938471f1",
+  "paths": [
+    {
+      "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+      "git_status": " M",
+      "owner": "root-integration-owner",
+      "reason": "Explicit root-owned private projection of the accepted program graph.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "722240164477f5ec18da3168f10d921006c422939d6193e66850ea601306daec",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "0da3e0ef97152f03a9cce48ef1036535c31c88dfb7a4de633b675f8c25ed9023",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/index/global.json",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "b8378d4330cc28ee5b188ea3829ac0ffc8851f82a792ee520b05d39c052a5fb2",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "fb3a9d59f3faa83afff6f34b03dcd7f313bc3882e0bebd64c2216ac1394141ed",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "17ba09b280c3280da3a8e09f2e2c2417898d9644d8c4382466ecedcde5a67292",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "a5dd891edee04f4cd69d2decb605f9ca867fd5051ec3a30a97f8d6122ecb01fa",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "23a4a0e0b6537ba397fb85e9d3a0776c1c2c42716cac29f55ed495c08de29205",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-22-commit-and-non-force-push-the-accepted-demo-2-surfaces.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "2191c378a9d7f4a8d5e25ce32b644e904a7b3e5bafa9093db1200a69198dca30",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-23-verify-exact-sha-ready-deployments-for-mdkg-dev-and-docs-mdkg-dev.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "199126aa01e17d872b0f7a07967ed4255e079c833df9de2b7c86936afb28fd8e",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-24-verify-demo-2-live-detail-and-output-routes.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "9c1f46e07eb9ea650abe7ab943c69e316392b227c70b3f225a5abdc3e0dce696",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-25-rehearse-the-complete-presentation-against-production-demo-2.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "becee035b18785974e3b2717b581b88ed0a97061a99f39af1d501289389025c1",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-26-seal-demo-2-as-the-immutable-golden-fallback.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "928a0d18a5b2bddc003b46373a63f50c964253d2a25a8ef950169ebe9d3b32cb",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-49-freeze-the-exact-push-range-and-obtain-demo-2-publication-approval.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "1c65166736d5ecc7d62fde7b643c37187272d0c1a18b2559c301c91db4837d7e",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-50-non-force-push-the-approved-demo-2-range-to-origin-main.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "f05825150073a444c86c654b10df3c3bfe1c1e27db0c2338a35dd8aadbb9c9f0",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-12-verify-demo-2-commit-push-and-exact-sha-deployment-evidence.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "e1496b836ca105ead5d4bc00b4e886ab03eb2fddd4e71fcdeefb52fdd90b53fe",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-13-verify-demo-2-noindex-accessibility-responsive-and-zero-javascript-behavior.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "cc9cd6f08afcc8cf4d6719088eee1c733979526d1d00723b04d7badbb595f8eb",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-14-verify-timed-rehearsal-and-golden-fallback-recovery.md",
+      "git_status": " M",
+      "owner": "program-graph-writer",
+      "reason": "Goal 5 contract, skill mirror, graph state, generated index, or execution evidence.",
+      "operation": "stage-and-local-commit",
+      "commit_group": "goal5-contract",
+      "commit_eligible": true,
+      "expected_sha256": "0d6ea4f06fe81fbdb5a456ca070078a226b1c5b575abc317fb822e3a8443bc51",
+      "forbidden_operations": [
+        "push",
+        "provider-action",
+        "history-rewrite",
+        "force-push",
+        "out-of-group-staging"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-preflight.json",
+      "git_status": "??",
+      "owner": "root-integration-owner",
+      "reason": "Self-referential Goal 5 preflight evidence remains local and unstaged.",
+      "operation": "local-evidence-only",
+      "commit_group": null,
+      "commit_eligible": false,
+      "expected_sha256": null,
+      "hash_policy": "Recompute and record externally at the next authority gate; a receipt cannot contain its own content hash.",
+      "forbidden_operations": [
+        "stage",
+        "commit",
+        "push",
+        "provider-action"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-receipt.json",
+      "git_status": "??",
+      "owner": "root-integration-owner",
+      "reason": "Self-referential Goal 5 preflight evidence remains local and unstaged.",
+      "operation": "local-evidence-only",
+      "commit_group": null,
+      "commit_eligible": false,
+      "expected_sha256": null,
+      "hash_policy": "Recompute and record externally at the next authority gate; a receipt cannot contain its own content hash.",
+      "forbidden_operations": [
+        "stage",
+        "commit",
+        "push",
+        "provider-action"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-integration-allowlist.json",
+      "git_status": "??",
+      "owner": "root-integration-owner",
+      "reason": "Self-referential Goal 5 preflight evidence remains local and unstaged.",
+      "operation": "local-evidence-only",
+      "commit_group": null,
+      "commit_eligible": false,
+      "expected_sha256": null,
+      "hash_policy": "Recompute and record externally at the next authority gate; a receipt cannot contain its own content hash.",
+      "forbidden_operations": [
+        "stage",
+        "commit",
+        "push",
+        "provider-action"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md",
+      "git_status": "??",
+      "owner": "local-agent-runtime",
+      "reason": "Generated context pack; never stage or commit.",
+      "operation": "local-runtime-only",
+      "commit_group": null,
+      "commit_eligible": false,
+      "expected_sha256": "3466f597ba0e31197034de5408891a3abccb5fa8999e393f47420293f9f7c2d6",
+      "forbidden_operations": [
+        "stage",
+        "commit",
+        "push",
+        "provider-action"
+      ]
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md.stats.json",
+      "git_status": "??",
+      "owner": "local-agent-runtime",
+      "reason": "Generated context pack; never stage or commit.",
+      "operation": "local-runtime-only",
+      "commit_group": null,
+      "commit_eligible": false,
+      "expected_sha256": "c835410fcb58d98daaf73ec80816424f630519449b7ff73fa8cf44538c90f129",
+      "forbidden_operations": [
+        "stage",
+        "commit",
+        "push",
+        "provider-action"
+      ]
+    }
+  ],
+  "ignored_runtime_inventory": [
+    {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/pack",
+      "file_count": 16,
+      "total_bytes": 255682,
+      "inventory_sha256": "95154dc1cbd65eb47e25051abfcfdc949377a016787b802d5c4d6376dfe5331f",
+      "commit_eligible": false,
+      "reason": "Generated pack, build output, dependency cache, or test output; never stage."
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack",
+      "file_count": 2,
+      "total_bytes": 14944,
+      "inventory_sha256": "625e0751e7823a5a94bad37dff9597179a52312da6b2891ba70870a605046830",
+      "commit_eligible": false,
+      "reason": "Generated pack, build output, dependency cache, or test output; never stage."
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/runs/demo-002/site/dist",
+      "file_count": 2,
+      "total_bytes": 30205,
+      "inventory_sha256": "429cd1efa6d7429ac978fa698e25ddf4aa11edd961cd6675ad154a2ae6094a44",
+      "commit_eligible": false,
+      "reason": "Generated pack, build output, dependency cache, or test output; never stage."
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/runs/demo-002/site/node_modules",
+      "file_count": 8974,
+      "total_bytes": 138353328,
+      "inventory_sha256": "5cd47f0f19dc22f7d6390ab01746d179a510e15161c65bef469554b9ecf3f044",
+      "commit_eligible": false,
+      "reason": "Generated pack, build output, dependency cache, or test output; never stage."
+    },
+    {
+      "path": "mdkg-dev/dist",
+      "file_count": 21,
+      "total_bytes": 185148,
+      "inventory_sha256": "5108bf497cd8a96ff0098059b36b0086d5830bf9892d32acd4c3eeff39391e87",
+      "commit_eligible": false,
+      "reason": "Generated pack, build output, dependency cache, or test output; never stage."
+    },
+    {
+      "path": "docs/dist",
+      "file_count": 91,
+      "total_bytes": 2347230,
+      "inventory_sha256": "84c577f567dffee58a8572ff33b9e1100ea4184138917bcb7f490a6e55109cb4",
+      "commit_eligible": false,
+      "reason": "Generated pack, build output, dependency cache, or test output; never stage."
+    },
+    {
+      "path": "dist",
+      "file_count": 187,
+      "total_bytes": 2133111,
+      "inventory_sha256": "f0afb190c7393e86a35965cfbff5c3fd8720ce3024d516d63eddbbdcd1914e76",
+      "commit_eligible": false,
+      "reason": "Generated pack, build output, dependency cache, or test output; never stage."
+    }
+  ],
+  "forbidden_surfaces": [
+    "src/**",
+    "tests/**",
+    "docs/**",
+    "packages/**",
+    "Demo 1 source",
+    "website template",
+    "deployment configuration",
+    "Git remote",
+    "provider state",
+    "DNS",
+    "analytics",
+    "package publication",
+    "history rewrite",
+    "force push"
+  ],
+  "abort_conditions": [
+    "any dirty or staged path is not listed",
+    "any commit-eligible path hash differs",
+    "HEAD changes before staging",
+    "the lease expires or another writer appears",
+    "candidate or chk-14 identity drifts",
+    "a required change expands beyond the accepted boundary"
+  ]
+}

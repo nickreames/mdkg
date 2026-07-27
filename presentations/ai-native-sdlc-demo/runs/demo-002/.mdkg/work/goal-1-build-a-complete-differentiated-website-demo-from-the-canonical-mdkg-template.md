@@ -2,12 +2,12 @@
 id: goal-1
 type: goal
 title: Build and publish the Demo 2 durable-continuity landing page
-status: blocked
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: The specialized Demo 2 durable-continuity landing page is implemented and locally validated, integrated through the canonical static Astro adapter, approved and non-force pushed under a separate publication gate, verified against READY deployments for the exact pushed SHA at both live routes, and closed with an accepted evidence checkpoint.
 scope_refs: [spike-1, task-1, test-1, task-2, test-2, task-3, test-3]
-active_node: task-1
+last_active_node: test-3
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [child graph validation and routing, local static Astro build, zero client JavaScript and public-safety scan, canonical detail and output route build, separate publication approval, complete non-force push range, exact-SHA READY deployment proof, live desktop and mobile route verification]
 max_iterations: 25
@@ -112,8 +112,10 @@ approval binds the candidate, complete push range, and allowlist.
 
 # Current State
 
-Specialized for Demo 2. The active node is `spike-1`; publication remains
-separately gated.
+The complete child chain is verified through `test-3`. Demo 2 is public at the
+two canonical noindex routes, both existing production projects are `READY` for
+exact SHA `f6af6410cf03ae222c4ee102844a678373b35d93`, and `chk-3` records the
+accepted production proof.
 
 # Iteration Log
 
@@ -125,6 +127,9 @@ separately gated.
 - 2026-07-27: Forked with preserved IDs and specialized for the Demo 2
   durable-continuity rehearsal, including an explicit local-to-production
   chain and separate publication authority.
+- 2026-07-27: Consumed the separate Goal 5 publication approval, normal-pushed
+  the exact reviewed range, verified both production projects and both live
+  routes, and accepted the child proof in `chk-3`.
 
 # Skill Improvement Candidates
 
@@ -133,5 +138,8 @@ separately gated.
 # Completion Evidence
 
 - `chk-2` accepts the reusable source contract.
-- Fork and specialization evidence are retained by the owning presentation
-  program. Child execution evidence remains pending.
+- `artifacts/publication-receipt.json` binds the approved normal push to exact
+  SHA `f6af6410cf03ae222c4ee102844a678373b35d93`.
+- `artifacts/live-verification-receipt.json` binds provider and live-route
+  proof to the same SHA.
+- `chk-3` answers what completed, why, and what comes next.

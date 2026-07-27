@@ -2,7 +2,7 @@
 id: task-3
 type: task
 title: Publish the accepted Demo 2 candidate
-status: backlog
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1

@@ -2,12 +2,12 @@
 id: goal-5
 type: goal
 title: Publish and rehearse Demo 2
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: The accepted Demo 2 candidate has a green canonical smoke contract and bounded local commits; a separate human publication receipt approves the actual fetched origin/main..HEAD commit/path range; that exact range is normal-pushed without force; the same child goal is achieved; both existing production deployments are READY for the exact final SHA; /demo/2/ and /demo/2/output/ pass desktop/mobile static, visibility, accessibility, claim, and privacy gates; the full talk rehearses within 35 minutes; and Demo 2 is sealed as an immutable public-safe fallback.
 scope_refs: [epic-5]
-active_node: task-22
+last_active_node: test-14
 required_skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 required_checks: [accepted chk-14 candidate and green canonical Demo 2 smoke contract, exact local-integration allowlist and bounded local commits, separate human approval of the actual fetched push range, fetched zero-behind state immediately before normal push, resumed and achieved Demo 2 child goal, non-force push receipt, both Vercel production projects READY for exact SHA, desktop and mobile live route checks, noindex accessibility zero-JavaScript claim secret and budget checks, 30-32 minute rehearsal with 35-minute hard stop, fallback reproducibility]
 max_iterations: 25
@@ -21,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-4, chk-13, chk-14, chk-15]
-evidence_refs: [chk-14, chk-15]
+evidence_refs: [chk-14, chk-15, chk-17, test-12, test-13, test-14]
 aliases: [demo-2-publication-and-rehearsal]
 skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -134,9 +134,10 @@ read-only provider and public-URL inspections.
 
 # Current State
 
-Enhanced and paused at accepted `chk-15`. Do not execute until the user grants
-local preparation authority and the exclusive writer window. Activation still
-does not authorize publication.
+Goal condition achieved at accepted `chk-17`. Demo 2 is the production
+rehearsal and immutable golden fallback. Goal 6 may consume its hashes and
+receipts read-only; changing the sealed fallback requires a newly versioned
+artifact and fresh Goal 5 acceptance.
 
 # Iteration Log
 
@@ -146,6 +147,10 @@ does not authorize publication.
 - 2026-07-27: Split local smoke repair and commits from exact-range approval
   and push, bound the accepted chk-14 evidence, and added the portable
   exact-SHA publication skill.
+- 2026-07-27: Normal-pushed the separately approved exact range, verified both
+  production projects and routes at SHA `f6af6410`, achieved the Demo 2 child
+  goal, rehearsed all reveal branches to a 33:55 content finish, and accepted
+  the deterministic golden fallback at `chk-17`.
 
 # Skill Improvement Candidates
 
@@ -153,4 +158,15 @@ does not authorize publication.
 
 # Completion Evidence
 
-- Pending.
+- Accepted closeout checkpoint: `chk-17`
+- Publication approval: `artifacts/demo-002/publication-approval.json`
+- Normal push: `artifacts/demo-002/push-receipt.json`
+- Exact-SHA deployments: `artifacts/demo-002/deployment-receipt.json`
+- Live route, accessibility, privacy, static, and screenshot proof:
+  `artifacts/demo-002/live-route-receipt.json`
+- Production rehearsal: `artifacts/demo-002/rehearsal-receipt.json`
+- Immutable fallback:
+  `artifacts/demo-002/golden-fallback.json`,
+  `artifacts/demo-002/golden-fallback.sha256`, and
+  `artifacts/demo-002/golden-fallback-recovery.md`
+- Independent gates: `test-12`, `test-13`, and `test-14`
