@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-78",
+  "implementation_node": "root:task-813",
+  "evaluation_node": "root:test-472",
+  "verified_at": "2026-07-26",
+  "runtime": {
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "network_policy": "offline"
+  },
+  "template": {
+    "path": ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+    "sha256": "2c8b395e43129681574f5417d00311ed30568a3d86bee7639f3254af5a5caa12",
+    "mode": "readonly",
+    "role": "template",
+    "materialization": "default_children",
+    "pre_run_questions": [
+      "scope_and_exclusions",
+      "ci_evidence_source_policy",
+      "local_execution_budget",
+      "authoritative_skill_projection_contract",
+      "generated_output_policy"
+    ],
+    "evidence_lanes": [
+      "local_test_build_inventory",
+      "ci_gate_inventory",
+      "smoke_coverage",
+      "skill_registry_mirror_integrity",
+      "harness_guidance_gaps",
+      "prioritized_improvements"
+    ],
+    "local_actions": [
+      "inspect_tests_and_build_configuration",
+      "inspect_ci_configuration",
+      "inspect_automation_scripts",
+      "inspect_skill_registry_and_projections",
+      "inspect_harness_guidance",
+      "run_local_node24_verification",
+      "create_mdkg_evidence_and_followups"
+    ],
+    "approval_gated_unrequested_actions": [
+      "external_ci_provider_calls",
+      "external_network_or_registry_calls"
+    ]
+  },
+  "focused_proof": {
+    "command": "node --test dist/tests/commands/loop.test.js dist/tests/test-ci-audit-template.test.js",
+    "passed": 20,
+    "failed": 0,
+    "cases": {
+      "positive_identity_contract": "passed",
+      "missing_duplicate_renamed_extra_lane_diagnostics": "passed",
+      "sqlite_dry_run_observational": "passed",
+      "selected_goal_unchanged_in_disposable_fixture": "passed",
+      "real_fork_five_question_bindings": "passed",
+      "six_lanes_waiting": "passed",
+      "plan_has_no_unanswered_questions_pending_approvals_invalid_bindings_or_blocked_children": "passed",
+      "next_selects_grounding_spike": "passed",
+      "concise_pack_dry_run": "passed"
+    },
+    "disposable_ids": {
+      "loop": "loop-1",
+      "spike": "spike-1",
+      "task": "task-1",
+      "test": "test-1",
+      "decision": "dec-1"
+    }
+  },
+  "historical_consumer_boundary": {
+    "loop": "root:loop-7",
+    "content_sha256": "07fc1262fa3561d3e28546f05d5d247f8dcc25de2f7570c7be1e2a43da84066e",
+    "status": "done",
+    "stored_template_hash": "sha256:84d12faf4c33d808eae229f13f169f5b1aedd199e9ef5ef3f1b4b055f0fb3c39",
+    "mutation": "none",
+    "lineage_note": "The completed fork intentionally retains its historical source hash and now reports stale provenance against the corrected canonical template."
+  },
+  "repository_boundary": {
+    "selected_goal": "root:goal-73",
+    "selected_goal_state_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "provider_calls": 0,
+    "network_or_registry_calls": 0,
+    "publication_actions": 0,
+    "functional_runtime_changes": 0,
+    "unrelated_untracked_paths_preserved": [
+      ".mdkg/bundles/private/presentations/",
+      "presentations/"
+    ]
+  }
+}

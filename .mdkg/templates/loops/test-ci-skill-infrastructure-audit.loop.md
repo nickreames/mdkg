@@ -11,15 +11,15 @@ scope_description: Repository or workspace selected for tests CI automation and 
 template_refs: []
 materialization_mode: default_children
 child_refs: []
-pre_run_questions: [target_scope, local_ci_simulation_approved, skill_sync_allowed, generated_output_policy]
+pre_run_questions: [scope_and_exclusions, ci_evidence_source_policy, local_execution_budget, authoritative_skill_projection_contract, generated_output_policy]
 question_answer_refs: []
-pre_approved_actions: [read_tests, inspect_ci_config, run_local_smokes, create_mdkg_evidence]
-approval_gated_actions: [external_ci_calls]
-required_actions: [read_tests, inspect_ci_config, run_local_smokes, create_mdkg_evidence]
-requested_actions: [read_tests, inspect_ci_config, run_local_smokes, create_mdkg_evidence]
-prohibited_actions: [ci_config_changes, skill_file_edits, push_publish_deploy]
+pre_approved_actions: [inspect_tests_and_build_configuration, inspect_ci_configuration, inspect_automation_scripts, inspect_skill_registry_and_projections, inspect_harness_guidance, run_local_node24_verification, create_mdkg_evidence_and_followups]
+approval_gated_actions: [external_ci_provider_calls, external_network_or_registry_calls]
+required_actions: [inspect_tests_and_build_configuration, inspect_ci_configuration, inspect_automation_scripts, inspect_skill_registry_and_projections, inspect_harness_guidance, run_local_node24_verification, create_mdkg_evidence_and_followups]
+requested_actions: [inspect_tests_and_build_configuration, inspect_ci_configuration, inspect_automation_scripts, inspect_skill_registry_and_projections, inspect_harness_guidance, run_local_node24_verification, create_mdkg_evidence_and_followups]
+prohibited_actions: [functional_implementation, dependency_replacement, tracked_generated_output_mutation, existing_consumer_mutation, unrelated_graph_or_selection_mutation, publication_or_deployment]
 action_approval_refs: []
-evidence_lanes: [test_inventory, ci_gate_review, skill_infrastructure_review, gap_prioritization, recommendations]
+evidence_lanes: [local_test_build_inventory, ci_gate_inventory, smoke_coverage, skill_registry_mirror_integrity, harness_guidance_gaps, prioritized_improvements]
 evidence_lane_refs: []
 lane_waiver_refs: []
 lane_waiver_decision_refs: []
@@ -68,36 +68,43 @@ Run a read-only audit of tests, CI gates, automation scripts, and SKILL.md infra
 
 # Required Evidence Lanes
 
-| Lane | Required | Evidence Needed | Status | Blocker | Recovery Node | Decision Or Waiver |
-| --- | --- | --- | --- | --- | --- | --- |
-| local test/build inventory | yes | package scripts and command receipts | todo | tool failure may occur | spike/proposal | none |
-| CI gate inventory | yes | workflow/config/provider evidence | todo | provider access may need approval | spike/proposal | none |
-| smoke coverage | yes | smoke scripts and gaps | todo | none | none | none |
-| SKILL.md registry and mirrors | yes | canonical and mirrored skill review | todo | none | none | none |
-| harness guidance gaps | yes | missing/duplicated instructions | todo | none | none | none |
-| prioritized improvements | yes | risk/payoff ordering | todo | none | none | none |
+| Identity | Lane | Required | Evidence Needed | Status | Blocker | Recovery Node | Decision Or Waiver |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `local_test_build_inventory` | local test/build inventory | yes | package scripts and command receipts | todo | tool failure may occur | spike/proposal | none |
+| `ci_gate_inventory` | CI gate inventory | yes | workflow/config/provider evidence | todo | provider access may need approval | spike/proposal | none |
+| `smoke_coverage` | smoke coverage | yes | smoke scripts and gaps | todo | none | none | none |
+| `skill_registry_mirror_integrity` | SKILL.md registry and mirrors | yes | canonical and mirrored skill review | todo | none | none | none |
+| `harness_guidance_gaps` | harness guidance gaps | yes | missing/duplicated instructions | todo | none | none | none |
+| `prioritized_improvements` | prioritized improvements | yes | risk/payoff ordering | todo | none | none | none |
 
 # Pre-Run Questions
 
-- Is CI provider access approved, or should the audit stay local-only?
-- Are local tests/builds approved when they write caches or generated outputs?
-- Should skill changes be in scope, or should this audit only create proposals?
-- Which runtime/client mirrors must be considered authoritative projections?
+- What repository surfaces and exclusions define the audit scope?
+- Which checked-in, local, provider, or registry sources may supply evidence?
+- What local execution budget and runtime constraints are approved?
+- Which skill registry is canonical, and which mirrors or public seeds are
+  authoritative managed projections?
+- Which ignored or tracked generated outputs may local verification create?
 
 # Pre-Approved Read-Only Actions
 
-- Inspect package scripts, tests, CI configs, smoke scripts, skills, mirrors,
-  generated docs, and mdkg graph.
-- Run local tests/builds/smokes and mdkg validation commands that do not call
-  external services.
-- Create mdkg evidence, skill-improvement proposals, tasks, tests, and open
-  questions.
+- Inspect tests and build configuration, CI configuration, automation scripts,
+  skill registries and projections, and harness guidance.
+- Run explicitly budgeted local Node 24 verification without external provider,
+  registry, or network calls.
+- Create bounded mdkg evidence and source-backed follow-up tasks or tests.
 
 # Approval-Gated Actions
 
-- CI provider/API calls.
-- Skill edits, mirror sync, source/test changes, generated updates, or
-  dependency changes unless the loop scope explicitly allows implementation.
+- External CI provider calls.
+- External network or registry calls.
+
+# Prohibited Actions
+
+- Functional implementation or mutation of existing consumers.
+- Dependency replacement or tracked generated-output mutation.
+- Unrelated graph or selected-goal mutation.
+- Publication or deployment.
 
 # Blocker Continuation
 
