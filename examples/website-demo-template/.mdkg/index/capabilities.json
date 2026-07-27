@@ -3,12 +3,12 @@
     "tool": "mdkg",
     "schema_version": 1,
     "cache_version": 1,
-    "generated_at": "2026-07-11T18:36:57.736Z",
+    "generated_at": "2026-07-27T04:04:10.991Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/website-demo-template",
     "workspaces": [
       "root"
     ],
-    "record_count": 18
+    "record_count": 19
   },
   "records": [
     {
@@ -29,7 +29,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7",
       "headings": [
         {
@@ -118,7 +118,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f",
       "headings": [
         {
@@ -235,7 +235,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-17",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45",
       "headings": [
         {
@@ -351,7 +351,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-03",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8",
       "headings": [
         {
@@ -424,7 +424,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03",
       "headings": [
         {
@@ -468,7 +468,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f",
       "headings": [
         {
@@ -553,7 +553,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:ef60b65b54a57ed54984a49f5ed14453cb4e47170a5660be94eceec26b92b01f",
       "headings": [
         {
@@ -597,7 +597,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-14",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae",
       "headings": [
         {
@@ -663,7 +663,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:945fb5cb47945735b9529f2b0a322630b3e8aef1c3e69c4ce85dd2db3e905cca",
       "headings": [
         {
@@ -718,7 +718,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-10",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a",
       "headings": [
         {
@@ -830,23 +830,25 @@
       "visibility": "private",
       "id": "dec-1",
       "qid": "root:dec-1",
-      "path": ".mdkg/design/dec-1-astro-plus-react-islands-is-the-demo-stack.md",
-      "title": "Astro plus React Islands is the demo stack",
+      "path": ".mdkg/design/dec-1-static-astro-and-zero-client-javascript-is-the-demo-stack.md",
+      "title": "Static Astro and zero client JavaScript is the demo stack",
       "tags": [
         "demo",
         "stack",
         "astro",
-        "react-islands"
+        "static",
+        "zero-javascript"
       ],
       "refs": [
-        "goal-1"
+        "goal-1",
+        "prd-2"
       ],
       "aliases": [],
       "links": [],
       "artifacts": [],
-      "updated": "2026-06-29",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
-      "source_hash": "sha256:f79d939c33521b22da6bb51f25914ba1f09d4dd38cbf2947a9aa2be0faedb262",
+      "updated": "2026-07-26",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
+      "source_hash": "sha256:537d9f716a8c566ac60e8e7bf9aaa9d4db5839963335ceb99f4421bf93b59dc0",
       "headings": [
         {
           "level": 1,
@@ -878,22 +880,23 @@
       "id": "dec-2",
       "qid": "root:dec-2",
       "path": ".mdkg/design/dec-2-demo-template-remains-preview-gated-and-public-safe.md",
-      "title": "demo template remains preview gated and public safe",
+      "title": "Demo template remains caller gated and public safe",
       "tags": [
         "demo",
-        "preview",
+        "authority",
         "boundary",
         "no-secret"
       ],
       "refs": [
-        "goal-1"
+        "goal-1",
+        "prd-2"
       ],
       "aliases": [],
       "links": [],
       "artifacts": [],
-      "updated": "2026-06-29",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
-      "source_hash": "sha256:0e2418c88d7eff56a7e36fd5fa5ae78e07785273f87b71a028031d1ad6e39d5b",
+      "updated": "2026-07-26",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
+      "source_hash": "sha256:4e2ba5cbcf0bee4c4ae8b81425295c857cab231ab34e012974c3b98c2da81417",
       "headings": [
         {
           "level": 1,
@@ -935,15 +938,16 @@
       ],
       "refs": [
         "goal-1",
+        "prd-2",
         "dec-1",
         "dec-2"
       ],
       "aliases": [],
       "links": [],
       "artifacts": [],
-      "updated": "2026-06-29",
-      "indexed_at": "2026-07-11T18:36:57.736Z",
-      "source_hash": "sha256:220a2f22aca7592d4e2177d5348667963f59c51b8b5bdccf04a9fd879cdea2af",
+      "updated": "2026-07-26",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
+      "source_hash": "sha256:782d85d6dace67f9b2c7b9daac922053d91d62cbf67d596eeb595438c9120ea9",
       "headings": [
         {
           "level": 1,
@@ -985,6 +989,83 @@
       "node_type": "edd"
     },
     {
+      "kind": "design",
+      "workspace": "root",
+      "visibility": "private",
+      "id": "prd-2",
+      "qid": "root:prd-2",
+      "path": ".mdkg/design/prd-2-reusable-static-astro-website-demo-platform.md",
+      "title": "Reusable static Astro website demo platform",
+      "tags": [
+        "website-demo",
+        "static-astro",
+        "source-template"
+      ],
+      "refs": [
+        "goal-1",
+        "epic-1",
+        "edd-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [
+        "reusable-website-demo-platform"
+      ],
+      "links": [],
+      "artifacts": [
+        "README.md",
+        "DESIGN.md",
+        "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+        "DEMO_HANDOFF_PROMPT.md"
+      ],
+      "updated": "2026-07-26",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
+      "source_hash": "sha256:a089216da42dae737becb1da714be3cab51e8c5f2c2a23ff9c3c11f3282accf9",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Problem"
+        },
+        {
+          "level": 1,
+          "text": "Goals"
+        },
+        {
+          "level": 1,
+          "text": "Non-goals"
+        },
+        {
+          "level": 1,
+          "text": "Requirements"
+        },
+        {
+          "level": 2,
+          "text": "Functional"
+        },
+        {
+          "level": 2,
+          "text": "Non-functional"
+        },
+        {
+          "level": 1,
+          "text": "Acceptance Criteria"
+        },
+        {
+          "level": 1,
+          "text": "Metrics / Success"
+        },
+        {
+          "level": 1,
+          "text": "Risks"
+        },
+        {
+          "level": 1,
+          "text": "Open Questions"
+        }
+      ],
+      "node_type": "prd"
+    },
+    {
       "kind": "skill",
       "workspace": "root",
       "visibility": "private",
@@ -1017,7 +1098,7 @@
         ".mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873",
       "headings": [
         {
@@ -1124,7 +1205,7 @@
         "llms.txt"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
       "headings": [
         {
@@ -1200,7 +1281,7 @@
         ".mdkg/design/edd-10-mdkg-goal-node-architecture-and-recursive-agent-loop.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5",
       "headings": [
         {
@@ -1283,7 +1364,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
       "headings": [
         {
@@ -1361,7 +1442,7 @@
         "AGENT_START.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-11T18:36:57.736Z",
+      "indexed_at": "2026-07-27T04:04:10.991Z",
       "source_hash": "sha256:1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
       "headings": [
         {

@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "kind": "website-demo-operator-materialization-manifest",
+  "source_root": "examples/website-demo-template",
+  "target_root_policy": "The --target run root supplied to bootstrap-website-demo-run.js",
+  "entries": [
+    {
+      "source_path": "AGENTS.md",
+      "target_path": "AGENTS.md",
+      "sha256": "9e33a1c20320e317e1e37dbb09fd0303e355b9e7d49cf2128fe791aaa2ce2fb1",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "AGENT_START.md",
+      "target_path": "AGENT_START.md",
+      "sha256": "91e31ae818b29f62ebe77ac24f7e1a2bd10a4fedfc1684da935f0849aaf6d200",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "CLAUDE.md",
+      "target_path": "CLAUDE.md",
+      "sha256": "3ff3ec5560968f7f1bf6f7d34a3c4b6e636edc9f0d45f717cdebc4df3b76403a",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "CLI_COMMAND_MATRIX.md",
+      "target_path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "82c509b91498131304ff2bc94bb7eb2f29c3c207a00bc8bcaf8a6ab52ff9e689",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "DEMO_HANDOFF_PROMPT.md",
+      "target_path": "DEMO_HANDOFF_PROMPT.md",
+      "sha256": "d7e4e2c4c3ed03e25f47a385872f20feb35f2b40973111b4f14628301eb9a64d",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "DESIGN.md",
+      "target_path": "DESIGN.md",
+      "sha256": "61259e6145df763b86a55c342f1e9559df98822c12577de916ec82b8d8bbc269",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+      "target_path": "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+      "sha256": "e571b6e5062807f176b432d51ea5fe75d98249dd9cf1e21aea5c113b4d532bfb",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "CREATIVE_PRODUCTION_INTAKE.md",
+      "target_path": "CREATIVE_PRODUCTION_INTAKE.md",
+      "sha256": "265f826c3e461177050711b31f54abbd2a19f8f5c98b76451c4ddf15f0c32329",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "llms.txt",
+      "target_path": "llms.txt",
+      "sha256": "108ac1feb3e11824c9cfc5116aaa83355cb461ad9b0ec5c4bb244f6a70276f31",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": ".agents/skills/.mdkg-managed.json",
+      "target_path": ".agents/skills/.mdkg-managed.json",
+      "sha256": "f0084a99b711e68ca12c95db4dea67078002343a5dbd3ab577fc0993cf952a49",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-agents-manifest"
+    },
+    {
+      "source_path": ".agents/skills/author-mdkg-skill/SKILL.md",
+      "target_path": ".agents/skills/author-mdkg-skill/SKILL.md",
+      "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-agents",
+      "canonical_skill_path": ".mdkg/skills/author-mdkg-skill/SKILL.md"
+    },
+    {
+      "source_path": ".agents/skills/build-pack-and-execute-task/SKILL.md",
+      "target_path": ".agents/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-agents",
+      "canonical_skill_path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md"
+    },
+    {
+      "source_path": ".agents/skills/pursue-mdkg-goal/SKILL.md",
+      "target_path": ".agents/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-agents",
+      "canonical_skill_path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md"
+    },
+    {
+      "source_path": ".agents/skills/select-work-and-ground-context/SKILL.md",
+      "target_path": ".agents/skills/select-work-and-ground-context/SKILL.md",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-agents",
+      "canonical_skill_path": ".mdkg/skills/select-work-and-ground-context/SKILL.md"
+    },
+    {
+      "source_path": ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+      "target_path": ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-agents",
+      "canonical_skill_path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md"
+    },
+    {
+      "source_path": ".claude/skills/.mdkg-managed.json",
+      "target_path": ".claude/skills/.mdkg-managed.json",
+      "sha256": "f0084a99b711e68ca12c95db4dea67078002343a5dbd3ab577fc0993cf952a49",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-claude-manifest"
+    },
+    {
+      "source_path": ".claude/skills/author-mdkg-skill/SKILL.md",
+      "target_path": ".claude/skills/author-mdkg-skill/SKILL.md",
+      "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-claude",
+      "canonical_skill_path": ".mdkg/skills/author-mdkg-skill/SKILL.md"
+    },
+    {
+      "source_path": ".claude/skills/build-pack-and-execute-task/SKILL.md",
+      "target_path": ".claude/skills/build-pack-and-execute-task/SKILL.md",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-claude",
+      "canonical_skill_path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md"
+    },
+    {
+      "source_path": ".claude/skills/pursue-mdkg-goal/SKILL.md",
+      "target_path": ".claude/skills/pursue-mdkg-goal/SKILL.md",
+      "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-claude",
+      "canonical_skill_path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md"
+    },
+    {
+      "source_path": ".claude/skills/select-work-and-ground-context/SKILL.md",
+      "target_path": ".claude/skills/select-work-and-ground-context/SKILL.md",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-claude",
+      "canonical_skill_path": ".mdkg/skills/select-work-and-ground-context/SKILL.md"
+    },
+    {
+      "source_path": ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+      "target_path": ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+      "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "skill-mirror-claude",
+      "canonical_skill_path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md"
+    }
+  ]
+}

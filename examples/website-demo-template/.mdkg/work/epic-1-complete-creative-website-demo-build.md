@@ -11,13 +11,13 @@ artifacts: []
 relates: []
 blocked_by: []
 blocks: [spike-1, task-1, test-1]
-refs: [goal-1]
-context_refs: [edd-1, dec-1, dec-2]
+refs: [goal-1, prd-2]
+context_refs: [prd-2, edd-1, dec-1, dec-2]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-06-29
-updated: 2026-06-29
+updated: 2026-07-26
 ---
 # Goal
 
@@ -27,21 +27,21 @@ validation and closeout recommendation.
 # Scope
 
 - Creative direction in `spike-1`.
-- Astro plus React Islands implementation in `task-1`.
+- Static Astro and zero-client-JavaScript implementation in `task-1`.
 - Build, browser, no-secret, and claims validation in `test-1`.
-- Closeout recommendation for discard, polish, or parent Vercel preview
-  approval.
+- Closeout recommendation for discard, rework, or caller-owned integration.
 
 # Milestones
 
 - `spike-1`: choose audience, offer, structure, and art direction.
-- `task-1`: build the local site.
+- `task-1`: build the complete static local site.
 - `test-1`: validate the candidate.
 
 # Out of Scope
 
 - Vercel project creation.
-- Preview deployment.
+- Git integration or commit.
+- Preview or production deployment.
 - DNS, aliases, durable hosting, push, tag, publish, or analytics activation.
 
 # Risks
@@ -53,6 +53,7 @@ validation and closeout recommendation.
 # Links / Artifacts
 
 - `goal-1`
+- `prd-2`
 - `edd-1`
 - `dec-1`
 - `dec-2`
