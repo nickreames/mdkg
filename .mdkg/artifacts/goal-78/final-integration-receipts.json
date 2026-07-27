@@ -9,7 +9,8 @@
   },
   "execution_policy": {
     "ci_release_invocations": 1,
-    "prepublish_only_invocations": 1,
+    "prepublish_only_invocations": 2,
+    "user_authorized_retries": 1,
     "automatic_retries": 0
   },
   "ci_release": {
@@ -47,7 +48,7 @@
       "changed_tracked_paths": []
     }
   },
-  "prepublish_only": {
+  "prepublish_only_initial_attempt": {
     "command": "npm run prepublishOnly",
     "ok": false,
     "duration_ms": 286605,
@@ -77,6 +78,57 @@
       "changed_tracked_paths": []
     }
   },
+  "prepublish_only_authorized_retry": {
+    "command": "npm run prepublishOnly",
+    "authorization": "Explicit user authorization after the initial unrelated concurrent-status failure.",
+    "quiescence_proof": {
+      "window_start": "2026-07-27T00:54:54Z",
+      "window_end": "2026-07-27T00:55:24Z",
+      "status_sha256_before": "4fb82b93e5e05f08a758cb4883d74c965efbdca38648e7f2568b5476c24edc16",
+      "status_sha256_after": "4fb82b93e5e05f08a758cb4883d74c965efbdca38648e7f2568b5476c24edc16",
+      "latest_unrelated_mtime": "2026-07-27T00:49:03.697Z",
+      "stable": true
+    },
+    "ok": true,
+    "duration_ms": 283897,
+    "within_budget": true,
+    "receipt_dir": "/private/tmp/mdkg-prepublish-release-1785113733919-15768",
+    "gate_count": 9,
+    "gate_failures": [],
+    "alias_count": 47,
+    "canonical_smoke_count": 46,
+    "smoke_failures": [],
+    "coverage": {
+      "test_files": 100,
+      "tests": 733,
+      "passed": 733,
+      "failed": 0,
+      "lines_percent": 89.31,
+      "branches_percent": 77.55,
+      "functions_percent": 96.25,
+      "thresholds": {
+        "lines_percent": 89,
+        "branches_percent": 77,
+        "functions_percent": 96
+      }
+    },
+    "artifact": {
+      "sha256": "3c5ac4056436d506d8b9204e9b6c90d5b25883dc121067b2b357a148710d352a",
+      "bytes": 431397
+    },
+    "git_boundary": {
+      "ok": true,
+      "head": "bfc1ac1062432f2a8299719834253e3b603c1600",
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true,
+      "changed_tracked_paths": []
+    }
+  },
   "concurrent_work_evidence": {
     "owned_by_this_goal": false,
     "inspection_only": true,
@@ -95,13 +147,12 @@
     "unchanged": true
   },
   "closeout_state": {
-    "ready": false,
-    "reason": "The required prepublish command returned nonzero on its Git-visible status invariant despite all gates and smokes passing. The accepted no-automatic-retry policy requires explicit authority for a fresh run or the separate decision and approval required for a waiver.",
-    "unauthorized_actions_not_taken": [
+    "ready": true,
+    "reason": "The explicitly authorized fresh prepublish run passed every gate, all 46 canonical smokes, coverage floors, artifact checks, and the complete Git-visible boundary after quiescence was proven.",
+    "boundaries_preserved": [
       "automatic whole-ladder retry",
       "waiver",
       "mutation or cleanup of unrelated presentation work",
-      "goal closure",
       "push",
       "tag",
       "publish",
