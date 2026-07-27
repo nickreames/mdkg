@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "decision_ref": "root:dec-91",
+  "source_measurements": ".mdkg/artifacts/goal-78/ci-topology-measurements.json",
+  "source_manifest": "scripts/smoke-manifest.json",
+  "workflow": ".github/workflows/release-readiness.yml",
+  "runtime_policy": {
+    "fast": ["24.15.0", "24.x"],
+    "full": "24.15.0",
+    "evidence_boundary": "Node 24.15.0 is a source-owned workflow requirement; the spike does not claim local or provider execution of that exact runtime."
+  },
+  "triggers": {
+    "fast": ["pull_request", "push:main", "workflow_dispatch:tier=fast"],
+    "full": ["workflow_dispatch:tier=full"],
+    "full_requires_commit_sha": true
+  },
+  "fast": {
+    "job_timeout_minutes": 15,
+    "measured_smoke_duration_ms": 52097,
+    "canonical": [
+      "smoke:consumer",
+      "smoke:git-materialize",
+      "smoke:loop",
+      "smoke:upgrade",
+      "smoke:init",
+      "smoke:db-queue-cli",
+      "smoke:db-snapshot",
+      "smoke:sqlite",
+      "smoke:bundle",
+      "smoke:subgraph",
+      "smoke:mdkg-dev-docs",
+      "smoke:mdkg-dev-seo",
+      "smoke:goal"
+    ],
+    "required_gates": [
+      "dependency_bootstrap_and_preflight",
+      "publishable_runtime_coverage",
+      "cli_snapshot",
+      "cli_contract",
+      "docs_contract",
+      "security_verifier",
+      "graph_validation",
+      "publish_readiness",
+      "tracked_drift"
+    ]
+  },
+  "full": {
+    "wall_clock_target_minutes": 30,
+    "prepare_timeout_minutes": 30,
+    "shard_timeout_minutes": 20,
+    "aggregate_timeout_minutes": 5,
+    "canonical_count": 46,
+    "measured_smoke_duration_ms": 161690,
+    "shards": [
+      {
+        "id": "package-command",
+        "measured_duration_ms": 35497,
+        "canonical": [
+          "smoke:consumer",
+          "smoke:matrix",
+          "smoke:upgrade",
+          "smoke:init",
+          "smoke:capabilities",
+          "smoke:command-docs"
+        ]
+      },
+      {
+        "id": "lifecycle-agent",
+        "measured_duration_ms": 37247,
+        "canonical": [
+          "smoke:loop",
+          "smoke:cli-ux-polish",
+          "smoke:operator-health",
+          "smoke:spike",
+          "smoke:goal-lifecycle",
+          "smoke:semantic-refs",
+          "smoke:checkpoint-templates",
+          "smoke:handoff",
+          "smoke:warning-ux",
+          "smoke:goal"
+        ]
+      },
+      {
+        "id": "db-work",
+        "measured_duration_ms": 26411,
+        "canonical": [
+          "smoke:db",
+          "smoke:db-queue",
+          "smoke:db-queue-cli",
+          "smoke:db-events",
+          "smoke:db-materializer",
+          "smoke:db-snapshot",
+          "smoke:archive-work",
+          "smoke:work-invocation",
+          "smoke:integration-ux"
+        ]
+      },
+      {
+        "id": "graph-concurrency",
+        "measured_duration_ms": 39356,
+        "canonical": [
+          "smoke:demo-graph",
+          "smoke:bundle",
+          "smoke:graph-clone",
+          "smoke:mcp",
+          "smoke:subgraph",
+          "smoke:visibility",
+          "smoke:sqlite",
+          "smoke:parallel"
+        ]
+      },
+      {
+        "id": "sites-git-repair",
+        "measured_duration_ms": 23179,
+        "canonical": [
+          "smoke:git-materialize",
+          "smoke:fix-plan",
+          "smoke:branch-conflicts",
+          "smoke:id-repair",
+          "smoke:mdkg-dev",
+          "smoke:mdkg-dev-docs",
+          "smoke:mdkg-dev-seo",
+          "smoke:mdkg-dev-polish-pass2",
+          "smoke:mdkg-dev-polish-pass3",
+          "smoke:mdkg-dev-polish-pass4",
+          "smoke:mdkg-dev-polish-pass5",
+          "smoke:mdkg-dev-a11y",
+          "smoke:mdkg-dev-perf"
+        ]
+      }
+    ]
+  },
+  "job_dag": {
+    "fast": [],
+    "full_prepare": [],
+    "full_smoke": ["full_prepare"],
+    "full_release": ["full_prepare", "full_smoke"]
+  },
+  "exact_sha_policy": {
+    "format": "40 lowercase hexadecimal characters",
+    "checkout": "actions/checkout ref is the supplied SHA",
+    "verification": [
+      "git rev-parse HEAD equals the supplied SHA",
+      "HEAD is detached before release work"
+    ]
+  },
+  "artifact_policy": {
+    "immutable_package": {
+      "producer": "full_prepare",
+      "consumer_verification": "SHA-256 must match the source-owned context manifest"
+    },
+    "fast_evidence": {
+      "name": "mdkg-fast-<runtime-id>-<run-id>",
+      "retention_days": 14,
+      "upload": "if: always()",
+      "missing_files": "error"
+    },
+    "full_context": {
+      "name": "mdkg-full-context-<commit-sha>",
+      "retention_days": 14,
+      "upload": "on successful preparation",
+      "missing_files": "error"
+    },
+    "full_shard_evidence": {
+      "name": "mdkg-full-<shard>-<commit-sha>",
+      "retention_days": 30,
+      "upload": "if: always()",
+      "missing_files": "error"
+    }
+  },
+  "profile_cache_policy": {
+    "site_smokes_share_one_shard": true,
+    "docs_profiles": 4,
+    "mdkg_dev_profiles": 5,
+    "maximum_actual_builds_per_normalized_profile": 1
+  },
+  "concurrency": {
+    "fast": "cancel superseded work per pull request or ref",
+    "full": "group by exact commit SHA and never auto-cancel an in-flight release proof"
+  },
+  "workflow_validation": {
+    "strategy": "deterministic_generation_and_check",
+    "new_dependency": false,
+    "partial_yaml_parser": false,
+    "drift_gate": "generated workflow must byte-match the checked-in workflow"
+  },
+  "authority": {
+    "provider_execution_claimed": false,
+    "branch_protection_mutation": false,
+    "network_or_registry_access_for_spike": false,
+    "publication_authority": false
+  }
+}

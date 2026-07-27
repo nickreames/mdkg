@@ -2,19 +2,19 @@
 id: spike-33
 type: spike
 title: Bind measured local release receipts to the risk-tier CI topology
-status: backlog
+status: done
 priority: 1
 parent: goal-78
 next: task-811
 tags: [ci, smoke, release, decision]
-owners: []
+owners: [root]
 links: []
-artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json]
+artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json, .mdkg/artifacts/goal-78/ci-topology-plan.json]
 relates: [prop-9, loop-7]
 blocked_by: [test-464]
 blocks: [task-811]
-refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88, chk-549, chk-550, chk-551]
-context_refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88, chk-549, chk-550, chk-551]
+refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88, chk-549, chk-550, chk-551, dec-91]
+context_refs: [goal-77, goal-78, prop-9, loop-7, test-463, test-464, dec-87, dec-88, dec-91, chk-549, chk-550, chk-551]
 evidence_refs: [chk-549, chk-550, chk-551]
 aliases: []
 skills: [select-work-and-ground-context, service-boundary-ownership-check]
@@ -84,7 +84,8 @@ the measured latency and build budgets produced by Goal 1?
 
 # Recommendation
 
-Accept a durable decision after measurements that binds all of:
+Accepted `root:dec-91`, with machine-readable detail in
+`.mdkg/artifacts/goal-78/ci-topology-plan.json`. It binds:
 
 - the exact fast-tier canonical identities and target budget;
 - full-release shard count, exact membership, measured shard load, and target
@@ -104,17 +105,16 @@ Accept a durable decision after measurements that binds all of:
 - final tracked-drift proof; and
 - the structured workflow parser or deterministic generator/checker strategy.
 
-Default to no new dependency or registry access. Prefer deterministic
-generation/checking; choosing a YAML parser dependency requires separate
-dependency and registry authority.
-
-If measurements exceed those targets, adjust shard membership or latency in the
-decision with evidence rather than silently weakening smoke coverage.
+The accepted shape uses 13 fast canonical smokes measured at `52.097s` and
+five full shards measured between `23.179s` and `39.356s`. It adds no
+dependency: workflow structure is deterministically generated and byte-checked.
+Any later membership or latency change must revise or supersede the decision
+rather than silently weaken smoke coverage.
 
 # Follow-Up Nodes To Create
 
-- Create one accepted CI-topology decision derived from `root:prop-9` and link
-  it to this spike, `root:task-811`, and `root:test-470` before implementation.
+- Created and accepted `root:dec-91`, derived from `root:prop-9` and linked to
+  this spike, `root:task-811`, and `root:test-470`.
 - Use existing `root:task-811` and `root:test-470` for implementation/proof;
   do not create duplicate workflow work.
 
@@ -154,5 +154,7 @@ decision with evidence rather than silently weakening smoke coverage.
 - `root:test-463`
 - `root:test-464`
 - `root:prop-9`
+- `root:dec-91`
+- `.mdkg/artifacts/goal-78/ci-topology-plan.json`
 - `.mdkg/artifacts/loop-7/test-ci-skill-infrastructure/ci-parity-matrix.json`
 - `.mdkg/artifacts/loop-7/test-ci-skill-infrastructure/smoke-coverage-map.json`

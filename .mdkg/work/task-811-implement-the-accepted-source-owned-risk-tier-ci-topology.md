@@ -8,15 +8,15 @@ parent: goal-78
 prev: spike-33
 next: test-470
 tags: [ci, smoke, release, workflow]
-owners: []
+owners: [root]
 links: []
 artifacts: []
 relates: [prop-9, loop-7]
 blocked_by: [spike-33]
 blocks: [test-470]
-refs: [goal-78, prop-9, spike-33, test-464, chk-549, chk-550, chk-551]
-context_refs: [goal-78, prop-9, spike-33, test-464, chk-549, chk-550, chk-551]
-evidence_refs: [chk-549, chk-550, chk-551]
+refs: [goal-78, prop-9, spike-33, test-464, chk-549, chk-550, chk-551, dec-91]
+context_refs: [goal-78, prop-9, dec-91, spike-33, test-464, chk-549, chk-550, chk-551, chk-553]
+evidence_refs: [chk-549, chk-550, chk-551, chk-553]
 aliases: []
 skills: [build-pack-and-execute-task, service-boundary-ownership-check]
 created: 2026-07-25
