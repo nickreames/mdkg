@@ -15,11 +15,11 @@ artifacts: [artifacts/demo-003/sendoff.md, artifacts/demo-003/sendoff.sha256, ar
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-30]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-30]
+refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-10, task-30]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-10, task-30]
 evidence_refs: []
 aliases: [phase-6-step-5]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -31,7 +31,9 @@ Freeze the live sendoff prompt and exact path allowlist. This is step 5 of 10 in
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-6.
-- Materialize this node's exact sendoff, child chain, authorized actions, three-attempt/twenty-minute bounds, hard blockers, and fallback rule at `artifacts/demo-003/sendoff.md`; record its SHA-256 in `sendoff.sha256`.
+- Materialize task-10's complete accepted `Normative Live Sendoff Contract` section at `artifacts/demo-003/sendoff.md`; record its SHA-256 in `sendoff.sha256`.
+- The materialized bytes and hash must match task-10 and `artifacts/demo-platform/live-sendoff-contract.md`. This node may bind event-specific hashes, paths, lease values, and allowlist data but may not silently rewrite the contract.
+- Build task-31 context with the explicit-edge standard pack and verify task-10's full body, complete normative section, and accepted contract hash are present before freezing anything.
 - Derive `artifacts/demo-003/event-allowlist.json` from the accepted Goal 2 interface and Demo 3 run contract. It records every exact repo-relative path, owner, operation, reason, expected base hash, base SHA, remote/branch, validity window, authorized actions, and forbidden actions.
 - The allowlist includes `presentations/ai-native-sdlc-demo/runs/demo-003/**` plus only specifically enumerated canonical adapter/site paths; globs or “related files” outside those frozen roots are invalid.
 - Bind sendoff and allowlist hashes to task-30's preflight base/origin/project observations. Any later content, HEAD, origin, owner, or lease drift requires refreezing.
@@ -51,29 +53,16 @@ Freeze the live sendoff prompt and exact path allowlist. This is step 5 of 10 in
 - Keep raw prompts, credentials, tokens, cookies, provider payloads, and unrelated private context out of artifacts.
 - Stop rather than broaden scope or authority.
 
-# Frozen Sendoff Contract
+# Canonical Contract Source
 
-> Continue until the specialized goal is achieved, the approved commit is non-force pushed to `origin/main`, both production deployments for that exact SHA are READY, and the public detail and output URLs pass verification. Do not stop at a local build or commit. Fix transient in-scope failures forward. Stop only for an enumerated hard blocker.
-
-The frozen child chain is:
-
-`positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint`
-
-Authorized actions are limited to the frozen Goal 2 allowlist plus the Demo 3 run directory, local validation and production-safe smoke tests, bounded in-scope fix-forward commits, a non-force `origin/main` push, read-only inspection of existing Vercel deployments and public URLs, and integration-owner refresh and verification of the program bundle.
-
-Hard blockers are:
-
-- Origin advances after the final preflight.
-- Push would require force, history rewriting, or unrelated integration.
-- Credentials or provider access are unavailable.
-- A provider outage or unresolved production failure exceeds three complete fix-forward attempts or twenty minutes.
-- Passing requires DNS, project configuration, manual redeploy, analytics, package publication, or out-of-scope source changes.
+Task-10's `Normative Live Sendoff Contract` section is the only normative graph source. This task consumes it through `context_refs`, verifies the accepted artifact hash, and copies the complete section byte-for-byte into the event artifact. Event-specific bindings belong in `event-allowlist.json`, not in altered sendoff prose.
 
 # Test Plan
 
 - Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
 - No child implementation node has executed.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
+- The task-31 standard execution pack contains task-10's full normative section; its materialized bytes and SHA-256 match the accepted Goal 2 artifact.
 - Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.
 - Dry rehearsal creates no implementation, commit, push, deployment, or provider change.
 

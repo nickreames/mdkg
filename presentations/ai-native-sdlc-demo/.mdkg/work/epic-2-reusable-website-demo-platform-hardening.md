@@ -7,7 +7,7 @@ priority: 1
 tags: [ai-native-sdlc, presentation-demo, phase-2]
 owners: [program-orchestrator]
 links: []
-artifacts: []
+artifacts: [artifacts/demo-platform/activation-contract.json, artifacts/demo-platform/drift-audit.md, artifacts/demo-platform/proposed-source-allowlist.json, artifacts/demo-platform/goal-2-activation-receipt.json, artifacts/demo-platform/interface-contract.json, artifacts/demo-platform/validation-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -15,7 +15,7 @@ refs: [goal-2, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 context_refs: [goal-2, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 evidence_refs: []
 aliases: [phase-2-epic]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -43,7 +43,8 @@ All listed nodes use epic-2, parent goal-2, and symmetric prev/next links. The g
 
 # Milestones
 
-- Activation conditions and writer authority accepted.
+- Read-only discovery gate accepted and spike-2 completed without shared-source mutation.
+- Mutation receipt accepted with exact owners, base commit, path/operation allowlist, dirty/staged inventory, quiet window, invalidation rules, and release condition.
 - Every actionable node completed in deterministic order.
 - Required checks and public-safe evidence recorded.
 - One accepted phase checkpoint records the outcome and next activation.
@@ -52,6 +53,8 @@ All listed nodes use epic-2, parent goal-2, and symmetric prev/next links. The g
 
 - Work owned by any other phase goal.
 - Side effects not explicitly authorized by goal-2.
+- Mutation of `examples/demo-runs/demo-001/**`; it is historical read-only evidence.
+- Root bundle refresh, staging, commit, push, deployment, or provider mutation during ordinary Goal 2 execution.
 - Raw prompts, credentials, provider payloads, or unrelated private context.
 
 # Risks

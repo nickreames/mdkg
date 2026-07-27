@@ -39,7 +39,8 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 - Demo 3 child chain: positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
 - Demo record: id, listed, noindex, sourceGoal, executedGoal, output component, validation, safety, and evidence.
 - Publication receipt: allowed paths, baseline/final SHA, divergence, commit/push, both deployment identities, exact-SHA match, routes, and forbidden actions not taken.
-- Writer lease: owner, allowlist, base SHA, quiet-window conditions, and release condition.
+- Discovery receipt: read-only audit scope, owning graph/artifact paths, source inventory, and mutation recommendation.
+- Writer lease: goal, shared-source writer, root integration owner, exact path/operation allowlist, read-only evidence paths, forbidden paths, clean base commit, dirty/staged inventory hash, quiet-window start/expiry, invalidation rules, and release condition.
 - Adoption record: separate demo retention decisions and separately accepted canonical ideas.
 
 # APIs / interfaces
@@ -58,6 +59,10 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 - Program writer: this directory and nested mdkg commands.
 - Root integration owner: root config, bundle, root graph, Git index, commits, and pushes.
 - Shared-source writer: only paths frozen by its active phase.
+- Goal 2 discovery may run `spike-2` before a shared-source lease because it is read-only outside this program directory.
+- Goal 2 mutation cannot begin at `task-5` until the integration owner accepts the spike recommendation and `artifacts/demo-platform/goal-2-activation-receipt.json`.
+- The program orchestrator yields after spike-2; one shared-source writer then owns the receipt's exact source paths plus the minimum nested task/evidence/index paths through test-6, and yields before root integration.
+- `examples/demo-runs/demo-001/**` is historical read-only evidence; canonical `/demo/1/` and `/demo/1/output/` are the regression surfaces.
 - Root and source mutations require an exclusive integration window.
 - Run graphs remain artifacts and never become writable root projections.
 
@@ -91,7 +96,7 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 # Testing Strategy
 
 - Goal 1: graph shape, references, routing, no loops, pack, bundle, and projection.
-- Goal 2: static build, routes, sitemap, zero JS, accessibility, budgets, claims, secrets, and fork startup.
+- Goal 2: read-only drift inventory; accepted mutation receipt; static build, routes, sitemap, zero JS, accessibility, budgets, claims, secrets, executable fork/operator bootstrap, and context-complete fresh-agent packs.
 - Goal 3: primary sources, rendered QA, notes, and timing.
 - Goal 4: child completion, local integration, and fallback capture.
 - Goal 5: Git boundary, exact-SHA deployments, routes, and rehearsal.

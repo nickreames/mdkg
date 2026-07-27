@@ -9,9 +9,9 @@ parent: goal-2
 prev: task-6
 next: task-8
 tags: [ai-native-sdlc, presentation-demo, phase-2, step-4]
-owners: [program-orchestrator]
+owners: [shared-source-writer]
 links: []
-artifacts: [artifacts/demo-platform/source-execution-evidence-contract.json]
+artifacts: [artifacts/demo-platform/source-execution-evidence-contract.json, artifacts/demo-platform/task-7-source-execution-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -19,7 +19,7 @@ refs: [goal-2, epic-2, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, t
 context_refs: [goal-2, epic-2, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-6]
 evidence_refs: []
 aliases: [phase-2-step-4]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -31,6 +31,7 @@ Add source goal versus specialized goal evidence surfaces. This is step 4 of 10 
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-2.
+- The accepted Goal 2 mutation receipt still matches HEAD, paths, hashes, owner, and quiet window.
 - Add explicit `sourceGoal`, `executedGoal`, `work`, and `evidence` fields to each demo record.
 - Preserve local goal ID, title, condition, requirements, authority, tests, status, checkpoint, and source hash needed to show reusable versus executed specification.
 - Render a sanitized side-by-side source/specialized contrast plus Plan -> Work -> Evidence and what completed, why, and what comes next.
@@ -42,7 +43,7 @@ Add source goal versus specialized goal evidence surfaces. This is step 4 of 10 
 
 # Files Affected
 
-- Only the exact allowlist established by goal-2 at activation.
+- Only the exact mutable paths in the accepted Goal 2 mutation receipt.
 - Program evidence under this nested graph.
 - No unrelated root, product, Git, or provider surface.
 
