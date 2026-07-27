@@ -87,6 +87,7 @@ If an active loop is known:
 - `mdkg loop show <loop-id> --json`
 - `mdkg skill show pursue-mdkg-loop`
 - `mdkg loop plan <loop-id> --json`
+- `mdkg loop next <loop-id> --json`
 - `mdkg pack <loop-id> --pack-profile concise --dry-run --stats`
 - answer or record pre-run questions and approval requirements
 - work every authorized linked lane before marking the loop done or blocked

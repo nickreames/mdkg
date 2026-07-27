@@ -81,7 +81,15 @@ This repo dogfoods mdkg. Before a substantial change:
 5. Add focused tests for new user-visible behavior.
 6. Run `mdkg validate` after building when possible.
 
-Do not commit generated index or pack outputs. Keep `.mdkg/index/` and `.mdkg/pack/` ignored.
+Treat generated mdkg state according to the repository's actual Git policy.
+This repository intentionally tracks `.mdkg/index/mdkg.sqlite` as rebuildable
+shared graph state, while `.mdkg/index/*.json`, temporary, lock, WAL, SHM, and
+journal byproducts plus `.mdkg/pack/` remain ignored compatibility or local
+cache output. Initialized consumer repositories may choose a different policy.
+Before cleanup, inspect `git ls-files .mdkg/index` and
+`git check-ignore .mdkg/index/<path>` together with `.gitignore`. Do not
+blanket-delete, reset, or restore `.mdkg/index/`; preserve unrelated work and
+stage only the intended tracked paths.
 
 ## Change Requirements
 

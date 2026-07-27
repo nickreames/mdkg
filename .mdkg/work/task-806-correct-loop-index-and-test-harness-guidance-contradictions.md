@@ -2,7 +2,7 @@
 id: task-806
 type: task
 title: correct loop index and test harness guidance contradictions
-status: backlog
+status: done
 priority: 3
 parent: goal-78
 prev: test-465
@@ -10,13 +10,13 @@ next: test-466
 tags: [audit-followup, harness, docs, agents]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/harness-guidance-verification.json]
 relates: [loop-7]
 blocked_by: [test-465]
 blocks: [test-466]
-refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-89, task-805, test-465]
+refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-89, task-805, test-465, chk-557]
 context_refs: [goal-78, loop-7, chk-544, dec-89, task-805, test-465]
-evidence_refs: []
+evidence_refs: [chk-557]
 aliases: []
 skills: [pursue-mdkg-loop, verify-close-and-checkpoint]
 created: 2026-07-17

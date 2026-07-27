@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "goal_ref": "root:goal-78",
+  "task_ref": "root:task-806",
+  "test_ref": "root:test-466",
+  "verified_at": "2026-07-26",
+  "runtime": "v24.18.0",
+  "startup_order": [
+    "mdkg loop show <loop-id> --json",
+    "mdkg skill show pursue-mdkg-loop",
+    "mdkg loop plan <loop-id> --json",
+    "mdkg loop next <loop-id> --json",
+    "mdkg pack <loop-id> --pack-profile concise --dry-run --stats",
+    "answer or record pre-run questions and approval requirements",
+    "work every authorized linked lane before marking the loop done or blocked"
+  ],
+  "startup_surfaces": [
+    {
+      "identity": "root",
+      "path": "AGENT_START.md",
+      "sha256": "ea09b466cefb7470406a129904d726208b703c9244b5396a0f63cdac67cc3ce6",
+      "ordered_contract": true
+    },
+    {
+      "identity": "public source",
+      "path": "assets/init/AGENT_START.md",
+      "sha256": "eca132550f11b2767cb9d045880b92daf01d4e457fe853412cc6089530549790",
+      "ordered_contract": true
+    },
+    {
+      "identity": "built public source",
+      "path": "dist/init/AGENT_START.md",
+      "sha256": "eca132550f11b2767cb9d045880b92daf01d4e457fe853412cc6089530549790",
+      "ordered_contract": true
+    },
+    {
+      "identity": "disposable fresh init",
+      "path": "temporary AGENT_START.md",
+      "ordered_contract": true
+    }
+  ],
+  "wrapper_policy": {
+    "root_public_whole_file_equality_required": false,
+    "ordered_semantics_required": true,
+    "canonical_loop_skill_delegation_required": true
+  },
+  "tracked_index": {
+    "git_ls_files": [
+      ".mdkg/index/mdkg.sqlite"
+    ],
+    "sqlite_ignored": false,
+    "ignored_transients": [
+      ".mdkg/index/*.json",
+      ".mdkg/index/write.lock/",
+      ".mdkg/index/*.sqlite-wal",
+      ".mdkg/index/*.sqlite-shm",
+      ".mdkg/index/*.sqlite-journal"
+    ],
+    "contributor_guidance_sha256": "1396ae44579a49167c91643bff41ab7231d909f901f8f18ceb59b768f9e0eef8",
+    "blanket_cleanup_prohibited": true,
+    "consumer_policy_may_differ": true
+  },
+  "dynamic_test_families": [
+    {
+      "path": "tests/commands/*.test.ts",
+      "current_file_count": 61
+    },
+    {
+      "path": "tests/core/*.test.ts",
+      "current_file_count": 4
+    },
+    {
+      "path": "tests/graph/*.test.ts",
+      "current_file_count": 12
+    },
+    {
+      "path": "tests/pack/*.test.ts",
+      "current_file_count": 4
+    },
+    {
+      "path": "tests/util/*.test.ts",
+      "current_file_count": 8
+    },
+    {
+      "path": "tests/*.test.ts",
+      "current_file_count": 7
+    },
+    {
+      "path": "tests/*.test.mjs",
+      "current_file_count": 3
+    }
+  ],
+  "test_guide": {
+    "path": "tests/README.md",
+    "sha256": "db9a6b8b68a7e1bb6631b00aa6152c9cfd02cef099dc53919736e07cd7c0e7b8",
+    "freezes_transient_counts": false,
+    "claims_cli_tests_deferred": false,
+    "documents_full_and_focused_execution": true
+  },
+  "negative_contracts": [
+    "each startup-order identity removed independently",
+    "tracked SQLite classification removed",
+    "ignored transient classification removed",
+    "unsafe blanket-cleanup prohibition removed",
+    "each dynamic test family removed",
+    "deferred CLI-test claim restored"
+  ],
+  "focused_receipts": [
+    {
+      "command": "npm run build",
+      "result": "pass; public startup copied to built seed"
+    },
+    {
+      "command": "npm run build:test",
+      "result": "pass"
+    },
+    {
+      "command": "node --test dist/tests/harness-guidance.test.js",
+      "result": "4 passed, 0 failed",
+      "duration_ms": 488.828666
+    },
+    {
+      "command": "npm run cli:check:built",
+      "result": "pass"
+    },
+    {
+      "command": "npm run docs:check:built",
+      "result": "59 files scanned, 474 examples checked, 0 failures"
+    },
+    {
+      "command": "node scripts/assert-publish-ready.js",
+      "result": "pass"
+    }
+  ],
+  "git_boundary": {
+    "status_porcelain_sha256_before": "83505e942b191c94bf690b2ec6d85b05e5df94dc984cfd0e9f5f6d6474a6faf6",
+    "status_porcelain_sha256_after": "83505e942b191c94bf690b2ec6d85b05e5df94dc984cfd0e9f5f6d6474a6faf6",
+    "unchanged_during_final_guidance_verification": true
+  },
+  "excluded_unrelated_path": "presentations/",
+  "authority_exclusions": [
+    "index behavior change",
+    "authority broadening",
+    "network or provider action",
+    "shared ci:release or prepublishOnly ladder"
+  ]
+}
