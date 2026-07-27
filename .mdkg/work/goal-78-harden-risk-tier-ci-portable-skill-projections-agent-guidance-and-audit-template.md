@@ -15,13 +15,13 @@ blocked_after_attempts: 3
 tags: [ci, skills, harness, templates, local-only]
 owners: []
 links: []
-artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json, .mdkg/artifacts/goal-78/ci-topology-plan.json, .mdkg/artifacts/goal-78/ci-topology-verification.json, .mdkg/artifacts/goal-78/portable-skill-body-verification.json, .mdkg/artifacts/goal-78/public-skill-projection-verification.json, .mdkg/artifacts/goal-78/harness-guidance-verification.json, .mdkg/artifacts/goal-78/test-ci-audit-template-verification.json]
+artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json, .mdkg/artifacts/goal-78/ci-topology-plan.json, .mdkg/artifacts/goal-78/ci-topology-verification.json, .mdkg/artifacts/goal-78/portable-skill-body-verification.json, .mdkg/artifacts/goal-78/public-skill-projection-verification.json, .mdkg/artifacts/goal-78/harness-guidance-verification.json, .mdkg/artifacts/goal-78/test-ci-audit-template-verification.json, .mdkg/artifacts/goal-78/final-integration-receipts.json]
 relates: []
 blocked_by: [test-464]
 blocks: []
-refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, bug-4, test-469, test-464]
-context_refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, bug-4, test-469, test-464]
-evidence_refs: [chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558]
+refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559, bug-4, test-469, test-464]
+context_refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559, bug-4, test-469, test-464]
+evidence_refs: [chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559]
 aliases: [governed-ci-skill-harness-hardening]
 skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, service-boundary-ownership-check, author-mdkg-skill, verify-close-and-checkpoint]
 created: 2026-07-25
@@ -195,6 +195,15 @@ outside this goal.
   binds four-surface loop routing order, live tracked/ignored index policy,
   dynamic test-family guidance, negative cases, and the untouched unrelated
   `presentations/` boundary. Advanced to canonical audit-template hardening.
+- 2026-07-26: Completed `root:task-813`/`root:test-472`. `root:chk-558`
+  binds the exact six-lane contract, negative identity cases, observational
+  SQLite dry run, decision-bound disposable fork, spike-first routing,
+  concise-pack proof, and unchanged completed Loop 7.
+- 2026-07-26: Ran the two shared closeout commands exactly once. `ci:release`
+  passed. `prepublishOnly` passed all 9 gates and all 46 smokes but returned
+  nonzero because unrelated untracked presentation graph paths changed during
+  the run. `root:chk-559` records the receipts and preserves the no-retry,
+  no-waiver, no-cleanup, and no-closeout boundary pending explicit authority.
 
 # Skill Improvement Candidates
 
@@ -202,4 +211,9 @@ outside this goal.
 
 # Completion Evidence
 
-- Pending.
+- Lane-specific implementation and test proof is complete through
+  `root:chk-558`.
+- Shared integration receipts are recorded in `root:chk-559`.
+- Final goal-closeout evidence remains pending because the required
+  `prepublishOnly` command returned nonzero on its concurrent untracked-status
+  invariant.
