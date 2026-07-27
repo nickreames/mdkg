@@ -2,20 +2,20 @@
 id: task-813
 type: task
 title: Align the canonical test CI skill audit template to six evidence lanes
-status: backlog
+status: done
 priority: 4
 parent: goal-78
 next: test-472
 tags: [loops, templates, tests, ci]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/test-ci-audit-template-verification.json]
 relates: [loop-7]
 blocked_by: [test-464]
 blocks: [test-472]
-refs: [goal-78, loop-7, dec-86, chk-544]
+refs: [goal-78, loop-7, dec-86, chk-544, chk-558]
 context_refs: [goal-78, loop-7, dec-86, chk-544]
-evidence_refs: []
+evidence_refs: [chk-558]
 aliases: []
 skills: [build-pack-and-execute-task, pursue-mdkg-loop]
 created: 2026-07-25

@@ -7,7 +7,7 @@ priority: 1
 goal_state: paused
 goal_condition: Goal 78 is achieved after Goal 77 and its goal-next fix are complete, measured local release receipts are bound to an accepted risk-tier CI decision, a source-owned smoke topology drives a Node 24.15.0 and 24.x fast matrix plus a manual exact-SHA full release gate across all 46 canonical smoke identities, six portable public skills are exact while two repository-only skills remain behaviorally excluded, startup tracked-index and test-family guidance is semantically enforced, the canonical test CI skill audit template has six one-to-one evidence lanes with fork-readiness proof, all eleven scoped spike task and test nodes are done with checkpoint evidence, approved changes are committed locally on main, and no push tag publish deploy provider selected-goal or existing-consumer mutation occurs.
 scope_refs: [spike-33, task-811, test-470, task-812, test-471, task-805, test-465, task-806, test-466, task-813, test-472]
-active_node: task-813
+last_active_node: test-472
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, service-boundary-ownership-check, author-mdkg-skill, verify-close-and-checkpoint]
 required_checks: [git status --short --branch, accepted measured CI topology decision derived from root:prop-9, focused smoke-topology and structured workflow tests, focused portable-skill policy projection and fresh-init tests, mdkg skill list --json, mdkg skill validate --json, focused startup tracked-index and test-family semantic tests, canonical template fork plan next and concise-pack proof, exactly one shared npm run ci:release at goal closeout, exactly one shared optimized npm run prepublishOnly at goal closeout, mdkg index, mdkg validate --changed-only --json, mdkg validate --summary --json --limit 20, mdkg goal next root:goal-78 --json, mdkg goal evaluate root:goal-78 --json, git diff --check]
 max_iterations: 25
@@ -15,13 +15,13 @@ blocked_after_attempts: 3
 tags: [ci, skills, harness, templates, local-only]
 owners: []
 links: []
-artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json, .mdkg/artifacts/goal-78/ci-topology-plan.json, .mdkg/artifacts/goal-78/ci-topology-verification.json, .mdkg/artifacts/goal-78/portable-skill-body-verification.json, .mdkg/artifacts/goal-78/public-skill-projection-verification.json, .mdkg/artifacts/goal-78/harness-guidance-verification.json]
+artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json, .mdkg/artifacts/goal-78/ci-topology-plan.json, .mdkg/artifacts/goal-78/ci-topology-verification.json, .mdkg/artifacts/goal-78/portable-skill-body-verification.json, .mdkg/artifacts/goal-78/public-skill-projection-verification.json, .mdkg/artifacts/goal-78/harness-guidance-verification.json, .mdkg/artifacts/goal-78/test-ci-audit-template-verification.json]
 relates: []
 blocked_by: [test-464]
 blocks: []
-refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, bug-4, test-469, test-464]
-context_refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, bug-4, test-469, test-464]
-evidence_refs: [chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557]
+refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, bug-4, test-469, test-464]
+context_refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, bug-4, test-469, test-464]
+evidence_refs: [chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558]
 aliases: [governed-ci-skill-harness-hardening]
 skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, service-boundary-ownership-check, author-mdkg-skill, verify-close-and-checkpoint]
 created: 2026-07-25

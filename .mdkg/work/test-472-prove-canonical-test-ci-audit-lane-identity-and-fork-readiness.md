@@ -2,20 +2,20 @@
 id: test-472
 type: test
 title: Prove canonical test CI audit lane identity and fork readiness
-status: backlog
+status: done
 priority: 4
 parent: goal-78
 prev: task-813
 tags: [loops, templates, tests, ci, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/test-ci-audit-template-verification.json]
 relates: [task-813, loop-7]
 blocked_by: [task-813]
 blocks: []
-refs: [goal-78, task-813, loop-7, dec-86, chk-544]
+refs: [goal-78, task-813, loop-7, dec-86, chk-544, chk-558]
 context_refs: [goal-78, task-813, loop-7, dec-86, chk-544]
-evidence_refs: []
+evidence_refs: [chk-558]
 aliases: []
 skills: [verify-close-and-checkpoint, pursue-mdkg-loop]
 cases: [five_pre_run_question_identities, six_frontmatter_identities, six_body_identities, one_to_one_mapping, action_authority_vocabulary, negative_lane_drift, observational_dry_run, disposable_real_fork, plan_next_pack_readiness, completed_loop_unchanged]
