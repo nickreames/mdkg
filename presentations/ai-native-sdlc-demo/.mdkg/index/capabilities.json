@@ -3,12 +3,12 @@
     "tool": "mdkg",
     "schema_version": 1,
     "cache_version": 1,
-    "generated_at": "2026-07-27T04:18:14.878Z",
+    "generated_at": "2026-07-27T04:53:22.506Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
-    "record_count": 24
+    "record_count": 25
   },
   "records": [
     {
@@ -29,7 +29,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7",
       "headings": [
         {
@@ -118,7 +118,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f",
       "headings": [
         {
@@ -235,7 +235,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-17",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45",
       "headings": [
         {
@@ -351,7 +351,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-03",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8",
       "headings": [
         {
@@ -424,7 +424,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03",
       "headings": [
         {
@@ -468,7 +468,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f",
       "headings": [
         {
@@ -553,7 +553,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:ef60b65b54a57ed54984a49f5ed14453cb4e47170a5660be94eceec26b92b01f",
       "headings": [
         {
@@ -597,7 +597,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-14",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae",
       "headings": [
         {
@@ -663,7 +663,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:945fb5cb47945735b9529f2b0a322630b3e8aef1c3e69c4ce85dd2db3e905cca",
       "headings": [
         {
@@ -718,7 +718,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-10",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a",
       "headings": [
         {
@@ -847,7 +847,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:089c04fb077c68ba54ed1756cfef3f81e2ba8598107c62b2a190e68e466b7c2f",
       "headings": [
         {
@@ -901,7 +901,7 @@
         "deck/citations/claim-matrix.md"
       ],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:2de8ff26c818a56ccbd6200ac21f6c945a7ce5bbd377197e41901ab0879a16b9",
       "headings": [
         {
@@ -952,7 +952,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:fe1871578f48ebfd82c0323256d30eff077d903e5262b6bb4063260962d599a1",
       "headings": [
         {
@@ -1007,7 +1007,7 @@
         "artifact://ai-native-sdlc-demo/writer-lease"
       ],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:87f1f0003824b2acb4cf5c33200995207b121e670cb6bdc5fd16252c12011c8f",
       "headings": [
         {
@@ -1061,7 +1061,7 @@
         "artifact://ai-native-sdlc-demo/event-receipt"
       ],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:93f0de4649e28eaf4b404116c5db6d1d491265243a3458af812e5820f7bdd743",
       "headings": [
         {
@@ -1111,7 +1111,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:6b9290bb3b2e3a1c8d5d5874c49e6f80887a48a4ce726346f09243be793fd2b6",
       "headings": [
         {
@@ -1173,7 +1173,7 @@
         "artifact://ai-native-sdlc-demo/root-registration"
       ],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:458dec95d1242d4d213705087487771d831cea95d0cada6f111b7284cf00e327",
       "headings": [
         {
@@ -1257,7 +1257,7 @@
         "artifact://ai-native-sdlc-demo/demo-003"
       ],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:dedc0ac1b55d6914f329c1669c2cb9d44b5a66886ec65704ac896ddf0ae15fba",
       "headings": [
         {
@@ -1344,7 +1344,7 @@
         ".mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:ffacd8b8412ab5453b53d91a192f27e0458da4591f80d82d4933805a6fb5a05d",
       "headings": [
         {
@@ -1451,7 +1451,7 @@
         "llms.txt"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
       "headings": [
         {
@@ -1497,6 +1497,107 @@
       "kind": "skill",
       "workspace": "root",
       "visibility": "private",
+      "id": "skill:produce-powerpoint-with-artifact-tool",
+      "qid": "root:skill:produce-powerpoint-with-artifact-tool",
+      "path": ".mdkg/skills/produce-powerpoint-with-artifact-tool/SKILL.md",
+      "title": "Produce PowerPoint with Artifact Tool",
+      "name": "Produce PowerPoint with Artifact Tool",
+      "description": "Plan, build, render, and visually verify a source-backed editable PowerPoint with Artifact Tool when Goal 3 or another approved presentation task requires a deterministic local deck.",
+      "slug": "produce-powerpoint-with-artifact-tool",
+      "tags": [
+        "stage:execute",
+        "writer:patch-only",
+        "presentation",
+        "powerpoint",
+        "artifact-tool"
+      ],
+      "refs": [],
+      "aliases": [
+        "produce-powerpoint-with-artifact-tool",
+        "stage:execute",
+        "writer:patch-only",
+        "presentation",
+        "powerpoint",
+        "artifact-tool"
+      ],
+      "links": [
+        "AGENT_START.md"
+      ],
+      "artifacts": [],
+      "indexed_at": "2026-07-27T04:53:22.506Z",
+      "source_hash": "sha256:1ab5e0167ecb9e67b3770d31bfbdfd02a5323ec9ba1a73aafe990219bea6b57b",
+      "headings": [
+        {
+          "level": 1,
+          "text": "Purpose"
+        },
+        {
+          "level": 2,
+          "text": "When To Use"
+        },
+        {
+          "level": 2,
+          "text": "Inputs"
+        },
+        {
+          "level": 2,
+          "text": "Outputs"
+        },
+        {
+          "level": 2,
+          "text": "Required Capabilities"
+        },
+        {
+          "level": 2,
+          "text": "Resources Touched"
+        },
+        {
+          "level": 2,
+          "text": "Steps"
+        },
+        {
+          "level": 2,
+          "text": "Validation Checks"
+        },
+        {
+          "level": 2,
+          "text": "Closeout Evidence"
+        },
+        {
+          "level": 2,
+          "text": "Failure Modes"
+        },
+        {
+          "level": 2,
+          "text": "Safety Rules"
+        },
+        {
+          "level": 2,
+          "text": "Related Manifests"
+        },
+        {
+          "level": 2,
+          "text": "Projection Targets"
+        },
+        {
+          "level": 2,
+          "text": "Open Questions"
+        }
+      ],
+      "skill": {
+        "version": "0.1.0",
+        "authors": [
+          "mdkg"
+        ],
+        "has_scripts": false,
+        "has_references": true,
+        "extensions": {}
+      }
+    },
+    {
+      "kind": "skill",
+      "workspace": "root",
+      "visibility": "private",
       "id": "skill:pursue-mdkg-goal",
       "qid": "root:skill:pursue-mdkg-goal",
       "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
@@ -1525,7 +1626,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776",
       "headings": [
         {
@@ -1627,7 +1728,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:65dae2a6e79f2f7e4265b7057287db0308ac6ac59e6ebe9a6b6cd50b5d90176b",
       "headings": [
         {
@@ -1730,7 +1831,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
       "headings": [
         {
@@ -1808,7 +1909,7 @@
         "AGENT_START.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-27T04:18:14.878Z",
+      "indexed_at": "2026-07-27T04:53:22.506Z",
       "source_hash": "sha256:1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
       "headings": [
         {

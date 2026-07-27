@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T04:18:14.871Z",
+    "generated_at": "2026-07-27T04:53:22.499Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-4"
+      "root": "root:chk-5"
     }
   },
   "workspaces": {
@@ -285,6 +285,62 @@
           "root:test-5",
           "root:test-6"
         ]
+      }
+    },
+    "root:chk-5": {
+      "id": "chk-5",
+      "qid": "root:chk-5",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Goal 3 presentation execution contract ready",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-3",
+        "pre-activation",
+        "accepted"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-3",
+        "epic-3",
+        "spike-3",
+        "task-11",
+        "task-12",
+        "task-13",
+        "task-14",
+        "test-7",
+        "test-8",
+        "test-9",
+        "goal-2",
+        "chk-4",
+        "prd-1",
+        "edd-1",
+        "dec-1",
+        "dec-2",
+        "dec-3",
+        "dec-4",
+        "dec-5",
+        "dec-6"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-5-goal-3-presentation-execution-contract-ready.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
       }
     },
     "root:dec-1": {
@@ -1293,32 +1349,37 @@
         "dec-3",
         "dec-4",
         "dec-5",
-        "dec-6"
+        "dec-6",
+        "chk-4",
+        "chk-5"
       ],
       "aliases": [
         "ai-native-sdlc-presentation-v1"
       ],
       "skills": [
         "select-work-and-ground-context",
+        "produce-powerpoint-with-artifact-tool",
         "verify-close-and-checkpoint"
       ],
       "attributes": {
         "goal_state": "paused",
-        "goal_condition": "A source-backed 30–32 minute presentation with a 35-minute hard stop exists as editable source and PPTX, three representative visual prototypes precede full production, every factual claim has primary-source support, every slide passes rendered visual QA, and a timed rehearsal proves kickoff, reveal, fallback, recovery, and CTA cues.",
+        "goal_condition": "A source-backed 30–32 minute narrated presentation exists as editable source and PPTX, three representative visual prototypes receive explicit human approval before full production, every factual claim has primary-source support, every slide passes rendered visual QA, and an offline cue rehearsal proves that the reveal plus CTA can finish within the 35-minute content hard stop before audience Q&A.",
         "scope_refs": [
           "epic-3"
         ],
         "required_skills": [
           "select-work-and-ground-context",
+          "produce-powerpoint-with-artifact-tool",
           "verify-close-and-checkpoint"
         ],
         "required_checks": [
+          "first-node context and evidence pack coverage without truncation",
           "primary-source claim matrix review",
-          "three-slide visual prototype review",
-          "PowerPoint generation",
-          "full slide render and contact-sheet review",
+          "explicit three-slide visual prototype approval",
+          "Artifact Tool PowerPoint generation",
+          "full slide render and individual full-size review",
           "overflow contrast hierarchy and legibility checks",
-          "timed rehearsal under 35 minutes"
+          "30-32 minute narrated rehearsal plus reveal and CTA within 35 minutes"
         ],
         "max_iterations": "25",
         "blocked_after_attempts": "3"
@@ -1337,7 +1398,8 @@
           "root:dec-4",
           "root:dec-5",
           "root:dec-6",
-          "root:goal-2"
+          "root:goal-2",
+          "root:chk-4"
         ],
         "evidence_refs": []
       }
@@ -2282,7 +2344,9 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "deck/citations/claim-matrix.md"
+      ],
       "refs": [
         "goal-3",
         "epic-3",
@@ -2293,7 +2357,10 @@
         "dec-3",
         "dec-4",
         "dec-5",
-        "dec-6"
+        "dec-6",
+        "goal-2",
+        "chk-4",
+        "chk-5"
       ],
       "aliases": [
         "phase-3-step-1"
@@ -2321,7 +2388,9 @@
           "root:dec-3",
           "root:dec-4",
           "root:dec-5",
-          "root:dec-6"
+          "root:dec-6",
+          "root:goal-2",
+          "root:chk-4"
         ],
         "evidence_refs": []
       }
@@ -2634,6 +2703,7 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "produce-powerpoint-with-artifact-tool",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -2683,7 +2753,9 @@
       ],
       "links": [],
       "artifacts": [
-        "deck/assets/prototypes/"
+        "deck/assets/prototypes/",
+        "deck/rendered/prototypes/contact-sheet.png",
+        "deck/rendered/prototypes/review-receipt.md"
       ],
       "refs": [
         "goal-3",
@@ -2703,6 +2775,7 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "produce-powerpoint-with-artifact-tool",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -2778,6 +2851,7 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "produce-powerpoint-with-artifact-tool",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -7112,7 +7186,10 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "deck/citations/claim-matrix.md",
+        "deck/speaker-notes.md"
+      ],
       "refs": [
         "goal-3",
         "epic-3",
@@ -7179,7 +7256,12 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "deck/source/ai-native-sdlc.mjs",
+        "deck/rendered/contact-sheet.png",
+        "deck/rendered/qa-report.md",
+        "deck/ai-native-sdlc.pptx"
+      ],
       "refs": [
         "goal-3",
         "epic-3",
@@ -7198,6 +7280,7 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "produce-powerpoint-with-artifact-tool",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -7246,7 +7329,10 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "deck/speaker-notes.md",
+        "deck/rendered/rehearsal-receipt.md"
+      ],
       "refs": [
         "goal-3",
         "epic-3",
@@ -8106,6 +8192,7 @@
         "root:epic-2",
         "root:goal-3",
         "root:spike-2",
+        "root:spike-3",
         "root:task-10",
         "root:task-5",
         "root:task-6",
@@ -8228,6 +8315,10 @@
         "root:test-22",
         "root:test-23",
         "root:test-24"
+      ],
+      "root:chk-4": [
+        "root:goal-3",
+        "root:spike-3"
       ],
       "root:spike-1": [
         "root:goal-4",

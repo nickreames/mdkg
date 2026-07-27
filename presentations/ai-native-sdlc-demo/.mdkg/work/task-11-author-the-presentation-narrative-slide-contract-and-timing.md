@@ -19,7 +19,7 @@ refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, s
 context_refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, spike-3]
 evidence_refs: []
 aliases: [phase-3-step-2]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -32,12 +32,18 @@ Author the presentation narrative slide contract and timing. This is step 2 of 8
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-3.
 - Use primary sources and a claim matrix for all externally checkable claims.
-- Use the accepted named sequence: GitHub Copilot; conversational prompt engineering; OpenAI o1; Claude Code, Cursor, and comparable harnesses; Agent Skills/`SKILL.md`; and supported multi-hour goal-driven agents.
+- State the communication job: by the end, engineers and engineering leaders should understand that capable coding agents still need durable specifications, guardrails, and evidence to form a dependable software-development lifecycle.
+- Use the accepted named sequence as a loose capability progression with overlapping product dates: GitHub Copilot; conversational prompt engineering; OpenAI o1; Claude Code, Cursor, and comparable harnesses; Agent Skills/`SKILL.md`; and supported multi-hour goal-driven agents.
 - Give each era a capability shift, unit of work, human role, remaining context constraint, and primary-source claim row.
+- Use one memorable product anchor per capability stage and supporting examples only where they advance the claim; do not create a vendor-comparison slide.
 - Connect improving models, reasoning, harnesses, and context length to the continuing need for spec-driven requirements, architecture decisions, guardrails, and evidence.
-- Prototype three representative visual directions before full-deck production.
+- Use one brief first-person transition explaining the gaps in AI coding tools and the desire to increase development velocity on personal projects that motivated mdkg.
+- Put the live kickoff within the opening minute.
+- Time the narrated deck at 30–32 minutes, excluding the reveal; reserve no more than the remaining time before minute 35 for the reveal and CTA; put Q&A afterward.
+- Define compact numbered footnotes for claim-heavy slides, one unspoken appendix sources slide, and complete `[Sources]` speaker-note blocks.
+- Prototype three representative slides in one coherent visual direction before full-deck production.
 - Retain editable source, notes, citations, PPTX, contact sheet, and QA report.
-- Prove 30–32 minute delivery with a 35-minute hard stop and fallback cues.
+- Prove 30–32 minute narrated delivery, with fixture-backed reveal and CTA cues that finish by minute 35.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-12 does not begin until this node is verified.
 
@@ -56,10 +62,10 @@ Author the presentation narrative slide contract and timing. This is step 2 of 8
 
 # Test Plan
 
-- Every factual claim has a complete primary-source row and approved paraphrase.
-- The named six-era story, spec-driven design, Plan -> Work -> Evidence, what/why/next, creator motivation, public-alpha/pre-v1 active-improvement wording, and CTA are present.
-- All slides render without overlap, clipping, low contrast, unreadable citations, or note drift.
-- Timed kickoff, narrative, reveal, fallback, recovery, and CTA finish by 35 minutes.
+- The slide contract assigns one narrative job and primary claim to each slide.
+- Every factual claim maps to a complete primary-source row and approved paraphrase.
+- The named six-era story, timeline-overlap caveat, spec-driven design, Plan -> Work -> Evidence, what/why/next, brief creator motivation, public-alpha/pre-v1 active-improvement wording, and CTA are present.
+- The opening kickoff, 30–32 minute narrated deck, three-minute maximum reveal/CTA allowance, and post-hard-stop Q&A boundary are explicit.
 
 # Links / Artifacts
 
