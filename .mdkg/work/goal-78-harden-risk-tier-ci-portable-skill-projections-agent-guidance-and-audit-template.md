@@ -2,9 +2,9 @@
 id: goal-78
 type: goal
 title: Harden risk-tier CI portable skill projections agent guidance and audit templates
-status: todo
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: Goal 78 is achieved after Goal 77 and its goal-next fix are complete, measured local release receipts are bound to an accepted risk-tier CI decision, a source-owned smoke topology drives a Node 24.15.0 and 24.x fast matrix plus a manual exact-SHA full release gate across all 46 canonical smoke identities, six portable public skills are exact while two repository-only skills remain behaviorally excluded, startup tracked-index and test-family guidance is semantically enforced, the canonical test CI skill audit template has six one-to-one evidence lanes with fork-readiness proof, all eleven scoped spike task and test nodes are done with checkpoint evidence, approved changes are committed locally on main, and no push tag publish deploy provider selected-goal or existing-consumer mutation occurs.
 scope_refs: [spike-33, task-811, test-470, task-812, test-471, task-805, test-465, task-806, test-466, task-813, test-472]
 last_active_node: test-472
@@ -19,9 +19,9 @@ artifacts: [.mdkg/artifacts/goal-78/ci-topology-measurements.json, .mdkg/artifac
 relates: []
 blocked_by: [test-464]
 blocks: []
-refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559, bug-4, test-469, test-464]
-context_refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559, bug-4, test-469, test-464]
-evidence_refs: [chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559]
+refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559, chk-560, bug-4, test-469, test-464]
+context_refs: [goal-77, loop-7, prop-9, dec-19, dec-85, dec-89, dec-91, chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559, chk-560, bug-4, test-469, test-464]
+evidence_refs: [chk-544, chk-545, chk-546, chk-549, chk-550, chk-551, chk-552, chk-553, chk-554, chk-555, chk-556, chk-557, chk-558, chk-559, chk-560]
 aliases: [governed-ci-skill-harness-hardening]
 skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, service-boundary-ownership-check, author-mdkg-skill, verify-close-and-checkpoint]
 created: 2026-07-25
@@ -204,6 +204,11 @@ outside this goal.
   nonzero because unrelated untracked presentation graph paths changed during
   the run. `root:chk-559` records the receipts and preserves the no-retry,
   no-waiver, no-cleanup, and no-closeout boundary pending explicit authority.
+- 2026-07-26: After explicit user authorization and a stable quiescence
+  snapshot, the one fresh `prepublishOnly` passed 733/733 tests, all 9 gates,
+  all 46 canonical smokes, coverage floors, package checks, and every
+  Git/selected-goal/lockfile invariant. `root:chk-560` binds the complete
+  requirement audit and local-only closeout evidence.
 
 # Skill Improvement Candidates
 
@@ -213,7 +218,8 @@ outside this goal.
 
 - Lane-specific implementation and test proof is complete through
   `root:chk-558`.
-- Shared integration receipts are recorded in `root:chk-559`.
-- Final goal-closeout evidence remains pending because the required
-  `prepublishOnly` command returned nonzero on its concurrent untracked-status
-  invariant.
+- The initial concurrent-work interruption is preserved in `root:chk-559`.
+- The explicitly authorized stable retry and final requirement audit are bound
+  in `root:chk-560`.
+- Goal 78 is supported for achieved closeout with no remaining
+  definition-blocking work.

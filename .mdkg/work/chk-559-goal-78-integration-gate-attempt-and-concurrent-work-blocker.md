@@ -12,7 +12,7 @@ artifacts: [.mdkg/artifacts/goal-78/final-integration-receipts.json]
 relates: [test-472]
 blocked_by: []
 blocks: []
-refs: [goal-78, dec-91, chk-554, chk-555, chk-556, chk-557, chk-558]
+refs: [goal-78, dec-91, chk-554, chk-555, chk-556, chk-557, chk-558, chk-560]
 context_refs: [goal-78, dec-91, chk-554, chk-555, chk-556, chk-557, chk-558]
 evidence_refs: []
 aliases: []
@@ -105,6 +105,8 @@ its Git-boundary window. No retry, waiver, cleanup, or goal closure occurred.
 - A fresh prepublish receipt requires explicit retry authority.
 - A waiver is not assumed; it requires both the specified same-lane accepted
   decision and separate verified approval.
+- Resolved: the user explicitly authorized one fresh run after quiescence;
+  `root:chk-560` records its passing receipt and final closeout audit.
 
 ## Follow-up Refs
 
