@@ -68,6 +68,21 @@
           "expected_profile": "private"
         }
       ]
+    },
+    "ai_native_sdlc_demo": {
+      "enabled": true,
+      "visibility": "private",
+      "permissions": [
+        "read"
+      ],
+      "max_stale_seconds": 86400,
+      "sources": [
+        {
+          "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+          "enabled": true,
+          "expected_profile": "private"
+        }
+      ]
     }
   },
   "pack": {
