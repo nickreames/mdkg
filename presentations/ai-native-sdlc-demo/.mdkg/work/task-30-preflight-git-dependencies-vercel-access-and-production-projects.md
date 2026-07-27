@@ -8,7 +8,7 @@ epic: epic-6
 parent: goal-6
 prev: task-29
 next: task-31
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-4]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-7]
 owners: [program-orchestrator]
 links: []
 artifacts: [artifacts/demo-003/event-preflight.json]
@@ -26,12 +26,16 @@ updated: 2026-07-26
 
 # Overview
 
-Preflight Git dependencies Vercel access and production projects. This is step 4 of 10 in Goal 6; it owns only the outcome named here and the authority granted by goal-6.
+Preflight Git dependencies Vercel access and production projects. This is step
+7 of 13 in Goal 6.
 
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-6.
 - Perform read-only Git checks for branch, HEAD, `origin/main`, merge base, ahead/behind, dirty/staged paths, remote URL, fetch access, and whether a normal non-force push would be possible; do not stage, commit, merge, rebase, or push.
+- Enumerate the complete prospective `origin/main..HEAD` range and changed
+  paths that Goal 7 would publish. Unrelated or unreviewed ahead history is a
+  preflight blocker, not implicitly absorbed into live-demo authority.
 - Verify the frozen Node/package-manager versions and required dependencies using installed lockfile state and local read-only commands; do not install or update packages.
 - Through read-only Vercel inspection, resolve the two existing production project names/opaque IDs, environment, latest deployment IDs/URLs/states/Git SHAs, account visibility, and query timestamps.
 - Write `artifacts/demo-003/event-preflight.json` with Git and dependency command receipts, provider project records, credential-availability boolean without secrets, base SHA, observed origin SHA, and explicit pass/blocker fields.

@@ -20,7 +20,25 @@ A live demo must continue beyond local implementation, but push and production p
 
 # Decision
 
-Goal 5 may publish Demo 2 only after its candidate checkpoint and an explicit publication window. Goal 7 may commit and non-force push only its frozen allowlist after Goal 6 readiness.
+Goal 5 may publish Demo 2 only after its candidate checkpoint and a separate
+human-accepted publication receipt. The receipt binds the complete
+`origin/main..HEAD` push range, exact path-and-operation allowlist, owner,
+validity window, and forbidden actions. Local Goal 4 authority and this
+decision do not implicitly grant that approval.
+
+Goal 6 uses the completed Demo 2 evidence to evaluate the reusable source
+template and live sendoff. Only explicitly accepted refinements may be applied
+before Demo 3 is forked, and a deterministic absent-target bootstrap must prove
+the revised or unchanged source contract.
+
+Goal 7 may commit and non-force push only its frozen allowlist after Goal 6
+readiness. Goal 6 must first seal a separate human-accepted event-authority
+receipt that pre-authorizes the entire frozen live workflow: allowlisted edits,
+local and canonical validation, bounded fix-forward commits, non-force
+`origin/main` push, read-only deployment inspection, live-route verification,
+and the integration-owner bundle refresh. These actions require no additional
+mid-run confirmation while the receipt, quiet window, base/origin state, and
+allowlist remain valid. Demo 2 approval does not carry forward to Demo 3.
 
 Success requires both existing production projects to report READY for the exact final pushed SHA and required routes to pass. A merely recent deployment is insufficient.
 
@@ -36,7 +54,10 @@ Hard blockers include origin advancement, force or unrelated integration, unavai
 
 # Consequences
 
-Demo 2 is sealed before the event. Demo 3 success and presentation success remain distinct and truthfully reportable.
+Demo 2 publication has an explicit human gate and is then sealed before the
+event. The live run is pre-approved rather than interactively permissioned,
+while drift still fails closed. Demo 3 success and presentation success remain
+distinct and truthfully reportable.
 
 # Links / references
 

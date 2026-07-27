@@ -11,7 +11,7 @@ next: task-16
 tags: [ai-native-sdlc, presentation-demo, phase-4, step-2]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifacts/demo-002/fork-receipt.json, artifacts/demo-002/source-goal-1.md]
+artifacts: [runs/demo-002/BOOTSTRAP_RECEIPT.json, artifacts/demo-002/fork-receipt.json, artifacts/demo-002/source-goal-1.md]
 relates: []
 blocked_by: []
 blocks: []
@@ -31,11 +31,15 @@ Fork the canonical website demo graph into Demo 2. This is step 2 of 9 in Goal 4
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-4.
-- From the repository root run exactly `mdkg graph fork examples/website-demo-template/.mdkg --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --json`.
+- From the repository root run the accepted wrapper exactly:
+  `node scripts/bootstrap-website-demo-run.js --source examples/website-demo-template --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --manifest presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json --receipt presentations/ai-native-sdlc-demo/runs/demo-002/BOOTSTRAP_RECEIPT.json`.
+- Require its embedded canonical fork command to remain
+  `mdkg graph fork examples/website-demo-template/.mdkg --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --json`.
 - Preserve the local ID `goal-1`, record the source tree hash and fork receipt, and prove the target is a writable run graph rather than a root subgraph.
 - Write `artifacts/demo-002/fork-receipt.json` with command, source root, source tree SHA-256, source `goal-1` QID/title/hash, target root, target `goal-1` QID/title/hash, created-file inventory, timestamp, and validation result.
 - Capture the unmodified source goal at `artifacts/demo-002/source-goal-1.md`; target existence, ID drift, source hash drift, or validation failure stops this node without replacing files.
-- Do not specialize source content until the unmodified fork validates and its source identity is sealed.
+- Do not specialize source content until the unmodified fork plus operator
+  bootstrap validates and its source identity is sealed.
 - Bind Demo 2 to the exact canonical source graph hash and reserved ID/routes.
 - Create the run through deterministic fork plus complete operator and skill materialization.
 - Specialize requirements, design, authority, goal, work, and tests while preserving lineage.

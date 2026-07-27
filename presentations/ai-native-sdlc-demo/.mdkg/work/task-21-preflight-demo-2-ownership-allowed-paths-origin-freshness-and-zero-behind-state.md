@@ -10,7 +10,7 @@ next: task-22
 tags: [ai-native-sdlc, presentation-demo, phase-5, step-1]
 owners: [root-integration-owner]
 links: []
-artifacts: [artifacts/demo-002/publication-allowlist.json, artifacts/demo-002/publication-preflight.json]
+artifacts: [artifacts/demo-002/publication-approval.json, artifacts/demo-002/publication-allowlist.json, artifacts/demo-002/publication-preflight.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -31,10 +31,23 @@ Preflight Demo 2 ownership allowed paths origin freshness and zero-behind state.
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-5.
 - Derive `artifacts/demo-002/publication-allowlist.json` only from accepted Goal 2–4 receipts. Record each exact repository-relative path, owner, reason, expected hash, allowed operation, base SHA, remote/branch, validity window, and forbidden surfaces.
+- Fetch `origin`, enumerate every commit and changed path in
+  `origin/main..HEAD`, include the planned Goal 5 commit set, and require the
+  resulting complete push-range manifest to be reviewed rather than treating
+  newly staged Demo 2 files as the whole publication surface.
+- Obtain explicit human acceptance in
+  `artifacts/demo-002/publication-approval.json`. Record approver, accepted
+  candidate/checkpoint hash, fetched origin SHA, current HEAD, complete
+  push-range commit/path manifest hash, exact allowlist hash, owner, validity
+  window, authorized non-force push/provider-read actions, forbidden actions,
+  and invalidation conditions. Do not infer approval from Goal 4 completion.
 - Acquire a root-integration-owner lease that names checkout, owner, start/expiry, base SHA, allowed paths, conflict check, release condition, and the parallel-writer acknowledgement.
-- Fetch `origin`, record `HEAD`, `origin/main`, merge base, ahead/behind counts, dirty and staged paths, and require zero behind immediately before handoff.
+- Record `HEAD`, `origin/main`, merge base, ahead/behind counts, dirty and
+  staged paths, and require zero behind immediately before handoff.
 - Write `artifacts/demo-002/publication-preflight.json` with the allowlist hash, candidate receipt/hash, lease, Git commands/results, fetched timestamp, exact staged-path expectation, logical commit/message plan, non-force push command, and abort conditions.
-- Abort on origin advancement, unrelated dirty/staged paths, allowlist mismatch, expired lease, force/history-rewrite need, missing access, or any candidate hash drift.
+- Abort on origin advancement, an unapproved ahead commit or path, unrelated
+  dirty/staged paths, allowlist mismatch, expired approval or lease,
+  force/history-rewrite need, missing access, or any candidate hash drift.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-22 does not begin until this node is verified.
 
@@ -55,6 +68,8 @@ Preflight Demo 2 ownership allowed paths origin freshness and zero-behind state.
 
 - Preflight receipt proves the accepted base SHA and fetched `origin/main` are current and the checkout is zero behind.
 - Every dirty or proposed staged path is present with the same expected hash in the allowlist; all other paths are absent.
+- Every commit and path that a normal `git push origin main` would publish is
+  present in the accepted push-range manifest.
 - The lease and preflight receipt remain valid at task-22 start; otherwise task-21 is rerun.
 
 # Links / Artifacts

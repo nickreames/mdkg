@@ -7,7 +7,7 @@ priority: 1
 epic: epic-6
 parent: goal-6
 prev: test-16
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-10]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-13]
 owners: [program-orchestrator]
 links: []
 artifacts: []
@@ -19,14 +19,15 @@ context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-6-step-10]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [no_implementation, no_stage, no_commit, no_push, no_deploy, fallback_ready]
+cases: [preauthorization_complete, no_mid_run_approval_gap, no_implementation, no_stage, no_commit, no_push, no_deploy, fallback_ready]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Validate verify the dry rehearsal stops before commit push or deployment as step 10 of Goal 6. A passing result must include exact commands or observations, reviewed outputs, and public-safe evidence.
+Validate the pre-authorized dry workflow and prove it stops before commit,
+push, or deployment as the final step 13 of Goal 6.
 
 # Target / Scope
 
@@ -47,6 +48,8 @@ Validate verify the dry rehearsal stops before commit push or deployment as step
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
 - Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.
 - Dry rehearsal creates no implementation, commit, push, deployment, or provider change.
+- The frozen authority covers the full future happy path without another
+  approval prompt, while each invalidation condition produces a hard blocker.
 - This test specifically proves: Verify the dry rehearsal stops before commit push or deployment.
 - Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
 

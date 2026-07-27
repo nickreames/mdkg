@@ -30,8 +30,18 @@ Refresh the program bundle and prepare the reveal receipt. This is the final ste
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-7.
-- Only after task-35 through task-39 and tests 18–21 pass, have the root integration owner prepare the public-safe reveal receipt and a provisional verified bundle from `presentations/ai-native-sdlc-demo/`.
-- Verify that exact ZIP, then from the repository root run `node dist/cli.js subgraph refresh ai_native_sdlc_demo --json`, `node dist/cli.js subgraph verify ai_native_sdlc_demo --json`, and `node dist/cli.js goal show ai_native_sdlc_demo:goal-7 --json` for the projected program evidence.
+- Only after task-35 through task-39 and tests 18–21 pass, have the root
+  integration owner prepare the public-safe reveal receipt and explicitly
+  build the private program bundle from
+  `presentations/ai-native-sdlc-demo/` into the existing root-owned path
+  `.mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip`.
+- Use
+  `mdkg --root presentations/ai-native-sdlc-demo bundle create --profile private --output <absolute-root-owned-bundle-path> --json`,
+  verify that exact ZIP from the nested root, then from the repository root run
+  `mdkg subgraph refresh ai_native_sdlc_demo --json`,
+  `mdkg subgraph verify ai_native_sdlc_demo --json`, and
+  `mdkg goal show ai_native_sdlc_demo:goal-7 --json`. Do not use
+  `subgraph sync`; this registration intentionally has no `source_path`.
 - Write `artifacts/demo-003/program-bundle-receipt.json` with program root, absolute bundle path, private/root profile, bundle content hash, ZIP SHA-256, alias, create/verify/refresh outputs, root base SHA, owner, and timestamp.
 - Write `artifacts/demo-003/reveal-receipt.json` linking source `goal-1`, specialized Demo 3 `goal-1`, achieved child checkpoint, Plan/Work/Evidence summaries, what/why/next, commit/push receipt, exact-SHA deployments, live routes/screenshots, and the bundle projection.
 - Complete task-40, create the accepted Goal 7 checkpoint, and close Goal 7 only after all receipts resolve. Then re-index and rebuild the bundle a second time, refresh/verify the root projection, and require `goal show ai_native_sdlc_demo:goal-7` to report achieved; the root integration event records this final post-closeout bundle hash so writing it cannot stale the bundle.

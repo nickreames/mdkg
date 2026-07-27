@@ -8,7 +8,7 @@ epic: epic-6
 parent: goal-6
 prev: test-15
 next: test-17
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-9]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-12]
 owners: [program-orchestrator]
 links: []
 artifacts: []
@@ -27,7 +27,8 @@ updated: 2026-07-26
 
 # Overview
 
-Validate verify provider access origin state and production project visibility as step 9 of Goal 6. A passing result must include exact commands or observations, reviewed outputs, and public-safe evidence.
+Validate provider access, origin/push-range state, production project
+visibility, and pre-authorization currency as step 12 of Goal 6.
 
 # Target / Scope
 
@@ -46,6 +47,8 @@ Validate verify provider access origin state and production project visibility a
 - Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
 - No child implementation node has executed.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
+- The complete prospective push range remains exactly the range approved in
+  `event-authority.json`; no unrelated ahead commit/path is present.
 - Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.
 - Dry rehearsal creates no implementation, commit, push, deployment, or provider change.
 - This test specifically proves: Verify provider access origin state and production project visibility.

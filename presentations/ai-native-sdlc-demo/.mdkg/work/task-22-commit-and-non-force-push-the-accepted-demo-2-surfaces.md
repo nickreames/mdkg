@@ -32,10 +32,21 @@ Commit and non-force push the accepted Demo 2 surfaces. This is step 2 of 9 in G
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-5.
 - Consume the still-valid task-21 preflight and allowlist hashes; rerun task-21 if HEAD, origin, dirty paths, hashes, owner, or lease changed.
-- Stage only enumerated accepted Goal 2 platform, Goal 3 deck, and Goal 4 Demo 2 paths; record the exact staged inventory and compare it byte-for-byte with the allowlist before committing.
+- Reverify the human publication-approval hash and complete push-range
+  manifest. Any changed or additional ahead commit/path returns to task-21 for
+  renewed human approval.
+- Resume `runs/demo-002/.mdkg/:goal-1`, require its publish task to be next,
+  and have only the root integration owner claim that child publish node.
+- Stage only enumerated accepted Demo 2 publication paths; record the exact
+  staged inventory and compare it byte-for-byte with the allowlist before
+  committing. Previously committed Goal 2, Goal 3, or Goal 4 surfaces are
+  governed by the separately accepted push-range manifest, not restaged here.
 - Create the planned bounded logical commit or commits with recorded messages and parent SHAs, then fetch and repeat the zero-behind/lease checks.
 - Push only with a normal non-force `git push origin main`; never amend, rebase, merge unrelated work, rewrite history, tag, publish a package, or mutate a provider.
 - Write `artifacts/demo-002/commit-push-receipt.json` with preflight/allowlist hashes, staged paths, commit SHAs/parents/messages, pre/post remote SHAs, divergence, push command/result, actor, and timestamps.
+- Mirror that receipt into the child run and complete its publish task. Require
+  the exact-SHA/live-URL test to become the next child node; do not mark the
+  child goal achieved yet.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-23 does not begin until this node is verified.
 
@@ -57,6 +68,8 @@ Commit and non-force push the accepted Demo 2 surfaces. This is step 2 of 9 in G
 
 - Staged paths and hashes exactly equal the accepted allowlist and contain no unrelated or generated-local-only state.
 - The final pushed SHA is reachable at `origin/main`, the push used no force/history rewrite, and the receipt resolves every commit parent and path.
+- The actual published commit/path range exactly equals the human-accepted
+  push-range manifest plus the approved task-22 commit set.
 - Stop after push evidence; deployment and URL verification belong to task-23 and task-24.
 
 # Links / Artifacts

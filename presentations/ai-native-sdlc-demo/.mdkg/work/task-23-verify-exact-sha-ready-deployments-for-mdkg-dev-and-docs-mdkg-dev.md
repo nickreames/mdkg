@@ -36,6 +36,9 @@ Verify exact-SHA READY deployments for mdkg.dev and docs.mdkg.dev. This is step 
 - Require both deployments to be `READY` and their provider Git SHA fields to equal the task-22 pushed SHA; recency or success for another SHA is not evidence.
 - Poll read-only at a bounded cadence for at most fifteen minutes. Do not create a deployment, redeploy, change project settings, DNS, aliases, analytics, or environment variables.
 - Write `artifacts/demo-002/deployment-receipt.json` with pushed SHA, both project/deployment records, polling attempts, final comparison, and any precise access/provider blocker.
+- Attach the verified deployment receipt to the still-open child
+  exact-SHA/live-URL test without completing it; task-24 owns live-route proof
+  and child closeout.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-24 does not begin until this node is verified.
 

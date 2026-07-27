@@ -29,6 +29,9 @@ Freeze event assets and prepare, but do not execute, the specialized Demo 3 run.
 Owned actionable chain:
 
 - task-27
+- spike-6
+- task-47
+- test-25
 - task-28
 - task-29
 - task-30
@@ -39,7 +42,8 @@ Owned actionable chain:
 - test-16
 - test-17
 
-All listed nodes use epic-6, parent goal-6, and symmetric prev/next links. The goal scopes this epic recursively.
+All 13 listed nodes use epic-6, parent goal-6, and symmetric prev/next links.
+The goal scopes this epic recursively.
 
 # Milestones
 

@@ -32,6 +32,9 @@ Rehearse the complete presentation against production Demo 2. This is step 5 of 
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-5.
 - Rehearse against the frozen deck source/PPTX and task-24 production URLs using the speaker notes and cue sheet versions recorded in Goal 3.
+- Treat Goal 3 as the accepted baseline rather than the final event deck.
+  Record evidence-backed slide/cue changes for Goal 6 task-27; do not edit the
+  deck in this node.
 - Time kickoff, history/timeline, context-engineering and AI-native SDLC framing, mdkg story, source-versus-specialized reveal, Plan -> Work -> Evidence walkthrough, what/why/next, CTA, questions buffer, and recovery branches separately.
 - Target 30–32 minutes and fail above the 35-minute hard stop; reserve explicit time for the live kickoff, result reveal, and Demo 2 fallback switch.
 - Exercise normal reveal, delayed Demo 3, hard-blocker fallback, offline fallback, and recovery wording without mutating source, Git, deployments, or providers.

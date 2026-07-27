@@ -8,7 +8,7 @@ epic: epic-6
 parent: goal-6
 prev: task-28
 next: task-30
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-3]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-6]
 owners: [program-orchestrator]
 links: []
 artifacts: []
@@ -26,7 +26,8 @@ updated: 2026-07-26
 
 # Overview
 
-Verify the Demo 3 child chain and public-safe context pack. This is step 3 of 10 in Goal 6; it owns only the outcome named here and the authority granted by goal-6.
+Verify the Demo 3 child chain and public-safe context pack. This is step 6 of
+13 in Goal 6.
 
 # Acceptance Criteria
 
@@ -56,6 +57,8 @@ Verify the Demo 3 child chain and public-safe context pack. This is step 3 of 10
 
 - Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
 - The pack identifies `examples/website-demo-template/.mdkg/:goal-1` as the reusable source and `runs/demo-003/.mdkg/:goal-1` as the writable specialized goal.
+- The source, manifest, and sendoff hashes equal test-25's verified identities;
+  no pre-refinement Goal 2 hash is silently substituted.
 - The only execution chain is positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
 - No child implementation node has executed.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.

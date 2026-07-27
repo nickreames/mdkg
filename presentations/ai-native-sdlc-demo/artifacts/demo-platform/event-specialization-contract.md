@@ -40,7 +40,7 @@ decisions, and a specialized `goal-1` that records:
   Demo 2 fallback;
 - checkpoint policy for success and transparent hard-blocker evidence.
 
-The normative live sendoff bytes are:
+The Goal 2 baseline normative live sendoff bytes are:
 
 - source: task-10 `Normative Live Sendoff Contract`, normalized to one trailing LF
 - materialized artifact: `artifacts/demo-platform/live-sendoff-contract.md`
@@ -48,8 +48,12 @@ The normative live sendoff bytes are:
   `63c3991d84b608eb6be0ee95cf5d7fa077e08758b598c5afa02dffaa2c461220`
 - byte length: `1605`
 
-Task 31 must consume these exact bytes and hash. Event-specific hashes, owners,
-paths, and lease values belong in its separate allowlist artifact.
+After Goal 5, Goal 6 spike-6 may recommend an evidence-backed refinement.
+Task-47 may either retain this baseline byte-for-byte or create a versioned
+replacement under `artifacts/demo-003/`; test-25 must verify the selected
+version. Task 31 consumes exactly the version and hash accepted by test-25.
+Event-specific hashes, owners, paths, lease values, and authority belong in
+separate allowlist/authority artifacts.
 
 The positioning spike may be completed during Goal 6 only if it does not create
 website implementation. The implementation task and every successor remain
@@ -95,6 +99,10 @@ Goal 7 may start only when:
   credentials;
 - task-31 has copied the normative sendoff bytes and recorded the matching
   SHA-256;
+- task-31 has recorded a separate human-accepted
+  `artifacts/demo-003/event-authority.json` binding the sendoff, allowlist,
+  lease, complete approved push range, authorized live actions, forbidden
+  actions, validity window, and invalidation conditions;
 - every allowlist row, source hash, target path, route, child node, and
   activation condition is inspectable from a fresh-agent pack.
 
@@ -104,6 +112,13 @@ The audience-facing program goal delegates to the specialized child
 `goal-1`. The child continues through implementation, local proof, canonical
 integration, publication, exact-SHA production verification, and accepted
 checkpoint unless a normative hard blocker occurs.
+
+The accepted event-authority receipt is the pre-approval for those exact live
+actions. The running agent does not request another approval for an in-scope
+edit, validation, bounded fix-forward commit, normal push, read-only provider
+inspection, route verification, or integration-owner bundle refresh while all
+frozen identities remain valid. Any drift invalidates the receipt and becomes a
+hard blocker rather than an invitation to broaden authority.
 
 The reveal shows:
 

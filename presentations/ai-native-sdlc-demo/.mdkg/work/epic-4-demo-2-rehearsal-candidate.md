@@ -11,9 +11,9 @@ artifacts: []
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [goal-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-evidence_refs: []
+refs: [goal-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, chk-13]
+context_refs: [goal-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, chk-13]
+evidence_refs: [chk-4, chk-12, chk-13]
 aliases: [phase-4-epic]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -22,7 +22,8 @@ updated: 2026-07-26
 
 # Goal
 
-Create and seal a fully local Demo 2 candidate and offline fallback.
+Create and seal a fully local Demo 2 candidate, pause its child goal with
+publication next, and retain deck-ready offline evidence.
 
 # Scope
 

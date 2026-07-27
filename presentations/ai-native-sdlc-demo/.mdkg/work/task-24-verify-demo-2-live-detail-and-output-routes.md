@@ -11,7 +11,7 @@ next: task-25
 tags: [ai-native-sdlc, presentation-demo, phase-5, step-4]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifacts/demo-002/live-route-receipt.json, artifacts/demo-002/screenshots/detail-desktop.png, artifacts/demo-002/screenshots/detail-mobile.png, artifacts/demo-002/screenshots/output-desktop.png, artifacts/demo-002/screenshots/output-mobile.png]
+artifacts: [artifacts/demo-002/live-route-receipt.json, artifacts/demo-002/production-reveal/source-vs-specialized-16x9.png, artifacts/demo-002/screenshots/detail-desktop.png, artifacts/demo-002/screenshots/detail-mobile.png, artifacts/demo-002/screenshots/output-desktop.png, artifacts/demo-002/screenshots/output-mobile.png]
 relates: []
 blocked_by: []
 blocks: []
@@ -36,6 +36,13 @@ Verify Demo 2 live detail and output routes. This is step 4 of 9 in Goal 5; it o
 - Require semantic keyboard navigation, visible focus, reduced-motion behavior, WCAG AA automated checks plus manual heading/landmark review, no leaked secrets/private prompts, no third-party scripts/fonts/forms/trackers, no client directives, no external JavaScript request, and zero transferred JavaScript bytes.
 - Record total initial transfer no greater than 500 KiB and every raster asset no greater than 250 KiB; capture the four named screenshots and a response/DOM/asset/accessibility receipt.
 - Write `artifacts/demo-002/live-route-receipt.json` with exact URL, deployment ID/SHA, viewport, status, headers/robots, DOM assertions, JS bytes, transfer/raster measurements, accessibility results, screenshot hashes, observation time, and tool versions.
+- Produce a production-backed 16:9 source-versus-specialized reveal image
+  using the exact-SHA route evidence. Keep the four raw production screenshots
+  separately hash-addressable.
+- Mirror the deployment and live-route receipts into the child run, complete
+  its exact-SHA/live-URL test, create its accepted checkpoint, run child
+  validation/evaluation, and mark child `goal-1` achieved only when the
+  complete local-to-production condition passes.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-25 does not begin until this node is verified.
 
@@ -56,6 +63,8 @@ Verify Demo 2 live detail and output routes. This is step 4 of 9 in Goal 5; it o
 
 - Both routes pass content, source-versus-specialized, noindex, zero-JavaScript, accessibility, responsive, claim, secret, and budget checks.
 - All four screenshot hashes resolve, and both desktop/mobile receipts bind task-23's deployment ID and pushed SHA.
+- The child accepted checkpoint resolves the publish, deployment, route, and
+  safety receipts and `goal evaluate goal-1` reports achieved.
 - Route or safety failure is recorded without editing source or redeploying from this node.
 
 # Links / Artifacts

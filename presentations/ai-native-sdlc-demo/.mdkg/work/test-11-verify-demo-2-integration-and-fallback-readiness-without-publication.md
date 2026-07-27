@@ -19,7 +19,7 @@ context_refs: [goal-4, epic-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-4-step-9]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [adapter_routes, source_specialized_contrast, fallback_hash, offline_capture, no_publication]
+cases: [adapter_routes, source_specialized_contrast, publication_gate_pause, fallback_hash, offline_capture, deck_ready_capture, no_publication]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -46,6 +46,10 @@ Validate verify demo 2 integration and fallback readiness without publication as
 - The specialized graph validates, routes correctly, and differs visibly from the source.
 - The local output is static, zero-JavaScript, accessible, noindex/unlisted, public-safe, responsive, and within budgets.
 - Adapter routes work locally and candidate/fallback hashes and receipts verify.
+- Child `goal-1` is paused with publish next, remains unachieved, and has no
+  publication, deployment, live-URL, or accepted-checkpoint evidence.
+- The 16:9 comparison and four desktop/mobile route captures are present,
+  hash-bound, public-safe, and suitable inputs to Goal 6 final deck polish.
 - No Git or provider side effect occurred.
 - This test specifically proves: Verify Demo 2 integration and fallback readiness without publication.
 - Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
