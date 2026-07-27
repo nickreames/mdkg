@@ -1,10 +1,11 @@
+import { indexableDemos } from "../data/demos";
+
 export const prerender = true;
 
-const routes = [
+const staticRoutes = [
   "/",
   "/quickstart/",
   "/demos/",
-  "/demo/1/",
   "/trust/",
   "/alpha/",
   "/llms.txt",
@@ -12,7 +13,8 @@ const routes = [
 ];
 
 export function GET() {
-  const urls = routes
+  const demoRoutes = indexableDemos.map((demo) => `/demo/${demo.id}/`);
+  const urls = [...staticRoutes, ...demoRoutes]
     .map((route) => `  <url><loc>https://mdkg.dev${route}</loc></url>`)
     .join("\n");
   const body = `<?xml version="1.0" encoding="UTF-8"?>

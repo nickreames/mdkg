@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Badge from "../../components/Badge.astro";
 import ButtonLink from "../../components/ButtonLink.astro";
-import { demoSnapshots, type DemoSnapshot } from "../../data/demoSnapshots";
+import { demoSnapshots, type DemoSnapshot } from "../../data/demos";
 
 export function getStaticPaths() {
   return demoSnapshots.map((demo) => ({
@@ -12,6 +12,9 @@ export function getStaticPaths() {
 }
 
 const { demo } = Astro.props as { demo: DemoSnapshot };
+const completedWork = demo.work.filter((item) => item.status === "done");
+const nextEvidence = demo.evidence.find((item) => item.label.toLowerCase() === "next");
+const proofEvidence = demo.evidence.filter((item) => item !== nextEvidence);
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -25,6 +28,7 @@ const structuredData = {
 <BaseLayout
   title={`${demo.title} - mdkg demo ${demo.id}`}
   description={demo.summary}
+  noindex={demo.noindex}
   structuredData={structuredData}
 >
   <section class="demo-detail-hero">
@@ -47,12 +51,110 @@ const structuredData = {
   <section class="section">
     <div class="container surface-layout">
       <aside class="surface-nav" aria-label="Demo surfaces">
+        <a href="#specifications">Specifications</a>
+        <a href="#lifecycle">Plan → Work → Evidence</a>
         <a href="#graph">Graph</a>
         <a href="#files">Files</a>
         <a href="#output">Output</a>
         <a href="#safety">Safety</a>
       </aside>
       <div class="surface-stack">
+        <section id="specifications" class="surface-section" aria-labelledby="specifications-title">
+          <div class="section-kicker">Reusable start → specialized result</div>
+          <h2 id="specifications-title">The same local goal id carries a more specific contract.</h2>
+          <p class="muted">Compare the reusable starting specification with the specialized executed specification. The contrast is requirements, authority, tests, and proof—not hidden chat history.</p>
+          <div class="spec-grid">
+            {[
+              { label: "Reusable starting specification", goal: demo.sourceGoal },
+              { label: "Specialized executed specification", goal: demo.executedGoal }
+            ].map(({ label, goal }) => (
+              <article class="spec-card">
+                <div class="node-meta">
+                  <span>{label}</span>
+                  <strong>{goal.status}</strong>
+                </div>
+                <p class="goal-id">{goal.id}</p>
+                <h3>{goal.title}</h3>
+                <p>{goal.summary}</p>
+                <div>
+                  <h4>Goal condition</h4>
+                  <p>{goal.condition}</p>
+                </div>
+                <div>
+                  <h4>Requirements</h4>
+                  <ul>
+                    {goal.requirements.map((item) => <li>{item}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4>Authority</h4>
+                  <ul>
+                    {goal.authority.map((item) => <li>{item}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4>Tests</h4>
+                  <ul>
+                    {goal.tests.map((item) => <li>{item}</li>)}
+                  </ul>
+                </div>
+                <dl class="provenance">
+                  <div>
+                    <dt>Checkpoint</dt>
+                    <dd>{goal.checkpoint.id} · {goal.checkpoint.title}</dd>
+                  </div>
+                  <div>
+                    <dt>Source hash</dt>
+                    <dd><code>{goal.sourceHash}</code></dd>
+                  </div>
+                </dl>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="lifecycle" class="surface-section" aria-labelledby="lifecycle-title">
+          <div class="section-kicker">Plan → Work → Evidence</div>
+          <h2 id="lifecycle-title">What completed, why it mattered, and what comes next.</h2>
+          <div class="lifecycle-grid">
+            <article class="flow-card">
+              <span>Plan</span>
+              <h3>Specialize the reusable contract</h3>
+              <p>{demo.executedGoal.condition}</p>
+            </article>
+            <article class="flow-card">
+              <span>Work</span>
+              <h3>{completedWork.length} scoped items completed</h3>
+              <ul class="work-list">
+                {demo.work.map((item) => (
+                  <li>
+                    <strong>{item.id} · {item.title}</strong>
+                    <span>Why: {item.why}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article class="flow-card">
+              <span>Evidence</span>
+              <h3>Completion is inspectable</h3>
+              <ul class="evidence-list">
+                {proofEvidence.map((item) => (
+                  <li>
+                    <strong>{item.label} · {item.status}</strong>
+                    <span>{item.detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </div>
+          {nextEvidence && (
+            <div class="next-callout">
+              <strong>What comes next</strong>
+              <p>{nextEvidence.detail}</p>
+            </div>
+          )}
+        </section>
+
         <section id="graph" class="surface-section" aria-labelledby="graph-title">
           <div class="section-kicker">Surface 1</div>
           <h2 id="graph-title">Sanitized mdkg graph</h2>
@@ -230,6 +332,91 @@ const structuredData = {
     gap: 14px;
   }
 
+  .spec-grid,
+  .lifecycle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .lifecycle-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .spec-card,
+  .flow-card {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    background: var(--zinc-50);
+  }
+
+  .goal-id,
+  .flow-card > span {
+    color: var(--blue-700);
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .spec-card h4 {
+    margin: 0 0 8px;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+  }
+
+  .provenance {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .provenance div {
+    display: grid;
+    gap: 4px;
+  }
+
+  .provenance dt {
+    color: var(--zinc-600);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .provenance dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .work-list,
+  .evidence-list {
+    padding: 0;
+    list-style: none;
+  }
+
+  .work-list li,
+  .evidence-list li {
+    display: grid;
+    gap: 4px;
+  }
+
+  .work-list span,
+  .evidence-list span {
+    color: var(--zinc-600);
+  }
+
+  .next-callout {
+    display: grid;
+    gap: 6px;
+    border-left: 4px solid var(--teal-500);
+    padding: 14px 18px;
+    background: var(--zinc-50);
+  }
+
   .node-card,
   .file-card,
   .gate-grid > div {
@@ -331,6 +518,8 @@ const structuredData = {
   @media (max-width: 880px) {
     .detail-hero-grid,
     .surface-layout,
+    .spec-grid,
+    .lifecycle-grid,
     .graph-grid,
     .gate-grid {
       grid-template-columns: 1fr;

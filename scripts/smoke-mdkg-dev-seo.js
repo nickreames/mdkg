@@ -68,12 +68,27 @@ function main() {
     "https://mdkg.dev/alpha/",
     "https://mdkg.dev/llms.txt",
     "https://mdkg.dev/llms-full.txt",
+    "https://mdkg.dev/demo/1/",
   ]) {
     assert(sitemap.includes(`<loc>${loc}</loc>`), `sitemap missing ${loc}`);
   }
   assert(!sitemap.includes("https://mdkg.dev/docs/"), "sitemap must not include deleted marketing /docs bridge");
   assert(!sitemap.includes("demo-"), "sitemap must not include future demo subdomains");
+  assert(!sitemap.includes("https://mdkg.dev/demo/1/output/"), "sitemap must not include demo output routes");
+  assert(!sitemap.includes("https://mdkg.dev/demo/2/"), "sitemap must not include fixture-only Demo 2");
+  assert(!sitemap.includes("https://mdkg.dev/demo/3/"), "sitemap must not include fixture-only Demo 3");
   assert(!sitemap.includes("vercel.app"), "sitemap must not include preview deployment URLs");
+
+  const demo1Detail = readText(path.join(dist, "demo", "1", "index.html"));
+  const demo1Output = readText(path.join(dist, "demo", "1", "output", "index.html"));
+  assert(
+    demo1Detail.includes('name="robots" content="index, follow"'),
+    "listed and indexable Demo 1 detail must remain indexable"
+  );
+  assert(
+    demo1Output.includes('name="robots" content="noindex,nofollow"'),
+    "Demo 1 output must remain noindex"
+  );
 
   const robots = readText(path.join(dist, "robots.txt"));
   assert(robots.includes("User-agent: *"), "robots missing user-agent");
@@ -160,7 +175,15 @@ function main() {
     assert(allHtml.includes(expected), `built pages missing expected link: ${expected}`);
   }
   const claims = readText(path.join(repoRoot, "mdkg-dev", "CLAIMS.md"));
-  for (const expected of ["Owner", "Review status", "approved for public alpha", "blocked from public claim", "comprehensive secret scanning"]) {
+  for (const expected of [
+    "Owner",
+    "Review status",
+    "approved for public alpha",
+    "blocked from public claim",
+    "comprehensive secret scanning",
+    "Demo 1 is an accepted local proof",
+    "Do not imply Demo 2 or Demo 3 exists",
+  ]) {
     assert(claims.includes(expected), `claims matrix missing ${expected}`);
   }
   for (const unsafe of ["hosted queue is available", "executes workers automatically", "arbitrary SQL access", "production-ready for every team"]) {
