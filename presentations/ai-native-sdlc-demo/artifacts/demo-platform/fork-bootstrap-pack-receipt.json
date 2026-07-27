@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "test": "test-6",
+  "title": "Deterministic fork, startup, routing, and pack-completeness receipt",
+  "recorded_at": "2026-07-26",
+  "base_git_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+  "final_source_surface": {
+    "kind": "sha256 of git diff --binary for the reusable template, bootstrap wrapper, demo-graph smoke, and operator manifest",
+    "sha256": "d198d1d1644f8e6536093981699b1ab81ffa0ae0d5ad6b6d4bcc0a73172f9e19"
+  },
+  "commands": [
+    {
+      "command": "npm run smoke:demo-graph",
+      "attempt": 1,
+      "exit_code": 0,
+      "result": "The existing bootstrap checks passed, but acceptance review found that the source graph had no PRD and therefore could not satisfy Test 6's explicit fresh-agent PRD coverage requirement. This run was not accepted as Test 6 proof."
+    },
+    {
+      "command": "mdkg --root examples/website-demo-template new prd \"Reusable static Astro website demo platform\" --status accepted --tags website-demo,static-astro,source-template --json",
+      "exit_code": 1,
+      "result": "Failed closed because --status is not valid for PRD nodes; no node was created."
+    },
+    {
+      "command": "mdkg --root examples/website-demo-template new prd \"Reusable static Astro website demo platform\" --tags website-demo,static-astro,source-template --json",
+      "exit_code": 0,
+      "result": "The CLI allocated prd-2, which was preserved without renumbering and then authored as the reusable source requirements."
+    },
+    {
+      "command": "npm run smoke:demo-graph",
+      "attempt": 2,
+      "exit_code": 1,
+      "result": "Failed closed with manifest_source_hash_mismatch after an adjacent manifest hash was edited incorrectly; the correct AGENTS.md hash was restored and no run directory was retained."
+    },
+    {
+      "command": "npm run smoke:demo-graph",
+      "attempt": 3,
+      "exit_code": 1,
+      "result": "The fork and 13-node pack succeeded, then the smoke failed because its expected node-count assertion still required 12. The stale assertion was corrected."
+    },
+    {
+      "command": "npm run smoke:demo-graph",
+      "attempt": 4,
+      "exit_code": 0,
+      "result": "Absent-target creation, PRD-aware packs, repeat equality, five negative cases, validation, routing, source-index immutability, and cleanup passed."
+    },
+    {
+      "command": "npm run smoke:demo-graph",
+      "attempt": 5,
+      "exit_code": 0,
+      "result": "Final structured-receipt rerun passed with the inventory hash and full pack QID list emitted."
+    },
+    {
+      "command": "mdkg --root examples/website-demo-template pack spike-1 --profile concise --depth 1 --edges parent,epic,relates,blocked_by,blocks,prev,next,context_refs,evidence_refs --skills auto --skills-depth full --dry-run --stats",
+      "exit_code": 0,
+      "result": "13-node summary-body pack, 7,769 bytes, 260 lines, approximately 1,948 tokens."
+    },
+    {
+      "command": "mdkg --root examples/website-demo-template pack spike-1 --profile standard --depth 1 --edges parent,epic,relates,blocked_by,blocks,prev,next,context_refs,evidence_refs --skills auto --skills-depth full --dry-run --stats",
+      "exit_code": 0,
+      "result": "13-node full-body pack, 39,520 bytes, 1,061 lines, approximately 9,886 tokens."
+    },
+    {
+      "command": "test ! -d presentations/ai-native-sdlc-demo/runs",
+      "exit_code": 0,
+      "result": "No rehearsal, event, or temporary run directory was retained."
+    }
+  ],
+  "bootstrap": {
+    "source_root": "examples/website-demo-template",
+    "source_tree_hash": "sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3",
+    "cli_source_tree_hash": "sha256:0f05e8de0b4b42aaa84e461b27abf6073bde0597e2559edc769e5471925c3e24",
+    "target_policy": "Absent, repository-contained temporary target under presentations/ai-native-sdlc-demo/runs; cleaned in finally.",
+    "start_goal": "goal-1",
+    "selected_goal_qid": "root:goal-1",
+    "preserved_ids": true,
+    "first_actionable_qid": "root:spike-1",
+    "generated_file_count": 103,
+    "generated_inventory_sha256": "481773f0514b0d99737187cb8e712df9c030607cfa13979273769e3c7cdf75ad",
+    "operator_manifest": {
+      "path": "artifacts/demo-platform/operator-materialization-manifest.json",
+      "sha256": "3ac248cb5f49bc65c1ec5fd73281b8a075d83710f1414ef82914c60db6f2963f",
+      "entry_count": 21,
+      "operator_files": 9,
+      "agent_skill_projection_files": 6,
+      "claude_skill_projection_files": 6
+    },
+    "wrapper": {
+      "path": "scripts/bootstrap-website-demo-run.js",
+      "sha256": "562e76bc2df7d7c5eba93617584df2663ce6ca4fe18a58d0b9166bc78d89a58f"
+    },
+    "smoke": {
+      "path": "scripts/smoke-demo-graph.js",
+      "sha256": "9e6fa93ffb9f4ed7412ab65cca4e3a7876a1ded3f7827bcbb04bb00f0e52f2b4"
+    }
+  },
+  "child_validation": {
+    "ok": true,
+    "warning_count": 0,
+    "error_count": 0,
+    "routing_warning_count": 0
+  },
+  "packs": {
+    "root_qid": "root:spike-1",
+    "edge_list": "parent,epic,relates,blocked_by,blocks,prev,next,context_refs,evidence_refs",
+    "included_qids": [
+      "root:spike-1",
+      "root:goal-1",
+      "root:epic-1",
+      "root:task-1",
+      "root:test-1",
+      "root:edd-1",
+      "root:dec-1",
+      "root:dec-2",
+      "root:prd-2",
+      "root:chk-2",
+      "root:skill:select-work-and-ground-context",
+      "root:skill:verify-close-and-checkpoint",
+      "root:skill:build-pack-and-execute-task"
+    ],
+    "concise": {
+      "body_mode": "summary",
+      "node_count": 13,
+      "bytes": 7769,
+      "lines": 260,
+      "estimated_tokens": 1948
+    },
+    "standard": {
+      "body_mode": "full",
+      "node_count": 13,
+      "bytes": 39520,
+      "lines": 1061,
+      "estimated_tokens": 9886
+    },
+    "prd_present": true,
+    "edd_present": true,
+    "accepted_decisions_present": true,
+    "predecessor_checkpoint_present": true,
+    "required_skills_present": true
+  },
+  "repeat_verification": {
+    "mode": "verify-only",
+    "result": "identical inventory and hashes",
+    "files_overwritten": 0,
+    "validation_routing_and_packs_rechecked": true
+  },
+  "negative_tests": [
+    {
+      "case": "deliberate operator drift",
+      "classification": "target_content_drift",
+      "result": "pass"
+    },
+    {
+      "case": "mismatched skill mirror",
+      "classification": "skill_mirror_mismatch",
+      "result": "pass"
+    },
+    {
+      "case": "missing required target input",
+      "classification": "missing_target_input",
+      "result": "pass"
+    },
+    {
+      "case": "unexpected pre-existing target",
+      "classification": "unexpected_target",
+      "result": "pass"
+    },
+    {
+      "case": "missing required manifest input",
+      "classification": "missing_source_input",
+      "result": "pass"
+    }
+  ],
+  "cleanup": {
+    "retained_run_directories": [],
+    "root_registered_run_graphs": [],
+    "source_example_indexes_mutated_by_smoke": false
+  },
+  "authority": {
+    "local_only": true,
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "provider_mutation": false
+  },
+  "warnings": [
+    "The Test 6 review added source PRD prd-2 under exact-path amendment-2 because the preexisting source template did not satisfy the already-scoped PRD pack requirement."
+  ],
+  "result": "pass"
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "kind": "source-execution-evidence-contract",
+  "state": "accepted",
+  "audience_language": {
+    "source_label": "Reusable starting specification",
+    "executed_label": "Specialized executed specification",
+    "mechanics_rule": "Do not teach graph-fork mechanics; show the durable specification contrast and execution evidence.",
+    "local_id_rule": "Both goal records may retain goal-1 and must remain visibly distinct by title, condition, provenance hash, status, requirements, authority, tests, and checkpoint."
+  },
+  "goal_fields": [
+    "id",
+    "title",
+    "status",
+    "condition",
+    "summary",
+    "requirements",
+    "authority",
+    "tests",
+    "checkpoint.id",
+    "checkpoint.title",
+    "checkpoint.status",
+    "sourceHash"
+  ],
+  "execution_fields": [
+    "work[].id",
+    "work[].type",
+    "work[].title",
+    "work[].status",
+    "work[].why",
+    "evidence[].label",
+    "evidence[].status",
+    "evidence[].detail"
+  ],
+  "reader_questions": [
+    "What was planned?",
+    "What work completed?",
+    "Why was it done?",
+    "What evidence supports completion?",
+    "What comes next?"
+  ],
+  "rendering": {
+    "comparison": "side by side at a stable field grain",
+    "lifecycle": "Plan -> Work -> Evidence",
+    "completion": "completed scoped work with why statements",
+    "next": "explicit next evidence record",
+    "provenance": "checkpoint plus SHA-256 source anchor"
+  },
+  "fail_closed": {
+    "missing_provenance": "reject record",
+    "identical_source_and_executed_hashes": "reject record",
+    "pending_public_evidence": "reject record",
+    "forbidden_keys": [
+      "rawPrompt",
+      "rawPrompts",
+      "credentials",
+      "tokens",
+      "cookies",
+      "providerPayload",
+      "providerPayloads",
+      "privateContext"
+    ],
+    "unsupported_claims": "reject or keep out of the configured public record until evidence and the claims matrix support them"
+  },
+  "historical_demo_1": {
+    "policy": "Preserve its React-era implementation truth while using the new comparison grammar.",
+    "source_tree_hash": "sha256:fd50a8dd10dde457c8e1eb2e17966ac6457d6e0eaa82f3ca5efee8bd56ba9495",
+    "executed_goal_hash": "sha256:7a4728a1cfcf383afc25dbbb91e5db385318ab90965768543807ac7e3d3f1ff8"
+  },
+  "authority": "Local implementation and proof only; no staging, commit, push, deployment, or provider mutation."
+}

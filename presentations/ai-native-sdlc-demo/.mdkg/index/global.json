@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T03:06:29.710Z",
+    "generated_at": "2026-07-27T04:18:14.871Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-3"
+      "root": "root:chk-4"
     }
   },
   "workspaces": {
@@ -205,6 +205,85 @@
         "evidence_refs": [
           "root:chk-1",
           "root:chk-2"
+        ]
+      }
+    },
+    "root:chk-4": {
+      "id": "chk-4",
+      "qid": "root:chk-4",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Goal 2 reusable demo platform accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-2",
+        "accepted"
+      ],
+      "owners": [
+        "program-orchestrator",
+        "root-integration-owner"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-platform/interface-contract.json",
+        "artifacts/demo-platform/validation-receipt.json",
+        "artifacts/demo-platform/fork-bootstrap-pack-receipt.json",
+        "artifacts/demo-platform/public-safety-visibility-zero-js-receipt.json",
+        "artifacts/demo-platform/static-build-route-a11y-budget-receipt.json"
+      ],
+      "refs": [
+        "goal-2",
+        "epic-2",
+        "spike-2",
+        "task-5",
+        "task-6",
+        "task-7",
+        "task-8",
+        "task-9",
+        "task-10",
+        "test-4",
+        "test-5",
+        "test-6",
+        "prd-1",
+        "edd-1",
+        "dec-1",
+        "dec-2",
+        "dec-3",
+        "dec-4",
+        "dec-5",
+        "dec-6",
+        "chk-3"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-4-goal-2-reusable-demo-platform-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-2",
+          "root:prd-1",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:dec-3",
+          "root:dec-4",
+          "root:dec-5",
+          "root:dec-6",
+          "root:chk-3"
+        ],
+        "evidence_refs": [
+          "root:chk-3",
+          "root:test-4",
+          "root:test-5",
+          "root:test-6"
         ]
       }
     },
@@ -570,7 +649,7 @@
       "ws": "root",
       "type": "epic",
       "title": "Reusable website-demo platform hardening",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -628,7 +707,13 @@
           "root:dec-5",
           "root:dec-6"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:chk-3",
+          "root:test-4",
+          "root:test-5",
+          "root:test-6",
+          "root:chk-4"
+        ]
       }
     },
     "root:epic-3": {
@@ -1073,7 +1158,7 @@
       "ws": "root",
       "type": "goal",
       "title": "Harden the reusable website-demo platform",
-      "status": "progress",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -1106,7 +1191,8 @@
         "goal-1",
         "chk-1",
         "chk-2",
-        "chk-3"
+        "chk-3",
+        "chk-4"
       ],
       "aliases": [
         "reusable-website-demo-platform-hardening"
@@ -1118,12 +1204,12 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {
-        "goal_state": "active",
+        "goal_state": "achieved",
         "goal_condition": "The reusable demo platform is locally implemented and verified with a static-Astro zero-client-JavaScript contract, per-demo records and output components, route and sitemap controls, source-versus-specialized goal evidence, deterministic fork and operator materialization, rehearsal/event sendoff contracts, and integrated build, accessibility, claims, privacy, asset, and startup proof, with no publication.",
         "scope_refs": [
           "epic-2"
         ],
-        "active_node": "spike-2",
+        "last_active_node": "test-4",
         "required_skills": [
           "select-work-and-ground-context",
           "pursue-mdkg-goal",
@@ -1163,7 +1249,11 @@
         ],
         "evidence_refs": [
           "root:chk-2",
-          "root:chk-3"
+          "root:chk-3",
+          "root:test-4",
+          "root:test-5",
+          "root:test-6",
+          "root:chk-4"
         ]
       }
     },
@@ -2439,7 +2529,7 @@
       "ws": "root",
       "type": "task",
       "title": "Author rehearsal and event specialization and sendoff contracts",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -5227,7 +5317,7 @@
       "ws": "root",
       "type": "task",
       "title": "Reconcile the website template with static Astro and zero client JavaScript",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -5297,7 +5387,7 @@
       "ws": "root",
       "type": "task",
       "title": "Generalize demo registry routes sitemap and smoke coverage",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -5367,7 +5457,7 @@
       "ws": "root",
       "type": "task",
       "title": "Add source goal versus specialized goal evidence surfaces",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -5437,7 +5527,7 @@
       "ws": "root",
       "type": "task",
       "title": "Add per-demo visibility and static output component contracts",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -5507,7 +5597,7 @@
       "ws": "root",
       "type": "task",
       "title": "Implement deterministic graph fork operator bootstrap and skill materialization",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -6782,7 +6872,7 @@
       "ws": "root",
       "type": "test",
       "title": "Verify static build routes accessibility and asset budgets",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -6861,7 +6951,7 @@
       "ws": "root",
       "type": "test",
       "title": "Verify claims no-secret noindex and zero client JavaScript contracts",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -6936,7 +7026,7 @@
       "ws": "root",
       "type": "test",
       "title": "Verify deterministic fork startup routing and concise pack",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -7247,6 +7337,7 @@
         "root:chk-1",
         "root:chk-2",
         "root:chk-3",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7343,6 +7434,7 @@
         "root:chk-1",
         "root:chk-2",
         "root:chk-3",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7437,6 +7529,7 @@
       ],
       "root:dec-1": [
         "root:chk-1",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7531,6 +7624,7 @@
       ],
       "root:dec-2": [
         "root:chk-1",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7625,6 +7719,7 @@
       ],
       "root:dec-3": [
         "root:chk-1",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7721,6 +7816,7 @@
         "root:chk-1",
         "root:chk-2",
         "root:chk-3",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7815,6 +7911,7 @@
       ],
       "root:dec-5": [
         "root:chk-1",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7909,6 +8006,7 @@
       ],
       "root:dec-6": [
         "root:chk-1",
+        "root:chk-4",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -8004,6 +8102,7 @@
       "root:goal-2": [
         "root:chk-2",
         "root:chk-3",
+        "root:chk-4",
         "root:epic-2",
         "root:goal-3",
         "root:spike-2",
@@ -8044,6 +8143,10 @@
       ],
       "root:chk-2": [
         "root:chk-3",
+        "root:goal-2"
+      ],
+      "root:chk-3": [
+        "root:chk-4",
         "root:goal-2"
       ],
       "root:goal-3": [
@@ -8125,9 +8228,6 @@
         "root:test-22",
         "root:test-23",
         "root:test-24"
-      ],
-      "root:chk-3": [
-        "root:goal-2"
       ],
       "root:spike-1": [
         "root:goal-4",
@@ -8442,6 +8542,27 @@
         "root:goal-2"
       ],
       "root:chk-3": [
+        "root:chk-4",
+        "root:epic-2",
+        "root:goal-2"
+      ],
+      "root:test-4": [
+        "root:chk-4",
+        "root:epic-2",
+        "root:goal-2"
+      ],
+      "root:test-5": [
+        "root:chk-4",
+        "root:epic-2",
+        "root:goal-2"
+      ],
+      "root:test-6": [
+        "root:chk-4",
+        "root:epic-2",
+        "root:goal-2"
+      ],
+      "root:chk-4": [
+        "root:epic-2",
         "root:goal-2"
       ]
     },

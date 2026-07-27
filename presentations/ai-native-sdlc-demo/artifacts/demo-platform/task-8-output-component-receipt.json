@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-2-task-8-output-component-receipt",
+  "state": "pass",
+  "goal_qid": "root:goal-2",
+  "task_qid": "root:task-8",
+  "contract_path": "artifacts/demo-platform/output-component-registry-contract.json",
+  "implementation": {
+    "registry": "mdkg-dev/src/components/demos/outputRegistry.ts",
+    "route_adapter": "mdkg-dev/src/pages/demo/[id]/output.astro",
+    "extracted_demo_1_component": "mdkg-dev/src/components/demos/Demo1Output.astro",
+    "configured_records": 1,
+    "configured_components": 1,
+    "missing_configured_components": 0,
+    "static_imports_only": true,
+    "dynamic_imports": 0,
+    "client_directives": 0
+  },
+  "fixture_proof": {
+    "source": "scripts/fixtures/demo-registry-fixtures.json",
+    "valid_unlisted_direct_record": "pass",
+    "negative_cases": [
+      "missing-component",
+      "duplicate-component-key",
+      "dynamic-component-import",
+      "client-hydrated-component"
+    ],
+    "negative_case_count": 4,
+    "result": "pass"
+  },
+  "built_output": {
+    "route": "/demo/1/output/",
+    "rendered_component": "demo-1",
+    "robots": "noindex,nofollow",
+    "generated_client_javascript_files": [],
+    "result": "pass"
+  },
+  "checks": [
+    {
+      "command": "npm --prefix mdkg-dev run build",
+      "result": "pass",
+      "detail": "The static registry resolved Demo 1 and generated its output route."
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev.js",
+      "result": "pass",
+      "detail": "Static import/route adapter assertions, zero client directives, an unlisted direct-record baseline, and four invalid mapping fixtures passed."
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev-seo.js",
+      "result": "pass",
+      "detail": "Output noindex and sitemap exclusion remained intact."
+    }
+  ],
+  "authority": {
+    "local_only": true,
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "provider_mutation": false
+  },
+  "warnings": [
+    "Demo 2 and Demo 3 component keys are reserved and fixture-tested but intentionally unregistered until their accepted records and distinct components exist."
+  ],
+  "verified_at": "2026-07-27T03:37:30Z",
+  "verified_by": "codex:/root"
+}

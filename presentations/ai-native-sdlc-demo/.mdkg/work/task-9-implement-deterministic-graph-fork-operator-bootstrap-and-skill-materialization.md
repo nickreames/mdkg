@@ -2,7 +2,7 @@
 id: task-9
 type: task
 title: Implement deterministic graph fork operator bootstrap and skill materialization
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

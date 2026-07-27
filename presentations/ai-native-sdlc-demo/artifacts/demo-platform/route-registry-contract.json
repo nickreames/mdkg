@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-route-registry-contract",
+  "state": "accepted",
+  "route_convention": {
+    "detail": "/demo/N/",
+    "output": "/demo/N/output/",
+    "id_pattern": "^[1-9]\\d*$"
+  },
+  "record_contract": {
+    "source": "mdkg-dev/src/data/demos/index.ts",
+    "type_source": "mdkg-dev/src/data/demos/types.ts",
+    "per_demo_directory": "mdkg-dev/src/data/demos/",
+    "required_fields": [
+      "id",
+      "title",
+      "summary",
+      "status",
+      "sourcePath",
+      "outputRoute",
+      "listed",
+      "noindex",
+      "outputComponent",
+      "sourceGoal",
+      "executedGoal",
+      "work",
+      "evidence"
+    ],
+    "duplicate_ids": "build error",
+    "missing_or_invalid_ids": "build error",
+    "output_route_drift": "build error"
+  },
+  "visibility": {
+    "gallery_source": "listedDemos",
+    "sitemap_source": "indexableDemos",
+    "detail_routes_source": "demoSnapshots",
+    "output_routes_source": "demoSnapshots",
+    "output_route_noindex": "always",
+    "detail_route_noindex": "record.noindex"
+  },
+  "configured_records": [
+    {
+      "id": "1",
+      "source": "mdkg-dev/src/data/demos/demo-1.ts",
+      "listed": true,
+      "noindex": false,
+      "detailRoute": "/demo/1/",
+      "outputRoute": "/demo/1/output/"
+    }
+  ],
+  "fixture_only_reserved_shapes": [
+    {
+      "id": "2",
+      "listed": false,
+      "noindex": true,
+      "detailRoute": "/demo/2/",
+      "outputRoute": "/demo/2/output/"
+    },
+    {
+      "id": "3",
+      "listed": false,
+      "noindex": true,
+      "detailRoute": "/demo/3/",
+      "outputRoute": "/demo/3/output/"
+    }
+  ],
+  "fail_closed_fixtures": [
+    "duplicate-id",
+    "missing-id",
+    "output-route-drift",
+    "listed-navigation-drift",
+    "noindex-sitemap-drift"
+  ],
+  "public_record_rule": "Fixture-only Demo 2 and Demo 3 shapes never enter the production registry and produce no built routes until a later run supplies its own accepted public-safe record.",
+  "authority": "Local source and test changes only; no staging, commit, push, deployment, or provider mutation."
+}

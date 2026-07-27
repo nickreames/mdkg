@@ -2,7 +2,7 @@
 id: test-5
 type: test
 title: Verify claims no-secret noindex and zero client JavaScript contracts
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

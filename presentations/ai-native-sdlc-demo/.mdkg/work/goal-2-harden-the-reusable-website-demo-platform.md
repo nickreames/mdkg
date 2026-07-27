@@ -2,12 +2,12 @@
 id: goal-2
 type: goal
 title: Harden the reusable website-demo platform
-status: progress
+status: done
 priority: 1
-goal_state: active
+goal_state: achieved
 goal_condition: The reusable demo platform is locally implemented and verified with a static-Astro zero-client-JavaScript contract, per-demo records and output components, route and sitemap controls, source-versus-specialized goal evidence, deterministic fork and operator materialization, rehearsal/event sendoff contracts, and integrated build, accessibility, claims, privacy, asset, and startup proof, with no publication.
 scope_refs: [epic-2]
-active_node: spike-2
+last_active_node: test-4
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, verify-close-and-checkpoint]
 required_checks: [accepted read-only drift and proposed-allowlist receipt, accepted shared-source mutation lease before task-5, static Astro and zero-JavaScript build checks, mdkg-dev route sitemap and demo-specific smoke checks, accessibility claim secret and asset-budget checks, deterministic fork and operator bootstrap, context-complete concise and standard packs]
 max_iterations: 25
@@ -19,9 +19,9 @@ artifacts: [artifacts/demo-platform/activation-contract.json, artifacts/demo-pla
 relates: []
 blocked_by: []
 blocks: []
-refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-1, chk-1, chk-2, chk-3]
+refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-1, chk-1, chk-2, chk-3, chk-4]
 context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-1, chk-1, chk-2, chk-3]
-evidence_refs: [chk-2, chk-3]
+evidence_refs: [chk-2, chk-3, test-4, test-5, test-6, chk-4]
 aliases: [reusable-website-demo-platform-hardening]
 skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -116,15 +116,19 @@ Any base, path, hash, owner, lease, or parallel-writer drift invalidates the rec
 
 # Current State
 
-Discovery accepted at chk-3. Shared-source implementation remains forbidden
-until the root integration owner commits the discovery milestone, refreshes the
-private projection, and accepts the typed mutation receipt.
+Implementation and validation are accepted at `chk-4`. The shared-source writer
+has completed its scoped work and will yield to the root integration owner for
+local commits, private bundle refresh, and read-only projection verification.
+No push, deployment, publication, or provider mutation is authorized.
 
 # Iteration Log
 
 - 2026-07-26: Created as phase 2 of the AI-native SDLC presentation and live-demo program.
 - 2026-07-26: Split read-only discovery from shared-source mutation; added explicit pack, owner, allowlist, lease, historical Demo 1, bootstrap, and evidence contracts.
 - 2026-07-26: Completed spike-2 and accepted the static-Astro recommendation at chk-3; task-5 remains behind the mutation gate.
+- 2026-07-26: Accepted the typed mutation lease, completed tasks 5–10 and tests
+  4–6, added source-template PRD `prd-2` when Test 6 exposed the missing
+  requirement context, and accepted the reusable platform at `chk-4`.
 
 # Skill Improvement Candidates
 
@@ -132,4 +136,9 @@ private projection, and accepts the typed mutation receipt.
 
 # Completion Evidence
 
-- Pending.
+- `chk-4`
+- `artifacts/demo-platform/interface-contract.json`
+- `artifacts/demo-platform/validation-receipt.json`
+- `artifacts/demo-platform/static-build-route-a11y-budget-receipt.json`
+- `artifacts/demo-platform/public-safety-visibility-zero-js-receipt.json`
+- `artifacts/demo-platform/fork-bootstrap-pack-receipt.json`

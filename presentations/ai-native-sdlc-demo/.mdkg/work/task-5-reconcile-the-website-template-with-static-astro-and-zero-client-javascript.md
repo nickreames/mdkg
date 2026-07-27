@@ -2,7 +2,7 @@
 id: task-5
 type: task
 title: Reconcile the website template with static Astro and zero client JavaScript
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

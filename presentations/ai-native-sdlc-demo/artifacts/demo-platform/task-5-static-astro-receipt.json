@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-2-task-5-static-astro-receipt",
+  "state": "pass",
+  "goal_qid": "root:goal-2",
+  "task_qid": "root:task-5",
+  "activation_receipt": "artifacts/demo-platform/goal-2-activation-receipt.json",
+  "accepted_base_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+  "contract_path": "artifacts/demo-platform/static-astro-contract.md",
+  "template": {
+    "root": "examples/website-demo-template",
+    "stack": "static Astro",
+    "client_javascript": "forbidden",
+    "metadata_script_exception": "static application/ld+json only",
+    "stable_ids": ["dec-1", "task-1"],
+    "latest_checkpoint": "chk-2",
+    "source_goal_executed": false,
+    "first_actionable_node": "spike-1",
+    "validation": {
+      "ok": true,
+      "warning_count": 0,
+      "error_count": 0
+    },
+    "concise_pack": {
+      "root_qid": "root:spike-1",
+      "node_count": 13,
+      "latest_checkpoint_qid": "root:chk-2",
+      "contains_complete_source_chain": true,
+      "contains_product_requirements": true,
+      "contains_design_context": true,
+      "contains_required_skills": true
+    }
+  },
+  "canonical_demo_1": {
+    "build_command": "npm --prefix mdkg-dev run build",
+    "build_output": "static",
+    "build_result": "pass",
+    "generated_page_count": 7,
+    "required_routes": [
+      "mdkg-dev/dist/demo/1/index.html",
+      "mdkg-dev/dist/demo/1/output/index.html"
+    ],
+    "required_routes_present": true,
+    "generated_javascript_files": [],
+    "unexpected_script_tags": [],
+    "hydration_markers": [],
+    "remote_runtime_assets": [],
+    "allowed_metadata_script": "application/ld+json",
+    "smoke_mdkg_dev": "pass",
+    "smoke_mdkg_dev_seo": "pass"
+  },
+  "historical_evidence": {
+    "read_only_paths": [
+      "examples/demo-runs/demo-001/**",
+      "mdkg-dev/public/demo-001/**"
+    ],
+    "changed_paths": [],
+    "result": "pass"
+  },
+  "authority": {
+    "local_only": true,
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "provider_mutation": false
+  },
+  "warnings": [
+    "The reusable source goal remains intentionally unexecuted; specialized runs must produce their own implementation and validation evidence.",
+    "The discovery allowlist omitted four tracked JSON indexes regenerated with its authorized SQLite sibling; exact-path amendment-1 records the accepted-base hashes and adds generated-index parity only."
+  ],
+  "verified_at": "2026-07-27T04:05:00Z",
+  "verified_by": "codex:/root"
+}

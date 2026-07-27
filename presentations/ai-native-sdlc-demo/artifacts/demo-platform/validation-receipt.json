@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "kind": "goal-2-validation-receipt",
+  "state": "pass_for_goal_closeout",
+  "goal_qid": "root:goal-2",
+  "recorded_at": "2026-07-26",
+  "base_git_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+  "source_surface_sha256": "f005746ea76e00c88733fb2c58575a96cec0738863267cfac5e3fbf1f34e3c5c",
+  "program_surface_sha256_before_closeout": "3a361b881efe69261170f79675cd5cb5fbd1ca49133ba9abf56493884aa402a5",
+  "required_checks": [
+    {
+      "check": "accepted read-only drift and proposed allowlist receipt",
+      "evidence": [
+        "artifacts/demo-platform/drift-audit.md",
+        "artifacts/demo-platform/proposed-source-allowlist.json",
+        "root:chk-3"
+      ],
+      "result": "pass"
+    },
+    {
+      "check": "accepted shared-source mutation lease before task-5",
+      "evidence": [
+        "artifacts/demo-platform/activation-contract.json",
+        "artifacts/demo-platform/goal-2-activation-receipt.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "check": "static Astro and zero-JavaScript build checks",
+      "evidence": [
+        "artifacts/demo-platform/task-5-static-astro-receipt.json",
+        "artifacts/demo-platform/static-build-route-a11y-budget-receipt.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "check": "mdkg-dev route sitemap and demo-specific smoke checks",
+      "evidence": [
+        "artifacts/demo-platform/task-6-route-registry-receipt.json",
+        "artifacts/demo-platform/public-safety-visibility-zero-js-receipt.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "check": "accessibility claim secret and asset-budget checks",
+      "evidence": [
+        "artifacts/demo-platform/static-build-route-a11y-budget-receipt.json",
+        "artifacts/demo-platform/public-safety-visibility-zero-js-receipt.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "check": "deterministic fork and operator bootstrap",
+      "evidence": [
+        "artifacts/demo-platform/task-9-bootstrap-receipt.json",
+        "artifacts/demo-platform/fork-bootstrap-pack-receipt.json"
+      ],
+      "result": "pass"
+    },
+    {
+      "check": "context-complete concise and standard packs",
+      "evidence": [
+        "artifacts/demo-platform/fork-bootstrap-pack-receipt.json"
+      ],
+      "result": "pass"
+    }
+  ],
+  "final_integrated_commands": [
+    {
+      "command": "npm run smoke:mdkg-dev",
+      "exit_code": 0,
+      "result": "14 required files and configured demo route behavior passed."
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-seo",
+      "exit_code": 0,
+      "result": "Claims, canonical metadata, robots policies, sitemap, and public-safety checks passed."
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-a11y",
+      "exit_code": 0,
+      "result": "22 page configurations plus demo-specific semantic, focus, reduced-motion, forced-colors, and contrast assertions passed."
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-perf",
+      "exit_code": 0,
+      "result": "Demo route initial transfers were 21,005, 40,294, and 15,382 bytes; generated site JavaScript was zero and no raster assets were emitted."
+    },
+    {
+      "command": "npm run smoke:demo-graph",
+      "exit_code": 0,
+      "result": "103-file absent-target bootstrap, validation, routing, 13-node concise/full-body packs, repeat equality, five negative cases, and cleanup passed."
+    },
+    {
+      "command": "mdkg --root examples/website-demo-template validate --json",
+      "exit_code": 0,
+      "result": "ok=true, warning_count=0, error_count=0"
+    },
+    {
+      "command": "mdkg --root presentations/ai-native-sdlc-demo validate --json",
+      "exit_code": 0,
+      "result": "ok=true, warning_count=0, error_count=0"
+    },
+    {
+      "command": "mdkg validate --changed-only --json",
+      "exit_code": 0,
+      "result": "ok=true, warning_count=0, error_count=0"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "No whitespace errors."
+    }
+  ],
+  "browser_evidence": {
+    "desktop": [
+      {
+        "route": "/demo/1/",
+        "viewport": "1440x900",
+        "horizontal_overflow": false
+      },
+      {
+        "route": "/demo/1/output/",
+        "viewport": "1440x900",
+        "horizontal_overflow": false
+      }
+    ],
+    "mobile": [
+      {
+        "route": "/demo/1/",
+        "viewport": "390x844",
+        "horizontal_overflow": false
+      },
+      {
+        "route": "/demo/1/output/",
+        "viewport": "390x844",
+        "horizontal_overflow": false
+      }
+    ],
+    "browser_warnings_or_errors": []
+  },
+  "scoped_node_status": {
+    "spike-2": "done",
+    "task-5": "done",
+    "task-6": "done",
+    "task-7": "done",
+    "task-8": "done",
+    "task-9": "done",
+    "task-10": "done",
+    "test-4": "done",
+    "test-5": "done",
+    "test-6": "done"
+  },
+  "authority_and_scope": {
+    "dirty_path_count_before_closeout": 77,
+    "forbidden_path_matches": [],
+    "historical_demo_1_source_changes": [],
+    "historical_demo_1_public_asset_changes": [],
+    "root_src_changes": [],
+    "root_test_changes": [],
+    "docs_changes": [],
+    "package_or_lockfile_changes": [],
+    "staged": false,
+    "committed_during_shared_source_work": false,
+    "pushed": false,
+    "deployed": false,
+    "provider_mutation": false
+  },
+  "integration_followup": {
+    "owner": "root-integration-owner",
+    "required_after_program_closeout": [
+      "yield the shared-source writer lease",
+      "run path-specific safe Git preflight",
+      "make logical local commits",
+      "refresh the private program bundle from the committed source",
+      "verify the root read-only projection and root changed-only validation"
+    ],
+    "push_authorized": false
+  },
+  "warnings": [
+    "The reusable source template remains intentionally unexecuted; Goals 4 and 6 specialize separate Demo 2 and Demo 3 runs.",
+    "The root private bundle is intentionally refreshed only after the program closeout is present and the shared-source writer has yielded to the integration owner."
+  ],
+  "result": "pass"
+}

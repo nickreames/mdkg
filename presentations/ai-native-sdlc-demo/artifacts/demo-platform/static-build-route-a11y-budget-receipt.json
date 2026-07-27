@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "test": "test-4",
+  "title": "Static build, route, accessibility, and asset-budget receipt",
+  "recorded_at": "2026-07-26",
+  "base_git_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+  "final_source_surface": {
+    "kind": "sha256 of git diff --binary for mdkg-dev and the two demo accessibility/performance smoke files",
+    "sha256": "05c6b510533e8d450d03d59d6c65347a3cb83dcbacef212ce78aaa9e657feaad"
+  },
+  "commands": [
+    {
+      "command": "npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-a11y && npm run smoke:mdkg-dev-perf",
+      "attempt": 1,
+      "exit_code": 1,
+      "result": "The new accessibility assertion incorrectly required noindex on the historical, configured-indexable Demo 1 detail route. The assertion was corrected to preserve Demo 1 policy; Demo 2 and Demo 3 noindex behavior is owned by test-5 fixtures."
+    },
+    {
+      "command": "npm run smoke:mdkg-dev && npm run smoke:mdkg-dev-a11y && npm run smoke:mdkg-dev-perf",
+      "attempt": 2,
+      "exit_code": 0,
+      "result": "All site, accessibility, and performance assertions passed."
+    },
+    {
+      "command": "npm --prefix mdkg-dev run preview -- --host 127.0.0.1 --port 4327",
+      "attempt": 1,
+      "exit_code": 1,
+      "result": "Sandbox denied local listener creation with EPERM."
+    },
+    {
+      "command": "npm --prefix mdkg-dev run preview -- --host 127.0.0.1 --port 4327",
+      "attempt": 2,
+      "exit_code": 0,
+      "result": "Approved local-only preview listener started; it was stopped after responsive checks."
+    },
+    {
+      "command": "git diff --check -- mdkg-dev scripts/smoke-mdkg-dev-a11y.js scripts/smoke-mdkg-dev-perf.js",
+      "exit_code": 0,
+      "result": "No whitespace errors."
+    }
+  ],
+  "route_inventory": {
+    "configured_pairs": [
+      {
+        "demo_id": "1",
+        "detail": "/demo/1/",
+        "output": "/demo/1/output/"
+      }
+    ],
+    "gallery": "/demos/",
+    "unexpected_demo_routes": [],
+    "reserved_fixture_routes_not_emitted": [
+      "/demo/2/",
+      "/demo/2/output/",
+      "/demo/3/",
+      "/demo/3/output/"
+    ]
+  },
+  "automated_accessibility": {
+    "checked_pages": 22,
+    "semantic_landmarks": "pass",
+    "single_h1": "pass",
+    "interactive_names": "pass",
+    "image_alt_contract": "pass",
+    "local_link_resolution": "pass",
+    "focus_visible": "pass",
+    "reduced_motion": "pass",
+    "forced_colors": "pass",
+    "wcag_aa_contrast": "pass",
+    "demo_detail_iframe_title": "pass"
+  },
+  "viewport_observations": [
+    {
+      "route": "/demo/1/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "document_scroll_width": 1440,
+      "horizontal_overflow": false,
+      "h1_count": 1,
+      "h2_count": 8,
+      "main_count": 1,
+      "nav_count": 1,
+      "visible_hierarchy": "Hero heading, action pair, visual proof, sticky surface navigation, and Specifications section were visibly distinct."
+    },
+    {
+      "route": "/demo/1/output/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "document_scroll_width": 1440,
+      "horizontal_overflow": false,
+      "h1_count": 1,
+      "h2_count": 3,
+      "main_count": 1,
+      "nav_count": 1,
+      "visible_hierarchy": "Brand/navigation, hero promise, supporting copy, CTAs, and Ocean Flow proof visual were visibly distinct."
+    },
+    {
+      "route": "/demo/1/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document_scroll_width": 390,
+      "horizontal_overflow": false,
+      "h1_count": 1,
+      "h2_count": 8,
+      "main_count": 1,
+      "nav_count": 1,
+      "responsive_assertions": {
+        "specification_columns": "328px",
+        "surface_navigation_columns": "166px 166px"
+      },
+      "visible_hierarchy": "Hero content and actions precede the full-width visual; typography remains legible and the two-column section navigation fits without clipping."
+    },
+    {
+      "route": "/demo/1/output/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document_scroll_width": 390,
+      "horizontal_overflow": false,
+      "h1_count": 1,
+      "h2_count": 3,
+      "main_count": 1,
+      "nav_count": 1,
+      "responsive_assertions": {
+        "hero_columns": "350px",
+        "secondary_header_navigation": "hidden"
+      },
+      "visible_hierarchy": "Brand, eyebrow, hero promise, supporting copy, CTAs, and visual are stacked in a readable order."
+    }
+  ],
+  "browser_console": {
+    "warnings_or_errors": []
+  },
+  "byte_measurements": {
+    "maximum_initial_transfer_bytes": 512000,
+    "maximum_raster_asset_bytes": 256000,
+    "generated_client_javascript_bytes": 0,
+    "routes": [
+      {
+        "route": "/demos/",
+        "html_bytes": 9981,
+        "local_asset_bytes": 11024,
+        "initial_transfer_bytes": 21005
+      },
+      {
+        "route": "/demo/1/",
+        "html_bytes": 23123,
+        "local_asset_bytes": 17171,
+        "initial_transfer_bytes": 40294
+      },
+      {
+        "route": "/demo/1/output/",
+        "html_bytes": 6012,
+        "local_asset_bytes": 9370,
+        "initial_transfer_bytes": 15382
+      }
+    ],
+    "raster_assets": [],
+    "largest_route_result": "pass"
+  },
+  "warnings": [],
+  "result": "pass"
+}

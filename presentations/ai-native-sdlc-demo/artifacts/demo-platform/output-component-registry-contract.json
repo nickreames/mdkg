@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "kind": "static-astro-output-component-registry-contract",
+  "state": "accepted",
+  "registry": {
+    "path": "mdkg-dev/src/components/demos/outputRegistry.ts",
+    "import_mode": "compile-time static imports only",
+    "dynamic_imports": "forbidden",
+    "component_type": "Astro",
+    "client_hydration": "forbidden",
+    "duplicate_keys": "build/test failure",
+    "missing_keys": "build/test failure"
+  },
+  "configured_components": [
+    {
+      "record_id": "1",
+      "record_key": "demo-1",
+      "component": "mdkg-dev/src/components/demos/Demo1Output.astro",
+      "route": "/demo/1/output/",
+      "noindex": true
+    }
+  ],
+  "reserved_specialization_keys": [
+    {
+      "record_id": "2",
+      "record_key": "demo-2",
+      "rule": "Goal 4 must add a distinct static Astro component and registry entry in the same accepted integration change as the Demo 2 record."
+    },
+    {
+      "record_id": "3",
+      "record_key": "demo-3",
+      "rule": "Goal 6 or Goal 7 must add a distinct static Astro component and registry entry in the same accepted integration change as the Demo 3 record."
+    }
+  ],
+  "route_adapter": {
+    "path": "mdkg-dev/src/pages/demo/[id]/output.astro",
+    "behavior": "Statically enumerate configured records, resolve the bounded component key, and render the selected Astro component with the typed demo record.",
+    "runtime_component_loading": false
+  },
+  "visibility": {
+    "listed_false": "The record remains absent from the gallery but retains its statically generated direct detail/output routes.",
+    "noindex_true": "The detail route is noindex and absent from the sitemap.",
+    "output_routes": "Always noindex and absent from the sitemap."
+  },
+  "shared_primitives": {
+    "palette": "Ocean Flow tokens",
+    "requirements": [
+      "semantic HTML",
+      "keyboard accessibility",
+      "visible focus",
+      "reduced-motion support",
+      "WCAG AA contrast",
+      "zero generated client JavaScript",
+      "public-safe source-backed copy"
+    ],
+    "composition_policy": "Each run may select a distinct composition; shared constraints do not impose one page layout."
+  },
+  "fail_closed_fixtures": [
+    "missing-component",
+    "duplicate-component-key",
+    "dynamic-component-import",
+    "client-hydrated-component"
+  ],
+  "authority": "Local source and test changes only; no staging, commit, push, deployment, or provider mutation."
+}

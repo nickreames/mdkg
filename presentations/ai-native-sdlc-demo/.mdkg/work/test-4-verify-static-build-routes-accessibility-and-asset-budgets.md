@@ -2,7 +2,7 @@
 id: test-4
 type: test
 title: Verify static build routes accessibility and asset budgets
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "kind": "goal-2-reusable-demo-platform-interface",
+  "state": "accepted",
+  "goal_qid": "root:goal-2",
+  "recorded_at": "2026-07-26",
+  "source_template": {
+    "root": "examples/website-demo-template",
+    "graph": "examples/website-demo-template/.mdkg",
+    "source_goal_qid": "root:goal-1",
+    "source_prd_qid": "root:prd-2",
+    "first_actionable_qid": "root:spike-1",
+    "latest_contract_checkpoint_qid": "root:chk-2",
+    "source_tree_hash": "sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3",
+    "stack": "Static Astro, semantic HTML, and CSS",
+    "client_javascript": "forbidden",
+    "creative_fixed": [
+      "Ocean Flow palette",
+      "semantic HTML",
+      "keyboard accessibility",
+      "visible focus",
+      "reduced-motion support",
+      "WCAG AA contrast",
+      "500 KiB initial route transfer",
+      "250 KiB per raster asset",
+      "public-safe evidence",
+      "caller-owned integration and publication authority"
+    ],
+    "creative_variable": [
+      "audience",
+      "offer",
+      "section order",
+      "composition",
+      "visual metaphor",
+      "typographic hierarchy",
+      "imagery",
+      "CSS-only motion",
+      "bounded marketing copy"
+    ]
+  },
+  "canonical_site_adapter": {
+    "record_type": "mdkg-dev/src/data/demos/types.ts#DemoSnapshot",
+    "record_directory": "mdkg-dev/src/data/demos/",
+    "record_exports": {
+      "all": "demoSnapshots",
+      "gallery": "listedDemos",
+      "sitemap": "indexableDemos",
+      "route_inventory": "demoRouteInventory"
+    },
+    "required_record_fields": [
+      "id",
+      "title",
+      "summary",
+      "status",
+      "sourcePath",
+      "outputRoute",
+      "listed",
+      "noindex",
+      "outputComponent",
+      "sourceGoal",
+      "executedGoal",
+      "work",
+      "evidence",
+      "graphNodes",
+      "files",
+      "validation",
+      "safety"
+    ],
+    "route_convention": {
+      "gallery": "/demos/",
+      "detail": "/demo/N/",
+      "output": "/demo/N/output/"
+    },
+    "visibility_semantics": {
+      "listed": "Controls gallery/navigation inclusion only.",
+      "noindex": "Controls robots metadata and sitemap inclusion only.",
+      "direct_route": "Generated for configured records independently of listed/noindex."
+    },
+    "output_registry": {
+      "path": "mdkg-dev/src/components/demos/outputRegistry.ts",
+      "mode": "compile-time static Astro imports",
+      "reserved_keys": [
+        "demo-1",
+        "demo-2",
+        "demo-3"
+      ],
+      "client_hydration": "forbidden"
+    },
+    "current_public_records": [
+      "demo-1"
+    ],
+    "reserved_fixture_only_records": [
+      "demo-2",
+      "demo-3"
+    ]
+  },
+  "source_execution_evidence": {
+    "source_goal_and_executed_goal_are_distinct": true,
+    "required_goal_fields": [
+      "id",
+      "title",
+      "status",
+      "condition",
+      "summary",
+      "requirements",
+      "authority",
+      "tests",
+      "checkpoint",
+      "sourceHash"
+    ],
+    "required_story": [
+      "Plan",
+      "Work",
+      "Evidence",
+      "What completed",
+      "Why it was done",
+      "What comes next"
+    ],
+    "forbidden_fields": [
+      "rawPrompt",
+      "rawPrompts",
+      "credentials",
+      "tokens",
+      "cookies",
+      "providerPayload",
+      "providerPayloads",
+      "privateContext"
+    ]
+  },
+  "bootstrap": {
+    "wrapper": "scripts/bootstrap-website-demo-run.js",
+    "operator_manifest": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json",
+    "target_policy": "repository-contained absent target",
+    "identity": "preserve local graph ids and select root:goal-1",
+    "materialization": "exact operator files plus .agents and .claude skill mirrors",
+    "repeat_mode": "verify-only, identical inventory and hashes, no overwrite",
+    "required_pack_qids": [
+      "root:goal-1",
+      "root:epic-1",
+      "root:spike-1",
+      "root:task-1",
+      "root:test-1",
+      "root:prd-2",
+      "root:edd-1",
+      "root:dec-1",
+      "root:dec-2",
+      "root:chk-2",
+      "root:skill:select-work-and-ground-context",
+      "root:skill:verify-close-and-checkpoint",
+      "root:skill:build-pack-and-execute-task"
+    ],
+    "failure_mode": "fail closed with stable classification and retain no temporary run"
+  },
+  "later_phase_contracts": {
+    "demo_2": "artifacts/demo-platform/rehearsal-specialization-contract.md",
+    "demo_3": "artifacts/demo-platform/event-specialization-contract.md",
+    "live_sendoff": "artifacts/demo-platform/live-sendoff-contract.md",
+    "normative_sendoff_normalization": "Complete normative section text with exactly one trailing LF.",
+    "normative_sendoff_sha256": "63c3991d84b608eb6be0ee95cf5d7fa077e08758b598c5afa02dffaa2c461220",
+    "normative_sendoff_bytes": 1605
+  },
+  "publication_boundary": {
+    "goal_2_local_only": true,
+    "staging_or_commit_during_shared_source_work": false,
+    "push": false,
+    "deployment": false,
+    "provider_mutation": false,
+    "demo_2_publication_owner": "goal-5",
+    "demo_3_publication_owner": "goal-7"
+  },
+  "external_contract_changes": {
+    "mdkg_cli": false,
+    "package_api": false,
+    "external_schema": false,
+    "deployment_configuration": false
+  }
+}

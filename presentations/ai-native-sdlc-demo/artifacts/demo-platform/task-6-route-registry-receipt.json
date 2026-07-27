@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-2-task-6-route-registry-receipt",
+  "state": "pass",
+  "goal_qid": "root:goal-2",
+  "task_qid": "root:task-6",
+  "contract_path": "artifacts/demo-platform/route-registry-contract.json",
+  "implementation": {
+    "monolith_removed": "mdkg-dev/src/data/demoSnapshots.ts",
+    "typed_contract": "mdkg-dev/src/data/demos/types.ts",
+    "registry": "mdkg-dev/src/data/demos/index.ts",
+    "demo_1_record": "mdkg-dev/src/data/demos/demo-1.ts",
+    "configured_record_count": 1,
+    "listed_record_count": 1,
+    "indexable_record_count": 1,
+    "fixture_only_record_count": 2,
+    "public_demo_2_or_3_records_created": false
+  },
+  "built_routes": [
+    "/demo/1/",
+    "/demo/1/output/"
+  ],
+  "absent_fixture_routes": [
+    "/demo/2/",
+    "/demo/2/output/",
+    "/demo/3/",
+    "/demo/3/output/"
+  ],
+  "sitemap": {
+    "includes": ["/demo/1/"],
+    "excludes": [
+      "/demo/1/output/",
+      "/demo/2/",
+      "/demo/2/output/",
+      "/demo/3/",
+      "/demo/3/output/"
+    ],
+    "result": "pass"
+  },
+  "fixture_tests": {
+    "source": "scripts/fixtures/demo-registry-fixtures.json",
+    "positive_reserved_shapes": 2,
+    "negative_cases": 5,
+    "result": "pass"
+  },
+  "claims": {
+    "source": "mdkg-dev/CLAIMS.md",
+    "demo_1_local_proof": "approved for public alpha",
+    "demo_2_and_3_claims": "forbidden without run-specific evidence",
+    "result": "pass"
+  },
+  "checks": [
+    {
+      "command": "npm --prefix mdkg-dev run build",
+      "result": "pass",
+      "detail": "Static Astro build generated the configured Demo 1 detail/output pair only."
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev.js",
+      "result": "pass",
+      "detail": "Fourteen required files, typed-registry source, gallery filtering, reserved-route absence, and five negative fixtures passed."
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev-seo.js",
+      "result": "pass",
+      "detail": "Record-derived sitemap and Demo 1 detail/output robots policies passed."
+    },
+    {
+      "command": "node scripts/smoke-demo-graph.js",
+      "result": "pass",
+      "detail": "Fresh copied template startup, current static-Astro decision/task/checkpoint, and source index immutability passed."
+    }
+  ],
+  "authority": {
+    "local_only": true,
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "provider_mutation": false
+  },
+  "warnings": [],
+  "verified_at": "2026-07-27T03:24:55Z",
+  "verified_by": "codex:/root"
+}
