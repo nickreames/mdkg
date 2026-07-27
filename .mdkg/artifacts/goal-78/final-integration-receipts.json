@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-78",
+  "recorded_at": "2026-07-26",
+  "runtime": {
+    "node": "v24.18.0",
+    "npm": "11.16.0",
+    "offline": true
+  },
+  "execution_policy": {
+    "ci_release_invocations": 1,
+    "prepublish_only_invocations": 1,
+    "automatic_retries": 0
+  },
+  "ci_release": {
+    "command": "npm run ci:release",
+    "ok": true,
+    "duration_ms": 181063,
+    "receipt_dir": "/private/tmp/mdkg-ci-release-1785112758842-27612",
+    "gate_count": 9,
+    "gate_failures": [],
+    "canonical_smoke_count": 13,
+    "smoke_failures": [],
+    "coverage": {
+      "test_files": 100,
+      "tests": 733,
+      "passed": 733,
+      "failed": 0,
+      "lines_percent": 89.29,
+      "branches_percent": 77.54,
+      "functions_percent": 96.29
+    },
+    "artifact": {
+      "sha256": "3c5ac4056436d506d8b9204e9b6c90d5b25883dc121067b2b357a148710d352a",
+      "bytes": 431397
+    },
+    "git_boundary": {
+      "ok": true,
+      "head": "4a9ebc8cf009f73bd4d34a1678f3b8a1a242404c",
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "status_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true,
+      "changed_tracked_paths": []
+    }
+  },
+  "prepublish_only": {
+    "command": "npm run prepublishOnly",
+    "ok": false,
+    "duration_ms": 286605,
+    "receipt_dir": "/private/tmp/mdkg-prepublish-release-1785112945560-65364",
+    "gate_count": 9,
+    "gate_failures": [],
+    "canonical_smoke_count": 46,
+    "smoke_failures": [],
+    "failure": {
+      "classification": "concurrent_unrelated_untracked_status_change",
+      "message": "release ladder changed Git-visible state: status, branch, HEAD, selected goal, lockfile, or diff-check invariant",
+      "only_failed_invariant": "status_unchanged",
+      "status_entry_count_before": 198,
+      "status_entry_count_after": 198,
+      "status_sha256_before": "eff8c71bbba4c6bcf82513ecf48ddc5f8051fc04e777a487fefca12044bbc775",
+      "status_sha256_after": "5c2682213016b067dcd14fe7f03ba06ff49859cd685fb8d688c638024af10b57"
+    },
+    "git_boundary": {
+      "ok": false,
+      "head": "4a9ebc8cf009f73bd4d34a1678f3b8a1a242404c",
+      "head_unchanged": true,
+      "branch_unchanged": true,
+      "tracked_tree_unchanged": true,
+      "selected_goal_unchanged": true,
+      "lockfiles_unchanged": true,
+      "diff_check_clean": true,
+      "changed_tracked_paths": []
+    }
+  },
+  "concurrent_work_evidence": {
+    "owned_by_this_goal": false,
+    "inspection_only": true,
+    "mutation": "none",
+    "root": "presentations/ai-native-sdlc-demo",
+    "files_modified_during_prepublication_window": 54,
+    "first_observed_mtime": "2026-07-27T00:44:01.424Z",
+    "last_observed_mtime": "2026-07-27T00:46:46.158Z",
+    "prepublication_window_start": "2026-07-27T00:42:25.560Z",
+    "prepublication_window_end": "2026-07-27T00:47:12.165Z"
+  },
+  "selected_goal_boundary": {
+    "qid": "root:goal-73",
+    "state_file_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "goal_file_sha256": "9bab1610f17a8b3b57eb2d4e04814f68737cbad854d83f735f2567f0b3f9f926",
+    "unchanged": true
+  },
+  "closeout_state": {
+    "ready": false,
+    "reason": "The required prepublish command returned nonzero on its Git-visible status invariant despite all gates and smokes passing. The accepted no-automatic-retry policy requires explicit authority for a fresh run or the separate decision and approval required for a waiver.",
+    "unauthorized_actions_not_taken": [
+      "automatic whole-ladder retry",
+      "waiver",
+      "mutation or cleanup of unrelated presentation work",
+      "goal closure",
+      "push",
+      "tag",
+      "publish",
+      "deploy"
+    ]
+  }
+}
