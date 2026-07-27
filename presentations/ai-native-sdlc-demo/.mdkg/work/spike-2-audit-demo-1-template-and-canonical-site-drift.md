@@ -2,7 +2,7 @@
 id: spike-2
 type: spike
 title: Audit Demo 1 template and canonical site drift
-status: todo
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2
@@ -49,27 +49,65 @@ What evidence, options, tradeoffs, and recommendation are required to audit demo
 
 # Findings
 
-Pending activation. Required findings:
-
-- Current-state matrix for template contracts, historical Demo 1, canonical detail/output routes, registry, gallery, sitemap, claims, and existing smoke coverage.
-- At least two viable options when a material choice remains.
-- Recommended option with consequences, owner, validation, and follow-up.
-- `proposed-source-allowlist.json` with exact planned existing/new paths or bounded new-path prefixes, read/write operation, owner, reason, expected base hash, and explicit forbidden/read-only paths.
-- `spike-2-readiness-receipt.json` with base commit, clean/dirty/staged inventory, pack receipt, validation receipts, artifact hashes, unresolved choices, and an explicit task-5 ready/blocker decision.
-- Explicit confirmation that task-5 may start only after the root integration owner accepts `goal-2-activation-receipt.json`.
+- The reusable template is graph/operator material rather than an implemented
+  site, and all execution-driving template records currently require Astro plus
+  React Islands. That is the primary source-contract drift.
+- Historical Demo 1 is a valid completed React-capable run with preserved IDs,
+  a `client:load` island, local validation, and a public-safe receipt. It must
+  remain immutable evidence rather than become the zero-JavaScript source.
+- The canonical site is already static and rejects generated client
+  JavaScript, but its demo interface is one monolithic Demo 1 record, one
+  output composition, an unfiltered gallery, and a hard-coded sitemap entry.
+- The canonical demo interface has no independent `listed`/`noindex` policy,
+  source-versus-executed goal model, Plan/Work/Evidence fields, or compile-time
+  output-component key.
+- Claims still mark all demo graphs pending even though Demo 1 has accepted
+  local proof and canonical routes; Demo 2/3 remain unexecuted and must not be
+  implied.
+- Existing graph, site, SEO, accessibility, and performance smokes each cover
+  part of the desired outcome but do not jointly prove the Goal 2 record,
+  visibility, output-component, route-level budget, or executable bootstrap
+  contracts.
+- `artifacts/demo-platform/drift-audit.md` contains the complete source-backed
+  matrix and material options.
+- `artifacts/demo-platform/proposed-source-allowlist.json` records the exact
+  planned existing and new source paths, owner, operations, reasons, expected
+  hashes, immutable historical paths, integration-only paths, and forbidden
+  actions.
 
 # Recommendation
 
-Pending activation and evidence collection.
+Adopt static Astro with zero client directives and zero generated client
+JavaScript as the canonical reusable-template contract. Keep Ocean Flow,
+semantic HTML, CSS motion, section order, visual metaphor, and bounded
+marketing copy open to the coding agent.
+
+Split the canonical demo data into typed per-demo records, filter navigation by
+`listed`, filter sitemap discovery by `noindex`, render source versus executed
+goals plus Plan -> Work -> Evidence, and select distinct Astro output
+components through a compile-time registry.
+
+Add one manifest-driven bootstrap that forks the graph, materializes operator
+files and skill projections, validates and routes the target, builds concise and
+standard packs, verifies repeat equality, and fails closed on deliberate drift.
+
+`task-5` may not start until this spike is committed, the root projection is
+refreshed from that clean commit, and the root integration owner accepts the
+typed mutation receipt.
 
 # Options And Tradeoffs
 
-- Record at least two viable options and their consequences when a material choice remains.
-- Prefer the option that preserves scope, authority, evidence, and recovery.
+- Option A, recommended: make static Astro the source template. It is the
+  lowest-risk live-demo contract and aligns directly with mdkg.dev, at the cost
+  of deferring client-state interaction ideas.
+- Option B: retain React capability and layer a Demo 2/3 static specialization
+  on top. It preserves optional interactivity but adds a second source of truth,
+  more failure cases, and no material benefit for this presentation contract.
 
 # Follow-Up Nodes To Create
 
-- Continue to task-5 only after this spike records a supported recommendation and the separate mutation gate is accepted.
+- No new work nodes are required. Continue through the existing task-5 ->
+  test-6 chain only after the separate mutation gate is accepted.
 
 # Skill Candidates
 
@@ -81,4 +119,13 @@ Pending activation and evidence collection.
 
 # Evidence and Sources
 
-- Pending.
+- `artifacts/demo-platform/drift-audit.md`
+- `artifacts/demo-platform/proposed-source-allowlist.json`
+- `artifacts/demo-platform/spike-2-readiness-receipt.json`
+- Read-only sources: `examples/website-demo-template/**`,
+  `examples/demo-runs/demo-001/**`, `mdkg-dev/CLAIMS.md`,
+  `mdkg-dev/src/data/demoSnapshots.ts`, demo pages, sitemap, and the five
+  declared smoke scripts.
+- Discovery baseline: commit
+  `0399f9dfc241a25d724cdcdf9704776dfdc10b45`, clean worktree, verified private
+  projection, nested validation with 0 warnings and 0 errors.

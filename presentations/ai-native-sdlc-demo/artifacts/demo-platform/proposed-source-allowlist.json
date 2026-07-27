@@ -1,0 +1,389 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-2-proposed-source-allowlist",
+  "state": "proposal",
+  "goal_qid": "root:goal-2",
+  "spike_qid": "root:spike-2",
+  "accepted_base_sha": "0399f9dfc241a25d724cdcdf9704776dfdc10b45",
+  "proposed_owner": "shared-source-writer",
+  "binding_rule": "The root integration owner must re-hash every present row after the spike commit and projection refresh. Any mismatch rejects the mutation gate.",
+  "existing_mutable_path_rows": [
+    {
+      "path": "examples/website-demo-template/README.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Make static Astro and canonical route boundaries the fresh-agent contract.",
+      "expected_state": "present",
+      "expected_base_sha256": "b4c68d0ad1614470d0e682e9b82fbb536229b8c999b35dcf0be97f3174ac343b"
+    },
+    {
+      "path": "examples/website-demo-template/DESIGN.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Replace React Island guidance with static semantic HTML and CSS constraints.",
+      "expected_state": "present",
+      "expected_base_sha256": "56936ab7533db8438a15bc24c686b19514c671fdbc552c7ab77d6f5bf4b540f2"
+    },
+    {
+      "path": "examples/website-demo-template/WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Make zero-client-JavaScript a fixed starting requirement.",
+      "expected_state": "present",
+      "expected_base_sha256": "1ac601858552004711ae5e6dbf049c968ecf061553c56af968b8a30c9d6fef9e"
+    },
+    {
+      "path": "examples/website-demo-template/DEMO_HANDOFF_PROMPT.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Give a fresh coding agent the static build and stop-boundary contract.",
+      "expected_state": "present",
+      "expected_base_sha256": "52b04d096a5f28dc55b59c7a3361ab20ff0c906f69961fe0cd387e8726bfab72"
+    },
+    {
+      "path": "examples/website-demo-template/CREATIVE_PRODUCTION_INTAKE.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Keep creative latitude without suggesting hydrated interaction.",
+      "expected_state": "present",
+      "expected_base_sha256": "4a80f770b059fa78c6eca17d007c457ab18d5b8a8fc05c87d898bf9dfa1984f0"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/design/dec-1-astro-plus-react-islands-is-the-demo-stack.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "delete"],
+      "reason": "Supersede the conflicting stack decision while preserving decision id dec-1.",
+      "expected_state": "present",
+      "expected_base_sha256": "f79d939c33521b22da6bb51f25914ba1f09d4dd38cbf2947a9aa2be0faedb262"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/design/dec-2-demo-template-remains-preview-gated-and-public-safe.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Remove obsolete parent goal and demo-subdomain assumptions while retaining local-first safety.",
+      "expected_state": "present",
+      "expected_base_sha256": "0e2418c88d7eff56a7e36fd5fa5ae78e07785273f87b71a028031d1ad6e39d5b"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/design/edd-1-ocean-flow-website-demo-design-and-creative-production-contract.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Align architecture, data model, failure modes, and tests with static output.",
+      "expected_state": "present",
+      "expected_base_sha256": "220a2f22aca7592d4e2177d5348667963f59c51b8b5bdccf04a9fd879cdea2af"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/epic-1-complete-creative-website-demo-build.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Align the scoped implementation outcome with the accepted stack decision.",
+      "expected_state": "present",
+      "expected_base_sha256": "624125356f070f8c08e53deb5ff3843b64a844c486c054dbd3dfb90cf9978080"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Make the reusable starting goal directly require static Astro and zero client JavaScript.",
+      "expected_state": "present",
+      "expected_base_sha256": "053527c7eeaa04e38854ba706bb2a3ec9daba1d8c5b67cb48341ab5fa6b5191f"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Remove React Island candidates from the creative direction schema.",
+      "expected_state": "present",
+      "expected_base_sha256": "c3589f3b8303615fb787eff0470247d7a03c289e36cf97662e89e20fbf415d1c"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/task-1-build-complete-astro-react-islands-website-demo.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "delete"],
+      "reason": "Rename the implementation node while preserving task-1.",
+      "expected_state": "present",
+      "expected_base_sha256": "1a7e0ff8f62baf2f1afef9627e1d2ad6c658cf0653dae6192cf094a3cc75d536"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/test-1-complete-website-demo-validation-and-handoff-contract.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Add zero-JavaScript, asset-budget, static-route, and public-safety proof.",
+      "expected_state": "present",
+      "expected_base_sha256": "675bd1d404ea3b2b33301fb43675a10eeda2679a3fe6cc167f36d47a83ec3189"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/index/mdkg.sqlite",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Regenerate the template's tracked graph index.",
+      "expected_state": "present",
+      "expected_base_sha256": "89fd02bd7ac01da0389b9128eea5a350cdc5a79871aef8d08e64e2f185b8649a"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/events/events.jsonl",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Record the accepted template-contract checkpoint.",
+      "expected_state": "present",
+      "expected_base_sha256": "bcde9dbda5dfe89d7893decbd1fe6f3615731bb2fae127f846b1cc86437c5aef"
+    },
+    {
+      "path": "mdkg-dev/CLAIMS.md",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Distinguish accepted Demo 1 local proof from unexecuted Demo 2/3 claims.",
+      "expected_state": "present",
+      "expected_base_sha256": "fbe63e2c30a780e58ece4547ce25179fe321881f3842b6b95f6ffd30bf20b4b8"
+    },
+    {
+      "path": "mdkg-dev/src/data/demoSnapshots.ts",
+      "owner": "shared-source-writer",
+      "operations": ["read", "delete"],
+      "reason": "Replace the monolithic Demo 1 record with typed per-demo records.",
+      "expected_state": "present",
+      "expected_base_sha256": "d59ed30a5173702317e3ac65119387765ae201f374af212311f49243fffbf68b"
+    },
+    {
+      "path": "mdkg-dev/src/pages/demos.astro",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Filter gallery and navigation by listed policy.",
+      "expected_state": "present",
+      "expected_base_sha256": "69da294efc0757f037e04b474b86aea13bae6ddaca6a5ad53c53a55d37e03d05"
+    },
+    {
+      "path": "mdkg-dev/src/pages/demo/[id].astro",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Render source/executed goals and Plan Work Evidence with per-demo noindex.",
+      "expected_state": "present",
+      "expected_base_sha256": "f5d6514d1fa0946f6cf11581e2055482c0f7a30cbeed80ad922473cfc1fd9dc5"
+    },
+    {
+      "path": "mdkg-dev/src/pages/demo/[id]/output.astro",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Delegate to the compile-time static Astro output-component registry.",
+      "expected_state": "present",
+      "expected_base_sha256": "541d7ec10f5ab753ae1a13c18133d6145f5fb0865297bbdc0488ad5bebdb7ca5"
+    },
+    {
+      "path": "mdkg-dev/src/pages/sitemap.xml.ts",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Derive indexable demo detail routes from record policy.",
+      "expected_state": "present",
+      "expected_base_sha256": "91dae2d98ae19b1593cf24cc835a2a5a21a033fa305295d299e04cdd7556d474"
+    },
+    {
+      "path": "scripts/smoke-demo-graph.js",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Exercise manifest-driven bootstrap, fixture routes, repeat equality, and negative drift.",
+      "expected_state": "present",
+      "expected_base_sha256": "803f6215ed294ba2e16a2c4bb34521269373f63c11e06eb091371f98fbf52462"
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev.js",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Add demo registry, route, evidence, component, sanitization, and zero-JavaScript assertions.",
+      "expected_state": "present",
+      "expected_base_sha256": "1a134f1d3e562aa24bc636cfe05ab14704fc1b1448eace98be8e2750c73d3816"
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev-seo.js",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Verify record-derived sitemap and per-demo robots behavior.",
+      "expected_state": "present",
+      "expected_base_sha256": "16eefcbe983aa8d61538e3225ff9c3aef02a5def16e83d586e75409a26953f4c"
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev-a11y.js",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Add gallery, detail, and output surfaces to accessibility checks.",
+      "expected_state": "present",
+      "expected_base_sha256": "cc2d05befd9ebdee323d6c5461e24260ff5317ce410f915e1efa8d88dfb2a948"
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev-perf.js",
+      "owner": "shared-source-writer",
+      "operations": ["read", "update"],
+      "reason": "Measure demo route transfer and raster budgets explicitly.",
+      "expected_state": "present",
+      "expected_base_sha256": "e06eb73b5049040ddd9939c2371b8759d6e205ee86f89201aadcd50abd7594b0"
+    }
+  ],
+  "create_path_rows": [
+    {
+      "path": "examples/website-demo-template/.mdkg/design/dec-1-static-astro-and-zero-client-javascript-is-the-demo-stack.md",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Preserve dec-1 under a truthful filename.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/task-1-build-complete-static-astro-website-demo.md",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Preserve task-1 under a truthful filename.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/chk-2-static-astro-zero-client-javascript-template-contract-accepted.md",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Supersede the historical seed checkpoint without rewriting it.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "mdkg-dev/src/data/demos/types.ts",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Declare the fail-closed per-demo contract.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "mdkg-dev/src/data/demos/demo-1.ts",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Move Demo 1 into an independent record.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "mdkg-dev/src/data/demos/index.ts",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Validate and export records plus visibility helpers.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/Demo1Output.astro",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Extract the current static output as Demo 1's independent composition.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/outputRegistry.ts",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Map bounded output keys to compile-time Astro components.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "scripts/fixtures/demo-registry-fixtures.json",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Test reserved Demo 2/3 route and visibility shapes without public records.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    },
+    {
+      "path": "scripts/bootstrap-website-demo-run.js",
+      "owner": "shared-source-writer",
+      "operations": ["create"],
+      "reason": "Provide executable deterministic fork and operator materialization.",
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    }
+  ],
+  "program_create_paths": [
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/static-astro-contract.md",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-5-static-astro-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/route-registry-contract.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-6-route-registry-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/source-execution-evidence-contract.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-7-source-execution-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/output-component-registry-contract.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-8-output-component-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/fork-contract.md",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-9-bootstrap-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/rehearsal-specialization-contract.md",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/event-specialization-contract.md",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/live-sendoff-contract.md",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/static-build-route-a11y-budget-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/public-safety-visibility-zero-js-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/fork-bootstrap-pack-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/interface-contract.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/validation-receipt.json"
+  ],
+  "read_only_roots": [
+    {
+      "path": "examples/demo-runs/demo-001/**",
+      "reason": "Immutable historical run evidence."
+    },
+    {
+      "path": "mdkg-dev/public/demo-001/**",
+      "reason": "Immutable retained Demo 1 asset."
+    },
+    {
+      "path": "examples/website-demo-template/AGENTS.md",
+      "reason": "Operator materialization source."
+    },
+    {
+      "path": "examples/website-demo-template/AGENT_START.md",
+      "reason": "Operator materialization source."
+    },
+    {
+      "path": "examples/website-demo-template/CLAUDE.md",
+      "reason": "Operator materialization source."
+    },
+    {
+      "path": "examples/website-demo-template/CLI_COMMAND_MATRIX.md",
+      "reason": "Operator materialization source."
+    },
+    {
+      "path": "examples/website-demo-template/llms.txt",
+      "reason": "Operator materialization source."
+    },
+    {
+      "path": "examples/website-demo-template/.agents/skills/**",
+      "reason": "Hash-checked skill projection source."
+    },
+    {
+      "path": "examples/website-demo-template/.claude/skills/**",
+      "reason": "Hash-checked skill projection source."
+    }
+  ],
+  "integration_only_paths": [
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+    ".mdkg/index/mdkg.sqlite"
+  ],
+  "forbidden_paths": [
+    "src/**",
+    "tests/**",
+    "docs/**",
+    "package.json",
+    "mdkg-dev/package.json",
+    "examples/website-demo-template/package.json",
+    "**/package-lock.json",
+    "**/npm-shrinkwrap.json",
+    ".github/**",
+    ".vercel/**"
+  ],
+  "forbidden_actions": [
+    "push",
+    "force push",
+    "history rewrite",
+    "deployment",
+    "DNS mutation",
+    "Vercel project or configuration mutation",
+    "analytics activation",
+    "tag creation",
+    "package publication",
+    "credential inspection or storage"
+  ]
+}
