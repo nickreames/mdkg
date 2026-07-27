@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-2-spike-readiness-receipt",
+  "goal_qid": "root:goal-2",
+  "work_qid": "root:spike-2",
+  "owner": "codex:/root",
+  "result": "accepted_recommendation_pending_mutation_gate",
+  "discovery": {
+    "accepted_base_sha": "0399f9dfc241a25d724cdcdf9704776dfdc10b45",
+    "branch": "main",
+    "upstream": "origin/main",
+    "upstream_divergence_at_start": {
+      "behind": 0,
+      "ahead": 14
+    },
+    "start_worktree_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "current_owned_dirty_porcelain_sha256": "94568d09ed08fa6cc3acc81d65a8537c906bf2a9434f77cb4cf6fe18303885e4",
+    "staged_paths": [],
+    "owned_dirty_paths": [
+      "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/global.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/chk-3-goal-2-discovery-gate-accepted.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/goal-2-harden-the-reusable-website-demo-platform.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/spike-2-audit-demo-1-template-and-canonical-site-drift.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/activation-contract.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/drift-audit.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/proposed-source-allowlist.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/spike-2-readiness-receipt.json"
+    ],
+    "forbidden_path_changes": [],
+    "source_writes_performed": false,
+    "root_graph_writes_performed": false,
+    "provider_actions_performed": false
+  },
+  "pack": {
+    "root_qid": "root:spike-2",
+    "profile_preview": "concise",
+    "execution_profile": "standard",
+    "edges": [
+      "parent",
+      "epic",
+      "relates",
+      "blocked_by",
+      "blocks",
+      "prev",
+      "next",
+      "context_refs",
+      "evidence_refs"
+    ],
+    "concise_node_count": 19,
+    "concise_chars": 14367,
+    "concise_approx_tokens": 3599,
+    "required_qids_present": [
+      "root:spike-2",
+      "root:goal-2",
+      "root:epic-2",
+      "root:prd-1",
+      "root:edd-1",
+      "root:dec-1",
+      "root:dec-2",
+      "root:dec-3",
+      "root:dec-4",
+      "root:dec-5",
+      "root:dec-6",
+      "root:goal-1",
+      "root:chk-1",
+      "root:chk-2",
+      "root:skill:select-work-and-ground-context",
+      "root:skill:pursue-mdkg-goal",
+      "root:skill:build-pack-and-execute-task",
+      "root:skill:verify-close-and-checkpoint"
+    ],
+    "full_body_reviewed": true
+  },
+  "validation": {
+    "nested_index": "pass",
+    "nested_validate": {
+      "ok": true,
+      "warning_count": 0,
+      "error_count": 0
+    },
+    "activation_contract_json": "pass",
+    "proposed_allowlist_json": "pass",
+    "git_diff_check": "pass"
+  },
+  "artifacts": {
+    "drift_audit": {
+      "path": "artifacts/demo-platform/drift-audit.md",
+      "sha256": "b2ee32c0078e480274624afc7350406db8e781b8985e11e225c4bbf34ab33402"
+    },
+    "proposed_source_allowlist": {
+      "path": "artifacts/demo-platform/proposed-source-allowlist.json",
+      "sha256": "56c21c0d809a2c6e7b66f16d20c448083417c18e9297cf603c34cdf4866132bc"
+    },
+    "activation_contract": {
+      "path": "artifacts/demo-platform/activation-contract.json",
+      "sha256": "002be211b90a110df54729941325e4d3d70cb8031c1da2e9f5adea826aa18da1"
+    }
+  },
+  "historical_read_only_proof": [
+    {
+      "path": "examples/demo-runs/demo-001/DEMO_RUN_RECEIPT.md",
+      "sha256": "14a36a7e757a7ed4489e75acc2fd3b06ab81d8f7733fcec0d4230639aa85e9fb"
+    },
+    {
+      "path": "examples/demo-runs/demo-001/package.json",
+      "sha256": "553c6262e3bec22893f9c0394fc71a5ff7fd24ab25b989d2bf44e25ce6869e3b"
+    },
+    {
+      "path": "examples/demo-runs/demo-001/.mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "sha256": "7a4728a1cfcf383afc25dbbb91e5db385318ab90965768543807ac7e3d3f1ff8"
+    },
+    {
+      "path": "mdkg-dev/public/demo-001/ocean-flow-map.svg",
+      "sha256": "fec43b7da8a5de6dc6350e0a97d1f3449b4a63cebfe1c027680d55d62b2b7979"
+    }
+  ],
+  "decision": {
+    "recommended_option": "static_astro_canonical_template",
+    "unresolved_material_choices": [],
+    "task_5_technical_readiness": "ready_after_clean_spike_commit_and_projection_refresh",
+    "task_5_authorized": false,
+    "required_next_gate": "root integration owner accepts artifacts/demo-platform/goal-2-activation-receipt.json with fresh exact hashes and an exclusive shared-source lease"
+  },
+  "public_safety": {
+    "raw_prompts_included": false,
+    "credentials_included": false,
+    "provider_payloads_included": false,
+    "private_runtime_state_included": false
+  }
+}

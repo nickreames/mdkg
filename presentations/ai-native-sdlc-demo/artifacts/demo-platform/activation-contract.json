@@ -2,21 +2,21 @@
   "schema_version": "1.0",
   "contract": "goal-2-two-gate-activation",
   "goal_id": "goal-2",
-  "state": "template",
-  "authorization": "not_granted",
+  "state": "discovery_authorized",
+  "authorization": "audit_gate_granted",
   "acceptance_rule": "Audit work requires a separately recorded audit_gate authorization. Shared-source mutation requires mutation_gate.state=accepted and every required field to be non-null, current, and hash-consistent.",
   "goal1_checkpoint": "chk-1",
   "root_projection": {
     "alias": "ai_native_sdlc_demo",
     "bundle_path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
-    "bundle_sha256": null,
-    "verified_at": null
+    "bundle_sha256": "a68836f94d3f83f21c792288beea995c0708176e3dacdf3554afc31a6b747a6a",
+    "verified_at": "2026-07-27T02:55:54Z"
   },
   "roles": {
-    "program_orchestrator": null,
+    "program_orchestrator": "codex:/root",
     "shared_source_writer": null,
-    "root_integration_owner": null,
-    "read_only_verifier": null,
+    "root_integration_owner": "codex:/root",
+    "read_only_verifier": "codex:/root",
     "no_overlapping_write_leases": true
   },
   "mutation_receipt_schema": {
@@ -64,8 +64,14 @@
     ]
   },
   "audit_gate": {
-    "state": "pending",
-    "owner": null,
+    "state": "accepted",
+    "owner": "codex:/root",
+    "selected_work": "spike-2",
+    "accepted_base_sha": "0399f9dfc241a25d724cdcdf9704776dfdc10b45",
+    "worktree_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bundle_sha256": "a68836f94d3f83f21c792288beea995c0708176e3dacdf3554afc31a6b747a6a",
+    "accepted_by": "codex:/root",
+    "accepted_at": "2026-07-27T02:55:54Z",
     "read_paths": [
       "examples/website-demo-template/**",
       "examples/demo-runs/demo-001/**",

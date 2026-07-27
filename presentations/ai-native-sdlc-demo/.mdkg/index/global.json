@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T02:12:18.926Z",
+    "generated_at": "2026-07-27T03:06:29.710Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-2"
+      "root": "root:chk-3"
     }
   },
   "workspaces": {
@@ -139,6 +139,72 @@
         ],
         "evidence_refs": [
           "root:chk-1"
+        ]
+      }
+    },
+    "root:chk-3": {
+      "id": "chk-3",
+      "qid": "root:chk-3",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Goal 2 discovery gate accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-2",
+        "discovery-gate",
+        "accepted"
+      ],
+      "owners": [
+        "program-orchestrator",
+        "root-integration-owner"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-platform/drift-audit.md",
+        "artifacts/demo-platform/proposed-source-allowlist.json",
+        "artifacts/demo-platform/spike-2-readiness-receipt.json",
+        "artifacts/demo-platform/activation-contract.json"
+      ],
+      "refs": [
+        "goal-2",
+        "epic-2",
+        "spike-2",
+        "goal-1",
+        "chk-1",
+        "chk-2",
+        "prd-1",
+        "edd-1",
+        "dec-4"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-3-goal-2-discovery-gate-accepted.md",
+      "edges": {
+        "relates": [
+          "root:spike-2"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-2",
+          "root:epic-2",
+          "root:spike-2",
+          "root:goal-1",
+          "root:chk-1",
+          "root:chk-2",
+          "root:prd-1",
+          "root:edd-1",
+          "root:dec-4"
+        ],
+        "evidence_refs": [
+          "root:chk-1",
+          "root:chk-2"
         ]
       }
     },
@@ -1007,7 +1073,7 @@
       "ws": "root",
       "type": "goal",
       "title": "Harden the reusable website-demo platform",
-      "status": "backlog",
+      "status": "progress",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -1039,7 +1105,8 @@
         "dec-6",
         "goal-1",
         "chk-1",
-        "chk-2"
+        "chk-2",
+        "chk-3"
       ],
       "aliases": [
         "reusable-website-demo-platform-hardening"
@@ -1051,11 +1118,12 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {
-        "goal_state": "paused",
+        "goal_state": "active",
         "goal_condition": "The reusable demo platform is locally implemented and verified with a static-Astro zero-client-JavaScript contract, per-demo records and output components, route and sitemap controls, source-versus-specialized goal evidence, deterministic fork and operator materialization, rehearsal/event sendoff contracts, and integrated build, accessibility, claims, privacy, asset, and startup proof, with no publication.",
         "scope_refs": [
           "epic-2"
         ],
+        "active_node": "spike-2",
         "required_skills": [
           "select-work-and-ground-context",
           "pursue-mdkg-goal",
@@ -1090,10 +1158,12 @@
           "root:dec-6",
           "root:goal-1",
           "root:chk-1",
-          "root:chk-2"
+          "root:chk-2",
+          "root:chk-3"
         ],
         "evidence_refs": [
-          "root:chk-2"
+          "root:chk-2",
+          "root:chk-3"
         ]
       }
     },
@@ -2035,7 +2105,7 @@
       "ws": "root",
       "type": "spike",
       "title": "Audit Demo 1 template and canonical site drift",
-      "status": "todo",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-26",
@@ -7140,12 +7210,16 @@
       ],
       "root:goal-1": [
         "root:chk-1"
+      ],
+      "root:spike-2": [
+        "root:chk-3"
       ]
     },
     "context_refs": {
       "root:goal-1": [
         "root:chk-1",
         "root:chk-2",
+        "root:chk-3",
         "root:epic-1",
         "root:goal-2",
         "root:spike-1",
@@ -7172,6 +7246,7 @@
       "root:prd-1": [
         "root:chk-1",
         "root:chk-2",
+        "root:chk-3",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7267,6 +7342,7 @@
       "root:edd-1": [
         "root:chk-1",
         "root:chk-2",
+        "root:chk-3",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7644,6 +7720,7 @@
       "root:dec-4": [
         "root:chk-1",
         "root:chk-2",
+        "root:chk-3",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7926,6 +8003,7 @@
       ],
       "root:goal-2": [
         "root:chk-2",
+        "root:chk-3",
         "root:epic-2",
         "root:goal-3",
         "root:spike-2",
@@ -7941,6 +8019,7 @@
       ],
       "root:epic-2": [
         "root:chk-2",
+        "root:chk-3",
         "root:spike-2",
         "root:task-10",
         "root:task-5",
@@ -7954,9 +8033,18 @@
       ],
       "root:chk-1": [
         "root:chk-2",
+        "root:chk-3",
         "root:goal-1",
         "root:goal-2",
         "root:spike-2"
+      ],
+      "root:spike-2": [
+        "root:chk-3",
+        "root:task-5"
+      ],
+      "root:chk-2": [
+        "root:chk-3",
+        "root:goal-2"
       ],
       "root:goal-3": [
         "root:epic-3",
@@ -8038,7 +8126,7 @@
         "root:test-23",
         "root:test-24"
       ],
-      "root:chk-2": [
+      "root:chk-3": [
         "root:goal-2"
       ],
       "root:spike-1": [
@@ -8238,9 +8326,6 @@
       "root:task-45": [
         "root:task-46"
       ],
-      "root:spike-2": [
-        "root:task-5"
-      ],
       "root:task-5": [
         "root:task-6",
         "root:test-4"
@@ -8348,10 +8433,15 @@
       ],
       "root:chk-1": [
         "root:chk-2",
+        "root:chk-3",
         "root:epic-1",
         "root:goal-1"
       ],
       "root:chk-2": [
+        "root:chk-3",
+        "root:goal-2"
+      ],
+      "root:chk-3": [
         "root:goal-2"
       ]
     },
