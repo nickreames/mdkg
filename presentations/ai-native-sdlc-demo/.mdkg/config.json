@@ -28,7 +28,7 @@
     "default_profile": "private"
   },
   "db": {
-    "enabled": true,
+    "enabled": false,
     "schema_version": 1,
     "root_path": ".mdkg/db",
     "schema_path": ".mdkg/db/schema",
@@ -38,53 +38,22 @@
     "receipts_path": ".mdkg/db/receipts",
     "migration_table": "mdkg_schema_migration"
   },
-  "subgraphs": {
-    "demo_agentic_coding": {
-      "enabled": true,
-      "visibility": "private",
-      "permissions": [
-        "read"
-      ],
-      "max_stale_seconds": 2592000,
-      "sources": [
-        {
-          "path": ".mdkg/bundles/private/examples/demo-agentic-coding.mdkg.zip",
-          "enabled": true,
-          "expected_profile": "private"
-        }
-      ]
+  "customization": {
+    "standards": {
+      "profile": "default",
+      "refs": []
     },
-    "template_mdkg_dev": {
-      "enabled": true,
-      "visibility": "private",
-      "permissions": [
-        "read"
-      ],
-      "max_stale_seconds": 2592000,
-      "sources": [
-        {
-          "path": ".mdkg/bundles/private/examples/template-mdkg-dev.mdkg.zip",
-          "enabled": true,
-          "expected_profile": "private"
-        }
-      ]
+    "core_docs": {
+      "custom_paths": []
     },
-    "ai_native_sdlc_demo": {
-      "enabled": true,
-      "visibility": "private",
-      "permissions": [
-        "read"
-      ],
-      "max_stale_seconds": 86400,
-      "sources": [
-        {
-          "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
-          "enabled": true,
-          "expected_profile": "private"
-        }
+    "skill_mirrors": {
+      "targets": [
+        ".agents/skills",
+        ".claude/skills"
       ]
     }
   },
+  "subgraphs": {},
   "pack": {
     "default_depth": 2,
     "default_edges": [
@@ -131,21 +100,6 @@
       "enabled": true,
       "mdkg_dir": ".mdkg",
       "visibility": "private"
-    }
-  },
-  "customization": {
-    "standards": {
-      "profile": "default",
-      "refs": []
-    },
-    "core_docs": {
-      "custom_paths": []
-    },
-    "skill_mirrors": {
-      "targets": [
-        ".agents/skills",
-        ".claude/skills"
-      ]
     }
   }
 }
