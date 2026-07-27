@@ -2,7 +2,7 @@
 id: test-7
 type: test
 title: Verify every presentation claim and citation
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 parent: goal-3
@@ -15,14 +15,14 @@ artifacts: [deck/citations/claim-matrix.md, deck/speaker-notes.md]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-14]
+refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-14, chk-8]
 context_refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-14]
-evidence_refs: []
+evidence_refs: [chk-8]
 aliases: [phase-3-step-6]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [github_copilot_autocomplete, conversational_prompt_engineering, openai_o1_reasoning, claude_code_cursor_tool_use, agent_skills_skill_md, long_horizon_codex_claude_code, context_engineering_claim, mdkg_maturity_wording, timeline_overlap_caveat, numbered_slide_markers, sources_appendix, speaker_note_source_mapping]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -55,7 +55,17 @@ Validate verify every presentation claim and citation as step 6 of Goal 3. A pas
 
 # Results / Evidence
 
-Pending activation. Record pass/fail per case, commands, hashes, routes, screenshots or receipts, warnings, and follow-up refs.
+PASS on 2026-07-27.
+
+- Re-opened all 12 external primary-source URLs and verified both mdkg claims against pinned repository commit `580be1e6efffe852e9996186e85e2bcbcd3e3e3b`.
+- Confirmed Cursor's living Agent documentation only supports the undated search/edit/run supporting example.
+- Confirmed the Codex eight-hour wording is human-equivalent task size, while METR explicitly distinguishes task horizon from elapsed agent runtime.
+- Parsed `deck/citations/claim-matrix.md`: 14 approved claim rows; every row contains source owner, URL, publication date, milestone date, exact support, approved paraphrase, confidence, slide use, and limitations.
+- Parsed `deck/rendered/inspect.ndjson`: 20 speaker-note records; every slide contains exactly one complete `[Sources]` block.
+- Cross-checked every claim row's numeric slide-use list against the visible compact marker and corresponding speaker-note marker: zero missing mappings.
+- Verified the appendix contains markers `[1]` through `[14]`.
+- Verified the matrix retains the explicit overlapping-capabilities caveat and the unsupported 8-hour-runtime, context-solves-memory, vendor-winner, and time-saved claims remain rejected.
+- Result: `pass: true`, with no field, note, marker, or appendix errors.
 
 # Notes / Follow-ups
 

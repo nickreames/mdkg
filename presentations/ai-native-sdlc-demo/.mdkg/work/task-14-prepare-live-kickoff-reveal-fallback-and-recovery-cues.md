@@ -2,7 +2,7 @@
 id: task-14
 type: task
 title: Prepare live kickoff reveal fallback and recovery cues
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 parent: goal-3
@@ -15,13 +15,13 @@ artifacts: [deck/speaker-notes.md]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-13]
+refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-13, chk-7]
 context_refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-13]
-evidence_refs: []
+evidence_refs: [chk-7]
 aliases: [phase-3-step-5]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -66,4 +66,4 @@ Prepare live kickoff reveal fallback and recovery cues. This is step 5 of 8 in G
 
 - goal-3
 - epic-3
-- Evidence pending activation.
+- `chk-7` — V2 full deck generated and visually verified.

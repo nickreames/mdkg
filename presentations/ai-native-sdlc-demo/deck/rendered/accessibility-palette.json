@@ -1,0 +1,83 @@
+{
+  "standard": "WCAG 2.2 relative-luminance contrast",
+  "minimumTextSizePt": 16,
+  "pairs": [
+    {
+      "use": "Primary text on canvas",
+      "foreground": "#08263A",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 14.96
+    },
+    {
+      "use": "Primary text on surface",
+      "foreground": "#08263A",
+      "background": "#FFFFFF",
+      "requirement": 7,
+      "ratio": 15.57
+    },
+    {
+      "use": "Secondary text on canvas",
+      "foreground": "#36566A",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.48
+    },
+    {
+      "use": "Teal accent text on canvas",
+      "foreground": "#005B57",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.66
+    },
+    {
+      "use": "Blue accent text on canvas",
+      "foreground": "#00566D",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.9
+    },
+    {
+      "use": "Coral accent text on canvas",
+      "foreground": "#9B2C2C",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.23
+    },
+    {
+      "use": "Light text on dark anchor",
+      "foreground": "#F7FBFD",
+      "background": "#08263A",
+      "requirement": 7,
+      "ratio": 14.96
+    },
+    {
+      "use": "Cyan text on dark anchor",
+      "foreground": "#3EDBFF",
+      "background": "#08263A",
+      "requirement": 7,
+      "ratio": 9.48
+    },
+    {
+      "use": "Aqua text on dark anchor",
+      "foreground": "#13C7B3",
+      "background": "#08263A",
+      "requirement": 7,
+      "ratio": 7.3
+    },
+    {
+      "use": "Functional boundary on canvas",
+      "foreground": "#5E8392",
+      "background": "#F7FBFD",
+      "requirement": 3,
+      "ratio": 3.93
+    },
+    {
+      "use": "Functional boundary on surface",
+      "foreground": "#5E8392",
+      "background": "#FFFFFF",
+      "requirement": 3,
+      "ratio": 4.09
+    }
+  ]
+}

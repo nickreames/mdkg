@@ -2,7 +2,7 @@
 id: task-12
 type: task
 title: Produce three representative visual prototypes
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 parent: goal-3
@@ -11,7 +11,7 @@ next: task-13
 tags: [ai-native-sdlc, presentation-demo, phase-3, step-3]
 owners: [program-orchestrator]
 links: []
-artifacts: [deck/assets/prototypes/, deck/rendered/prototypes/contact-sheet.png, deck/rendered/prototypes/review-receipt.md]
+artifacts: [deck/assets/prototypes/, deck/rendered/prototypes/contact-sheet.png, deck/rendered/prototypes/contact-sheet-v2.png, deck/rendered/prototypes/review-receipt.md, deck/rendered/prototypes/accessibility-report-v2.md, deck/assets/prototypes/visual-prototypes.mjs, deck/assets/prototypes/visual-prototypes-v2.mjs, deck/assets/prototypes/ai-native-sdlc-visual-prototypes.pptx, deck/assets/prototypes/ai-native-sdlc-visual-prototypes-v2.pptx, deck/rendered/prototypes/slides/, deck/rendered/prototypes/pptx-rendered/, deck/rendered/prototypes/v2/]
 relates: []
 blocked_by: []
 blocks: []
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-3-step-3]
 skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -65,4 +65,15 @@ Produce three representative visual prototypes. This is step 3 of 8 in Goal 3; i
 
 - goal-3
 - epic-3
-- Evidence pending activation.
+- `deck/assets/prototypes/visual-prototypes.mjs`
+- `deck/assets/prototypes/ai-native-sdlc-visual-prototypes.pptx`
+- `deck/rendered/prototypes/slides/`
+- `deck/rendered/prototypes/pptx-rendered/`
+- `deck/rendered/prototypes/contact-sheet.png`
+- `deck/rendered/prototypes/contact-sheet-v2.png`
+- `deck/rendered/prototypes/review-receipt.md`
+- `deck/rendered/prototypes/accessibility-report-v2.md`
+- `deck/assets/prototypes/visual-prototypes-v2.mjs`
+- `deck/assets/prototypes/ai-native-sdlc-visual-prototypes-v2.pptx`
+- `deck/rendered/prototypes/v2/`
+- Explicit user acceptance pending; `task-13` remains prohibited.

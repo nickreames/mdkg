@@ -1,0 +1,1444 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/eevt2k",
+    "id": "eevt2k",
+    "slide": 14,
+    "layoutId": "0fe0106a-9848-4ffe-9e31-943b47431bcd",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "45236187-0cb8-49d8-8724-1feb6beb4872",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F7FBFD",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0fe0106a-9848-4ffe-9e31-943b47431bcd",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "45236187-0cb8-49d8-8724-1feb6beb4872",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "45236187-0cb8-49d8-8724-1feb6beb4872",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fy1srutk",
+      "id": "1",
+      "name": "header-current-14",
+      "bbox": [
+        72,
+        39,
+        44,
+        8
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#13C7B3",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0ja9kza5",
+      "id": "2",
+      "name": "eyebrow-14",
+      "bbox": [
+        128,
+        31,
+        760,
+        24
+      ],
+      "geometry": "rect",
+      "text": "THE OPERATING MODEL",
+      "textPreview": "THE OPERATING MODEL",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#005B57",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "THE OPERATING MODEL"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "THE OPERATING MODEL",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#005B57",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "THE OPERATING MODEL",
+              "fontSize": 16,
+              "color": "#005B57",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kjat4bq",
+      "id": "3",
+      "name": "title-14",
+      "bbox": [
+        72,
+        69,
+        1136,
+        58
+      ],
+      "geometry": "rect",
+      "text": "Plan → Work → Evidence",
+      "textPreview": "Plan → Work → Evidence",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "fontSize": 38,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Plan → Work → Evidence"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Plan → Work → Evidence",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Plan → Work → Evidence",
+              "fontSize": 38,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qt8re5s3",
+      "id": "4",
+      "name": "subtitle-14",
+      "bbox": [
+        72,
+        136,
+        1136,
+        36
+      ],
+      "geometry": "rect",
+      "text": "One durable loop connects explicit intent to bounded execution and inspectable proof.",
+      "textPreview": "One durable loop connects explicit intent to bounded execution and inspectable proof.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#36566A",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "One durable loop connects explicit intent to bounded execution and inspectable proof."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "One durable loop connects explicit intent to bounded execution and inspectable proof.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#36566A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "One durable loop connects explicit intent to bounded execution and inspectable proof.",
+              "fontSize": 19,
+              "color": "#36566A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ruhsnat8",
+      "id": "5",
+      "name": "pwe-arrow-1",
+      "bbox": [
+        411,
+        328,
+        54,
+        34
+      ],
+      "geometry": "rightArrow",
+      "fillColor": "#00566D",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/svq9gfat",
+      "id": "6",
+      "name": "pwe-arrow-2",
+      "bbox": [
+        814,
+        328,
+        54,
+        34
+      ],
+      "geometry": "rightArrow",
+      "fillColor": "#005B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dwzapkbe",
+      "id": "7",
+      "name": "pwe-card-1",
+      "bbox": [
+        72,
+        208,
+        330,
+        278
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#5E8392",
+      "lineWidth": 2
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/apcrq9s7",
+      "id": "8",
+      "name": "pwe-topwash-1",
+      "bbox": [
+        74,
+        210,
+        326,
+        99
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#E7F5FB",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bqlsze9s",
+      "id": "9",
+      "name": "pwe-accent-1",
+      "bbox": [
+        94,
+        232,
+        58,
+        58
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#3EDBFF",
+      "lineColor": "#08263A",
+      "lineWidth": 2
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/72d03yds",
+      "id": "10",
+      "name": "pwe-number-1",
+      "bbox": [
+        96,
+        249,
+        54,
+        23
+      ],
+      "geometry": "rect",
+      "text": "01",
+      "textPreview": "01",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "01",
+              "fontSize": 16,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/614zutc7",
+      "id": "11",
+      "name": "pwe-title-1",
+      "bbox": [
+        172,
+        241,
+        204,
+        39
+      ],
+      "geometry": "rect",
+      "text": "PLAN",
+      "textPreview": "PLAN",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PLAN"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PLAN",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PLAN",
+              "fontSize": 29,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t4vi58vy",
+      "id": "12",
+      "name": "pwe-rule-1",
+      "bbox": [
+        94,
+        320,
+        286,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#5E8392",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83m1w3ud",
+      "id": "13",
+      "name": "pwe-detail-1",
+      "bbox": [
+        96,
+        348,
+        280,
+        112
+      ],
+      "geometry": "rect",
+      "text": "Requirements\nDecisions\nGuardrails",
+      "textPreview": "Requirements | Decisions | Guardrails",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#113A4E",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Requirements"
+          },
+          {
+            "index": 2,
+            "text": "Decisions"
+          },
+          {
+            "index": 3,
+            "text": "Guardrails"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Requirements",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Requirements",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Decisions",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Decisions",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "Guardrails",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Guardrails",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vqd07ido",
+      "id": "14",
+      "name": "pwe-card-2",
+      "bbox": [
+        475,
+        208,
+        330,
+        278
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#5E8392",
+      "lineWidth": 2
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/up4jydc3",
+      "id": "15",
+      "name": "pwe-topwash-2",
+      "bbox": [
+        477,
+        210,
+        326,
+        99
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#DDF4F4",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hsfi9svu",
+      "id": "16",
+      "name": "pwe-accent-2",
+      "bbox": [
+        497,
+        232,
+        58,
+        58
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#13C7B3",
+      "lineColor": "#08263A",
+      "lineWidth": 2
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr610nu9",
+      "id": "17",
+      "name": "pwe-number-2",
+      "bbox": [
+        499,
+        249,
+        54,
+        23
+      ],
+      "geometry": "rect",
+      "text": "02",
+      "textPreview": "02",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "02",
+              "fontSize": 16,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3ux0bid0",
+      "id": "18",
+      "name": "pwe-title-2",
+      "bbox": [
+        575,
+        241,
+        204,
+        39
+      ],
+      "geometry": "rect",
+      "text": "WORK",
+      "textPreview": "WORK",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "WORK"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "WORK",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WORK",
+              "fontSize": 29,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/itoj2dcf",
+      "id": "19",
+      "name": "pwe-rule-2",
+      "bbox": [
+        497,
+        320,
+        286,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#5E8392",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ep83uhwn",
+      "id": "20",
+      "name": "pwe-detail-2",
+      "bbox": [
+        499,
+        348,
+        280,
+        112
+      ],
+      "geometry": "rect",
+      "text": "One bounded node\nExplicit authority\nClear handoff",
+      "textPreview": "One bounded node | Explicit authority | Clear handoff",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#113A4E",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "One bounded node"
+          },
+          {
+            "index": 2,
+            "text": "Explicit authority"
+          },
+          {
+            "index": 3,
+            "text": "Clear handoff"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "One bounded node",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "One bounded node",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Explicit authority",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Explicit authority",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "Clear handoff",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Clear handoff",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fqh43mx8",
+      "id": "21",
+      "name": "pwe-card-3",
+      "bbox": [
+        878,
+        208,
+        330,
+        278
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#5E8392",
+      "lineWidth": 2
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0ralwret",
+      "id": "22",
+      "name": "pwe-topwash-3",
+      "bbox": [
+        880,
+        210,
+        326,
+        99
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#DDF4F4",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1sjm5wfe",
+      "id": "23",
+      "name": "pwe-accent-3",
+      "bbox": [
+        900,
+        232,
+        58,
+        58
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#5EEAD4",
+      "lineColor": "#08263A",
+      "lineWidth": 2
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ql83qhwb",
+      "id": "24",
+      "name": "pwe-number-3",
+      "bbox": [
+        902,
+        249,
+        54,
+        23
+      ],
+      "geometry": "rect",
+      "text": "03",
+      "textPreview": "03",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "03",
+              "fontSize": 16,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmhkzmxw",
+      "id": "25",
+      "name": "pwe-title-3",
+      "bbox": [
+        978,
+        241,
+        204,
+        39
+      ],
+      "geometry": "rect",
+      "text": "EVIDENCE",
+      "textPreview": "EVIDENCE",
+      "resolvedFontSize": 29,
+      "resolvedTextStyle": {
+        "fontSize": 29,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "EVIDENCE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EVIDENCE",
+          "resolvedTextStyle": {
+            "fontSize": 29,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "EVIDENCE",
+              "fontSize": 29,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/snqlsreh",
+      "id": "26",
+      "name": "pwe-rule-3",
+      "bbox": [
+        900,
+        320,
+        286,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#5E8392",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/doz21cf2",
+      "id": "27",
+      "name": "pwe-detail-3",
+      "bbox": [
+        902,
+        348,
+        280,
+        112
+      ],
+      "geometry": "rect",
+      "text": "Tests + receipts\nCheckpoints\nValidated state",
+      "textPreview": "Tests + receipts | Checkpoints | Validated state",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#113A4E",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Tests + receipts"
+          },
+          {
+            "index": 2,
+            "text": "Checkpoints"
+          },
+          {
+            "index": 3,
+            "text": "Validated state"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Tests + receipts",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Tests + receipts",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Checkpoints",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Checkpoints",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 3,
+          "text": "Validated state",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#113A4E",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Validated state",
+              "fontSize": 20,
+              "color": "#113A4E",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahs321wv",
+      "id": "28",
+      "name": "pwe-conclusion",
+      "bbox": [
+        235,
+        540,
+        810,
+        70
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#08263A",
+      "lineColor": "#00566D",
+      "lineWidth": 2
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bil4b6xg",
+      "id": "29",
+      "name": "pwe-conclusion-text",
+      "bbox": [
+        270,
+        562,
+        740,
+        28
+      ],
+      "geometry": "rect",
+      "text": "THE FINISH LINE IS ACCEPTED EVIDENCE.",
+      "textPreview": "THE FINISH LINE IS ACCEPTED EVIDENCE.",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "color": "#13C7B3",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "THE FINISH LINE IS ACCEPTED EVIDENCE."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "THE FINISH LINE IS ACCEPTED EVIDENCE.",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#13C7B3",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "THE FINISH LINE IS ACCEPTED EVIDENCE.",
+              "fontSize": 21,
+              "color": "#13C7B3",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7eh43u",
+      "id": "30",
+      "name": "footer-line-14",
+      "bbox": [
+        72,
+        663,
+        1136,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#5E8392",
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/knyxoz29",
+      "id": "31",
+      "name": "source-14",
+      "bbox": [
+        72,
+        674,
+        1045,
+        24
+      ],
+      "geometry": "rect",
+      "text": "[14] mdkg Plan → Work → Evidence",
+      "textPreview": "[14] mdkg Plan → Work → Evidence",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#36566A",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "[14] mdkg Plan → Work → Evidence"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "[14] mdkg Plan → Work → Evidence",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#36566A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "[14] mdkg Plan → Work → Evidence",
+              "fontSize": 16,
+              "color": "#36566A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm5wfulo",
+      "id": "32",
+      "name": "folio-14",
+      "bbox": [
+        1150,
+        674,
+        58,
+        24
+      ],
+      "geometry": "rect",
+      "text": "14",
+      "textPreview": "14",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#36566A",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "14"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "14",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#36566A",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "14",
+              "fontSize": 16,
+              "color": "#36566A",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

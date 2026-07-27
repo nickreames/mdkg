@@ -1,0 +1,1394 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/zw02fz",
+    "id": "zw02fz",
+    "slide": 8,
+    "layoutId": "0fe0106a-9848-4ffe-9e31-943b47431bcd",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "45236187-0cb8-49d8-8724-1feb6beb4872",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F7FBFD",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0fe0106a-9848-4ffe-9e31-943b47431bcd",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "45236187-0cb8-49d8-8724-1feb6beb4872",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "45236187-0cb8-49d8-8724-1feb6beb4872",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h8budkbq",
+      "id": "1",
+      "name": "header-current-8",
+      "bbox": [
+        72,
+        39,
+        44,
+        8
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#13C7B3",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u5kv25cz",
+      "id": "2",
+      "name": "eyebrow-8",
+      "bbox": [
+        128,
+        31,
+        760,
+        24
+      ],
+      "geometry": "rect",
+      "text": "LONG-HORIZON, GOAL-DRIVEN WORK",
+      "textPreview": "LONG-HORIZON, GOAL-DRIVEN WORK",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#005B57",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LONG-HORIZON, GOAL-DRIVEN WORK"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LONG-HORIZON, GOAL-DRIVEN WORK",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#005B57",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LONG-HORIZON, GOAL-DRIVEN WORK",
+              "fontSize": 16,
+              "color": "#005B57",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/v6tcbatk",
+      "id": "3",
+      "name": "title-8",
+      "bbox": [
+        72,
+        69,
+        1136,
+        58
+      ],
+      "geometry": "rect",
+      "text": "The work is outgrowing a single context window",
+      "textPreview": "The work is outgrowing a single context window",
+      "resolvedFontSize": 38,
+      "resolvedTextStyle": {
+        "fontSize": 38,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The work is outgrowing a single context window"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The work is outgrowing a single context window",
+          "resolvedTextStyle": {
+            "fontSize": 38,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "The work is outgrowing a single context window",
+              "fontSize": 38,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4bmd8fu1",
+      "id": "4",
+      "name": "subtitle-8",
+      "bbox": [
+        72,
+        136,
+        1136,
+        36
+      ],
+      "geometry": "rect",
+      "text": "Larger delegated tasks make continuity, recovery, and completion criteria part of the engineering problem.",
+      "textPreview": "Larger delegated tasks make continuity, recovery, and completion criteria part of the engineering problem.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#36566A",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Larger delegated tasks make continuity, recovery, and completion criteria part of the engineering problem."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Larger delegated tasks make continuity, recovery, and completion criteria part of the engineering problem.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#36566A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Larger delegated tasks make continuity, recovery, and completion criteria part of the engineering problem.",
+              "fontSize": 19,
+              "color": "#36566A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5cvehkbm",
+      "id": "5",
+      "name": "horizon-metric-panel",
+      "bbox": [
+        72,
+        212,
+        520,
+        330
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#00566D",
+      "lineWidth": 2
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i9kv65cv",
+      "id": "6",
+      "name": "horizon-metric-kicker",
+      "bbox": [
+        112,
+        246,
+        440,
+        28
+      ],
+      "geometry": "rect",
+      "text": "CODEX USAGE STUDY",
+      "textPreview": "CODEX USAGE STUDY",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#00566D",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "CODEX USAGE STUDY"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "CODEX USAGE STUDY",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#00566D",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "CODEX USAGE STUDY",
+              "fontSize": 18,
+              "color": "#00566D",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jadwfatg",
+      "id": "7",
+      "name": "horizon-metric-value",
+      "bbox": [
+        112,
+        292,
+        440,
+        108
+      ],
+      "geometry": "rect",
+      "text": "25.6%",
+      "textPreview": "25.6%",
+      "resolvedFontSize": 78,
+      "resolvedTextStyle": {
+        "fontSize": 78,
+        "typeface": "+mn-lt",
+        "color": "#00566D",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "25.6%"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "25.6%",
+          "resolvedTextStyle": {
+            "fontSize": 78,
+            "color": "#00566D",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "25.6%",
+              "fontSize": 78,
+              "color": "#00566D",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/szmdczad",
+      "id": "8",
+      "name": "horizon-metric-copy",
+      "bbox": [
+        122,
+        410,
+        420,
+        92
+      ],
+      "geometry": "rect",
+      "text": "of sampled individual users submitted at least one request estimated above eight hours of human work",
+      "textPreview": "of sampled individual users submitted at least one request estimated above eight hours of human work",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "of sampled individual users submitted"
+          },
+          {
+            "index": 2,
+            "text": "at least one request estimated above"
+          },
+          {
+            "index": 3,
+            "text": "eight hours of human work"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "of sampled individual users submitted at least one request estimated above eight hours of human work",
+          "resolvedTextStyle": {
+            "fontSize": 21,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "of sampled individual users submitted at least one request estimated above eight hours of human work",
+              "fontSize": 21,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t0vel4bi",
+      "id": "9",
+      "name": "horizon-continuity-panel",
+      "bbox": [
+        628,
+        212,
+        580,
+        330
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#DDF4F4",
+      "lineColor": "#005B57",
+      "lineWidth": 2
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lobytwva",
+      "id": "10",
+      "name": "horizon-continuity-kicker",
+      "bbox": [
+        668,
+        246,
+        500,
+        28
+      ],
+      "geometry": "rect",
+      "text": "LONG-RUNNING HARNESS WORK",
+      "textPreview": "LONG-RUNNING HARNESS WORK",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#005B57",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LONG-RUNNING HARNESS WORK"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LONG-RUNNING HARNESS WORK",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#005B57",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LONG-RUNNING HARNESS WORK",
+              "fontSize": 18,
+              "color": "#005B57",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0n2hkrup",
+      "id": "11",
+      "name": "horizon-window-arrow-1",
+      "bbox": [
+        822,
+        354,
+        36,
+        28
+      ],
+      "geometry": "rightArrow",
+      "fillColor": "#005B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zmtgrmd4",
+      "id": "12",
+      "name": "horizon-window-arrow-2",
+      "bbox": [
+        1000,
+        354,
+        36,
+        28
+      ],
+      "geometry": "rightArrow",
+      "fillColor": "#005B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yl0zihcj",
+      "id": "13",
+      "name": "horizon-window-1",
+      "bbox": [
+        684,
+        310,
+        138,
+        132
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#005B57",
+      "lineWidth": 2
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9sbyxwvm",
+      "id": "14",
+      "name": "horizon-window-label-1",
+      "bbox": [
+        696,
+        333,
+        114,
+        50
+      ],
+      "geometry": "rect",
+      "text": "CONTEXT\nWINDOW 1",
+      "textPreview": "CONTEXT | WINDOW 1",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "CONTEXT"
+          },
+          {
+            "index": 2,
+            "text": "WINDOW 1"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "CONTEXT",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "CONTEXT",
+              "fontSize": 17,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "WINDOW 1",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WINDOW 1",
+              "fontSize": 17,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8r2horu1",
+      "id": "15",
+      "name": "horizon-window-detail-1",
+      "bbox": [
+        696,
+        400,
+        114,
+        24
+      ],
+      "geometry": "rect",
+      "text": "initialize",
+      "textPreview": "initialize",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#005B57",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "initialize"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "initialize",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#005B57",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "initialize",
+              "fontSize": 16,
+              "color": "#005B57",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqtgvmdg",
+      "id": "16",
+      "name": "horizon-window-2",
+      "bbox": [
+        862,
+        310,
+        138,
+        132
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#005B57",
+      "lineWidth": 2
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mpkzm1cv",
+      "id": "17",
+      "name": "horizon-window-label-2",
+      "bbox": [
+        874,
+        333,
+        114,
+        50
+      ],
+      "geometry": "rect",
+      "text": "CONTEXT\nWINDOW 2",
+      "textPreview": "CONTEXT | WINDOW 2",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "CONTEXT"
+          },
+          {
+            "index": 2,
+            "text": "WINDOW 2"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "CONTEXT",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "CONTEXT",
+              "fontSize": 17,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "WINDOW 2",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WINDOW 2",
+              "fontSize": 17,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pwrylcv2",
+      "id": "18",
+      "name": "horizon-window-detail-2",
+      "bbox": [
+        874,
+        400,
+        114,
+        24
+      ],
+      "geometry": "rect",
+      "text": "continue",
+      "textPreview": "continue",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#005B57",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "continue"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "continue",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#005B57",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "continue",
+              "fontSize": 16,
+              "color": "#005B57",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ovixc7uh",
+      "id": "19",
+      "name": "horizon-window-3",
+      "bbox": [
+        1040,
+        310,
+        138,
+        132
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#005B57",
+      "lineWidth": 2
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gbmpob6p",
+      "id": "20",
+      "name": "horizon-window-label-3",
+      "bbox": [
+        1052,
+        333,
+        114,
+        50
+      ],
+      "geometry": "rect",
+      "text": "CONTEXT\nWINDOW 3",
+      "textPreview": "CONTEXT | WINDOW 3",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "CONTEXT"
+          },
+          {
+            "index": 2,
+            "text": "WINDOW 3"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "CONTEXT",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "CONTEXT",
+              "fontSize": 17,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "WINDOW 3",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "WINDOW 3",
+              "fontSize": 17,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cvqhw7a",
+      "id": "21",
+      "name": "horizon-window-detail-3",
+      "bbox": [
+        1052,
+        400,
+        114,
+        24
+      ],
+      "geometry": "rect",
+      "text": "verify",
+      "textPreview": "verify",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#005B57",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "verify"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "verify",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#005B57",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "verify",
+              "fontSize": 16,
+              "color": "#005B57",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e947m1oj",
+      "id": "22",
+      "name": "horizon-continuity-copy",
+      "bbox": [
+        680,
+        468,
+        476,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Durable requirements and progress records carry the goal forward.",
+      "textPreview": "Durable requirements and progress records carry the goal forward.",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Durable requirements and progress records carry"
+          },
+          {
+            "index": 2,
+            "text": "the goal forward."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Durable requirements and progress records carry the goal forward.",
+          "resolvedTextStyle": {
+            "fontSize": 19,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Durable requirements and progress records carry the goal forward.",
+              "fontSize": 19,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fad8f6p4",
+      "id": "23",
+      "name": "timeline-caveat",
+      "bbox": [
+        342,
+        578,
+        596,
+        42
+      ],
+      "geometry": "roundRect",
+      "text": "HUMAN-EQUIVALENT TASK SIZE IS NOT ELAPSED AGENT RUNTIME",
+      "textPreview": "HUMAN-EQUIVALENT TASK SIZE IS NOT ELAPSED AGENT RUNTIME",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#08263A",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "HUMAN-EQUIVALENT TASK SIZE IS NOT ELAPSED AGENT RUNTIME"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "HUMAN-EQUIVALENT TASK SIZE IS NOT ELAPSED AGENT RUNTIME",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#08263A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "HUMAN-EQUIVALENT TASK SIZE IS NOT ELAPSED AGENT RUNTIME",
+              "fontSize": 16,
+              "color": "#08263A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#FDEAE8",
+      "lineColor": "#9B2C2C",
+      "lineWidth": 2
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/of6psb6l",
+      "id": "24",
+      "name": "footer-line-8",
+      "bbox": [
+        72,
+        663,
+        1136,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#5E8392",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pgfqlg76",
+      "id": "25",
+      "name": "source-8",
+      "bbox": [
+        72,
+        674,
+        1045,
+        24
+      ],
+      "geometry": "rect",
+      "text": "[8] Codex usage study · [9] long-running harnesses · [12] METR methodology",
+      "textPreview": "[8] Codex usage study · [9] long-running harnesses · [12] METR methodology",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#36566A",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "[8] Codex usage study · [9] long-running harnesses · [12] METR methodology"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "[8] Codex usage study · [9] long-running harnesses · [12] METR methodology",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#36566A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "[8] Codex usage study · [9] long-running harnesses · [12] METR methodology",
+              "fontSize": 16,
+              "color": "#36566A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2do7q1ov",
+      "id": "26",
+      "name": "folio-8",
+      "bbox": [
+        1150,
+        674,
+        58,
+        24
+      ],
+      "geometry": "rect",
+      "text": "08",
+      "textPreview": "08",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#36566A",
+        "bold": true,
+        "alignment": "right",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "08"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "08",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#36566A",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "08",
+              "fontSize": 16,
+              "color": "#36566A",
+              "bold": true,
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

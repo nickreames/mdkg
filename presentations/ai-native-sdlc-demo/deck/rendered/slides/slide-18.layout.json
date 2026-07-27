@@ -1,0 +1,424 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/bmormm",
+    "id": "bmormm",
+    "slide": 18,
+    "layoutId": "0fe0106a-9848-4ffe-9e31-943b47431bcd",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "45236187-0cb8-49d8-8724-1feb6beb4872",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#08263A",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "0fe0106a-9848-4ffe-9e31-943b47431bcd",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "45236187-0cb8-49d8-8724-1feb6beb4872",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "45236187-0cb8-49d8-8724-1feb6beb4872",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3ytsrex",
+      "id": "1",
+      "name": "reveal-current-underlay",
+      "bbox": [
+        128,
+        503,
+        1024,
+        16
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#005B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b25sz6xc",
+      "id": "2",
+      "name": "reveal-current",
+      "bbox": [
+        128,
+        507,
+        1024,
+        7
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#13C7B3",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a1wbq1w7",
+      "id": "3",
+      "name": "reveal-node-1",
+      "bbox": [
+        236,
+        490,
+        40,
+        40
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#08263A",
+      "lineColor": "#13C7B3",
+      "lineWidth": 3
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87u5gfu",
+      "id": "4",
+      "name": "reveal-node-2",
+      "bbox": [
+        484,
+        490,
+        40,
+        40
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#08263A",
+      "lineColor": "#13C7B3",
+      "lineWidth": 3
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/k7ytwbe9",
+      "id": "5",
+      "name": "reveal-node-3",
+      "bbox": [
+        732,
+        490,
+        40,
+        40
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#08263A",
+      "lineColor": "#13C7B3",
+      "lineWidth": 3
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6pc36xo",
+      "id": "6",
+      "name": "reveal-node-4",
+      "bbox": [
+        980,
+        490,
+        40,
+        40
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#FDEAE8",
+      "lineColor": "#9B2C2C",
+      "lineWidth": 3
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y5gbu1w3",
+      "id": "7",
+      "name": "reveal-kicker",
+      "bbox": [
+        128,
+        112,
+        1024,
+        30
+      ],
+      "geometry": "rect",
+      "text": "LIVE REVEAL",
+      "textPreview": "LIVE REVEAL",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#13C7B3",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LIVE REVEAL"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LIVE REVEAL",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#13C7B3",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LIVE REVEAL",
+              "fontSize": 20,
+              "color": "#13C7B3",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cnatcfa",
+      "id": "8",
+      "name": "reveal-title",
+      "bbox": [
+        128,
+        188,
+        1024,
+        92
+      ],
+      "geometry": "rect",
+      "text": "Let’s inspect the run",
+      "textPreview": "Let’s inspect the run",
+      "resolvedFontSize": 60,
+      "resolvedTextStyle": {
+        "fontSize": 60,
+        "typeface": "+mn-lt",
+        "color": "#F7FBFD",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Let’s inspect the run"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Let’s inspect the run",
+          "resolvedTextStyle": {
+            "fontSize": 60,
+            "color": "#F7FBFD",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Let’s inspect the run",
+              "fontSize": 60,
+              "color": "#F7FBFD",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0butk7ep",
+      "id": "9",
+      "name": "reveal-subtitle",
+      "bbox": [
+        128,
+        319,
+        1024,
+        46
+      ],
+      "geometry": "rect",
+      "text": "Source specification  →  specialized goal  →  output  →  evidence",
+      "textPreview": "Source specification  →  specialized goal  →  output  →  evidence",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "fontSize": 25,
+        "typeface": "+mn-lt",
+        "color": "#5EEAD4",
+        "bold": true,
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Source specification  →  specialized goal  →  output  →  evidence"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Source specification  →  specialized goal  →  output  →  evidence",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "color": "#5EEAD4",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Source specification  →  specialized goal  →  output  →  evidence",
+              "fontSize": 25,
+              "color": "#5EEAD4",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e1c3q103",
+      "id": "10",
+      "name": "reveal-prompt",
+      "bbox": [
+        128,
+        400,
+        1024,
+        38
+      ],
+      "geometry": "rect",
+      "text": "What completed?   Why?   What comes next?",
+      "textPreview": "What completed?   Why?   What comes next?",
+      "resolvedFontSize": 23,
+      "resolvedTextStyle": {
+        "fontSize": 23,
+        "typeface": "+mn-lt",
+        "color": "#F7FBFD",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "What completed?   Why?   What comes next?"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "What completed?   Why?   What comes next?",
+          "resolvedTextStyle": {
+            "fontSize": 23,
+            "color": "#F7FBFD",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "What completed?   Why?   What comes next?",
+              "fontSize": 23,
+              "color": "#F7FBFD",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
