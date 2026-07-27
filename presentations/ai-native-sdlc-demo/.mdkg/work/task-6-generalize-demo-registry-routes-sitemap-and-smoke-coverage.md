@@ -2,7 +2,7 @@
 id: task-6
 type: task
 title: Generalize demo registry routes sitemap and smoke coverage
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

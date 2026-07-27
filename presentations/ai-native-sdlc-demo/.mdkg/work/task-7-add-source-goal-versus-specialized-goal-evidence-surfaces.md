@@ -2,7 +2,7 @@
 id: task-7
 type: task
 title: Add source goal versus specialized goal evidence surfaces
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

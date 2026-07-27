@@ -2,7 +2,7 @@
 id: task-10
 type: task
 title: Author rehearsal and event specialization and sendoff contracts
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2
@@ -35,7 +35,9 @@ Author rehearsal and event specialization and sendoff contracts. This is step 7 
 - Require each specialization to record source hash, run root, specialized PRD/EDD/decisions, specialized `goal-1`, exact output route, positioning, frozen allowlist, authority, tests, hard blockers, and checkpoint policy.
 - Demo 2 remains local until Goal 5 grants publication; Demo 3 remains unexecuted until Goal 7 grants the event authority.
 - The `Normative Live Sendoff Contract` section in this node is the canonical graph source for the event continuation text, child chain, authorized actions, hard blockers, attempt/time bound, exact-SHA proof, and transparent Demo 2 fallback.
-- Materialize that complete section byte-for-byte in `artifacts/demo-platform/live-sendoff-contract.md` and record its SHA-256 in the accepted specialization contract evidence.
+- Materialize that complete section with exactly one trailing LF in
+  `artifacts/demo-platform/live-sendoff-contract.md` and record its SHA-256 in
+  the accepted specialization contract evidence.
 - Future task-31 consumes and freezes this accepted contract byte-for-byte while adding event-specific hashes and allowlist values; task-10 does not depend on future task-31.
 - Produce public-safe contract artifacts consumable by a fresh agent without private prompts or implicit provider authority.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
@@ -84,11 +86,18 @@ On a hard blocker, record precise evidence and reveal the sealed Demo 2 fallback
 # Test Plan
 
 - Rehearsal and event contracts resolve all source, target, goal, route, allowlist, authority, test, stop, and checkpoint fields.
-- The materialized contract is byte-identical to the complete `Normative Live Sendoff Contract` section and records its SHA-256 for later task-31 verification.
+- The materialized contract preserves the complete `Normative Live Sendoff
+  Contract` text, normalized to exactly one trailing LF, and records its
+  SHA-256 for later task-31 verification.
 - A fresh-agent concise preview proves task-10 and its contract artifact are present; the explicit-edge standard execution pack proves the complete normative body without exposing secrets or provider payloads.
 
 # Links / Artifacts
 
 - goal-2
 - epic-2
-- Evidence pending activation.
+- `artifacts/demo-platform/rehearsal-specialization-contract.md`
+- `artifacts/demo-platform/event-specialization-contract.md`
+- `artifacts/demo-platform/live-sendoff-contract.md`
+- accepted live-sendoff SHA-256:
+  `63c3991d84b608eb6be0ee95cf5d7fa077e08758b598c5afa02dffaa2c461220`
+- accepted live-sendoff byte length: `1605`

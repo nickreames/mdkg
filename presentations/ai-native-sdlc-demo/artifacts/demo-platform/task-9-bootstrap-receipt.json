@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-2-task-9-bootstrap-receipt",
+  "state": "pass",
+  "goal_qid": "root:goal-2",
+  "task_qid": "root:task-9",
+  "contract_path": "artifacts/demo-platform/fork-contract.md",
+  "wrapper": {
+    "path": "scripts/bootstrap-website-demo-run.js",
+    "sha256": "562e76bc2df7d7c5eba93617584df2663ce6ca4fe18a58d0b9166bc78d89a58f",
+    "interface": "node scripts/bootstrap-website-demo-run.js --source examples/website-demo-template --target <run-root> --start-goal goal-1 --manifest presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json --receipt <run-root>/BOOTSTRAP_RECEIPT.json",
+    "syntax_check": "pass"
+  },
+  "manifest": {
+    "path": "artifacts/demo-platform/operator-materialization-manifest.json",
+    "sha256": "3ac248cb5f49bc65c1ec5fd73281b8a075d83710f1414ef82914c60db6f2963f",
+    "entry_count": 21,
+    "operator_files": 9,
+    "agent_skill_projection_files": 6,
+    "claude_skill_projection_files": 6,
+    "source_hash_mismatches": 0
+  },
+  "absent_target_create": {
+    "result": "pass",
+    "mode": "create",
+    "preserved_ids": true,
+    "selected_goal_qid": "root:goal-1",
+    "source_tree_hash": "sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3",
+    "cli_source_tree_hash": "sha256:0f05e8de0b4b42aaa84e461b27abf6073bde0597e2559edc769e5471925c3e24",
+    "generated_file_count": 103,
+    "generated_inventory_sha256": "481773f0514b0d99737187cb8e712df9c030607cfa13979273769e3c7cdf75ad",
+    "validation": {
+      "ok": true,
+      "warning_count": 0,
+      "error_count": 0
+    },
+    "first_actionable_qid": "root:spike-1",
+    "concise_pack_nodes": 13,
+    "standard_pack_nodes": 13,
+    "required_pack_qids": [
+      "root:goal-1",
+      "root:epic-1",
+      "root:spike-1",
+      "root:task-1",
+      "root:test-1",
+      "root:prd-2",
+      "root:edd-1",
+      "root:dec-1",
+      "root:dec-2",
+      "root:chk-2",
+      "root:skill:select-work-and-ground-context",
+      "root:skill:verify-close-and-checkpoint",
+      "root:skill:build-pack-and-execute-task"
+    ],
+    "standard_body_mode": "full",
+    "explicit_edges": "parent,epic,relates,blocked_by,blocks,prev,next,context_refs,evidence_refs"
+  },
+  "repeat_verify_only": {
+    "result": "pass",
+    "mode": "verify-only",
+    "inventory_equal": true,
+    "hashes_equal": true,
+    "files_overwritten": 0,
+    "validation_routing_and_packs_rechecked": true
+  },
+  "negative_tests": [
+    {
+      "case": "deliberate operator drift",
+      "expected_classification": "target_content_drift",
+      "result": "pass"
+    },
+    {
+      "case": "mismatched skill mirror",
+      "expected_classification": "skill_mirror_mismatch",
+      "result": "pass"
+    },
+    {
+      "case": "missing required target",
+      "expected_classification": "missing_target_input",
+      "result": "pass"
+    },
+    {
+      "case": "unexpected pre-existing target",
+      "expected_classification": "unexpected_target",
+      "result": "pass"
+    },
+    {
+      "case": "missing required manifest input",
+      "expected_classification": "missing_source_input",
+      "result": "pass"
+    }
+  ],
+  "checks": [
+    {
+      "command": "node --check scripts/bootstrap-website-demo-run.js",
+      "result": "pass"
+    },
+    {
+      "command": "node --check scripts/smoke-demo-graph.js",
+      "result": "pass"
+    },
+    {
+      "command": "node scripts/smoke-demo-graph.js",
+      "result": "pass",
+      "detail": "Absent-target creation, repeat equality, five fail-closed cases, child validation/routing/packs, source-index immutability, and temporary-target cleanup passed."
+    }
+  ],
+  "retained_run_directories": [],
+  "root_registered_run_graphs": [],
+  "authority": {
+    "local_only": true,
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "provider_mutation": false
+  },
+  "warnings": [],
+  "verified_at": "2026-07-27T04:05:00Z",
+  "verified_by": "codex:/root"
+}

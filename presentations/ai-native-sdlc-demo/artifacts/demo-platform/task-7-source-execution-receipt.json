@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-2-task-7-source-execution-receipt",
+  "state": "pass",
+  "goal_qid": "root:goal-2",
+  "task_qid": "root:task-7",
+  "contract_path": "artifacts/demo-platform/source-execution-evidence-contract.json",
+  "record_proof": {
+    "configured_records": 1,
+    "source_goal_complete": true,
+    "executed_goal_complete": true,
+    "local_goal_id_preserved": "goal-1",
+    "distinct_provenance_hashes": true,
+    "work_items": 3,
+    "evidence_items": 4,
+    "pending_public_evidence": 0
+  },
+  "render_proof": {
+    "route": "/demo/1/",
+    "source_label_present": true,
+    "executed_label_present": true,
+    "goal_id_occurrences_at_least": 2,
+    "provenance_hash_occurrences": 2,
+    "plan_work_evidence_present": true,
+    "completed_why_next_present": true,
+    "requirements_authority_tests_checkpoint_present": true,
+    "graph_fork_mechanics_taught": false
+  },
+  "sanitization": {
+    "fixture_source": "scripts/fixtures/demo-registry-fixtures.json",
+    "valid_baseline": "pass",
+    "negative_cases": [
+      "forbidden-raw-prompt-field",
+      "missing-source-hash",
+      "missing-requirements",
+      "identical-provenance",
+      "unsupported-pending-evidence"
+    ],
+    "negative_case_count": 5,
+    "result": "pass"
+  },
+  "checks": [
+    {
+      "command": "npm --prefix mdkg-dev run build",
+      "result": "pass",
+      "detail": "The comparison and lifecycle surfaces compiled into the static Demo 1 detail route."
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev.js",
+      "result": "pass",
+      "detail": "Stable-grain comparison, two provenance hashes, Plan -> Work -> Evidence, completed/why/next copy, and five sanitization negatives passed."
+    },
+    {
+      "command": "node scripts/smoke-mdkg-dev-seo.js",
+      "result": "pass",
+      "detail": "Detail/output robots and record-derived sitemap behavior remained correct."
+    }
+  ],
+  "authority": {
+    "local_only": true,
+    "staged": false,
+    "committed": false,
+    "pushed": false,
+    "deployed": false,
+    "provider_mutation": false
+  },
+  "warnings": [
+    "Demo 1 is historical React-era proof; this task changes its sanitized presentation model, not its preserved implementation evidence."
+  ],
+  "verified_at": "2026-07-27T03:29:00Z",
+  "verified_by": "codex:/root"
+}

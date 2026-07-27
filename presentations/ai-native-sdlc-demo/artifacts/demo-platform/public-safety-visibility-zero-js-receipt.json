@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "test": "test-5",
+  "title": "Claims, public-safety, visibility, and zero-client-JavaScript receipt",
+  "recorded_at": "2026-07-26",
+  "base_git_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+  "final_source_surface": {
+    "kind": "sha256 of git diff --binary for mdkg-dev and demo site/SEO/fixture smoke surfaces",
+    "sha256": "98712000ba633e1e2ce4200f8ff60daa27dfe2d8ca6e829af16359b79b323659"
+  },
+  "commands": [
+    {
+      "command": "npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev",
+      "attempt": 1,
+      "exit_code": 1,
+      "result": "SEO passed. The new static-script assertion rejected the gallery's compile-time JSON-LD metadata because its inert type had not yet been allowlisted."
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-seo && npm run smoke:mdkg-dev",
+      "attempt": 2,
+      "exit_code": 0,
+      "result": "SEO, claims, registry fixtures, sanitized provenance fixtures, visibility matrix, static-script, hydration, and public-safety assertions passed."
+    },
+    {
+      "command": "npm --prefix mdkg-dev run build",
+      "exit_code": 0,
+      "result": "A final normal-policy static build emitted the configured Demo 1 route pair and no Demo 2 or Demo 3 route."
+    },
+    {
+      "command": "git diff --check -- mdkg-dev scripts/smoke-mdkg-dev.js scripts/fixtures/demo-registry-fixtures.json",
+      "exit_code": 0,
+      "result": "No whitespace errors."
+    }
+  ],
+  "claim_rows": [
+    {
+      "claim": "Demo 1 is an accepted local proof showing a reusable goal, specialized run, local website output, and retained validation evidence.",
+      "evidence": "Historical Demo 1 graph/run receipt, accepted checkpoint, sanitized per-demo record, and local build/browser proof.",
+      "status": "approved for public alpha"
+    },
+    {
+      "claim": "The Demo 1 detail route contrasts a reusable starting specification with a specialized executed specification and organizes accepted work as Plan -> Work -> Evidence.",
+      "evidence": "Sanitized record, distinct source/executed hashes, checkpoint fields, and negative provenance fixtures.",
+      "status": "approved for public alpha"
+    }
+  ],
+  "sanitization": {
+    "rejected_fixture_classes": [
+      "rawPrompt",
+      "credentials",
+      "tokens",
+      "cookies",
+      "providerPayload",
+      "privateContext",
+      "missing provenance hash",
+      "missing requirements",
+      "identical source and executed provenance",
+      "pending public evidence"
+    ],
+    "built_output_high_risk_marker_scan": "pass",
+    "unsupported_claim_scan": "pass",
+    "raw_prompt_or_provider_payload_in_built_demo_routes": false
+  },
+  "visibility_matrix": {
+    "independent_combinations_tested": [
+      {
+        "listed": true,
+        "noindex": false
+      },
+      {
+        "listed": false,
+        "noindex": true
+      },
+      {
+        "listed": true,
+        "noindex": true
+      },
+      {
+        "listed": false,
+        "noindex": false
+      }
+    ],
+    "gallery_projection": "filters only by listed",
+    "sitemap_projection": "filters only by noindex",
+    "direct_route_projection": "does not filter by listed or noindex",
+    "reserved_demo_2_and_3": {
+      "listed": false,
+      "noindex": true,
+      "fixture_only": true,
+      "public_routes_emitted": false
+    }
+  },
+  "normal_build_inventory": {
+    "gallery_demo_ids": [
+      "1"
+    ],
+    "detail_routes": [
+      "/demo/1/"
+    ],
+    "output_routes": [
+      "/demo/1/output/"
+    ],
+    "sitemap_demo_routes": [
+      "/demo/1/"
+    ],
+    "detail_robots": {
+      "/demo/1/": "index, follow"
+    },
+    "output_robots": {
+      "/demo/1/output/": "noindex,nofollow"
+    },
+    "demo_2_or_3_gallery_entries": [],
+    "demo_2_or_3_sitemap_entries": [],
+    "demo_2_or_3_emitted_routes": []
+  },
+  "static_runtime_inventory": {
+    "client_directives_in_demo_source": [],
+    "generated_javascript_files": [],
+    "hydration_markers": [],
+    "remote_runtime_assets": [],
+    "script_tags": [
+      {
+        "route": "/demos/",
+        "type": "application/ld+json",
+        "src": null,
+        "classification": "inert structured metadata"
+      },
+      {
+        "route": "/demo/1/",
+        "type": "application/ld+json",
+        "src": null,
+        "classification": "inert structured metadata"
+      }
+    ],
+    "unexpected_script_tags": [],
+    "output_route_script_tags": []
+  },
+  "warnings": [
+    "Demo 1 remains intentionally listed and indexable as the historical public example. Demo 2 and Demo 3 remain fixture-only, unlisted, and noindex until later run goals create accepted records."
+  ],
+  "result": "pass"
+}

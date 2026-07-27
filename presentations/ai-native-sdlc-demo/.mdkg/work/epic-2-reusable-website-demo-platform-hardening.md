@@ -2,7 +2,7 @@
 id: epic-2
 type: epic
 title: Reusable website-demo platform hardening
-status: backlog
+status: done
 priority: 1
 tags: [ai-native-sdlc, presentation-demo, phase-2]
 owners: [program-orchestrator]
@@ -13,7 +13,7 @@ blocked_by: []
 blocks: []
 refs: [goal-2, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 context_refs: [goal-2, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-evidence_refs: []
+evidence_refs: [chk-3, test-4, test-5, test-6, chk-4]
 aliases: [phase-2-epic]
 skills: [select-work-and-ground-context, pursue-mdkg-goal, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -69,3 +69,4 @@ All listed nodes use epic-2, parent goal-2, and symmetric prev/next links. The g
 - goal-2
 - prd-1
 - edd-1
+- chk-4

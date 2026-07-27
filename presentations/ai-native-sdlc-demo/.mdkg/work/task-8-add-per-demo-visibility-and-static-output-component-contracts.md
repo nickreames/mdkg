@@ -2,7 +2,7 @@
 id: task-8
 type: task
 title: Add per-demo visibility and static output component contracts
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

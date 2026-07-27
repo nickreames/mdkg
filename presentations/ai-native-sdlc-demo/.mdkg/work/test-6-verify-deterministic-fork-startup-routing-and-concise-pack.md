@@ -2,7 +2,7 @@
 id: test-6
 type: test
 title: Verify deterministic fork startup routing and concise pack
-status: backlog
+status: done
 priority: 1
 epic: epic-2
 parent: goal-2

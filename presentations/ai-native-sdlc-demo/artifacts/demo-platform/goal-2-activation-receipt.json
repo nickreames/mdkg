@@ -1,0 +1,223 @@
+{
+  "schema_version": "1.0",
+  "schema": "goal-2-activation-receipt-v1",
+  "kind": "goal-2-shared-source-mutation-lease",
+  "state": "released_to_integration",
+  "goal_qid": "root:goal-2",
+  "checkpoint_qid": "root:chk-3",
+  "accepted_base_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+  "branch": "main",
+  "upstream": "origin/main",
+  "upstream_divergence": {
+    "behind": 0,
+    "ahead": 16
+  },
+  "worktree_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "owned_dirty_paths": [],
+  "owned_staged_paths": [],
+  "roles": {
+    "program_orchestrator": "codex:/root",
+    "shared_source_writer": "codex:/root",
+    "root_integration_owner": "codex:/root",
+    "read_only_verifier": "codex:/root",
+    "one_active_role_at_a_time": true,
+    "current_role": "root_integration_owner"
+  },
+  "projection": {
+    "alias": "ai_native_sdlc_demo",
+    "visibility": "private",
+    "permissions": ["read"],
+    "source_git_head": "b8248519431a5e6b3f82f4415f98253c414ef227",
+    "bundle_hash": "f23aa1cb360b7135a120aaf8349ab32fe6fbea70cb90ed7bf5843e09dbbe99aa",
+    "bundle_sha256": "2668b600f3c4a1a70a567cd50190ed51e0140c5b15f400b061e3fabc4f769921",
+    "verified": true,
+    "warning_count": 0,
+    "error_count": 0
+  },
+  "spike_evidence": {
+    "drift_audit": {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/drift-audit.md",
+      "sha256": "b2ee32c0078e480274624afc7350406db8e781b8985e11e225c4bbf34ab33402"
+    },
+    "proposed_source_allowlist": {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/proposed-source-allowlist.json",
+      "sha256": "56c21c0d809a2c6e7b66f16d20c448083417c18e9297cf603c34cdf4866132bc"
+    },
+    "readiness_receipt": {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/spike-2-readiness-receipt.json",
+      "sha256": "3f2109386baa47206f6dc469c2a9c2700285b81e6ebb9bc600be263c4a20ace0"
+    },
+    "checkpoint": {
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/work/chk-3-goal-2-discovery-gate-accepted.md",
+      "sha256": "5cb92d77fa5e48614d62030f062d12d0d0f82fa77af34e6c2a2834e6ae16c55a"
+    }
+  },
+  "source_allowlist": {
+    "authoritative_path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/proposed-source-allowlist.json",
+    "authoritative_sha256": "56c21c0d809a2c6e7b66f16d20c448083417c18e9297cf603c34cdf4866132bc",
+    "existing_rows_verified": 26,
+    "absent_create_rows_verified": 10,
+    "mismatch_count": 0,
+    "unexpected_present_count": 0,
+    "verification_result": "pass",
+    "rule": "Every exact row, operation, owner, reason, expected hash, immutable root, integration-only path, and forbidden action in the hash-bound allowlist is part of this lease."
+  },
+  "source_allowlist_amendments": [
+    {
+      "id": "amendment-1-template-generated-json-indexes",
+      "state": "accepted",
+      "reason": "Correct a discovery omission for four tracked JSON indexes regenerated with the already-authorized template SQLite index.",
+      "scope_effect": "Generated index parity only; no functional or provider surface is added.",
+      "accepted_base_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+      "rows": [
+        {
+          "path": "examples/website-demo-template/.mdkg/index/capabilities.json",
+          "owner": "codex:/root",
+          "operations": ["read", "update"],
+          "expected_base_sha256": "1d3d101a7ab3adc006684e0d3b58f3896bb91a552a787ec159db3db24487e506"
+        },
+        {
+          "path": "examples/website-demo-template/.mdkg/index/global.json",
+          "owner": "codex:/root",
+          "operations": ["read", "update"],
+          "expected_base_sha256": "3a5c7c737ba6c4a04aca8ca19bbfd9d63105a4e251f8bc70e437df16d2c332a0"
+        },
+        {
+          "path": "examples/website-demo-template/.mdkg/index/skills.json",
+          "owner": "codex:/root",
+          "operations": ["read", "update"],
+          "expected_base_sha256": "8b309e49692e442544445fbd350f8e2c77631dfa3a212975fe8ac2639c0c43b3"
+        },
+        {
+          "path": "examples/website-demo-template/.mdkg/index/subgraphs.json",
+          "owner": "codex:/root",
+          "operations": ["read", "update"],
+          "expected_base_sha256": "423d4606ac034ee22b9b12f01dca768f203e6802c24355b823365889deedb8f2"
+        }
+      ],
+      "identified_at": "2026-07-27T03:19:45Z",
+      "accepted_by": "codex:/root",
+      "accepted_at": "2026-07-27T03:20:00Z"
+    },
+    {
+      "id": "amendment-2-template-prd-pack-coverage",
+      "state": "accepted",
+      "reason": "Test 6 exposed that the accepted fresh-agent pack contract requires a PRD but the reusable source template did not contain one.",
+      "scope_effect": "One exact absent PRD path is added; existing goal, epic, spike, task, test, EDD, generated indexes, and smoke script are already covered by the accepted allowlist.",
+      "accepted_base_sha": "32b50aa1abfcc253a69dabb8dcb2eb3770380ff2",
+      "rows": [
+        {
+          "path": "examples/website-demo-template/.mdkg/design/prd-2-reusable-static-astro-website-demo-platform.md",
+          "owner": "codex:/root",
+          "operations": ["create"],
+          "expected_state": "absent",
+          "expected_base_sha256": null
+        }
+      ],
+      "allocation_note": "The mdkg CLI allocated prd-2 as the next available design ID; no ID was forced or renumbered.",
+      "identified_at": "2026-07-27T04:02:00Z",
+      "accepted_by": "codex:/root",
+      "accepted_at": "2026-07-27T04:02:00Z"
+    }
+  ],
+  "program_lease": {
+    "state": "released_to_integration",
+    "owner": "codex:/root",
+    "operations": ["read", "create", "update"],
+    "reason": "Record Goal 2 task lifecycle, evidence, generated nested indexes, tests, and the final checkpoint while the shared-source writer owns the implementation-and-proof chain.",
+    "existing_path_sha256": {
+      "presentations/ai-native-sdlc-demo/.mdkg/work/goal-2-harden-the-reusable-website-demo-platform.md": "a1cb2233de25879ddc9735a033805e5d2bed45937f60ee865b65be6ec3db7217",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/epic-2-reusable-website-demo-platform-hardening.md": "edbaf855c0ab2a4e3becb33eb3ac63cb1ecf4caccb53415eaa4dd3cbf354f1c2",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-5-reconcile-the-website-template-with-static-astro-and-zero-client-javascript.md": "d4977af37ea6a0c4c3527a5765b810be3d299592884e1fc6e97f3ff029b0406a",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-6-generalize-demo-registry-routes-sitemap-and-smoke-coverage.md": "e896050f8e21f361d5a3709d2050ddc55b39cac5628ddc544072cb63a5a700ca",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-7-add-source-goal-versus-specialized-goal-evidence-surfaces.md": "4ef1ba8a932b827796cdc020fe03da50f8eb300ef9558d424426561641b1cc52",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-8-add-per-demo-visibility-and-static-output-component-contracts.md": "66589f832e70684b7b0289d72f826221f0fcb8ecd37661c959d34504c2fd391e",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-9-implement-deterministic-graph-fork-operator-bootstrap-and-skill-materialization.md": "c12a936ee16a0ac3836de2eec89a95a25b45a514f2ffc1ccebb217816200d79d",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-10-author-rehearsal-and-event-specialization-and-sendoff-contracts.md": "6cd9423be6c72f18180fb3ebc1c68b3adf8b2a0d97d4d732c18c72f99349edd1",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-4-verify-static-build-routes-accessibility-and-asset-budgets.md": "cd67478fcd27883316a31aab9f04b4472bdc6b1810cc5bfa94ccd42376a41792",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-5-verify-claims-no-secret-noindex-and-zero-client-javascript-contracts.md": "b02717a75a8a23e7601dd79f78c3bfeb58435953868e50c4184d824dbe7bb65c",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-6-verify-deterministic-fork-startup-routing-and-concise-pack.md": "520a892a3d7aba34645feef792f78888e3e00ec61dd301d71f5bd359efd216e4",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl": "d138dc6f5588e82560653d05b795f052968c91d36915564d26093726eeaea9bd",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json": "502259e6f54d2b257340b3e54b4d897005389d50122c2c5c329e940df4f5f8d9",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/global.json": "827c375d7316babb70ff2460ac682da05998beda5fc70429467cc329754233cb",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite": "6116e0d85faa17618ed2e5e0e03128c687b9b744e448d7c3885b51f981c3f803",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json": "1029a2c67ddff06b023b78f1128b99481ec33ebee2739e1b1cd38fa1c4b723f2",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json": "852fd7211201183479e99624cd8cc5661c268af48b8431c8dc21337d904404a8"
+    },
+    "create_paths": [
+      "presentations/ai-native-sdlc-demo/.mdkg/work/chk-4-goal-2-reusable-demo-platform-accepted.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/static-astro-contract.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-5-static-astro-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/route-registry-contract.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-6-route-registry-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/source-execution-evidence-contract.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-7-source-execution-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/output-component-registry-contract.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-8-output-component-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/fork-contract.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/task-9-bootstrap-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/rehearsal-specialization-contract.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/event-specialization-contract.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/live-sendoff-contract.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/static-build-route-a11y-budget-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/public-safety-visibility-zero-js-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/fork-bootstrap-pack-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/interface-contract.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/validation-receipt.json"
+    ],
+    "released_at": "2026-07-27T04:18:00Z",
+    "release_checkpoint": "root:chk-4",
+    "next_owner": "root_integration_owner"
+  },
+  "lease_self_paths": [
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/activation-contract.json",
+      "owner": "codex:/root",
+      "operations": ["read", "update"],
+      "expected_state": "present",
+      "expected_base_sha256": "002be211b90a110df54729941325e4d3d70cb8031c1da2e9f5adea826aa18da1"
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/goal-2-activation-receipt.json",
+      "owner": "codex:/root",
+      "operations": ["create", "update"],
+      "expected_state": "absent",
+      "expected_base_sha256": null
+    }
+  ],
+  "quiet_window": {
+    "state": "released_to_integration",
+    "starts_at": "2026-07-27T03:09:24Z",
+    "expires_at": "2026-07-28T03:09:24Z",
+    "release_condition": "tasks 5-10 and tests 4-6 are evidenced, the shared-source writer yields, and the root integration owner begins path-specific staging",
+    "invalidated_by": [
+      "HEAD or origin/main changes",
+      "any dirty or staged path outside the accepted program and source rows",
+      "any expected base hash mismatch",
+      "another writer acquires an overlapping path",
+      "the named writer changes",
+      "the quiet window expires",
+      "a required public-safety or validation gate fails without an in-scope fix"
+    ],
+    "released_at": "2026-07-27T04:18:00Z",
+    "release_checkpoint": "root:chk-4"
+  },
+  "authorized_actions": [
+    "modify only the hash-bound shared-source rows and exact program paths",
+    "run local builds, validation, isolated temporary bootstrap tests, static analysis, and local browser checks",
+    "record public-safe artifacts and task lifecycle evidence"
+  ],
+  "forbidden_actions": [
+    "modify examples/demo-runs/demo-001/**",
+    "modify mdkg-dev/public/demo-001/**",
+    "modify root src/**, tests/**, docs/**, package.json, package or lock files, .github/**, or .vercel/**",
+    "refresh the root bundle or root index while acting as shared-source writer",
+    "stage or commit while acting as shared-source writer",
+    "push, deploy, mutate providers or DNS, activate analytics, create tags, or publish packages",
+    "inspect or store credentials, tokens, cookies, raw prompts, or provider payloads"
+  ],
+  "accepted_by": "codex:/root",
+  "accepted_at": "2026-07-27T03:09:24Z",
+  "task_5_authorized": true
+}
