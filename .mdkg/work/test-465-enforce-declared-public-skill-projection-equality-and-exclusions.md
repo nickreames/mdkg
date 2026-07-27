@@ -2,7 +2,7 @@
 id: test-465
 type: test
 title: enforce declared public skill projection equality and exclusions
-status: backlog
+status: done
 priority: 2
 parent: goal-78
 prev: task-805
@@ -10,13 +10,13 @@ next: task-806
 tags: [audit-followup, skills, public-seed, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/public-skill-projection-verification.json]
 relates: [loop-7, task-805]
 blocked_by: [task-805]
 blocks: [task-806]
-refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-19, dec-85, dec-89, task-812, test-471, task-805]
+refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-19, dec-85, dec-89, task-812, test-471, task-805, chk-556]
 context_refs: [goal-78, loop-7, chk-544, dec-19, dec-85, dec-89, task-812, test-471, task-805]
-evidence_refs: []
+evidence_refs: [chk-556]
 aliases: []
 skills: [verify-close-and-checkpoint, author-mdkg-skill]
 cases: [policy_schema, exact_six_members, canonical_configured_eight, public_source_built_six, repository_local_exclusions, public_behavior_exclusions, fresh_init_exact, negative_membership_hash_behavior, customized_upgrade_preserved, focused_projection_integration]

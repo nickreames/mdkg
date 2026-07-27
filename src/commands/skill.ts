@@ -32,8 +32,13 @@ import {
   writeStructuredOutput,
 } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
-import { shouldMaintainSkillMirrors, syncSkillMirrors } from "./skill_mirror";
+import {
+  configuredSkillMirrorTargets,
+  shouldMaintainSkillMirrors,
+  syncSkillMirrors,
+} from "./skill_mirror";
 import { withMutationLock } from "../util/lock";
+import { validatePublicSkillProjection } from "../core/public_skill_projection";
 
 export type SkillNewCommandOptions = {
   root: string;
@@ -553,6 +558,24 @@ export function runSkillValidateCommand(options: SkillValidateCommandOptions): v
         warnings.push(...result.warnings);
         errors.push(...result.errors);
       }
+    }
+    const projectionPolicyPath = path.join(
+      options.root,
+      "assets",
+      "init",
+      "skills",
+      "public-seed-policy.json",
+    );
+    if (fs.existsSync(projectionPolicyPath)) {
+      const builtRoot = path.join(options.root, "dist", "init", "skills", "default");
+      const projection = validatePublicSkillProjection({
+        policyPath: projectionPolicyPath,
+        canonicalRoot: skillsRoot,
+        mirrorRoots: configuredSkillMirrorTargets(config).map((target) => path.join(options.root, target)),
+        publicRoot: path.join(options.root, "assets", "init", "skills", "default"),
+        ...(fs.existsSync(builtRoot) ? { builtRoot } : {}),
+      });
+      errors.push(...projection.errors);
     }
   }
 

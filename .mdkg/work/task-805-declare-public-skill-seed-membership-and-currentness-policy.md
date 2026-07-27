@@ -2,7 +2,7 @@
 id: task-805
 type: task
 title: enforce public skill seed membership and currentness policy
-status: backlog
+status: done
 priority: 2
 parent: goal-78
 prev: test-471
@@ -10,13 +10,13 @@ next: test-465
 tags: [audit-followup, skills, public-seed, policy]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/public-skill-projection-verification.json]
 relates: [loop-7]
 blocked_by: [test-471]
 blocks: [test-465]
-refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-19, dec-85, dec-89, task-812, test-471]
+refs: [goal-78, loop-7, spike-32, test-461, chk-541, chk-542, chk-544, dec-19, dec-85, dec-89, task-812, test-471, chk-556]
 context_refs: [goal-78, loop-7, chk-544, dec-19, dec-85, dec-89, task-812, test-471]
-evidence_refs: []
+evidence_refs: [chk-556]
 aliases: []
 skills: [author-mdkg-skill, service-boundary-ownership-check, verify-close-and-checkpoint]
 created: 2026-07-17

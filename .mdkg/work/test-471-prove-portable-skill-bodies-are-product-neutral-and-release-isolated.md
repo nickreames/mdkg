@@ -2,7 +2,7 @@
 id: test-471
 type: test
 title: Prove portable skill bodies are product-neutral and release-isolated
-status: backlog
+status: done
 priority: 2
 parent: goal-78
 prev: task-812
@@ -10,13 +10,13 @@ next: task-805
 tags: [skills, public-seed, portability, test]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/portable-skill-body-verification.json]
 relates: [task-812, task-805]
 blocked_by: [task-812]
 blocks: [task-805]
-refs: [goal-78, task-812, task-805, dec-89]
+refs: [goal-78, task-812, task-805, dec-89, chk-555]
 context_refs: [goal-78, task-812, task-805, dec-19, dec-85, dec-89]
-evidence_refs: []
+evidence_refs: [chk-555]
 aliases: []
 skills: [verify-close-and-checkpoint]
 cases: [six_portable_behaviors_preserved, no_package_release_authority, no_repository_specific_qids, no_dangling_local_links, canonical_mirrors_exact, public_candidates_ready]

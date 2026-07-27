@@ -104,9 +104,24 @@ copyFile(
   path.join(distRoot, "CLI_COMMAND_MATRIX.md")
 );
 copyDir(path.join(root, "assets", "skills"), path.join(distRoot, "skills"));
+copyFile(
+  path.join(root, "assets", "init", "skills", "public-seed-policy.json"),
+  path.join(distRoot, "skills", "public-seed-policy.json")
+);
 copyDir(
   path.join(root, "assets", "init", "skills", "default"),
   path.join(distRoot, "skills", "default")
 );
 copyDir(path.join(root, "assets", "init", "legacy"), path.join(distRoot, "legacy"));
+const { assertPublicSkillProjection } = require(path.join(root, "dist", "core", "public_skill_projection.js"));
+assertPublicSkillProjection({
+  policyPath: path.join(root, "assets", "init", "skills", "public-seed-policy.json"),
+  canonicalRoot: path.join(root, ".mdkg", "skills"),
+  mirrorRoots: [
+    path.join(root, ".agents", "skills"),
+    path.join(root, ".claude", "skills"),
+  ],
+  publicRoot: path.join(root, "assets", "init", "skills", "default"),
+  builtRoot: path.join(distRoot, "skills", "default"),
+});
 writeInitManifest(distRoot, pkg.version);

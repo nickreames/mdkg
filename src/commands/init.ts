@@ -15,6 +15,7 @@ import { PROJECT_DB_GITIGNORE_ENTRIES } from "../core/project_db";
 import { createInitManifest, INIT_MANIFEST_FILE, sha256File, writeInitManifest } from "./init_manifest";
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { preflightSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
+import { assertPublicSkillProjection } from "../core/public_skill_projection";
 
 export type InitCommandOptions = {
   root: string;
@@ -430,6 +431,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedCliMatrix = path.join(seedRoot, "CLI_COMMAND_MATRIX.md");
   const seedReadme = path.join(seedRoot, "README.md");
   const seedDefaultSkills = path.join(seedRoot, "skills", "default");
+  const seedSkillPolicy = path.join(seedRoot, "skills", "public-seed-policy.json");
   const seedSoul = path.join(seedCore, "SOUL.md");
   const seedCollaboration = path.join(seedCore, "COLLABORATION.md");
   const seedHuman = path.join(seedCore, "HUMAN.md");
@@ -465,11 +467,21 @@ export function runInitCommand(options: InitCommandOptions): void {
   if (options.agent && !fs.existsSync(seedDefaultSkills)) {
     throw new NotFoundError(`init assets missing default skills at ${seedRoot}`);
   }
+  if (options.agent && !options.seedRoot && !fs.existsSync(seedSkillPolicy)) {
+    throw new NotFoundError(`init assets missing public skill policy at ${seedRoot}`);
+  }
   preflightSeedConfig(seedConfig);
+  const existingCanonicalSkills = options.agent ? listExistingCanonicalSkillSlugs(root) : [];
   if (options.agent) {
+    if (fs.existsSync(seedSkillPolicy)) {
+      assertPublicSkillProjection({
+        policyPath: seedSkillPolicy,
+        publicRoot: seedDefaultSkills,
+      });
+    }
     preflightSkillMirrorTargets({
       root,
-      slugs: [...listSeedSkillSlugs(seedDefaultSkills), ...listExistingCanonicalSkillSlugs(root)],
+      slugs: [...listSeedSkillSlugs(seedDefaultSkills), ...existingCanonicalSkills],
       force,
     });
   }
@@ -519,6 +531,13 @@ export function runInitCommand(options: InitCommandOptions): void {
       ensureContainedDirectory({ root, relativePath: ".mdkg/skills" });
       ensureContainedDirectory({ root, relativePath: ".mdkg/work/events" });
       copySeedDir(root, seedDefaultSkills, skillsDir, force, stats);
+      if (fs.existsSync(seedSkillPolicy) && existingCanonicalSkills.length === 0) {
+        assertPublicSkillProjection({
+          policyPath: seedSkillPolicy,
+          publicRoot: seedDefaultSkills,
+          freshInitRoot: skillsDir,
+        });
+      }
       if (!fs.existsSync(seedSoul)) {
         writeFileIfMissing(root, soulPath, soulTemplate(today), force, stats);
       }

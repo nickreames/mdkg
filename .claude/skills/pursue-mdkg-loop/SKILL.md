@@ -4,7 +4,7 @@ description: Pursue a selected mdkg loop by exhausting authorized linked work la
 tags: [stage:execute, writer:orchestrator, mdkg, loop, recursive]
 version: 0.2.0
 authors: [mdkg]
-links: [AGENT_START.md, CLI_COMMAND_MATRIX.md, .mdkg/design/edd-66-first-class-loop-node-operating-model-and-reusable-template-lifecycle.md, .mdkg/design/dec-65-loop-is-one-first-class-node-type-for-mvp.md]
+links: [AGENT_START.md, CLI_COMMAND_MATRIX.md]
 ---
 
 # Goal

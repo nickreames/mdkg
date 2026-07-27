@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "goal_ref": "root:goal-78",
+  "task_ref": "root:task-805",
+  "test_ref": "root:test-465",
+  "decision_ref": "root:dec-89",
+  "verified_at": "2026-07-26",
+  "runtime": "v24.18.0",
+  "policy": {
+    "source": "assets/init/skills/public-seed-policy.json",
+    "built": "dist/init/skills/public-seed-policy.json",
+    "schema_version": 1,
+    "supported_modes": [
+      "exact",
+      "excluded"
+    ]
+  },
+  "checked_surfaces": [
+    "canonical",
+    "configured .agents mirror",
+    "configured .claude mirror",
+    "public source",
+    "built public seed",
+    "disposable fresh init"
+  ],
+  "exact_hash_matrix": [
+    {
+      "slug": "author-mdkg-skill",
+      "sha256": "cedf099dfba6dd2ec59771aa7cf95953e60879ba4a94efb5af55ea2710f20b3a",
+      "equal_on_all_six_surfaces": true
+    },
+    {
+      "slug": "build-pack-and-execute-task",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
+      "equal_on_all_six_surfaces": true
+    },
+    {
+      "slug": "pursue-mdkg-goal",
+      "sha256": "3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776",
+      "equal_on_all_six_surfaces": true
+    },
+    {
+      "slug": "pursue-mdkg-loop",
+      "sha256": "fdc59fa723bfbcc139b2fe15ac8435e2e2cb262f6d092e5029d616dffbd235ce",
+      "equal_on_all_six_surfaces": true
+    },
+    {
+      "slug": "select-work-and-ground-context",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
+      "equal_on_all_six_surfaces": true
+    },
+    {
+      "slug": "verify-close-and-checkpoint",
+      "sha256": "9e397118f8998fe9769e7b60f9e336368d1e3b21473ae1704f76c93d7243b7ad",
+      "equal_on_all_six_surfaces": true
+    }
+  ],
+  "excluded_matrix": [
+    {
+      "slug": "release-mdkg-package",
+      "canonical_sha256": "50da6658a755a842051f6d39d33f7face3a0947d8a570280e4ebe28b7ef714f4",
+      "configured_mirrors_equal": true,
+      "public_source_absent": true,
+      "built_seed_absent": true,
+      "fresh_init_absent": true
+    },
+    {
+      "slug": "service-boundary-ownership-check",
+      "canonical_sha256": "37ef904c0bc5f05da7035c77450f267b96e91bfc3e302ffdf3fe738f16df518c",
+      "configured_mirrors_equal": true,
+      "public_source_absent": true,
+      "built_seed_absent": true,
+      "fresh_init_absent": true
+    }
+  ],
+  "reusable_validator_consumers": [
+    "scripts/copy-init-assets.js",
+    "src/commands/init.ts",
+    "src/commands/skill.ts",
+    "scripts/assert-publish-ready.js",
+    "tests/portable-skill-bodies.test.ts",
+    "tests/public-skill-projection.test.ts"
+  ],
+  "negative_fixtures": [
+    "unsupported reviewed_snapshot mode",
+    "missing exact member",
+    "extra public member",
+    "built-seed hash drift",
+    "excluded fresh-init member",
+    "embedded package publication command",
+    "registry authentication or credential procedure",
+    "push, tag, deploy, or provider release command",
+    "root-qualified internal QID",
+    "repository-specific design or work link",
+    "named internal product or provider"
+  ],
+  "focused_receipts": [
+    {
+      "command": "npm run build",
+      "result": "pass; policy copied and source/built projection validated"
+    },
+    {
+      "command": "npm run build:test",
+      "result": "pass"
+    },
+    {
+      "command": "node --test dist/tests/portable-skill-bodies.test.js dist/tests/public-skill-projection.test.js dist/tests/commands/init.test.js dist/tests/commands/upgrade.test.js",
+      "result": "30 passed, 0 failed",
+      "duration_ms": 3153.272416
+    },
+    {
+      "command": "mdkg skill validate --json",
+      "result": "8 checked, 0 warnings, 0 errors"
+    },
+    {
+      "command": "node scripts/assert-publish-ready.js",
+      "result": "pass"
+    },
+    {
+      "command": "node scripts/smoke-init.js",
+      "result": "pass, version 0.5.2"
+    }
+  ],
+  "customization_preservation": {
+    "existing_custom_canonical_preserved": true,
+    "configured_mirrors_follow_existing_custom_canonical": true,
+    "forced_public_equality_on_existing_consumer": false
+  },
+  "git_boundary": {
+    "status_porcelain_sha256_before": "d63df9ed5ee85e3eb64679e94a799f5c6961db0baf2660307871b58af190854a",
+    "status_porcelain_sha256_after": "d63df9ed5ee85e3eb64679e94a799f5c6961db0baf2660307871b58af190854a",
+    "unchanged_during_final_projection_verification": true
+  },
+  "authority_exclusions": [
+    "existing consumer repository mutation",
+    "network or registry access",
+    "push, tag, publish, deploy, or provider mutation"
+  ]
+}

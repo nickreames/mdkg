@@ -4,7 +4,7 @@ description: Create or update an mdkg SKILL.md or MANIFEST.md when a repeatable 
 tags: [stage:plan, writer:orchestrator, mdkg, skills, authoring]
 version: 0.2.0
 authors: [mdkg]
-links: [AGENT_START.md, CLI_COMMAND_MATRIX.md, .mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md]
+links: [AGENT_START.md, CLI_COMMAND_MATRIX.md]
 ---
 
 # Goal

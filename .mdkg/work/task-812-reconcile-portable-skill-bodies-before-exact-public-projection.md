@@ -2,20 +2,20 @@
 id: task-812
 type: task
 title: Reconcile portable skill bodies before exact public projection
-status: backlog
+status: done
 priority: 2
 parent: goal-78
 next: test-471
 tags: [skills, public-seed, portability, release-boundary]
 owners: []
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-78/portable-skill-body-verification.json]
 relates: [loop-7, task-805]
 blocked_by: [test-464]
 blocks: [test-471]
-refs: [goal-78, loop-7, goal-74, dec-19, dec-85, dec-89, task-805, test-465]
+refs: [goal-78, loop-7, goal-74, dec-19, dec-85, dec-89, task-805, test-465, chk-555]
 context_refs: [goal-78, loop-7, goal-74, dec-19, dec-85, dec-89, task-805, test-465]
-evidence_refs: []
+evidence_refs: [chk-555]
 aliases: []
 skills: [author-mdkg-skill, service-boundary-ownership-check]
 created: 2026-07-25

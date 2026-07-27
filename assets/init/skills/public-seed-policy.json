@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "decision_ref": "root:dec-89",
+  "projections": [
+    {
+      "slug": "author-mdkg-skill",
+      "mode": "exact"
+    },
+    {
+      "slug": "build-pack-and-execute-task",
+      "mode": "exact"
+    },
+    {
+      "slug": "pursue-mdkg-goal",
+      "mode": "exact"
+    },
+    {
+      "slug": "pursue-mdkg-loop",
+      "mode": "exact"
+    },
+    {
+      "slug": "release-mdkg-package",
+      "mode": "excluded",
+      "reason": "Package publication requires a repository-local release goal and current approval under root:dec-85."
+    },
+    {
+      "slug": "select-work-and-ground-context",
+      "mode": "exact"
+    },
+    {
+      "slug": "service-boundary-ownership-check",
+      "mode": "excluded",
+      "reason": "Repository boundary planning policy is not a portable public default under root:dec-89."
+    },
+    {
+      "slug": "verify-close-and-checkpoint",
+      "mode": "exact"
+    }
+  ]
+}
