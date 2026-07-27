@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T01:24:42.654Z",
+    "generated_at": "2026-07-27T02:12:18.926Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-1"
+      "root": "root:chk-2"
     }
   },
   "workspaces": {
@@ -82,6 +82,63 @@
           "root:test-1",
           "root:test-2",
           "root:test-3"
+        ]
+      }
+    },
+    "root:chk-2": {
+      "id": "chk-2",
+      "qid": "root:chk-2",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Goal 2 execution-readiness hardening handoff",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-2",
+        "execution-readiness",
+        "accepted"
+      ],
+      "owners": [
+        "program-orchestrator",
+        "root-integration-owner"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-platform/activation-contract.json",
+        "artifact://ai-native-sdlc-demo/private-bundle"
+      ],
+      "refs": [
+        "goal-2",
+        "epic-2",
+        "goal-1",
+        "chk-1",
+        "prd-1",
+        "edd-1",
+        "dec-4"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-2-goal-2-execution-readiness-hardening-handoff.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-2",
+          "root:epic-2",
+          "root:goal-1",
+          "root:chk-1",
+          "root:prd-1",
+          "root:edd-1",
+          "root:dec-4"
+        ],
+        "evidence_refs": [
+          "root:chk-1"
         ]
       }
     },
@@ -223,6 +280,9 @@
       ],
       "links": [],
       "artifacts": [
+        "artifacts/demo-platform/activation-contract.json",
+        "artifacts/demo-platform/proposed-source-allowlist.json",
+        "artifacts/demo-platform/goal-2-activation-receipt.json",
         "artifact://ai-native-sdlc-demo/writer-lease"
       ],
       "refs": [
@@ -457,7 +517,14 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-platform/activation-contract.json",
+        "artifacts/demo-platform/drift-audit.md",
+        "artifacts/demo-platform/proposed-source-allowlist.json",
+        "artifacts/demo-platform/goal-2-activation-receipt.json",
+        "artifacts/demo-platform/interface-contract.json",
+        "artifacts/demo-platform/validation-receipt.json"
+      ],
       "refs": [
         "goal-2",
         "prd-1",
@@ -474,6 +541,8 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "pursue-mdkg-goal",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -952,7 +1021,10 @@
       ],
       "links": [],
       "artifacts": [
+        "artifacts/demo-platform/activation-contract.json",
         "artifacts/demo-platform/drift-audit.md",
+        "artifacts/demo-platform/proposed-source-allowlist.json",
+        "artifacts/demo-platform/goal-2-activation-receipt.json",
         "artifacts/demo-platform/interface-contract.json",
         "artifacts/demo-platform/validation-receipt.json"
       ],
@@ -964,13 +1036,18 @@
         "dec-3",
         "dec-4",
         "dec-5",
-        "dec-6"
+        "dec-6",
+        "goal-1",
+        "chk-1",
+        "chk-2"
       ],
       "aliases": [
         "reusable-website-demo-platform-hardening"
       ],
       "skills": [
         "select-work-and-ground-context",
+        "pursue-mdkg-goal",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {
@@ -981,14 +1058,18 @@
         ],
         "required_skills": [
           "select-work-and-ground-context",
+          "pursue-mdkg-goal",
+          "build-pack-and-execute-task",
           "verify-close-and-checkpoint"
         ],
         "required_checks": [
-          "canonical template and Demo 1 drift audit",
+          "accepted read-only drift and proposed-allowlist receipt",
+          "accepted shared-source mutation lease before task-5",
           "static Astro and zero-JavaScript build checks",
-          "mdkg-dev route sitemap and smoke checks",
+          "mdkg-dev route sitemap and demo-specific smoke checks",
           "accessibility claim secret and asset-budget checks",
-          "deterministic fork startup and concise pack"
+          "deterministic fork and operator bootstrap",
+          "context-complete concise and standard packs"
         ],
         "max_iterations": "25",
         "blocked_after_attempts": "3"
@@ -1007,9 +1088,13 @@
           "root:dec-4",
           "root:dec-5",
           "root:dec-6",
-          "root:goal-1"
+          "root:goal-1",
+          "root:chk-1",
+          "root:chk-2"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:chk-2"
+        ]
       }
     },
     "root:goal-3": {
@@ -1964,10 +2049,16 @@
         "program-orchestrator"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-platform/drift-audit.md",
+        "artifacts/demo-platform/proposed-source-allowlist.json",
+        "artifacts/demo-platform/spike-2-readiness-receipt.json"
+      ],
       "refs": [
         "goal-2",
         "epic-2",
+        "goal-1",
+        "chk-1",
         "prd-1",
         "edd-1",
         "dec-1",
@@ -1982,6 +2073,7 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -1996,6 +2088,8 @@
         "context_refs": [
           "root:goal-2",
           "root:epic-2",
+          "root:goal-1",
+          "root:chk-1",
           "root:prd-1",
           "root:edd-1",
           "root:dec-1",
@@ -2286,7 +2380,7 @@
         "step-7"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
       "artifacts": [
@@ -2312,6 +2406,7 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -3914,6 +4009,7 @@
         "dec-4",
         "dec-5",
         "dec-6",
+        "task-10",
         "task-30"
       ],
       "aliases": [
@@ -3921,6 +4017,7 @@
       ],
       "skills": [
         "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -3944,6 +4041,7 @@
           "root:dec-4",
           "root:dec-5",
           "root:dec-6",
+          "root:task-10",
           "root:task-30"
         ],
         "evidence_refs": []
@@ -5070,11 +5168,12 @@
         "step-2"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-platform/static-astro-contract.md"
+        "artifacts/demo-platform/static-astro-contract.md",
+        "artifacts/demo-platform/task-5-static-astro-receipt.json"
       ],
       "refs": [
         "goal-2",
@@ -5093,7 +5192,7 @@
         "phase-2-step-2"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -5139,11 +5238,12 @@
         "step-3"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-platform/route-registry-contract.json"
+        "artifacts/demo-platform/route-registry-contract.json",
+        "artifacts/demo-platform/task-6-route-registry-receipt.json"
       ],
       "refs": [
         "goal-2",
@@ -5162,7 +5262,7 @@
         "phase-2-step-3"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -5208,11 +5308,12 @@
         "step-4"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-platform/source-execution-evidence-contract.json"
+        "artifacts/demo-platform/source-execution-evidence-contract.json",
+        "artifacts/demo-platform/task-7-source-execution-receipt.json"
       ],
       "refs": [
         "goal-2",
@@ -5231,7 +5332,7 @@
         "phase-2-step-4"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -5277,11 +5378,12 @@
         "step-5"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-platform/output-component-registry-contract.json"
+        "artifacts/demo-platform/output-component-registry-contract.json",
+        "artifacts/demo-platform/task-8-output-component-receipt.json"
       ],
       "refs": [
         "goal-2",
@@ -5300,7 +5402,7 @@
         "phase-2-step-5"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -5334,7 +5436,7 @@
       "qid": "root:task-9",
       "ws": "root",
       "type": "task",
-      "title": "Define deterministic graph fork operator bootstrap and skill materialization",
+      "title": "Implement deterministic graph fork operator bootstrap and skill materialization",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
@@ -5346,12 +5448,13 @@
         "step-6"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
       "artifacts": [
         "artifacts/demo-platform/fork-contract.md",
-        "artifacts/demo-platform/operator-materialization-manifest.json"
+        "artifacts/demo-platform/operator-materialization-manifest.json",
+        "artifacts/demo-platform/task-9-bootstrap-receipt.json"
       ],
       "refs": [
         "goal-2",
@@ -5370,11 +5473,11 @@
         "phase-2-step-6"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
-      "path": ".mdkg/work/task-9-define-deterministic-graph-fork-operator-bootstrap-and-skill-materialization.md",
+      "path": ".mdkg/work/task-9-implement-deterministic-graph-fork-operator-bootstrap-and-skill-materialization.md",
       "edges": {
         "epic": "root:epic-2",
         "parent": "root:goal-2",
@@ -6620,10 +6723,12 @@
         "step-8"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-platform/static-build-route-a11y-budget-receipt.json"
+      ],
       "refs": [
         "goal-2",
         "epic-2",
@@ -6635,13 +6740,18 @@
         "dec-4",
         "dec-5",
         "dec-6",
+        "task-5",
+        "task-6",
+        "task-7",
+        "task-8",
+        "task-9",
         "task-10"
       ],
       "aliases": [
         "phase-2-step-8"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -6665,6 +6775,11 @@
           "root:dec-4",
           "root:dec-5",
           "root:dec-6",
+          "root:task-5",
+          "root:task-6",
+          "root:task-7",
+          "root:task-8",
+          "root:task-9",
           "root:task-10"
         ],
         "evidence_refs": []
@@ -6687,10 +6802,12 @@
         "step-9"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-platform/public-safety-visibility-zero-js-receipt.json"
+      ],
       "refs": [
         "goal-2",
         "epic-2",
@@ -6702,13 +6819,16 @@
         "dec-4",
         "dec-5",
         "dec-6",
+        "task-6",
+        "task-7",
+        "task-8",
         "test-4"
       ],
       "aliases": [
         "phase-2-step-9"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -6732,6 +6852,9 @@
           "root:dec-4",
           "root:dec-5",
           "root:dec-6",
+          "root:task-6",
+          "root:task-7",
+          "root:task-8",
           "root:test-4"
         ],
         "evidence_refs": []
@@ -6754,10 +6877,12 @@
         "step-10"
       ],
       "owners": [
-        "program-orchestrator"
+        "shared-source-writer"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-platform/fork-bootstrap-pack-receipt.json"
+      ],
       "refs": [
         "goal-2",
         "epic-2",
@@ -6769,13 +6894,15 @@
         "dec-4",
         "dec-5",
         "dec-6",
+        "task-9",
+        "task-10",
         "test-5"
       ],
       "aliases": [
         "phase-2-step-10"
       ],
       "skills": [
-        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
         "verify-close-and-checkpoint"
       ],
       "attributes": {},
@@ -6798,6 +6925,8 @@
           "root:dec-4",
           "root:dec-5",
           "root:dec-6",
+          "root:task-9",
+          "root:task-10",
           "root:test-5"
         ],
         "evidence_refs": []
@@ -7016,9 +7145,11 @@
     "context_refs": {
       "root:goal-1": [
         "root:chk-1",
+        "root:chk-2",
         "root:epic-1",
         "root:goal-2",
         "root:spike-1",
+        "root:spike-2",
         "root:task-1",
         "root:task-2",
         "root:task-3",
@@ -7040,6 +7171,7 @@
       ],
       "root:prd-1": [
         "root:chk-1",
+        "root:chk-2",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7134,6 +7266,7 @@
       ],
       "root:edd-1": [
         "root:chk-1",
+        "root:chk-2",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7510,6 +7643,7 @@
       ],
       "root:dec-4": [
         "root:chk-1",
+        "root:chk-2",
         "root:epic-1",
         "root:epic-2",
         "root:epic-3",
@@ -7791,6 +7925,7 @@
         "root:test-9"
       ],
       "root:goal-2": [
+        "root:chk-2",
         "root:epic-2",
         "root:goal-3",
         "root:spike-2",
@@ -7803,6 +7938,25 @@
         "root:test-4",
         "root:test-5",
         "root:test-6"
+      ],
+      "root:epic-2": [
+        "root:chk-2",
+        "root:spike-2",
+        "root:task-10",
+        "root:task-5",
+        "root:task-6",
+        "root:task-7",
+        "root:task-8",
+        "root:task-9",
+        "root:test-4",
+        "root:test-5",
+        "root:test-6"
+      ],
+      "root:chk-1": [
+        "root:chk-2",
+        "root:goal-1",
+        "root:goal-2",
+        "root:spike-2"
       ],
       "root:goal-3": [
         "root:epic-3",
@@ -7884,8 +8038,8 @@
         "root:test-23",
         "root:test-24"
       ],
-      "root:chk-1": [
-        "root:goal-1"
+      "root:chk-2": [
+        "root:goal-2"
       ],
       "root:spike-1": [
         "root:goal-4",
@@ -7896,18 +8050,6 @@
         "root:task-28",
         "root:task-29",
         "root:task-34"
-      ],
-      "root:epic-2": [
-        "root:spike-2",
-        "root:task-10",
-        "root:task-5",
-        "root:task-6",
-        "root:task-7",
-        "root:task-8",
-        "root:task-9",
-        "root:test-4",
-        "root:test-5",
-        "root:test-6"
       ],
       "root:epic-3": [
         "root:spike-3",
@@ -7943,7 +8085,9 @@
         "root:test-24"
       ],
       "root:task-9": [
-        "root:task-10"
+        "root:task-10",
+        "root:test-4",
+        "root:test-6"
       ],
       "root:spike-3": [
         "root:task-11"
@@ -8028,6 +8172,11 @@
       "root:task-29": [
         "root:task-30"
       ],
+      "root:task-10": [
+        "root:task-31",
+        "root:test-4",
+        "root:test-6"
+      ],
       "root:task-30": [
         "root:task-31"
       ],
@@ -8093,16 +8242,23 @@
         "root:task-5"
       ],
       "root:task-5": [
-        "root:task-6"
+        "root:task-6",
+        "root:test-4"
       ],
       "root:task-6": [
-        "root:task-7"
+        "root:task-7",
+        "root:test-4",
+        "root:test-5"
       ],
       "root:task-7": [
-        "root:task-8"
+        "root:task-8",
+        "root:test-4",
+        "root:test-5"
       ],
       "root:task-8": [
-        "root:task-9"
+        "root:task-9",
+        "root:test-4",
+        "root:test-5"
       ],
       "root:task-4": [
         "root:test-1"
@@ -8158,9 +8314,6 @@
       "root:test-2": [
         "root:test-3"
       ],
-      "root:task-10": [
-        "root:test-4"
-      ],
       "root:test-4": [
         "root:test-5"
       ],
@@ -8194,8 +8347,12 @@
         "root:goal-1"
       ],
       "root:chk-1": [
+        "root:chk-2",
         "root:epic-1",
         "root:goal-1"
+      ],
+      "root:chk-2": [
+        "root:goal-2"
       ]
     },
     "epic": {

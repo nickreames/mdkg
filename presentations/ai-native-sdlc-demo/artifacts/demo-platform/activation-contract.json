@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0",
+  "contract": "goal-2-two-gate-activation",
+  "goal_id": "goal-2",
+  "state": "template",
+  "authorization": "not_granted",
+  "acceptance_rule": "Audit work requires a separately recorded audit_gate authorization. Shared-source mutation requires mutation_gate.state=accepted and every required field to be non-null, current, and hash-consistent.",
+  "goal1_checkpoint": "chk-1",
+  "root_projection": {
+    "alias": "ai_native_sdlc_demo",
+    "bundle_path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+    "bundle_sha256": null,
+    "verified_at": null
+  },
+  "roles": {
+    "program_orchestrator": null,
+    "shared_source_writer": null,
+    "root_integration_owner": null,
+    "read_only_verifier": null,
+    "no_overlapping_write_leases": true
+  },
+  "mutation_receipt_schema": {
+    "name": "goal-2-activation-receipt-v1",
+    "path_row_required_fields": [
+      "path",
+      "kind",
+      "owner",
+      "operations",
+      "reason",
+      "expected_state",
+      "expected_base_sha256"
+    ],
+    "path_kinds": [
+      "read_only",
+      "existing_mutable",
+      "create_root"
+    ],
+    "allowed_operations": [
+      "read",
+      "create",
+      "update",
+      "delete"
+    ],
+    "allowed_expected_states": [
+      "present",
+      "absent"
+    ],
+    "rules": [
+      "path is an exact repository-relative file path, except create_root may be an explicitly bounded directory root",
+      "owner names exactly one active writer role",
+      "operations contains only the minimum operations required for that row",
+      "expected_state is present for read_only and existing_mutable rows and absent for create_root rows",
+      "expected_base_sha256 is a lowercase SHA-256 for existing files",
+      "expected_base_sha256 is null only when kind=create_root and expected_state=absent",
+      "directory globs, related-files shorthand, and ownerless rows are invalid",
+      "every current dirty or staged path is inventoried separately even when it is outside the requested allowlist"
+    ],
+    "receipt_required_arrays": [
+      "read_only_path_rows",
+      "mutable_path_rows",
+      "create_root_rows",
+      "owned_dirty_paths",
+      "owned_staged_paths"
+    ]
+  },
+  "audit_gate": {
+    "state": "pending",
+    "owner": null,
+    "read_paths": [
+      "examples/website-demo-template/**",
+      "examples/demo-runs/demo-001/**",
+      "mdkg-dev/CLAIMS.md",
+      "mdkg-dev/package.json",
+      "mdkg-dev/src/data/demoSnapshots.ts",
+      "mdkg-dev/src/pages/demos.astro",
+      "mdkg-dev/src/pages/demo/[id].astro",
+      "mdkg-dev/src/pages/demo/[id]/output.astro",
+      "mdkg-dev/src/pages/sitemap.xml.ts",
+      "package.json",
+      "scripts/smoke-demo-graph.js",
+      "scripts/smoke-mdkg-dev.js",
+      "scripts/smoke-mdkg-dev-seo.js",
+      "scripts/smoke-mdkg-dev-a11y.js",
+      "scripts/smoke-mdkg-dev-perf.js"
+    ],
+    "writable_paths": [
+      "presentations/ai-native-sdlc-demo/.mdkg/**",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/drift-audit.md",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/proposed-source-allowlist.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/spike-2-readiness-receipt.json"
+    ],
+    "forbidden_actions": [
+      "shared-source mutation",
+      "root mdkg mutation",
+      "bundle refresh",
+      "staging",
+      "commit",
+      "push",
+      "deploy",
+      "provider mutation"
+    ]
+  },
+  "mutation_gate": {
+    "state": "pending",
+    "receipt_schema": "goal-2-activation-receipt-v1",
+    "accepted_base_sha": null,
+    "branch": null,
+    "upstream": null,
+    "porcelain_sha256": null,
+    "owned_dirty_paths": [],
+    "owned_staged_paths": [],
+    "spike_receipts": {
+      "drift_audit_sha256": null,
+      "proposed_allowlist_sha256": null,
+      "readiness_receipt_sha256": null
+    },
+    "lease": {
+      "owner": null,
+      "granted_at": null,
+      "expires_at": null,
+      "release_conditions": [],
+      "invalidation_conditions": [
+        "HEAD or upstream changes",
+        "dirty or staged path inventory changes",
+        "an expected base hash changes",
+        "the named writer or integration owner changes",
+        "another writer acquires an overlapping path",
+        "the quiet window expires",
+        "a required check or public-safety boundary fails"
+      ]
+    },
+    "read_only_path_rows": [],
+    "mutable_path_rows": [],
+    "create_root_rows": [],
+    "integration_only_paths": [
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+      ".mdkg/index/mdkg.sqlite"
+    ],
+    "historical_read_only": [
+      "examples/demo-runs/demo-001/**",
+      "mdkg-dev/public/demo-001/**"
+    ],
+    "quiet_window": {
+      "starts_at": null,
+      "expires_at": null,
+      "release_condition": null
+    },
+    "authorizer": null,
+    "accepted_at": null
+  },
+  "forbidden_paths": [
+    "examples/demo-runs/demo-001/**",
+    "mdkg-dev/public/demo-001/**",
+    "src/**",
+    "tests/**",
+    "docs/**",
+    "package.json",
+    "mdkg-dev/package.json",
+    "examples/website-demo-template/package.json",
+    "**/package-lock.json",
+    "**/npm-shrinkwrap.json",
+    ".github/**",
+    ".vercel/**"
+  ],
+  "forbidden_actions": [
+    "force push",
+    "history rewrite",
+    "remote push",
+    "deployment",
+    "DNS mutation",
+    "Vercel project or configuration mutation",
+    "analytics activation",
+    "tag creation",
+    "package publication",
+    "credential inspection or storage"
+  ]
+}

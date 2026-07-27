@@ -6,7 +6,7 @@ status: accepted
 tags: [ownership, writers, git, integration]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifact://ai-native-sdlc-demo/writer-lease]
+artifacts: [artifacts/demo-platform/activation-contract.json, artifacts/demo-platform/proposed-source-allowlist.json, artifacts/demo-platform/goal-2-activation-receipt.json, artifact://ai-native-sdlc-demo/writer-lease]
 relates: []
 refs: [prd-1, edd-1]
 aliases: [graph-only-writer-lease]
@@ -24,7 +24,18 @@ The program writer owns presentations/ai-native-sdlc-demo/ and uses nested mdkg 
 
 An executable child goal may own the publication node in its work topology, but only the root integration owner may claim and execute that node's Git mutation. The child implementation writer yields after accepted local/canonical validation; the integration owner then stages and pushes the child-approved allowlist, after which read-only verification resumes. These roles never hold overlapping write leases.
 
-Shared-source phases require a frozen path allowlist, accepted base SHA, explicit quiet window, and no overlapping root writer. Root registration and root Remotion nodes occur only during a serialized root integration window.
+Shared-source phases use two gates:
+
+1. A discovery gate may authorize a named read-only spike to inspect current source and write only inside its owning program graph and artifact directory.
+2. A mutation gate requires that spike's accepted recommendation plus a frozen path allowlist, accepted clean base commit, full dirty/staged inventory, explicit shared-source writer, exclusive quiet window, invalidation rules, and release condition.
+
+For Goal 2, `spike-2` owns the discovery gate. Before `task-5` starts, the root integration owner must accept `artifacts/demo-platform/goal-2-activation-receipt.json`. That receipt binds the Goal 1 checkpoint and bundle, proposed allowlist, base commit, worktree inventory hash, owner handoffs, lease window, and forbidden surfaces. Any HEAD, path, ownership, or parallel-writer drift invalidates it.
+
+After spike-2, the program orchestrator releases its nested writer lease. The accepted mutation receipt then grants one shared-source writer both the enumerated shared-source paths and only the Goal 2 nested task/evidence/index paths needed to execute task-5 through test-6. That writer yields before any root bundle, root index, staging, commit, or publication action. The program orchestrator may resume only after the shared-source lease is released.
+
+`examples/demo-runs/demo-001/**` is immutable historical evidence. Goal 2 regression language refers to the canonical mdkg.dev Demo 1 routes unless a later explicit goal reopens that historical run.
+
+Root registration, bundle refresh, staging, commits, pushes, and root Remotion nodes remain root-integration-owner actions during serialized windows. Goal execution and local validation do not imply any Git or provider authority.
 
 # Alternatives Considered
 
@@ -34,7 +45,7 @@ Shared-source phases require a frozen path allowlist, accepted base SHA, explici
 
 # Consequences
 
-Nested authoring can continue alongside unrelated root work. Root mutation, source integration, and publication wait for the integration owner.
+Nested read-only discovery and graph authoring can continue alongside unrelated root work. Shared-source mutation waits for an accepted mutation receipt, and root mutation, bundle refresh, Git integration, and publication wait for the root integration owner.
 
 # Links / references
 
