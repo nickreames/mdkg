@@ -72,6 +72,9 @@ Adopt the source-owned topology in
 - A single `full_prepare` job runs shared static/coverage gates, creates one
   immutable package artifact plus SHA-256 context manifest, and uploads
   `mdkg-full-context-<commit-sha>` for 14 days.
+- Preparation also uploads `mdkg-full-prepare-<commit-sha>` with
+  `if: always()`, missing-file failure, and 30-day retention so early failures
+  remain diagnosable.
 - Five `full_smoke` matrix jobs bootstrap dependencies, download and verify the
   shared package SHA, then run one exact manifest shard:
 

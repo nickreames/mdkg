@@ -77,6 +77,15 @@ function requirePackageVersions() {
   if (pkg.scripts["ci:release"] !== "node scripts/release-ladder.js ci") {
     fail("package.json is missing the canonical bounded ci:release runner");
   }
+  if (pkg.scripts["ci:full:prepare"] !== "node scripts/release-ladder.js full-prepare") {
+    fail("package.json is missing the canonical full preparation runner");
+  }
+  if (pkg.scripts["ci:full:shard"] !== "node scripts/release-ladder.js full-shard") {
+    fail("package.json is missing the canonical full shard runner");
+  }
+  if (pkg.scripts["ci:workflow:check"] !== "node scripts/generate-ci-workflow.js --check") {
+    fail("package.json is missing the deterministic CI workflow drift check");
+  }
   if (pkg.scripts.prepublishOnly !== "node scripts/release-ladder.js prepublish") {
     fail("package.json is missing the canonical bounded prepublishOnly runner");
   }
@@ -237,10 +246,16 @@ function requirePackageVersions() {
     fail("coverage config and measured baseline must remain bound to root:dec-88");
   }
   const prepublishCoverageOccurrences = (releaseLadder.match(/run\(\"coverage\"/g) || []).length;
-  if (prepublishCoverageOccurrences !== 1 || !releaseLadder.includes('mode === "prepublish"')) {
-    fail("prepublish ladder must execute the coverage contract exactly once");
+  if (prepublishCoverageOccurrences !== 1 || !releaseLadder.includes("!isFullShard")) {
+    fail("shared CI preparation must execute the coverage contract exactly once");
   }
   const smokeManifest = JSON.parse(requireFile("scripts/smoke-manifest.json"));
+  const { canonicalEntries, validateManifest } = require("./release-ladder.js");
+  try {
+    validateManifest(smokeManifest, pkg);
+  } catch (error) {
+    fail(`smoke manifest topology is invalid: ${error instanceof Error ? error.message : String(error)}`);
+  }
   const smokeAliases = Object.keys(pkg.scripts).filter((name) => name.startsWith("smoke:")).sort();
   const manifestAliases = smokeManifest.aliases.map((entry) => entry.alias).sort();
   const canonicalSmokes = new Set(smokeManifest.aliases.map((entry) => entry.canonical));
@@ -257,12 +272,15 @@ function requirePackageVersions() {
   if (!bundleImport || bundleImport.canonical !== "smoke:subgraph") {
     fail("smoke:bundle-import must remain an alias of smoke:subgraph");
   }
-  const currentCi = smokeManifest.aliases
-    .filter((entry) => entry.future_ci_tier === "current")
-    .map((entry) => entry.alias)
-    .sort();
-  if (JSON.stringify(currentCi) !== JSON.stringify(["smoke:git-materialize", "smoke:loop"])) {
-    fail("smoke manifest current CI membership must preserve git-materialize and loop");
+  const fastCi = canonicalEntries(smokeManifest, "ci");
+  if (fastCi.length !== 13 || smokeManifest.ci_topology?.decision_ref !== "root:dec-91") {
+    fail("smoke manifest fast CI membership must contain the 13 Decision 91 identities");
+  }
+  const sharded = smokeManifest.ci_topology.full.shards.flatMap((shard) =>
+    canonicalEntries(smokeManifest, "full-shard", shard.id),
+  );
+  if (sharded.length !== 46 || new Set(sharded.map((entry) => entry.canonical)).size !== 46) {
+    fail("smoke manifest full shards must partition all 46 canonical identities");
   }
   if (smokeManifest.profiles?.docs?.length !== 4 || smokeManifest.profiles?.["mdkg-dev"]?.length !== 5) {
     fail("smoke manifest must bind four docs and five mdkg-dev behavior profiles");
@@ -1049,7 +1067,20 @@ function requireInitAssets() {
     }
   }
   const releaseWorkflow = requireFile(".github/workflows/release-readiness.yml");
-  for (const expected of ["24.15.0", "24.x", "npm ci", "npm run ci:release"]) {
+  const { readTopology, renderWorkflow } = require("./generate-ci-workflow.js");
+  if (releaseWorkflow !== renderWorkflow(readTopology())) {
+    fail("release-readiness workflow does not match its deterministic source");
+  }
+  for (const expected of [
+    "24.15.0",
+    "24.x",
+    "npm run deps:bootstrap",
+    "npm run ci:release",
+    "npm run ci:full:prepare",
+    "npm run ci:full:shard",
+    "full_release:",
+    "if-no-files-found: error",
+  ]) {
     if (!releaseWorkflow.includes(expected)) {
       fail(`release-readiness workflow is missing ${expected}`);
     }

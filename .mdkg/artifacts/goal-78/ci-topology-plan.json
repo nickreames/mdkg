@@ -161,6 +161,12 @@
       "upload": "on successful preparation",
       "missing_files": "error"
     },
+    "full_prepare_evidence": {
+      "name": "mdkg-full-prepare-<commit-sha>",
+      "retention_days": 30,
+      "upload": "if: always()",
+      "missing_files": "error"
+    },
     "full_shard_evidence": {
       "name": "mdkg-full-<shard>-<commit-sha>",
       "retention_days": 30,
