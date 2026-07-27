@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "goal_ref": "root:goal-78",
+  "task_ref": "root:task-812",
+  "test_ref": "root:test-471",
+  "decision_refs": [
+    "root:dec-19",
+    "root:dec-85",
+    "root:dec-89"
+  ],
+  "verified_at": "2026-07-26",
+  "runtime": "v24.18.0",
+  "canonical_root": ".mdkg/skills",
+  "configured_mirrors": [
+    ".agents/skills",
+    ".claude/skills"
+  ],
+  "public_source_root": "assets/init/skills/default",
+  "successful_sync_receipt": {
+    "command": "mdkg skill sync --json",
+    "synced": 16,
+    "pruned": 0,
+    "targets": 2
+  },
+  "exact_public": [
+    {
+      "slug": "author-mdkg-skill",
+      "sha256": "cedf099dfba6dd2ec59771aa7cf95953e60879ba4a94efb5af55ea2710f20b3a"
+    },
+    {
+      "slug": "build-pack-and-execute-task",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae"
+    },
+    {
+      "slug": "pursue-mdkg-goal",
+      "sha256": "3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776"
+    },
+    {
+      "slug": "pursue-mdkg-loop",
+      "sha256": "fdc59fa723bfbcc139b2fe15ac8435e2e2cb262f6d092e5029d616dffbd235ce"
+    },
+    {
+      "slug": "select-work-and-ground-context",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409"
+    },
+    {
+      "slug": "verify-close-and-checkpoint",
+      "sha256": "9e397118f8998fe9769e7b60f9e336368d1e3b21473ae1704f76c93d7243b7ad"
+    }
+  ],
+  "exact_surfaces": [
+    "canonical",
+    "configured .agents mirror",
+    "configured .claude mirror",
+    "public source candidate"
+  ],
+  "repository_only": [
+    {
+      "slug": "release-mdkg-package",
+      "canonical_sha256": "50da6658a755a842051f6d39d33f7face3a0947d8a570280e4ebe28b7ef714f4",
+      "public_exists": false
+    },
+    {
+      "slug": "service-boundary-ownership-check",
+      "canonical_sha256": "37ef904c0bc5f05da7035c77450f267b96e91bfc3e302ffdf3fe738f16df518c",
+      "public_exists": false
+    }
+  ],
+  "portable_behavior_preserved": [
+    "skill and manifest authoring",
+    "pack-first patch-only execution",
+    "explicit-QID goal pursuit",
+    "identity-bound loop pursuit and blocker exhaustion",
+    "read-only work selection and context grounding",
+    "validation, evidence, checkpoint, bundle-aware, and multi-repo closeout"
+  ],
+  "forbidden_surfaces_absent": [
+    "package publication commands",
+    "registry inspection or authentication commands",
+    "registry credential procedures",
+    "push or tag commands",
+    "deployment commands",
+    "provider release commands",
+    "root-qualified internal QIDs",
+    "named internal products or providers",
+    "specific repository-local design or work links"
+  ],
+  "focused_receipts": [
+    {
+      "command": "npm run build:test",
+      "result": "pass"
+    },
+    {
+      "command": "node --test dist/tests/portable-skill-bodies.test.js",
+      "result": "3 passed, 0 failed",
+      "duration_ms": 60.776709
+    },
+    {
+      "command": "mdkg skill list --json",
+      "result": "8 canonical skills"
+    },
+    {
+      "command": "mdkg skill validate --json",
+      "result": "8 checked, 0 warnings, 0 errors"
+    }
+  ],
+  "git_boundary": {
+    "status_porcelain_sha256_before": "2518f3e357a824263d666a97d5f39524aeba72e3ef00c7b9087bbb82c6386d30",
+    "status_porcelain_sha256_after": "2518f3e357a824263d666a97d5f39524aeba72e3ef00c7b9087bbb82c6386d30",
+    "unchanged_during_focused_verification": true
+  },
+  "deferred_to_projection_lane": [
+    "machine-readable policy",
+    "built-seed equality",
+    "fresh-init exact membership and hashes",
+    "customized upgrade preservation",
+    "publish-readiness integration"
+  ],
+  "authority_exclusions": [
+    "existing consumer repository changes",
+    "package or provider release",
+    "network or registry access",
+    "push, tag, publish, or deploy"
+  ]
+}

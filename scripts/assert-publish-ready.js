@@ -752,8 +752,9 @@ function requireInitAssets() {
     "mdkg archive compress --all",
     "mdkg archive verify --json",
     "mdkg bundle create --profile private",
-    "npm publish --dry-run",
-    "explicit user approval",
+    "Authority-Separated Release Handoff",
+    "does not prescribe or perform",
+    "repository-owned release skill",
   ]) {
     if (!seededReviewSkill.includes(expected)) {
       fail(`dist/init verify-close-and-checkpoint skill is missing ${expected}`);
@@ -793,6 +794,22 @@ function requireInitAssets() {
         `${projection.identity} pursue-mdkg-goal skill does not match canonical .mdkg/skills/pursue-mdkg-goal/SKILL.md`
       );
     }
+  }
+  const { validatePublicSkillProjection } = require(
+    path.join(root, "dist", "core", "public_skill_projection.js")
+  );
+  const projectionReceipt = validatePublicSkillProjection({
+    policyPath: path.join(root, "assets", "init", "skills", "public-seed-policy.json"),
+    canonicalRoot: path.join(root, ".mdkg", "skills"),
+    mirrorRoots: [
+      path.join(root, ".agents", "skills"),
+      path.join(root, ".claude", "skills"),
+    ],
+    publicRoot: path.join(root, "assets", "init", "skills", "default"),
+    builtRoot: path.join(root, "dist", "init", "skills", "default"),
+  });
+  for (const error of projectionReceipt.errors) {
+    fail(`public skill projection: ${error}`);
   }
   const rootReadme = requireFile("README.md");
   const normalizedRootReadme = rootReadme.replace(/\s+/g, " ");

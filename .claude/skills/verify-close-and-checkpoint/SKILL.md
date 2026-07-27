@@ -1,7 +1,7 @@
 ---
 name: verify-close-and-checkpoint
 description: Verify code and mdkg state, attach evidence, and close work cleanly when the single-writer AI agent or human orchestrator is ready to perform durable writes.
-tags: [stage:review, writer:orchestrator, mdkg, validation, release]
+tags: [stage:review, writer:orchestrator, mdkg, validation, evidence]
 version: 0.1.0
 authors: [mdkg]
 links: [README.md, AGENT_START.md]
@@ -41,86 +41,22 @@ Finish work with evidence, validation, and minimal memory drift.
 13. If the latest checkpoint is relevant, use it as durable recall; treat raw events as provenance/debugging, not primary execution context.
 14. If `events.jsonl` is missing, recreate it with `mdkg event enable` before expecting automatic JSONL provenance.
 
-## Pre-Publish Release Gate
+## Authority-Separated Release Handoff
 
-Use this local repo-only checklist before publishing mdkg:
+Publication, push, tag, deployment, provider mutation, registry access, and
+credential handling are separate authority surfaces. This portable closeout
+skill does not prescribe or perform them.
 
-1. Classify public surfaces before turning release evidence into copy work:
-   package/runtime truth, docs/reference truth, public positioning, and
-   internal operational evidence are different surfaces.
-2. Confirm package intent and version in `package.json`, `package-lock.json`,
-   `README.md`, `CLI_COMMAND_MATRIX.md`, generated docs, and `CHANGELOG.md`.
-3. Map every publish-bound change in `origin/main..HEAD` to release notes. Treat
-   missing changelog coverage, stale package/docs/reference version strings, and
-   generated-doc drift as publish blockers, not cosmetic notes.
-4. Treat public positioning surfaces such as `mdkg.dev` homepage, demo pages, and
-   trust pages as copy/positioning surfaces, not automatic projections of
-   internal release, npm, Vercel, or checkpoint evidence. Change them only when
-   the current copy is objectively false for users, an active public-copy task
-   explicitly owns the wording, or the user approves the positioning change.
-5. Route current capability facts, command details, changelog entries, and
-   release validation evidence to docs/reference/changelog surfaces first. Do
-   not promote internal provider ids, postpublish state, or operator workflow
-   details into homepage copy by default.
-6. If a release audit finds ambiguous public copy, record it as an open question
-   or docs/reference follow-up instead of a prescriptive homepage implementation
-   task.
-7. Confirm release-line intent before bumping: when a change crosses a
-   capability-track boundary, prefer the next minor release line over patch-style
-   continuation.
-8. Use a clean npm cache path such as `/private/tmp/mdkg-npm-cache`.
-9. Run `npm ci`, `npm run build`, `node scripts/assert-publish-ready.js`,
-   `npm run test`, `npm run cli:check`, `npm run cli:contract`,
-   `npm run docs:check`, `node dist/cli.js validate --json`,
-   `node dist/cli.js validate --changed-only --json`, `npm run smoke:consumer`,
-   `npm run smoke:matrix`, `npm run smoke:upgrade`, `npm run smoke:init`,
-   `npm run smoke:capabilities`, `npm run smoke:archive-work`,
-   `npm run smoke:bundle`, `npm run smoke:bundle-import`,
-   `npm run smoke:subgraph`, and `npm run smoke:visibility`.
-10. Run `NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm pack --dry-run --json`
-   and confirm the tarball includes `dist/cli.js`, compiled folders,
-   `dist/init/`, release docs, and `scripts/postinstall.js`.
-11. Run the publish dry-run before recommending publish readiness:
-
-```bash
-NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --dry-run --registry=https://registry.npmjs.org/
-```
-
-12. Confirm registry state with these checks; readiness requires latest below the
-   target and the target version not already published:
-
-```bash
-npm view mdkg version --registry=https://registry.npmjs.org/
-npm view mdkg@<version> version --registry=https://registry.npmjs.org/
-```
-
-13. Stop with either a publish-readiness recommendation or an exact gaps list.
-   Do not run real `npm publish`, create a tag, or push release commits without
-   explicit user approval after the dry-run gates.
-14. When publishing with an exported `NPM_TOKEN`, create a temporary npm
-   userconfig that references the environment variable literally, then verify
-   auth before publish:
-
-```bash
-printf '//registry.npmjs.org/:_authToken=${NPM_TOKEN}\nregistry=https://registry.npmjs.org/\n' > /private/tmp/mdkg-npm-publish.npmrc
-NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm whoami --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc
-```
-
-Do not print the token, do not write the expanded token into committed files,
-and do not add unsupported `always-auth` config.
-15. Publish only after explicit user approval, the registry still shows the
-    previous version, and npm auth is known to have write access. Use the
-    verified userconfig when relying on `NPM_TOKEN`:
-
-```bash
-NPM_CONFIG_CACHE=/private/tmp/mdkg-npm-cache npm publish --registry=https://registry.npmjs.org/ --userconfig=/private/tmp/mdkg-npm-publish.npmrc
-```
-
-16. If publishing fails with 2FA, token policy, or permission errors, do not
-    commit; fix npm auth or package policy, then rerun publish.
-17. After successful publish, verify `npm view mdkg version`, `npm view mdkg dist-tags`,
-    and a temp-dir global install of the latest package before closing
-    post-publish validation.
+1. Record which validated local commit and evidence would support a later
+   release-specific workflow.
+2. Confirm that the current work item actually owns any release handoff; do not
+   infer publication authority from successful local validation or checkpoint
+   creation.
+3. Hand off to a repository-owned release skill or explicit release task when
+   one exists. Keep release commands, authentication procedures, provider
+   operations, and product-specific gates in that repository-local workflow.
+4. If no authorized release workflow exists, stop after local closeout and
+   report the exact remaining authority and evidence requirements.
 
 ## Bundle-Aware Commit Gate
 

@@ -27,46 +27,93 @@ shrinking the loop definition of done.
 - Loop node, required evidence lanes, child refs, linked goals, output refs,
   decision refs, approval refs, and blocker policy
 - Current user constraints, available approvals, and stop conditions
+- Relevant mdkg pack, source files, tests, docs, package metadata, and local
+  execution receipts
 
 ## Steps
 
-1. Resolve the loop with `mdkg loop show <loop> --json`.
-2. Inspect identity-scoped readiness with `mdkg loop plan <loop> --json`.
-3. Route with `mdkg loop next <loop> --json`; prefer its authorized child or
-   recovery selection unless current graph evidence justifies an override.
-4. Build context with `mdkg pack <loop> --pack-profile concise --dry-run --stats`.
-5. Build a completion matrix: lane, required/optional, linked refs, allowed
-   actions, needed evidence, status, blockers, recovery node, and accepted
-   decision or waiver.
-6. Surface pre-run questions before beginning when the loop template declares
-   external calls, privileged tools, multi-agent delegation, publish, deploy,
-   provider, or policy-sensitive decisions.
-7. Treat read-only and planning loops as pre-approved for low-risk local work:
-   source/doc/mdkg inspection, local discovery commands, local tests/builds that
-   may write caches or generated outputs outside committed source, mdkg evidence
-   nodes, and provisional triage.
-8. Do not treat read-only/planning preapproval as permission for functional
-   source changes, push/publish/tag/deploy, external metadata-disclosing calls,
-   privileged tools, or subagent delegation unless approval is explicit.
-9. Work the linked graph, not just the first branch. If one branch is blocked,
-   record blocker recovery and continue another authorized branch.
-10. Classify blockers as `recoverable_now`, `branch_blocked`,
-   `definition_blocking`, or `residual`.
-11. For non-trivial blockers, create or update a source-grounded spike, proposal
-   or open-question section with at least three viable paths, one recommended
-   path, and blocker evidence.
-12. Continue while any authorized, in-scope, linked work remains actionable.
-13. Bind answers, approvals, evidence, and waivers to stable identities with
-    `question_answer_refs`, `action_approval_refs`, `evidence_lane_refs`,
-    `lane_waiver_decision_refs`, and `lane_waiver_approval_refs`. A waiver
-    requires both an accepted decision and verified approval for the same lane.
-14. Mark the loop done only when every required lane is complete or explicitly
+1. Resolve the loop:
+   - Inspect it with `mdkg loop show <loop> --json`.
+   - Inspect readiness and per-identity evidence with
+     `mdkg loop plan <loop> --json`.
+   - Ask `mdkg loop next <loop> --json` for the next authorized child, recovery
+     path, question, approval, evidence lane, or closeout step.
+   - Build context with `mdkg pack <loop> --pack-profile concise --dry-run --stats`
+     or a stronger pack profile when needed.
+   - Inspect `child_refs`, `scope_refs`, `context_refs`, `evidence_refs`,
+     `decision_refs`, `approval_refs`, and `output_refs`.
+2. Build a completion matrix before execution:
+   - lane name
+   - required or optional
+   - linked node refs
+   - allowed actions
+   - evidence needed
+   - current status
+   - blockers
+   - recovery node
+   - accepted decision or waiver
+3. Ask or surface pre-run questions before beginning when the loop template
+   declares external calls, privileged tools, multi-agent delegation, publish,
+   deploy, provider, or policy-sensitive decisions.
+4. Treat read-only and planning loops as pre-approved for low-risk local work:
+   - read source, docs, mdkg graph, package metadata, configs, and tests;
+   - run local read-only discovery commands;
+   - run local test/build commands even when they write caches or generated
+     outputs outside committed source, unless the user forbids it;
+   - create mdkg evidence, spike, proposal, task, test, checkpoint, and
+     open-question nodes;
+   - make provisional triage and prioritization decisions.
+5. Do not treat read-only/planning preapproval as permission to:
+   - change functional source, docs, templates, generated command outputs, or
+     runtime behavior;
+   - push, publish, tag, deploy, change DNS, or activate analytics;
+   - make external network, registry, advisory, provider, browser-session, or
+     privileged calls that disclose repo/package/user metadata without approval;
+   - delegate to subagents or external tools unless the harness/user approval is
+     explicit.
+6. Work the linked graph, not just the first branch:
+   - Prefer the selection from `mdkg loop next`; override it only with an
+     explicit rationale grounded in the loop definition of done.
+   - Work it as far as the loop authorization allows.
+   - Record evidence on the child node and update the completion matrix.
+   - If that branch is blocked, classify the blocker and continue another
+     unblocked branch.
+7. Classify blockers:
+   - `recoverable_now`: request approval, use an approved local proof path, or
+     run an already authorized tool.
+   - `branch_blocked`: create or update a spike/proposal/options node, record
+     blocker evidence, and continue other linked work.
+   - `definition_blocking`: keep the loop open until the missing lane is
+     completed or explicitly waived.
+   - `residual`: create follow-up work, mark it non-blocking, and allow closeout
+     only if all required lanes are otherwise satisfied.
+8. For non-trivial blockers, create or update:
+   - a source-grounded spike;
+   - a proposal or open-question section with at least three viable paths;
+   - one recommended path with rationale;
+   - blocker evidence on affected linked nodes;
+   - a next actionable lane if one remains.
+9. Continue while any authorized, in-scope, linked work remains actionable.
+   Partial completion is expected and better than early whole-loop blocking.
+10. Waive required lanes only through durable evidence:
+    - Use proposal or open-question nodes for candidate waivers.
+    - Use `decision_refs` for accepted design/product/policy waivers.
+    - Use `approval_refs` for concrete human/orchestrator approval receipts,
+      artifacts, or future approval nodes when that surface exists.
+    - Bind answers, approvals, evidence, and waivers to stable identities with
+      `question_answer_refs`, `action_approval_refs`, `evidence_lane_refs`,
+      `lane_waiver_decision_refs`, and `lane_waiver_approval_refs`.
+    - A waiver requires both an accepted decision and verified approval for the
+      same lane; unrelated aggregate refs do not satisfy it.
+11. Before marking a loop done or blocked, rebuild the completion matrix and run
+    the loop's validation checks.
+12. Mark the loop done only when every required lane is complete or explicitly
     waived and the loop body explains why the definition of done is satisfied.
-15. Mark the loop blocked only when no authorized, useful, in-scope linked work
+13. Mark the loop blocked only when no authorized, useful, in-scope linked work
     remains across the loop graph and the loop records required decisions,
-    follow-up work, and unblock paths. Confirm
-    `exhaustion.whole_loop_blocked: true` from `mdkg loop next --json` against
-    current graph state before stopping.
+    follow-up work, and unblock paths. Treat
+    `exhaustion.whole_loop_blocked: true` from `mdkg loop next --json` as the
+    routing proof, then verify it against current graph state.
 
 ## Outputs
 
@@ -114,6 +161,8 @@ shrinking the loop definition of done.
 
 ## Safety
 
+- Prefer repo truth over chat memory.
+- Keep secrets out of skills, references, and generated artifacts.
 - Do not mark a loop done merely because follow-up nodes were created.
 - Do not mark a loop blocked while authorized linked work remains actionable.
 - Do not shrink the loop definition of done without a durable decision or
