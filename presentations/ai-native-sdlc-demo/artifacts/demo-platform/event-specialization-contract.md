@@ -1,143 +1,143 @@
-# Demo 3 Event Specialization Contract
+# Website Demo Source Release, Run Binding, and Event Authority Contract
 
-Status: accepted reusable contract; not yet instantiated
-Owner phase: Goal 6 for frozen preparation, Goal 7 for live execution
-Run root: `presentations/ai-native-sdlc-demo/runs/demo-003/`
-Detail route: `/demo/3/`
-Output route: `/demo/3/output/`
+Status: accepted reusable contract; no event authority instantiated here
 
-## Source identity
+## Ownership Model
 
-- Source root: `examples/website-demo-template`
-- Source graph: `examples/website-demo-template/.mdkg`
-- Source tree hash at Goal 2 acceptance:
-  `sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3`
-- Preserved source goal: `root:goal-1`
-- Bootstrap manifest:
-  `artifacts/demo-platform/operator-materialization-manifest.json`
-- Bootstrap command:
+The reusable workflow has four non-overlapping owners:
+
+1. The semantic source release owns authored graph topology, invariant
+   requirements, operator files, and skills.
+2. The immutable run binding owns run identity and bounded specialization
+   values.
+3. The child owns mutable execution state, outputs, evidence, and runtime
+   checkpoints.
+4. The caller owns shared-source leases, Git authority, provider visibility,
+   validity windows, repair limits, and fallback selection.
+
+No post-fork authored graph editing belongs to the normal path.
+
+## Deterministic Materialization
+
+The bootstrap consumes:
 
 ```text
-node scripts/bootstrap-website-demo-run.js --source examples/website-demo-template --target presentations/ai-native-sdlc-demo/runs/demo-003 --start-goal goal-1 --manifest presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json --receipt presentations/ai-native-sdlc-demo/runs/demo-003/BOOTSTRAP_RECEIPT.json
+source root + semantic release manifest + operator manifest +
+immutable run binding
 ```
 
-Goal 6 must reverify source and manifest hashes, create the absent target, and
-prove verify-only equality before specialization.
+and emits:
 
-## Required frozen specialization
+```text
+exact authored child graph + deterministic operator files + RUN_BINDING.json +
+CHILD_INTERFACE.json + IMMUTABLE_CHILD_CONTRACT.json + bootstrap receipt
+```
 
-Goal 6 must specialize source `prd-2` and create public-safe Demo 3 EDD,
-decisions, and a specialized `goal-1` that records:
+The source release inventories authored graph, operator, skill, README, and
+ignore inputs. It excludes generated indexes, SQLite, events, packs, selected
+state, runtime receipts/checkpoints, and outputs.
 
-- audience, offer, required story, and event positioning;
-- source hash and reusable source-goal snapshot;
-- specialized title, condition, requirements, authority, and tests;
-- `/demo/3/` and `/demo/3/output/`;
-- the chain
-  `positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint`;
-- accepted-base SHA, origin observation, exact path-and-operation allowlist,
-  quiet-window owner and expiry, attempt/time bounds, hard blockers, and sealed
-  Demo 2 fallback;
-- checkpoint policy for success and transparent hard-blocker evidence.
+The binding includes only:
 
-The Goal 2 baseline normative live sendoff bytes are:
+- run ID and target root;
+- detail/output routes and component key;
+- bounded positioning brief and creative latitude;
+- one designated harness and timing profile hash;
+- portable output and deterministic receipt destinations;
+- declared immutable and runtime-mutable field classes.
 
-- source: task-10 `Normative Live Sendoff Contract`, normalized to one trailing LF
-- materialized artifact: `artifacts/demo-platform/live-sendoff-contract.md`
-- SHA-256:
-  `63c3991d84b608eb6be0ee95cf5d7fa077e08758b598c5afa02dffaa2c461220`
-- byte length: `1605`
+It contains no credentials, provider payloads, approval, origin observation,
+lease, quiet window, allowlist, or self-issued authority.
 
-After Goal 5, Goal 6 spike-6 may recommend an evidence-backed refinement.
-Task-47 may either retain this baseline byte-for-byte or create a versioned
-replacement under `artifacts/demo-003/`; test-25 must verify the selected
-version. Task 31 consumes exactly the version and hash accepted by test-25.
-Event-specific hashes, owners, paths, lease values, and authority belong in
-separate allowlist/authority artifacts.
+The child interface resolves source, binding, routes, component, chain, and
+receipt identities. The authored contract seal hashes semantic authored child
+content, operator inventory, binding, interface, topology, and immutable
+requirements. Normal statuses, events, indexes, packs, evidence, outputs, and
+runtime checkpoints remain mutable.
 
-The positioning spike may be completed during Goal 6 only if it does not create
-website implementation. The implementation task and every successor remain
-unstarted. A dry rehearsal must stop before implementation, staging, commit,
-push, deployment, or provider mutation.
+## Complete Generic Chain
 
-## Frozen event allowlist shape
+`spike-1 → task-1 → test-1 → task-2 → test-2 → task-3 → test-3 → accepted runtime checkpoint`
 
-Task 31 binds then-current hashes and owners for these exact rows:
+- `spike-1` records the run's public-safe creative decision.
+- `task-1` produces one portable `DemoOutput.astro`.
+- `test-1` validates the local static candidate.
+- `task-2` performs thin canonical integration only under a caller lease.
+- `test-2` builds once and runs shared-output checks serially.
+- `task-3` publishes only under a separate matching human authority receipt.
+- `test-3` verifies exact-SHA deployments and bound public routes read-only.
 
-| Path | Operation | Owner | Purpose |
-|---|---|---|---|
-| `presentations/ai-native-sdlc-demo/runs/demo-003/**` | create/update | Demo 3 child writer | specialized graph, implementation, operator context, and evidence |
-| `mdkg-dev/src/data/demos/demo-3.ts` | create | shared-source writer | sanitized event record |
-| `mdkg-dev/src/data/demos/index.ts` | update | shared-source writer | register Demo 3 |
-| `mdkg-dev/src/components/demos/Demo3Output.astro` | create | shared-source writer | distinct event composition |
-| `mdkg-dev/src/components/demos/outputRegistry.ts` | update | shared-source writer | bind `demo-3` statically |
-| `mdkg-dev/CLAIMS.md` | update | shared-source writer | bind event copy to evidence |
-| `scripts/fixtures/demo-registry-fixtures.json` | update | shared-source writer | move Demo 3 from reserved fixture to configured test shape |
-| `scripts/smoke-mdkg-dev.js` | update | shared-source writer | route, evidence, safety, and zero-JS proof |
-| `scripts/smoke-mdkg-dev-seo.js` | update | shared-source writer | noindex/unlisted and sitemap proof |
-| `scripts/smoke-mdkg-dev-a11y.js` | update | shared-source writer | desktop/mobile accessibility proof |
-| `scripts/smoke-mdkg-dev-perf.js` | update | shared-source writer | transfer and raster budgets |
-| Goal 7 program artifacts and bundle source | create/update | program/root integration owners | event receipts, checkpoint, and projection refresh |
+The presence of later topology is not authority.
 
-No other canonical source, package, lockfile, deployment configuration, DNS,
-analytics, or provider configuration is implied. Existing rows require exact
-base SHA-256 values. Head, origin, content, owner, or lease drift invalidates
-the frozen event allowlist.
+## Event-Specific Caller Artifacts
 
-## Event activation gate
+Goal 6 later creates these outside the child:
 
-Goal 7 may start only when:
+- `artifacts/demo-003/run-binding.json`
+- `artifacts/demo-003/preparation-baseline-handoff.json`
+- `artifacts/demo-003/event-authority-policy.json`
+- `artifacts/demo-003/event-authority.json`
+- exact path-and-operation allowlist and writer lease receipts
+- sealed Demo 2 fallback identity
 
-- Goal 6 has an accepted readiness checkpoint;
-- Demo 2 is still live and sealed as the fallback;
-- the approved deck and reveal sequence are frozen;
-- the branch is the intended branch, origin is fetched, and the checkout is
-  zero behind;
+The child consumes their hashes only. Any source, binding, child seal,
+allowlist, baseline, origin, lease, authority, owner, or validity drift fails
+closed.
+
+## Timed Event Boundary
+
+The accepted profile is single-harness and approximately 30 minutes. It is not
+a multi-harness comparison or endurance demonstration.
+
+- T0: immediately before exact child dispatch, no later than P0+00:45
+- positioning: T+02
+- portable implementation: T+13
+- local validation: T+16
+- canonical integration and validation: T+20
+- normal push: T+22
+- no production repair after T+24
+- exact-SHA deployments READY: T+26
+- routes and child checkpoint: T+28:30
+- consolidated reveal receipt: T+29:15
+- success/fallback selection: T+29:30
+- global stop/fallback visible: T+30
+
+At most two pre-publication repairs and one production repair are allowed. The
+global deadline overrides remaining attempts.
+
+## Frozen Event Allowlist Shape
+
+Event authority later binds exact hashes for:
+
+- the materialized run directory and child-local evidence;
+- one demo data record and registry row;
+- one portable output component, thin wrapper, and static output registration;
+- evidence-backed claim map rows;
+- exact smoke fixtures and checks required for the bound routes;
+- Goal 7 compact event receipts.
+
+No package, lockfile, docs, deployment configuration, DNS, analytics, provider
+configuration, tag, force push, history rewrite, or unrelated source is
+implied.
+
+## Activation Gate
+
+Live execution starts only after:
+
+- Goal 6 readiness is accepted;
+- the preparation baseline is already published and its writer lease released;
+- the semantic release, binding, child interface, and authored seal verify;
+- the branch/origin/allowlist/range preflight is fresh and zero behind;
 - the quiet window excludes parallel root/Git writers;
-- Git credentials, non-force push capability, Vercel read visibility, and both
-  existing production project identities were preflighted without storing
-  credentials;
-- task-31 has copied the normative sendoff bytes and recorded the matching
-  SHA-256;
-- task-31 has recorded a separate human-accepted
-  `artifacts/demo-003/event-authority.json` binding the sendoff, allowlist,
-  lease, complete approved push range, authorized live actions, forbidden
-  actions, validity window, and invalidation conditions;
-- every allowlist row, source hash, target path, route, child node, and
-  activation condition is inspectable from a fresh-agent pack.
+- credentials and provider read visibility are available without storing them;
+- the normative sendoff, timed-run profile, event authority, and fallback
+  hashes all match.
 
-## Live execution and reveal
+## Reveal and Failure Honesty
 
-The audience-facing program goal delegates to the specialized child
-`goal-1`. The child continues through implementation, local proof, canonical
-integration, publication, exact-SHA production verification, and accepted
-checkpoint unless a normative hard blocker occurs.
+The reveal shows the reusable source specification, bound/executed child,
+landing page, Plan → Work → Evidence, what completed/why/next, and exact-SHA
+route receipts. It does not teach graph-fork mechanics.
 
-The accepted event-authority receipt is the pre-approval for those exact live
-actions. The running agent does not request another approval for an in-scope
-edit, validation, bounded fix-forward commit, normal push, read-only provider
-inspection, route verification, or integration-owner bundle refresh while all
-frozen identities remain valid. Any drift invalidates the receipt and becomes a
-hard blocker rather than an invitation to broaden authority.
-
-The reveal shows:
-
-- canonical source `goal-1`;
-- specialized Demo 3 `goal-1`;
-- the final landing page;
-- Plan → Work → Evidence;
-- what completed, why, and what comes next;
-- exact-SHA deployment and live-route receipts.
-
-Describe this as reusable starting specification versus specialized executed
-specification. Do not teach graph-fork mechanics, loops, or subgraph internals.
-
-On a hard blocker, seal precise evidence, stop further side effects, reveal the
-golden Demo 2 fallback, and state that Demo 3 did not complete.
-
-## Post-event boundary
-
-Goal 7 does not authorize canonical-site adoption beyond the Demo 3 allowlist.
-Goal 8 separately decides whether Demo 2 or Demo 3 is promoted, retained
-unlisted, or archived and whether any copy, layout, Astro, SEO, or
-LLM-discovery idea should be adopted.
+On a hard blocker, seal precise evidence, stop side effects, reveal the
+caller-named fallback, and state that the current run did not complete.
