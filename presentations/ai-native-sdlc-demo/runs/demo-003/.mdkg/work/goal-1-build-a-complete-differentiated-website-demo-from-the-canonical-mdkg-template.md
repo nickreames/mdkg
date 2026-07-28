@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: A differentiated static Astro demo is produced from the accepted semantic source release and immutable run binding without authored child graph edits; the complete positioning, portable implementation, local validation, caller-authorized canonical integration, canonical validation, authority-gated normal publication, exact-SHA deployment, public-route verification, evidence, and accepted runtime checkpoint are consistent, or an enumerated authority/safety blocker is recorded truthfully.
 scope_refs: [epic-1, spike-1, task-1, test-1, task-2, test-2, task-3, test-3]
-active_node: spike-1
+active_node: task-3
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [explicit-root graph validation, semantic release binding interface and seal verification, complete prev-next routing, concise and standard pack coverage, portable static output, build-once serial validation, external authority validation, exact-SHA READY deployments, public detail and output routes, closure consistency]
 max_iterations: 25
@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-06-29
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 # Objective
 

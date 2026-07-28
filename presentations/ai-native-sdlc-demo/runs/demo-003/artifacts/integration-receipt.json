@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-canonical-integration",
+  "status": "passed",
+  "recorded_at": "2026-07-28T14:12:02Z",
+  "authority": {
+    "event_allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+    "event_authority_sha256": "b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e",
+    "writer": "child-implementation-writer",
+    "publication_authority_used": false
+  },
+  "changed_canonical_paths": [
+    "mdkg-dev/src/data/demos/demo-3.ts",
+    "mdkg-dev/src/data/demos/index.ts",
+    "mdkg-dev/src/components/demos/Demo3Output.astro",
+    "mdkg-dev/src/components/demos/outputRegistry.ts",
+    "scripts/smoke-mdkg-dev.js"
+  ],
+  "adapter": {
+    "demo_id": "3",
+    "detail_route": "/demo/3/",
+    "output_route": "/demo/3/output/",
+    "component_key": "demo-3",
+    "portable_component": "presentations/ai-native-sdlc-demo/runs/demo-003/site/src/components/DemoOutput.astro",
+    "wrapper": "mdkg-dev/src/components/demos/Demo3Output.astro",
+    "composition_reauthored": false
+  },
+  "before_hashes": {
+    "mdkg-dev/src/data/demos/index.ts": "e1455cca732d485b8b5cde05617e4d95860889edd7042d767354bb50eda4d97b",
+    "mdkg-dev/src/components/demos/outputRegistry.ts": "35d5b79845ab3d5e5a220ceaa82fa3948f64661ebeb24260ff8f0e31e20435c0",
+    "scripts/smoke-mdkg-dev.js": "2cce042064ce10aa5969f9a5e423b1b98eecaa57d7a70446e1496262813dc8b4"
+  },
+  "after_hashes": {
+    "mdkg-dev/src/data/demos/demo-3.ts": "09a9d7b78a03d20bedbddc4a50bee28dc0fcc34f6598eeef85bcfc6b9aaa226f",
+    "mdkg-dev/src/data/demos/index.ts": "297b0116b46f6d2ece7be3e3ca5e9dd5aa126192cab0662afa8e52e95a7f7121",
+    "mdkg-dev/src/components/demos/Demo3Output.astro": "7288061b4e814a861e4f1c03a88c63969a76d8a08565b42a4298ac8a88cf1803",
+    "mdkg-dev/src/components/demos/outputRegistry.ts": "23ad9f0dffbe3364a0dc81e888967fa01c4aad2029fb58f2ab81972990c738d2",
+    "scripts/smoke-mdkg-dev.js": "7ce7a25c4dd1078356cec1da851e6420a8093d4dbf2ee9cec11e824ae2fba1d3"
+  },
+  "canonical_build": {
+    "result": "pass",
+    "smoke_required_files": 18,
+    "detail_sha256": "30ca27de6f66079820edfe479cc887174b3186c8fec3a9378a28a967d314a792",
+    "output_sha256": "3147da51aff33145aaab4829d0c8f9549799c2078dc03be12b9e2717d9d8ed01",
+    "repairs_used_total": 2,
+    "installation_performed": false
+  },
+  "next_qid": "root:test-2"
+}

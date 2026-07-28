@@ -2,7 +2,7 @@
 id: spike-1
 type: spike
 title: choose audience offer structure and creative direction
-status: todo
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
@@ -20,7 +20,7 @@ evidence_refs: []
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-06-29
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 # Research Question
 

@@ -1,0 +1,8 @@
+---
+import PortableOutput from "../../../../presentations/ai-native-sdlc-demo/runs/demo-003/site/src/components/DemoOutput.astro";
+import type { DemoSnapshot } from "../../data/demos";
+
+const { demo: _demo } = Astro.props as { demo: DemoSnapshot };
+---
+
+<PortableOutput />
