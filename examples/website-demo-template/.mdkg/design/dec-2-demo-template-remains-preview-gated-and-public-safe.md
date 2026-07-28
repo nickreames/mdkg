@@ -21,10 +21,16 @@ workflow.
 
 # Decision
 
-Keep the template local-first and public-safe by default. The template may hand
-an accepted candidate back to its caller, but it must not integrate, commit,
-deploy, change DNS, activate analytics, publish packages, push commits, or
-promote durable hosting on its own.
+Keep the template local-first and public-safe by default. Author the complete
+integration-to-production topology so a caller does not rewrite the child
+graph, but treat every shared-source, Git, and provider step as inert until a
+separate matching external authority receipt is present.
+
+The semantic source release and run binding never grant authority. A child may
+consume only hash-addressed caller receipts and must fail closed on missing,
+expired, or drifted identity. Force push, history rewrite, DNS, provider
+configuration, manual redeploy, analytics, package publication, credentials,
+and unrelated integration remain forbidden.
 
 # Alternatives considered
 
@@ -36,10 +42,12 @@ promote durable hosting on its own.
 # Consequences
 
 - Generated candidates can be reviewed safely.
-- The caller must grant a separate, explicit authority gate for integration,
-  commit, push, deployment, and public verification.
+- The caller must grant separate explicit leases/authority for integration,
+  commit, normal non-force push, and provider visibility.
 - A fork remains portable because it does not name a parent goal, hosting
   provider, domain, or repository-specific publication workflow.
+- The run binding records bounded identity and routes but contains no approval,
+  origin state, lease, credentials, or provider payload.
 
 # Links / references
 

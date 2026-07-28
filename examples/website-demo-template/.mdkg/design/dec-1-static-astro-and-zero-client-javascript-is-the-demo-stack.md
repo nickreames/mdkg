@@ -39,7 +39,11 @@ or third-party runtime assets. Visual motion must be CSS-only and respect
 - Creative Production and coding agents retain latitude over composition,
   visual metaphor, hierarchy, imagery, and CSS-only motion.
 - Built-output validation can fail closed on scripts, hydration metadata, and
-  unexpected runtime assets.
+unexpected runtime assets.
+- Each run produces one portable `DemoOutput.astro`; canonical integration
+  supplies only a thin wrapper and static registry binding.
+- Shared generated output is built once and checks that consume it run
+  serially.
 
 # Links / references
 

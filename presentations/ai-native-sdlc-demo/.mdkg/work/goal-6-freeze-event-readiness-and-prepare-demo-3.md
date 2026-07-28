@@ -20,12 +20,12 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20]
-evidence_refs: [chk-12, chk-14, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20]
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20, chk-21]
+evidence_refs: [chk-12, chk-14, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20, chk-21]
 aliases: [demo-3-event-readiness]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Objective

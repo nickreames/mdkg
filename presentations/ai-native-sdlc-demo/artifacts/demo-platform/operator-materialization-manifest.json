@@ -5,6 +5,22 @@
   "target_root_policy": "The --target run root supplied to bootstrap-website-demo-run.js",
   "entries": [
     {
+      "source_path": ".gitignore",
+      "target_path": ".gitignore",
+      "sha256": "b712e8e66857e638e5bea6d42a0cdbe9bcef45f8bc2103bc6d9287fab3d2201a",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "README.md",
+      "sha256": "5817d6b023576cd027f3e83c65d6e5d6dde773fc314daf0118ac9e9a3e423031",
+      "mode": "0644",
+      "required": true,
+      "projection_family": "operator-file"
+    },
+    {
       "source_path": "AGENTS.md",
       "target_path": "AGENTS.md",
       "sha256": "9e33a1c20320e317e1e37dbb09fd0303e355b9e7d49cf2128fe791aaa2ce2fb1",
@@ -39,7 +55,7 @@
     {
       "source_path": "DEMO_HANDOFF_PROMPT.md",
       "target_path": "DEMO_HANDOFF_PROMPT.md",
-      "sha256": "d7e4e2c4c3ed03e25f47a385872f20feb35f2b40973111b4f14628301eb9a64d",
+      "sha256": "04cf52d84aa17e4e8cb92ee570e52e60e50ffd34efcbea2a7ffde5f566f13055",
       "mode": "0644",
       "required": true,
       "projection_family": "operator-file"

@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T05:43:36.316Z",
+    "generated_at": "2026-07-28T06:27:51.291Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-9"
+      "root": "root:chk-21"
     }
   },
   "workspaces": {
@@ -811,6 +811,65 @@
           "root:test-14",
           "root:chk-18",
           "root:chk-19"
+        ]
+      }
+    },
+    "root:chk-21": {
+      "id": "chk-21",
+      "qid": "root:chk-21",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Fork-ready semantic source release authored for fixture verification",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-6",
+        "source-release"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-003/source-prompt-enhancement-receipt.json",
+        "artifacts/demo-platform/source-release-manifest.json",
+        "artifacts/demo-platform/run-binding.schema.json",
+        "artifacts/demo-platform/timed-run-contract.json",
+        "artifacts/demo-003/live-sendoff-v2.md"
+      ],
+      "refs": [
+        "goal-6",
+        "epic-6",
+        "spike-6",
+        "task-47",
+        "chk-20"
+      ],
+      "aliases": [
+        "phase-6-source-release-authored"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-21-fork-ready-semantic-source-release-authored-for-fixture-verification.md",
+      "edges": {
+        "relates": [
+          "root:task-47"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-6",
+          "root:epic-6",
+          "root:spike-6",
+          "root:task-47",
+          "root:chk-20"
+        ],
+        "evidence_refs": [
+          "root:task-47",
+          "root:chk-20"
         ]
       }
     },
@@ -2689,7 +2748,7 @@
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -2792,7 +2851,8 @@
           "root:test-14",
           "root:chk-18",
           "root:chk-19",
-          "root:chk-20"
+          "root:chk-20",
+          "root:chk-21"
         ],
         "evidence_refs": [
           "root:chk-12",
@@ -2803,7 +2863,8 @@
           "root:test-14",
           "root:chk-18",
           "root:chk-19",
-          "root:chk-20"
+          "root:chk-20",
+          "root:chk-21"
         ]
       }
     },
@@ -6990,10 +7051,10 @@
       "ws": "root",
       "type": "task",
       "title": "Author the canonical fork-ready source and run-binding contract",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-27",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -7057,7 +7118,8 @@
         "evidence_refs": [
           "root:spike-6",
           "root:chk-17",
-          "root:chk-20"
+          "root:chk-20",
+          "root:chk-21"
         ]
       }
     },
@@ -10359,6 +10421,9 @@
       "root:spike-6": [
         "root:chk-20"
       ],
+      "root:task-47": [
+        "root:chk-21"
+      ],
       "root:spike-2": [
         "root:chk-3"
       ],
@@ -11406,6 +11471,7 @@
         "root:chk-18",
         "root:chk-19",
         "root:chk-20",
+        "root:chk-21",
         "root:epic-6",
         "root:goal-7",
         "root:goal-9",
@@ -11605,6 +11671,7 @@
       ],
       "root:epic-6": [
         "root:chk-20",
+        "root:chk-21",
         "root:spike-6",
         "root:task-27",
         "root:task-28",
@@ -11621,6 +11688,7 @@
       ],
       "root:spike-6": [
         "root:chk-20",
+        "root:chk-21",
         "root:task-27",
         "root:task-28",
         "root:task-31",
@@ -11629,6 +11697,7 @@
       ],
       "root:task-47": [
         "root:chk-20",
+        "root:chk-21",
         "root:task-28",
         "root:task-31",
         "root:test-25"
@@ -11644,6 +11713,12 @@
         "root:goal-6",
         "root:goal-7",
         "root:spike-6"
+      ],
+      "root:chk-20": [
+        "root:chk-21",
+        "root:goal-6",
+        "root:task-47",
+        "root:test-25"
       ],
       "root:spike-2": [
         "root:chk-3",
@@ -11709,10 +11784,8 @@
         "root:test-4",
         "root:test-6"
       ],
-      "root:chk-20": [
-        "root:goal-6",
-        "root:task-47",
-        "root:test-25"
+      "root:chk-21": [
+        "root:goal-6"
       ],
       "root:task-28": [
         "root:goal-7",
@@ -12245,6 +12318,16 @@
         "root:goal-7",
         "root:spike-6"
       ],
+      "root:task-47": [
+        "root:chk-21",
+        "root:test-25"
+      ],
+      "root:chk-20": [
+        "root:chk-21",
+        "root:goal-6",
+        "root:task-47",
+        "root:test-25"
+      ],
       "root:chk-2": [
         "root:chk-3",
         "root:goal-2"
@@ -12306,10 +12389,9 @@
         "root:goal-5",
         "root:task-48"
       ],
-      "root:chk-20": [
+      "root:chk-21": [
         "root:goal-6",
-        "root:task-47",
-        "root:test-25"
+        "root:task-47"
       ],
       "root:test-17": [
         "root:goal-7",
@@ -12353,9 +12435,6 @@
       ],
       "root:test-28": [
         "root:task-57"
-      ],
-      "root:task-47": [
-        "root:test-25"
       ],
       "root:task-51": [
         "root:test-26"

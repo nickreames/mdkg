@@ -1,26 +1,59 @@
-# Normative Live Sendoff Contract
+# Normative Live Sendoff Contract v2
 
-> Continue until the specialized goal is achieved, the approved commit is non-force pushed to `origin/main`, both production deployments for that exact SHA are READY, and the public detail and output URLs pass verification. Do not stop at a local build or commit. Fix transient in-scope failures forward. Stop only for an enumerated hard blocker.
+> Continue until the bound child goal is achieved, the externally approved
+> bounded range is non-force pushed to the authorized remote branch, every
+> required production deployment for that exact SHA is READY, and the bound
+> public detail and output URLs pass the fast reveal verifier. Do not stop at a
+> local build or commit. Fix transient in-scope failures forward within the
+> accepted attempt and deadline limits. Stop only for an enumerated hard
+> blocker.
 
-The child work chain is:
+The authored child chain is:
 
-`positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint`
+`positioning spike → portable implementation task → local test → caller-owned integration task → canonical-site test → authority-gated publication task → exact-SHA/live-route test → accepted runtime checkpoint`
 
-Authorized actions are:
+The child graph and run binding grant no shared-source, Git, publication, or
+provider authority. Those actions require separate matching caller-owned
+lease and human-authority receipts. Before every side effect, verify the
+semantic source release, binding, authored child seal, exact allowlist,
+baseline, branch, origin observation, owner, validity window, and repair/deadline
+policy. Drift fails closed.
 
-- Edit only the frozen path-and-operation allowlist established by Goal 2 and the Demo 3 run directory.
+Authorized actions, only while every external identity remains valid:
+
+- Edit exactly the frozen path-and-operation allowlist.
 - Run local validation and production-safe smoke tests.
-- Create one or more bounded in-scope fix-forward commits.
-- Non-force push the approved commits to `origin/main`.
-- Inspect existing Vercel deployments and public URLs without mutating provider configuration.
-- Have the root integration owner refresh and verify the program bundle.
+- Create bounded in-scope fix-forward commits.
+- Perform a normal non-force push to the authorized remote branch.
+- Inspect existing production deployments and public URLs read-only.
+- Record compact public-safe receipts.
 
-Hard blockers are:
+Forbidden actions:
+
+- Manual edits to authored child goal, design, work, test, skill, or operator
+  content.
+- Force push, history rewrite, unrelated integration, tags, package
+  publication, DNS, analytics, manual redeploy, project/environment/alias
+  configuration, credentials storage, or provider mutation.
+- New dependencies, web research, image generation, remote runtime assets, or
+  new route architecture during the timed run.
+
+The 30-minute profile permits at most two pre-publication repair cycles and one
+production repair. No production repair starts after T+24. Exact-SHA
+deployments are due by T+26, routes and the child checkpoint by T+28:30, the
+consolidated reveal receipt by T+29:15, and success/fallback selection by
+T+29:30. T+30 is a global stop.
+
+Hard blockers:
 
 - Origin advances after the final preflight.
-- Push would require force, history rewriting, or unrelated integration.
-- Credentials or provider access are unavailable.
-- A provider outage or unresolved production failure exceeds three complete fix-forward attempts or twenty minutes.
-- Passing requires DNS, project configuration, manual redeploy, analytics, package publication, or out-of-scope source changes.
+- Push requires force, history rewrite, or unrelated integration.
+- Credentials or required read visibility are unavailable.
+- Source, binding, seal, allowlist, lease, baseline, authority, or deadline
+  identity drifts.
+- Passing requires a forbidden action or out-of-scope path.
+- The accepted repair policy or global deadline is exhausted.
 
-On a hard blocker, record precise evidence and reveal the sealed Demo 2 fallback transparently; do not claim Demo 3 succeeded.
+On a hard blocker, record precise evidence, stop side effects, select the
+caller-named sealed fallback transparently, and do not claim the current run
+succeeded.

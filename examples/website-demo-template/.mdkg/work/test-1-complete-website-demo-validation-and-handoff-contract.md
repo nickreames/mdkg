@@ -6,19 +6,21 @@ status: todo
 priority: 1
 epic: epic-1
 parent: goal-1
+prev: task-1
+next: task-2
 tags: [demo, website, validation, browser, static, zero-javascript]
 owners: []
 links: []
-artifacts: []
+artifacts: [artifacts/local-validation.json]
 relates: []
-blocked_by: [task-1]
+blocked_by: []
 blocks: []
 refs: [goal-1, prd-2]
-context_refs: [prd-2, edd-1, dec-1, dec-2]
-evidence_refs: []
+context_refs: [prd-2, edd-1, dec-1, dec-2, spike-1, task-1, chk-3]
+evidence_refs: [spike-1, task-1]
 aliases: []
 skills: [verify-close-and-checkpoint]
-cases: [template validates from one goal id., generated site builds locally., required routes render with semantic html and css., built demo routes contain zero client javascript scripts or hydration metadata., browser checks pass when implementation reaches local preview., keyboard focus reduced motion and wcag aa checks pass., transfer and raster asset budgets pass., creative production input is retained only as a compact public-safe direction summary., no secrets raw prompts provider payloads remote runtime assets or unsupported mdkg claims are retained., integration commit push and deployment remain caller gated.]
+cases: [template validates from one goal id., generated site builds locally with warm dependencies in one attempt., portable demooutput component exists and is importable by a thin wrapper., required local routes render with semantic html and css., built demo routes contain zero client javascript scripts or hydration metadata., browser checks pass when implementation reaches local preview., keyboard focus reduced motion and wcag aa checks pass., transfer and raster asset budgets pass., creative production input is retained only as a compact public-safe direction summary., no secrets raw prompts provider payloads remote runtime assets or unsupported mdkg claims are retained., integration remains gated by a separate caller lease.]
 created: 2026-06-29
 updated: 2026-07-26
 ---
@@ -43,6 +45,8 @@ recommendation.
 
 - Template validates from one goal id.
 - Generated site builds locally.
+- Warm dependency resolution succeeds in one attempt without installation.
+- `DemoOutput.astro` is portable and the local preview is a thin wrapper.
 - Required detail and output routes render as static semantic HTML and CSS.
 - Built demo routes contain no generated JavaScript, `<script>` tags, hydration
   metadata, client directives, remote fonts, or third-party runtime assets.
@@ -53,12 +57,14 @@ recommendation.
   retained.
 - Any Creative Production input is represented by a compact public-safe
   direction summary, not raw prompts or provider payloads.
-- Integration, commit, push, and deployment remain caller-gated.
+- No shared-source integration occurs without a separate caller-owned lease.
 
 # Results / Evidence
 
-Pending.
+Write deterministic results to `artifacts/local-validation.json`, including
+source/output hashes, build count, route inventory, public-safety scans,
+accessibility/budget results, and the next QID.
 
 # Notes / Follow-ups
 
-- Closeout must recommend discard, rework, or caller-owned integration.
+- On pass, continue to `task-2`; this test grants no integration authority.
