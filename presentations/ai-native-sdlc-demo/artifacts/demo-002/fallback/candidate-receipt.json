@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-sealed-local-candidate",
+  "state": "accepted-local-only",
+  "created_at": "2026-07-27T18:06:00Z",
+  "program_goal_qid": "root:goal-4",
+  "child_goal_qid": "root:goal-1",
+  "accepted_base_sha": "e2af9e9ec5b2e0e8912671ed54b1a2082dd19988",
+  "prerequisite_receipts": [
+    {
+      "path": "source-goal-1.md",
+      "sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c"
+    },
+    {
+      "path": "fork-receipt.json",
+      "sha256": "890c0376327a5153e762e79a0d463621d433cf45c5794f40620f0ec740e9e945"
+    },
+    {
+      "path": "operator-materialization-receipt.json",
+      "sha256": "1b645010ac7f3dd39f557f11134b4a53b31bec3b41288dedcdbad10a3062fb97"
+    },
+    {
+      "path": "specialization-receipt.json",
+      "sha256": "cac4d027678855faadc8e393e2b2170607d272fa17ea437bc8eef8d1502b388a"
+    },
+    {
+      "path": "integration-receipt.json",
+      "sha256": "e5bb66a000a66121c0b17901494790465e59797d35ec1728b7f558f7b3ba2996"
+    },
+    {
+      "path": "runs/demo-002/artifacts/local-validation.json",
+      "sha256": "fa947b2b52ec5f38d9d5a7fb1cb302ee139d95222c0ee3084981514bd341d724"
+    },
+    {
+      "path": "runs/demo-002/artifacts/canonical-route-validation.json",
+      "sha256": "bf43121a52a7cc36e60bdd1859aa98dc6f670783de4a2f1d38f937f43a4e6ec2"
+    }
+  ],
+  "child_goal_state": {
+    "goal_state": "paused",
+    "status": "blocked",
+    "achieved": false,
+    "paused_goal_file_sha256": "5062726e202623f8efcf8599d43025aca00682d5a97f5bc4352f1195498a176d",
+    "last_completed_qid": "root:test-2",
+    "last_completed_file_sha256": "6ef0cd7ddc739ce08feb45a3f2a8d4220e43cf595140ec02138c35f5825da756",
+    "next_qid": "root:task-3",
+    "next_title": "Publish the accepted Demo 2 candidate",
+    "next_status": "backlog",
+    "publication_task_claimed": false,
+    "publication_evidence": [],
+    "live_url_evidence": [],
+    "accepted_closeout_checkpoint": null,
+    "routing_warning": "The preserved active_node still points at completed task-1; read-only goal next deterministically selects task-3. Task-3 itself remains untouched and unclaimed."
+  },
+  "changed_paths": {
+    "canonical_exact": [
+      "mdkg-dev/src/data/demos/demo-2.ts",
+      "mdkg-dev/src/data/demos/index.ts",
+      "mdkg-dev/src/components/demos/Demo2Output.astro",
+      "mdkg-dev/src/components/demos/outputRegistry.ts"
+    ],
+    "program_graph_exact": [
+      "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/global.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/state/selected-goal.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/goal-4-build-the-demo-2-rehearsal-candidate.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/spike-4-choose-demo-2-positioning-and-reserve-the-rehearsal-run.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-15-fork-the-canonical-website-demo-graph-into-demo-2.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-16-materialize-demo-2-agent-operator-files-and-skills-deterministically.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-17-specialize-demo-2-requirements-decisions-goal-and-tests.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-18-execute-the-demo-2-local-website-goal.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-19-integrate-demo-2-through-the-generalized-local-adapter.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-20-seal-the-demo-2-candidate-receipt-and-offline-fallback.md"
+    ],
+    "program_artifact_root": "presentations/ai-native-sdlc-demo/artifacts/demo-002/",
+    "program_artifact_inventory": [
+      "candidate-receipt.json",
+      "fallback/",
+      "fork-receipt.json",
+      "goal-4-activation.json",
+      "integration-receipt.json",
+      "local-execution-receipt.json",
+      "operator-materialization-receipt.json",
+      "positioning-brief.md",
+      "reveal/",
+      "source-goal-1.md",
+      "specialization-receipt.json",
+      "specialized-goal-1.md"
+    ],
+    "run_root": "presentations/ai-native-sdlc-demo/runs/demo-002/",
+    "run_inventory_source": "fork-receipt.json generated inventory plus the specialization nodes, run-local site, and artifacts enumerated by local-execution-receipt.json and integration-receipt.json"
+  },
+  "route_inventory": [
+    {
+      "route": "/demo/2/",
+      "listed": false,
+      "noindex": true,
+      "html_sha256": "b2e0ababaf0d25e852d5a766939bde6e46912e545733031b2bf8e6105905e66e",
+      "initial_local_transfer_bytes": 38690
+    },
+    {
+      "route": "/demo/2/output/",
+      "listed": false,
+      "noindex": true,
+      "html_sha256": "77f1f9f037227da796e9204fb7b6032d79a5d78938b15ec1c7a6fb6a0b933fff",
+      "initial_local_transfer_bytes": 36049
+    }
+  ],
+  "local_validation": {
+    "commands": [
+      "npm --prefix presentations/ai-native-sdlc-demo/runs/demo-002/site run build",
+      "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 validate --json",
+      "npm --prefix mdkg-dev run build",
+      "node scripts/smoke-mdkg-dev-seo.js",
+      "node scripts/smoke-mdkg-dev-a11y.js",
+      "node scripts/smoke-mdkg-dev-perf.js",
+      "browser desktop/mobile detail and output inspection"
+    ],
+    "run_local_build": "pass",
+    "canonical_build": "pass",
+    "seo_regression": "pass",
+    "accessibility_regression": "pass",
+    "performance_regression": "pass",
+    "generated_javascript_files": 0,
+    "client_scripts": 0,
+    "astro_islands": 0,
+    "gallery_contains_demo_2": false,
+    "sitemap_contains_demo_2": false,
+    "desktop_horizontal_overflow": false,
+    "mobile_horizontal_overflow": false,
+    "known_test_drift": "scripts/smoke-mdkg-dev.js retains a pre-Demo-2 fixture sentinel. It fails only because Goal 4 intentionally creates Demo 2, and scripts/fixtures are outside the frozen source allowlist."
+  },
+  "reveal_assets": [
+    {
+      "path": "reveal/source-vs-specialized-16x9.png",
+      "dimensions": "1600x900",
+      "sha256": "0a1fb5d99741a7cd14df28f0596ab4cf34e6026826615bfab0b5446cd70edd0c"
+    },
+    {
+      "path": "reveal/detail-desktop.png",
+      "dimensions": "1280x720",
+      "sha256": "b8edf76beaf8663f060dd0817cf57aae8772ce377e76da93afad3db6efdc5e4e"
+    },
+    {
+      "path": "reveal/detail-mobile.png",
+      "dimensions": "390x720",
+      "sha256": "9341f502c1be5ed49bc924450536d6bd2ae9dde3bd92a02a552a54b57c582139"
+    },
+    {
+      "path": "reveal/output-desktop.png",
+      "dimensions": "1280x720",
+      "sha256": "efcb74ac0d385278bb8071c2d16a640d7008779c51377d9fef7111ff5ea83933"
+    },
+    {
+      "path": "reveal/output-mobile.png",
+      "dimensions": "390x720",
+      "sha256": "21de49ca9d094ec2a1ed34fa8d93c04521d728a20aa2c79eeb9602345967b8bc"
+    }
+  ],
+  "fallback_verification": {
+    "serve_command": "python3 -m http.server 4324 --bind 127.0.0.1 --directory presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site",
+    "detail": {
+      "route": "http://127.0.0.1:4324/demo/2/",
+      "state": "pass",
+      "viewport": "1280x720",
+      "document_scroll_width": 1280,
+      "stylesheets": 4,
+      "h1": 1,
+      "images_complete": true,
+      "client_scripts": 0
+    },
+    "output": {
+      "route": "http://127.0.0.1:4324/demo/2/output/",
+      "state": "pass",
+      "viewport": "1280x720",
+      "document_scroll_width": 1280,
+      "stylesheets": 1,
+      "h1": 1,
+      "client_scripts": 0
+    },
+    "provider_required": false,
+    "network_required_for_core_pages": false
+  },
+  "immutability": {
+    "policy": "Any later candidate change requires a new candidate receipt and fallback manifest rather than overwriting this seal.",
+    "fallback_root": "fallback/",
+    "manifest": "fallback/manifest.sha256"
+  },
+  "authority": {
+    "local_only": true,
+    "git_index_mutation": false,
+    "commit": false,
+    "push": false,
+    "publication": false,
+    "provider_inspection": false,
+    "public_availability_claimed": false
+  }
+}

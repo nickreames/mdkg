@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-canonical-route-validation",
+  "state": "pass",
+  "recorded_at": "2026-07-27T18:00:00Z",
+  "work_qid": "root:test-2",
+  "commands": [
+    "npm --prefix mdkg-dev run build",
+    "node scripts/smoke-mdkg-dev-seo.js",
+    "node scripts/smoke-mdkg-dev-a11y.js",
+    "node scripts/smoke-mdkg-dev-perf.js",
+    "node scripts/smoke-mdkg-dev.js",
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 validate --json",
+    "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 goal next goal-1 --json"
+  ],
+  "routes": {
+    "detail": {
+      "route": "/demo/2/",
+      "html_sha256": "b2e0ababaf0d25e852d5a766939bde6e46912e545733031b2bf8e6105905e66e",
+      "html_bytes": 27992,
+      "initial_local_transfer_bytes": 38690,
+      "robots": "noindex, nofollow",
+      "h1": 1,
+      "semantic_main": true,
+      "semantic_navigation": true,
+      "source_and_specialized_hashes": true,
+      "non_executable_json_ld_blocks": 1,
+      "client_scripts": 0,
+      "astro_islands": 0
+    },
+    "output": {
+      "route": "/demo/2/output/",
+      "html_sha256": "77f1f9f037227da796e9204fb7b6032d79a5d78938b15ec1c7a6fb6a0b933fff",
+      "html_bytes": 12038,
+      "initial_local_transfer_bytes": 36049,
+      "robots": "noindex,nofollow",
+      "h1": 1,
+      "semantic_main": true,
+      "semantic_navigation": true,
+      "required_story": true,
+      "script_tags": 0,
+      "client_scripts": 0,
+      "astro_islands": 0
+    }
+  },
+  "visibility": {
+    "listed": false,
+    "noindex": true,
+    "gallery_contains_demo_2": false,
+    "sitemap_contains_demo_2": false,
+    "unknown_demo_999_built": false
+  },
+  "static_public_safety": {
+    "generated_javascript_files": 0,
+    "client_directives": 0,
+    "astro_islands": 0,
+    "remote_fonts": 0,
+    "forms": 0,
+    "trackers": 0,
+    "third_party_runtime_assets": 0,
+    "raster_assets": 0,
+    "secret_assignments": 0
+  },
+  "responsive_browser": {
+    "detail_desktop": {
+      "viewport": "1280x720",
+      "document_scroll_width": 1280,
+      "horizontal_overflow": false,
+      "visual_review": "pass"
+    },
+    "detail_mobile": {
+      "viewport": "390x844",
+      "document_scroll_width": 390,
+      "horizontal_overflow": false,
+      "visual_review": "pass"
+    },
+    "output_desktop": {
+      "viewport": "1280x720",
+      "document_scroll_width": 1280,
+      "horizontal_overflow": false,
+      "visual_review": "pass"
+    },
+    "output_mobile": {
+      "viewport": "390x844",
+      "document_scroll_width": 390,
+      "horizontal_overflow": false,
+      "visual_review": "pass"
+    }
+  },
+  "accessibility": {
+    "semantic_landmarks": true,
+    "one_h1_per_route": true,
+    "skip_link_on_output": true,
+    "visible_focus_css": true,
+    "natural_link_order": true,
+    "reduced_motion_css": true,
+    "minimum_measured_text_contrast": 4.66,
+    "contrast_standard": "WCAG 2.x AA"
+  },
+  "regression_results": {
+    "seo": "pass",
+    "accessibility": "pass; 22 pages checked",
+    "performance": "pass; marketing JavaScript 0 bytes",
+    "base_smoke": {
+      "state": "expected-fail",
+      "classification": "stale-pre-demo-2-sentinel",
+      "detail": "The existing base smoke forbids any reserved Demo 2 route. Goal 4 intentionally creates that route, and its frozen source allowlist excludes scripts/fixtures. All current Demo 2 route contracts are tested directly here; the stale sentinel is retained as explicit follow-up rather than hidden or bypassed."
+    }
+  },
+  "routing": {
+    "goal_achieved": false,
+    "expected_next": "root:task-3",
+    "publication_task_touched": false,
+    "exact_sha_test_touched": false
+  },
+  "authority": {
+    "local_only": true,
+    "git_index_mutation": false,
+    "commit": false,
+    "push": false,
+    "publication": false,
+    "provider_inspection": false
+  }
+}

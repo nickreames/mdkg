@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "kind": "goal-4-local-execution-activation",
+  "state": "accepted",
+  "goal_qid": "root:goal-4",
+  "activated_at": "2026-07-27T17:24:22.226Z",
+  "base_git_sha": "e2af9e9ec5b2e0e8912671ed54b1a2082dd19988",
+  "writer": "program-orchestrator",
+  "writer_lease": {
+    "mode": "single-writer",
+    "valid_until": "Goal 4 reaches an accepted checkpoint or an invalidation condition occurs",
+    "parallel_root_writer_allowed": false
+  },
+  "source": {
+    "root": "examples/website-demo-template",
+    "graph": "examples/website-demo-template/.mdkg",
+    "goal_qid": "root:goal-1",
+    "goal_sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+    "tree_sha256": "sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3"
+  },
+  "contracts": {
+    "operator_manifest_sha256": "3ac248cb5f49bc65c1ec5fd73281b8a075d83710f1414ef82914c60db6f2963f",
+    "interface_contract_sha256": "9327ad08856a9535e51cba77f1e90c46bff048cb9bc2abd16f8ae935483e8516",
+    "route_registry_contract_sha256": "accb8a36179f2791718e86a255ce9c3f15bb8e5bea842d04dbc700098a4f4444",
+    "output_registry_contract_sha256": "3cb7236de874be5b10734e38355be03c7bb815fdc3428089e31a1a8b3ae8c375",
+    "rehearsal_specialization_contract_sha256": "371b400fbb765cc5b7c513df3a15e28fc29130361c6c117557a051b63715edd0",
+    "bootstrap_wrapper_sha256": "562e76bc2df7d7c5eba93617584df2663ce6ca4fe18a58d0b9166bc78d89a58f"
+  },
+  "reserved_run": {
+    "id": "demo-002",
+    "root": "presentations/ai-native-sdlc-demo/runs/demo-002",
+    "detail_route": "/demo/2/",
+    "output_route": "/demo/2/output/"
+  },
+  "allowed_operations": [
+    "nested mdkg goal and task lifecycle mutations",
+    "deterministic graph fork and verify-only operator materialization",
+    "Demo 2 graph specialization",
+    "Demo 2 local website implementation and validation",
+    "generalized local adapter integration",
+    "local static Astro build and HTTP smoke checks",
+    "local desktop and mobile screenshot capture",
+    "offline fallback and public-safe evidence generation"
+  ],
+  "allowed_paths": [
+    "presentations/ai-native-sdlc-demo/.mdkg/**",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/**",
+    "presentations/ai-native-sdlc-demo/runs/demo-002/**",
+    "mdkg-dev/src/data/demos/demo-2.ts",
+    "mdkg-dev/src/data/demos/index.ts",
+    "mdkg-dev/src/components/demos/Demo2Output.astro",
+    "mdkg-dev/src/components/demos/outputRegistry.ts"
+  ],
+  "forbidden_operations": [
+    "git staging",
+    "git commit",
+    "git push",
+    "history rewrite",
+    "deployment or provider inspection",
+    "deployment or provider mutation",
+    "DNS, analytics, package publication, or tag mutation",
+    "root mdkg mutation or root bundle refresh",
+    "claiming public availability"
+  ],
+  "publication_authority": {
+    "demo_2": false,
+    "owner": "root:goal-5",
+    "requirement": "A later separate human approval must bind the accepted candidate, exact push range, and publication allowlist."
+  },
+  "invalidation_conditions": [
+    "The canonical source graph, source goal, operator manifest, bootstrap wrapper, or accepted interface contracts change.",
+    "The base Git tree changes outside the allowed paths.",
+    "Another writer mutates an owned path.",
+    "The Demo 2 target exists without the accepted bootstrap receipt.",
+    "Execution requires a forbidden operation or an unlisted path."
+  ]
+}

@@ -2,7 +2,7 @@
 id: task-15
 type: task
 title: Fork the canonical website demo graph into Demo 2
-status: backlog
+status: done
 priority: 1
 epic: epic-4
 parent: goal-4
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-4-step-2]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview

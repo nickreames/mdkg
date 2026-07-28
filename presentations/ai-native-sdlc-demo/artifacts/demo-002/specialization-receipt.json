@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-specialization-receipt",
+  "state": "pass",
+  "recorded_at": "2026-07-27T17:34:20Z",
+  "source_tree_sha256": "sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3",
+  "lineage": {
+    "source_goal_snapshot": "presentations/ai-native-sdlc-demo/artifacts/demo-002/source-goal-1.md",
+    "specialized_goal_snapshot": "presentations/ai-native-sdlc-demo/artifacts/demo-002/specialized-goal-1.md",
+    "local_id_preserved": "goal-1",
+    "source_goal_sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+    "specialized_goal_sha256": "3fda685d8ab74c741e78143625978919bf22533ff51cd7cfce855ba9682176b1"
+  },
+  "changed_nodes": [
+    {
+      "id": "prd-2",
+      "before_sha256": "a089216da42dae737becb1da714be3cab51e8c5f2c2a23ff9c3c11f3282accf9",
+      "after_sha256": "3cd5543c5ff31ddba6f604ac073593468ee7d2fdf1f2401ae67d7eae7ce61167"
+    },
+    {
+      "id": "edd-1",
+      "before_sha256": "782d85d6dace67f9b2c7b9daac922053d91d62cbf67d596eeb595438c9120ea9",
+      "after_sha256": "ddadf54f0ce2bc01fab8d07d88a4e0b042a32d3b810e7365035df79d5007a0c3"
+    },
+    {
+      "id": "dec-1",
+      "before_sha256": "537d9f716a8c566ac60e8e7bf9aaa9d4db5839963335ceb99f4421bf93b59dc0",
+      "after_sha256": "21027bb5db11bce97085c07cd0c1cac7cc47c2b060ac6856c56d3fd56866a15d"
+    },
+    {
+      "id": "dec-2",
+      "before_sha256": "4e2ba5cbcf0bee4c4ae8b81425295c857cab231ab34e012974c3b98c2da81417",
+      "after_sha256": "65f7c9882e793608bc0769fe3d3196711ab0e622d4e7459edcb04633acbc90e7"
+    },
+    {
+      "id": "goal-1",
+      "before_sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+      "after_sha256": "3fda685d8ab74c741e78143625978919bf22533ff51cd7cfce855ba9682176b1"
+    },
+    {
+      "id": "epic-1",
+      "before_sha256": "b5cb93248bc7118ec801678eb308b5ebc8649d2cfd59f08392adbca04e065d37",
+      "after_sha256": "9a4b57e79eefe568e8ba724d85c06d9491656469619bf337b0296e500dd5d380"
+    },
+    {
+      "id": "spike-1",
+      "before_sha256": "c662c047b9501fa1c3aacc6fab274177e745851fe21d21e2caae98d62f8188ec",
+      "after_sha256": "072e9c7a23ac90b29e1fe4025a9b12784e791149886bd2efeab4cf98e6a8c8ab"
+    },
+    {
+      "id": "task-1",
+      "before_sha256": "f2e37afad5cbf5b30686c20be30c27cdf2259a0947f51fb623aa5b645323ec70",
+      "after_sha256": "f14d7481ffca6779fb049b64440402d41f086b6150afe580ad9ddde539d5374f"
+    },
+    {
+      "id": "test-1",
+      "before_sha256": "1a6943e32cf0495f992ccab1bba07bcc0e5047dc78dd693a3a214f8ce229d014",
+      "after_sha256": "abc8641b4badf1c91e1d68620c85ae18b6c786481294dd81c8f3bafeb8e29146"
+    },
+    {
+      "id": "task-2",
+      "before_sha256": null,
+      "after_sha256": "80072942324b5fb4b9a438efcb7eb296e8ef05b3b3bc7002f066b8681f7065ae"
+    },
+    {
+      "id": "test-2",
+      "before_sha256": null,
+      "after_sha256": "d70553f4d00b6bd59c740719d6810dfc1ef1bf1752172d98aa8ee332b11ff464"
+    },
+    {
+      "id": "task-3",
+      "before_sha256": null,
+      "after_sha256": "449caa2f3c55b922099f4f1703f9179194f3b24c984e731487a70bf84a837668"
+    },
+    {
+      "id": "test-3",
+      "before_sha256": null,
+      "after_sha256": "acd1352c03633c06bcc0cdad0b3a15e4eb48995d3abc0df00c556773df0c5281"
+    }
+  ],
+  "positioning": {
+    "audience": "AI-native builders, independent developers, and technical leads",
+    "promise": "Keep the plan when the agent changes.",
+    "visual_direction": "Bright Ocean Flow navigation chart",
+    "required_story": [
+      "Plan",
+      "Work",
+      "Evidence",
+      "What completed",
+      "Why it was done",
+      "What comes next"
+    ]
+  },
+  "routes": {
+    "detail": "/demo/2/",
+    "output": "/demo/2/output/",
+    "listed": false,
+    "noindex": true
+  },
+  "chain": [
+    "spike-1",
+    "task-1",
+    "test-1",
+    "task-2",
+    "test-2",
+    "task-3",
+    "test-3",
+    "accepted checkpoint"
+  ],
+  "authority": {
+    "goal_4_last_owned_child_node": "test-2",
+    "goal_4_stop_state": "paused with task-3 next",
+    "goal_5_publication_required": true,
+    "publication_evidence": [],
+    "live_evidence": []
+  },
+  "validation": {
+    "ok": true,
+    "warning_count": 0,
+    "error_count": 0,
+    "first_actionable_qid": "root:spike-1",
+    "concise_pack_node_count": 18,
+    "complete_chain_present": true,
+    "implementation_nodes_completed": 0
+  }
+}

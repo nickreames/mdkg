@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-fork-receipt",
+  "state": "pass",
+  "recorded_at": "2026-07-27T17:26:27Z",
+  "command": "node scripts/bootstrap-website-demo-run.js --source examples/website-demo-template --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --manifest presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json --receipt presentations/ai-native-sdlc-demo/runs/demo-002/BOOTSTRAP_RECEIPT.json",
+  "canonical_fork_command": "mdkg graph fork examples/website-demo-template/.mdkg --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --json",
+  "source": {
+    "root": "examples/website-demo-template",
+    "graph": "examples/website-demo-template/.mdkg",
+    "tree_sha256": "sha256:729b2196df234787c388cf968874cb0008d0a8d32a186b0a61297e47242459b3",
+    "cli_tree_sha256": "sha256:0f05e8de0b4b42aaa84e461b27abf6073bde0597e2559edc769e5471925c3e24",
+    "goal": {
+      "qid": "root:goal-1",
+      "title": "Build a complete differentiated website demo from the canonical mdkg template",
+      "sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+      "snapshot": "presentations/ai-native-sdlc-demo/artifacts/demo-002/source-goal-1.md"
+    }
+  },
+  "target": {
+    "root": "presentations/ai-native-sdlc-demo/runs/demo-002",
+    "graph": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg",
+    "writable": true,
+    "registered_as_root_subgraph": false,
+    "goal": {
+      "qid": "root:goal-1",
+      "title": "Build a complete differentiated website demo from the canonical mdkg template",
+      "sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c"
+    }
+  },
+  "identity": {
+    "preserved_ids": true,
+    "selected_goal_qid": "root:goal-1",
+    "first_actionable_qid": "root:spike-1"
+  },
+  "created_file_inventory": {
+    "receipt": "presentations/ai-native-sdlc-demo/runs/demo-002/BOOTSTRAP_RECEIPT.json",
+    "receipt_sha256": "8ca33e59b16dfba8705a763fdf9e4b75dcaa2c6e55bc2a633e84c057ae98b8be",
+    "field": "generated_inventory",
+    "file_count": 103,
+    "rule": "The bootstrap receipt generated_inventory array is the canonical stable-path inventory for this fork."
+  },
+  "validation": {
+    "ok": true,
+    "warning_count": 0,
+    "error_count": 0,
+    "concise_pack_node_count": 13,
+    "standard_pack_node_count": 13
+  },
+  "authority": {
+    "publication": false,
+    "provider_inspection": false,
+    "git_index_mutation": false
+  }
+}

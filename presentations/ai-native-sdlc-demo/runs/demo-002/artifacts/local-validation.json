@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-local-validation",
+  "state": "pass",
+  "recorded_at": "2026-07-27T17:50:00Z",
+  "work_qid": "root:test-1",
+  "subject": {
+    "source": "site/src/pages/index.astro",
+    "source_sha256": "475b83b57b443235ab49269592880f70b760893ca2a7af3295ed0d80a1a27747",
+    "output": "site/dist/index.html",
+    "output_sha256": "b31086be04aa2057e0f776491e014207f392cb45a73ab5f0f3a42724ca893447"
+  },
+  "checks": {
+    "astro_build": {
+      "state": "pass",
+      "command": "npm --prefix presentations/ai-native-sdlc-demo/runs/demo-002/site run build",
+      "pages": 1,
+      "total_bytes": 30205,
+      "budget_bytes": 512000
+    },
+    "graph_validation": {
+      "state": "pass",
+      "command": "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-002 validate --json",
+      "warnings": 0,
+      "errors": 0
+    },
+    "static_output_scan": {
+      "state": "pass",
+      "javascript_files": 0,
+      "script_tags": 0,
+      "client_directives": 0,
+      "astro_islands": 0,
+      "remote_fonts": 0,
+      "forms": 0,
+      "analytics_or_trackers": 0,
+      "secret_assignments": 0,
+      "raster_assets": 0
+    },
+    "browser_desktop": {
+      "state": "pass",
+      "url": "http://127.0.0.1:4322/",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "document_scroll_width": 1440,
+      "horizontal_overflow": false,
+      "h1_count": 1,
+      "h2_count": 5,
+      "main_count": 1,
+      "nav_count": 1,
+      "section_count": 6,
+      "article_count": 8,
+      "script_count": 0,
+      "astro_island_count": 0,
+      "robots": "noindex,nofollow"
+    },
+    "browser_mobile": {
+      "state": "pass",
+      "url": "http://127.0.0.1:4322/",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document_scroll_width": 390,
+      "horizontal_overflow": false,
+      "h1_count": 1,
+      "script_count": 0,
+      "astro_island_count": 0,
+      "robots": "noindex,nofollow"
+    },
+    "accessibility_contract": {
+      "state": "pass",
+      "language": "en",
+      "skip_link": "#main",
+      "duplicate_ids": 0,
+      "naturally_focusable_links": 10,
+      "nonzero_negative_tabindex": 0,
+      "visible_focus_css": true,
+      "reduced_motion_css": true,
+      "semantic_landmarks": true,
+      "minimum_measured_text_contrast": 4.66,
+      "contrast_standard": "WCAG 2.x AA"
+    },
+    "required_story": {
+      "state": "pass",
+      "hero_promise": true,
+      "problem_context": true,
+      "plan_work_evidence": true,
+      "source_vs_specialized_goal": true,
+      "what_completed_why_next": true,
+      "quickstart_cta": true,
+      "feedback_cta": true,
+      "public_alpha_pre_v1": true,
+      "local_only_boundary": true
+    }
+  },
+  "visual_review": {
+    "state": "pass",
+    "desktop": "Ocean Flow navigation-chart composition is coherent, legible, and differentiated.",
+    "mobile": "Single-column composition retains hierarchy and route-chart meaning without horizontal overflow.",
+    "note": "The browser connector's full-page stitching repeats fixed-position capture segments; viewport inspection and DOM metrics were used for acceptance."
+  },
+  "next": {
+    "qid": "root:task-2",
+    "title": "Integrate Demo 2 through the canonical static Astro adapter",
+    "publication_authorized": false
+  },
+  "authority": {
+    "local_only": true,
+    "canonical_integration": false,
+    "git_index_mutation": false,
+    "publication": false,
+    "provider_inspection": false
+  }
+}

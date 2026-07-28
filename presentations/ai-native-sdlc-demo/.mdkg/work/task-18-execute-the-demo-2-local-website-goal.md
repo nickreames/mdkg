@@ -2,7 +2,7 @@
 id: task-18
 type: task
 title: Execute the Demo 2 local website goal
-status: backlog
+status: done
 priority: 1
 epic: epic-4
 parent: goal-4
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-4-step-5]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview

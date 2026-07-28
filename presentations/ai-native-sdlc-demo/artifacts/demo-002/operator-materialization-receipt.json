@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-operator-materialization-receipt",
+  "state": "pass",
+  "recorded_at": "2026-07-27T17:27:33Z",
+  "command": "node scripts/bootstrap-website-demo-run.js --source examples/website-demo-template --target presentations/ai-native-sdlc-demo/runs/demo-002 --start-goal goal-1 --manifest presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json --receipt presentations/ai-native-sdlc-demo/runs/demo-002/BOOTSTRAP_RECEIPT.json",
+  "mode": "verify-only",
+  "manifest": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json",
+    "sha256": "3ac248cb5f49bc65c1ec5fd73281b8a075d83710f1414ef82914c60db6f2963f",
+    "entry_count": 21,
+    "required_entry_count": 21
+  },
+  "source_root": "examples/website-demo-template",
+  "target_root": "presentations/ai-native-sdlc-demo/runs/demo-002",
+  "verification": {
+    "expected_actual_hashes": "Every manifest entry source hash and target hash matched the declared SHA-256.",
+    "expected_actual_modes": "Every materialized target mode matched its declared four-digit mode.",
+    "inventory_equality": true,
+    "missing_entries": [],
+    "unexpected_entries": [],
+    "overwritten_files": [],
+    "bootstrap_receipt": "presentations/ai-native-sdlc-demo/runs/demo-002/BOOTSTRAP_RECEIPT.json",
+    "bootstrap_receipt_sha256": "f6e959133bd094782ede47d00c074b543e5a89716b0d22fd21c4f55d87315754",
+    "repeat_result": "identical inventory and hashes"
+  },
+  "projection_parity": {
+    "canonical_skill_entries_checked": 10,
+    "agents_mirror": "pass",
+    "claude_mirror": "pass",
+    "managed_manifests_equal": true,
+    "canonical_and_mirror_skill_hashes_equal": true
+  },
+  "child_checks": {
+    "validation": {
+      "ok": true,
+      "warnings": 0,
+      "errors": 0
+    },
+    "goal_qid": "root:goal-1",
+    "first_actionable_qid": "root:spike-1",
+    "concise_pack_node_count": 13,
+    "standard_pack_node_count": 13
+  },
+  "authority": {
+    "writes_outside_run_root": 0,
+    "git_index_mutation": false,
+    "publication": false,
+    "provider_inspection": false
+  }
+}

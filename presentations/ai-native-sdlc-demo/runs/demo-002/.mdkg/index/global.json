@@ -1,0 +1,1310 @@
+{
+  "meta": {
+    "tool": "mdkg",
+    "schema_version": 1,
+    "generated_at": "2026-07-27T18:10:13.484Z",
+    "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo/runs/demo-002",
+    "workspaces": [
+      "root"
+    ],
+    "latest_checkpoint_qid": {
+      "root": "root:chk-2"
+    }
+  },
+  "workspaces": {
+    "root": {
+      "path": ".",
+      "enabled": true
+    }
+  },
+  "nodes": {
+    "root:chk-1": {
+      "id": "chk-1",
+      "qid": "root:chk-1",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "website demo template seed accepted",
+      "status": "backlog",
+      "priority": 9,
+      "created": "2026-06-29",
+      "updated": "2026-06-29",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-1-website-demo-template-seed-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:chk-2": {
+      "id": "chk-2",
+      "qid": "root:chk-2",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Static Astro zero client JavaScript template contract accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [
+        "README.md",
+        "DESIGN.md",
+        "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+        "DEMO_HANDOFF_PROMPT.md",
+        "CREATIVE_PRODUCTION_INTAKE.md"
+      ],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-2-static-astro-zero-client-javascript-template-contract-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:dec-1": {
+      "id": "dec-1",
+      "qid": "root:dec-1",
+      "ws": "root",
+      "type": "dec",
+      "title": "Static Astro and zero client JavaScript is the demo stack",
+      "status": "accepted",
+      "created": "2026-06-29",
+      "updated": "2026-07-26",
+      "tags": [
+        "demo",
+        "demo-002",
+        "stack",
+        "astro",
+        "static",
+        "zero-javascript"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1",
+        "prd-2"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/dec-1-static-astro-and-zero-client-javascript-is-the-demo-stack.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:dec-2": {
+      "id": "dec-2",
+      "qid": "root:dec-2",
+      "ws": "root",
+      "type": "dec",
+      "title": "Demo 2 separates local integration from publication authority",
+      "status": "accepted",
+      "created": "2026-06-29",
+      "updated": "2026-07-26",
+      "tags": [
+        "demo",
+        "demo-002",
+        "authority",
+        "publication-gate",
+        "no-secret"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1",
+        "prd-2"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/dec-2-demo-template-remains-preview-gated-and-public-safe.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:edd-1": {
+      "id": "edd-1",
+      "qid": "root:edd-1",
+      "ws": "root",
+      "type": "edd",
+      "title": "Demo 2 durable-continuity architecture and evidence contract",
+      "created": "2026-06-29",
+      "updated": "2026-07-26",
+      "tags": [
+        "demo",
+        "demo-002",
+        "design",
+        "ocean-flow",
+        "static-astro",
+        "evidence"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1",
+        "prd-2",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/edd-1-ocean-flow-website-demo-design-and-creative-production-contract.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:epic-1": {
+      "id": "epic-1",
+      "qid": "root:epic-1",
+      "ws": "root",
+      "type": "epic",
+      "title": "complete Demo 2 durable-continuity landing-page run",
+      "status": "todo",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-07-26",
+      "tags": [
+        "demo",
+        "demo-002",
+        "website",
+        "astro",
+        "durable-continuity"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-1",
+        "prd-2"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/epic-1-complete-creative-website-demo-build.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [
+          "root:spike-1",
+          "root:task-1",
+          "root:test-1",
+          "root:task-2",
+          "root:test-2",
+          "root:task-3",
+          "root:test-3"
+        ],
+        "context_refs": [
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:goal-1": {
+      "id": "goal-1",
+      "qid": "root:goal-1",
+      "ws": "root",
+      "type": "goal",
+      "title": "Build and publish the Demo 2 durable-continuity landing page",
+      "status": "blocked",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "website",
+        "astro",
+        "static",
+        "zero-javascript",
+        "durable-continuity"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "site/",
+        "artifacts/creative-direction.md",
+        "artifacts/local-validation.json",
+        "artifacts/integration-receipt.json",
+        "artifacts/publication-receipt.json",
+        "artifacts/live-verification-receipt.json"
+      ],
+      "refs": [
+        "prd-2",
+        "edd-1",
+        "dec-1",
+        "dec-2",
+        "chk-2"
+      ],
+      "aliases": [
+        "demo-002-goal"
+      ],
+      "skills": [
+        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
+        "pursue-mdkg-goal",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {
+        "goal_state": "paused",
+        "goal_condition": "The specialized Demo 2 durable-continuity landing page is implemented and locally validated, integrated through the canonical static Astro adapter, approved and non-force pushed under a separate publication gate, verified against READY deployments for the exact pushed SHA at both live routes, and closed with an accepted evidence checkpoint.",
+        "scope_refs": [
+          "spike-1",
+          "task-1",
+          "test-1",
+          "task-2",
+          "test-2",
+          "task-3",
+          "test-3"
+        ],
+        "active_node": "task-1",
+        "required_skills": [
+          "select-work-and-ground-context",
+          "build-pack-and-execute-task",
+          "pursue-mdkg-goal",
+          "verify-close-and-checkpoint"
+        ],
+        "required_checks": [
+          "child graph validation and routing",
+          "local static Astro build",
+          "zero client JavaScript and public-safety scan",
+          "canonical detail and output route build",
+          "separate publication approval",
+          "complete non-force push range",
+          "exact-SHA READY deployment proof",
+          "live desktop and mobile route verification"
+        ],
+        "max_iterations": "25",
+        "blocked_after_attempts": "3"
+      },
+      "path": ".mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:chk-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:prd-2": {
+      "id": "prd-2",
+      "qid": "root:prd-2",
+      "ws": "root",
+      "type": "prd",
+      "title": "Demo 2 durable-continuity landing-page requirements",
+      "created": "2026-07-26",
+      "updated": "2026-07-26",
+      "tags": [
+        "website-demo",
+        "demo-002",
+        "static-astro",
+        "durable-continuity"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "README.md",
+        "DESIGN.md",
+        "WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+        "DEMO_HANDOFF_PROMPT.md"
+      ],
+      "refs": [
+        "goal-1",
+        "epic-1",
+        "edd-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [
+        "reusable-website-demo-platform"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/design/prd-2-reusable-static-astro-website-demo-platform.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-1": {
+      "id": "rule-1",
+      "qid": "root:rule-1",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg conventions (naming, ids, frontmatter, status, priority, templates)",
+      "created": "2026-01-06",
+      "updated": "2026-03-05",
+      "tags": [
+        "conventions",
+        "mdkg",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-1-mdkg-conventions.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-2": {
+      "id": "rule-2",
+      "qid": "root:rule-2",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg context pack rules (selection, ordering, verbose, checkpoints)",
+      "created": "2026-01-06",
+      "updated": "2026-01-14",
+      "tags": [
+        "agents",
+        "mdkg",
+        "pack",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-2-context-pack-rules.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-3": {
+      "id": "rule-3",
+      "qid": "root:rule-3",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg cli contract (root-only, commands, flags, exit codes)",
+      "created": "2026-01-06",
+      "updated": "2026-05-17",
+      "tags": [
+        "cli",
+        "contract",
+        "mdkg",
+        "spec"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-3-cli-contract.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-4": {
+      "id": "rule-4",
+      "qid": "root:rule-4",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg repo safety (ignore rules, publish safety, deployment safety)",
+      "created": "2026-01-06",
+      "updated": "2026-06-03",
+      "tags": [
+        "mdkg",
+        "publishing",
+        "safety"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-5": {
+      "id": "rule-5",
+      "qid": "root:rule-5",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg release and versioning (semver, publish checklist)",
+      "created": "2026-01-06",
+      "updated": "2026-01-14",
+      "tags": [
+        "mdkg",
+        "npm",
+        "release",
+        "semver"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-5-release-and-versioning.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-6": {
+      "id": "rule-6",
+      "qid": "root:rule-6",
+      "ws": "root",
+      "type": "rule",
+      "title": "mdkg templates and schemas (global templates, required frontmatter, body guidance)",
+      "created": "2026-01-06",
+      "updated": "2026-03-05",
+      "tags": [
+        "mdkg",
+        "schema",
+        "templates"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/rule-6-templates-and-schemas.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-7": {
+      "id": "rule-7",
+      "qid": "root:rule-7",
+      "ws": "root",
+      "type": "rule",
+      "title": "collaboration profile and operator preferences",
+      "created": "2026-06-27",
+      "updated": "2026-06-27",
+      "tags": [
+        "collaboration",
+        "preferences",
+        "operator"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "dec-53"
+      ],
+      "aliases": [
+        "collaboration",
+        "operator-profile"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/COLLABORATION.md",
+      "edges": {
+        "relates": [
+          "root:rule-human"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-guide": {
+      "id": "rule-guide",
+      "qid": "root:rule-guide",
+      "ws": "root",
+      "type": "rule",
+      "title": "agent guide (how to work in this repo using mdkg)",
+      "created": "2026-01-06",
+      "updated": "2026-05-14",
+      "tags": [
+        "agents",
+        "mdkg",
+        "workflow"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/guide.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-human": {
+      "id": "rule-human",
+      "qid": "root:rule-human",
+      "ws": "root",
+      "type": "rule",
+      "title": "human working profile and collaboration preferences",
+      "created": "2026-03-10",
+      "updated": "2026-06-27",
+      "tags": [
+        "human",
+        "collaboration",
+        "preferences"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [
+        "human"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/HUMAN.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:rule-soul": {
+      "id": "rule-soul",
+      "qid": "root:rule-soul",
+      "ws": "root",
+      "type": "rule",
+      "title": "agent soul and execution contract",
+      "created": "2026-03-10",
+      "updated": "2026-03-10",
+      "tags": [
+        "agent",
+        "llm",
+        "memory",
+        "constraints",
+        "context-window"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "edd-3",
+        "edd-6",
+        "rule-3",
+        "rule-4",
+        "rule-5"
+      ],
+      "aliases": [
+        "soul",
+        "system-contract"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/core/SOUL.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:spike-1": {
+      "id": "spike-1",
+      "qid": "root:spike-1",
+      "ws": "root",
+      "type": "spike",
+      "title": "Finalize the Demo 2 durable-continuity page direction",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "website",
+        "strategy",
+        "durable-continuity"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/creative-direction.md"
+      ],
+      "refs": [
+        "goal-1",
+        "prd-2",
+        "edd-1",
+        "dec-1",
+        "dec-2",
+        "chk-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "select-work-and-ground-context",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "next": "root:task-1",
+        "relates": [
+          "root:task-1",
+          "root:test-1",
+          "root:task-2",
+          "root:test-2",
+          "root:task-3",
+          "root:test-3",
+          "root:prd-2",
+          "root:dec-1",
+          "root:dec-2",
+          "root:edd-1"
+        ],
+        "blocked_by": [],
+        "blocks": [
+          "root:task-1"
+        ],
+        "context_refs": [
+          "root:goal-1",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:chk-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:task-1": {
+      "id": "task-1",
+      "qid": "root:task-1",
+      "ws": "root",
+      "type": "task",
+      "title": "Build the local Demo 2 durable-continuity Astro site",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "website",
+        "astro",
+        "static",
+        "zero-javascript",
+        "implementation"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "site/",
+        "artifacts/implementation-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "spike-1",
+        "prd-2",
+        "edd-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "build-pack-and-execute-task",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/task-1-build-complete-static-astro-website-demo.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:spike-1",
+        "next": "root:test-1",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:spike-1",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:task-2": {
+      "id": "task-2",
+      "qid": "root:task-2",
+      "ws": "root",
+      "type": "task",
+      "title": "Integrate Demo 2 through the canonical static Astro adapter",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "integration",
+        "astro",
+        "canonical-adapter"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/integration-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "test-1",
+        "prd-2",
+        "edd-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "build-pack-and-execute-task",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/task-2-integrate-demo-2-through-the-canonical-static-astro-adapter.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:test-1",
+        "next": "root:test-2",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:test-1",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:task-3": {
+      "id": "task-3",
+      "qid": "root:task-3",
+      "ws": "root",
+      "type": "task",
+      "title": "Publish the accepted Demo 2 candidate",
+      "status": "backlog",
+      "priority": 1,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "publication",
+        "authority-gated"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/publication-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "test-2",
+        "prd-2",
+        "edd-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "pursue-mdkg-goal",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/task-3-publish-the-accepted-demo-2-candidate.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:test-2",
+        "next": "root:test-3",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:test-2",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:test-1": {
+      "id": "test-1",
+      "qid": "root:test-1",
+      "ws": "root",
+      "type": "test",
+      "title": "Verify the local Demo 2 candidate and public-safety contract",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-06-29",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "website",
+        "validation",
+        "static",
+        "zero-javascript"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/local-validation.json"
+      ],
+      "refs": [
+        "goal-1",
+        "task-1",
+        "prd-2",
+        "edd-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/test-1-complete-website-demo-validation-and-handoff-contract.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:task-1",
+        "next": "root:task-2",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:task-1",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:test-2": {
+      "id": "test-2",
+      "qid": "root:test-2",
+      "ws": "root",
+      "type": "test",
+      "title": "Verify Demo 2 canonical detail and output routes locally",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "test",
+        "canonical-routes",
+        "public-safety"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/canonical-route-validation.json"
+      ],
+      "refs": [
+        "goal-1",
+        "task-2",
+        "prd-2",
+        "edd-1",
+        "dec-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/test-2-verify-demo-2-canonical-detail-and-output-routes-locally.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:task-2",
+        "next": "root:task-3",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:task-2",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    },
+    "root:test-3": {
+      "id": "test-3",
+      "qid": "root:test-3",
+      "ws": "root",
+      "type": "test",
+      "title": "Verify Demo 2 exact SHA deployments and live routes",
+      "status": "backlog",
+      "priority": 1,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [
+        "demo",
+        "demo-002",
+        "test",
+        "exact-sha",
+        "live-verification"
+      ],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/live-verification-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "task-3",
+        "prd-2",
+        "edd-1",
+        "dec-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/test-3-verify-demo-2-exact-sha-deployments-and-live-routes.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:task-3",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:task-3",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": []
+      }
+    }
+  },
+  "reverse_edges": {
+    "relates": {
+      "root:rule-human": [
+        "root:rule-7"
+      ],
+      "root:task-1": [
+        "root:spike-1"
+      ],
+      "root:test-1": [
+        "root:spike-1"
+      ],
+      "root:task-2": [
+        "root:spike-1"
+      ],
+      "root:test-2": [
+        "root:spike-1"
+      ],
+      "root:task-3": [
+        "root:spike-1"
+      ],
+      "root:test-3": [
+        "root:spike-1"
+      ],
+      "root:prd-2": [
+        "root:spike-1"
+      ],
+      "root:dec-1": [
+        "root:spike-1"
+      ],
+      "root:dec-2": [
+        "root:spike-1"
+      ],
+      "root:edd-1": [
+        "root:spike-1"
+      ]
+    },
+    "blocks": {
+      "root:spike-1": [
+        "root:epic-1"
+      ],
+      "root:task-1": [
+        "root:epic-1",
+        "root:spike-1"
+      ],
+      "root:test-1": [
+        "root:epic-1"
+      ],
+      "root:task-2": [
+        "root:epic-1"
+      ],
+      "root:test-2": [
+        "root:epic-1"
+      ],
+      "root:task-3": [
+        "root:epic-1"
+      ],
+      "root:test-3": [
+        "root:epic-1"
+      ]
+    },
+    "context_refs": {
+      "root:prd-2": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:edd-1": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:dec-1": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:test-1",
+        "root:test-2"
+      ],
+      "root:dec-2": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:chk-2": [
+        "root:goal-1",
+        "root:spike-1"
+      ],
+      "root:goal-1": [
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:spike-1": [
+        "root:task-1"
+      ],
+      "root:test-1": [
+        "root:task-2"
+      ],
+      "root:test-2": [
+        "root:task-3"
+      ],
+      "root:task-1": [
+        "root:test-1"
+      ],
+      "root:task-2": [
+        "root:test-2"
+      ],
+      "root:task-3": [
+        "root:test-3"
+      ]
+    },
+    "epic": {
+      "root:epic-1": [
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ]
+    },
+    "parent": {
+      "root:goal-1": [
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ]
+    },
+    "next": {
+      "root:task-1": [
+        "root:spike-1"
+      ],
+      "root:test-1": [
+        "root:task-1"
+      ],
+      "root:test-2": [
+        "root:task-2"
+      ],
+      "root:test-3": [
+        "root:task-3"
+      ],
+      "root:task-2": [
+        "root:test-1"
+      ],
+      "root:task-3": [
+        "root:test-2"
+      ]
+    },
+    "prev": {
+      "root:spike-1": [
+        "root:task-1"
+      ],
+      "root:test-1": [
+        "root:task-2"
+      ],
+      "root:test-2": [
+        "root:task-3"
+      ],
+      "root:task-1": [
+        "root:test-1"
+      ],
+      "root:task-2": [
+        "root:test-2"
+      ],
+      "root:task-3": [
+        "root:test-3"
+      ]
+    }
+  }
+}

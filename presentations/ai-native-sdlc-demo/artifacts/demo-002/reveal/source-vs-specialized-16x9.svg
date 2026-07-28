@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#edf8fb"/>
+      <stop offset=".58" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f6fbfd"/>
+    </linearGradient>
+    <linearGradient id="ocean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f5fd6"/>
+      <stop offset="1" stop-color="#087f78"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#1c5b75" flood-opacity=".14"/>
+    </filter>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#0f5fd6" stroke-opacity=".055"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#paper)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" fill="#0d2033">
+    <g transform="translate(78 58)">
+      <circle cx="19" cy="19" r="19" fill="#0d2033"/>
+      <rect x="10" y="20" width="4" height="9" rx="2" fill="#1cc7b5"/>
+      <rect x="17" y="10" width="4" height="19" rx="2" fill="#1cc7b5"/>
+      <rect x="24" y="15" width="4" height="14" rx="2" fill="#1cc7b5"/>
+      <text x="52" y="28" font-size="24" font-weight="850">mdkg</text>
+      <rect x="136" y="17" width="42" height="3" fill="#ef684b"/>
+      <text x="192" y="27" fill="#0f5fd6" font-size="16" font-weight="850" letter-spacing="2.2">DEMO 2 REVEAL</text>
+    </g>
+
+    <g transform="translate(1242 57)">
+      <rect width="278" height="42" rx="21" fill="#ffffff" stroke="#bfdde7"/>
+      <text x="139" y="27" text-anchor="middle" fill="#5f7485" font-size="14" font-weight="800" letter-spacing="1.2">LOCAL CANDIDATE · NOT PUBLISHED</text>
+    </g>
+
+    <text x="78" y="162" font-size="58" font-weight="820" letter-spacing="-2.8">One goal ID. A more specific contract.</text>
+
+    <g transform="translate(78 218)" filter="url(#shadow)">
+      <rect width="610" height="448" rx="16" fill="#ffffff" fill-opacity=".96" stroke="#bfdde7"/>
+      <text x="34" y="50" fill="#0f5fd6" font-size="15" font-weight="850" letter-spacing="1.7">SOURCE · GOAL-1 · REUSABLE</text>
+      <text x="34" y="110" font-size="38" font-weight="820" letter-spacing="-1.4">Starting specification</text>
+
+      <line x1="34" y1="144" x2="576" y2="144" stroke="#bfdde7"/>
+      <text x="34" y="178" fill="#0f5fd6" font-size="13" font-weight="850" letter-spacing="1.2">PROMISE</text>
+      <text x="154" y="176" fill="#3f5568" font-size="18">
+        <tspan x="154" dy="0">Build a differentiated static Astro website</tspan>
+        <tspan x="154" dy="25">inside fixed design and safety boundaries.</tspan>
+      </text>
+
+      <line x1="34" y1="238" x2="576" y2="238" stroke="#bfdde7"/>
+      <text x="34" y="272" fill="#0f5fd6" font-size="13" font-weight="850" letter-spacing="1.2">AUTHORITY</text>
+      <text x="154" y="270" fill="#3f5568" font-size="18">
+        <tspan x="154" dy="0">Local graph, implementation, and validation</tspan>
+        <tspan x="154" dy="25">only.</tspan>
+      </text>
+
+      <line x1="34" y1="332" x2="576" y2="332" stroke="#bfdde7"/>
+      <text x="34" y="366" fill="#0f5fd6" font-size="13" font-weight="850" letter-spacing="1.2">NEXT</text>
+      <text x="154" y="364" fill="#3f5568" font-size="18">
+        <tspan x="154" dy="0">Choose the audience and creative direction.</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(912 218)" filter="url(#shadow)">
+      <rect width="610" height="448" rx="16" fill="#ffffff" fill-opacity=".98" stroke="#0f5fd6" stroke-opacity=".46"/>
+      <rect x="430" width="180" height="7" rx="3.5" fill="url(#ocean)"/>
+      <text x="34" y="50" fill="#0f5fd6" font-size="15" font-weight="850" letter-spacing="1.7">DEMO 2 · GOAL-1 · SPECIALIZED</text>
+      <text x="34" y="110" font-size="38" font-weight="820" letter-spacing="-1.4">Executed specification</text>
+
+      <line x1="34" y1="144" x2="576" y2="144" stroke="#bfdde7"/>
+      <text x="34" y="178" fill="#0f5fd6" font-size="13" font-weight="850" letter-spacing="1.2">PROMISE</text>
+      <text x="154" y="176" fill="#3f5568" font-size="18">
+        <tspan x="154" dy="0">Keep the plan when the agent changes—then</tspan>
+        <tspan x="154" dy="25">prove it through local canonical routes.</tspan>
+      </text>
+
+      <line x1="34" y1="238" x2="576" y2="238" stroke="#bfdde7"/>
+      <text x="34" y="272" fill="#0f5fd6" font-size="13" font-weight="850" letter-spacing="1.2">AUTHORITY</text>
+      <text x="154" y="270" fill="#3f5568" font-size="18">
+        <tspan x="154" dy="0">Integrate locally; stop before commit, push,</tspan>
+        <tspan x="154" dy="25">deployment, or provider inspection.</tspan>
+      </text>
+
+      <line x1="34" y1="332" x2="576" y2="332" stroke="#bfdde7"/>
+      <text x="34" y="366" fill="#0f5fd6" font-size="13" font-weight="850" letter-spacing="1.2">NEXT</text>
+      <text x="154" y="364" fill="#3f5568" font-size="18">
+        <tspan x="154" dy="0">Request a separate Goal 5 publication approval.</tspan>
+      </text>
+    </g>
+
+    <g transform="translate(759 405)">
+      <circle cx="42" cy="42" r="42" fill="url(#ocean)"/>
+      <text x="42" y="56" text-anchor="middle" fill="#ffffff" font-size="40" font-weight="900">→</text>
+    </g>
+
+    <g transform="translate(78 702)">
+      <rect width="1444" height="142" rx="16" fill="#0d2033"/>
+      <g transform="translate(30 29)">
+        <rect width="46" height="46" rx="8" fill="#10263a" stroke="#2a4154"/>
+        <text x="23" y="30" text-anchor="middle" fill="#1cc7b5" font-size="15" font-weight="850">01</text>
+        <text x="62" y="31" fill="#ffffff" font-size="24" font-weight="850">Plan</text>
+        <text x="124" y="31" fill="#b8c9d5" font-size="24" font-weight="850">→</text>
+        <rect x="158" width="46" height="46" rx="8" fill="#10263a" stroke="#2a4154"/>
+        <text x="181" y="30" text-anchor="middle" fill="#1cc7b5" font-size="15" font-weight="850">02</text>
+        <text x="220" y="31" fill="#ffffff" font-size="24" font-weight="850">Work</text>
+        <text x="286" y="31" fill="#b8c9d5" font-size="24" font-weight="850">→</text>
+        <rect x="320" width="46" height="46" rx="8" fill="#10263a" stroke="#2a4154"/>
+        <text x="343" y="30" text-anchor="middle" fill="#1cc7b5" font-size="15" font-weight="850">03</text>
+        <text x="382" y="31" fill="#ffffff" font-size="24" font-weight="850">Evidence</text>
+      </g>
+
+      <g transform="translate(560 25)">
+        <line x1="0" y1="0" x2="0" y2="86" stroke="#1cc7b5" stroke-width="2"/>
+        <text x="16" y="20" fill="#1cc7b5" font-size="13" font-weight="850" letter-spacing="1.1">WHAT COMPLETED</text>
+        <text x="16" y="48" fill="#eef7fb" font-size="17">Static candidate + canonical proof</text>
+      </g>
+      <g transform="translate(880 25)">
+        <line x1="0" y1="0" x2="0" y2="86" stroke="#1cc7b5" stroke-width="2"/>
+        <text x="16" y="20" fill="#1cc7b5" font-size="13" font-weight="850" letter-spacing="1.1">WHY</text>
+        <text x="16" y="48" fill="#eef7fb" font-size="17">Continuity beats reconstruction</text>
+      </g>
+      <g transform="translate(1176 25)">
+        <line x1="0" y1="0" x2="0" y2="86" stroke="#1cc7b5" stroke-width="2"/>
+        <text x="16" y="20" fill="#1cc7b5" font-size="13" font-weight="850" letter-spacing="1.1">WHAT COMES NEXT</text>
+        <text x="16" y="48" fill="#eef7fb" font-size="17">Separate publication gate</text>
+      </g>
+    </g>
+  </g>
+</svg>
