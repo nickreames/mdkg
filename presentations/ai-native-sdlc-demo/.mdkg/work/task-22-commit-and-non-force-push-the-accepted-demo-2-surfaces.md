@@ -2,7 +2,7 @@
 id: task-22
 type: task
 title: Commit the accepted Demo 2 surfaces locally without push
-status: progress
+status: done
 priority: 1
 epic: epic-5
 parent: goal-5
@@ -14,7 +14,7 @@ links: []
 artifacts: [artifacts/demo-002/local-commit-receipt.json]
 relates: []
 blocked_by: []
-blocks: []
+blocks: [task-49]
 refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-4, chk-14, task-21]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-4, chk-14, task-21]
 evidence_refs: [chk-14, task-21]
@@ -82,4 +82,26 @@ does not push.
 
 - goal-5
 - epic-5
-- Evidence pending activation.
+
+# Results
+
+- Refreshed and verified the private program bundle and all root subgraph
+  projections before staging.
+- Created two bounded, non-amended local commits from exact path-and-hash
+  manifests:
+  - `611988111a590e9c108ad556c20682c3bc98695f` —
+    `feat(demo): add the accepted Demo 2 rehearsal candidate` (166 paths)
+  - `34bae9520452ee087ba958c92bcf0716bd59f282` —
+    `plan(presentation): harden Demo 2 publication workflow` (36 paths)
+- Re-froze the allowlist after the first commit advanced HEAD, then staged and
+  verified the second group against the new parent.
+- Kept both generated run-local packs and all task-21/task-22 receipts out of
+  the commits. The Git index is empty.
+- Did not fetch, push, inspect a provider, resume child publication `task-3`,
+  or claim public availability.
+
+# Evidence
+
+- `artifacts/demo-002/local-commit-receipt.json`
+- `artifacts/demo-002/local-integration-allowlist.json`
+- `artifacts/demo-002/local-commit-preflight.json`
