@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T06:39:21.973Z",
+    "generated_at": "2026-07-28T06:43:52.140Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
@@ -2920,7 +2920,7 @@
         "scope_refs": [
           "epic-6"
         ],
-        "active_node": "task-29",
+        "active_node": "task-30",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -5896,10 +5896,10 @@
       "ws": "root",
       "type": "task",
       "title": "Preflight Git dependencies Vercel access and production projects",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
