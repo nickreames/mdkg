@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T06:27:51.291Z",
+    "generated_at": "2026-07-28T06:32:14.270Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-21"
+      "root": "root:chk-22"
     }
   },
   "workspaces": {
@@ -870,6 +870,62 @@
         "evidence_refs": [
           "root:task-47",
           "root:chk-20"
+        ]
+      }
+    },
+    "root:chk-22": {
+      "id": "chk-22",
+      "qid": "root:chk-22",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Two zero-edit source fixtures and failure classifications verified",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-6",
+        "fixture-proof"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-003/source-prompt-verification-receipt.json",
+        "artifacts/demo-003/source-fixture-verification.json"
+      ],
+      "refs": [
+        "goal-6",
+        "epic-6",
+        "task-47",
+        "test-25",
+        "chk-21"
+      ],
+      "aliases": [
+        "phase-6-zero-edit-fixture-proof"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-22-two-zero-edit-source-fixtures-and-failure-classifications-verified.md",
+      "edges": {
+        "relates": [
+          "root:test-25"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-6",
+          "root:epic-6",
+          "root:task-47",
+          "root:test-25",
+          "root:chk-21"
+        ],
+        "evidence_refs": [
+          "root:chk-21",
+          "root:test-25"
         ]
       }
     },
@@ -2802,7 +2858,7 @@
         "scope_refs": [
           "epic-6"
         ],
-        "active_node": "task-47",
+        "active_node": "test-25",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -2852,7 +2908,8 @@
           "root:chk-18",
           "root:chk-19",
           "root:chk-20",
-          "root:chk-21"
+          "root:chk-21",
+          "root:chk-22"
         ],
         "evidence_refs": [
           "root:chk-12",
@@ -2864,7 +2921,8 @@
           "root:chk-18",
           "root:chk-19",
           "root:chk-20",
-          "root:chk-21"
+          "root:chk-21",
+          "root:chk-22"
         ]
       }
     },
@@ -9534,10 +9592,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify the fork-ready source with two zero-edit fixtures",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-27",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -9566,7 +9624,8 @@
         "chk-17",
         "spike-6",
         "task-47",
-        "chk-20"
+        "chk-20",
+        "chk-21"
       ],
       "aliases": [
         "phase-6-step-3",
@@ -9599,13 +9658,16 @@
           "root:chk-17",
           "root:spike-6",
           "root:task-47",
-          "root:chk-20"
+          "root:chk-20",
+          "root:chk-21"
         ],
         "evidence_refs": [
           "root:spike-6",
           "root:task-47",
           "root:chk-17",
-          "root:chk-20"
+          "root:chk-20",
+          "root:chk-21",
+          "root:chk-22"
         ]
       }
     },
@@ -10423,6 +10485,9 @@
       ],
       "root:task-47": [
         "root:chk-21"
+      ],
+      "root:test-25": [
+        "root:chk-22"
       ],
       "root:spike-2": [
         "root:chk-3"
@@ -11472,6 +11537,7 @@
         "root:chk-19",
         "root:chk-20",
         "root:chk-21",
+        "root:chk-22",
         "root:epic-6",
         "root:goal-7",
         "root:goal-9",
@@ -11672,6 +11738,7 @@
       "root:epic-6": [
         "root:chk-20",
         "root:chk-21",
+        "root:chk-22",
         "root:spike-6",
         "root:task-27",
         "root:task-28",
@@ -11698,12 +11765,14 @@
       "root:task-47": [
         "root:chk-20",
         "root:chk-21",
+        "root:chk-22",
         "root:task-28",
         "root:task-31",
         "root:test-25"
       ],
       "root:test-25": [
         "root:chk-20",
+        "root:chk-22",
         "root:task-27",
         "root:task-28",
         "root:task-31"
@@ -11718,6 +11787,11 @@
         "root:chk-21",
         "root:goal-6",
         "root:task-47",
+        "root:test-25"
+      ],
+      "root:chk-21": [
+        "root:chk-22",
+        "root:goal-6",
         "root:test-25"
       ],
       "root:spike-2": [
@@ -11784,7 +11858,7 @@
         "root:test-4",
         "root:test-6"
       ],
-      "root:chk-21": [
+      "root:chk-22": [
         "root:goal-6"
       ],
       "root:task-28": [
@@ -12328,6 +12402,18 @@
         "root:task-47",
         "root:test-25"
       ],
+      "root:chk-21": [
+        "root:chk-22",
+        "root:goal-6",
+        "root:task-47",
+        "root:test-25"
+      ],
+      "root:test-25": [
+        "root:chk-22",
+        "root:task-27",
+        "root:task-28",
+        "root:task-31"
+      ],
       "root:chk-2": [
         "root:chk-3",
         "root:goal-2"
@@ -12389,9 +12475,9 @@
         "root:goal-5",
         "root:task-48"
       ],
-      "root:chk-21": [
+      "root:chk-22": [
         "root:goal-6",
-        "root:task-47"
+        "root:test-25"
       ],
       "root:test-17": [
         "root:goal-7",
@@ -12403,11 +12489,6 @@
       ],
       "root:test-29": [
         "root:goal-8"
-      ],
-      "root:test-25": [
-        "root:task-27",
-        "root:task-28",
-        "root:task-31"
       ],
       "root:task-28": [
         "root:task-29"

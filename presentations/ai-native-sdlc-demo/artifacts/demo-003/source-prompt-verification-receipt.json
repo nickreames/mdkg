@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "kind": "source-prompt-verification-receipt",
+  "status": "passed",
+  "recorded_at": "2026-07-28T06:29:52Z",
+  "source_task_checkpoint": "chk-21",
+  "source_enhancement_receipt": "artifacts/demo-003/source-prompt-enhancement-receipt.json",
+  "fixture_receipt": "artifacts/demo-003/source-fixture-verification.json",
+  "verified_release": {
+    "id": "website-demo-source-v2",
+    "manifest_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "authored_inventory_sha256": "sha256:dfa6461bf076cf003aa0afbcc06928e9214f7e3f8230cf95fafffb306b817fe8",
+    "binding_schema_sha256": "2fca84ac44ba42af258676b2d351ea306c032278e07cb1f654511329204e2851",
+    "bootstrap_sha256": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28",
+    "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+    "sendoff_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc",
+    "timed_run_contract_sha256": "f4b21d56a23cb439dc4bb5aefe6808f0fb5f1dc9a3f30ed19a023f155c868465"
+  },
+  "checks": [
+    {
+      "name": "semantic_source_release",
+      "result": "pass",
+      "evidence": "All release dependency hashes resolved before both fixture materializations."
+    },
+    {
+      "name": "two_distinct_bindings",
+      "result": "pass",
+      "evidence": "Distinct run IDs, routes, component keys, positioning briefs, binding hashes, interfaces, and immutable seals were produced."
+    },
+    {
+      "name": "exact_authored_fork",
+      "result": "pass",
+      "evidence": "Both absent targets preserved authored IDs and required zero manual graph or operator edits."
+    },
+    {
+      "name": "bootstrap_repeat",
+      "result": "pass",
+      "evidence": "Verify-only repeat returned identical release, binding, authored child, operator, interface, seal, routing, pack, and inventory identities for both fixtures."
+    },
+    {
+      "name": "pack_coverage",
+      "result": "pass",
+      "evidence": "Concise and standard packs each contained 19 required graph, design, checkpoint, and full-skill nodes without truncation."
+    },
+    {
+      "name": "state_and_authority_separation",
+      "result": "pass",
+      "evidence": "Generated indexes, SQLite, events, packs, receipts, and mutable lifecycle state are excluded from semantic identity; binding authority leakage fails closed."
+    },
+    {
+      "name": "sendoff_and_timing",
+      "result": "pass",
+      "evidence": "The versioned sendoff requires normal non-force push, exact-SHA READY deployments, live routes, two pre-publication repairs, one production repair, T+24 cutoff, T+29:15 receipt, T+29:30 selection, and T+30 global stop."
+    },
+    {
+      "name": "prospective_external_authority_boundary",
+      "result": "pass",
+      "evidence": "The source and binding interfaces reserve allowlist, writer lease, origin baseline, human approval, provider visibility, and validity window for a later caller-owned authority receipt; no event authority has been issued."
+    },
+    {
+      "name": "no_retained_run",
+      "result": "pass",
+      "evidence": "Both temporary fixtures and bindings were removed and runs/demo-003 remained absent."
+    }
+  ],
+  "failure_classification": {
+    "stable": true,
+    "covered": [
+      "target_content_drift",
+      "skill_mirror_mismatch",
+      "authored_child_drift",
+      "interface_drift",
+      "missing_target_input",
+      "unexpected_target",
+      "binding_authority_leakage",
+      "binding_target_mismatch",
+      "source_release_dependency_drift"
+    ]
+  },
+  "warnings": [],
+  "residual_boundaries": [
+    "This proof does not create or execute Demo 3.",
+    "This proof does not issue event authority, mutate Git, inspect providers, or publish.",
+    "Task 27 may freeze the pre-test deck baseline; Demo 3 creation remains gated by the later ordered chain."
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0",
+  "kind": "source-fixture-verification",
+  "status": "passed",
+  "recorded_at": "2026-07-28T06:29:52Z",
+  "command": "npm run smoke:demo-graph",
+  "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+  "cli_source_tree_hash": "sha256:25f6c612186918c1c628e1ffaefac3610092a29c93573ee99eb9f2c503640dc0",
+  "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+  "source_contract": {
+    "preserved_ids": true,
+    "selected_goal_qid": "root:goal-1",
+    "first_actionable_qid": "root:spike-1",
+    "validation": {
+      "ok": true,
+      "warning_count": 0,
+      "error_count": 0
+    },
+    "source_index_unchanged": true,
+    "demo_3_absent_before_and_after": true
+  },
+  "fixtures": [
+    {
+      "run_id": "fixture-platform-teams",
+      "designated_harness": "Codex",
+      "materially_distinct_binding": true,
+      "binding_sha256": "9c5d347c108e6387626494e2da13faa001ca6942db7fc7121b40dd163fdd83b9",
+      "child_interface_sha256": "555c0c2107d60cb8d1dcc85ee9a9075188606df907a0220a57b353e21b26b8d7",
+      "child_contract_seal_sha256": "0989dec09a94e79b99f3900c718fce10a0c2d99089a2d8d5ef0a60c151473b5f",
+      "generated_file_count": 113,
+      "generated_inventory_sha256": "4e108811ea06c4607fc1e8f152d9c763ab976b4486fe6ab18092267ce0c40518",
+      "authored_child_manual_edits": 0,
+      "verify_only_repeat": "identical release binding authored child operator interface seal routing packs and inventory",
+      "cleaned": true
+    },
+    {
+      "run_id": "fixture-independent-builders",
+      "designated_harness": "Claude Code",
+      "materially_distinct_binding": true,
+      "binding_sha256": "54e341ee2632b263b5c47c3e56ea5f632fa9898fecaa55984895da0c13829755",
+      "child_interface_sha256": "e00873aacdabe59b993d2d1c2fe40080092dd003c957c8850f878dded9aa5cf4",
+      "child_contract_seal_sha256": "a933ef6e001375ac51e9de0e6310aa317047003cb5d14f11ef2eb0c955b5fa7b",
+      "generated_file_count": 113,
+      "generated_inventory_sha256": "ad98fe28dacd39e77313e84917ffcdea99f15f33c822fade79154b4104b75cd1",
+      "authored_child_manual_edits": 0,
+      "verify_only_repeat": "identical release binding authored child operator interface seal routing packs and inventory",
+      "cleaned": true
+    }
+  ],
+  "pack_proof": {
+    "profiles": [
+      "concise",
+      "standard"
+    ],
+    "node_count_each": 19,
+    "root_qid": "root:spike-1",
+    "required_chain_present": [
+      "root:spike-1",
+      "root:task-1",
+      "root:test-1",
+      "root:task-2",
+      "root:test-2",
+      "root:task-3",
+      "root:test-3"
+    ],
+    "design_present": [
+      "root:prd-2",
+      "root:edd-1",
+      "root:dec-1",
+      "root:dec-2"
+    ],
+    "checkpoint_present": "root:chk-3",
+    "required_skills_present": [
+      "root:skill:select-work-and-ground-context",
+      "root:skill:verify-close-and-checkpoint",
+      "root:skill:build-pack-and-execute-task",
+      "root:skill:pursue-mdkg-goal"
+    ],
+    "truncated": false
+  },
+  "negative_classifications": [
+    "target_content_drift",
+    "skill_mirror_mismatch",
+    "authored_child_drift",
+    "interface_drift",
+    "missing_target_input",
+    "unexpected_target",
+    "binding_authority_leakage",
+    "binding_target_mismatch",
+    "source_release_dependency_drift"
+  ],
+  "cleanup": {
+    "retained_run_directories": 0,
+    "retained_bindings": 0,
+    "demo_3_created": false
+  },
+  "side_effects": {
+    "canonical_site_edits": false,
+    "git_mutation_by_fixture": false,
+    "network_access": false,
+    "provider_action": false,
+    "publication": false
+  }
+}
