@@ -1,0 +1,208 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-production-live-route-receipt",
+  "observed_at": "2026-07-27T23:13:05Z",
+  "pushed_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "production_deployment": {
+    "project": "mdkg-dev",
+    "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+    "deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+    "deployment_url": "https://mdkg-l213f13c4-nicholas-reames-projects.vercel.app",
+    "state": "READY",
+    "provider_git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "exact_sha_match": true
+  },
+  "routes": [
+    {
+      "url": "https://mdkg.dev/demo/2/",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "canonical": "https://mdkg.dev/demo/2/",
+      "robots": "noindex, nofollow",
+      "html_bytes_uncompressed": 27992,
+      "desktop": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "client_width": 1440,
+        "scroll_width": 1440,
+        "horizontal_overflow": false,
+        "screenshot": "artifacts/demo-002/screenshots/detail-desktop.png",
+        "screenshot_sha256": "4cd8dc5b32e8fbe5be4d3565a576f05b55bffb4b69aa483743e689f3bbc3a158"
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "client_width": 390,
+        "scroll_width": 390,
+        "horizontal_overflow": false,
+        "screenshot": "artifacts/demo-002/screenshots/detail-mobile.png",
+        "screenshot_sha256": "fa424d8645d26e8eaaf66bc586dc44db5df6a005b0369a8596590272bf9de5f9"
+      },
+      "dom": {
+        "title": "Keep the plan when the agent changes - mdkg demo 2",
+        "lang": "en",
+        "h1_count": 1,
+        "main_count": 1,
+        "nav_count": 1,
+        "footer_count": 1,
+        "same_origin_output_iframe_count": 1,
+        "form_count": 0,
+        "executable_script_count": 0,
+        "external_script_count": 0,
+        "source_and_specialized_specifications_present": true,
+        "plan_work_evidence_present": true,
+        "what_why_next_present": true
+      },
+      "wire_transfer_bytes": {
+        "detail_document_and_css": 9823,
+        "same_origin_output_document_and_css": 8525,
+        "combined_initial_surface": 18348,
+        "browser_extension_injected_asset_excluded": true
+      }
+    },
+    {
+      "url": "https://mdkg.dev/demo/2/output/",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "canonical": null,
+      "robots": "noindex,nofollow",
+      "html_bytes_uncompressed": 12038,
+      "desktop": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "client_width": 1440,
+        "scroll_width": 1440,
+        "horizontal_overflow": false,
+        "screenshot": "artifacts/demo-002/screenshots/output-desktop.png",
+        "screenshot_sha256": "bc4a09fe0be10726cb6d33f412736e8d605b8fc07d6181f0b19b77b8398c41f4"
+      },
+      "mobile": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "client_width": 390,
+        "scroll_width": 390,
+        "horizontal_overflow": false,
+        "screenshot": "artifacts/demo-002/screenshots/output-mobile.png",
+        "screenshot_sha256": "868a866b8f3f13204e5d0b160094c0cd1509f670cac25d63d7daa54f5fcb680b"
+      },
+      "dom": {
+        "title": "Keep the plan when the agent changes · mdkg",
+        "lang": "en",
+        "h1_count": 1,
+        "header_count": 1,
+        "main_count": 1,
+        "nav_count": 1,
+        "footer_count": 1,
+        "iframe_count": 0,
+        "form_count": 0,
+        "executable_script_count": 0,
+        "external_script_count": 0,
+        "source_and_specialized_specifications_present": true,
+        "plan_work_evidence_present": true,
+        "what_why_next_present": true,
+        "quickstart_and_feedback_ctas_present": true
+      },
+      "wire_transfer_bytes": {
+        "document_and_css": 8525,
+        "browser_extension_injected_asset_excluded": true
+      }
+    }
+  ],
+  "visibility": {
+    "live_sitemap_url": "https://mdkg.dev/sitemap.xml",
+    "live_sitemap_status": 200,
+    "demo_2_absent_from_sitemap": true,
+    "live_demo_index_url": "https://mdkg.dev/demos/",
+    "live_demo_index_status": 200,
+    "demo_2_absent_from_demo_index": true,
+    "listed": false,
+    "noindex": true
+  },
+  "static_and_privacy": {
+    "client_directives_in_exact_sha_source": 0,
+    "executable_scripts_in_live_html": 0,
+    "external_javascript_requests": 0,
+    "transferred_javascript_bytes": 0,
+    "remote_fonts": 0,
+    "third_party_runtime_assets": 0,
+    "forms": 0,
+    "trackers": 0,
+    "analytics": 0,
+    "raster_assets": 0,
+    "largest_raster_asset_bytes": 0,
+    "initial_transfer_limit_bytes": 512000,
+    "combined_detail_surface_wire_bytes": 18348,
+    "transfer_budget_passed": true,
+    "uncompressed_exact_sha_route_and_css_bytes": 74739,
+    "secret_pattern_matches": 0,
+    "raw_private_prompt_content_found": false,
+    "policy_copy_mentioning_private_prompts_is_not_private_content": true
+  },
+  "accessibility": {
+    "automated_exact_sha_command": "npm run smoke:mdkg-dev-a11y",
+    "automated_result": "passed",
+    "automated_checked_pages": 22,
+    "wcag_aa_contrast_contract": "passed",
+    "manual_heading_and_landmark_review": "passed",
+    "desktop_and_mobile_visual_review": "passed",
+    "keyboard_focus": {
+      "detail": {
+        "first_focus_tag": "A",
+        "first_focus_href": "/",
+        "focus_visible": true,
+        "outline": "3px solid rgba(14, 165, 233, 0.55)"
+      },
+      "output": {
+        "first_focus_tag": "A",
+        "first_focus_href": "#main",
+        "first_focus_text": "Skip to content",
+        "focus_visible": true,
+        "outline": "3px solid rgb(239, 104, 75)"
+      }
+    },
+    "reduced_motion_media_contract_present": true,
+    "console_warning_count": 0,
+    "console_error_count": 0
+  },
+  "exact_sha_smoke_receipts": [
+    {
+      "command": "npm run smoke:mdkg-dev",
+      "result": "passed",
+      "required_files": 16
+    },
+    {
+      "command": "npm run smoke:mdkg-dev-seo",
+      "result": "passed"
+    },
+    {
+      "command": "npm run smoke:demo-graph",
+      "result": "passed",
+      "validation_errors": 0,
+      "validation_warnings": 0
+    }
+  ],
+  "verification_note": "An initial parallel companion-smoke attempt produced shared dist-tree build races. The accessibility suite passed in that attempt; all three affected companion suites then passed sequentially against unchanged HEAD.",
+  "production_reveal": {
+    "path": "artifacts/demo-002/production-reveal/source-vs-specialized-16x9.png",
+    "width": 1440,
+    "height": 810,
+    "source": "cropped and contained from the exact-SHA production output screenshot",
+    "sha256": "43eb63c44800b7d7ad842dc5b3f71addc1142d75a9fcc2798707bd7e8b56f2ec"
+  },
+  "tool_versions": {
+    "mdkg": "0.5.2",
+    "node": "v26.0.0",
+    "npm": "11.12.1",
+    "browser_client": "26.721.41059",
+    "provider_connector": "Vercel read-only project/deployment/fetch tools"
+  },
+  "passed": true
+}

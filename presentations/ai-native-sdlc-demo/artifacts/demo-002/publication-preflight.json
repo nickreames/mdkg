@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-publication-preflight",
+  "recorded_at": "2026-07-27T22:31:27Z",
+  "state": "awaiting-explicit-human-approval",
+  "remote": "origin",
+  "branch": "main",
+  "fetched_origin_sha": "f5135be5c8779c1f2b65bbd9dc41dced8a25bbdb",
+  "head": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "merge_base": "f5135be5c8779c1f2b65bbd9dc41dced8a25bbdb",
+  "ahead": 28,
+  "behind": 0,
+  "linear_single_parent_range": true,
+  "git_index_empty": true,
+  "push_range": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/push-range-manifest.json",
+    "file_sha256": "0fbb11fb7a6706fa3a840408e51fe24661ca35828cdf80c91e9b1bec6bf38328",
+    "stable_range_sha256": "da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d",
+    "commit_count": 28,
+    "unique_changed_path_count": 680
+  },
+  "accepted_candidate": {
+    "candidate_receipt_sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82",
+    "checkpoint_qid": "root:chk-14",
+    "checkpoint_file_sha256": "577332e4c3b1ad61b39654c4d1c4e2de9dae5eb8e56299be43da8e70c3aa96de",
+    "local_commit_receipt_sha256": "3e23759a4abca5920781e626eece8a6a7023d487f1276bdf045e8967120c8bf7"
+  },
+  "local_evidence_exception": {
+    "path_count": 16,
+    "path_status_manifest_sha256": "124c671d501e0bb07a134291319ce14cb61afe3f1368ef90e202f5973243412f",
+    "content_hash_note": "All pre-existing exception files are content-bound; the three mutually referential task-49 outputs are bound by exact path and status.",
+    "paths": [
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json",
+        "status": " M",
+        "content_sha256": "e941fbda04dc4ef3b3f19b5d0c7455960e3a3ac163e4a0e10b4dd2fc43ada47e",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/index/global.json",
+        "status": " M",
+        "content_sha256": "2c1f45db4bb2489b86fa4fae48fd9a60b4baac26f70d56d458ac669166bd91d1",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite",
+        "status": " M",
+        "content_sha256": "466155df87fc6ea215dc1e460ca4286270547bc10e2d7ebb219e3da0cf203d72",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json",
+        "status": " M",
+        "content_sha256": "5364a89923349dde8422f0dfa8628b629f725367f32d3a10966957c2ca0f8218",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json",
+        "status": " M",
+        "content_sha256": "c3f3988c2291fe425798a83416bf382de879c57d5706add88076e5deefdb9869",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl",
+        "status": " M",
+        "content_sha256": "a10de18d83fcdcb3f72937c3490f70aef6ee80b91a3ebcd9fe8256b4e60c678a",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/work/goal-5-publish-and-rehearse-demo-2.md",
+        "status": " M",
+        "content_sha256": "2202200ead71cbec1ef4c45bbf8720d1d5d17c5ed5703eeeeb531afdddfb23c2",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-49-freeze-the-exact-push-range-and-obtain-demo-2-publication-approval.md",
+        "status": " M",
+        "content_sha256": "2e7745d8a3c8c594419e1543a57edd5764ba9edf9d704df3f24f76a2d186cb30",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-preflight.json",
+        "status": "??",
+        "content_sha256": "96b59d1e830d359f6c2227d327092452532c315a1b8bb747c57e017bf4fedd9a",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-receipt.json",
+        "status": "??",
+        "content_sha256": "3e23759a4abca5920781e626eece8a6a7023d487f1276bdf045e8967120c8bf7",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-integration-allowlist.json",
+        "status": "??",
+        "content_sha256": "51878b4be32c5452694282a4b3ad9075d5738e62ea640a90d0c7d9b668a60f25",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/publication-approval.json",
+        "status": "??",
+        "content_sha256": null,
+        "hash_policy": "self-referential task-49 evidence; excluded from content-bound exception hash"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/publication-preflight.json",
+        "status": "??",
+        "content_sha256": null,
+        "hash_policy": "self-referential task-49 evidence; excluded from content-bound exception hash"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/push-range-manifest.json",
+        "status": "??",
+        "content_sha256": null,
+        "hash_policy": "self-referential task-49 evidence; excluded from content-bound exception hash"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md",
+        "status": "??",
+        "content_sha256": "3466f597ba0e31197034de5408891a3abccb5fa8999e393f47420293f9f7c2d6",
+        "hash_policy": "content-bound"
+      },
+      {
+        "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md.stats.json",
+        "status": "??",
+        "content_sha256": "c835410fcb58d98daaf73ec80816424f630519449b7ff73fa8cf44538c90f129",
+        "hash_policy": "content-bound"
+      }
+    ]
+  },
+  "validation": {
+    "fetched": true,
+    "zero_behind": true,
+    "linear": true,
+    "exact_head": true,
+    "staged_path_count": 0,
+    "unrelated_dirty_path_count": 0,
+    "provider_query_performed": false,
+    "push_performed": false
+  },
+  "approval_required": true,
+  "invalidation_conditions": [
+    "origin/main changes",
+    "HEAD changes",
+    "the complete range manifest hash changes",
+    "the local-evidence exception path/status manifest changes",
+    "the root integration owner changes",
+    "the approval expires",
+    "the push would require force, merge, rebase, amend, or history rewrite"
+  ]
+}

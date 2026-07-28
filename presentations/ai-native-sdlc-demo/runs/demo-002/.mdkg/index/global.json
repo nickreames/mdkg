@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T18:10:13.484Z",
+    "generated_at": "2026-07-27T23:15:17.257Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo/runs/demo-002",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-2"
+      "root": "root:chk-3"
     }
   },
   "workspaces": {
@@ -76,6 +76,52 @@
         "blocks": [],
         "context_refs": [],
         "evidence_refs": []
+      }
+    },
+    "root:chk-3": {
+      "id": "chk-3",
+      "qid": "root:chk-3",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Demo 2 exact-SHA production proof accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [],
+      "owners": [
+        "demo-002-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/publication-receipt.json",
+        "artifacts/live-verification-receipt.json",
+        "../../artifacts/demo-002/deployment-receipt.json",
+        "../../artifacts/demo-002/live-route-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "task-3",
+        "test-3"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-3-demo-2-exact-sha-production-proof-accepted.md",
+      "edges": {
+        "relates": [
+          "root:test-3"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:task-3"
+        ],
+        "evidence_refs": [
+          "root:task-3",
+          "root:test-3"
+        ]
       }
     },
     "root:dec-1": {
@@ -249,7 +295,7 @@
       "ws": "root",
       "type": "goal",
       "title": "Build and publish the Demo 2 durable-continuity landing page",
-      "status": "blocked",
+      "status": "done",
       "priority": 1,
       "created": "2026-06-29",
       "updated": "2026-07-27",
@@ -291,7 +337,7 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {
-        "goal_state": "paused",
+        "goal_state": "achieved",
         "goal_condition": "The specialized Demo 2 durable-continuity landing page is implemented and locally validated, integrated through the canonical static Astro adapter, approved and non-force pushed under a separate publication gate, verified against READY deployments for the exact pushed SHA at both live routes, and closed with an accepted evidence checkpoint.",
         "scope_refs": [
           "spike-1",
@@ -302,7 +348,7 @@
           "task-3",
           "test-3"
         ],
-        "active_node": "task-1",
+        "last_active_node": "test-3",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -890,7 +936,7 @@
       "ws": "root",
       "type": "task",
       "title": "Publish the accepted Demo 2 candidate",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-27",
       "updated": "2026-07-27",
@@ -1060,7 +1106,7 @@
       "ws": "root",
       "type": "test",
       "title": "Verify Demo 2 exact SHA deployments and live routes",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-27",
       "updated": "2026-07-27",
@@ -1076,7 +1122,9 @@
       ],
       "links": [],
       "artifacts": [
-        "artifacts/live-verification-receipt.json"
+        "artifacts/live-verification-receipt.json",
+        "../../artifacts/demo-002/deployment-receipt.json",
+        "../../artifacts/demo-002/live-route-receipt.json"
       ],
       "refs": [
         "goal-1",
@@ -1114,6 +1162,10 @@
       "root:rule-human": [
         "root:rule-7"
       ],
+      "root:test-3": [
+        "root:chk-3",
+        "root:spike-1"
+      ],
       "root:task-1": [
         "root:spike-1"
       ],
@@ -1127,9 +1179,6 @@
         "root:spike-1"
       ],
       "root:task-3": [
-        "root:spike-1"
-      ],
-      "root:test-3": [
         "root:spike-1"
       ],
       "root:prd-2": [
@@ -1145,31 +1194,21 @@
         "root:spike-1"
       ]
     },
-    "blocks": {
-      "root:spike-1": [
-        "root:epic-1"
-      ],
-      "root:task-1": [
-        "root:epic-1",
-        "root:spike-1"
-      ],
-      "root:test-1": [
-        "root:epic-1"
-      ],
-      "root:task-2": [
-        "root:epic-1"
-      ],
-      "root:test-2": [
-        "root:epic-1"
+    "context_refs": {
+      "root:goal-1": [
+        "root:chk-3",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
       ],
       "root:task-3": [
-        "root:epic-1"
+        "root:chk-3",
+        "root:test-3"
       ],
-      "root:test-3": [
-        "root:epic-1"
-      ]
-    },
-    "context_refs": {
       "root:prd-2": [
         "root:epic-1",
         "root:goal-1",
@@ -1216,15 +1255,6 @@
         "root:goal-1",
         "root:spike-1"
       ],
-      "root:goal-1": [
-        "root:spike-1",
-        "root:task-1",
-        "root:task-2",
-        "root:task-3",
-        "root:test-1",
-        "root:test-2",
-        "root:test-3"
-      ],
       "root:spike-1": [
         "root:task-1"
       ],
@@ -1239,9 +1269,38 @@
       ],
       "root:task-2": [
         "root:test-2"
+      ]
+    },
+    "evidence_refs": {
+      "root:task-3": [
+        "root:chk-3"
+      ],
+      "root:test-3": [
+        "root:chk-3"
+      ]
+    },
+    "blocks": {
+      "root:spike-1": [
+        "root:epic-1"
+      ],
+      "root:task-1": [
+        "root:epic-1",
+        "root:spike-1"
+      ],
+      "root:test-1": [
+        "root:epic-1"
+      ],
+      "root:task-2": [
+        "root:epic-1"
+      ],
+      "root:test-2": [
+        "root:epic-1"
       ],
       "root:task-3": [
-        "root:test-3"
+        "root:epic-1"
+      ],
+      "root:test-3": [
+        "root:epic-1"
       ]
     },
     "epic": {
