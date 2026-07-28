@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T03:36:32.341Z",
+    "generated_at": "2026-07-28T05:17:51.894Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
@@ -600,6 +600,88 @@
         ]
       }
     },
+    "root:chk-19": {
+      "id": "chk-19",
+      "qid": "root:chk-19",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Goal 6 fork-ready source contract accepted",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-6",
+        "pre-activation",
+        "handoff"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifact://ai-native-sdlc-demo/private-bundle"
+      ],
+      "refs": [
+        "goal-6",
+        "epic-6",
+        "spike-6",
+        "task-47",
+        "test-25",
+        "task-28",
+        "task-29",
+        "goal-7",
+        "goal-9",
+        "goal-10",
+        "chk-18",
+        "prd-1",
+        "edd-1",
+        "dec-3",
+        "dec-4",
+        "dec-5"
+      ],
+      "aliases": [
+        "goal-6-fork-ready-source-contract"
+      ],
+      "skills": [
+        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/chk-19-goal-6-fork-ready-source-contract-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:prd-1",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:dec-3",
+          "root:dec-4",
+          "root:dec-5",
+          "root:dec-6",
+          "root:goal-5",
+          "root:chk-17",
+          "root:goal-6",
+          "root:chk-18",
+          "root:goal-7",
+          "root:goal-9",
+          "root:goal-10"
+        ],
+        "evidence_refs": [
+          "root:chk-17",
+          "root:chk-18",
+          "root:test-12",
+          "root:test-13",
+          "root:test-14"
+        ]
+      }
+    },
     "root:chk-2": {
       "id": "chk-2",
       "qid": "root:chk-2",
@@ -1061,7 +1143,7 @@
       "title": "Use static Astro Ocean Flow demo outputs with bounded creative freedom",
       "status": "accepted",
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "astro",
         "ocean-flow",
@@ -1100,7 +1182,7 @@
       "title": "Use graph-only writer leases with one root integration owner",
       "status": "accepted",
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ownership",
         "writers",
@@ -1143,7 +1225,7 @@
       "title": "Use exact-SHA publication gates bounded fix-forward and a sealed fallback",
       "status": "accepted",
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "publication",
         "exact-sha",
@@ -1222,7 +1304,7 @@
       "type": "edd",
       "title": "AI-native SDLC presentation demo program architecture and execution",
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "architecture",
         "presentation",
@@ -1684,11 +1766,11 @@
       "qid": "root:epic-6",
       "ws": "root",
       "type": "epic",
-      "title": "Timed Demo 3 dress-rehearsal readiness",
+      "title": "Fork-ready demo source and timed Demo 3 readiness",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -2053,7 +2135,7 @@
       ],
       "attributes": {
         "goal_state": "paused",
-        "goal_condition": "From the separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes the fresh Demo 4 child under the 30-minute authority; the T+29:30 gate either proves child achievement, actual range policy compliance, normal non-force push, both exact-SHA READY deployments, and passing /demo/4/ routes, or truthfully selects Demo 2; post-reveal evidence and bundle closeout preserve the exact live outcome without retroactive success.",
+        "goal_condition": "From the separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes the fresh exact-source Demo 4 child while its semantic source release, immutable run binding, authored-content equality, child-contract seal, and external 30-minute authority remain valid; the T+29:30 gate either proves child achievement, actual range policy compliance, normal non-force push, both exact-SHA READY deployments, and passing /demo/4/ routes, or truthfully selects Demo 2; post-reveal evidence and bundle closeout preserve the exact live outcome without retroactive success.",
         "scope_refs": [
           "epic-10"
         ],
@@ -2528,11 +2610,11 @@
       "qid": "root:goal-6",
       "ws": "root",
       "type": "goal",
-      "title": "Prepare the timed Demo 3 dress rehearsal",
+      "title": "Harden the reusable demo source and prepare zero-edit Demo 3",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -2546,6 +2628,11 @@
         "artifacts/demo-003/historical-timing-analysis.json",
         "artifacts/demo-003/source-prompt-evaluation.md",
         "artifacts/demo-003/source-prompt-enhancement-receipt.json",
+        "artifacts/demo-platform/source-release-manifest.json",
+        "artifacts/demo-platform/run-binding.schema.json",
+        "artifacts/demo-003/source-fixture-verification.json",
+        "artifacts/demo-003/run-binding.json",
+        "artifacts/demo-003/immutable-child-contract-seal.json",
         "artifacts/demo-003/pre-test-deck-baseline.json",
         "artifacts/demo-003/post-test-presentation-handoff.md",
         "artifacts/demo-platform/timed-run-contract.json",
@@ -2577,7 +2664,7 @@
       ],
       "attributes": {
         "goal_state": "paused",
-        "goal_condition": "Demo 2 production, timing, prompt, and rehearsal evidence is evaluated; explicitly accepted source-template and sendoff refinements pass deterministic absent-target verification; a pre-test deck baseline and post-test polish handoff are sealed; runs/demo-003 is forked and specialized without implementation execution; one designated harness, warm dependencies, build-once validation, the 30-minute timing contract, prospective range policy, preparation-baseline handoff, exact allowlist, writer lease, Demo 2 fallback, human authority, and a side-effect-free dry rehearsal all pass.",
+        "goal_condition": "Demo 2 production, timing, prompt, and rehearsal evidence is classified into reusable source changes, immutable run-binding inputs, child-local state, and external authority; an explicitly accepted semantic source release with the complete generic chain passes two distinct zero-manual-edit absent-target fixtures; a pre-test deck baseline and post-test polish handoff are sealed; runs/demo-003 is created as an exact authored-content fork with a frozen run binding and immutable child-contract seal but no executed work; one designated harness, warm dependencies, build-once validation, the 30-minute timing contract, prospective range policy, preparation-baseline handoff, exact allowlist, writer lease, Demo 2 fallback, human authority, and a side-effect-free dry rehearsal all pass.",
         "scope_refs": [
           "epic-6"
         ],
@@ -2588,11 +2675,11 @@
           "verify-close-and-checkpoint"
         ],
         "required_checks": [
-          "Demo 2 historical timing and source-prompt evaluation",
-          "accepted refinement or no-change receipt",
-          "clean deterministic source bootstrap and pack",
+          "Demo 2 historical timing and reusable-delta classification",
+          "accepted semantic source release and run-binding schema",
+          "two distinct zero-edit absent-target fixtures and verify-only repeat",
           "pre-test deck baseline and post-test polish handoff",
-          "unexecuted Demo 3 identity chain and concise pack",
+          "unexecuted Demo 3 source-binding-seal identity chain and concise pack",
           "single-harness warm-dependency build-once contract",
           "read-only Git dependency and Vercel preflight",
           "prospective range policy and preparation-baseline publication handoff",
@@ -2627,7 +2714,8 @@
           "root:test-12",
           "root:test-13",
           "root:test-14",
-          "root:chk-18"
+          "root:chk-18",
+          "root:chk-19"
         ],
         "evidence_refs": [
           "root:chk-12",
@@ -2636,7 +2724,8 @@
           "root:test-12",
           "root:test-13",
           "root:test-14",
-          "root:chk-18"
+          "root:chk-18",
+          "root:chk-19"
         ]
       }
     },
@@ -2649,7 +2738,7 @@
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -2687,7 +2776,7 @@
       ],
       "attributes": {
         "goal_state": "paused",
-        "goal_condition": "Under the still-valid human-accepted rehearsal policy and separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes Demo 3 against the immutable 30-minute contract; a consolidated receipt either proves child achievement, normal non-force push, both exact-SHA READY deployments, passing /demo/3/ routes, and a T+29:30 reveal gate, or truthfully records the timed blocker and Demo 2 fallback; all per-stage timings, retries, waits, interventions, and post-reveal audits are sealed for Goal 9.",
+        "goal_condition": "Under the still-valid external human authority and separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes the exact-source Demo 3 instance whose source release, immutable run binding, authored-content equality, and child-contract seal remain valid; a consolidated receipt either proves child achievement, normal non-force push, both exact-SHA READY deployments, passing /demo/3/ routes, and a T+29:30 reveal gate, or truthfully records the timed blocker and Demo 2 fallback; all per-stage timings, retries, waits, interventions, and post-reveal audits are sealed for Goal 9.",
         "scope_refs": [
           "epic-7"
         ],
@@ -2727,12 +2816,16 @@
           "root:dec-6",
           "root:goal-6",
           "root:chk-18",
+          "root:chk-19",
+          "root:task-28",
+          "root:task-29",
           "root:task-31",
           "root:task-32",
           "root:task-33"
         ],
         "evidence_refs": [
           "root:chk-18",
+          "root:chk-19",
           "root:test-17"
         ]
       }
@@ -2864,7 +2957,7 @@
       ],
       "attributes": {
         "goal_state": "paused",
-        "goal_condition": "Demo 3 timing, execution, blocker, and reveal evidence is evaluated; explicitly accepted deck/source/sendoff changes are implemented and verified with human approval; runs/demo-004 is forked and specialized without implementation; a reviewed preparation-baseline publication handoff, one designated harness, fresh prospective authority, writer lease, Demo 2 fallback, provider preflight, and a side-effect-free dry rehearsal prove Demo 4 is ready for the live event.",
+        "goal_condition": "Demo 3 timing, execution, blocker, and reveal evidence is evaluated and each finding is classified as reusable source/materializer defect, run-specific creative choice, presentation change, or external-authority issue; explicitly accepted deck/source/sendoff changes produce a newly verified semantic source release when needed; runs/demo-004 is created from that accepted source plus a fresh immutable binding with no manual authored-child edits or implementation; a reviewed preparation-baseline publication handoff, one designated harness, fresh prospective authority, writer lease, Demo 2 fallback, provider preflight, and a side-effect-free dry rehearsal prove Demo 4 is ready for the live event.",
         "scope_refs": [
           "epic-9"
         ],
@@ -2875,13 +2968,13 @@
           "verify-close-and-checkpoint"
         ],
         "required_checks": [
-          "Demo 3 timing and evidence evaluation",
+          "Demo 3 timing and source-run-authority classification",
           "explicit acceptance of final polish",
           "deterministic deck regeneration and visual QA",
-          "accepted source-sendoff regression proof",
-          "unexecuted Demo 4 identity chain and pack",
+          "accepted semantic source-release and two-fixture regression proof",
+          "unexecuted zero-edit Demo 4 source-binding-seal chain and pack",
           "reviewed preparation-baseline publication handoff",
-          "fresh authority allowlist lease and fallback",
+          "fresh external authority allowlist lease and fallback",
           "provider preflight",
           "side-effect-free dry rehearsal"
         ],
@@ -2923,7 +3016,7 @@
       "type": "prd",
       "title": "AI-native SDLC presentation and live demo program requirements",
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "presentation",
         "live-demo",
@@ -3641,7 +3734,7 @@
       "qid": "root:spike-6",
       "ws": "root",
       "type": "spike",
-      "title": "Evaluate Demo 2 execution and prompt evidence for the live run",
+      "title": "Classify Demo 2 evidence for a fork-ready source release",
       "status": "todo",
       "priority": 1,
       "created": "2026-07-27",
@@ -3651,7 +3744,7 @@
         "presentation-demo",
         "phase-6",
         "step-1",
-        "source-prompt-refinement"
+        "fork-ready-source"
       ],
       "owners": [
         "program-orchestrator"
@@ -3715,7 +3808,8 @@
           "root:test-12",
           "root:test-13",
           "root:test-14",
-          "root:chk-18"
+          "root:chk-18",
+          "root:chk-19"
         ],
         "evidence_refs": [
           "root:chk-14",
@@ -3723,7 +3817,8 @@
           "root:test-12",
           "root:test-13",
           "root:test-14",
-          "root:chk-18"
+          "root:chk-18",
+          "root:chk-19"
         ]
       }
     },
@@ -5314,11 +5409,11 @@
       "qid": "root:task-28",
       "ws": "root",
       "type": "task",
-      "title": "Fork and specialize Demo 3 without executing implementation",
+      "title": "Materialize zero-edit Demo 3 from source and run binding",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5330,11 +5425,13 @@
       ],
       "links": [],
       "artifacts": [
+        "artifacts/demo-003/run-binding.json",
         "artifacts/demo-003/fork-receipt.json",
         "artifacts/demo-003/source-goal-1.md",
-        "artifacts/demo-003/specialized-goal-1.md",
-        "artifacts/demo-003/specialization-receipt.json",
-        "artifacts/demo-003/child-interface-manifest.json"
+        "artifacts/demo-003/bound-goal-1.md",
+        "artifacts/demo-003/materialization-receipt.json",
+        "artifacts/demo-003/child-interface-manifest.json",
+        "artifacts/demo-003/immutable-child-contract-seal.json"
       ],
       "refs": [
         "goal-6",
@@ -5396,11 +5493,11 @@
       "qid": "root:task-29",
       "ws": "root",
       "type": "task",
-      "title": "Verify the Demo 3 child chain and public-safe context pack",
+      "title": "Verify Demo 3 zero-edit lineage and public-safe pack",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5609,7 +5706,7 @@
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5693,7 +5790,7 @@
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5763,7 +5860,7 @@
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5833,7 +5930,7 @@
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6814,7 +6911,7 @@
       "qid": "root:task-47",
       "ws": "root",
       "type": "task",
-      "title": "Apply accepted source-template and live-sendoff refinements",
+      "title": "Author the canonical fork-ready source and run-binding contract",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-27",
@@ -6833,7 +6930,9 @@
       "artifacts": [
         "artifacts/demo-003/source-prompt-enhancement-receipt.json",
         "artifacts/demo-003/live-sendoff-v2.md",
-        "artifacts/demo-platform/timed-run-contract.json"
+        "artifacts/demo-platform/timed-run-contract.json",
+        "artifacts/demo-platform/source-release-manifest.json",
+        "artifacts/demo-platform/run-binding.schema.json"
       ],
       "refs": [
         "goal-6",
@@ -7274,7 +7373,7 @@
       "qid": "root:task-52",
       "ws": "root",
       "type": "task",
-      "title": "Fork and specialize Demo 4 without executing implementation",
+      "title": "Materialize zero-edit Demo 4 from the accepted source",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-27",
@@ -7290,10 +7389,13 @@
       ],
       "links": [],
       "artifacts": [
+        "artifacts/demo-004/run-binding.json",
         "artifacts/demo-004/fork-receipt.json",
         "artifacts/demo-004/source-goal-1.md",
-        "artifacts/demo-004/specialized-goal-1.md",
-        "artifacts/demo-004/child-interface-manifest.json"
+        "artifacts/demo-004/bound-goal-1.md",
+        "artifacts/demo-004/materialization-receipt.json",
+        "artifacts/demo-004/child-interface-manifest.json",
+        "artifacts/demo-004/immutable-child-contract-seal.json"
       ],
       "refs": [
         "goal-9",
@@ -8544,7 +8646,7 @@
       "qid": "root:test-15",
       "ws": "root",
       "type": "test",
-      "title": "Verify Demo 3 readiness routing and concise pack",
+      "title": "Verify Demo 3 source binding seal routing and concise pack",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
@@ -8617,7 +8719,7 @@
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-27",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -8682,7 +8784,7 @@
       "qid": "root:test-17",
       "ws": "root",
       "type": "test",
-      "title": "Verify the dry rehearsal stops before commit push or deployment",
+      "title": "Verify zero-edit event readiness without execution or publication",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-26",
@@ -9288,7 +9390,7 @@
       "qid": "root:test-25",
       "ws": "root",
       "type": "test",
-      "title": "Verify the enhanced source template and pre-authorized live sendoff",
+      "title": "Verify the fork-ready source with two zero-edit fixtures",
       "status": "backlog",
       "priority": 1,
       "created": "2026-07-27",
@@ -9305,7 +9407,8 @@
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-003/source-prompt-verification-receipt.json"
+        "artifacts/demo-003/source-prompt-verification-receipt.json",
+        "artifacts/demo-003/source-fixture-verification.json"
       ],
       "refs": [
         "goal-6",
@@ -10216,6 +10319,7 @@
         "root:chk-15",
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-2",
         "root:chk-3",
         "root:chk-4",
@@ -10341,6 +10445,7 @@
         "root:chk-15",
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-2",
         "root:chk-3",
         "root:chk-4",
@@ -10463,6 +10568,7 @@
       "root:dec-1": [
         "root:chk-1",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -10566,6 +10672,7 @@
       "root:dec-2": [
         "root:chk-1",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -10672,6 +10779,7 @@
       "root:dec-3": [
         "root:chk-1",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -10783,6 +10891,7 @@
         "root:chk-15",
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-2",
         "root:chk-3",
         "root:chk-4",
@@ -10897,6 +11006,7 @@
         "root:chk-15",
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -11018,6 +11128,7 @@
         "root:chk-1",
         "root:chk-15",
         "root:chk-18",
+        "root:chk-19",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -11177,6 +11288,7 @@
         "root:chk-15",
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:epic-5",
         "root:epic-6",
         "root:goal-10",
@@ -11201,6 +11313,7 @@
       "root:goal-6": [
         "root:chk-13",
         "root:chk-18",
+        "root:chk-19",
         "root:epic-6",
         "root:goal-7",
         "root:goal-9",
@@ -11223,6 +11336,7 @@
       "root:goal-7": [
         "root:chk-13",
         "root:chk-18",
+        "root:chk-19",
         "root:epic-7",
         "root:epic-9",
         "root:goal-8",
@@ -11327,6 +11441,7 @@
       ],
       "root:chk-17": [
         "root:chk-18",
+        "root:chk-19",
         "root:epic-6",
         "root:goal-10",
         "root:goal-6",
@@ -11340,6 +11455,7 @@
       ],
       "root:goal-9": [
         "root:chk-18",
+        "root:chk-19",
         "root:epic-10",
         "root:epic-9",
         "root:goal-10",
@@ -11356,6 +11472,7 @@
       ],
       "root:goal-10": [
         "root:chk-18",
+        "root:chk-19",
         "root:epic-10",
         "root:goal-8",
         "root:task-55",
@@ -11364,6 +11481,12 @@
         "root:task-59",
         "root:test-28",
         "root:test-29"
+      ],
+      "root:chk-18": [
+        "root:chk-19",
+        "root:goal-6",
+        "root:goal-7",
+        "root:spike-6"
       ],
       "root:epic-2": [
         "root:chk-2",
@@ -11450,10 +11573,18 @@
         "root:test-4",
         "root:test-6"
       ],
-      "root:chk-18": [
+      "root:chk-19": [
         "root:goal-6",
         "root:goal-7",
         "root:spike-6"
+      ],
+      "root:task-28": [
+        "root:goal-7",
+        "root:task-29"
+      ],
+      "root:task-29": [
+        "root:goal-7",
+        "root:task-30"
       ],
       "root:task-31": [
         "root:goal-7",
@@ -11612,14 +11743,8 @@
         "root:task-31",
         "root:test-25"
       ],
-      "root:task-28": [
-        "root:task-29"
-      ],
       "root:task-2": [
         "root:task-3"
-      ],
-      "root:task-29": [
-        "root:task-30"
       ],
       "root:task-30": [
         "root:task-31"
@@ -11946,6 +12071,7 @@
       "root:test-12": [
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:epic-6",
         "root:goal-5",
         "root:goal-6",
@@ -11955,6 +12081,7 @@
       "root:test-13": [
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:epic-6",
         "root:goal-5",
         "root:goal-6",
@@ -11964,6 +12091,7 @@
       "root:test-14": [
         "root:chk-17",
         "root:chk-18",
+        "root:chk-19",
         "root:epic-6",
         "root:goal-5",
         "root:goal-6",
@@ -11972,6 +12100,7 @@
       ],
       "root:chk-17": [
         "root:chk-18",
+        "root:chk-19",
         "root:epic-6",
         "root:goal-10",
         "root:goal-5",
@@ -11982,6 +12111,12 @@
         "root:task-47",
         "root:task-53",
         "root:test-25"
+      ],
+      "root:chk-18": [
+        "root:chk-19",
+        "root:goal-6",
+        "root:goal-7",
+        "root:spike-6"
       ],
       "root:chk-1": [
         "root:chk-2",
@@ -12050,7 +12185,7 @@
         "root:goal-5",
         "root:task-48"
       ],
-      "root:chk-18": [
+      "root:chk-19": [
         "root:goal-6",
         "root:goal-7",
         "root:spike-6"

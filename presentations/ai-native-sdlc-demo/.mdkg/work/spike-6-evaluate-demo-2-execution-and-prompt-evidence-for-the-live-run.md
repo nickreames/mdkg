@@ -1,13 +1,13 @@
 ---
 id: spike-6
 type: spike
-title: Evaluate Demo 2 execution and prompt evidence for the live run
+title: Classify Demo 2 evidence for a fork-ready source release
 status: todo
 priority: 1
 epic: epic-6
 parent: goal-6
 next: task-47
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-1, source-prompt-refinement]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-1, fork-ready-source]
 owners: [program-orchestrator]
 links: []
 artifacts: [artifacts/demo-003/source-prompt-evaluation.md, artifacts/demo-003/historical-timing-analysis.json]
@@ -15,8 +15,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18]
-evidence_refs: [chk-14, chk-17, test-12, test-13, test-14, chk-18]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18, chk-19]
+evidence_refs: [chk-14, chk-17, test-12, test-13, test-14, chk-18, chk-19]
 aliases: [phase-6-step-1, phase-6-source-prompt-evaluation]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-27
@@ -27,7 +27,8 @@ updated: 2026-07-27
 What did Demo 2 prove or expose about deterministic forking, fresh-agent
 context, positioning latitude, the source template, the sendoff prompt,
 authority handoffs, failure recovery, and audience-facing evidence, and which
-changes should be accepted before the timed Demo 3 dress rehearsal?
+changes belong in a reusable source release before the timed Demo 3 dress
+rehearsal?
 
 # Context And Constraints
 
@@ -36,6 +37,9 @@ changes should be accepted before the timed Demo 3 dress rehearsal?
 - Separate source-template defects, sendoff/prompt defects, operator or pack
   defects, site-adapter defects, execution variance, and presentation-only
   findings.
+- Classify every observed delta as reusable authored source, immutable
+  run-binding input, child-local runtime state/evidence, external authority, or
+  rejected Demo-2-specific creative direction.
 - Keep mdkg CLI/package APIs, canonical-site adoption, docs, and deployment
   configuration out of this refinement lane.
 - A no-change recommendation is valid when the accepted evidence supports it.
@@ -66,6 +70,13 @@ changes should be accepted before the timed Demo 3 dress rehearsal?
   deterministic receipt schemas, cursor invariants, state-neutral lifecycle
   copy, serial shared-output tests, build-once validation, and a fast
   production verifier.
+- Audit whether README, `.gitignore`, operator inventory, semantic source
+  identity, stable chain topology, closure consistency, and explicit-root
+  commands survived the Demo 2 fork.
+- Identify all Demo 2 post-fork authored-node changes. Promote generic
+  topology and guardrails into the source, but reject Demo 2 positioning,
+  metaphor, copy, IDs, routes, SHAs, deployments, screenshots, statuses,
+  events, indexes, packs, receipts, and checkpoints as source defaults.
 
 # Findings
 
@@ -86,9 +97,12 @@ nondeterminism.
 
 Write `artifacts/demo-003/source-prompt-evaluation.md` with ranked findings,
 accepted/rejected options, exact proposed paths, before hashes, expected
-outcomes, regression tests, and a recommended change or no-change decision.
-Record explicit user acceptance before task-47. Write the measured timing
-ledger separately to `artifacts/demo-003/historical-timing-analysis.json`.
+outcomes, regression tests, the five-way classification, and a recommended
+source-release/run-binding contract or explicit no-change decision. Preserve
+creative latitude through a positioning decision artifact rather than a
+post-fork graph rewrite. Record explicit user acceptance before task-47. Write
+the measured timing ledger separately to
+`artifacts/demo-003/historical-timing-analysis.json`.
 
 # Follow-Up Nodes To Create
 
@@ -103,7 +117,8 @@ ledger separately to `artifacts/demo-003/historical-timing-analysis.json`.
 # Data Structures And Algorithms Notes
 
 - Preserve deterministic absent-target creation, stable IDs, explicit
-  prev/next routing, source hashes, and pack coverage.
+  prev/next routing, semantic source-release hashes, immutable run-binding
+  hashes, child-contract seals, and pack coverage.
 
 # UX Notes
 

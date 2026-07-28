@@ -11,7 +11,7 @@ relates: []
 refs: [prd-1, edd-1]
 aliases: [exact-sha-live-demo-authority]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Context
@@ -35,11 +35,19 @@ approved range. Immediately before push the integration owner must re-fetch and
 prove that origin, HEAD, the range manifest, lease, expiry, staged-empty state,
 and local-evidence exception are unchanged. Drift invalidates approval.
 
-Goal 6 uses the completed Demo 2 evidence to evaluate the reusable source
-template and live sendoff. Only explicitly accepted refinements may be applied
-before Demo 3 is forked, and a deterministic absent-target bootstrap must prove
-the revised or unchanged source contract. Demo 3 is the timed dress rehearsal;
-Goal 9 later uses its measured evidence to prepare a fresh Demo 4 live run.
+Goal 6 uses the completed Demo 2 evidence to create an accepted semantic source
+release, immutable run-binding schema, and zero-manual-edit fork contract.
+Only explicitly accepted reusable refinements may enter the source. Two
+distinct absent-target fixtures must prove the release before Demo 3 is
+created from the exact authored source plus its frozen binding. Demo 3 is the
+timed dress rehearsal; Goal 9 later routes reusable findings back through a
+new source release before creating a fresh Demo 4.
+
+Human approval, exact allowlists, leases, published baselines, provider
+visibility, and validity windows remain external to the writable child. The
+child carries only hash-bound read-only authority references and may never
+author, broaden, or replace them. Authority binds the immutable child-contract
+seal rather than mutable whole-tree state.
 
 Goal 6 must seal a human-accepted prospective range-validation policy and a
 preparation-baseline publication handoff for Demo 3. Goal 9 must do the same

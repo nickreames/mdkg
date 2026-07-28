@@ -10,7 +10,7 @@ relates: []
 refs: [edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 aliases: [ai-native-sdlc-program-requirements]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Problem
@@ -57,8 +57,8 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
 ## Demo program
 
 - Demo 2 is the full production rehearsal and immutable fallback.
-- Demo 3 is a specialized, production-capable dress rehearsal used to measure
-  the complete live path before the event.
+- Demo 3 is a zero-manual-edit instance of an accepted, production-capable
+  source release used to measure the complete live path before the event.
 - Demo 4 is forked only after Demo 3 findings are accepted and is the fresh
   live-event identity.
 - Demo 2 local preparation first reconciles the canonical smoke contract and
@@ -67,24 +67,41 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
   fetched commit/path range. Local candidate or commit authority does not imply
   push, deployment observation, or public verification authority.
 - Goal 6 must use Demo 2 execution, prompt, route, and rehearsal evidence to
-  evaluate the reusable source template and live sendoff. It applies only
-  explicitly accepted refinements, reseals the source and prompt hashes,
-  proves a clean deterministic bootstrap, forks and specializes Demo 3 without
-  executing it, and seals a single-harness 30-minute rehearsal contract.
+  promote reusable structure into a versioned fork-ready source release. It
+  applies only explicitly accepted refinements, defines one immutable
+  per-run binding schema, proves two clean zero-manual-edit fixture forks,
+  creates Demo 3 as an exact authored-content fork, attaches its frozen
+  binding and interface receipt, and seals a single-harness 30-minute
+  rehearsal contract without executing the child.
 - Goal 7 executes Demo 3 as a measured dress rehearsal. Its audience-equivalent
   reveal gate is due by T+29:30 and the global stop/fallback boundary is T+30.
-- Goal 9 consumes Demo 3 evidence, applies explicitly accepted final deck and
-  source/sendoff polish, and forks Demo 4 without executing implementation.
+- Goal 9 consumes Demo 3 evidence, distinguishes reusable source defects from
+  run-specific creative choices, applies explicitly accepted final deck and
+  source/sendoff polish, releases a new source identity when needed, and
+  creates Demo 4 from that source without hand-editing the child graph.
 - Goal 10 executes the fresh Demo 4 live event under a separately frozen
   authority receipt.
-- Demo 3 and Demo 4 child goals use this exact chain: positioning spike ->
+- The canonical source and both timed child goals use this exact generic
+  chain: positioning spike ->
   implementation task -> local test -> integration task -> canonical-site
   test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
 - Detail routes are /demo/2/, /demo/3/, and /demo/4/; output routes are
   /demo/2/output/, /demo/3/output/, and /demo/4/output/.
-- Detail pages show sanitized source goal, specialized goal, work, and evidence.
+- Detail pages show the sanitized reusable source goal, immutable run binding,
+  selected positioning decision, executed goal state, work, and evidence.
 - Outputs remain noindex and unlisted until Goal 8 decides otherwise.
-- The reusable source stays conservative; publication authority exists only in specialized publication goals.
+- The reusable source contains the complete generic topology but grants no
+  publication authority. Its publication node remains caller-gated and
+  disabled until a separately accepted external authority is activated.
+- Authored goal, design, and work-node content in Demo 3 and Demo 4 must match
+  the accepted source release. Run identity and bounded positioning inputs
+  live in an immutable run binding; selected creative direction is recorded
+  as a child decision artifact; statuses, evidence, checkpoints, and outputs
+  are normal child-owned execution state.
+- Direct post-fork edits to authored child graph content are prohibited. A
+  reusable defect is fixed in the source and the absent target is recreated;
+  a run-specific input is changed in the binding and the absent target is
+  recreated.
 - Child run graphs remain owned artifacts and are not root-registered.
 - Both timed runs use one designated coding harness and one implementation
   writer. Mirrored operator files prove portability only; no alternate-harness
@@ -115,6 +132,11 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
 - Goals 7 and 10 alone may execute their separately frozen rehearsal/event
   authorities. Each consumes a human-accepted, hash-bound prospective
   range-validation policy created by its predecessor.
+- A writable child may execute an activated external authority but may not
+  author, broaden, or replace it. Human approval, leases, allowlists,
+  published-baseline state, provider access, and validity windows remain
+  outside the writable run; the child receives only hash-bound read-only
+  references.
 - Preparation surfaces must be published through a separately accepted
   baseline-publication handoff before presentation/rehearsal kickoff `P0` and
   timed sendoff `T0`. The orchestrator records immutable `T0` immediately
@@ -153,6 +175,10 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
 - A private root projection can expose the program without making its run graphs writable projections.
 - Presentation, rehearsal, fallback, live execution, and post-demo adoption have distinct completion conditions.
 - Every external side effect has an explicit owner, gate, evidence requirement, and forbidden surface.
+- A semantic source-release manifest, run-binding hash, bootstrap receipt, and
+  immutable child-contract seal make source-to-run lineage independently
+  verifiable without hashing transient indexes, events, packs, or runtime
+  state as authored identity.
 
 # Metrics / Success
 

@@ -22,7 +22,7 @@ aliases: [phase-6-step-12]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [git_access, origin_state, dependency_state, vercel_read_access, production_project_identity]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -44,7 +44,8 @@ visibility, and pre-authorization currency as step 12 of Goal 6.
 
 # Test Cases
 
-- Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
+- Demo 3 source-release, run-binding, child-seal, graph validation, routing,
+  and concise-pack identities pass without authored child drift.
 - No child implementation node has executed.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
 - Current base equals current origin, no unrelated ahead history exists, and
@@ -53,6 +54,9 @@ visibility, and pre-authorization currency as step 12 of Goal 6.
   range hash are calculated and proven against that policy immediately before
   push.
 - Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.
+- Provider observations and human authority remain external to the child; no
+  provider identifier, credential, approval, or lease is promoted into the
+  reusable source or writable run binding.
 - The expected preparation manifest excludes the exact local-evidence-only
   Goal 6/7 inventory, including task-58 and timed umbrella receipts; those
   paths are permitted to change locally but are never staged in the

@@ -5,7 +5,7 @@ title: Execute and assess the timed Demo 3 dress rehearsal
 status: backlog
 priority: 1
 goal_state: paused
-goal_condition: Under the still-valid human-accepted rehearsal policy and separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes Demo 3 against the immutable 30-minute contract; a consolidated receipt either proves child achievement, normal non-force push, both exact-SHA READY deployments, passing /demo/3/ routes, and a T+29:30 reveal gate, or truthfully records the timed blocker and Demo 2 fallback; all per-stage timings, retries, waits, interventions, and post-reveal audits are sealed for Goal 9.
+goal_condition: Under the still-valid external human authority and separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes the exact-source Demo 3 instance whose source release, immutable run binding, authored-content equality, and child-contract seal remain valid; a consolidated receipt either proves child achievement, normal non-force push, both exact-SHA READY deployments, passing /demo/3/ routes, and a T+29:30 reveal gate, or truthfully records the timed blocker and Demo 2 fallback; all per-stage timings, retries, waits, interventions, and post-reveal audits are sealed for Goal 9.
 scope_refs: [epic-7]
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [published clean preparation baseline and current human rehearsal authority, single-harness dispatch and timing ledger, Demo 3 child result or truthful timed blocker, consolidated T+29:15 receipt and T+29:30 reveal-selection test, exact actual range proof and normal non-force push on success, both production projects READY for exact SHA on success, live detail and output routes on success, post-reveal receipt audits and program bundle closeout, fallback honesty]
@@ -19,12 +19,12 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-6, chk-18, task-31, task-32, task-33]
-evidence_refs: [chk-18, test-17]
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-6, chk-18, chk-19, task-28, task-29, task-31, task-32, task-33]
+evidence_refs: [chk-18, chk-19, test-17]
 aliases: [timed-demo-3-dress-rehearsal]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Objective
@@ -44,10 +44,12 @@ fallback state, and post-reveal audit evidence for Goal 9.
 
 Goal 6 has an accepted readiness checkpoint. Its preparation-baseline handoff
 has separate publication approval, and the exclusive quiet window is active.
-`event-authority.json` remains human accepted and binds the source, child,
-sendoff, prospective range policy, allowlist, lease, clean pre-publication
-origin, expected preparation tree, designated harness, provider preflight,
-activation rule, and global deadline. Root-integration-owned `task-58` then
+`event-authority.json` remains externally human accepted and binds the
+semantic source release, immutable run binding, bootstrap/materializer
+identity, child-contract seal, sendoff, prospective range policy, allowlist,
+lease, clean pre-publication origin, expected preparation tree, designated
+harness, provider preflight, activation rule, and global deadline.
+Root-integration-owned `task-58` then
 publishes the exact manifest, proves it clean and equal to `origin/main`, binds
 the actual published baseline SHA in a separate authority-activation receipt,
 and releases its lease before task-34 records `P0` or dispatches.
@@ -69,6 +71,12 @@ and releases its lease before task-34 records `P0` or dispatches.
   test, or claim that this rehearsal proves general long-horizon autonomy.
 - No final deck/source/sendoff polish; Goal 9 owns changes selected from this
   rehearsal's evidence.
+- No source, run-binding, child-seal, or authored child graph mutation during
+  the timed run. A reusable defect is a blocker and Goal 9 source candidate,
+  not a reason to patch Demo 3.
+- The writable child may consume the activated external authority but may not
+  author, broaden, or replace approval, leases, allowlists, baseline state,
+  provider access, or validity windows.
 
 # Recursive Algorithm
 
@@ -104,18 +112,24 @@ and releases its lease before task-34 records `P0` or dispatches.
   edits, validation, fix-forward commits, normal push, read-only provider
   checks, route checks, and bundle refresh.
 - The child goal executes exactly: positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
+- The positioning spike records the selected creative direction as a decision
+  artifact; it does not rewrite the immutable source-authored goal, PRD, EDD,
+  or work/test chain.
 - At most two pre-publication repair cycles and one production fix-forward are
   permitted. No production repair starts after T+24; the global deadline
   overrides remaining retries.
-- Event-authority, sendoff, allowlist, lease, source, child, or range-policy
-  drift; origin advancement; force or unrelated integration; missing access;
+- Event-authority, sendoff, allowlist, lease, source release, run binding,
+  child seal, authored-content, or range-policy drift; origin advancement;
+  force or unrelated integration; missing access;
   provider outage at the bound; provider/DNS mutation; out-of-scope changes;
   or unrepaired safety failures are hard blockers.
 - Demo 3 is selected only after the T+29:30 reveal gate passes. Otherwise Demo
   2 is selected transparently by T+30 and the child remains unachieved. Goal 7
   may still close as a complete measured rehearsal outcome once truthful
   blocker and post-reveal evidence are sealed.
-- The reveal shows reusable source, specialized goal, output, Plan -> Work -> Evidence, and what/why/next without teaching graph mechanics.
+- The reveal shows the reusable source contract, frozen run binding, selected
+  positioning decision, executed goal state, output, Plan -> Work -> Evidence,
+  and what/why/next without teaching graph mechanics.
 - The reusable source is `examples/website-demo-template/.mdkg/:goal-1`; the executed specification is `runs/demo-003/.mdkg/:goal-1`.
 - `task-34 -> task-35 -> test-18` is the only reveal-critical umbrella path.
   Tasks 36–39, tests 19–21, bundle refresh, screenshots, and exhaustive audits
@@ -129,7 +143,7 @@ and releases its lease before task-34 records `P0` or dispatches.
 
 # Sendoff Contract
 
-> Continue until the specialized goal is achieved, the approved commit is non-force pushed to `origin/main`, both production deployments for that exact SHA are READY, and the public detail and output URLs pass verification. Do not stop at a local build or commit. Fix transient in-scope failures forward. Stop only for an enumerated hard blocker.
+> Continue until the bound Demo 3 goal is achieved, the approved commit is non-force pushed to `origin/main`, both production deployments for that exact SHA are READY, and the public detail and output URLs pass verification. Do not stop at a local build or commit. Fix transient in-scope failures forward. Stop only for an enumerated hard blocker.
 
 Authorized actions are restricted to the frozen allowlist plus
 `runs/demo-003/`, local validation and production-safe smoke tests, bounded
@@ -139,8 +153,9 @@ deployments and public URLs, and integration-owner bundle refresh and
 verification. The human-accepted event authority pre-approves those exact
 actions; no further mid-run confirmation is required while it remains valid.
 
-Hard blockers are authority, source, child, allowlist, lease, or range-policy
-drift; origin advancement after final preflight; a push requiring force,
+Hard blockers are authority, source-release, run-binding, child-seal,
+authored-content, allowlist, lease, or range-policy drift; origin advancement
+after final preflight; a push requiring force,
 history rewrite, or unrelated integration; unavailable credentials or provider
 access; missed T+24/T+29:15/T+29:30/T+30 boundaries; exhausted two/one repair limits;
 or any need for DNS, project configuration, manual redeploy, analytics,
@@ -191,6 +206,8 @@ node: `task-58`.
 - 2026-07-27: Reframed Demo 3 as the measured dress rehearsal, established a
   30-minute single-harness contract, and moved comprehensive audits after the
   reveal gate.
+- 2026-07-27: Bound execution to the zero-manual-edit source release, immutable
+  run binding, child-contract seal, and externally owned authority.
 
 # Skill Improvement Candidates
 

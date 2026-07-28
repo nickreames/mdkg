@@ -1,7 +1,7 @@
 ---
 id: epic-6
 type: epic
-title: Timed Demo 3 dress-rehearsal readiness
+title: Fork-ready demo source and timed Demo 3 readiness
 status: backlog
 priority: 1
 tags: [ai-native-sdlc, presentation-demo, phase-6]
@@ -17,13 +17,14 @@ evidence_refs: [chk-17, test-12, test-13, test-14]
 aliases: [phase-6-epic]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Goal
 
-Prepare, but do not execute, a specialized single-harness Demo 3 dress
-rehearsal with a credible 30-minute live path.
+Promote reusable Demo 2 lessons into a fork-ready source release, then prepare
+but do not execute an exact-source single-harness Demo 3 dress rehearsal with
+a credible 30-minute live path.
 
 # Scope
 
@@ -51,6 +52,11 @@ The goal scopes this epic recursively.
 - Activation conditions and writer authority accepted.
 - Every actionable node completed in deterministic order.
 - Required checks and public-safe evidence recorded.
+- Semantic source release, immutable run-binding schema, complete generic
+  topology, two distinct zero-edit fixtures, verify-only repeat, and cleanup
+  accepted before Demo 3 exists.
+- Demo 3 exact authored-content lineage, frozen binding, child-interface
+  manifest, and immutable contract seal accepted with no child work executed.
 - Warm dependencies, portable output, serial shared-output tests, build-once
   validation, fast production verification, and deterministic receipts sealed.
 - Prospective range policy, preparation-baseline handoff, human authority,
@@ -66,6 +72,8 @@ The goal scopes this epic recursively.
 - Multi-harness execution, harness-equivalence proof, and eight-hour/endurance
   claims.
 - Final post-rehearsal deck polish, which belongs to Goal 9.
+- Manual post-fork graph specialization, child-authored authority, and copying
+  Demo 2 creative direction or runtime evidence into the source.
 
 # Risks
 
