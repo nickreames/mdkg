@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T05:17:51.894Z",
+    "generated_at": "2026-07-28T05:43:36.316Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
@@ -736,6 +736,81 @@
         ],
         "evidence_refs": [
           "root:chk-1"
+        ]
+      }
+    },
+    "root:chk-20": {
+      "id": "chk-20",
+      "qid": "root:chk-20",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Demo 2 source-release recommendation ready for human approval",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-07-27",
+      "updated": "2026-07-27",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-6",
+        "source-release",
+        "human-gate"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-003/source-prompt-evaluation.md",
+        "artifacts/demo-003/historical-timing-analysis.json"
+      ],
+      "refs": [
+        "goal-6",
+        "epic-6",
+        "spike-6",
+        "task-47",
+        "test-25",
+        "chk-17",
+        "chk-18",
+        "chk-19"
+      ],
+      "aliases": [
+        "goal-6-source-release-recommendation-ready"
+      ],
+      "skills": [
+        "select-work-and-ground-context",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/chk-20-demo-2-source-release-recommendation-ready-for-human-approval.md",
+      "edges": {
+        "relates": [
+          "root:spike-6"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-6",
+          "root:epic-6",
+          "root:spike-6",
+          "root:task-47",
+          "root:test-25",
+          "root:prd-1",
+          "root:edd-1",
+          "root:dec-3",
+          "root:dec-5",
+          "root:chk-17",
+          "root:chk-18",
+          "root:chk-19"
+        ],
+        "evidence_refs": [
+          "root:spike-6",
+          "root:chk-17",
+          "root:test-12",
+          "root:test-13",
+          "root:test-14",
+          "root:chk-18",
+          "root:chk-19"
         ]
       }
     },
@@ -2668,6 +2743,7 @@
         "scope_refs": [
           "epic-6"
         ],
+        "active_node": "task-47",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -2715,7 +2791,8 @@
           "root:test-13",
           "root:test-14",
           "root:chk-18",
-          "root:chk-19"
+          "root:chk-19",
+          "root:chk-20"
         ],
         "evidence_refs": [
           "root:chk-12",
@@ -2725,7 +2802,8 @@
           "root:test-13",
           "root:test-14",
           "root:chk-18",
-          "root:chk-19"
+          "root:chk-19",
+          "root:chk-20"
         ]
       }
     },
@@ -3735,7 +3813,7 @@
       "ws": "root",
       "type": "spike",
       "title": "Classify Demo 2 evidence for a fork-ready source release",
-      "status": "todo",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-27",
       "updated": "2026-07-27",
@@ -6942,7 +7020,8 @@
         "dec-3",
         "dec-5",
         "spike-6",
-        "task-10"
+        "task-10",
+        "chk-20"
       ],
       "aliases": [
         "phase-6-step-2",
@@ -6972,11 +7051,13 @@
           "root:dec-5",
           "root:spike-6",
           "root:task-10",
-          "root:chk-17"
+          "root:chk-17",
+          "root:chk-20"
         ],
         "evidence_refs": [
           "root:spike-6",
-          "root:chk-17"
+          "root:chk-17",
+          "root:chk-20"
         ]
       }
     },
@@ -9422,7 +9503,8 @@
         "goal-5",
         "chk-17",
         "spike-6",
-        "task-47"
+        "task-47",
+        "chk-20"
       ],
       "aliases": [
         "phase-6-step-3",
@@ -9454,12 +9536,14 @@
           "root:goal-5",
           "root:chk-17",
           "root:spike-6",
-          "root:task-47"
+          "root:task-47",
+          "root:chk-20"
         ],
         "evidence_refs": [
           "root:spike-6",
           "root:task-47",
-          "root:chk-17"
+          "root:chk-17",
+          "root:chk-20"
         ]
       }
     },
@@ -10272,6 +10356,9 @@
       "root:task-48": [
         "root:chk-16"
       ],
+      "root:spike-6": [
+        "root:chk-20"
+      ],
       "root:spike-2": [
         "root:chk-3"
       ],
@@ -10321,6 +10408,7 @@
         "root:chk-18",
         "root:chk-19",
         "root:chk-2",
+        "root:chk-20",
         "root:chk-3",
         "root:chk-4",
         "root:epic-1",
@@ -10447,6 +10535,7 @@
         "root:chk-18",
         "root:chk-19",
         "root:chk-2",
+        "root:chk-20",
         "root:chk-3",
         "root:chk-4",
         "root:epic-1",
@@ -10780,6 +10869,7 @@
         "root:chk-1",
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -11007,6 +11097,7 @@
         "root:chk-17",
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -11314,6 +11405,7 @@
         "root:chk-13",
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:epic-6",
         "root:goal-7",
         "root:goal-9",
@@ -11442,6 +11534,7 @@
       "root:chk-17": [
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:epic-6",
         "root:goal-10",
         "root:goal-6",
@@ -11484,6 +11577,7 @@
       ],
       "root:chk-18": [
         "root:chk-19",
+        "root:chk-20",
         "root:goal-6",
         "root:goal-7",
         "root:spike-6"
@@ -11508,6 +11602,48 @@
         "root:goal-1",
         "root:goal-2",
         "root:spike-2"
+      ],
+      "root:epic-6": [
+        "root:chk-20",
+        "root:spike-6",
+        "root:task-27",
+        "root:task-28",
+        "root:task-29",
+        "root:task-30",
+        "root:task-31",
+        "root:task-32",
+        "root:task-33",
+        "root:task-47",
+        "root:test-15",
+        "root:test-16",
+        "root:test-17",
+        "root:test-25"
+      ],
+      "root:spike-6": [
+        "root:chk-20",
+        "root:task-27",
+        "root:task-28",
+        "root:task-31",
+        "root:task-47",
+        "root:test-25"
+      ],
+      "root:task-47": [
+        "root:chk-20",
+        "root:task-28",
+        "root:task-31",
+        "root:test-25"
+      ],
+      "root:test-25": [
+        "root:chk-20",
+        "root:task-27",
+        "root:task-28",
+        "root:task-31"
+      ],
+      "root:chk-19": [
+        "root:chk-20",
+        "root:goal-6",
+        "root:goal-7",
+        "root:spike-6"
       ],
       "root:spike-2": [
         "root:chk-3",
@@ -11573,10 +11709,10 @@
         "root:test-4",
         "root:test-6"
       ],
-      "root:chk-19": [
+      "root:chk-20": [
         "root:goal-6",
-        "root:goal-7",
-        "root:spike-6"
+        "root:task-47",
+        "root:test-25"
       ],
       "root:task-28": [
         "root:goal-7",
@@ -11638,21 +11774,6 @@
         "root:test-22",
         "root:test-23",
         "root:test-24"
-      ],
-      "root:epic-6": [
-        "root:spike-6",
-        "root:task-27",
-        "root:task-28",
-        "root:task-29",
-        "root:task-30",
-        "root:task-31",
-        "root:task-32",
-        "root:task-33",
-        "root:task-47",
-        "root:test-15",
-        "root:test-16",
-        "root:test-17",
-        "root:test-25"
       ],
       "root:epic-9": [
         "root:spike-7",
@@ -11723,25 +11844,8 @@
       "root:task-25": [
         "root:task-26"
       ],
-      "root:spike-6": [
-        "root:task-27",
-        "root:task-28",
-        "root:task-31",
-        "root:task-47",
-        "root:test-25"
-      ],
-      "root:test-25": [
-        "root:task-27",
-        "root:task-28",
-        "root:task-31"
-      ],
       "root:task-27": [
         "root:task-28"
-      ],
-      "root:task-47": [
-        "root:task-28",
-        "root:task-31",
-        "root:test-25"
       ],
       "root:task-2": [
         "root:task-3"
@@ -12072,6 +12176,7 @@
         "root:chk-17",
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:epic-6",
         "root:goal-5",
         "root:goal-6",
@@ -12082,6 +12187,7 @@
         "root:chk-17",
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:epic-6",
         "root:goal-5",
         "root:goal-6",
@@ -12092,6 +12198,7 @@
         "root:chk-17",
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:epic-6",
         "root:goal-5",
         "root:goal-6",
@@ -12101,6 +12208,7 @@
       "root:chk-17": [
         "root:chk-18",
         "root:chk-19",
+        "root:chk-20",
         "root:epic-6",
         "root:goal-10",
         "root:goal-5",
@@ -12114,6 +12222,7 @@
       ],
       "root:chk-18": [
         "root:chk-19",
+        "root:chk-20",
         "root:goal-6",
         "root:goal-7",
         "root:spike-6"
@@ -12123,6 +12232,18 @@
         "root:chk-3",
         "root:epic-1",
         "root:goal-1"
+      ],
+      "root:spike-6": [
+        "root:chk-20",
+        "root:task-27",
+        "root:task-47",
+        "root:test-25"
+      ],
+      "root:chk-19": [
+        "root:chk-20",
+        "root:goal-6",
+        "root:goal-7",
+        "root:spike-6"
       ],
       "root:chk-2": [
         "root:chk-3",
@@ -12185,10 +12306,10 @@
         "root:goal-5",
         "root:task-48"
       ],
-      "root:chk-19": [
+      "root:chk-20": [
         "root:goal-6",
-        "root:goal-7",
-        "root:spike-6"
+        "root:task-47",
+        "root:test-25"
       ],
       "root:test-17": [
         "root:goal-7",
@@ -12200,11 +12321,6 @@
       ],
       "root:test-29": [
         "root:goal-8"
-      ],
-      "root:spike-6": [
-        "root:task-27",
-        "root:task-47",
-        "root:test-25"
       ],
       "root:test-25": [
         "root:task-27",
