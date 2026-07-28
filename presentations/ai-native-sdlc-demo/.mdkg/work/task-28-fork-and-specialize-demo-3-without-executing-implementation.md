@@ -6,7 +6,7 @@ status: backlog
 priority: 1
 epic: epic-6
 parent: goal-6
-prev: test-25
+prev: task-27
 next: task-29
 tags: [ai-native-sdlc, presentation-demo, phase-6, step-5]
 owners: [program-orchestrator]
@@ -16,9 +16,9 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-27, spike-6, task-47, test-25]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-27, spike-6, task-47, test-25]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-27, spike-6, task-47, test-25, chk-17]
 evidence_refs: [test-25]
-aliases: [phase-6-step-2]
+aliases: [phase-6-step-5]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
@@ -47,9 +47,11 @@ of 13 in Goal 6.
 - Materialize exactly this child chain without completing any node: positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
 - Leave the positioning spike `todo`, every successor `backlog`, the accepted checkpoint absent/pending, and all implementation/publication evidence empty; record these invariants in the specialization receipt.
 - Write `artifacts/demo-003/child-interface-manifest.json` mapping each chain role to its allocated child node ID/QID, owner role, predecessor/successor, expected status, authoritative receipt path, and completion evidence; tasks 34–39 may consume only this manifest's paths.
+- Materialize the exact run-local sendoff and hash, designated single harness,
+  warm-dependency identity, timing contract, stage owners, handoff boundaries,
+  portable-output role, deterministic receipt paths, and required telemetry in
+  the child interface manifest.
 - Prove the complete child chain and public-safe concise pack.
-- Preflight Git, dependencies, Vercel visibility, projects, allowlist, hard blockers, and quiet window.
-- Run a dry rehearsal that stops before implementation, commit, push, deployment, or provider mutation.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-29 does not begin until this node is verified.
 
@@ -70,9 +72,8 @@ of 13 in Goal 6.
 
 - Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
 - No child implementation node has executed.
-- Git, dependencies, provider read access, and both project identities are visible without storing credentials.
-- Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.
-- Dry rehearsal creates no implementation, commit, push, deployment, or provider change.
+- The child interface encodes one designated harness, warm dependencies, the
+  global deadline, required telemetry, and no implementation evidence.
 
 # Links / Artifacts
 

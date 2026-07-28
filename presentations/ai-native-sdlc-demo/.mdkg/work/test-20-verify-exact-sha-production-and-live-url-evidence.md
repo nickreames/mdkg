@@ -20,7 +20,7 @@ context_refs: [goal-7, epic-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-7-step-9]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [event_authority, complete_push_range, pushed_sha, mdkg_deployment_ready, docs_deployment_ready, detail_url, output_url]
+cases: [success_branch, fallback_branch, event_authority, complete_push_range, pushed_sha, mdkg_deployment_ready, docs_deployment_ready, detail_url, output_url]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -43,15 +43,25 @@ Validate verify exact-sha production and live url evidence as step 9 of Goal 7. 
 
 # Test Cases
 
-- The child goal is achieved with local test and integration evidence.
-- Canonical build, routes, claims, accessibility, privacy, noindex, zero-JavaScript, and budgets pass.
-- Both production projects are READY for the exact final SHA and both live routes pass.
-- The pushed range and every live action were covered by the still-valid
-  human-accepted event authority without an ad hoc approval.
-- Fix-forward attempts and elapsed time stay within bounds.
-- Reveal selection and receipt state Demo 3 success or Demo 2 fallback truthfully; fallback never marks Goal 7 achieved.
+- On Demo 3 success, the child goal is achieved with local/integration
+  evidence; canonical safety gates pass; the actual pushed range satisfies
+  policy; and both production projects plus live routes pass for the exact
+  final SHA.
+- On Demo 2 fallback, require the exact blocker, last completed child node,
+  truthful unachieved child state, deadline compliance, partial-side-effect
+  inventory, and no fabricated push/deployment/route success. Audit any
+  success receipt that exists and mark absent success-only fields
+  `not_applicable`.
+- The actual pushed range, when present, is a linear descendant of the clean
+  baseline and its stable range hash satisfies the human-accepted prospective
+  policy; no future range was invented during Goal 6.
+- Fix-forward attempts, external waits, interventions, and elapsed time agree
+  across the ledger and receipts.
+- Reveal selection states Demo 3 success or Demo 2 fallback truthfully.
 - This test specifically proves: Verify exact-SHA production and live URL evidence.
-- Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
+- Any applicable skipped or unavailable check is a failure or explicit
+  blocker; explicitly non-applicable fallback fields are neither passes nor
+  failures.
 
 # Results / Evidence
 

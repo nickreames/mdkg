@@ -18,7 +18,7 @@ blocks: []
 refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-31]
 context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-31]
 evidence_refs: []
-aliases: [phase-6-step-6]
+aliases: [phase-6-step-9]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
@@ -34,14 +34,25 @@ Establish the event quiet window and verify Demo 2 fallback. This is step 9 of
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-6.
 - Establish `artifacts/demo-003/event-writer-lease.json` with the child
   implementation writer and root integration owner identities, checkout,
-  start/expiry, base and origin SHA, sendoff/allowlist/event-authority hashes,
+  start/expiry, renewal and invalidation rules, base and origin SHA,
+  sendoff/allowlist/authority-policy hashes,
   exact non-overlapping phases and allowed paths, excluded parallel writers,
   conflict check, heartbeat/renewal rule, canonical-test handoff, publication
   handoff, and release condition.
+- Model serialized physical-writer phases: root integration owner publishes
+  the preparation baseline in task-58 and releases; one designated timed
+  writer performs the logical orchestrator plus child-implementation roles
+  through canonical validation and releases; the root integration owner
+  reacquires only for the child publish node and releases; the designated
+  writer resumes read-only verification/receipt consolidation; the root
+  integration owner later owns bundle/root closeout.
 - Reverify Demo 2's golden-fallback manifest, candidate/deployment/route/deck hashes, public URLs, offline files, and recovery instructions without changing it.
 - Write `artifacts/demo-003/fallback-readiness.json` with Demo 2 manifest hash, exact immutable artifact inventory, live route observations, offline verification, reveal switch procedure, speaker wording, and pass/blocker status.
+- Require the live/offline fallback switch to be executable within 30 seconds.
+- Bind one implementation writer and one root integration owner to those
+  non-overlapping phases. Do not require the final authority hash yet.
 - Do not activate Goal 7 until every parallel root writer acknowledges the
-  quiet window and the event authority, lease, and fallback receipts pass at
+  quiet window and the authority policy, lease, and fallback receipts pass at
   the current base SHA.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-33 does not begin until this node is verified.
@@ -61,9 +72,11 @@ Establish the event quiet window and verify Demo 2 fallback. This is step 9 of
 
 # Test Plan
 
-- Exactly one child writer is authorized before publication and one root integration owner is authorized for the child publish node plus root bundle/Git operations; their leases never overlap.
+- The task-58 baseline lease, child implementation lease, child publication
+  lease, and root bundle closeout lease are serialized; no source/Git writers
+  overlap.
 - Demo 2 live and offline fallback hashes match the sealed Goal 5 receipt and the recovery procedure is executable.
-- Authority, lease, allowlist, sendoff, preflight, and fallback receipts all
+- Authority policy, lease, allowlist, sendoff, preflight, and fallback receipts all
   bind the same base SHA.
 
 # Links / Artifacts

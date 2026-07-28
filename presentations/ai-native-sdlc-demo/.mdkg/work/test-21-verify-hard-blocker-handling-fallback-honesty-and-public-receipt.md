@@ -43,13 +43,23 @@ Validate verify hard-blocker handling fallback honesty and public receipt as ste
 
 # Test Cases
 
-- The child goal is achieved with local test and integration evidence.
-- Canonical build, routes, claims, accessibility, privacy, noindex, zero-JavaScript, and budgets pass.
-- Both production projects are READY for the exact final SHA and both live routes pass.
-- Fix-forward attempts and elapsed time stay within bounds.
-- Reveal selection and receipt state Demo 3 success or Demo 2 fallback truthfully; fallback never marks Goal 7 achieved.
+- The child outcome is reported exactly as observed; a timed blocker never
+  fabricates child achievement.
+- On the Demo 3 success branch, canonical/public-safety, actual-range,
+  exact-SHA deployment, and live-route evidence all pass.
+- On the Demo 2 fallback branch, require the blocker, last completed child
+  state, partial-side-effect inventory, applicable receipt audits,
+  `not_applicable` success-only fields, and no fabricated success.
+- At most two pre-publication repairs and one production repair occurred; no
+  production repair began after T+24; the selection was made by T+29:30 and
+  all live actions stopped by T+30.
+- Reveal selection and receipt state Demo 3 success or Demo 2 fallback
+  truthfully; the final record distinguishes child success from a complete
+  rehearsal evaluation.
 - This test specifically proves: Verify hard-blocker handling fallback honesty and public receipt.
-- Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
+- Any applicable skipped or unavailable check is a failure or explicit
+  blocker. A success-only check that the selected fallback branch never
+  reached must be explicitly `not_applicable`, never silently skipped.
 
 # Results / Evidence
 

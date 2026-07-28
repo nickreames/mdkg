@@ -11,14 +11,14 @@ next: test-16
 tags: [ai-native-sdlc, presentation-demo, phase-6, step-11]
 owners: [program-orchestrator]
 links: []
-artifacts: []
+artifacts: [artifacts/demo-003/readiness-routing-verification.json]
 relates: []
 blocked_by: []
 blocks: []
 refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-33]
 context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-33]
 evidence_refs: []
-aliases: [phase-6-step-8]
+aliases: [phase-6-step-11]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [refined_source_identity, specialized_goal, child_chain, public_safe_pack, event_authority, no_execution]
 created: 2026-07-26
@@ -48,17 +48,28 @@ and concise pack as step 11 of Goal 6.
 - Demo 3 source, manifest, and sendoff hashes equal test-25's verified
   post-Demo-2 identities.
 - The human-accepted event authority resolves the same source, specialized
-  goal, preflight, allowlist, sendoff, push range, and lease.
+  goal, preflight, allowlist, sendoff, prospective range policy,
+  preparation-baseline handoff, and lease.
+- The authority inventories later Goal 6/7 local-evidence-only graph/status/
+  event/test/checkpoint/index/bundle/projection and umbrella receipt paths,
+  including task-58 publication/activation outputs; excludes them from every
+  publication; separately freezes child-run/canonical staged paths; and
+  invalidates on any bound functional hash change.
 - No child implementation node has executed.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
 - Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.
+- One designated harness, warm dependencies, portable output/thin wrapper,
+  build-once validation, fast verifier, exact first node, required skills, and
+  timing telemetry resolve without truncation.
 - Dry rehearsal creates no implementation, commit, push, deployment, or provider change.
 - This test specifically proves: Verify Demo 3 readiness routing and concise pack.
 - Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
 
 # Results / Evidence
 
-Pending activation. Record pass/fail per case, commands, hashes, routes, screenshots or receipts, warnings, and follow-up refs.
+Write `artifacts/demo-003/readiness-routing-verification.json` with pass/fail
+per case, commands, hashes, exact pack inventory, timing/authority identities,
+warnings, and follow-up refs.
 
 # Notes / Follow-ups
 

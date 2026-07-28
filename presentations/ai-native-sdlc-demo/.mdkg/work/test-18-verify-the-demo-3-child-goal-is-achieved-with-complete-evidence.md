@@ -1,40 +1,40 @@
 ---
 id: test-18
 type: test
-title: Verify the Demo 3 child goal is achieved with complete evidence
+title: Verify the Demo 3 reveal gate by the global deadline
 status: backlog
 priority: 1
 epic: epic-7
 parent: goal-7
-prev: task-39
-next: test-19
-tags: [ai-native-sdlc, presentation-demo, phase-7, step-7]
+prev: task-35
+next: task-36
+tags: [ai-native-sdlc, presentation-demo, phase-7, step-3]
 owners: [program-orchestrator]
 links: []
-artifacts: []
+artifacts: [artifacts/demo-003/reveal-gate-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-7, epic-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-39]
-context_refs: [goal-7, epic-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-39]
+refs: [goal-7, epic-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-35]
+context_refs: [goal-7, epic-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-35]
 evidence_refs: []
-aliases: [phase-7-step-7]
+aliases: [phase-7-step-3, demo-3-reveal-gate]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [child_achieved, positioning, implementation, local_test, integration, canonical_test, publish, exact_sha_live_urls, accepted_checkpoint]
+cases: [success_branch, fallback_branch, receipt_schema, timing_deadline, truthful_child_state, selection]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Validate that the Demo 3 child goal is achieved with complete
-local-to-production evidence as step 7 of Goal 7.
+Validate the consolidated Demo 3 reveal receipt without running new heavy
+commands. This is the audience-equivalent gate at step 3 of Goal 7.
 
 # Target / Scope
 
 - goal-7
 - epic-7
-- task-39
+- task-35
 
 # Preconditions / Environment
 
@@ -44,21 +44,26 @@ local-to-production evidence as step 7 of Goal 7.
 
 # Test Cases
 
-- The child goal is achieved only after positioning, implementation, local
-  test, integration, canonical-site test, publish, exact-SHA/live-URL test, and
-  its accepted checkpoint all resolve.
-- Canonical build, routes, claims, accessibility, privacy, noindex, zero-JavaScript, and budgets pass.
-- Both production projects are READY for the exact final SHA and both live routes pass.
-- Fix-forward attempts and elapsed time stay within bounds.
-- Reveal selection and receipt state Demo 3 success or Demo 2 fallback truthfully; fallback never marks Goal 7 achieved.
-- This test specifically proves: Verify the Demo 3 child goal is achieved with
-  complete local-to-production evidence.
+- For Demo 3 selection, require child `goal-1` achieved with an accepted
+  checkpoint, normal push range proven against policy, both deployments READY
+  for the exact final SHA, both routes passing, child checkpoint by T+28:30,
+  task-35 receipt by T+29:15, and this selection by T+29:30.
+- Validate receipt schema, all referenced hashes, timing/retry limits,
+  essential public-safety assertions, and source-to-execution story.
+- Perform no build, screenshot suite, provider polling loop, bundle refresh, or
+  source/Git/provider mutation.
+- Any missing success condition selects Demo 2. By T+30, all live actions stop.
+- A truthful fallback passes rehearsal-honesty evaluation but does not mark the
+  Demo 3 child successful.
+- This test, not task-35 alone, must finish and persist the Demo 3/Demo 2
+  selection by T+29:30.
 - Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
 
 # Results / Evidence
 
-Pending activation. Record pass/fail per case, commands, hashes, routes, screenshots or receipts, warnings, and follow-up refs.
+Write `artifacts/demo-003/reveal-gate-verification.json` with selection,
+deadline comparison, schema/hash results, blocker if any, and pass/fail.
 
 # Notes / Follow-ups
 
-- Do not advance to test-19 until the required result is evidenced.
+- Do not advance to post-reveal task-36 until the gate result is evidenced.

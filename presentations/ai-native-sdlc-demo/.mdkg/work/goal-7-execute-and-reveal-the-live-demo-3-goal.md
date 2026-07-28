@@ -1,27 +1,27 @@
 ---
 id: goal-7
 type: goal
-title: Execute and reveal the live Demo 3 goal
+title: Execute and assess the timed Demo 3 dress rehearsal
 status: backlog
 priority: 1
 goal_state: paused
-goal_condition: Under the still-valid human-accepted event authority, the specialized Demo 3 child goal is achieved without another mid-run approval, the complete approved commit range is pushed non-force to origin/main, both existing production deployments are READY for the same final SHA, /demo/3/ and /demo/3/output/ pass the frozen contract, the integration owner rebuilds and verifies the private program bundle, and a public-safe receipt proves Plan -> Work -> Evidence plus what completed, why, and what comes next. Showing Demo 2 after a hard blocker does not achieve Goal 7.
+goal_condition: Under the still-valid human-accepted rehearsal policy and separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes Demo 3 against the immutable 30-minute contract; a consolidated receipt either proves child achievement, normal non-force push, both exact-SHA READY deployments, passing /demo/3/ routes, and a T+29:30 reveal gate, or truthfully records the timed blocker and Demo 2 fallback; all per-stage timings, retries, waits, interventions, and post-reveal audits are sealed for Goal 9.
 scope_refs: [epic-7]
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
-required_checks: [current human event pre-authorization with no mid-run approval gap, Demo 3 child goal and complete evidence, canonical site build route claim accessibility privacy and zero-JavaScript gates, complete Git push-range allowlist fetch zero-behind commit and non-force push, both production projects READY for exact SHA, live detail and output routes, explicit program bundle rebuild and root projection verification, fallback honesty and public receipt]
+required_checks: [published clean preparation baseline and current human rehearsal authority, single-harness dispatch and timing ledger, Demo 3 child result or truthful timed blocker, consolidated T+29:15 receipt and T+29:30 reveal-selection test, exact actual range proof and normal non-force push on success, both production projects READY for exact SHA on success, live detail and output routes on success, post-reveal receipt audits and program bundle closeout, fallback honesty]
 max_iterations: 25
 blocked_after_attempts: 3
 tags: [ai-native-sdlc, presentation-demo, phase-7]
-owners: [program-orchestrator]
+owners: [program-orchestrator, root-integration-owner]
 links: []
-artifacts: [artifact://ai-native-sdlc-demo/demo-003-event-receipt, artifact://ai-native-sdlc-demo/demo-003-blocker-receipt]
+artifacts: [artifacts/demo-003/timing-ledger.json, artifacts/demo-003/reveal-gate-receipt.json, artifact://ai-native-sdlc-demo/demo-003-rehearsal-receipt, artifact://ai-native-sdlc-demo/demo-003-blocker-receipt]
 relates: []
 blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-6, task-31, task-32, task-33]
-evidence_refs: [test-17]
-aliases: [live-demo-3-execution-and-reveal]
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-6, chk-18, task-31, task-32, task-33]
+evidence_refs: [chk-18, test-17]
+aliases: [timed-demo-3-dress-rehearsal]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
@@ -29,33 +29,46 @@ updated: 2026-07-26
 
 # Objective
 
-Execute and reveal the live Demo 3 goal under the accepted program requirements, ownership model, and authority boundary.
+Execute Demo 3 as the audience-equivalent, 30-minute dress rehearsal and
+produce evidence that directly informs final Demo 4 preparation.
 
 # End Condition
 
-Under the still-valid human-accepted event authority, the specialized Demo 3
-child goal is achieved without another mid-run approval, the complete approved
-commit range is pushed non-force to `origin/main`, both existing production
-deployments are READY for the same final SHA, both public routes pass, the
-integration owner explicitly rebuilds and verifies the private program bundle,
-and a public-safe reveal receipt resolves Plan -> Work -> Evidence and
-what/why/next.
+The preparation baseline is published before `P0` and `T0`; one designated harness
+executes the complete child chain; the T+29:30 gate either proves the successful
+exact-SHA public result or selects Demo 2 truthfully; and the final rehearsal
+receipt preserves stage timing, attempts, waits, interventions, blocker/
+fallback state, and post-reveal audit evidence for Goal 9.
 
 # Activation Conditions
 
-Goal 6 has an accepted readiness checkpoint; `event-authority.json` is
-explicitly human accepted and still binds the source, child, sendoff, complete
-push range, allowlist, lease, base/origin SHAs, and provider preflight; and the
-event quiet window is active. Any drift is a hard blocker, not a request to
-broaden authority during the talk.
+Goal 6 has an accepted readiness checkpoint. Its preparation-baseline handoff
+has separate publication approval, and the exclusive quiet window is active.
+`event-authority.json` remains human accepted and binds the source, child,
+sendoff, prospective range policy, allowlist, lease, clean pre-publication
+origin, expected preparation tree, designated harness, provider preflight,
+activation rule, and global deadline. Root-integration-owned `task-58` then
+publishes the exact manifest, proves it clean and equal to `origin/main`, binds
+the actual published baseline SHA in a separate authority-activation receipt,
+and releases its lease before task-34 records `P0` or dispatches.
 
 # Non-Goals
 
 - No force, published-history reset, manual deployment, DNS, Vercel project configuration, analytics, tags, npm publication, or paths outside the allowlist.
 - No second implementation or publication writer in the program graph. The Demo 3 child owns the work topology and evidence, its implementation writer owns pre-publication source work, and the root integration owner exclusively claims and executes the child's publish node for staging, commits, and push after a lease handoff.
+- During the timed path, `program-orchestrator` and
+  `child-implementation-writer` are logical roles of the same designated
+  physical harness and writer lease. No separate umbrella agent mutates the
+  checkout concurrently. That writer yields at accepted canonical validation;
+  the root integration owner publishes and releases; the same designated
+  harness resumes read-only verification and receipt consolidation.
 - No interactive re-approval for a still-valid action already enumerated in
   `event-authority.json`; conversely, the receipt cannot authorize an action
   outside its exact frozen scope.
+- No multi-harness execution, harness-equivalence claim, eight-hour/endurance
+  test, or claim that this rehearsal proves general long-horizon autonomy.
+- No final deck/source/sendoff polish; Goal 9 owns changes selected from this
+  rehearsal's evidence.
 
 # Recursive Algorithm
 
@@ -75,14 +88,13 @@ broaden authority during the talk.
 
 # Required Checks
 
-- current human event pre-authorization with no mid-run approval gap
-- Demo 3 child goal and complete evidence
-- canonical site build route claim accessibility privacy and zero-JavaScript gates
-- complete Git push-range allowlist fetch zero-behind commit and non-force push
-- both production projects READY for exact SHA
-- live detail and output routes
+- published clean preparation baseline and current human rehearsal authority
+- single-harness dispatch, timing ledger, and exact child result
+- consolidated T+29:15 receipt, T+29:30 reveal-selection gate, and T+30 stop
+- actual range proven against policy and normal non-force push on success
+- exact-SHA deployments and live routes on success
+- post-reveal canonical, Git, provider, route, and fallback receipt audits
 - explicit program bundle rebuild and root projection verification
-- fallback honesty and public receipt
 
 # Acceptance Criteria
 
@@ -92,16 +104,28 @@ broaden authority during the talk.
   edits, validation, fix-forward commits, normal push, read-only provider
   checks, route checks, and bundle refresh.
 - The child goal executes exactly: positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
-- At most three bounded fix-forward attempts and twenty minutes follow the first production failure.
-- Event-authority, sendoff, allowlist, lease, source, child, or push-range
+- At most two pre-publication repair cycles and one production fix-forward are
+  permitted. No production repair starts after T+24; the global deadline
+  overrides remaining retries.
+- Event-authority, sendoff, allowlist, lease, source, child, or range-policy
   drift; origin advancement; force or unrelated integration; missing access;
   provider outage at the bound; provider/DNS mutation; out-of-scope changes;
   or unrepaired safety failures are hard blockers.
-- Demo 3 is revealed only after independent proof; otherwise Demo 2 is shown transparently and Demo 3 remains unachieved.
+- Demo 3 is selected only after the T+29:30 reveal gate passes. Otherwise Demo
+  2 is selected transparently by T+30 and the child remains unachieved. Goal 7
+  may still close as a complete measured rehearsal outcome once truthful
+  blocker and post-reveal evidence are sealed.
 - The reveal shows reusable source, specialized goal, output, Plan -> Work -> Evidence, and what/why/next without teaching graph mechanics.
 - The reusable source is `examples/website-demo-template/.mdkg/:goal-1`; the executed specification is `runs/demo-003/.mdkg/:goal-1`.
-- Program tasks 35–39 mirror and independently inspect child receipts read-only; they never repeat child source, Git, or provider mutations.
-- The child implementation writer and root integration owner never mutate concurrently: accepted canonical-site evidence releases the implementation lease, the integration owner performs the child publish node, then exact-SHA/live verification is read-only.
+- `task-34 -> task-35 -> test-18` is the only reveal-critical umbrella path.
+  Tasks 36–39, tests 19–21, bundle refresh, screenshots, and exhaustive audits
+  are post-reveal evidence work and may not delay or retroactively change the
+  selection.
+- The single designated timed writer and root integration owner never mutate
+  concurrently: accepted canonical-site evidence releases the timed writer
+  lease, the integration owner performs the child publish node and releases,
+  then the designated harness resumes read-only exact-SHA/live verification
+  and umbrella receipts.
 
 # Sendoff Contract
 
@@ -115,12 +139,29 @@ deployments and public URLs, and integration-owner bundle refresh and
 verification. The human-accepted event authority pre-approves those exact
 actions; no further mid-run confirmation is required while it remains valid.
 
-Hard blockers are authority, source, child, allowlist, lease, or push-range
+Hard blockers are authority, source, child, allowlist, lease, or range-policy
 drift; origin advancement after final preflight; a push requiring force,
 history rewrite, or unrelated integration; unavailable credentials or provider
-access; provider outage or unresolved production failure beyond three attempts
-or twenty minutes; or any need for DNS, project configuration, manual redeploy,
-analytics, package publication, or out-of-scope source changes.
+access; missed T+24/T+29:15/T+29:30/T+30 boundaries; exhausted two/one repair limits;
+or any need for DNS, project configuration, manual redeploy, analytics,
+package publication, or out-of-scope source changes.
+
+# Timed Contract
+
+`P0` is presentation/rehearsal kickoff. After preparation publication,
+clean-base proof, authority activation, and lease release, the orchestrator
+records immutable `T0` immediately before invoking the exact child dispatch.
+`T0` is due by P0+00:45 and child acknowledgement by T+00:45; positioning by
+T+02; implementation by T+13; local critical validation by T+16; mechanical
+canonical integration by T+20; actual range proof and normal push by T+22;
+latest production repair start at T+24; both exact-SHA deployments READY by
+T+26; routes and accepted child checkpoint by T+28:30; consolidated reveal
+receipt by T+29:15; verified selection by T+29:30; and stop/select Demo 2 at
+T+30.
+
+Every stage records `started_at`, `completed_at`, `duration_ms`,
+`attempt_count`, retry classification, `external_wait_ms`, intervention count,
+blocker, and fallback selection.
 
 # Definition Of Done
 
@@ -138,13 +179,18 @@ analytics, package publication, or out-of-scope source changes.
 
 # Current State
 
-Fully specified and paused. Do not execute until Activation Conditions are accepted.
+Enhanced and paused. Do not execute until Goal 6's accepted checkpoint and
+separate preparation-baseline publication approval exist. First actionable
+node: `task-58`.
 
 # Iteration Log
 
 - 2026-07-26: Created as phase 7 of the AI-native SDLC presentation and live-demo program.
 - 2026-07-27: Bound the live run to separate human pre-authorization, complete
   push-range review, and an explicit no-mid-run-approval contract.
+- 2026-07-27: Reframed Demo 3 as the measured dress rehearsal, established a
+  30-minute single-harness contract, and moved comprehensive audits after the
+  reveal gate.
 
 # Skill Improvement Candidates
 
