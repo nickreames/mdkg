@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-serialized-event-writer-lease",
+  "status": "reserved_pending_human_authority_and_post_publication_activation",
+  "prepared_at": "2026-07-28T06:53:32Z",
+  "checkout": {
+    "repository": "nickreames/mdkg",
+    "branch": "main",
+    "remote": "origin",
+    "reviewed_pre_task_32_head": "e5d3d23ea811c791870944e195ef7e09f57a1e9e",
+    "reviewed_origin_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "reviewed_range_ahead": 13,
+    "reviewed_range_behind": 0,
+    "reviewed_range_patch_sha256": "5403e145e1e01008999394ce1d5e06458707f77bedf70a4e6ce4c37b2e911386"
+  },
+  "bound_identity": {
+    "semantic_source_release_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+    "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+    "sendoff_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc",
+    "allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+    "authority_policy_sha256": "23b37b5f19c649ca811ca9be40b8cd78950661be7d485a82e75bcd6e6647f994",
+    "preparation_handoff_sha256": "360ecfe0cadd3ced88cc0853ea80a8fb402cce3c39d9e2b46d648bd8b8f0d263"
+  },
+  "physical_writer_rule": {
+    "maximum_concurrent_source_or_git_writers": 1,
+    "current_state": "no event writer active; reservation only",
+    "excluded_parallel_writers": [
+      "all other root source writers",
+      "all other Git index/history writers",
+      "all other Demo 3 child writers",
+      "any agent or human not named in the active phase"
+    ],
+    "read_only_observers_allowed": true,
+    "conflict_check": "Before every phase, require the previous phase release receipt, unchanged bound identities, unchanged origin, and no unallowed dirty or staged paths."
+  },
+  "roles": {
+    "designated_harness": "codex",
+    "program_orchestrator": "logical role of codex",
+    "child_implementation_writer": "logical role of codex",
+    "root_integration_owner": "exclusive preparation and publication writer"
+  },
+  "serialized_phases": [
+    {
+      "phase": "preparation_baseline_publication",
+      "physical_writer": "root-integration-owner",
+      "starts": "after separate baseline-publication approval and a passing task-58 preflight",
+      "expires": "on verified publication plus event-authority-activation receipt, or immediately on drift",
+      "allowed_paths": "the separately approved preparation manifest only",
+      "release_condition": "HEAD equals fetched origin/main, publication and activation receipts verify, the index is empty, and the lease release is recorded"
+    },
+    {
+      "phase": "timed_child_implementation_and_canonical_validation",
+      "physical_writer": "codex",
+      "logical_roles": ["program-orchestrator", "child-implementation-writer"],
+      "starts": "after preparation release, authority activation, P0, and immediately before immutable T0 dispatch",
+      "expires": "at accepted canonical validation, hard blocker, authority invalidation, or T+30:00",
+      "allowed_paths": "child implementation/lifecycle paths and the canonical validation paths in event-allowlist.json, excluding staging, commit, and push",
+      "release_condition": "accepted canonical validation receipt or hard-blocker receipt"
+    },
+    {
+      "phase": "child_publication",
+      "physical_writer": "root-integration-owner",
+      "starts": "after the timed writer releases at accepted canonical validation and range preflight passes",
+      "expires": "after bounded commit, one normal non-force push, and publication receipt, or immediately on drift",
+      "allowed_paths": "only event-allowlist.json publication-eligible paths",
+      "release_condition": "normal push receipt or hard-blocker receipt; no writer overlap"
+    },
+    {
+      "phase": "read_only_live_verification_and_reveal",
+      "physical_writer": "none",
+      "reader": "codex",
+      "starts": "after root integration owner publication release",
+      "expires": "at T+30:00 or earlier authority invalidation",
+      "allowed_paths": "local evidence-only receipts; public routes and existing provider state are read-only",
+      "release_condition": "reveal selection is sealed"
+    },
+    {
+      "phase": "post_reveal_bundle_and_root_closeout",
+      "physical_writer": "root-integration-owner",
+      "starts": "after reveal selection and timed writer release",
+      "expires": "after bundle and root projection verification",
+      "allowed_paths": "the policy-listed local evidence, bundle, and root projection paths only",
+      "release_condition": "closeout receipts verify"
+    }
+  ],
+  "handoffs": {
+    "canonical_test": "codex records accepted canonical validation and releases before root-integration-owner stages anything",
+    "publication": "root-integration-owner records its claim, rechecks the exact range and origin, publishes, records release, then yields",
+    "verification": "codex resumes only after the publication release and performs provider/route checks read-only"
+  },
+  "heartbeat_and_renewal": {
+    "heartbeat": "record at phase claim, every mutation boundary, every retry, and phase release",
+    "renewal": "allowed only before expiry when all bound hashes, owner, origin, index, and dirty-path checks still match",
+    "silent_renewal": false,
+    "post_T0_extension": "forbidden beyond T+30:00"
+  },
+  "invalidation": [
+    "any bound identity, allowlist, authority, owner, origin, branch, remote, or lease field changes",
+    "parallel source or Git writer activity",
+    "unallowed dirty or staged paths",
+    "an owner fails to release before the next owner claims",
+    "the repair or deadline policy is exhausted"
+  ],
+  "child_boundary": "The child may execute a later activated authority but may not edit the run binding, immutable seal, authority reference, allowlist, lease, human approval, or validity window.",
+  "activation": {
+    "active": false,
+    "requires": [
+      "Task 32 fallback receipt passes",
+      "Task 33 event-authority.json is explicitly human accepted",
+      "Goal 6 readiness tests and checkpoint pass",
+      "Task 58 publishes the separately approved preparation baseline",
+      "event-authority-activation.json verifies the actual baseline"
+    ]
+  }
+}

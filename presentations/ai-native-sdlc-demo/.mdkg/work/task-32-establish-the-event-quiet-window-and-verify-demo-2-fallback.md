@@ -2,7 +2,7 @@
 id: task-32
 type: task
 title: Establish the event quiet window and verify Demo 2 fallback
-status: backlog
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-6-step-9]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Overview
@@ -88,4 +88,30 @@ Establish the event quiet window and verify Demo 2 fallback. This is step 9 of
 
 - goal-6
 - epic-6
-- Evidence pending activation.
+
+# Results
+
+- Reserved a serialized event writer lease without activating it. The five
+  non-overlapping phases bind the preparation publisher, single Codex timed
+  writer, child publisher, read-only verifier, and bundle closeout owner with
+  explicit claims, releases, renewal checks, and fail-closed invalidation.
+- `event-writer-lease.json` binds the current Task 31 policy chain and reviewed
+  Git candidate at `e5d3d23ea811c791870944e195ef7e09f57a1e9e`; SHA-256
+  `8a1c96d8f03103f15930422937a29210217b34138a621ebc9dc3262bf70847f7`.
+  It grants no authority until the human receipt and post-publication
+  activation receipt both verify.
+- Confirmed there are no running parallel subagents or alternate source/Git
+  writers in this checkout. Any later writer appearance, ownership overlap, or
+  unallowed dirty/staged path invalidates the reservation.
+- Reverified all 30 entries in the immutable Demo 2 golden-fallback inventory
+  and all 17 files in its offline manifest. No fallback file changed.
+- Read-only GET verification returned HTTP 200 for both
+  `https://mdkg.dev/demo/2/` and `https://mdkg.dev/demo/2/output/`; both retain
+  `noindex,nofollow` and the expected Demo 2 story.
+- `fallback-readiness.json` (SHA-256
+  `8758c521fc17a868bce09852f50afbd2b30d74c30db4ca19cdb4dc3a1a79c9dc`)
+  records the exact manifest identities, live observations, offline recovery,
+  honest speaker wording, and a mutation-free sub-30-second reveal switch.
+- The pre-existing untracked Demo 2 pack remained untouched. No child work,
+  source implementation, staging, commit beyond the separately authorized
+  local planning commit, push, deployment, or provider mutation occurred.

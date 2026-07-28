@@ -2,7 +2,7 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T06:52:12.802Z",
+    "generated_at": "2026-07-28T06:56:06.881Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
@@ -2920,7 +2920,7 @@
         "scope_refs": [
           "epic-6"
         ],
-        "active_node": "task-31",
+        "active_node": "task-32",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -6049,10 +6049,10 @@
       "ws": "root",
       "type": "task",
       "title": "Establish the event quiet window and verify Demo 2 fallback",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
