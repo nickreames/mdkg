@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-event-mutation-allowlist",
+  "status": "frozen_prospective",
+  "prepared_at": "2026-07-28T06:47:40Z",
+  "authority_boundary": "This file defines eligible paths and operations but grants no Git, publication, provider, or timed-run authority.",
+  "identity": {
+    "semantic_source_release_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+    "materializer_version": "2.0",
+    "materializer_sha256": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28",
+    "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+    "child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+    "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+    "timed_run_contract_sha256": "f4b21d56a23cb439dc4bb5aefe6808f0fb5f1dc9a3f30ed19a023f155c868465",
+    "sendoff_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc"
+  },
+  "git_baseline": {
+    "remote": "origin",
+    "branch": "main",
+    "live_origin_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "reviewed_parent_head": "cd04500c0bb8aea7022f8adf10569676cc68ce58",
+    "linear_descendant_required": true,
+    "normal_non_force_push_only": true,
+    "actual_range_and_stable_range_hash_required_immediately_before_push": true
+  },
+  "owners": {
+    "designated_harness": "codex",
+    "program_orchestrator": "logical control role executed by the designated harness",
+    "child_implementation_writer": "designated harness while holding the timed child writer lease",
+    "root_integration_owner": "exclusive preparation and child publication writer",
+    "physical_writer_policy": "one physical Git/source writer at a time"
+  },
+  "canonical_paths": [
+    {
+      "path": "mdkg-dev/src/data/demos/demo-3.ts",
+      "owner": "root-integration-owner",
+      "operations": ["create", "stage", "commit"],
+      "reason": "Demo 3 registry record",
+      "expected_base": "absent"
+    },
+    {
+      "path": "mdkg-dev/src/data/demos/index.ts",
+      "owner": "root-integration-owner",
+      "operations": ["edit", "stage", "commit"],
+      "reason": "export the Demo 3 registry record",
+      "expected_base_sha256": "e1455cca732d485b8b5cde05617e4d95860889edd7042d767354bb50eda4d97b"
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/Demo3Output.astro",
+      "owner": "root-integration-owner",
+      "operations": ["create", "stage", "commit"],
+      "reason": "canonical static Demo 3 output component",
+      "expected_base": "absent"
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/outputRegistry.ts",
+      "owner": "root-integration-owner",
+      "operations": ["edit", "stage", "commit"],
+      "reason": "map the Demo 3 component key",
+      "expected_base_sha256": "35d5b79845ab3d5e5a220ceaa82fa3948f64661ebeb24260ff8f0e31e20435c0"
+    },
+    {
+      "path": "scripts/smoke-mdkg-dev.js",
+      "owner": "root-integration-owner",
+      "operations": ["edit", "stage", "commit"],
+      "reason": "verify the two canonical Demo 3 routes",
+      "expected_base_sha256": "2cce042064ce10aa5969f9a5e423b1b98eecaa57d7a70446e1496262813dc8b4"
+    }
+  ],
+  "child_run": {
+    "root": "presentations/ai-native-sdlc-demo/runs/demo-003/",
+    "allowed_mutable_paths": [
+      "presentations/ai-native-sdlc-demo/runs/demo-003/site/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/artifacts/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/index/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/state/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/events/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/chk-<cli-allocated-runtime-id>-*.md",
+      "status and evidence_refs fields in the seven authored child chain files, mutated only through mdkg lifecycle commands"
+    ],
+    "publication_eligible_paths": [
+      "presentations/ai-native-sdlc-demo/runs/demo-003/site/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/artifacts/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/events/events.jsonl",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/task-1-build-complete-static-astro-website-demo.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/task-2-integrate-the-portable-demo-output-through-the-caller-owned-canonical-adapter.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/task-3-publish-the-approved-bounded-range-under-external-caller-authority.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/test-1-complete-website-demo-validation-and-handoff-contract.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/test-2-verify-the-canonical-static-routes-and-shared-source-contract.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/test-3-verify-exact-sha-deployments-and-public-demo-routes.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/work/chk-<cli-allocated-runtime-id>-*.md"
+    ],
+    "immutable_denied_paths": [
+      "presentations/ai-native-sdlc-demo/runs/demo-003/RUN_BINDING.json",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/CHILD_INTERFACE.json",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/IMMUTABLE_CHILD_CONTRACT.json",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/DEMO_HANDOFF_PROMPT.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/design/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/core/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.mdkg/skills/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.agents/",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/.claude/",
+      "all authored prose and topology in the goal, epic, spike, task, and test files"
+    ]
+  },
+  "authorized_actions_if_separate_authority_is_active": [
+    "edit only the enumerated paths",
+    "run local validation and production-safe smoke tests",
+    "create at most four bounded in-scope commits",
+    "perform one normal non-force push to origin/main",
+    "inspect existing Vercel projects and deployments read-only",
+    "issue bounded GET checks for /demo/3/ and /demo/3/output/",
+    "record compact public-safe receipts"
+  ],
+  "forbidden_actions": [
+    "force push or history rewrite",
+    "unrelated integration or unlisted source paths",
+    "new dependencies or lockfile changes",
+    "DNS, project, environment, alias, or analytics configuration",
+    "manual redeploy or any provider mutation",
+    "tag or package publication",
+    "credentials, tokens, cookies, or private provider payloads in artifacts",
+    "web research, image generation, remote fonts, remote runtime assets, or new route architecture",
+    "authority expansion from within the child"
+  ],
+  "validity": {
+    "not_before": "a human-accepted event-authority receipt and a verified post-publication activation receipt",
+    "expires": "the earliest of explicit revocation, identity drift, lease invalidation, or T0+30:00",
+    "repairs": {
+      "pre_publication": 2,
+      "production": 1,
+      "latest_production_repair_start": "T+24:00"
+    }
+  },
+  "invalidation_conditions": [
+    "source release, run binding, materializer, operator manifest, child interface, immutable child contract, sendoff, allowlist, baseline, owner, or lease changes",
+    "origin/main advances after final preflight",
+    "a normal linear push is no longer possible",
+    "an action needs any unlisted path or forbidden operation",
+    "the repair limit or T+30 global deadline is exhausted"
+  ]
+}

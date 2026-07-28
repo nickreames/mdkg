@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-readiness-pack-receipt",
+  "status": "passed",
+  "verified_at": "2026-07-28T06:37:50Z",
+  "target_root": "presentations/ai-native-sdlc-demo/runs/demo-003",
+  "lineage": {
+    "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+    "bootstrap_verify_receipt_sha256": "4ec03c0a95ebd7fdc8f29c5922c06b0ad6da8ec74dc4702cd08bdd05913a66dc",
+    "child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+    "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+    "authored_goal_sha256": "cc033b466d9326d09da6576b27c5f48acf70debc89215f069e0f8526a1c39aba",
+    "authored_goal_equal_to_source": true,
+    "authored_entry_count": 103
+  },
+  "pack": {
+    "root_qid": "root:spike-1",
+    "profile": "concise",
+    "skills_depth": "full",
+    "node_count": 19,
+    "token_estimate": 3116,
+    "truncated": false,
+    "generated_path": "runs/demo-003/.mdkg/pack/pack_concise_spike-1_20260728-003750190.json",
+    "generated_sha256": "ed9a652c8cae8cb516eba59ed2a8d0d3df228451927437386246e71148b4885f",
+    "generated_pack_ignored_from_git": true,
+    "included_qids": [
+      "root:spike-1",
+      "root:goal-1",
+      "root:epic-1",
+      "root:edd-1",
+      "root:dec-1",
+      "root:dec-2",
+      "root:prd-2",
+      "root:task-1",
+      "root:test-1",
+      "root:task-2",
+      "root:task-3",
+      "root:chk-2",
+      "root:chk-3",
+      "root:test-2",
+      "root:test-3",
+      "root:skill:select-work-and-ground-context",
+      "root:skill:verify-close-and-checkpoint",
+      "root:skill:build-pack-and-execute-task",
+      "root:skill:pursue-mdkg-goal"
+    ]
+  },
+  "execution_state": {
+    "goal_status": "todo",
+    "goal_state": "active",
+    "active_node": "spike-1",
+    "first_actionable_qid": "root:spike-1",
+    "child_artifact_files": 0,
+    "implementation_evidence_empty": true,
+    "publication_evidence_empty": true,
+    "work_started": false,
+    "runtime_checkpoint_created": false
+  },
+  "interfaces": {
+    "designated_harness": "codex",
+    "timing_profile": "demo-live-30m-v1",
+    "warm_dependency_contract_present": true,
+    "portable_component": "site/src/components/DemoOutput.astro",
+    "thin_caller_adapter_required": true,
+    "external_authority_hash_bound": true,
+    "authority_stored_in_child": false
+  },
+  "public_safety": {
+    "raw_secret_or_credential_markers": 0,
+    "raw_provider_payloads": false,
+    "human_approval_embedded": false,
+    "writable_authority_embedded": false,
+    "note": "The graph uses default internal visibility metadata. The generated concise execution pack was scanned as public-safe; --visibility public correctly rejected an unlabelled root rather than broadening visibility."
+  },
+  "validation": {
+    "graph_ok": true,
+    "warning_count": 0,
+    "error_count": 0,
+    "goal_evaluate_report_only": true
+  },
+  "downstream_contracts_present": [
+    "external Git and provider authority boundary",
+    "hard blockers and bounded repair policy",
+    "T+24 production cutoff",
+    "T+29:15 receipt",
+    "T+29:30 reveal selection",
+    "T+30 global stop",
+    "Demo 2 fallback"
+  ],
+  "warnings": []
+}

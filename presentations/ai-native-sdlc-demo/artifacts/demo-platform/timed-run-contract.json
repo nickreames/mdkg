@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "kind": "website-demo-single-harness-timed-run-contract",
+  "state": "accepted",
+  "profile_id": "demo-live-30m-v1",
+  "single_harness": true,
+  "multi_harness_comparison": false,
+  "endurance_demonstration": false,
+  "clock": {
+    "preparation_origin": "P0",
+    "execution_origin": "T0",
+    "t0_definition": "Immediately before the exact child dispatch and no later than P0+00:45.",
+    "global_stop_seconds": 1800
+  },
+  "milestones": [
+    {
+      "name": "dispatch acknowledged",
+      "deadline_seconds": 45
+    },
+    {
+      "name": "positioning sealed",
+      "deadline_seconds": 120
+    },
+    {
+      "name": "implementation complete",
+      "deadline_seconds": 780
+    },
+    {
+      "name": "local validation complete",
+      "deadline_seconds": 960
+    },
+    {
+      "name": "canonical integration and validation complete",
+      "deadline_seconds": 1200
+    },
+    {
+      "name": "normal push complete",
+      "deadline_seconds": 1320
+    },
+    {
+      "name": "production repair cutoff",
+      "deadline_seconds": 1440
+    },
+    {
+      "name": "exact-SHA deployments READY",
+      "deadline_seconds": 1560
+    },
+    {
+      "name": "public routes and child checkpoint complete",
+      "deadline_seconds": 1710
+    },
+    {
+      "name": "consolidated reveal receipt sealed",
+      "deadline_seconds": 1755
+    },
+    {
+      "name": "success or fallback selected",
+      "deadline_seconds": 1770
+    },
+    {
+      "name": "fallback visible",
+      "deadline_seconds": 1800
+    }
+  ],
+  "repair_policy": {
+    "prepublication_repairs": 2,
+    "production_repairs": 1,
+    "global_deadline_overrides_remaining_attempts": true
+  },
+  "preconditions": [
+    "one designated harness",
+    "accepted semantic source release and immutable run binding",
+    "zero-manual-edit fixture proof",
+    "warm dependency resolution",
+    "one portable DemoOutput.astro and thin caller adapter",
+    "build-once serial shared-output checks",
+    "prepared fast exact-SHA and public-route verifier",
+    "published preparation baseline before P0",
+    "released preparation writer lease before T0",
+    "frozen prospective range policy and external human authority",
+    "sealed fallback"
+  ],
+  "per_stage_telemetry": [
+    "started_at",
+    "completed_at",
+    "duration_ms",
+    "attempt_count",
+    "retry_class",
+    "external_wait_ms",
+    "interventions",
+    "blocker",
+    "fallback_selection"
+  ],
+  "forbidden_during_clock": [
+    "manual child graph specialization",
+    "new dependencies",
+    "web research",
+    "image generation",
+    "remote runtime assets",
+    "new route architecture",
+    "parallel checks that share generated output",
+    "comprehensive screenshots before the reveal gate",
+    "bundle refresh before the reveal gate",
+    "force push or history rewrite",
+    "provider mutation"
+  ],
+  "hard_blockers": [
+    "origin advances after final preflight",
+    "push requires force history rewrite or unrelated integration",
+    "credentials or required read visibility are unavailable",
+    "semantic source binding child seal allowlist lease or authority identity drifts",
+    "passing requires DNS provider configuration manual redeploy analytics package publication or out-of-scope changes",
+    "the global deadline or repair policy is exhausted"
+  ],
+  "fallback_policy": "Seal precise evidence, stop further side effects, select the caller-named fallback by T+29:30, make it visible by T+30:00, and do not claim the current run succeeded."
+}

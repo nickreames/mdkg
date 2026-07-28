@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-immutable-child-contract-seal",
+  "status": "frozen",
+  "authoritative_child_file": "runs/demo-003/IMMUTABLE_CHILD_CONTRACT.json",
+  "authoritative_child_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+  "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+  "binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+  "interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+  "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+  "authored_child_entry_count": 103,
+  "sealed_in_identity": [
+    "semantic source release",
+    "run binding",
+    "goal condition and authored topology",
+    "role mapping and deterministic receipt paths",
+    "requirements and required skills",
+    "operator and sendoff inputs",
+    "forbidden authority and publication surfaces"
+  ],
+  "excluded_from_identity": [
+    "normal work statuses",
+    "events",
+    "evidence refs",
+    "runtime checkpoints",
+    "indexes",
+    "packs",
+    "site output",
+    "execution receipts"
+  ],
+  "post_fork_authored_graph_edits_allowed": false,
+  "external_authority_stored_in_child": false
+}

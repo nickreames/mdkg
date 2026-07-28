@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-pre-test-deck-baseline",
+  "status": "frozen",
+  "frozen_at": "2026-07-28T06:33:13Z",
+  "owner": "program-orchestrator",
+  "source_checkpoint": "chk-12",
+  "production_rehearsal_checkpoint": "chk-17",
+  "deck_modified_in_goal_6": false,
+  "artifacts": [
+    {
+      "path": "deck/source/ai-native-sdlc.mjs",
+      "sha256": "2218965d880a0b892ebb7889336602f6b9879c43970f643340a405e52d2be572",
+      "role": "editable deterministic source"
+    },
+    {
+      "path": "deck/ai-native-sdlc.pptx",
+      "sha256": "7cf122ccea42a98ab2538f103dc80678d093ba32719c6a5039f85e5fdc91bdcc",
+      "role": "20-slide presentation"
+    },
+    {
+      "path": "deck/speaker-notes.md",
+      "sha256": "2d22d3b729440d24c2820a22bd21fa8bbe2003c2c633834dec056087792ea220",
+      "role": "speaker notes and cues"
+    },
+    {
+      "path": "deck/citations/claim-matrix.md",
+      "sha256": "7037fdade57ba211b5cb25953e049474ccfa17d8dd3c2b9e38e8607fa3e860db",
+      "role": "claim provenance"
+    },
+    {
+      "path": "deck/rendered/contact-sheet.png",
+      "sha256": "3ade0971a8042bf6a479bcb5f452b2f09f0d788034575337c787f2ae821a69ec",
+      "role": "deck-level visual review"
+    },
+    {
+      "path": "deck/rendered/qa-report.md",
+      "sha256": "1a1cca5fd1e57c64bcbe08316d835c7cfeed33d89860de1f8ce71904b778fd3a",
+      "role": "render and accessibility QA"
+    },
+    {
+      "path": "deck/rendered/rehearsal-receipt.md",
+      "sha256": "3419ba17c4a227b23209a6b466a4ac20f2940d7e6846a7cd5c501a7c61946f1b",
+      "role": "Goal 3 offline cue baseline"
+    },
+    {
+      "path": "artifacts/demo-002/rehearsal-receipt.json",
+      "sha256": "cf63110923cc879954a70fad2495382e933f1c0d644fdcac51be1231b2cd47da",
+      "role": "production-backed cue and timing rehearsal"
+    },
+    {
+      "path": "artifacts/demo-002/production-reveal/source-vs-specialized-16x9.png",
+      "sha256": "43eb63c44800b7d7ad842dc5b3f71addc1142d75a9fcc2798707bd7e8b56f2ec",
+      "role": "production-backed reveal fallback"
+    }
+  ],
+  "timing": {
+    "narrated_deck_seconds": 1865,
+    "reveal_plus_cta_seconds": 170,
+    "total_content_seconds": 2035,
+    "hard_stop_seconds": 2100,
+    "margin_seconds": 65,
+    "questions_after_hard_stop": true
+  },
+  "accepted_demo_2_cue_findings": [
+    {
+      "finding": "The static comparison captures the governed pre-publication handoff.",
+      "event_treatment": "Frame it as the specialized specification at its governed handoff boundary, then show exact-SHA publication evidence."
+    },
+    {
+      "finding": "The production detail page is too long for a timed scroll.",
+      "event_treatment": "Lead with the retained 16:9 source-versus-specialized image, then open the output route and consolidated receipts."
+    },
+    {
+      "finding": "The Goal 3 notes predate sealed Demo 2 evidence.",
+      "event_treatment": "Use the Goal 5 production rehearsal cue matrix during the event; defer source/notes edits to Goal 9."
+    }
+  ],
+  "reserved_demo_3_evidence_slots": [
+    "timing ledger and global-stop result",
+    "exact-SHA production deployment identities",
+    "detail and output route verification",
+    "source release to binding to executed-state lineage",
+    "reveal-gate and fallback decision"
+  ],
+  "authority": {
+    "goal_9_owns_final_polish": true,
+    "goal_9_requires_explicit_human_approval": true,
+    "goal_6_may_regenerate_deck": false
+  },
+  "warnings": []
+}

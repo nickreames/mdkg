@@ -5,7 +5,7 @@ title: Evaluate and adopt results
 status: backlog
 priority: 2
 goal_state: paused
-goal_condition: Sanitized feedback and event evidence are reviewed, separate decisions classify Demo 2 and Demo 3 as promote, retain unlisted, or archive, evidence-backed canonical-site and SEO/LLM ideas are selected, the source claim map is updated before public copy, accepted changes are validated locally, and publication is explicitly deferred or handed to a separately authorized lane.
+goal_condition: Sanitized feedback and final event evidence are reviewed, separate decisions classify Demo 2, Demo 3, and Demo 4 as promote, retain unlisted, or archive, evidence-backed canonical-site and SEO/LLM ideas are selected, the source claim map is updated before public copy, accepted changes are validated locally, and publication is explicitly deferred or handed to a separately authorized lane.
 scope_refs: [epic-8]
 required_skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 required_checks: [sanitized feedback and event-evidence review, separate retention decisions, source claim-map reconciliation, canonical build and route smokes, SEO LLM metadata robots sitemap navigation and accessibility, fresh publication-authority handoff]
@@ -19,8 +19,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-7]
-evidence_refs: []
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-7, goal-9, goal-10, test-29]
+evidence_refs: [goal-7, goal-10, test-29]
 aliases: [post-demo-evaluation-and-adoption]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -33,11 +33,18 @@ Evaluate and adopt results under the accepted program requirements, ownership mo
 
 # End Condition
 
-Sanitized feedback and event evidence are reviewed, separate decisions classify Demo 2 and Demo 3 as promote, retain unlisted, or archive, evidence-backed canonical-site and SEO/LLM ideas are selected, the source claim map is updated before public copy, accepted changes are validated locally, and publication is explicitly deferred or handed to a separately authorized lane.
+Sanitized feedback and event evidence are reviewed, separate decisions classify
+Demo 2, Demo 3, and Demo 4 as promote, retain unlisted, or archive,
+evidence-backed canonical-site and SEO/LLM ideas are selected, the source claim
+map is updated before public copy, accepted changes are validated locally, and
+publication is explicitly deferred or handed to a separately authorized lane.
 
 # Activation Conditions
 
-An event-outcome checkpoint exists, whether Demo 3 achieved or the fail-closed Demo 2 fallback was used. Before any canonical source edit, a new writer lease records an accepted base SHA, exact source allowlist, quiet window, owner, and zero-conflict/zero-behind preflight.
+Goal 10 has an accepted event-outcome checkpoint, whether Demo 4 achieved or
+the fail-closed Demo 2 fallback was used. Before any canonical source edit, a
+new writer lease records an accepted base SHA, exact source allowlist, quiet
+window, owner, and zero-conflict/zero-behind preflight.
 
 # Non-Goals
 
@@ -68,7 +75,7 @@ An event-outcome checkpoint exists, whether Demo 3 achieved or the fail-closed D
 
 # Acceptance Criteria
 
-- Demo 2 and Demo 3 receive separate reversible retention decisions.
+- Demo 2, Demo 3, and Demo 4 receive separate reversible retention decisions.
 - Canonical ideas are accepted or rejected individually with evidence and owner.
 - Unsupported claims block public adoption.
 - Selected source changes pass local static, accessibility, SEO/LLM, visibility, and no-secret tests.

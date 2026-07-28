@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "tool": "mdkg",
+  "mdkg_version": "0.4.0",
+  "files": [
+    {
+      "path": ".mdkg/config.json",
+      "category": "config",
+      "sha256": "715e2f55843dc31f66d4b7d333b5f89ea2aeeacc30f5dfaf7d3fd9f2c41e5fb0"
+    },
+    {
+      "path": ".mdkg/core/COLLABORATION.md",
+      "category": "core",
+      "sha256": "ef60b65b54a57ed54984a49f5ed14453cb4e47170a5660be94eceec26b92b01f"
+    },
+    {
+      "path": ".mdkg/core/core.md",
+      "category": "core",
+      "sha256": "7d8a5ee16433ac8057234c84c2603a9d568d538f17f0488572da15f59603ca0f"
+    },
+    {
+      "path": ".mdkg/core/guide.md",
+      "category": "core",
+      "sha256": "ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae"
+    },
+    {
+      "path": ".mdkg/core/HUMAN.md",
+      "category": "core",
+      "sha256": "945fb5cb47945735b9529f2b0a322630b3e8aef1c3e69c4ce85dd2db3e905cca"
+    },
+    {
+      "path": ".mdkg/core/rule-1-mdkg-conventions.md",
+      "category": "core",
+      "sha256": "03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7"
+    },
+    {
+      "path": ".mdkg/core/rule-2-context-pack-rules.md",
+      "category": "core",
+      "sha256": "9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f"
+    },
+    {
+      "path": ".mdkg/core/rule-3-cli-contract.md",
+      "category": "core",
+      "sha256": "362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45"
+    },
+    {
+      "path": ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+      "category": "core",
+      "sha256": "3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8"
+    },
+    {
+      "path": ".mdkg/core/rule-5-release-and-versioning.md",
+      "category": "core",
+      "sha256": "d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03"
+    },
+    {
+      "path": ".mdkg/core/rule-6-templates-and-schemas.md",
+      "category": "core",
+      "sha256": "3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f"
+    },
+    {
+      "path": ".mdkg/core/SOUL.md",
+      "category": "core",
+      "sha256": "2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a"
+    },
+    {
+      "path": ".mdkg/README.md",
+      "category": "mdkg_doc",
+      "sha256": "faaf4bb697eded7c6baf6cb44a2a6c04feabfc250cac3bcb4be6b95e7a3bb02a"
+    },
+    {
+      "path": ".mdkg/skills/author-mdkg-skill/SKILL.md",
+      "category": "default_skill",
+      "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873"
+    },
+    {
+      "path": ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+      "category": "default_skill",
+      "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae"
+    },
+    {
+      "path": ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+      "category": "default_skill",
+      "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5"
+    },
+    {
+      "path": ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+      "category": "default_skill",
+      "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409"
+    },
+    {
+      "path": ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+      "category": "default_skill",
+      "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107"
+    },
+    {
+      "path": ".mdkg/templates/default/archive.md",
+      "category": "template",
+      "sha256": "d442523bbecd91a3c4a436043919117da00c145b368612311e98e628fe30d69b"
+    },
+    {
+      "path": ".mdkg/templates/default/bug.md",
+      "category": "template",
+      "sha256": "27ed977c67030befccfc469d9db257fadc9ad5331963e259c489ba03754194cb"
+    },
+    {
+      "path": ".mdkg/templates/default/chk.md",
+      "category": "template",
+      "sha256": "9e32f46665fc7cc582c4695772f5d99799f574229e740fa8892c7b9e75324de9"
+    },
+    {
+      "path": ".mdkg/templates/default/dec.md",
+      "category": "template",
+      "sha256": "a2f7098fea538c153ac290f2e2edb2e755ca9dd07d17c2a127fb23959517ece9"
+    },
+    {
+      "path": ".mdkg/templates/default/dispute.md",
+      "category": "template",
+      "sha256": "b1c5330fd4a1e3f03dbb4ac8907bd728e55537e053dcf43ebcbdc835ff1d0579"
+    },
+    {
+      "path": ".mdkg/templates/default/edd.md",
+      "category": "template",
+      "sha256": "44828719927cfd31389b9d55b57fc4fa9bc640f3e2475baefe585e4043740f5e"
+    },
+    {
+      "path": ".mdkg/templates/default/epic.md",
+      "category": "template",
+      "sha256": "0f515c046064771e3f9abaa3689634bfae3ffcf2ffe9825e8e3b7dc15c24fc50"
+    },
+    {
+      "path": ".mdkg/templates/default/feat.md",
+      "category": "template",
+      "sha256": "25c04ce41d8cf519d5c3009219eeed48f76c23600c6b7999264831aa92cefc4b"
+    },
+    {
+      "path": ".mdkg/templates/default/feedback.md",
+      "category": "template",
+      "sha256": "61ad7b8b717d17736ba505f814fa6e4f9ec61f7fe4ae6622359304620a99d649"
+    },
+    {
+      "path": ".mdkg/templates/default/goal.md",
+      "category": "template",
+      "sha256": "8f984580aefd02b34639fa7f5d2a834662656bbf2e12f14a285f5ae31aff74ce"
+    },
+    {
+      "path": ".mdkg/templates/default/manifest.md",
+      "category": "template",
+      "sha256": "2ff2af58cae6a0381a66949d7d9e997fac6486da85171b09096c43663889da95"
+    },
+    {
+      "path": ".mdkg/templates/default/prd.md",
+      "category": "template",
+      "sha256": "afee167576a4f881ab191867e118864b7b5629e14b9c4a61359c8fbd7ececeee"
+    },
+    {
+      "path": ".mdkg/templates/default/prop.md",
+      "category": "template",
+      "sha256": "839b976a8ddc0d6abddfbe6114dfb87f64471958ae807c011538777b758aa1f0"
+    },
+    {
+      "path": ".mdkg/templates/default/proposal.md",
+      "category": "template",
+      "sha256": "16bfa81b6e665064e93e0d1b625dccc518b9885f87a32a15e5ba5441c2c27ea8"
+    },
+    {
+      "path": ".mdkg/templates/default/receipt.md",
+      "category": "template",
+      "sha256": "516faf98abe421f154d162b18006c7875f1a0025ac4d35cc16df744c13548d9d"
+    },
+    {
+      "path": ".mdkg/templates/default/rule.md",
+      "category": "template",
+      "sha256": "6321abf72af61a6513d7bfaa2d3122b2aa3bd2b95b662a52d569fb2bf819fda1"
+    },
+    {
+      "path": ".mdkg/templates/default/spec.md",
+      "category": "template",
+      "sha256": "8c96e0b6dafa65acb83a2d84519e05a7354896aec8991c148650e9ec58196c77"
+    },
+    {
+      "path": ".mdkg/templates/default/spike.md",
+      "category": "template",
+      "sha256": "56e881fad20bd4fda8ae53cc78ce6f30f4dacd083f4eda40f9f2ba3723d52e0e"
+    },
+    {
+      "path": ".mdkg/templates/default/task.md",
+      "category": "template",
+      "sha256": "2db6e56298b22e9da9121e2ac31f2fd68e370211218c5bcaae1014a9e63b7cde"
+    },
+    {
+      "path": ".mdkg/templates/default/test.md",
+      "category": "template",
+      "sha256": "59484d4cf397707d738ccbc2f788c08eab58d3d73f37591f7bde8f1533b828ce"
+    },
+    {
+      "path": ".mdkg/templates/default/work_order.md",
+      "category": "template",
+      "sha256": "5fe376413035f2afe406d13491a597f103a2fce29d137951fe55ae042a1082f5"
+    },
+    {
+      "path": ".mdkg/templates/default/work.md",
+      "category": "template",
+      "sha256": "cfc53d3be1d2c31576448d071a579bc3d5d2f6851755e29c20825f6b6764c0aa"
+    },
+    {
+      "path": ".mdkg/templates/skills/base.SKILL.md",
+      "category": "template",
+      "sha256": "08a1bd65297173a1dc9df95776775d406337a419d4bc51863593b6f28777ebdb"
+    },
+    {
+      "path": ".mdkg/templates/specs/agent.MANIFEST.md",
+      "category": "template",
+      "sha256": "79fb755c95747d3f673e1333ec3f039d08f76488ba268b7fa32f457d8638ee64"
+    },
+    {
+      "path": ".mdkg/templates/specs/agent.SPEC.md",
+      "category": "template",
+      "sha256": "dab10c0ed12aa10a752ee3bd61f263065644826eb950c71a9e3458673edb0ca5"
+    },
+    {
+      "path": ".mdkg/templates/specs/api.MANIFEST.md",
+      "category": "template",
+      "sha256": "dd342ab2bd331b716e4b7de9f8c7cfa503703422a4cc88c21fe90ff49b11aa83"
+    },
+    {
+      "path": ".mdkg/templates/specs/api.SPEC.md",
+      "category": "template",
+      "sha256": "aee86cadcca31a5a015d7e15ad7503c4aa30f2af0079ec03f857b82b3ecbae59"
+    },
+    {
+      "path": ".mdkg/templates/specs/base.MANIFEST.md",
+      "category": "template",
+      "sha256": "056c4ccf8285db72c8befdc6acd165d625dbe892d70e89ce586f081db8e250fc"
+    },
+    {
+      "path": ".mdkg/templates/specs/base.SPEC.md",
+      "category": "template",
+      "sha256": "6d4171fac00c2f3d8f2a2ac746b8a47c59aaecebe224c3a0046dd6e6974a1d08"
+    },
+    {
+      "path": ".mdkg/templates/specs/capability.MANIFEST.md",
+      "category": "template",
+      "sha256": "0ab2c2f90c6bdcddaafd77ac6cc36422d6ee10cc935942d8f80728f5b184d5cc"
+    },
+    {
+      "path": ".mdkg/templates/specs/capability.SPEC.md",
+      "category": "template",
+      "sha256": "68a91e8bbd80d1ff1972e4c31e29f26451d5a1be1d25d414170fdd670010066f"
+    },
+    {
+      "path": ".mdkg/templates/specs/integration.MANIFEST.md",
+      "category": "template",
+      "sha256": "7af890bdac5515600661c241dd488c2bc270248ae6fba9afb0307d7a643022a4"
+    },
+    {
+      "path": ".mdkg/templates/specs/integration.SPEC.md",
+      "category": "template",
+      "sha256": "e907ce6ebc1fa5a455e31e39036e3f8699dccb3d9e45288c8ea025eaec4ca4a2"
+    },
+    {
+      "path": ".mdkg/templates/specs/model.MANIFEST.md",
+      "category": "template",
+      "sha256": "3fe36a424b6eba8542bd08d3e2728ffd7f35d2c72037f2e565757cea15da2e1f"
+    },
+    {
+      "path": ".mdkg/templates/specs/model.SPEC.md",
+      "category": "template",
+      "sha256": "56061a241819dfda4d3022c075f744cf6650f5f52c58cd15b0af9d1f613af4f2"
+    },
+    {
+      "path": ".mdkg/templates/specs/project.MANIFEST.md",
+      "category": "template",
+      "sha256": "e1f68306a9cff3d73e65a2fea38d52b49dd76921b5d7c7ea9710eb2c23cb6f89"
+    },
+    {
+      "path": ".mdkg/templates/specs/project.SPEC.md",
+      "category": "template",
+      "sha256": "386c41852cbb46e7a6ba583a7b0c4126262a56618d8e214aaa601b68d55818b9"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-agent.MANIFEST.md",
+      "category": "template",
+      "sha256": "4ba2013362597f101fb225bc6a3369a47a0c1cac3de78220efea4e53d42f0393"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-agent.SPEC.md",
+      "category": "template",
+      "sha256": "53af7c3e172f5ed1297f340aca0be5e53302613d2e6bb9145915067d7b0004c8"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-image.MANIFEST.md",
+      "category": "template",
+      "sha256": "098debed22f274c9f408defcf330ef27c760e1a3166876f2a6e16cb28cfb4757"
+    },
+    {
+      "path": ".mdkg/templates/specs/runtime-image.SPEC.md",
+      "category": "template",
+      "sha256": "37416b045cd7733d1f5e1cc629ac9b6616024d5fa52f2bdcd90110267151e593"
+    },
+    {
+      "path": ".mdkg/templates/specs/tool.MANIFEST.md",
+      "category": "template",
+      "sha256": "79e45600a3b83d70e2791cbdff0138b57018a30b7e277d9017b7ba142deccb91"
+    },
+    {
+      "path": ".mdkg/templates/specs/tool.SPEC.md",
+      "category": "template",
+      "sha256": "05b827bbce4f721ea25beda62850688aff3db644aec65e71b9cf76cad8e5f46f"
+    },
+    {
+      "path": "AGENT_START.md",
+      "category": "startup_doc",
+      "sha256": "91e31ae818b29f62ebe77ac24f7e1a2bd10a4fedfc1684da935f0849aaf6d200"
+    },
+    {
+      "path": "AGENTS.md",
+      "category": "agent_doc",
+      "sha256": "9e33a1c20320e317e1e37dbb09fd0303e355b9e7d49cf2128fe791aaa2ce2fb1"
+    },
+    {
+      "path": "CLAUDE.md",
+      "category": "agent_doc",
+      "sha256": "3ff3ec5560968f7f1bf6f7d34a3c4b6e636edc9f0d45f717cdebc4df3b76403a"
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "category": "startup_doc",
+      "sha256": "82c509b91498131304ff2bc94bb7eb2f29c3c207a00bc8bcaf8a6ab52ff9e689"
+    },
+    {
+      "path": "llms.txt",
+      "category": "startup_doc",
+      "sha256": "108ac1feb3e11824c9cfc5116aaa83355cb461ad9b0ec5c4bb244f6a70276f31"
+    }
+  ]
+}

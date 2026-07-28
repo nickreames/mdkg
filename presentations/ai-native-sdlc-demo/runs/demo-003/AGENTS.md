@@ -1,0 +1,9 @@
+# AGENTS
+
+Read `AGENT_START.md` first.
+
+Codex/OpenAI conventions for this repo:
+- use `AGENT_START.md` as the startup contract
+- use `.agents/skills/` for product-facing mirrored skills when present
+- use `mdkg skill ...` as the canonical skill command family
+- use `mdkg task ...` for structured task fields and markdown edits for narrative/body changes

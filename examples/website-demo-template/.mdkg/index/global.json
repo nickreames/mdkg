@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-27T04:04:10.985Z",
+    "generated_at": "2026-07-28T06:11:26.553Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/examples/website-demo-template",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-2"
+      "root": "root:chk-3"
     }
   },
   "workspaces": {
@@ -76,6 +76,73 @@
         "blocks": [],
         "context_refs": [],
         "evidence_refs": []
+      }
+    },
+    "root:chk-3": {
+      "id": "chk-3",
+      "qid": "root:chk-3",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Fork-ready semantic source release accepted",
+      "status": "done",
+      "priority": 1,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "demo",
+        "source-release",
+        "semantic-identity",
+        "accepted"
+      ],
+      "owners": [
+        "source-template-owner"
+      ],
+      "links": [],
+      "artifacts": [
+        "README.md",
+        "DEMO_HANDOFF_PROMPT.md"
+      ],
+      "refs": [
+        "goal-1",
+        "epic-1",
+        "prd-2",
+        "edd-1",
+        "dec-1",
+        "dec-2",
+        "spike-1",
+        "task-1",
+        "test-1",
+        "task-2",
+        "test-2",
+        "task-3",
+        "test-3"
+      ],
+      "aliases": [
+        "fork-ready-source-release-accepted"
+      ],
+      "skills": [
+        "select-work-and-ground-context",
+        "build-pack-and-execute-task",
+        "pursue-mdkg-goal",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/chk-3-fork-ready-semantic-source-release-accepted.md",
+      "edges": {
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-1",
+          "root:epic-1",
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2"
+        ],
+        "evidence_refs": [
+          "root:chk-2"
+        ]
       }
     },
     "root:dec-1": {
@@ -216,13 +283,18 @@
         "blocks": [
           "root:spike-1",
           "root:task-1",
-          "root:test-1"
+          "root:test-1",
+          "root:task-2",
+          "root:test-2",
+          "root:task-3",
+          "root:test-3"
         ],
         "context_refs": [
           "root:prd-2",
           "root:edd-1",
           "root:dec-1",
-          "root:dec-2"
+          "root:dec-2",
+          "root:chk-3"
         ],
         "evidence_refs": []
       }
@@ -259,23 +331,35 @@
       ],
       "attributes": {
         "goal_state": "active",
-        "goal_condition": "A complete, local, differentiated static Astro website demo is built from this template with zero client-side JavaScript, follows the Ocean Flow design system, records the creative direction and validation evidence, and closes with a recommendation to discard, rework, or return the accepted candidate for a separately authorized integration decision.",
+        "goal_condition": "A differentiated static Astro demo is produced from the accepted semantic source release and immutable run binding without authored child graph edits; the complete positioning, portable implementation, local validation, caller-authorized canonical integration, canonical validation, authority-gated normal publication, exact-SHA deployment, public-route verification, evidence, and accepted runtime checkpoint are consistent, or an enumerated authority/safety blocker is recorded truthfully.",
         "scope_refs": [
           "epic-1",
           "spike-1",
           "task-1",
-          "test-1"
+          "test-1",
+          "task-2",
+          "test-2",
+          "task-3",
+          "test-3"
         ],
         "active_node": "spike-1",
         "required_skills": [
           "select-work-and-ground-context",
+          "build-pack-and-execute-task",
+          "pursue-mdkg-goal",
           "verify-close-and-checkpoint"
         ],
         "required_checks": [
-          "mdkg validate --json",
-          "mdkg index",
-          "mdkg goal next goal-1 --json",
-          "mdkg pack spike-1 --profile concise --dry-run --stats"
+          "explicit-root graph validation",
+          "semantic release binding interface and seal verification",
+          "complete prev-next routing",
+          "concise and standard pack coverage",
+          "portable static output",
+          "build-once serial validation",
+          "external authority validation",
+          "exact-SHA READY deployments",
+          "public detail and output routes",
+          "closure consistency"
         ],
         "max_iterations": "25",
         "blocked_after_attempts": "3"
@@ -289,7 +373,8 @@
           "root:prd-2",
           "root:edd-1",
           "root:dec-1",
-          "root:dec-2"
+          "root:dec-2",
+          "root:chk-3"
         ],
         "evidence_refs": []
       }
@@ -667,7 +752,9 @@
       ],
       "owners": [],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/creative-direction.md"
+      ],
       "refs": [],
       "aliases": [],
       "skills": [
@@ -679,6 +766,7 @@
       "edges": {
         "epic": "root:epic-1",
         "parent": "root:goal-1",
+        "next": "root:task-1",
         "relates": [
           "root:task-1",
           "root:test-1",
@@ -688,15 +776,13 @@
           "root:edd-1"
         ],
         "blocked_by": [],
-        "blocks": [
-          "root:task-1",
-          "root:test-1"
-        ],
+        "blocks": [],
         "context_refs": [
           "root:prd-2",
           "root:edd-1",
           "root:dec-1",
-          "root:dec-2"
+          "root:dec-2",
+          "root:chk-3"
         ],
         "evidence_refs": []
       }
@@ -721,7 +807,10 @@
       ],
       "owners": [],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "site/src/components/DemoOutput.astro",
+        "artifacts/implementation-receipt.json"
+      ],
       "refs": [
         "goal-1",
         "prd-2"
@@ -736,18 +825,127 @@
       "edges": {
         "epic": "root:epic-1",
         "parent": "root:goal-1",
+        "prev": "root:spike-1",
+        "next": "root:test-1",
         "relates": [],
-        "blocked_by": [
-          "root:spike-1"
-        ],
+        "blocked_by": [],
         "blocks": [],
         "context_refs": [
           "root:prd-2",
           "root:edd-1",
           "root:dec-1",
-          "root:dec-2"
+          "root:dec-2",
+          "root:spike-1",
+          "root:chk-3"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:spike-1"
+        ]
+      }
+    },
+    "root:task-2": {
+      "id": "task-2",
+      "qid": "root:task-2",
+      "ws": "root",
+      "type": "task",
+      "title": "Integrate the portable demo output through the caller-owned canonical adapter",
+      "status": "backlog",
+      "priority": 1,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "demo",
+        "integration",
+        "portable-output",
+        "caller-owned"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [
+        "artifacts/integration-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "prd-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "build-pack-and-execute-task",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/task-2-integrate-the-portable-demo-output-through-the-caller-owned-canonical-adapter.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:test-1",
+        "next": "root:test-2",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:test-1",
+          "root:chk-3"
+        ],
+        "evidence_refs": [
+          "root:test-1"
+        ]
+      }
+    },
+    "root:task-3": {
+      "id": "task-3",
+      "qid": "root:task-3",
+      "ws": "root",
+      "type": "task",
+      "title": "Publish the approved bounded range under external caller authority",
+      "status": "backlog",
+      "priority": 1,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "demo",
+        "publication",
+        "authority-gated",
+        "non-force"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [
+        "artifacts/publication-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "prd-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "build-pack-and-execute-task",
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/task-3-publish-the-approved-bounded-range-under-external-caller-authority.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:test-2",
+        "next": "root:test-3",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-2",
+          "root:test-2",
+          "root:chk-3"
+        ],
+        "evidence_refs": [
+          "root:test-2"
+        ]
       }
     },
     "root:test-1": {
@@ -770,7 +968,9 @@
       ],
       "owners": [],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/local-validation.json"
+      ],
       "refs": [
         "goal-1",
         "prd-2"
@@ -784,18 +984,127 @@
       "edges": {
         "epic": "root:epic-1",
         "parent": "root:goal-1",
+        "prev": "root:task-1",
+        "next": "root:task-2",
         "relates": [],
-        "blocked_by": [
-          "root:task-1"
-        ],
+        "blocked_by": [],
         "blocks": [],
         "context_refs": [
           "root:prd-2",
           "root:edd-1",
           "root:dec-1",
-          "root:dec-2"
+          "root:dec-2",
+          "root:spike-1",
+          "root:task-1",
+          "root:chk-3"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:spike-1",
+          "root:task-1"
+        ]
+      }
+    },
+    "root:test-2": {
+      "id": "test-2",
+      "qid": "root:test-2",
+      "ws": "root",
+      "type": "test",
+      "title": "Verify the canonical static routes and shared-source contract",
+      "status": "backlog",
+      "priority": 1,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "demo",
+        "integration",
+        "canonical-validation",
+        "static"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [
+        "artifacts/canonical-route-validation.json"
+      ],
+      "refs": [
+        "goal-1",
+        "prd-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/test-2-verify-the-canonical-static-routes-and-shared-source-contract.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:task-2",
+        "next": "root:task-3",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:task-2",
+          "root:chk-3"
+        ],
+        "evidence_refs": [
+          "root:task-2"
+        ]
+      }
+    },
+    "root:test-3": {
+      "id": "test-3",
+      "qid": "root:test-3",
+      "ws": "root",
+      "type": "test",
+      "title": "Verify exact-SHA deployments and public demo routes",
+      "status": "backlog",
+      "priority": 1,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "demo",
+        "production",
+        "exact-sha",
+        "live-routes"
+      ],
+      "owners": [],
+      "links": [],
+      "artifacts": [
+        "artifacts/live-verification-receipt.json"
+      ],
+      "refs": [
+        "goal-1",
+        "prd-2"
+      ],
+      "aliases": [],
+      "skills": [
+        "verify-close-and-checkpoint"
+      ],
+      "attributes": {},
+      "path": ".mdkg/work/test-3-verify-exact-sha-deployments-and-public-demo-routes.md",
+      "edges": {
+        "epic": "root:epic-1",
+        "parent": "root:goal-1",
+        "prev": "root:task-3",
+        "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:prd-2",
+          "root:edd-1",
+          "root:dec-1",
+          "root:dec-2",
+          "root:task-3",
+          "root:chk-3"
+        ],
+        "evidence_refs": [
+          "root:task-3"
+        ]
       }
     }
   },
@@ -823,69 +1132,198 @@
         "root:spike-1"
       ]
     },
+    "context_refs": {
+      "root:goal-1": [
+        "root:chk-3"
+      ],
+      "root:epic-1": [
+        "root:chk-3"
+      ],
+      "root:prd-2": [
+        "root:chk-3",
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:edd-1": [
+        "root:chk-3",
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:dec-1": [
+        "root:chk-3",
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:dec-2": [
+        "root:chk-3",
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:chk-3": [
+        "root:epic-1",
+        "root:goal-1",
+        "root:spike-1",
+        "root:task-1",
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
+      ],
+      "root:spike-1": [
+        "root:task-1",
+        "root:test-1"
+      ],
+      "root:test-1": [
+        "root:task-2"
+      ],
+      "root:test-2": [
+        "root:task-3"
+      ],
+      "root:task-1": [
+        "root:test-1"
+      ],
+      "root:task-2": [
+        "root:test-2"
+      ],
+      "root:task-3": [
+        "root:test-3"
+      ]
+    },
+    "evidence_refs": {
+      "root:chk-2": [
+        "root:chk-3"
+      ],
+      "root:spike-1": [
+        "root:task-1",
+        "root:test-1"
+      ],
+      "root:test-1": [
+        "root:task-2"
+      ],
+      "root:test-2": [
+        "root:task-3"
+      ],
+      "root:task-1": [
+        "root:test-1"
+      ],
+      "root:task-2": [
+        "root:test-2"
+      ],
+      "root:task-3": [
+        "root:test-3"
+      ]
+    },
     "blocks": {
       "root:spike-1": [
         "root:epic-1"
       ],
       "root:task-1": [
-        "root:epic-1",
-        "root:spike-1"
+        "root:epic-1"
       ],
       "root:test-1": [
-        "root:epic-1",
-        "root:spike-1"
-      ]
-    },
-    "context_refs": {
-      "root:prd-2": [
-        "root:epic-1",
-        "root:goal-1",
-        "root:spike-1",
-        "root:task-1",
-        "root:test-1"
+        "root:epic-1"
       ],
-      "root:edd-1": [
-        "root:epic-1",
-        "root:goal-1",
-        "root:spike-1",
-        "root:task-1",
-        "root:test-1"
+      "root:task-2": [
+        "root:epic-1"
       ],
-      "root:dec-1": [
-        "root:epic-1",
-        "root:goal-1",
-        "root:spike-1",
-        "root:task-1",
-        "root:test-1"
+      "root:test-2": [
+        "root:epic-1"
       ],
-      "root:dec-2": [
-        "root:epic-1",
-        "root:goal-1",
-        "root:spike-1",
-        "root:task-1",
-        "root:test-1"
+      "root:task-3": [
+        "root:epic-1"
+      ],
+      "root:test-3": [
+        "root:epic-1"
       ]
     },
     "epic": {
       "root:epic-1": [
         "root:spike-1",
         "root:task-1",
-        "root:test-1"
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
       ]
     },
     "parent": {
       "root:goal-1": [
         "root:spike-1",
         "root:task-1",
-        "root:test-1"
+        "root:task-2",
+        "root:task-3",
+        "root:test-1",
+        "root:test-2",
+        "root:test-3"
       ]
     },
-    "blocked_by": {
+    "next": {
+      "root:task-1": [
+        "root:spike-1"
+      ],
+      "root:test-1": [
+        "root:task-1"
+      ],
+      "root:test-2": [
+        "root:task-2"
+      ],
+      "root:test-3": [
+        "root:task-3"
+      ],
+      "root:task-2": [
+        "root:test-1"
+      ],
+      "root:task-3": [
+        "root:test-2"
+      ]
+    },
+    "prev": {
       "root:spike-1": [
         "root:task-1"
       ],
+      "root:test-1": [
+        "root:task-2"
+      ],
+      "root:test-2": [
+        "root:task-3"
+      ],
       "root:task-1": [
         "root:test-1"
+      ],
+      "root:task-2": [
+        "root:test-2"
+      ],
+      "root:task-3": [
+        "root:test-3"
       ]
     }
   }

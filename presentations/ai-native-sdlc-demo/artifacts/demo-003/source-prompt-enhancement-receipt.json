@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "kind": "source-prompt-enhancement-receipt",
+  "status": "accepted-for-test-25",
+  "recorded_at": "2026-07-28T06:25:06Z",
+  "base_sha": "65adf3bb7467751e1ed7d4c7a500a54598fa3412",
+  "authority": {
+    "approval": "I approve the Task 47 mutation allowlist.",
+    "approved_source": "presentations/ai-native-sdlc-demo/artifacts/demo-003/source-prompt-evaluation.md",
+    "approved_source_sha256": "452b305286bf632594c2eeb07dc16afd5d5d5e8f2c33567f69171e2da22ef04e",
+    "scope": "local Task 47 source, operator, binding, sendoff, and fixture-preparation surfaces only",
+    "grants_demo_3_materialization": false,
+    "grants_push_or_provider_action": false
+  },
+  "release": {
+    "id": "website-demo-source-v2",
+    "manifest": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/source-release-manifest.json",
+    "manifest_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "authored_inventory_sha256": "sha256:dfa6461bf076cf003aa0afbcc06928e9214f7e3f8230cf95fafffb306b817fe8",
+    "authored_file_count": 103,
+    "cli_source_tree_sha256": "sha256:25f6c612186918c1c628e1ffaefac3610092a29c93573ee99eb9f2c503640dc0",
+    "expected_chain": [
+      "spike-1",
+      "task-1",
+      "test-1",
+      "task-2",
+      "test-2",
+      "task-3",
+      "test-3"
+    ],
+    "accepted_checkpoint": "chk-3"
+  },
+  "interfaces": {
+    "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+    "run_binding_schema_sha256": "2fca84ac44ba42af258676b2d351ea306c032278e07cb1f654511329204e2851",
+    "timed_run_contract_sha256": "f4b21d56a23cb439dc4bb5aefe6808f0fb5f1dc9a3f30ed19a023f155c868465",
+    "bootstrap_sha256": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28",
+    "smoke_sha256": "d05d8e41414247cfd26f61b5a4be858e6e3783511c4d488065d2b21af4b455d2",
+    "live_sendoff_bytes_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc"
+  },
+  "existing_file_hashes": [
+    {
+      "path": "examples/website-demo-template/README.md",
+      "before": "a578f0249d5a84ccc5facf401053a14da15240c6976454de04d99386a87d41c9",
+      "after": "5817d6b023576cd027f3e83c65d6e5d6dde773fc314daf0118ac9e9a3e423031"
+    },
+    {
+      "path": "examples/website-demo-template/.gitignore",
+      "before": "b712e8e66857e638e5bea6d42a0cdbe9bcef45f8bc2103bc6d9287fab3d2201a",
+      "after": "b712e8e66857e638e5bea6d42a0cdbe9bcef45f8bc2103bc6d9287fab3d2201a"
+    },
+    {
+      "path": "examples/website-demo-template/DEMO_HANDOFF_PROMPT.md",
+      "before": "d7e4e2c4c3ed03e25f47a385872f20feb35f2b40973111b4f14628301eb9a64d",
+      "after": "04cf52d84aa17e4e8cb92ee570e52e60e50ffd34efcbea2a7ffde5f566f13055"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/design/prd-2-reusable-static-astro-website-demo-platform.md",
+      "before": "a089216da42dae737becb1da714be3cab51e8c5f2c2a23ff9c3c11f3282accf9",
+      "after": "ff28f8f6ed81448896770ed622f77fdd8290efb92afc82ca9765d0a7a31880c0"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/design/edd-1-ocean-flow-website-demo-design-and-creative-production-contract.md",
+      "before": "782d85d6dace67f9b2c7b9daac922053d91d62cbf67d596eeb595438c9120ea9",
+      "after": "b724c70f0d344ffb180e16d141ea7998c77c47e75b8f77a1bec806bc21e93a8c"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/design/dec-1-static-astro-and-zero-client-javascript-is-the-demo-stack.md",
+      "before": "537d9f716a8c566ac60e8e7bf9aaa9d4db5839963335ceb99f4421bf93b59dc0",
+      "after": "b01467d8244a6c21123bec9ef3a99eb77762fc6b819b2a935583a0faf7333591"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/design/dec-2-demo-template-remains-preview-gated-and-public-safe.md",
+      "before": "4e2ba5cbcf0bee4c4ae8b81425295c857cab231ab34e012974c3b98c2da81417",
+      "after": "dfb3bfced3e60efea77a76189c2c7c0c4835395cf8474003dad9801a4e1a9bde"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+      "before": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c",
+      "after": "cc033b466d9326d09da6576b27c5f48acf70debc89215f069e0f8526a1c39aba"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/epic-1-complete-creative-website-demo-build.md",
+      "before": "b5cb93248bc7118ec801678eb308b5ebc8649d2cfd59f08392adbca04e065d37",
+      "after": "ca11b40a20157bf55c913f11620da68c18dc02efff7f0a026f206aa58e403ebc"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md",
+      "before": "c662c047b9501fa1c3aacc6fab274177e745851fe21d21e2caae98d62f8188ec",
+      "after": "0f85c0e41db1c3575075a1b88f094ccc418861623cf1655270f7df24455d2155"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/task-1-build-complete-static-astro-website-demo.md",
+      "before": "f2e37afad5cbf5b30686c20be30c27cdf2259a0947f51fb623aa5b645323ec70",
+      "after": "259fce912ab69d675cd236f7d3f30b3c59a56b18611caa2cff7dab277671b485"
+    },
+    {
+      "path": "examples/website-demo-template/.mdkg/work/test-1-complete-website-demo-validation-and-handoff-contract.md",
+      "before": "1a6943e32cf0495f992ccab1bba07bcc0e5047dc78dd693a3a214f8ce229d014",
+      "after": "fd1bd5085ff4896e708b5bdae5e073ddd52d47f8f7dbc6fed67befa71a2d6403"
+    },
+    {
+      "path": "scripts/bootstrap-website-demo-run.js",
+      "before": "562e76bc2df7d7c5eba93617584df2663ce6ca4fe18a58d0b9166bc78d89a58f",
+      "after": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28"
+    },
+    {
+      "path": "scripts/smoke-demo-graph.js",
+      "before": "9e6fa93ffb9f4ed7412ab65cca4e3a7876a1ded3f7827bcbb04bb00f0e52f2b4",
+      "after": "d05d8e41414247cfd26f61b5a4be858e6e3783511c4d488065d2b21af4b455d2"
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json",
+      "before": "3ac248cb5f49bc65c1ec5fd73281b8a075d83710f1414ef82914c60db6f2963f",
+      "after": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13"
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/event-specialization-contract.md",
+      "before": "5bd9616ab9b63655f7297d0088fbdde9d414571d2fab76c8899a7703832ac3ec",
+      "after": "f57c0b72dd147b60841177733f97ecd9c7ab4051188e1fa7808a80036890c4c3"
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/live-sendoff-contract.md",
+      "before": "63c3991d84b608eb6be0ee95cf5d7fa077e08758b598c5afa02dffaa2c461220",
+      "after": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc"
+    }
+  ],
+  "new_files": [
+    "examples/website-demo-template/.mdkg/work/task-2-integrate-the-portable-demo-output-through-the-caller-owned-canonical-adapter.md",
+    "examples/website-demo-template/.mdkg/work/test-2-verify-the-canonical-static-routes-and-shared-source-contract.md",
+    "examples/website-demo-template/.mdkg/work/task-3-publish-the-approved-bounded-range-under-external-caller-authority.md",
+    "examples/website-demo-template/.mdkg/work/test-3-verify-exact-sha-deployments-and-public-demo-routes.md",
+    "examples/website-demo-template/.mdkg/work/chk-3-fork-ready-semantic-source-release-accepted.md",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/source-release-manifest.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/run-binding.schema.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/timed-run-contract.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-003/live-sendoff-v2.md"
+  ],
+  "generated_changes": [
+    "examples/website-demo-template/.mdkg/index/**",
+    "examples/website-demo-template/.mdkg/work/events/events.jsonl",
+    "presentations/ai-native-sdlc-demo/.mdkg/index/**",
+    "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl"
+  ],
+  "validation": {
+    "node_syntax": "pass",
+    "source_graph_validation": {
+      "ok": true,
+      "warnings": 0,
+      "errors": 0
+    },
+    "source_next": "spike-1",
+    "smoke_command": "npm run smoke:demo-graph",
+    "smoke_attempts": 3,
+    "attempt_notes": [
+      "Initial attempt exposed an authored-inventory policy mismatch caused by an unmaterialized source file; the semantic inventory was narrowed to released authored mdkg and operator inputs.",
+      "Second attempt exposed insufficient pack traversal depth; bootstrap traversal was raised to include the complete generic chain.",
+      "Third attempt passed both distinct zero-edit fixtures, verify-only repeat, tamper classification, complete packs, and cleanup."
+    ],
+    "final_smoke": "pass",
+    "retained_fixture_directories": 0,
+    "demo_3_created": false,
+    "network_or_provider_actions": false,
+    "git_diff_check": "pass"
+  },
+  "warnings": [],
+  "handoff": {
+    "next_node": "test-25",
+    "purpose": "Independently verify the two zero-edit fixture contract and write durable fixture receipts before any Demo 3 materialization."
+  }
+}

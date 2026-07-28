@@ -1,32 +1,33 @@
 ---
 id: task-27
 type: task
-title: Apply rehearsal findings and freeze the approved deck
-status: todo
+title: Freeze the pre-Demo-3 deck baseline and post-test polish handoff
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
-next: spike-6
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-1]
+prev: test-25
+next: task-28
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-4]
 owners: [program-orchestrator]
 links: []
-artifacts: [deck/source/ai-native-sdlc.mjs, deck/ai-native-sdlc.pptx, deck/rendered/contact-sheet.png, deck/rendered/qa-report.md, deck/rendered/rehearsal-receipt.md, artifacts/demo-003/deck-freeze.json]
+artifacts: [deck/source/ai-native-sdlc.mjs, deck/ai-native-sdlc.pptx, deck/rendered/contact-sheet.png, deck/rendered/qa-report.md, deck/rendered/rehearsal-receipt.md, artifacts/demo-003/pre-test-deck-baseline.json, artifacts/demo-003/post-test-presentation-handoff.md]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-3, chk-12, goal-5]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-3, chk-12, goal-5]
-evidence_refs: [chk-12]
-aliases: [phase-6-step-1]
-skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
+refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-3, chk-12, goal-5, chk-17, test-14, spike-6, test-25]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-3, chk-12, goal-5, chk-17, test-14, spike-6, test-25]
+evidence_refs: [chk-12, chk-17, test-14, spike-6, test-25]
+aliases: [phase-6-step-4]
+skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview
 
-Apply Demo 2 production/rehearsal findings and freeze the explicitly approved
-event deck. This is step 1 of 13 in Goal 6.
+Hash-freeze the current presentation as the Demo 3 pre-test baseline and
+reserve an explicit post-test polish handoff. This is step 4 of 13 in Goal 6.
 
 # Acceptance Criteria
 
@@ -34,24 +35,25 @@ event deck. This is step 1 of 13 in Goal 6.
 - Start from Goal 3 `chk-12`; consume Goal 5's exact-SHA screenshots,
   production 16:9 comparison, child receipts, timing receipt, cue findings, and
   golden fallback.
-- Replace fixture/meta commentary only where accepted evidence now supports a
-  clearer audience-facing result. Preserve the capability narrative,
-  context-engineering conclusion, reveal truthfulness, CTA, claims, citations,
-  and 35-minute boundary.
-- Use both the raw production screenshots and the composed 16:9
-  source-versus-specialized proof where they materially improve the reveal.
-- Regenerate deterministically with Artifact Tool, rerun per-slide rendering,
-  overflow and full-size visual QA, source/citation mapping, QR checks, and the
-  timed cue rehearsal.
-- Obtain explicit human approval of the final polish before writing
-  `artifacts/demo-003/deck-freeze.json` with source/PPTX/notes/citation/render
-  hashes and rehearsal timing.
+- Do not modify or regenerate the deck, notes, citations, PPTX, renders, or
+  assets in Goal 6. If review finds a material factual defect that makes the
+  rehearsal unsafe, record the exact blocker and request an explicit scope
+  exception; do not silently treat it as an essential correction.
+- Record the three accepted Demo 2 cue findings and reserve explicit slots for
+  Demo 3 timing, exact-SHA, route, source-to-binding-to-executed-state, and
+  reveal-gate evidence.
+- Write `pre-test-deck-baseline.json` with exact source/PPTX/notes/citation/
+  render/rehearsal hashes and `post-test-presentation-handoff.md` with the
+  evidence Goal 9 must review.
+- State that Goal 9 owns final enhancement, regeneration, QA, and explicit
+  human approval after Demo 3.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
-- The successor spike-6 does not begin until this node is verified.
+- The successor task-28 does not begin until this node is verified.
 
 # Files Affected
 
-- Existing `deck/**` artifacts and `artifacts/demo-003/deck-freeze.json`.
+- The two named program-local baseline/handoff artifacts only.
+- Existing deck artifacts are read-only inputs whose hashes are recorded.
 - Nested Goal 6 evidence required to close this node.
 - No unrelated root, product, Git, or provider surface.
 
@@ -64,11 +66,26 @@ event deck. This is step 1 of 13 in Goal 6.
 
 # Test Plan
 
-- Final deck renders without overflow, retains source/citation integrity, and
-  passes the same deterministic and visual checks as Goal 3.
-- The narrated deck plus reveal/CTA still stops by 35 minutes.
-- The freeze receipt resolves exact Goal 5 evidence and explicit human
-  approval; no Demo 3 run or source mutation occurs.
+- The current accepted deck artifacts retain exact source/citation/render/PPTX
+  hashes; any change fails this node and routes to an explicit scope decision.
+- The post-test handoff preserves the 35-minute boundary and names the exact
+  Goal 9 evidence/approval gate.
+- The baseline receipt resolves Goal 3/Goal 5 evidence without claiming final
+  post-Demo-3 approval; no Demo 3 run or source mutation occurs.
+
+# Results / Evidence
+
+- Frozen exact hashes for deck source, PPTX, notes, claim matrix, contact
+  sheet, QA report, rehearsal receipt, and production-backed Demo 2 reveal.
+- Preserved the 31:05 narrated deck, 2:50 reveal/CTA, 33:55 content result,
+  and 1:05 hard-stop margin without modifying any deck artifact.
+- Recorded the three Goal 5 cue findings and reserved five Demo 3 evidence
+  slots for Goal 9.
+- `artifacts/demo-003/pre-test-deck-baseline.json` and
+  `artifacts/demo-003/post-test-presentation-handoff.md` are the durable
+  baseline and polish handoff.
+- Demo 3 remained absent and no source, Git, provider, or publication action
+  occurred.
 
 # Links / Artifacts
 
