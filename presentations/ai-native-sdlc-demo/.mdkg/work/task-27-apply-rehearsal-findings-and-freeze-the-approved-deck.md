@@ -2,7 +2,7 @@
 id: task-27
 type: task
 title: Freeze the pre-Demo-3 deck baseline and post-test polish handoff
-status: backlog
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -21,7 +21,7 @@ evidence_refs: [chk-12, chk-17, test-14, spike-6, test-25]
 aliases: [phase-6-step-4]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview
@@ -72,6 +72,20 @@ reserve an explicit post-test polish handoff. This is step 4 of 13 in Goal 6.
   Goal 9 evidence/approval gate.
 - The baseline receipt resolves Goal 3/Goal 5 evidence without claiming final
   post-Demo-3 approval; no Demo 3 run or source mutation occurs.
+
+# Results / Evidence
+
+- Frozen exact hashes for deck source, PPTX, notes, claim matrix, contact
+  sheet, QA report, rehearsal receipt, and production-backed Demo 2 reveal.
+- Preserved the 31:05 narrated deck, 2:50 reveal/CTA, 33:55 content result,
+  and 1:05 hard-stop margin without modifying any deck artifact.
+- Recorded the three Goal 5 cue findings and reserved five Demo 3 evidence
+  slots for Goal 9.
+- `artifacts/demo-003/pre-test-deck-baseline.json` and
+  `artifacts/demo-003/post-test-presentation-handoff.md` are the durable
+  baseline and polish handoff.
+- Demo 3 remained absent and no source, Git, provider, or publication action
+  occurred.
 
 # Links / Artifacts
 

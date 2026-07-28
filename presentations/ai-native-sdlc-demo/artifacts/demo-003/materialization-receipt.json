@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-materialization-receipt",
+  "status": "passed",
+  "created_at": "2026-07-28T06:34:20Z",
+  "bootstrap_receipt": {
+    "path": "runs/demo-003/BOOTSTRAP_RECEIPT.json",
+    "sha256": "4ec03c0a95ebd7fdc8f29c5922c06b0ad6da8ec74dc4702cd08bdd05913a66dc",
+    "mode": "verify-only",
+    "state": "pass"
+  },
+  "identities": {
+    "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "materializer_sha256": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28",
+    "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+    "binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+    "child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+    "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946"
+  },
+  "routing": {
+    "goal_qid": "root:goal-1",
+    "first_actionable_qid": "root:spike-1",
+    "authored_chain": [
+      "root:spike-1",
+      "root:task-1",
+      "root:test-1",
+      "root:task-2",
+      "root:test-2",
+      "root:task-3",
+      "root:test-3"
+    ]
+  },
+  "readiness_states": {
+    "root:spike-1": "todo",
+    "root:task-1": "todo",
+    "root:test-1": "todo",
+    "root:task-2": "backlog",
+    "root:test-2": "backlog",
+    "root:task-3": "backlog",
+    "root:test-3": "backlog"
+  },
+  "validation": {
+    "ok": true,
+    "warning_count": 0,
+    "error_count": 0
+  },
+  "packs": {
+    "concise_node_count": 19,
+    "standard_node_count": 19,
+    "truncated": false
+  },
+  "invariants": {
+    "authored_child_entry_count": 103,
+    "authored_content_equal_to_source_release": true,
+    "goal_status": "todo",
+    "goal_state": "active",
+    "active_node": "spike-1",
+    "implementation_evidence_empty": true,
+    "publication_evidence_empty": true,
+    "runtime_checkpoint_created": false,
+    "work_started": false,
+    "external_authority_granted": false
+  },
+  "repeat_result": "identical release binding authored child operator interface seal routing packs and inventory"
+}
