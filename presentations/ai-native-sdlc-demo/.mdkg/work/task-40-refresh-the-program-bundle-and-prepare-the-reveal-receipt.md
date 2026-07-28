@@ -1,7 +1,7 @@
 ---
 id: task-40
 type: task
-title: Refresh the program bundle and prepare the reveal receipt
+title: Refresh the program bundle and close the Demo 3 rehearsal evidence
 status: backlog
 priority: 1
 epic: epic-7
@@ -10,7 +10,7 @@ prev: test-21
 tags: [ai-native-sdlc, presentation-demo, phase-7, step-11]
 owners: [root-integration-owner]
 links: []
-artifacts: [artifacts/demo-003/reveal-receipt.json, artifacts/demo-003/program-bundle-receipt.json]
+artifacts: [artifacts/demo-003/rehearsal-outcome-receipt.json, artifacts/demo-003/program-bundle-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -25,7 +25,8 @@ updated: 2026-07-26
 
 # Overview
 
-Refresh the program bundle and prepare the reveal receipt. This is the final step 11 of 11 in Goal 7; it owns only the outcome named here and the authority granted by goal-7.
+After the audience-equivalent reveal gate and post-reveal audits, refresh the
+program bundle and seal the measured rehearsal outcome. This is final step 11.
 
 # Acceptance Criteria
 
@@ -43,7 +44,13 @@ Refresh the program bundle and prepare the reveal receipt. This is the final ste
   `mdkg goal show ai_native_sdlc_demo:goal-7 --json`. Do not use
   `subgraph sync`; this registration intentionally has no `source_path`.
 - Write `artifacts/demo-003/program-bundle-receipt.json` with program root, absolute bundle path, private/root profile, bundle content hash, ZIP SHA-256, alias, create/verify/refresh outputs, root base SHA, owner, and timestamp.
-- Write `artifacts/demo-003/reveal-receipt.json` linking source `goal-1`, specialized Demo 3 `goal-1`, achieved child checkpoint, Plan/Work/Evidence summaries, what/why/next, commit/push receipt, exact-SHA deployments, live routes/screenshots, and the bundle projection.
+- Write `artifacts/demo-003/rehearsal-outcome-receipt.json` linking source
+  `goal-1`, specialized Demo 3 `goal-1`, exact child result, reveal-gate
+  selection, complete timing ledger, Plan/Work/Evidence, what/why/next,
+  publication/live evidence when successful, blocker/fallback evidence when
+  not, and the bundle projection.
+- Bundle and exhaustive audit work is post-reveal and must not change which
+  output was selected or retroactively convert a late result into success.
 - Complete task-40, create the accepted Goal 7 checkpoint, and close Goal 7 only after all receipts resolve. Then re-index and rebuild the bundle a second time, refresh/verify the root projection, and require `goal show ai_native_sdlc_demo:goal-7` to report achieved; the root integration event records this final post-closeout bundle hash so writing it cannot stale the bundle.
 - If any required receipt is blocked or inconsistent, record the blocker and reveal the sealed Demo 2 fallback; never manufacture a Demo 3 success receipt.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.

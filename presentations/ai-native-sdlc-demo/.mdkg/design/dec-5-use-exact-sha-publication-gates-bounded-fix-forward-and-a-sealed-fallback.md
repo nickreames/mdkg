@@ -38,22 +38,59 @@ and local-evidence exception are unchanged. Drift invalidates approval.
 Goal 6 uses the completed Demo 2 evidence to evaluate the reusable source
 template and live sendoff. Only explicitly accepted refinements may be applied
 before Demo 3 is forked, and a deterministic absent-target bootstrap must prove
-the revised or unchanged source contract.
+the revised or unchanged source contract. Demo 3 is the timed dress rehearsal;
+Goal 9 later uses its measured evidence to prepare a fresh Demo 4 live run.
 
-Goal 7 may commit and non-force push only its frozen allowlist after Goal 6
-readiness. Goal 6 must first seal a separate human-accepted event-authority
-receipt that pre-authorizes the entire frozen live workflow: allowlisted edits,
-local and canonical validation, bounded fix-forward commits, non-force
-`origin/main` push, read-only deployment inspection, live-route verification,
-and the integration-owner bundle refresh. These actions require no additional
-mid-run confirmation while the receipt, quiet window, base/origin state, and
-allowlist remain valid. Demo 2 approval does not carry forward to Demo 3.
+Goal 6 must seal a human-accepted prospective range-validation policy and a
+preparation-baseline publication handoff for Demo 3. Goal 9 must do the same
+independently for Demo 4. The corresponding timed goal publishes preparation
+surfaces before `P0` and `T0`, proves the published base equals `origin/main`,
+releases the root-integration writer lease, and only then dispatches one
+designated harness. No nonexistent future push range is
+pre-approved: the actual linear descendant range and stable range hash are
+computed and checked against the policy immediately before the normal push.
+
+The pre-event human authority binds the clean pre-publication origin plus the
+expected preparation manifest/tree hash and an activation rule. The separate
+baseline-publication approval authorizes that exact preparation transaction.
+After its normal push, the timed goal derives the real published baseline SHA,
+verifies the tree and origin, and writes an authority-activation receipt. Only
+that receipt activates the timed workflow; no future baseline SHA is guessed.
+
+While the policy, lease, quiet window, base/origin state, and allowlist remain
+valid, it pre-authorizes allowlisted implementation, local and canonical
+build-once validation, bounded fix-forward commits, non-force `origin/main`
+push, read-only deployment inspection, and live-route verification without
+another mid-run confirmation. Demo 2 approval does not carry forward to Demo 3,
+and Demo 3 authority does not carry forward to Demo 4.
 
 Success requires both existing production projects to report READY for the exact final pushed SHA and required routes to pass. A merely recent deployment is insufficient.
 
-One fix-forward attempt is one bounded diagnosis, allowlisted edit, full local re-gate, logical commit, fetch and zero-behind check, non-force push, and exact-SHA/live recheck. Goal 7 permits at most three attempts and twenty minutes from the first production failure.
+One fix-forward attempt is one bounded diagnosis, allowlisted edit, full local
+re-gate, logical commit, fetch and zero-behind check, non-force push, and
+exact-SHA/live recheck. A timed run permits at most two pre-publication repair
+cycles and one production fix-forward cycle. Polling consumes the global
+deadline. No production repair may begin after T+24.
 
-Hard blockers include origin advancement, force or unrelated integration, unavailable credentials or read access, provider outage at the bound, required provider/DNS mutation, out-of-scope source, and unrepaired safety gates. On a blocker, preserve evidence and show sealed Demo 2. That completes the presentation but does not achieve Demo 3.
+`P0` records presentation/rehearsal kickoff. The orchestrator records immutable
+`T0` immediately before invoking the exact child dispatch; `T0` must occur by
+`P0+00:45`, and the child must acknowledge by T+00:45. Positioning is due by
+T+02, implementation by T+13, local critical validation by T+16, mechanical
+canonical integration by T+20, range proof and push by T+22, both exact-SHA
+deployments READY by T+26, and live routes plus child checkpoint by T+28:30.
+The consolidated reveal receipt is due by T+29:15, its independent selection
+test by T+29:30, and all live actions stop at T+30. Demo 2 is selected if any
+required state is incomplete. The global deadline always overrides remaining
+retry allowance.
+
+Hard blockers include origin advancement, force or unrelated integration,
+unavailable credentials or read access, provider outage at the bound, required
+provider/DNS mutation, out-of-scope source, unrepaired safety gates, and any
+missed hard deadline. On a blocker, preserve evidence and show sealed Demo 2.
+For the Demo 3 rehearsal, a truthful failed rehearsal may still produce a
+complete evaluation outcome but does not mark the child successful. For Demo 4,
+showing the fallback completes the presentation but does not make the live
+child successful.
 
 # Alternatives Considered
 
@@ -63,10 +100,11 @@ Hard blockers include origin advancement, force or unrelated integration, unavai
 
 # Consequences
 
-Demo 2 publication has an explicit human gate and is then sealed before the
-event. The live run is pre-approved rather than interactively permissioned,
-while drift still fails closed. Demo 3 success and presentation success remain
-distinct and truthfully reportable.
+Demo 2 publication has an explicit human gate and is then sealed before both
+timed runs. Demo 3 measures the complete path; Demo 4 remains fresh for the
+event. Timed actions are pre-approved rather than interactively permissioned,
+while drift still fails closed. Child success, rehearsal completion, and
+presentation success remain distinct and truthfully reportable.
 
 # Links / references
 

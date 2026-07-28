@@ -8,17 +8,17 @@ epic: epic-6
 parent: goal-6
 prev: spike-6
 next: test-25
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-3, source-prompt-refinement]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-2, source-prompt-refinement]
 owners: [shared-source-writer]
 links: []
-artifacts: [artifacts/demo-003/source-prompt-enhancement-receipt.json, artifacts/demo-003/live-sendoff-v2.md]
+artifacts: [artifacts/demo-003/source-prompt-enhancement-receipt.json, artifacts/demo-003/live-sendoff-v2.md, artifacts/demo-platform/timed-run-contract.json]
 relates: []
 blocked_by: []
 blocks: []
 refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, spike-6, task-10]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, spike-6, task-10]
-evidence_refs: []
-aliases: [phase-6-source-prompt-refinement]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, spike-6, task-10, chk-17]
+evidence_refs: [spike-6, chk-17]
+aliases: [phase-6-step-2, phase-6-source-prompt-refinement]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-27
 updated: 2026-07-27
@@ -44,7 +44,19 @@ sendoff refinements explicitly accepted from spike-6 before Demo 3 is forked.
   complete local-to-production child chain.
 - Preserve the normative continue-until behavior and make the separate
   pre-authorized live authority explicit. Do not weaken hard blockers,
-  attempt/time bounds, exact-SHA proof, or fallback honesty.
+  global deadlines, repair bounds, exact-SHA proof, or fallback honesty.
+- Where accepted, make one run-local sendoff authoritative; use explicit
+  run-root or `--root` commands; require claim/start/update/done/evaluate
+  lifecycle completion; materialize `.gitignore`; resolve warm dependencies in
+  one attempt without installation; generate one portable
+  `DemoOutput.astro` plus a thin wrapper; use deterministic artifact/receipt
+  paths; preserve an active-cursor invariant and state-neutral lifecycle copy;
+  and serialize tests that share build output.
+- Write `artifacts/demo-platform/timed-run-contract.json` with `P0`, immutable
+  sendoff-invocation `T0`, the P0+00:45 dispatch and T+00:45 acknowledgement
+  bounds, stage deadlines, two pre-publication repairs, one production repair,
+  T+24 production-repair cutoff, T+29:15 receipt, T+29:30 selection gate,
+  T+30 global stop, and required per-stage telemetry.
 - If the accepted recommendation is no change, write a no-change receipt with
   verified current hashes; do not create cosmetic churn.
 - Write `source-prompt-enhancement-receipt.json` with evidence inputs,
@@ -75,3 +87,4 @@ sendoff refinements explicitly accepted from spike-6 before Demo 3 is forked.
 - spike-6
 - task-10
 - artifacts/demo-003/source-prompt-enhancement-receipt.json
+- artifacts/demo-platform/timed-run-contract.json

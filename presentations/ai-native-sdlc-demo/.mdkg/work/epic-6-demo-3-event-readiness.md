@@ -1,7 +1,7 @@
 ---
 id: epic-6
 type: epic
-title: Demo 3 event readiness
+title: Timed Demo 3 dress-rehearsal readiness
 status: backlog
 priority: 1
 tags: [ai-native-sdlc, presentation-demo, phase-6]
@@ -12,8 +12,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [goal-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [goal-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-evidence_refs: []
+context_refs: [goal-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-5, chk-17, test-12, test-13, test-14]
+evidence_refs: [chk-17, test-12, test-13, test-14]
 aliases: [phase-6-epic]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -22,16 +22,17 @@ updated: 2026-07-26
 
 # Goal
 
-Freeze event assets and prepare, but do not execute, the specialized Demo 3 run.
+Prepare, but do not execute, a specialized single-harness Demo 3 dress
+rehearsal with a credible 30-minute live path.
 
 # Scope
 
 Owned actionable chain:
 
-- task-27
 - spike-6
 - task-47
 - test-25
+- task-27
 - task-28
 - task-29
 - task-30
@@ -50,6 +51,10 @@ The goal scopes this epic recursively.
 - Activation conditions and writer authority accepted.
 - Every actionable node completed in deterministic order.
 - Required checks and public-safe evidence recorded.
+- Warm dependencies, portable output, serial shared-output tests, build-once
+  validation, fast production verification, and deterministic receipts sealed.
+- Prospective range policy, preparation-baseline handoff, human authority,
+  writer lease, quiet window, and sub-30-second Demo 2 switch sealed.
 - One accepted phase checkpoint records the outcome and next activation.
 
 # Out of Scope
@@ -57,6 +62,10 @@ The goal scopes this epic recursively.
 - Work owned by any other phase goal.
 - Side effects not explicitly authorized by goal-6.
 - Raw prompts, credentials, provider payloads, or unrelated private context.
+- Demo 3 implementation or publication.
+- Multi-harness execution, harness-equivalence proof, and eight-hour/endurance
+  claims.
+- Final post-rehearsal deck polish, which belongs to Goal 9.
 
 # Risks
 

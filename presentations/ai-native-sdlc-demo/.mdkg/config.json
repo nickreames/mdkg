@@ -63,7 +63,7 @@
     ],
     "verbose_core_list_path": ".mdkg/core/core.md",
     "limits": {
-      "max_nodes": 25,
+      "max_nodes": 64,
       "max_bytes": 2000000
     }
   },

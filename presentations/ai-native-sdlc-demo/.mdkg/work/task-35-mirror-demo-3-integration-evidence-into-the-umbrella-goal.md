@@ -1,17 +1,17 @@
 ---
 id: task-35
 type: task
-title: Mirror Demo 3 integration evidence into the umbrella goal
+title: Consolidate and verify Demo 3 reveal-critical evidence
 status: backlog
 priority: 1
 epic: epic-7
 parent: goal-7
 prev: task-34
-next: task-36
+next: test-18
 tags: [ai-native-sdlc, presentation-demo, phase-7, step-2]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifacts/demo-003/umbrella/integration-receipt.json]
+artifacts: [artifacts/demo-003/reveal-gate-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -26,16 +26,31 @@ updated: 2026-07-26
 
 # Overview
 
-Mirror the Demo 3 child goal's integration evidence into the audience-facing umbrella without repeating its source mutation. This is step 2 of 11 in Goal 7.
+Run one prepared read-only verifier over the final child receipts and timing
+ledger, without repeating builds or source/provider mutation. This is step 2
+of 11 in Goal 7.
 
 # Acceptance Criteria
 
-- Consume only `runs/demo-003/artifacts/receipts/integration.json`; do not edit the adapter, output, run graph, or canonical site from this node.
-- Verify the receipt binds the specialized `goal-1`, allowed paths, output hashes, adapter contract, and local integration checks.
-- If integration is incomplete, keep the child goal running within its authority or record its hard blocker; do not create a second writer.
-- Record only sanitized evidence needed for the reveal.
-- Write `artifacts/demo-003/umbrella/integration-receipt.json` with child receipt path/hash, child QID/checkpoint, allowlist hash, adapter/schema version, exact changed paths/output hashes, local command results, review time, and pass/blocker status.
-- The successor task-36 does not begin until this node is verified.
+- Read the final child/timing state first. On the Demo 3 success branch,
+  consume the child checkpoint, local/canonical, commit/push, deployment,
+  route, source/specialized goal, timing, authority, sendoff, allowlist,
+  policy, and lease receipts. On the fallback branch, consume the blocker,
+  last completed child node, partial-side-effect inventory, timing, authority,
+  fallback, and every success receipt that actually exists; absent
+  success-only receipts are explicitly `not_applicable`, not fabricated.
+- Write `reveal-gate-receipt.json` binding source/specialized hashes, child
+  checkpoint, actual base/range/final SHA, normal push, both exact-SHA
+  deployment states, both route statuses, required content, noindex, zero
+  client JavaScript, essential public-safety/transfer assertions, milestone
+  timing, retries, waits, interventions, and Demo 3/Demo 2 selection.
+- Include Plan, Work, Evidence, what completed, why, and what comes next.
+- Do not rerun canonical builds, capture the four archival screenshots, perform
+  exhaustive accessibility QA, or refresh bundles in this node.
+- Finish by T+29:15, reserving fifteen seconds for test-18 to validate and
+  record the audience-facing selection by T+29:30. Incomplete or inconsistent
+  success evidence selects Demo 2 and records the exact blocker.
+- The successor test-18 does not begin until this receipt is verified.
 
 # Files Affected
 
@@ -51,8 +66,8 @@ Mirror the Demo 3 child goal's integration evidence into the audience-facing umb
 
 # Test Plan
 
-- Child integration evidence resolves to the specialized `goal-1` and frozen adapter.
-- The umbrella mirror hashes match `runs/demo-003/artifacts/receipts/integration.json` and introduces no mutation.
+- The consolidated receipt resolves every named child identity and performs no
+  heavy or mutating command.
 
 # Links / Artifacts
 

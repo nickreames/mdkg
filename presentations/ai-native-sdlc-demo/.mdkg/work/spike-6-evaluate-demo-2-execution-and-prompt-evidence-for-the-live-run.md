@@ -2,23 +2,22 @@
 id: spike-6
 type: spike
 title: Evaluate Demo 2 execution and prompt evidence for the live run
-status: backlog
+status: todo
 priority: 1
 epic: epic-6
 parent: goal-6
-prev: task-27
 next: task-47
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-2, source-prompt-refinement]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-1, source-prompt-refinement]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifacts/demo-003/source-prompt-evaluation.md]
+artifacts: [artifacts/demo-003/source-prompt-evaluation.md, artifacts/demo-003/historical-timing-analysis.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, goal-4, goal-5, task-27]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, goal-4, goal-5, task-27]
-evidence_refs: [chk-12]
-aliases: [phase-6-source-prompt-evaluation]
+refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18]
+evidence_refs: [chk-14, chk-17, test-12, test-13, test-14, chk-18]
+aliases: [phase-6-step-1, phase-6-source-prompt-evaluation]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-27
 updated: 2026-07-27
@@ -28,7 +27,7 @@ updated: 2026-07-27
 What did Demo 2 prove or expose about deterministic forking, fresh-agent
 context, positioning latitude, the source template, the sendoff prompt,
 authority handoffs, failure recovery, and audience-facing evidence, and which
-changes should be accepted before the live Demo 3 fork?
+changes should be accepted before the timed Demo 3 dress rehearsal?
 
 # Context And Constraints
 
@@ -42,6 +41,10 @@ changes should be accepted before the live Demo 3 fork?
 - A no-change recommendation is valid when the accepted evidence supports it.
 - task-47 cannot begin until the user explicitly accepts the recommendation
   and exact future mutation allowlist.
+- Treat Demo 2 as durable, resumable multi-stage execution evidence, not proof
+  of uninterrupted eight-hour autonomy or harness equivalence.
+- The rehearsal must complete with one designated harness in approximately
+  30 minutes; rank latency reductions by their contribution to that bound.
 
 # Search Plan
 
@@ -52,6 +55,17 @@ changes should be accepted before the live Demo 3 fork?
   contract, and normative live sendoff at their recorded hashes.
 - Test the proposed prompt against the hard requirement to continue through
   push, exact-SHA READY deployments, and live URLs without mid-run approval.
+- Write `historical-timing-analysis.json` with the observed Demo 2 stages,
+  including approximately 0:30 positioning, 11:32 implementation, 0:43 local
+  validation, 10:03 canonical integration, 0:47 canonical validation, 24:22
+  child-to-canonical wall time, 7:35 commit preparation, 2:29 deployment
+  readiness, 15:06 comprehensive production-route verification, and 51:44
+  comparable serialized execution excluding human approval.
+- Rank root-safe sendoff, warm one-attempt dependency resolution,
+  `.gitignore` materialization, portable `DemoOutput.astro` plus thin wrapper,
+  deterministic receipt schemas, cursor invariants, state-neutral lifecycle
+  copy, serial shared-output tests, build-once validation, and a fast
+  production verifier.
 
 # Findings
 
@@ -73,7 +87,8 @@ nondeterminism.
 Write `artifacts/demo-003/source-prompt-evaluation.md` with ranked findings,
 accepted/rejected options, exact proposed paths, before hashes, expected
 outcomes, regression tests, and a recommended change or no-change decision.
-Record explicit user acceptance before task-47.
+Record explicit user acceptance before task-47. Write the measured timing
+ledger separately to `artifacts/demo-003/historical-timing-analysis.json`.
 
 # Follow-Up Nodes To Create
 
