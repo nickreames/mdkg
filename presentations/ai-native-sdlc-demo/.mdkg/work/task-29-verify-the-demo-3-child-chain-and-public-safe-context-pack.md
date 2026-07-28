@@ -1,7 +1,7 @@
 ---
 id: task-29
 type: task
-title: Verify the Demo 3 child chain and public-safe context pack
+title: Verify Demo 3 zero-edit lineage and public-safe pack
 status: backlog
 priority: 1
 epic: epic-6
@@ -21,7 +21,7 @@ evidence_refs: [task-28]
 aliases: [phase-6-step-6]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -33,6 +33,9 @@ Verify the Demo 3 child chain and public-safe context pack. This is step 6 of
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-6.
 - Verify task-28's already-forked Demo 3 identity without changing it.
+- Verify the source-release hash, run-binding hash, bootstrap/materializer
+  version, authored-content equality, interface manifest, and immutable
+  child-contract seal as one lineage chain.
 - Prove the complete child chain and public-safe concise pack.
 - Verify that the pack contains the downstream Git/dependency/provider
   preflight, allowlist, hard-blocker, quiet-window, and dry-rehearsal contracts
@@ -55,18 +58,25 @@ Verify the Demo 3 child chain and public-safe context pack. This is step 6 of
 
 # Test Plan
 
-- Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
-- The pack identifies `examples/website-demo-template/.mdkg/:goal-1` as the reusable source and `runs/demo-003/.mdkg/:goal-1` as the writable specialized goal.
+- Demo 3 source-release, binding, seal, executed-state contrast, graph
+  validation, routing, and concise pack pass.
+- The pack identifies `examples/website-demo-template/.mdkg/:goal-1` as the
+  reusable source and `runs/demo-003/.mdkg/:goal-1` as its bound writable
+  execution instance.
 - The source, manifest, and sendoff hashes equal test-25's verified identities;
   no pre-refinement Goal 2 hash is silently substituted.
 - The only execution chain is positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
-- The first actionable child node, every role/QID, deterministic receipt path,
+- The first actionable child node, every source-authored role/QID,
+  deterministic receipt path,
   timing budget, designated harness, warm dependency, portable component,
   stage owner, handoff boundary, and required skill resolve from the child
   interface manifest.
 - Write `readiness-pack-receipt.json` with exact node inventory, skills,
-  token/truncation result, public-safety scan, source/specialized hashes, and
-  proof that implementation evidence is empty.
+  token/truncation result, public-safety scan, source/binding/seal hashes,
+  authored-content equality, and proof that implementation evidence is empty.
+- Verify the run binding is immutable, the positioning node records a decision
+  artifact rather than editing the graph contract, and authority remains an
+  external hash-bound reference.
 - No child implementation node has executed.
 - No downstream preflight, provider, or rehearsal side effect belongs to this
   pack-only verification node.

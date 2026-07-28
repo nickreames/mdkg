@@ -5,10 +5,10 @@ title: Apply Demo 3 findings and prepare the fresh Demo 4 live event
 status: backlog
 priority: 1
 goal_state: paused
-goal_condition: Demo 3 timing, execution, blocker, and reveal evidence is evaluated; explicitly accepted deck/source/sendoff changes are implemented and verified with human approval; runs/demo-004 is forked and specialized without implementation; a reviewed preparation-baseline publication handoff, one designated harness, fresh prospective authority, writer lease, Demo 2 fallback, provider preflight, and a side-effect-free dry rehearsal prove Demo 4 is ready for the live event.
+goal_condition: Demo 3 timing, execution, blocker, and reveal evidence is evaluated and each finding is classified as reusable source/materializer defect, run-specific creative choice, presentation change, or external-authority issue; explicitly accepted deck/source/sendoff changes produce a newly verified semantic source release when needed; runs/demo-004 is created from that accepted source plus a fresh immutable binding with no manual authored-child edits or implementation; a reviewed preparation-baseline publication handoff, one designated harness, fresh prospective authority, writer lease, Demo 2 fallback, provider preflight, and a side-effect-free dry rehearsal prove Demo 4 is ready for the live event.
 scope_refs: [epic-9]
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
-required_checks: [Demo 3 timing and evidence evaluation, explicit acceptance of final polish, deterministic deck regeneration and visual QA, accepted source-sendoff regression proof, unexecuted Demo 4 identity chain and pack, reviewed preparation-baseline publication handoff, fresh authority allowlist lease and fallback, provider preflight, side-effect-free dry rehearsal]
+required_checks: [Demo 3 timing and source-run-authority classification, explicit acceptance of final polish, deterministic deck regeneration and visual QA, accepted semantic source-release and two-fixture regression proof, unexecuted zero-edit Demo 4 source-binding-seal chain and pack, reviewed preparation-baseline publication handoff, fresh external authority allowlist lease and fallback, provider preflight, side-effect-free dry rehearsal]
 max_iterations: 25
 blocked_after_attempts: 3
 tags: [ai-native-sdlc, presentation-demo, phase-9]
@@ -34,11 +34,12 @@ Demo 4 for tomorrow's live event.
 
 # End Condition
 
-Demo 3 findings are dispositioned; the final deck and any accepted
-source/sendoff refinements pass their full regressions and human approval;
-Demo 4 is forked from the accepted source identity but remains unexecuted; and
-its clean baseline, authority, lease, fallback, preflight, pack, and dry
-rehearsal pass.
+Demo 3 findings are dispositioned by owner; the final deck and any accepted
+reusable source/sendoff refinements pass full regressions and human approval;
+Demo 4 is created from the new accepted semantic source release plus a fresh
+immutable run binding, with exact authored-content equality and no child work;
+and its clean baseline, child seal, external authority, lease, fallback,
+preflight, pack, and dry rehearsal pass.
 
 # Non-Goals
 
@@ -47,6 +48,10 @@ rehearsal pass.
 - No multi-harness, harness-equivalence, or eight-hour/endurance demonstration.
 - No unrelated canonical-site, CLI/package, docs, dependency, deployment
   configuration, or adoption work.
+- No patching Demo 4 to compensate for a reusable source or materializer
+  defect. Fix and reseal the source, remove the target, and recreate it.
+- No reuse of Demo 3's binding, child seal, authority, lease, approval, or
+  provider-state receipt.
 
 # Recursive Algorithm
 
@@ -79,7 +84,11 @@ rehearsal pass.
 
 - Demo 3 timings and every success/blocker branch are represented accurately.
 - Human acceptance gates any final deck or source/sendoff mutation.
-- Demo 4 is a fresh fork and no child work has executed.
+- Every Demo 3 finding is routed to reusable source/materializer,
+  run-specific creative choice, presentation, external authority, or no-change.
+- Demo 4 is a fresh exact-source authored-content fork with a new immutable
+  binding and child seal; no direct specialization edit or child work has
+  occurred.
 - Its timed contract matches the Demo 3-tested 30-minute budget unless a
   measured, explicitly accepted adjustment is recorded.
 - Demo 2 remains switchable within 30 seconds.
@@ -110,6 +119,8 @@ Fully scoped and paused. First actionable node: `spike-7`.
 
 - 2026-07-27: Added after aligning Demo 3 as the dress rehearsal and Demo 4 as
   the fresh live-event identity.
+- 2026-07-27: Required source-first iteration and zero-manual-edit Demo 4
+  materialization rather than copying or patching Demo 3.
 
 # Skill Improvement Candidates
 

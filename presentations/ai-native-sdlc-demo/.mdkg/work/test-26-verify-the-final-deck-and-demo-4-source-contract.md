@@ -20,7 +20,7 @@ context_refs: [goal-9, epic-9, prd-1, edd-1, dec-2, dec-3, dec-5, task-51]
 evidence_refs: [task-51]
 aliases: [phase-9-step-3]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [deck_determinism, slide_rendering, citations, qr_codes, timing, source_bootstrap, sendoff, single_harness_deadline]
+cases: [deck_determinism, slide_rendering, citations, qr_codes, timing, semantic_source_release, two_fixture_bindings, exact_authored_fork, verify_only_repeat, sendoff, single_harness_deadline]
 created: 2026-07-27
 updated: 2026-07-27
 ---
@@ -43,9 +43,14 @@ The task-51 acceptance receipt and human deck approval resolve.
 
 - Require deterministic deck rebuild, full slide QA, sources, QR scans, and
   content stop by minute 35.
-- Run an absent-target source bootstrap twice; require identical inventory,
-  complete skills/design pack, warm dependencies, one authoritative sendoff,
-  no untracked packs, and no retained target.
+- Run two materially distinct absent-target bindings against the accepted
+  semantic source release; require exact authored-content equality, identical
+  deterministic operator inventory, complete skills/design packs, warm
+  dependencies, one authoritative sendoff, verify-only no-op, no untracked
+  packs, and no retained targets.
+- Require the complete generic chain to exist in source, not be added after
+  fork. Prove a child receives only an immutable binding and read-only external
+  authority reference.
 - Require the single-harness 30-minute timing and prospective authority
   contracts without multi-harness/endurance claims.
 

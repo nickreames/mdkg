@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-6-step-9]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -35,7 +35,8 @@ Establish the event quiet window and verify Demo 2 fallback. This is step 9 of
 - Establish `artifacts/demo-003/event-writer-lease.json` with the child
   implementation writer and root integration owner identities, checkout,
   start/expiry, renewal and invalidation rules, base and origin SHA,
-  sendoff/allowlist/authority-policy hashes,
+  source-release/run-binding/child-seal/sendoff/allowlist/authority-policy
+  hashes,
   exact non-overlapping phases and allowed paths, excluded parallel writers,
   conflict check, heartbeat/renewal rule, canonical-test handoff, publication
   handoff, and release condition.
@@ -51,6 +52,9 @@ Establish the event quiet window and verify Demo 2 fallback. This is step 9 of
 - Require the live/offline fallback switch to be executable within 30 seconds.
 - Bind one implementation writer and one root integration owner to those
   non-overlapping phases. Do not require the final authority hash yet.
+- State explicitly that the child writer may execute a later activated
+  authority but may not edit the run binding, immutable seal, authority
+  reference, allowlist, lease, approval, or validity window.
 - Do not activate Goal 7 until every parallel root writer acknowledges the
   quiet window and the authority policy, lease, and fallback receipts pass at
   the current base SHA.
@@ -76,8 +80,9 @@ Establish the event quiet window and verify Demo 2 fallback. This is step 9 of
   lease, and root bundle closeout lease are serialized; no source/Git writers
   overlap.
 - Demo 2 live and offline fallback hashes match the sealed Goal 5 receipt and the recovery procedure is executable.
-- Authority policy, lease, allowlist, sendoff, preflight, and fallback receipts all
-  bind the same base SHA.
+- Authority policy, lease, allowlist, sendoff, source release, run binding,
+  immutable child seal, preflight, and fallback receipts all bind the same
+  preparation identity and base SHA.
 
 # Links / Artifacts
 

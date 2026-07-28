@@ -10,7 +10,7 @@ relates: []
 refs: [prd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
 aliases: [ai-native-sdlc-program-architecture]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -39,7 +39,16 @@ this directory and are not separately root-registered.
 - Program design: PRD, EDD, six decisions, ten goals, phase epics, action nodes, and checkpoints.
 - Claim row: era, source, publication date, exact support, approved paraphrase, confidence, and slide usage.
 - Deck release: source, assets, notes, citations, PPTX, contact sheet, and QA report.
-- Demo run: source hash, fork receipt, specialized design and goal, work chain, checkpoint, and sanitized export.
+- Source release: semantic manifest over authored graph, operator, skill,
+  README, and ignore inputs; generated indexes, SQLite, events, packs, and
+  runtime state are excluded from the authored release identity.
+- Run binding: schema/materializer version, source release hash, run ID,
+  routes, target root, bounded positioning brief, designated harness, timing
+  profile, output and receipt paths, plus explicit immutable/runtime-mutable
+  field classes. It contains no human approval or secret.
+- Demo run: exact authored-content source fork, immutable run-binding hash,
+  bootstrap receipt, child-interface manifest, selected positioning decision,
+  runtime state, work evidence, checkpoint, and sanitized export.
 - Demo 3 and Demo 4 child chain: positioning spike -> implementation task ->
   local test -> integration task -> canonical-site test -> publish task ->
   exact-SHA/live-URL test -> accepted checkpoint.
@@ -53,9 +62,14 @@ this directory and are not separately root-registered.
   actual published baseline SHA is bound in an activation receipt after the
   baseline push; the actual event range and stable range hash are calculated
   immediately before the later event push.
-- Source/prompt refinement receipt: Demo 2 evidence inputs, accepted changes
-  or accepted no-change result, before/after source and sendoff hashes,
-  deterministic bootstrap proof, and the source identity used to fork Demo 3.
+- Source/prompt refinement receipt: Demo 2 evidence inputs, accepted generic
+  changes, rejected run-specific changes, before/after semantic source and
+  sendoff hashes, two-fixture zero-edit bootstrap proof, and the source
+  identity used to create Demo 3.
+- Immutable child-contract seal: source release, run binding, goal condition,
+  chain topology, semantic role mapping, required skills, allowed receipt
+  paths, sendoff reference, and forbidden surfaces. Normal status, event,
+  evidence, checkpoint, index, and pack changes do not invalidate the seal.
 - Discovery receipt: read-only audit scope, owning graph/artifact paths, source inventory, and mutation recommendation.
 - Writer lease: goal, shared-source writer, root integration owner, exact path/operation allowlist, read-only evidence paths, forbidden paths, clean base commit, dirty/staged inventory hash, quiet-window start/expiry, invalidation rules, and release condition.
 - Timing ledger: stage, `started_at`, `completed_at`, `duration_ms`,
@@ -72,6 +86,10 @@ this directory and are not separately root-registered.
 - Goal 2 adds listed, noindex, sourceGoal, executedGoal, evidence, and static output component fields.
 - Vercel is observed for existing deployments only; production delivery is caused by an approved non-force Git push.
 - No mdkg CLI, package API, or external schema change belongs to this program.
+- The program-local bootstrap is the deterministic composition boundary:
+  accepted source release plus versioned run binding produces an absent-target
+  child and interface receipt. It may verify an existing target but may not
+  activate work, publish, grant authority, or silently rewrite authored nodes.
 - The event sendoff is a frozen interface: it requires continuation until child achievement, approved push, exact-SHA deployment readiness, and public-route verification, and it permits stopping only for an enumerated hard blocker.
 - Goal 6 freezes Demo 3's prospective authority policy and a
   baseline-publication handoff. Goal 7 publishes that preparation baseline
@@ -91,6 +109,10 @@ this directory and are not separately root-registered.
 - `examples/demo-runs/demo-001/**` is historical read-only evidence; canonical `/demo/1/` and `/demo/1/output/` are the regression surfaces.
 - Root and source mutations require an exclusive integration window.
 - Run graphs remain artifacts and never become writable root projections.
+- The source-release owner, binding/materializer owner, child writer, and
+  external-authority owner are distinct logical roles. The writable child may
+  update only runtime state and allowlisted outputs; it may never mutate its
+  source identity, run binding, immutable seal, or authority reference.
 - Timed execution has one designated child writer and one root integration
   owner with non-overlapping leases. Mirrored Codex/Claude files do not create
   a multi-harness claim.
@@ -111,6 +133,11 @@ this directory and are not separately root-registered.
 - Unsupported claim: remove or hold it.
 - JavaScript, accessibility, secret, or asset-budget failure: fail acceptance.
 - Run confusion: always record owning root and source hash.
+- Manual specialization drift: reject a child whose authored graph differs
+  from the accepted source release; fix the source or binding and recreate an
+  absent target.
+- Whole-tree over-binding: never use indexes, SQLite, events, packs, or mutable
+  execution evidence as the immutable authority identity.
 
 # Observability
 
@@ -132,6 +159,9 @@ this directory and are not separately root-registered.
 
 - Goal 1: graph shape, references, routing, no loops, pack, bundle, and projection.
 - Goal 2: read-only drift inventory; accepted mutation receipt; static build, routes, sitemap, zero JS, accessibility, budgets, claims, secrets, executable fork/operator bootstrap, and context-complete fresh-agent packs.
+- Goal 6 source gate: semantic source release, complete generic chain,
+  binding schema, two distinct zero-edit fixture forks, verify-only repeat,
+  no authority leakage, and cleanup before Demo 3 creation.
 - Goal 3: primary sources, rendered QA, notes, and timing.
 - Goal 4: child local segment completion, local integration, publication-gate
   pause, and fallback capture.

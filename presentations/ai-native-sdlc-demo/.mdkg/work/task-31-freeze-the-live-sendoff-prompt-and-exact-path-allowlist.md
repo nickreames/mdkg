@@ -21,7 +21,7 @@ evidence_refs: [test-25]
 aliases: [phase-6-step-8]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -47,8 +47,13 @@ policy, and preparation-baseline handoff. This is step 8 of 13 in Goal 6.
 - Bind sendoff and allowlist hashes to task-30's preflight base/origin/project
   observations. Any later bound functional/sendoff/allowlist content, HEAD,
   origin, owner, or lease drift requires refreezing.
+- Bind the semantic source-release hash, immutable run-binding hash,
+  bootstrap/materializer version, child-interface manifest, and immutable
+  child-contract seal. Do not bind mutable whole-tree state such as statuses,
+  events, indexes, packs, evidence, outputs, or checkpoints.
 - Create `event-authority-policy.json`, not the final human authority receipt.
-  Bind the exact clean base/origin SHA, source/specialized goal, sendoff and
+  Bind the exact clean base/origin SHA, source release, run binding, child
+  contract seal, sendoff and
   allowlist hashes, designated harness, owner handoffs, validity window,
   linear-descendant requirement, maximum commits, two pre-publication repairs,
   one production repair, normal non-force push,
@@ -65,7 +70,7 @@ policy, and preparation-baseline handoff. This is step 8 of 13 in Goal 6.
   functional, sendoff, allowlist, source, child-run, or interface hash. A
   correction to a bound hash invalidates authority and requires fresh human
   acceptance.
-- Separately enumerate the exact future publication paths: the specialized
+- Separately enumerate the exact future publication paths: the bound
   `runs/demo-003/` child graph/public-safe evidence needed by the demo and the
   frozen canonical adapter/site allowlist. Those paths are not dirty-state
   exceptions; they may be staged only by the child publication node after
@@ -73,6 +78,10 @@ policy, and preparation-baseline handoff. This is step 8 of 13 in Goal 6.
 - The policy requires the actual commit range and stable range hash to be
   calculated and proven immediately before push. It must not contain a
   fictional future range hash.
+- Keep the authoritative approval, lease, allowlist, provider state, and
+  validity window outside the writable child. The child receives a public-safe
+  read-only authority reference and hash only; editing that reference or any
+  immutable-seal input is a hard blocker.
 - Write `preparation-baseline-handoff.json` with the exact preparation tree,
   expected paths/hashes, review owner, separate publication-approval
   requirement, and the condition that Goal 7 cannot start `T0` until the
@@ -101,14 +110,16 @@ policy, and preparation-baseline handoff. This is step 8 of 13 in Goal 6.
 
 # Canonical Contract Source
 
-The version selected by task-47 and verified by test-25 is the normative event
-source. When unchanged, task-10 remains its byte-identical origin. Event
-bindings belong in `event-allowlist.json` and
-`event-authority-policy.json`, not in silently altered sendoff prose.
+The semantic source release and binding schema selected by task-47 and
+verified by test-25 are normative. The exact Demo 3 binding and child seal from
+task-28 are the run identity. Event authority belongs outside the writable
+child in `event-allowlist.json` and `event-authority-policy.json`, not in
+silently altered sendoff or child prose.
 
 # Test Plan
 
-- Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
+- Demo 3 source-release, binding, immutable-seal, graph validation, routing,
+  and concise-pack identities pass.
 - No child implementation node has executed.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
 - The task-31 standard execution pack contains task-10's full normative section; its materialized bytes and SHA-256 match the accepted Goal 2 artifact.

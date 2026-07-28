@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-6-step-10]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -33,10 +33,12 @@ Run a side-effect-free dry event rehearsal. This is step 10 of 13 in Goal 6.
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-6.
 - Obtain explicit human acceptance of `event-authority.json` after task-32.
   Bind it to the sendoff, allowlist policy, preparation-baseline handoff,
-  preflight, lease, fallback, clean pre-publication base/origin, expected
-  preparation tree/manifest hash, designated harness, global deadline, and the
-  post-publication activation rule. It must pre-authorize the still-valid timed
-  happy path without inventing future baseline, commit, or range SHAs.
+  source-release hash, run-binding hash, bootstrap/materializer version,
+  immutable child seal, preflight, lease, fallback, clean pre-publication
+  base/origin, expected preparation tree/manifest hash, designated harness,
+  global deadline, and post-publication activation rule. It must pre-authorize
+  the still-valid timed happy path without inventing future baseline, commit,
+  or range SHAs.
 - Bind the exact local-evidence-only inventory for later Goal 6 and Goal 7
   tests/status/events/checkpoints, task-58 publication/activation receipts,
   dispatch/timing/blocker/reveal/umbrella receipts, generated indexes, bundle,
@@ -45,7 +47,9 @@ Run a side-effect-free dry event rehearsal. This is step 10 of 13 in Goal 6.
   child-run/canonical publication allowlist separately. Any bound functional/
   sendoff/allowlist/source/child-interface hash change invalidates authority
   and requires fresh acceptance.
-- Capture before-state for Git HEAD/index/status/remote refs, Demo 3 graph node statuses and hashes, local output paths, bundle hash, and both provider deployment IDs/states.
+- Capture before-state for Git HEAD/index/status/remote refs, Demo 3 authored
+  content identity, binding/seal identities, mutable graph status, local
+  output paths, bundle hash, and both provider deployment IDs/states.
 - Rehearse only reading the frozen sendoff, building a public-safe concise pack, checking `goal show/next/evaluate`, resolving the first child node, walking the dispatch handoff, and exercising the Demo 2 reveal switch.
 - Rehearse `P0`, immutable `T0` immediately before dispatch by P0+00:45,
   child acknowledgement by T+00:45, every milestone cue, the prepared fast
@@ -58,6 +62,8 @@ Run a side-effect-free dry event rehearsal. This is step 10 of 13 in Goal 6.
   `event-authority-activation.json` from the actual published baseline, but do
   not create it or publish anything in Goal 6.
 - Stop before claiming or completing the child positioning node and before any implementation, file generation, canonical build, staging, commit, push, deployment, provider change, or bundle refresh.
+- Do not edit the child goal, design, work/test chain, run binding, immutable
+  seal, or authority reference during rehearsal.
 - Write `artifacts/demo-003/dry-rehearsal-receipt.json` with permitted commands,
   stop marker, expected/actual before-after hashes, cue deadlines, elapsed time,
   verifier/fallback observations, and invariant result.
@@ -79,8 +85,11 @@ Run a side-effect-free dry event rehearsal. This is step 10 of 13 in Goal 6.
 
 # Test Plan
 
-- Before/after Git, child graph, filesystem, bundle, and provider identities are identical.
-- `goal next goal-1` remains the positioning spike, every implementation/publication node remains backlog, and no checkpoint is accepted.
+- Before/after Git, authored child contract, binding, seal, filesystem, bundle,
+  and provider identities are identical.
+- `goal next goal-1` remains the positioning spike, every
+  implementation/publication node remains backlog, no checkpoint is accepted,
+  and authored child content still equals the accepted source release.
 - Any side effect fails the rehearsal and requires evidence-backed recovery before Goal 6 can close.
 
 # Links / Artifacts

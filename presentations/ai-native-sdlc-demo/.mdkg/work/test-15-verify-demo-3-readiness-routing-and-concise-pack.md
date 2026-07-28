@@ -1,7 +1,7 @@
 ---
 id: test-15
 type: test
-title: Verify Demo 3 readiness routing and concise pack
+title: Verify Demo 3 source binding seal routing and concise pack
 status: backlog
 priority: 1
 epic: epic-6
@@ -20,15 +20,15 @@ context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-6-step-11]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [refined_source_identity, specialized_goal, child_chain, public_safe_pack, event_authority, no_execution]
+cases: [source_release, immutable_binding, authored_equality, child_contract_seal, child_chain, public_safe_pack, external_event_authority, no_execution]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Validate Demo 3 readiness routing, refined source identity, event authority,
-and concise pack as step 11 of Goal 6.
+Validate Demo 3 source-to-run lineage, zero-edit authored identity, external
+event authority, routing, and concise pack as step 11 of Goal 6.
 
 # Target / Scope
 
@@ -44,11 +44,13 @@ and concise pack as step 11 of Goal 6.
 
 # Test Cases
 
-- Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
-- Demo 3 source, manifest, and sendoff hashes equal test-25's verified
-  post-Demo-2 identities.
-- The human-accepted event authority resolves the same source, specialized
-  goal, preflight, allowlist, sendoff, prospective range policy,
+- Demo 3 source release, run binding, bootstrap/materializer, immutable child
+  seal, graph validation, routing, and concise pack pass.
+- Demo 3 authored goal/design/work/operator content equals the accepted source
+  release; only binding, interface, empty runtime state, and receipts differ.
+- The human-accepted event authority resolves the same source release,
+  run binding, immutable child seal, preflight, allowlist, sendoff,
+  prospective range policy,
   preparation-baseline handoff, and lease.
 - The authority inventories later Goal 6/7 local-evidence-only graph/status/
   event/test/checkpoint/index/bundle/projection and umbrella receipt paths,
@@ -56,6 +58,9 @@ and concise pack as step 11 of Goal 6.
   publication; separately freezes child-run/canonical staged paths; and
   invalidates on any bound functional hash change.
 - No child implementation node has executed.
+- The child contains only a read-only authority reference. The authoritative
+  human approval, lease, allowlist, baseline, provider state, and validity
+  window remain external and hash-bound.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
 - Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.
 - One designated harness, warm dependencies, portable output/thin wrapper,

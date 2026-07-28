@@ -21,12 +21,13 @@ evidence_refs: [test-17, task-58]
 aliases: [phase-7-step-1]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
 
-Start the immutable timed window, dispatch the specialized Demo 3 child, and
+Start the immutable timed window, dispatch the bound exact-source Demo 3
+child, and
 monitor it through success or a terminal timed blocker. The root integration
 owner has already published and released the preparation baseline in task-58;
 this node performs no baseline commit or push.
@@ -44,17 +45,25 @@ this node performs no baseline commit or push.
 - Dispatch the exact `artifacts/demo-003/sendoff.md` and
   `event-allowlist.json` hashes against the Demo 3 `goal-1`; no paraphrased
   prompt, alternate goal, or alternate harness may be used.
+- Reverify the semantic source-release hash, immutable run-binding hash,
+  bootstrap/materializer version, authored-content equality, child-interface
+  manifest, and immutable child-contract seal before dispatch. Any mismatch is
+  a hard blocker; do not patch the child during the timed window.
 - Treat `program-orchestrator` and `child-implementation-writer` as sequential
   logical roles of this same designated physical harness/lease. After writing
   the dispatch receipt, continue under the child role; do not leave a second
   umbrella writer mutating timing or receipt files concurrently.
 - Reverify `event-authority.json` and require it to bind the same sendoff,
-  allowlist, child, lease, preflight, prospective range policy,
+  allowlist, source release, run binding, child seal, lease, preflight,
+  prospective range policy,
   pre-publication origin, expected preparation tree, and activation rule.
   Require the activation receipt to bind the clean actual published baseline
   SHA, current origin, and owner handoff. Record its hash in the dispatch
   receipt.
 - Dispatch against `runs/demo-003/.mdkg/:goal-1`; retain `examples/website-demo-template/.mdkg/:goal-1` as immutable contrast evidence.
+- Permit the positioning node to create its bounded creative decision artifact
+  and normal runtime evidence only. It may not rewrite the source-authored
+  goal, design, work/test chain, binding, seal, or authority reference.
 - Keep all edits inside the frozen allowlist and event writer lease.
 - Record presentation/rehearsal kickoff as `P0`. Immediately before invoking
   the exact child dispatch, record immutable `T0`; require `T0 <= P0+00:45`
@@ -70,7 +79,7 @@ this node performs no baseline commit or push.
   by the still-valid event authority. Any drift or new action is a hard
   blocker, not an invitation to seek ad hoc live permission.
 - Write `artifacts/demo-003/dispatch-receipt.json` with child root/QID, source
-  and specialized goal hashes, concise-pack hash,
+  release, run-binding, child-seal and bound-goal hashes, concise-pack hash,
   sendoff/allowlist/authority/lease/policy hashes, published baseline,
   child-writer and root-integration-owner identities, start time, attempt
   counter initialized to zero, all timed deadlines,
@@ -97,7 +106,7 @@ this node performs no baseline commit or push.
 # Implementation Notes
 
 - Re-read the active writer lease and current state immediately before mutation.
-- Build the specialized `goal-1` pack from `runs/demo-003/` and dispatch its
+- Build the bound `goal-1` pack from `runs/demo-003/` and dispatch its
   child implementation writer; after accepted canonical validation, that
   writer yields to the root integration owner for the child publish node.
 - Prefer deterministic mdkg, build, Git, and provider receipts over narrative claims.

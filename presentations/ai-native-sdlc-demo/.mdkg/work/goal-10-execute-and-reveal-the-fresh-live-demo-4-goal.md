@@ -5,7 +5,7 @@ title: Execute and reveal the fresh live Demo 4 goal
 status: backlog
 priority: 1
 goal_state: paused
-goal_condition: From the separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes the fresh Demo 4 child under the 30-minute authority; the T+29:30 gate either proves child achievement, actual range policy compliance, normal non-force push, both exact-SHA READY deployments, and passing /demo/4/ routes, or truthfully selects Demo 2; post-reveal evidence and bundle closeout preserve the exact live outcome without retroactive success.
+goal_condition: From the separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes the fresh exact-source Demo 4 child while its semantic source release, immutable run binding, authored-content equality, child-contract seal, and external 30-minute authority remain valid; the T+29:30 gate either proves child achievement, actual range policy compliance, normal non-force push, both exact-SHA READY deployments, and passing /demo/4/ routes, or truthfully selects Demo 2; post-reveal evidence and bundle closeout preserve the exact live outcome without retroactive success.
 scope_refs: [epic-10]
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [published clean preparation baseline and current human authority, single-harness dispatch and timing ledger, Demo 4 child result or truthful hard blocker, T+29:30 reveal gate and T+30 stop, actual range policy proof and non-force push on success, both exact-SHA READY deployments and live routes on success, post-reveal audit and bundle closeout, fallback honesty]
@@ -43,6 +43,8 @@ selection.
 - No force/history rewrite, unrelated integration, manual deploy, DNS/project
   configuration, analytics, package publication, or unlisted paths.
 - No ad hoc mid-run authority expansion.
+- No source, run-binding, child-seal, or authored child graph mutation. Any
+  mismatch is a hard blocker and fallback, not a live patch.
 
 # Recursive Algorithm
 
@@ -82,10 +84,13 @@ selection.
   receipt; otherwise Demo 2 is shown truthfully and all live work stops at
   T+30.
 - Plan, Work, Evidence and what/why/next are inspectable.
+- The reveal can trace source release -> immutable run binding -> positioning
+  decision -> executed work/evidence without implying that the writable child
+  authored its own authority.
 
 # Demo 4 Sendoff Contract
 
-> Continue until the specialized Demo 4 goal is achieved, the policy-compliant
+> Continue until the bound Demo 4 goal is achieved, the policy-compliant
 > approved commit range is non-force pushed to `origin/main`, both existing
 > production deployments for the exact final SHA are READY, and
 > `https://mdkg.dev/demo/4/` plus
@@ -109,8 +114,9 @@ publishes and releases; the same designated harness resumes read-only
 provider/route verification and reveal receipts. No two filesystem writers
 operate concurrently.
 
-Hard blockers are any authority, source, child, sendoff, allowlist, lease,
-policy, activation, origin, or bound-hash drift; a push requiring force,
+Hard blockers are any authority, source-release, run-binding, child-seal,
+authored-content, sendoff, allowlist, lease, policy, activation, origin, or
+bound-hash drift; a push requiring force,
 history rewriting, or unrelated integration; unavailable Git/provider access;
 a provider outage at the bound; exhausted repair limits; a missed
 T+24/T+29:15/T+29:30/T+30 deadline; or any need for DNS, project
@@ -149,6 +155,8 @@ Fully scoped and paused. First actionable node: `task-59`.
 
 - 2026-07-27: Added as the fresh live-event successor after Demo 3 became the
   timed dress rehearsal.
+- 2026-07-27: Bound the event to a fresh zero-manual-edit source instance and
+  externally owned authority.
 
 # Skill Improvement Candidates
 

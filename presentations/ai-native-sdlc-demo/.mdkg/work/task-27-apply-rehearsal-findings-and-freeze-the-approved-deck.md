@@ -40,8 +40,8 @@ reserve an explicit post-test polish handoff. This is step 4 of 13 in Goal 6.
   rehearsal unsafe, record the exact blocker and request an explicit scope
   exception; do not silently treat it as an essential correction.
 - Record the three accepted Demo 2 cue findings and reserve explicit slots for
-  Demo 3 timing, exact-SHA, route, source-versus-specialized, and reveal-gate
-  evidence.
+  Demo 3 timing, exact-SHA, route, source-to-binding-to-executed-state, and
+  reveal-gate evidence.
 - Write `pre-test-deck-baseline.json` with exact source/PPTX/notes/citation/
   render/rehearsal hashes and `post-test-presentation-handoff.md` with the
   evidence Goal 9 must review.

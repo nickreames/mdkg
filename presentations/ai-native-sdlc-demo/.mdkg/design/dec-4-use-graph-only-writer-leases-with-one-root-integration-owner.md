@@ -11,7 +11,7 @@ relates: []
 refs: [prd-1, edd-1]
 aliases: [graph-only-writer-lease]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Context
@@ -37,6 +37,25 @@ After spike-2, the program orchestrator releases its nested writer lease. The ac
 
 Root registration, bundle refresh, staging, commits, pushes, and root Remotion nodes remain root-integration-owner actions during serialized windows. Goal execution and local validation do not imply any Git or provider authority.
 
+Timed demo preparation uses four additional ownership boundaries:
+
+1. The canonical source-release owner may change authored template/operator
+   inputs only under an accepted shared-source lease.
+2. The program orchestrator may freeze a versioned run binding before
+   materialization, but may not alter the accepted source while creating a run.
+3. The child writer may update runtime state, evidence, decisions, checkpoints,
+   and allowlisted outputs, but may not edit the source identity, immutable
+   binding, contract seal, or authority reference.
+4. Human approval plus the root integration owner own the external authority,
+   Git lease, baseline publication, allowlist, validity window, and provider
+   boundary. The writable child may consume that authority but never author or
+   expand it.
+
+The child contract seal binds only immutable authored topology and policy
+references. Normal status, event, evidence, index, pack, and checkpoint writes
+must not invalidate authority. Any edit to immutable authored content or the
+run binding invalidates the child and requires absent-target regeneration.
+
 # Alternatives Considered
 
 - Dedicated worktree: safer but not selected.
@@ -46,6 +65,10 @@ Root registration, bundle refresh, staging, commits, pushes, and root Remotion n
 # Consequences
 
 Nested read-only discovery and graph authoring can continue alongside unrelated root work. Shared-source mutation waits for an accepted mutation receipt, and root mutation, bundle refresh, Git integration, and publication wait for the root integration owner.
+
+This separation prevents an executing child from self-authorizing, avoids
+whole-tree hash churn, and makes Demo 3 and Demo 4 independently reproducible
+from accepted source releases.
 
 # Links / references
 
