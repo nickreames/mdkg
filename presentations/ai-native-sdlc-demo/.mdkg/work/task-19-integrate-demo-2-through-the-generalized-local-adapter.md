@@ -35,6 +35,11 @@ Integrate Demo 2 through the generalized local adapter. This is step 6 of 9 in G
 - Register the Demo 2 record, source/executed goal evidence, and selected static Astro output component so local builds emit `/demo/2/` and `/demo/2/output/`.
 - Write `artifacts/demo-002/integration-receipt.json` with adapter input/output schema versions, exact changed paths, record/component keys, route inventory, build command, output hashes, and static/public-safety results.
 - Unknown demo IDs must retain Goal 2's deterministic not-found behavior; Demo 2 remains `listed: false` and `noindex: true`.
+- Mirror the accepted adapter receipt into the child run, complete the child's
+  integration task and canonical-site test through the child mdkg lifecycle,
+  and require `goal next goal-1` to select the untouched publish task.
+- Do not mark the child goal achieved and do not claim or mutate its publish,
+  exact-SHA/live-URL, or accepted-checkpoint segment.
 - Do not stage, commit, push, inspect deployments, or claim public availability.
 - Changed surfaces, commands, decisions, warnings, and artifacts are recorded in public-safe evidence.
 - The successor task-20 does not begin until this node is verified.
@@ -56,6 +61,8 @@ Integrate Demo 2 through the generalized local adapter. This is step 6 of 9 in G
 
 - The local output is static, zero-JavaScript, accessible, noindex/unlisted, public-safe, responsive, and within budgets.
 - Both local routes render from the generalized record/component registry and show inspectable source-versus-specialized evidence.
+- Child integration and canonical-site-test nodes are done with receipt hashes;
+  the publish task is next and the child goal remains unachieved.
 - The route inventory contains no third-party runtime script, remote font, form, tracker, or generated client JavaScript.
 - No Git or provider side effect occurred.
 

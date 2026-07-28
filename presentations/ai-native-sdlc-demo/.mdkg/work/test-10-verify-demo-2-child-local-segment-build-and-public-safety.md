@@ -1,7 +1,7 @@
 ---
 id: test-10
 type: test
-title: Verify Demo 2 child graph completion local build and public safety
+title: Verify Demo 2 child local segment build and public safety
 status: backlog
 priority: 1
 epic: epic-4
@@ -20,14 +20,16 @@ context_refs: [goal-4, epic-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-4-step-8]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [child_goal_achieved, static_build, zero_client_javascript, accessibility, public_safety, asset_budget]
+cases: [child_local_segment_complete, publication_next, static_build, zero_client_javascript, accessibility, public_safety, asset_budget]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Validate verify demo 2 child graph completion local build and public safety as step 8 of Goal 4. A passing result must include exact commands or observations, reviewed outputs, and public-safe evidence.
+Validate the Demo 2 child local-through-canonical segment, local build, and
+public safety as step 8 of Goal 4. A passing result must include exact commands
+or observations, reviewed outputs, and public-safe evidence.
 
 # Target / Scope
 
@@ -45,6 +47,9 @@ Validate verify demo 2 child graph completion local build and public safety as s
 
 - Fork receipt preserves IDs and binds the exact source hash.
 - The specialized graph validates, routes correctly, and differs visibly from the source.
+- Child positioning, implementation, local test, integration, and
+  canonical-site test are done; the child remains unachieved and its untouched
+  publish task is next.
 - The local output is static, zero-JavaScript, accessible, noindex/unlisted, public-safe, responsive, and within budgets.
 - Adapter routes work locally and candidate/fallback hashes and receipts verify.
 - No Git or provider side effect occurred.

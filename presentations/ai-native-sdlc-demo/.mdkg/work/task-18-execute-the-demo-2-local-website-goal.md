@@ -54,7 +54,9 @@ Execute the Demo 2 local website goal. This is step 5 of 9 in Goal 4; it owns on
 
 # Test Plan
 
-- Child `goal evaluate goal-1 --json` shows the local execution segment complete and the integration task as the next actionable node.
+- Child `goal evaluate goal-1 --json` does not report achieved; it shows the
+  positioning, implementation, and local-test segment complete and the
+  integration task as the next actionable node.
 - The local output is static, zero-JavaScript, accessible, noindex/unlisted, public-safe, responsive, and within budgets.
 - The receipt binds exact child node IDs, source and output hashes, local commands, and pass/fail results.
 - No Git or provider side effect occurred.

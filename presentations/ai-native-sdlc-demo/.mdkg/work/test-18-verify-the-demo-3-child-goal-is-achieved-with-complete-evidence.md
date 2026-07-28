@@ -1,7 +1,7 @@
 ---
 id: test-18
 type: test
-title: Verify the Demo 3 child goal is achieved with local evidence
+title: Verify the Demo 3 child goal is achieved with complete evidence
 status: backlog
 priority: 1
 epic: epic-7
@@ -20,14 +20,15 @@ context_refs: [goal-7, epic-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-7-step-7]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [child_achieved, positioning, implementation, local_test, integration, accepted_checkpoint]
+cases: [child_achieved, positioning, implementation, local_test, integration, canonical_test, publish, exact_sha_live_urls, accepted_checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Validate verify the demo 3 child goal is achieved with local evidence as step 7 of Goal 7. A passing result must include exact commands or observations, reviewed outputs, and public-safe evidence.
+Validate that the Demo 3 child goal is achieved with complete
+local-to-production evidence as step 7 of Goal 7.
 
 # Target / Scope
 
@@ -43,12 +44,15 @@ Validate verify the demo 3 child goal is achieved with local evidence as step 7 
 
 # Test Cases
 
-- The child goal is achieved with local test and integration evidence.
+- The child goal is achieved only after positioning, implementation, local
+  test, integration, canonical-site test, publish, exact-SHA/live-URL test, and
+  its accepted checkpoint all resolve.
 - Canonical build, routes, claims, accessibility, privacy, noindex, zero-JavaScript, and budgets pass.
 - Both production projects are READY for the exact final SHA and both live routes pass.
 - Fix-forward attempts and elapsed time stay within bounds.
 - Reveal selection and receipt state Demo 3 success or Demo 2 fallback truthfully; fallback never marks Goal 7 achieved.
-- This test specifically proves: Verify the Demo 3 child goal is achieved with local evidence.
+- This test specifically proves: Verify the Demo 3 child goal is achieved with
+  complete local-to-production evidence.
 - Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
 
 # Results / Evidence

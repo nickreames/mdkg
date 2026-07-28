@@ -20,7 +20,7 @@ context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-5-step-7]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [allowed_paths, fetched_origin, zero_behind, logical_commit, non_force_push, exact_sha]
+cases: [human_publication_approval, complete_push_range, allowed_paths, fetched_origin, zero_behind, logical_commit, non_force_push, exact_sha, child_achieved]
 created: 2026-07-26
 updated: 2026-07-26
 ---
@@ -44,6 +44,10 @@ Validate verify demo 2 commit push and exact-sha deployment evidence as step 7 o
 # Test Cases
 
 - Staged paths equal the allowlist and origin is fetched and zero behind immediately before non-force push.
+- Human approval binds every commit/path in the actual push range and remains
+  valid through the push.
+- The resumed Demo 2 child goal completes publish and exact-SHA/live-URL work,
+  has an accepted checkpoint, and evaluates achieved.
 - Both production projects are READY for the exact final pushed SHA.
 - Both routes pass content, source-versus-specialized, noindex, zero-JavaScript, accessibility, responsive, claim, secret, and budget checks.
 - The presentation rehearses by 35 minutes.

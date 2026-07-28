@@ -33,6 +33,10 @@ Specialize Demo 2 requirements decisions goal and tests. This is step 4 of 9 in 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-4.
 - Specialize the forked child PRD, EDD, design decisions, `goal-1`, scoped positioning/implementation/integration tasks, local/canonical/publication tests, authority fields, and activation conditions while preserving all fork lineage fields.
 - Keep `goal-1` active only inside the Demo 2 run graph; its scope contains only its executable child nodes and its context names the source graph, source goal snapshot, program PRD/EDD, and accepted platform contracts.
+- The specialized child goal condition spans the complete local-to-production
+  chain. Goal 4 is authorized only through its canonical-site local test and
+  must later pause it with publication next; Goal 5 alone may resume and
+  complete the publication/live segment after separate approval.
 - Require the specialized goal to visibly differ from the source in positioning, audience promise, visual direction, requirements, acceptance tests, and `what completed / why / next` evidence while retaining the static Astro, Ocean Flow, noindex/unlisted, zero-JavaScript, accessibility, privacy, and asset-budget guardrails.
 - Write `artifacts/demo-002/specialization-receipt.json` with changed-node inventory, before/after hashes, lineage, authority, route reservation, chain order, and validation result; snapshot the result at `artifacts/demo-002/specialized-goal-1.md`.
 - Do not stage, commit, push, inspect deployments, or claim public availability.
@@ -57,6 +61,8 @@ Specialize Demo 2 requirements decisions goal and tests. This is step 4 of 9 in 
 - Nested index and full validation pass, `goal show goal-1`, `goal next goal-1`, and concise pack identify the expected first positioning node.
 - Source and specialized goal snapshots retain the same local goal ID but show the required decision and requirement contrast.
 - No implementation node is completed by this specialization task.
+- `goal next goal-1` selects the child positioning spike after specialization;
+  the publish and live-URL nodes are backlog and contain no evidence.
 - No Git or provider side effect occurred.
 
 # Links / Artifacts

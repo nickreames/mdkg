@@ -8,7 +8,7 @@ epic: epic-6
 parent: goal-6
 prev: task-33
 next: test-16
-tags: [ai-native-sdlc, presentation-demo, phase-6, step-8]
+tags: [ai-native-sdlc, presentation-demo, phase-6, step-11]
 owners: [program-orchestrator]
 links: []
 artifacts: []
@@ -20,14 +20,15 @@ context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, 
 evidence_refs: []
 aliases: [phase-6-step-8]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
-cases: [source_identity, specialized_goal, child_chain, public_safe_pack, no_execution]
+cases: [refined_source_identity, specialized_goal, child_chain, public_safe_pack, event_authority, no_execution]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Validate verify demo 3 readiness routing and concise pack as step 8 of Goal 6. A passing result must include exact commands or observations, reviewed outputs, and public-safe evidence.
+Validate Demo 3 readiness routing, refined source identity, event authority,
+and concise pack as step 11 of Goal 6.
 
 # Target / Scope
 
@@ -44,6 +45,10 @@ Validate verify demo 3 readiness routing and concise pack as step 8 of Goal 6. A
 # Test Cases
 
 - Demo 3 source identity, specialized contrast, graph validation, routing, and concise pack pass.
+- Demo 3 source, manifest, and sendoff hashes equal test-25's verified
+  post-Demo-2 identities.
+- The human-accepted event authority resolves the same source, specialized
+  goal, preflight, allowlist, sendoff, push range, and lease.
 - No child implementation node has executed.
 - Git, dependencies, provider read access, and both project identities are visible without storing credentials.
 - Sendoff text, allowlist, attempt/time bound, hard blockers, quiet window, and fallback are sealed.

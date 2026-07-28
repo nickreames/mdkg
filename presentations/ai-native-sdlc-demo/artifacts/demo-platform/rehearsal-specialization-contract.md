@@ -43,9 +43,12 @@ Before implementation, Goal 4 must add or update public-safe child records for:
   `positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint`.
 
 The source goal and specialized goal must remain separately readable. Goal 4
-may execute only through the accepted canonical-site local test. The publish and
-live-URL nodes remain unauthorized until Goal 5 grants a separate publication
-gate.
+may execute only through the accepted canonical-site local test. It then pauses
+the specialized child `goal-1` with the publish task as the next actionable
+node. The child is locally accepted but not achieved. The publish and live-URL
+nodes remain unauthorized until Goal 5 records a separate human-accepted
+publication receipt, resumes the same child goal, and hands its publish node to
+the root integration owner.
 
 ## Positioning and creative latitude
 
@@ -103,18 +106,23 @@ Goal 4 completes only when:
 - zero client JavaScript, claims, secrets, accessibility, asset, and route tests
   pass;
 - an accepted candidate checkpoint and offline fallback capture exist.
+- the specialized child goal is paused with its publish task next, its local,
+  integration, and canonical-site-test nodes are done with evidence, and its
+  publish/live/checkpoint segment remains untouched.
 
 Goal 4 authorizes no stage, commit, push, deployment, provider action, or live
 URL claim.
 
 ## Goal 5 publication gate
 
-Goal 5 must separately verify an exact path inventory, clean ownership, fetched
-origin state, zero-behind status, and an approved commit set. Only then may the
-integration owner stage and commit accepted surfaces, non-force push
-`origin/main`, inspect existing deployments, and verify exact-SHA production
-routes. Manual redeploy, project creation, DNS changes, analytics activation,
-tagging, force push, and package publication remain forbidden.
+Goal 5 must separately obtain a human-accepted publication receipt and verify
+an exact path inventory, the complete `origin/main..HEAD` push range, clean
+ownership, fetched origin state, zero-behind status, and an approved commit
+set. Only then may it resume the same child goal and allow the integration
+owner to execute its publish node, non-force push `origin/main`, inspect
+existing deployments, and complete the child live-URL test and accepted
+checkpoint. Manual redeploy, project creation, DNS changes, analytics
+activation, tagging, force push, and package publication remain forbidden.
 
 After exact-SHA and desktop/mobile route proof, seal Demo 2 as the immutable
 golden fallback. Later corrections require bounded fix-forward evidence and

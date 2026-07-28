@@ -10,13 +10,13 @@ next: task-15
 tags: [ai-native-sdlc, presentation-demo, phase-4, step-1]
 owners: [program-orchestrator]
 links: []
-artifacts: []
+artifacts: [artifacts/demo-002/goal-4-activation.json, artifacts/demo-002/positioning-brief.md]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-4, epic-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [goal-4, epic-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-evidence_refs: []
+refs: [goal-4, epic-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, task-10, chk-13]
+context_refs: [goal-4, epic-4, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, task-10, chk-13]
+evidence_refs: [chk-4, chk-12, chk-13]
 aliases: [phase-4-step-1]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -25,15 +25,24 @@ updated: 2026-07-26
 
 # Research Question
 
-What evidence, options, tradeoffs, and recommendation are required to choose demo 2 positioning and reserve the rehearsal run under Goal 4?
+Which mdkg marketing angle, visitor promise, composition direction, and local
+execution allowlist should specialize Demo 2 while preserving the accepted
+platform, presentation, and publication boundaries?
 
 # Context and Constraints
 
 - Bind Demo 2 to the exact canonical source graph hash and reserved ID/routes.
+- Keep the product fixed as mdkg public alpha/pre-v1, the quickstart and GitHub
+  Issues CTA fixed, and let the agent choose the audience angle, promise,
+  composition, metaphor, typography, imagery, and bounded copy.
 - Create the run through deterministic fork plus complete operator and skill materialization.
 - Specialize requirements, design, authority, goal, work, and tests while preserving lineage.
 - Complete local child execution, adapter integration, static/public-safety gates, and fallback capture.
 - Do not stage, commit, push, inspect deployments, or claim public availability.
+- Record `goal-4-activation.json` with the exact local path/operation allowlist,
+  base SHA, source/manifest/contract hashes, writer, validity window,
+  invalidation conditions, and an explicit statement that Demo 2 publication
+  requires a later separate human approval.
 - This is step 1 of 9; do not perform successor implementation while researching.
 
 # Search Plan
@@ -63,7 +72,8 @@ Pending activation and evidence collection.
 
 # Follow-Up Nodes To Create
 
-- Continue to task-15 only after this spike records a supported recommendation.
+- Continue to task-15 only after the user accepts the positioning and local
+  execution receipt. That approval does not authorize Goal 5.
 
 # Skill Candidates
 

@@ -31,10 +31,18 @@ Review the commit and push receipt produced inside the authorized Demo 3 child g
 # Acceptance Criteria
 
 - Consume only `runs/demo-003/artifacts/receipts/commit-push.json` and verify fetched origin state, zero-behind preflight, exact staged allowlist, logical commit SHA, and successful non-force `origin/main` push.
+- Compare every published commit and path in the actual pre-push
+  `origin/main..HEAD` range plus fix-forward commits against the complete range
+  accepted in `event-authority.json`. A correct newly staged subset does not
+  excuse an unapproved earlier commit.
 - Confirm no force, history rewrite, unrelated integration, tag, package publication, or provider mutation occurred.
 - Inspect Git state read-only; do not stage, commit, amend, or push from this node.
 - Route any missing or contradictory evidence back to the child goal or record a hard blocker.
-- Write `artifacts/demo-003/umbrella/commit-push-receipt.json` with child path/hash, allowlist/lease hashes, pre/post origin SHA, staged inventory hash, commit/parent SHAs, push command/result, read-only remote comparison, review time, and pass/blocker state.
+- Write `artifacts/demo-003/umbrella/commit-push-receipt.json` with child
+  path/hash, allowlist/authority/lease hashes, accepted and actual complete
+  push-range hashes, pre/post origin SHA, staged inventory hash,
+  commit/parent SHAs, push command/result, read-only remote comparison, review
+  time, and pass/blocker state.
 - The successor task-38 does not begin until this node is verified.
 
 # Files Affected

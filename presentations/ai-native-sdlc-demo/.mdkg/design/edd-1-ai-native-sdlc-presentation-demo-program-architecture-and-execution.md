@@ -39,6 +39,12 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 - Demo 3 child chain: positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
 - Demo record: id, listed, noindex, sourceGoal, executedGoal, output component, validation, safety, and evidence.
 - Publication receipt: allowed paths, baseline/final SHA, divergence, commit/push, both deployment identities, exact-SHA match, routes, and forbidden actions not taken.
+- Publication authority receipt: human approval, exact push range and
+  allowlist hashes, validity window, owner, authorized/forbidden actions, and
+  invalidation rules.
+- Source/prompt refinement receipt: Demo 2 evidence inputs, accepted changes
+  or accepted no-change result, before/after source and sendoff hashes,
+  deterministic bootstrap proof, and the source identity used to fork Demo 3.
 - Discovery receipt: read-only audit scope, owning graph/artifact paths, source inventory, and mutation recommendation.
 - Writer lease: goal, shared-source writer, root integration owner, exact path/operation allowlist, read-only evidence paths, forbidden paths, clean base commit, dirty/staged inventory hash, quiet-window start/expiry, invalidation rules, and release condition.
 - Adoption record: separate demo retention decisions and separately accepted canonical ideas.
@@ -53,6 +59,10 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 - Vercel is observed for existing deployments only; production delivery is caused by an approved non-force Git push.
 - No mdkg CLI, package API, or external schema change belongs to this program.
 - The event sendoff is a frozen interface: it requires continuation until child achievement, approved push, exact-SHA deployment readiness, and public-route verification, and it permits stopping only for an enumerated hard blocker.
+- Goal 6 freezes a separate human-accepted event-authority receipt. It grants
+  the exact live actions named by the sendoff and allowlist before the event,
+  so the running agent does not pause for another approval inside the frozen
+  scope.
 
 # Writer Topology
 
@@ -72,6 +82,8 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 - Stale or invalid bundle: rebuild explicitly and verify before root use.
 - Origin drift: stop publication; never force or absorb unrelated work.
 - Provider or credential failure: record a hard blocker and use Demo 2.
+- Unapproved Demo 2 publication or missing Demo 3 event pre-authorization:
+  stop before the corresponding commit, push, or provider workflow.
 - Partial live output: do not reveal or claim Demo 3 success.
 - Unsupported claim: remove or hold it.
 - JavaScript, accessibility, secret, or asset-budget failure: fail acceptance.
@@ -98,9 +110,14 @@ One writable nested graph coordinates the presentation, rehearsal, live demo, an
 - Goal 1: graph shape, references, routing, no loops, pack, bundle, and projection.
 - Goal 2: read-only drift inventory; accepted mutation receipt; static build, routes, sitemap, zero JS, accessibility, budgets, claims, secrets, executable fork/operator bootstrap, and context-complete fresh-agent packs.
 - Goal 3: primary sources, rendered QA, notes, and timing.
-- Goal 4: child completion, local integration, and fallback capture.
-- Goal 5: Git boundary, exact-SHA deployments, routes, and rehearsal.
-- Goal 6: unexecuted Demo 3 readiness, provider preflight, and no-side-effect dry run.
+- Goal 4: child local segment completion, local integration, publication-gate
+  pause, and fallback capture.
+- Goal 5: separate Demo 2 publication approval, complete push-range review,
+  child publication completion, exact-SHA deployments, routes, and rehearsal.
+- Goal 6: evidence-backed final deck polish, Demo 2 source/prompt evaluation,
+  accepted template/sendoff refinement, deterministic fresh-bootstrap proof,
+  unexecuted Demo 3 readiness, event pre-authorization, provider preflight,
+  and a no-side-effect dry run.
 - Goal 7: child completion, canonical gates, exact SHA, URLs, fallback honesty, and event receipt.
 - Goal 8: decision provenance, claims, SEO/LLM, accessibility, and new publication authority.
 

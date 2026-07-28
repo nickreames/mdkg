@@ -54,6 +54,13 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
 
 - Demo 2 is the full production rehearsal and immutable fallback.
 - Demo 3 is a fresh specialized event run.
+- Demo 2 requires a separate explicit publication approval after its local
+  candidate is accepted; local candidate authority does not imply commit,
+  push, deployment observation, or public verification authority.
+- Goal 6 must use Demo 2 execution, prompt, route, and rehearsal evidence to
+  evaluate the reusable source template and live sendoff. It applies only
+  explicitly accepted refinements, reseals the source and prompt hashes, and
+  proves a clean deterministic bootstrap before Demo 3 is forked.
 - The Demo 3 child goal uses this exact chain: positioning spike -> implementation task -> local test -> integration task -> canonical-site test -> publish task -> exact-SHA/live-URL test -> accepted checkpoint.
 - Detail routes are /demo/2/ and /demo/3/; output routes are /demo/2/output/ and /demo/3/output/.
 - Detail pages show sanitized source goal, specialized goal, work, and evidence.
@@ -77,6 +84,14 @@ AI coding has progressed from inline completion to long-horizon goal-driven agen
 - Shared-source and publication goals require an accepted base SHA, exact allowlist, and exclusive quiet window.
 - Commit, push, provider observation, provider mutation, DNS, tags, analytics, and package publication are separate authority levels.
 - Goal 7 alone may authorize bounded allowlisted event commits and a non-force push after activation.
+- Goal 7 activation consumes a separate, human-accepted, hash-bound event
+  authority receipt created during Goal 6. That receipt pre-authorizes the
+  complete frozen live workflow, including allowlisted edits, local
+  validation, bounded fix-forward commits, a non-force `origin/main` push,
+  read-only provider inspection, live-route verification, and the
+  integration-owner bundle refresh. No additional mid-run approval is
+  required for those exact in-scope actions.
+- Demo 2 publication approval is not reusable as Demo 3 event authority.
 - The live sendoff must require the agent to continue through achieved child state, approved non-force push, both exact-SHA READY deployments, and verified public routes; a local build or commit is not completion.
 
 # Acceptance Criteria
