@@ -120,8 +120,13 @@ Run a side-effect-free dry event rehearsal. This is step 10 of 13 in Goal 6.
   and root bundle hash are unchanged.
 - `dry-rehearsal-receipt.json` records the complete before/after identity,
   permitted commands, pack inventory, cue matrix, branch/fallback procedures,
-  activation schema, stop marker, and invariants; SHA-256
+  activation schema, stop marker, and invariants; its Task 33 completion
+  SHA-256 was
   `5759ffe88dd398d9ff977321de1c337e0cee06513b8530ade212972ade9b2cce`.
+- Test 17 later appended its independent closeout verification and corrected a
+  redacted mdkg-docs project-ID transcription without changing any provider or
+  bound functional state. The final shared receipt SHA-256 is
+  `d164b5f168ebd8a17b73d8b84d9ef79c47f8f1af7cec51b178dde99e5896e51f`.
 - The rehearsal stopped before child claim, positioning, implementation,
   canonical build, staging, commit, push, deployment, provider mutation,
   preparation publication, authority activation, or bundle refresh.

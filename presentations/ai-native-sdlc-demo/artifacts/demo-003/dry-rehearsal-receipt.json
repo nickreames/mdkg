@@ -61,7 +61,7 @@
       },
       {
         "project": "mdkg-docs",
-        "project_id": "prj_3Aoh90VnkqM6AnX9t72fSULEd",
+        "project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
         "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
         "state": "READY",
         "target": "production",
@@ -228,7 +228,7 @@
         "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93"
       },
       {
-        "project_id": "prj_3Aoh90VnkqM6AnX9t72fSULEd",
+        "project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
         "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
         "state": "READY",
         "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93"
@@ -251,6 +251,117 @@
   },
   "stop_marker": "Stopped after read-only dispatch resolution and before goal claim, child positioning, implementation, file generation, canonical build, staging, commit, push, deployment, provider mutation, bundle refresh, or authority activation.",
   "warnings": [],
+  "test_17_verification": {
+    "verified_at": "2026-07-28T07:24:55Z",
+    "receipt_pre_verification_sha256": "5759ffe88dd398d9ff977321de1c337e0cee06513b8530ade212972ade9b2cce",
+    "readiness_routing_receipt_sha256_at_test_17_start": "394648223f341c69eed20b23a3d0909aa2cd4f1af5cd63fd191b501405c9738c",
+    "provider_readiness_receipt_sha256": "93f25b2404534cd95c79c9704b44d55d341df0964a04aaed82708b0c84017889",
+    "cases": {
+      "source_binding_seal_chain": {
+        "status": "pass",
+        "semantic_source_release_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+        "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+        "authoritative_child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+        "authoritative_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+        "authored_child_mismatch_count": 0
+      },
+      "preauthorization_complete": {
+        "status": "pass",
+        "event_authority_sha256": "b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e",
+        "external_human_acceptance_observed": true,
+        "future_happy_path_requires_no_mid_run_reapproval_after_valid_activation": true,
+        "separate_preparation_publication_approval_still_required": true
+      },
+      "child_cannot_self_authorize": {
+        "status": "pass",
+        "authority_stored_in_child": false,
+        "binding_or_seal_edit_is_hard_blocker": true,
+        "authority_or_allowlist_expansion_from_child": false
+      },
+      "no_authored_child_edit": {
+        "status": "pass",
+        "bootstrap_verify_only_result": "identical release binding authored child operator interface seal routing packs and inventory",
+        "goal_status": "todo",
+        "goal_state": "active",
+        "active_node": "spike-1",
+        "first_actionable_qid": "root:spike-1",
+        "tracked_child_diff": [],
+        "untracked_nonignored_child_files": []
+      },
+      "no_mid_run_approval_gap": {
+        "status": "pass",
+        "post_publication_activation_required": true,
+        "origin_or_identity_drift_routes_to_hard_blocker": true,
+        "unlisted_action_routes_to_hard_blocker": true
+      },
+      "no_implementation": {
+        "status": "pass",
+        "child_claimed": false,
+        "child_work_started": false,
+        "runtime_checkpoint_created": false,
+        "site_files": 0,
+        "artifact_files": 0
+      },
+      "no_stage": {
+        "status": "pass",
+        "rehearsal_index_before_empty": true,
+        "rehearsal_index_after_empty": true,
+        "current_index_empty": true
+      },
+      "no_commit": {
+        "status": "pass",
+        "rehearsal_head_before": "d9157757673c31a2c2c3c2c4a8dc03f0e4dd5b46",
+        "rehearsal_head_after": "d9157757673c31a2c2c3c2c4a8dc03f0e4dd5b46",
+        "later_evidence_commit_outside_rehearsal": "4e95431c96da4b0a261fec3bab82fbe94a5dda87"
+      },
+      "no_push": {
+        "status": "pass",
+        "rehearsal_origin_before": "f6af6410cf03ae222c4ee102844a678373b35d93",
+        "rehearsal_origin_after": "f6af6410cf03ae222c4ee102844a678373b35d93",
+        "live_origin_at_test_16": "f6af6410cf03ae222c4ee102844a678373b35d93"
+      },
+      "no_deploy": {
+        "status": "pass",
+        "provider_mutation_performed": false,
+        "both_existing_production_deployments_remain_ready_for_live_origin": true
+      },
+      "fallback_ready": {
+        "status": "pass",
+        "fallback_readiness_sha256": "8758c521fc17a868bce09852f50afbd2b30d74c30db4ca19cdb4dc3a1a79c9dc",
+        "golden_hash_entries_passed": 30,
+        "verification_elapsed_ms": 149,
+        "switch_limit_ms": 30000
+      }
+    },
+    "deadline_and_repair_assertions": {
+      "pre_publication_repairs_maximum": 2,
+      "production_repairs_maximum": 1,
+      "latest_production_repair_start": "T+24:00",
+      "consolidated_reveal_receipt": "T+29:15",
+      "success_or_fallback_selection": "T+29:30",
+      "global_stop": "T+30:00",
+      "one_designated_physical_harness": true,
+      "truthful_demo_2_selection_on_missed_gate": true
+    },
+    "inventory_consistency": {
+      "receipt_path_matches_bound_local_evidence_only_inventory": true,
+      "readiness_receipt_path_matches_bound_local_evidence_only_inventory": true,
+      "provider_receipt_path_matches_bound_local_evidence_only_inventory": true,
+      "publication_inventory_disjoint": true,
+      "canonical_or_child_publication_path_changed": false,
+      "bundle_refreshed_during_rehearsal": false,
+      "program_bundle_sha256": "e12516be01d1379c75959c57e0af3aea0795eee3a27264b0de423b06dab61d6d"
+    },
+    "corrections": [
+      "Corrected the mdkg-docs opaque project ID in the dry receipt from a transcription typo to the exact read-only provider observation. No provider, child, source, authority, or publication surface changed."
+    ],
+    "warnings": [],
+    "result": {
+      "all_cases_pass": true,
+      "dry_rehearsal_stopped_before_execution_or_publication": true,
+      "goal_6_closeout_may_begin": true
+    }
+  },
   "result": {
     "side_effect_free": true,
     "authority_complete_for_future_still_valid_happy_path": true,

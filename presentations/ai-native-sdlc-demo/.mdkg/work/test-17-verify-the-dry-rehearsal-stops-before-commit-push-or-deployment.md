@@ -2,7 +2,7 @@
 id: test-17
 type: test
 title: Verify zero-edit event readiness without execution or publication
-status: backlog
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -10,7 +10,7 @@ prev: test-16
 tags: [ai-native-sdlc, presentation-demo, phase-6, step-13]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifacts/demo-003/dry-rehearsal-verification.json]
+artifacts: [artifacts/demo-003/dry-rehearsal-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -21,7 +21,7 @@ aliases: [phase-6-step-13]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [source_binding_seal_chain, preauthorization_complete, child_cannot_self_authorize, no_authored_child_edit, no_mid_run_approval_gap, no_implementation, no_stage, no_commit, no_push, no_deploy, fallback_ready]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview
@@ -73,10 +73,34 @@ deployment as the final step 13 of Goal 6.
 
 # Results / Evidence
 
-Write `artifacts/demo-003/dry-rehearsal-verification.json` with pass/fail per
-case, before/after identities, authority consistency, deadline/retry
-assertions, fallback timing, warnings, and follow-up refs.
+Append a `test_17_verification` block to the already inventoried
+`artifacts/demo-003/dry-rehearsal-receipt.json` with pass/fail per case,
+before/after identities, authority consistency, deadline/retry assertions,
+fallback timing, warnings, and follow-up refs. Re-seal its final hash in this
+test and the Goal 6 closeout checkpoint.
 
 # Notes / Follow-ups
 
-- Do not advance to goal closeout until the required result is evidenced.
+- The accepted source release, immutable binding, authoritative child
+  interface, and immutable seal remain byte-identical with zero authored child
+  mismatches.
+- The prospective event authority remains externally accepted at SHA-256
+  `b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e`.
+  Once the separately approved preparation baseline is published and the
+  activation receipt verifies, the complete still-valid happy path requires no
+  mid-run approval; every invalidation condition routes to a hard blocker.
+- Demo 3 remains unexecuted at `spike-1`: no claim, work start, runtime
+  checkpoint, site output, artifact output, tracked child diff, or nonignored
+  child file exists.
+- The original rehearsal before/after HEAD, index, origin, bundle, child, and
+  provider observations prove no staging, commit, push, deployment, provider
+  mutation, or bundle refresh occurred inside the rehearsal. The later
+  `4e95431c…a87` commit contains only the accepted Task 33 evidence outside that
+  measured window.
+- The two/one repair budget, T+24 production-repair cutoff, T+29:15 receipt
+  gate, T+29:30 selection gate, T+30 global stop, one-harness constraint, and
+  truthful Demo 2 fallback are all explicit and internally consistent.
+- `dry-rehearsal-receipt.json` now contains the independent
+  `test_17_verification` block. Its final SHA-256 is
+  `d164b5f168ebd8a17b73d8b84d9ef79c47f8f1af7cec51b178dde99e5896e51f`.
+- All eleven cases pass with zero blockers. Goal 6 closeout may begin.
