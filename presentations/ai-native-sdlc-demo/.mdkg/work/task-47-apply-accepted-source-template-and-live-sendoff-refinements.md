@@ -15,9 +15,9 @@ artifacts: [artifacts/demo-003/source-prompt-enhancement-receipt.json, artifacts
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, spike-6, task-10]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, spike-6, task-10, chk-17]
-evidence_refs: [spike-6, chk-17]
+refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, spike-6, task-10, chk-20]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, spike-6, task-10, chk-17, chk-20]
+evidence_refs: [spike-6, chk-17, chk-20]
 aliases: [phase-6-step-2, phase-6-source-prompt-refinement]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-27
@@ -118,6 +118,9 @@ source release that future runs can fork without manual graph edits.
 # Links / Artifacts
 
 - spike-6
+- chk-20
+- artifacts/demo-003/source-prompt-evaluation.md
+- artifacts/demo-003/historical-timing-analysis.json
 - task-10
 - artifacts/demo-003/source-prompt-enhancement-receipt.json
 - artifacts/demo-platform/timed-run-contract.json

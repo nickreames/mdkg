@@ -2,7 +2,7 @@
 id: spike-6
 type: spike
 title: Classify Demo 2 evidence for a fork-ready source release
-status: todo
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -80,9 +80,40 @@ rehearsal?
 
 # Findings
 
-Pending Goal 5. Record evidence-backed strengths, defects, confusing
-instructions, unnecessary constraints, missing context, and sources of
-nondeterminism.
+Demo 2 proved the static Astro, Ocean Flow, public-safety, noindex/unlisted,
+source-versus-specialized, Plan → Work → Evidence, exact-SHA deployment, live
+route, and golden fallback contracts. The accepted implementation produced a
+30,205-byte static page with zero client JavaScript, scripts, remote fonts,
+forms, trackers, and raster assets; the minimum measured text contrast was
+4.66:1 and desktop/mobile overflow checks passed.
+
+It did not prove zero-edit specialization:
+
+- The source chain stopped after local validation. Demo 2 added integration,
+  canonical validation, publication, and production verification nodes by
+  rewriting the child after the fork.
+- The operator manifest omitted the source root `README.md` and `.gitignore`.
+  The copied prompt nevertheless instructed the agent to read `README.md`, and
+  generated child packs remain untracked.
+- The handoff prompt used root-ambiguous commands and encoded a local-only
+  stopping point rather than a state-neutral full lifecycle.
+- The bootstrap hardcoded the four-node local chain and hashed generated mdkg
+  state together with authored source.
+- Demo 2 required three dependency/build attempts, duplicated substantial
+  integration work, and exposed a shared-dist race when smoke suites ran in
+  parallel.
+- Child closure evidence is inconsistent: achieved state does not uniformly
+  preserve epic scope, final evidence refs, and accepted-checkpoint routing.
+
+The evidence supports a semantic authored source release plus an immutable run
+binding, not post-fork graph editing. It also supports one designated harness,
+warm dependencies, one portable output component plus thin wrapper, build-once
+serial validation, and a fast reveal verifier. It does not support
+multi-harness equivalence or uninterrupted eight-hour execution.
+
+The complete classification and exact proposed path/hash allowlist are in
+`artifacts/demo-003/source-prompt-evaluation.md`. The timing ledger is in
+`artifacts/demo-003/historical-timing-analysis.json`.
 
 # Options And Tradeoffs
 
@@ -95,14 +126,18 @@ nondeterminism.
 
 # Recommendation
 
-Write `artifacts/demo-003/source-prompt-evaluation.md` with ranked findings,
-accepted/rejected options, exact proposed paths, before hashes, expected
-outcomes, regression tests, the five-way classification, and a recommended
-source-release/run-binding contract or explicit no-change decision. Preserve
-creative latitude through a positioning decision artifact rather than a
-post-fork graph rewrite. Record explicit user acceptance before task-47. Write
-the measured timing ledger separately to
-`artifacts/demo-003/historical-timing-analysis.json`.
+Accept the bounded source-release refinement in
+`artifacts/demo-003/source-prompt-evaluation.md`. Promote generic topology and
+guardrails into the reusable authored source, specialize immutable values
+through a validated run binding, produce an authored child-contract seal, and
+keep runtime evidence and external authority in their separate owners.
+
+Preserve creative latitude through the child positioning decision rather than
+a post-fork graph rewrite. Reject Demo 2 creative copy, runtime evidence,
+provider identity, and event authority as source defaults.
+
+Task 47 remains gated on explicit user acceptance of the recorded
+recommendation and exact future mutation allowlist.
 
 # Follow-Up Nodes To Create
 
@@ -137,4 +172,12 @@ the measured timing ledger separately to
 
 # Evidence And Sources
 
-- Pending Goal 5 receipts and current source/operator contracts.
+- `artifacts/demo-003/source-prompt-evaluation.md`
+- `artifacts/demo-003/historical-timing-analysis.json`
+- `chk-14`, `chk-17`, `test-12`, `test-13`, `test-14`, `chk-18`, and
+  `chk-19`
+- Demo 2 bootstrap, implementation, local execution, integration, commit,
+  deployment, live-route, smoke-contract, and rehearsal receipts
+- Current source graph, operator manifest, bootstrap, smoke, specialization,
+  and normative live-sendoff contracts at the hashes recorded in the
+  evaluation
