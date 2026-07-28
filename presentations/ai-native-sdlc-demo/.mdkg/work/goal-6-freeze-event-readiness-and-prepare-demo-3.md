@@ -2,12 +2,12 @@
 id: goal-6
 type: goal
 title: Harden the reusable demo source and prepare zero-edit Demo 3
-status: backlog
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: Demo 2 production, timing, prompt, and rehearsal evidence is classified into reusable source changes, immutable run-binding inputs, child-local state, and external authority; an explicitly accepted semantic source release with the complete generic chain passes two distinct zero-manual-edit absent-target fixtures; a pre-test deck baseline and post-test polish handoff are sealed; runs/demo-003 is created as an exact authored-content fork with a frozen run binding and immutable child-contract seal but no executed work; one designated harness, warm dependencies, build-once validation, the 30-minute timing contract, prospective range policy, preparation-baseline handoff, exact allowlist, writer lease, Demo 2 fallback, human authority, and a side-effect-free dry rehearsal all pass.
 scope_refs: [epic-6]
-active_node: task-33
+last_active_node: test-17
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [Demo 2 historical timing and reusable-delta classification, accepted semantic source release and run-binding schema, two distinct zero-edit absent-target fixtures and verify-only repeat, pre-test deck baseline and post-test polish handoff, unexecuted Demo 3 source-binding-seal identity chain and concise pack, single-harness warm-dependency build-once contract, read-only Git dependency and Vercel preflight, prospective range policy and preparation-baseline publication handoff, exact sendoff allowlist writer lease human authority and Demo 2 fallback, side-effect-free dry rehearsal and deadline verification]
 max_iterations: 25
@@ -15,13 +15,13 @@ blocked_after_attempts: 3
 tags: [ai-native-sdlc, presentation-demo, phase-6]
 owners: [program-orchestrator]
 links: []
-artifacts: [artifacts/demo-003/historical-timing-analysis.json, artifacts/demo-003/source-prompt-evaluation.md, artifacts/demo-003/source-prompt-enhancement-receipt.json, artifacts/demo-platform/source-release-manifest.json, artifacts/demo-platform/run-binding.schema.json, artifacts/demo-003/source-fixture-verification.json, artifacts/demo-003/run-binding.json, artifacts/demo-003/immutable-child-contract-seal.json, artifacts/demo-003/pre-test-deck-baseline.json, artifacts/demo-003/post-test-presentation-handoff.md, artifacts/demo-platform/timed-run-contract.json, artifacts/demo-003/preparation-baseline-handoff.json, artifacts/demo-003/event-authority-policy.json, artifacts/demo-003/event-authority.json, artifact://ai-native-sdlc-demo/demo-003-readiness, artifact://ai-native-sdlc-demo/live-sendoff, artifact://ai-native-sdlc-demo/event-writer-lease]
+artifacts: [artifacts/demo-003/historical-timing-analysis.json, artifacts/demo-003/source-prompt-evaluation.md, artifacts/demo-003/source-prompt-enhancement-receipt.json, artifacts/demo-platform/source-release-manifest.json, artifacts/demo-platform/run-binding.schema.json, artifacts/demo-003/source-fixture-verification.json, artifacts/demo-003/run-binding.json, artifacts/demo-003/immutable-child-contract-seal.json, artifacts/demo-003/pre-test-deck-baseline.json, artifacts/demo-003/post-test-presentation-handoff.md, artifacts/demo-platform/timed-run-contract.json, artifacts/demo-003/preparation-baseline-handoff.json, artifacts/demo-003/event-authority-policy.json, artifacts/demo-003/event-authority.json, artifacts/demo-003/readiness-routing-receipt.json, artifacts/demo-003/provider-readiness-receipt.json, artifacts/demo-003/dry-rehearsal-receipt.json, artifact://ai-native-sdlc-demo/demo-003-readiness, artifact://ai-native-sdlc-demo/live-sendoff, artifact://ai-native-sdlc-demo/event-writer-lease]
 relates: []
 blocked_by: []
 blocks: []
 refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20, chk-21, chk-22, chk-23]
-evidence_refs: [chk-12, chk-14, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20, chk-21, chk-22, chk-23]
+context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-3, chk-12, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20, chk-21, chk-22, chk-23, test-15, test-16, test-17, chk-24]
+evidence_refs: [chk-12, chk-14, chk-17, test-12, test-13, test-14, chk-18, chk-19, chk-20, chk-21, chk-22, chk-23, test-15, test-16, test-17, chk-24]
 aliases: [demo-3-event-readiness]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
@@ -207,8 +207,11 @@ explicit user acceptance before `task-47`.
 
 # Current State
 
-Enhanced and paused. Goal 5 and fork-ready source checkpoint `chk-19` are
-accepted; activate only on explicit user direction.
+Goal condition achieved at accepted `chk-24`. Demo 3 remains unexecuted at
+`spike-1`; Goal 7 may consume the frozen preparation evidence but must first
+obtain separate approval for the exact preparation publication manifest,
+publish that baseline normally, verify fetched origin equality, activate the
+accepted timed authority, and release the integration writer lease.
 
 # Iteration Log
 
@@ -222,6 +225,10 @@ accepted; activate only on explicit user direction.
 - 2026-07-27: Replaced fork-then-edit specialization with a semantic source
   release, immutable run binding, two-fixture zero-edit proof, exact Demo 3
   fork, immutable contract seal, and externally owned authority.
+- 2026-07-28: Accepted the exact prospective event authority, completed the
+  side-effect-free dry rehearsal, verified source/binding/seal routing, live
+  origin and provider visibility, timing and fallback gates, and closed the
+  phase at `chk-24` without executing or publishing Demo 3.
 
 # Skill Improvement Candidates
 
@@ -229,4 +236,14 @@ accepted; activate only on explicit user direction.
 
 # Completion Evidence
 
-- Pending.
+- Accepted closeout checkpoint: `chk-24`
+- Readiness routing and exact receipt inventory:
+  `artifacts/demo-003/readiness-routing-receipt.json`
+- Live origin, warm dependency, and production visibility:
+  `artifacts/demo-003/provider-readiness-receipt.json`
+- Human authority, no-side-effect rehearsal, deadlines, and fallback:
+  `artifacts/demo-003/dry-rehearsal-receipt.json`
+- Immutable authority and policy:
+  `artifacts/demo-003/event-authority.json` and
+  `artifacts/demo-003/event-authority-policy.json`
+- Independent gates: `test-15`, `test-16`, and `test-17`

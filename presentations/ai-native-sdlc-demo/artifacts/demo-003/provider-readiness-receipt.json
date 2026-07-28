@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-provider-origin-readiness",
+  "status": "passed",
+  "verified_at": "2026-07-28T07:21:04Z",
+  "side_effect_policy": "Read-only Git, dependency, graph, and provider observations only; no fetch ref update, install, build, staging, commit, push, deployment, or provider mutation.",
+  "cases": {
+    "git_access": {
+      "status": "pass",
+      "remote": "origin",
+      "branch": "main",
+      "live_query": "git ls-remote origin refs/heads/main",
+      "live_origin_main": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "accepted_old_origin_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "accepted_base_equals_live_origin": true
+    },
+    "origin_state": {
+      "status": "pass",
+      "candidate_head": "4e95431c96da4b0a261fec3bab82fbe94a5dda87",
+      "merge_base": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "ahead": 16,
+      "behind": 0,
+      "linear_descendant": true,
+      "candidate_range": "f6af6410cf03ae222c4ee102844a678373b35d93..4e95431c96da4b0a261fec3bab82fbe94a5dda87",
+      "candidate_range_patch_sha256": "ae83f1768ce3a0905464fe842cc2ebdf2fda6f48ca52b42037e838071bd75b4d",
+      "candidate_commit_count": 16,
+      "candidate_history_classification": {
+        "presentation_or_demo_program": 15,
+        "root_remotion_research_prerequisite": 1,
+        "unrelated_or_unexplained": 0
+      },
+      "index_empty": true,
+      "local_evidence_only_changes_excluded_from_candidate_range": true,
+      "unrelated_untracked_paths_preserved": [
+        "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md",
+        "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md.stats.json"
+      ]
+    },
+    "dependency_state": {
+      "status": "pass",
+      "node": "v26.0.0",
+      "required_node": ">=24.15.0",
+      "npm": "11.12.1",
+      "required_installed_packages": {
+        "root": {
+          "typescript": "5.9.3",
+          "@types/node": "24.12.4"
+        },
+        "mdkg-dev": {
+          "astro": "7.0.0"
+        },
+        "docs": {
+          "astro": "6.4.8",
+          "@astrojs/starlight": "0.40.0"
+        }
+      },
+      "targeted_npm_ls_exit_codes": {
+        "root": 0,
+        "mdkg-dev": 0,
+        "docs": 0
+      },
+      "installation_performed": false,
+      "build_performed": false,
+      "prior_one_attempt_build_receipt": "artifacts/demo-003/event-preflight.json",
+      "warnings": [
+        "A broad mdkg-dev npm ls reports optional transitive native-runtime packages as extraneous; the required top-level Astro check exits zero and the accepted no-install build receipt remains valid."
+      ]
+    },
+    "vercel_read_access": {
+      "status": "pass",
+      "connector": "Vercel",
+      "team_id": "team_RkZhrKQs9wWs6PAdTcrwZ87z",
+      "credential_visibility_available": true,
+      "raw_provider_payload_retained": false,
+      "provider_mutation_performed": false
+    },
+    "production_project_identity": {
+      "status": "pass",
+      "projects": [
+        {
+          "name": "mdkg-dev",
+          "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+          "deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+          "deployment_url": "https://mdkg-l213f13c4-nicholas-reames-projects.vercel.app",
+          "canonical_domain": "mdkg.dev",
+          "state": "READY",
+          "target": "production",
+          "git_ref": "main",
+          "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+          "exact_live_origin_match": true
+        },
+        {
+          "name": "mdkg-docs",
+          "project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
+          "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
+          "deployment_url": "https://mdkg-docs-9z78wlsq1-nicholas-reames-projects.vercel.app",
+          "canonical_domain": "docs.mdkg.dev",
+          "state": "READY",
+          "target": "production",
+          "git_ref": "main",
+          "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+          "exact_live_origin_match": true
+        }
+      ]
+    }
+  },
+  "authority": {
+    "event_authority_sha256": "b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e",
+    "event_authority_policy_sha256": "23b37b5f19c649ca811ca9be40b8cd78950661be7d485a82e75bcd6e6647f994",
+    "event_allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+    "writer_lease_sha256": "8a1c96d8f03103f15930422937a29210217b34138a621ebc9dc3262bf70847f7",
+    "fallback_readiness_sha256": "8758c521fc17a868bce09852f50afbd2b30d74c30db4ca19cdb4dc3a1a79c9dc",
+    "external_human_acceptance_observed": true,
+    "prospective_range_policy_valid": true,
+    "future_actual_range_and_stable_hash_required_immediately_before_push": true,
+    "separate_preparation_publication_approval_required": true,
+    "provider_or_authority_data_embedded_in_child": false
+  },
+  "inventory": {
+    "receipt_path_matches_bound_local_evidence_only_inventory": true,
+    "readiness_routing_receipt_path_matches_bound_inventory": true,
+    "dry_rehearsal_receipt_path_matches_bound_inventory": true,
+    "publication_inventory_disjoint_and_exact": true,
+    "canonical_or_child_publication_path_changed": false
+  },
+  "dry_rehearsal": {
+    "receipt_sha256_at_test_start": "5759ffe88dd398d9ff977321de1c337e0cee06513b8530ade212972ade9b2cce",
+    "implementation_or_output_created": false,
+    "staging_or_commit": false,
+    "push_or_remote_ref_update": false,
+    "deployment_or_provider_mutation": false,
+    "bundle_refresh": false
+  },
+  "warnings": [
+    "The local candidate is intentionally ahead of origin; the accepted old-origin base, not local HEAD, is the value required to equal live origin until the separately approved preparation publication.",
+    "Goal 6 verification receipts use the exact filenames already frozen in event-authority-policy.json; no accepted authority payload or bound functional hash changed."
+  ],
+  "blockers": [],
+  "result": {
+    "all_cases_pass": true,
+    "test_17_may_begin": true
+  }
+}

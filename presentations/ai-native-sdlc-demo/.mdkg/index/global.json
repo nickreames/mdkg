@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T07:11:39.210Z",
+    "generated_at": "2026-07-28T07:29:26.987Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-23"
+      "root": "root:chk-24"
     }
   },
   "workspaces": {
@@ -989,6 +989,35 @@
           "root:task-28",
           "root:task-29"
         ]
+      }
+    },
+    "root:chk-24": {
+      "id": "chk-24",
+      "qid": "root:chk-24",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Goal 6 zero-edit Demo 3 event readiness accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-24-goal-6-zero-edit-demo-3-event-readiness-accepted.md",
+      "edges": {
+        "relates": [
+          "root:test-17"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
       }
     },
     "root:chk-3": {
@@ -2863,7 +2892,7 @@
       "ws": "root",
       "type": "goal",
       "title": "Harden the reusable demo source and prepare zero-edit Demo 3",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
       "updated": "2026-07-28",
@@ -2891,6 +2920,9 @@
         "artifacts/demo-003/preparation-baseline-handoff.json",
         "artifacts/demo-003/event-authority-policy.json",
         "artifacts/demo-003/event-authority.json",
+        "artifacts/demo-003/readiness-routing-receipt.json",
+        "artifacts/demo-003/provider-readiness-receipt.json",
+        "artifacts/demo-003/dry-rehearsal-receipt.json",
         "artifact://ai-native-sdlc-demo/demo-003-readiness",
         "artifact://ai-native-sdlc-demo/live-sendoff",
         "artifact://ai-native-sdlc-demo/event-writer-lease"
@@ -2915,12 +2947,12 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {
-        "goal_state": "paused",
+        "goal_state": "achieved",
         "goal_condition": "Demo 2 production, timing, prompt, and rehearsal evidence is classified into reusable source changes, immutable run-binding inputs, child-local state, and external authority; an explicitly accepted semantic source release with the complete generic chain passes two distinct zero-manual-edit absent-target fixtures; a pre-test deck baseline and post-test polish handoff are sealed; runs/demo-003 is created as an exact authored-content fork with a frozen run binding and immutable child-contract seal but no executed work; one designated harness, warm dependencies, build-once validation, the 30-minute timing contract, prospective range policy, preparation-baseline handoff, exact allowlist, writer lease, Demo 2 fallback, human authority, and a side-effect-free dry rehearsal all pass.",
         "scope_refs": [
           "epic-6"
         ],
-        "active_node": "task-33",
+        "last_active_node": "test-17",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -2972,7 +3004,11 @@
           "root:chk-20",
           "root:chk-21",
           "root:chk-22",
-          "root:chk-23"
+          "root:chk-23",
+          "root:test-15",
+          "root:test-16",
+          "root:test-17",
+          "root:chk-24"
         ],
         "evidence_refs": [
           "root:chk-12",
@@ -2986,7 +3022,11 @@
           "root:chk-20",
           "root:chk-21",
           "root:chk-22",
-          "root:chk-23"
+          "root:chk-23",
+          "root:test-15",
+          "root:test-16",
+          "root:test-17",
+          "root:chk-24"
         ]
       }
     },
@@ -8913,10 +8953,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify Demo 3 source binding seal routing and concise pack",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -8928,7 +8968,7 @@
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-003/readiness-routing-verification.json"
+        "artifacts/demo-003/readiness-routing-receipt.json"
       ],
       "refs": [
         "goal-6",
@@ -8982,10 +9022,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify provider access origin state and production project visibility",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -8997,7 +9037,7 @@
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-003/provider-origin-verification.json"
+        "artifacts/demo-003/provider-readiness-receipt.json"
       ],
       "refs": [
         "goal-6",
@@ -9051,10 +9091,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify zero-edit event readiness without execution or publication",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -9066,7 +9106,7 @@
       ],
       "links": [],
       "artifacts": [
-        "artifacts/demo-003/dry-rehearsal-verification.json"
+        "artifacts/demo-003/dry-rehearsal-receipt.json"
       ],
       "refs": [
         "goal-6",
@@ -10557,6 +10597,9 @@
       "root:task-29": [
         "root:chk-23"
       ],
+      "root:test-17": [
+        "root:chk-24"
+      ],
       "root:spike-2": [
         "root:chk-3"
       ],
@@ -11949,6 +11992,22 @@
       "root:chk-23": [
         "root:goal-6"
       ],
+      "root:test-15": [
+        "root:goal-6",
+        "root:test-16"
+      ],
+      "root:test-16": [
+        "root:goal-6",
+        "root:test-17"
+      ],
+      "root:test-17": [
+        "root:goal-6",
+        "root:task-34",
+        "root:task-58"
+      ],
+      "root:chk-24": [
+        "root:goal-6"
+      ],
       "root:task-31": [
         "root:goal-7",
         "root:task-32",
@@ -12091,10 +12150,6 @@
         "root:test-20",
         "root:test-21"
       ],
-      "root:test-17": [
-        "root:task-34",
-        "root:task-58"
-      ],
       "root:task-58": [
         "root:task-34"
       ],
@@ -12205,12 +12260,6 @@
       ],
       "root:task-26": [
         "root:test-12"
-      ],
-      "root:test-15": [
-        "root:test-16"
-      ],
-      "root:test-16": [
-        "root:test-17"
       ],
       "root:task-35": [
         "root:test-18"
@@ -12568,10 +12617,20 @@
         "root:goal-6",
         "root:task-29"
       ],
+      "root:test-15": [
+        "root:goal-6"
+      ],
+      "root:test-16": [
+        "root:goal-6"
+      ],
       "root:test-17": [
+        "root:goal-6",
         "root:goal-7",
         "root:task-34",
         "root:task-58"
+      ],
+      "root:chk-24": [
+        "root:goal-6"
       ],
       "root:goal-10": [
         "root:goal-8"
