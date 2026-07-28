@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-candidate-revalidation",
+  "recorded_at": "2026-07-27T22:15:23Z",
+  "program_goal_qid": "root:goal-5",
+  "task_qid": "root:task-48",
+  "state": "accepted-identity-unchanged",
+  "accepted_checkpoint": {
+    "qid": "root:chk-14",
+    "file_sha256": "577332e4c3b1ad61b39654c4d1c4e2de9dae5eb8e56299be43da8e70c3aa96de"
+  },
+  "candidate_receipt": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/candidate-receipt.json",
+    "sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82",
+    "prerequisite_hash_count": 7,
+    "prerequisite_hashes_match": true,
+    "reveal_asset_hash_count": 5,
+    "reveal_asset_hashes_match": true
+  },
+  "canonical_candidate_files": [
+    {
+      "path": "mdkg-dev/src/data/demos/demo-2.ts",
+      "sha256": "4e544c92fb118a6db6d8beb9f0946ce35c0b01c0b5fad284d22f7d7e5c1c7ec9"
+    },
+    {
+      "path": "mdkg-dev/src/data/demos/index.ts",
+      "sha256": "e1455cca732d485b8b5cde05617e4d95860889edd7042d767354bb50eda4d97b"
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/Demo2Output.astro",
+      "sha256": "34cf3232a10ae2c491e8d9c9427ddc71085d80f3470eafd4b7108366b09366dc"
+    },
+    {
+      "path": "mdkg-dev/src/components/demos/outputRegistry.ts",
+      "sha256": "35d5b79845ab3d5e5a220ceaa82fa3948f64661ebeb24260ff8f0e31e20435c0"
+    }
+  ],
+  "built_routes": [
+    {
+      "route": "/demo/2/",
+      "html_sha256": "b2e0ababaf0d25e852d5a766939bde6e46912e545733031b2bf8e6105905e66e",
+      "matches_sealed_candidate": true,
+      "initial_local_transfer_bytes": 39010,
+      "javascript_assets": 0,
+      "runtime_scripts": 0,
+      "allowed_metadata_scripts": 1
+    },
+    {
+      "route": "/demo/2/output/",
+      "html_sha256": "77f1f9f037227da796e9204fb7b6032d79a5d78938b15ec1c7a6fb6a0b933fff",
+      "matches_sealed_candidate": true,
+      "initial_local_transfer_bytes": 36049,
+      "javascript_assets": 0,
+      "runtime_scripts": 0,
+      "allowed_metadata_scripts": 0
+    }
+  ],
+  "fallback": {
+    "root": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback",
+    "manifest_sha256": "79d969e3c4bf1d1949ade31adb4e6d04b3a486e09ad99a99becc827619952186",
+    "command": "shasum -a 256 -c manifest.sha256",
+    "verified_files": 17,
+    "result": "pass"
+  },
+  "graph_validation": {
+    "program": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "demo_002_child": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "drift_assessment": {
+    "candidate_identity_changed": false,
+    "accepted_design_changed": false,
+    "accepted_copy_changed": false,
+    "canonical_route_behavior_changed": false,
+    "template_or_cli_changed": false,
+    "test_only_change": "scripts/smoke-mdkg-dev.js",
+    "conclusion": "The test repair recognizes the already accepted Demo 2 candidate without changing its source files, route hashes, evidence hashes, reveal assets, or immutable fallback."
+  },
+  "authority": {
+    "commit": false,
+    "push": false,
+    "provider_action": false,
+    "publication": false,
+    "public_availability_claimed": false
+  }
+}

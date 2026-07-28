@@ -8,7 +8,7 @@ epic: epic-5
 parent: goal-5
 prev: task-25
 next: test-12
-tags: [ai-native-sdlc, presentation-demo, phase-5, step-6]
+tags: [ai-native-sdlc, presentation-demo, phase-5, step-9]
 owners: [program-orchestrator]
 links: []
 artifacts: [artifacts/demo-002/golden-fallback.json, artifacts/demo-002/golden-fallback.sha256, artifacts/demo-002/golden-fallback-recovery.md]
@@ -18,15 +18,15 @@ blocks: []
 refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-25]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-25]
 evidence_refs: []
-aliases: [phase-5-step-6]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+aliases: [phase-5-step-9]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Seal Demo 2 as the immutable golden fallback. This is step 6 of 9 in Goal 5; it owns only the outcome named here and the authority granted by goal-5.
+Seal Demo 2 as the immutable golden fallback. This is step 9 of 12 in Goal 5.
 
 # Acceptance Criteria
 

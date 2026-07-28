@@ -31,6 +31,11 @@ Use `CLI_COMMAND_MATRIX.md` as the canonical command and flag reference when upd
   - stage: `stage:execute`
   - writer role: `writer:patch-only`
   - description: Plan, build, render, and visually verify a source-backed editable PowerPoint with Artifact Tool when Goal 3 or another approved presentation task requires a deterministic local deck.
+- `publish-static-demo-with-exact-sha`
+  - name: `Publish Static Demo with Exact-SHA Proof`
+  - stage: `stage:execute`
+  - writer role: `writer:orchestrator`
+  - description: Prepare, authorize, non-force publish, and verify a static demo against exact Git and deployment SHAs when a goal crosses from accepted local evidence into public production.
 - `pursue-mdkg-goal`
   - name: `pursue-mdkg-goal`
   - stage: `stage:execute`

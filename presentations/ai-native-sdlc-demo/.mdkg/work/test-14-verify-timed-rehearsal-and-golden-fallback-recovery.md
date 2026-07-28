@@ -7,7 +7,7 @@ priority: 1
 epic: epic-5
 parent: goal-5
 prev: test-13
-tags: [ai-native-sdlc, presentation-demo, phase-5, step-9]
+tags: [ai-native-sdlc, presentation-demo, phase-5, step-12]
 owners: [program-orchestrator]
 links: []
 artifacts: []
@@ -17,8 +17,8 @@ blocks: []
 refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, test-13]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, test-13]
 evidence_refs: []
-aliases: [phase-5-step-9]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+aliases: [phase-5-step-12]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 cases: [total_duration, kickoff, reveal, fallback, recovery, immutable_receipt]
 created: 2026-07-26
 updated: 2026-07-26
@@ -26,7 +26,8 @@ updated: 2026-07-26
 
 # Overview
 
-Validate verify timed rehearsal and golden fallback recovery as step 9 of Goal 5. A passing result must include exact commands or observations, reviewed outputs, and public-safe evidence.
+Independently verify the timed production rehearsal and immutable recovery path
+as step 12 of Goal 5.
 
 # Target / Scope
 
@@ -42,12 +43,14 @@ Validate verify timed rehearsal and golden fallback recovery as step 9 of Goal 5
 
 # Test Cases
 
-- Staged paths equal the allowlist and origin is fetched and zero behind immediately before non-force push.
-- Both production projects are READY for the exact final pushed SHA.
-- Both routes pass content, source-versus-specialized, noindex, zero-JavaScript, accessibility, responsive, claim, secret, and budget checks.
-- The presentation rehearses by 35 minutes.
-- Fallback hashes, routes, deployment IDs, deck version, and instructions reproduce without provider mutation.
-- This test specifically proves: Verify timed rehearsal and golden fallback recovery.
+- Narrated deck targets 30–32 minutes and kickoff, reveal, and CTA complete by
+  the 35-minute hard stop; audience Q&A follows.
+- Normal reveal, delayed Demo 3, hard-blocker fallback, and offline fallback
+  branches have measured recovery times and speaker-visible cues.
+- Fallback hashes, exact routes, deployment IDs, deck/notes/cue versions, and
+  recovery instructions reproduce without Git or provider mutation.
+- A fresh operator can disclose Demo 3 failure truthfully and reveal Demo 2
+  from live or sealed local evidence.
 - Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
 
 # Results / Evidence

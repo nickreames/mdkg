@@ -8,7 +8,7 @@ epic: epic-5
 parent: goal-5
 prev: test-12
 next: test-14
-tags: [ai-native-sdlc, presentation-demo, phase-5, step-8]
+tags: [ai-native-sdlc, presentation-demo, phase-5, step-11]
 owners: [program-orchestrator]
 links: []
 artifacts: []
@@ -18,8 +18,8 @@ blocks: []
 refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, test-12]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, test-12]
 evidence_refs: []
-aliases: [phase-5-step-8]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+aliases: [phase-5-step-11]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 cases: [detail_desktop, detail_mobile, output_desktop, output_mobile, noindex, accessibility, zero_client_javascript]
 created: 2026-07-26
 updated: 2026-07-26
@@ -27,7 +27,7 @@ updated: 2026-07-26
 
 # Overview
 
-Validate verify demo 2 noindex accessibility responsive and zero-javascript behavior as step 8 of Goal 5. A passing result must include exact commands or observations, reviewed outputs, and public-safe evidence.
+Independently verify Demo 2 production route behavior as step 11 of Goal 5.
 
 # Target / Scope
 
@@ -43,12 +43,15 @@ Validate verify demo 2 noindex accessibility responsive and zero-javascript beha
 
 # Test Cases
 
-- Staged paths equal the allowlist and origin is fetched and zero behind immediately before non-force push.
-- Both production projects are READY for the exact final pushed SHA.
-- Both routes pass content, source-versus-specialized, noindex, zero-JavaScript, accessibility, responsive, claim, secret, and budget checks.
-- The presentation rehearses by 35 minutes.
-- Fallback hashes, routes, deployment IDs, deck version, and instructions reproduce without provider mutation.
-- This test specifically proves: Verify Demo 2 noindex accessibility responsive and zero-JavaScript behavior.
+- Both routes bind to test-12's exact-SHA production deployments.
+- Detail and output pass at 1440x900 and 390x844 with HTTP 200, correct
+  canonical content, source-versus-specialized proof, and Plan -> Work ->
+  Evidence plus what/why/next.
+- `noindex` and unlisted/gallery/sitemap exclusions pass.
+- Keyboard, focus, headings, landmarks, reduced motion, contrast, responsive
+  layout, privacy, claims, transfer budget, raster budget, and zero transferred
+  JavaScript pass.
+- Screenshot, response, DOM, asset, and accessibility hashes resolve.
 - Any skipped or unavailable check is a failure or explicit blocker, not an implicit pass.
 
 # Results / Evidence

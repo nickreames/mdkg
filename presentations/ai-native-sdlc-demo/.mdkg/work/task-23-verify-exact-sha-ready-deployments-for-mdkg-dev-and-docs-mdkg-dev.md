@@ -6,34 +6,39 @@ status: backlog
 priority: 1
 epic: epic-5
 parent: goal-5
-prev: task-22
+prev: task-50
 next: task-24
-tags: [ai-native-sdlc, presentation-demo, phase-5, step-3]
+tags: [ai-native-sdlc, presentation-demo, phase-5, step-6]
 owners: [program-orchestrator]
 links: []
 artifacts: [artifacts/demo-002/deployment-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-22]
-context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-22]
-evidence_refs: []
-aliases: [phase-5-step-3]
-skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-50]
+context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-50]
+evidence_refs: [task-50]
+aliases: [phase-5-step-6]
+skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
 updated: 2026-07-26
 ---
 
 # Overview
 
-Verify exact-SHA READY deployments for mdkg.dev and docs.mdkg.dev. This is step 3 of 9 in Goal 5; it owns only the outcome named here and the authority granted by goal-5.
+Verify exact-SHA READY deployments for mdkg.dev and docs.mdkg.dev after the
+approved normal push. This node is step 6 of 12 and remains read-only at the
+provider boundary.
 
 # Acceptance Criteria
 
 - The named outcome is complete and matches prd-1, edd-1, dec-1 through dec-6, and goal-5.
-- Read the exact pushed SHA from task-22 and inspect the existing mdkg.dev and docs.mdkg.dev production projects through read-only Vercel queries.
+- Read the exact pushed SHA from task-50 and inspect the existing mdkg.dev and docs.mdkg.dev production projects through read-only Vercel queries.
+- Resolve the known production identities by canonical domains if project
+  listing is empty: `mdkg.dev` / project `mdkg-dev` and `docs.mdkg.dev` /
+  project `mdkg-docs`. Treat IDs as opaque values discovered at execution time.
 - For each project record project name, opaque project ID, environment, deployment ID, deployment URL, provider Git SHA field, state, observation time, and the redacted tool/query receipt.
-- Require both deployments to be `READY` and their provider Git SHA fields to equal the task-22 pushed SHA; recency or success for another SHA is not evidence.
+- Require both deployments to be `READY` and their provider Git SHA fields to equal the task-50 pushed SHA; recency or success for another SHA is not evidence.
 - Poll read-only at a bounded cadence for at most fifteen minutes. Do not create a deployment, redeploy, change project settings, DNS, aliases, analytics, or environment variables.
 - Write `artifacts/demo-002/deployment-receipt.json` with pushed SHA, both project/deployment records, polling attempts, final comparison, and any precise access/provider blocker.
 - Attach the verified deployment receipt to the still-open child
