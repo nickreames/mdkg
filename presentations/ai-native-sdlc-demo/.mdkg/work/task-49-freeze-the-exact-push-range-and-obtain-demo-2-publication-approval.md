@@ -2,7 +2,7 @@
 id: task-49
 type: task
 title: Freeze the exact push range and obtain Demo 2 publication approval
-status: backlog
+status: done
 priority: 0
 epic: epic-5
 parent: goal-5

@@ -2,7 +2,7 @@
 id: task-23
 type: task
 title: Verify exact-SHA READY deployments for mdkg.dev and docs.mdkg.dev
-status: backlog
+status: done
 priority: 1
 epic: epic-5
 parent: goal-5
@@ -21,7 +21,7 @@ evidence_refs: [task-50]
 aliases: [phase-5-step-6]
 skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview

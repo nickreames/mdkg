@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-publication-approval",
+  "requested_at": "2026-07-27T22:31:27Z",
+  "state": "accepted",
+  "accepted": true,
+  "accepted_by": "user",
+  "accepted_at": "2026-07-27T22:48:12Z",
+  "acceptance_statement": "I approve the normal non-force push of HEAD f6af6410cf03ae222c4ee102844a678373b35d93 with stable range hash da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d",
+  "valid_until": "2026-07-28T00:15:00Z",
+  "binding": {
+    "remote": "origin",
+    "branch": "main",
+    "fetched_origin_sha": "f5135be5c8779c1f2b65bbd9dc41dced8a25bbdb",
+    "head": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "push_range_manifest_sha256": "da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d",
+    "push_range_file_sha256": "0fbb11fb7a6706fa3a840408e51fe24661ca35828cdf80c91e9b1bec6bf38328",
+    "publication_preflight_sha256": "21771fb719e20bf446204da638936cd2546da021d3618541279fd78c2625eefa",
+    "local_evidence_exception_path_status_sha256": "124c671d501e0bb07a134291319ce14cb61afe3f1368ef90e202f5973243412f",
+    "candidate_receipt_sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82",
+    "checkpoint_file_sha256": "577332e4c3b1ad61b39654c4d1c4e2de9dae5eb8e56299be43da8e70c3aa96de",
+    "local_commit_receipt_sha256": "3e23759a4abca5920781e626eece8a6a7023d487f1276bdf045e8967120c8bf7"
+  },
+  "requested_authority": [
+    "one normal non-force git push origin main of the exact bound range",
+    "read-only inspection of existing mdkg.dev and docs.mdkg.dev Vercel deployments after the push",
+    "read-only verification of the public /demo/2/ and /demo/2/output/ URLs after the push",
+    "bounded in-scope fix-forward only under the existing Goal 5 stop conditions and a newly frozen range if HEAD changes"
+  ],
+  "forbidden_actions": [
+    "force push",
+    "amend, rebase, merge, reset, or history rewrite",
+    "manual Vercel deployment or redeploy",
+    "project creation or configuration",
+    "DNS or analytics changes",
+    "tag or package publication",
+    "staging or committing these local approval artifacts into the already frozen range"
+  ],
+  "explicit_warning": "This approval would publish all 28 commits in origin/main..HEAD, including the 25 commits that predate Goal 5.",
+  "acceptance_instruction": "Explicitly approve HEAD f6af6410cf03ae222c4ee102844a678373b35d93 and stable push-range manifest sha256:da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d; approval of Demo 2 by label alone is not sufficient.",
+  "invalidation_conditions": [
+    "origin/main changes",
+    "HEAD changes",
+    "the complete range manifest hash changes",
+    "the local-evidence exception path/status manifest changes",
+    "the root integration owner changes",
+    "the approval expires",
+    "the push would require force, merge, rebase, amend, or history rewrite"
+  ]
+}

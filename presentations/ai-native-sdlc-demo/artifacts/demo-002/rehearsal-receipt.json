@@ -1,0 +1,271 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-production-presentation-rehearsal-receipt",
+  "rehearsed_at": "2026-07-27T23:17:04Z",
+  "method": "Cold operational cue-and-timing rehearsal against the frozen 20-slide deck, speaker notes, production Demo 2 routes, and exact-SHA receipts. Production actions and recovery branches were exercised in accelerated cue-table mode; spoken segment durations use the frozen slide budgets.",
+  "deck_baseline": {
+    "pptx": {
+      "path": "deck/ai-native-sdlc.pptx",
+      "sha256": "7cf122ccea42a98ab2538f103dc80678d093ba32719c6a5039f85e5fdc91bdcc",
+      "slide_count": 20,
+      "archive_integrity": "passed"
+    },
+    "source": {
+      "path": "deck/source/ai-native-sdlc.mjs",
+      "sha256": "2218965d880a0b892ebb7889336602f6b9879c43970f643340a405e52d2be572"
+    },
+    "speaker_notes": {
+      "path": "deck/speaker-notes.md",
+      "sha256": "2d22d3b729440d24c2820a22bd21fa8bbe2003c2c633834dec056087792ea220"
+    },
+    "goal_3_cue_receipt": {
+      "path": "deck/rendered/rehearsal-receipt.md",
+      "sha256": "3419ba17c4a227b23209a6b466a4ac20f2940d7e6846a7cd5c501a7c61946f1b"
+    },
+    "qa_report": {
+      "path": "deck/rendered/qa-report.md",
+      "sha256": "1a1cca5fd1e57c64bcbe08316d835c7cfeed33d89860de1f8ce71904b778fd3a"
+    },
+    "claim_matrix": {
+      "path": "deck/citations/claim-matrix.md",
+      "sha256": "7037fdade57ba211b5cb25953e049474ccfa17d8dd3c2b9e38e8607fa3e860db"
+    },
+    "deck_modified_in_goal_5": false
+  },
+  "production_baseline": {
+    "pushed_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "deployment_receipt": {
+      "path": "artifacts/demo-002/deployment-receipt.json",
+      "sha256": "14c19d29a81d6ae004aef68df64b6946f6f1500f94de55a4e4b07b1d3f45c830"
+    },
+    "live_route_receipt": {
+      "path": "artifacts/demo-002/live-route-receipt.json",
+      "sha256": "b48d104f006f3274ee651817bd4f22ef6fd27c87b0c15629200bb06ed9322f5d"
+    },
+    "child_checkpoint": {
+      "qid": "demo-002:chk-3",
+      "sha256": "dab75e4419b014c001c1bdc09942ff5f420523e255c8b3e821f35889f047f065"
+    },
+    "detail_url": "https://mdkg.dev/demo/2/",
+    "output_url": "https://mdkg.dev/demo/2/output/",
+    "production_reveal": {
+      "path": "artifacts/demo-002/production-reveal/source-vs-specialized-16x9.png",
+      "sha256": "43eb63c44800b7d7ad842dc5b3f71addc1142d75a9fcc2798707bd7e8b56f2ec"
+    }
+  },
+  "timing": {
+    "segments": [
+      {
+        "name": "opening and live kickoff",
+        "slides": "1",
+        "start": "00:00",
+        "duration_seconds": 45,
+        "end": "00:45",
+        "kickoff_action_at": "00:15",
+        "kickoff_complete_by": "00:45",
+        "result": "passed"
+      },
+      {
+        "name": "capability history and timeline",
+        "slides": "2-8",
+        "start": "00:45",
+        "duration_seconds": 850,
+        "end": "14:55",
+        "result": "passed"
+      },
+      {
+        "name": "capability dimensions, context engineering, and AI-native SDLC framing",
+        "slides": "9-11",
+        "start": "14:55",
+        "duration_seconds": 340,
+        "end": "20:35",
+        "result": "passed"
+      },
+      {
+        "name": "mdkg creator transition and product story",
+        "slides": "12-16",
+        "start": "20:35",
+        "duration_seconds": 535,
+        "end": "29:30",
+        "result": "passed"
+      },
+      {
+        "name": "reusable-versus-specialized setup",
+        "slides": "17",
+        "start": "29:30",
+        "duration_seconds": 95,
+        "end": "31:05",
+        "result": "passed"
+      },
+      {
+        "name": "source-versus-specialized reveal",
+        "slides": "18",
+        "start": "31:05",
+        "duration_seconds": 30,
+        "end": "31:35",
+        "result": "passed"
+      },
+      {
+        "name": "production landing-page output",
+        "slides": "18",
+        "start": "31:35",
+        "duration_seconds": 35,
+        "end": "32:10",
+        "result": "passed"
+      },
+      {
+        "name": "Plan Work Evidence and what why next",
+        "slides": "18",
+        "start": "32:10",
+        "duration_seconds": 30,
+        "end": "32:40",
+        "result": "passed"
+      },
+      {
+        "name": "exact-SHA deployment and live-route receipts",
+        "slides": "18",
+        "start": "32:40",
+        "duration_seconds": 30,
+        "end": "33:10",
+        "result": "passed"
+      },
+      {
+        "name": "CTA",
+        "slides": "19",
+        "start": "33:10",
+        "duration_seconds": 45,
+        "end": "33:55",
+        "result": "passed"
+      },
+      {
+        "name": "hard-stop safety and questions transition buffer",
+        "slides": "20 unspoken",
+        "start": "33:55",
+        "duration_seconds": 65,
+        "end": "35:00",
+        "result": "passed"
+      },
+      {
+        "name": "audience questions",
+        "slides": "none",
+        "start": "35:00",
+        "duration_seconds": null,
+        "end": null,
+        "result": "correctly outside content hard stop"
+      }
+    ],
+    "narrated_deck_seconds": 1865,
+    "narrated_deck": "31:05",
+    "narrated_target": "30:00-32:00",
+    "reveal_seconds": 125,
+    "cta_seconds": 45,
+    "reveal_plus_cta_seconds": 170,
+    "reveal_plus_cta_max_seconds": 180,
+    "total_content_seconds": 2035,
+    "total_content": "33:55",
+    "hard_stop_seconds": 2100,
+    "hard_stop": "35:00",
+    "hard_stop_margin_seconds": 65,
+    "passed": true
+  },
+  "branch_rehearsal": [
+    {
+      "branch": "normal reveal",
+      "outcome": "passed",
+      "cue": "Show the production-backed source-versus-specialized image, live output route, Plan Work Evidence and what/why/next, then exact-SHA deployment and route receipts.",
+      "completion_claim_allowed": true,
+      "evidence": "Demo 2 child goal achieved at exact SHA f6af6410 with both production projects READY and both routes verified.",
+      "reveal_and_cta_seconds": 170
+    },
+    {
+      "branch": "delayed Demo 3",
+      "outcome": "passed",
+      "cue": "State that Demo 3 is still running and is not complete; switch to sealed Demo 2 at 31:35.",
+      "completion_claim_allowed": false,
+      "fallback_switch_seconds": 30,
+      "total_content_seconds": 2035
+    },
+    {
+      "branch": "hard blocker",
+      "outcome": "passed",
+      "cue": "Name the stopped authority boundary, show the blocker receipt, do not claim Demo 3 success, and switch to sealed Demo 2.",
+      "completion_claim_allowed": false,
+      "fallback_switch_seconds": 30,
+      "total_content_seconds": 2035
+    },
+    {
+      "branch": "offline fallback",
+      "outcome": "passed",
+      "cue": "Use the retained 16:9 production reveal, the four hash-addressed screenshots, and readable route URLs instead of improvising a live success claim.",
+      "completion_claim_allowed": true,
+      "recovery_seconds": 20,
+      "total_content_seconds": 2035
+    }
+  ],
+  "recovery_rehearsal": [
+    {
+      "condition": "provider visibility unavailable",
+      "maximum_seconds": 30,
+      "wording_verified": true
+    },
+    {
+      "condition": "origin advanced after preflight",
+      "maximum_seconds": 30,
+      "wording_verified": true
+    },
+    {
+      "condition": "detail or output URL fails",
+      "maximum_seconds": 30,
+      "wording_verified": true
+    },
+    {
+      "condition": "exact SHA missing or mismatched",
+      "maximum_seconds": 30,
+      "wording_verified": true
+    },
+    {
+      "condition": "presentation display or browser handoff fails",
+      "maximum_seconds": 20,
+      "wording_verified": true
+    },
+    {
+      "condition": "narrated deck reaches 32:00",
+      "maximum_seconds": 0,
+      "wording_verified": true,
+      "cut": "Omit the supporting Cursor sentence on slide 6 and the examples on slide 9; preserve slides 10-19."
+    },
+    {
+      "condition": "reveal begins after 32:15",
+      "maximum_seconds": 120,
+      "wording_verified": true,
+      "cut": "Show source, executed goal, and one consolidated receipt; preserve CTA."
+    }
+  ],
+  "observed_issues_for_goal_6_task_27": [
+    {
+      "severity": "medium",
+      "finding": "The static Demo 2 comparison intentionally captures the pre-publication handoff and visibly says paused at publication even though Goal 5 later published it.",
+      "recommendation": "In the frozen event notes, frame this as the specialized specification at its governed handoff boundary, then immediately show the exact-SHA publication receipt so the state transition is explicit."
+    },
+    {
+      "severity": "low",
+      "finding": "The production detail page is long and would cost reveal time if scrolled manually.",
+      "recommendation": "Use the retained 16:9 source-versus-specialized production image for the first reveal beat, then open the output route and consolidated receipts."
+    },
+    {
+      "severity": "low",
+      "finding": "Goal 3 notes still describe Demo 2 as future evidence in their offline-rehearsal caveat.",
+      "recommendation": "During Goal 6 deck freeze, update only the event notes and cue matrix to reference the now-sealed Demo 2 evidence; do not add visible branch-management commentary to slides."
+    }
+  ],
+  "pass_threshold": {
+    "narrated_deck_between_30_and_32_minutes": true,
+    "reveal_plus_cta_no_more_than_3_minutes": true,
+    "total_content_no_more_than_35_minutes": true,
+    "kickoff_within_opening_minute": true,
+    "normal_delayed_blocker_offline_branches_exercised": true,
+    "fallback_recovery_no_more_than_30_seconds": true,
+    "questions_after_hard_stop": true
+  },
+  "result": "passed"
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-exact-sha-deployment-receipt",
+  "pushed_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "observed_at": "2026-07-27T22:57:59Z",
+  "provider": "Vercel",
+  "team": {
+    "id": "team_RkZhrKQs9wWs6PAdTcrwZ87z",
+    "slug": "nicholas-reames-projects"
+  },
+  "discovery": {
+    "project_listing_count": 0,
+    "fallback_resolution": "Resolved the canonical project slugs required by task-23 and inspected each existing project and deployment directly.",
+    "query_receipt": [
+      "read-only list_teams",
+      "read-only list_projects",
+      "read-only get_project for mdkg-dev and mdkg-docs",
+      "read-only list_deployments for both projects",
+      "read-only get_deployment for both exact production deployments"
+    ]
+  },
+  "deployments": [
+    {
+      "canonical_domain": "mdkg.dev",
+      "project_name": "mdkg-dev",
+      "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+      "environment": "production",
+      "deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+      "deployment_url": "https://mdkg-l213f13c4-nicholas-reames-projects.vercel.app",
+      "provider_git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "state": "READY",
+      "source": "git",
+      "alias_error": null,
+      "exact_sha_match": true
+    },
+    {
+      "canonical_domain": "docs.mdkg.dev",
+      "project_name": "mdkg-docs",
+      "project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
+      "environment": "production",
+      "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
+      "deployment_url": "https://mdkg-docs-9z78wlsq1-nicholas-reames-projects.vercel.app",
+      "provider_git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "state": "READY",
+      "source": "git",
+      "alias_error": null,
+      "exact_sha_match": true
+    }
+  ],
+  "polling": {
+    "attempts": 1,
+    "timed_out": false
+  },
+  "final_comparison": {
+    "both_production": true,
+    "both_ready": true,
+    "both_exact_sha": true,
+    "passed": true
+  },
+  "provider_mutations": {
+    "deployment_created": false,
+    "redeploy_performed": false,
+    "project_configuration_changed": false,
+    "dns_changed": false,
+    "alias_changed": false,
+    "environment_variables_changed": false
+  },
+  "public_safety": {
+    "credentials_recorded": false,
+    "tokens_recorded": false,
+    "cookies_recorded": false,
+    "raw_provider_payload_recorded": false
+  }
+}
