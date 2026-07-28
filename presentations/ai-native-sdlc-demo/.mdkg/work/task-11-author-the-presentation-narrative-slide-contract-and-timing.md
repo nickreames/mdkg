@@ -2,7 +2,7 @@
 id: task-11
 type: task
 title: Author the presentation narrative slide contract and timing
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 parent: goal-3
@@ -11,7 +11,7 @@ next: task-12
 tags: [ai-native-sdlc, presentation-demo, phase-3, step-2]
 owners: [program-orchestrator]
 links: []
-artifacts: []
+artifacts: [deck/speaker-notes.md]
 relates: []
 blocked_by: []
 blocks: []
@@ -71,4 +71,5 @@ Author the presentation narrative slide contract and timing. This is step 2 of 8
 
 - goal-3
 - epic-3
-- Evidence pending activation.
+- `deck/citations/claim-matrix.md`
+- `deck/speaker-notes.md`

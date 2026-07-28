@@ -2,7 +2,7 @@
 id: spike-3
 type: spike
 title: Research the primary-source AI coding capability timeline and claim matrix
-status: todo
+status: done
 priority: 1
 epic: epic-3
 parent: goal-3
@@ -52,24 +52,26 @@ What evidence, options, tradeoffs, and recommendation are required to research t
 
 # Findings
 
-Pending activation. Required findings:
-
-- Current-state evidence and exact source locations.
-- A dated six-era claim matrix with named product anchors, explicit overlap, and no chronology inferred from marketing copy alone.
-- Evidence distinguishing model capability, reasoning, harness/tool use, context length, and demonstrated task horizon.
-- A defensible Codex/Claude Code long-horizon framing with other products included only where direct evidence supports the approved paraphrase.
-- At least two viable options when a material choice remains.
-- Recommended option with consequences, owner, validation, and follow-up.
-- Explicit confirmation that the next node may start or an exact blocker.
+- The primary-source matrix is recorded at `deck/citations/claim-matrix.md` with fourteen approved rows, source owners, URLs, publication and milestone dates, exact support, approved paraphrases, confidence, slide use, and limitations.
+- The defensible sequence is GitHub Copilot autocomplete (2021), ChatGPT conversational coding (2022), OpenAI o1 reasoning (2024), Claude Code tool use (2025), Agent Skills conditional context (2025), and Codex/Claude long-horizon work (2025–26).
+- The dates identify representative milestones. Capabilities overlap and accumulate; the matrix explicitly rejects strict era boundaries.
+- Model reasoning, context capacity, harness tools, and task horizon have separate rows and are not treated as interchangeable.
+- OpenAI directly supports an eight-hour statement only as estimated human-equivalent task size in a usage study. METR separately confirms that benchmark time horizon is task difficulty rather than elapsed runtime. The general claim that coding agents “run autonomously for 8+ hours” is rejected.
+- Anthropic’s long-running harness evidence directly supports multi-context-window work spanning hours or days and the need for durable requirements, progress records, and verification.
+- Cursor remains a supporting harness example because current first-party documentation supports its search/edit/terminal capability but not a dated historical milestone.
+- Current repository source at `580be1e6efffe852e9996186e85e2bcbcd3e3e3b` supports the pre-v1 public-alpha and Plan -> Work -> Evidence product wording.
+- No contradictory primary evidence requires changing the six-stage narrative. The material risk is overclaiming chronology or horizon, and the approved caveats address it.
 
 # Recommendation
 
-Pending activation and evidence collection.
+Proceed to `task-11` using the overlapping six-stage capability progression. Use one memorable product anchor per stage, make the long-horizon evidence caveat visible on-slide, and use the capability progression as the hinge into durable specifications, guardrails, and evidence.
 
 # Options And Tradeoffs
 
-- Record at least two viable options and their consequences when a material choice remains.
-- Prefer the option that preserves scope, authority, evidence, and recovery.
+1. Strict product chronology: easy to scan, but implies false handoffs and invites disputes over overlapping releases. Reject.
+2. Vendor comparison: recognizable, but dilutes the architecture and planning argument. Reject.
+3. Benchmark-led story: quantitative, but collapses probabilistic task difficulty into apparent runtime or productivity. Reject.
+4. Overlapping capability progression: slightly more nuanced, but directly supports the AI-native SDLC thesis and preserves evidence precision. Accept.
 
 # Follow-Up Nodes To Create
 
@@ -85,4 +87,6 @@ Pending activation and evidence collection.
 
 # Evidence and Sources
 
-- Pending.
+- `deck/citations/claim-matrix.md`
+- GitHub Copilot launch, OpenAI ChatGPT/o1/Codex/GPT-4.1 sources, Anthropic Claude Code/Agent Skills/context/harness sources, Cursor Agent documentation, and METR methodology are individually recorded in the matrix.
+- Repository evidence: `package.json`, `docs/start-here/public-alpha-contract.md`, and `mdkg-dev/src/pages/index.astro` at `580be1e6efffe852e9996186e85e2bcbcd3e3e3b`.

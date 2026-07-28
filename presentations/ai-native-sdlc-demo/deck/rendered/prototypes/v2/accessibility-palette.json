@@ -1,0 +1,133 @@
+{
+  "standard": "WCAG 2.2 relative-luminance contrast",
+  "thresholds": {
+    "AA normal text": 4.5,
+    "AA large text": 3,
+    "AAA normal text": 7,
+    "AAA large text": 4.5,
+    "non-text functional graphics": 3
+  },
+  "minimumTextSizePt": 16,
+  "pairs": [
+    {
+      "use": "Primary text on canvas",
+      "foreground": "#08263A",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 14.96,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Primary text on surface",
+      "foreground": "#08263A",
+      "background": "#FFFFFF",
+      "requirement": 7,
+      "ratio": 15.57,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Secondary text on canvas",
+      "foreground": "#36566A",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.48,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Secondary text on surface",
+      "foreground": "#36566A",
+      "background": "#FFFFFF",
+      "requirement": 7,
+      "ratio": 7.79,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Teal accent text on canvas",
+      "foreground": "#005B57",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.66,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Blue accent text on canvas",
+      "foreground": "#00566D",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.9,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Coral warning text on canvas",
+      "foreground": "#9B2C2C",
+      "background": "#F7FBFD",
+      "requirement": 7,
+      "ratio": 7.23,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Light text on dark anchor",
+      "foreground": "#F7FBFD",
+      "background": "#08263A",
+      "requirement": 7,
+      "ratio": 14.96,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Cyan text on dark anchor",
+      "foreground": "#3EDBFF",
+      "background": "#08263A",
+      "requirement": 7,
+      "ratio": 9.48,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Aqua text on dark anchor",
+      "foreground": "#13C7B3",
+      "background": "#08263A",
+      "requirement": 7,
+      "ratio": 7.3,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Functional boundary on canvas",
+      "foreground": "#5E8392",
+      "background": "#F7FBFD",
+      "requirement": 3,
+      "ratio": 3.93,
+      "rating": "AA large text / non-text 3:1"
+    },
+    {
+      "use": "Functional boundary on surface",
+      "foreground": "#5E8392",
+      "background": "#FFFFFF",
+      "requirement": 3,
+      "ratio": 4.09,
+      "rating": "AA large text / non-text 3:1"
+    },
+    {
+      "use": "Dark text on cyan marker",
+      "foreground": "#08263A",
+      "background": "#3EDBFF",
+      "requirement": 7,
+      "ratio": 9.48,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Dark text on aqua marker",
+      "foreground": "#08263A",
+      "background": "#13C7B3",
+      "requirement": 7,
+      "ratio": 7.3,
+      "rating": "AAA normal text"
+    },
+    {
+      "use": "Dark text on seafoam marker",
+      "foreground": "#08263A",
+      "background": "#5EEAD4",
+      "requirement": 7,
+      "ratio": 10.53,
+      "rating": "AAA normal text"
+    }
+  ]
+}

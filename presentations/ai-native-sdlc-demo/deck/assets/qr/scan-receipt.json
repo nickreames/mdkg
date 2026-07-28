@@ -1,0 +1,28 @@
+{
+  "generated_at" : "deterministic-local-build",
+  "generator" : "ReportLab QrCodeWidget",
+  "items" : [
+    {
+      "decoded_payload" : "https://docs.mdkg.dev/start-here/quickstart/",
+      "displayed_url" : "https://docs.mdkg.dev/start-here/quickstart/",
+      "height" : 492,
+      "id" : "quickstart",
+      "path" : "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo/deck/assets/qr/quickstart.png",
+      "scan_passed" : true,
+      "sha256" : "cca1f7c991e55c5a2def8c5b10ae1839075be335e656820a10ee8916acba042d",
+      "width" : 492
+    },
+    {
+      "decoded_payload" : "https://github.com/nickreames/mdkg/issues",
+      "displayed_url" : "https://github.com/nickreames/mdkg/issues",
+      "height" : 492,
+      "id" : "issues",
+      "path" : "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo/deck/assets/qr/issues.png",
+      "scan_passed" : true,
+      "sha256" : "a769d987155a5d4e2f8b6192eebc30e81b3ed5f18dd4077c7bf8f742e23b3bfb",
+      "width" : 492
+    }
+  ],
+  "scanner" : "Vision VNDetectBarcodesRequest",
+  "schema_version" : 1
+}

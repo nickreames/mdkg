@@ -1,0 +1,125 @@
+{"kind":"deck","id":"pr/mkazbv","name":"Deck"}
+{"kind":"layout","layoutId":"bf11f026-1874-466f-ac25-cb859d469c6a","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"7a502657-cb42-4dec-9b44-cec00f5a431b","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/051j4s","slide":1,"title":"CAPABILITY PROGRESSION","textShapes":24}
+{"kind":"shape","id":"sh/hgjitkza","slide":1,"name":"header-current-1","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/ut8zip0z","slide":1,"name":"eyebrow-1","text":"CAPABILITY PROGRESSION","textPreview":"CAPABILITY PROGRESSION","textChars":22,"textLines":1,"bbox":[128,31,600,24]}
+{"kind":"textbox","id":"sh/fu10rahk","slide":1,"name":"title-1","text":"The unit of coding work kept expanding","textPreview":"The unit of coding work kept expanding","textChars":38,"textLines":1,"bbox":[72,72,1136,58]}
+{"kind":"textbox","id":"sh/4jahozi1","slide":1,"name":"subtitle-1","text":"Capabilities accumulated. Product dates overlap; each stage adds reach without deleting the previous one.","textPreview":"Capabilities accumulated. Product dates overlap; each stage adds reach without deleting the previous one.","textChars":105,"textLines":1,"bbox":[72,137,1136,36]}
+{"kind":"shape","id":"sh/pkjix4zm","slide":1,"name":"timeline-current-underlay","bbox":[84,345,1082,14]}
+{"kind":"shape","id":"sh/2hszmp0v","slide":1,"name":"timeline-current","bbox":[84,349,1082,6]}
+{"kind":"shape","id":"sh/3i10vuhg","slide":1,"name":"timeline-arrow","bbox":[1148,336,64,32]}
+{"kind":"shape","id":"sh/knqhsvix","slide":1,"name":"stage-card-1","bbox":[68,196,176,126]}
+{"kind":"textbox","id":"sh/5ozyl0j2","slide":1,"name":"stage-date-1","text":"2021","textPreview":"2021","textChars":4,"textLines":1,"bbox":[82,209,148,22]}
+{"kind":"textbox","id":"sh/p0zuhgvi","slide":1,"name":"stage-label-1","text":"AUTOCOMPLETE","textPreview":"AUTOCOMPLETE","textChars":12,"textLines":1,"bbox":[75,239,162,46]}
+{"kind":"textbox","id":"sh/ozqtobux","slide":1,"name":"stage-product-1","text":"GitHub Copilot","textPreview":"GitHub Copilot","textChars":14,"textLines":1,"bbox":[82,293,148,23]}
+{"kind":"shape","id":"sh/nyhsf6dc","slide":1,"name":"stage-connector-1","bbox":[154,322,4,28]}
+{"kind":"shape","id":"sh/2x8bm1cr","slide":1,"name":"stage-dot-1","bbox":[143,340,25,25]}
+{"kind":"shape","id":"sh/x4zulgbe","slide":1,"name":"stage-card-2","bbox":[256,405,176,126]}
+{"kind":"textbox","id":"sh/c3qtsvut","slide":1,"name":"stage-date-2","text":"2022","textPreview":"2022","textChars":4,"textLines":1,"bbox":[270,418,148,22]}
+{"kind":"textbox","id":"sh/b2hcjqd8","slide":1,"name":"stage-label-2","text":"PROMPT\nENGINEERING","textPreview":"PROMPT | ENGINEERING","textChars":18,"textLines":2,"bbox":[263,448,162,46]}
+{"kind":"textbox","id":"sh/a18bqlcn","slide":1,"name":"stage-product-2","text":"ChatGPT","textPreview":"ChatGPT","textChars":7,"textLines":1,"bbox":[270,502,148,23]}
+{"kind":"shape","id":"sh/l8jup0ba","slide":1,"name":"stage-connector-2","bbox":[342,359,4,46]}
+{"kind":"shape","id":"sh/k7atwvu5","slide":1,"name":"stage-dot-2","bbox":[331,340,25,25]}
+{"kind":"shape","id":"sh/kbidsz21","slide":1,"name":"stage-card-3","bbox":[444,196,176,126]}
+{"kind":"textbox","id":"sh/5crel4jm","slide":1,"name":"stage-date-3","text":"2024","textPreview":"2024","textChars":4,"textLines":1,"bbox":[458,209,148,22]}
+{"kind":"textbox","id":"sh/i90vq9kb","slide":1,"name":"stage-label-3","text":"REASONING","textPreview":"REASONING","textChars":9,"textLines":1,"bbox":[451,239,162,46]}
+{"kind":"textbox","id":"sh/ja9wju1g","slide":1,"name":"stage-product-3","text":"OpenAI o1","textPreview":"OpenAI o1","textChars":9,"textLines":1,"bbox":[458,293,148,23]}
+{"kind":"shape","id":"sh/szidwj2d","slide":1,"name":"stage-connector-3","bbox":[530,322,4,28]}
+{"kind":"shape","id":"sh/t0bepojy","slide":1,"name":"stage-dot-3","bbox":[519,340,25,25]}
+{"kind":"shape","id":"sh/6d0vu9k7","slide":1,"name":"stage-card-4","bbox":[632,405,176,126]}
+{"kind":"textbox","id":"sh/7e9wne1s","slide":1,"name":"stage-date-4","text":"2025","textPreview":"2025","textChars":4,"textLines":1,"bbox":[646,418,148,22]}
+{"kind":"textbox","id":"sh/8jydkf2t","slide":1,"name":"stage-label-4","text":"TOOL USE","textPreview":"TOOL USE","textChars":8,"textLines":1,"bbox":[639,448,162,46]}
+{"kind":"textbox","id":"sh/947udkje","slide":1,"name":"stage-product-4","text":"Claude Code","textPreview":"Claude Code","textChars":11,"textLines":1,"bbox":[646,502,148,23]}
+{"kind":"shape","id":"sh/bydgzilw","slide":1,"name":"stage-connector-4","bbox":[718,359,4,46]}
+{"kind":"shape","id":"sh/qx4zqx4b","slide":1,"name":"stage-dot-4","bbox":[707,340,25,25]}
+{"kind":"shape","id":"sh/d0fy1s32","slide":1,"name":"stage-card-5","bbox":[820,196,176,126]}
+{"kind":"textbox","id":"sh/cz6hsnmh","slide":1,"name":"stage-date-5","text":"2025","textPreview":"2025","textChars":4,"textLines":1,"bbox":[834,209,148,22]}
+{"kind":"textbox","id":"sh/3udgvil0","slide":1,"name":"stage-label-5","text":"CONDITIONAL\nCONTEXT","textPreview":"CONDITIONAL | CONTEXT","textChars":19,"textLines":2,"bbox":[827,239,162,46]}
+{"kind":"textbox","id":"sh/2t4zmd4f","slide":1,"name":"stage-product-5","text":"SKILL.md","textPreview":"SKILL.md","textChars":8,"textLines":1,"bbox":[834,293,148,23]}
+{"kind":"shape","id":"sh/pwvyxs36","slide":1,"name":"stage-connector-5","bbox":[906,322,4,28]}
+{"kind":"shape","id":"sh/ovmhonml","slide":1,"name":"stage-dot-5","bbox":[895,340,25,25]}
+{"kind":"shape","id":"sh/f6tgrylo","slide":1,"name":"stage-card-6","bbox":[1008,405,176,126]}
+{"kind":"textbox","id":"sh/u5kfit4j","slide":1,"name":"stage-date-6","text":"2025–26","textPreview":"2025–26","textChars":7,"textLines":1,"bbox":[1022,418,148,22]}
+{"kind":"textbox","id":"sh/ud43m103","slide":1,"name":"stage-label-6","text":"LONG\nHORIZON","textPreview":"LONG | HORIZON","textChars":12,"textLines":2,"bbox":[1015,448,162,46]}
+{"kind":"textbox","id":"sh/vexkv6ho","slide":1,"name":"stage-product-6","text":"Codex + Claude","textPreview":"Codex + Claude","textChars":14,"textLines":1,"bbox":[1022,502,148,23]}
+{"kind":"shape","id":"sh/wf6lobit","slide":1,"name":"stage-connector-6","bbox":[1094,359,4,46]}
+{"kind":"shape","id":"sh/hgf2xgze","slide":1,"name":"stage-dot-6","bbox":[1083,340,25,25]}
+{"kind":"textbox","id":"sh/m94ji10r","slide":1,"name":"horizon-caveat","text":"Evidence rule  ·  human-equivalent task horizon ≠ elapsed agent runtime","textPreview":"Evidence rule  ·  human-equivalent task horizon ≠ elapsed agent runtime","textChars":71,"textLines":1,"bbox":[286,604,708,38]}
+{"kind":"shape","id":"sh/7adkrmhc","slide":1,"name":"footer-line-1","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/8bm1krix","slide":1,"name":"source-1","text":"[1–12] Primary sources and limitations in claim matrix + notes","textPreview":"[1–12] Primary sources and limitations in claim matrix + notes","textChars":62,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/9cv2twzi","slide":1,"name":"folio-1","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/051j4s","slide":1,"text":"Narrative job: show a loose, overlapping progression from line completion to bounded goals.\nCall out that capabilities accumulate; this is not a strict product chronology.\nMandatory caveat: an eight-hour benchmark or human-equivalent task horizon is not eight hours of elapsed agent runtime.\n\n[Sources]\n[1] https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/\n[2] https://openai.com/index/chatgpt/\n[3] https://openai.com/index/learning-to-reason-with-llms/\n[4] https://www.anthropic.com/news/claude-3-7-sonnet\n[5] https://docs.cursor.com/en/agent/overview\n[6] https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills\n[7] https://openai.com/index/introducing-codex/\n[8] https://openai.com/index/how-agents-are-transforming-work/\n[9] https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents\n[10] https://openai.com/index/gpt-4-1/\n[11] https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents\n[12] https://metr.org/time-horizons/\n[/Sources]"}
+{"kind":"slide","id":"sl/02ej4m","slide":2,"title":"THE OPERATING MODEL","textShapes":20}
+{"kind":"shape","id":"sh/43ux07ix","slide":2,"name":"header-current-2","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/32lgr2hc","slide":2,"name":"eyebrow-2","text":"THE OPERATING MODEL","textPreview":"THE OPERATING MODEL","textChars":19,"textLines":1,"bbox":[128,31,600,24]}
+{"kind":"textbox","id":"sh/21cfyx07","slide":2,"name":"title-2","text":"A dependable agentic SDLC has one durable loop","textPreview":"A dependable agentic SDLC has one durable loop","textChars":46,"textLines":1,"bbox":[72,72,1136,58]}
+{"kind":"textbox","id":"sh/dsnyxczu","slide":2,"name":"subtitle-2","text":"Not more ceremony—better project state for the next human or agent.","textPreview":"Not more ceremony—better project state for the next human or agent.","textChars":67,"textLines":1,"bbox":[72,137,1136,36]}
+{"kind":"shape","id":"sh/c7uh47i9","slide":2,"name":"pwe-card-1","bbox":[72,208,330,278]}
+{"kind":"shape","id":"sh/r6lgv2ho","slide":2,"name":"pwe-topwash-1","bbox":[74,210,326,99]}
+{"kind":"shape","id":"sh/q5cf2x03","slide":2,"name":"pwe-accent-1","bbox":[94,232,58,58]}
+{"kind":"textbox","id":"sh/twjyl8za","slide":2,"name":"pwe-number-1","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[96,249,54,23]}
+{"kind":"textbox","id":"sh/sbaxsnip","slide":2,"name":"pwe-title-1","text":"PLAN","textPreview":"PLAN","textChars":4,"textLines":1,"bbox":[172,241,204,39]}
+{"kind":"shape","id":"sh/qlwfmlwf","slide":2,"name":"pwe-rule-1","bbox":[94,320,286,2]}
+{"kind":"textbox","id":"sh/bm5wf6dk","slide":2,"name":"pwe-detail-1","text":"Requirements\nDecisions\nGuardrails","textPreview":"Requirements | Decisions | Guardrails","textChars":33,"textLines":3,"bbox":[96,348,280,112]}
+{"kind":"shape","id":"sh/cnexobe5","slide":2,"name":"pwe-card-2","bbox":[475,208,330,278]}
+{"kind":"shape","id":"sh/donehgvq","slide":2,"name":"pwe-topwash-2","bbox":[477,210,326,99]}
+{"kind":"shape","id":"sh/ypwfqlwb","slide":2,"name":"pwe-accent-2","bbox":[497,232,58,58]}
+{"kind":"textbox","id":"sh/zq5wjqdw","slide":2,"name":"pwe-number-2","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[499,249,54,23]}
+{"kind":"textbox","id":"sh/0rexsveh","slide":2,"name":"pwe-title-2","text":"WORK","textPreview":"WORK","textChars":4,"textLines":1,"bbox":[575,241,204,39]}
+{"kind":"shape","id":"sh/ls7el0v2","slide":2,"name":"pwe-rule-2","bbox":[497,320,286,2]}
+{"kind":"textbox","id":"sh/mtgfu5w7","slide":2,"name":"pwe-detail-2","text":"One bounded node\nExplicit authority\nClear handoff","textPreview":"One bounded node | Explicit authority | Clear handoff","textChars":49,"textLines":3,"bbox":[499,348,280,112]}
+{"kind":"shape","id":"sh/nepwnads","slide":2,"name":"pwe-card-3","bbox":[878,208,330,278]}
+{"kind":"shape","id":"sh/jipwbat0","slide":2,"name":"pwe-topwash-3","bbox":[880,210,326,99]}
+{"kind":"shape","id":"sh/ihgvi5sf","slide":2,"name":"pwe-accent-3","bbox":[900,232,58,58]}
+{"kind":"textbox","id":"sh/5kred0b6","slide":2,"name":"pwe-number-3","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[902,249,54,23]}
+{"kind":"textbox","id":"sh/kjidkfal","slide":2,"name":"pwe-title-3","text":"EVIDENCE","textPreview":"EVIDENCE","textChars":8,"textLines":1,"bbox":[978,241,204,39]}
+{"kind":"shape","id":"sh/vupw7qt4","slide":2,"name":"pwe-rule-3","bbox":[900,320,286,2]}
+{"kind":"textbox","id":"sh/atgvelcj","slide":2,"name":"pwe-detail-3","text":"Tests + receipts\nCheckpoints\nValidated state","textPreview":"Tests + receipts | Checkpoints | Validated state","textChars":44,"textLines":3,"bbox":[902,348,280,112]}
+{"kind":"shape","id":"sh/xg7e90bu","slide":2,"name":"flow-arrow-1","bbox":[411,328,54,34]}
+{"kind":"shape","id":"sh/wvydgva9","slide":2,"name":"flow-arrow-2","bbox":[814,328,54,34]}
+{"kind":"shape","id":"sh/nq5c3qts","slide":2,"name":"questions-band","bbox":[72,524,1136,101]}
+{"kind":"textbox","id":"sh/mpwvalc7","slide":2,"name":"question-1","text":"WHAT COMPLETED?","textPreview":"WHAT COMPLETED?","textChars":15,"textLines":1,"bbox":[96,548,300,24]}
+{"kind":"textbox","id":"sh/cja1onmt","slide":2,"name":"answer-1","text":"accepted outcome","textPreview":"accepted outcome","textChars":16,"textLines":1,"bbox":[96,583,300,23]}
+{"kind":"textbox","id":"sh/dkj2xsne","slide":2,"name":"question-2","text":"WHY?","textPreview":"WHY?","textChars":4,"textLines":1,"bbox":[444,548,300,24]}
+{"kind":"textbox","id":"sh/qhsjmd43","slide":2,"name":"answer-2","text":"requirements + decisions","textPreview":"requirements + decisions","textChars":24,"textLines":1,"bbox":[444,583,300,23]}
+{"kind":"textbox","id":"sh/ri1kvi58","slide":2,"name":"question-3","text":"WHAT COMES NEXT?","textPreview":"WHAT COMES NEXT?","textChars":16,"textLines":1,"bbox":[770,548,300,24]}
+{"kind":"textbox","id":"sh/0nu1s7m5","slide":2,"name":"answer-3","text":"next authorized node","textPreview":"next authorized node","textChars":20,"textLines":1,"bbox":[770,583,300,23]}
+{"kind":"shape","id":"sh/1o321snq","slide":2,"name":"footer-line-2","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/elsjqx4z","slide":2,"name":"source-2","text":"[14] mdkg canonical Plan → Work → Evidence product source","textPreview":"[14] mdkg canonical Plan → Work → Evidence product source","textChars":57,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/zmlkz25k","slide":2,"name":"folio-2","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/02ej4m","slide":2,"text":"Narrative job: introduce the smallest memorable mdkg operating model.\nPrimary claim: dependable agentic work connects an explicit plan to bounded execution and inspectable proof.\n\n[Sources]\n[14] https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/mdkg-dev/src/pages/index.astro\n[/Sources]"}
+{"kind":"slide","id":"sl/52pdzy","slide":3,"title":"SOURCE → EXECUTION PROOF","textShapes":25}
+{"kind":"shape","id":"sh/of6hwnip","slide":3,"name":"header-current-3","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/nedgnih4","slide":3,"name":"eyebrow-3","text":"SOURCE → EXECUTION PROOF","textPreview":"SOURCE → EXECUTION PROOF","textChars":24,"textLines":1,"bbox":[128,31,600,24]}
+{"kind":"textbox","id":"sh/2t4zud0j","slide":3,"name":"title-3","text":"Reusable specification → specialized, executed proof","textPreview":"Reusable specification → specialized, executed proof","textChars":52,"textLines":1,"bbox":[72,72,1136,58]}
+{"kind":"textbox","id":"sh/xkfitsz6","slide":3,"name":"subtitle-3","text":"Same goal identity. Sharper requirements. Inspectable evidence.","textPreview":"Same goal identity. Sharper requirements. Inspectable evidence.","textChars":63,"textLines":1,"bbox":[72,137,1136,36]}
+{"kind":"shape","id":"sh/cj6h0nil","slide":3,"name":"source-goal-card","bbox":[72,199,458,391]}
+{"kind":"textbox","id":"sh/bix0rih0","slide":3,"name":"source-pill","text":"SOURCE TEMPLATE","textPreview":"SOURCE TEMPLATE","textChars":15,"textLines":1,"bbox":[96,221,190,34]}
+{"kind":"textbox","id":"sh/ahozyd0f","slide":3,"name":"source-goal-id","text":"goal-1","textPreview":"goal-1","textChars":6,"textLines":1,"bbox":[96,273,240,48]}
+{"kind":"textbox","id":"sh/dovyhoz2","slide":3,"name":"source-label-Objective","text":"OBJECTIVE","textPreview":"OBJECTIVE","textChars":9,"textLines":1,"bbox":[96,337,190,22]}
+{"kind":"textbox","id":"sh/snmho3ih","slide":3,"name":"source-value-Objective","text":"Create a public landing page","textPreview":"Create a public landing page","textChars":28,"textLines":1,"bbox":[96,362,365,40]}
+{"kind":"textbox","id":"sh/6xkfalkr","slide":3,"name":"source-label-Requirements","text":"REQUIREMENTS","textPreview":"REQUIREMENTS","textChars":12,"textLines":1,"bbox":[96,416,190,22]}
+{"kind":"textbox","id":"sh/rytgjqlc","slide":3,"name":"source-value-Requirements","text":"Ocean Flow + bounded sections","textPreview":"Ocean Flow + bounded sections","textChars":29,"textLines":1,"bbox":[96,441,365,40]}
+{"kind":"textbox","id":"sh/sz2xcv2x","slide":3,"name":"source-label-State","text":"STATE","textPreview":"STATE","textChars":5,"textLines":1,"bbox":[96,495,190,22]}
+{"kind":"textbox","id":"sh/t0byl0ji","slide":3,"name":"source-value-State","text":"Reusable · not yet executed","textPreview":"Reusable · not yet executed","textChars":27,"textLines":1,"bbox":[96,520,365,40]}
+{"kind":"shape","id":"sh/e1kfe5k3","slide":3,"name":"specialize-arrow-underlay","bbox":[553,367,152,16]}
+{"kind":"shape","id":"sh/f2dgnq1o","slide":3,"name":"specialize-arrow","bbox":[558,348,142,55]}
+{"kind":"textbox","id":"sh/03mxgv2t","slide":3,"name":"specialize-pill","text":"SPECIALIZE","textPreview":"SPECIALIZE","textChars":10,"textLines":1,"bbox":[560,302,138,32]}
+{"kind":"shape","id":"sh/14vyp0je","slide":3,"name":"executed-goal-card","bbox":[728,179,480,431]}
+{"kind":"shape","id":"sh/254fi5kz","slide":3,"name":"executed-current","bbox":[728,179,480,12]}
+{"kind":"textbox","id":"sh/nqdgra1k","slide":3,"name":"executed-pill","text":"SPECIALIZED + EXECUTED","textPreview":"SPECIALIZED + EXECUTED","textChars":22,"textLines":1,"bbox":[752,207,250,34]}
+{"kind":"textbox","id":"sh/zuxwfahs","slide":3,"name":"executed-goal-id","text":"goal-1","textPreview":"goal-1","textChars":6,"textLines":1,"bbox":[752,258,240,48]}
+{"kind":"textbox","id":"sh/ytof6507","slide":3,"name":"executed-label-Positioning","text":"POSITIONING","textPreview":"POSITIONING","textChars":11,"textLines":1,"bbox":[752,318,190,22]}
+{"kind":"textbox","id":"sh/lwfehkzi","slide":3,"name":"executed-value-Positioning","text":"Selected audience + promise","textPreview":"Selected audience + promise","textChars":27,"textLines":1,"bbox":[752,343,365,40]}
+{"kind":"textbox","id":"sh/kv6x8fid","slide":3,"name":"executed-label-Requirements","text":"REQUIREMENTS","textPreview":"REQUIREMENTS","textChars":12,"textLines":1,"bbox":[752,390,190,22]}
+{"kind":"textbox","id":"sh/b6dwbahg","slide":3,"name":"executed-value-Requirements","text":"Static Astro · zero client JS","textPreview":"Static Astro · zero client JS","textChars":29,"textLines":1,"bbox":[752,415,365,40]}
+{"kind":"textbox","id":"sh/a54f250v","slide":3,"name":"executed-label-Work","text":"WORK","textPreview":"WORK","textChars":4,"textLines":1,"bbox":[752,462,190,22]}
+{"kind":"textbox","id":"sh/xsved0zm","slide":3,"name":"executed-value-Work","text":"4 / 4 bounded nodes complete","textPreview":"4 / 4 bounded nodes complete","textChars":28,"textLines":1,"bbox":[752,487,365,40]}
+{"kind":"textbox","id":"sh/c7mx4vi1","slide":3,"name":"executed-label-Evidence","text":"EVIDENCE","textPreview":"EVIDENCE","textChars":8,"textLines":1,"bbox":[752,534,190,22]}
+{"kind":"textbox","id":"sh/n2dw7qhk","slide":3,"name":"executed-value-Evidence","text":"Build · routes · exact SHA","textPreview":"Build · routes · exact SHA","textChars":26,"textLines":1,"bbox":[752,559,365,40]}
+{"kind":"textbox","id":"sh/214vyl0z","slide":3,"name":"fixture-warning","text":"ILLUSTRATIVE STRUCTURE · NOT A LIVE DEMO RECEIPT","textPreview":"ILLUSTRATIVE STRUCTURE · NOT A LIVE DEMO RECEIPT","textChars":48,"textLines":1,"bbox":[374,622,532,34]}
+{"kind":"shape","id":"sh/s7it8ryx","slide":3,"name":"footer-line-3","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/t8ruhwfi","slide":3,"name":"source-3","text":"Program EDD fixture · final reveal uses sanitized goals, work, and receipts","textPreview":"Program EDD fixture · final reveal uses sanitized goals, work, and receipts","textChars":75,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/650b6hgr","slide":3,"name":"folio-3","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/52pdzy","slide":3,"text":"Narrative job: prepare the audience to read the reveal as source-to-execution proof, without teaching graph mechanics.\nThis prototype is an illustrative structure only. It is not evidence that Demo 2 or Demo 3 exists.\nSpeaker cue: read this as a reusable starting specification becoming a specific, executed specification.\n\n[Sources]\nProgram architecture contract: presentations/ai-native-sdlc-demo/.mdkg/design/edd-1-ai-native-sdlc-presentation-demo-program-architecture-and-execution.md\n[/Sources]"}

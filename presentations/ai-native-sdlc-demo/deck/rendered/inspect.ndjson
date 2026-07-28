@@ -1,0 +1,495 @@
+{"kind":"layout","layoutId":"45236187-0cb8-49d8-8724-1feb6beb4872","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"0fe0106a-9848-4ffe-9e31-943b47431bcd","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/0wq4pd","slide":1,"title":"AI-NATIVE SOFTWARE DEVELOPMENT","textShapes":5}
+{"kind":"shape","id":"sh/69krupsr","slide":1,"name":"title-current-underlay","bbox":[72,521,1136,18]}
+{"kind":"shape","id":"sh/twba54bi","slide":1,"name":"title-current","bbox":[72,527,1136,7]}
+{"kind":"shape","id":"sh/sv29wzax","slide":1,"name":"title-cursor","bbox":[72,495,8,54]}
+{"kind":"shape","id":"sh/j698zutg","slide":1,"name":"title-node-1","bbox":[830,516,28,28]}
+{"kind":"shape","id":"sh/y50rqpcv","slide":1,"name":"title-node-2","bbox":[925,516,28,28]}
+{"kind":"shape","id":"sh/l8bq14b6","slide":1,"name":"title-node-3","bbox":[1020,516,28,28]}
+{"kind":"shape","id":"sh/k729szal","slide":1,"name":"title-node-4","bbox":[1115,516,28,28]}
+{"kind":"textbox","id":"sh/b298vat4","slide":1,"name":"title-kicker","text":"AI-NATIVE SOFTWARE DEVELOPMENT","textPreview":"AI-NATIVE SOFTWARE DEVELOPMENT","textChars":30,"textLines":1,"bbox":[72,75,720,30]}
+{"kind":"textbox","id":"sh/a10rm5cj","slide":1,"name":"deck-title","text":"From autocomplete\nto a durable agentic SDLC","textPreview":"From autocomplete | to a durable agentic SDLC","textChars":43,"textLines":2,"bbox":[72,122,1000,162]}
+{"kind":"textbox","id":"sh/ofi94ja9","slide":1,"name":"deck-subtitle","text":"How the unit of coding work changed—and why specifications, guardrails, and evidence matter more than ever.","textPreview":"How the unit of coding work changed—and why specifications, guardrails, and evidence matter more than ever.","textChars":107,"textLines":1,"bbox":[72,315,980,82]}
+{"kind":"textbox","id":"sh/pgrad4bu","slide":1,"name":"live-start-pill","text":"LIVE CODING GOAL STARTS NOW","textPreview":"LIVE CODING GOAL STARTS NOW","textChars":27,"textLines":1,"bbox":[72,428,330,40]}
+{"kind":"textbox","id":"sh/2d0r29s3","slide":1,"name":"title-folio","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[1150,601,58,24]}
+{"kind":"notes","id":"nt/0wq4pd","slide":1,"text":"Narrative job: establish the destination and dispatch the live demo before the first minute ends.\nSpeaker cue: Before we start, I am giving a coding agent a goal. It will work while we talk; near the end we will inspect both the result and the evidence.\nOffline rehearsal action: start only the fixture-backed cue clock.\nTiming: 0:45\n\n[Sources]\nNo external factual claim.\nProgram narrative decision: presentations/ai-native-sdlc-demo/.mdkg/design/dec-2-use-a-source-backed-mixed-audience-ai-native-sdlc-narrative.md\n[/Sources]"}
+{"kind":"slide","id":"sl/m24ody","slide":2,"title":"THE CHANGING UNIT OF WORK","textShapes":19}
+{"kind":"shape","id":"sh/5ovmxory","slide":2,"name":"header-current-2","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/il4nmt8n","slide":2,"name":"eyebrow-2","text":"THE CHANGING UNIT OF WORK","textPreview":"THE CHANGING UNIT OF WORK","textChars":25,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/3md4vy9s","slide":2,"name":"title-2","text":"The unit of coding work kept expanding","textPreview":"The unit of coding work kept expanding","textChars":38,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/gj25kjqh","slide":2,"name":"subtitle-2","text":"Capabilities accumulated; each new layer widened what a developer could delegate.","textPreview":"Capabilities accumulated; each new layer widened what a developer could delegate.","textChars":81,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/hkvmtor2","slide":2,"name":"unit-flow-underlay","bbox":[94,342,1080,38]}
+{"kind":"shape","id":"sh/uxkni98b","slide":2,"name":"unit-segment-1","bbox":[100,359,174,4]}
+{"kind":"shape","id":"sh/vyt4re9w","slide":2,"name":"unit-tick-1","bbox":[106,312,3,92]}
+{"kind":"textbox","id":"sh/8v25gza5","slide":2,"name":"unit-label-1","text":"LINE","textPreview":"LINE","textChars":4,"textLines":1,"bbox":[100,239,150,30]}
+{"kind":"textbox","id":"sh/twbmp4rq","slide":2,"name":"unit-detail-1","text":"complete code","textPreview":"complete code","textChars":13,"textLines":1,"bbox":[100,275,150,48]}
+{"kind":"shape","id":"sh/xkb25s7a","slide":2,"name":"unit-segment-2","bbox":[276,357.5,174,7]}
+{"kind":"shape","id":"sh/wj21wn6p","slide":2,"name":"unit-tick-2","bbox":[282,312,3,92]}
+{"kind":"textbox","id":"sh/byt03ip4","slide":2,"name":"unit-label-2","text":"TURN","textPreview":"TURN","textChars":4,"textLines":1,"bbox":[276,239,150,30]}
+{"kind":"textbox","id":"sh/ax0judoj","slide":2,"name":"unit-detail-2","text":"generate + refine","textPreview":"generate + refine","textChars":17,"textLines":1,"bbox":[276,275,150,48]}
+{"kind":"shape","id":"sh/pwri187y","slide":2,"name":"unit-segment-3","bbox":[466,356,174,10]}
+{"kind":"shape","id":"sh/ovi1s36d","slide":2,"name":"unit-tick-3","bbox":[472,312,3,92]}
+{"kind":"textbox","id":"sh/nu90zyp8","slide":2,"name":"unit-label-3","text":"PROBLEM","textPreview":"PROBLEM","textChars":7,"textLines":1,"bbox":[466,239,150,30]}
+{"kind":"textbox","id":"sh/2t0jqdon","slide":2,"name":"unit-detail-3","text":"reason through","textPreview":"reason through","textChars":14,"textLines":1,"bbox":[466,275,150,48]}
+{"kind":"shape","id":"sh/1srix872","slide":2,"name":"unit-segment-4","bbox":[656,354.5,174,13]}
+{"kind":"shape","id":"sh/0ri1o36h","slide":2,"name":"unit-tick-4","bbox":[662,312,3,92]}
+{"kind":"textbox","id":"sh/snmt07ip","slide":2,"name":"unit-label-4","text":"REPO","textPreview":"REPO","textChars":4,"textLines":1,"bbox":[680,239,150,30]}
+{"kind":"textbox","id":"sh/dovatsju","slide":2,"name":"unit-detail-4","text":"search + edit + test","textPreview":"search + edit + test","textChars":20,"textLines":1,"bbox":[680,275,150,48]}
+{"kind":"shape","id":"sh/ql4byx0j","slide":2,"name":"unit-segment-5","bbox":[846,353,174,16]}
+{"kind":"shape","id":"sh/rmdsr214","slide":2,"name":"unit-tick-5","bbox":[852,312,3,92]}
+{"kind":"textbox","id":"sh/4jm9wnid","slide":2,"name":"unit-label-5","text":"WORKFLOW","textPreview":"WORKFLOW","textChars":8,"textLines":1,"bbox":[846,239,174,30]}
+{"kind":"textbox","id":"sh/5kvapsjy","slide":2,"name":"unit-detail-5","text":"load practice","textPreview":"load practice","textChars":13,"textLines":1,"bbox":[846,275,150,48]}
+{"kind":"shape","id":"sh/ihkrud07","slide":2,"name":"unit-segment-6","bbox":[1036,350.5,122,21]}
+{"kind":"shape","id":"sh/3idsni1s","slide":2,"name":"unit-tick-6","bbox":[1042,312,3,92]}
+{"kind":"textbox","id":"sh/of6t8rih","slide":2,"name":"unit-label-6","text":"GOAL","textPreview":"GOAL","textChars":4,"textLines":1,"bbox":[1036,239,142,30]}
+{"kind":"textbox","id":"sh/9gfa1cj2","slide":2,"name":"unit-detail-6","text":"plan + work + prove","textPreview":"plan + work + prove","textChars":19,"textLines":1,"bbox":[1036,275,142,48]}
+{"kind":"textbox","id":"sh/ja1wrqlk","slide":2,"name":"unit-conclusion","text":"More delegation → more need for durable intent and proof","textPreview":"More delegation → more need for durable intent and proof","textChars":56,"textLines":1,"bbox":[238,482,804,48]}
+{"kind":"textbox","id":"sh/y9svylkz","slide":2,"name":"overlap-caveat","text":"STAGES OVERLAP · CAPABILITIES ACCUMULATE","textPreview":"STAGES OVERLAP · CAPABILITIES ACCUMULATE","textChars":40,"textLines":1,"bbox":[365,555,550,38]}
+{"kind":"shape","id":"sh/lcjetg3a","slide":2,"name":"footer-line-2","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/kbad0b2p","slide":2,"name":"source-2","text":"[1–12] Representative milestones; not exclusive product eras","textPreview":"[1–12] Representative milestones; not exclusive product eras","textChars":60,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/7e1wvqlg","slide":2,"name":"folio-2","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/m24ody","slide":2,"text":"Narrative job: frame the talk as a capability progression, not a product-history lecture.\nSpeaker cue: These stages overlap. New capabilities accumulate; they do not invalidate autocomplete, chat, or direct editing.\nTiming: 1:40\n\n[Sources]\nClaim synthesis: deck/citations/claim-matrix.md, C01-C12.\n[/Sources]"}
+{"kind":"slide","id":"sl/tzfsmt","slide":3,"title":"2021 · AUTOCOMPLETE","textShapes":13}
+{"kind":"shape","id":"sh/qhof6xoj","slide":3,"name":"header-current-3","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/dkfyhsnu","slide":3,"name":"eyebrow-3","text":"2021 · AUTOCOMPLETE","textPreview":"2021 · AUTOCOMPLETE","textChars":19,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/cj6h8n6p","slide":3,"name":"title-3","text":"Autocomplete changed the typing loop","textPreview":"Autocomplete changed the typing loop","textChars":36,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/3uxgbips","slide":3,"name":"subtitle-3","text":"Copilot made whole-line and whole-function suggestions part of everyday editor work.","textPreview":"Copilot made whole-line and whole-function suggestions part of everyday editor work.","textChars":84,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/2t4f2do7","slide":3,"name":"autocomplete-code","bbox":[72,205,690,372]}
+{"kind":"textbox","id":"sh/pgfyds7y","slide":3,"name":"autocomplete-file","text":"cart.ts","textPreview":"cart.ts","textChars":7,"textLines":1,"bbox":[100,228,200,24]}
+{"kind":"textbox","id":"sh/4v6x4n6d","slide":3,"name":"autocomplete-code-solid","text":"function total(items) {\n  return items.reduce((sum, item) =>","textPreview":"function total(items) { |   return items.reduce((sum, item) =>","textChars":60,"textLines":2,"bbox":[100,291,610,106]}
+{"kind":"textbox","id":"sh/fqdg7ypw","slide":3,"name":"autocomplete-code-ghost","text":"    sum + item.price, 0);\n}","textPreview":"sum + item.price, 0); | }","textChars":27,"textLines":2,"bbox":[100,407,610,88]}
+{"kind":"shape","id":"sh/up4fytob","slide":3,"name":"autocomplete-cursor","bbox":[100,517,5,31]}
+{"kind":"textbox","id":"sh/kj2hwbet","slide":3,"name":"autocomplete-unit","text":"UNIT · NEXT LINE OR FUNCTION","textPreview":"UNIT · NEXT LINE OR FUNCTION","textChars":28,"textLines":1,"bbox":[800,226,382,38]}
+{"kind":"textbox","id":"sh/lkbipgfe","slide":3,"name":"autocomplete-human-label","text":"HUMAN ROLE","textPreview":"HUMAN ROLE","textChars":10,"textLines":1,"bbox":[800,306,220,24]}
+{"kind":"textbox","id":"sh/yh0zu1w3","slide":3,"name":"autocomplete-human","text":"Author the code.\nAccept or reject the suggestion.","textPreview":"Author the code. | Accept or reject the suggestion.","textChars":49,"textLines":2,"bbox":[800,341,360,80]}
+{"kind":"textbox","id":"sh/zit0n6x8","slide":3,"name":"autocomplete-constraint-label","text":"CONTEXT LIMIT","textPreview":"CONTEXT LIMIT","textChars":13,"textLines":1,"bbox":[800,457,220,24]}
+{"kind":"textbox","id":"sh/cvihsrex","slide":3,"name":"autocomplete-constraint","text":"Mostly the code visible—or retrieved—inside the editor.","textPreview":"Mostly the code visible—or retrieved—inside the editor.","textChars":55,"textLines":1,"bbox":[800,492,360,72]}
+{"kind":"shape","id":"sh/xgrilwfi","slide":3,"name":"footer-line-3","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/at0zq1wr","slide":3,"name":"source-3","text":"[1] GitHub Copilot technical preview","textPreview":"[1] GitHub Copilot technical preview","textChars":36,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/bu9gj6xc","slide":3,"name":"folio-3","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/tzfsmt","slide":3,"text":"Narrative job: make the original interaction model concrete.\nPrimary claim: GitHub Copilot brought whole-line and whole-function suggestions into the typing loop.\nTiming: 1:50\n\n[Sources]\n[1] GitHub, Introducing GitHub Copilot: your AI pair programmer, 2021-06-29: https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/\n[/Sources]"}
+{"kind":"slide","id":"sl/25n33b","slide":4,"title":"2022 · CONVERSATIONAL CODING","textShapes":12}
+{"kind":"shape","id":"sh/nudszylk","slide":4,"name":"header-current-4","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/8vm9s325","slide":4,"name":"eyebrow-4","text":"2022 · CONVERSATIONAL CODING","textPreview":"2022 · CONVERSATIONAL CODING","textChars":28,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/9wva183q","slide":4,"name":"title-4","text":"Conversation made coding iterative","textPreview":"Conversation made coding iterative","textChars":34,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/ypkrmtk3","slide":4,"name":"subtitle-4","text":"Generate, explain, and refine turned the developer into the source of missing context.","textPreview":"Generate, explain, and refine turned the developer into the source of missing context.","textChars":86,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/zqtsvyl8","slide":4,"name":"conversation-turn-1","bbox":[72,216,520,96]}
+{"kind":"textbox","id":"sh/0r29o32t","slide":4,"name":"conversation-label-1","text":"GENERATE","textPreview":"GENERATE","textChars":8,"textLines":1,"bbox":[96,233,154,24]}
+{"kind":"textbox","id":"sh/lsbax83e","slide":4,"name":"conversation-text-1","text":"Draft a parser for this payload.","textPreview":"Draft a parser for this payload.","textChars":32,"textLines":1,"bbox":[96,265,472,30]}
+{"kind":"shape","id":"sh/q10ritkr","slide":4,"name":"conversation-turn-2","bbox":[314,341,520,96]}
+{"kind":"textbox","id":"sh/b2tsrelc","slide":4,"name":"conversation-label-2","text":"EXPLAIN","textPreview":"EXPLAIN","textChars":7,"textLines":1,"bbox":[338,358,154,24]}
+{"kind":"textbox","id":"sh/vaxgnyx4","slide":4,"name":"conversation-text-2","text":"Why does it fail on empty input?","textPreview":"Why does it fail on empty input?","textChars":32,"textLines":1,"bbox":[338,390,472,30]}
+{"kind":"shape","id":"sh/a9ozutwz","slide":4,"name":"conversation-turn-3","bbox":[556,466,520,96]}
+{"kind":"textbox","id":"sh/xcfypofa","slide":4,"name":"conversation-label-3","text":"REFINE","textPreview":"REFINE","textChars":6,"textLines":1,"bbox":[580,483,154,24]}
+{"kind":"textbox","id":"sh/wb6hwjep","slide":4,"name":"conversation-text-3","text":"Keep the API; add validation and tests.","textPreview":"Keep the API; add validation and tests.","textChars":39,"textLines":1,"bbox":[580,515,472,30]}
+{"kind":"shape","id":"sh/jex0ryxg","slide":4,"name":"conversation-constraint-line","bbox":[1096,242,3,300]}
+{"kind":"textbox","id":"sh/idozytwv","slide":4,"name":"conversation-constraint","text":"Useful context\nstill lived in\nconversation.","textPreview":"Useful context | still lived in | conversation.","textChars":43,"textLines":3,"bbox":[1115,321,142,132]}
+{"kind":"shape","id":"sh/5gzit8vm","slide":4,"name":"footer-line-4","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/kfqh03e1","slide":4,"name":"source-4","text":"[2] ChatGPT research preview","textPreview":"[2] ChatGPT research preview","textChars":28,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/zidgfexc","slide":4,"name":"folio-4","text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/25n33b","slide":4,"text":"Narrative job: show the jump from passive suggestion to iterative dialogue.\nPrimary claim: conversational models let developers generate, explain, challenge, and refine code through follow-up turns.\nTiming: 2:00\n\n[Sources]\n[2] OpenAI, Introducing ChatGPT, 2022-11-30: https://openai.com/index/chatgpt/\n[/Sources]"}
+{"kind":"slide","id":"sl/gsag35","slide":5,"title":"2024 · REASONING","textShapes":14}
+{"kind":"shape","id":"sh/kvetwjqh","slide":5,"name":"header-current-5","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/ju5c3e9w","slide":5,"name":"eyebrow-5","text":"2024 · REASONING","textPreview":"2024 · REASONING","textChars":16,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/ytcbu98b","slide":5,"name":"title-5","text":"Reasoning became a capability lever","textPreview":"Reasoning became a capability lever","textChars":35,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/xs3u14rq","slide":5,"name":"subtitle-5","text":"More inference can improve hard problems—but it cannot recover requirements that were never supplied.","textPreview":"More inference can improve hard problems—but it cannot recover requirements that were never supplied.","textChars":101,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/w7utszq5","slide":5,"name":"reasoning-path-a","bbox":[226,293,248,30]}
+{"kind":"shape","id":"sh/b6lcze90","slide":5,"name":"reasoning-path-b","bbox":[454,215,210,112]}
+{"kind":"shape","id":"sh/a5cbq98f","slide":5,"name":"reasoning-path-c","bbox":[454,319,210,112]}
+{"kind":"shape","id":"sh/943ux4ru","slide":5,"name":"reasoning-path-d","bbox":[646,293,236,30]}
+{"kind":"shape","id":"sh/o3utozq9","slide":5,"name":"reasoning-node-1","bbox":[72,252,170,116]}
+{"kind":"textbox","id":"sh/a58b6dsj","slide":5,"name":"reasoning-node-title-1","text":"PROBLEM","textPreview":"PROBLEM","textChars":7,"textLines":1,"bbox":[90,272,134,28]}
+{"kind":"textbox","id":"sh/bqhszy9o","slide":5,"name":"reasoning-node-detail-1","text":"multi-step task","textPreview":"multi-step task","textChars":15,"textLines":1,"bbox":[90,309,134,28]}
+{"kind":"shape","id":"sh/wrqt83a9","slide":5,"name":"reasoning-node-2","bbox":[451,185,208,94]}
+{"kind":"textbox","id":"sh/xsza18ru","slide":5,"name":"reasoning-node-title-2","text":"CHECK","textPreview":"CHECK","textChars":5,"textLines":1,"bbox":[469,205,172,28]}
+{"kind":"textbox","id":"sh/m1ob2ts7","slide":5,"name":"reasoning-node-detail-2","text":"find a flaw","textPreview":"find a flaw","textChars":11,"textLines":1,"bbox":[469,242,172,28]}
+{"kind":"shape","id":"sh/n2hsvy9s","slide":5,"name":"reasoning-node-3","bbox":[451,385,208,94]}
+{"kind":"textbox","id":"sh/o3qt43ad","slide":5,"name":"reasoning-node-title-3","text":"REVISE","textPreview":"REVISE","textChars":6,"textLines":1,"bbox":[469,405,172,28]}
+{"kind":"textbox","id":"sh/94zax8ry","slide":5,"name":"reasoning-node-detail-3","text":"try another path","textPreview":"try another path","textChars":16,"textLines":1,"bbox":[469,442,172,28]}
+{"kind":"shape","id":"sh/exorytsb","slide":5,"name":"reasoning-node-4","bbox":[870,252,192,116]}
+{"kind":"textbox","id":"sh/zyxsretw","slide":5,"name":"reasoning-node-title-4","text":"ANSWER","textPreview":"ANSWER","textChars":6,"textLines":1,"bbox":[888,272,156,28]}
+{"kind":"textbox","id":"sh/32d8zapo","slide":5,"name":"reasoning-node-detail-4","text":"validated result","textPreview":"validated result","textChars":16,"textLines":1,"bbox":[888,309,156,28]}
+{"kind":"shape","id":"sh/i1k76p83","slide":5,"name":"reasoning-boundary","bbox":[1084,217,136,250]}
+{"kind":"textbox","id":"sh/p4vq1k7e","slide":5,"name":"reasoning-boundary-text","text":"MISSING\nINTENT\nSTAYS\nMISSING","textPreview":"MISSING | INTENT | STAYS | MISSING","textChars":28,"textLines":4,"bbox":[1098,270,108,150]}
+{"kind":"shape","id":"sh/43mp8fqt","slide":5,"name":"footer-line-5","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/r6d83upk","slide":5,"name":"source-5","text":"[3] OpenAI o1-preview","textPreview":"[3] OpenAI o1-preview","textChars":21,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/q547ap8z","slide":5,"name":"folio-5","text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/gsag35","slide":5,"text":"Narrative job: distinguish better problem solving from simply producing more text.\nPrimary claim: o1 made additional test-time reasoning a visible capability lever for difficult problems.\nTiming: 2:10\n\n[Sources]\n[3] OpenAI, Learning to reason with LLMs, 2024-09-12: https://openai.com/index/learning-to-reason-with-llms/\n[/Sources]"}
+{"kind":"slide","id":"sl/uuoqbw","slide":6,"title":"2025 · TOOL-USING AGENTS","textShapes":12}
+{"kind":"shape","id":"sh/1gfqpkfa","slide":6,"name":"header-current-6","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/edo7u5wj","slide":6,"name":"eyebrow-6","text":"2025 · TOOL-USING AGENTS","textPreview":"2025 · TOOL-USING AGENTS","textChars":24,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/fex8nax4","slide":6,"name":"title-6","text":"The harness made agents operational","textPreview":"The harness made agents operational","textChars":35,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/sbmpsvet","slide":6,"name":"subtitle-6","text":"Search, files, terminals, tests, and source control turned model output into repository work.","textPreview":"Search, files, terminals, tests, and source control turned model output into repository work.","textChars":93,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/tcvql0fy","slide":6,"name":"tool-connector-1","bbox":[317,252,205,26]}
+{"kind":"shape","id":"sh/6947qlgn","slide":6,"name":"tool-connector-2","bbox":[317,488,205,26]}
+{"kind":"shape","id":"sh/rad8jqx8","slide":6,"name":"tool-connector-3","bbox":[758,252,205,26]}
+{"kind":"shape","id":"sh/c7q94zex","slide":6,"name":"tool-connector-4","bbox":[758,488,205,26]}
+{"kind":"shape","id":"sh/d8zqx4fi","slide":6,"name":"tool-port-1","bbox":[112,220,205,88]}
+{"kind":"textbox","id":"sh/t0b658bi","slide":6,"name":"tool-port-label-1","text":"SEARCH","textPreview":"SEARCH","textChars":6,"textLines":1,"bbox":[124,247,181,32]}
+{"kind":"shape","id":"sh/sz2pc3ax","slide":6,"name":"tool-port-2","bbox":[112,456,205,88]}
+{"kind":"textbox","id":"sh/ryto3itc","slide":6,"name":"tool-port-label-2","text":"FILES","textPreview":"FILES","textChars":5,"textLines":1,"bbox":[124,483,181,32]}
+{"kind":"shape","id":"sh/6x07adsr","slide":6,"name":"tool-port-3","bbox":[963,220,205,88]}
+{"kind":"textbox","id":"sh/5wr618bm","slide":6,"name":"tool-port-label-3","text":"TERMINAL","textPreview":"TERMINAL","textChars":8,"textLines":1,"bbox":[975,247,181,32]}
+{"kind":"shape","id":"sh/4bip83a1","slide":6,"name":"tool-port-4","bbox":[963,456,205,88]}
+{"kind":"textbox","id":"sh/ja9ozytg","slide":6,"name":"tool-port-label-4","text":"TESTS + GIT","textPreview":"TESTS + GIT","textChars":11,"textLines":1,"bbox":[975,483,181,32]}
+{"kind":"shape","id":"sh/i9076tsv","slide":6,"name":"tool-agent-core","bbox":[522,278,236,188]}
+{"kind":"textbox","id":"sh/psvqdsbq","slide":6,"name":"tool-agent-core-title","text":"CODING\nAGENT","textPreview":"CODING | AGENT","textChars":12,"textLines":2,"bbox":[552,316,176,78]}
+{"kind":"textbox","id":"sh/o7mpkna5","slide":6,"name":"tool-agent-core-detail","text":"model + harness","textPreview":"model + harness","textChars":15,"textLines":1,"bbox":[552,410,176,28]}
+{"kind":"textbox","id":"sh/8nehwvmt","slide":6,"name":"tool-boundary","text":"TOOLS INCREASE REACH—NOT INTENT","textPreview":"TOOLS INCREASE REACH—NOT INTENT","textChars":31,"textLines":1,"bbox":[395,568,490,40]}
+{"kind":"shape","id":"sh/9oni503y","slide":6,"name":"footer-line-6","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/mlczu54n","slide":6,"name":"source-6","text":"[4] Claude Code · [5] Cursor Agent","textPreview":"[4] Claude Code · [5] Cursor Agent","textChars":34,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/7ml03ql8","slide":6,"name":"folio-6","text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/uuoqbw","slide":6,"text":"Narrative job: explain why the harness matters as much as the model.\nPrimary claim: Claude Code, Cursor, and comparable harnesses connected models to search, file editing, terminals, tests, and source control.\nOptional timing cut: omit the supporting Cursor sentence.\nTiming: 2:10\n\n[Sources]\n[4] Anthropic, Claude 3.7 Sonnet and Claude Code, 2025-02-24: https://www.anthropic.com/news/claude-3-7-sonnet\n[5] Cursor, Agent Overview, accessed 2026-07-26: https://docs.cursor.com/en/agent/overview\n[/Sources]"}
+{"kind":"slide","id":"sl/kpejst","slide":7,"title":"2025 · CONDITIONAL CONTEXT","textShapes":11}
+{"kind":"shape","id":"sh/faxsnitg","slide":7,"name":"header-current-7","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/0bqtwnal","slide":7,"name":"eyebrow-7","text":"2025 · CONDITIONAL CONTEXT","textPreview":"2025 · CONDITIONAL CONTEXT","textChars":26,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/1czupsb6","slide":7,"name":"title-7","text":"Skills made context conditional","textPreview":"Skills made context conditional","textChars":31,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/2d8byxsr","slide":7,"name":"subtitle-7","text":"A task signal can load specialized procedure only when the work calls for it.","textPreview":"A task signal can load specialized procedure only when the work calls for it.","textChars":77,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/nehcr2tc","slide":7,"name":"skill-signal-arrow","bbox":[380,346,190,42]}
+{"kind":"shape","id":"sh/ofqt07ax","slide":7,"name":"skill-load-arrow","bbox":[708,346,190,42]}
+{"kind":"shape","id":"sh/p0zutcbi","slide":7,"name":"skill-folder","bbox":[72,229,330,284]}
+{"kind":"shape","id":"sh/a18b2xs3","slide":7,"name":"skill-folder-tab","bbox":[98,205,142,50]}
+{"kind":"textbox","id":"sh/b21cv2t8","slide":7,"name":"skill-file","text":"SKILL.md","textPreview":"SKILL.md","textChars":8,"textLines":1,"bbox":[104,284,266,54]}
+{"kind":"textbox","id":"sh/7yx4ve5k","slide":7,"name":"skill-contents","text":"instructions\nscripts\nresources","textPreview":"instructions | scripts | resources","textChars":30,"textLines":3,"bbox":[104,359,230,104]}
+{"kind":"shape","id":"sh/6xonm94f","slide":7,"name":"skill-match","bbox":[535,275,210,210]}
+{"kind":"textbox","id":"sh/t0fmxonq","slide":7,"name":"skill-match-text","text":"TASK\nMATCH","textPreview":"TASK | MATCH","textChars":10,"textLines":2,"bbox":[570,330,140,86]}
+{"kind":"shape","id":"sh/sz65ojm5","slide":7,"name":"active-context","bbox":[870,228,338,286]}
+{"kind":"textbox","id":"sh/jud4re5o","slide":7,"name":"active-context-label","text":"ACTIVE CONTEXT","textPreview":"ACTIVE CONTEXT","textChars":14,"textLines":1,"bbox":[904,270,270,32]}
+{"kind":"textbox","id":"sh/yt43i943","slide":7,"name":"active-context-body","text":"Metadata stays visible.\n\nFull procedure loads\nwhen relevant.","textPreview":"Metadata stays visible. |  | Full procedure loads | when relevant.","textChars":60,"textLines":4,"bbox":[910,327,258,132]}
+{"kind":"textbox","id":"sh/lwvmtonu","slide":7,"name":"skill-limit","text":"PROJECT STATE STILL NEEDS DURABLE OWNERSHIP","textPreview":"PROJECT STATE STILL NEEDS DURABLE OWNERSHIP","textChars":43,"textLines":1,"bbox":[350,563,580,40]}
+{"kind":"shape","id":"sh/kvm5kjm9","slide":7,"name":"footer-line-7","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/3qh43y5s","slide":7,"name":"source-7","text":"[6] Agent Skills and SKILL.md","textPreview":"[6] Agent Skills and SKILL.md","textChars":29,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/2p8nut47","slide":7,"name":"folio-7","text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/kpejst","slide":7,"text":"Narrative job: introduce Agent Skills as a bridge from reusable prompts to task-triggered procedural knowledge.\nPrimary claim: SKILL.md packages instructions and resources that an agent discovers and loads when relevant.\nTiming: 2:00\n\n[Sources]\n[6] Anthropic, Equipping agents for the real world with Agent Skills, 2025-10-16; open-standard update 2025-12-18: https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills\n[/Sources]"}
+{"kind":"slide","id":"sl/zw02fz","slide":8,"title":"LONG-HORIZON, GOAL-DRIVEN WORK","textShapes":17}
+{"kind":"shape","id":"sh/h8budkbq","slide":8,"name":"header-current-8","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/u5kv25cz","slide":8,"name":"eyebrow-8","text":"LONG-HORIZON, GOAL-DRIVEN WORK","textPreview":"LONG-HORIZON, GOAL-DRIVEN WORK","textChars":30,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/v6tcbatk","slide":8,"name":"title-8","text":"The work is outgrowing a single context window","textPreview":"The work is outgrowing a single context window","textChars":46,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/4bmd8fu1","slide":8,"name":"subtitle-8","text":"Larger delegated tasks make continuity, recovery, and completion criteria part of the engineering problem.","textPreview":"Larger delegated tasks make continuity, recovery, and completion criteria part of the engineering problem.","textChars":106,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/5cvehkbm","slide":8,"name":"horizon-metric-panel","bbox":[72,212,520,330]}
+{"kind":"textbox","id":"sh/i9kv65cv","slide":8,"name":"horizon-metric-kicker","text":"CODEX USAGE STUDY","textPreview":"CODEX USAGE STUDY","textChars":17,"textLines":1,"bbox":[112,246,440,28]}
+{"kind":"textbox","id":"sh/jadwfatg","slide":8,"name":"horizon-metric-value","text":"25.6%","textPreview":"25.6%","textChars":5,"textLines":1,"bbox":[112,292,440,108]}
+{"kind":"textbox","id":"sh/szmdczad","slide":8,"name":"horizon-metric-copy","text":"of sampled individual users submitted at least one request estimated above eight hours of human work","textPreview":"of sampled individual users submitted at least one request estimated above eight hours of human work","textChars":100,"textLines":1,"bbox":[122,410,420,92]}
+{"kind":"shape","id":"sh/t0vel4bi","slide":8,"name":"horizon-continuity-panel","bbox":[628,212,580,330]}
+{"kind":"textbox","id":"sh/lobytwva","slide":8,"name":"horizon-continuity-kicker","text":"LONG-RUNNING HARNESS WORK","textPreview":"LONG-RUNNING HARNESS WORK","textChars":25,"textLines":1,"bbox":[668,246,500,28]}
+{"kind":"shape","id":"sh/0n2hkrup","slide":8,"name":"horizon-window-arrow-1","bbox":[822,354,36,28]}
+{"kind":"shape","id":"sh/zmtgrmd4","slide":8,"name":"horizon-window-arrow-2","bbox":[1000,354,36,28]}
+{"kind":"shape","id":"sh/yl0zihcj","slide":8,"name":"horizon-window-1","bbox":[684,310,138,132]}
+{"kind":"textbox","id":"sh/9sbyxwvm","slide":8,"name":"horizon-window-label-1","text":"CONTEXT\nWINDOW 1","textPreview":"CONTEXT | WINDOW 1","textChars":16,"textLines":2,"bbox":[696,333,114,50]}
+{"kind":"textbox","id":"sh/8r2horu1","slide":8,"name":"horizon-window-detail-1","text":"initialize","textPreview":"initialize","textChars":10,"textLines":1,"bbox":[696,400,114,24]}
+{"kind":"shape","id":"sh/nqtgvmdg","slide":8,"name":"horizon-window-2","bbox":[862,310,138,132]}
+{"kind":"textbox","id":"sh/mpkzm1cv","slide":8,"name":"horizon-window-label-2","text":"CONTEXT\nWINDOW 2","textPreview":"CONTEXT | WINDOW 2","textChars":16,"textLines":2,"bbox":[874,333,114,50]}
+{"kind":"textbox","id":"sh/pwrylcv2","slide":8,"name":"horizon-window-detail-2","text":"continue","textPreview":"continue","textChars":8,"textLines":1,"bbox":[874,400,114,24]}
+{"kind":"shape","id":"sh/ovixc7uh","slide":8,"name":"horizon-window-3","bbox":[1040,310,138,132]}
+{"kind":"textbox","id":"sh/gbmpob6p","slide":8,"name":"horizon-window-label-3","text":"CONTEXT\nWINDOW 3","textPreview":"CONTEXT | WINDOW 3","textChars":16,"textLines":2,"bbox":[1052,333,114,50]}
+{"kind":"textbox","id":"sh/1cvqhw7a","slide":8,"name":"horizon-window-detail-3","text":"verify","textPreview":"verify","textChars":6,"textLines":1,"bbox":[1052,400,114,24]}
+{"kind":"textbox","id":"sh/e947m1oj","slide":8,"name":"horizon-continuity-copy","text":"Durable requirements and progress records carry the goal forward.","textPreview":"Durable requirements and progress records carry the goal forward.","textChars":65,"textLines":1,"bbox":[680,468,476,46]}
+{"kind":"textbox","id":"sh/fad8f6p4","slide":8,"name":"timeline-caveat","text":"HUMAN-EQUIVALENT TASK SIZE IS NOT ELAPSED AGENT RUNTIME","textPreview":"HUMAN-EQUIVALENT TASK SIZE IS NOT ELAPSED AGENT RUNTIME","textChars":55,"textLines":1,"bbox":[342,578,596,42]}
+{"kind":"shape","id":"sh/of6psb6l","slide":8,"name":"footer-line-8","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/pgfqlg76","slide":8,"name":"source-8","text":"[8] Codex usage study · [9] long-running harnesses · [12] METR methodology","textPreview":"[8] Codex usage study · [9] long-running harnesses · [12] METR methodology","textChars":74,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/2do7q1ov","slide":8,"name":"folio-8","text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/zw02fz","slide":8,"text":"Narrative job: establish with concrete evidence that the unit of work can now be a delegated engineering goal whose continuity spans multiple working contexts.\nMandatory caveat: the 25.6 percent figure is a vendor study of estimated human-equivalent task size. A benchmark or human-equivalent eight-hour task is not eight hours of elapsed agent runtime.\nTiming: 2:20\n\n[Sources]\n[8] OpenAI, How agents are transforming work, 2026-06-25: https://openai.com/index/how-agents-are-transforming-work/\n[9] Anthropic, Effective harnesses for long-running agents, 2025-11-26: https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents\n[12] METR, Task-Completion Time Horizons of Frontier AI Models, updated 2026-05-08: https://metr.org/time-horizons/\n[/Sources]"}
+{"kind":"slide","id":"sl/qxpmis","slide":9,"title":"CAPABILITY IS A SYSTEM","textShapes":15}
+{"kind":"shape","id":"sh/o3qlwbe1","slide":9,"name":"header-current-9","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/32hk36xw","slide":9,"name":"eyebrow-9","text":"CAPABILITY IS A SYSTEM","textPreview":"CAPABILITY IS A SYSTEM","textChars":22,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/2183u1wb","slide":9,"name":"title-9","text":"Four capabilities improved together","textPreview":"Four capabilities improved together","textChars":35,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/d8jm9gfy","slide":9,"name":"subtitle-9","text":"Model quality, context capacity, harness reach, and task horizon reinforce one another—but remain distinct.","textPreview":"Model quality, context capacity, harness reach, and task horizon reinforce one another—but remain distinct.","textChars":107,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/c7ql0bed","slide":9,"name":"system-stream-1","bbox":[72,223,760,48]}
+{"kind":"textbox","id":"sh/b6hk76xs","slide":9,"name":"system-stream-label-1","text":"MODEL CAPABILITY","textPreview":"MODEL CAPABILITY","textChars":16,"textLines":1,"bbox":[100,233,280,28]}
+{"kind":"textbox","id":"sh/q583ylw7","slide":9,"name":"system-stream-detail-1","text":"reasoning + generation","textPreview":"reasoning + generation","textChars":22,"textLines":1,"bbox":[390,234,290,26]}
+{"kind":"shape","id":"sh/tcf2xwfe","slide":9,"name":"system-stream-2","bbox":[72,312,808,48]}
+{"kind":"textbox","id":"sh/sb6lore9","slide":9,"name":"system-stream-label-2","text":"CONTEXT CAPACITY","textPreview":"CONTEXT CAPACITY","textChars":16,"textLines":1,"bbox":[100,322,280,28]}
+{"kind":"textbox","id":"sh/yl4by5gr","slide":9,"name":"system-stream-detail-2","text":"larger working windows","textPreview":"larger working windows","textChars":22,"textLines":1,"bbox":[390,323,290,26]}
+{"kind":"shape","id":"sh/zmdsrahc","slide":9,"name":"system-stream-3","bbox":[72,401,856,48]}
+{"kind":"textbox","id":"sh/knmt0fyx","slide":9,"name":"system-stream-label-3","text":"HARNESS + TOOLS","textPreview":"HARNESS + TOOLS","textChars":15,"textLines":1,"bbox":[100,411,280,28]}
+{"kind":"textbox","id":"sh/lovatkzi","slide":9,"name":"system-stream-detail-3","text":"search · edit · run · test","textPreview":"search · edit · run · test","textChars":26,"textLines":1,"bbox":[390,412,290,26]}
+{"kind":"shape","id":"sh/mp4b2pg3","slide":9,"name":"system-stream-4","bbox":[72,490,904,48]}
+{"kind":"textbox","id":"sh/7qdsvuxo","slide":9,"name":"system-stream-label-4","text":"TASK HORIZON","textPreview":"TASK HORIZON","textChars":12,"textLines":1,"bbox":[100,500,280,28]}
+{"kind":"textbox","id":"sh/8rmt4fy9","slide":9,"name":"system-stream-detail-4","text":"multi-turn goal pursuit","textPreview":"multi-turn goal pursuit","textChars":23,"textLines":1,"bbox":[390,501,290,26]}
+{"kind":"shape","id":"sh/9svaxkfe","slide":9,"name":"system-channel","bbox":[1012,220,196,322]}
+{"kind":"textbox","id":"sh/utob6pgz","slide":9,"name":"system-channel-title","text":"WIDER\nUNIT OF\nWORK","textPreview":"WIDER | UNIT OF | WORK","textChars":18,"textLines":3,"bbox":[1040,298,140,132]}
+{"kind":"textbox","id":"sh/vuxszuxk","slide":9,"name":"system-channel-detail","text":"system outcome","textPreview":"system outcome","textChars":14,"textLines":1,"bbox":[1035,467,150,28]}
+{"kind":"shape","id":"sh/rixsnuds","slide":9,"name":"footer-line-9","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/6horepw7","slide":9,"name":"source-9","text":"[3] reasoning · [4] harness · [8] horizon · [10] context","textPreview":"[3] reasoning · [4] harness · [8] horizon · [10] context","textChars":56,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/tkzap4vy","slide":9,"name":"folio-9","text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/qxpmis","slide":9,"text":"Narrative job: separate capability dimensions that are often collapsed into the phrase the model got better.\nOptional timing cut: present only the four labels and skip examples.\nTiming: 1:40\n\n[Sources]\n[3] OpenAI, Learning to reason with LLMs: https://openai.com/index/learning-to-reason-with-llms/\n[4] Anthropic, Claude 3.7 Sonnet and Claude Code: https://www.anthropic.com/news/claude-3-7-sonnet\n[8] OpenAI, How agents are transforming work: https://openai.com/index/how-agents-are-transforming-work/\n[10] OpenAI, Introducing GPT-4.1 in the API: https://openai.com/index/gpt-4-1/\n[/Sources]"}
+{"kind":"slide","id":"sl/1hb192","slide":10,"title":"CONTEXT CAPACITY","textShapes":12}
+{"kind":"shape","id":"sh/ret8j2hk","slide":10,"name":"header-current-10","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/cf2pc7y5","slide":10,"name":"eyebrow-10","text":"CONTEXT CAPACITY","textPreview":"CONTEXT CAPACITY","textChars":16,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/dgbqlczq","slide":10,"name":"title-10","text":"Capacity is not continuity","textPreview":"Capacity is not continuity","textChars":26,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/2p076xg3","slide":10,"name":"subtitle-10","text":"A larger reservoir helps only when the working channel selects, maintains, and recovers the right context.","textPreview":"A larger reservoir helps only when the working channel selects, maintains, and recovers the right context.","textChars":106,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/3q9ofiho","slide":10,"name":"context-reservoir","bbox":[72,201,520,372]}
+{"kind":"textbox","id":"sh/4bip8ny9","slide":10,"name":"context-reservoir-number","text":"1M","textPreview":"1M","textChars":2,"textLines":1,"bbox":[160,267,344,104]}
+{"kind":"textbox","id":"sh/pcrqhszu","slide":10,"name":"context-reservoir-label","text":"tokens of capacity\nin GPT-4.1","textPreview":"tokens of capacity | in GPT-4.1","textChars":29,"textLines":2,"bbox":[162,385,340,76]}
+{"kind":"textbox","id":"sh/ul072dg7","slide":10,"name":"context-reservoir-caveat","text":"Capacity ≠ perfect retrieval","textPreview":"Capacity ≠ perfect retrieval","textChars":28,"textLines":1,"bbox":[162,488,340,30]}
+{"kind":"shape","id":"sh/fm9obihs","slide":10,"name":"context-channel","bbox":[548,354,660,62]}
+{"kind":"shape","id":"sh/3ylg3ahs","slide":10,"name":"context-gate-1","bbox":[682,305,142,160]}
+{"kind":"textbox","id":"sh/2xcfa507","slide":10,"name":"context-gate-label-1","text":"SELECT","textPreview":"SELECT","textChars":6,"textLines":1,"bbox":[692,360,122,32]}
+{"kind":"shape","id":"sh/p0ny50zi","slide":10,"name":"context-gate-2","bbox":[850,305,142,160]}
+{"kind":"textbox","id":"sh/ozuxcfid","slide":10,"name":"context-gate-label-2","text":"MAINTAIN","textPreview":"MAINTAIN","textChars":8,"textLines":1,"bbox":[860,360,122,32]}
+{"kind":"shape","id":"sh/bm5g7aho","slide":10,"name":"context-gate-3","bbox":[1032,305,142,160]}
+{"kind":"textbox","id":"sh/q1wfe503","slide":10,"name":"context-gate-label-3","text":"RECOVER","textPreview":"RECOVER","textChars":7,"textLines":1,"bbox":[1042,360,122,32]}
+{"kind":"textbox","id":"sh/dony9kzu","slide":10,"name":"context-conclusion","text":"BIGGER WINDOWS HELP · DURABLE PROJECT STATE STILL MATTERS","textPreview":"BIGGER WINDOWS HELP · DURABLE PROJECT STATE STILL MATTERS","textChars":57,"textLines":1,"bbox":[318,584,644,40]}
+{"kind":"shape","id":"sh/cnexgfi9","slide":10,"name":"footer-line-10","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/r61wvqhk","slide":10,"name":"source-10","text":"[10] GPT-4.1 context · [11] context-engineering guidance","textPreview":"[10] GPT-4.1 context · [11] context-engineering guidance","textChars":56,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/65sf2l0z","slide":10,"name":"folio-10","text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/1hb192","slide":10,"text":"Narrative job: overturn the assumption that a larger window is a project-memory system.\nPrimary claim: one-million-token capacity and long-context improvements coexist with retrieval limits and the need to curate high-signal context.\nTiming: 2:10\n\n[Sources]\n[10] OpenAI, Introducing GPT-4.1 in the API, 2025-04-14: https://openai.com/index/gpt-4-1/\n[11] Anthropic, Effective context engineering for AI agents, 2025-09-29: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents\n[/Sources]"}
+{"kind":"slide","id":"sl/y7j31w","slide":11,"title":"THE SDLC IMPLICATION","textShapes":12}
+{"kind":"shape","id":"sh/vm5kbuxc","slide":11,"name":"header-current-11","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/gnel4zex","slide":11,"name":"eyebrow-11","text":"THE SDLC IMPLICATION","textPreview":"THE SDLC IMPLICATION","textChars":20,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/hon2d4fi","slide":11,"name":"title-11","text":"Context engineering becomes SDLC engineering","textPreview":"Context engineering becomes SDLC engineering","textChars":44,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/6hc3ypwv","slide":11,"name":"subtitle-11","text":"A capable agent stays dependable only when durable anchors hold intent, authority, and proof in place.","textPreview":"A capable agent stays dependable only when durable anchors hold intent, authority, and proof in place.","textChars":102,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/7ilk7ax0","slide":11,"name":"anchor-current-underlay","bbox":[118,392,1044,24]}
+{"kind":"shape","id":"sh/8jul0fel","slide":11,"name":"anchor-current","bbox":[118,386,1044,36]}
+{"kind":"shape","id":"sh/tkn29kf6","slide":11,"name":"anchor-line-1","bbox":[285,282,4,190]}
+{"kind":"shape","id":"sh/qdg3a9wz","slide":11,"name":"anchor-weight-1","bbox":[260,447,54,54]}
+{"kind":"shape","id":"sh/rep4jexk","slide":11,"name":"anchor-label-1","bbox":[128,217,318,116]}
+{"kind":"textbox","id":"sh/nutkvqlk","slide":11,"name":"anchor-title-1","text":"SPECIFICATION","textPreview":"SPECIFICATION","textChars":13,"textLines":1,"bbox":[146,240,282,30]}
+{"kind":"textbox","id":"sh/mtk3ml4z","slide":11,"name":"anchor-detail-1","text":"what good looks like","textPreview":"what good looks like","textChars":20,"textLines":1,"bbox":[146,282,282,26]}
+{"kind":"shape","id":"sh/9wv2x03q","slide":11,"name":"anchor-line-2","bbox":[626,282,4,190]}
+{"kind":"shape","id":"sh/ov2lovm5","slide":11,"name":"anchor-weight-2","bbox":[601,447,54,54]}
+{"kind":"shape","id":"sh/bidkzalg","slide":11,"name":"anchor-label-2","bbox":[469,217,318,116]}
+{"kind":"textbox","id":"sh/ah43q54b","slide":11,"name":"anchor-title-2","text":"GUARDRAILS","textPreview":"GUARDRAILS","textChars":10,"textLines":1,"bbox":[487,240,282,30]}
+{"kind":"textbox","id":"sh/xkv2103m","slide":11,"name":"anchor-detail-2","text":"what must stay bounded","textPreview":"what must stay bounded","textChars":22,"textLines":1,"bbox":[487,282,282,26]}
+{"kind":"shape","id":"sh/wjmlsfm1","slide":11,"name":"anchor-line-3","bbox":[967,282,4,190]}
+{"kind":"shape","id":"sh/jmdk3als","slide":11,"name":"anchor-weight-3","bbox":[942,447,54,54]}
+{"kind":"shape","id":"sh/yl43u547","slide":11,"name":"anchor-label-3","bbox":[810,217,318,116]}
+{"kind":"textbox","id":"sh/uh8nm9of","slide":11,"name":"anchor-title-3","text":"EVIDENCE","textPreview":"EVIDENCE","textChars":8,"textLines":1,"bbox":[828,240,282,30]}
+{"kind":"textbox","id":"sh/vihove50","slide":11,"name":"anchor-detail-3","text":"what proves completion","textPreview":"what proves completion","textChars":22,"textLines":1,"bbox":[828,282,282,26]}
+{"kind":"textbox","id":"sh/gjq5oj6l","slide":11,"name":"anchor-conclusion","text":"Without these anchors, reach grows faster than reliability.","textPreview":"Without these anchors, reach grows faster than reliability.","textChars":59,"textLines":1,"bbox":[230,548,820,44]}
+{"kind":"shape","id":"sh/hkz6xon6","slide":11,"name":"footer-line-11","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/6doni9oj","slide":11,"name":"source-11","text":"[9] long-running harnesses · [11] context engineering","textPreview":"[9] long-running harnesses · [11] context engineering","textChars":53,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/7exore5o","slide":11,"name":"folio-11","text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/y7j31w","slide":11,"text":"Narrative job: land the central takeaway before introducing mdkg.\nPrimary claim: capable coding agents still need durable specifications, guardrails, and evidence to form a dependable SDLC.\nDo not cut this slide.\nTiming: 1:50\n\n[Sources]\n[9] Anthropic, Effective harnesses for long-running agents: https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents\n[11] Anthropic, Effective context engineering for AI agents: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents\n[/Sources]"}
+{"kind":"slide","id":"sl/hxghvt","slide":12,"title":"WHY MDKG","textShapes":13}
+{"kind":"shape","id":"sh/twnatcfy","slide":12,"name":"header-current-12","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/6twrixg7","slide":12,"name":"eyebrow-12","text":"WHY MDKG","textPreview":"WHY MDKG","textChars":8,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/7u5sr2xs","slide":12,"name":"title-12","text":"I built mdkg to stay at the architecture layer","textPreview":"I built mdkg to stay at the architecture layer","textChars":46,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/gje9oryp","slide":12,"name":"subtitle-12","text":"The goal was not to type faster. It was to make better decisions—and give agents durable structure to execute them.","textPreview":"The goal was not to type faster. It was to make better decisions—and give agents durable structure to execute them.","textChars":115,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/hk7axwfu","slide":12,"name":"creator-noise-field","bbox":[72,213,470,338]}
+{"kind":"textbox","id":"sh/uxwrmhgj","slide":12,"name":"creator-noise-1","text":"more tabs","textPreview":"more tabs","textChars":9,"textLines":1,"bbox":[111,248,250,32]}
+{"kind":"textbox","id":"sh/fy5svmx4","slide":12,"name":"creator-noise-2","text":"longer prompts","textPreview":"longer prompts","textChars":14,"textLines":1,"bbox":[220,318,250,32]}
+{"kind":"textbox","id":"sh/w3u9cny5","slide":12,"name":"creator-noise-3","text":"re-explain context","textPreview":"re-explain context","textChars":18,"textLines":1,"bbox":[122,401,250,32]}
+{"kind":"textbox","id":"sh/xo3qlsfq","slide":12,"name":"creator-noise-4","text":"repeat the plan","textPreview":"repeat the plan","textChars":15,"textLines":1,"bbox":[264,471,250,32]}
+{"kind":"shape","id":"sh/pcfixw7q","slide":12,"name":"creator-transition-arrow","bbox":[547,349,126,48]}
+{"kind":"shape","id":"sh/4b6h4rq5","slide":12,"name":"creator-focus-plane","bbox":[687,197,521,370]}
+{"kind":"textbox","id":"sh/3ax0vmpk","slide":12,"name":"creator-focus-kicker","text":"HUMAN ATTENTION","textPreview":"HUMAN ATTENTION","textChars":15,"textLines":1,"bbox":[729,242,430,28]}
+{"kind":"textbox","id":"sh/29oz2h8f","slide":12,"name":"creator-focus-architecture","text":"ARCHITECTURE","textPreview":"ARCHITECTURE","textChars":12,"textLines":1,"bbox":[719,308,458,58]}
+{"kind":"shape","id":"sh/d0zi1g72","slide":12,"name":"creator-focus-rule","bbox":[759,386,378,3]}
+{"kind":"textbox","id":"sh/cz618bqh","slide":12,"name":"creator-focus-planning","text":"PLANNING","textPreview":"PLANNING","textChars":8,"textLines":1,"bbox":[719,414,458,58]}
+{"kind":"textbox","id":"sh/rex0z6pw","slide":12,"name":"creator-focus-detail","text":"agents execute within durable structure","textPreview":"agents execute within durable structure","textChars":39,"textLines":1,"bbox":[729,507,438,28]}
+{"kind":"textbox","id":"sh/qdoj618b","slide":12,"name":"creator-takeaway","text":"PERSONAL-PROJECT VELOCITY WITHOUT GIVING UP DESIGN JUDGMENT","textPreview":"PERSONAL-PROJECT VELOCITY WITHOUT GIVING UP DESIGN JUDGMENT","textChars":59,"textLines":1,"bbox":[288,588,704,40]}
+{"kind":"shape","id":"sh/14zi5g7y","slide":12,"name":"footer-line-12","bbox":[72,663,1136,2]}
+{"kind":"shape","id":"sh/03q1cbqd","slide":12,"name":"source-12","bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/k7yl8fep","slide":12,"name":"folio-12","text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/hxghvt","slide":12,"text":"Narrative job: provide a brief personal transition without turning the talk into a founder story.\nSpeaker cue: I wanted to move faster on personal projects, but the part I cared about was not typing more code. It was making the architecture and planning decisions—and giving agents enough durable structure to execute them.\nTiming: 1:10\n\n[Sources]\nFirst-person creator account; no external factual claim.\n[/Sources]"}
+{"kind":"slide","id":"sl/s0ave7","slide":13,"title":"THE MISSING LAYER","textShapes":15}
+{"kind":"shape","id":"sh/ap8nqtw3","slide":13,"name":"header-current-13","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/xsj61ove","slide":13,"name":"eyebrow-13","text":"THE MISSING LAYER","textPreview":"THE MISSING LAYER","textChars":17,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/wra5sjet","slide":13,"name":"title-13","text":"The missing layer is durable project state","textPreview":"The missing layer is durable project state","textChars":42,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/je1o3ydk","slide":13,"name":"subtitle-13","text":"A transcript can help a conversation. A repository must preserve what the next human or agent needs to act.","textPreview":"A transcript can help a conversation. A repository must preserve what the next human or agent needs to act.","textChars":107,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/yts7utwz","slide":13,"name":"state-arrow","bbox":[484,344,170,48]}
+{"kind":"shape","id":"sh/lgj658vq","slide":13,"name":"state-chat","bbox":[72,219,430,326]}
+{"kind":"textbox","id":"sh/kfapw3e5","slide":13,"name":"state-chat-title","text":"CHAT","textPreview":"CHAT","textChars":4,"textLines":1,"bbox":[108,255,160,36]}
+{"kind":"textbox","id":"sh/7ilo7ydg","slide":13,"name":"state-chat-lines","text":"“Here is the goal…”\n\n“Remember the constraint…”\n\n“What did we decide?”","textPreview":"“Here is the goal…” |  | “Remember the constraint…” |  | “What did we decide?”","textChars":70,"textLines":5,"bbox":[108,314,346,166]}
+{"kind":"textbox","id":"sh/6hc7ydwb","slide":13,"name":"state-chat-fade","text":"conversation fades","textPreview":"conversation fades","textChars":18,"textLines":1,"bbox":[108,499,260,24]}
+{"kind":"shape","id":"sh/0j2h4v2p","slide":13,"name":"state-repo","bbox":[638,197,570,370]}
+{"kind":"textbox","id":"sh/lkvyd03a","slide":13,"name":"state-repo-title","text":"REPOSITORY-OWNED STATE","textPreview":"REPOSITORY-OWNED STATE","textChars":22,"textLines":1,"bbox":[682,231,484,38]}
+{"kind":"shape","id":"sh/ehkz2lkj","slide":13,"name":"state-row-rule-1","bbox":[682,298,36,4]}
+{"kind":"textbox","id":"sh/zitgbql4","slide":13,"name":"state-row-1","text":"requirements","textPreview":"requirements","textChars":12,"textLines":1,"bbox":[742,283,390,30]}
+{"kind":"shape","id":"sh/8nmh8v21","slide":13,"name":"state-row-rule-2","bbox":[682,348,36,4]}
+{"kind":"textbox","id":"sh/9ovyh036","slide":13,"name":"state-row-2","text":"decisions","textPreview":"decisions","textChars":9,"textLines":1,"bbox":[742,333,390,30]}
+{"kind":"shape","id":"sh/ml4z6lkv","slide":13,"name":"state-row-rule-3","bbox":[682,398,36,4]}
+{"kind":"textbox","id":"sh/nmdgfqlg","slide":13,"name":"state-row-3","text":"authority","textPreview":"authority","textChars":9,"textLines":1,"bbox":[742,383,390,30]}
+{"kind":"shape","id":"sh/wbmhcf2x","slide":13,"name":"state-row-rule-4","bbox":[682,448,36,4]}
+{"kind":"textbox","id":"sh/xcfylkji","slide":13,"name":"state-row-4","text":"accepted evidence","textPreview":"accepted evidence","textChars":17,"textLines":1,"bbox":[742,433,390,30]}
+{"kind":"shape","id":"sh/5wrq9g7a","slide":13,"name":"state-row-rule-5","bbox":[682,498,36,4]}
+{"kind":"textbox","id":"sh/kvipgbqp","slide":13,"name":"state-row-5","text":"next authorized work","textPreview":"next authorized work","textChars":20,"textLines":1,"bbox":[742,483,390,30]}
+{"kind":"textbox","id":"sh/ju9876p4","slide":13,"name":"state-conclusion","text":"REVIEWABLE · ADDRESSABLE · RECOVERABLE","textPreview":"REVIEWABLE · ADDRESSABLE · RECOVERABLE","textChars":38,"textLines":1,"bbox":[390,595,500,38]}
+{"kind":"shape","id":"sh/itg7e18z","slide":13,"name":"footer-line-13","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/tkrqdg7m","slide":13,"name":"source-13","text":"[14] mdkg project-state operating model","textPreview":"[14] mdkg project-state operating model","textChars":39,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/sjipkbq1","slide":13,"name":"folio-13","text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/s0ave7","slide":13,"text":"Narrative job: define the problem mdkg addresses without presenting a CLI feature list.\nPrimary claim: chat transcripts and large prompts do not, by themselves, preserve scope, decisions, authority, accepted evidence, and next work as reviewable project state.\nTiming: 1:50\n\n[Sources]\nProgram requirements: presentations/ai-native-sdlc-demo/.mdkg/design/prd-1-ai-native-sdlc-presentation-and-live-demo-program-requirements.md\n[/Sources]"}
+{"kind":"slide","id":"sl/eevt2k","slide":14,"title":"THE OPERATING MODEL","textShapes":15}
+{"kind":"shape","id":"sh/fy1srutk","slide":14,"name":"header-current-14","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/0ja9kza5","slide":14,"name":"eyebrow-14","text":"THE OPERATING MODEL","textPreview":"THE OPERATING MODEL","textChars":19,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/1kjat4bq","slide":14,"name":"title-14","text":"Plan → Work → Evidence","textPreview":"Plan → Work → Evidence","textChars":22,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/qt8re5s3","slide":14,"name":"subtitle-14","text":"One durable loop connects explicit intent to bounded execution and inspectable proof.","textPreview":"One durable loop connects explicit intent to bounded execution and inspectable proof.","textChars":85,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/ruhsnat8","slide":14,"name":"pwe-arrow-1","bbox":[411,328,54,34]}
+{"kind":"shape","id":"sh/svq9gfat","slide":14,"name":"pwe-arrow-2","bbox":[814,328,54,34]}
+{"kind":"shape","id":"sh/dwzapkbe","slide":14,"name":"pwe-card-1","bbox":[72,208,330,278]}
+{"kind":"shape","id":"sh/apcrq9s7","slide":14,"name":"pwe-topwash-1","bbox":[74,210,326,99]}
+{"kind":"shape","id":"sh/bqlsze9s","slide":14,"name":"pwe-accent-1","bbox":[94,232,58,58]}
+{"kind":"textbox","id":"sh/72d03yds","slide":14,"name":"pwe-number-1","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[96,249,54,23]}
+{"kind":"textbox","id":"sh/614zutc7","slide":14,"name":"pwe-title-1","text":"PLAN","textPreview":"PLAN","textChars":4,"textLines":1,"bbox":[172,241,204,39]}
+{"kind":"shape","id":"sh/t4vi58vy","slide":14,"name":"pwe-rule-1","bbox":[94,320,286,2]}
+{"kind":"textbox","id":"sh/83m1w3ud","slide":14,"name":"pwe-detail-1","text":"Requirements\nDecisions\nGuardrails","textPreview":"Requirements | Decisions | Guardrails","textChars":33,"textLines":3,"bbox":[96,348,280,112]}
+{"kind":"shape","id":"sh/vqd07ido","slide":14,"name":"pwe-card-2","bbox":[475,208,330,278]}
+{"kind":"shape","id":"sh/up4jydc3","slide":14,"name":"pwe-topwash-2","bbox":[477,210,326,99]}
+{"kind":"shape","id":"sh/hsfi9svu","slide":14,"name":"pwe-accent-2","bbox":[497,232,58,58]}
+{"kind":"textbox","id":"sh/gr610nu9","slide":14,"name":"pwe-number-2","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[499,249,54,23]}
+{"kind":"textbox","id":"sh/3ux0bid0","slide":14,"name":"pwe-title-2","text":"WORK","textPreview":"WORK","textChars":4,"textLines":1,"bbox":[575,241,204,39]}
+{"kind":"shape","id":"sh/itoj2dcf","slide":14,"name":"pwe-rule-2","bbox":[497,320,286,2]}
+{"kind":"textbox","id":"sh/ep83uhwn","slide":14,"name":"pwe-detail-2","text":"One bounded node\nExplicit authority\nClear handoff","textPreview":"One bounded node | Explicit authority | Clear handoff","textChars":49,"textLines":3,"bbox":[499,348,280,112]}
+{"kind":"shape","id":"sh/fqh43mx8","slide":14,"name":"pwe-card-3","bbox":[878,208,330,278]}
+{"kind":"shape","id":"sh/0ralwret","slide":14,"name":"pwe-topwash-3","bbox":[880,210,326,99]}
+{"kind":"shape","id":"sh/1sjm5wfe","slide":14,"name":"pwe-accent-3","bbox":[900,232,58,58]}
+{"kind":"textbox","id":"sh/ql83qhwb","slide":14,"name":"pwe-number-3","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[902,249,54,23]}
+{"kind":"textbox","id":"sh/rmhkzmxw","slide":14,"name":"pwe-title-3","text":"EVIDENCE","textPreview":"EVIDENCE","textChars":8,"textLines":1,"bbox":[978,241,204,39]}
+{"kind":"shape","id":"sh/snqlsreh","slide":14,"name":"pwe-rule-3","bbox":[900,320,286,2]}
+{"kind":"textbox","id":"sh/doz21cf2","slide":14,"name":"pwe-detail-3","text":"Tests + receipts\nCheckpoints\nValidated state","textPreview":"Tests + receipts | Checkpoints | Validated state","textChars":44,"textLines":3,"bbox":[902,348,280,112]}
+{"kind":"shape","id":"sh/ahs321wv","slide":14,"name":"pwe-conclusion","bbox":[235,540,810,70]}
+{"kind":"textbox","id":"sh/bil4b6xg","slide":14,"name":"pwe-conclusion-text","text":"THE FINISH LINE IS ACCEPTED EVIDENCE.","textPreview":"THE FINISH LINE IS ACCEPTED EVIDENCE.","textChars":37,"textLines":1,"bbox":[270,562,740,28]}
+{"kind":"shape","id":"sh/5o7eh43u","slide":14,"name":"footer-line-14","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/knyxoz29","slide":14,"name":"source-14","text":"[14] mdkg Plan → Work → Evidence","textPreview":"[14] mdkg Plan → Work → Evidence","textChars":32,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/jm5wfulo","slide":14,"name":"folio-14","text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/eevt2k","slide":14,"text":"Narrative job: introduce the smallest memorable mdkg operating model.\nPrimary claim: dependable agentic work connects an explicit plan to bounded execution and inspectable proof.\nTiming: 2:00\n\n[Sources]\n[14] mdkg canonical landing-page source at inspected commit 580be1e6efffe852e9996186e85e2bcbcd3e3e3b: https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/mdkg-dev/src/pages/index.astro\n[/Sources]"}
+{"kind":"slide","id":"sl/79rotn","slide":15,"title":"RECOVERABLE PROJECT STATE","textShapes":14}
+{"kind":"shape","id":"sh/tgne54re","slide":15,"name":"header-current-15","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/6tcvupsn","slide":15,"name":"eyebrow-15","text":"RECOVERABLE PROJECT STATE","textPreview":"RECOVERABLE PROJECT STATE","textChars":25,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/7u5w3u98","slide":15,"name":"title-15","text":"Durable context answers three questions","textPreview":"Durable context answers three questions","textChars":39,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/gjex0zap","slide":15,"name":"subtitle-15","text":"A project should make completion, rationale, and next work recoverable without replaying the entire conversation.","textPreview":"A project should make completion, rationale, and next work recoverable without replaying the entire conversation.","textChars":113,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/hkne94ra","slide":15,"name":"ledger-spine","bbox":[116,207,22,396]}
+{"kind":"shape","id":"sh/uhwfy9sz","slide":15,"name":"ledger-connector-1","bbox":[126,276,70,4]}
+{"kind":"shape","id":"sh/fi5w7e94","slide":15,"name":"ledger-number-1","bbox":[96,259,62,62]}
+{"kind":"textbox","id":"sh/4nyx4ja1","slide":15,"name":"ledger-number-text-1","text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[100,278,54,24]}
+{"kind":"textbox","id":"sh/po7edorm","slide":15,"name":"ledger-question-1","text":"WHAT COMPLETED?","textPreview":"WHAT COMPLETED?","textChars":15,"textLines":1,"bbox":[216,221,520,42]}
+{"kind":"textbox","id":"sh/5c76pw3y","slide":15,"name":"ledger-answer-1","text":"The accepted outcome, tests, and checkpoint.","textPreview":"The accepted outcome, tests, and checkpoint.","textChars":44,"textLines":1,"bbox":[216,279,882,38]}
+{"kind":"shape","id":"sh/kbypwrmd","slide":15,"name":"ledger-connector-2","bbox":[126,409,70,4]}
+{"kind":"shape","id":"sh/japonml8","slide":15,"name":"ledger-number-2","bbox":[96,392,62,62]}
+{"kind":"textbox","id":"sh/i9g7uh4n","slide":15,"name":"ledger-number-text-2","text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[100,411,54,24]}
+{"kind":"textbox","id":"sh/tgr6tw3a","slide":15,"name":"ledger-question-2","text":"WHY?","textPreview":"WHY?","textChars":4,"textLines":1,"bbox":[216,354,520,42]}
+{"kind":"textbox","id":"sh/sfip0rmp","slide":15,"name":"ledger-answer-2","text":"The requirements and decisions that shaped the work.","textPreview":"The requirements and decisions that shaped the work.","textChars":52,"textLines":1,"bbox":[216,412,882,38]}
+{"kind":"shape","id":"sh/7eporml4","slide":15,"name":"ledger-connector-3","bbox":[126,542,70,4]}
+{"kind":"shape","id":"sh/6dg7yh4j","slide":15,"name":"ledger-number-3","bbox":[96,525,62,62]}
+{"kind":"textbox","id":"sh/9kn6hc3q","slide":15,"name":"ledger-number-text-3","text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[100,544,54,24]}
+{"kind":"textbox","id":"sh/8je5o7ml","slide":15,"name":"ledger-question-3","text":"WHAT COMES NEXT?","textPreview":"WHAT COMES NEXT?","textChars":16,"textLines":1,"bbox":[216,487,520,42]}
+{"kind":"textbox","id":"sh/0nip47u1","slide":15,"name":"ledger-answer-3","text":"The next authorized node—not a guess at the backlog.","textPreview":"The next authorized node—not a guess at the backlog.","textChars":52,"textLines":1,"bbox":[216,545,882,38]}
+{"kind":"shape","id":"sh/1or6dcvm","slide":15,"name":"footer-line-15","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/el072xcb","slide":15,"name":"source-15","text":"[14] mdkg project-state operating model","textPreview":"[14] mdkg project-state operating model","textChars":39,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/zm9ob2dw","slide":15,"name":"folio-15","text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/79rotn","slide":15,"text":"Narrative job: make the operating model useful to engineers and leaders immediately.\nPrimary claim: durable project state should answer what completed, why it was done, and what comes next.\nTiming: 1:40\n\n[Sources]\n[14] mdkg program requirements and canonical product source: https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/mdkg-dev/src/pages/index.astro\n[/Sources]"}
+{"kind":"slide","id":"sl/lb1b5a","slide":16,"title":"WHERE MDKG FITS","textShapes":12}
+{"kind":"shape","id":"sh/bip8ja5k","slide":16,"name":"header-current-16","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/cji9cfm5","slide":16,"name":"eyebrow-16","text":"WHERE MDKG FITS","textPreview":"WHERE MDKG FITS","textChars":15,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/xkrqlknq","slide":16,"name":"title-16","text":"mdkg keeps the human at the architecture layer","textPreview":"mdkg keeps the human at the architecture layer","textChars":46,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/yl0re54b","slide":16,"name":"subtitle-16","text":"Structured Markdown holds durable project state while coding agents keep using their existing harnesses.","textPreview":"Structured Markdown holds durable project state while coding agents keep using their existing harnesses.","textChars":104,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/zm98na5w","slide":16,"name":"architecture-layer","bbox":[72,202,1136,126]}
+{"kind":"textbox","id":"sh/kni9gfm1","slide":16,"name":"architecture-layer-kicker","text":"HUMAN DECISIONS","textPreview":"HUMAN DECISIONS","textChars":15,"textLines":1,"bbox":[110,228,340,26]}
+{"kind":"textbox","id":"sh/lorqpknm","slide":16,"name":"architecture-layer-title","text":"Architecture · planning · authority","textPreview":"Architecture · planning · authority","textChars":35,"textLines":1,"bbox":[110,267,980,42]}
+{"kind":"shape","id":"sh/epw72l4r","slide":16,"name":"repo-layer","bbox":[152,371,976,112]}
+{"kind":"textbox","id":"sh/fq58bq5c","slide":16,"name":"repo-layer-title","text":"REPO-OWNED MARKDOWN KNOWLEDGE GRAPH","textPreview":"REPO-OWNED MARKDOWN KNOWLEDGE GRAPH","textChars":35,"textLines":1,"bbox":[188,393,904,30]}
+{"kind":"textbox","id":"sh/na50vyhc","slide":16,"name":"repo-layer-items","text":"goals · requirements · decisions · work · checkpoints","textPreview":"goals · requirements · decisions · work · checkpoints","textChars":53,"textLines":1,"bbox":[188,440,904,28]}
+{"kind":"shape","id":"sh/2pwzmtg7","slide":16,"name":"harness-connector-1","bbox":[358,483,4,40]}
+{"kind":"shape","id":"sh/pc7ix8zi","slide":16,"name":"harness-connector-2","bbox":[638,483,4,40]}
+{"kind":"shape","id":"sh/obeho3yx","slide":16,"name":"harness-connector-3","bbox":[918,483,4,40]}
+{"kind":"shape","id":"sh/fm50rehg","slide":16,"name":"harness-1","bbox":[232,521,256,74]}
+{"kind":"textbox","id":"sh/elwzy90v","slide":16,"name":"harness-label-1","text":"CODEX","textPreview":"CODEX","textChars":5,"textLines":1,"bbox":[246,544,228,30]}
+{"kind":"shape","id":"sh/1onitozm","slide":16,"name":"harness-2","bbox":[512,521,256,74]}
+{"kind":"textbox","id":"sh/0nehkjy1","slide":16,"name":"harness-label-2","text":"CLAUDE CODE","textPreview":"CLAUDE CODE","textChars":11,"textLines":1,"bbox":[526,544,228,30]}
+{"kind":"shape","id":"sh/rilgnehk","slide":16,"name":"harness-3","bbox":[792,521,256,74]}
+{"kind":"textbox","id":"sh/6hczu90z","slide":16,"name":"harness-label-3","text":"OTHER HARNESSES","textPreview":"OTHER HARNESSES","textChars":15,"textLines":1,"bbox":[806,544,228,30]}
+{"kind":"shape","id":"sh/udsj69kr","slide":16,"name":"footer-line-16","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/vel0ze1c","slide":16,"name":"source-16","text":"[13] pre-v1 public alpha · [14] Plan → Work → Evidence","textPreview":"[13] pre-v1 public alpha · [14] Plan → Work → Evidence","textChars":54,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/wfu18j2x","slide":16,"name":"folio-16","text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/lb1b5a","slide":16,"text":"Narrative job: position mdkg as Git-native context engineering, not an agent harness or replacement for engineering judgment.\nPrimary claim: structured Markdown can keep goals, requirements, decisions, work, and checkpoints addressable in the repository while coding agents use their existing tools.\nTiming: 2:15\n\n[Sources]\n[13] mdkg Public Alpha Contract at inspected commit 580be1e6efffe852e9996186e85e2bcbcd3e3e3b: https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/docs/start-here/public-alpha-contract.md\n[14] mdkg canonical landing-page source: https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/mdkg-dev/src/pages/index.astro\n[/Sources]"}
+{"kind":"slide","id":"sl/ez8qsz","slide":17,"title":"REUSABLE → SPECIALIZED","textShapes":23}
+{"kind":"shape","id":"sh/x0n6dw7y","slide":17,"name":"header-current-17","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/adcnih8n","slide":17,"name":"eyebrow-17","text":"REUSABLE → SPECIALIZED","textPreview":"REUSABLE → SPECIALIZED","textChars":22,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/vyl4bm9s","slide":17,"name":"title-17","text":"A reusable specification becomes bounded execution","textPreview":"A reusable specification becomes bounded execution","textChars":50,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/k3e5obqp","slide":17,"name":"subtitle-17","text":"The goal stays recognizable while the audience, requirements, work, and proof become specific.","textPreview":"The goal stays recognizable while the audience, requirements, work, and proof become specific.","textChars":94,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/54n6hg7a","slide":17,"name":"source-goal","bbox":[72,199,458,391]}
+{"kind":"textbox","id":"sh/i1wnm18j","slide":17,"name":"source-goal-pill","text":"SOURCE SPECIFICATION","textPreview":"SOURCE SPECIFICATION","textChars":20,"textLines":1,"bbox":[96,221,270,34]}
+{"kind":"textbox","id":"sh/j25of6p4","slide":17,"name":"source-goal-id","text":"goal-1","textPreview":"goal-1","textChars":6,"textLines":1,"bbox":[96,273,240,48]}
+{"kind":"textbox","id":"sh/07a5c7q5","slide":17,"name":"source-label-Objective","text":"OBJECTIVE","textPreview":"OBJECTIVE","textChars":9,"textLines":1,"bbox":[96,337,190,22]}
+{"kind":"textbox","id":"sh/l83m5crq","slide":17,"name":"source-value-Objective","text":"Create a public landing page","textPreview":"Create a public landing page","textChars":28,"textLines":1,"bbox":[96,362,365,40]}
+{"kind":"textbox","id":"sh/tkry1cvm","slide":17,"name":"source-label-Fixed guardrails","text":"FIXED GUARDRAILS","textPreview":"FIXED GUARDRAILS","textChars":16,"textLines":1,"bbox":[96,416,190,22]}
+{"kind":"textbox","id":"sh/szyh87u1","slide":17,"name":"source-value-Fixed guardrails","text":"Ocean Flow · static Astro","textPreview":"Ocean Flow · static Astro","textChars":25,"textLines":1,"bbox":[96,441,365,40]}
+{"kind":"textbox","id":"sh/rypgz2dg","slide":17,"name":"source-label-Variable","text":"VARIABLE","textPreview":"VARIABLE","textChars":8,"textLines":1,"bbox":[96,495,190,22]}
+{"kind":"textbox","id":"sh/6xgz6xcv","slide":17,"name":"source-value-Variable","text":"Audience · offer · composition","textPreview":"Audience · offer · composition","textChars":30,"textLines":1,"bbox":[96,520,365,40]}
+{"kind":"shape","id":"sh/1ory5wvi","slide":17,"name":"specialize-underlay","bbox":[553,367,152,16]}
+{"kind":"shape","id":"sh/gnihcrux","slide":17,"name":"specialize-arrow","bbox":[558,348,142,55]}
+{"kind":"textbox","id":"sh/fm9g3mds","slide":17,"name":"specialize-label","text":"SPECIALIZE","textPreview":"SPECIALIZE","textChars":10,"textLines":1,"bbox":[560,302,138,32]}
+{"kind":"shape","id":"sh/el0zahc7","slide":17,"name":"executed-goal","bbox":[728,179,480,431]}
+{"kind":"shape","id":"sh/psbi9wbu","slide":17,"name":"executed-current","bbox":[728,179,480,12]}
+{"kind":"textbox","id":"sh/or2hgru9","slide":17,"name":"executed-goal-pill","text":"SPECIALIZED EXECUTION","textPreview":"SPECIALIZED EXECUTION","textChars":21,"textLines":1,"bbox":[752,207,238,34]}
+{"kind":"textbox","id":"sh/87a9sz6h","slide":17,"name":"executed-goal-id","text":"goal-1","textPreview":"goal-1","textChars":6,"textLines":1,"bbox":[752,258,240,48]}
+{"kind":"textbox","id":"sh/983a14n2","slide":17,"name":"executed-label-Positioning","text":"POSITIONING","textPreview":"POSITIONING","textChars":11,"textLines":1,"bbox":[752,318,190,22]}
+{"kind":"textbox","id":"sh/m5srqpor","slide":17,"name":"executed-value-Positioning","text":"Selected audience + promise","textPreview":"Selected audience + promise","textChars":27,"textLines":1,"bbox":[752,343,365,40]}
+{"kind":"textbox","id":"sh/n61szu5c","slide":17,"name":"executed-label-Requirements","text":"REQUIREMENTS","textPreview":"REQUIREMENTS","textChars":12,"textLines":1,"bbox":[752,390,190,22]}
+{"kind":"textbox","id":"sh/wbutwj6t","slide":17,"name":"executed-value-Requirements","text":"Static Astro · zero client JS","textPreview":"Static Astro · zero client JS","textChars":29,"textLines":1,"bbox":[752,415,365,40]}
+{"kind":"textbox","id":"sh/xc3a54ne","slide":17,"name":"executed-label-Work","text":"WORK","textPreview":"WORK","textChars":4,"textLines":1,"bbox":[752,462,190,22]}
+{"kind":"textbox","id":"sh/a9cru9on","slide":17,"name":"executed-value-Work","text":"Bounded nodes · explicit authority","textPreview":"Bounded nodes · explicit authority","textChars":34,"textLines":1,"bbox":[752,487,365,40]}
+{"kind":"textbox","id":"sh/vals3e58","slide":17,"name":"executed-label-Evidence","text":"EVIDENCE","textPreview":"EVIDENCE","textChars":8,"textLines":1,"bbox":[752,534,190,22]}
+{"kind":"textbox","id":"sh/cfq9kf69","slide":17,"name":"executed-value-Evidence","text":"Build · routes · receipts","textPreview":"Build · routes · receipts","textChars":25,"textLines":1,"bbox":[752,559,365,40]}
+{"kind":"shape","id":"sh/dgzatknu","slide":17,"name":"footer-line-17","bbox":[72,663,1136,2]}
+{"kind":"shape","id":"sh/fupczipc","slide":17,"name":"source-17","bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/etgvqd87","slide":17,"name":"folio-17","text":"17","textPreview":"17","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/ez8qsz","slide":17,"text":"Narrative job: prepare the audience to read the reveal as source-to-execution proof without teaching graph mechanics.\nSpeaker cue: I am not asking you to learn graph mechanics. Read this as a reusable starting specification becoming a bounded, specialized execution.\nThe displayed fields come from the accepted Goal 2 interface contract; they describe the reusable execution contract and do not claim that a future Demo 2 or Demo 3 run has completed.\nTiming: 1:35\n\n[Sources]\nDemo architecture contract: presentations/ai-native-sdlc-demo/.mdkg/design/edd-1-ai-native-sdlc-presentation-demo-program-architecture-and-execution.md\nAccepted Goal 2 interface: presentations/ai-native-sdlc-demo/artifacts/demo-platform/interface-contract.json\n[/Sources]"}
+{"kind":"slide","id":"sl/bmormm","slide":18,"title":"LIVE REVEAL","textShapes":4}
+{"kind":"shape","id":"sh/w3ytsrex","slide":18,"name":"reveal-current-underlay","bbox":[128,503,1024,16]}
+{"kind":"shape","id":"sh/b25sz6xc","slide":18,"name":"reveal-current","bbox":[128,507,1024,7]}
+{"kind":"shape","id":"sh/a1wbq1w7","slide":18,"name":"reveal-node-1","bbox":[236,490,40,40]}
+{"kind":"shape","id":"sh/l87u5gfu","slide":18,"name":"reveal-node-2","bbox":[484,490,40,40]}
+{"kind":"shape","id":"sh/k7ytwbe9","slide":18,"name":"reveal-node-3","bbox":[732,490,40,40]}
+{"kind":"shape","id":"sh/j6pc36xo","slide":18,"name":"reveal-node-4","bbox":[980,490,40,40]}
+{"kind":"textbox","id":"sh/y5gbu1w3","slide":18,"name":"reveal-kicker","text":"LIVE REVEAL","textPreview":"LIVE REVEAL","textChars":11,"textLines":1,"bbox":[128,112,1024,30]}
+{"kind":"textbox","id":"sh/1cnatcfa","slide":18,"name":"reveal-title","text":"Let’s inspect the run","textPreview":"Let’s inspect the run","textChars":21,"textLines":1,"bbox":[128,188,1024,92]}
+{"kind":"textbox","id":"sh/0butk7ep","slide":18,"name":"reveal-subtitle","text":"Source specification  →  specialized goal  →  output  →  evidence","textPreview":"Source specification  →  specialized goal  →  output  →  evidence","textChars":65,"textLines":1,"bbox":[128,319,1024,46]}
+{"kind":"textbox","id":"sh/e1c3q103","slide":18,"name":"reveal-prompt","text":"What completed?   Why?   What comes next?","textPreview":"What completed?   Why?   What comes next?","textChars":41,"textLines":1,"bbox":[128,400,1024,38]}
+{"kind":"notes","id":"nt/bmormm","slide":18,"text":"Narrative job: provide a clean audience-facing transition from the deck to the live browser reveal.\nSuccess branch: show source goal, specialized Demo 3 goal, output, Plan → Work → Evidence, and exact-SHA/live-route receipts.\nStill-running branch: state that Demo 3 is still running and use the sealed fallback.\nHard-blocker branch: show the blocker receipt and authority boundary, then use the sealed fallback.\nDo not expose the branch decision tree on screen; select the honest branch in the browser.\nTiming: 2:05 target; 2:15 maximum\n\n[Sources]\nEvent and fallback contract: presentations/ai-native-sdlc-demo/.mdkg/work/goal-7-execute-and-reveal-the-live-demo-3-goal.md\nAccepted Goal 2 interface fixture: presentations/ai-native-sdlc-demo/artifacts/demo-platform/interface-contract.json\n[/Sources]"}
+{"kind":"slide","id":"sl/6q14b8","slide":19,"title":"TRY THE PUBLIC ALPHA","textShapes":10}
+{"kind":"shape","id":"sh/cvm9cnup","slide":19,"name":"header-current-19","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/ruds3it4","slide":19,"name":"eyebrow-19","text":"TRY THE PUBLIC ALPHA","textPreview":"TRY THE PUBLIC ALPHA","textChars":20,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/qt4raxcj","slide":19,"name":"title-19","text":"Try mdkg on one real project","textPreview":"Try mdkg on one real project","textChars":28,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/10fa9cbm","slide":19,"name":"subtitle-19","text":"Use the quickstart, keep the experiment bounded, and send feedback that improves the pre-v1 workflow.","textPreview":"Use the quickstart, keep the experiment bounded, and send feedback that improves the pre-v1 workflow.","textChars":101,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"textbox","id":"sh/exorexcv","slide":19,"name":"quickstart-label","text":"QUICKSTART","textPreview":"QUICKSTART","textChars":10,"textLines":1,"bbox":[112,532,376,32]}
+{"kind":"textbox","id":"sh/9ozadcbi","slide":19,"name":"quickstart-url","text":"docs.mdkg.dev/start-here/quickstart/","textPreview":"docs.mdkg.dev/start-here/quickstart/","textChars":36,"textLines":1,"bbox":[72,576,456,28]}
+{"kind":"textbox","id":"sh/8n6tk7ux","slide":19,"name":"feedback-label","text":"SEND FEEDBACK","textPreview":"SEND FEEDBACK","textChars":13,"textLines":1,"bbox":[792,532,376,32]}
+{"kind":"textbox","id":"sh/qx4b258b","slide":19,"name":"feedback-url","text":"github.com/nickreames/mdkg/issues","textPreview":"github.com/nickreames/mdkg/issues","textChars":33,"textLines":1,"bbox":[752,576,456,28]}
+{"kind":"shape","id":"sh/ridcva9w","slide":19,"name":"cta-divider","bbox":[638,236,3,342]}
+{"kind":"textbox","id":"sh/sjmt4fqh","slide":19,"name":"alpha-status","text":"PRE-V1 · PUBLIC ALPHA · ACTIVE IMPROVEMENT","textPreview":"PRE-V1 · PUBLIC ALPHA · ACTIVE IMPROVEMENT","textChars":42,"textLines":1,"bbox":[394,617,492,36]}
+{"kind":"shape","id":"sh/dkvuxkr2","slide":19,"name":"footer-line-19","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/el4v658n","slide":19,"name":"source-19","text":"[13] mdkg Public Alpha Contract","textPreview":"[13] mdkg Public Alpha Contract","textChars":31,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/fmdczap8","slide":19,"name":"folio-19","text":"19","textPreview":"19","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"image","id":"im/x8vml8b6","slide":19,"name":"","alt":"QR code for the mdkg quickstart URL","bbox":[152,221,296,296]}
+{"kind":"image","id":"im/a5knadcv","slide":19,"name":"","alt":"QR code for the mdkg GitHub Issues feedback URL","bbox":[832,221,296,296]}
+{"kind":"notes","id":"nt/6q14b8","slide":19,"text":"Narrative job: close with a bounded, honest invitation.\nSpoken close: Try mdkg on one real project and send me feedback.\nBoth QR assets were generated locally and scan-tested against the readable displayed URLs.\nTiming: 0:45 maximum\n\n[Sources]\n[13] mdkg Public Alpha Contract at inspected commit 580be1e6efffe852e9996186e85e2bcbcd3e3e3b: https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/docs/start-here/public-alpha-contract.md\nQuickstart QR and displayed URL: https://docs.mdkg.dev/start-here/quickstart/\nFeedback QR and displayed URL: https://github.com/nickreames/mdkg/issues\nLocal scan receipt: presentations/ai-native-sdlc-demo/deck/assets/qr/scan-receipt.json\n[/Sources]"}
+{"kind":"slide","id":"sl/hmifk3","slide":20,"title":"REFERENCE","textShapes":19}
+{"kind":"shape","id":"sh/sbqhkzit","slide":20,"name":"header-current-20","bbox":[72,39,44,8]}
+{"kind":"textbox","id":"sh/7ax0bu18","slide":20,"name":"eyebrow-20","text":"REFERENCE","textPreview":"REFERENCE","textChars":9,"textLines":1,"bbox":[128,31,760,24]}
+{"kind":"textbox","id":"sh/69ozi90n","slide":20,"name":"title-20","text":"Sources","textPreview":"Sources","textChars":7,"textLines":1,"bbox":[72,69,1136,58]}
+{"kind":"textbox","id":"sh/58fi94j2","slide":20,"name":"subtitle-20","text":"Primary sources for the capability timeline and product claims.","textPreview":"Primary sources for the capability timeline and product claims.","textChars":63,"textLines":1,"bbox":[72,136,1136,36]}
+{"kind":"shape","id":"sh/k76hgzih","slide":20,"name":"source-index-rule-1","bbox":[72,209,28,4]}
+{"kind":"textbox","id":"sh/j6x07u1w","slide":20,"name":"source-index-1","text":"[1] GitHub · Copilot technical preview · 2021","textPreview":"[1] GitHub · Copilot technical preview · 2021","textChars":45,"textLines":1,"bbox":[116,198,510,34]}
+{"kind":"shape","id":"sh/i5ozep0b","slide":20,"name":"source-index-rule-2","bbox":[72,268,28,4]}
+{"kind":"textbox","id":"sh/x4fy5kj6","slide":20,"name":"source-index-2","text":"[2] OpenAI · ChatGPT research preview · 2022","textPreview":"[2] OpenAI · ChatGPT research preview · 2022","textChars":44,"textLines":1,"bbox":[116,257,510,34]}
+{"kind":"shape","id":"sh/w3mhcf2l","slide":20,"name":"source-index-rule-3","bbox":[72,327,28,4]}
+{"kind":"textbox","id":"sh/edsnuh0b","slide":20,"name":"source-index-3","text":"[3] OpenAI · o1 reasoning · 2024","textPreview":"[3] OpenAI · o1 reasoning · 2024","textChars":32,"textLines":1,"bbox":[116,316,510,34]}
+{"kind":"shape","id":"sh/ze1o3mhw","slide":20,"name":"source-index-rule-4","bbox":[72,386,28,4]}
+{"kind":"textbox","id":"sh/0fa5wrih","slide":20,"name":"source-index-4","text":"[4] Anthropic · Claude Code · 2025","textPreview":"[4] Anthropic · Claude Code · 2025","textChars":34,"textLines":1,"bbox":[116,375,510,34]}
+{"kind":"shape","id":"sh/1gj65wz2","slide":20,"name":"source-index-rule-5","bbox":[72,445,28,4]}
+{"kind":"textbox","id":"sh/qp8nqh0f","slide":20,"name":"source-index-5","text":"[5] Cursor · Agent overview · living docs","textPreview":"[5] Cursor · Agent overview · living docs","textChars":41,"textLines":1,"bbox":[116,434,510,34]}
+{"kind":"shape","id":"sh/rq1oz2h0","slide":20,"name":"source-index-rule-6","bbox":[72,504,28,4]}
+{"kind":"textbox","id":"sh/cra5s7i5","slide":20,"name":"source-index-6","text":"[6] Anthropic · Agent Skills · 2025","textPreview":"[6] Anthropic · Agent Skills · 2025","textChars":35,"textLines":1,"bbox":[116,493,510,34]}
+{"kind":"shape","id":"sh/dcj61czq","slide":20,"name":"source-index-rule-7","bbox":[72,563,28,4]}
+{"kind":"textbox","id":"sh/2l8nmx03","slide":20,"name":"source-index-7","text":"[7] OpenAI · Introducing Codex · 2025","textPreview":"[7] OpenAI · Introducing Codex · 2025","textChars":37,"textLines":1,"bbox":[116,552,510,34]}
+{"kind":"shape","id":"sh/3mh4v21o","slide":20,"name":"source-index-rule-8","bbox":[654,209,28,4]}
+{"kind":"textbox","id":"sh/7edc7et4","slide":20,"name":"source-index-8","text":"[8] OpenAI · Agents transforming work · 2026","textPreview":"[8] OpenAI · Agents transforming work · 2026","textChars":44,"textLines":1,"bbox":[698,198,510,34]}
+{"kind":"shape","id":"sh/6d4be9cj","slide":20,"name":"source-index-rule-9","bbox":[654,268,28,4]}
+{"kind":"textbox","id":"sh/tgvu94ba","slide":20,"name":"source-index-9","text":"[9] Anthropic · Long-running harnesses · 2025","textPreview":"[9] Anthropic · Long-running harnesses · 2025","textChars":45,"textLines":1,"bbox":[698,257,510,34]}
+{"kind":"shape","id":"sh/8fmtgzup","slide":20,"name":"source-index-rule-10","bbox":[654,327,28,4]}
+{"kind":"textbox","id":"sh/vidcbetg","slide":20,"name":"source-index-10","text":"[10] OpenAI · GPT-4.1 context · 2025","textPreview":"[10] OpenAI · GPT-4.1 context · 2025","textChars":36,"textLines":1,"bbox":[698,316,510,34]}
+{"kind":"shape","id":"sh/uh4bi9cv","slide":20,"name":"source-index-rule-11","bbox":[654,386,28,4]}
+{"kind":"textbox","id":"sh/hkvudob6","slide":20,"name":"source-index-11","text":"[11] Anthropic · Context engineering · 2025","textPreview":"[11] Anthropic · Context engineering · 2025","textChars":43,"textLines":1,"bbox":[698,375,510,34]}
+{"kind":"shape","id":"sh/gjmtkju1","slide":20,"name":"source-index-rule-12","bbox":[654,445,28,4]}
+{"kind":"textbox","id":"sh/bmtszadw","slide":20,"name":"source-index-12","text":"[12] METR · Task-completion time horizons · 2026","textPreview":"[12] METR · Task-completion time horizons · 2026","textChars":48,"textLines":1,"bbox":[698,434,510,34]}
+{"kind":"shape","id":"sh/al0b6pcr","slide":20,"name":"source-index-rule-13","bbox":[654,504,28,4]}
+{"kind":"textbox","id":"sh/0ry90ba9","slide":20,"name":"source-index-13","text":"[13] mdkg · Public Alpha Contract","textPreview":"[13] mdkg · Public Alpha Contract","textChars":33,"textLines":1,"bbox":[698,493,510,34]}
+{"kind":"shape","id":"sh/1s7q9gbu","slide":20,"name":"source-index-rule-14","bbox":[654,563,28,4]}
+{"kind":"textbox","id":"sh/epgrylsj","slide":20,"name":"source-index-14","text":"[14] mdkg · Plan → Work → Evidence source","textPreview":"[14] mdkg · Plan → Work → Evidence source","textChars":41,"textLines":1,"bbox":[698,552,510,34]}
+{"kind":"shape","id":"sh/fqp87qto","slide":20,"name":"footer-line-20","bbox":[72,663,1136,2]}
+{"kind":"textbox","id":"sh/sny9wbad","slide":20,"name":"source-20","text":"Full URLs and claim limitations are retained in speaker notes.","textPreview":"Full URLs and claim limitations are retained in speaker notes.","textChars":62,"textLines":1,"bbox":[72,674,1045,24]}
+{"kind":"textbox","id":"sh/do7q5gby","slide":20,"name":"folio-20","text":"20","textPreview":"20","textChars":2,"textLines":1,"bbox":[1150,674,58,24]}
+{"kind":"notes","id":"nt/hmifk3","slide":20,"text":"Narrative job: provide an unspoken appendix index for numbered markers. Do not present this slide unless a source question calls for it.\nTiming: 0:00\n\n[Sources]\nComplete source list: deck/citations/claim-matrix.md\n[1] https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/\n[2] https://openai.com/index/chatgpt/\n[3] https://openai.com/index/learning-to-reason-with-llms/\n[4] https://www.anthropic.com/news/claude-3-7-sonnet\n[5] https://docs.cursor.com/en/agent/overview\n[6] https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills\n[7] https://openai.com/index/introducing-codex/\n[8] https://openai.com/index/how-agents-are-transforming-work/\n[9] https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents\n[10] https://openai.com/index/gpt-4-1/\n[11] https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents\n[12] https://metr.org/time-horizons/\n[13] https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/docs/start-here/public-alpha-contract.md\n[14] https://github.com/nickreames/mdkg/blob/580be1e6efffe852e9996186e85e2bcbcd3e3e3b/mdkg-dev/src/pages/index.astro\n[/Sources]"}

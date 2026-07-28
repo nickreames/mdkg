@@ -2,11 +2,12 @@
 id: goal-3
 type: goal
 title: Produce presentation v1
-status: backlog
+status: done
 priority: 1
-goal_state: paused
+goal_state: achieved
 goal_condition: A source-backed 30–32 minute narrated presentation exists as editable source and PPTX, three representative visual prototypes receive explicit human approval before full production, every factual claim has primary-source support, every slide passes rendered visual QA, and an offline cue rehearsal proves that the reveal plus CTA can finish within the 35-minute content hard stop before audience Q&A.
 scope_refs: [epic-3]
+last_active_node: test-9
 required_skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
 required_checks: [first-node context and evidence pack coverage without truncation, primary-source claim matrix review, explicit three-slide visual prototype approval, Artifact Tool PowerPoint generation, full slide render and individual full-size review, overflow contrast hierarchy and legibility checks, 30-32 minute narrated rehearsal plus reveal and CTA within 35 minutes]
 max_iterations: 25
@@ -14,17 +15,17 @@ blocked_after_attempts: 3
 tags: [ai-native-sdlc, presentation-demo, phase-3]
 owners: [program-orchestrator]
 links: []
-artifacts: [deck/source/ai-native-sdlc.mjs, deck/citations/claim-matrix.md, deck/speaker-notes.md, deck/assets/, deck/rendered/contact-sheet.png, deck/rendered/qa-report.md, deck/ai-native-sdlc.pptx]
+artifacts: [deck/source/ai-native-sdlc.mjs, deck/citations/claim-matrix.md, deck/speaker-notes.md, deck/assets/, deck/rendered/contact-sheet.png, deck/rendered/qa-report.md, deck/rendered/rehearsal-receipt.md, deck/ai-native-sdlc.pptx]
 relates: []
 blocked_by: []
 blocks: []
-refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, chk-4, chk-5]
+refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, chk-4, chk-5, chk-6, chk-7, chk-8, chk-9, chk-10, chk-11, chk-12]
 context_refs: [prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4]
-evidence_refs: []
+evidence_refs: [chk-6, chk-7, chk-8, chk-9, chk-10, chk-11, chk-12]
 aliases: [ai-native-sdlc-presentation-v1]
 skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Objective
@@ -107,13 +108,20 @@ Goal 2 is achieved and its accepted interface checkpoint freezes the route names
 
 # Current State
 
-Pre-activation execution hardening is accepted in chk-5. Goal 3 remains paused;
-do not execute until the user explicitly activates it.
+Pre-activation execution hardening is accepted in chk-5. The user explicitly
+accepted the V2 Ocean Flow prototype direction on 2026-07-27, recorded in
+chk-6, and authorized full-deck production. All eight scoped nodes are now
+done; chk-7 through chk-11 record production, cue, citation, visual-QA, and
+fixture-only timing proof. Goal closeout is accepted in chk-12.
 
 # Iteration Log
 
 - 2026-07-26: Created as phase 3 of the AI-native SDLC presentation and live-demo program.
 - 2026-07-26: Added the deterministic context/evidence pack, Artifact Tool skill, explicit prototype approval, focused test lanes, and fixture-only rehearsal boundary; accepted in chk-5 without activating the goal.
+- 2026-07-27: User explicitly approved the V2 light-mode Ocean Flow direction; task-12 closed in chk-6 and Goal 3 activated on task-13.
+- 2026-07-27: Built the 20-slide V2 deck and closed full-deck production in chk-7.
+- 2026-07-27: Froze fixture-only event cues in chk-8, verified all claim mappings in chk-9, verified rendering and accessibility in chk-10, and verified the 33:55 rehearsal boundary in chk-11.
+- 2026-07-27: Accepted Goal 3 closeout in chk-12 with no commit, push, deployment, provider action, or production-readiness claim.
 
 # Skill Improvement Candidates
 
@@ -123,3 +131,10 @@ do not execute until the user explicitly activates it.
 
 - chk-4
 - chk-5
+- chk-6
+- chk-7
+- chk-8
+- chk-9
+- chk-10
+- chk-11
+- chk-12

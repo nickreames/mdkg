@@ -2,7 +2,7 @@
 id: task-13
 type: task
 title: Build PowerPoint source assets notes citations and final PPTX
-status: backlog
+status: done
 priority: 1
 epic: epic-3
 parent: goal-3
@@ -15,13 +15,13 @@ artifacts: [deck/source/ai-native-sdlc.mjs, deck/citations/claim-matrix.md, deck
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-12]
-context_refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-12]
-evidence_refs: []
+refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, task-12, chk-6]
+context_refs: [goal-3, epic-3, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, task-12]
+evidence_refs: [chk-6]
 aliases: [phase-3-step-4]
 skills: [select-work-and-ground-context, produce-powerpoint-with-artifact-tool, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview
@@ -66,4 +66,4 @@ Build PowerPoint source assets notes citations and final PPTX. This is step 4 of
 
 - goal-3
 - epic-3
-- Evidence pending activation.
+- V2 visual direction explicitly accepted by the user and recorded in chk-6.
