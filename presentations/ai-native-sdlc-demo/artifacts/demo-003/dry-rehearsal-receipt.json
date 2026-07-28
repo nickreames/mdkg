@@ -1,0 +1,261 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-side-effect-free-dry-rehearsal",
+  "status": "passed",
+  "recorded_at": "2026-07-28T07:08:14Z",
+  "human_authority": {
+    "event_authority_path": "presentations/ai-native-sdlc-demo/artifacts/demo-003/event-authority.json",
+    "event_authority_sha256": "b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e",
+    "accepted": true,
+    "acceptance_evidence": "The user explicitly accepted the immediately preceding exact-hash authority challenge after Task 32.",
+    "acceptance_recorded_at": "2026-07-28T07:08:14Z",
+    "raw_user_prompt_retained": false,
+    "scope": "Prospective Demo 3 timed dress-rehearsal happy path after separate preparation publication and activation; this dry rehearsal remains read-only."
+  },
+  "before_state": {
+    "git": {
+      "head": "d9157757673c31a2c2c3c2c4a8dc03f0e4dd5b46",
+      "tree": "7fc1322f1bea5a1cc0109e34ef86880e5dd148ad",
+      "branch": "main",
+      "remote": "origin",
+      "live_origin_main": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "ahead": 15,
+      "behind": 0,
+      "candidate_range_patch_sha256": "1bfc2f96091c0e14380afb8965ed1ff087bb9c1b024d4c9430654e106e77350a",
+      "index_empty": true,
+      "tracked_worktree_diff": [],
+      "unrelated_untracked_paths": [
+        "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md",
+        "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md.stats.json"
+      ]
+    },
+    "program_bundle_sha256": "e12516be01d1379c75959c57e0af3aea0795eee3a27264b0de423b06dab61d6d",
+    "child": {
+      "root": "presentations/ai-native-sdlc-demo/runs/demo-003",
+      "semantic_source_release_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+      "bootstrap_receipt_sha256": "4ec03c0a95ebd7fdc8f29c5922c06b0ad6da8ec74dc4702cd08bdd05913a66dc",
+      "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+      "child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+      "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+      "authored_entry_count": 103,
+      "expected_authored_inventory_sha256": "e80b06a9f575741beda3a7df4c1a9139ddb6c046812deb0c77ef570a20e0e3a6",
+      "actual_authored_inventory_sha256": "e80b06a9f575741beda3a7df4c1a9139ddb6c046812deb0c77ef570a20e0e3a6",
+      "authored_mismatch_count": 0,
+      "goal_status": "todo",
+      "goal_state": "active",
+      "active_node": "spike-1",
+      "first_actionable_qid": "root:spike-1",
+      "site_files": 0,
+      "artifact_files": 0,
+      "tracked_diff": [],
+      "untracked_nonignored_files": []
+    },
+    "provider": [
+      {
+        "project": "mdkg-dev",
+        "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+        "deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+        "state": "READY",
+        "target": "production",
+        "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93"
+      },
+      {
+        "project": "mdkg-docs",
+        "project_id": "prj_3Aoh90VnkqM6AnX9t72fSULEd",
+        "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
+        "state": "READY",
+        "target": "production",
+        "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93"
+      }
+    ]
+  },
+  "permitted_commands": [
+    "read and verify the frozen sendoff hash",
+    "build the selected Task 33 standard program pack under ignored program pack state",
+    "dry-run the child spike-1 concise pack with explicit context_refs,evidence_refs and full required skills",
+    "read child goal show, next, and report-only evaluate receipts",
+    "read Git HEAD, tree, index, status, live origin, and range identities",
+    "read existing Vercel deployment identities and state",
+    "verify the sealed Demo 2 fallback hash inventory",
+    "read child source, binding, interface, seal, routing, and authored inventory identities"
+  ],
+  "pack_rehearsal": {
+    "program_task_pack": {
+      "root_qid": "root:task-33",
+      "profile": "standard",
+      "explicit_edges": ["context_refs", "evidence_refs"],
+      "skills": "auto",
+      "skills_depth": "full",
+      "result": "pass",
+      "path": "presentations/ai-native-sdlc-demo/.mdkg/pack/pack_standard_task-33_20260728-010747516.json",
+      "sha256": "e0f43fd56b0c5908fd3cce17d50eb81bccd2384d92175f6250fee6f395b3510d",
+      "stats_sha256": "c867d5e8375bcf16dd0b56d92ac76696095aead2d6b76e500c16ee291dc202f7",
+      "ignored_from_git": true,
+      "transient_pack_removed_after_receipt": true,
+      "persistent_files_written": 0
+    },
+    "child_execution_pack": {
+      "root_qid": "root:spike-1",
+      "profile": "concise",
+      "explicit_edges": ["context_refs", "evidence_refs"],
+      "skills": "auto",
+      "skills_depth": "full",
+      "dry_run": true,
+      "files_written": 0,
+      "node_count": 15,
+      "token_estimate": 2525,
+      "truncated": false,
+      "included_qids": [
+        "root:spike-1",
+        "root:goal-1",
+        "root:epic-1",
+        "root:edd-1",
+        "root:dec-1",
+        "root:dec-2",
+        "root:prd-2",
+        "root:task-1",
+        "root:test-1",
+        "root:chk-2",
+        "root:chk-3",
+        "root:skill:select-work-and-ground-context",
+        "root:skill:verify-close-and-checkpoint",
+        "root:skill:build-pack-and-execute-task",
+        "root:skill:pursue-mdkg-goal"
+      ],
+      "public_safety_basis": "The same immutable child identity previously passed the 19-node public-safety scan; this dry run adds no content and includes only source-authored public-safe nodes and required skill bodies."
+    }
+  },
+  "cue_rehearsal": {
+    "simulated_p0": "2026-07-28T07:07:47.302Z",
+    "simulated_t0": "2026-07-28T07:07:48.162Z",
+    "simulated_child_acknowledgement": "2026-07-28T07:07:48.365Z",
+    "p0_to_t0_ms": 860,
+    "p0_to_t0_limit_ms": 45000,
+    "child_acknowledgement_ms": 203,
+    "child_acknowledgement_limit_ms": 45000,
+    "actual_rehearsal_elapsed_ms": 1407,
+    "dispatch_action": "Read-only goal next resolved root:spike-1; no claim or task start occurred.",
+    "milestone_cues": [
+      {"cue": "positioning", "deadline": "T+02:00", "late_action": "consume pre-publication repair if still in scope; otherwise hard blocker"},
+      {"cue": "implementation", "deadline": "T+13:00", "late_action": "use remaining pre-publication repair only if deadline still allows"},
+      {"cue": "local critical validation", "deadline": "T+16:00", "late_action": "fail closed on unresolved safety or public-safety defect"},
+      {"cue": "mechanical canonical integration", "deadline": "T+20:00", "late_action": "release timed writer only after accepted canonical evidence"},
+      {"cue": "range proof and normal push", "deadline": "T+22:00", "late_action": "root integration owner only; force or unrelated integration is a hard blocker"},
+      {"cue": "latest production repair start", "deadline": "T+24:00", "late_action": "do not start another production repair"},
+      {"cue": "both exact-SHA deployments READY", "deadline": "T+26:00", "late_action": "continue read-only wait only while T+29:30 remains achievable"},
+      {"cue": "routes and child checkpoint", "deadline": "T+28:30", "late_action": "prepare truthful fallback if incomplete"},
+      {"cue": "consolidated reveal receipt", "deadline": "T+29:15", "late_action": "Demo 3 cannot be selected without the receipt"},
+      {"cue": "selection gate", "deadline": "T+29:30", "late_action": "select sealed Demo 2 unless every Demo 3 gate passes"},
+      {"cue": "global stop", "deadline": "T+30:00", "late_action": "stop all side effects and reveal Demo 2 transparently"}
+    ],
+    "repair_accounting": {
+      "pre_publication_maximum": 2,
+      "production_maximum": 1,
+      "global_deadline_overrides_remaining_repairs": true
+    }
+  },
+  "branch_rehearsal": {
+    "success": "Use Demo 3 only after child achievement, normal push, both exact-SHA READY deployments, routes, checkpoint, and consolidated receipt all pass by T+29:30.",
+    "still_running": "Continue only within the frozen attempt and deadline policy; never imply local completion is public success.",
+    "hard_blocker": "Record the exact blocker, stop side effects, state that Demo 3 did not satisfy the gate, and switch to Demo 2.",
+    "hard_blocker_inputs": [
+      "origin advancement",
+      "force or unrelated integration requirement",
+      "missing credentials or provider visibility",
+      "source, binding, seal, sendoff, allowlist, policy, authority, baseline, lease, owner, or deadline drift",
+      "unlisted path or forbidden action",
+      "exhausted repair policy or global deadline"
+    ]
+  },
+  "fallback_rehearsal": {
+    "fallback_readiness_sha256": "8758c521fc17a868bce09852f50afbd2b30d74c30db4ca19cdb4dc3a1a79c9dc",
+    "golden_hash_inventory_result": "all 30 entries passed",
+    "verification_elapsed_ms": 149,
+    "switch_limit_ms": 30000,
+    "selected_routes": [
+      "https://mdkg.dev/demo/2/",
+      "https://mdkg.dev/demo/2/output/"
+    ],
+    "offline_routes": [
+      "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/demo/2/index.html",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/demo/2/output/index.html"
+    ],
+    "speaker_wording": "The live run hit a documented stop condition, so I am not going to call it a success. Here is the sealed rehearsal result, produced through the same Plan → Work → Evidence contract.",
+    "result": "pass"
+  },
+  "future_activation_rehearsal": {
+    "receipt_path": "presentations/ai-native-sdlc-demo/artifacts/demo-003/event-authority-activation.json",
+    "created": false,
+    "required_assertions_walked": [
+      "actual published baseline SHA equals fetched origin/main",
+      "published baseline is a linear descendant of the accepted old origin",
+      "preparation manifest and tree hashes match the separately approved transaction",
+      "event-authority, authority-policy, and allowlist hashes match",
+      "root integration writer release is present",
+      "activated_at and expires_at are actual derived values"
+    ],
+    "reason_not_created": "Task 58 has not been separately approved or published; inventing a future baseline or activation would violate the authority contract."
+  },
+  "after_state": {
+    "git": {
+      "head": "d9157757673c31a2c2c3c2c4a8dc03f0e4dd5b46",
+      "tree": "7fc1322f1bea5a1cc0109e34ef86880e5dd148ad",
+      "live_origin_main": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "index_empty": true,
+      "tracked_child_diff": [],
+      "untracked_nonignored_child_files": []
+    },
+    "program_bundle_sha256": "e12516be01d1379c75959c57e0af3aea0795eee3a27264b0de423b06dab61d6d",
+    "child": {
+      "authored_entry_count": 103,
+      "actual_authored_inventory_sha256": "e80b06a9f575741beda3a7df4c1a9139ddb6c046812deb0c77ef570a20e0e3a6",
+      "authored_mismatch_count": 0,
+      "goal_status": "todo",
+      "goal_state": "active",
+      "active_node": "spike-1",
+      "first_actionable_qid": "root:spike-1",
+      "site_files": 0,
+      "artifact_files": 0,
+      "claimed": false,
+      "work_started": false,
+      "runtime_checkpoint_created": false
+    },
+    "provider": [
+      {
+        "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+        "deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+        "state": "READY",
+        "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93"
+      },
+      {
+        "project_id": "prj_3Aoh90VnkqM6AnX9t72fSULEd",
+        "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
+        "state": "READY",
+        "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93"
+      }
+    ]
+  },
+  "invariants": {
+    "authority_payload_unchanged": true,
+    "source_binding_interface_and_seal_unchanged": true,
+    "authored_child_unchanged": true,
+    "child_mutable_status_unchanged": true,
+    "implementation_or_output_created": false,
+    "child_claim_or_task_start": false,
+    "staging_or_commit_during_rehearsal": false,
+    "push_or_remote_ref_update": false,
+    "deployment_or_provider_mutation": false,
+    "bundle_refresh": false,
+    "preparation_publication": false,
+    "authority_activation": false
+  },
+  "stop_marker": "Stopped after read-only dispatch resolution and before goal claim, child positioning, implementation, file generation, canonical build, staging, commit, push, deployment, provider mutation, bundle refresh, or authority activation.",
+  "warnings": [],
+  "result": {
+    "side_effect_free": true,
+    "authority_complete_for_future_still_valid_happy_path": true,
+    "another_mid_run_approval_required": false,
+    "separate_preparation_publication_approval_still_required": true,
+    "dry_rehearsal_passed": true
+  }
+}
