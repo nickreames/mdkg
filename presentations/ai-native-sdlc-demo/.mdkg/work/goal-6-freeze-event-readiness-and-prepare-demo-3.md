@@ -7,7 +7,7 @@ priority: 1
 goal_state: paused
 goal_condition: Demo 2 production, timing, prompt, and rehearsal evidence is classified into reusable source changes, immutable run-binding inputs, child-local state, and external authority; an explicitly accepted semantic source release with the complete generic chain passes two distinct zero-manual-edit absent-target fixtures; a pre-test deck baseline and post-test polish handoff are sealed; runs/demo-003 is created as an exact authored-content fork with a frozen run binding and immutable child-contract seal but no executed work; one designated harness, warm dependencies, build-once validation, the 30-minute timing contract, prospective range policy, preparation-baseline handoff, exact allowlist, writer lease, Demo 2 fallback, human authority, and a side-effect-free dry rehearsal all pass.
 scope_refs: [epic-6]
-active_node: task-30
+active_node: task-31
 required_skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [Demo 2 historical timing and reusable-delta classification, accepted semantic source release and run-binding schema, two distinct zero-edit absent-target fixtures and verify-only repeat, pre-test deck baseline and post-test polish handoff, unexecuted Demo 3 source-binding-seal identity chain and concise pack, single-harness warm-dependency build-once contract, read-only Git dependency and Vercel preflight, prospective range policy and preparation-baseline publication handoff, exact sendoff allowlist writer lease human authority and Demo 2 fallback, side-effect-free dry rehearsal and deadline verification]
 max_iterations: 25

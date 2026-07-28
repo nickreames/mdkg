@@ -2,7 +2,7 @@
 id: task-31
 type: task
 title: Freeze the live sendoff prompt and exact path allowlist
-status: backlog
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -21,7 +21,7 @@ evidence_refs: [test-25]
 aliases: [phase-6-step-8]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Overview
@@ -132,4 +132,30 @@ silently altered sendoff or child prose.
 
 - goal-6
 - epic-6
-- Evidence pending activation.
+
+# Results
+
+- Materialized `artifacts/demo-003/sendoff.md` byte-for-byte from the
+  fixture-tested v2 sendoff and verified SHA-256
+  `971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc`.
+- Froze the exact canonical integration paths, child lifecycle/publication
+  paths, immutable child exclusions, owners, operations, base hashes, and
+  fail-closed conditions in `event-allowlist.json` (SHA-256
+  `cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb`).
+- Authored a prospective policy rather than a grant of authority. It binds the
+  source release, run, materializer, child interface/seal, sendoff, allowlist,
+  origin, one-writer handoffs, four-commit ceiling, two/one repair bounds, and
+  T+24/T+29:15/T+29:30/T+30 cutoffs (SHA-256
+  `23b37b5f19c649ca811ca9be40b8cd78950661be7d485a82e75bcd6e6647f994`).
+- Sealed the reviewed 12-commit candidate range from
+  `f6af6410cf03ae222c4ee102844a678373b35d93` through
+  `cd04500c0bb8aea7022f8adf10569676cc68ce58`, stable candidate patch hash
+  `2ff53534094e32019634517b10a748ab813545af092227b61405834e5ea0d777`,
+  and the separate Task 58 manifest/publication requirements in
+  `preparation-baseline-handoff.json` (SHA-256
+  `360ecfe0cadd3ced88cc0853ea80a8fb402cce3c39d9e2b46d648bd8b8f0d263`).
+- The policy separates exact publication-eligible paths from local-only Goal 6
+  and Goal 7 evidence, generated state, bundle, and root projection receipts.
+  It guesses no future baseline, range, tree, or activation SHA.
+- No child work, canonical implementation, staging, push, deployment, provider
+  mutation, dependency, or unrelated path was changed.
