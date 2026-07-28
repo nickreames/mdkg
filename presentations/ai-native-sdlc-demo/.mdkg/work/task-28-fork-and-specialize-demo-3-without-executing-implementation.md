@@ -2,7 +2,7 @@
 id: task-28
 type: task
 title: Materialize zero-edit Demo 3 from source and run binding
-status: backlog
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -21,7 +21,7 @@ evidence_refs: [test-25]
 aliases: [phase-6-step-5]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Overview
@@ -55,7 +55,10 @@ of 13 in Goal 6.
   positioning spike -> implementation task -> local test -> integration task
   -> canonical-site test -> publish task -> exact-SHA/live-URL test ->
   accepted checkpoint.
-- Leave the positioning spike `todo`, every successor `backlog`, the accepted
+- Preserve the source-authored readiness states exactly: positioning,
+  portable implementation, and local validation are `todo`; caller-authorized
+  integration, canonical validation, publication, and live verification are
+  `backlog`. Keep `spike-1` as the only first actionable node, the runtime
   checkpoint absent/pending, and all implementation/publication evidence
   empty; record these invariants in the materialization receipt.
 - Write `artifacts/demo-003/child-interface-manifest.json` mapping each
@@ -102,6 +105,20 @@ of 13 in Goal 6.
   global deadline, required telemetry, and no implementation evidence.
 - The positioning spike later creates the run-specific creative decision
   artifact without rewriting the immutable child contract.
+
+# Results / Evidence
+
+- Created `runs/demo-003/` exactly once from semantic release
+  `49855648…5edf` and binding `95e1f33e…03e1`.
+- Preserved all 103 authored entries, `goal-1`, the complete seven-node chain,
+  first actionable `spike-1`, and zero-warning validation without child graph
+  edits.
+- Sealed child interface `a2942f6b…5e5a` and immutable contract
+  `f3d1cf59…5946`; the raw bootstrap receipt is retained inside the child.
+- Wrote public-safe fork, materialization, source/bound-goal, interface, and
+  seal receipts under `artifacts/demo-003/`.
+- No child node was claimed or started, no implementation or publication
+  evidence exists, and no external authority was granted.
 
 # Links / Artifacts
 

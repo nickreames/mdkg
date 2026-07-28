@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T06:32:14.270Z",
+    "generated_at": "2026-07-28T06:39:21.973Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-22"
+      "root": "root:chk-23"
     }
   },
   "workspaces": {
@@ -926,6 +926,68 @@
         "evidence_refs": [
           "root:chk-21",
           "root:test-25"
+        ]
+      }
+    },
+    "root:chk-23": {
+      "id": "chk-23",
+      "qid": "root:chk-23",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Demo 3 zero-edit lineage and readiness pack accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-6",
+        "demo-3-readiness"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-003/run-binding.json",
+        "artifacts/demo-003/materialization-receipt.json",
+        "artifacts/demo-003/child-interface-manifest.json",
+        "artifacts/demo-003/immutable-child-contract-seal.json",
+        "artifacts/demo-003/readiness-pack-receipt.json"
+      ],
+      "refs": [
+        "goal-6",
+        "epic-6",
+        "task-27",
+        "task-28",
+        "task-29",
+        "chk-22"
+      ],
+      "aliases": [
+        "phase-6-demo-3-zero-edit-ready"
+      ],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-23-demo-3-zero-edit-lineage-and-readiness-pack-accepted.md",
+      "edges": {
+        "relates": [
+          "root:task-29"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-6",
+          "root:epic-6",
+          "root:task-27",
+          "root:task-28",
+          "root:task-29",
+          "root:chk-22"
+        ],
+        "evidence_refs": [
+          "root:chk-22",
+          "root:task-28",
+          "root:task-29"
         ]
       }
     },
@@ -2858,7 +2920,7 @@
         "scope_refs": [
           "epic-6"
         ],
-        "active_node": "test-25",
+        "active_node": "task-29",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -2909,7 +2971,8 @@
           "root:chk-19",
           "root:chk-20",
           "root:chk-21",
-          "root:chk-22"
+          "root:chk-22",
+          "root:chk-23"
         ],
         "evidence_refs": [
           "root:chk-12",
@@ -2922,7 +2985,8 @@
           "root:chk-19",
           "root:chk-20",
           "root:chk-21",
-          "root:chk-22"
+          "root:chk-22",
+          "root:chk-23"
         ]
       }
     },
@@ -5514,10 +5578,10 @@
       "ws": "root",
       "type": "task",
       "title": "Freeze the pre-Demo-3 deck baseline and post-test polish handoff",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5607,10 +5671,10 @@
       "ws": "root",
       "type": "task",
       "title": "Materialize zero-edit Demo 3 from source and run binding",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5691,10 +5755,10 @@
       "ws": "root",
       "type": "task",
       "title": "Verify Demo 3 zero-edit lineage and public-safe pack",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -5752,7 +5816,8 @@
           "root:task-28"
         ],
         "evidence_refs": [
-          "root:task-28"
+          "root:task-28",
+          "root:chk-23"
         ]
       }
     },
@@ -10489,6 +10554,9 @@
       "root:test-25": [
         "root:chk-22"
       ],
+      "root:task-29": [
+        "root:chk-23"
+      ],
       "root:spike-2": [
         "root:chk-3"
       ],
@@ -11538,6 +11606,7 @@
         "root:chk-20",
         "root:chk-21",
         "root:chk-22",
+        "root:chk-23",
         "root:epic-6",
         "root:goal-7",
         "root:goal-9",
@@ -11739,6 +11808,7 @@
         "root:chk-20",
         "root:chk-21",
         "root:chk-22",
+        "root:chk-23",
         "root:spike-6",
         "root:task-27",
         "root:task-28",
@@ -11793,6 +11863,24 @@
         "root:chk-22",
         "root:goal-6",
         "root:test-25"
+      ],
+      "root:task-27": [
+        "root:chk-23",
+        "root:task-28"
+      ],
+      "root:task-28": [
+        "root:chk-23",
+        "root:goal-7",
+        "root:task-29"
+      ],
+      "root:task-29": [
+        "root:chk-23",
+        "root:goal-7",
+        "root:task-30"
+      ],
+      "root:chk-22": [
+        "root:chk-23",
+        "root:goal-6"
       ],
       "root:spike-2": [
         "root:chk-3",
@@ -11858,16 +11946,8 @@
         "root:test-4",
         "root:test-6"
       ],
-      "root:chk-22": [
+      "root:chk-23": [
         "root:goal-6"
-      ],
-      "root:task-28": [
-        "root:goal-7",
-        "root:task-29"
-      ],
-      "root:task-29": [
-        "root:goal-7",
-        "root:task-30"
       ],
       "root:task-31": [
         "root:goal-7",
@@ -11990,9 +12070,6 @@
       ],
       "root:task-25": [
         "root:task-26"
-      ],
-      "root:task-27": [
-        "root:task-28"
       ],
       "root:task-2": [
         "root:task-3"
@@ -12414,6 +12491,18 @@
         "root:task-28",
         "root:task-31"
       ],
+      "root:chk-22": [
+        "root:chk-23",
+        "root:goal-6",
+        "root:test-25"
+      ],
+      "root:task-28": [
+        "root:chk-23",
+        "root:task-29"
+      ],
+      "root:task-29": [
+        "root:chk-23"
+      ],
       "root:chk-2": [
         "root:chk-3",
         "root:goal-2"
@@ -12475,9 +12564,9 @@
         "root:goal-5",
         "root:task-48"
       ],
-      "root:chk-22": [
+      "root:chk-23": [
         "root:goal-6",
-        "root:test-25"
+        "root:task-29"
       ],
       "root:test-17": [
         "root:goal-7",
@@ -12489,9 +12578,6 @@
       ],
       "root:test-29": [
         "root:goal-8"
-      ],
-      "root:task-28": [
-        "root:task-29"
       ],
       "root:task-58": [
         "root:task-34"

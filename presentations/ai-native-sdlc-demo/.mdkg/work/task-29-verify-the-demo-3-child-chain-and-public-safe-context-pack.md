@@ -2,7 +2,7 @@
 id: task-29
 type: task
 title: Verify Demo 3 zero-edit lineage and public-safe pack
-status: backlog
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -17,11 +17,11 @@ blocked_by: []
 blocks: []
 refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-28]
 context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-28]
-evidence_refs: [task-28]
+evidence_refs: [task-28, chk-23]
 aliases: [phase-6-step-6]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Overview
@@ -80,6 +80,21 @@ Verify the Demo 3 child chain and public-safe context pack. This is step 6 of
 - No child implementation node has executed.
 - No downstream preflight, provider, or rehearsal side effect belongs to this
   pack-only verification node.
+
+# Results / Evidence
+
+- Verified the exact semantic release, binding, bootstrap receipt, child
+  interface, immutable seal, and byte-identical authored goal as one lineage.
+- Built a 19-node concise pack rooted at `spike-1` with the full chain,
+  designs, source checkpoint, and four required skills; estimated size is
+  3,116 tokens with no truncation.
+- Scanned the pack for credential/secret markers and confirmed it contains no
+  approval, writable authority, or raw provider payload.
+- Confirmed `spike-1` remains the first actionable node, all child artifacts
+  and execution evidence remain empty, and no downstream preflight or
+  provider action occurred.
+- Exact evidence is in
+  `artifacts/demo-003/readiness-pack-receipt.json`.
 
 # Links / Artifacts
 

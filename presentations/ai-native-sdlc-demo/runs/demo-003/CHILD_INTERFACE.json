@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "kind": "website-demo-child-interface",
+  "materializer_version": "2.0",
+  "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+  "binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+  "run_id": "demo-003",
+  "target_root": "presentations/ai-native-sdlc-demo/runs/demo-003",
+  "goal_qid": "root:goal-1",
+  "first_actionable_qid": "root:spike-1",
+  "authored_chain": [
+    "root:spike-1",
+    "root:task-1",
+    "root:test-1",
+    "root:task-2",
+    "root:test-2",
+    "root:task-3",
+    "root:test-3"
+  ],
+  "detail_route": "/demo/3/",
+  "output_route": "/demo/3/output/",
+  "component_key": "demo-3",
+  "designated_harness": "codex",
+  "timing_profile_ref": "sha256:f4b21d56a23cb439dc4bb5aefe6808f0fb5f1dc9a3f30ed19a023f155c868465",
+  "output_destinations": {
+    "portable_component": "site/src/components/DemoOutput.astro",
+    "local_preview": "site/src/pages/index.astro"
+  },
+  "receipt_destinations": {
+    "creative_direction": "artifacts/creative-direction.md",
+    "implementation": "artifacts/implementation-receipt.json",
+    "local_validation": "artifacts/local-validation.json",
+    "integration": "artifacts/integration-receipt.json",
+    "canonical_validation": "artifacts/canonical-route-validation.json",
+    "publication": "artifacts/publication-receipt.json",
+    "live_verification": "artifacts/live-verification-receipt.json"
+  },
+  "external_authority_required_for": [
+    "shared-source integration",
+    "Git commit and normal push",
+    "provider visibility and public verification"
+  ],
+  "authority_stored_in_child": false
+}

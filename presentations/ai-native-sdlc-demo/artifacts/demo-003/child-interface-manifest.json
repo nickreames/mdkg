@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-child-interface-manifest",
+  "status": "frozen",
+  "authoritative_child_file": "runs/demo-003/CHILD_INTERFACE.json",
+  "authoritative_child_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+  "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+  "binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+  "run_id": "demo-003",
+  "target_root": "presentations/ai-native-sdlc-demo/runs/demo-003",
+  "goal_qid": "root:goal-1",
+  "first_actionable_qid": "root:spike-1",
+  "designated_harness": "codex",
+  "timing_profile_ref": "sha256:f4b21d56a23cb439dc4bb5aefe6808f0fb5f1dc9a3f30ed19a023f155c868465",
+  "routes": {
+    "detail": "/demo/3/",
+    "output": "/demo/3/output/",
+    "component_key": "demo-3"
+  },
+  "roles": [
+    {
+      "role": "positioning",
+      "qid": "root:spike-1",
+      "owner": "child-implementation-writer",
+      "prev": null,
+      "next": "root:task-1",
+      "expected_initial_status": "todo",
+      "receipt": "artifacts/creative-direction.md"
+    },
+    {
+      "role": "portable implementation",
+      "qid": "root:task-1",
+      "owner": "child-implementation-writer",
+      "prev": "root:spike-1",
+      "next": "root:test-1",
+      "expected_initial_status": "todo",
+      "receipt": "artifacts/implementation-receipt.json"
+    },
+    {
+      "role": "local validation",
+      "qid": "root:test-1",
+      "owner": "child-implementation-writer",
+      "prev": "root:task-1",
+      "next": "root:task-2",
+      "expected_initial_status": "todo",
+      "receipt": "artifacts/local-validation.json"
+    },
+    {
+      "role": "canonical integration",
+      "qid": "root:task-2",
+      "owner": "root-integration-owner",
+      "prev": "root:test-1",
+      "next": "root:test-2",
+      "expected_initial_status": "backlog",
+      "receipt": "artifacts/integration-receipt.json"
+    },
+    {
+      "role": "canonical validation",
+      "qid": "root:test-2",
+      "owner": "root-integration-owner",
+      "prev": "root:task-2",
+      "next": "root:task-3",
+      "expected_initial_status": "backlog",
+      "receipt": "artifacts/canonical-route-validation.json"
+    },
+    {
+      "role": "publication",
+      "qid": "root:task-3",
+      "owner": "root-integration-owner",
+      "prev": "root:test-2",
+      "next": "root:test-3",
+      "expected_initial_status": "backlog",
+      "receipt": "artifacts/publication-receipt.json"
+    },
+    {
+      "role": "live verification",
+      "qid": "root:test-3",
+      "owner": "child-implementation-writer",
+      "prev": "root:task-3",
+      "next": null,
+      "expected_initial_status": "backlog",
+      "receipt": "artifacts/live-verification-receipt.json"
+    }
+  ],
+  "output_destinations": {
+    "portable_component": "site/src/components/DemoOutput.astro",
+    "local_preview": "site/src/pages/index.astro"
+  },
+  "external_authority_required_for": [
+    "shared-source integration",
+    "Git commit and normal push",
+    "provider visibility and public verification"
+  ],
+  "authority_stored_in_child": false,
+  "required_telemetry": [
+    "started_at",
+    "completed_at",
+    "duration_ms",
+    "attempt_count",
+    "retry_class",
+    "external_wait_ms",
+    "interventions",
+    "blocker",
+    "fallback_selection"
+  ]
+}

@@ -1,0 +1,99 @@
+---
+id: spike-1
+type: spike
+title: choose audience offer structure and creative direction
+status: todo
+priority: 1
+epic: epic-1
+parent: goal-1
+next: task-1
+tags: [demo, creative-production, website, strategy]
+owners: []
+links: []
+artifacts: [artifacts/creative-direction.md]
+relates: [task-1, test-1, prd-2, dec-1, dec-2, edd-1]
+blocked_by: []
+blocks: []
+refs: []
+context_refs: [prd-2, edd-1, dec-1, dec-2, chk-3]
+evidence_refs: []
+aliases: []
+skills: [select-work-and-ground-context, verify-close-and-checkpoint]
+created: 2026-06-29
+updated: 2026-07-26
+---
+# Research Question
+
+What audience, offer, page structure, static proof model, and creative direction
+should this demo run use while preserving the Ocean Flow design system and
+source-backed mdkg claims?
+
+# Context And Constraints
+
+- Start from the current `goal-1` and this graph only.
+- Treat `RUN_BINDING.json` as immutable bounded input; do not rewrite authored
+  goal, design, work, test, skill, or operator files.
+- Use `DESIGN.md` as the visual baseline.
+- Use `CREATIVE_PRODUCTION_INTAKE.md` when Creative Production is available.
+- Use static Astro with zero client-side JavaScript for the eventual
+  implementation.
+- Creative Production may propose differentiated structure, CSS-only motion,
+  visuals, and static proof ideas.
+- Do not store secrets, raw prompt transcripts, provider payloads, credentials,
+  or private repo context.
+- Do not infer shared-source, Git, or provider authority.
+
+# Search Plan
+
+- Read `WEBSITE_DEMO_TEMPLATE_BRIEF.md`.
+- Read `DESIGN.md`.
+- Read `CREATIVE_PRODUCTION_INTAKE.md`.
+- Inspect `prd-2`, `dec-1`, `dec-2`, and `edd-1`.
+- Use Creative Production when available to explore visual direction; otherwise
+  write a concise local creative direction in the spike findings.
+- Record audience, offer, page structure, visual territory, CSS-only motion,
+  static proof concepts, asset plan, source-backed content facts, explicit
+  non-goals, and risks in `artifacts/creative-direction.md` for `test-1`.
+
+# Findings
+
+Pending.
+
+# Options And Tradeoffs
+
+Pending.
+
+# Recommendation
+
+Pending.
+
+# Follow-Up Nodes To Create
+
+- Use existing `task-1`; do not create or rewrite work topology.
+
+# Skill Candidates
+
+- `select-work-and-ground-context`
+- `verify-close-and-checkpoint`
+- `creative-production:explore`
+
+# Data Structures And Algorithms Notes
+
+Pending.
+
+# UX Notes
+
+Pending.
+
+# Security Notes
+
+Never retain secrets, raw prompts, provider payloads, or private context in the
+template graph, generated website, or checkpoints.
+
+# mdkg.dev Launch Implications
+
+Later topology may execute only under caller-owned lease and authority receipts.
+
+# Evidence And Sources
+
+Pending.
