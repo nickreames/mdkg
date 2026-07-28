@@ -3,7 +3,7 @@
     "tool": "mdkg",
     "schema_version": 1,
     "cache_version": 1,
-    "generated_at": "2026-07-28T06:43:52.149Z",
+    "generated_at": "2026-07-28T06:52:12.810Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
@@ -29,7 +29,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7",
       "headings": [
         {
@@ -118,7 +118,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f",
       "headings": [
         {
@@ -235,7 +235,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-17",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45",
       "headings": [
         {
@@ -351,7 +351,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-03",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8",
       "headings": [
         {
@@ -424,7 +424,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-01-14",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03",
       "headings": [
         {
@@ -468,7 +468,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-05",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f",
       "headings": [
         {
@@ -553,7 +553,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:ef60b65b54a57ed54984a49f5ed14453cb4e47170a5660be94eceec26b92b01f",
       "headings": [
         {
@@ -597,7 +597,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-05-14",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae",
       "headings": [
         {
@@ -663,7 +663,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-06-27",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:945fb5cb47945735b9529f2b0a322630b3e8aef1c3e69c4ce85dd2db3e905cca",
       "headings": [
         {
@@ -718,7 +718,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-03-10",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a",
       "headings": [
         {
@@ -847,7 +847,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:089c04fb077c68ba54ed1756cfef3f81e2ba8598107c62b2a190e68e466b7c2f",
       "headings": [
         {
@@ -901,7 +901,7 @@
         "deck/citations/claim-matrix.md"
       ],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:24302a7f69b2804f4f75acb597d1a7a073a2d136e50efceb828f6b7d6122f2d1",
       "headings": [
         {
@@ -952,7 +952,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-07-27",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:f162993aa5aca46d4909206f86bbdb301afd10cf56cf379146ff3037fd0008ec",
       "headings": [
         {
@@ -1007,7 +1007,7 @@
         "artifact://ai-native-sdlc-demo/writer-lease"
       ],
       "updated": "2026-07-27",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:7a8cfeaa00f63017603d005a5fc266a669dcaf33d3783f5fdde85cedf3a56289",
       "headings": [
         {
@@ -1061,7 +1061,7 @@
         "artifact://ai-native-sdlc-demo/event-receipt"
       ],
       "updated": "2026-07-27",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:6e223fead9bac3d8e28d302e09c9b1c8fa8a5299788c66a003bda5463c8f90d4",
       "headings": [
         {
@@ -1111,7 +1111,7 @@
       "links": [],
       "artifacts": [],
       "updated": "2026-07-26",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:dfd17cdbd259c301a1a8aef60bc874e0ce95e1e1a28355bb7cd2c2af9a9b829d",
       "headings": [
         {
@@ -1173,7 +1173,7 @@
         "artifact://ai-native-sdlc-demo/root-registration"
       ],
       "updated": "2026-07-27",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:e80b35f793a8ef9be41662c4e9d1eac75fc364af17ca764d8916c0c7caad6e4e",
       "headings": [
         {
@@ -1258,7 +1258,7 @@
         "artifact://ai-native-sdlc-demo/demo-004"
       ],
       "updated": "2026-07-27",
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:4ac433473078b4bc563f7699aadaf033927374c08ed2290b5a9e7315518e2975",
       "headings": [
         {
@@ -1345,7 +1345,7 @@
         ".mdkg/design/edd-5-mdkg-skills-integration-guide-v0-4-agent-skills-standard-and-packs.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:ffacd8b8412ab5453b53d91a192f27e0458da4591f80d82d4933805a6fb5a05d",
       "headings": [
         {
@@ -1452,7 +1452,7 @@
         "llms.txt"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae",
       "headings": [
         {
@@ -1525,7 +1525,7 @@
         "AGENT_START.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:1ab5e0167ecb9e67b3770d31bfbdfd02a5323ec9ba1a73aafe990219bea6b57b",
       "headings": [
         {
@@ -1630,7 +1630,7 @@
         ".mdkg/design/dec-5-use-exact-sha-publication-gates-bounded-fix-forward-and-a-sealed-fallback.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:5de3f45d708c513e762f1a06bcff76369b93e22d3e028b29fbc2fc52ef6ac05a",
       "headings": [
         {
@@ -1732,7 +1732,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:3b8493ee443a289ba257ed0e30045be84e9b647ef7ebfd88782319382f489776",
       "headings": [
         {
@@ -1834,7 +1834,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:65dae2a6e79f2f7e4265b7057287db0308ac6ac59e6ebe9a6b6cd50b5d90176b",
       "headings": [
         {
@@ -1937,7 +1937,7 @@
         "CLI_COMMAND_MATRIX.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409",
       "headings": [
         {
@@ -2015,7 +2015,7 @@
         "AGENT_START.md"
       ],
       "artifacts": [],
-      "indexed_at": "2026-07-28T06:43:52.149Z",
+      "indexed_at": "2026-07-28T06:52:12.810Z",
       "source_hash": "sha256:1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107",
       "headings": [
         {
