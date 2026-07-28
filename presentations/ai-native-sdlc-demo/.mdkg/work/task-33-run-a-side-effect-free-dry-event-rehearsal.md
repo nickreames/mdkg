@@ -2,7 +2,7 @@
 id: task-33
 type: task
 title: Run a side-effect-free dry event rehearsal
-status: backlog
+status: progress
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-6-step-10]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Overview
@@ -96,4 +96,17 @@ Run a side-effect-free dry event rehearsal. This is step 10 of 13 in Goal 6.
 
 - goal-6
 - epic-6
-- Evidence pending activation.
+
+# Current Gate
+
+- Prepared the immutable prospective `event-authority.json` payload after Task
+  32. Its SHA-256 is
+  `b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e`.
+- All thirteen bound source, run, materializer, child, preflight, sendoff,
+  allowlist, policy, handoff, lease, and fallback hashes match current files.
+- The payload grants no authority until the user explicitly accepts that exact
+  hash. Task 47 approval, Demo 2 approval, and prior push approval do not
+  substitute.
+- The dry rehearsal remains stopped before pack generation, child dispatch,
+  implementation, canonical build, staging, commit, push, deployment, provider
+  mutation, authority activation, or bundle refresh.
