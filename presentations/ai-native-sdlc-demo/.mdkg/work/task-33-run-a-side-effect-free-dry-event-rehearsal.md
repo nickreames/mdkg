@@ -2,7 +2,7 @@
 id: task-33
 type: task
 title: Run a side-effect-free dry event rehearsal
-status: progress
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -97,16 +97,31 @@ Run a side-effect-free dry event rehearsal. This is step 10 of 13 in Goal 6.
 - goal-6
 - epic-6
 
-# Current Gate
+# Results
 
-- Prepared the immutable prospective `event-authority.json` payload after Task
-  32. Its SHA-256 is
+- The user explicitly accepted the immutable prospective
+  `event-authority.json` payload after Task 32. Its unchanged SHA-256 is
   `b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e`.
 - All thirteen bound source, run, materializer, child, preflight, sendoff,
   allowlist, policy, handoff, lease, and fallback hashes match current files.
-- The payload grants no authority until the user explicitly accepts that exact
-  hash. Task 47 approval, Demo 2 approval, and prior push approval do not
-  substitute.
-- The dry rehearsal remains stopped before pack generation, child dispatch,
-  implementation, canonical build, staging, commit, push, deployment, provider
-  mutation, authority activation, or bundle refresh.
+- Rehearsed P0, immutable T0, read-only dispatch resolution, every deadline and
+  repair cue, hard-blocker wording, activation-receipt derivation, and the Demo
+  2 fallback. P0-to-T0 was 860 ms, child routing acknowledgement was 203 ms,
+  and fallback verification completed in 149 ms.
+- The child concise pack dry run resolved `root:spike-1`, the required design
+  context, and all four full required skills without truncation or file writes.
+  The transient Task 33 standard pack was hash-recorded and removed, leaving
+  no persistent pack outside the authority inventory.
+- Reverified all 103 authored child entries against the bootstrap receipt with
+  zero mismatches. Demo 3 remains `todo/active` at `spike-1`, with zero site or
+  artifact files, no runtime checkpoint, and no claim or task start.
+- Both existing production deployments remain read-only `READY` at the bound
+  origin SHA. The Git index, child tracked tree, origin ref, provider state,
+  and root bundle hash are unchanged.
+- `dry-rehearsal-receipt.json` records the complete before/after identity,
+  permitted commands, pack inventory, cue matrix, branch/fallback procedures,
+  activation schema, stop marker, and invariants; SHA-256
+  `5759ffe88dd398d9ff977321de1c337e0cee06513b8530ade212972ade9b2cce`.
+- The rehearsal stopped before child claim, positioning, implementation,
+  canonical build, staging, commit, push, deployment, provider mutation,
+  preparation publication, authority activation, or bundle refresh.
