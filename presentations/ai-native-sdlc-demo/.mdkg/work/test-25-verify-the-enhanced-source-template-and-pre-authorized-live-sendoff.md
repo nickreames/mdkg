@@ -2,7 +2,7 @@
 id: test-25
 type: test
 title: Verify the fork-ready source with two zero-edit fixtures
-status: backlog
+status: done
 priority: 1
 epic: epic-6
 parent: goal-6
@@ -15,14 +15,14 @@ artifacts: [artifacts/demo-003/source-prompt-verification-receipt.json, artifact
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, chk-4, goal-5, chk-17, spike-6, task-47, chk-20]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, chk-4, goal-5, chk-17, spike-6, task-47, chk-20]
-evidence_refs: [spike-6, task-47, chk-17, chk-20]
+refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, chk-4, goal-5, chk-17, spike-6, task-47, chk-20, chk-21]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, chk-4, goal-5, chk-17, spike-6, task-47, chk-20, chk-21]
+evidence_refs: [spike-6, task-47, chk-17, chk-20, chk-21, chk-22]
 aliases: [phase-6-step-3, phase-6-source-prompt-proof]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [semantic_source_release, two_distinct_bindings, exact_authored_fork, bootstrap_repeat, pack_coverage, no_authority_leakage, no_retained_run]
 created: 2026-07-27
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 # Overview
 
@@ -85,10 +85,22 @@ runs before Demo 3 exists.
 
 # Results / Evidence
 
-Write `artifacts/demo-003/source-prompt-verification-receipt.json` and
-`source-fixture-verification.json` with source release, both binding hashes,
-authored-content comparisons, bootstrap/interface/seal identities, sendoff,
-pack, repeat, authority-leakage, cleanup, and pass/fail evidence.
+- `npm run smoke:demo-graph` passed independently against the accepted Task 47
+  release.
+- Two materially distinct absent-target bindings produced different binding,
+  child-interface, immutable-seal, and generated-inventory hashes with zero
+  manual authored-child edits.
+- Verify-only repeat was identity-stable for both fixtures. Concise and
+  standard child packs each contained the complete 19-node graph, design,
+  checkpoint, and required-skill context without truncation.
+- All nine negative drift/authority classifications failed closed, the source
+  index remained unchanged, both fixtures were removed, and
+  `runs/demo-003/` remained absent.
+- Exact identities and pass/fail evidence are recorded in
+  `artifacts/demo-003/source-prompt-verification-receipt.json` and
+  `artifacts/demo-003/source-fixture-verification.json`.
+- The future caller-owned authority interface is structurally reserved but no
+  event authority, Git mutation, provider action, or publication occurred.
 
 # Notes / Follow-ups
 
