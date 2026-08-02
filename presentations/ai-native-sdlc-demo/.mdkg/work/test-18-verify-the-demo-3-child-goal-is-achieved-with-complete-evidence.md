@@ -2,7 +2,7 @@
 id: test-18
 type: test
 title: Verify the Demo 3 reveal gate by the global deadline
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -22,7 +22,7 @@ aliases: [phase-7-step-3, demo-3-reveal-gate]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [success_branch, fallback_branch, receipt_schema, timing_deadline, truthful_child_state, selection]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview

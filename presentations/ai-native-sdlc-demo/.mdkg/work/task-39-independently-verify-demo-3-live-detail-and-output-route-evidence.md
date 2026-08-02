@@ -2,7 +2,7 @@
 id: task-39
 type: task
 title: Independently verify Demo 3 live detail and output route evidence
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-7-step-7]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview

@@ -2,22 +2,22 @@
 id: epic-7
 type: epic
 title: Timed Demo 3 dress-rehearsal execution and evidence
-status: backlog
+status: done
 priority: 1
 tags: [ai-native-sdlc, presentation-demo, phase-7]
 owners: [program-orchestrator, root-integration-owner]
 links: []
-artifacts: []
+artifacts: [artifacts/demo-003/rehearsal-outcome-receipt.json, artifacts/demo-003/program-bundle-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [goal-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-context_refs: [goal-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6]
-evidence_refs: []
+refs: [goal-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, chk-25]
+context_refs: [goal-7, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, chk-25]
+evidence_refs: [chk-25, chk-28, test-18, test-19, test-20, test-21, receipt.demo3-local-durability-closeout-001]
 aliases: [phase-7-epic]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-08-02
 ---
 
 # Goal
@@ -46,8 +46,12 @@ All listed nodes use epic-7, parent goal-7, and symmetric prev/next links. The g
 
 # Milestones
 
-- Root-integration-owned task-58 publishes the preparation baseline, activates
-  authority, and releases its lease before `P0` or `T0`.
+- Root-integration-owned task-58 verifies or, only if still necessary,
+  publishes the preparation baseline from a dedicated clean publication
+  worktree, activates authority, and releases its lease before `P0` or `T0`.
+- The private control checkout owns local Goal 6/7 evidence and may not stage,
+  commit, or push. Complete-range equality and an empty intersection with all
+  exact and pattern-based exclusions are required before any publication.
 - Live critical milestone `task-34 -> task-35 -> test-18` completes by
   T+29:30 or selects Demo 2 by T+30.
 - Post-reveal tasks 36–40 and tests 19–21 harden evidence without changing the
@@ -66,6 +70,9 @@ All listed nodes use epic-7, parent goal-7, and symmetric prev/next links. The g
 # Risks
 
 - Prerequisite or writer-lease drift.
+- Confusing the intentionally divergent private control checkout with the
+  clean publication worktree, or inspecting only staged paths instead of the
+  complete push range.
 - Hidden scope expansion across product, Git, or provider boundaries.
 - Evidence that does not prove the goal condition.
 - Stale bundle, source, route, claim, or deployment state.

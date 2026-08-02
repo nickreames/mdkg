@@ -2,7 +2,7 @@
 id: task-34
 type: task
 title: Start the clock and dispatch the timed Demo 3 child
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -21,7 +21,7 @@ evidence_refs: [test-17, task-58]
 aliases: [phase-7-step-1]
 skills: [select-work-and-ground-context, build-pack-and-execute-task, pursue-mdkg-goal, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-07-28
 ---
 
 # Overview

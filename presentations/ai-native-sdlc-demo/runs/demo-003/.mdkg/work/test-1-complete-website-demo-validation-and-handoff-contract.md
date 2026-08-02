@@ -2,7 +2,7 @@
 id: test-1
 type: test
 title: complete website demo validation and handoff contract
-status: todo
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
@@ -22,7 +22,7 @@ aliases: []
 skills: [verify-close-and-checkpoint]
 cases: [template validates from one goal id., generated site builds locally with warm dependencies in one attempt., portable demooutput component exists and is importable by a thin wrapper., required local routes render with semantic html and css., built demo routes contain zero client javascript scripts or hydration metadata., browser checks pass when implementation reaches local preview., keyboard focus reduced motion and wcag aa checks pass., transfer and raster asset budgets pass., creative production input is retained only as a compact public-safe direction summary., no secrets raw prompts provider payloads remote runtime assets or unsupported mdkg claims are retained., integration remains gated by a separate caller lease.]
 created: 2026-06-29
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 # Overview
 

@@ -2,7 +2,7 @@
 id: task-37
 type: task
 title: Review Demo 3 commit and non-force push evidence
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-7-step-5]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview

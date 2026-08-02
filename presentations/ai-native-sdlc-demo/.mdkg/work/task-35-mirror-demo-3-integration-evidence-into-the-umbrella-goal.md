@@ -2,7 +2,7 @@
 id: task-35
 type: task
 title: Consolidate and verify Demo 3 reveal-critical evidence
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -21,7 +21,7 @@ evidence_refs: []
 aliases: [phase-7-step-2]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview

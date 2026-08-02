@@ -2,13 +2,13 @@
   "meta": {
     "tool": "mdkg",
     "schema_version": 1,
-    "generated_at": "2026-07-28T07:29:26.987Z",
+    "generated_at": "2026-08-02T15:24:19.689Z",
     "root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
     "workspaces": [
       "root"
     ],
     "latest_checkpoint_qid": {
-      "root": "root:chk-24"
+      "root": "root:chk-28"
     }
   },
   "workspaces": {
@@ -1013,6 +1013,146 @@
       "edges": {
         "relates": [
           "root:test-17"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:chk-25": {
+      "id": "chk-25",
+      "qid": "root:chk-25",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Goal 7 clean publication-worktree execution contract accepted",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [
+        "ai-native-sdlc",
+        "presentation-demo",
+        "phase-7",
+        "pre-activation",
+        "publication-worktree"
+      ],
+      "owners": [
+        "program-orchestrator"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [
+        "goal-7",
+        "epic-7",
+        "task-58",
+        "goal-6",
+        "chk-24",
+        "dec-4",
+        "dec-5"
+      ],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-25-goal-7-clean-publication-worktree-execution-contract-accepted.md",
+      "edges": {
+        "relates": [
+          "root:task-58"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [
+          "root:goal-6",
+          "root:chk-24",
+          "root:dec-4",
+          "root:dec-5"
+        ],
+        "evidence_refs": [
+          "root:chk-24",
+          "root:test-17"
+        ]
+      }
+    },
+    "root:chk-26": {
+      "id": "chk-26",
+      "qid": "root:chk-26",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Demo 3 preparation baseline and timed authority activated",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-26-demo-3-preparation-baseline-and-timed-authority-activated.md",
+      "edges": {
+        "relates": [
+          "root:task-58"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:chk-27": {
+      "id": "chk-27",
+      "qid": "root:chk-27",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Demo 3 reveal gate passed",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-27-demo-3-reveal-gate-passed.md",
+      "edges": {
+        "relates": [
+          "root:test-18"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:chk-28": {
+      "id": "chk-28",
+      "qid": "root:chk-28",
+      "ws": "root",
+      "type": "checkpoint",
+      "title": "Demo 3 dress rehearsal achieved and public evidence sealed",
+      "status": "done",
+      "priority": 9,
+      "created": "2026-07-28",
+      "updated": "2026-07-28",
+      "tags": [],
+      "owners": [],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {},
+      "path": ".mdkg/work/chk-28-demo-3-dress-rehearsal-achieved-and-public-evidence-sealed.md",
+      "edges": {
+        "relates": [
+          "root:task-40"
         ],
         "blocked_by": [],
         "blocks": [],
@@ -2116,10 +2256,10 @@
       "ws": "root",
       "type": "epic",
       "title": "Timed Demo 3 dress-rehearsal execution and evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-08-02",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -2130,7 +2270,10 @@
         "root-integration-owner"
       ],
       "links": [],
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/demo-003/rehearsal-outcome-receipt.json",
+        "artifacts/demo-003/program-bundle-receipt.json"
+      ],
       "refs": [
         "goal-7",
         "prd-1",
@@ -2140,7 +2283,8 @@
         "dec-3",
         "dec-4",
         "dec-5",
-        "dec-6"
+        "dec-6",
+        "chk-25"
       ],
       "aliases": [
         "phase-7-epic"
@@ -2164,9 +2308,18 @@
           "root:dec-3",
           "root:dec-4",
           "root:dec-5",
-          "root:dec-6"
+          "root:dec-6",
+          "root:chk-25"
         ],
-        "evidence_refs": []
+        "evidence_refs": [
+          "root:chk-25",
+          "root:chk-28",
+          "root:test-18",
+          "root:test-19",
+          "root:test-20",
+          "root:test-21",
+          "root:receipt.demo3-local-durability-closeout-001"
+        ]
       }
     },
     "root:epic-8": {
@@ -3036,10 +3189,10 @@
       "ws": "root",
       "type": "goal",
       "title": "Execute and assess the timed Demo 3 dress rehearsal",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -3053,6 +3206,8 @@
       "artifacts": [
         "artifacts/demo-003/timing-ledger.json",
         "artifacts/demo-003/reveal-gate-receipt.json",
+        "artifacts/demo-003/rehearsal-outcome-receipt.json",
+        "artifacts/demo-003/program-bundle-receipt.json",
         "artifact://ai-native-sdlc-demo/demo-003-rehearsal-receipt",
         "artifact://ai-native-sdlc-demo/demo-003-blocker-receipt"
       ],
@@ -3064,7 +3219,9 @@
         "dec-3",
         "dec-4",
         "dec-5",
-        "dec-6"
+        "dec-6",
+        "chk-25",
+        "chk-28"
       ],
       "aliases": [
         "timed-demo-3-dress-rehearsal"
@@ -3076,11 +3233,12 @@
         "verify-close-and-checkpoint"
       ],
       "attributes": {
-        "goal_state": "paused",
-        "goal_condition": "Under the still-valid external human authority and separately approved preparation manifest, the root integration owner publishes and activates a clean baseline before the clock; after an explicit lease handoff, one designated harness executes the exact-source Demo 3 instance whose source release, immutable run binding, authored-content equality, and child-contract seal remain valid; a consolidated receipt either proves child achievement, normal non-force push, both exact-SHA READY deployments, passing /demo/3/ routes, and a T+29:30 reveal gate, or truthfully records the timed blocker and Demo 2 fallback; all per-stage timings, retries, waits, interventions, and post-reveal audits are sealed for Goal 9.",
+        "goal_state": "achieved",
+        "goal_condition": "Under the still-valid external human authority and separately approved preparation manifest, the root integration owner verifies or, only if still necessary, publishes the clean preparation baseline from a dedicated publication worktree and activates authority before the clock; the private control checkout never publishes; after an explicit lease handoff, one designated harness executes the exact-source Demo 3 instance whose source release, immutable run binding, authored-content equality, and child-contract seal remain valid; a consolidated receipt either proves child achievement, normal non-force push, both exact-SHA READY deployments, passing /demo/3/ routes, and a T+29:30 reveal gate, or truthfully records the timed blocker and Demo 2 fallback; all per-stage timings, retries, waits, interventions, and post-reveal audits are sealed for Goal 9.",
         "scope_refs": [
           "epic-7"
         ],
+        "last_active_node": "task-40",
         "required_skills": [
           "select-work-and-ground-context",
           "build-pack-and-execute-task",
@@ -3088,7 +3246,10 @@
           "verify-close-and-checkpoint"
         ],
         "required_checks": [
-          "published clean preparation baseline and current human rehearsal authority",
+          "distinct control and publication worktrees with publication forbidden from the control checkout",
+          "idempotent verification or clean publication of the approved preparation baseline",
+          "complete-range equality and empty local-evidence intersection",
+          "current human rehearsal authority and released preparation writer lease",
           "single-harness dispatch and timing ledger",
           "Demo 3 child result or truthful timed blocker",
           "consolidated T+29:15 receipt and T+29:30 reveal-selection test",
@@ -3122,12 +3283,19 @@
           "root:task-29",
           "root:task-31",
           "root:task-32",
-          "root:task-33"
+          "root:task-33",
+          "root:chk-25"
         ],
         "evidence_refs": [
           "root:chk-18",
           "root:chk-19",
-          "root:test-17"
+          "root:test-17",
+          "root:chk-25",
+          "root:chk-28",
+          "root:test-18",
+          "root:test-19",
+          "root:test-20",
+          "root:test-21"
         ]
       }
     },
@@ -3310,6 +3478,67 @@
         ]
       }
     },
+    "root:order.demo3-local-durability-closeout-001": {
+      "id": "order.demo3-local-durability-closeout-001",
+      "qid": "root:order.demo3-local-durability-closeout-001",
+      "ws": "root",
+      "type": "work_order",
+      "title": "Demo 3 local durability closeout order",
+      "created": "2026-08-02",
+      "updated": "2026-08-02",
+      "tags": [
+        "demo-3",
+        "durability",
+        "closeout"
+      ],
+      "owners": [
+        "omni-mdkg-agent"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {
+        "version": "0.1.0",
+        "work_id": "work.demo3-local-durability-closeout-001",
+        "work_version": "0.1.0",
+        "requester": "user.nick",
+        "order_status": "completed",
+        "request_ref": "delegation.mdkg-demo3-local-durability-closeout-001",
+        "trigger_ref": "trigger.manual",
+        "payload_hash": "sha256:7cff3de04cdd912a40a77fa25d362d3359856ed1291ad55fff557b94188abc2c",
+        "input_refs": [
+          "goal-7",
+          "epic-7",
+          "chk-28"
+        ],
+        "queue_refs": [],
+        "requested_outputs": [
+          "closeout_receipt:markdown:required",
+          "reconciled_graph:mdkg:required"
+        ],
+        "constraint_refs": [
+          "authority.local_mdkg_only",
+          "authority.one_local_commit",
+          "authority.no_remote_provider_release"
+        ],
+        "artifact_policy": "commit_sidecar_and_zip"
+      },
+      "path": ".mdkg/work/order.demo3-local-durability-closeout-001-demo-3-local-durability-closeout-order/WORK_ORDER.md",
+      "edges": {
+        "relates": [
+          "root:work.demo3-local-durability-closeout-001",
+          "root:goal-7",
+          "root:epic-7",
+          "root:chk-28"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
     "root:prd-1": {
       "id": "prd-1",
       "qid": "root:prd-1",
@@ -3356,6 +3585,77 @@
       "path": ".mdkg/design/prd-1-ai-native-sdlc-presentation-and-live-demo-program-requirements.md",
       "edges": {
         "relates": [],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
+    },
+    "root:receipt.demo3-local-durability-closeout-001": {
+      "id": "receipt.demo3-local-durability-closeout-001",
+      "qid": "root:receipt.demo3-local-durability-closeout-001",
+      "ws": "root",
+      "type": "receipt",
+      "title": "Demo 3 local durability closeout",
+      "created": "2026-08-02",
+      "updated": "2026-08-02",
+      "tags": [
+        "demo-3",
+        "durability",
+        "closeout"
+      ],
+      "owners": [
+        "omni-mdkg-agent"
+      ],
+      "links": [],
+      "artifacts": [
+        "artifacts/demo-003/rehearsal-outcome-receipt.json",
+        "artifacts/demo-003/umbrella/commit-push-receipt.json",
+        "artifacts/demo-003/umbrella/deployment-receipt.json",
+        "artifacts/demo-003/umbrella/live-route-receipt.json"
+      ],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {
+        "version": "0.1.0",
+        "work_order_id": "order.demo3-local-durability-closeout-001",
+        "receipt_status": "verified",
+        "outcome": "success",
+        "cost_ref": "cost.redacted",
+        "redaction_policy": "refs_and_hashes_only",
+        "proof_refs": [
+          "goal-7",
+          "epic-7",
+          "chk-28"
+        ],
+        "attestation_refs": [],
+        "evidence_hashes": [
+          "sha256:699751bfb4e7e04e356e0a53e6a0b032b91a01b8371e1d89b514ce05a48c39bd",
+          "sha256:86dc9e044c2addc0d1d2d7f66787a70e2012b9752d9d1cdcb88625341f2705ff",
+          "sha256:9e433dcd226570a329fd5377bdef6ce8c452d0376fb195039de7846a06efc2d0",
+          "sha256:68cbb8b49dadf08a749c67acb24edd6f92f63ff815e7ac0f7c5008099e4acb18",
+          "sha256:d0fbf88a1cb3ac55fac6758a263c257e1a450d1b861ce621b754feb82566386c",
+          "sha256:28b4f6bbaec1c13b68df89c7adf66d4c2c770b545e678406d33f82afde7e9cf6",
+          "sha256:cb5e6924195374d47984afcd651e1e7f3f5c49ecd9416ee8222049f5bd0f7da5",
+          "sha256:81af93c55dfbb6affecae117d0f08eaa04386299e2a0f5ce751d60ad062da607",
+          "sha256:1d1a48ff9ecb60f531b347804087c633e988be76cf814a099a5b57aa0a1b2b10",
+          "sha256:5a3e2ef0960cec4138812288aec3bb6e3069b3de26fb12acc52360a6477a537c"
+        ],
+        "input_hashes": [
+          "sha256:9f66eadddf270c03c9203131b2876873b0ea49fd40c83ad883d94c20cf7c9be5"
+        ],
+        "output_hashes": [
+          "sha256:710acd78a69c8ab419c0291f3992b71e131bf067fa6b14cd4c26f4577bce7448"
+        ]
+      },
+      "path": ".mdkg/work/receipt.demo3-local-durability-closeout-001-demo-3-local-durability-closeout/RECEIPT.md",
+      "edges": {
+        "relates": [
+          "root:goal-7",
+          "root:epic-7",
+          "root:chk-28"
+        ],
         "blocked_by": [],
         "blocks": [],
         "context_refs": [],
@@ -6229,10 +6529,10 @@
       "ws": "root",
       "type": "task",
       "title": "Start the clock and dispatch the timed Demo 3 child",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6315,10 +6615,10 @@
       "ws": "root",
       "type": "task",
       "title": "Consolidate and verify Demo 3 reveal-critical evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6384,10 +6684,10 @@
       "ws": "root",
       "type": "task",
       "title": "Review canonical site and public-safety validation evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6454,10 +6754,10 @@
       "ws": "root",
       "type": "task",
       "title": "Review Demo 3 commit and non-force push evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6524,10 +6824,10 @@
       "ws": "root",
       "type": "task",
       "title": "Independently verify exact-SHA READY production deployment evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6594,10 +6894,10 @@
       "ws": "root",
       "type": "task",
       "title": "Independently verify Demo 3 live detail and output route evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -6737,10 +7037,10 @@
       "ws": "root",
       "type": "task",
       "title": "Refresh the program bundle and close the Demo 3 rehearsal evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -8082,10 +8382,10 @@
       "ws": "root",
       "type": "task",
       "title": "Publish the Demo 3 preparation baseline and activate timed authority",
-      "status": "todo",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-27",
-      "updated": "2026-07-27",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -8111,7 +8411,9 @@
         "task-31",
         "task-32",
         "task-33",
-        "test-17"
+        "test-17",
+        "chk-24",
+        "chk-25"
       ],
       "aliases": [
         "phase-7-pre-event-baseline"
@@ -8140,10 +8442,14 @@
           "root:task-31",
           "root:task-32",
           "root:task-33",
-          "root:test-17"
+          "root:test-17",
+          "root:chk-24",
+          "root:chk-25"
         ],
         "evidence_refs": [
-          "root:test-17"
+          "root:test-17",
+          "root:chk-24",
+          "root:chk-25"
         ]
       }
     },
@@ -9159,10 +9465,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify the Demo 3 reveal gate by the global deadline",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -9229,10 +9535,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify canonical site build routes claims accessibility and zero JavaScript",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -9363,10 +9669,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify exact-SHA production and live URL evidence",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -9430,10 +9736,10 @@
       "ws": "root",
       "type": "test",
       "title": "Verify hard-blocker handling fallback honesty and public receipt",
-      "status": "backlog",
+      "status": "done",
       "priority": 1,
       "created": "2026-07-26",
-      "updated": "2026-07-26",
+      "updated": "2026-07-28",
       "tags": [
         "ai-native-sdlc",
         "presentation-demo",
@@ -10548,6 +10854,70 @@
           "root:chk-10"
         ]
       }
+    },
+    "root:work.demo3-local-durability-closeout-001": {
+      "id": "work.demo3-local-durability-closeout-001",
+      "qid": "root:work.demo3-local-durability-closeout-001",
+      "ws": "root",
+      "type": "work",
+      "title": "Demo 3 local durability closeout",
+      "created": "2026-08-02",
+      "updated": "2026-08-02",
+      "tags": [
+        "demo-3",
+        "durability",
+        "closeout"
+      ],
+      "owners": [
+        "omni-mdkg-agent"
+      ],
+      "links": [],
+      "artifacts": [],
+      "refs": [],
+      "aliases": [],
+      "skills": [],
+      "attributes": {
+        "version": "0.1.0",
+        "agent_id": "agent.omni-mdkg-agent",
+        "kind": "durability_closeout",
+        "pricing_model": "included",
+        "required_capabilities": [
+          "mdkg.graph.read",
+          "mdkg.graph.write"
+        ],
+        "skill_refs": [
+          "select-work-and-ground-context",
+          "service-boundary-ownership-check",
+          "verify-close-and-checkpoint"
+        ],
+        "tool_refs": [],
+        "model_refs": [],
+        "wasm_component_refs": [],
+        "runtime_image_refs": [],
+        "subagent_refs": [],
+        "inputs": [
+          "repository_root:path:required",
+          "custody_manifest:hash:required",
+          "original_evidence_refs:list:required"
+        ],
+        "outputs": [
+          "closeout_receipt:markdown:required",
+          "reconciled_graph:mdkg:required"
+        ],
+        "receipt_required": true
+      },
+      "path": ".mdkg/work/work.demo3-local-durability-closeout-001-demo-3-local-durability-closeout/WORK.md",
+      "edges": {
+        "relates": [
+          "root:goal-7",
+          "root:epic-7",
+          "root:chk-28"
+        ],
+        "blocked_by": [],
+        "blocks": [],
+        "context_refs": [],
+        "evidence_refs": []
+      }
     }
   },
   "reverse_edges": {
@@ -10600,6 +10970,16 @@
       "root:test-17": [
         "root:chk-24"
       ],
+      "root:task-58": [
+        "root:chk-25",
+        "root:chk-26"
+      ],
+      "root:test-18": [
+        "root:chk-27"
+      ],
+      "root:task-40": [
+        "root:chk-28"
+      ],
       "root:spike-2": [
         "root:chk-3"
       ],
@@ -10611,6 +10991,24 @@
       ],
       "root:task-14": [
         "root:chk-8"
+      ],
+      "root:work.demo3-local-durability-closeout-001": [
+        "root:order.demo3-local-durability-closeout-001"
+      ],
+      "root:goal-7": [
+        "root:order.demo3-local-durability-closeout-001",
+        "root:receipt.demo3-local-durability-closeout-001",
+        "root:work.demo3-local-durability-closeout-001"
+      ],
+      "root:epic-7": [
+        "root:order.demo3-local-durability-closeout-001",
+        "root:receipt.demo3-local-durability-closeout-001",
+        "root:work.demo3-local-durability-closeout-001"
+      ],
+      "root:chk-28": [
+        "root:order.demo3-local-durability-closeout-001",
+        "root:receipt.demo3-local-durability-closeout-001",
+        "root:work.demo3-local-durability-closeout-001"
       ]
     },
     "context_refs": {
@@ -11224,6 +11622,7 @@
         "root:chk-18",
         "root:chk-19",
         "root:chk-2",
+        "root:chk-25",
         "root:chk-3",
         "root:chk-4",
         "root:epic-1",
@@ -11339,6 +11738,7 @@
         "root:chk-18",
         "root:chk-19",
         "root:chk-20",
+        "root:chk-25",
         "root:chk-4",
         "root:epic-1",
         "root:epic-10",
@@ -11650,6 +12050,7 @@
         "root:chk-21",
         "root:chk-22",
         "root:chk-23",
+        "root:chk-25",
         "root:epic-6",
         "root:goal-7",
         "root:goal-9",
@@ -11925,6 +12326,11 @@
         "root:chk-23",
         "root:goal-6"
       ],
+      "root:chk-24": [
+        "root:chk-25",
+        "root:goal-6",
+        "root:task-58"
+      ],
       "root:spike-2": [
         "root:chk-3",
         "root:task-5"
@@ -11962,6 +12368,11 @@
         "root:goal-6",
         "root:spike-6",
         "root:task-27"
+      ],
+      "root:chk-25": [
+        "root:epic-7",
+        "root:goal-7",
+        "root:task-58"
       ],
       "root:goal-8": [
         "root:epic-8",
@@ -12004,9 +12415,6 @@
         "root:goal-6",
         "root:task-34",
         "root:task-58"
-      ],
-      "root:chk-24": [
-        "root:goal-6"
       ],
       "root:task-31": [
         "root:goal-7",
@@ -12552,6 +12960,18 @@
       "root:task-29": [
         "root:chk-23"
       ],
+      "root:chk-24": [
+        "root:chk-25",
+        "root:goal-6",
+        "root:task-58"
+      ],
+      "root:test-17": [
+        "root:chk-25",
+        "root:goal-6",
+        "root:goal-7",
+        "root:task-34",
+        "root:task-58"
+      ],
       "root:chk-2": [
         "root:chk-3",
         "root:goal-2"
@@ -12592,17 +13012,43 @@
         "root:goal-4",
         "root:spike-4"
       ],
+      "root:chk-25": [
+        "root:epic-7",
+        "root:goal-7",
+        "root:task-58"
+      ],
+      "root:chk-28": [
+        "root:epic-7",
+        "root:goal-7"
+      ],
+      "root:test-18": [
+        "root:epic-7",
+        "root:epic-9",
+        "root:goal-7",
+        "root:goal-9",
+        "root:spike-7"
+      ],
+      "root:test-19": [
+        "root:epic-7",
+        "root:goal-7"
+      ],
+      "root:test-20": [
+        "root:epic-7",
+        "root:goal-7"
+      ],
+      "root:test-21": [
+        "root:epic-7",
+        "root:goal-7"
+      ],
+      "root:receipt.demo3-local-durability-closeout-001": [
+        "root:epic-7"
+      ],
       "root:goal-7": [
         "root:epic-9",
         "root:goal-8",
         "root:goal-9",
         "root:spike-7",
         "root:task-51"
-      ],
-      "root:test-18": [
-        "root:epic-9",
-        "root:goal-9",
-        "root:spike-7"
       ],
       "root:task-40": [
         "root:epic-9",
@@ -12621,15 +13067,6 @@
         "root:goal-6"
       ],
       "root:test-16": [
-        "root:goal-6"
-      ],
-      "root:test-17": [
-        "root:goal-6",
-        "root:goal-7",
-        "root:task-34",
-        "root:task-58"
-      ],
-      "root:chk-24": [
         "root:goal-6"
       ],
       "root:goal-10": [

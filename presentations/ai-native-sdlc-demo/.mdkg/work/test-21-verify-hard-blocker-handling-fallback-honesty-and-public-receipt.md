@@ -2,7 +2,7 @@
 id: test-21
 type: test
 title: Verify hard-blocker handling fallback honesty and public receipt
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -22,7 +22,7 @@ aliases: [phase-7-step-10]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [hard_blockers, attempt_bound, time_bound, demo_2_fallback, truthful_goal_state, public_receipt]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview

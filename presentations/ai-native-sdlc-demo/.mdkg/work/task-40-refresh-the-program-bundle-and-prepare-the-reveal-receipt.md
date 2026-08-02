@@ -2,7 +2,7 @@
 id: task-40
 type: task
 title: Refresh the program bundle and close the Demo 3 rehearsal evidence
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -20,7 +20,7 @@ evidence_refs: []
 aliases: [phase-7-step-11]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview
