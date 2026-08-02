@@ -2,7 +2,7 @@
 id: test-2
 type: test
 title: Verify the canonical static routes and shared-source contract
-status: backlog
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1

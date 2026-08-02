@@ -2,7 +2,7 @@
 id: task-3
 type: task
 title: Publish the approved bounded range under external caller authority
-status: backlog
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
@@ -21,7 +21,7 @@ evidence_refs: [test-2]
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-07-28
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 # Overview
 

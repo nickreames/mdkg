@@ -2,7 +2,7 @@
 id: test-3
 type: test
 title: Verify exact-SHA deployments and public demo routes
-status: backlog
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
@@ -21,7 +21,7 @@ aliases: []
 skills: [verify-close-and-checkpoint]
 cases: [pushed sha matches publication receipt., required production deployments are ready for the exact sha., bound detail and output urls return success., routes match noindex unlisted zero-javascript accessibility privacy and budget contracts., source-versus-execution plan-work-evidence what-why-next quickstart and feedback proof pass., fast reveal receipt is sealed before optional comprehensive evidence., provider inspection is read-only., final statuses evidence refs and checkpoint are consistent., hard blockers select the named fallback without claiming success.]
 created: 2026-07-28
-updated: 2026-07-28
+updated: 2026-08-02
 ---
 # Overview
 

@@ -2,7 +2,7 @@
 id: test-20
 type: test
 title: Verify exact-SHA production and live URL evidence
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -22,7 +22,7 @@ aliases: [phase-7-step-9]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [success_branch, fallback_branch, event_authority, complete_push_range, pushed_sha, mdkg_deployment_ready, docs_deployment_ready, detail_url, output_url]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview

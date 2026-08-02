@@ -2,7 +2,7 @@
 id: task-2
 type: task
 title: Integrate the portable demo output through the caller-owned canonical adapter
-status: backlog
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1

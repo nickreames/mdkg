@@ -2,7 +2,7 @@
 id: test-19
 type: test
 title: Verify canonical site build routes claims accessibility and zero JavaScript
-status: backlog
+status: done
 priority: 1
 epic: epic-7
 parent: goal-7
@@ -22,7 +22,7 @@ aliases: [phase-7-step-8]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 cases: [success_branch, fallback_branch, canonical_build, detail_route, output_route, claims, accessibility, noindex, zero_client_javascript, asset_budgets]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 
 # Overview

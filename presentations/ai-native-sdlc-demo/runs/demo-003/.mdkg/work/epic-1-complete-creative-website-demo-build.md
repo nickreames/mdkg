@@ -2,22 +2,22 @@
 id: epic-1
 type: epic
 title: complete creative website demo build
-status: todo
+status: done
 priority: 1
 tags: [demo, website, creative-production, astro]
 owners: []
 links: []
-artifacts: []
+artifacts: [artifacts/publication-receipt.json, artifacts/live-verification-receipt.json]
 relates: []
 blocked_by: []
 blocks: [spike-1, task-1, test-1, task-2, test-2, task-3, test-3]
 refs: [goal-1, prd-2]
 context_refs: [prd-2, edd-1, dec-1, dec-2, chk-3]
-evidence_refs: []
+evidence_refs: [goal-1, test-3, receipt.demo3-chk4-loss-exception]
 aliases: []
 skills: []
 created: 2026-06-29
-updated: 2026-07-26
+updated: 2026-08-02
 ---
 # Goal
 
