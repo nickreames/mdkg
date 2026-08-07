@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "kind": "root-research-writer-lease",
+  "lease_id": "goal-79-research-20260728T015331Z",
+  "goal_qid": "root:goal-79",
+  "owner": "root-integration-owner",
+  "authority_source": "User-supplied persistent Goal 79 objective and continuation instruction",
+  "status": "released",
+  "checkout": "/Users/nick/omni-chat-rooms/projects/mdkg",
+  "branch": "main",
+  "base_sha": "f1dbb823ffe98a902b6076b8ad9a65d6715e4010",
+  "started_at": "2026-07-28T01:53:31Z",
+  "expires_at": "2026-07-28T05:53:31Z",
+  "selected_goal_baseline": {
+    "qid": "root:goal-73",
+    "selected_at": "2026-07-16T15:43:02.912Z",
+    "status": "done",
+    "goal_state": "achieved",
+    "mutation_authorized": false
+  },
+  "baseline": {
+    "staged_paths": [],
+    "tracked_changes": [],
+    "unrelated_untracked_paths": [
+      "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md",
+      "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md.stats.json"
+    ],
+    "status_observation_window_seconds": 15,
+    "status_stable": true,
+    "presentation_goal_qid": "ai_native_sdlc_demo:goal-3",
+    "presentation_goal_status": "done",
+    "presentation_goal_state": "achieved",
+    "presentation_projection_stale": false,
+    "prior_integration_lease_released": true
+  },
+  "allowed_paths": [
+    ".mdkg/artifacts/goal-79/**",
+    ".mdkg/design/dec-92-select-whether-to-adopt-remotion-for-offline-presentation-and-mdkg-dev-storytell.md",
+    ".mdkg/work/epic-255-remotion-feasibility-and-narrative-media-research.md",
+    ".mdkg/work/goal-79-research-remotion-for-offline-presentation-and-mdkg-dev-storytelling.md",
+    ".mdkg/work/spike-35-compare-powerpoint-static-assets-html-css-motion-and-offline-remotion-rendering.md",
+    ".mdkg/work/task-814-define-candidate-remotion-scenes-and-an-evaluation-rubric.md",
+    ".mdkg/work/test-473-verify-the-remotion-dependency-license-rendering-captions-still-fallback-accessi.md",
+    ".mdkg/work/task-815-author-a-proceed-defer-or-reject-remotion-decision.md",
+    ".mdkg/work/chk-*-goal-79-*.md",
+    ".mdkg/work/events/events.jsonl",
+    ".mdkg/index/**"
+  ],
+  "forbidden_paths_and_actions": [
+    "Application source, tests, workflows, package manifests, and lockfiles",
+    "presentations/ai-native-sdlc-demo/**",
+    "mdkg-dev/** and docs/**",
+    "Remotion installation, code, browser bootstrap, render, or media generation",
+    "Selected-goal mutation",
+    "Archive compression, bundle generation, or subgraph synchronization",
+    "Commit paths outside the Goal 79 mdkg allowlist",
+    "Push, tag, publish, deploy, provider mutation, or registry credential inspection"
+  ],
+  "parallel_writer_acknowledgement": {
+    "root_mdkg_writer": "root-integration-owner",
+    "subagents": "read-only",
+    "unrelated_demo_pack_owner": "Demo 2 run lane; preserved and excluded",
+    "overlap_detected": false
+  },
+  "invalidation_rules": [
+    "HEAD changes before the Goal 79 commit boundary",
+    "Any staged path appears outside the Goal 79 allowlist",
+    "Any tracked path changes outside the Goal 79 allowlist",
+    "The presentation projection becomes stale or its accepted goal state changes",
+    "A second root mdkg or Git-index writer becomes active",
+    "The lease expires"
+  ],
+  "release_condition": "Release after Goal 79 is closed with accepted evidence and the final writer mutation is complete; the authorized local commit is an index-only boundary after release.",
+  "released_at": "2026-07-28T02:18:54Z",
+  "release_reason": "Goal 79 is achieved, chk-562 is accepted, all required checks passed, Goal 80 and selected Goal 73 invariants hold, and the staged preflight's only finding—Markdown hard-break trailing whitespace—was mechanically corrected before this final release.",
+  "release_receipts": {
+    "goal_status": "done",
+    "goal_state": "achieved",
+    "closeout_checkpoint": "root:chk-562",
+    "changed_only_validation": "0 warnings, 0 errors",
+    "full_validation": "0 warnings, 0 errors",
+    "goal_next": "no node, 0 warnings",
+    "goal_80": "paused with empty scope",
+    "selected_goal": "root:goal-73 unchanged",
+    "unauthorized_tracked_changes": 0
+  },
+  "higher_authority": {
+    "local_mdkg_research_writes": true,
+    "local_path_specific_commit": true,
+    "dependency_or_registry_action": false,
+    "presentation_or_site_edit": false,
+    "push": false,
+    "tag": false,
+    "publish": false,
+    "deploy": false,
+    "provider_mutation": false
+  }
+}

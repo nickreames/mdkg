@@ -2,24 +2,24 @@
 id: spike-35
 type: spike
 title: Compare PowerPoint/static assets, HTML/CSS motion, and offline Remotion rendering
-status: backlog
+status: done
 priority: 1
 epic: epic-255
 next: task-814
 tags: [remotion, presentation, research, offline]
 owners: [root-integration-owner]
 links: []
-artifacts: [artifact://remotion/options-comparison]
+artifacts: [artifact://remotion/options-comparison, .mdkg/artifacts/goal-79/remotion/options-comparison.md]
 relates: [goal-79]
 blocked_by: []
-blocks: []
+blocks: [task-814]
 refs: [goal-79, epic-255, task-519, test-248, ai_native_sdlc_demo:goal-3, dec-92]
 context_refs: [goal-79, epic-255, task-519, test-248, ai_native_sdlc_demo:goal-3, dec-92]
-evidence_refs: []
+evidence_refs: [chk-561]
 aliases: []
 skills: [select-work-and-ground-context, service-boundary-ownership-check]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 # Research Question
 
@@ -40,7 +40,33 @@ Which medium—PowerPoint/static assets, HTML/CSS motion, or offline Remotion re
 
 # Findings
 
-Pending activation.
+- The current PowerPoint/static path is the ready baseline: the 20-slide deck
+  has accepted visual/accessibility QA, a retained static Demo 2 reveal, and a
+  33:55 offline rehearsal receipt.
+- Current Remotion 4.0.500 documentation supports local bundle rendering,
+  local assets and fonts, captions, fixed frame/FPS/duration inputs, seeded
+  randomness, and a preinstalled Chrome Headless Shell. Those are architectural
+  capabilities, not empirical proof for this repository.
+- A pilot would require an isolated presentation-tooling package boundary,
+  exact same-version Remotion packages, one authorized browser bootstrap,
+  network-denied renders, benchmarked concurrency, retained manifests, and
+  actual PowerPoint playback verification.
+- Current v4 license eligibility depends on legal entity and use. That
+  classification is not established here. Remotion's distributed FFmpeg binary
+  is GPLv2+ and its x264/x265 components are GPL.
+- Remotion's own accessibility guidance does not guarantee user-authored
+  compositions, while WCAG requires captions for meaningful prerecorded audio
+  and control or alternatives for motion. Captions, transcript, a still
+  fallback, non-motion comprehension, and a reduced-motion path remain
+  mandatory.
+- Remotion passes `.env` and `REMOTION_` variables to the headless browser, so a
+  future pilot must use a constructed no-secret environment and local-only
+  assets.
+- The strongest motion candidate is reusable source goal -> specialized goal
+  -> accepted evidence. Plan -> Work -> Evidence is second; the capability
+  progression is third because motion could falsely imply strict chronology.
+- The live reveal is not a candidate because authored motion could be mistaken
+  for current run evidence.
 
 # Options And Tradeoffs
 
@@ -48,9 +74,21 @@ Pending activation.
 - HTML/CSS motion: lightweight web-native storytelling; separate offline capture and zero-JavaScript constraints require care.
 - Offline Remotion: deterministic frame/video composition and reuse; adds dependency, render, caption, asset, and maintenance costs.
 
+The full comparison and source ledger are retained in
+`.mdkg/artifacts/goal-79/remotion/options-comparison.md`.
+
 # Recommendation
 
-Pending evidence. Recommend proceed only if a named scene scores materially higher than static alternatives and every goal-80 activation boundary is supportable.
+**Defer Remotion adoption with high confidence.** The technology is feasible
+enough to justify a separately authorized one-scene pilot later, but current
+evidence does not establish license eligibility, empirical offline rendering,
+event-machine playback, performance, repeatability, maintenance ownership, or a
+material comprehension gain over the accepted static deck.
+
+Keep Goal 80 paused and empty. Any later pilot should be presentation-only and
+must independently earn a keep/discard decision. Canonical mdkg.dev remains
+outside this adoption decision and receives no Remotion runtime, player, or
+dependency by implication.
 
 # Follow-Up Nodes To Create
 
@@ -78,4 +116,17 @@ Pending evidence. Recommend proceed only if a named scene scores materially high
 
 # Evidence And Sources
 
-Pending activation. Record source URL/title, publication/access date, supported claim, approved paraphrase, and confidence.
+- Accepted comparison:
+  `.mdkg/artifacts/goal-79/remotion/options-comparison.md`
+- Current primary Remotion documentation accessed 2026-07-27:
+  getting started/system requirements, brownfield install, Player install,
+  renderer, Chrome Headless Shell, assets/static files, local fonts, captions,
+  performance, security, randomness, accessibility, v4 license, FFmpeg license,
+  and upcoming v5 terms.
+- Current primary W3C guidance accessed 2026-07-27: WCAG 2.2 prerecorded
+  captions, pause/stop/hide, and animation-from-interactions.
+- Repository receipts: `ai_native_sdlc_demo:goal-3`, `root:task-519`,
+  `root:test-248`, deck visual/rehearsal evidence, Demo 2 retained still, and
+  the accepted static-Astro boundary.
+- Confidence: high for defer; no install/render/legal advice or empirical
+  performance claim was made.
