@@ -1,0 +1,27 @@
+{
+  "schema": "mdkg.demo3.umbrella.deployments.v1",
+  "result": "pass",
+  "reviewed_at": "2026-07-28T14:20:12Z",
+  "exact_git_sha": "3955a769a439a415e4b86a0df1373009fcc95fed",
+  "projects": [
+    {
+      "name": "mdkg-dev",
+      "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+      "environment": "production",
+      "deployment_id": "dpl_E1rue1P7XUWRJcEMdM1XTCud3xBj",
+      "state": "READY",
+      "git_sha_matches": true
+    },
+    {
+      "name": "docs",
+      "project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
+      "environment": "production",
+      "deployment_id": "dpl_B8H8jzZkLUytoLUfm3hhtbVkfekU",
+      "state": "READY",
+      "git_sha_matches": true
+    }
+  ],
+  "provider_mutation": false,
+  "production_repairs": 0,
+  "blocker": null
+}

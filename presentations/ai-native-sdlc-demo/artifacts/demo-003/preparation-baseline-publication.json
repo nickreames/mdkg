@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-preparation-baseline-publication",
+  "status": "verified_idempotent_reuse",
+  "verified_at": "2026-07-28T14:04:21Z",
+  "owner": "root-integration-owner",
+  "remote": "origin",
+  "branch": "main",
+  "old_origin_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "new_origin_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "actual_published_baseline_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "published_commit_parent": "b9694b67c52c361bf5d8f3c0acd52a27e5e30b5a",
+  "preparation_git_tree_oid": "a4055c8121b5dc51ff684259c97674d8afec5d39",
+  "preparation_tree_sha256": "c5e4d3f936023d38bc88286fc98c053a4fb75463f7ee25363af406a0c36e644e",
+  "preparation_manifest_sha256": "43a572eac3cb64a1dcd482f784865b5d098ad1b2bda067fda43f08991407738e",
+  "preparation_manifest_path_count": 201,
+  "preparation_patch_sha256": "9280cad9a89e6d0cc5d9c8759b1c67dcbbfa6301a27a1f5356a187927de3be34",
+  "published_commit_range": "b9694b67c52c361bf5d8f3c0acd52a27e5e30b5a..7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "current_candidate_range": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9..7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "current_candidate_range_inventory": [],
+  "current_candidate_exclusion_intersection": [],
+  "control_range_regression": {
+    "exact_policy_exclusion_matches": 32,
+    "checkpoint_pattern_matches": 8,
+    "expected_prior_checkpoint_matches": 7,
+    "additional_goal_7_checkpoint": "chk-25",
+    "publication_candidate_contains_any": false
+  },
+  "worktrees": {
+    "control": {
+      "path": "/Users/nick/omni-chat-rooms/projects/mdkg",
+      "branch": "main",
+      "head": "0f1b98879da7ac44eded3d34645d022bbcc8b79f",
+      "role": "private-control-local-evidence-only",
+      "publication_forbidden": true
+    },
+    "publication": {
+      "path": "/private/tmp/mdkg-demo3-preparation-20260728",
+      "branch": "codex/demo3-preparation",
+      "head": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+      "role": "clean-publication-worktree",
+      "clean": true,
+      "ahead": 0,
+      "behind": 0
+    },
+    "git_common_directory": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg",
+    "paths_are_distinct": true
+  },
+  "validation": {
+    "fresh_fetch": "pass",
+    "head_equals_origin_main": true,
+    "linear_descendant": true,
+    "index_empty": true,
+    "child_graph_validation": "pass_zero_warnings",
+    "child_doctor": "pass",
+    "duplicate_commit_created": false,
+    "duplicate_push_performed": false,
+    "forbidden_surface_touched": false
+  },
+  "writer_lease": {
+    "preparation_owner": "root-integration-owner",
+    "state": "released",
+    "released_at": "2026-07-28T14:04:21Z",
+    "next_owner": "child-implementation-writer"
+  }
+}

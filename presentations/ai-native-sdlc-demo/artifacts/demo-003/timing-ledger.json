@@ -1,0 +1,28 @@
+{
+  "schema": "mdkg.demo3.timing.v1",
+  "p0": "2026-07-28T14:05:39.291Z",
+  "t0": "2026-07-28T14:05:39.291Z",
+  "result": "demo3_success",
+  "milestones": [
+    {"name": "child_acknowledged", "at": "2026-07-28T14:05:49Z", "elapsed": "00:00:10"},
+    {"name": "positioning_complete", "at": "2026-07-28T14:06:20Z", "elapsed": "00:00:41"},
+    {"name": "portable_build_passed", "at": "2026-07-28T14:08:21Z", "elapsed": "00:02:42"},
+    {"name": "local_browser_validation_passed", "at": "2026-07-28T14:09:18Z", "elapsed": "00:03:39"},
+    {"name": "canonical_validation_passed", "at": "2026-07-28T14:13:00Z", "elapsed": "00:07:21"},
+    {"name": "push_verified", "at": "2026-07-28T14:15:45.444Z", "elapsed": "00:10:06"},
+    {"name": "exact_sha_and_live_routes_verified", "at": "2026-07-28T14:17:14Z", "elapsed": "00:11:35"},
+    {"name": "child_goal_achieved", "at": "2026-07-28T14:17:30Z", "elapsed": "00:11:51"},
+    {"name": "demo3_selected", "at": "2026-07-28T14:17:32Z", "elapsed": "00:11:53"}
+  ],
+  "repair_cycles": {
+    "prepublication": 2,
+    "production": 0
+  },
+  "external_waits": [
+    {"class": "vercel_build", "bounded": true, "outcome": "both READY"}
+  ],
+  "interventions": [],
+  "hard_blocker": null,
+  "fallback": null,
+  "within_deadlines": true
+}

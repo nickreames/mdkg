@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-event-authority-activation",
+  "status": "active",
+  "human_authority_sha256": "a90d02a8af985bbf587c2060f2078981fd041664b811c5525fc27a9e35f02a93",
+  "event_authority_sha256": "b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e",
+  "authority_policy_sha256": "23b37b5f19c649ca811ca9be40b8cd78950661be7d485a82e75bcd6e6647f994",
+  "allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+  "preparation_baseline_publication_receipt_sha256": "9183bdd1803afa5e83429909c191abd553bde16b0c5a2f7ac35c61c40c890930",
+  "actual_published_baseline_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "actual_live_origin_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "preparation_manifest_sha256": "43a572eac3cb64a1dcd482f784865b5d098ad1b2bda067fda43f08991407738e",
+  "preparation_tree_sha256": "c5e4d3f936023d38bc88286fc98c053a4fb75463f7ee25363af406a0c36e644e",
+  "bound_identity": {
+    "semantic_source_release_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+    "child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+    "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+    "sendoff_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc",
+    "preparation_handoff_sha256": "360ecfe0cadd3ced88cc0853ea80a8fb402cce3c39d9e2b46d648bd8b8f0d263",
+    "writer_lease_sha256": "8a1c96d8f03103f15930422937a29210217b34138a621ebc9dc3262bf70847f7",
+    "fallback_readiness_sha256": "8758c521fc17a868bce09852f50afbd2b30d74c30db4ca19cdb4dc3a1a79c9dc"
+  },
+  "writer_lease_release": {
+    "owner": "root-integration-owner",
+    "released": true,
+    "released_at": "2026-07-28T14:04:55Z",
+    "next_owner": "child-implementation-writer",
+    "maximum_concurrent_writers": 1
+  },
+  "activated_at": "2026-07-28T14:04:55Z",
+  "expires_at": "2026-07-28T14:34:55Z",
+  "activation_rule": "Valid only while every frozen identity, origin observation, writer lease, path boundary, repair limit, and deadline remains satisfied.",
+  "provider_mutation_authorized": false
+}

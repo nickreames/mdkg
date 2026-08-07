@@ -1,0 +1,35 @@
+{
+  "schema": "mdkg.demo3.dispatch.v1",
+  "result": "pass",
+  "child_root": "presentations/ai-native-sdlc-demo/runs/demo-003",
+  "child_goal_qid": "root:goal-1",
+  "source_goal_sha256": "cc033b466d9326d09da6576b27c5f48acf70debc89215f069e0f8526a1c39aba",
+  "specialized_goal_sha256": "7eeb2f2e67aae6b84ab6038c4fcba35fc9663385b469aabe771b1b6e7bcc6473",
+  "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+  "child_contract_seal_sha256": "4c319bb37a74661a94fec6d5bbccaafe56a4b4b96ece7f6d14435811e28baeb6",
+  "child_interface_manifest_sha256": "3d19dffd73499b0f9397011f6d17df7fb25cb5b9a2b1628ca05ce99408bff438",
+  "concise_pack_sha256": "3cf769ddcde9f9140f51de909ebe0862ff0a6c44504e96d3ab5a640374872fe7",
+  "sendoff_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc",
+  "allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+  "authority_sha256": "b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e",
+  "authority_policy_sha256": "23b37b5f19c649ca811ca9be40b8cd78950661be7d485a82e75bcd6e6647f994",
+  "writer_lease_sha256": "8a1c96d8f03103f15930422937a29210217b34138a621ebc9dc3262bf70847f7",
+  "published_preparation_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "actors": {
+    "physical_harness": "codex-designated-writer",
+    "child_role": "child-implementation-writer",
+    "publication_role": "root-integration-owner"
+  },
+  "p0": "2026-07-28T14:05:39.291Z",
+  "t0": "2026-07-28T14:05:39.291Z",
+  "child_acknowledged_at": "2026-07-28T14:05:49Z",
+  "attempts_initialized": 0,
+  "handoff_channel": "same-harness-serialized-lease",
+  "dispatch": "mdkg --root presentations/ai-native-sdlc-demo/runs/demo-003 goal next goal-1 --json",
+  "deadlines": {
+    "child_checkpoint": "T+28:30",
+    "consolidated_receipt": "T+29:15",
+    "reveal_selection": "T+29:30",
+    "stop_live_actions": "T+30:00"
+  }
+}

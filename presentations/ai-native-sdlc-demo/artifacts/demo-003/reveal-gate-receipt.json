@@ -1,0 +1,38 @@
+{
+  "schema": "mdkg.demo3.reveal-gate.v1",
+  "result": "pass",
+  "selection": "demo3",
+  "selected_at": "2026-07-28T14:17:32Z",
+  "elapsed_from_t0": "00:11:53",
+  "source_goal_sha256": "cc033b466d9326d09da6576b27c5f48acf70debc89215f069e0f8526a1c39aba",
+  "specialized_goal_sha256": "7eeb2f2e67aae6b84ab6038c4fcba35fc9663385b469aabe771b1b6e7bcc6473",
+  "child_checkpoint": {
+    "id": "chk-4",
+    "sha256": "68cbb8b49dadf08a749c67acb24edd6f92f63ff815e7ac0f7c5008099e4acb18"
+  },
+  "publication": {
+    "base_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+    "final_sha": "3955a769a439a415e4b86a0df1373009fcc95fed",
+    "normal_non_force_push": true,
+    "path_manifest_sha256": "8ec3603d7950ab5f859bb920f60d4c8a0f2e95b632499e9116c31b97cad11b56",
+    "range_patch_sha256": "31bb97b3b16f85245abad75c5be7e9dfe7692fe1af45ce41633ae966df579a5e"
+  },
+  "deployments": [
+    {"project": "mdkg-dev", "deployment_id": "dpl_E1rue1P7XUWRJcEMdM1XTCud3xBj", "state": "READY", "git_sha": "3955a769a439a415e4b86a0df1373009fcc95fed"},
+    {"project": "docs", "deployment_id": "dpl_B8H8jzZkLUytoLUfm3hhtbVkfekU", "state": "READY", "git_sha": "3955a769a439a415e4b86a0df1373009fcc95fed"}
+  ],
+  "routes": [
+    {"url": "https://mdkg.dev/demo/3/", "status": 200, "noindex": true, "required_story": true},
+    {"url": "https://mdkg.dev/demo/3/output/", "status": 200, "noindex": true, "required_story": true, "client_javascript_bytes": 0}
+  ],
+  "story": {
+    "plan": "The reusable source specification defined the bounded objective and guardrails.",
+    "work": "The specialized child executed positioning, implementation, validation, integration, publication, and verification.",
+    "evidence": "Accepted checkpoint, exact-SHA deployments, live routes, and immutable receipts.",
+    "what_completed": "A differentiated static Astro Demo 3 landing page is live.",
+    "why": "To show durable agentic SDLC context from reusable specification through public proof.",
+    "what_next": "Use Goal 9 to evaluate rehearsal findings and polish the presentation."
+  },
+  "repairs": {"prepublication": 2, "production": 0},
+  "blocker": null
+}

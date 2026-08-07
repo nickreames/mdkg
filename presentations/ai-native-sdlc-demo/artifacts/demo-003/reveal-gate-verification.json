@@ -1,0 +1,17 @@
+{
+  "schema": "mdkg.demo3.reveal-gate-verification.v1",
+  "result": "pass",
+  "selection": "demo3",
+  "verified_at": "2026-07-28T14:20:12Z",
+  "deadline": "T+29:30",
+  "actual": "T+14:33",
+  "child_goal_state": "achieved",
+  "accepted_checkpoint_present": true,
+  "normal_push_proven": true,
+  "both_exact_sha_deployments_ready": true,
+  "both_live_routes_pass": true,
+  "schema_and_hashes_pass": true,
+  "repair_limits_pass": true,
+  "source_to_execution_story_pass": true,
+  "blocker": null
+}

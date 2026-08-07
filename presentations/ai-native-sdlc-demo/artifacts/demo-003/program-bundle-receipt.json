@@ -1,0 +1,23 @@
+{
+  "schema": "mdkg.demo3.program-bundle.v1",
+  "result": "pass",
+  "program_root": "/Users/nick/omni-chat-rooms/projects/mdkg/presentations/ai-native-sdlc-demo",
+  "bundle_path": "/Users/nick/omni-chat-rooms/projects/mdkg/.mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+  "profile": "private",
+  "selected_workspaces": ["root"],
+  "alias": "ai_native_sdlc_demo",
+  "first_pass": {
+    "bundle_hash": "sha256:7230a1c0dd48b8077d1bbb7bfb99417869c2a567e4a05dd6054dc1ac3204b56a",
+    "zip_sha256": "sha256:b3dea06c0c0c2199dfa99a08f03889deacadf2ba39b32a45333cf1ea8510ff1b",
+    "file_count": 229,
+    "verify_ok": true,
+    "stale": false,
+    "root_refresh_ok": true,
+    "root_verify_ok": true,
+    "root_projection_resolved_with": "mdkg show ai_native_sdlc_demo:goal-7 --json"
+  },
+  "root_base_sha": "0f1b98879da7ac44eded3d34645d022bbcc8b79f",
+  "owner": "root-integration-owner",
+  "created_at": "2026-07-28T14:22:42Z",
+  "final_pass_recording": "The final achieved-state bundle hash is appended to the root integration event after closeout so the event cannot stale the bundle."
+}

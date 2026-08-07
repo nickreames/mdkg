@@ -1,0 +1,47 @@
+{
+  "schema": "mdkg.demo3.umbrella.live-routes.v1",
+  "result": "pass",
+  "reviewed_at": "2026-07-28T14:20:12Z",
+  "deployment_sha": "3955a769a439a415e4b86a0df1373009fcc95fed",
+  "routes": [
+    {
+      "url": "https://mdkg.dev/demo/3/",
+      "status": 200,
+      "viewports": ["1440x900", "390x844"],
+      "noindex": true,
+      "source_and_specialized_goal": true,
+      "plan_work_evidence": true,
+      "semantic_structure": "pass",
+      "responsive_overflow": false,
+      "runtime_scripts": "json-ld-only"
+    },
+    {
+      "url": "https://mdkg.dev/demo/3/output/",
+      "status": 200,
+      "viewports": ["1440x900", "390x844"],
+      "noindex": true,
+      "what_why_next": true,
+      "semantic_structure": "pass",
+      "responsive_overflow": false,
+      "client_javascript_bytes": 0
+    }
+  ],
+  "privacy": {
+    "third_party_runtime_scripts": 0,
+    "remote_fonts": 0,
+    "forms": 0,
+    "trackers": 0
+  },
+  "budgets": {
+    "output_initial_bytes": 21105,
+    "limit_bytes": 512000,
+    "raster_assets": 0
+  },
+  "screenshots": [
+    {"path": "artifacts/demo-003/screenshots/detail-desktop.png", "sha256": "05c006ff4b630b563cefd295c7ff6d5716085697cf0b0cf02536771052139513"},
+    {"path": "artifacts/demo-003/screenshots/detail-mobile.png", "sha256": "db57857faeb37bc440b42b727d3f5bef7c352a2738695de60075a10ee3faf085"},
+    {"path": "artifacts/demo-003/screenshots/output-desktop.png", "sha256": "84f3780a28042cbcaa7e734f3385a2f7d1b07fb09ffc5161336871480ac9e176"},
+    {"path": "artifacts/demo-003/screenshots/output-mobile.png", "sha256": "3274594c8e263017f89293a9310270ac7046374288af51aa9df30406f7f765d8"}
+  ],
+  "blocker": null
+}
