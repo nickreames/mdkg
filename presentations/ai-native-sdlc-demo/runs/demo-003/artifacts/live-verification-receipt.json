@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-live-verification",
+  "status": "passed",
+  "verified_at": "2026-07-28T14:17:14Z",
+  "commit_sha": "3955a769a439a415e4b86a0df1373009fcc95fed",
+  "deployments": [
+    {
+      "project": "mdkg-dev",
+      "project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+      "deployment_id": "dpl_E1rue1P7XUWRJcEMdM1XTCud3xBj",
+      "state": "READY",
+      "target": "production",
+      "git_ref": "main",
+      "git_sha": "3955a769a439a415e4b86a0df1373009fcc95fed"
+    },
+    {
+      "project": "mdkg-docs",
+      "project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
+      "deployment_id": "dpl_B8H8jzZkLUytoLUfm3hhtbVkfekU",
+      "state": "READY",
+      "target": "production",
+      "git_ref": "main",
+      "git_sha": "3955a769a439a415e4b86a0df1373009fcc95fed"
+    }
+  ],
+  "routes": {
+    "https://mdkg.dev/demo/3/": {
+      "result": "pass",
+      "title": "Give every coding agent the map - mdkg demo 3",
+      "noindex": true,
+      "source_goal": true,
+      "executed_goal": true,
+      "plan_work_evidence": true,
+      "desktop_horizontal_overflow": false,
+      "mobile_horizontal_overflow": false,
+      "only_script_type": "application/ld+json"
+    },
+    "https://mdkg.dev/demo/3/output/": {
+      "result": "pass",
+      "title": "Give every coding agent the map · mdkg",
+      "noindex": true,
+      "client_script_count": 0,
+      "hero": true,
+      "what_completed": true,
+      "what_comes_next": true,
+      "desktop_horizontal_overflow": false,
+      "mobile_horizontal_overflow": false
+    }
+  },
+  "authority": {
+    "provider_inspection": "read-only",
+    "public_requests": "bounded GET/browser checks",
+    "manual_deploy_or_redeploy": false,
+    "provider_configuration_mutation": false
+  },
+  "fallback": {
+    "selected": false,
+    "demo_3_reveal_gate": "pass"
+  },
+  "repairs": {
+    "prepublication_used": 2,
+    "production_used": 0
+  },
+  "what_completed": "A differentiated Demo 3 site was planned, implemented, validated, integrated, normally pushed, deployed by the existing Git integration, and verified publicly.",
+  "why": "The run demonstrates that durable specifications, explicit authority, routed work, and evidence can guide an AI-native SDLC from architecture to a public result.",
+  "what_comes_next": "Use the measured execution and presentation evidence in Goal 9 to refine the final Demo 4 live event.",
+  "next_qid": "runtime checkpoint, then goal evaluation"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "mdkg.demo3.umbrella.git.v1",
+  "result": "pass",
+  "reviewed_at": "2026-07-28T14:20:12Z",
+  "child_publication_receipt_sha256": "86dc9e044c2addc0d1d2d7f66787a70e2012b9752d9d1cdcb88625341f2705ff",
+  "authority_sha256": "b34378dccf18f8d88168109fe61bfc7d1e2a28aa5fc9bb4af1eab5783921802e",
+  "allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+  "base_sha": "7a90d13920aa98732fc3ddf12c7af8bfd4db59a9",
+  "commit_sha": "3955a769a439a415e4b86a0df1373009fcc95fed",
+  "post_push_origin_main": "3955a769a439a415e4b86a0df1373009fcc95fed",
+  "commit_count": 1,
+  "path_count": 22,
+  "path_manifest_sha256": "8ec3603d7950ab5f859bb920f60d4c8a0f2e95b632499e9116c31b97cad11b56",
+  "range_patch_sha256": "31bb97b3b16f85245abad75c5be7e9dfe7692fe1af45ce41633ae966df579a5e",
+  "push": "git push origin HEAD:main",
+  "normal_non_force": true,
+  "force_or_rewrite": false,
+  "unrelated_integration": false,
+  "second_push": false,
+  "blocker": null
+}

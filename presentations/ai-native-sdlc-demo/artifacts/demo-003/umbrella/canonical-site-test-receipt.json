@@ -1,0 +1,25 @@
+{
+  "schema": "mdkg.demo3.umbrella.canonical.v1",
+  "result": "pass",
+  "reviewed_at": "2026-07-28T14:20:12Z",
+  "child_receipts": {
+    "canonical_route_validation_sha256": "65a68fe5cd9671a179af6eb3e2d3f32e8714a70825598afbed8ad9fce954ba44",
+    "integration_sha256": "1853095ff873d7b95dd4d6049f835a037f4562016100e746d98a27e61ff6320e"
+  },
+  "build_sha": "3955a769a439a415e4b86a0df1373009fcc95fed",
+  "routes": ["/demo/3/", "/demo/3/output/"],
+  "gates": {
+    "canonical_smoke": "pass",
+    "claims": "pass",
+    "semantic_structure": "pass",
+    "keyboard_and_focus": "pass",
+    "reduced_motion": "pass",
+    "noindex_unlisted": "pass",
+    "privacy": "pass",
+    "output_zero_client_javascript": "pass",
+    "asset_budget": "pass"
+  },
+  "output_initial_bytes": 21105,
+  "raster_assets": 0,
+  "blocker": null
+}
