@@ -2,7 +2,7 @@
 id: task-24
 type: task
 title: Verify Demo 2 live detail and output routes
-status: backlog
+status: done
 priority: 1
 epic: epic-5
 parent: goal-5
@@ -15,13 +15,13 @@ artifacts: [artifacts/demo-002/live-route-receipt.json, artifacts/demo-002/produ
 relates: []
 blocked_by: [task-23]
 blocks: [task-25]
-refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-23]
+refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-23, chk-14]
 context_refs: [goal-5, epic-5, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, task-23]
 evidence_refs: []
 aliases: [phase-5-step-7]
 skills: [select-work-and-ground-context, publish-static-demo-with-exact-sha, verify-close-and-checkpoint]
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 # Overview

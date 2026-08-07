@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-local-commit-preflight",
+  "recorded_at": "2026-07-27T22:27:30Z",
+  "program_goal_qid": "root:goal-5",
+  "task_qid": "root:task-21",
+  "state": "ready-for-bounded-local-commits",
+  "git": {
+    "branch": "main",
+    "head": "34bae9520452ee087ba958c92bcf0716bd59f282",
+    "upstream": "refs/remotes/origin/main",
+    "observed_upstream_sha": "f5135be5c8779c1f2b65bbd9dc41dced8a25bbdb",
+    "remote_freshness_claimed": false,
+    "fetch_performed": false,
+    "staged_path_count": 0,
+    "dirty_path_count": 22
+  },
+  "allowlist": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-integration-allowlist.json",
+    "sha256": "51878b4be32c5452694282a4b3ad9075d5738e62ea640a90d0c7d9b668a60f25",
+    "commit_path_manifest_sha256": "bf836c967a68d5093f74638153abe21158184b154dd397dfc741d1ca938471f1",
+    "commit_eligible_count": 17,
+    "local_only_count": 5
+  },
+  "accepted_candidate": {
+    "checkpoint_qid": "root:chk-14",
+    "checkpoint_file_sha256": "577332e4c3b1ad61b39654c4d1c4e2de9dae5eb8e56299be43da8e70c3aa96de",
+    "candidate_receipt_sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82",
+    "candidate_revalidation_sha256": "77f9fc3e6ee210fcec94713b1207a236d9a92fc76b6281deace495816c682245",
+    "smoke_contract_receipt_sha256": "ab80260a5a815ebb7adbc301af9e513b5b334661843a94c4eefd09416a4d7504",
+    "fallback_manifest_sha256": "79d969e3c4bf1d1949ade31adb4e6d04b3a486e09ad99a99becc827619952186"
+  },
+  "validation": {
+    "canonical_smoke": "pass",
+    "seo_smoke": "pass",
+    "accessibility_smoke": "pass",
+    "performance_smoke": "pass",
+    "demo_graph_smoke": "pass",
+    "program_graph": "0 errors, 0 warnings",
+    "child_graph": "0 errors, 0 warnings",
+    "fallback_manifest": "17 files verified",
+    "git_diff_check": "pass"
+  },
+  "commit_plan": [
+    {
+      "id": "demo2-candidate",
+      "message": "feat(demo): add the accepted Demo 2 rehearsal candidate",
+      "intent": "Accepted Demo 2 canonical integration, forked run graph, public-safe evidence, immutable fallback, and smoke repair."
+    },
+    {
+      "id": "goal5-contract",
+      "message": "plan(presentation): harden Demo 2 publication workflow",
+      "intent": "Goal 5 publication contract, exact-SHA skill, smoke revalidation evidence, generated graph projection, and private root bundle."
+    }
+  ],
+  "local_evidence_exception_paths": [
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-integration-allowlist.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-preflight.json"
+  ],
+  "warnings": [
+    "The observed upstream SHA is intentionally not a freshness claim because task-21 forbids fetch.",
+    "The branch already contains pre-existing local commits; the complete actual push range will be fetched, frozen, and human-approved only in task-49.",
+    "Self-referential preflight receipts remain local-only and are rehashed at the next authority gate."
+  ],
+  "authority": {
+    "stage_and_local_commit": "authorized only in successor task-22 and only for the exact allowlist",
+    "fetch": false,
+    "push": false,
+    "provider_action": false,
+    "publication": false
+  }
+}

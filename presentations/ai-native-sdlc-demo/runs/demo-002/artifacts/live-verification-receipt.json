@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-child-live-verification-receipt",
+  "authority_owner": "ai-native-sdlc-demo:goal-5",
+  "child_goal": "goal-1",
+  "child_test": "test-3",
+  "pushed_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "deployment_receipt": "../../artifacts/demo-002/deployment-receipt.json",
+  "live_route_receipt": "../../artifacts/demo-002/live-route-receipt.json",
+  "observed_at": "2026-07-27T23:13:05Z",
+  "deployments": {
+    "mdkg_dev_ready_for_exact_sha": true,
+    "mdkg_docs_ready_for_exact_sha": true
+  },
+  "routes": {
+    "detail": {
+      "url": "https://mdkg.dev/demo/2/",
+      "status": 200,
+      "desktop_mobile": true
+    },
+    "output": {
+      "url": "https://mdkg.dev/demo/2/output/",
+      "status": 200,
+      "desktop_mobile": true
+    }
+  },
+  "checks": {
+    "noindex_unlisted": true,
+    "zero_client_javascript": true,
+    "accessibility": true,
+    "source_vs_specialized_proof": true,
+    "plan_work_evidence": true,
+    "what_why_next": true,
+    "public_safety": true,
+    "transfer_budget": true
+  },
+  "passed": true,
+  "what_completed": "The accepted Demo 2 candidate was normal-pushed, deployed by the existing Git integration, and verified on both canonical production routes.",
+  "why": "The rehearsal now has exact-SHA public proof and a deterministic fallback instead of relying on a local-only success claim.",
+  "what_comes_next": "The program rehearsal and fallback-sealing nodes consume this child proof; any later public update requires a fresh authority gate."
+}

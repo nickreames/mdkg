@@ -1,0 +1,961 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-bounded-local-commit-receipt",
+  "recorded_at": "2026-07-27T22:28:34Z",
+  "program_goal_qid": "root:goal-5",
+  "task_qid": "root:task-22",
+  "state": "local-commits-complete-no-push",
+  "actor": "root-integration-owner",
+  "branch": "main",
+  "initial_parent": "e2af9e9ec5b2e0e8912671ed54b1a2082dd19988",
+  "final_head": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "commits": [
+    {
+      "sha": "611988111a590e9c108ad556c20682c3bc98695f",
+      "parent": "e2af9e9ec5b2e0e8912671ed54b1a2082dd19988",
+      "subject": "feat(demo): add the accepted Demo 2 rehearsal candidate",
+      "path_count": 166,
+      "path_manifest_sha256": "9cc6b7f4a46ec3fea53869e525922669603988ba9da23c21bcf09d11a4e9b174",
+      "paths": [
+        {
+          "path": "mdkg-dev/src/components/demos/Demo2Output.astro",
+          "sha256": "34cf3232a10ae2c491e8d9c9427ddc71085d80f3470eafd4b7108366b09366dc"
+        },
+        {
+          "path": "mdkg-dev/src/components/demos/outputRegistry.ts",
+          "sha256": "35d5b79845ab3d5e5a220ceaa82fa3948f64661ebeb24260ff8f0e31e20435c0"
+        },
+        {
+          "path": "mdkg-dev/src/data/demos/demo-2.ts",
+          "sha256": "4e544c92fb118a6db6d8beb9f0946ce35c0b01c0b5fad284d22f7d7e5c1c7ec9"
+        },
+        {
+          "path": "mdkg-dev/src/data/demos/index.ts",
+          "sha256": "e1455cca732d485b8b5cde05617e4d95860889edd7042d767354bb50eda4d97b"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/chk-14-demo-2-rehearsal-candidate-accepted-locally.md",
+          "sha256": "577332e4c3b1ad61b39654c4d1c4e2de9dae5eb8e56299be43da8e70c3aa96de"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/goal-4-build-the-demo-2-rehearsal-candidate.md",
+          "sha256": "abb1f8320061f99fe58b4759dbe6e8dcecec55d4a1f255ea2ba1e14b5c9a935b"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/spike-4-choose-demo-2-positioning-and-reserve-the-rehearsal-run.md",
+          "sha256": "978612a98559b64f363ea5afbfae8859eab4a8b298230b51fd35fb3ddc2ca27b"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-15-fork-the-canonical-website-demo-graph-into-demo-2.md",
+          "sha256": "5c889e33361c2ef6da2888563e56631005ab6b08bd6efed275c4517f8e79f916"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-16-materialize-demo-2-agent-operator-files-and-skills-deterministically.md",
+          "sha256": "676caf9663851ea9ca41dd70cb172fb65a1e019985155ee31068e9a4ff0de708"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-17-specialize-demo-2-requirements-decisions-goal-and-tests.md",
+          "sha256": "19b6fafdb7f6ee1821c48e97427b3c45ceede7047bf6507835fde0bb2078654e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-18-execute-the-demo-2-local-website-goal.md",
+          "sha256": "06b522af95085036ccb2bb3b2100ad924f80e2c5e46cc70340ee59fb14fcdd5d"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-19-integrate-demo-2-through-the-generalized-local-adapter.md",
+          "sha256": "50e748fdb59a575494242a98ad48b844c4b1b59f13b7ccc46fbafbda5e93b1b7"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-20-seal-the-demo-2-candidate-receipt-and-offline-fallback.md",
+          "sha256": "cc4da521a4a99ebe6a7ae0f9fbcd15944ee6cf56822ee4f979f085b9be523870"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-10-verify-demo-2-child-local-segment-build-and-public-safety.md",
+          "sha256": "37de83a830f2de6746420a91862b37ec268c9f2d9e9d8a9a7d54fe00872067f3"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-11-verify-demo-2-integration-and-fallback-readiness-without-publication.md",
+          "sha256": "45d765e16a0230fb6bd9448dd37efc0fc079f74a91cb4ffd9a07901cd2cab3b2"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/candidate-receipt.json",
+          "sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/README.md",
+          "sha256": "fe2659d506a6d64b41b307adfcb1b7eed1ee0dbd239e44db98aebe381205ccf4"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/candidate-receipt.json",
+          "sha256": "0a4f6f09d1a5d9221c90fb0f278ee40f55b7b4f2b6681586b086ec839e465e82"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/goals/source-goal-1.md",
+          "sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/goals/specialized-goal-1.md",
+          "sha256": "3fda685d8ab74c741e78143625978919bf22533ff51cd7cfce855ba9682176b1"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/manifest.sha256",
+          "sha256": "79d969e3c4bf1d1949ade31adb4e6d04b3a486e09ad99a99becc827619952186"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/reveal/detail-desktop.png",
+          "sha256": "b8edf76beaf8663f060dd0817cf57aae8772ce377e76da93afad3db6efdc5e4e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/reveal/detail-mobile.png",
+          "sha256": "9341f502c1be5ed49bc924450536d6bd2ae9dde3bd92a02a552a54b57c582139"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/reveal/output-desktop.png",
+          "sha256": "efcb74ac0d385278bb8071c2d16a640d7008779c51377d9fef7111ff5ea83933"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/reveal/output-mobile.png",
+          "sha256": "21de49ca9d094ec2a1ed34fa8d93c04521d728a20aa2c79eeb9602345967b8bc"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/reveal/source-vs-specialized-16x9.png",
+          "sha256": "0a1fb5d99741a7cd14df28f0596ab4cf34e6026826615bfab0b5446cd70edd0c"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/reveal/source-vs-specialized-16x9.svg",
+          "sha256": "6f0a9a9f24a09e32b644b51959ab0b13c17e97445c6561e3d8fb8ef1d0a3b326"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/_astro/BaseLayout.DlqBrWzQ.css",
+          "sha256": "60d5ee44082ac87c4508c054d05b9e5ec764d5d4f9478480ba3d572317c5f6b9"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/_astro/_id_.DxDIpImJ.css",
+          "sha256": "75e0362fd154bcc30984e1eefcd0a6fae9052c5bae12c16459c13275228962d5"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/_astro/output.CIuQQ4Ti.css",
+          "sha256": "f47f3b4fca77ec57df9babe9bdb9bacb230ce532b1343bf08c0ca002a9950227"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/demo/2/index.html",
+          "sha256": "b2e0ababaf0d25e852d5a766939bde6e46912e545733031b2bf8e6105905e66e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/demo/2/output/index.html",
+          "sha256": "77f1f9f037227da796e9204fb7b6032d79a5d78938b15ec1c7a6fb6a0b933fff"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/favicon.svg",
+          "sha256": "1f1103f17b170cc3cd5864f36bda71a9f7f5ade406a65020028c994cda806315"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/site/llms.txt",
+          "sha256": "604ae8f8ce30122fab3c6273d5dff80424062b31b0102ebbebacb00ce0615ff1"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fork-receipt.json",
+          "sha256": "890c0376327a5153e762e79a0d463621d433cf45c5794f40620f0ec740e9e945"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/goal-4-activation.json",
+          "sha256": "c51e34b53efb0dab6a231d3e491a745a94bff04febe8f93518054ec7d289ae2e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/integration-receipt.json",
+          "sha256": "e5bb66a000a66121c0b17901494790465e59797d35ec1728b7f558f7b3ba2996"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-execution-receipt.json",
+          "sha256": "f24e9aaaaae25f80faba633a3511d17603510ca0637a52fe0fc3dfd5f0025794"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/operator-materialization-receipt.json",
+          "sha256": "1b645010ac7f3dd39f557f11134b4a53b31bec3b41288dedcdbad10a3062fb97"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/positioning-brief.md",
+          "sha256": "013e80a81d253d557709d001152b1f0a7c3464609a36edf84fa95936d1938646"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/reveal/detail-desktop.png",
+          "sha256": "b8edf76beaf8663f060dd0817cf57aae8772ce377e76da93afad3db6efdc5e4e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/reveal/detail-mobile.png",
+          "sha256": "9341f502c1be5ed49bc924450536d6bd2ae9dde3bd92a02a552a54b57c582139"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/reveal/output-desktop.png",
+          "sha256": "efcb74ac0d385278bb8071c2d16a640d7008779c51377d9fef7111ff5ea83933"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/reveal/output-mobile.png",
+          "sha256": "21de49ca9d094ec2a1ed34fa8d93c04521d728a20aa2c79eeb9602345967b8bc"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/reveal/source-vs-specialized-16x9.png",
+          "sha256": "0a1fb5d99741a7cd14df28f0596ab4cf34e6026826615bfab0b5446cd70edd0c"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/reveal/source-vs-specialized-16x9.svg",
+          "sha256": "6f0a9a9f24a09e32b644b51959ab0b13c17e97445c6561e3d8fb8ef1d0a3b326"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/source-goal-1.md",
+          "sha256": "06397e1a338bfb855c40fba65f8daaaf4f56f0a3aec669d3253886a7ed243c2c"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/specialization-receipt.json",
+          "sha256": "cac4d027678855faadc8e393e2b2170607d272fa17ea437bc8eef8d1502b388a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/specialized-goal-1.md",
+          "sha256": "3fda685d8ab74c741e78143625978919bf22533ff51cd7cfce855ba9682176b1"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.agents/skills/.mdkg-managed.json",
+          "sha256": "f0084a99b711e68ca12c95db4dea67078002343a5dbd3ab577fc0993cf952a49"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.agents/skills/author-mdkg-skill/SKILL.md",
+          "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.agents/skills/build-pack-and-execute-task/SKILL.md",
+          "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.agents/skills/pursue-mdkg-goal/SKILL.md",
+          "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.agents/skills/select-work-and-ground-context/SKILL.md",
+          "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.agents/skills/verify-close-and-checkpoint/SKILL.md",
+          "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.claude/skills/.mdkg-managed.json",
+          "sha256": "f0084a99b711e68ca12c95db4dea67078002343a5dbd3ab577fc0993cf952a49"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.claude/skills/author-mdkg-skill/SKILL.md",
+          "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.claude/skills/build-pack-and-execute-task/SKILL.md",
+          "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.claude/skills/pursue-mdkg-goal/SKILL.md",
+          "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.claude/skills/select-work-and-ground-context/SKILL.md",
+          "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.claude/skills/verify-close-and-checkpoint/SKILL.md",
+          "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/README.md",
+          "sha256": "faaf4bb697eded7c6baf6cb44a2a6c04feabfc250cac3bcb4be6b95e7a3bb02a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/config.json",
+          "sha256": "715e2f55843dc31f66d4b7d333b5f89ea2aeeacc30f5dfaf7d3fd9f2c41e5fb0"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/COLLABORATION.md",
+          "sha256": "ef60b65b54a57ed54984a49f5ed14453cb4e47170a5660be94eceec26b92b01f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/HUMAN.md",
+          "sha256": "945fb5cb47945735b9529f2b0a322630b3e8aef1c3e69c4ce85dd2db3e905cca"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/SOUL.md",
+          "sha256": "2bfdd4d1a65dd18c14d3e8469d0d5c74c6cc7c067f0b56d227532b7ab620795a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/core.md",
+          "sha256": "7d8a5ee16433ac8057234c84c2603a9d568d538f17f0488572da15f59603ca0f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/guide.md",
+          "sha256": "ffee0b532801d934d32842a9a9b1332df6329ad78d6804b39607553899b5b9ae"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/rule-1-mdkg-conventions.md",
+          "sha256": "03db1635d170331517efb0ac24351b477a8020a96e51edf5bd67910a49bb5db7"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/rule-2-context-pack-rules.md",
+          "sha256": "9dfd46b5ae791220c68304abc0784399509cf606821c937671cf63d6e9a8ce8f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/rule-3-cli-contract.md",
+          "sha256": "362fb8f22525f51c15ef54d81f63ebef4ab4b1dbaf37bd1415462a204ab78e45"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/rule-4-repo-safety-and-ignores.md",
+          "sha256": "3c7a4e34febf05b3202af4bb21cbbbeb430c2b872e3a7030920bbc6b045bd0b8"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/rule-5-release-and-versioning.md",
+          "sha256": "d7862806f999ae23b1d8bc3446f8c81b3a7fdd7d87920d966f59795a84978a03"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/core/rule-6-templates-and-schemas.md",
+          "sha256": "3ae20e1a925154ddc69bfc79495b169500aa5158db2134336890b00e64750c2f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/design/dec-1-static-astro-and-zero-client-javascript-is-the-demo-stack.md",
+          "sha256": "21027bb5db11bce97085c07cd0c1cac7cc47c2b060ac6856c56d3fd56866a15d"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/design/dec-2-demo-template-remains-preview-gated-and-public-safe.md",
+          "sha256": "65f7c9882e793608bc0769fe3d3196711ab0e622d4e7459edcb04633acbc90e7"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/design/edd-1-ocean-flow-website-demo-design-and-creative-production-contract.md",
+          "sha256": "ddadf54f0ce2bc01fab8d07d88a4e0b042a32d3b810e7365035df79d5007a0c3"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/design/prd-2-reusable-static-astro-website-demo-platform.md",
+          "sha256": "3cd5543c5ff31ddba6f604ac073593468ee7d2fdf1f2401ae67d7eae7ce61167"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/index/capabilities.json",
+          "sha256": "811160fa14c99f8aea70b423202e2f7271b2257a8c9c1b77e69f0816f82fcff4"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/index/global.json",
+          "sha256": "69391697bb4121149b9fb242d2531dd3d7e5995c7f912ae9a9604cf629337baa"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/index/mdkg.sqlite",
+          "sha256": "b72d21d5634b1106e42e6a870486acaffac8ea900d3c91f8fea14b488dc7d47a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/index/skills.json",
+          "sha256": "0375fe9f7df85ea9a75b49fef6067253d5489b0d4fe5a9366d54b261df229590"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/index/subgraphs.json",
+          "sha256": "41a7a9c39b20c1c9ef5a17c550abb0a2d6f04b9b90854ece1cebf562cbc1df2f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/init-manifest.json",
+          "sha256": "2a0414ddb4ae7c9cef8c6ebc5e680c674f73b6710bd57de00bc25b404d118d5b"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/skills/author-mdkg-skill/SKILL.md",
+          "sha256": "9ea196cb778e6a777c945b3bba9d51c7574602f413e9a1d5e01e2b95918c0873"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          "sha256": "3e240cb844b22e5e4c0046a4f839ac3c0d771a62d00a72719fc449477564b1ae"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          "sha256": "0545b011232d6924d84d80ad4b33153e591249d440c55481f125b37923c298d5"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/skills/registry.md",
+          "sha256": "f8a38e87c7d8f6cf2f1d70dcc5ff9ff012c271f8fda8b1f160b95e8622bb1ff1"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/skills/select-work-and-ground-context/SKILL.md",
+          "sha256": "95faee88875233dd2ed2039e941fbe879e3ccf619e1f9f18e3f2313ac5033409"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          "sha256": "1e3982ad80a0a8b94d43a80e2b7143a938f6e01aa898b86d0410911f61361107"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/state/selected-goal.json",
+          "sha256": "bd6257069fd613d022e945cc746f958e11b5ff3111cd98fdb1dec59a9a680482"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/archive.md",
+          "sha256": "d442523bbecd91a3c4a436043919117da00c145b368612311e98e628fe30d69b"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/bug.md",
+          "sha256": "27ed977c67030befccfc469d9db257fadc9ad5331963e259c489ba03754194cb"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/chk.md",
+          "sha256": "9e32f46665fc7cc582c4695772f5d99799f574229e740fa8892c7b9e75324de9"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/dec.md",
+          "sha256": "a2f7098fea538c153ac290f2e2edb2e755ca9dd07d17c2a127fb23959517ece9"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/dispute.md",
+          "sha256": "b1c5330fd4a1e3f03dbb4ac8907bd728e55537e053dcf43ebcbdc835ff1d0579"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/edd.md",
+          "sha256": "44828719927cfd31389b9d55b57fc4fa9bc640f3e2475baefe585e4043740f5e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/epic.md",
+          "sha256": "0f515c046064771e3f9abaa3689634bfae3ffcf2ffe9825e8e3b7dc15c24fc50"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/feat.md",
+          "sha256": "25c04ce41d8cf519d5c3009219eeed48f76c23600c6b7999264831aa92cefc4b"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/feedback.md",
+          "sha256": "61ad7b8b717d17736ba505f814fa6e4f9ec61f7fe4ae6622359304620a99d649"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/goal.md",
+          "sha256": "8f984580aefd02b34639fa7f5d2a834662656bbf2e12f14a285f5ae31aff74ce"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/loop.md",
+          "sha256": "6e8f280c3375b9ec18e09fdb263665b2e3da45ca09b2547378fdd4c9bc015d89"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/manifest.md",
+          "sha256": "2ff2af58cae6a0381a66949d7d9e997fac6486da85171b09096c43663889da95"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/prd.md",
+          "sha256": "afee167576a4f881ab191867e118864b7b5629e14b9c4a61359c8fbd7ececeee"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/prop.md",
+          "sha256": "839b976a8ddc0d6abddfbe6114dfb87f64471958ae807c011538777b758aa1f0"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/proposal.md",
+          "sha256": "16bfa81b6e665064e93e0d1b625dccc518b9885f87a32a15e5ba5441c2c27ea8"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/receipt.md",
+          "sha256": "516faf98abe421f154d162b18006c7875f1a0025ac4d35cc16df744c13548d9d"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/rule.md",
+          "sha256": "6321abf72af61a6513d7bfaa2d3122b2aa3bd2b95b662a52d569fb2bf819fda1"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/spec.md",
+          "sha256": "8c96e0b6dafa65acb83a2d84519e05a7354896aec8991c148650e9ec58196c77"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/spike.md",
+          "sha256": "56e881fad20bd4fda8ae53cc78ce6f30f4dacd083f4eda40f9f2ba3723d52e0e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/task.md",
+          "sha256": "2db6e56298b22e9da9121e2ac31f2fd68e370211218c5bcaae1014a9e63b7cde"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/test.md",
+          "sha256": "59484d4cf397707d738ccbc2f788c08eab58d3d73f37591f7bde8f1533b828ce"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/work.md",
+          "sha256": "cfc53d3be1d2c31576448d071a579bc3d5d2f6851755e29c20825f6b6764c0aa"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/default/work_order.md",
+          "sha256": "5fe376413035f2afe406d13491a597f103a2fce29d137951fe55ae042a1082f5"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/skills/base.SKILL.md",
+          "sha256": "08a1bd65297173a1dc9df95776775d406337a419d4bc51863593b6f28777ebdb"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/agent.MANIFEST.md",
+          "sha256": "79fb755c95747d3f673e1333ec3f039d08f76488ba268b7fa32f457d8638ee64"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/agent.SPEC.md",
+          "sha256": "dab10c0ed12aa10a752ee3bd61f263065644826eb950c71a9e3458673edb0ca5"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/api.MANIFEST.md",
+          "sha256": "dd342ab2bd331b716e4b7de9f8c7cfa503703422a4cc88c21fe90ff49b11aa83"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/api.SPEC.md",
+          "sha256": "aee86cadcca31a5a015d7e15ad7503c4aa30f2af0079ec03f857b82b3ecbae59"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/base.MANIFEST.md",
+          "sha256": "056c4ccf8285db72c8befdc6acd165d625dbe892d70e89ce586f081db8e250fc"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/base.SPEC.md",
+          "sha256": "6d4171fac00c2f3d8f2a2ac746b8a47c59aaecebe224c3a0046dd6e6974a1d08"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/capability.MANIFEST.md",
+          "sha256": "0ab2c2f90c6bdcddaafd77ac6cc36422d6ee10cc935942d8f80728f5b184d5cc"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/capability.SPEC.md",
+          "sha256": "68a91e8bbd80d1ff1972e4c31e29f26451d5a1be1d25d414170fdd670010066f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/integration.MANIFEST.md",
+          "sha256": "7af890bdac5515600661c241dd488c2bc270248ae6fba9afb0307d7a643022a4"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/integration.SPEC.md",
+          "sha256": "e907ce6ebc1fa5a455e31e39036e3f8699dccb3d9e45288c8ea025eaec4ca4a2"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/model.MANIFEST.md",
+          "sha256": "3fe36a424b6eba8542bd08d3e2728ffd7f35d2c72037f2e565757cea15da2e1f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/model.SPEC.md",
+          "sha256": "56061a241819dfda4d3022c075f744cf6650f5f52c58cd15b0af9d1f613af4f2"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/project.MANIFEST.md",
+          "sha256": "e1f68306a9cff3d73e65a2fea38d52b49dd76921b5d7c7ea9710eb2c23cb6f89"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/project.SPEC.md",
+          "sha256": "386c41852cbb46e7a6ba583a7b0c4126262a56618d8e214aaa601b68d55818b9"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/runtime-agent.MANIFEST.md",
+          "sha256": "4ba2013362597f101fb225bc6a3369a47a0c1cac3de78220efea4e53d42f0393"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/runtime-agent.SPEC.md",
+          "sha256": "53af7c3e172f5ed1297f340aca0be5e53302613d2e6bb9145915067d7b0004c8"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/runtime-image.MANIFEST.md",
+          "sha256": "098debed22f274c9f408defcf330ef27c760e1a3166876f2a6e16cb28cfb4757"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/runtime-image.SPEC.md",
+          "sha256": "37416b045cd7733d1f5e1cc629ac9b6616024d5fa52f2bdcd90110267151e593"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/tool.MANIFEST.md",
+          "sha256": "79e45600a3b83d70e2791cbdff0138b57018a30b7e277d9017b7ba142deccb91"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/templates/specs/tool.SPEC.md",
+          "sha256": "05b827bbce4f721ea25beda62850688aff3db644aec65e71b9cf76cad8e5f46f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/chk-1-website-demo-template-seed-accepted.md",
+          "sha256": "7216f8cca53805a0dcdf2ac14c2bb80f0e93e13730250f88a0800291de663ba0"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/chk-2-static-astro-zero-client-javascript-template-contract-accepted.md",
+          "sha256": "aec281aa7ea7b0a8b071ee12b9987080ce1aab95c14528641e088a41a936833b"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/epic-1-complete-creative-website-demo-build.md",
+          "sha256": "9a4b57e79eefe568e8ba724d85c06d9491656469619bf337b0296e500dd5d380"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/events/events.jsonl",
+          "sha256": "064b052af59cba5a8c56e48a32e803051309abc756a14041e16a12b399f8b559"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/goal-1-build-a-complete-differentiated-website-demo-from-the-canonical-mdkg-template.md",
+          "sha256": "5062726e202623f8efcf8599d43025aca00682d5a97f5bc4352f1195498a176d"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/spike-1-choose-audience-offer-structure-and-creative-direction.md",
+          "sha256": "e9240cefea7f3ec343ccb4ef9ccfaac40c8d314cf2eee35a1e27e062af73ba58"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/task-1-build-complete-static-astro-website-demo.md",
+          "sha256": "e7e862f3f486851c456ceb4ddf7c415aaf4d9d1ac2734d31d3049728ba5c31fb"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/task-2-integrate-demo-2-through-the-canonical-static-astro-adapter.md",
+          "sha256": "9222318d64e14e012a15c28d8b10436e1058525d7eaddcc9c304177e43a387fc"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/task-3-publish-the-accepted-demo-2-candidate.md",
+          "sha256": "449caa2f3c55b922099f4f1703f9179194f3b24c984e731487a70bf84a837668"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/test-1-complete-website-demo-validation-and-handoff-contract.md",
+          "sha256": "9297d7814b909143cb69b6804e26660f7303fa76d5c0f2ef129c133c7a9f4427"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/test-2-verify-demo-2-canonical-detail-and-output-routes-locally.md",
+          "sha256": "6ef0cd7ddc739ce08feb45a3f2a8d4220e43cf595140ec02138c35f5825da756"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/work/test-3-verify-demo-2-exact-sha-deployments-and-live-routes.md",
+          "sha256": "acd1352c03633c06bcc0cdad0b3a15e4eb48995d3abc0df00c556773df0c5281"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/AGENTS.md",
+          "sha256": "9e33a1c20320e317e1e37dbb09fd0303e355b9e7d49cf2128fe791aaa2ce2fb1"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/AGENT_START.md",
+          "sha256": "91e31ae818b29f62ebe77ac24f7e1a2bd10a4fedfc1684da935f0849aaf6d200"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/BOOTSTRAP_RECEIPT.json",
+          "sha256": "f6e959133bd094782ede47d00c074b543e5a89716b0d22fd21c4f55d87315754"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/CLAUDE.md",
+          "sha256": "3ff3ec5560968f7f1bf6f7d34a3c4b6e636edc9f0d45f717cdebc4df3b76403a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/CLI_COMMAND_MATRIX.md",
+          "sha256": "82c509b91498131304ff2bc94bb7eb2f29c3c207a00bc8bcaf8a6ab52ff9e689"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/CREATIVE_PRODUCTION_INTAKE.md",
+          "sha256": "265f826c3e461177050711b31f54abbd2a19f8f5c98b76451c4ddf15f0c32329"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/DEMO_HANDOFF_PROMPT.md",
+          "sha256": "d7e4e2c4c3ed03e25f47a385872f20feb35f2b40973111b4f14628301eb9a64d"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/DESIGN.md",
+          "sha256": "61259e6145df763b86a55c342f1e9559df98822c12577de916ec82b8d8bbc269"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/WEBSITE_DEMO_TEMPLATE_BRIEF.md",
+          "sha256": "e571b6e5062807f176b432d51ea5fe75d98249dd9cf1e21aea5c113b4d532bfb"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/artifacts/canonical-route-validation.json",
+          "sha256": "bf43121a52a7cc36e60bdd1859aa98dc6f670783de4a2f1d38f937f43a4e6ec2"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/artifacts/creative-direction.md",
+          "sha256": "3d32c829d379976fde5b263587221c10710ee52ed37fa06155fb7bb5df3c258d"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/artifacts/implementation-receipt.json",
+          "sha256": "3b9c86892de7507eb1cea5ce4d7efe90cfab8ae533193cef42dee7a50607b964"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/artifacts/integration-receipt.json",
+          "sha256": "e5bb66a000a66121c0b17901494790465e59797d35ec1728b7f558f7b3ba2996"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/artifacts/local-validation.json",
+          "sha256": "fa947b2b52ec5f38d9d5a7fb1cb302ee139d95222c0ee3084981514bd341d724"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/llms.txt",
+          "sha256": "108ac1feb3e11824c9cfc5116aaa83355cb461ad9b0ec5c4bb244f6a70276f31"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/site/.gitignore",
+          "sha256": "89d0129323d3463fb9bdfd017d8064238d1be3140ddc76032c6ec40f6f4defdb"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/site/package.json",
+          "sha256": "c91703884549a432434f175b8fea61e74a28385048d1057a9cf87f44c07d62f0"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/runs/demo-002/site/src/pages/index.astro",
+          "sha256": "475b83b57b443235ab49269592880f70b760893ca2a7af3295ed0d80a1a27747"
+        },
+        {
+          "path": "scripts/smoke-mdkg-dev.js",
+          "sha256": "2cce042064ce10aa5969f9a5e423b1b98eecaa57d7a70446e1496262813dc8b4"
+        }
+      ]
+    },
+    {
+      "sha": "34bae9520452ee087ba958c92bcf0716bd59f282",
+      "parent": "611988111a590e9c108ad556c20682c3bc98695f",
+      "subject": "plan(presentation): harden Demo 2 publication workflow",
+      "path_count": 36,
+      "path_manifest_sha256": "c62232b6eb3defedf387569a6dcd2be45891593a10f2ce8db8dde67d2ff36333",
+      "paths": [
+        {
+          "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+          "sha256": "de384d32a5b15c9083b06a2b147372f2c9bbe530b1575225bd9be548f86231dc"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.agents/skills/.mdkg-managed.json",
+          "sha256": "13548a8de7e8922ebc92d28521a2d38ec172e5ffdeff1592b1f2b6356d62ffbf"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.agents/skills/publish-static-demo-with-exact-sha/SKILL.md",
+          "sha256": "5de3f45d708c513e762f1a06bcff76369b93e22d3e028b29fbc2fc52ef6ac05a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.claude/skills/.mdkg-managed.json",
+          "sha256": "13548a8de7e8922ebc92d28521a2d38ec172e5ffdeff1592b1f2b6356d62ffbf"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.claude/skills/publish-static-demo-with-exact-sha/SKILL.md",
+          "sha256": "5de3f45d708c513e762f1a06bcff76369b93e22d3e028b29fbc2fc52ef6ac05a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/design/dec-5-use-exact-sha-publication-gates-bounded-fix-forward-and-a-sealed-fallback.md",
+          "sha256": "b5c19e74db28281b1163f24ecf2b648f5a2ab8b4e14e1f614df0da04ef5fd66f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/design/edd-1-ai-native-sdlc-presentation-demo-program-architecture-and-execution.md",
+          "sha256": "b89607acb09aee0b2a503d6dadcf5064b855be30d922eb1c3338fe6100d5144a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/design/prd-1-ai-native-sdlc-presentation-and-live-demo-program-requirements.md",
+          "sha256": "5fb94f7ae0ed9a5465ee87e28bb5da772f15e0f3e453cc049958ad49e8cb4d03"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json",
+          "sha256": "be3c4b94a8b83109158ead8a990e21910a4f5bdf57b90524af8ad9a62b90fb83"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/global.json",
+          "sha256": "fcdba51f036e572f866e611ab215084858a9201b65cb64cee61eb12949890733"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite",
+          "sha256": "18b964cb5a66461e0fb9cd08d74727e65baf72917dca47fc0b1b7c22a73ad334"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json",
+          "sha256": "e864fd43a67ee0cd9ee7dd3049382cd5c6e324101f985a1d0753ecb39070dbcc"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json",
+          "sha256": "d44dcbe0cbc4327ecf1406edcc11ec93ad0c5b0ae31542598b4fbb54379299ed"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/skills/publish-static-demo-with-exact-sha/SKILL.md",
+          "sha256": "5de3f45d708c513e762f1a06bcff76369b93e22d3e028b29fbc2fc52ef6ac05a"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/skills/registry.md",
+          "sha256": "cc917dee3162b8a7b27d10515fe7d0c5be2971d4c2cc0d42d6398e4c8c822289"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/state/selected-goal.json",
+          "sha256": "b471641539c562f85903943c752f94bb5117b9b85e84ee857ce0f7a7484f8838"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/chk-15-goal-5-exact-sha-publication-contract-ready.md",
+          "sha256": "486ed5d652a031462c34680b3d71d516e325ec85316302d859b154e48ef2efad"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/chk-16-demo-2-canonical-smoke-contract-and-candidate-revalidation-accepted.md",
+          "sha256": "a97dea1e71870a2141f6eb2ef6477eb6769a64a56291ab4359628f0794b7a22f"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/epic-5-demo-2-publication-and-rehearsal-proof.md",
+          "sha256": "a380cb25fb5ad1e12e8b2296e4306a59863f2d119dd5f9ed5df8125d8d5d1048"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl",
+          "sha256": "1d64953a3b1399a68ff5149f9ebf96687eeeda1c672bc0f57aa3dc0b2db574a0"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/goal-5-publish-and-rehearse-demo-2.md",
+          "sha256": "193e9f4168c1dc0f9eddb2f2ee558e2d3293857ffb6433e3a0b2af201af12609"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/goal-6-freeze-event-readiness-and-prepare-demo-3.md",
+          "sha256": "f0fcc90eead2b579e29a046f543cb814e7d4ce979652de5adae6a6713f423ddf"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-21-preflight-demo-2-ownership-allowed-paths-origin-freshness-and-zero-behind-state.md",
+          "sha256": "2e7bedcec66156222c81639db749206109eb14d9b6807a880410389a0eb40672"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-22-commit-and-non-force-push-the-accepted-demo-2-surfaces.md",
+          "sha256": "c68f943548a7e722dc141df2a086beb609685220d557e1fdfda4ebe5d66f5dee"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-23-verify-exact-sha-ready-deployments-for-mdkg-dev-and-docs-mdkg-dev.md",
+          "sha256": "b79f749c37dd0310a6c3b2ff64964037982f42da85431b8fb09d1fd8735b0fa7"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-24-verify-demo-2-live-detail-and-output-routes.md",
+          "sha256": "1148076a066a3fc049621053bd512cc5228a69e0ee4e08b9004a2fdb4fc06127"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-25-rehearse-the-complete-presentation-against-production-demo-2.md",
+          "sha256": "17d4849b4e9da92fd5b04fbb3ed8e9a634e4e1008387febeb1deac10bb11af79"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-26-seal-demo-2-as-the-immutable-golden-fallback.md",
+          "sha256": "0fb668197beac929bf92dc2d9168f16d41d9245c66f0cb4ceb27cc91045c3179"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-48-reconcile-the-canonical-demo-2-smoke-contract-and-revalidate-the-accepted-candid.md",
+          "sha256": "e0944e593b809152ba5d2a4ec291e78dd2c076202552747dd25eabb6295a88d9"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-49-freeze-the-exact-push-range-and-obtain-demo-2-publication-approval.md",
+          "sha256": "a19f2af3de36727245123e7ea47d3f11e0a56e6393082df6cc28747bd76d0fcf"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-50-non-force-push-the-approved-demo-2-range-to-origin-main.md",
+          "sha256": "c07215359f722deea43f5900ce1d88340f33a8be574498b7cb68b4370eeef9d9"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-12-verify-demo-2-commit-push-and-exact-sha-deployment-evidence.md",
+          "sha256": "3ff6b6b96c8d144750e3228b370d423b3596fb5eddf5f7dc7586271619b81c79"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-13-verify-demo-2-noindex-accessibility-responsive-and-zero-javascript-behavior.md",
+          "sha256": "6db28cafd547155d33f1dde81f844f52f264125d2229307a7b9433f21a883341"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-14-verify-timed-rehearsal-and-golden-fallback-recovery.md",
+          "sha256": "4262bd8b979b97b5769fe97774067c3b625ddd7e8185db9591b931e139a32ea4"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/candidate-revalidation.json",
+          "sha256": "77f9fc3e6ee210fcec94713b1207a236d9a92fc76b6281deace495816c682245"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/smoke-contract-receipt.json",
+          "sha256": "ab80260a5a815ebb7adbc301af9e513b5b334661843a94c4eefd09416a4d7504"
+        }
+      ]
+    },
+    {
+      "sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+      "parent": "34bae9520452ee087ba958c92bcf0716bd59f282",
+      "subject": "fix(mdkg): enforce Goal 5 publication routing",
+      "path_count": 17,
+      "path_manifest_sha256": "a43eed320e5b546b01ad76848ebe42bab70dc31dd747d017f7a843d65662e064",
+      "paths": [
+        {
+          "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+          "sha256": "722240164477f5ec18da3168f10d921006c422939d6193e66850ea601306daec"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json",
+          "sha256": "0da3e0ef97152f03a9cce48ef1036535c31c88dfb7a4de633b675f8c25ed9023"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/global.json",
+          "sha256": "b8378d4330cc28ee5b188ea3829ac0ffc8851f82a792ee520b05d39c052a5fb2"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite",
+          "sha256": "fb3a9d59f3faa83afff6f34b03dcd7f313bc3882e0bebd64c2216ac1394141ed"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json",
+          "sha256": "17ba09b280c3280da3a8e09f2e2c2417898d9644d8c4382466ecedcde5a67292"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json",
+          "sha256": "a5dd891edee04f4cd69d2decb605f9ca867fd5051ec3a30a97f8d6122ecb01fa"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl",
+          "sha256": "23a4a0e0b6537ba397fb85e9d3a0776c1c2c42716cac29f55ed495c08de29205"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-22-commit-and-non-force-push-the-accepted-demo-2-surfaces.md",
+          "sha256": "2191c378a9d7f4a8d5e25ce32b644e904a7b3e5bafa9093db1200a69198dca30"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-23-verify-exact-sha-ready-deployments-for-mdkg-dev-and-docs-mdkg-dev.md",
+          "sha256": "199126aa01e17d872b0f7a07967ed4255e079c833df9de2b7c86936afb28fd8e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-24-verify-demo-2-live-detail-and-output-routes.md",
+          "sha256": "9c1f46e07eb9ea650abe7ab943c69e316392b227c70b3f225a5abdc3e0dce696"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-25-rehearse-the-complete-presentation-against-production-demo-2.md",
+          "sha256": "becee035b18785974e3b2717b581b88ed0a97061a99f39af1d501289389025c1"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-26-seal-demo-2-as-the-immutable-golden-fallback.md",
+          "sha256": "928a0d18a5b2bddc003b46373a63f50c964253d2a25a8ef950169ebe9d3b32cb"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-49-freeze-the-exact-push-range-and-obtain-demo-2-publication-approval.md",
+          "sha256": "1c65166736d5ecc7d62fde7b643c37187272d0c1a18b2559c301c91db4837d7e"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/task-50-non-force-push-the-approved-demo-2-range-to-origin-main.md",
+          "sha256": "f05825150073a444c86c654b10df3c3bfe1c1e27db0c2338a35dd8aadbb9c9f0"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-12-verify-demo-2-commit-push-and-exact-sha-deployment-evidence.md",
+          "sha256": "e1496b836ca105ead5d4bc00b4e886ab03eb2fddd4e71fcdeefb52fdd90b53fe"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-13-verify-demo-2-noindex-accessibility-responsive-and-zero-javascript-behavior.md",
+          "sha256": "cc9cd6f08afcc8cf4d6719088eee1c733979526d1d00723b04d7badbb595f8eb"
+        },
+        {
+          "path": "presentations/ai-native-sdlc-demo/.mdkg/work/test-14-verify-timed-rehearsal-and-golden-fallback-recovery.md",
+          "sha256": "0d6ea4f06fe81fbdb5a456ca070078a226b1c5b575abc317fb822e3a8443bc51"
+        }
+      ]
+    }
+  ],
+  "task_21_evidence": {
+    "allowlist_path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-integration-allowlist.json",
+    "allowlist_sha256": "51878b4be32c5452694282a4b3ad9075d5738e62ea640a90d0c7d9b668a60f25",
+    "final_preflight_path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-preflight.json",
+    "final_preflight_sha256": "96b59d1e830d359f6c2227d327092452532c315a1b8bb747c57e017bf4fedd9a"
+  },
+  "validation": [
+    "npm run smoke:mdkg-dev: pass",
+    "npm run smoke:mdkg-dev-seo: pass",
+    "npm run smoke:mdkg-dev-a11y: pass, 22 pages",
+    "npm run smoke:mdkg-dev-perf: pass, 0 marketing JavaScript bytes",
+    "npm run smoke:demo-graph: pass",
+    "program graph validation: 0 errors, 0 warnings",
+    "Demo 2 child graph validation: 0 errors, 0 warnings",
+    "private bundle verify: pass, sha256:722240164477f5ec18da3168f10d921006c422939d6193e66850ea601306daec",
+    "root subgraph verify --all: pass",
+    "root changed-only validation: pass",
+    "git diff --check and both staged diff checks: pass",
+    "fallback manifest: 17 files verified"
+  ],
+  "postconditions": {
+    "git_index_empty": true,
+    "commit_eligible_paths_remaining_dirty": false,
+    "publication_task_claimed": false,
+    "fetch_performed": false,
+    "push_performed": false,
+    "provider_inspection_performed": false,
+    "public_availability_claimed": false
+  },
+  "local_only_paths": [
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-integration-allowlist.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-preflight.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-receipt.json",
+    "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md",
+    "presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/pack_concise_spike-1_20260727-113551790.md.stats.json"
+  ],
+  "authority": {
+    "local_commits": "consumed",
+    "fetch": false,
+    "push": false,
+    "provider_action": false,
+    "publication": false,
+    "next_gate": "task-49 must fetch origin, freeze the complete origin/main..HEAD range, and obtain explicit human approval"
+  }
+}

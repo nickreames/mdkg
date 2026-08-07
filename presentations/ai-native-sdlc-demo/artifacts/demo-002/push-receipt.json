@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-normal-push-receipt",
+  "actor": "root-integration-owner",
+  "remote": "origin",
+  "branch": "main",
+  "approved_head": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "pre_push_remote_sha": "f5135be5c8779c1f2b65bbd9dc41dced8a25bbdb",
+  "post_push_remote_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "pushed_at": "2026-07-27T22:55:30Z",
+  "verified_at": "2026-07-27T22:55:51Z",
+  "command": "git push origin main",
+  "result": "f5135be5..f6af6410 main -> main",
+  "normal_non_force": true,
+  "force_used": false,
+  "history_rewritten": false,
+  "merge_base_before_push": "f5135be5c8779c1f2b65bbd9dc41dced8a25bbdb",
+  "post_push_ahead": 0,
+  "post_push_behind": 0,
+  "approval": {
+    "accepted": true,
+    "accepted_by": "user",
+    "accepted_at": "2026-07-27T22:48:12Z",
+    "approval_file_sha256": "25ba9269de71be9bcdc34e0357466218065e9d9f1500baaf852aa64e760e80a1",
+    "stable_range_sha256": "da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d",
+    "push_range_file_sha256": "0fbb11fb7a6706fa3a840408e51fe24661ca35828cdf80c91e9b1bec6bf38328",
+    "publication_preflight_sha256": "21771fb719e20bf446204da638936cd2546da021d3618541279fd78c2625eefa",
+    "local_evidence_exception_path_status_sha256": "124c671d501e0bb07a134291319ce14cb61afe3f1368ef90e202f5973243412f"
+  },
+  "pre_push_revalidation": {
+    "fetched_origin_sha_matched": true,
+    "head_matched": true,
+    "stable_range_hash_matched": true,
+    "candidate_and_checkpoint_hashes_matched": true,
+    "all_content_bound_local_exceptions_matched": true,
+    "local_exception_path_and_status_set_matched": true,
+    "git_index_empty": true,
+    "linear_single_parent_range": true,
+    "zero_behind": true,
+    "approval_unexpired": true
+  },
+  "optional_dry_run": {
+    "performed": false,
+    "reason": "The sandbox approval reviewer timed out twice before process creation; live Git invariants remained green and the exact normal push was explicitly authorized."
+  },
+  "forbidden_actions_observed": {
+    "manual_vercel_deployment": false,
+    "provider_mutation": false,
+    "force_push": false,
+    "history_rewrite": false,
+    "tag": false,
+    "package_publication": false
+  }
+}

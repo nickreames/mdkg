@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-child-publication-receipt",
+  "authority_owner": "ai-native-sdlc-demo:goal-5",
+  "child_goal": "goal-1",
+  "child_task": "task-3",
+  "remote": "origin",
+  "branch": "main",
+  "approved_head": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "pre_push_remote_sha": "f5135be5c8779c1f2b65bbd9dc41dced8a25bbdb",
+  "post_push_remote_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+  "stable_range_sha256": "da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d",
+  "approval_file_sha256": "25ba9269de71be9bcdc34e0357466218065e9d9f1500baaf852aa64e760e80a1",
+  "pushed_at": "2026-07-27T22:55:30Z",
+  "verified_at": "2026-07-27T22:55:51Z",
+  "command": "git push origin main",
+  "normal_non_force": true,
+  "force_used": false,
+  "post_push_ahead": 0,
+  "post_push_behind": 0,
+  "provider_mutation_performed": false,
+  "next_required_work": "test-3 must independently prove both READY deployments for this exact SHA and both live Demo 2 routes before the child goal can close."
+}

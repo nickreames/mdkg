@@ -2,7 +2,7 @@
 id: test-3
 type: test
 title: Verify Demo 2 exact SHA deployments and live routes
-status: backlog
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
@@ -10,7 +10,7 @@ prev: task-3
 tags: [demo, demo-002, test, exact-sha, live-verification]
 owners: [demo-002-agent]
 links: []
-artifacts: [artifacts/live-verification-receipt.json]
+artifacts: [artifacts/live-verification-receipt.json, ../../artifacts/demo-002/deployment-receipt.json, ../../artifacts/demo-002/live-route-receipt.json]
 relates: []
 blocked_by: []
 blocks: []
