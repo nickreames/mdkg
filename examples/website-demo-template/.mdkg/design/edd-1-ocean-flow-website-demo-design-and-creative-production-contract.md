@@ -24,26 +24,40 @@ while preserving a recognizable visual baseline and safe demo boundaries.
 - `WEBSITE_DEMO_TEMPLATE_BRIEF.md` defines the operator-facing brief.
 - `CREATIVE_PRODUCTION_INTAKE.md` defines the optional Creative Production
   ideation contract and retained summary shape.
-- `goal-1` drives a complete local website run.
+- `goal-1` drives a complete generic local-to-production work topology.
 - `spike-1` chooses audience, offer, structure, and creative direction.
-- `task-1` implements the site using static Astro and CSS.
+- `task-1` implements one portable `DemoOutput.astro` using static Astro and
+  CSS.
 - `test-1` validates build, routes, rendering, accessibility, claims, budgets,
   and the zero-client-JavaScript boundary.
+- `task-2` integrates the portable output through a thin caller-owned adapter.
+- `test-2` builds once and serially verifies canonical routes and shared output.
+- `task-3` performs a bounded normal push only under matching external human
+  authority.
+- `test-3` verifies exact-SHA deployments and public routes read-only.
 
 # Data model
 
 - Creative direction: audience, offer, page structure, visual metaphor,
   CSS-only motion, static proof concepts, asset needs, source-backed content
   facts, explicit non-goals, and validation risks.
-- Website candidate: local source, screenshots, build result, and closeout
-  recommendation.
-- Closeout recommendation: discard, rework, or return the accepted candidate to
-  the caller for a separate integration decision.
+- Semantic release: hash-addressed authored graph/operator/skill inputs with
+  generated state excluded.
+- Run binding: immutable run identity and bounded specialization values without
+  authority or provider state.
+- Child interface: resolved routes, component contract, receipt destinations,
+  and semantic identities.
+- Authored contract seal: hash over authored child content, operator inventory,
+  binding, topology, and immutable requirements.
+- Runtime evidence: statuses, events, indexes, packs, implementation, tests,
+  receipts, checkpoints, and outputs; mutable without invalidating the authored
+  seal.
 
 # APIs / interfaces
 
-- `mdkg goal next goal-1 --json`
-- `mdkg pack spike-1 --profile concise --dry-run --stats`
+- `mdkg --root <run-root> goal next goal-1 --json`
+- `mdkg --root <run-root> pack spike-1 --profile concise
+  --edges context_refs,evidence_refs --skills auto --dry-run --stats`
 - Optional Creative Production exploration for visual direction.
 - Browser checks when a local preview exists.
 - Built-output scan for scripts, hydration metadata, remote runtime assets,
@@ -57,7 +71,11 @@ while preserving a recognizable visual baseline and safe demo boundaries.
   private context out of files and checkpoints.
 - Runtime drift: fail when a demo route emits JavaScript, hydration metadata,
   unexpected scripts, remote fonts, or third-party runtime assets.
-- Accidental side effects: integration and publication remain caller-gated.
+- Accidental side effects: topology remains inert until a matching external
+  lease/authority receipt is present and valid.
+- Source drift: semantic manifest, binding, child interface, or authored seal
+  mismatch fails before work starts.
+- Shared-output race: build once and run checks serially.
 
 # Observability
 
@@ -80,6 +98,7 @@ public-claims safety.
 
 # Rollout plan
 
-Use locally first. Return an accepted candidate and compact evidence to the
-caller only after validation; the caller owns every later integration and
-publication decision.
+Create an absent target from the accepted semantic release plus binding and
+verify it before work. Use locally first. Continue through later stages only
+when the caller supplies the matching lease and authority receipts; otherwise
+stop truthfully with compact evidence.

@@ -1,11 +1,11 @@
 ---
 id: epic-7
 type: epic
-title: Live Demo 3 execution and reveal
+title: Timed Demo 3 dress-rehearsal execution and evidence
 status: backlog
 priority: 1
 tags: [ai-native-sdlc, presentation-demo, phase-7]
-owners: [program-orchestrator]
+owners: [program-orchestrator, root-integration-owner]
 links: []
 artifacts: []
 relates: []
@@ -22,30 +22,36 @@ updated: 2026-07-26
 
 # Goal
 
-Execute and truthfully reveal Demo 3 through exact-SHA live proof or use the sealed fallback on a hard blocker.
+Execute and measure Demo 3 through a T+29:30 exact-SHA reveal gate or select
+the sealed fallback truthfully by T+30.
 
 # Scope
 
 Owned actionable chain:
 
+- task-58
 - task-34
 - task-35
+- test-18
 - task-36
 - task-37
 - task-38
 - task-39
-- task-40
-- test-18
 - test-19
 - test-20
 - test-21
+- task-40
 
 All listed nodes use epic-7, parent goal-7, and symmetric prev/next links. The goal scopes this epic recursively.
 
 # Milestones
 
-- Activation conditions and writer authority accepted.
-- Every actionable node completed in deterministic order.
+- Root-integration-owned task-58 publishes the preparation baseline, activates
+  authority, and releases its lease before `P0` or `T0`.
+- Live critical milestone `task-34 -> task-35 -> test-18` completes by
+  T+29:30 or selects Demo 2 by T+30.
+- Post-reveal tasks 36–40 and tests 19–21 harden evidence without changing the
+  reveal outcome.
 - Required checks and public-safe evidence recorded.
 - One accepted phase checkpoint records the outcome and next activation.
 
@@ -54,6 +60,8 @@ All listed nodes use epic-7, parent goal-7, and symmetric prev/next links. The g
 - Work owned by any other phase goal.
 - Side effects not explicitly authorized by goal-7.
 - Raw prompts, credentials, provider payloads, or unrelated private context.
+- Multi-harness or eight-hour/endurance demonstration.
+- Final presentation or source-template polish owned by Goal 9.
 
 # Risks
 

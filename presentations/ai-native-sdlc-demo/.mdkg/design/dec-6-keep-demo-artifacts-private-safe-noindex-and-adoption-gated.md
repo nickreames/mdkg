@@ -20,7 +20,10 @@ Production hosting proves delivery, but a candidate should not silently become p
 
 # Decision
 
-Keep program bundles and run graphs private. Keep Demo 2 and Demo 3 production-hosted but noindex and unlisted through the event. Exclude unlisted demos from gallery navigation and sitemap discovery. Store only sanitized graph, file, receipt, and route evidence.
+Keep program bundles and run graphs private. Keep Demo 2, Demo 3, and Demo 4
+production-hosted but noindex and unlisted through the event. Exclude unlisted
+demos from gallery navigation and sitemap discovery. Store only sanitized
+graph, file, receipt, and route evidence.
 
 Goal 8 makes separate promote, retain-unlisted, or archive decisions and separately accepts or rejects canonical-site ideas. Update the source claim map before adopting public copy. Later publication requires fresh authority.
 

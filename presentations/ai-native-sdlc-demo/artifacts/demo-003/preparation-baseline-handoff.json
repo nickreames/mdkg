@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-preparation-baseline-handoff",
+  "status": "reviewed_candidate_not_published",
+  "prepared_at": "2026-07-28T06:47:40Z",
+  "review_owner": "program-orchestrator",
+  "publication_owner": "root-integration-owner",
+  "authority": {
+    "baseline_publication_approved": false,
+    "timed_event_authority_approved": false,
+    "requires_separate_publication_approval": true,
+    "demo_2_approval_reused": false,
+    "provider_or_remote_mutation_authorized": false
+  },
+  "reviewed_git_candidate": {
+    "remote": "origin",
+    "branch": "main",
+    "origin_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "parent_head": "cd04500c0bb8aea7022f8adf10569676cc68ce58",
+    "ahead": 12,
+    "behind": 0,
+    "linear_descendant": true,
+    "candidate_range": "f6af6410cf03ae222c4ee102844a678373b35d93..cd04500c0bb8aea7022f8adf10569676cc68ce58",
+    "candidate_range_patch_sha256": "2ff53534094e32019634517b10a748ab813545af092227b61405834e5ea0d777",
+    "commits": [
+      "58b44d719cd3155730c78354c90588a1c4f70a93 chore(demo): seal Demo 2 production evidence",
+      "f1dbb823ffe98a902b6076b8ad9a65d6715e4010 chore(mdkg): refresh Goal 5 program projection",
+      "8e3b42222ddfc4881d1418b821e3aa24ccfe916a research(mdkg): decide Remotion adoption boundary",
+      "43485d7e64a76dcf0992dd14a0dc04dc3a37aefe plan(presentation): harden Goal 6 timed rehearsal contract",
+      "fd1b5541f293c546d9bf7c67d0ad8d97f180794e chore(mdkg): refresh Goal 6 program projection",
+      "67defd9aad96c45f4e0d90198f9c4e56a4ca4eff plan(presentation): make Goal 6 source-first and fork-ready",
+      "54f18f9bf3e8ec4218496eaf4c281edb24782cca chore(mdkg): refresh fork-ready Goal 6 projection",
+      "65adf3bb7467751e1ed7d4c7a500a54598fa3412 plan(presentation): classify Demo 2 source release evidence",
+      "5de4574d5a1b670db44f74187df79a15dc523b3e feat(demo): author fork-ready website source release",
+      "2f0a205ddd8e1b1d1c123cdd714539c540e646e3 test(demo): prove zero-edit source fixtures",
+      "da5a5fc459104e9ccf6e006f1e64d4ccc6a63c7a plan(demo): prepare zero-edit Demo 3 rehearsal",
+      "cd04500c0bb8aea7022f8adf10569676cc68ce58 chore(demo): verify Demo 3 event preflight"
+    ],
+    "classification": {
+      "presentation_demo_program": 11,
+      "root_remotion_research_prerequisite": 1,
+      "unrelated_or_unexplained": 0
+    }
+  },
+  "task_31_frozen_inputs": [
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-003/sendoff.md",
+      "sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc"
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-003/sendoff.sha256",
+      "sha256": "262b3c2144c6b6ed9f69e14cc883fc31b2f8fc86e0c00ffb714e7e2144774c68",
+      "content_contract": "records the sendoff.md SHA-256"
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-003/event-allowlist.json",
+      "sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb"
+    },
+    {
+      "path": "presentations/ai-native-sdlc-demo/artifacts/demo-003/event-authority-policy.json",
+      "sha256": "23b37b5f19c649ca811ca9be40b8cd78950661be7d485a82e75bcd6e6647f994"
+    }
+  ],
+  "expected_preparation_tree": {
+    "basis": "The 12-commit reviewed candidate plus the four frozen Task 31 inputs above. Task 31 mdkg lifecycle state and this handoff are local evidence and excluded.",
+    "functional_roots": [
+      "examples/website-demo-template/",
+      "scripts/bootstrap-website-demo-run.js",
+      "scripts/smoke-demo-graph.js",
+      "presentations/ai-native-sdlc-demo/runs/demo-003/",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/"
+    ],
+    "root_prerequisite_roots": [
+      ".mdkg/artifacts/goal-79/",
+      ".mdkg/design/dec-92-select-whether-to-adopt-remotion-for-offline-presentation-and-mdkg-dev-storytell.md",
+      ".mdkg/work/goal-79-research-remotion-for-offline-presentation-and-mdkg-dev-storytelling.md"
+    ],
+    "complete_manifest_rule": "Task 58 must calculate the exact file inventory, content hashes, tree hash, commit range, and stable range hash from the then-current candidate immediately before staging. It must equal this reviewed basis plus later separately accepted Goal 6 readiness artifacts, minus the bound local-evidence-only inventory.",
+    "self_reference_rule": "No future commit SHA, final tree hash, or stable range hash is guessed in this handoff."
+  },
+  "excluded_local_evidence": {
+    "policy_source": "event-authority-policy.json local_evidence_only_inventory",
+    "examples": [
+      "Goal 6 and Goal 7 status, events, checkpoints, generated indexes, and packs",
+      "preparation-baseline-publication.json and event-authority-activation.json",
+      "dispatch, timing, blocker, reveal, umbrella-audit, bundle, and root-projection receipts",
+      "the pre-existing runs/demo-002/.mdkg/pack/ directory"
+    ],
+    "must_not_be_staged_or_pushed": true
+  },
+  "publication_transaction_requirements": [
+    "obtain separate explicit human approval of the final exact preparation manifest and stable range hash",
+    "re-read live origin/main and require it still equals the accepted old origin",
+    "require a clean index and no unrelated dirty paths",
+    "stage only the approved manifest",
+    "create the deterministic preparation baseline commit if required",
+    "prove a linear descendant and perform only a normal non-force push",
+    "fetch and require HEAD equals origin/main with zero ahead and zero behind",
+    "write the publication and authority-activation receipts locally",
+    "release the root integration writer lease before T0"
+  ],
+  "goal_7_activation_gate": {
+    "may_start": false,
+    "conditions": [
+      "Goal 6 has an accepted readiness checkpoint",
+      "the final preparation manifest and publication have separate human approval",
+      "the preparation baseline is published",
+      "HEAD equals fetched origin/main",
+      "event-authority.json remains human accepted",
+      "event-authority-activation.json verifies the actual baseline",
+      "the root integration writer lease is released"
+    ]
+  },
+  "forbidden": [
+    "force push or history rewrite",
+    "unrelated integration or unlisted paths",
+    "DNS, project/environment/alias configuration, manual redeploy, or analytics",
+    "tag or package publication",
+    "authority expansion from Demo 2 approval or from the writable child"
+  ],
+  "next_action": "Verify and locally commit Task 31, establish the serialized writer lease and Demo 2 fallback in Task 32, then request explicit human acceptance of the complete event-authority receipt in Task 33."
+}

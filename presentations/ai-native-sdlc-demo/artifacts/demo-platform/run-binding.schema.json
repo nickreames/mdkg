@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mdkg.dev/schemas/website-demo-run-binding-v1.json",
+  "title": "Website Demo Immutable Run Binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "materializer_version",
+    "semantic_source_release",
+    "run_id",
+    "target_root",
+    "detail_route",
+    "output_route",
+    "component_key",
+    "positioning_brief",
+    "designated_harness",
+    "timing_profile_ref",
+    "output_destinations",
+    "receipt_destinations",
+    "immutable_fields",
+    "runtime_mutable_fields"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "kind": {
+      "const": "website-demo-run-binding"
+    },
+    "materializer_version": {
+      "const": "2.0"
+    },
+    "semantic_source_release": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^(demo-[0-9]{3}|fixture-[a-z0-9-]+)$"
+    },
+    "target_root": {
+      "type": "string",
+      "pattern": "^presentations/ai-native-sdlc-demo/runs/[A-Za-z0-9._-]+$"
+    },
+    "detail_route": {
+      "type": "string",
+      "pattern": "^/demo/[0-9]+/$"
+    },
+    "output_route": {
+      "type": "string",
+      "pattern": "^/demo/[0-9]+/output/$"
+    },
+    "component_key": {
+      "type": "string",
+      "pattern": "^demo-[0-9]+$"
+    },
+    "positioning_brief": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "audience",
+        "offer_boundary",
+        "required_story",
+        "creative_latitude",
+        "prohibited_defaults"
+      ],
+      "properties": {
+        "audience": {
+          "type": "string",
+          "minLength": 12,
+          "maxLength": 240
+        },
+        "offer_boundary": {
+          "type": "string",
+          "minLength": 12,
+          "maxLength": 320
+        },
+        "required_story": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "clear hero promise",
+              "context or problem framing",
+              "Plan -> Work -> Evidence",
+              "what completed why and what comes next",
+              "inspectable source-to-execution proof",
+              "quickstart and feedback CTA"
+            ]
+          }
+        },
+        "creative_latitude": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "composition",
+              "visual metaphor",
+              "section order",
+              "typographic hierarchy",
+              "local public-safe imagery",
+              "CSS-only motion",
+              "bounded marketing copy"
+            ]
+          }
+        },
+        "prohibited_defaults": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 120
+          }
+        }
+      }
+    },
+    "designated_harness": {
+      "type": "string",
+      "enum": [
+        "codex",
+        "claude-code"
+      ]
+    },
+    "timing_profile_ref": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "output_destinations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "portable_component",
+        "local_preview"
+      ],
+      "properties": {
+        "portable_component": {
+          "const": "site/src/components/DemoOutput.astro"
+        },
+        "local_preview": {
+          "const": "site/src/pages/index.astro"
+        }
+      }
+    },
+    "receipt_destinations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "creative_direction",
+        "implementation",
+        "local_validation",
+        "integration",
+        "canonical_validation",
+        "publication",
+        "live_verification"
+      ],
+      "properties": {
+        "creative_direction": {
+          "const": "artifacts/creative-direction.md"
+        },
+        "implementation": {
+          "const": "artifacts/implementation-receipt.json"
+        },
+        "local_validation": {
+          "const": "artifacts/local-validation.json"
+        },
+        "integration": {
+          "const": "artifacts/integration-receipt.json"
+        },
+        "canonical_validation": {
+          "const": "artifacts/canonical-route-validation.json"
+        },
+        "publication": {
+          "const": "artifacts/publication-receipt.json"
+        },
+        "live_verification": {
+          "const": "artifacts/live-verification-receipt.json"
+        }
+      }
+    },
+    "immutable_fields": {
+      "const": [
+        "schema_version",
+        "kind",
+        "materializer_version",
+        "semantic_source_release",
+        "run_id",
+        "target_root",
+        "detail_route",
+        "output_route",
+        "component_key",
+        "positioning_brief",
+        "designated_harness",
+        "timing_profile_ref",
+        "output_destinations",
+        "receipt_destinations"
+      ]
+    },
+    "runtime_mutable_fields": {
+      "const": [
+        ".mdkg/index/**",
+        ".mdkg/state/**",
+        ".mdkg/pack/**",
+        ".mdkg/work/events/**",
+        "artifacts/**",
+        "site/**",
+        "runtime checkpoints",
+        "work status and evidence_refs"
+      ]
+    }
+  }
+}

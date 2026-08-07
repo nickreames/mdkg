@@ -6,16 +6,18 @@ status: todo
 priority: 1
 epic: epic-1
 parent: goal-1
+prev: spike-1
+next: test-1
 tags: [demo, website, astro, static, zero-javascript, implementation]
 owners: []
 links: []
-artifacts: []
+artifacts: [site/src/components/DemoOutput.astro, artifacts/implementation-receipt.json]
 relates: []
-blocked_by: [spike-1]
+blocked_by: []
 blocks: []
 refs: [goal-1, prd-2]
-context_refs: [prd-2, edd-1, dec-1, dec-2]
-evidence_refs: []
+context_refs: [prd-2, edd-1, dec-1, dec-2, spike-1, chk-3]
+evidence_refs: [spike-1]
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-06-29
@@ -23,8 +25,9 @@ updated: 2026-07-26
 ---
 # Overview
 
-Build the local website candidate selected by `spike-1` using static Astro,
-semantic HTML, CSS, and the Ocean Flow design system.
+Build the local website candidate selected by `spike-1` as one portable
+`site/src/components/DemoOutput.astro` using static Astro, semantic HTML, CSS,
+and Ocean Flow.
 
 # Acceptance Criteria
 
@@ -39,11 +42,18 @@ semantic HTML, CSS, and the Ocean Flow design system.
   explicit.
 - It stays within the run's transfer and raster asset budgets.
 - It remains local-only until the caller grants separate integration authority.
+- It uses warm existing dependencies in one attempt and installs no package
+  during a timed run.
+- Its component is self-contained enough for a thin caller adapter rather than
+  a second hand-built composition.
+- It records deterministic source/output hashes, attempts, bytes, and
+  public-safety results in `artifacts/implementation-receipt.json`.
 
 # Files Affected
 
-- Future implementation should add website source under the forked run path.
-- This template itself records the contract and expected evidence only.
+- `site/src/components/DemoOutput.astro`
+- a thin local preview page importing the portable component
+- `artifacts/implementation-receipt.json`
 
 # Implementation Notes
 
@@ -62,6 +72,7 @@ semantic HTML, CSS, and the Ocean Flow design system.
 - Browser checks when the generated site is served locally
 - built-output scan for scripts, hydration metadata, remote runtime assets,
   complete routes, and asset budgets
+- portable-component import check
 
 # Links / Artifacts
 

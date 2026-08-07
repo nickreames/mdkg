@@ -15,8 +15,8 @@ relates: []
 blocked_by: []
 blocks: []
 refs: [goal-6, epic-6, prd-1, edd-1, dec-3, dec-5, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14]
-context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14, chk-18, chk-19]
-evidence_refs: [chk-14, chk-17, test-12, test-13, test-14, chk-18, chk-19]
+context_refs: [goal-6, epic-6, prd-1, edd-1, dec-1, dec-2, dec-3, dec-4, dec-5, dec-6, goal-2, chk-4, goal-4, chk-14, goal-5, chk-17, test-12, test-13, test-14]
+evidence_refs: [chk-14, chk-17, test-12, test-13, test-14]
 aliases: [phase-6-step-1, phase-6-source-prompt-evaluation]
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-07-27
@@ -174,8 +174,7 @@ recommendation and exact future mutation allowlist.
 
 - `artifacts/demo-003/source-prompt-evaluation.md`
 - `artifacts/demo-003/historical-timing-analysis.json`
-- `chk-14`, `chk-17`, `test-12`, `test-13`, `test-14`, `chk-18`, and
-  `chk-19`
+- `chk-14`, `chk-17`, `test-12`, `test-13`, and `test-14`
 - Demo 2 bootstrap, implementation, local execution, integration, commit,
   deployment, live-route, smoke-contract, and rehearsal receipts
 - Current source graph, operator manifest, bootstrap, smoke, specialization,

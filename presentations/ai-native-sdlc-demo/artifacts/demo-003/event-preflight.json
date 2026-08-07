@@ -1,0 +1,125 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-event-preflight",
+  "status": "passed_for_task_31_candidate_baseline_review",
+  "queried_at": "2026-07-28T06:42:45Z",
+  "side_effect_policy": "read-only observations only; no fetch ref update, staging, commit, push, deployment, or provider mutation",
+  "git": {
+    "branch": "main",
+    "candidate_head_at_query": "da5a5fc459104e9ccf6e006f1e64d4ccc6a63c7a",
+    "live_origin_main": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "merge_base": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "ahead": 11,
+    "behind": 0,
+    "linear_descendant": true,
+    "index_empty": true,
+    "remote": "origin",
+    "remote_url": "git@github.com:nickreames/mdkg.git",
+    "live_origin_command": "git ls-remote origin refs/heads/main",
+    "normal_push_dry_run": {
+      "command": "git push --dry-run origin HEAD:main",
+      "result": "fast-forward f6af6410..da5a5fc4",
+      "remote_updated": false
+    },
+    "candidate_range": "f6af6410cf03ae222c4ee102844a678373b35d93..da5a5fc459104e9ccf6e006f1e64d4ccc6a63c7a",
+    "candidate_range_patch_sha256": "b5eb60a7d305c36e9a7fc432f446bea2af1ab0b0735b56a8d297e1bdfffd1846",
+    "candidate_commits": [
+      "58b44d71 chore(demo): seal Demo 2 production evidence",
+      "f1dbb823 chore(mdkg): refresh Goal 5 program projection",
+      "8e3b4222 research(mdkg): decide Remotion adoption boundary",
+      "43485d7e plan(presentation): harden Goal 6 timed rehearsal contract",
+      "fd1b5541 chore(mdkg): refresh Goal 6 program projection",
+      "67defd9a plan(presentation): make Goal 6 source-first and fork-ready",
+      "54f18f9b chore(mdkg): refresh fork-ready Goal 6 projection",
+      "65adf3bb plan(presentation): classify Demo 2 source release evidence",
+      "5de4574d feat(demo): author fork-ready website source release",
+      "2f0a205d test(demo): prove zero-edit source fixtures",
+      "da5a5fc4 plan(demo): prepare zero-edit Demo 3 rehearsal"
+    ],
+    "classification": {
+      "presentation_demo_program": 10,
+      "root_remotion_research_prerequisite": 1,
+      "unrelated_or_unexplained": 0,
+      "result": "candidate preparation baseline only; task-31 must recalculate and seal the final range"
+    },
+    "local_evidence_only_exceptions_at_query": [
+      "presentations/ai-native-sdlc-demo/.mdkg work status, events, generated indexes, and task-30 receipt",
+      "pre-existing presentations/ai-native-sdlc-demo/runs/demo-002/.mdkg/pack/**"
+    ],
+    "blockers": []
+  },
+  "dependencies": {
+    "local_node": "v26.0.0",
+    "required_node": ">=24.15.0",
+    "vercel_node": "24.x",
+    "local_npm": "11.12.1",
+    "typescript": "5.9.3",
+    "types_node": "24.12.4",
+    "lockfile_installed_tree": "verified",
+    "dependency_preflight": "dependency trees verified: root, docs, mdkg-dev",
+    "installation_performed": false,
+    "one_attempt_build": {
+      "command": "npm run build",
+      "result": "pass",
+      "elapsed_seconds": 10.32
+    },
+    "warm_dependency_source": "existing repository node_modules and lockfile-resolved workspaces",
+    "build_once_validation": "Run npm run build once, then run generated-output checks serially.",
+    "shared_output_checks_serial": true,
+    "fast_reveal_verifier": "Use read-only Vercel project/deployment inspection for the exact published SHA, then issue bounded GET checks for /demo/3/ and /demo/3/output/; do not run screenshot or exhaustive audits before the reveal gate.",
+    "blockers": []
+  },
+  "provider": {
+    "connector": "Vercel",
+    "team": {
+      "id": "team_RkZhrKQs9wWs6PAdTcrwZ87z",
+      "slug": "nicholas-reames-projects"
+    },
+    "credential_visibility_available": true,
+    "list_projects_result_count": 0,
+    "direct_project_lookup_succeeded": true,
+    "projects": [
+      {
+        "name": "mdkg-dev",
+        "id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+        "environment": "production",
+        "canonical_domain": "mdkg.dev",
+        "deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+        "deployment_url": "https://mdkg-l213f13c4-nicholas-reames-projects.vercel.app",
+        "state": "READY",
+        "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+        "exact_live_origin_match": true,
+        "node_version": "24.x"
+      },
+      {
+        "name": "mdkg-docs",
+        "id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
+        "environment": "production",
+        "canonical_domain": "docs.mdkg.dev",
+        "deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
+        "deployment_url": "https://mdkg-docs-9z78wlsq1-nicholas-reames-projects.vercel.app",
+        "state": "READY",
+        "git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+        "exact_live_origin_match": true,
+        "node_version": "24.x"
+      }
+    ],
+    "provider_mutation_performed": false,
+    "warnings": [
+      "The team project-list endpoint returned no entries, but direct lookup of both previously sealed opaque project IDs and their deployment histories succeeded."
+    ],
+    "blockers": []
+  },
+  "result": {
+    "git_access": "pass",
+    "normal_fast_forward_feasibility": "pass",
+    "candidate_range_classification": "pass",
+    "dependencies": "pass",
+    "one_attempt_build": "pass",
+    "provider_visibility": "pass",
+    "both_production_projects": "pass",
+    "task_31_may_begin": true,
+    "publication_authority_granted": false,
+    "required_next_action": "Task 31 must recalculate HEAD and range after this local evidence is committed, then seal the exact preparation-baseline handoff and prospective authority policy."
+  }
+}

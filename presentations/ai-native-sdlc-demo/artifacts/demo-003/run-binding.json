@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "kind": "website-demo-run-binding",
+  "materializer_version": "2.0",
+  "semantic_source_release": "sha256:49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+  "run_id": "demo-003",
+  "target_root": "presentations/ai-native-sdlc-demo/runs/demo-003",
+  "detail_route": "/demo/3/",
+  "output_route": "/demo/3/output/",
+  "component_key": "demo-3",
+  "positioning_brief": {
+    "audience": "Engineering leaders and hands-on developers adopting AI-native software delivery without giving up architectural control.",
+    "offer_boundary": "Present mdkg public alpha as a practical way to make plans, requirements, guardrails, work, and evidence durable while the agent retains bounded creative control of the landing-page story.",
+    "required_story": [
+      "clear hero promise",
+      "context or problem framing",
+      "Plan -> Work -> Evidence",
+      "what completed why and what comes next",
+      "inspectable source-to-execution proof",
+      "quickstart and feedback CTA"
+    ],
+    "creative_latitude": [
+      "composition",
+      "visual metaphor",
+      "section order",
+      "typographic hierarchy",
+      "CSS-only motion",
+      "bounded marketing copy"
+    ],
+    "prohibited_defaults": [
+      "Demo 2 navigation-chart metaphor or copy",
+      "vendor comparison or harness-equivalence claim",
+      "eight-hour or endurance demonstration claim"
+    ]
+  },
+  "designated_harness": "codex",
+  "timing_profile_ref": "sha256:f4b21d56a23cb439dc4bb5aefe6808f0fb5f1dc9a3f30ed19a023f155c868465",
+  "output_destinations": {
+    "portable_component": "site/src/components/DemoOutput.astro",
+    "local_preview": "site/src/pages/index.astro"
+  },
+  "receipt_destinations": {
+    "creative_direction": "artifacts/creative-direction.md",
+    "implementation": "artifacts/implementation-receipt.json",
+    "local_validation": "artifacts/local-validation.json",
+    "integration": "artifacts/integration-receipt.json",
+    "canonical_validation": "artifacts/canonical-route-validation.json",
+    "publication": "artifacts/publication-receipt.json",
+    "live_verification": "artifacts/live-verification-receipt.json"
+  },
+  "immutable_fields": [
+    "schema_version",
+    "kind",
+    "materializer_version",
+    "semantic_source_release",
+    "run_id",
+    "target_root",
+    "detail_route",
+    "output_route",
+    "component_key",
+    "positioning_brief",
+    "designated_harness",
+    "timing_profile_ref",
+    "output_destinations",
+    "receipt_destinations"
+  ],
+  "runtime_mutable_fields": [
+    ".mdkg/index/**",
+    ".mdkg/state/**",
+    ".mdkg/pack/**",
+    ".mdkg/work/events/**",
+    "artifacts/**",
+    "site/**",
+    "runtime checkpoints",
+    "work status and evidence_refs"
+  ]
+}

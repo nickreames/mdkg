@@ -2,7 +2,7 @@
 id: task-50
 type: task
 title: Non-force push the approved Demo 2 range to origin main
-status: backlog
+status: done
 priority: 0
 epic: epic-5
 parent: goal-5

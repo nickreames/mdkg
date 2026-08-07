@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "kind": "website-demo-semantic-source-release",
+  "release_id": "website-demo-source-v2",
+  "released_date": "2026-07-28",
+  "state": "accepted-for-fixture-verification",
+  "materializer_version": "2.0",
+  "source_root": "examples/website-demo-template",
+  "start_goal": "goal-1",
+  "first_actionable": "spike-1",
+  "expected_chain": [
+    "spike-1",
+    "task-1",
+    "test-1",
+    "task-2",
+    "test-2",
+    "task-3",
+    "test-3"
+  ],
+  "required_qids": [
+    "root:goal-1",
+    "root:epic-1",
+    "root:spike-1",
+    "root:task-1",
+    "root:test-1",
+    "root:task-2",
+    "root:test-2",
+    "root:task-3",
+    "root:test-3",
+    "root:prd-2",
+    "root:edd-1",
+    "root:dec-1",
+    "root:dec-2",
+    "root:chk-3",
+    "root:skill:select-work-and-ground-context",
+    "root:skill:build-pack-and-execute-task",
+    "root:skill:pursue-mdkg-goal",
+    "root:skill:verify-close-and-checkpoint"
+  ],
+  "authored_inventory": {
+    "policy": "authored mdkg graph plus released operator manifest inputs minus generated runtime state",
+    "file_count": 103,
+    "sha256": "sha256:dfa6461bf076cf003aa0afbcc06928e9214f7e3f8230cf95fafffb306b817fe8",
+    "category_counts": {
+      "skill-mirror": 12,
+      "operator": 11,
+      "graph-scaffold": 3,
+      "core": 11,
+      "design": 4,
+      "canonical-skill": 6,
+      "template": 44,
+      "work": 12
+    },
+    "exclusions": [
+      ".mdkg/index/**",
+      ".mdkg/state/**",
+      ".mdkg/pack/**",
+      ".mdkg/work/events/**",
+      ".mdkg/db/runtime/**",
+      ".mdkg/subgraphs/**",
+      "*.sqlite-wal",
+      "*.sqlite-shm",
+      "*.sqlite-journal"
+    ]
+  },
+  "operator_manifest": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json",
+    "sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13"
+  },
+  "run_binding_schema": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/run-binding.schema.json",
+    "sha256": "2fca84ac44ba42af258676b2d351ea306c032278e07cb1f654511329204e2851"
+  },
+  "timed_run_contract": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-platform/timed-run-contract.json",
+    "sha256": "f4b21d56a23cb439dc4bb5aefe6808f0fb5f1dc9a3f30ed19a023f155c868465"
+  },
+  "materializer": {
+    "path": "scripts/bootstrap-website-demo-run.js",
+    "sha256": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28"
+  },
+  "authority_boundary": {
+    "grants_external_authority": false,
+    "requires_external_receipts_for": [
+      "shared-source integration",
+      "Git commit and normal non-force push",
+      "provider visibility and public verification"
+    ],
+    "forbidden_in_binding": [
+      "approval",
+      "authority",
+      "credentials",
+      "provider payloads",
+      "origin state",
+      "leases",
+      "quiet windows",
+      "allowlists"
+    ]
+  }
+}

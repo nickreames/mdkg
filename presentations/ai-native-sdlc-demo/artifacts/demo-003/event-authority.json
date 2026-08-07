@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-prospective-human-event-authority",
+  "status": "pending_explicit_human_acceptance",
+  "prepared_at": "2026-07-28T06:53:32Z",
+  "authority_effect": "This payload grants no authority until the user explicitly accepts this exact file SHA-256. After acceptance and post-publication activation, it pre-authorizes the complete still-valid timed happy path without another mid-run approval prompt.",
+  "scope": "Demo 3 timed dress rehearsal only; not Demo 2, Demo 4, the final live event, or any unrelated repository work.",
+  "bound_identity": {
+    "semantic_source_release_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+    "materializer_version": "2.0",
+    "materializer_sha256": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28",
+    "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+    "child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+    "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+    "preflight_sha256": "87e30be413347f21a192e78b9532b5143c4f19e9c8076790c3398399b0f50020",
+    "sendoff_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc",
+    "allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+    "authority_policy_sha256": "23b37b5f19c649ca811ca9be40b8cd78950661be7d485a82e75bcd6e6647f994",
+    "preparation_handoff_sha256": "360ecfe0cadd3ced88cc0853ea80a8fb402cce3c39d9e2b46d648bd8b8f0d263",
+    "writer_lease_sha256": "8a1c96d8f03103f15930422937a29210217b34138a621ebc9dc3262bf70847f7",
+    "fallback_readiness_sha256": "8758c521fc17a868bce09852f50afbd2b30d74c30db4ca19cdb4dc3a1a79c9dc"
+  },
+  "pre_publication_state": {
+    "remote": "origin",
+    "branch": "main",
+    "accepted_old_origin_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "reviewed_local_head_after_task_32": "e530497c1f69bb69921f5b6cb7d0c27f8d96f74c",
+    "linear_descendant_required": true,
+    "expected_preparation_tree": "the exact candidate defined by preparation-baseline-handoff.json plus later Goal 6 readiness artifacts that a separately approved Task 58 manifest includes, excluding all policy-bound local evidence",
+    "complete_preparation_manifest_sha256": "must be calculated and separately approved immediately before Task 58 publication",
+    "actual_published_baseline_sha": "must be derived after the normal Task 58 push",
+    "actual_timed_range_sha_and_stable_hash": "must be calculated and proven immediately before the timed child publication push",
+    "fictional_future_sha_forbidden": true
+  },
+  "separate_preparation_publication_gate": {
+    "authorized_by_this_payload": false,
+    "requirement": "Task 58 needs separate explicit human approval of its final exact preparation manifest and stable range hash before staging, commit, or push.",
+    "activation_after_publication": "event-authority-activation.json must bind the actual published baseline SHA, fetched origin/main equality, the accepted preparation manifest/tree hashes, this authority hash, and the released root writer lease."
+  },
+  "designated_execution": {
+    "physical_harness": "codex",
+    "single_harness": true,
+    "logical_roles": ["program-orchestrator", "child-implementation-writer"],
+    "root_integration_owner": "exclusive preparation and child publication writer",
+    "multi_harness_or_endurance_claim": false,
+    "one_physical_writer_at_a_time": true
+  },
+  "authorized_timed_happy_path_after_activation": [
+    "claim and complete the bound Demo 3 child chain without editing authored source, design, topology, binding, interface, or seal",
+    "edit only paths and operations in event-allowlist.json",
+    "run local validation and production-safe smoke tests",
+    "create at most four bounded in-scope commits under the two-pre-publication and one-production repair policy",
+    "have the root integration owner perform one normal non-force push to origin/main",
+    "inspect the two existing Vercel projects and deployments read-only",
+    "verify /demo/3/ and /demo/3/output/ with bounded public GET requests",
+    "record the child checkpoint, timing ledger, consolidated reveal receipt, and public-safe post-reveal evidence",
+    "have the root integration owner refresh and verify the program bundle and root projection"
+  ],
+  "no_mid_run_reapproval": "No additional approval is required for an authorized action while every bound identity, lease, baseline, origin observation, deadline, and attempt limit remains valid. Any drift is a hard blocker, not an invitation to broaden authority during the presentation.",
+  "repair_and_timing": {
+    "pre_publication_repairs": 2,
+    "production_repairs": 1,
+    "latest_production_repair_start": "T+24:00",
+    "exact_sha_deployments_ready": "T+26:00",
+    "routes_and_child_checkpoint": "T+28:30",
+    "consolidated_reveal_receipt": "T+29:15",
+    "selection_gate": "T+29:30",
+    "global_stop": "T+30:00",
+    "fallback": "select the sealed Demo 2 result transparently by T+30 if the Demo 3 gate has not passed"
+  },
+  "validity": {
+    "not_before": "Goal 6 readiness is accepted, Task 58's separately approved preparation baseline is published, HEAD equals fetched origin/main, event-authority-activation.json verifies, the root writer lease is released, and immutable T0 is recorded immediately before dispatch",
+    "expires": "the earliest of T0+30:00, explicit human revocation, bound identity drift, origin drift, lease invalidation, owner drift, or exhausted repair policy",
+    "wall_clock_event_window": "the later activation receipt supplies the actual activated_at and expires_at values"
+  },
+  "local_evidence_only_boundary": {
+    "exact_inventory": "the complete local_evidence_only_inventory object in event-authority-policy.json, bound by its SHA-256 above",
+    "rule": "These program status, event, checkpoint, index, receipt, bundle, and root projection paths may change locally but are excluded from the preparation manifest and every timed push.",
+    "correction_to_bound_content": "invalidates this authority and requires fresh human acceptance"
+  },
+  "publication_boundary": {
+    "exact_inventory": "the canonical_paths and child_run.publication_eligible_paths in event-allowlist.json, bound by its SHA-256 above",
+    "rule": "These are not dirty-state exceptions; the root integration owner may stage them only after accepted local and canonical validation plus writer release."
+  },
+  "hard_blockers": [
+    "origin/main advances after the final preflight",
+    "a push would require force, history rewrite, or unrelated integration",
+    "credentials or required provider visibility are unavailable",
+    "source, binding, interface, seal, sendoff, allowlist, policy, handoff, lease, fallback, baseline, owner, validity, or deadline identity drifts",
+    "a required action needs an unlisted path, provider mutation, or other forbidden action",
+    "the two/one repair policy or T+30 global deadline is exhausted"
+  ],
+  "forbidden": [
+    "force push, history rewrite, unrelated integration, tags, or package publication",
+    "new dependencies, lockfile edits, web research, image generation, remote fonts/assets, or new route architecture",
+    "DNS, Vercel project/environment/alias configuration, analytics, or manual redeploy",
+    "credentials, tokens, cookies, raw provider payloads, or private context in artifacts",
+    "editing this authority, the lease, allowlist, approval, validity window, run binding, interface, or immutable seal from the writable child",
+    "claiming Demo 3 succeeded after a hard blocker or missed selection gate"
+  ],
+  "fallback_honesty": {
+    "fallback_readiness_sha256": "8758c521fc17a868bce09852f50afbd2b30d74c30db4ca19cdb4dc3a1a79c9dc",
+    "speaker_wording": "The live run hit a documented stop condition, so I am not going to call it a success. Here is the sealed rehearsal result, produced through the same Plan → Work → Evidence contract.",
+    "switch_deadline_seconds": 30
+  },
+  "external_acceptance": {
+    "required": true,
+    "accepted": false,
+    "instruction": "The user must explicitly accept this exact event-authority.json SHA-256 after Task 32. Acceptance of Task 47, Demo 2, the policy, or a prior push does not substitute.",
+    "evidence_location": "Task 33 graph evidence plus the human interaction record; this immutable payload is not rewritten after acceptance."
+  }
+}

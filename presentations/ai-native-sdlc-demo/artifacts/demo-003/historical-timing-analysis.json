@@ -1,0 +1,273 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-002-historical-timing-analysis",
+  "state": "recommendation-ready-for-approval",
+  "recorded_date": "2026-07-27",
+  "owner_qid": "root:spike-6",
+  "purpose": "Use accepted Demo 2 evidence to constrain a single-harness approximately 30-minute Demo 3 dress rehearsal.",
+  "measurement_quality": {
+    "classification": "coarse receipt-boundary reconstruction",
+    "stopwatch_claim": false,
+    "note": "Stage durations are accepted approximate values from chk-18 and spike-6. Receipt timestamps establish ordering and coarse boundaries, not continuous unattended runtime."
+  },
+  "accepted_stage_estimates": [
+    {
+      "stage": "positioning",
+      "duration_seconds": 30,
+      "duration_display": "0:30",
+      "classification": "child-local"
+    },
+    {
+      "stage": "implementation",
+      "duration_seconds": 692,
+      "duration_display": "11:32",
+      "classification": "child-local",
+      "observed_attempts": 3,
+      "variance": [
+        "isolated Astro dependency resolution failed",
+        "generated cache directory conflicted with the dependency link shape",
+        "repository-local dependency reuse passed"
+      ]
+    },
+    {
+      "stage": "local_validation",
+      "duration_seconds": 43,
+      "duration_display": "0:43",
+      "classification": "child-local"
+    },
+    {
+      "stage": "canonical_integration",
+      "duration_seconds": 603,
+      "duration_display": "10:03",
+      "classification": "shared-source"
+    },
+    {
+      "stage": "canonical_validation",
+      "duration_seconds": 47,
+      "duration_display": "0:47",
+      "classification": "shared-source"
+    },
+    {
+      "stage": "child_to_canonical_wall_time",
+      "duration_seconds": 1462,
+      "duration_display": "24:22",
+      "classification": "derived-boundary",
+      "additive": false
+    },
+    {
+      "stage": "commit_preparation",
+      "duration_seconds": 455,
+      "duration_display": "7:35",
+      "classification": "root-integration"
+    },
+    {
+      "stage": "deployment_readiness",
+      "duration_seconds": 149,
+      "duration_display": "2:29",
+      "classification": "external-read-only-verification"
+    },
+    {
+      "stage": "comprehensive_production_route_verification",
+      "duration_seconds": 906,
+      "duration_display": "15:06",
+      "classification": "external-and-browser-verification"
+    }
+  ],
+  "comparable_serialized_execution": {
+    "duration_seconds": 3104,
+    "duration_display": "51:44",
+    "excludes_human_approval": true,
+    "proof_of_future_runtime": false
+  },
+  "receipt_boundaries": [
+    {
+      "event": "fork receipt",
+      "timestamp": "2026-07-27T17:26:27Z"
+    },
+    {
+      "event": "operator materialization",
+      "timestamp": "2026-07-27T17:27:33Z"
+    },
+    {
+      "event": "specialization",
+      "timestamp": "2026-07-27T17:34:20Z"
+    },
+    {
+      "event": "implementation",
+      "timestamp": "2026-07-27T17:46:43Z"
+    },
+    {
+      "event": "program local execution receipt",
+      "timestamp": "2026-07-27T17:52:00Z"
+    },
+    {
+      "event": "canonical integration",
+      "timestamp": "2026-07-27T17:58:00Z"
+    },
+    {
+      "event": "canonical route validation",
+      "timestamp": "2026-07-27T18:00:00Z"
+    },
+    {
+      "event": "smoke contract and candidate revalidation",
+      "timestamp": "2026-07-27T22:15:23Z"
+    },
+    {
+      "event": "local allowlist preflight",
+      "timestamp": "2026-07-27T22:27:30Z"
+    },
+    {
+      "event": "local commit receipt",
+      "timestamp": "2026-07-27T22:28:34Z"
+    },
+    {
+      "event": "publication preflight",
+      "timestamp": "2026-07-27T22:31:27Z"
+    },
+    {
+      "event": "normal push verified",
+      "timestamp": "2026-07-27T22:55:51Z"
+    },
+    {
+      "event": "production deployments verified",
+      "timestamp": "2026-07-27T22:57:59Z"
+    },
+    {
+      "event": "comprehensive live routes verified",
+      "timestamp": "2026-07-27T23:13:05Z"
+    }
+  ],
+  "principal_latency_findings": [
+    {
+      "rank": 1,
+      "finding": "Comprehensive production verification exceeded half of the planned live window.",
+      "response": "Use a prepared fast exact-SHA and route verifier for the reveal gate; defer screenshots and exhaustive audits."
+    },
+    {
+      "rank": 2,
+      "finding": "Canonical integration duplicated substantial page composition and validation work.",
+      "response": "Produce one portable DemoOutput.astro and integrate it through a thin pre-existing wrapper and registry contract."
+    },
+    {
+      "rank": 3,
+      "finding": "Commit preparation consumed 7:35.",
+      "response": "Publish the preparation baseline before the clock; during the timed run permit only the prospective frozen range."
+    },
+    {
+      "rank": 4,
+      "finding": "Dependency resolution took three attempts.",
+      "response": "Warm and verify dependencies before dispatch; prohibit new packages during the clock."
+    },
+    {
+      "rank": 5,
+      "finding": "Parallel smokes raced on a shared generated dist tree.",
+      "response": "Build once and run shared-output checks serially."
+    }
+  ],
+  "accepted_live_budget": {
+    "clock": "P0/T0",
+    "single_harness": true,
+    "target_total_seconds": 1800,
+    "milestones": [
+      {
+        "name": "dispatch acknowledged",
+        "deadline_seconds": 45,
+        "deadline_display": "T+0:45"
+      },
+      {
+        "name": "positioning sealed",
+        "deadline_seconds": 120,
+        "deadline_display": "T+2:00"
+      },
+      {
+        "name": "implementation complete",
+        "deadline_seconds": 780,
+        "deadline_display": "T+13:00"
+      },
+      {
+        "name": "local validation complete",
+        "deadline_seconds": 960,
+        "deadline_display": "T+16:00"
+      },
+      {
+        "name": "canonical integration and validation complete",
+        "deadline_seconds": 1200,
+        "deadline_display": "T+20:00"
+      },
+      {
+        "name": "normal push complete",
+        "deadline_seconds": 1320,
+        "deadline_display": "T+22:00"
+      },
+      {
+        "name": "exact-SHA deployments READY",
+        "deadline_seconds": 1560,
+        "deadline_display": "T+26:00"
+      },
+      {
+        "name": "public routes and accepted checkpoint complete",
+        "deadline_seconds": 1710,
+        "deadline_display": "T+28:30"
+      },
+      {
+        "name": "final receipt sealed",
+        "deadline_seconds": 1755,
+        "deadline_display": "T+29:15"
+      },
+      {
+        "name": "success or fallback selected",
+        "deadline_seconds": 1770,
+        "deadline_display": "T+29:30"
+      },
+      {
+        "name": "fallback visible",
+        "deadline_seconds": 1800,
+        "deadline_display": "T+30:00"
+      }
+    ],
+    "repair_policy": {
+      "prepublication_repairs": 2,
+      "production_repair": 1,
+      "deadline_overrides_attempt_count": true
+    }
+  },
+  "timed_run_preconditions": [
+    "single designated harness",
+    "accepted semantic source release and immutable run binding",
+    "zero-manual-edit fixture proof",
+    "warm dependency resolution with no install during the clock",
+    "pre-existing portable output and thin adapter contract",
+    "build-once and serial shared-output verification",
+    "prepared fast production verifier",
+    "pre-clock preparation baseline publication and released writer lease",
+    "frozen prospective allowlist and external human authority receipt",
+    "sealed Demo 2 fallback"
+  ],
+  "forbidden_during_timed_run": [
+    "multi-harness comparison",
+    "eight-hour execution demonstration",
+    "web research",
+    "image generation",
+    "new dependencies",
+    "remote assets",
+    "new route architecture",
+    "manual child graph specialization",
+    "comprehensive screenshot or accessibility audit before the reveal gate",
+    "bundle refresh before the reveal gate"
+  ],
+  "conclusion": "Source-first zero-edit materialization improves reproducibility and removes preparation variance, but the 30-minute target also depends on pre-clock publication, warm dependencies, portable output, thin integration, build-once serial tests, and a fast reveal verifier. Demo 2's 51:44 reconstruction is a baseline to beat, not proof that source rewriting alone reaches 30 minutes.",
+  "evidence_refs": [
+    "root:chk-14",
+    "root:chk-17",
+    "root:test-12",
+    "root:test-13",
+    "root:test-14",
+    "root:chk-18",
+    "presentations/ai-native-sdlc-demo/runs/demo-002/artifacts/implementation-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-execution-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/local-commit-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/deployment-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/live-route-receipt.json",
+    "presentations/ai-native-sdlc-demo/artifacts/demo-002/rehearsal-receipt.json"
+  ]
+}

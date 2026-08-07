@@ -32,7 +32,9 @@ Use primary sources for dated and capability claims. Explain how model capabilit
 
 # Consequences
 
-Goal 3 maintains the claim matrix and visual QA. The reveal presents source and specialized goals as reusable versus executed specifications without teaching graph mechanics.
+Goal 3 maintains the claim matrix and visual QA. The reveal presents the
+reusable source contract, immutable run binding, selected positioning decision,
+and executed goal state without teaching graph mechanics.
 
 # Links / references
 

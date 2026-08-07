@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-prospective-event-authority-policy",
+  "status": "proposed_for_human_acceptance_after_task_32",
+  "prepared_at": "2026-07-28T06:47:40Z",
+  "grants_authority": false,
+  "purpose": "Define the complete timed happy-path authority that a later human-accepted receipt may activate without mid-run approval prompts.",
+  "bound_identity": {
+    "semantic_source_release_sha256": "49855648676ade2fdf2be0932906c4873be87118067aebce11fb0412f5bf5edf",
+    "run_binding_sha256": "95e1f33e744a20825e19be10bebfc1c8ba5abfc9bd6f72d9d046d5c52ecf03e1",
+    "materializer_version": "2.0",
+    "materializer_sha256": "de16a87408af3247885218b5ae4cb6827b371da84aaeb007273131f84c6d8a28",
+    "operator_manifest_sha256": "440350056cbcc31204d686916e15ead7023ca1d9c383ef51a71e65e72a4dec13",
+    "child_interface_sha256": "a2942f6b1c2433b4b1ad394f75db6041e4610924f82f9d5de87b5200f9715e5a",
+    "immutable_child_contract_sha256": "f3d1cf59bde4ae851856c88bbbc8138455d57825b96c4f4cf6958852536a5946",
+    "sendoff_sha256": "971afb60053e82949fb5c4f511b676369901e0d88a7df0684bb871e341dcf1dc",
+    "allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+    "preflight_sha256": "87e30be413347f21a192e78b9532b5143c4f19e9c8076790c3398399b0f50020"
+  },
+  "git_policy": {
+    "remote": "origin",
+    "branch": "main",
+    "accepted_origin_candidate": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "reviewed_parent_head": "cd04500c0bb8aea7022f8adf10569676cc68ce58",
+    "preparation_baseline_sha": "must be derived by task-58 after the separately approved baseline transaction",
+    "actual_timed_range_sha": "must be derived immediately before the timed push",
+    "actual_stable_range_sha256": "must be calculated and verified immediately before the timed push",
+    "linear_descendant_required": true,
+    "normal_non_force_push_only": true,
+    "maximum_timed_commits": 4,
+    "force_or_history_rewrite": "forbidden",
+    "origin_advance_after_final_preflight": "hard_blocker"
+  },
+  "designated_roles": {
+    "physical_timed_harness": "codex",
+    "program_orchestrator": "logical role of codex",
+    "child_implementation_writer": "logical role of codex while holding the timed writer lease",
+    "root_integration_owner": "exclusive preparation and child publication writer",
+    "concurrency": "exactly one physical source/Git writer at a time"
+  },
+  "owner_handoffs": [
+    "root integration owner publishes the preparation baseline and releases",
+    "designated timed writer executes positioning through accepted canonical validation and releases",
+    "root integration owner reacquires only for the child publication node and releases",
+    "designated harness resumes read-only exact-SHA, route, and reveal receipt verification",
+    "root integration owner later owns bundle and root projection closeout"
+  ],
+  "authorized_happy_path_after_activation": [
+    "mutate only event-allowlist.json paths using their allowed operations",
+    "run local validation and production-safe smoke tests",
+    "create at most four bounded in-scope commits",
+    "perform one normal non-force push to origin/main",
+    "inspect the two existing Vercel production projects and deployments read-only",
+    "verify /demo/3/ and /demo/3/output/ with bounded public GET requests",
+    "refresh and verify the program bundle through the root integration owner",
+    "record public-safe local evidence and checkpoints"
+  ],
+  "repair_and_deadline_policy": {
+    "pre_publication_repair_cycles": 2,
+    "production_repairs": 1,
+    "latest_production_repair_start": "T+24:00",
+    "exact_sha_deployments_ready": "T+26:00",
+    "routes_and_child_checkpoint": "T+28:30",
+    "consolidated_reveal_receipt": "T+29:15",
+    "success_or_fallback_selection": "T+29:30",
+    "global_stop": "T+30:00"
+  },
+  "validity_window": {
+    "not_before": "task-58 has published the approved preparation baseline, HEAD equals origin/main, the root writer lease is released, and event-authority-activation.json verifies",
+    "expires": "the earliest of T0+30:00, explicit revocation, identity drift, owner/lease drift, origin drift, or exhausted repair policy",
+    "wall_clock_window": "supplied by the later human-accepted event-authority receipt; this policy does not invent one"
+  },
+  "post_publication_activation_receipt_schema": {
+    "path": "presentations/ai-native-sdlc-demo/artifacts/demo-003/event-authority-activation.json",
+    "required_fields": [
+      "schema_version",
+      "kind",
+      "status",
+      "human_authority_sha256",
+      "authority_policy_sha256",
+      "allowlist_sha256",
+      "preparation_baseline_publication_receipt_sha256",
+      "actual_published_baseline_sha",
+      "actual_live_origin_sha",
+      "preparation_manifest_sha256",
+      "preparation_tree_sha256",
+      "writer_lease_release",
+      "activated_at",
+      "expires_at"
+    ],
+    "verification": "all bound identities must match; actual_published_baseline_sha must equal fetched origin/main and be a linear descendant of the accepted origin"
+  },
+  "publication_eligible_paths": {
+    "canonical": [
+      "mdkg-dev/src/data/demos/demo-3.ts",
+      "mdkg-dev/src/data/demos/index.ts",
+      "mdkg-dev/src/components/demos/Demo3Output.astro",
+      "mdkg-dev/src/components/demos/outputRegistry.ts",
+      "scripts/smoke-mdkg-dev.js"
+    ],
+    "child": "Only the exact publication_eligible_paths enumerated in event-allowlist.json under presentations/ai-native-sdlc-demo/runs/demo-003/.",
+    "rule": "These are ordinary dirty-state paths, not exceptions; stage them only after the child local and canonical validation gates and writer handoff."
+  },
+  "local_evidence_only_inventory": {
+    "rule": "These paths may change locally for Goal 6 and Goal 7 evidence but are excluded from the preparation manifest and every timed push.",
+    "program_work_files": [
+      "presentations/ai-native-sdlc-demo/.mdkg/work/goal-6-freeze-event-readiness-and-prepare-demo-3.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-31-freeze-the-live-sendoff-prompt-and-exact-path-allowlist.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-32-establish-the-event-quiet-window-and-verify-demo-2-fallback.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-33-run-a-side-effect-free-dry-event-rehearsal.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-15-verify-demo-3-readiness-routing-and-concise-pack.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-16-verify-provider-access-origin-state-and-production-project-visibility.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-17-verify-the-dry-rehearsal-stops-before-commit-push-or-deployment.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/goal-7-execute-and-reveal-the-live-demo-3-goal.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-58-publish-the-demo-3-preparation-baseline-and-activate-timed-authority.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-34-kick-off-the-specialized-demo-3-child-goal.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-35-mirror-demo-3-integration-evidence-into-the-umbrella-goal.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-18-verify-the-demo-3-child-goal-is-achieved-with-complete-evidence.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-36-review-canonical-site-and-public-safety-validation-evidence.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-19-verify-canonical-site-build-routes-claims-accessibility-and-zero-javascript.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-37-review-demo-3-commit-and-non-force-push-evidence.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-38-independently-verify-exact-sha-ready-production-deployment-evidence.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-20-verify-exact-sha-production-and-live-url-evidence.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-39-independently-verify-demo-3-live-detail-and-output-route-evidence.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/test-21-verify-hard-blocker-handling-fallback-honesty-and-public-receipt.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/task-40-refresh-the-program-bundle-and-prepare-the-reveal-receipt.md",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/events/events.jsonl"
+    ],
+    "generated_program_state": [
+      "presentations/ai-native-sdlc-demo/.mdkg/index/capabilities.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/global.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/mdkg.sqlite",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/skills.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/index/subgraphs.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/state/selected-goal.json",
+      "presentations/ai-native-sdlc-demo/.mdkg/work/chk-<cli-allocated-goal-6-or-7-id>-*.md"
+    ],
+    "program_receipts": [
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/preparation-baseline-publication.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/event-authority-activation.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/dry-rehearsal-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/readiness-routing-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/provider-readiness-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/dispatch-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/timing-ledger.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/blocker-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/reveal-gate-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/umbrella-audit-receipt.json",
+      "presentations/ai-native-sdlc-demo/artifacts/demo-003/bundle-closeout-receipt.json"
+    ],
+    "root_projection_receipts": [
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+      ".mdkg/index/mdkg.sqlite",
+      ".mdkg/index/subgraphs.json",
+      ".mdkg/work/events/events.jsonl"
+    ]
+  },
+  "forbidden_actions": [
+    "force push, history rewrite, unrelated integration, or unlisted paths",
+    "DNS, Vercel project/environment/alias configuration, manual redeploy, or analytics",
+    "new dependencies, lockfile edits, tags, package publication, or remote runtime assets",
+    "editing the run binding, immutable seal, child interface, sendoff, allowlist, lease, approval, or validity window from the child",
+    "storing credentials, tokens, cookies, raw provider payloads, or private context"
+  ],
+  "invalidation_conditions": [
+    "any bound identity hash changes",
+    "the preparation tree or separately approved path inventory changes",
+    "origin/main changes after final preflight",
+    "the designated harness, owner handoff, lease, branch, or remote changes",
+    "a required action is not explicitly authorized",
+    "the deadline or repair policy is exhausted"
+  ],
+  "human_acceptance_rule": "Task 33 may create event-authority.json only after task-32 binds the quiet-window lease and verified fallback, and the user explicitly accepts the resulting complete authority receipt."
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-2-golden-fallback-readiness",
+  "status": "passed",
+  "verified_at": "2026-07-28T06:53:32Z",
+  "read_only_verification": true,
+  "golden_fallback": {
+    "manifest_path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/golden-fallback.json",
+    "manifest_sha256": "ea03f6ce816c4c484c5e8c1a63832f0cb155c08aa68e196891dfe0ab356893aa",
+    "hash_inventory_path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/golden-fallback.sha256",
+    "hash_inventory_sha256": "2658f30a8ee82e6f5189e026d6093666d09c0465610857924325e5333433a800",
+    "hash_inventory_entries": 30,
+    "hash_inventory_result": "all 30 immutable entries verified",
+    "accepted_commit_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "stable_range_sha256": "da3fedcae13fa1e34d7f126b1950f46d925508d7f4c431ead653aa090026953d"
+  },
+  "offline_fallback": {
+    "root": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/",
+    "manifest_path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/fallback/manifest.sha256",
+    "manifest_sha256": "79d969e3c4bf1d1949ade31adb4e6d04b3a486e09ad99a99becc827619952186",
+    "entry_count": 17,
+    "verification_result": "all 17 files verified from the fallback root",
+    "readme_sha256": "fe2659d506a6d64b41b307adfcb1b7eed1ee0dbd239e44db98aebe381205ccf4",
+    "recovery_guide_path": "presentations/ai-native-sdlc-demo/artifacts/demo-002/golden-fallback-recovery.md",
+    "recovery_guide_sha256": "a27d2a890505aaf3302f32acf9657fcbf7eec4fed22c1b36096ae81e1601cce2"
+  },
+  "live_routes": [
+    {
+      "url": "https://mdkg.dev/demo/2/",
+      "observed_status": 200,
+      "observed_at": "2026-07-28T06:53:23Z",
+      "content_length": 27992,
+      "response_sha256": "b2e0ababaf0d25e852d5a766939bde6e46912e545733031b2bf8e6105905e66e",
+      "noindex_nofollow": true,
+      "expected_story_present": true
+    },
+    {
+      "url": "https://mdkg.dev/demo/2/output/",
+      "observed_status": 200,
+      "observed_at": "2026-07-28T06:53:32Z",
+      "content_length": 12038,
+      "response_sha256": "77f1f9f037227da796e9204fb7b6032d79a5d78938b15ec1c7a6fb6a0b933fff",
+      "noindex_nofollow": true,
+      "expected_story_present": true
+    }
+  ],
+  "production_identity": {
+    "mdkg_dev_project_id": "prj_R9FJkRf2FsmcM9cuIyQbPTV9A056",
+    "mdkg_dev_deployment_id": "dpl_21o234sZhwAeTxQYUjaHEhGKbUJY",
+    "docs_project_id": "prj_3Aoh90VnkqNmqM6AnX9t72fSULEd",
+    "docs_deployment_id": "dpl_589fWNWwJEEUa7DGnwz738S8kPeF",
+    "provider_git_sha": "f6af6410cf03ae222c4ee102844a678373b35d93",
+    "source": "sealed Demo 2 golden-fallback manifest; Task 30 independently confirmed both deployments READY at this SHA"
+  },
+  "reveal_switch": {
+    "maximum_seconds": 30,
+    "procedure": [
+      "State that Demo 3 did not satisfy the live gate and do not claim success.",
+      "Open the already verified https://mdkg.dev/demo/2/ detail route.",
+      "Open https://mdkg.dev/demo/2/output/ for the landing-page reveal.",
+      "If network access is unavailable, open fallback/site/demo/2/index.html and fallback/site/demo/2/output/index.html locally.",
+      "Use fallback/reveal/source-vs-specialized-16x9.png for the source-versus-executed contrast."
+    ],
+    "timed_result": "procedure contains no build, Git, provider, or mutation step and is executable within 30 seconds",
+    "speaker_wording": "The live run hit a documented stop condition, so I am not going to call it a success. Here is the sealed rehearsal result, produced through the same Plan → Work → Evidence contract."
+  },
+  "immutability": {
+    "modified_during_verification": false,
+    "replacement_rule": "If any sealed hash changes, create and accept a new versioned fallback through Goal 5; never overwrite this fallback and call it equivalent."
+  },
+  "blockers": [],
+  "result": {
+    "live_detail_ready": true,
+    "live_output_ready": true,
+    "offline_ready": true,
+    "hashes_ready": true,
+    "sub_30_second_switch_ready": true,
+    "task_33_fallback_prerequisite": "pass"
+  }
+}
