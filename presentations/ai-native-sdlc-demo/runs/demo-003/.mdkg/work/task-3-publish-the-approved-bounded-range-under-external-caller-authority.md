@@ -2,7 +2,7 @@
 id: task-3
 type: task
 title: Publish the approved bounded range under external caller authority
-status: backlog
+status: progress
 priority: 1
 epic: epic-1
 parent: goal-1

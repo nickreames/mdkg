@@ -2,7 +2,7 @@
 id: task-1
 type: task
 title: Build complete static Astro website demo
-status: todo
+status: done
 priority: 1
 epic: epic-1
 parent: goal-1
@@ -21,7 +21,7 @@ evidence_refs: [spike-1]
 aliases: []
 skills: [build-pack-and-execute-task, verify-close-and-checkpoint]
 created: 2026-06-29
-updated: 2026-07-26
+updated: 2026-07-28
 ---
 # Overview
 

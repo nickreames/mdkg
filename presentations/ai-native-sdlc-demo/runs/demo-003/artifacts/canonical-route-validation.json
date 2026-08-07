@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-canonical-route-validation",
+  "status": "passed",
+  "verified_at": "2026-07-28T14:13:08Z",
+  "authority": {
+    "allowlist_sha256": "cff5ab35676078b9cf32985a1b9f0985e139ad09d11c40e0f3a90a9117af9cbb",
+    "changed_paths_equal_canonical_allowlist": true,
+    "publication_or_provider_action": false
+  },
+  "build": {
+    "command": "node scripts/smoke-mdkg-dev.js",
+    "result": "pass",
+    "required_files": 18,
+    "prepublication_repair_cycles_used": 2,
+    "prepublication_repair_cycles_remaining": 0,
+    "dependency_install": false
+  },
+  "routes": {
+    "/demo/3/": {
+      "sha256": "30ca27de6f66079820edfe479cc887174b3186c8fec3a9378a28a967d314a792",
+      "bytes": 24704,
+      "noindex": true,
+      "only_script_type": "application/ld+json",
+      "source_goal": true,
+      "executed_goal": true,
+      "plan_work_evidence": true,
+      "horizontal_overflow": false
+    },
+    "/demo/3/output/": {
+      "sha256": "3147da51aff33145aaab4829d0c8f9549799c2078dc03be12b9e2717d9d8ed01",
+      "bytes": 9594,
+      "noindex": true,
+      "script_count": 0,
+      "hero": true,
+      "what_completed": true,
+      "what_comes_next": true,
+      "horizontal_overflow": false
+    }
+  },
+  "public_safety": {
+    "listed_in_gallery": false,
+    "included_in_sitemap": false,
+    "client_javascript": false,
+    "remote_fonts_or_runtime_assets": false,
+    "forms": false,
+    "analytics_or_trackers": false,
+    "secrets_or_private_context": false
+  },
+  "accessibility": {
+    "semantic_landmarks": "pass",
+    "single_h1_per_route": "pass",
+    "keyboard_focus": "pass",
+    "reduced_motion": "pass",
+    "contrast": "pass",
+    "responsive_layout": "pass"
+  },
+  "next_qid": "root:task-3"
+}
