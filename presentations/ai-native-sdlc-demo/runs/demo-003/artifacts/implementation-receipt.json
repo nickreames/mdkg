@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-static-astro-implementation",
+  "status": "passed_after_one_prepublication_repair",
+  "recorded_at": "2026-07-28T14:08:21Z",
+  "creative_direction": "The Current Map",
+  "component": "site/src/components/DemoOutput.astro",
+  "preview": "site/src/pages/index.astro",
+  "source_sha256": "a0ffaa71ce86987582dac725e3adfe7483b9e09382fb1fc7e2339c23096aa1a2",
+  "output_sha256": "51b4e035f5eb915667afeb7ec445df55e5e61731380fab30849c75339bf61c17",
+  "build": {
+    "successful_attempt": 2,
+    "prepublication_repairs_used": 1,
+    "repair": "Replaced an incomplete build-created local node_modules directory with an ignored link to the already-installed warm mdkg-dev dependencies.",
+    "installation_performed": false,
+    "new_dependency_added": false,
+    "result": "pass"
+  },
+  "output": {
+    "routes": ["/"],
+    "file_count": 2,
+    "html_bytes": 9593,
+    "total_transfer_bytes": 21105,
+    "raster_assets": 0,
+    "client_javascript_files": 0,
+    "script_tags": 0,
+    "hydration_markers": 0
+  },
+  "public_safety": {
+    "remote_fonts": false,
+    "third_party_runtime_assets": false,
+    "analytics": false,
+    "forms": false,
+    "secrets_or_provider_payloads": false,
+    "robots": "noindex,nofollow"
+  },
+  "accessibility": {
+    "semantic_landmarks": true,
+    "skip_link": true,
+    "visible_focus": true,
+    "reduced_motion": true,
+    "responsive_breakpoints": true,
+    "contrast_review": "Ocean Flow text and control pairs use dark ink or white against approved high-contrast surfaces."
+  }
+}

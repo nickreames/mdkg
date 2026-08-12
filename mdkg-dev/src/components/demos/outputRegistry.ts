@@ -1,10 +1,12 @@
 import Demo1Output from "./Demo1Output.astro";
 import Demo2Output from "./Demo2Output.astro";
+import Demo3Output from "./Demo3Output.astro";
 import type { DemoOutputComponentKey, DemoSnapshot } from "../../data/demos";
 
 export const outputComponentRegistry = {
   "demo-1": Demo1Output,
-  "demo-2": Demo2Output
+  "demo-2": Demo2Output,
+  "demo-3": Demo3Output
 } as const;
 
 export type RegisteredOutputComponentKey = keyof typeof outputComponentRegistry;

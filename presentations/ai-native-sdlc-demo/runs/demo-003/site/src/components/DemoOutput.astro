@@ -1,0 +1,110 @@
+---
+const steps = [
+  ["01", "Plan", "Make intent durable", "Goals, requirements, and decisions define the route before implementation begins.", "goal-1 · prd-2 · dec-1"],
+  ["02", "Work", "Route one concrete move", "A bounded context pack gives the agent the selected work and the reasons surrounding it.", "spike-1 → task-1 → test-1"],
+  ["03", "Evidence", "Prove the position", "Checks, receipts, and checkpoints make completion inspectable and the next move explicit.", "validation · receipt · checkpoint"]
+];
+
+const outcomes = [
+  ["What completed", "A differentiated static site", "The positioning, implementation, and evidence remain linked to the executed goal."],
+  ["Why", "Architecture survives the session", "The next agent can recover intent without reconstructing it from a private conversation."],
+  ["What comes next", "Verify the public result", "Canonical integration, publication, and deployment each retain their own evidence gate."]
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="mdkg gives coding agents a durable map from plan to work to evidence." />
+    <title>Give every coding agent the map · mdkg</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header>
+      <a class="brand" href="#top" aria-label="mdkg Demo 3 home"><b>m</b><span>mdkg</span><small>public alpha</small></a>
+      <nav aria-label="Page navigation"><a href="#route">Route</a><a href="#proof">Proof</a><a href="#next">Try it</a></nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">LIVE SPECIFICATION · DEMO 3</p>
+          <h1>Give every coding agent <em>the map.</em></h1>
+          <p class="lede">Durable goals, guardrails, and evidence keep implementation aligned when the model, tool, or session changes.</p>
+          <div class="actions">
+            <a class="button primary" href="https://mdkg.dev/quickstart/">Try the quickstart <span aria-hidden="true">↗</span></a>
+            <a class="button secondary" href="https://github.com/nickreames/mdkg/issues">Send feedback <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="note">Open source · public alpha · pre-v1</p>
+        </div>
+        <div class="map" aria-label="Current route from plan through work to evidence">
+          <div class="map-head"><span>CURRENT ROUTE</span><strong>goal-1 / demo-003</strong><i>ACTIVE</i></div>
+          <div class="topography" aria-hidden="true">
+            <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+            <span class="route"></span>
+            <span class="point p1"><b>01</b><small>PLAN</small></span>
+            <span class="point p2"><b>02</b><small>WORK</small></span>
+            <span class="point p3"><b>03</b><small>EVIDENCE</small></span>
+          </div>
+          <div class="map-foot"><span>CONTEXT / BOUNDED</span><span>AUTHORITY / EXPLICIT</span><span>PROOF / LINKED</span></div>
+        </div>
+      </section>
+
+      <section class="context" aria-labelledby="context-title">
+        <p class="label">00 · THE CONTEXT GAP</p>
+        <div><h2 id="context-title">A bigger window is not a project memory.</h2><p>Context length helps a model see more. It does not decide which requirements still matter, why an architecture changed, or what evidence makes the next action safe.</p></div>
+        <blockquote><strong>Context engineering is the route design.</strong><span>Keep the durable parts with the work.</span></blockquote>
+      </section>
+
+      <section class="route-section" id="route" aria-labelledby="route-title">
+        <div class="heading"><p class="label">01 · THE OPERATING LOOP</p><h2 id="route-title">Plan → Work → Evidence</h2><p>Three coordinates answer what completed, why it was done, and what comes next.</p></div>
+        <div class="steps">
+          {steps.map(([number, name, title, body, artifact]) => (
+            <article>
+              <div class="step-top"><span>{number}</span><p>{name}</p></div>
+              <h3>{title}</h3><p>{body}</p><code>{artifact}</code>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="proof" id="proof" aria-labelledby="proof-title">
+        <div class="heading"><p class="label">02 · SOURCE TO EXECUTION</p><h2 id="proof-title">A reusable start. A specific finish.</h2><p>The source goal supplies a strong starting contract. The executed goal records what this run actually promised and proved.</p></div>
+        <div class="specs">
+          <article><div><span>SOURCE · goal-1</span><b>REUSABLE</b></div><h3>Starting specification</h3><p>Build a complete, differentiated static Astro candidate within fixed design, accessibility, and safety boundaries.</p><dl><dt>Authority</dt><dd>Local implementation and validation</dd><dt>Next</dt><dd>Choose the audience and offer</dd></dl></article>
+          <span class="specialize" aria-hidden="true">→</span>
+          <article class="executed"><div><span>DEMO 3 · goal-1</span><b>EXECUTED</b></div><h3>Specialized specification</h3><p>Build “The Current Map,” validate it, integrate the approved adapter, publish the bounded range, and verify the exact public result.</p><dl><dt>Authority</dt><dd>Frozen allowlist and normal push only</dd><dt>Next</dt><dd>Seal the execution checkpoint</dd></dl></article>
+        </div>
+      </section>
+
+      <section class="ledger" aria-labelledby="ledger-title">
+        <div class="heading"><p class="label">03 · THE OUTCOME LEDGER</p><h2 id="ledger-title">No handoff should require guesswork.</h2></div>
+        <div class="outcomes">{outcomes.map(([label, title, body], i) => <article><span>0{i + 1}</span><p>{label}</p><h3>{title}</h3><p>{body}</p></article>)}</div>
+      </section>
+
+      <section class="cta" id="next" aria-labelledby="cta-title">
+        <div><p class="label">04 · YOUR NEXT ROUTE</p><h2 id="cta-title">Try mdkg on one real project.</h2><p>Start with a goal you care about. Keep the architecture, decisions, work, and evidence close enough for the next agent to continue.</p></div>
+        <div class="cta-links"><a class="button light" href="https://mdkg.dev/quickstart/">Open quickstart ↗</a><a href="https://github.com/nickreames/mdkg/issues">Tell me where it gets in your way →</a></div>
+      </section>
+    </main>
+    <footer><b>mdkg</b><span>Plan the route. Work the route. Keep the evidence.</span><a href="https://github.com/nickreames/mdkg">GitHub ↗</a></footer>
+  </body>
+</html>
+
+<style>
+  :root{--ink:#102033;--slate:#43586b;--blue:#0f5fd6;--cyan:#087ead;--teal:#087b72;--mist:#eef7fb;--line:#bddde8;--white:#fff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);line-height:1.5}
+  *{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--white)}body{margin:0;min-width:320px;background:linear-gradient(180deg,#eaf8fc 0,#fff 46rem);color:var(--ink)}a{color:inherit}:focus-visible{outline:3px solid #d94b2b;outline-offset:4px}.skip{position:fixed;left:1rem;top:-5rem;z-index:20;background:var(--ink);color:#fff;padding:.8rem 1rem}.skip:focus{top:1rem}
+  header{max-width:1240px;margin:auto;padding:1.4rem 2rem;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none}.brand b{display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;color:#fff;background:linear-gradient(135deg,var(--blue),#12aeea 60%,#20c7b5)}.brand span{font-weight:850;font-size:1.2rem}.brand small{padding:.15rem .45rem;border:1px solid var(--line);border-radius:99px;color:var(--slate)}nav{display:flex;gap:1.6rem}nav a{font-size:.85rem;font-weight:750;text-decoration:none}
+  main>section{max-width:1240px;margin:auto;padding:6.5rem 2rem}.hero{min-height:680px;display:grid;grid-template-columns:1.03fr .97fr;gap:5rem;align-items:center;padding-top:4rem}.eyebrow,.label{font-size:.75rem;letter-spacing:.14em;font-weight:850;color:var(--blue)}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(3.5rem,7vw,6.6rem);line-height:.94;letter-spacing:-.065em;margin-bottom:1.8rem;max-width:760px}h1 em{font-style:normal;color:var(--blue)}.lede{max-width:670px;font-size:1.25rem;color:var(--slate)}.actions{display:flex;flex-wrap:wrap;gap:.8rem;margin:2.2rem 0 1.2rem}.button{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.1rem;border-radius:.45rem;text-decoration:none;font-weight:800}.primary{color:#fff;background:linear-gradient(135deg,var(--blue),#078cbf 60%,var(--teal));box-shadow:0 12px 30px #0f5fd62b}.secondary{background:#fff;border:1px solid #91bdce}.note{font-size:.78rem;color:var(--slate)}
+  .map{background:#fff;border:1px solid #a9d2df;border-radius:1rem;box-shadow:0 30px 80px #16587521;overflow:hidden;transform:rotate(1deg)}.map-head,.map-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.2rem;font-size:.65rem;letter-spacing:.08em}.map-head{border-bottom:1px solid var(--line)}.map-head strong{font-size:.82rem}.map-head i{font-style:normal;color:#086b3f;font-weight:850}.topography{height:390px;position:relative;overflow:hidden;background:linear-gradient(150deg,#f9fdff,#dff5f8)}.topography:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#73b6c51c 1px,transparent 1px),linear-gradient(90deg,#73b6c51c 1px,transparent 1px);background-size:34px 34px}.ring{position:absolute;border:1px solid #20a9c854;border-radius:50%;transform:rotate(-15deg)}.r1{width:400px;height:210px;left:-50px;top:20px}.r2{width:520px;height:300px;left:-80px;top:0}.r3{width:460px;height:240px;right:-180px;bottom:-30px}.route{position:absolute;left:15%;top:64%;width:72%;height:6px;border-radius:9px;background:linear-gradient(90deg,var(--blue),#12aeea,var(--teal));transform:rotate(-12deg);box-shadow:0 0 22px #12aeea66}.point{position:absolute;display:grid;place-items:center;width:66px;height:66px;border:5px solid #fff;border-radius:50%;background:var(--ink);color:#fff;box-shadow:0 8px 25px #10203338}.point b{font-size:1rem}.point small{font-size:.55rem;letter-spacing:.09em}.p1{left:11%;top:65%}.p2{left:47%;top:47%;background:var(--blue)}.p3{right:8%;top:28%;background:var(--teal)}.map-foot{border-top:1px solid var(--line);color:var(--slate)}
+  .context{display:grid;grid-template-columns:.35fr 1.1fr .65fr;gap:3rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}h2{font-size:clamp(2.3rem,4vw,4.2rem);line-height:1;letter-spacing:-.045em}h3{font-size:1.35rem;line-height:1.15}.context>div p,.heading>p{font-size:1.05rem;color:var(--slate);max-width:680px}.context blockquote{margin:0;padding:1.6rem;background:var(--mist);border-left:4px solid var(--blue);align-self:start}.context blockquote span{display:block;margin-top:.7rem;color:var(--slate)}
+  .route-section,.ledger{background:#fff}.heading{display:grid;grid-template-columns:1fr .85fr;column-gap:4rem;margin-bottom:3rem}.heading .label{grid-column:1/-1}.steps,.outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.steps article,.outcomes article{padding:1.7rem;border:1px solid var(--line);border-radius:.75rem;background:#fff}.step-top{display:flex;justify-content:space-between;color:var(--blue);font-weight:850}.steps code{display:block;margin-top:1.5rem;padding:.55rem .7rem;background:var(--mist);color:#075a75;border-radius:.35rem;font-size:.78rem}.steps article>p,.outcomes article>p{color:var(--slate)}
+  .proof{max-width:none!important;background:var(--ink);color:#fff}.proof>.heading,.proof>.specs{max-width:1176px;margin-left:auto;margin-right:auto}.proof .heading>p{color:#d3e8ef}.proof .label{color:#67d8ef}.specs{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:stretch}.specs article{padding:2rem;border:1px solid #527084;border-radius:.8rem;background:#172c40}.specs article.executed{background:#fff;color:var(--ink);border-color:#8dd2dd}.specs article>div{display:flex;justify-content:space-between;font-size:.72rem;letter-spacing:.08em}.specs article b{color:#6bd4e9}.specs .executed b{color:var(--teal)}.specs dl{margin:2rem 0 0}.specs dt{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#98b6c5}.specs .executed dt{color:var(--slate)}.specs dd{margin:0 0 1rem}.specialize{align-self:center;font-size:2rem;color:#60d4e8}
+  .outcomes article>span{font-weight:900;color:var(--blue);font-size:1.8rem}.outcomes article>p:first-of-type{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800}.cta{max-width:none!important;background:linear-gradient(135deg,#0f5fd6,#078ab7 58%,#087b72);color:#fff;display:grid;grid-template-columns:1.2fr .8fr;gap:3rem}.cta>div{max-width:700px;margin-left:auto}.cta .label{color:#c9f8ff}.cta p{font-size:1.08rem}.cta-links{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1.4rem;margin-right:auto!important;margin-left:0!important}.light{background:#fff;color:var(--ink)}.cta-links>a:not(.button){font-weight:800}footer{padding:2rem;display:flex;justify-content:space-between;gap:1rem;max-width:1240px;margin:auto;color:var(--slate)}footer b{color:var(--ink)}
+  @media(max-width:850px){nav{display:none}.hero,.context,.heading,.cta{grid-template-columns:1fr}.hero{gap:2rem}.map{transform:none}.context{gap:1rem}.steps,.outcomes,.specs{grid-template-columns:1fr}.specialize{transform:rotate(90deg);justify-self:center}.heading>p{grid-column:1}.cta>div,.cta-links{margin:0!important}footer{flex-direction:column}}
+  @media(max-width:520px){header,main>section{padding-left:1.15rem;padding-right:1.15rem}h1{font-size:3.4rem}.topography{height:310px}.map-foot{display:none}.point{width:58px;height:58px}.p3{right:4%}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.map{transform:none}}
+</style>

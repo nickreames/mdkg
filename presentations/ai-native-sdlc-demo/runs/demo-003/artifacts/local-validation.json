@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "kind": "demo-3-local-validation",
+  "status": "passed",
+  "verified_at": "2026-07-28T14:09:18Z",
+  "source_sha256": "a0ffaa71ce86987582dac725e3adfe7483b9e09382fb1fc7e2339c23096aa1a2",
+  "output_sha256": "51b4e035f5eb915667afeb7ec445df55e5e61731380fab30849c75339bf61c17",
+  "build": {
+    "result": "pass",
+    "successful_attempt": 2,
+    "prepublication_repairs_used": 1,
+    "warm_dependencies_only": true,
+    "installation_performed": false
+  },
+  "routes": ["/"],
+  "static_output": {
+    "html_bytes": 9593,
+    "css_bytes": 11512,
+    "total_bytes": 21105,
+    "javascript_files": 0,
+    "script_tags": 0,
+    "hydration_markers": 0,
+    "raster_assets": 0,
+    "under_500_kib": true
+  },
+  "browser": {
+    "desktop": {
+      "viewport_width": 1280,
+      "horizontal_overflow": false,
+      "single_h1": true,
+      "semantic_header_main_nav_footer": true,
+      "links": 10
+    },
+    "mobile": {
+      "viewport_width": 390,
+      "horizontal_overflow": false,
+      "hero_width": 390,
+      "content_width": 353.203125,
+      "navigation_collapsed": true
+    },
+    "console_errors": 0
+  },
+  "accessibility": {
+    "skip_link": "pass",
+    "visible_focus": "pass",
+    "reduced_motion": "pass",
+    "semantic_landmarks": "pass",
+    "descriptive_title": "pass",
+    "robots_noindex_nofollow": "pass",
+    "contrast_review": "pass"
+  },
+  "public_safety": {
+    "remote_fonts_or_assets": false,
+    "analytics_or_trackers": false,
+    "forms": false,
+    "secrets_raw_prompts_or_provider_payloads": false,
+    "unsupported_mdkg_claims": false
+  },
+  "recommendation": "hand the accepted local candidate to the caller-owned canonical integration node",
+  "next_qid": "root:task-2"
+}

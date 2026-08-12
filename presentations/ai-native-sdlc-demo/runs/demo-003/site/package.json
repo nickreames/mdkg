@@ -1,0 +1,9 @@
+{
+  "name": "mdkg-demo-003-current-map",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build"
+  }
+}
