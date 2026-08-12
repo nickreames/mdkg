@@ -191,6 +191,8 @@ function main() {
     "demo/1/output/index.html",
     "demo/2/index.html",
     "demo/2/output/index.html",
+    "demo/3/index.html",
+    "demo/3/output/index.html",
     "llms.txt",
     "llms-full.txt",
     "robots.txt",
@@ -258,11 +260,15 @@ function main() {
   const demo1Output = readText(path.join(dist, "demo", "1", "output", "index.html"));
   const demo2Detail = readText(path.join(dist, "demo", "2", "index.html"));
   const demo2Output = readText(path.join(dist, "demo", "2", "output", "index.html"));
+  const demo3Detail = readText(path.join(dist, "demo", "3", "index.html"));
+  const demo3Output = readText(path.join(dist, "demo", "3", "output", "index.html"));
   assertStaticDemoHtml(demos, "demo gallery", ["application/ld+json"]);
   assertStaticDemoHtml(demo1Detail, "Demo 1 detail", ["application/ld+json"]);
   assertStaticDemoHtml(demo1Output, "Demo 1 output");
   assertStaticDemoHtml(demo2Detail, "Demo 2 detail", ["application/ld+json"]);
   assertStaticDemoHtml(demo2Output, "Demo 2 output");
+  assertStaticDemoHtml(demo3Detail, "Demo 3 detail", ["application/ld+json"]);
+  assertStaticDemoHtml(demo3Output, "Demo 3 output");
   assertContains(demos, "Agent-ready website demo", "demo gallery");
   assertContains(demos, "/demo/1/", "demo gallery");
   assertNotContains(demos, "/demo/2/", "demo gallery");
@@ -324,7 +330,15 @@ function main() {
   assertContains(demo2Output, "What completed", "Demo 2 output");
   assertContains(demo2Output, "Continuity beats reconstruction", "Demo 2 output");
   assertContains(demo2Output, "What comes next", "Demo 2 output");
-  for (const reserved of demoFixtures.reserved_records.filter((record) => record.id !== "2")) {
+  assertContains(demo3Detail, 'name="robots" content="noindex, nofollow"', "Demo 3 detail");
+  assertContains(demo3Output, 'name="robots" content="noindex,nofollow"', "Demo 3 output");
+  assertContains(demo3Detail, "Reusable starting specification", "Demo 3 detail");
+  assertContains(demo3Detail, "Specialized executed specification", "Demo 3 detail");
+  assertContains(demo3Detail, "Plan → Work → Evidence", "Demo 3 detail");
+  assertContains(demo3Output, "Give every coding agent", "Demo 3 output");
+  assertContains(demo3Output, "What completed", "Demo 3 output");
+  assertContains(demo3Output, "What comes next", "Demo 3 output");
+  for (const reserved of demoFixtures.reserved_records.filter((record) => !["2", "3"].includes(record.id))) {
     assert(
       !fs.existsSync(path.join(dist, "demo", reserved.id)),
       `fixture-only Demo ${reserved.id} must not produce public routes`
@@ -338,8 +352,10 @@ function main() {
     ["mdkg-dev", "src", "data", "demos", "types.ts"],
     ["mdkg-dev", "src", "data", "demos", "demo-1.ts"],
     ["mdkg-dev", "src", "data", "demos", "demo-2.ts"],
+    ["mdkg-dev", "src", "data", "demos", "demo-3.ts"],
     ["mdkg-dev", "src", "data", "demos", "index.ts"],
     ["mdkg-dev", "src", "components", "demos", "Demo2Output.astro"],
+    ["mdkg-dev", "src", "components", "demos", "Demo3Output.astro"],
   ]) {
     assertExists(path.join(repoRoot, ...rel));
   }
@@ -357,8 +373,10 @@ function main() {
   );
   assertContains(outputRegistrySource, 'import Demo1Output from "./Demo1Output.astro"', "output registry");
   assertContains(outputRegistrySource, 'import Demo2Output from "./Demo2Output.astro"', "output registry");
+  assertContains(outputRegistrySource, 'import Demo3Output from "./Demo3Output.astro"', "output registry");
   assertContains(outputRegistrySource, '"demo-1": Demo1Output', "output registry");
   assertContains(outputRegistrySource, '"demo-2": Demo2Output', "output registry");
+  assertContains(outputRegistrySource, '"demo-3": Demo3Output', "output registry");
   assertNotContains(outputRegistrySource, "import(", "output registry");
   assertContains(outputRouteSource, "getDemoOutputComponent", "output route");
   assertContains(outputRouteSource, "<OutputComponent demo={demo} />", "output route");
