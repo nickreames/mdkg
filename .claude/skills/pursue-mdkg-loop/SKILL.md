@@ -2,12 +2,12 @@
 name: pursue-mdkg-loop
 description: Pursue a selected mdkg loop by exhausting authorized linked work lanes, recording blocker recovery, and closing only when the loop definition of done is satisfied or explicitly waived.
 tags: [stage:execute, writer:orchestrator, mdkg, loop, recursive]
-version: 0.2.0
+version: 0.3.0
 authors: [mdkg]
-links: [AGENT_START.md, CLI_COMMAND_MATRIX.md]
+links: [.mdkg/README.md]
 ---
 
-# Goal
+# Purpose
 
 Move one durable mdkg loop forward without prematurely closing, blocking, or
 shrinking the loop definition of done.
@@ -19,6 +19,23 @@ shrinking the loop definition of done.
   several linked goals, tasks, tests, spikes, proposals, checkpoints, or
   decisions.
 - A loop should keep making progress after one branch hits a decision point.
+
+## Bootstrap Discovery
+
+Use the repository's AGENTS.md or CLAUDE.md entrypoint once. Compact installs
+route through `.mdkg/AGENT_START.md`; legacy installs may retain a root
+AGENT_START.md. Do not repeatedly load either router or the full command matrix.
+Use `mdkg help <command>` for exact flags and `mdkg skill list/search/show`
+for focused procedures. `.mdkg/README.md` is the portable workspace reference;
+project README, LICENSE, and website discovery assets are separate surfaces.
+
+Current user instructions define the assignment and authority. Graph history,
+selected state, skills, and successful checks do not independently authorize
+writes. An explicit instruction to Run a fully planned goal authorizes its
+declared implementation and validation scope, subject to its exclusions and
+custody checks; do not request the same approval again. Git, release, provider,
+deployment, bundle, and cross-project actions require explicit inclusion or
+separate approval.
 
 ## Inputs
 
@@ -55,22 +72,14 @@ shrinking the loop definition of done.
 3. Ask or surface pre-run questions before beginning when the loop template
    declares external calls, privileged tools, multi-agent delegation, publish,
    deploy, provider, or policy-sensitive decisions.
-4. Treat read-only and planning loops as pre-approved for low-risk local work:
-   - read source, docs, mdkg graph, package metadata, configs, and tests;
-   - run local read-only discovery commands;
-   - run local test/build commands even when they write caches or generated
-     outputs outside committed source, unless the user forbids it;
-   - create mdkg evidence, spike, proposal, task, test, checkpoint, and
-     open-question nodes;
-   - make provisional triage and prioritization decisions.
-5. Do not treat read-only/planning preapproval as permission to:
-   - change functional source, docs, templates, generated command outputs, or
-     runtime behavior;
-   - push, publish, tag, deploy, change DNS, or activate analytics;
-   - make external network, registry, advisory, provider, browser-session, or
-     privileged calls that disclose repo/package/user metadata without approval;
-   - delegate to subagents or external tools unless the harness/user approval is
-     explicit.
+4. Respect the approved loop mode:
+   - read-only allows non-mutating local inspection only;
+   - planning writes, tests/builds that generate files, and evidence node
+     creation require inclusion in the approved scope;
+   - a loop selection or template cannot grant its own mutation authority.
+5. Keep source changes, Git operations, external access, providers, publication,
+   deployment, and delegation within explicit approval. A planning authorization
+   does not silently become implementation or release authorization.
 6. Work the linked graph, not just the first branch:
    - Prefer the selection from `mdkg loop next`; override it only with an
      explicit rationale grounded in the loop definition of done.
@@ -159,7 +168,7 @@ shrinking the loop definition of done.
 - Validation receipts
 - A loop summary that states why the loop is done, blocked, or continuing
 
-## Safety
+## Safety Rules
 
 - Prefer repo truth over chat memory.
 - Keep secrets out of skills, references, and generated artifacts.
@@ -173,7 +182,7 @@ shrinking the loop definition of done.
 - Communicate provisional decisions and open questions to the human or
   higher-level orchestrator before treating them as accepted.
 
-## Failure Handling
+## Failure Modes
 
 - If pre-run approvals are missing, record the decision request and continue
   authorized local lanes.

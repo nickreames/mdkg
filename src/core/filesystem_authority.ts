@@ -196,8 +196,8 @@ function noFollowFlag(): number {
   return typeof fs.constants.O_NOFOLLOW === "number" ? fs.constants.O_NOFOLLOW : 0;
 }
 
-function writeAndSync(filePath: string, data: WritableData, flags: number): void {
-  const handle = fs.openSync(filePath, flags, 0o666);
+function writeAndSync(filePath: string, data: WritableData, flags: number, mode = 0o666): void {
+  const handle = fs.openSync(filePath, flags, mode);
   try {
     fs.writeFileSync(handle, data, typeof data === "string" ? "utf8" : undefined);
     fs.fsyncSync(handle);
@@ -374,7 +374,7 @@ export function appendContainedFile(
 }
 
 export function atomicReplaceContainedFile(
-  input: { root: string; relativePath: string },
+  input: { root: string; relativePath: string; mode?: number },
   data: WritableData
 ): ContainedPathDescriptor {
   let descriptor = inspectPath(input.root, input.relativePath, "replace", true);
@@ -384,7 +384,8 @@ export function atomicReplaceContainedFile(
     writeAndSync(
       temp.absolutePath,
       data,
-      fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | noFollowFlag()
+      fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | noFollowFlag(),
+      input.mode
     );
     descriptor = inspectPath(input.root, input.relativePath, "replace", false);
     inspectPath(input.root, tempRelative, "create", false);

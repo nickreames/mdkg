@@ -123,6 +123,12 @@ function packAndInstall(tempRoot) {
   return binPath;
 }
 
+function applyReviewedUpgrade(binPath, root) {
+  const preview = parseJson(mdkg(binPath, ["upgrade", "--json"], root).stdout);
+  if (!preview.safe_to_apply) throw new Error("refusing conflicting upgrade: " + JSON.stringify(preview.blocking_conflicts));
+  return mdkg(binPath, ["upgrade", "--apply", "--plan-hash", preview.plan_hash, "--json"], root);
+}
+
 function parseJson(output) {
   return JSON.parse(output);
 }
@@ -163,7 +169,7 @@ function exerciseUpgrade(binPath, tempRoot) {
     throw new Error("upgrade dry-run did not expose init manifest apply side effect");
   }
 
-  const apply = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], root).stdout);
+  const apply = parseJson(applyReviewedUpgrade(binPath, root).stdout);
   if (apply.dry_run) {
     throw new Error("upgrade --apply reported dry_run=true");
   }
@@ -181,12 +187,12 @@ function exerciseUpgrade(binPath, tempRoot) {
   mdkg(binPath, ["init", "--agent"], customRoot);
   const customContent = "# Custom agent start\n";
   fs.writeFileSync(path.join(customRoot, "AGENT_START.md"), customContent, "utf8");
-  const customReceipt = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], customRoot).stdout);
+  const customReceipt = parseJson(applyReviewedUpgrade(binPath, customRoot).stdout);
   if (customReceipt.safe_to_apply !== true) {
     throw new Error("custom upgrade with preserved files should be safe to apply");
   }
-  if (!customReceipt.changes.some((change) => change.action === "conflict" && change.path === "AGENT_START.md")) {
-    throw new Error("custom AGENT_START.md was not reported as a conflict");
+  if (!customReceipt.changes.some((change) => change.action === "skip" && change.path === "AGENT_START.md")) {
+    throw new Error("custom root AGENT_START.md was not reported as preserved");
   }
   if (!customReceipt.preserved_customizations.some((change) => change.path === "AGENT_START.md")) {
     throw new Error("custom AGENT_START.md was not reported as a preserved customization");
@@ -197,7 +203,7 @@ function exerciseUpgrade(binPath, tempRoot) {
 
   const oldTemplateRoot = path.join(tempRoot, "old-template-workspace");
   initGit(oldTemplateRoot);
-  mdkg(binPath, ["init"], oldTemplateRoot);
+  mdkg(binPath, ["init", "--graph-only"], oldTemplateRoot);
   mdkg(binPath, ["new", "task", "Old Template Workspace", "--status", "todo", "--priority", "1"], oldTemplateRoot);
   for (const name of ["manifest", "spec", "work", "work_order", "receipt", "feedback", "dispute", "proposal", "spike", "loop"]) {
     fs.rmSync(path.join(oldTemplateRoot, ".mdkg", "templates", "default", `${name}.md`), { force: true });
@@ -224,7 +230,7 @@ function exerciseUpgrade(binPath, tempRoot) {
       throw new Error(`old-template upgrade did not plan to vendor missing template ${relativePath}`);
     }
   }
-  const oldTemplateApply = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], oldTemplateRoot).stdout);
+  const oldTemplateApply = parseJson(applyReviewedUpgrade(binPath, oldTemplateRoot).stdout);
   if (
     !oldTemplateApply.changes.some(
       (change) => change.action === "create" && change.path === ".mdkg/templates/default/spike.md"
@@ -278,7 +284,7 @@ function exerciseUpgrade(binPath, tempRoot) {
   if (!legacySpecDryRun.will_write_paths.includes(createdLegacyManifest.node.path)) {
     throw new Error("legacy SPEC migration target missing from will_write_paths");
   }
-  const legacySpecApply = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], legacySpecRoot).stdout);
+  const legacySpecApply = parseJson(applyReviewedUpgrade(binPath, legacySpecRoot).stdout);
   if (
     !legacySpecApply.changes.some(
       (change) => change.action === "migrate" && change.category === "manifest_migration"
@@ -332,7 +338,8 @@ function exerciseUpgrade(binPath, tempRoot) {
   const customSpikeTemplate = "---\nid: {{id}}\ntype: spike\n---\n# Custom Spike\n";
   const customSpikePath = path.join(customTemplateRoot, ".mdkg", "templates", "default", "spike.md");
   fs.writeFileSync(customSpikePath, customSpikeTemplate, "utf8");
-  const customSpikeUpgrade = parseJson(mdkg(binPath, ["upgrade", "--apply", "--json"], customTemplateRoot).stdout);
+  const customSpikeUpgrade = parseJson(mdkg(binPath, ["upgrade", "--json"], customTemplateRoot).stdout);
+  if (customSpikeUpgrade.safe_to_apply) throw new Error("customized requested template must block application");
   if (!customSpikeUpgrade.changes.some((change) => change.action === "conflict" && change.path === ".mdkg/templates/default/spike.md")) {
     throw new Error("custom spike template was not reported as a conflict");
   }

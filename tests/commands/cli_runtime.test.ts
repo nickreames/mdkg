@@ -265,13 +265,13 @@ test("runCli covers inline flag values and structured output parser branches", (
   const initFalse = captureRun(["init", "--agent=false"], initFalseRoot);
   assert.equal(initFalse.code, 0);
   assert.match(initFalse.stdout, /mdkg init complete/);
-  assert.equal(fs.existsSync(path.join(initFalseRoot, "AGENT_START.md")), false);
+  assert.equal(fs.existsSync(path.join(initFalseRoot, ".mdkg", "AGENT_START.md")), false);
 
   const initTrueRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-cli-init-true-"));
   const initTrue = captureRun(["init", "--agent=true"], initTrueRoot);
   assert.equal(initTrue.code, 0);
-  assert.match(initTrue.stdout, /read AGENT_START\.md/);
-  assert.equal(fs.existsSync(path.join(initTrueRoot, "AGENT_START.md")), true);
+  assert.match(initTrue.stdout, /read \.mdkg\/AGENT_START\.md/);
+  assert.equal(fs.existsSync(path.join(initTrueRoot, ".mdkg", "AGENT_START.md")), true);
 
   const initInvalidRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-cli-init-invalid-"));
   const initInvalid = captureRun(["init", "--agent=maybe"], initInvalidRoot);

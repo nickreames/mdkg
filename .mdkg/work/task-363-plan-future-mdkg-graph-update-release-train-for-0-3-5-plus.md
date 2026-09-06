@@ -2,56 +2,74 @@
 id: task-363
 type: task
 title: plan future mdkg graph update release train for 0.3.5 plus
-status: todo
-priority: 3
+status: done
+priority: 1
 epic: epic-83
-tags: [future, graph-upgrade, compatibility, lower-priority]
+tags: [future, graph-upgrade, compatibility, alignment-002]
 owners: []
 links: []
 artifacts: []
 relates: []
 blocked_by: []
 blocks: []
-refs: []
+refs: [goal-81, goal-82, edd-80, edd-81, dec-93, chk-563]
 aliases: []
 skills: []
 created: 2026-06-11
-updated: 2026-06-11
+updated: 2026-09-05
 ---
+
 # Overview
 
-Plan a lower-priority future mdkg graph update and compatibility train, likely
-after the spike foundation and initial mdkg.dev readiness work. This keeps graph
-format evolution visible without pulling it into the immediate spike release.
+Existing graph compatibility planning lane reused for
+MDKG-INTERACTIVE-ALIGNMENT-002 Phase 2. Nick approved the mdkg-only planning
+package for compact default bootstrap and complete branch-safe identity.
+The historical 0.3.5-plus release title is retained for stable lookup; it is
+not a current version commitment or release dependency.
 
 # Acceptance Criteria
 
-- Inventory graph-format, migration, upgrade, and compatibility ideas deferred
-  from the current hardening train.
-- Define dry-run-first requirements for graph upgrades, generated cache updates,
-  and downstream repo compatibility.
-- Identify release milestone candidates such as `0.3.5+` without committing to
-  a fixed version if scope shifts.
-- Create follow-up epics/tasks/tests only when the compatibility slice is ready
-  to activate.
+- Re-inventory clean baseline, selected goal, claims, local leases/queues and
+  source evidence before planning writes.
+- Record goals, architecture, task dependencies, test cases, migration gates and
+  first implementation increments without executing those future tasks.
+- Reuse epic-83/test-151 and retain achieved Goal 17 and prior decisions as history.
+- Leave new goals paused/unselected, implementation/tests todo and unclaimed.
+- Validate the complete planning graph and exact diff/path boundaries.
 
 # Files Affected
 
-- future graph update roadmap nodes
-- upgrade docs and smoke scripts when activated
+Owned mdkg design/work nodes identified in chk-563 plus required event/index
+projections. No source, docs/instruction/skill changes or bundles.
 
 # Implementation Notes
 
-- Keep this lane separate from `goal-14` spike implementation.
-- Do not mutate downstream repos from this task.
-- Use dry-run receipts as the default design shape for future graph updates.
+Goal: durable executable plans for the two approved improvements.
+Context: baseline main at 9652b8558942041cbebe8f444fbc79e16b1a670d, clean and
+matching cached origin/main; current Goal 73 achieved and left selected.
+Boundaries: no source implementation, instructions/skills, migration, repair,
+Git state operation, cross-project edit, bundle refresh, provider or deployment.
+Done when: planning package validated with explicit unclaimed follow-up state.
+Evidence: edd-80, edd-81, dec-93, goal-81, goal-82 and chk-563.
+
+Scoped planning ownership: this project agent under direct user approval.
+Supported task start/update/done and command-level mutation locks are used;
+no invented lease CLI, DB initialization, queue claim or goal activation.
+No other active runtime writer lease/queue was evidenced at intake. Historical
+archived/blocked goal active_node fields do not identify an overlapping claim.
 
 # Test Plan
 
-- Run `mdkg upgrade --dry-run --json` in temp repos when the lane activates.
-- Validate no-mutation guarantees with `test-151`.
-- Run `node dist/cli.js validate --json`.
+- node dist/cli.js validate --changed-only --json
+- node dist/cli.js validate --summary --json --limit 20
+- Paused-goal/unclaimed-node and reference/path inspection.
+- git diff --check and exact unstaged-path review.
+- Preserve HEAD, selected goal, Demo bundle and every out-of-scope path.
 
 # Links / Artifacts
 
-- Owned by `epic-83`.
+- goal-81: task-816 -> task-817 -> task-818 -> test-474.
+- goal-82: task-819 -> task-820 -> task-821 -> task-822 with test-151,
+  test-475 and test-476.
+- edd-80, edd-81, dec-93, chk-563.
+- Skill candidates: none. No runtime acceptance tests are claimed by planning.

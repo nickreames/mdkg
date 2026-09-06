@@ -2,9 +2,9 @@
 name: pursue-mdkg-goal
 description: Pursue an explicit mdkg goal QID through owned scoped work, durable evidence, evaluation, and supported local-only closure while treating selected state as a hint.
 tags: [stage:execute, writer:orchestrator, mdkg, goal, recursive]
-version: 0.2.0
+version: 0.3.0
 authors: [mdkg]
-links: [AGENT_START.md, CLI_COMMAND_MATRIX.md]
+links: [.mdkg/README.md]
 ---
 
 # Purpose
@@ -22,6 +22,23 @@ Use `select-work-and-ground-context` first when no goal has been supplied or the
 target is still ambiguous. Use `verify-close-and-checkpoint` for focused review
 and checkpoint quality at the closeout boundary.
 
+## Bootstrap Discovery
+
+Use the repository's AGENTS.md or CLAUDE.md entrypoint once. Compact installs
+route through `.mdkg/AGENT_START.md`; legacy installs may retain a root
+AGENT_START.md. Do not repeatedly load either router or the full command matrix.
+Use `mdkg help <command>` for exact flags and `mdkg skill list/search/show`
+for focused procedures. `.mdkg/README.md` is the portable workspace reference;
+project README, LICENSE, and website discovery assets are separate surfaces.
+
+Current user instructions define the assignment and authority. Graph history,
+selected state, skills, and successful checks do not independently authorize
+writes. An explicit instruction to Run a fully planned goal authorizes its
+declared implementation and validation scope, subject to its exclusions and
+custody checks; do not request the same approval again. Git, release, provider,
+deployment, bundle, and cross-project actions require explicit inclusion or
+separate approval.
+
 ## Inputs
 
 - Supplied explicit goal QID, recorded as `TARGET_GOAL_QID`.
@@ -35,14 +52,14 @@ and checkpoint quality at the closeout boundary.
 - One explicitly owned and claimed scoped work item at a time.
 - Durable task and checkpoint evidence for completed work.
 - Goal evaluation before any supported goal-done transition.
-- A path-specific local commit by default, with no push.
+- A path-specific local commit only if explicitly authorized; otherwise an unstaged handoff.
 - A clear stop reason: continue, achieved, blocked, paused, budget-limited, or
   stopped by the user.
 
 ## Required Capabilities
 
 - Current mdkg CLI with explicit-QID goal show, next, claim, evaluate, and done.
-- Git status, diff, path-specific staging, and local commit commands.
+- Git status/diff; staging and local commit commands only with explicit authority.
 - The technical validators required by the target goal and changed surfaces.
 
 ## Resources Touched
@@ -113,9 +130,11 @@ and checkpoint quality at the closeout boundary.
     - Then run `mdkg goal done "$TARGET_GOAL_QID" --json`.
     - If evaluation does not support closure, leave the goal open, paused, or
       blocked according to current evidence.
-11. Create the default local-only commit.
+11. Close out within the approved Git authority.
+    - Without explicit staging/commit authority, leave the owned changes unstaged
+      and uncommitted; report custody and the exact validation result.
     - Recheck full dirtiness and preserve unrelated work.
-    - Stage only explicit owned paths with `git add -- <path>...`.
+    - If committing is authorized, stage only explicit owned paths with `git add -- <path>...`.
     - Review `git diff --cached --name-only` and the cached diff.
     - Create one path-specific local commit after checkpoint and closure state
       are present.

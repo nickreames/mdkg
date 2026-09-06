@@ -101,7 +101,13 @@ profile checks such as `mdkg validate --profile omni-room` and
 execution, room ids, provider state, billing or ledger state, and final receipt
 authority.
 
-Read `AGENT_START.md` first when this repo includes it.
+Compact agent setup is the default for `mdkg init`; `--agent` remains a
+compatibility alias and `--graph-only` omits agent setup. Root AGENTS.md and
+CLAUDE.md contain bounded managed sections pointing to `.mdkg/AGENT_START.md`.
+Read that router once; use focused skills and command help as needed. Details
+live under `.mdkg`, not in a mandatory universal root handbook. User-authored
+instructions, README/LICENSE/project docs, and public website discovery remain
+separate, preserved surfaces. Legacy root startup files can remain compatible.
 
 ## Pack Profiles
 
@@ -167,7 +173,23 @@ mdkg init --update-gitignore --update-npmignore
 
 `mdkg upgrade` previews safe scaffold updates for existing workspaces and writes nothing by default.
 
-Use `mdkg upgrade --apply` only after reviewing `safe_to_apply`, `will_write_paths`, and `apply_side_effects` in the receipt. Local customizations are preserved and reported instead of overwritten. Missing built-in templates can be loaded from the installed package as a read-only fallback until you vendor them with upgrade.
+Review `safe_to_apply`, `will_write_paths`, `operation_hashes`, and
+`apply_side_effects`, then use `mdkg upgrade --apply --plan-hash <sha256>` with
+the preview's exact hash. Requested conflicts block all writes. To apply only
+specified safe units, preview `--only <comma-separated-paths>` and repeat that
+selection and hash on apply; required derived paths remain visible in the plan.
+Stale inputs fail before writes. User bytes outside managed instruction sections
+and customized legacy root documents remain preserved.
+
+An interrupted operation leaves `.mdkg/state/upgrade-journal.json` with original
+bytes and the plan hash. Keep it private and ignored. Explicit `--resume` or
+`--recover`, with that exact `--plan-hash`, respectively completes the operation
+or restores verified operation-owned bytes. Later user edits block recovery;
+there is no automatic rollback, Git staging, or history rewrite. The journal is
+not a graph identity authority. Completed journals remain local recovery evidence.
+Missing event history is not reconstructed by upgrade; use `mdkg event enable`
+explicitly when appropriate. Missing built-in templates can still be read from
+the installed package until a reviewed upgrade vendors them.
 
 ## Snapshot Bundles
 

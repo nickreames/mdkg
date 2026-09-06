@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const crypto = require("crypto");
 
 function copyFile(src, dest) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
@@ -23,60 +22,9 @@ function copyDir(src, dest) {
   }
 }
 
-function listFiles(dir) {
-  if (!fs.existsSync(dir)) {
-    return [];
-  }
-  const files = [];
-  const entries = fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...listFiles(fullPath));
-    } else if (entry.isFile()) {
-      files.push(fullPath);
-    }
-  }
-  return files;
-}
-
-function sha256(filePath) {
-  return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
-}
-
-function addManifestFile(files, seedRoot, seedRelPath, targetPath, category) {
-  const sourcePath = path.join(seedRoot, seedRelPath);
-  if (fs.existsSync(sourcePath) && fs.statSync(sourcePath).isFile()) {
-    files.push({ path: targetPath, category, sha256: sha256(sourcePath) });
-  }
-}
-
-function addManifestDir(files, seedRoot, seedRelDir, targetDir, category) {
-  const sourceDir = path.join(seedRoot, seedRelDir);
-  for (const sourcePath of listFiles(sourceDir)) {
-    const relPath = path.relative(sourceDir, sourcePath).split(path.sep).join("/");
-    files.push({ path: path.posix.join(targetDir, relPath), category, sha256: sha256(sourcePath) });
-  }
-}
-
 function writeInitManifest(seedRoot, packageVersion) {
-  const files = [];
-  addManifestFile(files, seedRoot, "config.json", ".mdkg/config.json", "config");
-  addManifestFile(files, seedRoot, "README.md", ".mdkg/README.md", "mdkg_doc");
-  addManifestDir(files, seedRoot, "core", ".mdkg/core", "core");
-  addManifestDir(files, seedRoot, "templates", ".mdkg/templates", "template");
-  addManifestFile(files, seedRoot, "AGENTS.md", "AGENTS.md", "agent_doc");
-  addManifestFile(files, seedRoot, "CLAUDE.md", "CLAUDE.md", "agent_doc");
-  addManifestFile(files, seedRoot, "llms.txt", "llms.txt", "startup_doc");
-  addManifestFile(files, seedRoot, "AGENT_START.md", "AGENT_START.md", "startup_doc");
-  addManifestFile(files, seedRoot, "CLI_COMMAND_MATRIX.md", "CLI_COMMAND_MATRIX.md", "startup_doc");
-  addManifestDir(files, seedRoot, path.join("skills", "default"), ".mdkg/skills", "default_skill");
-  const manifest = {
-    schema_version: 1,
-    tool: "mdkg",
-    mdkg_version: packageVersion,
-    files: files.sort((a, b) => a.path.localeCompare(b.path)),
-  };
+  const { createInitManifest } = require(path.join(root, "dist", "commands", "init_manifest.js"));
+  const manifest = createInitManifest(seedRoot, packageVersion);
   copyFileContent(JSON.stringify(manifest, null, 2) + "\n", path.join(seedRoot, "init-manifest.json"));
 }
 

@@ -117,16 +117,17 @@ Usage:
 Flags:
 - `--force`
 - `--agent`
+- `--graph-only`
 - `--no-update-ignores`
 - `--update-gitignore`
 - `--update-npmignore`
 - `--update-dockerignore`
 
 Notes:
-- `--agent` is the canonical complete AI-agent bootstrap path
+- compact agent setup is the default; `--agent` is compatible and `--graph-only` explicitly omits it; combining them fails before writes
 - removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
 - published bootstrap config is root-only by default
-- `--agent` creates `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node `SOUL.md` / `COLLABORATION.md` core docs, legacy `HUMAN.md`, default mdkg usage skills, `events.jsonl`, registry, and configured skill mirrors
+- default setup creates root `AGENTS.md`/`CLAUDE.md` managed sections, `.mdkg/AGENT_START.md`, `.mdkg/llms.txt`, `.mdkg/CLI_COMMAND_MATRIX.md`, strict-node core docs, focused default skills, events, registry, and configured native mirrors; project docs and public website discovery are not moved
 - run `mdkg index` after fresh init before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches
 
 ### `mdkg upgrade`
@@ -136,17 +137,23 @@ When to use:
 - refresh managed init docs, templates, and default skills without overwriting local edits
 
 Usage:
-- `mdkg upgrade [--dry-run] [--apply] [--json]`
+- `mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]`
 
 Flags:
 - `--dry-run`
 - `--apply`
+- `--plan-hash <sha256>`
+- `--only <comma-separated-exact-paths>`
+- `--resume`
+- `--recover`
 - `--json`
 
 Notes:
 - `mdkg upgrade` defaults to dry-run and writes nothing
-- `--apply` is the only mutating upgrade path
-- JSON receipts include `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects`
+- `--apply` requires the exact reviewed preview hash and selection; stale plans and requested conflicts refuse all writes
+- `--only` previews a bounded subset plus required exact derived projections; it is not implicit permission to skip conflicts
+- `--resume` and `--recover` require the local journal's plan hash and refuse later user edits; recovery restores only verified operation-owned original bytes, never Git history
+- JSON receipts include `plan_hash`, `operation_hashes`, `journal_path`, `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects`
 - customized docs, templates, skills, and core files are preserved and reported as preserved customizations
 - agent-enabled workspaces include safe default skill upgrades and skill mirror sync
 - ignored event logs are skipped with guidance to run `mdkg event enable`

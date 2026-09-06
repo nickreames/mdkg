@@ -8,11 +8,12 @@ import {
 } from "../core/filesystem_authority";
 import { loadConfig, validateConfigSchema } from "../core/config";
 import { migrateConfig } from "../core/migrate";
-import { NotFoundError } from "../util/errors";
+import { NotFoundError, UsageError } from "../util/errors";
+import { appendInstructions, instructionHash, instructionSection } from "./bootstrap_instructions";
 import { formatDate } from "../util/date";
 import { readPackageVersion } from "../core/version";
 import { PROJECT_DB_GITIGNORE_ENTRIES } from "../core/project_db";
-import { createInitManifest, INIT_MANIFEST_FILE, sha256File, writeInitManifest } from "./init_manifest";
+import { createInitManifest, INIT_MANIFEST_FILE, readInitManifest, sha256File, writeInitManifest } from "./init_manifest";
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { preflightSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 import { assertPublicSkillProjection } from "../core/public_skill_projection";
@@ -21,6 +22,7 @@ export type InitCommandOptions = {
   root: string;
   force?: boolean;
   agent?: boolean;
+  graphOnly?: boolean;
   updateGitignore?: boolean;
   updateNpmignore?: boolean;
   updateDockerignore?: boolean;
@@ -91,6 +93,17 @@ function copySeedFile(root: string, src: string, dest: string, force: boolean, s
   }
   atomicReplaceContainedFile({ root, relativePath }, fs.readFileSync(src));
   recordCreated(root, dest, stats);
+}
+
+function copyInstructionFile(root: string, src: string, relativePath: string, stats: CopyStats): void {
+  const before = containedPathExists({ root, relativePath }) ? readContainedFile({ root, relativePath }) : "";
+  const after = appendInstructions(before, fs.readFileSync(src, "utf8"));
+  if (after === before) {
+    recordSkipped(root, path.join(root, relativePath), stats);
+    return;
+  }
+  atomicReplaceContainedFile({ root, relativePath }, after);
+  recordCreated(root, path.join(root, relativePath), stats);
 }
 
 function copySeedDir(root: string, srcDir: string, destDir: string, force: boolean, stats: CopyStats): void {
@@ -414,11 +427,13 @@ function ensureCreatedCoreManifestEntry(
 }
 
 export function runInitCommand(options: InitCommandOptions): void {
+  if (options.graphOnly && options.agent) throw new UsageError("--graph-only and --agent cannot be combined");
+  const agent = !options.graphOnly && options.agent !== false;
   const root = path.resolve(options.root);
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
-  const createAgents = Boolean(options.agent);
-  const createClaude = Boolean(options.agent);
-  const createStartupDocs = Boolean(options.agent);
+  const createAgents = agent;
+  const createClaude = agent;
+  const createStartupDocs = agent;
   const force = Boolean(options.force);
 
   const seedConfig = path.join(seedRoot, "config.json");
@@ -436,9 +451,9 @@ export function runInitCommand(options: InitCommandOptions): void {
   const seedCollaboration = path.join(seedCore, "COLLABORATION.md");
   const seedHuman = path.join(seedCore, "HUMAN.md");
   const seedManifest = createInitManifest(seedRoot, readPackageVersion(), {
-    includeAgentDocs: Boolean(options.agent),
-    includeStartupDocs: Boolean(options.agent),
-    includeDefaultSkills: Boolean(options.agent),
+    includeAgentDocs: agent,
+    includeStartupDocs: agent,
+    includeDefaultSkills: agent,
   });
 
   if (!fs.existsSync(seedConfig) || !fs.existsSync(seedCore) || !fs.existsSync(seedTemplates)) {
@@ -464,15 +479,25 @@ export function runInitCommand(options: InitCommandOptions): void {
   if (!fs.existsSync(seedReadme)) {
     throw new NotFoundError(`init assets missing README.md at ${seedRoot}`);
   }
-  if (options.agent && !fs.existsSync(seedDefaultSkills)) {
+  if (agent && !fs.existsSync(seedDefaultSkills)) {
     throw new NotFoundError(`init assets missing default skills at ${seedRoot}`);
   }
-  if (options.agent && !options.seedRoot && !fs.existsSync(seedSkillPolicy)) {
+  if (agent && !options.seedRoot && !fs.existsSync(seedSkillPolicy)) {
     throw new NotFoundError(`init assets missing public skill policy at ${seedRoot}`);
   }
   preflightSeedConfig(seedConfig);
-  const existingCanonicalSkills = options.agent ? listExistingCanonicalSkillSlugs(root) : [];
-  if (options.agent) {
+  const previousManifestPath = path.join(root, ".mdkg", INIT_MANIFEST_FILE);
+  if (containedPathExists({ root, relativePath: `.mdkg/${INIT_MANIFEST_FILE}` })) {
+    readContainedFile({ root, relativePath: `.mdkg/${INIT_MANIFEST_FILE}` });
+  }
+  const previousManifest = readInitManifest(previousManifestPath);
+  if (agent) {
+    for (const relativePath of ["AGENTS.md", "CLAUDE.md"]) {
+      if (containedPathExists({ root, relativePath })) instructionSection(readContainedFile({ root, relativePath }));
+    }
+  }
+  const existingCanonicalSkills = agent ? listExistingCanonicalSkillSlugs(root) : [];
+  if (agent) {
     if (fs.existsSync(seedSkillPolicy)) {
       assertPublicSkillProjection({
         policyPath: seedSkillPolicy,
@@ -508,18 +533,18 @@ export function runInitCommand(options: InitCommandOptions): void {
     copySeedDir(root, seedCore, path.join(mdkgDir, "core"), force, stats);
     copySeedDir(root, seedTemplates, path.join(mdkgDir, "templates"), force, stats);
     if (createAgents) {
-      copySeedFile(root, seedAgents, path.join(root, "AGENTS.md"), force, stats);
+      copyInstructionFile(root, seedAgents, "AGENTS.md", stats);
     }
     if (createClaude) {
-      copySeedFile(root, seedClaude, path.join(root, "CLAUDE.md"), force, stats);
+      copyInstructionFile(root, seedClaude, "CLAUDE.md", stats);
     }
     if (createStartupDocs) {
-      copySeedFile(root, seedLlms, path.join(root, "llms.txt"), force, stats);
-      copySeedFile(root, seedAgentStart, path.join(root, "AGENT_START.md"), force, stats);
-      copySeedFile(root, seedCliMatrix, path.join(root, "CLI_COMMAND_MATRIX.md"), force, stats);
+      copySeedFile(root, seedLlms, path.join(mdkgDir, "llms.txt"), force, stats);
+      copySeedFile(root, seedAgentStart, path.join(mdkgDir, "AGENT_START.md"), force, stats);
+      copySeedFile(root, seedCliMatrix, path.join(mdkgDir, "CLI_COMMAND_MATRIX.md"), force, stats);
     }
 
-    if (options.agent) {
+    if (agent) {
       const today = formatDate(new Date());
       const soulPath = path.join(mdkgDir, "core", "SOUL.md");
       const collaborationPath = path.join(mdkgDir, "core", "COLLABORATION.md");
@@ -568,6 +593,26 @@ export function runInitCommand(options: InitCommandOptions): void {
       stats.mirroredSkills = mirrorResult.synced;
     }
 
+    // Record only the actual managed section, never ownership of surrounding text.
+    seedManifest.files = seedManifest.files.filter((file) => {
+      if (file.category !== "agent_doc") return true;
+      const section = instructionSection(readContainedFile({ root, relativePath: file.path }));
+      if (!section) return false;
+      const seedSection = instructionSection(appendInstructions("", fs.readFileSync(file.path === "AGENTS.md" ? seedAgents : seedClaude, "utf8")));
+      if (section.text.replace(/\r\n/g, "\n") !== seedSection?.text) return false;
+      file.sha256 = sha256File(path.join(root, file.path));
+      file.managed_section_sha256 = instructionHash(section.text);
+      return true;
+    });
+    // Repeated init is not an upgrade: preserve old provenance for assets that
+    // were skipped instead of claiming the newly installed package owns them.
+    const installed = new Map((previousManifest?.files ?? []).map(file => [file.path, file]));
+    for (const file of seedManifest.files) {
+      if (containedPathExists({ root, relativePath: file.path }) && sha256File(path.join(root, file.path)) === file.sha256) {
+        installed.set(file.path, file);
+      }
+    }
+    seedManifest.files = [...installed.values()].sort((a, b) => a.path.localeCompare(b.path));
     writeInitManifest(path.join(mdkgDir, INIT_MANIFEST_FILE), seedManifest);
     stats.manifestWritten = true;
   } catch (err) {
@@ -626,8 +671,8 @@ export function runInitCommand(options: InitCommandOptions): void {
   if (stats.ignoreFilesUpdated.length > 0) {
     console.log(`ignore files updated: ${stats.ignoreFilesUpdated.join(", ")}`);
   }
-  if (options.agent) {
-    console.log("agent bootstrap: AGENT_START.md, AGENTS.md, CLAUDE.md, llms.txt, CLI_COMMAND_MATRIX.md");
+  if (agent) {
+    console.log("agent bootstrap: AGENTS.md, CLAUDE.md; guidance: .mdkg/AGENT_START.md, .mdkg/llms.txt, .mdkg/CLI_COMMAND_MATRIX.md");
     console.log("agent core pins: rule-soul, rule-7, rule-human");
     console.log("agent event log: .mdkg/work/events/events.jsonl");
     console.log(`skill mirrors: ${stats.mirroredSkills} sync operation(s) across ${stats.mirrorTargets} target(s)`);
@@ -637,7 +682,7 @@ export function runInitCommand(options: InitCommandOptions): void {
   }
   console.log("next:");
   if (createStartupDocs) {
-    console.log("  read AGENT_START.md");
+    console.log("  read .mdkg/AGENT_START.md");
   }
   console.log('  mdkg new task "..." --status todo --priority 1');
   console.log('  mdkg search "..."');
