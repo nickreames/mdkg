@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 0ab5c4cc2288334720c20a27f7d141776d7e9b92420a1592bc4ffabbb508701d -->
+<!-- contract-hash: 600797aa5d6a2187f4e926cbe54dbbe5d76184c8f4aad74f5cfc743d57664379 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -3266,8 +3266,9 @@ mdkg init [options]
 
 ### Common flags
 
-- `--agent`: --agent               Create the complete agent bootstrap, skills, events, and mirrors
+- `--agent`: --agent               Compatibility alias for compact agent setup (default)
 - `--force`: --force               Overwrite existing mdkg files
+- `--graph-only`: --graph-only          Create graph scaffold without agent setup
 - `--help`: --help, -h          Show help
 - `--no-update-ignores`: --no-update-ignores   Skip default .gitignore/.npmignore updates
 - `--root`: --root, -r <path>   Run against a specific repo root
@@ -5716,21 +5717,25 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg upgrade [--dry-run] [--apply] [--json]
+mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg upgrade [--dry-run] [--apply] [--json]
+mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
 ```
 
 ### Common flags
 
-- `--apply`: mdkg upgrade [--dry-run] [--apply] [--json]
-- `--dry-run`: mdkg upgrade [--dry-run] [--apply] [--json]
+- `--apply |`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
+- `--dry-run |`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg upgrade [--dry-run] [--apply] [--json]
+- `--json`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
+- `--only <paths>`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
+- `--plan-hash <sha256>`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
+- `--recover`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
+- `--resume |`: mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 

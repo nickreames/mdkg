@@ -3,7 +3,7 @@ import path from "path";
 import { spawnSync } from "child_process";
 import { migrateConfig } from "../core/migrate";
 import { CustomizationConfig, defaultCustomizationConfig, validateConfigSchema } from "../core/config";
-import { atomicReplaceContainedFile, withContainedPathSink } from "../core/filesystem_authority";
+
 import { configPath } from "../core/paths";
 import { readPackageVersion } from "../core/version";
 import {
@@ -17,8 +17,8 @@ import {
   PROJECT_DB_SCHEMA_DIR,
   PROJECT_DB_STATE_FILE,
 } from "../core/project_db";
-import { formatDate } from "../util/date";
-import { NotFoundError } from "../util/errors";
+
+import { NotFoundError, UsageError } from "../util/errors";
 import { DEFAULT_FRONTMATTER_KEY_ORDER, formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { CANONICAL_MANIFEST_BASENAME, LEGACY_SPEC_BASENAME } from "../graph/agent_file_types";
@@ -31,10 +31,11 @@ import {
   readInitManifest,
   seedSourcePath,
   sha256File,
-  writeInitManifest,
 } from "./init_manifest";
-import { refreshSkillsRegistry } from "./skill_support";
-import { configuredSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
+import { configuredSkillMirrorTargets } from "./skill_mirror";
+import { appendInstructions, instructionHash, instructionSection, instructionSeed, replaceInstructions } from "./bootstrap_instructions";
+import { UpgradePlan, continueUpgrade, readUpgradeJournal, UPGRADE_JOURNAL, digest } from "./upgrade_transaction";
+import { planUpgradeProjections } from "./upgrade_projections";
 
 export type UpgradeCommandOptions = {
   root: string;
@@ -42,6 +43,12 @@ export type UpgradeCommandOptions = {
   apply?: boolean;
   json?: boolean;
   seedRoot?: string;
+  planHash?: string;
+  only?: string[];
+  resume?: boolean;
+  recover?: boolean;
+  /** In-process fault injection; never exposed as a CLI/environment switch. */
+  afterWrite?: (path: string, index: number) => void;
 };
 
 export type UpgradeChangeAction = "create" | "update" | "migrate" | "sync" | "conflict" | "skip";
@@ -75,6 +82,10 @@ export type UpgradeReceipt = {
   blocking_conflicts: UpgradeChange[];
   apply_side_effects: UpgradeChange[];
   changes: UpgradeChange[];
+  plan_hash: string;
+  journal_path: string;
+  operation_hashes: Array<{path: string; before: string | null; after: string | null}>;
+  recovery_state?: string;
 };
 
 const DEFAULT_SEED_SUBDIR = path.resolve(__dirname, "..", "init");
@@ -86,22 +97,6 @@ const LOCAL_STATE_IGNORE_ENTRIES = [
   ".mdkg/archive/**/source/",
   ...PROJECT_DB_GITIGNORE_ENTRIES,
 ];
-
-function seededInitEvent(nowIso: string): string {
-  const event = {
-    ts: nowIso,
-    run_id: `upgrade-${nowIso.replace(/[^0-9]/g, "").slice(0, 14)}`,
-    workspace: "root",
-    agent: "mdkg",
-    kind: "RUN_STARTED",
-    status: "ok",
-    refs: ["edd-4"],
-    artifacts: [],
-    notes: "upgrade ensured agent event log",
-    redacted: true,
-  };
-  return `${JSON.stringify(event)}\n`;
-}
 
 function requireSeedAssets(seedRoot: string): void {
   for (const required of ["config.json", "README.md", "core", "templates"]) {
@@ -119,12 +114,12 @@ function isAgentWorkspace(root: string, config: ReturnType<typeof validateConfig
   ].some((candidate) => fs.existsSync(candidate));
 }
 
-function copyFile(root: string, src: string, dest: string): void {
-  atomicReplaceContainedFile({ root, relativePath: repoRelativePath(root, dest) }, fs.readFileSync(src));
+function copyFile(plan: UpgradePlan, src: string, dest: string): void {
+  plan.write(repoRelativePath(plan.root, dest), fs.readFileSync(src));
 }
 
-function writeFile(root: string, filePath: string, content: string): void {
-  atomicReplaceContainedFile({ root, relativePath: repoRelativePath(root, filePath) }, content);
+function writeFile(plan: UpgradePlan, filePath: string, content: string): void {
+  plan.write(repoRelativePath(plan.root, filePath), content);
 }
 
 function repoRelativePath(root: string, filePath: string): string {
@@ -201,14 +196,44 @@ function planSeedFile(options: {
   seedRoot: string;
   file: InitManifestFile;
   knownHashes: Map<string, Set<string>>;
-  dryRun: boolean;
+  plan: UpgradePlan;
+  knownSections: Map<string, Set<string>>;
   summary: UpgradeSummary;
   changes: UpgradeChange[];
   managedCurrentFiles: InitManifestFile[];
 }): boolean {
   const destPath = path.join(options.root, options.file.path);
   const srcPath = seedSourcePath(options.seedRoot, options.file);
-  const currentHash = fs.existsSync(destPath) && fs.statSync(destPath).isFile() ? sha256File(destPath) : undefined;
+  const current = options.plan.read(options.file.path);
+  const currentHash = current ? digest(current) : undefined;
+  if (options.file.category === "agent_doc") {
+    const seed = fs.readFileSync(srcPath, "utf8");
+    const raw = current?.toString("utf8") ?? "";
+    let section: ReturnType<typeof instructionSection>;
+    try { section = instructionSection(raw); } catch (error) {
+      record(options.summary, options.changes, { path: options.file.path, category: "agent_doc", action: "conflict", reason: (error as Error).message });
+      return false;
+    }
+    const seedSection = instructionSeed(seed);
+    const sectionKnown = section && (section.text.replace(/\r\n/g, "\n") === seedSection.replace(/\r\n/g, "\n") ||
+      options.knownSections.get(options.file.path)?.has(instructionHash(section.text)));
+    if (section && !sectionKnown) {
+      record(options.summary, options.changes, { path: options.file.path, category: "agent_doc", action: "conflict", reason: "modified managed instruction section; surrounding user content preserved" });
+      return false;
+    }
+    // An unmarked wrapper is replaced only with whole-file seed proof. Otherwise
+    // append a managed section while preserving all original user bytes.
+    const next = section ? replaceInstructions(raw, seed) :
+      appendInstructions(currentHash && options.knownHashes.get(options.file.path)?.has(currentHash) ? "" : raw, seed);
+    const installed = { ...options.file, sha256: instructionHash(next),
+      managed_section_sha256: instructionHash(instructionSection(next)!.text) };
+    options.managedCurrentFiles.push(installed);
+    if (next === raw) { options.summary.unchanged++; return false; }
+    options.plan.write(options.file.path, next);
+    record(options.summary, options.changes, { path: options.file.path, category: "agent_doc",
+      action: current ? "update" : "create", reason: section ? "replace verified managed section only" : "install bounded instructions; preserve unowned bytes" });
+    return true;
+  }
   const nextHash = options.file.sha256;
 
   if (!currentHash) {
@@ -218,9 +243,7 @@ function planSeedFile(options: {
       action: "create",
       reason: "missing managed init asset",
     });
-    if (!options.dryRun) {
-      copyFile(options.root, srcPath, destPath);
-    }
+    copyFile(options.plan, srcPath, destPath);
     options.managedCurrentFiles.push(options.file);
     return true;
   }
@@ -244,9 +267,7 @@ function planSeedFile(options: {
       action: "update",
       reason: "matches a managed seed hash",
     });
-    if (!options.dryRun) {
-      copyFile(options.root, srcPath, destPath);
-    }
+    copyFile(options.plan, srcPath, destPath);
     options.managedCurrentFiles.push(options.file);
     return true;
   }
@@ -350,7 +371,7 @@ function migrateCustomizationConfig(input: unknown): { config: unknown; changed:
   return { config: raw, changed: true };
 }
 
-function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+function migrateConfigIfNeeded(root: string, plan: UpgradePlan, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const cfgPath = configPath(root);
   const raw = JSON.parse(fs.readFileSync(cfgPath, "utf8"));
   const migrated = migrateConfig(raw);
@@ -381,9 +402,7 @@ function migrateConfigIfNeeded(root: string, dryRun: boolean, summary: UpgradeSu
     action: "migrate",
     reason: reasons.join(" and "),
   });
-  if (!dryRun) {
-    writeFile(root, cfgPath, `${JSON.stringify(customizationConfig.config, null, 2)}\n`);
-  }
+  writeFile(plan, cfgPath, `${JSON.stringify(customizationConfig.config, null, 2)}\n`);
 }
 
 function sameStringArray(left: string[], right: readonly string[]): boolean {
@@ -414,7 +433,7 @@ function reportPreservedCustomizationOverlay(root: string, summary: UpgradeSumma
   });
 }
 
-function migrateClosedGoalActiveNodes(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+function migrateClosedGoalActiveNodes(root: string, plan: UpgradePlan, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
   const filesByAlias = listWorkspaceDocFilesByAlias(root, config);
   let planned = 0;
@@ -456,12 +475,12 @@ function migrateClosedGoalActiveNodes(root: string, dryRun: boolean, summary: Up
         action: "migrate",
         reason: "move closed goal active_node to last_active_node",
       });
-      if (!dryRun) {
+      {
         if (!lastActiveNode) {
           frontmatter.last_active_node = activeNode;
         }
         delete frontmatter.active_node;
-        writeFile(root, filePath, renderFrontmatterDocument(frontmatter, parsed.body.length > 0 ? parsed.body : ""));
+        writeFile(plan, filePath, renderFrontmatterDocument(frontmatter, parsed.body.length > 0 ? parsed.body : ""));
       }
     }
   }
@@ -470,7 +489,7 @@ function migrateClosedGoalActiveNodes(root: string, dryRun: boolean, summary: Up
   }
 }
 
-function migrateLegacySpecManifests(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+function migrateLegacySpecManifests(root: string, plan: UpgradePlan, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
   const filesByAlias = listWorkspaceDocFilesByAlias(root, config);
   let planned = 0;
@@ -512,20 +531,10 @@ function migrateLegacySpecManifests(root: string, dryRun: boolean, summary: Upgr
         action: "migrate",
         reason: "rename legacy SPEC.md to MANIFEST.md and normalize type: spec to type: manifest",
       });
-      if (!dryRun) {
+      {
         const frontmatter = { ...parsed.frontmatter, type: "manifest" };
-        atomicReplaceContainedFile(
-          { root, relativePath: repoRelativePath(root, filePath) },
-          renderFrontmatterDocument(frontmatter, parsed.body)
-        );
-        withContainedPathSink(
-          { root, relativePath: repoRelativePath(root, targetPath), operation: "create", createParents: true },
-          ({ absolutePath: safeTarget }) =>
-            withContainedPathSink(
-              { root, relativePath: repoRelativePath(root, filePath), operation: "delete" },
-              ({ absolutePath: safeSource }) => fs.renameSync(safeSource, safeTarget)
-            )
-        );
+        plan.write(relativeTargetPath, renderFrontmatterDocument(frontmatter, parsed.body));
+        plan.write(relativePath, null);
       }
     }
   }
@@ -575,7 +584,7 @@ function isGitIgnored(root: string, relativePath: string): boolean {
   return isIgnoredBySimpleGitignore(root, relativePath);
 }
 
-function ensureAgentRuntimeFiles(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+function ensureAgentRuntimeFiles(root: string, plan: UpgradePlan, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const eventsPath = path.join(root, ".mdkg", "work", "events", "events.jsonl");
   const relEventsPath = ".mdkg/work/events/events.jsonl";
   if (!fs.existsSync(eventsPath)) {
@@ -589,20 +598,15 @@ function ensureAgentRuntimeFiles(root: string, dryRun: boolean, summary: Upgrade
       return;
     }
     record(summary, changes, {
-      path: relEventsPath,
-      category: "event_log",
-      action: "create",
-      reason: "agent workspace is missing event log",
+      path: relEventsPath, category: "event_log", action: "skip",
+      reason: "missing event history is not reconstructed by upgrade; use mdkg event enable explicitly",
     });
-    if (!dryRun) {
-      writeFile(root, eventsPath, seededInitEvent(new Date().toISOString()));
-    }
   } else {
     summary.unchanged += 1;
   }
 }
 
-function ensureArchiveIgnorePolicy(root: string, dryRun: boolean, summary: UpgradeSummary, changes: UpgradeChange[]): void {
+function ensureArchiveIgnorePolicy(root: string, plan: UpgradePlan, summary: UpgradeSummary, changes: UpgradeChange[]): void {
   const ignorePath = path.join(root, ".gitignore");
   const raw = fs.existsSync(ignorePath) ? fs.readFileSync(ignorePath, "utf8") : "";
   const lines = raw.split(/\r?\n/);
@@ -618,9 +622,9 @@ function ensureArchiveIgnorePolicy(root: string, dryRun: boolean, summary: Upgra
     action: fs.existsSync(ignorePath) ? "update" : "create",
     reason: "ignore local mdkg state, project DB runtime files, and raw archive source copies while keeping authored graph records commit-eligible",
   });
-  if (!dryRun) {
+  {
     const suffix = raw.length === 0 || raw.endsWith("\n") ? "" : "\n";
-    writeFile(root, ignorePath, `${raw}${suffix}${additions.join("\n")}\n`);
+    writeFile(plan, ignorePath, `${raw}${suffix}${additions.join("\n")}\n`);
   }
 }
 
@@ -630,43 +634,6 @@ function isWritableChange(change: UpgradeChange): boolean {
 
 function writablePathForChange(change: UpgradeChange): string {
   return change.target_path ?? change.path;
-}
-
-function buildApplySideEffects(options: {
-  existingManifest: InitManifest | undefined;
-  agentWorkspace: boolean;
-  mirrorTargets: string[];
-  changes: UpgradeChange[];
-}): UpgradeChange[] {
-  const hasDirectWrites = options.changes.some(isWritableChange);
-  if (!hasDirectWrites && options.existingManifest) {
-    return [];
-  }
-  const effects: UpgradeChange[] = [
-    {
-      path: ".mdkg/init-manifest.json",
-      category: "init_manifest",
-      action: options.existingManifest ? "update" : "create",
-      reason: "records managed init asset fingerprints after apply",
-    },
-  ];
-  if (options.agentWorkspace) {
-    effects.push({
-      path: ".mdkg/skills/registry.md",
-      category: "skill_registry",
-      action: "update",
-      reason: "refreshes canonical skill registry after apply",
-    });
-    if (options.mirrorTargets.length > 0) {
-      effects.push({
-        path: options.mirrorTargets.join(","),
-        category: "skill_mirror",
-        action: "sync",
-        reason: "syncs configured managed skill mirrors after apply",
-      });
-    }
-  }
-  return effects;
 }
 
 function emitHumanReceipt(receipt: UpgradeReceipt): void {
@@ -699,7 +666,7 @@ function emitHumanReceipt(receipt: UpgradeReceipt): void {
   }
   if (receipt.dry_run && receipt.will_write_paths.length > 0) {
     if (receipt.safe_to_apply) {
-      console.log("next: mdkg upgrade --apply (writes only safe managed paths; preserves customized files)");
+      console.log(`next: mdkg upgrade --apply --plan-hash ${receipt.plan_hash} (repeat the reviewed --only selection, if any)`);
     } else {
       console.log("next: resolve blocking conflicts before running mdkg upgrade --apply");
     }
@@ -709,96 +676,124 @@ function emitHumanReceipt(receipt: UpgradeReceipt): void {
 export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceipt {
   const root = path.resolve(options.root);
   const seedRoot = options.seedRoot ? path.resolve(options.seedRoot) : DEFAULT_SEED_SUBDIR;
-  const dryRun = !options.apply;
+  const dryRun = !options.apply && !options.resume && !options.recover;
+  if ((options.dryRun && !dryRun) || (options.resume && options.recover) || ((options.resume || options.recover) && options.only?.length)) {
+    throw new UsageError("choose preview, apply, resume, or recover; recovery cannot select a partial operation");
+  }
   const version = readPackageVersion();
+  const plan = new UpgradePlan(root);
+  const initialConfig = validateConfigSchema(migrateConfig(JSON.parse(plan.read(".mdkg/config.json")!.toString("utf8"))).config);
+  const emit = (receipt: UpgradeReceipt): UpgradeReceipt => {
+    if (options.json) console.log(JSON.stringify(receipt, null, 2));
+    else emitHumanReceipt(receipt);
+    return receipt;
+  };
+  if (options.resume || options.recover) {
+    const journal = continueUpgrade(root, options.recover ? "recover" : "resume", options.planHash, initialConfig.index.lock_timeout_ms);
+    return emit({ action: "upgrade", dry_run: false, version, safe_to_apply: true, summary: createSummary(),
+      will_write_paths: journal.operations.map(op => op.path), preserved_customizations: [], blocking_conflicts: [],
+      apply_side_effects: [], changes: [], plan_hash: journal.plan_hash, journal_path: UPGRADE_JOURNAL,
+      operation_hashes: journal.operations.map(op => ({ path: op.path, before: op.before === null ? null : digest(Buffer.from(op.before, "base64")),
+        after: op.after === null ? null : digest(Buffer.from(op.after, "base64")) })), recovery_state: journal.state });
+  }
+  const journal = readUpgradeJournal(root);
+  if (journal && !["completed", "recovered"].includes(journal.state)) {
+    throw new UsageError(`unfinished upgrade ${journal.plan_hash}; review journal and explicitly --resume or --recover --plan-hash ${journal.plan_hash}`);
+  }
   requireSeedAssets(seedRoot);
-
   const currentManifest = createInitManifest(seedRoot, version);
+  plan.read(`.mdkg/${INIT_MANIFEST_FILE}`);
   const existingManifest = readInitManifest(path.join(root, ".mdkg", INIT_MANIFEST_FILE));
-  const legacyManifests = loadLegacyInitManifests(seedRoot);
-  const knownHashes = buildKnownHashes([existingManifest, ...legacyManifests]);
+  const manifests = [existingManifest, ...loadLegacyInitManifests(seedRoot)];
+  const knownHashes = buildKnownHashes(manifests);
+  const knownSections = new Map<string, Set<string>>();
+  for (const manifest of manifests) for (const file of manifest?.files ?? []) {
+    if (file.managed_section_sha256) {
+      if (!knownSections.has(file.path)) knownSections.set(file.path, new Set());
+      knownSections.get(file.path)!.add(file.managed_section_sha256);
+    }
+  }
   const summary = createSummary();
   const changes: UpgradeChange[] = [];
-  const initialConfig = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
   const agentWorkspace = isAgentWorkspace(root, initialConfig);
   const managedCurrentFiles: InitManifestFile[] = [];
+  const only = options.only ? new Set(options.only) : undefined;
+  if (only?.size === 0) throw new UsageError("--only requires one or more exact upgrade paths");
+  const selected = (change: UpgradeChange): boolean => !only || only.has(change.path) || Boolean(change.target_path && only.has(change.target_path));
 
-  migrateConfigIfNeeded(root, dryRun, summary, changes);
+  // Bind graph migration discovery as well as destination bytes to the preview.
+  const graphFiles = listWorkspaceDocFilesByAlias(root, initialConfig);
+  for (const files of Object.values(graphFiles)) for (const file of files) {
+    const relative = repoRelativePath(root, file);
+    plan.read(relative);
+    let parent = path.posix.dirname(relative);
+    while (parent !== ".") { plan.list(parent); parent = path.posix.dirname(parent); }
+  }
+  plan.read(".gitignore");
+  migrateConfigIfNeeded(root, plan, summary, changes);
   reportPreservedCustomizationOverlay(root, summary, changes);
-  migrateClosedGoalActiveNodes(root, dryRun, summary, changes);
-  migrateLegacySpecManifests(root, dryRun, summary, changes);
-
+  migrateClosedGoalActiveNodes(root, plan, summary, changes);
+  migrateLegacySpecManifests(root, plan, summary, changes);
   for (const file of currentManifest.files) {
-    if (!shouldIncludeFile(file, agentWorkspace)) {
-      continue;
-    }
-    planSeedFile({
-      root,
-      seedRoot,
-      file,
-      knownHashes,
-      dryRun,
-      summary,
-      changes,
-      managedCurrentFiles,
-    });
+    if (!shouldIncludeFile(file, agentWorkspace)) continue;
+    planSeedFile({ root, seedRoot, file, knownHashes, knownSections, plan, summary, changes, managedCurrentFiles });
   }
-
   if (agentWorkspace) {
-    ensureAgentRuntimeFiles(root, dryRun, summary, changes);
-  }
-  ensureArchiveIgnorePolicy(root, dryRun, summary, changes);
-
-  const applySideEffects = buildApplySideEffects({
-    existingManifest,
-    agentWorkspace,
-    mirrorTargets: configuredSkillMirrorTargets(initialConfig),
-    changes,
-  });
-  for (const effect of applySideEffects) {
-    record(summary, changes, effect);
-  }
-
-  if (!dryRun) {
-    const appliedManifest: InitManifest = {
-      ...currentManifest,
-      files: managedCurrentFiles.sort((a, b) => a.path.localeCompare(b.path)),
-    };
-    if (applySideEffects.length > 0) {
-      writeInitManifest(path.join(root, ".mdkg", INIT_MANIFEST_FILE), appliedManifest);
-    }
-    if (agentWorkspace && applySideEffects.length > 0) {
-      const config = validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(configPath(root), "utf8"))).config);
-      refreshSkillsRegistry(root, config);
-      scaffoldMirrorRoots(root, config);
-      syncSkillMirrors({ root, config, createRoots: true });
+    ensureAgentRuntimeFiles(root, plan, summary, changes);
+    for (const name of ["AGENT_START.md", "CLI_COMMAND_MATRIX.md", "llms.txt"]) {
+      const raw = plan.read(name);
+      if (!raw) continue;
+      if (knownHashes.get(name)?.has(digest(raw))) {
+        const destination = `.mdkg/${name}`;
+        if (plan.value(destination)) {
+          const redirect = `# mdkg compatibility entrypoint\n\nRead [${name}](${destination}).\n\nThis verified legacy path is retained for compatibility.\n`;
+          plan.write(name, redirect);
+          if (plan.operations.has(name)) record(summary, changes, { path: name, category: "legacy_redirect", action: "update", reason: "verified legacy seed; preserve old link with a compatibility redirect" });
+          managedCurrentFiles.push({ path: name, category: "startup_doc", sha256: digest(redirect) });
+        }
+      } else record(summary, changes, { path: name, category: "legacy_preserved", action: "skip", reason: "unknown or customized root document/public discovery asset preserved; not adopted by filename" });
     }
   }
+  ensureArchiveIgnorePolicy(root, plan, summary, changes);
 
-  const preservedCustomizations = changes.filter(
-    (change) => change.action === "conflict" || change.category === "customization_overlay"
-  );
-  const blockingConflicts = changes.filter(
-    (change) => change.action === "conflict" && change.category === "manifest_migration"
-  );
-  const willWritePaths = changes.filter(isWritableChange).map(writablePathForChange);
-  const receipt: UpgradeReceipt = {
-    action: "upgrade",
-    dry_run: dryRun,
-    version,
-    safe_to_apply: blockingConflicts.length === 0,
-    summary,
-    will_write_paths: Array.from(new Set(willWritePaths)),
-    preserved_customizations: preservedCustomizations,
-    blocking_conflicts: blockingConflicts,
-    apply_side_effects: applySideEffects,
-    changes,
-  };
-
-  if (options.json) {
-    console.log(`${JSON.stringify(receipt, null, 2)}`);
-  } else {
-    emitHumanReceipt(receipt);
+  if (only) {
+    const recognized = new Set(changes.flatMap(change => [change.path, ...(change.target_path ? [change.target_path] : [])]));
+    for (const item of only) if (!recognized.has(item)) throw new UsageError(`--only path is not a pending upgrade unit: ${item}`);
+    for (const change of changes) if (!selected(change)) {
+      plan.operations.delete(change.path);
+      if (change.target_path) plan.operations.delete(change.target_path);
+    }
+    // A redirect cannot point at a destination excluded by a subset plan.
+    for (const change of changes.filter(change => change.category === "legacy_redirect" && selected(change))) {
+      if (!plan.value(`.mdkg/${change.path}`)) throw new UsageError(`include .mdkg/${change.path} with its compatibility redirect`);
+    }
   }
-  return receipt;
+  const directPaths = new Set(plan.operations.keys());
+  const applySideEffects = agentWorkspace && (!only || [...directPaths].some(file => file.startsWith(".mdkg/skills/")))
+    ? planUpgradeProjections(plan, initialConfig, knownHashes) : [];
+  for (const effect of applySideEffects) record(summary, changes, effect);
+
+  const appliedFiles = new Map((existingManifest?.files ?? []).map(file => [file.path, file]));
+  for (const file of managedCurrentFiles) {
+    const actual = plan.value(file.path);
+    if (actual && digest(actual) === file.sha256) appliedFiles.set(file.path, file);
+  }
+  const manifest: InitManifest = { ...currentManifest, files: [...appliedFiles.values()].sort((a, b) => a.path.localeCompare(b.path)) };
+  plan.write(`.mdkg/${INIT_MANIFEST_FILE}`, JSON.stringify(manifest, null, 2) + "\n");
+  if (plan.operations.has(`.mdkg/${INIT_MANIFEST_FILE}`)) {
+    const effect: UpgradeChange = { path: `.mdkg/${INIT_MANIFEST_FILE}`, category: "init_manifest", action: existingManifest ? "update" : "create", reason: "record only verified installed managed units" };
+    applySideEffects.push(effect); record(summary, changes, effect);
+  }
+  const blockingConflicts = changes.filter(change => change.action === "conflict" && (selected(change) || applySideEffects.includes(change)));
+  const planHash = plan.hash({ version, only: only ? [...only].sort() : null, seed: currentManifest, conflicts: blockingConflicts });
+  const receipt: UpgradeReceipt = { action: "upgrade", dry_run: dryRun, version, safe_to_apply: blockingConflicts.length === 0,
+    summary, will_write_paths: [...plan.operations.keys()], preserved_customizations: changes.filter(change => change.action === "conflict" || change.category === "customization_overlay" || change.category === "legacy_preserved"),
+    blocking_conflicts: blockingConflicts, apply_side_effects: applySideEffects, changes, plan_hash: planHash, journal_path: UPGRADE_JOURNAL,
+    operation_hashes: [...plan.operations.values()].map(op => ({ path: op.path, before: op.before === null ? null : digest(Buffer.from(op.before, "base64")), after: op.after === null ? null : digest(Buffer.from(op.after, "base64")) })) };
+  if (!dryRun && receipt.safe_to_apply && plan.operations.size) {
+    if (!options.planHash || options.planHash !== planHash) throw new UsageError("review mdkg upgrade first, then supply its exact --plan-hash and --only selection; stale plans are refused");
+    plan.apply(planHash, initialConfig.index.lock_timeout_ms, options.afterWrite);
+    receipt.recovery_state = "completed";
+  }
+  return emit(receipt);
 }

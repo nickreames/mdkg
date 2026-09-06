@@ -299,7 +299,8 @@ test("cli help upgrade documents conservative dry-run/apply behavior", () => {
     cwd: repoRoot,
   });
   assert.equal(upgradeHelp.status, 0);
-  assert.match(upgradeHelp.stdout, /mdkg upgrade \[--dry-run\] \[--apply\] \[--json\]/);
+  assert.match(upgradeHelp.stdout, /mdkg upgrade \[--dry-run \| --apply \| --resume \| --recover\]/);
+  assert.match(upgradeHelp.stdout, /--plan-hash <sha256>/);
   assert.match(upgradeHelp.stdout, /Preview upgrade changes/);
   assert.match(upgradeHelp.stdout, /--apply/);
 });
@@ -311,7 +312,7 @@ test("cli upgrade rejects dry-run and apply together", () => {
   });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /choose either --dry-run or --apply/);
-  assert.match(result.stdout, /mdkg upgrade \[--dry-run\] \[--apply\] \[--json\]/);
+  assert.match(result.stdout, /mdkg upgrade \[--dry-run \| --apply \| --resume \| --recover\]/);
 });
 
 test("cli removed init flags fail with migration guidance", () => {

@@ -360,13 +360,13 @@ test("internal dogfood skills comply with the locked Anthropic best-practice sna
     assert.equal(writerTags[0], skill.writerTag);
 
     const body = parsed.body;
-    assert.match(body, /^# Goal/m);
+    assert.match(body, /^# Purpose/m);
     assert.match(body, /^## When To Use/m);
     assert.match(body, /^## Inputs/m);
     assert.match(body, /^## Steps/m);
     assert.match(body, /^## Outputs/m);
     assert.match(body, /^## Safety/m);
-    assert.match(body, /^## Failure Handling/m);
+    assert.match(body, /^## Failure Modes/m);
     assert.match(body, /mdkg indexes and discovers skills, but does not execute skill scripts/i);
 
     for (const pattern of skill.bodyChecks) {

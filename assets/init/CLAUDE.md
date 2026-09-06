@@ -1,8 +1,5 @@
-# CLAUDE
-
-Read `AGENT_START.md` first.
-
-Claude conventions for this repo:
-- use `AGENT_START.md` as the startup contract
-- use `.claude/skills/` for product-facing mirrored skills when present
-- use `mdkg skill ...` as the canonical skill command family
+<!-- mdkg:instructions:start -->
+Read [.mdkg/AGENT_START.md](.mdkg/AGENT_START.md) for focused mdkg discovery.
+Use `.claude/skills/` when native skill mirrors are present; `.mdkg/skills/`
+is canonical. Preserve this file's user-authored instructions outside this block.
+<!-- mdkg:instructions:end -->

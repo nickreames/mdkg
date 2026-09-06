@@ -261,7 +261,8 @@ function printInitHelp(log: LogFn): void {
   log("  mdkg init [options]");
   log("\nOptions:");
   log("  --force               Overwrite existing mdkg files");
-  log("  --agent               Create the complete agent bootstrap, skills, events, and mirrors");
+  log("  --agent               Compatibility alias for compact agent setup (default)");
+  log("  --graph-only          Create graph scaffold without agent setup");
   log("  --no-update-ignores   Skip default .gitignore/.npmignore updates");
   log("  --update-gitignore    Append mdkg ignore entries");
   log("  --update-npmignore    Append mdkg ignore entries");
@@ -271,17 +272,21 @@ function printInitHelp(log: LogFn): void {
 
 function printUpgradeHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg upgrade [--dry-run] [--apply] [--json]");
+  log("  mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>] [--only <paths>] [--json]");
   log("\nOptions:");
   log("  --dry-run             Preview upgrade changes without writing files (default)");
-  log("  --apply               Apply safe managed init asset upgrades");
+  log("  --apply               Apply the reviewed hash-bound plan; refuse conflicts");
+  log("  --plan-hash <sha256>   Exact preview hash required for writes/resume/recovery");
+  log("  --only <paths>        Comma-separated exact upgrade units; review derived paths too");
+  log("  --resume              Explicitly resume the journaled operation");
+  log("  --recover             Restore verified operation-owned original bytes");
   log("  --json                Emit machine-readable upgrade receipt");
   log("\nNotes:");
   log("  - preserves customized docs, templates, skills, and core files");
   log("  - json receipts include safe_to_apply, will_write_paths, and apply_side_effects");
   log("  - upgrades default mdkg skills only when they match managed seed fingerprints");
   log("  - skips ignored event logs; run mdkg event enable if provenance should be restored");
-  log("  - run without flags first, then rerun with --apply when the receipt looks right");
+  log("  - review the preview, then use --apply --plan-hash <sha256>; no implicit Git staging");
   printGlobalOptions(log);
 }
 
@@ -3161,7 +3166,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
           throw new UsageError(`\`mdkg init ${removedFlag}\` was removed; use \`mdkg init --agent\``);
         }
       }
-      const agent = parseBooleanFlag("--agent", parsed.flags["--agent"]);
+      const agent = parsed.flags["--agent"] === undefined ? undefined : parseBooleanFlag("--agent", parsed.flags["--agent"]);
+      const graphOnly = parseBooleanFlag("--graph-only", parsed.flags["--graph-only"]);
       const noUpdateIgnores = parseBooleanFlag(
         "--no-update-ignores",
         parsed.flags["--no-update-ignores"]
@@ -3186,6 +3192,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         updateDockerignore,
         noUpdateIgnores,
         agent,
+        graphOnly,
       });
       return 0;
     }
@@ -3199,8 +3206,13 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
         throw new UsageError("choose either --dry-run or --apply, not both");
       }
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runUpgradeCommand({ root, dryRun, apply, json });
-      return 0;
+      const resume = parseBooleanFlag("--resume", parsed.flags["--resume"]);
+      const recover = parseBooleanFlag("--recover", parsed.flags["--recover"]);
+      const planHash = requireFlagValue("--plan-hash", parsed.flags["--plan-hash"]);
+      const only = requireFlagValue("--only", parsed.flags["--only"]);
+      const receipt = runUpgradeCommand({ root, dryRun, apply, json, resume, recover, planHash,
+        only: only === undefined ? undefined : only.split(",").map(value => value.trim()).filter(Boolean) });
+      return !receipt.dry_run && !receipt.safe_to_apply ? 1 : 0;
     }
     case "guide":
       runGuideCommand({ root });

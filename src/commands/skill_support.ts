@@ -61,7 +61,7 @@ export function registryTemplate(): string {
     "",
     "Use `mdkg skill new <slug> \"<name>\" --description \"...\"` to scaffold a new skill from the built-in Anthropic-aligned template.",
     "Use `mdkg skill sync` to mirror canonical skills into configured `.mdkg/config.json` targets; defaults are `.agents/skills/` and `.claude/skills/`.",
-    "Use `CLI_COMMAND_MATRIX.md` as the canonical command and flag reference when updating skill procedures.",
+    "Use `mdkg help <command>` for focused command discovery; compact guidance lives under `.mdkg`, with legacy root entrypoints preserved when applicable.",
     "",
     "## Conventions",
     "",
@@ -79,8 +79,8 @@ export function registryTemplate(): string {
   ].join("\n");
 }
 
-function renderRegistryLines(skillsIndex: SkillsIndex): string[] {
-  const skills = Object.values(skillsIndex.skills).sort((a, b) => a.slug.localeCompare(b.slug));
+function renderRegistryLines(entries: Array<Pick<SkillIndexEntry, "slug" | "name" | "description" | "tags">>): string[] {
+  const skills = [...entries].sort((a, b) => a.slug.localeCompare(b.slug));
   if (skills.length === 0) {
     return ["_No skills registered yet. Run `mdkg skill new` to add one._"];
   }
@@ -130,8 +130,12 @@ export function refreshSkillsRegistry(root: string, config: Config): void {
   const registryPath = ensureSkillsRegistry(root, config);
   const raw = fs.readFileSync(registryPath, "utf8");
   const index = buildSkillsIndex(root, config);
-  const updated = replaceManagedSection(raw, renderRegistryLines(index));
+  const updated = renderSkillRegistryContent(raw, Object.values(index.skills));
   atomicWriteFile(registryPath, updated);
+}
+
+export function renderSkillRegistryContent(raw: string, skills: Array<Pick<SkillIndexEntry, "slug" | "name" | "description" | "tags">>): string {
+  return replaceManagedSection(raw, renderRegistryLines(skills));
 }
 
 export function formatSkillCard(skill: SkillIndexEntry): string {

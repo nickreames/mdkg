@@ -2,12 +2,12 @@
 name: author-mdkg-skill
 description: Create or update an mdkg SKILL.md or MANIFEST.md when a repeatable workflow, capability, agent, tool, runtime, API, or projection contract should become durable mdkg-authored knowledge.
 tags: [stage:plan, writer:orchestrator, mdkg, skills, authoring]
-version: 0.2.0
+version: 0.3.0
 authors: [mdkg]
-links: [AGENT_START.md, CLI_COMMAND_MATRIX.md]
+links: [.mdkg/README.md]
 ---
 
-# Goal
+# Purpose
 
 Create or update focused mdkg-authored SKILL.md and MANIFEST.md assets that make
 repeatable workflows and durable capabilities explicit without creating
@@ -22,6 +22,23 @@ duplicated procedures or projection-only behavior.
   needs a durable MANIFEST before it is projected into a runtime-specific config
 - When `.codex/agents` or another projection surface contains behavior that
   should be mirrored into durable mdkg/MANIFEST/SKILL state
+
+## Bootstrap Discovery
+
+Use the repository's AGENTS.md or CLAUDE.md entrypoint once. Compact installs
+route through `.mdkg/AGENT_START.md`; legacy installs may retain a root
+AGENT_START.md. Do not repeatedly load either router or the full command matrix.
+Use `mdkg help <command>` for exact flags and `mdkg skill list/search/show`
+for focused procedures. `.mdkg/README.md` is the portable workspace reference;
+project README, LICENSE, and website discovery assets are separate surfaces.
+
+Current user instructions define the assignment and authority. Graph history,
+selected state, skills, and successful checks do not independently authorize
+writes. An explicit instruction to Run a fully planned goal authorizes its
+declared implementation and validation scope, subject to its exclusions and
+custody checks; do not request the same approval again. Git, release, provider,
+deployment, bundle, and cross-project actions require explicit inclusion or
+separate approval.
 
 ## Inputs
 
@@ -103,9 +120,10 @@ For MANIFEST.md output, include:
     SKILL/MANIFEST.
 13. If input is incomplete, create repair tasks instead of guessing.
 14. Validate the new or updated skill with `mdkg skill validate <slug>`.
-15. If the skill changes the public workflow, update `AGENT_START.md`,
-    `CLI_COMMAND_MATRIX.md`, root onboarding docs, and the skill registry in the
-    same pass.
+15. If the skill changes the public workflow, update the owned seed/router,
+    applicable command reference, and registry within the maintenance scope.
+    Preserve customized or project-maintained root docs; do not migrate a live
+    checkout or website merely to update a generic skill.
 16. When mirrored skill folders are enabled, run `mdkg skill sync` after broad
     manual changes so every configured `.mdkg/config.json`
     `customization.skill_mirrors.targets` path stays current. The default
@@ -175,15 +193,14 @@ For MANIFEST.md output, include:
 - Do not export secrets, provider credentials, raw auth state, production
   controls, wallet/ledger state, or local-only user paths into templates or
   projections.
-- Do not create a skill-factory-agent until SKILL/MANIFEST templates and projection
-  doctrine are stable.
+- Do not create a skill-factory agent; maintain qualified existing procedures.
 - Optional `draft_uri` fields are future-facing hints, not finalized protocol
   semantics. Use generic examples such as `capability://repo.inspect` or
   `mdkg://capability/repo.inspect` in canonical mdkg templates.
 - Do not use downstream product names or product-specific URI schemes as public
   mdkg template examples.
 
-## Failure Handling
+## Failure Modes
 
 - If the trigger or writer role is unclear, stop and resolve that before authoring the skill.
 - If multiple skills overlap, merge or narrow them instead of creating redundant procedures.

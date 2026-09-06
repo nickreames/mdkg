@@ -545,43 +545,29 @@ function requireInitAssets() {
     }
   }
   const seededAgentStart = requireFile("dist/init/AGENT_START.md");
-  if (!seededAgentStart.includes("mdkg subgraph add/list/verify")) {
-    fail("dist/init/AGENT_START.md is missing subgraph onboarding guidance");
+  if (seededAgentStart.split(/\s+/).length > 450 ||
+      !seededAgentStart.includes("mdkg skill search") ||
+      !seededAgentStart.includes("mdkg goal next <qid>") ||
+      !seededAgentStart.includes("mdkg help <command>") ||
+      !seededAgentStart.includes("separate approval")) {
+    fail("compact startup router must remain bounded with focused discovery and authority boundaries");
   }
-  if (!seededAgentStart.includes("mdkg pack <id> --visibility public|internal")) {
-    fail("dist/init/AGENT_START.md is missing visibility pack guidance");
+  for (const adapter of ["AGENTS.md", "CLAUDE.md"]) {
+    const body = requireFile("dist/init/" + adapter);
+    if (!body.includes("<!-- mdkg:instructions:start -->") || !body.includes(".mdkg/AGENT_START.md") ||
+        !body.includes("<!-- mdkg:instructions:end -->")) fail(adapter + " lacks the compact managed adapter");
   }
-  if (!seededAgentStart.includes("mdkg goal activate") || !seededAgentStart.includes("mdkg goal claim")) {
-    fail("dist/init/AGENT_START.md is missing goal onboarding guidance");
+  for (const name of ["AGENT_START.md", "CLI_COMMAND_MATRIX.md", "llms.txt"]) {
+    if (!initManifest.files.some(file => file.path === ".mdkg/" + name)) fail("manifest lacks compact guidance: " + name);
   }
-  if (
-    !seededAgentStart.includes("mdkg db init") ||
-    !seededAgentStart.includes("mdkg db migrate") ||
-    !seededAgentStart.includes("mdkg db verify") ||
-    !seededAgentStart.includes("mdkg db stats") ||
-    !seededAgentStart.includes("mdkg db snapshot seal")
-  ) {
-    fail("dist/init/AGENT_START.md is missing project DB onboarding guidance");
-  }
-  if (
-    !seededAgentStart.includes("public local") ||
-    !seededAgentStart.includes("node:sqlite queue") ||
-    !seededAgentStart.includes("mdkg db queue ...") ||
-    !seededAgentStart.includes("mdkg db queue contract") ||
-    !seededAgentStart.includes("--queue-policy paused")
-  ) {
-    fail("dist/init/AGENT_START.md is missing public queue CLI guidance");
-  }
-  if (
-    !seededAgentStart.includes("event/receipt/reducer") ||
-    !seededAgentStart.includes("writer lease/CAS") ||
-    !seededAgentStart.includes("materializer") ||
-    !seededAgentStart.includes("`mdkg db event`") ||
-    !seededAgentStart.includes("`mdkg db reducer`") ||
-    !seededAgentStart.includes("`mdkg db lease`") ||
-    !seededAgentStart.includes("`mdkg db materializer`")
-  ) {
-    fail("dist/init/AGENT_START.md is missing internal event/reducer/lease/materializer boundary guidance");
+  // Detailed domain guidance is still required, but lives behind focused
+  // discovery instead of being mandatory startup context.
+  const detailedGuidance = (requireFile("dist/init/README.md") + requireFile("dist/init/CLI_COMMAND_MATRIX.md")).replace(/\s+/g, " ");
+  for (const command of ["mdkg subgraph", "mdkg pack", "--visibility", "mdkg goal claim", "mdkg db init",
+    "mdkg db migrate", "mdkg db verify", "mdkg db stats", "mdkg db snapshot seal", "mdkg db queue contract",
+    "--queue-policy paused", "event/receipt/reducer", "writer lease/CAS", "materializer",
+    "`mdkg db event`", "`mdkg db reducer`", "`mdkg db lease`", "`mdkg db materializer`"]) {
+    if (!detailedGuidance.includes(command)) fail("focused guidance missing: " + command);
   }
   const seededReadme = requireFile("dist/init/README.md");
   const normalizedSeededReadme = seededReadme.replace(/\s+/g, " ");
@@ -767,8 +753,8 @@ function requireInitAssets() {
     }
   }
   const seededExecuteSkill = requireFile("dist/init/skills/default/build-pack-and-execute-task/SKILL.md");
-  if (!seededExecuteSkill.includes("mdkg archive compress --all") || !seededExecuteSkill.includes("mdkg bundle create --profile private")) {
-    fail("dist/init build-pack-and-execute-task skill is missing pre-commit handoff guidance");
+  if (!seededExecuteSkill.includes("separately authorized archive/bundle refresh") || !seededExecuteSkill.includes("do not infer that authority")) {
+    fail("dist/init build-pack-and-execute-task skill is missing authority-separated handoff guidance");
   }
   const goalSkillProjections = [
     ["canonical", ".mdkg/skills/pursue-mdkg-goal/SKILL.md"],

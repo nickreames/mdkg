@@ -1,20 +1,5 @@
-# mdkg agent bootstrap
+# mdkg repository discovery
 
-Read `AGENT_START.md` first.
-
-Key files:
-- `.mdkg/core/SOUL.md`
-- `.mdkg/core/COLLABORATION.md`
-- `.mdkg/core/HUMAN.md` (legacy alias for one release)
-- `.mdkg/README.md`
-- `CLI_COMMAND_MATRIX.md`
-
-First commands:
-- `mdkg search "..."`
-- `mdkg show <id>`
-- `mdkg next`
-- `mdkg pack <id>`
-- `mdkg skill list --tags stage:plan --json`
-- `mdkg validate`
-
-Discovery and show commands also support `--xml`, `--toon`, and `--md` when JSON is not the desired interchange format.
+Start with [focused mdkg guidance](AGENT_START.md).
+Use [workspace layout](README.md) and [command reference](CLI_COMMAND_MATRIX.md)
+only when relevant. This internal file is not a public website discovery asset.

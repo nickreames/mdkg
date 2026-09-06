@@ -4,6 +4,10 @@ import fs from "fs";
 import path from "path";
 const { runInitCommand } = require("../../commands/init");
 const { runUpgradeCommand } = require("../../commands/upgrade");
+function approvedUpgrade(options: { root: string; seedRoot: string; only?: string[] }): any {
+  const preview = runUpgradeCommand(options);
+  return runUpgradeCommand({ ...options, apply: true, planHash: preview.plan_hash });
+}
 const {
   createInitManifest,
   writeInitManifest,
@@ -231,15 +235,15 @@ test("runUpgradeCommand defaults to dry-run and does not write files", () => {
   const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
   runInitCommand({ root, seedRoot: oldSeed, agent: true });
 
-  const before = fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8");
+  const before = fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8");
   const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed })) as {
     dry_run: boolean;
     changes: Array<{ action: string; path: string }>;
   };
 
   assert.equal(receipt.dry_run, true);
-  assert.ok(receipt.changes.some((change) => change.action === "update" && change.path === "AGENT_START.md"));
-  assert.equal(fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"), before);
+  assert.ok(receipt.changes.some((change) => change.action === "update" && change.path === ".mdkg/AGENT_START.md"));
+  assert.equal(fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8"), before);
 });
 
 test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs mirrors", () => {
@@ -247,7 +251,7 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
   const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
   runInitCommand({ root, seedRoot: oldSeed, agent: true });
 
-  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+  const receipt = captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed })) as {
     dry_run: boolean;
     changes: Array<{ action: string; path: string }>;
     safe_to_apply: boolean;
@@ -257,7 +261,7 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
 
   assert.equal(receipt.dry_run, false);
   assert.equal(receipt.safe_to_apply, true);
-  assert.ok(receipt.changes.some((change) => change.action === "update" && change.path === "AGENT_START.md"));
+  assert.ok(receipt.changes.some((change) => change.action === "update" && change.path === ".mdkg/AGENT_START.md"));
   assert.ok(receipt.changes.some((change) => change.action === "create" && change.path === ".mdkg/templates/default/loop.md"));
   assert.ok(
     receipt.changes.some(
@@ -267,7 +271,7 @@ test("runUpgradeCommand apply updates managed assets, writes manifest, and syncs
   assert.ok(receipt.changes.some((change) => change.action === "sync"));
   assert.ok(receipt.will_write_paths.includes(".mdkg/init-manifest.json"));
   assert.ok(receipt.apply_side_effects.some((change) => change.category === "skill_mirror"));
-  assert.match(fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"), /current/);
+  assert.match(fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8"), /current/);
   assert.match(fs.readFileSync(path.join(root, ".mdkg", "templates", "default", "loop.md"), "utf8"), /type: loop/);
   assert.match(
     fs.readFileSync(path.join(root, ".mdkg", "templates", "loops", "security-audit.loop.md"), "utf8"),
@@ -315,23 +319,23 @@ test("runUpgradeCommand preserves customized docs and default skills", () => {
   const root = makeTempDir("mdkg-upgrade-custom-");
   const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
   runInitCommand({ root, seedRoot: oldSeed, agent: true });
-  writeFile(path.join(root, "AGENT_START.md"), "# Custom agent start\n");
+  writeFile(path.join(root, ".mdkg", "AGENT_START.md"), "# Custom agent start\n");
   writeFile(
     path.join(root, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md"),
     "---\nname: select-work-and-ground-context\ndescription: custom local skill\n---\n\n# Custom\n"
   );
 
-  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+  const receipt = captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed })) as {
     changes: Array<{ action: string; path: string }>;
     safe_to_apply: boolean;
     preserved_customizations: Array<{ path: string }>;
     blocking_conflicts: unknown[];
   };
 
-  assert.equal(receipt.safe_to_apply, true);
-  assert.equal(receipt.blocking_conflicts.length, 0);
-  assert.ok(receipt.changes.some((change) => change.action === "conflict" && change.path === "AGENT_START.md"));
-  assert.ok(receipt.preserved_customizations.some((change) => change.path === "AGENT_START.md"));
+  assert.equal(receipt.safe_to_apply, false);
+  assert.ok(receipt.blocking_conflicts.length >= 2);
+  assert.ok(receipt.changes.some((change) => change.action === "conflict" && change.path === ".mdkg/AGENT_START.md"));
+  assert.ok(receipt.preserved_customizations.some((change) => change.path === ".mdkg/AGENT_START.md"));
   assert.ok(
     receipt.changes.some(
       (change) =>
@@ -339,7 +343,7 @@ test("runUpgradeCommand preserves customized docs and default skills", () => {
         change.path === ".mdkg/skills/select-work-and-ground-context/SKILL.md"
     )
   );
-  assert.equal(fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"), "# Custom agent start\n");
+  assert.equal(fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8"), "# Custom agent start\n");
   assert.match(
     fs.readFileSync(
       path.join(root, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md"),
@@ -356,7 +360,7 @@ test("runUpgradeCommand creates collaboration doc and preserves customized human
   fs.rmSync(path.join(root, ".mdkg", "core", "COLLABORATION.md"), { force: true });
   writeFile(path.join(root, ".mdkg", "core", "HUMAN.md"), "# Custom legacy human profile\n");
 
-  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+  const receipt = captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed, only: [".mdkg/core/COLLABORATION.md"] })) as {
     changes: Array<{ action: string; category: string; path: string }>;
     preserved_customizations: Array<{ path: string }>;
   };
@@ -382,7 +386,7 @@ test("runUpgradeCommand migrates legacy config without replacing custom config",
   delete legacyConfig.workspaces;
   writeFile(path.join(root, ".mdkg", "config.json"), JSON.stringify(legacyConfig, null, 2));
 
-  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+  const receipt = captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed })) as {
     changes: Array<{ action: string; path: string }>;
   };
   const config = JSON.parse(fs.readFileSync(path.join(root, ".mdkg", "config.json"), "utf8"));
@@ -434,7 +438,7 @@ test("runUpgradeCommand reports and preserves operator customization overlays", 
   );
   assert.ok(dryRun.preserved_customizations.some((change) => change.category === "customization_overlay"));
 
-  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed }));
   const appliedConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
   assert.deepEqual(appliedConfig.customization.skill_mirrors.targets, [".agents/skills", ".claude/skills", ".codex/skills"]);
   assert.deepEqual(appliedConfig.customization.core_docs.custom_paths, ["standards/COLLABORATION.md"]);
@@ -493,7 +497,7 @@ test("runUpgradeCommand migrates achieved goal active_node to last_active_node",
   );
   assert.match(fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8"), /^active_node: task-1$/m);
 
-  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed }));
   const migrated = fs.readFileSync(path.join(root, ".mdkg", "work", "goal-1.md"), "utf8");
   assert.doesNotMatch(migrated, /^active_node:/m);
   assert.match(migrated, /^last_active_node: task-1$/m);
@@ -534,7 +538,7 @@ test("runUpgradeCommand apply renames legacy SPEC to MANIFEST and normalizes typ
   runInitCommand({ root, seedRoot: currentSeed, agent: true });
   const { sourcePath, targetPath } = writeLegacySpecFixture(root);
 
-  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+  const receipt = captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed })) as {
     dry_run: boolean;
     safe_to_apply: boolean;
     changes: Array<{ action: string; category: string; path: string; target_path?: string }>;
@@ -573,7 +577,7 @@ test("runUpgradeCommand blocks legacy SPEC migration when sibling MANIFEST exist
   const { sourcePath, targetPath } = writeLegacySpecFixture(root);
   writeFile(targetPath, manifestContent());
 
-  const receipt = captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true })) as {
+  const receipt = captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed })) as {
     safe_to_apply: boolean;
     will_write_paths: string[];
     blocking_conflicts: Array<{ action: string; category: string; path: string; target_path?: string }>;
@@ -600,13 +604,13 @@ test("runUpgradeCommand blocks legacy SPEC migration when sibling MANIFEST exist
 test("runUpgradeCommand does not add skills or events to non-agent workspaces", () => {
   const root = makeTempDir("mdkg-upgrade-non-agent-");
   const { oldSeed, currentSeed } = setupCurrentAndLegacySeeds();
-  runInitCommand({ root, seedRoot: oldSeed });
+  runInitCommand({ root, seedRoot: oldSeed, graphOnly: true });
 
-  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed }));
 
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "skills")), false);
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "work", "events", "events.jsonl")), false);
-  assert.equal(fs.existsSync(path.join(root, "AGENT_START.md")), false);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "AGENT_START.md")), false);
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
   assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
 });
@@ -627,7 +631,7 @@ test("runUpgradeCommand repairs legacy agent workspaces missing wrapper docs", (
   assert.ok(dryRun.changes.some((change) => change.action === "create" && change.path === "CLAUDE.md"));
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
 
-  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed }));
   assert.ok(fs.existsSync(path.join(root, "AGENTS.md")));
   assert.ok(fs.existsSync(path.join(root, "CLAUDE.md")));
 });
@@ -665,7 +669,7 @@ test("runUpgradeCommand skips ignored event logs and reports safe apply metadata
   assert.equal(receipt.will_write_paths.includes(".mdkg/work/events/events.jsonl"), false);
   assert.equal(receipt.will_write_paths.includes(".gitignore"), true);
 
-  captureUpgrade(() => runUpgradeCommand({ root, seedRoot: currentSeed, apply: true }));
+  captureUpgrade(() => approvedUpgrade({ root, seedRoot: currentSeed }));
   assert.match(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), /\.mdkg\/archive\/\*\*\/source\//);
   assert.match(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), /\.mdkg\/db\/runtime\//);
   assert.match(fs.readFileSync(path.join(root, ".gitignore"), "utf8"), /\.mdkg\/db\/\*\*\/\*\.sqlite-wal/);

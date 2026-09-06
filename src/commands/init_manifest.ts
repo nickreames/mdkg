@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
+import { appendInstructions, instructionHash, instructionSeed } from "./bootstrap_instructions";
 
 export const INIT_MANIFEST_FILE = "init-manifest.json";
 export const INIT_MANIFEST_SCHEMA_VERSION = 1;
@@ -18,6 +19,7 @@ export type InitManifestFile = {
   path: string;
   category: InitManifestFileCategory;
   sha256: string;
+  managed_section_sha256?: string;
 };
 
 export type InitManifest = {
@@ -79,7 +81,8 @@ function addSeedFile(
   files.push({
     path: toPosixPath(targetPath),
     category,
-    sha256: sha256File(sourcePath),
+    sha256: category === "agent_doc" ? instructionHash(appendInstructions("", fs.readFileSync(sourcePath, "utf8"))) : sha256File(sourcePath),
+    ...(category === "agent_doc" ? { managed_section_sha256: instructionHash(instructionSeed(fs.readFileSync(sourcePath, "utf8"))) } : {}),
   });
 }
 
@@ -102,6 +105,9 @@ function addSeedDir(
 }
 
 export function seedSourcePath(seedRoot: string, file: InitManifestFile): string {
+  if (file.category === "startup_doc" && file.path.startsWith(".mdkg/")) {
+    return path.join(seedRoot, file.path.slice(".mdkg/".length));
+  }
   if (file.path === ".mdkg/config.json") {
     return path.join(seedRoot, "config.json");
   }
@@ -144,7 +150,7 @@ export function createInitManifest(
   }
   if (includeStartupDocs) {
     for (const doc of STARTUP_DOCS) {
-      addSeedFile(files, seedRoot, doc, doc, "startup_doc");
+      addSeedFile(files, seedRoot, doc, `.mdkg/${doc}`, "startup_doc");
     }
   }
   if (includeDefaultSkills) {

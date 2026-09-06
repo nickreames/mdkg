@@ -236,7 +236,8 @@ test("review-003-cand-005 init rejects a linked managed destination", (t) => {
   const outside = makeTempDir("mdkg-security-init-outside-");
   const sentinel = path.join(outside, "AGENT_START.md");
   writeFile(sentinel, "outside\n");
-  if (!linkOrSkip(t, sentinel, path.join(root, "AGENT_START.md"), "file")) return;
+  fs.mkdirSync(path.join(root, ".mdkg"));
+  if (!linkOrSkip(t, sentinel, path.join(root, ".mdkg", "AGENT_START.md"), "file")) return;
 
   runRejected(root, ["init", "--agent", "--json"]);
   assert.equal(fs.readFileSync(sentinel, "utf8"), "outside\n");

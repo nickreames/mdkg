@@ -125,12 +125,12 @@ function assertManifestPathsExistAndMatch(root: string): Array<{ path: string; c
   return manifest.files;
 }
 
-test("runInitCommand copies seed assets, creates directories, and updates ignores by default", () => {
+test("runInitCommand graph-only copies seed assets and updates ignores by default", () => {
   const root = makeTempDir("mdkg-init-root-");
   const seed = makeTempDir("mdkg-init-seed-");
   setupSeed(seed);
 
-  runInitCommand({ root, seedRoot: seed });
+  runInitCommand({ root, seedRoot: seed, graphOnly: true });
 
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "config.json")));
   assert.ok(fs.existsSync(path.join(root, ".mdkg", "README.md")));
@@ -152,7 +152,7 @@ test("runInitCommand copies seed assets, creates directories, and updates ignore
   assert.equal(manifest.files.some((file: { category: string }) => file.category === "agent_doc"), false);
   assert.equal(manifest.files.some((file: { category: string }) => file.category === "startup_doc"), false);
   assert.equal(manifest.files.some((file: { category: string }) => file.category === "default_skill"), false);
-  assert.equal(fs.existsSync(path.join(root, "AGENT_START.md")), false);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "AGENT_START.md")), false);
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
   assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
   assertManifestPathsExistAndMatch(root);
@@ -182,13 +182,13 @@ test("runInitCommand agent mode creates complete startup and wrapper docs", () =
 
   assert.ok(fs.existsSync(path.join(root, "AGENTS.md")));
   assert.ok(fs.existsSync(path.join(root, "CLAUDE.md")));
-  assert.ok(fs.existsSync(path.join(root, "llms.txt")));
-  assert.ok(fs.existsSync(path.join(root, "AGENT_START.md")));
-  assert.ok(fs.existsSync(path.join(root, "CLI_COMMAND_MATRIX.md")));
+  assert.ok(fs.existsSync(path.join(root, ".mdkg", "llms.txt")));
+  assert.ok(fs.existsSync(path.join(root, ".mdkg", "AGENT_START.md")));
+  assert.ok(fs.existsSync(path.join(root, ".mdkg", "CLI_COMMAND_MATRIX.md")));
   const manifestFiles = assertManifestPathsExistAndMatch(root);
   assert.ok(manifestFiles.some((file) => file.path === "AGENTS.md" && file.category === "agent_doc"));
   assert.ok(manifestFiles.some((file) => file.path === "CLAUDE.md" && file.category === "agent_doc"));
-  assert.ok(manifestFiles.some((file) => file.path === "AGENT_START.md" && file.category === "startup_doc"));
+  assert.ok(manifestFiles.some((file) => file.path === ".mdkg/AGENT_START.md" && file.category === "startup_doc"));
   assert.ok(
     manifestFiles.some(
       (file) => file.path === ".mdkg/skills/select-work-and-ground-context/SKILL.md" && file.category === "default_skill"
@@ -201,7 +201,7 @@ test("runInitCommand supports global ignore opt-out", () => {
   const seed = makeTempDir("mdkg-init-no-ignores-seed-");
   setupSeed(seed, false);
 
-  runInitCommand({ root, seedRoot: seed, noUpdateIgnores: true });
+  runInitCommand({ root, seedRoot: seed, graphOnly: true, noUpdateIgnores: true });
 
   assert.equal(fs.existsSync(path.join(root, ".gitignore")), false);
   assert.equal(fs.existsSync(path.join(root, ".npmignore")), false);
@@ -216,6 +216,7 @@ test("runInitCommand explicit ignore flags override global opt-out", () => {
     root,
     seedRoot: seed,
     noUpdateIgnores: true,
+    graphOnly: true,
     updateGitignore: true,
     updateDockerignore: true,
   });
@@ -243,9 +244,9 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   const claudeSkillsPath = path.join(root, ".claude", "skills");
   const agentsDocPath = path.join(root, "AGENTS.md");
   const claudeDocPath = path.join(root, "CLAUDE.md");
-  const agentStartPath = path.join(root, "AGENT_START.md");
-  const cliMatrixPath = path.join(root, "CLI_COMMAND_MATRIX.md");
-  const llmsPath = path.join(root, "llms.txt");
+  const agentStartPath = path.join(root, ".mdkg", "AGENT_START.md");
+  const cliMatrixPath = path.join(root, ".mdkg", "CLI_COMMAND_MATRIX.md");
+  const llmsPath = path.join(root, ".mdkg", "llms.txt");
 
   assert.ok(fs.existsSync(soulPath));
   assert.ok(fs.existsSync(collaborationPath));
@@ -300,8 +301,8 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.match(authorSkill, /customization\.skill_mirrors\.targets/);
 
   const executeSkill = fs.readFileSync(executeSkillPath, "utf8");
-  assert.match(executeSkill, /mdkg archive compress --all/);
-  assert.match(executeSkill, /mdkg bundle create --profile private/);
+  assert.match(executeSkill, /separately authorized archive\/bundle refresh/);
+  assert.match(executeSkill, /do not infer that authority/);
 
   const reviewSkill = fs.readFileSync(reviewSkillPath, "utf8");
   assert.match(reviewSkill, /Bundle-Aware Commit Gate/);
@@ -315,11 +316,11 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.doesNotMatch(gitignore, /\.mdkg\/work\/events\/\*\.jsonl/);
 
   const agentStart = fs.readFileSync(agentStartPath, "utf8");
-  assert.match(agentStart, /\.mdkg\/core\/SOUL\.md/);
-  assert.match(agentStart, /\.mdkg\/core\/COLLABORATION\.md/);
-  assert.match(agentStart, /\.mdkg\/core\/HUMAN\.md.*legacy alias/);
-  assert.match(agentStart, /select-work-and-ground-context/);
-  assert.match(agentStart, /markdown edits for narrative\/body updates/);
+  assert.match(agentStart, /core\/SOUL\.md/);
+  assert.match(agentStart, /core\/COLLABORATION\.md/);
+  assert.match(agentStart, /legacy preferences.*core\/HUMAN\.md/);
+  assert.match(agentStart, /mdkg skill search/);
+  assert.match(agentStart, /Never load the whole command/);
 
   const cliMatrix = fs.readFileSync(cliMatrixPath, "utf8");
   assert.match(cliMatrix, /mdkg new manifest "<title>" \[options\] \[--json\]/);
@@ -387,9 +388,9 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
 
 test("runInitCommand base init passes doctor and validate without agent bootstrap", () => {
   const root = makeTempDir("mdkg-init-base-health-");
-  runInitCommand({ root });
+  runInitCommand({ root, graphOnly: true });
 
-  assert.equal(fs.existsSync(path.join(root, "AGENT_START.md")), false);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "AGENT_START.md")), false);
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "skills")), false);
   assertManifestPathsExistAndMatch(root);
   captureConsole(() => runDoctorCommand({ root }));
@@ -410,7 +411,7 @@ test("runInitCommand mirror collision preflight fails before seed writes", () =>
     /already exists and is not mdkg-managed/
   );
   assert.equal(fs.existsSync(path.join(root, ".mdkg")), false);
-  assert.equal(fs.existsSync(path.join(root, "AGENT_START.md")), false);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "AGENT_START.md")), false);
 });
 
 test("runInitCommand preflights mirror collisions for existing canonical skills", () => {
@@ -429,7 +430,7 @@ test("runInitCommand preflights mirror collisions for existing canonical skills"
     /already exists and is not mdkg-managed/
   );
   assert.equal(fs.existsSync(path.join(root, ".mdkg", "config.json")), false);
-  assert.equal(fs.existsSync(path.join(root, "AGENT_START.md")), false);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "AGENT_START.md")), false);
 });
 
 test("published init seed config remains root-only", () => {

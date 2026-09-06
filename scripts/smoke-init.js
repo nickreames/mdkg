@@ -163,10 +163,10 @@ function assertNoImmediateUpgrade(binPath, root) {
 
 function assertNoRemovedInitGuidance(root) {
   for (const relativePath of [
-    "AGENT_START.md",
+    ".mdkg/AGENT_START.md",
     "AGENTS.md",
     "CLAUDE.md",
-    "CLI_COMMAND_MATRIX.md",
+    ".mdkg/CLI_COMMAND_MATRIX.md",
     ".mdkg/README.md",
   ]) {
     const absolute = path.join(root, relativePath);
@@ -235,7 +235,7 @@ function exerciseMirrorCollision(binPath, tempRoot) {
 function exerciseBaseInit(binPath, tempRoot) {
   const root = path.join(tempRoot, "base-init");
   initGit(root);
-  const init = mdkg(binPath, ["init"], root);
+  const init = mdkg(binPath, ["init", "--graph-only"], root);
   assertIncludes(init.stdout, "managed manifest:", "base init output");
   assertExists(path.join(root, ".mdkg", "config.json"));
   assertExists(path.join(root, ".mdkg", "README.md"));
@@ -353,17 +353,17 @@ function exerciseDbInit(binPath, tempRoot) {
 function exerciseAgentInit(binPath, tempRoot) {
   const root = path.join(tempRoot, "agent-init");
   initGit(root);
-  const init = mdkg(binPath, ["init", "--agent"], root);
+  const init = mdkg(binPath, ["init"], root);
   assertIncludes(init.stdout, "agent bootstrap:", "agent init output");
   assertIncludes(init.stdout, "skill mirrors:", "agent init output");
   assertSpikeTemplate(root, "agent init");
   assertManifestTemplate(root, "agent init");
   for (const relativePath of [
-    "AGENT_START.md",
+    ".mdkg/AGENT_START.md",
     "AGENTS.md",
     "CLAUDE.md",
-    "llms.txt",
-    "CLI_COMMAND_MATRIX.md",
+    ".mdkg/llms.txt",
+    ".mdkg/CLI_COMMAND_MATRIX.md",
     ".mdkg/skills/author-mdkg-skill/SKILL.md",
     ".mdkg/skills/select-work-and-ground-context/SKILL.md",
     ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
@@ -396,19 +396,19 @@ function exerciseAgentInit(binPath, tempRoot) {
     "mirrored verify-close-and-checkpoint skill"
   );
   assertIncludes(
-    fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
-    "mdkg subgraph add/list/verify",
-    "seeded AGENT_START subgraph guidance"
+    fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8"),
+    "mdkg skill search",
+    "seeded router focused discovery"
   );
   assertIncludes(
-    fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
-    "mdkg manifest list/show/validate",
-    "seeded AGENT_START manifest guidance"
+    fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8"),
+    "mdkg help",
+    "seeded router command discovery"
   );
   assertIncludes(
-    fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8"),
-    "deterministic triggers",
-    "seeded AGENT_START work trigger guidance"
+    fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8"),
+    "Existing user instructions",
+    "seeded router authority"
   );
   assertIncludes(
     fs.readFileSync(path.join(root, ".mdkg", "README.md"), "utf8"),
@@ -426,17 +426,17 @@ function exerciseAgentInit(binPath, tempRoot) {
     "seeded .mdkg README work trigger guidance"
   );
   assertIncludes(
-    fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
+    fs.readFileSync(path.join(root, ".mdkg", "CLI_COMMAND_MATRIX.md"), "utf8"),
     "mdkg new manifest",
     "seeded CLI matrix manifest guidance"
   );
   assertIncludes(
-    fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
+    fs.readFileSync(path.join(root, ".mdkg", "CLI_COMMAND_MATRIX.md"), "utf8"),
     "work trigger --enqueue",
     "seeded CLI matrix queue bridge guidance"
   );
   assertIncludes(
-    fs.readFileSync(path.join(root, "CLI_COMMAND_MATRIX.md"), "utf8"),
+    fs.readFileSync(path.join(root, ".mdkg", "CLI_COMMAND_MATRIX.md"), "utf8"),
     "linkage",
     "seeded CLI matrix linkage guidance"
   );
