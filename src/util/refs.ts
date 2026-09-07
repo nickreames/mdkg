@@ -1,4 +1,5 @@
 import { isPortableIdRef } from "./id";
+import { parseIdentityRef } from "../graph/identity";
 
 const URI_RE = /^[a-z][a-z0-9+.-]*:\/\/\S+$/i;
 const ARCHIVE_URI_RE = /^archive:\/\/([a-z][a-z0-9_]*(?:[._-][a-z0-9_]+)*)$/;
@@ -29,6 +30,7 @@ export function isPortableOrUriRef(value: string): boolean {
 }
 
 export function validatePortableOrUriRef(value: string): boolean {
+  if (/^mdkg:/i.test(value)) return Boolean(parseIdentityRef(value));
   if (isUriRef(value)) {
     if (value.startsWith("archive://")) {
       return archiveIdFromUri(value) !== undefined;

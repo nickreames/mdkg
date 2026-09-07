@@ -1,5 +1,10 @@
-import { appendEvent, ensureEventsEnabled, EventStatus, normalizeEventRefList, normalizeEventStringList } from "./event_support";
+import { appendEvent, ensureEventsEnabled, EventStatus, normalizeEventRefList, normalizeEventStringList, normalizeWorkspaceForEvents } from "./event_support";
 import { UsageError } from "../util/errors";
+import { loadConfig } from "../core/config";
+import { readGraphFormat } from "../graph/identity";
+import { loadIndex } from "../graph/index_cache";
+import { bindAuthoredIdentityReferences } from "../graph/identity_authoring";
+import { withMutationLock } from "../util/lock";
 
 export type EventEnableCommandOptions = {
   root: string;
@@ -57,13 +62,28 @@ function normalizeEventStatus(value: string): EventStatus {
 }
 
 export function runEventAppendCommand(options: EventAppendCommandOptions): void {
+  const config = loadConfig(options.root);
+  if (readGraphFormat(options.root).format_version === 2) {
+    return withMutationLock(options.root, config.index.lock_timeout_ms, () => runEventAppendCommandLocked(options));
+  }
+  return runEventAppendCommandLocked(options);
+}
+
+function runEventAppendCommandLocked(options: EventAppendCommandOptions): void {
   const kind = options.kind.trim();
   if (!kind) {
     throw new UsageError("--kind is required");
   }
-  const refs = normalizeEventRefList(options.refs);
+  let refs = normalizeEventRefList(options.refs);
   if (refs.length === 0) {
     throw new UsageError("--refs requires at least one id or qid");
+  }
+
+  if (readGraphFormat(options.root).format_version === 2) {
+    const config = loadConfig(options.root);
+    const ws = normalizeWorkspaceForEvents(config, options.ws);
+    const { index } = loadIndex({ root: options.root, config, persistReindex: false });
+    refs = bindAuthoredIdentityReferences(index, ws, { refs }).refs as string[];
   }
 
   const record = appendEvent({

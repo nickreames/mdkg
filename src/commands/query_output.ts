@@ -1,12 +1,16 @@
 import { IndexNode } from "../graph/indexer";
 import { FrontmatterValue } from "../graph/frontmatter";
 import { SkillIndexEntry } from "../graph/skills_indexer";
+import { identityRef, NodeIdentity } from "../graph/identity";
 
 export type QueryOutputFormat = "json" | "xml" | "toon" | "md";
 
 export type NodeSummaryJson = {
   id: string;
   qid: string;
+  alias_qid?: string;
+  identity?: NodeIdentity;
+  stable_ref?: string;
   ws: string;
   type: string;
   title: string;
@@ -58,6 +62,8 @@ export function toNodeSummaryJson(node: IndexNode): NodeSummaryJson {
   return {
     id: node.id,
     qid: node.qid,
+    ...(node.alias_qid ? { alias_qid: node.alias_qid } : {}),
+    ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}),
     ws: node.ws,
     type: node.type,
     title: node.title,

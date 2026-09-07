@@ -71,6 +71,7 @@ export function loadCapabilityRecords(options: CapabilityListOptions): Capabilit
   if (stale && !rebuilt && !options.noCache) {
     console.error("warning: capabilities index is stale; run mdkg index to refresh");
   }
+  for (const warning of index.meta.inspection_errors ?? []) console.error(`warning: ${warning}`);
   const subgraph = buildSubgraphCapabilityRecords(options.root, config);
   for (const warning of subgraph.warnings) {
     console.error(`warning: ${warning}`);
@@ -254,10 +255,9 @@ function printCapabilityList(records: CapabilityRecord[], json?: boolean, query?
 
 export function resolveCapabilityRecord(records: CapabilityRecord[], id: string): CapabilityRecord {
   const normalized = id.toLowerCase();
-  const exact = records.find((record) => record.qid === id || record.id === id);
-  if (exact) {
-    return exact;
-  }
+  const exact = records.filter((record) => record.qid === id || record.id === id || record.stable_ref === id || record.alias_qid === id);
+  if (exact.length === 1) return exact[0];
+  if (exact.length > 1) throw new UsageError(`capability reference is ambiguous: ${id}`);
   const matches = records.filter(
     (record) =>
       record.slug === normalized ||

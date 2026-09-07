@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { authorNewIdentityNode } from "../graph/identity_authoring";
 import { loadConfig, Config } from "../core/config";
 import { loadIndex } from "../graph/index_cache";
 import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
@@ -18,6 +19,7 @@ import { withMutationLock } from "../util/lock";
 import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
 import { writeDerivedIndexes } from "../graph/reindex";
 import { appendAutomaticEvent } from "./event_support";
+import { assertNodeFormat, identityRef, newIdentityUuid, NodeIdentity, parseIdentityRef, readGraphFormat, readNodeIdentity } from "../graph/identity";
 
 export type NewCommandOptions = {
   root: string;
@@ -65,6 +67,8 @@ type NewNodeReceipt = {
   title: string;
   status?: string;
   priority?: number;
+  identity?: NodeIdentity;
+  stable_ref?: string;
 };
 
 type LoopTemplateSuggestion = {
@@ -350,6 +354,19 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     throw new UsageError("--id is only valid for agent workflow file types");
   }
 
+  // Reject a known invalid v2 creation before reserving a numeric alias or
+  // writing source. A failed post-write index rebuild must not leave a second
+  // active goal that makes the ordinary branch graph unusable.
+  if (type === "goal" && readGraphFormat(options.root).format_version === 2) {
+    const statuses = config.work.status_enum.map((value) => value.toLowerCase());
+    const proposed = options.status?.toLowerCase() ?? (statuses.includes("progress") ? "progress" : statuses[0]);
+    if (proposed === "progress" && Object.values(index.nodes).some((node) =>
+      node.ws === ws && node.type === "goal" && !node.source?.imported &&
+      node.status === "progress" && node.attributes.goal_state === "active")) {
+      throw new UsageError("an active goal already exists in this workspace; create the new goal with --status todo or explicitly pause the existing goal");
+    }
+  }
+
   const prefix = idPrefixForType(type);
   const id = options.id !== undefined
     ? normalizeAgentFileId(options.id)
@@ -462,7 +479,10 @@ function runNewCommandLocked(options: NewCommandOptions): void {
 
   if (type === "dec" && options.supersedes) {
     const supersedes = options.supersedes.toLowerCase();
-    if (!DEC_ID_RE.test(supersedes)) {
+    if (parseIdentityRef(supersedes)) {
+      const resolved = resolveQid(index, supersedes);
+      if (resolved.status !== "ok" || index.nodes[resolved.qid].type !== "dec") throw new UsageError("--supersedes identity must resolve to one decision node");
+    } else if (!DEC_ID_RE.test(supersedes)) {
       throw new UsageError("--supersedes must be a dec-# id");
     }
   } else if (options.supersedes && type !== "dec") {
@@ -532,13 +552,20 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     created: today,
     updated: today,
   });
-  const content = mergeRenderedFrontmatter(renderedContent, filePath, {
+  const graphFormat = readGraphFormat(options.root);
+  const identity: NodeIdentity | undefined = graphFormat.format_version === 2
+    ? { graph_id: graphFormat.graph_id, node_id: newIdentityUuid() } : undefined;
+  const authoredContent = mergeRenderedFrontmatter(renderedContent, filePath, {
+    graph_id: identity?.graph_id,
+    node_id: identity?.node_id,
     contract_profile: contractProfile,
     validation_policy_ref: validationPolicyRef,
     evidence_policy_ref: evidencePolicyRef,
     receipt_kind: receiptKind,
     redaction_class: redactionClass,
   });
+  const { content } = authorNewIdentityNode(options.root, index, ws, authoredContent, filePath);
+  assertNodeFormat(graphFormat, readNodeIdentity(parseFrontmatter(content, filePath).frontmatter, filePath), filePath);
 
   try {
     writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, content);
@@ -560,7 +587,7 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     ws,
     kind: "NODE_CREATED",
     status: "ok",
-    refs: [id],
+    refs: [identity ? identityRef(identity) : id],
     notes: `node created via mdkg new`,
     runId: options.runId,
     now: options.now,
@@ -574,6 +601,7 @@ function runNewCommandLocked(options: NewCommandOptions): void {
     path: relativePath,
     type,
     title,
+    ...(identity ? { identity, stable_ref: identityRef(identity) } : {}),
     ...(status ? { status } : {}),
     ...(priority !== undefined ? { priority } : {}),
   };

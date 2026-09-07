@@ -111,6 +111,12 @@ const VALUE_FLAGS = new Set([
   "--family",
   "--start-goal",
   "--id-prefix",
+  "--graph-id",
+  "--origin",
+  "--ancestor",
+  "--incoming",
+  "--decisions",
+  "--plan-hash",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -124,6 +130,7 @@ const BOOLEAN_FLAGS = new Set([
   "--graph-only",
   "--resume",
   "--recover",
+  "--rollback",
   "--force",
   "--update-gitignore",
   "--update-npmignore",
@@ -273,7 +280,7 @@ export function parseArgs(argv: string[]): ParsedArgs {
       }
 
       if (supportsBoolean) {
-        result.flags[flag] = true;
+        result.flags[flag] = inlineValue ?? true;
         continue;
       }
 

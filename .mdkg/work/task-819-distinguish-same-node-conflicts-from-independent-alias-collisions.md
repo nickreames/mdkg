@@ -2,12 +2,12 @@
 id: task-819
 type: task
 title: Distinguish same-node conflicts from independent alias collisions
-status: todo
+status: done
 priority: 1
 epic: epic-83
 parent: goal-82
-tags: [alignment-002, implementation-unapproved]
-owners: []
+tags: [alignment-002, execution-authorized]
+owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
@@ -15,18 +15,19 @@ blocked_by: [task-363]
 blocks: []
 refs: [edd-81, dec-93, goal-17]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-565]
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-09-05
-updated: 2026-09-05
+updated: 2026-09-06
 ---
 
 # Overview
 
 First collaboration correctness increment: distinguish independently created
 nodes from conflicting edits to one ancestor node before proposing alias repair.
-This is not the complete identity slice. Future implementation, unclaimed.
+This is not the complete identity slice. Execution authorized by the user's
+explicit Goal 82 Run instruction; owned by mdkg-project-agent.
 
 # Acceptance Criteria
 
@@ -41,13 +42,14 @@ This is not the complete identity slice. Future implementation, unclaimed.
 
 # Files Affected
 
-Future src/commands/fix.ts and tests/commands/fix.test.ts; CLI contract if needed.
+src/commands/fix.ts, tests/commands/fix.test.ts, src/cli.ts, CLI command matrix,
+packaged repair smoke and the mirrored graph-movement documentation.
 
 # Implementation Notes
 
-Current source at baseline 9652b855 selects stages 2/3 and matching ids without
-checking a shared ancestor first. This is static evidence, not a reproduced test
-result. Complete the fixtures before changing classification.
+Baseline behavior reproduced before implementation, including same-node splitting
+and implicit Git staging. The corrected classifier and 27 focused fixtures pass;
+see chk-565 for exact evidence and remaining identity-slice boundaries.
 
 # Test Plan
 
@@ -57,4 +59,4 @@ Covered further by test-476 and test-151.
 
 # Links / Artifacts
 
-- edd-81, goal-17, goal-82; proof pending.
+- edd-81, goal-17, goal-82; test proof: chk-565.

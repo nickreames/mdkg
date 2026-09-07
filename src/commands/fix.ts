@@ -19,11 +19,12 @@ import { resolveSubgraphsIndexPath, isSubgraphsIndexStale } from "../graph/subgr
 import { buildIndex, Index } from "../graph/indexer";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
 import { loadTemplateSchemas } from "../graph/template_schema";
-import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
+import { getWorkspaceDocRoots, listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
 import { withMutationLock } from "../util/lock";
 import { rebuildDerivedIndexCaches } from "./index";
+import { readGraphFormat } from "../graph/identity";
 
 export type FixFamily = "index" | "refs" | "ids" | "all";
 
@@ -140,7 +141,10 @@ function rel(root: string, target: string): string {
 }
 
 function runGit(root: string, args: string[]): string | undefined {
-  const result = spawnSync("git", args, { cwd: root, encoding: "utf8" });
+  const result = spawnSync("git", args, {
+    cwd: root, encoding: "utf8", maxBuffer: 16 * 1024 * 1024,
+    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" },
+  });
   if (result.status !== 0) {
     return undefined;
   }
@@ -790,18 +794,14 @@ function candidateDuplicateId(baseId: string, used: Set<string>): string {
 }
 
 function gitShow(root: string, refPath: string): string | undefined {
-  const result = spawnSync("git", ["show", refPath], { cwd: root, encoding: "utf8" });
+  const result = spawnSync("git", ["show", refPath], {
+    cwd: root, encoding: "utf8", maxBuffer: 16 * 1024 * 1024,
+    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" },
+  });
   if (result.status !== 0) {
     return undefined;
   }
   return result.stdout;
-}
-
-function runGitStrict(root: string, args: string[]): void {
-  const result = spawnSync("git", args, { cwd: root, encoding: "utf8" });
-  if (result.status !== 0) {
-    throw new UsageError(`git ${args.join(" ")} failed: ${(result.stderr || result.stdout).trim() || "unknown error"}`);
-  }
 }
 
 function baseRefIdPaths(root: string, baseRef: string | undefined, files: string[], config: ReturnType<typeof loadConfig>) {
@@ -892,11 +892,18 @@ type GitStageEntry = {
   path: string;
 };
 
-function gitConflictStages(root: string): Map<string, GitStageEntry[]> {
-  const output = runGit(root, ["ls-files", "-u", "--", ".mdkg"]) ?? "";
+function gitConflictStages(root: string, config: ReturnType<typeof loadConfig>): Map<string, GitStageEntry[]> {
+  const roots = getWorkspaceDocRoots(root, config).map((entry) => rel(root, entry.root));
+  const output = runGit(root, ["ls-files", "-u", "-z", "--", ...roots]);
   const groups = new Map<string, GitStageEntry[]>();
-  for (const line of output.split(/\r?\n/).filter(Boolean)) {
-    const match = /^([0-7]+) ([0-9a-f]+) ([123])\t(.+)$/.exec(line);
+  if (output === undefined) {
+    if (runGit(root, ["rev-parse", "--is-inside-work-tree"]) === "true") {
+      throw new UsageError("unable to inventory Git conflict stages; no repair is safe");
+    }
+    return groups;
+  }
+  for (const line of output.split("\0").filter(Boolean)) {
+    const match = /^([0-7]+) ([0-9a-f]+) ([123])\t([\s\S]+)$/.exec(line);
     if (!match || !match[4].endsWith(".md")) {
       continue;
     }
@@ -909,6 +916,61 @@ function gitConflictStages(root: string): Map<string, GitStageEntry[]> {
     groups.set(entry.path, [...(groups.get(entry.path) ?? []), entry]);
   }
   return groups;
+}
+
+// An absent stage 1 at this path is not proof of a new node: a rename can
+// move an ancestor node here. Inventory the entire accepted ancestor graph.
+function gitConflictAncestor(root: string, config: ReturnType<typeof loadConfig>, baseRef: string | undefined) {
+  const target = runGit(root, ["rev-parse", "--verify", "HEAD^{commit}"]);
+  const incoming = runGit(root, ["rev-parse", "--verify", "MERGE_HEAD^{commit}"]);
+  if (!target || !incoming) {
+    throw new UsageError("independent creation requires a two-parent merge with an identifiable common ancestor");
+  }
+  const bases = (runGit(root, ["merge-base", "--all", target, incoming]) ?? "").split(/\r?\n/).filter(Boolean);
+  if (bases.length !== 1) {
+    throw new UsageError("missing or ambiguous common ancestor; semantic reconciliation is required");
+  }
+  const ancestor = bases[0];
+  if (baseRef && runGit(root, ["rev-parse", "--verify", `${baseRef}^{commit}`]) !== ancestor) {
+    throw new UsageError("--base-ref must match the unique merge ancestor for Git-stage repair");
+  }
+  const ancestorConfig = gitShow(root, `${ancestor}:.mdkg/config.json`);
+  if (!ancestorConfig || stableJson(JSON.parse(ancestorConfig).workspaces) !== stableJson(config.workspaces)) {
+    throw new UsageError("workspace ownership differs from the ancestor; establish an explicit mapping before repair");
+  }
+  const roots = getWorkspaceDocRoots(root, config);
+  const templates = loadTemplateSchemas(root, config, ALLOWED_TYPES);
+  const ids = new Map<string, string[]>();
+  let files = 0;
+  let bytes = 0;
+  for (const workspace of roots) {
+    const wsPath = rel(root, workspace.root);
+    const output = runGit(root, ["ls-tree", "-r", "-z", ancestor, "--", ...["core", "design", "work", "archive"].map((folder) => `${wsPath}/${folder}`)]);
+    if (output === undefined) throw new UsageError("unable to inventory ancestor graph");
+    for (const entry of output.split("\0").filter(Boolean)) {
+      const match = /^(\d+) blob ([0-9a-f]+)\t([\s\S]+)$/.exec(entry);
+      if (!match || !match[3].endsWith(".md")) continue;
+      const filePath = match[3];
+      if (filePath === `${wsPath}/core/core.md` ||
+        (filePath.startsWith(`${wsPath}/archive/`) && filePath.slice(`${wsPath}/archive/`.length).split("/").includes("source"))) continue;
+      if (!/^100(644|755)$/.test(match[1])) throw new UsageError(`non-regular ancestor node: ${filePath}`);
+      const content = gitShow(root, `${ancestor}:${filePath}`);
+      if (content === undefined) throw new UsageError(`unreadable ancestor node: ${filePath}`);
+      const size = Buffer.byteLength(content);
+      files += 1;
+      bytes += size;
+      if (size > config.index.limits.max_file_bytes || files > config.index.limits.max_files || bytes > config.index.limits.max_total_bytes) {
+        throw new UsageError("ancestor graph exceeds configured discovery limits");
+      }
+      const node = parseNode(content, path.resolve(root, filePath), {
+        workStatusEnum: config.work.status_enum, priorityMin: config.work.priority_min,
+        priorityMax: config.work.priority_max, templateSchemas: templates,
+      });
+      const qid = `${workspace.alias}:${node.id}`;
+      ids.set(qid, [...(ids.get(qid) ?? []), filePath]);
+    }
+  }
+  return { ancestor, target, incoming, ids };
 }
 
 function workspaceAliasForPath(root: string, config: ReturnType<typeof loadConfig>, relativePath: string): string | undefined {
@@ -983,28 +1045,57 @@ function planGitStageDuplicateIdRepairs(
   root: string,
   target: string | undefined,
   config: ReturnType<typeof loadConfig>,
+  conflicts: Map<string, GitStageEntry[]>,
+  baseRef: string | undefined,
   usedIdsByAlias: Map<string, Set<string>>,
   usedPaths: Set<string>,
   startIndex: number
-): { proposed: FixPlanChange[]; matchedTarget: boolean } {
+): { proposed: FixPlanChange[]; blocked: FixPlanChange[]; matchedTarget: boolean } {
   const templateSchemas = loadTemplateSchemas(root, config, ALLOWED_TYPES);
   const proposed: FixPlanChange[] = [];
+  const blocked: FixPlanChange[] = [];
   let matchedTarget = false;
-  for (const [relativePath, stages] of [...gitConflictStages(root).entries()].sort(([a], [b]) => a.localeCompare(b))) {
+  let ancestry: ReturnType<typeof gitConflictAncestor> | undefined;
+  let ancestryError: string | undefined;
+  if (conflicts.size > 0) {
+    try { ancestry = gitConflictAncestor(root, config, baseRef); }
+    catch (error) { ancestryError = error instanceof Error ? error.message : String(error); }
+  }
+  for (const [relativePath, stages] of [...conflicts.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+    const base = stages.find((entry) => entry.stage === 1);
     const ours = stages.find((entry) => entry.stage === 2);
     const theirs = stages.find((entry) => entry.stage === 3);
-    if (!ours || !theirs) {
-      continue;
-    }
     const alias = workspaceAliasForPath(root, config, relativePath);
     if (!alias) {
       continue;
     }
-    const oursContent = gitShow(root, `:2:${relativePath}`);
-    const theirsContent = gitShow(root, `:3:${relativePath}`);
-    if (oursContent === undefined || theirsContent === undefined) {
+    const contents = stages.map((entry) => gitShow(root, `:${entry.stage}:${relativePath}`));
+    const ids = Array.from(new Set(contents.flatMap((content) => {
+      const match = content && /^id:\s*([a-z]+-\d+)\s*$/m.exec(content);
+      return match ? [match[1]] : [];
+    })));
+    const targetMatches = !target || target === relativePath || ids.length === 0 ||
+      ids.some((id) => target.toLowerCase() === id || target.toLowerCase() === `${alias}:${id}`);
+    if (!targetMatches) continue;
+    matchedTarget = true;
+    const refuse = (reason: string, detail: string, ancestorPaths: string[] = []) => blocked.push({
+      id: `ids.git.blocked.${String(blocked.length + 1).padStart(3, "0")}`,
+      family: "ids", risk: "blocked", status: "blocked", reason,
+      paths: [relativePath], refs: ids.map((id) => `${alias}:${id}`), apply_supported: false,
+      evidence: { detail, stages, ancestor: ancestry?.ancestor ?? null, ancestor_paths: ancestorPaths,
+        stage_roles: "positional Git stages; not branch names or authority", git_staging: "unchanged" },
+    });
+    if (base || !ours || !theirs) {
+      refuse(base && ours && theirs ? "git_same_node_conflict" : "git_delete_or_rename_conflict",
+        "existing ancestor or incomplete stages require a semantic decision, not alias splitting");
       continue;
     }
+    if (stages.some((entry) => !/^100(644|755)$/.test(entry.mode)) || contents.some((content) => content === undefined)) {
+      refuse("git_unsupported_stage", "only readable regular-file node stages can be classified");
+      continue;
+    }
+    const oursContent = contents[stages.indexOf(ours)]!;
+    const theirsContent = contents[stages.indexOf(theirs)]!;
     try {
       const absPath = path.resolve(root, relativePath);
       const oursNode = parseNode(oursContent, absPath, {
@@ -1020,15 +1111,24 @@ function planGitStageDuplicateIdRepairs(
         templateSchemas,
       });
       if (oursNode.id !== theirsNode.id) {
+        refuse("git_different_node_conflict", "different aliases at one conflicted path need reviewed reconciliation");
         continue;
       }
       const duplicateId = oursNode.id;
       const qid = `${alias}:${duplicateId}`;
-      const targetMatches = !target || target.toLowerCase() === duplicateId || target.toLowerCase() === qid || target === relativePath;
-      if (!targetMatches) {
+      if (!ancestry) {
+        refuse("git_ancestry_unproven", ancestryError ?? "ancestor is unavailable");
         continue;
       }
-      matchedTarget = true;
+      const ancestorPaths = ancestry.ids.get(qid) ?? [];
+      if (ancestorPaths.length > 0) {
+        refuse("git_ancestor_identity_conflict", "alias existed in the common ancestor, possibly at a renamed path", ancestorPaths);
+        continue;
+      }
+      if (!/^<<<<<<< /m.test(readContainedFile({ root, relativePath }))) {
+        refuse("git_worktree_resolution_present", "working-tree conflict markers are absent; preserve the reviewed or manually edited resolution");
+        continue;
+      }
       const usedIds = usedIdsByAlias.get(alias) ?? new Set<string>();
       usedIds.add(oursNode.id);
       usedIds.add(theirsNode.id);
@@ -1044,7 +1144,10 @@ function planGitStageDuplicateIdRepairs(
         paths: [relativePath, candidatePath],
         refs: [qid, `${alias}:${candidate}`].sort(),
         evidence: {
-          conflict_kind: "git_index_unresolved_duplicate_id",
+          conflict_kind: "independent_add_add",
+          ancestor: ancestry.ancestor,
+          target_revision: ancestry.target,
+          incoming_revision: ancestry.incoming,
           workspace: alias,
           duplicate_id: duplicateId,
           conflict_path: relativePath,
@@ -1053,7 +1156,7 @@ function planGitStageDuplicateIdRepairs(
           current_blob: ours.object,
           incoming_blob: theirs.object,
           deterministic_rule:
-            "keep stage 2 at the conflicted path, rewrite stage 3 to the next unused canonical numeric id and path, then git add both files",
+            "keep positional stage 2 at the conflicted path; rewrite stage 3 to the next unused numeric id and path; leave Git staging unchanged",
         },
         before: {
           duplicate_id: duplicateId,
@@ -1071,23 +1174,32 @@ function planGitStageDuplicateIdRepairs(
           canonical_path: relativePath,
           collision_free: true,
           deterministic_rule:
-            "keep stage 2 at the conflicted path, rewrite stage 3 to the next unused canonical numeric id and path, then git add both files",
+            "keep positional stage 2 at the conflicted path; rewrite stage 3 to the next unused numeric id and path; leave Git staging unchanged",
         },
         command_hint: `mdkg fix ids --target ${duplicateId} --apply --json`,
         apply_supported: true,
         apply_kind: "git_stage_duplicate_id_rewrite",
       });
-    } catch {
-      continue;
+    } catch (error) {
+      refuse("git_invalid_node_stage", error instanceof Error ? error.message : String(error));
     }
   }
-  return { proposed, matchedTarget };
+  return { proposed, blocked, matchedTarget };
 }
 
 function planDuplicateIdRepairs(root: string, target: string | undefined, baseRef: string | undefined): FixPlannerResult {
+  if (readGraphFormat(root).format_version === 2) {
+    return { proposed: [], blocked: [{
+      id: "ids.identity.001", family: "ids", risk: "blocked", status: "blocked",
+      reason: "identity_reconciliation_required", paths: [".mdkg/graph.json"], refs: target ? [target] : [],
+      evidence: { detail: "legacy numeric repair cannot rewrite identity-backed graph references; use reviewed identity reconciliation" },
+      apply_supported: false,
+    }] };
+  }
   const config = loadConfig(root);
   const templateSchemas = loadTemplateSchemas(root, config, ALLOWED_TYPES);
   const docsByAlias = listWorkspaceDocFilesByAlias(root, config);
+  const conflicts = gitConflictStages(root, config);
   const proposed: FixPlanChange[] = [];
   const blocked: FixPlanChange[] = [];
   const usedIdsByAlias = new Map<string, Set<string>>();
@@ -1101,6 +1213,7 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
     const basePathsById = baseRefIdPaths(root, baseRef, files, config);
     for (const filePath of files) {
       usedPaths.add(rel(root, filePath));
+      if (conflicts.has(rel(root, filePath))) continue;
       if (path.basename(filePath) === "core.md" && path.basename(path.dirname(filePath)) === "core") {
         continue;
       }
@@ -1117,9 +1230,23 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
           path: rel(root, filePath),
           absPath: filePath,
         });
+        if (target && (target.toLowerCase() === node.id || target.toLowerCase() === `${alias}:${node.id}` || target === rel(root, filePath))) {
+          matchedTarget = true;
+        }
         usedIds.add(node.id);
       } catch {
         continue;
+      }
+    }
+    // A conflicted node may have no parseable working-tree representation.
+    // Reserve all indexed sides before any normal or stage-based allocation.
+    for (const [conflictPath, stages] of conflicts) {
+      usedPaths.add(conflictPath);
+      if (workspaceAliasForPath(root, config, conflictPath) !== alias) continue;
+      for (const stage of stages) {
+        const content = gitShow(root, `:${stage.stage}:${conflictPath}`);
+        const match = content && /^id:\s*([a-z]+-\d+)\s*$/m.exec(content);
+        if (match) usedIds.add(match[1]);
       }
     }
     usedIdsByAlias.set(alias, usedIds);
@@ -1227,11 +1354,14 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
     root,
     target,
     config,
+    conflicts,
+    baseRef,
     usedIdsByAlias,
     usedPaths,
     proposed.length
   );
   proposed.push(...stageRepairs.proposed);
+  blocked.push(...stageRepairs.blocked);
   if (stageRepairs.matchedTarget) {
     matchedTarget = true;
   }
@@ -1436,7 +1566,6 @@ function applyGitStageDuplicateIdChange(root: string, change: FixPlanChange): Fi
   }
   atomicReplaceContainedFile({ root, relativePath: conflictPath }, canonicalContent);
   atomicReplaceContainedFile({ root, relativePath: candidatePath }, rewrittenDuplicate);
-  runGitStrict(root, ["add", "--", conflictPath, candidatePath]);
   return {
     id: change.id,
     family: "ids",
@@ -1474,6 +1603,7 @@ export function collectFixApply(options: FixApplyCommandOptions) {
       action: "fix.apply",
       ok: true,
       schema_version: 1,
+      git_staging: "unchanged",
       root,
       family,
       target: options.target ?? null,

@@ -1,4 +1,5 @@
 import { Index } from "../graph/indexer";
+import { identityRef } from "../graph/identity";
 import { collectGoalScope } from "../graph/goal_scope";
 import { createNodeBodyReader } from "../graph/node_body";
 import { resolveQid } from "../util/qid";
@@ -295,6 +296,8 @@ function buildPackNode(index: Index, qid: string, readBody: (node: Index["nodes"
 
   return {
     qid: node.qid,
+    ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}),
+    ...(node.alias_qid ? { alias_qid: node.alias_qid } : {}),
     id: node.id,
     workspace: node.ws,
     type: node.type,
@@ -355,7 +358,7 @@ function applyMaxNodes(
 }
 
 export function buildPack(options: PackBuildOptions): PackBuildResult {
-  const warnings: string[] = [];
+  const warnings: string[] = [...(options.index.meta.inspection_errors ?? [])];
   const maxTraversalNodes = options.maxTraversalNodes ?? Math.max(1_000, options.maxNodes * 10);
   const includeLatestCheckpoint = options.includeLatestCheckpoint ?? true;
   const { qids, depths } = collectNodes(

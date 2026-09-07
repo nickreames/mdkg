@@ -3,6 +3,9 @@ import fs from "fs";
 import path from "path";
 import { Config, WorkspaceConfig } from "../core/config";
 import { FrontmatterValue } from "./frontmatter";
+import { identityRef, NodeIdentity } from "./identity";
+import { resolveQid } from "../util/qid";
+import { matchesWorkContractPath } from "./identity_refs";
 import { Index, IndexNode, buildIndex } from "./indexer";
 import {
   CANONICAL_MANIFEST_BASENAME,
@@ -28,6 +31,9 @@ export type CapabilityHeading = {
 };
 
 export type CapabilityRecord = {
+  identity?: NodeIdentity;
+  stable_ref?: string;
+  alias_qid?: string;
   kind: CapabilityKind;
   workspace: string;
   visibility: CapabilityVisibility;
@@ -100,6 +106,7 @@ export type CapabilitiesIndex = {
     root: string;
     workspaces: string[];
     record_count: number;
+    inspection_errors?: string[];
   };
   records: CapabilityRecord[];
 };
@@ -195,9 +202,15 @@ function resolveSpecWorkContracts(index: Index, specNode: IndexNode): IndexNode[
   const candidates = new Map<string, IndexNode>();
   const specDir = path.posix.dirname(specNode.path);
   for (const contractPath of toStringList(specNode.attributes.work_contracts)) {
+    const resolved = specNode.identity ? resolveQid(index, contractPath, specNode.ws) : undefined;
+    if (resolved?.status === "ok") {
+      const target = index.nodes[resolved.qid];
+      if (target.type === "work" && target.ws === specNode.ws) candidates.set(target.qid, target);
+      continue;
+    }
     const normalizedPath = path.posix.normalize(path.posix.join(specDir, contractPath));
     for (const node of Object.values(index.nodes)) {
-      if (node.type === "work" && node.ws === specNode.ws && node.path === normalizedPath) {
+      if (node.type === "work" && node.ws === specNode.ws && (node.path === normalizedPath || matchesWorkContractPath(node.path, contractPath))) {
         candidates.set(node.qid, node);
       }
     }
@@ -331,6 +344,8 @@ function nodeCapabilityRecord(
   const content = fs.readFileSync(absolutePath, "utf8");
   const manifest = kind === "spec" ? manifestCapabilityMetadata(node) : undefined;
   const record: CapabilityRecord = {
+    ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}),
+    ...(node.alias_qid ? { alias_qid: node.alias_qid } : {}),
     kind,
     workspace: node.ws,
     visibility: workspaceVisibility(config, node.ws),
@@ -510,6 +525,7 @@ export function buildCapabilitiesIndex(
         .filter((alias) => config.workspaces[alias].enabled)
         .sort(),
       record_count: sortedRecords.length,
+      ...(index.meta.inspection_errors?.length ? { inspection_errors: index.meta.inspection_errors } : {}),
     },
     records: sortedRecords,
   };

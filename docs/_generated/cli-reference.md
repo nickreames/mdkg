@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 600797aa5d6a2187f4e926cbe54dbbe5d76184c8f4aad74f5cfc743d57664379 -->
+<!-- contract-hash: 4fd76e2dae0ba6e83ae0d55914d7078de77f1d6845169532ee2aa078a42ee8ec -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -10,7 +10,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - Tool: mdkg
 - Package version: 0.5.2
 - Schema version: 1
-- Command count: 117
+- Command count: 120
 - Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, loop, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
 
 ## Categories
@@ -27,7 +27,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - git: 8
 - global: 1
 - goal: 13
-- graph: 5
+- graph: 8
 - guide: 1
 - handoff: 1
 - index: 1
@@ -2881,7 +2881,7 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 
 ### Related commands
 
-`mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph refs`
+`mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`, `mdkg graph reconcile`
 
 ## graph clone
 
@@ -2931,7 +2931,7 @@ mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 
 ### Related commands
 
-`mdkg graph`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph refs`
+`mdkg graph`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`, `mdkg graph reconcile`
 
 ## graph fork
 
@@ -2982,7 +2982,7 @@ mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-
 
 ### Related commands
 
-`mdkg graph`, `mdkg graph clone`, `mdkg graph import-template`, `mdkg graph refs`
+`mdkg graph`, `mdkg graph clone`, `mdkg graph import-template`, `mdkg graph migrate`, `mdkg graph reconcile`
 
 ## graph import-template
 
@@ -3036,7 +3036,164 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 
 ### Related commands
 
-`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph refs`
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph migrate`, `mdkg graph reconcile`
+
+## graph migrate
+
+mdkg graph migrate command
+
+- Command: `mdkg graph migrate`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use for graph references, clone/fork/import, and graph movement workflows.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+```
+
+### Common flags
+
+- `--ancestor <ref>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+- `--apply`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+- `--graph-id <uuid>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+- `--help`: --help, -h          Show help
+- `--json`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+- `--origin <uuid>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"flag":"--apply"}
+- Side effects: preview-or-apply-reviewed-identity-migration
+- Read paths: .mdkg/**, <local-git-objects-and-index>
+- Write paths: .mdkg/graph.json, .mdkg/identity/migrations/**, .mdkg/index/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: hash-bound-journal-and-per-file-atomic-writes
+- Receipts: graph-migration-plan, graph-transaction-receipt
+
+### Related commands
+
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph reconcile`
+
+## graph reconcile
+
+mdkg graph reconcile command
+
+- Command: `mdkg graph reconcile`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use for graph references, clone/fork/import, and graph movement workflows.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+```
+
+### Examples
+
+```bash
+mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+```
+
+### Common flags
+
+- `--ancestor <ref>`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--apply`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--decisions <path>`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--help`: --help, -h          Show help
+- `--incoming <ref>`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--json`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--target <HEAD-ref>`: mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true,"flag":"--apply"}
+- Side effects: preview-or-apply-reviewed-identity-reconciliation
+- Read paths: .mdkg/**, <decisions-json>, <local-git-history-and-index>
+- Write paths: .mdkg/identity/**, .mdkg/index/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: hash-bound-journal-and-per-file-atomic-writes
+- Receipts: graph-reconciliation-noop, graph-reconciliation-plan, graph-transaction-receipt
+
+### Related commands
+
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`
+
+## graph recover
+
+mdkg graph recover command
+
+- Command: `mdkg graph recover`
+- Mode: Mutating command
+- Public status: stable / public
+- Danger level: moderate
+
+### When to use
+
+Use for graph references, clone/fork/import, and graph movement workflows.
+
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
+
+### Usage
+
+```text
+mdkg graph recover <plan-hash> [--resume|--rollback] [--json]
+```
+
+### Examples
+
+```bash
+mdkg graph recover <plan-hash> [--resume|--rollback] [--json]
+```
+
+### Common flags
+
+- `--help`: --help, -h          Show help
+- `--json`: mdkg graph recover <plan-hash> [--resume|--rollback] [--json]
+- `--resume`: mdkg graph recover <plan-hash> [--resume|--rollback] [--json]
+- `--root`: --root, -r <path>   Run against a specific repo root
+- `--version`: --version, -V       Show version
+
+### Output and safety
+
+- Output formats: text, json
+- Dry run: {"supported":true,"default":true}
+- Side effects: inspect-or-resume-or-roll-back-reviewed-graph-transaction
+- Read paths: .mdkg/**, <local-git-objects-and-index>
+- Write paths: .mdkg/graph.json, .mdkg/identity/**, .mdkg/index/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
+- Lock policy: mutation-lock-required-for-resume-or-rollback
+- Atomic write policy: exact-owned-before-after-bytes-only
+- Receipts: graph-transaction-inspect, graph-transaction-receipt
+
+### Related commands
+
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`
 
 ## graph refs
 
@@ -3086,7 +3243,7 @@ mdkg graph refs <id-or-qid> [--ws <alias>] [--json]
 
 ### Related commands
 
-`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`
+`mdkg graph`, `mdkg graph clone`, `mdkg graph fork`, `mdkg graph import-template`, `mdkg graph migrate`
 
 ## guide
 

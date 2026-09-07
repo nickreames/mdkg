@@ -751,6 +751,9 @@ Usage:
 - `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
 - `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
 - `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
+- `mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]`
+- `mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]`
+- `mdkg graph recover <plan-hash> [--resume|--rollback] [--json]`
 
 Flags:
 - `--target <path>`
@@ -763,17 +766,22 @@ Flags:
 - `--json`
 
 Notes:
-- `graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace
+- `graph clone` and `graph fork` preserve numeric aliases. For v2, clone preserves same-project identity; independent fork creates new graph/node identities and a durable lineage mapping. V2 transport excludes checkout execution state.
 - clone/fork targets must be empty or absent and stay under the current mdkg root
 - live directory sources are never mutated; clone/fork refuses targets nested inside a live source directory
 - `graph fork --start-goal <goal-id>` writes selected-goal state in the target graph after validation
 - `graph import-template` imports authored `.mdkg/work/*.md` template nodes into the current repo and skips config, generated indexes, archive payloads, bundles, and materialized subgraph views
 - `graph import-template` defaults to dry-run unless `--apply` is supplied
 - same-repo template import rewrites canonical numeric IDs to the next unused ID by type prefix and rewrites structured refs plus safe body-local id/qid mentions
+- V2 template targets instead receive target-owned stable identities, exact structured reference bindings, and durable `.mdkg/identity/templates/` mappings. Historical bodies are preserved verbatim; unproven external bindings block before writing. V2 sources cannot be silently downgraded into legacy targets.
 - colliding semantic template IDs require `--id-prefix`
 - `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
 - importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
 - `graph refs` is read-only; it reports `scope_refs`, `context_refs`, `evidence_refs`, blockers, related refs, and structural inbound/outbound links
+- `graph migrate` previews explicit legacy-v1 to identity-v2 conversion without writes. A Git graph requires a reviewed local `--ancestor`; `--graph-id` is the shared graph namespace and independent branch additions require distinct `--origin` UUIDs.
+- `graph reconcile` previews fixed local ancestor/incoming commits against the current authored checkout. `--target` must resolve to current HEAD. It preserves target aliases, binds structured references to stable identities, and requires a reasoned JSON decision for same-identity conflicts. Repeated inputs use durable acceptance evidence, including local cherry-pick/revert history; incomplete or ambiguous ancestry fails closed. `--apply --plan-hash` requires the exact unchanged preview. Only reviewed authored paths, immutable identity receipts and local derived indexes are written. Source/config/docs, bundles, checkout selection/runtime state and Git staging/history remain untouched.
+- Migration apply requires `--apply --plan-hash` with the exact reviewed `sha256:...` value and unchanged authored/control inputs. It preserves historical body bytes and records stable identity/reference mappings under `.mdkg/identity/migrations/`.
+- `graph recover` defaults to read-only metadata inspection; `--resume` or `--rollback` uses the private `.mdkg/state/identity-transactions/` journal and refuses changed/unowned inputs. No operation implicitly stages, selects a goal, refreshes bundles, contacts remotes or rewrites Git history.
 - subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 JSON receipts:
@@ -1396,7 +1404,10 @@ Boundaries:
 - `fix ids` without `--apply` is equivalent to `fix plan --family ids`
 - `fix ids --apply` is equivalent to `fix apply --family ids`
 - apply rewrites graph Markdown atomically, rebuilds derived indexes, and emits a receipt
-- unresolved Git add/add conflict stages are handled by keeping stage 2 at the conflicted path and writing stage 3 to a new canonical ID/path
+- Git-stage repair requires a unique common merge ancestor and proves the alias did not exist elsewhere in that ancestor graph; `--base-ref`, when supplied, must match that ancestor
+- only proven independent add/add nodes are split: positional stage 2 stays at the conflicted path and stage 3 receives a new numeric ID/path (stage numbers do not imply branch names or authority)
+- same-node edits, rename/delete conflicts, invalid stages, missing/ambiguous ancestry, changed workspace ownership, and already-resolved working-tree content block automatic repair
+- repair never stages Git files or rewrites history; inspect the working-tree result and explicitly stage separately, then validate before committing
 - graph-reference and index/cache findings remain review-only guidance
 - initial families are index/cache, graph refs, and duplicate ids
 
@@ -1404,7 +1415,7 @@ JSON receipt:
 - `{ action: "fix.plan", ok, schema_version, plan_id, plan_hash, generated_at, root, family, target, dirty, families, risk_counts, proposed_changes, blocked_changes, summary }`
 - each proposed change includes family, risk, status, reason, paths, refs, optional before/after values, command hint, and `apply_supported`
 - duplicate-ID changes include candidate ID/path details and `apply_kind`
-- `{ action: "fix.apply", ok, schema_version, receipt_hash, root, family, target, base_ref, plan_id, plan_hash, applied_changes, touched_paths, ambiguous_reference_rewrites, index, summary }`
+- `{ action: "fix.apply", ok, schema_version, git_staging, receipt_hash, root, family, target, base_ref, plan_id, plan_hash, applied_changes, touched_paths, ambiguous_reference_rewrites, index, summary }`
 - `summary.apply_deferred` remains true when the selected plan includes index/cache, graph-ref, blocked, or otherwise unsupported findings
 
 ### `mdkg doctor`

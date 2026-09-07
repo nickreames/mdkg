@@ -2,12 +2,12 @@
 id: task-820
 type: task
 title: Implement versioned graph identity and legacy migration planning
-status: todo
+status: done
 priority: 1
 epic: epic-83
 parent: goal-82
-tags: [alignment-002, implementation-unapproved]
-owners: []
+tags: [alignment-002, execution-authorized]
+owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
@@ -15,18 +15,19 @@ blocked_by: [task-819]
 blocks: []
 refs: [edd-81, dec-93, test-151, goal-18]
 context_refs: []
-evidence_refs: []
+evidence_refs: [chk-566]
 aliases: []
 skills: [select-work-and-ground-context, verify-close-and-checkpoint]
 created: 2026-09-05
-updated: 2026-09-05
+updated: 2026-09-06
 ---
 
 # Overview
 
 Implement the versioned format and immutable identity foundation, including
-explicit legacy migration preview/application in disposable fixtures. Unclaimed;
-no migration of this checkout or any consuming graph is authorized.
+explicit legacy migration preview/application in disposable fixtures. Authorized
+by the explicit Goal 82 Run; owned by mdkg-project-agent after task-819 proof.
+No migration of this checkout or any consuming graph is authorized.
 
 # Acceptance Criteria
 
@@ -63,4 +64,8 @@ test-475 own verification; source algorithm completion does not migrate this rep
 
 # Links / Artifacts
 
-- edd-81, goal-18, test-151, goal-82; proof pending.
+- edd-81, goal-18, test-151, goal-82; implementation proof: chk-566.
+- 2026-09-06: format/identity, reviewed migration/recovery and ownership-safe
+  clone/fork/template/subgraph foundation verified. npm run test passed 713+26;
+  CLI/docs checks and graph validation passed. Canonical graph remains legacy.
+  Full command parity and semantic reconciliation continue under task-821/822.

@@ -41,6 +41,8 @@ import {
 import { collectValidateReceipt } from "./validate";
 import { toNodeSummaryJson, writeJson } from "./query_output";
 import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
+import { authorNewIdentityNode, bindAuthoredIdentityReferences, bindExistingIdentityNode } from "../graph/identity_authoring";
+import { identityRef, NodeIdentity, readGraphFormat } from "../graph/identity";
 
 export type WorkContractNewCommandOptions = {
   root: string;
@@ -179,6 +181,8 @@ type WorkMutationReceipt = {
   workspace: string;
   id: string;
   qid: string;
+  identity?: NodeIdentity;
+  stable_ref?: string;
   path: string;
   type: string;
   title: string;
@@ -745,6 +749,11 @@ function resolveTriggerWorkNode(index: Index, ws: string, refRaw: string): {
   const candidates = new Map<string, IndexNode>();
   const specDir = path.posix.dirname(node.path);
   for (const contractPath of toStringList(node.attributes.work_contracts)) {
+    const bound = resolveTypedReadableNode(index, node.ws, contractPath, "work");
+    if (bound) {
+      candidates.set(bound.qid, bound);
+      continue;
+    }
     const normalizedPath = path.posix.normalize(path.posix.join(specDir, contractPath));
     for (const candidate of Object.values(index.nodes)) {
       if (candidate.type === "work" && candidate.ws === node.ws && candidate.path === normalizedPath) {
@@ -783,6 +792,7 @@ function resolveTriggerWorkNode(index: Index, ws: string, refRaw: string): {
 
 function nodeReceipt(root: string, node: IndexNode): WorkMutationReceipt {
   return {
+    ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}),
     workspace: node.ws,
     id: node.id,
     qid: node.qid,
@@ -810,6 +820,7 @@ function listReceiptsForOrder(index: Index, order: IndexNode): IndexNode[] {
 function buildWorkOrderStatusReceipt(index: Index, order: IndexNode): WorkOrderStatusReceipt {
   const workId = typeof order.attributes.work_id === "string" ? order.attributes.work_id : undefined;
   const receipts = listReceiptsForOrder(index, order).map((receipt) => ({
+    ...(receipt.identity ? { identity: receipt.identity, stable_ref: identityRef(receipt.identity) } : {}),
     id: receipt.id,
     qid: receipt.qid,
     path: receipt.path,
@@ -830,6 +841,7 @@ function buildWorkOrderStatusReceipt(index: Index, order: IndexNode): WorkOrderS
   return {
     kind: "work_order_status",
     order: {
+      ...(order.identity ? { identity: order.identity, stable_ref: identityRef(order.identity) } : {}),
       workspace: order.ws,
       id: order.id,
       qid: order.qid,
@@ -1004,6 +1016,7 @@ function buildWorkReceiptVerifyReceipt(index: Index, receipt: IndexNode): WorkRe
     kind: "work_receipt_verify",
     ok: errors.length === 0,
     receipt: {
+      ...(receipt.identity ? { identity: receipt.identity, stable_ref: identityRef(receipt.identity) } : {}),
       workspace: receipt.ws,
       id: receipt.id,
       qid: receipt.qid,
@@ -1026,6 +1039,7 @@ function buildWorkReceiptVerifyReceipt(index: Index, receipt: IndexNode): WorkRe
     },
     work_order: workOrder
       ? {
+          ...(workOrder.identity ? { identity: workOrder.identity, stable_ref: identityRef(workOrder.identity) } : {}),
           id: workOrder.id,
           qid: workOrder.qid,
           path: workOrder.path,
@@ -1059,10 +1073,12 @@ function resolveTypedReadableNode(
 
 function writeFrontmatterFile(
   root: string,
+  index: Index,
   filePath: string,
   frontmatter: Record<string, FrontmatterValue>,
   body: string
 ): void {
+  Object.assign(frontmatter, bindExistingIdentityNode(root, index, filePath, frontmatter));
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const content = ["---", ...lines, "---", body.trimStart()].join("\n");
   atomicReplaceContainedFile(
@@ -1129,7 +1145,9 @@ function createAgentWorkflowNode(options: {
     updated: today,
     ...options.overrides,
   });
-  const content = mergeRenderedFrontmatter(renderedContent, filePath, options.overrides);
+  const authored = authorNewIdentityNode(options.root, index, ws,
+    mergeRenderedFrontmatter(renderedContent, filePath, options.overrides), filePath);
+  const content = authored.content;
   const relativeFilePath = path.relative(options.root, filePath).split(path.sep).join("/");
   try {
     writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, content);
@@ -1147,7 +1165,7 @@ function createAgentWorkflowNode(options: {
       ws,
       kind: "WORK_NODE_CREATED",
       status: "ok",
-      refs: [id],
+      refs: [authored.stable_ref ?? id],
       notes: `${options.type} semantic mirror created via mdkg work`,
       now: options.now,
     });
@@ -1167,6 +1185,7 @@ function createAgentWorkflowNode(options: {
     path: toPosixPath(path.relative(options.root, filePath)),
     type: options.type,
     title: options.title,
+    ...(authored.identity ? { identity: authored.identity, stable_ref: authored.stable_ref } : {}),
   };
 }
 
@@ -1195,6 +1214,7 @@ function resolveWorkNode(
 
 function loadMutableAgentNode(root: string, idOrQid: string, wsRaw: string | undefined, type: string): {
   config: ReturnType<typeof loadConfig>;
+  index: Index;
   node: IndexNode;
   filePath: string;
   frontmatter: Record<string, FrontmatterValue>;
@@ -1206,7 +1226,7 @@ function loadMutableAgentNode(root: string, idOrQid: string, wsRaw: string | und
   const node = resolveWorkNode(index, idOrQid, ws, new Set([type]), type);
   const filePath = path.resolve(root, node.path);
   const parsed = parseFrontmatter(readContainedFile({ root, relativePath: node.path }), filePath);
-  return { config, node, filePath, frontmatter: { ...parsed.frontmatter }, body: parsed.body };
+  return { config, index, node, filePath, frontmatter: { ...parsed.frontmatter }, body: parsed.body };
 }
 
 function printReceipt(action: string, receipt: WorkMutationReceipt, json?: boolean): void {
@@ -1237,20 +1257,29 @@ function createWorkOrderForWork(options: {
   evidencePolicyRef?: string;
   now?: Date;
 }): WorkOrderCreation {
+  const workId = options.workNode.identity ? identityRef(options.workNode.identity) : options.workId;
   const workVersion = String(options.workNode.attributes.version ?? "0.1.0");
   const requestRef = options.requestRef ?? "request.redacted";
   const triggerRef = options.triggerRef ?? "trigger.manual";
-  const inputRefs = parseCsvList(options.inputRefs);
-  const queueRefs = parseCsvList(options.queueRefs);
+  let inputRefs = parseCsvList(options.inputRefs);
+  let queueRefs = parseCsvList(options.queueRefs);
   const requestedOutputs =
     options.requestedOutputs !== undefined
       ? parseCsvList(options.requestedOutputs)
       : toStringList(options.workNode.attributes.outputs);
-  const constraintRefs = parseCsvList(options.constraintRefs);
+  let constraintRefs = parseCsvList(options.constraintRefs);
+  if (readGraphFormat(options.root).format_version === 2) {
+    const config = loadConfig(options.root);
+    const { index } = loadIndex({ root: options.root, config, persistReindex: false });
+    const bound = bindAuthoredIdentityReferences(index, options.ws, { input_refs: inputRefs, queue_refs: queueRefs, constraint_refs: constraintRefs });
+    inputRefs = bound.input_refs as string[];
+    queueRefs = bound.queue_refs as string[];
+    constraintRefs = bound.constraint_refs as string[];
+  }
   const payloadHash =
     normalizeSha256Ref(options.payloadHash, "--payload-hash") ??
     buildWorkOrderPayloadHash({
-      workId: options.workId,
+      workId,
       workVersion,
       requester: options.requester,
       requestRef,
@@ -1268,7 +1297,7 @@ function createWorkOrderForWork(options: {
     id: options.id,
     now: options.now,
     overrides: {
-      work_id: options.workId,
+      work_id: workId,
       work_version: workVersion,
       requester: options.requester,
       order_status: "submitted",
@@ -1286,7 +1315,7 @@ function createWorkOrderForWork(options: {
       relates: [options.workId],
     },
   });
-  return { receipt, payloadHash, workId: options.workId, workVersion };
+  return { receipt, payloadHash, workId, workVersion };
 }
 
 function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions): void {
@@ -1361,7 +1390,7 @@ function runWorkTriggerCommandLocked(options: WorkTriggerCommandOptions): void {
   const requester = options.requester ?? "user.local";
   const requestRef = "request.redacted";
   const triggerRef = "trigger.mdkg-work-trigger";
-  const workRef = workNode.source?.imported ? workNode.qid : workNode.id;
+  const workRef = workNode.identity ? identityRef(workNode.identity) : workNode.source?.imported ? workNode.qid : workNode.id;
   const requestedOutputs = toStringList(workNode.attributes.outputs);
   const payloadHash = buildWorkOrderPayloadHash({
     workId: workRef,
@@ -1437,7 +1466,7 @@ function runWorkTriggerCommandLocked(options: WorkTriggerCommandOptions): void {
     ws,
     kind: queueDelivery ? "WORK_TRIGGER_ENQUEUED" : "WORK_TRIGGERED",
     status: "ok",
-    refs: [created.receipt.id, workRef, ...(queueRef ? [queueRef] : [])],
+    refs: [created.receipt.stable_ref ?? created.receipt.id, workNode.identity ? identityRef(workNode.identity) : workRef, ...(queueRef ? [queueRef] : [])],
     notes: queueDelivery
       ? `work trigger created order mirror and enqueued ${queueDelivery.message_id} on project DB queue ${queueDelivery.queue_name}; no work executed`
       : "work trigger created order mirror; no work executed",
@@ -1502,7 +1531,7 @@ function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions)
     parseCsvList(options.addArtifacts)
   );
   loaded.frontmatter.updated = formatDate(options.now ?? new Date());
-  writeFrontmatterFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
+  writeFrontmatterFile(options.root, loaded.index, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
   printReceipt("order updated", nodeReceipt(options.root, loaded.node), options.json);
 }
@@ -1588,7 +1617,7 @@ function runWorkReceiptUpdateCommandLocked(options: WorkReceiptUpdateCommandOpti
     normalizeSha256Refs(options.addEvidenceHashes, "--add-evidence-hashes")
   );
   loaded.frontmatter.updated = formatDate(options.now ?? new Date());
-  writeFrontmatterFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
+  writeFrontmatterFile(options.root, loaded.index, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
   printReceipt("receipt updated", nodeReceipt(options.root, loaded.node), options.json);
 }
@@ -1667,7 +1696,7 @@ function runWorkArtifactAddCommandLocked(options: WorkArtifactAddCommandOptions)
     loaded.frontmatter.relates = appendUnique(toStringList(loaded.frontmatter.relates), [archivePayload.archive.id]);
   }
   loaded.frontmatter.updated = formatDate(options.now ?? new Date());
-  writeFrontmatterFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
+  writeFrontmatterFile(options.root, loaded.index, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
 
   if (options.json) {

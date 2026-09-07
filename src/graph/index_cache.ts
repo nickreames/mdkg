@@ -6,6 +6,7 @@ import { sortIndexNodes } from "../util/sort";
 import { atomicWriteFile } from "../util/atomic";
 import { buildIndex, Index } from "./indexer";
 import { isIndexStale } from "./staleness";
+import { readGraphFormat } from "./identity";
 import {
   buildSubgraphsIndex,
   isSubgraphsIndexStale,
@@ -23,6 +24,7 @@ export type LoadIndexOptions = {
   tolerant?: boolean;
   includeImports?: boolean;
   persistReindex?: boolean;
+  inspection?: boolean;
 };
 
 export type LoadIndexResult = {
@@ -68,21 +70,26 @@ function validateCachedNodePaths(root: string, config: Config, cached: Index): I
 }
 
 export function writeIndex(indexPath: string, index: Index): void {
+  if (index.meta.inspection_errors?.length) throw new Error("cannot persist an unresolved inspection graph; reviewed reconciliation required");
   const sortedIndex: Index = { ...index, nodes: sortIndexNodes(index.nodes) };
   atomicWriteFile(indexPath, JSON.stringify(sortedIndex, null, 2));
 }
 
 export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
-  const useCache = options.useCache ?? true;
+  // Format checks and authored identities cannot be bypassed by a fresh cache.
+  // V2 derives from the current working tree, including untracked/deleted nodes.
+  const graphFormat = readGraphFormat(options.root);
+  const inspection = graphFormat.format_version === 2 && options.inspection === true;
+  const useCache = graphFormat.format_version === 2 ? false : options.useCache ?? true;
   const allowReindex = options.allowReindex ?? options.config.index.auto_reindex;
   const tolerant = options.tolerant ?? options.config.index.tolerant;
   const includeImports = options.includeImports ?? true;
-  const persistReindex = options.persistReindex ?? true;
+  const persistReindex = inspection ? false : options.persistReindex ?? true;
 
   const indexPath = path.resolve(options.root, options.config.index.global_index_path);
   const withSubgraphs = (index: Index, rebuilt: boolean, stale: boolean): LoadIndexResult => {
     if (!includeImports || Object.keys(options.config.subgraphs).length === 0) {
-      return { index, rebuilt, stale, warnings: [] };
+      return { index, rebuilt, stale, warnings: index.meta.inspection_errors ?? [] };
     }
     const subgraphs = buildSubgraphsIndex(options.root, options.config);
     if (allowReindex && persistReindex) {
@@ -92,12 +99,12 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
       index: mergeSubgraphsIntoIndex(index, subgraphs),
       rebuilt,
       stale: stale || isSubgraphsIndexStale(options.root, options.config),
-      warnings: subgraphWarnings(subgraphs),
+      warnings: [...(index.meta.inspection_errors ?? []), ...subgraphWarnings(subgraphs)],
     };
   };
 
   if (!useCache) {
-    const index = buildIndex(options.root, options.config, { tolerant });
+    const index = buildIndex(options.root, options.config, { tolerant, inspection });
     return withSubgraphs(index, true, false);
   }
 

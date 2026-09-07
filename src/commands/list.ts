@@ -48,6 +48,7 @@ export function runListCommand(options: ListCommandOptions): void {
   }
 
   const { index, rebuilt, stale, warnings } = loadIndex({
+    inspection: true,
     root: options.root,
     config,
     useCache: !options.noCache,

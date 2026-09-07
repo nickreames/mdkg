@@ -30,6 +30,9 @@ export type PackMeta = {
 };
 
 export type PackNode = {
+  identity?: IndexNode["identity"];
+  stable_ref?: string;
+  alias_qid?: string;
   qid: string;
   id: string;
   workspace: string;

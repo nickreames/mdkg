@@ -15,9 +15,11 @@ import {
 import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { validatePortableOrUriRef } from "../util/refs";
 import { isLoopIdentity, parseLoopRefBinding } from "./loop_bindings";
+import { NodeIdentity, parseIdentityRef, readNodeIdentity } from "./identity";
 
 export type Node = {
   id: string;
+  identity?: NodeIdentity;
   type: string;
   title: string;
   created: string;
@@ -120,6 +122,9 @@ export type NodeParseOptions = {
   priorityMin: number;
   priorityMax: number;
   templateSchemas: TemplateSchemaMap;
+  /** Historical/virtual inspection only. The caller must separately verify
+   * archive payload dependencies before admitting a candidate to application. */
+  deferArchiveIntegrity?: boolean;
 };
 
 function formatError(filePath: string, message: string): Error {
@@ -236,7 +241,7 @@ function normalizeIdList(
     if (value !== value.toLowerCase()) {
       throw formatError(filePath, `${key} entries must be lowercase`);
     }
-    const valid = allowPortableIds ? isPortableId(value) : isValidId(value);
+    const valid = parseIdentityRef(value) || (allowPortableIds ? isPortableId(value) : isValidId(value));
     if (!valid) {
       throw formatError(filePath, `${key} entries must match <prefix>-<number> or reserved id`);
     }
@@ -651,6 +656,7 @@ function validateTemplateKeys(
   for (const key of Object.keys(frontmatter)) {
     if (
       !schema.allowedKeys.has(key) &&
+      key !== "graph_id" && key !== "node_id" &&
       OPTIONAL_COMPAT_TEMPLATE_KEYS[schema.type]?.[key] === undefined
     ) {
       throw formatError(filePath, `unknown key: ${key}`);
@@ -658,7 +664,8 @@ function validateTemplateKeys(
   }
 
   for (const [key, value] of Object.entries(frontmatter)) {
-    const expected = schema.keyKinds[key] ?? OPTIONAL_COMPAT_TEMPLATE_KEYS[schema.type]?.[key];
+    const expected = key === "graph_id" || key === "node_id" ? "scalar"
+      : schema.keyKinds[key] ?? OPTIONAL_COMPAT_TEMPLATE_KEYS[schema.type]?.[key];
     if (!expected) {
       continue;
     }
@@ -687,8 +694,9 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   const isPortableType = isAgentType || isArchiveType(type);
   const schema = requireTemplateSchema(type, options.templateSchemas, filePath);
   validateTemplateKeys(frontmatter, schema, filePath);
+  const identity = readNodeIdentity(frontmatter, filePath);
   validateAgentFrontmatter(type, frontmatter, filePath);
-  validateArchiveFrontmatter(type, frontmatter, filePath);
+  validateArchiveFrontmatter(type, frontmatter, filePath, options.deferArchiveIntegrity);
   validateGoalFrontmatter(type, frontmatter, filePath);
   validateLoopFrontmatter(type, frontmatter, filePath);
 
@@ -767,7 +775,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
       throw formatError(filePath, "supersedes is only allowed for decision records");
     }
     const normalized = requireLowercase(supersedesValue, "supersedes", filePath);
-    if (!DEC_ID_RE.test(normalized)) {
+    if (!DEC_ID_RE.test(normalized) && !parseIdentityRef(normalized)) {
       throw formatError(filePath, "supersedes must be a dec-# id");
     }
   }
@@ -777,6 +785,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
     includeSemanticRefs: WORK_TYPES.has(type),
   });
   const attributes = {
+    ...(supersedesValue !== undefined ? { supersedes: supersedesValue } : {}),
     ...extractGoalAttributes(type, frontmatter),
     ...extractLoopAttributes(type, frontmatter),
     ...extractAgentAttributes(type, frontmatter),
@@ -785,6 +794,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
 
   return {
     id,
+    ...(identity ? { identity } : {}),
     type,
     title,
     created,

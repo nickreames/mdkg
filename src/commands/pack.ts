@@ -419,6 +419,7 @@ export function runPackCommand(options: PackCommandOptions): void {
     ? normalizeVisibility(options.visibility)
     : undefined;
   const { index, rebuilt, stale, warnings } = loadIndex({
+    inspection: true,
     root: options.root,
     config,
     useCache: !options.noCache && !visibility,
