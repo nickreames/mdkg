@@ -21,6 +21,7 @@ import { NotFoundError, UsageError } from "../util/errors";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { sortNodesByQid } from "../util/sort";
 import { toNodeDetailJson, toNodeSummaryJson } from "./query_output";
+import { readLocalGoalSelection, resolveLocalGoalSelection, selectionRequiresIdentity } from "../graph/selected_goal";
 
 const MCP_PROTOCOL_VERSION = "2025-06-18";
 const SERVER_NAME = "mdkg";
@@ -257,6 +258,7 @@ function normalizeWorkspace(value?: string): string | undefined {
 function loadReadOnlyIndex(root: string): { config: ReturnType<typeof loadConfig>; index: Index } {
   const config = loadConfig(root);
   const { index } = loadIndex({
+    inspection: true,
     root,
     config,
     useCache: false,
@@ -310,29 +312,6 @@ function matchesSearch(node: IndexNode, terms: string[]): boolean {
   return terms.every((term) => haystack.includes(term));
 }
 
-function selectedGoalState(root: string): { qid: string; id: string; ws: string; selected_at: string } | undefined {
-  const filePath = path.join(root, ".mdkg", "state", "selected-goal.json");
-  try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, "utf8")) as JsonObject;
-    if (
-      typeof parsed.qid === "string" &&
-      typeof parsed.id === "string" &&
-      typeof parsed.ws === "string" &&
-      typeof parsed.selected_at === "string"
-    ) {
-      return {
-        qid: parsed.qid.toLowerCase(),
-        id: parsed.id.toLowerCase(),
-        ws: parsed.ws.toLowerCase(),
-        selected_at: parsed.selected_at,
-      };
-    }
-  } catch {
-    return undefined;
-  }
-  return undefined;
-}
-
 function activeGoalCandidates(index: Index, ws?: string): IndexNode[] {
   return Object.values(index.nodes)
     .filter((node) => node.type === "goal")
@@ -369,13 +348,19 @@ function resolveGoal(
     return { source: "explicit", node, warnings };
   }
 
-  const selected = selectedGoalState(root);
+  const selection = readLocalGoalSelection(root);
+  if (selection.warning) warnings.push(selection.warning);
+  const selected = selection.state;
+  if (!selected && selection.warning && selectionRequiresIdentity(index)) throw new UsageError(selection.warning);
   if (selected) {
-    const node = index.nodes[selected.qid];
-    if (node && (!ws || node.ws === ws)) {
+    const resolvedSelection = resolveLocalGoalSelection(index, selected);
+    const node = resolvedSelection.node;
+    if (resolvedSelection.warning) warnings.push(resolvedSelection.warning);
+    if (node && (!ws || node.ws === ws) && !isArchivedGoal(node)) {
       return { source: "selected", node, warnings };
     }
     warnings.push("selected goal is missing or outside the requested workspace");
+    if (selectionRequiresIdentity(index, selected)) throw new UsageError(warnings.join("; "));
   }
 
   const active = activeGoalCandidates(index, ws);
@@ -525,22 +510,28 @@ function packTool(root: string, args: JsonObject): JsonObject {
 function goalCurrentTool(root: string, args: JsonObject): JsonObject {
   const { config, index } = loadReadOnlyIndex(root);
   const ws = ensureKnownWorkspace(config, normalizeWorkspace(optionalString(args, "ws")));
-  const selected = selectedGoalState(root);
-  const selectedNode = selected ? index.nodes[selected.qid] : undefined;
-  if (selectedNode && (!ws || selectedNode.ws === ws)) {
+  const selection = readLocalGoalSelection(root);
+  const selected = selection.state;
+  const resolvedSelection = selected ? resolveLocalGoalSelection(index, selected) : {};
+  const selectedNode = resolvedSelection.node;
+  const warnings = [selection.warning, resolvedSelection.warning].filter((item): item is string => Boolean(item));
+  if (selectedNode && (!ws || selectedNode.ws === ws) && !isArchivedGoal(selectedNode)) {
     return {
       command: "mcp.goal_current",
       source: "selected",
       selected,
+      warnings,
       goal: toNodeSummaryJson(selectedNode),
     };
   }
   const active = activeGoalCandidates(index, ws);
+  const blockFallback = Boolean(selected || selection.warning) && selectionRequiresIdentity(index, selected);
   return {
     command: "mcp.goal_current",
-    source: active.length === 1 ? "unique_active" : "none",
+    source: !blockFallback && active.length === 1 ? "unique_active" : "none",
     selected: selected ?? null,
-    goal: active.length === 1 ? toNodeSummaryJson(active[0]) : null,
+    goal: !blockFallback && active.length === 1 ? toNodeSummaryJson(active[0]) : null,
+    warnings,
     active_count: active.length,
     active_goals: active.map(toNodeSummaryJson),
   };

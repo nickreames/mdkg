@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { readGraphFormat } from "../graph/identity";
 import {
   ensureContainedDirectory,
   removeContainedPath,
@@ -36,6 +37,8 @@ export function withMutationLock<T>(
   timeoutMs: number,
   fn: () => T
 ): T {
+  // Do not create even transient mutation state in a graph we cannot write.
+  readGraphFormat(root);
   const dir = lockDir(root);
   if (HELD_LOCKS.has(dir)) {
     return fn();

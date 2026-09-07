@@ -24,6 +24,9 @@ import { withMutationLock } from "../util/lock";
 import { formatResolveError, resolveQid } from "../util/qid";
 import { appendAutomaticEvent } from "./event_support";
 import { formatNodeCard } from "./node_card";
+import { readLocalGoalSelection, resolveLocalGoalSelection, selectionRequiresIdentity, SelectedGoalState, writeLocalGoalSelection } from "../graph/selected_goal";
+import { identityRef } from "../graph/identity";
+import { bindExistingIdentityNode } from "../graph/identity_authoring";
 
 const CONCRETE_GOAL_NEXT_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
 const SELECTED_GOAL_STATE_PATH = path.join(".mdkg", "state", "selected-goal.json");
@@ -65,13 +68,6 @@ type LoadedGoal = {
   warnings: string[];
 };
 
-type SelectedGoalState = {
-  qid: string;
-  id: string;
-  ws: string;
-  selected_at: string;
-};
-
 function normalizeWorkspace(value?: string): string | undefined {
   if (!value) {
     return undefined;
@@ -95,44 +91,13 @@ function selectedGoalPath(root: string): string {
 }
 
 function readSelectedGoalState(root: string, warnings: string[]): SelectedGoalState | undefined {
-  const filePath = selectedGoalPath(root);
-  if (!containedPathExists({ root, relativePath: ".mdkg/state/selected-goal.json" })) {
-    return undefined;
-  }
-  try {
-    const parsed = JSON.parse(readContainedFile({ root, relativePath: ".mdkg/state/selected-goal.json" })) as Partial<SelectedGoalState>;
-    if (
-      typeof parsed.qid === "string" &&
-      typeof parsed.id === "string" &&
-      typeof parsed.ws === "string" &&
-      typeof parsed.selected_at === "string"
-    ) {
-      return {
-        qid: parsed.qid.toLowerCase(),
-        id: parsed.id.toLowerCase(),
-        ws: parsed.ws.toLowerCase(),
-        selected_at: parsed.selected_at,
-      };
-    }
-    warnings.push("selected goal state is malformed; run `mdkg goal select <goal-id>`");
-    return undefined;
-  } catch {
-    warnings.push("selected goal state is unreadable; run `mdkg goal select <goal-id>`");
-    return undefined;
-  }
+  const selected = readLocalGoalSelection(root);
+  if (selected.warning) warnings.push(selected.warning);
+  return selected.state;
 }
 
 function writeSelectedGoalState(root: string, node: IndexNode, now: Date): void {
-  const state: SelectedGoalState = {
-    qid: node.qid,
-    id: node.id,
-    ws: node.ws,
-    selected_at: now.toISOString(),
-  };
-  atomicReplaceContainedFile(
-    { root, relativePath: ".mdkg/state/selected-goal.json" },
-    `${JSON.stringify(state, null, 2)}\n`
-  );
+  writeLocalGoalSelection(root, node, now);
 }
 
 function readNodeFrontmatter(root: string, node: IndexNode): {
@@ -152,11 +117,13 @@ function readNodeFrontmatter(root: string, node: IndexNode): {
 
 function writeNodeFrontmatterFile(
   root: string,
+  index: Index,
   filePath: string,
   frontmatter: Record<string, FrontmatterValue>,
   body: string,
   now: Date
 ): void {
+  Object.assign(frontmatter, bindExistingIdentityNode(root, index, filePath, frontmatter));
   frontmatter.updated = formatDate(now);
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const frontmatterBlock = ["---", ...lines, "---"].join("\n");
@@ -229,9 +196,12 @@ function resolveGoalSelection(
   }
 
   const selected = readSelectedGoalState(root, warnings);
+  if (!selected && warnings.length > 0 && selectionRequiresIdentity(index)) throw new UsageError(warnings.join("; "));
   if (selected) {
-    const node = index.nodes[selected.qid];
-    if (node && node.type === "goal" && !node.source?.imported && !isArchivedGoal(node)) {
+    const resolved = resolveLocalGoalSelection(index, selected);
+    const node = resolved.node;
+    if (resolved.warning) warnings.push(resolved.warning);
+    if (node && (!wsHint || node.ws === wsHint) && !isArchivedGoal(node)) {
       return { node, source: "selected", warnings };
     }
     if (isArchivedGoal(node)) {
@@ -239,6 +209,7 @@ function resolveGoalSelection(
     } else {
       warnings.push(`selected goal ${selected.qid} is not available; run \`mdkg goal select <goal-id>\``);
     }
+    if (selectionRequiresIdentity(index, selected)) throw new UsageError(warnings.join("; "));
   }
 
   const active = activeGoalCandidates(index, wsHint);
@@ -260,9 +231,10 @@ function loadGoal(
   persistReindex = true
 ): LoadedGoal {
   const config = loadConfig(root);
-  const { index } = loadIndex({ root, config, persistReindex });
+  const { index } = loadIndex({ root, config, persistReindex, inspection: !persistReindex });
   const ws = normalizeWorkspace(wsHint);
   const selection = resolveGoalSelection(root, index, idOrQid, ws);
+  selection.warnings.push(...(index.meta.inspection_errors ?? []));
   const node = selection.node;
   if (node.source?.imported) {
     throw new UsageError(
@@ -296,6 +268,7 @@ function goalReceipt(root: string, loaded: LoadedGoal): Record<string, unknown> 
     workspace: loaded.node.ws,
     id: loaded.node.id,
     qid: loaded.node.qid,
+    ...(loaded.node.identity ? { identity: loaded.node.identity, stable_ref: identityRef(loaded.node.identity) } : {}),
     path: path.relative(root, loaded.filePath),
     type: loaded.node.type,
     title: loaded.node.title,
@@ -314,7 +287,7 @@ function goalReceipt(root: string, loaded: LoadedGoal): Record<string, unknown> 
 }
 
 function writeGoalFile(root: string, loaded: LoadedGoal, now: Date): void {
-  writeNodeFrontmatterFile(root, loaded.filePath, loaded.frontmatter, loaded.body, now);
+  writeNodeFrontmatterFile(root, loaded.index, loaded.filePath, loaded.frontmatter, loaded.body, now);
 }
 
 function maybeReindex(root: string, config: ReturnType<typeof loadConfig>): void {
@@ -571,7 +544,7 @@ export function runGoalActivateCommand(options: GoalCommandOptions): void {
       const conflictFile = readNodeFrontmatter(options.root, conflict);
       conflictFile.frontmatter.goal_state = "paused";
       conflictFile.frontmatter.status = ensureStatusAllowed(config, "blocked");
-      writeNodeFrontmatterFile(options.root, conflictFile.filePath, conflictFile.frontmatter, conflictFile.body, now);
+      writeNodeFrontmatterFile(options.root, loaded.index, conflictFile.filePath, conflictFile.frontmatter, conflictFile.body, now);
       pausedGoals.push({
         workspace: conflict.ws,
         id: conflict.id,
@@ -595,7 +568,7 @@ export function runGoalActivateCommand(options: GoalCommandOptions): void {
       ws: loaded.node.ws,
       kind: "GOAL_ACTIVATE",
       status: "ok",
-      refs: [loaded.node.id, ...conflicts.map((node) => node.id)],
+      refs: [loaded.node.identity ? identityRef(loaded.node.identity) : loaded.node.id, ...conflicts.map((node) => node.identity ? identityRef(node.identity) : node.id)],
       notes: `goal activate via mdkg goal activate`,
       now,
     });
@@ -626,16 +599,19 @@ export function runGoalActivateCommand(options: GoalCommandOptions): void {
 
 export function runGoalCurrentCommand(options: GoalCommandOptions): void {
   const config = loadConfig(options.root);
-  const { index } = loadIndex({ root: options.root, config, persistReindex: false });
+  const { index } = loadIndex({ root: options.root, config, persistReindex: false, inspection: true });
   const ws = normalizeWorkspace(options.ws);
-  const warnings: string[] = [];
+  const warnings: string[] = [...(index.meta.inspection_errors ?? [])];
   let source: LoadedGoal["resolutionSource"] | "none" | "ambiguous" = "none";
   let node: IndexNode | undefined;
 
   const selected = readSelectedGoalState(options.root, warnings);
+  let blockFallback = warnings.length > 0 && selectionRequiresIdentity(index);
   if (selected) {
-    const selectedNode = index.nodes[selected.qid];
-    if (selectedNode && selectedNode.type === "goal" && !selectedNode.source?.imported && !isArchivedGoal(selectedNode)) {
+    const resolved = resolveLocalGoalSelection(index, selected);
+    const selectedNode = resolved.node;
+    if (resolved.warning) warnings.push(resolved.warning);
+    if (selectedNode && (!ws || selectedNode.ws === ws) && !isArchivedGoal(selectedNode)) {
       node = selectedNode;
       source = "selected";
     } else {
@@ -644,10 +620,11 @@ export function runGoalCurrentCommand(options: GoalCommandOptions): void {
       } else {
         warnings.push(`selected goal ${selected.qid} is not available; run \`mdkg goal select <goal-id>\``);
       }
+      blockFallback = selectionRequiresIdentity(index, selected);
     }
   }
 
-  if (!node) {
+  if (!node && !blockFallback) {
     const active = activeGoalCandidates(index, ws);
     if (active.length === 1) {
       node = active[0];
@@ -664,6 +641,7 @@ export function runGoalCurrentCommand(options: GoalCommandOptions): void {
       workspace: node.ws,
       id: node.id,
       qid: node.qid,
+      ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}),
       path: node.path,
       type: node.type,
       title: node.title,
@@ -751,7 +729,7 @@ export function runGoalClaimCommand(options: GoalClaimCommandOptions): void {
       ws: loaded.node.ws,
       kind: "GOAL_CLAIM",
       status: "ok",
-      refs: [loaded.node.id, node.id],
+      refs: [loaded.node.identity ? identityRef(loaded.node.identity) : loaded.node.id, node.identity ? identityRef(node.identity) : node.id],
       notes: `goal claim via mdkg goal claim`,
       now,
     });
@@ -796,7 +774,7 @@ function runGoalStateMutationLocked(
     ws: loaded.node.ws,
     kind: `GOAL_${action.toUpperCase()}`,
     status: "ok",
-    refs: [loaded.node.id],
+    refs: [loaded.node.identity ? identityRef(loaded.node.identity) : loaded.node.id],
     notes: `goal ${action} via mdkg goal ${action}`,
     now,
   });

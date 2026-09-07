@@ -12,6 +12,7 @@ export function isPortableId(value: string): boolean {
 }
 
 export function isCanonicalIdRef(value: string): boolean {
+  if (parseIdentityRef(value)) return true;
   const normalized = value.toLowerCase();
   const parts = normalized.split(":");
   if (parts.length === 1) {
@@ -26,6 +27,7 @@ export function isCanonicalIdRef(value: string): boolean {
 }
 
 export function isPortableIdRef(value: string): boolean {
+  if (parseIdentityRef(value)) return true;
   const normalized = value.toLowerCase();
   const parts = normalized.split(":");
   if (parts.length === 1) {
@@ -38,3 +40,4 @@ export function isPortableIdRef(value: string): boolean {
   const id = parts[1] ?? "";
   return WORKSPACE_RE.test(workspace) && isPortableId(id);
 }
+import { parseIdentityRef } from "../graph/identity";

@@ -22,6 +22,15 @@ import { withMutationLock } from "../util/lock";
 import { formatDate } from "../util/date";
 import { isUriRef } from "../util/refs";
 import { isCanonicalId, isPortableId } from "../util/id";
+import { planTransportIdentity } from "../graph/identity_transport";
+import { templateIdentityMapper } from "../graph/identity_template";
+import { GRAPH_FORMAT_PATH, identityHash, identityRef } from "../graph/identity";
+import { replaceGraphFrontmatter } from "../graph/identity_migration";
+import { indexAuthoredSnapshot, readAuthoredSnapshot } from "../graph/identity_snapshot";
+import { ALLOWED_TYPES, parseNode } from "../graph/node";
+import { AGENT_FILE_BASENAMES } from "../graph/agent_file_types";
+import { writeLocalGoalSelection } from "../graph/selected_goal";
+import { loadTemplateSchemas } from "../graph/template_schema";
 
 export type GraphCloneCommandOptions = {
   root: string;
@@ -81,6 +90,7 @@ type GraphTransportReceipt = {
     zip_sha256: string;
   };
   preserved_ids: boolean;
+  identity?: ReturnType<typeof planTransportIdentity>["identity"];
   files_written: string[];
   skipped_paths: string[];
   start_goal?: {
@@ -137,6 +147,7 @@ type GraphImportTemplateReceipt = {
     zip_sha256: string;
   };
   preserved_ids: false;
+  identity?: { receipt_path: string; mappings: NonNullable<ReturnType<typeof templateIdentityMapper>>["receipt"]["mappings"] };
   rewritten_ids: Array<{
     from_id: string;
     to_id: string;
@@ -182,6 +193,9 @@ type GoalLifecycleReceipt = {
 };
 
 type RefNodeSummary = {
+  identity?: IndexNode["identity"];
+  stable_ref?: string;
+  alias_qid?: string;
   qid: string;
   id: string;
   workspace: string;
@@ -223,6 +237,8 @@ function toStringList(value: unknown): string[] {
 
 function summarizeNode(node: IndexNode): RefNodeSummary {
   return {
+    ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}),
+    ...(node.alias_qid ? { alias_qid: node.alias_qid } : {}),
     qid: node.qid,
     id: node.id,
     workspace: node.ws,
@@ -489,23 +505,25 @@ function assertSourceNotMutatedByTarget(source: LoadedGraphSource, targetRoot: s
   }
 }
 
-function writeGraphFiles(targetRoot: string, source: LoadedGraphSource): { filesWritten: string[]; skippedPaths: string[] } {
+function writeGraphFiles(targetRoot: string, source: LoadedGraphSource, identityPlan: ReturnType<typeof planTransportIdentity>): { filesWritten: string[]; skippedPaths: string[] } {
   const filesWritten: string[] = [];
   const skippedPaths: string[] = [];
   for (const file of source.manifest.files) {
     const safeName = safeZipEntryPath(file.path);
-    if (file.kind === "generated_index") {
+    if (file.kind === "generated_index" || identityPlan.skipped.has(safeName)) {
       skippedPaths.push(safeName);
       continue;
     }
-    const data = source.entries.get(file.path);
+    const data = identityPlan.replacements.get(file.path) ?? source.entries.get(file.path);
     if (!data) {
       throw new ValidationError(`graph source missing bundled file: ${file.path}`);
     }
-    const output = path.join(targetRoot, safeName);
-    fs.mkdirSync(path.dirname(output), { recursive: true });
-    fs.writeFileSync(output, data);
+    writeContainedFileExclusive({ root: targetRoot, relativePath: safeName }, data);
     filesWritten.push(safeName);
+  }
+  for (const [file, data] of identityPlan.additions) {
+    writeContainedFileExclusive({ root: targetRoot, relativePath: file }, data);
+    filesWritten.push(file);
   }
   return { filesWritten: filesWritten.sort(), skippedPaths: skippedPaths.sort() };
 }
@@ -534,15 +552,9 @@ function resolveStartGoal(targetRoot: string, requested: string) {
   return node;
 }
 
-function writeSelectedGoal(targetRoot: string, qid: string, id: string, ws: string): string {
+function writeSelectedGoal(targetRoot: string, node: IndexNode): string {
   const statePath = path.join(targetRoot, ".mdkg", "state", "selected-goal.json");
-  const state = {
-    qid,
-    id,
-    ws,
-    selected_at: new Date().toISOString(),
-  };
-  atomicWriteFile(statePath, `${JSON.stringify(state, null, 2)}\n`);
+  writeLocalGoalSelection(targetRoot, node);
   return rel(targetRoot, statePath);
 }
 
@@ -741,6 +753,15 @@ function rewriteFrontmatterValue(
 
 function targetPathForImport(sourcePath: string, fromId: string, toId: string, usedPaths: Set<string>): string {
   const basename = path.posix.basename(sourcePath);
+  if (Object.values(AGENT_FILE_BASENAMES).includes(basename) || basename === "SPEC.md") {
+    const directory = path.posix.basename(path.posix.dirname(sourcePath));
+    const suffix = directory.startsWith(fromId) ? directory.slice(fromId.length) : "";
+    let candidate = `.mdkg/work/${toId}${suffix}/${basename}`;
+    let count = 2;
+    while (usedPaths.has(candidate)) candidate = `.mdkg/work/${toId}${suffix}-${count++}/${basename}`;
+    usedPaths.add(candidate);
+    return candidate;
+  }
   const suffix = basename.startsWith(fromId) ? basename.slice(fromId.length) : ".md";
   let candidate = `.mdkg/work/${toId}${suffix}`;
   let count = 2;
@@ -805,7 +826,7 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
     }
     const parsed = parseFrontmatter(data.toString("utf8"), sourcePath);
     const { id, type } = requireImportedIdentity(sourcePath, parsed.frontmatter);
-    return { sourcePath, parsed, id, type };
+    return { sourcePath, parsed, id, type, content: data.toString("utf8") };
   });
 
   const idMap = new Map<string, string>();
@@ -823,17 +844,18 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
     idMap.set(node.id, toId);
   }
 
+  const identityMapper = templateIdentityMapper(options.root, source.entries.get(GRAPH_FORMAT_PATH), source.manifest.source_tree_hash, imported, idMap);
   const rewrittenRefs: RewriteReceipt[] = [];
   const plans: ImportNodePlan[] = imported.map((node) => {
     const toId = idMap.get(node.id) ?? node.id;
-    const frontmatter: Record<string, FrontmatterValue> = { ...node.parsed.frontmatter, id: toId };
+    const frontmatter: Record<string, FrontmatterValue> = identityMapper ? identityMapper.transform(node) : { ...node.parsed.frontmatter, id: toId };
     for (const [field, value] of Object.entries(frontmatter)) {
-      if (field === "id") {
+      if (field === "id" || identityMapper) {
         continue;
       }
       frontmatter[field] = rewriteFrontmatterValue(value, idMap, node.sourcePath, field, rewrittenRefs);
     }
-    const body = rewriteStringValue(node.parsed.body, idMap, node.sourcePath, "body", rewrittenRefs);
+    const body = identityMapper ? node.parsed.body : rewriteStringValue(node.parsed.body, idMap, node.sourcePath, "body", rewrittenRefs);
     const targetPath = targetPathForImport(node.sourcePath, node.id, toId, usedPaths);
     const targetAbs = path.resolve(options.root, targetPath);
     if (fs.existsSync(targetAbs)) {
@@ -848,7 +870,7 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
       status: typeof frontmatter.status === "string" ? frontmatter.status : undefined,
       goal_state: typeof frontmatter.goal_state === "string" ? frontmatter.goal_state : undefined,
       title: typeof frontmatter.title === "string" ? frontmatter.title : undefined,
-      content: renderNode(frontmatter, body),
+      content: identityMapper ? replaceGraphFrontmatter(node.content, frontmatter) : renderNode(frontmatter, body),
     };
   });
 
@@ -888,6 +910,26 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
       : [];
   const warnings = pausedGoals.length > 0 ? [`paused ${pausedGoals.length} competing active goal(s)`] : [];
 
+  if (identityMapper) {
+    const snapshot = readAuthoredSnapshot(options.root);
+    const templates = loadTemplateSchemas(options.root, snapshot.config, ALLOWED_TYPES);
+    const parse = (content: string, file: string) => parseNode(content, file, {
+      workStatusEnum: snapshot.config.work.status_enum, priorityMin: snapshot.config.work.priority_min,
+      priorityMax: snapshot.config.work.priority_max, templateSchemas: templates,
+    });
+    const candidate = { ...snapshot, nodes: [...snapshot.nodes, ...plans.map((plan) => ({
+      path: plan.target_path, ws: "root", qid: `root:${plan.to_id}`, content: plan.content,
+      hash: identityHash(plan.content), node: parse(plan.content, plan.target_path),
+    }))] };
+    for (const entry of candidate.nodes) {
+      const lifecycle = entry.qid === activatedGoal?.qid ? activatedGoal : pausedGoals.find((goal) => goal.qid === entry.qid);
+      if (!lifecycle) continue;
+      const fm = { ...entry.node.frontmatter, status: lifecycle.status, goal_state: lifecycle.goal_state };
+      entry.node = parse(replaceGraphFrontmatter(entry.content, fm), entry.path);
+    }
+    indexAuthoredSnapshot(candidate);
+  }
+
   const mode = options.apply ? "import_template_applied" : "import_template_dry_run";
   return {
     action: "graph.import_template",
@@ -906,6 +948,7 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
       zip_sha256: source.zipSha256,
     },
     preserved_ids: false,
+    ...(identityMapper ? { identity: { receipt_path: identityMapper.receiptPath, mappings: identityMapper.receipt.mappings } } : {}),
     rewritten_ids: plans.map((plan) => ({
       from_id: plan.from_id,
       to_id: plan.to_id,
@@ -958,7 +1001,7 @@ function applyImportTemplate(
       }
       const parsed = parseFrontmatter(data.toString("utf8"), sourcePath);
       const { id } = requireImportedIdentity(sourcePath, parsed.frontmatter);
-      return { sourcePath, parsed, id };
+      return { sourcePath, parsed, id, content: data.toString("utf8") };
     });
     const idMap = new Map<string, string>();
     for (const node of imported) {
@@ -974,17 +1017,18 @@ function applyImportTemplate(
       usedIds.add(toId);
       idMap.set(node.id, toId);
     }
+    const identityMapper = templateIdentityMapper(options.root, source.entries.get(GRAPH_FORMAT_PATH), source.manifest.source_tree_hash, imported, idMap);
     const ignoredRewrites: RewriteReceipt[] = [];
     for (const node of imported) {
       const toId = idMap.get(node.id) ?? node.id;
-      const frontmatter: Record<string, FrontmatterValue> = { ...node.parsed.frontmatter, id: toId };
+      const frontmatter: Record<string, FrontmatterValue> = identityMapper ? identityMapper.transform(node) : { ...node.parsed.frontmatter, id: toId };
       for (const [field, value] of Object.entries(frontmatter)) {
-        if (field === "id") {
+        if (field === "id" || identityMapper) {
           continue;
         }
         frontmatter[field] = rewriteFrontmatterValue(value, idMap, node.sourcePath, field, ignoredRewrites);
       }
-      const body = rewriteStringValue(node.parsed.body, idMap, node.sourcePath, "body", ignoredRewrites);
+      const body = identityMapper ? node.parsed.body : rewriteStringValue(node.parsed.body, idMap, node.sourcePath, "body", ignoredRewrites);
       if (frontmatter.type === "goal" && options.selectGoal) {
         if (qidForRoot(toId) === applyPlan.activated_goal?.qid) {
           frontmatter.status = ensureStatusAllowed(config, "progress");
@@ -996,7 +1040,7 @@ function applyImportTemplate(
         frontmatter.updated = formatDate(new Date());
       }
       const targetPath = targetPathForImport(node.sourcePath, node.id, toId, usedPaths);
-      contentByTarget.set(targetPath, renderNode(frontmatter, body));
+      contentByTarget.set(targetPath, identityMapper ? replaceGraphFrontmatter(node.content, frontmatter) : renderNode(frontmatter, body));
     }
     for (const targetPath of files) {
       withContainedPathSink(
@@ -1012,6 +1056,9 @@ function applyImportTemplate(
       writeContainedFileExclusive({ root: options.root, relativePath: targetPath }, content);
     }
     pauseLocalGoals(options.root, applyPlan.paused_goals, config);
+    if (identityMapper) {
+      writeContainedFileExclusive({ root: options.root, relativePath: identityMapper.receiptPath }, `${JSON.stringify(identityMapper.receipt, null, 2)}\n`);
+    }
     const indexReceipt = rebuildDerivedIndexCaches({ root: options.root });
     const validation = collectValidateReceipt({ root: options.root, quiet: true });
     if (validation.error_count > 0) {
@@ -1022,8 +1069,7 @@ function applyImportTemplate(
       if (!selected) {
         throw new UsageError("--select-goal could not resolve imported start goal");
       }
-      const id = idFromRootQid(selected);
-      writeSelectedGoal(options.root, selected, id, "root");
+      writeSelectedGoal(options.root, resolveStartGoal(options.root, selected));
       applyPlan.selected_goal = { qid: selected, path: ".mdkg/state/selected-goal.json", planned: false };
       if (applyPlan.activated_goal) {
         applyPlan.activated_goal.planned = false;
@@ -1048,8 +1094,9 @@ function runGraphTransport(options: GraphForkCommandOptions, mode: GraphTranspor
   assertSourceNotMutatedByTarget(source, targetRoot);
   const warnings: string[] = [];
 
+  const identityPlan = planTransportIdentity(source.entries, mode, source.manifest.source_tree_hash);
   fs.mkdirSync(targetRoot, { recursive: true });
-  const { filesWritten, skippedPaths } = writeGraphFiles(targetRoot, source);
+  const { filesWritten, skippedPaths } = writeGraphFiles(targetRoot, source, identityPlan);
   const indexReceipt = rebuildDerivedIndexCaches({ root: targetRoot });
   let validation = collectValidateReceipt({ root: targetRoot, quiet: true });
   if (validation.error_count > 0) {
@@ -1060,7 +1107,7 @@ function runGraphTransport(options: GraphForkCommandOptions, mode: GraphTranspor
   let selectedGoal: GraphTransportReceipt["selected_goal"];
   if (mode === "fork" && options.startGoal) {
     const node = resolveStartGoal(targetRoot, options.startGoal);
-    const statePath = writeSelectedGoal(targetRoot, node.qid, node.id, node.ws);
+    const statePath = writeSelectedGoal(targetRoot, node);
     startGoal = {
       requested: options.startGoal,
       qid: node.qid,
@@ -1096,6 +1143,7 @@ function runGraphTransport(options: GraphForkCommandOptions, mode: GraphTranspor
       zip_sha256: source.zipSha256,
     },
     preserved_ids: true,
+    ...(identityPlan.identity ? { identity: identityPlan.identity } : {}),
     files_written: filesWritten,
     skipped_paths: skippedPaths,
     ...(startGoal ? { start_goal: startGoal } : {}),
@@ -1152,7 +1200,7 @@ export function runGraphImportTemplateCommand(options: GraphImportTemplateComman
 
 export function runGraphRefsCommand(options: GraphRefsCommandOptions): void {
   const config = loadConfig(options.root);
-  const { index, warnings } = loadIndex({ root: options.root, config });
+  const { index, warnings } = loadIndex({ root: options.root, config, inspection: true });
   const resolved = resolveQid(index, options.id, options.ws);
   if (resolved.status !== "ok") {
     throw new NotFoundError(formatResolveError("node", options.id, resolved, options.ws));

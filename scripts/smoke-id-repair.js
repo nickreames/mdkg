@@ -232,6 +232,7 @@ function main() {
   const merge = git(["merge", "--no-edit", "branch-b"], root, { allowFailure: true });
   assert(merge.status !== 0, "merge should create an unresolved add/add conflict");
   assert(git(["ls-files", "-u", "--", ".mdkg/work/task-900.md"], root).stdout.includes(".mdkg/work/task-900.md"), "missing unresolved conflict stages");
+  const gitIndexBeforeRepair = fs.readFileSync(path.join(root, ".git", "index"));
 
   const stagePlan = parseJson(mdkg(binPath, ["fix", "ids", "--target", "task-900", "--json"], root));
   assert(stagePlan.summary.apply_supported === true, "stage conflict plan should be apply-capable");
@@ -240,7 +241,8 @@ function main() {
   const stageApply = parseJson(mdkg(binPath, ["fix", "ids", "--target", "task-900", "--apply", "--json"], root));
   assert(stageApply.touched_paths.includes(".mdkg/work/task-900.md"), "stage apply missing canonical path");
   assert(stageApply.touched_paths.includes(".mdkg/work/task-901.md"), "stage apply missing incoming split path");
-  assert(git(["ls-files", "-u", "--", ".mdkg/work/task-900.md"], root).stdout.trim() === "", "stage apply did not clear git conflict stages");
+  assert(fs.readFileSync(path.join(root, ".git", "index")).equals(gitIndexBeforeRepair), "repair must preserve Git staging exactly");
+  assert(git(["ls-files", "-u", "--", ".mdkg/work/task-900.md"], root).stdout.trim() !== "", "repair must leave explicit staging to the caller");
   assert(fs.readFileSync(path.join(root, ".mdkg", "work", "task-900.md"), "utf8").includes("branch A same path task"), "stage 2 canonical content was not preserved");
   assert(fs.readFileSync(path.join(root, ".mdkg", "work", "task-901.md"), "utf8").includes("id: task-901"), "stage 3 content was not rewritten");
   assert(parseJson(mdkg(binPath, ["validate", "--json"], root)).ok === true, "stage repair validate failed");

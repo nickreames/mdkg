@@ -57,6 +57,7 @@ export function runShowCommand(options: ShowCommandOptions): void {
   }
 
   const { index, rebuilt, stale, warnings } = loadIndex({
+    inspection: true,
     root: options.root,
     config,
     useCache: !options.noCache,

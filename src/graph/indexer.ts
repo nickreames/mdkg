@@ -5,13 +5,19 @@ import { FrontmatterValue } from "./frontmatter";
 import { ALLOWED_TYPES, parseNode } from "./node";
 import { EdgeMap } from "./edges";
 import { listWorkspaceDocFilesByAlias } from "./workspace_files";
-import { validateGraph } from "./validate_graph";
+import { collectGraphErrors, validateGraph } from "./validate_graph";
 import { loadTemplateSchemas } from "./template_schema";
 import { collectManifestSiblingConflicts } from "./agent_file_types";
+import { assertNoGraphConflictMarkers, assertNodeFormat, GraphFormatV2, identityRef, NodeIdentity, readGraphFormat } from "./identity";
+import { UsageError } from "../util/errors";
+import { normalizeIndexIdentityReferences } from "./identity_refs";
+import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "./subgraphs";
 
 export type IndexNode = {
   id: string;
+  identity?: NodeIdentity;
   qid: string;
+  alias_qid?: string;
   ws: string;
   type: string;
   title: string;
@@ -56,6 +62,8 @@ export type Index = {
     root: string;
     workspaces: string[];
     latest_checkpoint_qid?: Record<string, string>;
+    graph_format?: GraphFormatV2;
+    inspection_errors?: string[];
   };
   workspaces: Record<string, { path: string; enabled: boolean }>;
   nodes: Record<string, IndexNode>;
@@ -64,6 +72,7 @@ export type Index = {
 
 export type IndexOptions = {
   tolerant?: boolean;
+  inspection?: boolean;
 };
 
 function normalizeEdgeTarget(value: string, ws: string): string {
@@ -103,10 +112,13 @@ function addReverseEdge(
 }
 
 export function buildIndex(root: string, config: Config, options: IndexOptions = {}): Index {
+  const graphFormat = readGraphFormat(root);
+  const inspection = graphFormat.format_version === 2 && options.inspection === true;
   const tolerant = options.tolerant ?? config.index.tolerant;
   const templateSchemas = loadTemplateSchemas(root, config, ALLOWED_TYPES);
   const nodes: Record<string, IndexNode> = {};
   const idsByWorkspace: Record<string, Set<string>> = {};
+  const identityPaths = new Map<string, string>();
   const docFilesByAlias = listWorkspaceDocFilesByAlias(root, config);
   const workspaceAliases = Object.keys(docFilesByAlias).sort();
 
@@ -125,25 +137,43 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
       }
       try {
         const content = fs.readFileSync(filePath, "utf8");
+        if (graphFormat.format_version === 2) assertNoGraphConflictMarkers(content, filePath);
         const node = parseNode(content, filePath, {
           workStatusEnum: config.work.status_enum,
           priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max,
           templateSchemas,
         });
+        assertNodeFormat(graphFormat, node.identity, filePath);
+        if (node.identity) {
+          const ref = identityRef(node.identity);
+          if (identityPaths.has(ref)) throw new Error(`duplicate immutable identity ${ref}: ${identityPaths.get(ref)} and ${filePath}`);
+          identityPaths.set(ref, filePath);
+        }
 
-        if (idsByWorkspace[alias].has(node.id)) {
-          throw new Error(`duplicate id ${node.id} in workspace ${alias}`);
+        const aliasQid = `${alias}:${node.id}`;
+        const collision = idsByWorkspace[alias].has(node.id);
+        if (collision) {
+          if (!inspection) throw new Error(`duplicate id ${node.id} in workspace ${alias}; use read-only identity inspection and reviewed reconciliation`);
+          const previous = nodes[aliasQid];
+          if (previous?.identity) {
+            delete nodes[aliasQid];
+            previous.alias_qid = aliasQid;
+            previous.qid = identityRef(previous.identity);
+            nodes[previous.qid] = previous;
+          }
         }
         idsByWorkspace[alias].add(node.id);
 
-        const qid = `${alias}:${node.id}`;
+        const qid = collision && node.identity ? identityRef(node.identity) : aliasQid;
         const relPath = path.relative(root, filePath);
         const normalizedEdges = normalizeEdges(node.edges, alias);
 
         nodes[qid] = {
           id: node.id,
+          ...(node.identity ? { identity: node.identity } : {}),
           qid,
+          ...(collision ? { alias_qid: aliasQid } : {}),
           ws: alias,
           type: node.type,
           title: node.title,
@@ -163,13 +193,14 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
           edges: normalizedEdges,
         };
       } catch (err) {
-        if (!tolerant) {
+        if (!tolerant || graphFormat.format_version === 2 || err instanceof UsageError) {
           throw err;
         }
       }
     }
   }
 
+  normalizeIndexIdentityReferences({ nodes });
   const reverse_edges: Record<string, Record<string, string[]>> = {};
   for (const [qid, node] of Object.entries(nodes)) {
     const edges = node.edges;
@@ -221,16 +252,30 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
       generated_at: new Date().toISOString(),
       root,
       workspaces: workspaceAliases,
+      ...(graphFormat.format_version === 2 ? { graph_format: graphFormat } : {}),
     },
     workspaces,
     nodes,
     reverse_edges,
   };
 
-  validateGraph(index, {
+  const validationOptions = {
     allowMissing: tolerant,
     externalWorkspaces: new Set(Object.keys(config.subgraphs ?? {})),
-  });
+  };
+  // A local v2 index remains local-owned, but reference validation must include
+  // independently verified mounted identities before any index is persisted.
+  const imports = graphFormat.format_version === 2 && Object.keys(config.subgraphs).length > 0
+    ? buildSubgraphsIndex(root, config) : undefined;
+  const importErrors = imports?.index.subgraphs.flatMap((entry) => entry.errors.map((error) => `subgraph ${entry.alias}: ${error}`)) ?? [];
+  const validationIndex = imports ? mergeSubgraphsIntoIndex(index, imports) : index;
+  if (inspection) {
+    const errors = [...importErrors, ...collectGraphErrors(validationIndex, validationOptions)];
+    if (errors.length > 0) index.meta.inspection_errors = errors;
+  } else {
+    if (importErrors.length) throw new UsageError(importErrors.join("; "));
+    validateGraph(validationIndex, validationOptions);
+  }
 
   const latestCheckpointByWorkspace: Record<string, string> = {};
   for (const alias of workspaceAliases) {

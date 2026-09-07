@@ -11,6 +11,7 @@ import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
 import { listProjectDbRuntimePolicyFiles } from "../core/project_db";
 import { verifyProjectDb } from "../core/project_db_migrations";
 import { ValidationError } from "../util/errors";
+import { readLocalGoalSelection, resolveLocalGoalSelection } from "../graph/selected_goal";
 
 export type DoctorCommandOptions = {
   root: string;
@@ -37,7 +38,6 @@ type CheckResult = {
 const REQUIRED_NODE_MAJOR = 24;
 const REQUIRED_NODE_MINOR = 15;
 const ARCHIVE_RAW_ALLOWED_DIRS = new Set(["source"]);
-const SELECTED_GOAL_STATE_PATH = path.join(".mdkg", "state", "selected-goal.json");
 
 type CheckInput = {
   id: string;
@@ -49,13 +49,6 @@ type CheckInput = {
   remediation?: string;
   refs?: string[];
   strictFail?: boolean;
-};
-
-type SelectedGoalState = {
-  qid: string;
-  id: string;
-  ws: string;
-  selected_at: string;
 };
 
 function makeCheck(input: CheckInput): CheckResult {
@@ -406,40 +399,12 @@ function runVisibilityPolicyCheck(
   }
 }
 
-function readSelectedGoalState(root: string): { state?: SelectedGoalState; warning?: string } {
-  const filePath = path.join(root, SELECTED_GOAL_STATE_PATH);
-  if (!fs.existsSync(filePath)) {
-    return {};
-  }
-  try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, "utf8")) as Partial<SelectedGoalState>;
-    if (
-      typeof parsed.qid === "string" &&
-      typeof parsed.id === "string" &&
-      typeof parsed.ws === "string" &&
-      typeof parsed.selected_at === "string"
-    ) {
-      return {
-        state: {
-          qid: parsed.qid.toLowerCase(),
-          id: parsed.id.toLowerCase(),
-          ws: parsed.ws.toLowerCase(),
-          selected_at: parsed.selected_at,
-        },
-      };
-    }
-    return { warning: "selected goal state is malformed" };
-  } catch {
-    return { warning: "selected goal state is unreadable" };
-  }
-}
-
 function runSelectedGoalChecks(
   root: string,
   config: ReturnType<typeof loadConfig>,
   options: Pick<DoctorCommandOptions, "noCache" | "noReindex" | "strict">
 ): CheckResult[] {
-  const selected = readSelectedGoalState(root);
+  const selected = readLocalGoalSelection(root);
   if (selected.warning) {
     return [
       makeCheck({
@@ -472,7 +437,8 @@ function runSelectedGoalChecks(
       useCache: !options.noCache,
       allowReindex: !options.noReindex && !options.strict,
     });
-    const node = index.nodes[selected.state.qid];
+    const resolvedSelection = resolveLocalGoalSelection(index, selected.state);
+    const node = resolvedSelection.node;
     if (!node) {
       return [
         makeCheck({
@@ -480,7 +446,7 @@ function runSelectedGoalChecks(
           name: "selected-goal",
           ok: true,
           level: "warn",
-          detail: `selected goal ${selected.state.qid} is missing from the graph`,
+          detail: resolvedSelection.warning ?? `selected goal ${selected.state.qid} is missing from the graph`,
           remediation: "Run `mdkg goal clear --json` when no repo-local goal should be selected, or `mdkg goal activate <goal-id> --json` for the next active repo-local goal.",
           refs: [selected.state.qid],
           strictFail: true,
@@ -495,9 +461,9 @@ function runSelectedGoalChecks(
           name: "selected-goal",
           ok: true,
           level: "warn",
-          detail: `selected goal ${selected.state.qid} is achieved but still current`,
+          detail: `selected goal ${node.qid} is achieved but still current`,
           remediation: "Run `mdkg goal clear --json` for an achieved current goal, or `mdkg goal activate <goal-id> --json` only when a new repo-local goal should become active. Root orchestrators should not mutate dirty child repos without approval.",
-          refs: [selected.state.qid],
+          refs: [node.qid],
           strictFail: true,
         }),
       ];
@@ -507,8 +473,8 @@ function runSelectedGoalChecks(
         id: "goal.selected_achieved",
         name: "selected-goal",
         ok: true,
-        detail: `selected goal ${selected.state.qid} is active`,
-        refs: [selected.state.qid],
+        detail: `selected goal ${node.qid} is active`,
+        refs: [node.qid],
       }),
     ];
   } catch (err) {

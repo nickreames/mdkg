@@ -11,6 +11,9 @@ import { isCanonicalId, isPortableIdRef } from "../util/id";
 import { withMutationLock } from "../util/lock";
 import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
 import { appendAutomaticEvent } from "./event_support";
+import { authorNewIdentityNode } from "../graph/identity_authoring";
+import { NodeIdentity } from "../graph/identity";
+import { resolveQid } from "../util/qid";
 
 export type CheckpointNewCommandOptions = {
   root: string;
@@ -33,6 +36,8 @@ export type CheckpointReceipt = {
   workspace: string;
   id: string;
   qid: string;
+  identity?: NodeIdentity;
+  stable_ref?: string;
   path: string;
   kind: CheckpointKind;
 };
@@ -301,12 +306,11 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
 
   const relates = parseCsvList(options.relates).map((value) => normalizeIdRef(value, "--relates"));
   for (const target of relates) {
-    const qid = target.includes(":") ? target : `${ws}:${target}`;
-    if (!index.nodes[qid]) {
+    if (resolveQid(index, target, target.includes(":") ? undefined : ws).status !== "ok") {
       throw new NotFoundError(`related node not found: ${target}`);
     }
   }
-  const scope = parseCsvList(options.scope).map((value) => normalizeId(value, "--scope"));
+  const scope = parseCsvList(options.scope).map((value) => index.meta.graph_format ? normalizeIdRef(value, "--scope") : normalizeId(value, "--scope"));
   const kind = normalizeCheckpointKind(options.kind);
 
   const now = options.now ?? new Date();
@@ -323,7 +327,9 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     relates,
     scope,
   });
-  const rendered = replaceRenderedBody(content, options.body ?? checkpointBody(kind));
+  const authored = authorNewIdentityNode(options.root, index, ws,
+    replaceRenderedBody(content, options.body ?? checkpointBody(kind)), relativeFilePath);
+  const rendered = authored.content;
 
   try {
     writeContainedFileExclusive({ root: options.root, relativePath: relativeFilePath }, rendered);
@@ -340,7 +346,7 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     ws,
     kind: "CHECKPOINT_CREATED",
     status: "ok",
-    refs: [id],
+    refs: [authored.stable_ref ?? id],
     notes: options.note ?? `checkpoint created via mdkg checkpoint new`,
     runId: options.runId,
     now,
@@ -350,6 +356,7 @@ function createCheckpointLocked(options: CheckpointNewCommandOptions): Checkpoin
     workspace: ws,
     id,
     qid: `${ws}:${id}`,
+    ...(authored.identity ? { identity: authored.identity, stable_ref: authored.stable_ref } : {}),
     path: path.relative(options.root, filePath),
     kind,
   };

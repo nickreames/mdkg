@@ -124,6 +124,115 @@ function createLinkedTemplateGraph(root: string, name: string, activateStartGoal
   return source;
 }
 
+function migrateFixture(root: string): void {
+  // Legacy seed prose carries references to its authoring repository. They
+  // are not identity evidence in this disposable graph; remove explicitly.
+  for (const name of ["SOUL.md", "COLLABORATION.md"]) {
+    const file = path.join(root, ".mdkg/core", name);
+    if (fs.existsSync(file)) updateFrontmatter(file, { refs: "[]" });
+  }
+  const args = ["graph", "migrate", "--graph-id", crypto.randomUUID(), "--origin", crypto.randomUUID(), "--json"];
+  const plan = JSON.parse(run(args, root).stdout);
+  assert.deepEqual(plan.blocking, []);
+  run([...args, "--apply", "--plan-hash", plan.plan_hash], root);
+}
+
+test("v2 transport preserves same-project clone identities and gives independent forks bound lineage", () => {
+  const root = makeTempDir("mdkg-identity-transport-");
+  run(["init", "--graph-only"], root);
+  const source = createLinkedTemplateGraph(root, "source");
+  migrateFixture(source);
+  const sourceFormat = JSON.parse(fs.readFileSync(path.join(source, ".mdkg/graph.json"), "utf8"));
+  fs.mkdirSync(path.join(source, ".mdkg/state"), { recursive: true });
+  fs.writeFileSync(path.join(source, ".mdkg/state/selected-goal.json"), "private checkout selection");
+  const sourceBefore = hashTree(source);
+  const cloned = JSON.parse(run(["graph", "clone", "source", "--target", "clone", "--json"], root).stdout);
+  const forked = JSON.parse(run(["graph", "fork", "source", "--target", "fork", "--json"], root).stdout);
+  assert.equal(hashTree(source), sourceBefore, "transport never mutates source bytes");
+  assert.equal(cloned.identity.target_graph_id, sourceFormat.graph_id);
+  assert.equal(cloned.identity.preserved_node_identities, true);
+  assert.notEqual(forked.identity.target_graph_id, sourceFormat.graph_id);
+  assert.equal(forked.identity.preserved_node_identities, false);
+  const task = ".mdkg/work/task-1-template-linked-task.md";
+  const original = fs.readFileSync(path.join(source, task), "utf8");
+  assert.equal(fs.readFileSync(path.join(root, "clone", task), "utf8"), original);
+  const forkBody = fs.readFileSync(path.join(root, "fork", task), "utf8");
+  assert.ok(forkBody.includes(`graph_id: ${forked.identity.target_graph_id}`));
+  assert.ok(!forkBody.includes(`parent: mdkg://${sourceFormat.graph_id}/`));
+  assert.ok(forkBody.includes(`parent: mdkg://${forked.identity.target_graph_id}/`));
+  assert.ok(forkBody.includes("Mentions root:goal-1 and task-1 for rewrite proof."));
+  const forkFormat = JSON.parse(fs.readFileSync(path.join(root, "fork/.mdkg/graph.json"), "utf8"));
+  assert.equal(forkFormat.lineage.source_graph_id, sourceFormat.graph_id);
+  assert.equal(forkFormat.migration_receipt, undefined);
+  assert.ok(fs.existsSync(path.join(root, "fork", forked.identity.receipt_path)));
+  for (const target of ["clone", "fork"]) {
+    assert.equal(fs.existsSync(path.join(root, target, ".mdkg/state/selected-goal.json")), false);
+    assert.equal(fs.existsSync(path.join(root, target, ".mdkg/state/identity-transactions")), false);
+    run(["validate", "--json"], path.join(root, target));
+  }
+});
+
+test("v2 template imports are target-owned, deterministically previewed, cross-linked and body-preserving", () => {
+  const root = makeTempDir("mdkg-identity-template-");
+  run(["init", "--graph-only"], root);
+  run(["new", "task", "Existing local node"], root);
+  migrateFixture(root);
+  const source = createLinkedTemplateGraph(root, "template");
+  migrateFixture(source);
+  const before = hashTree(root);
+  const preview = JSON.parse(run(["graph", "import-template", "template", "--json"], root).stdout);
+  const repeated = JSON.parse(run(["graph", "import-template", "template", "--json"], root).stdout);
+  assert.deepEqual(preview.identity, repeated.identity);
+  assert.equal(hashTree(root), before);
+  const applied = JSON.parse(run(["graph", "import-template", "template", "--apply", "--json"], root).stdout);
+  assert.deepEqual(applied.identity, preview.identity);
+  const targetFormat = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/graph.json"), "utf8"));
+  const task = applied.rewritten_ids.find((item: any) => item.from_id === "task-1");
+  const goal = applied.identity.mappings.find((item: any) => item.from_alias === "goal-1");
+  const raw = fs.readFileSync(path.join(root, task.to_path), "utf8");
+  assert.ok(raw.includes(`graph_id: ${targetFormat.graph_id}`));
+  assert.ok(raw.includes(`parent: ${goal.to}`));
+  assert.ok(raw.includes("Mentions root:goal-1 and task-1 for rewrite proof."));
+  assert.ok(fs.existsSync(path.join(root, applied.identity.receipt_path)));
+  const second = JSON.parse(run(["graph", "import-template", "template", "--json"], root).stdout);
+  assert.notEqual(second.identity.mappings[0].to, applied.identity.mappings[0].to);
+  run(["validate", "--json"], root);
+});
+
+test("v2 template ownership and missing-binding failures happen before target writes", () => {
+  const root = makeTempDir("mdkg-identity-template-refusal-");
+  run(["init", "--graph-only"], root);
+  const source = createLinkedTemplateGraph(root, "template");
+  migrateFixture(source);
+  let before = hashTree(root);
+  assert.match(runFailure(["graph", "import-template", "template", "--apply"], root).stderr, /explicitly migrate the target/);
+  assert.equal(hashTree(root), before);
+  migrateFixture(root);
+  updateFrontmatter(path.join(source, ".mdkg/work/task-1-template-linked-task.md"), { refs: "[rule-999]" });
+  before = hashTree(root);
+  assert.match(runFailure(["graph", "import-template", "template", "--apply"], root).stderr, /lacks an imported identity binding/);
+  assert.equal(hashTree(root), before);
+});
+
+test("v2 read-only subgraph mounts retain source identities without source mutation authority", () => {
+  const root = makeTempDir("mdkg-identity-mount-");
+  run(["init", "--graph-only"], root);
+  const source = createLinkedTemplateGraph(root, "child");
+  migrateFixture(source);
+  const format = JSON.parse(fs.readFileSync(path.join(source, ".mdkg/graph.json"), "utf8"));
+  run(["bundle", "create", "--output", path.join(root, "child.mdkg.zip"), "--json"], source);
+  run(["subgraph", "add", "child", "child.mdkg.zip", "--json"], root);
+  const { loadIndex } = require("../../graph/index_cache");
+  const { loadConfig } = require("../../core/config");
+  const { index } = loadIndex({ root, config: loadConfig(root), noCache: true });
+  const node = index.nodes["child:task-1"];
+  assert.equal(node.identity.graph_id, format.graph_id);
+  assert.equal(node.source.read_only, true);
+  const sourceBefore = hashTree(source);
+  assert.match(runFailure(["task", "start", "child:task-1"], root).stderr, /read.only|imported/);
+  assert.equal(hashTree(source), sourceBefore);
+});
+
 test("graph clone preserves IDs from a bundle into an empty target", () => {
   const root = makeTempDir("mdkg-graph-clone-");
   run(["init", "--agent"], root);

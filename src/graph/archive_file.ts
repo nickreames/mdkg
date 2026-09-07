@@ -65,7 +65,8 @@ export function isArchiveType(type: string): boolean {
 export function validateArchiveFrontmatter(
   type: string,
   frontmatter: Record<string, FrontmatterValue>,
-  filePath: string
+  filePath: string,
+  deferIntegrity = false
 ): void {
   if (!isArchiveType(type)) {
     return;
@@ -110,6 +111,7 @@ export function validateArchiveFrontmatter(
   const ingestStatus = expectString(frontmatter, "ingest_status", filePath);
   requireEnum(ingestStatus, "ingest_status", INGEST_STATUS_VALUES, filePath);
 
+  if (deferIntegrity) return;
   const sidecarDir = path.dirname(filePath);
   const checked = checkArchiveIntegrity({
     root: sidecarDir,

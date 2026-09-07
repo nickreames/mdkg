@@ -376,6 +376,8 @@ function isExcludedRelativePath(relative: string): boolean {
     normalized.startsWith(".mdkg/subgraphs/") ||
     normalized.includes("/.mdkg/index/") ||
     normalized.startsWith(".mdkg/index/") ||
+    normalized.includes("/.mdkg/state/identity-transactions/") ||
+    normalized.startsWith(".mdkg/state/identity-transactions/") ||
     ((normalized.includes("/.mdkg/archive/") || normalized.startsWith(".mdkg/archive/")) &&
       normalized.includes("/source/"))
   );

@@ -2,6 +2,7 @@ import path from "path";
 import { FrontmatterValue } from "./frontmatter";
 import { isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, validatePortableOrUriRef } from "../util/refs";
+import { parseIdentityRef } from "./identity";
 
 export const CANONICAL_MANIFEST_BASENAME = "MANIFEST.md";
 export const LEGACY_SPEC_BASENAME = "SPEC.md";
@@ -561,9 +562,11 @@ function validateRelativeMarkdownPaths(
   values: string[],
   key: string,
   basename: string,
-  filePath: string
+  filePath: string,
+  allowIdentity = false
 ): void {
   for (const [index, value] of values.entries()) {
+    if (allowIdentity && parseIdentityRef(value)) continue;
     if (path.isAbsolute(value) || value.split(/[\\/]/).includes("..")) {
       throw formatError(filePath, `${key}[${index}] must be a relative path`);
     }
@@ -620,7 +623,8 @@ export function validateAgentFrontmatter(
         optionalList(frontmatter, "work_contracts", filePath),
         "work_contracts",
         "WORK.md",
-        filePath
+        filePath,
+        typeof frontmatter.graph_id === "string" && typeof frontmatter.node_id === "string"
       );
       validateCapabilities(
         optionalList(frontmatter, "requested_capabilities", filePath),

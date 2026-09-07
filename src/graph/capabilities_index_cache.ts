@@ -4,6 +4,8 @@ import { Config } from "../core/config";
 import { configPath } from "../core/paths";
 import { atomicWriteFile } from "../util/atomic";
 import { listWorkspaceDocFiles } from "./workspace_files";
+import { readGraphFormat } from "./identity";
+import { buildIndex } from "./indexer";
 import {
   buildCapabilitiesIndex,
   CapabilitiesIndex,
@@ -97,12 +99,19 @@ function readCapabilitiesIndex(indexPath: string): CapabilitiesIndex {
 }
 
 export function writeCapabilitiesIndex(indexPath: string, index: CapabilitiesIndex): void {
+  if (index.meta.inspection_errors?.length) throw new Error("cannot persist unresolved capability inspection; reviewed reconciliation required");
   atomicWriteFile(indexPath, JSON.stringify(index, null, 2));
 }
 
 export function loadCapabilitiesIndex(
   options: LoadCapabilitiesIndexOptions
 ): LoadCapabilitiesIndexResult {
+  if (readGraphFormat(options.root).format_version === 2) {
+    const nodes = buildIndex(options.root, options.config, { inspection: true });
+    const index = buildCapabilitiesIndex(options.root, options.config, nodes);
+    if (nodes.meta.inspection_errors?.length) index.meta.inspection_errors = nodes.meta.inspection_errors;
+    return { index, rebuilt: true, stale: false };
+  }
   const useCache = options.useCache ?? true;
   const allowReindex = options.allowReindex ?? options.config.index.auto_reindex;
   const persistReindex = options.persistReindex ?? true;

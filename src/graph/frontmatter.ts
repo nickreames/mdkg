@@ -11,6 +11,8 @@ const MAX_FRONTMATTER_LIST_ITEMS = 10_000;
 
 export const DEFAULT_FRONTMATTER_KEY_ORDER = [
   "id",
+  "graph_id",
+  "node_id",
   "type",
   "title",
   "checkpoint_kind",

@@ -77,6 +77,7 @@ import {
   runGraphImportTemplateCommand,
   runGraphRefsCommand,
 } from "./commands/graph";
+import { runGraphMigrateCommand, runGraphRecoverCommand, runGraphReconcileCommand } from "./commands/graph_identity";
 import {
   runGitCloneCommand,
   runGitCloseoutCommand,
@@ -809,12 +810,39 @@ function printBundleHelp(log: LogFn, subcommand?: string): void {
 
 function printGraphHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
+    case "reconcile":
+      log("Usage:");
+      log("  mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]");
+      log("\nNotes:");
+      log("  - read-only preview compares explicit local ancestry, current authored target and incoming graph identities");
+      log("  - target must resolve to current HEAD; uncommitted authored nodes remain usable inputs");
+      log("  - decisions JSON maps stable mdkg:// refs to {take: target|incoming|delete, reason: nonempty text}");
+      log("  - exact reviewed hash gates application; receipts preserve alias mappings and prior-integration/revert evidence");
+      log("  - no implicit Git staging/history change, source transplant, bundle refresh or remote access");
+      break;
+    case "migrate":
+      log("Usage:");
+      log("  mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]");
+      log("\nNotes:");
+      log("  - preview is read-only; legacy Git graphs require an explicitly accepted local ancestor");
+      log("  - graph namespace and branch origin must be reviewed; independent branch additions need distinct origins");
+      log("  - apply requires the exact unchanged plan hash and persists identity mappings before rebuilding local indexes");
+      log("  - no implicit Git staging, selection change, bundle refresh, remote access, or history rewrite");
+      break;
+    case "recover":
+      log("Usage:");
+      log("  mdkg graph recover <plan-hash> [--resume|--rollback] [--json]");
+      log("\nNotes:");
+      log("  - defaults to read-only journal inspection with raw graph bodies omitted");
+      log("  - explicit resume/rollback requires unchanged control inputs and exact owned before/after bytes");
+      log("  - changed or unowned inputs stop recovery without overwriting user work");
+      break;
     case "clone":
       log("Usage:");
       log("  mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]");
       log("\nNotes:");
       log("  - clones a complete graph into an empty contained target directory");
-      log("  - preserves IDs because the target is a separate graph namespace");
+      log("  - preserves numeric aliases and stable identities as a same-project copy");
       log("  - source bundle or source directory is never mutated");
       break;
     case "fork":
@@ -822,7 +850,8 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]");
       log("\nNotes:");
       log("  - forks a complete graph into an empty contained target directory");
-      log("  - preserves IDs and can select a start goal in the target graph");
+      log("  - preserves numeric aliases; v2 forks allocate new graph/node identities with lineage");
+      log("  - can explicitly select a start goal in the target graph; checkout execution state is not copied for v2");
       log("  - source bundle or source directory is never mutated");
       break;
     case "import-template":
@@ -832,6 +861,7 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       log("  - imports authored .mdkg/work template nodes into the current graph");
       log("  - defaults to dry-run unless --apply is supplied");
       log("  - rewrites canonical numeric IDs and structured graph links deterministically");
+      log("  - v2 targets assign target-owned identities and preserve historical body bytes; v2 sources require a v2 target");
       log("  - --select-goal requires --start-goal; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state");
       break;
     case "refs":
@@ -849,7 +879,9 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]");
       log("  mdkg graph refs <id-or-qid> [--ws <alias>] [--json]");
       log("\nNotes:");
-      log("  - graph clone/fork create authored graph state in separate target directories and preserve IDs");
+      log("  - graph clone/fork preserve numeric aliases; v2 clones share identity, independent forks record new identity and lineage");
+      log("  - graph migrate previews explicit versioned identity migration; graph recover inspects or resumes its journal");
+      log("  - graph reconcile reviews ancestor-backed identity changes and applies only an exact accepted plan hash");
       log("  - graph import-template imports template work nodes into the current graph with rewritten IDs");
       log("  - graph refs is read-only and explains local plus subgraph graph relationships");
       log("  - subgraphs remain read-only bundle projections for orchestration context");
@@ -1340,6 +1372,9 @@ function printFixHelp(log: LogFn, subcommand?: string): void {
       log("  - applies only supported ids-family duplicate-ID rewrites");
       log("  - refuses index/cache, graph-ref, all-family, blocked, and unsupported repairs");
       log("  - writes graph Markdown atomically and rebuilds derived indexes");
+      log("  - Git-stage repair requires proven independent creation at a unique merge ancestor");
+      log("  - same-node, rename/delete, invalid, and unproven conflicts require explicit reconciliation");
+      log("  - never stages Git files; review and stage the working-tree resolution separately");
       log("  - emits a receipt with plan hash, touched paths, and manual-review reference notes");
       log("\nOptions:");
       log("  --family ids          Explicit apply family; ids is the only supported apply family");
@@ -1355,6 +1390,7 @@ function printFixHelp(log: LogFn, subcommand?: string): void {
       log("  - convenience command for duplicate-ID planning and application");
       log("  - without --apply it is equivalent to `mdkg fix plan --family ids`");
       log("  - with --apply it is equivalent to `mdkg fix apply --family ids`");
+      log("  - Git-stage repair is ancestor-aware and leaves Git staging unchanged");
       log("\nOptions:");
       log("  --target <id-or-qid>  Optional duplicate ID target");
       log("  --base-ref <ref>      Prefer IDs that already exist at a Git base ref");
@@ -2190,7 +2226,44 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const source = parsed.positionals[2];
   const target = requireFlagValue("--target", parsed.flags["--target"]);
   const json = parseBooleanFlag("--json", parsed.flags["--json"]);
+  if (subcommand === "migrate" || subcommand === "recover" || subcommand === "reconcile") {
+    const allowed = new Set(["--root", "--json", "--xml", "--toon", "--md",
+      ...(subcommand === "migrate" ? ["--graph-id", "--origin", "--ancestor", "--apply", "--plan-hash"]
+        : subcommand === "reconcile" ? ["--ancestor", "--incoming", "--target", "--decisions", "--apply", "--plan-hash"] : ["--resume", "--rollback"])]);
+    for (const flag of Object.keys(parsed.flags)) {
+      if (!allowed.has(flag)) throw new UsageError(`graph ${subcommand} does not support ${flag}; no mutation attempted`);
+    }
+  }
   switch (subcommand) {
+    case "reconcile": {
+      if (parsed.positionals.length !== 2) throw new UsageError("graph reconcile does not accept positional arguments");
+      const ancestor = requireFlagValue("--ancestor", parsed.flags["--ancestor"]);
+      const incoming = requireFlagValue("--incoming", parsed.flags["--incoming"]);
+      if (!ancestor || !incoming) throw new UsageError("graph reconcile requires --ancestor <ref> and --incoming <ref>");
+      runGraphReconcileCommand({ root, ancestor, incoming, target,
+        decisionsPath: requireFlagValue("--decisions", parsed.flags["--decisions"]),
+        apply: parseBooleanFlag("--apply", parsed.flags["--apply"]),
+        planHash: requireFlagValue("--plan-hash", parsed.flags["--plan-hash"]), json });
+      return 0;
+    }
+    case "migrate": {
+      if (parsed.positionals.length !== 2) throw new UsageError("graph migrate does not accept positional arguments");
+      const graphId = requireFlagValue("--graph-id", parsed.flags["--graph-id"]);
+      const origin = requireFlagValue("--origin", parsed.flags["--origin"]);
+      if (!graphId || !origin) throw new UsageError("graph migrate requires --graph-id <uuid> and --origin <uuid>");
+      runGraphMigrateCommand({ root, graphId, origin,
+        ancestor: requireFlagValue("--ancestor", parsed.flags["--ancestor"]),
+        apply: parseBooleanFlag("--apply", parsed.flags["--apply"]),
+        planHash: requireFlagValue("--plan-hash", parsed.flags["--plan-hash"]), json });
+      return 0;
+    }
+    case "recover": {
+      if (!source || parsed.positionals.length !== 3) throw new UsageError("graph recover requires <plan-hash>");
+      runGraphRecoverCommand({ root, hash: source,
+        resume: parseBooleanFlag("--resume", parsed.flags["--resume"]),
+        rollback: parseBooleanFlag("--rollback", parsed.flags["--rollback"]), json });
+      return 0;
+    }
     case "clone": {
       if (!source || parsed.positionals.length > 3) {
         throw new UsageError("graph clone requires <source-bundle-or-mdkg-dir>");
@@ -2234,7 +2307,7 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       return 0;
     }
     default:
-      throw new UsageError("graph requires clone/fork/import-template/refs");
+      throw new UsageError("graph requires clone/fork/import-template/refs/migrate/reconcile/recover");
   }
 }
 

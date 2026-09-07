@@ -88,6 +88,7 @@ export function runSearchCommand(options: SearchCommandOptions): void {
   }
 
   const { index, rebuilt, stale, warnings } = loadIndex({
+    inspection: true,
     root: options.root,
     config,
     useCache: !options.noCache,

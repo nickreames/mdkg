@@ -4,6 +4,12 @@ import { archiveIdFromUri, isUriRef } from "../util/refs";
 import { resolveQid } from "../util/qid";
 import { collectGoalScope, GOAL_SCOPE_ACTIONABLE_TYPES, GOAL_SCOPE_ALLOWED_TYPES } from "./goal_scope";
 import { parseLoopRefBindings } from "./loop_bindings";
+import { parseIdentityRef } from "./identity";
+import { mapGraphReferenceFields, matchesWorkContractPath } from "./identity_refs";
+
+function isExternalUri(ref: string): boolean {
+  return isUriRef(ref) && !parseIdentityRef(ref);
+}
 
 export type ValidateGraphOptions = {
   allowMissing?: boolean;
@@ -52,7 +58,7 @@ function validateEdgeTargets(
 
     for (const [edgeKey, values] of edgeLists) {
       for (const value of values) {
-        if ((edgeKey === "context_refs" || edgeKey === "evidence_refs") && isUriRef(value)) {
+        if ((edgeKey === "context_refs" || edgeKey === "evidence_refs") && isExternalUri(value)) {
           continue;
         }
         const targetNode = nodes[value];
@@ -142,19 +148,6 @@ function validatePrevNextSymmetry(index: Index, _allowMissing: boolean, errors: 
   }
 }
 
-function normalizeDocPath(value: string): string {
-  return value.replace(/\\/g, "/").replace(/^\.\//, "");
-}
-
-function pathEndsWithContractRef(nodePath: string, contractRef: string): boolean {
-  const normalizedNodePath = normalizeDocPath(nodePath);
-  const normalizedContractRef = normalizeDocPath(contractRef);
-  return (
-    normalizedNodePath === normalizedContractRef ||
-    normalizedNodePath.endsWith(`/${normalizedContractRef}`)
-  );
-}
-
 function resolveNodeRef(index: Index, ws: string, value: string): Index["nodes"][string] | undefined {
   const qid = value.includes(":") ? value : `${ws}:${value}`;
   return index.nodes[qid];
@@ -206,8 +199,9 @@ function validateAgentWorkflowSpecWorkContracts(
       if (typeof value !== "string") {
         continue;
       }
+      const resolved = node.identity ? resolveQid(index, value, node.ws) : undefined;
       const matches = workspaceWorkNodes.filter((workNode) =>
-        pathEndsWithContractRef(workNode.path, value)
+        resolved?.status === "ok" ? workNode.qid === resolved.qid : matchesWorkContractPath(workNode.path, value)
       );
       if (matches.length === 0) {
         if (allowMissing) {
@@ -230,7 +224,8 @@ function validateAgentWorkflowSpecWorkContracts(
         continue;
       }
       const matchedWorkNode = matches[0];
-      if (matchedWorkNode.agentId !== undefined && matchedWorkNode.agentId !== node.id) {
+      const owner = matchedWorkNode.agentId !== undefined ? resolveQid(index, matchedWorkNode.agentId, node.ws) : undefined;
+      if (matchedWorkNode.agentId !== undefined && (owner?.status !== "ok" || owner.qid !== node.qid)) {
         pushError(
           errors,
           `${qid}: work_contracts[${indexValue}] references ${matchedWorkNode.qid} owned by agent_id ${matchedWorkNode.agentId}, not ${node.id}`
@@ -722,7 +717,7 @@ function validateLoopTypedRefs(index: Index, allowMissing: boolean, errors: stri
     }
 
     for (const ref of loopAttributeList(node, "decision_refs")) {
-      if (isUriRef(ref)) {
+      if (isExternalUri(ref)) {
         pushError(errors, `${qid}: decision_refs requires a local accepted dec ref, got ${ref}`);
         continue;
       }
@@ -739,7 +734,7 @@ function validateLoopTypedRefs(index: Index, allowMissing: boolean, errors: stri
     }
 
     for (const ref of loopAttributeList(node, "approval_refs")) {
-      if (isUriRef(ref)) {
+      if (isExternalUri(ref)) {
         continue;
       }
       const target = resolveLoopEvidenceNode(index, node.ws, ref);
@@ -770,7 +765,7 @@ function validateLoopTypedRefs(index: Index, allowMissing: boolean, errors: stri
     for (const check of checks) {
       const bindings = parseLoopRefBindings(loopAttributeList(node, check.key));
       for (const binding of bindings) {
-        if (isUriRef(binding.ref)) {
+        if (isExternalUri(binding.ref)) {
           if (check.kind === "decision") {
             pushError(errors, `${qid}: ${check.key} ${binding.identity} requires a local accepted dec ref, got ${binding.ref}`);
           }
@@ -871,6 +866,29 @@ function detectPrevNextCycles(index: Index, errors: string[] | null): void {
 
 export function collectGraphErrors(index: Index, options: ValidateGraphOptions = {}): string[] {
   const errors: string[] = [];
+  const aliases = new Map<string, string[]>();
+  for (const node of Object.values(index.nodes)) {
+    const alias = `${node.ws}:${node.id}`;
+    aliases.set(alias, [...(aliases.get(alias) ?? []), node.qid]);
+    if (node.identity) {
+      mapGraphReferenceFields({ ...node.attributes, refs: node.refs, artifacts: node.artifacts }, (ref, field) => {
+        if (ref.startsWith("mdkg:")) {
+          const resolved = resolveQid(index, ref);
+          if (resolved.status !== "ok") errors.push(`${node.qid}: ${field} has an unresolved or ambiguous immutable identity ${ref}`);
+        }
+        return ref;
+      });
+      if (node.type === "dec" && typeof node.attributes.supersedes === "string") {
+        const target = resolveQid(index, node.attributes.supersedes, node.ws);
+        if (target.status !== "ok" || index.nodes[target.qid].type !== "dec" || target.qid === node.qid) {
+          errors.push(`${node.qid}: supersedes must resolve to a different decision identity`);
+        }
+      }
+    }
+  }
+  for (const [alias, variants] of aliases) {
+    if (variants.length > 1) errors.push(`ambiguous alias ${alias}: ${variants.sort().join(", ")}; reviewed identity reconciliation required`);
+  }
   const allowMissing = options.allowMissing ?? false;
   const knownSkillSlugs = options.knownSkillSlugs;
   const externalWorkspaces = options.externalWorkspaces;

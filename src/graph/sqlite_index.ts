@@ -229,6 +229,7 @@ export function writeSqliteIndex(options: {
   capabilitiesIndex: CapabilitiesIndex;
   subgraphsIndex: SubgraphsIndex;
 }): string {
+  if (options.nodeIndex.meta?.inspection_errors?.length) throw new Error("cannot persist an unresolved inspection graph; reviewed reconciliation required");
   const sqliteRelativePath = options.config.index.sqlite_path;
   const sqlitePath = resolveSqlitePath(options.root, options.config);
   const tempRelativePath = sqliteTempRelativePath(sqliteRelativePath);

@@ -1,5 +1,7 @@
 import fs from "fs";
 import path from "path";
+import { authorNewIdentityNode } from "../graph/identity_authoring";
+import { identityRef, NodeIdentity, parseIdentityRef, readGraphFormat } from "../graph/identity";
 import { Config, loadConfig } from "../core/config";
 import {
   atomicReplaceContainedFile,
@@ -23,6 +25,7 @@ import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId } from "../util/id";
 import { archiveIdFromUri } from "../util/refs";
 import { withMutationLock } from "../util/lock";
+import { formatResolveError, resolveQid } from "../util/qid";
 import { createDeterministicZip } from "../util/zip";
 import { appendAutomaticEvent } from "./event_support";
 
@@ -72,9 +75,12 @@ export type ArchiveCompressCommandOptions = {
 };
 
 type ArchiveReceipt = {
+  alias_qid?: string;
   workspace: string;
   id: string;
   qid: string;
+  identity?: NodeIdentity;
+  stable_ref?: string;
   path: string;
   archive_uri: string;
   stored_path: string;
@@ -85,6 +91,9 @@ type ArchiveReceipt = {
 };
 
 type ArchiveVerifyResult = {
+  identity?: NodeIdentity;
+  stable_ref?: string;
+  alias_qid?: string;
   qid: string;
   id: string;
   path: string;
@@ -227,6 +236,8 @@ function nextArchiveId(root: string, ws: string, basename: string, existingIds: 
 
 function archiveNodeReceipt(root: string, node: IndexNode): ArchiveReceipt {
   return {
+    ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}),
+    ...(node.alias_qid ? { alias_qid: node.alias_qid } : {}),
     workspace: node.ws,
     id: node.id,
     qid: node.qid,
@@ -253,14 +264,8 @@ function maybeReindex(root: string): void {
 
 function resolveArchiveNode(root: string, id: string, ws?: string): IndexNode {
   const config = loadConfig(root);
-  const { index } = loadIndex({ root, config });
-  const target = archiveTargetFromInput(id, ws);
-  const qid = `${target.workspace}:${target.id}`;
-  const node = index.nodes[qid];
-  if (!node || node.type !== "archive") {
-    throw new NotFoundError(`archive not found: ${id}`);
-  }
-  return node;
+  const { index } = loadIndex({ root, config, inspection: true, persistReindex: false });
+  return resolveArchiveNodeFromIndex(index, id, ws);
 }
 
 function archiveNodePaths(root: string, node: IndexNode): {
@@ -396,6 +401,14 @@ function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): Ar
 
 function loadArchiveVerifyResults(options: ArchiveVerifyCommandOptions): ArchiveVerifyResult[] {
   const config = loadConfig(options.root);
+  if (options.id && (parseIdentityRef(options.id) || readGraphFormat(options.root).format_version === 2)) {
+    const node = resolveArchiveNode(options.root, options.id, options.ws);
+    const { sidecarPath } = archiveNodePaths(options.root, node);
+    const result = verifyArchiveSidecar(options.root, node.ws, sidecarPath);
+    if (!result) throw new NotFoundError(`archive not found: ${options.id}`);
+    return [{ ...result, qid: node.qid, ...(node.alias_qid ? { alias_qid: node.alias_qid } : {}),
+      ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}) }];
+  }
   const wsFilter = options.ws ? normalizeWorkspace(options.ws) : undefined;
   if (wsFilter && !config.workspaces[wsFilter]) {
     throw new NotFoundError(`workspace not found: ${wsFilter}`);
@@ -470,14 +483,12 @@ function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
     [sidecarRelativePath, "create"],
   ] as const) {
     withContainedPathSink(
-      { root: options.root, relativePath, operation, createParents: true },
+      { root: options.root, relativePath, operation, createParents: false },
       () => undefined
     );
   }
   const rawData = fs.readFileSync(sourcePath);
-  writeContainedFileExclusive({ root: options.root, relativePath: rawRelativePath }, rawData);
   const zipData = createDeterministicZip(basename, rawData);
-  atomicReplaceContainedFile({ root: options.root, relativePath: zipRelativePath }, zipData);
 
   const frontmatter: Record<string, FrontmatterValue> = {
     id,
@@ -504,12 +515,11 @@ function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
     created: today,
     updated: today,
   };
-  writeArchiveSidecar(
-    options.root,
-    sidecarPath,
-    frontmatter,
-    ["# Archive Entry", "", `Archived ${archiveKind}: ${basename}`, "", "# Provenance", "", "Copied from local workspace input."].join("\n")
-  );
+  const authored = authorNewIdentityNode(options.root, index, ws, formatArchiveSidecar(frontmatter,
+    ["# Archive Entry", "", `Archived ${archiveKind}: ${basename}`, "", "# Provenance", "", "Copied from local workspace input."].join("\n")), sidecarRelativePath);
+  writeContainedFileExclusive({ root: options.root, relativePath: rawRelativePath }, rawData);
+  atomicReplaceContainedFile({ root: options.root, relativePath: zipRelativePath }, zipData);
+  writeContainedFileExclusive({ root: options.root, relativePath: sidecarRelativePath }, authored.content);
 
   maybeReindex(options.root);
   appendAutomaticEvent({
@@ -517,7 +527,7 @@ function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
     ws,
     kind: "ARCHIVE_ADDED",
     status: "ok",
-    refs: [id],
+    refs: [authored.stable_ref ?? id],
     artifacts: [`archive://${id}`],
     notes: "archive sidecar created via mdkg archive add",
     now: options.now,
@@ -534,6 +544,7 @@ function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
     sha256: String(frontmatter.sha256),
     compressed_sha256: String(frontmatter.compressed_sha256),
     visibility,
+    ...(authored.identity ? { identity: authored.identity, stable_ref: authored.stable_ref } : {}),
   };
   if (options.json) {
     console.log(JSON.stringify({ action: "created", archive: receipt }, null, 2));
@@ -544,7 +555,7 @@ function runArchiveAddCommandLocked(options: ArchiveAddCommandOptions): void {
 
 export function runArchiveListCommand(options: ArchiveListCommandOptions): void {
   const config = loadConfig(options.root);
-  const { index } = loadIndex({ root: options.root, config });
+  const { index } = loadIndex({ root: options.root, config, inspection: true, persistReindex: false });
   const ws = options.ws ? normalizeWorkspace(options.ws) : undefined;
   const kind = options.kind ? normalizeArchiveKind(options.kind) : undefined;
   const visibility = options.visibility
@@ -644,9 +655,10 @@ function assertWritableArchiveOwner(config: Config, node: IndexNode): void {
 }
 
 function resolveArchiveNodeFromIndex(index: Index, id: string, ws?: string): IndexNode {
-  const target = archiveTargetFromInput(id, ws);
-  const qid = `${target.workspace}:${target.id}`;
-  const node = index.nodes[qid];
+  const target = parseIdentityRef(id) ? undefined : archiveTargetFromInput(id, ws);
+  const resolved = resolveQid(index, target ? `${target.workspace}:${target.id}` : id, ws);
+  if (resolved.status !== "ok") throw new NotFoundError(formatResolveError("archive", id, resolved, ws));
+  const node = index.nodes[resolved.qid];
   if (!node || node.type !== "archive") {
     throw new NotFoundError(`archive not found: ${id}`);
   }

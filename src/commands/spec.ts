@@ -52,6 +52,8 @@ function matchesSpecRef(record: CapabilityRecord, id: string): boolean {
   return (
     record.id === id ||
     record.qid === id ||
+    record.stable_ref === id ||
+    record.alias_qid === id ||
     record.path === id ||
     record.id.toLowerCase() === normalized ||
     record.qid.toLowerCase() === normalized ||

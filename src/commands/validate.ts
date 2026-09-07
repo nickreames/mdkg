@@ -22,6 +22,8 @@ import { collectVisibilityViolations, visibilityViolationMessages } from "../gra
 import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
 import { UsageError, ValidationError } from "../util/errors";
 import { auditSkillMirrors } from "./skill_mirror";
+import { assertNoGraphConflictMarkers, assertNodeFormat, GraphFormat, identityRef, readGraphFormat } from "../graph/identity";
+import { normalizeIndexIdentityReferences } from "../graph/identity_refs";
 
 export type ValidateCommandOptions = {
   root: string;
@@ -582,6 +584,7 @@ function buildIndexNode(
 ): IndexNode {
   return {
     id: node.id,
+    ...(node.identity ? { identity: node.identity } : {}),
     qid: `${ws}:${node.id}`,
     ws,
     type: node.type,
@@ -733,6 +736,10 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
 
   const errors: string[] = [];
   const warnings: string[] = [];
+  let graphFormat: GraphFormat | undefined;
+  try { graphFormat = readGraphFormat(options.root); }
+  catch (error) { errors.push(error instanceof Error ? error.message : String(error)); }
+  const identityPaths = new Map<string, string>();
   if (isSqliteBackend(config)) {
     const health = sqliteHealth(options.root, config);
     warnings.push(...health.warnings);
@@ -766,12 +773,19 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
         continue;
       }
       try {
+        if (graphFormat?.format_version === 2) assertNoGraphConflictMarkers(content, filePath);
         const node = parseNode(content, filePath, {
           workStatusEnum: config.work.status_enum,
           priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max,
           templateSchemas,
         });
+        if (graphFormat) assertNodeFormat(graphFormat, node.identity, filePath);
+        if (node.identity) {
+          const ref = identityRef(node.identity);
+          if (identityPaths.has(ref)) throw new UsageError(`duplicate immutable identity ${ref}: ${identityPaths.get(ref)} and ${filePath}`);
+          identityPaths.set(ref, filePath);
+        }
 
         if (idsByWorkspace[alias].has(node.id)) {
           const firstPath = idsByWorkspace[alias].get(node.id);
@@ -807,6 +821,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
     }
   }
 
+  normalizeIndexIdentityReferences({ nodes });
   const index: Index = {
     meta: {
       tool: config.tool,
@@ -814,6 +829,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
       generated_at: new Date().toISOString(),
       root: options.root,
       workspaces: Object.keys(filesByAlias).sort(),
+      ...(graphFormat?.format_version === 2 ? { graph_format: graphFormat } : {}),
     },
     workspaces: buildWorkspaceMap(config),
     nodes,

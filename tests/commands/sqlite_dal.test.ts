@@ -141,6 +141,14 @@ test("legacy config without sqlite fields remains json backend", () => {
 test("parallel new and checkpoint commands allocate unique ids", async () => {
   const root = makeRoot("mdkg-sqlite-parallel-");
   assert.equal(captureRun(["init", "--agent"], root).code, 0);
+  // This fixture proves serialization/unique IDs, not a 10-second latency SLA.
+  // Eight writers contend while the full suite runs many other CLI processes.
+  // Preserve the production default (asserted above), but give this stress
+  // fixture enough headroom on loaded CI/developer machines.
+  const configPath = path.join(root, ".mdkg", "config.json");
+  const config = readJson(configPath);
+  config.index.lock_timeout_ms = 60000;
+  writeJson(configPath, config);
   assert.equal(captureRun(["index"], root).code, 0);
 
   const createCalls = Array.from({ length: 8 }, (_, index) =>

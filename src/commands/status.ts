@@ -13,6 +13,7 @@ import { isSkillsIndexStale } from "../graph/skills_index_cache";
 import { isIndexStale } from "../graph/staleness";
 import { resolveSubgraphsIndexPath, isSubgraphsIndexStale } from "../graph/subgraphs";
 import { collectGraphErrors } from "../graph/validate_graph";
+import { readLocalGoalSelection, resolveLocalGoalSelection } from "../graph/selected_goal";
 
 export type StatusCommandOptions = {
   root: string;
@@ -27,19 +28,12 @@ type CacheStatus = {
   stale: boolean | null;
 };
 
-type SelectedGoalState = {
-  qid: string;
-  id: string;
-  ws: string;
-  selected_at: string;
-};
-
 function rel(root: string, target: string): string {
   return path.relative(root, target).replace(/\\/g, "/") || ".";
 }
 
 function runGit(root: string, args: string[]): string | undefined {
-  const result = spawnSync("git", args, { cwd: root, encoding: "utf8" });
+  const result = spawnSync("git", args, { cwd: root, encoding: "utf8", env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" } });
   if (result.status !== 0) {
     return undefined;
   }
@@ -96,34 +90,6 @@ function cacheStatus(
   };
 }
 
-function readSelectedGoalState(root: string): { state: SelectedGoalState | null; warning?: string } {
-  const filePath = path.join(root, ".mdkg", "state", "selected-goal.json");
-  if (!fs.existsSync(filePath)) {
-    return { state: null };
-  }
-  try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, "utf8")) as Partial<SelectedGoalState>;
-    if (
-      typeof parsed.qid === "string" &&
-      typeof parsed.id === "string" &&
-      typeof parsed.ws === "string" &&
-      typeof parsed.selected_at === "string"
-    ) {
-      return {
-        state: {
-          qid: parsed.qid.toLowerCase(),
-          id: parsed.id.toLowerCase(),
-          ws: parsed.ws.toLowerCase(),
-          selected_at: parsed.selected_at,
-        },
-      };
-    }
-    return { state: null, warning: "selected goal state is malformed" };
-  } catch {
-    return { state: null, warning: "selected goal state is unreadable" };
-  }
-}
-
 function releaseStatus(root: string) {
   const version = readPackageVersion();
   const changelogPath = path.join(root, "CHANGELOG.md");
@@ -149,6 +115,7 @@ export function collectStatus(root: string) {
 
   try {
     const loaded = loadIndex({
+      inspection: true,
       root,
       config,
       useCache: true,
@@ -164,14 +131,16 @@ export function collectStatus(root: string) {
     graphErrors = [err instanceof Error ? err.message : String(err)];
   }
 
-  const selected = readSelectedGoalState(root);
+  const selected = readLocalGoalSelection(root);
   if (selected.warning) {
     warnings.push(selected.warning);
   }
-  const selectedNode = selected.state && index ? index.nodes[selected.state.qid] : undefined;
+  const selection = selected.state && index ? resolveLocalGoalSelection(index, selected.state) : {};
+  if (selection.warning) warnings.push(selection.warning);
+  const selectedNode = selection.node;
   const selectedAchieved =
     selectedNode?.status === "done" || String(selectedNode?.attributes.goal_state ?? "") === "achieved";
-  const selectedMissing = selected.state !== null && !selectedNode;
+  const selectedMissing = Boolean(selected.state) && !selectedNode;
   if (selectedMissing) {
     warnings.push("selected goal is missing from the graph index");
   }
@@ -275,9 +244,10 @@ export function collectStatus(root: string) {
       error_count: graphErrors.length,
     },
     goal: {
-      selected: selected.state,
-      selected_exists: selected.state === null ? null : !selectedMissing,
-      selected_achieved: selected.state === null ? null : selectedAchieved,
+      selected: selected.state ?? null,
+      selected_exists: selected.state ? !selectedMissing : null,
+      selected_achieved: selected.state ? selectedAchieved : null,
+      ...(selectedNode?.identity ? { selected_resolved_qid: selectedNode.qid } : {}),
       active_node: selectedNode?.attributes.active_node ?? null,
       last_active_node: selectedNode?.attributes.last_active_node ?? null,
       goal_state: selectedNode?.attributes.goal_state ?? null,

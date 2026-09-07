@@ -813,7 +813,7 @@ test("fix plan ids family groups two-branch duplicate ids with stable apply-capa
   assert.equal(change.apply_supported, true);
 });
 
-test("fix ids --apply resolves unresolved git conflict-stage duplicate ids", () => {
+test("fix ids --apply splits independent add/add nodes without staging Git files", () => {
   const root = createFixRepo("mdkg-fix-ids-stage-conflict-");
   assertGit(root, ["init", "-q"]);
   assertGit(root, ["add", "."]);
@@ -835,6 +835,7 @@ test("fix ids --apply resolves unresolved git conflict-stage duplicate ids", () 
   const merge = git(root, ["merge", "--no-edit", "branch-b"]);
   assert.notEqual(merge.status, 0, merge.stdout || merge.stderr);
   assert.match(git(root, ["ls-files", "-u", "--", ".mdkg/work/task-900.md"]).stdout, /\t\.mdkg\/work\/task-900\.md/);
+  const gitIndexBefore = fs.readFileSync(path.join(root, ".git", "index"));
 
   const plan = run(root, ["fix", "ids", "--target", "task-900", "--json"]);
   assert.equal(plan.status, 0, plan.stderr);
@@ -854,7 +855,8 @@ test("fix ids --apply resolves unresolved git conflict-stage duplicate ids", () 
   assert.equal(receipt.action, "fix.apply");
   assert.equal(receipt.summary.applied_count, 1);
   assert.deepEqual(receipt.touched_paths, [".mdkg/work/task-900.md", ".mdkg/work/task-901.md"]);
-  assert.equal(git(root, ["ls-files", "-u", "--", ".mdkg/work/task-900.md"]).stdout.trim(), "");
+  assert.deepEqual(fs.readFileSync(path.join(root, ".git", "index")), gitIndexBefore);
+  assert.notEqual(git(root, ["ls-files", "-u", "--", ".mdkg/work/task-900.md"]).stdout.trim(), "");
 
   const canonical = fs.readFileSync(path.join(root, ".mdkg", "work", "task-900.md"), "utf8");
   const incoming = fs.readFileSync(path.join(root, ".mdkg", "work", "task-901.md"), "utf8");
@@ -863,10 +865,107 @@ test("fix ids --apply resolves unresolved git conflict-stage duplicate ids", () 
   assert.match(incoming, /^id: task-901$/m);
   assert.match(incoming, /branch b same path duplicate/);
 
+  const resolved = snapshotFiles(root);
+  const repeat = run(root, ["fix", "ids", "--target", "task-900", "--apply", "--json"]);
+  assert.notEqual(repeat.status, 0, "repeated apply must not split the unresolved index again");
+  assert.deepEqual(snapshotFiles(root), resolved);
+
   const validate = run(root, ["validate", "--json"]);
   assert.equal(validate.status, 0, validate.stderr);
   assert.equal(JSON.parse(validate.stdout).ok, true);
 });
+
+for (const scenario of ["modify/modify", "delete/modify", "rename/rename"] as const) {
+  test(`fix ids refuses ${scenario} ancestor conflicts without splitting or writing`, () => {
+    const root = createFixRepo("mdkg-fix-ancestor-");
+    const relativePath = ".mdkg/work/task-900.md";
+    writeFile(path.join(root, relativePath), taskNode("task-900", "existing ancestor node"));
+    assertGit(root, ["init", "-q"]);
+    assertGit(root, ["add", "."]);
+    assertGit(root, ["commit", "-qm", "ancestor"]);
+    const base = git(root, ["rev-parse", "HEAD"]).stdout.trim();
+    assertGit(root, ["checkout", "-qb", "target"]);
+    if (scenario === "delete/modify") {
+      assertGit(root, ["rm", relativePath]);
+    } else if (scenario === "rename/rename") {
+      assertGit(root, ["mv", relativePath, ".mdkg/work/task-900-target.md"]);
+    } else {
+      writeFile(path.join(root, relativePath), taskNode("task-900", "target edited node"));
+      assertGit(root, ["add", relativePath]);
+    }
+    assertGit(root, ["commit", "-qm", "target change"]);
+    assertGit(root, ["checkout", "-qb", "incoming", base]);
+    if (scenario === "rename/rename") {
+      assertGit(root, ["mv", relativePath, ".mdkg/work/task-900-incoming.md"]);
+    } else {
+      writeFile(path.join(root, relativePath), taskNode("task-900", "incoming edited node"));
+      assertGit(root, ["add", relativePath]);
+    }
+    assertGit(root, ["commit", "-qm", "incoming change"]);
+    assertGit(root, ["checkout", "-q", "target"]);
+    assert.notEqual(git(root, ["merge", "--no-edit", "incoming"]).status, 0);
+    const before = snapshotFiles(root);
+    const plan = run(root, ["fix", "ids", "--target", "task-900", "--json"]);
+    assert.equal(plan.status, 0, plan.stderr);
+    const receipt = JSON.parse(plan.stdout);
+    assert.equal(receipt.proposed_changes.length, 0, JSON.stringify(receipt.proposed_changes));
+    assert.ok(receipt.blocked_changes.some((change: { reason: string }) => change.reason.startsWith("git_")));
+    assert.deepEqual(snapshotFiles(root), before, "preview must preserve graph and Git metadata");
+    const apply = run(root, ["fix", "ids", "--target", "task-900", "--apply", "--json"]);
+    assert.notEqual(apply.status, 0);
+    assert.match(apply.stderr, /blocked changes/);
+    assert.deepEqual(snapshotFiles(root), before, "blocked application must preserve all bytes");
+  });
+}
+
+for (const scenario of ["missing ancestry", "renamed ancestor", "quoted path", "wrong base", "invalid stage"] as const) {
+  test(`fix ids classifies add/add with ${scenario} using exact local evidence`, () => {
+    const root = createFixRepo("mdkg-fix-add-add-evidence-");
+    const relativePath = scenario === "quoted path" ? ".mdkg/work/task-900 résumé.md" : ".mdkg/work/task-900.md";
+    if (scenario === "renamed ancestor") {
+      writeFile(path.join(root, ".mdkg/work/task-900-old.md"), taskNode("task-900", "old path"));
+    }
+    assertGit(root, ["init", "-q"]);
+    assertGit(root, ["add", "."]);
+    assertGit(root, ["commit", "-qm", "base"]);
+    const base = git(root, ["rev-parse", "HEAD"]).stdout.trim();
+    for (const branch of ["target", "incoming"]) {
+      assertGit(root, ["checkout", "-qb", branch, base]);
+      if (scenario === "renamed ancestor") assertGit(root, ["rm", ".mdkg/work/task-900-old.md"]);
+      const content = taskNode("task-900", branch);
+      writeFile(path.join(root, relativePath), scenario === "invalid stage" && branch === "incoming"
+        ? content.replace("type: task", "type: unknown") : content);
+      assertGit(root, ["add", relativePath]);
+      assertGit(root, ["commit", "-qm", branch]);
+    }
+    assertGit(root, ["checkout", "-q", "target"]);
+    assert.notEqual(git(root, ["-c", "merge.renames=false", "merge", "--no-edit", "incoming"]).status, 0);
+    assert.ok(!git(root, ["ls-files", "-u", "--", relativePath]).stdout.includes(" 1\t"), "fixture has no path-local ancestor stage");
+    if (scenario === "missing ancestry") fs.unlinkSync(path.join(root, ".git", "MERGE_HEAD"));
+    const args = ["fix", "ids", "--target", "task-900", "--json"];
+    if (scenario === "wrong base") args.push("--base-ref", "HEAD");
+    const before = snapshotFiles(root);
+    const result = run(root, args);
+    assert.equal(result.status, 0, result.stderr);
+    const receipt = JSON.parse(result.stdout);
+    assert.deepEqual(snapshotFiles(root), before);
+    if (scenario === "quoted path") {
+      assert.equal(receipt.proposed_changes.length, 1);
+      assert.equal(receipt.proposed_changes[0].paths[0], relativePath);
+      assert.equal(receipt.proposed_changes[0].evidence.ancestor, base);
+      const applied = run(root, [...args, "--apply"]);
+      assert.equal(applied.status, 0, applied.stderr);
+      assert.equal(fs.readFileSync(path.join(root, ".git", "index"), "utf8"), before.get(".git/index"));
+    } else {
+      assert.equal(receipt.proposed_changes.length, 0);
+      const reasons = { "missing ancestry": "git_ancestry_unproven", "renamed ancestor": "git_ancestor_identity_conflict",
+        "wrong base": "git_ancestry_unproven", "invalid stage": "git_invalid_node_stage" };
+      assert.equal(receipt.blocked_changes[0].reason, reasons[scenario]);
+      assert.notEqual(run(root, [...args, "--apply"]).status, 0);
+      assert.deepEqual(snapshotFiles(root), before);
+    }
+  });
+}
 
 test("fix plan ids family supports target filtering and blocked target receipts", () => {
   const root = createFixRepo("mdkg-fix-ids-target-");
@@ -881,4 +980,64 @@ test("fix plan ids family supports target filtering and blocked target receipts"
   assert.equal(payload.blocked_changes[0].reason, "target_not_found");
   assert.equal(payload.blocked_changes[0].risk, "blocked");
   assert.equal(payload.risk_counts.blocked, 1);
+});
+
+test("fix ids blocks criss-cross merges with multiple accepted ancestor candidates", () => {
+  const root = createFixRepo("mdkg-fix-ambiguous-ancestor-");
+  assertGit(root, ["init", "-q"]);
+  assertGit(root, ["add", "."]);
+  assertGit(root, ["commit", "-qm", "base"]);
+  const base = git(root, ["rev-parse", "HEAD"]).stdout.trim();
+  const revisions: string[] = [];
+  for (const branch of ["target", "incoming"]) {
+    assertGit(root, ["checkout", "-qb", branch, base]);
+    writeFile(path.join(root, ".mdkg/work/task-900.md"), taskNode("task-900", branch));
+    assertGit(root, ["add", ".mdkg/work/task-900.md"]);
+    assertGit(root, ["commit", "-qm", branch]);
+    revisions.push(git(root, ["rev-parse", "HEAD"]).stdout.trim());
+  }
+  const merges = revisions.map((revision) => {
+    const result = git(root, ["commit-tree", `${revision}^{tree}`, "-p", revisions[0], "-p", revisions[1], "-m", `merge ${revision}`]);
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout.trim();
+  });
+  assert.equal(git(root, ["merge-base", "--all", ...merges]).stdout.trim().split("\n").length, 2);
+  assertGit(root, ["checkout", "-q", "--detach", merges[0]]);
+  assertGit(root, ["read-tree", "-m", base, ...merges]);
+  writeFile(path.join(root, ".git/MERGE_HEAD"), `${merges[1]}\n`);
+  const before = snapshotFiles(root);
+  const result = run(root, ["fix", "ids", "--json"]);
+  assert.equal(result.status, 0, result.stderr);
+  const receipt = JSON.parse(result.stdout);
+  assert.equal(receipt.proposed_changes.length, 0);
+  assert.equal(receipt.blocked_changes[0].reason, "git_ancestry_unproven");
+  assert.match(receipt.blocked_changes[0].evidence.detail, /ambiguous common ancestor/);
+  assert.deepEqual(snapshotFiles(root), before);
+});
+
+test("fix ids leaves cleanly merged disjoint edits to one ancestor node as one node", () => {
+  const root = createFixRepo("mdkg-fix-disjoint-edits-");
+  const filePath = path.join(root, ".mdkg/work/task-1.md");
+  const original = fs.readFileSync(filePath, "utf8");
+  assertGit(root, ["init", "-q"]);
+  assertGit(root, ["add", "."]);
+  assertGit(root, ["commit", "-qm", "base"]);
+  const base = git(root, ["rev-parse", "HEAD"]).stdout.trim();
+  assertGit(root, ["checkout", "-qb", "target"]);
+  writeFile(filePath, original.replace("title: fix fixture", "title: edited title"));
+  assertGit(root, ["add", ".mdkg/work/task-1.md"]);
+  assertGit(root, ["commit", "-qm", "title"]);
+  assertGit(root, ["checkout", "-qb", "incoming", base]);
+  writeFile(filePath, `${original}\n\nIndependent body edit.\n`);
+  assertGit(root, ["add", ".mdkg/work/task-1.md"]);
+  assertGit(root, ["commit", "-qm", "body"]);
+  assertGit(root, ["checkout", "-q", "target"]);
+  assertGit(root, ["merge", "--no-edit", "incoming"]);
+  const before = snapshotFiles(root);
+  const result = run(root, ["fix", "ids", "--target", "task-1", "--json"]);
+  assert.equal(result.status, 0, result.stderr);
+  const receipt = JSON.parse(result.stdout);
+  assert.deepEqual(receipt.proposed_changes, []);
+  assert.deepEqual(receipt.blocked_changes, []);
+  assert.deepEqual(snapshotFiles(root), before);
 });

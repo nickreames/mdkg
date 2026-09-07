@@ -17,6 +17,8 @@ import { formatResolveError, resolveQid } from "../util/qid";
 import { isCanonicalId, isCanonicalIdRef } from "../util/id";
 import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent, isEventLoggingEnabled } from "./event_support";
+import { bindExistingIdentityNode } from "../graph/identity_authoring";
+import { identityRef, NodeIdentity } from "../graph/identity";
 import { CheckpointReceipt, createCheckpoint, runCheckpointNewCommand } from "./checkpoint";
 
 const MUTABLE_TASK_TYPES = new Set(["feat", "task", "bug", "test", "spike"]);
@@ -67,6 +69,8 @@ export type TaskDoneCommandOptions = {
 };
 
 type TaskReceipt = {
+  identity?: NodeIdentity;
+  stable_ref?: string;
   workspace: string;
   id: string;
   qid: string;
@@ -287,10 +291,12 @@ function loadMutableTaskNode(root: string, idOrQid: string, wsHint?: string): Lo
 
 function writeNodeFile(
   root: string,
+  index: Index,
   filePath: string,
   frontmatter: Record<string, FrontmatterValue>,
   body: string
 ): void {
+  Object.assign(frontmatter, bindExistingIdentityNode(root, index, filePath, frontmatter));
   const lines = formatFrontmatter(frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER);
   const frontmatterBlock = ["---", ...lines, "---"].join("\n");
   const content = body.length > 0 ? `${frontmatterBlock}\n${body}` : frontmatterBlock;
@@ -368,6 +374,7 @@ function taskReceipt(root: string, loaded: LoadedTaskNode): TaskReceipt {
   const priority =
     rawPriority === undefined ? undefined : Number.parseInt(String(rawPriority), 10);
   return {
+    ...(loaded.index.nodes[loaded.qid].identity ? { identity: loaded.index.nodes[loaded.qid].identity, stable_ref: identityRef(loaded.index.nodes[loaded.qid].identity!) } : {}),
     workspace: loaded.ws,
     id: loaded.id,
     qid: loaded.qid,
@@ -408,7 +415,7 @@ function runTaskStartCommandLocked(options: TaskStartCommandOptions): void {
   const now = options.now ?? new Date();
   loaded.frontmatter.status = ensureStatusAllowed(loaded.config, "progress");
   updateUpdatedDate(loaded.frontmatter, now);
-  writeNodeFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
+  writeNodeFile(options.root, loaded.index, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
 
   appendAutomaticEvent({
@@ -416,7 +423,7 @@ function runTaskStartCommandLocked(options: TaskStartCommandOptions): void {
     ws: loaded.ws,
     kind: "TASK_STARTED",
     status: "ok",
-    refs: [loaded.id],
+    refs: [loaded.index.nodes[loaded.qid].identity ? identityRef(loaded.index.nodes[loaded.qid].identity!) : loaded.id],
     notes: options.note ?? `status set to progress via mdkg task start`,
     runId: options.runId,
     now,
@@ -464,7 +471,7 @@ function runTaskUpdateCommandLocked(options: TaskUpdateCommandOptions): void {
   loaded.frontmatter.blocked_by = nextBlockedBy;
   updateUpdatedDate(loaded.frontmatter, now);
 
-  writeNodeFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
+  writeNodeFile(options.root, loaded.index, loaded.filePath, loaded.frontmatter, loaded.body);
   maybeReindex(options.root, loaded.config);
 
   appendAutomaticEvent({
@@ -472,7 +479,7 @@ function runTaskUpdateCommandLocked(options: TaskUpdateCommandOptions): void {
     ws: loaded.ws,
     kind: "TASK_UPDATED",
     status: "ok",
-    refs: [loaded.id],
+    refs: [loaded.index.nodes[loaded.qid].identity ? identityRef(loaded.index.nodes[loaded.qid].identity!) : loaded.id],
     artifacts: nextArtifacts,
     notes: options.note ?? `task metadata updated via mdkg task update`,
     runId: options.runId,
@@ -499,14 +506,14 @@ function runTaskDoneCommandLocked(options: TaskDoneCommandOptions): void {
   loaded.frontmatter.refs = nextRefs;
   updateUpdatedDate(loaded.frontmatter, now);
 
-  writeNodeFile(options.root, loaded.filePath, loaded.frontmatter, loaded.body);
+  writeNodeFile(options.root, loaded.index, loaded.filePath, loaded.frontmatter, loaded.body);
 
   appendAutomaticEvent({
     root: options.root,
     ws: loaded.ws,
     kind: "TASK_DONE",
     status: "ok",
-    refs: [loaded.id],
+    refs: [loaded.index.nodes[loaded.qid].identity ? identityRef(loaded.index.nodes[loaded.qid].identity!) : loaded.id],
     artifacts: nextArtifacts,
     notes: options.note ?? `status set to done via mdkg task done`,
     runId: options.runId,

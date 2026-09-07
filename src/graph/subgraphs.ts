@@ -4,10 +4,12 @@ import path from "path";
 import { spawnSync } from "child_process";
 import { Config, SubgraphConfig, SubgraphSourceConfig } from "../core/config";
 import { configPath } from "../core/paths";
-import { FrontmatterValue } from "./frontmatter";
+import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
+import { assertNodeFormat, canonicalJson, GRAPH_FORMAT_PATH, parseGraphFormat, readNodeIdentity } from "./identity";
 import { Index, IndexNode } from "./indexer";
 import { atomicWriteFile } from "../util/atomic";
 import { readZipFileEntries } from "../util/zip";
+import { normalizeIndexIdentityReferences } from "./identity_refs";
 
 export type SubgraphSourceHealth = {
   label?: string;
@@ -389,6 +391,20 @@ function projectOneSource(
     if (!isRecord(readJsonEntry<unknown>(entries, SKILLS_INDEX_ENTRY))) throw new Error("generated skills index has an invalid shape");
     if (!isRecord(readJsonEntry<unknown>(entries, CAPABILITIES_INDEX_ENTRY))) throw new Error("generated capabilities index has an invalid shape");
     errors.push(...entryHashErrors(entries, manifest));
+    const formatBytes = entries.get(GRAPH_FORMAT_PATH);
+    const format = formatBytes ? parseGraphFormat(formatBytes.toString("utf8")) : { format_version: 1 as const };
+    if (format.format_version === 2) {
+      if (canonicalJson(index.meta.graph_format) !== canonicalJson(format)) throw new Error("subgraph index format disagrees with authored manifest");
+      for (const node of Object.values(index.nodes)) {
+        const authored = entries.get(node.path);
+        if (!authored) throw new Error(`subgraph identity has no authored node: ${node.path}`);
+        const identity = readNodeIdentity(parseFrontmatter(authored.toString("utf8"), node.path).frontmatter, node.path);
+        assertNodeFormat(format, identity, node.path);
+        if (canonicalJson(identity) !== canonicalJson(node.identity)) throw new Error(`subgraph index identity disagrees with authored node: ${node.path}`);
+      }
+    } else if (Object.values(index.nodes).some((node) => node.identity)) {
+      throw new Error("subgraph identity requires an authored format manifest");
+    }
     errors.push(...publicProjectionErrors(index, manifest));
     if (manifest.profile !== source.expected_profile) {
       errors.push(`expected ${source.expected_profile} bundle but found ${manifest.profile}`);
@@ -639,17 +655,22 @@ export function isSubgraphsIndexStale(root: string, config: Config): boolean {
 }
 
 export function mergeSubgraphsIntoIndex(base: Index, projection: SubgraphProjection): Index {
-  const nodes = { ...base.nodes, ...projection.index.nodes };
-  const reverse_edges: Index["reverse_edges"] = JSON.parse(JSON.stringify(base.reverse_edges));
-  for (const [edgeKey, targets] of Object.entries(projection.index.reverse_edges)) {
-    reverse_edges[edgeKey] = reverse_edges[edgeKey] ?? {};
-    for (const [target, sources] of Object.entries(targets)) {
-      reverse_edges[edgeKey][target] = [
-        ...(reverse_edges[edgeKey][target] ?? []),
-        ...sources,
-      ].sort();
+  // The combined inspection view may bind local stable references to mounted
+  // identities. Never mutate either persisted local or imported source indexes.
+  const nodes = Object.fromEntries(Object.entries({ ...base.nodes, ...projection.index.nodes }).map(([qid, node]) =>
+    [qid, { ...node, refs: [...node.refs], attributes: { ...node.attributes }, edges: { ...node.edges } }]));
+  normalizeIndexIdentityReferences({ nodes });
+  const reverse_edges: Index["reverse_edges"] = {};
+  for (const node of Object.values(nodes)) {
+    for (const [edgeKey, value] of Object.entries(node.edges)) {
+      for (const target of typeof value === "string" ? [value] : value ?? []) {
+        reverse_edges[edgeKey] ??= {};
+        reverse_edges[edgeKey][target] ??= [];
+        reverse_edges[edgeKey][target].push(node.qid);
+      }
     }
   }
+  for (const targets of Object.values(reverse_edges)) for (const sources of Object.values(targets)) sources.sort();
   return {
     ...base,
     meta: {

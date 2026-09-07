@@ -23,6 +23,8 @@ import { NotFoundError, UsageError } from "../util/errors";
 import { formatNodeCard } from "./node_card";
 import { toNodeDetailJson, toNodeSummaryJson, writeJson } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
+import { bindNewIdentityGroup } from "../graph/identity_authoring";
+import { identityRef, NodeIdentity, readNodeIdentity } from "../graph/identity";
 
 type MaterializationMode = "default_children" | "planning_only" | "manual";
 
@@ -81,6 +83,8 @@ type LoopTemplate = {
 };
 
 type CreatedNodeReceipt = {
+  identity?: NodeIdentity;
+  stable_ref?: string;
   workspace: string;
   id: string;
   qid: string;
@@ -516,7 +520,7 @@ function resolveTemplateForProvenance(
   if (templateRef.startsWith("template://loops/")) {
     return loadSeedTemplates(root, config).find((template) => template.ref === templateRef);
   }
-  if (templateRef.includes("://")) {
+  if (templateRef.includes("://") && !templateRef.startsWith("mdkg://")) {
     return undefined;
   }
   const resolved = resolveQid(index, templateRef, ws);
@@ -575,7 +579,7 @@ function loopTemplateProvenance(
 
   const current = resolveTemplateForProvenance(root, config, index, templateRef, node.ws);
   if (!current) {
-    if (templateRef.includes("://") && !templateRef.startsWith("template://loops/")) {
+    if (templateRef.includes("://") && !templateRef.startsWith("template://loops/") && !templateRef.startsWith("mdkg://")) {
       return {
         ...base,
         state: "unknown",
@@ -846,6 +850,7 @@ function planLoopFork(options: LoopForkCommandOptions): {
     childIds: childRefs,
   });
   const loop = nodePlan(ws, loopId, "loop", title, status, priority, loopPath, loopFrontmatter, loopBody, options.root);
+  bindNewIdentityGroup(options.root, index, ws, [loop, ...children]);
 
   return {
     config,
@@ -959,7 +964,9 @@ function writePlannedNode(root: string, node: PlannedNode): void {
 }
 
 function receiptNode(node: PlannedNode): CreatedNodeReceipt {
+  const identity = readNodeIdentity(node.frontmatter, node.path);
   return {
+    ...(identity ? { identity, stable_ref: identityRef(identity) } : {}),
     workspace: node.workspace,
     id: node.id,
     qid: node.qid,
@@ -1031,6 +1038,7 @@ function forkReceipt(plan: ReturnType<typeof planLoopFork>, dryRun: boolean): Re
   return {
     action: dryRun ? "planned" : "forked",
     dry_run: dryRun,
+    ...(plan.index.meta.graph_format ? { identities_provisional: dryRun } : {}),
     template: {
       kind: plan.template.kind,
       ref: plan.template.ref,
@@ -1099,7 +1107,7 @@ export function runLoopForkCommand(options: LoopForkCommandOptions): void {
       writeDerivedIndexes(options.root, plan.config, updatedIndex);
     }
 
-    const refs = [plan.loop.id, ...plan.children.map((child) => child.id)];
+    const refs = [plan.loop, ...plan.children].map((node) => receiptNode(node).stable_ref ?? node.id);
     appendAutomaticEvent({
       root: options.root,
       ws: plan.ws,
@@ -1130,6 +1138,7 @@ function loadLoopIndex(options: LoopCommandBaseOptions): { config: Config; index
     throw new NotFoundError(`workspace not found: ${ws}`);
   }
   const { index, rebuilt, stale, warnings } = loadIndex({
+    inspection: true,
     root: options.root,
     config,
     useCache: !options.noCache,
