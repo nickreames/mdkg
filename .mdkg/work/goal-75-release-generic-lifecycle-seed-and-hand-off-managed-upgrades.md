@@ -19,7 +19,7 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: []
+context_refs: [goal-85]
 evidence_refs: []
 aliases: [generic-lifecycle-package-release-handoff]
 skills: [release-mdkg-package, service-boundary-ownership-check, verify-close-and-checkpoint]
@@ -98,3 +98,7 @@ creation.
 # Completion Evidence
 
 - Pending future explicit publication authority.
+
+## Version-specific successor
+
+Goal 85 plans direct 0.6.0 publication after Goals 83 and 84 qualify the exact artifact. This legacy goal stays paused; no publication or consumer upgrade authority is inherited from the successor planning record.
