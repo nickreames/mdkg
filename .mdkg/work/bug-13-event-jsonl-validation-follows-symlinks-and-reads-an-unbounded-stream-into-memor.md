@@ -2,7 +2,7 @@
 id: bug-13
 type: bug
 title: Event JSONL validation follows symlinks and reads an unbounded stream into memory
-status: backlog
+status: blocked
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
@@ -61,3 +61,26 @@ Require failing-before/passing-after results and independent verification in tas
 Codex Security scan 35ca791e-716a-4bc3-8067-88d47224e288; candidate key baseline-events-unbounded-read; sanitized hash receipt chk-571.
 
 Disposition: open, not fixed, not publication-ready.
+
+## Compatibility Decision Pending
+
+2026-09-07 independent read-only prepatch investigation confirms that current
+event writers append without file/line/count limits or rotation, while edd-6
+describes high-frequency append-only durable history. Markdown discovery limits
+do not currently include event JSONL bytes. No event-specific defaults or
+oversized-history recovery contract is established. No source changes or
+runtime reproduction for this finding have been performed.
+
+Question sent to Nick: may 0.6.0 validation reject oversized event histories
+with a clear error, using configurable bounded streaming, or should streaming
+accept arbitrarily large histories with no total-size limit? Recommendation:
+configurable bounded streaming, no automatic rotation/deletion, preserved raw
+history, explicit limit diagnostics. Numerical limits and shared materialization
+budgets must be documented and tested after that compatibility choice. Neither
+the recommendation nor an unanswered question is an accepted product decision.
+
+All collectValidateReceipt consumers need coverage, including CLI, MCP and
+materialization. Preserve current line numbering, blank lines, CRLF, final lines
+without newline, UTF-8 boundaries and existing permissive event field semantics.
+Bound accumulated diagnostics as well as record/file/aggregate consumption.
+Keep this finding open until regression execution and independent verification.

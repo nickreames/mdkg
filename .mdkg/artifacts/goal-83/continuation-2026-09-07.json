@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "kind": "qualification-continuation-receipt",
+  "date": "2026-09-07",
+  "outcome": "NOT_READY",
+  "target_version": "0.6.0",
+  "source_revision": "d9d1f46b0735543d0a8b885c56a4be87a24bc599",
+  "package_version": "0.5.2 development candidate; version preparation and final seal remain pending",
+  "local_commits": [
+    {
+      "sha": "417b1ee1ecd14b26badb3781f8f4b130f011b944",
+      "subject": "fix(graph): contain workspace discovery and formatting",
+      "paths": [
+        "src/commands/fix.ts",
+        "src/commands/format.ts",
+        "src/commands/validate.ts",
+        "src/graph/indexer.ts",
+        "src/graph/workspace_files.ts",
+        "tests/graph/workspace_containment.test.ts",
+        "tests/commands/mutation_safety.test.ts",
+        ".mdkg/artifacts/goal-84/bug-11-verification.json",
+        ".mdkg/work/bug-11-symlinked-graph-directories-expose-and-format-external-nodes.md",
+        ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md"
+      ]
+    },
+    {
+      "sha": "d9d1f46b0735543d0a8b885c56a4be87a24bc599",
+      "subject": "fix(pack): contain generated outputs and preserve private modes",
+      "paths": [
+        "src/commands/pack.ts",
+        "src/util/atomic.ts",
+        "tests/commands/pack_output_containment.test.ts",
+        ".mdkg/artifacts/goal-84/bug-20-verification.json",
+        ".mdkg/work/bug-20-default-pack-output-follows-directory-symlinks-outside-the-checkout.md",
+        ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md"
+      ]
+    }
+  ],
+  "node_state": {
+    "done_this_continuation": [
+      "root:bug-11",
+      "root:bug-20"
+    ],
+    "paused_goals": [
+      "root:goal-83",
+      "root:goal-84",
+      "root:goal-85"
+    ],
+    "pending_decision": "root:bug-13",
+    "final_independent_verification": "root:task-828 remains incomplete",
+    "publication_acceptance": "root:chk-570 remains incomplete"
+  },
+  "validation": {
+    "full_source_tests": 876,
+    "contract_tests": 26,
+    "failures": 0,
+    "skips": 0,
+    "installed_workspace_tests": 23,
+    "installed_pack_tests": 20,
+    "cli_and_command_contract": "passed",
+    "documentation_examples": 478,
+    "graph_errors": 0,
+    "inherited_graph_warnings": 3,
+    "changed_only_warnings": 0,
+    "diff_check": "passed"
+  },
+  "security": {
+    "standard_scan": "35ca791e-716a-4bc3-8067-88d47224e288, sealed and not repeated",
+    "locally_fixed_findings": 6,
+    "remaining_security_bugs": [
+      "root:bug-10",
+      "root:bug-12",
+      "root:bug-13",
+      "root:bug-15",
+      "root:bug-16",
+      "root:bug-17",
+      "root:bug-18"
+    ],
+    "other_blocking_bugs": [
+      "root:bug-5",
+      "root:bug-6",
+      "root:bug-7"
+    ],
+    "review_effect": "One fresh pack-output reviewer identified private mode widening; parent reproduced two failures, corrected, and reran focused/installed/full checks.",
+    "unqualified_metadata": "Extended ACL/ownership preservation for atomic exports requires final platform/security verification; no waiver."
+  },
+  "pending_question": {
+    "owner": "Nick",
+    "question": "May event validation reject oversized append-only histories with clear limit errors?",
+    "recommendation": "Configurable bounded streaming with no automatic deletion/rotation, preserved source history and explicit diagnostics.",
+    "alternative": "Unbounded total history streaming bounds memory but not processing time.",
+    "status": "Unanswered; no event source changes or runtime reproduction performed."
+  },
+  "remaining_release_gates": [
+    "Remaining blocker remediation",
+    "Actual 0.5.2-to-candidate installed upgrade and full fixture families",
+    "Private canonical graph migration rehearsal",
+    "Exact Node 24.15.0, available Node 24 and Node 26 matrix",
+    "Draft 0.6.0 metadata, release notes and complete documentation",
+    "Final exact-range security diff review",
+    "Full manifest-backed release ladder and unchanged coverage floors",
+    "Immutable final candidate seal and independently blocked publication handoff"
+  ],
+  "git": {
+    "branch": "main",
+    "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "remote_url": "git@github.com:nickreames/mdkg.git",
+    "remote_verified": false,
+    "network_git_actions": "none",
+    "ahead_before_receipt_commit": 9,
+    "behind_cached_upstream": 0,
+    "remaining_generated_path": ".mdkg/index/mdkg.sqlite",
+    "generated_custody": "Pre-existing owned tracked derived state plus authorized lifecycle projections; excluded from fix commits.",
+    "staging": "Only exact allowlisted reviewed paths; no broad staging. This receipt and decision state receive a separate evidence-only local commit."
+  },
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority_used": "Approved local remediation, fixture execution, mdkg lifecycle/evidence, explicit-path local commits. No push/publication/tag/provider/deployment/history rewrite/canonical migration/bundle refresh.",
+  "writer_disposition": "Parent sole repository writer; no runtime writer lease acquired; transient mutation locks released; goal-84 paused at compatibility decision.",
+  "portability": "Generic graph/path/output safety; no Omni policy added. POSIX-specific modes/FIFO tests are explicitly platform-scoped; full supported-platform qualification remains incomplete.",
+  "skills": {
+    "coverage": [
+      "codex-security:fix-finding",
+      "verify-close-and-checkpoint",
+      "safe-git-publication-preflight"
+    ],
+    "candidates": []
+  }
+}

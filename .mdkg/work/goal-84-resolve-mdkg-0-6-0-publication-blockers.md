@@ -2,9 +2,9 @@
 id: goal-84
 type: goal
 title: Resolve mdkg 0.6.0 publication blockers
-status: progress
+status: blocked
 priority: 1
-goal_state: active
+goal_state: paused
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
 active_node: bug-20
@@ -90,3 +90,28 @@ None. Findings belong in source/regression contracts, not procedural skill creat
 # Completion Evidence
 
 Pending full end-condition evidence.
+
+## 2026-09-07 Continuation Boundary
+
+Local commits 417b1ee1ecd14b26badb3781f8f4b130f011b944 and
+d9d1f46b0735543d0a8b885c56a4be87a24bc599 close bug-11 workspace containment
+and bug-20 pack output containment with sanitized verification artifacts.
+Final source suite: 876 tests plus 26 contract checks, zero failures/skips.
+The current Standard scan remains sealed; this pass used independent bounded
+prepatch/candidate reviews, not a repeated repository scan. Six of thirteen
+current security findings are locally fixed; seven remain, plus bugs 5–7 and
+all independent final qualification gates. Nothing is published or pushed.
+
+Pause at the new event-history compatibility decision in bug-13 rather than
+silently inventing a history-size contract. Nick has been asked whether bounded
+streaming may fail closed on oversized logs. No event source was changed.
+Read-only template-schema investigation is complete; bug-18 implementation has
+not started. Existing source/validation authority remains as approved once the
+decision is resolved; publication and excluded external actions remain separate.
+
+Goal 73 selection, runtime DB and protected Demo 3 bundle bytes are unchanged.
+No runtime writer lease was acquired; transient mutation locks are released.
+The pre-existing tracked SQLite index remains owned, uncommitted generated
+state, not part of the two fix commits. Extended ACL/ownership metadata for
+atomic exports is unqualified and must be covered by the still-open final
+platform/security verification; no release waiver is implied.
