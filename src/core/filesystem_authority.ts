@@ -366,6 +366,37 @@ export function readContainedFile(
   });
 }
 
+// The consumer must process each chunk synchronously. This reader never retains
+// earlier chunks, checks actual bytes (including post-stat growth), and closes
+// its descriptor even when a parser or budget callback rejects input.
+export function forEachContainedFileChunk(
+  input: ContainedPathInput & { maxBytes: number },
+  consume: (chunk: Buffer) => void
+): number {
+  if (!Number.isSafeInteger(input.maxBytes) || input.maxBytes < 0) {
+    fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read byte limit must be a nonnegative safe integer");
+  }
+  return withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => {
+    if (!fs.lstatSync(absolutePath).isFile()) fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read target must be a file");
+    const nonblock = typeof fs.constants.O_NONBLOCK === "number" ? fs.constants.O_NONBLOCK : 0;
+    const handle = fs.openSync(absolutePath, fs.constants.O_RDONLY | noFollowFlag() | nonblock);
+    try {
+      const stat = fs.fstatSync(handle);
+      if (!stat.isFile()) fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read target must be a file");
+      if (stat.size > input.maxBytes) fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, `contained read exceeds byte limit: ${input.maxBytes}`);
+      let total = 0;
+      while (true) {
+        const chunk = Buffer.allocUnsafe(Math.min(64 * 1024, input.maxBytes - total + 1));
+        const count = fs.readSync(handle, chunk, 0, chunk.length, null);
+        if (count === 0) return total;
+        total += count;
+        if (total > input.maxBytes) fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, `contained read exceeds byte limit: ${input.maxBytes}`);
+        consume(chunk.subarray(0, count));
+      }
+    } finally { fs.closeSync(handle); }
+  });
+}
+
 export function writeContainedFileExclusive(
   input: ContainedPathInput,
   data: WritableData

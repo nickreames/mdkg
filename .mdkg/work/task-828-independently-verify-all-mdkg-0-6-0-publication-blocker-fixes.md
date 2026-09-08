@@ -45,3 +45,12 @@ Independent diff report/hash, complete regression matrix, no unresolved publicat
 # Links / Artifacts
 
 Owning goal and dependencies are explicit above. Record exact commands, input/source/artifact hashes and pass/fail before completion.
+
+## Required Limitation Review
+
+Bug-13 verification confirms an active concurrent ancestor-swap race in the
+shared path authority, distinct from the fixed static-input unbounded-read
+finding. Review the single-writer/static-checkout guarantee and public wording;
+do not claim portable openat race immunity. Bug-20 also leaves extended ACL and
+ownership metadata preservation unqualified. Independently assess both during
+final platform/security qualification; no automatic release waiver is allowed.

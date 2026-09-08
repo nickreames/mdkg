@@ -2,12 +2,12 @@
 id: bug-13
 type: bug
 title: Event JSONL validation follows symlinks and reads an unbounded stream into memory
-status: blocked
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-13-verification.json]
 relates: [test-479]
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Overview
@@ -60,9 +60,15 @@ Require failing-before/passing-after results and independent verification in tas
 
 Codex Security scan 35ca791e-716a-4bc3-8067-88d47224e288; candidate key baseline-events-unbounded-read; sanitized hash receipt chk-571.
 
-Disposition: open, not fixed, not publication-ready.
+Disposition: fixed locally with the verification below; final task-828 review
+and publication qualification remain incomplete.
 
-## Compatibility Decision Pending
+## Compatibility Decision Resolved
+
+Resolved 2026-09-08: Nick accepted configurable bounded streaming with explicit
+limit errors, preserved history and no automatic rotation/deletion. Implementation
+and validation continue under the existing local-only qualification authority.
+The discussion below is retained as historical decision context, not a blocker.
 
 2026-09-07 independent read-only prepatch investigation confirms that current
 event writers append without file/line/count limits or rotation, while edd-6
@@ -84,3 +90,26 @@ materialization. Preserve current line numbering, blank lines, CRLF, final lines
 without newline, UTF-8 boundaries and existing permissive event field semantics.
 Bound accumulated diagnostics as well as record/file/aggregate consumption.
 Keep this finding open until regression execution and independent verification.
+
+## 2026-09-08 Local Verification
+
+The historical pending statements above are superseded by this receipt.
+Fifteen of seventeen cases failed before source edits; two legacy controls
+passed. The shared validator now streams contained regular-file bytes with
+finite file, aggregate, line, physical-line, record and diagnostic limits.
+Defaults and explicit override ceilings are documented in README and the
+troubleshooting guide. No event history is changed or automatically rotated.
+
+Seventy focused, 39 installed-package and 898 full tests plus 26 contract checks
+pass without failures/skips. CLI/docs parity, full/changed-only graph validation
+and diff checks pass; only three inherited imported-bundle age warnings remain.
+The exact published 0.5.2 package contains the same original raw read/split.
+Source hashes and intermediate package integrity are in the attached JSON.
+
+A fresh source-only candidate reviewer found no static-input bypass or parser
+regression. Parent reproduced the stronger concurrent ancestor-swap limitation
+already present in shared filesystem authority: another local writer can change
+the path between inspection and open. Resource bounds still hold. This does not
+claim portable openat race immunity; task-828 must review the explicit
+single-writer/static-checkout guarantee and compatibility language independently.
+No additional risk waiver or publication approval is implied.

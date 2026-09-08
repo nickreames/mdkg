@@ -1,6 +1,7 @@
 import fs from "fs";
 import { configPath } from "./paths";
 import { migrateConfig } from "./migrate";
+import { EventValidationLimits, normalizeEventConfig } from "./event_limits";
 import {
   isRootWorkspacePath,
   normalizeContainedWorkspacePath,
@@ -61,6 +62,7 @@ export type Config = {
   archive: {
     large_cache_warning_bytes: number;
   };
+  events?: { validation: EventValidationLimits };
   index: {
     auto_reindex: boolean;
     tolerant: boolean;
@@ -573,6 +575,9 @@ export function validateConfigSchema(raw: unknown): Config {
   const templatesRaw = requireObject(raw.templates, "templates", errors);
   const workRaw = requireObject(raw.work, "work", errors);
   const workspacesRaw = requireObject(raw.workspaces, "workspaces", errors);
+  let events: Config["events"];
+  try { events = normalizeEventConfig(raw.events); }
+  catch (error) { errors.push(error instanceof Error ? error.message : String(error)); }
 
   const archive = archiveRaw
     ? {
@@ -1138,6 +1143,7 @@ export function validateConfigSchema(raw: unknown): Config {
     tool: tool as string,
     root_required: root_required as boolean,
     archive: archive as Config["archive"],
+    events,
     index: index as Config["index"],
     capabilities: capabilities as Config["capabilities"],
     bundles: bundles as Config["bundles"],
