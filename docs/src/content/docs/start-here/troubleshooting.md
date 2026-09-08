@@ -118,6 +118,29 @@ leave source templates untouched and do not mean partial validation succeeded.
 Keep the checkout quiescent during validation: path checks do not provide an
 atomic filesystem sandbox against another process replacing ancestors.
 
+## A configured subgraph bundle is rejected (0.6.0 candidate)
+
+Configured subgraph sources and imported-node bundle metadata must resolve to
+contained regular files. Leaf links, linked ancestors, dangling links and
+parent-directory traversal are rejected, including when a body reader already
+has cached entries. ZIP archive and expansion limits still apply; the archive
+byte limit is checked before and during the actual contained read.
+An already-loaded body cache can still return its original bytes after genuine
+file deletion; that is cached snapshot data, not fresh bundle verification.
+
+An invalid enabled source produces subgraph health errors and omits that
+subgraph's projected nodes/capabilities. Other aliases remain independent.
+Show/pack may consequently report an unresolved imported node. Disabled sources
+are not read. Read-only planning does not repair the source; explicit refresh
+commands can still update derived caches before reporting failure. Do not treat
+an omitted or unhealthy import as successfully verified evidence.
+
+Ordinary native relative path spelling remains supported. Explicit
+operator-selected external bundle inspection is a separate authority surface;
+this restriction does not turn all bundle commands into repository-only reads.
+Keep the checkout quiescent: the path-based checks are not a portable atomic
+filesystem sandbox against concurrent ancestor replacement.
+
 ## A handoff warns about raw markers
 
 Review the handoff manually. Warnings are aids, not proof that the content is safe or unsafe. Remove raw secrets, tokens, provider payloads, raw prompt dumps, and bulky runtime traces before sharing.

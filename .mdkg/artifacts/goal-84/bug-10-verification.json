@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-10",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "baseline-subgraph-link-disclosure",
+  "outcome": "fixed-locally",
+  "base_revision": "3696c99b6a4514a8cbe27e39988c92aaa91401de",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball includes unchecked configured bundle and imported body reads. Current candidate reproduced before patch; earlier releases unassessed.",
+  "invariant": "Repository-configured subgraph bundles and imported-node metadata cannot authorize reads through symlinked or escaping paths; bounded contained reads apply at projection, capability reread and cached/uncached body consumers.",
+  "strategy": "One shared raw-path validation and bounded regular-file reader for configured imports. Preserve native relative names, disabled-alias isolation, external operator-selected bundle inspection and previously loaded body cache after genuine deletion. Cached bytes are not fresh verification.",
+  "files_sha256": {
+    "src/graph/subgraph_bundle.ts": "d67983acb68d513ca747c1acb54194a79aaee66f5f177e3202cfdc79fa72117f",
+    "src/graph/subgraphs.ts": "dc769b6311f47cabfc610c273cecccaed651a5ae3bce8ddbc95efdcca17bc974",
+    "src/graph/node_body.ts": "b84fcf08abd9e1e473988348b3b6a06e68e388691c039389801e0fee64e3b8dd",
+    "tests/graph/subgraph_containment.test.ts": "49804f1604cb02f0497fa687eb99493073b3651fec51ad90e599f95af00abd8f",
+    "docs/src/content/docs/start-here/troubleshooting.md": "9411f484902079c26fc50ef3b345e8bb476ac1ab37e9e89691b465977a9338b3"
+  },
+  "before": "9 of 13 initial cases failed; 4 legitimate controls passed. Leaf/ancestor/inward/dangling links, metadata traversal, warmed cache and CLI/MCP disclosure reproduced in owned synthetic fixtures.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; focused subgraph containment and node_body suites",
+      "result": "16 passed; zero failures/skips. Added sparse oversize, nonregular and second-open capability substitution cases."
+    },
+    {
+      "command": "Offline npm pack/install; installed subgraph containment, existing subgraph commands and node_body suites",
+      "result": "33 passed; zero failures/skips. Installed runtime hashes unchanged; disposable install/tarball/fixtures removed after compact receipt retained."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "Full source suite and 26 release/security-contract checks passed; exit 0, zero failures/skips."
+    },
+    {
+      "command": "npm run cli:check:built; npm run docs:check:built; full/changed-only graph validation; git diff --check",
+      "result": "Passed. 478 examples in 63 files; zero graph errors, three inherited full-graph age warnings and zero changed-only warnings."
+    }
+  ],
+  "failed_gate_disposition": "First full suite: 938/939 passed. Existing node_body contract requires cached entries remain readable after genuine file deletion. Corrected cache-hit handling to preserve only previously loaded bytes on NotFound while still rejecting links, invalid paths, oversized/nonregular replacements. Original compatibility test was not changed; reran focused and installed suites including it.",
+  "review": "One independent prepatch investigation and one fresh source-only candidate reviewer completed. No concrete surviving static-path bypass identified. Full-suite compatibility finding was then corrected by parent and verified through original plus security tests. Final task-828 exact-range/platform review remains required.",
+  "installed_candidate": {
+    "sha256": "eb96895fd54d2ea2d0864730c506f4378bec8b696cfda9568734130a52f05419",
+    "integrity": "sha512-8zhLMBnYTDEtKMJWgcRe2+ll8qn55gpIHC4rSSzu3txP+VYm3L5xFIT+xMVeL5fwyeAFUhMHcgvcJmqsPZInhg==",
+    "status": "Intermediate development artifact, not final 0.6.0 seal"
+  },
+  "limitations": [
+    "Static-checkout/single-writer boundary; no portable openat immunity against active concurrent ancestor replacement.",
+    "Windows and exact Node 24 execution remain pending.",
+    "Other blockers, full fixture matrix, final Security diff workflow, release ladder and immutable seal remain incomplete."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and explicit-path local commits only; no remote Git, publication, provider/deployment, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}

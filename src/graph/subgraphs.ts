@@ -8,7 +8,7 @@ import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { assertNodeFormat, canonicalJson, GRAPH_FORMAT_PATH, parseGraphFormat, readNodeIdentity } from "./identity";
 import { Index, IndexNode } from "./indexer";
 import { writeCacheFile } from "./cache_output";
-import { readZipFileEntries } from "../util/zip";
+import { readSubgraphBundleEntries } from "./subgraph_bundle";
 import { normalizeIndexIdentityReferences } from "./identity_refs";
 
 export type SubgraphSourceHealth = {
@@ -229,10 +229,6 @@ function readJsonEntry<T>(entries: Map<string, Buffer>, entryPath: string): T {
   return JSON.parse(data.toString("utf8")) as T;
 }
 
-function readBundleEntries(bundlePath: string): Map<string, Buffer> {
-  return new Map(readZipFileEntries(bundlePath).map((entry) => [entry.name, entry.data]));
-}
-
 function resolveBundlePath(root: string, source: SubgraphSourceConfig): string {
   return path.resolve(root, source.path);
 }
@@ -382,10 +378,7 @@ function projectOneSource(
   }
 
   try {
-    if (!fs.existsSync(bundlePath)) {
-      throw new Error(`bundle not found: ${source.path}`);
-    }
-    entries = readBundleEntries(bundlePath);
+    entries = readSubgraphBundleEntries(root, source.path);
     manifest = validateForeignManifest(readJsonEntry<unknown>(entries, MANIFEST_ENTRY));
     index = validateIndexShape(readJsonEntry<unknown>(entries, GLOBAL_INDEX_ENTRY));
     if (!isRecord(readJsonEntry<unknown>(entries, SKILLS_INDEX_ENTRY))) throw new Error("generated skills index has an invalid shape");
@@ -727,7 +720,7 @@ export function buildSubgraphCapabilityRecords(root: string, config: Config): {
       try {
         const bundlePath = resolveBundlePath(root, source);
         const relativeBundlePath = toPosixPath(path.relative(root, bundlePath));
-        const entries = readBundleEntries(bundlePath);
+        const entries = readSubgraphBundleEntries(root, source.path);
         const capabilities = readJsonEntry<{ records?: Array<Record<string, unknown>> }>(
           entries,
           CAPABILITIES_INDEX_ENTRY

@@ -2,22 +2,22 @@
 id: bug-10
 type: bug
 title: Subgraph bundle symlinks import and disclose graph bodies outside the selected repository
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-10-verification.json]
 relates: [test-479]
 blocked_by: []
 blocks: []
-refs: []
+refs: [chk-572]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Overview
@@ -60,4 +60,30 @@ Require failing-before/passing-after results and independent verification in tas
 
 Codex Security scan 35ca791e-716a-4bc3-8067-88d47224e288; candidate key baseline-subgraph-link-disclosure; sanitized hash receipt chk-571.
 
-Disposition: open, not fixed, not publication-ready.
+Disposition: fixed locally on 2026-09-08; final task-828 verification and publication qualification remain open.
+
+## Local Verification
+
+Shared configured-bundle boundary validates raw paths before resolution,
+rejects linked/nonregular/oversized input and bounds actual ZIP reads. Projection,
+capability rereads and both body readers share it. Previously loaded cache bytes
+remain available after genuine deletion, but links and malformed replacements
+are rejected; cached bytes do not establish fresh verification. Operator-selected
+external bundle inspection, native relative names and disabled aliases remain.
+
+Before patch, 9/13 initial cases failed; 4 controls passed. Final focused suite:
+16 passed. Installed package: 33 passed, including existing subgraph commands
+and the unchanged cached-deletion compatibility test. Full source suite and 26
+release/security-contract checks pass; CLI/docs/full and changed-only graph/diff
+checks pass. Three inherited bundle-age warnings remain untouched.
+
+First full run caught a cached-deletion compatibility regression (938/939);
+the implementation was corrected, not the existing test, and all gates rerun.
+Independent prepatch and one candidate source review completed. Published 0.5.2
+contains the same unchecked paths. Exact source hashes, intermediate installed
+integrity, remaining platform/race qualifications and preserved-state bookends:
+.mdkg/artifacts/goal-84/bug-10-verification.json.
+
+No runtime lease acquired; transient locks released. SQLite remains accepted
+uncommitted generated custody. No remote, publication, provider, canonical graph
+migration or bundle/subgraph refresh occurred. Goal qualification is NOT_READY.
