@@ -66,6 +66,7 @@ function writeGoal(root: string, overrides: Partial<Record<string, string>> = {}
       "blocked_by: []",
       "blocks: []",
       "refs: []",
+      `context_refs: ${overrides.context_refs ?? "[]"}`,
       "aliases: []",
       "skills: []",
       "created: 2026-01-01",
@@ -276,6 +277,28 @@ test("goal next skips unresolved blockers and advances through a valid local cha
   const advancedReceipt = JSON.parse(advanced.stdout);
   assert.equal(advancedReceipt.node.qid, "root:task-1");
   assert.deepEqual(advancedReceipt.warnings, []);
+});
+
+test("publication task gates on external verification and checkpoint without importing their owning goals", () => {
+  const root = setupRepo();
+  writeGoal(root, { active_node: "", scope_refs: "[task-1]", context_refs: "[goal-2]" });
+  writeGoal(root, { id: "goal-2", active_node: "", scope_refs: "[task-9]", goal_state: "paused", status: "blocked", context_refs: "[goal-1]" });
+  writeWork(root, "task", "task-1", "Future publication recheck", "todo", 1, { blocked_by: "chk-1, task-9" });
+  writeWork(root, "task", "task-9", "Independent blocker verification", "todo", 1);
+  const checkpoint = path.join(root, ".mdkg", "work", "chk-1.md");
+  writeFile(checkpoint, "---\nid: chk-1\ntype: checkpoint\ntitle: Qualification acceptance\nstatus: backlog\npriority: 1\ncheckpoint_kind: goal-closeout\ncreated: 2026-01-01\nupdated: 2026-01-01\n---\n\nPending qualification.\n");
+  const next = () => JSON.parse(captureOutput(() => runGoalNextCommand({ root, id: "goal-1", json: true })).stdout);
+  assert.equal(next().node, null);
+  assert.deepEqual(next().warnings, []);
+  writeWork(root, "task", "task-9", "Independent blocker verification", "done", 1);
+  assert.equal(next().node, null, "verification alone must not bypass checkpoint acceptance");
+  fs.writeFileSync(checkpoint, fs.readFileSync(checkpoint, "utf8").replace("status: backlog", "status: done"));
+  assert.equal(next().node.qid, "root:task-1");
+  assert.deepEqual(next().warnings, []);
+  // Reopening either gate blocks the task again; next is guidance, not authority.
+  writeWork(root, "task", "task-9", "Independent blocker verification", "todo", 1);
+  assert.equal(next().node, null);
+  assert.equal(fs.existsSync(path.join(root, ".mdkg", "state", "selected-goal.json")), false);
 });
 
 test("goal next does not let a blocked active node bypass its dependency", () => {

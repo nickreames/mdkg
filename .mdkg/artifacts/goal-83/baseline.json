@@ -1,0 +1,843 @@
+{
+  "schema_version": 1,
+  "kind": "local-release-baseline",
+  "goal": "root:goal-83",
+  "task": "root:task-823",
+  "source_baseline": "867ac7099faaa0b8eeed1e167609e0e1e482d519",
+  "candidate_source": "9d7e0d3fdbcfbc3908b7d3983b4957f15d17cb2b",
+  "source_provenance": "chk-535 records release source 867ac709 and invocation 95f35b93; the 10 intervening paths are mdkg-only evidence/cache. Registry has no gitHead; no tag provenance is inferred.",
+  "published": {
+    "version": "0.5.2",
+    "source": "https://registry.npmjs.org/mdkg/0.5.2",
+    "tarball": "https://registry.npmjs.org/mdkg/-/mdkg-0.5.2.tgz",
+    "bytes": 425431,
+    "sha1": "8226872a6c797382265a13382edea5b7a9c1e033",
+    "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+    "file_count": 191,
+    "file_list_sha256": "4c42bb607755590b011492f16c1040a1c2a91a47e0a0c95dec2fbc307e041ed0",
+    "verification": "Fresh unauthenticated metadata and tarball download; SHA-1/SHA-512 exact match, all 191 entries regular and package-root-contained. Registry signature not independently verified; TLS plus known immutable digest verified."
+  },
+  "delta": {
+    "changed_paths": 1125,
+    "classified_manifest_sha256": "ee5cf24a7fe2bc528eb4ffd41c02979665042209297edccf357bf509fb4098f0",
+    "counts": {
+      "repository-instruction-projections": 18,
+      "validation-infrastructure": 62,
+      "repository-configuration": 1,
+      "project-memory-and-derived-history": 172,
+      "bundled-guidance-inputs": 14,
+      "documentation": 12,
+      "demo-and-website-consumers": 780,
+      "shipped-runtime-and-metadata": 66
+    },
+    "reproduction": "git diff --name-only --no-renames 867ac7099faaa0b8eeed1e167609e0e1e482d519 9d7e0d3fdbcfbc3908b7d3983b4957f15d17cb2b; retain command order, apply the first matching classification rule below, git rev-parse REV:path for head_blob (null when deleted). SHA-256 compact JSON array of objects with keys path, classification, head_blob in that order.",
+    "classification_rules": [
+      { "prefixes": ["src/"], "exact": ["package.json", "package-lock.json", "scripts/postinstall.js"], "category": "shipped-runtime-and-metadata" },
+      { "prefixes": ["assets/init/", ".mdkg/core/", ".mdkg/templates/"], "category": "bundled-guidance-inputs" },
+      { "prefixes": ["tests/", "scripts/", ".github/", "tsconfig"], "category": "validation-infrastructure" },
+      { "prefixes": ["docs/"], "exact": ["README.md", "CHANGELOG.md", "CLI_COMMAND_MATRIX.md", "CONTRIBUTING.md", "LICENSE"], "category": "documentation" },
+      { "prefixes": ["mdkg-dev/", "presentations/", "examples/"], "category": "demo-and-website-consumers" },
+      { "prefixes": [".mdkg/"], "category": "project-memory-and-derived-history" },
+      { "prefixes": [".agents/", ".claude/"], "exact": ["AGENTS.md", "CLAUDE.md", "AGENT_START.md", "llms.txt"], "category": "repository-instruction-projections" },
+      { "fallback": true, "category": "repository-configuration" }
+    ],
+    "package_and_validation_paths": [
+      {
+        "path": ".github/workflows/release-readiness.yml",
+        "classification": "validation-infrastructure",
+        "head_blob": "260d1df9c1fb74753599520dc63750e5cd684e08"
+      },
+      {
+        "path": ".gitignore",
+        "classification": "repository-configuration",
+        "head_blob": "73c655dfc634a0d68108f0664814779e07627781"
+      },
+      {
+        "path": ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "74a13a1627f4e051ab8fbc558cb74b04c53c95fd"
+      },
+      {
+        "path": "CHANGELOG.md",
+        "classification": "documentation",
+        "head_blob": "c3fae14decc7f4f6e147884e79c65b849246974d"
+      },
+      {
+        "path": "CLI_COMMAND_MATRIX.md",
+        "classification": "documentation",
+        "head_blob": "ea19e501d3e6732a25f7cf602ea6d19243da29aa"
+      },
+      {
+        "path": "CONTRIBUTING.md",
+        "classification": "documentation",
+        "head_blob": "e7893dbd5ed95d878ebc26204003d65a3054b815"
+      },
+      {
+        "path": "assets/init/AGENTS.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "3caed8b566bed79c7f0059601b6b003266271a4f"
+      },
+      {
+        "path": "assets/init/AGENT_START.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "bb776db371bb1d2944413fdcfd6752c87adc853d"
+      },
+      {
+        "path": "assets/init/CLAUDE.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "71a140ad1e7eb8a62c25ad5259f1deac8445668c"
+      },
+      {
+        "path": "assets/init/README.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "35cca9823725020f2e5e43af34aa85fe1cf61ffc"
+      },
+      {
+        "path": "assets/init/legacy/0.5.2-before-compact.json",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "f1a749e7508d6317c64be4ee5f0dc08826a51427"
+      },
+      {
+        "path": "assets/init/llms.txt",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "2398caca8da007c9ac9ccda7a8a178aa711a5cae"
+      },
+      {
+        "path": "assets/init/skills/default/author-mdkg-skill/SKILL.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "d6df0fa6557b617bc34e16ba865101e0c2c37cff"
+      },
+      {
+        "path": "assets/init/skills/default/build-pack-and-execute-task/SKILL.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "55d6e86b65c96dfd6c58ca6b25a528bb59d80747"
+      },
+      {
+        "path": "assets/init/skills/default/pursue-mdkg-goal/SKILL.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "fd2d3e68eb0f44a268df31b917a369c2b258908f"
+      },
+      {
+        "path": "assets/init/skills/default/pursue-mdkg-loop/SKILL.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "b79f14584682257be1bdc7544a21c230343a9ae3"
+      },
+      {
+        "path": "assets/init/skills/default/select-work-and-ground-context/SKILL.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "d5d3b48246cda8832ff690ddcb7b10a770633109"
+      },
+      {
+        "path": "assets/init/skills/default/verify-close-and-checkpoint/SKILL.md",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "3660d12ba4d1c7b1200723782751dacd47f2b144"
+      },
+      {
+        "path": "assets/init/skills/public-seed-policy.json",
+        "classification": "bundled-guidance-inputs",
+        "head_blob": "819a509f08f8a4ca6a9d62b6f65d01379658d9a1"
+      },
+      {
+        "path": "docs/_generated/cli-reference.md",
+        "classification": "documentation",
+        "head_blob": "2748a38c2ce286544417d327eec0c43fa192e171"
+      },
+      {
+        "path": "docs/_generated/command-contract-summary.json",
+        "classification": "documentation",
+        "head_blob": "5189fa08f9aca9b267f390c8008d16178db25ea3"
+      },
+      {
+        "path": "docs/_generated/release-notes.json",
+        "classification": "documentation",
+        "head_blob": "74a5fc395699fbe2136be5a1bb74afe417248163"
+      },
+      {
+        "path": "docs/advanced-alpha/graph-movement.md",
+        "classification": "documentation",
+        "head_blob": "f522a3abbd18ade93b718e37401e8a4f502dbfaa"
+      },
+      {
+        "path": "docs/src/components/CurrentReleaseSupplement.astro",
+        "classification": "documentation",
+        "head_blob": "5b10f7b2504535779932b122da120fdbb7b136bd"
+      },
+      {
+        "path": "docs/src/components/Footer.astro",
+        "classification": "documentation",
+        "head_blob": "ecfd8ec145e04e30063402a2c356a7c6319ab023"
+      },
+      {
+        "path": "docs/src/components/ReleaseV050Supplement.astro",
+        "classification": "documentation",
+        "head_blob": null
+      },
+      {
+        "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+        "classification": "documentation",
+        "head_blob": "f522a3abbd18ade93b718e37401e8a4f502dbfaa"
+      },
+      {
+        "path": "docs/src/data/currentRelease.mjs",
+        "classification": "documentation",
+        "head_blob": "4d1ba0e6c117042603b0851133500fc14bee68a5"
+      },
+      {
+        "path": "package.json",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "85eb6f43abb4363bcb6561aec5985ea52f8c27ba"
+      },
+      {
+        "path": "scripts/add-shebang.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "a168b434dc3d6270b8fae5eadfbd559ea377b8aa"
+      },
+      {
+        "path": "scripts/assert-publish-ready.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "43b4683e1e893248749b7f177909c59f3459cf75"
+      },
+      {
+        "path": "scripts/bootstrap-website-demo-run.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "9b552f5d6e3ee1c7b54143f5a407167d662f6b55"
+      },
+      {
+        "path": "scripts/build-receipts.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "1b91a9089be053990128419b3e3d01035350a7b7"
+      },
+      {
+        "path": "scripts/cli_help_targets.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "f35044531925db061f86f28279ca95d9284f79a6"
+      },
+      {
+        "path": "scripts/copy-init-assets.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "af3b558d3de4c261550e3ab396b1966d96dbca30"
+      },
+      {
+        "path": "scripts/coverage-baseline.json",
+        "classification": "validation-infrastructure",
+        "head_blob": "8be92c8ad213bf0503bab4da83995cd7f9938bc3"
+      },
+      {
+        "path": "scripts/coverage-contract.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "5f38e99562e222d093c6897c37be9c66c122ebf3"
+      },
+      {
+        "path": "scripts/coverage-contract.json",
+        "classification": "validation-infrastructure",
+        "head_blob": "beb7e4d5340197aa70f9569be81ce79d4fc7ed63"
+      },
+      {
+        "path": "scripts/coverage-reporter.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "4520ae0b70dc8d2ad380ba8c91ab71938528b200"
+      },
+      {
+        "path": "scripts/dependency-boundary.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "aa4f144e5b2050971c0e37844909969b445602c7"
+      },
+      {
+        "path": "scripts/fixtures/demo-registry-fixtures.json",
+        "classification": "validation-infrastructure",
+        "head_blob": "4f4242bb85fb37708dfdd0aad5234d4d512afec0"
+      },
+      {
+        "path": "scripts/generate-ci-workflow.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "459c502f46e0d7e2f33c4976413c652bfc253dbf"
+      },
+      {
+        "path": "scripts/generate-command-contract.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "b95edfbcf0451c958b4a3af35a114defba9c009b"
+      },
+      {
+        "path": "scripts/generate-release-notes-data.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "fb4ae4bb9f6373d91dcf371f8bbfc51ad2b578b0"
+      },
+      {
+        "path": "scripts/goal-pursuit-contract.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "020d5e6a8793ddc689a393d5dee5c439bc4a3be1"
+      },
+      {
+        "path": "scripts/mdkg-dev-smoke-utils.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "ee240273f1f2dde6fff7e717301d11712e12da61"
+      },
+      {
+        "path": "scripts/npm-smoke-proxy.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "5f7e912659f5801af7cc9b8026d1ce85b54837b1"
+      },
+      {
+        "path": "scripts/release-ladder.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "2a8f4609da66ceeae44903e059b2e46ddf60d04e"
+      },
+      {
+        "path": "scripts/smoke-demo-graph.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "0eedc7bdc54cd63a9742dfa19f6c58faf6b09dc0"
+      },
+      {
+        "path": "scripts/smoke-id-repair.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "3daddb2d3ff5ed11c0953eaa8316b225bb4720b3"
+      },
+      {
+        "path": "scripts/smoke-init.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "a80a10821311676c930d0c1bc61ee8312856687b"
+      },
+      {
+        "path": "scripts/smoke-manifest.json",
+        "classification": "validation-infrastructure",
+        "head_blob": "e61425e742941cd232fd1fa5b07ac3d3d4c0413f"
+      },
+      {
+        "path": "scripts/smoke-mdkg-dev-a11y.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "f81cf950071475eccbe0527fc362630a73fdfe5d"
+      },
+      {
+        "path": "scripts/smoke-mdkg-dev-docs.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "a975b43b8825736313dce8dd37f4c81b5cd21fea"
+      },
+      {
+        "path": "scripts/smoke-mdkg-dev-perf.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "52147bd3ff62119655d9f330319bb88b0120c21a"
+      },
+      {
+        "path": "scripts/smoke-mdkg-dev-seo.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "f859344b84266ef922644b0713dfcb93760f6a0e"
+      },
+      {
+        "path": "scripts/smoke-mdkg-dev.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "59a5b4e2d43bfbe2abe480c9e054ec0f3b75110f"
+      },
+      {
+        "path": "scripts/smoke-upgrade.js",
+        "classification": "validation-infrastructure",
+        "head_blob": "d269d6e56b1d878fd80d8324a64d678c04a5f230"
+      },
+      {
+        "path": "src/cli.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "be9406bd96d9310515178a5ae0ffc0aad979ea3a"
+      },
+      {
+        "path": "src/commands/archive.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "4a2be8aa37ed2ee42829cd2e8c9cb0e08085643a"
+      },
+      {
+        "path": "src/commands/bootstrap_instructions.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "cffc7c1d352ceddbc39d30c89830553cadef5253"
+      },
+      {
+        "path": "src/commands/bundle.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "2610d69143282b9efe609ab1ddd39e9001af86e8"
+      },
+      {
+        "path": "src/commands/capability.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "fe883d1dc308c7c5488e8354efbf342736f047f7"
+      },
+      {
+        "path": "src/commands/checkpoint.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "7424edd9232d5153fdbe9e25e013527afac3877e"
+      },
+      {
+        "path": "src/commands/doctor.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "64b9c882fa405678561bc3b3f906e75723956dbe"
+      },
+      {
+        "path": "src/commands/event.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "6b2e3a549a114220a64ccbec683655dd75e355f5"
+      },
+      {
+        "path": "src/commands/fix.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "c2ccd585d6b2d03665878450cfa277be45c28f42"
+      },
+      {
+        "path": "src/commands/goal.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "815561629afe35d63da1ee2c57524925c44e9772"
+      },
+      {
+        "path": "src/commands/graph.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "66fa4040ae1e9b30c13e083f9e19135f86b83780"
+      },
+      {
+        "path": "src/commands/graph_identity.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "3270be7ba09db1c6bd5a55e19023f198c7969827"
+      },
+      {
+        "path": "src/commands/init.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "5b58b68d56cb051c008328fee9f9a94ab99fa4f2"
+      },
+      {
+        "path": "src/commands/init_manifest.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "5ef9d18437bda04d17c80ccaa5102dca44759d68"
+      },
+      {
+        "path": "src/commands/list.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "ba45561d7f53db6a54402d67025f57b6baa5ad8a"
+      },
+      {
+        "path": "src/commands/loop.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "d84603d9a6ab8c959a8f5fd6ba80b4b558ba4091"
+      },
+      {
+        "path": "src/commands/mcp.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "f646e1cf474008d56bfd4f6f1ce5d58c810a69c2"
+      },
+      {
+        "path": "src/commands/new.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "cde7dc9239e0e535ea06ce82c2a45c007d14032d"
+      },
+      {
+        "path": "src/commands/pack.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "afbdd17843d1763a108c63e5b879534f12e5a467"
+      },
+      {
+        "path": "src/commands/query_output.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "0a12bbe79547121ef4c8f5794f6adb515ca62059"
+      },
+      {
+        "path": "src/commands/search.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "843faa34a7e2d4a4a27c49b62c9afc1fbf7a6ea9"
+      },
+      {
+        "path": "src/commands/show.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "34b682615dafcf8d363984ac4c2d3ee4770ae334"
+      },
+      {
+        "path": "src/commands/skill.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "635aaabafb64ae0f6ed1c2a2f28c793398853191"
+      },
+      {
+        "path": "src/commands/skill_support.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "cf139e7cdc44b46e9ca258e5bb8aa8a8b8d3641c"
+      },
+      {
+        "path": "src/commands/spec.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "15e4f01c94561a11b53c4e155e8a3be047f57236"
+      },
+      {
+        "path": "src/commands/status.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "a1853ae4a21196543b98d1c249c1f349d865f121"
+      },
+      {
+        "path": "src/commands/task.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "cb93d1b81f42eec3296f9399b159e89fdb6d15c6"
+      },
+      {
+        "path": "src/commands/upgrade.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "10774f9b55f21c5b75fe174e9c08670547a55b4f"
+      },
+      {
+        "path": "src/commands/upgrade_projections.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "95b3c2b9cb9ab257f36863551ce557e4e5fb5900"
+      },
+      {
+        "path": "src/commands/upgrade_transaction.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "41f25e53d1a42dee02d433636b2ce5a0930ff428"
+      },
+      {
+        "path": "src/commands/validate.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "f60d1f5474f4e31aafaf245c0ec64d0658f9f29a"
+      },
+      {
+        "path": "src/commands/work.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "d9fe930e09eb5d2443707bb5ab503dd8783428af"
+      },
+      {
+        "path": "src/core/filesystem_authority.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "a9b75e8e7d9c240581400e530459bbb607f35903"
+      },
+      {
+        "path": "src/core/public_skill_projection.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "7ca05e358501318c1aa67499d587c45b306262d3"
+      },
+      {
+        "path": "src/graph/agent_file_types.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "82f5524938d7cb152d7615da845716914228ad5a"
+      },
+      {
+        "path": "src/graph/archive_file.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "2303e041ade051c7190cf9af68ce82bf73c77a41"
+      },
+      {
+        "path": "src/graph/capabilities_index_cache.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "6d4b5bd523abab8204efaac5c684ed7f8a1ac272"
+      },
+      {
+        "path": "src/graph/capabilities_indexer.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "a0948f41fa10fb43e68eb48d2f60ca7ec256c05c"
+      },
+      {
+        "path": "src/graph/frontmatter.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "8c1234a5bda9df8bff8cccc84416a51b795c62fa"
+      },
+      {
+        "path": "src/graph/goal_next.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "a33512feb1b33765dcdd2b5388bb9228f9e01d5e"
+      },
+      {
+        "path": "src/graph/identity.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "bec02f9c021a0ef142256ae8b885a82e10b41d08"
+      },
+      {
+        "path": "src/graph/identity_authoring.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "3a089464cdd491e3c889ef6161840cc6aea3471c"
+      },
+      {
+        "path": "src/graph/identity_history.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "65c9f9098f5f70dbb1c67afd0ba32fe3fec5f044"
+      },
+      {
+        "path": "src/graph/identity_migration.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "200bb53f97cbb2e296879b1a518e9623a40c6d70"
+      },
+      {
+        "path": "src/graph/identity_reconcile.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "b8bbe0d5426c4ecb9d5d1f2233e6da318d0e34aa"
+      },
+      {
+        "path": "src/graph/identity_reconciliation_plan.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "ec9ed78b0a48634ea7e2818191b3569228406854"
+      },
+      {
+        "path": "src/graph/identity_refs.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "da86d968e79b3ad107aed734a76a8cd9cdf25df0"
+      },
+      {
+        "path": "src/graph/identity_snapshot.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "01c10430dc19bb1d6e8176096ba6ac2d0e34e699"
+      },
+      {
+        "path": "src/graph/identity_template.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "9dcaed18b2dd5cc5e597369edbe17e076c79903f"
+      },
+      {
+        "path": "src/graph/identity_transaction.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "c6aff70c5cd38604f684aef7b1e597f092b44d35"
+      },
+      {
+        "path": "src/graph/identity_transport.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "cbd44b445bab73bdbde32372ddcc403444d3e988"
+      },
+      {
+        "path": "src/graph/index_cache.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "10c61bc870531501ef8c5f916f4711e62a8b6a4a"
+      },
+      {
+        "path": "src/graph/indexer.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "4d368839d0a880a670724e6d21cb27266e2562ea"
+      },
+      {
+        "path": "src/graph/node.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "a0d51abb6e51be0e6ebbf0a6c6e445656ae3a166"
+      },
+      {
+        "path": "src/graph/selected_goal.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "48fc7dad616ebbb684f1ceb34f45eedd4ecd9452"
+      },
+      {
+        "path": "src/graph/sqlite_index.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "61515d4b05a617c14660cac0a2b8c8a5649a180a"
+      },
+      {
+        "path": "src/graph/subgraphs.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "59dce68333a7ccb723f7f473118999ac1cf12aba"
+      },
+      {
+        "path": "src/graph/validate_graph.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "269c7b089d70bfac5b52e1619be5b3cda5b329fc"
+      },
+      {
+        "path": "src/pack/pack.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "0803289296b955a5907038b84d0df05bcb6d1a4f"
+      },
+      {
+        "path": "src/pack/types.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "54d6029c1a1cb13c1ad0e40ca9ae996857d1cee7"
+      },
+      {
+        "path": "src/util/argparse.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "4bad363d73fd411cff74cf7b51e23ab39d9540b1"
+      },
+      {
+        "path": "src/util/id.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "cf2eccad46856b4039fbd116d64c505093ad009e"
+      },
+      {
+        "path": "src/util/lock.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "1b0fd58298a257275dc92853d32b346d6269435e"
+      },
+      {
+        "path": "src/util/qid.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "faa56938982b873c7d3945278742b6e2d31c663c"
+      },
+      {
+        "path": "src/util/refs.ts",
+        "classification": "shipped-runtime-and-metadata",
+        "head_blob": "7a7d71b658dc84c7158bdbe5fa298edb5970cb94"
+      },
+      {
+        "path": "tests/README.md",
+        "classification": "validation-infrastructure",
+        "head_blob": "8c5c874de47ca1abad472b15086a92c0a9a24dda"
+      },
+      {
+        "path": "tests/ci-topology.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "f5abb2cb6962476d3d011c72c076a99cfb66edc4"
+      },
+      {
+        "path": "tests/commands/cli.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "961383c35a1b3b69c1f0bb294c3ffce974e3e713"
+      },
+      {
+        "path": "tests/commands/cli_runtime.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "1d8fa0edcd92cde22e9e5401b5719c33f43b63ed"
+      },
+      {
+        "path": "tests/commands/compact_bootstrap.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "d32e8face85dfdfd45d2f42b1c9a6ab10638ba0c"
+      },
+      {
+        "path": "tests/commands/fix.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "131069af3375abda5599e013bacc14d9dd6ba745"
+      },
+      {
+        "path": "tests/commands/goal.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "906824a5314831422f02001bfb74d5de6eedce6a"
+      },
+      {
+        "path": "tests/commands/graph.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "fe3a41898f3c7fece2b6ac4bad7d4ca8d94bb84c"
+      },
+      {
+        "path": "tests/commands/identity_commands.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "c59f2f0afe00eb6a69995902fdee7d75062dfa4a"
+      },
+      {
+        "path": "tests/commands/init.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "e790056bffa2e81f3946f25286dafc9681216302"
+      },
+      {
+        "path": "tests/commands/mcp.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "aed460ee7dc5c3c55bc1369eb52af3293cd85384"
+      },
+      {
+        "path": "tests/commands/security_containment.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "1c331a06728f79ce3250c45e6b4cba2e24cea30e"
+      },
+      {
+        "path": "tests/commands/skills.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "54030002377d2bede2b0c32dd04e73faa60cc181"
+      },
+      {
+        "path": "tests/commands/sqlite_dal.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "832c8a127262e258ca157c9eedb51ec53ee6a9eb"
+      },
+      {
+        "path": "tests/commands/subgraph.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "1a79c817f63b45a8ceba7e07c85f48eddaf80a60"
+      },
+      {
+        "path": "tests/commands/upgrade.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "5a4421cda97a4026317caa412a1fcc05a276412e"
+      },
+      {
+        "path": "tests/commands/upgrade_safety.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "8de5ccc2118960d34e96b6bd4f6de1f66285b212"
+      },
+      {
+        "path": "tests/coverage-contract.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "38583872edfe80a7565e0cf48760af169ff64717"
+      },
+      {
+        "path": "tests/dependency-boundary.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "cac3ffc4077734f220c4fd83801f403bc086fd1e"
+      },
+      {
+        "path": "tests/graph/goal_next.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "a83fe74fd3a0d4077718de0f919e032f3ff27a37"
+      },
+      {
+        "path": "tests/graph/identity.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "fb522d80591e53c7643336b0c20b8ea4d16309d6"
+      },
+      {
+        "path": "tests/graph/identity_migration.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "39d611cc3ff765755e7dc015962d482120e1e543"
+      },
+      {
+        "path": "tests/graph/identity_reconcile.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "96882bd275073215bdea0803da63d8edb3238006"
+      },
+      {
+        "path": "tests/graph/identity_reconciliation_plan.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "7391d64913b349717b352906ee38a1279043bafc"
+      },
+      {
+        "path": "tests/harness-guidance.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "a5dd4f5806640cf64f57120de697c64b2a93ce34"
+      },
+      {
+        "path": "tests/portable-skill-bodies.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "752548339bcad7f7a69e24d168643e3df138a3a2"
+      },
+      {
+        "path": "tests/public-release.test.mjs",
+        "classification": "validation-infrastructure",
+        "head_blob": "fb17d8932815e594ffe1aa816d095ac0e4bebe18"
+      },
+      {
+        "path": "tests/public-skill-projection.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "574b07cc927a53732a37c450e02e659cb283d8fd"
+      },
+      {
+        "path": "tests/publish-readiness-goal-contract.test.mjs",
+        "classification": "validation-infrastructure",
+        "head_blob": "beaeb141e243960de9801255e84ba0221345e18e"
+      },
+      {
+        "path": "tests/release-ladder.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "d406fe66d516ddc201cb2e0cc4ac15e694e3a919"
+      },
+      {
+        "path": "tests/test-ci-audit-template.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "e242e8c616d87958e4fccf85928b9e56f7107f52"
+      },
+      {
+        "path": "tests/util/argparse.test.ts",
+        "classification": "validation-infrastructure",
+        "head_blob": "1488e43fddebb894ba563a6ceee84f1918982be0"
+      }
+    ]
+  },
+  "custody": {
+    "branch": "main",
+    "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "ahead": 2,
+    "behind": 0,
+    "remote_verified": false,
+    "baseline_commit": "9d7e0d3fdbcfbc3908b7d3983b4957f15d17cb2b",
+    "baseline_committed_paths": 85,
+    "preexisting_dirty": [
+      ".mdkg/index/mdkg.sqlite"
+    ],
+    "selection_preserved": "root:goal-73",
+    "runtime_leases": {
+      "released": 5,
+      "active": 0
+    },
+    "queue_rows": 0,
+    "obsolete_worktree_metadata": "preserved; no branch/worktree mutation"
+  },
+  "disposition": "Baseline bound, not 0.6.0 qualification or publication."
+}
