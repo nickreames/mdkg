@@ -106,6 +106,29 @@ hard ceiling is exceeded, stop and plan an explicit archival/segmentation
 workflow; do not delete history, bypass validation, or claim partial validation
 is complete.
 
+## Skill resource projection errors (0.6.0 candidate)
+
+Mirror synchronization inventories every selected canonical skill document and
+its `references`, `assets`, and `scripts` trees before changing any mirror.
+Linked roots, linked descendants, special files and exceeded limits fail
+explicitly; no external bytes are copied and no oversized input is truncated.
+Validation uses the same contained, byte-exact resource inventory for parity.
+Empty directories, binary files and legacy `SKILLS.md` documents remain supported.
+
+Resource inventories use configured `index.limits`: defaults are 8 MiB per file,
+512 MiB total, 100,000 entries and depth 64. Total bytes and entries are shared
+across selected skills; entries include directories so empty trees are bounded.
+Discovery also bounds entries in the canonical skills directory. Mirror audit
+uses a separate aggregate budget per target. For trusted oversized assets,
+preserve them and review configuration/resource needs rather than bypassing the
+check. An explicit empty mirror-target list consumes no resource trees.
+
+The inventory is an in-memory snapshot, not permission to execute scripts.
+Keep the checkout quiescent: contained reads do not promise atomic protection
+against another process replacing ancestor directories. Initialization and skill
+creation can have their own earlier writes; the source-inventory guarantee is
+for mirror synchronization, not a transaction over the enclosing command.
+
 ## Local template discovery errors (0.6.0 candidate)
 
 `templates.root_path` and `templates.default_set` must be relative contained
