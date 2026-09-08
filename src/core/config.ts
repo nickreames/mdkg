@@ -2,6 +2,7 @@ import fs from "fs";
 import { configPath } from "./paths";
 import { migrateConfig } from "./migrate";
 import { EventValidationLimits, normalizeEventConfig } from "./event_limits";
+import { normalizeTemplatePath } from "./template_path";
 import {
   isRootWorkspacePath,
   normalizeContainedWorkspacePath,
@@ -148,7 +149,7 @@ const SQL_IDENTIFIER_RE = /^[a-z][a-z0-9_]*$/;
 const DEFAULT_ARCHIVE_LARGE_CACHE_WARNING_BYTES = 26214400;
 const DEFAULT_SQLITE_COMMIT_WARNING_BYTES = 52428800;
 const DEFAULT_LOCK_TIMEOUT_MS = 10000;
-const DEFAULT_INDEX_LIMITS = {
+export const DEFAULT_INDEX_LIMITS = {
   max_files: 100_000,
   max_file_bytes: 8 * 1024 * 1024,
   max_total_bytes: 512 * 1024 * 1024,
@@ -866,7 +867,12 @@ export function validateConfigSchema(raw: unknown): Config {
   const templates = templatesRaw
     ? {
         root_path: requireContainedPath(templatesRaw.root_path, "templates.root_path", errors),
-        default_set: requireString(templatesRaw.default_set, "templates.default_set", errors),
+        default_set: (() => {
+          const value = requireString(templatesRaw.default_set, "templates.default_set", errors);
+          if (value === undefined) return undefined;
+          try { return normalizeTemplatePath(value, "templates.default_set"); }
+          catch (error) { errors.push(error instanceof Error ? error.message : String(error)); return undefined; }
+        })(),
         workspace_overrides_enabled: requireBoolean(
           templatesRaw.workspace_overrides_enabled,
           "templates.workspace_overrides_enabled",

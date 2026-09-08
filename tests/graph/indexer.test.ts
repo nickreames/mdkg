@@ -93,7 +93,8 @@ test("buildIndex creates qids and reverse edges", () => {
 test("buildIndex rejects graph count and byte budgets before reading files", () => {
   const root = makeTempDir("mdkg-index-budget-");
   writeConfig(root);
-  writeDefaultTemplates(root);
+  // Use installed fallback so local template limits do not mask the distinct
+  // graph count/byte errors under test.
   writeTask(root, "task-1");
   writeTask(root, "task-2");
 

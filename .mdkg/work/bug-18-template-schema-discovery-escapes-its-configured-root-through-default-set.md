@@ -2,22 +2,22 @@
 id: bug-18
 type: bug
 title: Template schema discovery escapes its configured root through default_set
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-18-verification.json]
 relates: [test-479]
 blocked_by: []
 blocks: []
-refs: []
+refs: [chk-572]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Overview
@@ -60,4 +60,28 @@ Require failing-before/passing-after results and independent verification in tas
 
 Codex Security scan 35ca791e-716a-4bc3-8067-88d47224e288; candidate key identity-template-root-escape; sanitized hash receipt chk-571.
 
-Disposition: open, not fixed, not publication-ready.
+Disposition: fixed locally; final task-828 verification and publication
+qualification remain incomplete.
+
+## 2026-09-08 Local Verification
+
+The historical pending statements above are superseded by this receipt. Raw
+selector validation now precedes resolution. Schema discovery streams contained
+directory entries and bounds file count, entry count, depth and actual bytes;
+the local body loader shares per-file limits. Nested/dot selectors, legacy
+case behavior, missing built-in fallback and explicit missing-set errors remain
+supported. The troubleshooting guide records ceilings and compatibility.
+
+Nineteen of 22 cases failed before patch; three legitimate controls passed.
+Final 92 focused, 55 installed and 924 full tests plus 26 release/security
+contract checks pass, zero failures/skips. Initial full-suite failures were
+three graph/event fixtures whose deliberately tiny budgets now also reject
+local templates; supported package fallback isolates their unchanged assertions.
+CLI/docs parity, 478 examples, full/changed-only graph and diff checks pass;
+three inherited imported-bundle age warnings remain preserved.
+
+Independent prepatch and one fresh candidate review found no concrete surviving
+static-input bypass or regression. The exact published 0.5.2 tarball has the
+same original raw selector/read path. Source hashes and intermediate integrity
+are in the attached JSON receipt. No portable concurrent-ancestor race immunity
+is claimed; Windows/Node 24 execution and final exact-range review remain open.

@@ -118,3 +118,19 @@ from this commit. No runtime lease acquired; transient locks released. Local
 commit authority only: no fetch/push/tag/publish/deploy/provider action,
 canonical migration, bundle/subgraph refresh or cross-project write.
 New skill candidates: none; reuse goal pursuit and verification coverage.
+
+## Follow-on Verification: root:bug-18
+
+2026-09-08: extend this midpoint checkpoint rather than allocate another for a
+single follow-on fix. Owner and authority remain mdkg-project-agent under
+root:goal-84. Template selectors, contained streaming directory/schema reads,
+body bounds, regression fixtures and troubleshooting guidance are verified.
+Receipt: .mdkg/artifacts/goal-84/bug-18-verification.json.
+
+92 focused, 55 installed and 924 full tests plus 26 contract checks pass;
+CLI/docs/graph/diff checks pass with the same three inherited age warnings.
+Eight security findings are locally fixed; remaining work is recorded in
+goal-84. Selected Goal 73, runtime DB and protected Demo 3 bundle bytes remain
+unchanged. SQLite is uncommitted generated custody; no runtime lease acquired.
+Only a reviewed local commit is authorized. Final task-828 review, compatibility
+matrix, release ladder and seal remain pending; no remote/publication action.

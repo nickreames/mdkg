@@ -3,6 +3,9 @@ import path from "path";
 import { Config } from "../core/config";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { requireBundledTemplatePath, resolveBundledTemplateRoot } from "../templates/builtin";
+import { containedPathExists, forEachContainedDirectoryEntry, readContainedFile } from "../core/filesystem_authority";
+import { templateSetRelativePath } from "../core/template_path";
+import { localTemplateLimits } from "../templates/limits";
 
 export type TemplateKeyKind = "scalar" | "list" | "boolean";
 
@@ -25,24 +28,6 @@ export type TemplateSchemaLoadResult = {
 const TEMPLATE_SCHEMA_ALIASES: Record<string, string> = {
   spec: "manifest",
 };
-
-function listMarkdownFiles(dir: string): string[] {
-  if (!fs.existsSync(dir)) {
-    return [];
-  }
-
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  const files: string[] = [];
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...listMarkdownFiles(fullPath));
-    } else if (entry.isFile() && entry.name.endsWith(".md")) {
-      files.push(fullPath);
-    }
-  }
-  return files;
-}
 
 function getValueKind(value: FrontmatterValue): TemplateKeyKind {
   if (Array.isArray(value)) {
@@ -111,19 +96,17 @@ export function loadTemplateSchemasWithInfo(
   config: Config,
   requiredTypes?: Iterable<string>
 ): TemplateSchemaLoadResult {
-  const templateRoot = path.resolve(
-    root,
-    config.templates.root_path,
-    config.templates.default_set
-  );
-  const files = listMarkdownFiles(templateRoot);
-  if (files.length === 0 && !requiredTypes) {
-    throw new Error(`no templates found at ${templateRoot}`);
-  }
-
+  const relativeRoot = templateSetRelativePath(config.templates.root_path, config.templates.default_set);
+  const templateRoot = path.resolve(root, relativeRoot);
+  const limits = localTemplateLimits(config);
+  let fileCount = 0, totalBytes = 0, entries = 0;
   const schemas: TemplateSchemaMap = {};
-  for (const filePath of files) {
-    const content = fs.readFileSync(filePath, "utf8");
+  const consume = (relativePath: string) => {
+    if (++fileCount > limits.max_files) throw new Error("template file count exceeds index.limits.max_files");
+    const filePath = path.resolve(root, relativePath);
+    const bytes = readContainedFile({ root, relativePath, pathSyntax: "native", maxBytes: Math.min(limits.max_file_bytes, limits.max_total_bytes - totalBytes) }, null);
+    totalBytes += bytes.length;
+    const content = bytes.toString("utf8");
     const { frontmatter } = parseFrontmatter(content, filePath);
     const typeValue = frontmatter.type;
     if (typeof typeValue !== "string") {
@@ -148,7 +131,19 @@ export function loadTemplateSchemasWithInfo(
       const kind = getValueKind(value);
       addKeyToSchema(schema, key, kind, filePath);
     }
-  }
+  };
+  const visit = (relativePath: string, depth: number) => {
+    if (depth > limits.max_depth) throw new Error("template directory depth exceeds index.limits.max_depth");
+    forEachContainedDirectoryEntry({ root, relativePath, pathSyntax: "native" }, (entry) => {
+      if (++entries > limits.max_files * 10) throw new Error("template discovery entry budget exceeded (10 * index.limits.max_files)");
+      const child = path.join(relativePath, entry.name);
+      if (entry.isDirectory()) visit(child, depth + 1);
+      else if (entry.isFile() && entry.name.endsWith(".md")) consume(child);
+      // Preserve existing exclusion of descendant links and non-Markdown files.
+    });
+  };
+  if (relativeRoot === "." || containedPathExists({ root, relativePath: relativeRoot })) visit(relativeRoot, 0);
+  if (fileCount === 0 && !requiredTypes) throw new Error(`no templates found at ${templateRoot}`);
 
   const fallbackTypes: string[] = [];
   if (requiredTypes) {

@@ -312,6 +312,22 @@ export function readContainedDirectory(input: ContainedPathInput): fs.Dirent[] {
   });
 }
 
+// Bounded callers can stop without materializing a whole directory. An explicit
+// dot path means the validated authority root itself; other helpers retain their
+// stricter non-root target contract. Callback exceptions always close the handle.
+export function forEachContainedDirectoryEntry(input: ContainedPathInput, consume: (entry: fs.Dirent) => void): void {
+  const visit = (absolutePath: string) => {
+    if (!fs.lstatSync(absolutePath).isDirectory()) fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read target must be a directory");
+    const directory = fs.opendirSync(absolutePath, { bufferSize: 32 });
+    try {
+      let entry: fs.Dirent | null;
+      while ((entry = directory.readSync()) !== null) consume(entry);
+    } finally { directory.closeSync(); }
+  };
+  if (input.relativePath === ".") visit(validatedRoot(input.root, "read", ".").absoluteRoot);
+  else withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => visit(absolutePath));
+}
+
 export function readContainedFile(input: ContainedPathInput & { maxBytes?: number }): string;
 export function readContainedFile(input: ContainedPathInput & { maxBytes?: number }, encoding: null): Buffer;
 export function readContainedFile(

@@ -5,6 +5,7 @@ import { containedPathExists, readContainedFile } from "../core/filesystem_autho
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
 import { NotFoundError } from "../util/errors";
 import { resolveLocalTemplatePath, requireBundledTemplatePath, templateNameForType } from "./builtin";
+import { localTemplateLimits } from "./limits";
 
 export type LoadedTemplate = {
   templatePath: string;
@@ -32,7 +33,7 @@ export function loadTemplate(
   const resolvedPath = source === "local" ? templatePath : requireBundledTemplatePath(type);
 
   const content = source === "local"
-    ? readContainedFile({ root, relativePath: templateRelativePath })
+    ? readContainedFile({ root, relativePath: templateRelativePath, maxBytes: localTemplateLimits(config).max_file_bytes })
     : fs.readFileSync(resolvedPath, "utf8");
   const { frontmatter, body } = parseFrontmatter(content, resolvedPath);
   return { templatePath: resolvedPath, source, frontmatter, body };

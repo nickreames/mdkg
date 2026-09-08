@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
+import { normalizeTemplatePath, templateSetRelativePath } from "../core/template_path";
 
 export const BUILTIN_TEMPLATE_SET = "default";
 
@@ -18,11 +19,12 @@ export function resolveLocalTemplatePath(
   type: string,
   templateSet?: string
 ): string {
-  const setName = (templateSet ?? config.templates.default_set).toLowerCase();
+  // Preserve the historical body-loader case normalization, distinct from the
+  // schema loader's case-sensitive configured set selection.
+  const setName = normalizeTemplatePath(templateSet ?? config.templates.default_set, "templates.default_set").toLowerCase();
   return path.resolve(
     root,
-    config.templates.root_path,
-    setName,
+    templateSetRelativePath(config.templates.root_path, setName),
     `${templateNameForType(type)}.md`
   );
 }
