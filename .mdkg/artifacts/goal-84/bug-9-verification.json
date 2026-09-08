@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-9",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "baseline-cache-parent-symlink",
+  "outcome": "fixed-locally",
+  "base_revision": "4fb3dcaa5c61e55e775e9b38feb88d6ca1aceee1",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Published 0.5.2 exact tarball contains the same raw writeIndex/atomicWriteFile and aggregate writer sequence. Runtime failing-before proof used the equivalent prepatch candidate. Earlier versions unassessed.",
+  "invariant": "Every derived JSON cache writer uses explicit checkout-root containment at actual replacement, including independent loader and skill-authoring callers. Aggregate rebuild preflights all JSON and active SQLite destinations before the first cache write.",
+  "strategy": "Shared root-aware cache output adapter preserves already-resolved native path semantics and uses existing contained atomic replacement. Public explicit external-output writers are unchanged.",
+  "files_sha256": {
+    "src/graph/cache_output.ts": "4b1463490ccb44145fa6a4b687784fc2fa234b6d2d4d9450f0ffc95aa274f3bb",
+    "src/graph/reindex.ts": "737b0bf5b8a41e5d1df1d56948739ff3505c8ede9ebad4a63aee8aaa0f3dd1de",
+    "src/graph/index_cache.ts": "1de8b81760ae2da749c95db7001276cf919bad9af502090a4eb0c3e51f9446ca",
+    "src/graph/skills_index_cache.ts": "f963968f315853e10fe5f914e208a083e58b0613964fe24b12baab00c504d64e",
+    "src/graph/capabilities_index_cache.ts": "0bbdfa0211017cb06f2c24d19e3242e931c6c9d4e821930feba8c6e58f8463b6",
+    "src/graph/subgraphs.ts": "28c7ef0ee8f6c390b0d2c7dad2f3e66c77c5a01376780c7d0b9a1300ad4949d8",
+    "src/commands/skill.ts": "c0a3a5f167fff8cc10d8cf4b100c962e8def2f727479d2ba6f0cf17599f3af0f",
+    "tests/graph/cache_containment.test.ts": "716718c870a7e3aaf143e0252f72c743b91a8b09c2bafb4c72d5cd95bb424c45",
+    "tests/graph/capabilities_indexer.test.ts": "63e48592614abaca74ad03be51f89d1ada112fd847a0529116baacdac7390d1d"
+  },
+  "before": "Six security checks failed, one legitimate control passed: four CLI parent-link writes succeeded, unsafe capabilities did not reject, unsafe later SQLite left earlier JSON output/parents.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; node --test dist/tests/graph/cache_containment.test.js dist/tests/graph/capabilities_indexer.test.js with owned TMPDIR",
+      "result": "38 passed; zero failures/skips after review correction."
+    },
+    {
+      "command": "Offline npm pack/install into disposable prefix; external compiled-test harness resolves installed modules and CLI",
+      "result": "34 cache-containment tests passed; no installed runtime bytes changed. Includes index/db index rebuild, all four writers, all loader persistence routes, parent/final/dangling/inward links, native custom paths, external-root rejection, inactive SQLite, default SQLite and no-persistence controls."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "814 main tests and 26 release/security-contract tests passed; zero failures/skips. Subsequent test-only EPERM handling and one focused regression passed in the 38/34 final source/installed runs; package inputs unchanged."
+    },
+    {
+      "command": "CLI snapshot and command contract parity; documentation command examples; graph validation; git diff --check",
+      "result": "Passed; 478 examples across 63 files; no graph errors, three inherited full-graph bundle-age warnings, zero changed-only warnings."
+    }
+  ],
+  "installed_candidate": {
+    "sha256": "b419f9b1c66c785c23416259d1fcadc9893f560f82dd772311dcff1e925c1e72",
+    "integrity": "sha512-7eDW0vVANEBCfaVke+5nNj7/F7ZtwSP5WPuBBhBa9OrZqRr/uo1RKbOyW5zOAQDsW/lQgno/p/PGhIbVnm3UqQ==",
+    "status": "Intermediate development package, not version 0.6.0 qualification seal"
+  },
+  "review": "Fresh independent prepatch investigation and one fresh postpatch review. No static-link bypass or product regression found; reviewer identified test failure on hosts without symlink privileges. Added EPERM-only handling and scoped fault-injection proof; unrelated errors remain visible. Final task-828 security diff review remains required.",
+  "limitations": [
+    "Preflight protects the aggregate cache-output boundary, not prior authored writes by callers such as new/skill creation; no whole-command rollback claim.",
+    "Existing contained authority is not a portable openat guarantee against an active concurrent directory-swap actor.",
+    "Windows execution and Node 24 runtime matrix remain unverified; injected EPERM verifies only fixture behavior.",
+    "Remaining publication blockers, final security diff review, release ladder, draft metadata and exact candidate seal remain open."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation, validation and exact-path local commit only; no remote Git, publication, providers, deployment, canonical migration or bundle/subgraph refresh.",
+  "skill_candidates": []
+}

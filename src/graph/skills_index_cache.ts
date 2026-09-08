@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { configPath } from "../core/paths";
-import { atomicWriteFile } from "../util/atomic";
+import { writeCacheFile } from "./cache_output";
 import { Config } from "../core/config";
 import { readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import {
@@ -104,7 +104,7 @@ function validateCachedSkillPaths(root: string, config: Config, cached: SkillsIn
   return cached;
 }
 
-export function writeSkillsIndex(indexPath: string, index: SkillsIndex): void {
+export function writeSkillsIndex(root: string, indexPath: string, index: SkillsIndex): void {
   const sortedSkills: SkillsIndex["skills"] = {};
   for (const slug of Object.keys(index.skills).sort()) {
     sortedSkills[slug] = index.skills[slug];
@@ -113,7 +113,7 @@ export function writeSkillsIndex(indexPath: string, index: SkillsIndex): void {
     ...index,
     skills: sortedSkills,
   };
-  atomicWriteFile(indexPath, JSON.stringify(sortedIndex, null, 2));
+  writeCacheFile(root, indexPath, JSON.stringify(sortedIndex, null, 2));
 }
 
 export function loadSkillsIndex(options: LoadSkillsIndexOptions): LoadSkillsIndexResult {
@@ -139,7 +139,7 @@ export function loadSkillsIndex(options: LoadSkillsIndexOptions): LoadSkillsInde
   if (allowReindex) {
     const index = buildSkillsIndex(options.root, options.config);
     if (persistReindex) {
-      writeSkillsIndex(indexPath, index);
+      writeSkillsIndex(options.root, indexPath, index);
     }
     return { index, rebuilt: true, stale };
   }

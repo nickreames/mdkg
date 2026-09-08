@@ -400,7 +400,7 @@ test("loadCapabilitiesIndex can return stale cache when reindex is disabled", ()
   const config = loadConfig(root);
   const indexPath = resolveCapabilitiesIndexPath(root, config);
   const initial = buildCapabilitiesIndex(root, config);
-  writeCapabilitiesIndex(indexPath, initial);
+  writeCapabilitiesIndex(root, indexPath, initial);
   touch(indexPath, Date.now() - 60_000);
   writeDesign(root);
 

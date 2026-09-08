@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
 import { configPath } from "../core/paths";
-import { atomicWriteFile } from "../util/atomic";
+import { writeCacheFile } from "./cache_output";
 import { listWorkspaceDocFiles } from "./workspace_files";
 import { readGraphFormat } from "./identity";
 import { buildIndex } from "./indexer";
@@ -98,9 +98,9 @@ function readCapabilitiesIndex(indexPath: string): CapabilitiesIndex {
   }
 }
 
-export function writeCapabilitiesIndex(indexPath: string, index: CapabilitiesIndex): void {
+export function writeCapabilitiesIndex(root: string, indexPath: string, index: CapabilitiesIndex): void {
   if (index.meta.inspection_errors?.length) throw new Error("cannot persist unresolved capability inspection; reviewed reconciliation required");
-  atomicWriteFile(indexPath, JSON.stringify(index, null, 2));
+  writeCacheFile(root, indexPath, JSON.stringify(index, null, 2));
 }
 
 export function loadCapabilitiesIndex(
@@ -130,7 +130,7 @@ export function loadCapabilitiesIndex(
   if (allowReindex) {
     const index = buildCapabilitiesIndex(options.root, options.config);
     if (persistReindex) {
-      writeCapabilitiesIndex(indexPath, index);
+      writeCapabilitiesIndex(options.root, indexPath, index);
     }
     return { index, rebuilt: true, stale };
   }

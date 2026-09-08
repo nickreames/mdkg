@@ -3,7 +3,7 @@ import path from "path";
 import { Config } from "../core/config";
 import { readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import { sortIndexNodes } from "../util/sort";
-import { atomicWriteFile } from "../util/atomic";
+import { writeCacheFile } from "./cache_output";
 import { buildIndex, Index } from "./indexer";
 import { isIndexStale } from "./staleness";
 import { readGraphFormat } from "./identity";
@@ -69,10 +69,10 @@ function validateCachedNodePaths(root: string, config: Config, cached: Index): I
   return cached;
 }
 
-export function writeIndex(indexPath: string, index: Index): void {
+export function writeIndex(root: string, indexPath: string, index: Index): void {
   if (index.meta.inspection_errors?.length) throw new Error("cannot persist an unresolved inspection graph; reviewed reconciliation required");
   const sortedIndex: Index = { ...index, nodes: sortIndexNodes(index.nodes) };
-  atomicWriteFile(indexPath, JSON.stringify(sortedIndex, null, 2));
+  writeCacheFile(root, indexPath, JSON.stringify(sortedIndex, null, 2));
 }
 
 export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
@@ -93,7 +93,7 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
     }
     const subgraphs = buildSubgraphsIndex(options.root, options.config);
     if (allowReindex && persistReindex) {
-      writeSubgraphsIndex(resolveSubgraphsIndexPath(options.root), subgraphs.index);
+      writeSubgraphsIndex(options.root, resolveSubgraphsIndexPath(options.root), subgraphs.index);
     }
     return {
       index: mergeSubgraphsIntoIndex(index, subgraphs),
@@ -116,7 +116,7 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
   if (allowReindex) {
     const index = buildIndex(options.root, options.config, { tolerant });
     if (persistReindex) {
-      writeIndex(indexPath, index);
+      writeIndex(options.root, indexPath, index);
     }
     return withSubgraphs(index, true, stale);
   }
