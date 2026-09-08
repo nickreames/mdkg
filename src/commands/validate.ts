@@ -15,7 +15,7 @@ import {
   isAgentFileType,
 } from "../graph/agent_file_types";
 import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
-import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
+import { listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "../graph/workspace_files";
 import { collectGraphErrors } from "../graph/validate_graph";
 import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
@@ -766,7 +766,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
       }
       let content = "";
       try {
-        content = fs.readFileSync(filePath, "utf8");
+        content = readWorkspaceDocument(options.root, filePath, config.index.limits.max_file_bytes);
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(`${filePath}: failed to read file: ${message}`);

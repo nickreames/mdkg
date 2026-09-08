@@ -1,4 +1,3 @@
-import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
 import {
@@ -11,12 +10,12 @@ import { loadTemplateSchemas, TemplateSchema } from "../graph/template_schema";
 import { ALLOWED_TYPES, DEC_TYPES, WORK_TYPES } from "../graph/node";
 import { isAgentFileType } from "../graph/agent_file_types";
 import { isArchiveType } from "../graph/archive_file";
-import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
+import { listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "../graph/workspace_files";
 import { ValidationError } from "../util/errors";
 import { formatDate } from "../util/date";
 import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, isUriRef, validatePortableOrUriRef } from "../util/refs";
-import { atomicWriteFile } from "../util/atomic";
+import { atomicReplaceContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import { withMutationLock } from "../util/lock";
 import { RECOMMENDED_HEADINGS } from "./validate";
 
@@ -402,7 +401,7 @@ function runHeadingFormatCommandLocked(options: FormatCommandOptions): void {
       }
       let content = "";
       try {
-        content = fs.readFileSync(filePath, "utf8");
+        content = readWorkspaceDocument(options.root, filePath, config.index.limits.max_file_bytes);
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(`${filePath}: failed to read file: ${message}`);
@@ -460,9 +459,7 @@ function runHeadingFormatCommandLocked(options: FormatCommandOptions): void {
 
   const apply = options.apply === true;
   if (apply) {
-    for (const change of changes) {
-      atomicWriteFile(change.filePath, change.content);
-    }
+    writeFormattedDocuments(options.root, changes);
   }
 
   const publicChanges = changes.map(({ filePath: _filePath, content: _content, ...change }) => change);
@@ -504,7 +501,7 @@ function runFormatCommandLocked(options: FormatCommandOptions): void {
       }
       let content = "";
       try {
-        content = fs.readFileSync(filePath, "utf8");
+        content = readWorkspaceDocument(options.root, filePath, config.index.limits.max_file_bytes);
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(`${filePath}: failed to read file: ${message}`);
@@ -579,11 +576,17 @@ function runFormatCommandLocked(options: FormatCommandOptions): void {
     throw new ValidationError(`format failed with ${errors.length} error(s)`);
   }
 
-  for (const update of updates) {
-    atomicWriteFile(update.filePath, update.content);
-  }
+  writeFormattedDocuments(options.root, updates);
 
   console.log(`format updated ${updates.length} file(s)`);
+}
+
+function writeFormattedDocuments(root: string, changes: Array<{ filePath: string; content: string }>): void {
+  const input = (filePath: string) => ({ root, relativePath: path.relative(root, filePath), pathSyntax: "native" as const });
+  for (const change of changes) {
+    withContainedPathSink({ ...input(change.filePath), operation: "replace", createParents: false }, () => undefined);
+  }
+  for (const change of changes) atomicReplaceContainedFile(input(change.filePath), change.content);
 }
 
 export function runFormatCommand(options: FormatCommandOptions): void {
