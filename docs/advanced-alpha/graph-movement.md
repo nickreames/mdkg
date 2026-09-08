@@ -135,14 +135,34 @@ applying that preview. Conflicting lifecycle/evidence changes are never resolved
 by timestamp or an automatic list union. Body text is preserved from the chosen
 input; only proven structured reference fields are rebound.
 
-Local acceptance receipts under `.mdkg/identity/reconciliations/` record source
-revisions, semantic bases and immutable alias/path mappings. Repeated accepted
+Receipts under `.mdkg/identity/reconciliations/` record source revisions, semantic
+bases and immutable alias/path mappings. A receipt's self-hash establishes byte
+consistency, not target acceptance. Local application additionally creates a
+target-owned binding under `.mdkg/identity/acceptances/`. Replay requires either
+the exact generated receipt of a verified applied local transaction, or that
+exact target-owned binding with target ancestry in the current checkout or local
+Git history. Later authored edits, including edits before the first commit, do
+not revoke acceptance or require retaining an intermediate output snapshot.
+Incoming bindings are copied byte-for-byte
+under `.mdkg/identity/transported/`, where they are inert evidence; importing
+another branch's acceptance does not accept its choices on this target.
+
+Repeated accepted
 input is a no-op, including after a committed integration was reverted. A newer
 incoming descendant uses its most recent uniquely proven accepted semantic base.
 Cherry-picked/deleted identities without such a receipt require explicit review
 before reintroduction. Missing source objects, shallow/grafted history, ambiguous
 bases, malformed receipts or a bounded-history inspection limit stop planning;
 mdkg does not fetch, rewrite history or guess the missing evidence.
+
+Pre-binding v2 development receipts remain usable when their genuine applied
+local journal survives. Without that proof, their bytes remain evidence but
+cannot supply replay authority; re-plan from the accepted Git ancestor and
+review any resulting conflicts. No identities or receipt bodies are rewritten
+to invent historical acceptance. Independent forks retain old-graph receipts
+as inert provenance. Ordinary Git commits and same-project clone selection are
+explicit trust decisions over the target graph; these bindings are not signatures
+and do not defend against an actor authorized to rewrite target-owned files.
 
 Application requires the exact unchanged reviewed hash and preserves Git staging,
 selection, queues and runtime state. It writes only reviewed authored nodes,

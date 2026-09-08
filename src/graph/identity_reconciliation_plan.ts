@@ -3,6 +3,7 @@ import { containedPathExists, readContainedFile } from "../core/filesystem_autho
 import { UsageError } from "../util/errors";
 import { canonicalJson, identityHash, identityRef } from "./identity";
 import { acceptedSemanticBase, readIdentityHistory } from "./identity_history";
+import { authoredResultHash, reconciliationAcceptanceContent, reconciliationAcceptancePath, transportedIdentityPath } from "./identity_acceptance";
 import { GraphFileChange, IdentityPlanBase } from "./identity_migration";
 import { IdentityDecisions, IdentityMergeResult, reconcileIdentitySnapshots } from "./identity_reconcile";
 import { AuthoredSnapshot, graphControlSnapshot, indexAuthoredSnapshot, readAuthoredSnapshot, readGraphGit, resolveGraphRevision } from "./identity_snapshot";
@@ -27,7 +28,7 @@ export type ReconciliationPlan = IdentityPlanBase & {
 };
 
 const EXCLUSIONS = [".mdkg/index/", ".mdkg/bundles/", ".mdkg/pack/", ".mdkg/state/", ".mdkg/db/", ".mdkg/events/", ".git/"];
-const RECEIPT_PATH = /^\.mdkg\/identity\/(migrations|reconciliations|templates|forks)\/[0-9a-f]{64}\.json$/;
+const RECEIPT_PATH = /^\.mdkg\/identity\/(migrations|reconciliations|templates|forks|acceptances|transported)\/[0-9a-f]{64}\.json$/;
 const message = (error: unknown) => error instanceof Error ? error.message : String(error);
 
 /** Validate a virtual authored candidate against live, read-only dependencies.
@@ -132,11 +133,12 @@ export function planIdentityReconciliation(root: string, parameters: Reconciliat
   }
   if (!noop) {
     for (const [file, evidence] of Object.entries(incoming.identity_evidence ?? {})) {
-      const existing = current.identity_evidence?.[file];
+      const destination = transportedIdentityPath(file, evidence.hash);
+      const existing = current.identity_evidence?.[destination];
       if (existing && existing.hash !== evidence.hash) blocking.push(`immutable identity evidence collision: ${file}`);
       else if (!existing) {
         if (!RECEIPT_PATH.test(file)) blocking.push(`unclassifiable incoming identity evidence: ${file}`);
-        else writes.push({ path: file, before: null, after: evidence.content });
+        else if (!writes.some((entry) => entry.path === destination)) writes.push({ path: destination, before: null, after: evidence.content });
       }
     }
   }
@@ -149,7 +151,7 @@ export function planIdentityReconciliation(root: string, parameters: Reconciliat
     ancestor: { revision: ancestor.revision!, tree_hash: ancestor.tree_hash }, target: { revision: targetRevision, tree_hash: current.tree_hash },
     incoming: { revision: incoming.revision!, tree_hash: incoming.tree_hash }, semantic_base: semanticBase,
     decisions, classifications: result.classifications, mappings: result.mappings,
-    output_authored_hash: identityHash(canonicalJson(Object.fromEntries(candidate.nodes.map((entry) => [entry.path, entry.hash])))),
+    output_authored_hash: authoredResultHash(candidate),
     validation, body_policy: "exact chosen body bytes; only proven structured references rebound",
     execution_state_policy: "selection, local locks, runtime DB, queues and Git staging are excluded" };
   const intent = identityHash(canonicalJson(payload));
@@ -157,7 +159,13 @@ export function planIdentityReconciliation(root: string, parameters: Reconciliat
   if (!noop) {
     if (containedPathExists({ root, relativePath: receiptPath }) || writes.some((entry) => entry.path === receiptPath)) {
       blocking.push(`receipt destination is already owned: ${receiptPath}`);
-    } else writes.push({ path: receiptPath, before: null, after: `${JSON.stringify({ ...payload, intent_hash: intent }, null, 2)}\n` });
+    } else {
+      const content = `${JSON.stringify({ ...payload, intent_hash: intent }, null, 2)}\n`;
+      const acceptancePath = reconciliationAcceptancePath(receiptPath);
+      if (containedPathExists({ root, relativePath: acceptancePath })) blocking.push(`acceptance destination is already owned: ${acceptancePath}`);
+      writes.push({ path: receiptPath, before: null, after: content });
+      writes.push({ path: acceptancePath, before: null, after: reconciliationAcceptanceContent(receiptPath, content) });
+    }
   }
   const incomingPaths = readGraphGit(root, ["diff", "--no-ext-diff", "--no-textconv", "--name-only", "-z", ancestor.revision!, incoming.revision!, "--"])!.split("\0").filter(Boolean);
   const authored = new Set([...ancestor.nodes, ...incoming.nodes].map((entry) => entry.path));

@@ -15,6 +15,7 @@ import { buildIndex } from "./indexer";
 import { assertCompleteIdentityHistory } from "./identity_history";
 import { validateReconciliationCandidate } from "./identity_reconciliation_plan";
 import { buildSkillsIndex } from "./skills_indexer";
+import { ACCEPTANCE_DIRECTORY, matchesReconciliationAcceptance, reconciliationAcceptancePath } from "./identity_acceptance";
 
 const JOURNAL_DIR = ".mdkg/state/identity-transactions";
 type TransactionState = "applying" | "applied" | "rolling-back" | "rolled-back";
@@ -67,12 +68,19 @@ function checkPlan(root: string, plan: IdentityPlanBase, expectedHash: string): 
       return /^(core|design|work|archive)\/.+\.md$/.test(local) && local !== "core/core.md" &&
         !local.split("/").includes("source");
     });
-    const identityReceipt = /^\.mdkg\/identity\/(migrations|reconciliations|templates|forks)\/[0-9a-f]{64}\.json$/.test(change.path);
+    const identityReceipt = /^\.mdkg\/identity\/(migrations|reconciliations|templates|forks|acceptances|transported)\/[0-9a-f]{64}\.json$/.test(change.path);
     if (!nodePath && change.path !== GRAPH_FORMAT_PATH && !identityReceipt) {
       throw new UsageError(`graph transaction cannot own path ${change.path}`);
     }
     if (plan.action === "graph.reconcile.plan" && (change.path === GRAPH_FORMAT_PATH || (identityReceipt && change.before !== null))) {
       throw new UsageError("reconciliation cannot replace the owning format or immutable identity evidence");
+    }
+    if (change.path.startsWith(ACCEPTANCE_DIRECTORY)) {
+      const ownReceipt = plan.writes.find((entry) => entry.path === plan.receipt_path);
+      if (plan.action !== "graph.reconcile.plan" || change.path !== reconciliationAcceptancePath(plan.receipt_path) ||
+        !change.after || !ownReceipt?.after || !matchesReconciliationAcceptance(change.after, plan.receipt_path, ownReceipt.after)) {
+        throw new UsageError("graph transaction can accept only its own exact generated reconciliation receipt");
+      }
     }
     withContainedPathSink({ root, relativePath: change.path, operation: "read" }, () => undefined);
     seen.add(change.path);
@@ -165,6 +173,23 @@ function checkOtherTransactions(root: string, hash: string): void {
 
 export function assertNoPendingIdentityTransaction(root: string): void {
   checkOtherTransactions(root, "");
+}
+
+// Ignored checkout-local journals are not imported graph evidence. This also
+// supports pre-binding v2 receipts while their genuine applied journal survives.
+export function readAppliedReconciliationReceipts(root: string): Map<string, string> {
+  const receipts = new Map<string, string>();
+  if (!containedPathExists({ root, relativePath: JOURNAL_DIR })) return receipts;
+  const control = graphControlSnapshot(root);
+  for (const entry of readContainedDirectory({ root, relativePath: JOURNAL_DIR })) {
+    if (!entry.isFile() || !/^[0-9a-f]{64}\.json$/.test(entry.name)) throw new UsageError("unclassifiable graph transaction journal");
+    const journal = readJournal(root, `sha256:${entry.name.slice(0, -5)}`);
+    if (journal.state !== "applied" || journal.plan.action !== "graph.reconcile.plan") continue;
+    if (journal.plan.control.branch !== control.branch || (!control.branch && journal.plan.control.head !== control.head)) continue;
+    const own = journal.plan.writes.find((change) => change.path === journal.plan.receipt_path);
+    if (own?.before === null && own.after !== null) receipts.set(own.path, identityHash(own.after));
+  }
+  return receipts;
 }
 
 function checkTerminal(root: string, journal: GraphJournal, rollback: boolean): void {

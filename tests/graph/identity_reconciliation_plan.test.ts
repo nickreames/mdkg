@@ -6,7 +6,8 @@ import { spawnSync } from "child_process";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
-const { createGraphFormat, identityRef } = require("../../graph/identity");
+const { canonicalJson, createGraphFormat, identityHash, identityRef } = require("../../graph/identity");
+const { reconciliationAcceptancePath } = require("../../graph/identity_acceptance");
 const { planIdentityReconciliation } = require("../../graph/identity_reconciliation_plan");
 const { applyGraphMigrationPlan, continueGraphTransaction, inspectGraphTransaction } = require("../../graph/identity_transaction");
 const { readAuthoredSnapshot, graphControlSnapshot } = require("../../graph/identity_snapshot");
@@ -181,6 +182,7 @@ test("successive incoming revision uses the accepted semantic base and preserves
   const plan = planIdentityReconciliation(f.root, { ancestor: f.base, incoming: first });
   applyGraphMigrationPlan(f.root, plan, plan.plan_hash);
   f.commit(plan.writes.map((entry: any) => entry.path), "accept first");
+  fs.rmSync(path.join(f.root, ".mdkg/state/identity-transactions"), { recursive: true });
   f.edit(added.path, "priority: 3", "priority: 2");
   f.commit([added.path], "target priority decision");
   f.git(["checkout", "incoming"]);
@@ -194,6 +196,39 @@ test("successive incoming revision uses the accepted semantic base and preserves
   const content = fs.readFileSync(path.join(f.root, added.path), "utf8");
   assert.ok(content.includes("priority: 2")); assert.ok(content.includes("title: Incoming evolved"));
 });
+
+for (const continuation of ["clone", "renamed-branch"]) {
+  test(`accepted reconciliation survives pre-commit authored edits in ${continuation}`, (t) => {
+    const f = fixture();
+    t.after(() => fs.rmSync(f.root, { recursive: true, force: true }));
+    f.git(["checkout", "-b", "incoming"]);
+    f.edit(f.common.path, "status: todo", "status: done");
+    const incoming = f.commit([f.common.path], "incoming done");
+    f.git(["checkout", "main"]);
+    f.edit(f.common.path, "status: todo", "status: progress");
+    f.commit([f.common.path], "target progress");
+    const ref = identityRef(readAuthoredSnapshot(f.root).nodes[0].node.identity);
+    const plan = planIdentityReconciliation(f.root, { ancestor: f.base, incoming,
+      decisions: { [ref]: { take: "target", reason: "Keep target lifecycle" } } });
+    applyGraphMigrationPlan(f.root, plan, plan.plan_hash);
+    f.edit(f.common.path, "status: progress", "status: todo");
+    let target = f.root;
+    if (continuation === "clone") {
+      f.commit([...plan.writes.map((entry: any) => entry.path), f.common.path], "accept then revise before first commit");
+      target = makeTempDir("mdkg-reconciliation-clone-");
+      t.after(() => fs.rmSync(target, { recursive: true, force: true }));
+      f.git(["clone", "--no-hardlinks", "--no-local", f.root, target]);
+    } else {
+      f.git(["branch", "-m", "renamed-target"]);
+    }
+    const before = bytes(target);
+    const replay = planIdentityReconciliation(target, { ancestor: f.base, incoming });
+    assert.equal(replay.replay.noop, true, "accepted choices survive later authored edits without a local journal");
+    assert.deepEqual(replay.writes, []);
+    assert.match(fs.readFileSync(path.join(target, f.common.path), "utf8"), /status: todo/);
+    assert.deepEqual(bytes(target), before);
+  });
+}
 
 test("reconciliation recovery preserves unknown work and resumes exact reviewed owned bytes", () => {
   const f = fixture();
@@ -288,6 +323,134 @@ test("interrupted reconciliation rolls back authored paths without changing Git 
   assert.equal(readAuthoredSnapshot(f.root).tree_hash, original.tree_hash);
   assert.deepEqual(graphControlSnapshot(f.root), control);
   assert.equal(continueGraphTransaction(f.root, plan.plan_hash, "rollback").state, "rolled-back");
+});
+
+for (const placement of ["working-tree", "committed", "transported", "transported-binding", "transported-reverted"]) {
+  for (const claim of ["base", "replay"]) {
+    test(`unapplied self-hashed ${claim} receipt is inert in ${placement} evidence`, (t) => {
+      const f = fixture();
+      t.after(() => fs.rmSync(f.root, { recursive: true, force: true }));
+      f.git(["checkout", "-b", "incoming"]);
+      f.edit(f.common.path, "status: todo", "status: progress");
+      const intermediate = f.commit([f.common.path], "incoming intermediate lifecycle");
+      f.edit(f.common.path, "status: progress", "status: done");
+      const incoming = f.commit([f.common.path], "incoming completed lifecycle");
+      f.git(["checkout", "main"]);
+      f.edit(f.common.path, "status: todo", "status: progress");
+      f.commit([f.common.path], "target independent lifecycle");
+      const ref = identityRef(readAuthoredSnapshot(f.root).nodes[0].node.identity);
+      // A genuine, internally consistent preview is still not an application.
+      // In the replay case even its target/output hashes and mappings agree.
+      const unaccepted = planIdentityReconciliation(f.root, { ancestor: f.base,
+        incoming: claim === "base" ? intermediate : incoming,
+        ...(claim === "replay" ? { decisions: { [ref]: { take: "target", reason: "Unapproved receipt claim" } } } : {}),
+      });
+      assert.deepEqual(unaccepted.blocking, []);
+      const evidence = unaccepted.writes.find((entry: any) => entry.path === unaccepted.receipt_path);
+      assert.ok(evidence?.after);
+      if (placement.startsWith("transported")) {
+        f.git(["checkout", "-b", "receipt-only", f.base]);
+        writeFile(path.join(f.root, evidence.path), evidence.after);
+        const incomingFiles = [evidence.path];
+        if (placement === "transported-binding") {
+          const binding = unaccepted.writes.find((entry: any) => entry.path === reconciliationAcceptancePath(evidence.path));
+          assert.ok(binding?.after);
+          writeFile(path.join(f.root, binding.path), binding.after);
+          incomingFiles.push(binding.path);
+        }
+        const receiptBranch = f.commit(incomingFiles, "transport an unaccepted receipt");
+        f.git(["checkout", "main"]);
+        const transport = planIdentityReconciliation(f.root, { ancestor: f.base, incoming: receiptBranch });
+        assert.deepEqual(transport.blocking, []);
+        applyGraphMigrationPlan(f.root, transport, transport.plan_hash);
+        if (placement === "transported-binding") {
+          assert.equal(fs.existsSync(path.join(f.root, reconciliationAcceptancePath(evidence.path))), false);
+          const binding = unaccepted.writes.find((entry: any) => entry.path === reconciliationAcceptancePath(evidence.path));
+          const inert = `.mdkg/identity/transported/${identityHash(binding.after).slice(7)}.json`;
+          assert.equal(fs.readFileSync(path.join(f.root, inert), "utf8"), binding.after, "transport preserves exact inert binding bytes");
+        }
+        const acceptedTransport = f.commit(transport.writes.map((entry: any) => entry.path), "accept evidence transport only");
+        if (placement === "transported-reverted") f.git(["revert", "--no-edit", acceptedTransport]);
+      } else {
+        writeFile(path.join(f.root, evidence.path), evidence.after);
+        if (placement === "committed") f.commit([evidence.path], "retain receipt bytes only");
+      }
+      const before = bytes(f.root);
+      const planned = planIdentityReconciliation(f.root, { ancestor: f.base, incoming });
+      assert.equal(planned.semantic_base.revision, f.base, "receipt consistency is not target acceptance");
+      assert.equal(planned.replay.noop, false, "unaccepted evidence must not suppress integration");
+      assert.ok(planned.blocking.length > 0, "real ancestor requires a lifecycle decision");
+      assert.deepEqual(bytes(f.root), before, "preview is observational even with adversarial provenance");
+    });
+  }
+}
+
+test("pre-binding v2 receipts use only their own applied local journal, not their self-hash", (t) => {
+  const f = fixture();
+  t.after(() => fs.rmSync(f.root, { recursive: true, force: true }));
+  f.git(["checkout", "-b", "incoming"]);
+  const added = f.add("Legacy accepted input", "task-2");
+  const incoming = f.commit([added.path], "incoming node");
+  f.git(["checkout", "main"]);
+  const { plan_hash: _hash, ...preview } = planIdentityReconciliation(f.root, { ancestor: f.base, incoming });
+  preview.writes = preview.writes.filter((entry: any) => entry.path !== reconciliationAcceptancePath(preview.receipt_path));
+  const legacy = { ...preview, plan_hash: identityHash(canonicalJson(preview)) };
+  applyGraphMigrationPlan(f.root, legacy, legacy.plan_hash);
+  assert.equal(planIdentityReconciliation(f.root, { ancestor: f.base, incoming }).replay.noop, true);
+  f.commit(legacy.writes.map((entry: any) => entry.path), "legacy integration without binding");
+  fs.rmSync(path.join(f.root, ".mdkg/state/identity-transactions"), { recursive: true });
+  const unproven = planIdentityReconciliation(f.root, { ancestor: f.base, incoming });
+  assert.equal(unproven.replay.noop, false, "receipt-only Git history is not retrospectively attested");
+  assert.equal(unproven.semantic_base.revision, f.base);
+});
+
+test("independent fork keeps foreign acceptance bytes inert even without their source Git objects", (t) => {
+  const f = fixture();
+  const fork = makeTempDir("mdkg-reconciliation-fork-");
+  t.after(() => { fs.rmSync(f.root, { recursive: true, force: true }); fs.rmSync(fork, { recursive: true, force: true }); });
+  f.git(["checkout", "-b", "incoming"]);
+  const added = f.add("Accepted source graph node", "task-2");
+  const incoming = f.commit([added.path], "incoming node");
+  f.git(["checkout", "main"]);
+  const plan = planIdentityReconciliation(f.root, { ancestor: f.base, incoming });
+  applyGraphMigrationPlan(f.root, plan, plan.plan_hash);
+  const source = readAuthoredSnapshot(f.root);
+  const entries = new Map<string, Buffer>(Object.keys(source.files).map((file) => [file, fs.readFileSync(path.join(f.root, file))]));
+  const { planTransportIdentity } = require("../../graph/identity_transport");
+  const transport = planTransportIdentity(entries, "fork", source.tree_hash);
+  writeDefaultTemplates(fork);
+  for (const [file, content] of entries) writeFile(path.join(fork, file), (transport.replacements.get(file) ?? content).toString("utf8"));
+  for (const [file, content] of transport.additions as Map<string, Buffer>) writeFile(path.join(fork, file), content.toString("utf8"));
+  assert.equal(fs.readFileSync(path.join(fork, plan.receipt_path), "utf8"), fs.readFileSync(path.join(f.root, plan.receipt_path), "utf8"));
+  const git = (args: string[]) => {
+    const result = spawnSync("git", ["-c", "user.name=mdkg test", "-c", "user.email=mdkg-test@example.invalid", ...args], { cwd: fork, encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout.trim();
+  };
+  git(["init", "-b", "main"]);
+  git(["add", "--", ".mdkg/config.json", ".mdkg/graph.json", ".mdkg/identity", ".mdkg/work", ".mdkg/templates"]);
+  git(["commit", "-m", "independent fork seed"]);
+  const base = git(["rev-parse", "HEAD"]);
+  const before = bytes(fork);
+  const preview = planIdentityReconciliation(fork, { ancestor: base, incoming: base });
+  assert.deepEqual(preview.blocking, []);
+  assert.equal(preview.semantic_base.revision, base);
+  assert.equal(preview.semantic_base.receipt_path, null);
+  assert.deepEqual(bytes(fork), before);
+});
+
+test("target acceptance tampering fails before planning writes", (t) => {
+  const f = fixture();
+  t.after(() => fs.rmSync(f.root, { recursive: true, force: true }));
+  const plan = planIdentityReconciliation(f.root, { ancestor: f.base, incoming: f.base });
+  applyGraphMigrationPlan(f.root, plan, plan.plan_hash);
+  const bindingPath = path.join(f.root, reconciliationAcceptancePath(plan.receipt_path));
+  const binding = JSON.parse(fs.readFileSync(bindingPath, "utf8"));
+  binding.receipt_hash = `sha256:${"f".repeat(64)}`;
+  writeFile(bindingPath, JSON.stringify(binding));
+  const before = bytes(f.root);
+  assert.throws(() => planIdentityReconciliation(f.root, { ancestor: f.base, incoming: f.base }), /target acceptance does not bind/);
+  assert.deepEqual(bytes(f.root), before);
 });
 
 test("unverified provenance and nonancestor input are refused without any writes", () => {
