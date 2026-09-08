@@ -168,3 +168,13 @@ have local fixes. Bug-15 awaits only its resource-limit compatibility decision;
 bug-17 investigation and other independent qualification work can continue.
 Protected states, SQLite custody and local-only authority remain unchanged.
 No runtime lease acquired or new skill candidates proposed; final gates remain.
+
+## Follow-on Verification: root:bug-5
+
+2026-09-08: clock-independent source fingerprints and lossless SQLite JSON are
+locally verified. Seven focused, 26 installed, 997 source tests and 26 contract
+checks pass; CLI/docs/graph/diff gates pass. Receipt:
+.mdkg/artifacts/goal-84/bug-5-verification.json. This is a non-security defect,
+not an additional sealed security finding. Final verification remains task-828.
+Protected selection/runtime/bundle bytes and generated SQLite custody remain
+unchanged. No runtime lease, publication or new skill authoring is involved.

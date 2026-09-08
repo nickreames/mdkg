@@ -293,6 +293,7 @@ function buildCurrentSqliteFingerprint(root: string, tolerant: boolean): string 
   const subgraphsIndex = buildSubgraphsIndex(root, config).index;
   return sqliteSourceFingerprint({
     root,
+    config,
     nodeIndex,
     skillsIndex,
     capabilitiesIndex,

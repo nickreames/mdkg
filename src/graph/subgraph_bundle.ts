@@ -21,8 +21,12 @@ export function assertSubgraphBundleFile(root: string, bundlePath: string): stri
   return absolutePath;
 }
 
-export function readSubgraphBundleEntries(root: string, bundlePath: string): Map<string, Buffer> {
+export function readSubgraphBundleBytes(root: string, bundlePath: string): Buffer {
   const absolutePath = assertSubgraphBundleFile(root, bundlePath);
-  const bytes = readContainedFile({ root, relativePath: path.relative(root, absolutePath), pathSyntax: "native", maxBytes: DEFAULT_ZIP_READ_LIMITS.maxArchiveBytes }, null);
+  return readContainedFile({ root, relativePath: path.relative(root, absolutePath), pathSyntax: "native", maxBytes: DEFAULT_ZIP_READ_LIMITS.maxArchiveBytes }, null);
+}
+
+export function readSubgraphBundleEntries(root: string, bundlePath: string): Map<string, Buffer> {
+  const bytes = readSubgraphBundleBytes(root, bundlePath);
   return new Map(readZipEntries(bytes).map((entry) => [entry.name, entry.data]));
 }

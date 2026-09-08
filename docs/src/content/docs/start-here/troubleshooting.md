@@ -14,6 +14,20 @@ mdkg validate --summary
 
 Generated indexes are rebuildable access caches. Markdown graph files remain authoritative.
 
+### SQLite source fingerprints (0.6.0 candidate)
+
+The source fingerprint binds configuration, authored records and enabled imported
+bundle bytes, not elapsed bundle-age health warnings. Those warnings still report
+staleness; they do not mean unchanged source bytes have changed. Nested authored
+fields named `generated_at` or `indexed_at` are preserved in SQLite JSON.
+
+An index created by an older fingerprint implementation needs one explicit
+`mdkg index` rebuild after upgrading. This rebuild does not require refreshing
+source bundles. Disabled imports and checkout-local selection are not source
+payload inputs. Invalid readable bundle bytes remain distinguishable; linked,
+oversized or inaccessible sources retain failure diagnostics instead of being
+opened outside the existing containment/size contract.
+
 ## `mdkg goal next` returns no node
 
 Check the selected goal:

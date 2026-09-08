@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import { Config } from "../core/config";
+import { Config, loadConfig } from "../core/config";
 import {
   containedPathExists,
   removeContainedPath,
@@ -12,6 +12,8 @@ import { Index } from "./indexer";
 import { SkillsIndex } from "./skills_indexer";
 import { SubgraphsIndex } from "./subgraphs";
 import { isIndexStale } from "./staleness";
+import { canonicalJson } from "./identity";
+import { readSubgraphBundleBytes } from "./subgraph_bundle";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -48,26 +50,11 @@ function sha256File(filePath: string): string {
   return `sha256:${crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")}`;
 }
 
-function stripVolatileCacheFields(value: unknown): unknown {
-  if (Array.isArray(value)) {
-    return value.map((item) => stripVolatileCacheFields(item));
-  }
-  if (value && typeof value === "object") {
-    const input = value as Record<string, unknown>;
-    const output: Record<string, unknown> = {};
-    for (const key of Object.keys(input).sort()) {
-      if (key === "generated_at" || key === "indexed_at") {
-        continue;
-      }
-      output[key] = stripVolatileCacheFields(input[key]);
-    }
-    return output;
-  }
-  return value;
-}
-
 function stableCacheJson(value: unknown): string {
-  return JSON.stringify(stripVolatileCacheFields(value));
+  // Serialization is lossless. Volatile fields are excluded only at their
+  // typed diagnostic boundary in the source fingerprint, never by key name
+  // recursively through authored extension or workflow data.
+  return canonicalJson(value);
 }
 
 export function isSqliteBackend(config: Config): boolean {
@@ -166,13 +153,30 @@ function nodeSourceHash(root: string, nodePath: string): string | undefined {
 }
 
 function buildSourceFingerprint(options: {
+  root: string;
+  config: Config;
   nodeIndex: Index;
   skillsIndex: SkillsIndex;
   capabilitiesIndex: CapabilitiesIndex;
   subgraphsIndex: SubgraphsIndex;
   nodeHashes: Map<string, string | undefined>;
 }): string {
+  const bundleSources = Object.entries(options.config.subgraphs).sort(([a], [b]) => a.localeCompare(b))
+    .flatMap(([alias, subgraph]) => !subgraph.enabled ? [] : subgraph.sources.filter((source) => source.enabled).map((source) => {
+      try {
+        const bytes = readSubgraphBundleBytes(options.root, source.path);
+        return { alias, path: source.path, sha256: crypto.createHash("sha256").update(bytes).digest("hex") };
+      } catch (error) {
+        // Invalid imports already have a health/error record. Do not bypass
+        // containment, open disabled sources or turn diagnostic clocks into
+        // source authority merely to fingerprint an unreadable import.
+        return { alias, path: source.path, error: error instanceof Error ? error.message : String(error) };
+      }
+    }));
   const payload = {
+    fingerprint_version: 2,
+    config: options.config,
+    bundle_sources: bundleSources,
     nodes: Object.values(options.nodeIndex.nodes)
       .sort((a, b) => a.qid.localeCompare(b.qid))
       .map((node) => ({
@@ -181,14 +185,22 @@ function buildSourceFingerprint(options: {
         hash: options.nodeHashes.get(node.qid) ?? "",
       })),
     skills: Object.values(options.skillsIndex.skills).sort((a, b) => a.qid.localeCompare(b.qid)),
-    capabilities: options.capabilitiesIndex.records,
-    subgraphs: options.subgraphsIndex.subgraphs,
+    capabilities: options.capabilitiesIndex.records.map(({ indexed_at: _indexedAt, source, ...record }) => {
+      if (!source) return record;
+      const { stale: _stale, warnings: _warnings, ...provenance } = source;
+      return { ...record, source: provenance };
+    }),
+    subgraphs: options.subgraphsIndex.subgraphs.map(({ stale: _stale, warnings: _warnings, warning_count: _count, sources, ...subgraph }) => ({
+      ...subgraph,
+      sources: sources.map(({ stale: _sourceStale, warnings: _sourceWarnings, warning_count: _sourceCount, ...source }) => source),
+    })),
   };
   return `sha256:${crypto.createHash("sha256").update(stableCacheJson(payload)).digest("hex")}`;
 }
 
 export function sqliteSourceFingerprint(options: {
   root: string;
+  config?: Config;
   nodeIndex: Index;
   skillsIndex: SkillsIndex;
   capabilitiesIndex: CapabilitiesIndex;
@@ -198,7 +210,7 @@ export function sqliteSourceFingerprint(options: {
   for (const node of Object.values(options.nodeIndex.nodes)) {
     nodeHashes.set(node.qid, nodeSourceHash(options.root, node.path));
   }
-  return buildSourceFingerprint({ ...options, nodeHashes });
+  return buildSourceFingerprint({ ...options, config: options.config ?? loadConfig(options.root), nodeHashes });
 }
 
 export function readSqliteIndexMeta(root: string, config: Config): Record<string, string> {
