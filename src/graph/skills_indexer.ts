@@ -3,6 +3,7 @@ import path from "path";
 import { Config } from "../core/config";
 import { readContainedFile } from "../core/filesystem_authority";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
+import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 
 export const SKILLS_INDEX_RELATIVE_PATH = ".mdkg/index/skills.json";
 
@@ -44,7 +45,8 @@ export type SkillDocCandidate = {
   filePath: string;
 };
 
-export function listSkillMarkdownFiles(dir: string): SkillDocCandidate[] {
+export function listSkillMarkdownFiles(dir: string, owns: (file: string) => boolean = () => true): SkillDocCandidate[] {
+  if (!owns(dir)) return [];
   if (!fs.existsSync(dir)) {
     return [];
   }
@@ -56,16 +58,19 @@ export function listSkillMarkdownFiles(dir: string): SkillDocCandidate[] {
     }
     const slug = entry.name.toLowerCase();
     const skillDir = path.join(dir, entry.name);
+    if (!owns(skillDir)) continue;
     const canonicalPath = path.join(skillDir, "SKILL.md");
     const compatPath = path.join(skillDir, "SKILLS.md");
-    if (fs.existsSync(canonicalPath) && fs.existsSync(compatPath)) {
+    const canonicalExists = owns(canonicalPath) && fs.existsSync(canonicalPath);
+    const compatExists = owns(compatPath) && fs.existsSync(compatPath);
+    if (canonicalExists && compatExists) {
       throw new Error(`${skillDir}: both SKILL.md and SKILLS.md exist`);
     }
-    if (fs.existsSync(canonicalPath)) {
+    if (canonicalExists) {
       files.push({ slug, filePath: canonicalPath });
       continue;
     }
-    if (fs.existsSync(compatPath)) {
+    if (compatExists) {
       files.push({ slug, filePath: compatPath });
     }
   }
@@ -218,7 +223,8 @@ export function buildSkillIndexEntry(root: string, slug: string, filePath: strin
 
 export function buildSkillsIndex(root: string, config: Config): SkillsIndex {
   const skillsRoot = resolveSkillsRoot(root, config);
-  const files = listSkillMarkdownFiles(skillsRoot);
+  const owner = absoluteWorkspaceDocumentOwner(root, config);
+  const files = listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === "root");
   const skills: Record<string, SkillIndexEntry> = {};
 
   for (const file of files) {

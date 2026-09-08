@@ -2,12 +2,12 @@
 id: bug-16
 type: bug
 title: Public bundles include a nested private workspace as public parent files
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-16-verification.json]
 relates: [test-479]
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Overview
@@ -60,4 +60,28 @@ Require failing-before/passing-after results and independent verification in tas
 
 Codex Security scan 35ca791e-716a-4bc3-8067-88d47224e288; candidate key nested-private-workspace-bundle; sanitized hash receipt chk-571.
 
-Disposition: open, not fixed, not publication-ready.
+Disposition: fixed locally; independent final exact-range verification remains
+required in task-828. Not publication-ready.
+
+## Local Verification — 2026-09-08
+
+Fourteen of 16 original cases failed. Deepest registered ownership now applies
+before raw traversal, graph/skill parsing and generated export. Historical
+snapshots, Git-stage repair and fork mappings use the same aliases; public
+references to private evidence still fail closed. Exact published 0.5.2 contains
+the same unfiltered parent traversal. Earlier releases are unassessed.
+
+One independent candidate review identified leaf SKILL/SKILLS boundaries,
+case-only filesystem aliases and normalized cache invalidation. All reproduced
+and were corrected. Case-insensitive hosts require exact directory-entry spelling
+for configured roots, with an explicit non-mutating diagnostic. Distinct
+case-sensitive paths remain separate. The initial helper root-directory call
+failed its focused checks and was corrected to use the existing dot-root-aware
+directory API; no check was weakened.
+
+Final: 49 focused, 100 installed, 990 full source tests and 26 contract checks
+pass, zero failures/skips. CLI/docs/full and changed-only graph/diff checks pass;
+three inherited bundle-age warnings remain untouched. Evidence and exact hashes:
+.mdkg/artifacts/goal-84/bug-16-verification.json. Protected selected state, runtime
+DB and Demo 3 bundle hashes match. SQLite stays uncommitted generated custody;
+no runtime lease acquired, no remote/publication action or canonical refresh.

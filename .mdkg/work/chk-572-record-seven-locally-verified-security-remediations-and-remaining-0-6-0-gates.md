@@ -155,3 +155,16 @@ prepatch/candidate source reviews and CLI/docs/graph/diff checks completed.
 Ten security findings have local fixes; bugs 15–17 and all final gates remain.
 Protected selection/runtime/bundle bytes, SQLite custody and local-only authority
 are unchanged. No runtime lease acquired or new skill candidates proposed.
+
+## Follow-on Verification: root:bug-16
+
+2026-09-08: deepest workspace ownership is locally verified across exports,
+derived discovery, historical snapshots and identity/legacy repair consumers.
+Receipt: .mdkg/artifacts/goal-84/bug-16-verification.json. Forty-nine focused,
+100 installed, 990 full source tests and 26 contract checks pass; CLI/docs/graph/
+diff gates pass with three inherited age warnings. Three candidate-review gaps
+were reproduced and corrected before closure. Eleven security findings now
+have local fixes. Bug-15 awaits only its resource-limit compatibility decision;
+bug-17 investigation and other independent qualification work can continue.
+Protected states, SQLite custody and local-only authority remain unchanged.
+No runtime lease acquired or new skill candidates proposed; final gates remain.

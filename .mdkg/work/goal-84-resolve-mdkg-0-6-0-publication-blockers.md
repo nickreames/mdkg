@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-12
+active_node: bug-16
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -157,3 +157,13 @@ bugs 5–7 and final qualification gates remain open. Skill resource source-boun
 investigation is underway read-only, without skill authoring or mirror changes.
 No new Nick decision is required for continuing the approved local scope.
 Publication remains blocked; protected states and SQLite custody are unchanged.
+
+## 2026-09-08 Workspace Export Ownership Verification
+
+Bug-16 is locally verified: 49 focused, 100 installed, 990 full source tests and
+26 contract checks pass. CLI/docs/graph/diff gates pass. All three independent
+candidate-review gaps were reproduced and corrected. Eleven of thirteen security
+findings have local fixes; bug-15 awaits the skill-resource size-limit decision
+and bug-17 is under read-only investigation. Bugs 5–7 and final qualification
+remain open. Continue independent authorized work, not publication. Selected
+Goal 73, runtime DB, protected bundles and generated SQLite custody are preserved.

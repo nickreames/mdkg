@@ -21,6 +21,7 @@ import { buildIndex, Index } from "../graph/indexer";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
 import { loadTemplateSchemas } from "../graph/template_schema";
 import { getWorkspaceDocRoots, listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "../graph/workspace_files";
+import { workspaceDocumentOwner } from "../graph/workspace_ownership";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
 import { withMutationLock } from "../util/lock";
@@ -896,6 +897,7 @@ type GitStageEntry = {
 
 function gitConflictStages(root: string, config: ReturnType<typeof loadConfig>): Map<string, GitStageEntry[]> {
   const roots = getWorkspaceDocRoots(root, config).map((entry) => rel(root, entry.root));
+  const owner = workspaceDocumentOwner(config);
   const output = runGit(root, ["ls-files", "-u", "-z", "--", ...roots]);
   const groups = new Map<string, GitStageEntry[]>();
   if (output === undefined) {
@@ -909,6 +911,8 @@ function gitConflictStages(root: string, config: ReturnType<typeof loadConfig>):
     if (!match || !match[4].endsWith(".md")) {
       continue;
     }
+    const alias = owner(match[4]);
+    if (!alias || !config.workspaces[alias].enabled) continue;
     const entry: GitStageEntry = {
       mode: match[1],
       object: match[2],
@@ -941,6 +945,7 @@ function gitConflictAncestor(root: string, config: ReturnType<typeof loadConfig>
     throw new UsageError("workspace ownership differs from the ancestor; establish an explicit mapping before repair");
   }
   const roots = getWorkspaceDocRoots(root, config);
+  const owner = workspaceDocumentOwner(config);
   const templates = loadTemplateSchemas(root, config, ALLOWED_TYPES);
   const ids = new Map<string, string[]>();
   let files = 0;
@@ -953,6 +958,7 @@ function gitConflictAncestor(root: string, config: ReturnType<typeof loadConfig>
       const match = /^(\d+) blob ([0-9a-f]+)\t([\s\S]+)$/.exec(entry);
       if (!match || !match[3].endsWith(".md")) continue;
       const filePath = match[3];
+      if (owner(filePath) !== workspace.alias) continue;
       if (filePath === `${wsPath}/core/core.md` ||
         (filePath.startsWith(`${wsPath}/archive/`) && filePath.slice(`${wsPath}/archive/`.length).split("/").includes("source"))) continue;
       if (!/^100(644|755)$/.test(match[1])) throw new UsageError(`non-regular ancestor node: ${filePath}`);
@@ -977,18 +983,8 @@ function gitConflictAncestor(root: string, config: ReturnType<typeof loadConfig>
 }
 
 function workspaceAliasForPath(root: string, config: ReturnType<typeof loadConfig>, relativePath: string): string | undefined {
-  const absPath = path.resolve(root, relativePath);
-  for (const alias of Object.keys(config.workspaces).sort()) {
-    const entry = config.workspaces[alias];
-    if (!entry.enabled) {
-      continue;
-    }
-    const wsRoot = path.resolve(root, entry.path, entry.mdkg_dir);
-    if (absPath === wsRoot || absPath.startsWith(`${wsRoot}${path.sep}`)) {
-      return alias;
-    }
-  }
-  return undefined;
+  const alias = workspaceDocumentOwner(config)(rel(root, path.resolve(root, relativePath)));
+  return alias && config.workspaces[alias].enabled ? alias : undefined;
 }
 
 function filesContaining(root: string, files: string[], needle: string, maxBytes: number): string[] {

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-16",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "nested-private-workspace-bundle",
+  "outcome": "fixed-locally",
+  "base_revision": "b6718a2b1f28d7b4ed0215c1bd7db25a9c08f8ac",
+  "runtime": "Node v26.0.0 on macOS case-insensitive filesystem",
+  "affected_version": "Exact published 0.5.2 tarball contains the same recursive bundle traversal and parent visibility assignment without deepest-owner filtering. Candidate reproduced before patch; earlier releases unassessed.",
+  "invariant": "Each authored file and derived record keeps its deepest registered workspace owner, independently of enabled state, visibility or selection.",
+  "strategy": "Shared lexical owner resolution prunes child roots before traversal/parsing; live metadata checks reject filesystem spelling aliases. Apply ownership to graph/skill/capability discovery, cache freshness, bundle collection, historical snapshots, legacy Git-stage repair and independent-fork mappings. Preserve public reference validation and immutable historical receipts.",
+  "files_sha256": {
+    "src/commands/bundle.ts": "5e564e0b3169af7bf8d883493180c0e6577f923ae84654e884f9ebc9cce26921",
+    "src/commands/fix.ts": "3d923daeafc8237bb7c686861f9869ff89078ef2b8ef68d74cd290fe875538b5",
+    "src/graph/workspace_ownership.ts": "774cb64492c7f8eef5620d3c93707c1ade57d3ec7d3cf7db5b77f32e081fdf42",
+    "src/graph/workspace_files.ts": "f9739e25285bdaa026559c4a5b65c610e29a7a954f9875d75d6268ba5d0f987d",
+    "src/graph/skills_indexer.ts": "91cab8d336ac63318b0519c7e89ab62947ce58cf23326790c474e285f8c045d6",
+    "src/graph/capabilities_indexer.ts": "3e4fcba781e9c019789a3b658fd809acfd2d3683b64939a906c07b50549c5dc2",
+    "src/graph/capabilities_index_cache.ts": "da2736d2af82459eacc3562598ae9aa4e01eb994dc7abbee24ada6f2134b3a7e",
+    "src/graph/identity_snapshot.ts": "aca2adb55cb748a7563fdce41480fe42104c643c1176f077e179de4330326c8a",
+    "src/graph/identity_transport.ts": "b3c647ba515c461065c3552bafd8fa5685e4f865d32c26926c5785d19ec358e2",
+    "tests/commands/bundle_ownership.test.ts": "3377c7ec429ca7cb2b80a227dd2a3c22f22338d8703a82610b47530ae2aad347",
+    "docs/src/content/docs/start-here/troubleshooting.md": "928c8f09af2ab0a487f523e133eaae155da8502b9e86301af1d0a77f4fc46706"
+  },
+  "before": "14 of 16 initial cases failed (two legitimate controls passed). One independent candidate review identified three additional gaps, confirmed by four failing cases: SKILL.md/SKILLS.md leaf ownership, filesystem case aliases and normalized capability-cache invalidation.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; bundle ownership and workspace containment suites",
+      "result": "49 passed, zero failures/skips; 26 ownership cases plus 23 existing containment cases."
+    },
+    {
+      "command": "Offline npm pack/install; installed bundle ownership, bundle, fix, graph, skills, capabilities and workspace containment suites",
+      "result": "100 passed, zero failures/skips; installed bytes unchanged. Compact receipt retained; intermediate install/tarball/fixtures removed."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "990 source tests plus 26 release/security-contract checks passed; zero failures/skips."
+    },
+    {
+      "command": "CLI/docs/full and changed-only graph validation; git diff --check",
+      "result": "Passed. 478 examples across 63 files; zero graph errors, three inherited full-graph age warnings, zero changed-only warnings."
+    }
+  ],
+  "review": "Independent prepatch investigation and one fresh candidate source review completed. Parent reproduced and corrected all three reviewer findings, reran focused/installed/full verification and reviewed changed direct consumers. Final separate exact-range review remains task-828.",
+  "installed_candidate": {
+    "sha256": "fe1589ef185f90e0d379ef8b863023a0646958ed7dfa2f92082aa3774c1cb296",
+    "integrity": "sha512-9i3qG4Fmc1J1F6fKAGB0kTBR8pEvWqSQFeEhhPnesTzjG6W01COl6hpbNRLA+NQHD8I4NBYh5hIZg19WkPOa1Q==",
+    "status": "Intermediate development package, not final 0.6.0 seal"
+  },
+  "limitations": [
+    "Case-insensitive hosts now require exact directory-entry spelling for registered roots; ambiguous aliases fail explicitly without changing files.",
+    "No portable immunity to active concurrent ancestor replacement; quiescent checkout required.",
+    "Exact Node 24 and other host/platform qualification, remaining findings, final Security diff review, release ladder and seal remain open.",
+    "Existing bundles are preserved, not retroactively repaired or redistributed."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and explicit-path local commits only; no remote Git, publication, provider/deployment, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}

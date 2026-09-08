@@ -165,6 +165,26 @@ operator-selected source remains supported; this does not authorize sidecars
 to read arbitrary external paths. Internal live `parseNode` consumers supply
 `archiveRoot`; explicitly deferred historical parsing does not verify payloads.
 
+## Nested workspace ownership in bundles (0.6.0 candidate)
+
+The deepest registered workspace document root owns each file. Disabled,
+private, and unselected roots remain ownership boundaries: their contents are
+not borrowed by a selected public parent. A selected enabled public child is
+exported once under its own alias. Private bundles also respect enabled state
+and explicit workspace selection; private does not mean all registered roots.
+
+Graph and skill discovery, historical snapshots, and independent-fork mappings
+use the same ownership rule. Ordinary nested folders that are not registered
+workspace roots remain part of their parent. Public references to private nodes
+still fail validation rather than silently dropping evidence. On case-insensitive
+filesystems, configured roots must use the exact directory-entry spelling;
+case-only aliases fail with a workspace path-spelling diagnostic before export.
+Correct the configuration spelling explicitly, without renaming graph history.
+Separate case-sensitive paths remain distinct owners. Existing bundle
+bytes are not changed by this fix; regenerating or distributing a replacement
+is a separate explicit action. This ownership rule does not claim immunity to
+concurrent filesystem replacement during export.
+
 ## A handoff warns about raw markers
 
 Review the handoff manually. Warnings are aids, not proof that the content is safe or unsafe. Remove raw secrets, tokens, provider payloads, raw prompt dumps, and bulky runtime traces before sharing.

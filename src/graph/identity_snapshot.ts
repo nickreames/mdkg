@@ -7,6 +7,7 @@ import { UsageError } from "../util/errors";
 import { ALLOWED_TYPES, Node, parseNode } from "./node";
 import { loadTemplateSchemas } from "./template_schema";
 import { getWorkspaceDocRoots, listWorkspaceDocFilesByAlias } from "./workspace_files";
+import { workspaceDocumentOwner } from "./workspace_ownership";
 import type { Index, IndexNode } from "./indexer";
 import { normalizeIndexIdentityReferences } from "./identity_refs";
 import { validateGraph } from "./validate_graph";
@@ -118,6 +119,7 @@ export function readAuthoredSnapshot(root: string, revision?: string): AuthoredS
   const nodes: AuthoredNode[] = [];
   const templates = loadTemplateSchemas(root, currentConfig, ALLOWED_TYPES);
   const roots = getWorkspaceDocRoots(root, config);
+  const owner = workspaceDocumentOwner(config);
   const worktreeFiles = resolved ? undefined : listWorkspaceDocFilesByAlias(root, config);
   let totalBytes = 0;
   for (const workspace of roots) {
@@ -129,7 +131,7 @@ export function readAuthoredSnapshot(root: string, revision?: string): AuthoredS
       for (const entry of listing.split("\0").filter(Boolean)) {
         const match = /^(\d+) (\w+) ([0-9a-f]+)\t([\s\S]+)$/.exec(entry);
         if (!match) throw new UsageError("unclassifiable Git tree entry");
-        if (!match[4].endsWith(".md") || skipDocument(match[4], wsPath)) continue;
+        if (owner(match[4]) !== workspace.alias || !match[4].endsWith(".md") || skipDocument(match[4], wsPath)) continue;
         if (match[2] !== "blob" || !/^100(644|755)$/.test(match[1])) throw new UsageError(`non-regular graph input: ${match[4]}`);
         paths.push(match[4]);
       }
