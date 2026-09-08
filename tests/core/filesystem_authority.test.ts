@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "fs";
 import os from "os";
 import path from "path";
+import { spawnSync } from "node:child_process";
 
 type PathInput = { root: string; relativePath: string; pathSyntax?: "native" };
 
@@ -11,7 +12,7 @@ const authority = require("../../core/filesystem_authority") as {
   containedPathExists(input: PathInput): boolean;
   ensureContainedDirectory(input: PathInput): { relativePath: string };
   readContainedDirectory(input: PathInput): fs.Dirent[];
-  readContainedFile(input: PathInput, encoding?: BufferEncoding | null): string | Buffer;
+  readContainedFile(input: PathInput & { maxBytes?: number }, encoding?: BufferEncoding | null): string | Buffer;
   withContainedTreeSink<T>(input: { root: string; operation: "replace"; relativePath: string }, sink: (descriptor: { absolutePath: string }) => T): T;
   writeContainedFileExclusive(input: PathInput, data: string | Buffer): { relativePath: string };
   appendContainedFile(input: PathInput, data: string | Buffer): { relativePath: string };
@@ -28,6 +29,44 @@ function fixture(): { base: string; root: string; outside: string } {
   fs.mkdirSync(outside);
   return { base, root, outside };
 }
+
+test("contained bounded reads enforce actual bytes when the file grows after stat", () => {
+  const { base, root } = fixture();
+  const original = fs.fstatSync;
+  try {
+    fs.writeFileSync(path.join(root, "growing.txt"), "larger than four bytes");
+    fs.fstatSync = ((...args: any[]) => ({ ...original(args[0]), size: 0, isFile: () => true })) as typeof fs.fstatSync;
+    assert.throws(() => authority.readContainedFile({ root, relativePath: "growing.txt", maxBytes: 4 }), /byte limit/);
+  } finally { fs.fstatSync = original; fs.rmSync(base, { recursive: true }); }
+});
+
+test("contained reads reject FIFO input without blocking before regular-file validation", (t) => {
+  if (process.platform === "win32") { t.skip("POSIX FIFO fixture"); return; }
+  const { base, root } = fixture();
+  try {
+    const created = spawnSync("mkfifo", [path.join(root, "fifo")], { encoding: "utf8" });
+    assert.equal(created.status, 0, created.stderr);
+    const script = 'const a=require(process.argv[1]);try{a.readContainedFile({root:process.argv[2],relativePath:"fifo",maxBytes:32});process.exit(2)}catch(e){if(e.code==="ERR_CONTAINED_PATH_TYPE")process.exit(0);throw e}';
+    const result = spawnSync(process.execPath, ["-e", script, path.resolve(__dirname, "../../core/filesystem_authority.js"), root], { encoding: "utf8", timeout: 2000 });
+    assert.equal(result.status, 0, result.error?.message || result.stderr);
+  } finally { fs.rmSync(base, { recursive: true }); }
+});
+
+test("bounded reads preserve exact limits, encodings and empty files and reject invalid budgets", () => {
+  const { base, root } = fixture();
+  try {
+    fs.writeFileSync(path.join(root, "text"), "café");
+    fs.writeFileSync(path.join(root, "empty"), "");
+    assert.equal(authority.readContainedFile({ root, relativePath: "text", maxBytes: 5 }), "café");
+    assert.deepEqual(authority.readContainedFile({ root, relativePath: "text", maxBytes: 5 }, null), Buffer.from("café"));
+    assert.equal(authority.readContainedFile({ root, relativePath: "text", maxBytes: 5 }, "hex"), Buffer.from("café").toString("hex"));
+    assert.equal(authority.readContainedFile({ root, relativePath: "empty", maxBytes: 0 }), "");
+    assert.throws(() => authority.readContainedFile({ root, relativePath: "text", maxBytes: 4 }), /byte limit/);
+    for (const maxBytes of [-1, NaN, Infinity, 1.5]) {
+      assert.throws(() => authority.readContainedFile({ root, relativePath: "text", maxBytes }), /nonnegative safe integer/);
+    }
+  } finally { fs.rmSync(base, { recursive: true }); }
+});
 
 test("native layout adapters preserve contained filenames without weakening portable paths", () => {
   const { base, root, outside } = fixture();

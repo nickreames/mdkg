@@ -322,8 +322,17 @@ export function readContainedFile(
   input: ContainedPathInput & { maxBytes?: number },
   encoding: BufferEncoding | null = "utf8"
 ): string | Buffer {
+  if (input.maxBytes !== undefined && (!Number.isSafeInteger(input.maxBytes) || input.maxBytes < 0)) {
+    fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read byte limit must be a nonnegative safe integer");
+  }
   return withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => {
-    const handle = fs.openSync(absolutePath, fs.constants.O_RDONLY | noFollowFlag());
+    // Reject special files before opening. Nonblocking open also prevents a
+    // FIFO swapped in after inspection from hanging before descriptor checks.
+    if (!fs.lstatSync(absolutePath).isFile()) {
+      fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read target must be a file");
+    }
+    const nonblock = typeof fs.constants.O_NONBLOCK === "number" ? fs.constants.O_NONBLOCK : 0;
+    const handle = fs.openSync(absolutePath, fs.constants.O_RDONLY | noFollowFlag() | nonblock);
     try {
       const stat = fs.fstatSync(handle);
       if (!stat.isFile()) {
@@ -331,6 +340,24 @@ export function readContainedFile(
       }
       if (input.maxBytes !== undefined && stat.size > input.maxBytes) {
         fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, `contained read exceeds byte limit: ${input.maxBytes}`);
+      }
+      if (input.maxBytes !== undefined) {
+        // Enforce actual bytes, not just an earlier stat that can become stale.
+        // At most one extra byte is read to distinguish exact-boundary EOF.
+        const chunks: Buffer[] = [];
+        let total = 0;
+        while (true) {
+          const chunk = Buffer.allocUnsafe(Math.min(64 * 1024, input.maxBytes - total + 1));
+          const count = fs.readSync(handle, chunk, 0, chunk.length, null);
+          if (count === 0) break;
+          total += count;
+          if (total > input.maxBytes) {
+            fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, `contained read exceeds byte limit: ${input.maxBytes}`);
+          }
+          chunks.push(chunk.subarray(0, count));
+        }
+        const content = Buffer.concat(chunks, total);
+        return encoding === null ? content : content.toString(encoding);
       }
       return encoding === null ? fs.readFileSync(handle) : fs.readFileSync(handle, encoding);
     } finally {

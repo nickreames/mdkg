@@ -626,18 +626,18 @@ test("runCli covers command-specific usage errors and exit-code handlers", () =>
   assert.equal(validation.code, 2);
   assert.match(validation.stderr, /validation failed/);
 
-  const readFileSync = fs.readFileSync;
+  const openSync = fs.openSync;
   try {
-    fs.readFileSync = ((target: fs.PathLike, options?: unknown) => {
+    fs.openSync = ((target: fs.PathLike, flags: string | number, mode?: fs.Mode) => {
       if (path.resolve(String(target)) === path.join(root, ".mdkg", "core", "guide.md")) {
         throw new Error("boom");
       }
-      return readFileSync(target, options as Parameters<typeof readFileSync>[1]);
-    }) as typeof fs.readFileSync;
+      return openSync(target, flags, mode);
+    }) as typeof fs.openSync;
     const generic = captureRun(["guide"], root);
     assert.equal(generic.code, 4);
     assert.match(generic.stderr, /boom/);
   } finally {
-    fs.readFileSync = readFileSync;
+    fs.openSync = openSync;
   }
 });
