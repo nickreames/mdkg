@@ -7,7 +7,7 @@ import { configPath } from "../core/paths";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { assertNodeFormat, canonicalJson, GRAPH_FORMAT_PATH, parseGraphFormat, readNodeIdentity } from "./identity";
 import { Index, IndexNode } from "./indexer";
-import { atomicWriteFile } from "../util/atomic";
+import { writeCacheFile } from "./cache_output";
 import { readZipFileEntries } from "../util/zip";
 import { normalizeIndexIdentityReferences } from "./identity_refs";
 
@@ -626,8 +626,8 @@ export function buildSubgraphsIndex(root: string, config: Config): SubgraphProje
   };
 }
 
-export function writeSubgraphsIndex(indexPath: string, index: SubgraphsIndex): void {
-  atomicWriteFile(indexPath, JSON.stringify(index, null, 2));
+export function writeSubgraphsIndex(root: string, indexPath: string, index: SubgraphsIndex): void {
+  writeCacheFile(root, indexPath, JSON.stringify(index, null, 2));
 }
 
 export function isSubgraphsIndexStale(root: string, config: Config): boolean {

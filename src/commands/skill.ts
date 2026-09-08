@@ -315,7 +315,7 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
 
   if (config.index.auto_reindex) {
     const skillsIndex = buildSkillsIndex(root, config);
-    writeSkillsIndex(resolveSkillsIndexPath(root), skillsIndex);
+    writeSkillsIndex(root, resolveSkillsIndexPath(root), skillsIndex);
   }
 
   appendAutomaticEvent({

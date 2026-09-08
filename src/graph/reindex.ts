@@ -8,6 +8,8 @@ import { writeIndex } from "./index_cache";
 import { writeSkillsIndex } from "./skills_index_cache";
 import { buildSkillsIndex, resolveSkillsIndexPath } from "./skills_indexer";
 import { isSqliteBackend, writeSqliteIndex } from "./sqlite_index";
+import { preflightCacheOutputs } from "./cache_output";
+import { withContainedPathSink } from "../core/filesystem_authority";
 
 export type DerivedIndexWriteResult = {
   nodeIndex: Index;
@@ -36,10 +38,17 @@ export function writeDerivedIndexes(
   const capabilitiesOutputPath = resolveCapabilitiesIndexPath(root, config);
   const subgraphsOutputPath = resolveSubgraphsIndexPath(root);
 
-  writeIndex(nodesOutputPath, nextNodeIndex);
-  writeSkillsIndex(skillsOutputPath, skillsIndex);
-  writeCapabilitiesIndex(capabilitiesOutputPath, capabilitiesIndex);
-  writeSubgraphsIndex(subgraphsOutputPath, subgraphsIndex.index);
+  // Reject an unsafe later destination before refreshing earlier JSON caches.
+  // Each actual writer still validates containment at replacement. This is not
+  // a transaction for authoring operations that called into cache rebuilding.
+  preflightCacheOutputs(root, [nodesOutputPath, skillsOutputPath, capabilitiesOutputPath, subgraphsOutputPath]);
+  if (isSqliteBackend(config)) {
+    withContainedPathSink({ root, relativePath: config.index.sqlite_path, operation: "replace", createParents: false }, () => undefined);
+  }
+  writeIndex(root, nodesOutputPath, nextNodeIndex);
+  writeSkillsIndex(root, skillsOutputPath, skillsIndex);
+  writeCapabilitiesIndex(root, capabilitiesOutputPath, capabilitiesIndex);
+  writeSubgraphsIndex(root, subgraphsOutputPath, subgraphsIndex.index);
 
   const paths: DerivedIndexWriteResult["paths"] = {
     nodes: nodesOutputPath,
