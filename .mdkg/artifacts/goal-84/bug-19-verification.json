@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-19",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "parent-guide-uncontained-read",
+  "outcome": "fixed-locally",
+  "base_revision": "6791edc74bfb505b7ce3b1336f50c582edc13e38",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball contains the same pathname-based guide and verbose-core reads. Runtime failing-before proof used equivalent prepatch candidate; earlier releases unassessed.",
+  "invariant": "Guide and verbose core-list readers accept only contained regular files with finite byte bounds before exposing content. Shared bounded reads enforce actual read bytes rather than only an earlier stat and reject special-file input without waiting for a FIFO writer.",
+  "strategy": "Use existing root-aware contained reader; preserve native core-list path resolution, missing/blank/Unicode/list parsing behavior and nonverbose laziness. Guide and default list limit use existing 8 MiB node-body precedent; buildPack passes an explicit maxBodyBytes when supplied. Strengthen the shared reader at its actual descriptor-read boundary.",
+  "files_sha256": {
+    "src/commands/guide.ts": "4d3ed567b0eebc1c3170d90fcabe6506b32a063eae9d27a3da4144762b8de9d0",
+    "src/core/filesystem_authority.ts": "a4e2248f235e4e3acbafa718babeebca59e12a291130b292fc8d94c94cff11e7",
+    "src/pack/pack.ts": "c8a4eb3212d0d26a7d3e1fb80a5c81fc0a602a5e83585bfe7e98b2f375745205",
+    "src/pack/verbose_core.ts": "d9d86494fc4fc5ec8bcb4eb2a1d51c277830eedfccf0f2b01436ffef2eed7cb7",
+    "tests/commands/discovery_containment.test.ts": "c34ae444e394e34fefb0b868572f0960d0f07daa376c70091f19d060dafe9e44",
+    "tests/commands/cli_runtime.test.ts": "0575a88e40b8a1038627b5798eecf1b3a5acdece16018318d544bc375e04a884",
+    "tests/core/filesystem_authority.test.ts": "64f3a8b534d2844f63d47a36895ad3ccdeda5bcdde0db741a517e392e27acf60"
+  },
+  "before": "13 discovery regressions failed: linked guide/list content was exposed, dangling guide was treated as absent rather than rejected, oversized guide printed. Two additional shared-reader regressions failed: post-stat growth exceeded the bound and FIFO input timed out before type validation.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; focused discovery/guide/authority/CLI-runtime/pack tests with owned TMPDIR",
+      "result": "65 passed; zero failures/skips. Original and alternate link cases, profile aliases/dry-run, no pack output, nonverbose control, Unicode/CRLF/native paths, exact bytes, invalid budgets, growth and FIFO refusal covered."
+    },
+    {
+      "command": "Offline npm pack/install into disposable prefix; external compiled test harness resolves installed CLI/modules",
+      "result": "27 discovery/authority tests passed; installed runtime file hashes unchanged. Owned fixtures, install and intermediate pack removed after receipt retention."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "833 main tests and 26 public-release/security-contract checks passed; zero failures/skips."
+    },
+    {
+      "command": "CLI snapshot/command contract parity; doc command examples; full and changed-only graph validation; git diff --check",
+      "result": "Passed; 478 examples across 63 files, no graph errors, three inherited full-graph bundle-age warnings, zero changed-only warnings."
+    }
+  ],
+  "installed_candidate": {
+    "sha256": "c38129088a9f4de45e943db86f98dc9afb652b7e770044a8fb94ec196022cd26",
+    "integrity": "sha512-g8w6MLTqWJ04mVn3/HLu6eP8eTJqCs6EpPnlV3bxDCz8avyAVjPDpJXq2WovTfWKz24a4mWO2OvViPaWfbfNGQ==",
+    "status": "Intermediate development artifact, not final 0.6.0 release seal"
+  },
+  "review": "Fresh independent prepatch investigation and one fresh candidate review. No surviving static-input bypass or regression found. Reviewer did not execute tests; parent performed runtime checks above. Final task-828 exact-range security diff review remains open.",
+  "limitations": [
+    "Concurrent parent-directory replacement can defeat path-based containment; leaf O_NOFOLLOW and descriptor type checks are not portable openat. This stronger active local filesystem-actor threat is outside the supported single-writer/static-checkout guarantee.",
+    "The original verbose disclosure reaches returned warnings and CLI stderr, not ordinary serialized pack content. MCP/handoff currently hard-code verbose false.",
+    "Exact Node 24 runtime matrix, final security diff review, remaining blockers, full release ladder and immutable candidate seal remain pending."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and reviewed local commit only; no remote Git, publication, providers, deployment, canonical graph migration or bundle refresh.",
+  "skill_candidates": []
+}

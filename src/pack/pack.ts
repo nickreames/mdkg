@@ -409,7 +409,7 @@ export function buildPack(options: PackBuildOptions): PackBuildResult {
   }
 
   if (options.verbose) {
-    const coreIds = readVerboseCoreList(options.verboseCoreListPath);
+    const coreIds = readVerboseCoreList(options.root, options.verboseCoreListPath, options.maxBodyBytes);
     for (const id of coreIds) {
       const resolved = resolveQid(options.index, id, options.wsHint);
       if (resolved.status === "ok") {

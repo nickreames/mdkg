@@ -1,11 +1,15 @@
-import fs from "fs";
+import path from "path";
+import { containedPathExists, readContainedFile } from "../core/filesystem_authority";
 
-export function readVerboseCoreList(listPath: string): string[] {
-  if (!fs.existsSync(listPath)) {
+export const DEFAULT_CORE_LIST_MAX_BYTES = 8 * 1024 * 1024;
+
+export function readVerboseCoreList(root: string, listPath: string, maxBytes = DEFAULT_CORE_LIST_MAX_BYTES): string[] {
+  const input = { root, relativePath: path.relative(root, path.resolve(root, listPath)), pathSyntax: "native" as const, maxBytes };
+  if (!containedPathExists(input)) {
     throw new Error(`verbose core list not found: ${listPath}`);
   }
 
-  const raw = fs.readFileSync(listPath, "utf8");
+  const raw = readContainedFile(input, "utf8");
   const lines = raw.split(/\r?\n/);
   const ids: string[] = [];
   for (const line of lines) {
