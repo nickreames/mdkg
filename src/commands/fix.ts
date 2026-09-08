@@ -5,6 +5,7 @@ import path from "path";
 import { loadConfig } from "../core/config";
 import {
   atomicReplaceContainedFile,
+  ContainedPathError,
   containedPathExists,
   readContainedFile,
   withContainedPathSink,
@@ -19,7 +20,7 @@ import { resolveSubgraphsIndexPath, isSubgraphsIndexStale } from "../graph/subgr
 import { buildIndex, Index } from "../graph/indexer";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
 import { loadTemplateSchemas } from "../graph/template_schema";
-import { getWorkspaceDocRoots, listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
+import { getWorkspaceDocRoots, listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "../graph/workspace_files";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
 import { withMutationLock } from "../util/lock";
@@ -988,12 +989,13 @@ function workspaceAliasForPath(root: string, config: ReturnType<typeof loadConfi
   return undefined;
 }
 
-function filesContaining(root: string, files: string[], needle: string): string[] {
+function filesContaining(root: string, files: string[], needle: string, maxBytes: number): string[] {
   return files
     .filter((filePath) => {
       try {
-        return fs.readFileSync(filePath, "utf8").includes(needle);
-      } catch {
+        return readWorkspaceDocument(root, filePath, maxBytes).includes(needle);
+      } catch (error) {
+        if (error instanceof ContainedPathError) throw error;
         return false;
       }
     })
@@ -1017,11 +1019,11 @@ function countOccurrences(value: string, needle: string): number {
   }
 }
 
-function referenceRewriteItems(root: string, files: string[], from: string, to: string) {
+function referenceRewriteItems(root: string, files: string[], from: string, to: string, maxBytes: number) {
   return files
     .map((filePath) => {
       try {
-        const replacementCount = countOccurrences(fs.readFileSync(filePath, "utf8"), from);
+        const replacementCount = countOccurrences(readWorkspaceDocument(root, filePath, maxBytes), from);
         if (replacementCount === 0) {
           return undefined;
         }
@@ -1033,7 +1035,8 @@ function referenceRewriteItems(root: string, files: string[], from: string, to: 
           confidence: "manual_review",
           replacement_count: replacementCount,
         };
-      } catch {
+      } catch (error) {
+        if (error instanceof ContainedPathError) throw error;
         return undefined;
       }
     })
@@ -1218,7 +1221,7 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
         continue;
       }
       try {
-        const node = parseNode(fs.readFileSync(filePath, "utf8"), filePath, {
+        const node = parseNode(readWorkspaceDocument(root, filePath, config.index.limits.max_file_bytes), filePath, {
           workStatusEnum: config.work.status_enum,
           priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max,
@@ -1234,7 +1237,8 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
           matchedTarget = true;
         }
         usedIds.add(node.id);
-      } catch {
+      } catch (error) {
+        if (error instanceof ContainedPathError) throw error;
         continue;
       }
     }
@@ -1270,7 +1274,7 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
       const basePaths = basePathsById.get(id);
       const baseCanonical = basePaths ? group.find((record) => basePaths.has(record.path)) : undefined;
       const canonical = baseCanonical ?? group[0];
-      const referencePaths = filesContaining(root, files, id);
+      const referencePaths = filesContaining(root, files, id, config.index.limits.max_file_bytes);
       const duplicateRecords = group.filter((record) => record.path !== canonical.path);
       const groupPaths = group.map((record) => record.path).sort();
       const deterministicRule = baseCanonical
@@ -1278,12 +1282,13 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
         : "keep the lexicographically first path unchanged; propose the next unused canonical numeric id for each later path";
       for (const duplicate of duplicateRecords) {
         const candidate = candidateDuplicateId(id, usedIds);
-        const selfReferenceRewrites = referenceRewriteItems(root, [duplicate.absPath], id, candidate);
+        const selfReferenceRewrites = referenceRewriteItems(root, [duplicate.absPath], id, candidate, config.index.limits.max_file_bytes);
         const externalReferenceRewrites = referenceRewriteItems(
           root,
           files.filter((filePath) => filePath !== duplicate.absPath),
           id,
-          candidate
+          candidate,
+          config.index.limits.max_file_bytes
         );
         const safeReferenceRewrites = baseRef
           ? externalReferenceRewrites.filter((item) => gitShow(root, `${baseRef}:${item.path}`) === undefined)

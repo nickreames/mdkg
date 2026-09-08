@@ -1,10 +1,10 @@
-import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
 import { FrontmatterValue } from "./frontmatter";
 import { ALLOWED_TYPES, parseNode } from "./node";
 import { EdgeMap } from "./edges";
-import { listWorkspaceDocFilesByAlias } from "./workspace_files";
+import { listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "./workspace_files";
+import { ContainedPathError } from "../core/filesystem_authority";
 import { collectGraphErrors, validateGraph } from "./validate_graph";
 import { loadTemplateSchemas } from "./template_schema";
 import { collectManifestSiblingConflicts } from "./agent_file_types";
@@ -136,7 +136,7 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
         continue;
       }
       try {
-        const content = fs.readFileSync(filePath, "utf8");
+        const content = readWorkspaceDocument(root, filePath, config.index.limits.max_file_bytes);
         if (graphFormat.format_version === 2) assertNoGraphConflictMarkers(content, filePath);
         const node = parseNode(content, filePath, {
           workStatusEnum: config.work.status_enum,
@@ -193,7 +193,7 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
           edges: normalizedEdges,
         };
       } catch (err) {
-        if (!tolerant || graphFormat.format_version === 2 || err instanceof UsageError) {
+        if (!tolerant || graphFormat.format_version === 2 || err instanceof UsageError || err instanceof ContainedPathError) {
           throw err;
         }
       }

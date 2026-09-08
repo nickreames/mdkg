@@ -55,8 +55,8 @@ const MUTATING_COMMAND_AUDIT = [
     file: "src/commands/format.ts",
     mutation_kind: "graph-markdown-normalization",
     lock_required: true,
-    atomic_write: "atomicWriteFile",
-    notes: "Formatting is lock-wrapped and changed files are written atomically.",
+    atomic_write: "atomicReplaceContainedFile",
+    notes: "Formatting is lock-wrapped with all-path preflight and contained atomic replacement.",
   },
   {
     command: "mdkg skill new/sync",
@@ -109,8 +109,11 @@ test("high-risk graph config and skill mutation paths are lock-wrapped and atomi
 
   const format = source("src/commands/format.ts");
   assert.match(format, /withMutationLock/);
-  assert.match(format, /atomicWriteFile\(update\.filePath/);
-  assert.doesNotMatch(format, /fs\.writeFileSync\(update\.filePath/);
+  assert.match(format, /writeFormattedDocuments\(options\.root, updates\)/);
+  assert.match(format, /writeFormattedDocuments\(options\.root, changes\)/);
+  assert.match(format, /atomicReplaceContainedFile\(input\(change\.filePath\), change\.content\)/);
+  assert.match(format, /withContainedPathSink/);
+  assert.doesNotMatch(format, /atomicWriteFile|fs\.writeFileSync/);
 
   const skill = source("src/commands/skill.ts");
   assert.match(skill, /withMutationLock/);

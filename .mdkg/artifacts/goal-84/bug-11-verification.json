@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-11",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "baseline-workspace-root-symlink",
+  "outcome": "fixed-locally",
+  "base_revision": "6c5ef5297f32984596e30d9fedc590ea0e529445",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball contains the same unchecked directory enumeration. Runtime failing-before proof used the prepatch candidate; earlier versions unassessed.",
+  "invariant": "Configured graph document roots and discovered Markdown remain within the repository through traversal, parsing and formatting replacement; a linked directory cannot disclose external node metadata or replace external files.",
+  "strategy": "Extend the existing shared workspace discovery boundary with contained directory and bounded file reads. Indexing, validation, duplicate-ID planning and both formatting modes recheck reads; formatting preflights all changed destinations and uses contained atomic replacement. Tolerant indexing and repair planning propagate containment failures.",
+  "files_sha256": {
+    "src/commands/fix.ts": "ee2aea142a566e6654081bbd9b40cb4b7c8c1e661d4c507501e5b693ac02955f",
+    "src/commands/format.ts": "b63bff65df9282ed6aa31097cfd524391c48b8c6f095218d3e577dd1b9d6311c",
+    "src/commands/validate.ts": "68953f3a31f923a9b5d504fbc98819ec4f30abfc04367d22963c97418feedd55",
+    "src/graph/indexer.ts": "d575379aff745b4f620360e1d0abd34d5330435334865dd30438bf622d4b17c1",
+    "src/graph/workspace_files.ts": "65ada293307293c00e7e1560558bcb480a3a392564577c2b41716efc02a5fbfe",
+    "tests/graph/workspace_containment.test.ts": "c3aeaa2085541ff8c010c5f3e5291023b1c91efa8e5717be30afce2a54525800",
+    "tests/commands/mutation_safety.test.ts": "b3d264f4414bc6e71d109baa8ab2d78304f5b0f918d37449b8cfe7733f8898be"
+  },
+  "before": "18 of 19 new cases failed before patch, with linked core/design/work/archive roots exposing metadata and both formatting modes replacing owned outside-fixture files. The ordinary discovery control passed.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; workspace containment/indexer/format focused tests",
+      "result": "Initial 30 passed. Expanded installed suite covers all 23 workspace scenarios, including post-discovery leaf substitution, tolerant indexing, both format modes, native names, disabled workspaces and idempotent formatting."
+    },
+    {
+      "command": "Offline npm pack/install and external compiled harness against installed CLI/modules",
+      "result": "23 passed; zero failures/skips; all installed runtime bytes unchanged. Owned fixture and install directories and intermediate tarball removed after retaining the compact receipt."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "856 main tests and 26 public-release/security-contract checks passed; zero failures/skips. First full run found one old source assertion expecting atomicWriteFile; assertion now requires both format modes to use the contained atomic replacement boundary."
+    },
+    {
+      "command": "CLI snapshot and command-contract parity; doc command examples; full and changed-only graph validation; git diff --check",
+      "result": "Passed; 478 examples across 63 files; no graph errors; three inherited full-graph bundle-age warnings and zero changed-only warnings."
+    }
+  ],
+  "installed_candidate": {
+    "sha256": "a224c57995f46e3426464568335b4fb741dd47cd2dd2b51d19bc5c26f129f931",
+    "integrity": "sha512-A4zNeehAqFPjdWM52LRtg1SGjGrTaeWAmHx7K0iZ+ccx6GXweF5zHkalbAJCaK25je7H21R9ncBrG4GWbFuN7Q==",
+    "status": "Intermediate development artifact; not the final 0.6.0 seal"
+  },
+  "review": "Fresh independent prepatch investigation and one fresh candidate review; no concrete remaining static linked-directory bypass or legitimate regression evidenced. Reviewer ran no code; parent performed execution checks. Separate final exact-range review remains required in task-828.",
+  "limitations": [
+    "Path-based ancestor checks do not provide portable openat race immunity against a concurrent filesystem actor; static-checkout single-writer contract only.",
+    "Whole-format atomicity across concurrent changes is not claimed; all known paths are preflighted and each replacement is checked again.",
+    "Node 24 matrix, remaining blockers, final security diff review, full release ladder and candidate seal remain pending."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and reviewed local commit only; no remote Git, publication, providers, deployment, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}
