@@ -83,9 +83,47 @@ function mdkg(binPath, args, cwd) {
   return run(binPath, args, { cwd });
 }
 
+function verifyInstalledInitContainment(binPath, tempRoot) {
+  for (const [index, linkedPath] of [".mdkg/db", ".mdkg/db/schema", ".mdkg/db/receipts"].entries()) {
+    const root = path.join(tempRoot, `linked-${index}`);
+    const outside = path.join(tempRoot, `sentinel-${index}`);
+    fs.mkdirSync(root);
+    fs.mkdirSync(outside);
+    mdkg(binPath, ["init", "--graph-only"], root);
+    const configPath = path.join(root, ".mdkg/config.json");
+    const configBefore = fs.readFileSync(configPath);
+    fs.writeFileSync(path.join(outside, "sentinel"), "preserve exact bytes\n");
+    const linked = path.join(root, linkedPath);
+    fs.mkdirSync(path.dirname(linked), { recursive: true });
+    fs.symlinkSync(outside, linked, "dir");
+    const result = runRaw(binPath, ["db", "init", "--json"], { cwd: root });
+    assert(result.status === 2, `installed init must reject ${linkedPath}: ${result.stderr}`);
+    assert(fs.readFileSync(configPath).equals(configBefore), "rejected init changed config");
+    assert(JSON.stringify(fs.readdirSync(outside)) === JSON.stringify(["sentinel"]), "rejected init created outside files");
+    assert(fs.readFileSync(path.join(outside, "sentinel"), "utf8") === "preserve exact bytes\n", "rejected init changed sentinel");
+    if (linkedPath === ".mdkg/db/receipts") {
+      assert(!fs.existsSync(path.join(root, ".mdkg/db/schema")), "late unsafe path left partial scaffold");
+    }
+  }
+  for (const [index, customRoot] of ["..project-db", ...(process.platform === "win32" ? [] : [".project\\db"])].entries()) {
+    const root = path.join(tempRoot, `custom-${index}`);
+    fs.mkdirSync(root);
+    mdkg(binPath, ["init", "--graph-only"], root);
+    const configPath = path.join(root, ".mdkg/config.json");
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    config.db = { enabled: false, schema_version: 1, root_path: customRoot, migration_table: "mdkg_schema_migration" };
+    fs.writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
+    mdkg(binPath, ["db", "init", "--json"], root);
+    assertExists(path.join(root, customRoot, "schema", "migrations"));
+    const repeated = parseJson(mdkg(binPath, ["db", "init", "--json"], root));
+    assert(repeated.created.length === 0 && repeated.updated.length === 0, "installed custom init must remain idempotent");
+  }
+}
+
 function main() {
   const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-db-smoke-"));
   const binPath = packAndInstall(tempRoot);
+  verifyInstalledInitContainment(binPath, tempRoot);
   const root = path.join(tempRoot, "repo");
   fs.mkdirSync(root, { recursive: true });
   run(GIT_CMD, ["init", "-q"], { cwd: root });
@@ -149,6 +187,7 @@ function main() {
   assert(show.includes("db smoke search target"), "show did not return created db smoke task");
 
   console.log("db smoke passed");
+  fs.rmSync(tempRoot, { recursive: true, force: true });
 }
 
 main();

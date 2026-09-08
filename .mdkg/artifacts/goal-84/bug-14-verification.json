@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-14",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "db-init-directory-symlink",
+  "outcome": "fixed-locally",
+  "base_revision": "7b7264954c0674478798cb1696d93988ce7b7095",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Published 0.5.2 tarball contains the same unchecked stat/mkdir/raw-manifest-read implementation; failing-before execution used its equivalent prepatch candidate implementation. Earlier releases were not assessed.",
+  "invariant": "Every configured DB-init directory plus manifest/config target is contained, non-linked and of the expected filesystem type before any scaffold write. No active runtime database is created by init.",
+  "strategy": "Preflight the whole layout, then use shared contained sinks. Adapt resolved layouts with explicit native path syntax; portable graph paths retain their existing cross-platform rules. Fix the shared containment predicate to reject parent components rather than safe dot-dot-prefixed child names.",
+  "files_sha256": {
+    "src/commands/db.ts": "2b7ed6a92a9c325e26333cf0a48f3de0cf516b9d4333d39e76f18f2f272c6875",
+    "src/core/filesystem_authority.ts": "5fcd9f96fa0c130733abaf90f74f5f7add0733dd8af6244ef2f9dc28fa14e3ba",
+    "tests/commands/db_index.test.ts": "bc84aab572c74d1a9f1e61f0dc3f51f9de0fab152cfe40ba6168cf4853f24939",
+    "tests/core/filesystem_authority.test.ts": "fdc49b878a2e5fb0d706a5f5b189214310da66a0e679f4b75869d5fd245c7c5a",
+    "scripts/smoke-db.js": "c7379e9168411b72799596a3f3df41d19a3959bee32c4444d1969b1da6a7dd61"
+  },
+  "before": {
+    "security_regression_run": "4 passed, 6 failed: link layouts returned success, dangling target failed after a lock timeout, FIFO manifest timed out",
+    "review_regression_run": "1 passed, 2 failed: valid ..project-db rejected; POSIX literal backslash directory reinterpreted"
+  },
+  "after": [
+    { "command": "npm run build && npm run build:test && TMPDIR=/private/tmp node --test dist/tests/core/filesystem_authority.test.js dist/tests/commands/db_index.test.js", "result": "39 passed, zero failed/skipped" },
+    { "command": "TMPDIR=/private/tmp npm run test", "result": "766 main tests and 26 public-release/security-contract tests passed; zero failed/skipped" },
+    { "command": "NPM_CONFIG_OFFLINE=true node scripts/smoke-db.js with isolated npm cache/user/global configs", "result": "Real candidate package installed in disposable prefix; link rejection, custom-layout idempotence, normal init/migrate/verify/stats/index/search/show passed; successful fixture root removed" },
+    { "command": "node scripts/cli_help_snapshot.js --check && node scripts/generate-command-contract.js --check", "result": "passed; command contract 4fd76e2dae0ba6e83ae0d55914d7078de77f1d6845169532ee2aa078a42ee8ec" },
+    { "command": "node scripts/check-doc-command-examples.js", "result": "478 examples checked across 63 files; zero failed" },
+    { "command": "node dist/cli.js validate --summary --json; node dist/cli.js validate --changed-only --summary --json; git diff --check", "result": "zero graph errors; three inherited full-graph bundle-age warnings, zero changed-only warnings; diff check passed" }
+  ],
+  "review": "Fresh independent prepatch investigation and one fresh postpatch review. Both reported custom-layout regressions were reproduced, corrected and covered by passing source and installed tests. A separate final security diff review remains required by task-828.",
+  "limitations": [
+    "No portable openat guarantee against a concurrently hostile directory-swap actor; supported single-writer custody remains required.",
+    "This fix rejects manifest FIFOs before opening; it does not claim general FIFO hardening for all repository readers.",
+    "Exact Node 24.15.0 and supported Node 24 qualification remain pending in test-482.",
+    "No final 0.6.0 version metadata, sealed artifact, full release ladder, hosted CI, or publication clearance is claimed."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation, tests and local commit only; no remote Git, publication, providers, deployments, canonical graph migration or bundle refresh.",
+  "skill_candidates": []
+}

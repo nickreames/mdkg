@@ -2,12 +2,12 @@
 id: bug-14
 type: bug
 title: DB initialization follows symlinked layout directories outside the repository
-status: progress
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-14-verification.json]
 relates: [test-479]
 blocked_by: []
 blocks: []
@@ -60,4 +60,22 @@ Require failing-before/passing-after results and independent verification in tas
 
 Codex Security scan 35ca791e-716a-4bc3-8067-88d47224e288; candidate key db-init-directory-symlink; sanitized hash receipt chk-571.
 
-Disposition: open, not fixed, not publication-ready.
+## Local remediation verification
+
+The DB-init containment defect is fixed locally. Every configured directory and
+manifest/config target is checked before scaffold creation, then written through
+the shared contained filesystem authority. Native configured layouts preserve
+valid `..project-db` names, POSIX literal backslashes and root-self layouts.
+The canonical graph/runtime DB and protected bundles were not initialized or
+refreshed. Published 0.5.2 contains the same vulnerable implementation; no earlier
+version claim is made.
+
+Evidence: `.mdkg/artifacts/goal-84/bug-14-verification.json` binds exact source/test
+hashes, failing-before triggers, independent review, 39 focused checks, 766 main
+plus 26 release-contract tests, and a real installed-package DB smoke.
+Both compatibility regressions found by the independent reviewer were reproduced
+and corrected. No general concurrent-hostile-filesystem guarantee is claimed.
+
+Disposition: local fix verified. Final task-828 security diff review and full
+0.6.0 qualification remain required; this bug's completion is not publication
+clearance or a substitute for the remaining blockers.

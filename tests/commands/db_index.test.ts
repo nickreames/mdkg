@@ -198,13 +198,14 @@ test("db init creates generic project db scaffold and is idempotent", () => {
   assert.equal(repeated.unchanged.includes(".mdkg/db/project-db.json"), true);
 });
 
-test("db init honors custom contained project db root defaults", () => {
+for (const customRoot of [".project-db", "..project-db", ...(process.platform === "win32" ? [] : [".project\\db"])]) {
+test(`db init honors custom contained project db root defaults: ${customRoot}`, () => {
   const root = makeRoot("mdkg-db-init-custom-");
   const config = readConfig(root);
   config.db = {
     enabled: false,
     schema_version: 1,
-    root_path: ".project-db",
+    root_path: customRoot,
     migration_table: "mdkg_schema_migration",
   };
   writeConfig(root, config);
@@ -212,15 +213,20 @@ test("db init honors custom contained project db root defaults", () => {
   const result = runCli(root, ["db", "init", "--json"]);
   assert.equal(result.status, 0, result.stderr);
   const payload = parseJson(result.stdout);
-  assert.equal(payload.paths.root, ".project-db");
-  assert.equal(payload.paths.runtime_path, ".project-db/runtime/project.sqlite");
-  assert.equal(fs.existsSync(path.join(root, ".project-db", "schema", "migrations")), true);
-  assert.equal(fs.existsSync(path.join(root, ".project-db", "runtime", "project.sqlite")), false);
+  assert.equal(payload.paths.root, customRoot);
+  assert.equal(payload.paths.runtime_path, `${customRoot}/runtime/project.sqlite`);
+  assert.equal(fs.existsSync(path.join(root, customRoot, "schema", "migrations")), true);
+  assert.equal(fs.existsSync(path.join(root, customRoot, "runtime", "project.sqlite")), false);
   const updatedConfig = readConfig(root);
   assert.equal(updatedConfig.db.enabled, true);
-  assert.equal(updatedConfig.db.schema_path, ".project-db/schema");
-  assert.equal(updatedConfig.db.runtime_path, ".project-db/runtime/project.sqlite");
+  assert.equal(updatedConfig.db.schema_path, `${customRoot}/schema`);
+  assert.equal(updatedConfig.db.runtime_path, `${customRoot}/runtime/project.sqlite`);
+  const repeated = runCli(root, ["db", "init", "--json"]);
+  assert.equal(repeated.status, 0, repeated.stderr);
+  assert.deepEqual(parseJson(repeated.stdout).created, []);
+  assert.deepEqual(parseJson(repeated.stdout).updated, []);
 });
+}
 
 test("db init rejects invalid existing project db filesystem state", () => {
   const root = makeRoot("mdkg-db-init-invalid-");
@@ -230,6 +236,94 @@ test("db init rejects invalid existing project db filesystem state", () => {
   const result = runCli(root, ["db", "init", "--json"]);
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /\.mdkg\/db\/schema exists and is not a directory/);
+});
+
+for (const linkedPath of [".mdkg/db", ".mdkg/db/schema", ".mdkg/db/receipts", ".custom-parent"]) {
+  test(`db init rejects linked layout ${linkedPath} before scaffold mutation`, (t) => {
+    const root = makeRoot("mdkg-db-init-link-");
+    const external = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-db-init-sentinel-"));
+    t.after(() => {
+      fs.rmSync(root, { recursive: true, force: true });
+      fs.rmSync(external, { recursive: true, force: true });
+    });
+    if (linkedPath === ".custom-parent") {
+      const config = readConfig(root);
+      config.db = { enabled: false, schema_version: 1, root_path: ".custom-parent/db", migration_table: "mdkg_schema_migration" };
+      writeConfig(root, config);
+    }
+    fs.writeFileSync(path.join(external, "project-db.json"), "external sentinel\n");
+    fs.mkdirSync(path.dirname(path.join(root, linkedPath)), { recursive: true });
+    fs.symlinkSync(external, path.join(root, linkedPath), "dir");
+    const configBefore = fs.readFileSync(path.join(root, ".mdkg/config.json"));
+    const result = runCli(root, ["db", "init", "--json"]);
+    assert.equal(result.status, 2, result.stderr);
+    assert.match(result.stderr, /contained|symbolic link/);
+    assert.deepEqual(fs.readFileSync(path.join(root, ".mdkg/config.json")), configBefore);
+    assert.equal(fs.readFileSync(path.join(external, "project-db.json"), "utf8"), "external sentinel\n");
+    assert.deepEqual(fs.readdirSync(external), ["project-db.json"]);
+    if (linkedPath === ".mdkg/db/receipts") assert.deepEqual(fs.readdirSync(path.join(root, ".mdkg/db")), ["receipts"]);
+  });
+}
+
+test("db init rejects dangling directories and linked manifest before any DB writes", (t) => {
+  for (const kind of ["dangling-directory", "manifest-link"]) {
+    const root = makeRoot("mdkg-db-init-reject-");
+    const external = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-db-init-target-"));
+    t.after(() => {
+      fs.rmSync(root, { recursive: true, force: true });
+      fs.rmSync(external, { recursive: true, force: true });
+    });
+    fs.mkdirSync(path.join(root, ".mdkg/db"));
+    const name = kind === "manifest-link" ? "project-db.json" : "receipts";
+    const target = path.join(external, "target");
+    if (kind === "manifest-link") fs.writeFileSync(target, "manifest sentinel\n");
+    fs.symlinkSync(target, path.join(root, ".mdkg/db", name));
+    const configBefore = fs.readFileSync(path.join(root, ".mdkg/config.json"));
+    const result = runCli(root, ["db", "init", "--json"]);
+    assert.equal(result.status, 2, result.stderr);
+    assert.deepEqual(fs.readdirSync(path.join(root, ".mdkg/db")), [name]);
+    assert.deepEqual(fs.readFileSync(path.join(root, ".mdkg/config.json")), configBefore);
+    if (kind === "manifest-link") assert.equal(fs.readFileSync(target, "utf8"), "manifest sentinel\n");
+  }
+});
+
+test("db init rejects a nonregular manifest without blocking", (t) => {
+  if (process.platform === "win32") { t.skip("POSIX FIFO fixture"); return; }
+  const root = makeRoot("mdkg-db-init-fifo-");
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, ".mdkg/db"));
+  const fifo = path.join(root, ".mdkg/db/project-db.json");
+  assert.equal(spawnSync("mkfifo", [fifo], { encoding: "utf8" }).status, 0);
+  const configBefore = fs.readFileSync(path.join(root, ".mdkg/config.json"));
+  const result = spawnSync(process.execPath, [cliPath, "db", "init", "--json"], {
+    cwd: root, encoding: "utf8", timeout: 2000,
+  });
+  assert.equal(result.status, 2, result.stderr || String(result.error));
+  assert.match(result.stderr, /not a (regular )?file/);
+  assert.deepEqual(fs.readdirSync(path.join(root, ".mdkg/db")), ["project-db.json"]);
+  assert.deepEqual(fs.readFileSync(path.join(root, ".mdkg/config.json")), configBefore);
+});
+
+test("db init preserves explicit root-self layout and existing runtime bytes", (t) => {
+  const root = makeRoot("mdkg-db-init-root-self-");
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const config = readConfig(root);
+  config.db = {
+    enabled: false, schema_version: 1, root_path: ".", schema_path: "./schema",
+    migrations_path: "./schema/migrations", runtime_path: "./runtime/project.sqlite",
+    state_path: "./state/project.sqlite", receipts_path: "./receipts",
+    migration_table: "mdkg_schema_migration",
+  };
+  writeConfig(root, config);
+  writeFile(path.join(root, "runtime/project.sqlite"), "existing runtime bytes\n");
+  const first = runCli(root, ["db", "init", "--json"]);
+  assert.equal(first.status, 0, first.stderr);
+  assert.equal(parseJson(first.stdout).runtime_database_created, false);
+  const second = runCli(root, ["db", "init", "--json"]);
+  assert.equal(second.status, 0, second.stderr);
+  assert.deepEqual(parseJson(second.stdout).created, []);
+  assert.deepEqual(parseJson(second.stdout).updated, []);
+  assert.equal(fs.readFileSync(path.join(root, "runtime/project.sqlite"), "utf8"), "existing runtime bytes\n");
 });
 
 test("db migrate applies generic foundation migration and is idempotent", () => {

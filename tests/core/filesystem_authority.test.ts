@@ -4,16 +4,19 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 
+type PathInput = { root: string; relativePath: string; pathSyntax?: "native" };
+
 const authority = require("../../core/filesystem_authority") as {
   ContainedPathError: new (...args: never[]) => Error & { code: string };
-  containedPathExists(input: { root: string; relativePath: string }): boolean;
-  ensureContainedDirectory(input: { root: string; relativePath: string }): { relativePath: string };
-  readContainedDirectory(input: { root: string; relativePath: string }): fs.Dirent[];
-  readContainedFile(input: { root: string; relativePath: string }, encoding?: BufferEncoding | null): string | Buffer;
+  containedPathExists(input: PathInput): boolean;
+  ensureContainedDirectory(input: PathInput): { relativePath: string };
+  readContainedDirectory(input: PathInput): fs.Dirent[];
+  readContainedFile(input: PathInput, encoding?: BufferEncoding | null): string | Buffer;
   withContainedTreeSink<T>(input: { root: string; operation: "replace"; relativePath: string }, sink: (descriptor: { absolutePath: string }) => T): T;
-  writeContainedFileExclusive(input: { root: string; relativePath: string }, data: string | Buffer): { relativePath: string };
-  atomicReplaceContainedFile(input: { root: string; relativePath: string }, data: string | Buffer): { relativePath: string };
-  removeContainedPath(input: { root: string; relativePath: string; recursive?: boolean; force?: boolean }): { relativePath: string };
+  writeContainedFileExclusive(input: PathInput, data: string | Buffer): { relativePath: string };
+  appendContainedFile(input: PathInput, data: string | Buffer): { relativePath: string };
+  atomicReplaceContainedFile(input: PathInput, data: string | Buffer): { relativePath: string };
+  removeContainedPath(input: PathInput & { recursive?: boolean; force?: boolean }): { relativePath: string };
   authorizeOperatorSelectedExternalPath(input: { operation: "replace"; path: string; operatorSelected: true }): { operation: string; absolutePath: string; operatorSelected: true };
 };
 
@@ -25,6 +28,35 @@ function fixture(): { base: string; root: string; outside: string } {
   fs.mkdirSync(outside);
   return { base, root, outside };
 }
+
+test("native layout adapters preserve contained filenames without weakening portable paths", () => {
+  const { base, root, outside } = fixture();
+  try {
+    for (const name of ["..project-db", ...(path.sep === "/" ? ["project\\db", "C:project"] : [])]) {
+      const directory: PathInput = { root, relativePath: name, pathSyntax: "native" };
+      authority.ensureContainedDirectory(directory);
+      assert.equal(fs.statSync(path.join(root, name)).isDirectory(), true);
+      const file = { ...directory, relativePath: path.join(name, "data.txt") };
+      authority.writeContainedFileExclusive(file, "one");
+      authority.appendContainedFile(file, "two");
+      assert.equal(authority.readContainedFile(file), "onetwo");
+      authority.atomicReplaceContainedFile(file, "three");
+      assert.equal(fs.readFileSync(path.join(root, name, "data.txt"), "utf8"), "three");
+      assert.equal(authority.containedPathExists(file), true);
+      assert.deepEqual(authority.readContainedDirectory(directory).map((entry) => entry.name), ["data.txt"]);
+      authority.removeContainedPath({ ...directory, recursive: true });
+      assert.equal(fs.existsSync(path.join(root, name)), false);
+    }
+    // The portable default remains cross-platform and rejects Windows escapes.
+    assert.throws(() => authority.readContainedFile({ root, relativePath: "C:project/file" }), authority.ContainedPathError);
+    for (const relativePath of ["../outside/file", path.join("nested", "..", "..", "outside", "file"), outside]) {
+      assert.throws(() => authority.atomicReplaceContainedFile({ root, relativePath, pathSyntax: "native" }, "bad"), authority.ContainedPathError);
+    }
+    assert.deepEqual(fs.readdirSync(outside), []);
+  } finally {
+    fs.rmSync(base, { recursive: true, force: true });
+  }
+});
 
 test("authority rejects unsafe lexical identities with stable codes", () => {
   const { base, root } = fixture();
@@ -93,6 +125,10 @@ test("all contained sinks reject linked ancestors and final targets", (t) => {
       () => authority.readContainedFile({ root, relativePath: "linked-file" }),
       () => authority.atomicReplaceContainedFile({ root, relativePath: "linked-file" }, "changed"),
       () => authority.removeContainedPath({ root, relativePath: "linked-file" }),
+      () => authority.readContainedFile({ root, relativePath: "linked-dir/sentinel.txt", pathSyntax: "native" }),
+      () => authority.atomicReplaceContainedFile({ root, relativePath: "linked-dir/new.txt", pathSyntax: "native" }, "changed"),
+      () => authority.ensureContainedDirectory({ root, relativePath: "linked-dir/new", pathSyntax: "native" }),
+      () => authority.removeContainedPath({ root, relativePath: "linked-file", pathSyntax: "native" }),
     ];
     for (const operation of operations) {
       assert.throws(operation, (error: unknown) =>
