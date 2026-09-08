@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-8",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "identity-incoming-acceptance-provenance",
+  "outcome": "fixed-locally",
+  "base_revision": "da71733eabe5943157191be44b2afef768fbace5",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Unpublished Goal 82 identity implementation. Exact published 0.5.2 package inventory has no identity implementation modules; this finding is not claimed against 0.5.2.",
+  "invariant": "Incoming receipt self-hashes prove byte consistency, not target acceptance. Only an exact target-owned acceptance binding with target ancestry, or the own generated receipt of a verified applied local transaction, supplies replay authority.",
+  "strategy": "Quarantine incoming acceptance bindings as exact inert evidence; validate receipt structure and binding bytes; persist target acceptance independently of later authored edits. This is an authored target trust namespace, not a signature or protection from an actor authorized to rewrite target state.",
+  "files_sha256": {
+    "src/graph/identity_acceptance.ts": "5c607878cbe3b3ee81b9628bc530a499c348d470d52ff5b3123307ae4d809492",
+    "src/graph/identity_history.ts": "34f28f56794ab85d502784f688c62b50a37e32e0ac8ffcc361c4eccf26ad6d5f",
+    "src/graph/identity_reconciliation_plan.ts": "45f208b4d2a13913a591b47241abdd08b29d8fa4c4ce64d6336f00ea03d28596",
+    "src/graph/identity_transaction.ts": "600556bf0a189d3647339597cc060fa37e7b267bf9a191291286de665a20d2ed",
+    "tests/graph/identity_reconciliation_plan.test.ts": "d48fa324f0b3d8cce29d4b5d896d153f4dfc09f974dbad11c476830909156200",
+    "docs/advanced-alpha/graph-movement.md": "6a6d5bbf0f3a2dff75c765ea1855ed5b874fcce2802e32817ad13331047f1d58",
+    "docs/src/content/docs/advanced-alpha/graph-movement.md": "6a6d5bbf0f3a2dff75c765ea1855ed5b874fcce2802e32817ad13331047f1d58"
+  },
+  "before": {
+    "original_attack_cases": "Eight genuine but unapplied self-hashed receipt cases failed before the patch: false semantic base or replay suppression across working-tree, committed, transported and reverted evidence.",
+    "review_regressions": "Two fresh-review regressions reproduced: post-application edits before first commit lost replay acceptance in a clone or renamed target branch."
+  },
+  "after": [
+    {
+      "command": "npm run build && npm run build:test && node --test dist/tests/graph/identity_reconciliation_plan.test.js with owned TMPDIR",
+      "result": "27 passed; zero failures or skips. Includes ten adversarial receipt/binding cases, clone and branch rename, legacy journals, forks, replay/reverts, explicit reintroduction, stale plans, recovery, mounted source and unchanged Git staging."
+    },
+    {
+      "command": "npm pack; offline npm install into disposable prefix; run compiled reconciliation tests in an external harness resolving only installed dist modules and installed CLI",
+      "result": "27 passed; all installed runtime file hashes unchanged. Compiled test helpers are outside the installed package. Disposable fixture/install/pack directories removed after receipt retention."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "Complete main suite and 26 public-release/security-contract checks passed, exit 0, after reviewer regression correction."
+    },
+    {
+      "command": "CLI snapshot and command contract checks; documentation command examples; full and changed-only graph validation; git diff --check",
+      "result": "Passed; 478 examples across 63 files; zero graph errors; three inherited full-graph bundle-age warnings, zero changed-only warnings."
+    }
+  ],
+  "installed_candidate": {
+    "sha256": "a2bfc3eab732c706d898cf67f62b15b66bdc30cc54e27570c4b416259f09b424",
+    "integrity": "sha512-gXIR4/ghGIN1SlLo8BWpQJL2jFlskTp5BItiXA/La59tV2FjdDDYKlLWuYvpgAPRAq53Rg6JfGSwf8o4ciHvUw==",
+    "status": "Intermediate development package only, not final version 0.6.0 or a release seal"
+  },
+  "review": "Fresh independent prepatch investigator and one fresh postpatch reviewer. Reviewer-reported compatibility failures reproduced, corrected, then passed source and installed tests. Final task-828 security diff review remains required.",
+  "limitations": [
+    "Pre-binding unpublished v2 receipts without their applied local journal are retained as evidence, not retrospectively attested; re-plan from the accepted ancestor and review conflicts.",
+    "Acceptance bindings are target-owned graph state; ordinary Git commits/clone selection remain explicit target trust decisions. No cryptographic publisher or malicious target-writer defense is claimed.",
+    "Node 24.15.0/24-line matrix, full release ladder, remaining findings, final security diff review and candidate seal remain pending."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation, tests and reviewed local commit only. No remote Git, publication, providers, deployment, canonical graph migration or bundle refresh.",
+  "skill_candidates": []
+}
