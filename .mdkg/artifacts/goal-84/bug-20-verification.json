@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-20",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "parent-default-pack-output-symlink",
+  "outcome": "fixed-locally",
+  "base_revision": "417b1ee1ecd14b26badb3781f8f4b130f011b944",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball contains the same raw default pack/report writes. Failing-before execution used the prepatch candidate; earlier versions unassessed.",
+  "invariant": "Generated pack and inherited report destinations stay within the repository. Explicit operator exports carry separate per-output authority. Known linked/special targets fail before any output; regular-file replacement must not widen private POSIX permissions or truncate hardlink peers.",
+  "strategy": "One command-local output list preflights all targets and rechecks every sink. Default outputs use existing contained atomic replacement; explicit exports use existing external atomic writer with optional mode preservation. Explicit primary authority is inherited only by its own sidecars; independent explicit report flags do not authorize default primary output.",
+  "files_sha256": {
+    "src/commands/pack.ts": "e468f31f8173f229a35c33f5caa0b514eedd741805c31158d492ce6ac79b84f4",
+    "src/util/atomic.ts": "27f0961e2ccd09d9d9b21e884024a8bbc54fe58eb3f725160a7e66417c033150",
+    "tests/commands/pack_output_containment.test.ts": "d584ee27b5c31fdc88d1c301524a922ad4ff50dcaf9643e31f2e0fa6454b0e83"
+  },
+  "before": "11 of 15 tests failed: default ancestor/leaf/report links, mixed report authority, explicit leaf dereference, hardlink peer modification and FIFO blocking. Four ordinary/dry-run controls passed.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; focused pack-output/pack/pack-additional/pack-errors tests",
+      "result": "42 passed; zero failures/skips. Covers generated and explicit destinations, inherited reports, independent explicit reports, native export names, dry-run, all known-target preflight, unchanged Git staging, FIFO refusal, hardlinks and private modes."
+    },
+    {
+      "command": "Offline npm pack/install; external harness resolves installed CLI/modules",
+      "result": "20 passed; zero failures/skips; installed runtime bytes unchanged. Exact owned install, fixture and intermediate tarball directories removed after retaining compact receipt."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "876 main tests and 26 public-release/security-contract checks passed; zero failures/skips."
+    },
+    {
+      "command": "CLI snapshot/command-contract parity; documentation examples; full and changed-only graph validation; git diff --check",
+      "result": "Passed; 478 examples across 63 files; no graph errors; three inherited full-graph age warnings; zero changed-only warnings."
+    }
+  ],
+  "review": "Fresh independent prepatch investigation and one fresh candidate review. Reviewer identified mode widening from 0600 to 0644 in initial atomic replacement. Parent reproduced both default/explicit failures, passed existing rwx mode into each temporary writer, and reran focused, installed and full checks. No second review cycle; final exact-range task-828 review remains required.",
+  "installed_candidate": {
+    "sha256": "4b0438c26a316837d0b4806f594d6e489838c090c654c4d39a3b15f5a36df7a8",
+    "integrity": "sha512-+tLxDYrUCxPC+ANTU5HelJhEcM55zJawCdsFe8sAwJPIa6fO81QDeID3InuOql5Ff8wWxJ00AgrHrstdWqb4Xg==",
+    "status": "Intermediate development artifact; not final 0.6.0 seal"
+  },
+  "limitations": [
+    "No multi-file transaction or portable openat-style protection against concurrent ancestor replacement is claimed.",
+    "Explicit operator-selected ancestor links remain supported; final links and nonregular files are rejected. Existing rwx permissions are retained subject to umask; extended ACL/ownership metadata preservation has not been qualified.",
+    "Exact Node 24 matrix, remaining blockers, final security diff review, release ladder and seal remain pending."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and explicit-path local commits only; no remote Git, publication, providers, deployment, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}

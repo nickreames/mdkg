@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
-import { readContainedFile } from "../core/filesystem_authority";
+import { atomicReplaceContainedFile, authorizeOperatorSelectedExternalPath, readContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import { loadIndex } from "../graph/index_cache";
 import { parseFrontmatter } from "../graph/frontmatter";
 import { loadSkillsIndex } from "../graph/skills_index_cache";
@@ -29,6 +29,7 @@ import { loadTemplateHeadingMap } from "../templates/headings";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { buildDefaultPackPath } from "../util/output";
 import { formatResolveError, resolveQid } from "../util/qid";
+import { atomicWriteFile } from "../util/atomic";
 
 const EDGE_KEYS = new Set(["parent", "epic", "relates", "blocked_by", "blocks", "prev", "next", "context_refs", "evidence_refs"]);
 const FORMAT_KEYS = new Set(["md", "json", "toon", "xml"]);
@@ -347,9 +348,40 @@ function applyVisibilityFilter(
   };
 }
 
-function writeJsonFile(outPath: string, payload: unknown): void {
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, JSON.stringify(payload, null, 2), "utf8");
+type PackOutput = { path: string; content: string; explicit: boolean; message: string; afterMessage?: string };
+
+function regularOrAbsentOutput(filePath: string): number | undefined {
+  let stat: fs.Stats;
+  try { stat = fs.lstatSync(filePath); }
+  catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return;
+    throw error;
+  }
+  if (!stat.isFile() || stat.isSymbolicLink()) throw new Error(`pack output must be an absent or regular file: ${filePath}`);
+  return stat.mode & 0o777;
+}
+
+function preflightPackOutput(root: string, output: PackOutput): number | undefined {
+  if (output.explicit) {
+    const target = authorizeOperatorSelectedExternalPath({ path: output.path, operation: "replace", operatorSelected: true });
+    return regularOrAbsentOutput(target.absolutePath);
+  } else {
+    return withContainedPathSink({ root, relativePath: path.relative(root, output.path), pathSyntax: "native", operation: "replace" },
+      ({ absolutePath }) => regularOrAbsentOutput(absolutePath));
+  }
+}
+
+function writePackOutputs(root: string, outputs: PackOutput[]): void {
+  // Preflight every known destination before writing any pack/report. Each
+  // sink rechecks its own authority; this is not a multi-file transaction.
+  for (const output of outputs) preflightPackOutput(root, output);
+  for (const output of outputs) {
+    const mode = preflightPackOutput(root, output);
+    if (output.explicit) atomicWriteFile(output.path, output.content, mode);
+    else atomicReplaceContainedFile({ root, relativePath: path.relative(root, output.path), pathSyntax: "native", mode }, output.content);
+    console.log(`${output.message}: ${output.path}`);
+    if (output.afterMessage) console.log(output.afterMessage);
+  }
 }
 
 function resolveStatsPath(root: string, outPath: string, statsOut?: string): string {
@@ -587,9 +619,7 @@ export function runPackCommand(options: PackCommandOptions): void {
         resolvedProfile.profile
       );
 
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, output, "utf8");
-  console.log(`pack written: ${outPath}`);
+  const outputs: PackOutput[] = [{ path: outPath, content: output, explicit: Boolean(options.out), message: "pack written" }];
 
   const statsEnabled = Boolean(options.stats || options.statsOut);
   if (statsEnabled) {
@@ -600,11 +630,9 @@ export function runPackCommand(options: PackCommandOptions): void {
       ...finalStats,
     };
     const statsPath = resolveStatsPath(options.root, outPath, options.statsOut);
-    writeJsonFile(statsPath, statsPayload);
-    console.log(`pack stats written: ${statsPath}`);
-    if (options.stats) {
-      console.log(renderPackStats(finalStats));
-    }
+    outputs.push({ path: statsPath, content: JSON.stringify(statsPayload, null, 2),
+      explicit: Boolean(options.statsOut || options.out), message: "pack stats written",
+      afterMessage: options.stats ? renderPackStats(finalStats) : undefined });
   }
 
   const truncationReport: PackTruncationReport = {
@@ -624,7 +652,8 @@ export function runPackCommand(options: PackCommandOptions): void {
     const reportPath = options.truncationReport
       ? path.resolve(options.root, options.truncationReport)
       : `${outPath}.truncation.json`;
-    writeJsonFile(reportPath, truncationReport);
-    console.log(`pack truncation report written: ${reportPath}`);
+    outputs.push({ path: reportPath, content: JSON.stringify(truncationReport, null, 2),
+      explicit: Boolean(options.truncationReport || options.out), message: "pack truncation report written" });
   }
+  writePackOutputs(options.root, outputs);
 }
