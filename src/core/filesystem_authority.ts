@@ -36,6 +36,14 @@ export class ContainedPathError extends Error {
 
 type WritableData = string | Buffer;
 
+export type ContainedPathInput = {
+  root: string;
+  relativePath: string;
+  // Portable graph paths are the default. Use native syntax only when adapting
+  // a platform-native resolved layout; on POSIX a backslash is a filename byte.
+  pathSyntax?: "native";
+};
+
 export type ContainedPathDescriptor = Readonly<{
   root: string;
   operation: ContainedPathOperation;
@@ -67,17 +75,17 @@ function isAbsoluteOnSupportedPlatform(value: string): boolean {
   );
 }
 
-function normalizeRelativePath(value: string, operation: ContainedPathOperation): string {
+function normalizeRelativePath(value: string, operation: ContainedPathOperation, pathSyntax?: "native"): string {
   if (!value) {
     fail("ERR_CONTAINED_PATH_EMPTY", operation, value, "contained path cannot be empty");
   }
   if (value.includes("\0")) {
     fail("ERR_CONTAINED_PATH_NUL", operation, value, "contained path cannot contain NUL bytes");
   }
-  if (isAbsoluteOnSupportedPlatform(value)) {
+  if (pathSyntax === "native" ? path.isAbsolute(value) : isAbsoluteOnSupportedPlatform(value)) {
     fail("ERR_CONTAINED_PATH_ABSOLUTE", operation, value, "contained path must be relative");
   }
-  const components = value.split(/[\\/]/);
+  const components = value.split(pathSyntax === "native" && path.sep === "/" ? /\// : /[\\/]/);
   if (components.some((component) => component === "" || component === "." || component === "..")) {
     fail(
       "ERR_CONTAINED_PATH_COMPONENT",
@@ -91,7 +99,7 @@ function normalizeRelativePath(value: string, operation: ContainedPathOperation)
 
 function isInside(root: string, target: string): boolean {
   const relative = path.relative(root, target);
-  return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
+  return relative === "" || (relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative));
 }
 
 function lstatIfPresent(target: string): fs.Stats | undefined {
@@ -130,11 +138,12 @@ function inspectPath(
   root: string,
   relativePath: string,
   operation: ContainedPathOperation,
-  createParents: boolean
+  createParents: boolean,
+  pathSyntax?: "native"
 ): ContainedPathDescriptor {
   // Node has no portable openat-style API. Keep validation and the sink in one
   // authority, reject every visible link, and use O_NOFOLLOW for file opens.
-  const normalized = normalizeRelativePath(relativePath, operation);
+  const normalized = normalizeRelativePath(relativePath, operation, pathSyntax);
   const { absoluteRoot, canonicalRoot } = validatedRoot(root, operation, relativePath);
   const components = normalized.split(path.sep);
   let current = absoluteRoot;
@@ -187,7 +196,7 @@ function inspectPath(
   return Object.freeze({
     root: absoluteRoot,
     operation,
-    relativePath: components.join("/"),
+    relativePath: components.join(pathSyntax === "native" ? path.sep : "/"),
     absolutePath,
   });
 }
@@ -211,10 +220,8 @@ function randomSuffix(): string {
 }
 
 export function withContainedPathSink<T>(
-  input: {
-    root: string;
+  input: ContainedPathInput & {
     operation: ContainedPathOperation;
-    relativePath: string;
     createParents?: boolean;
   },
   sink: (pathDescriptor: ContainedPathDescriptor) => T
@@ -223,7 +230,8 @@ export function withContainedPathSink<T>(
     input.root,
     input.relativePath,
     input.operation,
-    input.createParents ?? false
+    input.createParents ?? false,
+    input.pathSyntax
   );
   return sink(descriptor);
 }
@@ -250,10 +258,8 @@ function rejectLinkedTree(
 }
 
 export function withContainedTreeSink<T>(
-  input: {
-    root: string;
+  input: ContainedPathInput & {
     operation: ContainedPathOperation;
-    relativePath: string;
     createParents?: boolean;
   },
   sink: (pathDescriptor: ContainedPathDescriptor) => T
@@ -275,17 +281,14 @@ export function withContainedTreeSink<T>(
   });
 }
 
-export function containedPathExists(input: { root: string; relativePath: string }): boolean {
+export function containedPathExists(input: ContainedPathInput): boolean {
   return withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) =>
     lstatIfPresent(absolutePath) !== undefined
   );
 }
 
-export function ensureContainedDirectory(input: {
-  root: string;
-  relativePath: string;
-}): ContainedPathDescriptor {
-  let descriptor = inspectPath(input.root, input.relativePath, "create", true);
+export function ensureContainedDirectory(input: ContainedPathInput): ContainedPathDescriptor {
+  let descriptor = inspectPath(input.root, input.relativePath, "create", true, input.pathSyntax);
   try {
     fs.mkdirSync(descriptor.absolutePath);
   } catch (error) {
@@ -293,17 +296,14 @@ export function ensureContainedDirectory(input: {
       throw error;
     }
   }
-  descriptor = inspectPath(input.root, input.relativePath, "create", false);
+  descriptor = inspectPath(input.root, input.relativePath, "create", false, input.pathSyntax);
   if (!fs.lstatSync(descriptor.absolutePath).isDirectory()) {
     fail("ERR_CONTAINED_PATH_TYPE", "create", input.relativePath, "contained directory target is not a directory");
   }
   return descriptor;
 }
 
-export function readContainedDirectory(input: {
-  root: string;
-  relativePath: string;
-}): fs.Dirent[] {
+export function readContainedDirectory(input: ContainedPathInput): fs.Dirent[] {
   return withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => {
     if (!fs.lstatSync(absolutePath).isDirectory()) {
       fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read target must be a directory");
@@ -312,14 +312,14 @@ export function readContainedDirectory(input: {
   });
 }
 
-export function readContainedFile(input: { root: string; relativePath: string; maxBytes?: number }): string;
-export function readContainedFile(input: { root: string; relativePath: string; maxBytes?: number }, encoding: null): Buffer;
+export function readContainedFile(input: ContainedPathInput & { maxBytes?: number }): string;
+export function readContainedFile(input: ContainedPathInput & { maxBytes?: number }, encoding: null): Buffer;
 export function readContainedFile(
-  input: { root: string; relativePath: string; maxBytes?: number },
+  input: ContainedPathInput & { maxBytes?: number },
   encoding: BufferEncoding
 ): string;
 export function readContainedFile(
-  input: { root: string; relativePath: string; maxBytes?: number },
+  input: ContainedPathInput & { maxBytes?: number },
   encoding: BufferEncoding | null = "utf8"
 ): string | Buffer {
   return withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => {
@@ -340,10 +340,10 @@ export function readContainedFile(
 }
 
 export function writeContainedFileExclusive(
-  input: { root: string; relativePath: string },
+  input: ContainedPathInput,
   data: WritableData
 ): ContainedPathDescriptor {
-  const descriptor = inspectPath(input.root, input.relativePath, "create", true);
+  const descriptor = inspectPath(input.root, input.relativePath, "create", true, input.pathSyntax);
   writeAndSync(
     descriptor.absolutePath,
     data,
@@ -353,10 +353,10 @@ export function writeContainedFileExclusive(
 }
 
 export function appendContainedFile(
-  input: { root: string; relativePath: string },
+  input: ContainedPathInput,
   data: WritableData
 ): ContainedPathDescriptor {
-  const descriptor = inspectPath(input.root, input.relativePath, "replace", false);
+  const descriptor = inspectPath(input.root, input.relativePath, "replace", false, input.pathSyntax);
   const handle = fs.openSync(
     descriptor.absolutePath,
     fs.constants.O_WRONLY | fs.constants.O_APPEND | noFollowFlag()
@@ -374,12 +374,12 @@ export function appendContainedFile(
 }
 
 export function atomicReplaceContainedFile(
-  input: { root: string; relativePath: string; mode?: number },
+  input: ContainedPathInput & { mode?: number },
   data: WritableData
 ): ContainedPathDescriptor {
-  let descriptor = inspectPath(input.root, input.relativePath, "replace", true);
+  let descriptor = inspectPath(input.root, input.relativePath, "replace", true, input.pathSyntax);
   const tempRelative = `${descriptor.relativePath}.${randomSuffix()}.tmp`;
-  const temp = inspectPath(input.root, tempRelative, "create", false);
+  const temp = inspectPath(input.root, tempRelative, "create", false, input.pathSyntax);
   try {
     writeAndSync(
       temp.absolutePath,
@@ -387,8 +387,8 @@ export function atomicReplaceContainedFile(
       fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | noFollowFlag(),
       input.mode
     );
-    descriptor = inspectPath(input.root, input.relativePath, "replace", false);
-    inspectPath(input.root, tempRelative, "create", false);
+    descriptor = inspectPath(input.root, input.relativePath, "replace", false, input.pathSyntax);
+    inspectPath(input.root, tempRelative, "create", false, input.pathSyntax);
     fs.renameSync(temp.absolutePath, descriptor.absolutePath);
     return descriptor;
   } catch (error) {
@@ -404,13 +404,11 @@ export function atomicReplaceContainedFile(
   }
 }
 
-export function removeContainedPath(input: {
-  root: string;
-  relativePath: string;
+export function removeContainedPath(input: ContainedPathInput & {
   recursive?: boolean;
   force?: boolean;
 }): ContainedPathDescriptor {
-  const descriptor = inspectPath(input.root, input.relativePath, "delete", false);
+  const descriptor = inspectPath(input.root, input.relativePath, "delete", false, input.pathSyntax);
   fs.rmSync(descriptor.absolutePath, {
     recursive: input.recursive ?? false,
     force: input.force ?? false,

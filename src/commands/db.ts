@@ -4,6 +4,15 @@ import { loadConfig, validateConfigSchema } from "../core/config";
 import { migrateConfig } from "../core/migrate";
 import { configPath } from "../core/paths";
 import {
+  atomicReplaceContainedFile,
+  ContainedPathError,
+  ContainedPathInput,
+  containedPathExists,
+  ensureContainedDirectory,
+  readContainedFile,
+  withContainedPathSink,
+} from "../core/filesystem_authority";
+import {
   resolveConfiguredProjectDbLayout,
 } from "../core/project_db";
 import {
@@ -58,7 +67,6 @@ import {
   sqliteHealth,
   sqliteSourceFingerprint,
 } from "../graph/sqlite_index";
-import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 
@@ -145,6 +153,10 @@ function rel(root: string, filePath: string): string {
   return path.relative(root, filePath).split(path.sep).join("/");
 }
 
+function initPath(root: string, filePath: string): ContainedPathInput {
+  return { root, relativePath: path.relative(root, filePath), pathSyntax: "native" };
+}
+
 function fileSize(filePath: string): number | undefined {
   if (!fs.existsSync(filePath)) {
     return undefined;
@@ -159,7 +171,7 @@ function readRawConfig(root: string): { configPath: string; raw: Record<string, 
   }
   let parsed: unknown;
   try {
-    parsed = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    parsed = JSON.parse(readContainedFile(initPath(root, filePath)));
   } catch (err) {
     throw new UsageError(`failed to read config: ${err instanceof Error ? err.message : String(err)}`);
   }
@@ -171,21 +183,33 @@ function readRawConfig(root: string): { configPath: string; raw: Record<string, 
   return { configPath: filePath, raw: migrated as Record<string, unknown> };
 }
 
-function writeRawConfig(filePath: string, raw: Record<string, unknown>): void {
-  atomicWriteFile(filePath, `${JSON.stringify(raw, null, 2)}\n`);
+function writeRawConfig(root: string, filePath: string, raw: Record<string, unknown>): void {
+  atomicReplaceContainedFile(initPath(root, filePath), `${JSON.stringify(raw, null, 2)}\n`);
+}
+
+function preflightInitPath(root: string, filePath: string, kind: "directory" | "file"): void {
+  const relative = rel(root, filePath);
+  // A supported root-self layout never creates the checkout directory itself.
+  // The manifest/config descriptors below still validate that root's authority.
+  if (!relative && kind === "directory") return;
+  withContainedPathSink({ ...initPath(root, filePath), operation: "replace" }, ({ absolutePath }) => {
+    if (!fs.existsSync(absolutePath)) return;
+    const stat = fs.lstatSync(absolutePath);
+    if (kind === "directory" ? !stat.isDirectory() : !stat.isFile()) {
+      throw new ValidationError(`${relative} exists and is not a ${kind === "directory" ? "directory" : "regular file"}`);
+    }
+  });
 }
 
 function ensureDirectory(root: string, dirPath: string, created: string[], unchanged: string[]): void {
   const relative = rel(root, dirPath);
-  if (fs.existsSync(dirPath)) {
-    if (!fs.statSync(dirPath).isDirectory()) {
-      throw new ValidationError(`${relative} exists and is not a directory`);
-    }
+  if (!relative) {
     unchanged.push(relative);
     return;
   }
-  fs.mkdirSync(dirPath, { recursive: true });
-  created.push(relative);
+  const existed = containedPathExists(initPath(root, dirPath));
+  ensureContainedDirectory(initPath(root, dirPath));
+  (existed ? unchanged : created).push(relative);
 }
 
 function writeJsonIfChanged(
@@ -197,21 +221,19 @@ function writeJsonIfChanged(
   updated: string[]
 ): void {
   const relative = rel(root, filePath);
-  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
-    throw new ValidationError(`${relative} exists and is not a file`);
-  }
+  preflightInitPath(root, filePath, "file");
   const content = `${JSON.stringify(payload, null, 2)}\n`;
-  if (fs.existsSync(filePath)) {
-    const current = fs.readFileSync(filePath, "utf8");
+  if (containedPathExists(initPath(root, filePath))) {
+    const current = readContainedFile(initPath(root, filePath));
     if (current === content) {
       unchanged.push(relative);
       return;
     }
-    atomicWriteFile(filePath, content);
+    atomicReplaceContainedFile(initPath(root, filePath), content);
     updated.push(relative);
     return;
   }
-  atomicWriteFile(filePath, content);
+  atomicReplaceContainedFile(initPath(root, filePath), content);
   created.push(relative);
 }
 
@@ -428,14 +450,19 @@ function runDbInitCommandLocked(options: DbInitCommandOptions): void {
   const unchanged: string[] = [];
   const updated: string[] = [];
 
-  for (const dirPath of [
+  const directories = [
     layout.db,
     layout.schema,
     layout.migrations,
     layout.runtimeDir,
     layout.stateDir,
     layout.receipts,
-  ]) {
+  ];
+  // Reject every unsafe target before creating even an earlier safe directory.
+  for (const dirPath of directories) preflightInitPath(options.root, dirPath, "directory");
+  preflightInitPath(options.root, layout.manifest, "file");
+  preflightInitPath(options.root, configPath(options.root), "file");
+  for (const dirPath of directories) {
     ensureDirectory(options.root, dirPath, created, unchanged);
   }
 
@@ -468,7 +495,7 @@ function runDbInitCommandLocked(options: DbInitCommandOptions): void {
   if (currentDb !== normalizedDb) {
     nextConfig.db = nextDb;
     validateConfigSchema(nextConfig);
-    writeRawConfig(rawConfig.configPath, nextConfig);
+    writeRawConfig(options.root, rawConfig.configPath, nextConfig);
     updated.push(".mdkg/config.json");
     config_updated = true;
   } else {
@@ -517,9 +544,16 @@ function runDbInitCommandLocked(options: DbInitCommandOptions): void {
 
 export function runDbInitCommand(options: DbInitCommandOptions): void {
   const config = loadConfig(options.root);
-  return withMutationLock(options.root, config.index.lock_timeout_ms, () =>
-    runDbInitCommandLocked(options)
-  );
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => {
+    try {
+      return runDbInitCommandLocked(options);
+    } catch (error) {
+      if (error instanceof ContainedPathError) {
+        throw new ValidationError(`db init requires safe contained paths: ${error.message}`);
+      }
+      throw error;
+    }
+  });
 }
 
 function runDbMigrateCommandLocked(options: DbMigrateCommandOptions): void {
