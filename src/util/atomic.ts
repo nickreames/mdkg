@@ -8,8 +8,8 @@ function randomSuffix(): string {
   return `${process.pid}-${Date.now()}-${crypto.randomBytes(6).toString("hex")}`;
 }
 
-function writeAndSync(filePath: string, data: WritableData, flags: string): void {
-  const handle = fs.openSync(filePath, flags);
+function writeAndSync(filePath: string, data: WritableData, flags: string, mode?: number): void {
+  const handle = fs.openSync(filePath, flags, mode);
   try {
     if (typeof data === "string") {
       fs.writeFileSync(handle, data, "utf8");
@@ -22,11 +22,11 @@ function writeAndSync(filePath: string, data: WritableData, flags: string): void
   }
 }
 
-export function atomicWriteFile(filePath: string, data: WritableData): void {
+export function atomicWriteFile(filePath: string, data: WritableData, mode?: number): void {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   const tempPath = path.join(path.dirname(filePath), `.${path.basename(filePath)}.${randomSuffix()}.tmp`);
   try {
-    writeAndSync(tempPath, data, "wx");
+    writeAndSync(tempPath, data, "wx", mode);
     fs.renameSync(tempPath, filePath);
   } catch (err) {
     fs.rmSync(tempPath, { force: true });
