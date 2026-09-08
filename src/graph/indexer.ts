@@ -139,6 +139,7 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
         const content = readWorkspaceDocument(root, filePath, config.index.limits.max_file_bytes);
         if (graphFormat.format_version === 2) assertNoGraphConflictMarkers(content, filePath);
         const node = parseNode(content, filePath, {
+          archiveRoot: root,
           workStatusEnum: config.work.status_enum,
           priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max,

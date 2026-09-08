@@ -819,6 +819,7 @@ function baseRefIdPaths(root: string, baseRef: string | undefined, files: string
     }
     try {
       const node = parseNode(content, absPath, {
+        archiveRoot: root,
         workStatusEnum: config.work.status_enum,
         priorityMin: config.work.priority_min,
         priorityMax: config.work.priority_max,
@@ -964,6 +965,7 @@ function gitConflictAncestor(root: string, config: ReturnType<typeof loadConfig>
         throw new UsageError("ancestor graph exceeds configured discovery limits");
       }
       const node = parseNode(content, path.resolve(root, filePath), {
+        archiveRoot: root,
         workStatusEnum: config.work.status_enum, priorityMin: config.work.priority_min,
         priorityMax: config.work.priority_max, templateSchemas: templates,
       });
@@ -1102,12 +1104,14 @@ function planGitStageDuplicateIdRepairs(
     try {
       const absPath = path.resolve(root, relativePath);
       const oursNode = parseNode(oursContent, absPath, {
+        archiveRoot: root,
         workStatusEnum: config.work.status_enum,
         priorityMin: config.work.priority_min,
         priorityMax: config.work.priority_max,
         templateSchemas,
       });
       const theirsNode = parseNode(theirsContent, absPath, {
+        archiveRoot: root,
         workStatusEnum: config.work.status_enum,
         priorityMin: config.work.priority_min,
         priorityMax: config.work.priority_max,
@@ -1222,6 +1226,7 @@ function planDuplicateIdRepairs(root: string, target: string | undefined, baseRe
       }
       try {
         const node = parseNode(readWorkspaceDocument(root, filePath, config.index.limits.max_file_bytes), filePath, {
+          archiveRoot: root,
           workStatusEnum: config.work.status_enum,
           priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max,

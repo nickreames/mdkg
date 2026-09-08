@@ -1,8 +1,8 @@
-import fs from "fs";
 import path from "path";
 import { FrontmatterValue } from "./frontmatter";
 import { checkArchiveIntegrity } from "./archive_integrity";
 import { isPortableId } from "../util/id";
+import { normalizeContainedWorkspacePath } from "../core/workspace_path";
 
 export const ARCHIVE_ATTRIBUTE_KEY_ORDER = [
   "archive_kind",
@@ -47,9 +47,8 @@ function requireEnum(value: string, key: string, allowed: Set<string>, filePath:
 }
 
 function requireRelativePath(value: string, key: string, filePath: string): void {
-  if (path.isAbsolute(value) || value.split(/[\\/]/).includes("..")) {
-    throw formatError(filePath, `${key} must be a relative path`);
-  }
+  try { normalizeContainedWorkspacePath(value, key); }
+  catch (err) { throw formatError(filePath, `${key} must be a relative path: ${err instanceof Error ? err.message : String(err)}`); }
 }
 
 function requireSha256(value: string, key: string, filePath: string): void {
@@ -66,7 +65,8 @@ export function validateArchiveFrontmatter(
   type: string,
   frontmatter: Record<string, FrontmatterValue>,
   filePath: string,
-  deferIntegrity = false
+  deferIntegrity = false,
+  root?: string
 ): void {
   if (!isArchiveType(type)) {
     return;
@@ -112,9 +112,10 @@ export function validateArchiveFrontmatter(
   requireEnum(ingestStatus, "ingest_status", INGEST_STATUS_VALUES, filePath);
 
   if (deferIntegrity) return;
-  const sidecarDir = path.dirname(filePath);
+  if (!root) throw formatError(filePath, "archive integrity requires an explicit repository root");
+  const sidecarDir = path.dirname(path.resolve(root, filePath));
   const checked = checkArchiveIntegrity({
-    root: sidecarDir,
+    root,
     rawPath: path.resolve(sidecarDir, storedPath),
     zipPath: path.resolve(sidecarDir, compressedPath),
     expectedRawHash: sourceHash,

@@ -722,6 +722,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
       try {
         if (graphFormat?.format_version === 2) assertNoGraphConflictMarkers(content, filePath);
         const node = parseNode(content, filePath, {
+          archiveRoot: options.root,
           workStatusEnum: config.work.status_enum,
           priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max,

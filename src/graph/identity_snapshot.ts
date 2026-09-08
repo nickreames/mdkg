@@ -158,6 +158,7 @@ export function readAuthoredSnapshot(root: string, revision?: string): AuthoredS
           containedPathExists({ root, relativePath: payloadPath });
         }
         parseNode(content, path.resolve(root, relativePath), {
+          archiveRoot: root,
           workStatusEnum: config.work.status_enum, priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max, templateSchemas: templates,
         });

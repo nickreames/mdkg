@@ -2,22 +2,22 @@
 id: bug-12
 type: bug
 title: Archive verification reads unchecked paths and hashes payloads before enforcing file and size limits
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-12-verification.json]
 relates: [test-479]
 blocked_by: []
 blocks: []
-refs: []
+refs: [chk-572]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Overview
@@ -60,4 +60,30 @@ Require failing-before/passing-after results and independent verification in tas
 
 Codex Security scan 35ca791e-716a-4bc3-8067-88d47224e288; candidate key baseline-archive-read-containment; sanitized hash receipt chk-571.
 
-Disposition: open, not fixed, not publication-ready.
+Disposition: fixed locally on 2026-09-08; final task-828 verification and publication qualification remain open.
+
+## Local Verification
+
+Direct verification now validates the shared archive schema before resolving
+payload paths, and reads contained bounded sidecars. Live node parsing requires
+explicit repository authority; all non-deferred source callers supply it.
+ZIP hashing/parsing use identical bounded bytes. Raw hashing and byte counting
+stream from one contained descriptor. Limits precede hashing, rejecting links,
+special files and oversize payloads without incidental external fingerprints.
+ID filtering precedes unrelated legacy payload verification. Absent raw copies,
+corruption diagnostics, operator-selected external archive add and explicitly
+deferred historical parsing remain supported.
+
+Before patch: 13/18 cases failed, five controls passed. Expanded focused suite:
+25 passed. Installed archive/work/ownership/ZIP tests: 48 passed. Full suite:
+964 source tests and 26 contract checks passed with zero failures/skips.
+CLI/docs/full and changed-only graph/diff checks pass; three inherited bundle-age
+warnings remain untouched. Independent prepatch and one candidate source review
+completed without a concrete surviving bypass or introduced regression.
+
+Exact published 0.5.2 contains the same unrestricted hashing sink; earlier
+versions unassessed. Source hashes, intermediate installed integrity, protected
+state hashes and remaining platform/aggregate-work/race limitations are bound in
+.mdkg/artifacts/goal-84/bug-12-verification.json. No runtime lease acquired;
+transient locks released. SQLite remains accepted uncommitted generated custody.
+No remote, publication, provider, canonical migration or bundle refresh occurred.

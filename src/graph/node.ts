@@ -118,6 +118,9 @@ const LOOP_ATTRIBUTE_KEYS = [
 ];
 
 export type NodeParseOptions = {
+  /** Authority for live archive dependency reads; omitted only for non-archive
+   * nodes or explicitly deferred historical/virtual inspection. */
+  archiveRoot?: string;
   workStatusEnum: string[];
   priorityMin: number;
   priorityMax: number;
@@ -696,7 +699,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   validateTemplateKeys(frontmatter, schema, filePath);
   const identity = readNodeIdentity(frontmatter, filePath);
   validateAgentFrontmatter(type, frontmatter, filePath);
-  validateArchiveFrontmatter(type, frontmatter, filePath, options.deferArchiveIntegrity);
+  validateArchiveFrontmatter(type, frontmatter, filePath, options.deferArchiveIntegrity, options.archiveRoot);
   validateGoalFrontmatter(type, frontmatter, filePath);
   validateLoopFrontmatter(type, frontmatter, filePath);
 
