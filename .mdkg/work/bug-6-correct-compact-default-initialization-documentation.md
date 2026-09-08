@@ -2,12 +2,12 @@
 id: bug-6
 type: bug
 title: Correct compact default initialization documentation
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-6-verification.json]
 relates: [test-477]
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Overview
@@ -60,4 +60,30 @@ Require failing-before/passing-after results and independent verification in tas
 
 Initial approved plan and chk-563/Goal 82 history.
 
-Disposition: open, not fixed, not publication-ready.
+## Local Verification — 2026-09-08
+
+Disposition: fixed locally, not publication-ready. Maintained README, install,
+quickstart and agent workflow guidance now describe compact default initialization,
+explicit graph-only mode, compatibility spelling, focused discovery and bounded
+managed-section ownership. Candidate behavior is distinguished from published
+0.5.2. Reviewed upgrade hashes, stale-plan rejection, explicit recovery and
+customized/project/public-doc preservation are documented. The two concise pack
+profile flags are equivalent aliases, not a removed command or broader preset.
+
+Three documentation regression groups fail before and pass after the edit.
+Thirty-five installed bootstrap/init/upgrade/safety tests pass. Actual offline
+published 0.5.2 installs created base, agent and customized-agent fixtures; the
+installed candidate upgraded them with reviewed hashes, preserved user bytes and
+Git staging, validated the graphs and produced no repeated upgrade writes. Three
+fresh init-mode fixtures also pass. Installed-source tests cover stale plans,
+interrupted writes/resume/recovery, native mirrors and discovery links.
+
+The serialized full suite and 26 contract checks pass, as do CLI/docs checks
+(494 examples), graph validation and diff review. A test run overlapped by a CLI
+rebuild was discarded and rerun; harness seed-layout issues were corrected, not
+counted as product defects. Receipt: .mdkg/artifacts/goal-84/bug-6-verification.json.
+
+Exact Node 24/full identity qualification and manifest-backed integration remain
+bug-7/task-826; independent task-828 verification and the final seal remain open.
+No canonical initialization/upgrade, instruction rewrite, skill projection,
+bundle refresh, runtime-state change or external action occurred.

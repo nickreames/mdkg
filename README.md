@@ -78,18 +78,29 @@ The npm global install path is the canonical public-alpha path covered by releas
 Initialize mdkg in a repo:
 
 ```bash
-mdkg init --agent
+mdkg init
 mdkg index
 ```
 
-This is the canonical AI-agent bootstrap path. It creates `.mdkg/`, `AGENT_START.md`, `AGENTS.md`, `CLAUDE.md`, `llms.txt`, `CLI_COMMAND_MATRIX.md`, strict-node `SOUL.md` / `COLLABORATION.md`, legacy `HUMAN.md` for one release, the default mdkg usage skills, `events.jsonl`, the skill registry, core pin updates, and configured skill mirrors under `.agents/skills/` and `.claude/skills/` by default. It also updates `.gitignore` / `.npmignore` by default. Use `--no-update-ignores` to opt out of those ignore-file updates.
+Compact agent setup is the default in the 0.6.0 candidate. Root `AGENTS.md` and
+`CLAUDE.md` contain bounded mdkg-managed sections pointing to
+`.mdkg/AGENT_START.md`. Detailed generated discovery lives in `.mdkg/llms.txt`
+and `.mdkg/CLI_COMMAND_MATRIX.md`; canonical skills live in `.mdkg/skills/`,
+with default native mirrors under `.agents/skills/` and `.claude/skills/`.
+Core guidance, templates, the skill registry and event history live under
+`.mdkg/`. Existing user instructions outside managed sections, project README,
+LICENSE and public website discovery files are preserved. Init also updates
+`.gitignore` / `.npmignore` by default; use `--no-update-ignores` to opt out.
 
 Run `mdkg index` after a fresh init before using `mdkg status --json` or
 `mdkg doctor --strict --json` as health gates. Init writes source scaffold
 files; indexing creates the generated graph, skill, capability, subgraph, and
 SQLite caches that strict doctor expects.
 
-For a non-agent markdown graph only, run `mdkg init`.
+For a graph without agent bootstrap assets, run `mdkg init --graph-only`.
+`mdkg init --agent` remains a compatibility spelling for compact setup; do not
+combine it with `--graph-only`. Published 0.5.2 used the older opt-in agent
+layout; check `mdkg --version` when following candidate instructions.
 
 Preview safe scaffold upgrades in an existing mdkg workspace:
 
@@ -98,13 +109,23 @@ mdkg upgrade
 mdkg upgrade --json
 ```
 
-Apply only after reviewing the receipt:
+Apply only after reviewing the receipt. Replace `PLAN_HASH` with its exact
+`plan_hash`; pending writes without that reviewed hash are rejected:
 
 ```bash
-mdkg upgrade --apply
+mdkg upgrade --apply --plan-hash PLAN_HASH
 ```
 
 Upgrade is intentionally conservative. It creates missing managed startup docs and templates, updates unchanged mdkg seed assets, and preserves customized docs, templates, skills, and core files as reported preserved customizations. Review `safe_to_apply`, `will_write_paths`, and `apply_side_effects` in the JSON receipt before applying. Agent-enabled workspaces can receive safe default skill upgrades and skill mirror refreshes; ignored event logs are skipped with guidance to run `mdkg event enable` if provenance should be restored.
+
+Managed-section edits or stale plans block application rather than overwrite
+user content. Known generated legacy root guides can become compatibility
+redirects only with manifest/hash provenance; customized root guides and public
+`llms.txt` files remain separate. Review reported conflicts and explicitly
+selected safe subsets instead of treating every same-named file as generated.
+Interrupted upgrades require explicit `mdkg upgrade --resume --plan-hash PLAN_HASH`
+or `mdkg upgrade --recover --plan-hash PLAN_HASH` using the journal's hash.
+Recovery refuses subsequent user edits; it is not a blanket filesystem rollback.
 
 Older workspaces can continue to inspect and validate current graph nodes before applying an upgrade. When local templates are missing for newly introduced built-in mdkg types, mdkg uses the installed package's bundled templates as a read-only schema fallback and warns that `mdkg upgrade --apply` can vendor the missing templates.
 
@@ -404,7 +425,9 @@ mdkg skill validate release-readiness
 
 ## LLM-readable onboarding artifacts
 
-The root docs below are the canonical fast-start set for humans and agents:
+The root docs below are maintained source/reference material for this repository,
+not the file layout generated in a new consumer checkout. Start with `AGENTS.md`
+or `CLAUDE.md` and follow the relevant router; load these references as needed:
 - [`AGENT_START.md`](AGENT_START.md)
 - [`llms.txt`](llms.txt)
 - [`PACK_EXAMPLES.md`](PACK_EXAMPLES.md)
@@ -712,7 +735,7 @@ By default, init/upgrade ignore generated raw archive source copies with `.mdkg/
 ## Current direction
 
 This release includes:
-- `init --agent`
+- compact default `mdkg init`, explicit `mdkg init --graph-only`, and `--agent` compatibility
 - default ignore updates with `--no-update-ignores` for generated JSON index/temp/lock files, `.mdkg/pack/`, and raw archive source copies
 - root-only published init seed config
 - skills indexing and search/show/list support
@@ -729,7 +752,7 @@ This release includes:
 - XML / TOON / Markdown output for node and skill list/search/show
 - agent workflow file types and semantic `mdkg new --id` support
 - product-specific skill mirrors for Codex/OpenAI and Claude
-- shared `AGENT_START.md` startup guidance
+- compact `.mdkg/AGENT_START.md` routing through root `AGENTS.md` / `CLAUDE.md`
 - conservative `mdkg upgrade` with mode-aware init manifests
 - archive sidecars with deterministic ZIP caches
 - semantic mirror helpers under `mdkg work ...`, including trigger/order status/receipt verification
@@ -737,8 +760,8 @@ This release includes:
 - strict archive ZIP payload integrity checks during validation
 
 Current direction:
-- keep the OSS story generic around `mdkg init --agent`
-- use base `mdkg init` only for repos that do not want agent bootstrap assets
+- keep the OSS story generic around compact default `mdkg init`
+- use `mdkg init --graph-only` for repos that do not want agent bootstrap assets
 - keep `pack <id>` at the center of the human/agent loop
 - use `mdkg task ...` for structured state changes and markdown edits for narrative/body content
 - make event logging guided instead of purely manual

@@ -178,3 +178,13 @@ checks pass; CLI/docs/graph/diff gates pass. Receipt:
 not an additional sealed security finding. Final verification remains task-828.
 Protected selection/runtime/bundle bytes and generated SQLite custody remain
 unchanged. No runtime lease, publication or new skill authoring is involved.
+
+## Follow-on Verification: root:bug-6
+
+2026-09-08: compact default and reviewed upgrade guidance corrected without
+moving canonical instructions or editing skills. Three documentation tests,
+35 installed tests and six CLI init/actual-0.5.2-upgrade scenario groups pass.
+Full suite, 26 contract checks and CLI/docs/graph/diff checks pass. Receipt:
+.mdkg/artifacts/goal-84/bug-6-verification.json. Preserved selection/runtime/
+bundle bytes and uncommitted generated SQLite custody remain unchanged.
+Bug-7 and final qualification stay open; no release approval or new skill candidate.
