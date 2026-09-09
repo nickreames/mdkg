@@ -7,10 +7,33 @@ import { withMutationLock } from "../util/lock";
 
 export const UPGRADE_JOURNAL = ".mdkg/state/upgrade-journal.json";
 export type UpgradeOperation = { path: string; before: string | null; after: string | null };
-type Journal = { schema_version: 1; plan_hash: string; operations: UpgradeOperation[]; operations_hash: string; state: "applying" | "recovering" | "completed" | "recovered" };
+type Dependencies = { files: Array<[string, string | null]>; directories: Array<[string, string[]]> };
+type Journal = { schema_version: 1 | 2; plan_hash: string; operations: UpgradeOperation[]; operations_hash: string;
+  dependencies?: Dependencies; dependencies_hash?: string;
+  state: "applying" | "recovering" | "completed" | "recovered" };
 export const digest = (value: string | Buffer): string => crypto.createHash("sha256").update(value).digest("hex");
 
+function canonicalPath(relativePath: string): void {
+  if (typeof relativePath !== "string" || relativePath.includes("\\") || path.posix.isAbsolute(relativePath) ||
+      relativePath.split("/").some(part => !part || part === "." || part === ".." || part.toLowerCase() === ".git")) {
+    throw new UsageError("upgrade paths must be canonical slash-relative paths outside Git");
+  }
+}
+function assertPathSpelling(root: string, relativePath: string): void {
+  canonicalPath(relativePath);
+  withContainedPathSink({ root, relativePath, operation: "read" }, () => {
+    let parent = root;
+    for (const part of relativePath.split("/")) {
+      const next = path.join(parent, part);
+      if (!fs.existsSync(next)) break;
+      if (!fs.readdirSync(parent).includes(part)) throw new UsageError(`upgrade path spelling differs from filesystem: ${relativePath}`);
+      parent = next;
+    }
+  });
+}
+
 function bytes(root: string, relativePath: string): Buffer | null {
+  canonicalPath(relativePath);
   return withContainedPathSink({ root, relativePath, operation: "read" }, ({ absolutePath }) =>
     fs.existsSync(absolutePath) ? readContainedFile({ root, relativePath }, null) : null);
 }
@@ -18,6 +41,7 @@ function encoded(root: string, relativePath: string): string | null {
   return bytes(root, relativePath)?.toString("base64") ?? null;
 }
 function directoryEntries(root: string, relativePath: string): string[] {
+  canonicalPath(relativePath);
   return withContainedPathSink({ root, relativePath, operation: "read" }, ({ absolutePath }) => {
     const entries = fs.existsSync(absolutePath) ? fs.readdirSync(absolutePath).sort() : [];
     // Lock/journal directories are checkout-local transaction infrastructure,
@@ -37,7 +61,7 @@ export function readUpgradeJournal(root: string): Journal | undefined {
   const raw = bytes(root, UPGRADE_JOURNAL);
   if (!raw) return undefined;
   const journal = JSON.parse(raw.toString("utf8")) as Journal;
-  if (journal.schema_version !== 1 || !Array.isArray(journal.operations) ||
+  if (![1, 2].includes(journal.schema_version) || !Array.isArray(journal.operations) ||
       digest(JSON.stringify(journal.operations)) !== journal.operations_hash ||
       !["applying", "recovering", "completed", "recovered"].includes(journal.state)) {
     throw new UsageError("invalid upgrade journal; preserve it for explicit investigation");
@@ -48,10 +72,54 @@ export function readUpgradeJournal(root: string): Journal | undefined {
         ![op.before, op.after].every(value => value === null || (typeof value === "string" && Buffer.from(value, "base64").toString("base64") === value))) {
       throw new UsageError("invalid upgrade journal operation");
     }
+    assertPathSpelling(root, op.path);
     bytes(root, op.path); // Recheck containment, links, and file types.
     seen.add(op.path);
   }
+  if (journal.schema_version === 2) {
+    const dependencies = journal.dependencies;
+    if (!dependencies || !Array.isArray(dependencies.files) || !Array.isArray(dependencies.directories) ||
+        digest(JSON.stringify(dependencies)) !== journal.dependencies_hash) throw new UsageError("invalid upgrade journal dependencies");
+    for (const [kind, entries] of [["file", dependencies.files], ["directory", dependencies.directories]] as const) {
+      const paths = new Set<string>();
+      for (const entry of entries) {
+        if (!Array.isArray(entry) || entry.length !== 2) throw new UsageError("invalid upgrade dependency entry");
+        const [file, value] = entry;
+        if (typeof file !== "string" || paths.has(file) || file.split(/[\\/]/).includes(".git")) throw new UsageError("invalid upgrade dependency path");
+        canonicalPath(file);
+        withContainedPathSink({ root, relativePath: file, operation: "read" }, () => {});
+        if (kind === "file" ? !(value === null || typeof value === "string" && /^[0-9a-f]{64}$/.test(value)) :
+          !(Array.isArray(value) && value.every(name => typeof name === "string" && name !== "." && name !== ".." && !/[\\/]/.test(name)) && new Set(value).size === value.length)) {
+          throw new UsageError("invalid upgrade dependency value");
+        }
+        paths.add(file);
+      }
+    }
+  }
   return journal;
+}
+
+function assertRecoveryDependencies(root: string, journal: Journal): void {
+  if (journal.schema_version !== 2) return;
+  const operations = new Map(journal.operations.map(op => [op.path, op]));
+  for (const [file, expected] of journal.dependencies!.files) {
+    if (operations.has(file)) continue; // Operation bytes have their own before/after custody check.
+    const actual = bytes(root, file);
+    if ((actual === null ? null : digest(actual)) !== expected) throw new UsageError(`stale upgrade dependency: ${file}`);
+  }
+  for (const [directory, expected] of journal.dependencies!.directories) {
+    const variable = new Set<string>();
+    for (const op of journal.operations) {
+      const relative = path.posix.relative(directory, op.path);
+      if (relative === ".." || relative.startsWith("../") || relative === "") continue;
+      const parts = relative.split("/");
+      // Direct file entries may be before or after. New operation-owned parent
+      // directories may already exist after a partial write or rollback.
+      if (parts.length === 1 || (!expected.includes(parts[0]) && op.after !== null)) variable.add(parts[0]);
+    }
+    const stable = (entries: string[]) => JSON.stringify(entries.filter(name => !variable.has(name)).sort());
+    if (stable(directoryEntries(root, directory)) !== stable(expected)) throw new UsageError(`stale upgrade directory dependency: ${directory}`);
+  }
 }
 
 /** Pure in-memory intent collection; no directory, index, lock, or journal writes. */
@@ -75,9 +143,12 @@ export class UpgradePlan {
     return entries;
   }
   write(relativePath: string, content: string | Buffer | null): void {
+    assertPathSpelling(this.root, relativePath);
     if (relativePath.split(/[\\/]/).includes(".git") || relativePath === UPGRADE_JOURNAL) throw new UsageError("upgrade cannot target Git or its own transaction journal");
     const before = this.read(relativePath)?.toString("base64") ?? null;
     const after = content === null ? null : Buffer.from(content).toString("base64");
+    let parent = path.posix.dirname(relativePath);
+    while (parent !== ".") { this.list(parent); parent = path.posix.dirname(parent); }
     if (before === after) this.operations.delete(relativePath);
     else this.operations.set(relativePath, { path: relativePath, before, after });
   }
@@ -106,8 +177,10 @@ export class UpgradePlan {
       const previous = readUpgradeJournal(this.root);
       if (previous && !["completed", "recovered"].includes(previous.state)) throw new UsageError("unfinished upgrade; use explicit --resume or --recover");
       const operations = [...this.operations.values()];
-      const journal: Journal = { schema_version: 1, plan_hash: planHash, operations,
-        operations_hash: digest(JSON.stringify(operations)), state: "applying" };
+      const dependencies: Dependencies = { files: [...this.observed].sort(),
+        directories: [...this.directories].sort().map(([file, entries]) => [file, JSON.parse(entries) as string[]]) };
+      const journal: Journal = { schema_version: 2, plan_hash: planHash, operations, dependencies,
+        dependencies_hash: digest(JSON.stringify(dependencies)), operations_hash: digest(JSON.stringify(operations)), state: "applying" };
       saveJournal(this.root, journal);
       for (const [index, operation] of operations.entries()) {
         if (encoded(this.root, operation.path) !== operation.before) throw new UsageError(`upgrade baseline moved: ${operation.path}; explicit recovery required`);
@@ -120,7 +193,8 @@ export class UpgradePlan {
   }
 }
 
-export function continueUpgrade(root: string, mode: "resume" | "recover", planHash: string | undefined, timeout: number): Journal {
+export function continueUpgrade(root: string, mode: "resume" | "recover", planHash: string | undefined, timeout: number,
+  validate?: (journal: Journal) => void): Journal {
   const journal = readUpgradeJournal(root);
   if (!journal || !planHash || planHash !== journal.plan_hash) throw new UsageError("resume/recover requires the journal's exact --plan-hash");
   if (journal.state === "recovered" || (mode === "resume" && journal.state === "completed")) return journal;
@@ -130,6 +204,8 @@ export function continueUpgrade(root: string, mode: "resume" | "recover", planHa
       const actual = encoded(root, op.path);
       if (actual !== op.before && actual !== op.after) throw new UsageError(`upgrade recovery collision: ${op.path}; user bytes preserved`);
     }
+    assertRecoveryDependencies(root, journal);
+    validate?.(journal);
   };
   check(); // Refuse without even acquiring a lock if custody changed.
   return withMutationLock(root, timeout, () => {

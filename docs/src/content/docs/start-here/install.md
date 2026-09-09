@@ -100,6 +100,13 @@ For an interrupted transaction, use its journal hash with
 Both paths reject intervening user edits instead of discarding them. Review a
 fresh preview after recovery; do not delete the journal to bypass a conflict.
 
+For adopted v2 graphs, upgrade preserves identities and aliases rather than
+inventing identities for missing seed nodes. Use explicit graph creation or
+reintroduction for those nodes. New journals bind graph-format bytes and preview
+dependencies; changes to those inputs block both continuation paths. Older
+journals without dependency bindings cannot resume v2 upgrades, but can recover
+verified original bytes that preserve identities and workspace ownership.
+
 For capability files, use canonical `MANIFEST.md` naming in new work. Legacy
 `SPEC.md` files and `mdkg spec ...` commands remain compatibility aliases for
 one release, but new docs and skills should prefer `mdkg manifest ...` and
