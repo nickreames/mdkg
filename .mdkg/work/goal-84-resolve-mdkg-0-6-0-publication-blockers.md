@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, test-483, task-828]
-active_node: bug-32
+active_node: bug-7
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -382,3 +382,13 @@ the full installed compatibility matrix through bug-7; preserve bug-17's pending
 legacy config-less public materialization decision. Final independent security,
 coverage/release qualification, metadata and sealing remain open. No publication
 readiness, remote action or new skill candidate is implied.
+
+## 2026-09-09 Installed Qualification Milestone
+
+Bug-7 now has chk-586 and a hash-bound partial progress receipt. Real published
+0.5.2 standard/customized upgrades and independent-clone collaboration pass on
+Node 24.18.0/26.0.0; 1341 source tests and CLI/docs/graph checks pass. Bug-7 stays
+progress for its remaining matrix; bug-17 stays blocked on the separate legacy
+public-bundle decision. Twenty-six of twenty-eight bug lanes remain locally done,
+not twenty-eight. Final task-828, qualification, metadata and sealing remain open.
+No new skill candidate, remote action or publication readiness.

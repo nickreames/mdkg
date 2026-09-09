@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-586",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "disposition": "partial installed qualification; bug-7 remains progress; NOT_READY for publication",
+  "source_baseline": "ff7111430da8fed16ec8b281c2995894ee26e5a2",
+  "candidate": {
+    "version": "0.5.2",
+    "kind": "intermediate development candidate, not historical baseline or 0.6.0 seal",
+    "sha256": "5d72db2d486ab187eef8da487abd519e31700e6e41bb7420a18850216d3eba05"
+  },
+  "published_baseline": {
+    "version": "0.5.2",
+    "bytes": 425431,
+    "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+    "source": "previously verified cached registry tarball; rehashed this turn; no network access"
+  },
+  "coverage": [
+    "Existing manifest-backed smoke:upgrade retains legacy synthetic controls and now executes actual published 0.5.2 standard and customized upgrades.",
+    "Preserve both root instruction customizations, README/LICENSE CRLF bytes, authored task bytes, Git index and canonical/native skill parity.",
+    "A customized canonical skill blocks blanket application without writes; explicit reviewed --only preserves it while applying other managed units and native projections. The customization conflict remains visible.",
+    "Standard repeated preview/apply is byte-preserving no-op. Customized repeated preview has no writes but remains blocked on the retained custom skill.",
+    "Existing manifest-backed smoke:branch-conflicts retains numeric repair coverage and adds three real independent local clones with CLI-created v2 identities, no source imports and no manual alias reassignment.",
+    "Natural alias collisions, cross-links, observational staged/untracked reads, deterministic preview, target alias preservation, incoming remapping, unchanged Git index and immutable external fixture receipt bytes.",
+    "Semantic integration replay/revert, reasoned reintroduction, same-identity lifecycle decisions, stale-plan rejection, newer incoming review and cherry-pick/revert reintroduction refusal.",
+    "Pinned baseline byte/dual-hash checks; bounded stream and local file reads; linked/nonregular/oversized/altered inputs rejected by unit tests."
+  ],
+  "source_sha256": {
+    "scripts/published-upgrade-baseline.js": "eae09f0a1bd797d10b3e32df8b42becbb2d06be0c6a04df480793cc3973a31e0",
+    "scripts/installed-identity-collaboration.js": "e8640bc88433c2dcdc1613c1442fd04d022634f64aa6ff4873496aaae29978d9",
+    "scripts/smoke-upgrade.js": "80615d508f9f3aa37fdbc4320d1e18e88fee7d024f4e3b817b8acfb2da7df629",
+    "scripts/smoke-branch-conflicts.js": "756789b0f0505bafe15cbf4b11b05425055a54fafda4021f141e3cc07270f3b8",
+    "tests/published-upgrade-baseline.test.ts": "03ffdc04911280405a44994413b3ecb6f9ac269608de412d08361c0d78447c9b"
+  },
+  "runs": [
+    {
+      "label": "upgrade-preservation-review",
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "de5482a7016be51fba4e8231a809a929f1fbd014c06859b005107fe900b646e0"
+    },
+    {
+      "label": "upgrade-node24",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "595fd8424264c7a017e44056a16179ce1ce18c465ea27f0d2b70b5bf5f2a19fb"
+    },
+    {
+      "label": "branch-semantic-final",
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "90b1a5d67bcbe42cce43ade737350a277ae21c7abf33dbaf6a6b61046176f88a"
+    },
+    {
+      "label": "branch-node24",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "6ccdd047b8a4afa20e8ace1f2cb8b0b52803adcdd18e83d21c45d7470645562e"
+    }
+  ],
+  "full": [
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "scripts/test-built.js"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "ec1da40ac814f5ad417c8fc385e28c4cbab3ea51811f3b88896a261e766b24bf",
+      "summary": [
+        "✔ runDoctorCommand reports missing and invalid config failures (37.575958ms)",
+        "✔ runDoctorCommand reports cached index read failures (208.362167ms)",
+        "✔ v2 template ownership and missing-binding failures happen before target writes (14631.752625ms)",
+        "ℹ tests 1341",
+        "ℹ pass 1341",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    }
+  ],
+  "auxiliary": [
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "--test",
+        "dist/tests/published-upgrade-baseline.test.js",
+        "dist/tests/release-ladder.test.js",
+        "tests/security-remediation.test.mjs"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "2b20f56a685bd5bad84bfc167932f412e1d8cc97726bb78f178ece69751ce6b1",
+      "summary": [
+        "ℹ tests 20",
+        "ℹ pass 20",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "command": "npm",
+      "args": [
+        "run",
+        "cli:check:built"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf",
+      "summary": []
+    },
+    {
+      "command": "npm",
+      "args": [
+        "run",
+        "docs:check:built"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba",
+      "summary": [
+        "> node scripts/generate-docs-reference.js --check && node scripts/generate-release-notes-data.js --check && node scripts/check-doc-command-examples.js",
+        "  \"checked_examples\": 494,",
+        "  \"placeholder_examples\": 58,",
+        "  \"placeholder_context_examples\": 34,",
+        "  \"placeholder_fence_examples\": 34,",
+        "  \"placeholder_fence_context_examples\": 34,",
+        "  \"skipped_illustrative_examples\": 60,",
+        "  \"failed_examples\": 0,",
+        "  \"failures\": []"
+      ]
+    },
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "2d5d6aa9adcc7106298dbc449edaec46df584a5665155fa736a441ce5a7dacee",
+      "summary": []
+    },
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "dist/cli.js",
+        "validate",
+        "--changed-only",
+        "--json"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "09a0f2661b45c23e71f8379f888e16c354e8379b33c4aebeeeb9b79750aaff15",
+      "summary": []
+    },
+    {
+      "command": "git",
+      "args": [
+        "diff",
+        "--check"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": []
+    }
+  ],
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "fixture_corrections": [
+    "Initial decisions-file argument was absolute; corrected fixture to the documented contained relative path after rejection.",
+    "Initial cherry-pick/revert assertion incorrectly expected no-op rather than an explicit reintroduction conflict; verified current source contract and asserted fail-closed decision requirement.",
+    "Initial customized-skill fixture incorrectly expected blanket upgrade success; retained conflict behavior and added explicit reviewed path selection plus separate standard-upgrade case.",
+    "No new shipped source defect or security-clearance claim follows from these fixture corrections."
+  ],
+  "remaining": [
+    "Node 24.15.0 qualification and all approved runtime/fixture families.",
+    "Complete installed upgrade interruption/recovery and identity delete/modify/evidence-conflict coverage, legacy/old-client behavior, private canonical graph rehearsal, operational scale and goal/blocker routing.",
+    "Bug-17 legacy config-less public materialization decision and final transport remediation.",
+    "Task-828 independent full remediation security review; draft 0.6.0 metadata; final coverage/release ladder and immutable candidate seal."
+  ],
+  "exclusions": [
+    "No canonical graph migration, bundle/subgraph refresh, runtime/selection edits, source feature change, remote Git, push, tag, registry publication, provider action or consumer change.",
+    "No security scan launched; historical security-remediation tests are not current clearance.",
+    "This milestone does not complete bug-7, task-826, goal-83, goal-84 or goal-85."
+  ],
+  "evidence_location": "/private/tmp/mdkg-bug7-upgrade.63CHpg retains compact logs, checks, immutable-artifact usage hashes and runnable harnesses; owned disposable smoke installs/clones/caches removed after verification.",
+  "skill_candidates": []
+}

@@ -4,12 +4,15 @@ const { spawnSync } = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const crypto = require("node:crypto");
+const { preparePublishedBaseline, verifyBaseline } = require("./published-upgrade-baseline");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
 const tempBase = process.env.MDKG_SMOKE_TMPDIR || os.tmpdir();
 const NPM_CMD = process.env.npm_execpath || "npm";
 const GIT_CMD = process.env.GIT || "git";
+let isolatedConfig = {};
 
 function commandEnv(extra = {}) {
   return {
@@ -17,6 +20,7 @@ function commandEnv(extra = {}) {
     NPM_CONFIG_CACHE: process.env.NPM_CONFIG_CACHE || "/private/tmp/mdkg-npm-cache",
     NPM_CONFIG_DRY_RUN: "false",
     npm_config_dry_run: "false",
+    ...isolatedConfig,
     ...extra,
   };
 }
@@ -369,16 +373,97 @@ function exerciseUpgrade(binPath, tempRoot) {
   }
 }
 
-function runSmoke() {
+async function exercisePublishedUpgrade(binPath, tempRoot, customizedSkills = false) {
+  const baseline = await preparePublishedBaseline(tempRoot);
+  const prefix = path.join(tempRoot, "published-prefix");
+  run(NPM_CMD, ["install", "-g", baseline.path, "--prefix", prefix, "--offline", "--no-audit", "--no-fund"], { cwd: tempRoot });
+  verifyBaseline(fs.readFileSync(baseline.path));
+  const oldBin = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+  if (mdkg(oldBin, ["--version"], tempRoot).stdout !== "0.5.2") throw new Error("published baseline version mismatch");
+  const root = path.join(tempRoot, "actual-published-upgrade"); initGit(root);
+  mdkg(oldBin, ["init", "--agent"], root);
+  const task = parseJson(mdkg(oldBin, ["new", "task", "Published user task", "--json"], root).stdout).node;
+  const historical = fs.readFileSync(path.join(root, task.path));
+  const authored = "# User-owned project document\r\nPreserve these bytes.\r\n";
+  for (const file of ["README.md", "LICENSE"]) fs.writeFileSync(path.join(root, file), authored);
+  const customInstructions = "\n# User instructions\nDo not publish without approval.\n";
+  const protectedInstructions = {};
+  for (const file of ["AGENTS.md", "CLAUDE.md"]) {
+    fs.appendFileSync(path.join(root, file), customInstructions);
+    protectedInstructions[file] = fs.readFileSync(path.join(root, file), "utf8");
+  }
+  const customSkill = ".mdkg/skills/select-work-and-ground-context/SKILL.md";
+  if (customizedSkills) fs.appendFileSync(path.join(root, customSkill), "\nUser-owned project grounding convention.\n");
+  const skillBytes = fs.readFileSync(path.join(root, customSkill));
+  const indexPath = path.join(root, ".git/index");
+  run(GIT_CMD, ["add", "--", "README.md"], { cwd: root });
+  const staging = fs.readFileSync(indexPath);
+  const digest = p => crypto.createHash("sha256").update(fs.readFileSync(p)).digest("hex");
+  const snapshot = () => {
+    const files = {}; const walk = dir => { for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name); if (e.isDirectory()) walk(p); else files[path.relative(root, p)] = digest(p);
+    } }; walk(root); return files;
+  };
+  const before = snapshot();
+  let preview = parseJson(mdkg(binPath, ["upgrade", "--json"], root).stdout), selection = [];
+  if (JSON.stringify(snapshot()) !== JSON.stringify(before)) throw new Error("published upgrade preview changed workspace bytes");
+  if (customizedSkills) {
+    if (preview.safe_to_apply || preview.blocking_conflicts.length !== 1 || preview.blocking_conflicts[0].path !== customSkill) throw new Error("custom canonical skill requires explicit preservation review");
+    const blocked = spawnSync(binPath, ["upgrade", "--apply", "--plan-hash", preview.plan_hash, "--json"], { cwd: root, env: commandEnv(), encoding: "utf8" });
+    if (blocked.status === 0 || JSON.stringify(snapshot()) !== JSON.stringify(before)) throw new Error("conflicting upgrade did not refuse without writes");
+    // Explicit fixture decision: retain the custom skill, select every other
+    // pending direct managed unit, and review its required native projections.
+    const direct = preview.changes.filter(c => ["create", "update", "migrate"].includes(c.action) && !["init_manifest", "skill_mirror", "skill_registry"].includes(c.category));
+    selection = ["--only", direct.map(c => c.path).join(",")];
+    preview = parseJson(mdkg(binPath, ["upgrade", ...selection, "--json"], root).stdout);
+    if (JSON.stringify(snapshot()) !== JSON.stringify(before)) throw new Error("selected upgrade preview changed bytes");
+  }
+  if (!preview.safe_to_apply) throw new Error("published upgrade requires explicit disposition: " + JSON.stringify(preview.blocking_conflicts));
+  const applied = parseJson(mdkg(binPath, ["upgrade", ...selection, "--apply", "--plan-hash", preview.plan_hash, "--json"], root).stdout);
+  for (const file of ["README.md", "LICENSE"]) if (fs.readFileSync(path.join(root, file), "utf8") !== authored) throw new Error("user project document changed: " + file);
+  for (const file of Object.keys(protectedInstructions)) {
+    if (!fs.readFileSync(path.join(root, file), "utf8").startsWith(protectedInstructions[file])) throw new Error("custom root instructions not preserved: " + file);
+  }
+  if (customizedSkills && !fs.readFileSync(path.join(root, customSkill)).equals(skillBytes)) throw new Error("custom canonical skill changed");
+  for (const mirror of [".agents", ".claude"]) {
+    if (!fs.readFileSync(path.join(root, mirror, "skills/select-work-and-ground-context/SKILL.md")).equals(fs.readFileSync(path.join(root, customSkill)))) throw new Error("native mirror differs from canonical skill");
+  }
+  for (const file of [".mdkg/AGENT_START.md", ".mdkg/CLI_COMMAND_MATRIX.md", ".mdkg/llms.txt"]) assertExists(path.join(root, file));
+  if (!fs.readFileSync(path.join(root, task.path)).equals(historical)) throw new Error("published user task was rewritten during scaffold upgrade");
+  if (!fs.readFileSync(indexPath).equals(staging)) throw new Error("upgrade changed Git staging");
+  mdkg(binPath, ["validate", "--json"], root);
+  const repeatBefore = snapshot(), repeat = parseJson(mdkg(binPath, ["upgrade", "--json"], root).stdout);
+  if (repeat.will_write_paths.length) throw new Error("published upgrade has unexpected pending writes: " + JSON.stringify(repeat));
+  if (customizedSkills ? (repeat.safe_to_apply || repeat.blocking_conflicts.length !== 1 || repeat.blocking_conflicts[0].path !== customSkill) : !repeat.safe_to_apply) throw new Error("repeated upgrade lost preservation disposition");
+  if (JSON.stringify(snapshot()) !== JSON.stringify(repeatBefore)) throw new Error("repeated preview changed bytes");
+  if (!customizedSkills) mdkg(binPath, ["upgrade", "--apply", "--plan-hash", repeat.plan_hash, "--json"], root);
+  if (JSON.stringify(snapshot()) !== JSON.stringify(repeatBefore)) throw new Error("repeated no-op apply changed bytes");
+  return { baseline, task: task.id, applied_paths: applied.will_write_paths, user_bytes_preserved: true,
+    customized_both_entrypoints: true, canonical_skill_mirrors_equal: true,
+    custom_skill_preservation_decision: customizedSkills ? "explicit --only excluding custom canonical skill; conflict retained" : "not applicable",
+    git_index_unchanged: true, repeated_preview_noop: true, repeated_apply_noop: !customizedSkills };
+}
+
+async function runSmoke() {
   let tempRoot;
   try {
     tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-upgrade-smoke-"));
+    const userConfig = path.join(tempRoot, "user.npmrc"), globalConfig = path.join(tempRoot, "global.npmrc");
+    fs.writeFileSync(userConfig, "audit=false\nfund=false\n"); fs.writeFileSync(globalConfig, "audit=false\nfund=false\n");
+    isolatedConfig = { npm_config_userconfig: userConfig, NPM_CONFIG_USERCONFIG: userConfig,
+      npm_config_globalconfig: globalConfig, NPM_CONFIG_GLOBALCONFIG: globalConfig,
+      npm_config_cache: path.join(tempRoot, "npm-cache"), NPM_CONFIG_CACHE: path.join(tempRoot, "npm-cache") };
     const binPath = packAndInstall(tempRoot);
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
     if (version !== packageVersion) {
       throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     }
     exerciseUpgrade(binPath, tempRoot);
+    const published = await exercisePublishedUpgrade(binPath, tempRoot);
+    console.log(JSON.stringify({ action: "published-upgrade-qualified", runtime: process.version, ...published }));
+    const customRoot = path.join(tempRoot, "customized-published"); fs.mkdirSync(customRoot);
+    const customized = await exercisePublishedUpgrade(binPath, customRoot, true);
+    console.log(JSON.stringify({ action: "published-customized-upgrade-qualified", runtime: process.version, ...customized }));
     console.log("upgrade smoke passed");
     console.log(`version=${version}`);
   } finally {
@@ -388,4 +473,4 @@ function runSmoke() {
   }
 }
 
-runSmoke();
+runSmoke().catch(error => { console.error(error); process.exitCode = 1; });

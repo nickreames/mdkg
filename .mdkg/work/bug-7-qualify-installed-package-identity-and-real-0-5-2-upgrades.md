@@ -2,22 +2,22 @@
 id: bug-7
 type: bug
 title: Qualify installed package identity and real 0.5.2 upgrades
-status: backlog
+status: progress
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: []
+refs: [chk-586]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Overview
@@ -66,3 +66,20 @@ Require failing-before/passing-after results and independent verification in tas
 Initial approved plan and chk-563/Goal 82 history.
 
 Disposition: open, not fixed, not publication-ready.
+
+## 2026-09-09 Installed Upgrade and Independent Branch Milestone
+
+Chk-586 and `.mdkg/artifacts/goal-84/bug-7-progress.json` record real published
+0.5.2 standard/customized upgrades plus independent-clone v2 collaboration on
+Node 24.18.0 and 26.0.0. Existing smoke entries retain prior coverage while adding
+natural collisions, cross-links, staged/untracked reads, reviewed mappings,
+same-identity decisions, stale plans, replay/revert and reintroduction checks.
+User documents, custom skills/mirrors, Git staging and external fixture evidence
+retain their required treatment. Full source suite: 1341 passed; CLI/docs,
+focused contracts and graph checks pass. Fixture corrections are recorded.
+
+Still open: minimum Node 24.15.0, complete installed recovery/delete-modify and
+evidence-conflict cases, legacy/old-client compatibility, remaining task-826
+families, final independent task-828 review, full ladder and artifact seal.
+This milestone does not close bug-7 or authorize publication. Bug-17 remains
+separate custody; selected Goal 73 and runtime/bundle bytes are unchanged.
