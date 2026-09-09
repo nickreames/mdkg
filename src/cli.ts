@@ -822,10 +822,13 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       break;
     case "migrate":
       log("Usage:");
-      log("  mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]");
+      log("  mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]");
       log("\nNotes:");
       log("  - preview is read-only; legacy Git graphs require an explicitly accepted local ancestor");
       log("  - graph namespace and branch origin must be reviewed; independent branch additions need distinct origins");
+      log("  - ambiguous lineage requires decisions JSON keyed by legacy QID: {take: restore-ancestor|new-identity, reason, review_hash}");
+      log("  - copy review_hash from continuity_reviews, review current reference bindings, then preview again with --decisions");
+      log("  - complete local Git history is required; no body similarity or revert message proves identity continuity");
       log("  - apply requires the exact unchanged plan hash and persists identity mappings before rebuilding local indexes");
       log("  - no implicit Git staging, selection change, bundle refresh, remote access, or history rewrite");
       break;
@@ -2228,7 +2231,7 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const json = parseBooleanFlag("--json", parsed.flags["--json"]);
   if (subcommand === "migrate" || subcommand === "recover" || subcommand === "reconcile") {
     const allowed = new Set(["--root", "--json", "--xml", "--toon", "--md",
-      ...(subcommand === "migrate" ? ["--graph-id", "--origin", "--ancestor", "--apply", "--plan-hash"]
+      ...(subcommand === "migrate" ? ["--graph-id", "--origin", "--ancestor", "--decisions", "--apply", "--plan-hash"]
         : subcommand === "reconcile" ? ["--ancestor", "--incoming", "--target", "--decisions", "--apply", "--plan-hash"] : ["--resume", "--rollback"])]);
     for (const flag of Object.keys(parsed.flags)) {
       if (!allowed.has(flag)) throw new UsageError(`graph ${subcommand} does not support ${flag}; no mutation attempted`);
@@ -2253,6 +2256,7 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       if (!graphId || !origin) throw new UsageError("graph migrate requires --graph-id <uuid> and --origin <uuid>");
       runGraphMigrateCommand({ root, graphId, origin,
         ancestor: requireFlagValue("--ancestor", parsed.flags["--ancestor"]),
+        decisionsPath: requireFlagValue("--decisions", parsed.flags["--decisions"]),
         apply: parseBooleanFlag("--apply", parsed.flags["--apply"]),
         planHash: requireFlagValue("--plan-hash", parsed.flags["--plan-hash"]), json });
       return 0;

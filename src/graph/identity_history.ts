@@ -25,6 +25,13 @@ export type IdentityHistory = {
 // Missing ancestry is not permission to treat an old identity as a new node.
 // Never fetch history or reinterpret replacement/graft objects to fill a gap.
 export function assertCompleteIdentityHistory(root: string): void {
+  const promisorPattern = "^remote\\..*\\.promisor$";
+  const hasPromisorConfig = readGraphGit(root, ["config", "--get-regexp", promisorPattern], true) !== undefined;
+  const promisor = hasPromisorConfig ? readGraphGit(root, ["config", "--type=bool", "--get-regexp", promisorPattern])! : "";
+  if (readGraphGit(root, ["config", "--get", "extensions.partialClone"], true)?.trim() ||
+    /\strue\s*$/m.test(promisor)) {
+    throw new UsageError("identity history requires complete local objects; partial/promisor clones require an explicit local history audit, no fetch attempted");
+  }
   if (readGraphGit(root, ["rev-parse", "--is-shallow-repository"])?.trim() !== "false") {
     throw new UsageError("identity reconciliation requires complete local history; no fetch attempted");
   }

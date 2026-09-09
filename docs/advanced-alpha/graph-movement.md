@@ -36,6 +36,27 @@ graphs also require an accepted local ancestor. Common ancestor nodes share
 identity; independently created aliases do not. Unproven legacy references or
 rename/recreation histories block conversion instead of guessing.
 
+Migration inspects the full local ancestor-to-HEAD history and merge boundary
+parents, plus stage-0 index and working-tree nodes. A deletion followed by a
+revert, equal body text, or a rename/alias change followed by restoration is not
+automatic proof of one continuous entity. Ambiguity appears in
+`continuity_reviews`, with observations, reasons and an exact `review_hash`.
+Supply a repository-contained `--decisions <path>` JSON object keyed by legacy
+QID. Each entry requires `take` (`restore-ancestor` or `new-identity`), a nonempty
+`reason`, and that exact `review_hash`. Review current inbound references too:
+the choice binds all current structured links to the selected identity, while
+historical bodies and external receipt text remain unchanged. Preview again with
+the decisions file before applying its new plan hash with the same file.
+
+`restore-ancestor` retains the accepted ancestor identity; `new-identity` creates
+a deterministic origin-scoped recreation identity. Unknown/unused decisions and
+changed review inputs fail closed. Missing, shallow, grafted or partial/promisor
+history requires a separate local history audit; no fetch is attempted. History
+inspection uses the existing 2,048-commit/4,096-revision bounds and the configured
+`index.limits.max_total_bytes` budget for retained compact lineage observations.
+Unrecorded unlink/recreate operations leaving no committed or staged trace are
+indistinguishable from ordinary edits; mdkg does not invent that provenance.
+
 Application requires the exact reviewed plan hash and unchanged graph/control
 inputs. Durable mappings live under `.mdkg/identity/migrations/`. Private
 before/after journals live under `.mdkg/state/identity-transactions/` and are
@@ -43,6 +64,11 @@ excluded from bundles. `mdkg graph recover <plan-hash>` inspects metadata;
 explicit `--resume` or `--rollback` refuses changed or unowned bytes. Successful
 application/recovery strictly validates authored state before rebuilding caches.
 None of these commands stages files or changes Git history.
+
+New Git-backed migration application/resume requires reviewed continuity
+evidence. An older interrupted journal without it remains inspectable and can
+roll back exact owned before-bytes, but cannot resume the unreviewed mapping.
+Rollback still refuses changed or unowned files; it is not identity approval.
 
 V2 same-project clones retain identities. Independent forks allocate new
 identities with lineage, preserving numeric aliases and historical bodies.

@@ -13,15 +13,18 @@ import {
 } from "./identity_snapshot";
 import { ALLOWED_TYPES, parseNode } from "./node";
 import { loadTemplateSchemas } from "./template_schema";
+import { inspectLegacyLineage, LegacyContinuity, LegacyLineageEvidence } from "./identity_legacy_lineage";
+import { assertCompleteIdentityHistory } from "./identity_history";
 
 export type GraphFileChange = { path: string; before: string | null; after: string | null };
-export type MigrationParameters = { graphId: string; origin: string; ancestor?: string };
+export type MigrationDecision = { take: "restore-ancestor" | "new-identity"; reason: string; review_hash: string };
+export type MigrationParameters = { graphId: string; origin: string; ancestor?: string; decisions?: Record<string, MigrationDecision> };
 export type LegacyIdentityMapping = {
   qid: string;
   path: string;
   identity: NodeIdentity;
   stable_ref: string;
-  origin_kind: "accepted-ancestor" | "branch-addition";
+  origin_kind: "accepted-ancestor" | "branch-addition" | "reviewed-recreation";
   ancestor_path: string | null;
   before_hash: string;
   after_hash?: string;
@@ -40,12 +43,14 @@ export type IdentityPlanBase = {
   dependency_files?: Record<string, string | null>;
   skill_dependency_paths?: string[];
   revision_evidence?: Array<{ revision: string; tree_hash: string }>;
+  legacy_lineage?: LegacyLineageEvidence;
 };
 export type MigrationPlan = IdentityPlanBase & {
   action: "graph.migrate.plan";
   parameters: MigrationParameters;
   ancestor: { revision: string; tree_hash: string } | null;
   mappings: LegacyIdentityMapping[];
+  continuity_reviews: Array<LegacyContinuity & { review_hash: string; reference_policy: string }>;
 };
 
 // Preserve body bytes (including CRLF and immutable quoted receipt material).
@@ -72,6 +77,7 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
   if (control.head && !parameters.ancestor) {
     throw new UsageError("legacy Git migration requires an explicit accepted --ancestor; do not independently assign aliases on divergent branches");
   }
+  if (control.head) assertCompleteIdentityHistory(root);
   const ancestor = parameters.ancestor ? readAuthoredSnapshot(root, parameters.ancestor) : undefined;
   if (ancestor && ancestor.format.format_version !== 1) {
     throw new UsageError("ancestor already has identities; use its authored identity mapping instead of a new legacy namespace");
@@ -85,13 +91,43 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
     throw new UsageError("legacy aliases are ambiguous; migrate independent branches before integration or supply reviewed identity evidence");
   }
   const blocking: string[] = [];
+  const lineage = ancestor && control.head ? inspectLegacyLineage(root, current, ancestor, control.head) : undefined;
+  const lineageHash = lineage ? identityHash(canonicalJson(lineage.evidence)) : null;
+  const continuityReviews = (lineage?.continuity ?? []).filter((entry) => entry.reasons.length > 0).map((entry) => {
+    const referencePolicy = "approved choice binds all current structured references to this node's selected identity; historical body and external receipt bytes are not rewritten";
+    return { ...entry, reference_policy: referencePolicy, review_hash: identityHash(canonicalJson({
+      graph_id: graphId, origin, input_tree_hash: current.tree_hash, git_index: control.git_index,
+      lineage_hash: lineageHash, continuity: entry, reference_policy: referencePolicy,
+    })) };
+  });
+  const decisions = parameters.decisions === undefined ? {} : parameters.decisions;
+  const reviewByQid = new Map(continuityReviews.map((entry) => [entry.qid, entry]));
+  const ancestorPaths = new Set(ancestor?.nodes.map((entry) => entry.path) ?? []);
+  if (!decisions || typeof decisions !== "object" || Array.isArray(decisions)) throw new UsageError("migration decisions must be an object keyed by legacy QID");
+  for (const [qid, decision] of Object.entries(decisions)) {
+    const review = reviewByQid.get(qid);
+    if (!review) throw new UsageError(`unused or unknown migration provenance decision: ${qid}`);
+    if (!decision || typeof decision !== "object" || Array.isArray(decision) ||
+      Object.keys(decision).sort().join(",") !== "reason,review_hash,take" ||
+      !["restore-ancestor", "new-identity"].includes(decision.take) || typeof decision.reason !== "string" || !decision.reason.trim() ||
+      decision.review_hash !== review.review_hash) throw new UsageError(`invalid or stale migration provenance decision: ${qid}; review exact evidence again`);
+  }
   const mappings: LegacyIdentityMapping[] = current.nodes.map((entry) => {
     const previous = ancestorQids.get(entry.qid);
-    if (previous && (previous.path !== entry.path || previous.node.type !== entry.node.type)) {
-      blocking.push(`${entry.path}: ancestor alias moved or changed type; explicit rename/recreation identity evidence is required`);
+    const review = reviewByQid.get(entry.qid);
+    const decision = Object.prototype.hasOwnProperty.call(decisions, entry.qid) ? decisions[entry.qid] : undefined;
+    if (review && !decision) {
+      blocking.push(`${entry.path}: continuity requires explicit reviewed rename/recreation provenance; use the exact continuity review hash`);
     }
-    const kind = previous ? "accepted-ancestor" : "branch-addition";
-    const nodeId = previous
+    // A changed alias at an old path is not an independently proven addition.
+    // No automatic cross-alias pairing: preserve it for explicit normalization.
+    if (!previous && ancestorPaths.has(entry.path)) {
+      blocking.push(`${entry.path}: changed ancestor alias requires explicit alias provenance before migration`);
+    }
+    const kind = decision?.take === "new-identity" ? "reviewed-recreation" : previous ? "accepted-ancestor" : "branch-addition";
+    const nodeId = kind === "reviewed-recreation"
+      ? deriveIdentityUuid(graphId, kind, [origin, ancestor!.revision!, entry.qid, entry.path])
+      : previous
       ? deriveIdentityUuid(graphId, kind, [ancestor!.revision!, previous.qid, previous.path])
       : deriveIdentityUuid(graphId, kind, [origin, entry.qid, entry.path]);
     const identity = { graph_id: graphId, node_id: nodeId };
@@ -135,6 +171,7 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
   const intentHash = identityHash(canonicalJson({
     graph_id: graphId, origin, input_tree_hash: current.tree_hash,
     ancestor: ancestor ? { revision: ancestor.revision, tree_hash: ancestor.tree_hash } : null, mappings,
+    lineage: lineage?.evidence ?? null, continuity_reviews: continuityReviews, decisions,
   }));
   const receiptPath = `.mdkg/identity/migrations/${intentHash.slice(7)}.json`;
   const format = { ...createGraphFormat(graphId), migration_receipt: receiptPath };
@@ -146,20 +183,32 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
   const receipt = {
     schema_version: 1, kind: "graph-identity-migration", intent_hash: intentHash,
     graph_id: graphId, origin, ancestor: ancestor ? { revision: ancestor.revision, tree_hash: ancestor.tree_hash } : null,
-    input_tree_hash: current.tree_hash, mappings,
+    input_tree_hash: current.tree_hash, mappings, lineage: lineage?.evidence ?? null,
+    continuity_reviews: continuityReviews, decisions,
+    provenance_limit: "Git commits and stage-0 index prove observable continuity only; unrecorded unlink/recreate with no surviving Git trace is indistinguishable from editing",
     manifest_hash: identityHash(manifestContent), body_policy: "preserve exact historical body bytes",
     execution_state_policy: "selection, claims, runtime DB and Git staging are not migrated",
   };
-  writes.push({ path: receiptPath, before: null, after: `${JSON.stringify(receipt, null, 2)}\n` });
+  const receiptContent = `${JSON.stringify(receipt, null, 2)}\n`;
+  const evidenceContents = [...Object.values(current.identity_evidence ?? {}).map((entry) => entry.content), receiptContent];
+  const limits = current.config.index.limits;
+  if (evidenceContents.some((content) => Buffer.byteLength(content) > limits.max_file_bytes) ||
+    candidateNodes.length + evidenceContents.length > limits.max_files ||
+    candidateNodes.reduce((sum, entry) => sum + Buffer.byteLength(entry.content), 0) +
+      evidenceContents.reduce((sum, content) => sum + Buffer.byteLength(content), 0) > limits.max_total_bytes) {
+    blocking.push("generated migration evidence exceeds configured discovery limits; review the exact receipt and graph budget before application");
+  }
+  writes.push({ path: receiptPath, before: null, after: receiptContent });
   for (const change of writes) {
     if (path.isAbsolute(change.path) || change.path.split("/").includes("..")) throw new UsageError("migration produced an unsafe path");
   }
   const body: Omit<MigrationPlan, "plan_hash"> = {
     schema_version: 1, action: "graph.migrate.plan",
-    parameters: { graphId, origin, ...(ancestor ? { ancestor: ancestor.revision! } : {}) },
+    parameters: { graphId, origin, ...(ancestor ? { ancestor: ancestor.revision! } : {}), decisions },
     input_tree_hash: current.tree_hash, input_files: current.files, control,
     ancestor: ancestor ? { revision: ancestor.revision!, tree_hash: ancestor.tree_hash } : null,
-    mappings, writes, receipt_path: receiptPath, blocking: [...new Set(blocking)].sort(),
+    mappings, continuity_reviews: continuityReviews, ...(lineage ? { legacy_lineage: lineage.evidence } : {}),
+    writes, receipt_path: receiptPath, blocking: [...new Set(blocking)].sort(),
     generated_exclusions: [".mdkg/index/", ".mdkg/bundles/", ".mdkg/pack/", ".mdkg/state/", ".mdkg/db/", ".mdkg/events/", ".git/"],
   };
   return { ...body, plan_hash: graphPlanHash(body) };

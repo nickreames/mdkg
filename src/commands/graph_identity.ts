@@ -17,11 +17,13 @@ export function runGraphReconcileCommand(options: Omit<ReconciliationParameters,
   console.log(JSON.stringify(options.apply ? applyGraphMigrationPlan(options.root, plan, options.planHash!) : publicMigrationPlan(plan), null, 2));
 }
 
-export function runGraphMigrateCommand(options: MigrationParameters & { root: string; apply?: boolean; planHash?: string; json?: boolean }): void {
+export function runGraphMigrateCommand(options: MigrationParameters & { root: string; decisionsPath?: string; apply?: boolean; planHash?: string; json?: boolean }): void {
   if (options.apply && !options.planHash) throw new UsageError("graph migrate --apply requires the exact reviewed --plan-hash");
   if (!options.apply && options.planHash) throw new UsageError("--plan-hash applies only with --apply; preview does not write");
+  const decisions = options.decisionsPath ? JSON.parse(readContainedFile({ root: options.root, relativePath: options.decisionsPath,
+    maxBytes: 1024 * 1024 })) : {};
   const plan = planLegacyIdentityMigration(options.root, {
-    graphId: options.graphId, origin: options.origin, ancestor: options.ancestor,
+    graphId: options.graphId, origin: options.origin, ancestor: options.ancestor, decisions,
   });
   const result = options.apply ? applyGraphMigrationPlan(options.root, plan, options.planHash!) : publicMigrationPlan(plan);
   console.log(JSON.stringify(result, null, 2));
