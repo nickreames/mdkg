@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "checkpoint_qid": "root:chk-584",
+  "owner": "mdkg-project-agent",
+  "work_qid": "root:bug-27",
+  "goal_qids": [
+    "root:goal-84",
+    "root:goal-83"
+  ],
+  "outcome": "locally verified candidate-validation remediation; final independent task-828 verification outstanding; NOT_READY for publication",
+  "source_baseline": "2d94265ebe83ca36c8002348cb692e4961321228",
+  "affected_versions": "Candidate-only graph-v2 migration/reconciliation behavior; no claim that published 0.5.2 implements this feature.",
+  "contract": [
+    "Shared authored candidate validation for migration and reconciliation before journal/application, resume and terminal success.",
+    "Bind template bytes/fallbacks, canonical and enabled local workspace skill metadata/inventories, actual imported targets, archive payloads and event history.",
+    "Enforce resulting node/identity-evidence/event budgets; refuse stale or underbound plans and authored/dependency overlap.",
+    "Preflight derived output ownership, future SQLite sidecars, disabled/imported roots and observed filesystem case aliases; verify terminal custody after cache rebuild.",
+    "Old plans remain inspectable and exact owned rollback remains available without granting unreviewed resume; no Git staging or execution-state mutation."
+  ],
+  "prepatch": {
+    "initial": {
+      "phase": "pre",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "--test",
+        "dist/tests/graph/identity_migration_validation.test.js",
+        "dist/tests/graph/identity_migration.test.js",
+        "dist/tests/graph/identity_migration_lineage.test.js"
+      ],
+      "runtime": "v26.0.0",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "9e4a346cd3084b7cc4f0f680bc471c0e3b49e234e6008d691991964d2a4dd43d",
+      "summary": [
+        "ℹ tests 45",
+        "ℹ pass 37",
+        "ℹ fail 8",
+        "ℹ skipped 0",
+        "ℹ duration_ms 18948.411792"
+      ]
+    },
+    "cache_ownership": {
+      "phase": "pre-cache",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "--test",
+        "dist/tests/graph/identity_migration_validation.test.js",
+        "dist/tests/graph/identity_migration.test.js",
+        "dist/tests/graph/identity_migration_lineage.test.js",
+        "dist/tests/graph/identity_reconciliation_plan.test.js"
+      ],
+      "runtime": "v26.0.0",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "eeb6cdaf2430cc0b367fff9901de2f5ae6002b1863178759556671dc7a52232c",
+      "summary": [
+        "ℹ tests 105",
+        "ℹ pass 92",
+        "ℹ fail 13",
+        "ℹ skipped 0",
+        "ℹ duration_ms 41600.572333"
+      ]
+    }
+  },
+  "focused": {
+    "phase": "post6",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "--test",
+      "dist/tests/graph/identity_migration_validation.test.js",
+      "dist/tests/graph/identity_migration.test.js",
+      "dist/tests/graph/identity_migration_lineage.test.js",
+      "dist/tests/graph/identity_reconciliation_plan.test.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 0,
+    "signal": null,
+    "output_sha256": "16699c1cf7c06acbba975a318678b445fab1c584d2639e5b5b5bcaec00eda5c8",
+    "source_sha256": {
+      "src/graph/identity_migration.ts": "28de2957b680968474383693a9cb413c16936dede05386f6f6d2b2fd604e64d3",
+      "src/graph/identity_reconciliation_plan.ts": "ec346bd3c6147f7f7c23476c96eb262c8ba7ffb352872db6b60bd27e533e90a4",
+      "src/graph/identity_snapshot.ts": "d6e670ce8571ff03ce85eab6afef873001ad2d30b6bb059dd64878f36550d90b",
+      "src/graph/identity_transaction.ts": "ede8834c8a1641fd000be230da6ce808a03782abee38cab5740a96e44b2497ab",
+      "src/graph/identity_validation.ts": "391f1710bd63e9cb268fb2d26db7dfe05373e1d9b04bc72512aa71d57f424a14",
+      "src/graph/reindex.ts": "3d2dee082235b631c0509a318d5d0f42f6824f90b49db1ddbb5c8adb7c53e5d0",
+      "src/graph/template_schema.ts": "ce2b728702ae447124f60f692be7dde310b6abffb4cc8d1fe8f2d9a85ecdec08",
+      "src/graph/events_validation.ts": "0d59f25903a7eeb78093b82728f95c0143fcf9a522d5612612304bd04afda566",
+      "tests/graph/identity_migration_validation.test.ts": "c83ee2c2515d0b2304d011a58639d29bde051131915571ddf6fdcdcba9a21dc0"
+    },
+    "summary": [
+      "ℹ tests 120",
+      "ℹ pass 120",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 45316.566917"
+    ]
+  },
+  "full_suite": {
+    "phase": "full-final",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "scripts/test-built.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 0,
+    "signal": null,
+    "output_sha256": "1c1d0f2b054afea4db39d4cbd6fec9660296c26f382f9cff25c3ec2ca3d7b358",
+    "source_sha256": {
+      "src/graph/identity_migration.ts": "28de2957b680968474383693a9cb413c16936dede05386f6f6d2b2fd604e64d3",
+      "src/graph/identity_reconciliation_plan.ts": "ec346bd3c6147f7f7c23476c96eb262c8ba7ffb352872db6b60bd27e533e90a4",
+      "src/graph/identity_snapshot.ts": "d6e670ce8571ff03ce85eab6afef873001ad2d30b6bb059dd64878f36550d90b",
+      "src/graph/identity_transaction.ts": "ede8834c8a1641fd000be230da6ce808a03782abee38cab5740a96e44b2497ab",
+      "src/graph/identity_validation.ts": "391f1710bd63e9cb268fb2d26db7dfe05373e1d9b04bc72512aa71d57f424a14",
+      "src/graph/reindex.ts": "3d2dee082235b631c0509a318d5d0f42f6824f90b49db1ddbb5c8adb7c53e5d0",
+      "src/graph/template_schema.ts": "ce2b728702ae447124f60f692be7dde310b6abffb4cc8d1fe8f2d9a85ecdec08",
+      "src/graph/events_validation.ts": "0d59f25903a7eeb78093b82728f95c0143fcf9a522d5612612304bd04afda566",
+      "tests/graph/identity_migration_validation.test.ts": "c83ee2c2515d0b2304d011a58639d29bde051131915571ddf6fdcdcba9a21dc0"
+    },
+    "summary": [
+      "ℹ tests 1328",
+      "ℹ pass 1328",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 147261.956041"
+    ]
+  },
+  "installed": {
+    "schema_version": 1,
+    "disposition": "intermediate development candidate, not release seal",
+    "candidate": {
+      "version": "0.5.2",
+      "sha256": "81a32d77ef2e57fd8d7778b5f7300bb4d3bef00bffa8821b7279b185d864c113",
+      "integrity": "sha512-xudB4HWzW0eiyn1ySRJTuBor5Wk2dHqWoGwKOlEFZs5+wyq8jW0c+yJ+PXWrMvHt81tYzgU2YdTXquh6icryJg==",
+      "package_file_manifest_sha256": "e300c0c8034557dbdbd9df48a7ce81c2c948af55f05fa6e4535b18b8efde699b"
+    },
+    "results": [
+      {
+        "name": "pack",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "86c49877ef62b68be3bc78b60772e7d0c7c3e781cd782933b242ae2bc89750b4",
+        "summary": []
+      },
+      {
+        "name": "install",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "260b81283a0da65e0d8dfcf98575e940ede1f863ed00bc5c0ec5bd2f838907e1",
+        "summary": []
+      },
+      {
+        "name": "installed-node26",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "7b7f6d5e2b6ea07d4c38be70558acd322b3f370f8b2b622e20b96ff4fe12f1b9",
+        "summary": [
+          "ℹ tests 57",
+          "ℹ pass 57",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 55794.795333"
+        ],
+        "runtime": "v26.0.0"
+      },
+      {
+        "name": "installed-node24",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "5d4f698533ae83103db2c684b376e86961baf3fcf65bab8bddd3aeafb45b71b4",
+        "summary": [
+          "ℹ tests 57",
+          "ℹ pass 57",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 42557.383542"
+        ],
+        "runtime": "v24.18.0"
+      }
+    ],
+    "test_source_sha256": "c83ee2c2515d0b2304d011a58639d29bde051131915571ddf6fdcdcba9a21dc0",
+    "harness_sha256": "1923a68b2e92c737514c9830f241bb680662b10c32099ffeda7e559848e5192e",
+    "installed_package_unchanged": true
+  },
+  "auxiliary_validation": {
+    "cli_matrix": "pass: npm run cli:check:built",
+    "docs": "pass: npm run docs:check:built; 494 examples in 63 files, zero failures",
+    "release_contract_tests": "26 passed; historical security-matrix tests are not current scan clearance",
+    "graph": "full and changed-only passed before lifecycle closeout; three preserved imported-bundle age warnings on full validation",
+    "sqlite": "node dist/cli.js db index verify --json: pass",
+    "diff": "git diff --check: pass; staged review required before commit"
+  },
+  "review": {
+    "kind": "one bounded read-only source reviewer with iterative follow-up",
+    "scope": "candidate/dependency completeness, recovery and cache ownership, native paths and case aliasing",
+    "disposition": "identified gaps reproduced and fixed; final review reported no remaining defect in its bounded scope",
+    "not_clearance_for": "task-828 independent security review of complete remediation range"
+  },
+  "regression_notes": [
+    "Eight original prepatch failures and thirteen later cache/metadata ownership failures reproduced.",
+    "Intermediate fixture mistakes were corrected: generic refs are not skill-update proposal constraints; parent injection must actually add a field; disabled-subgraph fixture must use valid configuration.",
+    "57 new tests include valid controls, no-write refusal, dependency movement, limits, imports, cache collisions, old rollback, filesystem case behavior and literal POSIX backslash paths."
+  ],
+  "exclusions": [
+    "Derived SQLite health, native mirrors and opt-in profiles remain separate qualification gates.",
+    "No canonical migration, bundle/subgraph refresh, runtime writes, remote Git, provider action, publication or consumer changes.",
+    "Installed artifact remains intermediate development metadata 0.5.2, not published 0.5.2 baseline or final 0.6.0 seal.",
+    "Full installed workflow matrix, Node 24.15.0 qualification, coverage/release ladder and artifact seal remain open."
+  ],
+  "protected_before_after_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/commands/subgraph.ts": "95aa15c8338203cd8dae153da1e072d6e97ea1ddd38579c5017850a03456ae47",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "preserved_uncommitted_paths": [
+    ".mdkg/index/mdkg.sqlite",
+    ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+    ".mdkg/artifacts/goal-84/bug-17-progress.json",
+    "src/commands/bundle.ts",
+    "src/commands/graph.ts",
+    "src/commands/subgraph.ts",
+    "src/graph/identity_transport.ts",
+    "src/graph/transport_state.ts",
+    "tests/commands/bundle_state.test.ts"
+  ],
+  "evidence_location": "Local reproducible logs, harnesses, file manifest and intermediate tarball retained under /private/tmp/mdkg-bug27-verify.7sZ5U9; compact hashes are durable here.",
+  "skill_candidates": [],
+  "local_commit_allowlist": [
+    "src/graph/events_validation.ts",
+    "src/graph/identity_migration.ts",
+    "src/graph/identity_reconciliation_plan.ts",
+    "src/graph/identity_transaction.ts",
+    "src/graph/identity_validation.ts",
+    "src/graph/reindex.ts",
+    "src/graph/template_schema.ts",
+    "tests/graph/identity_migration_validation.test.ts",
+    "docs/advanced-alpha/graph-movement.md",
+    "docs/src/content/docs/advanced-alpha/graph-movement.md",
+    ".mdkg/artifacts/goal-84/bug-27-verification.json",
+    ".mdkg/work/bug-27-validate-migration-candidates-and-bind-their-skill-dependencies.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/chk-584-verify-complete-identity-candidate-validation-and-recovery-custody.md"
+  ]
+}

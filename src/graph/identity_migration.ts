@@ -8,13 +8,14 @@ import {
 } from "./identity";
 import { mapGraphReferenceFields, matchesWorkContractPath } from "./identity_refs";
 import {
-  AuthoredSnapshot, graphControlSnapshot, GraphControlSnapshot, indexAuthoredSnapshot,
+  AuthoredSnapshot, graphControlSnapshot, GraphControlSnapshot,
   readAuthoredSnapshot, readGraphGit,
 } from "./identity_snapshot";
 import { ALLOWED_TYPES, parseNode } from "./node";
 import { loadTemplateSchemas } from "./template_schema";
 import { inspectLegacyLineage, LegacyContinuity, LegacyLineageEvidence } from "./identity_legacy_lineage";
 import { assertCompleteIdentityHistory } from "./identity_history";
+import { assertCandidateDependencies, candidateDependencyWriteConflicts, CandidateValidationContract, validateIdentityCandidate } from "./identity_validation";
 
 export type GraphFileChange = { path: string; before: string | null; after: string | null };
 export type MigrationDecision = { take: "restore-ancestor" | "new-identity"; reason: string; review_hash: string };
@@ -42,6 +43,7 @@ export type IdentityPlanBase = {
   plan_hash: string;
   dependency_files?: Record<string, string | null>;
   skill_dependency_paths?: string[];
+  candidate_validation?: CandidateValidationContract;
   revision_evidence?: Array<{ revision: string; tree_hash: string }>;
   legacy_lineage?: LegacyLineageEvidence;
 };
@@ -151,6 +153,9 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
       const qid = ref.includes(":") ? ref : `${entry.ws}:${ref}`;
       const target = mappingByQid.get(qid);
       if (target) return target.stable_ref;
+      // Read-only imported aliases are not assigned this graph's identities.
+      // The complete candidate validator must prove their actual target exists.
+      if (Object.prototype.hasOwnProperty.call(current.config.subgraphs, qid.split(":")[0])) return ref;
       blocking.push(`${entry.path}: ${field} reference ${ref} lacks a proven identity binding`);
       return ref;
     });
@@ -178,8 +183,6 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
   const manifestContent = `${JSON.stringify(format, null, 2)}\n`;
   writes.push({ path: GRAPH_FORMAT_PATH, before: null, after: manifestContent });
   const candidate: AuthoredSnapshot = { ...current, format, nodes: candidateNodes };
-  try { indexAuthoredSnapshot(candidate); }
-  catch (error) { blocking.push(`strict candidate validation: ${error instanceof Error ? error.message : String(error)}`); }
   const receipt = {
     schema_version: 1, kind: "graph-identity-migration", intent_hash: intentHash,
     graph_id: graphId, origin, ancestor: ancestor ? { revision: ancestor.revision, tree_hash: ancestor.tree_hash } : null,
@@ -188,6 +191,7 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
     provenance_limit: "Git commits and stage-0 index prove observable continuity only; unrecorded unlink/recreate with no surviving Git trace is indistinguishable from editing",
     manifest_hash: identityHash(manifestContent), body_policy: "preserve exact historical body bytes",
     execution_state_policy: "selection, claims, runtime DB and Git staging are not migrated",
+    validation_contract: "authored-candidate-v1: graph, skills, templates, imports, visibility, archives, events and resulting discovery limits; derived caches and opt-in profiles excluded",
   };
   const receiptContent = `${JSON.stringify(receipt, null, 2)}\n`;
   const evidenceContents = [...Object.values(current.identity_evidence ?? {}).map((entry) => entry.content), receiptContent];
@@ -199,6 +203,10 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
     blocking.push("generated migration evidence exceeds configured discovery limits; review the exact receipt and graph budget before application");
   }
   writes.push({ path: receiptPath, before: null, after: receiptContent });
+  candidate.identity_evidence = { ...current.identity_evidence, [receiptPath]: { content: receiptContent, hash: identityHash(receiptContent) } };
+  const validated = validateIdentityCandidate(root, candidate);
+  blocking.push(...validated.blocking);
+  blocking.push(...candidateDependencyWriteConflicts(writes, validated.dependencies, validated.contract));
   for (const change of writes) {
     if (path.isAbsolute(change.path) || change.path.split("/").includes("..")) throw new UsageError("migration produced an unsafe path");
   }
@@ -206,11 +214,16 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
     schema_version: 1, action: "graph.migrate.plan",
     parameters: { graphId, origin, ...(ancestor ? { ancestor: ancestor.revision! } : {}), decisions },
     input_tree_hash: current.tree_hash, input_files: current.files, control,
+    dependency_files: validated.dependencies, skill_dependency_paths: validated.skillPaths, candidate_validation: validated.contract,
     ancestor: ancestor ? { revision: ancestor.revision!, tree_hash: ancestor.tree_hash } : null,
     mappings, continuity_reviews: continuityReviews, ...(lineage ? { legacy_lineage: lineage.evidence } : {}),
     writes, receipt_path: receiptPath, blocking: [...new Set(blocking)].sort(),
     generated_exclusions: [".mdkg/index/", ".mdkg/bundles/", ".mdkg/pack/", ".mdkg/state/", ".mdkg/db/", ".mdkg/events/", ".git/"],
   };
+  if (canonicalJson(graphControlSnapshot(root)) !== canonicalJson(control) || readAuthoredSnapshot(root).tree_hash !== current.tree_hash) {
+    throw new UsageError("migration baseline moved while planning; preserve state and re-inventory");
+  }
+  if (!blocking.length) assertCandidateDependencies(root, current.config, validated.dependencies, validated.contract);
   return { ...body, plan_hash: graphPlanHash(body) };
 }
 

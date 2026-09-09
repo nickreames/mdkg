@@ -2,12 +2,12 @@
 id: bug-27
 type: bug
 title: Validate migration candidates and bind their skill dependencies
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-83/task-824-contract-audit.json]
+artifacts: [.mdkg/artifacts/goal-83/task-824-contract-audit.json, .mdkg/artifacts/goal-84/bug-27-verification.json]
 relates: [task-824, goal-84, test-483]
 blocked_by: []
 blocks: []
@@ -60,3 +60,33 @@ Allowed source: src/graph/identity_migration.ts, identity_transaction.ts, identi
 - .mdkg/artifacts/goal-83/task-824-contract-audit.json
 - root:test-483; root:task-828; root:goal-83
 - Initial probe starts invalid deliberately to test refusal; the defect is false safe/applied validation, not a claim that migration created the original missing skill.
+
+## 2026-09-09 Local Remediation Verification
+
+Shared candidate validation now covers migration and reconciliation before
+authored writes, during resume and before terminal success. Plans bind exact
+template, skill, import, archive and event inputs plus discovery inventories;
+resulting graph/evidence limits and derived-output ownership fail closed.
+Old unbound plans cannot resume, while exact owned rollback remains available
+after output-custody preflight. Native paths and observed filesystem case
+behavior preserve distinct case-sensitive paths without allowing cache aliases.
+
+Eight initial failures and thirteen additional cache/metadata failures were
+reproduced. Final evidence: 120 focused tests and 1328 ordinary tests pass on
+Node 26.0.0; all 57 installed migration-validation cases pass on both Node
+24.18.0 and 26.0.0. CLI/docs checks and 26 release-contract tests pass; full and
+changed-only graph validation and SQLite verification pass. Intermediate fixture
+corrections and explicit exclusions are recorded in the verification artifact.
+
+One bounded independent source reviewer investigated the patch iteratively;
+its final scoped review found no remaining defect. This is not task-828 final
+security clearance. Full installed qualification, release coverage/runtime
+gates and the final artifact seal remain outstanding. The intermediate tarball
+retains development metadata 0.5.2 and is not a qualified 0.6.0 release.
+
+Owner mdkg-project-agent. Existing Goal 84 claim remains the execution scope;
+no runtime lease was acquired. Selected Goal 73, runtime DB, protected Demo 3
+bundle and separate bug-17 source bytes are unchanged. Mixed tracked SQLite
+projection custody remains excluded from this local source/evidence commit.
+No canonical migration, refresh, remote Git, provider action or publication.
+Skill coverage reused; candidates none.

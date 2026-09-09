@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, test-483, task-828]
-active_node: bug-26
+active_node: bug-27
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -352,3 +352,19 @@ materialization decision. The original Standard security accounting remains
 12 of 13 locally fixed. Task-828 final independent security review, full
 installed qualification, release metadata/ladder and sealing remain open.
 No publication, canonical migration, remote action or new skill candidate.
+
+## 2026-09-09 Candidate Validation Verification
+
+Bug-27 now has passing local remediation evidence in
+`.mdkg/artifacts/goal-84/bug-27-verification.json`: 1328 ordinary tests, 120
+focused checks, and 57 installed cases on each of Node 24.18.0 and 26.0.0.
+Complete candidate/dependency validation and recovery/cache custody are shared
+by migration and reconciliation. CLI/docs, release-contract, graph and SQLite
+checks pass; protected state and separate bug-17 custody remain preserved.
+
+Remaining bug lanes are 7, 17 and 32 after bug-27 lifecycle closure. The next
+independent improvement is bug-32 CLI onboarding/repair guidance. Bug-17's old
+config-less public-bundle materialization decision remains outstanding, but
+does not prevent that independent work. Task-828 final security review and the
+full installed/release qualification gates remain open. No publication readiness
+or automatic risk waiver is claimed; skill candidates none.

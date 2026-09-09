@@ -70,6 +70,35 @@ evidence. An older interrupted journal without it remains inspectable and can
 roll back exact owned before-bytes, but cannot resume the unreviewed mapping.
 Rollback still refuses changed or unowned files; it is not identity approval.
 
+Migration and reconciliation share a versioned candidate-validation contract.
+Before any journal or authored write, the complete proposed graph is validated
+against exact template inputs, canonical skills, enabled local workspace skill
+metadata, mounted source snapshots, archive payloads and durable event history.
+Missing imported targets are errors; registering an alias does not prove a node
+exists. Root skill resolution is unchanged: a child workspace skill does not
+automatically satisfy a root node's skill requirement.
+
+Plans bind dependency contents and discovery inventories, including relevant
+absent files. Template body changes, skill additions/removals and event changes
+invalidate approval. Resulting nodes, identity receipts and graph/event totals
+must fit their configured limits. Recovery reconstructs the intended complete
+candidate from reviewed operations before resuming, rather than treating a
+partially migrated graph as valid. Older plans lacking this dependency contract
+remain inspectable and may restore exact owned before-bytes, but cannot resume.
+
+Authored writes may not overlap validation dependencies. Derived cache outputs
+must be distinct from authored data, skills/templates, imported or disabled
+owners, execution state, journals and SQLite sidecar paths. Dedicated custom
+cache locations remain supported. Existing filesystem spelling and observed
+case behavior participate in collision checks; mdkg does not create probe files
+or silently case-fold distinct paths on a case-sensitive filesystem. Ambiguous
+ownership requires separate resolution before migration or rollback. Terminal
+authored/control/dependency checks also run after cache rebuilding.
+
+This contract does not claim that old caches already represent the proposed
+graph, that native skill mirrors are synchronized, or that opt-in validation
+profiles have passed. Those remain separate validation and qualification gates.
+
 V2 same-project clones retain identities. Independent forks allocate new
 identities with lineage, preserving numeric aliases and historical bodies.
 Template imports allocate target-owned identities with durable mappings and

@@ -1,19 +1,16 @@
 import path from "path";
-import { containedPathExists, readContainedFile } from "../core/filesystem_authority";
+import { containedPathExists } from "../core/filesystem_authority";
 import { UsageError } from "../util/errors";
 import { canonicalJson, identityHash, identityRef } from "./identity";
 import { acceptedSemanticBase, readIdentityHistory } from "./identity_history";
 import { authoredResultHash, reconciliationAcceptanceContent, reconciliationAcceptancePath, transportedIdentityPath } from "./identity_acceptance";
 import { GraphFileChange, IdentityPlanBase } from "./identity_migration";
 import { IdentityDecisions, IdentityMergeResult, reconcileIdentitySnapshots } from "./identity_reconcile";
-import { AuthoredSnapshot, graphControlSnapshot, indexAuthoredSnapshot, readAuthoredSnapshot, readGraphGit, resolveGraphRevision } from "./identity_snapshot";
+import { AuthoredSnapshot, graphControlSnapshot, readAuthoredSnapshot, readGraphGit, resolveGraphRevision } from "./identity_snapshot";
 import { assertNoPendingIdentityTransaction } from "./identity_transaction";
 import { ALLOWED_TYPES, parseNode } from "./node";
 import { loadTemplateSchemas } from "./template_schema";
-import { buildSubgraphsIndex } from "./subgraphs";
-import { buildSkillsIndex } from "./skills_indexer";
-import { collectGraphErrors } from "./validate_graph";
-import { collectVisibilityViolations, visibilityViolationMessages } from "./visibility";
+import { assertCandidateDependencies, candidateDependencyWriteConflicts, validateIdentityCandidate } from "./identity_validation";
 
 export type ReconciliationParameters = { ancestor: string; incoming: string; target?: string; decisions?: IdentityDecisions };
 export type ReconciliationPlan = IdentityPlanBase & {
@@ -31,50 +28,8 @@ const EXCLUSIONS = [".mdkg/index/", ".mdkg/bundles/", ".mdkg/pack/", ".mdkg/stat
 const RECEIPT_PATH = /^\.mdkg\/identity\/(migrations|reconciliations|templates|forks|acceptances|transported)\/[0-9a-f]{64}\.json$/;
 const message = (error: unknown) => error instanceof Error ? error.message : String(error);
 
-/** Validate a virtual authored candidate against live, read-only dependencies.
- * No cache is trusted, no source bundle is refreshed, no archive is reconstructed.
- */
-export function validateReconciliationCandidate(root: string, candidate: AuthoredSnapshot) {
-  const dependencies: Record<string, string | null> = {};
-  const blocking: string[] = [];
-  const capture = (file: string) => {
-    const relative = path.relative(root, path.resolve(root, file)).split(path.sep).join("/");
-    dependencies[relative] = containedPathExists({ root, relativePath: relative })
-      ? identityHash(readContainedFile({ root, relativePath: relative }, null)) : null;
-  };
-  for (const subgraph of Object.values(candidate.config.subgraphs)) {
-    if (!subgraph.enabled) continue;
-    for (const source of subgraph.sources) if (source.enabled) capture(source.path);
-  }
-  const imported = buildSubgraphsIndex(root, candidate.config);
-  for (const item of imported.index.subgraphs) blocking.push(...item.errors.map((error) => `subgraph ${item.alias}: ${error}`));
-  const skills = buildSkillsIndex(root, candidate.config);
-  for (const skill of Object.values(skills.skills)) capture(skill.path);
-  const templates = loadTemplateSchemas(root, candidate.config, ALLOWED_TYPES);
-  for (const entry of candidate.nodes) {
-    for (const slug of entry.node.skills) if (!skills.skills[slug]) blocking.push(`${entry.qid}: skills reference missing slug: ${slug}`);
-    if (entry.node.type !== "archive") continue;
-    for (const attribute of ["stored_path", "compressed_path"]) {
-      capture(path.posix.join(path.posix.dirname(entry.path), String(entry.node.attributes[attribute])));
-    }
-    try {
-      // Default parser integrity checks verify actual payload/hash/size. The
-      // historical parser deliberately does not read today's payload as proof.
-      parseNode(entry.content, path.resolve(root, entry.path), {
-        archiveRoot: root,
-        workStatusEnum: candidate.config.work.status_enum, priorityMin: candidate.config.work.priority_min,
-        priorityMax: candidate.config.work.priority_max, templateSchemas: templates,
-      });
-    } catch (error) { blocking.push(`archive dependency requires separate exact transfer: ${message(error)}`); }
-  }
-  try {
-    const index = indexAuthoredSnapshot(candidate, imported.index.nodes);
-    blocking.push(...collectGraphErrors(index, { allowMissing: false, knownSkillSlugs: new Set(Object.keys(skills.skills)),
-      externalWorkspaces: new Set(Object.keys(candidate.config.subgraphs)) }));
-    blocking.push(...visibilityViolationMessages(collectVisibilityViolations(index, candidate.config)));
-  } catch (error) { blocking.push(`strict candidate validation: ${message(error)}`); }
-  return { dependencies, skillPaths: Object.values(skills.skills).map((skill) => skill.path).sort(), blocking: [...new Set(blocking)].sort() };
-}
+// Keep the existing internal entrypoint while migration shares the same rules.
+export const validateReconciliationCandidate = validateIdentityCandidate;
 
 export function planIdentityReconciliation(root: string, parameters: ReconciliationParameters): ReconciliationPlan {
   assertNoPendingIdentityTransaction(root);
@@ -168,6 +123,15 @@ export function planIdentityReconciliation(root: string, parameters: Reconciliat
       writes.push({ path: acceptancePath, before: null, after: reconciliationAcceptanceContent(receiptPath, content) });
     }
   }
+  candidate.identity_evidence = { ...current.identity_evidence };
+  for (const change of writes) if (change.path.startsWith(".mdkg/identity/") && change.after !== null) {
+    candidate.identity_evidence[change.path] = { content: change.after, hash: identityHash(change.after) };
+  }
+  const finalValidation = validateIdentityCandidate(root, candidate);
+  blocking.push(...finalValidation.blocking);
+  blocking.push(...candidateDependencyWriteConflicts(writes, finalValidation.dependencies, finalValidation.contract));
+  if (!finalValidation.blocking.length && (canonicalJson(finalValidation.dependencies) !== canonicalJson(validated.dependencies) ||
+    canonicalJson(finalValidation.contract) !== canonicalJson(validated.contract))) throw new UsageError("reconciliation dependencies moved while planning");
   const incomingPaths = readGraphGit(root, ["diff", "--no-ext-diff", "--no-textconv", "--name-only", "-z", ancestor.revision!, incoming.revision!, "--"])!.split("\0").filter(Boolean);
   const authored = new Set([...ancestor.nodes, ...incoming.nodes].map((entry) => entry.path));
   const pathManifest = [...new Set([...incomingPaths, ...writes.map((entry) => entry.path)])].sort().map((file) => ({ path: file,
@@ -185,6 +149,7 @@ export function planIdentityReconciliation(root: string, parameters: Reconciliat
     writes: writes.sort((a, b) => a.path.localeCompare(b.path)), receipt_path: receiptPath,
     blocking: [...new Set(blocking)].sort(), generated_exclusions: EXCLUSIONS,
     dependency_files: validated.dependencies, skill_dependency_paths: validated.skillPaths,
+    candidate_validation: validated.contract,
     revision_evidence: [...revisions].sort().map(([revision, tree_hash]) => ({ revision, tree_hash })),
     path_manifest: pathManifest, replay: { noop, previously_present: history.previously_present,
       inspected_revisions: history.inspected_revisions, receipt_path: accepted?.path ?? null }, validation,
@@ -193,5 +158,6 @@ export function planIdentityReconciliation(root: string, parameters: Reconciliat
   if (canonicalJson(graphControlSnapshot(root)) !== canonicalJson(control) || readAuthoredSnapshot(root).tree_hash !== current.tree_hash) {
     throw new UsageError("reconciliation baseline moved while planning; preserve state and re-inventory");
   }
+  if (!blocking.length) assertCandidateDependencies(root, current.config, validated.dependencies, validated.contract);
   return { ...body, plan_hash: identityHash(canonicalJson(body)) };
 }
