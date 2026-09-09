@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "qid": "root:bug-24",
+  "owner": "mdkg-project-agent",
+  "baseline_head": "7f60d63212f3daab1b274263e68a5b03d7bc193a",
+  "disposition": "locally verified; independent task-828 acceptance still required",
+  "candidate": {
+    "version": "0.5.2",
+    "sha256": "d5985d4c3ab546455b810db683528fff80041ee3402b4c35a1fe677a9687b5dc",
+    "integrity": "sha512-InEFF6zKw9NtDwLhT3W+k2Cx9IRuvyT2Qtz20Hh03PCDJJyLZwOGVRHTV5tkX11zWQfUUbZvStbV53AiEyam3w==",
+    "status": "intermediate candidate, not final release seal",
+    "file_manifest_sha256": "d5ddde9fc8c9d4fcfd82f3f8941a6bfeda906c5ca77e66f5926ffc4b242a6f63"
+  },
+  "source_sha256": {
+    "src/commands/init.ts": "7239e2c76da23e24c5f1df9d338b31c1fecca63b6e2399d44969460511cfbd76",
+    "tests/commands/init_identity.test.ts": "343c35c4cf745f0f35fc918f3f2d025c5b1ce0fd7e1da0137e4508448c1282b4",
+    "src/graph/identity.ts": "d369954e4a5e914d10484f5d43dd1f7f171be6fcbc14cf9085796a864c73c9ad",
+    "src/commands/upgrade_transaction.ts": "33bef0743e7ef402db6d3002266f9d151a1f8b3a885f64b30b7d00c5d4759634",
+    "src/util/lock.ts": "2e3036bafa937809242f979a61006d5efc24dedde35d6854e9a15fbdf2e0d664"
+  },
+  "installed_receipt_sha256": "8a5bac89248b0b9c47b4330e81c4e3b2658ef17dc5206a97433f700e8b071fcd",
+  "verification_harness_sha256": "155030d7293953becef698d38d7e8ea38f00e61da1aa06935362841b88d994a5",
+  "full_suite": {
+    "exit_code": 0,
+    "signal": null,
+    "runtime": "v26.0.0",
+    "output_sha256": "e81cbfcd5cc8d3b21b955baff5058c8e8b5440e171fab5373c4ab261cc416d8b",
+    "summary": [
+      "ℹ tests 1130",
+      "ℹ suites 0",
+      "ℹ pass 1130",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 123137.135083",
+      "ℹ tests 26",
+      "ℹ suites 0",
+      "ℹ pass 26",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 83.950875"
+    ]
+  },
+  "installed_results": [
+    {
+      "name": "prepatch-installed",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "b3600582efa56bf6f8ab4ed77e6d7865da4237d4245608dcf1f063ad041e767d",
+      "summary": [
+        "# tests 22",
+        "# suites 0",
+        "# pass 4",
+        "# fail 18",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 18866.434458"
+      ]
+    },
+    {
+      "name": "installed-node26",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "20f6d9b4543a374da44d5a36089764fb810fddaaca55ff5bd5e962645a716ab5",
+      "summary": [
+        "# tests 44",
+        "# suites 0",
+        "# pass 44",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 17382.026833"
+      ],
+      "runtime": "v26.0.0"
+    },
+    {
+      "name": "installed-node24",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "0d2cdcb0563f12b4800ffe8651a8ed8c0d248df55449df938b3134a8e401164e",
+      "summary": [
+        "# tests 44",
+        "# suites 0",
+        "# pass 44",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 56192.673708"
+      ],
+      "runtime": "v24.18.0"
+    }
+  ],
+  "protected_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "checks": {
+    "build": "passed",
+    "cli_check_built": "passed",
+    "docs_check_built": "passed: 494 examples, zero failures",
+    "graph_full": "passed: zero errors, three preserved stale-subgraph warnings",
+    "graph_changed_only": "passed: zero errors/warnings",
+    "sqlite_index_verify": "passed: all five caches fresh",
+    "git_diff_check": "passed"
+  },
+  "adjacent_findings": [
+    "root:bug-28",
+    "root:bug-29"
+  ],
+  "scope": "Graph format/identity preflight before bootstrap writes; explicit v2 force refusal; unfinished upgrade and shared writer-lock custody. No migration, new identities, Git staging, canonical init, consumer or provider changes.",
+  "limitations": [
+    "Exact Node 24.15.0 and full user-journey matrix remain unqualified.",
+    "Final independent task-828 review and release ladder remain open.",
+    "Already-built output packed with prepack skipped; normal isolated postinstall executed.",
+    "Synthetic migration fixtures close unshipped seed design refs; untouched-seed defect independently retained as bug-29.",
+    "Initial fixture path/copy errors corrected; final installed/source runs pass.",
+    "Node 24.15.0, full qualification ladder, final independent security review and 0.6.0 seal remain open."
+  ],
+  "authority": "Existing user-approved goal-83/84 local source/tests/evidence and reviewed local commits; no remote action or publication."
+}

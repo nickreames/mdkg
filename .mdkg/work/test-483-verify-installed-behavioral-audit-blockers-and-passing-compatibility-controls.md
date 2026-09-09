@@ -7,26 +7,26 @@ priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-83/task-824-contract-audit.json]
+artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-83/task-824-contract-audit.json, .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json]
 relates: [task-824, goal-84, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27]
-blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27]
+blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29]
 blocks: []
-refs: []
+refs: [bug-28, bug-29]
 context_refs: [goal-83, goal-84]
 evidence_refs: []
 aliases: []
 skills: []
-cases: [test-483-case-1, test-483-case-2, test-483-case-3, test-483-case-4, test-483-case-5, test-483-case-6, test-483-case-7, test-483-case-8]
+cases: [test-483-case-1, test-483-case-2, test-483-case-3, test-483-case-4, test-483-case-5, test-483-case-6, test-483-case-7, test-483-case-8, test-483-case-9, test-483-case-10]
 created: 2026-09-08
 updated: 2026-09-09
 ---
 # Overview
 
-Verify all seven reproduced behavioral blockers against the installed candidate and preserve passing compatibility controls. This is future fix verification, not a claim that the initial reproductions passed the desired contracts.
+Verify all nine reproduced behavioral blockers against the installed candidate and preserve passing compatibility controls. This is future fix verification, not a claim that the initial reproductions passed the desired contracts.
 
 # Target / Scope
 
-root:bug-21 through root:bug-27; root:task-824 evidence intake; root:task-828 independent acceptance.
+root:bug-21 through root:bug-29; root:task-824 evidence intake and bug-24 adjacent probes; root:task-828 independent acceptance.
 
 # Preconditions / Environment
 
@@ -42,6 +42,12 @@ One frozen package with exact source/tarball hashes, disposable synthetic graphs
 6. Checkpoint routing withholds dependent work until checkpoint completion. No goal state alone substitutes for publication artifact and blocker rechecks.
 7. Legacy delete/recreate at a reused alias/path requires explicit provenance before migration, while uninterrupted edits retain ancestor identity. Cover restoration/revert versus intentional recreation without guessing.
 8. Migration candidate validation rejects missing skills and agrees with normal strict graph validation. Bind dependency inventory/content to preview, apply and recovery; no successful applied receipt for an invalid result.
+9. Scaffold upgrade preserves v2 node identities; unsafe seed restoration and
+   stale graph-format changes refuse before writes. Safe non-node upgrades and
+   explicit interrupted-operation recovery remain supported.
+10. Untouched packaged initialization has a closed reference graph and can adopt
+    v2 without importing repository-only design docs. Preserve legacy/customized
+    inputs without silently stripping their references to make migration pass.
 
 # Results / Evidence
 
@@ -54,4 +60,4 @@ blockers, seven total. The 124 passing installed controls are not remedy
 verification. Exact evidence is in the contract-audit artifact; this node stays
 backlog until the seven fixes and required runtime matrix are verified.
 
-All seven bugs block independent task-828 and therefore publication. Keep scope generic: graph identity, observational CLI behavior and reproducible local validation. No new skill or loop. Preserve unknown-version formatter refusal and complete-v2 init controls rather than weakening them to obtain a pass.
+All nine bugs block independent task-828 and therefore publication. Keep scope generic: graph identity, observational CLI behavior and reproducible local validation. No new skill or loop. Preserve unknown-version formatter refusal and complete-v2 init controls rather than weakening them to obtain a pass.

@@ -6,8 +6,8 @@ status: progress
 priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, test-483, task-828]
-active_node: bug-23
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, test-483, task-828]
+active_node: bug-24
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -86,6 +86,18 @@ Planning complete at creation; user-approved local execution may resume after pl
 # Skill Improvement Candidates
 
 None. Findings belong in source/regression contracts, not procedural skill creation.
+
+## 2026-09-09 Bootstrap Qualification Findings
+
+Bug-24 is locally verified: 44 installed cases on each of Node 24.18.0 and
+26.0.0, 1130 source tests plus 26 contract checks. Its verification artifact
+binds exact inputs and preserved states; final task-828 acceptance is open.
+Installed adjacent checks add
+bug-28 (upgrade seed restoration invalidates v2) and bug-29 (fresh packaged seed
+references prevent migration). Evidence: .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json.
+Both block test-483/task-828 and therefore publication. They are functional
+findings, not additional Standard security scan findings. Original security
+accounting remains twelve of thirteen locally fixed. No new skill candidate.
 
 # Completion Evidence
 

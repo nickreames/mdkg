@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "installed-adjacent-bootstrap-findings",
+  "candidate": {
+    "version": "0.5.2",
+    "integrity": "sha512-InEFF6zKw9NtDwLhT3W+k2Cx9IRuvyT2Qtz20Hh03PCDJJyLZwOGVRHTV5tkX11zWQfUUbZvStbV53AiEyam3w==",
+    "sha256": "d5985d4c3ab546455b810db683528fff80041ee3402b4c35a1fe677a9687b5dc",
+    "status": "intermediate; not release seal"
+  },
+  "probe_sha256": "f7e76489f14a8708e203c942000abd1a34c638fbf97929746fe5b404c6e4f742",
+  "raw_receipt_sha256": "1ef048600f5fbc9a48ba5f90c5bd2d763249a2dd4aa19c2a8dc76a60699613f8",
+  "source_sha256": {
+    "src/commands/init.ts": "7239e2c76da23e24c5f1df9d338b31c1fecca63b6e2399d44969460511cfbd76",
+    "src/commands/upgrade.ts": "853960b81b2eda94457aac121866174e25e4ec165ef190daeac59ce1692e3de7",
+    "scripts/copy-init-assets.js": "84498b504c98393ce671c4d91199b3d858087d8aa7eb6bcf58be724199bb40ce"
+  },
+  "findings": [
+    {
+      "qid": "root:bug-28",
+      "before_validate_exit": 0,
+      "preview_safe_to_apply": true,
+      "planned_paths": [
+        ".mdkg/core/HUMAN.md"
+      ],
+      "after_validate_exit": 2,
+      "error": ".mdkg/core/HUMAN.md: v2 node is missing graph_id/node_id"
+    },
+    {
+      "qid": "root:bug-29",
+      "fresh_init_migration_blockers": [
+        ".mdkg/core/COLLABORATION.md: refs reference dec-53 lacks a proven identity binding",
+        ".mdkg/core/SOUL.md: refs reference edd-3 lacks a proven identity binding",
+        ".mdkg/core/SOUL.md: refs reference edd-6 lacks a proven identity binding"
+      ]
+    }
+  ],
+  "limits": [
+    "Synthetic isolated installed-package reproduction on Node 26.0.0; not independent security review.",
+    "Fresh seed migration first tested unchanged. Upgrade reproduction then uses an explicitly closed synthetic graph, without unshipped seed design refs.",
+    "Published 0.5.2 affected-version assessment and full final qualification remain open."
+  ]
+}
