@@ -88,6 +88,19 @@ task-828 final security, complete release ladder, metadata and seal remain open.
 
 Initial approved plan and chk-563/Goal 82 history.
 
+### Completed Scale Diagnosis
+
+The isolated Node26/JSON 2000-node migration now completes under the explicitly
+extended profiling allowance: 329196 ms, followed by passing validation, exact
+task count and stable identity inspection. Full scale/runtime acceptance remains
+open. Chk594 and bug-7-scale-goal.json bind the unchanged candidate, profile and
+canonical bookends. Measurements plus independent source review identify the
+duplicated containedPathExists/readContainedFile path traversal in value() as a
+bounded optimization target. Implement a fresh nullable authority read with
+initial-absence-only handling and race/containment regressions; do not cache
+filesystem observations or skip per-write custody checks. No source fix, new
+performance threshold or compatibility decision has been adopted in this step.
+
 Disposition: open, not fixed, not publication-ready.
 
 ## 2026-09-09 Installed Upgrade and Independent Branch Milestone

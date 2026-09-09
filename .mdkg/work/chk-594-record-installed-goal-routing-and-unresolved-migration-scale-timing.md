@@ -108,5 +108,30 @@ Git verification. No skill authoring or new candidates.
 
 # Links / Artifacts
 
+## Completed Profiling Follow-up
+
+At local HEAD 94f91803, an isolated installed Node 26.0.0 run completed the same
+2000-node/20000-event migration in 329196 ms using an explicit 600000 ms diagnostic
+allowance and CPU profiling. Validation passed, list returned 2000 tasks and the
+last task exposed stable identity. The candidate's 222 regular input files and
+canonical Git/protected-state bookends matched. This completes one diagnostic,
+not the full JSON/SQLite/runtime scale matrix or a product latency requirement.
+
+Inclusive samples attribute 95.82% to custody checks, 60.60% to containment path
+inspection, 53.70% to nullable value reads, 23.91% to workspace discovery and
+22.48% to existence checks. These categories overlap; they are not additive CPU
+cost estimates. The source-only independent review agrees that duplicate
+exists/read path traversal is the first bounded optimization candidate.
+
+Next implement a fresh nullable contained read, with no filesystem observation
+cache and no broad ENOENT suppression. Preserve all per-write controls, inventory,
+dependencies and current-byte checks; add disappearance, links, special-file and
+equal-size/timestamp collision regressions before repeating installed scale.
+No runtime source changes or performance waiver occurred during profiling.
+Raw profile, exact scripts and the completed synthetic fixture remain private in
+/private/tmp/mdkg-migration-profile.yUh0GD for before/after comparison. The four
+previous interrupted fixtures remain untouched. The artifact records hashes,
+the corrected scratch init-output expectation, limitations and review details.
+
 .mdkg/artifacts/goal-84/bug-7-scale-goal.json contains exact hashes, limitations,
 reproduction inputs, review and private fixture custody. Final outcome: NOT_READY.
