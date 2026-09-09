@@ -421,3 +421,14 @@ probe preserves journal/data but cannot resume through the killed writer's stale
 lock. This operational gap stays in bug-7; no automatic lock takeover or policy
 waiver was implemented. Twenty-six bug lanes remain locally done, with bug-7
 in progress and bug-17 separately blocked. Final qualification remains NOT_READY.
+
+## 2026-09-09 Installed MCP Read Qualification
+
+Chk-590 verifies 30 installed v2 read/cache/backend-parity scenarios across all
+three required Node versions while retaining legacy MCP coverage. Parent/child
+identities and authored/Git state survive stale, fresh and absent caches, including
+permission-enforced read-only fixtures. Fresh npm test passes 1341 tests; CLI/docs
+checks pass. This adds coverage without changing shipped behavior or accepting
+pending compatibility policies. Bug-7 remains progress, bug-17 blocked, and all
+final independent security, complete installed-family, release and seal gates
+remain required. Skill candidates none; overall NOT_READY.

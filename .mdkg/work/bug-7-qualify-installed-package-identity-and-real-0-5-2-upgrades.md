@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -146,3 +146,18 @@ do not infer abandonment from elapsed time or weaken live-writer exclusion.
 
 Legacy writer adoption policy, remaining installed families/private rehearsal,
 bug-17, final security review, release ladder and artifact seal remain open.
+
+## 2026-09-09 Installed MCP and Observational Cache Parity
+
+Chk-590 and `.mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json` record 30
+installed v2 scenarios across Node 24.15.0, 24.18.0 and 26.0.0. Stale, warm,
+absent and permission-read-only caches preserve current authored content,
+stable parent/child identities and all fixture/Git bytes. Switching the same
+graph between JSON and SQLite yields identical semantic MCP responses.
+The existing legacy MCP workflow remains covered. Fresh full suite: 1341 pass;
+CLI/docs parity and diff checks pass. No shipped runtime implementation changed.
+
+This closes a bounded installed-read coverage gap, not bug-7 or task-826.
+Work/archive flows, private migration rehearsal, scale, legacy-writer policy,
+killed-writer recovery, bug-17 and final independent/release gates remain open.
+No permission policy, canonical migration, bundle refresh or publication assumed.
