@@ -484,3 +484,14 @@ custody scans per write; profiling and safe optimization are the next independen
 lane, not a reason to lower the graph target or weaken custody. No new bug is
 counted solely from a harness timeout; the gap is tracked on bug7 and test481.
 28 of 30 bug lanes remain done; all final qualification/publication gates remain.
+
+## 2026-09-09 Measured Nullable Read Optimization
+
+Bug7/chk595 records a constant-factor improvement that removes duplicate path
+inspection but preserves every per-write custody check. Full runtime suite:
+1368 pass; final focused refinements: 25 pass; installed reader checks: eight per
+required runtime. One paired isolated 2000-node profile improves from 329196 to
+272214 ms and validates. This does not close the remaining full scale/runtime
+matrix, pending compatibility decisions, Bug17 or final security/release gates.
+The bounded source review has no remaining findings. Protected state remains
+unchanged; no public release, canonical migration or new skill candidate.

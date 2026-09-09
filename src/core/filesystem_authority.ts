@@ -338,13 +338,33 @@ export function readContainedFile(
   input: ContainedPathInput & { maxBytes?: number },
   encoding: BufferEncoding | null = "utf8"
 ): string | Buffer {
+  return readContainedFileContent(input, encoding, false);
+}
+
+/** One fresh authority inspection, not exists-then-read or a filesystem cache.
+ * Only initial target absence is nullable; errors after presence, including an
+ * ENOENT from open/read, propagate so a disappearing file is not reclassified.
+ */
+export function readContainedFileIfPresent(input: ContainedPathInput & { maxBytes?: number }): string | null {
+  return readContainedFileContent(input, "utf8", true);
+}
+
+function readContainedFileContent(input: ContainedPathInput & { maxBytes?: number }, encoding: BufferEncoding | null, allowMissing: false): string | Buffer;
+function readContainedFileContent(input: ContainedPathInput & { maxBytes?: number }, encoding: "utf8", allowMissing: true): string | null;
+function readContainedFileContent(
+  input: ContainedPathInput & { maxBytes?: number },
+  encoding: BufferEncoding | null,
+  allowMissing: boolean
+): string | Buffer | null {
   if (input.maxBytes !== undefined && (!Number.isSafeInteger(input.maxBytes) || input.maxBytes < 0)) {
     fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read byte limit must be a nonnegative safe integer");
   }
   return withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => {
     // Reject special files before opening. Nonblocking open also prevents a
     // FIFO swapped in after inspection from hanging before descriptor checks.
-    if (!fs.lstatSync(absolutePath).isFile()) {
+    const initial = allowMissing ? lstatIfPresent(absolutePath) : fs.lstatSync(absolutePath);
+    if (!initial) return null;
+    if (!initial.isFile()) {
       fail("ERR_CONTAINED_PATH_TYPE", "read", input.relativePath, "contained read target must be a file");
     }
     const nonblock = typeof fs.constants.O_NONBLOCK === "number" ? fs.constants.O_NONBLOCK : 0;

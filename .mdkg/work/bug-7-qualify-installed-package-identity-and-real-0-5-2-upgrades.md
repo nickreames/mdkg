@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -62,6 +62,23 @@ Affected-version assessment: confirmed against current 9d7e0d3f candidate source
 Require failing-before/passing-after results and independent verification in task-828. Every security bug links a case-level source regression and installed consumer regression where applicable. No automatic waiver.
 
 # Links / Artifacts
+
+## Fresh Nullable Read Optimization
+
+Chk595 and bug-7-nullable-read.json verify a bounded source improvement: graph
+transaction value reads no longer repeat existence-check containment traversal.
+All per-write custody and fresh byte/dependency/control checks remain. Initial
+absence alone returns null; disappearance after presence remains an error.
+The 1368-test runtime suite passes; final regression-only refinements pass 25
+focused checks and eight installed reader tests on each required runtime.
+
+The installed Node26/JSON 2000-node migration completes and validates in 272214 ms
+versus 329196 ms in the preceding isolated profile, with identical authored input
+bodies and event streams. This 17.31% paired reduction is not a universal speedup,
+new product SLA or full scale-matrix acceptance. Keep the representative graph
+size; plan the remaining runtime/backend qualification using explicit measured
+execution allowances, never weaker custody checks or silently reduced coverage.
+No pending compatibility policy, final security review or release gate is waived.
 
 ## 2026-09-09 Installed Goal Routing and Scale Gap
 
