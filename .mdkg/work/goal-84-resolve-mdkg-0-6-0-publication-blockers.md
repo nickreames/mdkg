@@ -495,3 +495,17 @@ required runtime. One paired isolated 2000-node profile improves from 329196 to
 matrix, pending compatibility decisions, Bug17 or final security/release gates.
 The bounded source review has no remaining findings. Protected state remains
 unchanged; no public release, canonical migration or new skill candidate.
+
+## 2026-09-09 Representative Installed Scale Proof
+
+Chk-596 verifies the strengthened 2000-task scale/lifecycle matrix across Node
+24.15.0, 24.18.0 and 26.0.0: 45 cases, 798 commands, exact persisted identities
+and plan hashes, unchanged event histories and 27 removed disposable fixtures.
+Fresh full suite: 1383 pass. CLI/docs/graph/SQLite checks pass. Independent
+bounded review has no remaining finding; final task828 is still required.
+
+Bug7 remains in progress for compatibility/recovery decisions and installed
+aggregation. Bug17 remains blocked on legacy public-bundle compatibility. The
+28-of-30 bug and 12-of-13 original security-fix counts do not change. Metadata,
+full release ladder and exact seal remain open. Preserve selected Goal73,
+runtime state, Demo3 bundle and partial Bug17 custody. Skill candidates: none.

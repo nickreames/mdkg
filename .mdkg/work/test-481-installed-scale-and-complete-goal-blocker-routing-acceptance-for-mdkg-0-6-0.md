@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
-refs: [bug-7, chk-595]
+refs: [bug-7, chk-595, chk-596]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
@@ -43,7 +43,13 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
 
 # Results / Evidence
 
-Not executed. Record case-level expected/actual, exact commands/runtime/package identity, stdout/exit results and compact reproducible evidence. No missing runtime, interrupted case or source-only assertion is a pass.
+Current bounded result: chk-596 records 45 strengthened installed cases across
+Node 24.15.0, 24.18.0 and 26.0.0, with 2000 tasks per large graph. All five case
+areas have representative evidence in
+.mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json. This node remains
+open for task826 and final independent acceptance; no missing runtime,
+interrupted case or source-only assertion is counted as a pass. Earlier partial
+results below are retained as investigation history, not current acceptance.
 
 2026-09-09 partial execution supersedes the initial not-executed placeholder:
 scripts/installed-scale-goal.js has 15 passing 100-node control cases on all three
@@ -55,6 +61,16 @@ a declared product SLA. The four partial fixtures/journals are retained and the
 cost investigation stays under bug-7. Do not count these incomplete runs as full
 scale acceptance or complete this aggregate node before task-826 and final review.
 Evidence: .mdkg/artifacts/goal-84/bug-7-scale-goal.json.
+
+2026-09-09 further evidence: the earlier full-size harness passes on Node24.15.0
+and24.18.0, but read-only review identified missing explicit v2 identity and
+event-history preservation assertions. The strengthened installed100-task
+control passes15 cases/266 commands, including those assertions against public
+CLI plan hashes and persisted graph state. All three strengthened2000-task
+runtimes remain pending; the smaller control does not satisfy case1. Artifact:
+.mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json. The full ordinary suite
+passes1383 and independent bounded review has no remaining finding. This does
+not complete task826, test481, final security review or release qualification.
 
 # Notes / Follow-ups
 

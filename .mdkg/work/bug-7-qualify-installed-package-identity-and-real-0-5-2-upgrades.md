@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -266,3 +266,40 @@ frozen graph, fixture Git index and contemporaneous canonical graph/Git bytes.
 This snapshot predates bug-33 intake and is not a current-canonical migration
 approval. Private bodies remain under /private/tmp; durable summaries contain
 only counts, diagnostic references and hashes. Bug-7 remains incomplete.
+
+## 2026-09-09 Strengthened Installed Scale Evidence
+
+The earlier 2000-task matrix now passes 15 cases/262 commands on Node24.15.0
+and24.18.0 under an explicit bounded test-only allowance. Independent evidence
+review identified missing persisted-identity and across-migration event-history
+assertions; those receipts remain supplemental rather than complete acceptance.
+
+The harness now verifies the public plan after-hashes, applied state/plan hash,
+persisted v2 manifest, complete unique identity inventory and task-only count,
+and exact original event bytes. A failed 100-task control exposed an internal
+versus public plan-shape assumption; the corrected installed control passes
+15 cases/266 commands. Fifteen harness tests pass on each required runtime;
+fresh Node24.18.0 full suite passes1383 with no failures/skips. CLI/docs pass.
+Read-only review has no remaining bounded finding; it is not task828 clearance.
+
+Evidence: .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json. Fresh
+strengthened 2000-task runs on all three runtimes remain required. Do not close
+Bug7, test481, task826 or Goal83 from the small control or older receipts.
+Pending compatibility/recovery/public-bundle decisions remain unaccepted.
+Selected Goal73, runtime DB, protected Demo3 bundle and separate Bug17 bytes
+are preserved. No new product change, skill candidate, commit or publication.
+
+## 2026-09-09 Representative Scale Matrix Verified
+
+Chk-596 and .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json record
+45 strengthened cases and 798 commands passing on Node 24.15.0, 24.18.0 and
+26.0.0. Six 2000-task migrations verify every persisted identity/plan hash and
+unchanged event history. All 27 successful graph fixtures were removed. This
+supersedes the pending strengthened-runtime execution gap above; older control
+and 262-command evidence remains historical, not the basis for this milestone.
+
+The full suite passes 1383; CLI/docs/graph/SQLite checks pass. No shipped runtime
+change or compatibility policy acceptance occurred. Bug7 stays in progress for
+old-writer and killed-writer treatment, historical migration evidence and remaining
+installed-family aggregation. Bug17, final task828 review, release metadata,
+complete release ladder and artifact seal remain open. No publication readiness.
