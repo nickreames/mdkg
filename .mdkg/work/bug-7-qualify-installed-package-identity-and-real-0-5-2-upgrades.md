@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -161,3 +161,17 @@ This closes a bounded installed-read coverage gap, not bug-7 or task-826.
 Work/archive flows, private migration rehearsal, scale, legacy-writer policy,
 killed-writer recovery, bug-17 and final independent/release gates remain open.
 No permission policy, canonical migration, bundle refresh or publication assumed.
+
+## 2026-09-09 Installed Work and Archive Qualification
+
+Chk-591 and `.mdkg/artifacts/goal-84/bug-7-work-archive.json` record complete
+archive/work and direct/queued invocation flows in legacy, v2 JSON and v2 SQLite
+on Node 24.15.0, 24.18.0 and 26.0.0. Twenty-four v2 warm/cold checks verify stable
+contract/order/receipt/archive links, observational reads and preserved Git/evidence
+bytes. Fresh Node 24.18.0 full suite passes 1341 tests; CLI/docs checks pass.
+One fixture-only expectation was corrected: source attachments use input_refs,
+not artifacts. No new shipped defect or policy approval was established.
+
+Remaining: private migration rehearsal, scale and other installed-family gaps,
+legacy-writer and killed-writer treatment, bug-17, independent security review,
+draft release guidance/metadata, complete release ladder and exact artifact seal.

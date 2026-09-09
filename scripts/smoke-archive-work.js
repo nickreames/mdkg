@@ -5,10 +5,11 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { prepareWorkIdentity, verifyWorkIdentity } = require("./installed-work-identity");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
+const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
 const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
 const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
 
@@ -133,10 +134,11 @@ function packAndInstall(tempRoot) {
   return { binPath, tarballPath };
 }
 
-function exerciseArchiveAndWork(binPath, tempRoot) {
-  const root = path.join(tempRoot, "archive-work-repo");
+function exerciseArchiveAndWork(binPath, tempRoot, backend) {
+  const root = path.join(tempRoot, `archive-work-${backend || "legacy"}`);
   initGit(root);
   mdkg(binPath, ["init", "--agent"], root);
+  prepareWorkIdentity(binPath, root, backend);
 
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assertIncludes(gitignore, ".mdkg/archive/**/source/", ".gitignore");
@@ -212,8 +214,8 @@ function exerciseArchiveAndWork(binPath, tempRoot) {
   ).node;
   const workContractRef = `${path.basename(path.dirname(work.path))}/WORK.md`;
   updateFrontmatter(path.join(root, spec.path), {
-    work_contracts: `[${workContractRef}]`,
-    relates: "[work.generate-image]",
+    work_contracts: `[${work.stable_ref || workContractRef}]`,
+    relates: `[${work.stable_ref || "work.generate-image"}]`,
   });
 
   const order = parseJson(
@@ -360,6 +362,13 @@ function exerciseArchiveAndWork(binPath, tempRoot) {
   if (!doctor.ok) {
     throw new Error(`doctor failed: ${JSON.stringify(doctor, null, 2)}`);
   }
+  return backend ? verifyWorkIdentity(binPath, root, {
+    backend,
+    ids: [spec.id, work.id, order.id, receipt.id, "archive.key-input-doc", "archive.supplemental-prompt", "archive.image-output"],
+    links: [[spec.id, "work_contracts", work.id], [work.id, "agent_id", spec.id], [order.id, "work_id", work.id], [receipt.id, "work_order_id", order.id],
+      [order.id, "input_refs", "archive.key-input-doc"], [order.id, "input_refs", "archive.supplemental-prompt"], [receipt.id, "artifacts", "archive.image-output"]],
+    orders: [order.id], receipts: [receipt.id],
+  }) : [];
 }
 
 function runSmoke() {
@@ -372,6 +381,9 @@ function runSmoke() {
       throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     }
     exerciseArchiveAndWork(binPath, tempRoot);
+    const identityWorkflows = [];
+    for (const backend of ["json", "sqlite"]) identityWorkflows.push(...exerciseArchiveAndWork(binPath, tempRoot, backend));
+    console.log(JSON.stringify({ smoke: "archive-work", identityWorkflows }));
     console.log("archive/work smoke passed");
     console.log(`version=${version}`);
     console.log(`tarball=${path.basename(tarballPath)}`);
