@@ -6,8 +6,8 @@ status: progress
 priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, test-483, task-828]
-active_node: bug-28
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, test-483, task-828]
+active_node: bug-29
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -102,6 +102,22 @@ accounting remains twelve of thirteen locally fixed. No new skill candidate.
 # Completion Evidence
 
 Pending full end-condition evidence.
+
+## 2026-09-09 Public Bootstrap Seed Verification
+
+Bug29 is locally verified: public core seeds are self-contained and about 80%
+smaller by bytes, while canonical instructions and existing aliases remain.
+45 focused and23 installed tests pass on each of Node24.18.0/26.0.0, including
+actual published0.5.2 upgrade/customization/recovery. Full suite:1249 pass,
+zero failures/skips. Receipt: .mdkg/artifacts/goal-84/bug-29-verification.json.
+Two independent functional review findings were corrected; task-828 remains
+the separate final security/qualification gate. Original security count stays
+twelve of thirteen locally fixed. Bugs17,26,27 and new bug32 remain open,
+alongside full installed qualification, metadata, ladder and artifact seal.
+Bug32 records stale CLI upgrade hints; its implementation has not started.
+Next bounded recommendation: bug26 identity recreation provenance. Selected
+Goal73, runtime DB, Demo3 bundle and partial bug17 bytes remain preserved.
+No new skill candidate; no push, publish, tag, provider or deployment action.
 
 ## 2026-09-09 Upgrade Identity and Recovery Verification
 

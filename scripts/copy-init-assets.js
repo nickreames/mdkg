@@ -36,11 +36,14 @@ function copyFileContent(content, dest) {
 const root = path.resolve(__dirname, "..");
 const distRoot = path.join(root, "dist", "init");
 const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+const { assertPublicCoreSeed } = require("./public-core-seed.js");
+const publicCoreRoot = path.join(root, "assets", "init", "core");
+assertPublicCoreSeed({ publicRoot: publicCoreRoot });
 
 fs.rmSync(distRoot, { recursive: true, force: true });
 
 copyFile(path.join(root, "assets", "init", "config.json"), path.join(distRoot, "config.json"));
-copyDir(path.join(root, ".mdkg", "core"), path.join(distRoot, "core"));
+copyDir(publicCoreRoot, path.join(distRoot, "core"));
 copyDir(path.join(root, ".mdkg", "templates"), path.join(distRoot, "templates"));
 copyFile(path.join(root, "assets", "init", "README.md"), path.join(distRoot, "README.md"));
 copyFile(path.join(root, "assets", "init", "AGENTS.md"), path.join(distRoot, "AGENTS.md"));
@@ -72,4 +75,5 @@ assertPublicSkillProjection({
   publicRoot: path.join(root, "assets", "init", "skills", "default"),
   builtRoot: path.join(distRoot, "skills", "default"),
 });
+assertPublicCoreSeed({ publicRoot: publicCoreRoot, builtRoot: path.join(distRoot, "core") });
 writeInitManifest(distRoot, pkg.version);

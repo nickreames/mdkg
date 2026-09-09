@@ -2,12 +2,12 @@
 id: bug-29
 type: bug
 title: Make packaged bootstrap graph references self-contained
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-24-adjacent-findings.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-24-adjacent-findings.json, .mdkg/artifacts/goal-84/bug-29-verification.json]
 relates: [goal-84, goal-83, bug-7, test-483]
 blocked_by: []
 blocks: []
@@ -73,4 +73,28 @@ tests and task-828 independent verification remain required.
 # Links / Artifacts
 
 - .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json
-- root:bug-7, root:test-483, root:task-826 and root:task-828. No fix yet.
+- root:bug-7, root:test-483, root:task-826 and root:task-828.
+
+## Local Verification — 2026-09-09
+
+Public core guidance now has explicit ownership under assets/init/core rather
+than copying the maintainer graph. Ten rule IDs, eleven filenames and all five
+historical search aliases remain. Canonical node/schema parsing, reference
+closure, identity-free seeds, exact inventory/pins, required aliases and built
+byte parity gate build and static package readiness. Core guidance drops from
+61020 to 12440 bytes without modifying canonical instructions or project docs.
+
+Before: three fresh-init-to-v2 tests failed with missing dec-53/edd-3/edd-6.
+After: 45 focused tests on each of Node24.18.0 and26.0.0; 23 installed tests on
+each runtime; 1249 full ordinary tests, zero failures/skips. Actual published
+0.5.2 upgrade fixtures prove managed hashes, alias preservation, custom-content
+protection, repeated preview, interrupted recovery and explicit v2 adoption.
+Preserved custom legacy references continue to block migration, as required.
+
+Two independent functional guard findings were reproduced/corrected; final
+source review found no remaining concrete bug29 defect. This is not independent
+security clearance. Artifact: .mdkg/artifacts/goal-84/bug-29-verification.json.
+Full/changed graph, SQLite, CLI/docs and diff checks pass. Goal83/84, final
+task-828, installed full matrix, release ladder and seal remain incomplete.
+New bug32 tracks stale source-emitted upgrade help separately; no source fix for
+that intake is included. No new skill candidate or publication authority used.
