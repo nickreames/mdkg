@@ -6,6 +6,7 @@ const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { exerciseIdentityCollaboration } = require("./installed-identity-collaboration");
+const { exerciseInstalledGraphRecovery } = require("./installed-graph-recovery");
 
 const repoRoot = path.resolve(__dirname, "..");
 const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
@@ -215,6 +216,7 @@ function main() {
   assertNoMutation(root, before, "fix plan duplicate-id branch conflict check");
 
   const identity = exerciseIdentityCollaboration(binPath, tempRoot);
+  const recovery = exerciseInstalledGraphRecovery(binPath, tempRoot, commandEnv());
 
   console.log(
     JSON.stringify(
@@ -225,6 +227,7 @@ function main() {
         tarball: tarballPath,
         plan_hash: first.plan_hash,
         identity,
+        recovery,
       },
       null,
       2

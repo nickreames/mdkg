@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588]
+refs: [chk-586, chk-587, chk-588, chk-589]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -127,3 +127,22 @@ all-writers-upgraded/no-mixed-version adoption requirement, with old-init limits
 clearly documented. Nick's policy acceptance is still required. No source guard,
 canonical migration or risk waiver was implemented. Continue independent
 qualification while that decision is pending.
+
+## 2026-09-09 Installed Graph Recovery Milestone
+
+Chk-589 adds 36 installed migration/reconciliation caught-error recovery cases
+across Node 24.15.0, 24.18.0 and 26.0.0, plus 118 focused passing regressions.
+Exact resume/rollback, interrupted rollback, dependency/user/control refusal,
+Git-index preservation and observational terminal replay are verified. Existing
+branch-smoke coverage remains intact; no runtime implementation changed.
+
+A separate abrupt-termination probe confirms an open operational limit:
+SIGKILL leaves the writer lock after one authored write. Journal inspection is
+observational; resume times out and preserves all files. The owned child was
+confirmed terminated on both tested runtimes. No canonical lock was removed,
+no automatic takeover was added, and this is not crash-recovery clearance.
+Keep this as bug-7/killed-writer-lock-recovery pending a safe supported route;
+do not infer abandonment from elapsed time or weaken live-writer exclusion.
+
+Legacy writer adoption policy, remaining installed families/private rehearsal,
+bug-17, final security review, release ladder and artifact seal remain open.
