@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -175,6 +175,21 @@ not artifacts. No new shipped defect or policy approval was established.
 Remaining: private migration rehearsal, scale and other installed-family gaps,
 legacy-writer and killed-writer treatment, bug-17, independent security review,
 draft release guidance/metadata, complete release ladder and exact artifact seal.
+
+## 2026-09-09 Portable Dependency Classification
+
+Bug-34 fixes seven false blockers from MANIFEST/WORK portable skill and tool
+labels using the shared identity mapper. The frozen graph hash remains
+e6d7aefa52c08983a18150653f445c6efd7c922c83c153379af60f043587f000.
+The complete installed preview has 2490 mappings, 2492 proposed writes and one
+remaining strict-candidate refusal: task-309 artifacts contains mdkg://goal-10.
+That node also contains mdkg://epic-64; both alias-shaped URIs occur in its original
+commit 2a8ed49d24e89e92d912968092539f1a53d9effb. No exact stable identity is inferred
+from these historical locators. Neither private copy nor canonical graph was
+migrated, and no historical body was changed. The unsupported condition remains
+explicit here; this is not a release waiver. Evidence is bug-34-verification.json.
+Old-writer adoption, killed-writer recovery, remaining scale/lifecycle fixtures,
+independent security and final release qualification remain open.
 
 ## 2026-09-09 Frozen Private Graph Preview and Output Defect
 

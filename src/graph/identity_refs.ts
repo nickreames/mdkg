@@ -23,6 +23,14 @@ const OPAQUE_REF_FIELDS = new Set([
   "validation_policy_ref", "evidence_policy_ref",
 ]);
 
+// Capability dependencies may name a runtime/skill registry entry without a
+// graph node. Only explicit immutable references opt into graph identity here;
+// coincidental local aliases must not change a portable dependency's meaning.
+// subagent_refs is intentionally absent: it is a validated graph foreign key.
+const PORTABLE_DEPENDENCY_FIELDS = new Set([
+  "skill_refs", "tool_refs", "model_refs", "wasm_component_refs", "runtime_image_refs",
+]);
+
 export function isGraphReferenceField(key: string): boolean {
   return !OPAQUE_REF_FIELDS.has(key) && (GRAPH_REF_FIELDS.has(key) || key.endsWith("_ref") || key.endsWith("_refs"));
 }
@@ -36,12 +44,16 @@ export function mapGraphReferenceFields(
   const result = { ...frontmatter };
   for (const [field, value] of Object.entries(frontmatter)) {
     if (!isGraphReferenceField(field)) continue;
+    const resolveValue = (ref: string): string => {
+      if (PORTABLE_DEPENDENCY_FIELDS.has(field) && !/^mdkg:/i.test(ref)) return ref;
+      return resolve(ref, field);
+    };
     const transform = (ref: string): string => {
       // Artifact lists also contain opaque filesystem/runtime locators. Only
       // explicit internal graph/archive URIs in this field bind identities.
       if (field === "artifacts" && !ref.startsWith("mdkg:") && !ref.startsWith("archive://")) return ref;
       const binding = /^([a-z0-9][a-z0-9._-]*)=(.+)$/.exec(ref);
-      return binding ? `${binding[1]}=${resolve(binding[2], field)}` : resolve(ref, field);
+      return binding ? `${binding[1]}=${resolveValue(binding[2])}` : resolveValue(ref);
     };
     if (typeof value === "string") result[field] = transform(value);
     else if (Array.isArray(value)) result[field] = value.map(transform);

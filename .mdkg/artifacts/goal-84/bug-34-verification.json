@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-34",
+  "checkpoint_qid": "root:chk-593",
+  "owner": "mdkg-project-agent",
+  "goal_qids": ["root:goal-83", "root:goal-84"],
+  "source_baseline": "a441acca9e8308b7984add71a50e1669c51bdaa8",
+  "outcome": "Portable dependency classification locally verified; overall qualification NOT_READY",
+  "affected_versions": "Unpublished graph-v2 candidate; not attributed to published 0.5.2",
+  "impact": "Valid portable dependencies blocked migration, or coincidentally matching aliases silently captured their meaning as graph identities.",
+  "source_sha256": {
+    "src/graph/identity_refs.ts": "4934bb46d6acbd580b58df41cfcc9e9fa26d2bce3c92d968576958dbba5bcab1",
+    "tests/graph/identity_dependencies.test.ts": "12b0c9f688f773ff1cfb28ef571dbcc93c5a5779e9420f512b822291d77068d5"
+  },
+  "classification": {
+    "probes": 9,
+    "legacy_validation_all_passed": true,
+    "portable_fields": ["skill_refs", "tool_refs", "model_refs", "wasm_component_refs", "runtime_image_refs"],
+    "explicit_mdkg_references_remain_strict": true,
+    "subagent_refs_remain_graph_and_role_checked": true,
+    "classification_sha256": "d52f8e4fb67bf37500b60863b803e4214e132b3bc5e7c7256a652e12600c9f0e"
+  },
+  "regression": {
+    "before": {"passed": 1, "failed": 7, "log_sha256": "261223818c6ccd4b3e9ee54a9e0e69c2c51101a4454514b061c10394ebe6db0f"},
+    "after": {"passed": 8, "failed": 0, "log_sha256": "eecbeb0fce6ba9dfdd9ac92d679642e0ff9f230fab4c52b2db9492063d8f61ab"},
+    "same_final_test_file": true,
+    "coverage": ["shared mapping", "MANIFEST/SPEC/WORK migration", "ordinary binding", "semantic reconciliation", "template import", "independent fork", "strict missing/malformed/ambiguous identity and subagent controls", "exact JSON/SQLite capability arrays and unchanged authored bytes"],
+    "fixture_corrections": ["WORK inputs/outputs were corrected to schema-valid values", "label assertions narrowed to the three authored capability records rather than generated core nodes", "final strengthened test file rerun against both before and after implementations"]
+  },
+  "installed_candidate": {
+    "version": "0.5.2 development",
+    "tarball_sha256": "1143dafbc36f773af4ea9e411026063116523477efbf64198918b38a30b7bcbf",
+    "integrity": "sha512-mDZBjoQQcowo1WCxAh8K1GqJkm1LrdRfc0jb0ZBNcCJtifin5Hx5IvjYkLZw9Y67j2g9bE4r80q7pZO67hmgbw==",
+    "mode": "Intermediate built package using npm pack --ignore-scripts; not the final release ladder or seal",
+    "runtimes": [{"node": "24.15.0", "passed": 8}, {"node": "24.18.0", "passed": 8}, {"node": "26.0.0", "passed": 8}],
+    "qualification_receipt_sha256": "a9a15ae96af62dce680ad2084c814d0e6d86e7d2e0b9dd3d3e4b41c5d1c51348"
+  },
+  "validation": {
+    "focused": {"passed": 271, "failed": 0, "node": "26.0.0"},
+    "full": {"passed": 1357, "failed": 0, "skipped": 0, "node": "24.18.0"},
+    "cli_check_built_exit": 0,
+    "docs_check_built_exit": 0,
+    "public_release_contracts": {"passed": 26, "failed": 0},
+    "source_checks_receipt_sha256": "c1c33ef940c38274c0c14697a3db6a18f0ec6cb4bc0c12d21fac48e5f49b9127",
+    "preclosure_graph": {"errors": 0, "warnings": 3, "warning_class": "preserved stale subgraph snapshots"},
+    "evidence_graph_checks": {"index_exit": 0, "full_validate_exit": 0, "changed_validate_exit": 0, "sqlite_verify_exit": 0, "diff_check_exit": 0}
+  },
+  "independent_review": {
+    "reviewer": "migration_ref_classification",
+    "mode": "Read-only source classification and exact source/test candidate review",
+    "blocking_findings": 0,
+    "limits": "Bounded review, not task-828 final Codex Security diff clearance"
+  },
+  "private_graph_preview": {
+    "graph_sha256": "e6d7aefa52c08983a18150653f445c6efd7c922c83c153379af60f043587f000",
+    "stdout_bytes": 2952139,
+    "stdout_sha256": "d783f531d834b38a2cab394a82bb99d6efd72c04913d9634e439700a7def08fa",
+    "plan_hash": "sha256:fb591cd9896f3c254e19256dd8c1531e512236888baee4b80a9e3fa5bb9cff4a",
+    "mapping_count": 2490,
+    "proposed_write_count": 2492,
+    "false_dependency_blockers_removed": 7,
+    "remaining_blockers": ["strict candidate validation: root:task-309: artifacts has an unresolved or ambiguous immutable identity mdkg://goal-10"],
+    "safe_to_apply": false,
+    "migration_applied": false,
+    "preview_observational": true,
+    "canonical_preserved": true,
+    "historical_disposition": "task-309 also contains mdkg://epic-64. Both alias-shaped URIs occur in original commit 2a8ed49d24e89e92d912968092539f1a53d9effb. Preserve exact historical bytes; no invented immutable identities or canonical migration. Remaining compatibility assessment belongs to bug-7."
+  },
+  "preserved_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/commands/subgraph.ts": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2",
+    ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md": "2a788e558c49556bf11ce5d1ed90286193842eeebe3fd9c6117550a9e45825d6",
+    ".mdkg/artifacts/goal-84/bug-17-progress.json": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e"
+  },
+  "authority": "Scoped Goal83/84 source, tests, evidence/projections and reviewed local commit only; no remote, publish, tag, provider, deployment, canonical migration, bundle refresh or consumer writes",
+  "generated_custody": "Tracked SQLite remains separately preserved dirty generated state and is excluded from this commit",
+  "commit_allowlist": [
+    "src/graph/identity_refs.ts",
+    "tests/graph/identity_dependencies.test.ts",
+    ".mdkg/artifacts/goal-84/bug-34-verification.json",
+    ".mdkg/work/bug-34-preserve-portable-dependency-labels-across-identity-workflows.md",
+    ".mdkg/work/chk-593-verify-portable-dependency-labels-and-preserve-historical-migration-refusal.md",
+    ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+    ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md"
+  ],
+  "fixture_cleanup": {"removed_owned_directories": 999, "target_manifest_sha256": "ae823ef975d235e263e4135957ce7ff9f36e0d315740325c54d57314e2b096f7", "retained": ["intermediate tarball", "installed candidate", "diagnostic scripts/logs/receipts", "separate frozen private graph copy"]},
+  "skill_candidates": []
+}
