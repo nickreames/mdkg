@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "qid": "root:bug-25",
+  "owner": "mdkg-project-agent",
+  "baseline_head": "99778dfc200dd7601b307435b12a887479ded4dc",
+  "disposition": "locally verified; independent task-828 and full release qualification remain required",
+  "affected_surface": "Repository site-build release infrastructure; proxy is not shipped in the npm runtime package.",
+  "source_sha256": {
+    "scripts/npm-smoke-proxy.js": "d9f709184c518562b85466702fd6f341d135ef5cde707388a85fe95f1f5cb37b",
+    "scripts/build-receipts.js": "68010a47f2abd27e07122dda2d3bb83844574563e5622bf32c3b22adbce05cf7",
+    "scripts/smoke-manifest.json": "1370a7f073d48bd0d6743b2af68cf2e14ce13e9e06dd4f94f3baa9053f2a53a7",
+    "tests/release-ladder.test.ts": "04436c21158dec496e8880c7dbdc1623d84fcd949b21d443ab0fd2e4a288e4e9"
+  },
+  "prepatch": {
+    "tests": 11,
+    "passed": 7,
+    "failed": 4,
+    "proxy_sha256": "c1a5635dbe8832eca05ffd799614364f1aac2e899d851eb253e868f6f3e566f3",
+    "output_sha256": "4306a4d64338d9c5af30c145c639bed4d5aa3cd73c7014a155652c34955d42b6",
+    "note": "Four new regressions reproduced; the later lockfile/manifest and dotenv tests were additional postpatch coverage."
+  },
+  "focused": [
+    {
+      "runtime": "v24.18.0",
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "output_sha256": "5eb5de3db489f8730af8c1b574d96bc63ecb7551a2ebeb37e6dfa9ccd49a3fcb"
+    },
+    {
+      "runtime": "v26.0.0",
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "output_sha256": "b7f49035cdd183a03f28b38a1f321ed51c8daaf8e622043cd390b2bcc4c3b50a"
+    }
+  ],
+  "runtime_separation": {
+    "runtimes": ["v24.18.0", "v26.0.0", "v24.18.0", "v26.0.0"],
+    "cache_hits": [false, false, true, true],
+    "receipt_sha256": "64ec2a95a05302c652a022ae29775f88d8d534df99fe2553f7c6ad1018a27ade"
+  },
+  "real_local_site_builds": {
+    "runtime": "v24.18.0",
+    "owners": ["docs", "mdkg-dev"],
+    "profile": "default",
+    "builds": 2,
+    "verified_cache_hits": 2,
+    "input_count": 6176,
+    "input_manifest_sha256": "716d83803d70c3801056a118c857685a8f86da637aff9886a8dcb92396320eca",
+    "receipt_sha256": "b8aec56be074ffc7932d78018371913857dcc8b52a238e917b766d4da8bf82fb",
+    "git_head_and_status_unchanged": true,
+    "network_or_provider_checks": false
+  },
+  "full_test_built": {
+    "runtime": "v26.0.0",
+    "source_tests_passed": 1130,
+    "contract_tests_passed": 26,
+    "failed_or_skipped": 0,
+    "output_sha256": "f446c48990ad61192ad7e1a82bfd91dbff0393a2f14a2367d7076dedee2f9250",
+    "scope_note": "The shell-expanded test:built glob does not prove root-level TypeScript test coverage. The 13 focused tests above ran separately. The recursive coverage-contract runner and final task-829 ladder remain required."
+  },
+  "checks": {
+    "build": "passed",
+    "cli_check_built": "passed",
+    "docs_check_built": "passed; 494 examples, zero failures",
+    "graph_full": "passed; zero errors and three preserved stale-subgraph warnings",
+    "graph_changed_only": "passed; zero errors/warnings",
+    "sqlite_index_verify": "passed; all five caches fresh",
+    "git_diff_check": "passed"
+  },
+  "protected_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "coverage": [
+    "Direct and transitive external authored input changes, addition/deletion and unchanged reuse",
+    "Declared profile, build arguments, lockfile and Node runtime identity bound to cache key",
+    "Source movement, linked inputs, implicit dotenv inputs and malformed cache evidence fail closed",
+    "Persisted input manifest and cached/restored output hashes verified before acceptance",
+    "Whole-repository conservative authored-input manifest; bounded streaming file hashes"
+  ],
+  "limitations": [
+    "Not an arbitrary JavaScript dependency tracer or hermetic build sandbox. Installed dependencies are lockfile-owned and assumed immutable under the release dependency preflight.",
+    "Reserved generated output, checkout-local stores and caller-owned receipt/cache sinks are not supported authored inputs; conservative hashing can invalidate on unrelated authored changes.",
+    "Cache seals are local integrity evidence, not signatures or execution authorization.",
+    "Final independent task-828 review, installed qualification and full task-829 ladder remain open; this is not a 0.6.0 artifact seal.",
+    "No canonical bundle refresh, public-copy edits, remote Git, provider/deployment action or package publication."
+  ],
+  "skill_candidates": [],
+  "authority": "Existing approved goal-83/84 local source, tests, evidence and reviewed local commit scope."
+}

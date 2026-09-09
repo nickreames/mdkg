@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, test-483, task-828]
-active_node: bug-24
+active_node: bug-25
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -102,6 +102,21 @@ accounting remains twelve of thirteen locally fixed. No new skill candidate.
 # Completion Evidence
 
 Pending full end-condition evidence.
+
+## 2026-09-09 Site Cache Verification
+
+Bug-25 is locally verified: four failing-before regressions, 13 focused tests
+passing on Node 24.18.0 and 26.0.0, runtime-separated cache reuse, and two real
+local Astro builds with two verified cache hits. Build, 1130 source tests plus
+26 contracts, CLI/docs/graph/SQLite/diff checks pass. The root-level focused
+tests ran separately; align ordinary test discovery with the recursive release
+coverage contract before final qualification. Evidence:
+.mdkg/artifacts/goal-84/bug-25-verification.json.
+
+Original security accounting remains twelve of thirteen locally fixed;
+bug-17's compatibility decision, bugs 26-29, full installed qualification,
+independent task-828 review, ladder and seal remain open. Protected state and
+partial bug-17 work are preserved. No new skill candidate or publication.
 
 ## 2026-09-07 Continuation Boundary
 
