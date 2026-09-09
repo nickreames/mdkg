@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
 const { runShowCommand } = require("../../commands/show");
+const { rebuildDerivedIndexCaches } = require("../../commands/index");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -131,7 +132,7 @@ test("runShowCommand warns when cached index is stale and reindex is disabled", 
   writeDefaultTemplates(root);
   writeTask(root);
 
-  captureOutput(() => runShowCommand({ root, id: "task-1", metaOnly: true }));
+  rebuildDerivedIndexCaches({ root });
   const taskPath = path.join(root, ".mdkg", "work", "task-1.md");
   const future = new Date(Date.now() + 10_000);
   fs.utimesSync(taskPath, future, future);

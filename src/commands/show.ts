@@ -61,7 +61,7 @@ export function runShowCommand(options: ShowCommandOptions): void {
     root: options.root,
     config,
     useCache: !options.noCache,
-    allowReindex: !options.noReindex,
+    allowReindex: options.noReindex ? false : undefined,
   });
 
   if (stale && !rebuilt && !options.noCache) {

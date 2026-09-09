@@ -455,7 +455,7 @@ export function runPackCommand(options: PackCommandOptions): void {
     root: options.root,
     config,
     useCache: !options.noCache && !visibility,
-    allowReindex: !options.noReindex,
+    allowReindex: options.noReindex ? false : undefined,
   });
 
   if (stale && !rebuilt && !options.noCache) {
@@ -521,10 +521,11 @@ export function runPackCommand(options: PackCommandOptions): void {
   let packWithSkills = buildResult.pack;
   if (skillsPolicy.mode !== "none") {
     const skillsLoad = loadSkillsIndex({
+      persistReindex: false,
       root: options.root,
       config,
       useCache: !options.noCache && !visibility,
-      allowReindex: !options.noReindex,
+      allowReindex: options.noReindex ? false : undefined,
     });
     if (skillsLoad.stale && !skillsLoad.rebuilt && !options.noCache) {
       console.error("warning: skills index is stale; run mdkg index to refresh");

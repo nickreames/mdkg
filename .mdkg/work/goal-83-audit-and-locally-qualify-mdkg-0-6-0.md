@@ -7,7 +7,7 @@ priority: 1
 goal_state: paused
 goal_condition: Complete full audit and installed consumer qualification with all publication blockers independently verified and one exact draft 0.6.0 candidate sealed without publication.
 scope_refs: [task-823, task-824, task-825, task-826, task-827, task-829, task-830, test-477, test-478, test-479, test-480, test-481, test-482]
-active_node: task-823
+active_node: task-824
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Objective
@@ -91,3 +91,32 @@ None. Findings belong in source/regression contracts, not procedural skill creat
 # Completion Evidence
 
 chk-571 records the initial security milestone. chk-570 remains incomplete until final qualification.
+
+## 2026-09-08 Behavioral Audit Progress
+
+Task-824 remains the owned active lane. A frozen installed candidate completed
+34 primary/supplemental probes with zero final harness errors. Five defect
+families are now bug-21 through bug-25 under Goal 84, with test-483 verification
+and explicit task-828 blockers. Passing controls include v2 observational reads,
+complete v2 reinitialization, legacy formatting, unknown-version formatter
+refusal and checkpoint dependency routing. Evidence is in
+`.mdkg/artifacts/goal-83/task-824-behavioral-audit.json`.
+
+This is partial behavioral evidence, not complete audit or release qualification.
+Remaining work includes full contract trace, fixes, installed family/runtime
+matrix, final independent security review, draft metadata, release ladder and
+artifact seal. Bug-17's public materialization decision remains open; independent
+audit work continues. Source snapshot, selected Goal 73, runtime DB and protected
+Demo 3 bundle remain unchanged. New nodes and projections are owned uncommitted
+planning/evidence; no source fix, commit, push or publication in this intake.
+
+## 2026-09-09 Behavioral Audit Completion
+
+Task-824's contract classification is complete with seven behavioral blockers
+(bug-21 through bug-27) routed to Goal 84. The contract-audit artifact records
+37 custom probes, 124 passing installed control tests, source hashes and explicit
+coverage limitations. No final qualification is inferred. Continue bounded
+Goal 84 remedies, full installed/runtime qualification, independent review,
+draft release guidance, the full ladder and exact artifact seal. Bug-17 remains
+blocked only on its public-materialization compatibility decision; other work
+continues under the approved local-only contract.

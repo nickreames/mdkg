@@ -1,0 +1,512 @@
+{
+  "schema_version": 1,
+  "kind": "behavioral-audit-progress",
+  "goal": "root:goal-83",
+  "task": "root:task-824",
+  "outcome": "five-confirmed-blockers-not-release-qualified",
+  "scope": "Installed synthetic graph probes plus source-grounded release-cache regression; not full Goal 83 completion.",
+  "candidate": {
+    "sha256": "3238663f76882f094cfd1e9c86abbd43e057aa165ec69099a976949f9d011c05",
+    "integrity": "sha512-WG4nWXf0gBdEtDBmfbmqpwP4sKi808gFSEs7r3sOPMp7urMPghjo956osBJu0+ShScNpHuV7pGxDh6O/vFpkPg==",
+    "status": "intermediate uncommitted candidate; not final release seal"
+  },
+  "source_head": "d09dd2a1f9d6f2a6692ce08fad339498b9b4dd05",
+  "runtime": "v26.0.0",
+  "source_files_sha256": {
+    "src/graph/index_cache.ts": "1de8b81760ae2da749c95db7001276cf919bad9af502090a4eb0c3e51f9446ca",
+    "src/commands/show.ts": "953bc702962abfa57630e4d50b992fa2c64d97adfaa9ebd603c5b74c9e874d90",
+    "src/commands/list.ts": "9450c983a2c4b978169025f20bf429e8b3fbf007b6cfdb07f955de6ba8360171",
+    "src/commands/search.ts": "efb0ad4bc153c4be02200b24d5aa3cc5fc08db9b9771f4736cde8968ad4f0d87",
+    "src/commands/next.ts": "e7b873df9a25a3e8d598e2f56dcca3b27475aff8e213239cfbbacbdc9422586b",
+    "src/commands/pack.ts": "e468f31f8173f229a35c33f5caa0b514eedd741805c31158d492ce6ac79b84f4",
+    "src/pack/pack.ts": "c8a4eb3212d0d26a7d3e1fb80a5c81fc0a602a5e83585bfe7e98b2f375745205",
+    "src/pack/export_json.ts": "7521006cde997d0e684067824d53d5cc13f774facb1afe97122505359fe98231",
+    "src/pack/export_md.ts": "319ab4d380b904be491ce32a0eb674123b108e1cdf4f8035419ca47c400c1ba5",
+    "src/pack/export_xml.ts": "3b4657e3ee9faaaf09bd3501f5c1bb9e5c05c93834d255cbc9441b481c34d983",
+    "src/pack/export_toon.ts": "b275543f9bc0ca8da973c8607894ac20cba27c8f03c499960efaa06fe963d14e",
+    "src/commands/format.ts": "b63bff65df9282ed6aa31097cfd524391c48b8c6f095218d3e577dd1b9d6311c",
+    "src/commands/init.ts": "3c6307511dd994d8428f0076e0102338db22fd69c549d8bde8529b32f90a19fe",
+    "src/util/lock.ts": "2e3036bafa937809242f979a61006d5efc24dedde35d6854e9a15fbdf2e0d664",
+    "scripts/npm-smoke-proxy.js": "c1a5635dbe8832eca05ffd799614364f1aac2e899d851eb253e868f6f3e566f3",
+    "scripts/smoke-manifest.json": "1370a7f073d48bd0d6743b2af68cf2e14ce13e9e06dd4f94f3baa9053f2a53a7",
+    "package.json": "4cee961fe2cfa16e6c08c09ec50ba327cfded0d700bc16633e3a534ef79e3403"
+  },
+  "raw_receipts_sha256": {
+    "primary": "32e5bb5c04ee0d56baac94d4e747cf1e7105eb11cb13c9050c691780d436ebf9",
+    "supplemental": "28fee194c1a8bf73a9e0d96a278921db4c4a116957dfb2205b009fb010d3af5f"
+  },
+  "harness_sha256": {
+    "primary": "60075bc219db6c055834b889473c6215fa5275f2030c3501e3d6048e15e0d489",
+    "supplemental": "223224e15d7cede2bda893ea08d1fd6fdb2df9731d5dd2c90d11029f2cb20b5a"
+  },
+  "results": [
+    {
+      "id": "observational-legacy-json-show",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-json-list",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-json-search",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-json-next",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-json-pack",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-sqlite-show",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-sqlite-list",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-sqlite-search",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-sqlite-next",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-legacy-sqlite-pack",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/global.json"
+      ]
+    },
+    {
+      "id": "observational-v2-json-show",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-json-list",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-json-search",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-json-next",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-json-pack",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-sqlite-show",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-sqlite-list",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-sqlite-search",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-sqlite-next",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "observational-v2-sqlite-pack",
+      "status": 0,
+      "changed_paths": []
+    },
+    {
+      "id": "pack-v2-export-identities",
+      "exported": [
+        {
+          "format": "json",
+          "status": 0,
+          "contains_stable_ref": false,
+          "contains_node_id": false,
+          "output_sha256": "d323b41039191578a5a5eca2bc39a625b421ce40ab08a63c82c78e3aa8adf51a",
+          "stderr": ""
+        },
+        {
+          "format": "md",
+          "status": 0,
+          "contains_stable_ref": false,
+          "contains_node_id": false,
+          "output_sha256": "3b92c8c6815cbd91f9d98d5b62239c183314e506542556b1b5c12576839e6816",
+          "stderr": ""
+        },
+        {
+          "format": "xml",
+          "status": 0,
+          "contains_stable_ref": false,
+          "contains_node_id": false,
+          "output_sha256": "1fa8a8cd19d20ab3c9480ac3a10538634dc3574f979a1cd9df12a44510190df9",
+          "stderr": ""
+        },
+        {
+          "format": "toon",
+          "status": 0,
+          "contains_stable_ref": false,
+          "contains_node_id": false,
+          "output_sha256": "5378f838c6ea9d6ecb2a5267bbdb92d74fffe0b46cfedd9c16b5a7bd5427ab90",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "format-v2-compatibility",
+      "status": 2,
+      "changed_paths": [],
+      "after_validate_status": 0
+    },
+    {
+      "id": "repeat-v2-init",
+      "status": 0,
+      "changed_paths": [
+        ".agents/skills/.mdkg-managed.json",
+        ".agents/skills/author-mdkg-skill/SKILL.md",
+        ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        ".agents/skills/pursue-mdkg-loop/SKILL.md",
+        ".agents/skills/select-work-and-ground-context/SKILL.md",
+        ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        ".claude/skills/.mdkg-managed.json",
+        ".claude/skills/author-mdkg-skill/SKILL.md",
+        ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        ".claude/skills/pursue-mdkg-loop/SKILL.md",
+        ".claude/skills/select-work-and-ground-context/SKILL.md",
+        ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/AGENT_START.md",
+        ".mdkg/CLI_COMMAND_MATRIX.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/llms.txt",
+        ".mdkg/skills/author-mdkg-skill/SKILL.md",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/events/events.jsonl",
+        "AGENTS.md",
+        "CLAUDE.md"
+      ],
+      "after_validate_status": 0
+    },
+    {
+      "id": "repeat-v2-init---graph-only",
+      "status": 0,
+      "changed_paths": [],
+      "after_validate_status": 0
+    },
+    {
+      "id": "repeat-v2-init---agent",
+      "status": 0,
+      "changed_paths": [
+        ".agents/skills/.mdkg-managed.json",
+        ".agents/skills/author-mdkg-skill/SKILL.md",
+        ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        ".agents/skills/pursue-mdkg-loop/SKILL.md",
+        ".agents/skills/select-work-and-ground-context/SKILL.md",
+        ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        ".claude/skills/.mdkg-managed.json",
+        ".claude/skills/author-mdkg-skill/SKILL.md",
+        ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        ".claude/skills/pursue-mdkg-loop/SKILL.md",
+        ".claude/skills/select-work-and-ground-context/SKILL.md",
+        ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/AGENT_START.md",
+        ".mdkg/CLI_COMMAND_MATRIX.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/llms.txt",
+        ".mdkg/skills/author-mdkg-skill/SKILL.md",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/events/events.jsonl",
+        "AGENTS.md",
+        "CLAUDE.md"
+      ],
+      "after_validate_status": 0
+    },
+    {
+      "id": "checkpoint-dependency-routing",
+      "after_validate_status": 0,
+      "before_node": null,
+      "after_node": "task-3"
+    },
+    {
+      "id": "format-legacy-control",
+      "status": 0,
+      "after_validate_status": 0
+    },
+    {
+      "id": "v2-missing-core-init",
+      "status": 0,
+      "changed_paths": [
+        ".agents/skills/.mdkg-managed.json",
+        ".agents/skills/author-mdkg-skill/SKILL.md",
+        ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        ".agents/skills/pursue-mdkg-loop/SKILL.md",
+        ".agents/skills/select-work-and-ground-context/SKILL.md",
+        ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        ".claude/skills/.mdkg-managed.json",
+        ".claude/skills/author-mdkg-skill/SKILL.md",
+        ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        ".claude/skills/pursue-mdkg-loop/SKILL.md",
+        ".claude/skills/select-work-and-ground-context/SKILL.md",
+        ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/AGENT_START.md",
+        ".mdkg/CLI_COMMAND_MATRIX.md",
+        ".mdkg/core/HUMAN.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/llms.txt",
+        ".mdkg/skills/author-mdkg-skill/SKILL.md",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/events/events.jsonl",
+        "AGENTS.md",
+        "CLAUDE.md"
+      ],
+      "before_validate_status": 2,
+      "after_validate_status": 2
+    },
+    {
+      "id": "v2-missing-core-init---graph-only",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/core/HUMAN.md"
+      ],
+      "before_validate_status": 2,
+      "after_validate_status": 2
+    },
+    {
+      "id": "unknown-format-init",
+      "status": 0,
+      "changed_paths": [
+        ".agents/skills/.mdkg-managed.json",
+        ".agents/skills/author-mdkg-skill/SKILL.md",
+        ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        ".agents/skills/pursue-mdkg-loop/SKILL.md",
+        ".agents/skills/select-work-and-ground-context/SKILL.md",
+        ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        ".claude/skills/.mdkg-managed.json",
+        ".claude/skills/author-mdkg-skill/SKILL.md",
+        ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        ".claude/skills/pursue-mdkg-loop/SKILL.md",
+        ".claude/skills/select-work-and-ground-context/SKILL.md",
+        ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/AGENT_START.md",
+        ".mdkg/CLI_COMMAND_MATRIX.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/llms.txt",
+        ".mdkg/skills/author-mdkg-skill/SKILL.md",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/events/events.jsonl",
+        "AGENTS.md",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "id": "unknown-format-format---headings---apply",
+      "status": 1,
+      "changed_paths": []
+    },
+    {
+      "id": "valid-v2-omitted-legacy-core-init",
+      "status": 0,
+      "changed_paths": [
+        ".agents/skills/.mdkg-managed.json",
+        ".agents/skills/author-mdkg-skill/SKILL.md",
+        ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        ".agents/skills/pursue-mdkg-loop/SKILL.md",
+        ".agents/skills/select-work-and-ground-context/SKILL.md",
+        ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        ".claude/skills/.mdkg-managed.json",
+        ".claude/skills/author-mdkg-skill/SKILL.md",
+        ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        ".claude/skills/pursue-mdkg-loop/SKILL.md",
+        ".claude/skills/select-work-and-ground-context/SKILL.md",
+        ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/AGENT_START.md",
+        ".mdkg/CLI_COMMAND_MATRIX.md",
+        ".mdkg/core/HUMAN.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/llms.txt",
+        ".mdkg/skills/author-mdkg-skill/SKILL.md",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/events/events.jsonl",
+        "AGENTS.md",
+        "CLAUDE.md"
+      ],
+      "before_validate_status": 0,
+      "after_validate_status": 2
+    },
+    {
+      "id": "valid-v2-omitted-legacy-core-init---graph-only",
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/core/HUMAN.md"
+      ],
+      "before_validate_status": 0,
+      "after_validate_status": 2
+    },
+    {
+      "id": "site-cache-external-import",
+      "expected_output": "synthetic-version-two",
+      "actual_output": "synthetic-version-one",
+      "cache_events": [
+        {
+          "schema_version": 1,
+          "kind": "site",
+          "owner": "mdkg-dev",
+          "profile": "default",
+          "cache_hit": false,
+          "cache_key": "8947e4584df3c2150ac40420454f3825bc2a289c336c8c169cb4fe7b8ad0ffca",
+          "node": "v26.0.0",
+          "smoke": "synthetic-cache-audit"
+        },
+        {
+          "schema_version": 1,
+          "kind": "site",
+          "owner": "mdkg-dev",
+          "profile": "default",
+          "cache_hit": true,
+          "cache_key": "8947e4584df3c2150ac40420454f3825bc2a289c336c8c169cb4fe7b8ad0ffca",
+          "node": "v26.0.0",
+          "smoke": "synthetic-cache-audit"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "qid": "root:bug-21",
+      "title": "keep-legacy-graph-inspection-and-dry-run-commands-observational",
+      "disposition": "confirmed-publication-blocker",
+      "affected_version": "Confirmed current candidate. Cached published 0.5.2 dist/graph/index_cache.js has the same persistReindex default pattern; no published-runtime reproduction yet. Verify exact affected command behavior before claiming a published regression."
+    },
+    {
+      "qid": "root:bug-22",
+      "title": "preserve-stable-node-identities-in-every-pack-export",
+      "disposition": "confirmed-publication-blocker",
+      "affected_version": "Unpublished v2 identity functionality. Published 0.5.2 does not claim this identity slice; do not label 0.5.2 affected by missing v2 fields."
+    },
+    {
+      "qid": "root:bug-23",
+      "title": "make-formatting-preserve-v2-identities-and-stable-references",
+      "disposition": "confirmed-publication-blocker",
+      "affected_version": "Confirmed candidate v2 incompatibility. Published 0.5.2 has no supported v2 adoption, so this is not claimed as a published v2 regression."
+    },
+    {
+      "qid": "root:bug-24",
+      "title": "guard-initialization-against-unsupported-formats-and-identity-loss",
+      "disposition": "confirmed-publication-blocker",
+      "affected_version": "Confirmed candidate against adopted and future-format fixtures. Existing 0.5.2 clients must be tested separately in legacy/v2 qualification; no claim that old clients already provide v2 guarantees."
+    },
+    {
+      "qid": "root:bug-25",
+      "title": "invalidate-site-build-caches-on-external-source-dependencies",
+      "disposition": "confirmed-publication-blocker",
+      "affected_version": "Current repository release infrastructure; script is absent from cached 0.5.2 package. Classify as release-chain validation gap, not an npm runtime defect."
+    }
+  ],
+  "controls": [
+    "Ten v2 observational reads changed no files.",
+    "Complete v2 initialization default/--agent/--graph-only remained valid; graph-only changed no files.",
+    "Legacy format passes.",
+    "Unknown format --headings --apply refuses without writes through shared mutation-lock format gate.",
+    "Checkpoint blocked_by routing withholds task until checkpoint done."
+  ],
+  "limitations": [
+    "Tests ran on Node v26.0.0; required Node 24 qualification remains incomplete.",
+    "The first missing-core probes began invalid; the strengthened cases remove the incoming legacy edge and validate before init, then become invalid solely from identity-less reseeding.",
+    "The supplemental harness initially had a syntax error and executed no cases; corrected final execution completed eight probes with zero harness errors.",
+    "The release-cache reproducer uses a synthetic builder to isolate cache behavior, not a real hosted or local site build.",
+    "No source remedy is included in this receipt. Five bugs and test-483 remain open.",
+    "Full behavioral contract coverage, exact remediation review, full installed acceptance, release ladder and artifact seal remain incomplete."
+  ],
+  "custody": {
+    "owner": "mdkg-project-agent",
+    "claim": "root:goal-83 active_node root:task-824",
+    "source_snapshot": "all original package-input hashes and installed bytes unchanged during probes; complete inventories retained in hash-bound private receipt",
+    "runtime_leases": "five released rows; no runtime lease acquired",
+    "protected_sha256": {
+      "selection": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      "runtime_db": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      "demo3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    }
+  },
+  "authority": "Existing local Goal 83 task-824 evidence intake and disposable fixtures only; source snapshot frozen, bug-17 preserved, no remote/publication/provider or bundle actions.",
+  "skill_candidates": []
+}
