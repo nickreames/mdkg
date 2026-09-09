@@ -27,8 +27,11 @@ node --test dist/tests/commands/<name>.test.js
 npm run test:public-release
 ```
 
-`npm run test` performs the source build, compiles the TypeScript test tree,
-runs the compiled families, and then runs the root MJS contract suite. Use the
-focused commands only after `npm run build` when validating a bounded change.
+`npm run test` performs the source build and compiles the TypeScript test tree.
+Its ordinary runner reuses the coverage contract's recursive discovery and
+source/compiled parity check, then passes every compiled test (including root
+and deeply nested files) and source MJS contract to Node exactly once. It does
+not enable coverage; the separate coverage gate retains its existing policy.
+Use the focused commands only after `npm run build` when validating a bounded change.
 Derive current files from the family paths above rather than freezing transient
 test counts in this guide.

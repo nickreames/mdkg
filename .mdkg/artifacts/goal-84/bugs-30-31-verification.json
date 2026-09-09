@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "qids": ["root:bug-30", "root:bug-31"],
+  "owner": "mdkg-project-agent",
+  "baseline_head": "98e60c3cacdbe8c1284e4b44a0d650c55a9df483",
+  "disposition": "locally verified; independent task-828 and final release qualification remain open",
+  "local_commit_allowlist": [
+    "package.json",
+    "scripts/test-built.js",
+    "tests/test-built.test.ts",
+    "tests/README.md",
+    "tests/harness-guidance.test.ts",
+    "tests/portable-skill-bodies.test.ts",
+    ".mdkg/artifacts/goal-84/bugs-30-31-verification.json",
+    ".mdkg/work/bug-30-make-ordinary-test-execution-discover-every-compiled-test-family.md",
+    ".mdkg/work/bug-31-align-startup-and-skill-regression-gates-with-compact-authority-safe-discovery.md",
+    ".mdkg/work/chk-580-verify-complete-test-discovery-and-compact-startup-authority-gates.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+    ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md"
+  ],
+  "affected_surface": "Repository validation infrastructure, not shipped CLI behavior. Current compact/v2 candidate exposes stale gates; no new security advisory.",
+  "source_sha256": {
+    "package.json": "ba541229e473bb2f873c8dfac441f3edf52ac1cc71863dca46e0ab88bdbb6420",
+    "scripts/test-built.js": "5cf758d057092baa7a1e9b0f66c336a8aac89a826b09e213b6a1c2fe6bb47390",
+    "scripts/coverage-contract.js": "2134f83853dfe487816c82679446b7c763a0cc3fb5943621ef7aaa1a13a314e8",
+    "tests/test-built.test.ts": "05ea6bb1917637ba23e949af1ad9e7679cd068afa9e8dc7e7979b2e5a768af1d",
+    "tests/README.md": "4d2f8c52edf48dfc936f16dcd1f46bd0f3114a8b115d9c7dac52e35ebc72c34d",
+    "tests/harness-guidance.test.ts": "19dd8199b87bdf9206b130e6ba031f85db5578686c4266d45bff58cde1f0363d",
+    "tests/portable-skill-bodies.test.ts": "324a67d93fbc84649e70d853864217cd1e13491ff671556cb12c8ba5f43b8fe7"
+  },
+  "discovery": {
+    "baseline_compiled_files": 122,
+    "baseline_shell_expansion_files": 114,
+    "omitted_baseline_files": [
+      "dist/tests/ci-topology.test.js", "dist/tests/coverage-contract.test.js",
+      "dist/tests/dependency-boundary.test.js", "dist/tests/harness-guidance.test.js",
+      "dist/tests/portable-skill-bodies.test.js", "dist/tests/public-skill-projection.test.js",
+      "dist/tests/release-ladder.test.js", "dist/tests/test-ci-audit-template.test.js"
+    ],
+    "final_compiled_files": 123,
+    "final_source_mjs_files": 3,
+    "final_total_files": 126,
+    "implementation": "Reuse discoverTestContract; explicit Node argv, no shell, strict source/compiled parity; fail closed on inherited worker context."
+  },
+  "prepatch_evidence": {
+    "initial_regression_output_sha256": "9bf4625fd0c1bb717583db56e3a059340f1d9102e78de83c0abd53210415d79f",
+    "initial_regression_note": "One existing npm-entry contract failure, four absent-new-runner acceptance failures and six passing coverage controls.",
+    "first_complete_suite_output_sha256": "c8bd4b752ccf6eeb36256974e439cb312a3f835f6b7716d0be88481a44832132",
+    "first_complete_suite": "1209 tests, 1205 pass, two stale guidance gates fail plus two nested-fixture isolation failures; all subsequently corrected.",
+    "worker_guard_output_sha256": "12a61aa64fe3f7523ef8f4d959974c6fbe366020178e9ad75ad46e2f496e1841",
+    "worker_guard": "20 passing controls and one reproduced false-success regression before explicit worker-context refusal."
+  },
+  "focused": [
+    { "runtime": "v24.18.0", "passed": 21, "failed": 0, "skipped": 0, "output_sha256": "c36f9f69b8695eb4014841e455cf8c2b6f868b70e002db20474178588c6c994b" },
+    { "runtime": "v26.0.0", "passed": 21, "failed": 0, "skipped": 0, "output_sha256": "edf9eeb8551a67621cf648f3345f2469e111d02a6b24ff4f998821ecc1de9fa2" }
+  ],
+  "full_ordinary_suite": {
+    "command": "npm run test:built",
+    "runtime": "v26.0.0",
+    "passed": 1212,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "output_sha256": "39726e261556d204e738cb546fa902b8fdd7274710ea4d887d9d0f43179c19b8"
+  },
+  "guidance_controls": [
+    "Legacy repository startup retains ordered loop procedure coverage.",
+    "Fresh AGENTS/CLAUDE route to .mdkg/AGENT_START.md; focused resource links resolve within .mdkg.",
+    "Canonical, public, built and fresh loop skills retain identical complete procedures.",
+    "Removing each compact or focused loop step fails the gate.",
+    "Removing patch-only/separate-authority boundaries or introducing direct archive/bundle commands fails the gate.",
+    "All native/public skill parity, membership, portability and customization controls remain intact. No skills or startup source modified."
+  ],
+  "checks": {
+    "build": "passed",
+    "cli_check_built": "passed",
+    "docs_check_built": "passed; 494 examples, zero failures",
+    "graph_full": "passed; three preserved stale-subgraph warnings",
+    "graph_changed_only": "passed; zero errors/warnings",
+    "sqlite_index_verify": "passed; five fresh caches",
+    "git_diff_check": "passed"
+  },
+  "unchanged_coverage_policy": {
+    "lines": 89, "branches": 77, "functions": 96,
+    "config_sha256": "0c4c5039f9e37cdd8cf87b8bade3de438aff3e6746d6b488064858a8de8137b1",
+    "baseline_sha256": "2c50d994194db65664af3db3264e57ae7b61752056024f9ba61b5a0b1c4b2522"
+  },
+  "protected_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "limitations": [
+    "Ordinary test completeness is not coverage measurement, final installed qualification or security clearance.",
+    "Node 24.15.0, full release ladder, independent remediation review and exact 0.6.0 artifact seal remain open.",
+    "Original Standard security accounting remains twelve of thirteen locally fixed; bug-17 and bugs 26-29 remain open.",
+    "Package metadata remains development version 0.5.2; no publication, remote Git, provider/deployment or bundle refresh."
+  ],
+  "skill_candidates": [],
+  "authority": "Existing approved goal-83/84 bounded validation remediation, scoped mdkg evidence and reviewed local commits."
+}

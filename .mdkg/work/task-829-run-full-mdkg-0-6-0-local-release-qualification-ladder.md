@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827]
+blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827, bug-30]
 blocks: []
 refs: []
 context_refs: [goal-83]
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Overview

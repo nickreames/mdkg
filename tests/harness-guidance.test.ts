@@ -25,6 +25,14 @@ const loopSteps = [
   "work every authorized linked lane before marking the loop done or blocked",
 ];
 
+const compactSteps = ["mdkg show <qid>", "mdkg skill list", "mdkg skill show <slug>", "mdkg pack <qid> --pack-profile concise"];
+const focusedLoopSteps = [
+  "mdkg loop show <loop> --json", "mdkg loop plan <loop> --json",
+  "mdkg loop next <loop> --json", "mdkg pack <loop> --pack-profile concise --dry-run --stats",
+  "Build a completion matrix before execution", "Ask or surface pre-run questions",
+  "Work the linked graph, not just the first branch",
+];
+
 function captureConsole(fn: () => void): void {
   const log = console.log;
   const error = console.error;
@@ -66,29 +74,55 @@ function runGit(args: string[]) {
   return spawnSync("git", ["-C", repoRoot, ...args], { encoding: "utf8" });
 }
 
-test("root public built and fresh startup wrappers preserve ordered loop routing semantics", () => {
+test("legacy startup and compact adapters preserve focused loop discovery without duplicating procedures", t => {
   const freshRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-harness-guidance-init-"));
+  t.after(() => fs.rmSync(freshRoot, { recursive: true, force: true }));
   captureConsole(() => runInitCommand({
     root: freshRoot,
     seedRoot: path.join(repoRoot, "dist", "init"),
     agent: true,
     noUpdateIgnores: true,
   }));
-  const surfaces = [
-    ["root", path.join(repoRoot, "AGENT_START.md")],
+  assertOrdered(activeLoopSection(fs.readFileSync(path.join(repoRoot, "AGENT_START.md"), "utf8")), loopSteps);
+  const routers = [
     ["public source", path.join(repoRoot, "assets", "init", "AGENT_START.md")],
     ["built public", path.join(repoRoot, "dist", "init", "AGENT_START.md")],
-    ["fresh init", path.join(freshRoot, "AGENT_START.md")],
+    ["fresh init", path.join(freshRoot, ".mdkg", "AGENT_START.md")],
   ] as const;
-  for (const [identity, filePath] of surfaces) {
-    assertOrdered(activeLoopSection(fs.readFileSync(filePath, "utf8")), loopSteps);
-    assert.ok(fs.readFileSync(filePath, "utf8").includes("pursue-mdkg-loop"), identity);
+  for (const [identity, filePath] of routers) {
+    const source = fs.readFileSync(filePath, "utf8");
+    assertOrdered(source, compactSteps);
+    assert.match(source, /Never load the whole command/);
+    assert.doesNotMatch(source, /If an active loop is known:/, identity);
   }
-  assert.notEqual(
-    fs.readFileSync(surfaces[0][1], "utf8"),
-    fs.readFileSync(surfaces[1][1], "utf8"),
-    "audience-specific startup wrappers must not require whole-file equality",
-  );
+  assert.equal(fs.existsSync(path.join(freshRoot, "AGENT_START.md")), false);
+  for (const adapter of ["AGENTS.md", "CLAUDE.md"]) {
+    const body = fs.readFileSync(path.join(freshRoot, adapter), "utf8");
+    assert.match(body, /\[\.mdkg\/AGENT_START\.md\]\(\.mdkg\/AGENT_START\.md\)/);
+    assert.doesNotMatch(body, /mdkg loop plan/);
+  }
+  const freshRouter = fs.readFileSync(routers[2][1], "utf8");
+  for (const link of freshRouter.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
+    const target = path.resolve(freshRoot, ".mdkg", link[1]);
+    assert.ok(target.startsWith(path.join(freshRoot, ".mdkg") + path.sep), link[1]);
+    assert.ok(fs.existsSync(target), `broken focused resource link: ${link[1]}`);
+  }
+  const canonical = fs.readFileSync(path.join(repoRoot, ".mdkg/skills/pursue-mdkg-loop/SKILL.md"), "utf8");
+  assertOrdered(canonical, focusedLoopSteps);
+  for (const surface of [path.join(repoRoot, "assets/init/skills/default"), path.join(repoRoot, "dist/init/skills/default"), path.join(freshRoot, ".mdkg/skills")]) {
+    assert.equal(fs.readFileSync(path.join(surface, "pursue-mdkg-loop/SKILL.md"), "utf8"), canonical);
+  }
+});
+
+test("compact routing and focused loop procedures reject each removed required step", () => {
+  for (const [file, steps] of [
+    ["assets/init/AGENT_START.md", compactSteps],
+    [".mdkg/skills/pursue-mdkg-loop/SKILL.md", focusedLoopSteps],
+  ] as const) {
+    const body = normalize(fs.readFileSync(path.join(repoRoot, file), "utf8"));
+    assertOrdered(body, [...steps]);
+    for (const step of steps) assert.throws(() => assertOrdered(body.split(step).join(""), [...steps]), /missing or out-of-order guidance/);
+  }
 });
 
 test("each required loop routing identity fails independently when removed", () => {
