@@ -670,7 +670,7 @@ function emitHumanReceipt(receipt: UpgradeReceipt): void {
     if (receipt.safe_to_apply) {
       console.log(`next: mdkg upgrade --apply --plan-hash ${receipt.plan_hash} (repeat the reviewed --only selection, if any)`);
     } else {
-      console.log("next: resolve blocking conflicts before running mdkg upgrade --apply");
+      console.log("next: resolve blocking conflicts, then run mdkg upgrade again and review the new plan before applying");
     }
   }
 }

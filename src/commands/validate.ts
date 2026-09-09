@@ -412,7 +412,7 @@ function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): V
       message,
       node_type: nodeType,
       path: pathValue,
-      remediation: "Run mdkg upgrade --apply to vendor missing built-in template schemas when the managed asset update is safe.",
+      remediation: "Run mdkg upgrade to review missing built-in template schemas; apply only with its exact --plan-hash and the same --only selection, if any.",
     };
   }
   const manifestCompatMatch = /manifest\.compat\.([a-z_]+)/.exec(message);
@@ -692,7 +692,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
   }
   if (templateSchemaInfo.fallbackTypes.length > 0) {
     warnings.push(
-      `using bundled template schema fallback for missing local type(s): ${templateSchemaInfo.fallbackTypes.join(", ")}; run \`mdkg upgrade --apply\` to vendor built-in templates`
+      `using bundled template schema fallback for missing local type(s): ${templateSchemaInfo.fallbackTypes.join(", ")}; preview built-in templates with \`mdkg upgrade\`, review changes, then apply with its exact --plan-hash and the same --only selection, if any`
     );
   }
   const nodes: Record<string, IndexNode> = {};

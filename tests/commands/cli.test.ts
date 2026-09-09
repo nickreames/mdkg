@@ -322,7 +322,7 @@ test("cli removed init flags fail with migration guidance", () => {
       cwd: repoRoot,
     });
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /removed; use `mdkg init --agent`/);
+    assert.match(result.stderr, /removed; use `mdkg init` for compact agent setup \(default\)/);
   }
 });
 

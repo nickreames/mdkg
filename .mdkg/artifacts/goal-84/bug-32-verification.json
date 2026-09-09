@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "checkpoint_qid": "root:chk-585",
+  "owner": "mdkg-project-agent",
+  "work_qid": "root:bug-32",
+  "goal_qids": [
+    "root:goal-84",
+    "root:goal-83"
+  ],
+  "source_baseline": "2fa037fd1771e6b41ba3236e5f08d00680fea78a",
+  "outcome": "locally verified CLI onboarding and reviewed-upgrade guidance; NOT_READY for publication",
+  "affected_versions": "Unpublished candidate compact/default and hash-bound upgrade guidance; no claim that historical published 0.5.2 required this new approval contract.",
+  "scope": [
+    "Concise quickstart leads with default init; optional graph-only and compatible agent alias are explicit.",
+    "CLI fallback/repair hints preview first and require exact reviewed hash and matching path selection.",
+    "Bundled and maintained command references agree; generated global flag uses a path placeholder rather than prose.",
+    "No changed upgrade, identity or bundle execution semantics."
+  ],
+  "prepatch": {
+    "cli": {
+      "phase": "pre-compiled",
+      "runtime": "v26.0.0",
+      "exit_code": 1,
+      "signal": null,
+      "command": [
+        "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "--test",
+        "dist/tests/commands/cli_onboarding.test.js",
+        "dist/tests/commands/compact_bootstrap.test.js",
+        "dist/tests/commands/upgrade_safety.test.js",
+        "dist/tests/commands/upgrade_identity.test.js"
+      ],
+      "output_sha256": "a001b51a5963495d6b05984841532159115d6ea588c43ab4ac7f069be0c7f261",
+      "source_sha256": {
+        "src/cli.ts": "96170e4638a1ca48fd8ad601947cdabef9dbb96790294f4d22142e49ec587843",
+        "src/commands/new.ts": "71b9272b884d8a991bfd15240bd15858b2157215cd43f18e7839db1d4059e4e4",
+        "src/commands/validate.ts": "4431dfbd1ccc31a13d9a1b22c171ae89e5f64afc5f471556d284089ab9bd3a09",
+        "src/commands/doctor.ts": "b512fdaeba7d4722c6c9826e439cf97c112384d3d272b412ef61bdfe9512a160",
+        "src/commands/subgraph.ts": "95aa15c8338203cd8dae153da1e072d6e97ea1ddd38579c5017850a03456ae47",
+        "src/commands/init.ts": "7239e2c76da23e24c5f1df9d338b31c1fecca63b6e2399d44969460511cfbd76",
+        "src/commands/upgrade.ts": "df94554f0a670ec98ce8e478d755d1839cc4db5f54e63527dd1d4fb015d29c26",
+        "tests/commands/cli_onboarding.test.ts": "b5dcfe4cd5f5ff906060d6ab5b6b56702419861b07550855a07bc2f2271c2773"
+      },
+      "summary": [
+        "ℹ tests 34",
+        "ℹ pass 31",
+        "ℹ fail 3",
+        "ℹ skipped 0",
+        "ℹ duration_ms 35759.443417"
+      ]
+    },
+    "bundled_reference": {
+      "receipt": {
+        "phase": "pre-seed",
+        "runtime": "v26.0.0",
+        "exit_code": 1,
+        "signal": null,
+        "command": [
+          "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+          "--test",
+          "dist/tests/commands/cli_onboarding.test.js",
+          "dist/tests/commands/compact_bootstrap.test.js",
+          "dist/tests/commands/upgrade_safety.test.js",
+          "dist/tests/commands/upgrade_identity.test.js"
+        ],
+        "output_sha256": "0185f0f48d5531b08db25d8eaf9714881a029bd4ff56bc80c3d6e52fa6f235cf",
+        "source_sha256": {
+          "src/cli.ts": "506d19d86e09862d8915f8f80d13a79722f939eb54c3edb100c4a4904b565982",
+          "src/commands/new.ts": "289bb08547bd2f6c53d04c504a178aca6f92089e266160007920bf10920f3dc7",
+          "src/commands/validate.ts": "ad862dc7850549481e1e769f06a54e4b9dee34945440e442c63f80044040e1bb",
+          "src/commands/doctor.ts": "d4aaad740b4f67d32a4ed437529626ffa7a08b59edda918796a8d2b72269a63e",
+          "src/commands/subgraph.ts": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4",
+          "src/commands/init.ts": "dfe8b678ef8db6669d90ae651d9eccf4f9dfaec0e1168042408892948bc4587f",
+          "src/commands/upgrade.ts": "312f30483969f7256e18cac462adfb9dd24b0ebc025c29850780a91c76d039f0",
+          "tests/commands/cli_onboarding.test.ts": "5b2b58cb0c6dd4605689bf4d09e6e51c3cf05a88e2392c47cf10f495803d6719"
+        },
+        "summary": [
+          "ℹ tests 36",
+          "ℹ pass 35",
+          "ℹ fail 1",
+          "ℹ skipped 0",
+          "ℹ duration_ms 37118.6695"
+        ]
+      },
+      "asset_sha256": "b055b6e1a36f633ccb7eb9954f3ba4ec93d57b0829fcfcbdbc1713885d6bc357"
+    },
+    "projection": {
+      "command": "node --test --test-name-pattern='global help projects' dist/tests/commands/cli_onboarding.test.js",
+      "tests": 1,
+      "failed": 1,
+      "actual": "selection",
+      "expected": "<path,...>"
+    }
+  },
+  "focused": {
+    "phase": "final-focused",
+    "runtime": "v26.0.0",
+    "exit_code": 0,
+    "signal": null,
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "--test",
+      "dist/tests/commands/cli_onboarding.test.js",
+      "dist/tests/commands/compact_bootstrap.test.js",
+      "dist/tests/commands/upgrade_safety.test.js",
+      "dist/tests/commands/upgrade_identity.test.js"
+    ],
+    "output_sha256": "2ca6623db46bd64beda626fc2c1074da77cfe42dc33e42c7f97c7f5ada3f8af6",
+    "source_sha256": {
+      "src/cli.ts": "d8ab380138d83c1db1db559cb8f1286ca8c19401cc3784f427a009f90ec4ef93",
+      "src/commands/new.ts": "289bb08547bd2f6c53d04c504a178aca6f92089e266160007920bf10920f3dc7",
+      "src/commands/validate.ts": "ad862dc7850549481e1e769f06a54e4b9dee34945440e442c63f80044040e1bb",
+      "src/commands/doctor.ts": "d4aaad740b4f67d32a4ed437529626ffa7a08b59edda918796a8d2b72269a63e",
+      "src/commands/subgraph.ts": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4",
+      "src/commands/init.ts": "dfe8b678ef8db6669d90ae651d9eccf4f9dfaec0e1168042408892948bc4587f",
+      "src/commands/upgrade.ts": "312f30483969f7256e18cac462adfb9dd24b0ebc025c29850780a91c76d039f0",
+      "tests/commands/cli_onboarding.test.ts": "4c7e9c2ceb4b0072026fa98491705c10856e08c4460aff7e938641a2cd408e31",
+      "tests/commands/cli.test.ts": "23c92d49061d00f83c3190b7e428220f3fa6497b1e28b54f501c212dbea5f157",
+      "assets/init/CLI_COMMAND_MATRIX.md": "731d96578e8c4bd1369b2c6cfddc24df1404705d20f073c215f46ef9bef5a997",
+      "CLI_COMMAND_MATRIX.md": "e024849612b08e9fc8ba1066b94e0b0414973e1ba561668a6a64f1d73c69854a"
+    },
+    "summary": [
+      "ℹ tests 37",
+      "ℹ pass 37",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 117373.977666"
+    ]
+  },
+  "full_suite": {
+    "phase": "full-final-candidate",
+    "runtime": "v26.0.0",
+    "exit_code": 0,
+    "signal": null,
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "scripts/test-built.js"
+    ],
+    "output_sha256": "e43e507eb6c0a99330e1455fe60cbd2134027caf01446ddd154653a1a8bf4df3",
+    "source_sha256": {
+      "src/cli.ts": "d8ab380138d83c1db1db559cb8f1286ca8c19401cc3784f427a009f90ec4ef93",
+      "src/commands/new.ts": "289bb08547bd2f6c53d04c504a178aca6f92089e266160007920bf10920f3dc7",
+      "src/commands/validate.ts": "ad862dc7850549481e1e769f06a54e4b9dee34945440e442c63f80044040e1bb",
+      "src/commands/doctor.ts": "d4aaad740b4f67d32a4ed437529626ffa7a08b59edda918796a8d2b72269a63e",
+      "src/commands/subgraph.ts": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4",
+      "src/commands/init.ts": "dfe8b678ef8db6669d90ae651d9eccf4f9dfaec0e1168042408892948bc4587f",
+      "src/commands/upgrade.ts": "312f30483969f7256e18cac462adfb9dd24b0ebc025c29850780a91c76d039f0",
+      "tests/commands/cli_onboarding.test.ts": "4c7e9c2ceb4b0072026fa98491705c10856e08c4460aff7e938641a2cd408e31",
+      "tests/commands/cli.test.ts": "23c92d49061d00f83c3190b7e428220f3fa6497b1e28b54f501c212dbea5f157",
+      "assets/init/CLI_COMMAND_MATRIX.md": "731d96578e8c4bd1369b2c6cfddc24df1404705d20f073c215f46ef9bef5a997",
+      "CLI_COMMAND_MATRIX.md": "e024849612b08e9fc8ba1066b94e0b0414973e1ba561668a6a64f1d73c69854a"
+    },
+    "summary": [
+      "ℹ tests 1338",
+      "ℹ pass 1338",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 147590.428708"
+    ]
+  },
+  "installed": {
+    "schema_version": 1,
+    "disposition": "intermediate development candidate, not release seal",
+    "candidate": {
+      "version": "0.5.2",
+      "sha256": "5d72db2d486ab187eef8da487abd519e31700e6e41bb7420a18850216d3eba05",
+      "integrity": "sha512-+xz2/N0KTqfylW1ZzLP9hKWLtOdhj1jM4461VFlmuIev3PbosvD6AJ4kiPTYYKYO1ztoNvstUgGdngDWkewjyg==",
+      "package_file_manifest_sha256": "506e2f5ffb52f225e1abbe2d5717ad63216c6385d5bd48546eb858b2da801b4c"
+    },
+    "results": [
+      {
+        "name": "pack",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "a77edd79805476d4f8b2e54a2a5b5cd316e8f89e1fc3e7b83fd6a36d03855b07",
+        "summary": []
+      },
+      {
+        "name": "install",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "ed435fab73a9b746a43a14339ba74fe949add5a81a8c6f3c8b718d53164f5cfd",
+        "summary": []
+      },
+      {
+        "name": "installed-node26",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "f034d007e889825aca885c8df8e0d317b6e19e50a0a907cceeeb76e1394325bc",
+        "summary": [
+          "ℹ tests 10",
+          "ℹ pass 10",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 25337.511958"
+        ],
+        "runtime": "v26.0.0"
+      },
+      {
+        "name": "installed-node24",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "0f2a78fc66871a1f10e1831b3d419b9fe9034fdb5f128d71e714fd8e9fc200bf",
+        "summary": [
+          "ℹ tests 10",
+          "ℹ pass 10",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 27290.788542"
+        ],
+        "runtime": "v24.18.0"
+      }
+    ],
+    "test_source_sha256": "4c7e9c2ceb4b0072026fa98491705c10856e08c4460aff7e938641a2cd408e31",
+    "harness_sha256": "6a80a2f60ca1c5b894b224c0be1e613030e933aec09673fadfe69376a9ee43f8",
+    "installed_package_unchanged": true
+  },
+  "auxiliary_checks": {
+    "build": "pass",
+    "cli": "npm run cli:check:built pass",
+    "docs": "npm run docs:check:built pass; 494 examples in 63 files; zero failures",
+    "release_contracts": "26 pass; historical security-matrix test is not current clearance",
+    "graph": "full and changed-only passed after chk-585; full retains three preserved imported-bundle age warnings; changed-only has none",
+    "sqlite": "node dist/cli.js db index verify --json passed after chk-585 and required projection refresh",
+    "diff": "git diff --check pass"
+  },
+  "limitations": [
+    "Initial harness invocation omitted build:test and did not execute tests; pre-compiled is the valid reproduction.",
+    "Final task-828 independent security diff review remains required.",
+    "These ten installed onboarding cases do not replace bug-7/test-477 complete real published 0.5.2 upgrade qualification or all task-826 fixture families.",
+    "Node 24.15.0, final coverage/release ladder, metadata 0.6.0 and artifact seal remain outstanding.",
+    "Intermediate installed candidate still has development 0.5.2 metadata; not the historical baseline or final release seal."
+  ],
+  "protected_before_after_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "shared_path_custody": {
+    "path": "src/commands/subgraph.ts",
+    "owned_change": "Only the legacy bundle_imports diagnostic text hunk.",
+    "preserved_transport_baseline_sha256": "95aa15c8338203cd8dae153da1e072d6e97ea1ddd38579c5017850a03456ae47",
+    "verification": "Reversing only this diagnostic replacement yields the exact preserved pre-turn file hash.",
+    "staging": "Apply only the reviewed diagnostic hunk to the index; leave existing bundle transport hunks uncommitted."
+  },
+  "preserved_uncommitted_paths": [
+    ".mdkg/index/mdkg.sqlite",
+    ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+    ".mdkg/artifacts/goal-84/bug-17-progress.json",
+    "src/commands/bundle.ts",
+    "src/commands/graph.ts",
+    "src/commands/subgraph.ts",
+    "src/graph/identity_transport.ts",
+    "src/graph/transport_state.ts",
+    "tests/commands/bundle_state.test.ts"
+  ],
+  "local_commit_allowlist": [
+    "CLI_COMMAND_MATRIX.md",
+    "assets/init/CLI_COMMAND_MATRIX.md",
+    "docs/_generated/cli-reference.md",
+    "docs/_generated/command-contract-summary.json",
+    "src/cli.ts",
+    "src/commands/new.ts",
+    "src/commands/validate.ts",
+    "src/commands/doctor.ts",
+    "src/commands/subgraph.ts",
+    "src/commands/init.ts",
+    "src/commands/upgrade.ts",
+    "tests/commands/cli.test.ts",
+    "tests/commands/cli_onboarding.test.ts",
+    ".mdkg/artifacts/goal-84/bug-32-verification.json",
+    ".mdkg/work/bug-32-align-cli-quickstart-and-repair-hints-with-reviewed-upgrade-authority.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/chk-585-verify-compact-cli-onboarding-and-reviewed-upgrade-guidance.md"
+  ],
+  "evidence_location": "Compact logs, harnesses, manifests and intermediate tarballs under /private/tmp/mdkg-bug32-verify.TxOXx9; hashes recorded here.",
+  "skill_candidates": []
+}

@@ -12,7 +12,7 @@ legacy alias for one compatibility release.
 
 Primary commands:
 - `mdkg init`
-- `mdkg upgrade [--dry-run] [--apply] [--json]`
+- `mdkg upgrade [--dry-run | --apply | --resume | --recover] [--only <path,...>] [--plan-hash <sha256>] [--json]`
 - `mdkg new`
 - `mdkg show`
 - `mdkg list`
@@ -192,15 +192,18 @@ Checkpoint commands:
 - `mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audit|handoff] [--ws <alias>] [--json]`
 - checkpoint kinds render bodies with command evidence, pass/fail status, known warnings, changed surfaces, boundaries, and follow-up refs
 
-Agent bootstrap:
-- `mdkg init --agent`
+Compact bootstrap (default):
+- `mdkg init` creates compact agent setup; `mdkg init --agent` remains a compatibility alias
+- `mdkg init --graph-only` creates graph scaffolding without agent setup; do not combine it with `--agent`
 - published bootstrap config is root-only by default
-- `mdkg init --agent` creates the complete startup docs, wrapper docs, `SOUL.md` / `COLLABORATION.md` core docs, legacy `HUMAN.md`, default mdkg skills, event log, registry, and configured skill mirrors
-- removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
+- default setup preserves authored content around root `AGENTS.md`/`CLAUDE.md` managed sections and puts the compact router and detailed command guidance under `.mdkg`; focused skills and configured native mirrors support task-specific discovery
+- project README, LICENSE and public website discovery files remain separate user-owned surfaces
+- removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init` or `mdkg init --graph-only`
 
 Upgrade:
 - `mdkg upgrade` previews safe scaffold updates and writes nothing by default
-- `mdkg upgrade --apply` updates only managed or unchanged init assets
+- review the preview before applying with `mdkg upgrade --apply --plan-hash <sha256>`; repeat the same `--only` selection, if any
+- missing or stale approval is refused; resolve blocking conflicts and preview again before applying a new plan
 - JSON receipts include `safe_to_apply`, `will_write_paths`, `preserved_customizations`, `blocking_conflicts`, and `apply_side_effects`
 - customized docs, templates, skills, and core files are preserved and reported
 - ignored event logs are skipped with guidance to run `mdkg event enable`

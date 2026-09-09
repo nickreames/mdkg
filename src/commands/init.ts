@@ -308,7 +308,7 @@ function collaborationTemplate(created: string): string {
     "- Keep top goals, boundaries, and style preferences current.",
     "- Include ask-before-doing constraints for risky or high-impact actions.",
     "- Record preferred environment assumptions and validation commands.",
-    "- Preserve local operator customizations during `mdkg upgrade --apply`.",
+    "- Preview `mdkg upgrade` and review changes before applying with its exact --plan-hash and the same --only selection, if any; preserve local operator customizations.",
     "",
     "# Notes",
     "",
@@ -379,7 +379,7 @@ function emitPartialInitFailure(root: string, stats: CopyStats, err: unknown): v
   }
   console.error("recovery:");
   console.error("  inspect the created paths above");
-  console.error("  rerun `mdkg init --agent` after resolving the reported error");
+  console.error("  rerun `mdkg init` after resolving the reported error (compact agent setup is the default)");
   console.error(`  root: ${root}`);
 }
 

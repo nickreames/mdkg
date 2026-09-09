@@ -125,7 +125,7 @@ Flags:
 
 Notes:
 - compact agent setup is the default; `--agent` is compatible and `--graph-only` explicitly omits it; combining them fails before writes
-- removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use `mdkg init --agent`
+- removed flags `--llm`, `--agents`, `--claude`, and `--omni` fail before mutation with guidance to use compact-default `mdkg init` or explicit `mdkg init --graph-only`
 - published bootstrap config is root-only by default
 - default setup creates root `AGENTS.md`/`CLAUDE.md` managed sections, `.mdkg/AGENT_START.md`, `.mdkg/llms.txt`, `.mdkg/CLI_COMMAND_MATRIX.md`, strict-node core docs, focused default skills, events, registry, and configured native mirrors; project docs and public website discovery are not moved
 - run `mdkg index` after fresh init before treating `mdkg doctor --strict --json` as a clean health gate; init writes source scaffold files and index writes generated caches
@@ -900,7 +900,7 @@ Notes:
 - stale subgraphs warn during planning reads; `mdkg subgraph verify` exits nonzero for stale or invalid subgraphs
 - mutating commands reject subgraph qids with a read-only subgraph error
 - `mdkg index` writes `.mdkg/index/subgraphs.json` in addition to local indexes
-- legacy `mdkg bundle import ...` exits with guidance to run `mdkg upgrade --apply` and use `mdkg subgraph ...`
+- legacy `mdkg bundle import ...` exits with guidance to preview `mdkg upgrade`, review the exact plan hash and any `--only` selection before applying, and use `mdkg subgraph ...`
 
 JSON receipts:
 - `add/enable/disable/refresh`: `{ action, subgraph: { alias, enabled, visibility, permissions, sources, stale, warnings, errors } }`
