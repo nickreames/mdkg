@@ -1,0 +1,415 @@
+{
+  "schema_version": 1,
+  "bug": "root:bug-33",
+  "goal": "root:goal-84",
+  "source_head": "2be35035245a067793b6ca70befd9b4a9bd48845",
+  "qualification": {
+    "candidate": {
+      "tarball": "/private/tmp/mdkg-cli-drain.wOv5d7/package/mdkg-0.5.2.tgz",
+      "tarball_sha256": "9ec0966f45e3a6e07ea35f98fd9f941bba1997e5a934ff8063232af02c0ee860",
+      "integrity": "sha512-dSJTCBUiQf81/22jpVRlyjMuxDbAIUkUo7dJBXJCJFvo7UpHXd8dT9EheZFQhfORTckv04obtn9f9+QtQ/lKrw==",
+      "bin": "/private/tmp/mdkg-cli-drain.wOv5d7/prefix/lib/node_modules/mdkg/dist/cli.js",
+      "cli_sha256": "ef442bcb76824c22f0fcfbc1febab13dca5a529d0d98881d8c889f6c810911e3",
+      "pack_mode": "intermediate built package; prepack not invoked; not a release seal"
+    },
+    "results": [
+      {
+        "label": "pack",
+        "exe": "/opt/homebrew/bin/npm",
+        "args": [
+          "pack",
+          "--ignore-scripts",
+          "--json",
+          "--pack-destination",
+          "/private/tmp/mdkg-cli-drain.wOv5d7/package"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsed_ms": 405,
+        "output_sha256": "d08eaa11c9800144139174563e671b922815707613934646c34db7c220151829"
+      },
+      {
+        "label": "install",
+        "exe": "/opt/homebrew/bin/npm",
+        "args": [
+          "install",
+          "-g",
+          "/private/tmp/mdkg-cli-drain.wOv5d7/package/mdkg-0.5.2.tgz",
+          "--prefix",
+          "/private/tmp/mdkg-cli-drain.wOv5d7/prefix",
+          "--foreground-scripts"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsed_ms": 299,
+        "output_sha256": "3b9c068e31458ce0c2e5b847ecb77a008787b36fe36d0d47a8e68a56211c4da5"
+      },
+      {
+        "label": "installed-24.15.0",
+        "exe": "/private/tmp/mdkg-bug7-recovery.YDpsrx/node-24.15.0/node",
+        "args": [
+          "--test",
+          "/private/tmp/mdkg-cli-drain.wOv5d7/installed-tests/tests/commands/cli_output.test.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsed_ms": 1214,
+        "output_sha256": "99a2f308b0c000bcac3486321d6733b59c45089d5e0aa15efad38e4e80562ac6"
+      },
+      {
+        "label": "installed-24.18.0",
+        "exe": "/opt/homebrew/opt/node@24/bin/node",
+        "args": [
+          "--test",
+          "/private/tmp/mdkg-cli-drain.wOv5d7/installed-tests/tests/commands/cli_output.test.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsed_ms": 1587,
+        "output_sha256": "729f7c9b408521d86bc3c87a33a2b8e7bae623cc80f34e1b208bda52c94b9183"
+      },
+      {
+        "label": "installed-26.0.0",
+        "exe": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "args": [
+          "--test",
+          "/private/tmp/mdkg-cli-drain.wOv5d7/installed-tests/tests/commands/cli_output.test.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsed_ms": 1549,
+        "output_sha256": "a9ced5d03925749143f6a1e18eb2b66f3fae0da1fc5fff4bd49c1e25fd1c76c7"
+      },
+      {
+        "label": "focused",
+        "exe": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "args": [
+          "--test",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/cli.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/cli_dispatch.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/cli_error_matrix.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/cli_help_matrix.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/cli_onboarding.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/cli_output.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/cli_runtime.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/git_materialize.test.js",
+          "/Users/nick/omni-chat-rooms/projects/mdkg/dist/tests/commands/mcp.test.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsed_ms": 12714,
+        "output_sha256": "d4c7e1699ccf92c5d91d38ca6f193d682e5ec5cdc5a2e983a7bf0961718b5021"
+      }
+    ]
+  },
+  "source_checks": [
+    {
+      "label": "full",
+      "args": [
+        "run",
+        "test"
+      ],
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "elapsed_ms": 159655,
+      "output_sha256": "167bc94cbe7c1db6a00ba5a3cbeafa9114095d0b2eaf744bd159b99a9ce97fc0"
+    },
+    {
+      "label": "cli",
+      "args": [
+        "run",
+        "cli:check:built"
+      ],
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "elapsed_ms": 8545,
+      "output_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+    },
+    {
+      "label": "docs",
+      "args": [
+        "run",
+        "docs:check:built"
+      ],
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "elapsed_ms": 248,
+      "output_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+    },
+    {
+      "label": "release-contracts",
+      "args": [
+        "run",
+        "test:public-release"
+      ],
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "elapsed_ms": 231,
+      "output_sha256": "665a130efc85bb49348958b7063265770fc864973be2a24f84b827b0a4e5741d"
+    }
+  ],
+  "reproductions": [
+    {
+      "runtime": "v26.0.0",
+      "bin": "/private/tmp/mdkg-private-migration.eJKLVl/candidate-prefix/lib/node_modules/mdkg/dist/cli.js",
+      "cli_sha256": "ecd9e10068c85eb57e6e66f6bcc52c4a9f3653f52e9d7c158289ccb5f5197c43",
+      "root": "/private/tmp/mdkg-cli-drain.wOv5d7/fixture-zzmXsc",
+      "results": [
+        {
+          "args": [
+            "show",
+            "task-1",
+            "--json"
+          ],
+          "piped_exit": 0,
+          "direct_exit": 0,
+          "piped_bytes": 65537,
+          "direct_bytes": 1049599,
+          "equal": false,
+          "json_valid": false,
+          "has_end": false,
+          "piped_sha256": "2119586659a601f29be27715575401f6c3c77ead981eceef3e1e8a211a2e2dc6",
+          "direct_sha256": "feeb65c3d931e6b748e2b9874731c9a83e9138c13d5db4f95b22c47715c57995"
+        },
+        {
+          "args": [
+            "show",
+            "task-1"
+          ],
+          "piped_exit": 0,
+          "direct_exit": 0,
+          "piped_bytes": 65536,
+          "direct_bytes": 983493,
+          "equal": false,
+          "json_valid": false,
+          "has_end": false,
+          "piped_sha256": "7b5dfeff76e6721224772d729b3df2602c5969094117c7fa140f1a7a381ee0a5",
+          "direct_sha256": "13d48c2cb5c6a45a5a2fc7d3fe7c2160accd504a127388120fc146d0609ad3ab"
+        }
+      ]
+    },
+    {
+      "runtime": "v26.0.0",
+      "bin": "/private/tmp/mdkg-legacy-barrier.32Ycqs/old/package/dist/cli.js",
+      "cli_sha256": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+      "root": "/private/tmp/mdkg-cli-drain.wOv5d7/fixture-iRO4iv",
+      "results": [
+        {
+          "args": [
+            "show",
+            "task-1",
+            "--json"
+          ],
+          "piped_exit": 0,
+          "direct_exit": 0,
+          "piped_bytes": 65537,
+          "direct_bytes": 1049599,
+          "equal": false,
+          "json_valid": false,
+          "has_end": false,
+          "piped_sha256": "2119586659a601f29be27715575401f6c3c77ead981eceef3e1e8a211a2e2dc6",
+          "direct_sha256": "feeb65c3d931e6b748e2b9874731c9a83e9138c13d5db4f95b22c47715c57995"
+        },
+        {
+          "args": [
+            "show",
+            "task-1"
+          ],
+          "piped_exit": 0,
+          "direct_exit": 0,
+          "piped_bytes": 65536,
+          "direct_bytes": 983493,
+          "equal": false,
+          "json_valid": false,
+          "has_end": false,
+          "piped_sha256": "7b5dfeff76e6721224772d729b3df2602c5969094117c7fa140f1a7a381ee0a5",
+          "direct_sha256": "13d48c2cb5c6a45a5a2fc7d3fe7c2160accd504a127388120fc146d0609ad3ab"
+        }
+      ]
+    }
+  ],
+  "migration_preview": {
+    "runtime": "v26.0.0",
+    "source_head": "2be35035245a067793b6ca70befd9b4a9bd48845",
+    "frozen_graph_sha256": "e6d7aefa52c08983a18150653f445c6efd7c922c83c153379af60f043587f000",
+    "status": 0,
+    "stdout_bytes": 2952912,
+    "stdout_sha256": "9fbffad0a8e4b7e2b6de69c089bdcb20ea73c6bc467aa8b9c609172ee22e390f",
+    "elapsed_ms": 58521,
+    "plan_hash": "sha256:1201c04850eed7b66958c005830575797358ce16e37e1d65678d2956f492d37a",
+    "safe_to_apply": false,
+    "blocking": [
+      ".mdkg/work/mdkg-cli/MANIFEST.md: skill_refs reference pursue-mdkg-goal lacks a proven identity binding",
+      ".mdkg/work/mdkg-cli/MANIFEST.md: skill_refs reference verify-close-and-checkpoint lacks a proven identity binding",
+      ".mdkg/work/mdkg-cli/MANIFEST.md: tool_refs reference tool.node lacks a proven identity binding",
+      ".mdkg/work/mdkg-cli/MANIFEST.md: tool_refs reference tool.npm lacks a proven identity binding",
+      ".mdkg/work/mdkg-cli/validate/WORK.md: skill_refs reference verify-close-and-checkpoint lacks a proven identity binding",
+      ".mdkg/work/mdkg-cli/validate/WORK.md: tool_refs reference tool.node lacks a proven identity binding",
+      ".mdkg/work/mdkg-cli/validate/WORK.md: tool_refs reference tool.npm lacks a proven identity binding",
+      "strict candidate validation: root:task-309: artifacts has an unresolved or ambiguous immutable identity mdkg://goal-10"
+    ],
+    "mapping_count": 2490,
+    "write_count": 2492,
+    "continuity_review_count": 0,
+    "preview_observational": true,
+    "canonical_preserved": true,
+    "migration_applied": false
+  },
+  "source_hashes": {
+    "src/cli.ts": "7d8cbe4baf0da786d30a7045fa17d3a5c43d60cb721e7bd94961aa0d5c0a9e5b",
+    "tests/commands/cli_output.test.ts": "b70cc2c97f27c7618cdedadc155ed22ef093f63a425ef788944e076bb4420cc3"
+  },
+  "regressions": {
+    "before": {
+      "count": 8,
+      "passed": 0,
+      "failed": 8,
+      "log_sha256": "1e921ba356284092953cb7a9e77ae3ee77cf9f7e71eb90c82a5e5de2217ecef6"
+    },
+    "after": {
+      "count": 8,
+      "passed": 8,
+      "failed": 0,
+      "log_sha256": "43339455d3cd7f8b43b5af5471ba3009201b5cbee7a2296ebd6210093d426b41"
+    }
+  },
+  "protected_hashes": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "independent_review": {
+    "source_read_only": true,
+    "findings": [],
+    "reviewed_source_hashes": {
+      "src/cli.ts": "7d8cbe4baf0da786d30a7045fa17d3a5c43d60cb721e7bd94961aa0d5c0a9e5b",
+      "tests/commands/cli_output.test.ts": "b70cc2c97f27c7618cdedadc155ed22ef093f63a425ef788944e076bb4420cc3"
+    },
+    "checks": [
+      "MCP initialize and EOF: exit 0 complete response",
+      "Oversized materialize input kept open: exit 2 complete invalid_request, no Git operation"
+    ],
+    "limits": [
+      "No final task-828 security clearance",
+      "Consumer disconnect/EPIPE and successful/cancelled materialization not independently exercised"
+    ]
+  },
+  "full_suite": {
+    "tests": 1349,
+    "passed": 1349,
+    "failed": 0,
+    "skipped": 0
+  },
+  "focused_suite": {
+    "tests": 79,
+    "passed": 79
+  },
+  "installed_suite": {
+    "runtimes": [
+      "24.15.0",
+      "24.18.0",
+      "26.0.0"
+    ],
+    "tests": 24,
+    "passed": 24
+  },
+  "harness_correction": "After source build cleaned dist/tests, an initial focused invocation found no compiled test file. Rebuilt tests before execution; no test result was inferred from that invocation.",
+  "remaining": [
+    "bug-7: migration reference classification, scale and remaining installed qualification",
+    "bug-7: old-client v2 adoption and killed-writer recovery",
+    "bug-17: public bundle compatibility decision and final fix",
+    "task-827, task-828, task-829, task-830: draft release metadata, independent security review, full ladder and artifact seal"
+  ],
+  "publication": "NOT_READY; no remote, tag, push or publication action",
+  "skill_candidates": [],
+  "graph_checks": [
+    {
+      "command": "node",
+      "args": [
+        "dist/cli.js",
+        "index"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81"
+    },
+    {
+      "command": "node",
+      "args": [
+        "dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "51e42f93592ab9d84e3905d166fb9567d72ccf2190632659ea5f5dda79463b6e"
+    },
+    {
+      "command": "node",
+      "args": [
+        "dist/cli.js",
+        "validate",
+        "--changed-only",
+        "--json"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "651c1f73ad2ecf8baa887329e7318d507175d9f6f9ffee74ebfbce465c3f699f"
+    },
+    {
+      "command": "node",
+      "args": [
+        "dist/cli.js",
+        "db",
+        "index",
+        "verify",
+        "--json"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "a02638a0fd3ef70a0426526d8472a4f6eebc9c33f4feab0b6a98933bbc110092"
+    },
+    {
+      "command": "git",
+      "args": [
+        "diff",
+        "--check"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "graph_result": {
+    "full": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 3
+    },
+    "changed": {
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "cleanup": {
+    "removed_owned_fixture_directories": 990,
+    "manifest_sha256": "4fdc92106afbba12d019b729c4480d1cbfb15e7bf1cbff726a89ca36d341c0a5",
+    "retained": "intermediate tarball, installed candidate, diagnostics and frozen private graph for further classification"
+  },
+  "commit_allowlist": [
+    "src/cli.ts",
+    "tests/commands/cli_output.test.ts",
+    ".mdkg/artifacts/goal-84/bug-33-verification.json",
+    ".mdkg/work/bug-33-drain-cli-output-before-exiting-to-preserve-complete-piped-receipts.md",
+    ".mdkg/work/chk-592-verify-complete-cli-output-and-record-frozen-graph-migration-blockers.md",
+    ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+    ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md"
+  ]
+}

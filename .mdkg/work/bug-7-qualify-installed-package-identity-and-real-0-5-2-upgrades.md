@@ -11,7 +11,7 @@ artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -175,3 +175,26 @@ not artifacts. No new shipped defect or policy approval was established.
 Remaining: private migration rehearsal, scale and other installed-family gaps,
 legacy-writer and killed-writer treatment, bug-17, independent security review,
 draft release guidance/metadata, complete release ladder and exact artifact seal.
+
+## 2026-09-09 Frozen Private Graph Preview and Output Defect
+
+The exact private graph snapshot at 2be35035 (2,863 files, inventory SHA-256
+e6d7aefa52c08983a18150653f445c6efd7c922c83c153379af60f043587f000) validates
+as legacy. Its installed migration preview originally exited zero with 65,536
+bytes of invalid JSON. A smaller synthetic reproduction confirms stdout and
+stderr truncation in both published 0.5.2 and the candidate; route to bug-33.
+
+With the bounded CLI shutdown fix, the same frozen preview returns 2,952,912
+bytes of valid JSON, 2,490 mappings and 2,492 proposed writes. It fails closed
+with eight explicit blockers: MANIFEST/WORK skill_refs for pursue-mdkg-goal and
+verify-close-and-checkpoint and tool_refs for tool.node/tool.npm lack proven
+identity bindings (seven diagnostics); task-309 artifacts contains an unresolved
+or ambiguous mdkg://goal-10 reference. These require source-grounded classification
+before migration qualification can close. Do not invent identities, silently
+remove references, or modify canonical nodes to make the rehearsal pass.
+
+No migration was applied, even in the private fixture. Preview preserves the
+frozen graph, fixture Git index and contemporaneous canonical graph/Git bytes.
+This snapshot predates bug-33 intake and is not a current-canonical migration
+approval. Private bodies remain under /private/tmp; durable summaries contain
+only counts, diagnostic references and hashes. Bug-7 remains incomplete.

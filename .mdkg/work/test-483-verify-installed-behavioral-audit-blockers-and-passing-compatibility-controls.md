@@ -9,14 +9,14 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-83/task-824-contract-audit.json, .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json]
 relates: [task-824, goal-84, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27]
-blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-32]
+blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-32, bug-33]
 blocks: []
-refs: [bug-28, bug-29, bug-32]
+refs: [bug-28, bug-29, bug-32, bug-33]
 context_refs: [goal-83, goal-84]
 evidence_refs: []
 aliases: []
 skills: []
-cases: [test-483-case-1, test-483-case-2, test-483-case-3, test-483-case-4, test-483-case-5, test-483-case-6, test-483-case-7, test-483-case-8, test-483-case-9, test-483-case-10]
+cases: [test-483-case-1, test-483-case-2, test-483-case-3, test-483-case-4, test-483-case-5, test-483-case-6, test-483-case-7, test-483-case-8, test-483-case-9, test-483-case-10, test-483-case-11]
 created: 2026-09-08
 updated: 2026-09-09
 ---
@@ -48,6 +48,11 @@ One frozen package with exact source/tarball hashes, disposable synthetic graphs
 10. Untouched packaged initialization has a closed reference graph and can adopt
     v2 without importing repository-only design docs. Preserve legacy/customized
     inputs without silently stripping their references to make migration pass.
+11. Large CLI text/JSON/XML/TOON/Markdown output and nonzero diagnostics drain
+    completely to ordinary and slow pipes, preserving UTF-8 bytes and exit codes.
+    Compare installed output with regular-file output on all three runtimes.
+    The frozen private graph migration preview must return a complete parseable
+    plan; a blocked plan is not permission to synthesize bindings or apply it.
 
 # Results / Evidence
 
