@@ -392,3 +392,23 @@ progress for its remaining matrix; bug-17 stays blocked on the separate legacy
 public-bundle decision. Twenty-six of twenty-eight bug lanes remain locally done,
 not twenty-eight. Final task-828, qualification, metadata and sealing remain open.
 No new skill candidate, remote action or publication readiness.
+
+## 2026-09-09 Recovery and Legacy-Writer Qualification
+
+Bug-7's chk-587 records six recovery cases and expanded delete/evidence conflicts
+passing on Node 24.15.0, 24.18.0 and 26.0.0, plus 1341 passing source tests.
+The verified minimum runtime is retained locally for remaining qualification.
+An actual 0.5.2 old writer partially mutates a v2 fixture before error; the current
+candidate detects the invalid legacy node and refuses further writes. This new
+compatibility evidence stays under bug-7 and requires explicit adoption/guard
+disposition, not an automatic waiver. Bug-7 remains progress, bug-17's separate
+decision remains open, and final review/qualification/publication gates remain.
+
+## 2026-09-09 Legacy Writer Barrier Evidence
+
+Chk-588 narrows the bug-7 decision with 76 runtime probes. Published 0.5.2 has
+a reusable newer-config-version refusal for tested non-init commands, but its
+init paths bypass that barrier. Recommend layered configuration fencing plus
+explicit no-mixed-version writers for v2 adoption; no policy or source change
+was silently adopted. Bug-7 stays progress, bug-17 remains separately blocked,
+and independent qualification work remains available. Skill candidates none.

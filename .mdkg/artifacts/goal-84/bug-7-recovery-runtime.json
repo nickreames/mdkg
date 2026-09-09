@@ -1,0 +1,377 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-587",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_baseline": "188afe2dab60e0a63d6a692982e7c2cd4a29f30d",
+  "disposition": "partial qualification with unresolved legacy-writer compatibility hazard; NOT_READY",
+  "candidate": {
+    "version": "0.5.2",
+    "kind": "intermediate development candidate, not historical baseline or 0.6.0 seal",
+    "sha256": "5d72db2d486ab187eef8da487abd519e31700e6e41bb7420a18850216d3eba05"
+  },
+  "published_baseline": {
+    "version": "0.5.2",
+    "bytes": 425431,
+    "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+    "source": "previously verified cached registry tarball; rehashed this turn; no network access"
+  },
+  "minimum_runtime": {
+    "version": "v24.15.0",
+    "platform": "darwin-arm64",
+    "archive_url": "https://nodejs.org/dist/v24.15.0/node-v24.15.0-darwin-arm64.tar.gz",
+    "checksum_url": "https://nodejs.org/dist/v24.15.0/SHASUMS256.txt",
+    "archive_sha256": "372331b969779ab5d15b949884fc6eaf88d5afe87bde8ba881d6400b9100ffc4",
+    "executable_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+    "checksum_manifest_sha256": "1e812945dee26c3e4ca41a8c0b582668ff2401ba0ae727a122300c0e8514edb0",
+    "trust_basis": "official HTTPS archive and checksum manifest; no detached-signature verification claimed",
+    "installation": "only executable extracted into owned /private/tmp directory; no global installation/configuration",
+    "network": "Initial sandbox DNS failure; approved escalation downloaded only public checksum manifest and runtime archive."
+  },
+  "source_sha256": {
+    "scripts/installed-upgrade-recovery.js": "198098846ad6a0cfcb2c3e11c5a4c0dbca882f530cf851c7f913bd45faeb15c6",
+    "scripts/installed-identity-collaboration.js": "4aa288dec4f9046070424be5cde4e9e697502f2049ec3d27e64dbf6d7bc27206",
+    "scripts/smoke-upgrade.js": "810b892f5bd149085dd9cbc1a3bf781eba5cbf7f3893b53ba7ad2ccb93f45c98"
+  },
+  "runs": [
+    {
+      "label": "upgrade-recovery-node26",
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "ae25e2714e399235824567b1ceb74ffeafdcf2d3900a1605b1dff2f67d3b0d37"
+    },
+    {
+      "label": "upgrade-recovery-node24",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "8542fbdce5e51ad220539f8e59813685691ad53c9aac958ab69e2f477791b97e"
+    },
+    {
+      "label": "upgrade-recovery-node24-min",
+      "runtime": "v24.15.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "54d47999d24ee6043eb0dbf77b9b8e73b797f705535c254d8a28b91dad1a415c"
+    },
+    {
+      "label": "branch-delete-evidence-node26-final",
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "329f578ef812cbc983f68ee0218c3b1f974eba7c390dec31a0c11293add68412"
+    },
+    {
+      "label": "branch-delete-evidence-node24",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "609fc82c72ed66f45dbe56106cbd21304746fa1e5282706b9c3ec6d443c17fd9"
+    },
+    {
+      "label": "branch-delete-evidence-node24-min",
+      "runtime": "v24.15.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "224fe8aa5827f950b78f36109d6f346e43ad3a649ed83b20c1bb1d7478c5f006"
+    }
+  ],
+  "full": [
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "scripts/test-built.js"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "22041fc4981a2b87dfa522830da2edebae7fdd7ec9e2f430a486ec06e843482e",
+      "summary": [
+        "✔ runDoctorCommand reports missing and invalid config failures (44.506667ms)",
+        "✔ runDoctorCommand reports cached index read failures (149.634667ms)",
+        "✔ v2 template ownership and missing-binding failures happen before target writes (15606.461708ms)",
+        "ℹ tests 1341",
+        "ℹ pass 1341",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    }
+  ],
+  "auxiliary": [
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "--test",
+        "dist/tests/published-upgrade-baseline.test.js",
+        "dist/tests/release-ladder.test.js",
+        "tests/security-remediation.test.mjs"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "c5e1008832fed7c227e10a91bfd7038f24aede31321f52e71dd2fa1dbf8fae35",
+      "summary": [
+        "ℹ tests 20",
+        "ℹ pass 20",
+        "ℹ fail 0",
+        "ℹ skipped 0"
+      ]
+    },
+    {
+      "command": "npm",
+      "args": [
+        "run",
+        "cli:check:built"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf",
+      "summary": []
+    },
+    {
+      "command": "npm",
+      "args": [
+        "run",
+        "docs:check:built"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba",
+      "summary": [
+        "> node scripts/generate-docs-reference.js --check && node scripts/generate-release-notes-data.js --check && node scripts/check-doc-command-examples.js",
+        "  \"checked_examples\": 494,",
+        "  \"placeholder_examples\": 58,",
+        "  \"placeholder_context_examples\": 34,",
+        "  \"placeholder_fence_examples\": 34,",
+        "  \"placeholder_fence_context_examples\": 34,",
+        "  \"skipped_illustrative_examples\": 60,",
+        "  \"failed_examples\": 0,",
+        "  \"failures\": []"
+      ]
+    },
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "dist/cli.js",
+        "validate",
+        "--json"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "1c255bd7d454229d4c0985aeab8d08d6be8604ce6bb863b4ed1063d74d4414fb",
+      "summary": []
+    },
+    {
+      "command": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "args": [
+        "dist/cli.js",
+        "validate",
+        "--changed-only",
+        "--json"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "4c877acbd832083a52a1594da565a81e9b7a91700c30526462c47ff63e95dee3",
+      "summary": []
+    },
+    {
+      "command": "git",
+      "args": [
+        "diff",
+        "--check"
+      ],
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": []
+    }
+  ],
+  "coverage": [
+    "Existing installed upgrade smoke adds six explicit error-interruption cases: resume and rollback after first, middle and last authored replacement among 40 operations, on all three required Node versions.",
+    "Fixture-only node:fs rename instrumentation throws after the actual replacement; installed package bytes are not modified and no production fault-injection API is added.",
+    "Journal observed written-operation counts are 1, 21 and 40; each resumes to completed or rolls back to exact original authored/Git bytes. Unrelated sentinel bytes are preserved.",
+    "Midpoint recovery refuses later user edits without writes. Terminal repeated continuation is observational; journal mode is 0600 on this macOS host.",
+    "Installed branch smoke adds delete/modify in both directions and competing artifacts fields. Unreviewed applications refuse without writes; explicit owner choices preserve selected evidence/body and Git staging.",
+    "Standard/customized actual published upgrades and full branch smokes pass on Node 24.15.0, 24.18.0 and 26.0.0; this is not all test-482 or final artifact qualification."
+  ],
+  "legacy_writer_finding": {
+    "id": "bug-7/legacy-writer-v2-partial-write",
+    "classification": "local data-integrity compatibility hazard; deduplicated into existing installed identity qualification blocker",
+    "affected": "Published mdkg 0.5.2 invoked against an explicitly migrated v2 graph; reproduced on Node 26.0.0 and 24.15.0.",
+    "observation": "Old show succeeds without writes. Old new creates a legacy node and updates SQLite before exit 4 on an unknown graph_id key. Existing node destruction was not observed.",
+    "candidate_control": "Candidate validation reports the missing graph_id/node_id; candidate new refuses without any additional writes. The graph manifest alone cannot cause an already-published old binary to reject before writing.",
+    "evidence": [
+      {
+        "runtime": "v26.0.0",
+        "results": [
+          {
+            "name": "candidate-before",
+            "args": [
+              "validate",
+              "--json"
+            ],
+            "status": 0,
+            "signal": null,
+            "output_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+            "changed_paths": []
+          },
+          {
+            "name": "old-show",
+            "args": [
+              "show",
+              "task-1",
+              "--json"
+            ],
+            "status": 0,
+            "signal": null,
+            "output_sha256": "06fa83bde182a1d2d8ea7fc85bd5e6260d24bac137c8195255894d46631613a4",
+            "changed_paths": []
+          },
+          {
+            "name": "old-new",
+            "args": [
+              "new",
+              "task",
+              "Older writer attempt",
+              "--json"
+            ],
+            "status": 4,
+            "signal": null,
+            "output_sha256": "624102a83ae7ac3d095a7b732f89b7a0d32d7eb36adefd3acb49ab761a98f5ac",
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/task-2-older-writer-attempt.md"
+            ]
+          },
+          {
+            "name": "candidate-after",
+            "args": [
+              "validate",
+              "--json"
+            ],
+            "status": 2,
+            "signal": null,
+            "output_sha256": "4f68f0b79a3a8f5fa8772af8c418e9d858dd2d1cd7d067de9b831d0deaa67284",
+            "changed_paths": []
+          },
+          {
+            "name": "candidate-new-after",
+            "args": [
+              "new",
+              "task",
+              "Candidate refuses mixed graph",
+              "--json"
+            ],
+            "status": 1,
+            "signal": null,
+            "output_sha256": "44f58e17071bd69cefc78d0e90301022478adca4e81c1025b4829823ace95c36",
+            "changed_paths": []
+          }
+        ]
+      },
+      {
+        "runtime": "v24.15.0",
+        "results": [
+          {
+            "name": "candidate-before",
+            "args": [
+              "validate",
+              "--json"
+            ],
+            "status": 0,
+            "signal": null,
+            "output_sha256": "6276c72e7d43cc8321790a309fe725f8f47e7a5845137389f90b12d177d2ff4a",
+            "changed_paths": []
+          },
+          {
+            "name": "old-show",
+            "args": [
+              "show",
+              "task-1",
+              "--json"
+            ],
+            "status": 0,
+            "signal": null,
+            "output_sha256": "06fa83bde182a1d2d8ea7fc85bd5e6260d24bac137c8195255894d46631613a4",
+            "changed_paths": []
+          },
+          {
+            "name": "old-new",
+            "args": [
+              "new",
+              "task",
+              "Older writer attempt",
+              "--json"
+            ],
+            "status": 4,
+            "signal": null,
+            "output_sha256": "d30d3d78a509ecaea20280ecbc9fae41bd8c061592600eb2d8d5137327c0d108",
+            "changed_paths": [
+              ".mdkg/index/mdkg.sqlite",
+              ".mdkg/work/task-2-older-writer-attempt.md"
+            ]
+          },
+          {
+            "name": "candidate-after",
+            "args": [
+              "validate",
+              "--json"
+            ],
+            "status": 2,
+            "signal": null,
+            "output_sha256": "5a4cf2a1b609dfe2a2b3e8238c19f4da8fa9115d8b47fe89a2700c86f4aa1f6d",
+            "changed_paths": []
+          },
+          {
+            "name": "candidate-new-after",
+            "args": [
+              "new",
+              "task",
+              "Candidate refuses mixed graph",
+              "--json"
+            ],
+            "status": 1,
+            "signal": null,
+            "output_sha256": "faa3c737c0ef74fadbfc02f792f3c12ba9d71440dc0e0decc2bf1c0d5f2247d7",
+            "changed_paths": []
+          }
+        ]
+      }
+    ],
+    "status": "open; not compatibility clearance, not an accepted risk waiver",
+    "recommendation": "Before clearing publication, evaluate an enforceable legacy-writer compatibility barrier for v2 adoption. An all-writers-upgraded, mixed-writes-unsupported release policy is an alternative requiring explicit Nick acceptance and complete migration/recovery guidance.",
+    "authority": "No new compatibility policy, source guard, canonical migration or automatic recovery was implemented."
+  },
+  "fixture_correction": "The initial delete fixture tried to git add a path already removed from the index by git rm. Corrected the owned fixture to commit the already-staged deletion; failed-run log retained. Not a shipped source defect.",
+  "remaining": [
+    "Resolve legacy-writer adoption policy/guard and publish truthful compatibility/recovery guidance; no automatic waiver.",
+    "Complete installed graph transaction recovery, dependency movement, legacy/old-client acceptance and remaining task-826 families/private graph rehearsal/scale.",
+    "Bug-17 public config-less materialization decision and transport remediation.",
+    "Task-828 independent full security diff review, final metadata, coverage/release ladder and 0.6.0 artifact sealing."
+  ],
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "evidence_location": "/private/tmp/mdkg-bug7-recovery.YDpsrx: compact logs, harnesses, digests and verified minimum runtime retained. Disposable smoke installs/clones/caches and probe copies removed after validation.",
+  "authority_used": "Goal 83/84 local qualification, fixture Git operations, approved public runtime download, graph evidence/projections and reviewed local commit only.",
+  "excluded": "No remote Git, push, tag, release, npm publication, provider/deployment, canonical migration, bundle refresh, consumer edits or live runtime/selection changes.",
+  "skill_candidates": []
+}

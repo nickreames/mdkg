@@ -6,6 +6,7 @@ const os = require("node:os");
 const path = require("node:path");
 const crypto = require("node:crypto");
 const { preparePublishedBaseline, verifyBaseline } = require("./published-upgrade-baseline");
+const { exerciseInstalledUpgradeRecovery } = require("./installed-upgrade-recovery");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
@@ -464,6 +465,9 @@ async function runSmoke() {
     const customRoot = path.join(tempRoot, "customized-published"); fs.mkdirSync(customRoot);
     const customized = await exercisePublishedUpgrade(binPath, customRoot, true);
     console.log(JSON.stringify({ action: "published-customized-upgrade-qualified", runtime: process.version, ...customized }));
+    const oldBin = process.platform === "win32" ? path.join(tempRoot, "published-prefix/mdkg.cmd") : path.join(tempRoot, "published-prefix/bin/mdkg");
+    const recovery = exerciseInstalledUpgradeRecovery(binPath, oldBin, tempRoot, commandEnv());
+    console.log(JSON.stringify({ action: "installed-upgrade-recovery-qualified", ...recovery }));
     console.log("upgrade smoke passed");
     console.log(`version=${version}`);
   } finally {

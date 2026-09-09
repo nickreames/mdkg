@@ -27,7 +27,8 @@ function exerciseIdentityCollaboration(binPath, ownedRoot) {
     }; visit(root); return output;
   };
   const commit = (root, paths, title) => {
-    git(root, ["add", "--", ...paths]); git(root, ["commit", "-m", title]); return git(root, ["rev-parse", "HEAD"]);
+    if (paths.length) git(root, ["add", "--", ...paths]);
+    git(root, ["commit", "-m", title]); return git(root, ["rev-parse", "HEAD"]);
   };
   const create = (root, title, args = []) => cli(root, ["new", "task", title, "--status", "todo", ...args]).node;
   const root = path.join(ownedRoot, "identity-collaboration"); fs.mkdirSync(root);
@@ -158,13 +159,55 @@ function exerciseIdentityCollaboration(binPath, ownedRoot) {
   assert.notEqual(cherryRejected.status, 0);
   assert.deepEqual(files(cherry), cherryBefore);
   assert.equal(fs.readFileSync(path.join(incoming, externalPath), "utf8"), externalReceipt);
+  const semanticCases = [];
+  for (const kind of ["target-delete", "incoming-delete", "evidence-conflict"]) {
+    const left = path.join(root, kind + "-target"), right = path.join(root, kind + "-incoming");
+    git(root, ["clone", "--no-local", seed, left]);
+    git(root, ["clone", "--no-local", seed, right]);
+    if (kind === "target-delete") git(left, ["rm", "--", common.path]);
+    else cli(left, ["task", "update", common.stable_ref, ...(kind === "evidence-conflict" ? ["--add-artifacts", "artifact://fixture.target"] : ["--priority", "2"])]);
+    if (kind === "incoming-delete") git(right, ["rm", "--", common.path]);
+    else cli(right, ["task", "update", common.stable_ref, ...(kind === "evidence-conflict" ? ["--add-artifacts", "artifact://fixture.incoming"] : ["--priority", "3"])]);
+    commit(left, kind === "target-delete" ? [] : [common.path], kind + " target state");
+    const revision = commit(right, kind === "incoming-delete" ? [] : [common.path], kind + " incoming state");
+    git(left, ["fetch", right, "main:refs/heads/review-incoming"]);
+    const conflictArgs = ["graph", "reconcile", "--ancestor", base, "--incoming", revision];
+    const conflictBefore = files(left), blocked = cli(left, conflictArgs);
+    const classification = blocked.classifications.find(c => c.stable_ref === common.stable_ref);
+    const expectedConflict = kind === "target-delete" ? "$delete-modify" : kind === "incoming-delete" ? "$modify-delete" : "artifacts";
+    assert.ok(classification.conflicts.includes(expectedConflict), JSON.stringify(classification));
+    assert.ok(blocked.blocking.length);
+    const refused = run(left, binPath, [...conflictArgs, "--apply", "--plan-hash", blocked.plan_hash, "--json"], true);
+    assert.notEqual(refused.status, 0);
+    assert.deepEqual(files(left), conflictBefore, "unreviewed deletion/evidence change must not write");
+    const take = kind === "target-delete" ? "incoming" : "target";
+    const desired = take === "incoming" ? fs.readFileSync(path.join(right, common.path)) : fs.readFileSync(path.join(left, common.path));
+    fs.writeFileSync(path.join(left, "decision.json"), JSON.stringify({ [common.stable_ref]: { take, reason: "Explicit owner review retains this exact version and its evidence" } }));
+    const reviewArgs = [...conflictArgs, "--decisions", "decision.json"], approved = cli(left, reviewArgs);
+    assert.deepEqual(approved.blocking, []);
+    const priorIndex = fs.readFileSync(path.join(left, ".git/index"));
+    cli(left, [...reviewArgs, "--apply", "--plan-hash", approved.plan_hash]);
+    assert.deepEqual(fs.readFileSync(path.join(left, ".git/index")), priorIndex);
+    assert.equal(cli(left, ["show", common.stable_ref]).item.stable_ref, common.stable_ref);
+    const final = fs.readFileSync(path.join(left, common.path), "utf8");
+    // Reconciliation may canonicalize the header; the chosen evidence and body
+    // must retain their meaning, with no union of competing attestations.
+    if (kind === "evidence-conflict") {
+      assert.ok(final.includes("artifact://fixture.target"));
+      assert.ok(!final.includes("artifact://fixture.incoming"));
+    }
+    const body = text => text.slice(text.indexOf("\n---", 4) + 4);
+    assert.equal(body(final), body(desired.toString("utf8")));
+    cli(left, ["validate"]);
+    semanticCases.push({ kind, conflict: expectedConflict, reviewed_take: take, refused_without_writes: true, git_index_unchanged: true });
+  }
   return { runtime: process.version, common_ancestor: base, incoming: incomingHead,
     natural_collision: a.id, target_identity: a.stable_ref, incoming_identity: b.stable_ref,
     incoming_alias_after: mapping.output.alias, plan_hash: plan.plan_hash,
     cross_links_preserved: true, ordinary_uncommitted_reads_observational: true,
     git_index_unchanged: true, external_receipt_sha256: crypto.createHash("sha256").update(externalReceipt).digest("hex"), replay_noop: true,
     reviewed_reintroduction: true, revert_replay_noop: true, cherry_pick_revert_requires_decision: true,
-    same_identity_conflict_requires_decision: true, stale_plan_refused_without_writes: true, newer_incoming_reviewed: true };
+    same_identity_conflict_requires_decision: true, stale_plan_refused_without_writes: true, newer_incoming_reviewed: true, semantic_cases: semanticCases };
 }
 
 module.exports = { exerciseIdentityCollaboration };

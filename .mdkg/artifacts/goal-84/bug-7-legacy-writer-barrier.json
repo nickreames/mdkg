@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-588",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_baseline": "188afe2dab60e0a63d6a692982e7c2cd4a29f30d",
+  "disposition": "INCOMPLETE_BARRIER; adoption policy and implementation remain undecided; NOT_READY",
+  "published_package_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+  "intermediate_candidate_sha256": "5d72db2d486ab187eef8da487abd519e31700e6e41bb7420a18850216d3eba05",
+  "method": [
+    "Execute extracted immutable package CLI entrypoints with no source imports or package modifications; no dependencies/install scripts/network needed.",
+    "Candidate initializes and explicitly migrates synthetic graph, creates task/goal through CLI. Each old command receives independent copied graph and freshly rebuilt candidate cache.",
+    "Experiment changes only fixture config schema_version to 2; current source does NOT accept or emit this configuration version.",
+    "Snapshot all fixture files and directories including modes before and after each command. No Git operations needed in these fixtures.",
+    "Node 24.15.0 and 26.0.0 produce identical status/path/guard classifications for all 38 cases per runtime."
+  ],
+  "harness_sha256": "289830b4c5be7a01d931e1250f72ad3168456945a7627d1fd4c85f387126380c",
+  "runs": [
+    {
+      "runtime": "v26.0.0",
+      "sha256": "44778b527c7d6bfd22edff332f0024ee85893cf80b1ee8c7efcd4319afe74143",
+      "cases": 38
+    },
+    {
+      "runtime": "v24.15.0",
+      "sha256": "19a6cb322ffeaed698dfbdd4de835a7e691a86d7d03ce7791d83916eab807ff5",
+      "cases": 38
+    }
+  ],
+  "matrix": [
+    {
+      "schema": 1,
+      "command": [
+        "new",
+        "task",
+        "Old writer attempt",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [
+        ".mdkg/index/mdkg.sqlite",
+        ".mdkg/work/task-2-old-writer-attempt.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "task",
+        "update",
+        "task-1",
+        "--priority",
+        "2",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [
+        ".mdkg/work/task-1-existing-identity.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "format"
+      ],
+      "status": 2,
+      "changed_paths": [],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "format",
+        "--headings",
+        "--apply",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "index"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "upgrade",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "upgrade",
+        "--apply",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/README.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "fix",
+        "ids",
+        "--apply",
+        "--json"
+      ],
+      "status": 1,
+      "changed_paths": [],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "checkpoint",
+        "new",
+        "Old checkpoint",
+        "--kind",
+        "test-proof",
+        "--scope",
+        "task-1",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/index/mdkg.sqlite",
+        ".mdkg/work/chk-1-old-checkpoint.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "goal",
+        "activate",
+        "goal-1",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [
+        ".mdkg/state/selected-goal.json",
+        ".mdkg/work/goal-1-existing-goal.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "event",
+        "enable",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/work/events",
+        ".mdkg/work/events/events.jsonl"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "event",
+        "append",
+        "--kind",
+        "test-proof",
+        "--refs",
+        "task-1",
+        "--status",
+        "ok",
+        "--json"
+      ],
+      "status": 3,
+      "changed_paths": [],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "skill",
+        "new",
+        "fixture-skill",
+        "Fixture skill",
+        "--description",
+        "Synthetic fixture",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".agents",
+        ".agents/skills",
+        ".agents/skills/.mdkg-managed.json",
+        ".agents/skills/fixture-skill",
+        ".agents/skills/fixture-skill/SKILL.md",
+        ".agents/skills/fixture-skill/assets",
+        ".agents/skills/fixture-skill/references",
+        ".claude",
+        ".claude/skills",
+        ".claude/skills/.mdkg-managed.json",
+        ".claude/skills/fixture-skill",
+        ".claude/skills/fixture-skill/SKILL.md",
+        ".claude/skills/fixture-skill/assets",
+        ".claude/skills/fixture-skill/references",
+        ".mdkg/index/skills.json",
+        ".mdkg/skills",
+        ".mdkg/skills/fixture-skill",
+        ".mdkg/skills/fixture-skill/SKILL.md",
+        ".mdkg/skills/fixture-skill/assets",
+        ".mdkg/skills/fixture-skill/references",
+        ".mdkg/skills/registry.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "skill",
+        "sync",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".agents",
+        ".agents/skills",
+        ".agents/skills/.mdkg-managed.json",
+        ".claude",
+        ".claude/skills",
+        ".claude/skills/.mdkg-managed.json"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "db",
+        "init",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/config.json",
+        ".mdkg/db",
+        ".mdkg/db/project-db.json",
+        ".mdkg/db/receipts",
+        ".mdkg/db/runtime",
+        ".mdkg/db/schema",
+        ".mdkg/db/schema/migrations",
+        ".mdkg/db/state"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "show",
+        "task-1",
+        "--json"
+      ],
+      "status": 0,
+      "changed_paths": [],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "init"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/init-manifest.json"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "init",
+        "--agent"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".agents",
+        ".agents/skills",
+        ".agents/skills/.mdkg-managed.json",
+        ".agents/skills/author-mdkg-skill",
+        ".agents/skills/author-mdkg-skill/SKILL.md",
+        ".agents/skills/build-pack-and-execute-task",
+        ".agents/skills/build-pack-and-execute-task/SKILL.md",
+        ".agents/skills/pursue-mdkg-goal",
+        ".agents/skills/pursue-mdkg-goal/SKILL.md",
+        ".agents/skills/pursue-mdkg-loop",
+        ".agents/skills/pursue-mdkg-loop/SKILL.md",
+        ".agents/skills/select-work-and-ground-context",
+        ".agents/skills/select-work-and-ground-context/SKILL.md",
+        ".agents/skills/verify-close-and-checkpoint",
+        ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+        ".claude",
+        ".claude/skills",
+        ".claude/skills/.mdkg-managed.json",
+        ".claude/skills/author-mdkg-skill",
+        ".claude/skills/author-mdkg-skill/SKILL.md",
+        ".claude/skills/build-pack-and-execute-task",
+        ".claude/skills/build-pack-and-execute-task/SKILL.md",
+        ".claude/skills/pursue-mdkg-goal",
+        ".claude/skills/pursue-mdkg-goal/SKILL.md",
+        ".claude/skills/pursue-mdkg-loop",
+        ".claude/skills/pursue-mdkg-loop/SKILL.md",
+        ".claude/skills/select-work-and-ground-context",
+        ".claude/skills/select-work-and-ground-context/SKILL.md",
+        ".claude/skills/verify-close-and-checkpoint",
+        ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/skills",
+        ".mdkg/skills/author-mdkg-skill",
+        ".mdkg/skills/author-mdkg-skill/SKILL.md",
+        ".mdkg/skills/build-pack-and-execute-task",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-loop",
+        ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/select-work-and-ground-context",
+        ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+        ".mdkg/skills/verify-close-and-checkpoint",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/events",
+        ".mdkg/work/events/events.jsonl",
+        "AGENTS.md",
+        "AGENT_START.md",
+        "CLAUDE.md",
+        "CLI_COMMAND_MATRIX.md",
+        "llms.txt"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 1,
+      "command": [
+        "init",
+        "--force"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/README.md",
+        ".mdkg/core/COLLABORATION.md",
+        ".mdkg/core/HUMAN.md",
+        ".mdkg/core/SOUL.md",
+        ".mdkg/core/core.md",
+        ".mdkg/core/guide.md",
+        ".mdkg/core/rule-1-mdkg-conventions.md",
+        ".mdkg/core/rule-2-context-pack-rules.md",
+        ".mdkg/core/rule-3-cli-contract.md",
+        ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+        ".mdkg/core/rule-5-release-and-versioning.md",
+        ".mdkg/core/rule-6-templates-and-schemas.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    },
+    {
+      "schema": 2,
+      "command": [
+        "new",
+        "task",
+        "Old writer attempt",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "task",
+        "update",
+        "task-1",
+        "--priority",
+        "2",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "format"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "format",
+        "--headings",
+        "--apply",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "index"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "upgrade",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "upgrade",
+        "--apply",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "fix",
+        "ids",
+        "--apply",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "checkpoint",
+        "new",
+        "Old checkpoint",
+        "--kind",
+        "test-proof",
+        "--scope",
+        "task-1",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "goal",
+        "activate",
+        "goal-1",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "event",
+        "enable",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "event",
+        "append",
+        "--kind",
+        "test-proof",
+        "--refs",
+        "task-1",
+        "--status",
+        "ok",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "skill",
+        "new",
+        "fixture-skill",
+        "Fixture skill",
+        "--description",
+        "Synthetic fixture",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "skill",
+        "sync",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "db",
+        "init",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "show",
+        "task-1",
+        "--json"
+      ],
+      "status": 4,
+      "changed_paths": [],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "init"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/init-manifest.json"
+      ],
+      "config_schema_after": 2,
+      "refused_by_version": false
+    },
+    {
+      "schema": 2,
+      "command": [
+        "init",
+        "--agent"
+      ],
+      "status": 4,
+      "changed_paths": [
+        ".mdkg/skills",
+        ".mdkg/skills/author-mdkg-skill",
+        ".mdkg/skills/author-mdkg-skill/SKILL.md",
+        ".mdkg/skills/build-pack-and-execute-task",
+        ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-goal",
+        ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+        ".mdkg/skills/pursue-mdkg-loop",
+        ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+        ".mdkg/skills/registry.md",
+        ".mdkg/skills/select-work-and-ground-context",
+        ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+        ".mdkg/skills/verify-close-and-checkpoint",
+        ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+        ".mdkg/work/events",
+        ".mdkg/work/events/events.jsonl",
+        "AGENTS.md",
+        "AGENT_START.md",
+        "CLAUDE.md",
+        "CLI_COMMAND_MATRIX.md",
+        "llms.txt"
+      ],
+      "config_schema_after": 2,
+      "refused_by_version": true
+    },
+    {
+      "schema": 2,
+      "command": [
+        "init",
+        "--force"
+      ],
+      "status": 0,
+      "changed_paths": [
+        ".mdkg/README.md",
+        ".mdkg/config.json",
+        ".mdkg/core/COLLABORATION.md",
+        ".mdkg/core/HUMAN.md",
+        ".mdkg/core/SOUL.md",
+        ".mdkg/core/core.md",
+        ".mdkg/core/guide.md",
+        ".mdkg/core/rule-1-mdkg-conventions.md",
+        ".mdkg/core/rule-2-context-pack-rules.md",
+        ".mdkg/core/rule-3-cli-contract.md",
+        ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+        ".mdkg/core/rule-5-release-and-versioning.md",
+        ".mdkg/core/rule-6-templates-and-schemas.md",
+        ".mdkg/init-manifest.json",
+        ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md"
+      ],
+      "config_schema_after": 1,
+      "refused_by_version": false
+    }
+  ],
+  "source_hashes": {
+    "core/migrate.js": "924a508db5035771941ae9890569b391821254f9b639a8f8f02c0247121297b2",
+    "commands/init.js": "232fb751abaeba4bd90610dd908e56bb7e5eaa78383bfdf0fbfab69c2cf4533a",
+    "commands/new.js": "a5ca0fcf84dfc91692b5aff7edc11b1a84f1ee91831a09b92a9c48498b7d9e41",
+    "commands/upgrade.js": "49016ce59c817bfe6ecb5adfba8b700ad3b0234013de5d0f6c439c39c77f7646"
+  },
+  "findings": [
+    {
+      "key": "partial-configuration-barrier",
+      "result": "All 16 tested non-init commands under experimental config schema 2 refuse with the newer-schema diagnostic and no filesystem changes.",
+      "scope": "Configuration loader guard only; command operations beyond that guard were not qualified by their refusal."
+    },
+    {
+      "key": "old-init-bypass",
+      "result": "Old init writes init-manifest despite schema 2. Old init --agent adds 21 file/directory paths before version refusal. Old init --force succeeds, rewrites 15 paths including identity-bearing core and changes config schema back to 1. Not a complete old-writer barrier."
+    },
+    {
+      "key": "warm-cache-partial-mutation",
+      "result": "Under unchanged schema 1, old new writes a legacy node and SQLite before error. Old task update changes priority on an existing identity and reorders, but preserves, identity fields before error. Old checkpoint creation succeeds with new legacy evidence. Candidate validation remains required; command failure is not rollback."
+    },
+    {
+      "key": "cache-dependent-failure",
+      "result": "Initial copied-cache probes rejected new/show before mutation due to timestamp staleness. Explicit candidate index warming reproduces the hazardous path. Initial 38 cold-cache exploratory cases are retained separately and are not counted as compatibility clearance."
+    }
+  ],
+  "recommendation": {
+    "preferred": "Layer a reviewed, explicit v2-adoption configuration contract on the old client's existing newer-schema refusal, AND require all writers to upgrade before v2 adoption. Do not describe config fencing as protection from old init or arbitrary file editing.",
+    "implementation_shape": [
+      "Keep config schema 1 readable and legacy initialization unchanged. Do not automatically bump existing config during observational reads.",
+      "Bind new configuration contract to explicit identity adoption; migration preview names config, manifest and nodes, hashes their inputs, and applies/reverses them through the same recovery journal.",
+      "Fail closed on missing/mismatched v2 configuration in new-client mutation paths, with diagnostics and reviewed recovery. No silent identity allocation or automatic repair.",
+      "Cover cold/warm caches, old mutation families, old init bypass, migration interruption ordering, repeated migration, mixed-client recovery, clone/fork/reconcile, legacy unchanged reads and supported-runtime matrix.",
+      "Keep old-init/direct-editor limitations explicit. Any stronger process/filesystem access barrier belongs to consuming runtime/operator enforcement, not claimed as a portable graph guarantee."
+    ],
+    "alternatives": [
+      "Documentation-only all-writers-upgraded policy: least implementation, but fails to use an available accidental-write defense; not recommended without explicit risk acceptance.",
+      "Relocate or hide authored nodes: broad graph/layout/consumer compatibility changes and no general protection from old init; not recommended for this bounded fix.",
+      "Git hooks or wrapper-only checks: bypassable and not inherited reliably by every clone; useful optional consumer controls, not the graph correctness boundary."
+    ],
+    "decision_required": "Nick approval of the layered configuration fence plus no mixed-version writers during v2 adoption, including the explicit old-init limitation. This receipt does not approve or implement it."
+  },
+  "limitations": [
+    "Tested 0.5.2 only; no guarantee for every older executable, custom client or direct editor.",
+    "Fixture-only config version experiment, not a released format contract or migration.",
+    "No full security review, final runtime matrix, benchmark, artifact seal or publication clearance."
+  ],
+  "evidence_location": "/private/tmp/mdkg-legacy-barrier.32Ycqs: harness, result JSON and raw synthetic diagnostic logs",
+  "authority_used": "Goal83/84 local investigation, owned temporary fixtures, mdkg evidence/projections, reviewed local commit if validation passes",
+  "excluded": "No canonical config/identity migration, shipped runtime change, consumer write, remote Git, publication, provider/deployment or bundle refresh.",
+  "skill_candidates": []
+}
