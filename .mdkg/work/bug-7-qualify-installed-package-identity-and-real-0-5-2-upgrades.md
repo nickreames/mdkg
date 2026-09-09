@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -62,6 +62,29 @@ Affected-version assessment: confirmed against current 9d7e0d3f candidate source
 Require failing-before/passing-after results and independent verification in task-828. Every security bug links a case-level source regression and installed consumer regression where applicable. No automatic waiver.
 
 # Links / Artifacts
+
+## 2026-09-09 Installed Goal Routing and Scale Gap
+
+The reusable installed-scale-goal harness passes 15 control cases (262 commands)
+on each of Node 24.15.0, 24.18.0 and 26.0.0 with 100-node graphs and 20000 events.
+JSON/SQLite and legacy/v2 reads are observational. Both publication gate orders,
+reopened gates, task/checkpoint/goal completion, stable last-active identity and
+unchanged Git index/selection pass. Default node/event size limits and actual
+2049-commit history reject oversized input with exact diagnostics and no writes.
+Goal routing is not an artifact verifier or publication authority enforcer.
+
+The 2000-node matrix remains incomplete: migration apply exceeded the explicit
+180-second harness timeout on all three runtimes concurrently and on Node26 in
+isolation. The isolated process terminated after 1086 of 2000 task headers had
+migrated; its journal and fixture remain private. This is a qualification gap,
+not an invented product latency limit or proof of data loss. Source confirms a
+full custody inventory/content scan before each write, yielding quadratic work.
+Next: profile and improve measured cost without weakening containment, dependency,
+control, current-byte or unknown-path guarantees; retain the representative scale
+target and report any longer diagnostic allowance explicitly. No new policy or
+automatic lock recovery was accepted. Exact proof and harness corrections are in
+.mdkg/artifacts/goal-84/bug-7-scale-goal.json. Existing compatibility decisions,
+task-828 final security, complete release ladder, metadata and seal remain open.
 
 Initial approved plan and chk-563/Goal 82 history.
 

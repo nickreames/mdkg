@@ -473,3 +473,14 @@ refusal. No canonical migration or bundle change occurred. After bug-34 closure,
 28 of 30 bug lanes are locally done; bug-7 and bug-17 remain incomplete. Original
 Standard findings remain 12 of 13 locally fixed. Final security, release ladder,
 metadata and sealing remain open; no policy decision is implicitly accepted.
+
+## 2026-09-09 Installed Lifecycle and Scale Qualification
+
+Bug7 gains 45 passing small-graph installed controls across the three required
+runtimes, including lifecycle/checkpoint/publication dependency routing and strict
+existing limit diagnostics. A 2000-node v2 migration remains unqualified after
+three concurrent and one isolated harness timeouts. Source shows repeated full
+custody scans per write; profiling and safe optimization are the next independent
+lane, not a reason to lower the graph target or weaken custody. No new bug is
+counted solely from a harness timeout; the gap is tracked on bug7 and test481.
+28 of 30 bug lanes remain done; all final qualification/publication gates remain.
