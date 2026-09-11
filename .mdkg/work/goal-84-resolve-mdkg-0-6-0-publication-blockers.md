@@ -519,3 +519,13 @@ serial full suite passes1395tests; CLI/docs and nine focused tests pass. An
 overlapping-build validation run is explicitly excluded, not counted as proof.
 Bug7 stays owned/in-progress; bug17 and all material compatibility decisions
 remain open. Final task828,metadata,ladder and seal remain. No new skill candidate.
+
+## 2026-09-11 Mixed-State Collaboration and Recovery Freshness
+
+Chk599 records831installed commands across all three required runtimes,
+including three tracked mixed-index/body/metadata cases and36caught-error graph
+recovery cases. Full suite1395pass and CLI/docs checks pass. No product source
+or policy changed. Mixed-state and post-optimization graph-recovery freshness
+gaps are closed for the intermediate artifact; per-finding installed coverage,
+pending compatibility/recovery decisions, task828 and release gates remain.
+The28-of-30 bug and12-of-13 original security counts are unchanged. Candidates:none.

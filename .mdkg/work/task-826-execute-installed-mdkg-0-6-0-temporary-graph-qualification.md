@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: []
 blocked_by: [task-824, bug-7]
 blocks: []
@@ -54,10 +54,12 @@ recovery, MCP/cache parity, work/archive and scale scenarios have all executed
 across the three required runtimes, on recorded intermediate candidates. This
 does not qualify one final artifact or resolve policy-dependent failures.
 
-Chk598 now closes the installed stale-upgrade-plan gap with18cases across all
-three runtimes. Next independent gap: a tracked node with simultaneous
-staged/unstaged edits, including pack and mutation proof.
-Refresh graph-recovery evidence after the nullable-read optimization. The old
+Chk598 closes the installed stale-upgrade-plan gap with18cases across all
+three runtimes. Chk599 now closes mixed tracked staged/unstaged node, full-body
+pack/mutation and manual metadata stale-cache proof, and refreshes graph recovery
+after the nullable-read optimization. All proof remains intermediate-candidate.
+Next independent step: complete per-finding installed coverage and explicit
+requirement disposition rather than rerun these families as never executed. The old
 client v2 partial-write hazard, killed-writer recovery, legacy public-bundle
 materialization and historical task309 migration disposition remain open.
 Final task828 review, release ladder and exact artifact seal remain required.

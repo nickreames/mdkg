@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-599",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_head": "70134f895bb7c1428c49938f083955cccfaeab24",
+  "outcome": "BOUNDED_INSTALLED_PROOF_PASSED_NOT_RELEASE_QUALIFIED",
+  "source_sha256": {
+    "scripts/installed-identity-collaboration.js": "8d2dd577335a4343d3109ee9e5a2fa7e030df495ed8aacd3bb878c3e90d458c4",
+    "scripts/installed-graph-recovery.js": "8d6bdcd4d756a5229a9b4ae57604020d59a22951098fbf5d12687436747ac85d"
+  },
+  "candidate": {
+    "version": "0.5.2 development; target 0.6.0",
+    "tarball_sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+    "installed_regular_files_matched": 222,
+    "install_reused": true
+  },
+  "fixture_root": "/private/tmp/mdkg-mixed-recovery.4Xz36d",
+  "runner_sha256": "f0050a6fe3eb164c022fafacd34eee4872b5f5cf1d0ce88a6f8229f995edd8de",
+  "runs": [
+    {
+      "label": "node24-min-v3",
+      "runtime": "v24.15.0",
+      "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "receipt_sha256": "4e92878093be6a190deaf5cf04e354dcc756665b9be8784f865a7759b2eee7ab",
+      "ok": true,
+      "mdkg_invocations": 172,
+      "git_commands": 105,
+      "expected_refusals": 34,
+      "signal_count": 0,
+      "custody_equal": true,
+      "fixture_removed": true,
+      "mixed_tracked_node": {
+        "backend": "sqlite",
+        "distinct_head_staged_working_versions": true,
+        "stable_identity_preserved": true,
+        "manual_metadata_stale_cache_reads": true,
+        "reads_and_pack_preview_observational": true,
+        "pack_contains_working_tree_version": true,
+        "explicit_pack_is_only_created_file": true,
+        "ordinary_mutations_preserve_unstaged_body": true,
+        "staged_blob_and_index_unchanged": true,
+        "head_unchanged": true
+      },
+      "recovery_case_count": 12,
+      "recovery_all_completed": true,
+      "collaboration_plan_hash": "sha256:da9feee1af368d0dcdd430fc349ee671fad40e878dad7d42ed6ee37e070b25ee",
+      "recovery_terminal_states": {
+        "applied": 6,
+        "rolled-back": 6
+      }
+    },
+    {
+      "label": "node24-v3",
+      "runtime": "v24.18.0",
+      "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+      "receipt_sha256": "77a7fa33b3ea9ab4661c2677254265405d7fc649befd6812e11d90bf82644f9d",
+      "ok": true,
+      "mdkg_invocations": 172,
+      "git_commands": 105,
+      "expected_refusals": 34,
+      "signal_count": 0,
+      "custody_equal": true,
+      "fixture_removed": true,
+      "mixed_tracked_node": {
+        "backend": "sqlite",
+        "distinct_head_staged_working_versions": true,
+        "stable_identity_preserved": true,
+        "manual_metadata_stale_cache_reads": true,
+        "reads_and_pack_preview_observational": true,
+        "pack_contains_working_tree_version": true,
+        "explicit_pack_is_only_created_file": true,
+        "ordinary_mutations_preserve_unstaged_body": true,
+        "staged_blob_and_index_unchanged": true,
+        "head_unchanged": true
+      },
+      "recovery_case_count": 12,
+      "recovery_all_completed": true,
+      "collaboration_plan_hash": "sha256:a25f2166bbf2374c3cb1f3c4414a1d072bf617e7ec610ba9c9cf178f05b3dda7",
+      "recovery_terminal_states": {
+        "applied": 6,
+        "rolled-back": 6
+      }
+    },
+    {
+      "label": "node26-v3",
+      "runtime": "v26.0.0",
+      "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "receipt_sha256": "cba67ac55822c56436e45f7d1c20cc4b868068101ecee400af16c37227b50422",
+      "ok": true,
+      "mdkg_invocations": 172,
+      "git_commands": 105,
+      "expected_refusals": 34,
+      "signal_count": 0,
+      "custody_equal": true,
+      "fixture_removed": true,
+      "mixed_tracked_node": {
+        "backend": "sqlite",
+        "distinct_head_staged_working_versions": true,
+        "stable_identity_preserved": true,
+        "manual_metadata_stale_cache_reads": true,
+        "reads_and_pack_preview_observational": true,
+        "pack_contains_working_tree_version": true,
+        "explicit_pack_is_only_created_file": true,
+        "ordinary_mutations_preserve_unstaged_body": true,
+        "staged_blob_and_index_unchanged": true,
+        "head_unchanged": true
+      },
+      "recovery_case_count": 12,
+      "recovery_all_completed": true,
+      "collaboration_plan_hash": "sha256:b88530ca23d29a58bb69a11b1482d50683661a3164934285df79f3b8918c6097",
+      "recovery_terminal_states": {
+        "applied": 6,
+        "rolled-back": 6
+      }
+    }
+  ],
+  "coverage": [
+    "Three complete existing collaboration workflows retain natural branch alias collisions, stable cross-links, staged/untracked reads, deterministic mapping, immutable external receipt preservation, repeated integration, revert/cherry-pick/reintroduction, same-identity conflicts, stale-plan refusal, and deletion/evidence decisions.",
+    "New separate clone has genuinely tracked node with distinct HEAD, staged-priority, and unstaged-lifecycle/body/title versions. Manual title change after cache refresh independently tests stale SQLite metadata.",
+    "Alias and stable-ref show agree on exact working body; list/search resolve current metadata. All reads and pack preview preserve every regular-file hash, including Git and caches. Explicit pack creates exactly the requested output and contains full working metadata/body.",
+    "Ordinary task mutations preserve exact latest body, title, stable identity, staged blob, complete Git index and HEAD. No interpretation of ambiguous unresolved Git merge mutation is claimed.",
+    "Thirty-six current-candidate graph recovery cases cover migration/reconciliation, resume/rollback, first/middle/last authored operations, interrupted rollback, changed user/dependency/control refusal, preserved staged index and observational terminal replay."
+  ],
+  "review": {
+    "kind": "Independent bounded read-only functional review",
+    "corrections": [
+      "Strengthened marker-only body preservation to exact full-body equality.",
+      "Added manual metadata edit to independently qualify stale-cache list/search reads.",
+      "Normalized expected output path separators for harness portability; Windows execution remains unqualified."
+    ],
+    "final_result": "No remaining actionable assertion defect found after first two corrections; final path normalization is parent-reviewed.",
+    "security_clearance": false
+  },
+  "superseded_runs": "node24-min/node24/node26 and v2 counterparts passed but precede final assertion/source freeze; supplemental only. Final accepted receipts are the three v3 runs.",
+  "validation": {
+    "graph_checks": {
+      "graph.json": {
+        "ok": true,
+        "error_count": 0,
+        "warning_count": 3,
+        "sha256": "87d9a78ccb1688c53b13e1197f6bd0c535f2995386f9feb819d6fdba0abe2120"
+      },
+      "graph-changed.json": {
+        "ok": true,
+        "error_count": 0,
+        "warning_count": 0,
+        "sha256": "9441d96cf52b2226fd12ba7a87acecf1cc8cb8f57cddd4f5c0a094f2528c58ba"
+      },
+      "sqlite.json": {
+        "ok": true,
+        "error_count": 0,
+        "warning_count": 0,
+        "sha256": "d914a6c03146082acfb3b71ad1e61693714f497e1d9dcf573217e37944ff576c"
+      }
+    },
+    "full_suite": {
+      "runtime": "24.18.0",
+      "passed": 1395,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "66ad07ff235a5301e91504a234fed1f9e0bc5f937ac030c2c7e4abb54fd9a1e5"
+    },
+    "cli_check": {
+      "exit": 0,
+      "log_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+    },
+    "docs_check": {
+      "exit": 0,
+      "examples": 494,
+      "log_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+    },
+    "execution_order": "All installed runners terminal before full build/test; CLI/docs built checks followed serially."
+  },
+  "requirement_alignment": {
+    "test_478": "Existing cases1-5 rerun on current intermediate artifact; case2 now includes tracked mixed-index/body/metadata and pack/mutation proof. Final sealed-artifact requalification and independent aggregate acceptance remain.",
+    "test_479": "Caught-error recovery and stale-plan/index portions of cases3/4 freshly verified after transaction read optimization. Per-security-finding installed coverage, bug17 and killed-writer recovery remain open.",
+    "test_482": "Three exact required runtimes pass this collaboration/recovery family, not the complete final release matrix."
+  },
+  "limitations": [
+    "macOS SQLite mixed-state fixture; no new Windows or JSON-backend mixed-state claim.",
+    "Regular-file contents, not permissions/empty-directory equivalence, are compared in collaboration snapshots.",
+    "Caught-error recovery is not SIGKILL, power-loss or abandoned-lock recovery.",
+    "No final security review, artifact seal or automatic compatibility waiver."
+  ],
+  "custody": {
+    "protected_hash_receipt": ".mdkg/artifacts/goal-84/bug-34-verification.json",
+    "protected_bytes_preserved": true,
+    "selected_goal": "root:goal-73 unchanged",
+    "runtime": "No runtime lease acquired; existing DB preserved",
+    "fixture_cleanup": "All graph trees under each successful owned runtime root removed; compact runner/receipts retained.",
+    "separate_dirty": "Eight bug17 paths and generated SQLite excluded from commit."
+  },
+  "next": [
+    "Complete per-finding installed coverage and aggregate requirement disposition",
+    "Resolve old-writer v2 adoption, killed-writer recovery and legacy public-bundle decisions",
+    "Preserve historical task309 migration refusal and address real read-only mount evidence gap",
+    "Finish draft metadata/guidance, independent security review, full unchanged-threshold ladder and exact seal"
+  ],
+  "authority_used": "Approved Goal83/84 local test, disposable Git/CLI fixtures, owned mdkg evidence/projections and exact-path local commit; no remote Git, publication, provider, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}

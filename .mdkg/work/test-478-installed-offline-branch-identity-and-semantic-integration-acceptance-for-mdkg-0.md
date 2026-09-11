@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-478-case-1, test-478-case-2, test-478-case-3, test-478-case-4, test-478-case-5]
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-11
 ---
 
 # Overview
@@ -43,7 +43,18 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
 
 # Results / Evidence
 
-Not executed. Record case-level expected/actual, exact commands/runtime/package identity, stdout/exit results and compact reproducible evidence. No missing runtime, interrupted case or source-only assertion is a pass.
+Cases1-5 have current intermediate installed evidence in chk599 across
+Node24.15.0,24.18.0,26.0.0. Existing natural alias collision/cross-links,
+deterministic mapping, same-identity decisions, deletion/evidence conflicts,
+repeat integration, cherry-pick/revert/reintroduction and external receipts pass.
+Case2 now also uses a genuinely tracked node with distinct HEAD/staged/working
+versions: stale SQLite metadata reads observe manual edits, full-body show/pack
+and ordinary mutation preserve latest bytes, and Git staging/HEAD stay unchanged.
+
+Final v3 runtime receipts bind exact source/package/runtime hashes. Earlier
+matrices are supplemental. This does not claim Windows or JSON mixed-state
+coverage, ambiguous unresolved merge mutation, or a final sealed0.6.0 artifact.
+Keep aggregate open for final-artifact requalification and independent acceptance.
 
 # Notes / Follow-ups
 

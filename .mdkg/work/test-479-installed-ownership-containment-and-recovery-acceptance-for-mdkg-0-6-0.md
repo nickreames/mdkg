@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-479-case-1, test-479-case-2, test-479-case-3, test-479-case-4, test-479-case-5]
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-11
 ---
 
 # Overview
@@ -43,7 +43,19 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
 
 # Results / Evidence
 
-Not executed. Record case-level expected/actual, exact commands/runtime/package identity, stdout/exit results and compact reproducible evidence. No missing runtime, interrupted case or source-only assertion is a pass.
+Partial case-level proof exists; this aggregate is not complete. Chk599 reruns
+36installed graph recovery cases on the current intermediate candidate after
+the transaction read optimization, across all three required runtimes. This
+supports cases3/4: first/middle/last migration/reconciliation interruptions,
+resume/rollback, interrupted rollback, changed user/dependency/control refusal,
+unchanged staged index and observational terminal replay. The branch fixture
+also preserves stale-plan refusal and immutable external evidence.
+
+Cases1/2/5 require complete per-finding installed evidence aggregation, bug17
+completion and final independent review. Killed-writer/abandoned-lock recovery
+is explicitly not established by caught exceptions. No final artifact or
+automatic compatibility waiver is inferred. Raw evidence is hash-bound through
+.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json and chk599.
 
 # Notes / Follow-ups
 

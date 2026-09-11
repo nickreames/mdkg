@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598, chk-599]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -333,3 +333,19 @@ Continue mixed staged/unstaged tracked-node qualification and graph recovery
 freshness. Existing old-writer, killed-writer, public-bundle and historical
 migration decisions remain open; final review, metadata, ladder and seal remain.
 The earlier init unit is locally committed as0c0f7d26. No push or publication.
+
+## 2026-09-11 Mixed Git State and Current Graph Recovery
+
+Chk599 verifies the final collaboration/recovery matrix on Node24.15.0,
+24.18.0 and26.0.0:831commands, including three mixed tracked-node scenarios
+and36caught-error migration/reconciliation recovery cases. Stale SQLite reads
+see manual metadata edits; show/pack/task mutation preserve the full current
+body and identity without changing the staged blob/index or HEAD. Existing
+branch-collision, mapping, semantic conflict, replay and external-evidence
+scenarios remain intact. Graph recovery is now fresh after the optimization.
+
+Full suite1395pass; CLI/docs pass. Initial/v2 matrices are supplemental;
+final v3 receipts bind the frozen harness and current intermediate package.
+No product changes or policy acceptance. Continue per-finding installed coverage
+aggregation and outstanding compatibility/historical/read-only-mount decisions,
+then final security review, metadata, release ladder and seal. Bug7 remains open.
