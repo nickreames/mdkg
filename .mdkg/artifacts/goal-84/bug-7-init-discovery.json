@@ -1,0 +1,425 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-597",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "scope_refs": [
+    "root:test-477",
+    "root:test-482",
+    "root:task-826"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_head": "1cd6a889a3e18f0d471a289858cdce9eed7fd7b9",
+  "outcome": "Installed compact-init and focused discovery milestone verified; aggregate qualification remains NOT_READY",
+  "candidate": {
+    "version": "0.5.2 development",
+    "sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+    "installed_regular_files_matched": 222,
+    "final_seal": false,
+    "partial_bug17_not_cleared": true
+  },
+  "source_sha256": {
+    "scripts/smoke-init.js": "bb3c34018fc65698632f26faa4508af02a544417355610263d5e9a92e53490bb",
+    "tests/smoke-init-discovery.test.mjs": "c982e2b10f8bfd6e36f7da4b5bc25efd29eb8fb0e1eaa765619cbb3221c81cd6"
+  },
+  "runner_sha256": "648909fd7219d67dd4a812e02eaf148464fb40293c20e71b9c885ba056b1a3a9",
+  "runs": [
+    {
+      "file": "node24-min-v2.json",
+      "sha256": "91b4225dc5b828fa46271ea5f885e4fbd6601503f451cee32b981bf0696e6b03",
+      "runtime": "v24.15.0",
+      "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "cases": [
+        {
+          "name": "exerciseRemovedFlags",
+          "ok": true
+        },
+        {
+          "name": "exerciseMirrorCollision",
+          "ok": true
+        },
+        {
+          "name": "exerciseBaseInit",
+          "ok": true
+        },
+        {
+          "name": "exerciseOptionalSpecWorkTemplates",
+          "ok": true
+        },
+        {
+          "name": "exerciseDbInit",
+          "ok": true
+        },
+        {
+          "name": "exerciseAgentInit",
+          "ok": true
+        },
+        {
+          "name": "explicit-agent-init",
+          "ok": true
+        },
+        {
+          "name": "customized-discovery",
+          "ok": true,
+          "runtime": "v24.15.0",
+          "initial": {
+            "skills": 6,
+            "local_links": 16,
+            "native_targets": 2
+          },
+          "resources": {
+            "skills": 6,
+            "local_links": 16,
+            "native_targets": 2
+          },
+          "synthetic_resource_files": 3,
+          "customized_entrypoints": 2,
+          "project_files_preserved": 4,
+          "git_index_preserved": true,
+          "discovery_observational": true,
+          "resources_executed": false
+        }
+      ],
+      "command_count": 77,
+      "expected_failures": [
+        {
+          "args": [
+            "init",
+            "--llm"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--agents"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--claude"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--omni"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--agent"
+          ],
+          "exit": 1
+        }
+      ],
+      "fixture_removed": true
+    },
+    {
+      "file": "node24-v2.json",
+      "sha256": "c4c2b012d9c9ce0e4c84f7789469a380be74b30b27771b89d9c8bc30b25586e7",
+      "runtime": "v24.18.0",
+      "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+      "cases": [
+        {
+          "name": "exerciseRemovedFlags",
+          "ok": true
+        },
+        {
+          "name": "exerciseMirrorCollision",
+          "ok": true
+        },
+        {
+          "name": "exerciseBaseInit",
+          "ok": true
+        },
+        {
+          "name": "exerciseOptionalSpecWorkTemplates",
+          "ok": true
+        },
+        {
+          "name": "exerciseDbInit",
+          "ok": true
+        },
+        {
+          "name": "exerciseAgentInit",
+          "ok": true
+        },
+        {
+          "name": "explicit-agent-init",
+          "ok": true
+        },
+        {
+          "name": "customized-discovery",
+          "ok": true,
+          "runtime": "v24.18.0",
+          "initial": {
+            "skills": 6,
+            "local_links": 16,
+            "native_targets": 2
+          },
+          "resources": {
+            "skills": 6,
+            "local_links": 16,
+            "native_targets": 2
+          },
+          "synthetic_resource_files": 3,
+          "customized_entrypoints": 2,
+          "project_files_preserved": 4,
+          "git_index_preserved": true,
+          "discovery_observational": true,
+          "resources_executed": false
+        }
+      ],
+      "command_count": 77,
+      "expected_failures": [
+        {
+          "args": [
+            "init",
+            "--llm"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--agents"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--claude"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--omni"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--agent"
+          ],
+          "exit": 1
+        }
+      ],
+      "fixture_removed": true
+    },
+    {
+      "file": "node26-v3.json",
+      "sha256": "2e8c4a7420c6c2808ea481d39be0ded14858d6688fadbf791dfe2bddf8399787",
+      "runtime": "v26.0.0",
+      "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "cases": [
+        {
+          "name": "exerciseRemovedFlags",
+          "ok": true
+        },
+        {
+          "name": "exerciseMirrorCollision",
+          "ok": true
+        },
+        {
+          "name": "exerciseBaseInit",
+          "ok": true
+        },
+        {
+          "name": "exerciseOptionalSpecWorkTemplates",
+          "ok": true
+        },
+        {
+          "name": "exerciseDbInit",
+          "ok": true
+        },
+        {
+          "name": "exerciseAgentInit",
+          "ok": true
+        },
+        {
+          "name": "explicit-agent-init",
+          "ok": true
+        },
+        {
+          "name": "customized-discovery",
+          "ok": true,
+          "runtime": "v26.0.0",
+          "initial": {
+            "skills": 6,
+            "local_links": 16,
+            "native_targets": 2
+          },
+          "resources": {
+            "skills": 6,
+            "local_links": 16,
+            "native_targets": 2
+          },
+          "synthetic_resource_files": 3,
+          "customized_entrypoints": 2,
+          "project_files_preserved": 4,
+          "git_index_preserved": true,
+          "discovery_observational": true,
+          "resources_executed": false
+        }
+      ],
+      "command_count": 77,
+      "expected_failures": [
+        {
+          "args": [
+            "init",
+            "--llm"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--agents"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--claude"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--omni"
+          ],
+          "exit": 1
+        },
+        {
+          "args": [
+            "init",
+            "--agent"
+          ],
+          "exit": 1
+        }
+      ],
+      "fixture_removed": true
+    }
+  ],
+  "coverage": [
+    "Retain original manifest-backed smoke:init groups, including graph-only, default compact, removed-flag and unmanaged-mirror refusal, optional templates and explicit fixture DB lifecycle.",
+    "Exercise fresh --agent independently using the same complete compact-init assertions as default init; verify graph-only excludes both adapters, focused guidance, native mirrors and event log.",
+    "Fresh init preserves pre-existing CRLF AGENTS/CLAUDE prefixes, later suffixes, README/LICENSE/public llms/project documentation and actual staged Git index bytes.",
+    "Skill list/show/search are observational; CLI discovery roster equals every canonical skill exactly once. Verify scoped generated Markdown links and skill metadata links.",
+    "Compare full canonical/native regular-file inventories for all six seeded skills and two adapters. Add three non-executing synthetic resources and preserve an independent pre-sync canonical snapshot, native bytes and unrelated adapter folders.",
+    "Each final runtime completes eight scenario groups and77commands; only five expected command refusals occur, no signals; all three final disposable roots removed."
+  ],
+  "corrections": [
+    {
+      "kind": "stale_release_test",
+      "observed": "Original smoke:init expected removed flags to recommend optional --agent; current src/cli.ts correctly recommends compact-default init and graph-only.",
+      "resolution": "Updated exact diagnostic assertions; retained no-scaffold checks and all original smoke groups. No shipped runtime behavior changed.",
+      "receipt": "node26.json"
+    },
+    {
+      "kind": "harness_false_pass",
+      "observed": "Canonical and both native resource trees could all change identically and pass mirror equality.",
+      "resolution": "Bind pre-sync canonical inventories; add synchronized deletion/change and duplicate roster negative controls."
+    },
+    {
+      "kind": "invalidated_custody",
+      "observed": "Initial Node24.15 run completed cases but failed post-run custody because concurrently authorized npm test build cleaned dist/command-contract.json.",
+      "resolution": "Retain invalid receipt/fixture; serialize final runtime reruns after build termination. No product pass/failure inferred from invalidated run.",
+      "receipt": "node24-min.json"
+    },
+    {
+      "kind": "superseded_controls",
+      "observed": "node26-v2.json and node24.json predate strengthened canonical preservation/roster assertions.",
+      "resolution": "Supplemental only; final evidence is three runs listed above."
+    }
+  ],
+  "validation": {
+    "cli_check": {"exit": 0, "log_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"},
+    "docs_check": {"exit": 0, "checked_examples": 494, "log_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"},
+    "graph_checks": {"graph.json":{"ok":true,"error_count":0,"warning_count":3,"sha256":"ad7d71a269377fe2484d839a8b3440bfad3145e15d7c84951c279f50c1dcfa6e"},"graph-changed.json":{"ok":true,"error_count":0,"warning_count":0,"sha256":"77ac3d18cbc31e0fc40dd0120469778787fd891023ce4eba4bd984c255a02fbd"},"sqlite.json":{"ok":true,"sha256":"5d6d18b1cea05c4ef237f880641702d9f480f5f63d73abd7a13f47b0b97a8f71"}},
+    "diff_check_exit": 0,
+    "focused_tests": {
+      "runtime": "26.0.0",
+      "passed": 12,
+      "failed": 0,
+      "log_sha256": "3e85e75cfe9d3379be1796ad34d6ed82ffdedae5ae19f28406d9cd3a1f77706c"
+    },
+    "full_suite": {
+  "command": "PATH=/opt/homebrew/opt/node@24/bin:$PATH npm test",
+  "runtime": "24.18.0",
+  "passed": 1395,
+  "failed": 0,
+  "skipped": 0,
+  "log_sha256": "1ea0bbbdc75cb99ea0409c07c9b96e29cd9915dd092d20cb1e849dba1097f2c3"
+}
+  },
+  "independent_review": {
+    "reviewer": "installed_coverage_read",
+    "mode": "read-only source and receipt review",
+    "blocking_findings": 0,
+    "final_security_clearance": false
+  },
+  "requirement_alignment": [
+    {
+      "qid": "root:test-477",
+      "covered": "Fresh init forms/customization/discovery now have current intermediate-candidate three-runtime evidence. Actual published upgrades and caught-error recovery already executed on all three runtimes in bug-7-recovery-runtime.json.",
+      "remaining": "Add installed fresh upgrade preview -> user edit -> stale apply refusal; rerun published upgrade/recovery against final candidate; final independent acceptance."
+    },
+    {
+      "qid": "root:test-478",
+      "covered": "Natural branch collisions, cross-links, staged/untracked reads, alias mapping, semantic decisions, delete/modify, replay/revert/cherry-pick and reintroduction already executed on all three runtimes.",
+      "remaining": "Add tracked-node simultaneous staged/unstaged edits with pack and ordinary mutation assertions. Requalify final artifact; do not mislabel old candidate evidence as missing-runtime."
+    },
+    {
+      "qid": "root:test-479",
+      "covered": "Caught-error graph recovery, user/dependency/control refusal and Git-index preservation already executed on three runtimes; security remedies have separate bug receipts.",
+      "remaining": "Killed-writer recovery remains open. Rerun graph recovery after identity_transaction optimization and complete per-finding installed security coverage/final review; bug17 unresolved."
+    },
+    {
+      "qid": "root:test-480",
+      "covered": "Three-runtime MCP/cache parity, work/archive identity and private historical migration preview receipts exist.",
+      "remaining": "Old0.5.2 safe-v2 behavior is contradicted by partial writes. Private migration has unresolved task309 alias-shaped immutable references. POSIX permission fixtures do not claim actual read-only mount qualification. Requalify final candidate."
+    },
+    {
+      "qid": "root:test-481",
+      "covered": "chk596 proves representative2000task/20000event scale and lifecycle routing across three runtimes on current intermediate artifact.",
+      "remaining": "Final artifact and independent aggregate acceptance, no universal SLA."
+    },
+    {
+      "qid": "root:test-482",
+      "covered": "All three exact runtimes available and exercised; new init family supplements previous all-runtime upgrade/branch/recovery/MCP/work/scale receipts.",
+      "remaining": "One final candidate across complete required family matrix, explicit exclusion/decision disposition and release ladder."
+    }
+  ],
+  "limitations": [
+    "Existing installed package reused; npm install/postinstall not rerun in this matrix.",
+    "Byte inventories do not claim permission-mode preservation.",
+    "Link checks cover named generated inline Markdown targets and skill metadata links, not arbitrary Markdown syntax, heading anchors, remote URLs or script execution.",
+    "Current candidate includes partial bug17 transport changes and remains version0.5.2 development; no0.6 metadata or artifact seal.",
+    "No compatibility policies accepted and no aggregate work node closed."
+  ],
+  "custody": {
+    "excluded_dirty": "Generated SQLite plus eight partial bug17 paths; exact hashes preserved through final runtime bookends.",
+    "selected_goal": "root:goal-73 unchanged",
+    "runtime": "Existing DB bytes preserved; no runtime lease acquired.",
+    "temp_root": "/private/tmp/mdkg-init-qualification.0ZV2pV",
+    "cleanup": "Three strengthened success roots removed; invalidated preflight fixtures and compact diagnostics retained."
+  },
+  "authority_used": "Approved local qualification tests and evidence; one mdkg repository writer; no remote Git/provider/publish/canonical migration/bundle actions",
+  "skill_candidates": []
+}

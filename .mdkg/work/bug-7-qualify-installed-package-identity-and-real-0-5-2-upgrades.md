@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
@@ -303,3 +303,19 @@ change or compatibility policy acceptance occurred. Bug7 stays in progress for
 old-writer and killed-writer treatment, historical migration evidence and remaining
 installed-family aggregation. Bug17, final task828 review, release metadata,
 complete release ladder and artifact seal remain open. No publication readiness.
+
+## 2026-09-09 Installed Compact Init and Discovery
+
+Chk-597 records 24 installed scenario groups and 231 commands across Node
+24.15.0, 24.18.0 and 26.0.0. Existing smoke:init coverage is extended, not
+replaced: fresh explicit-agent/default/graph-only contracts, user-owned
+instructions/docs, complete native resources and observational skill discovery.
+One stale removed-flag test expectation was corrected to match current CLI
+guidance. Review strengthened canonical resource preservation independently of
+mirror equality; twelve verifier controls and the final 1395-test suite pass.
+
+The initial minimum-runtime custody-invalidated run is retained and excluded;
+all final runtime runs were serialized with identical bookends. No product
+source or accepted compatibility policy changed. The artifact includes the
+case-level coverage map and actual remaining gaps. Bug7 remains in progress;
+no final security/release clearance, skill candidate or publication action.

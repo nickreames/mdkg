@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
@@ -49,6 +49,13 @@ package hashes are in .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.
 All required runtimes were available; no missing or interrupted execution is a
 pass. The complete task826 family/runtime matrix and final acceptance remain
 open. Earlier partial scale evidence below is retained as history.
+
+Chk-597 additionally binds eight installed init/discovery groups and 77 commands
+per exact runtime, with current intermediate package and executable hashes.
+All three final runs pass custody checks. The earlier Node24.15 run overlapped
+an owned build and failed custody; it is explicitly excluded rather than counted
+as a pass or product failure. Remaining family/final-artifact gaps are mapped in
+the linked bug-7-init-discovery artifact; aggregate status remains open.
 
 2026-09-09 additional partial runtime proof: 15 installed scale/lifecycle controls
 pass on exact Node 24.15.0, 24.18.0 and 26.0.0. The larger 2000-node runs are

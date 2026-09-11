@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json]
 relates: []
 blocked_by: [task-824, bug-7]
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Overview
@@ -45,3 +45,19 @@ Each named fixture case has pass/fail and hash-bound runtime/package evidence; n
 # Links / Artifacts
 
 Owning goal and dependencies are explicit above. Record exact commands, input/source/artifact hashes and pass/fail before completion.
+
+## 2026-09-09 Installed Coverage Reconciliation
+
+Chk-597 and the linked bug-7-init-discovery artifact provide a requirement-level
+coverage map for test-477 through test-482. Bootstrap, branch, caught-error
+recovery, MCP/cache parity, work/archive and scale scenarios have all executed
+across the three required runtimes, on recorded intermediate candidates. This
+does not qualify one final artifact or resolve policy-dependent failures.
+
+Next independent gaps are an installed stale-upgrade-plan refusal and a tracked
+node with simultaneous staged/unstaged edits, including pack and mutation proof.
+Refresh graph-recovery evidence after the nullable-read optimization. The old
+client v2 partial-write hazard, killed-writer recovery, legacy public-bundle
+materialization and historical task309 migration disposition remain open.
+Final task828 review, release ladder and exact artifact seal remain required.
+Keep this aggregate uncompleted; no compatibility waiver or publication approval.
