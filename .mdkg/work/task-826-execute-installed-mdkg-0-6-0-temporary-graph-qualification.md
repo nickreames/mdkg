@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
 relates: []
 blocked_by: [task-824, bug-7]
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # Overview
@@ -54,8 +54,9 @@ recovery, MCP/cache parity, work/archive and scale scenarios have all executed
 across the three required runtimes, on recorded intermediate candidates. This
 does not qualify one final artifact or resolve policy-dependent failures.
 
-Next independent gaps are an installed stale-upgrade-plan refusal and a tracked
-node with simultaneous staged/unstaged edits, including pack and mutation proof.
+Chk598 now closes the installed stale-upgrade-plan gap with18cases across all
+three runtimes. Next independent gap: a tracked node with simultaneous
+staged/unstaged edits, including pack and mutation proof.
 Refresh graph-recovery evidence after the nullable-read optimization. The old
 client v2 partial-write hazard, killed-writer recovery, legacy public-bundle
 materialization and historical task309 migration disposition remain open.

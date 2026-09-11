@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-482-case-1, test-482-case-2, test-482-case-3, test-482-case-4, test-482-case-5]
 created: 2026-09-07
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # Overview

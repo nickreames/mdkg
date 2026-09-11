@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # Objective
@@ -509,3 +509,13 @@ aggregation. Bug17 remains blocked on legacy public-bundle compatibility. The
 28-of-30 bug and 12-of-13 original security-fix counts do not change. Metadata,
 full release ladder and exact seal remain open. Preserve selected Goal73,
 runtime state, Demo3 bundle and partial Bug17 custody. Skill candidates: none.
+
+## 2026-09-11 Stale Upgrade Plan Qualification
+
+Chk598 verifies18installed published0.5.2-to-candidate upgrade/recovery cases
+across Node24.15.0,24.18.0,26.0.0. User edits invalidate old plans before writes;
+fresh plans preserve edited wrappers and Git through resume/rollback. The
+serial full suite passes1395tests; CLI/docs and nine focused tests pass. An
+overlapping-build validation run is explicitly excluded, not counted as proof.
+Bug7 stays owned/in-progress; bug17 and all material compatibility decisions
+remain open. Final task828,metadata,ladder and seal remain. No new skill candidate.

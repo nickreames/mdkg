@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-477-case-1, test-477-case-2, test-477-case-3, test-477-case-4, test-477-case-5]
 created: 2026-09-07
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # Overview
@@ -53,7 +53,10 @@ The linked bug-7-recovery-runtime artifact already records actual published
 0.5.2 standard/customized upgrades and caught-error upgrade recovery on all
 three runtimes, supporting cases 1/3 and portions of 4/5 on an older candidate.
 Do not repeat those as never executed or infer final-candidate freshness.
-Still required: installed fresh preview -> user edit -> stale apply refusal,
+Chk598 now verifies installed fresh preview -> user edit -> stale apply refusal
+and fresh-plan edited-wrapper resume/rollback on all three runtimes, using the
+current intermediate candidate. This closes that case4 gap and strengthens
+cases1/3/5 with18actual published-upgrade/recovery cases. Still required:
 final-candidate upgrade/recovery reruns and independent aggregate acceptance.
 No interrupted, missing-runtime or source-only assertion is counted as a pass.
 

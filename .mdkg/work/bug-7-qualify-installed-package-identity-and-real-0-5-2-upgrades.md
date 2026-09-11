@@ -7,17 +7,17 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # Overview
@@ -319,3 +319,17 @@ all final runtime runs were serialized with identical bookends. No product
 source or accepted compatibility policy changed. The artifact includes the
 case-level coverage map and actual remaining gaps. Bug7 remains in progress;
 no final security/release clearance, skill candidate or publication action.
+
+## 2026-09-11 Installed Stale Upgrade Plan Proof
+
+Chk598 closes the fresh preview/user-edit/stale-apply gap on the current
+intermediate candidate across all three required runtimes:18cases/222commands.
+Fresh review, resume and rollback preserve edited AGENTS/CLAUDE and Git bytes.
+The existing six-case recovery harness is extended without product changes.
+Serial full suite:1395pass; nine focused tests and CLI/docs checks pass.
+One build-overlapped full run is excluded and retained with its correction.
+
+Continue mixed staged/unstaged tracked-node qualification and graph recovery
+freshness. Existing old-writer, killed-writer, public-bundle and historical
+migration decisions remain open; final review, metadata, ladder and seal remain.
+The earlier init unit is locally committed as0c0f7d26. No push or publication.

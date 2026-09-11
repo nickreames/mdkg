@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-598",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_head": "0c0f7d26b64c80154aa09fc4fc9d3faa93586ed4",
+  "outcome": "BOUNDED_INSTALLED_PROOF_PASSED_NOT_RELEASE_QUALIFIED",
+  "source_sha256": {
+    "scripts/installed-upgrade-recovery.js": "8f0e706013e314b56660c4eefb2317bcbb2d2ab52714a97fc647b658118450b2"
+  },
+  "candidate": {
+    "version": "0.5.2 development; target 0.6.0",
+    "tarball_sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+    "installed_regular_files_matched_to_build": 222,
+    "install_reused": true
+  },
+  "published_baseline": {
+    "version": "0.5.2",
+    "tarball_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "size_and_sha512_verified": true,
+    "installation": "Fresh offline npm installation from verified local tarball; actual postinstall completed once; same install used by all runtimes."
+  },
+  "fixture_root": "/private/tmp/mdkg-upgrade-stale.EQQ0lV",
+  "runner_sha256": "913f98ed3dc030d385398028ef7a9744b6bc27d47ab0d831b42fc2f108c93e4f",
+  "runs": [
+    {
+      "label": "node24-min",
+      "receipt_sha256": "36652e2834f1d6c298f00fcc1250c506945c74e10f93c293514f7733c114da85",
+      "runtime": "v24.15.0",
+      "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "ok": true,
+      "cases": [
+        {
+          "mode": "resume",
+          "position": "first",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "resume",
+          "position": "middle",
+          "wrapper": "CLAUDE.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "resume",
+          "position": "last",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "recover",
+          "position": "first",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        },
+        {
+          "mode": "recover",
+          "position": "middle",
+          "wrapper": "CLAUDE.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        },
+        {
+          "mode": "recover",
+          "position": "last",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        }
+      ],
+      "mdkg_invocations": 62,
+      "git_commands": 12,
+      "expected_refusals": 20,
+      "signal_count": 0,
+      "fixture_removed": true,
+      "custody_equal": true
+    },
+    {
+      "label": "node24",
+      "receipt_sha256": "d7e3e86d4fcc90fdd1e2cfbbfc0aabb963fbc22e7fa8daf16a7019b94080369a",
+      "runtime": "v24.18.0",
+      "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+      "ok": true,
+      "cases": [
+        {
+          "mode": "resume",
+          "position": "first",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "resume",
+          "position": "middle",
+          "wrapper": "CLAUDE.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "resume",
+          "position": "last",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "recover",
+          "position": "first",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        },
+        {
+          "mode": "recover",
+          "position": "middle",
+          "wrapper": "CLAUDE.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        },
+        {
+          "mode": "recover",
+          "position": "last",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        }
+      ],
+      "mdkg_invocations": 62,
+      "git_commands": 12,
+      "expected_refusals": 20,
+      "signal_count": 0,
+      "fixture_removed": true,
+      "custody_equal": true
+    },
+    {
+      "label": "node26",
+      "receipt_sha256": "c265502277f4aa1508e181fe15e0db6be2fa1d66302629d64b00cc529f4520be",
+      "runtime": "v26.0.0",
+      "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "ok": true,
+      "cases": [
+        {
+          "mode": "resume",
+          "position": "first",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "resume",
+          "position": "middle",
+          "wrapper": "CLAUDE.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "resume",
+          "position": "last",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "completed"
+        },
+        {
+          "mode": "recover",
+          "position": "first",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        },
+        {
+          "mode": "recover",
+          "position": "middle",
+          "wrapper": "CLAUDE.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        },
+        {
+          "mode": "recover",
+          "position": "last",
+          "wrapper": "AGENTS.md",
+          "stale_exit": 1,
+          "writes": 40,
+          "recovery_state": "recovered"
+        }
+      ],
+      "mdkg_invocations": 62,
+      "git_commands": 12,
+      "expected_refusals": 20,
+      "signal_count": 0,
+      "fixture_removed": true,
+      "custody_equal": true
+    }
+  ],
+  "coverage": [
+    "Actual published 0.5.2 initialization, candidate preview, repeated hash stability, AGENTS/CLAUDE edit before apply, stale-plan rejection and complete regular-file/Git byte preservation.",
+    "No stale-plan recovery journal; fresh preview changes hash without mutation. New user bytes are accepted only through the newly reviewed plan.",
+    "Resume and rollback at first/middle/last actual authored write boundaries. Mid-recovery user edits refuse without writes. Terminal continuation remains observational.",
+    "Resume preserves complete edited legacy wrapper prefix; rollback restores exact edited pre-apply authored/Git bytes. Unknown user file and Git index survive."
+  ],
+  "validation": {
+    "graph": {
+      "full": "pass, zero errors; three preserved stale-subgraph warnings",
+      "changed_only": "pass, zero errors or warnings",
+      "sqlite_index": "pass after authorized evidence projection refresh",
+      "diff_check": "pass"
+    },
+    "full_suite": {
+      "runtime": "24.18.0",
+      "passed": 1395,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "7c5f3a4a37af3885d766840231a75528cdf23d82c6786d9fe3f47d10d5b70e36"
+    },
+    "focused_existing_upgrade_safety": {
+      "runtime": "26.0.0",
+      "passed": 9,
+      "failed": 0,
+      "source": "tests/commands/upgrade_safety.test.ts",
+      "evidence": "Terminal local test output; no retained raw focused log."
+    },
+    "cli_check": {
+      "exit": 0,
+      "log_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+    },
+    "docs_check": {
+      "exit": 0,
+      "examples": 494,
+      "log_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+    }
+  },
+  "excluded_run": {
+    "log_sha256": "e7e7b855f11dec340a5af121bc1ced14edc180d6ed8305fe89731729214eab16",
+    "passed": 1386,
+    "failed": 9,
+    "reason": "Assistant accidentally started cli:check, whose build cleans dist, during the full suite. The build was interrupted with exit130; suite exited1 with missing/rebuilt output. Excluded entirely from acceptance; successful serial rerun followed both terminal processes. Installed matrix completed before overlap."
+  },
+  "independent_review": {
+    "kind": "bounded source-only functional harness review",
+    "finding": "No concrete defect found; verifies byte preservation, not filesystem mode or empty-directory equivalence.",
+    "not_final_security_clearance": true
+  },
+  "requirement_alignment": {
+    "test_477": "Fresh stale-plan portion of case4 and edited-wrapper recovery now verified on current intermediate artifact across all three runtimes. Final sealed-artifact rerun and independent aggregate acceptance remain.",
+    "test_482": "Three exact runtimes verified for this strengthened upgrade family; not complete final runtime qualification."
+  },
+  "remaining": [
+    "Mixed tracked-node staged/unstaged command and pack qualification",
+    "Graph transaction recovery rerun after optimization (this milestone tests bootstrap upgrade recovery)",
+    "Old-writer v2 adoption and killed-writer recovery decisions",
+    "Legacy public-bundle materialization decision and bug17 completion",
+    "Historical migration and read-only mount coverage disposition",
+    "Final security review, metadata, coverage/release ladder and exact candidate seal"
+  ],
+  "custody": {
+    "protected_hash_receipt": ".mdkg/artifacts/goal-84/bug-34-verification.json",
+    "all_protected_hashes_preserved": true,
+    "selected_goal": "root:goal-73 unchanged",
+    "runtime": "No runtime lease acquired; preserved DB bytes",
+    "fixture_cleanup": "All 18 successful graph fixtures removed; compact runner/receipts and published install retained.",
+    "excluded_dirty": "Eight partial bug17 paths and generated SQLite remain separate."
+  },
+  "authority_used": "Approved Goal83/84 local fixture, test, mdkg evidence/projection and reviewed local commit scope; no push/publication/provider/canonical migration/bundle changes.",
+  "skill_candidates": []
+}

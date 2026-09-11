@@ -41,7 +41,23 @@ fs.renameSync=function(a,b){const result=rename.apply(this,arguments);if(targets
     fs.writeFileSync(path.join(root,"unknown.txt"),"Preserve unrelated user bytes.\r\n");
     const git=spawnSync(process.env.GIT || "git",["init","-q"],{cwd:root,env,encoding:"utf8"});assert.equal(git.status,0,git.stderr);
     const staged=spawnSync(process.env.GIT || "git",["add","--","unknown.txt"],{cwd:root,env,encoding:"utf8"});assert.equal(staged.status,0,staged.stderr);
-    const before=snapshot(root,true), plan=cli(root,candidate,["upgrade"]);
+    const initial=snapshot(root), reviewed=cli(root,candidate,["upgrade"]);
+    assert.deepEqual(snapshot(root),initial,"fresh preview must preserve all fixture and Git bytes");
+    assert.equal(cli(root,candidate,["upgrade"]).plan_hash,reviewed.plan_hash);
+    assert.deepEqual(snapshot(root),initial,"repeated preview must be observational");
+    const wrapper=position==="middle"?"CLAUDE.md":"AGENTS.md";
+    const userEdit="\r\nUser instruction added after upgrade review.\r\n";
+    fs.appendFileSync(path.join(root,wrapper),userEdit);
+    const editedWrapper=fs.readFileSync(path.join(root,wrapper),"utf8");
+    const edited=snapshot(root), stale=run(root,candidate,["upgrade","--apply","--plan-hash",reviewed.plan_hash,"--json"]);
+    assert.equal(stale.signal,null); assert.notEqual(stale.status,0);
+    assert.match(stale.stderr+stale.stdout,/stale plans are refused/);
+    assert.deepEqual(snapshot(root),edited,"stale apply must preserve all edited fixture and Git bytes");
+    assert.equal(fs.existsSync(path.join(root,".mdkg/state/upgrade-journal.json")),false,"stale plan must not create a recovery journal");
+    const plan=cli(root,candidate,["upgrade"]);
+    assert.notEqual(plan.plan_hash,reviewed.plan_hash,"new user bytes require a newly reviewed plan");
+    assert.deepEqual(snapshot(root),edited,"fresh re-review must not mutate the edited fixture");
+    const before=snapshot(root,true);
     assert.equal(plan.safe_to_apply,true);
     assert.ok(plan.will_write_paths.length>3);
     const fault=position==="first"?0:position==="last"?plan.will_write_paths.length-1:Math.floor(plan.will_write_paths.length/2);
@@ -77,12 +93,14 @@ fs.renameSync=function(a,b){const result=rename.apply(this,arguments);if(targets
       for(const op of journal.operations){const actual=bytes(path.join(root,op.path));assert.equal(actual===null?null:actual.toString("base64"),op.after);}
       assert.deepEqual(cli(root,candidate,["upgrade"]).will_write_paths,[]);
       cli(root,candidate,["validate"]);
+      assert.ok(fs.readFileSync(path.join(root,wrapper),"utf8").startsWith(editedWrapper),"fresh plan preserves the complete edited legacy wrapper");
       for(const p of Object.keys(before).filter(p=>p.startsWith(".git/")||p==="unknown.txt"))assert.equal(snapshot(root,true)[p],before[p]);
     }
     const terminal=snapshot(root);cli(root,candidate,["upgrade","--"+mode,"--plan-hash",plan.plan_hash]);
     assert.deepEqual(snapshot(root),terminal,"terminal continuation is observational");
     if(process.platform!=="win32")assert.equal(fs.statSync(journalPath).mode&0o777,0o600);
-    cases.push({mode,position,writes:plan.will_write_paths.length,observed_written:observedAfter,state:recovered.recovery_state,unknown_and_git_preserved:true,changed_user_bytes_refused:position==="middle"});
+    cases.push({mode,position,writes:plan.will_write_paths.length,observed_written:observedAfter,state:recovered.recovery_state,unknown_and_git_preserved:true,changed_user_bytes_refused:position==="middle",
+      stale_preview:{wrapper,reviewed_hash:reviewed.plan_hash,fresh_hash:plan.plan_hash,exit:stale.status,all_bytes_preserved:true,journal_absent:true,edited_wrapper_preserved:true}});
   }
   return {runtime:process.version,cases,fixture_fault_preload_sha256:crypto.createHash("sha256").update(fs.readFileSync(preload)).digest("hex")};
 }
