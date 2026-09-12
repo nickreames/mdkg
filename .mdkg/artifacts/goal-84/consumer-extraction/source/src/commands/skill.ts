@@ -1,0 +1,650 @@
+import fs from "fs";
+import path from "path";
+import { loadConfig } from "../core/config";
+import {
+  atomicReplaceContainedFile,
+  containedPathExists,
+  ensureContainedDirectory,
+  readContainedFile,
+} from "../core/filesystem_authority";
+import {
+  buildSkillIndexEntry,
+  buildSkillsIndex,
+  resolveSkillsIndexPath,
+  resolveSkillsRoot,
+  SKILL_SLUG_RE,
+  SkillIndexEntry,
+} from "../graph/skills_indexer";
+import { loadSkillsIndex } from "../graph/skills_index_cache";
+import { writeSkillsIndex } from "../graph/skills_index_cache";
+import { UsageError, ValidationError, NotFoundError } from "../util/errors";
+import {
+  ensureSkillsRegistry,
+  formatSkillCard,
+  refreshSkillsRegistry,
+  renderSkillTemplate,
+} from "./skill_support";
+import {
+  QueryOutputFormat,
+  toSkillDetailJson,
+  toSkillSummaryJson,
+  writeCount,
+  writeStructuredOutput,
+} from "./query_output";
+import { appendAutomaticEvent } from "./event_support";
+import {
+  configuredSkillMirrorTargets,
+  shouldMaintainSkillMirrors,
+  syncSkillMirrors,
+} from "./skill_mirror";
+import { withMutationLock } from "../util/lock";
+import { validatePublicSkillProjection } from "../core/public_skill_projection";
+
+export type SkillNewCommandOptions = {
+  root: string;
+  slug: string;
+  name: string;
+  description: string;
+  tags?: string;
+  authors?: string;
+  links?: string;
+  withScripts?: boolean;
+  force?: boolean;
+  runId?: string;
+  json?: boolean;
+  now?: Date;
+};
+
+export type SkillListCommandOptions = {
+  root: string;
+  tags?: string[];
+  tagsMode?: "any" | "all";
+  format?: QueryOutputFormat;
+  json?: boolean;
+  noCache?: boolean;
+  noReindex?: boolean;
+};
+
+export type SkillShowCommandOptions = {
+  root: string;
+  slug: string;
+  metaOnly?: boolean;
+  format?: QueryOutputFormat;
+  json?: boolean;
+  noCache?: boolean;
+  noReindex?: boolean;
+};
+
+export type SkillSearchCommandOptions = {
+  root: string;
+  query: string;
+  tags?: string[];
+  tagsMode?: "any" | "all";
+  format?: QueryOutputFormat;
+  json?: boolean;
+  noCache?: boolean;
+  noReindex?: boolean;
+};
+
+export type SkillValidateCommandOptions = {
+  root: string;
+  slug?: string;
+  json?: boolean;
+};
+
+export type SkillSyncCommandOptions = {
+  root: string;
+  force?: boolean;
+  json?: boolean;
+};
+
+type SkillReceipt = {
+  workspace: string;
+  id: string;
+  qid: string;
+  slug: string;
+  name: string;
+  path: string;
+  with_scripts: boolean;
+};
+
+type SkillValidateReceipt = {
+  action: "validated";
+  ok: boolean;
+  checked_count: number;
+  warning_count: number;
+  error_count: number;
+  warnings: string[];
+  errors: string[];
+  target?: string;
+};
+
+function parseCsvList(raw?: string): string[] {
+  if (!raw) {
+    return [];
+  }
+  return raw
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function normalizeLowercaseList(raw?: string): string[] {
+  return parseCsvList(raw).map((value) => value.toLowerCase());
+}
+
+function normalizeSlug(raw: string): string {
+  const slug = raw.trim().toLowerCase();
+  if (!SKILL_SLUG_RE.test(slug)) {
+    throw new UsageError(`skill slug must be kebab-case: ${raw}`);
+  }
+  return slug;
+}
+
+function resolveSkillPaths(root: string, slug: string): {
+  skillDir: string;
+  canonicalPath: string;
+  compatPath: string;
+} {
+  const config = loadConfig(root);
+  const skillsRoot = resolveSkillsRoot(root, config);
+  const skillDir = path.join(skillsRoot, slug);
+  return {
+    skillDir,
+    canonicalPath: path.join(skillDir, "SKILL.md"),
+    compatPath: path.join(skillDir, "SKILLS.md"),
+  };
+}
+
+function validateSingleSkill(root: string, slug: string): { warnings: string[]; errors: string[] } {
+  const { skillDir, canonicalPath, compatPath } = resolveSkillPaths(root, slug);
+  const warnings: string[] = [];
+  const errors: string[] = [];
+  const hasCanonical = fs.existsSync(canonicalPath);
+  const hasCompat = fs.existsSync(compatPath);
+
+  if (!fs.existsSync(skillDir)) {
+    throw new NotFoundError(`skill not found: ${slug}`);
+  }
+  if (hasCanonical && hasCompat) {
+    errors.push(`${skillDir}: both SKILL.md and SKILLS.md exist`);
+    return { warnings, errors };
+  }
+  if (!hasCanonical && !hasCompat) {
+    errors.push(`${skillDir}: missing SKILL.md or SKILLS.md`);
+    return { warnings, errors };
+  }
+
+  const skillPath = hasCanonical ? canonicalPath : compatPath;
+  if (!hasCanonical) {
+    warnings.push(`${path.relative(root, compatPath)}: using legacy SKILLS.md compatibility file`);
+  }
+  try {
+    buildSkillIndexEntry(root, slug, skillPath);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "unknown skill validation error";
+    errors.push(message);
+  }
+  return { warnings, errors };
+}
+
+function maybeLine(label: string, values: string[]): string | undefined {
+  if (values.length === 0) {
+    return undefined;
+  }
+  return `${label}: ${values.join(", ")}`;
+}
+
+function filterSkills(
+  skills: SkillIndexEntry[],
+  tags?: string[],
+  tagsMode: "any" | "all" = "any"
+): SkillIndexEntry[] {
+  const normalizedTags = tags?.map((value) => value.toLowerCase()).filter(Boolean) ?? [];
+  if (normalizedTags.length === 0) {
+    return skills;
+  }
+  return skills.filter((skill) => {
+    const skillTags = new Set(skill.tags.map((value) => value.toLowerCase()));
+    if (tagsMode === "all") {
+      return normalizedTags.every((value) => skillTags.has(value));
+    }
+    return normalizedTags.some((value) => skillTags.has(value));
+  });
+}
+
+function buildSkillSearchText(skill: SkillIndexEntry): string {
+  const extensionTokens = Object.entries(skill.extensions).flatMap(([namespace, values]) =>
+    Object.entries(values).flatMap(([key, value]) => {
+      const field = `extensions.${namespace}.${key}`;
+      if (Array.isArray(value)) {
+        return [field, ...value];
+      }
+      if (typeof value === "boolean") {
+        return [field, value ? "true" : "false"];
+      }
+      return [field, value];
+    })
+  );
+  const ochatrTokens = Object.entries(skill.ochatr).flatMap(([key, value]) => {
+    if (Array.isArray(value)) {
+      return [key, ...value];
+    }
+    if (typeof value === "boolean") {
+      return [key, value ? "true" : "false"];
+    }
+    return [key, value];
+  });
+  const tokens = [
+    skill.slug,
+    skill.id,
+    skill.qid,
+    skill.name,
+    skill.description,
+    skill.path,
+    ...skill.tags,
+    ...skill.authors,
+    ...skill.links,
+    ...extensionTokens,
+    ...ochatrTokens,
+  ];
+  return tokens.join(" ").toLowerCase();
+}
+
+function matchesSkillQuery(skill: SkillIndexEntry, terms: string[]): boolean {
+  const text = buildSkillSearchText(skill);
+  for (const term of terms) {
+    if (!text.includes(term)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
+  const root = options.root;
+  const config = loadConfig(root);
+  const slug = normalizeSlug(options.slug);
+  const name = options.name.trim();
+  const description = options.description.trim();
+  if (!name) {
+    throw new UsageError("skill name cannot be empty");
+  }
+  if (!description) {
+    throw new UsageError("skill description cannot be empty");
+  }
+
+  const tags = normalizeLowercaseList(options.tags);
+  const authors = parseCsvList(options.authors);
+  const links = parseCsvList(options.links);
+  const skillsRoot = resolveSkillsRoot(root, config);
+  const skillDir = path.join(skillsRoot, slug);
+  const canonicalPath = path.join(skillDir, "SKILL.md");
+  const compatPath = path.join(skillDir, "SKILLS.md");
+  const force = Boolean(options.force);
+
+  if (fs.existsSync(compatPath)) {
+    throw new UsageError(`legacy compatibility file exists for ${slug}; migrate SKILLS.md before scaffolding`);
+  }
+  if (fs.existsSync(canonicalPath) && !force) {
+    throw new UsageError(`skill already exists: ${path.relative(root, canonicalPath)} (use --force to overwrite)`);
+  }
+
+  const relativeSkillDir = path.relative(root, skillDir).split(path.sep).join("/");
+  ensureContainedDirectory({ root, relativePath: relativeSkillDir });
+  ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/references` });
+  ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/assets` });
+  if (options.withScripts) {
+    ensureContainedDirectory({ root, relativePath: `${relativeSkillDir}/scripts` });
+  }
+
+  const content = renderSkillTemplate({
+    name,
+    description,
+    tags,
+    authors,
+    links,
+  });
+  atomicReplaceContainedFile({ root, relativePath: `${relativeSkillDir}/SKILL.md` }, content);
+
+  ensureSkillsRegistry(root, config);
+  refreshSkillsRegistry(root, config);
+  if (shouldMaintainSkillMirrors(root, config)) {
+    syncSkillMirrors({ root, config, createRoots: true, force });
+  }
+
+  if (config.index.auto_reindex) {
+    const skillsIndex = buildSkillsIndex(root, config);
+    writeSkillsIndex(root, resolveSkillsIndexPath(root), skillsIndex);
+  }
+
+  appendAutomaticEvent({
+    root,
+    ws: "root",
+    kind: "SKILL_CREATED",
+    status: "ok",
+    refs: [`skill:${slug}`],
+    notes: `skill created via mdkg skill new`,
+    runId: options.runId,
+    skill: slug,
+    now: options.now,
+  });
+
+  const receipt: SkillReceipt = {
+    workspace: "root",
+    id: `skill:${slug}`,
+    qid: `root:skill:${slug}`,
+    slug,
+    name,
+    path: path.relative(root, canonicalPath),
+    with_scripts: Boolean(options.withScripts),
+  };
+
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "created",
+          skill: receipt,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  console.log(`skill created: ${receipt.qid} (${receipt.path})`);
+}
+
+export function runSkillNewCommand(options: SkillNewCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runSkillNewCommandLocked(options));
+}
+
+export function runSkillListCommand(options: SkillListCommandOptions): void {
+  const config = loadConfig(options.root);
+  const { index, rebuilt, stale } = loadSkillsIndex({
+    root: options.root,
+    config,
+    useCache: !options.noCache,
+    allowReindex: !options.noReindex,
+    persistReindex: false,
+  });
+  if (stale && !rebuilt && !options.noCache) {
+    console.error("warning: skills index is stale; run mdkg index to refresh");
+  }
+  const skills = filterSkills(
+    Object.values(index.skills),
+    options.tags,
+    options.tagsMode ?? "any"
+  ).sort((a, b) => a.qid.localeCompare(b.qid));
+
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
+      command: "list",
+      kind: "skill",
+      count: skills.length,
+      items: skills.map(toSkillSummaryJson),
+    }, format);
+    return;
+  }
+
+  writeCount(skills.length, skills.length === 0 ? "no skills matched current filters" : undefined);
+  for (const skill of skills) {
+    console.log(formatSkillCard(skill));
+  }
+}
+
+export function runSkillShowCommand(options: SkillShowCommandOptions): void {
+  const config = loadConfig(options.root);
+  const slug = normalizeSlug(options.slug);
+  const { index, rebuilt, stale } = loadSkillsIndex({
+    root: options.root,
+    config,
+    useCache: !options.noCache,
+    allowReindex: !options.noReindex,
+    persistReindex: false,
+  });
+  if (stale && !rebuilt && !options.noCache) {
+    console.error("warning: skills index is stale; run mdkg index to refresh");
+  }
+  const skill = index.skills[slug];
+  if (!skill) {
+    throw new NotFoundError(`skill not found: ${slug}`);
+  }
+
+  let body = "";
+  if (!options.metaOnly) {
+    if (!containedPathExists({ root: options.root, relativePath: skill.path })) {
+      throw new NotFoundError(`file not found for ${skill.id}: ${skill.path}`);
+    }
+    body = readContainedFile({ root: options.root, relativePath: skill.path }).trimEnd();
+  }
+
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
+      command: "show",
+      kind: "skill",
+      item: toSkillDetailJson(skill, options.metaOnly ? undefined : body),
+    }, format);
+    return;
+  }
+
+  if (options.metaOnly) {
+    const lines: string[] = [];
+    lines.push(formatSkillCard(skill));
+    lines.push(`description: ${skill.description}`);
+    const tagsLine = maybeLine("tags", skill.tags);
+    if (tagsLine) {
+      lines.push(tagsLine);
+    }
+    if (skill.version) {
+      lines.push(`version: ${skill.version}`);
+    }
+    const authorsLine = maybeLine("authors", skill.authors);
+    if (authorsLine) {
+      lines.push(authorsLine);
+    }
+    const linksLine = maybeLine("links", skill.links);
+    if (linksLine) {
+      lines.push(linksLine);
+    }
+    lines.push(`has_scripts: ${skill.has_scripts ? "true" : "false"}`);
+    lines.push(`has_references: ${skill.has_references ? "true" : "false"}`);
+    for (const [namespace, values] of Object.entries(skill.extensions).sort(([a], [b]) =>
+      a.localeCompare(b)
+    )) {
+      for (const [key, value] of Object.entries(values).sort(([a], [b]) => a.localeCompare(b))) {
+        if (Array.isArray(value)) {
+          lines.push(`extensions.${namespace}.${key}: ${value.join(", ")}`);
+          continue;
+        }
+        if (typeof value === "boolean") {
+          lines.push(`extensions.${namespace}.${key}: ${value ? "true" : "false"}`);
+          continue;
+        }
+        lines.push(`extensions.${namespace}.${key}: ${value}`);
+      }
+    }
+    for (const [key, value] of Object.entries(skill.ochatr).sort(([a], [b]) => a.localeCompare(b))) {
+      if (Array.isArray(value)) {
+        lines.push(`${key}: ${value.join(", ")}`);
+        continue;
+      }
+      if (typeof value === "boolean") {
+        lines.push(`${key}: ${value ? "true" : "false"}`);
+        continue;
+      }
+      lines.push(`${key}: ${value}`);
+    }
+    console.log(lines.join("\n"));
+    return;
+  }
+
+  console.log(body);
+}
+
+export function runSkillSearchCommand(options: SkillSearchCommandOptions): void {
+  const query = options.query.trim();
+  if (!query) {
+    throw new UsageError("search query cannot be empty");
+  }
+
+  const config = loadConfig(options.root);
+  const { index, rebuilt, stale } = loadSkillsIndex({
+    root: options.root,
+    config,
+    useCache: !options.noCache,
+    allowReindex: !options.noReindex,
+    persistReindex: false,
+  });
+  if (stale && !rebuilt && !options.noCache) {
+    console.error("warning: skills index is stale; run mdkg index to refresh");
+  }
+
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const skills = filterSkills(
+    Object.values(index.skills),
+    options.tags,
+    options.tagsMode ?? "any"
+  )
+    .filter((skill) => matchesSkillQuery(skill, terms))
+    .sort((a, b) => a.qid.localeCompare(b.qid));
+
+  const format = options.format ?? (options.json ? "json" : undefined);
+  if (format) {
+    writeStructuredOutput({
+      command: "search",
+      kind: "skill",
+      count: skills.length,
+      items: skills.map(toSkillSummaryJson),
+    }, format);
+    return;
+  }
+
+  writeCount(skills.length, skills.length === 0 ? `no skills matched query "${query}"` : undefined);
+  for (const skill of skills) {
+    console.log(formatSkillCard(skill));
+  }
+}
+
+export function runSkillValidateCommand(options: SkillValidateCommandOptions): void {
+  const config = loadConfig(options.root);
+  const targetSlug = options.slug?.trim().toLowerCase();
+
+  const warnings: string[] = [];
+  const errors: string[] = [];
+  let checkedCount = 0;
+
+  if (targetSlug) {
+    const normalizedSlug = normalizeSlug(targetSlug);
+    const result = validateSingleSkill(options.root, normalizedSlug);
+    checkedCount = 1;
+    warnings.push(...result.warnings);
+    errors.push(...result.errors);
+  } else {
+    const skillsRoot = resolveSkillsRoot(options.root, config);
+    if (fs.existsSync(skillsRoot)) {
+      const entries = fs.readdirSync(skillsRoot, { withFileTypes: true });
+      const skillDirs = entries
+        .filter((value) => value.isDirectory())
+        .sort((a, b) => a.name.localeCompare(b.name));
+      checkedCount = skillDirs.length;
+      for (const entry of skillDirs) {
+        const result = validateSingleSkill(options.root, entry.name.toLowerCase());
+        warnings.push(...result.warnings);
+        errors.push(...result.errors);
+      }
+    }
+    const projectionPolicyPath = path.join(
+      options.root,
+      "assets",
+      "init",
+      "skills",
+      "public-seed-policy.json",
+    );
+    if (fs.existsSync(projectionPolicyPath)) {
+      const builtRoot = path.join(options.root, "dist", "init", "skills", "default");
+      const projection = validatePublicSkillProjection({
+        policyPath: projectionPolicyPath,
+        canonicalRoot: skillsRoot,
+        mirrorRoots: configuredSkillMirrorTargets(config).map((target) => path.join(options.root, target)),
+        publicRoot: path.join(options.root, "assets", "init", "skills", "default"),
+        ...(fs.existsSync(builtRoot) ? { builtRoot } : {}),
+      });
+      errors.push(...projection.errors);
+    }
+  }
+
+  const uniqueWarnings = Array.from(new Set(warnings));
+  const uniqueErrors = Array.from(new Set(errors));
+  const receipt: SkillValidateReceipt = {
+    action: "validated",
+    ok: uniqueErrors.length === 0,
+    checked_count: checkedCount,
+    warning_count: uniqueWarnings.length,
+    error_count: uniqueErrors.length,
+    warnings: uniqueWarnings,
+    errors: uniqueErrors,
+    ...(targetSlug ? { target: normalizeSlug(targetSlug) } : {}),
+  };
+
+  if (options.json) {
+    console.log(JSON.stringify(receipt, null, 2));
+    if (uniqueErrors.length > 0) {
+      throw new ValidationError(`skill validation failed with ${uniqueErrors.length} error(s)`);
+    }
+    return;
+  }
+
+  for (const warning of uniqueWarnings) {
+    console.error(`warning: ${warning}`);
+  }
+  if (uniqueErrors.length > 0) {
+    for (const error of uniqueErrors) {
+      console.error(error);
+    }
+    throw new ValidationError(`skill validation failed with ${uniqueErrors.length} error(s)`);
+  }
+
+  if (targetSlug) {
+    console.log(`skill validation ok: ${targetSlug} (1 skill checked)`);
+    return;
+  }
+  console.log(`skill validation ok: ${checkedCount} skill${checkedCount === 1 ? "" : "s"} checked`);
+}
+
+function runSkillSyncCommandLocked(options: SkillSyncCommandOptions): void {
+  const config = loadConfig(options.root);
+  const result = syncSkillMirrors({
+    root: options.root,
+    config,
+    createRoots: true,
+    force: options.force,
+  });
+  if (options.json) {
+    console.log(
+      JSON.stringify(
+        {
+          action: "synced",
+          sync: result,
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
+  console.log(
+    `skill mirror sync ok: ${result.synced} synced, ${result.pruned} pruned across ${result.targets} target${result.targets === 1 ? "" : "s"}`
+  );
+}
+
+export function runSkillSyncCommand(options: SkillSyncCommandOptions): void {
+  const config = loadConfig(options.root);
+  return withMutationLock(options.root, config.index.lock_timeout_ms, () => runSkillSyncCommandLocked(options));
+}

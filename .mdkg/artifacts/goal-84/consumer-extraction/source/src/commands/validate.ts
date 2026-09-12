@@ -1,0 +1,931 @@
+import fs from "fs";
+import path from "path";
+import { spawnSync } from "child_process";
+import { loadConfig } from "../core/config";
+import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
+import { ALLOWED_TYPES, parseNode } from "../graph/node";
+import { Index, IndexNode } from "../graph/indexer";
+import {
+  CANONICAL_MANIFEST_BASENAME,
+  LEGACY_SPEC_BASENAME,
+  KNOWN_CONTRACT_PROFILES,
+  KNOWN_RECEIPT_KINDS,
+  KNOWN_REDACTION_CLASSES,
+  collectManifestSiblingConflicts,
+  isAgentFileType,
+} from "../graph/agent_file_types";
+import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
+import { listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "../graph/workspace_files";
+import { validateEventsJsonl } from "../graph/events_validation";
+import { collectGraphErrors } from "../graph/validate_graph";
+import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
+import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
+import { isSqliteBackend, sqliteHealth } from "../graph/sqlite_index";
+import { UsageError, ValidationError } from "../util/errors";
+import { auditSkillMirrors } from "./skill_mirror";
+import { assertNoGraphConflictMarkers, assertNodeFormat, GraphFormat, identityRef, readGraphFormat } from "../graph/identity";
+import { normalizeIndexIdentityReferences } from "../graph/identity_refs";
+
+export type ValidateCommandOptions = {
+  root: string;
+  out?: string;
+  jsonOut?: string;
+  quiet?: boolean;
+  json?: boolean;
+  changedOnly?: boolean;
+  summary?: boolean;
+  limit?: number;
+  profile?: string;
+};
+
+export type ValidateWarningDiagnostic = {
+  id: string;
+  category: string;
+  severity: "warning";
+  message: string;
+  qid?: string;
+  node_type?: string;
+  path?: string;
+  ref?: string;
+  remediation: string;
+};
+
+export type ValidateWarningSummaryBucket = {
+  key: string;
+  count: number;
+};
+
+export type ValidateWarningSummary = {
+  total: number;
+  emitted: number;
+  truncated: boolean;
+  omitted_count: number;
+  limit: number | null;
+  affected_file_count: number;
+  by_id: ValidateWarningSummaryBucket[];
+  by_category: ValidateWarningSummaryBucket[];
+  by_node_type: ValidateWarningSummaryBucket[];
+  top_qids: ValidateWarningSummaryBucket[];
+  top_paths: ValidateWarningSummaryBucket[];
+};
+
+export type ValidateReceipt = {
+  action: "validated";
+  ok: boolean;
+  warning_count: number;
+  error_count: number;
+  warnings: string[];
+  warning_diagnostics: ValidateWarningDiagnostic[];
+  warning_summary: ValidateWarningSummary;
+  errors: string[];
+  validation_profile?: string;
+  report_path?: string;
+  json_receipt_path?: string;
+  warning_filter?: {
+    mode: "changed-only";
+    changed_paths: string[];
+  };
+};
+
+const VALIDATION_PROFILES = new Set(["omni-room"]);
+
+type HeadingMap = Record<string, string[]>;
+
+export const RECOMMENDED_HEADINGS: HeadingMap = {
+  task: [
+    "Overview",
+    "Acceptance Criteria",
+    "Files Affected",
+    "Implementation Notes",
+    "Test Plan",
+    "Links / Artifacts",
+  ],
+  bug: [
+    "Overview",
+    "Reproduction Steps",
+    "Expected vs Actual",
+    "Suspected Cause",
+    "Fix Plan",
+    "Test Plan",
+    "Links / Artifacts",
+  ],
+  feat: ["Overview", "Acceptance Criteria", "Notes"],
+  spike: [
+    "Research Question",
+    "Context And Constraints",
+    "Search Plan",
+    "Findings",
+    "Options And Tradeoffs",
+    "Recommendation",
+    "Follow-Up Nodes To Create",
+    "Skill Candidates",
+    "Evidence And Sources",
+  ],
+  epic: ["Goal", "Scope", "Milestones", "Out of Scope", "Risks", "Links / Artifacts"],
+  checkpoint: [
+    "Summary",
+    "Scope Covered",
+    "Decisions Captured",
+    "Implementation Summary",
+    "Verification / Testing",
+    "Known Issues / Follow-ups",
+    "Links / Artifacts",
+  ],
+  prd: [
+    "Problem",
+    "Goals",
+    "Non-goals",
+    "Requirements",
+    "Acceptance Criteria",
+    "Metrics / Success",
+    "Risks",
+    "Open Questions",
+  ],
+  edd: [
+    "Overview",
+    "Architecture",
+    "Data model",
+    "APIs / interfaces",
+    "Failure modes",
+    "Observability",
+    "Security / privacy",
+    "Testing strategy",
+    "Rollout plan",
+  ],
+  dec: ["Context", "Decision", "Alternatives considered", "Consequences", "Links / references"],
+  spec: ["Purpose", "Runtime", "Work Contracts", "Capabilities"],
+  work: ["Capability", "Inputs", "Outputs", "Receipt"],
+  work_order: ["Request", "Inputs", "Constraints"],
+  receipt: ["Outcome", "Artifacts", "Notes"],
+  feedback: ["Feedback", "Evidence"],
+  dispute: ["Dispute", "Evidence", "Resolution"],
+  proposal: ["Summary", "Evidence", "Proposed Change", "Review"],
+};
+
+function normalizeHeading(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function extractHeadings(body: string): Set<string> {
+  const headings = new Set<string>();
+  const lines = body.split(/\r?\n/);
+  for (const line of lines) {
+    const match = /^#+\s+(.*)$/.exec(line);
+    if (!match) {
+      continue;
+    }
+    headings.add(normalizeHeading(match[1] ?? ""));
+  }
+  return headings;
+}
+
+const RAW_CONTENT_MARKERS: Array<{ id: string; pattern: RegExp; description: string }> = [
+  { id: "raw_prompt", pattern: /\bRAW_PROMPT_MARKER\b/i, description: "raw prompt marker" },
+  { id: "raw_payload", pattern: /\bRAW_PAYLOAD_MARKER\b/i, description: "raw payload marker" },
+  { id: "raw_secret", pattern: /\bRAW_SECRET_MARKER\b|BEGIN [A-Z ]*PRIVATE KEY|secret\s*=/i, description: "raw secret marker" },
+];
+
+function shouldCheckRawContentWarnings(node: ReturnType<typeof parseNode>): boolean {
+  if (isAgentFileType(node.type)) {
+    return true;
+  }
+  return node.type === "checkpoint" && typeof node.frontmatter.checkpoint_kind === "string";
+}
+
+function collectRawContentWarnings(qid: string, node: ReturnType<typeof parseNode>): string[] {
+  if (!shouldCheckRawContentWarnings(node)) {
+    return [];
+  }
+  const warnings: string[] = [];
+  for (const marker of RAW_CONTENT_MARKERS) {
+    if (marker.pattern.test(node.body)) {
+      warnings.push(
+        `${qid}: raw-content.${marker.id} warning: ${marker.description} detected; use refs, hashes, summaries, or artifact links instead of raw secrets/prompts/payloads`
+      );
+    }
+  }
+  return warnings;
+}
+
+function collectManifestCompatibilityWarnings(
+  qid: string,
+  filePath: string,
+  node: ReturnType<typeof parseNode>
+): string[] {
+  const basename = path.basename(filePath);
+  if (basename === LEGACY_SPEC_BASENAME && node.type === "spec") {
+    return [
+      `${qid}: manifest.compat.spec_legacy warning: SPEC.md is legacy; MANIFEST.md is the canonical manifest filename. Rename this file before the compatibility release closes.`,
+    ];
+  }
+  if (basename === CANONICAL_MANIFEST_BASENAME && node.type === "spec") {
+    return [
+      `${qid}: manifest.compat.type_spec warning: MANIFEST.md uses legacy type: spec; use type: manifest before the compatibility release closes.`,
+    ];
+  }
+  return [];
+}
+
+function collectContractProfileWarnings(qid: string, node: ReturnType<typeof parseNode>): string[] {
+  if (!isAgentFileType(node.type)) {
+    return [];
+  }
+  const warnings: string[] = [];
+  if (node.frontmatter.profile !== undefined) {
+    warnings.push(
+      `${qid}: contract-profile.ambiguous-field warning: profile is ambiguous and is not a supported alias; use contract_profile for mdkg contract surfaces`
+    );
+  }
+  const contractProfile = node.frontmatter.contract_profile;
+  if (typeof contractProfile === "string" && !KNOWN_CONTRACT_PROFILES.has(contractProfile)) {
+    warnings.push(
+      `${qid}: contract-profile.unknown warning: unknown contract_profile ${contractProfile}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+    );
+  }
+  if (node.type === "receipt") {
+    const receiptKind = node.frontmatter.receipt_kind;
+    if (typeof receiptKind === "string" && !KNOWN_RECEIPT_KINDS.has(receiptKind)) {
+      warnings.push(
+        `${qid}: receipt-kind.unknown warning: unknown receipt_kind ${receiptKind}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+      );
+    }
+    const redactionClass = node.frontmatter.redaction_class;
+    if (typeof redactionClass === "string" && !KNOWN_REDACTION_CLASSES.has(redactionClass)) {
+      warnings.push(
+        `${qid}: redaction-class.unknown warning: unknown redaction_class ${redactionClass}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+      );
+    }
+    if (typeof redactionClass === "string" && node.frontmatter.redaction_policy === undefined) {
+      warnings.push(
+        `${qid}: redaction-class.missing-policy warning: redaction_class should be paired with redaction_policy so receipt handling and sensitivity are both explicit`
+      );
+    }
+  }
+  return warnings;
+}
+
+function normalizeValidationProfile(profile?: string): string | undefined {
+  if (profile === undefined) {
+    return undefined;
+  }
+  if (!VALIDATION_PROFILES.has(profile)) {
+    throw new UsageError("--profile must be one of omni-room");
+  }
+  return profile;
+}
+
+function collectContractProfileErrors(
+  qid: string,
+  node: ReturnType<typeof parseNode>,
+  profile: string
+): string[] {
+  if (!isAgentFileType(node.type)) {
+    return [];
+  }
+  const errors: string[] = [];
+  if (node.frontmatter.profile !== undefined) {
+    errors.push(
+      `${qid}: contract-profile.ambiguous-field error: profile is ambiguous and is not a supported alias; use contract_profile for ${profile} validation`
+    );
+  }
+  const contractProfile = node.frontmatter.contract_profile;
+  if (typeof contractProfile === "string" && contractProfile !== profile) {
+    errors.push(
+      `${qid}: contract-profile.incompatible error: contract_profile ${contractProfile} is incompatible with validation profile ${profile}`
+    );
+  }
+  if (node.type === "receipt") {
+    const receiptKind = node.frontmatter.receipt_kind;
+    if (typeof receiptKind === "string" && !KNOWN_RECEIPT_KINDS.has(receiptKind)) {
+      errors.push(
+        `${qid}: receipt-kind.incompatible error: receipt_kind ${receiptKind} is incompatible with validation profile ${profile}`
+      );
+    }
+    const redactionClass = node.frontmatter.redaction_class;
+    if (typeof redactionClass === "string" && !KNOWN_REDACTION_CLASSES.has(redactionClass)) {
+      errors.push(
+        `${qid}: redaction-class.incompatible error: redaction_class ${redactionClass} is incompatible with validation profile ${profile}`
+      );
+    }
+    if (typeof redactionClass === "string" && node.frontmatter.redaction_policy === undefined) {
+      errors.push(
+        `${qid}: redaction-class.missing-policy error: redaction_class requires redaction_policy for validation profile ${profile}`
+      );
+    }
+  }
+  return errors;
+}
+
+function collectChangedPaths(root: string): Set<string> {
+  const result = spawnSync(
+    "git",
+    ["-C", root, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ".mdkg"],
+    {
+    encoding: "utf8",
+    }
+  );
+  if (result.status !== 0) {
+    const detail = result.stderr.trim();
+    throw new ValidationError(
+      `changed-only validation could not enumerate Git paths${detail ? `: ${detail}` : ""}`
+    );
+  }
+  const changed = new Set<string>();
+  const records = result.stdout.split("\0");
+  for (let index = 0; index < records.length; index += 1) {
+    const record = records[index];
+    if (!record) {
+      continue;
+    }
+    if (record.length < 4 || record[2] !== " ") {
+      throw new ValidationError("changed-only validation received malformed Git status output");
+    }
+    const status = record.slice(0, 2);
+    changed.add(record.slice(3).replace(/\\/g, "/"));
+    if (status.includes("R") || status.includes("C")) {
+      const sourcePath = records[index + 1];
+      if (!sourcePath) {
+        throw new ValidationError("changed-only validation received an incomplete Git rename record");
+      }
+      changed.add(sourcePath.replace(/\\/g, "/"));
+      index += 1;
+    }
+  }
+  return changed;
+}
+
+function qidFromWarning(message: string): string | undefined {
+  const match = /^([a-z0-9_-]+:[^\s:]+):/.exec(message);
+  return match?.[1];
+}
+
+function warningPath(message: string, nodes: Record<string, IndexNode>): string | undefined {
+  const qid = qidFromWarning(message);
+  if (qid && nodes[qid]) {
+    return nodes[qid].path;
+  }
+  for (const node of Object.values(nodes)) {
+    if (message.includes(node.path)) {
+      return node.path;
+    }
+  }
+  const match = /([.]mdkg\/[^\s:]+\.md|[.]mdkg\/[^\s:]+\/SKILLS?\.md)/.exec(message);
+  return match?.[1];
+}
+
+function warningDiagnostic(message: string, nodes: Record<string, IndexNode>): ValidateWarningDiagnostic {
+  const qid = qidFromWarning(message);
+  const nodeType = qid && nodes[qid] ? nodes[qid].type : undefined;
+  const pathValue = warningPath(message, nodes);
+  const rawMatch = /raw-content\.([a-z_]+)/.exec(message);
+  if (rawMatch) {
+    return {
+      id: `raw-content.${rawMatch[1]}`,
+      category: "raw-content",
+      severity: "warning",
+      message,
+      qid,
+      node_type: nodeType,
+      path: pathValue,
+      ref: qid,
+      remediation: "Replace raw secrets, prompts, tokens, or payloads with refs, hashes, redacted summaries, or archive/artifact links.",
+    };
+  }
+  if (message.includes("missing recommended heading")) {
+    return {
+      id: "heading.missing",
+      category: "headings",
+      severity: "warning",
+      message,
+      qid,
+      node_type: nodeType,
+      path: pathValue,
+      ref: qid,
+      remediation: "Run mdkg format --headings --dry-run to review missing heading additions, then --apply if acceptable.",
+    };
+  }
+  if (message.includes("bundled template schema fallback")) {
+    return {
+      id: "template_schema.fallback",
+      category: "templates",
+      severity: "warning",
+      message,
+      node_type: nodeType,
+      path: pathValue,
+      remediation: "Run mdkg upgrade to review missing built-in template schemas; apply only with its exact --plan-hash and the same --only selection, if any.",
+    };
+  }
+  const manifestCompatMatch = /manifest\.compat\.([a-z_]+)/.exec(message);
+  if (manifestCompatMatch) {
+    return {
+      id: `manifest.compat.${manifestCompatMatch[1]}`,
+      category: "manifest-compatibility",
+      severity: "warning",
+      message,
+      qid,
+      node_type: nodeType,
+      path: pathValue,
+      ref: qid,
+      remediation: "Rename legacy SPEC.md files to MANIFEST.md and update transitional type: spec frontmatter to type: manifest before the compatibility release closes.",
+    };
+  }
+  const contractProfileMatch = /(contract-profile|receipt-kind|redaction-class)\.([a-z-]+)/.exec(message);
+  if (contractProfileMatch) {
+    return {
+      id: `${contractProfileMatch[1]}.${contractProfileMatch[2]}`,
+      category: "contract-profile",
+      severity: "warning",
+      message,
+      qid,
+      node_type: nodeType,
+      path: pathValue,
+      ref: qid,
+      remediation: "Use contract_profile and explicit policy/kind/class fields only when they are intentional generic mdkg contract metadata.",
+    };
+  }
+  if (message.includes("sqlite") || message.includes("index")) {
+    return {
+      id: "cache.index",
+      category: "cache",
+      severity: "warning",
+      message,
+      node_type: nodeType,
+      path: pathValue,
+      remediation: "Run mdkg index or mdkg db index rebuild when generated cache state should be refreshed.",
+    };
+  }
+  if (message.includes("skill") || message.includes("mirror")) {
+    return {
+      id: "skill_mirror.warning",
+      category: "skills",
+      severity: "warning",
+      message,
+      node_type: nodeType,
+      path: pathValue,
+      remediation: "Run mdkg skill sync after reviewing managed skill mirror drift.",
+    };
+  }
+  if (message.includes("subgraph")) {
+    return {
+      id: "subgraph.warning",
+      category: "subgraph",
+      severity: "warning",
+      message,
+      node_type: nodeType,
+      path: pathValue,
+      remediation: "Run mdkg subgraph verify or refresh the source bundle after reviewing child graph freshness.",
+    };
+  }
+  return {
+    id: "warning.generic",
+    category: "general",
+    severity: "warning",
+    message,
+    qid,
+    node_type: nodeType,
+    path: pathValue,
+    ref: qid,
+    remediation: "Review the warning and apply the focused mdkg command suggested by the message when appropriate.",
+  };
+}
+
+function countBuckets(values: Array<string | undefined>): ValidateWarningSummaryBucket[] {
+  const counts = new Map<string, number>();
+  for (const value of values) {
+    if (!value) {
+      continue;
+    }
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([key, count]) => ({ key, count }))
+    .sort((a, b) => b.count - a.count || a.key.localeCompare(b.key));
+}
+
+function normalizeLimit(limit?: number): number {
+  if (limit === undefined) {
+    return 50;
+  }
+  if (!Number.isInteger(limit) || limit < 0) {
+    throw new ValidationError("--limit must be a non-negative integer");
+  }
+  return limit;
+}
+
+function buildWarningSummary(
+  diagnostics: ValidateWarningDiagnostic[],
+  limit?: number | null
+): ValidateWarningSummary {
+  const effectiveLimit = limit === null || limit === undefined ? diagnostics.length : limit;
+  const emitted = Math.min(diagnostics.length, effectiveLimit);
+  const truncated = emitted < diagnostics.length;
+  return {
+    total: diagnostics.length,
+    emitted,
+    truncated,
+    omitted_count: diagnostics.length - emitted,
+    limit: limit === undefined ? null : limit,
+    affected_file_count: new Set(diagnostics.map((diagnostic) => diagnostic.path).filter(Boolean)).size,
+    by_id: countBuckets(diagnostics.map((diagnostic) => diagnostic.id)),
+    by_category: countBuckets(diagnostics.map((diagnostic) => diagnostic.category)),
+    by_node_type: countBuckets(diagnostics.map((diagnostic) => diagnostic.node_type)),
+    top_qids: countBuckets(diagnostics.map((diagnostic) => diagnostic.qid)).slice(0, 25),
+    top_paths: countBuckets(diagnostics.map((diagnostic) => diagnostic.path)).slice(0, 25),
+  };
+}
+
+function shapeValidateReceiptForSummary(receipt: ValidateReceipt, limit?: number): ValidateReceipt {
+  const effectiveLimit = normalizeLimit(limit);
+  const warningDiagnostics = receipt.warning_diagnostics.slice(0, effectiveLimit);
+  return {
+    ...receipt,
+    warnings: warningDiagnostics.map((warning) => warning.message),
+    warning_diagnostics: warningDiagnostics,
+    warning_summary: buildWarningSummary(receipt.warning_diagnostics, effectiveLimit),
+  };
+}
+
+function writeJsonReceipt(root: string, jsonOut: string, receipt: ValidateReceipt): string {
+  const outPath = path.resolve(root, jsonOut);
+  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.writeFileSync(outPath, `${JSON.stringify(receipt, null, 2)}\n`, "utf8");
+  return outPath;
+}
+
+function isCoreListFile(filePath: string): boolean {
+  return path.basename(filePath) === "core.md" && path.basename(path.dirname(filePath)) === "core";
+}
+
+function normalizeEdgeTarget(value: string, ws: string): string {
+  if (value.includes(":")) {
+    return value;
+  }
+  return `${ws}:${value}`;
+}
+
+function normalizeEdges(edges: IndexNode["edges"], ws: string): IndexNode["edges"] {
+  return {
+    epic: edges.epic ? normalizeEdgeTarget(edges.epic, ws) : undefined,
+    parent: edges.parent ? normalizeEdgeTarget(edges.parent, ws) : undefined,
+    prev: edges.prev ? normalizeEdgeTarget(edges.prev, ws) : undefined,
+    next: edges.next ? normalizeEdgeTarget(edges.next, ws) : undefined,
+    relates: edges.relates.map((value) => normalizeEdgeTarget(value, ws)),
+    blocked_by: edges.blocked_by.map((value) => normalizeEdgeTarget(value, ws)),
+    blocks: edges.blocks.map((value) => normalizeEdgeTarget(value, ws)),
+    context_refs: (edges.context_refs ?? []).map((value) => normalizeEdgeTarget(value, ws)),
+    evidence_refs: (edges.evidence_refs ?? []).map((value) => normalizeEdgeTarget(value, ws)),
+  };
+}
+
+function buildIndexNode(
+  root: string,
+  ws: string,
+  filePath: string,
+  node: ReturnType<typeof parseNode>
+): IndexNode {
+  return {
+    id: node.id,
+    ...(node.identity ? { identity: node.identity } : {}),
+    qid: `${ws}:${node.id}`,
+    ws,
+    type: node.type,
+    title: node.title,
+    status: node.status,
+    priority: node.priority,
+    created: node.created,
+    updated: node.updated,
+    tags: node.tags,
+    owners: node.owners,
+    links: node.links,
+    artifacts: node.artifacts,
+    refs: node.refs,
+    aliases: node.aliases,
+    skills: node.skills,
+    attributes: node.attributes,
+    path: path.relative(root, filePath),
+    edges: normalizeEdges(node.edges, ws),
+  };
+}
+
+function buildWorkspaceMap(config: ReturnType<typeof loadConfig>): Record<string, { path: string; enabled: boolean }> {
+  const workspaces: Record<string, { path: string; enabled: boolean }> = {};
+  for (const alias of Object.keys(config.workspaces).sort()) {
+    const entry = config.workspaces[alias];
+    workspaces[alias] = { path: entry.path, enabled: entry.enabled };
+  }
+  return workspaces;
+}
+
+function addReverseEdge(
+  reverse: Index["reverse_edges"],
+  edgeKey: string,
+  target: string | undefined,
+  source: string
+): void {
+  if (!target) {
+    return;
+  }
+  reverse[edgeKey] = reverse[edgeKey] ?? {};
+  reverse[edgeKey][target] = reverse[edgeKey][target] ?? [];
+  reverse[edgeKey][target].push(source);
+}
+
+function buildReverseEdges(nodes: Record<string, IndexNode>): Index["reverse_edges"] {
+  const reverse: Index["reverse_edges"] = {};
+  for (const [qid, node] of Object.entries(nodes)) {
+    addReverseEdge(reverse, "epic", node.edges.epic, qid);
+    addReverseEdge(reverse, "parent", node.edges.parent, qid);
+    addReverseEdge(reverse, "prev", node.edges.prev, qid);
+    addReverseEdge(reverse, "next", node.edges.next, qid);
+    for (const target of node.edges.relates) {
+      addReverseEdge(reverse, "relates", target, qid);
+    }
+    for (const target of node.edges.blocked_by) {
+      addReverseEdge(reverse, "blocked_by", target, qid);
+    }
+    for (const target of node.edges.blocks) {
+      addReverseEdge(reverse, "blocks", target, qid);
+    }
+    for (const target of node.edges.context_refs ?? []) {
+      addReverseEdge(reverse, "context_refs", target, qid);
+    }
+    for (const target of node.edges.evidence_refs ?? []) {
+      addReverseEdge(reverse, "evidence_refs", target, qid);
+    }
+  }
+  for (const targets of Object.values(reverse)) {
+    for (const sources of Object.values(targets)) {
+      sources.sort();
+    }
+  }
+  return reverse;
+}
+
+function listDirectories(dirPath: string): string[] {
+  if (!fs.existsSync(dirPath)) {
+    return [];
+  }
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(dirPath, entry.name))
+    .sort();
+}
+
+export function collectValidateReceipt(options: ValidateCommandOptions): ValidateReceipt {
+  const validationProfile = normalizeValidationProfile(options.profile);
+  const config = loadConfig(options.root);
+  const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
+  const templateSchemas = templateSchemaInfo.schemas;
+  const filesByAlias = listWorkspaceDocFilesByAlias(options.root, config);
+
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  let graphFormat: GraphFormat | undefined;
+  try { graphFormat = readGraphFormat(options.root); }
+  catch (error) { errors.push(error instanceof Error ? error.message : String(error)); }
+  const identityPaths = new Map<string, string>();
+  if (isSqliteBackend(config)) {
+    const health = sqliteHealth(options.root, config);
+    warnings.push(...health.warnings);
+    errors.push(...health.errors);
+  }
+  if (templateSchemaInfo.fallbackTypes.length > 0) {
+    warnings.push(
+      `using bundled template schema fallback for missing local type(s): ${templateSchemaInfo.fallbackTypes.join(", ")}; preview built-in templates with \`mdkg upgrade\`, review changes, then apply with its exact --plan-hash and the same --only selection, if any`
+    );
+  }
+  const nodes: Record<string, IndexNode> = {};
+  let graphValidationBytes = 0;
+  const idsByWorkspace: Record<string, Map<string, string>> = {};
+
+  for (const [alias, files] of Object.entries(filesByAlias)) {
+    idsByWorkspace[alias] = new Map();
+    errors.push(
+      ...collectManifestSiblingConflicts(files, (dirPath) =>
+        path.relative(options.root, dirPath).split(path.sep).join("/") || "."
+      )
+    );
+    for (const filePath of files) {
+      if (isCoreListFile(filePath)) {
+        continue;
+      }
+      let content = "";
+      try {
+        content = readWorkspaceDocument(options.root, filePath, config.index.limits.max_file_bytes);
+        graphValidationBytes += Buffer.byteLength(content, "utf8");
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "unknown error";
+        errors.push(`${filePath}: failed to read file: ${message}`);
+        continue;
+      }
+      try {
+        if (graphFormat?.format_version === 2) assertNoGraphConflictMarkers(content, filePath);
+        const node = parseNode(content, filePath, {
+          archiveRoot: options.root,
+          workStatusEnum: config.work.status_enum,
+          priorityMin: config.work.priority_min,
+          priorityMax: config.work.priority_max,
+          templateSchemas,
+        });
+        if (graphFormat) assertNodeFormat(graphFormat, node.identity, filePath);
+        if (node.identity) {
+          const ref = identityRef(node.identity);
+          if (identityPaths.has(ref)) throw new UsageError(`duplicate immutable identity ${ref}: ${identityPaths.get(ref)} and ${filePath}`);
+          identityPaths.set(ref, filePath);
+        }
+
+        if (idsByWorkspace[alias].has(node.id)) {
+          const firstPath = idsByWorkspace[alias].get(node.id);
+          errors.push(
+            `${path.relative(options.root, filePath).split(path.sep).join("/")}: duplicate id ${node.id} in workspace ${alias} (also in ${firstPath ? path.relative(options.root, firstPath).split(path.sep).join("/") : "unknown"})`
+          );
+          continue;
+        }
+        idsByWorkspace[alias].set(node.id, filePath);
+
+        const qid = `${alias}:${node.id}`;
+        nodes[qid] = buildIndexNode(options.root, alias, filePath, node);
+
+        const recommended = RECOMMENDED_HEADINGS[node.type];
+        if (recommended) {
+          const headings = extractHeadings(node.body);
+          for (const heading of recommended) {
+            if (!headings.has(normalizeHeading(heading))) {
+              warnings.push(`${qid}: missing recommended heading "${heading}"`);
+            }
+          }
+        }
+        warnings.push(...collectRawContentWarnings(qid, node));
+        warnings.push(...collectManifestCompatibilityWarnings(qid, filePath, node));
+        warnings.push(...collectContractProfileWarnings(qid, node));
+        if (validationProfile) {
+          errors.push(...collectContractProfileErrors(qid, node, validationProfile));
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "unknown error";
+        errors.push(message);
+      }
+    }
+  }
+
+  normalizeIndexIdentityReferences({ nodes });
+  const index: Index = {
+    meta: {
+      tool: config.tool,
+      schema_version: config.schema_version,
+      generated_at: new Date().toISOString(),
+      root: options.root,
+      workspaces: Object.keys(filesByAlias).sort(),
+      ...(graphFormat?.format_version === 2 ? { graph_format: graphFormat } : {}),
+    },
+    workspaces: buildWorkspaceMap(config),
+    nodes,
+    reverse_edges: buildReverseEdges(nodes),
+  };
+
+  const subgraphProjection = buildSubgraphsIndex(options.root, config);
+  for (const item of subgraphProjection.index.subgraphs) {
+    for (const warning of item.warnings) {
+      warnings.push(`subgraph ${item.alias}: ${warning}`);
+    }
+    for (const error of item.errors) {
+      errors.push(`subgraph ${item.alias}: ${error}`);
+    }
+  }
+  const validationIndex = mergeSubgraphsIntoIndex(index, subgraphProjection);
+
+  let knownSkills = new Set<string>();
+  try {
+    const skillsIndex = buildSkillsIndex(options.root, config);
+    knownSkills = new Set(Object.keys(skillsIndex.skills));
+    for (const node of Object.values(nodes)) {
+      for (const slug of node.skills) {
+        if (!knownSkills.has(slug)) {
+          errors.push(`${node.qid}: skills reference missing slug: ${slug}`);
+        }
+      }
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "unknown skill validation error";
+    errors.push(message);
+  }
+
+  const graphErrors = collectGraphErrors(validationIndex, {
+    allowMissing: false,
+    knownSkillSlugs: knownSkills,
+  });
+  errors.push(...graphErrors);
+  errors.push(
+    ...visibilityViolationMessages(collectVisibilityViolations(validationIndex, config)).map(
+      (message) => `visibility: ${message}`
+    )
+  );
+
+  const skillsRoot = resolveSkillsRoot(options.root, config);
+  for (const dirPath of listDirectories(skillsRoot)) {
+    const canonicalPath = path.join(dirPath, "SKILL.md");
+    const compatPath = path.join(dirPath, "SKILLS.md");
+    const hasCanonical = fs.existsSync(canonicalPath);
+    const hasCompat = fs.existsSync(compatPath);
+    if (hasCanonical && hasCompat) {
+      errors.push(`${dirPath}: both SKILL.md and SKILLS.md exist`);
+      continue;
+    }
+    if (!hasCanonical && !hasCompat) {
+      errors.push(`${dirPath}: missing SKILL.md or SKILLS.md`);
+      continue;
+    }
+    if (hasCompat) {
+      warnings.push(`${path.relative(options.root, compatPath)}: using legacy SKILLS.md compatibility file`);
+    }
+  }
+
+  warnings.push(...auditSkillMirrors(options.root, config));
+
+  validateEventsJsonl(options.root, config, errors, graphValidationBytes);
+
+  const allUniqueWarnings = Array.from(new Set(warnings));
+  const allWarningDiagnostics = allUniqueWarnings.map((warning) => warningDiagnostic(warning, nodes));
+  const changedPaths = options.changedOnly ? collectChangedPaths(options.root) : new Set<string>();
+  const filteredWarningDiagnostics = options.changedOnly
+    ? allWarningDiagnostics.filter((warning) => warning.path !== undefined && changedPaths.has(warning.path))
+    : allWarningDiagnostics;
+  const uniqueWarnings = filteredWarningDiagnostics.map((warning) => warning.message);
+  const uniqueErrors = Array.from(new Set(errors));
+
+  const reportLines = [
+    ...uniqueWarnings.map((warning) => `warning: ${warning}`),
+    ...uniqueErrors,
+  ];
+
+  let outPath: string | undefined = undefined;
+  if (options.out) {
+    outPath = path.resolve(options.root, options.out);
+    fs.mkdirSync(path.dirname(outPath), { recursive: true });
+    fs.writeFileSync(outPath, reportLines.join("\n"), "utf8");
+  }
+
+  const receipt: ValidateReceipt = {
+    action: "validated",
+    ok: uniqueErrors.length === 0,
+    warning_count: uniqueWarnings.length,
+    error_count: uniqueErrors.length,
+    warnings: uniqueWarnings,
+    warning_diagnostics: filteredWarningDiagnostics,
+    warning_summary: buildWarningSummary(filteredWarningDiagnostics),
+    errors: uniqueErrors,
+    ...(validationProfile ? { validation_profile: validationProfile } : {}),
+    ...(outPath ? { report_path: outPath } : {}),
+    ...(options.changedOnly
+      ? { warning_filter: { mode: "changed-only" as const, changed_paths: Array.from(changedPaths).sort() } }
+      : {}),
+  };
+
+  return receipt;
+}
+
+export function runValidateCommand(options: ValidateCommandOptions): void {
+  let receipt = collectValidateReceipt(options);
+  if (options.jsonOut) {
+    const jsonOutPath = path.resolve(options.root, options.jsonOut);
+    receipt = { ...receipt, json_receipt_path: jsonOutPath };
+    writeJsonReceipt(options.root, options.jsonOut, receipt);
+  }
+  const displayReceipt = options.summary ? shapeValidateReceiptForSummary(receipt, options.limit) : receipt;
+
+  if (options.json) {
+    console.log(JSON.stringify(displayReceipt, null, 2));
+    if (receipt.error_count > 0) {
+      throw new ValidationError(`validation failed with ${receipt.error_count} error(s)`);
+    }
+    return;
+  }
+
+  if (!options.quiet) {
+    for (const warning of displayReceipt.warnings) {
+      console.error(`warning: ${warning}`);
+    }
+    if (displayReceipt.warning_summary.truncated) {
+      console.error(
+        `warning summary: omitted ${displayReceipt.warning_summary.omitted_count} warning(s); rerun without --summary or use --json-out <path> for full diagnostics`
+      );
+    }
+  }
+
+  if (receipt.error_count > 0) {
+    if (receipt.report_path) {
+      console.error(`validation failed: ${receipt.error_count} error(s). details written to ${receipt.report_path}`);
+    } else {
+      for (const error of receipt.errors) {
+        console.error(error);
+      }
+    }
+    throw new ValidationError(`validation failed with ${receipt.error_count} error(s)`);
+  }
+
+  if (receipt.report_path) {
+    console.log(`validation report written: ${receipt.report_path}`);
+  }
+  console.log("validation ok");
+}

@@ -1,0 +1,40 @@
+{
+  "work_qid": "root:task-833",
+  "outcome": "SOURCE_CONTEXT_VERIFIED_LOCAL_UNDISPATCHED",
+  "source_revision": "cd0eb6fcc3f5945cfa3c29fe0cb356d9805e518c",
+  "manifest": ".mdkg/artifacts/goal-84/consumer-extraction/manifest.json",
+  "manifest_sha256": "7ad3dc58e759bd8891089ae532bba513170387a610dbbc77084917c11bc9068a",
+  "files": 152,
+  "source_and_fixture_files": 150,
+  "primary_dependency_modules": 87,
+  "independent_review": {
+    "reviewer": "consumer_boundary_audit",
+    "mode": "read-only source, manifest and fixture review",
+    "source_mismatches": 0,
+    "missing_dependencies": 0,
+    "blocking_export_findings": 0,
+    "license": "MIT retained verbatim",
+    "sensitive_data": "credential-shape screen and focused manual review found synthetic fixtures only; not comprehensive security clearance"
+  },
+  "validation": {
+    "export_verifier": "pass",
+    "script_syntax": "pass",
+    "npm_pack_dry_run": { "scripts_executed": false, "offline": true, "package_files": 223, "export_leaks": 0 },
+    "graph": { "errors": 0, "inherited_stale_subgraph_warnings": 3 },
+    "diff_check": "pass"
+  },
+  "custody": {
+    "protected_source_runtime_selection_bundle": "matched prior frozen hashes before any removal",
+    "runtime_leases": "five released",
+    "queue_count": 0,
+    "active_goal_policy": "only Goal83 active for export; Goal84 paused; selected Goal73 unchanged"
+  },
+  "limits": [
+    "Non-runnable reference context, not standalone build or SDK",
+    "No copied payload executed",
+    "Consumer implementation and adoption unverified; no dispatch",
+    "No security clearance, provider proof, publication or remote action",
+    "After source removal use sealed export hashes and recorded revision, not current-source equality"
+  ],
+  "skill_candidates": []
+}

@@ -1,0 +1,124 @@
+import { PackResult } from "./types";
+
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function listItems(tag: string, itemTag: string, items: string[], indent: string): string[] {
+  if (items.length === 0) {
+    return [];
+  }
+  const lines: string[] = [];
+  lines.push(`${indent}<${tag}>`);
+  for (const item of items) {
+    lines.push(`${indent}  <${itemTag}>${escapeXml(item)}</${itemTag}>`);
+  }
+  lines.push(`${indent}</${tag}>`);
+  return lines;
+}
+
+function listValues(items: string[] | undefined): string[] {
+  return items ?? [];
+}
+
+function attributeLines(
+  key: string,
+  value: PackResult["nodes"][number]["attributes"][string],
+  indent: string
+): string[] {
+  if (Array.isArray(value)) {
+    return listItems(key, "item", value, indent);
+  }
+  return [`${indent}<${key}>${escapeXml(String(value))}</${key}>`];
+}
+
+export function exportXml(pack: PackResult): string {
+  const lines: string[] = [];
+  lines.push("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+  lines.push("<pack>");
+  lines.push("  <meta>");
+  lines.push(`    <root>${escapeXml(pack.meta.root)}</root>`);
+  lines.push(`    <depth>${pack.meta.depth}</depth>`);
+  lines.push(`    <verbose>${pack.meta.verbose}</verbose>`);
+  if (pack.meta.profile) {
+    lines.push(`    <profile>${escapeXml(pack.meta.profile)}</profile>`);
+  }
+  if (pack.meta.body_mode) {
+    lines.push(`    <body_mode>${escapeXml(pack.meta.body_mode)}</body_mode>`);
+  }
+  if (pack.meta.visibility) {
+    lines.push(`    <visibility>${escapeXml(pack.meta.visibility)}</visibility>`);
+  }
+  if (pack.meta.latest_checkpoint_qid) {
+    lines.push(`    <latest_checkpoint_qid>${escapeXml(pack.meta.latest_checkpoint_qid)}</latest_checkpoint_qid>`);
+  }
+  if (pack.meta.latest_checkpoint_qid_hint) {
+    lines.push(
+      `    <latest_checkpoint_qid_hint>${escapeXml(pack.meta.latest_checkpoint_qid_hint)}</latest_checkpoint_qid_hint>`
+    );
+  }
+  lines.push(`    <generated_at>${escapeXml(pack.meta.generated_at)}</generated_at>`);
+  lines.push(`    <node_count>${pack.meta.node_count}</node_count>`);
+  lines.push("    <truncated>");
+  lines.push(`      <max_nodes>${pack.meta.truncated.max_nodes}</max_nodes>`);
+  lines.push(`      <max_bytes>${pack.meta.truncated.max_bytes}</max_bytes>`);
+  lines.push(`      <max_chars>${Boolean(pack.meta.truncated.max_chars)}</max_chars>`);
+  lines.push(`      <max_lines>${Boolean(pack.meta.truncated.max_lines)}</max_lines>`);
+  lines.push(`      <max_tokens>${Boolean(pack.meta.truncated.max_tokens)}</max_tokens>`);
+  if (pack.meta.truncated.dropped.length > 0) {
+    lines.push("      <dropped>");
+    for (const qid of pack.meta.truncated.dropped) {
+      lines.push(`        <qid>${escapeXml(qid)}</qid>`);
+    }
+    lines.push("      </dropped>");
+  }
+  lines.push("    </truncated>");
+  lines.push("  </meta>");
+  lines.push("  <nodes>");
+
+  for (const node of pack.nodes) {
+    lines.push("    <node>");
+    lines.push(`      <qid>${escapeXml(node.qid)}</qid>`);
+    if (node.identity) {
+      lines.push("      <identity>");
+      lines.push(`        <graph_id>${escapeXml(node.identity.graph_id)}</graph_id>`);
+      lines.push(`        <node_id>${escapeXml(node.identity.node_id)}</node_id>`);
+      lines.push("      </identity>");
+    }
+    if (node.stable_ref) lines.push(`      <stable_ref>${escapeXml(node.stable_ref)}</stable_ref>`);
+    if (node.alias_qid) lines.push(`      <alias_qid>${escapeXml(node.alias_qid)}</alias_qid>`);
+    lines.push(`      <id>${escapeXml(node.id)}</id>`);
+    lines.push(`      <workspace>${escapeXml(node.workspace)}</workspace>`);
+    lines.push(`      <type>${escapeXml(node.type)}</type>`);
+    lines.push(`      <title>${escapeXml(node.title)}</title>`);
+    if (node.status) {
+      lines.push(`      <status>${escapeXml(node.status)}</status>`);
+    }
+    if (node.priority !== undefined) {
+      lines.push(`      <priority>${node.priority}</priority>`);
+    }
+    lines.push(`      <path>${escapeXml(node.path)}</path>`);
+    lines.push("      <frontmatter>");
+    lines.push(...listItems("links", "link", listValues(node.links), "        "));
+    lines.push(...listItems("artifacts", "artifact", listValues(node.artifacts), "        "));
+    lines.push(...listItems("refs", "ref", listValues(node.refs), "        "));
+    lines.push(...listItems("context_refs", "context_ref", listValues(node.context_refs), "        "));
+    lines.push(...listItems("evidence_refs", "evidence_ref", listValues(node.evidence_refs), "        "));
+    lines.push(...listItems("aliases", "alias", listValues(node.aliases), "        "));
+    for (const [key, value] of Object.entries(node.attributes ?? {})) {
+      lines.push(...attributeLines(key, value, "        "));
+    }
+    lines.push("      </frontmatter>");
+    lines.push(`      <body>${escapeXml(node.body)}</body>`);
+    lines.push("    </node>");
+  }
+
+  lines.push("  </nodes>");
+  lines.push("</pack>");
+  return lines.join("\n");
+}

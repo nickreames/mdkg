@@ -9,9 +9,9 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [release/0.6.0-qualification-draft.md]
 relates: []
-blocked_by: [bug-6]
+blocked_by: [bug-6, bug-36, bug-37]
 blocks: []
-refs: [chk-602]
+refs: [chk-602, dec-94, chk-603, dec-95, edd-82, task-833, chk-604]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
@@ -22,11 +22,23 @@ updated: 2026-09-11
 
 # Overview
 
+Current alignment: dec-94 accepts the four policy/fix directions. Update the
+maintainer draft's now-historical proposal wording during the next guidance pass;
+do not retain unanswered-decision blockers. Chk603 adds worktree review findings.
+This alignment turn edits mdkg nodes only, not package metadata or release docs.
+
 Goal: Draft 0.6.0 metadata, complete change notes, bootstrap/migration/reconciliation instructions and compatibility limitations.
 
 Context: The complete approved contract is goal-83 and bounded blocker ownership is goal-84.
 
 # Acceptance Criteria
+
+Dec95 is accepted, not a deprecation proposal: removed Git mutation commands and
+consumer-specific tooling have no compatibility aliases. Document the exact
+breaking inventory, native Git/worktree workflow, generic retained contracts and
+source-bound task833 consumer export. Edd82 distinguishes recommendations from
+implemented behavior; do not assert consumer adoption. Individual-project
+worktrees and ancestry-preserving reviewed merges are confirmed decisions.
 
 Set direct 0.6.0 candidate only after bounded fixes, keep public release state draft/unpublished, correct bootstrap mismatch through bug-6 and include every shipped delta. Preserve compact-default setup, explicit v2 adoption, numeric aliases with stable identities and reviewed reconciliation. No federation, remote skill distribution or autonomous improvement additions.
 

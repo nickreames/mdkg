@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "alias_count": 47,
+  "canonical_execution_count": 46,
+  "full_ladder_timeout_seconds": 3600,
+  "profiles": {
+    "docs": [
+      {"id": "default", "env": {}},
+      {"id": "preview", "env": {"VERCEL_ENV": "preview"}},
+      {"id": "production", "env": {"VERCEL": "1", "VERCEL_ENV": "production"}},
+      {"id": "release_preview", "env": {"PUBLIC_MDKG_RELEASE_PREVIEW": "1"}}
+    ],
+    "mdkg-dev": [
+      {"id": "default", "env": {}},
+      {"id": "preview", "env": {"VERCEL_ENV": "preview"}},
+      {"id": "production", "env": {"VERCEL": "1", "VERCEL_ENV": "production"}},
+      {"id": "noindex", "env": {"PUBLIC_MDKG_PREVIEW_NOINDEX": "1"}},
+      {"id": "release_preview", "env": {"PUBLIC_MDKG_RELEASE_PREVIEW": "1"}}
+    ]
+  },
+  "ci_topology": {
+    "decision_ref": "root:dec-91",
+    "fast": {
+      "runtimes": [
+        {"id": "minimum", "version": "24.15.0"},
+        {"id": "floating", "version": "24.x"}
+      ],
+      "timeout_minutes": 15,
+      "artifact_retention_days": 14,
+      "canonical": [
+        "smoke:consumer",
+        "smoke:git-materialize",
+        "smoke:loop",
+        "smoke:upgrade",
+        "smoke:init",
+        "smoke:db-queue-cli",
+        "smoke:db-snapshot",
+        "smoke:sqlite",
+        "smoke:bundle",
+        "smoke:subgraph",
+        "smoke:mdkg-dev-docs",
+        "smoke:mdkg-dev-seo",
+        "smoke:goal"
+      ]
+    },
+    "full": {
+      "runtime": "24.15.0",
+      "prepare_timeout_minutes": 30,
+      "shard_timeout_minutes": 20,
+      "aggregate_timeout_minutes": 5,
+      "context_retention_days": 14,
+      "evidence_retention_days": 30,
+      "exact_sha_pattern": "^[a-f0-9]{40}$",
+      "shards": [
+        {
+          "id": "package-command",
+          "canonical": [
+            "smoke:consumer",
+            "smoke:matrix",
+            "smoke:upgrade",
+            "smoke:init",
+            "smoke:capabilities",
+            "smoke:command-docs"
+          ]
+        },
+        {
+          "id": "lifecycle-agent",
+          "canonical": [
+            "smoke:loop",
+            "smoke:cli-ux-polish",
+            "smoke:operator-health",
+            "smoke:spike",
+            "smoke:goal-lifecycle",
+            "smoke:semantic-refs",
+            "smoke:checkpoint-templates",
+            "smoke:handoff",
+            "smoke:warning-ux",
+            "smoke:goal"
+          ]
+        },
+        {
+          "id": "db-work",
+          "canonical": [
+            "smoke:db",
+            "smoke:db-queue",
+            "smoke:db-queue-cli",
+            "smoke:db-events",
+            "smoke:db-materializer",
+            "smoke:db-snapshot",
+            "smoke:archive-work",
+            "smoke:work-invocation",
+            "smoke:integration-ux"
+          ]
+        },
+        {
+          "id": "graph-concurrency",
+          "canonical": [
+            "smoke:demo-graph",
+            "smoke:bundle",
+            "smoke:graph-clone",
+            "smoke:mcp",
+            "smoke:subgraph",
+            "smoke:visibility",
+            "smoke:sqlite",
+            "smoke:parallel"
+          ]
+        },
+        {
+          "id": "sites-git-repair",
+          "canonical": [
+            "smoke:git-materialize",
+            "smoke:fix-plan",
+            "smoke:branch-conflicts",
+            "smoke:id-repair",
+            "smoke:mdkg-dev",
+            "smoke:mdkg-dev-docs",
+            "smoke:mdkg-dev-seo",
+            "smoke:mdkg-dev-polish-pass2",
+            "smoke:mdkg-dev-polish-pass3",
+            "smoke:mdkg-dev-polish-pass4",
+            "smoke:mdkg-dev-polish-pass5",
+            "smoke:mdkg-dev-a11y",
+            "smoke:mdkg-dev-perf"
+          ]
+        }
+      ]
+    }
+  },
+  "aliases": [
+    {"alias":"smoke:consumer","canonical":"smoke:consumer","entrypoint":"scripts/smoke-consumer.js","subsystem":"package_consumer","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:git-materialize","canonical":"smoke:git-materialize","entrypoint":"scripts/smoke-git-materialize.js","subsystem":"git_materialization","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:loop","canonical":"smoke:loop","entrypoint":"scripts/smoke-loop.js","subsystem":"loop_lifecycle","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:matrix","canonical":"smoke:matrix","entrypoint":"scripts/smoke-command-matrix.js","subsystem":"command_contract","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:upgrade","canonical":"smoke:upgrade","entrypoint":"scripts/smoke-upgrade.js","subsystem":"upgrade","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:init","canonical":"smoke:init","entrypoint":"scripts/smoke-init.js","subsystem":"initialization","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:capabilities","canonical":"smoke:capabilities","entrypoint":"scripts/smoke-capabilities.js","subsystem":"capability_registry","prerequisites":["dependency_preflight","built_cli"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:db","canonical":"smoke:db","entrypoint":"scripts/smoke-db.js","subsystem":"application_db","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:db-queue","canonical":"smoke:db-queue","entrypoint":"scripts/smoke-db-queue.js","subsystem":"application_db_queue","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:db-queue-cli","canonical":"smoke:db-queue-cli","entrypoint":"scripts/smoke-db-queue-cli.js","subsystem":"application_db_queue_cli","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:db-events","canonical":"smoke:db-events","entrypoint":"scripts/smoke-db-events.js","subsystem":"application_db_events","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:db-materializer","canonical":"smoke:db-materializer","entrypoint":"scripts/smoke-db-materializer.js","subsystem":"application_db_materializer","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:db-snapshot","canonical":"smoke:db-snapshot","entrypoint":"scripts/smoke-db-snapshot.js","subsystem":"application_db_snapshot","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:archive-work","canonical":"smoke:archive-work","entrypoint":"scripts/smoke-archive-work.js","subsystem":"archive_and_work","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:work-invocation","canonical":"smoke:work-invocation","entrypoint":"scripts/smoke-work-invocation.js","subsystem":"work_invocation","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:cli-ux-polish","canonical":"smoke:cli-ux-polish","entrypoint":"scripts/smoke-cli-ux-polish.js","subsystem":"cli_ux","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:operator-health","canonical":"smoke:operator-health","entrypoint":"scripts/smoke-operator-health.js","subsystem":"operator_health","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:fix-plan","canonical":"smoke:fix-plan","entrypoint":"scripts/smoke-fix-plan.js","subsystem":"fix_planning","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:branch-conflicts","canonical":"smoke:branch-conflicts","entrypoint":"scripts/smoke-branch-conflicts.js","subsystem":"branch_conflicts","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:id-repair","canonical":"smoke:id-repair","entrypoint":"scripts/smoke-id-repair.js","subsystem":"id_repair","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:command-docs","canonical":"smoke:command-docs","entrypoint":"scripts/smoke-command-docs.js","subsystem":"command_docs","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:spike","canonical":"smoke:spike","entrypoint":"scripts/smoke-spike.js","subsystem":"spike_lifecycle","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:goal-lifecycle","canonical":"smoke:goal-lifecycle","entrypoint":"scripts/smoke-goal-lifecycle.js","subsystem":"goal_lifecycle","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:semantic-refs","canonical":"smoke:semantic-refs","entrypoint":"scripts/smoke-semantic-refs.js","subsystem":"semantic_refs","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:checkpoint-templates","canonical":"smoke:checkpoint-templates","entrypoint":"scripts/smoke-checkpoint-templates.js","subsystem":"checkpoint_templates","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:handoff","canonical":"smoke:handoff","entrypoint":"scripts/smoke-handoff.js","subsystem":"handoff","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:warning-ux","canonical":"smoke:warning-ux","entrypoint":"scripts/smoke-warning-ux.js","subsystem":"warning_ux","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:integration-ux","canonical":"smoke:integration-ux","entrypoint":"scripts/smoke-integration-ux.js","subsystem":"integration_ux","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:mdkg-dev","canonical":"smoke:mdkg-dev","entrypoint":"scripts/smoke-mdkg-dev.js","subsystem":"public_site","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["mdkg-dev:default","mdkg-dev:preview","mdkg-dev:release_preview"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-docs","canonical":"smoke:mdkg-dev-docs","entrypoint":"scripts/smoke-mdkg-dev-docs.js","subsystem":"docs_site","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["docs:default","docs:preview","docs:release_preview"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-seo","canonical":"smoke:mdkg-dev-seo","entrypoint":"scripts/smoke-mdkg-dev-seo.js","subsystem":"public_site_seo","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["mdkg-dev:default","mdkg-dev:preview","mdkg-dev:production","mdkg-dev:noindex","mdkg-dev:release_preview"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-polish-pass2","canonical":"smoke:mdkg-dev-polish-pass2","entrypoint":"scripts/smoke-mdkg-dev-polish-pass2.js","subsystem":"public_site_polish","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["docs:default","docs:preview","docs:production","mdkg-dev:default","mdkg-dev:preview","mdkg-dev:production"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-polish-pass3","canonical":"smoke:mdkg-dev-polish-pass3","entrypoint":"scripts/smoke-mdkg-dev-polish-pass3.js","subsystem":"public_site_polish","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["docs:default","mdkg-dev:default"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-polish-pass4","canonical":"smoke:mdkg-dev-polish-pass4","entrypoint":"scripts/smoke-mdkg-dev-polish-pass4.js","subsystem":"public_site_polish","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["docs:default","mdkg-dev:default"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-polish-pass5","canonical":"smoke:mdkg-dev-polish-pass5","entrypoint":"scripts/smoke-mdkg-dev-polish-pass5.js","subsystem":"public_site_polish","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["docs:default","mdkg-dev:default"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-a11y","canonical":"smoke:mdkg-dev-a11y","entrypoint":"scripts/smoke-mdkg-dev-a11y.js","subsystem":"public_site_accessibility","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["docs:default","docs:release_preview","mdkg-dev:default","mdkg-dev:release_preview"],"timeout_seconds":600},
+    {"alias":"smoke:mdkg-dev-perf","canonical":"smoke:mdkg-dev-perf","entrypoint":"scripts/smoke-mdkg-dev-perf.js","subsystem":"public_site_performance","prerequisites":["dependency_preflight","site_profile_cache"],"environment_profiles":["docs:default","mdkg-dev:default"],"timeout_seconds":600},
+    {"alias":"smoke:demo-graph","canonical":"smoke:demo-graph","entrypoint":"scripts/smoke-demo-graph.js","subsystem":"demo_graph","prerequisites":["dependency_preflight","built_cli"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:bundle","canonical":"smoke:bundle","entrypoint":"scripts/smoke-bundle.js","subsystem":"bundle","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:graph-clone","canonical":"smoke:graph-clone","entrypoint":"scripts/smoke-graph-clone.js","subsystem":"graph_clone","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:mcp","canonical":"smoke:mcp","entrypoint":"scripts/smoke-mcp.js","subsystem":"mcp","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:bundle-import","canonical":"smoke:subgraph","entrypoint":"scripts/smoke-subgraph.js","subsystem":"bundle_import_compatibility_alias","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":600},
+    {"alias":"smoke:visibility","canonical":"smoke:visibility","entrypoint":"scripts/smoke-visibility.js","subsystem":"visibility","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:sqlite","canonical":"smoke:sqlite","entrypoint":"scripts/smoke-sqlite.js","subsystem":"sqlite_index","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:parallel","canonical":"smoke:parallel","entrypoint":"scripts/smoke-parallel.js","subsystem":"parallel_execution","prerequisites":["dependency_preflight","built_cli"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:goal","canonical":"smoke:goal","entrypoint":"scripts/smoke-goal.js","subsystem":"goal_commands","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:subgraph","canonical":"smoke:subgraph","entrypoint":"scripts/smoke-subgraph.js","subsystem":"subgraph_and_bundle_import","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":600}
+  ]
+}
