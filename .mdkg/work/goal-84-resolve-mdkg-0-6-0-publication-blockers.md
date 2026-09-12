@@ -103,6 +103,28 @@ accounting remains twelve of thirteen locally fixed. No new skill candidate.
 
 Pending full end-condition evidence.
 
+## 2026-09-11 Current Installed Security Regression Coverage
+
+Chk600 refreshes primary installed regression families for all twelve locally
+fixed original Standard findings on Node24.15.0,24.18.0 and26.0.0:14unique
+suites,292tests per runtime,876passing executions,zero failures/skips. Direct
+tarball comparison matches all223installed files; the module guard rejects
+canonical runtime imports. Public CLI and direct shipped-module checks are
+identified without claiming every test is a distinct security finding.
+
+The sanitized per-finding map links original failing-before receipts and exact
+current tests, package, runtimes and module-provenance evidence. Independent
+read-only functional harness review reports no blocking defect; it is not
+task828 independent security clearance. Full ordinary suite:1395pass,zero
+failures/skips; CLI/docs checks pass. No product/test source or policy change.
+
+Bug7 remains in progress; Bug17 remains blocked on old config-less public bundle
+compatibility. Old-client adoption, killed-writer recovery, historical migration
+references and actual read-only mounts remain unqualified, followed by metadata,
+final security review, the complete release ladder and exact candidate seal.
+Selected Goal73, runtime DB and Demo3 bundle remain preserved. No skill candidate
+or remote/publication action. Artifact:bug-7-installed-security-regressions.json.
+
 ## 2026-09-09 Public Bootstrap Seed Verification
 
 Bug29 is locally verified: public core seeds are self-contained and about 80%
