@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "bug_qid": "root:bug-35",
+  "qualification_work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-601",
+  "owner": "mdkg-project-agent",
+  "outcome": "NEW_PUBLICATION_BLOCKER_NO_SOURCE_REMEDIATION",
+  "source_head": "dfafe500929a279eae8f958b71a3fe2ea8253351",
+  "runtime": "v24.18.0",
+  "git": {
+    "executable": "/usr/bin/git",
+    "version": "git version 2.50.1 (Apple Git-155)",
+    "environment": "Fixture PATH resolves system Git; GIT_CONFIG_NOSYSTEM=1 and GIT_CONFIG_GLOBAL=/dev/null. Optional locks unset in reproduction and disabled only in paired controls."
+  },
+  "candidate_tarball_sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+  "candidate_cli_sha256": "ef442bcb76824c22f0fcfbc1febab13dca5a529d0d98881d8c889f6c810911e3",
+  "source_sha256": {
+    "src/graph/subgraphs.ts": "dc769b6311f47cabfc610c273cecccaed651a5ae3bce8ddbc95efdcca17bc974",
+    "src/commands/validate.ts": "ad862dc7850549481e1e769f06a54e4b9dee34945440e442c63f80044040e1bb",
+    "src/commands/git.ts": "83345a9f4d6888ec86b25c1a18a867e42a8582cac996a6a36c8f0562141710b2",
+    "src/commands/subgraph.ts": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1"
+  },
+  "reproduction": {
+    "runner_sha256": "53a52660186212d5c13d39449995b9cdc46aa126fbbeee3510715ab41f45751e",
+    "receipt_sha256": "f0833982a1acf293e5d6f93d70717ee96805ebb67336eb58318b5b244e5ac2fe",
+    "log_sha256": "998bd6f1cd4266f96b65ef8d2cc637e803cf02de55c8011908ef6555e9a15a2f",
+    "cases": [
+      {
+        "command": "status --json",
+        "optional_locks": "unset",
+        "status": 0,
+        "changed_indexes": [
+          "projects/child_demo/.git/index"
+        ],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "d01cb5abb1dc1120f065020206446cb6ab010daa8f411315558385606d5249eb"
+        }
+      },
+      {
+        "command": "status --json",
+        "optional_locks": "disabled",
+        "status": 0,
+        "changed_indexes": [],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      },
+      {
+        "command": "show root:task-1 --json",
+        "optional_locks": "unset",
+        "status": 0,
+        "changed_indexes": [
+          "projects/child_demo/.git/index"
+        ],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "df9916d5e925b45aa587d79c2caed7e3eed80a6316bc0112d77c23fe03f4d87c"
+        }
+      },
+      {
+        "command": "show root:task-1 --json",
+        "optional_locks": "disabled",
+        "status": 0,
+        "changed_indexes": [],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      },
+      {
+        "command": "validate --json",
+        "optional_locks": "unset",
+        "status": 0,
+        "changed_indexes": [
+          "projects/child_demo/.git/index"
+        ],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "24fdaa35802813caabeaaa9f1539cd0eb612145dd71f1499cc92a783b6665b32"
+        }
+      },
+      {
+        "command": "validate --json",
+        "optional_locks": "disabled",
+        "status": 0,
+        "changed_indexes": [],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      },
+      {
+        "command": "validate --changed-only --json",
+        "optional_locks": "unset",
+        "status": 0,
+        "changed_indexes": [
+          ".git/index",
+          "projects/child_demo/.git/index"
+        ],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "20e36a98044c3b8cdded52649f309219932696e173eb65b6f9285b31b8160e77",
+          "projects/child_demo/.git/index": "a87474bb96670fc6a247f42022b49e96287afa7b372a2a9044810738fb08bd36"
+        }
+      },
+      {
+        "command": "validate --changed-only --json",
+        "optional_locks": "disabled",
+        "status": 0,
+        "changed_indexes": [],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      },
+      {
+        "command": "subgraph list --json",
+        "optional_locks": "unset",
+        "status": 0,
+        "changed_indexes": [
+          "projects/child_demo/.git/index"
+        ],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "416f61d501e1d19b631e5b820793dfe464bb07620c9b85f571a42bd628ac1bef"
+        }
+      },
+      {
+        "command": "subgraph list --json",
+        "optional_locks": "disabled",
+        "status": 0,
+        "changed_indexes": [],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      },
+      {
+        "command": "subgraph audit --json",
+        "optional_locks": "unset",
+        "status": 0,
+        "changed_indexes": [
+          "projects/child_demo/.git/index"
+        ],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "827ad4e5de12d76ec866af53209e2f13caa3a60b0b7edaa804187eafbe794e38"
+        }
+      },
+      {
+        "command": "subgraph audit --json",
+        "optional_locks": "disabled",
+        "status": 0,
+        "changed_indexes": [],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      },
+      {
+        "command": "git inspect --json",
+        "optional_locks": "unset",
+        "status": 0,
+        "changed_indexes": [
+          ".git/index"
+        ],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "589fddff401044d32842ba5ed6477dc42d8396f8da734fe2fc58195989f7bee0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      },
+      {
+        "command": "git inspect --json",
+        "optional_locks": "disabled",
+        "status": 0,
+        "changed_indexes": [],
+        "staged_entries_unchanged": true,
+        "before": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        },
+        "after": {
+          ".git/index": "e26500501aa584085cb4a5c37fdd158d31e3a121fe3a0ee2c34f548efcc754e0",
+          "projects/child_demo/.git/index": "ddfc07f61b595edc6656fa1ac654e16e0112b287b617c88c4e6c73b7381fe0f8"
+        }
+      }
+    ],
+    "summary": "Seven default-environment cases change Git index metadata; seven optional-lock-disabled controls preserve both indexes. No changed staged object/mode/path entry observed."
+  },
+  "cause": "Git status may refresh index stat metadata; separate subprocess helpers omit GIT_OPTIONAL_LOCKS=0. Root status already supplies it, but nested subgraph inspection does not.",
+  "scope_note": "bundle sourceInfo has the same source pattern but was not one of the seven reproduced command cases.",
+  "mount_preflight": {
+    "source_folder": "/private/tmp/mdkg-readonly-mount.r0wGNa/probe-source",
+    "image": "/private/tmp/mdkg-readonly-mount.r0wGNa/probe.dmg",
+    "image_sha256": "bee0d042f57d41c1c103be5a96c9a6dab2b31e7765bed4b19cfe1a60537d0373",
+    "filesystem": "HFS+",
+    "format": "UDRO",
+    "mountpoint": "/private/tmp/mdkg-readonly-mount.r0wGNa/probe-mount",
+    "sandbox_attempt": "hdiutil create exited1 Device not configured",
+    "scoped_escalated_create": "passed",
+    "scoped_escalated_attach_readonly": "passed",
+    "write_probe_error": "EROFS",
+    "write_probe_created_file": false,
+    "detach": "passed; disk4 ejected",
+    "installed_graph_mount_matrix": "NOT_EXECUTED; stopped at writable baseline defect"
+  },
+  "harness_corrections": [
+    "Initial legacy CLI show omitted root qualification and correctly failed on root/child alias ambiguity; fixed in test harness only.",
+    "Runner now pins PATH to process.execPath directory for MCP shebang runtime attribution.",
+    "First isolated reproduction assumed legacy root index existed; created staged synthetic root work, then final14case rerun verifies both index hashes and staged entries."
+  ],
+  "proposed_fix": "Apply per-subprocess observational Git policy, keep intentional Git mutations authorized, add stale-stat root/child tests and installed/actual mount proof; do not hide defect through qualification-wide environment settings.",
+  "custody_gate": {
+    "requires_nick_permission": [
+      "src/commands/subgraph.ts",
+      "src/commands/bundle.ts"
+    ],
+    "reason": "These files are exact preserved partial Bug17 custody; no edits have been made.",
+    "not_authorized": "Does not accept old config-less public bundle policy or clear Bug17."
+  },
+  "limitations": [
+    "Functional observational-state violation, not demonstrated staged-content loss, source disclosure or a new Standard finding.",
+    "Current installed candidate on macOS Node24.18.0 only; published0.5.2 and other runtimes require affected-version/fix qualification.",
+    "No installed graph read-only-mount acceptance yet.",
+    "Canonical lifecycle/validation commands use per-process optional-lock suppression after discovery to avoid the known side effect; no global configuration change."
+  ],
+  "preserved_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/commands/subgraph.ts": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2",
+    ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md": "2a788e558c49556bf11ce5d1ed90286193842eeebe3fd9c6117550a9e45825d6",
+    ".mdkg/artifacts/goal-84/bug-17-progress.json": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e"
+  },
+  "validation": {
+    "reproduction": "confirmed",
+    "remediation": "not started",
+    "retained_evidence_review": "All14 raw cases match the durable summary; paired inputs match; retained fixture index hashes match recorded outputs; staged entries unchanged in all cases.",
+    "full_graph": {
+      "errors": 0,
+      "warnings": 3,
+      "receipt_sha256": "adea13d87e560e7ca85000a7ebb915708a02d9be92be48b614a15ba0487ed588"
+    },
+    "changed_graph": {
+      "errors": 0,
+      "warnings": 0,
+      "receipt_sha256": "5d2bfff995d7f61bc5d38f432a6639f7d3e9646fc93de7de46fc97d5a218167a"
+    },
+    "sqlite": {
+      "ok": true,
+      "failures": 0,
+      "receipt_sha256": "2b7b2ef645cc17df1ab8e625d62f60b3610ea4b119a988ff22b01ef837bc2b6b"
+    },
+    "git_diff_check": "passed",
+    "protected_hashes": "all match",
+    "ownership": "Existing Bug7 mdkg-project-agent claim; five runtime leases released, queue empty, no mutation lock. No new lease acquired.",
+    "scope": "Evidence-only closure checks; no new full suite, source build or fixed-candidate qualification."
+  },
+  "review": {
+    "kind": "bounded independent read-only reproduction review",
+    "result": "Confirms optional Git index stat refresh with unchanged staged entries; medium functional observational-contract defect, not proven content corruption or security exploit.",
+    "limits": "Two index files per fixture, not a complete filesystem inventory; writable legacy fixture on one runtime. Bundle sourceInfo remains static coverage only. Empty EROFS probe is host capability, not installed graph acceptance."
+  },
+  "retention": "Synthetic reproduction fixtures, runners, logs and detached probe image retained under evidence_location for remediation. Probe mountpoint is empty; no active mount or process remains from the completed run.",
+  "evidence_location": "/private/tmp/mdkg-readonly-mount.r0wGNa",
+  "skill_candidates": []
+}

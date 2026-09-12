@@ -7,18 +7,18 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
-refs: []
+refs: [bug-35, chk-601]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 cases: [test-480-case-1, test-480-case-2, test-480-case-3, test-480-case-4, test-480-case-5]
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-11
 ---
 
 # Overview

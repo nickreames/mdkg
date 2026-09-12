@@ -6,7 +6,7 @@ status: progress
 priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, test-483, task-828]
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828]
 active_node: bug-7
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
@@ -102,6 +102,20 @@ accounting remains twelve of thirteen locally fixed. No new skill candidate.
 # Completion Evidence
 
 Pending full end-condition evidence.
+
+## 2026-09-11 Read-Only Mount Preflight Finds Git Index Mutation
+
+An owned empty HFS+ image mounts read-only and rejects creation with EROFS;
+it was detached. Actual installed graph-mount qualification has not run.
+Its writable baseline exposed Bug35: seven installed read-only commands
+refresh root or registered child Git index metadata; seven disabled-optional-
+lock controls preserve it. Staged object entries remain unchanged. No data-loss
+or new Standard security finding is claimed; Bug21 remains achieved.
+
+Bug35 is an additional publication blocker. Complete remediation overlaps
+preserved Bug17 bundle/subgraph helper files and requires explicit narrow
+custody permission before those bytes change. Source remains untouched; mount
+qualification stays open. Chk601 and the reproduction artifact bind the evidence.
 
 ## 2026-09-11 Current Installed Security Regression Coverage
 
