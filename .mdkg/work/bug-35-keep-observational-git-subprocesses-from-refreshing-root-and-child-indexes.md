@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json, .mdkg/artifacts/goal-84/bug-35-affected-versions.json]
 relates: [goal-83, goal-84, bug-7, bug-21, test-480]
 blocked_by: []
 blocks: []
@@ -105,6 +105,24 @@ subject to validation and the approved Goal83/84 contract.
 Affected version: reproduced on source dfafe500 and intermediate tarball
 39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b.
 Published0.5.2 is not newly reproduced here; assess it explicitly during remedy.
+
+## Completed Affected-Version Assessment
+
+The subsequent 96-case matrix in bug-35-affected-versions.json supersedes the
+initial affected-version uncertainty and bundle sourceInfo static-only limit.
+Actual published0.5.2 and the current candidate each reproduce all eight paths
+on Node24.15.0,24.18.0 and26.0.0. All48 unset-policy runs refresh Git indexes;
+all48 disabled-policy controls preserve them. All96 retain staged entries.
+The eighth path is bundle creation in disposable synthetic fixtures only:
+the requested ZIP output is expected; root Git index mutation is not.
+
+Published show also rewrites subgraphs.json independently of optional Git locks;
+the candidate preserves it, consistent with the separate achieved Bug21 fix.
+Both installed trees match every file in their retained tarballs (191published,
+223candidate files). Package and seed hashes stay unchanged; all96 fixture
+copies and two extracted package copies were removed after output verification.
+No current source fix, canonical bundle creation or actual mount acceptance is
+claimed. The protected-source custody decision remains unanswered.
 
 # Links / Artifacts
 

@@ -111,6 +111,24 @@ Bug35,bug7,test480,test483,task826,task828,goals83/84/85.
 Private synthetic evidence:/private/tmp/mdkg-readonly-mount.r0wGNa.
 Source baseline:dfafe500929a279eae8f958b71a3fe2ea8253351.
 
+## Affected-Version Follow-Up
+
+At source HEAD3e1d597a, a separate matrix completes the original version and
+bundle-path investigation:96commands, two installed packages, three runtimes,
+eight paths and two optional-lock policies. Published0.5.2 is affected along
+with the candidate. All48 default-policy cases mutate Git index metadata;
+all48 controls preserve it; staged entries remain unchanged in all96.
+Only requested ZIP outputs and the known published show subgraph-cache write
+appear outside the Git indexes. Candidate read paths preserve other file bytes.
+
+Evidence:.mdkg/artifacts/goal-84/bug-35-affected-versions.json. Package tarball
+comparisons cover all191published and223candidate files. Retained runner/raw
+results/log hashes support reproduction; all96 case copies and both extracted
+tarball trees were removed. Protected source and state hashes are unchanged.
+This expands defect evidence, not security or release clearance. Earlier
+single-runtime and static-only bundle limitations are superseded by this matrix;
+actual mounted-graph qualification and source remediation remain incomplete.
+
 # Raw Content Safety
 
 Durable evidence contains synthetic summaries and hashes; raw logs remain in
