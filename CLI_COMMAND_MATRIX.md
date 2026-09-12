@@ -371,7 +371,6 @@ Primary flags:
 - `--verbose` / `-v`
 - `--format <fmt>` / `-f`
 - `--out <path>` / `-o`
-- `--profile <name>`
 - `--visibility public|internal|private`
 - `--skills <mode>`
 - `--skills-depth <mode>`
@@ -896,7 +895,7 @@ Usage:
 - `mdkg work order new|status|update ...`
 - `mdkg work receipt new|verify|update ...`
 - `mdkg work artifact add ...`
-- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]`
 - `mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]`
 - `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--trigger-ref <ref>] [--payload-hash <sha256:...>] [--input-refs <...>] [--queue-refs <...>] [--requested-outputs <...>] [--json]`
 - `mdkg work order status <id-or-qid> [--json]`
@@ -905,8 +904,8 @@ Usage:
 - `mdkg work receipt verify <id-or-qid> [--json]`
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
-- `mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]`
-- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
 
 Notes:
 - work commands mutate semantic mirror files only
@@ -923,7 +922,7 @@ Notes:
 - `work receipt new` accepts optional contract-profile, receipt-kind, redaction-class, and validation/evidence policy refs without becoming canonical runtime receipt state
 - `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks; invalid receipts print JSON before exiting nonzero
 - `work validate` is read-only and reports typed diagnostics for MANIFEST.md, legacy SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
-- `work validate --profile omni-room` applies explicit contract-profile validation after generic mirror validation; it is separate from `mdkg pack --profile`
+- Contract profiles and policy references are opaque metadata; consumer policy is not executed by mdkg
 - `work artifact add` calls `mdkg archive add`, then attaches the resulting `archive://...` ref to the target order or receipt
 - `work order update`, `work receipt update`, and `work artifact add` accept local ids or local qids; subgraph qids are read-only and must be changed in their source workspace
 
@@ -1021,7 +1020,7 @@ Behavior:
 - `loop plan` reports readiness state, materialization state, child/run/output refs, evidence lanes, blockers, closeout readiness, and blocker-continuation guidance without executing agents.
 - `loop next` is read-only and routes to the next actionable child, readiness lane, or blocker recovery step without claiming work.
 - `loop runs` reports linked `run_refs` and graph `evidence_refs` without executing runtime jobs.
-- mdkg defines reusable process state and graph context; omni-room-runtime or other runtimes execute agents, tools, sandboxes, traces, and model routing.
+- mdkg defines reusable process state and graph context; consuming runtimes execute agents, tools, sandboxes, traces, and model routing.
 
 JSON receipts:
 - `list`: `{ action: "listed", loops, templates, warnings }`
@@ -1112,11 +1111,11 @@ When to use:
 - run the repo trust gate before calling work done
 
 Usage:
-- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]`
+- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]`
 - `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
 - `--summary` emits bounded warning samples for agent/CI logs; `--limit <n>` controls the sample size
 - `--out <path>` writes the compatibility text report; `--json-out <path>` writes a clean full JSON receipt
-- `--profile omni-room` applies explicit contract-profile validation after generic validation; it is separate from `mdkg pack --profile`
+- Contract profiles and policy references are opaque metadata; consumer policy is not executed by mdkg
 - JSON receipts include `warning_summary` and `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
 
 Flags:
@@ -1126,11 +1125,10 @@ Flags:
 - `--changed-only`
 - `--summary`
 - `--limit <n>`
-- `--profile <name>`
 - `--json`
 
 JSON receipt:
-- `{ action: "validated", ok, warning_count, error_count, warnings, warning_diagnostics, warning_summary, errors, validation_profile?, report_path?, json_receipt_path? }`
+- `{ action: "validated", ok, warning_count, error_count, warnings, warning_diagnostics, warning_summary, errors, report_path?, json_receipt_path? }`
 - `report_path` is included only when `--out` is used.
 - `json_receipt_path` is included only when `--json-out` is used.
 
@@ -1485,7 +1483,7 @@ Kind values in this wave:
 JSON behavior rules:
 - full bodies are returned only by `show` and `skill show` without `--meta`
 - list/search summaries never include bodies
-- skill summaries include generic `extensions`; `ochatr_*` metadata is exposed as `extensions.ochatr` and retained as top-level `ochatr` compatibility data in 0.0.9
+- Skill summaries contain only supported generic fields; unknown authored frontmatter has no privileged projection or search weighting
 - text notes and counts go to `stderr`
 - JSON payloads go to `stdout`
 

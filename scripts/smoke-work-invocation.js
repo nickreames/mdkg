@@ -5,6 +5,7 @@ const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { prepareWorkIdentity, verifyWorkIdentity } = require("./installed-work-identity");
+const { verifyGenericBoundary } = require("./installed-generic-boundary");
 
 const repoRoot = path.resolve(__dirname, "..");
 const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
@@ -108,7 +109,9 @@ function packAndInstall(tempRoot) {
   });
   const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
   assertExists(binPath);
-  return { binPath, tarballPath };
+  const packageRoot = [path.join(prefix, "lib/node_modules/mdkg"), path.join(prefix, "node_modules/mdkg")].find(fs.existsSync);
+  assert(packageRoot, "installed package root is missing");
+  return { binPath, tarballPath, packageRoot };
 }
 
 function createSpecAndWork(binPath, root) {
@@ -133,8 +136,6 @@ function createSpecAndWork(binPath, root) {
         "receipt_ref:ref:required",
         "--required-capabilities",
         "mdkg.graph.read,mdkg.graph.write",
-        "--pricing-model",
-        "included",
         "--json",
       ],
       root
@@ -310,10 +311,11 @@ function exerciseInvocation(binPath, tempRoot, backend) {
 function main() {
   const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-work-invocation-smoke-"));
   try {
-    const { binPath, tarballPath } = packAndInstall(tempRoot);
+    const { binPath, tarballPath, packageRoot } = packAndInstall(tempRoot);
+    const genericBoundary = verifyGenericBoundary({ packageRoot, tarballPath, tempRoot });
     const identityWorkflows = [];
     for (const backend of [undefined, "json", "sqlite"]) identityWorkflows.push(...exerciseInvocation(binPath, tempRoot, backend));
-    console.log(JSON.stringify({ smoke: "work-invocation", identityWorkflows }));
+    console.log(JSON.stringify({ smoke: "work-invocation", genericBoundary, identityWorkflows }));
     console.log(`work invocation smoke passed: ${path.basename(tarballPath)} at ${tempRoot}`);
   } finally {
     if (tempRoot && fs.existsSync(tempRoot) && process.env.MDKG_KEEP_SMOKE_TMP !== "1") {

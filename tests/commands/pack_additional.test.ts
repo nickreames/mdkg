@@ -145,8 +145,7 @@ test("runPackCommand auto-includes skills with meta and full depth", () => {
   assert.ok(metaSkill);
   assert.match(metaSkill.body, /description: skill description/);
   assert.match(metaSkill.body, /authors: mdkg/);
-  assert.match(metaSkill.body, /extensions\.ochatr\.approval: required/);
-  assert.match(metaSkill.body, /ochatr_approval: required/);
+  assert.doesNotMatch(metaSkill.body, /extensions|ochatr_/);
 
   runPackCommand({
     root,

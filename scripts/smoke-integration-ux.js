@@ -160,8 +160,6 @@ function createSpecAndWork(binPath, root) {
         "receipt_ref:ref:required",
         "--required-capabilities",
         "mdkg.graph.read,mdkg.graph.write",
-        "--pricing-model",
-        "included",
         "--json",
       ],
       root
@@ -353,9 +351,15 @@ function main() {
     assert(shownGoal.edges.evidence_refs.includes("proof://integration-ux/evidence"), "show missing goal evidence URI");
     const formatDryRun = parseJson(mdkg(binPath, ["format", "--headings", "--dry-run", "--json"], root).stdout);
     assert(formatDryRun.action === "format.headings" && formatDryRun.dry_run === true, "heading formatter dry-run action mismatch");
+    // Removing the raw-marker source text after the earlier index must make
+    // that derived cache stale. Observational commands do not refresh it.
+    const staleValidation = parseJson(mdkg(binPath, ["validate", "--json"], root).stdout);
+    assert(staleValidation.ok === true, "edited source must remain valid before refresh");
+    assert(staleValidation.warning_diagnostics.some(warning => warning.id === "cache.index"), "authored edit must invalidate the derived cache");
+    mdkg(binPath, ["index"], root);
     const validate = parseJson(mdkg(binPath, ["validate", "--json"], root).stdout);
     assert(validate.ok === true, "integration UX repo did not validate");
-    assert(validate.warning_count === 0, `expected zero validation warnings, got ${validate.warning_count}`);
+    assert(validate.warning_count === 0, `expected zero validation warnings, got ${validate.warning_count}: ${JSON.stringify(validate.warning_diagnostics)}`);
 
     console.log(
       JSON.stringify(

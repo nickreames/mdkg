@@ -78,8 +78,8 @@ test("buildSkillsIndex parses skill metadata deterministically", () => {
   assert.equal(entry.version, "1.2.3");
   assert.equal(entry.has_scripts, true);
   assert.equal(entry.has_references, true);
-  assert.deepEqual(entry.extensions.ochatr, { policy: "approval-required" });
-  assert.equal(entry.ochatr.ochatr_policy, "approval-required");
+  assert.equal(entry.extensions, undefined);
+  assert.equal(entry.ochatr, undefined);
 });
 
 test("buildSkillsIndex supports SKILLS.md compatibility files", () => {

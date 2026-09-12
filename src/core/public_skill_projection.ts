@@ -132,7 +132,6 @@ export function portableSkillBodyDiagnostics(source: string): string[] {
   const checks: Array<[string, RegExp]> = [
     ["root-qualified internal QID", /\broot:[a-z][a-z0-9_-]*-\d+\b/i],
     ["repository-local design or work link", /\.mdkg\/(?:design|work)\/(?![<{])[^`\s,\]]+\.md\b/i],
-    ["named internal product or provider", /\b(?:mdkg\.dev|Vercel|omni-chat-rooms)\b/i],
     ["package publication command", /(?:^|\n)\s*(?:NPM_CONFIG_[^\n]*\s+)?npm\s+publish\b/i],
     ["registry inspection or authentication command", /(?:^|\n)\s*npm\s+(?:view|login|whoami)\b/i],
     ["registry credential procedure", /\b(?:NPM_TOKEN|_authToken|registry\.npmjs\.org)\b/i],

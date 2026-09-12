@@ -1,0 +1,48 @@
+{
+  "schema": "mdkg.cli-unknown-option.reproduction.v1",
+  "observed_at": "2026-09-12",
+  "owner": "mdkg-project-agent",
+  "goal": "root:goal-84",
+  "work": "root:bug-39",
+  "classification": "functional publication blocker; not an additional Standard security finding",
+  "source_base": "465b34e37f94bf6df410b54e8947b989f7daf37a",
+  "scope": "Owned disposable synthetic graphs only. No canonical graph writes, remote operations or provider actions in the probe.",
+  "reproduction": "Initialize a disposable graph with the installed CLI; inventory file hashes; run mdkg index --verify --json; compare before/after. This unsupported flag must reject rather than rebuild. The supported observational command is mdkg db index verify --json.",
+  "rows": [
+    {
+      "label": "published-0.5.2",
+      "node": "v24.18.0",
+      "cli_sha256": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+      "command": "mdkg index --verify --json",
+      "exit": 0,
+      "changed_paths": [
+        ".mdkg/index/capabilities.json",
+        ".mdkg/index/global.json",
+        ".mdkg/index/mdkg.sqlite",
+        ".mdkg/index/skills.json",
+        ".mdkg/index/subgraphs.json"
+      ],
+      "stdout": "index written: .mdkg/index/global.json\nskills index written: .mdkg/index/skills.json\ncapabilities index written: .mdkg/index/capabilities.json\nsubgraphs index written: .mdkg/index/subgraphs.json\nsqlite index written: .mdkg/index/mdkg.sqlite",
+      "stderr": ""
+    },
+    {
+      "label": "candidate",
+      "node": "v24.18.0",
+      "cli_sha256": "5caeb1be5f5d3af9586262331d721e9200b109cd08e90ff631d01183bfb2e381",
+      "command": "mdkg index --verify --json",
+      "exit": 0,
+      "changed_paths": [
+        ".mdkg/index/capabilities.json",
+        ".mdkg/index/global.json",
+        ".mdkg/index/mdkg.sqlite",
+        ".mdkg/index/skills.json",
+        ".mdkg/index/subgraphs.json"
+      ],
+      "stdout": "index written: .mdkg/index/global.json\nskills index written: .mdkg/index/skills.json\ncapabilities index written: .mdkg/index/capabilities.json\nsubgraphs index written: .mdkg/index/subgraphs.json\nsqlite index written: .mdkg/index/mdkg.sqlite",
+      "stderr": ""
+    }
+  ],
+  "observed_impact": "Both packages exit zero and change all five index projections. No authored Markdown or staged-content loss was observed.",
+  "disposition": "Open. Require command-aware unsupported-option rejection before dispatch with compatibility and no-side-effect regression proof.",
+  "fixtures_removed": true
+}

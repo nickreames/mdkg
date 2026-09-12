@@ -326,7 +326,7 @@ test("runInitCommand agent mode scaffolds soul/human/skills/events/mirrors and c
   assert.match(cliMatrix, /mdkg new manifest "<title>" \[options\] \[--json\]/);
   assert.match(
     cliMatrix,
-    /mdkg validate \[--out <path>\] \[--json-out <path>\] \[--quiet\] \[--changed-only\] \[--summary\] \[--limit <n>\] \[--profile <name>\] \[--json\]/
+    /mdkg validate \[--out <path>\] \[--json-out <path>\] \[--quiet\] \[--changed-only\] \[--summary\] \[--limit <n>\] \[--json\]/
   );
   assert.match(cliMatrix, /mdkg skill validate \[<slug>\] \[--json\]/);
 

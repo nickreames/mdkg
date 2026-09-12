@@ -264,7 +264,6 @@ function writeWorkOrderValidationFixture(
       "version: 1.0.0",
       "agent_id: spec.fixture",
       "kind: generic",
-      "pricing_model: included",
       "required_capabilities: [capability.fixture]",
       "skill_refs: []",
       "tool_refs: []",
@@ -479,7 +478,7 @@ test("validate and index accept valid Agent workflow file fixtures", () => {
   assert.deepEqual(index.nodes["root:work.generate-image"].attributes.skill_refs, [
     "author-agent-work-contract",
   ]);
-  assert.equal(index.nodes["root:work.generate-image"].attributes.pricing_model, "included");
+  assert.equal(index.nodes["root:work.generate-image"].attributes.pricing_model, undefined);
   assert.deepEqual(index.nodes["root:work.generate-image"].attributes.tool_refs, [
     "tool.artifact-uploader",
   ]);
@@ -578,7 +577,7 @@ test("validate and index accept contract profile metadata on workflow surfaces",
   assert.equal(index.nodes["root:receipt.fixture"].attributes.evidence_policy_ref, "policy.evidence");
 });
 
-test("validate and work validate accept omni-room profile mode for compatible metadata", () => {
+test("generic validation preserves opaque profile metadata without executing consumer policy", () => {
   const root = makeTempDir("mdkg-agent-contract-profile-mode-valid-");
   setupWorkspace(root);
   const manifestPath = writeManifestWithKind(root, "agent", "agent.profile-mode");
@@ -592,20 +591,21 @@ test("validate and work validate accept omni-room profile mode for compatible me
   ]);
 
   const validateOutput = captureOutput(() =>
-    runValidateCommand({ root, profile: "omni-room", json: true })
+    runValidateCommand({ root, json: true })
   );
   const validateReceipt = JSON.parse(validateOutput.stdout);
   assert.equal(validateOutput.stderr, "");
   assert.equal(validateReceipt.ok, true);
-  assert.equal(validateReceipt.validation_profile, "omni-room");
+  assert.equal(validateReceipt.validation_profile, undefined);
+  assert.ok(validateReceipt.warning_diagnostics.some((item: { id: string }) => item.id === "contract-profile.unknown"));
 
   const workOutput = captureOutput(() =>
-    runWorkValidateCommand({ root, id: "receipt.fixture", profile: "omni-room", json: true })
+    runWorkValidateCommand({ root, id: "receipt.fixture", json: true })
   );
   const workReceipt = JSON.parse(workOutput.stdout);
   assert.equal(workOutput.stderr, "");
   assert.equal(workReceipt.ok, true);
-  assert.equal(workReceipt.validation_profile, "omni-room");
+  assert.equal(workReceipt.validation_profile, undefined);
   assert.equal(workReceipt.error_count, 0);
 });
 
@@ -663,75 +663,26 @@ test("validate warns for ambiguous and unknown contract profile metadata in gene
   assert.ok(warningIds.includes("redaction-class.missing-policy"));
 });
 
-test("profile mode escalates incompatible contract profile metadata to errors", () => {
-  const root = makeTempDir("mdkg-agent-contract-profile-mode-invalid-");
-  setupWorkspace(root);
-  const manifestPath = writeManifestWithKind(root, "agent", "agent.profile-mode-invalid");
-  insertAfterLine(manifestPath, "work_contracts: []", [
-    "profile: runtime-owned",
-    "contract_profile: custom-room",
-  ]);
-  writeReceiptValidationFixture(root, {});
-  const receiptPath = path.join(root, ".mdkg", "work", "receipt-fixture", "RECEIPT.md");
-  replaceInFile(
-    receiptPath,
-    "redaction_policy: refs_and_hashes_only",
-    [
-      "contract_profile: custom-room",
-      "receipt_kind: reviewer",
-      "redaction_class: sensitive",
-    ].join("\n")
-  );
-
-  const validateOutput = captureThrownOutput(() =>
-    runValidateCommand({ root, profile: "omni-room", json: true })
-  );
-  const validateReceipt = JSON.parse(validateOutput.stdout);
-
-  assert.match(String(validateOutput.error), /validation failed/);
-  assert.equal(validateOutput.stderr, "");
-  assert.equal(validateReceipt.ok, false);
-  assert.equal(validateReceipt.validation_profile, "omni-room");
-  assert.ok(
-    validateReceipt.errors.some((error: string) =>
-      error.includes("contract-profile.ambiguous-field")
-    )
-  );
-  assert.ok(
-    validateReceipt.errors.some((error: string) =>
-      error.includes("contract-profile.incompatible")
-    )
-  );
-  assert.ok(
-    validateReceipt.errors.some((error: string) => error.includes("receipt-kind.incompatible"))
-  );
-  assert.ok(
-    validateReceipt.errors.some((error: string) =>
-      error.includes("redaction-class.incompatible")
-    )
-  );
-  assert.ok(
-    validateReceipt.errors.some((error: string) =>
-      error.includes("redaction-class.missing-policy")
-    )
-  );
-
-  const workOutput = captureThrownOutput(() =>
-    runWorkValidateCommand({ root, id: "receipt.fixture", profile: "omni-room", json: true })
-  );
-  const workReceipt = JSON.parse(workOutput.stdout);
-  const errorCodes = workReceipt.diagnostics
-    .filter((diagnostic: { severity: string }) => diagnostic.severity === "error")
-    .map((diagnostic: { code: string }) => diagnostic.code);
-
-  assert.match(String(workOutput.error), /workflow validation failed/);
-  assert.equal(workOutput.stderr, "");
-  assert.equal(workReceipt.ok, false);
-  assert.equal(workReceipt.validation_profile, "omni-room");
-  assert.ok(errorCodes.includes("contract-profile.incompatible"));
-  assert.ok(errorCodes.includes("receipt-kind.incompatible"));
-  assert.ok(errorCodes.includes("redaction-class.incompatible"));
-  assert.ok(errorCodes.includes("redaction-class.missing-policy"));
+test("former known consumer profile receives the same generic warnings as any custom profile", () => {
+  const root = makeTempDir("mdkg-agent-consumer-neutral-");
+  try {
+    setupWorkspace(root);
+    const file = writeManifestWithKind(root, "agent", "agent.consumer-neutral");
+    insertAfterLine(file, "work_contracts: []", ["contract_profile: omni-room"]);
+    const original = fs.readFileSync(file, "utf8");
+    const former = JSON.parse(captureOutput(() => runValidateCommand({ root, json: true })).stdout);
+    assert.equal(former.ok, true);
+    assert.equal(former.validation_profile, undefined);
+    assert.deepEqual(fs.readFileSync(file, "utf8"), original);
+    replaceInFile(file, "contract_profile: omni-room", "contract_profile: custom-consumer");
+    const custom = JSON.parse(captureOutput(() => runValidateCommand({ root, json: true })).stdout);
+    assert.equal(custom.ok, true);
+    assert.deepEqual(former.warning_diagnostics.map((item: { id: string }) => item.id),
+      custom.warning_diagnostics.map((item: { id: string }) => item.id));
+    assert.ok(former.warning_diagnostics.some((item: { id: string }) => item.id === "contract-profile.unknown"));
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("validate rejects malformed contract profile metadata with stable ids", () => {
@@ -1224,7 +1175,6 @@ test("validate rejects WORK contracts without capabilities or dependency refs", 
       "version: 0.1.0",
       "agent_id: agent.empty-contract",
       "kind: generic",
-      "pricing_model: included",
       "required_capabilities: []",
       "skill_refs: []",
       "tool_refs: []",
@@ -1920,7 +1870,7 @@ test("new command scaffolds contract profile metadata for workflow file types", 
     now: new Date("2026-03-11T00:00:00Z"),
   });
 
-  silenceErrors(() => runValidateCommand({ root, quiet: true, profile: "omni-room" }));
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
 
   const config = loadConfig(root);
   const index = buildIndex(root, config);
@@ -1985,7 +1935,7 @@ test("work helper new commands scaffold contract profile metadata", () => {
     })
   );
 
-  silenceErrors(() => runValidateCommand({ root, quiet: true, profile: "omni-room" }));
+  silenceErrors(() => runValidateCommand({ root, quiet: true }));
 
   const config = loadConfig(root);
   const index = buildIndex(root, config);

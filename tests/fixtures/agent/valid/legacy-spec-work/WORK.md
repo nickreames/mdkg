@@ -5,7 +5,6 @@ title: Legacy SPEC Render Contract
 version: 1.0.0
 agent_id: agent.legacy-spec-worker
 kind: artifact_rendering
-pricing_model: included
 required_capabilities: [model.runtime.generate]
 skill_refs: [author-agent-work-contract]
 tool_refs: [tool.mdkg.pack]

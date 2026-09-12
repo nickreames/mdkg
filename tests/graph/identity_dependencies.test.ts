@@ -30,7 +30,7 @@ function run(root: string, args: string[]) {
 function node(root: string, type: string, id: string, extra: Record<string, unknown> = {}) {
   const common = { id, type, title: "Dependency fixture", version: "1.0.0", tags: [], owners: [], links: [], artifacts: [], relates: [], refs: [], aliases: [], created: "2026-09-09", updated: "2026-09-09" };
   const fields = type === "work"
-    ? { agent_id: "agent.fixture", kind: "fixture", pricing_model: "included", required_capabilities: ["fixture.read"], inputs: ["request:text:required"], outputs: ["result:text:required"], receipt_required: "true" }
+    ? { agent_id: "agent.fixture", kind: "fixture", required_capabilities: ["fixture.read"], inputs: ["request:text:required"], outputs: ["result:text:required"], receipt_required: "true" }
     : { spec_kind: "capability", role: "tool_service", runtime_mode: "tool_service", work_contracts: [], requested_capabilities: [], update_policy: "manual" };
   const file = path.join(root, ".mdkg/work", id, type === "work" ? "WORK.md" : type === "spec" ? "SPEC.md" : "MANIFEST.md");
   fs.mkdirSync(path.dirname(file), { recursive: true });

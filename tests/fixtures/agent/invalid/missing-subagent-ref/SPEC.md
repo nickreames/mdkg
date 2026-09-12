@@ -4,7 +4,7 @@ type: spec
 title: Missing Subagent Ref
 version: 1.0.0
 role: orchestrator
-runtime_mode: room_orchestrated
+runtime_mode: orchestrated
 work_contracts: []
 requested_capabilities: [mdkg.read.root_summary]
 skill_refs: []

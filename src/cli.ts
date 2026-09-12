@@ -979,7 +979,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
   switch ((subcommand ?? "").toLowerCase()) {
     case "contract":
       log("Usage:");
-      log('  mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]');
+      log('  mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]');
       break;
     case "trigger":
       log("Usage:");
@@ -1006,6 +1006,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--add-evidence-hashes <sha256:...>] [--json]");
       log("\nNotes:");
       log("  work receipt verify is read-only and reports deterministic JSON linkage, evidence, hash, outcome, and redaction checks.");
+      log("  Verification establishes structural/local-evidence consistency, not external execution, payment, or attestation authenticity.");
       break;
     case "artifact":
       log("Usage:");
@@ -1013,11 +1014,11 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       break;
     case "validate":
       log("Usage:");
-      log("  mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]");
+      log("  mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]");
       log("\nNotes:");
       log("  Read-only focused validation for agent workflow mirrors.");
       log("  Reports typed diagnostics for MANIFEST.md, legacy SPEC.md, WORK.md, WORK_ORDER.md, RECEIPT.md, FEEDBACK.md, DISPUTE.md, and PROPOSAL.md files.");
-      log("  --profile omni-room applies explicit contract-profile validation after generic mirror validation; this is separate from mdkg pack --profile.");
+      log("  Contract profiles and policy references are opaque metadata; consumer policy is not executed by mdkg.");
       log("  Obvious raw secret, prompt, token, or payload markers are warnings so humans and agents can review boundaries.");
       break;
     default:
@@ -1027,7 +1028,7 @@ function printWorkHelp(log: LogFn, subcommand?: string): void {
       log("  mdkg work order new|status|update ...");
       log("  mdkg work receipt new|verify|update ...");
       log("  mdkg work artifact add ...");
-      log("  mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--profile <name>] [--json]");
+      log("  mdkg work validate [<id-or-qid>] [--type <workflow-type>] [--json]");
       log("\nNotes:");
       log("  - work commands mutate semantic mirror files only");
       log("  - work validate is read-only and reports typed workflow diagnostics");
@@ -1225,11 +1226,11 @@ function printCheckpointHelp(log: LogFn): void {
 
 function printValidateHelp(log: LogFn): void {
   log("Usage:");
-  log("  mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]");
+  log("  mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]");
   log("\nNotes:");
   log("  Validates frontmatter schemas, graph references, visibility, skills, and events.");
   log("  --changed-only filters warning presentation to changed .mdkg files while full graph errors still run.");
-  log("  --profile omni-room applies explicit contract-profile validation after generic validation; this is separate from mdkg pack --profile.");
+  log("  Contract profiles and policy references are opaque metadata; consumer policy is not executed by mdkg.");
   log("  JSON output includes warning_summary plus warning_diagnostics with warning ids, categories, severity, paths, refs, and remediation text.");
   log("  --summary emits bounded warning samples for agent/CI logs; --limit controls the sample size.");
   log("  --out writes the compatibility text report; --json-out writes a clean full JSON receipt.");
@@ -2416,8 +2417,7 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       throw new UsageError("work validate accepts at most one workflow reference");
     }
     const type = requireFlagValue("--type", parsed.flags["--type"]);
-    const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
-    runWorkValidateCommand({ root, ws, id, type, profile, json });
+    runWorkValidateCommand({ root, ws, id, type, json });
     return 0;
   }
 
@@ -2435,7 +2435,6 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       "--required-capabilities",
       parsed.flags["--required-capabilities"]
     );
-    const pricingModel = requireFlagValue("--pricing-model", parsed.flags["--pricing-model"]);
     const contractProfile = requireFlagValue("--contract-profile", parsed.flags["--contract-profile"]);
     runWorkContractNewCommand({
       root,
@@ -2447,7 +2446,6 @@ function runWorkSubcommand(parsed: ParsedArgs, root: string): ExitCode {
       inputs,
       outputs,
       requiredCapabilities,
-      pricingModel,
       contractProfile,
       json,
     });
@@ -3463,9 +3461,8 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const changedOnly = parseBooleanFlag("--changed-only", parsed.flags["--changed-only"]);
       const summary = parseBooleanFlag("--summary", parsed.flags["--summary"]);
       const limit = parseNumberFlag("--limit", parsed.flags["--limit"]);
-      const profile = requireFlagValue("--profile", parsed.flags["--pack-profile"]);
       const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-      runValidateCommand({ root, out, jsonOut, quiet, json, changedOnly, summary, limit, profile });
+      runValidateCommand({ root, out, jsonOut, quiet, json, changedOnly, summary, limit });
       return 0;
     }
     case "status": {
@@ -3554,9 +3551,31 @@ async function runMcpSubcommand(parsed: ParsedArgs, root: string): Promise<ExitC
   return 0;
 }
 
+// Refuse retired options before config discovery, report writes or command dispatch.
+// --profile remains an alias for --pack-profile only on retained pack/bundle surfaces.
+function removedOptionError(parsed: ParsedArgs, argv: string[]): string | undefined {
+  // Retired tokens are deliberately absent from the active parser registry.
+  // Inspect raw arguments too: a preceding valueless option must not swallow one.
+  if (argv.some((arg) => arg === "--pricing-model" || arg.startsWith("--pricing-model="))) {
+    return "--pricing-model is not supported; commercial policy belongs to consumers";
+  }
+  const command = (parsed.positionals[0] ?? "").toLowerCase();
+  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  if ((command === "validate" || (command === "work" && subcommand === "validate")) &&
+      parsed.flags["--pack-profile"] !== undefined) {
+    return "--profile/--pack-profile is not supported for validation; mdkg validates generic contracts only";
+  }
+  return undefined;
+}
+
 export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   const io = resolveRuntime(runtime);
   const parsed = parseArgs(argv);
+  const removedError = removedOptionError(parsed, argv);
+  if (removedError) {
+    io.error(removedError);
+    return 1;
+  }
   if (parsed.error) {
     io.error(parsed.error);
     printUsage(io.log);
@@ -3607,6 +3626,11 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
 export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Promise<ExitCode> {
   const io = resolveRuntime(runtime);
   const parsed = parseArgs(argv);
+  const removedError = removedOptionError(parsed, argv);
+  if (removedError) {
+    io.error(removedError);
+    return 1;
+  }
   if (parsed.error) {
     io.error(parsed.error);
     printUsage(io.log);

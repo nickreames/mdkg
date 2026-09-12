@@ -55,7 +55,6 @@ export type WorkContractNewCommandOptions = {
   ws?: string;
   contractProfile?: string;
   requiredCapabilities?: string;
-  pricingModel?: string;
   json?: boolean;
   now?: Date;
 };
@@ -162,7 +161,6 @@ export type WorkValidateCommandOptions = {
   id?: string;
   ws?: string;
   type?: string;
-  profile?: string;
   json?: boolean;
 };
 
@@ -298,7 +296,6 @@ type WorkValidateReceipt = {
   action: "work.validate";
   ok: boolean;
   type: AgentFileType | "all";
-  validation_profile?: string;
   target?: ReturnType<typeof toNodeSummaryJson>;
   checked_count: number;
   nodes: Array<ReturnType<typeof toNodeSummaryJson>>;
@@ -309,7 +306,6 @@ type WorkValidateReceipt = {
   diagnostics: WorkValidationDiagnostic[];
 };
 
-const PRICING_MODELS = new Set(["free", "included", "quoted", "fixed", "metered", "subscription"]);
 const ORDER_STATUSES = new Set(["submitted", "accepted", "running", "completed", "cancelled", "failed"]);
 const RECEIPT_STATUSES = new Set(["recorded", "verified", "rejected", "superseded"]);
 const OUTCOMES = new Set(["success", "partial", "failure"]);
@@ -671,7 +667,7 @@ function buildWorkValidateReceipt(options: WorkValidateCommandOptions): WorkVali
   }
 
   const candidatePaths = workflowCandidatePaths({ root: options.root, config, ws, type, target });
-  const validation = collectValidateReceipt({ root: options.root, profile: options.profile });
+  const validation = collectValidateReceipt({ root: options.root });
   const warnings = filterWorkflowMessages(validation.warnings, targets, candidatePaths);
   const errors = filterWorkflowMessages(validation.errors, targets, candidatePaths);
   const diagnostics: WorkValidationDiagnostic[] = [
@@ -693,7 +689,6 @@ function buildWorkValidateReceipt(options: WorkValidateCommandOptions): WorkVali
     action: "work.validate",
     ok: errors.length === 0,
     type: type ?? "all",
-    ...(options.profile ? { validation_profile: options.profile } : {}),
     ...(target ? { target: toNodeSummaryJson(target) } : {}),
     checked_count: target ? 1 : candidatePaths.filter((value) => !path.isAbsolute(value)).length,
     nodes: targets.map((node) => toNodeSummaryJson(node)),
@@ -1342,7 +1337,6 @@ function runWorkContractNewCommandLocked(options: WorkContractNewCommandOptions)
       agent_id: agentId,
       kind,
       contract_profile: contractProfile,
-      pricing_model: normalizeEnum(options.pricingModel ?? "quoted", "--pricing-model", PRICING_MODELS),
       required_capabilities: requiredCapabilities.length > 0 ? requiredCapabilities : [kind],
       inputs: parseCsvList(options.inputs),
       outputs: parseCsvList(options.outputs),

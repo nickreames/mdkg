@@ -112,15 +112,27 @@ downstream runtime needs a clearer semantic mirror:
 These fields are separate from MANIFEST `resource_profile`, WORK `kind`,
 WORK_ORDER `artifact_policy`, RECEIPT `redaction_policy`, and pack/bundle
 `--profile` flags. Generic validation accepts well-shaped custom values with
-warnings for unknown profiles, receipt kinds, or redaction classes. Use
-`mdkg validate --profile omni-room` or
-`mdkg work validate --profile omni-room` when you need explicit profile checks.
+warnings for unknown profiles, receipt kinds, or redaction classes. Run
+`mdkg validate` or `mdkg work validate` for generic checks. Consumer validation
+profiles are not executed by mdkg; the former validation `--profile` option is
+unsupported, with no compatibility alias.
 The bare field name `profile` is ambiguous and is diagnosed rather than treated
 as an alias.
 
-mdkg owns the generic mirror fields and validation. Omni Room and other
-downstream runtimes own runtime policy, queue execution, final receipt
-normalization, and downstream adoption.
+mdkg owns generic mirror fields and validation. Downstream runtimes own policy,
+queue execution, final receipt normalization, and adoption. Receipt verification
+checks structural/local-evidence consistency, not external execution, payment,
+or attestation authenticity.
+
+For 0.6.0, agent manifests use `runtime_mode: orchestrated` instead of
+`room_orchestrated`. Work contracts no longer require or generate a
+`pricing_model`, and `--pricing-model` is unsupported. Conversion is explicit:
+review authored manifests and replace the old runtime token only where its
+meaning is unchanged; move commercial policy to the consumer or intentionally
+retain custom fields through a project-owned template. The generic CLI neither
+interprets that commercial policy nor rewrites authored files during validation.
+Unknown skill frontmatter remains in the source but has no privileged namespace
+in discovery, search weighting, metadata rendering, or JSON projections.
 
 Close work with evidence. Use the concrete `TASK_ID` from the work item you are closing:
 

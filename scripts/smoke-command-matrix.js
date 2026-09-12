@@ -107,19 +107,23 @@ function initGit(root) {
 }
 
 function assertOnboardingDocs(root) {
-  assertExists(path.join(root, "AGENT_START.md"));
-  assertExists(path.join(root, "llms.txt"));
-  assertExists(path.join(root, "CLI_COMMAND_MATRIX.md"));
+  for (const name of ["AGENT_START.md", "llms.txt", "CLI_COMMAND_MATRIX.md"]) {
+    assertExists(path.join(root, ".mdkg", name));
+    assertNotExists(path.join(root, name));
+  }
   assertNotExists(path.join(root, "AGENT_PROMPT_SNIPPET.md"));
   assertExists(path.join(root, "AGENTS.md"));
   assertExists(path.join(root, "CLAUDE.md"));
 
-  const agentStart = fs.readFileSync(path.join(root, "AGENT_START.md"), "utf8");
-  assertIncludes(agentStart, "Agent operating prompt", "AGENT_START.md");
-  assertIncludes(agentStart, "Prefer `mdkg pack <id>`", "AGENT_START.md");
-  assertIncludes(agentStart, "Run `mdkg validate` before marking work done", "AGENT_START.md");
+  const agentStart = fs.readFileSync(path.join(root, ".mdkg", "AGENT_START.md"), "utf8");
+  assertIncludes(agentStart, "Authority and custody", ".mdkg/AGENT_START.md");
+  assertIncludes(agentStart, "mdkg pack <qid> --pack-profile concise", ".mdkg/AGENT_START.md");
+  assertIncludes(agentStart, "run `mdkg validate` before", ".mdkg/AGENT_START.md");
+  for (const name of ["AGENTS.md", "CLAUDE.md"]) {
+    assertIncludes(fs.readFileSync(path.join(root, name), "utf8"), ".mdkg/AGENT_START.md", name);
+  }
 
-  const llms = fs.readFileSync(path.join(root, "llms.txt"), "utf8");
+  const llms = fs.readFileSync(path.join(root, ".mdkg", "llms.txt"), "utf8");
   assertIncludes(llms, "AGENT_START.md", "llms.txt");
 }
 
@@ -132,9 +136,9 @@ function exerciseHelp(binPath) {
 }
 
 function exerciseInit(binPath, tempRoot) {
-  const baseRoot = path.join(tempRoot, "init-base");
+  const baseRoot = path.join(tempRoot, "init-graph-only");
   initGit(baseRoot);
-  const baseInit = mdkg(binPath, ["init"], baseRoot);
+  const baseInit = mdkg(binPath, ["init", "--graph-only"], baseRoot);
   assertIncludes(baseInit.stdout, "mdkg init complete", "init base");
   assertExists(path.join(baseRoot, ".mdkg", "config.json"));
   assertNotExists(path.join(baseRoot, "AGENT_START.md"));
@@ -142,10 +146,16 @@ function exerciseInit(binPath, tempRoot) {
   mdkg(binPath, ["doctor"], baseRoot);
   mdkg(binPath, ["validate"], baseRoot);
 
+  const defaultRoot = path.join(tempRoot, "init-default");
+  initGit(defaultRoot);
+  mdkg(binPath, ["init"], defaultRoot);
+  assertOnboardingDocs(defaultRoot);
+  mdkg(binPath, ["validate"], defaultRoot);
+
   const agentRoot = path.join(tempRoot, "init-agent");
   initGit(agentRoot);
   const agentInit = mdkg(binPath, ["init", "--agent"], agentRoot);
-  assertIncludes(agentInit.stdout, "read AGENT_START.md", "init --agent");
+  assertIncludes(agentInit.stdout, "read .mdkg/AGENT_START.md", "init --agent");
   assertIncludes(agentInit.stdout, "agent bootstrap:", "init --agent summary");
   assertOnboardingDocs(agentRoot);
   assertExists(path.join(agentRoot, ".mdkg", "skills", "select-work-and-ground-context", "SKILL.md"));
@@ -178,7 +188,7 @@ function exerciseInit(binPath, tempRoot) {
       encoding: "utf8",
       stdio: "pipe",
     });
-    if (removed.status === 0 || !removed.stderr.includes("use `mdkg init --agent`")) {
+    if (removed.status === 0 || !removed.stderr.includes("use `mdkg init`") || !removed.stderr.includes("mdkg init --graph-only")) {
       throw new Error(`init ${removedFlag} did not report migration guidance`);
     }
     assertNotExists(path.join(removedRoot, ".mdkg"));
@@ -265,13 +275,12 @@ function exerciseWorkflow(binPath, tempRoot) {
   writeUpdatedFrontmatter(path.join(root, spec.path), {
     spec_kind: "agent",
     role: "subagent",
-    runtime_mode: "room_orchestrated",
+    runtime_mode: "orchestrated",
     work_contracts: `[${workContractRef}]`,
     relates: "[work.generate-image]",
   });
   writeUpdatedFrontmatter(path.join(root, work.path), {
     agent_id: "agent.image-worker",
-    pricing_model: "included",
     subagent_refs: "[agent.image-worker]",
     relates: "[agent.image-worker]",
   });

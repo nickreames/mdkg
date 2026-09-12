@@ -176,8 +176,6 @@ function createSpecAndWork(binPath, root) {
         "validation_receipt:json:required",
         "--required-capabilities",
         "mdkg.graph.read,mdkg.graph.write",
-        "--pricing-model",
-        "included",
         "--json",
       ],
       root

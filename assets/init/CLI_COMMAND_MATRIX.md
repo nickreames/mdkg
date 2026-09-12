@@ -121,11 +121,11 @@ Project database commands:
 - active `.mdkg/db/runtime/` files and `.mdkg/db` WAL/SHM/journal/lock/temp files are ignored by default
 
 Validation commands:
-- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]`
+- `mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]`
 - `--changed-only` filters warning presentation to changed `.mdkg` files while full graph errors still run
 - `--summary` emits bounded warning samples for agent/CI logs; `--limit <n>` controls the sample size
 - `--out <path>` writes the compatibility text report; `--json-out <path>` writes a clean full JSON receipt
-- `--profile omni-room` applies explicit contract-profile validation after generic validation; it is separate from `mdkg pack --profile`
+- Contract profiles and policy references are opaque metadata; consumer policy is not executed by mdkg
 - JSON receipts include `warning_summary` and `warning_diagnostics` with warning ids, categories, severity, paths, refs, and remediation text
 
 Node creation commands:
@@ -306,7 +306,7 @@ Subgraph orchestration:
 - public/internal subgraphs require public bundle profiles
 
 Work semantic mirrors:
-- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--pricing-model <...>] [--json]`
+- `mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <kind> --inputs <...> --outputs <...> [--contract-profile <name>] [--required-capabilities <...>] [--json]`
 - `mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"] [--requester <ref>] [--enqueue <queue>] [--json]`
 - `mdkg work order new "<title>" --id <order.id> --work-id <work.id> --requester <ref> [--contract-profile <name>] [--validation-policy-ref <ref>] [--evidence-policy-ref <ref>] [--request-ref <ref>] [--input-refs <...>] [--requested-outputs <...>] [--json]`
 - `mdkg work order status <id-or-qid> [--json]`
@@ -315,14 +315,14 @@ Work semantic mirrors:
 - `mdkg work receipt verify <id-or-qid> [--json]`
 - `mdkg work receipt update <id-or-qid> [--receipt-status <status>] [--add-artifacts <...>] [--add-proof-refs <...>] [--add-attestation-refs <...>] [--json]`
 - `mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [--kind source|artifact] [--json]`
-- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--profile <name>] [--json]`
+- `mdkg work validate [<id-or-qid>] [--type manifest|spec|work|work_order|receipt|feedback|dispute|proposal] [--json]`
 - `work trigger` accepts a `WORK.md` ref directly or a `MANIFEST.md` / legacy `SPEC.md` capability ref with exactly one resolvable work contract; it creates a submitted order mirror and never executes work
 - example: `mdkg work trigger work.example --id order.example-1 --requester user://example --json`
 - `work trigger --enqueue <queue>` requires a valid project DB plus an explicitly created active queue, creates a submitted order mirror, and enqueues a local delivery message without executing work
 - `work order status` is read-only and reports deterministic order state plus linked receipts
 - `work receipt verify` is read-only and reports linkage, evidence, archive ref, hash, outcome, and redaction-policy checks
 - `work validate` is read-only and reports typed diagnostics for agent workflow mirrors; obvious raw secret, prompt, token, or payload markers are warnings, not hard failures
-- `work validate --profile omni-room` applies explicit contract-profile validation after generic mirror validation; it is separate from `mdkg pack --profile`
+- Receipt verification establishes structural/local-evidence consistency, not external execution, payment, or attestation authenticity
 - work commands mutate mdkg semantic mirror files only; production order, receipt, feedback, dispute, payment, ledger, marketplace inventory, fulfillment, and execution state remains canonical outside mdkg
 - do not store raw secrets, credentials, live payment state, ledger mutations, or canonical marketplace state in work mirrors
 - `artifact://...` refs identify external/runtime-managed artifacts; `archive://...` refs identify committed mdkg archive sidecars

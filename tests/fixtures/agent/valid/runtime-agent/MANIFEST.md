@@ -4,7 +4,7 @@ type: manifest
 title: Runtime Worker Agent
 version: 1.0.0
 role: subagent
-runtime_mode: room_orchestrated
+runtime_mode: orchestrated
 work_contracts: [runtime-work/WORK.md]
 requested_capabilities: [mdkg.read.root_summary, mdkg.write.self]
 skill_refs: [skill.review-runtime-receipt]

@@ -4,7 +4,7 @@ type: spec
 title: Owner Mismatch Agent
 version: 1.0.0
 role: subagent
-runtime_mode: room_orchestrated
+runtime_mode: orchestrated
 work_contracts: [work/WORK.md]
 requested_capabilities: [mdkg.read.root_summary]
 skill_refs: []

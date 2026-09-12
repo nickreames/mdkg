@@ -4,6 +4,7 @@ import path from "node:path";
 import test from "node:test";
 
 const repoRoot = path.resolve(process.cwd());
+const { repositorySkillBodyDiagnostics } = require(path.join(repoRoot, "scripts/repository-skill-policy.js"));
 const { portableSkillBodyDiagnostics } = require("../core/public_skill_projection") as {
   portableSkillBodyDiagnostics(source: string): string[];
 };
@@ -84,6 +85,7 @@ test("six public candidates are exact portable bodies and two repository skills 
     const canonical = readSkill(".mdkg/skills", slug);
     assert.equal(readSkill("assets/init/skills/default", slug), canonical, `public drift: ${slug}`);
     assert.deepEqual(portableSkillBodyDiagnostics(canonical), [], `non-portable public body: ${slug}`);
+    assert.deepEqual(repositorySkillBodyDiagnostics(canonical), [], `repository public policy: ${slug}`);
     if (slug === "build-pack-and-execute-task") assertPatchOnlyAuthority(canonical);
     for (const behavior of portableBehavior[slug]) {
       assert.match(canonical, new RegExp(behavior.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
@@ -122,12 +124,18 @@ test("portability scan rejects procedures and local references but permits autho
     ["gh release create v1.0.0", "provider release command"],
     ["Use root:goal-999 as evidence.", "root-qualified internal QID"],
     ["Read .mdkg/design/dec-999-private.md.", "repository-local design or work link"],
-    ["Update mdkg.dev through Vercel.", "named internal product or provider"],
   ];
   for (const [fixture, identity] of fixtures) {
     assert.ok(
       portableSkillBodyDiagnostics(`---\nname: fixture\n---\n${fixture}\n`).includes(identity),
       `${identity}: ${fixture}`,
     );
+  }
+});
+
+test("product-name exclusions belong to this repository, not generic mdkg validation", () => {
+  for (const source of ["Update mdkg.dev.", "Read Vercel documentation.", "Consume omni-chat-rooms evidence."]) {
+    assert.deepEqual(portableSkillBodyDiagnostics(source), []);
+    assert.deepEqual(repositorySkillBodyDiagnostics(source), ["named internal product or provider"]);
   }
 });

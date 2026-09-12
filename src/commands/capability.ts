@@ -5,6 +5,7 @@ import {
   CapabilityKind,
   CapabilityRecord,
   CapabilityVisibility,
+  projectCapabilityRecord,
 } from "../graph/capabilities_indexer";
 import { loadCapabilitiesIndex } from "../graph/capabilities_index_cache";
 import { buildSubgraphCapabilityRecords } from "../graph/subgraphs";
@@ -76,7 +77,7 @@ export function loadCapabilityRecords(options: CapabilityListOptions): Capabilit
   for (const warning of subgraph.warnings) {
     console.error(`warning: ${warning}`);
   }
-  return [...index.records, ...(subgraph.records as CapabilityRecord[])];
+  return [...index.records, ...(subgraph.records as CapabilityRecord[])].map(projectCapabilityRecord);
 }
 
 export function filterCapabilityRecords(records: CapabilityRecord[], options: CapabilityListOptions): CapabilityRecord[] {

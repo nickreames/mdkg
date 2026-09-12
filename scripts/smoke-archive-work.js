@@ -205,8 +205,6 @@ function exerciseArchiveAndWork(binPath, tempRoot, backend) {
         "image_url:url:required",
         "--required-capabilities",
         "model.image.generate",
-        "--pricing-model",
-        "included",
         "--json",
       ],
       root

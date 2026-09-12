@@ -37,7 +37,7 @@ Use:
 - `skill.<slug>` for skill proposal targets
 - `extensions.<vendor>` for vendor extension metadata
 
-Avoid new public API or docs language that makes mdkg look tied to one product or runtime. ochatr.ai is a pioneering adopter and may use `ochatr_*` extension metadata, but the base mdkg schema should stay vendor-neutral.
+Avoid new public API or docs language that makes mdkg look tied to one product or runtime. Consumer-owned metadata may remain in authored documents under the ordinary custom-template rules, but mdkg must not give a vendor namespace privileged validation, search, or output behavior.
 
 ## Development Loop
 

@@ -59,7 +59,6 @@ export const AGENT_ATTRIBUTE_KEY_ORDER: Record<AgentFileType, string[]> = {
     "agent_id",
     "kind",
     "contract_profile",
-    "pricing_model",
     "required_capabilities",
     "skill_refs",
     "tool_refs",
@@ -134,7 +133,7 @@ const SEMVER_RE = /^\d+\.\d+\.\d+(?:[-+][a-z0-9.-]+)?$/;
 const LOWER_TOKEN_RE = /^[a-z][a-z0-9_]*(?:-[a-z0-9_]+)*$/;
 const FIELD_DESCRIPTOR_RE = /^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*(?::(?:required|optional))?$/;
 
-export const KNOWN_CONTRACT_PROFILES = new Set(["generic", "omni-room"]);
+export const KNOWN_CONTRACT_PROFILES = new Set(["generic"]);
 export const KNOWN_RECEIPT_KINDS = new Set(["worker", "final", "cleanup", "audit"]);
 export const KNOWN_REDACTION_CLASSES = new Set(["public", "internal", "private", "restricted"]);
 
@@ -146,7 +145,7 @@ const ROLE_VALUES = new Set([
   "remote_agent",
 ]);
 const RUNTIME_MODE_VALUES = new Set([
-  "room_orchestrated",
+  "orchestrated",
   "standalone",
   "tool_service",
   "remote",
@@ -178,14 +177,6 @@ const DOCUMENTATION_ONLY_SPEC_KIND_ROUTES: Record<string, string> = {
   planning_note: "use an EDD, task, or checkpoint for planning notes",
   launch_checklist: "use a task, test, checkpoint, or DEC for launch checklists",
 };
-const PRICING_MODEL_VALUES = new Set([
-  "free",
-  "included",
-  "quoted",
-  "fixed",
-  "metered",
-  "subscription",
-]);
 const ORDER_STATUS_VALUES = new Set([
   "submitted",
   "accepted",
@@ -673,8 +664,6 @@ export function validateAgentFrontmatter(
       const kind = expectString(frontmatter, "kind", filePath);
       requireLowerToken(kind, "kind", filePath);
       validateOptionalContractProfile(frontmatter, filePath);
-      const pricingModel = expectString(frontmatter, "pricing_model", filePath);
-      requireEnum(pricingModel, "pricing_model", PRICING_MODEL_VALUES, filePath);
       const requiredCapabilities = expectList(frontmatter, "required_capabilities", filePath);
       validateCapabilities(
         requiredCapabilities,

@@ -61,7 +61,6 @@ export type CapabilityRecord = {
     authors: string[];
     has_scripts: boolean;
     has_references: boolean;
-    extensions: Record<string, Record<string, FrontmatterValue>>;
   };
   spec?: Record<string, FrontmatterValue>;
   manifest?: {
@@ -114,6 +113,27 @@ export type CapabilitiesIndex = {
 };
 
 const CAPABILITY_CACHE_VERSION = 1;
+
+const WORK_CAPABILITY_ATTRIBUTES = [
+  "version", "agent_id", "kind", "required_capabilities", "skill_refs", "tool_refs",
+  "model_refs", "wasm_component_refs", "runtime_image_refs", "subagent_refs",
+  "inputs", "outputs", "receipt_required",
+];
+
+// Apply the current discovery contract to cached/imported records as well as
+// freshly indexed source. Preserve source provenance and never rewrite inputs.
+export function projectCapabilityRecord(record: CapabilityRecord): CapabilityRecord {
+  return {
+    ...record,
+    ...(record.skill ? { skill: {
+      version: record.skill.version,
+      authors: record.skill.authors,
+      has_scripts: record.skill.has_scripts,
+      has_references: record.skill.has_references,
+    } } : {}),
+    ...(record.work ? { work: pickAttributes(record.work, WORK_CAPABILITY_ATTRIBUTES) } : {}),
+  };
+}
 
 function toPosixPath(value: string): string {
   return value.split(path.sep).join("/");
@@ -387,22 +407,7 @@ function nodeCapabilityRecord(
     ]);
   }
   if (kind === "work") {
-    record.work = pickAttributes(node.attributes, [
-      "version",
-      "agent_id",
-      "kind",
-      "pricing_model",
-      "required_capabilities",
-      "skill_refs",
-      "tool_refs",
-      "model_refs",
-      "wasm_component_refs",
-      "runtime_image_refs",
-      "subagent_refs",
-      "inputs",
-      "outputs",
-      "receipt_required",
-    ]);
+    record.work = pickAttributes(node.attributes, WORK_CAPABILITY_ATTRIBUTES);
   }
   record.linkage = buildCapabilityLinkage(index, node, kind);
 
@@ -441,7 +446,6 @@ function skillCapabilityRecord(
       authors: [...skill.authors],
       has_scripts: skill.has_scripts,
       has_references: skill.has_references,
-      extensions: skill.extensions,
     },
   };
 }

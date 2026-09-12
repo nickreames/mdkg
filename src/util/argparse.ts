@@ -66,7 +66,6 @@ const VALUE_FLAGS = new Set([
   "--inputs",
   "--outputs",
   "--required-capabilities",
-  "--pricing-model",
   "--work-id",
   "--requester",
   "--request-ref",
