@@ -255,15 +255,15 @@ function main() {
   assert(!advancedOverview.includes("should be documented"), "Advanced alpha overview still has documentation meta commentary");
   const gitMaterialization = readText(path.join(docs, "src", "content", "docs", "advanced-alpha", "git-materialization.md"));
   for (const snippet of [
-    "mdkg.git.materialize.request.v1",
-    "mdkg.git.materialize.receipt.v1",
-    "mdkg git materialize --request materialize-request.json --json",
-    "same-parent atomic rename",
+    "Breaking change in 0.6.0",
+    "no compatibility aliases",
+    "mdkg git inspect --json",
+    "Native Git equivalents",
     "Authentication remains external",
-    "Project-memory policy",
-    "Clone compatibility",
+    "Branches and worktrees",
+    "Structural receipt validation does not authenticate external work",
   ]) {
-    assert(gitMaterialization.includes(snippet), `Git materialization guide missing contract detail: ${snippet}`);
+    assert(gitMaterialization.includes(snippet), `Native Git migration guide missing boundary detail: ${snippet}`);
   }
   const publicRoadmap = readText(path.join(docs, "src", "content", "docs", "project", "roadmap.md"));
   assert(publicRoadmap.includes("product-facing"), "Roadmap should explain product-facing boundary");
@@ -282,7 +282,7 @@ function main() {
   assert(!publicChangelog.includes("Public docs should"), "Changelog still has docs-author meta commentary");
   const referenceHome = readText(path.join(docs, "src", "content", "docs", "reference", "index.md"));
   assert(referenceHome.includes("Integration metadata"), "Reference home should label command contract as integration metadata");
-  assert(referenceHome.includes("mdkg git materialize --request REQUEST.json --json"), "Reference home missing Git materialization command");
+  assert(referenceHome.includes("mdkg git inspect --json"), "Reference home missing local Git inspection");
   assert(!referenceHome.includes("The documentation rule"), "Reference home still has docs-author meta commentary");
   const workNodeTypes = readText(path.join(docs, "src", "content", "docs", "concepts", "work-node-types.md"));
   for (const snippet of [
@@ -328,24 +328,19 @@ function main() {
   assert(generated.includes("## handoff"), "generated CLI reference missing handoff command");
   assert(generated.includes("mdkg handoff create <id-or-qid>"), "generated CLI reference missing handoff create usage");
   assert(generated.includes("## git"), "generated CLI reference missing git command family");
-  assert(generated.includes("## git materialize"), "generated CLI reference missing git materialize command");
-  assert(generated.includes("mdkg.git.materialize.receipt.v1"), "generated CLI reference missing materialize receipt schema");
-  assert(generated.includes("mdkg git push-ready --remote <name> --branch <name>"), "generated CLI reference missing git push-ready usage");
-  assert(generated.includes("external auth"), "generated CLI reference missing git auth boundary");
+  assert(generated.includes("## git inspect"), "generated CLI reference missing git inspect command");
+  assert(!/mdkg git (?:clone|fetch|push|materialize|closeout)/.test(generated), "generated CLI reference contains removed Git commands");
+  assert(generated.includes("authentication stays external"), "generated CLI reference missing Git auth boundary");
 
   const generatedReferenceSource = readText(path.join(docs, "src", "content", "docs", "reference", "generated-cli-reference.md"));
   for (const snippet of [
-    "## Git lifecycle commands",
+    "## Native Git and revision inspection",
     "mdkg git inspect --json",
-    "mdkg git materialize --request materialize-request.json --json",
-    "mdkg git clone <repository-ref>",
-    "mdkg git fetch --remote origin --branch main --json",
-    "mdkg git closeout --json",
-    "mdkg git push-ready --remote origin --branch main --json",
-    "mdkg git push --remote origin --branch main --stage-all",
+    "Use native Git for branches, worktrees",
+    "without",
     "authentication stays external",
   ]) {
-    assert(generatedReferenceSource.includes(snippet), `public generated CLI reference missing git lifecycle snippet: ${snippet}`);
+    assert(generatedReferenceSource.includes(snippet), `public generated CLI reference missing Git boundary snippet: ${snippet}`);
   }
 
   const summaryJson = JSON.parse(readText(path.join(docs, "_generated", "command-contract-summary.json")));

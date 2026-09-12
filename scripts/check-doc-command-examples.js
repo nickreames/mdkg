@@ -261,7 +261,7 @@ function validateCommand(example, commands) {
     return { ok: words[1] === "--version", reason: `unsupported node command example: ${example.command}` };
   }
   if (words[0] === "git") {
-    return { ok: words[1] === "status", reason: `unsupported git command example: ${example.command}` };
+    return { ok: words[1] === "status" || (words.length === 3 && words[1] === "diff" && words[2] === "--check"), reason: `unsupported git command example: ${example.command}` };
   }
   return { ok: true };
 }

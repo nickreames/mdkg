@@ -29,7 +29,7 @@
       "artifact_retention_days": 14,
       "canonical": [
         "smoke:consumer",
-        "smoke:git-materialize",
+        "smoke:git-boundary",
         "smoke:loop",
         "smoke:upgrade",
         "smoke:init",
@@ -108,7 +108,7 @@
         {
           "id": "sites-git-repair",
           "canonical": [
-            "smoke:git-materialize",
+            "smoke:git-boundary",
             "smoke:fix-plan",
             "smoke:branch-conflicts",
             "smoke:id-repair",
@@ -128,7 +128,7 @@
   },
   "aliases": [
     {"alias":"smoke:consumer","canonical":"smoke:consumer","entrypoint":"scripts/smoke-consumer.js","subsystem":"package_consumer","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
-    {"alias":"smoke:git-materialize","canonical":"smoke:git-materialize","entrypoint":"scripts/smoke-git-materialize.js","subsystem":"git_materialization","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
+    {"alias":"smoke:git-boundary","canonical":"smoke:git-boundary","entrypoint":"scripts/smoke-git-boundary.js","subsystem":"git_observation_boundary","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
     {"alias":"smoke:loop","canonical":"smoke:loop","entrypoint":"scripts/smoke-loop.js","subsystem":"loop_lifecycle","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
     {"alias":"smoke:matrix","canonical":"smoke:matrix","entrypoint":"scripts/smoke-command-matrix.js","subsystem":"command_contract","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},
     {"alias":"smoke:upgrade","canonical":"smoke:upgrade","entrypoint":"scripts/smoke-upgrade.js","subsystem":"upgrade","prerequisites":["dependency_preflight","immutable_package_artifact"],"environment_profiles":["none"],"timeout_seconds":300},

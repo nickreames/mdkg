@@ -74,7 +74,7 @@ Reusable manifest capability records are accessed through `mdkg manifest ...`;
 Archive sidecars are accessed through `mdkg archive ...`.
 Full graph snapshot bundles are accessed through `mdkg bundle ...`.
 Whole-graph clone, fork, and same-repo template import workflows are accessed through `mdkg graph ...`.
-Low-level Git remote lifecycle primitives are accessed through `mdkg git ...`.
+Read-only local Git state and revision descriptors are accessed through `mdkg git inspect`.
 Read-only child graph orchestration is accessed through `mdkg subgraph ...`.
 Work contract/order/receipt semantic mirrors are accessed through `mdkg work ...`.
 Recursive long-running objective contracts are accessed through `mdkg goal ...`.
@@ -794,58 +794,29 @@ JSON receipts:
 ### `mdkg git`
 
 When to use:
-- inspect the current Git-backed mdkg project and accepted revision evidence
-- materialize a strict caller-selected Git ref only after commit, tree, and policy verification
-- clone or fetch real Git remotes through the system Git CLI with external auth
-- close out mdkg state to static receipts before an agent checkpoint commit
-- prove push readiness before any approval-gated real remote push
+- inspect local Git state and sanitized revision descriptors
+- bind graph evidence to the current commit and tree without remote access
 
 Usage:
 - `mdkg git inspect [--json]`
-- `mdkg git materialize --request <file|-> [--json]`
-- `mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]`
-- `mdkg git fetch [--remote <name>] [--branch <name>] [--json]`
-- `mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]`
-- `mdkg git push-ready --remote <name> --branch <name> [--json]`
-- `mdkg git push --remote <name> --branch <name> [--json]`
-- `mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]`
-- `mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]`
 
 Flags:
-- `--request <file|->`
-- `--target <path>`
-- `--branch <name>`
-- `--remote <name>`
-- `--queue-policy drain|paused`
-- `--output <path>`
-- `--stage-all`
-- `--message <text>`
 - `--json`
 
 Notes:
-- `mdkg git` is a low-level lifecycle surface, not project-memory semantic search
-- v1 uses the system Git CLI; authentication stays external through credential helpers, SSH, `gh`, CI/runtime env, or shell state
-- mdkg rejects repository refs and push remotes with embedded URL credentials; inspected remotes with userinfo are redacted before receipts are printed
-- `git inspect` is read-only and emits sanitized source descriptors plus accepted-revision hashes
-- `git materialize` accepts only `mdkg.git.materialize.request.v1` JSON, rejects unsafe input before Git, verifies a full ref and exact commit/tree, and atomically renames a same-parent temporary tree into a contained destination
-- materialization disables prompts, repository hooks, push, and recursive submodules; project-memory checks do not index or execute repository-controlled behavior
-- `deny|ignore` controls submodule acceptance and `required|optional|forbidden` controls project-memory presence
-- materialization receipts never retain credentials, environment values, helper output, socket paths, raw Git output, repository contents, or absolute local paths
-- `git clone` writes only to an empty or absent contained `--target`; use `mdkg graph clone|fork` for bundle/template graph transport
-- `git closeout` validates mdkg state and writes static JSON and Markdown receipts under `.mdkg/git/closeouts` by default
-- when the project DB participated, `git closeout` also seals `.mdkg/db/state/project.sqlite` and writes a deterministic dump
-- `git push-ready` is read-only and requires explicit remote and branch, clean worktree, passing mdkg validation, external-auth-safe remote config, and a valid DB snapshot when DB state participated
-- `git push --stage-all` writes closeout evidence, stages all changes, commits with `--message`, reruns push-ready, then pushes `HEAD` to the explicit remote branch
-- real `git push` should remain approval-gated by the calling runtime or human operator
+- inspection is read-only, including Git index bookkeeping; configured filesystem-monitor helpers are disabled per process, with no authentication probes or remote contact
+- tracked content that requires a configured clean/process filter, including initialized submodules, blocks inspection before that helper can execute; review the filter before using native Git for that observation
+- status uses NUL-delimited porcelain, preserving status columns and paths; rename/copy entries include `original_path`
+- failed, truncated, malformed, oversized or non-UTF-8 observations fail closed without a successful partial/clean receipt; outside a Git work tree `status.clean` is false
+- source descriptors omit URL userinfo, query and fragment data; opaque helpers and malformed URL-like values are withheld. They are display evidence, not transport inputs or a general secret detector
+- accepted-revision hashes describe local objects, not remote acceptance or execution proof; the selected remote name and URL always refer to the same configured remote
+- use native Git for cloning, fetching, branching, linked worktrees, staging, commits, merging and pushing; authentication stays external
+- graph reconciliation is a separate reviewed semantic operation, not a Git merge wrapper
+- generic `db snapshot` and graph evidence operations remain explicit and separate from Git
+- 0.6.0 removes the former mutation/lifecycle wrappers completely, without compatibility aliases
 
 JSON receipts:
 - `inspect`: `{ action: "git.inspect", ok, root, inside_work_tree, branch, head_sha, tree_hash, remotes, status, source_descriptor, accepted_revision, warnings }`
-- `materialize`: `{ schema: "mdkg.git.materialize.receipt.v1", action: "git.materialize", ok, reason_code, request_hash, repository, source_ref, access_ref, correlation_ref, evidence_refs, target_ref, expected_revision, observed_revision, policies, destination, cleanup, warnings }`
-- `clone`: `{ action: "git.clone", ok, repository_ref, target, branch, source_descriptor, accepted_revision, inspect, warnings }`
-- `fetch`: `{ action: "git.fetch", ok, remote, branch, fetch_output, inspect, warnings }`
-- `closeout`: `{ action: "git.closeout", ok, root, output_dir, generated_at, git, validation, db_participated, db_snapshot_status, db_snapshot_seal, db_snapshot_dump, static_receipts, warnings }`
-- `push-ready`: `{ action: "git.push_ready", ok, root, remote, branch, remote_url, git, validation, db_snapshot_status, checks, warning_count, failure_count, warnings, errors }`
-- `push`: `{ action: "git.push", ok, remote, branch, head_sha, pushed_ref, stage_all, closeout, commit, push_ready, push_output, warnings }`
 
 ### `mdkg subgraph`
 

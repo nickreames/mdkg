@@ -9,7 +9,6 @@ import { writeRootConfig } from "../helpers/config";
 import { makeTempDir } from "../helpers/fs";
 
 const cliPath = path.resolve(__dirname, "..", "..", "cli.js");
-const { runGitFetchCommand, runGitCloneCommand, runGitPushReadyCommand } = require("../../commands/git");
 
 function runCli(root: string, args: string[]): SpawnSyncReturns<string> {
   return spawnSync(process.execPath, [cliPath, ...args], {
@@ -92,8 +91,9 @@ function commitAll(root: string, message: string): void {
   git(root, ["commit", "-q", "-m", message]);
 }
 
-test("git inspect reports sanitized source descriptor and accepted revision", () => {
+test("git inspect reports sanitized source descriptor and accepted revision", (t) => {
   const root = makeMdkgRoot("mdkg-git-inspect-");
+  t.after(() => fs.rmSync(root, {recursive:true,force:true}));
   initGitRepo(root);
   git(root, ["remote", "add", "origin", "https://user:secret@example.com/acme/demo.git"]);
   commitAll(root, "initial");
@@ -118,177 +118,87 @@ test("git inspect reports sanitized source descriptor and accepted revision", ()
   assert.doesNotMatch(result.stdout, /secret/);
 });
 
-test("git clone and fetch use system Git with external auth refs", () => {
-  const root = makeMdkgRoot("mdkg-git-clone-root-");
-  const source = path.join(root, "source");
-  fs.mkdirSync(source, { recursive: true });
-  writeRootConfig(source);
-  writeDefaultTemplates(source);
-  writeTask(source, "source task");
-  initGitRepo(source);
-  commitAll(source, "source initial");
 
-  const clone = json<{
-    action: string;
-    ok: boolean;
-    repository_ref: string;
-    target: string;
-    accepted_revision: { commit_sha: string };
-    inspect: { source_descriptor: { access_ref: string } };
-  }>(
-    runCliOk(root, ["git", "clone", "source", "--target", "clones/source", "--json"]).stdout
-  );
-
-  assert.equal(clone.action, "git.clone");
-  assert.equal(clone.ok, true);
-  assert.equal(clone.repository_ref, "source");
-  assert.equal(clone.target, "clones/source");
-  assert.match(clone.accepted_revision.commit_sha, /^[0-9a-f]{40}$/);
-  assert.equal(clone.inspect.source_descriptor.access_ref, "external-git-auth");
-
-  const clonedRoot = path.join(root, "clones", "source");
-  const fetch = json<{ action: string; ok: boolean; remote: string; inspect: { status: { clean: boolean } } }>(
-    runCliOk(clonedRoot, ["git", "fetch", "--remote", "origin", "--json"]).stdout
-  );
-  assert.equal(fetch.action, "git.fetch");
-  assert.equal(fetch.ok, true);
-  assert.equal(fetch.remote, "origin");
-  assert.equal(fetch.inspect.status.clean, true);
+test("git inspect preserves the Git index after worktree timestamps change", (t) => {
+  const root = makeMdkgRoot("mdkg-git-observational-");
+  t.after(() => fs.rmSync(root, {recursive:true, force:true}));
+  initGitRepo(root); commitAll(root, "base");
+  const index = path.join(root, git(root, ["rev-parse", "--git-path", "index"]).stdout.trim());
+  const before = fs.readFileSync(index);
+  const task = path.join(root, ".mdkg/work/task-1-git-fixture-task.md");
+  fs.utimesSync(task, new Date(), new Date(Date.now() + 2000));
+  const result = runCliOk(root, ["git", "inspect", "--json"]);
+  assert.equal(JSON.parse(result.stdout).status.clean, true);
+  assert.deepEqual(fs.readFileSync(index), before);
 });
 
-test("git closeout seals DB state and writes static JSON and Markdown receipts", () => {
-  const root = makeMdkgRoot("mdkg-git-closeout-");
-  initGitRepo(root);
-  runCliOk(root, ["db", "init", "--json"]);
-  runCliOk(root, ["db", "migrate", "--json"]);
-
-  const receipt = json<{
-    action: string;
-    ok: boolean;
-    db_participated: boolean;
-    db_snapshot_seal: { snapshot: string; manifest: string; new_snapshot_sha256: string };
-    db_snapshot_dump: { output: string; sha256: string };
-    static_receipts: { json: string; markdown: string };
-    validation: { ok: boolean };
-  }>(runCliOk(root, ["git", "closeout", "--json"]).stdout);
-
-  assert.equal(receipt.action, "git.closeout");
-  assert.equal(receipt.ok, true);
-  assert.equal(receipt.validation.ok, true);
-  assert.equal(receipt.db_participated, true);
-  assert.match(receipt.db_snapshot_seal.new_snapshot_sha256, /^sha256:/);
-  for (const relativePath of [
-    receipt.db_snapshot_seal.snapshot,
-    receipt.db_snapshot_seal.manifest,
-    receipt.db_snapshot_dump.output,
-    receipt.static_receipts.json,
-    receipt.static_receipts.markdown,
-  ]) {
-    assert.equal(fs.existsSync(path.join(root, relativePath)), true, relativePath);
+for (const command of ["clone", "fetch", "push", "materialize", "closeout", "push-ready"]) {
+  test(`removed git ${command} refuses before Git or auth subprocesses`, (t) => {
+    const root = makeMdkgRoot("mdkg-git-removed-");
+    t.after(() => fs.rmSync(root, {recursive:true, force:true}));
+    const trap = path.join(root, "trap"); fs.mkdirSync(trap);
+    const log = path.join(root, "called");
+    for (const tool of ["git", "gh", "ssh"]) {
+      fs.writeFileSync(path.join(trap, tool), "#!" + process.execPath + "\nrequire('fs').appendFileSync(" + JSON.stringify(log) + ", 'called');process.exit(87);\n", {mode:0o755});
+    }
+    const before = fs.readdirSync(root).sort();
+    const result = spawnSync(process.execPath, [cliPath, "git", command, "--json"], {
+      cwd:root, encoding:"utf8", env:{...process.env, PATH:trap + path.delimiter + process.env.PATH}
+    });
+    assert.equal(result.status, 1, result.stderr);
+    assert.match(result.stderr, /git requires inspect/);
+    assert.equal(fs.existsSync(log), false);
+    assert.deepEqual(fs.readdirSync(root).sort(), before);
+  });
+}
+test("Git module and help expose inspection only", (t) => {
+  const root = makeMdkgRoot("mdkg-git-help-");
+  t.after(() => fs.rmSync(root, {recursive:true, force:true}));
+  assert.deepEqual(Object.keys(require("../../commands/git")), ["runGitInspectCommand"]);
+  const help=runCliOk(root, ["help", "git"]).stdout;
+  assert.match(help, /mdkg git inspect/);
+  assert.doesNotMatch(help, /mdkg git (?:clone|fetch|push|materialize|closeout)/);
+  for (const flag of ["--stage-all", "--message", "--remote", "--branch", "--request", "--target", "--queue-policy", "--out"]) {
+    const result = runCli(root, ["git", "inspect", flag, ...(flag === "--stage-all" ? [] : ["fixture"])]);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /git inspect does not accept --/);
   }
 });
 
-test("git push-ready blocks embedded remote credentials without leaking them", () => {
-  const root = makeMdkgRoot("mdkg-git-push-ready-creds-");
-  initGitRepo(root);
-  git(root, ["remote", "add", "origin", "https://user:secret@example.com/acme/demo.git"]);
-  commitAll(root, "initial");
-
-  const result = runCli(root, ["git", "push-ready", "--remote", "origin", "--branch", "main", "--json"]);
-  assert.notEqual(result.status, 0);
-  assert.match(result.stdout, /git.push_ready/);
-  assert.match(result.stdout, /<redacted>/);
-  assert.doesNotMatch(result.stdout, /secret/);
-  assert.doesNotMatch(result.stderr, /secret/);
+test("git commands reject option-like remote repository and branch operands after removal", (t) => {
+  // Preserve the historical regression linkage, but exercise removal rather
+  // than claim that the deleted operand-validation implementation still runs.
+  const root = makeMdkgRoot("mdkg-git-removed-operands-");
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const trap = path.join(root, "trap");
+  fs.mkdirSync(trap);
+  const marker = path.join(root, "called");
+  fs.writeFileSync(path.join(trap, "git"), `#!${process.execPath}\nrequire('fs').writeFileSync(${JSON.stringify(marker)}, 'called');process.exit(87);\n`, { mode: 0o755 });
+  for (const args of [
+    ["git", "fetch", "--remote=--all"],
+    ["git", "fetch", "--remote", "origin", "--branch=--prune"],
+    ["git", "clone", "--upload-pack=fixture", "--target", "clone-target"],
+    ["git", "push-ready", "--remote=--all", "--branch", "main"],
+  ]) {
+    const result = spawnSync(process.execPath, [cliPath, ...args], {
+      cwd: root, encoding: "utf8", env: { ...process.env, PATH: trap + path.delimiter + process.env.PATH },
+    });
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /git requires inspect/);
+  }
+  assert.equal(fs.existsSync(marker), false);
+  assert.equal(fs.existsSync(path.join(root, "clone-target")), false);
 });
 
-test("git fetch blocks configured remotes with embedded credentials before invoking Git", () => {
-  const root = makeMdkgRoot("mdkg-git-fetch-creds-");
-  initGitRepo(root);
-  git(root, ["remote", "add", "origin", "https://user:secret@example.com/acme/demo.git"]);
-  commitAll(root, "initial");
-
-  const result = runCli(root, ["git", "fetch", "--remote", "origin", "--json"]);
-  assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /external Git auth/);
-  assert.doesNotMatch(result.stdout, /secret/);
-  assert.doesNotMatch(result.stderr, /secret/);
-});
-
-test("git commands reject option-like remote repository and branch operands", () => {
-  const root = makeMdkgRoot("mdkg-git-operands-");
-  initGitRepo(root);
-  commitAll(root, "initial");
-
-  assert.throws(
-    () => runGitFetchCommand({ root, remote: "--all", json: true }),
-    /non-option Git operand/
-  );
-  assert.throws(
-    () => runGitFetchCommand({ root, remote: "origin", branch: "--prune", json: true }),
-    /non-option Git operand/
-  );
-  assert.throws(
-    () => runGitCloneCommand({ root, repository: "--upload-pack=fixture", target: "clone-target", json: true }),
-    /non-option Git operand/
-  );
-  assert.throws(
-    () => runGitPushReadyCommand({ root, remote: "--all", branch: "main", json: true }),
-    /non-option Git operand/
-  );
-});
-
-test("git push --stage-all writes closeout evidence, commits, and pushes to a local bare remote", () => {
-  const root = makeMdkgRoot("mdkg-git-push-");
-  initGitRepo(root);
-  commitAll(root, "initial");
-  const remote = makeTempDir("mdkg-git-remote-");
-  fs.rmSync(remote, { recursive: true, force: true });
-  git(path.dirname(remote), ["init", "-q", "--bare", remote]);
-  git(root, ["remote", "add", "origin", remote]);
-
-  fs.appendFileSync(path.join(root, ".mdkg", "work", "task-1-git-fixture-task.md"), "\nPush proof update.\n", "utf8");
-
-  const receipt = json<{
-    action: string;
-    ok: boolean;
-    stage_all: boolean;
-    closeout: { static_receipts: { json: string; markdown: string }; db_participated: boolean };
-    commit: { created: boolean; sha: string };
-    push_ready: { ok: boolean };
-    pushed_ref: string;
-  }>(
-    runCliOk(root, [
-      "git",
-      "push",
-      "--remote",
-      "origin",
-      "--branch",
-      "main",
-      "--stage-all",
-      "--message",
-      "checkpoint",
-      "--json",
-    ]).stdout
-  );
-
-  assert.equal(receipt.action, "git.push");
-  assert.equal(receipt.ok, true);
-  assert.equal(receipt.stage_all, true);
-  assert.equal(receipt.closeout.db_participated, false);
-  assert.equal(receipt.commit.created, true);
-  assert.match(receipt.commit.sha, /^[0-9a-f]{40}$/);
-  assert.equal(receipt.push_ready.ok, true);
-  assert.equal(receipt.pushed_ref, "refs/heads/main");
-  assert.equal(fs.existsSync(path.join(root, receipt.closeout.static_receipts.json)), true);
-  assert.equal(fs.existsSync(path.join(root, receipt.closeout.static_receipts.markdown)), true);
-
-  const remoteHead = git(root, ["--git-dir", remote, "rev-parse", "refs/heads/main"]).stdout.trim();
-  assert.equal(remoteHead, receipt.commit.sha);
-
-  const ready = json<{ ok: boolean; failure_count: number }>(
-    runCliOk(root, ["git", "push-ready", "--remote", "origin", "--branch", "main", "--json"]).stdout
-  );
-  assert.equal(ready.ok, true);
-  assert.equal(ready.failure_count, 0);
+test("removed Git help returns an ordinary usage error from both entrypoints", () => {
+  const { runCli, runCliAsync } = require("../../cli");
+  return (async () => {
+    for (const entrypoint of [runCli, runCliAsync]) {
+      for (const args of [["help", "git", "materialize"], ["git", "push", "--help"]]) {
+        const errors: string[] = [];
+        assert.equal(await entrypoint(args, { log: () => undefined, error: (value: string) => errors.push(value) }), 1);
+        assert.deepEqual(errors, ["unknown git subcommand"]);
+      }
+    }
+  })();
 });
