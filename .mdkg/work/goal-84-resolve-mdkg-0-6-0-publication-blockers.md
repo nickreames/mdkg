@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-5
+active_node: bug-6
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -177,3 +177,12 @@ fields survive SQLite storage. Receipt: .mdkg/artifacts/goal-84/bug-5-verificati
 Eleven security findings remain locally fixed; bug-15 awaits resource-size policy
 and bug-17 awaits public DB-payload policy. Continue bugs 6–7 and independent
 qualification work. Protected state and local-only boundaries are unchanged.
+
+## 2026-09-08 Bootstrap Documentation Verification
+
+Bug-6 is locally verified with three documentation regressions, 35 installed
+bootstrap/upgrade tests and six CLI scenario groups, including actual published
+0.5.2 upgrades. The serialized full suite, 26 contract checks, CLI/docs/graph/diff
+gates pass. Receipt: .mdkg/artifacts/goal-84/bug-6-verification.json. Bugs 5–6
+are locally fixed; bug-7/full behavioral and installed qualification, bugs 15/17
+policy decisions, and independent final verification remain. Nothing is published.

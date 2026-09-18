@@ -9,22 +9,33 @@ If you are still choosing between the human and agent first-run paths, start at 
 
 ## Canonical agent path
 
-1. Read `AGENT_START.md`.
+1. Read root `AGENTS.md` or `CLAUDE.md`; compact installs route to
+   `.mdkg/AGENT_START.md`. Legacy installs may retain root `AGENT_START.md`.
 2. Run `mdkg status`.
 3. Inspect the current goal with `mdkg goal current`.
-4. Run `mdkg goal next`.
+4. Ground the explicitly authorized goal with `mdkg goal next GOAL_ID`.
 5. Show and pack one work node with `mdkg show WORK_ID` and `mdkg pack WORK_ID`.
 6. Do work outside mdkg.
 7. Record evidence with checkpoints, handoffs, or task updates.
 8. Validate with `mdkg validate` before closeout.
 
-This is the same path exposed in [`llms.txt`](https://mdkg.dev/llms.txt) for agents that start from the public site instead of a checked-out repository.
+The selected goal is a hint, not execution authority. Current user instructions
+define the assignment; graph history and skills provide context and conventions.
+Use `mdkg skill search "task topic"` and `mdkg skill show SKILL_SLUG` for focused
+procedures, and focused help such as `mdkg pack --help` for exact flags. Replace
+`SKILL_SLUG` with the relevant skill slug. Do not repeatedly load the entire handbook.
+
+The website's [`llms.txt`](https://mdkg.dev/llms.txt) is public discovery, separate
+from generated `.mdkg/llms.txt` and repo-owned instructions. Neither grants
+permission to edit a checkout or execute a selected goal.
 
 Copy this into an agent session when you want a repo-scoped implementation run. Replace uppercase placeholders with concrete ids from your repo:
 
 ```text
-Start by reading AGENT_START.md and the current mdkg goal.
-Run mdkg goal current, mdkg goal next, mdkg show WORK_ID, and mdkg pack WORK_ID before editing.
+Start with AGENTS.md or CLAUDE.md and follow its router once.
+Inspect mdkg goal current as a hint; use the explicitly authorized GOAL_ID.
+Run mdkg goal next GOAL_ID and mdkg show WORK_ID; discover focused skills.
+Preview context with mdkg pack WORK_ID --dry-run before editing.
 Use mdkg goal claim GOAL_ID WORK_ID only after accepting the work item.
 Run the required checks yourself.
 Record a checkpoint with commands, pass/fail state, known warnings, and boundaries.
@@ -36,7 +47,7 @@ Replace `WORK_ID` and `GOAL_ID` with ids returned by the read-only routing comma
 ```bash
 mdkg status
 mdkg goal current
-mdkg goal next
+mdkg goal next GOAL_ID
 mdkg pack WORK_ID
 mdkg goal claim GOAL_ID WORK_ID
 ```
@@ -83,7 +94,11 @@ Mutating commands change graph lifecycle or evidence:
 `mdkg task done TASK_ID --checkpoint "..."`
 : Marks the task-like node done and writes checkpoint evidence. Use meaningful checkpoint names and include commands, pass/fail state, known warnings, and follow-up refs.
 
-Beginner safety rule: run the read-only commands first, make the code or docs change outside mdkg, then mutate mdkg state only when you have evidence.
+Beginner safety rule: ground context read-only, establish approved scope and
+ownership, then start the task and do the work. Record checks and evidence before
+closing it. A fully planned goal's explicit run authorizes only its declared
+actions; commits, pushes, publication and cross-project actions require explicit
+inclusion or separate approval.
 
 ## Contract-profile metadata
 
@@ -129,7 +144,8 @@ When a parent repo uses subgraphs, mutate the child repo in the child checkout f
 
 ## Common mistakes
 
-- Starting with file edits before reading `AGENT_START.md`, current goal state, and one scoped pack.
+- Starting edits before following the repo's compact or legacy router, grounding
+  the authorized goal and inspecting one scoped context pack.
 - Treating `mdkg goal next` as a claim. It is read-only; use `mdkg goal claim GOAL_ID WORK_ID` only after accepting the node.
 - Closing a task with "tests passed" when no command evidence is recorded. Include commands, pass/fail state, known warnings, and boundaries in the checkpoint.
 - Mutating a child repo from a parent orchestration context. Work in the owning repo, commit accepted child changes, then refresh the parent bundle.

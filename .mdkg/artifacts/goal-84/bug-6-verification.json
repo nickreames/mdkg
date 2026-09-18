@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "kind": "local-bootstrap-documentation-verification",
+  "bug": "root:bug-6",
+  "goal": "root:goal-84",
+  "outcome": "fixed-locally",
+  "base_revision": "7b87581d9e476744913a0f8cfd4325c1bdcac4e3",
+  "runtime": "v26.0.0",
+  "affected_version": "Candidate documentation mismatch after compact-default implementation. Published 0.5.2 retains the older opt-in layout; no claim that its historic documentation was wrong.",
+  "files_sha256": {
+    "README.md": "d13f62f5c80b080222b174ef01c3dbc12bbb8c503303243339d1ec4354735a33",
+    "docs/src/content/docs/start-here/install.md": "d719061492001f93f71d85a23ccdd8aa30afe7b03af93f4c0087abffb5e4ad25",
+    "docs/src/content/docs/start-here/quickstart.md": "a79c72e51b0afd1df1c930e7f4d5cc6b6f74825f013920e3ecd5562182fae57c",
+    "docs/src/content/docs/guides/agent-workflow.md": "032ec0d0564f1b7d5e9bf61618c7993766bcbc75a03c3125b783fce62484c4f5",
+    "tests/commands/bootstrap_docs.test.ts": "308d115bdcdfd4930f33b18c42be2fb85c802361e845d04e2850e8693d01995f"
+  },
+  "changes": [
+    "Compact default, explicit graph-only mode and --agent compatibility, with candidate-versus-published version distinction.",
+    "Managed root adapters, detailed .mdkg discovery, focused skills, customization/provenance and project/public-document preservation.",
+    "Reviewed upgrade hash, stale plan and explicit resume/recovery boundaries.",
+    "Concise pack profile spellings are equivalent aliases; no claim that traversal budgets change."
+  ],
+  "before": "Three documentation regression groups failed against the prior maintained guidance. Focused source inspection confirmed the profile spellings are aliases; that historical command was not a runtime defect.",
+  "after": [
+    {
+      "command": "bootstrap_docs.test",
+      "result": "3 passed"
+    },
+    {
+      "command": "Offline installed compact_bootstrap, init, upgrade and upgrade_safety suites",
+      "result": "35 passed; zero failures/skips; installed runtime unchanged."
+    },
+    {
+      "command": "Actual published 0.5.2 install and candidate CLI upgrade",
+      "result": "Six scenario groups passed: three init modes plus base, agent and customized-agent upgrades. Preview/repeat/source preservation/managed redirects and unchanged Git staging verified."
+    },
+    {
+      "command": "Serialized npm run test:built",
+      "result": "Full source suite and 26 release/security-contract checks passed. A prior overlapping CLI build invalidated one attempt; no pass was claimed for that attempt."
+    },
+    {
+      "command": "CLI/docs checks, graph validation and git diff --check",
+      "result": "Passed; 494 documented command examples across 63 files."
+    }
+  ],
+  "installed_candidate": {
+    "sha256": "d4de0231cc9e0cb82e4d9c6956806f20b418722e6e966693b6171145327da7bf",
+    "integrity": "sha512-dvy+SOhJ0v3GiVEQa1MN096p7RY5F6/P/0FDF7+8yhGtCo9TCVkacd+qS71vc/4lBVPFjgIh9ZrORZ1CP3bdBA==",
+    "status": "Intermediate development package, not final 0.6.0 seal"
+  },
+  "published_upgrade": {
+    "baseline_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "baseline_version": "0.5.2",
+    "cases": [
+      {
+        "name": "fresh-default",
+        "result": "passed"
+      },
+      {
+        "name": "fresh-agent",
+        "result": "passed"
+      },
+      {
+        "name": "fresh-graph-only",
+        "result": "passed"
+      },
+      {
+        "name": "published-0.5.2-upgrade-base",
+        "result": "passed",
+        "plan_hash": "b069b126e400b3092790795f819fd88c038fa0def2c3e8fcf1bde5ad10a32953",
+        "changed_paths": [
+          ".mdkg/README.md",
+          ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          ".mdkg/init-manifest.json"
+        ],
+        "git_index_unchanged": true
+      },
+      {
+        "name": "published-0.5.2-upgrade-agent",
+        "result": "passed",
+        "plan_hash": "cf41d53a16c1ea4dc40b8020875cdf077171e1b2237f02051bb21d36a77d4ce8",
+        "changed_paths": [
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/llms.txt",
+          ".mdkg/README.md",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          "AGENTS.md",
+          "CLAUDE.md",
+          "AGENT_START.md",
+          "CLI_COMMAND_MATRIX.md",
+          "llms.txt",
+          ".mdkg/skills/registry.md",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/init-manifest.json"
+        ],
+        "git_index_unchanged": true
+      },
+      {
+        "name": "published-0.5.2-upgrade-customized-agent",
+        "result": "passed",
+        "plan_hash": "af49278f29c4381524043e77195c81921a06d8734d675a5eb64893093cdd677a",
+        "changed_paths": [
+          ".mdkg/AGENT_START.md",
+          ".mdkg/CLI_COMMAND_MATRIX.md",
+          ".mdkg/llms.txt",
+          ".mdkg/README.md",
+          ".mdkg/skills/author-mdkg-skill/SKILL.md",
+          ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+          ".mdkg/skills/pursue-mdkg-loop/SKILL.md",
+          ".mdkg/skills/select-work-and-ground-context/SKILL.md",
+          ".mdkg/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/templates/loops/test-ci-skill-infrastructure-audit.loop.md",
+          "AGENTS.md",
+          "CLAUDE.md",
+          ".mdkg/skills/registry.md",
+          ".agents/skills/author-mdkg-skill/SKILL.md",
+          ".agents/skills/build-pack-and-execute-task/SKILL.md",
+          ".agents/skills/pursue-mdkg-goal/SKILL.md",
+          ".agents/skills/pursue-mdkg-loop/SKILL.md",
+          ".agents/skills/select-work-and-ground-context/SKILL.md",
+          ".agents/skills/verify-close-and-checkpoint/SKILL.md",
+          ".claude/skills/author-mdkg-skill/SKILL.md",
+          ".claude/skills/build-pack-and-execute-task/SKILL.md",
+          ".claude/skills/pursue-mdkg-goal/SKILL.md",
+          ".claude/skills/pursue-mdkg-loop/SKILL.md",
+          ".claude/skills/select-work-and-ground-context/SKILL.md",
+          ".claude/skills/verify-close-and-checkpoint/SKILL.md",
+          ".mdkg/init-manifest.json"
+        ],
+        "git_index_unchanged": true
+      }
+    ],
+    "note": "Actual offline installed published CLI creates legacy fixtures; candidate installed CLI performs reviewed upgrades. Synthetic source only; no canonical migration."
+  },
+  "reproduction": {
+    "harness_sha256": "900559e174a030a77605439f1d46b0681849798aeb245a97ba65d96c3a69f490",
+    "procedure": "Install the recorded published tarball and candidate into separate isolated prefixes with npm offline. Run retained synthetic bootstrap harness with process.execPath and isolated Git config, plus installed-source upgrade fault-injection suites. Do not run against a consumer checkout.",
+    "local_harness": "published-bootstrap.cjs retained in the owned temporary qualification directory"
+  },
+  "limitations": [
+    "Only Node 26.0.0 qualified here; exact supported Node 24 matrix, full identity fixtures and manifest-backed release ladder remain bug-7/task-826.",
+    "Task-828 independent final review and exact artifact seal remain open.",
+    "Skill-resource and public DB payload policy decisions remain bug-15 and bug-17; regular bootstrap success does not waive them."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local documentation/tests/evidence/projections and local commit; fixture-only initialization/upgrades, no canonical startup rewrite, migration, skill sync, bundle refresh, remote Git or publication.",
+  "skill_candidates": []
+}
