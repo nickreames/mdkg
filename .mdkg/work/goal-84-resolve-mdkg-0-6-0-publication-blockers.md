@@ -6,8 +6,8 @@ status: progress
 priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, test-483, task-828]
-active_node: bug-25
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, test-483, task-828]
+active_node: bug-30
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -102,6 +102,23 @@ accounting remains twelve of thirteen locally fixed. No new skill candidate.
 # Completion Evidence
 
 Pending full end-condition evidence.
+
+## 2026-09-09 Complete Ordinary Test Discovery
+
+Bugs 30-31 correct shell-dependent test discovery and two stale startup/skill
+assertions against accepted compact/authority-safe contracts. Before: eight
+compiled root test files omitted by ordinary npm tests. Now: all 123 compiled
+and three source MJS files execute, with 1212 passing tests and no failures or
+skips on Node 26.0.0. The 21 focused checks also pass on Node 24.18.0.
+Missing/orphaned compilation, inherited worker context, lost discovery steps
+and unsafe patch-only mutation guidance fail closed. No skills, instructions,
+coverage floors or coverage denominator changed.
+
+Evidence: .mdkg/artifacts/goal-84/bugs-30-31-verification.json. Historical
+1130-plus-26 ordinary-suite receipts did not include the omitted root TS
+families; do not treat those earlier counts as complete qualification. Original
+security counts remain twelve of thirteen locally fixed. Final task-828,
+task-829, installed qualification and release seal remain required.
 
 ## 2026-09-09 Site Cache Verification
 

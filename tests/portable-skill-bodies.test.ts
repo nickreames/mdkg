@@ -28,7 +28,8 @@ const portableBehavior: Record<(typeof exactPublic)[number], string[]> = {
   "build-pack-and-execute-task": [
     "mdkg pack",
     "Keep this stage patch-only",
-    "mdkg archive compress --all",
+    "separately authorized archive/bundle refresh",
+    "do not infer that authority from the patch-only stage",
   ],
   "pursue-mdkg-goal": [
     "explicit goal QID",
@@ -62,6 +63,14 @@ function readSkill(root: string, slug: string): string {
   return fs.readFileSync(skillPath(root, slug), "utf8");
 }
 
+function assertPatchOnlyAuthority(source: string): void {
+  const body = source.replace(/\s+/g, " ");
+  assert.match(body, /Keep this stage patch-only/);
+  assert.match(body, /hand that to the orchestrator stage for separately authorized archive\/bundle refresh/);
+  assert.match(body, /do not infer that authority from the patch-only stage/);
+  assert.doesNotMatch(body, /mdkg archive compress --all|mdkg bundle create/);
+}
+
 test("all configured skill mirrors exactly match the eight canonical bodies", () => {
   for (const slug of [...exactPublic, ...repositoryOnly]) {
     const canonical = readSkill(".mdkg/skills", slug);
@@ -75,12 +84,24 @@ test("six public candidates are exact portable bodies and two repository skills 
     const canonical = readSkill(".mdkg/skills", slug);
     assert.equal(readSkill("assets/init/skills/default", slug), canonical, `public drift: ${slug}`);
     assert.deepEqual(portableSkillBodyDiagnostics(canonical), [], `non-portable public body: ${slug}`);
+    if (slug === "build-pack-and-execute-task") assertPatchOnlyAuthority(canonical);
     for (const behavior of portableBehavior[slug]) {
       assert.match(canonical, new RegExp(behavior.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
     }
   }
   for (const slug of repositoryOnly) {
     assert.equal(fs.existsSync(path.join(repoRoot, "assets", "init", "skills", "default", slug)), false);
+  }
+});
+
+test("patch-only authority gate rejects missing delegation boundaries and direct mutation commands", () => {
+  const source = readSkill(".mdkg/skills", "build-pack-and-execute-task");
+  assertPatchOnlyAuthority(source);
+  for (const required of ["Keep this stage patch-only", "separately authorized archive/bundle refresh", "do not infer that authority from the patch-only stage"]) {
+    assert.throws(() => assertPatchOnlyAuthority(source.replace(required, "")));
+  }
+  for (const forbidden of ["mdkg archive compress --all", "mdkg bundle create --profile private"]) {
+    assert.throws(() => assertPatchOnlyAuthority(source + "\n" + forbidden));
   }
 });
 
