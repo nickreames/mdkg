@@ -8,6 +8,8 @@ import {
   authorizeOperatorSelectedExternalPath,
 } from "../core/filesystem_authority";
 import { atomicWriteFile } from "../util/atomic";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
+import { absoluteWorkspaceDocumentOwner } from "../graph/workspace_ownership";
 import { buildCapabilitiesIndex } from "../graph/capabilities_indexer";
 import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
@@ -336,15 +338,15 @@ function sourceInfo(root: string): BundleManifest["source"] {
 }
 
 function workspaceMdkgRoot(root: string, entry: WorkspaceConfig): string {
-  return path.resolve(root, entry.path, entry.mdkg_dir);
+  return path.resolve(root, workspaceDocumentRelativePath(entry.path, entry.mdkg_dir));
 }
 
 function workspacePrefix(entry: WorkspaceConfig): string {
-  const wsPath = entry.path === "." ? "" : `${toPosixPath(entry.path).replace(/\/+$/, "")}/`;
-  return `${wsPath}${toPosixPath(entry.mdkg_dir).replace(/^\/+|\/+$/g, "")}/`;
+  return `${workspaceDocumentRelativePath(entry.path, entry.mdkg_dir)}/`;
 }
 
-function listFilesRecursive(dir: string): string[] {
+function listFilesRecursive(dir: string, owns: (file: string) => boolean = () => true): string[] {
+  if (!owns(dir)) return [];
   if (!fs.existsSync(dir)) {
     return [];
   }
@@ -352,8 +354,9 @@ function listFilesRecursive(dir: string): string[] {
   const files: string[] = [];
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
+    if (!owns(fullPath)) continue;
     if (entry.isDirectory()) {
-      files.push(...listFilesRecursive(fullPath));
+      files.push(...listFilesRecursive(fullPath, owns));
     } else if (entry.isFile()) {
       files.push(fullPath);
     }
@@ -520,10 +523,11 @@ function filterIndex(index: Index, config: Config, selectedAliases: Set<string>,
 
 function buildBundleSkillsIndex(root: string, config: Config, selectedAliases: Set<string>): SkillsIndex {
   const skills: SkillsIndex["skills"] = {};
+  const owner = absoluteWorkspaceDocumentOwner(root, config);
   for (const alias of Array.from(selectedAliases).sort()) {
     const workspace = config.workspaces[alias];
     const skillsRoot = path.join(workspaceMdkgRoot(root, workspace), "skills");
-    for (const file of listSkillMarkdownFiles(skillsRoot)) {
+    for (const file of listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === alias)) {
       const entry = buildSkillIndexEntryForWorkspace(root, alias, file.slug, file.filePath);
       const key = alias === "root" ? file.slug : `${alias}:${file.slug}`;
       skills[key] = entry;
@@ -736,6 +740,7 @@ function resolveBundlePath(root: string, value: string): string {
 
 export function buildBundle(options: BundleCreateCommandOptions): BundleBuildResult {
   const config = loadConfig(options.root);
+  const owner = absoluteWorkspaceDocumentOwner(options.root, config);
   const profile = normalizeProfile(options.profile, config.bundles.default_profile);
   const requestedAliases = selectedWorkspaceAliases(config, options.ws);
   const selectedAliases = filterAliasesForProfile(config, requestedAliases, profile);
@@ -757,7 +762,7 @@ export function buildBundle(options: BundleCreateCommandOptions): BundleBuildRes
     const workspace = config.workspaces[alias];
     const wsRoot = workspaceMdkgRoot(options.root, workspace);
     const wsPrefix = workspacePrefix(workspace);
-    for (const filePath of listFilesRecursive(wsRoot)) {
+    for (const filePath of listFilesRecursive(wsRoot, (file) => owner(file) === alias)) {
       const rel = relativePath(options.root, filePath);
       if (isExcludedRelativePath(rel)) {
         continue;

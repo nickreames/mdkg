@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
 import { configPath } from "../core/paths";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
+import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 import { writeCacheFile } from "./cache_output";
 import { listWorkspaceDocFiles } from "./workspace_files";
 import { readGraphFormat } from "./identity";
@@ -30,7 +32,8 @@ function mtimeMs(filePath: string): number {
   return fs.statSync(filePath).mtimeMs;
 }
 
-function listFilesAndDirectories(dir: string): string[] {
+function listFilesAndDirectories(dir: string, owns: (file: string) => boolean): string[] {
+  if (!owns(dir)) return [];
   if (!fs.existsSync(dir)) {
     return [];
   }
@@ -38,8 +41,9 @@ function listFilesAndDirectories(dir: string): string[] {
   const items: string[] = [dir];
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
+    if (!owns(fullPath)) continue;
     if (entry.isDirectory()) {
-      items.push(...listFilesAndDirectories(fullPath));
+      items.push(...listFilesAndDirectories(fullPath, owns));
       continue;
     }
     if (entry.isFile()) {
@@ -49,13 +53,13 @@ function listFilesAndDirectories(dir: string): string[] {
   return items;
 }
 
-function workspaceSkillsRoots(root: string, config: Config): string[] {
+function workspaceSkillsRoots(root: string, config: Config): Array<{ alias: string; root: string }> {
   return Object.keys(config.workspaces)
     .sort()
     .filter((alias) => config.workspaces[alias].enabled)
     .map((alias) => {
       const workspace = config.workspaces[alias];
-      return path.resolve(root, workspace.path, workspace.mdkg_dir, "skills");
+      return { alias, root: path.resolve(root, workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "skills")) };
     });
 }
 
@@ -77,8 +81,9 @@ export function isCapabilitiesIndexStale(root: string, config: Config): boolean 
     }
   }
 
-  for (const skillsRoot of workspaceSkillsRoots(root, config)) {
-    for (const item of listFilesAndDirectories(skillsRoot)) {
+  const owner = absoluteWorkspaceDocumentOwner(root, config);
+  for (const { alias, root: skillsRoot } of workspaceSkillsRoots(root, config)) {
+    for (const item of listFilesAndDirectories(skillsRoot, (file) => owner(file) === alias)) {
       if (mtimeMs(item) > indexMtime) {
         return true;
       }

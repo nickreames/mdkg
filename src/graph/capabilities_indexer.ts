@@ -2,6 +2,8 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { Config, WorkspaceConfig } from "../core/config";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
+import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 import { FrontmatterValue } from "./frontmatter";
 import { identityRef, NodeIdentity } from "./identity";
 import { resolveQid } from "../util/qid";
@@ -445,7 +447,7 @@ function skillCapabilityRecord(
 }
 
 function workspaceSkillsRoot(root: string, entry: WorkspaceConfig): string {
-  return path.resolve(root, entry.path, entry.mdkg_dir, "skills");
+  return path.resolve(root, workspaceDocumentRelativePath(entry.path, entry.mdkg_dir, "skills"));
 }
 
 function buildWorkspaceSkillCapabilities(
@@ -454,13 +456,14 @@ function buildWorkspaceSkillCapabilities(
   indexedAt: string
 ): CapabilityRecord[] {
   const records: CapabilityRecord[] = [];
+  const owner = absoluteWorkspaceDocumentOwner(root, config);
   for (const alias of Object.keys(config.workspaces).sort()) {
     const workspace = config.workspaces[alias];
     if (!workspace.enabled) {
       continue;
     }
     const skillsRoot = workspaceSkillsRoot(root, workspace);
-    for (const candidate of listSkillMarkdownFiles(skillsRoot)) {
+    for (const candidate of listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === alias)) {
       const skill = buildSkillIndexEntryForWorkspace(
         root,
         alias,

@@ -1,5 +1,7 @@
 import path from "path";
 import { validateConfigSchema } from "../core/config";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
+import { workspaceDocumentOwner } from "./workspace_ownership";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
 import { parseFrontmatter } from "./frontmatter";
@@ -20,6 +22,7 @@ export function planTransportIdentity(entries: Map<string, Buffer>, mode: "clone
   const configBytes = entries.get(".mdkg/config.json");
   if (!configBytes) throw new UsageError("identity transport requires the owning graph config");
   const config = validateConfigSchema(JSON.parse(configBytes.toString("utf8")));
+  const owner = workspaceDocumentOwner(config);
   for (const file of entries.keys()) {
     // These are checkout execution state, not knowledge or portable provenance.
     if (/(^|\/)\.mdkg\/state\//.test(file) || file.startsWith(`${config.db.root_path}/runtime/`)) skipped.add(file);
@@ -34,8 +37,9 @@ export function planTransportIdentity(entries: Map<string, Buffer>, mode: "clone
   const aliases = new Set<string>();
   for (const [ws, workspace] of Object.entries(config.workspaces)) {
     if (!workspace.enabled) continue;
-    const prefix = path.posix.join(workspace.path, workspace.mdkg_dir);
+    const prefix = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir);
     for (const [file, data] of entries) {
+      if (owner(file) !== ws) continue;
       const local = path.posix.relative(prefix, file);
       if (!/^(core|design|work|archive)\/.+\.md$/.test(local) || local === "core/core.md" || local.split("/").includes("source")) continue;
       const content = data.toString("utf8");
