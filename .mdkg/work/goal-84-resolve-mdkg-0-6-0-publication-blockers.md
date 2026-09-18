@@ -6,7 +6,7 @@ status: progress
 priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, test-483, task-828]
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, test-483, task-828]
 active_node: bug-7
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
@@ -443,3 +443,20 @@ expectation was corrected, with no new product defect. Twenty-six bug lanes
 remain locally done, bug-7 progress and bug-17 blocked. Private graph rehearsal,
 scale, remaining installed coverage and all final security/release gates remain.
 No compatibility policy or publication authority inferred; candidates none.
+
+## 2026-09-09 Complete CLI Output Verification
+
+Bug-33 was discovered during private graph migration qualification: both published
+0.5.2 and the candidate truncate large piped output despite exit zero. It is now
+locally verified in chk-592 with eight source regressions, 24 installed cases,
+79 focused tests and 1349 full-suite passes. CLI/docs and release-contract checks
+pass. Original Standard security accounting remains 12 of 13 locally fixed;
+bug-33 is a separately discovered behavioral defect, not another scan finding.
+Twenty-seven of twenty-nine bug lanes are locally done; bug-7 and bug-17 remain.
+
+The complete frozen migration preview exposes eight reference-binding blockers
+recorded under bug-7. Neither graph was migrated, and no historical reference
+was synthesized or removed. Continue classification and remaining qualification;
+old-writer, killed-writer and public-bundle decisions remain unaccepted. Final
+independent security review, full release ladder, metadata and sealing are open.
+Skill candidates none; no remote action, release seal or publication readiness.

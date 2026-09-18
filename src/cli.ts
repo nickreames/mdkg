@@ -3825,10 +3825,14 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
 
 export function main(argv: string[] = process.argv.slice(2)): void {
   runCliAsync(argv, { cwd: () => process.cwd() })
-    .then((code) => process.exit(code))
+    .then((code) => {
+      // Pipes may still have pending stdout/stderr writes after a command returns.
+      // Let Node drain them naturally instead of truncating a successful receipt.
+      process.exitCode = code;
+    })
     .catch((err) => {
       console.error(err instanceof Error ? err.message : String(err));
-      process.exit(4);
+      process.exitCode = 4;
     });
 }
 
