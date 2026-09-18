@@ -2,22 +2,22 @@
 id: bug-46
 type: bug
 title: Updating a private graph file can widen its filesystem permissions
-status: backlog
+status: blocked
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-46-investigation.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, chk-623]
 context_refs: [goal-86, goal-84, task-837]
-evidence_refs: []
+evidence_refs: [chk-623]
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-18
 ---
 # Overview
 
@@ -114,5 +114,33 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-18: Reproduced on main754710c7 with built-source Node26.0.0,
+macOS arm64. Seven cases confirm both helpers widen0600 to0644, drop an
+explicit deny-read ACL while retaining0644, and replace a differing owning
+group. A real disposable task update also widens0600 to0644. Temporary
+descriptors are already0644 before content writes. All six hard-linked peer
+controls preserve their original bytes and metadata. Only synthetic data was
+used; no cross-principal access or real disclosure is claimed.
+
+One fresh read-only prepatch investigation confirmed the shared sinks and
+compatibility constraints. Explicit0600 journal requests must remain effective;
+mirror0775 under restrictive umask and pack/hardlink behavior must remain valid.
+No production patch, installed-artifact qualification or candidate review exists.
+
+Blocked on a material filesystem architecture decision. The current runtime
+has no third-party dependencies and uses public Node APIs, which do not supply
+the needed portable ACL operations. Mode-only changes, in-place overwrite,
+post-publication chmod and ordinary copy are not complete substitutes. The
+separately tracked Bug47 also requires descriptor-anchored containment or a
+verified non-replaceable namespace; repeated pathname checks are not that proof.
+
+Question for Nick: may mdkg add a narrowly scoped OS-native filesystem layer,
+with explicit packaging/build/platform qualification? Recommendation: approve
+a bounded design and feasibility proof, then settle distribution and supported
+fallback behavior before implementation. A capability-checked system-tool
+bridge is an alternative, but adds runtime prerequisites and performance/
+portability costs; neither approach is approved or qualified by this record.
+Do not weaken the existing security invariant or treat alpha status as a waiver.
+
+Chk623 and bug-46-investigation.json bind exact evidence, source hashes,
+version-assessment limits and the pending decision. Goal85 remains paused.

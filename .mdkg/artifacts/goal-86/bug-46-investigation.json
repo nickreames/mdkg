@@ -1,0 +1,307 @@
+{
+  "kind": "goal86-bug46-investigation-and-decision-gate",
+  "version": 1,
+  "created_at": "2026-09-18",
+  "qid": "root:bug-46",
+  "scan_id": "9d6a2ca2-4273-45de-9013-20452c7651d0",
+  "finding_id": "g86-baseline-003",
+  "outcome": "BLOCKED_ARCHITECTURE_DECISION_NOT_FIXED",
+  "source_base": "754710c7023583021a466823cec6a88a432b1b27",
+  "authority": "Existing Goal86 run: read source, synthetic local reproduction, bounded read-only investigator, sanitized evidence and reviewed local evidence commit. No new runtime/native dependency approved.",
+  "invariant": "Replacement must preserve applicable mode, owner/group and ACL restrictions before writing or publishing sensitive bytes, or fail closed without altering the original. Atomicity and hard-linked-peer independence remain required.",
+  "source": [
+    {
+      "path": "src/util/atomic.ts",
+      "sha256": "27f0961e2ccd09d9d9b21e884024a8bbc54fe58eb3f725160a7e66417c033150",
+      "baseline_blob": "319a48ddce9260f2ef588b317c78e175f6bdd3e3",
+      "baseline_sha256": "6460539b010af3b7a27318ebe48f08324472b1efb0ceecbd119cec9714b12499"
+    },
+    {
+      "path": "src/core/filesystem_authority.ts",
+      "sha256": "826cdb2f9e57b5e224bfe1c06ca1ea46820b9642810ae7b2b472f050dcea606e",
+      "baseline_blob": "61fe6d405fd56018fccfd14108e8557cfb8da448",
+      "baseline_sha256": "bf8eb1d5959e4bf9905c3e905eaf8a710248e3d6daf063b946570bcd47b0912f"
+    }
+  ],
+  "reproduction": {
+    "source": "754710c7023583021a466823cec6a88a432b1b27",
+    "platform": "darwin",
+    "arch": "arm64",
+    "runtime": "v26.0.0",
+    "umask": "022",
+    "results": [
+      {
+        "helper": "contained",
+        "kind": "mode",
+        "before": {
+          "mode": "600",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "after": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "temporary": [
+          {
+            "at": "before sensitive write",
+            "mode": "644",
+            "uid": 501,
+            "gid": 0
+          }
+        ],
+        "peer_preserved": true
+      },
+      {
+        "helper": "contained",
+        "kind": "acl",
+        "before": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": [
+            " 0: FFFFEEEE-DDDD-CCCC-BBBB-AAAAFFFFFFFE deny read"
+          ]
+        },
+        "after": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "temporary": [
+          {
+            "at": "before sensitive write",
+            "mode": "644",
+            "uid": 501,
+            "gid": 0
+          }
+        ],
+        "peer_preserved": true
+      },
+      {
+        "helper": "contained",
+        "kind": "group",
+        "before": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 20,
+          "acl": []
+        },
+        "after": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "temporary": [
+          {
+            "at": "before sensitive write",
+            "mode": "644",
+            "uid": 501,
+            "gid": 0
+          }
+        ],
+        "peer_preserved": true
+      },
+      {
+        "helper": "general",
+        "kind": "mode",
+        "before": {
+          "mode": "600",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "after": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "temporary": [
+          {
+            "at": "before sensitive write",
+            "mode": "644",
+            "uid": 501,
+            "gid": 0
+          }
+        ],
+        "peer_preserved": true
+      },
+      {
+        "helper": "general",
+        "kind": "acl",
+        "before": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": [
+            " 0: FFFFEEEE-DDDD-CCCC-BBBB-AAAAFFFFFFFE deny read"
+          ]
+        },
+        "after": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "temporary": [
+          {
+            "at": "before sensitive write",
+            "mode": "644",
+            "uid": 501,
+            "gid": 0
+          }
+        ],
+        "peer_preserved": true
+      },
+      {
+        "helper": "general",
+        "kind": "group",
+        "before": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 20,
+          "acl": []
+        },
+        "after": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "temporary": [
+          {
+            "at": "before sensitive write",
+            "mode": "644",
+            "uid": 501,
+            "gid": 0
+          }
+        ],
+        "peer_preserved": true
+      },
+      {
+        "helper": "built-source-cli",
+        "kind": "task-update",
+        "before": {
+          "mode": "600",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        },
+        "after": {
+          "mode": "644",
+          "uid": 501,
+          "gid": 0,
+          "acl": []
+        }
+      }
+    ],
+    "classification": "Built-source helper and CLI reproduction; NOT installed-package qualification",
+    "cases": 7,
+    "confirmed_metadata_failures": 7,
+    "hardlink_controls_passed": 6,
+    "all_fixture_roots_removed": true,
+    "harness_sha256": "c2fcc99996df7ffc9acc91fa633e29fc72b3cd226b3c49930d3bba3d962d69a8",
+    "raw_receipt_sha256": "d3ccc57054292033112a4b401ba49e2baf7370ce89b15cf82c08d1d11934aa59",
+    "recipe": [
+      "In an owned /private/tmp root, create synthetic regular files under umask022. For each atomic helper, test a0600 file; a0644 file with macOS named-user nobody deny-read ACL; and a0644 file with an alternate supplementary group.",
+      "Create a hard-linked peer before each helper invocation. Capture mode/uid/gid and native ls -dlen ACL output before and after replacement; instrument fs.writeFileSync's open descriptor to inspect mode/ownership before synthetic content writes.",
+      "Initialize a separate disposable graph through built dist/cli.js init --graph-only; create task1; chmod its node0600; run task update task1 --priority2; inspect metadata.",
+      "Assert no fixture escape and preserve each peer's original content/metadata. Restore the process umask and remove only the exact owned mkdtemp roots."
+    ]
+  },
+  "review": {
+    "agent": "/root/bug46_boundary_review",
+    "mode": "One fresh read-only prepatch investigation",
+    "result": "Confirmed both helper sinks and task/goal/format/selection/cache callers; explicit0600 journal requests, mode-preserving mirrors and hardlink controls must remain. No candidate patch or candidate review exists."
+  },
+  "affected_versions": {
+    "current": "Current draft0.6.0 source reproduces on macOS arm64 Node26.0.0.",
+    "recorded_published_source": "Exact recorded0.5.2 revision867ac7099faaa0b8eeed1e167609e0e1e482d519 contains the same metadata-omitting atomic replacement pattern; blobs and hashes above.",
+    "limits": "No registry access, installed0.5.2 run, earlier-version range, real sensitive-data disclosure or cross-principal access test is claimed."
+  },
+  "design_gate": {
+    "existing_contract": "README and package.json promise zero third-party runtime dependencies; current implementation is TypeScript/Node. macOS/Linux acceptance is mandatory; Windows remains unqualified.",
+    "finding": "Node's inspected supported public filesystem surface provides mode/uid/gid operations but no portable ACL interface. libuv1.52.1 copyfile copies mode/data and ignores fchown failure; it does not establish complete ACL-preserving replacement. This is source analysis, not a proof that every possible implementation is unavailable.",
+    "rejected_shortcuts": [
+      "Mode-only preservation leaves demonstrated ACL and group failures unresolved.",
+      "In-place overwrite sacrifices atomic replacement and modifies hard-linked peers.",
+      "Post-rename chmod/chown exposes content before protection and can fail after replacing the original.",
+      "Path rechecks alone do not resolve separately tracked Bug47 ancestor-substitution races."
+    ],
+    "question": "May mdkg add a narrowly scoped OS-native filesystem layer, with explicit build/package/platform qualification, to preserve ACL/ownership and provide descriptor-anchored containment?",
+    "recommendation": "Approve a bounded native-layer design and feasibility proof first, then settle distribution and supported fallback behavior before implementation. Keep the existing no-waiver security invariant. Do not install or add a dependency without that architecture approval.",
+    "alternative": "A capability-checked platform-tool bridge may avoid distributing native binaries, but makes system tools part of the runtime contract, needs fail-closed behavior when unavailable and adds performance/portability costs. It is not yet qualified and is not automatically authorized.",
+    "related": "root:bug-47 has the same shared filesystem boundary, but its reproduction and remediation remain a separate finding, not completed by this investigation."
+  },
+  "official_references": [
+    "https://nodejs.org/download/release/v24.18.0/docs/api/fs.html",
+    "https://raw.githubusercontent.com/libuv/libuv/v1.52.1/src/unix/fs.c"
+  ],
+  "unverified": [
+    "A complete candidate fix",
+    "Installed artifact and Node24 reproduction for this finding",
+    "Linux x86_64/ARM64 ACL/ownership semantics",
+    "Effective access as another principal",
+    "Inherited ACL and metadata-failure injection",
+    "Bug47 race remediation",
+    "Final Task828 review, full ladder and artifact seal"
+  ],
+  "preserved": {
+    "selected_goal_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_db_sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle_sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "active_runtime_leases": 0,
+    "queue_count": 0,
+    "queue_message_count": 0,
+    "mutation_lock_present": false
+  },
+  "release_status": "NOT_READY; Goal85 remains paused. Broader documentation polish stays deferred; release-critical corrections remain required.",
+  "skill_coverage": [
+    "codex-security:fix-finding",
+    "source-grounded-diagnose-and-fix",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": [],
+  "exclusions": "No Bug46 source patch, native build/runtime dependency, configuration change, migration, bundle refresh, remote Git, push, tag, publication, provider/deployment or cross-project action.",
+  "validation": {
+    "full_graph": {
+      "errors": 0,
+      "warnings": 3,
+      "warning_kind": "Preserved stale imported-bundle warnings"
+    },
+    "changed_only": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite": {
+      "checks": 5,
+      "fresh": 5
+    },
+    "diff_check": "passed",
+    "source_hashes": "match base",
+    "source_test_rerun": "Not run for this evidence-only unit; no production source changed",
+    "final_release_acceptance": false
+  },
+  "git": {
+    "branch": "main",
+    "base": "754710c7023583021a466823cec6a88a432b1b27",
+    "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "ahead": 54,
+    "behind": 0,
+    "remote_verified": false,
+    "staging_before": [],
+    "excluded_generated_path": ".mdkg/index/mdkg.sqlite"
+  },
+  "commit_allowlist": [
+    ".mdkg/artifacts/goal-86/bug-46-investigation.json",
+    ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+    ".mdkg/work/chk-623-record-goal-86-security-progress-and-filesystem-architecture-decision-gate.md",
+    ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md"
+  ]
+}
