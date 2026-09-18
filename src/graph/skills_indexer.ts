@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
-import { readContainedFile } from "../core/filesystem_authority";
+import { forEachContainedDirectoryEntry, readContainedFile } from "../core/filesystem_authority";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 
@@ -45,20 +45,22 @@ export type SkillDocCandidate = {
   filePath: string;
 };
 
-export function listSkillMarkdownFiles(dir: string, owns: (file: string) => boolean = () => true): SkillDocCandidate[] {
+export function listSkillMarkdownFiles(dir: string, owns: (file: string) => boolean = () => true,
+  maxEntries?: number): SkillDocCandidate[] {
   if (!owns(dir)) return [];
   if (!fs.existsSync(dir)) {
     return [];
   }
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
   const files: SkillDocCandidate[] = [];
-  for (const entry of entries) {
+  let count = 0;
+  const visit = (entry: fs.Dirent) => {
+    if (maxEntries !== undefined && ++count > maxEntries) throw new Error(`${dir}: skill discovery exceeds entry limit`);
     if (!entry.isDirectory()) {
-      continue;
+      return;
     }
     const slug = entry.name.toLowerCase();
     const skillDir = path.join(dir, entry.name);
-    if (!owns(skillDir)) continue;
+    if (!owns(skillDir)) return;
     const canonicalPath = path.join(skillDir, "SKILL.md");
     const compatPath = path.join(skillDir, "SKILLS.md");
     const canonicalExists = owns(canonicalPath) && fs.existsSync(canonicalPath);
@@ -68,12 +70,14 @@ export function listSkillMarkdownFiles(dir: string, owns: (file: string) => bool
     }
     if (canonicalExists) {
       files.push({ slug, filePath: canonicalPath });
-      continue;
+      return;
     }
     if (compatExists) {
       files.push({ slug, filePath: compatPath });
     }
-  }
+  };
+  if (maxEntries === undefined) fs.readdirSync(dir, { withFileTypes: true }).forEach(visit);
+  else forEachContainedDirectoryEntry({ root: dir, relativePath: "." }, visit);
   files.sort((a, b) => a.slug.localeCompare(b.slug));
   return files;
 }
@@ -175,14 +179,15 @@ export function buildSkillIndexEntryForWorkspace(
   root: string,
   workspace: string,
   slug: string,
-  filePath: string
+  filePath: string,
+  readDocument?: (filePath: string) => string
 ): SkillIndexEntry {
   if (!SKILL_SLUG_RE.test(slug)) {
     throw new Error(`${filePath}: skill slug must be kebab-case`);
   }
 
   const relativePath = path.relative(root, filePath).split(path.sep).join("/");
-  const content = readContainedFile({ root, relativePath });
+  const content = readDocument ? readDocument(filePath) : readContainedFile({ root, relativePath });
   const { frontmatter } = parseFrontmatter(content, filePath);
   const name = requireString(frontmatter, "name", filePath);
   const description = requireString(frontmatter, "description", filePath);
@@ -221,10 +226,11 @@ export function buildSkillIndexEntry(root: string, slug: string, filePath: strin
   return buildSkillIndexEntryForWorkspace(root, "root", slug, filePath);
 }
 
-export function buildSkillsIndex(root: string, config: Config): SkillsIndex {
+export function buildSkillsIndex(root: string, config: Config,
+  options: { maxEntries?: number; readDocument?: (filePath: string) => string } = {}): SkillsIndex {
   const skillsRoot = resolveSkillsRoot(root, config);
   const owner = absoluteWorkspaceDocumentOwner(root, config);
-  const files = listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === "root");
+  const files = listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === "root", options.maxEntries);
   const skills: Record<string, SkillIndexEntry> = {};
 
   for (const file of files) {
@@ -232,7 +238,7 @@ export function buildSkillsIndex(root: string, config: Config): SkillsIndex {
     if (skills[slug]) {
       throw new Error(`${filePath}: duplicate skill slug ${slug}`);
     }
-    skills[slug] = buildSkillIndexEntry(root, slug, filePath);
+    skills[slug] = buildSkillIndexEntryForWorkspace(root, "root", slug, filePath, options.readDocument);
   }
 
   const sortedSkills: Record<string, SkillIndexEntry> = {};

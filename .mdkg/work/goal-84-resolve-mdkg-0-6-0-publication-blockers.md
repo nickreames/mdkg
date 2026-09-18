@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-6
+active_node: bug-15
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -186,3 +186,21 @@ bootstrap/upgrade tests and six CLI scenario groups, including actual published
 gates pass. Receipt: .mdkg/artifacts/goal-84/bug-6-verification.json. Bugs 5–6
 are locally fixed; bug-7/full behavioral and installed qualification, bugs 15/17
 policy decisions, and independent final verification remain. Nothing is published.
+
+## 2026-09-08 Skill Resource Verification and State Alignment
+
+Nick resolved the skill-resource bounds and public DB-payload export decisions.
+Bug-15 is locally verified with 44 focused and 44 installed cases, 1,018 source
+tests and 26 release/security-contract checks. Both independent candidate-review
+issues were reproduced and corrected. Receipt:
+.mdkg/artifacts/goal-84/bug-15-verification.json. Twelve of thirteen sealed
+security findings now have local fixes; bug-17 is the remaining security fix.
+Its accepted public omission/private portability contract is recorded on that
+node. Bug-7, full behavioral/installed qualification, task-828, ladder and seal
+remain incomplete. No publication readiness is implied.
+
+Git retains distilled intent and project memory; full operational/economic
+receipting belongs to consumers. One writer owns each agent graph; parent reads
+do not inherit child mutation authority. Consumer-specific coordination is a
+separate prompt for Nick to route, not public mdkg policy or a dispatched task.
+Protected selected/runtime/bundle state and generated SQLite custody persist.

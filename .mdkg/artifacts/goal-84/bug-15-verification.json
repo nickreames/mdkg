@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-15",
+  "goal": "root:goal-84",
+  "outcome": "fixed-locally",
+  "base_revision": "59e5930379e1237f03824b547ed44c32e01d6ac0",
+  "runtime": "v26.0.0",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "affected_version": "Current candidate reproduced. Cached integrity-bound published 0.5.2 dist/commands/skill_mirror.js contains the same stat-following resource roots and raw source/parity reads; source-confirmed affected, no fresh registry or published-runtime exploit claim.",
+  "files_sha256": {
+    "src/commands/skill_mirror.ts": "4c49a4958d19d81025f860f39a6c6cfb8010290d60cbbc2323e2b1e12f814266",
+    "src/graph/skills_indexer.ts": "fe69501263949e24401fd97e3ffa70b1df81828f721a7898cd6b3e44a6146585",
+    "tests/commands/skill_resource_containment.test.ts": "7d71cfe2233f0aa4ec0b8566fe6c70a2218ff23099926da8ff7139a09f4e7836",
+    "docs/src/content/docs/start-here/troubleshooting.md": "9f3a1b4c069855333290a5afa026a68153332079b4b898bf4c804922cf9c6770"
+  },
+  "security_invariant": "All selected canonical documents and resource trees are read through contained no-follow bounded readers into byte snapshots before mirror synchronization mutates targets. Materialization does not reopen sources; parity uses the same safe byte inventory.",
+  "accepted_policy": "Existing configurable index limits: 8 MiB/file, 512 MiB aggregate, 100000 entries including directories, depth 64 defaults. Explicit rejection, no truncation/deletion. No-target mode consumes no resources.",
+  "before": "10 of the initial 11 tests failed against baseline; original root links, nested/dangling links, missing limits and unsafe parity were reproduced.",
+  "review": {
+    "workflow": "One completed independent prepatch investigation and one fresh source-only candidate review",
+    "observations": [
+      "Early document parsing bypassed inventory bounds; focused regression reproduced then bounded snapshot reader was threaded into existing skill discovery/parser.",
+      "Current umask stripped existing mirror permissions during atomic replacement; focused regression reproduced then original mode was restored on the replacement inode."
+    ],
+    "disposition": "Both confirmed issues corrected and passing in focused and installed tests. Final exact-range task-828 review remains open."
+  },
+  "after": [
+    {
+      "command": "npm run build",
+      "result": "passed"
+    },
+    {
+      "command": "skill_resource_containment, skill_mirrors, skill_new, skill_validate, skills_indexer",
+      "result": "44 passed; includes 18 new regressions"
+    },
+    {
+      "command": "Offline installed candidate; same five suites",
+      "result": "44 passed, zero failures/skips; installed runtime manifest unchanged"
+    },
+    {
+      "command": "Serialized npm run test:built",
+      "result": "1018 source tests and 26 release/security-contract checks passed, zero failures/skips"
+    },
+    {
+      "command": "CLI/docs/graph/full and changed-only/DB verification/git diff --check",
+      "result": "passed; 494 documented examples; three inherited stale-subgraph warnings, zero changed-only warnings"
+    }
+  ],
+  "invalid_attempt": "A docs:check build overlapped one full-suite attempt and removed generated dist files, producing MODULE_NOT_FOUND/ENOENT failures. That attempt was invalidated; the standalone full-suite rerun passed.",
+  "installed_candidate": {
+    "sha256": "68d2ab4015bf99870ce245ef945d3e63830babbcd3cb776d8a03bf5d5e9a0e90",
+    "integrity": "sha512-mSAbadZyJqXx3Cq71ox8CpkyFvv5e0TiVrFg+mNlUDbg+VhhtoEzJNADOBr6QQc4bv+vEng1x7uqzbiwjVfDGg==",
+    "status": "Intermediate development package, not final 0.6.0 seal"
+  },
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "limitations": [
+    "Quiescent checkout required; no portable active ancestor-race immunity or extended ACL guarantee.",
+    "Only Node 26.0.0 verified in this fix; supported Node 24 matrix and final security diff review remain required.",
+    "No transaction promised across enclosing init or skill-new writes; mirror inventory precedes mirror synchronization writes.",
+    "bug-17 public DB export, bug-7 full installed qualification, task-828, full release ladder and final artifact seal remain open."
+  ],
+  "authority": "Scoped local source/tests/docs/evidence/projections and reviewed local commit only. No canonical mirror sync, bundle/subgraph refresh, selected-state changes, runtime DB mutation, remote Git, provider/deployment or publication.",
+  "skill_candidates": []
+}

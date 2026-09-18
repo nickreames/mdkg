@@ -5,7 +5,9 @@ import {
   atomicReplaceContainedFile,
   containedPathExists,
   ensureContainedDirectory,
+  forEachContainedDirectoryEntry,
   readContainedFile,
+  withContainedPathSink,
   withContainedTreeSink,
 } from "../core/filesystem_authority";
 import { buildSkillsIndex, resolveSkillsRoot, SKILL_SLUG_RE, SkillsIndex } from "../graph/skills_indexer";
@@ -32,11 +34,9 @@ type MirrorManifest = {
   managed_slugs: string[];
 };
 
-type SkillMirrorSource = {
-  slug: string;
-  sourceDir: string;
-  docPath: string;
-};
+type SkillTree = Map<string, Buffer | null>;
+type SkillMirrorSource = { slug: string; entries: SkillTree };
+type InventoryBudget = { bytes: number; entries: number };
 
 export type SyncSkillMirrorsOptions = {
   root: string;
@@ -117,194 +117,118 @@ function shouldCreateMirrorRoots(root: string, config?: Config): boolean {
   return resolveMirrorTargets(root, config).some((target) => fs.existsSync(target.rootDir) || fs.existsSync(target.skillsRoot));
 }
 
-function listAllowedEntries(dirPath: string): string[] {
-  if (!fs.existsSync(dirPath)) {
-    return [];
+// Retain bytes, not source paths: no source is reopened after mirror mutation
+// begins. The existing index limits also bound resource files, total bytes,
+// entries (including empty directories), and depth across all selected skills.
+function inventoryEntry(root: string, relativePath: string, key: string, entries: SkillTree,
+  config: Config, budget: InventoryBudget, depth: number, fileOnly = false): void {
+  if (++budget.entries > config.index.limits.max_files || depth > config.index.limits.max_depth) {
+    throw new UsageError(`${relativePath}: skill resource inventory exceeds entry/depth limit`);
   }
-  const entries: string[] = [];
-  const queue: string[] = [dirPath];
-  while (queue.length > 0) {
-    const current = queue.shift() as string;
-    const dirEntries = fs.readdirSync(current, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
-    for (const entry of dirEntries) {
-      const fullPath = path.join(current, entry.name);
-      const relPath = path.relative(dirPath, fullPath).replace(/\\/g, "/");
-      if (entry.isDirectory()) {
-        entries.push(`${relPath}/`);
-        queue.push(fullPath);
-      } else if (entry.isFile()) {
-        entries.push(relPath);
-      }
-    }
+  const input = { root, relativePath, pathSyntax: "native" as const };
+  const stat = withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => fs.lstatSync(absolutePath));
+  if (stat.isDirectory() && !fileOnly) {
+    entries.set(key, null);
+    forEachContainedDirectoryEntry(input, (entry) => {
+      inventoryEntry(root, path.join(relativePath, entry.name), path.join(key, entry.name), entries, config, budget, depth + 1);
+    });
+  } else {
+    const bytes = readContainedFile({ ...input,
+      maxBytes: Math.min(config.index.limits.max_file_bytes, config.index.limits.max_total_bytes - budget.bytes) }, null);
+    budget.bytes += bytes.length;
+    entries.set(key, bytes);
   }
-  return entries.sort();
-}
-
-function resolveSkillDocPath(skillDir: string): string {
-  const canonicalPath = path.join(skillDir, "SKILL.md");
-  const compatPath = path.join(skillDir, "SKILLS.md");
-  if (fs.existsSync(canonicalPath) && fs.existsSync(compatPath)) {
-    throw new UsageError(`${skillDir}: both SKILL.md and SKILLS.md exist; fix the canonical skill first`);
-  }
-  if (fs.existsSync(canonicalPath)) {
-    return canonicalPath;
-  }
-  if (fs.existsSync(compatPath)) {
-    return compatPath;
-  }
-  throw new UsageError(`${skillDir}: missing SKILL.md or SKILLS.md`);
 }
 
 function loadCanonicalSources(root: string, config: Config): SkillMirrorSource[] {
-  const index = buildSkillsIndex(root, config);
-  return Object.values(index.skills)
-    .sort((a, b) => a.slug.localeCompare(b.slug))
-    .map((entry) => {
-      const docPath = path.resolve(root, entry.path);
-      return {
-        slug: entry.slug,
-        sourceDir: path.dirname(docPath),
-        docPath,
-      };
-    });
-}
-
-function writeFileIfChanged(srcPath: string, destPath: string): void {
-  const next = fs.readFileSync(srcPath);
-  if (fs.existsSync(destPath) && fs.statSync(destPath).isFile()) {
-    const current = fs.readFileSync(destPath);
-    if (current.equals(next)) {
-      return;
+  const budget = { bytes: 0, entries: 0 };
+  const documents = new Map<string, SkillTree>();
+  // Discovery and parsing must consume the same bounded snapshot as projection,
+  // rather than parsing an unbounded document before enforcing resource limits.
+  containedPathExists({ root, relativePath: path.relative(root, resolveSkillsRoot(root, config)), pathSyntax: "native" });
+  const index = buildSkillsIndex(root, config, {
+    maxEntries: config.index.limits.max_files,
+    readDocument: (filePath) => {
+      const entries: SkillTree = new Map();
+      const relativePath = path.relative(root, filePath);
+      inventoryEntry(root, relativePath, "SKILL.md", entries, config, budget, 0, true);
+      documents.set(relativePath, entries);
+      return (entries.get("SKILL.md") as Buffer).toString("utf8");
+    },
+  });
+  return Object.values(index.skills).sort((a, b) => a.slug.localeCompare(b.slug)).map((entry) => {
+    const entries = documents.get(entry.path) as SkillTree;
+    for (const name of ALLOWED_ROOT_ENTRIES.slice(1)) {
+      const relativePath = path.join(path.dirname(entry.path), name);
+      const input = { root, relativePath, pathSyntax: "native" as const };
+      if (!containedPathExists(input)) continue;
+      const stat = withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => fs.lstatSync(absolutePath));
+      // Historical regular files at resource-directory names are not projected.
+      // Links and special files are never silently accepted.
+      if (stat.isFile()) continue;
+      inventoryEntry(root, relativePath, name, entries, config, budget, 0);
     }
-  }
-  fs.mkdirSync(path.dirname(destPath), { recursive: true });
-  fs.writeFileSync(destPath, next);
+    return { slug: entry.slug, entries };
+  });
 }
 
-function syncDir(srcDir: string, destDir: string): void {
+function materializeSkillMirror(root: string, source: SkillMirrorSource, destDir: string): void {
   fs.mkdirSync(destDir, { recursive: true });
-
-  const sourceEntries = fs.readdirSync(srcDir, { withFileTypes: true });
-  const sourceNames = new Set(sourceEntries.map((entry) => entry.name));
-  if (fs.existsSync(destDir)) {
-    for (const existing of fs.readdirSync(destDir)) {
-      if (!sourceNames.has(existing)) {
-        fs.rmSync(path.join(destDir, existing), { recursive: true, force: true });
-      }
+  // Destination ancestry/tree was validated by the caller. Prune only this
+  // managed skill, retaining directories and byte-identical files in place.
+  const prune = (dir: string, prefix: string) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const key = path.join(prefix, entry.name), absolute = path.join(dir, entry.name);
+      const expected = source.entries.get(key);
+      if (expected === undefined || entry.isDirectory() !== (expected === null)) {
+        fs.rmSync(absolute, { recursive: true, force: true });
+      } else if (entry.isDirectory()) prune(absolute, key);
     }
-  }
-
-  for (const entry of sourceEntries) {
-    const srcPath = path.join(srcDir, entry.name);
-    const destPath = path.join(destDir, entry.name);
-    if (entry.isDirectory()) {
-      syncDir(srcPath, destPath);
-    } else if (entry.isFile()) {
-      writeFileIfChanged(srcPath, destPath);
+  };
+  prune(destDir, "");
+  for (const [key, bytes] of [...source.entries].sort(([a], [b]) => a.localeCompare(b))) {
+    const relativePath = path.relative(root, path.join(destDir, key));
+    const input = { root, relativePath, pathSyntax: "native" as const };
+    if (bytes === null) { ensureContainedDirectory(input); continue; }
+    let mode: number | undefined;
+    if (containedPathExists(input)) {
+      const stat = fs.lstatSync(path.join(root, relativePath));
+      mode = stat.mode & 0o777;
+      if (!stat.isFile()) throw new UsageError(`${relativePath}: managed mirror target must be a regular file`);
+      if (stat.size === bytes.length && readContainedFile({ ...input, maxBytes: bytes.length }, null).equals(bytes)) continue;
     }
-  }
-}
-
-function materializeSkillMirror(source: SkillMirrorSource, destDir: string): void {
-  fs.mkdirSync(destDir, { recursive: true });
-
-  const expectedRootEntries = new Set<string>(["SKILL.md"]);
-  for (const entry of ["references", "assets", "scripts"]) {
-    const srcPath = path.join(source.sourceDir, entry);
-    if (fs.existsSync(srcPath) && fs.statSync(srcPath).isDirectory()) {
-      expectedRootEntries.add(entry);
-    }
-  }
-
-  for (const existing of fs.readdirSync(destDir)) {
-    if (!expectedRootEntries.has(existing)) {
-      fs.rmSync(path.join(destDir, existing), { recursive: true, force: true });
-    }
-  }
-
-  writeFileIfChanged(source.docPath, path.join(destDir, "SKILL.md"));
-  for (const entry of ["references", "assets", "scripts"]) {
-    const srcPath = path.join(source.sourceDir, entry);
-    const destPath = path.join(destDir, entry);
-    if (fs.existsSync(srcPath) && fs.statSync(srcPath).isDirectory()) {
-      syncDir(srcPath, destPath);
-    } else if (fs.existsSync(destPath)) {
-      fs.rmSync(destPath, { recursive: true, force: true });
-    }
+    ensureContainedDirectory({ root, relativePath: path.dirname(relativePath), pathSyntax: "native" });
+    atomicReplaceContainedFile({ ...input, mode }, bytes);
+    // O_CREAT applies the current umask even to an explicit mode. Preserve the
+    // existing mirror's permissions after replacing its inode, as in-place
+    // updates did, without modifying a hard-linked peer.
+    if (mode !== undefined) withContainedPathSink({ ...input, operation: "replace" }, ({ absolutePath }) => fs.chmodSync(absolutePath, mode));
   }
 }
 
-function collectExpectedSkillTree(source: SkillMirrorSource): Map<string, string> {
-  const expected = new Map<string, string>();
-  expected.set("SKILL.md", fs.readFileSync(source.docPath, "utf8"));
-  for (const entry of ["references", "assets", "scripts"]) {
-    const srcPath = path.join(source.sourceDir, entry);
-    if (!fs.existsSync(srcPath) || !fs.statSync(srcPath).isDirectory()) {
-      continue;
-    }
-    expected.set(`${entry}/`, "dir");
-    for (const relPath of listAllowedEntries(srcPath)) {
-      const absolute = path.join(srcPath, relPath.replace(/\/$/, ""));
-      expected.set(`${entry}/${relPath}`, relPath.endsWith("/") ? "dir" : fs.readFileSync(absolute, "utf8"));
-    }
-  }
-  return expected;
-}
-
-function collectActualSkillTree(destDir: string): { entries: Map<string, string>; hasUnexpectedRootEntry: boolean } {
-  const entries = new Map<string, string>();
-  if (!fs.existsSync(destDir)) {
-    return { entries, hasUnexpectedRootEntry: false };
-  }
-
-  const rootEntries = fs.readdirSync(destDir, { withFileTypes: true });
-  let hasUnexpectedRootEntry = false;
-  for (const entry of rootEntries) {
-    if (!ALLOWED_ROOT_ENTRIES.includes(entry.name)) {
-      hasUnexpectedRootEntry = true;
-      continue;
-    }
-    const fullPath = path.join(destDir, entry.name);
-    if (entry.isFile()) {
-      entries.set(entry.name, fs.readFileSync(fullPath, "utf8"));
-      continue;
-    }
-    if (!entry.isDirectory()) {
-      hasUnexpectedRootEntry = true;
-      continue;
-    }
-    entries.set(`${entry.name}/`, "dir");
-    for (const relPath of listAllowedEntries(fullPath)) {
-      const absolute = path.join(fullPath, relPath.replace(/\/$/, ""));
-      entries.set(`${entry.name}/${relPath}`, relPath.endsWith("/") ? "dir" : fs.readFileSync(absolute, "utf8"));
-    }
-  }
-
-  return { entries, hasUnexpectedRootEntry };
-}
-
-function isManagedSkillTreeInSync(source: SkillMirrorSource, destDir: string): boolean {
-  const expected = collectExpectedSkillTree(source);
-  const actual = collectActualSkillTree(destDir);
-  if (actual.hasUnexpectedRootEntry) {
-    return false;
-  }
-  if (expected.size !== actual.entries.size) {
-    return false;
-  }
-  for (const [relPath, content] of expected.entries()) {
-    if (!actual.entries.has(relPath) || actual.entries.get(relPath) !== content) {
-      return false;
-    }
+function isManagedSkillTreeInSync(root: string, source: SkillMirrorSource, destDir: string, config: Config,
+  budget: InventoryBudget): boolean {
+  const actual: SkillTree = new Map();
+  let unexpected = false;
+  forEachContainedDirectoryEntry({ root, relativePath: path.relative(root, destDir), pathSyntax: "native" }, (entry) => {
+    if (!ALLOWED_ROOT_ENTRIES.includes(entry.name)) { unexpected = true; return; }
+    inventoryEntry(root, path.relative(root, path.join(destDir, entry.name)), entry.name, actual, config, budget, 0);
+  });
+  if (unexpected || source.entries.size !== actual.size) return false;
+  for (const [key, bytes] of source.entries) {
+    const current = actual.get(key);
+    if (bytes === null ? current !== null : !Buffer.isBuffer(current) || !bytes.equals(current)) return false;
   }
   return true;
 }
 
 export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMirrorsResult {
-  const sources = loadCanonicalSources(options.root, options.config);
   const createRoots = Boolean(options.createRoots);
   const force = Boolean(options.force);
-  const targets = resolveMirrorTargets(options.root, options.config);
+  const targets = resolveMirrorTargets(options.root, options.config).filter((target) =>
+    createRoots || fs.existsSync(target.skillsRoot) || fs.existsSync(target.rootDir));
+  if (targets.length === 0) return { synced: 0, pruned: 0, targets: 0 };
+  const sources = loadCanonicalSources(options.root, options.config);
   let synced = 0;
   let pruned = 0;
   let touchedTargets = 0;
@@ -329,7 +253,7 @@ export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMir
               `${path.relative(options.root, destDir)} already exists and is not mdkg-managed; rerun \`mdkg skill sync --force\` to replace it`
             );
           }
-          materializeSkillMirror(source, destDir);
+          materializeSkillMirror(options.root, source, destDir);
           managed.add(source.slug);
           synced += 1;
         }
@@ -383,7 +307,8 @@ export function shouldMaintainSkillMirrors(root: string, config?: Config): boole
 }
 
 export function auditSkillMirrors(root: string, config: Config): string[] {
-  const shouldAudit = shouldCreateMirrorRoots(root, config);
+  const targets = resolveMirrorTargets(root, config);
+  const shouldAudit = targets.length > 0 && shouldCreateMirrorRoots(root, config);
   if (!shouldAudit) {
     return [];
   }
@@ -392,7 +317,8 @@ export function auditSkillMirrors(root: string, config: Config): string[] {
   const sources = loadCanonicalSources(root, config);
   const sourceBySlug = new Map(sources.map((source) => [source.slug, source]));
 
-  for (const target of resolveMirrorTargets(root, config)) {
+  for (const target of targets) {
+    const budget = { bytes: 0, entries: 0 };
     if (!fs.existsSync(target.skillsRoot)) {
       warnings.push(`${path.relative(root, target.skillsRoot)}: mirror root missing; run \`mdkg skill sync\``);
       continue;
@@ -413,7 +339,7 @@ export function auditSkillMirrors(root: string, config: Config): string[] {
         warnings.push(`${path.relative(root, destDir)}: conflicting unmanaged mirror; rerun \`mdkg skill sync --force\` to replace it`);
         continue;
       }
-      if (!isManagedSkillTreeInSync(source, destDir)) {
+      if (!isManagedSkillTreeInSync(root, source, destDir, config, budget)) {
         warnings.push(`${path.relative(root, destDir)}: mirrored skill drift detected; run \`mdkg skill sync\``);
       }
     }
