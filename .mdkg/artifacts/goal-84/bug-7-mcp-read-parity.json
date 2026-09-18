@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-590",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_baseline": "6294f36f480f0e6df7e13a721a8e42f48c82e6b3",
+  "disposition": "Installed v2 MCP/read-only/cache parity milestone verified; bug-7 and overall qualification remain NOT_READY",
+  "candidate": {
+    "version": "0.5.2",
+    "kind": "intermediate development artifact, not the published 0.5.2 baseline or final 0.6.0 seal",
+    "sha256": "5d72db2d486ab187eef8da487abd519e31700e6e41bb7420a18850216d3eba05",
+    "matched_current_repository_package_files": 222,
+    "matched_path_manifest_sha256": "a8881c3bdba8bb2a9edb9e6a1bd24ad2dbbb49aee7bf64ba2d5c92d08d1c1c8a",
+    "equivalence_note": "Every installed regular package file except npm-normalized package.json matches current repository bytes; source build completed. Preserved partial bug-17 changes are included in this intermediate artifact."
+  },
+  "source_sha256": {
+    "scripts/smoke-mcp.js": "43bd087441e05a810af5cd56abcaf285615eb98383c230008839076422c7fee7",
+    "src/commands/mcp.ts": "664a16d44b3b86444d24ad108a3ea811a82c1f582ed7d345ce4fe4f85ea4cdcc",
+    "src/commands/init.ts": "dfe8b678ef8db6669d90ae651d9eccf4f9dfaec0e1168042408892948bc4587f",
+    "scripts/smoke-manifest.json": "1370a7f073d48bd0d6743b2af68cf2e14ce13e9e06dd4f94f3baa9053f2a53a7"
+  },
+  "runs": [
+    {
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "c6b9f5a5a783eafd7adc6995ac0ae7ab0f4a11cc095d541f7008448ac3d6607f",
+      "label": "node26-qualified",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "stale-cache",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "a96369659ae9d1c70ec648f98cb071adfdd532433f9ba097cfcfe947b8071eb6"
+        },
+        {
+          "backend": "json",
+          "state": "warm",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "6f42acbc97afd8a47bdf00f3017dbdf2355ab84a82a4e104fd4b16b9fd648dd4"
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "ba09c4f599b772892c0dc6838689909d53a812d97b873ffd09102c5e9d5043a7"
+        },
+        {
+          "backend": "json",
+          "state": "read-only-cold",
+          "ok": true,
+          "permission_enforced": true,
+          "snapshot_sha256": "854cf59bb039852769f9798018a772920a9116080d48171091bdba2318969871"
+        },
+        {
+          "backend": "json",
+          "state": "same-graph-backend-parity",
+          "comparison_backend": "sqlite",
+          "ok": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "stale-cache",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "4e2f519720e819df918c916285896553ec281eeea1ec524a5eec08779da5b1ab"
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "71c9c46d5aaea8eca51dc7bcb7d3f424ae85ae77cee0a6898879b93ee7bdc25e"
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "e160cebbabaf365cd6333c03c6d6fd72e461089c3c6bcc666cb6beebc9894a2f"
+        },
+        {
+          "backend": "sqlite",
+          "state": "read-only-cold",
+          "ok": true,
+          "permission_enforced": true,
+          "snapshot_sha256": "6c0625c4a2f383d787e34d64cc3c0698e78320c3bc3e59eb0cbef96a368c8bb3"
+        },
+        {
+          "backend": "sqlite",
+          "state": "same-graph-backend-parity",
+          "comparison_backend": "json",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "runtime": "v24.15.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "efbc7f9374bd13440f57637d39154c37fb60ce61668f5a71882f95be3c15715e",
+      "label": "node24-min-qualified",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "stale-cache",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "54b7fd6cf7d91a8fb487f186846820e12559a9d00056ea621dcfaa66ef486b5c"
+        },
+        {
+          "backend": "json",
+          "state": "warm",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "0d76bf087722b60b4c9087c7455f9025b24925c7506f8f01145b0bd0cf8505fc"
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "b3aef925287a786e5436f45ba9d374873eaccca1453181325848c540cde24fde"
+        },
+        {
+          "backend": "json",
+          "state": "read-only-cold",
+          "ok": true,
+          "permission_enforced": true,
+          "snapshot_sha256": "336e98174f07c69b446337bbba8983f5975e297773c34bdf5c236940b568918f"
+        },
+        {
+          "backend": "json",
+          "state": "same-graph-backend-parity",
+          "comparison_backend": "sqlite",
+          "ok": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "stale-cache",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "c9bc900bdc8e30a81d10af58c6b6ae217eb8e62dbdedb028773ca848986d4af1"
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "ca557ef5c83f604766aa57445c3babb850564a16fd6058287631161400d0ab0a"
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "0b1085ed1c30e25d2ba3b143f4ca568d010c92ea225d2ab31c203a64814f11d0"
+        },
+        {
+          "backend": "sqlite",
+          "state": "read-only-cold",
+          "ok": true,
+          "permission_enforced": true,
+          "snapshot_sha256": "5214c92908317c1ac4408fb7ff449467e74360203a97640d74d56b9b4ff8f6be"
+        },
+        {
+          "backend": "sqlite",
+          "state": "same-graph-backend-parity",
+          "comparison_backend": "json",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "a4392d34c695a70d5254118b368b20174d9f3086700773688dbb88b111d96687",
+      "label": "node24-qualified",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "stale-cache",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "53555f3023523cbbe42ca91e84377b839b6821e900d8498904f50a4e868bfce4"
+        },
+        {
+          "backend": "json",
+          "state": "warm",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "fa8c45db3ce977c4b778b77c447f933e55b06a50d315a08ddc6a3b5e0526e7b0"
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "cfc88d5476cadb248dfaad61de0805abd16d2be60d142cef1f1ccc95e5a6e885"
+        },
+        {
+          "backend": "json",
+          "state": "read-only-cold",
+          "ok": true,
+          "permission_enforced": true,
+          "snapshot_sha256": "5df509ad498da2cac5b52b0ace2e93e074f28525ace2a2db014df7e1d6ce939d"
+        },
+        {
+          "backend": "json",
+          "state": "same-graph-backend-parity",
+          "comparison_backend": "sqlite",
+          "ok": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "stale-cache",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "5079c41285d9d0349e2fe19ac1cf558b4880eb771b4d2e01bc785efd6c16453a"
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "62754da1ea478ef1d9e4afe20841e56f0c918da062e5c870c3b7d939ee0dbe26"
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "ok": true,
+          "permission_enforced": false,
+          "snapshot_sha256": "38d49e3c44f3be0c7a24ef1030ee6f9fc9cbeac765030635c0ed77e375069dfd"
+        },
+        {
+          "backend": "sqlite",
+          "state": "read-only-cold",
+          "ok": true,
+          "permission_enforced": true,
+          "snapshot_sha256": "f35a9181279c558efdd026a68a2aed8a1d4042f23c9c18365af5bf15153318a5"
+        },
+        {
+          "backend": "sqlite",
+          "state": "same-graph-backend-parity",
+          "comparison_backend": "json",
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "scenario_count": 30,
+  "method": [
+    "Extend existing manifest-backed smoke:mcp entry; preserve original legacy stdio, child bundle discovery, tool allowlist, goal lifecycle and rejected mutation-tool checks.",
+    "Initialize and migrate synthetic parent/child graphs through installed CLI with reviewable plan hashes; do not synthesize graph/node identity fields or import implementation modules.",
+    "Two backends each exercise stale cache after unstaged edit, rebuilt warm cache, absent index directory, permission-enforced read-only absent-cache graph, and same-graph switched-backend semantic parity.",
+    "Each cache state runs CLI show/search/list/validate, then all eight MCP read tools plus stable-reference show and child pack. MCP tool calls return current unstaged body text and persisted local/imported identities.",
+    "Deep equality compares show, search, local/imported pack nodes and goal current/next across cache states and both backends on the same persisted graph.",
+    "Hash all fixture files including staged Git index, child graph, caches, unknown user work and selection; include directory inventory and modes. CLI and MCP reads preserve snapshots exactly.",
+    "Read-only tests remove write bits and confirm W_OK refusal before execution; they are POSIX permission fixtures, not mounted read-only filesystems. Original modes restore in finally.",
+    "All installs consume the same hash-checked intermediate artifact using offline npm with isolated config/cache; all Git and MCP execution stays inside owned disposable fixtures."
+  ],
+  "validation": {
+    "checks": [
+      {
+        "command": "npm",
+        "args": [
+          "test"
+        ],
+        "status": 0,
+        "signal": null,
+        "output_sha256": "41a10e98fe995ee9fc91a6f988fcfd1f2b6842f2656b2a5ef8ef0d006d014aa8"
+      },
+      {
+        "command": "npm",
+        "args": [
+          "run",
+          "cli:check:built"
+        ],
+        "status": 0,
+        "signal": null,
+        "output_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+      },
+      {
+        "command": "npm",
+        "args": [
+          "run",
+          "docs:check:built"
+        ],
+        "status": 0,
+        "signal": null,
+        "output_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+      },
+      {
+        "command": "git",
+        "args": [
+          "diff",
+          "--check"
+        ],
+        "status": 0,
+        "signal": null,
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "full_suite": {
+      "runtime": "v26.0.0",
+      "passed": 1341,
+      "failed": 0,
+      "skipped": 0
+    },
+    "docs_examples": 494,
+    "docs_failed_examples": 0,
+    "syntax": "node --check scripts/smoke-mcp.js passed"
+  },
+  "post_evidence_checks": [
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "index"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "validate",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "26139780727ec289687449c6de797e02159482f6339c60f5383d049570fb41a6"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "validate",
+      "--changed-only",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "30fbe091aab89032123b34999dc4bcde0b709610467f4dd6b300eb534ccb3ea9"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "db",
+      "index",
+      "verify",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "9591dbd80bd43b00a2c04ad032218a017eff805f632b1af5ff8179bd05ed01f2"
+  },
+  {
+    "command": "git",
+    "args": [
+      "diff",
+      "--check"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+],
+  "limitations": [
+    "No new product defect reproduced by these scenarios; this is coverage, not final security clearance.",
+    "No actual read-only mount or Windows permission qualification; Windows receipt does not claim POSIX enforcement.",
+    "This does not complete work/archive invocation, private current-graph migration rehearsal, scale or all task-826 acceptance families.",
+    "Old-client v2 partial writes, killed-writer lock recovery and bug-17 config-less public-bundle materialization remain open.",
+    "Final task-828 independent security review, draft 0.6.0 metadata/guidance, full coverage/release ladder and exact candidate seal remain required."
+  ],
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "cleanup": {
+    "owned_fixture_install_cache_trees_removed": 6,
+    "diagnostics_retained": true,
+    "receipt": "/private/tmp/mdkg-mcp-qualification.RFDM6E/cleanup.json"
+  },
+  "evidence_location": "/private/tmp/mdkg-mcp-qualification.RFDM6E",
+  "authority_used": "Goal83/84 local qualification scripts, disposable installed/Git/MCP fixtures, mdkg evidence/projections and reviewed local commit only",
+  "excluded": "No shipped source behavior change, policy waiver, canonical migration/configuration/selection/runtime/bundle change, remote Git, provider/deployment, consumer edit or publication",
+  "skill_candidates": []
+}
