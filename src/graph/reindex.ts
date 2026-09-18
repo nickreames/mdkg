@@ -22,6 +22,13 @@ export type DerivedIndexWriteResult = {
   };
 };
 
+/** One destination inventory for actual writes and observational preflights. */
+export function derivedIndexPaths(root: string, config: Config): DerivedIndexWriteResult["paths"] {
+  return { nodes: path.resolve(root, config.index.global_index_path), skills: resolveSkillsIndexPath(root),
+    capabilities: resolveCapabilitiesIndexPath(root, config), subgraphs: resolveSubgraphsIndexPath(root),
+    ...(isSqliteBackend(config) ? { sqlite: path.resolve(root, config.index.sqlite_path) } : {}) };
+}
+
 export function writeDerivedIndexes(
   root: string,
   config: Config,
@@ -33,10 +40,8 @@ export function writeDerivedIndexes(
   const capabilitiesIndex = buildCapabilitiesIndex(root, config, nextNodeIndex);
   const subgraphsIndex = buildSubgraphsIndex(root, config);
 
-  const nodesOutputPath = path.resolve(root, config.index.global_index_path);
-  const skillsOutputPath = resolveSkillsIndexPath(root);
-  const capabilitiesOutputPath = resolveCapabilitiesIndexPath(root, config);
-  const subgraphsOutputPath = resolveSubgraphsIndexPath(root);
+  const destinations = derivedIndexPaths(root, config);
+  const { nodes: nodesOutputPath, skills: skillsOutputPath, capabilities: capabilitiesOutputPath, subgraphs: subgraphsOutputPath } = destinations;
 
   // Reject an unsafe later destination before refreshing earlier JSON caches.
   // Each actual writer still validates containment at replacement. This is not

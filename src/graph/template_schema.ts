@@ -6,6 +6,7 @@ import { requireBundledTemplatePath, resolveBundledTemplateRoot } from "../templ
 import { containedPathExists, forEachContainedDirectoryEntry, readContainedFile } from "../core/filesystem_authority";
 import { templateSetRelativePath } from "../core/template_path";
 import { localTemplateLimits } from "../templates/limits";
+import { identityHash } from "./identity";
 
 export type TemplateKeyKind = "scalar" | "list" | "boolean";
 
@@ -23,6 +24,7 @@ export type TemplateSchemaLoadResult = {
   templateRoot: string;
   bundledTemplateRoot: string;
   fallbackTypes: string[];
+  sourceInputs: { local: Record<string, string>; bundled: Record<string, string> };
 };
 
 const TEMPLATE_SCHEMA_ALIASES: Record<string, string> = {
@@ -62,9 +64,10 @@ function cloneSchema(schema: TemplateSchema, type: string): TemplateSchema {
   };
 }
 
-function loadBundledSchema(type: string): TemplateSchema {
+function loadBundledSchema(type: string, inputs: Record<string, string>): TemplateSchema {
   const bundledPath = requireBundledTemplatePath(type);
   const content = fs.readFileSync(bundledPath, "utf8");
+  inputs[type] = identityHash(content);
   const { frontmatter } = parseFrontmatter(content, bundledPath);
   const typeValue = frontmatter.type;
   if (typeValue !== type) {
@@ -101,11 +104,13 @@ export function loadTemplateSchemasWithInfo(
   const limits = localTemplateLimits(config);
   let fileCount = 0, totalBytes = 0, entries = 0;
   const schemas: TemplateSchemaMap = {};
+  const sourceInputs = { local: {} as Record<string, string>, bundled: {} as Record<string, string> };
   const consume = (relativePath: string) => {
     if (++fileCount > limits.max_files) throw new Error("template file count exceeds index.limits.max_files");
     const filePath = path.resolve(root, relativePath);
     const bytes = readContainedFile({ root, relativePath, pathSyntax: "native", maxBytes: Math.min(limits.max_file_bytes, limits.max_total_bytes - totalBytes) }, null);
     totalBytes += bytes.length;
+    sourceInputs.local[relativePath.split(path.sep).join("/")] = identityHash(bytes);
     const content = bytes.toString("utf8");
     const { frontmatter } = parseFrontmatter(content, filePath);
     const typeValue = frontmatter.type;
@@ -151,11 +156,11 @@ export function loadTemplateSchemasWithInfo(
     for (const missingType of required.filter((value) => !schemas[value])) {
       const aliasType = TEMPLATE_SCHEMA_ALIASES[missingType];
       if (aliasType) {
-        const aliasSchema = schemas[aliasType] ?? loadBundledSchema(aliasType);
+        const aliasSchema = schemas[aliasType] ?? loadBundledSchema(aliasType, sourceInputs.bundled);
         schemas[missingType] = cloneSchema(aliasSchema, missingType);
         continue;
       }
-      schemas[missingType] = loadBundledSchema(missingType);
+      schemas[missingType] = loadBundledSchema(missingType, sourceInputs.bundled);
       fallbackTypes.push(missingType);
     }
   }
@@ -165,5 +170,6 @@ export function loadTemplateSchemasWithInfo(
     templateRoot,
     bundledTemplateRoot: resolveBundledTemplateRoot(),
     fallbackTypes,
+    sourceInputs,
   };
 }

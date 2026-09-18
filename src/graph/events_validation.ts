@@ -1,4 +1,5 @@
 import path from "path";
+import { createHash } from "crypto";
 import { Config } from "../core/config";
 import { normalizeEventConfig } from "../core/event_limits";
 import { containedPathExists, forEachContainedFileChunk } from "../core/filesystem_authority";
@@ -6,7 +7,8 @@ import { workspaceDocumentRelativePath } from "../core/workspace_path";
 
 class EventValidationLimit extends Error {}
 
-export function validateEventsJsonl(root: string, config: Config, errors: string[], graphBytes = 0): void {
+export function validateEventsJsonl(root: string, config: Config, errors: string[], graphBytes = 0,
+  fingerprints?: Record<string, string | null>): void {
   const limits = normalizeEventConfig(config.events).validation;
   let bytes = 0, lines = 0, records = 0, diagnostics = 0;
   const addError = (message: string) => {
@@ -19,6 +21,7 @@ export function validateEventsJsonl(root: string, config: Config, errors: string
       const relativePath = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "work", "events", "events.jsonl");
       const eventsPath = path.resolve(root, relativePath);
       const authority = { root, relativePath };
+      if (fingerprints) fingerprints[relativePath] = null;
       const budgets = [
         { name: "events.validation.max_file_bytes", remaining: limits.max_file_bytes },
         { name: "events.validation.max_total_bytes", remaining: limits.max_total_bytes - bytes },
@@ -51,9 +54,11 @@ export function validateEventsJsonl(root: string, config: Config, errors: string
       };
       try {
         if (!containedPathExists(authority)) continue;
+        const hash = createHash("sha256");
         let parts: Buffer[] = [], lineBytes = 0;
         forEachContainedFileChunk({ ...authority, maxBytes: Math.max(0, budgets[0].remaining) }, (chunk) => {
           bytes += chunk.length;
+          hash.update(chunk);
           let offset = 0;
           while (offset < chunk.length) {
             const newline = chunk.indexOf(10, offset);
@@ -67,6 +72,7 @@ export function validateEventsJsonl(root: string, config: Config, errors: string
           }
         });
         if (lineBytes > 0) parseLine(Buffer.concat(parts, lineBytes));
+        if (fingerprints) fingerprints[relativePath] = `sha256:${hash.digest("hex")}`;
       } catch (error) {
         if (error instanceof EventValidationLimit) throw error;
         addError(`${eventsPath}: event read failed (${budgets[0].name}): ${error instanceof Error ? error.message : String(error)}`);

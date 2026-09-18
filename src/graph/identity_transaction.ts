@@ -6,16 +6,19 @@ import {
 } from "../core/filesystem_authority";
 import { UsageError } from "../util/errors";
 import { withMutationLock } from "../util/lock";
-import { canonicalJson, GRAPH_FORMAT_PATH, identityHash } from "./identity";
+import { canonicalJson, GRAPH_FORMAT_PATH, identityHash, parseGraphFormat } from "./identity";
 import { GraphFileChange, IdentityPlanBase, publicMigrationPlan } from "./identity_migration";
-import { graphControlSnapshot, indexAuthoredSnapshot, readAuthoredSnapshot, readIdentityEvidence } from "./identity_snapshot";
+import { AuthoredSnapshot, graphControlSnapshot, indexAuthoredSnapshot, readAuthoredSnapshot, readIdentityEvidence } from "./identity_snapshot";
 import { getWorkspaceDocRoots, listWorkspaceDocFilesByAlias } from "./workspace_files";
 import { writeDerivedIndexes } from "./reindex";
 import { buildIndex } from "./indexer";
 import { assertCompleteIdentityHistory } from "./identity_history";
 import { verifyLegacyLineage } from "./identity_legacy_lineage";
-import { validateReconciliationCandidate } from "./identity_reconciliation_plan";
+import { assertCandidateDependencies, candidateDependencyWriteConflicts, graphDependencyHash, identityDerivedOutputConflicts, validateIdentityCandidate } from "./identity_validation";
 import { buildSkillsIndex } from "./skills_indexer";
+import { ALLOWED_TYPES, parseNode } from "./node";
+import { loadTemplateSchemas } from "./template_schema";
+import { workspaceDocumentOwner } from "./workspace_ownership";
 import { ACCEPTANCE_DIRECTORY, matchesReconciliationAcceptance, reconciliationAcceptancePath } from "./identity_acceptance";
 
 const JOURNAL_DIR = ".mdkg/state/identity-transactions";
@@ -101,13 +104,57 @@ function checkControl(root: string, plan: IdentityPlanBase, recovering = false):
   if (canonicalJson(recovering ? stripFormat(actual) : actual) !== canonicalJson(recovering ? stripFormat(expected) : expected)) {
     throw new UsageError("graph control baseline moved (HEAD, branch, Git index, selection, runtime DB or validation contract); preserve state and re-plan");
   }
-  for (const [file, expectedHash] of Object.entries(plan.dependency_files ?? {})) {
-    const actualHash = containedPathExists({ root, relativePath: file }) ? identityHash(readContainedFile({ root, relativePath: file }, null)) : null;
+  if (!plan.candidate_validation) for (const [file, expectedHash] of Object.entries(plan.dependency_files ?? {})) {
+    const actualHash = graphDependencyHash(root, file);
     if (actualHash !== expectedHash) throw new UsageError(`graph dependency baseline moved: ${file}`);
   }
-  if (plan.skill_dependency_paths) {
+  if (plan.candidate_validation) assertCandidateDependencies(root, loadConfig(root), plan.dependency_files ?? {}, plan.candidate_validation);
+  if (!plan.candidate_validation && plan.skill_dependency_paths) {
     const paths = Object.values(buildSkillsIndex(root, loadConfig(root)).skills).map((skill) => skill.path).sort();
     if (canonicalJson(paths) !== canonicalJson(plan.skill_dependency_paths)) throw new UsageError("graph skill dependency inventory moved; preserve state and re-plan");
+  }
+}
+
+/** Reconstruct the terminal graph from reviewed operations and untouched inputs,
+ * never from parsing a partially migrated working tree. No temporary checkout,
+ * identity invention, dependency refresh, journal or cache write is involved.
+ */
+function checkCandidate(root: string, plan: IdentityPlanBase): void {
+  if (!plan.candidate_validation || !plan.dependency_files) {
+    throw new UsageError("graph plan lacks complete candidate validation dependencies; preserve journal for inspection/rollback and re-plan before application");
+  }
+  const config = loadConfig(root), owner = workspaceDocumentOwner(config);
+  const templates = loadTemplateSchemas(root, config, ALLOWED_TYPES);
+  const changes = new Map(plan.writes.map((change) => [change.path, change]));
+  const contents = new Map<string, string>();
+  for (const file of new Set([...Object.keys(plan.input_files), ...changes.keys()])) {
+    const content = changes.has(file) ? changes.get(file)!.after : value(root, file);
+    if (content !== null) contents.set(file, content);
+  }
+  const formatContent = contents.get(GRAPH_FORMAT_PATH);
+  const candidate: AuthoredSnapshot = { revision: null, tree_hash: "", config,
+    format: formatContent === undefined ? { format_version: 1 } : parseGraphFormat(formatContent),
+    files: {}, nodes: [], identity_evidence: {} };
+  for (const [file, content] of contents) {
+    candidate.files[file] = identityHash(content);
+    if (file.startsWith(".mdkg/identity/")) candidate.identity_evidence![file] = { content, hash: identityHash(content) };
+    else if (file.endsWith(".md")) {
+      const ws = owner(file);
+      if (!ws || !config.workspaces[ws].enabled) throw new UsageError(`candidate node lacks enabled authored ownership: ${file}`);
+      const node = parseNode(content, path.resolve(root, file), {
+        workStatusEnum: config.work.status_enum, priorityMin: config.work.priority_min,
+        priorityMax: config.work.priority_max, templateSchemas: templates, deferArchiveIntegrity: true,
+      });
+      candidate.nodes.push({ path: file, ws, qid: `${ws}:${node.id}`, content, node, hash: identityHash(content) });
+    }
+  }
+  candidate.tree_hash = identityHash(canonicalJson(candidate.files));
+  const validated = validateIdentityCandidate(root, candidate);
+  validated.blocking.push(...candidateDependencyWriteConflicts(plan.writes, validated.dependencies, validated.contract));
+  if (validated.blocking.length) throw new UsageError(`strict candidate validation failed: ${validated.blocking.join("; ")}`);
+  if (canonicalJson(validated.dependencies) !== canonicalJson(plan.dependency_files) ||
+    canonicalJson(validated.contract) !== canonicalJson(plan.candidate_validation)) {
+    throw new UsageError("graph candidate dependency manifest is incomplete or changed; re-plan before application");
   }
 }
 
@@ -206,20 +253,32 @@ function checkTerminal(root: string, journal: GraphJournal, rollback: boolean): 
   }
 }
 
+function checkDerivedOwnership(root: string, plan: IdentityPlanBase): void {
+  const errors = identityDerivedOutputConflicts(root, loadConfig(root),
+    [...Object.keys(plan.input_files), ...plan.writes.map((change) => change.path)], Object.keys(plan.dependency_files ?? {}));
+  if (errors.length) throw new UsageError(errors.join("; "));
+}
+
 function finish(root: string, journal: GraphJournal, rollback: boolean): void {
   checkTerminal(root, journal, rollback);
   // Exact rollback restores owned before-bytes; it does not approve the old
   // identity mapping. Preserve recovery for pre-lineage migration journals.
   if (!rollback || journal.plan.action !== "graph.migrate.plan") checkRevisions(root, journal.plan);
   const snapshot = readAuthoredSnapshot(root);
-  if (journal.plan.action === "graph.reconcile.plan") {
-    const candidate = validateReconciliationCandidate(root, snapshot);
-    if (candidate.blocking.length) throw new UsageError(`strict reconciliation validation failed: ${candidate.blocking.join("; ")}`);
+  if (!rollback) {
+    checkCandidate(root, journal.plan);
+    const candidate = validateIdentityCandidate(root, snapshot);
+    if (candidate.blocking.length) throw new UsageError(`strict candidate validation failed: ${candidate.blocking.join("; ")}`);
   } else indexAuthoredSnapshot(snapshot);
   const config = loadConfig(root);
+  checkDerivedOwnership(root, journal.plan);
   // Only local derived caches are regenerated; no bundles, subgraph refresh,
   // provider interaction, Git staging, selected state, queue or claim writes.
   writeDerivedIndexes(root, config, buildIndex(root, config, { tolerant: false }), { tolerant: false });
+  // A successful cache rebuild is not proof that authored/control custody held.
+  // Recheck bookends before giving the journal its terminal success state.
+  checkTerminal(root, journal, rollback);
+  if (!rollback) checkCandidate(root, journal.plan);
   journal.state = rollback ? "rolled-back" : "applied";
   saveJournal(root, journal);
 }
@@ -231,6 +290,7 @@ function receipt(journal: GraphJournal) {
     receipt_path: journal.state === "rolled-back" ? null : journal.plan.receipt_path,
     authored_paths: journal.plan.writes.map((change) => change.path),
     derived_state: "local indexes rebuilt after strict authored validation",
+    candidate_validation: journal.state === "rolled-back" ? "exact before-byte restoration; not candidate approval" : journal.plan.candidate_validation?.version ?? "legacy-unbound",
     git_staging: "unchanged", execution_state: "unchanged",
   };
 }
@@ -250,6 +310,7 @@ export function applyGraphMigrationPlan(root: string, plan: IdentityPlanBase, ex
     for (const change of plan.writes) {
       if (value(root, change.path) !== change.before) throw new UsageError(`stale graph operation: ${change.path}`);
     }
+    checkCandidate(root, plan);
   };
   check(); // Refuse stale inputs without creating a lock, directory or journal.
   if (plan.action === "graph.reconcile.plan" && plan.writes.length === 0) return {
@@ -275,6 +336,11 @@ export function continueGraphTransaction(root: string, hash: string, mode: "resu
   const journal = readJournal(root, hash);
   if (mode !== "rollback" || journal.plan.action !== "graph.migrate.plan") checkRevisions(root, journal.plan);
   checkOtherTransactions(root, hash);
+  checkDerivedOwnership(root, journal.plan);
+  if (mode === "resume") {
+    checkRecoveryCustody(root, journal.plan);
+    checkCandidate(root, journal.plan);
+  }
   if ((mode === "resume" && journal.state === "applied") || (mode === "rollback" && journal.state === "rolled-back")) {
     checkTerminal(root, journal, mode === "rollback");
     return receipt(journal);
@@ -285,6 +351,8 @@ export function continueGraphTransaction(root: string, hash: string, mode: "resu
     checkOtherTransactions(root, hash);
     if (canonicalJson(readJournal(root, hash)) !== canonicalJson(journal)) throw new UsageError("graph journal changed during recovery preflight");
     checkRecoveryCustody(root, journal.plan);
+    if (mode === "resume") checkCandidate(root, journal.plan);
+    checkDerivedOwnership(root, journal.plan);
     journal.state = mode === "rollback" ? "rolling-back" : "applying";
     saveJournal(root, journal);
     const changes = mode === "rollback" ? [...journal.plan.writes].reverse() : journal.plan.writes;
