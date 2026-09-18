@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "checkpoint": "root:chk-581",
+  "local_commit_allowlist": [
+  "README.md",
+  "docs/src/content/docs/start-here/install.md",
+  "src/commands/upgrade.ts",
+  "src/commands/upgrade_identity.ts",
+  "src/commands/upgrade_transaction.ts",
+  "tests/commands/upgrade_identity.test.ts",
+  ".mdkg/artifacts/goal-84/bug-28-verification.json",
+  ".mdkg/work/bug-28-preserve-adopted-graph-identities-during-scaffold-upgrade.md",
+  ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+  ".mdkg/work/chk-581-verify-identity-preserving-scaffold-upgrades-and-recovery.md"
+],
+  "qid": "root:bug-28",
+  "owner": "mdkg-project-agent",
+  "baseline_head": "6eeb17a3e97d330320e60b3044b1e3435456676e",
+  "disposition": "locally verified; independent task-828 acceptance remains required",
+  "source_sha256": {
+    "src/commands/upgrade.ts": "df94554f0a670ec98ce8e478d755d1839cc4db5f54e63527dd1d4fb015d29c26",
+    "src/commands/upgrade_identity.ts": "ce4731e8590a12a6c6d263127547ce7b4fb10f3e8f190e0ad46e106f75415b08",
+    "src/commands/upgrade_transaction.ts": "c32f0dbbc17b1666519b80f5b9e65795f078ce855e0bfb5f7d14d0b25cac95c4",
+    "tests/commands/upgrade_identity.test.ts": "008e7709b2c106a667fcacc7f87e2ef51f4ac105c313b6676503617dc50d1df0",
+    "README.md": "f5ff93faba0fa65962f2cbb81e37fb60c657569d6141965de437a45b74153106",
+    "docs/src/content/docs/start-here/install.md": "7c21cd941688e46a3e3e444cdfe206e693e3bc7334ca75fd577d77779e5765c0"
+  },
+  "before_runs": [
+    {
+      "phase": "pre-current",
+      "runtime": "v26.0.0",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "f728639c76346c6bf0c1a9d4f8aae4757c5759038eb3bb5e24a3975e94f397bc",
+      "source_sha256": {
+        "src/commands/upgrade.ts": "853960b81b2eda94457aac121866174e25e4ec165ef190daeac59ce1692e3de7",
+        "src/commands/upgrade_transaction.ts": "33bef0743e7ef402db6d3002266f9d151a1f8b3a885f64b30b7d00c5d4759634",
+        "tests/commands/upgrade_identity.test.ts": "6bf9ea64e02830904b3c85c8fa8d6d79fd060820525b314e3c86c99b7441888a"
+      },
+      "summary": [
+        "ℹ tests 27",
+        "ℹ pass 23",
+        "ℹ fail 4",
+        "ℹ skipped 0",
+        "ℹ duration_ms 10296.524125"
+      ]
+    },
+    {
+      "phase": "recovery-pre",
+      "runtime": "v26.0.0",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "1134528083f97cf77143b2fb8feccbab5993b7cdeb72b69e9e5316c01e0cad3e",
+      "source_sha256": {
+        "src/commands/upgrade.ts": "9610cbc2d348f1afed69f2059cfacf8bf224667b33764a1c5e4795d5b7500b34",
+        "src/commands/upgrade_transaction.ts": "33bef0743e7ef402db6d3002266f9d151a1f8b3a885f64b30b7d00c5d4759634",
+        "tests/commands/upgrade_identity.test.ts": "ae63f3c02203d546d3cbaf3b27529d1a59fc6b091d356f2267425df30116f794"
+      },
+      "summary": [
+        "ℹ tests 31",
+        "ℹ pass 28",
+        "ℹ fail 3",
+        "ℹ skipped 0",
+        "ℹ duration_ms 15510.338375"
+      ]
+    },
+    {
+      "phase": "review-pre-corrected",
+      "runtime": "v26.0.0",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "9ba9be767f19b3000afe8d774b13f3702f32f1112ee21ea7198eb57a12a164cc",
+      "source_sha256": {
+        "src/commands/upgrade.ts": "c674879ddc26cae8eb0651d333cc9b38c920cf208531b3872be8ae682bde00ba",
+        "src/commands/upgrade_identity.ts": "4439b630f11a77db926e8bf1ffb5a367436b458f952fe5cc22d97c8f3d537073",
+        "src/commands/upgrade_transaction.ts": "3b6c174353a6bbc53ed7bd52be1d99280865f5889e39b7a56b961f97fe5ce03a",
+        "tests/commands/upgrade_identity.test.ts": "d61606e7c085f6657f2f8cfa85b76aedbd5b68f180dc560754ccb2218983b84f"
+      },
+      "summary": [
+        "ℹ tests 35",
+        "ℹ pass 32",
+        "ℹ fail 3",
+        "ℹ skipped 0",
+        "ℹ duration_ms 27093.366875"
+      ]
+    },
+    {
+      "phase": "ownership-pre-valid",
+      "runtime": "v26.0.0",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "03e4617f3ab6c52b1084807f0f944abdf9666bdfaef7511af6a7265a713aa043",
+      "source_sha256": {
+        "src/commands/upgrade.ts": "c674879ddc26cae8eb0651d333cc9b38c920cf208531b3872be8ae682bde00ba",
+        "src/commands/upgrade_identity.ts": "ce4731e8590a12a6c6d263127547ce7b4fb10f3e8f190e0ad46e106f75415b08",
+        "src/commands/upgrade_transaction.ts": "c32f0dbbc17b1666519b80f5b9e65795f078ce855e0bfb5f7d14d0b25cac95c4",
+        "tests/commands/upgrade_identity.test.ts": "008e7709b2c106a667fcacc7f87e2ef51f4ac105c313b6676503617dc50d1df0"
+      },
+      "summary": [
+        "ℹ tests 36",
+        "ℹ pass 35",
+        "ℹ fail 1",
+        "ℹ skipped 0",
+        "ℹ duration_ms 30840.029583"
+      ]
+    }
+  ],
+  "focused_runs": [
+    {
+      "phase": "final-26",
+      "runtime": "v26.0.0",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "67b9ab94edfc135945804e6803fef26b7f4b0832603105106fd8bd0af8f30718",
+      "source_sha256": {
+        "src/commands/upgrade.ts": "df94554f0a670ec98ce8e478d755d1839cc4db5f54e63527dd1d4fb015d29c26",
+        "src/commands/upgrade_identity.ts": "ce4731e8590a12a6c6d263127547ce7b4fb10f3e8f190e0ad46e106f75415b08",
+        "src/commands/upgrade_transaction.ts": "c32f0dbbc17b1666519b80f5b9e65795f078ce855e0bfb5f7d14d0b25cac95c4",
+        "tests/commands/upgrade_identity.test.ts": "008e7709b2c106a667fcacc7f87e2ef51f4ac105c313b6676503617dc50d1df0"
+      },
+      "summary": [
+        "ℹ tests 36",
+        "ℹ pass 36",
+        "ℹ fail 0",
+        "ℹ skipped 0",
+        "ℹ duration_ms 30686.690334"
+      ]
+    },
+    {
+      "phase": "final-24",
+      "runtime": "v24.18.0",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "614274138ee07abb88dbb51caad0bb9572e983d3c894bd670187281f75b6f589",
+      "source_sha256": {
+        "src/commands/upgrade.ts": "df94554f0a670ec98ce8e478d755d1839cc4db5f54e63527dd1d4fb015d29c26",
+        "src/commands/upgrade_identity.ts": "ce4731e8590a12a6c6d263127547ce7b4fb10f3e8f190e0ad46e106f75415b08",
+        "src/commands/upgrade_transaction.ts": "c32f0dbbc17b1666519b80f5b9e65795f078ce855e0bfb5f7d14d0b25cac95c4",
+        "tests/commands/upgrade_identity.test.ts": "008e7709b2c106a667fcacc7f87e2ef51f4ac105c313b6676503617dc50d1df0"
+      },
+      "summary": [
+        "ℹ tests 36",
+        "ℹ pass 36",
+        "ℹ fail 0",
+        "ℹ skipped 0",
+        "ℹ duration_ms 34621.676916"
+      ]
+    }
+  ],
+  "full_suite": {
+    "phase": "full-final",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "scripts/test-built.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 0,
+    "signal": null,
+    "output_sha256": "2a4ea6dc5822f84add3e5c9492b1b5832eb2dd697f52aba004143cf504230db5",
+    "source_sha256": {
+      "src/commands/upgrade.ts": "df94554f0a670ec98ce8e478d755d1839cc4db5f54e63527dd1d4fb015d29c26",
+      "src/commands/upgrade_identity.ts": "ce4731e8590a12a6c6d263127547ce7b4fb10f3e8f190e0ad46e106f75415b08",
+      "src/commands/upgrade_transaction.ts": "c32f0dbbc17b1666519b80f5b9e65795f078ce855e0bfb5f7d14d0b25cac95c4",
+      "tests/commands/upgrade_identity.test.ts": "008e7709b2c106a667fcacc7f87e2ef51f4ac105c313b6676503617dc50d1df0"
+    },
+    "summary": [
+      "ℹ tests 1226",
+      "ℹ pass 1226",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 139102.272375"
+    ]
+  },
+  "installed": {
+    "schema_version": 1,
+    "disposition": "intermediate development candidate, not release seal",
+    "candidate": {
+      "version": "0.5.2",
+      "sha256": "4e044cafd7b09eb55d9486bad867e6a9682aaa126ce7e1636bb9063180c3ca61",
+      "integrity": "sha512-8o1JbomE/9DrEqBkQj6HyWpvp/tZxWnelQSlctjnQiOCFLq+bKV3L6dc05qGn775Qvaw3m1SAGoznExecaw7eQ==",
+      "package_file_manifest_sha256": "6ac9c68bb33c70f1025d5b1ba7b38fd4aa9d23db4ec72937c5bc53a41365a257"
+    },
+    "results": [
+      {
+        "name": "pack",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "ce6a0fb6b4c6366250dd96481a762ca256621d621f9dc8b95860b771e31ec879",
+        "summary": []
+      },
+      {
+        "name": "install",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "ec27f32f2e5537eb2f7524a27b146c3ddb22f98f449fd6948b1666a8795d05d7",
+        "summary": []
+      },
+      {
+        "name": "installed-node26",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "25744c72b44c14c5c7d1d44d46dbc1bf29264f0856071f152c9c3f27af9ebb69",
+        "summary": [
+          "ℹ tests 14",
+          "ℹ pass 14",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 30895.899625"
+        ],
+        "runtime": "v26.0.0"
+      },
+      {
+        "name": "installed-node24",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "dd49463d2c44399f615e30f734b88c060595c8c8dea328ec7d57155a4b61065f",
+        "summary": [
+          "ℹ tests 14",
+          "ℹ pass 14",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 112037.65375"
+        ],
+        "runtime": "v24.18.0"
+      }
+    ],
+    "test_source_sha256": "008e7709b2c106a667fcacc7f87e2ef51f4ac105c313b6676503617dc50d1df0",
+    "harness_sha256": "d1d726686d4529d4591cb2de2ed08d2beffc268323ade9fc15c83c20995cfaf0",
+    "installed_package_unchanged": true
+  },
+  "review": {
+    "kind": "bounded independent read-only functional candidate review, not final Codex Security clearance",
+    "findings": [
+      "Noncanonical separator paths could bypass journal manifest/config/self-target checks; reproduced and rejected before writes, with existing case-spelling checks.",
+      "Directory inventory incorrectly counted directories against max_files; reproduced on a valid 64-file-limit graph with 65 empty directories; removed that count without changing file limits.",
+      "Recovery compared original workspace config to itself; reproduced with a valid disabled nested workspace; now compares journal before and after regardless of direction."
+    ],
+    "limitations": [
+      "Final task-828 security diff and compatibility matrix remain required.",
+      "Identity guards do not replace complete graph reference/schema validation.",
+      "Full version-specific qualification and exact Node 24.15.0 proof remain open."
+    ]
+  },
+  "checks": {
+    "build": "passed",
+    "cli_check_built": "passed",
+    "docs_check_built": "passed; 494 examples, zero failures",
+    "graph_full": "passed; three preserved stale-subgraph warnings",
+    "graph_changed_only": "passed",
+    "sqlite_index_verify": "passed; five fresh caches",
+    "git_diff_check": "passed"
+  },
+  "preserved_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "affected_version": "V2 failures affect the unpublished candidate. Published 0.5.2 does not claim v2 support; no broader published-version advisory claim. Legacy upgrade/recovery controls pass.",
+  "reproduction": [
+    "npm run build && npm run build:test",
+    "Run the three compiled upgrade test families with node --test.",
+    "Build an intermediate tarball using npm pack --ignore-scripts into an owned disposable directory; this is not release qualification.",
+    "Install that exact local tarball offline into an isolated prefix with isolated npm configuration/cache.",
+    "Set the test-only MDKG_TEST_PACKAGE to the installed package root and run dist/tests/commands/upgrade_identity.test.js with Node 24 and 26.",
+    "Run node scripts/test-built.js after successful build:test for complete ordinary test discovery."
+  ],
+  "boundaries": "No canonical upgrade/migration, bundle/subgraph refresh, remote Git, push, publication, tag, provider, deployment or sibling change. Package remains development 0.5.2, not final 0.6.0 seal. Partial bug-17 source was preserved and included only as existing candidate input, not newly verified by this fix.",
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "source-grounded-diagnose-and-fix",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": []
+}

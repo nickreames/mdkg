@@ -36,6 +36,8 @@ import { configuredSkillMirrorTargets } from "./skill_mirror";
 import { appendInstructions, instructionHash, instructionSection, instructionSeed, replaceInstructions } from "./bootstrap_instructions";
 import { UpgradePlan, continueUpgrade, readUpgradeJournal, UPGRADE_JOURNAL, digest } from "./upgrade_transaction";
 import { planUpgradeProjections } from "./upgrade_projections";
+import { canonicalJson, GRAPH_FORMAT_PATH, readGraphFormat } from "../graph/identity";
+import { assertUpgradeIdentities, bindUpgradeGraphDirectories } from "./upgrade_identity";
 
 export type UpgradeCommandOptions = {
   root: string;
@@ -681,7 +683,9 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
     throw new UsageError("choose preview, apply, resume, or recover; recovery cannot select a partial operation");
   }
   const version = readPackageVersion();
+  const graphFormat = readGraphFormat(root);
   const plan = new UpgradePlan(root);
+  plan.read(GRAPH_FORMAT_PATH); // Bind exact bytes, including absence, not only the parsed version.
   const initialConfig = validateConfigSchema(migrateConfig(JSON.parse(plan.read(".mdkg/config.json")!.toString("utf8"))).config);
   const emit = (receipt: UpgradeReceipt): UpgradeReceipt => {
     if (options.json) console.log(JSON.stringify(receipt, null, 2));
@@ -689,7 +693,28 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
     return receipt;
   };
   if (options.resume || options.recover) {
-    const journal = continueUpgrade(root, options.recover ? "recover" : "resume", options.planHash, initialConfig.index.lock_timeout_ms);
+    const journal = continueUpgrade(root, options.recover ? "recover" : "resume", options.planHash, initialConfig.index.lock_timeout_ms, journal => {
+      const currentFormat = readGraphFormat(root);
+      if (currentFormat.format_version === 2 && options.resume && journal.schema_version === 1) {
+        throw new UsageError("unbound legacy upgrade journal cannot resume a v2 graph; preserve evidence and use verified original-byte recovery");
+      }
+      const operations = new Map(journal.operations.map(op => [op.path, op]));
+      if (operations.has(GRAPH_FORMAT_PATH)) throw new UsageError("scaffold recovery cannot modify the graph format manifest; use reviewed identity migration");
+      const overlay = (side: "before" | "after") => (file: string): Buffer | null => {
+        const op = operations.get(file);
+        return op ? op[side] === null ? null : Buffer.from(op[side], "base64") : plan.read(file);
+      };
+      const original = overlay("before"), candidate = options.recover ? original : overlay("after");
+      const configFor = (read: typeof original) => validateConfigSchema(migrateConfig(JSON.parse(read(".mdkg/config.json")!.toString("utf8"))).config);
+      const originalConfig = configFor(original), candidateConfig = configFor(overlay("after"));
+      if (canonicalJson(originalConfig.workspaces) !== canonicalJson(candidateConfig.workspaces)) {
+        throw new UsageError("scaffold recovery cannot change graph workspace ownership");
+      }
+      // Recovery validates the original graph, not an intentionally interrupted
+      // intermediate graph. Old journals may restore valid original v2 bytes,
+      // but cannot restore identity-free bytes into an adopted graph.
+      assertUpgradeIdentities(root, originalConfig, currentFormat, operations.keys(), original, candidate);
+    });
     return emit({ action: "upgrade", dry_run: false, version, safe_to_apply: true, summary: createSummary(),
       will_write_paths: journal.operations.map(op => op.path), preserved_customizations: [], blocking_conflicts: [],
       apply_side_effects: [], changes: [], plan_hash: journal.plan_hash, journal_path: UPGRADE_JOURNAL,
@@ -722,6 +747,7 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   const selected = (change: UpgradeChange): boolean => !only || only.has(change.path) || Boolean(change.target_path && only.has(change.target_path));
 
   // Bind graph migration discovery as well as destination bytes to the preview.
+  bindUpgradeGraphDirectories(plan, initialConfig);
   const graphFiles = listWorkspaceDocFilesByAlias(root, initialConfig);
   for (const files of Object.values(graphFiles)) for (const file of files) {
     const relative = repoRelativePath(root, file);
@@ -785,6 +811,16 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
     applySideEffects.push(effect); record(summary, changes, effect);
   }
   const blockingConflicts = changes.filter(change => change.action === "conflict" && (selected(change) || applySideEffects.includes(change)));
+  try {
+    assertUpgradeIdentities(root, initialConfig, graphFormat, plan.operations.keys(),
+      file => plan.read(file), file => plan.value(file));
+  } catch (error) {
+    const conflict: UpgradeChange = { path: GRAPH_FORMAT_PATH, category: "graph_identity", action: "conflict",
+      reason: error instanceof Error ? error.message : String(error) };
+    record(summary, changes, conflict);
+    // Graph invariants apply to the final subset; --only cannot exclude them.
+    blockingConflicts.push(conflict);
+  }
   const planHash = plan.hash({ version, only: only ? [...only].sort() : null, seed: currentManifest, conflicts: blockingConflicts });
   const receipt: UpgradeReceipt = { action: "upgrade", dry_run: dryRun, version, safe_to_apply: blockingConflicts.length === 0,
     summary, will_write_paths: [...plan.operations.keys()], preserved_customizations: changes.filter(change => change.action === "conflict" || change.category === "customization_overlay" || change.category === "legacy_preserved"),

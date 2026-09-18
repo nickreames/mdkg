@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, test-483, task-828]
-active_node: bug-30
+active_node: bug-28
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -102,6 +102,22 @@ accounting remains twelve of thirteen locally fixed. No new skill candidate.
 # Completion Evidence
 
 Pending full end-condition evidence.
+
+## 2026-09-09 Upgrade Identity and Recovery Verification
+
+Bug-28 is locally verified: 36 focused tests and 14 installed tests on each of
+Node 24.18.0 and 26.0.0, plus 1226 full ordinary tests with no failures/skips.
+Preview and recovery preserve identities, reject stale dependencies and path
+aliases, and prohibit workspace ownership drift. Three independent functional
+review findings were reproduced and corrected. Receipt:
+.mdkg/artifacts/goal-84/bug-28-verification.json.
+
+Original Standard security accounting remains twelve of thirteen locally fixed;
+bug-17 still awaits its compatibility decision and final review. Bugs 26, 27,
+29, full installed qualification, task-828, release ladder and artifact seal
+remain open. No canonical migration/upgrade, bundle refresh or publication.
+Next recommended bounded remedy is bug-29 packaged seed reference closure.
+Protected states and separate generated SQLite custody remain unchanged.
 
 ## 2026-09-09 Complete Ordinary Test Discovery
 

@@ -127,6 +127,13 @@ Interrupted upgrades require explicit `mdkg upgrade --resume --plan-hash PLAN_HA
 or `mdkg upgrade --recover --plan-hash PLAN_HASH` using the journal's hash.
 Recovery refuses subsequent user edits; it is not a blanket filesystem rollback.
 
+On adopted v2 graphs, scaffold upgrades preserve node identities and aliases;
+restoring a missing node requires explicit graph creation or reintroduction,
+not an identity-free seed copy. New journals bind graph-format bytes and preview
+dependencies, so changed inputs block resume and recovery. Older journals without
+those bindings cannot resume a v2 upgrade; recovery remains available only when
+the recorded original bytes preserve valid identities and workspace ownership.
+
 Older workspaces can continue to inspect and validate current graph nodes before applying an upgrade. When local templates are missing for newly introduced built-in mdkg types, mdkg uses the installed package's bundled templates as a read-only schema fallback and warns that `mdkg upgrade --apply` can vendor the missing templates.
 
 Create a task:

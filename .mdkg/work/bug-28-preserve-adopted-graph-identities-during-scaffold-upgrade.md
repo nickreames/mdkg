@@ -2,12 +2,12 @@
 id: bug-28
 type: bug
 title: Preserve adopted graph identities during scaffold upgrade
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-24-adjacent-findings.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-24-adjacent-findings.json, .mdkg/artifacts/goal-84/bug-28-verification.json]
 relates: [goal-84, goal-83, bug-24, test-483]
 blocked_by: []
 blocks: []
@@ -72,4 +72,31 @@ full tests and independent task-828 verification before publication.
 # Links / Artifacts
 
 - .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json
-- root:test-483 and root:task-828 remain final verification gates. No fix yet.
+- root:test-483 and root:task-828 remain independent final verification gates.
+
+## Local Verification — 2026-09-09
+
+Preview validates final selected identities and aliases and binds raw graph
+format bytes. Journal v2 persists dependency hashes and directory inventories;
+resume/recovery reject moved inputs, path aliases, graph-format changes and
+workspace ownership changes. Old v2 journals cannot resume without bindings;
+verified original valid identities remain recoverable. No identity synthesis,
+implicit Git staging or history changes occur.
+
+Four initial failing tests, three recovery failures and independent-review
+regressions were reproduced before correction. The review exposed separator
+alias bypass, incorrect directory/file limit coupling and a direction-dependent
+ownership comparison. A schema-valid disabled nested workspace reproduces the
+last issue; disabling the mandatory root was already rejected by config schema.
+All are covered by the final regressions. File limits were not lowered or
+repurposed.
+
+Final: 36 focused tests on each of Node 24.18.0 and 26.0.0; 14 installed tests
+on each runtime; 1226 complete ordinary tests on Node 26.0.0, no failures/skips.
+Build, CLI/docs parity, graph full/changed-only, SQLite verification and diff
+checks pass. Documentation describes conservative v2 upgrade/recovery limits.
+Exact receipts and hashes: .mdkg/artifacts/goal-84/bug-28-verification.json.
+
+Selected Goal 73, runtime DB, protected Demo 3 bundle and partial bug-17 source
+remain unchanged. No final security clearance, 0.6.0 seal or publication is
+claimed. Skill candidates: none.
