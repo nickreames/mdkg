@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-18",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "identity-template-root-escape",
+  "outcome": "fixed-locally",
+  "base_revision": "d561335c0ee6c0b183fb916cdbf450aa57ac6c96",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball includes unchecked default_set resolution and raw recursive template schema reads. Candidate reproduced before patch; earlier releases unassessed.",
+  "invariant": "Repository-controlled template root/set selection cannot escape its configured local authority; schema and body input is bounded before parsing without silently converting invalid input into bundled fallback.",
+  "strategy": "Validate raw selectors before joining; preserve nested/dot paths and historical case behavior. Shared contained streaming directory iteration plus contained bounded file reads. Existing graph budgets cap local template inputs at the default safety envelope; trusted package fallback remains separate.",
+  "files_sha256": {
+    "src/core/config.ts": "57dca01de38a8845e681f3af79cc7c9844182e67e3faeee9eed05fff403e3b99",
+    "src/core/filesystem_authority.ts": "ccec0eb07064cbb8878342f563232cf36d18427ee17dbab7e798a888f86214cf",
+    "src/core/template_path.ts": "eaa11727b8ec5b3e8dfb9efd4e91944d6e6fa181a272e687dfbf2c860e801543",
+    "src/graph/template_schema.ts": "baea420ccbe2d06be6afcf03f75c3c594ede6e4842f9bcf33aa383d7ffcd0d06",
+    "src/templates/builtin.ts": "e0dc36ce1a46601cf1b4d0a96ae13d7dd9cec3e95b95aebd59327494a67d9461",
+    "src/templates/loader.ts": "08c04ddda9f670e934bd638c5cdabb580e9c35c295629ba4863579ba4dcb76e0",
+    "src/templates/limits.ts": "c7c8e09704a544ce58aea7d30562c261ddc1eac61ae0ec423314eaa086e896b2",
+    "tests/graph/template_containment.test.ts": "65ac4fd807946fc6defbe167193df834abd4383ca38e004b9bf534765dd4071a",
+    "tests/commands/event_containment.test.ts": "80f389b5f942fa403fd0b8d4ccd80689be912cefe7e0b6d59b8974047a61aebb",
+    "tests/graph/indexer.test.ts": "a5731fccf10133c13b322e4fcdef89edc81673f18a66011400853ae97a5ce43e",
+    "docs/src/content/docs/start-here/troubleshooting.md": "9089747394e2eac07e1409894e1f41190b969c34dfb1c3fc7caff86334c35830"
+  },
+  "before": "19 of 22 initial cases failed: unsafe raw selectors, linked discovery roots, all resource bounds, body read bounds and discovery-to-read leaf substitution. Three nested/dot/fallback controls passed.",
+  "after": [
+    {
+      "command": "Build and focused template/config/new/event/indexer regression suites",
+      "result": "92 passed; zero failures/skips."
+    },
+    {
+      "command": "Offline npm pack/install and external installed CLI/module harness",
+      "result": "55 passed; zero failures/skips. Includes index/validate/doctor/new, legacy schema fallback and separate graph/event budgets. Installed bytes unchanged; intermediate install/fixture/tarball removed, compact receipts retained."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "924 main tests plus 26 release/security-contract checks passed, zero failures/skips."
+    },
+    {
+      "command": "CLI snapshot and command-contract parity; generated docs/release-note/example parity; full and changed-only graph validation; git diff --check",
+      "result": "Passed. 478 examples in 63 files; zero graph errors, three inherited full-graph age warnings and zero changed-only warnings."
+    }
+  ],
+  "failed_gate_disposition": "First full run: 921/924 passed. Three pre-existing event/indexer fixtures vendored templates exceeding their deliberately tiny graph-only budgets, masking the intended assertions. Use supported bundled fallback only in those disposable fixtures; retain their original graph/event error and success assertions. Expanded installed and full suites then passed; no source limit was weakened.",
+  "review": "Completed independent prepatch investigation plus one fresh source-only candidate reviewer. No concrete surviving bug-18 bypass or patch-induced regression found. Parent traced all schema callers and preserved static containment, partial fallback, explicit not-found behavior and historical casing. Final task-828 exact-range/platform review remains required.",
+  "installed_candidate": {
+    "sha256": "327cc1e36d365850aa5c3abc0203b088d58addfdfce5e5e06f6a5c534bdd2b4f",
+    "integrity": "sha512-1G5/U/+eqN8WIy/ue7RFs6ab91UQz2v1/tDuuSVAewBGEYyvrXRerzrpSWBxyk4+KpwhMLGuL6gK9sTyOne+cw==",
+    "status": "Intermediate development artifact, not final 0.6.0 seal"
+  },
+  "limitations": [
+    "No portable openat immunity against active concurrent ancestor replacement; single-writer/static-checkout boundary.",
+    "Windows and exact Node 24 execution remain pending; Windows selector forms were tested on macOS.",
+    "Other blockers, final Security diff workflow, release ladder and immutable candidate seal remain incomplete."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and explicit-path local commits only; no remote Git, publication, provider/deployment, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}

@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-13
+active_node: bug-18
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -127,3 +127,12 @@ fixed; six remain, plus bugs 5–7 and final qualification gates. Continue owned
 independent work; do not infer that the whole goal is blocked by the resolved
 event decision. Selected Goal 73, runtime DB and protected bundle hashes remain
 unchanged. SQLite stays accepted uncommitted generated custody.
+
+## 2026-09-08 Template Boundary Verification
+
+Bug-18 is locally verified with 92 focused, 55 installed and 924 full tests
+plus 26 contract checks. Eight of thirteen security findings now have local
+fixes; bug-10, bug-12, bug-15, bug-16 and bug-17 remain, alongside bugs 5–7 and
+final qualification. The independent bug-10 prepatch investigation is complete;
+its source and evidence implementation has not started. No new Nick decision
+is required to continue authorized local scope. Publication remains blocked.

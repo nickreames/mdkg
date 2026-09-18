@@ -78,6 +78,9 @@ test("event aggregate limits cover every enabled workspace", (t) => {
 });
 test("event and Markdown reads share the graph aggregate budget", (t) => {
   const f = fixture(t), node = "---\nid: task-1\ntype: task\ntitle: node\nstatus: todo\npriority: 2\ncreated: 2026-01-01\nupdated: 2026-01-01\n---\n";
+  // Isolate the event/graph budget from the separately bounded local template
+  // input; installed built-in fallback supplies the unchanged schema.
+  fs.rmSync(path.join(f.root, ".mdkg/templates"), { recursive: true });
   configure(f.root, {}, (c) => { c.index.limits = { max_files: 100, max_file_bytes: 1024, max_total_bytes: Buffer.byteLength(node) + Buffer.byteLength(event()) - 1, max_depth: 10 }; });
   writeFile(path.join(f.root, ".mdkg/work/task-1.md"), node); writeFile(f.events, event());
   const receipt = validate(f.root);
@@ -91,6 +94,7 @@ test("missing logs and legacy record semantics remain valid at exact limits", (t
 });
 test("UTF-8 sequences spanning read chunks and histories above the Markdown file limit remain valid", (t) => {
   const f = fixture(t); configure(f.root, {}, (c) => { c.index.limits = { max_files: 100, max_file_bytes: 1024, max_total_bytes: 1024 * 1024, max_depth: 10 }; });
+  fs.rmSync(path.join(f.root, ".mdkg/templates"), { recursive: true });
   writeFile(f.events, event("root", "a".repeat(65500) + "🙂é".repeat(100)));
   assert.equal(validate(f.root).ok, true);
 });

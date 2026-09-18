@@ -92,6 +92,32 @@ hard ceiling is exceeded, stop and plan an explicit archival/segmentation
 workflow; do not delete history, bypass validation, or claim partial validation
 is complete.
 
+## Local template discovery errors (0.6.0 candidate)
+
+`templates.root_path` and `templates.default_set` must be relative contained
+paths. Absolute paths, drive-relative paths, NUL bytes and parent-directory
+components are rejected before lookup. Nested sets and explicit `.` remain
+supported; normal `./` prefixes and repeated separators are normalized.
+Schema discovery preserves the configured set's case. The template body loader
+retains its historical lowercase set lookup; use lowercase set names when the
+same templates serve both paths on a case-sensitive filesystem.
+
+Visible linked discovery roots and directories are rejected. Descendant links
+and non-Markdown entries remain excluded from schema input. Missing local
+required built-in types may use installed bundled fallback; malformed existing
+templates do not silently fall back. An explicitly requested missing body set
+still returns a not-found error.
+
+Local schema reads use `index.limits`, capped at 100,000 Markdown files, 8 MiB
+per file, 512 MiB total and depth 64 below the selected set. Lower configured
+limits apply. Discovery also stops after ten times the effective `max_files`
+directory entries, including ignored entries, so wide non-Markdown trees are
+bounded. Local body reads use the same per-file bound; trusted installed
+fallback assets are separate from these local-input budgets. Limit errors
+leave source templates untouched and do not mean partial validation succeeded.
+Keep the checkout quiescent during validation: path checks do not provide an
+atomic filesystem sandbox against another process replacing ancestors.
+
 ## A handoff warns about raw markers
 
 Review the handoff manually. Warnings are aids, not proof that the content is safe or unsafe. Remove raw secrets, tokens, provider payloads, raw prompt dumps, and bulky runtime traces before sharing.
