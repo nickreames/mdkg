@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-589",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_baseline": "96208a682dee90d0a6c85ce394caf3c53aa00fe1",
+  "disposition": "Caught-error recovery qualified; killed-writer recovery and legacy compatibility remain open; NOT_READY",
+  "candidate": {
+    "version": "0.5.2",
+    "kind": "intermediate development artifact, not published baseline or final 0.6.0 seal",
+    "sha256": "5d72db2d486ab187eef8da487abd519e31700e6e41bb7420a18850216d3eba05",
+    "verified_dist_equivalence": [
+      "dist/graph/identity_transaction.js",
+      "dist/graph/identity_migration.js",
+      "dist/graph/identity_reconciliation_plan.js"
+    ]
+  },
+  "source_sha256": {
+    "scripts/installed-graph-recovery.js": "8d6bdcd4d756a5229a9b4ae57604020d59a22951098fbf5d12687436747ac85d",
+    "scripts/smoke-branch-conflicts.js": "98c66601fec8ee24e25f2fd1ba226c5a0c08458aa4254c0d737cc6e86fca464b",
+    "src/graph/identity_transaction.ts": "ede8834c8a1641fd000be230da6ce808a03782abee38cab5740a96e44b2497ab",
+    "src/util/lock.ts": "2e3036bafa937809242f979a61006d5efc24dedde35d6854e9a15fbdf2e0d664"
+  },
+  "runs": [
+    {
+      "label": "installed-node26-final",
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "702ee96ba1ce5b441c4c3cac4a82c2989d8d3f5cdd242551bb543773844476fa",
+      "recovery_case_count": 12,
+      "fault_preload_sha256": "632e0229ee96c06e6cdcbf79861cd7473189620dc6aa8b4513ab7fadc2c63e0b"
+    },
+    {
+      "label": "installed-node24-final",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "30943d17672b4b8cde2941ce73abf7707b1295f35d2201c6e3168fc89644dfa4",
+      "recovery_case_count": 12,
+      "fault_preload_sha256": "2205bd655e0aa0adeb66e1b82f59b352d50bfa4ad149094e148aa48fd21f3195"
+    },
+    {
+      "label": "installed-node24-min-final",
+      "runtime": "v24.15.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "5b82bb7ce63e37eabe4ea8568604f369181ccbfda16760bf7cae6eb165725c5c",
+      "recovery_case_count": 12,
+      "fault_preload_sha256": "33ede829a177d70a6f070eb11a8bde7ab329661f8b14c0f3f162126041f8623e"
+    }
+  ],
+  "cases": [
+    {
+      "kind": "migration",
+      "mode": "resume",
+      "position": "first",
+      "writes": 14,
+      "observed_written": 1,
+      "state": "applied",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "migration",
+      "mode": "resume",
+      "position": "middle",
+      "writes": 14,
+      "observed_written": 8,
+      "state": "applied",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": true,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "migration",
+      "mode": "resume",
+      "position": "last",
+      "writes": 14,
+      "observed_written": 14,
+      "state": "applied",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "migration",
+      "mode": "rollback",
+      "position": "first",
+      "writes": 14,
+      "observed_written": 1,
+      "state": "rolled-back",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "migration",
+      "mode": "rollback",
+      "position": "middle",
+      "writes": 14,
+      "observed_written": 8,
+      "state": "rolled-back",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": true,
+      "rollback_interruption_verified": true
+    },
+    {
+      "kind": "migration",
+      "mode": "rollback",
+      "position": "last",
+      "writes": 14,
+      "observed_written": 14,
+      "state": "rolled-back",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "reconciliation",
+      "mode": "resume",
+      "position": "first",
+      "writes": 6,
+      "observed_written": 1,
+      "state": "applied",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "reconciliation",
+      "mode": "resume",
+      "position": "middle",
+      "writes": 6,
+      "observed_written": 4,
+      "state": "applied",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": true,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "reconciliation",
+      "mode": "resume",
+      "position": "last",
+      "writes": 6,
+      "observed_written": 6,
+      "state": "applied",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "reconciliation",
+      "mode": "rollback",
+      "position": "first",
+      "writes": 6,
+      "observed_written": 1,
+      "state": "rolled-back",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    },
+    {
+      "kind": "reconciliation",
+      "mode": "rollback",
+      "position": "middle",
+      "writes": 6,
+      "observed_written": 4,
+      "state": "rolled-back",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": true,
+      "rollback_interruption_verified": true
+    },
+    {
+      "kind": "reconciliation",
+      "mode": "rollback",
+      "position": "last",
+      "writes": 6,
+      "observed_written": 6,
+      "state": "rolled-back",
+      "git_index_preserved": true,
+      "user_bytes_preserved": true,
+      "dependency_and_control_refused": false,
+      "rollback_interruption_verified": false
+    }
+  ],
+  "method": [
+    "Existing smoke:branch-conflicts manifest entry retains original legacy and v2 collaboration checks and adds installed graph-recovery helper. No new production flags or imports of graph implementation.",
+    "All Git operations are confined to synthetic local repositories. Reconciliation contains modification, creation, deletion and cross-linked authored nodes.",
+    "Fixture-only node:fs wrappers throw after actual exclusive-write close, atomic replacement or deletion at first/middle/last authored operations. Installed package bytes remain unchanged.",
+    "Migration interruption positions 1/8/14 and reconciliation 1/4/6, each resumed or rolled back. Partial graph is inspected without writes; exact terminal operation bytes verified.",
+    "Midpoint user edits, template dependency changes and Git index movement cause byte-preserving refusal. Synthetic captured bytes are restored only by the fixture harness before continuation.",
+    "Interrupted rollback remains rolling-back; resume refuses and explicit rollback completes. Repeated terminal recovery leaves file hashes unchanged.",
+    "Tracked Git index and unrelated sentinel bytes survive; rollback restores all pre-existing authored/Git file hashes. Ignored journals/index caches are separate derived state. Unix journal mode 0600."
+  ],
+  "validation": {
+    "focused": {
+      "command": "node --test dist/tests/graph/identity_migration.test.js dist/tests/graph/identity_migration_validation.test.js dist/tests/graph/identity_reconciliation_plan.test.js dist/tests/published-upgrade-baseline.test.js dist/tests/release-ladder.test.js tests/security-remediation.test.mjs",
+      "runtime": "v26.0.0",
+      "passed": 118,
+      "failed": 0,
+      "skipped": 0
+    },
+    "syntax": "node --check scripts/installed-graph-recovery.js passed",
+    "full_suite": "Previous chk-587 1341-test evidence retained; not rerun this milestone; no shipped runtime source changed."
+  },
+  "post_evidence_checks": [
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "index"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "validate",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "559b4b93ba920067bdc6adf1d515fba2089e9925cfd9d4ad5637571472818691"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "validate",
+      "--changed-only",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "d3142090c683520f4ed2d2f32839877339df37d8a5c03dc4dbde46f2a81446da"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "db",
+      "index",
+      "verify",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "2f929179becc50c9a93989e57850bf98559901109f4dc28b9f151cc7cd0559bb"
+  },
+  {
+    "command": "npm",
+    "args": [
+      "run",
+      "cli:check:built"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+  },
+  {
+    "command": "npm",
+    "args": [
+      "run",
+      "docs:check:built"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+  },
+  {
+    "command": "git",
+    "args": [
+      "diff",
+      "--check"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+],
+  "hard_stop_finding": {
+    "id": "bug-7/killed-writer-lock-recovery",
+    "classification": "operational recovery gap; not automatic takeover authority or a newly counted Standard security finding",
+    "probes": [
+      {
+        "sha256": "13729b9d872eff12c0cf2e7bde4cf21751d423b4a159c2bed83c4b5d4b9c6fe1",
+        "runtime": "v26.0.0",
+        "signal": "SIGKILL",
+        "terminated_child_confirmed": true,
+        "journal_state": "applying",
+        "observed_completed_writes": 1,
+        "inspection_observational": true,
+        "resume_status": 4,
+        "resume_diagnostic": "timed out waiting for mdkg mutation lock at .mdkg/index/write.lock; owner details withheld",
+        "resume_preserved_all_bytes": true,
+        "lock_remains": true,
+        "fixture_lock_timeout_ms": 100,
+        "limitation": "Killed writer leaves a stale mutation lock. No automatic recovery or lock removal attempted; supported recovery gap remains separate from passing caught-error cases."
+      },
+      {
+        "sha256": "41c294edb4b000617fbc87cf04fd0239cfe23e281448109c92a549ff088dc4e5",
+        "runtime": "v24.15.0",
+        "signal": "SIGKILL",
+        "terminated_child_confirmed": true,
+        "journal_state": "applying",
+        "observed_completed_writes": 1,
+        "inspection_observational": true,
+        "resume_status": 4,
+        "resume_diagnostic": "timed out waiting for mdkg mutation lock at .mdkg/index/write.lock; owner details withheld",
+        "resume_preserved_all_bytes": true,
+        "lock_remains": true,
+        "fixture_lock_timeout_ms": 100,
+        "limitation": "Killed writer leaves a stale mutation lock. No automatic recovery or lock removal attempted; supported recovery gap remains separate from passing caught-error cases."
+      }
+    ],
+    "source": "src/util/lock.ts releases only through finally; dead-writer reclamation is not implemented. CLI recovery uses the same mutation lock.",
+    "treatment": "Remain open for source-grounded recovery design and acceptance. Do not remove canonical locks or label timeout as data loss or successful crash recovery.",
+    "requirements": [
+      "Provide a supported ownership-reviewed recovery route without stealing a live writer's lock or treating elapsed time as proof of abandonment.",
+      "Retain exact graph/control/dependency bookends and journal integrity; recovery itself must not infer new identities or staging authority.",
+      "Qualify abrupt termination separately from thrown errors, including ambiguous owner state; preserve data and fail closed where safe ownership cannot be established."
+    ]
+  },
+  "fixture_corrections": [
+    "Initial helper syntax omission corrected before execution.",
+    "Initial Git-index perturbation staged new content and introduced a loose object, violating the harness's own inventory assertion. Replaced with index metadata toggle and exact captured index restoration; failing log retained.",
+    "Initial temporary npm proxy omitted its required tool selector; all three attempts stopped before package installation. Corrected temporary wrapper and reran all three complete installed smokes."
+  ],
+  "remaining": [
+    "Legacy writer version-adoption decision and bounded implementation remain open under chk-588.",
+    "Killed-writer recovery limitation remains open; caught-error cases do not clear it.",
+    "Complete remaining task-826 installed families, private graph migration rehearsal and scale coverage.",
+    "Bug-17 transport completion, separate full security diff review, draft 0.6.0 metadata/guidance, full release/coverage ladder and immutable artifact seal."
+  ],
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "evidence_location": "/private/tmp/mdkg-graph-recovery.lvWdKa: compact run logs, result digests and fixture harnesses",
+  "authority_used": "Goal83/84 local qualification infrastructure, disposable Git/fault fixtures, mdkg evidence/projections and reviewed local commit only",
+  "excluded": "No canonical migration, configuration change, bundle refresh, live runtime change, remote Git, provider/deployment, consumer edits or publication",
+  "skill_candidates": []
+}

@@ -412,3 +412,12 @@ init paths bypass that barrier. Recommend layered configuration fencing plus
 explicit no-mixed-version writers for v2 adoption; no policy or source change
 was silently adopted. Bug-7 stays progress, bug-17 remains separately blocked,
 and independent qualification work remains available. Skill candidates none.
+
+## 2026-09-09 Installed Transaction Recovery Evidence
+
+Chk-589 records 36 passing installed caught-error recovery cases on all three
+required Node versions and 118 passing focused regressions. A separate hard-stop
+probe preserves journal/data but cannot resume through the killed writer's stale
+lock. This operational gap stays in bug-7; no automatic lock takeover or policy
+waiver was implemented. Twenty-six bug lanes remain locally done, with bug-7
+in progress and bug-17 separately blocked. Final qualification remains NOT_READY.
