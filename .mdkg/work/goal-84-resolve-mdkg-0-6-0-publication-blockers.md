@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-18
+active_node: bug-10
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -136,3 +136,14 @@ fixes; bug-10, bug-12, bug-15, bug-16 and bug-17 remain, alongside bugs 5–7 an
 final qualification. The independent bug-10 prepatch investigation is complete;
 its source and evidence implementation has not started. No new Nick decision
 is required to continue authorized local scope. Publication remains blocked.
+
+## 2026-09-08 Subgraph Boundary Verification
+
+Bug-10 is locally verified: 16 focused and 33 installed tests, full source suite
+and 26 contract checks pass, with CLI/docs/graph/diff parity. The full suite
+caught and the implementation corrected cached-body deletion compatibility;
+the existing test was preserved. Nine of thirteen security findings now have
+local fixes. Bugs 12, 15, 16 and 17 remain, alongside bugs 5–7 and final gates.
+Archive bug-12 independent prepatch investigation is complete; implementation
+has not started. Continue authorized local work; no new Nick decision required.
+Protected selection/runtime/bundle bytes and generated SQLite custody remain.

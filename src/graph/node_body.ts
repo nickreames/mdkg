@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { parseFrontmatter } from "./frontmatter";
 import { IndexNode } from "./indexer";
-import { readZipFileEntries } from "../util/zip";
+import { assertSubgraphBundleFile, readSubgraphBundleEntries } from "./subgraph_bundle";
 import { NotFoundError } from "../util/errors";
 import { readContainedFile } from "../core/filesystem_authority";
 
@@ -27,11 +27,14 @@ export function createNodeBodyReader(root: string, maxBytes = DEFAULT_NODE_BODY_
     const source = node.source;
     const bundlePath = path.resolve(root, source.bundle_path);
     let entries = bundleEntries.get(bundlePath);
-    if (!entries) {
-      if (!fs.existsSync(bundlePath)) {
-        throw new NotFoundError(`bundle not found for ${node.qid}: ${source.bundle_path}`);
-      }
-      entries = new Map(readZipFileEntries(bundlePath).map((entry) => [entry.name, entry.data]));
+    if (entries) {
+      // Preserve the existing snapshot-cache behavior after genuine deletion,
+      // but never treat a linked/nonregular replacement or malformed path as
+      // absence. This branch returns only previously loaded bytes, not new IO.
+      try { assertSubgraphBundleFile(root, source.bundle_path); }
+      catch (error) { if (!(error instanceof NotFoundError)) throw error; }
+    } else {
+      entries = readSubgraphBundleEntries(root, source.bundle_path);
       bundleEntries.set(bundlePath, entries);
     }
     const entry = entries.get(source.original_path);
@@ -50,20 +53,14 @@ function readImportedBody(root: string, node: IndexNode, maxBytes: number): stri
   if (!source?.imported) {
     throw new Error("node is not imported");
   }
-  const bundlePath = path.resolve(root, source.bundle_path);
-  if (!fs.existsSync(bundlePath)) {
-    throw new NotFoundError(`bundle not found for ${node.qid}: ${source.bundle_path}`);
-  }
-  const entry = readZipFileEntries(bundlePath).find(
-    (candidate) => candidate.name === source.original_path
-  );
+  const entry = readSubgraphBundleEntries(root, source.bundle_path).get(source.original_path);
   if (!entry) {
     throw new NotFoundError(`bundle entry not found for ${node.qid}: ${source.original_path}`);
   }
-  if (entry.data.length > maxBytes) {
+  if (entry.length > maxBytes) {
     throw new Error(`node body source exceeds byte limit for ${node.qid}: ${maxBytes}`);
   }
-  return parseFrontmatter(entry.data.toString("utf8"), source.original_path).body.trimEnd();
+  return parseFrontmatter(entry.toString("utf8"), source.original_path).body.trimEnd();
 }
 
 export function readNodeBody(root: string, node: IndexNode, maxBytes = DEFAULT_NODE_BODY_MAX_BYTES): string {

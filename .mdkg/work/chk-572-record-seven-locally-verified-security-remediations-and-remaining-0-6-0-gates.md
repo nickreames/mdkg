@@ -134,3 +134,14 @@ goal-84. Selected Goal 73, runtime DB and protected Demo 3 bundle bytes remain
 unchanged. SQLite is uncommitted generated custody; no runtime lease acquired.
 Only a reviewed local commit is authorized. Final task-828 review, compatibility
 matrix, release ladder and seal remain pending; no remote/publication action.
+
+## Follow-on Verification: root:bug-10
+
+2026-09-08: contained bounded configured-subgraph reads are locally verified.
+Receipt: .mdkg/artifacts/goal-84/bug-10-verification.json. Sixteen focused,
+33 installed, full source suite and 26 contract checks pass; CLI/docs/graph/diff
+checks pass with the three inherited age warnings. The initial full-suite
+cached-deletion failure was corrected while preserving the original test.
+Nine security findings have local fixes; bug-12 is the next investigated lane.
+Owner, local-only authority, preserved states, SQLite custody and final gates
+remain as above. No runtime lease acquired; no new skill candidates.
