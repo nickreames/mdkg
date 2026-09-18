@@ -2,22 +2,22 @@
 id: bug-45
 type: bug
 title: Restoring a historical-format bundle can install active Git metadata
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-45-local-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, test-488, test-487, task-839]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-18
 ---
 # Overview
 
@@ -106,5 +106,25 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+Local remedy verified on2026-09-18; final release clearance remains separate.
+Shared transport admission now checks complete path inventories, Git
+administrative spellings, deepest enabled/selected ownership and root-config
+cache destinations before extraction or clone/fork index rebuilding. Owned graph
+assets, private snapshots, custom caches and optional historical owner labels
+remain supported. Historical inputs without proven transport authority remain
+inspect-only.
+
+The original source failed72/106 boundary cases. One independent read-only
+candidate review found configured cache destinations bypassing entry admission.
+Parent reproduced54 such refusals plus3 historical-label compatibility failures
+in167 expanded cases before refining the remedy. Final167 cases pass against the
+same installed package on each of Node24.15.0,24.18.0 and26.0.0, macOS arm64.
+The focused source suite passed154/154 without skips; build, CLI/docs/workflow
+parity, full/changed graph validation, SQLite verification and diff checks pass.
+Protected Demo3, selected Goal73 and runtime DB hashes match; no remote action.
+
+Exact source/runtime hashes, intermediate artifact identity, findings disposition
+and limits: .mdkg/artifacts/goal-86/bug-45-local-verification.json.
+This is not a final seal or Linux qualification. Test487/488, Task828, the full
+ladder and final artifact seal remain required. Goal85 stays paused. No active
+Git payload execution or earlier-release exposure is claimed.
