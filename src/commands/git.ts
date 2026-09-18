@@ -1,5 +1,6 @@
 import { GitStatusEntry, insideGitWorkTree, observeGit, readGitHead, readGitStatus } from "../util/git_observation";
 import { ValidationError } from "../util/errors";
+import { redactRemoteRef, remoteUsesOpaqueHelper } from "../util/git_remote";
 
 type GitRemoteSummary = {
   name: string;
@@ -45,27 +46,6 @@ export type GitInspectCommandOptions = {
   json?: boolean;
 };
 
-function redactRemoteRef(value: string): string {
-  // These are display descriptors, never transport-ready authentication data.
-  // Preserve normal local/SCP syntax; opaque helpers and malformed URL-like
-  // values cannot be safely interpreted as URLs, so do not echo their payload.
-  if (/[\x00-\x1f\x7f]/.test(value)) return "<redacted remote descriptor>";
-  if (/^[a-z]:[\\/]/i.test(value) || value.startsWith("\\\\")) return value;
-  if (/^[^/\\:]+::/.test(value)) return "<redacted remote helper descriptor>";
-  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(value)) {
-    return value.includes("://") ? "<redacted remote descriptor>" : value;
-  }
-  try {
-    const parsed = new URL(value);
-    if (!parsed.host && parsed.protocol !== "file:") return "<redacted remote descriptor>";
-    // Do not use a list of secret parameter names: omit the entire URL query
-    // and fragment. Encoded delimiters in the path are ordinary path bytes.
-    return value.split(/[?#]/, 1)[0].replace(/^([a-z][a-z0-9+.-]*:\/\/)[^/]*@/i, "$1<redacted>@");
-  } catch {
-    return "<redacted remote descriptor>";
-  }
-}
-
 function gitLine(cwd: string, args: string[]): string {
   // Remove only Git's output terminator, not whitespace from authored values.
   return observeGit(cwd, args).stdout.replace(/\r?\n$/, "");
@@ -92,11 +72,14 @@ function listRemotes(root: string): GitRemoteSummary[] {
     .split(/\r?\n/)
     .filter(Boolean)
     .sort()
-    .map((name) => ({
-      name,
-      fetch_url: redactRemoteRef(gitLine(root, ["remote", "get-url", "--", name])),
-      push_url: redactRemoteRef(gitLine(root, ["remote", "get-url", "--push", "--", name])),
-    }));
+    .map((name) => {
+      const opaqueHelper = remoteUsesOpaqueHelper(root, name);
+      return {
+        name,
+        fetch_url: redactRemoteRef(gitLine(root, ["remote", "get-url", "--", name]), opaqueHelper),
+        push_url: redactRemoteRef(gitLine(root, ["remote", "get-url", "--push", "--", name]), opaqueHelper),
+      };
+    });
 }
 
 function buildSourceDescriptor(inspect: GitInspectReceipt): GitSourceDescriptor {

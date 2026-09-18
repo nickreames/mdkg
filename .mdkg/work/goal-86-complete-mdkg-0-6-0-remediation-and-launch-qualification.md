@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
 scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: task-837
+active_node: bug-44
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -21,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: []
 context_refs: [goal-83, goal-84, goal-85, goal-75, dec-93, dec-94, dec-95, dec-96, edd-82, task-825, task-833, test-485]
-evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619, chk-620]
+evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619, chk-620, chk-621]
 aliases: []
 skills: []
 created: 2026-09-13
@@ -383,6 +383,14 @@ Demo3 bundle remain protected. Baseline/custody are bound in the planning receip
 None. Reuse existing skills; no skill authoring or consumer-specific candidate.
 
 # Completion Evidence
+
+Chk620 binds completed fresh Standard coverage and fourteen confirmed findings;
+this is not a clean security bill. Chk621 and bug-44-local-verification.json bind
+the first new finding's local remedy, one candidate-review cycle with two
+reproduced/corrected gaps,67 focused source tests and49 installed scenarios each
+on Node24.15.0/24.18.0/26 macOS arm64. Remaining remedies, Linux, test488/Task828,
+full ladder and final artifact qualification/seal remain open. Broad docs polish
+is deferred; release-critical truth correction remains Task839. Goal85 stays paused.
 
 Chk608 proves planning only; chk609 and the execution baseline prove task834's
 accepted custody. Chk610 binds Bug35/40's local verification and Bug42's failing

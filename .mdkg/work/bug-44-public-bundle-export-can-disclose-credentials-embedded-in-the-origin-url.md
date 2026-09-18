@@ -2,22 +2,22 @@
 id: bug-44
 type: bug
 title: Public bundle export can disclose credentials embedded in the origin URL
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-44-local-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, test-488]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-18
 ---
 # Overview
 
@@ -69,6 +69,9 @@ Centralize safe Git provenance descriptors and use them in bundle source metadat
 Owned source allowlist:
 - src/commands/bundle.ts
 - src/commands/git.ts
+- src/util/git_remote.ts (shared descriptor control)
+- src/commands/subgraph.ts and src/graph/subgraphs.ts (historical/configured provenance sinks)
+- src/commands/mcp.ts (configured-provenance inspection sink)
 
 Directly required shared helpers and regression files may be added only for
 this control. Keep different findings separately attributable even when the
@@ -98,5 +101,31 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+Local remedy verified on 2026-09-18; final release qualification remains open.
+The shared descriptor boundary now withholds URL userinfo, all query/fragment
+data, explicit/implicit/configured opaque helpers, malformed descriptors and
+parser-normalized authority bypasses. Safe SCP/local/Windows/UNC/encoded-path
+descriptors and deterministic bundle behavior remain covered by controls.
+
+Imported and configured provenance is redacted in inspection, packs, health,
+audit/plan/sync receipts, JSON/SQLite projections and MCP output. Authored config
+and historical ZIPs are not rewritten. Bundle show flags a redacted view;
+unsafe historical provenance is inspect-only rather than copied by materialize.
+This is not arbitrary-body/config secret scanning or credential erasure.
+
+Evidence: `.mdkg/artifacts/goal-86/bug-44-local-verification.json`. Original
+source failed18/26 cases with8 passing controls. One independent candidate
+review found2 concrete gaps; the parent reproduced20/47 failures, refined the
+control and verified49 scenarios on installed bytes for each of Node24.15.0,
+24.18.0 and26 (macOS arm64). Focused source67/67 passed; the final two-case
+fixture extension also passed. Build, CLI/docs/workflow parity, full/changed
+graph validation, SQLite checks and diff checks passed. Three historical stale
+subgraph warnings remain; no protected bundle was refreshed.
+
+The recorded0.5.2 release source867ac709 also contains the raw-origin producer;
+exact source/blob hashes are retained. This unit did not execute the published
+0.5.2 package or establish earlier affected ranges or actual exposure.
+
+Local bug completion does not close test488/Task828, Linux qualification, the
+full ladder or final artifact seal. Goal85 remains paused/unpublished. Broad
+documentation polish remains deferred; Task839 owns release-critical guidance.

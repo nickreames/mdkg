@@ -2,6 +2,7 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { insideGitWorkTree, readGitHead, readGitStatus } from "../util/git_observation";
+import { redactRemoteRef } from "../util/git_remote";
 import { Config, SubgraphConfig, SubgraphSourceConfig } from "../core/config";
 import { configPath } from "../core/paths";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
@@ -481,6 +482,7 @@ function projectOneSubgraph(
 ): { health: SubgraphHealth; nodes: Record<string, IndexNode>; reverse_edges: Index["reverse_edges"]; loadedSources: LoadedSource[] } {
   const nodes: Record<string, IndexNode> = {};
   const reverse_edges: Index["reverse_edges"] = {};
+  const configuredRepo = subgraph.source_repo === undefined ? undefined : redactRemoteRef(subgraph.source_repo);
   if (!subgraph.enabled) {
     return {
       health: {
@@ -489,7 +491,7 @@ function projectOneSubgraph(
         visibility: subgraph.visibility,
         permissions: subgraph.permissions,
         source_path: subgraph.source_path,
-        source_repo: subgraph.source_repo,
+        source_repo: configuredRepo,
         stale: false,
         warning_count: 0,
         error_count: 0,
@@ -551,6 +553,7 @@ function projectOneSubgraph(
       if (!loaded.source.enabled || !loaded.index) {
         continue;
       }
+      const sourceRepo = subgraph.source_repo ?? loaded.manifest?.source?.repo;
       for (const node of Object.values(loaded.index.nodes)) {
         const projectedQid = qidMap.get(node.qid) as string;
         const projected: IndexNode = {
@@ -584,7 +587,7 @@ function projectOneSubgraph(
             permissions: subgraph.permissions,
             stale,
             warnings: [...warnings],
-            source_repo: subgraph.source_repo ?? loaded.manifest?.source?.repo,
+            source_repo: sourceRepo === undefined ? undefined : redactRemoteRef(sourceRepo),
             source_git_head: loaded.manifest?.source?.git_head ?? null,
           },
         };
@@ -601,7 +604,7 @@ function projectOneSubgraph(
       visibility: subgraph.visibility,
       permissions: subgraph.permissions,
       source_path: subgraph.source_path,
-      source_repo: subgraph.source_repo,
+      source_repo: configuredRepo,
       stale,
       warning_count: warnings.length,
       error_count: errors.length,

@@ -22,6 +22,7 @@ import { formatResolveError, resolveQid } from "../util/qid";
 import { sortNodesByQid } from "../util/sort";
 import { toNodeDetailJson, toNodeSummaryJson } from "./query_output";
 import { readLocalGoalSelection, resolveLocalGoalSelection, selectionRequiresIdentity } from "../graph/selected_goal";
+import { redactRemoteRef } from "../util/git_remote";
 
 const MCP_PROTOCOL_VERSION = "2025-06-18";
 const SERVER_NAME = "mdkg";
@@ -412,7 +413,7 @@ function listWorkspaces(root: string): JsonObject {
         visibility: entry.visibility,
         permissions: [...entry.permissions],
         source_path: entry.source_path,
-        source_repo: entry.source_repo,
+        source_repo: entry.source_repo === undefined ? undefined : redactRemoteRef(entry.source_repo),
         sources: entry.sources.map((source) => ({
           label: source.label,
           path: source.path,

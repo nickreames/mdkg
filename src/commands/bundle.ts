@@ -2,6 +2,7 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { insideGitWorkTree, observeGit, readGitHead, readGitStatus } from "../util/git_observation";
+import { redactRemoteRef, remoteUsesOpaqueHelper } from "../util/git_remote";
 import { loadConfig, validateConfigSchema, Config, WorkspaceConfig } from "../core/config";
 import { migrateConfig } from "../core/migrate";
 import {
@@ -327,7 +328,7 @@ function normalizeProfile(value?: string, fallback: BundleProfile = "private"): 
 
 function sourceInfo(root: string): BundleManifest["source"] {
   const inside = insideGitWorkTree(root);
-  const remote = inside ? observeGit(root, ["config", "--get", "remote.origin.url"], { allowedFailures: [1] }).stdout.trim() : null;
+  const remote = inside ? observeGit(root, ["config", "--get", "remote.origin.url"], { allowedFailures: [1] }).stdout.replace(/\r?\n$/, "") : null;
   const head = inside ? readGitHead(root) : null;
   const dirtyPaths = (inside ? readGitStatus(root) : [])
         .flatMap((entry) => entry.original_path ? [entry.path, entry.original_path] : [entry.path])
@@ -342,7 +343,7 @@ function sourceInfo(root: string): BundleManifest["source"] {
           );
         });
   return {
-    repo: remote || path.basename(root),
+    repo: remote ? redactRemoteRef(remote, remoteUsesOpaqueHelper(root, "origin")) : path.basename(root),
     git_head: head,
     dirty: dirtyPaths.length > 0,
   };
@@ -1004,7 +1005,7 @@ function bundleSummary(manifest: BundleManifest, bundlePath: string, zipSha256?:
     source_tree_hash: manifest.source_tree_hash,
     bundle_hash: manifest.bundle_hash,
     zip_sha256: zipSha256,
-    source: manifest.source,
+    source: { ...manifest.source, repo: redactRemoteRef(manifest.source.repo) },
   };
 }
 
@@ -1077,7 +1078,12 @@ export function runBundleShowCommand(options: BundleShowCommandOptions): void {
     zipSha256
   );
   if (options.json) {
-    writeJson({ action: "show", bundle: summary, manifest });
+    // A safe inspection view is not a rewrite of the historical ZIP. Its
+    // original-byte identity remains zip_sha256; flag changed provenance.
+    writeJson({ action: "show", bundle: summary,
+      manifest: { ...manifest, source: summary.source },
+      ...(summary.source.repo !== manifest.source.repo ? { provenance_redacted: true } : {}),
+    });
     return;
   }
   console.log(`${summary.path} | ${summary.profile} | ${summary.file_count} file(s)`);
