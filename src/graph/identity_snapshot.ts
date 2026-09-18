@@ -30,7 +30,7 @@ export type AuthoredSnapshot = {
 export function readGraphGit(root: string, args: string[], optional = false): string | undefined {
   const result = spawnSync("git", args, {
     cwd: root, encoding: "utf8", maxBuffer: 32 * 1024 * 1024,
-    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0", GIT_NO_REPLACE_OBJECTS: "1" },
+    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0", GIT_NO_REPLACE_OBJECTS: "1", GIT_NO_LAZY_FETCH: "1" },
   });
   if (result.status !== 0 || result.error) {
     if (optional) return undefined;

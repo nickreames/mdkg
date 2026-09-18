@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, test-483, task-828]
-active_node: bug-29
+active_node: bug-26
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -334,3 +334,21 @@ and 24.18.0, 1059 source tests and 26 release/security contracts pass. Evidence:
 affected from an integrity-verified cached artifact. Six behavioral remedies
 (bugs 22-27), bug-17's compatibility decision and all independent qualification
 gates remain incomplete. No risk waiver, final seal or publication is implied.
+
+## 2026-09-09 Reviewed Legacy Lineage Verification
+
+Bug-26 is locally complete with chk-583 and its hash-bound verification artifact.
+Explicit restoration/recreation choices now preserve current references and
+historical bodies while rejecting unproven continuity, incomplete history,
+stale decisions and oversized generated evidence. Recovery retains exact
+old-journal rollback without permitting unreviewed resume. Final validation:
+1271 ordinary tests, 36 focused Node 24.18.0 checks, 22 installed checks each on
+Node 24.18.0/26.0.0, and 26 release/security contract tests pass. CLI/docs,
+graph and SQLite checks pass; selected Goal 73 and protected bytes remain fixed.
+
+Current unresolved bug nodes are 7, 17, 27 and 32. Bug-27 is the next independent
+migration-validation lane; bug-17 still needs the legacy public-bundle
+materialization decision. The original Standard security accounting remains
+12 of 13 locally fixed. Task-828 final independent security review, full
+installed qualification, release metadata/ladder and sealing remain open.
+No publication, canonical migration, remote action or new skill candidate.

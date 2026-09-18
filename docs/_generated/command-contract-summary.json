@@ -1,6 +1,6 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "4fd76e2dae0ba6e83ae0d55914d7078de77f1d6845169532ee2aa078a42ee8ec",
+  "contract_hash": "79797d9636e88614a59589c462b09aa98391a91d2ce3770454633d392ee03699",
   "package_version": "0.5.2",
   "command_count": 120,
   "categories": {

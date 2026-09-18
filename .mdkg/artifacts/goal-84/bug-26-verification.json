@@ -1,0 +1,257 @@
+{
+  "checkpoint_qid": "root:chk-583",
+  "local_commit_allowlist": [
+    "CLI_COMMAND_MATRIX.md",
+    "docs/_generated/cli-reference.md",
+    "docs/_generated/command-contract-summary.json",
+    "docs/advanced-alpha/graph-movement.md",
+    "docs/src/content/docs/advanced-alpha/graph-movement.md",
+    "src/cli.ts",
+    "src/commands/graph_identity.ts",
+    "src/graph/identity_history.ts",
+    "src/graph/identity_legacy_lineage.ts",
+    "src/graph/identity_migration.ts",
+    "src/graph/identity_snapshot.ts",
+    "src/graph/identity_transaction.ts",
+    "tests/graph/identity_migration_lineage.test.ts",
+    ".mdkg/artifacts/goal-84/bug-26-verification.json",
+    ".mdkg/work/bug-26-require-explicit-legacy-recreation-provenance-before-identity-migration.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/chk-583-verify-reviewed-legacy-identity-continuity-and-recovery.md"
+  ],
+  "schema_version": 1,
+  "owner": "mdkg-project-agent",
+  "work_qid": "root:bug-26",
+  "goal_qids": [
+    "root:goal-84",
+    "root:goal-83"
+  ],
+  "outcome": "locally verified lineage remediation; NOT_READY for publication",
+  "source_baseline": "882181a467dbee15193807690bb24c44c5672ef7",
+  "prepatch": {
+    "phase": "pre-corrected",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "--test",
+      "dist/tests/graph/identity_migration_lineage.test.js",
+      "dist/tests/graph/identity_migration.test.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 1,
+    "signal": null,
+    "output_sha256": "0e7165b84003a652e7ffe0ff607bc800a7518f2ae12d185c57c4631fe504c9cd",
+    "source_sha256": {
+      "src/graph/identity_migration.ts": "e199415b746e4a2a83390c126ee8f013caec196e2cbbe87341a1da9b8b2ac626",
+      "src/graph/identity_history.ts": "34f28f56794ab85d502784f688c62b50a37e32e0ac8ffcc361c4eccf26ad6d5f",
+      "src/graph/identity_transaction.ts": "600556bf0a189d3647339597cc060fa37e7b267bf9a191291286de665a20d2ed",
+      "tests/graph/identity_migration_lineage.test.ts": "0a5e3e0af79eed2e7f45dd024a4f6cd259b4d917fef1fd906873e7adc79c5a21"
+    },
+    "summary": [
+      "ℹ tests 22",
+      "ℹ pass 15",
+      "ℹ fail 7",
+      "ℹ skipped 0",
+      "ℹ duration_ms 6827.635291"
+    ]
+  },
+  "receipt_limit_prepatch": {
+    "phase": "pre-evidence-limit-corrected",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "--test",
+      "dist/tests/graph/identity_migration_lineage.test.js",
+      "dist/tests/graph/identity_migration.test.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 1,
+    "signal": null,
+    "output_sha256": "b0ee34fb4ea4e741ee9cf52063bb72acf03ca3bf7e71c6d36f7b8268255f25cb",
+    "source_sha256": {
+      "src/graph/identity_migration.ts": "62b78c2cfbc8f9bc66e8ad30e3e3de4913320eff942c6cd24246add6356ea040",
+      "src/graph/identity_legacy_lineage.ts": "2846800e0a8d5cdb6f46c5bd205e384549c5e11291674918e7a0e9aeaf021449",
+      "src/graph/identity_history.ts": "096ec7ad6a559089d390e18a609aeeb1f6b4c18e8ab13d82aa8f9ba3596476cb",
+      "src/graph/identity_snapshot.ts": "d6e670ce8571ff03ce85eab6afef873001ad2d30b6bb059dd64878f36550d90b",
+      "src/graph/identity_transaction.ts": "2356e5699e41ed06f5fe22c5fb0931be00509fcffbcbe94521e5fadd865b228a",
+      "src/commands/graph_identity.ts": "9b3da70678301a299022b144e8f32a1bb8b73605c83c659142c618cdfa1c7769",
+      "src/cli.ts": "96170e4638a1ca48fd8ad601947cdabef9dbb96790294f4d22142e49ec587843",
+      "tests/graph/identity_migration_lineage.test.ts": "857a19728443381cb637e56b7c529a708d9245d5fad336596f5ca1f5c17078cf"
+    },
+    "summary": [
+      "ℹ tests 34",
+      "ℹ pass 33",
+      "ℹ fail 1",
+      "ℹ skipped 0",
+      "ℹ duration_ms 16409.661583"
+    ]
+  },
+  "full_suite": {
+    "phase": "full-final",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "scripts/test-built.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 0,
+    "signal": null,
+    "output_sha256": "88e7d1acb5b769e33070fb41354281ec408f59a2e2259020b266d1a3f5256913",
+    "source_sha256": {
+      "src/graph/identity_migration.ts": "bf6af8af9b964e36f7af24e5a5e693da9c264cf96ec315bd028260f0424848b4",
+      "src/graph/identity_legacy_lineage.ts": "2846800e0a8d5cdb6f46c5bd205e384549c5e11291674918e7a0e9aeaf021449",
+      "src/graph/identity_history.ts": "749354878a2a9cd9990567d1136af331834d2f3230d4f5a53be2a9a8b84eaf1c",
+      "src/graph/identity_snapshot.ts": "d6e670ce8571ff03ce85eab6afef873001ad2d30b6bb059dd64878f36550d90b",
+      "src/graph/identity_transaction.ts": "2356e5699e41ed06f5fe22c5fb0931be00509fcffbcbe94521e5fadd865b228a",
+      "src/commands/graph_identity.ts": "9b3da70678301a299022b144e8f32a1bb8b73605c83c659142c618cdfa1c7769",
+      "src/cli.ts": "96170e4638a1ca48fd8ad601947cdabef9dbb96790294f4d22142e49ec587843",
+      "tests/graph/identity_migration_lineage.test.ts": "1a0f5ecd0d46d8869c03f65cdcbe2c91eec76866364c8c3db02450399c2d8abb"
+    },
+    "summary": [
+      "ℹ tests 1271",
+      "ℹ pass 1271",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 142622.373916"
+    ]
+  },
+  "node24": {
+    "phase": "final24",
+    "command": [
+      "/opt/homebrew/opt/node@24/bin/node",
+      "--test",
+      "dist/tests/graph/identity_migration_lineage.test.js",
+      "dist/tests/graph/identity_migration.test.js"
+    ],
+    "runtime": "v24.18.0",
+    "exit_code": 0,
+    "signal": null,
+    "output_sha256": "6ea1cafcb686552df5cbedc0a2442b8544b960db7b79de9c8dbca18c879bbdc5",
+    "source_sha256": {
+      "src/graph/identity_migration.ts": "bf6af8af9b964e36f7af24e5a5e693da9c264cf96ec315bd028260f0424848b4",
+      "src/graph/identity_legacy_lineage.ts": "2846800e0a8d5cdb6f46c5bd205e384549c5e11291674918e7a0e9aeaf021449",
+      "src/graph/identity_history.ts": "749354878a2a9cd9990567d1136af331834d2f3230d4f5a53be2a9a8b84eaf1c",
+      "src/graph/identity_snapshot.ts": "d6e670ce8571ff03ce85eab6afef873001ad2d30b6bb059dd64878f36550d90b",
+      "src/graph/identity_transaction.ts": "2356e5699e41ed06f5fe22c5fb0931be00509fcffbcbe94521e5fadd865b228a",
+      "src/commands/graph_identity.ts": "9b3da70678301a299022b144e8f32a1bb8b73605c83c659142c618cdfa1c7769",
+      "src/cli.ts": "96170e4638a1ca48fd8ad601947cdabef9dbb96790294f4d22142e49ec587843",
+      "tests/graph/identity_migration_lineage.test.ts": "1a0f5ecd0d46d8869c03f65cdcbe2c91eec76866364c8c3db02450399c2d8abb"
+    },
+    "summary": [
+      "ℹ tests 36",
+      "ℹ pass 36",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 95049.506167"
+    ]
+  },
+  "installed": {
+    "schema_version": 1,
+    "disposition": "intermediate development candidate, not release seal",
+    "candidate": {
+      "version": "0.5.2",
+      "sha256": "990092db2c960744f473e0846a5527fe081ea6c63d5d3a0653d706fd42a4e168",
+      "integrity": "sha512-jt6j92dbFJORzhbqnEayNrsc59xP8aBjf26/ObNsNNr+eRHNdS+NlZz3PWMbWUyiYtKdo39lS4tZLJL4/wYnpw==",
+      "package_file_manifest_sha256": "cdc93a7d182bca1f1b017cc43bad94d5054e77827a653ef996b8f331eed2409e"
+    },
+    "results": [
+      {
+        "name": "pack",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "9b5be02bcc1b675d759d058694bad5ff3a43de59992d0df430045aa3ded0ec6d",
+        "summary": []
+      },
+      {
+        "name": "install",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "d061fdcf53b23456aff056d7fc76d0d57a5ded5f45f0e2261e1b9f5be2eff0d5",
+        "summary": []
+      },
+      {
+        "name": "installed-node26",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "c37db360f6abde5cf2c65e83d7d5b9ba8b7c3ff86ddacc42acc52e5a9d17d129",
+        "summary": [
+          "ℹ tests 22",
+          "ℹ pass 22",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 87820.653"
+        ],
+        "runtime": "v26.0.0"
+      },
+      {
+        "name": "installed-node24",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "9c6c7a10ae0e6ce526b991fc49b1f4db9dc3a0be2c38254e8a90fda26f407809",
+        "summary": [
+          "ℹ tests 22",
+          "ℹ pass 22",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 30490.984708"
+        ],
+        "runtime": "v24.18.0"
+      }
+    ],
+    "test_source_sha256": "1a0f5ecd0d46d8869c03f65cdcbe2c91eec76866364c8c3db02450399c2d8abb",
+    "harness_sha256": "68c5e2e43dd7355846daf37c1ae29eb5e7655f85be481bb8d278a35ecac27018",
+    "installed_package_unchanged": true
+  },
+  "protected_before_after_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/commands/subgraph.ts": "95aa15c8338203cd8dae153da1e072d6e97ea1ddd38579c5017850a03456ae47",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "functional_review": {
+    "worker": "legacy_lineage_review",
+    "mode": "source-only",
+    "resolved": [
+      "old-journal rollback compatibility",
+      "newline filename staged alias ambiguity",
+      "retained history memory and quadratic scans",
+      "null decisions",
+      "generated receipt discovery budgets"
+    ],
+    "result": "no directly introduced residual defect evidenced; final task-828 security review still required"
+  },
+  "qualification": {
+    "build": "passed",
+    "cli_matrix": "passed",
+    "docs_examples": 494,
+    "release_security_contract_tests": 26,
+    "graph_full": "passed with three preserved stale-subgraph warnings",
+    "graph_changed": "passed",
+    "sqlite_index": "five caches verified",
+    "diff_check": "passed",
+    "runtime_versions": [
+      "24.18.0",
+      "26.0.0"
+    ],
+    "node_24_15_0": "not qualified by this slice"
+  },
+  "boundaries": {
+    "canonical_migration": false,
+    "bundle_refresh": false,
+    "selected_goal_changed": false,
+    "runtime_db_changed": false,
+    "remote_action": false,
+    "publication": false,
+    "skill_candidates": []
+  },
+  "remaining": [
+    "bug-27 complete candidate and dependency validation, including expanded node per-file limits",
+    "bug-17 legacy public-bundle compatibility",
+    "bug-32 CLI guidance",
+    "bug-7 and full installed qualification",
+    "task-828 final independent security review",
+    "draft 0.6.0 metadata, full release ladder and exact artifact seal"
+  ]
+}

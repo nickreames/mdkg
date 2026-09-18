@@ -13,6 +13,7 @@ import { getWorkspaceDocRoots, listWorkspaceDocFilesByAlias } from "./workspace_
 import { writeDerivedIndexes } from "./reindex";
 import { buildIndex } from "./indexer";
 import { assertCompleteIdentityHistory } from "./identity_history";
+import { verifyLegacyLineage } from "./identity_legacy_lineage";
 import { validateReconciliationCandidate } from "./identity_reconciliation_plan";
 import { buildSkillsIndex } from "./skills_indexer";
 import { ACCEPTANCE_DIRECTORY, matchesReconciliationAcceptance, reconciliationAcceptancePath } from "./identity_acceptance";
@@ -112,6 +113,10 @@ function checkControl(root: string, plan: IdentityPlanBase, recovering = false):
 
 function checkRevisions(root: string, plan: IdentityPlanBase): void {
   if (plan.action === "graph.reconcile.plan") assertCompleteIdentityHistory(root);
+  if (plan.action === "graph.migrate.plan" && plan.control.head) {
+    if (!plan.legacy_lineage) throw new UsageError("legacy migration plan lacks reviewed continuity evidence; preserve journal and re-plan before application");
+    verifyLegacyLineage(root, plan.legacy_lineage);
+  }
   for (const evidence of plan.revision_evidence ?? []) {
     if (readAuthoredSnapshot(root, evidence.revision).tree_hash !== evidence.tree_hash) throw new UsageError(`reviewed revision evidence changed: ${evidence.revision}`);
   }
@@ -203,7 +208,9 @@ function checkTerminal(root: string, journal: GraphJournal, rollback: boolean): 
 
 function finish(root: string, journal: GraphJournal, rollback: boolean): void {
   checkTerminal(root, journal, rollback);
-  checkRevisions(root, journal.plan);
+  // Exact rollback restores owned before-bytes; it does not approve the old
+  // identity mapping. Preserve recovery for pre-lineage migration journals.
+  if (!rollback || journal.plan.action !== "graph.migrate.plan") checkRevisions(root, journal.plan);
   const snapshot = readAuthoredSnapshot(root);
   if (journal.plan.action === "graph.reconcile.plan") {
     const candidate = validateReconciliationCandidate(root, snapshot);
@@ -266,7 +273,7 @@ export function applyGraphMigrationPlan(root: string, plan: IdentityPlanBase, ex
 
 export function continueGraphTransaction(root: string, hash: string, mode: "resume" | "rollback", hooks: GraphTransactionHooks = {}) {
   const journal = readJournal(root, hash);
-  checkRevisions(root, journal.plan);
+  if (mode !== "rollback" || journal.plan.action !== "graph.migrate.plan") checkRevisions(root, journal.plan);
   checkOtherTransactions(root, hash);
   if ((mode === "resume" && journal.state === "applied") || (mode === "rollback" && journal.state === "rolled-back")) {
     checkTerminal(root, journal, mode === "rollback");

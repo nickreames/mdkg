@@ -751,7 +751,7 @@ Usage:
 - `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
 - `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
 - `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
-- `mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]`
+- `mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]`
 - `mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]`
 - `mdkg graph recover <plan-hash> [--resume|--rollback] [--json]`
 
@@ -779,6 +779,7 @@ Notes:
 - importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
 - `graph refs` is read-only; it reports `scope_refs`, `context_refs`, `evidence_refs`, blockers, related refs, and structural inbound/outbound links
 - `graph migrate` previews explicit legacy-v1 to identity-v2 conversion without writes. A Git graph requires a reviewed local `--ancestor`; `--graph-id` is the shared graph namespace and independent branch additions require distinct `--origin` UUIDs.
+- Migration inspects complete local history, merge parents and stage-0 graph inputs. Ambiguous continuity produces `continuity_reviews`; `--decisions` maps legacy QIDs to `{take: restore-ancestor|new-identity, reason: nonempty text, review_hash: exact preview hash}`. The choice binds current structured references, not historical prose. Preview again with the decisions, then apply its exact plan hash with the same decisions file. Missing/shallow/partial history fails closed without fetching. Unrecorded filesystem replacement with no Git trace is not distinguishable from an edit.
 - `graph reconcile` previews fixed local ancestor/incoming commits against the current authored checkout. `--target` must resolve to current HEAD. It preserves target aliases, binds structured references to stable identities, and requires a reasoned JSON decision for same-identity conflicts. Repeated inputs use durable acceptance evidence, including local cherry-pick/revert history; incomplete or ambiguous ancestry fails closed. `--apply --plan-hash` requires the exact unchanged preview. Only reviewed authored paths, immutable identity receipts and local derived indexes are written. Source/config/docs, bundles, checkout selection/runtime state and Git staging/history remain untouched.
 - Migration apply requires `--apply --plan-hash` with the exact reviewed `sha256:...` value and unchanged authored/control inputs. It preserves historical body bytes and records stable identity/reference mappings under `.mdkg/identity/migrations/`.
 - `graph recover` defaults to read-only metadata inspection; `--resume` or `--rollback` uses the private `.mdkg/state/identity-transactions/` journal and refuses changed/unowned inputs. No operation implicitly stages, selects a goal, refreshes bundles, contacts remotes or rewrites Git history.

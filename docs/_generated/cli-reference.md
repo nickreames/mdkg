@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 4fd76e2dae0ba6e83ae0d55914d7078de77f1d6845169532ee2aa078a42ee8ec -->
+<!-- contract-hash: 79797d9636e88614a59589c462b09aa98391a91d2ce3770454633d392ee03699 -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -3056,23 +3056,24 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 ```
 
 ### Common flags
 
-- `--ancestor <ref>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
-- `--apply`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
-- `--graph-id <uuid>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+- `--ancestor <ref>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--apply`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--decisions <path>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--graph-id <uuid>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
-- `--origin <uuid>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--apply --plan-hash <sha256>] [--json]
+- `--json`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
+- `--origin <uuid>`: mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
