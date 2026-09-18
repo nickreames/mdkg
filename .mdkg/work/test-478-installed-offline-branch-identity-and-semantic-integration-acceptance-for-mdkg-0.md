@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: []
-blocked_by: [bug-35, task-835, task-836, task-827]
+blocked_by: [bug-35, task-835, task-836, task-827, task-839, task-838]
 blocks: []
 refs: [dec-94, dec-95, test-484]
 context_refs: [goal-83, goal-86, dec-96]
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-478-case-1, test-478-case-2, test-478-case-3, test-478-case-4, test-478-case-5, test-478-case-6, test-478-case-7, test-478-case-8, test-478-case-9, test-478-case-10, test-478-case-11, test-478-case-12]
 created: 2026-09-07
-updated: 2026-09-13
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

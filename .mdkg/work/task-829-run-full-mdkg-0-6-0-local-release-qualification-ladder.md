@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827, bug-30, task-837, test-483, test-484, test-486, test-487]
+blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827, bug-30, task-837, test-483, test-484, test-486, test-487, task-838, task-839, test-488]
 blocks: []
 refs: []
 context_refs: [goal-83, goal-86, dec-96]
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-13
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

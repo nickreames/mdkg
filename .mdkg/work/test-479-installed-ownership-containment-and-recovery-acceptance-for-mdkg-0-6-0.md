@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-86/bug-17-local-verification.json]
 relates: []
-blocked_by: [bug-17, bug-35, bug-39, task-836, task-827, bug-40, bug-41]
+blocked_by: [bug-17, bug-35, bug-39, task-836, task-827, bug-40, bug-41, task-839, task-838]
 blocks: []
 refs: []
 context_refs: [goal-83, goal-86, dec-96]
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-479-case-1, test-479-case-2, test-479-case-3, test-479-case-4, test-479-case-5]
 created: 2026-09-07
-updated: 2026-09-15
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

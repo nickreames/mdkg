@@ -6,8 +6,8 @@ status: progress
 priority: 1
 goal_state: active
 goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
-scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: task-827
+scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
+active_node: task-837
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -21,7 +21,7 @@ blocked_by: []
 blocks: []
 refs: []
 context_refs: [goal-83, goal-84, goal-85, goal-75, dec-93, dec-94, dec-95, dec-96, edd-82, task-825, task-833, test-485]
-evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619]
+evidence_refs: [chk-608, chk-609, chk-610, chk-611, chk-612, chk-613, chk-614, chk-615, chk-616, chk-617, chk-618, chk-619, chk-620]
 aliases: []
 skills: []
 created: 2026-09-13
@@ -164,6 +164,18 @@ precise separate authorization and remains a blocking evidence gap.
 
 # Current State
 
+2026-09-18: Fresh Task837 Standard scan9d6a2ca2 is complete against frozen
+maine42f1d9/draft0.6.0:14confirmed findings,5medium/9low,567fully reviewed files
+with explicit exclusions. Bugs44-57 own those remedies; Bugs58-60 separately
+own MCP robustness, Git-metadata mirror refusal and observational SQLite
+qualification. Tasks838/839 correct harness custody and final release-critical
+truth; test488 binds the fresh regression map. Source audit completion is not
+clearance. Candidate6957f918 remains unqualified and must be replaced after
+package-input changes. Raw reports remain plugin-owned; sanitized hashes and
+dispositions are in task-837-standard-security-audit.json. Broader documentation
+polish stays deferred, Goal85 paused, and protected selection/runtime/Demo3
+hashes are unchanged. Existing completed milestones below remain historical.
+
 Task827 draft metadata and release-critical guidance are locally verified:
 package0.6.0, public release draft/unpublished,1,628 source tests,95 focused and
 27 release/contract checks pass. Independent bounded guidance review is clear;
@@ -239,6 +251,13 @@ verification. Selected achieved Goal73, released runtime leases, empty queues an
 Demo3 bundle remain protected. Baseline/custody are bound in the planning receipt.
 
 # Iteration Log
+
+- 2026-09-18: Task837 current-source Standard audit completed without changing
+  frozen source/package bytes. Main e42f1d9 contains the reviewed171-path core
+  commit;51ahead/0behind cached origin/main, no remote action. Fourteen fresh
+  findings and three adjacent correctness/contract gaps are separately routed,
+  with new fixes blocking final test families, task828/829 and publication.
+  No finding is waived or earlier achievement reopened. Skills reused; none new.
 
 - 2026-09-17: Task827 local preparation is accepted with draft0.6.0 metadata,
   source-grounded breaking guidance and preserved user customization. All1,628

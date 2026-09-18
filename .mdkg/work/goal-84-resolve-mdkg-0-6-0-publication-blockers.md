@@ -6,7 +6,7 @@ status: blocked
 priority: 1
 goal_state: paused
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-835, task-836, task-837, test-487, bug-40, bug-41, bug-42, bug-43]
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-835, task-836, task-837, test-487, bug-40, bug-41, bug-42, bug-43, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-488]
 last_active_node: bug-37
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
@@ -126,6 +126,13 @@ The end condition is supported by exact artifacts and checks, not just report-on
 Unknown dirty ownership, writer collision, baseline movement, global configuration changes, materially new decisions or excluded actions. Publication remains a distinct gate.
 
 # Current State
+
+2026-09-18: Task837's fresh complete Standard scan records14new confirmed
+findings separately from the original scan: Bugs44-57,5medium/9low. Bugs58-60
+are adjacent correctness/observational-contract blockers, not extra security
+findings. Tasks838/839 and test488 own safe qualification and final truth checks.
+Goal86 executes these bounded remedies; this goal remains the paused blocker
+ledger. Complete old milestones are preserved. No current publication clearance.
 
 2026-09-17: Goal86 has locally verified Bugs17/35/39/40/41/42/43 and
 Tasks835/836, and prepared draft0.6.0 metadata/guidance under Task827. All1,628

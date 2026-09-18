@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-86/bug-17-local-verification.json]
 relates: []
-blocked_by: [task-835, task-836, task-827]
+blocked_by: [task-835, task-836, task-827, task-839, task-838]
 blocks: []
 refs: []
 context_refs: [goal-83, goal-86, dec-96]
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-477-case-1, test-477-case-2, test-477-case-3, test-477-case-4, test-477-case-5]
 created: 2026-09-07
-updated: 2026-09-15
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13
