@@ -1,0 +1,482 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-591",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_baseline": "4246fc2cdbbb4601d0eabed4cb154857a3b108bf",
+  "disposition": "Installed legacy/v2 work/archive milestone verified; complete qualification remains NOT_READY",
+  "candidate": {
+    "version": "0.5.2",
+    "kind": "intermediate candidate, not published baseline or final 0.6.0 seal",
+    "sha256": "5d72db2d486ab187eef8da487abd519e31700e6e41bb7420a18850216d3eba05",
+    "matched_repository_package_files": 222,
+    "equivalence_note": "Installed regular files except npm-normalized package.json match current repository bytes; includes preserved partial bug-17 source."
+  },
+  "runs": [
+    {
+      "smoke": "archive-work",
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "70712cd9410f7ee2f2c65b205367bc12fe88e66935dc1c869cad31a35d76ddd4",
+      "label": "node26-final",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "warm",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        }
+      ]
+    },
+    {
+      "smoke": "work-invocation",
+      "runtime": "v26.0.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "780cea409243ada73ddb5e359290e946c851df05a42aa9d541eed311760e5a16",
+      "label": "node26-final",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "warm",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        }
+      ]
+    },
+    {
+      "smoke": "archive-work",
+      "runtime": "v24.15.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "70712cd9410f7ee2f2c65b205367bc12fe88e66935dc1c869cad31a35d76ddd4",
+      "label": "node24-min-final",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "warm",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        }
+      ]
+    },
+    {
+      "smoke": "work-invocation",
+      "runtime": "v24.15.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "0ff3e42ed1b3a1ca2c8aea0744ce71b5cebef581cbb217262284208593de485c",
+      "label": "node24-min-final",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "warm",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        }
+      ]
+    },
+    {
+      "smoke": "archive-work",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "70712cd9410f7ee2f2c65b205367bc12fe88e66935dc1c869cad31a35d76ddd4",
+      "label": "node24-final",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "warm",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "node_count": 7,
+          "order_count": 1,
+          "receipt_count": 1,
+          "stable_links": 7,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        }
+      ]
+    },
+    {
+      "smoke": "work-invocation",
+      "runtime": "v24.18.0",
+      "status": 0,
+      "signal": null,
+      "output_sha256": "680280ca317e51274daf5e3496f9ccbeae622d8c79b3f6a304e523e444abd954",
+      "label": "node24-final",
+      "cases": [
+        {
+          "backend": "json",
+          "state": "warm",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "json",
+          "state": "cold",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "warm",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        },
+        {
+          "backend": "sqlite",
+          "state": "cold",
+          "node_count": 6,
+          "order_count": 2,
+          "receipt_count": 2,
+          "stable_links": 6,
+          "git_index_preserved": true,
+          "evidence_bytes_preserved": true
+        }
+      ]
+    }
+  ],
+  "validation": [
+    {
+      "runtime": "v24.18.0",
+      "command": "npm",
+      "args": [
+        "test"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "a45986f74f23a89ee2f89291569fd9cddb11b2ebb01a64a0fb07a3bb5af8ad5d"
+    },
+    {
+      "runtime": "v24.18.0",
+      "command": "npm",
+      "args": [
+        "run",
+        "cli:check:built"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+    },
+    {
+      "runtime": "v24.18.0",
+      "command": "npm",
+      "args": [
+        "run",
+        "docs:check:built"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+    },
+    {
+      "runtime": "v24.18.0",
+      "command": "git",
+      "args": [
+        "diff",
+        "--check"
+      ],
+      "status": 0,
+      "signal": null,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "protected": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "source_sha256": {
+    "scripts/installed-work-identity.js": "f27311fa6dec26f4dacfa5cbfe11d33f4b98af54cd48bc1c59c9d6f6223ddab8",
+    "scripts/smoke-archive-work.js": "0eef92b84dc2fb763ed635128ac2c00cbefa5e1b9944b6365fec215e94af887d",
+    "scripts/smoke-work-invocation.js": "eb1b4cf48ffb714e0364804061656396a73d99bce5f5c863f729bc0a20a914b6",
+    "src/commands/work.ts": "619bd03f3b6c6fea3e337698dc64be131b84a29baea6ea5b0f9cdd4ff6a10767",
+    "src/commands/archive.ts": "5d5621b1be2d5e1bdefe342f908dce6b0a94df1069be1d95bb89c956f6bc9e2e",
+    "scripts/smoke-manifest.json": "1370a7f073d48bd0d6743b2af68cf2e14ce13e9e06dd4f94f3baa9053f2a53a7"
+  },
+  "scenario_count": 24,
+  "complete_workflow_runs": 18,
+  "method": [
+    "Reuse manifest-backed smoke:archive-work and smoke:work-invocation; each retains its legacy control and repeats the entire workflow on explicit v2 JSON and SQLite graphs.",
+    "Shared fixture helper initializes v2 by installed graph migrate preview and exact plan-hash application, without graph implementation imports or synthetic identity assignment.",
+    "Archive workflow exercises registration, compression, verification with and without raw sources, spec/contract/order/receipt creation, artifact attachment, updates, packs and discovery.",
+    "Invocation workflow exercises non-executing trigger, direct and queued order mirrors, isolated project database migrations, local queue claim/ack, receipt verification and capability linkage.",
+    "Verify unique persisted identities, lookup by stable reference and exact persisted links for contracts/orders/receipts and archive inputs/outputs.",
+    "Explicitly stage only synthetic node paths, update order via stable reference, then verify immutable identities, Git-index bytes and archive/input evidence bytes survive.",
+    "Work order status, receipt verify, work validate and graph validate preserve full file/directory inventories with both warm and absent caches. Resulting receipt identities and order/work linkage match expected nodes.",
+    "All six installed smoke executions consume one immutable tarball via offline npm with isolated caches/config; fixture-only Git and queues never access canonical runtime state."
+  ],
+  "fixture_correction": {
+    "failed_assertion": "order.generate-image-1.artifacts must persist archive.supplemental-prompt's stable reference",
+    "source_evidence": "src/commands/work.ts runWorkArtifactAddCommandLocked routes work_order plus source kind to input_refs, not artifacts",
+    "treatment": "Corrected expected field to input_refs; all three complete final archive workflows rerun. This is a harness expectation error, not a shipped defect.",
+    "failing_output_sha256": "61f3f58aab944588afb3e223362fb486752adff90521ae2aeb1f523dd7315840"
+  },
+  "full_suite": {
+    "runtime": "v24.18.0",
+    "command": "npm test",
+    "passed": 1341,
+    "failed": 0,
+    "skipped": 0
+  },
+  "docs_examples": 494,
+  "docs_failures": 0,
+  "limitations": [
+    "Receipt verification checks local mirror linkage, declared evidence and schema; no provider execution, external proof retrieval, payment/accounting or marketplace correctness is claimed.",
+    "These scenarios qualify ordinary work/archive behavior, not branch reconciliation of every possible work mirror or final full release qualification.",
+    "Private current-graph migration rehearsal, representative scale and remaining task-826 scenarios remain open.",
+    "Old-client v2 compatibility, killed-writer recovery and bug-17 public materialization decisions remain unresolved.",
+    "Final independent remediation security review, draft 0.6.0 guidance/metadata, complete coverage/release ladder and exact artifact seal remain required."
+  ],
+  "post_evidence_checks": [
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "index"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "86845218340d1ba749f2d9d82e3dc70a232faba04e0cac3870d3f15f67c5ba81"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "validate",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "2cad229870ef2498f51983a249afba3d19a65e3b0772ac17fcd36f4a8b825beb"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "validate",
+      "--changed-only",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "dd6ed1c63ee445969dd975f64eccd1f1352fe294bca64e8d7e1ac2949badf901"
+  },
+  {
+    "command": "node",
+    "args": [
+      "dist/cli.js",
+      "db",
+      "index",
+      "verify",
+      "--json"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "156e1b39f2b1ed8b63f8181a2428b64df88f3a1a258794486a8a8f96940864c0"
+  },
+  {
+    "command": "git",
+    "args": [
+      "diff",
+      "--check"
+    ],
+    "status": 0,
+    "signal": null,
+    "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+],
+  "diagnostic_correction": "An initial graph-check run reused the previous milestone's temporary runner, superseding graph-check-0..4.log and graph-checks.json under /private/tmp/mdkg-mcp-qualification.RFDM6E. The original digests remain in committed chk-590 evidence; those six scratch files must not be treated as its original logs. Current graph checks were rerun in the current diagnostic directory. Prior installed/full-suite logs and all committed/protected evidence were unchanged.",
+  "cleanup": { "owned_fixture_install_cache_trees_removed": 15, "diagnostics_retained": true, "receipt": "/private/tmp/mdkg-work-qualification.FwzGCT/cleanup.json" },
+  "evidence_location": "/private/tmp/mdkg-work-qualification.FwzGCT",
+  "authority_used": "Goal83/84 local qualification scripts, synthetic installed/Git/queue fixtures, mdkg evidence/projections and reviewed local commit only",
+  "excluded": "No shipped runtime behavior change, canonical migration/config/runtime/bundle/selection change, policy waiver, remote Git, provider/deployment, consumer edit or publication",
+  "skill_candidates": []
+}

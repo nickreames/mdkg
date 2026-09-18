@@ -4,9 +4,10 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { prepareWorkIdentity, verifyWorkIdentity } = require("./installed-work-identity");
 
 const repoRoot = path.resolve(__dirname, "..");
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
+const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
 const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
 const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
 
@@ -140,8 +141,8 @@ function createSpecAndWork(binPath, root) {
     )
   ).node;
   updateFrontmatter(path.join(root, spec.path), {
-    work_contracts: `[${path.basename(path.dirname(work.path))}/WORK.md]`,
-    relates: "[work.invoke]",
+    work_contracts: `[${work.stable_ref || `${path.basename(path.dirname(work.path))}/WORK.md`}]`,
+    relates: `[${work.stable_ref || "work.invoke"}]`,
   });
   return { spec, work };
 }
@@ -154,15 +155,13 @@ function verifyReceipt(binPath, root, receiptId) {
   return verified;
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-work-invocation-smoke-"));
-  try {
-    const { binPath, tarballPath } = packAndInstall(tempRoot);
-    const root = path.join(tempRoot, "repo");
+function exerciseInvocation(binPath, tempRoot, backend) {
+    const root = path.join(tempRoot, `repo-${backend || "legacy"}`);
     fs.mkdirSync(root, { recursive: true });
     run(GIT_CMD, ["init", "-q"], { cwd: root });
 
     mdkg(binPath, ["init", "--agent"], root);
+    prepareWorkIdentity(binPath, root, backend);
     createSpecAndWork(binPath, root);
 
     const direct = parseJson(
@@ -298,9 +297,26 @@ function main() {
 
     mdkg(binPath, ["db", "verify", "--json"], root);
     mdkg(binPath, ["validate"], root);
+    return backend ? verifyWorkIdentity(binPath, root, {
+      backend,
+      ids: ["agent.invocation-worker", "work.invoke", "order.invoke-direct", "order.invoke-queued", "receipt.invoke-direct", "receipt.invoke-queued"],
+      links: [["agent.invocation-worker", "work_contracts", "work.invoke"], ["work.invoke", "agent_id", "agent.invocation-worker"],
+        ["order.invoke-direct", "work_id", "work.invoke"], ["order.invoke-queued", "work_id", "work.invoke"],
+        ["receipt.invoke-direct", "work_order_id", "order.invoke-direct"], ["receipt.invoke-queued", "work_order_id", "order.invoke-queued"]],
+      orders: ["order.invoke-direct", "order.invoke-queued"], receipts: ["receipt.invoke-direct", "receipt.invoke-queued"],
+    }) : [];
+}
+
+function main() {
+  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-work-invocation-smoke-"));
+  try {
+    const { binPath, tarballPath } = packAndInstall(tempRoot);
+    const identityWorkflows = [];
+    for (const backend of [undefined, "json", "sqlite"]) identityWorkflows.push(...exerciseInvocation(binPath, tempRoot, backend));
+    console.log(JSON.stringify({ smoke: "work-invocation", identityWorkflows }));
     console.log(`work invocation smoke passed: ${path.basename(tarballPath)} at ${tempRoot}`);
   } finally {
-    if (tempRoot && fs.existsSync(tempRoot)) {
+    if (tempRoot && fs.existsSync(tempRoot) && process.env.MDKG_KEEP_SMOKE_TMP !== "1") {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   }

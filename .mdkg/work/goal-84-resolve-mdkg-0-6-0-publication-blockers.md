@@ -432,3 +432,14 @@ checks pass. This adds coverage without changing shipped behavior or accepting
 pending compatibility policies. Bug-7 remains progress, bug-17 blocked, and all
 final independent security, complete installed-family, release and seal gates
 remain required. Skill candidates none; overall NOT_READY.
+
+## 2026-09-09 Installed Work/Archive Qualification
+
+Chk-591 verifies the existing archive and invocation workflows on all three
+runtimes, preserving legacy controls and adding v2 JSON/SQLite execution plus
+24 warm/cold identity/evidence checks. Fresh Node 24.18.0 full suite: 1341 pass;
+CLI/docs checks pass. Source attachments correctly bind input_refs; one harness
+expectation was corrected, with no new product defect. Twenty-six bug lanes
+remain locally done, bug-7 progress and bug-17 blocked. Private graph rehearsal,
+scale, remaining installed coverage and all final security/release gates remain.
+No compatibility policy or publication authority inferred; candidates none.
