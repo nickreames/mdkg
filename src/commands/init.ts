@@ -17,6 +17,10 @@ import { createInitManifest, INIT_MANIFEST_FILE, readInitManifest, sha256File, w
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { preflightSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 import { assertPublicSkillProjection } from "../core/public_skill_projection";
+import { parseFrontmatter } from "../graph/frontmatter";
+import { assertNoGraphConflictMarkers, assertNodeFormat, readGraphFormat, readNodeIdentity } from "../graph/identity";
+import { readUpgradeJournal } from "./upgrade_transaction";
+import { withMutationLock } from "../util/lock";
 
 export type InitCommandOptions = {
   root: string;
@@ -115,6 +119,44 @@ function copySeedDir(root: string, srcDir: string, destDir: string, force: boole
     const relPath = path.relative(srcDir, filePath);
     const destPath = path.join(destDir, relPath);
     copySeedFile(root, filePath, destPath, force, stats);
+  }
+}
+
+/** Bootstrap may restore guidance, but it is not identity migration or repair. */
+function preflightInitIdentity(root: string, seedCore: string, agent: boolean, force: boolean): void {
+  const format = readGraphFormat(root);
+  const journal = readUpgradeJournal(root);
+  if (journal && !["completed", "recovered"].includes(journal.state)) {
+    throw new UsageError("unfinished upgrade; inspect its journal and use mdkg upgrade --resume or --recover with the reviewed plan hash before init");
+  }
+  if (format.format_version === 2 && force) {
+    throw new UsageError("init --force cannot replace adopted graph configuration or node identities; use reviewed upgrade/reconciliation and rerun init without --force");
+  }
+  const candidates = new Map(listFiles(seedCore).map(file => [
+    `.mdkg/core/${path.relative(seedCore, file).split(path.sep).join("/")}`,
+    fs.readFileSync(file, "utf8"),
+  ]));
+  if (agent) {
+    const today = formatDate(new Date());
+    for (const [name, content] of [
+      ["SOUL.md", soulTemplate(today)], ["COLLABORATION.md", collaborationTemplate(today)], ["HUMAN.md", humanTemplate(today)],
+    ]) if (!candidates.has(`.mdkg/core/${name}`)) candidates.set(`.mdkg/core/${name}`, content);
+  }
+  for (const [relativePath, seed] of candidates) {
+    // core.md is a pin list, not an authored node. Other core assets without
+    // frontmatter are guidance, and do not acquire identity during init.
+    const existing = containedPathExists({ root, relativePath }) ? readContainedFile({ root, relativePath }) : undefined;
+    for (const content of [existing, ...(existing === undefined || force ? [seed] : [])]) {
+      if (content === undefined) continue;
+      assertNoGraphConflictMarkers(content, relativePath);
+      if (!/^---\s*\r?\n/.test(content)) continue;
+      const frontmatter = parseFrontmatter(content, relativePath).frontmatter;
+      if (frontmatter.id === undefined && frontmatter.graph_id === undefined && frontmatter.node_id === undefined) continue;
+      assertNodeFormat(format, readNodeIdentity(frontmatter, relativePath), relativePath);
+      if (format.format_version === 2 && (existing === undefined || force)) {
+        throw new UsageError(`${relativePath}: init cannot create or replace adopted node identity; restore exact reviewed node evidence or use reviewed graph reconciliation, then rerun init without --force`);
+      }
+    }
   }
 }
 
@@ -426,7 +468,7 @@ function ensureCreatedCoreManifestEntry(
   manifest.files.sort((a, b) => a.path.localeCompare(b.path));
 }
 
-export function runInitCommand(options: InitCommandOptions): void {
+function initialize(options: InitCommandOptions, locked: boolean): void {
   if (options.graphOnly && options.agent) throw new UsageError("--graph-only and --agent cannot be combined");
   const agent = !options.graphOnly && options.agent !== false;
   const root = path.resolve(options.root);
@@ -486,6 +528,7 @@ export function runInitCommand(options: InitCommandOptions): void {
     throw new NotFoundError(`init assets missing public skill policy at ${seedRoot}`);
   }
   preflightSeedConfig(seedConfig);
+  preflightInitIdentity(root, seedCore, agent, force);
   const previousManifestPath = path.join(root, ".mdkg", INIT_MANIFEST_FILE);
   if (containedPathExists({ root, relativePath: `.mdkg/${INIT_MANIFEST_FILE}` })) {
     readContainedFile({ root, relativePath: `.mdkg/${INIT_MANIFEST_FILE}` });
@@ -509,6 +552,15 @@ export function runInitCommand(options: InitCommandOptions): void {
       slugs: [...listSeedSkillSlugs(seedDefaultSkills), ...existingCanonicalSkills],
       force,
     });
+  }
+
+  // Refuse incompatible input before creating a lock directory. Re-run the
+  // complete preflight under the shared writer lock before the first write.
+  if (!locked) {
+    const config = !force && containedPathExists({ root, relativePath: ".mdkg/config.json" })
+      ? loadConfig(root)
+      : validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(seedConfig, "utf8"))).config);
+    return withMutationLock(root, config.index.lock_timeout_ms, () => initialize(options, true));
   }
 
   const stats: CopyStats = {
@@ -690,4 +742,8 @@ export function runInitCommand(options: InitCommandOptions): void {
   console.log("  mdkg next");
   console.log("  mdkg pack <id>");
   console.log("  mdkg validate");
+}
+
+export function runInitCommand(options: InitCommandOptions): void {
+  initialize(options, false);
 }

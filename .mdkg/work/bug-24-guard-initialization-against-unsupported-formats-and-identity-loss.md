@@ -2,12 +2,12 @@
 id: bug-24
 type: bug
 title: Guard initialization against unsupported formats and identity loss
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json]
+artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-84/bug-24-verification.json]
 relates: [task-824, goal-84, goal-83]
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-08
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 # Overview
 
@@ -58,3 +58,30 @@ Acceptance: all reproduced failures corrected with passing controls preserved; r
 - .mdkg/artifacts/goal-83/task-824-behavioral-audit.json
 - root:test-483; root:task-824; root:task-828; root:goal-84
 - Initial candidate SHA-256: 3238663f76882f094cfd1e9c86abbd43e057aa165ec69099a976949f9d011c05 (development metadata 0.5.2; not a 0.6.0 seal).
+
+## 2026-09-09 Local Verification
+
+Initialization now checks the format contract and complete seeded/fallback core
+candidate set before persistent writes. It rejects unsupported capabilities,
+missing manifest evidence, and unsafe v2 restoration/force replacement. It
+preserves complete adopted graphs and customized instructions, supports recovery
+of missing non-node guidance, refuses unfinished upgrade custody, and uses the
+existing shared writer lock with a repeated preflight under ownership.
+
+Twenty-two new regression cases: the prior installed candidate fails eighteen
+safety expectations while four supported controls pass. The corrected installed
+package passes all 44 init/compact/upgrade cases on Node 24.18.0 and 26.0.0.
+The final full suite passes 1130 source tests and 26 contract checks. Build,
+CLI/docs (494 examples), full/changed graph, SQLite and diff checks pass.
+Evidence: .mdkg/artifacts/goal-84/bug-24-verification.json.
+
+Adjacent installed probes create bug-28 (unsafe v2 upgrade restoration) and
+bug-29 (unshipped seed references preventing migration), both explicitly block
+test-483/task-828. No adjacent fix is claimed. The synthetic closed graph used
+by these init regressions is not proof that untouched packaged seeds migrate.
+
+No canonical init, migration, selection change, bundle refresh or remote action.
+Selected Goal 73, runtime DB and protected Demo 3 bundle retain exact hashes;
+partial bug-17 work and the mixed SQLite projection remain excluded from this
+commit unit. Final independent task-828 review, full runtime matrix and release
+qualification are still required. New skill candidates: none.
