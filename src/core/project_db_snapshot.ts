@@ -10,6 +10,7 @@ import { resolveConfiguredProjectDbLayout } from "./project_db";
 import { readPackageVersion } from "./version";
 import { atomicWriteFile } from "../util/atomic";
 import { UsageError, ValidationError } from "../util/errors";
+import { assertCompatibleWriter } from "../util/writer_admission";
 import { verifyProjectDb } from "./project_db_migrations";
 import {
   ProjectQueueSnapshotSummary,
@@ -356,6 +357,7 @@ export function sealProjectDbSnapshot(
   config: Config,
   queuePolicy: ProjectDbSnapshotQueuePolicy = "drain"
 ): ProjectDbSnapshotSealReceipt {
+  assertCompatibleWriter(root);
   const verification = verifyProjectDb(root, config);
   if (!verification.ok) {
     throw new ValidationError(`db snapshot seal requires a valid project DB; run mdkg db verify`);
@@ -686,6 +688,7 @@ function canonicalDumpForContainedSnapshot(
 }
 
 export function dumpProjectDbSnapshot(root: string, config: Config, snapshotPath?: string, outputPath?: string): ProjectDbSnapshotDumpReceipt & { dump: string } {
+  if (outputPath) assertCompatibleWriter(root);
   const layout = resolveConfiguredProjectDbLayout(root, config.db);
   const snapshot = canonicalDumpForContainedSnapshot(
     root,

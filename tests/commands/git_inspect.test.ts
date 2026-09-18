@@ -198,6 +198,16 @@ for (const kind of ["clean", "process"]) {
     assert.equal(fs.existsSync(marker), false);
     assert.deepEqual(fs.readFileSync(path.join(root, ".git/index")), index);
     assert.doesNotMatch(result.stdout + result.stderr, /filter\.cjs|"clean": true/);
+    for (const overrides of [
+      { GIT_LITERAL_PATHSPECS: "1" }, { GIT_GLOB_PATHSPECS: "1" }, { GIT_ICASE_PATHSPECS: "1" },
+      { GIT_DIR: path.join(root, ".git"), GIT_WORK_TREE: root, GIT_INDEX_FILE: path.join(root, ".git/index") },
+    ]) {
+      const redirected = inspect(root, overrides);
+      assert.equal(redirected.status, 2, redirected.stderr);
+      assert.match(redirected.stderr, /configured content filter/);
+      assert.equal(fs.existsSync(marker), false);
+      assert.deepEqual(fs.readFileSync(path.join(root, ".git/index")), index);
+    }
   });
 }
 
@@ -214,6 +224,13 @@ test("inspection checks content filters in initialized linked submodules", { ski
   const result = inspect(parent);
   assert.equal(result.status, 2, result.stderr);
   assert.match(result.stderr, /configured content filter/);
+  assert.equal(fs.existsSync(marker), false);
+  assert.deepEqual([fs.readFileSync(path.join(parent, ".git/index")), fs.readFileSync(childIndex)], before);
+  const redirected = inspect(parent, {
+    GIT_DIR: path.join(parent, ".git"), GIT_WORK_TREE: parent, GIT_INDEX_FILE: path.join(parent, ".git/index"),
+  });
+  assert.equal(redirected.status, 2, redirected.stderr);
+  assert.match(redirected.stderr, /configured content filter/);
   assert.equal(fs.existsSync(marker), false);
   assert.deepEqual([fs.readFileSync(path.join(parent, ".git/index")), fs.readFileSync(childIndex)], before);
 });

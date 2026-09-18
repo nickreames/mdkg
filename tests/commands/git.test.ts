@@ -146,7 +146,7 @@ for (const command of ["clone", "fetch", "push", "materialize", "closeout", "pus
       cwd:root, encoding:"utf8", env:{...process.env, PATH:trap + path.delimiter + process.env.PATH}
     });
     assert.equal(result.status, 1, result.stderr);
-    assert.match(result.stderr, /git requires inspect/);
+    assert.equal(result.stderr, `git ${command} does not support --json; no command effects attempted\n`);
     assert.equal(fs.existsSync(log), false);
     assert.deepEqual(fs.readdirSync(root).sort(), before);
   });
@@ -161,7 +161,7 @@ test("Git module and help expose inspection only", (t) => {
   for (const flag of ["--stage-all", "--message", "--remote", "--branch", "--request", "--target", "--queue-policy", "--out"]) {
     const result = runCli(root, ["git", "inspect", flag, ...(flag === "--stage-all" ? [] : ["fixture"])]);
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /git inspect does not accept --/);
+    assert.equal(result.stderr, `git inspect does not support ${flag}; no command effects attempted\n`);
   }
 });
 
@@ -184,7 +184,7 @@ test("git commands reject option-like remote repository and branch operands afte
       cwd: root, encoding: "utf8", env: { ...process.env, PATH: trap + path.delimiter + process.env.PATH },
     });
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /git requires inspect/);
+    assert.match(result.stderr, /^git (?:fetch|clone|push-ready).* does not support --[\w-]+; no command effects attempted\n$/);
   }
   assert.equal(fs.existsSync(marker), false);
   assert.equal(fs.existsSync(path.join(root, "clone-target")), false);

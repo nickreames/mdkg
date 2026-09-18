@@ -385,6 +385,33 @@ test("changed-only validation expands untracked workflow directories to file pat
   assert.ok(receipt.warnings.some((warning) => warning.includes("root:receipt.runtime-render-1") && warning.includes("raw-content")));
 });
 
+test("changed-only retains original and destination paths from rename and copy records", t => {
+  const root = makeTempDir("mdkg-validate-changed-records-");
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  writeConfig(root);
+  writeDefaultTemplates(root);
+  writeTaskWithId(root, "task-1");
+  writeTaskWithId(root, "task-2");
+  writeTaskWithId(root, "task-3");
+  const observer = require("../../util/git_observation");
+  const prefix = "nested\\literal\nproject/";
+  const source = `${prefix}.mdkg/work/task-1.md`;
+  const originalOutside = "outside\\literal\nsource.md";
+  t.mock.method(observer, "readGitPrefix", () => prefix);
+  t.mock.method(observer, "readGitStatus", (_root: string, options: unknown) => {
+    assert.equal(_root, root);
+    assert.deepEqual(options, { untracked: "all", paths: [".mdkg"] });
+    return observer.parseGitStatus(`C  ${prefix}.mdkg/work/task-2.md\0${source}\0R  ${prefix}.mdkg/work/task-3.md\0${originalOutside}\0`);
+  });
+  const output = captureOutput(() => runValidateCommand({ root, json: true, changedOnly: true }));
+  assert.equal(output.error, undefined);
+  const receipt = JSON.parse(output.stdout);
+  assert.deepEqual(receipt.warning_filter.changed_paths, [
+    `../${originalOutside}`, ".mdkg/work/task-1.md", ".mdkg/work/task-2.md", ".mdkg/work/task-3.md",
+  ].sort());
+  assert.equal(receipt.warning_count, 18);
+});
+
 test("runValidateCommand emits a failing JSON receipt before throwing", () => {
   const root = makeTempDir("mdkg-validate-json-fail-");
   writeConfig(root);

@@ -9,16 +9,32 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-826, task-827, bug-21, bug-22, bug-23, bug-24, bug-25, test-483, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486]
+blocked_by: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-826, task-827, bug-21, bug-22, bug-23, bug-24, bug-25, test-483, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-837, test-487, bug-40, bug-41, bug-42, bug-43]
 blocks: []
 refs: [dec-95, edd-82, task-833]
-context_refs: [goal-83]
+context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-12
+updated: 2026-09-15
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Require fresh task837 Standard coverage plus all local blocker fixes and
+test487 macOS/Linux results. Independently review the complete remediation range
+from the recorded original audit source through the frozen final candidate,
+including deleted code and supporting behavior. Do not substitute Bug37's local
+functional review or original task825 for this independent workflow. Resolve the
+ancestor-directory swap and ACL/ownership limitations with source/platform evidence;
+documentation alone cannot waive an in-scope defect. Failed/incomplete scans block.
+Route fresh findings without creating a dependency on their own verification;
+implementation-local closure and this final independent acceptance are distinct.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

@@ -1,25 +1,31 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import { spawnSync } from "child_process";
-import { loadConfig, Config, WorkspaceConfig } from "../core/config";
+import { insideGitWorkTree, observeGit, readGitHead, readGitStatus } from "../util/git_observation";
+import { loadConfig, validateConfigSchema, Config, WorkspaceConfig } from "../core/config";
+import { migrateConfig } from "../core/migrate";
 import {
   atomicReplaceContainedFile,
   authorizeOperatorSelectedExternalPath,
+  containedPathExists,
+  readContainedFile,
 } from "../core/filesystem_authority";
 import { atomicWriteFile } from "../util/atomic";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { absoluteWorkspaceDocumentOwner } from "../graph/workspace_ownership";
+import { graphTransportState, TransportDatabase, TransportExclusion, TransportExclusionReason } from "../graph/transport_state";
+import { createPortableTransportPolicy, PortableTransportPolicy, portableTransportPayloadErrors, validatePortableTransportPolicy } from "../graph/transport_policy";
 import { buildCapabilitiesIndex } from "../graph/capabilities_indexer";
 import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
+import { listWorkspaceDocFilesByAlias } from "../graph/workspace_files";
 import {
   buildSkillIndexEntryForWorkspace,
   listSkillMarkdownFiles,
   SkillsIndex,
 } from "../graph/skills_indexer";
 import { FrontmatterValue } from "../graph/frontmatter";
-import { createDeterministicZipFromEntries, readZipFileEntries, ZipEntry } from "../util/zip";
+import { createDeterministicZipFromEntries, readZipEntries, readZipFileBytes, ZipEntry } from "../util/zip";
 import { UsageError, ValidationError, NotFoundError } from "../util/errors";
 import { archiveIdFromUri } from "../util/refs";
 import {
@@ -83,6 +89,8 @@ export type BundleManifest = {
   file_count: number;
   index_hashes: Record<string, string>;
   files: BundleManifestFile[];
+  transport_exclusions?: TransportExclusion[];
+  transport_policy?: PortableTransportPolicy;
 };
 
 export type BundleBuildResult = {
@@ -225,7 +233,16 @@ export function validateBundleManifest(value: unknown): BundleManifest {
       manifestError(`index hash does not match file row for ${requiredPath}`);
     }
   }
-  return {
+  let transportExclusions: TransportExclusion[] | undefined;
+  if (value.transport_exclusions !== undefined) {
+    if (!Array.isArray(value.transport_exclusions)) manifestError("transport_exclusions must be an array");
+    transportExclusions = value.transport_exclusions.map((entry): TransportExclusion => {
+      if (!isRecord(entry) || !["checkout-state", "live-db", "db-sidecar", "private-db-payload"].includes(String(entry.reason)) ||
+        !Number.isSafeInteger(entry.roots) || Number(entry.roots) < 1) manifestError("invalid transport exclusion receipt");
+      return { reason: entry.reason as TransportExclusionReason, roots: Number(entry.roots) };
+    });
+  }
+  const manifest: BundleManifest = {
     manifest_version: 1,
     tool: "mdkg",
     mdkg_version: mdkgVersion,
@@ -237,7 +254,11 @@ export function validateBundleManifest(value: unknown): BundleManifest {
     file_count: files.length,
     index_hashes: indexHashes,
     files,
+    ...(transportExclusions ? { transport_exclusions: transportExclusions } : {}),
   };
+  const policy = validatePortableTransportPolicy(value.transport_policy, manifest);
+  if (policy) manifest.transport_policy = policy;
+  return manifest;
 }
 
 export function bundlePayloadErrors(entries: Map<string, Buffer>, manifest: BundleManifest): string[] {
@@ -266,6 +287,7 @@ export function bundlePayloadErrors(entries: Map<string, Buffer>, manifest: Bund
     errors.push("source_tree_hash mismatch");
   }
   if (hashManifestFiles(manifest.files) !== manifest.bundle_hash) errors.push("bundle_hash mismatch");
+  if (errors.length === 0) errors.push(...portableTransportPayloadErrors(entries, manifest));
   return Array.from(new Set(errors));
 }
 
@@ -303,37 +325,26 @@ function normalizeProfile(value?: string, fallback: BundleProfile = "private"): 
   throw new UsageError("--profile must be one of private, public");
 }
 
-function gitOutput(root: string, args: string[]): string | null {
-  const result = spawnSync("git", args, { cwd: root, encoding: "utf8", stdio: "pipe" });
-  if (result.status !== 0) {
-    return null;
-  }
-  const output = result.stdout.trim();
-  return output.length > 0 ? output : null;
-}
-
 function sourceInfo(root: string): BundleManifest["source"] {
-  const remote = gitOutput(root, ["config", "--get", "remote.origin.url"]);
-  const head = gitOutput(root, ["rev-parse", "HEAD"]);
-  const status = gitOutput(root, ["status", "--porcelain"]);
-  const dirtyPaths = status
-    ? status
-        .split(/\r?\n/)
-        .map((line) => line.slice(3).replace(/^"|"$/g, ""))
-        .filter(Boolean)
+  const inside = insideGitWorkTree(root);
+  const remote = inside ? observeGit(root, ["config", "--get", "remote.origin.url"], { allowedFailures: [1] }).stdout.trim() : null;
+  const head = inside ? readGitHead(root) : null;
+  const dirtyPaths = (inside ? readGitStatus(root) : [])
+        .flatMap((entry) => entry.original_path ? [entry.path, entry.original_path] : [entry.path])
         .filter((filePath) => {
-          const normalized = filePath.replace(/\\/g, "/");
+          // Porcelain -z already uses Git's slash separators. On POSIX a
+          // backslash is a literal filename character, not a bundle directory.
+          const normalized = filePath;
           return (
             normalized !== ".mdkg/bundles" &&
             !normalized.startsWith(".mdkg/bundles/") &&
             !normalized.includes("/.mdkg/bundles/")
           );
-        })
-    : [];
+        });
   return {
-    repo: remote ?? path.basename(root),
+    repo: remote || path.basename(root),
     git_head: head,
-    dirty: status === null ? false : dirtyPaths.length > 0,
+    dirty: dirtyPaths.length > 0,
   };
 }
 
@@ -366,24 +377,6 @@ function listFilesRecursive(dir: string, owns: (file: string) => boolean = () =>
 
 function relativePath(root: string, absolutePath: string): string {
   return toPosixPath(path.relative(root, absolutePath));
-}
-
-function isExcludedRelativePath(relative: string): boolean {
-  const normalized = relative.replace(/\\/g, "/");
-  return (
-    normalized.includes("/.mdkg/pack/") ||
-    normalized.startsWith(".mdkg/pack/") ||
-    normalized.includes("/.mdkg/bundles/") ||
-    normalized.startsWith(".mdkg/bundles/") ||
-    normalized.includes("/.mdkg/subgraphs/") ||
-    normalized.startsWith(".mdkg/subgraphs/") ||
-    normalized.includes("/.mdkg/index/") ||
-    normalized.startsWith(".mdkg/index/") ||
-    normalized.includes("/.mdkg/state/identity-transactions/") ||
-    normalized.startsWith(".mdkg/state/identity-transactions/") ||
-    ((normalized.includes("/.mdkg/archive/") || normalized.startsWith(".mdkg/archive/")) &&
-      normalized.includes("/source/"))
-  );
 }
 
 function archiveVisibilityByPath(index: Index): Map<string, string> {
@@ -752,22 +745,80 @@ export function buildBundle(options: BundleCreateCommandOptions): BundleBuildRes
     throw new UsageError(`no workspaces selected for ${profile} bundle; ${hint}`);
   }
   const selectedSet = new Set(selectedAliases);
-  const index = buildIndex(options.root, config);
-  const archiveVisibility = archiveVisibilityByPath(index);
-
-  const entries: ZipEntry[] = [];
-  const files: BundleManifestFile[] = [];
-
+  // Validate the root policy before opening any registered child config; a DB
+  // path must not borrow graph/config authority. Child policy only constrains
+  // export and never expands workspace selection or ownership.
+  graphTransportState(config, profile);
+  const databases: TransportDatabase[] = [];
+  const configPaths = new Set(Object.values(config.workspaces).map((workspace) => workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "config.json")));
+  let configBytes = 0;
+  for (const alias of Object.keys(config.workspaces).filter((alias) => config.workspaces[alias].enabled)) {
+    const workspace = config.workspaces[alias];
+    const relativePath = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "config.json");
+    if (relativePath === ".mdkg/config.json" || owner(path.resolve(options.root, relativePath)) !== alias) continue;
+    if (!containedPathExists({ root: options.root, relativePath })) continue;
+    const bytes = readContainedFile({ root: options.root, relativePath,
+      maxBytes: Math.min(config.index.limits.max_file_bytes, config.index.limits.max_total_bytes - configBytes) }, null);
+    configBytes += bytes.length;
+    const child = validateConfigSchema(migrateConfig(JSON.parse(bytes.toString("utf8"))).config);
+    databases.push({ basePath: workspace.path, includePrivatePayloads: selectedSet.has(alias), db: child.db, index: child.index, capabilities: child.capabilities, bundles: child.bundles, workspaces: child.workspaces });
+  }
+  const transportState = graphTransportState(config, profile, databases);
+  transportState.assertFilesystemSpellings(options.root);
+  const excluded = new Map<TransportExclusionReason, number>();
+  const selectedFiles: Array<{ alias: string; files: string[] }> = [];
+  // Complete metadata-only admission before parsing graph documents or opening
+  // payloads. An undeclared nested configuration cannot silently supply a custom
+  // DB layout to an export policy that never consulted it.
   for (const alias of selectedAliases) {
     const workspace = config.workspaces[alias];
     const wsRoot = workspaceMdkgRoot(options.root, workspace);
-    const wsPrefix = workspacePrefix(workspace);
-    for (const filePath of listFilesRecursive(wsRoot, (file) => owner(file) === alias)) {
-      const rel = relativePath(options.root, filePath);
-      if (isExcludedRelativePath(rel)) {
-        continue;
+    const candidates = listFilesRecursive(wsRoot, (file) => {
+      if (owner(file) !== alias) return false;
+      const relative = relativePath(options.root, file);
+      const reason = transportState(relative);
+      if (!reason) {
+        if (/\/\.mdkg\/config\.json$/i.test(relative) && !configPaths.has(relative)) {
+          throw new UsageError(`undeclared nested graph config: ${relative}; register its workspace before export`);
+        }
+        return true;
       }
-      if (profile === "public" && rel.endsWith(".mdkg/config.json")) {
+      // Derived output/cache existence must not perturb a deterministic bundle
+      // (including whether the previous bundle itself is already on disk).
+      if (!transportState.isDerived(relative)) excluded.set(reason, (excluded.get(reason) ?? 0) + 1);
+      return false;
+    });
+    for (const file of candidates) {
+      const relative = relativePath(options.root, file);
+      for (const [disabledAlias, disabled] of Object.entries(config.workspaces)) {
+        if (disabled.enabled) continue;
+        const base = workspaceDocumentRelativePath(disabled.path, ".");
+        const selectedRoot = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir);
+        if (base && relative.startsWith(`${base}/`) && !selectedRoot.startsWith(`${base}/`)) {
+          throw new UsageError(`disabled workspace ${disabledAlias} has unclassified files outside its graph directory; resolve its transport ownership before export`);
+        }
+      }
+    }
+    selectedFiles.push({ alias, files: candidates });
+  }
+  // Raw-file omission alone cannot prevent private state from being parsed into
+  // an index representation. Reuse metadata-only document discovery to reject
+  // contradictory graph/state ownership before any node or template parsing.
+  for (const files of Object.values(listWorkspaceDocFilesByAlias(options.root, config))) {
+    for (const file of files) {
+      const relative = relativePath(options.root, file);
+      if (transportState(relative)) throw new UsageError(`transport state overlaps authored graph discovery: ${relative}`);
+    }
+  }
+  const index = buildIndex(options.root, config);
+  const archiveVisibility = archiveVisibilityByPath(index);
+  const entries: ZipEntry[] = [];
+  const files: BundleManifestFile[] = [];
+  for (const selected of selectedFiles) {
+    const alias = selected.alias, workspace = config.workspaces[alias], wsPrefix = workspacePrefix(workspace);
+    for (const filePath of selected.files) {
+      const rel = relativePath(options.root, filePath);
+      if (profile === "public" && (rel === `${wsPrefix}config.json` || rel.endsWith("/.mdkg/config.json"))) {
         continue;
       }
       const visibility = archivePathVisibility(archiveVisibility, rel) ?? workspace.visibility;
@@ -838,7 +889,13 @@ export function buildBundle(options: BundleCreateCommandOptions): BundleBuildRes
     file_count: files.length,
     index_hashes: indexHashes,
     files,
+    // Counts describe excluded traversal roots, not inspected payload files.
+    // Do not expose private filenames, payload hashes or database metadata.
+    transport_exclusions: [...excluded].sort(([a], [b]) => a.localeCompare(b)).map(([reason, roots]) => ({ reason, roots })),
   };
+  manifest.transport_policy = createPortableTransportPolicy(config, manifest, transportState);
+  const policyErrors = portableTransportPayloadErrors(new Map(entries.map((entry) => [entry.name, entry.data])), manifest);
+  if (policyErrors.length) throw new ValidationError(policyErrors.join("; "));
 
   const manifestData = Buffer.from(stableJson(manifest), "utf8");
   const zip = createDeterministicZipFromEntries([
@@ -857,9 +914,10 @@ export function buildBundle(options: BundleCreateCommandOptions): BundleBuildRes
   };
 }
 
-export function parseBundle(bundlePath: string): { entries: Map<string, Buffer>; manifest: BundleManifest } {
+export function parseBundle(bundlePath: string): { entries: Map<string, Buffer>; manifest: BundleManifest; zipSha256: string } {
+  const bytes = readZipFileBytes(bundlePath);
   const entries = new Map<string, Buffer>();
-  for (const entry of readZipFileEntries(bundlePath)) {
+  for (const entry of readZipEntries(bytes)) {
     entries.set(entry.name, entry.data);
   }
   const manifestData = entries.get(MANIFEST_ENTRY);
@@ -867,7 +925,7 @@ export function parseBundle(bundlePath: string): { entries: Map<string, Buffer>;
     throw new ValidationError("bundle manifest missing");
   }
   try {
-    return { entries, manifest: validateBundleManifest(JSON.parse(manifestData.toString("utf8")) as unknown) };
+    return { entries, manifest: validateBundleManifest(JSON.parse(manifestData.toString("utf8")) as unknown), zipSha256: sha256Buffer(bytes) };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     throw new ValidationError(`bundle manifest is invalid JSON: ${message}`);
@@ -879,11 +937,13 @@ export function verifyBundle(root: string, bundlePath: string): VerifyResult {
   const stalePaths: string[] = [];
   let manifest: BundleManifest | undefined;
   let entries: Map<string, Buffer> = new Map();
+  let zipSha256: string;
 
   try {
     const parsed = parseBundle(bundlePath);
     manifest = parsed.manifest;
     entries = parsed.entries;
+    zipSha256 = parsed.zipSha256;
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return {
@@ -911,8 +971,8 @@ export function verifyBundle(root: string, bundlePath: string): VerifyResult {
       }
     }
   }
-  const currentHead = gitOutput(root, ["rev-parse", "HEAD"]);
-  if (manifest.source.git_head && currentHead && manifest.source.git_head !== currentHead) {
+  const currentHead = insideGitWorkTree(root) ? readGitHead(root) : null;
+  if (manifest.source.git_head && manifest.source.git_head !== currentHead) {
     stalePaths.push("git:HEAD");
   }
 
@@ -927,7 +987,7 @@ export function verifyBundle(root: string, bundlePath: string): VerifyResult {
     errors,
     stale_paths: Array.from(new Set(stalePaths)).sort(),
     bundle_hash: manifest.bundle_hash,
-    zip_sha256: sha256Buffer(fs.readFileSync(bundlePath)),
+    zip_sha256: zipSha256,
   };
 }
 
@@ -1010,11 +1070,11 @@ export function runBundleShowCommand(options: BundleShowCommandOptions): void {
   if (!fs.existsSync(bundlePath)) {
     throw new NotFoundError(`bundle not found: ${options.bundlePath}`);
   }
-  const { manifest } = parseBundle(bundlePath);
+  const { manifest, zipSha256 } = parseBundle(bundlePath);
   const summary = bundleSummary(
     manifest,
     path.relative(options.root, bundlePath) || bundlePath,
-    sha256Buffer(fs.readFileSync(bundlePath))
+    zipSha256
   );
   if (options.json) {
     writeJson({ action: "show", bundle: summary, manifest });

@@ -69,6 +69,34 @@ test("warmed imported body cache rechecks bundle path authority", (t) => {
   fs.unlinkSync(f.bundlePath); if (!linked(t, f.external, f.bundlePath, "file")) return;
   assert.throws(() => read(n), /symbolic link|linked/);
 });
+
+test("projected body reads refuse source bytes changed after projection", (t) => {
+  const f = fixture(t), n = node(f);
+  const { readZipEntries, createDeterministicZipFromEntries } = require("../../util/zip");
+  const entries = readZipEntries(bundle);
+  const row = entries.find((entry: any) => entry.name === n.source.original_path);
+  row.data = Buffer.from(row.data.toString().replace(marker, "REPLACED_UNVERIFIED_BODY"));
+  // This replacement is deliberately not rehashed: the reader must establish
+  // the prior validated snapshot, not trust that the path is still regular.
+  fs.writeFileSync(f.bundlePath, createDeterministicZipFromEntries(entries));
+  assert.throws(() => readNodeBody(f.root, n), /hash|integrity|snapshot/i);
+  assert.throws(() => createNodeBodyReader(f.root)(n), /hash|integrity|snapshot/i);
+});
+
+test("capability import consumes the same once-validated bundle bytes", (t) => {
+  const f = fixture(t);
+  const reader = require("../../graph/subgraph_bundle");
+  const original = reader.readSubgraphBundleEntries; let reads = 0;
+  reader.readSubgraphBundleEntries = (...args: any[]) => {
+    if (++reads > 1) throw new Error("UNVALIDATED_SECOND_SOURCE_READ");
+    return original(...args);
+  };
+  try {
+    const imported = buildSubgraphCapabilityRecords(f.root, f.config);
+    assert.ok(imported.records.some((r: any) => r.qid === "child:agent.synthetic"), JSON.stringify(imported));
+    assert.equal(reads, 1);
+  } finally { reader.readSubgraphBundleEntries = original; }
+});
 for (const sourcePath of ["../outside/child.zip", "bundles/../bundles/child.zip"]) {
   test(`direct imported metadata cannot launder ${sourcePath}`, (t) => {
     const f = fixture(t), n = node(f); n.source.bundle_path = sourcePath;
@@ -133,7 +161,7 @@ test("oversized and nonregular bundle replacements fail before a body read", (t)
   fs.unlinkSync(f.bundlePath); fs.mkdirSync(f.bundlePath);
   assert.throws(() => readNodeBody(f.root, n), /regular file/);
 });
-test("capability reread rejects a leaf substituted after projection", (t) => {
+test("capability import removes the second-open substitution opportunity", (t) => {
   const f = fixture(t), original = fs.openSync;
   let opened = 0, substituted = false;
   t.mock.method(fs, "openSync", (...args: any[]) => {
@@ -143,6 +171,7 @@ test("capability reread rejects a leaf substituted after projection", (t) => {
     return (original as any)(...args);
   });
   const result = buildSubgraphCapabilityRecords(f.root, f.config);
-  assert.equal(substituted, true); assert.equal(result.records.length, 0);
-  assert.ok(result.warnings.length > 0); assert.deepEqual(fs.readFileSync(f.external), bundle);
+  assert.equal(opened, 1); assert.equal(substituted, false);
+  assert.ok(result.records.some((record: any) => record.qid === "child:agent.synthetic"));
+  assert.deepEqual(fs.readFileSync(f.external), bundle);
 });

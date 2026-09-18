@@ -7,7 +7,7 @@ import {
   readContainedFile,
 } from "../core/filesystem_authority";
 import { loadConfig, validateConfigSchema } from "../core/config";
-import { migrateConfig } from "../core/migrate";
+import { IDENTITY_CONFIG_SCHEMA_VERSION, migrateConfig } from "../core/migrate";
 import { NotFoundError, UsageError } from "../util/errors";
 import { appendInstructions, instructionHash, instructionSection } from "./bootstrap_instructions";
 import { formatDate } from "../util/date";
@@ -125,12 +125,13 @@ function copySeedDir(root: string, srcDir: string, destDir: string, force: boole
 /** Bootstrap may restore guidance, but it is not identity migration or repair. */
 function preflightInitIdentity(root: string, seedCore: string, agent: boolean, force: boolean): void {
   const format = readGraphFormat(root);
+  const existingConfig = containedPathExists({ root, relativePath: ".mdkg/config.json" }) ? loadConfig(root) : undefined;
   const journal = readUpgradeJournal(root);
   if (journal && !["completed", "recovered"].includes(journal.state)) {
     throw new UsageError("unfinished upgrade; inspect its journal and use mdkg upgrade --resume or --recover with the reviewed plan hash before init");
   }
-  if (format.format_version === 2 && force) {
-    throw new UsageError("init --force cannot replace adopted graph configuration or node identities; use reviewed upgrade/reconciliation and rerun init without --force");
+  if (force && (format.format_version === 2 || existingConfig?.schema_version === IDENTITY_CONFIG_SCHEMA_VERSION)) {
+    throw new UsageError("init --force cannot replace adopted graph configuration or graph identity; use reviewed upgrade/reconciliation and rerun init without --force");
   }
   const candidates = new Map(listFiles(seedCore).map(file => [
     `.mdkg/core/${path.relative(seedCore, file).split(path.sep).join("/")}`,

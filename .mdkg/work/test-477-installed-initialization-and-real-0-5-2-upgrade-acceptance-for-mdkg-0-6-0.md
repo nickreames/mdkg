@@ -7,19 +7,34 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-86/bug-17-local-verification.json]
 relates: []
-blocked_by: [task-826]
+blocked_by: [task-835, task-836, task-827]
 blocks: []
 refs: []
-context_refs: [goal-83]
+context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 cases: [test-477-case-1, test-477-case-2, test-477-case-3, test-477-case-4, test-477-case-5]
 created: 2026-09-07
-updated: 2026-09-11
+updated: 2026-09-15
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Actual0.5.2 upgrades, compact defaults, graph-only/--agent, customized instructions/docs/skills and repeated/stale/interrupted/recovered upgrade cases.
+
+This test no longer waits for task826 or Bug7 aggregate closure. Its updated
+implementation prerequisites lead into installed cases; task826 consumes the
+results. Record historical/current-intermediate/final-artifact-pass/failure/
+unverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux
+completeness is independently bound by test487. Task828 remains independent
+acceptance, not an upstream requirement for these test results.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 
@@ -61,5 +76,16 @@ final-candidate upgrade/recovery reruns and independent aggregate acceptance.
 No interrupted, missing-runtime or source-only assertion is counted as a pass.
 
 # Notes / Follow-ups
+
+2026-09-15 bootstrap qualification observation, bound in
+`.mdkg/artifacts/goal-86/bug-17-local-verification.json`: compact default init emits
+root-scoped history. Registering that independently initialized child as a mutable
+parent workspace and then writing parent-scoped events produces a scope-validation
+failure. Published0.5.2 bare init and current explicit graph-only setup pass the
+original parent-workspace control without deleting or relabeling history.
+The bundle/capability smoke fixtures now state that setup explicitly; this is not
+proof of independent graph re-aliasing. Reverify the documented setup and diagnose
+any required unsupported transition during final bootstrap qualification, alongside
+task827's guidance. No new federation or event-history migration is authorized.
 
 Route newly validated blockers to goal-84; retain unknown/unsupported historical cases explicitly. Do not migrate canonical graph or regenerate protected bundles.

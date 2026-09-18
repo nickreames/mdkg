@@ -2,23 +2,35 @@
 id: bug-35
 type: bug
 title: Keep observational Git subprocesses from refreshing root and child indexes
-status: blocked
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json, .mdkg/artifacts/goal-84/bug-35-affected-versions.json]
-relates: [goal-83, goal-84, bug-7, bug-21, test-480]
-blocked_by: []
+artifacts: [.mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json, .mdkg/artifacts/goal-84/bug-35-affected-versions.json, .mdkg/artifacts/goal-86/observational-boundary-verification.json]
+relates: [bug-7, bug-21, test-480]
+blocked_by: [task-834, bug-40]
 blocks: []
-refs: []
-context_refs: []
+refs: [dec-94, bug-40, bug-42]
+context_refs: [goal-86, dec-96, goal-83, goal-84]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-11
-updated: 2026-09-11
+updated: 2026-09-15
 ---
+
+# Current Successor Contract - 2026-09-13
+
+After task834 accepts current custody, finish observational Git helper suppression
+with caller overrides included. Preserve overlapping Bug17 edits; root/child and
+linked-worktree index bytes plus staged entries must remain unchanged. Caller-only
+GIT_OPTIONAL_LOCKS controls are diagnostic workarounds, never fix acceptance.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
+
 # Overview
 
 Installed read-only commands can refresh root or registered child Git index
@@ -31,6 +43,35 @@ particularly when a parent only has read authority over its child graph.
 Functional publication blocker, not a new Standard security scan finding.
 Original scan accounting stays twelve of thirteen locally fixed. Bug21's
 cache-persistence fix remains achieved; this is a distinct Git subprocess sink.
+
+# Local Implementation Verification - 2026-09-15
+
+The scoped Git-index remedy is complete locally. Four previously unguarded
+subprocess helpers now force GIT_OPTIONAL_LOCKS=0. Existing hardened git inspect
+already passed the current-source baseline and remains unchanged. The accepted
+Bug17 transport patch in bundle/subgraph was preserved. Historical sections below
+retain earlier observations; their unimplemented/custody-pending statements no
+longer describe the current run.
+
+Current-source baseline:14 of16 cases refreshed root/child indexes. Afterward,
+1,409 tests pass and one immutable intermediate tarball passes288 cases on each
+of Node24.15.0,24.18.0 and26.0.0: standalone, linked worktrees, actual submodule and
+separate gitdir; unset/1 caller policies; clean and staged/unstaged work. Native
+Git positive controls prove the indexes could refresh; mdkg mutation controls
+remain intentional and do not stage graph files. Bug40's preview lock/parent
+writes were separately corrected and verified before closing this lane.
+
+The actual read-only APFS matrix preserves all36 fixture inventories and sync
+previews, but its broader show/search assertions fail12cases due to copied legacy
+cache metadata. Bug42 is a separate required release blocker, not a waived test
+or a failure of Git-index custody. Bug41's configured-helper execution boundary
+also remains open. Neither this bug's closure nor the intermediate tarball grants
+final installed/platform/security acceptance or publication authority.
+
+Evidence: .mdkg/artifacts/goal-86/observational-boundary-verification.json.
+Main HEAD remains38205296208c23fcfcc6fc821a295040be05c0bb; all source work is
+unstaged/uncommitted. Protected selection, runtime DB, Demo3 bundle and Git index
+match before/after hashes. Final task828/829/830 and Linux qualification remain.
 
 # Reproduction Steps
 
@@ -73,13 +114,14 @@ per-child-process Git read policy, not user/global configuration. Keep identity
 and transport behavior unchanged; do not add remote operations or blanket
 environment overrides to the qualification harness to hide this defect.
 
-Custody stop: src/commands/subgraph.ts and src/commands/bundle.ts belong to the
-preserved partial Bug17 patch. Their exact hashes are bound in the reproduction
-artifact. Nick must explicitly permit narrowly scoped Git-read helper edits
-in those paths while preserving the existing transport patch. No source edits
-have been made. This is not authority to finish or waive Bug17 compatibility.
+Custody decision accepted in dec-94: Nick permits narrowly scoped Git-read
+helper edits in src/commands/subgraph.ts and src/commands/bundle.ts while
+preserving the existing partial Bug17 patch. Its baseline hashes remain bound
+in the reproduction artifact; future fixes need before/after path review.
+No source remedy has been applied yet. Bug17 has its own accepted policy and
+separate verification requirements; this approval does not waive either.
 
-After that custody decision: re-inventory, claim this bug, implement all proven
+Next execution: re-inventory, claim this bug, implement all proven
 read-only sinks as a coherent unit, verify explicit mutation commands remain
 intentional, rebuild/reinstall a new candidate, then rerun affected installed
 proof and the full actual-read-only-mount matrix. Changed package bytes invalidate

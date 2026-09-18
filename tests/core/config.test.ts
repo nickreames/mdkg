@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import path from "path";
 const { loadConfig } = require("../../core/config");
-const { LATEST_SCHEMA_VERSION, migrateConfig } = require("../../core/migrate");
+const { DEFAULT_SCHEMA_VERSION, LATEST_SCHEMA_VERSION, migrateConfig } = require("../../core/migrate");
 import { makeTempDir, writeFile } from "../helpers/fs";
 
 const BASE_CONFIG = {
@@ -75,7 +75,7 @@ test("loadConfig reads and validates config", () => {
   writeFile(configPath, JSON.stringify(BASE_CONFIG, null, 2));
 
   const config = loadConfig(root);
-  assert.equal(config.schema_version, LATEST_SCHEMA_VERSION);
+  assert.equal(config.schema_version, DEFAULT_SCHEMA_VERSION);
   assert.equal(config.workspaces.root.path, ".");
   assert.equal(config.workspaces.root.visibility, "private");
   assert.deepEqual(config.index.limits, {
@@ -129,7 +129,7 @@ test("loadConfig migrates legacy config without schema_version and defaults capa
   writeFile(configPath, JSON.stringify(legacyConfig, null, 2));
 
   const config = loadConfig(root);
-  assert.equal(config.schema_version, LATEST_SCHEMA_VERSION);
+  assert.equal(config.schema_version, DEFAULT_SCHEMA_VERSION);
   assert.equal(config.workspaces.root.mdkg_dir, ".mdkg");
   assert.equal(config.workspaces.root.visibility, "private");
   assert.equal(config.archive.large_cache_warning_bytes, 26214400);
@@ -1006,10 +1006,10 @@ test("migrateConfig upgrades legacy root-only config deterministically", () => {
 
   assert.deepEqual(first, second);
   assert.equal(first.from, 0);
-  assert.equal(first.to, LATEST_SCHEMA_VERSION);
+  assert.equal(first.to, DEFAULT_SCHEMA_VERSION);
 
   const migrated = first.config as Record<string, unknown>;
-  assert.equal(migrated.schema_version, LATEST_SCHEMA_VERSION);
+  assert.equal(migrated.schema_version, DEFAULT_SCHEMA_VERSION);
   assert.deepEqual(migrated.workspaces, {
     root: {
       path: ".",

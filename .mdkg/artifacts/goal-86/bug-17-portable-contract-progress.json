@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "kind": "intermediate-portable-transport-remediation",
+  "date": "2026-09-15",
+  "goal": "root:goal-86",
+  "work": "root:bug-17",
+  "outcome": "IN_PROGRESS_NOT_QUALIFIED",
+  "supersedes_current_status_only": ".mdkg/artifacts/goal-86/bug-17-transport-progress.json",
+  "historical_evidence_preserved": true,
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "source_has_uncommitted_changes": true,
+  "source_sha256": {
+    "src/commands/bundle.ts": "1c26f823fb86fba8e43a44a4217ddf0a591c95ce6b78f5da13e72d4429fafae4",
+    "src/commands/graph.ts": "f21105a59135f5578e2787ad47c4884542e448eae2fe188a34acf086de848a05",
+    "src/commands/subgraph.ts": "b42aeab79d58ed905060c32d6fdef41ea657b09227d9c55fd99024a33a9d7fdc",
+    "src/graph/identity_transport.ts": "223b3025352b16f2b03db90cd0aaafcaadba6a5235b6230d274c39bdfe7bb1d0",
+    "src/graph/subgraphs.ts": "c675daa5b3bb5475ee3ca7d05df89cc90f91140e8487adb34aa21a8f0ebbf631",
+    "src/graph/node_body.ts": "f3c26eff4c6e445b0b45d8a29e871070493dea54f6789e9e42376cc1633941fa",
+    "src/graph/transport_state.ts": "00df1247864b2df40573732ea686bfcb45d63d259f1ec88f3dbe27b3858e9339",
+    "src/graph/transport_policy.ts": "70d2c63deaa0c0e3a28a4d861b7b2f5e6eb4f5a1154eabe9c13bf811a24d67bf",
+    "src/graph/workspace_ownership.ts": "993b4884ab2e32ebfba8c1ac842d3694ee3696e2af3810450e81bb253932ecdc",
+    "src/util/zip.ts": "90336751cca6772ad665a68634a33fc0543907114322d548323a0bd0eb09fd81",
+    "tests/commands/bundle_state.test.ts": "54ea8a8487fa593c2a128ce8a64fb36cb99c73a06fec41855dd29871cf9629e5",
+    "tests/commands/subgraph.test.ts": "a08cd9b63195a641226fb1c59abe004464725a041db90a5ec4544763642a5cc2",
+    "tests/graph/node_body.test.ts": "f9ba6d8b4a61fbe23f5772d1be592d0b0ee455ecec128ab5c2cf06bc31b36ba8",
+    "tests/graph/subgraph_containment.test.ts": "0b24daa918fc66419e6cc2cf84f4ce3e70097d54d55086228df6d9acab5cfbf2"
+  },
+  "contract": {
+    "version": 1,
+    "meaning": "Structural declaration of included graph/private-db/projection files bound to manifest payload hash, profile and selected workspace ownership; not authentication, public-safety attestation or execution/writer authority.",
+    "privacy": "Only already-included paths appear. No excluded private paths, excluded payload hashes, DB contents or operational records are added to public policy metadata.",
+    "producer": "Fresh exports emit and validate the declaration after shared state classification. Enabled registered child configurations are consulted even when their workspaces are unselected; their private payloads remain excluded unless selected. Undeclared or disabled ambiguous configuration custody refuses before payload reads.",
+    "consumers": "Both manifest validators, materialization, template import and projections validate the declaration and owning configurations when included. Child-only config validation uses policy roots bound to the global workspace index.",
+    "historical": "Policy-less public snapshots remain bounded inspection-only; their missing transport policy is not guessed. Clone/fork continue to require an actual owning root configuration.",
+    "private_portability": "Selected private child checkpoints remain byte-preserving positive controls; live runtime state, sidecars and checkout authority remain excluded.",
+    "snapshot_binding": "Bundle receipts hash the parsed ZIP bytes. Template apply verifies and uses one held source snapshot under its lock. Imported capability/body projections consume the validated bundle snapshot and bind projected metadata to its bundle hash/profile. Existing safe cached-body reads after genuine deletion remain supported."
+  },
+  "failing_before_evidence": [
+    "Seven contract cases failed before implementation: fresh public policy absent and six contradictory or malformed policies ignored.",
+    "Conventional nested state was read as payload; undeclared child configuration allowed custom live payload reads.",
+    "Changing bundle bytes after projection returned unverified body data; capability projection reopened a different bundle snapshot.",
+    "A verification receipt could hash bytes different from those parsed; template application could consume a changed source between preview and apply.",
+    "Candidate review hypotheses reproduced: an unselected child's custom live DB, checkpoint and receipts entered a public root-only export; a child-only private bundle accepted a consistently rehashed injected live DB in graph/private-db roles."
+  ],
+  "candidate_review": {
+    "kind": "single independent offline read-only candidate review",
+    "reviewer": "transport_contract_candidate_review",
+    "cycles": 1,
+    "confirmed_hypotheses": 2,
+    "disposition": "Both parent-reproduced hypotheses corrected at shared ownership/configuration boundaries and covered by negative regressions plus selected-private portability controls.",
+    "parent_reproduction_receipt_sha256": "9e213fed57c1522e26fe1de3678bb1dc43f07cfbfb836a87a549172955a9ea94",
+    "not_standard_or_final_diff_clearance": true
+  },
+  "validation": {
+    "build": "pass on Node 24.18.0",
+    "test_build": "pass",
+    "focused_post_review": {
+      "runtime": "v24.18.0",
+      "platform": "darwin-arm64",
+      "tests": 106,
+      "passed": 106,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 6699.847417,
+      "scope": "bundle_state, bundle, bundle_ownership, subgraph_containment, node_body and zip"
+    },
+    "full_pre_review": {
+      "tests": 1440,
+      "passed": 1440,
+      "failed": 0,
+      "skipped": 0,
+      "freshness": "Historical intermediate run before the two final review corrections; not substituted for the post-review run."
+    },
+    "full_post_review": {
+      "command": "npm run test:built",
+      "runtime": "v24.18.0",
+      "platform": "darwin-arm64",
+      "tests": 1445,
+      "passed": 1445,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 161774.779459,
+      "status": 0,
+      "source_hashes_unchanged": true,
+      "source_paths_checked": 17,
+      "receipt_sha256": "3ff8677e14665221420dff11128f76eae8087bec021df93971bce3239cf3edef",
+      "stdout_sha256": "098df4e6db2d74998baf960a48771a0ab2b8091a5b5cbf6107347d28f251e26b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post_record_checks": "pending; record a separate validation addendum after evidence and required projections are updated",
+    "installed_current_candidate": "unverified",
+    "linux": "unverified",
+    "standard_and_final_diff": "unverified",
+    "final_artifact_pass": false
+  },
+  "remaining_before_bug_closure": [
+    "Complete bounded alternate-representation checks, distinguishing unconfirmed hypotheses from reproducible defects.",
+    "Exercise the current installed package on all three required runtimes without relying on source imports; preserve source and artifact identity.",
+    "Bind implementation acceptance to final test-479/platform/Standard/task-828 obligations; source tests alone are not final release qualification."
+  ],
+  "preserved_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "git-index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+  },
+  "custody": "Sole Goal86 writer continues owned Bug17 progress; all earlier planning and Bug35/40 edits preserved. No active runtime DB lease, queue message or transient mutation lock; five historical leases remain released.",
+  "temporary_evidence": "Owned full-test receipts/logs and synthetic review reproductions retained under the dedicated temporary transport run; no raw security report or operational payload copied into the repository.",
+  "git": {"branch": "main", "commits_created": [], "staged_paths": [], "remote_actions": "none", "cached_ahead": 50, "cached_behind": 0},
+  "release": "NOT_READY; metadata remains 0.5.2, Goal85 paused; no publication, bundle refresh, provider or deployment action",
+  "skill_candidates": []
+}

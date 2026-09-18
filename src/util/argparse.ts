@@ -4,6 +4,8 @@ export type ParsedArgs = {
   version: boolean;
   positionals: string[];
   flags: Record<string, string | boolean>;
+  // Preserve every occurrence so a later valid value cannot hide malformed input.
+  options?: Array<{ flag: string; value: string | boolean }>;
   error?: string;
 };
 
@@ -112,6 +114,12 @@ const VALUE_FLAGS = new Set([
   "--incoming",
   "--decisions",
   "--plan-hash",
+  "--lock-evidence",
+  "--lease-owner", "--lease-ms", "--payload-json", "--payload-file", "--dedupe-key",
+  "--available-at-ms", "--max-attempts", "--retry-after-ms", "--error", "--reason",
+  "--contract-profile", "--validation-policy-ref", "--evidence-policy-ref",
+  "--receipt-kind", "--redaction-class", "--materialization", "--checkpoint-kind",
+  "--only", "--parent", "--skills", "--skills-depth", "--base-ref",
 ]);
 
 const BOOLEAN_FLAGS = new Set([
@@ -157,9 +165,11 @@ const BOOLEAN_FLAGS = new Set([
   "--gitignore",
   "--select-goal",
   "--stdio",
+  "--help",
+  "--paused", "--planning-only", "--no-children", "--changed-only", "--headings", "--strict",
 ]);
 
-const FLAG_ALIASES: Record<string, string> = {
+export const FLAG_ALIASES: Readonly<Record<string, string>> = {
   "--o": "--out",
   "-o": "--out",
   "--output": "--out",
@@ -180,68 +190,80 @@ const FLAG_ALIASES: Record<string, string> = {
   "-q": "--quiet",
   "--V": "--version",
   "-V": "--version",
+  "--h": "--help",
+  "-h": "--help",
 };
 
-function normalizeFlag(flag: string): string {
+export function normalizeFlag(flag: string): string {
   return FLAG_ALIASES[flag] ?? flag;
 }
 
-function normalizeFlagToken(token: string): string | undefined {
-  if (!token.startsWith("-")) {
-    return undefined;
-  }
-  let normalized = token;
-  if (!normalized.startsWith("--") && normalized.length === 2) {
-    normalized = `--${normalized.slice(1)}`;
-  }
-  const eqIndex = normalized.indexOf("=");
-  const flag = eqIndex === -1 ? normalized : normalized.slice(0, eqIndex);
-  return normalizeFlag(flag);
-}
-
 function isFlagToken(token: string): boolean {
-  const flag = normalizeFlagToken(token);
-  if (!flag) {
-    return false;
-  }
-  return VALUE_FLAGS.has(flag) || BOOLEAN_FLAGS.has(flag) || flag === "--help";
+  // Unknown options must not become a preceding option's path/value. Negative
+  // numbers and a lone dash remain ordinary values; option-looking text can use =.
+  return token === "--" || (token.startsWith("-") && token !== "-" && !/^-\d/.test(token));
 }
 
-export function parseArgs(argv: string[]): ParsedArgs {
+export function optionValueKind(flag: string): "value" | "boolean" | undefined {
+  if (VALUE_FLAGS.has(flag)) return "value";
+  if (BOOLEAN_FLAGS.has(flag)) return "boolean";
+  return undefined;
+}
+
+function parseTokens(argv: string[], booleanAgent: boolean): ParsedArgs {
   const result: ParsedArgs = {
     help: false,
     version: false,
     positionals: [],
     flags: {},
+    options: [],
+  };
+
+  const record = (flag: string, value: string | boolean): void => {
+    result.flags[flag] = value;
+    result.options!.push({ flag, value });
   };
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
+    if (arg === "--") {
+      result.positionals.push(...argv.slice(i + 1));
+      break;
+    }
     if (arg === "--help" || arg === "-h") {
       result.help = true;
+      record("--help", true);
       continue;
     }
     if (arg === "--version" || arg === "-V") {
       result.version = true;
+      record("--version", true);
       continue;
     }
 
     let normalizedArg = arg;
-    if (normalizedArg.startsWith("-") && !normalizedArg.startsWith("--")) {
-      if (normalizedArg.length === 2) {
-        normalizedArg = `--${normalizedArg.slice(1)}`;
-      }
+    // Single-character aliases accept the same inline syntax as long options.
+    if (/^-[^-](?:=|$)/.test(normalizedArg)) {
+      normalizedArg = `--${normalizedArg.slice(1)}`;
     }
 
-    if (normalizedArg.startsWith("--")) {
+    if (isFlagToken(normalizedArg)) {
       const eqIndex = normalizedArg.indexOf("=");
       const flagRaw = eqIndex === -1 ? normalizedArg : normalizedArg.slice(0, eqIndex);
       const flag = normalizeFlag(flagRaw);
       const inlineValue = eqIndex === -1 ? undefined : normalizedArg.slice(eqIndex + 1);
 
+      if (flag === "--help" || flag === "--version") {
+        const enabled = inlineValue === undefined || inlineValue === "true";
+        record(flag, inlineValue ?? true);
+        if (flag === "--help") result.help = enabled;
+        else result.version = enabled;
+        continue;
+      }
+
       if (flag === "--root") {
         const value = inlineValue ?? argv[i + 1];
-        if (!value || isFlagToken(value)) {
+        if (!value || (inlineValue === undefined && isFlagToken(value))) {
           result.error = "--root requires a path";
           return result;
         }
@@ -249,43 +271,34 @@ export function parseArgs(argv: string[]): ParsedArgs {
           i += 1;
         }
         result.root = value;
-        result.flags[flag] = value;
+        record(flag, value);
         continue;
       }
 
       const value = inlineValue ?? argv[i + 1];
-      const supportsValue = VALUE_FLAGS.has(flag);
-      const supportsBoolean = BOOLEAN_FLAGS.has(flag);
+      const supportsValue = VALUE_FLAGS.has(flag) && !(flag === "--agent" && booleanAgent);
+      const supportsBoolean = BOOLEAN_FLAGS.has(flag) && (flag !== "--agent" || booleanAgent);
 
       if (supportsValue) {
-        if (value === undefined || isFlagToken(value)) {
-          if (supportsBoolean) {
-            result.flags[flag] = true;
-            continue;
-          }
-          result.flags[flag] = true;
-          continue;
+        if (value === undefined || (inlineValue === undefined && isFlagToken(value)) || !value.trim()) {
+          result.error = `${flag} requires a value`;
+          return result;
         }
         if (inlineValue === undefined) {
           i += 1;
         }
-        result.flags[flag] = NORMALIZE_VALUE_FLAGS.has(flag) ? value.toLowerCase() : value;
+        record(flag, NORMALIZE_VALUE_FLAGS.has(flag) ? value.toLowerCase() : value);
         continue;
       }
 
       if (supportsBoolean) {
-        result.flags[flag] = inlineValue ?? true;
+        record(flag, inlineValue ?? true);
         continue;
       }
 
-      if (value === undefined || isFlagToken(value)) {
-        result.flags[flag] = true;
-        continue;
-      }
-      if (inlineValue === undefined) {
-        i += 1;
-      }
-      result.flags[flag] = NORMALIZE_VALUE_FLAGS.has(flag) ? value.toLowerCase() : value;
+      // Retain the token for command-specific refusal, without swallowing a
+      // command, title, or another option as an unknown option's guessed value.
+      record(flag, inlineValue ?? true);
       continue;
     }
 
@@ -293,4 +306,17 @@ export function parseArgs(argv: string[]): ParsedArgs {
   }
 
   return result;
+}
+
+export function parseArgs(argv: string[]): ParsedArgs {
+  // --agent is boolean only for init and valued for event append. Probe without
+  // effects so flags may precede the command, including an event agent named init.
+  const booleanParse = parseTokens(argv, true);
+  const commandPositionals = booleanParse.positionals[0]?.toLowerCase() === "help"
+    ? booleanParse.positionals.slice(1) : booleanParse.positionals;
+  if (commandPositionals[0]?.toLowerCase() === "init" && commandPositionals.length === 1) {
+    return booleanParse;
+  }
+  if (!booleanParse.options?.some(option => option.flag === "--agent")) return booleanParse;
+  return parseTokens(argv, false);
 }

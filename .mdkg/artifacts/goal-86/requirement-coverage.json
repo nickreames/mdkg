@@ -1,0 +1,1681 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-requirement-coverage",
+  "goal_qid": "root:goal-86",
+  "work_qid": "root:task-834",
+  "recorded_at": "2026-09-15T14:37:10.402Z",
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "source_manifest_sha256": "349085c269d13b318796b37aef3e5a8059824eaf24fd9609296289ffe41fd39d",
+  "package_input_manifest_sha256": "d6cb86f78cc98027eee28d13843e1f94a4aa01d9a74b065bfa672a5d80c60a54",
+  "states": [
+    "historical",
+    "current-intermediate",
+    "final-artifact-pass",
+    "failure",
+    "unverified"
+  ],
+  "policy": "A historical pass never automatically becomes final-artifact pass. Package-input changes invalidate affected verification; independently verify findings. Reopen affected completed acceptance tasks explicitly, since mdkg routing checks status not artifact freshness.",
+  "requirements": [
+    {
+      "id": "R01",
+      "requirement": "Compact init, graph-only and --agent; actual 0.5.2 upgrade; custom instructions/docs/skills; repeated and interrupted upgrade",
+      "owner_qids": [
+        "root:test-477"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R02",
+      "requirement": "Immutable graph/node identity, numeric aliases, cross-linked uncommitted nodes and explicit v2 writer admission",
+      "owner_qids": [
+        "root:task-835",
+        "root:test-478",
+        "root:test-480"
+      ],
+      "evidence_state": "current-intermediate",
+      "evidence": [".mdkg/artifacts/goal-86/task-835-local-verification.json"],
+      "qualification_boundary": "Task835 local implementation: 1585 source tests and50 installed cases per required Node runtime on macOS. Final0.6.0 platform/security and collaboration acceptance remain open; no killed-writer proof is implied.",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R03",
+      "requirement": "Native linked worktrees, concurrent offline creation, isolated per-checkout state and same-checkout writer exclusion",
+      "owner_qids": [
+        "root:test-478",
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R04",
+      "requirement": "Pinned ancestry, reviewed reconcile then native merge, whole source-plus-graph validation; no blanket ours",
+      "owner_qids": [
+        "root:test-478"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R05",
+      "requirement": "Repeated integration, cherry-picks/reverts, deletion/reintroduction and immutable external receipts",
+      "owner_qids": [
+        "root:test-478"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R06",
+      "requirement": "Separate submodule and gitdir-indirection qualification",
+      "owner_qids": [
+        "root:test-478",
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R07",
+      "requirement": "Evidence-bound killed-writer recovery, live/ambiguous/legacy owner refusal; no age/PID-only takeover",
+      "owner_qids": [
+        "root:task-836",
+        "root:test-479",
+        "root:test-487"
+      ],
+      "evidence_state": "current-intermediate",
+      "evidence": [".mdkg/artifacts/goal-86/task-836-local-verification.json"],
+      "qualification_boundary": "Task836 local implementation: 1627 source tests, unchanged coverage floors and33 installed SIGKILL cases across three required Node runtimes on macOS arm64. Exact0.6.0 Linux/platform, full installed and independent security gates remain open; incomplete publication fails closed.",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R08",
+      "requirement": "Stale plans, changed dependencies, unknown files and interrupted rollback/resume",
+      "owner_qids": [
+        "root:task-836",
+        "root:test-477",
+        "root:test-479"
+      ],
+      "evidence_state": "current-intermediate",
+      "evidence": [".mdkg/artifacts/goal-86/task-835-local-verification.json", ".mdkg/artifacts/goal-86/task-836-local-verification.json"],
+      "qualification_boundary": "Current source and intermediate installed recovery refuse changed dependencies, other journals, unknown files and stale approvals; repeat resume/rollback and recovery-of-recovery pass. Full final-artifact init/upgrade and platform coverage remains required.",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R09",
+      "requirement": "Read-only Git everywhere; root/child/worktree index bytes and staging unchanged regardless of caller env",
+      "owner_qids": [
+        "root:bug-35",
+        "root:test-480",
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R10",
+      "requirement": "Public/private producer-consumer transport classification; no live state, private DB omission receipts, private portable snapshots and old public inspect-only behavior",
+      "owner_qids": [
+        "root:bug-17",
+        "root:test-479"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R11",
+      "requirement": "Unsupported and wrong-command flags refuse before discovery/effects in both entrypoints; complete inventories and subprocess traps plus positive controls",
+      "owner_qids": [
+        "root:bug-39",
+        "root:test-486"
+      ],
+      "evidence_state": "current-intermediate",
+      "evidence": [".mdkg/artifacts/goal-86/bug-39-local-verification.json"],
+      "qualification_boundary": "Local source and same-intermediate-package macOS proof on Node24.15.0/24.18.0/26.0.0; test486 final0.6.0 and Linux/security acceptance remain open.",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R12",
+      "requirement": "Real read-only filesystems, malformed inputs, symlinks, ancestor substitution and ACL/ownership exposure assessed without documentation waiver",
+      "owner_qids": [
+        "root:test-479",
+        "root:test-487",
+        "root:task-828"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R13",
+      "requirement": "Legacy/v2 JSON/SQLite parity, packs, MCP, archive/work refs and offline graph usability",
+      "owner_qids": [
+        "root:test-480"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R14",
+      "requirement": "Private canonical-graph migration rehearsal; exact historical mdkg://goal-10 ambiguity disposition without invented identity",
+      "owner_qids": [
+        "root:test-480",
+        "root:bug-7"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R15",
+      "requirement": "Representative scale, bounded-history diagnostics, full goal/checkpoint/blocker routing and retained measured performance limits",
+      "owner_qids": [
+        "root:test-481"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R16",
+      "requirement": "All required installed families on exact Node 24.15.0, selected supported Node 24 and Node 26 on macOS/Linux; Windows unqualified",
+      "owner_qids": [
+        "root:test-482",
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R17",
+      "requirement": "Verified local Linux endpoint/image/isolation/filesystem; no automatic service or new-infrastructure authority",
+      "owner_qids": [
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R18",
+      "requirement": "Generic retained/removed CLI/help/docs/MCP/seeds/native projections and npm allowlist agreement; verified undispatched extraction",
+      "owner_qids": [
+        "root:test-483",
+        "root:test-484",
+        "root:task-827"
+      ],
+      "evidence_state": "current-intermediate",
+      "evidence": [".mdkg/artifacts/goal-86/task-827-local-verification.json"],
+      "qualification_boundary": "Current CLI/help/docs/generated-contract parity and152-file extraction hash verification pass; final installed inventories and npm artifact exclusion remain test483/484.",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R19",
+      "requirement": "Fresh Standard after known fixes/metadata; frozen snapshot, capability preflight, source coverage/exclusions, plugin-owned raw reports",
+      "owner_qids": [
+        "root:task-837"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R20",
+      "requirement": "Independent remediation diff including removals/supporting code; deduplicated findings/regressions/affected versions; no automatic waivers",
+      "owner_qids": [
+        "root:task-828"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R21",
+      "requirement": "Complete manifest release ladder and full test discovery; floors 89/77/96, graph/SQLite/docs/package/diff checks",
+      "owner_qids": [
+        "root:task-829"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R22",
+      "requirement": "Draft 0.6.0 metadata and corrected tested guidance, not public publication",
+      "owner_qids": [
+        "root:task-827"
+      ],
+      "evidence_state": "current-intermediate",
+      "evidence": [".mdkg/artifacts/goal-86/task-827-local-verification.json"],
+      "qualification_boundary": "Draft0.6.0 metadata and release-critical guidance locally verified with1628 source tests and unchanged inputs. Public release remains draft; final artifact acceptance and broad docs polish are separate.",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R23",
+      "requirement": "Exact tarball reused for tests and seal, SHA256/SHA512, file/input manifests, source/platform/security/evidence identity; invalidate on input change",
+      "owner_qids": [
+        "root:task-830"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R24",
+      "requirement": "Protected Demo 3/selection/runtime state bookends, reviewed local commits, residual custody and ownership release",
+      "owner_qids": [
+        "root:task-829",
+        "root:task-830"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    },
+    {
+      "id": "R25",
+      "requirement": "Goal 85 stays paused; fresh publication approval, blocker and exact-artifact rechecks remain separate",
+      "owner_qids": [
+        "root:task-831"
+      ],
+      "evidence_state": "unverified",
+      "final_artifact_pass": false
+    }
+  ],
+  "work_contracts": [
+    {
+      "qid": "root:task-834",
+      "title": "Freeze mdkg 0.6.0 launch custody and requirement coverage",
+      "status": "progress",
+      "path": ".mdkg/work/task-834-freeze-mdkg-0-6-0-launch-custody-and-requirement-coverage.md",
+      "contract_sha256": "d35e098f03924f0b4003968f95925dad17ab5ccd98ea8831ebfb5b761a62d12b",
+      "blocked_by": [],
+      "evidence_state": "current-intermediate",
+      "acceptance_contract": "- Verify main/HEAD/cached upstream, staged/unstaged/untracked paths, exact ownership,\n  supported locks/claims/runtime lease/queue state, graph selection and imported freshness.\n- Classify all current paths; bind and preserve the accepted partial Bug17 bytes.\n  Overlap with Bug35 is narrow and explicit; unrelated history is not absorbed.\n- Bind recorded published0.5.2 integrity/source provenance, current package inputs,\n  completed extraction and every remaining requirement to exact evidence.\n- Matrix states are historical/current-intermediate/final-artifact-pass/failure/\n  unverified. Keep reproduction, fix, independent review and release acceptance distinct.\n- Verify requirement/dependency routing including reopen/stale-evidence behavior.\n- Record the run's Goal, Context, Boundaries, Done when and Evidence; establish\n  only supported scoped ownership. No invented lease command or DB initialization.",
+      "current_successor_contract": "",
+      "case_ids": [],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-86/planning-receipt.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:bug-35",
+      "title": "Keep observational Git subprocesses from refreshing root and child indexes",
+      "status": "todo",
+      "path": ".mdkg/work/bug-35-keep-observational-git-subprocesses-from-refreshing-root-and-child-indexes.md",
+      "contract_sha256": "350bdbe90b1d4809af921d7474d80d20c8aedbc4ec835bc32d62da8de4ad064a",
+      "blocked_by": [
+        "root:task-834"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "",
+      "current_successor_contract": "After task834 accepts current custody, finish observational Git helper suppression\nwith caller overrides included. Preserve overlapping Bug17 edits; root/child and\nlinked-worktree index bytes plus staged entries must remain unchanged. Caller-only\nGIT_OPTIONAL_LOCKS controls are diagnostic workarounds, never fix acceptance.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json",
+        ".mdkg/artifacts/goal-84/bug-35-affected-versions.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:bug-17",
+      "title": "Public graph bundles include ignored live queue databases and checkout-local state",
+      "status": "todo",
+      "path": ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+      "contract_sha256": "e36e10f64f66a57155d7c75729b84431fe1624697aaa35c4777b92824c2bdd29",
+      "blocked_by": [
+        "root:task-834",
+        "root:bug-35"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "",
+      "current_successor_contract": "Finish the accepted transport contract after Bug35's narrow overlapping helper\nwork. Dec94/95 policy choices are resolved: omit live checkout state in both\nprofiles; public omission receipts distinguish private DB payloads; preserve\nintentional private portability. Old policy-less public bundles are inspect-only\nuntil a fresh safe export exists. Preserve the partial patch, never rebuild\ncanonical bundles or guess a historical materialization policy.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-17-progress.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:bug-39",
+      "title": "Reject unsupported command options before dispatch and unintended writes",
+      "status": "todo",
+      "path": ".mdkg/work/bug-39-reject-unsupported-command-options-before-dispatch-and-unintended-writes.md",
+      "contract_sha256": "e95c8e1b7e414e6588b223705e1c45c2d7c3da1f5bdaf37c7deefc4bf959a488",
+      "blocked_by": [
+        "root:bug-17"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "",
+      "current_successor_contract": "Retain this bug and test486, not a duplicate finding. Inventory all real command\noptions and enforce early refusal before config and all side effects, in both\nentrypoints. Positive compatibility controls remain mandatory. Local implementation\nclosure precedes final installed test486 and independent task828; do not create\na bug/test/review completion cycle.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-39-unknown-option-reproduction.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-835",
+      "title": "Enforce explicit v2 writer capability admission and document old client limits",
+      "status": "backlog",
+      "path": ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md",
+      "contract_sha256": "82f9cbe89c692f69062aa20118bc769c7a8c52d43a3e1af0ff0c730e7b9a5f9f",
+      "blocked_by": [
+        "root:task-834",
+        "root:bug-39"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "- Extend existing versioned config/capability and migration journal boundaries;\n  keep adoption explicit and atomically bind the fence to the reviewed migration.\n- Compatible clients still operate on unmerged authored nodes; newer/unknown\n  required capability writers refuse before authored/cache/event/lock effects.\n- Reproduce actual0.5.2 warm/cold behavior; document its init/force-init bypass\n  and the no-mixed-unsupported-writers requirement. Do not claim retroactive enforcement.\n- Preview, interrupted apply, rollback and repeated application preserve exact\n  ownership, stable identities and Git index. No implicit canonical migration.\n- Local implementation evidence is separate from tests477/480 final-artifact proof;\n  this task does not wait for Bug7/task826 aggregate acceptance.",
+      "current_successor_contract": "",
+      "case_ids": [],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-836",
+      "title": "Add evidence-bound interrupted-writer recovery for graph transactions",
+      "status": "backlog",
+      "path": ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md",
+      "contract_sha256": "5854371c2e765ca0f787d5562bb0aac9be0a4daf2dd169bc54547f1c8424d23a",
+      "blocked_by": [
+        "root:task-835"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "- Extend the existing graph recovery/lock contract, not a new generic lease CLI.\n  Inspection stays read-only; any recovery mutation names and binds the exact\n  checkout, transaction/plan, lock owner and journal plus current owned file states.\n- Newly recorded provenance must support reliable local liveness/ownership proof;\n  old weak lock metadata is not upgraded by inference. Live, suspended, PID-reused,\n  ambiguous or insufficiently evidenced owners refuse; age/PID alone is never enough.\n- Preserve fresh byte/dependency custody checks during resume/rollback. Changes\n  to evidence, unknown files, locks, journals or plans invalidate approval.\n- Distinct worktrees share graph identity but never checkout authority. Recovery\n  in A cannot remove B's lock/journal, change shared Git administration or stage files.\n- Preserve diagnostic/recovery evidence and original receipt identities; do not\n  delete canonical locks during qualification. Only owned killed fixture workers.",
+      "current_successor_contract": "",
+      "case_ids": [],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-827",
+      "title": "Prepare draft mdkg 0.6.0 metadata and release guidance",
+      "status": "progress",
+      "path": ".mdkg/work/task-827-prepare-draft-mdkg-0-6-0-metadata-and-release-guidance.md",
+      "contract_sha256": "c1c573c8ec7a7b7a0dd5bbd765d9b81d3eb1b060f99eb52b57739e9f88ec48f1",
+      "blocked_by": [
+        "root:bug-6",
+        "root:bug-36",
+        "root:bug-37",
+        "root:bug-35",
+        "root:bug-17",
+        "root:bug-39",
+        "root:task-835",
+        "root:task-836"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "Dec95 is accepted, not a deprecation proposal: removed Git mutation commands and\nconsumer-specific tooling have no compatibility aliases. Document the exact\nbreaking inventory, native Git/worktree workflow, generic retained contracts and\nsource-bound task833 consumer export. Edd82 distinguishes recommendations from\nimplemented behavior; do not assert consumer adoption. Individual-project\nworktrees and ancestry-preserving reviewed merges are confirmed decisions.\n\nSet direct 0.6.0 candidate only after bounded fixes, keep public release state draft/unpublished, correct bootstrap mismatch through bug-6 and include every shipped delta. Preserve compact-default setup, explicit v2 adoption, numeric aliases with stable identities and reviewed reconciliation. No federation, remote skill distribution or autonomous improvement additions.",
+      "current_successor_contract": "Finish draft0.6.0 metadata and guidance after the explicit implementation\nprerequisites. Candidate package inputs must be finalized before the installed\nmatrix and fresh Standard snapshot. Task830 seals the same qualified tarball\nafter all gates; it must not create an untested replacement. Keep public release\nstate draft/unpublished, user documents intact and Windows explicitly unqualified.\nExplain accepted old-client/recovery/legacy-bundle limits and the tested native\nGit worktree protocol; no policy decision is still pending merely due to old text.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [
+        "release/0.6.0-qualification-draft.md"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-477",
+      "title": "Installed initialization and real 0.5.2 upgrade acceptance for mdkg 0.6.0",
+      "status": "backlog",
+      "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+      "contract_sha256": "c16fcbfe81a1d83067f93fd47b566e1c3908c2413107c07df85f75058dcdc319",
+      "blocked_by": [
+        "root:task-835",
+        "root:task-836",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Actual published 0.5.2 tarball integrity and installed upgrade, not a mock legacy seed.\n2. Default compact init, --graph-only and --agent compatibility.\n3. Customized AGENTS/CLAUDE and project README/LICENSE preserved.\n4. Repeated preview/apply, stale plan, interrupted upgrade and recovery.\n5. Native skill mirrors, resource links and rollback compatibility.",
+      "current_successor_contract": "Actual0.5.2 upgrades, compact defaults, graph-only/--agent, customized instructions/docs/skills and repeated/stale/interrupted/recovered upgrade cases.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [
+        "test-477-case-1",
+        "test-477-case-2",
+        "test-477-case-3",
+        "test-477-case-4",
+        "test-477-case-5"
+      ],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-7-init-discovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-recovery-runtime.json",
+        ".mdkg/artifacts/goal-84/bug-7-stale-upgrade.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-478",
+      "title": "Installed offline branch identity and semantic integration acceptance for mdkg 0.6.0",
+      "status": "backlog",
+      "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+      "contract_sha256": "6ffb33dd63dc20530fad686961842539d8b0abea2562e6dc875aa6ec582a8d42",
+      "blocked_by": [
+        "root:bug-35",
+        "root:task-835",
+        "root:task-836",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Two offline local branches create colliding numeric aliases and cross-linked stable identities.\n2. Ordinary commands work on uncommitted, staged and unstaged authored nodes.\n3. Different identities remap deterministically; same-identity changes use real ancestry.\n4. Lifecycle/evidence conflict, delete/modify, repeated integration and explicit reintroduction.\n5. Cherry-pick/revert and newer ancestry preserve immutable external receipt bytes.\n6. A disposable ordinary Git repository with two actual linked worktrees on\n   distinct branches: .git files, separate HEAD/index paths, one common object\n   store. Resolve paths through Git, not root/.git/index assumptions.\n7. Concurrent installed creation of colliding aliases/cross-links in both v2\n   worktrees: shared graph ID, distinct new node IDs; ordinary commands work\n   before commit. Same-identity concurrent edits remain explicit conflicts.\n8. Locks/journals/selection/runtime DB/caches are local to each checkout.\n   One active writer in A does not globally lock B; a second writer in A is\n   refused. Recovery in A cannot remove B's lock or journal, even under the same\n   graph ID. Never relocate a writer lock to the shared Git common directory.\n9. Inspection preserves every worktree's Git index, staged contents and authored\n   bytes; include stale-stat caches, Bug35 paths, overridden environment and\n   explicit --root invocation. Warm/cold JSON and SQLite backends are covered.\n10. Complete serial integration of branches containing both source and graph\n    changes: preserve accepted source outcomes and stable graph references,\n    retain full reviewable ancestry, and prove repeated integration behavior.\n    Reconcile refuses unresolved Git stages and binds HEAD/index, so establish\n    a tested ordering rather than bypassing those guards or assuming Git merge\n    plus reconciliation composes automatically. No force or history rewrite.\n11. Pin exact incoming/ancestor revisions: a concurrently advancing sibling\n    branch cannot change reviewed inputs silently. Dirty/untracked evidence and\n    incomplete journals prevent cleanup; Git worktree lock is not a writer lease.\n12. Exercise the submodule/gitdir-indirection topology separately from ordinary\n    linked worktrees. No generic worktree pass proves nested submodule support.\n    Preserve failed/unsupported topology evidence and route any required scope\n    decision before claiming the public support envelope.",
+      "current_successor_contract": "Two actual concurrent linked worktrees, isolated state, exact pinned target/incoming/ancestor, reconciliation before native ancestry-preserving merge, separate source/config resolution, repeated integration and distinct submodule/gitdir-indirection proof.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [
+        "test-478-case-1",
+        "test-478-case-2",
+        "test-478-case-3",
+        "test-478-case-4",
+        "test-478-case-5",
+        "test-478-case-6",
+        "test-478-case-7",
+        "test-478-case-8",
+        "test-478-case-9",
+        "test-478-case-10",
+        "test-478-case-11",
+        "test-478-case-12"
+      ],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-479",
+      "title": "Installed ownership containment and recovery acceptance for mdkg 0.6.0",
+      "status": "backlog",
+      "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+      "contract_sha256": "5899b89c004069e893fd1522d8631bd86a15362b777e7a41e16d35f7162a0434",
+      "blocked_by": [
+        "root:bug-17",
+        "root:bug-35",
+        "root:bug-39",
+        "root:task-836",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Every security bug has a failing-before/passing-after synthetic regression.\n2. Symlink, traversal, malformed receipt and oversized/special input attacks fail closed.\n3. Interrupted writes, resume/rollback and changed dependencies preserve unknown sentinels.\n4. Stale plans reject without writes; original Git index remains byte-identical.\n5. Runtime/selection state never becomes portable acceptance authority.",
+      "current_successor_contract": "Live runtime exclusion/private portability, real read-only filesystems, malformed/symlink/path attacks, abrupt termination and exact evidence-bound recovery; include ancestor-swap and ACL/ownership disposition without implicit waiver.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [
+        "test-479-case-1",
+        "test-479-case-2",
+        "test-479-case-3",
+        "test-479-case-4",
+        "test-479-case-5"
+      ],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-480",
+      "title": "Installed graph compatibility pack and MCP acceptance for mdkg 0.6.0",
+      "status": "backlog",
+      "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+      "contract_sha256": "397895b5bd678bef392c452919689590dd6b960627ace548d3ab3790517ecb00",
+      "blocked_by": [
+        "root:bug-17",
+        "root:bug-35",
+        "root:task-835",
+        "root:task-836",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Legacy and explicit v2 adoption preserve supported command behavior.\n2. Old 0.5.2 client on v2 fails safely without corrupting authored identity.\n3. JSON/SQLite identity and reference parity; observational reads on read-only fixtures.\n4. Clone versus independent fork, archive/work refs, packs and MCP retain identity semantics.\n5. Private copy of current graph migration rehearsed; unsupported historical evidence reported exactly.",
+      "current_successor_contract": "Legacy/v2, explicit compatible-writer adoption, historical migration ambiguity, JSON/SQLite observational parity, packs/MCP and work/archive references. Keep the canonical rehearsal private; never invent identity.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nCurrent case 2 replaces the unconditional old-client refusal expectation in\nthe historical case list below. Test the explicit v2 writer-capability fence\nwhere the candidate can enforce it, including refusal before writes and normal\noperation by compatible writers. Separately reproduce the actual published\n0.5.2 initialization bypass inside a disposable fixture; record exact observed\neffects and classify that old executable as unsupported for v2 authoring.\nAn old executable cannot be changed retroactively. This accepted limitation is\nnot a safe-refusal pass and must not waive defects in candidate-controlled paths.\nBind both dispositions to dec-94, task-835 and exact installed package bytes.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [
+        "test-480-case-1",
+        "test-480-case-2",
+        "test-480-case-3",
+        "test-480-case-4",
+        "test-480-case-5"
+      ],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-481",
+      "title": "Installed scale and complete goal blocker-routing acceptance for mdkg 0.6.0",
+      "status": "backlog",
+      "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+      "contract_sha256": "f3862bf099c569deff70a1dde055fdf895468f87c9b07b7c2549a3f4c2361dea",
+      "blocked_by": [
+        "root:task-835",
+        "root:task-836",
+        "root:bug-35",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Representative large graphs with recorded sizes and bounded history thresholds.\n2. Clear fail-closed limits without lowering existing safety budgets.\n3. Complete task/goal execution with checkpoints, blocker-goal verification and publication routing.\n4. Publication remains blocked until both completed audit checkpoint and blocker verification task.\n5. Goal done/evaluate alone cannot satisfy artifact identity or publication authority.",
+      "current_successor_contract": "Representative scale and complete goal/checkpoint/blocker routing; preserve measured allowances, custody and event-history checks without new arbitrary limits. Large transaction redesign remains later work.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [
+        "test-481-case-1",
+        "test-481-case-2",
+        "test-481-case-3",
+        "test-481-case-4",
+        "test-481-case-5"
+      ],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-7-scale-goal.json",
+        ".mdkg/artifacts/goal-84/bug-7-nullable-read.json",
+        ".mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json",
+        ".mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-482",
+      "title": "Installed Node 24.15.0 supported 24 and Node 26 acceptance for mdkg 0.6.0",
+      "status": "backlog",
+      "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+      "contract_sha256": "5d35a8cda272ea2d2cdf1f0ebbfcf9ef70a35b83deea21a10c9791ed9c2a15e6",
+      "blocked_by": [
+        "root:test-477",
+        "root:test-478",
+        "root:test-479",
+        "root:test-480",
+        "root:test-481",
+        "root:test-483",
+        "root:test-484",
+        "root:test-486"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Installed exact Node 24.15.0 candidate qualification.\n2. Available supported Node 24 line with exact executable/version receipt.\n3. Node 26 compatibility smoke with exact version.\n4. Missing runtime is an evidence gap, never presumed pass.\n5. Isolated caches/config and unauthenticated public runtime downloads only.",
+      "current_successor_contract": "Aggregate exact Node24.15.0, selected supported24 and26 receipts after family cases. No missing runtime, package mismatch, source import or partial execution is a pass.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nCurrent case 3 supersedes the historical Node 26 smoke-only wording below.\nAll required installed test families must pass on Node 24.15.0, the selected\nsupported Node 24 runtime, and Node 26, on both macOS and Linux. Record each\nexact runtime version and platform, the same tarball hash, and case-level\ncoverage; smoke-only or incomplete Node 26 results remain unverified.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [
+        "test-482-case-1",
+        "test-482-case-2",
+        "test-482-case-3",
+        "test-482-case-4",
+        "test-482-case-5"
+      ],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-7-scale-goal.json",
+        ".mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json",
+        ".mdkg/artifacts/goal-84/bug-7-init-discovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-stale-upgrade.json",
+        ".mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-483",
+      "title": "Verify installed behavioral audit blockers and passing compatibility controls",
+      "status": "backlog",
+      "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+      "contract_sha256": "641b0d5dd447e14ee575107c0df9307a3a8115d58bc3aec2587d121776145459",
+      "blocked_by": [
+        "root:bug-21",
+        "root:bug-22",
+        "root:bug-23",
+        "root:bug-24",
+        "root:bug-25",
+        "root:bug-26",
+        "root:bug-27",
+        "root:bug-28",
+        "root:bug-29",
+        "root:bug-32",
+        "root:bug-33",
+        "root:bug-34",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Legacy/v2, JSON/SQLite inspection on missing/stale caches makes no persistent changes; explicit index remains supported. Cover read-only storage, imported graphs and no-cache/reindex policy.\n2. All four pack formats and profiles preserve stable identity and existing aliases, including remapped cross-links, visibility controls and output/token limits.\n3. Format supports valid v2 identities and references without changing identity; legacy and unknown-version refusal controls remain passing; repeated formatting is deterministic.\n4. Initialization preserves valid v2 graphs with optional legacy core omitted, respects unknown format/feature gates before all writes, and preserves complete-graph default/graph-only/--agent behavior, force boundaries and custom instructions.\n5. Site cache invalidates direct/transitive external source changes and cannot issue acceptance evidence for stale output; unchanged inputs reuse the same immutable build/artifact identity.\n6. Checkpoint routing withholds dependent work until checkpoint completion. No goal state alone substitutes for publication artifact and blocker rechecks.\n7. Legacy delete/recreate at a reused alias/path requires explicit provenance before migration, while uninterrupted edits retain ancestor identity. Cover restoration/revert versus intentional recreation without guessing.\n8. Migration candidate validation rejects missing skills and agrees with normal strict graph validation. Bind dependency inventory/content to preview, apply and recovery; no successful applied receipt for an invalid result.\n9. Scaffold upgrade preserves v2 node identities; unsafe seed restoration and\n   stale graph-format changes refuse before writes. Safe non-node upgrades and\n   explicit interrupted-operation recovery remain supported.\n10. Untouched packaged initialization has a closed reference graph and can adopt\n    v2 without importing repository-only design docs. Preserve legacy/customized\n    inputs without silently stripping their references to make migration pass.\n11. Large CLI text/JSON/XML/TOON/Markdown output and nonzero diagnostics drain\n    completely to ordinary and slow pipes, preserving UTF-8 bytes and exit codes.\n    Compare installed output with regular-file output on all three runtimes.\n    The frozen private graph migration preview must return a complete parseable\n    plan; a blocked plan is not permission to synthesize bindings or apply it.\n12. Portable skill/tool/model/WASM/image dependency labels survive migration,\n    ordinary binding, reconciliation, template import and independent fork even\n    when aliases collide. Explicit immutable refs stay strict and remappable;\n    subagent refs keep graph/role checks. JSON/SQLite capability arrays agree and\n    authored bytes remain unchanged by projection. Bug-34 has eight regressions\n    passing on all three installed runtimes; final independent verification is\n    still required before this aggregate test closes.",
+      "current_successor_contract": "Refresh the complete deduplicated behavioral-regression and passing-control matrix on final bytes; keep original failing-before evidence without reopening completed fixes.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [
+        "test-483-case-1",
+        "test-483-case-2",
+        "test-483-case-3",
+        "test-483-case-4",
+        "test-483-case-5",
+        "test-483-case-6",
+        "test-483-case-7",
+        "test-483-case-8",
+        "test-483-case-9",
+        "test-483-case-10",
+        "test-483-case-11",
+        "test-483-case-12"
+      ],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-83/task-824-behavioral-audit.json",
+        ".mdkg/artifacts/goal-83/task-824-contract-audit.json",
+        ".mdkg/artifacts/goal-84/bug-24-adjacent-findings.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-484",
+      "title": "Qualify native Git boundaries and generic-only mdkg 0.6.0 contracts",
+      "status": "backlog",
+      "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+      "contract_sha256": "d91bdba2a80bb02195443b9638e906c9bb0558dadf0b476bc3fe7fcc44325891",
+      "blocked_by": [
+        "root:bug-36",
+        "root:bug-37",
+        "root:task-827",
+        "root:test-478"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Removed Git mutation commands/flags reject before filesystem/index/remote\n   effects; no hidden aliases. Retained observational history still works.\n2. Package CLI/help/generated docs/MCP/seeds agree on removed/retained surfaces.\n3. Removed product profile rejects explicitly; no fallback to weaker validation.\n4. Skill metadata has no privileged product namespace, search/output adapter or\n   hidden compatibility projection. Unknown authored data remains unmodified.\n5. Generic orchestrated agents and noncommercial work contracts are exercised\n   after their exact successor schema is reviewed; no old product-token aliases.\n6. Retained references, redaction/visibility, receipt linkage and artifact checks\n   remain strict; structural verification never asserts external execution proof.\n7. Fresh init and actual0.5.2 upgrade preserve custom user files and provide clear\n   breaking-change guidance without canonical or silent authored-data migration.\n8. Export manifest/source/fixture hashes match pre-removal source; consumer\n   adoption remains distinct. Scan exclusions/history are explicit and justified.\n9. Native Git/worktree scenarios retain source and graph outcomes, stable IDs,\n   local-state isolation and untouched staging during semantic operations.",
+      "current_successor_contract": "Refresh all retained/removed CLI/help/docs/MCP/seed/native projection boundaries, generic manifests/work contracts and task833 extraction hashes. Require actual upgrade/worktree evidence; no consumer adoption inference.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-486",
+      "title": "Verify unsupported CLI options fail before side effects and supported flags remain compatible",
+      "status": "todo",
+      "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+      "contract_sha256": "32be496e314020582f4c0ee3fbf19940fa75e6e0bd95c46bc67d199fd1c27cf1",
+      "blocked_by": [
+        "root:bug-39",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "- `index --verify --json` rejects without creating/updating any index file.\n- Unsupported options on `new`, `task`, `goal`, `work`, `upgrade` and graph\n  mutation paths reject before source, lifecycle, events, locks or output writes.\n- Wrong-command known flags do not silently turn validation/preview into action.\n- Documented global and command aliases, inline/separate values, argument order,\n  Boolean forms, help and ordinary positional text remain compatible.\n- Missing values and retired options fail explicitly; an adjacent option cannot\n  be swallowed and accidentally become an output path or command argument.\n- Subprocess traps prove no Git/auth/remote execution on rejected arguments;\n  full path/mode/hash inventories cover source, indexes and staged bytes.\n- Supported `db index verify` stays observational; explicit `index` still\n  rebuilds derived state. Real authorized mutations remain functional.\n- Complete tests, CLI contract/help, docs and installed smoke checks pass;\n  task828 binds independent acceptance of the actual fix range.",
+      "current_successor_contract": "Unknown/wrong-command options and malformed values fail in both entrypoints before config, files, Git index, cache, events, authentication or subprocess effects. Preserve valid flags/aliases/positionals and real mutation controls.\n\nThis test no longer waits for task826 or Bug7 aggregate closure. Its updated\nimplementation prerequisites lead into installed cases; task826 consumes the\nresults. Record historical/current-intermediate/final-artifact-pass/failure/\nunverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux\ncompleteness is independently bound by test487. Task828 remains independent\nacceptance, not an upstream requirement for these test results.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-39-unknown-option-reproduction.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:test-487",
+      "title": "Qualify the exact mdkg 0.6.0 candidate on macOS and Linux",
+      "status": "backlog",
+      "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "contract_sha256": "0aaaa0209732c3c0dab8b9573c9a550f1c26a65545bf42450d35d78275c1d66f",
+      "blocked_by": [
+        "root:test-477",
+        "root:test-478",
+        "root:test-479",
+        "root:test-480",
+        "root:test-481",
+        "root:test-482",
+        "root:test-483",
+        "root:test-484",
+        "root:test-486"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "1. Same tarball SHA256/SHA512 and file manifest on macOS/Linux; no source-import\n   substitution, platform repacking or missing-runtime pass.\n2. Node 24.15.0, the selected supported Node 24 runtime, and Node 26 each execute\n   all required installed families on both macOS and Linux, with exact case\n   coverage and runtime identity. Smoke-only results do not satisfy this gate.\n3. Actual0.5.2 upgrade, compact init and customized instruction/document preservation.\n4. Two real linked worktrees, concurrent offline creation, per-checkout state,\n   same-checkout exclusion, native reviewed ancestry-preserving source-plus-graph merge.\n5. Separate submodule/gitdir indirection, staged/unstaged input and exact Git index\n   resolution via Git, not assumptions about root/.git/index.\n6. Actual read-only filesystem refusal, symlink/ancestor/hardlink/nonregular input,\n   ACL/ownership/rwx/umask behavior and explicit shared-authority race limitations.\n7. Real abrupt termination and evidence-bound recovery; live/ambiguous owners,\n   modified evidence and cross-worktree recovery refuse without side effects.\n8. JSON/SQLite parity, MCP/packs/archive/work, scale and goal/blocker routing;\n   removed/unknown invocations have complete zero-write/subprocess proofs.\n9. Full test-discovery and manifest-backed ladder results identify macOS/Linux\n   source/runtime/environment. Final ladder refresh lives in task829, not an\n   upstream prerequisite of this platform test. Coverage floors never decrease.",
+      "current_successor_contract": "",
+      "case_ids": [
+        "test-487-case-1",
+        "test-487-case-2",
+        "test-487-case-3",
+        "test-487-case-4",
+        "test-487-case-5",
+        "test-487-case-6",
+        "test-487-case-7",
+        "test-487-case-8",
+        "test-487-case-9"
+      ],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-826",
+      "title": "Execute installed mdkg 0.6.0 temporary graph qualification",
+      "status": "backlog",
+      "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+      "contract_sha256": "b79d1504db0565df1af72bcc13fd3fc3fcdfeaba6e124ccd802d3cdb66eaab82",
+      "blocked_by": [
+        "root:task-824",
+        "root:test-477",
+        "root:test-478",
+        "root:test-479",
+        "root:test-480",
+        "root:test-481",
+        "root:test-482",
+        "root:test-483",
+        "root:test-484",
+        "root:test-486",
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "Linked Git worktrees are an explicit required topology, not equivalent to the\nalready-executed independent repository fixtures. Extend existing test478 with\nreal shared-object-store worktrees and concurrent local process execution;\npin refs/inputs, prove isolation and the complete source-plus-graph integration\nsequence. Chk603 records source findings and outstanding alignment questions.\nReview only in the acceptance/alignment turn; no canonical worktree is created.\n\nUse the built tarball rather than source imports as consumer CLI. Execute test-477 through test-482 with isolated npm caches/config and local-only remotes. Reproduce missing identity qualification via bug-7. Record commands, exact versions, fixture inputs and outcomes; preserve compact diagnostics and remove only owned fixtures. Never run recovered Demo 3 applications.",
+      "current_successor_contract": "This task is aggregate acceptance AFTER tests477-484/486 and test487, not their\nprerequisite. It no longer waits for Bug7: implementation prerequisites are\ntasks835/836 and the owned bugs; Bug7 closes missing qualification after this task.\nCheck every case/runtime/platform and exact artifact identity. Earlier matrices\nare useful intermediate evidence, not permission to skip final-artifact execution.\nNo tests may depend on this aggregate while their results are required by it.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-7-init-discovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-stale-upgrade.json",
+        ".mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:bug-7",
+      "title": "Qualify installed package identity and real 0.5.2 upgrades",
+      "status": "progress",
+      "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+      "contract_sha256": "e40e6ea2001b61a67742ec4fc6ca37c24b3c24fdc7f8946edc16bfddfcaa9a4f",
+      "blocked_by": [
+        "root:task-824",
+        "root:task-826"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "",
+      "current_successor_contract": "This bug is now aggregate installed-qualification acceptance, not a prerequisite\nthat blocks its own tests. Tasks835 and836 explicitly own the remaining writer\nfence and evidence-bound recovery implementation. Tests477-484/486 and platform\ntest487 precede task826 aggregate acceptance; then this bug may close its missing\nproof obligation. Current partial evidence remains intermediate, not final0.6.0.\nTask309's historical mdkg URI ambiguity must have an evidence-bound unsupported\nor exact-resolution disposition; never alter history or invent identities.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [
+        ".mdkg/artifacts/goal-84/bug-7-progress.json",
+        ".mdkg/artifacts/goal-84/bug-7-recovery-runtime.json",
+        ".mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json",
+        ".mdkg/artifacts/goal-84/bug-7-graph-recovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json",
+        ".mdkg/artifacts/goal-84/bug-7-work-archive.json",
+        ".mdkg/artifacts/goal-84/bug-34-verification.json",
+        ".mdkg/artifacts/goal-84/bug-7-scale-goal.json",
+        ".mdkg/artifacts/goal-84/bug-7-nullable-read.json",
+        ".mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json",
+        ".mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json",
+        ".mdkg/artifacts/goal-84/bug-7-init-discovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-stale-upgrade.json",
+        ".mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json",
+        ".mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json",
+        ".mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json",
+        ".mdkg/artifacts/goal-84/bug-35-affected-versions.json"
+      ],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-837",
+      "title": "Audit the post-remediation mdkg 0.6.0 repository with a fresh Standard security scan",
+      "status": "backlog",
+      "path": ".mdkg/work/task-837-audit-the-post-remediation-mdkg-0-6-0-repository-with-a-fresh-standard-security.md",
+      "contract_sha256": "7059fc4c9769ae8da6e71ee715ddcd02c98d929d7f879a8fc8d7c3a43ebeb4b6",
+      "blocked_by": [
+        "root:bug-35",
+        "root:bug-17",
+        "root:bug-39",
+        "root:task-835",
+        "root:task-836",
+        "root:task-827"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "- Freeze exact source and package inputs after known remedies and draft metadata;\n  no writer changes reviewed source while the scan is active.\n- Follow installed Standard workflow, authoritative scan identity, capability\n  preflight, independent baseline, source-backed investigations and canonical report.\n  Workers are offline/read-only; no global Codex config change without approval.\n- Review graph/receipt parsers, filesystem authority, archives/transport, Git\n  subprocesses, MCP, templates, package/install scripts, release automation and\n  relevant website/demo source. Explicitly distinguish shipped and historical assets.\n- Record actual source coverage, exclusions, failed/deferred work and source-bound\n  findings. Incomplete/failed scans are not no-findings or release clearance.\n- Deduplicate confirmed findings into Goal84 and Goal86 with regressions, affected\n  versions and independent verification. Preserve original scan finding counts.\n- Audit completion records findings; it does not require its own downstream fixes\n  as prerequisites. New remedies block task828/829, avoiding a scan/fix cycle.\n- Raw reports remain plugin-owned; only sanitized summaries/hashes/dispositions\n  and regression links enter Git. Task828 is a separate independent diff workflow.",
+      "current_successor_contract": "",
+      "case_ids": [],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-828",
+      "title": "Independently verify all mdkg 0.6.0 publication blocker fixes",
+      "status": "backlog",
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "contract_sha256": "ad98ba07c566243577de2248c85d03a8e83b4b7f46f7b527b148524aa2045252",
+      "blocked_by": [
+        "root:bug-5",
+        "root:bug-6",
+        "root:bug-7",
+        "root:bug-8",
+        "root:bug-9",
+        "root:bug-10",
+        "root:bug-11",
+        "root:bug-12",
+        "root:bug-13",
+        "root:bug-14",
+        "root:bug-15",
+        "root:bug-16",
+        "root:bug-17",
+        "root:bug-18",
+        "root:bug-19",
+        "root:bug-20",
+        "root:task-826",
+        "root:task-827",
+        "root:bug-21",
+        "root:bug-22",
+        "root:bug-23",
+        "root:bug-24",
+        "root:bug-25",
+        "root:test-483",
+        "root:bug-26",
+        "root:bug-27",
+        "root:bug-28",
+        "root:bug-29",
+        "root:bug-30",
+        "root:bug-31",
+        "root:bug-32",
+        "root:bug-33",
+        "root:bug-34",
+        "root:bug-35",
+        "root:bug-36",
+        "root:bug-37",
+        "root:test-484",
+        "root:bug-38",
+        "root:test-485",
+        "root:bug-39",
+        "root:test-486",
+        "root:task-837",
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "Require every bug in goal-84 fixed with failing-before/passing-after regression and affected-version assessment. Run a separate Codex Security diff workflow on the exact fix range after writers freeze it. Validate realistic consumers and dependency routing. Missing security coverage, failed tests, data loss or unresolved decisions keep this task incomplete. No automatic risk waivers.",
+      "current_successor_contract": "Require fresh task837 Standard coverage plus all local blocker fixes and\ntest487 macOS/Linux results. Independently review the complete remediation range\nfrom the recorded original audit source through the frozen final candidate,\nincluding deleted code and supporting behavior. Do not substitute Bug37's local\nfunctional review or original task825 for this independent workflow. Resolve the\nancestor-directory swap and ACL/ownership limitations with source/platform evidence;\ndocumentation alone cannot waive an in-scope defect. Failed/incomplete scans block.\nRoute fresh findings without creating a dependency on their own verification;\nimplementation-local closure and this final independent acceptance are distinct.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-829",
+      "title": "Run full mdkg 0.6.0 local release qualification ladder",
+      "status": "backlog",
+      "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+      "contract_sha256": "c4614078ab58931518c05c0c5256980c7e199b46847e10dc053414e7f87f801c",
+      "blocked_by": [
+        "root:task-828",
+        "root:test-477",
+        "root:test-478",
+        "root:test-479",
+        "root:test-480",
+        "root:test-481",
+        "root:test-482",
+        "root:task-827",
+        "root:bug-30",
+        "root:task-837",
+        "root:test-483",
+        "root:test-484",
+        "root:test-486",
+        "root:test-487"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "Require task-828, all installed fixture tests and draft metadata complete. Run full manifest-backed ladder, complete tests, CLI/command/docs/skill/package checks, full and changed-only graph validation, SQLite verification and git diff --check. Floors remain 89 percent lines, 77 branches and 96 functions. Compare protected before/after hashes; hosted CI and remotes remain unverified.",
+      "current_successor_contract": "Run the entire manifest-backed ladder after task828 and all final-artifact test\ngates including test487. Preserve89/77/96coverage floors, complete discovery,\nsource/help/docs/MCP/seed/native-skill/package parity, full/changed graph validation,\nsupported db index verify and diff checks. Both macOS/Linux evidence sets must\nbind the same package inputs/tarball. This final refresh is not a prerequisite\nof test487's earlier platform proof, avoiding a ladder/platform dependency cycle.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    },
+    {
+      "qid": "root:task-830",
+      "title": "Seal exact locally qualified mdkg 0.6.0 candidate",
+      "status": "backlog",
+      "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+      "contract_sha256": "759e25c69d02eca322bef9a7d520f51aea523b0dd60cac2cd95c15d91494d4d6",
+      "blocked_by": [
+        "root:task-829"
+      ],
+      "evidence_state": "unverified",
+      "acceptance_contract": "After task-829, review explicit staged paths and coherent local commits. Seal a single tarball with SHA-512 integrity, SHA-256, file manifest, package-input hashes, source SHA, runtime versions, audit report hashes and validation receipts. Evidence-only commits may follow. Any package-input change invalidates the seal and requires requalification. Mark chk-570 done only with all proofs.",
+      "current_successor_contract": "Seal the exact tarball already consumed by final installed/platform qualification\nand the full ladder. Bind SHA256/SHA512 integrity, file and package-input manifests,\nsource revision, runtime/platform identities and both current security reports.\nDo not pack a replacement after qualification. Any input change invalidates the\nseal and affected evidence; evidence-only commits may follow. Report exact local\ncommits/paths/custody and protected bookends; no push, tag or publication.\n\nThe earlier sections below retain their historical evidence. This current addendum,\nupdated dependencies, goal-86 and dec-96 govern the remaining work. Planning\nauthoring is not execution, qualification, a writer claim, or publication.",
+      "case_ids": [],
+      "historical_artifacts": [],
+      "final_artifact_pass": false
+    }
+  ],
+  "historical_evidence": [
+    {
+      "path": ".mdkg/artifacts/goal-83/baseline.json",
+      "sha256": "332b54f9284a129c49ae02c70882f4332b28b3260ec641e966712cf61fade836",
+      "evidence_state": "historical",
+      "work_qid": "root:task-823",
+      "outcome": "Baseline bound, not 0.6.0 qualification or publication.",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-83/continuation-2026-09-07.json",
+      "sha256": "375433395ad8e39487405a5c2c5825d9d70f63f4fd05ccb309713c51e8ac0361",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-83/task-824-behavioral-audit.json",
+      "sha256": "9dfc6ae29f10dfd2ae75c21f688d05170a01000bf223e371bed3f2402a1a1299",
+      "evidence_state": "historical",
+      "work_qid": "root:task-824",
+      "outcome": "five-confirmed-blockers-not-release-qualified",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-83/task-824-contract-audit.json",
+      "sha256": "aa8d57f13bb64c9fcc6121a64a3a39db1d9203c10bb6d275b9b8660cc1c22934",
+      "evidence_state": "historical",
+      "work_qid": "root:task-824",
+      "outcome": [
+        {
+          "area": "Compact init and managed instructions",
+          "evidence": "Installed compact_bootstrap, upgrade and upgrade_safety suites; prior 34 probes; bug-6 actual published upgrade receipt",
+          "result": "core controls pass; init format/identity bug-24 remains",
+          "owner": "root:bug-24"
+        },
+        {
+          "area": "Identity allocation, references and ordinary commands",
+          "evidence": "Installed identity and identity_commands suites; source identity_authoring/refs; pack export and format probes",
+          "result": "ordinary identity controls pass; serializer and formatting bugs remain",
+          "owners": [
+            "root:bug-22",
+            "root:bug-23"
+          ]
+        },
+        {
+          "area": "Legacy migration and ancestor provenance",
+          "evidence": "Installed identity_migration suite plus delete/recreate and missing-skill probes; migration/snapshot/transaction source trace",
+          "result": "two additional confirmed blockers",
+          "owners": [
+            "root:bug-26",
+            "root:bug-27"
+          ]
+        },
+        {
+          "area": "Reviewed semantic reconciliation and replay",
+          "evidence": "Installed pure kernel and branch-plan suites; source plan/history/acceptance/transaction trace",
+          "result": "tested same-identity conflict, replay/revert, newer ancestry, acceptance quarantine and non-staging controls pass; full consumer/runtime qualification remains task-826"
+        },
+        {
+          "area": "Legacy numeric repair",
+          "evidence": "Source fix.ts Git stage-1/common-ancestor classification and apply gate; achieved Goal 82 task-819 evidence reused",
+          "result": "existing-node conflicts and blocked/ambiguous plans refuse; legacy repair remains distinct from v2 reviewed reconciliation"
+        },
+        {
+          "area": "Recovery and custody",
+          "evidence": "Installed interrupted migration/reconciliation and upgrade_safety suites; source exact-before/after custody, private journals, plan/control checks",
+          "result": "tested resume/rollback and user-byte preservation controls pass; final independent race/ACL assessment remains task-828"
+        },
+        {
+          "area": "Observational reads and JSON/SQLite",
+          "evidence": "37 total custom probes including legacy cache writes; installed identity command backend matrix; verified bug-5 fingerprint receipt reused",
+          "result": "v2 controls pass; legacy persistence bug-21 remains",
+          "owner": "root:bug-21"
+        },
+        {
+          "area": "Selection, claims and execution state",
+          "evidence": "Installed goal/goal_next and identity command selection tests; source selected_goal/goal.ts/control snapshots",
+          "result": "selection uses stable identity and is preserved; goal claim remains authored active_node lifecycle, not a distributed runtime lease. Runtime enforcement and economic state stay outside graph merge."
+        },
+        {
+          "area": "Transport and immutable evidence",
+          "evidence": "Existing hash-bound bug-17 partial receipt, graph consumer verification and transport classification source retained unchanged",
+          "result": "existing bug-17 remains open; no duplicate security claim",
+          "owner": "root:bug-17"
+        },
+        {
+          "area": "Release validation and artifact reuse",
+          "evidence": "Source release-ladder environment, tracked-boundary hashes, manifest routing and proxy; synthetic external-import cache probe; existing Goal 77 coverage contracts reused",
+          "result": "cache dependency bug-25 and installed coverage bug-7 remain; final ladder/seal unexecuted",
+          "owners": [
+            "root:bug-25",
+            "root:bug-7"
+          ]
+        },
+        {
+          "area": "Checkpoint dependency routing",
+          "evidence": "Installed goal publication-route test plus synthetic checkpoint before/after control; canonical Goal 85 next returns no eligible node",
+          "result": "suspected checkpoint-routing defect rejected; publication still requires independent exact artifact/blocker checks"
+        }
+      ],
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-10-verification.json",
+      "sha256": "4c7958bd46cea71c8331b785c47f8f060782c72a3afaa25a2c74e4b7e6770e52",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-11-verification.json",
+      "sha256": "55ae06bb5ac50b43e652c987ff57c699efce003a7bb5e8edabf93bf07becf6e8",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-12-verification.json",
+      "sha256": "2b41a60772f5801dc260048cc83ea0e0dd09f0dfc65bc0459959ed52eb772be0",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-13-verification.json",
+      "sha256": "25ea97509b91aa2b16009dbfd7ca9b6f672ab3a97b7b440360f267237737efc5",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-14-verification.json",
+      "sha256": "2b18210fbf1095a4804def1fc8793568931a8f7ede18984c444ec2b129d3fd86",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-15-verification.json",
+      "sha256": "42d18e74f79d25a8df6f0a86875fd21547ebb99183fe92121e70e2cf69c4f29c",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-16-verification.json",
+      "sha256": "b106289d2f1a6657c2c6a87890b4e44cee54d087a39e560b2fdebe0a5fa180f9",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-17-progress.json",
+      "sha256": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "incomplete-not-release-qualified",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-18-verification.json",
+      "sha256": "82f9dc0ad9390bacfd3aaa7d25226f392831311297beb87d87fad8b656f6d4ae",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-19-verification.json",
+      "sha256": "a2df34d9dd093f6c4ac13aa8f889ab2e8ab27a704e655c331eba067cb7b426f5",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-20-verification.json",
+      "sha256": "c07cce76fcb6e0971467eff424a1a673775d4a8372c485ab5c13a487f9561395",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-21-verification.json",
+      "sha256": "c0f5926adc0298a9b13bc6c508ba77b12cb8f3b27919eb52b8a9be8bca51e006",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": null,
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-22-verification.json",
+      "sha256": "83912de2ef40d62c293e7c673a0cb03445aa4f9608face2c1140d0006568b2c3",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": null,
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-23-verification.json",
+      "sha256": "50f218a9dab9fac3492450c09b1fab2cf03fc89f4b35f5bf778b95b59f61655e",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": null,
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-24-adjacent-findings.json",
+      "sha256": "982276751b78cc1f164ee234dfe260334e4a5c7148e73c882437f59c0ad11236",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": null,
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-24-verification.json",
+      "sha256": "140eefdc5a1ff618d0ab0a2aba23763bb523082c5a0ad46191bc22bce449ed66",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "locally verified; independent task-828 acceptance still required",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-25-verification.json",
+      "sha256": "4bbc898753610b11c6cf7b5bb7459a83efc1172774019f80720e25f87f3d1771",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "locally verified; independent task-828 and full release qualification remain required",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-26-verification.json",
+      "sha256": "77e4ab5348d88050798750ada0fa5a4b889f30c7d8ef3e39a16836a5ed6503ce",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-26",
+      "outcome": "locally verified lineage remediation; NOT_READY for publication",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-27-verification.json",
+      "sha256": "565292f91b91807470dcaf6d875903d32019ef2250806a109d9812ed9d30287b",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-27",
+      "outcome": "locally verified candidate-validation remediation; final independent task-828 verification outstanding; NOT_READY for publication",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-28-verification.json",
+      "sha256": "5d0bc999aeacd57c5cf40280cca891810a882b521dc79aa6d707f337a7242a96",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "locally verified; independent task-828 acceptance remains required",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-29-verification.json",
+      "sha256": "9933a732902abe8f752f3cd38809bfbca81bcdb2993e949379bf7fe34f513ccf",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-29",
+      "outcome": {
+        "seed_ownership": "assets/init/core is deliberate public source; canonical maintainer .mdkg/core is not copied",
+        "node_count": 10,
+        "file_count": 11,
+        "compatibility": "historical node IDs, filenames and five search aliases retained; aliases metadata are not arbitrary graph IDs",
+        "reference_guard": "canonical rule schema/parser plus structured-reference closure, immutable-identity exclusion, required aliases, exact inventory/pins and built byte parity",
+        "size": {
+          "previous_core_bytes": 61020,
+          "public_core_bytes": 12440,
+          "description": "79.6 percent reduction in public core guidance only, not full package or initialization"
+        },
+        "upgrade": "reviewed hash-proven known seed replacement; customized guidance and README/LICENSE preserved; interrupted writes recover original bytes; old custom refs remain explicit migration blockers"
+      },
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-32-verification.json",
+      "sha256": "21797244e568eb80c8f8e6646ded8b976c69ca5e56e340d4f2a5f043d6b4087b",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-32",
+      "outcome": "locally verified CLI onboarding and reviewed-upgrade guidance; NOT_READY for publication",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-33-verification.json",
+      "sha256": "b712f11ab3c8060299c96dd74b4526d7b3940292b7adfdc88f795961ca31d344",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": null,
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-34-verification.json",
+      "sha256": "9dbe554eab45cf0e3d025bccb99c180f273205296a6602d4f733a541c78a17d4",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-34",
+      "outcome": "Portable dependency classification locally verified; overall qualification NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-35-affected-versions.json",
+      "sha256": "b4e376ab041e5eb7c7701114ae1f08b42e4607a9f83b4d807815553908d34161",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "PUBLISHED_0_5_2_AND_CURRENT_CANDIDATE_AFFECTED_NO_SOURCE_FIX",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json",
+      "sha256": "c4021243b44b685e3288fcf3a1d382acfaa9e967106ec1f84b2683ad5d37b7c0",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "NEW_PUBLICATION_BLOCKER_NO_SOURCE_REMEDIATION",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-36-38-commit-allowlist.json",
+      "sha256": "023b6324b367e35a0cb8fea4a950ae85731554a42445a39e6b24b4bec0f36d52",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": null,
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-36-38-verification.json",
+      "sha256": "d4685988c17175682a1a13182f760008352eedc20b41d8e10baa9120b876a409",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "VERIFIED_LOCAL_IMPLEMENTATION_UNIT_NOT_RELEASE_QUALIFICATION",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-37-commit-allowlist.json",
+      "sha256": "6f8c7a8437292cf11e22e1f1b2814db1924f94da69ce211f7c0d476c777c563d",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": null,
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-37-verification.json",
+      "sha256": "20db4e19beca35f0325f989a54d8128d4fcbdcca1783c2787662ad1a2807bee2",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "VERIFIED_LOCAL_IMPLEMENTATION_UNIT_NOT_RELEASE_QUALIFICATION",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-39-unknown-option-reproduction.json",
+      "sha256": "97c8964ee227c7265c5922cf6d13bfd96f748a1db49a1bafea1054344b7816bd",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "Open. Require command-aware unsupported-option rejection before dispatch with compatibility and no-side-effect regression proof.",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-5-verification.json",
+      "sha256": "1177ea45a650cc2a4ac28c371299e594824f76ca5e6702f9c3f9d18ff1592f78",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-6-verification.json",
+      "sha256": "eea01ae6f620fd6602720afca0f11910bafe1d9fd773a96f1310243cb1d0224b",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-graph-recovery.json",
+      "sha256": "6b689fca1e4959d37ead760e004b44664db901f5714bc0ebee3ea3f884445066",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Caught-error recovery qualified; killed-writer recovery and legacy compatibility remain open; NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-init-discovery.json",
+      "sha256": "cd2eb3fbb26ab4670d11bbc3c79d893f2c7e53a41a3e15719ac9e709636ea920",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Installed compact-init and focused discovery milestone verified; aggregate qualification remains NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json",
+      "sha256": "5244aa84ede7eb258cb435198a41ebcb7fce8b60e5f5b1231df5d2586412e3a7",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "CURRENT_INSTALLED_REGRESSIONS_PASS_NOT_RELEASE_QUALIFIED",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json",
+      "sha256": "c7ea2b1aad9beb50727d39c80603aa47b2cc9e25155dc61fb3f4651ceb25c95e",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "INCOMPLETE_BARRIER; adoption policy and implementation remain undecided; NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json",
+      "sha256": "0d7cdc76cf06bbe00de3c751f9a1f309859499ba555c510f946d1b32a173bfac",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Installed v2 MCP/read-only/cache parity milestone verified; bug-7 and overall qualification remain NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json",
+      "sha256": "550e347fbf0ff98b802d582dec82f50c317dbbd8652449557e6af132b1329d41",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "BOUNDED_INSTALLED_PROOF_PASSED_NOT_RELEASE_QUALIFIED",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-nullable-read.json",
+      "sha256": "fbf0b05c49f843512d25043cc11d75e57724fcc0c569d10da52914cbd8f7075f",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Bounded duplicate-inspection optimization locally verified; aggregate Bug7 and Goal83 remain NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-progress.json",
+      "sha256": "b5e111f0d63a6180e86240b9080d388d9127ca05838002a52ef61020750f0405",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "partial installed qualification; bug-7 remains progress; NOT_READY for publication",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-recovery-runtime.json",
+      "sha256": "0b6963cd5fa692bd85878c3da0bd6c4b11bea648127bcee16f13b5461c19774e",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "partial qualification with unresolved legacy-writer compatibility hazard; NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-scale-goal.json",
+      "sha256": "426dae4760d57f9cf0cfb3195679b096a979458bb6096054aff7ee16fafea4f0",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Small installed controls verified; one isolated 2000-node migration completed under an explicit longer profiling allowance; full scale/runtime qualification remains incomplete; NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json",
+      "sha256": "36691c2dd986d89bdc3170662e8e49caa08abe593b41c67b1c31964e502684a3",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Strengthened installed-scale harness locally verified; representative reruns and aggregate qualification remain NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json",
+      "sha256": "57f0fc5b390a8d8d1d00ae4b006606f985b8e0c8858b61116ce4f452e56cb88d",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Representative installed scale/lifecycle matrix verified on all three required runtimes; aggregate Bug7/Goal83 remain NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-stale-upgrade.json",
+      "sha256": "9595516d4a7409cd6c4168b78c6b5e412c4de069647926e18c6e0e92d61627fd",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "BOUNDED_INSTALLED_PROOF_PASSED_NOT_RELEASE_QUALIFIED",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-7-work-archive.json",
+      "sha256": "c2e27373c7a35720da408cad20c28a4194e205e0e46c5537c5e631f4bc35be48",
+      "evidence_state": "historical",
+      "work_qid": "root:bug-7",
+      "outcome": "Installed legacy/v2 work/archive milestone verified; complete qualification remains NOT_READY",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-8-verification.json",
+      "sha256": "5effd794e0f505b73e96af99aa619d57ae25e6b09b061bb9350f6c1946ea95cf",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-9-verification.json",
+      "sha256": "27554be5af4f0de583cf8e6c7c04580fbc7c09a24c3eef27754aa5dff1cab733",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "fixed-locally",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bugs-30-31-verification.json",
+      "sha256": "e66914d86a3ee1dfe475d5bdd37e82ae276a4cd421cc9dca07baef54d162b097",
+      "evidence_state": "historical",
+      "work_qid": null,
+      "outcome": "locally verified; independent task-828 and final release qualification remain open",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/consumer-extraction-verification.json",
+      "sha256": "c69ec4073eadab60e74611f44ab860971a6a1d5e42d7032f485688a866187e2d",
+      "evidence_state": "historical",
+      "work_qid": "root:task-833",
+      "outcome": "SOURCE_CONTEXT_VERIFIED_LOCAL_UNDISPATCHED",
+      "scope_limit": "Recorded source/package snapshot only; not final Goal 86 artifact clearance"
+    }
+  ],
+  "dependency_order": [
+    "root:task-834",
+    "root:bug-35",
+    "root:bug-17",
+    "root:bug-39",
+    "root:task-835",
+    "root:task-836",
+    "root:bug-6",
+    "root:task-833",
+    "root:bug-38",
+    "root:bug-36",
+    "root:bug-37",
+    "root:task-827",
+    "root:test-477",
+    "root:test-478",
+    "root:test-479",
+    "root:test-480",
+    "root:test-481",
+    "root:bug-21",
+    "root:bug-22",
+    "root:bug-23",
+    "root:bug-24",
+    "root:bug-25",
+    "root:bug-26",
+    "root:bug-27",
+    "root:bug-28",
+    "root:bug-29",
+    "root:bug-32",
+    "root:bug-33",
+    "root:bug-34",
+    "root:test-483",
+    "root:test-484",
+    "root:test-486",
+    "root:test-482",
+    "root:test-487",
+    "root:task-823",
+    "root:task-825",
+    "root:task-824",
+    "root:task-826",
+    "root:bug-7",
+    "root:task-837",
+    "root:bug-5",
+    "root:bug-8",
+    "root:bug-9",
+    "root:bug-10",
+    "root:bug-11",
+    "root:bug-12",
+    "root:bug-13",
+    "root:bug-14",
+    "root:bug-15",
+    "root:bug-16",
+    "root:bug-18",
+    "root:bug-19",
+    "root:bug-20",
+    "root:bug-31",
+    "root:bug-30",
+    "root:test-485",
+    "root:task-828",
+    "root:task-829",
+    "root:task-830",
+    "root:chk-570",
+    "root:task-831",
+    "root:task-832"
+  ],
+  "routing_checks": {
+    "scope_valid": true,
+    "dependency_nodes": 62,
+    "acyclic": true,
+    "routing": [
+      {
+        "case": "custody completion exposes Git-read remedy",
+        "actual": "root:bug-35",
+        "expected": "root:bug-35"
+      },
+      {
+        "case": "installed family eligible after implementation prerequisites",
+        "actual": "root:test-480",
+        "expected": "root:test-480"
+      },
+      {
+        "case": "reopened implementation blocks unfinished installed family",
+        "actual": null,
+        "expected": null
+      },
+      {
+        "case": "publication recheck eligible only after direct gates in isolated status copy",
+        "actual": "root:task-831",
+        "expected": "root:task-831"
+      },
+      {
+        "case": "reopened platform gate blocks publication recheck",
+        "actual": null,
+        "expected": null
+      }
+    ],
+    "limitation": "Routing is status-based and does not invalidate completed descendants or artifact hashes automatically; Goal 86 requires explicit affected-evidence invalidation and reopening before later acceptance. The installed end-to-end proof remains test-481."
+  },
+  "publication_goal": "paused, separate fresh authority",
+  "initial_final_artifact_passes": 0,
+  "execution_updates": [
+    {
+      "date": "2026-09-17",
+      "work": "root:task-827",
+      "evidence": ".mdkg/artifacts/goal-86/task-827-local-verification.json",
+      "requirement_dispositions": [
+        {"id": "R22", "evidence_state": "current-intermediate", "result": "Package0.6.0 and draft/unpublished manifest, corrected breaking/bootstrap/migration/native-Git/recovery guidance and independent bounded review pass", "final_artifact_pass": false},
+        {"id": "R18", "evidence_state": "current-intermediate", "result": "CLI/docs472examples/generated parity and152 extraction payload hashes pass; final installed/package exclusion remains", "final_artifact_pass": false},
+        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1628 source tests pass on unchanged435-file input snapshot;95 focused,27 release/contract, local docs smoke, graph/SQLite and diff checks pass", "final_artifact_pass": false}
+      ],
+      "disposition": "Draft preparation is locally complete, not full release qualification. macOS/Linux installed matrix, fresh Standard, independent remediation diff, full ladder and exact seal remain open; Goal85 stays paused. Broad documentation audit/polish is deferred."
+    },
+    {
+      "date": "2026-09-15",
+      "work": "root:bug-43",
+      "checkpoint": "root:chk-615",
+      "evidence": ".mdkg/artifacts/goal-86/bug-43-local-verification.json",
+      "requirement_dispositions": [
+        {
+          "id": "R29",
+          "evidence_state": "current-intermediate",
+          "result": "Exact root/nested warning paths pass native rename/copy, cache and four-topology16-case installed matrix on each required runtime from one unchanged226-file intermediate artifact; global errors and filesystem/Git bytes preserved",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "1521 complete source tests,17focused and13broader observer tests plus CLI/docs/contract/workflow parity pass; final ladder/coverage not yet qualified",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Local Bug43 closure only; Task835 next. No implementation defect found by independent bounded review. Fixture expectation corrections and coverage limits are recorded; fresh Standard, complete independent diff, Linux, final0.6.0 inputs and seal remain open."
+    },
+    {
+      "date": "2026-09-15",
+      "work": "root:bug-42",
+      "checkpoint": "root:chk-614",
+      "evidence": ".mdkg/artifacts/goal-86/bug-42-local-verification.json",
+      "requirement_dispositions": [
+        {
+          "id": "R28",
+          "evidence_state": "current-intermediate",
+          "result": "Content-bound legacy node/skill/capability freshness; both independent candidate findings and supporting compatibility regressions fixed;242 installed cases per required runtime on one unchanged226-file intermediate artifact",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R13",
+          "evidence_state": "current-intermediate",
+          "result": "Original12 copied-cache mounted metadata failures resolved; same replacement package passes84 actual read-only APFS checks per runtime; final0.6.0/macOS/Linux matrix remains open",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R12",
+          "evidence_state": "current-intermediate",
+          "result": "EROFS and complete inventory/staging proof preserved; archive restoration/corruption and explicit repair controls pass; security/platform scope remains incomplete",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R21",
+          "evidence_state": "current-intermediate",
+          "result": "1515 complete source tests,143 focused tests and CLI/docs/contract/workflow parity pass; final full ladder and coverage floors unverified",
+          "final_artifact_pass": false
+        }
+      ],
+      "disposition": "Local Bug42 closure only; Bug43 next. Both reported candidate findings reproduced before remedy. Invalidated package/test runs remain historical failures; fresh Standard, complete independent diff, Linux, final0.6.0 inputs and exact seal remain open. Goal85 stays paused."
+    },
+    {
+      "date": "2026-09-15",
+      "work": "root:bug-41",
+      "checkpoint": "root:chk-613",
+      "evidence": ".mdkg/artifacts/goal-86/bug-41-local-verification.json",
+      "requirement_dispositions": [
+        {"id": "R27", "evidence_state": "current-intermediate", "result": "Local helper-execution and false-clean/freshness correction passes1474 source tests and726 installed CLI-only cases on each required Node runtime from one unchanged225-file intermediate tarball", "final_artifact_pass": false},
+        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1474 discovered tests and CLI/docs/contract/workflow parity pass; final coverage floors and full release ladder remain unverified", "final_artifact_pass": false}
+      ],
+      "disposition": "Bug41 local closure is separate from test479/484/487 and task837/828 final acceptance. Bug42 is next. Bug43 separately blocks exact changed-warning qualification; all final platform, security, version and seal gates remain."
+    },
+    {
+      "date": "2026-09-15",
+      "work": "root:bug-43",
+      "evidence": ".mdkg/artifacts/goal-86/changed-warning-intake.json",
+      "requirement_additions": [
+        {"id": "R29", "requirement": "Changed-only warnings preserve exact project-relative Git paths for nested graphs and literal POSIX backslashes, retaining global errors and excluding unchanged warnings", "owner_qids": ["root:bug-43", "root:test-480", "root:task-828"], "evidence_state": "failure", "final_artifact_pass": false}
+      ],
+      "disposition": "Current and retained published0.5.2 each lose six warnings in three cases; the ordinary root-path control retains all six. Bug43 is todo, not claimed or fixed. Goal84/86 scope and task827/test480 dependencies include it; achieved task771/test431/chk506 remain historical evidence."
+    },
+    {
+      "date": "2026-09-15",
+      "work": "root:bug-17",
+      "evidence": ".mdkg/artifacts/goal-86/bug-17-local-verification.json",
+      "checkpoint": "root:chk-611",
+      "requirement_dispositions": [
+        {"id": "R10", "evidence_state": "current-intermediate", "result": "Local transport remedy verified with118 focused tests,22 installed CLI-only scenarios per required runtime on one immutable intermediate artifact, and installed bundle/subgraph/visibility smokes; final-artifact/platform/security acceptance remains", "final_artifact_pass": false},
+        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1457 discovered tests pass after the final config-less runtime correction; source bookends unchanged. Full final release ladder remains unverified", "final_artifact_pass": false},
+        {"id": "R01", "evidence_state": "current-intermediate", "result": "Explicit graph-only setup restores the original parent-owned workspace smoke contract after compact init became default. Independent root event-history re-aliasing is not qualified; task827/test477 retain its final disposition", "final_artifact_pass": false}
+      ],
+      "disposition": "Bug17 local implementation closure is separate from test479/test487/task837/task828 final acceptance. Historical evidence and failed fixture attempts remain bound; no event rewrite, scan, seal, commit, remote action or publication. Bug39 is next."
+    },
+    {
+      "date": "2026-09-15",
+      "work": "root:bug-17",
+      "evidence": ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json",
+      "requirement_dispositions": [
+        {"id": "R10", "evidence_state": "current-intermediate", "result": "Fresh portable contract, held-snapshot consumers and two parent-reproduced independent-review corrections pass106 focused tests; current installed/platform/security qualification remains", "final_artifact_pass": false},
+        {"id": "R21", "evidence_state": "current-intermediate", "result": "All1445 discovered tests pass after the candidate-review corrections on Node24.18.0/macOS with unchanged source hashes; full release ladder remains unverified", "final_artifact_pass": false}
+      ],
+      "disposition": "Bug17 remains progress and owned. Fresh contracted public snapshots support bounded transport; historical policy-less public snapshots remain inspect-only. No excluded private names or authority are added to the structural declaration. Earlier evidence and final gates are preserved."
+    },
+    {
+      "date": "2026-09-15",
+      "work": "root:bug-17",
+      "evidence": ".mdkg/artifacts/goal-86/bug-17-transport-progress.json",
+      "requirement_dispositions": [
+        {"id": "R10", "evidence_state": "current-intermediate", "result": "Known producer/historical-consumer corrections pass67 current focused tests; fresh public portable-state contract and independent/installed qualification remain incomplete", "final_artifact_pass": false}
+      ],
+      "disposition": "Bug17 remains progress and owned; new fresh public bundles remain inspect-only until the explicit contract is implemented and qualified. Prior evidence remains snapshot-bound."
+    },
+    {
+      "date": "2026-09-15",
+      "checkpoint": "root:chk-610",
+      "evidence": ".mdkg/artifacts/goal-86/observational-boundary-verification.json",
+      "requirement_dispositions": [
+        {"id": "R09", "evidence_state": "current-intermediate", "result": "Bug35 locally verified: 288 CLI-only installed observations per required runtime, unchanged root/child/worktree indexes and staging", "final_artifact_pass": false},
+        {"id": "R26", "evidence_state": "current-intermediate", "result": "Bug40 locally verified: preview no mutation lock or output-parent creation, real-sync positive controls retained", "final_artifact_pass": false},
+        {"id": "R13", "evidence_state": "failure", "result": "Actual read-only APFS qualification exposes 12 copied-legacy-cache metadata failures across three runtimes; Bug42 owns remediation", "final_artifact_pass": false},
+        {"id": "R12", "evidence_state": "current-intermediate", "result": "Mounted EROFS probes, complete inventories and all sync previews pass; wider semantic and security/platform qualification remains incomplete", "final_artifact_pass": false},
+        {"id": "R21", "evidence_state": "current-intermediate", "result": "1409 full discovered tests passed; CLI and documentation checks passed; final release ladder remains unverified", "final_artifact_pass": false}
+      ],
+      "requirement_additions": [
+        {"id": "R28", "requirement": "Copied legacy caches cannot override current authored metadata, including equal/older mtimes and both configured backends", "owner_qids": ["root:bug-42", "root:test-480", "root:task-828"], "evidence_state": "failure", "final_artifact_pass": false}
+      ],
+      "routing": "Bug35/40 done; Bug17 -> Bug39 -> Bug41 -> Bug42 -> Task835; draft/final verification also require Bug42",
+      "disposition": "Intermediate tarball still version0.5.2, not a final seal. All final macOS/Linux, Standard, independent diff and artifact gates remain. Original matrix and historical evidence preserved."
+    },
+    {
+      "date": "2026-09-15",
+      "evidence": ".mdkg/artifacts/goal-86/observational-boundary-reproductions.json",
+      "requirement_additions": [
+        {
+          "id": "R26",
+          "requirement": "Subgraph previews make no mutation-lock or cache-directory writes, including absent-cache linked worktrees; real sync retains writer exclusion",
+          "owner_qids": ["root:bug-40", "root:test-479", "root:task-828"],
+          "evidence_state": "failure",
+          "final_artifact_pass": false
+        },
+        {
+          "id": "R27",
+          "requirement": "Generic Git observations do not execute configured helpers or fabricate clean evidence; preserve existing git inspect safeguards",
+          "owner_qids": ["root:bug-41", "root:test-484", "root:task-828"],
+          "evidence_state": "failure",
+          "final_artifact_pass": false
+        }
+      ],
+      "routing": "Task834 -> Bug40 -> Bug35 -> Bug17 -> Bug39 -> Bug41 -> Task835; draft and final verification also depend explicitly on Bugs40/41",
+      "disposition": "Confirmed on current and retained published0.5.2; remedies and final installed/security/platform acceptance remain open. Historical scan accounting and original matrix snapshot are preserved."
+    }
+  ]
+}

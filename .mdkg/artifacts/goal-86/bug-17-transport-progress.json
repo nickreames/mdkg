@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "intermediate-transport-remediation",
+  "date": "2026-09-15",
+  "goal": "root:goal-86",
+  "work": "root:bug-17",
+  "outcome": "IN_PROGRESS_NOT_QUALIFIED",
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "source_has_uncommitted_changes": true,
+  "source_sha256": {
+    "src/commands/bundle.ts": "9e6039125732fec990ae1bef1dc655d85e15c1f3577097e4d6cd57666f13cc16",
+    "src/commands/graph.ts": "e6530b7249bcc1f024c64990a2ce0b715e206016acdece55bc795e8d1c504a84",
+    "src/commands/subgraph.ts": "b9e368b77cd5793e16bbea0d6a4ddb0ca8d3c2124a3f6bf9ff9b04b75d125951",
+    "src/graph/identity_transport.ts": "223b3025352b16f2b03db90cd0aaafcaadba6a5235b6230d274c39bdfe7bb1d0",
+    "src/graph/transport_state.ts": "a6314fcdd24d746826f175bb0411edfc6bcf92b0c21ea1be6c4799576139ae8b",
+    "tests/commands/bundle_state.test.ts": "413a0fddaaa4da3000b90d0e2fc45a9cf93aa6609120bcc41df8f3575c3512f5"
+  },
+  "intake": ".mdkg/artifacts/goal-86/bug-17-transport-intake.json",
+  "before": {
+    "producer": "Corrected synthetic fixtures: 19 of26 passed,7 failed. Nested checkout-state discovery was admitted; relocated cache bytes escaped; path aliases were admitted; private receipt siblings were dropped. Nested receipts ownership already refused safely.",
+    "consumers": "After producer corrections: 27 of32 passed,5 failed. Policy-less public materialization/template application succeeded, clone/fork restored public private-checkpoint bytes, expected-profile changes were ignored.",
+    "temporary_ownership": "Two controlled temporary-name collisions both lost their pre-existing synthetic sentinel, on refusal and success paths.",
+    "regression_challenge": "Replacing fixed exclusions initially rejected valid deepest-owned child layouts and changed deterministic output when caches appeared; both corrected. A further unregistered nested conventional-cache case reproduced after consolidation and was corrected at the shared boundary.",
+    "fixture_corrections": "Initial child fixture omitted required dates, and a safe ambiguous-ownership diagnostic did not match the first expected regex. Neither is counted as a confirmed product defect."
+  },
+  "current_remedies": [
+    "One shared transport classifier covers configured caches, custom graph roots, live state, conventional remnants, public private-DB omission and intentional private portability.",
+    "Overlap checks respect deepest workspace ownership in both directions; state-contained child discovery refuses before graph parsing.",
+    "Configured filesystem spelling is checked through parent entries without opening state payloads; literal backslashes refuse before ZIP normalization.",
+    "Derived cache/output existence does not alter deterministic exclusion receipts.",
+    "Clone/fork use the actual profile; template import consults transport policy; historical policy-less public materialization and template application refuse while bounded inspection remains.",
+    "Materialization rechecks expected profile, avoids target-parent/gitignore effects on admission refusal, exclusively creates its temporary directory and never pre-clears a colliding directory."
+  ],
+  "validation": {
+    "build": "pass on Node24.18.0",
+    "test_build": "pass",
+    "focused_final_snapshot": {
+      "command": "node --test dist/tests/commands/bundle_state.test.js dist/tests/commands/bundle_ownership.test.js dist/tests/commands/bundle.test.js",
+      "runtime": "v24.18.0",
+      "platform": "darwin-arm64",
+      "tests": 67,
+      "passed": 67,
+      "failed": 0,
+      "skipped": 0,
+      "captured_terminal_chunk_sha256": "cb43c20a383ba68edb2608aee8f334f8749792a3f9cbe8ace8946ca475af463a"
+    },
+    "broader_intermediate": {
+      "tests": 95,
+      "passed": 95,
+      "failed": 0,
+      "skipped": 0,
+      "includes": "bundle/state/ownership, graph, subgraph and the288-case Git-observation fixture",
+      "duration_ms": 113754.098917,
+      "freshness": "Preceded the final conventional unregistered-cache exclusion correction;67 focused tests reverified the final snapshot. Not full final-artifact evidence."
+    },
+    "candidate_review": "not launched; finish the complete transport contract before the single fresh candidate review",
+    "post_record_checks": {
+      "full_graph_errors": 0,
+      "full_graph_warnings": "3 preserved stale imported-subgraph warnings",
+      "changed_only_errors": 0,
+      "changed_only_warnings": 0,
+      "sqlite_projections": "all5 present and fresh",
+      "dependency_closure": "64 nodes, acyclic, no missing or invalid scope refs",
+      "cli_parity": "pass",
+      "documentation": "63 files,470 checked examples,zero failures",
+      "diff_check": "pass"
+    },
+    "installed_final_artifact": "unverified",
+    "linux": "unverified",
+    "standard_and_final_diff": "unverified"
+  },
+  "remaining_before_bug_closure": [
+    "Design and emit the explicit validated portable-state contract for fresh public/config-less selected-child exports; do not expose excluded private names, payload hashes or DB metadata.",
+    "Admit fresh contracted public inspection/template/materialization through both manifest validators and all consumers; missing historical policy remains inspect-only. Current fresh public exports still lack this contract and are therefore not materializable.",
+    "Qualify private selected-child snapshots, path/Unicode and alternate representations, role/hash/profile contradictions, generated projections and consumer validation-to-use boundaries.",
+    "Independently assess remaining capability/body reread candidates, add focused reproductions where in scope, and perform one fresh candidate bypass/regression review.",
+    "Repeat required installed runtime/platform and final security/release gates against finalized package inputs."
+  ],
+  "preserved_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "git-index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+  },
+  "custody": "Accepted partial Bug17 expanded only in five owned source files and its regression file; Bug35/40 helper fixes preserved. Goal86/bug17 remains active and owned; no standing DB lease or transient lock remains. Five prior DB leases released, zero queues/messages.",
+  "cleanup": "741 completed synthetic full-test directories/cache folders removed from the dedicated temporary run; three test log/receipt files, one xcrun cache file, intermediate package and failing APFS cache fixture retained. Removed fixtures are reproducible, not retained original directories.",
+  "git": {"branch": "main", "commits_created": [], "staged_paths": [], "remote_actions": "none", "cached_ahead": 50, "cached_behind": 0},
+  "release": "NOT_READY; package metadata remains0.5.2, Goal85 paused, no publication authority used",
+  "skill_candidates": []
+}

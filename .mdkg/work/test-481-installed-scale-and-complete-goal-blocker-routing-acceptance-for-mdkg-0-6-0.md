@@ -9,17 +9,32 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json]
 relates: []
-blocked_by: [task-826]
+blocked_by: [task-835, task-836, bug-35, task-827]
 blocks: []
-refs: [bug-7, chk-595, chk-596]
-context_refs: [goal-83]
-evidence_refs: []
+refs: [bug-7]
+context_refs: [goal-83, goal-86, dec-96]
+evidence_refs: [chk-595, chk-596]
 aliases: []
 skills: []
 cases: [test-481-case-1, test-481-case-2, test-481-case-3, test-481-case-4, test-481-case-5]
 created: 2026-09-07
-updated: 2026-09-09
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Representative scale and complete goal/checkpoint/blocker routing; preserve measured allowances, custody and event-history checks without new arbitrary limits. Large transaction redesign remains later work.
+
+This test no longer waits for task826 or Bug7 aggregate closure. Its updated
+implementation prerequisites lead into installed cases; task826 consumes the
+results. Record historical/current-intermediate/final-artifact-pass/failure/
+unverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux
+completeness is independently bound by test487. Task828 remains independent
+acceptance, not an upstream requirement for these test results.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

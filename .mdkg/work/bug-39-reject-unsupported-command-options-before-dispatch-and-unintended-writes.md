@@ -2,23 +2,57 @@
 id: bug-39
 type: bug
 title: Reject unsupported command options before dispatch and unintended writes
-status: todo
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-39-unknown-option-reproduction.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-39-unknown-option-reproduction.json, .mdkg/artifacts/goal-86/bug-39-local-verification.json]
 relates: []
-blocked_by: []
+blocked_by: [bug-17]
 blocks: []
-refs: [goal-84, goal-83, task-828, test-486]
-context_refs: []
+refs: [task-828, test-486]
+context_refs: [goal-86, dec-96, goal-84, goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-12
-updated: 2026-09-12
+updated: 2026-09-15
 ---
+
+# Current Successor Contract - 2026-09-13
+
+2026-09-15 local implementation acceptance: the pure option gate now covers 151
+concrete command paths, including 22 creation-type variants, before both CLI
+entrypoints discover configuration or attempt effects. Candidate review found
+two reproducible gaps (explicit init-help agent overload and type-specific new
+options); both are corrected and separately re-reviewed. Full source discovery
+passes 1,463 tests; focused compatibility/containment coverage passes 126 tests.
+One unchanged intermediate installed tarball passes 194 process refusals, 388
+direct-entrypoint refusals, 41 unindexed-graph refusals and seven positive controls
+on each Node24.15.0/24.18.0/26.0.0 on macOS. Evidence is
+.mdkg/artifacts/goal-86/bug-39-local-verification.json.
+
+This closes the bounded implementation obligation, not final test486, task828,
+Standard or macOS/Linux launch qualification. The intermediate package still
+identifies as0.5.2; no0.6.0 seal or release readiness is claimed. Early admission
+covers unsupported/wrong-command flags, missing values and malformed Boolean/
+integer syntax. Supported-option domain, mode and graph semantics remain their
+existing command validation; this is not a universal zero-effect promise for
+every possible invalid command. Full-suite fixtures formerly using ignored
+flags now reach their intended archive, metadata and containment paths. No
+security gate, source assertion or historical finding was waived.
+
+Retain this bug and test486, not a duplicate finding. Inventory all real command
+options and enforce early refusal before config and all side effects, in both
+entrypoints. Positive compatibility controls remain mandatory. Local implementation
+closure precedes final installed test486 and independent task828; do not create
+a bug/test/review completion cycle.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
+
 # Overview
 
 Goal: reject unsupported command options before dispatch, filesystem changes or

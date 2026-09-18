@@ -9,16 +9,29 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827, bug-30]
+blocked_by: [task-828, test-477, test-478, test-479, test-480, test-481, test-482, task-827, bug-30, task-837, test-483, test-484, test-486, test-487]
 blocks: []
 refs: []
-context_refs: [goal-83]
+context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-09
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Run the entire manifest-backed ladder after task828 and all final-artifact test
+gates including test487. Preserve89/77/96coverage floors, complete discovery,
+source/help/docs/MCP/seed/native-skill/package parity, full/changed graph validation,
+supported db index verify and diff checks. Both macOS/Linux evidence sets must
+bind the same package inputs/tarball. This final refresh is not a prerequisite
+of test487's earlier platform proof, avoiding a ladder/platform dependency cycle.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

@@ -14,7 +14,7 @@ mdkg --version
 Then initialize and validate the repo memory layer:
 
 ```bash
-mdkg init --agent
+mdkg init
 mdkg index
 mdkg status
 mdkg validate
@@ -22,10 +22,18 @@ mdkg validate
 
 Typical outputs:
 
-- `mdkg init --agent` creates `.mdkg/` and agent-facing startup files.
+- In the 0.6.0 candidate, `mdkg init` creates `.mdkg/` and compact root
+  `AGENTS.md` / `CLAUDE.md` sections routing to `.mdkg/AGENT_START.md`.
 - `mdkg index` rebuilds generated search and capability caches.
 - `mdkg status` summarizes git, graph, selected goal, cache, and DB health.
 - `mdkg validate` reports graph errors and warning categories.
+
+Use `mdkg init --graph-only` to omit agent setup. `mdkg init --agent` remains
+a compatibility spelling for compact setup. Published 0.5.2 used the older
+opt-in layout; compare `mdkg --version` with the instructions you are using.
+Project README, LICENSE, public discovery files and user-authored instructions
+outside mdkg-managed sections remain yours. Detailed generated guidance and
+canonical skills live under `.mdkg`, not in a universal root handbook.
 
 You do not need an existing goal for this first proof. A new repo can validate successfully while `mdkg goal next` returns no node.
 
@@ -50,7 +58,9 @@ mdkg show WORK_ID
 mdkg pack WORK_ID
 ```
 
-Use `mdkg pack WORK_ID --profile concise` when you want a shorter transfer pack.
+Use `mdkg pack WORK_ID --pack-profile concise` for summary-first node bodies in
+a shorter transfer pack. `--profile concise` is an equivalent alias; neither
+option changes traversal depth or node/byte limits by itself.
 
 When a human or AI agent does work, record evidence before moving on:
 

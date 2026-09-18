@@ -52,8 +52,8 @@ Operator health:
 - does not rebuild indexes, run migrations, repair files, mutate graph nodes, or change selected-goal state
 - `mdkg fix plan ...` is dry-run repair planning only; it writes nothing
 - duplicate-ID graph repairs can be applied with `mdkg fix apply --family ids` or `mdkg fix ids --apply`
-- use `--base-ref main` when mainline IDs should win branch-merge repair
-- unresolved Git add/add conflict stages are split by keeping stage 2 at the conflicted path and writing stage 3 to a new canonical ID/path
+- unresolved Git repair requires a unique proven common ancestor; an explicit `--base-ref` must match it
+- split stage2/stage3 only for proven independent additions; same-node edits and ambiguous history require semantic review; preserve manual resolutions and Git staging
 - graph-reference and index/cache findings remain review-only guidance
 - `fix plan --json` returns a receipt-shaped plan with selected families, risk counts, paths, reason codes, and per-change `apply_supported` metadata
 
@@ -271,14 +271,19 @@ Graph clone, fork, and template import:
 - `mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-id>] [--json]`
 - `mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]`
 - `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
-- `graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace
+- v2 `graph clone` retains same-project immutable identities; independent `graph fork` creates new identities with lineage while preserving numeric aliases
 - clone/fork targets must be empty or absent and stay under the current mdkg root
 - live directory sources are never mutated; clone/fork refuses targets nested inside a live source directory
 - `graph fork --start-goal <goal-id>` writes selected-goal state in the target graph after validation
 - `graph import-template` imports authored `.mdkg/work/*.md` template nodes into the current repo and skips config, generated indexes, archive payloads, bundles, and materialized subgraph views
 - `graph import-template` defaults to dry-run unless `--apply` is supplied
-- same-repo template import rewrites canonical numeric IDs to the next unused ID by type prefix and rewrites structured refs plus safe body-local id/qid mentions
+- same-graph template import rewrites numeric aliases and proven structured references; legacy imports also rewrite safe body-local aliases, while v2 imports preserve exact historical bodies
 - colliding semantic template IDs require `--id-prefix`
+- v2 templates require a v2 target; template import allocates target-owned identities
+- explicit `graph migrate` adopts v2 with reviewed graph/origin UUIDs, local ancestry, compatible-writer fencing and an exact plan hash; reads/indexing never migrate
+- `graph reconcile` handles reviewed v2 identity/alias integration; `fix ids` is legacy-only and refuses v2 rather than changing immutable identity
+- `graph recover <plan-hash>` inspects privately journaled transactions; explicit resume/rollback refuses changed files and requires mode-specific `--lock-evidence` for a proven orphan
+- use `mdkg graph migrate --help`, `mdkg graph reconcile --help` and `mdkg graph recover --help` for current flags; no command stages or merges Git history
 - `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
 - importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
 - `graph refs` is read-only and summarizes inbound/outbound scope, context, evidence, blocker, related, and structural refs across local and subgraph qids

@@ -8,6 +8,9 @@ import { writeCacheFile } from "./cache_output";
 import { listWorkspaceDocFiles } from "./workspace_files";
 import { readGraphFormat } from "./identity";
 import { buildIndex } from "./indexer";
+import { currentNodeCacheFingerprint } from "./staleness";
+import { currentSkillCacheSources } from "./skills_indexer";
+import { capabilityCacheFingerprint, readJsonCacheFingerprint } from "./json_cache_fingerprint";
 import {
   buildCapabilitiesIndex,
   CapabilitiesIndex,
@@ -91,7 +94,9 @@ export function isCapabilitiesIndexStale(root: string, config: Config): boolean 
     }
   }
 
-  return false;
+  const fingerprint = readJsonCacheFingerprint(root, indexPath, "capabilities");
+  return !fingerprint || fingerprint !== capabilityCacheFingerprint(config,
+    currentNodeCacheFingerprint(root, config), currentSkillCacheSources(root, config, true));
 }
 
 function readCapabilitiesIndex(indexPath: string): CapabilitiesIndex {

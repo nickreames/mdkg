@@ -12,13 +12,26 @@ relates: []
 blocked_by: [task-829]
 blocks: []
 refs: []
-context_refs: [goal-83]
+context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Seal the exact tarball already consumed by final installed/platform qualification
+and the full ladder. Bind SHA256/SHA512 integrity, file and package-input manifests,
+source revision, runtime/platform identities and both current security reports.
+Do not pack a replacement after qualification. Any input change invalidates the
+seal and affected evidence; evidence-only commits may follow. Report exact local
+commits/paths/custody and protected bookends; no push, tag or publication.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

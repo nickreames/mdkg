@@ -66,6 +66,14 @@ native Git integration are separate review steps; reconciliation does not stage
 files, merge Git history, or grant authority to commit or push. Checkout-local
 selection, locks, journals and live DB state are not shared graph authority.
 
+Pin target, incoming and common-ancestor revisions. On the target, preview and
+apply the reviewed mdkg reconciliation, validate, and commit its exact graph
+result under explicit Git authority before starting the native merge. Resolve
+graph paths to that reviewed result, handle source/configuration separately,
+validate the combined tree, commit the ancestry-preserving merge, and verify
+both parent ancestries plus repeated integration. Never blanket-choose `ours`
+for `.mdkg`. Git history is not rewritten by an alias remapping.
+
 The 0.6.0 release qualification must verify the complete linked-worktree and
 ancestry-preserving integration protocol before release claims are made. A
 simple worktree run does not prove submodule-backed topology or concurrent

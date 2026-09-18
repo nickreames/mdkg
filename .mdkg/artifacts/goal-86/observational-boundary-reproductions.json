@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "kind": "observational-boundary-reproduction-intake",
+  "goal": "root:goal-86",
+  "findings": [
+    "root:bug-40",
+    "root:bug-41"
+  ],
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "source_state": "accepted partial Bug17 and narrowly applied Bug35 optional-lock changes; no Bug40 or Bug41 remedy",
+  "source_manifest": [
+    {
+      "path": "src/commands/subgraph.ts",
+      "sha256": "1937b77078860b58e33a3db371944fec054e4ab8b42f45b15f7830112a4cac05"
+    },
+    {
+      "path": "src/util/lock.ts",
+      "sha256": "2e3036bafa937809242f979a61006d5efc24dedde35d6854e9a15fbdf2e0d664"
+    },
+    {
+      "path": "src/commands/status.ts",
+      "sha256": "afc24635c6be24ac5ad246fb853286161ed25e9393188f213bb00750ae0392cd"
+    },
+    {
+      "path": "src/commands/git.ts",
+      "sha256": "1c5b6d6f0a19b3bf01d0ef833f321496ed79240b93469ec81515aa664b3a500c"
+    },
+    {
+      "path": "src/commands/bundle.ts",
+      "sha256": "ad04ae9f2f40561edda429e75fab8532a31c5af5f27e5a1ccd90954619dc380d"
+    },
+    {
+      "path": "src/graph/subgraphs.ts",
+      "sha256": "08554f74fae1037f12a1c31de2745b5087a65383666e90f17075a9fdf6cbbcbf"
+    }
+  ],
+  "receipts": [
+    {
+      "package": "current",
+      "node": "v24.18.0",
+      "cli_sha256": "5caeb1be5f5d3af9586262331d721e9200b109cd08e90ff631d01183bfb2e381",
+      "receipt_sha256": "b1c30b65ea36ea7abaf5ffa11386a7dadab1c4a30d75562349a0a8daed318a89",
+      "tracer_sha256": "1878509f43779fd4ae5c9823f84551cdb3c5a342ae337fe8410f33598169febd",
+      "results": [
+        {
+          "kind": "dry-run-lock",
+          "command": [
+            "subgraph",
+            "sync",
+            "child_demo",
+            "--dry-run",
+            "--allow-dirty",
+            "--json"
+          ],
+          "exit": 0,
+          "helper_marker": null,
+          "lock_syscalls": [
+            {
+              "syscall": "mkdirSync",
+              "path": ".mdkg/index/write.lock"
+            },
+            {
+              "syscall": "openSync",
+              "path": ".mdkg/index/write.lock/owner.json"
+            },
+            {
+              "syscall": "rmSync",
+              "path": ".mdkg/index/write.lock"
+            }
+          ],
+          "lock_left_behind": false,
+          "stdout_sha256": "ba5f442be5d8ba0ae7729bc9e4728807e3f04d84b4ff2d80c724b19acf999429"
+        },
+        {
+          "kind": "fsmonitor-status",
+          "command": [
+            "status",
+            "--json"
+          ],
+          "exit": 0,
+          "helper_marker": true,
+          "lock_syscalls": [],
+          "lock_left_behind": false,
+          "stdout_sha256": "8ffd6bdc6f66f5c810b20b8b256d9a007e232a9314e323773b6f0c82432eecef"
+        },
+        {
+          "kind": "fsmonitor-inspect-control",
+          "command": [
+            "git",
+            "inspect",
+            "--json"
+          ],
+          "exit": 0,
+          "helper_marker": false,
+          "lock_syscalls": [],
+          "lock_left_behind": false,
+          "stdout_sha256": "27ef20ef56de120d07893c6f58ccdc98d73af30685656e80a00196d6295dff5a"
+        }
+      ]
+    },
+    {
+      "package": "published-0.5.2",
+      "node": "v24.18.0",
+      "cli_sha256": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+      "receipt_sha256": "e8b08a1a219e52983cc249bd29231000c6ead4cde8347cfb30419ed38546f84f",
+      "tracer_sha256": "1878509f43779fd4ae5c9823f84551cdb3c5a342ae337fe8410f33598169febd",
+      "results": [
+        {
+          "kind": "dry-run-lock",
+          "command": [
+            "subgraph",
+            "sync",
+            "child_demo",
+            "--dry-run",
+            "--allow-dirty",
+            "--json"
+          ],
+          "exit": 0,
+          "helper_marker": null,
+          "lock_syscalls": [
+            {
+              "syscall": "mkdirSync",
+              "path": ".mdkg/index/write.lock"
+            },
+            {
+              "syscall": "openSync",
+              "path": ".mdkg/index/write.lock/owner.json"
+            },
+            {
+              "syscall": "rmSync",
+              "path": ".mdkg/index/write.lock"
+            }
+          ],
+          "lock_left_behind": false,
+          "stdout_sha256": "8f3f53bf76dea639d851992ae9685a8edd91656933bdfc5eb0f14a790befaa89"
+        },
+        {
+          "kind": "fsmonitor-status",
+          "command": [
+            "status",
+            "--json"
+          ],
+          "exit": 0,
+          "helper_marker": true,
+          "lock_syscalls": [],
+          "lock_left_behind": false,
+          "stdout_sha256": "26ff6e65577dfb5f57e67fd57eba975f6e94dcbb45caf85a373d93278e483911"
+        },
+        {
+          "kind": "fsmonitor-inspect-control",
+          "command": [
+            "git",
+            "inspect",
+            "--json"
+          ],
+          "exit": 0,
+          "helper_marker": true,
+          "lock_syscalls": [],
+          "lock_left_behind": false,
+          "stdout_sha256": "d53b0017a6b3ac7b48abd3210001f4050f7dfcc741874dbb3915e130eee6b55f"
+        }
+      ]
+    }
+  ],
+  "classification": "confirmed functional observational-boundary publication blockers; not new Standard-scan vulnerability findings",
+  "published_provenance": "Recorded 0.5.2 integrity and installed file matching are retained in goal84/bug-35-affected-versions.json; no new registry access",
+  "validation": "synthetic successful lock syscall tracing; synthetic fsmonitor write marker; current git inspect negative control; all created fixture copies removed",
+  "exclusions": [
+    "no canonical bundle or runtime mutation",
+    "no providers or remote Git",
+    "no security scan or vulnerability severity claim"
+  ],
+  "independent_verification_required": "root:task-828",
+  "overall_status": "NOT_READY"
+}

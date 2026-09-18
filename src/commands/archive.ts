@@ -20,6 +20,7 @@ import {
 } from "../graph/archive_integrity";
 import { buildIndex, Index, IndexNode } from "../graph/indexer";
 import { loadIndex } from "../graph/index_cache";
+import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { writeDerivedIndexes } from "../graph/reindex";
 import { normalizeVisibility, Visibility } from "../graph/visibility";
 import { formatDate } from "../util/date";
@@ -802,7 +803,14 @@ function runArchiveCompressCommandLocked(options: ArchiveCompressCommandOptions)
     throw new UsageError("archive compress requires <id-or-archive-uri-or-qid> or --all");
   }
   const config = loadConfig(options.root);
-  const { index } = loadIndex({ root: options.root, config });
+  // Explicit compression regenerates payloads from currently authored sidecars
+  // and raw files. A missing/corrupt ZIP must not require a stale metadata cache
+  // to select that repair. This unbound selection index is never persisted;
+  // schema, identity, owner and every write target still pass normal preflight.
+  const index = mergeSubgraphsIntoIndex(
+    buildIndex(options.root, config, { deferArchiveIntegrity: true }),
+    buildSubgraphsIndex(options.root, config)
+  );
   const { nodes, selection } = selectArchiveCompressionNodes(options, config, index);
   const today = formatDate(options.now ?? new Date());
   const plans = nodes.map((node) => preflightArchiveCompression(options.root, node, today));

@@ -9,16 +9,29 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json]
 relates: []
-blocked_by: [task-824, bug-7]
+blocked_by: [task-824, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487]
 blocks: []
-refs: [chk-600, dec-94, chk-603, dec-95, test-484]
-context_refs: [goal-83]
-evidence_refs: []
+refs: [dec-94, dec-95, test-484]
+context_refs: [goal-83, goal-86, dec-96]
+evidence_refs: [chk-600, chk-603]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-11
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+This task is aggregate acceptance AFTER tests477-484/486 and test487, not their
+prerequisite. It no longer waits for Bug7: implementation prerequisites are
+tasks835/836 and the owned bugs; Bug7 closes missing qualification after this task.
+Check every case/runtime/platform and exact artifact identity. Earlier matrices
+are useful intermediate evidence, not permission to skip final-artifact execution.
+No tests may depend on this aggregate while their results are required by it.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

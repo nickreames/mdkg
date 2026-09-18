@@ -1,0 +1,614 @@
+{
+  "schema_version": 1,
+  "kind": "authored-content-cache-local-verification",
+  "work_qid": "root:bug-42",
+  "goal_qid": "root:goal-86",
+  "outcome": "locally-verified-fixed",
+  "evidence_state": "current-intermediate",
+  "final_artifact_pass": false,
+  "publication_status": "NOT_READY",
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "branch": "main",
+  "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_divergence": "50\t0",
+  "remote_verified": false,
+  "commits_created": [],
+  "staged_paths": [],
+  "owner": "mdkg-project-agent",
+  "authority_used": "Explicit Goal86 Run: bounded generic mdkg implementation, synthetic local fixtures, independent read-only reviewers and required evidence/projections.",
+  "scope": {
+    "invariant": "Current authored content, inventory, effective template/configuration and archive admission determine legacy cache freshness, not mtime order alone. Ordinary reads remain write-free; indexes are derived, not identity or authenticity authority.",
+    "source_surfaces": [
+      "src/graph/indexer.ts",
+      "src/graph/index_cache.ts",
+      "src/graph/staleness.ts",
+      "src/graph/skills_indexer.ts",
+      "src/graph/skills_index_cache.ts",
+      "src/graph/capabilities_indexer.ts",
+      "src/graph/capabilities_index_cache.ts",
+      "src/graph/json_cache_fingerprint.ts",
+      "src/graph/node.ts",
+      "src/graph/archive_file.ts",
+      "src/commands/archive.ts",
+      "tests/graph/cache_freshness.test.ts",
+      "tests/fixtures/cache-freshness.cjs",
+      "tests/commands/archive_work.test.ts"
+    ],
+    "compatibility": "Old unbound caches remain readable through explicit stale-cache opt-out; ordinary reads derive current metadata in memory. V2 bypass, both configured backends, strict/tolerant behavior, normal regeneration, archive repair and Git staging remain supported.",
+    "exclusions": "No graph format migration, public flags, new identities, consumer policy, canonical archive/bundle refresh, remote or provider action."
+  },
+  "strategy": [
+    "Bind node caches to exact captured Markdown bytes/path inventory, effective configuration and local/bundled template inputs.",
+    "Bind root skill caches and all-enabled-workspace capability skill inputs to content plus directory-presence metadata; capture each skill's parse/hash/headings from one read.",
+    "Archive sidecars already bind expected payload hashes. Capture live integrity/admission from the same bounded parse-time reads, including tolerant omissions; restore/corrupt transitions invalidate freshness.",
+    "Retain mtime checks as early-stale hints, not sufficient fresh proof. Preserve malformed cache syntax/shape diagnostics, no-cache/no-reindex behavior and containment refusal.",
+    "Explicit archive compression now selects current authored sidecars without relying on stale cache metadata. The deferred-integrity selection is unbound and never persisted; owner/schema/identity/full-set path preflight still applies before writing.",
+    "Imported nodes are already rebuilt from integrity-verified bundles; mtime-based subgraph health is not represented as blanket JSON/security freshness clearance. SQLite's prior content binding remains separate."
+  ],
+  "reproduction": {
+    "published_0_5_2": "Confirmed on retained published executable: stale title with current body, search_count=0, no stale warning; exact files unchanged.",
+    "current_candidate": "Same copied/older-timestamp minimal failure confirmed before patch; original mounted APFS proof had 12 semantic failures across three runtimes.",
+    "scope": "Synthetic local fixtures only; no recovered Demo3 payload execution.",
+    "entrypoint_hashes": [
+      {
+        "label": "current",
+        "cli_sha256": "4400d15f793f783d6e61206a4357e8904ae5532d2e0958c7a5927dd9d18d0b76",
+        "title": "Cached before marker",
+        "current_body": true,
+        "search_count": 0,
+        "stderr": "",
+        "unchanged": true,
+        "source_mtime": 1000,
+        "cache_mtime": 1789516419064.1052
+      },
+      {
+        "label": "published-0.5.2",
+        "cli_sha256": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+        "title": "Cached before marker",
+        "current_body": true,
+        "search_count": 0,
+        "stderr": "",
+        "unchanged": true,
+        "source_mtime": 1000,
+        "cache_mtime": 1789516419827.9768
+      }
+    ]
+  },
+  "review": {
+    "standard_scan": false,
+    "task828_acceptance": false,
+    "prepatch_inventory": "One bounded source-read-only inventory, then parent reproduction and caller analysis.",
+    "candidate_review": "One bounded independent read-only source review; both reported findings independently reproduced by the parent before remedy.",
+    "findings": [
+      {
+        "issue": "Capability skill parse/hash second-read inconsistency",
+        "before": "Deterministic intervening skill edit produced false-fresh old metadata.",
+        "after": "Shared captured bytes plus regression detect stale cache and current discovery."
+      },
+      {
+        "issue": "Archive payload integrity not represented in freshness",
+        "before": "Missing-to-restored ZIP, invalid-to-valid raw and valid-to-corrupt ZIP all falsely remained fresh.",
+        "after": "All three regressions pass with bounded parse-time admission evidence."
+      }
+    ],
+    "supporting_regressions": [
+      "Preserve explicit stale-cache opt-out when strict current parsing would fail.",
+      "Preserve explicit archive compression with missing ZIP and absent legacy caches."
+    ]
+  },
+  "source_files": [
+    {
+      "path": "src/graph/indexer.ts",
+      "sha256": "9179209d4597939fd754cd60e6a6d93c2ec06f6ac3fbb46e2cee46dbaa9824a9"
+    },
+    {
+      "path": "src/graph/index_cache.ts",
+      "sha256": "f0414b329fb89435565b761fb9015bf04abe4032303e9543896e919ceada9694"
+    },
+    {
+      "path": "src/graph/staleness.ts",
+      "sha256": "a2a78a6245a91a27be9c08809f683d84069af3f127905a9e6b4f2722e696788b"
+    },
+    {
+      "path": "src/graph/skills_indexer.ts",
+      "sha256": "41d869ae7fa56d136d5de7fcc955e5277f27d91a69fed5f3baa73b897d3f3354"
+    },
+    {
+      "path": "src/graph/skills_index_cache.ts",
+      "sha256": "094f3b13ac0a3475b011f7b73a51e40fab54eac0b9bbf7f385f0ee3b5b5a17f9"
+    },
+    {
+      "path": "src/graph/capabilities_indexer.ts",
+      "sha256": "208b20600252a7e2089021f0cafba03d7eac119c9d54ba495857a9995674fabc"
+    },
+    {
+      "path": "src/graph/capabilities_index_cache.ts",
+      "sha256": "875988984a04cef872bad5ff084310aa03505e77e0a7e386ef066f68317a5706"
+    },
+    {
+      "path": "src/graph/json_cache_fingerprint.ts",
+      "sha256": "123cfcde4d5515ae57b3688e73e334351186fc4758c930f09dcd9ec449cccb7e"
+    },
+    {
+      "path": "src/graph/node.ts",
+      "sha256": "526a39c0f61788b3addfad5ba5a08f40a397b8b037de49664c46cb69daceb75c"
+    },
+    {
+      "path": "src/graph/archive_file.ts",
+      "sha256": "3c78d9da5bfe9115b709149adc8873d69fab20493479f3843522eed8fe8d894c"
+    },
+    {
+      "path": "src/commands/archive.ts",
+      "sha256": "dec76ff849619fd8fc790335b39e60ea265e9144bf3bc9b311f46a08998410c1"
+    },
+    {
+      "path": "tests/graph/cache_freshness.test.ts",
+      "sha256": "dd4a197c340eb60c7cddd27577fa56e982f57cbbfc4a6da8a8a9c21338746de2"
+    },
+    {
+      "path": "tests/fixtures/cache-freshness.cjs",
+      "sha256": "31295080805838f8072b6521168eba119600d543cfd4da638ac2c88e260c0bb4"
+    },
+    {
+      "path": "tests/commands/archive_work.test.ts",
+      "sha256": "e90c45010f828d84bee6d58abd14f558452ed9ae0890ab3a569ba724a73354e0"
+    }
+  ],
+  "candidate": {
+    "kind": "intermediate-not-release",
+    "version": "0.5.2",
+    "sha256": "f9d58d95163f5c845cd0a3ab4f2db35f6d6195edd3ed86d479b302a992f1ccad",
+    "integrity": "sha512-3eYAEf7Gt7EdtxQm5tEbNeMGOKpkexBSg5qZC+N1FqiZ8bsKu9nyfQG9H2x+pBVm91jBGklydH/4M5JxFcvPvg==",
+    "files": 226,
+    "prepack_bypassed": true
+  },
+  "package_input_changes_since_pack": [],
+  "validation": {
+    "build": "pass",
+    "focused": {
+      "tests": 143,
+      "pass": 143,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "full_source": {
+      "runtime": "24.18.0",
+      "platform": "macOS arm64",
+      "tests": 1515,
+      "pass": 1515,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_ms": 315878.675875
+    },
+    "parity": {
+      "cli": "pass",
+      "contract_hash": "33c58c8639714dfdee752d3991dd9efeaf4b080939336db6c8f65b8870926819",
+      "docs": "pass;470 examples/63 files/0 failures",
+      "workflow": "pass"
+    },
+    "installed": {
+      "result": "pass",
+      "runtimes": [
+        {
+          "runtime": "v24.15.0",
+          "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+          "platform": "darwin",
+          "arch": "arm64",
+          "installed_files": 226,
+          "cases": 242,
+          "receipt_sha256": "c74109daadbb9327ccc62fb6e947d7ec2e607ce14707c82f17717dc30d907437",
+          "mounted_cases": 84,
+          "mounted_receipt_sha256": "a5f62ab28cb2b7e9e2906a4591884521b54e1c235b774bad89b71e424755b19a"
+        },
+        {
+          "runtime": "v24.18.0",
+          "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+          "platform": "darwin",
+          "arch": "arm64",
+          "installed_files": 226,
+          "cases": 242,
+          "receipt_sha256": "6ae3a2b4bbf04dcb15c8088a7f110a5770318c11957e2e1e7cddd0e6323e360b",
+          "mounted_cases": 84,
+          "mounted_receipt_sha256": "536cc3efb3e647b21e040f71c59c393e8f7c34f96775a7a2b8d3f900233ceb6b"
+        },
+        {
+          "runtime": "v26.0.0",
+          "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+          "platform": "darwin",
+          "arch": "arm64",
+          "installed_files": 226,
+          "cases": 242,
+          "receipt_sha256": "f0b425e586d8b667ae20d3f6ac5d7ab569c4809f128d3fe07b0663f26c3d8fbd",
+          "mounted_cases": 84,
+          "mounted_receipt_sha256": "dfb7ef3705b373313e38b6971db56d09b9adb5b66ad49de856c7890c6ebc4683"
+        }
+      ],
+      "same_tarball": true,
+      "all_installed_files_match": true,
+      "matrix": "Legacy/v2 x JSON/SQLite; fresh/copied/equal/older/deleted/absent caches; show/search/list/skills/capabilities/pack/MCP, opt-outs and normal writing; legacy archive restoration/corruption and explicit compression controls."
+    },
+    "actual_read_only": {
+      "result": "pass",
+      "image_sha256": "b133857a88261dc71be2075328c132a461e46edabeb0535f3f25c3d53b75e485",
+      "fixtures": 12,
+      "cases_per_runtime": 84,
+      "all_probes": "EROFS",
+      "inventories_and_git_indexes": "unchanged",
+      "image_detached": true
+    },
+    "preclose_graph": {
+      "errors": 0,
+      "warnings": 4,
+      "note": "Three preserved stale-subgraph warnings plus expected stale SQLite projection before the supported closeout refresh."
+    },
+    "preclose_changed_graph": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "diff_check": "pass"
+  },
+  "performance": {
+    "kind": "bounded-cache-timing-not-performance-guarantee",
+    "runtime": "v24.18.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "results": [
+      {
+        "count": 100,
+        "candidate": "before",
+        "index_ms": 340.1936670000001,
+        "show_ms": [
+          121.05108299999984,
+          117.27320800000007,
+          119.00595900000008
+        ],
+        "median_ms": 119.00595900000008,
+        "inventory_unchanged": true
+      },
+      {
+        "count": 100,
+        "candidate": "after",
+        "index_ms": 218.5072500000001,
+        "show_ms": [
+          131.05933400000004,
+          133.9789169999999,
+          129.78949999999986
+        ],
+        "median_ms": 131.05933400000004,
+        "inventory_unchanged": true
+      },
+      {
+        "count": 1000,
+        "candidate": "before",
+        "index_ms": 915.114916,
+        "show_ms": [
+          206.07683300000008,
+          200.77670899999976,
+          198.29479100000026
+        ],
+        "median_ms": 200.77670899999976,
+        "inventory_unchanged": true
+      },
+      {
+        "count": 1000,
+        "candidate": "after",
+        "index_ms": 952.094083,
+        "show_ms": [
+          254.9725410000001,
+          252.5749169999999,
+          266.22199999999975
+        ],
+        "median_ms": 254.9725410000001,
+        "inventory_unchanged": true
+      }
+    ],
+    "limits": "Three measured warm fresh-cache reads per size/candidate; process startup and filesystem costs included. Synthetic graphs only; no new timing threshold or compatibility limit.",
+    "caveat": "Small warm synthetic sample while the full suite was also active; not an SLA or comparative benchmark guarantee. Content admission adds reads/parsing. Preserve larger scale/timing qualification and post-0.6 transaction optimization scope."
+  },
+  "failed_attempts": [
+    "Initial invalid rule fixture and incorrect custom-attribute/pack-preview assertions were corrected without weakening source behavior.",
+    "Initial full suite1500 had1499 pass/1 genuine malformed-cache diagnostic regression; fixed and added9 corruption cases before replacement qualification.",
+    "First installed equal-time harness kept future source mtimes through its later write-health control; only after read assertions, reset fixture timestamps before normal-write health. No stale-read case was waived.",
+    "Independent review exposed4 failing skill/archive regressions; parent added strict opt-out regression and fixed it before qualification.",
+    "Reviewed installed archive fixture used index without explicit --tolerant; corrected harness to exercise intended tolerant production cache.",
+    "An accidental cli/docs rebuilding invocation overlapped one full suite:27 failures,26 attributable to missing/replaced compiled modules and one independently reproduced archive-compression regression. That run is invalidated, regression fixed and clean serialized build/check/full-test run1515 passed."
+  ],
+  "invalidated_intermediate_packages": [
+    "634cf977f8fa34c7587ecae41894d3b949a3b178f101938be420a12a2e6eb0ef",
+    "5b76292eedd1683c5ef0fddc4db36b049df6deae05514d2d115a1214bb611567",
+    "e44a2f4ef43be378c33f0fbc8a8fa4baa9a6c1033b43b769d10ceae2629479e2"
+  ],
+  "raw_temp_evidence_hashes": [
+    {
+      "path": "before.json",
+      "sha256": "b71d5c20a648200228dbd5d7c4c20deb62dce997dd5e137a208e86c1a6ab21dc"
+    },
+    {
+      "path": "reproduce.cjs",
+      "sha256": "da19646e069154288921f2035b599b95d6d4e255d12dd2a335b1e8c4ee420f9b"
+    },
+    {
+      "path": "regression-before.log",
+      "sha256": "af87c48a7ed66df7f78ddb73cb54ac2c02c2f31520a50a561afb76beaf13727d"
+    },
+    {
+      "path": "review-regressions-before.log",
+      "sha256": "f9ae659a73b2b38085eda0fb6f00c68f9405c488f67554a821074fb472bb37e1"
+    },
+    {
+      "path": "strict-opt-out-before.log",
+      "sha256": "fccb0f26209dd487e5c3dd1f2716666fdce68dbd0069a0e12625b2e059d70726"
+    },
+    {
+      "path": "compression-before.log",
+      "sha256": "d440b549d0479409753c46bb71bc137c506fed55f9a8ba1c41ed4b97438d0ed3"
+    },
+    {
+      "path": "accepted-focused.log",
+      "sha256": "9ae7d8e166c9cd369f7291c02e516f0a36b3d598c3835cbef85696f951997008"
+    },
+    {
+      "path": "package-manifest-accepted.json",
+      "sha256": "ae9563a68bd67427480ce265f887504fcf21a58f54108bb65c854ef950dcb4e8"
+    },
+    {
+      "path": "installed.cjs",
+      "sha256": "f0201bd0b18de80cd6155db532993e0dbf4778da4fa22ae241389878e26e812e"
+    },
+    {
+      "path": "mounted.cjs",
+      "sha256": "999c51a1fed08ba1b9b4a4cf1bcb47acc97979abd36e54e1dd554fb649d8bdd6"
+    },
+    {
+      "path": "performance.cjs",
+      "sha256": "0d7054b708a54f61c0279405625a572cbcdda5750c13d46d35a80db2ee995b8e"
+    },
+    {
+      "path": "performance-supported-accepted.json",
+      "sha256": "2ccd64714409d5e752b7a128ea0147338c66bb3153c53b1ad4f98765e36158c6"
+    },
+    {
+      "path": "accepted-full-tests.log",
+      "sha256": "813cb8bb5e8c23a032c68c72ecbde5ee5d88d9a6386c44a4bfbbee2e6f12fd4b"
+    },
+    {
+      "path": "fixture-cleanup.json",
+      "sha256": "31b21c559d2930d0ec49bde079b30b561a8ec94c31c424fbf4d0e4328b6b1086"
+    },
+    {
+      "path": "cleanup-owned-fixtures.cjs",
+      "sha256": "7c702a40f5196653d39e5b304763343968d878f7b1e21e6512c5a017f90305e1"
+    },
+    {
+      "path": "full-tests-revised.log",
+      "sha256": "54d289abb3a11f65cfc0f8977e4bf143fcc2c396cc3b94c5f68bd572ccef6e10"
+    },
+    {
+      "path": "review-full-tests-final.log",
+      "sha256": "6defc239261fb5522473fcef351c9efca7bbe62dc8f79c996076ceb6a5e6cefd"
+    }
+  ],
+  "protected_before": [
+    {
+      "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+      "mode": 33188,
+      "size": 488385,
+      "kind": "file",
+      "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    {
+      "path": ".mdkg/db/runtime/project.sqlite",
+      "mode": 33188,
+      "size": 118784,
+      "kind": "file",
+      "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+    },
+    {
+      "path": ".mdkg/state/selected-goal.json",
+      "mode": 33188,
+      "size": 108,
+      "kind": "file",
+      "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+    },
+    {
+      "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index",
+      "mode": 33188,
+      "size": 674003,
+      "kind": "file",
+      "sha256": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+    }
+  ],
+  "runtime_state": "Protected database bytes unchanged; prior verified five leases released, queues/messages empty. WAL/SHM, mutation lock and index.lock absent.",
+  "custody": {
+    "baseline_dirty_paths": 101,
+    "preclose_dirty_paths": 115,
+    "added_paths": [
+      "src/graph/indexer.ts",
+      "src/graph/index_cache.ts",
+      "src/graph/staleness.ts",
+      "src/graph/skills_indexer.ts",
+      "src/graph/skills_index_cache.ts",
+      "src/graph/capabilities_indexer.ts",
+      "src/graph/capabilities_index_cache.ts",
+      "src/graph/json_cache_fingerprint.ts",
+      "src/graph/node.ts",
+      "src/graph/archive_file.ts",
+      "src/commands/archive.ts",
+      "tests/graph/cache_freshness.test.ts",
+      "tests/fixtures/cache-freshness.cjs",
+      "tests/commands/archive_work.test.ts"
+    ],
+    "unclassified_paths": [],
+    "inventory_sha256": "0f94c97eb7a65b2a92667ad25b6443a781195cc1d08c2f9a40ea7393a79a996c",
+    "diagnostic_incident": "Prepatch investigator invoked plain git status once; immediate exact Git-index hash comparison showed no byte change. No restore was performed."
+  },
+  "cleanup": {
+    "roots": [
+      {
+        "path": "current",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "published-0.5.2",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "timing-JbeBod",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "timing-93F1gF",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-compatibility-accepted/cache-qualification-TWAbjl",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-compatibility-final/cache-qualification-hlxCYk",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-compatibility-reviewed/cache-qualification-K5ycly",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-minimum-accepted/cache-qualification-MwfJgn",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-minimum-final/cache-qualification-WDOvLM",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-minimum-reviewed/cache-qualification-jk18w1",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-supported/cache-qualification-E0pQwL",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-supported-accepted/cache-qualification-AOcEvn",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-supported-corrected/cache-qualification-eZz2Ni",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-supported-final/cache-qualification-rjCYzm",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      },
+      {
+        "path": "installed-supported-reviewed/cache-qualification-7dmXdn",
+        "removed": true,
+        "kind": "owned synthetic fixture"
+      }
+    ],
+    "retained": "Diagnostic logs, fixture runners, package manifests, tarballs, installed packages and original immutable APFS image. No canonical or unknown paths removed."
+  },
+  "linux_capability_preflight": {
+    "scope": "Read-only local endpoint/version/image inventory only; no Linux fixture executed.",
+    "endpoint": "unix:///Users/nick/.docker/run/docker.sock",
+    "context": "desktop-linux",
+    "engine": "Docker Desktop4.85.0; Engine29.6.2; linux/arm64; kernel6.12.76-linuxkit",
+    "cached_official_node_images": 0,
+    "services_started": 0,
+    "qualified": false,
+    "note": "Sandbox socket denial was followed by approved read-only local check. Image identity/isolation/filesystem semantics and Linux fixture coverage remain open."
+  },
+  "remaining": [
+    "Bug43 exact changed-warning paths; task835 v2 writer admission; task836 interrupted-writer recovery.",
+    "Task827 finalized0.6.0 inputs; final installed/platform matrix including Linux; Windows remains unqualified.",
+    "Task837 fresh Standard and task828 complete independent remediation review; task829 full ladder/coverage floors; task830 exact seal; chk570.",
+    "Goal85 remains paused and requires fresh publication approval; no current package is a final0.6.0 artifact."
+  ],
+  "skill_coverage": [
+    "select-work-and-ground-context",
+    "pursue-mdkg-goal",
+    "source-grounded-diagnose-and-fix",
+    "verify-close-and-checkpoint"
+  ],
+  "existing_skills_searched": [
+    "cache: no match",
+    "stage:review: verify-close-and-checkpoint"
+  ],
+  "skill_candidates": [],
+  "surface_classification": "Generic enforced cache/source-consistency implementation and regression evidence; no new procedure or consumer-specific skill.",
+  "post_closeout": {
+    "checkpoint": "root:chk-614",
+    "node_state": "done-local-verification",
+    "goal_state": "active-NOT_READY",
+    "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+    "branch": "main",
+    "dirty_paths": 117,
+    "staged_paths": [],
+    "commits_created": [],
+    "full_graph": {
+      "errors": 0,
+      "warnings": 3,
+      "warning_scope": "preserved stale imported bundles"
+    },
+    "changed_graph": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite_projections": {
+      "checks": 5,
+      "fresh": 5,
+      "failures": 0
+    },
+    "diff_check": "pass",
+    "protected_after": [
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "mode": 33188,
+        "size": 488385,
+        "kind": "file",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "mode": 33188,
+        "size": 118784,
+        "kind": "file",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "mode": 33188,
+        "size": 108,
+        "kind": "file",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index",
+        "mode": 33188,
+        "size": 674003,
+        "kind": "file",
+        "sha256": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+      }
+    ],
+    "protected_match": true,
+    "next_qid": "root:bug-43",
+    "ownership": "Bug42 task lifecycle closed; no standing runtime lease acquired and transient locks absent. Goal86 remains the sole authorized writer lane.",
+    "projection_policy": "Only normal derived index/event outputs refreshed; canonical bundles, graph format, selection and runtime bytes preserved."
+  }
+}

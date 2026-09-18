@@ -122,6 +122,15 @@ function assertRecoveryDependencies(root: string, journal: Journal): void {
   }
 }
 
+function assertTerminalCustody(root: string, journal: Journal, side: "before" | "after"): void {
+  for (const operation of journal.operations) {
+    if (encoded(root, operation.path) !== operation[side]) {
+      throw new UsageError(`upgrade terminal custody changed: ${operation.path}; user bytes preserved`);
+    }
+  }
+  assertRecoveryDependencies(root, journal);
+}
+
 /** Pure in-memory intent collection; no directory, index, lock, or journal writes. */
 export class UpgradePlan {
   readonly operations = new Map<string, UpgradeOperation>();
@@ -187,6 +196,7 @@ export class UpgradePlan {
         put(this.root, operation.path, operation.after);
         afterWrite?.(operation.path, index);
       }
+      assertTerminalCustody(this.root, journal, "after");
       journal.state = "completed";
       saveJournal(this.root, journal);
     });
@@ -197,7 +207,11 @@ export function continueUpgrade(root: string, mode: "resume" | "recover", planHa
   validate?: (journal: Journal) => void): Journal {
   const journal = readUpgradeJournal(root);
   if (!journal || !planHash || planHash !== journal.plan_hash) throw new UsageError("resume/recover requires the journal's exact --plan-hash");
-  if (journal.state === "recovered" || (mode === "resume" && journal.state === "completed")) return journal;
+  if (journal.state === "recovered" || journal.state === "completed") {
+    assertTerminalCustody(root, journal, journal.state === "recovered" ? "before" : "after");
+    validate?.(journal);
+    if (journal.state === "recovered" || mode === "resume") return journal;
+  }
   if (mode === "resume" && journal.state === "recovering") throw new UsageError("recovery already started; continue --recover");
   const check = () => {
     for (const op of journal.operations) {
@@ -219,6 +233,8 @@ export function continueUpgrade(root: string, mode: "resume" | "recover", planHa
       if (actual !== op.before && actual !== op.after) throw new UsageError(`upgrade recovery collision: ${op.path}`);
       if (actual !== wanted) put(root, op.path, wanted);
     }
+    assertTerminalCustody(root, journal, mode === "recover" ? "before" : "after");
+    validate?.(journal);
     journal.state = mode === "recover" ? "recovered" : "completed";
     saveJournal(root, journal);
     return journal;

@@ -2,12 +2,14 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { Config, WorkspaceConfig } from "../core/config";
+import { readContainedFile } from "../core/filesystem_authority";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 import { FrontmatterValue } from "./frontmatter";
 import { identityRef, NodeIdentity } from "./identity";
 import { resolveQid } from "../util/qid";
 import { matchesWorkContractPath } from "./identity_refs";
+import { capabilityCacheFingerprint } from "./json_cache_fingerprint";
 import { Index, IndexNode, buildIndex } from "./indexer";
 import {
   CANONICAL_MANIFEST_BASENAME,
@@ -108,6 +110,7 @@ export type CapabilitiesIndex = {
     workspaces: string[];
     record_count: number;
     inspection_errors?: string[];
+    source_fingerprint?: string;
   };
   records: CapabilityRecord[];
 };
@@ -415,13 +418,11 @@ function nodeCapabilityRecord(
 }
 
 function skillCapabilityRecord(
-  root: string,
   config: Config,
   skill: SkillIndexEntry,
-  indexedAt: string
+  indexedAt: string,
+  content: string
 ): CapabilityRecord {
-  const absolutePath = path.resolve(root, skill.path);
-  const content = fs.readFileSync(absolutePath, "utf8");
   return {
     kind: "skill",
     workspace: skill.ws,
@@ -468,13 +469,15 @@ function buildWorkspaceSkillCapabilities(
     }
     const skillsRoot = workspaceSkillsRoot(root, workspace);
     for (const candidate of listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === alias)) {
+      const content = readContainedFile({ root, relativePath: path.relative(root, candidate.filePath), pathSyntax: "native" });
       const skill = buildSkillIndexEntryForWorkspace(
         root,
         alias,
         candidate.slug,
-        candidate.filePath
+        candidate.filePath,
+        () => content
       );
-      records.push(skillCapabilityRecord(root, config, skill, indexedAt));
+      records.push(skillCapabilityRecord(config, skill, indexedAt, content));
     }
   }
   return records;
@@ -518,7 +521,8 @@ export function buildCapabilitiesIndex(
     records.push(nodeCapabilityRecord(root, config, index, node, kind, generatedAt));
   }
 
-  records.push(...buildWorkspaceSkillCapabilities(root, config, generatedAt));
+  const skillRecords = buildWorkspaceSkillCapabilities(root, config, generatedAt);
+  records.push(...skillRecords);
   const sortedRecords = sortRecords(records);
 
   return {
@@ -532,6 +536,10 @@ export function buildCapabilitiesIndex(
         .filter((alias) => config.workspaces[alias].enabled)
         .sort(),
       record_count: sortedRecords.length,
+      source_fingerprint: capabilityCacheFingerprint(config, index.meta.source_fingerprint, skillRecords.map(record => ({
+        workspace: record.workspace, slug: record.slug!, path: record.path, hash: record.source_hash,
+        has_scripts: record.skill!.has_scripts, has_references: record.skill!.has_references,
+      }))),
       ...(index.meta.inspection_errors?.length ? { inspection_errors: index.meta.inspection_errors } : {}),
     },
     records: sortedRecords,

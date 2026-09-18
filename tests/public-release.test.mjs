@@ -22,10 +22,11 @@ const canonicalReleaseNotes = JSON.parse(
   readFileSync(new URL("../docs/_generated/release-notes.json", import.meta.url), "utf8"),
 );
 const draftManifest = { ...canonicalManifest, state: "draft" };
+const publishedManifest = { ...canonicalManifest, state: "published" };
 
 function canonicalProjection(overrides = {}) {
   return {
-    manifest: canonicalManifest,
+    manifest: publishedManifest,
     package_version: canonicalPackage.version,
     published: true,
     preview_visible: false,
@@ -38,19 +39,35 @@ function sha256(filePath) {
   return createHash("sha256").update(readFileSync(filePath)).digest("hex");
 }
 
-test("canonical manifest is strict and published", () => {
+test("canonical manifest is strict and its declared visibility is respected", () => {
   const before = sha256(publicReleasePaths.manifest);
   const projection = loadPublicReleaseProjection({ env: {} });
   const after = sha256(publicReleasePaths.manifest);
 
   assert.deepEqual(projection.manifest, canonicalManifest);
   assert.equal(projection.package_version, canonicalPackage.version);
-  assert.equal(projection.published, true);
+  const published = canonicalManifest.state === "published";
+  assert.equal(projection.published, published);
   assert.equal(projection.preview_visible, false);
-  assert.equal(projection.visible, true);
-  assert.equal(projection.indexable, true);
+  assert.equal(projection.visible, published);
+  assert.equal(projection.indexable, published);
   assert.equal(projection.site_noindex, false);
   assert.equal(after, before);
+  assert.deepEqual(currentRelease, projectCurrentRelease({
+    releaseProjection: projection,
+    releaseNotes: canonicalReleaseNotes,
+  }));
+});
+
+test("draft releases stay hidden by default locally and in production", () => {
+  for (const env of [{}, { VERCEL_ENV: "production" }]) {
+    const projection = projectPublicRelease({ manifest: draftManifest,
+      packageVersion: canonicalPackage.version, env });
+    assert.equal(projection.published, false);
+    assert.equal(projection.visible, false);
+    assert.equal(projection.indexable, false);
+    assert.equal(projection.preview_visible, false);
+  }
 });
 
 test("manifest validation rejects missing, unknown, and malformed values", () => {
@@ -99,7 +116,7 @@ test("draft release preview fails closed in Vercel production", () => {
 
 test("published release requires package version parity", () => {
   const projection = projectPublicRelease({
-    manifest: canonicalManifest,
+    manifest: publishedManifest,
     packageVersion: canonicalPackage.version,
     env: {},
   });
@@ -109,14 +126,19 @@ test("published release requires package version parity", () => {
   assert.equal(projection.indexable, true);
   assert.equal(projection.site_noindex, false);
   assert.throws(
-    () => projectPublicRelease({ manifest: canonicalManifest, packageVersion: "mismatch", env: {} }),
+    () => projectPublicRelease({ manifest: publishedManifest, packageVersion: "mismatch", env: {} }),
     /package version must be a valid semantic version/,
+  );
+  assert.throws(
+    () => projectPublicRelease({ manifest: { ...publishedManifest, target_version: "999.0.0" },
+      packageVersion: canonicalPackage.version, env: {} }),
+    /but package.json is/,
   );
 });
 
 test("deployment previews retain site-wide noindex behavior", () => {
   const projection = projectPublicRelease({
-    manifest: canonicalManifest,
+    manifest: publishedManifest,
     packageVersion: canonicalPackage.version,
     env: { VERCEL_ENV: "preview" },
   });
@@ -128,7 +150,7 @@ test("deployment previews retain site-wide noindex behavior", () => {
 
 test("release preview flag does not de-index a published release", () => {
   const projection = projectPublicRelease({
-    manifest: canonicalManifest,
+    manifest: publishedManifest,
     packageVersion: canonicalPackage.version,
     env: { PUBLIC_MDKG_RELEASE_PREVIEW: "1" },
   });
@@ -186,7 +208,6 @@ test("current release projection selects exact published release facts", () => {
   assert.equal(projected.date, selected.date);
   assert.equal(projected.item_count, selected.item_count);
   assert.deepEqual(projected.highlights, selected.highlights);
-  assert.deepEqual(currentRelease, projected);
 });
 
 test("current release projection uses Unreleased notes for enabled draft previews", () => {

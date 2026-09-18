@@ -57,10 +57,14 @@ index/cache repair hints, missing graph references, and duplicate local ids as
 receipt-shaped planned changes with risk levels and per-change
 `apply_supported` metadata. Duplicate-ID graph repairs can be applied with
 `mdkg fix apply --family ids --json` or `mdkg fix ids --apply --json`; use
-`--base-ref main` when mainline IDs should win. Index/cache and graph-reference
-findings remain review-only. For unresolved Git add/add conflicts, `fix ids`
-keeps stage 2 at the conflicted path, rewrites stage 3 to the next unused
-canonical ID/path, and records a receipt.
+`--base-ref` only after reviewing its meaning. During unresolved Git repair it
+must match the unique common ancestor. Index/cache and graph-reference findings
+remain review-only. `fix ids` splits stage2/stage3 only when the ancestor proves
+independent additions; same-node edits and ambiguous ancestry require a semantic
+decision. It preserves reviewed manual resolutions and Git staging. Stage numbers
+are positional, not an assumption that either branch is main.
+Numeric repair is legacy-only. Format-v2 graphs use `mdkg graph reconcile` for
+reviewed identity/alias integration; `fix ids` refuses v2 graphs.
 
 Use research spikes for investigation and planning work that should produce a
 reviewable recommendation before implementation:
@@ -204,7 +208,7 @@ mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip
 
 Use this as a pre-commit recommendation only when the repo tracks archive caches or `.mdkg/bundles/`. Private bundles are local graph transport artifacts and may be tracked in private repos when configured. Public bundles require selected workspaces with `visibility: public` and fail closed when public records reference private graph, archive, or subgraph records.
 
-Clone or fork an authored graph into a separate repo/workspace while preserving IDs:
+Clone or fork an authored graph into a separate target while preserving numeric aliases:
 
 ```bash
 mdkg graph clone .mdkg/bundles/private/all.mdkg.zip --target demos/demo-1 --json
@@ -218,7 +222,14 @@ mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 -
 mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 --select-goal --apply --json
 ```
 
-`graph clone` and `graph fork` preserve IDs because the target is a separate graph namespace. `graph import-template` rewrites canonical numeric IDs for same-repo imports and requires `--id-prefix` for colliding semantic IDs. With `--select-goal --apply`, import-template activates the rewritten imported start goal, pauses competing active root goals, validates the graph, and then writes selected-goal state. Subgraphs remain read-only planning views; use `mdkg graph ...` when authored graph state should be created.
+V2 `graph clone` preserves same-project graph/node identities. Independent v2
+`graph fork` creates new identities with lineage, while keeping numeric aliases.
+`graph import-template` rewrites numeric aliases and proven structured links for
+same-graph imports, allocates target-owned v2 identities and requires `--id-prefix`
+for colliding semantic IDs. With `--select-goal --apply`, import-template
+activates the rewritten imported start goal, pauses competing active root goals,
+validates the graph, and writes selected-goal state. Subgraphs remain read-only
+planning views; none of these operations transfers live checkout authority.
 
 Register child bundle snapshots as read-only subgraphs with:
 

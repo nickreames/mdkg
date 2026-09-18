@@ -1,4 +1,7 @@
 import path from "path";
+import { validateConfigSchema } from "../core/config";
+import { readContainedFile } from "../core/filesystem_authority";
+import { identityWriterConfig } from "../core/migrate";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri, isUriRef } from "../util/refs";
 import { formatFrontmatter, FrontmatterValue } from "./frontmatter";
@@ -137,7 +140,12 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
       ancestor_path: previous?.path ?? null, before_hash: entry.hash };
   });
   const mappingByQid = new Map(mappings.map((entry) => [entry.qid, entry]));
-  const writes: GraphFileChange[] = [];
+  const configBefore = readContainedFile({ root, relativePath: ".mdkg/config.json" });
+  const configAfter = `${JSON.stringify(identityWriterConfig(JSON.parse(configBefore)), null, 2)}\n`;
+  const candidateConfig = validateConfigSchema(JSON.parse(configAfter));
+  // First forward / last rollback operation: block ordinary old clients before
+  // any identity bytes change. Old init binaries remain outside our control.
+  const writes: GraphFileChange[] = [{ path: ".mdkg/config.json", before: configBefore, after: configAfter }];
   const templates = loadTemplateSchemas(root, current.config, ALLOWED_TYPES);
   const candidateNodes = current.nodes.map((entry) => {
     const mapping = mappingByQid.get(entry.qid)!;
@@ -182,7 +190,7 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
   const format = { ...createGraphFormat(graphId), migration_receipt: receiptPath };
   const manifestContent = `${JSON.stringify(format, null, 2)}\n`;
   writes.push({ path: GRAPH_FORMAT_PATH, before: null, after: manifestContent });
-  const candidate: AuthoredSnapshot = { ...current, format, nodes: candidateNodes };
+  const candidate: AuthoredSnapshot = { ...current, config: candidateConfig, format, nodes: candidateNodes };
   const receipt = {
     schema_version: 1, kind: "graph-identity-migration", intent_hash: intentHash,
     graph_id: graphId, origin, ancestor: ancestor ? { revision: ancestor.revision, tree_hash: ancestor.tree_hash } : null,
@@ -190,6 +198,8 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
     continuity_reviews: continuityReviews, decisions,
     provenance_limit: "Git commits and stage-0 index prove observable continuity only; unrecorded unlink/recreate with no surviving Git trace is indistinguishable from editing",
     manifest_hash: identityHash(manifestContent), body_policy: "preserve exact historical body bytes",
+    writer_fence: { path: ".mdkg/config.json", before_hash: identityHash(configBefore), after_hash: identityHash(configAfter),
+      policy: "all writers must support adopted graph capabilities; old init/force-init cannot be controlled retroactively" },
     execution_state_policy: "selection, claims, runtime DB and Git staging are not migrated",
     validation_contract: "authored-candidate-v1: graph, skills, templates, imports, visibility, archives, events and resulting discovery limits; derived caches and opt-in profiles excluded",
   };

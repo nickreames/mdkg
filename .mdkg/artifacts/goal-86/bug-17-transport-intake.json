@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "source-only-transport-candidate-intake",
+  "date": "2026-09-15",
+  "goal": "root:goal-86",
+  "owner": "root:bug-17",
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "source_has_accepted_uncommitted_changes": true,
+  "reviewer": "transport_completion_prepatch",
+  "review_mode": "One fresh independent offline read-only source investigation; no edits, tests, builds, scan or remote activity",
+  "disposition": "Candidates below are not confirmed runtime defects or security clearance. Reproduce before remedies; preserve original Standard finding accounting.",
+  "source_bookends": {
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/commands/bundle.ts": "ad04ae9f2f40561edda429e75fab8532a31c5af5f27e5a1ccd90954619dc380d",
+    "src/commands/subgraph.ts": "80a6b6b0b3a830725b7307682de52fee1319edc14c08a4f8a1c6db2a62e861c7"
+  },
+  "accepted_boundary": "Public exports omit private DB payloads with non-disclosing exclusion evidence; both profiles exclude live databases, sidecars and checkout authority. Private deliberate snapshots/receipts remain byte-exact. Historical policy-less public bundles remain inspectable, not materializable. Local structural integrity is not external authenticity or execution authority.",
+  "candidates": [
+    {"id": "transport-child-projections", "source": ["src/graph/transport_state.ts", "src/graph/workspace_files.ts", "src/commands/bundle.ts"], "claim": "Selected child graphs nested under excluded checkout/DB roots may survive in freshly generated indexes despite raw omission"},
+    {"id": "transport-consumer-admission", "source": ["src/commands/subgraph.ts", "src/commands/graph.ts"], "claim": "Config-less materialization and template import lack shared mandatory portable-state admission"},
+    {"id": "transport-relocated-caches", "source": ["src/commands/bundle.ts", "src/core/config.ts"], "claim": "Custom graph roots and relocated configured caches bypass fixed .mdkg exclusions"},
+    {"id": "transport-profile", "source": ["src/graph/identity_transport.ts", "src/commands/subgraph.ts"], "claim": "Clone/fork hard-code private policy; materialization does not recheck registered expected profile"},
+    {"id": "transport-path-representations", "source": ["src/graph/transport_state.ts", "src/util/zip.ts"], "claim": "Case, Unicode and literal backslash aliases may differ between configured state, filesystem discovery and archive spelling"},
+    {"id": "transport-incoming-authority", "source": ["src/graph/transport_state.ts", "src/commands/graph.ts", "src/commands/subgraph.ts"], "claim": "Historical manifest rows can label checkout locks or alternate cache files as authored"},
+    {"id": "transport-portable-siblings", "source": ["src/graph/transport_state.ts"], "claim": "Private receipt paths under conventional runtime storage and public omission reasons need explicit compatibility tests"},
+    {"id": "transport-projection-snapshot", "source": ["src/graph/subgraphs.ts"], "claim": "Foreign capabilities and later imported-body reads may not share the validated manifest/workspace/snapshot boundary"}
+  ],
+  "next": "Parent reproductions and legitimate controls in owned synthetic fixtures, shared-boundary implementation only for confirmed in-scope routes, then one fresh candidate reviewer and final task-828 review",
+  "skill_candidates": []
+}

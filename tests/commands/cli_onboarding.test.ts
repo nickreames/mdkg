@@ -55,10 +55,11 @@ test("bundled command reference agrees with compact and reviewed-upgrade guidanc
   assert.doesNotMatch(text, /`mdkg upgrade --apply`/);
 });
 
-test("global help projects an actual path placeholder instead of prose as the only argument", () => {
+test("upgrade path selection is command-specific and uses a real placeholder", () => {
   const contract = JSON.parse(fs.readFileSync(path.join(runtime, "command-contract.json"), "utf8"));
-  const flag = contract.commands.find((c: any) => c.key === "global").flags.find((f: any) => f.name === "--only");
-  assert.equal(flag.value, "<path,...>");
+  assert.equal(contract.commands.find((c: any) => c.key === "global").flags.some((f: any) => f.name === "--only"), false);
+  const flag = contract.commands.find((c: any) => c.key === "upgrade").flags.find((f: any) => f.name === "--only");
+  assert.match(flag.value, /^<paths?>$/);
 });
 
 test("removed init modes point to the default without writing anything", () => {

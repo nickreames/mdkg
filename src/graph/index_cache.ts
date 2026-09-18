@@ -110,7 +110,7 @@ export function loadIndex(options: LoadIndexOptions): LoadIndexResult {
     return withSubgraphs(index, true, false);
   }
 
-  const stale = isIndexStale(options.root, options.config);
+  const stale = isIndexStale(options.root, options.config, tolerant);
   if (fs.existsSync(indexPath) && !stale) {
     return withSubgraphs(validateCachedNodePaths(options.root, options.config, readIndex(options.root, indexPath)), false, false);
   }

@@ -1,0 +1,1151 @@
+{
+  "schema_version": 1,
+  "kind": "git-observation-local-verification",
+  "work_qid": "root:bug-41",
+  "goal_qid": "root:goal-86",
+  "outcome": "locally-verified-fixed",
+  "evidence_state": "current-intermediate",
+  "final_artifact_pass": false,
+  "publication_status": "NOT_READY",
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "branch": "main",
+  "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_divergence": "50\t0",
+  "remote_verified": false,
+  "commits_created": [],
+  "staged_paths": [],
+  "owner": "mdkg-project-agent",
+  "authority_used": "Explicit Goal86 Run: bounded generic mdkg implementation, synthetic local fixtures, read-only independent reviewers and required evidence/projections",
+  "scope": {
+    "invariant": "Observational Git consumers do not execute configured fsmonitor or clean/process helpers; failed/malformed observations cannot become clean or fresh receipts.",
+    "callers": [
+      "git inspect",
+      "status",
+      "fix plan/internal repair reads",
+      "validate --changed-only",
+      "bundle create/verify",
+      "registered child freshness",
+      "subgraph audit/upgrade-plan/sync preview",
+      "upgrade missing-event guidance"
+    ],
+    "legitimate_behavior": "Non-Git graphs, native Git/worktrees/submodules/gitdir indirection, unused filters and Boolean attributes, historical snapshots, intended graph writes and unchanged Git staging remain supported.",
+    "overlap": "Preserve prior accepted Bug17/35/40 and Bug39 hunks; whole-file hashes bind the combined candidate, not exclusive ownership of every diff hunk."
+  },
+  "strategy": [
+    "Shared internal Git observation helper extracted from existing inspect hardening; core.fsmonitor=false, optional locks disabled, no lazy fetch, strict UTF-8/NUL/porcelain parsing and sanitized failures.",
+    "Inventory effective tracked paths and initialized submodules before status; reject active content filters without blanket disabling that could falsify provenance.",
+    "Remove command-specific GIT_CONFIG from all observations so config enumeration and native status use the same effective configuration; preserve normal Git configuration environment.",
+    "Use check-attr --all to distinguish absent attributes from literal unspecified. Disambiguate Boolean set/unset from literal drivers through hash-object without -w, disabling all executable drivers and requiring success only for the probe; actual status never uses altered filters.",
+    "Preserve literal POSIX backslashes in bundle dirty provenance. Recorded HEAD unavailable/mismatch is stale; show still supports historical inspection and native non-Git bundles remain verifiable.",
+    "Unknown child source freshness is explicitly stale while integrity-verified imported historical nodes remain readable; fresh-only/actions refuse unknown proof."
+  ],
+  "security_review": {
+    "workflow": "codex-security:fix-finding",
+    "standard_scan": false,
+    "task828_acceptance": false,
+    "prepatch": "One fresh source-read-only investigator; parent independently traced and reproduced affected sinks.",
+    "candidate_review": {
+      "cycles": 1,
+      "patch_sha256": "e9fd316c06f8bd69fc637a40c74f84d4f9ba64187ab6ee6e720b5187478ebe79",
+      "findings": [
+        {
+          "issue": "GIT_CONFIG filters hidden from preflight",
+          "confirmation": "Five current candidate commands executed synthetic marker helper before; all now refuse with zero execution."
+        },
+        {
+          "issue": "Sentinel-named unused filters falsely refused",
+          "confirmation": "Absent/Boolean attributes now pass; literal named drivers refuse; native controls distinguish actual execution."
+        },
+        {
+          "issue": "Literal backslash bundle path falsely treated as excluded generated directory",
+          "confirmation": "Before source.dirty=false despite native modification; regression now requires true and keeps genuine bundle-directory exclusions."
+        }
+      ],
+      "question": {
+        "issue": "Recorded HEAD unavailable yet bundle verify fresh",
+        "disposition": "Parent reproduced unborn-HEAD success and confirmed the source-freshness contract; now stale, with historical show and genuine non-Git controls."
+      }
+    }
+  },
+  "reproduction": {
+    "published_0_5_2": "Retained installed executable reproduces root fsmonitor/content-filter/failure-boundary cases. New candidate-review edge cases were separately established on the current candidate, not assumed published unless tested.",
+    "fixtures": "Synthetic only; native helper marker positive controls, complete file-content/mode/topology inventories, Git-index/staging hashes and forbidden-operation traps.",
+    "raw_temp_evidence_hashes": [
+      {
+        "path": "before.json",
+        "sha256": "080a6e7a38f1e6598bfac4f1151fb2c4c59d4a602a60e49cc613d3d6610f7348"
+      },
+      {
+        "path": "challenge-before.json",
+        "sha256": "6db077355b7fe211c30523f3e399e6b6b0d8135cf207ca28b0113847119d070e"
+      },
+      {
+        "path": "upgrade-before.json",
+        "sha256": "baaa011a66f64d9a6c067bc4730ef9c88ebc2956ba0f7804234ad5f960469500"
+      },
+      {
+        "path": "review-probes-before.json",
+        "sha256": "1951390fb6e8c29733abce094988488ff314bbbfbf15e35ea030d2b980f43782"
+      },
+      {
+        "path": "review-probes-after.json",
+        "sha256": "43959b209bf94320e95bdfa8310ac823063ade31bb989248e9a7b81f4bb06776"
+      },
+      {
+        "path": "attribute-probes-before.json",
+        "sha256": "e7bb3c786b906ec1992ae97938f5a11d04f36d7625b9c0cc51a6c6d3c7e6c0ad"
+      },
+      {
+        "path": "attribute-probes-after.json",
+        "sha256": "a91e2b038f138fc31a4ab15fe8edd5fd4ad6909c047f83d75a5e3da52222945e"
+      },
+      {
+        "path": "review-boundaries-before.json",
+        "sha256": "7eee79fb829e6b6eea397c6ec9c9de8a17790825004535cb298a8066e6b914bf"
+      },
+      {
+        "path": "head-probe-current.json",
+        "sha256": "ac4a4e33721a8a55c1584661a7758d65501bce5a75c5cc0521a2200833c5f62e"
+      },
+      {
+        "path": "head-probe-after.json",
+        "sha256": "30a86a72d852ee387aecdb32f2e006f8381513e470046de23173551d0459d9e6"
+      },
+      {
+        "path": "candidate-review.patch",
+        "sha256": "e9fd316c06f8bd69fc637a40c74f84d4f9ba64187ab6ee6e720b5187478ebe79"
+      },
+      {
+        "path": "full-tests-final.log",
+        "sha256": "6c056ca301553102d16e60e779730115e4657332835f31035950d7a1d6200e55"
+      },
+      {
+        "path": "focused-final.log",
+        "sha256": "720928de2c6d0eb938c7d265f884144f35f2bf1fd59c38d18f3c78fda937d1ad"
+      },
+      {
+        "path": "package-manifest.json",
+        "sha256": "cb42675a7f030ca3d2c7c8bb11c6e11703c94cea17dab50817fee34f46e7991a"
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "path": "src/commands/git.ts",
+      "sha256": "b4ccb98421f0fa592f0563eeb7e4f098a2da020d4bfce51505947261f427ae0a"
+    },
+    {
+      "path": "src/commands/status.ts",
+      "sha256": "c69142e21f20e6bc13458babd3d54835e881ea1b4c41c1db98e81ce5ee0a6987"
+    },
+    {
+      "path": "src/commands/fix.ts",
+      "sha256": "4fafdb27ef0ba16b600a3ac8a9214ded38b5d8fc1302d40586bc55bea7032b0b"
+    },
+    {
+      "path": "src/commands/bundle.ts",
+      "sha256": "fe5774ffd5a4c9e98ad93b673498a85d0b3872ed69786512eeb856bf8a394579"
+    },
+    {
+      "path": "src/commands/subgraph.ts",
+      "sha256": "c6dd152119508de1faab1cdbac5247c71d6e2d06cc69a73fe56804eddd35574a"
+    },
+    {
+      "path": "src/commands/validate.ts",
+      "sha256": "f58360871fa0adc3c35c9c51f70658cf67af58a5f064ecadf323861044becc52"
+    },
+    {
+      "path": "src/commands/upgrade.ts",
+      "sha256": "fd33155a25a67962942454caf79dd522cf8de388355b162b6cfc89796c014537"
+    },
+    {
+      "path": "src/graph/subgraphs.ts",
+      "sha256": "ded4e4c27570aa1e4f54a61fe57d9ee27986f4c3d2d185f727c78404b7c0b38c"
+    },
+    {
+      "path": "src/util/git_observation.ts",
+      "sha256": "811d8b80bbc7f2e5b813ca6e303d9b9d7e06a1aa87031f88ca4e2a7744b23475"
+    },
+    {
+      "path": "tests/commands/git_inspect.test.ts",
+      "sha256": "8f7d4b307ff16eae6da391d4ae356910bf259e8c3ea2b24fb05992b2be4da48f"
+    },
+    {
+      "path": "tests/commands/git_helper_observation.test.ts",
+      "sha256": "5f064a4329aff9dc270903d3cefe0683c9cc16da46cac4f6ccb0e3c8da63d16b"
+    },
+    {
+      "path": "tests/commands/git_child_observation.test.ts",
+      "sha256": "6923b6f8a4373f1317eeadeecdc13c3119f2f65420f845290e125999f059735f"
+    },
+    {
+      "path": "tests/fixtures/git-helper-observation.cjs",
+      "sha256": "543e30034835bfff09342d18b47cdd96a0a494f8cfd38bc16bd2cd8d9dcea6e9"
+    },
+    {
+      "path": "tests/fixtures/git-child-observation.cjs",
+      "sha256": "389be144bccf93e24aa5169544f67da108331dbbd04fd9fd5a96e045e49f2006"
+    }
+  ],
+  "package_input_changes_since_pack": [],
+  "candidate": {
+    "kind": "intermediate-not-release",
+    "version": "0.5.2",
+    "sha256": "bd7d6fbdc6b6b99d4ad23a4f61b0ad3c5f853bf9f0f330c7cae6fa5980cee987",
+    "integrity": "sha512-tcdyBpnqAMv/Gd092IffyR2jhuhdqXOWoqRpnu2KUAwiXWcqMX8WVwy6fGPA795ZP7b5Mz4l39A9pRb+2k6IDQ==",
+    "files": 225,
+    "prepack_bypassed": true,
+    "meaning": "Not a final 0.6.0 seal, publish-ready artifact or successful full release ladder."
+  },
+  "validation": {
+    "build": "pass",
+    "focused": "37/38 original focused tests passed; one provenance fixture mistakenly passed unsupported init --json. Corrected harness then passed that test. Final full source run contains corrected fixture.",
+    "full_source": {
+      "runtime": "24.18.0",
+      "platform": "macOS arm64",
+      "tests": 1474,
+      "pass": 1474,
+      "fail": 0,
+      "skipped": 0,
+      "exit_code": 0
+    },
+    "parity": {
+      "cli": "pass",
+      "contract": "pass",
+      "docs": "pass;470 examples/63 files/0 failures",
+      "workflow": "pass"
+    },
+    "installed": {
+      "result": "pass",
+      "runtimes": [
+        {
+          "runtime": "v24.15.0",
+          "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+          "platform": "darwin",
+          "arch": "arm64",
+          "tarball_sha256": "bd7d6fbdc6b6b99d4ad23a4f61b0ad3c5f853bf9f0f330c7cae6fa5980cee987",
+          "receipt_sha256": "87fd1bda3aaf2e41ecbda921df110b3613f4322fa3f05f3000c664b803c9d7c4",
+          "installed_files": 225,
+          "direct_cases": 430,
+          "child_cases": 288,
+          "upgrade_cases": 2,
+          "provenance_cases": 6,
+          "exit_code": 0
+        },
+        {
+          "runtime": "v24.18.0",
+          "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+          "platform": "darwin",
+          "arch": "arm64",
+          "tarball_sha256": "bd7d6fbdc6b6b99d4ad23a4f61b0ad3c5f853bf9f0f330c7cae6fa5980cee987",
+          "receipt_sha256": "1dd933693649ef543cbac5a198c7fca25adfbb5664545fd0f70beb70d67f26d6",
+          "installed_files": 225,
+          "direct_cases": 430,
+          "child_cases": 288,
+          "upgrade_cases": 2,
+          "provenance_cases": 6,
+          "exit_code": 0
+        },
+        {
+          "runtime": "v26.0.0",
+          "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+          "platform": "darwin",
+          "arch": "arm64",
+          "tarball_sha256": "bd7d6fbdc6b6b99d4ad23a4f61b0ad3c5f853bf9f0f330c7cae6fa5980cee987",
+          "receipt_sha256": "aa00758345962e992a4f8d00bfc5f71f02150c93ad3d25aeb8b518b090241d96",
+          "installed_files": 225,
+          "direct_cases": 430,
+          "child_cases": 288,
+          "upgrade_cases": 2,
+          "provenance_cases": 6,
+          "exit_code": 0
+        }
+      ],
+      "matrix_sha256": "e174c16c2db2776791cdd10cd61781fb5e9e2ff0666d6fddd4de15cbfe80add1",
+      "matrix_consistent": true,
+      "package_inputs_unchanged": true,
+      "direct": [
+        {
+          "topology": "standalone",
+          "cases": 110,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "unused-process",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "unused-unspecified-clean",
+            "unused-set-clean",
+            "unused-unset-clean",
+            "boolean-set-clean",
+            "boolean-unset-clean",
+            "active-set-clean",
+            "active-unset-clean",
+            "active-unspecified-clean",
+            "failed",
+            "truncated",
+            "malformed",
+            "rename",
+            "utf8",
+            "pair",
+            "oversized"
+          ],
+          "commands": [
+            "status",
+            "fix plan",
+            "validate --changed-only",
+            "bundle create",
+            "git inspect"
+          ],
+          "native_helper_positive_controls": 8,
+          "deliberate_graph_mutation_supported": true
+        },
+        {
+          "topology": "worktree",
+          "cases": 80,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "unused-process",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "unused-unspecified-clean",
+            "unused-set-clean",
+            "unused-unset-clean",
+            "boolean-set-clean",
+            "boolean-unset-clean",
+            "active-set-clean",
+            "active-unset-clean",
+            "active-unspecified-clean",
+            "failed"
+          ],
+          "commands": [
+            "status",
+            "fix plan",
+            "validate --changed-only",
+            "bundle create",
+            "git inspect"
+          ],
+          "native_helper_positive_controls": 8,
+          "deliberate_graph_mutation_supported": true
+        },
+        {
+          "topology": "submodule",
+          "cases": 80,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "unused-process",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "unused-unspecified-clean",
+            "unused-set-clean",
+            "unused-unset-clean",
+            "boolean-set-clean",
+            "boolean-unset-clean",
+            "active-set-clean",
+            "active-unset-clean",
+            "active-unspecified-clean",
+            "failed"
+          ],
+          "commands": [
+            "status",
+            "fix plan",
+            "validate --changed-only",
+            "bundle create",
+            "git inspect"
+          ],
+          "native_helper_positive_controls": 8,
+          "deliberate_graph_mutation_supported": true
+        },
+        {
+          "topology": "gitdir",
+          "cases": 80,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "unused-process",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "unused-unspecified-clean",
+            "unused-set-clean",
+            "unused-unset-clean",
+            "boolean-set-clean",
+            "boolean-unset-clean",
+            "active-set-clean",
+            "active-unset-clean",
+            "active-unspecified-clean",
+            "failed"
+          ],
+          "commands": [
+            "status",
+            "fix plan",
+            "validate --changed-only",
+            "bundle create",
+            "git inspect"
+          ],
+          "native_helper_positive_controls": 8,
+          "deliberate_graph_mutation_supported": true
+        },
+        {
+          "topology": "nested",
+          "cases": 80,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "unused-process",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "unused-unspecified-clean",
+            "unused-set-clean",
+            "unused-unset-clean",
+            "boolean-set-clean",
+            "boolean-unset-clean",
+            "active-set-clean",
+            "active-unset-clean",
+            "active-unspecified-clean",
+            "failed"
+          ],
+          "commands": [
+            "status",
+            "fix plan",
+            "validate --changed-only",
+            "bundle create",
+            "git inspect"
+          ],
+          "native_helper_positive_controls": 8,
+          "deliberate_graph_mutation_supported": true
+        }
+      ],
+      "children": [
+        {
+          "topology": "nested",
+          "cases": 72,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "failed",
+            "truncated"
+          ],
+          "commands": [
+            "show child:task-1",
+            "validate",
+            "subgraph list",
+            "subgraph show",
+            "subgraph verify",
+            "subgraph audit",
+            "subgraph upgrade-plan",
+            "subgraph sync",
+            "capability resolve"
+          ]
+        },
+        {
+          "topology": "worktree",
+          "cases": 72,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "failed",
+            "truncated"
+          ],
+          "commands": [
+            "show child:task-1",
+            "validate",
+            "subgraph list",
+            "subgraph show",
+            "subgraph verify",
+            "subgraph audit",
+            "subgraph upgrade-plan",
+            "subgraph sync",
+            "capability resolve"
+          ]
+        },
+        {
+          "topology": "submodule",
+          "cases": 72,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "failed",
+            "truncated"
+          ],
+          "commands": [
+            "show child:task-1",
+            "validate",
+            "subgraph list",
+            "subgraph show",
+            "subgraph verify",
+            "subgraph audit",
+            "subgraph upgrade-plan",
+            "subgraph sync",
+            "capability resolve"
+          ]
+        },
+        {
+          "topology": "gitdir",
+          "cases": 72,
+          "modes": [
+            "fsmonitor",
+            "unused-clean",
+            "active-clean",
+            "active-process",
+            "active-config-clean",
+            "active-config-process",
+            "failed",
+            "truncated"
+          ],
+          "commands": [
+            "show child:task-1",
+            "validate",
+            "subgraph list",
+            "subgraph show",
+            "subgraph verify",
+            "subgraph audit",
+            "subgraph upgrade-plan",
+            "subgraph sync",
+            "capability resolve"
+          ]
+        }
+      ],
+      "upgrade": [
+        {
+          "git": false,
+          "helper_executed": false,
+          "inventory_preserved": true,
+          "deleted_history_not_restored": true
+        },
+        {
+          "git": true,
+          "helper_executed": false,
+          "inventory_preserved": true,
+          "deleted_history_not_restored": true
+        }
+      ],
+      "provenance": [
+        {
+          "case": "native-nongit-bundle",
+          "verified": true
+        },
+        {
+          "case": "real-bundle-directory",
+          "excluded": true
+        },
+        {
+          "case": "literal-backslash-path",
+          "dirty": true
+        },
+        {
+          "case": "recorded-committed-head",
+          "verified": true
+        },
+        {
+          "case": "unborn",
+          "stale": true,
+          "historical_inspection": true
+        },
+        {
+          "case": "nongit-copy",
+          "stale": true,
+          "historical_inspection": true
+        }
+      ]
+    },
+    "graph": "Full 0 errors/3 preserved stale-import warnings; changed-only 0 errors. SQLite verification passes after own sequential projection writes complete; a concurrent intermediate observation saw an in-flight fingerprint mismatch and is not final proof.",
+    "diff_check": "pass"
+  },
+  "failed_attempts": [
+    "A focused run overlapped the agent's own build cleanup and was invalidated; clean subsequent focused/full runs replace it, without weakening assertions.",
+    "The first npm pack failed because user/global isolated config both referenced /dev/null. Distinct isolated config paths resolved the tool setup; no global/user configuration changed.",
+    "The first installed minimum-runtime run reached all direct/child observations but failed the provenance fixture's unsupported init flag. A complete corrected rerun passes all726 cases against unchanged tarball bytes."
+  ],
+  "remaining": [
+    "Final 0.6.0 inputs and installed Linux/macOS qualification",
+    "Fresh Standard task837 and full-remediation independent task828",
+    "Full manifest-backed release ladder including unchanged coverage floors",
+    "Exact final artifact seal and fresh Goal85 publication approval",
+    "Separate Bug42 copied-cache metadata and Bug43 changed-warning path blockers; v2 writer/recovery work"
+  ],
+  "protected_before": [
+    {
+      "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+      "mode": 33188,
+      "size": 488385,
+      "kind": "file",
+      "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    {
+      "path": ".mdkg/db/runtime/project.sqlite",
+      "mode": 33188,
+      "size": 118784,
+      "kind": "file",
+      "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+    },
+    {
+      "path": ".mdkg/db/runtime/project.sqlite-shm",
+      "absent": true
+    },
+    {
+      "path": ".mdkg/db/runtime/project.sqlite-wal",
+      "absent": true
+    },
+    {
+      "path": ".mdkg/index/write.lock",
+      "absent": true
+    },
+    {
+      "path": ".mdkg/state/selected-goal.json",
+      "mode": 33188,
+      "size": 108,
+      "kind": "file",
+      "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+    },
+    {
+      "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index",
+      "mode": 33188,
+      "size": 674003,
+      "kind": "file",
+      "sha256": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+    },
+    {
+      "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index.lock",
+      "absent": true
+    }
+  ],
+  "runtime_state": {
+    "active_leases": 0,
+    "recorded_released_leases": 5,
+    "queues": 0,
+    "messages": 0
+  },
+  "skill_coverage": [
+    "select-work-and-ground-context",
+    "service-boundary-ownership-check",
+    "pursue-mdkg-goal",
+    "source-grounded-diagnose-and-fix",
+    "codex-security:fix-finding",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": [],
+  "skill_classification": "Enforced generic CLI behavior belongs in implementation/regressions; reuse existing procedures, no new skill.",
+  "qualification_boundary": "This closes only Bug41 local implementation acceptance. Final installed/platform/security gates remain open; no final coverage measurement or publication clearance is claimed.",
+  "post_closeout": {
+    "checkpoint": "root:chk-613",
+    "work_state": "done",
+    "goal_state": "active-not-ready",
+    "future_publication_goal": "root:goal-85 remains paused",
+    "validation": {
+      "full_graph": {
+        "exit_code": 0,
+        "errors": 0,
+        "warnings": 3,
+        "warning_kind": "Preserved stale imported bundles"
+      },
+      "changed_only": {
+        "exit_code": 0,
+        "errors": 0,
+        "warnings": 0
+      },
+      "sqlite": {
+        "exit_code": 0,
+        "fresh_checks": 5
+      },
+      "diff_check": {
+        "exit_code": 0
+      }
+    },
+    "protected_after": [
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "mode": 33188,
+        "size": 488385,
+        "kind": "file",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "mode": 33188,
+        "size": 118784,
+        "kind": "file",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-shm",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-wal",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/index/write.lock",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "mode": 33188,
+        "size": 108,
+        "kind": "file",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index",
+        "mode": 33188,
+        "size": 674003,
+        "kind": "file",
+        "sha256": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+      },
+      {
+        "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index.lock",
+        "absent": true
+      }
+    ],
+    "protected_match": true,
+    "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+    "branch": "main",
+    "cached_divergence": "50\t0",
+    "staged_paths": [],
+    "dirty_path_count": 101,
+    "dirty_paths": [
+      {
+        "status": " M",
+        "path": ".mdkg/index/mdkg.sqlite"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/bug-35-keep-observational-git-subprocesses-from-refreshing-root-and-child-indexes.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/bug-39-reject-unsupported-command-options-before-dispatch-and-unintended-writes.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/task-827-prepare-draft-mdkg-0-6-0-metadata-and-release-guidance.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/task-831-recheck-mdkg-0-6-0-approval-blockers-and-sealed-candidate.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md"
+      },
+      {
+        "status": " M",
+        "path": "docs/_generated/cli-reference.md"
+      },
+      {
+        "status": " M",
+        "path": "docs/_generated/command-contract-summary.json"
+      },
+      {
+        "status": " M",
+        "path": "scripts/generate-command-contract.js"
+      },
+      {
+        "status": " M",
+        "path": "scripts/generate-docs-reference.js"
+      },
+      {
+        "status": " M",
+        "path": "scripts/smoke-bundle.js"
+      },
+      {
+        "status": " M",
+        "path": "scripts/smoke-capabilities.js"
+      },
+      {
+        "status": " M",
+        "path": "scripts/smoke-git-boundary.js"
+      },
+      {
+        "status": " M",
+        "path": "src/cli.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/bundle.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/fix.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/git.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/graph.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/status.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/subgraph.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/upgrade.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/commands/validate.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/graph/identity_transport.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/graph/node_body.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/graph/subgraphs.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/graph/workspace_ownership.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/util/argparse.ts"
+      },
+      {
+        "status": " M",
+        "path": "src/util/zip.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/cli_onboarding.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/command_contract.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/git.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/git_inspect.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/graph.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/read_only_observational.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/security_containment.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/commands/subgraph.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/graph/node_body.test.ts"
+      },
+      {
+        "status": " M",
+        "path": "tests/graph/subgraph_containment.test.ts"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-84/bug-17-progress.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/bug-17-closeout-validation.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/bug-17-local-verification.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/bug-17-transport-intake.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/bug-17-transport-progress.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/bug-39-local-verification.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/bug-41-local-verification.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/changed-warning-intake.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/execution-baseline-20260915.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/observational-boundary-reproductions.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/observational-boundary-verification.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/planning-receipt.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/requirement-coverage.json"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/design/dec-96-require-fresh-security-and-macos-linux-launch-qualification-for-mdkg-0-6-0.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/bug-40-keep-subgraph-sync-previews-free-of-mutation-locks-and-cache-directory-writes.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/bug-41-prevent-configured-git-helpers-from-executing-through-generic-graph-observations.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/bug-42-prevent-copied-legacy-json-caches-from-overriding-current-authored-metadata.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/bug-43-preserve-exact-changed-warning-paths-in-nested-git-checkouts-and-literal-filenam.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/chk-608-record-the-mdkg-0-6-0-launch-qualification-planning-package.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/chk-609-accept-goal-86-execution-custody-and-requirement-coverage.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/chk-610-verify-observational-git-and-subgraph-preview-fixes-and-record-cache-qualificati.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/chk-611-verify-shared-transport-state-exclusion-and-portable-checkpoint-compatibility.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/chk-612-verify-early-cli-option-admission-and-installed-compatibility.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/chk-613-verify-helper-free-git-observations-and-exact-provenance.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/task-834-freeze-mdkg-0-6-0-launch-custody-and-requirement-coverage.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/task-837-audit-the-post-remediation-mdkg-0-6-0-repository-with-a-fresh-standard-security.md"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md"
+      },
+      {
+        "status": "??",
+        "path": "src/commands/option_contract.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/graph/transport_policy.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/graph/transport_state.ts"
+      },
+      {
+        "status": "??",
+        "path": "src/util/git_observation.ts"
+      },
+      {
+        "status": "??",
+        "path": "tests/commands/bundle_state.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "tests/commands/cli_option_admission.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "tests/commands/git_child_observation.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "tests/commands/git_helper_observation.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "tests/commands/git_observation.test.ts"
+      },
+      {
+        "status": "??",
+        "path": "tests/fixtures/cli-options.cjs"
+      },
+      {
+        "status": "??",
+        "path": "tests/fixtures/git-child-observation.cjs"
+      },
+      {
+        "status": "??",
+        "path": "tests/fixtures/git-helper-observation.cjs"
+      },
+      {
+        "status": "??",
+        "path": "tests/fixtures/git-observation.cjs"
+      },
+      {
+        "status": "??",
+        "path": "tests/fixtures/transport-state.cjs"
+      }
+    ],
+    "runtime_state": {
+      "active_leases": 0,
+      "released_leases": 5,
+      "queues": 0,
+      "messages": 0
+    },
+    "ownership": "Bug41 task is done; no semantic DB lease was acquired, supported transient locks are absent. Goal86 remains the active authorized lane.",
+    "cleanup": {
+      "synthetic_checkouts_removed": 99,
+      "user_files_removed": false,
+      "retained": "Owned temporary scripts, diagnostics, installed packages/receipts and intermediate tarball"
+    },
+    "next_work": "root:bug-42; root:bug-43 remains a distinct planned prerequisite",
+    "excluded_actions_performed": false
+  }
+}

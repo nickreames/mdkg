@@ -66,7 +66,8 @@ export function validateArchiveFrontmatter(
   frontmatter: Record<string, FrontmatterValue>,
   filePath: string,
   deferIntegrity = false,
-  root?: string
+  root?: string,
+  onIntegrity?: (valid: boolean) => void
 ): void {
   if (!isArchiveType(type)) {
     return;
@@ -122,6 +123,9 @@ export function validateArchiveFrontmatter(
     expectedCompressedHash: compressedHash,
     expectedByteSize: byteSize,
   });
+  // Cache producers capture the admission result from these exact bounded
+  // dependency reads, including invalid archives omitted by tolerant indexing.
+  onIntegrity?.(checked.ok);
   if (!checked.ok) {
     throw formatError(filePath, checked.errors.join("; "));
   }

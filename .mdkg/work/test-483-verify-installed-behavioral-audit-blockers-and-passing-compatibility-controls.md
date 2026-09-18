@@ -8,18 +8,34 @@ tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-83/task-824-contract-audit.json, .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json]
-relates: [task-824, goal-84, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27]
-blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-32, bug-33, bug-34]
+relates: [task-824, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27]
+blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-32, bug-33, bug-34, task-827]
 blocks: []
 refs: [bug-28, bug-29, bug-32, bug-33, bug-34]
-context_refs: [goal-83, goal-84]
+context_refs: [goal-83, goal-84, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 cases: [test-483-case-1, test-483-case-2, test-483-case-3, test-483-case-4, test-483-case-5, test-483-case-6, test-483-case-7, test-483-case-8, test-483-case-9, test-483-case-10, test-483-case-11, test-483-case-12]
 created: 2026-09-08
-updated: 2026-09-09
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Refresh the complete deduplicated behavioral-regression and passing-control matrix on final bytes; keep original failing-before evidence without reopening completed fixes.
+
+This test no longer waits for task826 or Bug7 aggregate closure. Its updated
+implementation prerequisites lead into installed cases; task826 consumes the
+results. Record historical/current-intermediate/final-artifact-pass/failure/
+unverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux
+completeness is independently bound by test487. Task828 remains independent
+acceptance, not an upstream requirement for these test results.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
+
 # Overview
 
 Verify the recorded behavioral blockers against the installed candidate and preserve passing compatibility controls. This is future fix verification, not a claim that the initial reproductions passed the desired contracts.

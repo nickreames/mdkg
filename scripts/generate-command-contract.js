@@ -10,6 +10,8 @@ const root = path.resolve(__dirname, "..");
 const cliPath = path.join(root, "dist", "cli.js");
 const packagePath = path.join(root, "package.json");
 const outputPath = path.join(root, "dist", "command-contract.json");
+const { COMMAND_OPTIONS, commandOptionKind, optionCommandsForHelp } = require(path.join(root, "dist", "commands", "option_contract.js"));
+const { FLAG_ALIASES, normalizeFlag } = require(path.join(root, "dist", "util", "argparse.js"));
 
 function loadLoopCommandDescriptors() {
   const modulePath = path.join(root, "dist", "commands", "loop_descriptors.js");
@@ -154,8 +156,8 @@ const SAFETY_OVERRIDES = {
     side_effects: ["inspect-or-resume-or-roll-back-reviewed-graph-transaction"],
     read_paths: [".mdkg/**", "<local-git-objects-and-index>"],
     write_paths: ["<reviewed-authored-graph-paths>", ".mdkg/graph.json", ".mdkg/identity/**", ".mdkg/state/identity-transactions/**", ".mdkg/index/**"],
-    lock_policy: "mutation-lock-required-for-resume-or-rollback",
-    atomic_write_policy: "exact-owned-before-after-bytes-only",
+    lock_policy: "mutation-lock-or-explicit-evidence-bound-orphan-recovery",
+    atomic_write_policy: "exact-owned-bytes-and-checkout-lock-journal-custody",
     dry_run: { supported: true, default: true },
     receipts: ["graph-transaction-inspect", "graph-transaction-receipt"],
     danger_level: "moderate",
@@ -644,7 +646,7 @@ function extractSummary(helpText, key) {
 
 function flagOccurrences(line) {
   const occurrences = [];
-  const flagPattern = /(^|[\s[])(--[a-z0-9][a-z0-9-]*)(?:[ =](<[^>]+>|\[[^\]]+\]|[^\s\]]+))?/gi;
+  const flagPattern = /(^|[\s[|])(--[a-z0-9][a-z0-9-]*)(?:[ =](<[^>]+>|\[[^\]]+\]|(?!-)[^\s\]]+))?/gi;
   for (const match of line.matchAll(flagPattern)) {
     const nameIndex = (match.index ?? 0) + match[1].length;
     let optionalDepth = 0;
@@ -820,6 +822,23 @@ function commandRecord(target) {
       command_matrix: "CLI_COMMAND_MATRIX.md",
     },
   });
+  const admitted = optionCommandsForHelp(target);
+  const names = [...new Set(admitted.length ? admitted.flatMap(item => item.flags) : ["--root", "--help", "--version"])];
+  const descriptions = new Map(record.flags.map(flag => [normalizeFlag(flag.name), flag]));
+  record.flags = names.sort().map(name => {
+    const command = admitted.find(item => item.flags.includes(name))?.command ?? "global";
+    const kind = commandOptionKind(command, name);
+    const documented = descriptions.get(name);
+    return {
+      name,
+      value: kind === "boolean" ? null : documented?.value ?? (kind === "integer" ? "<integer>" : "<value>"),
+      required: documented?.required ?? false,
+      description: documented?.description ?? `Accepted ${kind} option; see the concrete command admission contract.`,
+      aliases: Object.entries(FLAG_ALIASES).filter(([, canonical]) => canonical === name).map(([alias]) => alias).sort(),
+    };
+  });
+  record.option_admission_source = "src/commands/option_contract.ts";
+  record.executable_option_paths = admitted.map(item => item.command);
   return normalizeRecord(record);
 }
 
@@ -908,12 +927,17 @@ function buildContract() {
     source: {
       help_targets: "scripts/cli_help_targets.js",
       command_matrix: "CLI_COMMAND_MATRIX.md",
+      option_admission: "src/commands/option_contract.ts",
     },
     projections: {
       mdkg_native: "dist/command-contract.json",
       opencli: null,
     },
     commands,
+    option_admission: Object.entries(COMMAND_OPTIONS).map(([command, flags]) => ({
+      command,
+      flags: flags.map(name => ({ name, kind: commandOptionKind(command, name) })),
+    })),
   };
   const contract = {
     ...withoutHash,

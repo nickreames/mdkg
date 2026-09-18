@@ -121,6 +121,8 @@ export type NodeParseOptions = {
   /** Authority for live archive dependency reads; omitted only for non-archive
    * nodes or explicitly deferred historical/virtual inspection. */
   archiveRoot?: string;
+  /** Internal cache admission evidence from the same archive integrity check. */
+  onArchiveIntegrity?: (valid: boolean) => void;
   workStatusEnum: string[];
   priorityMin: number;
   priorityMax: number;
@@ -699,7 +701,7 @@ export function parseNode(content: string, filePath: string, options: NodeParseO
   validateTemplateKeys(frontmatter, schema, filePath);
   const identity = readNodeIdentity(frontmatter, filePath);
   validateAgentFrontmatter(type, frontmatter, filePath);
-  validateArchiveFrontmatter(type, frontmatter, filePath, options.deferArchiveIntegrity, options.archiveRoot);
+  validateArchiveFrontmatter(type, frontmatter, filePath, options.deferArchiveIntegrity, options.archiveRoot, options.onArchiveIntegrity);
   validateGoalFrontmatter(type, frontmatter, filePath);
   validateLoopFrontmatter(type, frontmatter, filePath);
 

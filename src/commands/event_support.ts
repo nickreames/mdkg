@@ -8,6 +8,7 @@ import {
 } from "../core/filesystem_authority";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { UsageError, NotFoundError } from "../util/errors";
+import { assertCompatibleWriter } from "../util/writer_admission";
 
 export type EventStatus = "ok" | "error" | "retry" | "skipped";
 
@@ -92,6 +93,7 @@ export function ensureEventsEnabled(options: EnsureEventsEnabledOptions): {
   eventsPath: string;
   created: boolean;
 } {
+  assertCompatibleWriter(options.root);
   const config = loadConfig(options.root);
   const ws = normalizeWorkspaceForEvents(config, options.ws);
   const eventsPath = resolveEventsPath(options.root, config, ws);
@@ -149,6 +151,7 @@ function buildEventRecord(config: MdkgConfig, options: AppendEventOptions): Even
 }
 
 export function appendEvent(options: AppendEventOptions): EventRecord {
+  assertCompatibleWriter(options.root);
   const config = loadConfig(options.root);
   const record = buildEventRecord(config, options);
   if (record.refs.length === 0) {

@@ -6,6 +6,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { qualifyGitObservation } = require("../tests/fixtures/git-observation.cjs");
 
 const REMOVED = ["clone", "fetch", "push", "materialize", "closeout", "push-ready"];
 const REMOVED_FLAGS = ["--remote", "--branch", "--message", "--request", "--stage-all"];
@@ -190,7 +191,10 @@ try {
   const help = run(process.execPath, [cli, "help", "git"], consumer);
   assert(help.includes("mdkg git inspect"));
   assert(!/mdkg git (clone|fetch|push|materialize|closeout)/.test(help));
-  console.log(JSON.stringify({ schema: "mdkg.git-boundary-smoke.v1", ok: true, version: pkg.version, node: process.version, removed_commands: REMOVED, refused_invocations: refusals, retained_inspect: true, inspection_cases: inspectionCases, fsmonitor_and_failure_injection: supportedHookFixture ? "passed" : "unverified", fixture_bytes_preserved: true, external_actions: "none", tarball_sha256: crypto.createHash("sha256").update(fs.readFileSync(tarball)).digest("hex") }));
+  // This matrix deliberately bypasses result()'s optional-lock workaround and
+  // runs installed bytes with both an unset policy and a hostile caller value.
+  const observation = qualifyGitObservation({ cli, tempRoot });
+  console.log(JSON.stringify({ schema: "mdkg.git-boundary-smoke.v1", ok: true, version: pkg.version, node: process.version, removed_commands: REMOVED, refused_invocations: refusals, retained_inspect: true, inspection_cases: inspectionCases, fsmonitor_and_failure_injection: supportedHookFixture ? "passed" : "unverified", fixture_bytes_preserved: true, git_observation: observation, external_actions: "none", tarball_sha256: crypto.createHash("sha256").update(fs.readFileSync(tarball)).digest("hex") }));
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1;
 } finally {

@@ -1,5 +1,6 @@
 import path from "path";
 import { atomicReplaceContainedFile, withContainedPathSink } from "../core/filesystem_authority";
+import { assertCompatibleWriter } from "../util/writer_admission";
 
 function cachePath(root: string, outputPath: string) {
   // Cache resolvers already use native path.resolve. Preserve that contract,
@@ -15,5 +16,6 @@ export function preflightCacheOutputs(root: string, outputPaths: string[]): void
 }
 
 export function writeCacheFile(root: string, outputPath: string, content: string): void {
+  assertCompatibleWriter(root);
   atomicReplaceContainedFile(cachePath(root, outputPath), content);
 }

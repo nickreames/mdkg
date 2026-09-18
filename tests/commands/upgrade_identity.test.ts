@@ -104,6 +104,89 @@ test("upgrade preview refuses unknown graph formats without creating state", () 
   assert.deepEqual(snapshot(root), before);
 });
 
+for (const recovery of [undefined, "resume", "recover"] as const) {
+  test(`reviewed config-only upgrade fences pre-fence v2 without changing identities (${recovery ?? "apply"})`, () => {
+    const { root, seed } = fixture(), configPath = path.join(root, ".mdkg/config.json");
+    // Synthetic pre-fence v2 state; do not rewrite its immutable identity receipt.
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    config.schema_version = 1; config.extension = { preserve: "authored setting" };
+    writeFile(configPath, JSON.stringify(config, null, 4) + "\n");
+    const originalConfig = fs.readFileSync(configPath, "utf8"), before = snapshot(root);
+    const only = [".mdkg/config.json"], receipt = preview(root, seed, only);
+    assert.equal(receipt.safe_to_apply, true, JSON.stringify(receipt.blocking_conflicts));
+    assert.ok(receipt.will_write_paths.includes(".mdkg/config.json"));
+    assert.deepEqual(snapshot(root), before);
+    const apply = () => quiet(() => runUpgradeCommand({ root, seedRoot: seed, only, apply: true, planHash: receipt.plan_hash,
+      ...(recovery ? { afterWrite: (p: string) => { if (p === ".mdkg/config.json") throw Error("config fence interruption"); } } : {}) }));
+    if (recovery) {
+      assert.throws(apply, /config fence interruption/);
+      assert.equal(JSON.parse(fs.readFileSync(configPath, "utf8")).schema_version, 2);
+      quiet(() => runUpgradeCommand({ root, seedRoot: seed, [recovery]: true, planHash: receipt.plan_hash }));
+    } else apply();
+    const afterConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    assert.equal(afterConfig.schema_version, recovery === "recover" ? 1 : 2);
+    assert.deepEqual(afterConfig.extension, config.extension);
+    if (recovery === "recover") assert.equal(fs.readFileSync(configPath, "utf8"), originalConfig);
+    const after = snapshot(root);
+    for (const [file, digest] of Object.entries(before)) {
+      if (file === ".mdkg/graph.json" || file.startsWith(".mdkg/identity/") || /^\.mdkg\/(core|work|design)\//.test(file)) {
+        assert.equal(after[file], digest, file);
+      }
+    }
+    validate(root);
+    if (recovery !== "recover") {
+      const repeatedBefore = snapshot(root), repeated = quiet(() => runUpgradeCommand({ root, seedRoot: seed }));
+      assert.ok(!repeated.will_write_paths.includes(".mdkg/config.json"));
+      assert.deepEqual(snapshot(root), repeatedBefore);
+    }
+  });
+}
+
+for (const terminal of ["completed", "recovered"] as const) for (const changed of ["config", "dependency", "opposite-state"] as const) {
+  test(`${terminal} fence-upgrade repeats refuse changed terminal ${changed} without effects`, () => {
+    const { root, seed } = fixture(), configPath = path.join(root, ".mdkg/config.json");
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8")); config.schema_version = 1;
+    writeFile(configPath, JSON.stringify(config));
+    const only = [".mdkg/config.json"], receipt = preview(root, seed, only);
+    quiet(() => runUpgradeCommand({ root, seedRoot: seed, only, apply: true, planHash: receipt.plan_hash }));
+    if (terminal === "recovered") quiet(() => runUpgradeCommand({ root, seedRoot: seed, recover: true, planHash: receipt.plan_hash }));
+    const journal = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/state/upgrade-journal.json"), "utf8"));
+    const stable = snapshot(root), repeatMode = terminal === "completed" ? "resume" : "recover";
+    const repeated = quiet(() => runUpgradeCommand({ root, seedRoot: seed, [repeatMode]: true, planHash: receipt.plan_hash }));
+    assert.equal(repeated.recovery_state, terminal);
+    assert.deepEqual(snapshot(root), stable);
+    if (changed === "dependency") fs.appendFileSync(path.join(root, ".mdkg/graph.json"), "\n");
+    else if (changed === "config") fs.appendFileSync(configPath, "\n");
+    else {
+      const operation = journal.operations.find((op: any) => op.path === ".mdkg/config.json");
+      fs.writeFileSync(configPath, Buffer.from(terminal === "completed" ? operation.before : operation.after, "base64"));
+    }
+    const moved = snapshot(root);
+    assert.throws(() => quiet(() => runUpgradeCommand({ root, seedRoot: seed, [repeatMode]: true,
+      planHash: receipt.plan_hash })), /custody|dependency|collision|stale/);
+    assert.deepEqual(snapshot(root), moved);
+  });
+}
+
+for (const changed of ["operation", "dependency"] as const) {
+  test(`fence upgrade checks late ${changed} custody before recording completion`, () => {
+    const { root, seed } = fixture(), configPath = path.join(root, ".mdkg/config.json");
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8")); config.schema_version = 1;
+    writeFile(configPath, JSON.stringify(config));
+    const only = [".mdkg/config.json"], receipt = preview(root, seed, only);
+    assert.throws(() => quiet(() => runUpgradeCommand({ root, seedRoot: seed, only, apply: true, planHash: receipt.plan_hash,
+      afterWrite: (_file: string, index: number) => {
+        if (index === receipt.will_write_paths.length - 1) fs.appendFileSync(changed === "operation" ? configPath : path.join(root, ".mdkg/graph.json"), "\n");
+      } })), /custody|dependency|collision|stale/);
+    const journal = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/state/upgrade-journal.json"), "utf8"));
+    assert.equal(journal.state, "applying");
+    const moved = snapshot(root);
+    assert.throws(() => quiet(() => runUpgradeCommand({ root, seedRoot: seed, resume: true,
+      planHash: receipt.plan_hash })), /custody|dependency|collision|stale/);
+    assert.deepEqual(snapshot(root), moved);
+  });
+}
+
 test("equivalent manifest byte movement invalidates a reviewed safe subset before writes", () => {
   const { root, seed } = fixture(), only = [".mdkg/AGENT_START.md"];
   fs.unlinkSync(path.join(root, only[0]));

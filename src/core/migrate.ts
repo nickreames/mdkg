@@ -1,4 +1,6 @@
-export const LATEST_SCHEMA_VERSION = 1;
+export const DEFAULT_SCHEMA_VERSION = 1;
+export const IDENTITY_CONFIG_SCHEMA_VERSION = 2;
+export const LATEST_SCHEMA_VERSION = IDENTITY_CONFIG_SCHEMA_VERSION;
 const LEGACY_SCHEMA_VERSION = 0;
 
 export type MigrationResult = {
@@ -65,12 +67,15 @@ export function migrateConfig(raw: unknown): MigrationResult {
     );
   }
 
-  if (version === LATEST_SCHEMA_VERSION) {
+  // Recognizing a newer schema must not implicitly opt legacy graphs into it.
+  // Schema 2 is an explicit compatible-writer fence, installed by reviewed
+  // identity migration or by reviewed upgrade of an already adopted graph.
+  if (version >= DEFAULT_SCHEMA_VERSION) {
     return { config: raw, from: version, to: version };
   }
 
   let current: unknown = raw;
-  for (let v = version; v < LATEST_SCHEMA_VERSION; v += 1) {
+  for (let v = version; v < DEFAULT_SCHEMA_VERSION; v += 1) {
     const migrator = MIGRATIONS[v];
     if (!migrator) {
       throw new Error(`no migration available for schema_version ${v} -> ${v + 1}`);
@@ -78,5 +83,10 @@ export function migrateConfig(raw: unknown): MigrationResult {
     current = migrator(current);
   }
 
-  return { config: current, from: version, to: LATEST_SCHEMA_VERSION };
+  return { config: current, from: version, to: DEFAULT_SCHEMA_VERSION };
+}
+
+/** Preserve authored settings/extensions; only explicit adoption adds this fence. */
+export function identityWriterConfig(raw: unknown): JsonObject {
+  return { ...(migrateConfig(raw).config as JsonObject), schema_version: IDENTITY_CONFIG_SCHEMA_VERSION };
 }

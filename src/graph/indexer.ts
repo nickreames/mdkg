@@ -6,9 +6,10 @@ import { EdgeMap } from "./edges";
 import { listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "./workspace_files";
 import { ContainedPathError } from "../core/filesystem_authority";
 import { collectGraphErrors, validateGraph } from "./validate_graph";
-import { loadTemplateSchemas } from "./template_schema";
+import { loadTemplateSchemasWithInfo } from "./template_schema";
 import { collectManifestSiblingConflicts } from "./agent_file_types";
-import { assertNoGraphConflictMarkers, assertNodeFormat, GraphFormatV2, identityRef, NodeIdentity, readGraphFormat } from "./identity";
+import { assertNoGraphConflictMarkers, assertNodeFormat, GraphFormatV2, identityHash, identityRef, NodeIdentity, readGraphFormat } from "./identity";
+import { nodeCacheFingerprint } from "./json_cache_fingerprint";
 import { UsageError } from "../util/errors";
 import { normalizeIndexIdentityReferences } from "./identity_refs";
 import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "./subgraphs";
@@ -64,6 +65,7 @@ export type Index = {
     latest_checkpoint_qid?: Record<string, string>;
     graph_format?: GraphFormatV2;
     inspection_errors?: string[];
+    source_fingerprint?: string;
   };
   workspaces: Record<string, { path: string; enabled: boolean }>;
   nodes: Record<string, IndexNode>;
@@ -73,6 +75,8 @@ export type Index = {
 export type IndexOptions = {
   tolerant?: boolean;
   inspection?: boolean;
+  /** Explicit archive regeneration selection only; never a fresh cached graph. */
+  deferArchiveIntegrity?: boolean;
 };
 
 function normalizeEdgeTarget(value: string, ws: string): string {
@@ -115,7 +119,10 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
   const graphFormat = readGraphFormat(root);
   const inspection = graphFormat.format_version === 2 && options.inspection === true;
   const tolerant = options.tolerant ?? config.index.tolerant;
-  const templateSchemas = loadTemplateSchemas(root, config, ALLOWED_TYPES);
+  const templateInfo = loadTemplateSchemasWithInfo(root, config, ALLOWED_TYPES);
+  const templateSchemas = templateInfo.schemas;
+  const sourceDocuments: Record<string, string> = {};
+  const archiveIntegrity: Record<string, boolean> = {};
   const nodes: Record<string, IndexNode> = {};
   const idsByWorkspace: Record<string, Set<string>> = {};
   const identityPaths = new Map<string, string>();
@@ -132,14 +139,15 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
       throw new Error(manifestConflicts[0]);
     }
     for (const filePath of files) {
-      if (path.basename(filePath) === "core.md" && path.basename(path.dirname(filePath)) === "core") {
-        continue;
-      }
       try {
         const content = readWorkspaceDocument(root, filePath, config.index.limits.max_file_bytes);
+        sourceDocuments[path.relative(root, filePath).split(path.sep).join("/")] = identityHash(content);
+        if (path.basename(filePath) === "core.md" && path.basename(path.dirname(filePath)) === "core") continue;
         if (graphFormat.format_version === 2) assertNoGraphConflictMarkers(content, filePath);
         const node = parseNode(content, filePath, {
           archiveRoot: root,
+          deferArchiveIntegrity: options.deferArchiveIntegrity,
+          onArchiveIntegrity: valid => { archiveIntegrity[path.relative(root, filePath).split(path.sep).join("/")] = valid; },
           workStatusEnum: config.work.status_enum,
           priorityMin: config.work.priority_min,
           priorityMax: config.work.priority_max,
@@ -253,6 +261,8 @@ export function buildIndex(root: string, config: Config, options: IndexOptions =
       generated_at: new Date().toISOString(),
       root,
       workspaces: workspaceAliases,
+      source_fingerprint: options.deferArchiveIntegrity ? undefined
+        : nodeCacheFingerprint(config, sourceDocuments, templateInfo.sourceInputs, tolerant, archiveIntegrity),
       ...(graphFormat.format_version === 2 ? { graph_format: graphFormat } : {}),
     },
     workspaces,
