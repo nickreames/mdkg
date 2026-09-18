@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-29",
+  "owner": "mdkg-project-agent",
+  "date": "2026-09-09",
+  "disposition": "locally_verified_not_release_qualified",
+  "baseline": {
+    "branch": "main",
+    "head": "985c649017607dfb2b100a5c4563aaa7dd432ca1",
+    "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "ahead": 25,
+    "behind": 0,
+    "remote_verified": false
+  },
+  "scope": {
+    "owner": "generic mdkg public bootstrap seed/build/release validation",
+    "preserved": "canonical instructions/core, protected Demo 3 bundle, selection, runtime state and unrelated partial bug17 work",
+    "authority": "goal83/84 scoped local implementation, validation, evidence and exact-path local commit only",
+    "excluded": [
+      "canonical upgrade/migration",
+      "bundle/subgraph refresh",
+      "remote Git",
+      "publication",
+      "tags/history rewrite",
+      "provider/deployment",
+      "consumer/root/sibling writes"
+    ]
+  },
+  "outcome": {
+    "seed_ownership": "assets/init/core is deliberate public source; canonical maintainer .mdkg/core is not copied",
+    "node_count": 10,
+    "file_count": 11,
+    "compatibility": "historical node IDs, filenames and five search aliases retained; aliases metadata are not arbitrary graph IDs",
+    "reference_guard": "canonical rule schema/parser plus structured-reference closure, immutable-identity exclusion, required aliases, exact inventory/pins and built byte parity",
+    "size": {
+      "previous_core_bytes": 61020,
+      "public_core_bytes": 12440,
+      "description": "79.6 percent reduction in public core guidance only, not full package or initialization"
+    },
+    "upgrade": "reviewed hash-proven known seed replacement; customized guidance and README/LICENSE preserved; interrupted writes recover original bytes; old custom refs remain explicit migration blockers"
+  },
+  "source_sha256": {
+    "assets/init/core/COLLABORATION.md": "f047064bd3b226be8b43461e740b2698226a90ad90366e04e6cb24f190065c33",
+    "assets/init/core/HUMAN.md": "6d13b14e15d2e5bd32b8c7e33b241ab25d142a13ba57de67ed141e37ec28a1cf",
+    "assets/init/core/SOUL.md": "83c337cf97fea35f848ea484794ee0d9fcc941c09621c43ba4d2d005a572a9f5",
+    "assets/init/core/core.md": "af69bfda0e39acb6d2546dd21bddce0644af0ec5fbf183ea3bcb53e6a12276c0",
+    "assets/init/core/guide.md": "d61baf21254be6283bd18bd505c87bed83a27a607b76011e5d6a6d5bc1e24ca1",
+    "assets/init/core/rule-1-mdkg-conventions.md": "9cf912380532de20bab0e658bfdefdce177f2ec3733b2f94196eb0cca072c31c",
+    "assets/init/core/rule-2-context-pack-rules.md": "3214954d5ed0eb8620b175a9a50b3429fa718ea17f2eb74c0ad146b627d5e8ca",
+    "assets/init/core/rule-3-cli-contract.md": "864baaf1edc8bdafb5195c7c1c9847960a18358eaffdf07a8555636f2b10610b",
+    "assets/init/core/rule-4-repo-safety-and-ignores.md": "b821c48482bd67066a0224a2ad102e027c326ff0b956454d18bfedeb14555746",
+    "assets/init/core/rule-5-release-and-versioning.md": "59b87afc83eccf34d7c324c006ba97a0a676e77379378f240d0e03aea1d936a7",
+    "assets/init/core/rule-6-templates-and-schemas.md": "7ab6849b86460c051496df97cb4070ff263711d92b34cf2e00d478b576343bb3",
+    "scripts/copy-init-assets.js": "7a910739ed47ab49e4242d44b37874e21d94062b4430159941cf4d0fc7f84c97",
+    "scripts/public-core-seed.js": "ac791fef6a88f854e9337f69064532213335f2933dfd82644dcaa5c03d495e2f",
+    "scripts/assert-publish-ready.js": "bf8d2025ca398c9997b51f20d7d69dadc9ad0415113129e1855c82c01e6d2c1c",
+    "tests/commands/bootstrap_seed.test.ts": "abc76c456c9f3c0b431e6b81f3b52694a54ea6da68fd8520351f0c796fd348b5"
+  },
+  "protected_before_after_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/commands/subgraph.ts": "95aa15c8338203cd8dae153da1e072d6e97ea1ddd38579c5017850a03456ae47",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+  },
+  "prepatch": {
+    "phase": "pre",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "--test",
+      "dist/tests/commands/bootstrap_seed.test.js",
+      "dist/tests/commands/init.test.js",
+      "dist/tests/commands/upgrade.test.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 1,
+    "signal": null,
+    "output_sha256": "a0c1c5c774f2af77c08abed4f32ac4be25eab36b1e564d804bcd6a494952e749",
+    "source_sha256": {
+      "scripts/copy-init-assets.js": "84498b504c98393ce671c4d91199b3d858087d8aa7eb6bcf58be724199bb40ce",
+      "tests/commands/bootstrap_seed.test.ts": "ea9a4cafe61ba4b1017aecc1947e2d67817886e4bec22a10f1316f1c236638fb"
+    },
+    "summary": [
+      "ℹ tests 26",
+      "ℹ pass 23",
+      "ℹ fail 3",
+      "ℹ skipped 0",
+      "ℹ duration_ms 4602.732958"
+    ]
+  },
+  "focused": [
+    {
+      "phase": "post-clean",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "--test",
+        "dist/tests/commands/bootstrap_seed.test.js",
+        "dist/tests/commands/init.test.js",
+        "dist/tests/commands/upgrade.test.js"
+      ],
+      "runtime": "v26.0.0",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "067107b96a711d86360c9fc8eb540ddb7fa98320630f6db5bed2ba78542dd562",
+      "source_sha256": {
+        "scripts/copy-init-assets.js": "7a910739ed47ab49e4242d44b37874e21d94062b4430159941cf4d0fc7f84c97",
+        "scripts/public-core-seed.js": "ac791fef6a88f854e9337f69064532213335f2933dfd82644dcaa5c03d495e2f",
+        "tests/commands/bootstrap_seed.test.ts": "abc76c456c9f3c0b431e6b81f3b52694a54ea6da68fd8520351f0c796fd348b5"
+      },
+      "summary": [
+        "ℹ tests 45",
+        "ℹ pass 45",
+        "ℹ fail 0",
+        "ℹ skipped 0",
+        "ℹ duration_ms 7457.232041"
+      ]
+    },
+    {
+      "phase": "post-clean24",
+      "command": [
+        "/opt/homebrew/opt/node@24/bin/node",
+        "--test",
+        "dist/tests/commands/bootstrap_seed.test.js",
+        "dist/tests/commands/init.test.js",
+        "dist/tests/commands/upgrade.test.js"
+      ],
+      "runtime": "v24.18.0",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "82ec4bb5a80856fb0e098f016706b0a595063182cb8406c2129e8a417195b65e",
+      "source_sha256": {
+        "scripts/copy-init-assets.js": "7a910739ed47ab49e4242d44b37874e21d94062b4430159941cf4d0fc7f84c97",
+        "scripts/public-core-seed.js": "ac791fef6a88f854e9337f69064532213335f2933dfd82644dcaa5c03d495e2f",
+        "tests/commands/bootstrap_seed.test.ts": "abc76c456c9f3c0b431e6b81f3b52694a54ea6da68fd8520351f0c796fd348b5"
+      },
+      "summary": [
+        "ℹ tests 45",
+        "ℹ pass 45",
+        "ℹ fail 0",
+        "ℹ skipped 0",
+        "ℹ duration_ms 33558.389459"
+      ]
+    }
+  ],
+  "full_suite": {
+    "phase": "full-clean",
+    "command": [
+      "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "scripts/test-built.js"
+    ],
+    "runtime": "v26.0.0",
+    "exit_code": 0,
+    "signal": null,
+    "output_sha256": "edb298416536f421d549a715d2cec9ba538491a62e02fa5dbdba0c651610a973",
+    "source_sha256": {
+      "scripts/copy-init-assets.js": "7a910739ed47ab49e4242d44b37874e21d94062b4430159941cf4d0fc7f84c97",
+      "scripts/public-core-seed.js": "ac791fef6a88f854e9337f69064532213335f2933dfd82644dcaa5c03d495e2f",
+      "tests/commands/bootstrap_seed.test.ts": "abc76c456c9f3c0b431e6b81f3b52694a54ea6da68fd8520351f0c796fd348b5"
+    },
+    "summary": [
+      "ℹ tests 1249",
+      "ℹ pass 1249",
+      "ℹ fail 0",
+      "ℹ skipped 0",
+      "ℹ duration_ms 142475.572542"
+    ]
+  },
+  "installed": {
+    "schema_version": 1,
+    "disposition": "intermediate development candidate, not release seal",
+    "candidate": {
+      "version": "0.5.2",
+      "sha256": "63d78eeec703134206f5ace48c23049f746890b21f7ec4285fc2dff448a4c941",
+      "integrity": "sha512-6hUfBK/K5dhZSnzzTGzogANi0CQHFMQ+mgEsLu3z2rvVON8U03k3wixdToTX1CncUGp2V3Dy0HANiZvz4njLjQ==",
+      "package_file_manifest_sha256": "88b4b538516815975bff3c23f5d50adf9276e9991ec20529190dc860b160ab81"
+    },
+    "results": [
+      {
+        "name": "pack",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "9471073ff1ac87349d2ce9263201281b35e04f4ee886e2907b845955e4b6162e",
+        "summary": []
+      },
+      {
+        "name": "install",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "856a519f9ae039d5b542fc1da429ebc63909b994da5f358cf7b7576a3c2ce066",
+        "summary": []
+      },
+      {
+        "name": "install-legacy",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "cd48c3f97a3b7f991b25465f87591761a3cbe8decd371e5ee0f9b1087ae10f2b",
+        "summary": []
+      },
+      {
+        "name": "installed-node26",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "6b76f47bcd7f6be4abd96247f658937bcc5a9082e3242bdf10ee39e7be4021e4",
+        "summary": [
+          "ℹ tests 23",
+          "ℹ pass 23",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 6187.615375"
+        ],
+        "runtime": "v26.0.0"
+      },
+      {
+        "name": "legacy-node26",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "c371d48afee790db9ed65c0cec3ddc3aa7f49669d5f401f935550e6fa1815a37",
+        "summary": [],
+        "runtime": "v26.0.0"
+      },
+      {
+        "name": "installed-node24",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "1a7327b76d37744678a6f86433d33b2056809fe0c6cecf54834d21a783d77d57",
+        "summary": [
+          "ℹ tests 23",
+          "ℹ pass 23",
+          "ℹ fail 0",
+          "ℹ skipped 0",
+          "ℹ duration_ms 14542.036417"
+        ],
+        "runtime": "v24.18.0"
+      },
+      {
+        "name": "legacy-node24",
+        "exit_code": 0,
+        "signal": null,
+        "output_sha256": "f1f17af6f6ce1c645e03c20725a378d0c023df7528ec5536f0b448a832ee1ccc",
+        "summary": [],
+        "runtime": "v24.18.0"
+      }
+    ],
+    "test_source_sha256": "abc76c456c9f3c0b431e6b81f3b52694a54ea6da68fd8520351f0c796fd348b5",
+    "harness_sha256": "7d0d266355c5397ac04babfa0e417c64c40bb3e9da7090eb31434adb9e8fa748",
+    "installed_package_unchanged": true
+  },
+  "published_baseline": {
+    "version": "0.5.2",
+    "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "provenance": "existing goal83 baseline.json; locally cached published tarball hash verified before isolated offline installation",
+    "assessment": "published seed bodies contain unshipped dec-53/edd-3/edd-6 refs; v2 migration failure applies to candidate workflow, not an assertion that published0.5.2 supported v2",
+    "runtime_results": [
+      {
+        "runtime": "v26.0.0",
+        "results": [
+          {
+            "customized": false,
+            "published_refs_confirmed": true,
+            "preview_unchanged": true,
+            "interrupted_recovery_preserved_originals": true,
+            "core_aliases_preserved": true,
+            "managed_provenance_verified": true,
+            "project_docs_preserved": true,
+            "migration": "applied and validated"
+          },
+          {
+            "customized": true,
+            "published_refs_confirmed": true,
+            "preview_unchanged": true,
+            "interrupted_recovery_preserved_originals": true,
+            "core_aliases_preserved": true,
+            "managed_provenance_verified": true,
+            "project_docs_preserved": true,
+            "migration": "explicit preserved-custom-reference blocker"
+          }
+        ]
+      },
+      {
+        "runtime": "v24.18.0",
+        "results": [
+          {
+            "customized": false,
+            "published_refs_confirmed": true,
+            "preview_unchanged": true,
+            "interrupted_recovery_preserved_originals": true,
+            "core_aliases_preserved": true,
+            "managed_provenance_verified": true,
+            "project_docs_preserved": true,
+            "migration": "applied and validated"
+          },
+          {
+            "customized": true,
+            "published_refs_confirmed": true,
+            "preview_unchanged": true,
+            "interrupted_recovery_preserved_originals": true,
+            "core_aliases_preserved": true,
+            "managed_provenance_verified": true,
+            "project_docs_preserved": true,
+            "migration": "explicit preserved-custom-reference blocker"
+          }
+        ]
+      }
+    ]
+  },
+  "independent_functional_review": {
+    "worker": "bootstrap_seed_review",
+    "mode": "source read-only; no tests executed by worker",
+    "findings": [
+      {
+        "finding": "required historical alias inventory missing",
+        "resolution": "required alias map plus removal regression"
+      },
+      {
+        "finding": "reference mapper accepted labelled refs incompatible with rule schema",
+        "resolution": "canonical parseNode schema validation plus malformed-ref regressions"
+      }
+    ],
+    "final": "no remaining concrete bug29 defect found",
+    "not_security_clearance": true
+  },
+  "other_validation": {
+    "build": "pass",
+    "cli": "pass",
+    "docs": "pass; 494 checked examples, no failures",
+    "full_graph": "pass; three preserved stale imported bundle warnings",
+    "changed_graph": "pass",
+    "sqlite": "five cache checks pass",
+    "diff_check": "pass",
+    "static_publish_readiness": "pass for current structural script; not final goal83/84 clearance"
+  },
+  "evidence_location": "/private/tmp/mdkg-bug29-verify.Fq55JJ",
+  "harness_sha256": {
+    "run.cjs": "117b24b33bf5cc361bebb4cbd7644ef6262a63d0905cb4bcb8da82b7eeec4160",
+    "installed.cjs": "7d0d266355c5397ac04babfa0e417c64c40bb3e9da7090eb31434adb9e8fa748",
+    "legacy.cjs": "ee3383565d88a214904e0754b5e0c457511450be3687ced7a8f0e9df82d80ddb"
+  },
+  "remaining": {
+    "goal83": "incomplete",
+    "goal84": "incomplete",
+    "goal85": "paused and blocked",
+    "original_security_findings": "12 of 13 locally fixed; final security diff review still required",
+    "open_work": [
+      "bug-17 legacy config-less bundle compatibility and final review",
+      "bug-26 recreation provenance",
+      "bug-27 migration dependency validation",
+      "bug-32 CLI quickstart/repair hints",
+      "bug-7 and task-826 complete installed matrix",
+      "task-827 draft0.6 metadata/docs",
+      "task-828 independent security verification",
+      "task-829 full coverage/release ladder",
+      "task-830 final artifact seal"
+    ],
+    "runtime_gap": "exact Node24.15.0 not qualified; 24.18.0 and26.0.0 tested here",
+    "candidate": "intermediate development tarball still version0.5.2; not a 0.6.0 seal",
+    "git": "local commit only; generated SQLite and partial bug17 custody excluded"
+  },
+  "skill_coverage": [
+    "select-work-and-ground-context",
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "source-grounded-diagnose-and-fix",
+    "service-boundary-ownership-check",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": [],
+  "checkpoint_qid": "root:chk-582",
+  "commit_allowlist": [
+    ".mdkg/artifacts/goal-84/bug-29-verification.json",
+    ".mdkg/work/bug-29-make-packaged-bootstrap-graph-references-self-contained.md",
+    ".mdkg/work/bug-32-align-cli-quickstart-and-repair-hints-with-reviewed-upgrade-authority.md",
+    ".mdkg/work/chk-582-verify-portable-compact-bootstrap-seeds-and-installed-upgrade-compatibility.md",
+    ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+    ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+    ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+    "assets/init/core/COLLABORATION.md",
+    "assets/init/core/HUMAN.md",
+    "assets/init/core/SOUL.md",
+    "assets/init/core/core.md",
+    "assets/init/core/guide.md",
+    "assets/init/core/rule-1-mdkg-conventions.md",
+    "assets/init/core/rule-2-context-pack-rules.md",
+    "assets/init/core/rule-3-cli-contract.md",
+    "assets/init/core/rule-4-repo-safety-and-ignores.md",
+    "assets/init/core/rule-5-release-and-versioning.md",
+    "assets/init/core/rule-6-templates-and-schemas.md",
+    "scripts/assert-publish-ready.js",
+    "scripts/copy-init-assets.js",
+    "scripts/public-core-seed.js",
+    "tests/commands/bootstrap_seed.test.ts"
+  ],
+  "qualification_note": "Final staged-path review caught trailing blank lines in eight new seed files. Removed them and reran build, full tests, both focused runtimes and installed/published-baseline workflows against these exact input hashes."
+}

@@ -797,6 +797,14 @@ function requireInitAssets() {
   for (const error of projectionReceipt.errors) {
     fail(`public skill projection: ${error}`);
   }
+  try {
+    require("./public-core-seed.js").assertPublicCoreSeed({
+      publicRoot: path.join(root, "assets", "init", "core"),
+      builtRoot: path.join(root, "dist", "init", "core"),
+    });
+  } catch (error) {
+    fail(`public core seed: ${error.message}`);
+  }
   const rootReadme = requireFile("README.md");
   const normalizedRootReadme = rootReadme.replace(/\s+/g, " ");
   if (

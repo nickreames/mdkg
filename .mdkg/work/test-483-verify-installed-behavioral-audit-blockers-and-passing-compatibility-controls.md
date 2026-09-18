@@ -9,9 +9,9 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-83/task-824-contract-audit.json, .mdkg/artifacts/goal-84/bug-24-adjacent-findings.json]
 relates: [task-824, goal-84, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27]
-blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29]
+blocked_by: [bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-32]
 blocks: []
-refs: [bug-28, bug-29]
+refs: [bug-28, bug-29, bug-32]
 context_refs: [goal-83, goal-84]
 evidence_refs: []
 aliases: []
@@ -22,11 +22,11 @@ updated: 2026-09-09
 ---
 # Overview
 
-Verify all nine reproduced behavioral blockers against the installed candidate and preserve passing compatibility controls. This is future fix verification, not a claim that the initial reproductions passed the desired contracts.
+Verify the recorded behavioral blockers against the installed candidate and preserve passing compatibility controls. This is future fix verification, not a claim that the initial reproductions passed the desired contracts.
 
 # Target / Scope
 
-root:bug-21 through root:bug-29; root:task-824 evidence intake and bug-24 adjacent probes; root:task-828 independent acceptance.
+root:bug-21 through root:bug-29 and root:bug-32; root:task-824 evidence intake and bug-24 adjacent probes; root:task-828 independent acceptance. Bug32 adds installed quickstart and upgrade-hint parity, including reviewed hash/selection requirements and preserved refusal behavior.
 
 # Preconditions / Environment
 
