@@ -23,6 +23,12 @@ export function renderNodeMetricsText(node: PackNode): string {
   const aliases = node.aliases ?? [];
   const lines: string[] = [];
   lines.push(`qid: ${node.qid}`);
+  if (node.identity) {
+    lines.push(`graph_id: ${node.identity.graph_id}`);
+    lines.push(`node_id: ${node.identity.node_id}`);
+  }
+  if (node.stable_ref) lines.push(`stable_ref: ${node.stable_ref}`);
+  if (node.alias_qid) lines.push(`alias_qid: ${node.alias_qid}`);
   lines.push(`id: ${node.id}`);
   lines.push(`workspace: ${node.workspace}`);
   lines.push(`type: ${node.type}`);

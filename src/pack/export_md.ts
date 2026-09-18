@@ -66,6 +66,12 @@ function renderNode(node: PackNode): string[] {
   const lines: string[] = [];
   lines.push(`## ${node.qid}`);
   lines.push(`qid: ${node.qid}`);
+  if (node.identity) {
+    lines.push(`graph_id: ${node.identity.graph_id}`);
+    lines.push(`node_id: ${node.identity.node_id}`);
+  }
+  if (node.stable_ref) lines.push(`stable_ref: ${node.stable_ref}`);
+  if (node.alias_qid) lines.push(`alias_qid: ${node.alias_qid}`);
   lines.push(`type: ${node.type}`);
   lines.push(`title: ${node.title}`);
   if (node.status) {

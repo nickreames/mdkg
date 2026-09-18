@@ -2,6 +2,9 @@ import { FrontmatterValue } from "../graph/frontmatter";
 import { PackResult } from "./types";
 
 type JsonNode = {
+  identity?: PackResult["nodes"][number]["identity"];
+  stable_ref?: string;
+  alias_qid?: string;
   qid: string;
   id: string;
   workspace: string;
@@ -54,6 +57,9 @@ function buildFrontmatter(node: PackResult["nodes"][number]): Record<string, Fro
 export function exportJson(pack: PackResult): string {
   const nodes: JsonNode[] = pack.nodes.map((node) => ({
     qid: node.qid,
+    identity: node.identity,
+    stable_ref: node.stable_ref,
+    alias_qid: node.alias_qid,
     id: node.id,
     workspace: node.workspace,
     type: node.type,

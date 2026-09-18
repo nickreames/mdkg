@@ -70,11 +70,13 @@ function fixture() {
   return { root, git, run, add, base, common, commit, edit };
 }
 
-test("reviewed local branch plan applies cross-linked identities without Git staging or source transplant", () => {
+test("reviewed local branch plan applies cross-linked identities without Git staging or source transplant", t => {
   const f = fixture();
+  t.after(() => fs.rmSync(f.root, { recursive: true, force: true }));
   f.git(["checkout", "-b", "incoming"]);
   const first = f.add("Incoming first", "task-2");
-  const second = f.add("Incoming linked", "task-3", "task-2");
+  const second = f.run(["new", "task", "Incoming linked", "--status", "todo", "--priority", "3",
+    "--parent", first.id, "--refs", first.id, "--json"]).node;
   writeFile(path.join(f.root, "source.txt"), "incoming product change stays excluded\n");
   const incoming = f.commit([first.path, second.path, "source.txt"], "incoming graph and excluded source");
   f.git(["checkout", "main"]);
@@ -105,6 +107,25 @@ test("reviewed local branch plan applies cross-linked identities without Git sta
   assert.equal(repeated.replay.noop, true); assert.deepEqual(repeated.writes, []);
   assert.equal(applyGraphMigrationPlan(f.root, repeated, repeated.plan_hash).action, "graph.reconcile.noop");
   assert.deepEqual(bytes(f.root), repeatBefore);
+  // Export the persisted result after replay, not a synthetic mapping. The
+  // incoming numeric alias changed; its stable cross-link must not change.
+  for (const format of ["json", "md", "xml", "toon"]) {
+    const out = path.join(f.root, `reconciled.${format}`);
+    const exported = spawnSync(process.execPath, [cli, "pack", identityRef(linked.node.identity),
+      "--pack-profile", "headers", "--skills", "none", "--format", format, "--out", out],
+    { cwd: f.root, encoding: "utf8" });
+    assert.equal(exported.status, 0, exported.stderr || exported.stdout);
+    const raw = fs.readFileSync(out, "utf8");
+    assert.ok(raw.includes(identityRef(linked.node.identity)));
+    assert.ok(raw.includes(mapped.stable_ref));
+    if (format === "json" || format === "toon") {
+      const payload = JSON.parse(raw), node = payload.nodes[0];
+      assert.deepEqual(node.identity, linked.node.identity);
+      assert.ok(node.frontmatter.refs.includes(mapped.output.alias));
+      assert.equal(payload.nodes.find((item: any) => item.qid === mapped.output.alias).stable_ref, mapped.stable_ref);
+    }
+  }
+  assert.equal(f.git(["diff", "--cached", "--name-only"]), "");
 });
 
 test("same identity lifecycle conflicts require a reasoned decision and unchanged reviewed plan", () => {

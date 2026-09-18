@@ -84,6 +84,14 @@ export function exportXml(pack: PackResult): string {
   for (const node of pack.nodes) {
     lines.push("    <node>");
     lines.push(`      <qid>${escapeXml(node.qid)}</qid>`);
+    if (node.identity) {
+      lines.push("      <identity>");
+      lines.push(`        <graph_id>${escapeXml(node.identity.graph_id)}</graph_id>`);
+      lines.push(`        <node_id>${escapeXml(node.identity.node_id)}</node_id>`);
+      lines.push("      </identity>");
+    }
+    if (node.stable_ref) lines.push(`      <stable_ref>${escapeXml(node.stable_ref)}</stable_ref>`);
+    if (node.alias_qid) lines.push(`      <alias_qid>${escapeXml(node.alias_qid)}</alias_qid>`);
     lines.push(`      <id>${escapeXml(node.id)}</id>`);
     lines.push(`      <workspace>${escapeXml(node.workspace)}</workspace>`);
     lines.push(`      <type>${escapeXml(node.type)}</type>`);

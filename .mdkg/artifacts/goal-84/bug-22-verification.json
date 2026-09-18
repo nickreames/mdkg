@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "kind": "local-behavioral-fix-verification",
+  "bug": "root:bug-22",
+  "goal": "root:goal-84",
+  "status": "locally-verified; final independent acceptance remains task-828/test-483",
+  "source_head": "9211e8a82ccf99088bd6ef658b1665145873fd10",
+  "candidate": {
+    "version": "0.5.2",
+    "sha256": "a043093b03825ee5afce534fbc2e1cf60fe060b9d03546a8b2bb602ebcc61304",
+    "integrity": "sha512-7v9YNXOfkZfW6a0XolBU1BMyl8hBkV2omznDSorWOpfPzK03ohyU5m+Rp/XYZAlWIMTEDJEVYuSdiWM4jqAqyA=="
+  },
+  "source_files_sha256": {
+    "src/pack/budget.ts": "e52e1bddba2a8be89699fe3f81943460d0a825925af1f7d9f563b217f0969d2b",
+    "src/pack/export_json.ts": "473a683f926fb3b9186e64bf9537e84a42cb6c136b53f963b374887995d38dd9",
+    "src/pack/export_md.ts": "f65b1f5871e5e5536efdc9d95a4b3955a1432ed587c03abc1e7da917cf39d742",
+    "src/pack/export_toon.ts": "b275543f9bc0ca8da973c8607894ac20cba27c8f03c499960efaa06fe963d14e",
+    "src/pack/export_xml.ts": "fab6cec918de68502dab9bb154bcb0b72b2957c575fbac594d87a22ef6f37873",
+    "src/pack/metrics.ts": "53696d89331d3e136da4ab993b234e4ee0a53b94178c4a22336cfaa04c60dace",
+    "src/pack/order.ts": "a498137dbec7d9672264ad3dd4ecc2757c7b953357f180f59bae159741485cc8",
+    "src/pack/pack.ts": "c8a4eb3212d0d26a7d3e1fb80a5c81fc0a602a5e83585bfe7e98b2f375745205",
+    "src/pack/profile.ts": "54edd8a740c10b29c0b7f8f523d16a32854d38885ff787f76b14a97569818383",
+    "src/pack/stats.ts": "4af273b03436cc73e0c8fe39574de5b60e16c07ea8dffc64d6eedd1474ed9e00",
+    "src/pack/types.ts": "0ea9d83039dc7d6757c5c185e3cbba3744bdca1924181da8259d7a63c05af447",
+    "src/pack/verbose_core.ts": "d9d86494fc4fc5ec8bcb4eb2a1d51c277830eedfccf0f2b01436ffef2eed7cb7",
+    "tests/commands/pack_identity.test.ts": "8a218c9be44d236d5e0056b266d1956f9968e7e315b48ab5a6fe9cee1c91b8a9",
+    "tests/pack/exporters.test.ts": "6ff7071e21ea3df7f49be3b058f9e1ee8148c00ed9b91ea731677af7937123ac",
+    "tests/graph/identity_reconciliation_plan.test.ts": "4c0d64f4fa44494954e83926407411c4e4fb542eec9188d8d3a08c73f9cc87e4"
+  },
+  "protected_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "results": [
+    {
+      "name": "prepatch-installed",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "ce1274432dd6932574f863ca6a4a7a29bf2d749dd3d19dd22dbc99b8b9b5ef75",
+      "summary": [
+        "# tests 30",
+        "# suites 0",
+        "# pass 8",
+        "# fail 22",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 3941.483708"
+      ]
+    },
+    {
+      "name": "pack",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "f70a440c8740577181125c67ad974042e99b007c739424998d06a1bcf4620291",
+      "summary": []
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "c25858f472130c45ec5cf5ca61b2258cd5b235f2a1d6f6d535e500e58fc5aa91",
+      "summary": []
+    },
+    {
+      "name": "installed-node26",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "6a282187a0e0b4662a3912865cf86febb75341266ac6138db3012baf4cbc577a",
+      "summary": [
+        "# tests 67",
+        "# suites 0",
+        "# pass 67",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 98486.20025"
+      ],
+      "runtime": "v26.0.0"
+    },
+    {
+      "name": "installed-node24",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "362a0fad8a77b785821c3ba8aeab639cb82fd0b4eec8bcc7acc7312fc7342ef4",
+      "summary": [
+        "# tests 67",
+        "# suites 0",
+        "# pass 67",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 56047.527791"
+      ],
+      "runtime": "v24.18.0"
+    }
+  ],
+  "full": {
+    "exit_code": 0,
+    "signal": null,
+    "runtime": "v26.0.0",
+    "output_sha256": "0f8b232634e2542c323ad6ac68b027237e13aa27823476b30a87ebcbcf31abf2",
+    "summary": [
+      "ℹ tests 1084",
+      "ℹ suites 0",
+      "ℹ pass 1084",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 119146.177125",
+      "ℹ tests 26",
+      "ℹ suites 0",
+      "ℹ pass 26",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 94.265208"
+    ]
+  },
+  "xml_budget": {
+    "runtime": "v26.0.0",
+    "cases": 12,
+    "passed": 12,
+    "note": "Root identity is retained even if minimum root metadata exceeds the requested budget; truncation is explicit. XML checked with local xmllint --nonet."
+  },
+  "receipt_hashes": {
+    "receipt.json": "514317d72f8f00721e8b161739d1d90f0aa1b91608f9f4f894fc114c26bdc080",
+    "full-receipt.json": "47b3c44400a0d0ce27dcf7a5dc395f441181c406878d71a7a3b6df031e7f185a",
+    "xml-budget-receipt.json": "b09b8bbe63b79b72396b30c5c5ca855ea268919d2fbf81be8f41ff639e7c958a",
+    "verify.cjs": "70d5d14371de5454b65a997285d64b1b0d2107971a62947bcd8fa336c27d214b",
+    "xml-budget.cjs": "11fa60a1e02c101aed7e8fc18aca0f9f23e863a6af0dc8e97640680825314ce5",
+    "full.cjs": "d53ff2c8d95541a6f0ce61d62d319286e6d710187b055ea0ab4db996ae7fb195"
+  },
+  "fix": [
+    "All four pack serializers retain persisted graph/node identities, stable references and ambiguous alias metadata.",
+    "Pack estimates include identity metadata; root identity survives explicit truncation.",
+    "Numeric QID normalization, graph authority and legacy output remain unchanged."
+  ],
+  "coverage": [
+    "All four formats and standard/concise/headers profiles.",
+    "JSON/SQLite; uncommitted and staged work; alias remapping and unresolved collisions; CLI and MCP parity.",
+    "Real reviewed reconciliation, cross-linked identities and repeated integration without Git staging.",
+    "Private imported v2 identities, fail-closed public exports and unchanged source/checkout bytes.",
+    "Legacy no-identity controls; XML escaping and independent parseability; tiny-budget identity retention."
+  ],
+  "checks": {
+    "build": "pass",
+    "full_suite": "1084 source plus 26 release/security-contract tests; no failures or skips",
+    "cli_parity": "pass",
+    "docs_parity": "494 examples; zero failures",
+    "full_graph": "zero errors; three preserved stale-subgraph age warnings",
+    "changed_graph": "zero errors or warnings",
+    "sqlite_verify": "all five projections fresh",
+    "diff_check": "pass"
+  },
+  "prepatch_assessment": "Integrity-bound installed prepatch candidate reproduces 22 failures among 30 tests; 8 controls pass. Missing exported identity/stable_ref and omitted metric text explain the failures. This is unpublished v2 behavior, not a claim against published 0.5.2.",
+  "harness_corrections": "Initial new-test run assumed inspection retained literal stable edge strings, compared undefined properties across JSON serialization, and used an overly narrow visibility-message regex. Corrected expectations against source contracts before final installed comparison; no graph resolution behavior changed.",
+  "limitations": [
+    "Exact Node 24.15.0 and full user-journey matrix remain unqualified.",
+    "Final independent task-828 review and release ladder remain open.",
+    "Already-built output packed with prepack skipped; normal isolated postinstall executed.",
+    "Development metadata still 0.5.2; candidate is not the final 0.6.0 artifact.",
+    "Partial bug-17 source, selected Goal 73, runtime DB and protected Demo 3 bundle preserved.",
+    "No remote Git, provider, deployment, publication, canonical migration or bundle refresh."
+  ],
+  "skills": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "source-grounded-diagnose-and-fix",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": []
+}
