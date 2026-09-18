@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586]
+refs: [chk-586, chk-587, chk-588]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -83,3 +83,47 @@ evidence-conflict cases, legacy/old-client compatibility, remaining task-826
 families, final independent task-828 review, full ladder and artifact seal.
 This milestone does not close bug-7 or authorize publication. Bug-17 remains
 separate custody; selected Goal 73 and runtime/bundle bytes are unchanged.
+
+## 2026-09-09 Recovery, Minimum Runtime and Legacy Writer Finding
+
+Chk-587 and `.mdkg/artifacts/goal-84/bug-7-recovery-runtime.json` extend proof to
+Node 24.15.0, 24.18.0 and 26.0.0. Six upgrade interruption/resume/rollback cases
+per runtime pass, preserving unknown files, original Git bytes and later user
+edits on refusal. Both delete/modify directions and evidence conflicts require
+explicit reviewed choices and preserve Git staging. The full 1341-test suite,
+CLI/docs and graph checks pass. The minimum runtime is now locally available;
+its complete final release matrix remains unqualified.
+
+The actual published 0.5.2 client can create a legacy node and update SQLite in
+a v2 graph before returning an unknown-key error. This was reproduced on Node
+24.15.0 and 26.0.0. The candidate detects missing identities and refuses further
+mutation without writes; it does not prevent a separate old binary from writing.
+This is deduplicated here as bug-7/legacy-writer-v2-partial-write, not a new
+Standard security finding or a compatibility pass. Existing node destruction
+was not observed. No source guard, canonical recovery or risk waiver was applied.
+
+Before closure, evaluate an enforceable compatibility barrier for old writers,
+or obtain Nick's explicit acceptance of an all-writers-upgraded/no-mixed-writes
+v2-adoption policy with complete migration/recovery guidance. Remaining graph
+transaction recovery, legacy compatibility and task-826 families still proceed
+within existing scope; final task-828 review, full ladder and seal remain open.
+
+## 2026-09-09 Legacy Configuration Barrier Investigation
+
+Chk-588 records 76 warm-cache probes against published 0.5.2 on Node 24.15.0
+and 26.0.0. A fixture-only configuration schema 2 causes all 16 tested non-init
+commands to refuse before mutation. Old init still writes its manifest;
+init --agent writes before refusal, and init --force overwrites core/config and
+removes the version fence. Thus a configuration gate can reduce accidental old
+writes but cannot enforce full old-client exclusion.
+
+Warm-cache controls also show old task update changes existing-node priority
+before failure (identity values survive), and old checkpoint creates legacy
+evidence successfully. These extend the existing compatibility finding rather
+than duplicate it. Cold-cache refusal is insufficient proof of safety.
+
+Recommend an explicit, journal-bound v2 configuration capability gate plus an
+all-writers-upgraded/no-mixed-version adoption requirement, with old-init limits
+clearly documented. Nick's policy acceptance is still required. No source guard,
+canonical migration or risk waiver was implemented. Continue independent
+qualification while that decision is pending.
