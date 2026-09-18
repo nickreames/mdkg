@@ -5,9 +5,10 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { exerciseIdentityCollaboration } = require("./installed-identity-collaboration");
 
 const repoRoot = path.resolve(__dirname, "..");
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
+const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
 const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
 const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
 
@@ -213,6 +214,8 @@ function main() {
   assert(change.after.reference_rewrite_plan.length >= 2, "missing reference rewrite path counts");
   assertNoMutation(root, before, "fix plan duplicate-id branch conflict check");
 
+  const identity = exerciseIdentityCollaboration(binPath, tempRoot);
+
   console.log(
     JSON.stringify(
       {
@@ -221,6 +224,7 @@ function main() {
         temp_root: tempRoot,
         tarball: tarballPath,
         plan_hash: first.plan_hash,
+        identity,
       },
       null,
       2
