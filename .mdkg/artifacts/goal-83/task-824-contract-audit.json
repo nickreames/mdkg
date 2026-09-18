@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "kind": "behavioral-contract-audit-disposition",
+  "task": "root:task-824",
+  "goal": "root:goal-83",
+  "status": "audit-complete-with-publication-blockers",
+  "source_head": "d09dd2a1f9d6f2a6692ce08fad339498b9b4dd05",
+  "candidate": {
+    "sha256": "3238663f76882f094cfd1e9c86abbd43e057aa165ec69099a976949f9d011c05",
+    "integrity": "sha512-WG4nWXf0gBdEtDBmfbmqpwP4sKi808gFSEs7r3sOPMp7urMPghjo956osBJu0+ShScNpHuV7pGxDh6O/vFpkPg==",
+    "status": "intermediate uncommitted candidate; not final release seal"
+  },
+  "runtime": "v26.0.0",
+  "source_files_sha256": {
+    "src/graph/identity.ts": "d369954e4a5e914d10484f5d43dd1f7f171be6fcbc14cf9085796a864c73c9ad",
+    "src/graph/identity_authoring.ts": "210bf66ea76c01de76d3cf7deb81ad2f47c6b6db5db891669583dc0bc04ef2de",
+    "src/graph/identity_refs.ts": "f13f5be166e79b8c2fce49e99349899312326baada6ecf92eee06c81d5737e79",
+    "src/graph/identity_migration.ts": "e199415b746e4a2a83390c126ee8f013caec196e2cbbe87341a1da9b8b2ac626",
+    "src/graph/identity_reconcile.ts": "1b25ed542524a3c34182c7a98a059ef31f5a6904a17c910d06aafe9866b32aaf",
+    "src/graph/identity_reconciliation_plan.ts": "e9aba144335f1722da722031ded6ac6704392750295a142116b7501bfe259281",
+    "src/graph/identity_snapshot.ts": "aca2adb55cb748a7563fdce41480fe42104c643c1176f077e179de4330326c8a",
+    "src/graph/identity_history.ts": "34f28f56794ab85d502784f688c62b50a37e32e0ac8ffcc361c4eccf26ad6d5f",
+    "src/graph/identity_acceptance.ts": "5c607878cbe3b3ee81b9628bc530a499c348d470d52ff5b3123307ae4d809492",
+    "src/graph/identity_transaction.ts": "600556bf0a189d3647339597cc060fa37e7b267bf9a191291286de665a20d2ed",
+    "src/graph/selected_goal.ts": "db216d02d3359d214e4a8403027ac0c95682af4ba1cd27313490ab0419be9ff5",
+    "src/graph/sqlite_index.ts": "aeeae6289b63e5368c73cc6db35ebf81a7e1d2a17901ee7024f6b4e95b5a148f",
+    "src/commands/graph_identity.ts": "367aadc6c2314683937dbff8cd944626a2728b0797a4041fb127d559e9fad602",
+    "src/commands/goal.ts": "72be488a8532c439bbee90f2a96e098bff609b3d7ef4f14221472e4520766365",
+    "src/commands/fix.ts": "3d923daeafc8237bb7c686861f9869ff89078ef2b8ef68d74cd290fe875538b5",
+    "src/commands/upgrade.ts": "853960b81b2eda94457aac121866174e25e4ec165ef190daeac59ce1692e3de7",
+    "src/commands/upgrade_transaction.ts": "33bef0743e7ef402db6d3002266f9d151a1f8b3a885f64b30b7d00c5d4759634",
+    "src/commands/bootstrap_instructions.ts": "b5b33c8bd9b4050ab446fd05608dbeb6c69dde23aebc20096d12d35db752bf41",
+    "src/commands/validate.ts": "4431dfbd1ccc31a13d9a1b22c171ae89e5f64afc5f471556d284089ab9bd3a09",
+    "scripts/release-ladder.js": "f36b513f6b9cf51af529b6a4fb54d2eaa8f76f5ab24ede9cd554f2d4ce0b8173",
+    "scripts/npm-smoke-proxy.js": "c1a5635dbe8832eca05ffd799614364f1aac2e899d851eb253e868f6f3e566f3"
+  },
+  "receipt_hashes": {
+    "deep": "51e098e18c7fdf152ffd4c7d48bce687a81fc67d70dd83a4f2301273b03d4cca",
+    "installed": "6a94b5bc63043846efd5fe2c788a45b8732b03538b0af34a668a5e3d560fe406"
+  },
+  "harness_hashes": {
+    "deep": "4411b75f2bea9303e5a0024315ce5627d0f7789d2c48d6c92aa5610d378a376d",
+    "installed": "59fc13b13d6e8d6812d2021a47d58479ffea831a95f66b2516d89cba26a4f782"
+  },
+  "installed_suite": {
+    "suites": [
+      "graph/identity",
+      "graph/identity_migration",
+      "graph/identity_reconcile",
+      "graph/identity_reconciliation_plan",
+      "commands/identity_commands",
+      "commands/compact_bootstrap",
+      "commands/upgrade_safety",
+      "commands/upgrade",
+      "commands/goal",
+      "graph/goal_next"
+    ],
+    "test_source_sha256": {
+      "tests/graph/identity.test.ts": "c92610acd4a579fa98a59bce13ddb454657cd322ad338e62a87f44d39af8bc77",
+      "tests/graph/identity_migration.test.ts": "ab91f6b48f39b0f956e54ddb439725dfeed2974c7f082dd42d1c8dc7f59b78c2",
+      "tests/graph/identity_reconcile.test.ts": "26c815d8401335fa76146dad426e153e5e2ed10fe900e37631e516a6f26b2a51",
+      "tests/graph/identity_reconciliation_plan.test.ts": "d48fa324f0b3d8cce29d4b5d896d153f4dfc09f974dbad11c476830909156200",
+      "tests/commands/identity_commands.test.ts": "01159b07850b688b4ec60a21b960dc7c04b1d0464f03a21c8a083b89d0a3c9e5",
+      "tests/commands/compact_bootstrap.test.ts": "00e855f4d036c149d937ede72bdd2377da3fc690950f82551e4e959da60985f4",
+      "tests/commands/upgrade_safety.test.ts": "2e6091ac793cbc803d80bb811330f30eb5fefa06b68065d6272c7e6e3546aaaf",
+      "tests/commands/upgrade.test.ts": "be18b84def57ad9fc74a4d9c5f977f5c09e8c7bba8e68be3e1b103ecd97c83e6",
+      "tests/commands/goal.test.ts": "29cc5c87d423e6f9db8c5ecc436b13152fab24ce6ba6f9d339b2f8aca8a69ec4",
+      "tests/graph/goal_next.test.ts": "3954d67884b46083442a453d3cdfeba14b9e35adcea2649e4f5b1309e8989bda"
+    },
+    "exit_code": 0,
+    "summary": [
+      "# tests 124",
+      "# suites 0",
+      "# pass 124",
+      "# fail 0",
+      "# cancelled 0",
+      "# skipped 0",
+      "# todo 0",
+      "# duration_ms 54219.08175"
+    ],
+    "output_sha256": "35e8399c0d2426021794c1a0894f7bfd90508e69ee45511e3f02cc381c17e8a9"
+  },
+  "new_probes": [
+    {
+      "id": "legacy-ancestry-ordinary-edit",
+      "evidence": {
+        "status": 0,
+        "validation_status": 0,
+        "ancestor": "c4ec6d583bb41c509724e4dd6b72ae763fbff4bc",
+        "safe_to_apply": true,
+        "blocking": [],
+        "mapping": {
+          "qid": "root:task-1",
+          "path": ".mdkg/work/task-1-alpha-intent.md",
+          "identity": {
+            "graph_id": "e7403372-f270-4cd7-902d-64b792c781df",
+            "node_id": "b7aa0506-82c4-8d0f-95fb-8052cebc568b"
+          },
+          "stable_ref": "mdkg://e7403372-f270-4cd7-902d-64b792c781df/b7aa0506-82c4-8d0f-95fb-8052cebc568b",
+          "origin_kind": "accepted-ancestor",
+          "ancestor_path": ".mdkg/work/task-1-alpha-intent.md",
+          "before_hash": "sha256:c19bd93b4bf99c99fd5abedcbbbc95967fd2abd7f047d5e5fdad2b807f1ec8f5",
+          "after_hash": "sha256:4eb113adbffd6c998c787a909a1468dea9a4d145571edd6f30fd4700e459ccfb"
+        },
+        "stderr": "",
+        "preview_unchanged": true
+      }
+    },
+    {
+      "id": "legacy-ancestry-delete-recreate",
+      "evidence": {
+        "status": 0,
+        "validation_status": 0,
+        "ancestor": "c4ec6d583bb41c509724e4dd6b72ae763fbff4bc",
+        "safe_to_apply": true,
+        "blocking": [],
+        "mapping": {
+          "qid": "root:task-1",
+          "path": ".mdkg/work/task-1-alpha-intent.md",
+          "identity": {
+            "graph_id": "e7403372-f270-4cd7-902d-64b792c781df",
+            "node_id": "b7aa0506-82c4-8d0f-95fb-8052cebc568b"
+          },
+          "stable_ref": "mdkg://e7403372-f270-4cd7-902d-64b792c781df/b7aa0506-82c4-8d0f-95fb-8052cebc568b",
+          "origin_kind": "accepted-ancestor",
+          "ancestor_path": ".mdkg/work/task-1-alpha-intent.md",
+          "before_hash": "sha256:c19bd93b4bf99c99fd5abedcbbbc95967fd2abd7f047d5e5fdad2b807f1ec8f5",
+          "after_hash": "sha256:4eb113adbffd6c998c787a909a1468dea9a4d145571edd6f30fd4700e459ccfb"
+        },
+        "stderr": "",
+        "preview_unchanged": true
+      }
+    },
+    {
+      "id": "migration-missing-skill-preflight",
+      "evidence": {
+        "status": 0,
+        "validation_status": 2,
+        "safe_to_apply": true,
+        "blocking": [],
+        "stderr": "",
+        "preview_unchanged": true,
+        "apply_status": 0,
+        "apply_stdout": {
+          "action": "graph.transaction",
+          "ok": true,
+          "state": "applied",
+          "plan_hash": "sha256:ae6210a95d26f7372df7a6e51a1e01642c9326d18f652d9e18be18a131ef65e9",
+          "journal_path": ".mdkg/state/identity-transactions/ae6210a95d26f7372df7a6e51a1e01642c9326d18f652d9e18be18a131ef65e9.json",
+          "receipt_path": ".mdkg/identity/migrations/21db755c852ab60eff2ff72c32260ce5115639c88675a2e7456170e5f1b32cbb.json",
+          "authored_paths": [
+            ".mdkg/core/COLLABORATION.md",
+            ".mdkg/core/guide.md",
+            ".mdkg/core/HUMAN.md",
+            ".mdkg/core/rule-1-mdkg-conventions.md",
+            ".mdkg/core/rule-2-context-pack-rules.md",
+            ".mdkg/core/rule-3-cli-contract.md",
+            ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+            ".mdkg/core/rule-5-release-and-versioning.md",
+            ".mdkg/core/rule-6-templates-and-schemas.md",
+            ".mdkg/core/SOUL.md",
+            ".mdkg/work/task-1-alpha-intent.md",
+            ".mdkg/graph.json",
+            ".mdkg/identity/migrations/21db755c852ab60eff2ff72c32260ce5115639c88675a2e7456170e5f1b32cbb.json"
+          ],
+          "derived_state": "local indexes rebuilt after strict authored validation",
+          "git_staging": "unchanged",
+          "execution_state": "unchanged"
+        },
+        "apply_stderr": "",
+        "after_validate_status": 2
+      }
+    }
+  ],
+  "prior_evidence": ".mdkg/artifacts/goal-83/task-824-behavioral-audit.json",
+  "disposition": [
+    {
+      "area": "Compact init and managed instructions",
+      "evidence": "Installed compact_bootstrap, upgrade and upgrade_safety suites; prior 34 probes; bug-6 actual published upgrade receipt",
+      "result": "core controls pass; init format/identity bug-24 remains",
+      "owner": "root:bug-24"
+    },
+    {
+      "area": "Identity allocation, references and ordinary commands",
+      "evidence": "Installed identity and identity_commands suites; source identity_authoring/refs; pack export and format probes",
+      "result": "ordinary identity controls pass; serializer and formatting bugs remain",
+      "owners": [
+        "root:bug-22",
+        "root:bug-23"
+      ]
+    },
+    {
+      "area": "Legacy migration and ancestor provenance",
+      "evidence": "Installed identity_migration suite plus delete/recreate and missing-skill probes; migration/snapshot/transaction source trace",
+      "result": "two additional confirmed blockers",
+      "owners": [
+        "root:bug-26",
+        "root:bug-27"
+      ]
+    },
+    {
+      "area": "Reviewed semantic reconciliation and replay",
+      "evidence": "Installed pure kernel and branch-plan suites; source plan/history/acceptance/transaction trace",
+      "result": "tested same-identity conflict, replay/revert, newer ancestry, acceptance quarantine and non-staging controls pass; full consumer/runtime qualification remains task-826"
+    },
+    {
+      "area": "Legacy numeric repair",
+      "evidence": "Source fix.ts Git stage-1/common-ancestor classification and apply gate; achieved Goal 82 task-819 evidence reused",
+      "result": "existing-node conflicts and blocked/ambiguous plans refuse; legacy repair remains distinct from v2 reviewed reconciliation"
+    },
+    {
+      "area": "Recovery and custody",
+      "evidence": "Installed interrupted migration/reconciliation and upgrade_safety suites; source exact-before/after custody, private journals, plan/control checks",
+      "result": "tested resume/rollback and user-byte preservation controls pass; final independent race/ACL assessment remains task-828"
+    },
+    {
+      "area": "Observational reads and JSON/SQLite",
+      "evidence": "37 total custom probes including legacy cache writes; installed identity command backend matrix; verified bug-5 fingerprint receipt reused",
+      "result": "v2 controls pass; legacy persistence bug-21 remains",
+      "owner": "root:bug-21"
+    },
+    {
+      "area": "Selection, claims and execution state",
+      "evidence": "Installed goal/goal_next and identity command selection tests; source selected_goal/goal.ts/control snapshots",
+      "result": "selection uses stable identity and is preserved; goal claim remains authored active_node lifecycle, not a distributed runtime lease. Runtime enforcement and economic state stay outside graph merge."
+    },
+    {
+      "area": "Transport and immutable evidence",
+      "evidence": "Existing hash-bound bug-17 partial receipt, graph consumer verification and transport classification source retained unchanged",
+      "result": "existing bug-17 remains open; no duplicate security claim",
+      "owner": "root:bug-17"
+    },
+    {
+      "area": "Release validation and artifact reuse",
+      "evidence": "Source release-ladder environment, tracked-boundary hashes, manifest routing and proxy; synthetic external-import cache probe; existing Goal 77 coverage contracts reused",
+      "result": "cache dependency bug-25 and installed coverage bug-7 remain; final ladder/seal unexecuted",
+      "owners": [
+        "root:bug-25",
+        "root:bug-7"
+      ]
+    },
+    {
+      "area": "Checkpoint dependency routing",
+      "evidence": "Installed goal publication-route test plus synthetic checkpoint before/after control; canonical Goal 85 next returns no eligible node",
+      "result": "suspected checkpoint-routing defect rejected; publication still requires independent exact artifact/blocker checks"
+    }
+  ],
+  "confirmed_behavioral_blockers": [
+    "root:bug-21",
+    "root:bug-22",
+    "root:bug-23",
+    "root:bug-24",
+    "root:bug-25",
+    "root:bug-26",
+    "root:bug-27"
+  ],
+  "verification": "root:test-483; root:task-828",
+  "limits": [
+    "This closes audit classification, not fixes or release qualification.",
+    "124 existing installed tests use synthetic helper templates and are not the full user-facing installed family/runtime matrix.",
+    "37 custom probes include intentionally failing product contracts; zero final harness errors does not mean all contracts passed.",
+    "Temporary harness mistakes (missing brace, deleted fixture parent, and symlinked seed layout) were corrected; no product changes were made to obtain passing controls. The earlier installed harness run failed eight setup cases and is not counted as clearance.",
+    "Node 24.15.0 and supported 24 remain unqualified in this snapshot; final security diff review, platform/race/ACL review, coverage ladder, draft metadata and seal remain open.",
+    "Source and tests already reviewed under task-825/earlier verified fixes are reused as scoped evidence, not represented as a fresh repeated Standard scan.",
+    "No source fixes, canonical migration, bundle refresh, remote Git, provider or publication in this audit."
+  ],
+  "skills": [
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": []
+}

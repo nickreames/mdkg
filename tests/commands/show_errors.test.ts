@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
 const { runShowCommand } = require("../../commands/show");
+const { rebuildDerivedIndexCaches } = require("../../commands/index");
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 import { writeRootConfig } from "../helpers/config";
@@ -74,7 +75,7 @@ test("runShowCommand errors when node body file is missing", () => {
   writeRootConfig(root);
   writeDefaultTemplates(root);
   writeTask(root);
-  runShowCommand({ root, id: "task-1", metaOnly: true });
+  rebuildDerivedIndexCaches({ root });
   fs.unlinkSync(path.join(root, ".mdkg", "work", "task-1.md"));
 
   assert.throws(

@@ -66,10 +66,11 @@ export function runNextCommand(options: NextCommandOptions): void {
   }
 
   const { index, rebuilt, stale } = loadIndex({
+    persistReindex: false,
     root: options.root,
     config,
     useCache: !options.noCache,
-    allowReindex: !options.noReindex,
+    allowReindex: options.noReindex ? false : undefined,
   });
 
   if (stale && !rebuilt && !options.noCache) {

@@ -6,8 +6,8 @@ status: progress
 priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-15
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, test-483, task-828]
+active_node: bug-21
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 
 # Objective
@@ -195,6 +195,17 @@ tests and 26 release/security-contract checks. Both independent candidate-review
 issues were reproduced and corrected. Receipt:
 .mdkg/artifacts/goal-84/bug-15-verification.json. Twelve of thirteen sealed
 security findings now have local fixes; bug-17 is the remaining security fix.
+
+## 2026-09-08 Transport-State Remediation Progress
+
+bug-17 now has a hash-bound partial implementation receipt at
+`.mdkg/artifacts/goal-84/bug-17-progress.json`. Eighteen regressions and 78
+installed cases pass, as do 1036 source tests and 26 release/security contracts.
+The bug remains in progress: config-less public materialization needs an explicit
+compatibility decision, alternate representations require final review, and the
+independent candidate review has not yet run. This is not a thirteenth completed
+security fix or publication readiness. The twelve previously verified fixes
+remain unchanged; preserve the full task-828 and Goal 83 gates.
 Its accepted public omission/private portability contract is recorded on that
 node. Bug-7, full behavioral/installed qualification, task-828, ladder and seal
 remain incomplete. No publication readiness is implied.
@@ -204,3 +215,46 @@ receipting belongs to consumers. One writer owns each agent graph; parent reads
 do not inherit child mutation authority. Consumer-specific coordination is a
 separate prompt for Nick to route, not public mdkg policy or a dispatched task.
 Protected selected/runtime/bundle state and generated SQLite custody persist.
+
+## 2026-09-08 Behavioral Audit Intake
+
+Task-824 reproduced five additional publication blockers in one frozen installed
+candidate: bug-21 legacy observational writes; bug-22 pack identity omission;
+bug-23 v2 formatter incompatibility; bug-24 identity-unsafe and unknown-format
+initialization; bug-25 incomplete site-build cache dependencies. These are
+functional/release-validation findings, not five additional Standard security
+findings. The 12-of-13 original security-fix accounting is unchanged.
+
+Test-483 defines independent installed verification and preserved controls.
+All five bugs are backlog, qualified for bounded Goal 84 remediation only after
+the current source-read-only snapshot audit boundary is closed. Task-828 depends
+on them and test-483; no publication gate can bypass this intake. Evidence:
+`.mdkg/artifacts/goal-83/task-824-behavioral-audit.json`.
+
+No source remedy occurred during intake. Bug-17 remains blocked on its separate
+public materialization decision; independent Goal 83 audit work continues.
+
+## 2026-09-09 Migration Audit Disposition
+
+The completed source/contract trace adds bug-26 (legacy recreation provenance)
+and bug-27 (migration validation and skill-dependency binding). All seven
+behavioral blockers are owned here and block test-483/task-828. These are not
+additional Standard security findings; original security accounting remains
+twelve of thirteen locally fixed, with bug-17 incomplete.
+
+Evidence: `.mdkg/artifacts/goal-83/task-824-contract-audit.json`. Three additional
+probes bring the custom audit to 37; 124 existing installed contract tests pass
+on Node 26.0.0. Passing controls do not verify these new fixes. No source changes
+occurred during snapshot review. Independent bounded remediation may follow
+task-824 audit closure while bug-17's compatibility decision stays blocked.
+
+## 2026-09-09 Observational CLI Remediation
+
+Task-824 closed with audit chk-574. Goal 83 is paused only while the same
+approved qualification pass works its bounded Goal 84 remedies; selected Goal 73
+is unchanged. Bug-21 is locally verified: 23 installed tests each on Node 26.0.0
+and 24.18.0, 1059 source tests and 26 release/security contracts pass. Evidence:
+`.mdkg/artifacts/goal-84/bug-21-verification.json`. Published 0.5.2 is confirmed
+affected from an integrity-verified cached artifact. Six behavioral remedies
+(bugs 22-27), bug-17's compatibility decision and all independent qualification
+gates remain incomplete. No risk waiver, final seal or publication is implied.

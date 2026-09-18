@@ -1,0 +1,480 @@
+{
+  "schema_version": 1,
+  "kind": "local-behavioral-fix-verification",
+  "bug": "root:bug-21",
+  "goal": "root:goal-84",
+  "status": "locally-verified; final independent acceptance remains task-828/test-483",
+  "source_head": "d09dd2a1f9d6f2a6692ce08fad339498b9b4dd05",
+  "candidate": {
+    "version": "0.5.2",
+    "sha256": "3022a4b0bec58b7c0b73296c1eb2d52558cff8868c8484d62b5f574fc9c5548d",
+    "integrity": "sha512-r68rOyJOwxIcSHklsQjHafV4x/WmM2Cg8y7mpIuSXKn2KJfnRvPz+h4C2HXzdOWer1J4GEmD6XkQuIY2dBSBew=="
+  },
+  "source_files_sha256": {
+    "src/graph/index_cache.ts": "515ccdbe7155dc25ce9b0e8d4e2f262b1eb7ac4aee37d8cdcbd35314f86b6d6f",
+    "src/commands/next.ts": "c01436cd06a5b5ef92472d7027afb2cb32a632540c927aa1cd28e6c1c5839f61",
+    "src/commands/show.ts": "43a8afe9627dd4c9189b34b365d960f30133e7f630524f1f252878b623d5e1ee",
+    "src/commands/list.ts": "4b1049324a302f9743a062c0e15d40ffc1624da759b09b04cf3219180272084e",
+    "src/commands/search.ts": "69e754356502f4b0a07b9b48e9c14eecd74e0fc0066cfaaec926550a53d08dcf",
+    "src/commands/pack.ts": "6248edaddbe4bb3750a050ca254884d8d83fa65ebccea9441f956cd0719c6d03",
+    "tests/commands/observational_reads.test.ts": "c3f4cb1dc8735bff4f11852c485a593f3f4d0b84de14cb2b0143068e0b3f2e4b",
+    "tests/commands/pack.test.ts": "2f7996926ac83fcbc6843778c3af19b50d37d326cad81b0b87fd0774aec77ae3",
+    "tests/commands/show_errors.test.ts": "a05ded0dca40df4728ff32ffc8f5c4b4b8a5ab17e5b4ff895ee187f0d70f90db",
+    "tests/commands/show_nodes.test.ts": "54b2d49da486ff9fcd8306c5b98de162c948279abd94e3f2c844c8527de8b2dc"
+  },
+  "protected_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "installed_results": [
+    {
+      "name": "pack",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "11fd8b265774d13c4b80633f9f43cf620e9ccc417bbd70129ec9e1dc308bd5a1",
+      "summary": []
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "7212c68c06b4f6e28b48eb2bad70552973c553a16af69e9b7dc9b960bf072efa",
+      "summary": []
+    },
+    {
+      "name": "installed-node26",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "ec4a1a4ea73239a65dc12733fd21b527ecdb65c0cf8e4c2b5d4a4edd291e5b01",
+      "summary": [
+        "# tests 23",
+        "# suites 0",
+        "# pass 23",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 58726.215458"
+      ],
+      "runtime": "v26.0.0"
+    },
+    {
+      "name": "installed-node24",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "6f5d53e414ada54afdda9384e46f014e023192a0101b6026dd45608da3bff398",
+      "summary": [
+        "# tests 23",
+        "# suites 0",
+        "# pass 23",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 39108.144042"
+      ],
+      "runtime": "v24.18.0"
+    }
+  ],
+  "full": {
+    "exit_code": 0,
+    "signal": null,
+    "runtime": "v26.0.0",
+    "output_sha256": "700c08e8d55431a4273fcee298019a1c78663995230ba6b7276e9f23657fe10f",
+    "summary": [
+      "ℹ tests 1059",
+      "ℹ suites 0",
+      "ℹ pass 1059",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 112409.63925",
+      "ℹ tests 26",
+      "ℹ suites 0",
+      "ℹ pass 26",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 97.834583"
+    ]
+  },
+  "published": {
+    "version": "0.5.2",
+    "integrity": "sha512-a01iaKqgw3fv7YRi/0E1bWE0polds76ccGyOCMVzyBf35ySZHSjlTIA2DG5CgjZw2TqxKSgcVZxazrOjcB333g==",
+    "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "cases": [
+      {
+        "backend": "json",
+        "state": "missing",
+        "args": [
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "missing",
+        "args": [
+          "list",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "missing",
+        "args": [
+          "search",
+          "Alpha",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "missing",
+        "args": [
+          "next"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "missing",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "none"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "missing",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "auto"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json",
+          ".mdkg/index/skills.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "stale",
+        "args": [
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "stale",
+        "args": [
+          "list",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "stale",
+        "args": [
+          "search",
+          "Alpha",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "stale",
+        "args": [
+          "next"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "stale",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "none"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "json",
+        "state": "stale",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "auto"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json",
+          ".mdkg/index/skills.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "missing",
+        "args": [
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "missing",
+        "args": [
+          "list",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "missing",
+        "args": [
+          "search",
+          "Alpha",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "missing",
+        "args": [
+          "next"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "missing",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "none"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "missing",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "auto"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json",
+          ".mdkg/index/skills.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "stale",
+        "args": [
+          "show",
+          "task-1",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "stale",
+        "args": [
+          "list",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "stale",
+        "args": [
+          "search",
+          "Alpha",
+          "--json"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "stale",
+        "args": [
+          "next"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "stale",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "none"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json"
+        ]
+      },
+      {
+        "backend": "sqlite",
+        "state": "stale",
+        "args": [
+          "pack",
+          "task-1",
+          "--dry-run",
+          "--skills",
+          "auto"
+        ],
+        "exit_code": 0,
+        "changed": [
+          ".mdkg/index/global.json",
+          ".mdkg/index/skills.json"
+        ]
+      }
+    ]
+  },
+  "receipt_hashes": {
+    "receipt.json": "99a760dd4dbad37913f09cab9f39e41c2a5760bdd2b37a599da5d54817f77aed",
+    "published-receipt.json": "1dde38875c5ef009b6caa86a6861d22fcb1ab05b931542acbb4b39bd5882fb08",
+    "full-final-receipt.json": "ea19d677ed2c684845ac4a8278350de81c089e3b4ac1c1aeccc7eb8a989af95f",
+    "full-tests.txt": "ff049fd6e6df5ee388cec63b783ac3717273f304754ecb209f516f57395604d7"
+  },
+  "fix": [
+    "Legacy inspection suppresses authored and imported cache persistence independently of v2 ambiguity handling.",
+    "next explicitly disables persistence while preserving its strict graph classification.",
+    "Pack skill discovery never persists caches, including dry-run automatic skill inclusion.",
+    "Five affected commands honor configured auto_reindex=false when --no-reindex is absent; explicit --no-cache retains in-memory derivation."
+  ],
+  "before": {
+    "focused_cases": 20,
+    "passed": 6,
+    "failed": 14,
+    "description": "Current prepatch code reproduced global/subgraph/skill cache writes, ignored config opt-out, and read-only EACCES. A preliminary harness used the wrong generic-error exit expectation; corrected before this final failing run."
+  },
+  "regression_coverage": [
+    "23 tests per installed runtime, 46 passing, no skips.",
+    "Legacy/v2 and JSON/SQLite, missing/stale caches, no-cache/no-reindex and configuration opt-out.",
+    "Automatic skill inclusion, active child snapshots, qualified references and preserved ambiguity refusal.",
+    "Unchanged Git index, staged/unstaged source, unrelated user bytes and local sentinels.",
+    "Enforced POSIX read-only permissions; explicit index and SQLite verification still succeed."
+  ],
+  "full_suite_disposition": "First full run: 1056/1059 pass; three fixtures relied on implicit read-time cache creation. Changed only their setup to explicit indexing; all original behavior assertions preserved. Final 1059 source plus 26 release/security-contract tests pass. Nineteen focused existing pack/show tests also pass.",
+  "checks": {
+    "build": "pass",
+    "cli_parity": "pass",
+    "docs_parity": "pass; 494 examples checked; zero failures",
+    "full_graph": "pass; zero errors; three existing stale-subgraph age warnings preserved",
+    "changed_graph": "pass; zero errors and warnings",
+    "sqlite_verify": "all five projections fresh",
+    "diff_check": "pass"
+  },
+  "limitations": [
+    "Exact Node 24.15.0, cross-platform qualification, full installed user-journey matrix, coverage ladder and final security diff review remain open.",
+    "Package retains development 0.5.2 metadata; intermediate npm pack skipped prepack using already-built output; normal isolated postinstall executed. Not a 0.6.0 release seal.",
+    "Published baseline is cached integrity-verified 0.5.2, not a fresh registry lookup.",
+    "A temporary verification-script syntax error executed no cases; an imported-graph fixture was corrected to qualify its intentionally ambiguous alias.",
+    "No canonical migration, bundle refresh, remote Git, provider, deployment or publication. Existing partial bug-17 patch unchanged."
+  ],
+  "skills": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "source-grounded-diagnose-and-fix",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": []
+}

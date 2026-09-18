@@ -5,6 +5,7 @@ import path from "path";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeDefaultTemplates } from "../helpers/templates";
 const { runPackCommand } = require("../../commands/pack");
+const { rebuildDerivedIndexCaches } = require("../../commands/index");
 const { runArchiveAddCommand } = require("../../commands/archive");
 
 function writeConfig(root: string): void {
@@ -368,6 +369,7 @@ test("runPackCommand rejects --verbose with non-standard profile", () => {
 test("runPackCommand standard profile does not require unrelated templates", () => {
   const root = makeTempDir("mdkg-pack-standard-templates-");
   setupPackFixture(root);
+  rebuildDerivedIndexCaches({ root });
 
   runPackCommand({
     root,
