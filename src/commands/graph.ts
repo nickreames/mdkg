@@ -914,6 +914,7 @@ function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphIm
     const snapshot = readAuthoredSnapshot(options.root);
     const templates = loadTemplateSchemas(options.root, snapshot.config, ALLOWED_TYPES);
     const parse = (content: string, file: string) => parseNode(content, file, {
+      archiveRoot: options.root,
       workStatusEnum: snapshot.config.work.status_enum, priorityMin: snapshot.config.work.priority_min,
       priorityMax: snapshot.config.work.priority_max, templateSchemas: templates,
     });

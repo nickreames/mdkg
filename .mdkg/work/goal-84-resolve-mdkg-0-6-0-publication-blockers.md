@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-10
+active_node: bug-12
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -147,3 +147,13 @@ local fixes. Bugs 12, 15, 16 and 17 remain, alongside bugs 5–7 and final gates
 Archive bug-12 independent prepatch investigation is complete; implementation
 has not started. Continue authorized local work; no new Nick decision required.
 Protected selection/runtime/bundle bytes and generated SQLite custody remain.
+
+## 2026-09-08 Archive Boundary Verification
+
+Bug-12 is locally verified: 25 focused, 48 installed, 964 full source tests and
+26 contract checks pass; CLI/docs/graph/diff gates pass. Ten of thirteen security
+findings now have local fixes. Remaining security nodes are bugs 15, 16 and 17;
+bugs 5–7 and final qualification gates remain open. Skill resource source-boundary
+investigation is underway read-only, without skill authoring or mirror changes.
+No new Nick decision is required for continuing the approved local scope.
+Publication remains blocked; protected states and SQLite custody are unchanged.

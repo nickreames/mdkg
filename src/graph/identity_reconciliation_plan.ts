@@ -61,6 +61,7 @@ export function validateReconciliationCandidate(root: string, candidate: Authore
       // Default parser integrity checks verify actual payload/hash/size. The
       // historical parser deliberately does not read today's payload as proof.
       parseNode(entry.content, path.resolve(root, entry.path), {
+        archiveRoot: root,
         workStatusEnum: candidate.config.work.status_enum, priorityMin: candidate.config.work.priority_min,
         priorityMax: candidate.config.work.priority_max, templateSchemas: templates,
       });

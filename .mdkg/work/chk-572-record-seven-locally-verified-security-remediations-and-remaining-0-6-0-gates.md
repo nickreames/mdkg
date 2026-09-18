@@ -145,3 +145,13 @@ cached-deletion failure was corrected while preserving the original test.
 Nine security findings have local fixes; bug-12 is the next investigated lane.
 Owner, local-only authority, preserved states, SQLite custody and final gates
 remain as above. No runtime lease acquired; no new skill candidates.
+
+## Follow-on Verification: root:bug-12
+
+2026-09-08: archive schema/path/descriptor boundaries are locally verified.
+Receipt: .mdkg/artifacts/goal-84/bug-12-verification.json. Twenty-five focused,
+48 installed, 964 full source tests and 26 contract checks pass. Independent
+prepatch/candidate source reviews and CLI/docs/graph/diff checks completed.
+Ten security findings have local fixes; bugs 15–17 and all final gates remain.
+Protected selection/runtime/bundle bytes, SQLite custody and local-only authority
+are unchanged. No runtime lease acquired or new skill candidates proposed.

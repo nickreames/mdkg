@@ -122,6 +122,7 @@ export function planLegacyIdentityMigration(root: string, parameters: MigrationP
     frontmatter.node_id = mapping.identity.node_id;
     const after = replaceGraphFrontmatter(entry.content, frontmatter);
     const node = parseNode(after, path.resolve(root, entry.path), {
+      archiveRoot: root,
       workStatusEnum: current.config.work.status_enum, priorityMin: current.config.work.priority_min,
       priorityMax: current.config.work.priority_max, templateSchemas: templates,
     });

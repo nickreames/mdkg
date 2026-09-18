@@ -2,16 +2,18 @@ import fs from "fs";
 import path from "path";
 import { authorNewIdentityNode } from "../graph/identity_authoring";
 import { identityRef, NodeIdentity, parseIdentityRef, readGraphFormat } from "../graph/identity";
-import { Config, loadConfig } from "../core/config";
+import { Config, DEFAULT_INDEX_LIMITS, loadConfig } from "../core/config";
 import {
   atomicReplaceContainedFile,
   containedPathExists,
+  forEachContainedDirectoryEntry,
   readContainedFile,
   withContainedPathSink,
   writeContainedFileExclusive,
 } from "../core/filesystem_authority";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { FrontmatterValue, formatFrontmatter, parseFrontmatter } from "../graph/frontmatter";
+import { validateArchiveFrontmatter } from "../graph/archive_file";
 import {
   checkArchiveIntegrity,
   hashArchiveBuffer,
@@ -285,23 +287,31 @@ function archiveNodePaths(root: string, node: IndexNode): {
   };
 }
 
-function walkArchiveSidecars(root: string): string[] {
-  if (!fs.existsSync(root)) {
-    return [];
-  }
-  const entries = fs.readdirSync(root, { withFileTypes: true });
+type ArchiveVerificationBudget = {
+  limits: Config["index"]["limits"];
+  entries: number;
+  files: number;
+  bytes: number;
+};
+
+function walkArchiveSidecars(root: string, relativeRoot: string, budget: ArchiveVerificationBudget): string[] {
+  if (!containedPathExists({ root, relativePath: relativeRoot })) return [];
   const files: string[] = [];
-  for (const entry of entries) {
-    if (entry.name === "source") {
-      continue;
-    }
-    const fullPath = path.join(root, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...walkArchiveSidecars(fullPath));
-    } else if (entry.isFile() && entry.name.endsWith(".md")) {
-      files.push(fullPath);
-    }
-  }
+  const visit = (relativePath: string, depth: number) => {
+    if (depth > budget.limits.max_depth) throw new ValidationError("archive discovery exceeds index.limits.max_depth");
+    forEachContainedDirectoryEntry({ root, relativePath, pathSyntax: "native" }, (entry) => {
+      if (++budget.entries > budget.limits.max_files * 10) throw new ValidationError("archive discovery entry budget exceeded");
+      if (entry.name === "source") return;
+      const child = path.join(relativePath, entry.name);
+      if (entry.isDirectory()) visit(child, depth + 1);
+      else if (entry.isFile() && entry.name.endsWith(".md")) {
+        if (++budget.files > budget.limits.max_files) throw new ValidationError("archive discovery exceeds index.limits.max_files");
+        files.push(path.resolve(root, child));
+      }
+      // Descendant links/special entries remain excluded, never followed.
+    });
+  };
+  visit(relativeRoot, 0);
   return files.sort();
 }
 
@@ -330,11 +340,13 @@ function formatArchiveSidecar(
   return content.endsWith("\n") ? content : `${content}\n`;
 }
 
-function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): ArchiveVerifyResult | undefined {
+function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string, budget: ArchiveVerificationBudget, idFilter?: string): ArchiveVerifyResult | undefined {
   const relativePath = toPosixPath(path.relative(root, sidecarPath));
   let frontmatter: Record<string, FrontmatterValue>;
   try {
-    frontmatter = parseFrontmatter(fs.readFileSync(sidecarPath, "utf8"), sidecarPath).frontmatter;
+    const bytes = readContainedFile({ root, relativePath: path.relative(root, sidecarPath), pathSyntax: "native", maxBytes: Math.min(budget.limits.max_file_bytes, budget.limits.max_total_bytes - budget.bytes) }, null);
+    budget.bytes += bytes.length;
+    frontmatter = parseFrontmatter(bytes.toString("utf8"), sidecarPath).frontmatter;
   } catch (err) {
     return {
       qid: `${ws}:${relativePath}`,
@@ -350,6 +362,7 @@ function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): Ar
     return undefined;
   }
   const id = stringAttribute(frontmatter.id) ?? relativePath;
+  if (idFilter && id !== idFilter) return undefined;
   const result: ArchiveVerifyResult = {
     qid: `${ws}:${id}`,
     id,
@@ -361,24 +374,16 @@ function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): Ar
   };
 
   const sidecarDir = path.dirname(sidecarPath);
-  const sourcePath = stringAttribute(frontmatter.source_path);
   const storedPath = stringAttribute(frontmatter.stored_path);
   const compressedPath = stringAttribute(frontmatter.compressed_path);
   const expectedRawHash = stringAttribute(frontmatter.sha256);
   const expectedCompressedHash = stringAttribute(frontmatter.compressed_sha256);
   const expectedByteSize = stringAttribute(frontmatter.byte_size);
-  for (const [key, value] of [
-    ["source_path", sourcePath],
-    ["stored_path", storedPath],
-    ["compressed_path", compressedPath],
-    ["sha256", expectedRawHash],
-    ["compressed_sha256", expectedCompressedHash],
-    ["byte_size", expectedByteSize],
-  ] as const) {
-    if (!value) {
-      result.errors.push(`${key} is required`);
-    }
-  }
+  // Schema validation precedes resolution: do not launder traversal into a
+  // normal-looking absolute path. Payload integrity then uses repository root,
+  // never the attacker-controlled sidecar directory as the authority root.
+  try { validateArchiveFrontmatter("archive", frontmatter, sidecarPath, true); }
+  catch (err) { result.errors.push(err instanceof Error ? err.message : String(err)); }
   if (result.errors.length > 0) {
     result.ok = false;
     return result;
@@ -401,10 +406,13 @@ function verifyArchiveSidecar(root: string, ws: string, sidecarPath: string): Ar
 
 function loadArchiveVerifyResults(options: ArchiveVerifyCommandOptions): ArchiveVerifyResult[] {
   const config = loadConfig(options.root);
+  const limits: Config["index"]["limits"] = { ...DEFAULT_INDEX_LIMITS };
+  for (const key of Object.keys(limits) as Array<keyof typeof limits>) limits[key] = Math.min(limits[key], config.index.limits[key]);
+  const budget: ArchiveVerificationBudget = { limits, entries: 0, files: 0, bytes: 0 };
   if (options.id && (parseIdentityRef(options.id) || readGraphFormat(options.root).format_version === 2)) {
     const node = resolveArchiveNode(options.root, options.id, options.ws);
     const { sidecarPath } = archiveNodePaths(options.root, node);
-    const result = verifyArchiveSidecar(options.root, node.ws, sidecarPath);
+    const result = verifyArchiveSidecar(options.root, node.ws, sidecarPath, budget);
     if (!result) throw new NotFoundError(`archive not found: ${options.id}`);
     return [{ ...result, qid: node.qid, ...(node.alias_qid ? { alias_qid: node.alias_qid } : {}),
       ...(node.identity ? { identity: node.identity, stable_ref: identityRef(node.identity) } : {}) }];
@@ -423,9 +431,9 @@ function loadArchiveVerifyResults(options: ArchiveVerifyCommandOptions): Archive
     if (!workspace.enabled) {
       continue;
     }
-    const archiveRoot = path.resolve(options.root, workspace.path, workspace.mdkg_dir, "archive");
-    for (const sidecarPath of walkArchiveSidecars(archiveRoot)) {
-      const result = verifyArchiveSidecar(options.root, alias, sidecarPath);
+    const archiveRoot = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "archive");
+    for (const sidecarPath of walkArchiveSidecars(options.root, archiveRoot, budget)) {
+      const result = verifyArchiveSidecar(options.root, alias, sidecarPath, budget, idFilter);
       if (!result) {
         continue;
       }

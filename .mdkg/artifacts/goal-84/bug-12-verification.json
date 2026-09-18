@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-12",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "baseline-archive-read-containment",
+  "outcome": "fixed-locally",
+  "base_revision": "c88d97e18323c00204b296a39d026cda8ff8b04e",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball contains the same unrestricted hashArchiveFile read before ZIP limits and raw stat. Candidate reproduced before patch; earlier releases unassessed.",
+  "invariant": "Repository-authored archive sidecars cannot authorize external, linked or special-file reads. Validate raw metadata before path resolution and enforce bounded contained descriptor reads before computing digests.",
+  "strategy": "Shared schema checks plus explicit archiveRoot for live parseNode consumers. Hash and ZIP-parse identical bounded bytes; stream raw hashing and byte count from one descriptor. Direct sidecar discovery/read uses contained bounded iteration/documents and filters legacy IDs before unrelated payload verification. Explicit external archive add and historical deferred parsing remain separate.",
+  "files_sha256": {
+    "src/commands/archive.ts": "5d5621b1be2d5e1bdefe342f908dce6b0a94df1069be1d95bb89c956f6bc9e2e",
+    "src/commands/fix.ts": "5ca43cbdea7bdbb7162963d1f1d3a7bfd4d15d7a62c3f20b5e25995a54c62417",
+    "src/commands/graph.ts": "aebe758320271596c677a58e45453323789d3ce50b4cb05e2de99fba95c2bb94",
+    "src/commands/validate.ts": "4431dfbd1ccc31a13d9a1b22c171ae89e5f64afc5f471556d284089ab9bd3a09",
+    "src/graph/archive_file.ts": "ded6d456d048da8cff13e8297ac27e75244306a35d84580993b433c26b44804a",
+    "src/graph/archive_integrity.ts": "dddf8563ae69b65587a79780a46144125bc41eedee3497151783167d96ff1a4a",
+    "src/graph/identity_migration.ts": "e199415b746e4a2a83390c126ee8f013caec196e2cbbe87341a1da9b8b2ac626",
+    "src/graph/identity_reconciliation_plan.ts": "e9aba144335f1722da722031ded6ac6704392750295a142116b7501bfe259281",
+    "src/graph/identity_snapshot.ts": "4323a132a65372a5d1516255f57a996cc10c1e1459c60824baf22ecd0bd376e9",
+    "src/graph/indexer.ts": "8ecdb69799fe5ffc1b6141600225d47746ee2e692328ecf6c89d974895be9a43",
+    "src/graph/node.ts": "02264f3a6178ef12670dcc4875664276b4e2ad1ee92b97ff12482bf5eefa5d03",
+    "tests/graph/archive_containment.test.ts": "8032b2f53eb986c70c4253664e4b8d5d14ca2361db0dd65057fc0d46290f506e",
+    "docs/src/content/docs/start-here/troubleshooting.md": "b3bfb74baa37d9f6ae3469bb34af82e1a552e3ca4ed8735072a24df6ef51fb6e"
+  },
+  "before": "13 of 18 initial cases failed: external fingerprint leakage, normalized/absolute/Windows/NUL paths, raw/ZIP links, root discovery links and pre-limit whole-file hash reads. Five existing controls passed.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; focused archive containment and existing archive/work tests",
+      "result": "Initial focused 31 passed; expanded containment suite 25 passed, zero failures/skips."
+    },
+    {
+      "command": "Offline npm pack/install; installed archive containment, archive/work, archive compression ownership and ZIP suites",
+      "result": "48 passed, zero failures/skips; installed runtime bytes unchanged. Compact receipt retained; owned install/intermediate tarball/fixtures removed."
+    },
+    {
+      "command": "CLI/docs/full and changed-only graph validation; git diff --check",
+      "result": "Passed. 478 examples across 63 files; zero graph errors, three inherited full-graph age warnings and zero changed-only warnings."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "964 source tests plus 26 release/security-contract checks passed, zero failures/skips."
+    }
+  ],
+  "review": "Independent prepatch and one fresh source-only candidate reviewer found no concrete surviving original bypass or introduced regression. Parent traced every non-deferred parseNode caller and added explicit repository authority. Final exact-range/platform verification remains owned by task-828.",
+  "installed_candidate": {
+    "sha256": "5ec96bb8f81f81bd9700b516e9cadacedbc509a06cbd773dae54d5cb0c564f91",
+    "integrity": "sha512-kmqQ8dJelJwyeWqVmrmRQv9BpuehcXmRmNG2H8ROejxjBnIBgpeJ4bWME30o8yPIme/iIKcj7aGx8Nq/tAVBcQ==",
+    "status": "Intermediate development package, not final 0.6.0 seal"
+  },
+  "limitations": [
+    "Per-payload 128 MiB compressed/64 MiB raw bounds match existing ZIP ceilings; not an aggregate archive-work budget.",
+    "No portable openat immunity against active concurrent ancestor replacement; requires quiescent checkout.",
+    "Windows and exact Node 24 qualification, remaining findings, final Security diff review, release ladder and seal remain open."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and explicit-path local commits only; no remote Git, publication, provider/deployment, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}

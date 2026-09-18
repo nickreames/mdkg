@@ -141,6 +141,30 @@ this restriction does not turn all bundle commands into repository-only reads.
 Keep the checkout quiescent: the path-based checks are not a portable atomic
 filesystem sandbox against concurrent ancestor replacement.
 
+## Archive verification rejects a path or size (0.6.0 candidate)
+
+Archive sidecars now use the same schema checks in direct verification and
+normal graph parsing. Stored and compressed paths are sidecar-relative, but
+their filesystem authority is the selected repository root. Absolute paths,
+parent-directory components, NUL bytes, links and special files are rejected
+before payload hashing. A genuinely absent raw copy remains optional when its
+compressed cache verifies; a dangling raw link is an error, not absence.
+
+Compressed input is bounded at 128 MiB and hashed from the same bytes parsed
+as ZIP. Raw verification streams at most 64 MiB, matching the existing ZIP
+single-entry uncompressed limit; other ZIP expansion limits still apply.
+Contained-file mismatch receipts can still report actual digests. Invalid
+external targets are not hashed. These are per-payload bounds, not an aggregate
+archive-work budget or a portable atomic sandbox against concurrent writers.
+
+Direct sidecar discovery uses bounded directory iteration and document reads:
+`index.limits` can lower the default file, depth and byte budgets; they are capped
+at the default safety envelope for this command. Legacy ID filtering occurs
+before unrelated payload verification. Explicit `archive add` of an external
+operator-selected source remains supported; this does not authorize sidecars
+to read arbitrary external paths. Internal live `parseNode` consumers supply
+`archiveRoot`; explicitly deferred historical parsing does not verify payloads.
+
 ## A handoff warns about raw markers
 
 Review the handoff manually. Warnings are aids, not proof that the content is safe or unsafe. Remove raw secrets, tokens, provider payloads, raw prompt dumps, and bulky runtime traces before sharing.
