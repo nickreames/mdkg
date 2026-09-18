@@ -19,40 +19,41 @@ function fail(message) {
 }
 
 function hashFile(filePath) {
-  return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+  const hash = crypto.createHash("sha256");
+  const fd = fs.openSync(filePath, "r");
+  const buffer = Buffer.allocUnsafe(64 * 1024);
+  try {
+    let count;
+    while ((count = fs.readSync(fd, buffer, 0, buffer.length, null)) > 0) hash.update(buffer.subarray(0, count));
+  } finally { fs.closeSync(fd); }
+  return hash.digest("hex");
 }
 
-function hashTree(root, extras = []) {
-  const hash = crypto.createHash("sha256");
-  const roots = [root, ...extras].filter((entry) => fs.existsSync(entry));
+function hashTree(root, { source = false, excluded = [] } = {}) {
+  if (!fs.lstatSync(root).isDirectory()) fail(`unsupported linked or non-directory ${source ? "input" : "output"} root`);
   const files = [];
-  function visit(current, base) {
+  function visit(current) {
     for (const entry of fs.readdirSync(current, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
-      if (["node_modules", "dist", ".astro", ".git", ".cache"].includes(entry.name)) {
-        continue;
-      }
       const absolute = path.join(current, entry.name);
+      const relative = path.relative(root, absolute).split(path.sep).join("/");
+      // Source inputs are conservative: include the whole repository, not just
+      // one site's import syntax. Installed packages are lockfile-owned; these
+      // reserved outputs and checkout-local stores are never authored inputs.
+      if (source && (["node_modules", ".astro", ".git", ".cache"].includes(entry.name) ||
+        /(^|\/)\.mdkg\/(index|pack|state|subgraphs|db\/runtime)(\/|$)/.test(relative) ||
+        excluded.some(dir => absolute === dir || absolute.startsWith(dir + path.sep)))) continue;
+      if (entry.isSymbolicLink()) fail(`unsupported symbolic-link ${source ? "input" : "output"}: ${relative}`);
       if (entry.isDirectory()) {
-        visit(absolute, base);
+        visit(absolute);
       } else if (entry.isFile()) {
-        files.push([path.relative(base, absolute).split(path.sep).join("/"), absolute]);
-      }
+        if (source && /^\.env(?:\.|$)/.test(entry.name)) fail(`unsupported implicit environment input: ${relative}; use a declared build profile without dotenv files`);
+        const stat = fs.lstatSync(absolute);
+        files.push({ path: relative, sha256: hashFile(absolute), mode: stat.mode & 0o777 });
+      } else fail(`unsupported ${source ? "input" : "output"} type: ${relative}`);
     }
   }
-  for (const sourceRoot of roots) {
-    if (fs.statSync(sourceRoot).isDirectory()) {
-      visit(sourceRoot, sourceRoot);
-    } else {
-      files.push([path.basename(sourceRoot), sourceRoot]);
-    }
-  }
-  for (const [relative, absolute] of files.sort((left, right) => left[0].localeCompare(right[0]))) {
-    hash.update(relative);
-    hash.update("\0");
-    hash.update(fs.readFileSync(absolute));
-    hash.update("\0");
-  }
-  return hash.digest("hex");
+  visit(root);
+  return { files, sha256: crypto.createHash("sha256").update(JSON.stringify(files)).digest("hex") };
 }
 
 function selectedProfileEnv() {
@@ -82,6 +83,7 @@ function resolveProfile(owner) {
   if (!profile) {
     fail(`undeclared ${owner} build profile: ${JSON.stringify(selected)}`);
   }
+  if (!/^[a-z0-9]+(?:[_-][a-z0-9]+)*$/.test(profile.id)) fail("unsupported site profile identity");
   return profile;
 }
 
@@ -158,29 +160,51 @@ function runSiteBuild(owner, args) {
   const profile = resolveProfile(owner);
   const ownerRoot = path.join(repoRoot, owner);
   const lockfile = path.join(ownerRoot, "package-lock.json");
-  const sourceHash = hashTree(ownerRoot, [
-    path.join(repoRoot, "release"),
-    path.join(repoRoot, "package.json"),
-  ]);
+  const cacheRoot = process.env.MDKG_SITE_CACHE_DIR;
+  const receiptRoot = process.env.MDKG_BUILD_RECEIPT_DIR;
+  if (!cacheRoot || !receiptRoot) fail("MDKG_SITE_CACHE_DIR and MDKG_BUILD_RECEIPT_DIR are required for site builds");
+  const sinks = [path.resolve(cacheRoot), path.resolve(receiptRoot)];
+  for (const sink of sinks) {
+    if (sink === repoRoot || repoRoot.startsWith(sink + path.sep) || sink === ownerRoot || sink.startsWith(ownerRoot + path.sep)) {
+      fail("site cache/receipt directories must not overlap the repository root or site source tree");
+    }
+  }
+  const excluded = [path.join(repoRoot, "dist"), path.join(repoRoot, "docs/dist"), path.join(repoRoot, "mdkg-dev/dist"), ...sinks];
+  const snapshot = () => hashTree(repoRoot, { source: true, excluded });
+  const inputs = snapshot();
+  const sourceHash = inputs.sha256;
   const key = crypto.createHash("sha256").update(JSON.stringify({
+    schema_version: 2,
     owner,
     profile: profile.id,
     profile_env: profile.env,
+    build_args: args,
     source_hash: sourceHash,
     lockfile_hash: hashFile(lockfile),
     node: process.version,
   })).digest("hex");
-  const cacheRoot = process.env.MDKG_SITE_CACHE_DIR;
-  if (!cacheRoot) {
-    fail("MDKG_SITE_CACHE_DIR is required for site builds");
-  }
-  const cachedDist = path.join(cacheRoot, owner, profile.id, key, "dist");
+  const entryRoot = path.join(cacheRoot, owner, profile.id, key);
+  const cachedDist = path.join(entryRoot, "dist");
+  const sealPath = path.join(entryRoot, "seal.json");
+  const manifestFile = path.join(entryRoot, "inputs.json");
   const liveDist = path.join(ownerRoot, "dist");
-  const cacheHit = fs.existsSync(cachedDist);
-  fs.rmSync(liveDist, { recursive: true, force: true });
+  const cacheHit = fs.existsSync(entryRoot);
+  let outputHash;
+  const inputManifest = JSON.stringify({ schema_version: 2, files: inputs.files }, null, 2) + "\n";
+  const inputManifestHash = crypto.createHash("sha256").update(inputManifest).digest("hex");
   if (cacheHit) {
+    if (!fs.lstatSync(entryRoot).isDirectory()) fail("unsupported symbolic-link cache entry");
+    if (!fs.existsSync(sealPath) || !fs.existsSync(cachedDist) || !fs.existsSync(manifestFile)) fail("incomplete site cache; preserve it for inspection instead of accepting a hit");
+    if (!fs.lstatSync(sealPath).isFile() || !fs.lstatSync(manifestFile).isFile()) fail("unsupported symbolic-link cache metadata");
+    const seal = JSON.parse(fs.readFileSync(sealPath, "utf8"));
+    if (seal.schema_version !== 2 || seal.cache_key !== key || seal.source_hash !== sourceHash) fail("site cache seal identity mismatch");
+    if (seal.input_manifest_sha256 !== inputManifestHash || hashFile(manifestFile) !== inputManifestHash) fail("site cache input manifest integrity mismatch");
+    outputHash = hashTree(cachedDist).sha256;
+    if (outputHash !== seal.output_hash) fail("site cache output integrity hash mismatch");
+    fs.rmSync(liveDist, { recursive: true, force: true });
     fs.cpSync(cachedDist, liveDist, { recursive: true });
   } else {
+    fs.rmSync(liveDist, { recursive: true, force: true });
     const result = spawnReal("npm", args);
     if (result.status !== 0) {
       process.exit(result.status ?? 1);
@@ -188,8 +212,16 @@ function runSiteBuild(owner, args) {
     if (!fs.existsSync(liveDist)) {
       fail(`${owner} build did not create dist`);
     }
-    fs.mkdirSync(path.dirname(cachedDist), { recursive: true });
+    outputHash = hashTree(liveDist).sha256;
+  }
+  if (snapshot().sha256 !== sourceHash) fail("site source inputs changed during build/restore; no cache seal or acceptance receipt emitted");
+  if (hashTree(liveDist).sha256 !== outputHash) fail("restored site output integrity mismatch");
+  if (!cacheHit) {
+    fs.mkdirSync(entryRoot, { recursive: true });
     fs.cpSync(liveDist, cachedDist, { recursive: true });
+    if (hashTree(cachedDist).sha256 !== outputHash) fail("site cache copy integrity mismatch");
+    fs.writeFileSync(manifestFile, inputManifest);
+    fs.writeFileSync(sealPath, JSON.stringify({ schema_version: 2, cache_key: key, source_hash: sourceHash, output_hash: outputHash, input_manifest_sha256: inputManifestHash }, null, 2) + "\n");
   }
   recordBuildReceipt({
     kind: "site",
@@ -197,6 +229,11 @@ function runSiteBuild(owner, args) {
     profile: profile.id,
     cache_hit: cacheHit,
     cache_key: key,
+    source_hash: sourceHash,
+    output_hash: outputHash,
+    input_count: inputs.files.length,
+    input_manifest: manifestFile,
+    input_manifest_sha256: inputManifestHash,
     node: process.version,
     smoke: process.env.MDKG_SMOKE_ID || "unknown",
   });

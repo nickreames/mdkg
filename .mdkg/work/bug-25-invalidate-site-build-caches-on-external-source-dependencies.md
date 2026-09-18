@@ -2,12 +2,12 @@
 id: bug-25
 type: bug
 title: Invalidate site build caches on external source dependencies
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json]
+artifacts: [.mdkg/artifacts/goal-83/task-824-behavioral-audit.json, .mdkg/artifacts/goal-84/bug-25-verification.json]
 relates: [task-824, goal-84, goal-83]
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-08
-updated: 2026-09-08
+updated: 2026-09-09
 ---
 # Overview
 
@@ -54,6 +54,29 @@ Unchanged cache hit; external direct/transitive source edits; added/removed depe
 Acceptance: all reproduced failures corrected with passing controls preserved; root:test-483 and root:task-828 verify the exact installed candidate. No missing proof is a waiver.
 
 # Links / Artifacts
+
+## 2026-09-09 Local Verification
+
+The proxy now binds a conservative repository-wide authored-input manifest,
+declared profile/build arguments, lockfile and Node runtime. It verifies input
+and output evidence before cache reuse, rejects unsupported linked/dotenv
+inputs, and withholds acceptance when source moves during execution. File
+hashing uses bounded streaming. No site or Demo 3 source changed.
+
+Four prepatch regressions fail with seven controls passing. The final 13 focused
+tests pass on both Node 24.18.0 and 26.0.0; a shared-cache runtime probe proves
+independent misses followed by runtime-specific hits. Real local docs/mdkg-dev
+Astro builds each miss once and hit once with matching evidence. Build,
+1130 source tests plus 26 contracts, CLI/docs checks, full/changed graph
+validation, SQLite verification and diff checks pass. The 13 root-level tests
+ran separately: ordinary test:built shell discovery does not establish their
+coverage. Final recursive discovery/coverage and task-829 remain required.
+
+This is local release-infrastructure verification, not installed runtime or
+publication clearance. Task-828 independent review remains open. No cache
+manifest is identity or security-policy authority; reserved generated/local
+stores and immutable installed dependencies retain their separate contracts.
+Evidence: .mdkg/artifacts/goal-84/bug-25-verification.json.
 
 - .mdkg/artifacts/goal-83/task-824-behavioral-audit.json
 - root:test-483; root:task-824; root:task-828; root:goal-84

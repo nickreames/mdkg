@@ -156,6 +156,7 @@ test("site build proxy caches once per declared profile and invalidates on sourc
     ].join("\n"),
     "utf8",
   );
+  runGit(root, ["init", "-q"]);
   const baseEnv = {
     MDKG_REAL_NPM: fakeNpm,
     MDKG_REAL_NPX: fakeNpm,
@@ -193,6 +194,121 @@ test("site build proxy caches once per declared profile and invalidates on sourc
       ["default", false],
     ],
   );
+});
+
+function externalSiteFixture(t: { after(fn: () => void): void }) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-site-external-"));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  runGit(root, ["init", "-q"]);
+  const put = (relative: string, content: string) => {
+    const file = path.join(root, relative);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, content);
+  };
+  put(".gitignore", "**/dist/\nnode_modules/\n");
+  put("package.json", JSON.stringify({ name: "fixture", version: "1.0.0" }));
+  put("mdkg-dev/package.json", JSON.stringify({ name: "site", version: "1.0.0" }));
+  put("mdkg-dev/package-lock.json", JSON.stringify({ lockfileVersion: 3, packages: {} }));
+  put("mdkg-dev/src/page.astro", "import Portable from '../../presentations/example/site/src/Portable.astro';\n");
+  put("presentations/example/site/src/Portable.astro", "first component\n");
+  put("shared/message.txt", "first transitive input\n");
+  put("fake-npm.js", [
+    'const fs=require("node:fs"),path=require("node:path");',
+    'const files=["presentations/example/site/src/Portable.astro", "shared/message.txt", "shared/optional.txt"];',
+    'const output=files.map(file=>fs.existsSync(file)?fs.readFileSync(file,"utf8"):"absent").join("\\n");',
+    'if(process.env.MDKG_TEST_CHANGE_INPUT) fs.writeFileSync("shared/message.txt","changed during build");',
+    'fs.mkdirSync("mdkg-dev/dist",{recursive:true});fs.writeFileSync("mdkg-dev/dist/index.html",output);',
+  ].join("\n"));
+  const env = {
+    MDKG_REAL_NPM: path.join(root, "fake-npm.js"), MDKG_REAL_NPX: path.join(root, "fake-npm.js"),
+    MDKG_REPO_ROOT: root, MDKG_SMOKE_MANIFEST: manifestPath,
+    MDKG_SITE_CACHE_DIR: path.join(root, "receipts/site-cache"), MDKG_BUILD_RECEIPT_DIR: path.join(root, "receipts"),
+    MDKG_SMOKE_ID: "smoke:external-inputs",
+  };
+  const run = (extra: NodeJS.ProcessEnv = {}) => runProxy(["npm", "--prefix", "mdkg-dev", "run", "build"], { ...env, ...extra }, root);
+  const events = () => {
+    const file = path.join(root, "receipts/build-events.jsonl");
+    return fs.existsSync(file) ? fs.readFileSync(file, "utf8").trim().split("\n").map(line => JSON.parse(line)) : [];
+  };
+  const output = () => fs.readFileSync(path.join(root, "mdkg-dev/dist/index.html"), "utf8");
+  return { root, put, run, events, output };
+}
+
+test("site cache binds external direct and transitive sources including additions and deletions", t => {
+  const f = externalSiteFixture(t);
+  const build = () => { const r = f.run(); assert.equal(r.status, 0, r.stderr); };
+  build(); build();
+  f.put("presentations/example/site/src/Portable.astro", "second component\n");
+  build(); assert.match(f.output(), /second component/);
+  f.put("shared/message.txt", "second transitive input\n");
+  build(); assert.match(f.output(), /second transitive input/);
+  f.put("shared/optional.txt", "added input\n");
+  build(); assert.match(f.output(), /added input/);
+  fs.unlinkSync(path.join(f.root, "shared/optional.txt"));
+  build(); assert.doesNotMatch(f.output(), /added input/);
+  build();
+  // Deleting the optional input returns to a previously sealed exact input set.
+  assert.deepEqual(f.events().map(e => e.cache_hit), [false, true, false, false, false, true, true]);
+  assert.equal(f.events()[0].source_hash, f.events()[1].source_hash);
+  assert.notEqual(f.events()[1].source_hash, f.events()[2].source_hash);
+  assert.ok(f.events().every(e => /^[a-f0-9]{64}$/.test(e.source_hash) && /^[a-f0-9]{64}$/.test(e.output_hash)));
+});
+
+test("site cache refuses unsupported linked input without issuing build acceptance", t => {
+  const f = externalSiteFixture(t);
+  const outside = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-site-outside-"));
+  t.after(() => fs.rmSync(outside, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(outside, "message.txt"), "outside input\n");
+  fs.unlinkSync(path.join(f.root, "shared/message.txt"));
+  fs.symlinkSync(path.join(outside, "message.txt"), path.join(f.root, "shared/message.txt"));
+  const r = f.run();
+  assert.notEqual(r.status, 0);
+  assert.match(r.stderr, /symlink|symbolic|unsupported/i);
+  assert.deepEqual(f.events(), []);
+});
+
+test("site cache refuses source movement during the build without sealing stale output", t => {
+  const f = externalSiteFixture(t), r = f.run({ MDKG_TEST_CHANGE_INPUT: "1" });
+  assert.notEqual(r.status, 0);
+  assert.match(r.stderr, /changed|moved|unstable/i);
+  assert.deepEqual(f.events(), []);
+  const retry = f.run(); assert.equal(retry.status, 0, retry.stderr);
+  assert.match(f.output(), /changed during build/);
+  assert.equal(f.events()[0].cache_hit, false);
+});
+
+test("site cache detects corrupted output instead of accepting a poisoned hit", t => {
+  const f = externalSiteFixture(t), first = f.run(); assert.equal(first.status, 0, first.stderr);
+  const event = f.events()[0];
+  f.put(`receipts/site-cache/mdkg-dev/default/${event.cache_key}/dist/index.html`, "poisoned output\n");
+  const second = f.run();
+  assert.notEqual(second.status, 0);
+  assert.match(second.stderr, /integrity|hash|corrupt/i);
+  assert.equal(f.events().length, 1);
+});
+
+test("site cache binds lockfiles and verifies its persisted input evidence", t => {
+  const f = externalSiteFixture(t);
+  let r = f.run(); assert.equal(r.status, 0, r.stderr);
+  f.put("mdkg-dev/package-lock.json", JSON.stringify({ lockfileVersion: 3, packages: { changed: {} } }));
+  r = f.run(); assert.equal(r.status, 0, r.stderr);
+  const events = f.events();
+  assert.deepEqual(events.map(e => e.cache_hit), [false, false]);
+  assert.notEqual(events[0].cache_key, events[1].cache_key);
+  assert.equal(sha256(events[1].input_manifest), events[1].input_manifest_sha256);
+  fs.writeFileSync(events[1].input_manifest, "tampered manifest\n");
+  r = f.run(); assert.notEqual(r.status, 0);
+  assert.match(r.stderr, /manifest integrity/);
+  assert.equal(f.events().length, 2);
+});
+
+test("site cache refuses implicit dotenv inputs before reading or building them", t => {
+  const f = externalSiteFixture(t);
+  f.put("mdkg-dev/.env", "PRIVATE_FIXTURE_VALUE=not-a-real-secret\n");
+  const r = f.run(); assert.notEqual(r.status, 0);
+  assert.match(r.stderr, /implicit environment input/);
+  assert.doesNotMatch(r.stderr, /not-a-real-secret/);
+  assert.deepEqual(f.events(), []);
 });
 
 test("release scripts preserve standalone smoke behavior and use bounded runners", () => {
