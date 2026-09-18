@@ -2,12 +2,12 @@
 id: bug-5
 type: bug
 title: Make SQLite source fingerprints independent of bundle age
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-5-verification.json]
 relates: [test-480]
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Overview
@@ -58,4 +58,21 @@ Require failing-before/passing-after results and independent verification in tas
 
 Initial approved plan and chk-563/Goal 82 history.
 
-Disposition: open, not fixed, not publication-ready.
+## Local Verification — 2026-09-08
+
+Disposition: fixed locally, not publication-ready. Fingerprint v2 excludes only
+typed clock-derived diagnostics, binds configuration and enabled bundle bytes,
+and preserves authored timestamp-named fields in stored SQLite JSON. Bounded
+bundle reads retain existing containment and size rules. Published 0.5.2 source
+contains the same defect pattern; runtime reproduction used the candidate.
+
+Seven final regression cases produced five failures and two controls before
+the fix; all seven pass afterward. Twenty-six installed-package tests, 997 full
+source tests and 26 release/security-contract checks pass. CLI/docs/graph/diff
+gates pass, with three inherited bundle-age warnings and no bundle refresh.
+Receipt: .mdkg/artifacts/goal-84/bug-5-verification.json.
+
+Old fingerprint caches require one explicit derived-index rebuild. Selected
+Goal 73, runtime DB and protected Demo 3 bundle bytes remain unchanged. The
+tracked SQLite projection stays owned and uncommitted. Independent task-828
+review and full 0.6.0 qualification remain open; no publication is authorized.

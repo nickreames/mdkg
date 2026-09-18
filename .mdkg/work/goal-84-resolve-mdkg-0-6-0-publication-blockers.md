@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-16
+active_node: bug-5
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -167,3 +167,13 @@ findings have local fixes; bug-15 awaits the skill-resource size-limit decision
 and bug-17 is under read-only investigation. Bugs 5–7 and final qualification
 remain open. Continue independent authorized work, not publication. Selected
 Goal 73, runtime DB, protected bundles and generated SQLite custody are preserved.
+
+## 2026-09-08 SQLite Fingerprint Verification
+
+Bug-5 is locally verified: seven focused and 26 installed cases, 997 full source
+tests and 26 contract checks pass. Fingerprints remain stable as age warnings
+change, while actual source changes invalidate them and authored timestamp-named
+fields survive SQLite storage. Receipt: .mdkg/artifacts/goal-84/bug-5-verification.json.
+Eleven security findings remain locally fixed; bug-15 awaits resource-size policy
+and bug-17 awaits public DB-payload policy. Continue bugs 6–7 and independent
+qualification work. Protected state and local-only boundaries are unchanged.

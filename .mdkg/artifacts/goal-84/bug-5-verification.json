@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "local-defect-verification",
+  "bug": "root:bug-5",
+  "goal": "root:goal-84",
+  "outcome": "fixed-locally",
+  "base_revision": "1bee1a824211ce3e7880a367eeb12162c7ad9d3b",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball contains recursive timestamp-key stripping and clock-dependent subgraph health in fingerprint input. Reproduction executed against current prepatch candidate; earlier releases unassessed.",
+  "invariant": "Elapsed bundle-age diagnostics do not change source identity. Actual configuration, authored data and enabled readable bundle bytes do; SQLite serialization preserves authored timestamp-named fields.",
+  "files_sha256": {
+    "src/commands/db.ts": "c6ef5e809982bda0c7cc1c2bce6062f1a2ec1ed851ff2f235e0be49fa9939641",
+    "src/graph/sqlite_index.ts": "aeeae6289b63e5368c73cc6db35ebf81a7e1d2a17901ee7024f6b4e95b5a148f",
+    "src/graph/subgraph_bundle.ts": "729ea21a5853fc84293580700eb2dd4041f812c04912dbeebcc867dbe60f19b1",
+    "tests/graph/sqlite_fingerprint.test.ts": "3c89fb62e2686c31b8c05aac21f5d7adb32d2032d73e9115b8e6fbbf5544db4a",
+    "docs/src/content/docs/start-here/troubleshooting.md": "f855e3a54ab096622d4d4f287954fb013fad7c274131a0e1047d6b24f17d0b62"
+  },
+  "before": "Final seven-case regression fixture: five failures and two passing controls. Invalid earlier fixture assumptions were corrected before counting product failures.",
+  "after": [
+    {
+      "command": "Focused SQLite fingerprint suite",
+      "result": "7 passed; zero failures/skips."
+    },
+    {
+      "command": "Offline packed/installed candidate plus SQLite DAL and subgraph containment suites",
+      "result": "26 passed; installed runtime bytes unchanged."
+    },
+    {
+      "command": "npm run test:built",
+      "result": "997 source tests and 26 release/security-contract checks passed; zero failures/skips."
+    },
+    {
+      "command": "CLI/docs/full and changed-only graph validation; git diff --check",
+      "result": "Passed; 479 examples across 63 files, three inherited full-graph age warnings."
+    }
+  ],
+  "installed_candidate": {
+    "sha256": "da070530f71f6aff9270175d3a3dd65265fcaa548cdb4ff73c62cb4242dfadec",
+    "integrity": "sha512-5a8waNoBmBLaJ56X+6DoQosXzntMTgIXvl+3IpQyYzIOsp9rOkD1ovDMP0CYooReIaO3Azko07TLTcSbGCRCLg==",
+    "status": "Intermediate development package, not final 0.6.0 seal"
+  },
+  "limitations": [
+    "Older cached fingerprints need one explicit derived-index rebuild, not a bundle refresh.",
+    "No canonical migration, remote validation or publication performed.",
+    "Independent task-828 verification, exact runtime matrix, remaining defects and full qualification remain open."
+  ],
+  "canonical_index_verification": "After the required evidence projection rebuild, mdkg db index verify passed all five cache checks without any protected bundle refresh; this observational verification left runtime and selected state unchanged.",
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation, evidence/projections and explicit-path local commit; no external action or bundle refresh.",
+  "skill_candidates": []
+}
