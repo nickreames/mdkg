@@ -628,6 +628,28 @@ test("git materialize denies or ignores submodules without recursive initializat
   assert.deepEqual(fs.readdirSync(path.join(ignoreRoot, "sources", "ignored", "vendor", "child")), []);
 });
 
+test("git materialize rejects event limit bypasses and preserves source history", () => {
+  const source = makeMdkgSource("mdkg-materialize-event-limits-source-");
+  const configPath = path.join(source.root, ".mdkg/config.json");
+  const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+  config.events = { validation: { max_records: 1 } };
+  writeFile(configPath, JSON.stringify(config));
+  const eventsPath = path.join(source.root, ".mdkg/work/events/events.jsonl");
+  const record = JSON.stringify({ ts: "t", run_id: "r", workspace: "root", agent: "a", kind: "k", status: "ok", refs: [], artifacts: [], notes: "preserved" });
+  const history = record + "\n" + record + "\n";
+  writeFile(eventsPath, history);
+  git(source.root, ["add", "--", ".mdkg/config.json", ".mdkg/work/events/events.jsonl"]);
+  git(source.root, ["commit", "-q", "-m", "bounded history fixture"]);
+  source.commit = git(source.root, ["rev-parse", "HEAD"]);
+  source.tree = git(source.root, ["rev-parse", "HEAD^{tree}"]);
+  const root = makeConsumerRoot("mdkg-materialize-event-limits-");
+  const rejected = materialize(root, requestFor(source, "sources/rejected", { project_memory_policy: "required" }));
+  assert.equal(rejected.receipt.reason_code, "project_memory_invalid");
+  assert.equal(rejected.receipt.destination.published, false);
+  assert.equal(fs.readFileSync(eventsPath, "utf8"), history);
+  assertNoTemporaryMaterializationPaths(root, "sources/rejected");
+});
+
 test("git materialize enforces required optional and forbidden project-memory policies without mutation", () => {
   const ordinary = makeSource("mdkg-materialize-memory-ordinary-");
   assert.ok(ordinary);

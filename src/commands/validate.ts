@@ -16,6 +16,7 @@ import {
 } from "../graph/agent_file_types";
 import { buildSkillsIndex, resolveSkillsRoot } from "../graph/skills_indexer";
 import { listWorkspaceDocFilesByAlias, readWorkspaceDocument } from "../graph/workspace_files";
+import { validateEventsJsonl } from "../graph/events_validation";
 import { collectGraphErrors } from "../graph/validate_graph";
 import { buildSubgraphsIndex, mergeSubgraphsIntoIndex } from "../graph/subgraphs";
 import { collectVisibilityViolations, visibilityViolationMessages } from "../graph/visibility";
@@ -671,62 +672,6 @@ function listDirectories(dirPath: string): string[] {
     .sort();
 }
 
-function validateEventsJsonl(
-  root: string,
-  config: ReturnType<typeof loadConfig>,
-  errors: string[]
-): void {
-  for (const [alias, workspace] of Object.entries(config.workspaces)) {
-    if (!workspace.enabled) {
-      continue;
-    }
-    const eventsPath = path.resolve(root, workspace.path, workspace.mdkg_dir, "work", "events", "events.jsonl");
-    if (!fs.existsSync(eventsPath)) {
-      continue;
-    }
-
-    const lines = fs.readFileSync(eventsPath, "utf8").split(/\r?\n/);
-    for (let i = 0; i < lines.length; i += 1) {
-      const raw = lines[i].trim();
-      if (!raw) {
-        continue;
-      }
-      let parsed: unknown;
-      try {
-        parsed = JSON.parse(raw);
-      } catch {
-        errors.push(`${eventsPath}:${i + 1}: invalid JSON`);
-        continue;
-      }
-
-      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-        errors.push(`${eventsPath}:${i + 1}: event must be a JSON object`);
-        continue;
-      }
-
-      const event = parsed as Record<string, unknown>;
-      for (const key of ["ts", "run_id", "workspace", "agent", "kind", "status"]) {
-        const value = event[key];
-        if (typeof value !== "string" || value.trim().length === 0) {
-          errors.push(`${eventsPath}:${i + 1}: ${key} is required and must be a non-empty string`);
-        }
-      }
-      if (!Array.isArray(event.refs)) {
-        errors.push(`${eventsPath}:${i + 1}: refs is required and must be a list`);
-      }
-      if (!Array.isArray(event.artifacts)) {
-        errors.push(`${eventsPath}:${i + 1}: artifacts is required and must be a list`);
-      }
-      if (typeof event.notes !== "string") {
-        errors.push(`${eventsPath}:${i + 1}: notes is required and must be a string`);
-      }
-      if (typeof event.workspace === "string" && event.workspace !== alias) {
-        errors.push(`${eventsPath}:${i + 1}: workspace must match ${alias}`);
-      }
-    }
-  }
-}
-
 export function collectValidateReceipt(options: ValidateCommandOptions): ValidateReceipt {
   const validationProfile = normalizeValidationProfile(options.profile);
   const config = loadConfig(options.root);
@@ -751,6 +696,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
     );
   }
   const nodes: Record<string, IndexNode> = {};
+  let graphValidationBytes = 0;
   const idsByWorkspace: Record<string, Map<string, string>> = {};
 
   for (const [alias, files] of Object.entries(filesByAlias)) {
@@ -767,6 +713,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
       let content = "";
       try {
         content = readWorkspaceDocument(options.root, filePath, config.index.limits.max_file_bytes);
+        graphValidationBytes += Buffer.byteLength(content, "utf8");
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(`${filePath}: failed to read file: ${message}`);
@@ -895,7 +842,7 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
 
   warnings.push(...auditSkillMirrors(options.root, config));
 
-  validateEventsJsonl(options.root, config, errors);
+  validateEventsJsonl(options.root, config, errors, graphValidationBytes);
 
   const allUniqueWarnings = Array.from(new Set(warnings));
   const allWarningDiagnostics = allUniqueWarnings.map((warning) => warningDiagnostic(warning, nodes));

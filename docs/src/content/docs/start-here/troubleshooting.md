@@ -55,6 +55,43 @@ mdkg db stats --json
 
 Do not commit `.mdkg/db/runtime/` files.
 
+## Event validation limits (0.6.0 candidate)
+
+Validation streams contained regular event-log files; it never rotates, deletes,
+rewrites, or silently skips oversized history. Missing logs remain valid. Links,
+special files, and exceeded limits produce validation errors, including through
+MCP and Git materialization. A rejected/incomplete validation is not clearance.
+
+Optional `events.validation` fields in `.mdkg/config.json` override these defaults:
+
+| Field | Default | Hard safety ceiling |
+| --- | ---: | ---: |
+| `max_file_bytes` | 67,108,864 (64 MiB) | 536,870,912 (512 MiB) |
+| `max_total_bytes` | 134,217,728 (128 MiB) | 536,870,912 (512 MiB) |
+| `max_line_bytes` | 1,048,576 (1 MiB) | 8,388,608 (8 MiB) |
+| `max_records` | 1,000,000 | 5,000,000 |
+| `max_lines` | 2,000,000 | 10,000,000 |
+| `max_errors` | 1,000 | 10,000 |
+
+Overrides must be positive safe integers; unknown limit names are errors.
+File and line limits are per file/line; total bytes, physical lines, nonblank
+records, and event diagnostics are shared across enabled workspaces. Line bytes
+exclude LF but include an optional CR. A trailing LF does not create an extra
+physical line. At most `max_errors` event diagnostics plus one explicit
+incomplete-validation diagnostic are returned.
+
+Event bytes and decoded Markdown validation bytes also share
+`index.limits.max_total_bytes`; the tightest remaining byte budget applies.
+Blank lines, CRLF, UTF-8 split across read chunks, and a final line without LF
+remain supported. Validation preserves existing event field semantics; append
+commands do not rotate logs or guarantee that a growing log stays below limits.
+
+For trusted history that exceeds a default, preserve it, review resource needs,
+and explicitly increase the relevant configuration within the ceilings. If a
+hard ceiling is exceeded, stop and plan an explicit archival/segmentation
+workflow; do not delete history, bypass validation, or claim partial validation
+is complete.
+
 ## A handoff warns about raw markers
 
 Review the handoff manually. Warnings are aids, not proof that the content is safe or unsafe. Remove raw secrets, tokens, provider payloads, raw prompt dumps, and bulky runtime traces before sharing.

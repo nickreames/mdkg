@@ -2,12 +2,12 @@
 id: goal-84
 type: goal
 title: Resolve mdkg 0.6.0 publication blockers
-status: blocked
+status: progress
 priority: 1
-goal_state: paused
+goal_state: active
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-828]
-active_node: bug-20
+active_node: bug-13
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -25,7 +25,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-08
 ---
 
 # Objective
@@ -115,3 +115,15 @@ The pre-existing tracked SQLite index remains owned, uncommitted generated
 state, not part of the two fix commits. Extended ACL/ownership metadata for
 atomic exports is unqualified and must be covered by the still-open final
 platform/security verification; no release waiver is implied.
+
+## 2026-09-08 Event Compatibility and Remediation
+
+Nick accepted configurable bounded streaming with explicit limit errors,
+preserved event bytes and no automatic rotation/deletion. The prior pause is
+resolved. Bug-13 now has 70 focused, 39 installed and 898 full passing tests
+plus 26 release/security-contract checks, documented defaults/ceilings and
+independent candidate review. Seven of thirteen security findings are locally
+fixed; six remain, plus bugs 5–7 and final qualification gates. Continue owned
+independent work; do not infer that the whole goal is blocked by the resolved
+event decision. Selected Goal 73, runtime DB and protected bundle hashes remain
+unchanged. SQLite stays accepted uncommitted generated custody.

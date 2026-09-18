@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "local-security-fix-verification",
+  "bug": "root:bug-13",
+  "goal": "root:goal-84",
+  "scan_id": "35ca791e-716a-4bc3-8067-88d47224e288",
+  "candidate_key": "baseline-events-unbounded-read",
+  "outcome": "fixed-locally",
+  "base_revision": "b1a3bbd8d0ebb2adbc5fe0e7cb42ab0a9bd518e7",
+  "runtime": "Node v26.0.0 on macOS",
+  "affected_version": "Exact published 0.5.2 tarball has the same existsSync/readFileSync/split validator. Candidate reproduced before patch; earlier releases unassessed.",
+  "decision": "Nick approved configurable bounded streaming on 2026-09-08: explicit errors, preserved history, no automatic rotation/deletion.",
+  "invariant": "Repository-controlled event histories are contained regular files and cannot cause unbounded byte, line, record or diagnostic consumption during CLI, MCP or materialization validation. Existing event bytes and permissive record semantics remain unchanged.",
+  "strategy": "Shared incremental event validator; contained nonblocking/no-follow regular-file streaming in <=64KiB chunks; actual-byte accounting; optional normalized events.validation limits with finite hard ceilings; aggregate event/Markdown budget.",
+  "files_sha256": {
+    "src/commands/validate.ts": "bc7e656e5ed4783dd53ce83d13e6734e129f8bdcbb7395b5029f31cdfad094de",
+    "src/core/config.ts": "51685ba54ee3de6147f1639a505d1caf1180f19fa9545b6c9f1d425ee88fddd1",
+    "src/core/event_limits.ts": "e05239f33c72aad66e89239902f057d4bcf8cf09f80c511093c89559b1f503ec",
+    "src/core/filesystem_authority.ts": "a3a94c634971da4efb295bb719b38b81931895d89a48e2b11a96f017adf8413d",
+    "src/graph/events_validation.ts": "f360b0577adac9747b2cbb57281435a1b0109b66e7a62b532f7716672d3cc44e",
+    "tests/commands/event_containment.test.ts": "8651154b50c0ff48562c3d728a2c6fc3a67cc989fd60c0044d974f83e78215da",
+    "tests/core/contained_stream.test.ts": "90f3b28919a6146072d1ec67091c6bc4df9511a811728ff6e17697319bd79f6e",
+    "tests/commands/git_materialize.test.ts": "94a5943fc7d2ce90e79295b6160516439ee2439277590116b67aa81413ee663d",
+    "README.md": "4a6d530ad9858eb29e6e8e86c16985343e59519738cb236669bb83f004d56cc8",
+    "docs/src/content/docs/start-here/troubleshooting.md": "5fbeea6bc04059818aa9b191626720aed72c25ff911cbad0f5cb88729816aad9"
+  },
+  "before": "15 of 17 cases failed before source edits: visible/dangling/ancestor links, all budget families, malformed floods, aggregate consumption, MCP and FIFO timeout. Two compatibility controls passed.",
+  "after": [
+    {
+      "command": "npm run build; npm run build:test; focused event/stream/config/legacy validate/materialization tests",
+      "result": "70 passed, zero failures/skips. Includes post-stat growth, descriptor cleanup, exact limits, UTF-8 chunk boundaries, CRLF, blank lines, final unterminated records and arbitrary legacy fields."
+    },
+    {
+      "command": "Offline npm pack/install and external installed CLI/module harness",
+      "result": "39 passed, zero failures/skips; installed bytes unchanged; owned intermediate install/fixture/tarball removed, compact receipt retained."
+    },
+    {
+      "command": "TMPDIR=<owned fixture parent> npm run test:built",
+      "result": "898 tests plus 26 release/security-contract checks passed, zero failures/skips."
+    },
+    {
+      "command": "CLI snapshot/command-contract parity; docs reference/release projection/example parity; full and changed-only graph validation; git diff --check",
+      "result": "Passed; 478 examples in 63 files; zero graph errors; three inherited full-graph age warnings; zero changed-only warnings."
+    }
+  ],
+  "review": "Reused completed independent prepatch investigation; one fresh independent candidate reviewer found no additional static-input bypass or parser regression. Parent confirmed the reported concurrent ancestor-swap route using owned disposable directories and intercepted openSync. It consumed 16 external fixture bytes, still within configured finite resource bounds. This is the pre-existing shared path-authority race limitation requiring another active local filesystem writer; not a static repository-input resource bypass. No claim of race immunity or final platform/security clearance; task-828 must independently review the limitation and public compatibility statements.",
+  "installed_candidate": {
+    "sha256": "010278c2880603615e16e13513ef5202d46b1ac59a99324b881df495aa717a3e",
+    "integrity": "sha512-upFcisqHL6JaHiNhDXlSUzjtKiWtKdNd+w4aviQpCmGOhcy+waPrhDllYNjUUig0nPlVQgm/XA9BZBT/bfFe0w==",
+    "status": "Intermediate development artifact, not the final 0.6.0 seal"
+  },
+  "limitations": [
+    "No portable openat protection against active concurrent ancestor substitution; single-writer/static-checkout boundary only.",
+    "Append-only event writers remain unchanged; a growing trusted history can exceed validation limits and then requires an explicit archive/segmentation decision, never silent truncation.",
+    "Exact Node 24 matrix, other blockers, final security diff review, release ladder and artifact seal remain pending."
+  ],
+  "preserved_sha256": {
+    "selected_goal": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_database": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo_3_bundle": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": "Approved local remediation and explicit-path local commits only; no remote Git, publication, providers, deployment, canonical migration or bundle refresh.",
+  "skill_candidates": []
+}
