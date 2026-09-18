@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "kind": "local-behavioral-fix-verification",
+  "bug": "root:bug-23",
+  "goal": "root:goal-84",
+  "status": "locally-verified; independent task-828/test-483 acceptance remains open",
+  "source_head": "1213bf9d73e009eca2b0a37a21750a060de914a1",
+  "candidate": {
+    "version": "0.5.2",
+    "sha256": "fd9f620d36ea48cb651ae3b1d9c2516e79e5297df39d7600dbf285d9c4a18030",
+    "integrity": "sha512-F+v7TB6YnV9styHLMcGdVfJDPXM70r8MCV9+GQdqffIFOUAM2j2XgPHohqA4YNLRfHPUdUv8UI9fEDgQBjrEog=="
+  },
+  "source_files_sha256": {
+    "src/commands/format.ts": "91a94d1796e96e416dd48393c9fc70535c7cb8878fc1d9083e55ff542809052c",
+    "src/graph/frontmatter.ts": "2b3e412b75b7a9f39ed7659993409343b1610539d7588e1daf637d093def4a7b",
+    "src/graph/identity.ts": "d369954e4a5e914d10484f5d43dd1f7f171be6fcbc14cf9085796a864c73c9ad",
+    "src/graph/identity_refs.ts": "f13f5be166e79b8c2fce49e99349899312326baada6ecf92eee06c81d5737e79",
+    "src/graph/template_schema.ts": "baea420ccbe2d06be6afcf03f75c3c594ede6e4842f9bcf33aa383d7ffcd0d06",
+    "src/util/lock.ts": "2e3036bafa937809242f979a61006d5efc24dedde35d6854e9a15fbdf2e0d664",
+    "tests/commands/format_identity.test.ts": "1e9317627171836dead532575f4ae3ba13243a15e2bd8d7a3eb291644224f4ba"
+  },
+  "protected_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "results": [
+    {
+      "name": "prepatch-installed",
+      "exit_code": 1,
+      "signal": null,
+      "output_sha256": "ab594e692aefedab7916f36ce932925e5b6151a80fc87fa634338b71c62ea41f",
+      "summary": [
+        "# tests 24",
+        "# suites 0",
+        "# pass 12",
+        "# fail 12",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 11143.5495"
+      ]
+    },
+    {
+      "name": "pack",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "2a7a5e89126157ad8f5f180f7c4d82585a08944c962200814c9ebfd5347328b5",
+      "summary": []
+    },
+    {
+      "name": "install",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "02f7a762bfc00ff7506e5dc6a31c31e005bfa3a9df4b25e69dc3cd112f9117d5",
+      "summary": []
+    },
+    {
+      "name": "installed-node26",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "2b19d3f019e9c5c8a7ac9f042d420d5fa1043b79bf53dbf229c670e4fe4a2427",
+      "summary": [
+        "# tests 37",
+        "# suites 0",
+        "# pass 37",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 11503.827208"
+      ],
+      "runtime": "v26.0.0"
+    },
+    {
+      "name": "installed-node24",
+      "exit_code": 0,
+      "signal": null,
+      "output_sha256": "44b3fc93058bc92f85ae3c3ad9ce0c8b0b2dce07077440d56591306af33f7ecd",
+      "summary": [
+        "# tests 37",
+        "# suites 0",
+        "# pass 37",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0",
+        "# todo 0",
+        "# duration_ms 28533.009583"
+      ],
+      "runtime": "v24.18.0"
+    }
+  ],
+  "full": {
+    "exit_code": 0,
+    "signal": null,
+    "runtime": "v26.0.0",
+    "output_sha256": "a3d4bac0ae95b2914e23126142e8dccb2b3ae5778ce5ed8c312ff505d4736f49",
+    "summary": [
+      "ℹ tests 1108",
+      "ℹ suites 0",
+      "ℹ pass 1108",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 117908.758209",
+      "ℹ tests 26",
+      "ℹ suites 0",
+      "ℹ pass 26",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 89.692625"
+    ]
+  },
+  "receipt_hashes": {
+    "receipt.json": "3fe4ece2e1be767a9549c44c4c3786db92ca14d5ecce6f9f030318c906866288",
+    "full-receipt.json": "ec3f72e17775b432c9d7e9360c909b7940051f0a3c076461e2eddbd84e1f1d46",
+    "verify.cjs": "cb9a0792ee474abbf99ea8378bd6da88503f80ce94d24998aee0ca053dcf12dc",
+    "full.cjs": "d53ff2c8d95541a6f0ce61d62d319286e6d710187b055ea0ab4db996ae7fb195"
+  },
+  "fix": [
+    "Reserved graph_id/node_id survive formatting independently of template extension declarations; absent legacy identities are never synthesized.",
+    "Supported stable scope and decision-supersession references survive normalization.",
+    "Both normal and heading-only formatting validate identity, graph ownership, canonical stable reference syntax and conflict markers before any authored write.",
+    "Opaque consumer policy references remain opaque; no migration, allocation, alias repair or Git staging is performed."
+  ],
+  "coverage": [
+    "24 new regression tests plus 13 existing formatter controls on each installed runtime.",
+    "v2 exact identity/reference preservation; custom template extensions; stable decision supersession; repeated idempotency.",
+    "Heading dry-run/apply preservation; mixed invalid/valid files; unchanged Git staging and unrelated bytes.",
+    "Missing, partial, malformed, uppercase and foreign identity; malformed/uppercase stable references; conflict markers; unsupported graph format.",
+    "Legacy normalization, reserved-template-key no-synthesis and rejection of accidental identity adoption."
+  ],
+  "prepatch": "Prior hash-verified installed candidate fails 12 of 24 new tests; 12 controls pass. Failures include valid-v2 rejection and heading-mode mutation of invalid identity documents. The expanded legacy test also detects synthesized reserved identity lists from custom templates.",
+  "harness_corrections": "Initial fixture assumed new task files retained empty relation keys. Corrected insertion to match actual CLI-authored omissions before final failing-before/installed comparisons.",
+  "checks": {
+    "build": "pass",
+    "full_suite": "1108 source and 26 release/security-contract tests; no failures or skips",
+    "cli_parity": "pass",
+    "docs_parity": "494 examples; zero failures",
+    "full_graph": "zero errors; three preserved stale-subgraph age warnings",
+    "changed_graph": "zero errors or warnings",
+    "sqlite_verify": "all five projections fresh",
+    "diff_check": "pass"
+  },
+  "limitations": [
+    "Exact Node 24.15.0 and full user-journey matrix remain unqualified.",
+    "Final independent task-828 review and release ladder remain open.",
+    "Already-built output packed with prepack skipped; normal isolated postinstall executed.",
+    "Intermediate package metadata remains 0.5.2; not the final qualified 0.6.0 artifact.",
+    "Current v2-only compatibility defect; no claim that published 0.5.2 supported v2 identity.",
+    "Partial bug-17 work, mixed SQLite projection, selected Goal 73, runtime DB and Demo 3 bundle remain preserved.",
+    "No canonical formatter execution, migration, bundle refresh, remote Git, provider or publication action."
+  ],
+  "skills": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "source-grounded-diagnose-and-fix",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": []
+}

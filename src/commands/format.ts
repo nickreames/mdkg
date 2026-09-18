@@ -17,6 +17,8 @@ import { isCanonicalId, isPortableId, isPortableIdRef } from "../util/id";
 import { isSha256Ref, isUriRef, validatePortableOrUriRef } from "../util/refs";
 import { atomicReplaceContainedFile, withContainedPathSink } from "../core/filesystem_authority";
 import { withMutationLock } from "../util/lock";
+import { assertNoGraphConflictMarkers, assertNodeFormat, GraphFormat, parseIdentityRef, readGraphFormat, readNodeIdentity } from "../graph/identity";
+import { mapGraphReferenceFields } from "../graph/identity_refs";
 import { RECOMMENDED_HEADINGS } from "./validate";
 
 export type FormatCommandOptions = {
@@ -55,6 +57,19 @@ type FormatHeadingsSummary = {
 
 const DEC_ID_RE = /^dec-[0-9]+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const IDENTITY_KEYS = new Set(["graph_id", "node_id"]);
+
+// Formatting may normalize presentation, never allocate or repair identity.
+// Run this on every document before either mode writes any of its candidates.
+function validateFormatIdentity(frontmatter: Record<string, FrontmatterValue>, format: GraphFormat, filePath: string): void {
+  assertNodeFormat(format, readNodeIdentity(frontmatter, filePath), filePath);
+  mapGraphReferenceFields(frontmatter, (ref, field) => {
+    if (/^mdkg:/i.test(ref) && !parseIdentityRef(ref)) {
+      throw new ValidationError(`${filePath}: ${field} contains an invalid stable identity reference`);
+    }
+    return ref;
+  });
+}
 
 const ID_LIST_KEYS = new Set(["refs", "scope"]);
 const ID_REF_LIST_KEYS = new Set(["relates", "blocked_by", "blocks"]);
@@ -189,7 +204,7 @@ function normalizeList(
     }
     if (ID_LIST_KEYS.has(key) && key === "refs" && !validatePortableOrUriRef(entry)) {
       errors.push(`${filePath}: ${key} entries must be portable ids, qids, or URI refs`);
-    } else if (ID_LIST_KEYS.has(key) && key !== "refs" && !(allowPortableRefs ? isPortableId(entry) : isValidId(entry))) {
+    } else if (ID_LIST_KEYS.has(key) && key !== "refs" && !parseIdentityRef(entry) && !(allowPortableRefs ? isPortableId(entry) : isValidId(entry))) {
       errors.push(`${filePath}: ${key} entries must match <prefix>-<number> or reserved id`);
     }
     if (ID_REF_LIST_KEYS.has(key) && !isPortableIdRef(entry)) {
@@ -262,17 +277,21 @@ function normalizeFrontmatter(
   const normalized: Record<string, FrontmatterValue> = {};
 
   for (const key of Object.keys(frontmatter)) {
-    if (!schema.allowedKeys.has(key)) {
+    if (!schema.allowedKeys.has(key) && !IDENTITY_KEYS.has(key)) {
       errors.push(`${filePath}: unknown key: ${key}`);
     }
   }
 
-  for (const key of schema.allowedKeys) {
+  for (const key of new Set([...schema.allowedKeys, ...IDENTITY_KEYS])) {
     const value = frontmatter[key];
     if (value === undefined) {
-      if (schema.listKeys.has(key)) {
+      if (schema.listKeys.has(key) && !IDENTITY_KEYS.has(key)) {
         normalized[key] = [];
       }
+      continue;
+    }
+    if (IDENTITY_KEYS.has(key)) {
+      normalized[key] = value;
       continue;
     }
     const normalizedValue = normalizeFrontmatterValue(key, value, schema, errors, filePath, type);
@@ -369,7 +388,7 @@ function normalizeFrontmatter(
 
   if (typeof normalized.supersedes === "string") {
     const normalizedValue = normalizeScalar(normalized.supersedes).toLowerCase();
-    if (!DEC_ID_RE.test(normalizedValue)) {
+    if (!DEC_ID_RE.test(normalizedValue) && !parseIdentityRef(normalizedValue)) {
       errors.push(`${filePath}: supersedes must be a dec-# id`);
     }
     normalized.supersedes = normalizedValue;
@@ -390,6 +409,7 @@ function runHeadingFormatCommandLocked(options: FormatCommandOptions): void {
     throw new ValidationError("format --headings cannot use --dry-run and --apply together");
   }
   const config = loadConfig(options.root);
+  const graphFormat = readGraphFormat(options.root);
   const filesByAlias = listWorkspaceDocFilesByAlias(options.root, config);
   const errors: string[] = [];
   const changes: Array<HeadingChange & { filePath: string; content: string }> = [];
@@ -409,7 +429,9 @@ function runHeadingFormatCommandLocked(options: FormatCommandOptions): void {
       }
       let parsed;
       try {
+        assertNoGraphConflictMarkers(content, filePath);
         parsed = parseFrontmatter(content, filePath);
+        validateFormatIdentity(parsed.frontmatter, graphFormat, filePath);
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(message);
@@ -487,6 +509,7 @@ function runFormatCommandLocked(options: FormatCommandOptions): void {
     return;
   }
   const config = loadConfig(options.root);
+  const graphFormat = readGraphFormat(options.root);
   const templateSchemas = loadTemplateSchemas(options.root, config, ALLOWED_TYPES);
   const filesByAlias = listWorkspaceDocFilesByAlias(options.root, config);
   const today = formatDate(options.now ?? new Date());
@@ -509,7 +532,9 @@ function runFormatCommandLocked(options: FormatCommandOptions): void {
       }
       let parsed;
       try {
+        assertNoGraphConflictMarkers(content, filePath);
         parsed = parseFrontmatter(content, filePath);
+        validateFormatIdentity(parsed.frontmatter, graphFormat, filePath);
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(message);
