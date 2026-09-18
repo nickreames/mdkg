@@ -616,8 +616,8 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
           name: "local-templates",
           ok: true,
           level: "warn",
-          detail: `missing local template schema(s) covered by bundled fallback: ${templateSchemaInfo.fallbackTypes.join(", ")}; run \`mdkg upgrade --apply\` to vendor them`,
-          remediation: "Run `mdkg upgrade --apply` to vendor missing managed template schemas.",
+          detail: `missing local template schema(s) covered by bundled fallback: ${templateSchemaInfo.fallbackTypes.join(", ")}; preview with \`mdkg upgrade\`, review changes, then apply with its exact --plan-hash and the same --only selection, if any`,
+          remediation: "Run `mdkg upgrade` to review missing managed template schemas; apply only with its exact --plan-hash and the same --only selection, if any.",
           refs: templateSchemaInfo.fallbackTypes,
         }));
       }
@@ -628,7 +628,7 @@ export function runDoctorCommand(options: DoctorCommandOptions): void {
         name: "templates",
         ok: false,
         detail: message,
-        remediation: "Repair `.mdkg/templates` or run `mdkg upgrade --apply` when managed assets should be restored.",
+        remediation: "Inspect `.mdkg/templates`; use `mdkg upgrade` to review managed restoration before applying with its exact --plan-hash and the same --only selection, if any.",
       }));
     }
 

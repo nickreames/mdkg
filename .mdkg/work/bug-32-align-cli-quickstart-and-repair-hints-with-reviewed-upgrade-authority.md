@@ -2,12 +2,12 @@
 id: bug-32
 type: bug
 title: Align CLI quickstart and repair hints with reviewed upgrade authority
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, behavioral-audit]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-32-verification.json]
 relates: [goal-83, goal-84, bug-6, task-827, task-828]
 blocked_by: []
 blocks: []
@@ -86,3 +86,28 @@ task-828 must verify this finding along with all other publication blockers.
 - root:bug-6, root:task-827, root:task-828, root:goal-83, root:goal-84.
 - Supporting context: root:bug-29 bootstrap qualification. No implementation yet.
 - Skill candidates: none; surface is CLI behavior/documentation, not a new skill.
+
+## 2026-09-09 Local Verification
+
+The quickstart now leads with compact-default initialization and keeps upgrade
+and skill-authoring work out of the basic task flow. Init modes are explicit;
+fallback/repair diagnostics preview first and require exact reviewed hashes
+with matching path selections. The bundled command reference and maintained
+reference now agree. A generated-help regression also prevents prose from being
+misinterpreted as the `--only` argument.
+
+Reproduced three CLI-output failures, one stale bundled-reference failure and
+one generated-placeholder failure. Final source passes 1338 ordinary tests,
+37 focused bootstrap/recovery checks, and ten installed onboarding checks each
+on Node 24.18.0 and 26.0.0. Build, CLI/docs parity and 26 release-contract tests
+pass. Full/changed graph and SQLite verification are closeout gates. Exact
+source/package hashes and limitations are in the verification artifact.
+
+This is a guidance correction, not new upgrade authority or changed transport
+semantics. Only the diagnostic hunk in shared `src/commands/subgraph.ts` belongs
+to this commit; the prior bug-17 transport hunks remain uncommitted. Selected
+Goal 73, runtime DB and Demo 3 bundle remain unchanged. No runtime lease,
+canonical migration, bundle refresh, remote Git, provider action or publication.
+Task-828 independent security verification and complete installed/release
+qualification remain open; this intermediate package is not the final seal.
+Skill coverage reused; candidates none.

@@ -181,7 +181,7 @@ function writeRawConfig(configPath: string, raw: Record<string, unknown>): void 
 
 function getSubgraphs(raw: Record<string, unknown>): Record<string, unknown> {
   if (raw.bundle_imports !== undefined) {
-    throw new UsageError("config uses legacy bundle_imports; run `mdkg upgrade --apply` before editing subgraphs");
+    throw new UsageError("config uses legacy bundle_imports; preview with `mdkg upgrade`, review changes, then apply with its exact --plan-hash and the same --only selection, if any, before editing subgraphs");
   }
   const subgraphs = raw.subgraphs;
   if (subgraphs === undefined) {

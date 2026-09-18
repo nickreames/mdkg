@@ -520,7 +520,7 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   const template = loadTemplate(options.root, config, type, options.template);
   if (template.source === "bundled") {
     console.error(
-      `warning: using bundled template fallback for ${type}; run \`mdkg upgrade --apply\` to vendor missing local templates`
+      `warning: using bundled template fallback for ${type}; preview missing local templates with \`mdkg upgrade\`, review changes, then apply with its exact --plan-hash and the same --only selection, if any`
     );
   }
   const renderedContent = renderTemplate(template, {

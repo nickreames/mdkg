@@ -238,21 +238,24 @@ function printUsage(log: LogFn): void {
   log("  doctor      Run install and workspace diagnostics");
   log("  workspace   Manage workspaces (ls/add/rm/enable/disable)");
   log("\nQuickstart:");
-  log("  mdkg init --agent");
-  log("  mdkg upgrade");
-  log("  mdkg upgrade --apply");
+  log("  mdkg init");
   log('  mdkg new task "..." --status todo --priority 1');
   log('  mdkg search "..."');
   log("  mdkg show <id>");
   log("  mdkg next");
-  log("  mdkg pack <id>");
-  log("  mdkg pack <id> --profile concise --dry-run --stats");
+  log("  mdkg pack <id> --pack-profile concise --dry-run --stats");
   log("  mdkg task start <id>");
-  log('  mdkg skill new release-readiness "release readiness audit" --description "use when preparing a release"');
-  log("  mdkg skill list --tags stage:plan --json");
   log("  mdkg validate");
-  log("\nAgent-ready bootstrap:");
-  log("  mdkg init --agent");
+  log("\nInitialization modes:");
+  log("  mdkg init               Compact agent setup (default); preserves user instructions");
+  log("  mdkg init --graph-only  Graph scaffold without agent setup");
+  log("  mdkg init --agent       Compatibility alias for the default");
+  log("\nExisting installations:");
+  log("  mdkg upgrade [--only <path,...>]   Preview only; review changes and selected paths");
+  log("  mdkg upgrade --apply --plan-hash <sha256>");
+  log("  Apply the exact reviewed hash and repeat the same --only selection, if any.");
+  log("\nFocused discovery:");
+  log('  mdkg skill search "<task>"');
   log("\nRun `mdkg help <command>` or `mdkg <command> --help` for details.");
   printGlobalOptions(log);
 }
@@ -2180,7 +2183,7 @@ function runBundleSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
   switch (subcommand) {
     case "import": {
-      throw new UsageError("mdkg bundle import has been replaced by mdkg subgraph; run `mdkg upgrade --apply` to migrate legacy bundle_imports config");
+      throw new UsageError("mdkg bundle import has been replaced by mdkg subgraph; preview legacy bundle_imports migration with `mdkg upgrade`, review it, then apply with its exact --plan-hash and the same --only selection, if any");
     }
     case "create": {
       if (parsed.positionals.length > 2) {
@@ -3240,7 +3243,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       const force = parseBooleanFlag("--force", parsed.flags["--force"]);
       for (const removedFlag of ["--llm", "--agents", "--claude", "--omni"]) {
         if (parsed.flags[removedFlag] !== undefined) {
-          throw new UsageError(`\`mdkg init ${removedFlag}\` was removed; use \`mdkg init --agent\``);
+          throw new UsageError(`\`mdkg init ${removedFlag}\` was removed; use \`mdkg init\` for compact agent setup (default), or \`mdkg init --graph-only\` without agent setup`);
         }
       }
       const agent = parsed.flags["--agent"] === undefined ? undefined : parseBooleanFlag("--agent", parsed.flags["--agent"]);

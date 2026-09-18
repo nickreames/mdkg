@@ -1,6 +1,6 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "79797d9636e88614a59589c462b09aa98391a91d2ce3770454633d392ee03699",
+  "contract_hash": "043009bbf550dd9ab58b9c65f234152aa7600ed884f97487d6dc34ef61b8b49f",
   "package_version": "0.5.2",
   "command_count": 120,
   "categories": {
@@ -551,8 +551,7 @@
       "visibility": "public",
       "danger_level": "read-only",
       "output_formats": [
-        "text",
-        "json"
+        "text"
       ],
       "dry_run": {
         "supported": false

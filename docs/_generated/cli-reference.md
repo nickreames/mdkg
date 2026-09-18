@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 79797d9636e88614a59589c462b09aa98391a91d2ce3770454633d392ee03699 -->
+<!-- contract-hash: 043009bbf550dd9ab58b9c65f234152aa7600ed884f97487d6dc34ef61b8b49f -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -2134,22 +2134,21 @@ mdkg <command> [options]
 
 ### Common flags
 
-- `--agent`: mdkg init --agent
-- `--apply`: mdkg upgrade --apply
-- `--description "use`: mdkg skill new release-readiness "release readiness audit" --description "use when preparing a release"
-- `--dry-run`: mdkg pack <id> --profile concise --dry-run --stats
+- `--agent`: mdkg init --agent       Compatibility alias for the default
+- `--apply`: mdkg upgrade --apply --plan-hash <sha256>
+- `--dry-run`: mdkg pack <id> --pack-profile concise --dry-run --stats
+- `--graph-only`: mdkg init --graph-only  Graph scaffold without agent setup
 - `--help`: Run `mdkg help <command>` or `mdkg <command> --help` for details.
-- `--json`: mdkg skill list --tags stage:plan --json
+- `--only <path,...>`: mdkg upgrade [--only <path,...>]   Preview only; review changes and selected paths
+- `--pack-profile concise`: mdkg pack <id> --pack-profile concise --dry-run --stats
 - `--priority 1`: mdkg new task "..." --status todo --priority 1
-- `--profile concise`: mdkg pack <id> --profile concise --dry-run --stats
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--status todo`: mdkg new task "..." --status todo --priority 1
-- `--tags stage:plan`: mdkg skill list --tags stage:plan --json
 - `--version`: --version, -V       Show version
 
 ### Output and safety
 
-- Output formats: text, json
+- Output formats: text
 - Dry run: {"supported":false}
 - Side effects: none
 - Read paths: .mdkg/**
