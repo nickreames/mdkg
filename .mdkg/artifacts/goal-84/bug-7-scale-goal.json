@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-594",
+  "goal_qids": ["root:goal-83", "root:goal-84"],
+  "test_qids": ["root:test-481", "root:test-482"],
+  "owner": "mdkg-project-agent",
+  "source_baseline": "5c4f15f065d4a150d8b9ad3230cfee3d4c7e1fee",
+  "outcome": "Small installed lifecycle and limit controls verified; 2000-node v2 migration scale remains unqualified; NOT_READY",
+  "candidate": {
+    "version": "0.5.2 development",
+    "tarball_sha256": "1143dafbc36f773af4ea9e411026063116523477efbf64198918b38a30b7bcbf",
+    "matched_repository_files": 222,
+    "equivalence": "Installed regular files except npm-normalized package.json match repository bytes, including preserved partial bug-17 runtime changes",
+    "release_seal": false
+  },
+  "harness": {
+    "path": "scripts/installed-scale-goal.js",
+    "sha256": "c510d27f3c51277cba42a81d87789471ec8bb714d4820e9668eba11590754f71",
+    "invocation": "require('./scripts/installed-scale-goal').runInstalledScaleGoal({bin: absoluteInstalledCliJsPath, tempBase: ownedTemporaryDirectory, nodeCount: 2000})",
+    "uses_product_source_imports": false,
+    "timeout_ms": 180000,
+    "timeout_is_product_limit_or_sla": false,
+    "fixture_only_changes": "Synthetic authored graphs, event streams, local Git histories, migration and goal lifecycle; no canonical migration"
+  },
+  "passing_controls": [
+    {"node": "24.15.0", "nodes": 100, "cases": 15, "commands": 262, "receipt_sha256": "0e457abee6c9b17bd54033fa4626cd106ecda6093f7eb64f433c46f7a482300e"},
+    {"node": "24.18.0", "nodes": 100, "cases": 15, "commands": 262, "receipt_sha256": "8486c6d53643f2c92c1ab656c46fa5cd4cce63da0a7b03c4f2a557e4f53f446e"},
+    {"node": "26.0.0", "nodes": 100, "cases": 15, "commands": 262, "receipt_sha256": "7bbc2c1c4032b5e30f280f871106df8c492eb40c968a4314f388b18cac71f0f1"}
+  ],
+  "control_coverage": [
+    "JSON/SQLite, legacy/v2, warm/cold list/show/search/linked pack/validation preserve whole-fixture bytes and directories",
+    "20000 valid event records totaling 3660000 bytes per graph",
+    "Default 8388608-byte node and 1048576-byte event-line limits fail closed at limit plus one with exact guard messages and preserved bytes",
+    "Actual 2049-commit Git history refuses the existing 2048 review limit without writes; exhaustive 2048-commit acceptance is not claimed",
+    "Complete task start/done/checkpoint and goal claim/done flows preserve identity, Git index and selection",
+    "Publication work stays unavailable with either acceptance checkpoint or independent verification incomplete, including reopening either gate",
+    "Goal evaluate is observational and does not run declared checks; goal done is not checkpoint or verification completion",
+    "Artifact mismatch remains detectable by a separate hash check; graph routing itself does not enforce publication authority or verify artifacts"
+  ],
+  "large_graph_attempts": [
+    {"node": "24.15.0", "mode": "concurrent", "elapsed_ms": 180011, "signal": "SIGTERM", "migrated_tasks_observed_after_exit": 603, "receipt_sha256": "cfe18534022743254a187692cf1dd10d5bfad4e6a94d491f57c19829292dcf04"},
+    {"node": "24.18.0", "mode": "concurrent", "elapsed_ms": 180012, "signal": "SIGTERM", "migrated_tasks_observed_after_exit": 607, "receipt_sha256": "fb8b4d5705dbe24694dbd823ed82f46eeb9131524644fad1784144e7e69031ca"},
+    {"node": "26.0.0", "mode": "concurrent", "elapsed_ms": 180010, "signal": "SIGTERM", "migrated_tasks_observed_after_exit": 603, "receipt_sha256": "11040c3a9b153859d6cb2b1963c3f47687a3de3497d73a55e7aa702dde6cdcd9"},
+    {"node": "26.0.0", "mode": "isolated", "elapsed_ms": 180009, "signal": "SIGTERM", "migrated_tasks_observed_after_exit": 1086, "receipt_sha256": "79cd8704ecd625a257af6e019baaeb890e1af14fe1d9f9e606845c8fc9c1be27"}
+  ],
+  "large_graph_scope": {"task_nodes": 2000, "legacy_authored_bytes": 803563, "event_records": 20000, "event_bytes": 3660000, "legacy_json_warm_cold_reads_passed_each_attempt": true, "v2_application_completed": false, "remaining_large_matrix_executed": false},
+  "disposition": {
+    "tracking": "bug-7/large-migration-custody-scaling",
+    "confirmed": "2000-node application exceeds this harness bound even in isolation; processes are terminal and partial synthetic journals are retained",
+    "source_evidence": "identity_transaction.ts applyGraphMigrationPlan calls checkRecoveryCustody before every write; that function rescans authored paths and reads every planned change. This establishes quadratic traversal work, not a measured breakdown of total runtime.",
+    "next": "Profile per-phase work and representative scaling; seek bounded optimization without removing containment, current-byte, dependency, control or unknown-path checks. Keep 2000-node qualification incomplete until completed and reviewed. A longer diagnostic timeout must be explicit evidence, not a silent pass or new SLA.",
+    "not_claimed": ["new Standard security finding", "data loss", "three-minute product SLA", "complete scale acceptance", "automatic stale-lock recovery"]
+  },
+  "harness_corrections": ["Added required event agent field and recommended task headings", "Used mdkg unquoted inline-list syntax rather than JSON-quoted aliases", "Matched existing exit classes: node-discovery 4, event-validation 2, history-usage 1", "Asserted v2 last_active_node as stable identity rather than alias", "Removed inherited GIT_* overrides and verified fixture Git ownership", "Tightened limit assertions to avoid matching fixture path names", "Added v2 scale, linked-neighbor packs and persisted checkpoint/goal assertions"],
+  "review": {"reviewer": "installed_scale_goal_review", "mode": "read-only source and harness review", "final_bounded_findings": 0, "final_script_sha256": "c510d27f3c51277cba42a81d87789471ec8bb714d4820e9668eba11590754f71", "not_final_security_clearance": true},
+  "custody": "Preserve nine existing dirty paths, selected Goal73, runtime DB and Demo3 bundle. Their hash baseline is bug-34-verification.json. Successful control runs verified canonical bookends and removed their nine owned fixture directories each. Four failed large fixtures and their journals remain private for diagnosis; no lock takeover or recovery application.",
+  "authority": "Local Goal83/84 validation infrastructure, fixtures, mdkg evidence/projections and reviewed local commit; no remote, publication, tag, provider, deployment, bundle/subgraph refresh, root/sibling write or canonical migration",
+  "cleanup": {"additional_removed_owned_directories": 22, "manifest_sha256": "2a9211f52d37e8a8e3e5d83e27a31e34dfb937f1a57502796fe726dd0d865849", "retained_large_fixture_names": ["mdkg-installed-scale-FfhdQN", "mdkg-installed-scale-GkDq4X", "mdkg-installed-scale-h9AEVF", "mdkg-installed-scale-75gkD6"]},
+  "validation": {"node_syntax_check_exit": 0, "cli_check_built_exit": 0, "docs_check_built_exit": 0, "public_release_contract_tests_passed": 26, "full_source_suite_rerun": false},
+  "skill_candidates": []
+}

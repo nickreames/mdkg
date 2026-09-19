@@ -7,18 +7,18 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
-refs: []
+refs: [bug-7]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 cases: [test-482-case-1, test-482-case-2, test-482-case-3, test-482-case-4, test-482-case-5]
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Overview
@@ -44,6 +44,11 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
 # Results / Evidence
 
 Not executed. Record case-level expected/actual, exact commands/runtime/package identity, stdout/exit results and compact reproducible evidence. No missing runtime, interrupted case or source-only assertion is a pass.
+
+2026-09-09 additional partial runtime proof: 15 installed scale/lifecycle controls
+pass on exact Node 24.15.0, 24.18.0 and 26.0.0. The larger 2000-node runs are
+incomplete, not runtime passes. Evidence and precise exclusions are recorded in
+.mdkg/artifacts/goal-84/bug-7-scale-goal.json; full task-826 matrix remains open.
 
 # Notes / Follow-ups
 
