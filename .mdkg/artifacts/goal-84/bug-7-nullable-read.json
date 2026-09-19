@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-595",
+  "owner": "mdkg-project-agent",
+  "source_head_before_commit": "d4070284148ab8ad424d728e99db09f72cda47df",
+  "outcome": "Bounded duplicate-inspection optimization locally verified; aggregate Bug7 and Goal83 remain NOT_READY",
+  "source_sha256": {
+    "src/core/filesystem_authority.ts": "1f5520d89f080d97b5b83837998322a005b75421ac7cda040d3a38c5b533c918",
+    "src/graph/identity_transaction.ts": "16c7fd57db3ea30e21a3b7570fe55c35ecafdd826153ac0debf3de8f756e92f0",
+    "tests/core/filesystem_nullable_read.test.ts": "281171f4b125fdd056b2ed058f1c3cf35bdad4d5df2ffa3a06f986ea522080dc",
+    "tests/graph/identity_migration.test.ts": "e1f4035a0a61d8e14ea2e80cb59cd3c4171dcef1f7a1331a37da3dbe1cc21a11"
+  },
+  "change": "value() uses one fresh nullable contained read instead of exists-then-read. Shared read implementation retains containment, regular-file checks, no-follow/nonblocking open, fstat, actual byte bounds and descriptor closure. Only initial absence returns null; later ENOENT and other errors propagate.",
+  "preserved_semantics": ["every apply/resume/rollback per-write custody pass", "fresh inventory and unknown-path detection", "current before/after byte comparison", "dependency and Git/runtime/selection control checks", "put() fresh read and sink verification", "existing non-nullable reader behavior", "no filesystem observation cache"],
+  "tests": {
+    "before": {"new_api_tests": 7, "failed": 7, "reason": "nullable helper not yet implemented; performance defect independently evidenced by preceding CPU profile, not seven security defects"},
+    "initial_focused": {"passed": 117, "failed": 0, "scope": "filesystem authority and migration/validation/reconciliation"},
+    "full": {"node": "24.18.0", "passed": 1368, "failed": 0, "skipped": 0, "receipt_sha256": "3f9141916f0be3c574e81fe61c874d0d479442f6271bdddb49bb6a349a170566", "freshness": "Final runtime behavior; test compilation preceded final regression-only rollback setup and installed-module-routing refinements, independently rerun below. Removing one unused import afterward left all shipped bytes unchanged."},
+    "final_focused": {"passed": 25, "failed": 0, "receipt_sha256": "abb7256e15de2cdf4bc66a17fd53311b859d1be40d7e3f5e416be55d7011c871", "cleanup": "New migration regression fixtures register exact owned-directory teardown; final 25-test rerun includes this test-only cleanup refinement."},
+    "installed_module": [
+      {"node": "24.15.0", "passed": 8, "failed": 0, "receipt_sha256": "373eadc3c75f27e85ddbdd31bd87e92654f52bb9f6b8664445cec7fe38631e28"},
+      {"node": "24.18.0", "passed": 8, "failed": 0, "receipt_sha256": "c15742e790518ef3b895f9c2c6d128db7de2c998fa3f9d19d00137cf7e177f09"},
+      {"node": "26.0.0", "passed": 8, "failed": 0, "receipt_sha256": "3fce4a9d9eb9a3123e0f1d99d9930d4a3202402376bfc35e99436da9c88d81fb"}
+    ],
+    "coverage": ["initial missing target/ancestor versus invalid root/path/type", "one fresh root inspection per call", "equal-size content changes with restored timestamps", "exact UTF-8/empty/invalid byte bounds and post-stat growth", "actual disappearance before open and EACCES/EIO propagation", "no-follow/nonblocking flags and descriptor validation/closure", "linked/dangling root/ancestor/leaf and FIFO refusal", "mid-apply/resume/rollback changes to prior/future nodes; rollback includes actual byte restoration"],
+    "other": {"cli_check_built_exit": 0, "docs_check_built_exit": 0, "documentation_examples_checked": 494, "release_contract_tests_passed": 26, "full_graph_errors": 0, "full_graph_preserved_stale_subgraph_warnings": 3, "changed_graph_errors": 0, "changed_graph_warnings": 0, "sqlite_index_verify_exit": 0, "diff_check_exit": 0}
+  },
+  "installed_candidate": {
+    "version": "0.5.2 development",
+    "tarball_sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+    "integrity": "sha512-F8/DspQ/o785y42eBMbKdAaW74Dew1b4DUfhdysl2c3Qr1XbKg7yfykYN41rmvw1jWxhuXk2LNElL2zBC6XMxg==",
+    "file_count": 223,
+    "matched_repository_regular_files_excluding_package_json": 222,
+    "qualification_only": "Built local candidate packed with lifecycle scripts disabled, then installed offline with normal postinstall into isolated prefix/config/cache; not the final release ladder or 0.6.0 seal. Partial Bug17 source remains in the intermediate candidate and is not cleared by this test."
+  },
+  "profile": {
+    "runtime": "26.0.0", "backend": "json", "nodes": 2000, "event_records": 20000,
+    "baseline_apply_ms": 329196, "candidate_apply_ms": 272214, "paired_reduction_percent": 17.3094,
+    "diagnostic_timeout_ms": 600000, "apply_exit": 0, "validate_exit": 0,
+    "exact_task_count": 2000, "last_node_stable_identity_verified": true,
+    "authored_before_bodies_and_event_streams_match_baseline": true,
+    "canonical_bookends_preserved": true,
+    "plan_hash": "sha256:f68ac3ea309bfa3d07127505928b246b4411cb8d5cb2b6771d44bf6e294be519",
+    "receipt_sha256": "3a67672784ceb90172c9b25e771199384ff3772310fc4f605dffd3a82dc650d5",
+    "profile_sha256": "368d67bdadcc7f4f476ace21be33e001e86436b7324570c051c4b7c9431de6c9",
+    "summary_sha256": "c3fab73beaef0e48c149dc6b12523811aa9c2072b4cc01da3d66cb60ac87f587",
+    "runner_sha256": "90eeacc61e6182da4b1d3d92f0b89c222ee59093b76c78ae8be7e2375e33be8e",
+    "samples": 212950,
+    "inclusive_sample_percent": {"checkRecoveryCustody": 95.0391, "inspectPath": 51.9928, "value": 42.1686, "listWorkspaceDocFilesByAlias": 29.6261},
+    "limitations": "One paired isolated profiled run, not a general speed guarantee, new SLA or full installed scale/runtime matrix. Inclusive sample categories overlap and include synchronous I/O/subprocess waiting. The original 180-second full-harness bound remains unchanged; aggregate scale qualification is still open."
+  },
+  "independent_review": {"reviewer": "migration_scale_read_review", "mode": "source/test read-only", "final_bounded_findings": 0, "test_coverage_correction": "Rollback fixture now migrates all Markdown first and mutates after actual first node restoration; final focused rerun passes", "not_task_828_final_security_clearance": true},
+  "custody": {"preserved_baseline": ".mdkg/artifacts/goal-84/bug-34-verification.json preserved_sha256", "excluded_dirty_paths": "SQLite generated custody plus eight partial Bug17 paths", "private_diagnostics": "/private/tmp/mdkg-nullable-read.D8mLBL", "temporary_state": "Candidate tarball/install, compact logs and completed profile fixture retained until remaining scale qualification. No stale-lock takeover or earlier interrupted-fixture mutation."},
+  "authority": "Existing Goal83/84 local source/test/evidence/projection and reviewed local commit authority only; no remote Git, publication, tag, provider, deployment, consumer/root/sibling write, canonical migration or bundle/subgraph refresh",
+  "remaining": ["full representative JSON/SQLite and runtime installed scale matrix", "old-writer v2 adoption policy", "killed-writer recovery policy", "legacy public-bundle compatibility decision and Bug17 completion", "final independent security review", "release documentation/metadata, full unchanged-threshold ladder and candidate seal"],
+  "skill_candidates": []
+}

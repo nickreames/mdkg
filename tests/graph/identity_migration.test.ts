@@ -283,6 +283,52 @@ test("recovery refuses modified owned bytes and symlinked journal paths", () => 
   assert.deepEqual(bytes(second.root), linked);
 });
 
+for (const mode of ["apply", "resume", "rollback"] as const) {
+  test(`${mode} rechecks prior and future node bytes even with unchanged length and timestamps`, (t) => {
+    for (const targetPosition of ["first", "last"]) {
+      const { root, run } = fixture();
+      t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+      assert.equal(run(["new", "task", "Second node", "--json"]).status, 0);
+      assert.equal(run(["new", "task", "Third node", "--json"]).status, 0);
+      const plan = planLegacyIdentityMigration(root, { graphId: GRAPH, origin: ORIGIN_A });
+      const nodes = plan.writes.filter((c: any) => c.path.endsWith(".md"));
+      const target = path.join(root, nodes[targetPosition === "first" ? 0 : nodes.length - 1].path);
+      if (mode !== "apply") {
+        const interruptionIndex = mode === "rollback"
+          ? plan.writes.findLastIndex((change: any) => change.path.endsWith(".md")) : 1;
+        assert.throws(() => applyGraphMigrationPlan(root, plan, plan.plan_hash, {
+          afterWrite: (_file: string, index: number) => { if (index === interruptionIndex) throw Error("controlled interruption"); },
+        }), /controlled interruption/);
+      }
+      const triggerIndex = mode === "rollback"
+        ? [...plan.writes].reverse().findIndex((change: any) => change.path.endsWith(".md")) : 0;
+      assert.ok(triggerIndex >= 0);
+      let modified = "", hookCalls = 0;
+      const hooks = { afterWrite: (_file: string, index: number) => {
+        hookCalls++;
+        if (index !== triggerIndex) return;
+        if (mode === "rollback") {
+          const restored = plan.writes.find((change: any) => change.path === _file);
+          assert.notEqual(restored.before, restored.after);
+          assert.equal(fs.readFileSync(path.join(root, _file), "utf8"), restored.before);
+        }
+        const original = fs.readFileSync(target, "utf8"), stat = fs.statSync(target);
+        modified = original.replace("title:", "Title:");
+        assert.notEqual(modified, original); assert.equal(Buffer.byteLength(modified), stat.size);
+        fs.writeFileSync(target, modified); fs.utimesSync(target, stat.atime, stat.mtime);
+      } };
+      assert.throws(() => mode === "apply"
+        ? applyGraphMigrationPlan(root, plan, plan.plan_hash, hooks)
+        : continueGraphTransaction(root, plan.plan_hash, mode, hooks), /custody collision/);
+      assert.equal(hookCalls, triggerIndex + 1, "stop before the next authored write");
+      assert.equal(fs.readFileSync(target, "utf8"), modified);
+      const preserved = bytes(root);
+      assert.throws(() => continueGraphTransaction(root, plan.plan_hash, "rollback"), /custody collision/);
+      assert.deepEqual(bytes(root), preserved, "recovery must not overwrite changed user bytes");
+    }
+  });
+}
+
 test("migration CLI binds the reviewed plan, defaults recovery to inspection and excludes private journals from bundles", () => {
   const { root, run } = fixture();
   const args = ["graph", "migrate", "--graph-id", GRAPH, "--origin", ORIGIN_A, "--json"];

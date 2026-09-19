@@ -1,7 +1,7 @@
 import path from "path";
 import { loadConfig } from "../core/config";
 import {
-  atomicReplaceContainedFile, containedPathExists, readContainedDirectory, readContainedFile,
+  atomicReplaceContainedFile, containedPathExists, readContainedDirectory, readContainedFileIfPresent,
   removeContainedPath, withContainedPathSink, writeContainedFileExclusive,
 } from "../core/filesystem_authority";
 import { UsageError } from "../util/errors";
@@ -35,7 +35,7 @@ function journalPath(hash: string): string {
 }
 
 function value(root: string, relativePath: string): string | null {
-  return containedPathExists({ root, relativePath }) ? readContainedFile({ root, relativePath }) : null;
+  return readContainedFileIfPresent({ root, relativePath });
 }
 
 function put(root: string, change: GraphFileChange, desired: string | null): void {
