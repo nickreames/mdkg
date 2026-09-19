@@ -5,20 +5,69 @@ const crypto = require("node:crypto");
 const assert = require("node:assert/strict");
 const { spawnSync } = require("node:child_process");
 
+// Check the persisted public graph contract, not migration exit status alone.
+// No implementation internals are imported by consumer qualification.
+function verifyInstalledMigration({ root, plan, applied, items, eventBefore }) {
+  assert.equal(applied.ok, true);
+  assert.equal(applied.state, "applied");
+  assert.equal(applied.plan_hash, plan.plan_hash);
+  const manifest = JSON.parse(fs.readFileSync(path.join(root, ".mdkg/graph.json"), "utf8"));
+  assert.equal(manifest.format, "mdkg-graph");
+  assert.equal(manifest.format_version, 2);
+  assert.equal(manifest.graph_id, plan.parameters.graphId);
+  for (const change of plan.writes) {
+    assert.ok(typeof change.path === "string" && !path.isAbsolute(change.path) &&
+      !change.path.split(/[\\/]/).some(part => part === ".." || part === ""), "unsafe persisted plan path");
+    const file = path.join(root, change.path);
+    if (change.after_hash === null) assert.equal(fs.existsSync(file), false);
+    else {
+      assert.match(change.after_hash, /^sha256:[a-f0-9]{64}$/, "public plan must supply an after hash");
+      const actual = "sha256:" + crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+      assert.equal(actual, change.after_hash, `persisted plan mismatch: ${change.path}`);
+    }
+  }
+  assert.equal(items.length, plan.mappings.length, "migration must preserve the complete node inventory");
+  const byQid = new Map(items.map(item => [item.qid, item]));
+  assert.equal(byQid.size, items.length, "duplicate persisted aliases");
+  const identities = new Set();
+  for (const mapping of plan.mappings) {
+    const item = byQid.get(mapping.qid);
+    assert.ok(item, `missing migrated node: ${mapping.qid}`);
+    assert.deepEqual(item.identity, mapping.identity, `identity mismatch: ${mapping.qid}`);
+    assert.equal(item.identity.graph_id, manifest.graph_id);
+    assert.match(item.identity.node_id, /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    assert.equal(item.stable_ref, `mdkg://${manifest.graph_id}/${item.identity.node_id}`);
+    assert.equal(item.stable_ref, mapping.stable_ref);
+    identities.add(item.stable_ref);
+  }
+  assert.equal(identities.size, items.length, "duplicate persisted identities");
+  const eventPath = path.join(root, ".mdkg/work/events/events.jsonl");
+  const eventAfter = fs.existsSync(eventPath) ? fs.readFileSync(eventPath) : null;
+  assert.deepEqual(eventAfter, eventBefore, "migration must preserve original event history exactly");
+  return { graph_format: 2, persisted_identity_count: identities.size,
+    persisted_task_identity_count: items.filter(item => item.type === "task").length,
+    exact_plan_writes: plan.writes.length,
+    event_history_preserved: true,
+    event_history_sha256: eventAfter === null ? null : crypto.createHash("sha256").update(eventAfter).digest("hex") };
+}
+
 // Consumer qualification only: invoke the installed CLI, never graph internals.
 // Fixture generation/edits below represent authored Markdown and local Git input.
-function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, onCase = () => {} }) {
+function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, commandTimeoutMs = 180000, onCase = () => {} }) {
   assert.ok(path.isAbsolute(bin) && fs.statSync(bin).isFile(), "installed CLI required");
   assert.ok(Number.isSafeInteger(nodeCount) && nodeCount >= 100 && nodeCount <= 10000);
+  // Qualification allowance, not a product timeout, compatibility limit or SLA.
+  assert.ok(Number.isSafeInteger(commandTimeoutMs) && commandTimeoutMs > 0 && commandTimeoutMs <= 600000,
+    "commandTimeoutMs must be an integer from 1 through 600000");
   const roots = [], cases = [], commands = [];
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_")));
   Object.assign(env, { GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: os.devNull, GIT_TERMINAL_PROMPT: "0" });
   const hash = value => crypto.createHash("sha256").update(value).digest("hex");
   function run(root, executable, args, expected = 0, input) {
     const start = Date.now();
-    const r = spawnSync(executable, args, { cwd: root, env, encoding: "utf8", input, timeout: 180000, maxBuffer: 32 * 1024 * 1024 });
+    const r = spawnSync(executable, args, { cwd: root, env, encoding: "utf8", input, timeout: commandTimeoutMs, maxBuffer: 32 * 1024 * 1024 });
     commands.push({ fixture: path.basename(root), executable: path.basename(executable), args, exit: r.status, signal: r.signal,
-      elapsed_ms: Date.now() - start, stdout_bytes: Buffer.byteLength(r.stdout || ""), stdout_sha256: hash(r.stdout || ""), stderr_sha256: hash(r.stderr || "") });
+      timeout_ms: commandTimeoutMs, elapsed_ms: Date.now() - start, stdout_bytes: Buffer.byteLength(r.stdout || ""), stdout_sha256: hash(r.stdout || ""), stderr_sha256: hash(r.stderr || "") });
     assert.equal(r.status, expected, `${args.join(" ")}\n${r.error || ""}\n${(r.stdout || "").slice(-6000)}\n${(r.stderr || "").slice(-2000)}`);
     return r;
   }
@@ -56,11 +105,14 @@ function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, 
   }
   function migrate(root) {
     const args = ["graph", "migrate", "--graph-id", crypto.randomUUID(), "--origin", crypto.randomUUID()];
+    const eventPath = path.join(root, ".mdkg/work/events/events.jsonl");
+    const eventBefore = fs.existsSync(eventPath) ? fs.readFileSync(eventPath) : null;
     const before = snapshot(root), plan = json(root, args);
     assert.deepEqual(snapshot(root), before, "migration preview must be observational");
     assert.deepEqual(plan.blocking, []); assert.equal(plan.safe_to_apply, true);
-    json(root, [...args, "--apply", "--plan-hash", plan.plan_hash]);
+    const applied = json(root, [...args, "--apply", "--plan-hash", plan.plan_hash]);
     assert.equal(json(root, ["validate"]).ok, true);
+    return verifyInstalledMigration({ root, plan, applied, eventBefore, items: json(root, ["list", "--ws", "root"]).items });
   }
   function initializeGit(root) {
     git(root, ["init", "-b", "main"]);
@@ -84,7 +136,7 @@ function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, 
       const eventPath = path.join(work, "events/events.jsonl"); fs.mkdirSync(path.dirname(eventPath), {recursive:true});
       fs.writeFileSync(eventPath, event.repeat(20000));
       for (const version of ["legacy", "v2"]) {
-      if (version === "v2") migrate(root);
+      const migration = version === "v2" ? migrate(root) : undefined;
       cli(root, ["index"]);
       for (const state of ["warm", "cold"]) {
         if (state === "cold") fs.rmSync(path.join(root, ".mdkg/index"), {recursive:true});
@@ -98,7 +150,8 @@ function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, 
         assert.equal(json(root, ["validate"]).ok, true);
         assert.deepEqual(snapshot(root), before, `${backend}/${state} reads wrote files`);
         record({ family:"scale", backend, version, state, node_count:nodeCount, legacy_authored_bytes:authoredBytes, event_records:20000,
-          event_bytes:Buffer.byteLength(event)*20000, command_ms:commands.slice(started).map(c => c.elapsed_ms), observational:true });
+          event_bytes:Buffer.byteLength(event)*20000, command_ms:commands.slice(started).map(c => c.elapsed_ms), observational:true,
+          ...(migration ? { migration } : {}) });
       }
       }
     }
@@ -140,7 +193,7 @@ function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, 
       json(root, ["task", "update", publication.id, "--add-blocked-by", `${acceptance.id},${verification.id}`]);
       fs.writeFileSync(path.join(root, "candidate.txt"), "synthetic candidate\n");
       const sealedHash = hash(fs.readFileSync(path.join(root, "candidate.txt")));
-      if (version === "v2") migrate(root);
+      const migration = version === "v2" ? migrate(root) : undefined;
       initializeGit(root); const gitIndex = fs.readFileSync(path.join(root, ".git/index"));
       const next = goal => json(root, ["goal", "next", goal.id]);
       const blocked = () => {const n=next(publish);assert.equal(n.node,null);assert.deepEqual(n.warnings,[]);};
@@ -183,12 +236,13 @@ function runInstalledScaleGoal({ bin, tempBase = os.tmpdir(), nodeCount = 2000, 
       assert.deepEqual(fs.readFileSync(path.join(root,".git/index")),gitIndex);
       assert.equal(json(root,["validate"]).ok,true);
       record({family:"goal-routing",backend,version,both_gate_orders:true,reopened_gate_blocks:true,goal_state_not_acceptance:true,
-        evaluate_observational:true,artifact_recheck_required:true,publication_executed:false,git_index_preserved:true,selection_preserved:true});
+        evaluate_observational:true,artifact_recheck_required:true,publication_executed:false,git_index_preserved:true,selection_preserved:true,
+        ...(migration ? { migration } : {}) });
     }
     for (const root of roots) fs.rmSync(root,{recursive:true,force:false});
-    return {schema_version:1,runtime:process.version,installed_cli_sha256:hash(fs.readFileSync(bin)),cases,commands,fixtures_removed:roots.length,
+    return {schema_version:1,runtime:process.version,command_timeout_ms:commandTimeoutMs,installed_cli_sha256:hash(fs.readFileSync(bin)),cases,commands,fixtures_removed:roots.length,
       limitations:[`${nodeCount}-node graph is representative coverage, not a universal performance SLA`, "2049-commit refusal exercises the existing limit; exhaustive 2048-commit acceptance is not claimed", "goal routing stores guidance, not artifact verification or publication enforcement"]};
   } catch (error) { error.fixture_roots=roots; error.completed_cases=cases; error.command_receipts=commands; throw error; }
 }
 
-module.exports = { runInstalledScaleGoal };
+module.exports = { runInstalledScaleGoal, verifyInstalledMigration };

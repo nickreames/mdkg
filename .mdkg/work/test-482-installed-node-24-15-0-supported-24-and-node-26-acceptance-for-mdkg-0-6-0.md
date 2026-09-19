@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
-refs: [bug-7]
+refs: [bug-7, chk-596]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
@@ -43,7 +43,12 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
 
 # Results / Evidence
 
-Not executed. Record case-level expected/actual, exact commands/runtime/package identity, stdout/exit results and compact reproducible evidence. No missing runtime, interrupted case or source-only assertion is a pass.
+Current scale-family result: chk-596 records 15 strengthened 2000-task cases and
+266 commands on each exact runtime: Node 24.15.0, 24.18.0 and 26.0.0. Receipt and
+package hashes are in .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json.
+All required runtimes were available; no missing or interrupted execution is a
+pass. The complete task826 family/runtime matrix and final acceptance remain
+open. Earlier partial scale evidence below is retained as history.
 
 2026-09-09 additional partial runtime proof: 15 installed scale/lifecycle controls
 pass on exact Node 24.15.0, 24.18.0 and 26.0.0. The larger 2000-node runs are

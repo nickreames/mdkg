@@ -1,0 +1,973 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-596",
+  "scope_refs": [
+    "root:test-481",
+    "root:test-482",
+    "root:task-826"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_head": "375265f208bb50b3af05440d6491e27488f98862",
+  "outcome": "Representative installed scale/lifecycle matrix verified on all three required runtimes; aggregate Bug7/Goal83 remain NOT_READY",
+  "source_sha256": {
+    "scripts/installed-scale-goal.js": "e713a5f3933dde943fd050158af3067d936f7a23e9ee72670e4d138615e6c70c",
+    "tests/installed-scale-goal.test.mjs": "c523bd847c2d0849d9f5114e890e5f32e5cc4ae996e8885d75cc016ab672f875"
+  },
+  "package_candidate": {
+    "version": "0.5.2 development",
+    "tarball_sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+    "installed_regular_files_matched": 222,
+    "final_release_seal": false,
+    "partial_bug17_not_cleared": true
+  },
+  "execution": {
+    "mode": "sequential isolated installed CLI; no graph implementation imports",
+    "tasks_per_large_graph": 2000,
+    "additional_core_nodes": 10,
+    "event_records": 20000,
+    "event_bytes": 3660000,
+    "command_timeout_ms": 600000,
+    "default_timeout_ms": 180000,
+    "timeout_scope": "test-only per-command allowance, not a product SLA or altered safety budget",
+    "total_cases": 45,
+    "total_commands": 798,
+    "fixtures_removed": 27
+  },
+  "runs": [
+    {
+      "runtime": "v24.15.0",
+      "receipt_file": "node24-15-identity.json",
+      "receipt_sha256": "c3459bf06f658edd837124cad2447c1305bc6267bd50099dbf9dec7083faaee8",
+      "command_manifest_sha256": "0ac4b2e6d0a00799d26a40c48e0062f7ed3acaeddd719a3eee11e76148d60a90",
+      "cases": [
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "legacy",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            148,
+            140,
+            140,
+            148,
+            226
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "legacy",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            203,
+            192,
+            201,
+            195,
+            220
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "v2",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            204,
+            194,
+            196,
+            197,
+            225
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "v2",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            204,
+            193,
+            196,
+            199,
+            223
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "legacy",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            142,
+            134,
+            134,
+            153,
+            257
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "legacy",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            219,
+            200,
+            187,
+            190,
+            226
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "v2",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            203,
+            199,
+            208,
+            197,
+            269
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "v2",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            204,
+            194,
+            194,
+            197,
+            227
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "default-limit",
+          "kind": "node",
+          "bytes": 8388609,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "default-limit",
+          "kind": "event",
+          "bytes": 1048577,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "history-limit",
+          "commits": 2049,
+          "existing_limit": 2048,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "json",
+          "version": "legacy",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "json",
+          "version": "v2",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 17,
+            "persisted_task_identity_count": 2,
+            "exact_plan_writes": 19,
+            "event_history_preserved": true,
+            "event_history_sha256": null
+          }
+        },
+        {
+          "family": "goal-routing",
+          "backend": "sqlite",
+          "version": "legacy",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "sqlite",
+          "version": "v2",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 17,
+            "persisted_task_identity_count": 2,
+            "exact_plan_writes": 19,
+            "event_history_preserved": true,
+            "event_history_sha256": null
+          }
+        }
+      ],
+      "command_count": 266,
+      "expected_nonzero_exits": [
+        4,
+        2,
+        1
+      ],
+      "signals": [],
+      "fixtures_removed": 9,
+      "large_migration_ms": [
+        255885,
+        252702
+      ],
+      "total_command_ms": 539045,
+      "custody_scope": "HEAD, Git path status, named protected files, harness/tests, installed payload and both package metadata files; not an exhaustive canonical file inventory",
+      "canonical_bookends_matched": true,
+      "matched_installed_files": 222,
+      "runner_sha256": "7e0ec7fa85823ace44d68657f71f7cdc38c257eb614924afb6666ab286a4e902"
+    },
+    {
+      "runtime": "v24.18.0",
+      "receipt_file": "node24-18-identity.json",
+      "receipt_sha256": "ed5f2ecaaea9af59bc4425ad88f914c671b185c26dd07cb8706ae65682b52828",
+      "command_manifest_sha256": "f299a97071c8ae677fc9487184e9f6ff15cbb6861719cf22e017da83c148683e",
+      "cases": [
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "legacy",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            181,
+            174,
+            171,
+            177,
+            263
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "legacy",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            333,
+            282,
+            254,
+            249,
+            376
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "v2",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            233,
+            225,
+            223,
+            232,
+            260
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "v2",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            240,
+            227,
+            225,
+            228,
+            253
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "legacy",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            172,
+            159,
+            162,
+            168,
+            289
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "legacy",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            230,
+            215,
+            216,
+            227,
+            278
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "v2",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            232,
+            224,
+            223,
+            227,
+            291
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "v2",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            245,
+            238,
+            225,
+            238,
+            259
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "default-limit",
+          "kind": "node",
+          "bytes": 8388609,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "default-limit",
+          "kind": "event",
+          "bytes": 1048577,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "history-limit",
+          "commits": 2049,
+          "existing_limit": 2048,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "json",
+          "version": "legacy",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "json",
+          "version": "v2",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 17,
+            "persisted_task_identity_count": 2,
+            "exact_plan_writes": 19,
+            "event_history_preserved": true,
+            "event_history_sha256": null
+          }
+        },
+        {
+          "family": "goal-routing",
+          "backend": "sqlite",
+          "version": "legacy",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "sqlite",
+          "version": "v2",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 17,
+            "persisted_task_identity_count": 2,
+            "exact_plan_writes": 19,
+            "event_history_preserved": true,
+            "event_history_sha256": null
+          }
+        }
+      ],
+      "command_count": 266,
+      "expected_nonzero_exits": [
+        4,
+        2,
+        1
+      ],
+      "signals": [],
+      "fixtures_removed": 9,
+      "large_migration_ms": [
+        257519,
+        253562
+      ],
+      "total_command_ms": 548914,
+      "custody_scope": "HEAD, Git path status, named protected files, harness/tests, installed payload and both package metadata files; not an exhaustive canonical file inventory",
+      "canonical_bookends_matched": true,
+      "matched_installed_files": 222,
+      "runner_sha256": "7e0ec7fa85823ace44d68657f71f7cdc38c257eb614924afb6666ab286a4e902"
+    },
+    {
+      "runtime": "v26.0.0",
+      "receipt_file": "node26-identity.json",
+      "receipt_sha256": "17efd992f91480b3aeb1964b29b84921f75c419da7eaa91ff868e5f53706584f",
+      "command_manifest_sha256": "228f9bb682fcc2977a179c702f895cc2d0ed071c0f240e757c4f248b34e61884",
+      "cases": [
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "legacy",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            162,
+            156,
+            155,
+            163,
+            245
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "legacy",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            227,
+            218,
+            222,
+            216,
+            240
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "v2",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            242,
+            224,
+            231,
+            232,
+            259
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "json",
+          "version": "v2",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            237,
+            222,
+            231,
+            235,
+            262
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "legacy",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            209,
+            217,
+            189,
+            168,
+            299
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "legacy",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            248,
+            216,
+            219,
+            228,
+            249
+          ],
+          "observational": true
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "v2",
+          "state": "warm",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            245,
+            227,
+            232,
+            236,
+            315
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "scale",
+          "backend": "sqlite",
+          "version": "v2",
+          "state": "cold",
+          "node_count": 2000,
+          "legacy_authored_bytes": 803563,
+          "event_records": 20000,
+          "event_bytes": 3660000,
+          "command_ms": [
+            251,
+            238,
+            243,
+            248,
+            263
+          ],
+          "observational": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 2010,
+            "persisted_task_identity_count": 2000,
+            "exact_plan_writes": 2012,
+            "event_history_preserved": true,
+            "event_history_sha256": "7b172bdfe80ad48874ee2449b85774634436f52e0468d6729621c4d461eed770"
+          }
+        },
+        {
+          "family": "default-limit",
+          "kind": "node",
+          "bytes": 8388609,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "default-limit",
+          "kind": "event",
+          "bytes": 1048577,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "history-limit",
+          "commits": 2049,
+          "existing_limit": 2048,
+          "failed_closed": true,
+          "observational": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "json",
+          "version": "legacy",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "json",
+          "version": "v2",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 17,
+            "persisted_task_identity_count": 2,
+            "exact_plan_writes": 19,
+            "event_history_preserved": true,
+            "event_history_sha256": null
+          }
+        },
+        {
+          "family": "goal-routing",
+          "backend": "sqlite",
+          "version": "legacy",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true
+        },
+        {
+          "family": "goal-routing",
+          "backend": "sqlite",
+          "version": "v2",
+          "both_gate_orders": true,
+          "reopened_gate_blocks": true,
+          "goal_state_not_acceptance": true,
+          "evaluate_observational": true,
+          "artifact_recheck_required": true,
+          "publication_executed": false,
+          "git_index_preserved": true,
+          "selection_preserved": true,
+          "migration": {
+            "graph_format": 2,
+            "persisted_identity_count": 17,
+            "persisted_task_identity_count": 2,
+            "exact_plan_writes": 19,
+            "event_history_preserved": true,
+            "event_history_sha256": null
+          }
+        }
+      ],
+      "command_count": 266,
+      "expected_nonzero_exits": [
+        4,
+        2,
+        1
+      ],
+      "signals": [],
+      "fixtures_removed": 9,
+      "large_migration_ms": [
+        253242,
+        258383
+      ],
+      "total_command_ms": 550274,
+      "custody_scope": "HEAD, Git path status, named protected files, harness/tests, installed payload and both package metadata files; not an exhaustive canonical file inventory",
+      "canonical_bookends_matched": true,
+      "matched_installed_files": 222,
+      "runner_sha256": "7e0ec7fa85823ace44d68657f71f7cdc38c257eb614924afb6666ab286a4e902"
+    }
+  ],
+  "validation": {
+    "full_suite": {
+      "runtime": "24.18.0",
+      "passed": 1383,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "bad08de8b3c908028ea05ff30480caf3db93f28894448ae583950837f8dd9e34"
+    },
+    "harness_unit": {
+      "per_runtime_passed": 15,
+      "runtimes": [
+        "24.15.0",
+        "24.18.0",
+        "26.0.0"
+      ],
+      "logs": {
+        "node24_15": "d662b0e68d89c2f13c6840a9edbacb9827bb371306f760b8de3050682cdadbfe",
+        "node24_18": "b381f92c06a58ecd558b36a4b2d38cd8ea53ac47cf4c0b3c60963d27ac386230",
+        "node26_with_26_contract_tests": "3b2e605b84fa3eee6bb55194966cca27fec1c605cb926d4028b2d4fca397fbef"
+      }
+    },
+    "cli_check": {
+      "exit": 0,
+      "log_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+    },
+    "docs_check": {
+      "exit": 0,
+      "examples": 494,
+      "log_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+    },
+    "diff_check_exit": 0
+  },
+  "independent_review": {
+    "reviewer": "scale_allowance_review",
+    "mode": "read-only source and receipt review; no test execution",
+    "remaining_bounded_findings": 0,
+    "task_828_clearance": false
+  },
+  "prior_evidence": ".mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json",
+  "limitations": [
+    "Representative 2000-task scale, not universal scale/performance certification",
+    "Above-threshold node/event/history refusals do not claim exhaustive exact-boundary acceptance",
+    "Goal lifecycle is routing and report-only guidance, not artifact verification or publication enforcement",
+    "Intermediate 0.5.2-development package includes incomplete Bug17 work; not a 0.6.0 seal",
+    "These runs precede any remaining product fixes or version metadata changes; affected package inputs must be requalified before final seal"
+  ],
+  "remaining": [
+    "Bug7 old-writer v2 adoption policy and safe killed-writer recovery",
+    "Bug17 legacy public-bundle compatibility decision and final remedy",
+    "historical task309 migration evidence disposition",
+    "complete task826/test477..482 aggregation and independent verification",
+    "draft0.6 metadata, task828 security diff review, full release ladder and exact candidate seal"
+  ],
+  "custody": {
+    "protected_hash_reference": ".mdkg/artifacts/goal-84/bug-34-verification.json preserved_sha256",
+    "selected_goal": "root:goal-73 unchanged",
+    "runtime_leases": "all five released; no new runtime lease acquired",
+    "queue_count": 0,
+    "excluded_dirty": "generated SQLite index plus eight partial Bug17 paths",
+    "diagnostics_root": "/private/tmp/mdkg-full-scale.Xmx0M3/",
+    "cleanup": "27 successful strengthened-run graph fixtures removed; compact receipts, candidate and prior diagnostics retained"
+  },
+  "authority": "Existing Goal83/84 local qualification/evidence and exact-path local commit authority; no remote Git, publication, provider/deployment, canonical migration or bundle/subgraph refresh",
+  "skill_candidates": []
+}
