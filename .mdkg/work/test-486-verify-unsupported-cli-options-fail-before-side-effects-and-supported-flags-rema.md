@@ -10,7 +10,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-39-unknown-option-reproduction.json, .mdkg/artifacts/goal-86/bug-39-local-verification.json]
 relates: []
-blocked_by: [bug-39, task-827]
+blocked_by: [bug-39, task-827, task-839, task-838]
 blocks: []
 refs: [task-828]
 context_refs: [goal-86, dec-96, goal-84]
@@ -19,7 +19,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-09-12
-updated: 2026-09-15
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json]
 relates: []
-blocked_by: [bug-17, bug-35, task-835, task-836, task-827, bug-42, bug-43]
+blocked_by: [bug-17, bug-35, task-835, task-836, task-827, bug-42, bug-43, task-839, task-838]
 blocks: []
 refs: [bug-35]
 context_refs: [goal-83, goal-86, dec-96]
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-480-case-1, test-480-case-2, test-480-case-3, test-480-case-4, test-480-case-5]
 created: 2026-09-07
-updated: 2026-09-15
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

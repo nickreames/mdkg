@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [bug-36, bug-37, task-827, test-478]
+blocked_by: [bug-36, bug-37, task-827, test-478, task-839, task-838]
 blocks: []
 refs: [dec-95, edd-82, task-833, test-478]
 context_refs: [goal-86, dec-96, goal-83, goal-84]
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: []
 created: 2026-09-11
-updated: 2026-09-13
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

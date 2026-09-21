@@ -1,0 +1,768 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-core-local-commit",
+  "recorded_at": "2026-09-18T01:59:14.236Z",
+  "commit": "e42f1d93497119c9a1f8684df926510da91dea42",
+  "parent": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "branch": "main",
+  "scope": "Completed locally verified Goal86 remedies and Task827 draft preparation plus attributable planning/evidence/projections; not release-qualified",
+  "authority": "Explicit Goal86 run, reviewed local-only commit on main",
+  "committed_paths": [
+    {
+      "path": ".mdkg/index/mdkg.sqlite",
+      "sha256": "648a2083b786c49e08535bb5e37bcbfa76bed8e817dae591ef445c855f976bc5"
+    },
+    {
+      "path": ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+      "sha256": "62d6585d91b41c45c90c02f4a67ef2f35a6d5e9d023ddc37e7d5ca93e00d0da5"
+    },
+    {
+      "path": ".mdkg/work/bug-35-keep-observational-git-subprocesses-from-refreshing-root-and-child-indexes.md",
+      "sha256": "08512d06ed50b3d87f10bbe90e5e42e92095521d5b8fcbaefb9a3d993dab9ec8"
+    },
+    {
+      "path": ".mdkg/work/bug-39-reject-unsupported-command-options-before-dispatch-and-unintended-writes.md",
+      "sha256": "736d89a0b02c14a3f3166df2a0b3778510fd457d6e694291a5ce89c5237eb797"
+    },
+    {
+      "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+      "sha256": "b5970da6232fb803455119a783c21c5bd76813b18ccced93c6afe93178b2b109"
+    },
+    {
+      "path": ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md",
+      "sha256": "99603a36a473ebf92727632106079f7a2393149285185d0998629a9f16705413"
+    },
+    {
+      "path": ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md",
+      "sha256": "3c7087d881aa4b62e4cde18d6bdf56b1560f5e6957db4733044fe0f6d0cb4b96"
+    },
+    {
+      "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+      "sha256": "5e958e764e7b810e53afba16be8d4ffb0259e4a6e77acdc1de343ff27e898156"
+    },
+    {
+      "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+      "sha256": "e622a23999cbcd15bc0d712be183feaec4cc1674b3cc52cf879745a3e64c3381"
+    },
+    {
+      "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+      "sha256": "b79d1504db0565df1af72bcc13fd3fc3fcdfeaba6e124ccd802d3cdb66eaab82"
+    },
+    {
+      "path": ".mdkg/work/task-827-prepare-draft-mdkg-0-6-0-metadata-and-release-guidance.md",
+      "sha256": "07fa0e78c9d103dbe512412c149ca23d99adb7a3327adcc04308ba79f91a599a"
+    },
+    {
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "sha256": "163442cc699d13661d0d1512663f421d323d35ae3dbbf68c6d7d506219c7d991"
+    },
+    {
+      "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+      "sha256": "c4614078ab58931518c05c0c5256980c7e199b46847e10dc053414e7f87f801c"
+    },
+    {
+      "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+      "sha256": "759e25c69d02eca322bef9a7d520f51aea523b0dd60cac2cd95c15d91494d4d6"
+    },
+    {
+      "path": ".mdkg/work/task-831-recheck-mdkg-0-6-0-approval-blockers-and-sealed-candidate.md",
+      "sha256": "b4382c7024d350895ae5d50759490561421969aacd9c04f7217f0133b6d3f5b8"
+    },
+    {
+      "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "b79c7b1a245442b5b78a850c0c2e08a7a3d1c6522d111b94e9127fa3c850bcd2"
+    },
+    {
+      "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+      "sha256": "6ffb33dd63dc20530fad686961842539d8b0abea2562e6dc875aa6ec582a8d42"
+    },
+    {
+      "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "b6a390fc3e3322c4ba638772c197b7ecb1da17b713746d6fd7c71019a99e0870"
+    },
+    {
+      "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "5472622e4949999e53845c1c3af35a5a39875349a411cf3ab76fbbc932af46e9"
+    },
+    {
+      "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "f3862bf099c569deff70a1dde055fdf895468f87c9b07b7c2549a3f4c2361dea"
+    },
+    {
+      "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+      "sha256": "5d35a8cda272ea2d2cdf1f0ebbfcf9ef70a35b83deea21a10c9791ed9c2a15e6"
+    },
+    {
+      "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+      "sha256": "641b0d5dd447e14ee575107c0df9307a3a8115d58bc3aec2587d121776145459"
+    },
+    {
+      "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+      "sha256": "d91bdba2a80bb02195443b9638e906c9bb0558dadf0b476bc3fe7fcc44325891"
+    },
+    {
+      "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+      "sha256": "96f8b42a865d7a3af4e79ff8bd7747799816af90dcfad0967d83f9a199a59c68"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "cd4e3872aa67b986b6207995b67a22682fa70bf00a31fefd0409f114e349f026"
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "9a7a89474b6972ab3bdd70c610cb712a5088e4df88cb39ccf0492d083b3a6c25"
+    },
+    {
+      "path": "README.md",
+      "sha256": "eec9f5c2879d0114e71978897061180edefde83101da5be3401d5c35e47c9e98"
+    },
+    {
+      "path": "assets/init/CLI_COMMAND_MATRIX.md",
+      "sha256": "447987b1b28e924e7a44f759885ad4e7ef5ff78a21f7aa1d549b09298f89d22a"
+    },
+    {
+      "path": "assets/init/README.md",
+      "sha256": "2cb4064b12a3c3c89445ddcd56a60e04c8879cb2bbfa3e7930249863461652a9"
+    },
+    {
+      "path": "docs/_generated/cli-reference.md",
+      "sha256": "ca891b8df751dcb59f2eeb2013ece383f2b1c62c517dd36a3ab4067229dc7ad2"
+    },
+    {
+      "path": "docs/_generated/command-contract-summary.json",
+      "sha256": "caaf6abd296893f1b9437e1f18897e35ebec735a10e66e7aceeabad348bd6d87"
+    },
+    {
+      "path": "docs/_generated/release-notes.json",
+      "sha256": "e12775352aadc7e4eb17a93bfcf9efa24fa5ae3901833c24453df75cba5be078"
+    },
+    {
+      "path": "docs/advanced-alpha/git-materialization.md",
+      "sha256": "c5da333d9014194ce9eacde9683ca5bdc6e32f1937309aa9a33ae118bcd68bb7"
+    },
+    {
+      "path": "docs/advanced-alpha/graph-movement.md",
+      "sha256": "4a2ecb851da26d37f2ae35e695f3b097897a53606330b52b353cb64e96c3b061"
+    },
+    {
+      "path": "docs/src/content/docs/advanced-alpha/git-materialization.md",
+      "sha256": "c5da333d9014194ce9eacde9683ca5bdc6e32f1937309aa9a33ae118bcd68bb7"
+    },
+    {
+      "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+      "sha256": "4a2ecb851da26d37f2ae35e695f3b097897a53606330b52b353cb64e96c3b061"
+    },
+    {
+      "path": "docs/start-here/quickstart.md",
+      "sha256": "1535f1fa50c754c13f01ae62880ee149c404f9521a4d96a1eb5133e091e19be9"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "032ee3c8e3d95478f260b74f28e05db6da1550229fca8b97173b42cfad9db57b"
+    },
+    {
+      "path": "package.json",
+      "sha256": "e7ddf8e609bcdf072292d7fa3ca7ba282c8f854974a1f3485bd32e92dd981087"
+    },
+    {
+      "path": "release/0.6.0-qualification-draft.md",
+      "sha256": "c51e9acff60374dd92c2bb2857dc9d3e36d4b5ea4e3fa65680ac3ca5f1ee5ec7"
+    },
+    {
+      "path": "release/public-release.json",
+      "sha256": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91"
+    },
+    {
+      "path": "scripts/generate-command-contract.js",
+      "sha256": "311a336a3413bf9e29bdfa058bbada0dab5a1d2fe4528a8016f05e7c863cd760"
+    },
+    {
+      "path": "scripts/generate-docs-reference.js",
+      "sha256": "cf0017348dae5a515709475a20a82fcde001ca32893a2fde9da4d704c4c028c8"
+    },
+    {
+      "path": "scripts/smoke-bundle.js",
+      "sha256": "f7d00d4c43891e44baae6ffd2a25275f7405eb395dd50173ce77646531c53bb9"
+    },
+    {
+      "path": "scripts/smoke-capabilities.js",
+      "sha256": "c6b639998c98561711a4dfd8d870161b67f4e45533d88cfcc7ebf47fd7baeb1d"
+    },
+    {
+      "path": "scripts/smoke-git-boundary.js",
+      "sha256": "926977686ddc70d2f406ebe65b2e9c15e3e5daab6aaf1eeee64455fec66489dd"
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "e9da60874e50b095f9886b84674fa2a197ecc130fe99380a895e6882080f896d"
+    },
+    {
+      "path": "src/commands/archive.ts",
+      "sha256": "dec76ff849619fd8fc790335b39e60ea265e9144bf3bc9b311f46a08998410c1"
+    },
+    {
+      "path": "src/commands/bundle.ts",
+      "sha256": "fe5774ffd5a4c9e98ad93b673498a85d0b3872ed69786512eeb856bf8a394579"
+    },
+    {
+      "path": "src/commands/event_support.ts",
+      "sha256": "3d2a08d2a5c896e10fae3c3b9a72b053b4eaeeab3a2a8de851f827118da16e81"
+    },
+    {
+      "path": "src/commands/fix.ts",
+      "sha256": "4fafdb27ef0ba16b600a3ac8a9214ded38b5d8fc1302d40586bc55bea7032b0b"
+    },
+    {
+      "path": "src/commands/git.ts",
+      "sha256": "b4ccb98421f0fa592f0563eeb7e4f098a2da020d4bfce51505947261f427ae0a"
+    },
+    {
+      "path": "src/commands/graph.ts",
+      "sha256": "f21105a59135f5578e2787ad47c4884542e448eae2fe188a34acf086de848a05"
+    },
+    {
+      "path": "src/commands/graph_identity.ts",
+      "sha256": "43a4202430a2c26945667212ed35db5f41f53d1b5dc23bdd6ae0aff3f2992349"
+    },
+    {
+      "path": "src/commands/init.ts",
+      "sha256": "361b4271aa29f83f84202af84b3c6c1a431580f875269f964a91408ed5a6db38"
+    },
+    {
+      "path": "src/commands/status.ts",
+      "sha256": "c69142e21f20e6bc13458babd3d54835e881ea1b4c41c1db98e81ce5ee0a6987"
+    },
+    {
+      "path": "src/commands/subgraph.ts",
+      "sha256": "c6dd152119508de1faab1cdbac5247c71d6e2d06cc69a73fe56804eddd35574a"
+    },
+    {
+      "path": "src/commands/upgrade.ts",
+      "sha256": "55d2fddd172cffadd0096fe410873e681f0ef369d3a71f068f19bc79725769ae"
+    },
+    {
+      "path": "src/commands/upgrade_transaction.ts",
+      "sha256": "278b13d3f0f2ae937a10336bc3a5d5f5b74049aacd275a94dc1a37a956823633"
+    },
+    {
+      "path": "src/commands/validate.ts",
+      "sha256": "241935d3e66fa26b73ce6b29233458e96c27f0b998341105cd084988b9122a1a"
+    },
+    {
+      "path": "src/core/config.ts",
+      "sha256": "c593007bd3048f6bf189903bd7633547cee4f95d53c1124ffe13dab26018903a"
+    },
+    {
+      "path": "src/core/filesystem_authority.ts",
+      "sha256": "826cdb2f9e57b5e224bfe1c06ca1ea46820b9642810ae7b2b472f050dcea606e"
+    },
+    {
+      "path": "src/core/migrate.ts",
+      "sha256": "be201346c37372c09a6cf861a50b16ad89ef1bef6c262568f48c7e0f4a9d1718"
+    },
+    {
+      "path": "src/core/project_db_snapshot.ts",
+      "sha256": "850a5285dcf2458ad69a942ad5afd6e1ae426710ec0944cc2a44c030b8db150d"
+    },
+    {
+      "path": "src/graph/archive_file.ts",
+      "sha256": "3c78d9da5bfe9115b709149adc8873d69fab20493479f3843522eed8fe8d894c"
+    },
+    {
+      "path": "src/graph/cache_output.ts",
+      "sha256": "38ce18b936835267a6e300de05063efc8499ce014096d995c74d63c6bd046768"
+    },
+    {
+      "path": "src/graph/capabilities_index_cache.ts",
+      "sha256": "875988984a04cef872bad5ff084310aa03505e77e0a7e386ef066f68317a5706"
+    },
+    {
+      "path": "src/graph/capabilities_indexer.ts",
+      "sha256": "208b20600252a7e2089021f0cafba03d7eac119c9d54ba495857a9995674fabc"
+    },
+    {
+      "path": "src/graph/identity_migration.ts",
+      "sha256": "7c46b9852498c0dafe63204558ff42d28eb882e387fb75703850eeb36b3f6d49"
+    },
+    {
+      "path": "src/graph/identity_transaction.ts",
+      "sha256": "b2cc948626f5cc51c1a29eb0ee627301c75432ebe617683ad10240d417506532"
+    },
+    {
+      "path": "src/graph/identity_transport.ts",
+      "sha256": "223b3025352b16f2b03db90cd0aaafcaadba6a5235b6230d274c39bdfe7bb1d0"
+    },
+    {
+      "path": "src/graph/index_cache.ts",
+      "sha256": "f0414b329fb89435565b761fb9015bf04abe4032303e9543896e919ceada9694"
+    },
+    {
+      "path": "src/graph/indexer.ts",
+      "sha256": "9179209d4597939fd754cd60e6a6d93c2ec06f6ac3fbb46e2cee46dbaa9824a9"
+    },
+    {
+      "path": "src/graph/node.ts",
+      "sha256": "526a39c0f61788b3addfad5ba5a08f40a397b8b037de49664c46cb69daceb75c"
+    },
+    {
+      "path": "src/graph/node_body.ts",
+      "sha256": "f3c26eff4c6e445b0b45d8a29e871070493dea54f6789e9e42376cc1633941fa"
+    },
+    {
+      "path": "src/graph/skills_index_cache.ts",
+      "sha256": "094f3b13ac0a3475b011f7b73a51e40fab54eac0b9bbf7f385f0ee3b5b5a17f9"
+    },
+    {
+      "path": "src/graph/skills_indexer.ts",
+      "sha256": "41d869ae7fa56d136d5de7fcc955e5277f27d91a69fed5f3baa73b897d3f3354"
+    },
+    {
+      "path": "src/graph/sqlite_index.ts",
+      "sha256": "345789d7636bba1ce25f4b7ff373441e036fb8419c890e8504c57f01596c84ab"
+    },
+    {
+      "path": "src/graph/staleness.ts",
+      "sha256": "a2a78a6245a91a27be9c08809f683d84069af3f127905a9e6b4f2722e696788b"
+    },
+    {
+      "path": "src/graph/subgraphs.ts",
+      "sha256": "ded4e4c27570aa1e4f54a61fe57d9ee27986f4c3d2d185f727c78404b7c0b38c"
+    },
+    {
+      "path": "src/graph/workspace_ownership.ts",
+      "sha256": "993b4884ab2e32ebfba8c1ac842d3694ee3696e2af3810450e81bb253932ecdc"
+    },
+    {
+      "path": "src/util/argparse.ts",
+      "sha256": "bb5c8798aa92bbf5acaa996acf5a92e0e21963972a4ac3eb9baf0389a3cb378d"
+    },
+    {
+      "path": "src/util/lock.ts",
+      "sha256": "27887a6984f58d5cb916fd632cb95923b2ca96600b9f06358f126abc9473be76"
+    },
+    {
+      "path": "src/util/zip.ts",
+      "sha256": "90336751cca6772ad665a68634a33fc0543907114322d548323a0bd0eb09fd81"
+    },
+    {
+      "path": "tests/commands/archive_work.test.ts",
+      "sha256": "e90c45010f828d84bee6d58abd14f558452ed9ae0890ab3a569ba724a73354e0"
+    },
+    {
+      "path": "tests/commands/cli_onboarding.test.ts",
+      "sha256": "f527bc05d822dcf75f42e8676876c2b3587d9e5863f40c34d73457cbaddb0928"
+    },
+    {
+      "path": "tests/commands/command_contract.test.ts",
+      "sha256": "4d7c476a8a41bc0e228c8b610c2a291679eb05b6b0479b5afd3cbbecde5381c8"
+    },
+    {
+      "path": "tests/commands/git.test.ts",
+      "sha256": "893d20976b431d3e4f942b359269ece7e7cf5017baa2240d57d6f0bd34ec2b0d"
+    },
+    {
+      "path": "tests/commands/git_inspect.test.ts",
+      "sha256": "8f7d4b307ff16eae6da391d4ae356910bf259e8c3ea2b24fb05992b2be4da48f"
+    },
+    {
+      "path": "tests/commands/graph.test.ts",
+      "sha256": "5292797563c823c9c3a4cadb97f2603cc685c65b4ba055a5312b7effcff13700"
+    },
+    {
+      "path": "tests/commands/read_only_observational.test.ts",
+      "sha256": "184d2e7c4864030b750d2e5ccb63190d24d066bdd89c3df86df31f2cc640b0a0"
+    },
+    {
+      "path": "tests/commands/security_containment.test.ts",
+      "sha256": "4e983b4bd7dde962797741fc7a295ba7886348025cd6a270b1645285189b119e"
+    },
+    {
+      "path": "tests/commands/subgraph.test.ts",
+      "sha256": "a08cd9b63195a641226fb1c59abe004464725a041db90a5ec4544763642a5cc2"
+    },
+    {
+      "path": "tests/commands/upgrade_identity.test.ts",
+      "sha256": "3fc43a99709a3e55cf78fde27739e891582865cd8fcefefb179a2a5a224d4229"
+    },
+    {
+      "path": "tests/commands/validate.test.ts",
+      "sha256": "da36c8f6751e7927f7711e60c6744afcb3ae4e5f2fd6018168091989e1d604cd"
+    },
+    {
+      "path": "tests/core/config.test.ts",
+      "sha256": "10928b27432f989f3c4d548ff095ff1fd14e714507bd04f547666d47886cff83"
+    },
+    {
+      "path": "tests/core/migrate.test.ts",
+      "sha256": "830dbf5b49062111462c743fa6300dcc3dfa8743eaf2b0cb86f86afdd0c4143e"
+    },
+    {
+      "path": "tests/graph/node_body.test.ts",
+      "sha256": "f9ba6d8b4a61fbe23f5772d1be592d0b0ee455ecec128ab5c2cf06bc31b36ba8"
+    },
+    {
+      "path": "tests/graph/subgraph_containment.test.ts",
+      "sha256": "0b24daa918fc66419e6cc2cf84f4ce3e70097d54d55086228df6d9acab5cfbf2"
+    },
+    {
+      "path": "tests/public-release.test.mjs",
+      "sha256": "e3b4b21d49e0aae9ca1ff511a3eb4386ea4ed11abc3fd590ccab7466edc420ff"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-17-progress.json",
+      "sha256": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-closeout-validation.json",
+      "sha256": "58b9151a0a25d90af11bcca5a3be2d8b73206ddaa1e29beb08778fe4abb0ae4e"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-local-verification.json",
+      "sha256": "75ee40e5405dffcd2c7628113a2af58a709df0e91ace2b546c69d61fefce9c2e"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json",
+      "sha256": "571aad4616f9590e87612687b3989b88d088da738b74899488f548c3f5a1b66d"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-transport-intake.json",
+      "sha256": "6185afe504911090363661b5de9b5d07e07ae273b3a945a463482831ab01cdcc"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-transport-progress.json",
+      "sha256": "e8c9b54a2ce29e825b47826cb4da26cea3421fcb9c91a37f1abc255d1a4d8e6e"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-39-local-verification.json",
+      "sha256": "9454a30a324c502e65cf1f95f174013cec267ab2de405d5cd1b4988c5d234c37"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-41-local-verification.json",
+      "sha256": "ecd4db3e338a6163a60744bf92fc2daf4a95cfacd8135c306dcd565c7c3ebc7a"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-42-local-verification.json",
+      "sha256": "a3f582cab32fd103a301e2592cafff45e422eea528d45005439bfecebdb281a9"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-43-local-verification.json",
+      "sha256": "02de1c1960c7c02bea66bbc781a6c66203a6e6db09f5fe7904477c3575019f7c"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/changed-warning-intake.json",
+      "sha256": "c07b8ad46453acc4c706b8ff639c9531ba0049028b7038bbe4b639299797c677"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/execution-baseline-20260915.json",
+      "sha256": "928f06257547a95e3a9993f6aca346915a12209886acd7ee29383b34f00ed60e"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/observational-boundary-reproductions.json",
+      "sha256": "c2d734e611af0f6470bb6f5979d996ffffa36644f1fd7593ce4804004ff04270"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/observational-boundary-verification.json",
+      "sha256": "f1edf0ca0dd1ee119b9f6e3f3002eeb67668f1e1d9f8eb258f2264f148ffd265"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/pause-checkpoint-20260915.json",
+      "sha256": "6179cc823f1adf526148d286cbcf7a8f1be84f9ce2583d332a945a8296cad568"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/planning-receipt.json",
+      "sha256": "01686fd88e5468e6deaa4e99a4be573df41057c377fe0202141cdee8e9d47bbc"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      "sha256": "d213e8f2d112d625712ef4603f5482ed5d7f806467d34dbe9edbb78ddc2098eb"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-827-local-verification.json",
+      "sha256": "05230b1501e76824c8b2e72bfd98ffe0363d3800e9fd43c0bbdccb157969ba25"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-835-local-verification.json",
+      "sha256": "0725d5eb4e57edadf2f87bdf49305e24af5385ccac8c67520edc6a3f0cb708f5"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/task-836-local-verification.json",
+      "sha256": "fb1fb8821cb8c1c883b6a268b71b33bf9dd4dd950be0928674d98c4bd89dae1d"
+    },
+    {
+      "path": ".mdkg/design/dec-96-require-fresh-security-and-macos-linux-launch-qualification-for-mdkg-0-6-0.md",
+      "sha256": "25697326c8a7a28d7937cfcc422d699283908cca65cbffd71d4bde6d413e7e6e"
+    },
+    {
+      "path": ".mdkg/work/bug-40-keep-subgraph-sync-previews-free-of-mutation-locks-and-cache-directory-writes.md",
+      "sha256": "37e9b756405fe4d440346e6aff8346386c5332a0a961cabf1ca9ba9223cfdcf0"
+    },
+    {
+      "path": ".mdkg/work/bug-41-prevent-configured-git-helpers-from-executing-through-generic-graph-observations.md",
+      "sha256": "12d715ca4d93e7b2a5039ea5c7696724914d45aaa1a5c089701fa505eb043b34"
+    },
+    {
+      "path": ".mdkg/work/bug-42-prevent-copied-legacy-json-caches-from-overriding-current-authored-metadata.md",
+      "sha256": "8973cae0199b2e94ac868bd1d2763ffcad77599fde5e90db7392c8a9053d38d5"
+    },
+    {
+      "path": ".mdkg/work/bug-43-preserve-exact-changed-warning-paths-in-nested-git-checkouts-and-literal-filenam.md",
+      "sha256": "2caaf76c156ae30612d7fbc32d8ec71f521e772dc680778c995a9186e0d4f7d6"
+    },
+    {
+      "path": ".mdkg/work/chk-608-record-the-mdkg-0-6-0-launch-qualification-planning-package.md",
+      "sha256": "81dbb20a3ca55efc5d332dbc35b8fe47f067cddf98abb6969152aeee9048caba"
+    },
+    {
+      "path": ".mdkg/work/chk-609-accept-goal-86-execution-custody-and-requirement-coverage.md",
+      "sha256": "d71f72b51214c1986ca27b0a204098f6ce95d6b51c0a96cb3dc6cf72c1a6e8e7"
+    },
+    {
+      "path": ".mdkg/work/chk-610-verify-observational-git-and-subgraph-preview-fixes-and-record-cache-qualificati.md",
+      "sha256": "adc18f9255c126435f050bc777327402b94178846052b182c45e023fe3b1f6f0"
+    },
+    {
+      "path": ".mdkg/work/chk-611-verify-shared-transport-state-exclusion-and-portable-checkpoint-compatibility.md",
+      "sha256": "dbf5ed8a12c68637a3e290876dab68eeb7f8707ff64dc96ad0348aab2443a95d"
+    },
+    {
+      "path": ".mdkg/work/chk-612-verify-early-cli-option-admission-and-installed-compatibility.md",
+      "sha256": "6905808dc6c6a5e291ba8929b17e14ec7833ae82f9af8b4d2636374fedf22a8d"
+    },
+    {
+      "path": ".mdkg/work/chk-613-verify-helper-free-git-observations-and-exact-provenance.md",
+      "sha256": "69b0b94fd41a8e0110d99a80e3f1819edcfad652e32183847a7d18f9b8fd92c8"
+    },
+    {
+      "path": ".mdkg/work/chk-614-verify-content-bound-cache-freshness-and-explicit-archive-recovery.md",
+      "sha256": "edbae757fddf7c03090417267946ceec1a9e5242acba725a512c5fe1e8212bf1"
+    },
+    {
+      "path": ".mdkg/work/chk-615-verify-exact-changed-only-warning-paths-across-native-git-checkouts.md",
+      "sha256": "5a8eb92edd1e8ddec9a33c470a63959024cefaa8ef5205f408c40d7adb9b7517"
+    },
+    {
+      "path": ".mdkg/work/chk-616-pause-goal-86-after-local-remediation-and-writer-admission-diagnosis.md",
+      "sha256": "66f40d7b534a4af2fdd2e4d882bd9298c1137ea958d48d4b7162263d38211016"
+    },
+    {
+      "path": ".mdkg/work/chk-617-verify-explicit-v2-writer-admission-and-reviewed-configuration-fencing.md",
+      "sha256": "2a31bfc62dd19622ef026357b51bdf7cf2365c9546222814bd35417ca6165ae5"
+    },
+    {
+      "path": ".mdkg/work/chk-618-verify-evidence-bound-interrupted-writer-recovery-and-local-runtime-qualificatio.md",
+      "sha256": "638402b1da66564f37fd843eae8ae7269a3f007331c9d989d50b6a2d6b69c207"
+    },
+    {
+      "path": ".mdkg/work/chk-619-verify-draft-0-6-0-metadata-and-release-critical-guidance.md",
+      "sha256": "1e7cb55133bcb282bd2610d6582d02961c3b56a59ff6fd7a5a9c624d47513f33"
+    },
+    {
+      "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      "sha256": "2f6484a5a0024044260983f7e7288c1fd6b9cc948803e478d1bb05d9d9d2e814"
+    },
+    {
+      "path": ".mdkg/work/task-834-freeze-mdkg-0-6-0-launch-custody-and-requirement-coverage.md",
+      "sha256": "9b67858d77741411edcfdddb14dbe6754a7dda53908cc2c1159a5dbc136defda"
+    },
+    {
+      "path": ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md",
+      "sha256": "019df3f0d8a893ce77743d9a39305eac204e2e24c15df23856dd43c16fd1bd2f"
+    },
+    {
+      "path": ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md",
+      "sha256": "3dacc188d10ad563f9f9d581c50cf09e9320f9c1151216d577c06119ebc86aa7"
+    },
+    {
+      "path": ".mdkg/work/task-837-audit-the-post-remediation-mdkg-0-6-0-repository-with-a-fresh-standard-security.md",
+      "sha256": "7059fc4c9769ae8da6e71ee715ddcd02c98d929d7f879a8fc8d7c3a43ebeb4b6"
+    },
+    {
+      "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "sha256": "f6b147ae89180208075b469ea79b44883386b43f55a78ed6c00418ba38c3fdaa"
+    },
+    {
+      "path": "src/commands/option_contract.ts",
+      "sha256": "b9a626acb4b18371f194b28ba0eb8b98af9f5e32bcc57d8047ee143791f468d5"
+    },
+    {
+      "path": "src/graph/json_cache_fingerprint.ts",
+      "sha256": "123cfcde4d5515ae57b3688e73e334351186fc4758c930f09dcd9ec449cccb7e"
+    },
+    {
+      "path": "src/graph/transport_policy.ts",
+      "sha256": "70d2c63deaa0c0e3a28a4d861b7b2f5e6eb4f5a1154eabe9c13bf811a24d67bf"
+    },
+    {
+      "path": "src/graph/transport_state.ts",
+      "sha256": "9ef4e25fb24b02f57267494918ba45fdf54b79e79f29ef468bfe8551654f5420"
+    },
+    {
+      "path": "src/util/git_observation.ts",
+      "sha256": "c365ea1244ffa4e3b634e5c6b9aecf6e7c631ced0aebdef76abf57f7e90df7e3"
+    },
+    {
+      "path": "src/util/lock_evidence.ts",
+      "sha256": "abd040d5e43cdcdcf662cc26ecb16cbc0eed9733608bac317956fc1c818d0fa6"
+    },
+    {
+      "path": "src/util/writer_admission.ts",
+      "sha256": "00abf890a196e756c3aa1e4097204bdd48c3900fed3368cd5c946d82ffc1c4e0"
+    },
+    {
+      "path": "tests/commands/bundle_state.test.ts",
+      "sha256": "c8db1371040259b2c2336acbfa65ea2c68e9d29fdb4f2a646b7ce73665f458cb"
+    },
+    {
+      "path": "tests/commands/changed_warning_paths.test.ts",
+      "sha256": "93d46353f782dbc6d04e46dee55745bb4675bb545a3a1340e5a20389e0675f43"
+    },
+    {
+      "path": "tests/commands/cli_option_admission.test.ts",
+      "sha256": "e7a7e881703aeb062f8a3e2a6d1b7e76a4f4aa49b927499323c4f18dda5a8375"
+    },
+    {
+      "path": "tests/commands/git_child_observation.test.ts",
+      "sha256": "6923b6f8a4373f1317eeadeecdc13c3119f2f65420f845290e125999f059735f"
+    },
+    {
+      "path": "tests/commands/git_helper_observation.test.ts",
+      "sha256": "5f064a4329aff9dc270903d3cefe0683c9cc16da46cac4f6ccb0e3c8da63d16b"
+    },
+    {
+      "path": "tests/commands/git_observation.test.ts",
+      "sha256": "1d114d4c3a777ad2fdefd0d3cdf98c124ae3dd3bc44f9837ee91699ba5c2d4f3"
+    },
+    {
+      "path": "tests/commands/writer_admission.test.ts",
+      "sha256": "5bcd647b218d52ca305319fd5fd58cc60d0b611d671a58a41badf5766b35264b"
+    },
+    {
+      "path": "tests/fixtures/cache-freshness.cjs",
+      "sha256": "31295080805838f8072b6521168eba119600d543cfd4da638ac2c88e260c0bb4"
+    },
+    {
+      "path": "tests/fixtures/changed-warnings.cjs",
+      "sha256": "d8f2711453e2cab0cee63c81569aebd58268c003dad4fff2872f5c36409efc92"
+    },
+    {
+      "path": "tests/fixtures/cli-options.cjs",
+      "sha256": "47fa61377e81a86aeceb97471c3b75daf946b1b32d6b1cd817cae777c524c78e"
+    },
+    {
+      "path": "tests/fixtures/git-child-observation.cjs",
+      "sha256": "389be144bccf93e24aa5169544f67da108331dbbd04fd9fd5a96e045e49f2006"
+    },
+    {
+      "path": "tests/fixtures/git-helper-observation.cjs",
+      "sha256": "543e30034835bfff09342d18b47cdd96a0a494f8cfd38bc16bd2cd8d9dcea6e9"
+    },
+    {
+      "path": "tests/fixtures/git-observation.cjs",
+      "sha256": "92512fb798c09fa7065de3a9568dbdf458689c02d11301b3172adaa69cb5e9db"
+    },
+    {
+      "path": "tests/fixtures/interrupted-writer.cjs",
+      "sha256": "48b24ad457cdfff7f768220fd0e7e3c5d1a3425d310798a29808ca6d58ba1ff9"
+    },
+    {
+      "path": "tests/fixtures/transport-state.cjs",
+      "sha256": "e40f1ccb7efebf0fe08f3814f71db677c3859a6185472ef79d880e511efeef43"
+    },
+    {
+      "path": "tests/fixtures/writer-admission.cjs",
+      "sha256": "171ee3023a35a3e633832f20e2bc306ab0120be253769b225345d2593d869b41"
+    },
+    {
+      "path": "tests/graph/cache_freshness.test.ts",
+      "sha256": "dd4a197c340eb60c7cddd27577fa56e982f57cbbfc4a6da8a8a9c21338746de2"
+    },
+    {
+      "path": "tests/graph/identity_interrupted_writer.test.ts",
+      "sha256": "c00bb172687cec9dcde720fd232c5343add08f61383b81deba57e3e1e3d97748"
+    },
+    {
+      "path": "tests/graph/identity_writer_fence.test.ts",
+      "sha256": "a37fc6911d177817aa4a8fd0dd2c089f813115f153c69e767f5719ca1c3605f9"
+    },
+    {
+      "path": "tests/util/git_prefix.test.ts",
+      "sha256": "4b45d2687aa4281ba9855dad5ab501367494ac1790eb3ac1d1f312acd08e35b8"
+    },
+    {
+      "path": "tests/util/mutation_lock.test.ts",
+      "sha256": "af01777634967ea907646d4843a8191a7094eb5edafdebc8735a7e6389d89582"
+    }
+  ],
+  "review": {
+    "custody": "All171 exact paths and staged blob hashes verified against owned receipts and Task827 inputs",
+    "functional_path_count": 104,
+    "mdkg_path_count": 67,
+    "unknown_or_unrelated_paths": [],
+    "raw_security_reports_or_runtime_payloads": false,
+    "staged_review": {
+      "staged_paths": 171,
+      "all_blob_sha256_match": true,
+      "working_bytes_match": true,
+      "unstaged": "",
+      "untracked": "",
+      "protected": {
+        ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+        ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+        ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      },
+      "index_sha256": "37fb6600e218bae7fd03b486451bcf5bf843bec5d7308c66d90f987d6d40e9d2",
+      "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+      "whitespace": {
+        "full_exit": 2,
+        "full_output": ".mdkg/artifacts/goal-86/execution-baseline-20260915.json:9109: new blank line at EOF.",
+        "all_other_paths_exit": 0,
+        "exception": {
+          "path": ".mdkg/artifacts/goal-86/execution-baseline-20260915.json",
+          "sha256": "928f06257547a95e3a9993f6aca346915a12209886acd7ee29383b34f00ed60e",
+          "reason": "One pre-existing blank-at-EOF in hash-bound current-run baseline receipt. Preserve original bytes and downstream custody hashes; no source/metadata whitespace exception and no security/publication waiver."
+        }
+      }
+    }
+  },
+  "validation": {
+    "full_source_tests": 1628,
+    "focused_tests": 95,
+    "release_contract_tests": 27,
+    "cli_docs_workflow": "pass",
+    "local_docs_smoke": "pass",
+    "graph": {
+      "errors": 0,
+      "warnings": 3,
+      "warning_policy": "preserved stale imports; refresh withheld"
+    },
+    "changed_only": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite": "5fresh projections",
+    "release_readiness": "NOT_READY"
+  },
+  "post_commit": {
+    "clean": true,
+    "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "cached_ahead": 51,
+    "cached_behind": 0,
+    "remote_verified": false,
+    "pushed_refs": [],
+    "protected_bookends": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+    },
+    "git_index_after_commit_sha256": "7154b7a65000efb64ac87dc31d49c8b504a24a3763129f3a7795a7b5f36df4d1",
+    "writer_lock": false,
+    "runtime_lease_acquired": false
+  },
+  "next": [
+    "Freeze exact candidate bytes and source inventory",
+    "Final installed/macOS/Linux qualification",
+    "Fresh Standard and independent remediation diff",
+    "Full ladder and seal; Goal85 remains paused"
+  ],
+  "skill_candidates": []
+}

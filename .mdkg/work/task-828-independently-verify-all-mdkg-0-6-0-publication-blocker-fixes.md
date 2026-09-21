@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-826, task-827, bug-21, bug-22, bug-23, bug-24, bug-25, test-483, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-837, test-487, bug-40, bug-41, bug-42, bug-43]
+blocked_by: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-826, task-827, bug-21, bug-22, bug-23, bug-24, bug-25, test-483, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-837, test-487, bug-40, bug-41, bug-42, bug-43, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-488]
 blocks: []
 refs: [dec-95, edd-82, task-833]
 context_refs: [goal-83, goal-86, dec-96]
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-15
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

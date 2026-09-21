@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486]
+blocked_by: [test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, task-839, task-838]
 blocks: []
 refs: [dec-96, test-482, task-828]
 context_refs: [goal-86, goal-83, goal-84]
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-487-case-1, test-487-case-2, test-487-case-3, test-487-case-4, test-487-case-5, test-487-case-6, test-487-case-7, test-487-case-8, test-487-case-9]
 created: 2026-09-13
-updated: 2026-09-13
+updated: 2026-09-17
 ---
 
 # Overview

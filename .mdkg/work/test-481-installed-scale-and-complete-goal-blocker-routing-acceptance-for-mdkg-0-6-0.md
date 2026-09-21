@@ -9,7 +9,7 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json]
 relates: []
-blocked_by: [task-835, task-836, bug-35, task-827]
+blocked_by: [task-835, task-836, bug-35, task-827, task-839, task-838]
 blocks: []
 refs: [bug-7]
 context_refs: [goal-83, goal-86, dec-96]
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-481-case-1, test-481-case-2, test-481-case-3, test-481-case-4, test-481-case-5]
 created: 2026-09-07
-updated: 2026-09-13
+updated: 2026-09-17
 ---
 
 # Current Successor Contract - 2026-09-13

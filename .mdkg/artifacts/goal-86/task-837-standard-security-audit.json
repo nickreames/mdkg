@@ -1,0 +1,781 @@
+{
+  "schema": "mdkg.goal86.standard-security-intake.v1",
+  "recordedAt": "2026-09-18T03:32:16.549171Z",
+  "owner": "mdkg-project-agent",
+  "goal": "root:goal-86",
+  "task": "root:task-837",
+  "status": "AUDIT_COMPLETE_REMEDIATION_REQUIRED",
+  "releaseReadiness": "NOT_READY",
+  "source": {
+    "branch": "main",
+    "head": "e42f1d93497119c9a1f8684df926510da91dea42",
+    "packageVersion": "0.6.0",
+    "releaseState": "draft/unpublished",
+    "cachedUpstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "ahead": 51,
+    "behind": 0,
+    "remoteVerification": false,
+    "sourceFrozenDuringAudit": true
+  },
+  "scan": {
+    "id": "9d6a2ca2-4273-45de-9013-20452c7651d0",
+    "status": "complete",
+    "mode": "standard",
+    "snapshotDigest": "codex-security-snapshot/v1:sha256:e1e6001378c8063b15bdc5187e5fa973b2c5a40953b5255b5cdb5026be535635",
+    "counts": {
+      "medium": 5,
+      "low": 9,
+      "total": 14
+    },
+    "artifacts": {
+      "markdownReport": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/report.md",
+        "sha256": "de72047114382a3f25dc5619ad7042e296ebfd125272cd2e5b6c03c24e532ba2"
+      },
+      "manifest": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/scan-manifest.json",
+        "sha256": "5781d559f665f41f83a83cd0ca7c80ac210355ee44b4d3ed7c67d7d6aec8a9de"
+      },
+      "findings": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/findings.json",
+        "sha256": "7146007bbcac3b1209f327cd016b9ae519663d97f46d262d40139a8950f2b139"
+      },
+      "coverage": {
+        "path": "/private/var/folders/t8/vllsb80n0j71dvz3z0cjq7_40000gn/T/codex-security-scans-jIfy3X/mdkg/e42f1d93497119c9a1f8684df926510da91dea42_20260918T020033Z_annw13rq/coverage.json",
+        "sha256": "bff459ae39ad0067726a1cb37bea3b2bdfb1a82810a83883da18c68d72adf272"
+      }
+    },
+    "usage": {
+      "cacheWriteInputTokens": 0,
+      "cachedInputTokens": 69599232,
+      "coverage": "complete",
+      "inputTokens": 74403371,
+      "outputTokens": 312776,
+      "reasoningOutputTokens": 99362,
+      "source": "codex_rollout",
+      "threadCount": 8,
+      "totalTokens": 74716147
+    }
+  },
+  "coverage": {
+    "summary": "Offline source-backed Standard audit of the frozen current mdkg repository at e42f1d93497119c9a1f8684df926510da91dea42, with explicit non-executable, historical, generated, third-party and external exclusions.",
+    "context": "Goal 86 / task-837: generic mdkg 0.6.0 local qualification. Preserve selected goal, runtime state and Demo 3 bundle. No publication, remote Git, providers, consumer inspection, source mutation or application execution during review. Broader documentation polish is deferred; release-critical accuracy remains a qualification obligation.",
+    "validationMode": "Static source validation; independent baseline plus focused investigations, parent validation and attacker-to-effect assessment. All 69 canonical source evidence excerpts were compared to current bytes and matched.",
+    "runtimeStatus": "No application, fixture, exploit, native platform or installed-package execution was performed as part of this scan. Runtime/platform qualification remains separate.",
+    "artifactsReviewed": [
+      "140 current src implementation files",
+      "79 current executable scripts",
+      "149 current test files",
+      "Current executable website/demo/example source",
+      "Shipped node/spec/loop/core/skill templates and security-relevant configuration",
+      "Active root and release-critical guidance",
+      "Package/build/release and consumer-extraction exclusion contracts"
+    ],
+    "limitations": [
+      "567 deduplicated files were fully security-audited, intersected with a 4654-path current-scope inventory. The workbench's earlier 4795-file estimate is not a reviewed-file claim.",
+      "Eight explicit coverage exclusions preserve historical data, private artifacts, binary/generated/third-party internals and external systems; their current repository parsers/integration boundaries were reviewed.",
+      "Native ancestor-race, filesystem ACL/ownership, SQLite sidecar effects, installed artifact behavior and macOS/Linux acceptance are not established by static source review.",
+      "Fourteen confirmed findings are publication blockers pending bounded remedies and independent verification; completing this report does not grant release clearance.",
+      "The prior published versions were not checked out or examined; affected-version claims are limited to the frozen 0.6.0 candidate unless separately established."
+    ],
+    "auditedFiles": 567,
+    "currentInventoryPaths": 4654,
+    "workbenchEstimate": 4795,
+    "sourceEvidenceComparisons": {
+      "checked": 69,
+      "mismatches": 0
+    },
+    "explicitExclusions": [
+      {
+        "pattern": "**/node_modules/**; OS/Node/Git/SQLite/Sharp/Astro/artifact-tool internals",
+        "reason": "Third-party/native implementations and advisory services were not audited or executed. Repository integration boundaries, package metadata and relevant fixed calls were reviewed. Native filesystem/ACL/SQLite effects remain platform qualification obligations; no dependency or hosted clearance is claimed."
+      },
+      {
+        "pattern": "**/dist/**; **/dist-test/**; **/.astro/**; ignored build caches",
+        "reason": "Derived compilation and site output are not independent implementation authority. Current source, generators, package allowlists and qualification consumers were reviewed. Candidate-byte installation and generated-output parity belong to later exact-artifact qualification; no generated implementation was substituted for source review."
+      },
+      {
+        "pattern": ".mdkg/artifacts/goal-84/consumer-extraction/source/**",
+        "reason": "Frozen historical copied source, marked runnable:false and independently excluded from npm/build inputs. Manifest/context/handoff, exporter and actual package/build exclusion were reviewed; copied removed implementations are not scanned again as current shipping code."
+      },
+      {
+        "pattern": ".mdkg/work/**; .mdkg/design/**; .mdkg/artifacts/** (except explicitly reviewed evidence/provenance); .mdkg/handoffs/**; .mdkg/git/**",
+        "reason": "Authored project-memory and historical receipt datasets are non-executable input, not current runtime implementation. Their parsers, containment, visibility and serialization boundaries were audited. This is not a forensic review or authentication of every historical claim, nor a blanket secret scan of stored private data."
+      },
+      {
+        "pattern": "examples/**/.mdkg/**; presentations/**/.mdkg/**; .agents/skills/**; .claude/skills/**; historical core/skill copies",
+        "reason": "Historical project graphs and adapter copies are data/projections. Canonical shipped core/skill/template content and projection code were reviewed; historical copies were not interpreted as current authority or executed. Relevant executable example/demo source was reviewed."
+      },
+      {
+        "pattern": "**/*.sqlite*; **/*.zip; presentations/**/artifacts/**/fallback/**; presentations/**/deck/rendered/**; binary media/QR/rendered layout assets",
+        "reason": "Preserved runtime state, historical bundles and generated presentation/site media were not executed, rebuilt or unpacked as application payloads. Current transport/archive parsers and generators were audited; protected bundle/runtime hashes were preserved. Historical provider/deployment proof is not refreshed by this scan."
+      },
+      {
+        "pattern": "tests/fixtures/**/*.md; tests/snapshots/**; docs/_generated/**; archival planning/feedback/polish Markdown",
+        "reason": "Synthetic fixture documents and generated/historical prose are data, not an additional executable implementation. All current test code, fixture scripts, generators and security-relevant active guidance were reviewed. Broad documentation polish and verification of every historical prose claim are outside this security pass."
+      },
+      {
+        "pattern": "remote repositories, registry/advisory services, providers, deployments, consumers and Git history",
+        "reason": "Offline current-checkout scope only. No fetch, push, publication, provider call, consumer inspection or historical source checkout was performed."
+      }
+    ],
+    "unvalidatedCandidates": 0,
+    "applicationExecution": false,
+    "platformQualification": false
+  },
+  "findings": [
+    {
+      "candidateId": "g86-baseline-001",
+      "findingId": "csf_a7cd9c9abb7cc26c07fa8af8",
+      "occurrenceId": "occ_1d67bd722cf1f727b0ab23c0",
+      "qid": "root:bug-44",
+      "path": ".mdkg/work/bug-44-public-bundle-export-can-disclose-credentials-embedded-in-the-origin-url.md",
+      "severity": "medium",
+      "title": "Public bundle export can disclose credentials embedded in the origin URL",
+      "summary": "Creating and sharing a public bundle copies an origin URL's authentication-bearing userinfo, query or fragment into manifest provenance and summary output. Public graph filtering does not redact that field.",
+      "sourceAnchors": [
+        {
+          "path": "src/commands/bundle.ts",
+          "line": 328
+        },
+        {
+          "path": "src/commands/bundle.ts",
+          "line": 880
+        },
+        {
+          "path": "src/commands/bundle.ts",
+          "line": 998
+        },
+        {
+          "path": "src/commands/git.ts",
+          "line": 48
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-baseline-002",
+      "findingId": "csf_9bc91efe6f4cf5b08969d2d0",
+      "occurrenceId": "occ_5dca12132344b3edeaa98765",
+      "qid": "root:bug-45",
+      "path": ".mdkg/work/bug-45-restoring-a-historical-format-bundle-can-install-active-git-metadata.md",
+      "severity": "medium",
+      "title": "Restoring a historical-format bundle can install active Git metadata",
+      "summary": "Graph clone/fork and subgraph materialization accept policy-less bundles with owning configuration and write arbitrary non-excluded manifest entries. An attacker can install .git metadata in the new destination, enabling later native Git operations to consume attacker-selected configuration.",
+      "sourceAnchors": [
+        {
+          "path": "src/commands/bundle.ts",
+          "line": 150
+        },
+        {
+          "path": "src/commands/bundle.ts",
+          "line": 264
+        },
+        {
+          "path": "src/graph/transport_policy.ts",
+          "line": 110
+        },
+        {
+          "path": "src/graph/transport_policy.ts",
+          "line": 150
+        },
+        {
+          "path": "src/graph/identity_transport.ts",
+          "line": 16
+        },
+        {
+          "path": "src/graph/transport_state.ts",
+          "line": 167
+        },
+        {
+          "path": "src/commands/graph.ts",
+          "line": 511
+        },
+        {
+          "path": "src/commands/subgraph.ts",
+          "line": 1207
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-baseline-003",
+      "findingId": "csf_48d9efa093b16a2a750f1412",
+      "occurrenceId": "occ_7b2207ba9374ed254250c621",
+      "qid": "root:bug-46",
+      "path": ".mdkg/work/bug-46-updating-a-private-graph-file-can-widen-its-filesystem-permissions.md",
+      "severity": "low",
+      "title": "Updating a private graph file can widen its filesystem permissions",
+      "summary": "A routine task update replaces an existing file with a fresh inode using0666 subject to umask. An owner-only0600 file can become0644; existing ACL or ownership restrictions are not preserved by either atomic writer.",
+      "sourceAnchors": [
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 208
+        },
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 471
+        },
+        {
+          "path": "src/util/atomic.ts",
+          "line": 25
+        },
+        {
+          "path": "src/commands/task.ts",
+          "line": 292
+        },
+        {
+          "path": "src/commands/pack.ts",
+          "line": 331
+        },
+        {
+          "path": "src/commands/skill_mirror.ts",
+          "line": 193
+        },
+        {
+          "path": "src/commands/goal.ts",
+          "line": 126
+        },
+        {
+          "path": "src/commands/goal.ts",
+          "line": 543
+        },
+        {
+          "path": "src/commands/format.ts",
+          "line": 609
+        },
+        {
+          "path": "src/graph/selected_goal.ts",
+          "line": 35
+        },
+        {
+          "path": "src/graph/cache_output.ts",
+          "line": 18
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-baseline-004",
+      "findingId": "csf_8963bde432ac4ceae4e62aeb",
+      "occurrenceId": "occ_0acc75c705f0b9444c110599",
+      "qid": "root:bug-47",
+      "path": ".mdkg/work/bug-47-a-concurrent-directory-swap-can-redirect-contained-graph-operations.md",
+      "severity": "medium",
+      "title": "A concurrent directory swap can redirect contained graph operations",
+      "summary": "The shared containment helper checks ancestors, then passes a pathname to later opens, renames and deletes. A narrower-rights local actor who can replace an ancestor can redirect an authorized operation outside the graph; skill mirroring supplies a concrete read-to-copy disclosure path.",
+      "sourceAnchors": [
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 137
+        },
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 222
+        },
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 362
+        },
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 436
+        },
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 502
+        },
+        {
+          "path": "src/commands/skill_mirror.ts",
+          "line": 123
+        },
+        {
+          "path": "src/commands/skill_mirror.ts",
+          "line": 189
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-baseline-005",
+      "findingId": "csf_9049020c658eab213883fc30",
+      "occurrenceId": "occ_ed3a3ff28388c3306a9e83b7",
+      "qid": "root:bug-48",
+      "path": ".mdkg/work/bug-48-inspecting-repository-config-or-bundle-sources-can-block-on-special-files.md",
+      "severity": "low",
+      "title": "Inspecting repository config or bundle sources can block on special files",
+      "summary": "Configuration loading and bundle freshness verification follow repository symlinks and perform unbounded whole-file reads before adequate type/size admission. A device or FIFO target can exhaust memory or block local CLI/MCP inspection.",
+      "sourceAnchors": [
+        {
+          "path": "src/core/config.ts",
+          "line": 1171
+        },
+        {
+          "path": "src/commands/mcp.ts",
+          "line": 258
+        },
+        {
+          "path": "src/commands/bundle.ts",
+          "line": 961
+        },
+        {
+          "path": "src/core/filesystem_authority.ts",
+          "line": 362
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-bootstrap-003",
+      "findingId": "csf_7e91ec5252718ecb377c372b",
+      "occurrenceId": "occ_1c96ca1f719c1109b3c69f2f",
+      "qid": "root:bug-49",
+      "path": ".mdkg/work/bug-49-creating-a-skill-can-copy-an-external-file-through-a-linked-registry.md",
+      "severity": "medium",
+      "title": "Creating a skill can copy an external file through a linked registry",
+      "summary": "An untrusted checkout can make registry.md a symlink to an operator-readable file. Ordinary skill creation follows the link, preserves the external text, then replaces the link with a repository-local copy.",
+      "sourceAnchors": [
+        {
+          "path": "src/commands/skill_support.ts",
+          "line": 129
+        },
+        {
+          "path": "src/commands/skill.ts",
+          "line": 270
+        },
+        {
+          "path": "src/util/atomic.ts",
+          "line": 25
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-dbwork-002",
+      "findingId": "csf_30e5de7de22747563b8886c1",
+      "occurrenceId": "occ_8c6ca76a60613eeb9421e9c2",
+      "qid": "root:bug-50",
+      "path": ".mdkg/work/bug-50-snapshot-verification-reports-directories-as-valid-checkpoints.md",
+      "severity": "low",
+      "title": "Snapshot verification reports directories as valid checkpoints",
+      "summary": "A malformed repository checkpoint can bypass all substantive verification and receive a successful machine-readable validity receipt, despite containing no usable SQLite snapshot or manifest. This is a checkpoint-validation bypass, not external execution or attestation forgery.",
+      "sourceAnchors": [
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 435
+        },
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 454
+        },
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 581
+        },
+        {
+          "path": "src/commands/db.ts",
+          "line": 898
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-dbwork-003",
+      "findingId": "csf_1cd899be6d90b5e223739d4e",
+      "occurrenceId": "occ_abd453922b02e9c724cff2a1",
+      "qid": "root:bug-51",
+      "path": ".mdkg/work/bug-51-snapshot-inspection-can-disclose-hashes-of-files-outside-the-repository.md",
+      "severity": "low",
+      "title": "Snapshot inspection can disclose hashes of files outside the repository",
+      "summary": "A malicious checkout can cause snapshot verification to read an arbitrary operator-readable external file and disclose its SHA-256 and size in the verification receipt. This does not require the external file to be a valid SQLite database. Whole-file hashing also allocates memory proportional to the external target. No remote access or native SQLite write effect is asserted.",
+      "sourceAnchors": [
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 435
+        },
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 481
+        },
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 167
+        },
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 366
+        },
+        {
+          "path": "src/core/project_db_snapshot.ts",
+          "line": 403
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-bootstrap-004",
+      "findingId": "csf_6331325f9554908eb4d60052",
+      "occurrenceId": "occ_0fe513a1e612cb471a417880",
+      "qid": "root:bug-52",
+      "path": ".mdkg/work/bug-52-recovery-journal-operations-are-not-bound-to-the-approved-upgrade-plan-hash.md",
+      "severity": "low",
+      "title": "Recovery journal operations are not bound to the approved upgrade plan hash",
+      "summary": "Resuming or recovering an upgrade compares the user-approved plan hash to a mutable journal string but does not bind the journal's operations to that hash. A replaced journal can add ordinary-file writes while retaining the approved hash.",
+      "sourceAnchors": [
+        {
+          "path": "src/commands/upgrade_transaction.ts",
+          "line": 164
+        },
+        {
+          "path": "src/commands/upgrade_transaction.ts",
+          "line": 188
+        },
+        {
+          "path": "src/commands/upgrade_transaction.ts",
+          "line": 60
+        },
+        {
+          "path": "src/commands/upgrade_transaction.ts",
+          "line": 206
+        },
+        {
+          "path": "src/commands/upgrade_transaction.ts",
+          "line": 229
+        },
+        {
+          "path": "src/commands/upgrade.ts",
+          "line": 698
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-bootstrap-002",
+      "findingId": "csf_7ed98b188737b793274a04df",
+      "occurrenceId": "occ_a4d0b2c07382ade22e9c83d0",
+      "qid": "root:bug-53",
+      "path": ".mdkg/work/bug-53-init-rewrites-hard-linked-manifest-peers-outside-the-selected-repository.md",
+      "severity": "low",
+      "title": "Init rewrites hard-linked manifest peers outside the selected repository",
+      "summary": "Running init, including without --force, can overwrite another repository's hard-linked init manifest with the selected repository's generated ownership metadata. This can corrupt the external repository's upgrade provenance. The finding does not require a race, but ordinary Git cloning does not preserve the required hard link.",
+      "sourceAnchors": [
+        {
+          "path": "src/commands/init.ts",
+          "line": 533
+        },
+        {
+          "path": "src/commands/init.ts",
+          "line": 660
+        },
+        {
+          "path": "src/commands/init_manifest.ts",
+          "line": 168
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-identity-001",
+      "findingId": "csf_94ff6765f69555f364765d5d",
+      "occurrenceId": "occ_532ef951275700bbff0e3f6a",
+      "qid": "root:bug-54",
+      "path": ".mdkg/work/bug-54-large-numeric-aliases-can-hang-repair-or-corrupt-newly-authored-graph-nodes.md",
+      "severity": "low",
+      "title": "Large numeric aliases can hang repair or corrupt newly authored graph nodes",
+      "summary": "Graph documents can supply decimal IDs that parse correctly but exceed JavaScript's precise integer range. Legacy repair can then loop indefinitely; ordinary creation, checkpoint creation and loop forks can instead author duplicate or invalid aliases, disrupting subsequent graph operations.",
+      "sourceAnchors": [
+        {
+          "path": "src/util/id.ts",
+          "line": 1
+        },
+        {
+          "path": "src/commands/fix.ts",
+          "line": 784
+        },
+        {
+          "path": "src/commands/fix.ts",
+          "line": 1132
+        },
+        {
+          "path": "src/commands/fix.ts",
+          "line": 1278
+        },
+        {
+          "path": "src/commands/fix.ts",
+          "line": 1585
+        },
+        {
+          "path": "src/commands/checkpoint.ts",
+          "line": 89
+        },
+        {
+          "path": "src/commands/checkpoint.ts",
+          "line": 330
+        },
+        {
+          "path": "src/commands/new.ts",
+          "line": 234
+        },
+        {
+          "path": "src/commands/new.ts",
+          "line": 567
+        },
+        {
+          "path": "src/commands/loop.ts",
+          "line": 318
+        },
+        {
+          "path": "src/commands/loop.ts",
+          "line": 1100
+        },
+        {
+          "path": "src/graph/identity_authoring.ts",
+          "line": 54
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-graph-001",
+      "findingId": "csf_45da3724a50295900dff4918",
+      "occurrenceId": "occ_fe13069da9d0805a8ac873ee",
+      "qid": "root:bug-55",
+      "path": ".mdkg/work/bug-55-creating-a-loop-can-read-an-external-file-through-a-linked-seed-template.md",
+      "severity": "low",
+      "title": "Creating a loop can read an external file through a linked seed template",
+      "summary": "`new loop` automatically reads every matching loop seed after creating the node. A repository-supplied symlink can make this optional discovery read an external Markdown file and expose its title, or block on a special device, leaving the creation without its normal receipt.",
+      "sourceAnchors": [
+        {
+          "path": "src/commands/new.ts",
+          "line": 104
+        },
+        {
+          "path": "src/commands/new.ts",
+          "line": 113
+        },
+        {
+          "path": "src/commands/new.ts",
+          "line": 570
+        },
+        {
+          "path": "src/commands/new.ts",
+          "line": 613
+        },
+        {
+          "path": "assets/init/config.json",
+          "line": 70
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-graph-003",
+      "findingId": "csf_38c9be329344001b90177e7a",
+      "occurrenceId": "occ_91d3c68da71c8689bc54afb9",
+      "qid": "root:bug-56",
+      "path": ".mdkg/work/bug-56-loop-inspection-can-exhaust-memory-by-reading-seeds-without-template-limits.md",
+      "severity": "low",
+      "title": "Loop inspection can exhaust memory by reading seeds without template limits",
+      "summary": "Loop list, seed show, fork and provenance lookup read regular seed bodies without the configured file, aggregate or catalog limits. A supplied large seed or many seeds can stall or terminate local inspection or authoring despite the normal template safety envelope.",
+      "sourceAnchors": [
+        {
+          "path": "src/commands/loop.ts",
+          "line": 423
+        },
+        {
+          "path": "src/commands/loop.ts",
+          "line": 477
+        },
+        {
+          "path": "src/commands/loop.ts",
+          "line": 519
+        },
+        {
+          "path": "src/commands/loop.ts",
+          "line": 1839
+        },
+        {
+          "path": "src/commands/loop.ts",
+          "line": 1912
+        },
+        {
+          "path": "src/commands/new.ts",
+          "line": 99
+        },
+        {
+          "path": "src/graph/frontmatter.ts",
+          "line": 190
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    },
+    {
+      "candidateId": "g86-export-001",
+      "findingId": "csf_657c280c44623af35be5b269",
+      "occurrenceId": "occ_7c20958728378323988212fc",
+      "qid": "root:bug-57",
+      "path": ".mdkg/work/bug-57-compressing-an-archive-can-copy-or-overwrite-another-workspace-s-files.md",
+      "severity": "medium",
+      "title": "Compressing an archive can copy or overwrite another workspace's files",
+      "summary": "Archive compression authorizes the sidecar owner but trusts its relative payload paths within the entire repository. A root-owned sidecar can point into a nested private or disabled workspace, copy its raw data into a parent archive, or replace its graph documents with ZIP bytes without force.",
+      "sourceAnchors": [
+        {
+          "path": "src/graph/archive_file.ts",
+          "line": 90
+        },
+        {
+          "path": "src/commands/archive.ts",
+          "line": 274
+        },
+        {
+          "path": "src/commands/archive.ts",
+          "line": 646
+        },
+        {
+          "path": "src/commands/archive.ts",
+          "line": 748
+        },
+        {
+          "path": "src/commands/archive.ts",
+          "line": 815
+        },
+        {
+          "path": "src/graph/workspace_ownership.ts",
+          "line": 41
+        }
+      ],
+      "affectedVersion": "Confirmed current draft0.6.0 at the frozen source SHA; earlier published versions unassessed",
+      "disposition": "open_publication_blocker",
+      "regressionOwner": "root:test-488",
+      "independentVerification": "root:task-828"
+    }
+  ],
+  "adjacentWork": [
+    {
+      "qid": "root:bug-58",
+      "path": ".mdkg/work/bug-58-keep-malformed-mcp-requests-from-terminating-the-local-serving-session.md",
+      "title": "Keep malformed MCP requests from terminating the local serving session",
+      "classification": "nonsecurity_correctness_or_contract",
+      "disposition": "planned"
+    },
+    {
+      "qid": "root:bug-59",
+      "path": ".mdkg/work/bug-59-refuse-native-git-metadata-as-a-skill-mirror-destination-even-with-force.md",
+      "title": "Refuse native Git metadata as a skill mirror destination even with force",
+      "classification": "nonsecurity_correctness_or_contract",
+      "disposition": "planned"
+    },
+    {
+      "qid": "root:bug-60",
+      "path": ".mdkg/work/bug-60-enforce-read-only-sqlite-opens-for-observational-verification.md",
+      "title": "Enforce read-only SQLite opens for observational verification",
+      "classification": "nonsecurity_correctness_or_contract",
+      "disposition": "planned"
+    },
+    {
+      "qid": "root:task-838",
+      "path": ".mdkg/work/task-838-bind-release-fixtures-to-isolated-git-state-owned-cleanup-and-immutable-candidat.md",
+      "title": "Bind release fixtures to isolated Git state owned cleanup and immutable candidate bytes",
+      "classification": "qualification",
+      "disposition": "planned"
+    },
+    {
+      "qid": "root:task-839",
+      "path": ".mdkg/work/task-839-correct-final-release-critical-guidance-against-verified-generic-cli-behavior.md",
+      "title": "Correct final release-critical guidance against verified generic CLI behavior",
+      "classification": "qualification",
+      "disposition": "planned"
+    },
+    {
+      "qid": "root:test-488",
+      "path": ".mdkg/work/test-488-verify-fresh-standard-security-remedies-and-adjacent-qualification-corrections.md",
+      "title": "Verify fresh Standard security remedies and adjacent qualification corrections",
+      "classification": "acceptance",
+      "disposition": "planned"
+    }
+  ],
+  "protected": {
+    "selectedGoalSha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtimeDbSha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3BundleSha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "gitIndexSha256": "7154b7a65000efb64ac87dc31d49c8b504a24a3763129f3a7795a7b5f36df4d1",
+    "activeRuntimeLeases": 0,
+    "releasedHistoricalLeases": 5,
+    "queueRows": 0,
+    "queueMessageRows": 0,
+    "writeLock": false
+  },
+  "candidate": {
+    "sha256": "6957f9187062cc6c78b0c16e95f4bd623c19ef07e36ee411fdb9553c5478c5b5",
+    "qualified": false,
+    "sealed": false,
+    "replaceAfterPackageInputChanges": true
+  },
+  "decisions": {
+    "broaderDocumentationPolish": "deferred to later goal set",
+    "releaseCriticalAccuracy": "required here",
+    "unreleasedV2ConsumerAdoption": "unknown; public alpha; no consumer inspection",
+    "linuxPlatforms": [
+      "x86_64",
+      "ARM64"
+    ],
+    "publicationGoal": "root:goal-85 remains paused"
+  },
+  "authority": {
+    "used": "Goal86 run: read-only frozen audit and scoped mdkg blocker intake",
+    "remoteGit": false,
+    "publish": false,
+    "provider": false,
+    "canonicalMigration": false,
+    "bundleRefresh": false,
+    "globalConfiguration": false
+  },
+  "skills": {
+    "coverage": [
+      "pursue-mdkg-goal",
+      "verify-close-and-checkpoint",
+      "codex-security:security-scan"
+    ],
+    "candidates": []
+  },
+  "next": "Complete bounded remedies, final installed/platform qualification, independent diff review, full ladder and exact new artifact seal. Audit completion is not release clearance."
+}
