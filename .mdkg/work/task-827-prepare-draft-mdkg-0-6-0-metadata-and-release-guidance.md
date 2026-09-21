@@ -2,22 +2,22 @@
 id: task-827
 type: task
 title: Prepare draft mdkg 0.6.0 metadata and release guidance
-status: backlog
+status: progress
 priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [release/0.6.0-qualification-draft.md]
 relates: []
 blocked_by: [bug-6]
 blocks: []
-refs: []
+refs: [chk-602]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-11
 ---
 
 # Overview
@@ -45,3 +45,17 @@ Documentation examples, generated-reference parity, command contract, package al
 # Links / Artifacts
 
 Owning goal and dependencies are explicit above. Record exact commands, input/source/artifact hashes and pass/fail before completion.
+
+## 2026-09-11 Independent Draft Guidance Progress
+
+Claimed under Goal83 and started without modifying selected Goal73. The new
+release/0.6.0-qualification-draft.md separates candidate setup, reviewed scaffold
+upgrade, explicit identity adoption, branch reconciliation and Git authority.
+It records proposed compatibility policies as unresolved and identifies final
+qualification/seal requirements. Chk602 binds the bounded documentation proof.
+
+Package/lock metadata and the published0.5.2 manifest remain unchanged: this task
+requires bounded fixes before setting the direct0.6.0 candidate. Complete final
+change notes, accepted policies, generated release references and metadata are
+still pending. Do not interpret the maintainer draft or passing22release-contract
+tests as finished task827 or release readiness.
