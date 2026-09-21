@@ -1,0 +1,284 @@
+{
+  "kind": "goal86-bug44-local-remediation",
+  "version": 1,
+  "created_at": "2026-09-18T04:23:07.057Z",
+  "qid": "root:bug-44",
+  "scan_id": "9d6a2ca2-4273-45de-9013-20452c7651d0",
+  "finding_id": "g86-baseline-001",
+  "outcome": "FIXED_LOCAL_NOT_RELEASE_QUALIFIED",
+  "source_base": "923b367549c9257d154ae41e2e09210a6625bb96",
+  "authority": "Explicit Goal86 run: generic scoped remedy, isolated fixtures, evidence and reviewed local commit only. No remote Git, publication, canonical bundle refresh, providers, consumer or cross-project changes.",
+  "boundary": {
+    "source": "Authentication-bearing automatic Git origin and configured/imported source descriptors",
+    "sinks": [
+      "New public/private bundle provenance and create/show output",
+      "Imported-node provenance and packs",
+      "Subgraph health, audit, plan, sync and JSON/SQLite index projections",
+      "MCP workspace-list output",
+      "Historical bundle materialization"
+    ],
+    "invariant": "Recognizable URL authentication, entire query/fragment suffixes, and opaque Git helper payloads do not cross display/export provenance boundaries.",
+    "strategy": "Shared repository-native display transform; remote.vcs and unknown helper schemes withheld; URL parse/raw-authority mismatch fails closed; unchanged transport config. Historical raw ZIPs remain immutable; redacted show views are flagged and unsafe provenance cannot be materialized.",
+    "exclusions": [
+      "Not general secret scanning of arbitrary host/path/SCP usernames or authored Markdown/configuration",
+      "Private bundles preserve authored configuration, including user-supplied content; they are not secret-scrubbing exports",
+      "Existing secret-bearing ZIP bytes are not erased or rewritten",
+      "No transport-ready claim for redacted descriptors"
+    ]
+  },
+  "reproduction": {
+    "original_source": {
+      "cases": 26,
+      "failed": 18,
+      "legitimate_controls_passed": 8,
+      "source_commit": "923b367549c9257d154ae41e2e09210a6625bb96"
+    },
+    "first_candidate": {
+      "cases": 26,
+      "passed": 26,
+      "accepted": false,
+      "reason": "One independent review identified URL normalization and configured-provenance sink gaps."
+    },
+    "confirmed_review_regression": {
+      "cases": 47,
+      "failed": 20,
+      "passed": 27
+    },
+    "final_source_regression": {
+      "cases": 49,
+      "passed": 49,
+      "failed": 0
+    }
+  },
+  "reviews": {
+    "prepatch": {
+      "agent": "/root/bug44_boundary_review",
+      "mode": "fresh read-only",
+      "result": "Confirmed producer and imported-provenance paths, helper forms and compatibility constraints"
+    },
+    "candidate": {
+      "agent": "/root/bug44_candidate_review",
+      "mode": "one fresh read-only candidate review",
+      "findings": 2,
+      "disposition": "Both hypotheses reproduced before refinement and fixed by the parent with regression coverage. No second candidate-review cycle; final Goal86 Task828 remains pending."
+    }
+  },
+  "affected_versions": {
+    "current_draft": "0.6.0 pre-remediation source confirmed vulnerable",
+    "recorded_published_source": {
+      "version": "0.5.2",
+      "revision": "867ac7099faaa0b8eeed1e167609e0e1e482d519",
+      "path": "src/commands/bundle.ts",
+      "git_blob": "3713f8faa724e7475284f4d68c9e8489646c3a4d",
+      "sha256": "088acc1845282991282f5b66d88837c18ec86318c11577ec3bc600094467aa6e",
+      "evidence": "sourceInfo lines313-334 directly copy remote origin into repo; locally read from exact recorded release source"
+    },
+    "limit": "No fresh registry check or actual installed 0.5.2 execution in this unit. Earlier release ranges and real credential exposure remain unverified."
+  },
+  "validation": {
+    "build": "npm run build and npm run build:test passed",
+    "focused_source": {
+      "command": "node --test dist/tests/util/git_remote.test.js dist/tests/commands/bundle_provenance.test.js dist/tests/commands/git_inspect.test.js dist/tests/commands/bundle.test.js dist/tests/commands/subgraph.test.js dist/tests/commands/graph.test.js dist/tests/commands/mcp.test.js",
+      "passed": 67,
+      "failed": 0,
+      "skipped": 0,
+      "runtime": "Node26.0.0 darwin arm64"
+    },
+    "final_fixture_extension": {
+      "command": "node --test dist/tests/commands/bundle_provenance.test.js",
+      "passed": 1,
+      "scenarios": 49,
+      "failed": 0
+    },
+    "parity": [
+      "cli:check:built passed",
+      "docs:check:built passed:63files/472examples",
+      "ci:workflow:check passed",
+      "git diff --check passed"
+    ],
+    "graph": {
+      "full": {
+        "errors": 0,
+        "warnings": 3,
+        "warning_kind": "Preserved stale imported bundle warnings"
+      },
+      "changed_only": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "sqlite": {
+        "checks": 5,
+        "fresh": 5
+      }
+    },
+    "corrected_harness_issues": [
+      "Initial fixture expected an observational read to persist a cache; corrected to explicit fixture indexing",
+      "Initial test import used source-style TS resolution; corrected to existing compiled-test require convention",
+      "Isolated npm preflight rejected duplicate /dev/null config paths before packing; corrected to distinct owned empty config files"
+    ],
+    "final_ladder": false,
+    "final_security_diff": false,
+    "linux": false,
+    "windows": false
+  },
+  "installed": {
+    "classification": "Intermediate regression artifact, not final candidate seal",
+    "tarball": "/private/tmp/mdkg-goal86-bug44.Uisiyo/qualification-F0aBuX/pack/mdkg-0.6.0.tgz",
+    "sha256": "2b05e737da48fdc80d3f68da642a11e89d2899bebae460dfd283915d6f3a314c",
+    "integrity": "sha512-mFWK5WECHyTz7JudysvAo5AbCwliN9AfgtFewvovi5wxI0D7QdGFg1j9xth8Na97606Mqfg+j8vVUF7ZTQVGKg==",
+    "file_count": 229,
+    "file_manifest_sha256": "35042aa71f8ca83a8981ed4076b31ceae153c4293343f0d1513c87405f223142",
+    "raw_receipt_sha256": "9ddb23948a8308b00b16db09acdfabc7505158714ff683633b1ec39f2ea3eccd",
+    "runtimes": [
+      {
+        "runtime": {
+          "version": "v24.15.0",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+        "cases": 49,
+        "passed": 49,
+        "failed": 0
+      },
+      {
+        "runtime": {
+          "version": "v24.18.0",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+        "cases": 49,
+        "passed": 49,
+        "failed": 0
+      },
+      {
+        "runtime": {
+          "version": "v26.0.0",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+        "cases": 49,
+        "passed": 49,
+        "failed": 0
+      }
+    ],
+    "scenarios": [
+      "userinfo-query-fragment:public",
+      "userinfo-query-fragment:private",
+      "encoded-userinfo:public",
+      "encoded-userinfo:private",
+      "extra-authority-slashes:public",
+      "extra-authority-slashes:private",
+      "four-authority-slashes:public",
+      "four-authority-slashes:private",
+      "explicit-helper:public",
+      "explicit-helper:private",
+      "implicit-helper:public",
+      "implicit-helper:private",
+      "malformed-url:public",
+      "malformed-url:private",
+      "control-bearing:public",
+      "control-bearing:private",
+      "configured-helper:public",
+      "configured-helper:private",
+      "control:https://example.invalid/repo%3Fname%23part",
+      "control:git@example.invalid:org/repo",
+      "control:../local?name#part",
+      "control:C:\\repos\\project",
+      "control:\\\\server\\share\\project",
+      "control:no-origin",
+      "control:no-git",
+      "historical:inspection",
+      "historical:provenance",
+      "historical:materialize-refuses-without-writes",
+      "historical:normalized-authority-refuses-without-rewriting",
+      "control:materialize-safe-bundle",
+      "configured:added",
+      "configured:enabled:list",
+      "configured:enabled:show",
+      "configured:enabled:verify",
+      "configured:enabled:audit",
+      "configured:enabled:upgrade-plan",
+      "configured:enabled:sync",
+      "configured:disabled",
+      "configured:disabled:list",
+      "configured:disabled:show",
+      "configured:disabled:verify",
+      "configured:disabled:audit",
+      "configured:disabled:upgrade-plan",
+      "configured:disabled:sync",
+      "configured:disabled-sync-text",
+      "configured:mcp-observation",
+      "configured:enabled-and-indexed",
+      "subgraph-sync:shared-producer",
+      "configured:sqlite-projection"
+    ],
+    "installed_file_hashes_before_after_match": true,
+    "tarball_before_after_match": true,
+    "source_inputs_before_after_match": true,
+    "prepack_and_postinstall_skipped": true,
+    "npm_offline": true,
+    "separate_empty_npm_configs": true,
+    "superseded_intermediate_sha256": "c91049042b72e7a1b254b0a5dab143673fda80613eb8ceb5ad8ede27b9924b54"
+  },
+  "source_inputs": {
+    "src/util/git_remote.ts": "08b52c3510fc6f17322c1a7db170f858b4765f0a89de7599a484c47e2ff4e931",
+    "src/commands/bundle.ts": "6b4f0be6f25cdb4e30e4c50168f4a3672e4738eb96cbc95eb89696f6f58f6123",
+    "src/commands/git.ts": "dafe61a3e1692da24118f0e28b5b74317d6da025807c5d52289bac06856da5cd",
+    "src/commands/subgraph.ts": "261ef680637a99f38ec88ae04b4eca601ed8870bd71c48924dc73d6400ec66b3",
+    "src/commands/mcp.ts": "00f298e18676a827f51be34ed038a553d5f5cfe66a201f2164ffce37446124e1",
+    "src/graph/subgraphs.ts": "e67fcc77f71713251f782a23b8374d35de8bea1ac4f8d37fc7f338c0b3e43674",
+    "tests/util/git_remote.test.ts": "0308091211b045ef6087d15003553b9e48dcc8ee43a3f9219ce75a8fad1a717c",
+    "tests/commands/bundle_provenance.test.ts": "304adef028a26e29f0587aaa8eccbf3abc5daff3f51ec8d58f2addc0586f56cb",
+    "tests/fixtures/bundle-provenance.cjs": "458e8eceb4c522a95b1bc938743510bc80b63e338d27b5d547bfd8d13df4e79b"
+  },
+  "protected_before_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "fixture_custody": "Synthetic repositories removed by their exact creator-owned cleanup. Compact receipts, regression driver and intermediate tarballs retained locally; no real credentials or recovered Demo3 payloads used.",
+  "git": {
+    "branch": "main",
+    "base": "923b367549c9257d154ae41e2e09210a6625bb96",
+    "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "before_ahead": 52,
+    "before_behind": 0,
+    "remote_verified": false,
+    "commit": "Exact reviewed local commit binds this receipt; no push authority used",
+    "commit_allowlist": [
+      ".mdkg/artifacts/goal-86/bug-44-local-verification.json",
+      ".mdkg/work/bug-44-public-bundle-export-can-disclose-credentials-embedded-in-the-origin-url.md",
+      ".mdkg/work/chk-621-verify-credential-free-bundle-and-imported-provenance.md",
+      ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      "src/commands/bundle.ts",
+      "src/commands/git.ts",
+      "src/commands/mcp.ts",
+      "src/commands/subgraph.ts",
+      "src/graph/subgraphs.ts",
+      "src/util/git_remote.ts",
+      "tests/commands/bundle_provenance.test.ts",
+      "tests/fixtures/bundle-provenance.cjs",
+      "tests/util/git_remote.test.ts"
+    ],
+    "excluded_generated": [
+      ".mdkg/index/mdkg.sqlite"
+    ]
+  },
+  "remaining": [
+    "Bugs45-57 security remediation; Bugs58-60 correctness/qualification",
+    "Tasks838/839, installed families and macOS/Linux gates",
+    "Task828 independent complete-range security review, full ladder, exact final seal",
+    "Goal85 paused; publication requires separate authority"
+  ],
+  "ownership": "Supported Goal86 claim of Bug44; transient command locks released. No runtime DB lease acquired or invented.",
+  "skill_coverage": [
+    "source-grounded-diagnose-and-fix",
+    "codex-security:fix-finding",
+    "build-pack-and-execute-task",
+    "verify-close-and-checkpoint"
+  ],
+  "skill_candidates": []
+}

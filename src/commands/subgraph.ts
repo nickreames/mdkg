@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { observeGit, readGitStatus } from "../util/git_observation";
+import { redactRemoteRef } from "../util/git_remote";
 import { loadConfig, SubgraphConfig, SubgraphSourceConfig, validateConfigSchema } from "../core/config";
 import {
   atomicReplaceContainedFile,
@@ -534,12 +535,13 @@ function auditOneAlias(options: {
         details: { dirty_tracked_paths: gitState.dirtyTrackedPaths },
       });
       if (options.subgraph.source_repo && options.subgraph.source_repo !== gitState.sourceRepo) {
+        const configured = redactRemoteRef(options.subgraph.source_repo);
         pushAuditCheck(receipt, {
           id: "subgraph.source_repo.current",
           ok: false,
           severity: "warning",
-          message: `configured source_repo differs from child repo head: ${options.subgraph.source_repo} -> ${gitState.sourceRepo}`,
-          details: { configured: options.subgraph.source_repo, current: gitState.sourceRepo },
+          message: `configured source_repo differs from child repo head: ${configured} -> ${gitState.sourceRepo}`,
+          details: { configured, current: gitState.sourceRepo },
         });
       }
     } catch (err) {
@@ -712,7 +714,7 @@ function upgradePlanForAlias(options: {
       apply_command: `mdkg subgraph sync ${options.alias} --json`,
       reason: options.health.stale ? "bundle is stale or source HEAD changed" : "configured source_repo is missing or behind current child head",
       current_source_repo: options.audit.source_repo_current,
-      configured_source_repo: options.subgraph.source_repo,
+      configured_source_repo: options.health.source_repo,
     });
   } else {
     actions.push({
@@ -941,7 +943,7 @@ function syncOneAlias(options: {
     enabled: options.subgraph.enabled,
     dry_run: options.dryRun,
     source_path: options.subgraph.source_path,
-    old_source_repo: options.subgraph.source_repo,
+    old_source_repo: options.subgraph.source_repo === undefined ? undefined : redactRemoteRef(options.subgraph.source_repo),
     updated: false,
     skipped: false,
     warnings,
@@ -1211,6 +1213,9 @@ function materializeOneAlias(options: {
     const payloadErrors = bundlePayloadErrors(parsed.entries, parsed.manifest);
     if (payloadErrors.length) throw new ValidationError(`subgraph source integrity failed: ${payloadErrors.join("; ")}`);
     if (parsed.manifest.profile !== source.expected_profile) throw new ValidationError(`subgraph source profile mismatch: expected ${source.expected_profile}, received ${parsed.manifest.profile}`);
+    if (redactRemoteRef(parsed.manifest.source.repo) !== parsed.manifest.source.repo) {
+      throw new ValidationError("bundle provenance contains sensitive or opaque remote data; this bundle is inspect-only until a fresh credential-free export is available");
+    }
     const transportState = bundleTransportState(parsed.entries, parsed.manifest);
     if (!transportState) throw new UsageError("subgraph transport requires an owning config or validated portable-state contract; this bundle is inspect-only until a fresh safe export is available");
     const skippedPaths: string[] = [];
@@ -1240,7 +1245,7 @@ function materializeOneAlias(options: {
       bundle_hash: parsed.manifest.bundle_hash,
       zip_sha256: parsed.zipSha256,
       profile: parsed.manifest.profile,
-      source_repo: options.subgraph.source_repo ?? parsed.manifest.source.repo,
+      source_repo: redactRemoteRef(options.subgraph.source_repo ?? parsed.manifest.source.repo),
       source_git_head: parsed.manifest.source.git_head,
       generated_at: new Date().toISOString(),
       mdkg_version: readPackageVersion(),
