@@ -8,6 +8,7 @@ import { parseFrontmatter } from "./frontmatter";
 import { mapGraphReferenceFields, matchesWorkContractPath } from "./identity_refs";
 import { replaceGraphFrontmatter } from "./identity_migration";
 import { configuredBundleTransportState } from "./transport_state";
+import { assertTransportInventory } from "./transport_paths";
 import {
   assertNodeFormat, canonicalJson, createGraphFormat, GRAPH_FORMAT_PATH,
   identityHash, identityRef, newIdentityUuid, parseGraphFormat, parseIdentityRef, readNodeIdentity,
@@ -19,7 +20,12 @@ export function planTransportIdentity(entries: Map<string, Buffer>, mode: "clone
   const skipped = new Set<string>();
   const transportState = configuredBundleTransportState(entries, profile);
   if (!transportState) throw new UsageError("graph transport requires the owning graph config; a public inspection bundle is not a restorable checkout");
-  for (const file of entries.keys()) if (transportState(file)) skipped.add(file);
+  assertTransportInventory(entries.keys());
+  for (const file of entries.keys()) {
+    if (file === "manifest.json") continue;
+    transportState.assertOwnedPath(file);
+    if (transportState(file)) skipped.add(file);
+  }
   const manifest = entries.get(GRAPH_FORMAT_PATH);
   if (!manifest) return { replacements, additions, skipped, identity: undefined };
   const format = parseGraphFormat(manifest.toString("utf8"));

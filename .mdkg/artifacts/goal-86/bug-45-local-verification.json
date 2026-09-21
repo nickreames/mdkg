@@ -1,0 +1,226 @@
+{
+  "kind": "goal86-bug45-local-remediation",
+  "version": 1,
+  "created_at": "2026-09-18T04:49:44.308Z",
+  "qid": "root:bug-45",
+  "scan_id": "9d6a2ca2-4273-45de-9013-20452c7651d0",
+  "finding_id": "g86-baseline-002",
+  "outcome": "FIXED_LOCAL_NOT_RELEASE_QUALIFIED",
+  "source_base": "d44831b6b7cc7fc2e3c4a879940fb69f72506670",
+  "authority": "Explicit Goal86 run: bounded generic remedy, owned disposable fixtures, sanitized evidence, reviewed explicit-path local commit on main. No remote Git, publication, bundle refresh, providers, consumer or cross-project changes.",
+  "boundary": {
+    "source": "Supplier-controlled bundle entries, selected workspace declarations, owning config and automatic derived-output destinations",
+    "sinks": [
+      "Graph clone and independent fork from ZIP or directory",
+      "Subgraph materialization and clean replacement",
+      "Template preview/apply",
+      "Fresh public/private bundle producer admission"
+    ],
+    "invariant": "No Git administrative path or unrelated root payload is installed. Every payload has a deepest enabled selected graph owner; restored root-config cache outputs have graph ownership. Complete path and classification admission precedes target/tree creation.",
+    "strategy": "Shared exact-path and inventory checks plus configured ownership admission; no normalization into authority. Historical optional row labels may be absent when actual owning config proves ownership; present labels must agree. Preserve private checkpoints, graph assets, custom owned caches and v2 lineage.",
+    "limitations": [
+      "Structural/local ownership, not author trust or attestation",
+      "No claim of active Git execution: all injected fixtures were inert, including generated JSON/SQLite output destinations",
+      "No content execution or general payload sanitization",
+      "Policy-less config-less snapshots remain inspect-only; safe supported historical transport remains available"
+    ]
+  },
+  "reproduction": {
+    "original_source": {
+      "cases": 106,
+      "failed": 72,
+      "passed": 34,
+      "source_commit": "d44831b6b7cc7fc2e3c4a879940fb69f72506670"
+    },
+    "first_candidate": {
+      "cases": 106,
+      "passed": 106,
+      "accepted": false,
+      "reason": "Independent review found configured cache destination writes after import."
+    },
+    "expanded_first_candidate": {
+      "cases": 167,
+      "failed": 57,
+      "passed": 110,
+      "detail": "54 configured-output refusals failed; 3 optional historical-label compatibility controls failed. Parent reproduced before refinement."
+    },
+    "final_regression": {
+      "cases": 167,
+      "passed": 167,
+      "failed": 0
+    }
+  },
+  "reviews": {
+    "prepatch": {
+      "agent": "/root/bug45_boundary_review",
+      "mode": "fresh read-only",
+      "result": "Traced bundle/config ownership through producer and transport consumers, aliases, and supported snapshot controls."
+    },
+    "candidate": {
+      "agent": "/root/bug45_candidate_review",
+      "mode": "one fresh read-only candidate review",
+      "findings": 1,
+      "disposition": "Configured global JSON, capabilities and enabled SQLite destination hypothesis reproduced and fixed. Parent also confirmed and removed unnecessary rejection of omitted optional historical owner labels. No second candidate cycle; final Task828 acceptance remains pending."
+    }
+  },
+  "affected_versions": {
+    "current_draft": "0.6.0 pre-remediation source reproduced",
+    "recorded_release_source": {
+      "version": "0.5.2",
+      "revision": "867ac7099faaa0b8eeed1e167609e0e1e482d519",
+      "files": [
+        {
+          "path": "src/commands/graph.ts",
+          "git_blob": "bb357ca6171fce9d892a18c737098152c6528272",
+          "sha256": "336632045d59ae8bf6c79b583f350fa943ac8accb022bd4229265e01062574a2",
+          "evidence": "writeGraphFiles lines492-510 installs non-generated rows after relative path syntax checks only"
+        },
+        {
+          "path": "src/commands/subgraph.ts",
+          "git_blob": "74e11f37837139a684da6acf33dccdf41e629d68",
+          "sha256": "f07cdcce3acab5ba1d66991450ff5a2b397a999f3c1dadd84ac6557d1f50ef22",
+          "evidence": "materialization lines1202-1219 copies all entries after relative syntax checks"
+        }
+      ]
+    },
+    "limit": "Source assessment only for locally recorded 0.5.2; no fresh registry verification or installed 0.5.2 execution in this unit. Earlier affected ranges and real exposure unknown."
+  },
+  "validation": {
+    "build": "npm run build and npm run build:test passed",
+    "focused_source": {
+      "command": "node --test dist/tests/commands/bundle_admission.test.js dist/tests/commands/bundle_state.test.js dist/tests/commands/bundle_ownership.test.js dist/tests/commands/graph.test.js dist/tests/commands/subgraph.test.js dist/tests/graph/identity_dependencies.test.js dist/tests/graph/identity_reconciliation_plan.test.js",
+      "passed": 154,
+      "failed": 0,
+      "skipped": 0,
+      "runtime": "Node26.0.0 darwin arm64"
+    },
+    "parity": [
+      "cli:check:built passed",
+      "docs:check:built passed:63files/472examples",
+      "ci:workflow:check passed",
+      "git diff --check passed"
+    ],
+    "graph": {
+      "full": {
+        "errors": 0,
+        "warnings": 3,
+        "warning_kind": "Preserved stale imported bundle warnings"
+      },
+      "changed_only": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "sqlite": {
+        "checks": 5,
+        "fresh": 5
+      }
+    },
+    "final_ladder": false,
+    "final_security_diff": false,
+    "linux": false,
+    "windows": false
+  },
+  "installed": {
+    "kind": "bug45-intermediate-installed-verification-not-final-seal",
+    "source_head": "d44831b6b7cc7fc2e3c4a879940fb69f72506670",
+    "source_inputs": {
+      "src/commands/graph.ts": "fdc8d01134adcf91d9d30bd34d33e8302930825306b797e216e4fc2c40a937b1",
+      "src/graph/identity_transport.ts": "0649151ba4a3ad821f4ef48f14112fdc209039f05cc84e26e728258310842837",
+      "src/graph/transport_state.ts": "86914760b2afcf1ec037caf9c97dd7706eef9719fc4e0db802b40511fbfbd795",
+      "src/graph/transport_policy.ts": "9a06ae8655dc675ea5ca836a3f13ed5ab46366fe78f37660044739b87f01e819",
+      "src/graph/transport_paths.ts": "696e8144a8df776f8e6bfa4f012ad26d9f5f622670fb757490cf74d048bfcc25",
+      "tests/commands/bundle_admission.test.ts": "8158a1d2fe8a6dac6f742c7499b78824d6ca1b5dc9a5c83a0fbd9998424dbeea",
+      "tests/fixtures/transport-admission.cjs": "56616478f9887741de24a1f6d0bb4ea8c70ffccb344b8c863ce5decdd95bcf7d"
+    },
+    "prepack_and_postinstall_skipped_for_isolated_regression": true,
+    "tarball": "/private/tmp/mdkg-goal86-bug45.AdXyyt/qualification-UmpXW2/pack/mdkg-0.6.0.tgz",
+    "tarball_sha256": "66b85b00a1337d37adad385b4b9e54d3c346addf5303e7ad1653391181c29321",
+    "integrity": "sha512-aSHqTQx5DcvmvN/Wd9tIYfCKRQhJl7SyKYzUdpb00400GqNAkxnX+mOoQV9t6AHErt9iKjyUMyIVjanXO4I63w==",
+    "results": [
+      {
+        "runtime": "v24.15.0",
+        "runtime_path": "/private/tmp/mdkg-bug7-recovery.YDpsrx/node-24.15.0/node",
+        "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+        "pass": true,
+        "cases": 167,
+        "platform": "darwin-arm64",
+        "cli_sha256": "3a4c5f28d7723b90b8ad89008deac20b21c504811c021269a651c8da5dfd5b48",
+        "final_qualification": false
+      },
+      {
+        "runtime": "v24.18.0",
+        "runtime_path": "/opt/homebrew/Cellar/node@24/24.18.0/bin/node",
+        "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+        "pass": true,
+        "cases": 167,
+        "platform": "darwin-arm64",
+        "cli_sha256": "3a4c5f28d7723b90b8ad89008deac20b21c504811c021269a651c8da5dfd5b48",
+        "final_qualification": false
+      },
+      {
+        "runtime": "v26.0.0",
+        "runtime_path": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+        "pass": true,
+        "cases": 167,
+        "platform": "darwin-arm64",
+        "cli_sha256": "3a4c5f28d7723b90b8ad89008deac20b21c504811c021269a651c8da5dfd5b48",
+        "final_qualification": false
+      }
+    ],
+    "installed_input_hashes_unchanged": true,
+    "source_inputs_unchanged": true,
+    "tarball_unchanged": true,
+    "linux_verified": false,
+    "final_release_qualification": false,
+    "file_manifest_sha256": "7bba3445d0cc65bd9991e177183ae2a5ee1d177c5f26d14141e2aac95b6d77ab",
+    "file_count": 230,
+    "receipt_sha256": "c3f856d6f26062efb96844bfd2f6535dcc409289539a9d4ae5ccbae96d54a045"
+  },
+  "protected_bookends": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "custody": {
+    "branch": "main",
+    "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "before_ahead": 53,
+    "before_behind": 0,
+    "remote_verified": false,
+    "initial_staging": "empty",
+    "unrelated_paths_absorbed": [],
+    "generated_unstaged": [
+      ".mdkg/index/mdkg.sqlite"
+    ],
+    "runtime_leases": {
+      "released": 5,
+      "active": 0
+    },
+    "runtime_queue_rows": 0,
+    "git_and_mutation_locks": 0
+  },
+  "checkpoint": "root:chk-622",
+  "reviewed_local_commit_allowlist": [
+  ".mdkg/artifacts/goal-86/bug-45-local-verification.json",
+  ".mdkg/work/bug-45-restoring-a-historical-format-bundle-can-install-active-git-metadata.md",
+  ".mdkg/work/chk-622-verify-graph-owned-transport-admission-before-import-effects.md",
+  ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+  "src/commands/graph.ts",
+  "src/graph/identity_transport.ts",
+  "src/graph/transport_policy.ts",
+  "src/graph/transport_state.ts",
+  "src/graph/transport_paths.ts",
+  "tests/commands/bundle_admission.test.ts",
+  "tests/fixtures/transport-admission.cjs"
+],
+  "skill_coverage": [
+    "fix-finding",
+    "source-grounded-diagnose-and-fix",
+    "build-pack-and-execute-task",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": [],
+  "next": "Bug46 and remaining Goal86 remedies; independent Task828 review, macOS/Linux final qualification, full ladder and exact final seal still required. Goal85 stays paused."
+}

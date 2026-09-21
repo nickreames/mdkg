@@ -6,6 +6,7 @@ import { migrateConfig } from "../core/migrate";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { workspaceDocumentOwner } from "./workspace_ownership";
 import { UsageError } from "../util/errors";
+import { assertTransportPath } from "./transport_paths";
 
 export type TransportExclusionReason = "checkout-state" | "live-db" | "db-sidecar" | "private-db-payload";
 export type TransportExclusion = { reason: TransportExclusionReason; roots: number };
@@ -77,7 +78,17 @@ export function configuredBundleTransportState(entries: Map<string, Buffer>, pro
   // boundaries when no config is included. Do not let a self-declared private
   // role erase them. Historical config-less bundles get no such admission, and
   // only actual owning config can authorize a nonconventional checkpoint layout.
-  return databases.length || scopedWorkspaces ? transportStateFromLayouts(workspaces, profile, databases) : undefined;
+  const state = databases.length || scopedWorkspaces ? transportStateFromLayouts(workspaces, profile, databases) : undefined;
+  if (state && config) {
+    // A restored root config also supplies the clone/fork cache writers. Entry
+    // admission alone cannot authorize their later writes. Use native resolver
+    // semantics for these paths, not workspace-path backslash reinterpretation.
+    // Child-only inspection snapshots do not restore a root checkout config.
+    for (const file of [config.index.global_index_path, config.index.sqlite_path, config.capabilities.cache_path]) {
+      state.assertOwnedPath(path.posix.normalize(file));
+    }
+  }
+  return state;
 }
 
 // Explicit configured paths and conventional remnants are separate rules. A
@@ -92,6 +103,7 @@ function transportStateFromLayouts(workspaces: Config["workspaces"], profile: "p
   const roots = Object.entries(workspaces).map(([alias, workspace]) => ({
     alias, prefix: workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir),
   }));
+  for (const { prefix } of roots) assertTransportPath(prefix);
   const owner = workspaceDocumentOwner({ workspaces });
   const configPaths = new Set(Object.values(workspaces).map((workspace) => workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "config.json")));
   const unregisteredNested = sources.flatMap(({ basePath, workspaces: declared }) => Object.entries(declared ?? {}).flatMap(([alias, workspace]) => {
@@ -165,7 +177,7 @@ function transportStateFromLayouts(workspaces: Config["workspaces"], profile: "p
     ...roots.map(({ prefix }) => `${prefix}/archive`),
     ...layouts.flatMap((layout) => [layout.runtime, ...sidecars.map((suffix) => `${layout.runtime}${suffix}`)])];
   const classify = (file: string): TransportExclusionReason | undefined => {
-    if (file.includes("\\")) throw new UsageError(`transport path contains a non-portable literal backslash: ${file}`);
+    assertTransportPath(file);
     // Child configuration constrains both export and restore, but never expands
     // the parent's workspace selection. Unknown descendant DB paths cannot be
     // guessed from a graph role or a self-consistent archive hash.
@@ -210,6 +222,20 @@ function transportStateFromLayouts(workspaces: Config["workspaces"], profile: "p
     return undefined;
   };
   return Object.assign(classify, {
+    assertOwnedPath: (file: string, selected?: string[], declaredOwner?: string) => {
+      assertTransportPath(file);
+      for (const { prefix } of roots) {
+        if (within(portableKey(file), portableKey(prefix)) && !within(file, prefix)) {
+          throw new UsageError(`transport path spelling aliases workspace ownership: ${file}; expected ${prefix}`);
+        }
+      }
+      const alias = owner(file);
+      if (!alias || !workspaces[alias].enabled || (selected && !selected.includes(alias)) ||
+        (declaredOwner !== undefined && declaredOwner !== alias) || roots.some(root => root.prefix === file)) {
+        throw new UsageError(`transport payload has no selected, enabled graph ownership: ${file}`);
+      }
+      return alias;
+    },
     isPrivatePayload: (file: string) => portableFiles.includes(file) || privateRoots.some((root) => within(file, root)) ||
       undeclaredLocals(file).some((local) => local[0] === "db" && ["state", "receipts"].includes(local[1])),
     assertFilesystemSpellings: (root: string) => assertPathSpellings(root, policyPaths),

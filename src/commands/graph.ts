@@ -1101,6 +1101,9 @@ function applyImportTemplate(
 
 function runGraphTransport(options: GraphForkCommandOptions, mode: GraphTransportMode): GraphTransportReceipt {
   const source = loadGraphSource(options.root, options.source);
+  if (!bundleTransportState(source.entries, source.manifest)) {
+    throw new UsageError("graph transport requires an owning config or validated portable-state contract; this bundle is inspect-only");
+  }
   const targetRoot = resolveTargetRoot(options.root, options.target);
   assertSourceNotMutatedByTarget(source, targetRoot);
   const warnings: string[] = [];

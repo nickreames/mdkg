@@ -3,6 +3,7 @@ import { Config } from "../core/config";
 import { normalizeContainedWorkspacePath, workspaceDocumentRelativePath } from "../core/workspace_path";
 import { ValidationError } from "../util/errors";
 import { configuredBundleTransportState, graphTransportState } from "./transport_state";
+import { assertTransportInventory, assertTransportPath } from "./transport_paths";
 
 type TransportRole = "graph" | "private-db" | "projection";
 export type PortableTransportPolicy = {
@@ -68,6 +69,8 @@ export function validatePortableTransportPolicy(value: unknown, manifest: Transp
     exactKeys(item, ["alias", "root"]);
     if (typeof item.alias !== "string" || !manifest.selected_workspaces.includes(item.alias) || aliases.has(item.alias)) fail("workspace selection mismatch");
     const root = safePath(item.root);
+    assertTransportPath(root);
+    if (item.alias === "root" && root !== ".mdkg") fail("root workspace must own .mdkg");
     if (roots.has(key(root))) fail("ambiguous workspace root");
     roots.add(key(root)); aliases.add(item.alias);
     return { alias: item.alias, root };
@@ -79,6 +82,7 @@ export function validatePortableTransportPolicy(value: unknown, manifest: Transp
     if (!record(item)) fail("invalid file role");
     exactKeys(item, ["path", "role"]);
     const file = safePath(item.path), row = rows.get(file);
+    assertTransportPath(file);
     if (!row || seen.has(key(file))) fail("duplicate, aliased or unmanifested file");
     seen.add(key(file));
     const role = item.role;
@@ -110,6 +114,7 @@ export function validatePortableTransportPolicy(value: unknown, manifest: Transp
 export function portableTransportPayloadErrors(entries: Map<string, Buffer>, manifest: TransportManifest): string[] {
   if (!manifest.transport_policy) return [];
   try {
+    assertTransportInventory(entries.keys());
     const policy = validatePortableTransportPolicy(manifest.transport_policy, manifest)!;
     const roles = new Map(policy.files.map((file) => [file.path, file.role]));
     const rows = new Map(manifest.files.map((file) => [file.path, file]));
@@ -135,6 +140,8 @@ export function portableTransportPayloadErrors(entries: Map<string, Buffer>, man
     const state = configuredBundleTransportState(entries, manifest.profile, scopedWorkspaces);
     if (state) for (const file of policy.files) {
       if (file.role === "projection") continue;
+      const row = rows.get(file.path)!;
+      state.assertOwnedPath(file.path, manifest.selected_workspaces, row.workspace);
       if (state(file.path) || state.isPrivatePayload(file.path) !== (file.role === "private-db")) fail(`owning configuration contradicts role for ${file.path}`);
     }
     for (const node of Object.values(global.nodes)) check(node, "ws");
@@ -148,7 +155,27 @@ export function portableTransportPayloadErrors(entries: Map<string, Buffer>, man
 // transport. Contracted projections remain in the bundle for inspection, never
 // installed as checkout caches. Cloning still separately requires owning config.
 export function bundleTransportState(entries: Map<string, Buffer>, manifest: TransportManifest) {
-  if (!manifest.transport_policy) return configuredBundleTransportState(entries, manifest.profile);
+  assertTransportInventory(entries.keys());
+  if (!manifest.transport_policy) {
+    const state = configuredBundleTransportState(entries, manifest.profile);
+    if (!state) return undefined;
+    // Historical integrity is not ownership. Projections are a fixed inspection
+    // surface; every other file needs the deepest enabled, selected owner from
+    // the actual configuration, not a self-declared row label.
+    for (const row of manifest.files) {
+      if (row.kind === "generated_index") {
+        if (!projections.includes(row.path) || row.workspace !== undefined) fail("invalid historical projection ownership");
+      } else {
+        // Older manifests made row labels optional. The actual config still
+        // proves ownership; a present label must agree, never grant authority.
+        state.assertOwnedPath(row.path, manifest.selected_workspaces, row.workspace);
+      }
+    }
+    // Exercise every classification before extraction, including paths excluded
+    // from restored state. Never discover ambiguous ownership mid-write.
+    for (const file of entries.keys()) if (file !== "manifest.json") state(file);
+    return state;
+  }
   const errors = portableTransportPayloadErrors(entries, manifest);
   if (errors.length) fail(errors.join("; "));
   const roles = new Map(manifest.transport_policy.files.map((file) => [file.path, file.role]));
