@@ -1,0 +1,82 @@
+import { PackNode, PackResult, PackStats, PackStatsNode } from "./types";
+
+export function countLines(text: string): number {
+  if (text.length === 0) {
+    return 0;
+  }
+  return text.split(/\r?\n/).length;
+}
+
+export function estimateTokensFromChars(chars: number): number {
+  if (chars <= 0) {
+    return 0;
+  }
+  return Math.ceil(chars / 4);
+}
+
+export function renderNodeMetricsText(node: PackNode): string {
+  const links = node.links ?? [];
+  const artifacts = node.artifacts ?? [];
+  const refs = node.refs ?? [];
+  const contextRefs = node.context_refs ?? [];
+  const evidenceRefs = node.evidence_refs ?? [];
+  const aliases = node.aliases ?? [];
+  const lines: string[] = [];
+  lines.push(`qid: ${node.qid}`);
+  if (node.identity) {
+    lines.push(`graph_id: ${node.identity.graph_id}`);
+    lines.push(`node_id: ${node.identity.node_id}`);
+  }
+  if (node.stable_ref) lines.push(`stable_ref: ${node.stable_ref}`);
+  if (node.alias_qid) lines.push(`alias_qid: ${node.alias_qid}`);
+  lines.push(`id: ${node.id}`);
+  lines.push(`workspace: ${node.workspace}`);
+  lines.push(`type: ${node.type}`);
+  lines.push(`title: ${node.title}`);
+  if (node.status) {
+    lines.push(`status: ${node.status}`);
+  }
+  if (node.priority !== undefined) {
+    lines.push(`priority: ${node.priority}`);
+  }
+  lines.push(`path: ${node.path}`);
+  lines.push(`links: ${links.join(",")}`);
+  lines.push(`artifacts: ${artifacts.join(",")}`);
+  lines.push(`refs: ${refs.join(",")}`);
+  lines.push(`context_refs: ${contextRefs.join(",")}`);
+  lines.push(`evidence_refs: ${evidenceRefs.join(",")}`);
+  lines.push(`aliases: ${aliases.join(",")}`);
+  if (node.body.length > 0) {
+    lines.push("");
+    lines.push(node.body);
+  }
+  return lines.join("\n");
+}
+
+export function measureNode(node: PackNode): PackStatsNode {
+  const rendered = renderNodeMetricsText(node);
+  const chars = rendered.length;
+  const lines = countLines(rendered);
+  const bytes = Buffer.byteLength(rendered, "utf8");
+  return {
+    qid: node.qid,
+    chars,
+    lines,
+    bytes,
+    tokens_estimate: estimateTokensFromChars(chars),
+  };
+}
+
+export function measurePack(pack: PackResult): PackStats {
+  const nodes = pack.nodes.map((node) => measureNode(node));
+  const totals = nodes.reduce(
+    (acc, node) => ({
+      chars: acc.chars + node.chars,
+      lines: acc.lines + node.lines,
+      bytes: acc.bytes + node.bytes,
+      tokens_estimate: acc.tokens_estimate + node.tokens_estimate,
+    }),
+    { chars: 0, lines: 0, bytes: 0, tokens_estimate: 0 }
+  );
+  return { nodes, totals };
+}

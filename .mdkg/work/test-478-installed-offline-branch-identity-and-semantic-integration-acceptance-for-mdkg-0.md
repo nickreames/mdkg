@@ -11,17 +11,24 @@ artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
-refs: []
+refs: [dec-94, chk-603, dec-95, test-484]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
 skills: []
-cases: [test-478-case-1, test-478-case-2, test-478-case-3, test-478-case-4, test-478-case-5]
+cases: [test-478-case-1, test-478-case-2, test-478-case-3, test-478-case-4, test-478-case-5, test-478-case-6, test-478-case-7, test-478-case-8, test-478-case-9, test-478-case-10, test-478-case-11, test-478-case-12]
 created: 2026-09-07
 updated: 2026-09-11
 ---
 
 # Overview
+
+Confirmed topology: individual project repositories, not the orchestration
+superproject. Use native Git CLI worktree/branch/merge operations, no mdkg Git
+mutation convenience wrappers. Default integration uses reviewed ancestry-
+preserving merge commits. Test whole source-plus-graph outcomes and pinned refs;
+do not re-ask these decisions or substitute branch-only tests. Test484 separately
+checks removed CLI surfaces; shared tests must not depend on those wrappers.
 
 Qualify installed offline branch identity and semantic integration acceptance for mdkg 0.6.0 using the installed candidate, not source imports.
 
@@ -40,8 +47,39 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
 3. Different identities remap deterministically; same-identity changes use real ancestry.
 4. Lifecycle/evidence conflict, delete/modify, repeated integration and explicit reintroduction.
 5. Cherry-pick/revert and newer ancestry preserve immutable external receipt bytes.
+6. A disposable ordinary Git repository with two actual linked worktrees on
+   distinct branches: .git files, separate HEAD/index paths, one common object
+   store. Resolve paths through Git, not root/.git/index assumptions.
+7. Concurrent installed creation of colliding aliases/cross-links in both v2
+   worktrees: shared graph ID, distinct new node IDs; ordinary commands work
+   before commit. Same-identity concurrent edits remain explicit conflicts.
+8. Locks/journals/selection/runtime DB/caches are local to each checkout.
+   One active writer in A does not globally lock B; a second writer in A is
+   refused. Recovery in A cannot remove B's lock or journal, even under the same
+   graph ID. Never relocate a writer lock to the shared Git common directory.
+9. Inspection preserves every worktree's Git index, staged contents and authored
+   bytes; include stale-stat caches, Bug35 paths, overridden environment and
+   explicit --root invocation. Warm/cold JSON and SQLite backends are covered.
+10. Complete serial integration of branches containing both source and graph
+    changes: preserve accepted source outcomes and stable graph references,
+    retain full reviewable ancestry, and prove repeated integration behavior.
+    Reconcile refuses unresolved Git stages and binds HEAD/index, so establish
+    a tested ordering rather than bypassing those guards or assuming Git merge
+    plus reconciliation composes automatically. No force or history rewrite.
+11. Pin exact incoming/ancestor revisions: a concurrently advancing sibling
+    branch cannot change reviewed inputs silently. Dirty/untracked evidence and
+    incomplete journals prevent cleanup; Git worktree lock is not a writer lease.
+12. Exercise the submodule/gitdir-indirection topology separately from ordinary
+    linked worktrees. No generic worktree pass proves nested submodule support.
+    Preserve failed/unsupported topology evidence and route any required scope
+    decision before claiming the public support envelope.
 
 # Results / Evidence
+
+Cases6-12 are planned and NOT EXECUTED as of chk603. Static review finds good
+product foundations but existing installed helpers hard-code .git/index; no
+actual worktree-add fixture was found in the searched test/script sources.
+Do not relabel ordinary branch tests as concurrent linked-worktree proof.
 
 Cases1-5 have current intermediate installed evidence in chk599 across
 Node24.15.0,24.18.0,26.0.0. Existing natural alias collision/cross-links,

@@ -2,12 +2,12 @@
 id: goal-83
 type: goal
 title: Audit and locally qualify mdkg 0.6.0
-status: blocked
+status: progress
 priority: 1
-goal_state: paused
+goal_state: active
 goal_condition: Complete full audit and installed consumer qualification with all publication blockers independently verified and one exact draft 0.6.0 candidate sealed without publication.
-scope_refs: [task-823, task-824, task-825, task-826, task-827, task-829, task-830, test-477, test-478, test-479, test-480, test-481, test-482]
-active_node: task-827
+scope_refs: [task-823, task-824, task-825, task-826, task-827, task-829, task-830, test-477, test-478, test-479, test-480, test-481, test-482, task-833, test-484]
+active_node: task-833
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -20,7 +20,7 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-84, goal-85]
+context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-84, goal-85, dec-94, dec-95, edd-82]
 evidence_refs: []
 aliases: []
 skills: []
@@ -29,6 +29,15 @@ updated: 2026-09-11
 ---
 
 # Objective
+
+Latest alignment: dec-95 requires complete Git mutation-wrapper and consumer-
+specific capability removal in0.6.0, with no compatibility adapters. Task833
+captures source-bound extraction context before bugs36/37; test484 and task828
+verify. Native Git owns individual-project worktrees and ancestry-preserving
+reviewed merges; task826/test478 prove full source-plus-graph integration.
+Edd82 classifies retained generic contracts versus consumer exports. Performance
+transaction redesign is a later proposal, not an extra release dependency.
+This planning pass preserves paused goal state and does not start implementation.
 
 Complete full audit and installed consumer qualification with all publication blockers independently verified and one exact draft 0.6.0 candidate sealed without publication.
 
@@ -77,6 +86,15 @@ The end condition is supported by exact artifacts and checks, not just report-on
 Unknown dirty ownership, writer collision, baseline movement, global configuration changes, materially new decisions or excluded actions. Publication remains a distinct gate.
 
 # Current State
+
+2026-09-11 alignment: Nick accepted the four recommendations in dec-94.
+The prior unanswered-policy/protected-helper blockers are resolved; none of
+the corresponding fixes is cleared by acceptance alone. Finish existing work
+under the approved local qualification scope, with linked-worktree scenarios
+now explicit in task826/test478. Current request pauses source execution for
+mdkg-node alignment and a worktree review; no canonical branch/worktree change.
+Chk603 records remaining integration/topology questions. Older baseline and
+unanswered-policy narratives below are historical evidence, not current gates.
 
 Planning complete at creation; user-approved local execution may resume after planning validation. Canonical main is 9d7e0d3fdbcfbc3908b7d3983b4957f15d17cb2b, two ahead of cached origin/main; no remote verification. Only pre-existing dirty SQLite projection was accepted before these isolated planning nodes. Selection is achieved Goal 73. Runtime leases released, queues empty; obsolete worktree metadata remains untouched.
 

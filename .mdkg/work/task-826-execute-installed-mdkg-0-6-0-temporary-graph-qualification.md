@@ -11,7 +11,7 @@ artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/g
 relates: []
 blocked_by: [task-824, bug-7]
 blocks: []
-refs: [chk-600]
+refs: [chk-600, dec-94, chk-603, dec-95, test-484]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
@@ -27,6 +27,13 @@ Goal: Installed candidate consumer workflows across all six acceptance families.
 Context: The complete approved contract is goal-83 and bounded blocker ownership is goal-84.
 
 # Acceptance Criteria
+
+Linked Git worktrees are an explicit required topology, not equivalent to the
+already-executed independent repository fixtures. Extend existing test478 with
+real shared-object-store worktrees and concurrent local process execution;
+pin refs/inputs, prove isolation and the complete source-plus-graph integration
+sequence. Chk603 records source findings and outstanding alignment questions.
+Review only in the acceptance/alignment turn; no canonical worktree is created.
 
 Use the built tarball rather than source imports as consumer CLI. Execute test-477 through test-482 with isolated npm caches/config and local-only remotes. Reproduce missing identity qualification via bug-7. Record commands, exact versions, fixture inputs and outcomes; preserve compact diagnostics and remove only owned fixtures. Never run recovered Demo 3 applications.
 

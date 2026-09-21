@@ -4,9 +4,9 @@ type: goal
 title: Resolve mdkg 0.6.0 publication blockers
 status: progress
 priority: 1
-goal_state: active
+goal_state: paused
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828]
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828, bug-36, bug-37, test-484]
 active_node: bug-7
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
@@ -20,7 +20,7 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-83, goal-85]
+context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-83, goal-85, dec-95, edd-82]
 evidence_refs: []
 aliases: []
 skills: []
@@ -29,6 +29,19 @@ updated: 2026-09-11
 ---
 
 # Objective
+
+Latest boundary decision dec95 adds bugs36/37 and test484 as publication blockers.
+Task833 is the external prerequisite owned by Goal83: preserve the extraction
+context before source removal. These are two product-boundary change lanes, not
+additional Standard security findings. New lanes remain backlog/unclaimed.
+Final task828 depends on both removals and installed generic-boundary proof;
+existing Goal85/task831 dependency on task828 therefore remains effective.
+
+Current policy authority: dec-94 accepts v2 compatible-writer adoption,
+explicit evidence-bound recovery, inspection-only legacy public bundles and
+the narrow Bug35 overlapping helper edits. Bugs17/35 are todo after acceptance;
+Bug7 remains progress. Historical requests for those decisions are superseded,
+not grounds for repeatedly asking Nick. Required fixes and tests remain open.
 
 Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
 
