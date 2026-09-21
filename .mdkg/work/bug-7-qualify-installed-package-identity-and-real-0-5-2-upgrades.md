@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598, chk-599, chk-600]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598, chk-599, chk-600, bug-35, chk-601]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -365,3 +365,18 @@ Bug17 is excluded and remains open. This is passing-after regression evidence,
 not task828 independent clearance. Old-writer, killed-writer, historical
 migration and actual read-only-mount decisions/evidence remain; draft metadata,
 the complete ladder and exact final artifact seal are still required.
+
+## 2026-09-11 Read-Only Filesystem Preflight and New Blocker
+
+The host can create/mount a disposable HFS+ image read-only: an explicit
+synthetic creation probe returns EROFS and creates nothing; the image is detached.
+This is host capability evidence, not installed graph qualification. Writable
+legacy root/child fixture preparation caught a Git index byte change during MCP
+inspection. Bug35 independently reproduces seven CLI read paths and seven
+optional-lock-disabled controls. Staged entries are unchanged in every case.
+
+Actual graph-mount runs are withheld until the observational defect is fixed;
+the harness is not configured to hide it. Full fix scope touches two preserved
+Bug17 source files and needs narrow custody permission. No product source,
+protected bundle, selected goal or runtime DB bytes changed. Chk601 records
+the new blocker, including the earlier corrected harness ambiguity mistake.
