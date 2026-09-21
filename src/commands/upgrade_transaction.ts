@@ -8,10 +8,29 @@ import { withMutationLock } from "../util/lock";
 export const UPGRADE_JOURNAL = ".mdkg/state/upgrade-journal.json";
 export type UpgradeOperation = { path: string; before: string | null; after: string | null };
 type Dependencies = { files: Array<[string, string | null]>; directories: Array<[string, string[]]> };
-type Journal = { schema_version: 1 | 2; plan_hash: string; operations: UpgradeOperation[]; operations_hash: string;
+type ApprovedPlan = { extra: unknown; dependencies: Dependencies; operations: UpgradeOperation[] };
+type Journal = { schema_version: 1 | 2 | 3; plan_hash: string; operations: UpgradeOperation[]; operations_hash: string;
+  approved_plan?: ApprovedPlan;
   dependencies?: Dependencies; dependencies_hash?: string;
   state: "applying" | "recovering" | "completed" | "recovered" };
 export const digest = (value: string | Buffer): string => crypto.createHash("sha256").update(value).digest("hex");
+
+// Preserve array order and every own JSON key (including __proto__). Approval
+// excludes mutable progress, but includes all observations and operation bytes.
+function canonicalPlan(value: unknown): string {
+  return JSON.stringify(value, (_key, item) => item && typeof item === "object" && !Array.isArray(item)
+    ? Object.fromEntries(Object.entries(item).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)) : item);
+}
+function assertApprovedPlan(journal: Journal, expected: string): void {
+  if (journal.schema_version !== 3) throw new UsageError("unbound legacy upgrade journal; preserve it for explicit investigation; automatic resume/recover refused");
+  const approved = journal.approved_plan;
+  if (!approved || typeof approved !== "object" || !Array.isArray(approved.operations) || !approved.dependencies ||
+      !/^[0-9a-f]{64}$/.test(expected) || journal.plan_hash !== expected || digest(canonicalPlan(approved)) !== expected ||
+      canonicalPlan(approved.operations) !== canonicalPlan(journal.operations) ||
+      canonicalPlan(approved.dependencies) !== canonicalPlan(journal.dependencies)) {
+    throw new UsageError("upgrade journal does not match the exact approved plan; preserve it for explicit investigation");
+  }
+}
 
 function canonicalPath(relativePath: string): void {
   if (typeof relativePath !== "string" || relativePath.includes("\\") || path.posix.isAbsolute(relativePath) ||
@@ -57,18 +76,21 @@ function put(root: string, relativePath: string, value: string | null): void {
 function saveJournal(root: string, journal: Journal): void {
   atomicReplaceContainedFile({ root, relativePath: UPGRADE_JOURNAL, mode: 0o600 }, JSON.stringify(journal, null, 2) + "\n");
 }
-export function readUpgradeJournal(root: string): Journal | undefined {
+export function readUpgradeJournal(root: string, expectedPlanHash?: string): Journal | undefined {
   const raw = bytes(root, UPGRADE_JOURNAL);
   if (!raw) return undefined;
   const journal = JSON.parse(raw.toString("utf8")) as Journal;
-  if (![1, 2].includes(journal.schema_version) || !Array.isArray(journal.operations) ||
+  if (!journal || ![1, 2, 3].includes(journal.schema_version) || !Array.isArray(journal.operations) ||
       digest(JSON.stringify(journal.operations)) !== journal.operations_hash ||
       !["applying", "recovering", "completed", "recovered"].includes(journal.state)) {
     throw new UsageError("invalid upgrade journal; preserve it for explicit investigation");
   }
+  // Check approval before reading journal-selected paths, acquiring a lock, or
+  // considering terminal-state shortcuts. Legacy journals remain inspectable.
+  if (expectedPlanHash !== undefined || journal.schema_version === 3) assertApprovedPlan(journal, expectedPlanHash ?? journal.plan_hash);
   const seen = new Set<string>();
   for (const op of journal.operations) {
-    if (typeof op.path !== "string" || op.path.split(/[\\/]/).includes(".git") || op.path === UPGRADE_JOURNAL || seen.has(op.path) ||
+    if (!op || typeof op.path !== "string" || op.path.split(/[\\/]/).includes(".git") || op.path === UPGRADE_JOURNAL || seen.has(op.path) ||
         ![op.before, op.after].every(value => value === null || (typeof value === "string" && Buffer.from(value, "base64").toString("base64") === value))) {
       throw new UsageError("invalid upgrade journal operation");
     }
@@ -76,7 +98,7 @@ export function readUpgradeJournal(root: string): Journal | undefined {
     bytes(root, op.path); // Recheck containment, links, and file types.
     seen.add(op.path);
   }
-  if (journal.schema_version === 2) {
+  if (journal.schema_version >= 2) {
     const dependencies = journal.dependencies;
     if (!dependencies || !Array.isArray(dependencies.files) || !Array.isArray(dependencies.directories) ||
         digest(JSON.stringify(dependencies)) !== journal.dependencies_hash) throw new UsageError("invalid upgrade journal dependencies");
@@ -100,7 +122,7 @@ export function readUpgradeJournal(root: string): Journal | undefined {
 }
 
 function assertRecoveryDependencies(root: string, journal: Journal): void {
-  if (journal.schema_version !== 2) return;
+  if (journal.schema_version < 2) return;
   const operations = new Map(journal.operations.map(op => [op.path, op]));
   for (const [file, expected] of journal.dependencies!.files) {
     if (operations.has(file)) continue; // Operation bytes have their own before/after custody check.
@@ -136,6 +158,7 @@ export class UpgradePlan {
   readonly operations = new Map<string, UpgradeOperation>();
   private readonly observed = new Map<string, string | null>();
   private readonly directories = new Map<string, string>();
+  private approved?: ApprovedPlan;
   constructor(readonly root: string) {}
   read(relativePath: string): Buffer | null {
     const value = bytes(this.root, relativePath);
@@ -162,8 +185,19 @@ export class UpgradePlan {
     else this.operations.set(relativePath, { path: relativePath, before, after });
   }
   hash(extra: unknown): string {
-    return digest(JSON.stringify({ extra, inputs: [...this.observed].sort(), directories: [...this.directories].sort(),
-      operations: [...this.operations.values()] }));
+    this.approved = JSON.parse(canonicalPlan(this.payload(extra ?? null))) as ApprovedPlan;
+    return digest(canonicalPlan(this.approved));
+  }
+  private payload(extra: unknown): ApprovedPlan {
+    return { extra, operations: [...this.operations.values()], dependencies: { files: [...this.observed].sort(),
+      directories: [...this.directories].sort().map(([file, entries]) => [file, JSON.parse(entries) as string[]]) } };
+  }
+  private approvedPayload(planHash: string): ApprovedPlan {
+    if (!this.approved || digest(canonicalPlan(this.approved)) !== planHash ||
+        canonicalPlan(this.payload(this.approved.extra)) !== canonicalPlan(this.approved)) {
+      throw new UsageError("upgrade plan changed or was not approved; review a fresh plan hash");
+    }
+    return JSON.parse(canonicalPlan(this.approved)) as ApprovedPlan;
   }
   assertFresh(): void {
     for (const operation of this.operations.values()) {
@@ -179,16 +213,16 @@ export class UpgradePlan {
     }
   }
   apply(planHash: string, timeout: number, afterWrite?: (path: string, index: number) => void): void {
+    this.approvedPayload(planHash);
     if (!this.operations.size) return;
     this.assertFresh();
     withMutationLock(this.root, timeout, () => {
       this.assertFresh();
       const previous = readUpgradeJournal(this.root);
       if (previous && !["completed", "recovered"].includes(previous.state)) throw new UsageError("unfinished upgrade; use explicit --resume or --recover");
-      const operations = [...this.operations.values()];
-      const dependencies: Dependencies = { files: [...this.observed].sort(),
-        directories: [...this.directories].sort().map(([file, entries]) => [file, JSON.parse(entries) as string[]]) };
-      const journal: Journal = { schema_version: 2, plan_hash: planHash, operations, dependencies,
+      const approved_plan = this.approvedPayload(planHash);
+      const { operations, dependencies } = approved_plan;
+      const journal: Journal = { schema_version: 3, plan_hash: planHash, approved_plan, operations, dependencies,
         dependencies_hash: digest(JSON.stringify(dependencies)), operations_hash: digest(JSON.stringify(operations)), state: "applying" };
       saveJournal(this.root, journal);
       for (const [index, operation] of operations.entries()) {
@@ -205,21 +239,25 @@ export class UpgradePlan {
 
 export function continueUpgrade(root: string, mode: "resume" | "recover", planHash: string | undefined, timeout: number,
   validate?: (journal: Journal) => void): Journal {
-  const journal = readUpgradeJournal(root);
-  if (!journal || !planHash || planHash !== journal.plan_hash) throw new UsageError("resume/recover requires the journal's exact --plan-hash");
+  if (!planHash) throw new UsageError("resume/recover requires the journal's exact --plan-hash");
+  const journal = readUpgradeJournal(root, planHash);
+  if (!journal) throw new UsageError("resume/recover requires the journal's exact --plan-hash");
   if (journal.state === "recovered" || journal.state === "completed") {
     assertTerminalCustody(root, journal, journal.state === "recovered" ? "before" : "after");
     validate?.(journal);
+    assertApprovedPlan(journal, planHash);
     if (journal.state === "recovered" || mode === "resume") return journal;
   }
   if (mode === "resume" && journal.state === "recovering") throw new UsageError("recovery already started; continue --recover");
   const check = () => {
+    assertApprovedPlan(journal, planHash);
     for (const op of journal.operations) {
       const actual = encoded(root, op.path);
       if (actual !== op.before && actual !== op.after) throw new UsageError(`upgrade recovery collision: ${op.path}; user bytes preserved`);
     }
     assertRecoveryDependencies(root, journal);
     validate?.(journal);
+    assertApprovedPlan(journal, planHash);
   };
   check(); // Refuse without even acquiring a lock if custody changed.
   return withMutationLock(root, timeout, () => {
@@ -235,6 +273,7 @@ export function continueUpgrade(root: string, mode: "resume" | "recover", planHa
     }
     assertTerminalCustody(root, journal, mode === "recover" ? "before" : "after");
     validate?.(journal);
+    assertApprovedPlan(journal, planHash);
     journal.state = mode === "recover" ? "recovered" : "completed";
     saveJournal(root, journal);
     return journal;

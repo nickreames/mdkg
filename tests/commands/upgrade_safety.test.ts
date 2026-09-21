@@ -126,13 +126,14 @@ test("recovery refuses user edits; operation-owned creation and deletion are rev
   writeFile(path.join(root, "old.md"), "original");
   const plan = new UpgradePlan(root);
   plan.write("new.md", "new"); plan.write("old.md", null);
-  assert.throws(() => plan.apply("test-plan", 10, (_: string, index: number) => { if (index === 1) throw new Error("interrupted"); }), /interrupted/);
+  const approvedHash = plan.hash({});
+  assert.throws(() => plan.apply(approvedHash, 10, (_: string, index: number) => { if (index === 1) throw new Error("interrupted"); }), /interrupted/);
   writeFile(path.join(root, "new.md"), "user edited");
   const before = snapshot(root);
-  assert.throws(() => continueUpgrade(root, "recover", "test-plan", 10), /recovery collision/);
+  assert.throws(() => continueUpgrade(root, "recover", approvedHash, 10), /recovery collision/);
   assert.deepEqual(snapshot(root), before);
   writeFile(path.join(root, "new.md"), "new");
-  continueUpgrade(root, "recover", "test-plan", 10);
+  continueUpgrade(root, "recover", approvedHash, 10);
   assert.equal(fs.existsSync(path.join(root, "new.md")), false);
   assert.equal(fs.readFileSync(path.join(root, "old.md"), "utf8"), "original");
 });

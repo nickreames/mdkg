@@ -94,7 +94,7 @@ are conflicts, not permission to overwrite. Legacy root guides are redirected
 only when provenance proves they are known generated content. Maintained project
 docs and public `llms.txt` assets are not owned merely because of their names.
 
-For an interrupted transaction, use its journal hash with
+For an interrupted transaction, use the hash retained from its reviewed preview with
 `mdkg upgrade --resume --plan-hash PLAN_HASH` to finish, or
 `mdkg upgrade --recover --plan-hash PLAN_HASH` to restore operation-owned bytes.
 Both paths reject intervening user edits instead of discarding them. Review a
@@ -103,9 +103,12 @@ fresh preview after recovery; do not delete the journal to bypass a conflict.
 For adopted v2 graphs, upgrade preserves identities and aliases rather than
 inventing identities for missing seed nodes. Use explicit graph creation or
 reintroduction for those nodes. New journals bind graph-format bytes and preview
-dependencies; changes to those inputs block both continuation paths. Older
-journals without dependency bindings cannot resume v2 upgrades, but can recover
-verified original bytes that preserve identities and workspace ownership.
+dependencies and every approved operation; changes to those inputs block both
+continuation paths. Unbound schema1/2 journals remain inspectable but cannot
+automatically resume or recover on any graph version. Preserve the journal and
+affected files for explicit investigation. Do not accept a replacement approval
+hash from edited journal data. This verifies local approval consistency, not
+external attestation.
 
 For capability files, use canonical `MANIFEST.md` naming in new work. Legacy
 `SPEC.md` files and `mdkg spec ...` commands remain compatibility aliases for

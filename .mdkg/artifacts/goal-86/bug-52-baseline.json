@@ -1,0 +1,21 @@
+{
+  "kind": "bug52-current-source-prepatch-reproduction",
+  "head": "67743f5a591d3616486ba4188e4696fe9260bcc4",
+  "source_sha256": "278b13d3f0f2ae937a10336bc3a5d5f5b74049aacd275a94dc1a37a956823633",
+  "runtime": "v26.0.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "cases": [
+    {
+      "mode": "resume",
+      "approved_plan_hash_preserved": true,
+      "unauthorized_write_observed": true
+    },
+    {
+      "mode": "recover",
+      "approved_plan_hash_preserved": true,
+      "unauthorized_write_observed": true
+    }
+  ],
+  "scope": "Current shipped internal transaction helper with synthetic disposable files; not remote exploit, historical scan rerun, or installed qualification."
+}
