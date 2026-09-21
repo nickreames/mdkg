@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "finding_qid": "root:bug-35",
+  "checkpoint_qid": "root:chk-601",
+  "owner": "mdkg-project-agent",
+  "outcome": "PUBLISHED_0_5_2_AND_CURRENT_CANDIDATE_AFFECTED_NO_SOURCE_FIX",
+  "source_head": "3e1d597a0e399a034cb81ab681684411900d4931",
+  "runner_sha256": "344a3caff2ba1f1c2c23ddc1d7f5912f3cf75c391e3f2891d0735f22a1e39f4a",
+  "results_sha256": "a6bf994a1bcc177a5331d98ddc871055dd3f14ee57a7b5f27f1b3b92ff905266",
+  "log_sha256": "f0f7ca4cad21549a568c7dfa789ffbb4993e610cc3b75cdd9795574fa477cfc6",
+  "seed_inventory_sha256": "a3e40c740a0711544f75b3c20bdaa96c68c8a01373246149fafef088d027877c",
+  "runtimes": [
+    {
+      "version": "v24.15.0",
+      "path": "/private/tmp/mdkg-bug7-recovery.YDpsrx/node-24.15.0/node",
+      "sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32"
+    },
+    {
+      "version": "v24.18.0",
+      "path": "/opt/homebrew/opt/node@24/bin/node",
+      "sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f"
+    },
+    {
+      "version": "v26.0.0",
+      "path": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+      "sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164"
+    }
+  ],
+  "packages": {
+    "published": {
+      "path": "/private/tmp/mdkg-upgrade-stale.EQQ0lV/published-prefix/lib/node_modules/mdkg",
+      "cli_sha256": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+      "inventory_sha256": "cc296713f20799a2e26ffbc33ee810dd2715525810f14546e2feeb9432870a2d"
+    },
+    "candidate": {
+      "path": "/private/tmp/mdkg-nullable-read.D8mLBL/prefix/lib/node_modules/mdkg",
+      "cli_sha256": "ef442bcb76824c22f0fcfbc1febab13dca5a529d0d98881d8c889f6c810911e3",
+      "inventory_sha256": "2e5de70ed72418cdd6ccfddff11ae1c999e82cfe1c0bf7a45b96a17f702364a7"
+    }
+  },
+  "input_bookends": "seed and both installed package inventories unchanged",
+  "groups": [
+    {
+      "runtime": "v24.15.0",
+      "package": "published",
+      "cases": 16,
+      "successful_processes": 16,
+      "default_index_changes": 8,
+      "disabled_index_changes": 0,
+      "all_staged_entries_unchanged": true
+    },
+    {
+      "runtime": "v24.15.0",
+      "package": "candidate",
+      "cases": 16,
+      "successful_processes": 16,
+      "default_index_changes": 8,
+      "disabled_index_changes": 0,
+      "all_staged_entries_unchanged": true
+    },
+    {
+      "runtime": "v24.18.0",
+      "package": "published",
+      "cases": 16,
+      "successful_processes": 16,
+      "default_index_changes": 8,
+      "disabled_index_changes": 0,
+      "all_staged_entries_unchanged": true
+    },
+    {
+      "runtime": "v24.18.0",
+      "package": "candidate",
+      "cases": 16,
+      "successful_processes": 16,
+      "default_index_changes": 8,
+      "disabled_index_changes": 0,
+      "all_staged_entries_unchanged": true
+    },
+    {
+      "runtime": "v26.0.0",
+      "package": "published",
+      "cases": 16,
+      "successful_processes": 16,
+      "default_index_changes": 8,
+      "disabled_index_changes": 0,
+      "all_staged_entries_unchanged": true
+    },
+    {
+      "runtime": "v26.0.0",
+      "package": "candidate",
+      "cases": 16,
+      "successful_processes": 16,
+      "default_index_changes": 8,
+      "disabled_index_changes": 0,
+      "all_staged_entries_unchanged": true
+    }
+  ],
+  "tarball_verification": {
+    "published": {
+      "sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+      "files": 191,
+      "all_installed_bytes_match": true
+    },
+    "candidate": {
+      "sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+      "files": 223,
+      "all_installed_bytes_match": true
+    }
+  },
+  "commands": [
+    "status --json",
+    "show root:task-1 --json",
+    "validate --json",
+    "validate --changed-only --json",
+    "subgraph list --json",
+    "subgraph audit --json",
+    "git inspect --json",
+    "bundle create --profile private --output .mdkg/bundles/private/bug35-proof.mdkg.zip --json"
+  ],
+  "findings": [
+    "All48 default-environment cases refresh at least one root/child Git index; all48 GIT_OPTIONAL_LOCKS=0 controls preserve both indexes. All96 processes exit zero and preserve staged mode/object/stage/path entries.",
+    "Published0.5.2 show also rewrites .mdkg/index/subgraphs.json with either lock policy; current candidate does not. This is distinct from Git optional writes and consistent with already-closed Bug21 cache-persistence remediation.",
+    "Bundle creation intentionally creates one synthetic output ZIP. The unintended Git index refresh is separately reproduced in its sourceInfo path, replacing prior static-only coverage.",
+    "Current status preserves its root index but not the child index; published status refreshes both. Do not infer one guarded root helper protects all child reads."
+  ],
+  "validation": {
+    "case_count": 96,
+    "full_graph": { "errors": 0, "warnings": 3, "receipt_sha256": "95c84e89b97f2bdd50bbe5678b31434089309168fb26beca25894e3a3301685e" },
+    "changed_graph": { "errors": 0, "warnings": 0, "receipt_sha256": "e72f43d877b490916095332ea4c4056b797c539b4947a5b5677c43d6d70120a7" },
+    "sqlite": { "ok": true, "failures": 0, "receipt_sha256": "5f42baee5414785d29b73b2a3c698844c7b0e24b5c039028a0433cf43d75ec46" },
+    "git_diff_check": "passed",
+    "parent_crosscheck": "All case counts, exit codes, staged-entry results, expected non-index changes and retained final index bytes checked before fixture removal.",
+    "canonical_preservation": "All protected/source hashes from bug-35-readonly-git-index-reproduction.json remain identical.",
+    "scope": "Affected-version evidence only; no source remediation, fresh security scan, semantic-output equivalence, real read-only mount, v2 matrix or final release acceptance."
+  },
+  "limitations": [
+    "macOS arm64, Apple Git2.50.1; three specified Node runtimes only.",
+    "Full regular-file byte inventories exclude directories and mode/ACL/ownership metadata; symlinks and special files are rejected in the synthetic seed.",
+    "The candidate includes preserved partial Bug17 transport changes; it is not a final sealed0.6.0 artifact.",
+    "Per-process environment controls are diagnostic only, not a product fix or an accepted user workaround."
+  ],
+  "evidence_location": "/private/tmp/mdkg-git-read-versions.gGjemX",
+  "cleanup": "All96 synthetic case copies and both temporary unpacked tarball trees removed after verification; runner, raw hashed results and log retained. Original shared synthetic seed and installed packages unchanged.",
+  "authority": "Existing local Goal83/84 qualification only; no protected source, global config, canonical bundle, remote Git, provider, publish, deployment or sibling mutation.",
+  "skill_candidates": []
+}
