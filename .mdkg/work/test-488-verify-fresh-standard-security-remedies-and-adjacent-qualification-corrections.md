@@ -7,18 +7,18 @@ priority: 1
 tags: [release-0.6.0, security, qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json, .mdkg/artifacts/goal-86/bug-48-current-validation.json, .mdkg/artifacts/goal-86/bug-48-installed-verification.json]
 relates: []
 blocked_by: [bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-487]
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, chk-624, chk-625]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 cases: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -64,7 +64,7 @@ is pre-remediation and unqualified; any package-input change invalidates it.
 - bug-45: Reject .git/config, full .git trees, .git indirection files, nested administrative paths and filesystem aliases before any write. Reject unrelated root payloads even with matching manifest hashes and an owning config. Retain supported owned graph, archive and deliberately portable private-snapshot materialization.
 - bug-46: Update a0600 task under022 umask and assert no permission widening, including temporary files. Test differing group ownership and restrictive per-file ACLs on macOS and Linux. Cover both atomic helpers, mode-preserving callers and unchanged hard-linked peers. Cover task, goal, competing-goal activation, formatting, selection and cache write routes through the centralized metadata contract.
 - bug-47: Use synchronized ancestor swaps on macOS/Linux for read-to-mirror, exclusive create, append, replacement and removal. Prove outside sentinels remain unread/unmodified and operations fail closed. Verify legitimate native Git worktree and private-checkout workflows remain supported.
-- bug-48: Reject config/source symlinks to devices, FIFOs and outside sentinels without blocking. Reject oversized regular files and post-stat growth within timeout-bounded fixtures. Exercise CLI and fixed-root MCP while proving subsequent valid requests still work.
+- bug-48: Reject config/source symlinks to devices, FIFOs and outside sentinels without blocking. Reject oversized regular files and post-stat growth within timeout-bounded fixtures. Exercise CLI and fixed-root MCP while proving subsequent valid requests still work. Also qualify selected-ZIP leaf substitution and actual-byte growth before parsing: nonblocking descriptor admission, exact limits and descriptor closure on failure; retain explicit external and linked regular ZIP controls. Chk624 records the reproduced remaining ZIP-reader path; the partial candidate is not closure.
 - bug-49: Create a registry symlink to a synthetic external sentinel and require refusal with no sentinel bytes copied. Cover missing-target links, linked ancestors and no-partial-skill-write behavior. Retain customization preservation for admitted regular registry files.
 - bug-50: Either/both configured paths as nonempty directories must produce invalid status and failing verify exit. Require every mandatory check to execute and pass, independent of whether error strings were populated. Retain regular valid/missing/corrupt snapshot positive and negative controls.
 - bug-51: Use external sentinels for verify, status and seal; refuse links before native open/hash and prove no digest or bytes enter output. Reject special files and oversized manifest inputs; hash large admitted DBs with bounded streaming. Retain valid portable private snapshot behavior.
@@ -84,6 +84,31 @@ is pre-remediation and unqualified; any package-input change invalidates it.
   No canonical source imports masquerade as installed consumer execution.
 
 # Results / Evidence
+
+2026-09-21 current direction: proceed from retained mdkg findings. Do not read
+blocked scan context, recover its artifacts or rerun the blocked historical
+findings. The recovery proposal below is historical and superseded. This does
+not waive final independent current-source review or platform qualification.
+Bug48 now has164 focused passing source tests and30 installed CLI/MCP cases
+passing on each of Node24.15.0,24.18.0,26.0.0 on macOS arm64. Exact current
+receipts are bug-48-current-validation.json and bug-48-installed-verification.json
+under .mdkg/artifacts/goal-86/. The latter binds all installed package file
+hashes and confirms they remain unchanged; it is intermediate, not a final seal.
+Full discovery executed1647 tests:1614 passed and33 failed only because the
+sandbox could not provide OS ownership evidence for interrupted-writer tests.
+The entire38-case unchanged family passed in an approved native local rerun.
+Both results are retained; the restricted run itself did not pass. Linux and
+final-artifact results remain unverified. Do not promote these intermediate
+results to completion of this acceptance node.
+
+Historical checkpoint evidence (2026-09-18):
+
+Chk624 preserves intermediate Bug48 observations only:155 focused source tests
+and69 installed cases passed before a surviving ZIP-reader path was confirmed.
+Those temporary artifacts are now inaccessible; no final candidate pass follows.
+Task838 must establish retained evidence custody; Task828 independently checks
+recovered original or explicitly superseding canonical security reports. The
+sealed Standard14-finding count and earlier completed findings remain historical.
 
 No cases have run for this fresh acceptance record. Initial source evidence and
 canonical report hashes: .mdkg/artifacts/goal-86/task-837-standard-security-audit.json.

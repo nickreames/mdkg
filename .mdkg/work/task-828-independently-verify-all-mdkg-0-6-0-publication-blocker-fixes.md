@@ -7,17 +7,17 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/security-findings-checkpoint-20260918.json]
 relates: []
 blocked_by: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, task-826, task-827, bug-21, bug-22, bug-23, bug-24, bug-25, test-483, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-837, test-487, bug-40, bug-41, bug-42, bug-43, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-838, task-839, test-488]
 blocks: []
-refs: [dec-95, edd-82, task-833]
+refs: [dec-95, edd-82, task-833, chk-624]
 context_refs: [goal-83, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-17
+updated: 2026-09-18
 ---
 
 # Current Successor Contract - 2026-09-13
@@ -43,6 +43,30 @@ Goal: Independent verification of every publication blocker and exact remediatio
 Context: The complete approved contract is goal-83 and bounded blocker ownership is goal-84.
 
 # Acceptance Criteria
+
+2026-09-21 user direction supersedes the historical recovery proposal below:
+use retained mdkg findings and evidence for remediation; do not access blocked
+context, recover old scan artifacts or rerun the blocked historical findings.
+Record provenance limits honestly. This does not turn intermediate tests into
+final acceptance or waive current-source independent verification; do not launch
+any new scan merely to repair old evidence availability. Continue source fixes
+and their local regressions under Goal86 without requesting recovery again.
+
+Chk624 adds an explicit evidence-availability gate: the recorded Task837
+canonical report, manifest, findings and coverage files are inaccessible at
+their stored paths in the current environment. Historical completion remains
+recorded, but a sanitized summary/hash cannot substitute for the reports this
+acceptance must inspect. Recover originals and verify exact hashes, or preserve
+the loss and supersede the missing qualification through a fresh authorized
+workflow on a frozen candidate. Do not fabricate original bodies, silently
+re-finalize the sealed scan, or mark this gate passed from chat history.
+
+The live workbench retains all14 findings but reports reportAvailable=false and
+disables built-in remediation because current HEAD differs from the scanned
+e42f1d9 revision. Do not reset current main or pretend the historical scan covers
+new source. Bind the planned final review to a fresh frozen target; preserve
+historical scan identities and distinguish current local fixes from workbench
+remediation state. Reading the old scan context is not a new scan or approval.
 
 Require every bug in goal-84 fixed with failing-before/passing-after regression and affected-version assessment. Run a separate Codex Security diff workflow on the exact fix range after writers freeze it. Validate realistic consumers and dependency routing. Missing security coverage, failed tests, data loss or unresolved decisions keep this task incomplete. No automatic risk waivers.
 
