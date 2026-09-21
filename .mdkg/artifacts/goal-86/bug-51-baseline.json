@@ -1,0 +1,388 @@
+{
+  "kind": "bug51-source-bound-prepatch-baseline",
+  "source_head": "8c5a61133ba717ca0be0923838549fbf53dcc5d9",
+  "source_hashes": {
+    "src/core/project_db_snapshot.ts": "b9ceba8350b59d2ddbec89c2da063ee515088eae8b434449602599638ab29bb7",
+    "src/core/project_db_queue.ts": "0e5831732eeab61e64e191e8916cb8c8b6ba6687a253254324df66a99182b720",
+    "src/core/project_db_migrations.ts": "d0db8553e2e79c3b33389cb55e9923f4a2718e94304fff94e8a64b953511499b"
+  },
+  "method": "Owned copy of compiled source; three changed runtime modules compiled from exact git show HEAD sources; remaining source unchanged. Not an installed-package release qualification.",
+  "runtime": {
+    "version": "v26.0.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "pass": false,
+  "cases": [
+    {
+      "name": "verify rejects snapshot external-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects snapshot internal-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects snapshot dangling-link before effects",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'missing'\n- 'invalid'\n"
+    },
+    {
+      "name": "verify rejects snapshot ancestor-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects snapshot fifo before effects",
+      "pass": true
+    },
+    {
+      "name": "verify rejects snapshot directory before effects",
+      "pass": true
+    },
+    {
+      "name": "verify rejects manifest external-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects manifest internal-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects manifest dangling-link before effects",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'missing'\n- 'invalid'\n"
+    },
+    {
+      "name": "verify rejects manifest ancestor-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects manifest fifo before effects",
+      "pass": true
+    },
+    {
+      "name": "verify rejects manifest directory before effects",
+      "pass": true
+    },
+    {
+      "name": "verify rejects runtime external-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects runtime internal-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects runtime dangling-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects runtime ancestor-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects runtime fifo before effects",
+      "pass": false,
+      "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:7:31)\n+     at refused (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:25:43)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:45:11\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:18:39)\n+     at qualifySnapshotContainment (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:36:9)\n+     at Object.<anonymous> (/private/tmp/mdkg-bug51.y1UWwH/baseline.cjs:12:14)\n+     at Module._compile (node:internal/modules/cjs/loader:1829:14)\n+     at Module._extensions..js (node:internal/modules/cjs/loader:1969:10) {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/private/tmp/mdkg-bug51.y1UWwH/prepatch/dist/cli.js',\n+     'db',\n+     'snapshot',\n+     'verify',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+    },
+    {
+      "name": "verify rejects runtime directory before effects",
+      "pass": false,
+      "error": "Unexpected end of JSON input"
+    },
+    {
+      "name": "status rejects snapshot external-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects snapshot internal-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects snapshot dangling-link before effects",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'missing'\n- 'invalid'\n"
+    },
+    {
+      "name": "status rejects snapshot ancestor-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects snapshot fifo before effects",
+      "pass": true
+    },
+    {
+      "name": "status rejects snapshot directory before effects",
+      "pass": true
+    },
+    {
+      "name": "status rejects manifest external-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects manifest internal-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects manifest dangling-link before effects",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'missing'\n- 'invalid'\n"
+    },
+    {
+      "name": "status rejects manifest ancestor-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects manifest fifo before effects",
+      "pass": true
+    },
+    {
+      "name": "status rejects manifest directory before effects",
+      "pass": true
+    },
+    {
+      "name": "status rejects runtime external-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects runtime internal-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects runtime dangling-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects runtime ancestor-link before effects",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects runtime fifo before effects",
+      "pass": false,
+      "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:7:31)\n+     at refused (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:25:43)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:45:11\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:18:39)\n+     at qualifySnapshotContainment (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:36:9)\n+     at Object.<anonymous> (/private/tmp/mdkg-bug51.y1UWwH/baseline.cjs:12:14)\n+     at Module._compile (node:internal/modules/cjs/loader:1829:14)\n+     at Module._extensions..js (node:internal/modules/cjs/loader:1969:10) {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/private/tmp/mdkg-bug51.y1UWwH/prepatch/dist/cli.js',\n+     'db',\n+     'snapshot',\n+     'status',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+    },
+    {
+      "name": "status rejects runtime directory before effects",
+      "pass": false,
+      "error": "Unexpected end of JSON input"
+    },
+    {
+      "name": "seal rejects snapshot external-link before effects",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects snapshot internal-link before effects",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects snapshot dangling-link before effects",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects snapshot ancestor-link before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects snapshot fifo before effects",
+      "pass": false,
+      "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:7:31)\n+     at refused (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:25:43)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:45:11\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:18:39)\n+     at qualifySnapshotContainment (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-containment.cjs:36:9)\n+     at Object.<anonymous> (/private/tmp/mdkg-bug51.y1UWwH/baseline.cjs:12:14)\n+     at Module._compile (node:internal/modules/cjs/loader:1829:14)\n+     at Module._extensions..js (node:internal/modules/cjs/loader:1969:10) {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/private/tmp/mdkg-bug51.y1UWwH/prepatch/dist/cli.js',\n+     'db',\n+     'snapshot',\n+     'seal',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+    },
+    {
+      "name": "seal rejects snapshot directory before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects manifest external-link before effects",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects manifest internal-link before effects",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects manifest dangling-link before effects",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects manifest ancestor-link before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects manifest fifo before effects",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects manifest directory before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects runtime external-link before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects runtime internal-link before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects runtime dangling-link before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects runtime ancestor-link before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects runtime fifo before effects",
+      "pass": true
+    },
+    {
+      "name": "seal rejects runtime directory before effects",
+      "pass": true
+    },
+    {
+      "name": "verify rejects oversized manifest before parse",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects oversized manifest before parse",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify does not disclose arbitrary external snapshot digest",
+      "pass": false,
+      "error": "external sentinel digest disclosed"
+    },
+    {
+      "name": "verify rejects linked snapshot-wal sidecar",
+      "pass": true
+    },
+    {
+      "name": "verify rejects linked snapshot-shm sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects linked snapshot-journal sidecar",
+      "pass": true
+    },
+    {
+      "name": "verify rejects linked runtime-wal sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects linked runtime-shm sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "verify rejects linked runtime-journal sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status does not disclose arbitrary external snapshot digest",
+      "pass": false,
+      "error": "external sentinel digest disclosed"
+    },
+    {
+      "name": "status rejects linked snapshot-wal sidecar",
+      "pass": true
+    },
+    {
+      "name": "status rejects linked snapshot-shm sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects linked snapshot-journal sidecar",
+      "pass": true
+    },
+    {
+      "name": "status rejects linked runtime-wal sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects linked runtime-shm sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "status rejects linked runtime-journal sidecar",
+      "pass": false,
+      "error": "inspection accepted unsafe input\n\ntrue !== false\n"
+    },
+    {
+      "name": "seal does not disclose arbitrary external snapshot digest",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects linked snapshot-wal sidecar",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects linked snapshot-shm sidecar",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects linked snapshot-journal sidecar",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects linked runtime-wal sidecar",
+      "pass": true
+    },
+    {
+      "name": "seal rejects linked runtime-shm sidecar",
+      "pass": false,
+      "error": "seal accepted unsafe input"
+    },
+    {
+      "name": "seal rejects linked runtime-journal sidecar",
+      "pass": true
+    },
+    {
+      "name": "first seal and regular reseal retain old snapshot hash",
+      "pass": true
+    },
+    {
+      "name": "portable absent-runtime snapshot verifies without writes",
+      "pass": true
+    }
+  ],
+  "fixture_cleanup": "exact owned mkdtemp removed"
+}

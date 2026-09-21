@@ -47,8 +47,8 @@ test("snapshot admission failures include diagnostics and do not reach content r
 });
 
 test("snapshot inspection exceptions produce invalid receipts without content reads", t => {
-  const f = fixture(t), stat = fs.statSync;
-  t.mock.method(fs, "statSync", (...args: any[]) => {
+  const f = fixture(t), stat = fs.lstatSync;
+  t.mock.method(fs, "lstatSync", (...args: any[]) => {
     if (String(args[0]) === f.snapshot) throw Object.assign(new Error("synthetic denied"), { code: "EACCES" });
     return (stat as any)(...args);
   });
