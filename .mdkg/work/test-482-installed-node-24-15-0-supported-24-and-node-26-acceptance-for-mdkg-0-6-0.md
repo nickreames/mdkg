@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
@@ -63,5 +63,11 @@ incomplete, not runtime passes. Evidence and precise exclusions are recorded in
 .mdkg/artifacts/goal-84/bug-7-scale-goal.json; full task-826 matrix remains open.
 
 # Notes / Follow-ups
+
+Chk598 and chk599 add final three-runtime stale-upgrade and mixed-state/graph
+recovery proof on the current intermediate candidate. Chk599 includes277commands
+per runtime with exact executable/package hashes and matching custody bookends.
+No required runtime is missing for these families. Final0.6.0 matrix acceptance,
+unresolved policy/coverage gates and the full release ladder remain open.
 
 Route newly validated blockers to goal-84; retain unknown/unsupported historical cases explicitly. Do not migrate canonical graph or regenerate protected bundles.

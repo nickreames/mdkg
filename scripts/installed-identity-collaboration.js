@@ -42,6 +42,63 @@ function exerciseIdentityCollaboration(binPath, ownedRoot) {
   assert.ok(common.stable_ref, "fixture must use CLI-persisted v2 identity");
   git(seed, ["init", "-b", "main"]);
   const base = commit(seed, [".gitignore", ".mdkg/config.json", ".mdkg/graph.json", ".mdkg/templates", ".mdkg/core", ".mdkg/work"], "common graph");
+  // A tracked node may have three legitimate versions: HEAD, Git staging, and
+  // the authored working tree. mdkg must consume the latter without staging it.
+  const mixed = path.join(root, "mixed-staged-working-tree");
+  git(root, ["clone", "--no-local", seed, mixed]);
+  const committedBody = run(mixed, process.env.GIT || "git", ["show", `HEAD:${common.path}`]).stdout;
+  cli(mixed, ["task", "update", common.stable_ref, "--priority", "2"]);
+  git(mixed, ["add", "--", common.path]);
+  const stagedBody = run(mixed, process.env.GIT || "git", ["show", `:${common.path}`]).stdout;
+  assert.notEqual(stagedBody, committedBody);
+  const mixedIndex = fs.readFileSync(path.join(mixed, ".git/index"));
+  cli(mixed, ["task", "update", common.id, "--status", "progress"]);
+  assert.deepEqual(fs.readFileSync(path.join(mixed, ".git/index")), mixedIndex, "ordinary mutation must not alter Git staging");
+  const marker = "MixedWorkingTreeEvidence";
+  fs.appendFileSync(path.join(mixed, common.path), `\n# Working-tree evidence\n\n${marker}\n`);
+  const workingTitle = "Manually edited working tree title";
+  const workingPath = path.join(mixed, common.path);
+  const manualBefore = fs.readFileSync(workingPath, "utf8");
+  assert.match(manualBefore, /^title: Common ancestor$/m);
+  fs.writeFileSync(workingPath, manualBefore.replace(/^title: Common ancestor$/m, `title: ${workingTitle}`));
+  assert.notEqual(fs.readFileSync(path.join(mixed, common.path), "utf8"), stagedBody);
+  assert.equal(git(mixed, ["diff", "--cached", "--name-only"]), common.path);
+  assert.equal(git(mixed, ["diff", "--name-only"]), common.path);
+  const mixedBefore = files(mixed);
+  let workingBody;
+  for (const ref of [common.id, common.stable_ref]) {
+    const shown = cli(mixed, ["show", ref]).item;
+    assert.equal(shown.stable_ref, common.stable_ref);
+    assert.equal(shown.status, "progress"); assert.equal(shown.priority, 2);
+    assert.equal(shown.title, workingTitle, "show must resolve manually edited metadata despite stale cache");
+    assert.ok(shown.body.includes(marker), "show must use the unstaged body");
+    if (workingBody === undefined) workingBody = shown.body;
+    else assert.equal(shown.body, workingBody);
+  }
+  assert.ok(cli(mixed, ["list", "--type", "task"]).items.some(n => n.stable_ref === common.stable_ref && n.status === "progress" && n.title === workingTitle));
+  assert.ok(cli(mixed, ["search", workingTitle, "--status", "progress"]).items.some(n => n.stable_ref === common.stable_ref && n.title === workingTitle));
+  cli(mixed, ["validate"]);
+  run(mixed, binPath, ["pack", common.stable_ref, "--dry-run", "--stats"]);
+  assert.deepEqual(files(mixed), mixedBefore, "mixed-stage ordinary reads and pack preview must be observational");
+  const packPath = ".mdkg/pack/mixed-working-tree.json";
+  run(mixed, binPath, ["pack", common.stable_ref, "--format", "json", "--out", packPath]);
+  const packed = JSON.parse(fs.readFileSync(path.join(mixed, packPath), "utf8")).nodes.find(n => n.stable_ref === common.stable_ref);
+  assert.ok(packed); assert.equal(packed.status, "progress"); assert.equal(packed.priority, 2);
+  assert.equal(packed.title, workingTitle);
+  assert.equal(packed.body, workingBody, "pack must preserve the complete unstaged body");
+  const packedFiles = files(mixed);
+  for (const [p, hash] of Object.entries(mixedBefore)) assert.equal(packedFiles[p], hash, `pack changed pre-existing file: ${p}`);
+  assert.deepEqual(Object.keys(packedFiles).filter(p => !(p in mixedBefore)), [path.normalize(packPath)]);
+  cli(mixed, ["task", "update", common.stable_ref, "--add-artifacts", "artifact://fixture.mixed-working-tree"]);
+  const changed = cli(mixed, ["show", common.id]).item;
+  assert.equal(changed.stable_ref, common.stable_ref); assert.equal(changed.status, "progress");
+  assert.equal(changed.priority, 2); assert.equal(changed.title, workingTitle);
+  assert.equal(changed.body, workingBody, "ordinary mutation must preserve the complete latest body");
+  assert.ok(changed.artifacts.includes("artifact://fixture.mixed-working-tree"));
+  assert.deepEqual(fs.readFileSync(path.join(mixed, ".git/index")), mixedIndex);
+  assert.equal(run(mixed, process.env.GIT || "git", ["show", `:${common.path}`]).stdout, stagedBody);
+  assert.equal(git(mixed, ["rev-parse", "HEAD"]), base);
+  cli(mixed, ["validate"]);
   const target = path.join(root, "developer-a"), incoming = path.join(root, "developer-b");
   git(root, ["clone", "--no-local", seed, target]);
   git(root, ["clone", "--no-local", seed, incoming]);
@@ -205,6 +262,11 @@ function exerciseIdentityCollaboration(binPath, ownedRoot) {
     natural_collision: a.id, target_identity: a.stable_ref, incoming_identity: b.stable_ref,
     incoming_alias_after: mapping.output.alias, plan_hash: plan.plan_hash,
     cross_links_preserved: true, ordinary_uncommitted_reads_observational: true,
+    mixed_tracked_node: { backend: JSON.parse(fs.readFileSync(path.join(mixed, ".mdkg/config.json"), "utf8")).index.backend,
+      distinct_head_staged_working_versions: true, stable_identity_preserved: true, manual_metadata_stale_cache_reads: true,
+      reads_and_pack_preview_observational: true, pack_contains_working_tree_version: true,
+      explicit_pack_is_only_created_file: true, ordinary_mutations_preserve_unstaged_body: true,
+      staged_blob_and_index_unchanged: true, head_unchanged: true },
     git_index_unchanged: true, external_receipt_sha256: crypto.createHash("sha256").update(externalReceipt).digest("hex"), replay_noop: true,
     reviewed_reintroduction: true, revert_replay_noop: true, cherry_pick_revert_requires_decision: true,
     same_identity_conflict_requires_decision: true, stale_plan_refused_without_writes: true, newer_incoming_reviewed: true, semantic_cases: semanticCases };
