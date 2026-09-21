@@ -117,6 +117,15 @@ matrix before completion. Test487 supplies required supported-platform proof.
 
 # Notes / Follow-ups
 
+2026-09-21 Bug49 intermediate local remedy:1658 full and164 focused source tests
+pass, plus19 installed cases each on Node24.15.0/24.18.0/26 macOS arm64. Receipts:
+bug-49-baseline.json, bug-49-current-validation.json and
+bug-49-installed-verification.json under .mdkg/artifacts/goal-86/. Linked/special
+registry refusal, customization/force controls and output-budget admission are
+covered. Invalidated earlier attempts are retained. This does not complete this
+acceptance node or claim Linux/final-artifact qualification, metadata/ACL or
+ancestor-race remediation, or blocked-context recovery. Task828 remains required.
+
 Task828 performs a separate independent remediation-diff review after source is
 frozen. Test488's test results do not substitute for that security workflow.
 No automatic waivers, historical evidence rewrites, canonical graph migration,

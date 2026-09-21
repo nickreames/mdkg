@@ -1,5 +1,13 @@
 {
   "schema": "mdkg.goal86.security-findings-checkpoint.v1",
+  "bug49_local_update_20260921": {
+    "status": "locally verified; final independent/platform acceptance remains open",
+    "full_tests": {"pass": 1658, "fail": 0, "skipped": 0},
+    "focused_tests": 164,
+    "installed_cases": 57,
+    "evidence": [".mdkg/artifacts/goal-86/bug-49-baseline.json", ".mdkg/artifacts/goal-86/bug-49-current-validation.json", ".mdkg/artifacts/goal-86/bug-49-installed-verification.json"],
+    "scope": "Fresh current-source regression evidence only. No blocked scan context inspected, recovered or rerun. Historical fields below remain historical, not instructions."
+  },
   "recorded_at": "2026-09-18T14:24:05.536Z",
   "authority": "Latest request: capture known findings and plan next steps; no further functional changes, scan launch, staging or commit.",
   "goal": "root:goal-86",
@@ -98,7 +106,7 @@
       "path": ".mdkg/work/bug-49-creating-a-skill-can-copy-an-external-file-through-a-linked-registry.md",
       "title": "Creating a skill can copy an external file through a linked registry",
       "severity": "medium",
-      "current_status": "backlog",
+      "current_status": "done",
       "summary": "An untrusted checkout can make registry.md a symlink to an operator-readable file. Ordinary skill creation follows the link, preserves the external text, then replaces the link with a repository-local copy.",
       "candidate_id": "g86-bootstrap-003"
     },

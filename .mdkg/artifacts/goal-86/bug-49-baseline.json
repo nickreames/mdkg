@@ -1,0 +1,234 @@
+{
+  "kind": "bug49-current-source-baseline",
+  "head": "8ee44cf17ebd9a2b683e6e5d87784b9c8e450ec7",
+  "runtime": "v26.0.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "source_hashes": {
+    "src/commands/skill.ts": "a58452e7d84f09c54ecfaf080628ea3f23d918ebc3ae659398dfde4166dd1fb4",
+    "src/commands/skill_support.ts": "d217275acd6c58bed234bf55cfbfb41443e77ccc24b6ab30ed5bd84640b09833",
+    "src/commands/init.ts": "361b4271aa29f83f84202af84b3c6c1a431580f875269f964a91408ed5a6db38",
+    "tests/fixtures/skill-registry-admission.cjs": "b96c6966e0b4afd5e736565f89ee3d5e6836c5437c77b93727f3c07464223e4c"
+  },
+  "pass": false,
+  "cases": [
+    {
+      "name": "default new refuses external symlink without partial writes",
+      "pass": false,
+      "error": "unsafe registry was accepted"
+    },
+    {
+      "name": "default new refuses relative external symlink without partial writes",
+      "pass": false,
+      "error": "unsafe registry was accepted"
+    },
+    {
+      "name": "default new refuses internal symlink without partial writes",
+      "pass": false,
+      "error": "unsafe registry was accepted"
+    },
+    {
+      "name": "default new refuses dangling symlink without partial writes",
+      "pass": false,
+      "error": "unsafe registry was accepted"
+    },
+    {
+      "name": "default new refuses directory without partial writes",
+      "pass": false,
+      "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'EISDIR: illegal operation on a directory, read\\n'\n"
+    },
+    {
+      "name": "default new refuses FIFO without partial writes",
+      "pass": false,
+      "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:24:31)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:58:86\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:27:36)\n+     at qualifySkillRegistryAdmission (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:57:72)\n+     at Object.<anonymous> (/private/tmp/mdkg-bug49.tdfzvp/baseline.cjs:5:14)\n+     at Module._compile (node:internal/modules/cjs/loader:1829:14)\n+     at Module._extensions..js (node:internal/modules/cjs/loader:1969:10)\n+     at Module.load (node:internal/modules/cjs/loader:1552:32) {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/Users/nick/omni-chat-rooms/projects/mdkg/dist/cli.js',\n+     'skill',\n+     'new',\n+     'admitted-skill',\n+     'Admitted skill',\n+     '--description',\n+     'Synthetic registry admission control',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+    },
+    {
+      "name": "default new refuses device symlink without partial writes",
+      "pass": false,
+      "error": "unsafe registry was accepted"
+    },
+    {
+      "name": "default new refuses oversized regular registry without partial writes",
+      "pass": false,
+      "error": "unsafe registry was accepted"
+    },
+    {
+      "name": "default new refuses linked skills ancestor without partial writes",
+      "pass": true
+    },
+    {
+      "name": "force refuses a linked registry without replacing an existing skill",
+      "pass": false,
+      "error": "Expected \"actual\" to be strictly unequal to: 0"
+    },
+    {
+      "name": "default regular missing registry retains customization",
+      "pass": true
+    },
+    {
+      "name": "default regular customized registry retains customization",
+      "pass": true
+    },
+    {
+      "name": "default regular managed registry retains customization",
+      "pass": true
+    },
+    {
+      "name": "default regular hardlinked registry retains customization",
+      "pass": true
+    },
+    {
+      "name": "CLI rejects unsupported custom root configuration without effects",
+      "pass": true
+    }
+  ],
+  "fixture_cleanup": "exact owned mkdtemp removed",
+  "prior_fixture_attempt": {
+    "kind": "bug49-current-source-baseline",
+    "head": "8ee44cf17ebd9a2b683e6e5d87784b9c8e450ec7",
+    "runtime": "v26.0.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "source_hashes": {
+      "src/commands/skill.ts": "a58452e7d84f09c54ecfaf080628ea3f23d918ebc3ae659398dfde4166dd1fb4",
+      "src/commands/skill_support.ts": "d217275acd6c58bed234bf55cfbfb41443e77ccc24b6ab30ed5bd84640b09833",
+      "src/commands/init.ts": "361b4271aa29f83f84202af84b3c6c1a431580f875269f964a91408ed5a6db38",
+      "tests/fixtures/skill-registry-admission.cjs": "066a8e6134f76b1226d3a991901759e499f05c83b70c5cd1cd2e4c69870cacd3"
+    },
+    "pass": false,
+    "cases": [
+      {
+        "name": "default new refuses external symlink without partial writes",
+        "pass": false,
+        "error": "unsafe registry was accepted"
+      },
+      {
+        "name": "default new refuses relative external symlink without partial writes",
+        "pass": false,
+        "error": "unsafe registry was accepted"
+      },
+      {
+        "name": "default new refuses internal symlink without partial writes",
+        "pass": false,
+        "error": "unsafe registry was accepted"
+      },
+      {
+        "name": "default new refuses dangling symlink without partial writes",
+        "pass": false,
+        "error": "unsafe registry was accepted"
+      },
+      {
+        "name": "default new refuses directory without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'EISDIR: illegal operation on a directory, read\\n'\n"
+      },
+      {
+        "name": "default new refuses FIFO without partial writes",
+        "pass": false,
+        "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:24:31)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:58:86\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:27:36)\n+     at qualifySkillRegistryAdmission (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/skill-registry-admission.cjs:57:78)\n+     at Object.<anonymous> (/private/tmp/mdkg-bug49.tdfzvp/baseline.cjs:5:14)\n+     at Module._compile (node:internal/modules/cjs/loader:1829:14)\n+     at Module._extensions..js (node:internal/modules/cjs/loader:1969:10)\n+     at Module.load (node:internal/modules/cjs/loader:1552:32) {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/Users/nick/omni-chat-rooms/projects/mdkg/dist/cli.js',\n+     'skill',\n+     'new',\n+     'admitted-skill',\n+     'Admitted skill',\n+     '--description',\n+     'Synthetic registry admission control',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+      },
+      {
+        "name": "default new refuses device symlink without partial writes",
+        "pass": false,
+        "error": "unsafe registry was accepted"
+      },
+      {
+        "name": "default new refuses oversized regular registry without partial writes",
+        "pass": false,
+        "error": "unsafe registry was accepted"
+      },
+      {
+        "name": "default new refuses linked skills ancestor without partial writes",
+        "pass": true
+      },
+      {
+        "name": "custom new refuses external symlink without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses relative external symlink without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses internal symlink without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses dangling symlink without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses directory without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses FIFO without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses device symlink without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses oversized regular registry without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "custom new refuses linked skills ancestor without partial writes",
+        "pass": false,
+        "error": "The input did not match the regular expression /contained|symbolic|linked|file|byte limit/i. Input:\n\n'config validation failed:\\n' +\n  'workspaces.root.path must be \".\"\\n' +\n  'workspaces.root.mdkg_dir must be \".mdkg\"\\n'\n"
+      },
+      {
+        "name": "force refuses a linked registry without replacing an existing skill",
+        "pass": false,
+        "error": "Expected \"actual\" to be strictly unequal to: 0"
+      },
+      {
+        "name": "default regular missing registry retains customization",
+        "pass": true
+      },
+      {
+        "name": "default regular customized registry retains customization",
+        "pass": true
+      },
+      {
+        "name": "default regular managed registry retains customization",
+        "pass": true
+      },
+      {
+        "name": "default regular hardlinked registry retains customization",
+        "pass": true
+      },
+      {
+        "name": "custom regular missing registry retains customization",
+        "pass": false,
+        "error": "config validation failed:\nworkspaces.root.path must be \".\"\nworkspaces.root.mdkg_dir must be \".mdkg\"\n\n\n4 !== 0\n"
+      },
+      {
+        "name": "custom regular customized registry retains customization",
+        "pass": false,
+        "error": "config validation failed:\nworkspaces.root.path must be \".\"\nworkspaces.root.mdkg_dir must be \".mdkg\"\n\n\n4 !== 0\n"
+      },
+      {
+        "name": "custom regular managed registry retains customization",
+        "pass": false,
+        "error": "config validation failed:\nworkspaces.root.path must be \".\"\nworkspaces.root.mdkg_dir must be \".mdkg\"\n\n\n4 !== 0\n"
+      },
+      {
+        "name": "custom regular hardlinked registry retains customization",
+        "pass": false,
+        "error": "config validation failed:\nworkspaces.root.path must be \".\"\nworkspaces.root.mdkg_dir must be \".mdkg\"\n\n\n4 !== 0\n"
+      }
+    ],
+    "fixture_cleanup": "exact owned mkdtemp removed"
+  },
+  "prior_fixture_disposition": "The first fixture attempted13 unsupported custom-root CLI configurations; current schema intentionally requires root path . and mdkg_dir .mdkg. Those are harness errors, not vulnerability cases. Preserve one explicit refusal control and move configurable helper behavior to direct-module tests."
+}
