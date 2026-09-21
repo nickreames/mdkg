@@ -74,15 +74,15 @@ explicit:
 
 ```bash
 mdkg validate
-mdkg git closeout --json
-mdkg git push-ready --remote origin --branch main --json
+mdkg git inspect --json
+git status --short
+git diff --check
 ```
 
-`mdkg git closeout` writes static JSON/Markdown receipts and seals DB snapshot
-evidence when project DB state participated. `mdkg git push-ready` is read-only
-and checks the explicit remote, branch, clean worktree, validation state, DB
-snapshot state, and credential boundary. Run `mdkg git push ...` only when a
-human or runtime has explicitly approved a real remote push.
+Use native Git to review and commit an explicit set of authored files. Graph
+validation and a clean diff do not authorize a commit or remote push. mdkg does
+not stage, commit, fetch or push for you. Optional DB snapshots are a separate
+explicit operation, not an automatic closeout side effect.
 
 ## First principle
 

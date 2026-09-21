@@ -270,32 +270,20 @@ Subgraph nodes are projected under the subgraph alias, for example `child_repo:t
 
 Use `mdkg graph refs <id-or-qid> --json` to inspect inbound and outbound scope, context, evidence, blocker, related, and structural links for local or read-only subgraph qids without mutating either graph.
 
-Use low-level Git lifecycle receipts when an agent run needs to accept an exact
-source revision, close out local mdkg state, or prove push readiness before an
-explicit remote update:
+Use read-only Git inspection to bind graph evidence to a local revision:
 
 ```bash
 mdkg git inspect --json
-mdkg git materialize --request materialize-request.json --json
-mdkg git clone git@github.com:org/repo.git --target worktrees/repo --branch main --json
-mdkg git fetch --remote origin --branch main --json
-mdkg git closeout --json
-mdkg git push-ready --remote origin --branch main --json
-mdkg git push --remote origin --branch main --stage-all --message "agent checkpoint" --json
 ```
 
-`mdkg git` uses the system Git CLI. Authentication stays external through SSH,
-credential helpers, `gh`, CI/runtime environment, or shell state; mdkg rejects
-embedded URL credentials and records only sanitized refs, hashes, policy names,
-and receipts. `materialize` accepts only strict
-`mdkg.git.materialize.request.v1` JSON, verifies the full target ref and
-accepted revision, and publishes a contained destination only after all checks
-pass; see the [verified Git materialization
-guide](https://docs.mdkg.dev/advanced-alpha/git-materialization/). `closeout`
-validates mdkg state before writing static JSON and
-Markdown receipts, and when the project DB participated it also seals the
-SQLite state and writes a deterministic dump. Treat real `mdkg git push` as an
-approval-gated operation in agent runtimes.
+The 0.6.0 candidate removes the Git mutation and lifecycle wrappers without
+compatibility aliases. Use native Git for clone, fetch, branches, worktrees,
+reviewed staging, commits, merges and push. Authentication and untrusted-source
+acceptance belong to the caller, not mdkg. Inspection returns local commit/tree
+hashes and sanitized descriptors without remote contact or Git-index writes;
+it is not proof of remote acceptance or execution. Optional graph receipts and
+DB snapshots remain explicit, separate operations. See the [native Git migration
+guide](https://docs.mdkg.dev/advanced-alpha/git-materialization/).
 
 Launch a local read-only MCP server when an MCP-capable agent should inspect a
 specific mdkg graph without receiving mutation tools:

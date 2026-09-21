@@ -2,22 +2,22 @@
 id: bug-36
 type: bug
 title: Remove Git mutation convenience commands from mdkg 0.6.0 without compatibility aliases
-status: backlog
+status: done
 priority: 1
 tags: []
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-36-38-verification.json]
 relates: []
-blocked_by: [task-833]
+blocked_by: [task-833, bug-38]
 blocks: []
-refs: [goal-84, dec-95, edd-82, test-484]
+refs: [goal-84, dec-95, edd-82, test-484, bug-38, test-485]
 context_refs: []
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-11
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 # Overview
 
@@ -68,4 +68,15 @@ Done only with exact removed/retained inventory and source/package-bound proof.
 
 # Links / Artifacts
 
-- dec-95; edd-82; task-833; test-484; task-828. Future implementation unclaimed.
+- Local implementation verification:
+  .mdkg/artifacts/goal-84/bug-36-38-verification.json. All six wrappers and their
+  exclusive implementation, flags and dispatch are removed without aliases.
+  Installed package/module/help/contract checks retain inspection only.
+- Materialization smoke membership is replaced, not removed, by the installed
+  Git-boundary smoke. Exact source/tarball hashes and all three Node runtimes
+  prove26 refusal cases per runtime before Git/auth tools or fixture writes.
+- Bug38/test485 qualify the retained inspector; full ordinary tests1402 pass.
+  CLI/docs/generated-reference/package guards and full/changed graph checks pass.
+- Test484 also awaits Bug37; native linked-worktree test478 and task828 final
+  independent security acceptance remain separate required publication gates.
+  This local implementation unit does not imply complete0.6.0 readiness.

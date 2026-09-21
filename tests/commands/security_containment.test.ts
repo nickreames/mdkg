@@ -144,17 +144,19 @@ test("cand-review-002-006 bundle create rejects a linked default output director
   assert.deepEqual(fs.readdirSync(outside), []);
 });
 
-test("cand-review-005-003 git clone rejects linked target ancestry", (t) => {
+test("cand-review-005-003 removed git clone refuses with linked target ancestry", (t) => {
   const root = initAgent("mdkg-security-git-clone-");
   createGitSource(root, "source");
   const outside = makeTempDir("mdkg-security-git-clone-outside-");
   if (!linkOrSkip(t, outside, path.join(root, "clones"), "dir")) return;
 
-  runRejected(root, ["git", "clone", "source", "--target", "clones/source", "--json"]);
+  const rejected = runCli(root, ["git", "clone", "source", "--target", "clones/source", "--json"]);
+  assert.equal(rejected.status, 1);
+  assert.match(rejected.stderr, /git requires inspect/);
   assert.deepEqual(fs.readdirSync(outside), []);
 });
 
-test("cand-review-005-004 git closeout rejects linked receipt ancestry", (t) => {
+test("cand-review-005-004 removed git closeout refuses with linked receipt ancestry", (t) => {
   const root = initAgent("mdkg-security-git-closeout-");
   const outside = makeTempDir("mdkg-security-git-closeout-outside-");
   gitOk(root, ["init", "-q"]);
@@ -163,7 +165,9 @@ test("cand-review-005-004 git closeout rejects linked receipt ancestry", (t) => 
   fs.mkdirSync(path.join(root, ".mdkg", "git"), { recursive: true });
   if (!linkOrSkip(t, outside, path.join(root, ".mdkg", "git", "closeouts"), "dir")) return;
 
-  runRejected(root, ["git", "closeout", "--json"]);
+  const rejected = runCli(root, ["git", "closeout", "--json"]);
+  assert.equal(rejected.status, 1);
+  assert.match(rejected.stderr, /git requires inspect/);
   assert.deepEqual(fs.readdirSync(outside), []);
 });
 

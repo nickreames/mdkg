@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 043009bbf550dd9ab58b9c65f234152aa7600ed884f97487d6dc34ef61b8b49f -->
+<!-- contract-hash: f1017c1d84dafed22a3f73c6a657dba774270b2ff72130a220a53f85d18f1d6c -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -10,7 +10,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - Tool: mdkg
 - Package version: 0.5.2
 - Schema version: 1
-- Command count: 120
+- Command count: 114
 - Categories: archive, bundle, capability, checkpoint, db, doctor, event, fix, format, git, global, goal, graph, guide, handoff, index, init, list, loop, manifest, mcp, new, next, pack, search, show, skill, spec, status, subgraph, task, upgrade, validate, work, workspace
 
 ## Categories
@@ -24,7 +24,7 @@ The page is generated from current command metadata in `dist/command-contract.js
 - event: 3
 - fix: 4
 - format: 1
-- git: 8
+- git: 2
 - global: 1
 - goal: 13
 - graph: 8
@@ -1687,230 +1687,13 @@ none
 mdkg git command
 
 - Command: `mdkg git`
-- Mode: Mutating command
-- Public status: stable / public
-- Danger level: mixed
-
-### When to use
-
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
-
-Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
-
-### Usage
-
-```text
-mdkg git inspect [--json]
-mdkg git materialize --request <file|-> [--json]
-mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-mdkg git fetch [--remote <name>] [--branch <name>] [--json]
-mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-mdkg git push-ready --remote <name> --branch <name> [--json]
-mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]
-```
-
-### Examples
-
-```bash
-mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-mdkg git inspect [--json]
-mdkg git materialize --request <file|-> [--json]
-```
-
-### Common flags
-
-- `--branch <name>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-- `--help`: --help, -h          Show help
-- `--json`: mdkg git inspect [--json]
-- `--output <path>`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-- `--queue-policy drain|paused`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-- `--remote <name>`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
-- `--request <file|->`: mdkg git materialize --request <file|-> [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--stage-all`: mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]
-- `--target <path>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-- `--version`: --version, -V       Show version
-
-### Output and safety
-
-- Output formats: text, json
-- Dry run: {"supported":false}
-- Side effects: inspect-or-mutate-git-backed-mdkg-project-lifecycle
-- Read paths: .mdkg/**
-- Write paths: .mdkg/db/**, .mdkg/git/**, .mdkg/index/**
-- Lock policy: mutation-lock-required-for-closeout-and-stage-all-push
-- Atomic write policy: atomic-file-writes-for-closeout-receipts
-- Receipts: git-closeout-receipt, git-inspect-receipt, git-push-ready-receipt, git-push-receipt
-
-### Related commands
-
-`mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git materialize`
-
-## git clone
-
-mdkg git clone command
-
-- Command: `mdkg git clone`
-- Mode: Mutating command
-- Public status: stable / public
-- Danger level: moderate
-
-### When to use
-
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
-
-Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
-
-### Usage
-
-```text
-mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-```
-
-### Examples
-
-```bash
-mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-```
-
-### Common flags
-
-- `--branch <name>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-- `--help`: --help, -h          Show help
-- `--json`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--target <path>`: mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]
-- `--version`: --version, -V       Show version
-
-### Output and safety
-
-- Output formats: text, json
-- Dry run: {"supported":false}
-- Side effects: clone-remote-git-repository-into-contained-target
-- Read paths: .mdkg/**
-- Write paths: <target>/**
-- Lock policy: not-required-for-contained-target
-- Atomic write policy: delegated-to-system-git
-- Receipts: git-clone-receipt
-
-### Related commands
-
-`mdkg git`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git materialize`
-
-## git closeout
-
-mdkg git closeout command
-
-- Command: `mdkg git closeout`
-- Mode: Mutating command
-- Public status: stable / public
-- Danger level: moderate
-
-### When to use
-
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
-
-Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
-
-### Usage
-
-```text
-mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-```
-
-### Examples
-
-```bash
-mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-```
-
-### Common flags
-
-- `--help`: --help, -h          Show help
-- `--json`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-- `--output <path>`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-- `--queue-policy drain|paused`: mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
-
-### Output and safety
-
-- Output formats: text, json
-- Dry run: {"supported":false}
-- Side effects: write-static-git-closeout-receipts-and-optional-db-snapshot
-- Read paths: .mdkg/**
-- Write paths: .mdkg/db/**, .mdkg/git/**, .mdkg/index/**
-- Lock policy: mutation-lock-required
-- Atomic write policy: atomic-file-writes-and-sqlite-vacuum-into
-- Receipts: git-closeout-receipt
-
-### Related commands
-
-`mdkg git`, `mdkg git clone`, `mdkg git fetch`, `mdkg git inspect`, `mdkg git materialize`
-
-## git fetch
-
-mdkg git fetch command
-
-- Command: `mdkg git fetch`
-- Mode: Mutating command
-- Public status: stable / public
-- Danger level: moderate
-
-### When to use
-
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
-
-Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
-
-### Usage
-
-```text
-mdkg git fetch [--remote <name>] [--branch <name>] [--json]
-```
-
-### Examples
-
-```bash
-mdkg git fetch [--remote <name>] [--branch <name>] [--json]
-```
-
-### Common flags
-
-- `--branch <name>`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
-- `--help`: --help, -h          Show help
-- `--json`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
-- `--remote <name>`: mdkg git fetch [--remote <name>] [--branch <name>] [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
-
-### Output and safety
-
-- Output formats: text, json
-- Dry run: {"supported":false}
-- Side effects: fetch-remote-git-refs
-- Read paths: .mdkg/**
-- Write paths: .git/**
-- Lock policy: delegated-to-system-git
-- Atomic write policy: delegated-to-system-git
-- Receipts: git-fetch-receipt
-
-### Related commands
-
-`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git inspect`, `mdkg git materialize`
-
-## git inspect
-
-mdkg git inspect command
-
-- Command: `mdkg git inspect`
 - Mode: Read-only command
 - Public status: stable / public
 - Danger level: read-only
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
+Use for read-only local Git state and sanitized revision descriptors. Use native Git for branches, worktrees, commits and remote operations; authentication stays external.
 
 Beginner safety: Safe for initial grounding. It should not change repository files.
 
@@ -1946,147 +1729,39 @@ mdkg git inspect [--json]
 
 ### Related commands
 
-`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git materialize`
+`mdkg git inspect`
 
-## git materialize
+## git inspect
 
-mdkg git materialize command
+mdkg git inspect command
 
-- Command: `mdkg git materialize`
-- Mode: Mutating command
-- Public status: stable / public
-- Danger level: moderate
-
-### When to use
-
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
-
-Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
-
-### Usage
-
-```text
-mdkg git materialize --request <file|-> [--json]
-```
-
-### Examples
-
-```bash
-mdkg git materialize --request <file|-> [--json]
-```
-
-### Common flags
-
-- `--help`: --help, -h          Show help
-- `--json`: mdkg git materialize --request <file|-> [--json]
-- `--request <file|->`: mdkg git materialize --request <file|-> [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--version`: --version, -V       Show version
-
-### Output and safety
-
-- Output formats: text, json
-- Dry run: {"supported":false}
-- Side effects: materialize-verified-git-source-into-contained-destination
-- Read paths: <remote-git-objects>, <request-file-or-stdin>
-- Write paths: <destination>/**
-- Lock policy: not-required-for-contained-destination
-- Atomic write policy: same-parent-temporary-tree-rename-after-verification
-- Receipts: mdkg.git.materialize.receipt.v1
-
-### Related commands
-
-`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`
-
-## git push
-
-mdkg git push command
-
-- Command: `mdkg git push`
-- Mode: Mutating command
-- Public status: stable / public
-- Danger level: high
-
-### When to use
-
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
-
-Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
-
-### Usage
-
-```text
-mdkg git push --remote <name> --branch <name> [--json]
-mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]
-```
-
-### Examples
-
-```bash
-mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]
-mdkg git push --remote <name> --branch <name> [--json]
-```
-
-### Common flags
-
-- `--branch <name>`: mdkg git push --remote <name> --branch <name> [--json]
-- `--help`: --help, -h          Show help
-- `--json`: mdkg git push --remote <name> --branch <name> [--json]
-- `--message`: - --stage-all writes closeout evidence, stages all changes, commits with --message, then runs push-ready before pushing
-- `--queue-policy drain|paused`: mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]
-- `--remote <name>`: mdkg git push --remote <name> --branch <name> [--json]
-- `--root`: --root, -r <path>   Run against a specific repo root
-- `--stage-all`: mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]
-- `--version`: --version, -V       Show version
-
-### Output and safety
-
-- Output formats: text, json
-- Dry run: {"supported":false}
-- Side effects: optional-closeout-stage-commit-and-real-git-push
-- Read paths: .mdkg/**
-- Write paths: .git/**, .mdkg/db/**, .mdkg/git/**, repo-files/**
-- Lock policy: mutation-lock-required
-- Atomic write policy: atomic-file-writes-plus-system-git
-- Receipts: git-push-receipt
-
-### Related commands
-
-`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`
-
-## git push-ready
-
-mdkg git push-ready command
-
-- Command: `mdkg git push-ready`
+- Command: `mdkg git inspect`
 - Mode: Read-only command
 - Public status: stable / public
 - Danger level: read-only
 
 ### When to use
 
-Use for Git-backed project clone, fetch, closeout, push-readiness, and explicit push workflows through system Git with external authentication.
+Use for read-only local Git state and sanitized revision descriptors. Use native Git for branches, worktrees, commits and remote operations; authentication stays external.
 
 Beginner safety: Safe for initial grounding. It should not change repository files.
 
 ### Usage
 
 ```text
-mdkg git push-ready --remote <name> --branch <name> [--json]
+mdkg git inspect [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg git push-ready --remote <name> --branch <name> [--json]
+mdkg git inspect [--json]
 ```
 
 ### Common flags
 
-- `--branch <name>`: mdkg git push-ready --remote <name> --branch <name> [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg git push-ready --remote <name> --branch <name> [--json]
-- `--remote <name>`: mdkg git push-ready --remote <name> --branch <name> [--json]
+- `--json`: mdkg git inspect [--json]
 - `--root`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -2099,11 +1774,11 @@ mdkg git push-ready --remote <name> --branch <name> [--json]
 - Write paths: none
 - Lock policy: none-read-only
 - Atomic write policy: none-read-only
-- Receipts: git-push-ready-receipt
+- Receipts: git-inspect-receipt
 
 ### Related commands
 
-`mdkg git`, `mdkg git clone`, `mdkg git closeout`, `mdkg git fetch`, `mdkg git inspect`
+`mdkg git`
 
 ## global
 

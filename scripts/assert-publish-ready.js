@@ -71,8 +71,8 @@ function requirePackageVersions() {
   if (!pkg.scripts || !pkg.scripts["smoke:loop"]) {
     fail("package.json is missing smoke:loop");
   }
-  if (!pkg.scripts || pkg.scripts["smoke:git-materialize"] !== "npm run build && node scripts/smoke-git-materialize.js") {
-    fail("package.json is missing the canonical smoke:git-materialize command");
+  if (!pkg.scripts || pkg.scripts["smoke:git-boundary"] !== "npm run build && node scripts/smoke-git-boundary.js" || pkg.scripts["smoke:git-materialize"]) {
+    fail("package.json must replace materialization with the canonical smoke:git-boundary gate");
   }
   if (pkg.scripts["ci:release"] !== "node scripts/release-ladder.js ci") {
     fail("package.json is missing the canonical bounded ci:release runner");
@@ -351,7 +351,7 @@ function requireCliBuild() {
     "loop plan",
     "loop next",
     "loop runs",
-    "git materialize",
+    "git inspect",
   ]) {
     if (!byKey.has(key)) {
       fail(`dist/command-contract.json is missing ${key}`);
@@ -418,30 +418,17 @@ function requireCliBuild() {
   ) {
     fail("dist/command-contract.json is missing truthful loop fork and dry-run safety metadata");
   }
-  const gitMaterialize = byKey.get("git materialize");
-  if (
-    !gitMaterialize ||
-    gitMaterialize.danger_level !== "moderate" ||
-    !gitMaterialize.write_paths.includes("<destination>/**") ||
-    gitMaterialize.lock_policy !== "not-required-for-contained-destination" ||
-    gitMaterialize.atomic_write_policy !== "same-parent-temporary-tree-rename-after-verification" ||
-    gitMaterialize.dry_run?.supported !== false ||
-    gitMaterialize.json_schema_ref !== "mdkg.git.materialize.receipt.v1" ||
-    !gitMaterialize.receipts.includes("mdkg.git.materialize.receipt.v1")
-  ) {
-    fail("dist/command-contract.json is missing truthful git materialize safety metadata");
+  for (const key of ["git", "git inspect"]) {
+    const command = byKey.get(key);
+    if (!command || command.danger_level !== "read-only" ||
+        command.write_paths.length !== 0 || command.lock_policy !== "none-read-only" ||
+        command.atomic_write_policy !== "none-read-only" ||
+        !command.side_effects.includes("none")) {
+      fail(`dist/command-contract.json must keep ${key} observational`);
+    }
   }
-  const materializeRequestFlag = gitMaterialize && gitMaterialize.flags.find((flag) => flag.name === "--request");
-  const materializeJsonFlag = gitMaterialize && gitMaterialize.flags.find((flag) => flag.name === "--json");
-  if (
-    !materializeRequestFlag ||
-    materializeRequestFlag.value !== "<file|->" ||
-    materializeRequestFlag.required !== true
-  ) {
-    fail("dist/command-contract.json must mark git materialize --request <file|-> as required");
-  }
-  if (!materializeJsonFlag || materializeJsonFlag.value !== null || materializeJsonFlag.required !== false) {
-    fail("dist/command-contract.json must keep bracketed git materialize --json optional and discoverable");
+  for (const subcommand of ["clone", "fetch", "push", "materialize", "closeout", "push-ready"]) {
+    if (byKey.has(`git ${subcommand}`)) fail(`removed git ${subcommand} must not be discoverable`);
   }
 }
 
@@ -476,11 +463,12 @@ function requireBuildFolders() {
   }
   requireFile("dist/graph/goal_scope.js");
   requireFile("dist/commands/subgraph.js");
-  const gitMaterialize = requireFile("dist/commands/git_materialize.js");
-  for (const expected of ["mdkg.git.materialize.request.v1", "mdkg.git.materialize.receipt.v1", "collectGitMaterializeReceipt"]) {
-    if (!gitMaterialize.includes(expected)) {
-      fail(`dist/commands/git_materialize.js is missing ${expected}`);
-    }
+  if (fs.existsSync(path.join(root, "dist/commands/git_materialize.js"))) {
+    fail("removed Git materialization module must not be packaged");
+  }
+  const gitModule = require(path.join(root, "dist/commands/git.js"));
+  if (JSON.stringify(Object.keys(gitModule)) !== JSON.stringify(["runGitInspectCommand"])) {
+    fail("Git command module must expose inspection only");
   }
   const subgraph = requireFile("dist/commands/subgraph.js");
   if (!subgraph.includes("runSubgraphAuditCommand") || !subgraph.includes("runSubgraphUpgradePlanCommand")) {

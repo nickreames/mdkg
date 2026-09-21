@@ -1,8 +1,8 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "043009bbf550dd9ab58b9c65f234152aa7600ed884f97487d6dc34ef61b8b49f",
+  "contract_hash": "f1017c1d84dafed22a3f73c6a657dba774270b2ff72130a220a53f85d18f1d6c",
   "package_version": "0.5.2",
-  "command_count": 120,
+  "command_count": 114,
   "categories": {
     "archive": 6,
     "bundle": 6,
@@ -13,7 +13,7 @@
     "event": 3,
     "fix": 4,
     "format": 1,
-    "git": 8,
+    "git": 2,
     "global": 1,
     "goal": 13,
     "graph": 8,
@@ -445,58 +445,6 @@
       "key": "git",
       "category": "git",
       "visibility": "public",
-      "danger_level": "mixed",
-      "output_formats": [
-        "text",
-        "json"
-      ],
-      "dry_run": {
-        "supported": false
-      }
-    },
-    {
-      "key": "git clone",
-      "category": "git",
-      "visibility": "public",
-      "danger_level": "moderate",
-      "output_formats": [
-        "text",
-        "json"
-      ],
-      "dry_run": {
-        "supported": false
-      }
-    },
-    {
-      "key": "git closeout",
-      "category": "git",
-      "visibility": "public",
-      "danger_level": "moderate",
-      "output_formats": [
-        "text",
-        "json"
-      ],
-      "dry_run": {
-        "supported": false
-      }
-    },
-    {
-      "key": "git fetch",
-      "category": "git",
-      "visibility": "public",
-      "danger_level": "moderate",
-      "output_formats": [
-        "text",
-        "json"
-      ],
-      "dry_run": {
-        "supported": false
-      }
-    },
-    {
-      "key": "git inspect",
-      "category": "git",
-      "visibility": "public",
       "danger_level": "read-only",
       "output_formats": [
         "text",
@@ -507,33 +455,7 @@
       }
     },
     {
-      "key": "git materialize",
-      "category": "git",
-      "visibility": "public",
-      "danger_level": "moderate",
-      "output_formats": [
-        "text",
-        "json"
-      ],
-      "dry_run": {
-        "supported": false
-      }
-    },
-    {
-      "key": "git push",
-      "category": "git",
-      "visibility": "public",
-      "danger_level": "high",
-      "output_formats": [
-        "text",
-        "json"
-      ],
-      "dry_run": {
-        "supported": false
-      }
-    },
-    {
-      "key": "git push-ready",
+      "key": "git inspect",
       "category": "git",
       "visibility": "public",
       "danger_level": "read-only",

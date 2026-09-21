@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "work_qids": ["root:bug-36", "root:bug-38", "root:test-485"],
+  "owner": "mdkg-project-agent",
+  "outcome": "VERIFIED_LOCAL_IMPLEMENTATION_UNIT_NOT_RELEASE_QUALIFICATION",
+  "source_base": "0b4d4af7eeb5db355d97cd55c7315fb4df5780ed",
+  "source_hashes": {
+    "src/cli.ts": "f72600b80038b39a5a4b6a317c8b71d01f14aa9af8ff8afe1daa0bf1f5648804",
+    "src/commands/git.ts": "1c5b6d6f0a19b3bf01d0ef833f321496ed79240b93469ec81515aa664b3a500c",
+    "src/util/argparse.ts": "ae8abedd007153cff3a0691691af96362e41b81854960df627f75e8c1ccc2ce7",
+    "tests/commands/git.test.ts": "f4f7cf3f3bf1a79607de4d8a836df7b9041f9c9199d1c54545f3d9ea3c54b4f7",
+    "tests/commands/git_inspect.test.ts": "5c997a2504972483b39e443e87ab29abc00577cdc751e92e1783b90b368064b6",
+    "scripts/smoke-git-boundary.js": "5783ee8964c970ef2ba6894d5e3dc8f7cc73f0eb965c97b9b6089695107bd900"
+  },
+  "removed_commands": ["git clone", "git fetch", "git push", "git materialize", "git closeout", "git push-ready"],
+  "deleted_implementation_and_retired_checks": ["src/commands/git_materialize.ts", "tests/commands/git_materialize.test.ts", "scripts/smoke-git-materialize.js"],
+  "retained": ["git inspect", "internal observational history/reconciliation helpers", "explicit generic DB snapshot and graph evidence operations"],
+  "release_gate_replacement": "smoke:git-boundary replaces all three smoke-manifest memberships of retired materialization coverage; no compatibility alias remains",
+  "extraction": {
+    "path": ".mdkg/artifacts/goal-84/consumer-extraction/",
+    "manifest_sha256": "7ad3dc58e759bd8891089ae532bba513170387a610dbbc77084917c11bc9068a",
+    "verification": "152 manifested files match; pre-removal source cd0eb6fcc3f5945cfa3c29fe0cb356d9805e518c; export absent from installed package",
+    "status": "LOCAL / UNDISPATCHED / CONSUMER ADOPTION UNVERIFIED"
+  },
+  "before_fix": {
+    "source_sha256": "20c7d3ff8ecf12d48fa31d36f41eee23f620a5ae8317b20da2420905b468aafd",
+    "focused_tests": {"total": 12, "failed": 10, "passed_controls": 2},
+    "observed": ["first unstaged column and filename corruption", "failed/oversized status becomes successful clean receipt", "malformed/truncated rename records accepted", "fallback remote name always origin", "URL query/fragment echo", "configured fsmonitor execution"]
+  },
+  "published_0_5_2": {
+    "provenance_ref": ".mdkg/artifacts/goal-83/baseline.json",
+    "retained_installed_cli_sha256": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+    "retained_installed_git_sha256": "256e74a583d12b644c0ff4a8b1c5b2540d98d4197ddba31f1669ba93e6dd270c",
+    "probe_sha256": "24e968da4ee998954363dbef22550e3839250eb0e32a6ba0d0f74dea216b9ccb",
+    "runtime": "v24.18.0",
+    "reproduced": ["first unstaged corruption", "non-origin descriptor mismatch", "synthetic URL suffix echo", "failed status false clean", "configured fsmonitor execution"],
+    "clean_control": "passed",
+    "source_bookends": "unchanged",
+    "remote_actions": "none; synthetic local repositories only"
+  },
+  "independent_review": {
+    "pre_patch": "fresh read-only source-to-sink investigator; no new exploit or scan count claimed",
+    "post_patch": "one fresh read-only bypass/regression reviewer; source snapshot 12594f5644ed29498125518276891ff044ff536fd1494602d25505c1ae30be12",
+    "confirmed_and_addressed": [
+      "Content-filter helper execution reproduced in a temporary pass-through fixture. Active clean/process filters now refuse before status, including initialized submodules; unused configured filters remain supported.",
+      "Non-URI helper names such as fixture_helper are withheld in every remote descriptor projection.",
+      "Tree hashes derive from the captured immutable commit. A temporary revision-change shim verifies commit/tree binding across live HEAD movement.",
+      "POSIX-only filename creation is separated from portable fixture cases. No Windows execution is claimed."
+    ],
+    "filter_probe_sha256": "a1fe3856c950c779d76b19e65289253c3f0a4fb3b4c17ac0237a2a61601c2255",
+    "security_classification": "functional blockers and descriptor hardening, not a new validated Standard-scan vulnerability; preserve chk-571 rejected broad credential candidate and original scan accounting",
+    "final_security_acceptance": "task-828 remains open"
+  },
+  "installed_candidate": {
+    "label": "intermediate source package still versioned 0.5.2; not published and not the final 0.6.0 seal",
+    "tarball_sha256": "aee02deaff63d3690511405ded534ce965a36df456af555463f90ad65ae218a1",
+    "artifact_usage_receipt_sha256": "e8acbd854d10ab5c468127611a6e2a97dd81507a67897802d6fddbf2b9316956",
+    "runtimes": ["v24.15.0", "v24.18.0", "v26.0.0"],
+    "per_runtime": {"removed_command_and_flag_refusals": 26, "inspection_cases": 16, "failed": 0},
+    "artifact_reuse": "all three runtimes installed exact same bytes via the existing immutable artifact proxy",
+    "fixture_preservation": "path/type/mode/hash inventories unchanged by observations and refusals, including Git index bytes; synthetic helper markers absent",
+    "temporary_fixture_cleanup": "smoke-owned repositories and installations removed after each run"
+  },
+  "validation": {
+    "build": "passed",
+    "focused_git_and_containment": {"passed": 53, "failed": 0, "skipped": 0},
+    "full_tests": {"passed": 1402, "failed": 0, "skipped": 0, "duration_ms": 144294.8085},
+    "cli_matrix": "passed",
+    "docs_check_built": "passed; generated references, release-note data and 472 command examples",
+    "publish_readiness_static_guard": "passed; not publication authority or complete release qualification",
+    "full_graph": {"errors": 0, "warnings": 3, "warning_scope": "preserved stale imported bundles"},
+    "changed_graph": {"errors": 0, "warnings": 0},
+    "sqlite": "db index verify --json passed all five fresh cache checks",
+    "git_diff_check": "passed",
+    "operator_command_correction": "index --verify was an unsupported verification invocation and rebuilt only authorized derived caches; no verification evidence is taken from it. The supported db index verify command was run separately. General unknown-option handling remains an audit observation."
+  },
+  "protected_bookends": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "limitations": [
+    "macOS arm64 only; no Windows, hosted CI, remote-authentication, provider, production or consumer-adoption proof",
+    "Inspection is a live observation under the one-writer checkout contract, not an atomic snapshot or hostile concurrent-filesystem sandbox",
+    "Configured content filters on tracked files require explicit native Git review; mdkg neither executes the helpers nor disables normalization to fabricate status",
+    "Bug35 owns remaining observational Git helper coverage outside git inspect",
+    "Bug7, Bug17, Bug35, Bug37, test478/test484, task828/829/830 remain separate incomplete release gates",
+    "No source migration, bundle/subgraph refresh, remote Git, push, tag, release or publication occurred"
+  ],
+  "skill_coverage": ["pursue-mdkg-goal", "build-pack-and-execute-task", "service-boundary-ownership-check", "verify-close-and-checkpoint", "source-grounded-diagnose-and-fix", "codex-security:fix-finding"],
+  "skill_candidates": []
+}

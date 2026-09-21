@@ -78,19 +78,7 @@ import {
   runGraphRefsCommand,
 } from "./commands/graph";
 import { runGraphMigrateCommand, runGraphRecoverCommand, runGraphReconcileCommand } from "./commands/graph_identity";
-import {
-  runGitCloneCommand,
-  runGitCloseoutCommand,
-  runGitFetchCommand,
-  runGitInspectCommand,
-  runGitPushCommand,
-  runGitPushReadyCommand,
-} from "./commands/git";
-import {
-  collectGitMaterializeReceipt,
-  GitMaterializeError,
-  GitMaterializeReceipt,
-} from "./commands/git_materialize";
+import { runGitInspectCommand } from "./commands/git";
 import {
   runSubgraphAddCommand,
   runSubgraphAuditCommand,
@@ -217,7 +205,7 @@ function printUsage(log: LogFn): void {
   log("  archive     Add, list, show, verify, and compress archive sidecars");
   log("  bundle      Create, list, show, and verify full graph snapshot bundles");
   log("  graph       Clone, fork, import, and inspect mdkg graph references");
-  log("  git         Materialize, clone, fetch, inspect, close out, and push Git-backed projects");
+  log("  git         Inspect local Git state and sanitized revision descriptors");
   log("  subgraph    Register, audit, plan, sync, materialize, and verify read-only child graph snapshots");
   log("  work        Create and update work contracts, orders, receipts, and artifacts");
   log("  loop        List, show, fork, plan, and inspect first-class loop nodes");
@@ -896,76 +884,12 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
 }
 
 function printGitHelp(log: LogFn, subcommand?: string): void {
-  switch ((subcommand ?? "").toLowerCase()) {
-    case "inspect":
-      log("Usage:");
-      log("  mdkg git inspect [--json]");
-      log("\nNotes:");
-      log("  - read-only Git worktree, remote, branch, status, descriptor, and accepted-revision receipt");
-      log("  - remote URLs are redacted when userinfo is present");
-      break;
-    case "clone":
-      log("Usage:");
-      log("  mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]");
-      log("\nNotes:");
-      log("  - uses the system Git CLI and external Git auth");
-      log("  - --target must be empty or absent and stay inside the current repo");
-      log("  - repository refs must not embed credentials");
-      break;
-    case "materialize":
-      log("Usage:");
-      log("  mdkg git materialize --request <file|-> [--json]");
-      log("\nNotes:");
-      log("  - accepts only schema mdkg.git.materialize.request.v1 JSON");
-      log("  - verifies the full target ref, expected commit, optional tree, and policy checks before publishing");
-      log("  - uses external auth and an atomic contained destination; receipts never include credentials or raw Git output");
-      break;
-    case "fetch":
-      log("Usage:");
-      log("  mdkg git fetch [--remote <name>] [--branch <name>] [--json]");
-      log("\nNotes:");
-      log("  - defaults to remote origin");
-      log("  - auth stays external through Git credential helpers, SSH, gh, CI env, or shell state");
-      break;
-    case "closeout":
-      log("Usage:");
-      log("  mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]");
-      log("\nNotes:");
-      log("  - validates mdkg state before writing closeout receipts");
-      log("  - when the project DB participated, seals SQLite state and writes a deterministic dump");
-      log("  - writes static JSON and Markdown receipts under .mdkg/git/closeouts by default");
-      break;
-    case "push-ready":
-      log("Usage:");
-      log("  mdkg git push-ready --remote <name> --branch <name> [--json]");
-      log("\nNotes:");
-      log("  - read-only high-bar preflight for explicit Git remote/branch push");
-      log("  - requires clean worktree, valid mdkg graph, external auth boundary, and valid DB snapshot when DB state participated");
-      break;
-    case "push":
-      log("Usage:");
-      log("  mdkg git push --remote <name> --branch <name> [--json]");
-      log("  mdkg git push --remote <name> --branch <name> --stage-all --message <text> [--queue-policy drain|paused] [--json]");
-      log("\nNotes:");
-      log("  - real Git push via system Git; requires explicit remote and branch");
-      log("  - --stage-all writes closeout evidence, stages all changes, commits with --message, then runs push-ready before pushing");
-      log("  - no raw credentials, tokens, SSH keys, prompts, payloads, or provider auth are stored in receipts");
-      break;
-    default:
-      log("Usage:");
-      log("  mdkg git inspect [--json]");
-      log("  mdkg git materialize --request <file|-> [--json]");
-      log("  mdkg git clone <repository-ref> --target <path> [--branch <name>] [--json]");
-      log("  mdkg git fetch [--remote <name>] [--branch <name>] [--json]");
-      log("  mdkg git closeout [--queue-policy drain|paused] [--output <path>] [--json]");
-      log("  mdkg git push-ready --remote <name> --branch <name> [--json]");
-      log("  mdkg git push --remote <name> --branch <name> [--stage-all --message <text>] [--json]");
-      log("\nBoundaries:");
-      log("  - mdkg git is a low-level Git lifecycle surface, not project-memory semantic search");
-      log("  - system Git is the v1 execution backend");
-      log("  - authentication stays external; mdkg records only refs, hashes, policy names, and receipts");
-      log("  - real push operations require explicit remote and branch and should be approval-gated by the caller");
-  }
+  if (subcommand && subcommand.toLowerCase() !== "inspect") throw new UsageError("unknown git subcommand");
+  log("Usage:");
+  log("  mdkg git inspect [--json]");
+  log("\nNotes:");
+  log("  - read-only local revision and sanitized repository descriptors");
+  log("  - use native Git for branches, worktrees, commits and remote operations");
   printGlobalOptions(log);
 }
 
@@ -2319,119 +2243,16 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
 }
 
 function runGitSubcommand(parsed: ParsedArgs, root: string): ExitCode {
-  const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
-  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-  switch (subcommand) {
-    case "inspect": {
-      if (parsed.positionals.length > 2) {
-        throw new UsageError("git inspect does not accept positional arguments");
-      }
-      runGitInspectCommand({ root, json });
-      return 0;
-    }
-    case "materialize":
-      throw new UsageError("git materialize requires the asynchronous CLI entrypoint");
-    case "clone": {
-      const repository = parsed.positionals[2];
-      if (!repository || parsed.positionals.length > 3) {
-        throw new UsageError("git clone requires <repository-ref>");
-      }
-      const target = requireFlagValue("--target", parsed.flags["--target"]);
-      if (!target) {
-        throw new UsageError("git clone requires --target <path>");
-      }
-      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
-      runGitCloneCommand({ root, repository, target, branch, json });
-      return 0;
-    }
-    case "fetch": {
-      if (parsed.positionals.length > 2) {
-        throw new UsageError("git fetch does not accept positional arguments");
-      }
-      const remote = requireFlagValue("--remote", parsed.flags["--remote"]);
-      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
-      runGitFetchCommand({ root, remote, branch, json });
-      return 0;
-    }
-    case "closeout": {
-      if (parsed.positionals.length > 2) {
-        throw new UsageError("git closeout does not accept positional arguments");
-      }
-      const queuePolicy = parseQueuePolicyFlag(parsed.flags["--queue-policy"]);
-      const output = requireFlagValue("--output", parsed.flags["--out"]);
-      runGitCloseoutCommand({ root, queuePolicy, output, json });
-      return 0;
-    }
-    case "push-ready": {
-      if (parsed.positionals.length > 2) {
-        throw new UsageError("git push-ready does not accept positional arguments");
-      }
-      const remote = requireFlagValue("--remote", parsed.flags["--remote"]);
-      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
-      runGitPushReadyCommand({ root, remote, branch, json });
-      return 0;
-    }
-    case "push": {
-      if (parsed.positionals.length > 2) {
-        throw new UsageError("git push does not accept positional arguments");
-      }
-      const remote = requireFlagValue("--remote", parsed.flags["--remote"]);
-      const branch = requireFlagValue("--branch", parsed.flags["--branch"]);
-      const message = requireFlagValue("--message", parsed.flags["--message"]);
-      const stageAll = parseBooleanFlag("--stage-all", parsed.flags["--stage-all"]);
-      const queuePolicy = parseQueuePolicyFlag(parsed.flags["--queue-policy"]);
-      runGitPushCommand({ root, remote, branch, message, stageAll, queuePolicy, json });
-      return 0;
-    }
-    default:
-      throw new UsageError("git requires inspect/materialize/clone/fetch/closeout/push-ready/push");
+  if ((parsed.positionals[1] ?? "").toLowerCase() !== "inspect") throw new UsageError("git requires inspect");
+  if (parsed.positionals.length !== 2) throw new UsageError("git inspect does not accept positional arguments");
+  for (const flag of Object.keys(parsed.flags)) {
+    if (flag !== "--root" && flag !== "--json") throw new UsageError(`git inspect does not accept ${flag}`);
   }
+  runGitInspectCommand({ root, json: parseBooleanFlag("--json", parsed.flags["--json"]) });
+  return 0;
 }
 
-function printGitMaterializeReceipt(
-  receipt: GitMaterializeReceipt,
-  json: boolean,
-  runtime: ResolvedCliRuntime
-): void {
-  if (json) {
-    runtime.log(JSON.stringify(receipt, null, 2));
-    return;
-  }
-  if (receipt.ok) {
-    runtime.log("git materialize accepted");
-    runtime.log(`destination: ${receipt.destination.path ?? "(none)"}`);
-    runtime.log(`commit: ${receipt.observed_revision.commit ?? "(none)"}`);
-    runtime.log(`tree: ${receipt.observed_revision.tree ?? "(none)"}`);
-    return;
-  }
-  runtime.error(`git materialize failed: ${receipt.reason_code}`);
-  runtime.error(`destination: ${receipt.destination.state}`);
-  runtime.error(`cleanup: ${receipt.cleanup.state}`);
-}
 
-async function runGitMaterializeSubcommand(
-  parsed: ParsedArgs,
-  root: string,
-  runtime: ResolvedCliRuntime
-): Promise<ExitCode> {
-  if (parsed.positionals.length > 2) {
-    throw new UsageError("git materialize does not accept positional arguments");
-  }
-  const request = requireFlagValue("--request", parsed.flags["--request"]);
-  if (!request) throw new UsageError("git materialize requires --request <file|->");
-  const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-  try {
-    const receipt = await collectGitMaterializeReceipt({ root, request });
-    printGitMaterializeReceipt(receipt, json, runtime);
-    return 0;
-  } catch (error) {
-    if (error instanceof GitMaterializeError) {
-      printGitMaterializeReceipt(error.receipt, json, runtime);
-      return 2;
-    }
-    throw error;
-  }
-}
 
 function runSubgraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
@@ -3743,8 +3564,12 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   }
 
   if (parsed.help) {
-    printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
-    return 0;
+    try {
+      printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
+      return 0;
+    } catch (error) {
+      return handleCommandError(error, parsed.positionals[0] ?? "help", io);
+    }
   }
   if (parsed.version) {
     io.log(readPackageVersion());
@@ -3758,8 +3583,12 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
   }
 
   if (command === "help") {
-    printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
-    return 0;
+    try {
+      printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
+      return 0;
+    } catch (error) {
+      return handleCommandError(error, parsed.positionals[1] ?? "help", io);
+    }
   }
 
   const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
@@ -3785,8 +3614,12 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
   }
 
   if (parsed.help) {
-    printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
-    return 0;
+    try {
+      printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
+      return 0;
+    } catch (error) {
+      return handleCommandError(error, parsed.positionals[0] ?? "help", io);
+    }
   }
   if (parsed.version) {
     io.log(readPackageVersion());
@@ -3800,8 +3633,12 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
   }
 
   if (command === "help") {
-    printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
-    return 0;
+    try {
+      printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
+      return 0;
+    } catch (error) {
+      return handleCommandError(error, parsed.positionals[1] ?? "help", io);
+    }
   }
 
   const root = parsed.root ? path.resolve(parsed.root) : io.cwd();
@@ -3813,9 +3650,6 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
   try {
     if (command === "mcp") {
       return await runMcpSubcommand(parsed, root);
-    }
-    if (command === "git" && (parsed.positionals[1] ?? "").toLowerCase() === "materialize") {
-      return await runGitMaterializeSubcommand(parsed, root, io);
     }
     return runCommand(parsed, root, io);
   } catch (err) {

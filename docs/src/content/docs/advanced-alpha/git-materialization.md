@@ -1,120 +1,76 @@
 ---
-title: Verified Git Materialization
-description: Accept an exact Git revision into a contained destination with bounded evidence.
+title: Native Git and mdkg
+description: Migrate removed Git wrappers to native Git and retain read-only graph evidence.
 ---
 
-Use `mdkg git materialize` when an orchestrator has already selected a Git source and must prove that the local tree exactly matches an accepted commit before making it available to later work. This is an advanced alpha source-ingestion boundary, not a package manager, deployment command, or replacement for `mdkg git clone`.
+## Breaking change in 0.6.0
 
-## Request contract
+The Git materialization and lifecycle wrappers are removed completely in the
+0.6.0 candidate. The former subcommands `clone`, `fetch`, `push`,
+`materialize`, `closeout`, and `push-ready` have no compatibility aliases.
+This URL remains available so existing documentation links do not break.
 
-The command accepts one strict JSON object from a file or standard input:
+mdkg owns graph meaning and portable project memory. Native Git owns repository
+transport, branches, worktrees, staging, commits, merges and remote updates.
+Authentication remains external to mdkg. A consumer that accepts untrusted
+repositories must own its authentication, containment, hook/submodule policy,
+cleanup, and exact-revision verification; invoking Git alone does not provide
+that security boundary.
+
+## Read-only revision inspection
+
+`mdkg git inspect` remains available:
 
 ```bash
-mdkg git materialize --request materialize-request.json --json
+mdkg git inspect --json
+mdkg validate --json
 ```
 
-```json
-{
-  "schema": "mdkg.git.materialize.request.v1",
-  "source_ref": "catalog-source-v1",
-  "repository_ref": "https://github.com/example/project.git",
-  "access_ref": "public-https",
-  "auth_capability": "unauthenticated",
-  "target_ref": "refs/heads/main",
-  "expected_commit": "0123456789abcdef0123456789abcdef01234567",
-  "expected_tree": "89abcdef0123456789abcdef0123456789abcdef",
-  "destination": "sources/project",
-  "depth": "full",
-  "submodule_policy": "deny",
-  "project_memory_policy": "optional",
-  "correlation_ref": "run-42",
-  "evidence_refs": ["approval-17"]
-}
-```
+Inspection reports local commit/tree hashes, sanitized remote descriptors and
+working-tree state without contacting remotes or refreshing the Git index.
+Configured filesystem-monitor helpers are disabled for this observation. Status
+paths and columns are preserved, including rename/copy source paths. Failed or
+incomplete observations produce an error, never a successful clean receipt.
+If tracked content requires a configured clean/process filter, including inside
+an initialized submodule, inspection refuses rather than running that helper or
+disabling normalization and reporting misleading changes. Review the filter
+before using native Git to inspect that repository.
 
-The schema rejects unknown fields, duplicate keys, YAML, control characters, embedded credentials, credential-shaped opaque refs, option-shaped values, unsupported protocols, partial refs, abbreviated object ids, and unsafe destinations before Git executes.
+Remote descriptors are display evidence, not reusable transport inputs. URL
+userinfo, queries and fragments are omitted; opaque helper payloads and malformed
+URL-like values are withheld. This is not a general-purpose secret detector for
+arbitrary local paths or repository names. Authentication remains external.
+These are local observations, not remote acceptance, deployment or execution
+proof. Structural receipt validation does not authenticate external work.
 
-| Field | Contract |
+## Native Git equivalents
+
+| Former responsibility | Explicit replacement |
 | --- | --- |
-| `source_ref` | Stable caller-owned source identity. |
-| `repository_ref` | Credential-free HTTPS, SSH, Git, file, SCP-like, or local Git source. |
-| `access_ref` | Stable caller-owned access-policy identity, never a credential. |
-| `auth_capability` | One of `unauthenticated`, `gh`, `ssh-agent`, `credential-helper`, or `git-environment`. |
-| `target_ref` | Full `refs/heads/...` or `refs/tags/...` ref. Annotated tags are peeled to their commit. |
-| `expected_commit` | Required full SHA-1 or SHA-256 commit id. |
-| `expected_tree` | Optional full tree id using the same object format as the commit. |
-| `destination` | Contained relative path beneath the current mdkg root. |
-| `depth` | `full` or a positive integer. |
-| `submodule_policy` | `deny` rejects gitlinks; `ignore` records bounded gitlink evidence without initializing submodules. |
-| `project_memory_policy` | `required`, `optional`, or `forbidden` for discovered `.mdkg/config.json`. |
-| `correlation_ref`, `evidence_refs` | Optional bounded opaque non-secret caller refs copied into the receipt. |
+| Clone or fetch a repository | Native Git clone/fetch under the caller's authority and security policy. |
+| Materialize a verified source | Consumer-owned source acceptance; verify pinned revisions, isolate untrusted content and record consumer evidence. |
+| Closeout or push readiness | Run mdkg validation and inspect its evidence, then independently review native Git status and diff. |
+| Stage, commit or push | Native Git with an explicit reviewed path list and separately authorized destination. |
+| Optional DB checkpoint | Explicit generic mdkg DB snapshot operations; never infer them from a Git operation. |
 
-`source_ref`, `access_ref`, `correlation_ref`, and each `evidence_refs` value are identifiers, not secret containers. Stable namespaced values such as `catalog://org/source-v1`, `policy://git/public-read`, `run://materialization/42`, and `evidence://approval/17` are accepted. Assignment-shaped values and recognizable bearer, token, API-key, private-key, cloud-key, and JWT forms are rejected before Git executes. Put credentials only in the declared external authentication capability.
+Do not replace the old stage-all wrapper with blind broad staging. Review authored
+memory, derived caches, secrets, and unrelated work before choosing commit paths.
+Preserve historical receipts as historical evidence; do not rewrite them into
+claims that a new workflow executed.
 
-## Acceptance sequence
+## Branches and worktrees
 
-mdkg invokes system Git with an argument array, disables prompts and repository hooks, prohibits recursive submodules, fetches only the declared full ref, and verifies the observed commit, tree, and object format. Project-memory validation reads the candidate graph without indexing it and without executing repository scripts, hooks, skills, or commands.
+Use one writer per checkout and ordinary linked worktrees for parallel branches.
+A branch's authored nodes remain usable before commit. Graph reconciliation and
+native Git integration are separate review steps; reconciliation does not stage
+files, merge Git history, or grant authority to commit or push. Checkout-local
+selection, locks, journals and live DB state are not shared graph authority.
 
-The candidate stays in a same-parent temporary directory until every identity and policy check passes. Acceptance uses a same-parent atomic rename. An existing destination, a symlink escape, cancellation, or any failed check leaves no accepted destination. Cancellation terminates the active Git process group and removes bounded temporary state.
+The 0.6.0 release qualification must verify the complete linked-worktree and
+ancestry-preserving integration protocol before release claims are made. A
+simple worktree run does not prove submodule-backed topology or concurrent
+writes to the same checkout.
 
-A positive numeric depth applies to clone and fetch. It is transport behavior, not permission to fetch an object id directly. Use `full` when history depth itself should not constrain the accepted source.
-
-## Authentication and redaction
-
-Authentication remains external. The declared capability only asks mdkg to confirm that the expected auth class is available:
-
-- `unauthenticated` requires no auth state.
-- `gh` checks `gh auth status`.
-- `ssh-agent` checks that an SSH agent socket is declared.
-- `credential-helper` checks that Git has a credential helper configured.
-- `git-environment` checks for supported Git or SSH askpass/command environment configuration.
-
-Receipts retain only capability availability and a bounded reason code. They never retain credential values, environment values, helper output, socket paths, raw Git output, repository contents, or absolute local paths. Repository evidence uses a transport, bounded label, and hash rather than echoing the raw source ref.
-
-## Receipt and failures
-
-Success and failure both use `mdkg.git.materialize.receipt.v1`. A success receipt includes the request hash, expected and observed revision identities, object format, policy outcomes, destination state, cleanup state, reason code, and warnings:
-
-```json
-{
-  "schema": "mdkg.git.materialize.receipt.v1",
-  "action": "git.materialize",
-  "ok": true,
-  "reason_code": "accepted",
-  "request_hash": "sha256...",
-  "observed_revision": {
-    "commit": "0123456789abcdef0123456789abcdef01234567",
-    "tree": "89abcdef0123456789abcdef0123456789abcdef",
-    "object_format": "sha1"
-  },
-  "destination": {
-    "path": "sources/project",
-    "state": "accepted",
-    "published": true
-  },
-  "cleanup": {
-    "state": "complete",
-    "temporary_paths_remaining": 0
-  }
-}
-```
-
-Materialization failures exit with code `2` and a bounded receipt. Representative reason codes include `invalid_request`, `auth_unavailable`, `destination_exists`, `target_ref_missing`, `commit_mismatch`, `tree_mismatch`, `submodules_denied`, `project_memory_required`, `project_memory_forbidden`, `project_memory_invalid`, `cancelled`, and `cleanup_failed`. Treat the reason code as the stable diagnostic surface; do not depend on raw Git stderr.
-
-## Project-memory policy
-
-- `required`: the accepted tree must contain valid mdkg project memory.
-- `optional`: validate project memory when present; a source without `.mdkg/config.json` is accepted.
-- `forbidden`: reject a source that contains `.mdkg/config.json`.
-
-Discovery is intentionally inert. It does not hydrate SQLite, rebuild indexes, install skills, or execute repository-controlled behavior.
-
-## Clone compatibility
-
-`mdkg git clone` remains the direct system-Git convenience command for a caller that wants a contained clone without the strict request/accepted-revision protocol:
-
-```bash
-mdkg git clone https://github.com/example/project.git --target worktrees/project --branch main --json
-```
-
-Use `mdkg git materialize` for policy-bound source acceptance and bounded evidence. Use `mdkg git clone` for the existing clone workflow. Use `mdkg graph clone|fork|import-template` for mdkg graph-template movement rather than repository materialization.
+Use [Graph movement](/advanced-alpha/graph-movement/) for graph operations and
+[Project DB and queues](/advanced-alpha/project-db-queues/) for explicit optional
+local state. There is no Git-workflow fallback behind another mdkg command.

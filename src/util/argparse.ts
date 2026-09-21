@@ -99,14 +99,10 @@ const VALUE_FLAGS = new Set([
   "--visibility",
   "--source-path",
   "--source-repo",
-  "--remote",
-  "--branch",
-  "--message",
   "--max-stale-seconds",
   "--queue-policy",
   "--requires",
   "--target",
-  "--request",
   "--snapshot",
   "--family",
   "--start-goal",
@@ -161,7 +157,6 @@ const BOOLEAN_FLAGS = new Set([
   "--clean",
   "--gitignore",
   "--select-goal",
-  "--stage-all",
   "--stdio",
 ]);
 

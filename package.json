@@ -17,7 +17,7 @@
     "test:coverage:built": "node scripts/coverage-contract.js run",
     "test:coverage:measure": "npm run build && npm run build:test && node scripts/coverage-contract.js measure",
     "smoke:consumer": "npm run build && node scripts/smoke-consumer.js",
-    "smoke:git-materialize": "npm run build && node scripts/smoke-git-materialize.js",
+    "smoke:git-boundary": "npm run build && node scripts/smoke-git-boundary.js",
     "smoke:loop": "npm run build && node scripts/smoke-loop.js",
     "smoke:matrix": "npm run build && node scripts/smoke-command-matrix.js",
     "smoke:upgrade": "npm run build && node scripts/smoke-upgrade.js",

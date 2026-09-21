@@ -4,7 +4,7 @@ type: goal
 title: Audit and locally qualify mdkg 0.6.0
 status: progress
 priority: 1
-goal_state: active
+goal_state: paused
 goal_condition: Complete full audit and installed consumer qualification with all publication blockers independently verified and one exact draft 0.6.0 candidate sealed without publication.
 scope_refs: [task-823, task-824, task-825, task-826, task-827, task-829, task-830, test-477, test-478, test-479, test-480, test-481, test-482, task-833, test-484]
 active_node: task-833
