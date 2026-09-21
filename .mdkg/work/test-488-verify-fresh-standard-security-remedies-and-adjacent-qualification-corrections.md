@@ -117,6 +117,17 @@ matrix before completion. Test487 supplies required supported-platform proof.
 
 # Notes / Follow-ups
 
+2026-09-21 Bug50 intermediate local remedy:1664 full and71 focused source tests
+pass, plus26 installed cases each on Node24.15.0/24.18.0/26.0.0 macOS arm64.
+Receipts: bug-50-baseline.json, bug-50-current-validation.json and
+bug-50-installed-verification.json under .mdkg/artifacts/goal-86/. Admission
+and all nine mandatory checks are required for success; status remains an
+observational exit0 receipt and verify fails on invalid inputs. Full synthetic
+fixture inventories remain unchanged. One source-only independent review found
+no concrete remaining Bug50 bypass. Linked-input authority, native read-only
+SQLite semantics, ancestor races, Linux and final qualification remain separate;
+this acceptance node stays incomplete. No blocked context or old scan recovery.
+
 2026-09-21 Bug49 intermediate local remedy:1658 full and164 focused source tests
 pass, plus19 installed cases each on Node24.15.0/24.18.0/26 macOS arm64. Receipts:
 bug-49-baseline.json, bug-49-current-validation.json and

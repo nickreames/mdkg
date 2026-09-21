@@ -1,0 +1,251 @@
+{
+  "kind": "bug50-current-source-baseline",
+  "head": "c0a51fbb0975c3b0b7df4b9ac6ac8bcf4384260f",
+  "runtime": "v26.0.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "source_hashes": {
+    "src/core/project_db_snapshot.ts": "850a5285dcf2458ad69a942ad5afd6e1ae426710ec0944cc2a44c030b8db150d",
+    "src/commands/db.ts": "c6ef5e809982bda0c7cc1c2bce6062f1a2ec1ed851ff2f235e0be49fa9939641"
+  },
+  "pass": false,
+  "cases": [
+    {
+      "name": "valid drained snapshot executes every mandatory check without effects",
+      "pass": true
+    },
+    {
+      "name": "nonempty directories at snapshot are invalid",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "missing snapshot reports missing",
+      "pass": true
+    },
+    {
+      "name": "nonempty directories at manifest are invalid",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "missing manifest reports missing",
+      "pass": true
+    },
+    {
+      "name": "nonempty directories at snapshot+manifest are invalid",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "missing snapshot+manifest reports missing",
+      "pass": true
+    },
+    {
+      "name": "snapshot FIFO refuses without blocking",
+      "pass": false,
+      "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:9:31)\n+     at inspect (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:37:20)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:71:96\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:23:39)\n+     at qualifySnapshotVerification (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:71:7)\n+     at [stdin]:1:208\n+     at runScriptInThisContext (node:internal/vm:219:10)\n+     at node:internal/process/execution:483:12 {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/Users/nick/omni-chat-rooms/projects/mdkg/dist/cli.js',\n+     'db',\n+     'snapshot',\n+     'verify',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+    },
+    {
+      "name": "snapshot device target refuses",
+      "pass": true
+    },
+    {
+      "name": "snapshot linked directory is invalid",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "manifest FIFO refuses without blocking",
+      "pass": false,
+      "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:9:31)\n+     at inspect (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:37:20)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:71:96\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:23:39)\n+     at qualifySnapshotVerification (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:71:7)\n+     at [stdin]:1:208\n+     at runScriptInThisContext (node:internal/vm:219:10)\n+     at node:internal/process/execution:483:12 {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/Users/nick/omni-chat-rooms/projects/mdkg/dist/cli.js',\n+     'db',\n+     'snapshot',\n+     'verify',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+    },
+    {
+      "name": "manifest device target refuses",
+      "pass": true
+    },
+    {
+      "name": "manifest linked directory is invalid",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "malformed manifest is invalid",
+      "pass": true
+    },
+    {
+      "name": "unsupported manifest shape is invalid",
+      "pass": true
+    },
+    {
+      "name": "corrupt SQLite snapshot is invalid",
+      "pass": true
+    },
+    {
+      "name": "mismatched snapshot_sha256 is invalid",
+      "pass": true
+    },
+    {
+      "name": "mismatched byte_size is invalid",
+      "pass": true
+    },
+    {
+      "name": "mismatched table_counts is invalid",
+      "pass": true
+    },
+    {
+      "name": "mismatched migrations is invalid",
+      "pass": true
+    },
+    {
+      "name": "mismatched queue_summary is invalid",
+      "pass": true
+    },
+    {
+      "name": "absent runtime retains valid portable snapshot",
+      "pass": true
+    },
+    {
+      "name": "missing source hash with runtime present reports missing",
+      "pass": true
+    },
+    {
+      "name": "configured snapshot path uses its derived manifest and rejects directories",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+    },
+    {
+      "name": "changed runtime is stale but still structurally valid",
+      "pass": true
+    },
+    {
+      "name": "paused ready queue snapshot is valid under its declared policy",
+      "pass": true
+    }
+  ],
+  "fixture_cleanup": "exact owned mkdtemp removed",
+  "prior_fixture_attempt": {
+    "kind": "bug50-current-source-baseline",
+    "head": "c0a51fbb0975c3b0b7df4b9ac6ac8bcf4384260f",
+    "runtime": "v26.0.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "source_hashes": {
+      "src/core/project_db_snapshot.ts": "850a5285dcf2458ad69a942ad5afd6e1ae426710ec0944cc2a44c030b8db150d",
+      "src/commands/db.ts": "c6ef5e809982bda0c7cc1c2bce6062f1a2ec1ed851ff2f235e0be49fa9939641"
+    },
+    "pass": false,
+    "cases": [
+      {
+        "name": "valid drained snapshot executes every mandatory check without effects",
+        "pass": true
+      },
+      {
+        "name": "nonempty directories at snapshot are invalid",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "name": "missing snapshot reports missing",
+        "pass": true
+      },
+      {
+        "name": "nonempty directories at manifest are invalid",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "name": "missing manifest reports missing",
+        "pass": true
+      },
+      {
+        "name": "nonempty directories at snapshot+manifest are invalid",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "name": "missing snapshot+manifest reports missing",
+        "pass": true
+      },
+      {
+        "name": "snapshot FIFO refuses without blocking",
+        "pass": false,
+        "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:9:31)\n+     at inspect (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:37:20)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:70:96\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:23:39)\n+     at qualifySnapshotVerification (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:70:7)\n+     at [stdin]:1:147\n+     at runScriptInThisContext (node:internal/vm:219:10)\n+     at node:internal/process/execution:483:12 {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/Users/nick/omni-chat-rooms/projects/mdkg/dist/cli.js',\n+     'db',\n+     'snapshot',\n+     'verify',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+      },
+      {
+        "name": "snapshot device target refuses",
+        "pass": true
+      },
+      {
+        "name": "snapshot linked directory is invalid",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "name": "manifest FIFO refuses without blocking",
+        "pass": false,
+        "error": "Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+ actual - expected\n\n+ Error: spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node ETIMEDOUT\n+     at Object.spawnSync (node:internal/child_process:1127:20)\n+     at spawnSync (node:child_process:911:24)\n+     at run (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:9:31)\n+     at inspect (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:37:20)\n+     at /Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:70:96\n+     at check (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:23:39)\n+     at qualifySnapshotVerification (/Users/nick/omni-chat-rooms/projects/mdkg/tests/fixtures/snapshot-verification.cjs:70:7)\n+     at [stdin]:1:147\n+     at runScriptInThisContext (node:internal/vm:219:10)\n+     at node:internal/process/execution:483:12 {\n+   code: 'ETIMEDOUT',\n+   errno: -60,\n+   path: '/opt/homebrew/Cellar/node/26.0.0/bin/node',\n+   spawnargs: [\n+     '/Users/nick/omni-chat-rooms/projects/mdkg/dist/cli.js',\n+     'db',\n+     'snapshot',\n+     'verify',\n+     '--json'\n+   ],\n+   syscall: 'spawnSync /opt/homebrew/Cellar/node/26.0.0/bin/node'\n+ }\n- undefined\n"
+      },
+      {
+        "name": "manifest device target refuses",
+        "pass": true
+      },
+      {
+        "name": "manifest linked directory is invalid",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\ntrue !== false\n"
+      },
+      {
+        "name": "malformed manifest is invalid",
+        "pass": true
+      },
+      {
+        "name": "unsupported manifest shape is invalid",
+        "pass": true
+      },
+      {
+        "name": "corrupt SQLite snapshot is invalid",
+        "pass": true
+      },
+      {
+        "name": "mismatched snapshot_sha256 is invalid",
+        "pass": true
+      },
+      {
+        "name": "mismatched byte_size is invalid",
+        "pass": true
+      },
+      {
+        "name": "mismatched table_counts is invalid",
+        "pass": true
+      },
+      {
+        "name": "mismatched migrations is invalid",
+        "pass": true
+      },
+      {
+        "name": "mismatched queue_summary is invalid",
+        "pass": true
+      },
+      {
+        "name": "absent runtime retains valid portable snapshot",
+        "pass": true
+      },
+      {
+        "name": "missing source hash with runtime present is invalid",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'missing'\n- 'invalid'\n"
+      },
+      {
+        "name": "changed runtime is stale but still structurally valid",
+        "pass": true
+      },
+      {
+        "name": "paused ready queue snapshot is valid under its declared policy",
+        "pass": true
+      }
+    ],
+    "fixture_cleanup": "exact owned mkdtemp removed"
+  },
+  "prior_fixture_disposition": "One incorrect expected invalid status for missing runtime-source hash corrected to established missing semantics; not a product failure."
+}

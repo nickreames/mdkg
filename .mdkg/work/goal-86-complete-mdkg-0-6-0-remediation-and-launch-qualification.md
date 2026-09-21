@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
 scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: bug-49
+active_node: bug-50
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -163,6 +163,18 @@ Do not start/reconfigure services; missing local capability or hosted CI needs
 precise separate authorization and remains a blocking evidence gap.
 
 # Current State
+
+2026-09-21 Bug50 local verification complete: regular-file input admission and
+mandatory-check aggregation prevent false-valid snapshot receipts. Frozen-source
+1664/1664 full tests,71 focused and78 installed cases pass on macOS arm64;
+26 cases each use Node24.15.0/24.18.0/26.0.0 and exact intermediate tarball
+d520a0c1f94e439765091eaeebe60569d1ee60f263ccb5aff1ca6f0b0568e531.
+One independent candidate review found no concrete surviving bypass in this
+bounded control. Five of14 retained findings now have local remedies; nine
+remain open plus adjacent Bugs58-60 and final qualification. This does not
+resolve linked-input authority (Bug51), metadata/ACLs (Bug46), or ancestor races
+(Bug47). No blocked context accessed or recovered. Next independent remedy:
+Bug51 snapshot input containment. Goal85 stays paused; release NOT_READY.
 
 2026-09-21 Bug49 local verification complete: contained registry admission before
 skill effects and at refresh, plus preflighted UTF8 output bounds. One completed
