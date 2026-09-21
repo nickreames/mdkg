@@ -5,6 +5,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const assert = require("node:assert/strict");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
@@ -87,6 +88,124 @@ function assertNotIncludes(value, expected, label) {
 
 function sha256(filePath) {
   return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+}
+
+function fileInventory(root) {
+  const files = {};
+  function visit(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) visit(file);
+      else if (entry.isFile()) files[path.relative(root, file).split(path.sep).join("/")] = sha256(file);
+      else throw new Error(`unexpected fixture file type: ${file}`);
+    }
+  }
+  visit(root);
+  return files;
+}
+
+// Assert public installed discovery surfaces; never import graph implementation.
+function canonicalSkillInventories(root) {
+  const result = {}, base = path.join(root, ".mdkg/skills");
+  for (const entry of fs.readdirSync(base, { withFileTypes: true })) {
+    if (entry.isDirectory() && fs.existsSync(path.join(base, entry.name, "SKILL.md"))) {
+      result[entry.name] = fileInventory(path.join(base, entry.name));
+    }
+  }
+  return result;
+}
+
+function assertFocusedDiscovery(root, skills, expectedCanonical) {
+  assert.ok(skills.length > 0, "installed skills must be discoverable");
+  const canonicalSkills = canonicalSkillInventories(root);
+  assert.deepEqual(skills.map(skill => skill.slug).sort(), Object.keys(canonicalSkills).sort(),
+    "discovery must include every canonical skill exactly once");
+  if (expectedCanonical) assert.deepEqual(canonicalSkills, expectedCanonical, "sync must preserve canonical resource bytes");
+  let localLinks = 0;
+  const containedTarget = (from, target) => {
+    const file = path.resolve(from, target), relative = path.relative(root, file);
+    assert.ok(relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative), "discovery link escapes fixture");
+    assert.ok(fs.existsSync(file), `broken discovery link: ${target}`);
+    localLinks++;
+  };
+  for (const relative of ["AGENTS.md", "CLAUDE.md", ".mdkg/AGENT_START.md", ".mdkg/llms.txt", ".mdkg/README.md"]) {
+    const content = fs.readFileSync(path.join(root, relative), "utf8");
+    // Seeded inline Markdown links only; this is not a general Markdown parser.
+    for (const match of content.matchAll(/\]\(([^)#]+)(?:#[^)]*)?\)/g)) {
+      if (/^[a-z][a-z\d+.-]*:/i.test(match[1])) continue;
+      containedTarget(path.dirname(path.join(root, relative)), match[1]);
+    }
+  }
+  for (const skill of skills) {
+    assert.match(skill.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    for (const link of skill.links || []) {
+      if (!/^[a-z][a-z\d+.-]*:/i.test(link)) containedTarget(root, link);
+    }
+    const canonical = canonicalSkills[skill.slug];
+    assert.ok(canonical["SKILL.md"], "canonical SKILL.md required");
+    for (const adapter of [".agents", ".claude"]) {
+      assert.deepEqual(fileInventory(path.join(root, adapter, "skills", skill.slug)), canonical,
+        `native resource inventory differs: ${adapter}/${skill.slug}`);
+    }
+  }
+  return { skills: skills.length, local_links: localLinks, native_targets: 2 };
+}
+
+function exerciseCustomizedDiscovery(binPath, tempRoot) {
+  const root = path.join(tempRoot, "customized-discovery"); initGit(root);
+  const user = "# User instructions\r\nPreserve my constraints.\r\n";
+  const projectFiles = ["README.md", "LICENSE", "llms.txt", "docs/project.md"];
+  for (const file of [...projectFiles, "AGENTS.md", "CLAUDE.md"]) {
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), user + file + "\r\n");
+  }
+  run(GIT_CMD, ["add", "--", ...projectFiles, "AGENTS.md", "CLAUDE.md"], { cwd: root });
+  const before = fileInventory(root);
+  mdkg(binPath, ["init"], root);
+  for (const file of projectFiles) assert.equal(sha256(path.join(root, file)), before[file]);
+  assert.equal(sha256(path.join(root, ".git/index")), before[".git/index"]);
+  for (const file of ["AGENTS.md", "CLAUDE.md"]) {
+    const text = fs.readFileSync(path.join(root, file), "utf8");
+    assert.ok(text.startsWith(user + file + "\r\n"));
+    assert.equal(text.split("<!-- mdkg:instructions:start -->").length, 2);
+    assert.equal(text.split("<!-- mdkg:instructions:end -->").length, 2);
+    assert.equal(text.replaceAll("\r\n", "").includes("\n"), false, "root CRLF convention preserved");
+    fs.appendFileSync(path.join(root, file), "\r\n# User suffix\r\nNever discard this.\r\n");
+  }
+  const repeatBefore = fileInventory(root);
+  mdkg(binPath, ["init", "--agent"], root);
+  for (const file of [...projectFiles, "AGENTS.md", "CLAUDE.md", ".git/index"]) {
+    assert.equal(sha256(path.join(root, file)), repeatBefore[file], `repeat changed user file: ${file}`);
+  }
+  const discoveryBefore = fileInventory(root);
+  const skills = parseJson(mdkg(binPath, ["skill", "list", "--json"], root).stdout).items;
+  for (const skill of skills) {
+    const shown = parseJson(mdkg(binPath, ["skill", "show", skill.slug, "--json"], root).stdout).item;
+    assert.equal(shown.slug, skill.slug);
+    assert.ok(parseJson(mdkg(binPath, ["skill", "search", skill.slug, "--json"], root).stdout).items.some(item => item.slug === skill.slug));
+  }
+  assert.deepEqual(fileInventory(root), discoveryBefore, "skill discovery must be observational");
+  const initial = assertFocusedDiscovery(root, skills);
+  // Add synthetic non-executing resources only inside this disposable skill.
+  const slug = skills[0].slug;
+  for (const file of ["references/example.md", "assets/example.txt", "scripts/example.txt"]) {
+    const target = path.join(root, ".mdkg/skills", slug, file);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, `Synthetic resource: ${file}\n`);
+  }
+  for (const adapter of [".agents", ".claude"]) {
+    const sentinel = path.join(root, adapter, "skills/unrelated-user-notes/note.txt");
+    fs.mkdirSync(path.dirname(sentinel), { recursive: true }); fs.writeFileSync(sentinel, user);
+  }
+  const canonicalBefore = canonicalSkillInventories(root);
+  mdkg(binPath, ["skill", "sync", "--json"], root);
+  const resources = assertFocusedDiscovery(root, skills, canonicalBefore);
+  for (const adapter of [".agents", ".claude"]) assert.equal(fs.readFileSync(path.join(root, adapter, "skills/unrelated-user-notes/note.txt"), "utf8"), user);
+  for (const file of [...projectFiles, "AGENTS.md", "CLAUDE.md", ".git/index"]) assert.equal(sha256(path.join(root, file)), repeatBefore[file]);
+  mdkg(binPath, ["validate", "--json"], root);
+  return { runtime: process.version, initial, resources, synthetic_resource_files: 3,
+    customized_entrypoints: 2, project_files_preserved: projectFiles.length,
+    git_index_preserved: true, discovery_observational: true, resources_executed: false };
 }
 
 function initGit(root) {
@@ -213,7 +332,9 @@ function exerciseRemovedFlags(binPath, tempRoot) {
     const root = path.join(tempRoot, `removed-${removedFlag.slice(2)}`);
     initGit(root);
     const result = runExpectFailure(binPath, ["init", removedFlag], { cwd: root });
-    assertIncludes(result.stderr, "use `mdkg init --agent`", `init ${removedFlag}`);
+    assertIncludes(result.stderr, `\`mdkg init ${removedFlag}\` was removed`, `init ${removedFlag}`);
+    assertIncludes(result.stderr, "use `mdkg init` for compact agent setup (default)", `init ${removedFlag}`);
+    assertIncludes(result.stderr, "`mdkg init --graph-only` without agent setup", `init ${removedFlag}`);
     assertNotExists(path.join(root, ".mdkg"));
     assertNotExists(path.join(root, "AGENT_START.md"));
   }
@@ -241,6 +362,7 @@ function exerciseBaseInit(binPath, tempRoot) {
   assertExists(path.join(root, ".mdkg", "README.md"));
   assertNotExists(path.join(root, "AGENT_START.md"));
   assertNotExists(path.join(root, "AGENTS.md"));
+  for (const relative of ["CLAUDE.md", ".mdkg/AGENT_START.md", ".mdkg/CLI_COMMAND_MATRIX.md", ".mdkg/llms.txt", ".agents/skills", ".claude/skills", ".mdkg/work/events/events.jsonl"]) assertNotExists(path.join(root, relative));
   assertNotExists(path.join(root, ".mdkg", "skills"));
   assertSpikeTemplate(root, "base init");
   assertManifestTemplate(root, "base init");
@@ -350,10 +472,10 @@ function exerciseDbInit(binPath, tempRoot) {
   mdkg(binPath, ["validate"], root);
 }
 
-function exerciseAgentInit(binPath, tempRoot) {
-  const root = path.join(tempRoot, "agent-init");
+function exerciseAgentInit(binPath, tempRoot, explicitAgent = false) {
+  const root = path.join(tempRoot, explicitAgent ? "explicit-agent-init" : "agent-init");
   initGit(root);
-  const init = mdkg(binPath, ["init"], root);
+  const init = mdkg(binPath, explicitAgent ? ["init", "--agent"] : ["init"], root);
   assertIncludes(init.stdout, "agent bootstrap:", "agent init output");
   assertIncludes(init.stdout, "skill mirrors:", "agent init output");
   assertSpikeTemplate(root, "agent init");
@@ -377,6 +499,8 @@ function exerciseAgentInit(binPath, tempRoot) {
     assertExists(path.join(root, relativePath));
   }
   assertNoRemovedInitGuidance(root);
+  for (const file of ["AGENT_START.md", "CLI_COMMAND_MATRIX.md", "README.md", "LICENSE", "llms.txt"]) assertNotExists(path.join(root, file));
+  assertFocusedDiscovery(root, parseJson(mdkg(binPath, ["skill", "list", "--json"], root).stdout).items);
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assertIncludes(gitignore, ".mdkg/archive/**/source/", ".gitignore");
   assertIncludes(gitignore, ".mdkg/db/runtime/", ".gitignore");
@@ -486,6 +610,8 @@ function runSmoke() {
     exerciseOptionalSpecWorkTemplates(binPath, tempRoot);
     exerciseDbInit(binPath, tempRoot);
     exerciseAgentInit(binPath, tempRoot);
+    exerciseAgentInit(binPath, tempRoot, true);
+    console.log(JSON.stringify({ action: "installed-customized-discovery-qualified", ...exerciseCustomizedDiscovery(binPath, tempRoot) }));
     console.log("init smoke passed");
     console.log(`version=${version}`);
   } finally {
@@ -495,4 +621,7 @@ function runSmoke() {
   }
 }
 
-runSmoke();
+if (require.main === module) runSmoke();
+module.exports = { fileInventory, canonicalSkillInventories, assertFocusedDiscovery, exerciseCustomizedDiscovery,
+  exerciseRemovedFlags, exerciseMirrorCollision, exerciseBaseInit,
+  exerciseOptionalSpecWorkTemplates, exerciseDbInit, exerciseAgentInit };

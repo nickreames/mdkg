@@ -7,7 +7,7 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
@@ -18,7 +18,7 @@ aliases: []
 skills: []
 cases: [test-477-case-1, test-477-case-2, test-477-case-3, test-477-case-4, test-477-case-5]
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-09
 ---
 
 # Overview
@@ -43,7 +43,19 @@ Exact built tarball and source hashes, disposable /private/tmp roots, synthetic 
 
 # Results / Evidence
 
-Not executed. Record case-level expected/actual, exact commands/runtime/package identity, stdout/exit results and compact reproducible evidence. No missing runtime, interrupted case or source-only assertion is a pass.
+Partial installed evidence exists; this aggregate remains open. Chk-597 binds
+fresh default/explicit-agent/graph-only initialization, customized root/project
+documents, focused skill discovery and complete canonical/native resource
+preservation on Node 24.15.0, 24.18.0 and 26.0.0. This supports cases 2/3 and the
+discovery portion of case 5 on the current intermediate candidate.
+
+The linked bug-7-recovery-runtime artifact already records actual published
+0.5.2 standard/customized upgrades and caught-error upgrade recovery on all
+three runtimes, supporting cases 1/3 and portions of 4/5 on an older candidate.
+Do not repeat those as never executed or infer final-candidate freshness.
+Still required: installed fresh preview -> user edit -> stale apply refusal,
+final-candidate upgrade/recovery reruns and independent aggregate acceptance.
+No interrupted, missing-runtime or source-only assertion is counted as a pass.
 
 # Notes / Follow-ups
 
