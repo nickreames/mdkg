@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json]
 relates: []
 blocked_by: [task-826]
 blocks: []
-refs: []
+refs: [chk-600]
 context_refs: [goal-83]
 evidence_refs: []
 aliases: []
@@ -58,5 +58,13 @@ automatic compatibility waiver is inferred. Raw evidence is hash-bound through
 .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json and chk599.
 
 # Notes / Follow-ups
+
+Chk600 adds current installed primary regression coverage for cases1/2 across
+all twelve locally fixed original findings, on all three required runtimes.
+Its per-finding map retains original failing-before evidence and clearly marks
+public CLI versus shipped internal-module scope. The shared suite total is
+876passing executions,not876security findings. Case5/Bug17, actual read-only
+mounts, killed writers and final independent review remain incomplete. No
+aggregate closure or release waiver is implied.
 
 Route newly validated blockers to goal-84; retain unknown/unsupported historical cases explicitly. Do not migrate canonical graph or regenerate protected bundles.

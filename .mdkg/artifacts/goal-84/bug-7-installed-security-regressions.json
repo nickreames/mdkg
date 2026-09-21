@@ -1,0 +1,1202 @@
+{
+  "schema_version": 1,
+  "work_qid": "root:bug-7",
+  "checkpoint_qid": "root:chk-600",
+  "goal_qids": [
+    "root:goal-83",
+    "root:goal-84"
+  ],
+  "owner": "mdkg-project-agent",
+  "source_head": "c6c7bf08a4328fb4d91fb8840e8eb2b9d18117f5",
+  "outcome": "CURRENT_INSTALLED_REGRESSIONS_PASS_NOT_RELEASE_QUALIFIED",
+  "candidate": {
+    "version": "0.5.2 development; target 0.6.0",
+    "tarball_sha256": "39575a351ed5eb7b7074721102863aa3000a842630f7ed2597e30d490a1f349b",
+    "integrity": "sha512-F8/DspQ/o785y42eBMbKdAaW74Dew1b4DUfhdysl2c3Qr1XbKg7yfykYN41rmvw1jWxhuXk2LNElL2zBC6XMxg==",
+    "installed_reused": true,
+    "tarball_exact_matching_regular_files": 223,
+    "repository_matching_regular_files_excluding_package_json": 222,
+    "file_manifest_sha256": "64a076d8868f2e01723e2e03804fb10909576e9ee7c5ed8d86d21c6fcfed3b21",
+    "provenance_receipt_sha256": "423a1cb100f175dcaa11482964394d37698ca9bc3b6ed4840d1b0c0fa3a38bdb",
+    "partial_bug17_included_but_not_cleared": true
+  },
+  "fixture_root": "/private/tmp/mdkg-installed-security.prJunP",
+  "runner_sha256": "c3021e9a6126b5656d284f417de8405ca3a0369990c092062a85581288331be1",
+  "guard_sha256": "d0259099d485088fa1c12c44dd5c397d65ac349dea0ec629bed9ca91074044e4",
+  "provenance_runner_sha256": "f2018976595feaf729f979dfb5cf1a91b025c9c430ffca75257c7b7f11573cda",
+  "guard_controls": [
+    {
+      "label": "installed",
+      "status": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "canonical",
+      "status": 1,
+      "stderr_sha256": "4b21f218d7a47c143689c7722f3bf67b645b906ad6c7c92796d876ca0e877839"
+    }
+  ],
+  "test_files_sha256": {
+    "tests/graph/identity_reconciliation_plan.test.ts": "4c0d64f4fa44494954e83926407411c4e4fb542eec9188d8d3a08c73f9cc87e4",
+    "dist/tests/graph/identity_reconciliation_plan.test.js": "4b155f60b727a67f58423ea9b8a3479bfb65b3c0ef32e097cdba8c5287481391",
+    "tests/graph/cache_containment.test.ts": "716718c870a7e3aaf143e0252f72c743b91a8b09c2bafb4c72d5cd95bb424c45",
+    "dist/tests/graph/cache_containment.test.js": "a456ddc2676a8aa3243e5023b17c0d088f685ef768a068cdd1df331718bde9e1",
+    "tests/graph/subgraph_containment.test.ts": "49804f1604cb02f0497fa687eb99493073b3651fec51ad90e599f95af00abd8f",
+    "dist/tests/graph/subgraph_containment.test.js": "b5b94415ab63a44699173ad95c339f7a66c0e318f995ded78fe1b17086e0a95d",
+    "tests/graph/workspace_containment.test.ts": "c3aeaa2085541ff8c010c5f3e5291023b1c91efa8e5717be30afce2a54525800",
+    "dist/tests/graph/workspace_containment.test.js": "ee5109d26321e48185faa920f7762fca482d7c9bcceaa40efb9af773cb7adcc3",
+    "tests/graph/archive_containment.test.ts": "8032b2f53eb986c70c4253664e4b8d5d14ca2361db0dd65057fc0d46290f506e",
+    "dist/tests/graph/archive_containment.test.js": "3f32f4665302ac97ace572a48e8a61b41ed548afc700466e445c7817dbe45e40",
+    "tests/commands/event_containment.test.ts": "80f389b5f942fa403fd0b8d4ccd80689be912cefe7e0b6d59b8974047a61aebb",
+    "dist/tests/commands/event_containment.test.js": "18efe2b855453dff2078a9a5be7c72b62842328ef6b3f97a5c88dde2530287f8",
+    "tests/core/contained_stream.test.ts": "90f3b28919a6146072d1ec67091c6bc4df9511a811728ff6e17697319bd79f6e",
+    "dist/tests/core/contained_stream.test.js": "9aed8b1a38a3d871c199e6b1621b554d7511940609dbd24cd0ea21115e5a722f",
+    "tests/commands/db_index.test.ts": "bc84aab572c74d1a9f1e61f0dc3f51f9de0fab152cfe40ba6168cf4853f24939",
+    "dist/tests/commands/db_index.test.js": "0b0a9f618fa846b10ffb5eacd474ec4295b20e084c0838099533c93fd461edbf",
+    "tests/core/filesystem_authority.test.ts": "64f3a8b534d2844f63d47a36895ad3ccdeda5bcdde0db741a517e392e27acf60",
+    "dist/tests/core/filesystem_authority.test.js": "6eca178c1c967e26f9ab6fdb02c3d155838f14d5aebf3aee2368737d09fb88ba",
+    "tests/commands/skill_resource_containment.test.ts": "7d71cfe2233f0aa4ec0b8566fe6c70a2218ff23099926da8ff7139a09f4e7836",
+    "dist/tests/commands/skill_resource_containment.test.js": "dfe4341d0162dbf690aaacad2d4b601bfac31dd17d31bf3567ef9dc2003aef72",
+    "tests/commands/bundle_ownership.test.ts": "3377c7ec429ca7cb2b80a227dd2a3c22f22338d8703a82610b47530ae2aad347",
+    "dist/tests/commands/bundle_ownership.test.js": "e1071b1ddacf2cc56e48b35657a6d2725cd92ce400ec76e614137b3a04db94ad",
+    "tests/graph/template_containment.test.ts": "65ac4fd807946fc6defbe167193df834abd4383ca38e004b9bf534765dd4071a",
+    "dist/tests/graph/template_containment.test.js": "53dd18effb6916005304f99bc7cfb5374120c5653c7a4b56b79ad0d0e032b5d1",
+    "tests/commands/discovery_containment.test.ts": "c34ae444e394e34fefb0b868572f0960d0f07daa376c70091f19d060dafe9e44",
+    "dist/tests/commands/discovery_containment.test.js": "660f5061392d8ca840c9f6e2918e89e85def248833b84670aac3e0af0797b930",
+    "tests/commands/pack_output_containment.test.ts": "d584ee27b5c31fdc88d1c301524a922ad4ff50dcaf9643e31f2e0fa6454b0e83",
+    "dist/tests/commands/pack_output_containment.test.js": "4a0bd1b9212ccfe10a206a749062ce6433da7efebeb2d8d4e7d3f712bc5aec37"
+  },
+  "compiled_helpers_sha256": {
+    "config.js": "6307f81b0c70c5533f01d6fd2813f31950bb5ef4c0aff3c2c0d09af1235137fa",
+    "fs.js": "5f1088362ae4b1aaa7b9c7e382293043b601dcdf6b665c7a49d6ba95975d7e73",
+    "templates.js": "f222e0d24c6bd985486f15f1c8bda6617e39443edbdc438758c0d83e2bee3252"
+  },
+  "runs": [
+    {
+      "runtime": "v24.15.0",
+      "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "label": "node24-min",
+      "receipt_sha256": "e3a676c26565be59e39fb1a4f9ae9c867bfbeb144701843616d5cd18cebd8496",
+      "totals": {
+        "tests": 292,
+        "pass": 292,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "suites": [
+        {
+          "suite": "graph/identity_reconciliation_plan",
+          "bugs": [
+            "bug-8"
+          ],
+          "counts": {
+            "tests": 27,
+            "pass": 27,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "80e2b31c4f5b7a002a613887ae5212d600e52bd482069b5f4ee2f258a2f0f298",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/cache_containment",
+          "bugs": [
+            "bug-9"
+          ],
+          "counts": {
+            "tests": 34,
+            "pass": 34,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "c010887ced16d5e326b773807712b9a4a86ac950f9475612b671c8733f0d2ca9",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/subgraph_containment",
+          "bugs": [
+            "bug-10"
+          ],
+          "counts": {
+            "tests": 15,
+            "pass": 15,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "0e6fb52f2bfeb32d17f4852f31802e01d7894a70ce10637500bf03eebdc85dcb",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/workspace_containment",
+          "bugs": [
+            "bug-11"
+          ],
+          "counts": {
+            "tests": 23,
+            "pass": 23,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "2e802ebfa78474b4e028c0bcf53113928af010ae923408ba6178584eabdffd70",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/archive_containment",
+          "bugs": [
+            "bug-12"
+          ],
+          "counts": {
+            "tests": 25,
+            "pass": 25,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "93f3734fbba030ae02b6e9e830ba72325e9a00c474ea517bea21f0e5ce16161e",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/event_containment",
+          "bugs": [
+            "bug-13"
+          ],
+          "counts": {
+            "tests": 17,
+            "pass": 17,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "fe225882052b501c661b66d29b297ad89d9aa68819be8178fabf06f542e9c266",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "core/contained_stream",
+          "bugs": [
+            "bug-13"
+          ],
+          "counts": {
+            "tests": 4,
+            "pass": 4,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "170fa74b6b7bc4f2ff0a4b7d3f65be87eb95f70f77450ea75332cd6ae2379661",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/db_index",
+          "bugs": [
+            "bug-14"
+          ],
+          "counts": {
+            "tests": 30,
+            "pass": 30,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "054c005719789d30f219c92a085b167a0901cd4e15c1627aced42d285d0cbb0b",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "core/filesystem_authority",
+          "bugs": [
+            "bug-14",
+            "bug-19"
+          ],
+          "counts": {
+            "tests": 12,
+            "pass": 12,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "ea8bf5b9c7bb646aef0bbbff8190a26bcab5b660ecc82b9c1f0c9cbbf06119d7",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/skill_resource_containment",
+          "bugs": [
+            "bug-15"
+          ],
+          "counts": {
+            "tests": 18,
+            "pass": 18,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "106b31b86178120a524881e9b7fcf7e3d5ef20afde6787580033cea310387893",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/bundle_ownership",
+          "bugs": [
+            "bug-16"
+          ],
+          "counts": {
+            "tests": 26,
+            "pass": 26,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "0c95fa793bbdec7ba7443b3796797cb104a590c4aba1e99f84e060d84c71ad94",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/template_containment",
+          "bugs": [
+            "bug-18"
+          ],
+          "counts": {
+            "tests": 26,
+            "pass": 26,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "8c3108821ed19a02b2b7dd33f8cf9d56db54fb5d36499e9d390c387252b24ad4",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/discovery_containment",
+          "bugs": [
+            "bug-19"
+          ],
+          "counts": {
+            "tests": 15,
+            "pass": 15,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "1e3e3dcca0f8c400998f6a36c1a613c529f898c65561e6c1c11f8935615dd693",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/pack_output_containment",
+          "bugs": [
+            "bug-20"
+          ],
+          "counts": {
+            "tests": 20,
+            "pass": 20,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "f0f12343ae90d99142572d90da0a630d74987be749f277cfa78108edecd8e2f9",
+          "fixtures_removed": true
+        }
+      ],
+      "module_process_records": 330,
+      "loaded_installed_module_count": 134,
+      "loaded_installed_modules_sha256": "e345f8f208877f18431cba6ed9797f94a2f05b1e9859c82bb2437886ec72a3d3",
+      "canonical_bookends_equal": true,
+      "canonical_bookend_sha256": "8a0deaa24169ed0d12af2b6ed75d8471c1655883409917d9c2ef3e6fd598ec14",
+      "installed_and_compiled_inputs_unchanged": true
+    },
+    {
+      "runtime": "v24.18.0",
+      "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+      "label": "node24",
+      "receipt_sha256": "944a0791847b4487eba78470934abbfa77effab9d2ed49b7887b45169a7124fe",
+      "totals": {
+        "tests": 292,
+        "pass": 292,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "suites": [
+        {
+          "suite": "graph/identity_reconciliation_plan",
+          "bugs": [
+            "bug-8"
+          ],
+          "counts": {
+            "tests": 27,
+            "pass": 27,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "6b837cbea4aca40cde46de70784b7f03cc3bca0896bd0d70403e99dead289eac",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/cache_containment",
+          "bugs": [
+            "bug-9"
+          ],
+          "counts": {
+            "tests": 34,
+            "pass": 34,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "537e429ada86e88c66d04f61b7abdacc4d0a767e820173bcf4a410411637592f",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/subgraph_containment",
+          "bugs": [
+            "bug-10"
+          ],
+          "counts": {
+            "tests": 15,
+            "pass": 15,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "809ab475cd01941dfc27e16ab1651a41269486f1e176ab20495a7e96c82bb39f",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/workspace_containment",
+          "bugs": [
+            "bug-11"
+          ],
+          "counts": {
+            "tests": 23,
+            "pass": 23,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "57ffe0bd1b444fe9b4a7bea1844e8121f7e9891fb052916d5c7592684b5874cc",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/archive_containment",
+          "bugs": [
+            "bug-12"
+          ],
+          "counts": {
+            "tests": 25,
+            "pass": 25,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "98a733f77cf420af0caac5c24cbd8652220236e68aba654bfa64e9c69768c4cc",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/event_containment",
+          "bugs": [
+            "bug-13"
+          ],
+          "counts": {
+            "tests": 17,
+            "pass": 17,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "56b683b1b2711b21a5a8ab80a6b769dc058ccfba81943ab84234b810e5e67fd5",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "core/contained_stream",
+          "bugs": [
+            "bug-13"
+          ],
+          "counts": {
+            "tests": 4,
+            "pass": 4,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "a59cf2663fa3278b569db0dc51c418dbccc3997fb3f5109913f3bb580dc66f7b",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/db_index",
+          "bugs": [
+            "bug-14"
+          ],
+          "counts": {
+            "tests": 30,
+            "pass": 30,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "291bb12b55e035705b7446ddd79c6526ef6364ec475f47483cf7a969136b6ce2",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "core/filesystem_authority",
+          "bugs": [
+            "bug-14",
+            "bug-19"
+          ],
+          "counts": {
+            "tests": 12,
+            "pass": 12,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "77163de7a1a2a6ed0e8daed88c3df9b9fd62775f5887c6af89ed5be4b4c8f340",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/skill_resource_containment",
+          "bugs": [
+            "bug-15"
+          ],
+          "counts": {
+            "tests": 18,
+            "pass": 18,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "97635f454d9bd48ceb106d428412bc2308b845b1c779dd24bd9b60239c72bb3e",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/bundle_ownership",
+          "bugs": [
+            "bug-16"
+          ],
+          "counts": {
+            "tests": 26,
+            "pass": 26,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "f1d4062b870388332ac863ff142ab7b594791d3eee2106d3097409b3f2881d52",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/template_containment",
+          "bugs": [
+            "bug-18"
+          ],
+          "counts": {
+            "tests": 26,
+            "pass": 26,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "2ef0715547903ccaa690ebb0729b4a04555265baeeea610e631eaa95c763249e",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/discovery_containment",
+          "bugs": [
+            "bug-19"
+          ],
+          "counts": {
+            "tests": 15,
+            "pass": 15,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "ae80559445a89343b5c709f27b62e403cab3881d8c216986ab332262497ff9a2",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/pack_output_containment",
+          "bugs": [
+            "bug-20"
+          ],
+          "counts": {
+            "tests": 20,
+            "pass": 20,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "4f68ce4afe315d7acb63f9aee1f2d655c4dc2a8701791f6825872d31b194f774",
+          "fixtures_removed": true
+        }
+      ],
+      "module_process_records": 330,
+      "loaded_installed_module_count": 134,
+      "loaded_installed_modules_sha256": "e345f8f208877f18431cba6ed9797f94a2f05b1e9859c82bb2437886ec72a3d3",
+      "canonical_bookends_equal": true,
+      "canonical_bookend_sha256": "8a0deaa24169ed0d12af2b6ed75d8471c1655883409917d9c2ef3e6fd598ec14",
+      "installed_and_compiled_inputs_unchanged": true
+    },
+    {
+      "runtime": "v26.0.0",
+      "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "label": "node26",
+      "receipt_sha256": "54d362bd8c0acb061fdd96bc7ae63ef3ed831fce76bb104e5139b967e5e77b3f",
+      "totals": {
+        "tests": 292,
+        "pass": 292,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "suites": [
+        {
+          "suite": "graph/identity_reconciliation_plan",
+          "bugs": [
+            "bug-8"
+          ],
+          "counts": {
+            "tests": 27,
+            "pass": 27,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "37fd67a2f53229e5b87d451ac7b8dac6e2d3927c750ab735957829d302d9ce22",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/cache_containment",
+          "bugs": [
+            "bug-9"
+          ],
+          "counts": {
+            "tests": 34,
+            "pass": 34,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "c52c7c211571234a5b3b54e29b405e5ff2e9189a88eceeaafcb599caf6153047",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/subgraph_containment",
+          "bugs": [
+            "bug-10"
+          ],
+          "counts": {
+            "tests": 15,
+            "pass": 15,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "4549bfc0741e7cf61fb12ce96825756c24386864fa38012c4fc7d381073e01b2",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/workspace_containment",
+          "bugs": [
+            "bug-11"
+          ],
+          "counts": {
+            "tests": 23,
+            "pass": 23,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "382c1f15138ada132a545866455df3bdc45eac853c0a8fb8503217fd5949a13d",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/archive_containment",
+          "bugs": [
+            "bug-12"
+          ],
+          "counts": {
+            "tests": 25,
+            "pass": 25,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "bd3b199689bb9fb93c0faa1aa4315240692b2d0d0306e00d4ca248d2a5ff9864",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/event_containment",
+          "bugs": [
+            "bug-13"
+          ],
+          "counts": {
+            "tests": 17,
+            "pass": 17,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "dd018a9dfb0cb5d03df6924cac1d6884511d9a5267861c2d27ffe701dbfffba4",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "core/contained_stream",
+          "bugs": [
+            "bug-13"
+          ],
+          "counts": {
+            "tests": 4,
+            "pass": 4,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "4c0d2f3738dc29c97cd7ae7b56ad56cfac0229f8c8f40a400e523f07cf530c5d",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/db_index",
+          "bugs": [
+            "bug-14"
+          ],
+          "counts": {
+            "tests": 30,
+            "pass": 30,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "0c93ef4c19c65a96d73e68f04ec383ff04282117fd3b949f969180ae0bdd3cc6",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "core/filesystem_authority",
+          "bugs": [
+            "bug-14",
+            "bug-19"
+          ],
+          "counts": {
+            "tests": 12,
+            "pass": 12,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "e9fa89c31c41c6093a3e5fc8a02e722933a550deb37c81a17f24dd334c423766",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/skill_resource_containment",
+          "bugs": [
+            "bug-15"
+          ],
+          "counts": {
+            "tests": 18,
+            "pass": 18,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "a87a455b83ae9db00c6e51e4f2696dcda28d0811580a91e797ab066cc8a1453d",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/bundle_ownership",
+          "bugs": [
+            "bug-16"
+          ],
+          "counts": {
+            "tests": 26,
+            "pass": 26,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "685880ad0c446a1541cef2e7bb48f6f079c595911b8d81b8d8963e67663e59b8",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "graph/template_containment",
+          "bugs": [
+            "bug-18"
+          ],
+          "counts": {
+            "tests": 26,
+            "pass": 26,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "6c41b4920e357f2813b5c1a097771b5caaaace9f480399e8596cd3eadda1f10d",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/discovery_containment",
+          "bugs": [
+            "bug-19"
+          ],
+          "counts": {
+            "tests": 15,
+            "pass": 15,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "73c11bd7ec577623ce27ad455127498beea30087b6c29100d0df3848dba1f301",
+          "fixtures_removed": true
+        },
+        {
+          "suite": "commands/pack_output_containment",
+          "bugs": [
+            "bug-20"
+          ],
+          "counts": {
+            "tests": 20,
+            "pass": 20,
+            "fail": 0,
+            "cancelled": 0,
+            "skipped": 0,
+            "todo": 0
+          },
+          "status": 0,
+          "signal": null,
+          "error": null,
+          "log_sha256": "03ee7ddfcbb861870a650aaab632a025df67b01d8a3964aa442514f6adbddced",
+          "fixtures_removed": true
+        }
+      ],
+      "module_process_records": 330,
+      "loaded_installed_module_count": 134,
+      "loaded_installed_modules_sha256": "e345f8f208877f18431cba6ed9797f94a2f05b1e9859c82bb2437886ec72a3d3",
+      "canonical_bookends_equal": true,
+      "canonical_bookend_sha256": "8a0deaa24169ed0d12af2b6ed75d8471c1655883409917d9c2ef3e6fd598ec14",
+      "installed_and_compiled_inputs_unchanged": true
+    }
+  ],
+  "finding_matrix": [
+    {
+      "bug": "root:bug-8",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-8-verification.json",
+      "original_fix_receipt_sha256": "5effd794e0f505b73e96af99aa619d57ae25e6b09b061bb9350f6c1946ea95cf",
+      "invariant": "Incoming receipt self-hashes prove byte consistency, not target acceptance. Only an exact target-owned acceptance binding with target ancestry, or the own generated receipt of a verified applied local transaction, supplies replay authority.",
+      "current_suites": [
+        {
+          "path": "tests/graph/identity_reconciliation_plan.test.ts",
+          "tests_per_runtime": 27
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-9",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-9-verification.json",
+      "original_fix_receipt_sha256": "27554be5af4f0de583cf8e6c7c04580fbc7c09a24c3eef27754aa5dff1cab733",
+      "invariant": "Every derived JSON cache writer uses explicit checkout-root containment at actual replacement, including independent loader and skill-authoring callers. Aggregate rebuild preflights all JSON and active SQLite destinations before the first cache write.",
+      "current_suites": [
+        {
+          "path": "tests/graph/cache_containment.test.ts",
+          "tests_per_runtime": 34
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-10",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-10-verification.json",
+      "original_fix_receipt_sha256": "4c7958bd46cea71c8331b785c47f8f060782c72a3afaa25a2c74e4b7e6770e52",
+      "invariant": "Repository-configured subgraph bundles and imported-node metadata cannot authorize reads through symlinked or escaping paths; bounded contained reads apply at projection, capability reread and cached/uncached body consumers.",
+      "current_suites": [
+        {
+          "path": "tests/graph/subgraph_containment.test.ts",
+          "tests_per_runtime": 15
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-11",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-11-verification.json",
+      "original_fix_receipt_sha256": "55ae06bb5ac50b43e652c987ff57c699efce003a7bb5e8edabf93bf07becf6e8",
+      "invariant": "Configured graph document roots and discovered Markdown remain within the repository through traversal, parsing and formatting replacement; a linked directory cannot disclose external node metadata or replace external files.",
+      "current_suites": [
+        {
+          "path": "tests/graph/workspace_containment.test.ts",
+          "tests_per_runtime": 23
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-12",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-12-verification.json",
+      "original_fix_receipt_sha256": "2b41a60772f5801dc260048cc83ea0e0dd09f0dfc65bc0459959ed52eb772be0",
+      "invariant": "Repository-authored archive sidecars cannot authorize external, linked or special-file reads. Validate raw metadata before path resolution and enforce bounded contained descriptor reads before computing digests.",
+      "current_suites": [
+        {
+          "path": "tests/graph/archive_containment.test.ts",
+          "tests_per_runtime": 25
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-13",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-13-verification.json",
+      "original_fix_receipt_sha256": "25ea97509b91aa2b16009dbfd7ca9b6f672ab3a97b7b440360f267237737efc5",
+      "invariant": "Repository-controlled event histories are contained regular files and cannot cause unbounded byte, line, record or diagnostic consumption during CLI, MCP or materialization validation. Existing event bytes and permissive record semantics remain unchanged.",
+      "current_suites": [
+        {
+          "path": "tests/commands/event_containment.test.ts",
+          "tests_per_runtime": 17
+        },
+        {
+          "path": "tests/core/contained_stream.test.ts",
+          "tests_per_runtime": 4
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-14",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-14-verification.json",
+      "original_fix_receipt_sha256": "2b18210fbf1095a4804def1fc8793568931a8f7ede18984c444ec2b129d3fd86",
+      "invariant": "Every configured DB-init directory plus manifest/config target is contained, non-linked and of the expected filesystem type before any scaffold write. No active runtime database is created by init.",
+      "current_suites": [
+        {
+          "path": "tests/commands/db_index.test.ts",
+          "tests_per_runtime": 30
+        },
+        {
+          "path": "tests/core/filesystem_authority.test.ts",
+          "tests_per_runtime": 12
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-15",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-15-verification.json",
+      "original_fix_receipt_sha256": "42d18e74f79d25a8df6f0a86875fd21547ebb99183fe92121e70e2cf69c4f29c",
+      "invariant": "Canonical skill resource containment and safe native projections",
+      "current_suites": [
+        {
+          "path": "tests/commands/skill_resource_containment.test.ts",
+          "tests_per_runtime": 18
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-16",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-16-verification.json",
+      "original_fix_receipt_sha256": "b106289d2f1a6657c2c6a87890b4e44cee54d087a39e560b2fdebe0a5fa180f9",
+      "invariant": "Each authored file and derived record keeps its deepest registered workspace owner, independently of enabled state, visibility or selection.",
+      "current_suites": [
+        {
+          "path": "tests/commands/bundle_ownership.test.ts",
+          "tests_per_runtime": 26
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-18",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-18-verification.json",
+      "original_fix_receipt_sha256": "82f9dc0ad9390bacfd3aaa7d25226f392831311297beb87d87fad8b656f6d4ae",
+      "invariant": "Repository-controlled template root/set selection cannot escape its configured local authority; schema and body input is bounded before parsing without silently converting invalid input into bundled fallback.",
+      "current_suites": [
+        {
+          "path": "tests/graph/template_containment.test.ts",
+          "tests_per_runtime": 26
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-19",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-19-verification.json",
+      "original_fix_receipt_sha256": "a2df34d9dd093f6c4ac13aa8f889ab2e8ab27a704e655c331eba067cb7b426f5",
+      "invariant": "Guide and verbose core-list readers accept only contained regular files with finite byte bounds before exposing content. Shared bounded reads enforce actual read bytes rather than only an earlier stat and reject special-file input without waiting for a FIFO writer.",
+      "current_suites": [
+        {
+          "path": "tests/core/filesystem_authority.test.ts",
+          "tests_per_runtime": 12
+        },
+        {
+          "path": "tests/commands/discovery_containment.test.ts",
+          "tests_per_runtime": 15
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    },
+    {
+      "bug": "root:bug-20",
+      "original_fix_receipt": ".mdkg/artifacts/goal-84/bug-20-verification.json",
+      "original_fix_receipt_sha256": "c07cce76fcb6e0971467eff424a1a673775d4a8372c485ab5c13a487f9561395",
+      "invariant": "Generated pack and inherited report destinations stay within the repository. Explicit operator exports carry separate per-output authority. Known linked/special targets fail before any output; regular-file replacement must not widen private POSIX permissions or truncate hardlink peers.",
+      "current_suites": [
+        {
+          "path": "tests/commands/pack_output_containment.test.ts",
+          "tests_per_runtime": 20
+        }
+      ],
+      "disposition": "Original local fix remains covered by current installed regressions; final independent review pending"
+    }
+  ],
+  "unique_suite_count": 14,
+  "unique_tests_per_runtime": 292,
+  "total_test_executions": 876,
+  "coverage_notes": [
+    "Public CLI calls and direct shipped internal-module tests both execute; no canonical source/runtime modules are loaded.",
+    "Per-finding counts overlap at shared filesystem_authority; 292 is the unique suite total per runtime, not a vulnerability count.",
+    "Primary current regression families for all twelve fixed original Standard findings are refreshed; older supplemental suites and failing-before evidence remain in the linked historical receipts.",
+    "Task828 must independently verify the exact complete fix range; these passing-after checks do not replace that review."
+  ],
+  "review": {
+    "kind": "Independent bounded read-only functional harness review",
+    "reviewer": "installed_regression_review",
+    "blocking_findings": 0,
+    "followup": "Reviewer installation-provenance caveat resolved by direct 223-file tarball comparison and positive/negative module-routing controls.",
+    "not_final_security_clearance": true
+  },
+  "limitations": [
+    "Bug17 is excluded and remains blocked on old config-less public bundle compatibility.",
+    "macOS arm64; not Windows or actual read-only-mount qualification.",
+    "Static input and synthetic substitution fixtures do not prove active hostile-writer race immunity or extended ACL/ownership preservation.",
+    "Custody covers recorded regular bytes, path inventory, HEAD and Git index; not every ignored file, modes or empty directories.",
+    "CommonJS guard is module provenance instrumentation, not filesystem/network sandboxing or an ESM loader policy.",
+    "No new independent scan or affected-version reassessment; no final 0.6.0 artifact seal."
+  ],
+  "preserved_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "src/commands/bundle.ts": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1",
+    "src/commands/graph.ts": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436",
+    "src/commands/subgraph.ts": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4",
+    "src/graph/identity_transport.ts": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684",
+    "src/graph/transport_state.ts": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072",
+    "tests/commands/bundle_state.test.ts": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2",
+    ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md": "2a788e558c49556bf11ce5d1ed90286193842eeebe3fd9c6117550a9e45825d6",
+    ".mdkg/artifacts/goal-84/bug-17-progress.json": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e"
+  },
+  "validation": {
+    "installed_matrix": "876 pass, 0 fail, 0 skipped",
+    "test_compilation": "npm run build:test passed",
+    "closing_checks": {
+      "full_ordinary": {
+        "command": "npm run test:built",
+        "runtime": "24.18.0",
+        "passed": 1395,
+        "failed": 0,
+        "skipped": 0,
+        "log_sha256": "a07730e959761c218e339de916009ec48e1691eafc725eb04220ecbb1c3fe6cf"
+      },
+      "cli_parity": {
+        "passed": true,
+        "log_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf"
+      },
+      "docs": {
+        "passed": true,
+        "examples": 494,
+        "log_sha256": "936b5b26b1da5262d280f116f1e36af8f0ff1edf43fb1bf055780f7b1ddca5ba"
+      },
+      "full_graph": {
+        "errors": 0,
+        "warnings": 3,
+        "receipt_sha256": "f3d4f0f5b4927b1bf01e2af6e4fc68b86f0b56251ac2b90c30ba333f2a4f6ce8"
+      },
+      "changed_graph": {
+        "errors": 0,
+        "warnings": 0,
+        "receipt_sha256": "8167f1a086bfe7bc352e14edd642b952932ab3611e092d25428e7ffdba07fc23"
+      },
+      "sqlite": {
+        "fresh": true,
+        "receipt_sha256": "1c4de6186930d004c433ca854a49c8c3abcc42d9b8b7476cba83cede0aaa7c82"
+      },
+      "git_diff_check": "passed",
+      "protected_hashes": "all match",
+      "full_suite_fixture_parent_removed": true,
+      "full_suite_leftover_entries_removed": 855
+    }
+  },
+  "authority": "Existing Goal83/84 local fixture, evidence/projection and exact-path local commit authority. No product source/test changes, remote Git, publication, tags, providers, deployment, consumer/root/sibling writes, canonical migration, protected bundle or subgraph refresh.",
+  "remaining": [
+    "Bug17 compatibility and completion",
+    "old-writer v2 adoption decision",
+    "killed-writer recovery decision",
+    "historical migration reference disposition",
+    "actual read-only-mount evidence",
+    "final independent security review",
+    "draft 0.6.0 metadata, full release ladder and exact artifact seal"
+  ],
+  "skill_candidates": []
+}

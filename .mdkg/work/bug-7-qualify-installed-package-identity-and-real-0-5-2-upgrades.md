@@ -7,11 +7,11 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json]
 relates: [task-826]
 blocked_by: [task-824]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598, chk-599]
+refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598, chk-599, chk-600]
 context_refs: [goal-84, goal-83]
 evidence_refs: []
 aliases: []
@@ -349,3 +349,19 @@ final v3 receipts bind the frozen harness and current intermediate package.
 No product changes or policy acceptance. Continue per-finding installed coverage
 aggregation and outstanding compatibility/historical/read-only-mount decisions,
 then final security review, metadata, release ladder and seal. Bug7 remains open.
+
+## 2026-09-11 Current Installed Security Regression Matrix
+
+Chk600 refreshes primary regression families for all twelve locally fixed
+original Standard findings against the current installed candidate on all three
+required runtimes:14unique suites,292tests each,876passing executions and no
+failures/skips. The per-finding map links original failing-before receipts;
+ordinary behavioral controls are not counted as additional security findings.
+Public CLI and direct shipped-module tests are both used, with no canonical
+runtime imports. All223installed files match the tarball exactly; canonical
+and installed custody bookends match. Every suite fixture directory is removed.
+
+Bug17 is excluded and remains open. This is passing-after regression evidence,
+not task828 independent clearance. Old-writer, killed-writer, historical
+migration and actual read-only-mount decisions/evidence remain; draft metadata,
+the complete ladder and exact final artifact seal are still required.
