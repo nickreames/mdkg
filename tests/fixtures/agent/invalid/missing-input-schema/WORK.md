@@ -5,7 +5,6 @@ title: Missing Inputs
 version: 1.0.0
 agent_id: agent.image-generator
 kind: image_generation
-pricing_model: quoted
 required_capabilities: [model.image.generate]
 outputs: [image_url:url:required]
 receipt_required: true

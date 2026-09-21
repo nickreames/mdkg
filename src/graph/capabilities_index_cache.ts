@@ -11,6 +11,7 @@ import { buildIndex } from "./indexer";
 import {
   buildCapabilitiesIndex,
   CapabilitiesIndex,
+  projectCapabilityRecord,
   resolveCapabilitiesIndexPath,
 } from "./capabilities_indexer";
 
@@ -96,7 +97,8 @@ export function isCapabilitiesIndexStale(root: string, config: Config): boolean 
 function readCapabilitiesIndex(indexPath: string): CapabilitiesIndex {
   try {
     const raw = fs.readFileSync(indexPath, "utf8");
-    return JSON.parse(raw) as CapabilitiesIndex;
+    const index = JSON.parse(raw) as CapabilitiesIndex;
+    return { ...index, records: index.records.map(projectCapabilityRecord) };
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
     throw new Error(`failed to read capabilities index: ${message}`);

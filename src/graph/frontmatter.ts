@@ -73,7 +73,6 @@ export const DEFAULT_FRONTMATTER_KEY_ORDER = [
   "kind",
   "receipt_kind",
   "redaction_class",
-  "pricing_model",
   "required_capabilities",
   "inputs",
   "outputs",

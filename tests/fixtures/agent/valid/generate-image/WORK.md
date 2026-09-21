@@ -5,7 +5,6 @@ title: Generate Image
 version: 1.0.0
 agent_id: agent.image-generator
 kind: image_generation
-pricing_model: included
 required_capabilities: [model.image.generate, artifact.upload]
 skill_refs: [author-agent-work-contract]
 tool_refs: [tool.artifact-uploader]

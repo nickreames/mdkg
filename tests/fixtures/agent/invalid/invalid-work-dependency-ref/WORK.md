@@ -5,7 +5,6 @@ title: Invalid Dependency Ref
 version: 1.0.0
 agent_id: agent.image-generator
 kind: image_generation
-pricing_model: quoted
 required_capabilities: [model.image.generate]
 skill_refs: [author-agent-work-contract]
 tool_refs: [Tool.ArtifactUploader]

@@ -5,7 +5,6 @@ title: Invalid Receipt Status Work
 version: 1.0.0
 agent_id: agent.invalid-status
 kind: fixture
-pricing_model: free
 required_capabilities: []
 skill_refs: []
 tool_refs: []

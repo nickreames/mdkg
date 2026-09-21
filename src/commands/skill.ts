@@ -214,27 +214,6 @@ function filterSkills(
 }
 
 function buildSkillSearchText(skill: SkillIndexEntry): string {
-  const extensionTokens = Object.entries(skill.extensions).flatMap(([namespace, values]) =>
-    Object.entries(values).flatMap(([key, value]) => {
-      const field = `extensions.${namespace}.${key}`;
-      if (Array.isArray(value)) {
-        return [field, ...value];
-      }
-      if (typeof value === "boolean") {
-        return [field, value ? "true" : "false"];
-      }
-      return [field, value];
-    })
-  );
-  const ochatrTokens = Object.entries(skill.ochatr).flatMap(([key, value]) => {
-    if (Array.isArray(value)) {
-      return [key, ...value];
-    }
-    if (typeof value === "boolean") {
-      return [key, value ? "true" : "false"];
-    }
-    return [key, value];
-  });
   const tokens = [
     skill.slug,
     skill.id,
@@ -245,8 +224,6 @@ function buildSkillSearchText(skill: SkillIndexEntry): string {
     ...skill.tags,
     ...skill.authors,
     ...skill.links,
-    ...extensionTokens,
-    ...ochatrTokens,
   ];
   return tokens.join(" ").toLowerCase();
 }
@@ -454,32 +431,6 @@ export function runSkillShowCommand(options: SkillShowCommandOptions): void {
     }
     lines.push(`has_scripts: ${skill.has_scripts ? "true" : "false"}`);
     lines.push(`has_references: ${skill.has_references ? "true" : "false"}`);
-    for (const [namespace, values] of Object.entries(skill.extensions).sort(([a], [b]) =>
-      a.localeCompare(b)
-    )) {
-      for (const [key, value] of Object.entries(values).sort(([a], [b]) => a.localeCompare(b))) {
-        if (Array.isArray(value)) {
-          lines.push(`extensions.${namespace}.${key}: ${value.join(", ")}`);
-          continue;
-        }
-        if (typeof value === "boolean") {
-          lines.push(`extensions.${namespace}.${key}: ${value ? "true" : "false"}`);
-          continue;
-        }
-        lines.push(`extensions.${namespace}.${key}: ${value}`);
-      }
-    }
-    for (const [key, value] of Object.entries(skill.ochatr).sort(([a], [b]) => a.localeCompare(b))) {
-      if (Array.isArray(value)) {
-        lines.push(`${key}: ${value.join(", ")}`);
-        continue;
-      }
-      if (typeof value === "boolean") {
-        lines.push(`${key}: ${value ? "true" : "false"}`);
-        continue;
-      }
-      lines.push(`${key}: ${value}`);
-    }
     console.log(lines.join("\n"));
     return;
   }

@@ -786,6 +786,13 @@ function requireInitAssets() {
     fail(`public skill projection: ${error}`);
   }
   try {
+    require("./repository-skill-policy.js").assertRepositoryPublicSkills(
+      path.join(root, "assets", "init", "skills", "default")
+    );
+  } catch (error) {
+    fail(`repository public skill policy: ${error.message}`);
+  }
+  try {
     require("./public-core-seed.js").assertPublicCoreSeed({
       publicRoot: path.join(root, "assets", "init", "core"),
       builtRoot: path.join(root, "dist", "init", "core"),
@@ -912,7 +919,7 @@ function requireInitAssets() {
     fail("CLI_COMMAND_MATRIX.md is missing workflow validation command references");
   }
   if (
-    !matrix.includes("mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--profile <name>] [--json]") ||
+    !matrix.includes("mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--summary] [--limit <n>] [--json]") ||
     !matrix.includes("warning_summary") ||
     !matrix.includes("json_receipt_path") ||
     !matrix.includes("mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]")

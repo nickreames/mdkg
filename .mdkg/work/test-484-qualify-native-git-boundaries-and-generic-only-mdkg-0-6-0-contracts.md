@@ -57,7 +57,20 @@ graphs/native Git repositories under /private/tmp, required Node24.15.0/supporte
 
 # Results / Evidence
 
-Not executed. Bind exact candidate/runtime/fixture receipts before completion.
+Partial local evidence is available; this test is not complete. Chk606 covers
+the earlier Git wrapper removal/inspection unit. Bug37's verification artifact
+adds exact installed generic-boundary and work-flow proof on Node24.15.0,
+24.18.0 and26.0.0: nine rejected invocations per runtime with no writes or
+subprocesses, neutral cached/imported capability metadata, preserved custom
+fields, generic runtime vocabulary, and warm/cold JSON/SQLite identity links.
+The historical-shaped imported bundle is synthetic test data, not recovered
+published evidence. The source-removal export still verifies unchanged.
+
+`.mdkg/artifacts/goal-84/bug-37-verification.json` also binds complete tests,
+affected installed smokes and a prospective source-commit check without partial
+Bug17 changes. These are intermediate0.5.2-versioned packages, not the final
+qualified0.6.0 artifact. Actual0.5.2 upgrade, real native-worktree integration,
+the final package and independent task828 acceptance remain required.
 
 # Notes / Follow-ups
 

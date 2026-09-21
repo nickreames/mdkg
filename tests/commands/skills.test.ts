@@ -306,8 +306,7 @@ test("skill show renders full body by default and meta when requested", () => {
   ).stdout;
   assert.match(meta, /root:skill:plan-run \| skill \| -\/- \| plan-run/);
   assert.match(meta, /tags: stage:plan, writer:read-only, risk:low/);
-  assert.match(meta, /extensions\.ochatr\.policy: advisory/);
-  assert.match(meta, /ochatr_policy: advisory/);
+  assert.doesNotMatch(meta, /extensions|ochatr_/);
 });
 
 test("internal dogfood skills comply with the locked Anthropic best-practice snapshot", () => {

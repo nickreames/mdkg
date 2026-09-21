@@ -39,6 +39,9 @@ const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"))
 const { assertPublicCoreSeed } = require("./public-core-seed.js");
 const publicCoreRoot = path.join(root, "assets", "init", "core");
 assertPublicCoreSeed({ publicRoot: publicCoreRoot });
+require("./repository-skill-policy.js").assertRepositoryPublicSkills(
+  path.join(root, "assets", "init", "skills", "default")
+);
 
 fs.rmSync(distRoot, { recursive: true, force: true });
 

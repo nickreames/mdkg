@@ -1,0 +1,728 @@
+{
+  "schema_version": 1,
+  "work_qids": [
+    "root:bug-37"
+  ],
+  "owner": "mdkg-project-agent",
+  "outcome": "VERIFIED_LOCAL_IMPLEMENTATION_UNIT_NOT_RELEASE_QUALIFICATION",
+  "source_base": "465b34e37f94bf6df410b54e8947b989f7daf37a",
+  "package_source_manifest": [
+    {
+      "path": ".mdkg/templates/default/work.md",
+      "sha256": "1a2d22b922b37a208a1e51ad0fc51d8914dea6acb0ece4d9c6e19cdf907cd426"
+    },
+    {
+      "path": "CLI_COMMAND_MATRIX.md",
+      "sha256": "d1d262348b432273e1e9c11ea31b83f9be6de145fb1bd2d154061d4f2e08b990"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "40ce333e0d2043222a4d8bbc2d010915f333e1d131683df9c5d4f2b8a9c10925"
+    },
+    {
+      "path": "README.md",
+      "sha256": "da625ce60d98a74ed014fdb580da0d3a2b7835d0a397d337e760b916a783e76f"
+    },
+    {
+      "path": "assets/init/CLI_COMMAND_MATRIX.md",
+      "sha256": "77de018aaf3aa27678a5d28561e4316f3c8c531ec866fe66a3d650a6ff91e5d9"
+    },
+    {
+      "path": "assets/init/README.md",
+      "sha256": "8e6601ad0035bea5ca694043ad00c5c76702e7f73f4972a39aeb90eb8dd5d3ff"
+    },
+    {
+      "path": "docs/_generated/cli-reference.md",
+      "sha256": "3c0689345da33cceee18904826406f3db8273345fd2bf035e9881084aef48540"
+    },
+    {
+      "path": "docs/_generated/command-contract-summary.json",
+      "sha256": "b23d97468b01df02c00bf8147b91cf504b955054a22862fb424b3a6a332c758a"
+    },
+    {
+      "path": "docs/src/content/docs/guides/agent-workflow.md",
+      "sha256": "53b1b871b2b82dd3cb39d6106d3e2e018668c17db0ccadb8fd84d773f7a8a148"
+    },
+    {
+      "path": "scripts/assert-publish-ready.js",
+      "sha256": "e606d1a39809ae920a88e614735851ed5ddae758e6f9b94d459e1bc1e650be14"
+    },
+    {
+      "path": "scripts/copy-init-assets.js",
+      "sha256": "1419274b5e94d2e5a8ad89d9c9be57c63d5634b4edb67effd410af3f3f47b5c4"
+    },
+    {
+      "path": "scripts/smoke-archive-work.js",
+      "sha256": "4e13f3f333706a36ac859e2bd4bac03b2b71144a35023705c51f435022d223f3"
+    },
+    {
+      "path": "scripts/smoke-cli-ux-polish.js",
+      "sha256": "997a6ef612e5393a2ef43242100c0ced95f3d7b4d6d77e378f4ea4ea54b4df8b"
+    },
+    {
+      "path": "scripts/smoke-command-matrix.js",
+      "sha256": "6adf0d55552dabd117c7042d5da6538243ddc50359cbbcc5dc89bf6b1abf9b93"
+    },
+    {
+      "path": "scripts/smoke-integration-ux.js",
+      "sha256": "747be12b8a1e3f4431ecd4c2adff31ccf9543d9bef27b8de21caeea89d1dd43c"
+    },
+    {
+      "path": "scripts/smoke-work-invocation.js",
+      "sha256": "bcad11c3329af0c1c8c5a6cf33b98b5a9a8172840a96296712cb7ec84bef3fd1"
+    },
+    {
+      "path": "src/cli.ts",
+      "sha256": "c97a165568b86cc577aca7edc48b1061f12e711f3aaeaed98d4bdc3d20755f09"
+    },
+    {
+      "path": "src/commands/capability.ts",
+      "sha256": "e5b2175f513717a25b2335d05159f011d2d4d7e2b79b36845164967a54a86f9a"
+    },
+    {
+      "path": "src/commands/pack.ts",
+      "sha256": "78f5017989c7414cbaf1fcb261c733f62957bc99e51411df04e2117e9bb0999d"
+    },
+    {
+      "path": "src/commands/query_output.ts",
+      "sha256": "21bbf590f28cccef8240d01b84fdc79262f0d7cab097ac0b415bf2eb6b723500"
+    },
+    {
+      "path": "src/commands/skill.ts",
+      "sha256": "a58452e7d84f09c54ecfaf080628ea3f23d918ebc3ae659398dfde4166dd1fb4"
+    },
+    {
+      "path": "src/commands/validate.ts",
+      "sha256": "bb902a64fea92862c1227700d7d71e5e057858d1a5444ffe8ef6dbdbf1bac116"
+    },
+    {
+      "path": "src/commands/work.ts",
+      "sha256": "2f08429225ada4236f16c253abc42eb8a5229b09e9162630c3a381f3a678a285"
+    },
+    {
+      "path": "src/core/public_skill_projection.ts",
+      "sha256": "3243cd60c6b2aeba7a44ede01729107835e95744bb4ecca13c054f8369e7b475"
+    },
+    {
+      "path": "src/graph/agent_file_types.ts",
+      "sha256": "92fa6553b5403a8a47c9a642baf4425887e5999410fd8ffa5e533b8879349fe7"
+    },
+    {
+      "path": "src/graph/capabilities_index_cache.ts",
+      "sha256": "574efc175fbeb37a20d1653362f01a5a5100ee2d46fe6941c9cecfb46efbaae7"
+    },
+    {
+      "path": "src/graph/capabilities_indexer.ts",
+      "sha256": "7c2cc7d15efdb6624edbd2657c6e1d68bc714f508a675cfa7ad663e19efa9da0"
+    },
+    {
+      "path": "src/graph/frontmatter.ts",
+      "sha256": "2346950db5a029f313216356fafee1b8e047f4900bd2a4348d0ee595dd90eb1b"
+    },
+    {
+      "path": "src/graph/skills_indexer.ts",
+      "sha256": "f67f0a3efdaa9ca287cf8de8d7a068efba70eb3351b5a7fd083bad77498bd2df"
+    },
+    {
+      "path": "src/util/argparse.ts",
+      "sha256": "0a78dce8f445bca0131c254206120a8c6313bd87cfe34ccf0863cb391a8b06ae"
+    },
+    {
+      "path": "tests/commands/agent_file_types.test.ts",
+      "sha256": "7270e5653a5dc89d9f31cd49438996cd951f201e0b381f4808c16b494e95f3a4"
+    },
+    {
+      "path": "tests/commands/archive_work.test.ts",
+      "sha256": "61a1ada648196d7239742e1e5ab182270ce791f48ec36598893b6c535f52b11a"
+    },
+    {
+      "path": "tests/commands/cli.test.ts",
+      "sha256": "4689091e19ecb9c08ac600bbc1eb40eb62385a7f00647c97a37ca3c0f1cb9675"
+    },
+    {
+      "path": "tests/commands/cli_help_matrix.test.ts",
+      "sha256": "3094dd57e8d2e3aa1417adc167da190350acf01137416ba8d9522319f77f7073"
+    },
+    {
+      "path": "tests/commands/init.test.ts",
+      "sha256": "fa21d633c2a3b419339c2390cdf0bde86446e16818a51039fc6b77b63ba7557d"
+    },
+    {
+      "path": "tests/commands/json_discovery.test.ts",
+      "sha256": "5b203fe5d33084cffa2eec8ea38d83850a0c85cc1a349debd876c926b4f6de23"
+    },
+    {
+      "path": "tests/commands/pack_additional.test.ts",
+      "sha256": "90faafb6c281b664ee5e37c4ecf2e802a3b0281bfa3bb2ed6660ff865b500e76"
+    },
+    {
+      "path": "tests/commands/skills.test.ts",
+      "sha256": "1597d566d7fb826c9068913a9828cf2087e67c9e1b86d681f76fbb540eac1ad0"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/dispute-receipt-order-mismatch/work/WORK.md",
+      "sha256": "7bab316ae5c165fc0a7522e4974621f79b8ebd1cba13e9a0df3b946c99ccba2f"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/invalid-receipt-status/work/WORK.md",
+      "sha256": "61319852ef23fd5b083fbb17cb10869b34a902b4b6a9b4b9ba026e3af52a8159"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/invalid-role/SPEC.md",
+      "sha256": "b0e9aff75a8df838c8f974e4a585ecd8e3bc9d0723a5906d428bda86c999b4ed"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/invalid-spec-dependency-ref/SPEC.md",
+      "sha256": "22cf60171abe601e0b1f3823abb5521ab77c3dc59a1e9cc1adf1e88f7da8c469"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/invalid-work-dependency-ref/WORK.md",
+      "sha256": "e1a0f7f0e91f713921c504a1b887fac6a39b25e2e2e7079be5350be93857962b"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/missing-dispute-receipt/work/WORK.md",
+      "sha256": "ae36ee1c57537e0ac778e66370c98814b8e9c8b0daf8c74bc1b31f9409c7dcd0"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/missing-input-schema/WORK.md",
+      "sha256": "5030f3fe8f6aee36e4db45d42c8b9b56e664e4849920b47ad3800d98be338ab5"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/missing-proposal-evidence/work/WORK.md",
+      "sha256": "d5b98b1a6c20f815a3480e18fdc048c345fcd2502febc3fb3118808401fe76b1"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/missing-subagent-ref/SPEC.md",
+      "sha256": "5b4e5e316090583c5d5aac9350aa34c6fcee27aa63573453f9ef48cf216aea73"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/missing-work-contract/SPEC.md",
+      "sha256": "32e0a68510544bf3aaad7b09892f3fa6e8cdc1db559466b74094ae7aee84158f"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/non-subagent-ref/spec/SPEC.md",
+      "sha256": "63ce95a7cad31cbd70cfd04250405e31819c7762354e3c88aca59480ea7a5a45"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/non-subagent-ref/work/WORK.md",
+      "sha256": "70c38d8d976dd78296b899e8cb337c7b8d7b726139a37f1c36b19ed8f2d05042"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/spec-work-owner-mismatch/agent/SPEC.md",
+      "sha256": "10b679500e67b2ba1326ab09b128ff04b2fa71ba5687849225b020e0ac566c55"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/spec-work-owner-mismatch/work/WORK.md",
+      "sha256": "3fc9467fbde083c45d3d97f0b4ab7cf77c2dc28265b4e500c4ad11b086aa4458"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/work-order-version-mismatch/generate-image/WORK.md",
+      "sha256": "a081d8687d84c62230bfdca6e2d0b351e350bc8a4b48d50a562562411e88ac16"
+    },
+    {
+      "path": "tests/fixtures/agent/invalid/wrong-basename/spec.md",
+      "sha256": "8aa7de8414402f6a191337449968b7526bdf8a775eda4cb3e630d746a09122a2"
+    },
+    {
+      "path": "tests/fixtures/agent/valid/generate-image/WORK.md",
+      "sha256": "6e6f49ef33fdb2164739b094e006cc6eb17c6119b5eefbc8db17bfce11479f7e"
+    },
+    {
+      "path": "tests/fixtures/agent/valid/image-agent/MANIFEST.md",
+      "sha256": "fcd5cf399c97d08d323465e90ff3b0b4e84f8c04ff8bec849a22a783ca5be82d"
+    },
+    {
+      "path": "tests/fixtures/agent/valid/legacy-spec-agent/SPEC.md",
+      "sha256": "be40d34c29d2087819fe361d8ae86af4b33ed2499b58b68e660f457701265c9a"
+    },
+    {
+      "path": "tests/fixtures/agent/valid/legacy-spec-work/WORK.md",
+      "sha256": "9fa5ee9c939183d616b496a4503ba5ca70533474dc7c0301dc3433370030c1d9"
+    },
+    {
+      "path": "tests/fixtures/agent/valid/runtime-agent/MANIFEST.md",
+      "sha256": "7a1025ece8bc980f4c39e306089c8144a83f40152557dfbcceb46eef3f0a4fe7"
+    },
+    {
+      "path": "tests/fixtures/agent/valid/runtime-work/WORK.md",
+      "sha256": "24205a2af7234c64b1e99aa8b34c82b0369e7e50aed01763e254515d1ef78837"
+    },
+    {
+      "path": "tests/graph/capabilities_indexer.test.ts",
+      "sha256": "fda1db133de2203349d93a5642c2cbc1bc0070dd7d563e28120ea09c77f39182"
+    },
+    {
+      "path": "tests/graph/identity_dependencies.test.ts",
+      "sha256": "32862897b5e095d58580bc18b1f210981073343a3218105e5e8b6105f420655d"
+    },
+    {
+      "path": "tests/graph/skills_indexer.test.ts",
+      "sha256": "1429510001c053b36b7de587d0ddba08be29ca8a53859ae78425d2f26c1cec01"
+    },
+    {
+      "path": "tests/graph/sqlite_fingerprint.test.ts",
+      "sha256": "1b452f3f597706d1f6494840dffbb639afc282d884d4041fbb9dfa03a0f35524"
+    },
+    {
+      "path": "tests/helpers/templates.ts",
+      "sha256": "9bf52d6dc5d4774aae9ff511d5fbad600b9e2d87fd961a2acba48a5e5a1b221f"
+    },
+    {
+      "path": "tests/pack/pack.test.ts",
+      "sha256": "b61337409d61ad237a639af7a933c704faac8d7ecf1c4b7d842bd8b4ada99cd3"
+    },
+    {
+      "path": "tests/portable-skill-bodies.test.ts",
+      "sha256": "d5e5c1c9454e7a499fc4dfdfd1ceb96bcae74718e3f119250ee4d1df49d11d4a"
+    },
+    {
+      "path": "scripts/installed-generic-boundary.js",
+      "sha256": "4353ccfe9b2d07574175475fae2144c42c94a088fea3920a3e6c00919bee26ad"
+    },
+    {
+      "path": "scripts/repository-skill-policy.js",
+      "sha256": "c6f70fee3ab302d0eb1c5e9cd30d477a7840090eda388832e5bdfd2cdb26a232"
+    },
+    {
+      "path": "tests/commands/generic_boundary.test.ts",
+      "sha256": "3125a30b52353f52839bc52124f7b11964307361dbf432bf0b103bfdf393e3eb"
+    }
+  ],
+  "boundary": {
+    "removed": [
+      "omni-room validation profile execution and known-profile privilege",
+      "ochatr namespace extraction, weighted search, metadata and JSON projections",
+      "first-class pricing-model CLI/default/validation/projection",
+      "room_orchestrated runtime token"
+    ],
+    "retained": [
+      "opaque policy refs and generic validation",
+      "orchestrated runtime token",
+      "generic manifests, work and structural receipt mirrors",
+      "custom-template authored fields without privileged discovery"
+    ],
+    "authority": "Generic mdkg only; consumers own execution, authentication, policy, accounting and external proof authenticity"
+  },
+  "extraction": {
+    "path": ".mdkg/artifacts/goal-84/consumer-extraction/",
+    "manifest_sha256": "7ad3dc58e759bd8891089ae532bba513170387a610dbbc77084917c11bc9068a",
+    "files": 152,
+    "status": "LOCAL / UNDISPATCHED / CONSUMER ADOPTION UNVERIFIED",
+    "verified_unchanged": true
+  },
+  "independent_readonly_review": {
+    "frozen_source_inventory_sha256": "a1db5c4e5a40599d5969ebf63158a0701835fcf398e8edef78ad8725757d8305",
+    "reviewer_inventory_sha256": "df749b4f573c41a60e58e360bb06cd9de2fec91db6f5810919061107a2650e6a",
+    "source_bookends": "58 parent-manifested paths unchanged during review; 16 reviewer files also unchanged",
+    "findings": [
+      "Retired pricing token swallowed as another option value; independently reproduced, raw-argv refusal added, sync/async and installed no-side-effect regressions pass",
+      "Retired options in active smoke calls and root command matrix; updated and affected installed smokes pass"
+    ],
+    "coverage_gaps_closed": "Installed synthetic imported capability metadata, cached WORK pricing, custom-template preservation and raw skill versus metadata behavior are now covered.",
+    "limitation": "Not a canonical Codex Security diff review; task828 remains open."
+  },
+  "validation": {
+    "build": "passed",
+    "full_tests": {
+      "passed": 1408,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 145364.981875,
+      "log_sha256": "0ca381b58253997340c706594f547accabb74961f63a4cfffe5c958792f03242"
+    },
+    "cli_matrix": "passed",
+    "command_contract": "passed; 39b45497b4e8531de5e0bdb2e7e37d2f9ffba3f8d2fd51fb1ea708738f466e76",
+    "docs": "passed; generated references/release-note data; 63 files and 470 command examples",
+    "static_package_guard": "passed; not final publication qualification",
+    "graph_before_close": {
+      "full_errors": 0,
+      "full_warnings": 4,
+      "changed_errors": 0,
+      "changed_warnings": 0,
+      "note": "three preserved stale imported bundles plus stale shared SQLite projection; post-checkpoint reindex/verification is required before commit"
+    },
+    "diff_check": "passed",
+    "post_checkpoint": {
+      "full_graph": {
+        "ok": true,
+        "errors": 0,
+        "warnings": 3,
+        "sha256": "872039774cb918c67ce3a87e117dc376a6435d1523eec2659fcb71d349094a26"
+      },
+      "changed_graph": {
+        "ok": true,
+        "errors": 0,
+        "warnings": 0,
+        "sha256": "4c068e8d2c22a6c050fb5a1bd32e053d33a616bd49ca8e714f9e601ad4fa79dd"
+      },
+      "sqlite": {
+        "ok": true,
+        "checks": [
+          {
+            "name": "global",
+            "ok": true,
+            "level": "ok",
+            "path": ".mdkg/index/global.json",
+            "exists": true,
+            "stale": false,
+            "size": 3211344,
+            "detail": "cache is present and fresh",
+            "errors": [],
+            "warnings": []
+          },
+          {
+            "name": "skills",
+            "ok": true,
+            "level": "ok",
+            "path": ".mdkg/index/skills.json",
+            "exists": true,
+            "stale": false,
+            "size": 7048,
+            "detail": "cache is present and fresh",
+            "errors": [],
+            "warnings": []
+          },
+          {
+            "name": "capabilities",
+            "ok": true,
+            "level": "ok",
+            "path": ".mdkg/index/capabilities.json",
+            "exists": true,
+            "stale": false,
+            "size": 323241,
+            "detail": "cache is present and fresh",
+            "errors": [],
+            "warnings": []
+          },
+          {
+            "name": "subgraphs",
+            "ok": true,
+            "level": "ok",
+            "path": ".mdkg/index/subgraphs.json",
+            "exists": true,
+            "stale": false,
+            "size": 559439,
+            "detail": "cache is present and fresh",
+            "errors": [],
+            "warnings": []
+          },
+          {
+            "name": "sqlite",
+            "ok": true,
+            "level": "ok",
+            "path": ".mdkg/index/mdkg.sqlite",
+            "exists": true,
+            "stale": false,
+            "size": 4435968,
+            "detail": "SQLite cache is present and fresh",
+            "errors": [],
+            "warnings": []
+          }
+        ],
+        "sha256": "a22104b65bf80571412d266fef52e2f405aeabc2384769de29dc75dfa2d402a2"
+      },
+      "diff_check": "passed; only preserved stale imported-bundle warnings remain"
+    }
+  },
+  "installed_candidate": {
+    "label": "Intermediate 0.5.2-versioned source package; not published or sealed as final 0.6.0",
+    "tarball_sha256": "e2bf338e180805bbeb6fb16626ea494474fe76d4ecf13edffc0232cd8960346c",
+    "artifact_usage_sha256": "0b5c43fefaacf7de7437e05ab0754b97f3f8170c5269290918df761099b488fc",
+    "results": [
+      {
+        "node": "v24.15.0",
+        "script": "smoke-work-invocation.js",
+        "exit": 0,
+        "signal": null,
+        "duration_ms": 19303,
+        "log_sha256": "ea52036f06f5c34a90bb84c8ef27f99c8c00fa5d5528565989e7a193ef9c189e",
+        "receipt": {
+          "smoke": "work-invocation",
+          "genericBoundary": {
+            "node": "v24.15.0",
+            "tarball_sha256": "e2bf338e180805bbeb6fb16626ea494474fe76d4ecf13edffc0232cd8960346c",
+            "rejected_invocations": 9,
+            "subprocesses_on_refusal": 0,
+            "generic_work": true,
+            "old_runtime_token_rejected": true,
+            "custom_fields_preserved": true,
+            "cached_projection_neutral": true,
+            "synthetic_import_projection_neutral": true,
+            "imported_bytes_preserved": true
+          },
+          "identityWorkflows": [
+            {
+              "backend": "json",
+              "state": "warm",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "json",
+              "state": "cold",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "sqlite",
+              "state": "warm",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "sqlite",
+              "state": "cold",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            }
+          ]
+        }
+      },
+      {
+        "node": "v24.18.0",
+        "script": "smoke-work-invocation.js",
+        "exit": 0,
+        "signal": null,
+        "duration_ms": 21495,
+        "log_sha256": "38e290aff55f5d993cd8e062718a10b592a604b5dba73d0f9b44251e3f95a6b8",
+        "receipt": {
+          "smoke": "work-invocation",
+          "genericBoundary": {
+            "node": "v24.18.0",
+            "tarball_sha256": "e2bf338e180805bbeb6fb16626ea494474fe76d4ecf13edffc0232cd8960346c",
+            "rejected_invocations": 9,
+            "subprocesses_on_refusal": 0,
+            "generic_work": true,
+            "old_runtime_token_rejected": true,
+            "custom_fields_preserved": true,
+            "cached_projection_neutral": true,
+            "synthetic_import_projection_neutral": true,
+            "imported_bytes_preserved": true
+          },
+          "identityWorkflows": [
+            {
+              "backend": "json",
+              "state": "warm",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "json",
+              "state": "cold",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "sqlite",
+              "state": "warm",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "sqlite",
+              "state": "cold",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            }
+          ]
+        }
+      },
+      {
+        "node": "v24.18.0",
+        "script": "smoke-archive-work.js",
+        "exit": 0,
+        "signal": null,
+        "duration_ms": 17933,
+        "log_sha256": "70712cd9410f7ee2f2c65b205367bc12fe88e66935dc1c869cad31a35d76ddd4"
+      },
+      {
+        "node": "v24.18.0",
+        "script": "smoke-cli-ux-polish.js",
+        "exit": 0,
+        "signal": null,
+        "duration_ms": 4381,
+        "log_sha256": "a07435fea478cbdffa8b3e509e961acbe830ce352af4aed4820cdfff0fb8e819"
+      },
+      {
+        "node": "v24.18.0",
+        "script": "smoke-integration-ux.js",
+        "exit": 0,
+        "signal": null,
+        "duration_ms": 4624,
+        "log_sha256": "8d46247a6af733938169e8853b3ef482a3bf6341e7ce3c42d9d27a5f8cc526d7"
+      },
+      {
+        "node": "v24.18.0",
+        "script": "smoke-command-matrix.js",
+        "exit": 0,
+        "signal": null,
+        "duration_ms": 18418,
+        "log_sha256": "9ae236d6eb12f6c12ead647a813f49d427bae68baca1b0532e00daca3ff7e959"
+      },
+      {
+        "node": "v26.0.0",
+        "script": "smoke-work-invocation.js",
+        "exit": 0,
+        "signal": null,
+        "duration_ms": 21707,
+        "log_sha256": "9f2c013cad17883f4ce95045431c87fa016f4e998fa333a08e0cd7b7ef9192d0",
+        "receipt": {
+          "smoke": "work-invocation",
+          "genericBoundary": {
+            "node": "v26.0.0",
+            "tarball_sha256": "e2bf338e180805bbeb6fb16626ea494474fe76d4ecf13edffc0232cd8960346c",
+            "rejected_invocations": 9,
+            "subprocesses_on_refusal": 0,
+            "generic_work": true,
+            "old_runtime_token_rejected": true,
+            "custom_fields_preserved": true,
+            "cached_projection_neutral": true,
+            "synthetic_import_projection_neutral": true,
+            "imported_bytes_preserved": true
+          },
+          "identityWorkflows": [
+            {
+              "backend": "json",
+              "state": "warm",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "json",
+              "state": "cold",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "sqlite",
+              "state": "warm",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            },
+            {
+              "backend": "sqlite",
+              "state": "cold",
+              "node_count": 6,
+              "order_count": 2,
+              "receipt_count": 2,
+              "stable_links": 6,
+              "git_index_preserved": true,
+              "evidence_bytes_preserved": true
+            }
+          ]
+        }
+      }
+    ],
+    "scope": "Each runtime uses identical installed bytes. Workflow graph fixtures, queue/work receipt flows, warm/cold JSON/SQLite identity observations; no claim of full native worktree qualification.",
+    "synthetic_import": "Historical-shaped generated capability metadata synthesized solely for testing. Not a recovered or exact published bundle."
+  },
+  "prospective_commit_proof": {
+    "base": "465b34e37f94bf6df410b54e8947b989f7daf37a",
+    "excluded_partial_paths": [
+      "src/commands/bundle.ts",
+      "src/commands/graph.ts",
+      "src/commands/subgraph.ts",
+      "src/graph/identity_transport.ts",
+      "src/graph/transport_state.ts",
+      "tests/commands/bundle_state.test.ts"
+    ],
+    "owned_overlay_count": 70,
+    "build": "passed using the existing lockfile-owned dependencies as read-only fixture links",
+    "focused_tests": {
+      "passed": 158,
+      "failed": 0,
+      "skipped": 0,
+      "log_sha256": "35a3e826fb83d4609f680841ffadc17fa19b5dbab88df38cbd2b23ed015fc03f"
+    },
+    "installed": {
+      "node": "v24.18.0",
+      "tarball_sha256": "289ea7aca7138b5bddfbecdd2e334b485c43ce7d5f093a0e5da44d2e0a3fa717",
+      "rejected_invocations": 9,
+      "subprocesses_on_refusal": 0,
+      "generic_work": true,
+      "old_runtime_token_rejected": true,
+      "custom_fields_preserved": true,
+      "cached_projection_neutral": true,
+      "synthetic_import_projection_neutral": true,
+      "imported_bytes_preserved": true
+    },
+    "meaning": "Prospective source unit builds and its direct regressions and installed generic boundary pass without the preserved Bug17 partial patch. No canonical branch or worktree was created."
+  },
+  "corrected_fixture_failures": [
+    "Stale retired help expectations: replaced with the current generic command surface; complete tests pass.",
+    "Integration smoke changed authored Markdown after indexing: now proves the stale-cache warning, explicitly reindexes its fixture, then requires zero warnings.",
+    "Command-matrix smoke asserted legacy default/root handbook layout: now separately checks compact default, explicit graph-only, --agent compatibility and focused .mdkg guidance."
+  ],
+  "followup_blocker": {
+    "bug": "root:bug-39",
+    "test": "root:test-486",
+    "evidence": ".mdkg/artifacts/goal-84/bug-39-unknown-option-reproduction.json",
+    "finding": "Unsupported index --verify silently rebuilds five projections on actual published0.5.2 and the current candidate.",
+    "disposition": "Open; blocks final task828. No automatic waiver or new Standard scan count."
+  },
+  "protected_bookends": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "limitations": [
+    "Goal85 remains paused; Bug7/Bug17/Bug35/Bug39, test478/test484/test486, final task828 security acceptance, full task829 ladder and task830 exact0.6.0 seal remain incomplete.",
+    "macOS only; no Windows, remote Git, hosted CI, provider, deployment, publication or consumer-adoption proof.",
+    "Complete release coverage floors remain 89/77/96; no new full coverage claim is made here.",
+    "All source changes require final requalification; neither intermediate artifact is a publication candidate."
+  ],
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "service-boundary-ownership-check",
+    "verify-close-and-checkpoint",
+    "source-grounded-diagnose-and-fix"
+  ],
+  "skill_candidates": [],
+  "checkpoint": "root:chk-607",
+  "commit_allowlist": ".mdkg/artifacts/goal-84/bug-37-commit-allowlist.json"
+}

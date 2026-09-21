@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
+import { writeDefaultTemplates } from "../helpers/templates";
 const { loadConfig } = require("../../core/config");
 const { buildBundle } = require("../../commands/bundle");
 const { buildIndex } = require("../../graph/indexer");
@@ -15,9 +16,14 @@ const { writeDerivedIndexes } = require("../../graph/reindex");
 
 function seed(root: string) {
   writeRootConfig(root);
+  writeDefaultTemplates(root);
+  const template = path.join(root, ".mdkg/templates/default/task.md");
+  const body = fs.readFileSync(template, "utf8").replace("type: task", "type: task\ngenerated_at: example\nindexed_at: example");
+  writeFile(template, body);
   writeFile(path.join(root, ".mdkg/work/task-1.md"), "---\nid: task-1\ntype: task\ntitle: Synthetic task\nstatus: backlog\npriority: 1\ncreated: 2026-09-08\nupdated: 2026-09-08\n---\nAuthored body\n");
-  // Exercise the existing legacy extension adapter, not a new vendor policy.
-  writeFile(path.join(root, ".mdkg/skills/demo/SKILL.md"), "---\nname: demo\ndescription: Synthetic skill\nochatr_generated_at: authored-generation\nochatr_indexed_at: authored-index\n---\nSkill body\n");
+  const task = path.join(root, ".mdkg/work/task-1.md");
+  writeFile(task, fs.readFileSync(task, "utf8").replace("type: task", "type: task\ngenerated_at: authored-generation\nindexed_at: authored-index"));
+  writeFile(path.join(root, ".mdkg/skills/demo/SKILL.md"), "---\nname: demo\ndescription: Synthetic skill\n---\nSkill body\n");
 }
 function fixture(t: { after(fn: () => void): void }) {
   const owner = makeTempDir("mdkg-sqlite-fingerprint-");
@@ -70,23 +76,23 @@ test("source fingerprints bind configuration without stripping authored timestam
   const f = fixture(t), before = sqliteSourceFingerprint(inputs(f.root));
   f.raw.pack.limits.max_bytes += 1; f.save();
   assert.notEqual(sqliteSourceFingerprint(inputs(f.root)), before);
-  const first = inputs(f.root), second = structuredClone(first);
-  first.skillsIndex.skills.demo.extensions.audit = { generated_at: "authored-generation" };
-  second.skillsIndex.skills.demo.extensions.audit = { generated_at: "authored-generation" };
-  second.skillsIndex.skills.demo.extensions.audit.generated_at = "authored-change";
-  assert.notEqual(sqliteSourceFingerprint(second), sqliteSourceFingerprint(first));
+  const first = sqliteSourceFingerprint(inputs(f.root));
+  const file = path.join(f.root, ".mdkg/work/task-1.md");
+  writeFile(file, fs.readFileSync(file, "utf8").replace("generated_at: authored-generation", "generated_at: authored-change"));
+  assert.notEqual(sqliteSourceFingerprint(inputs(f.root)), first);
 });
 test("SQLite JSON preserves nested authored generated_at and indexed_at fields", (t) => {
   const f = fixture(t), data = inputs(f.root);
-  const extension = data.skillsIndex.skills.demo.extensions.ochatr;
-  assert.deepEqual(extension, { generated_at: "authored-generation", indexed_at: "authored-index" });
+  const attributes = data.nodeIndex.nodes["root:task-1"].attributes;
+  // Exercise the lossless storage codec directly. This does not add a generic
+  // metadata projection to replace the removed consumer-specific skill adapter.
+  attributes.generated_at = "authored-generation";
+  attributes.indexed_at = "authored-index";
   writeSqliteIndex(data);
   const { DatabaseSync } = require("node:sqlite"), db = new DatabaseSync(path.join(f.root, ".mdkg/index/mdkg.sqlite"), { readOnly: true });
   try {
-    const stored = JSON.parse(db.prepare("SELECT json FROM skills WHERE slug='demo'").get().json);
-    assert.deepEqual(stored.extensions.ochatr, extension);
-    const capability = JSON.parse(db.prepare("SELECT json FROM capabilities WHERE kind='skill' AND workspace='root'").get().json);
-    assert.deepEqual(capability.skill.extensions.ochatr, extension);
+    const stored = JSON.parse(db.prepare("SELECT json FROM nodes WHERE qid='root:task-1'").get().json);
+    assert.deepEqual(stored.attributes, attributes);
   } finally { db.close(); }
 });
 test("node, skill and imported bundle body changes invalidate source fingerprints", (t) => {

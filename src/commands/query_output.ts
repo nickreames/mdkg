@@ -46,8 +46,6 @@ export type SkillSummaryJson = {
   path: string;
   has_scripts: boolean;
   has_references: boolean;
-  extensions: SkillIndexEntry["extensions"];
-  ochatr: SkillIndexEntry["ochatr"];
 };
 
 export type NodeDetailJson = NodeSummaryJson & {
@@ -121,8 +119,6 @@ export function toSkillSummaryJson(skill: SkillIndexEntry): SkillSummaryJson {
     path: skill.path,
     has_scripts: skill.has_scripts,
     has_references: skill.has_references,
-    extensions: JSON.parse(JSON.stringify(skill.extensions)),
-    ochatr: { ...skill.ochatr },
   };
 }
 

@@ -334,8 +334,6 @@ test("work lifecycle helpers create validation-clean contract order receipt and 
       "image_url:url:required",
       "--required-capabilities",
       "model.image.generate",
-      "--pricing-model",
-      "included",
       "--json",
     ], root).stdout
   ).node;
@@ -694,8 +692,6 @@ test("work trigger creates deterministic submitted order mirrors without executi
       "image_url:url:required",
       "--required-capabilities",
       "model.image.generate",
-      "--pricing-model",
-      "included",
       "--json",
     ], root).stdout
   ).node;
@@ -884,8 +880,6 @@ test("work trigger accepts legacy SPEC refs during the compatibility release", (
       "artifact_uri:uri:required",
       "--required-capabilities",
       "model.runtime.generate",
-      "--pricing-model",
-      "included",
       "--json",
     ], root).stdout
   ).node;
@@ -962,8 +956,6 @@ test("work trigger accepts canonical manifest refs and reports manifest-first co
       "thumbnail_url:url:required",
       "--required-capabilities",
       "model.image.generate",
-      "--pricing-model",
-      "included",
       "--json",
     ], root).stdout
   ).node;

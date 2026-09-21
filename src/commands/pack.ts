@@ -152,28 +152,6 @@ function renderSkillMetaBody(skill: SkillIndexEntry): string {
   }
   lines.push(`has_scripts: ${skill.has_scripts ? "true" : "false"}`);
   lines.push(`has_references: ${skill.has_references ? "true" : "false"}`);
-  for (const [namespace, values] of Object.entries(skill.extensions).sort(([a], [b]) =>
-    a.localeCompare(b)
-  )) {
-    for (const [key, value] of Object.entries(values).sort(([a], [b]) => a.localeCompare(b))) {
-      if (Array.isArray(value)) {
-        lines.push(`extensions.${namespace}.${key}: ${value.join(", ")}`);
-      } else if (typeof value === "boolean") {
-        lines.push(`extensions.${namespace}.${key}: ${value ? "true" : "false"}`);
-      } else {
-        lines.push(`extensions.${namespace}.${key}: ${value}`);
-      }
-    }
-  }
-  for (const [key, value] of Object.entries(skill.ochatr).sort(([a], [b]) => a.localeCompare(b))) {
-    if (Array.isArray(value)) {
-      lines.push(`${key}: ${value.join(", ")}`);
-    } else if (typeof value === "boolean") {
-      lines.push(`${key}: ${value ? "true" : "false"}`);
-    } else {
-      lines.push(`${key}: ${value}`);
-    }
-  }
   return lines.join("\n").trimEnd();
 }
 

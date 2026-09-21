@@ -4,7 +4,7 @@ type: spec
 title: Bad Role
 version: 1.0.0
 role: wizard
-runtime_mode: room_orchestrated
+runtime_mode: orchestrated
 work_contracts: []
 requested_capabilities: []
 resource_profile: builder

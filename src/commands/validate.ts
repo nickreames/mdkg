@@ -35,7 +35,6 @@ export type ValidateCommandOptions = {
   changedOnly?: boolean;
   summary?: boolean;
   limit?: number;
-  profile?: string;
 };
 
 export type ValidateWarningDiagnostic = {
@@ -78,7 +77,6 @@ export type ValidateReceipt = {
   warning_diagnostics: ValidateWarningDiagnostic[];
   warning_summary: ValidateWarningSummary;
   errors: string[];
-  validation_profile?: string;
   report_path?: string;
   json_receipt_path?: string;
   warning_filter?: {
@@ -87,7 +85,6 @@ export type ValidateReceipt = {
   };
 };
 
-const VALIDATION_PROFILES = new Set(["omni-room"]);
 
 type HeadingMap = Record<string, string[]>;
 
@@ -239,20 +236,20 @@ function collectContractProfileWarnings(qid: string, node: ReturnType<typeof par
   const contractProfile = node.frontmatter.contract_profile;
   if (typeof contractProfile === "string" && !KNOWN_CONTRACT_PROFILES.has(contractProfile)) {
     warnings.push(
-      `${qid}: contract-profile.unknown warning: unknown contract_profile ${contractProfile}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+      `${qid}: contract-profile.unknown warning: unknown contract_profile ${contractProfile}; generic validation accepts well-shaped values, consumer policy is not executed by mdkg`
     );
   }
   if (node.type === "receipt") {
     const receiptKind = node.frontmatter.receipt_kind;
     if (typeof receiptKind === "string" && !KNOWN_RECEIPT_KINDS.has(receiptKind)) {
       warnings.push(
-        `${qid}: receipt-kind.unknown warning: unknown receipt_kind ${receiptKind}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+        `${qid}: receipt-kind.unknown warning: unknown receipt_kind ${receiptKind}; generic validation accepts well-shaped values, consumer policy is not executed by mdkg`
       );
     }
     const redactionClass = node.frontmatter.redaction_class;
     if (typeof redactionClass === "string" && !KNOWN_REDACTION_CLASSES.has(redactionClass)) {
       warnings.push(
-        `${qid}: redaction-class.unknown warning: unknown redaction_class ${redactionClass}; generic validation accepts well-shaped values, but explicit profile validation may reject it`
+        `${qid}: redaction-class.unknown warning: unknown redaction_class ${redactionClass}; generic validation accepts well-shaped values, consumer policy is not executed by mdkg`
       );
     }
     if (typeof redactionClass === "string" && node.frontmatter.redaction_policy === undefined) {
@@ -262,58 +259,6 @@ function collectContractProfileWarnings(qid: string, node: ReturnType<typeof par
     }
   }
   return warnings;
-}
-
-function normalizeValidationProfile(profile?: string): string | undefined {
-  if (profile === undefined) {
-    return undefined;
-  }
-  if (!VALIDATION_PROFILES.has(profile)) {
-    throw new UsageError("--profile must be one of omni-room");
-  }
-  return profile;
-}
-
-function collectContractProfileErrors(
-  qid: string,
-  node: ReturnType<typeof parseNode>,
-  profile: string
-): string[] {
-  if (!isAgentFileType(node.type)) {
-    return [];
-  }
-  const errors: string[] = [];
-  if (node.frontmatter.profile !== undefined) {
-    errors.push(
-      `${qid}: contract-profile.ambiguous-field error: profile is ambiguous and is not a supported alias; use contract_profile for ${profile} validation`
-    );
-  }
-  const contractProfile = node.frontmatter.contract_profile;
-  if (typeof contractProfile === "string" && contractProfile !== profile) {
-    errors.push(
-      `${qid}: contract-profile.incompatible error: contract_profile ${contractProfile} is incompatible with validation profile ${profile}`
-    );
-  }
-  if (node.type === "receipt") {
-    const receiptKind = node.frontmatter.receipt_kind;
-    if (typeof receiptKind === "string" && !KNOWN_RECEIPT_KINDS.has(receiptKind)) {
-      errors.push(
-        `${qid}: receipt-kind.incompatible error: receipt_kind ${receiptKind} is incompatible with validation profile ${profile}`
-      );
-    }
-    const redactionClass = node.frontmatter.redaction_class;
-    if (typeof redactionClass === "string" && !KNOWN_REDACTION_CLASSES.has(redactionClass)) {
-      errors.push(
-        `${qid}: redaction-class.incompatible error: redaction_class ${redactionClass} is incompatible with validation profile ${profile}`
-      );
-    }
-    if (typeof redactionClass === "string" && node.frontmatter.redaction_policy === undefined) {
-      errors.push(
-        `${qid}: redaction-class.missing-policy error: redaction_class requires redaction_policy for validation profile ${profile}`
-      );
-    }
-  }
-  return errors;
 }
 
 function collectChangedPaths(root: string): Set<string> {
@@ -673,7 +618,6 @@ function listDirectories(dirPath: string): string[] {
 }
 
 export function collectValidateReceipt(options: ValidateCommandOptions): ValidateReceipt {
-  const validationProfile = normalizeValidationProfile(options.profile);
   const config = loadConfig(options.root);
   const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
   const templateSchemas = templateSchemaInfo.schemas;
@@ -759,9 +703,6 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
         warnings.push(...collectRawContentWarnings(qid, node));
         warnings.push(...collectManifestCompatibilityWarnings(qid, filePath, node));
         warnings.push(...collectContractProfileWarnings(qid, node));
-        if (validationProfile) {
-          errors.push(...collectContractProfileErrors(qid, node, validationProfile));
-        }
       } catch (err) {
         const message = err instanceof Error ? err.message : "unknown error";
         errors.push(message);
@@ -875,7 +816,6 @@ export function collectValidateReceipt(options: ValidateCommandOptions): Validat
     warning_diagnostics: filteredWarningDiagnostics,
     warning_summary: buildWarningSummary(filteredWarningDiagnostics),
     errors: uniqueErrors,
-    ...(validationProfile ? { validation_profile: validationProfile } : {}),
     ...(outPath ? { report_path: outPath } : {}),
     ...(options.changedOnly
       ? { warning_filter: { mode: "changed-only" as const, changed_paths: Array.from(changedPaths).sort() } }

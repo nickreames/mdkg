@@ -5,7 +5,6 @@ title: Runtime Render Contract
 version: 1.0.0
 agent_id: agent.runtime-worker
 kind: artifact_rendering
-pricing_model: included
 required_capabilities: [model.runtime.generate, artifact.upload]
 skill_refs: [skill.review-runtime-receipt]
 tool_refs: [tool.artifact-upload, tool.mdkg.pack]
