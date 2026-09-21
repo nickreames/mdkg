@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
 scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: bug-53
+active_node: bug-54
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -163,6 +163,21 @@ Do not start/reconfigure services; missing local capability or hosted CI needs
 precise separate authorization and remains a blocking evidence gap.
 
 # Current State
+
+2026-09-21 Bug54 bounded local remedy verified (chk-631): exact safe-integer
+allocation, source-fresh alias admission, prospective validation and reviewed
+SQLite batch reservations prevent hangs and duplicate/invalid authored IDs.
+Preserved bundled templates, portable IDs and explicit legacy relationship
+staging.1816/1816 full tests,147 final compatibility checks and258 installed
+cases pass; Node24.15.0/24.18.0/26.0.0 use one230-file intermediate package
+7bf5c746dc35a36e6efdee7ce7d6a6a0e2fabdb36c842e112b23abbbbeb1f3e4.
+One fresh read-only candidate review identified three addressed admission gaps;
+the superseded full run's three compatibility failures remain recorded. Nine
+of14 retained findings now have local remedies; Bugs46/47/55-57, adjacent
+Bugs58-60, Task828, Linux qualification, full ladder/coverage and final seal
+remain open. Protected Goal73/runtime/Demo3 bookends match. No blocked context
+accessed, old artifacts recovered or blocked findings rerun. Next: Bug55 loop
+seed containment. Goal85 stays paused; release NOT_READY; skill candidates none.
 
 2026-09-21 Bug53 bounded local remedy verified: reject multiply linked init
 manifests before initialization and guard descriptor/path custody at the writer;

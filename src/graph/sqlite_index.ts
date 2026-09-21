@@ -15,6 +15,8 @@ import { isIndexStale } from "./staleness";
 import { canonicalJson } from "./identity";
 import { readSubgraphBundleBytes } from "./subgraph_bundle";
 import { assertCompatibleWriter } from "../util/writer_admission";
+import { numericAlias, numericSuccessor } from "../util/id";
+import { UsageError } from "../util/errors";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -26,7 +28,7 @@ type DatabaseSyncType = {
   close(): void;
 };
 
-type DatabaseCtor = new (filename: string) => DatabaseSyncType;
+type DatabaseCtor = new (filename: string, options?: { readOnly?: boolean }) => DatabaseSyncType;
 
 export const SQLITE_SCHEMA_VERSION = 2;
 
@@ -382,35 +384,67 @@ export function writeSqliteIndex(options: {
   return sqlitePath;
 }
 
-export function reserveSqliteNumericId(options: {
+export type NumericReservation = { ws: string; prefix: string; currentMax: number; id: string };
+
+function allocationCandidate(db: DatabaseSyncType | undefined, request: Omit<NumericReservation, "id">): string {
+  const minimum = numericSuccessor(request.currentMax);
+  const table = db?.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'id_allocations'").get();
+  const row = table ? db!.prepare("SELECT CAST(next_value AS TEXT) AS value, typeof(next_value) AS kind FROM id_allocations WHERE ws = ? AND prefix = ?").get(request.ws, request.prefix) : undefined;
+  let next = minimum;
+  if (row) {
+    if (row.kind !== "integer" || typeof row.value !== "string" || !/^[0-9]+$/.test(row.value)) {
+      throw new UsageError("numeric alias reservation has an invalid counter");
+    }
+    const parsed = numericAlias(`${request.prefix}-${row.value}`);
+    if (!parsed || parsed.number < 1) throw new UsageError("numeric alias reservation has an invalid counter");
+    next = Math.max(minimum, parsed.number);
+  }
+  return `${request.prefix}-${next}`;
+}
+
+export function planNumericId(options: {
   root: string;
   config: Config;
   ws: string;
   prefix: string;
   currentMax: number;
-}): string | undefined {
-  if (!isSqliteBackend(options.config)) {
-    return undefined;
+}): string {
+  const fallback = allocationCandidate(undefined, options);
+  if (!isSqliteBackend(options.config) || !containedPathExists({ root: options.root, relativePath: options.config.index.sqlite_path })) return fallback;
+  const DatabaseSync = loadDatabaseCtor();
+  return withContainedPathSink({ root: options.root, relativePath: options.config.index.sqlite_path, operation: "read" }, ({ absolutePath }) => {
+    const db = new DatabaseSync(absolutePath, { readOnly: true });
+    try { return allocationCandidate(db, options); } finally { db.close(); }
+  });
+}
+
+// All authored content is checked before this single reservation boundary.
+// Revalidate the exact preview inside the transaction; never silently choose a
+// different alias. BigInt is used only for the bounded exhaustion sentinel.
+export function reservePlannedNumericIds(options: { root: string; config: Config; reservations: NumericReservation[] }): void {
+  if (!isSqliteBackend(options.config) || options.reservations.length === 0) return;
+  for (const request of options.reservations) {
+    if (!numericAlias(request.id) || request.id !== planNumericId({ ...options, ...request })) {
+      throw new UsageError("numeric alias reservation plan is stale or invalid");
+    }
   }
   assertCompatibleWriter(options.root);
   const DatabaseSync = loadDatabaseCtor();
-  return withContainedPathSink(
+  withContainedPathSink(
     { root: options.root, relativePath: options.config.index.sqlite_path, operation: "replace", createParents: true },
     ({ absolutePath }) => {
       const db = new DatabaseSync(absolutePath);
       try {
-        db.exec("CREATE TABLE IF NOT EXISTS id_allocations (ws TEXT NOT NULL, prefix TEXT NOT NULL, next_value INTEGER NOT NULL, PRIMARY KEY (ws, prefix));");
         db.exec("BEGIN IMMEDIATE");
-        const row = db
-          .prepare("SELECT next_value FROM id_allocations WHERE ws = ? AND prefix = ?")
-          .get(options.ws, options.prefix);
-        const existing = typeof row?.next_value === "number" ? row.next_value : undefined;
-        const nextValue = Math.max(existing ?? 1, options.currentMax + 1);
-        db.prepare(
-          "INSERT INTO id_allocations (ws, prefix, next_value) VALUES (?, ?, ?) ON CONFLICT(ws, prefix) DO UPDATE SET next_value = excluded.next_value"
-        ).run(options.ws, options.prefix, nextValue + 1);
+        for (const request of options.reservations) {
+          if (request.id !== allocationCandidate(db, request)) throw new UsageError("numeric alias reservation plan is stale");
+          db.exec("CREATE TABLE IF NOT EXISTS id_allocations (ws TEXT NOT NULL, prefix TEXT NOT NULL, next_value INTEGER NOT NULL, PRIMARY KEY (ws, prefix));");
+          const nextValue = numericAlias(request.id)!.number;
+          db.prepare(
+            "INSERT INTO id_allocations (ws, prefix, next_value) VALUES (?, ?, ?) ON CONFLICT(ws, prefix) DO UPDATE SET next_value = excluded.next_value"
+          ).run(request.ws, request.prefix, BigInt(nextValue) + 1n);
+        }
         db.exec("COMMIT");
-        return `${options.prefix}-${nextValue}`;
       } catch (err) {
         try {
           db.exec("ROLLBACK");
@@ -423,6 +457,13 @@ export function reserveSqliteNumericId(options: {
       }
     }
   );
+}
+
+export function reserveSqliteNumericId(options: { root: string; config: Config; ws: string; prefix: string; currentMax: number }): string | undefined {
+  if (!isSqliteBackend(options.config)) return undefined;
+  const id = planNumericId(options);
+  reservePlannedNumericIds({ ...options, reservations: [{ ...options, id }] });
+  return id;
 }
 
 export function sqliteHealth(root: string, config: Config): {

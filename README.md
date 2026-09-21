@@ -634,6 +634,14 @@ rejects oversized lines, batches, nesting, bodies, tool payloads, and responses.
 
 Mutating commands use a workspace mutation lock plus atomic writes. SQLite mode additionally reserves numeric ids in a SQLite transaction before writing Markdown so parallel `mdkg new` and checkpoint calls avoid naming conflicts. Skipped ids after failed writes are acceptable because Markdown remains canonical.
 
+Numeric creation and duplicate repair use exact integers through
+`9007199254740991`; exhausted or unsafe aliases refuse before new source writes.
+Existing larger aliases remain readable where otherwise valid, but are not
+silently rounded or renumbered. Creation checks current authored aliases,
+prospective node syntax and discovery limits before reserving SQLite counters.
+Legacy `new --no-reindex` can defer reciprocal relationship completion, not these
+allocation checks. Portable nonnumeric IDs remain supported for agent files.
+
 ## Project DB Layout
 
 `.mdkg/db` is reserved for project application database state, separate from

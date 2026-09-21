@@ -14,7 +14,8 @@ import { loadIndex } from "../graph/index_cache";
 import { groupLoopRefBindings, parseLoopRefBindings } from "../graph/loop_bindings";
 import { readNodeBody } from "../graph/node_body";
 import { writeDerivedIndexes } from "../graph/reindex";
-import { isSqliteBackend, reserveSqliteNumericId } from "../graph/sqlite_index";
+import { NumericReservation, planNumericId, reservePlannedNumericIds } from "../graph/sqlite_index";
+import { maxNumericAlias, numericAlias } from "../util/id";
 import { formatDate } from "../util/date";
 import { validatePortableOrUriRef } from "../util/refs";
 import { formatResolveError, resolveQid } from "../util/qid";
@@ -23,7 +24,7 @@ import { NotFoundError, UsageError } from "../util/errors";
 import { formatNodeCard } from "./node_card";
 import { toNodeDetailJson, toNodeSummaryJson, writeJson } from "./query_output";
 import { appendAutomaticEvent } from "./event_support";
-import { bindNewIdentityGroup } from "../graph/identity_authoring";
+import { bindNewIdentityGroup, validateProspectiveNodes } from "../graph/identity_authoring";
 import { identityRef, NodeIdentity, readNodeIdentity } from "../graph/identity";
 
 type MaterializationMode = "default_children" | "planning_only" | "manual";
@@ -315,45 +316,19 @@ function slugifyTitle(title: string): string {
   return slug.length > maxLen ? slug.slice(0, maxLen).replace(/-+$/g, "") : slug;
 }
 
-function maxIdForPrefix(index: Record<string, { ws: string; id: string }>, ws: string, prefix: string): number {
-  let max = 0;
-  const pattern = new RegExp(`^${prefix}-(\\d+)$`);
-  for (const node of Object.values(index)) {
-    if (node.ws !== ws) {
-      continue;
-    }
-    const match = pattern.exec(node.id);
-    if (!match) {
-      continue;
-    }
-    const parsed = Number.parseInt(match[1] ?? "", 10);
-    if (Number.isInteger(parsed) && parsed > max) {
-      max = parsed;
-    }
-  }
-  return max;
-}
-
-function idNumber(id: string): number {
-  const match = /-(\d+)$/.exec(id);
-  return match ? Number.parseInt(match[1] ?? "0", 10) : 0;
-}
-
 function createIdAllocator(
   root: string,
   config: Config,
   index: Index,
   ws: string,
-  reserve: boolean
+  reservations: NumericReservation[]
 ): (prefix: string) => string {
   const maxByPrefix = new Map<string, number>();
   return (prefix: string): string => {
-    const currentMax = maxByPrefix.get(prefix) ?? maxIdForPrefix(index.nodes, ws, prefix);
-    const reserved = reserve && isSqliteBackend(config)
-      ? reserveSqliteNumericId({ root, config, ws, prefix, currentMax })
-      : undefined;
-    const id = reserved ?? `${prefix}-${currentMax + 1}`;
-    maxByPrefix.set(prefix, Math.max(currentMax, idNumber(id)));
+    const currentMax = maxByPrefix.get(prefix) ?? maxNumericAlias(index.nodes, ws, prefix);
+    const id = planNumericId({ root, config, ws, prefix, currentMax });
+    maxByPrefix.set(prefix, numericAlias(id)!.number);
+    reservations.push({ ws, prefix, currentMax, id });
     return id;
   };
 }
@@ -713,6 +688,7 @@ function workFilePath(root: string, config: Config, ws: string, id: string, titl
 }
 
 function planLoopFork(options: LoopForkCommandOptions): {
+  reservations: NumericReservation[];
   config: Config;
   index: Index;
   ws: string;
@@ -728,9 +704,9 @@ function planLoopFork(options: LoopForkCommandOptions): {
   const { index, stale, rebuilt, warnings: indexWarnings } = loadIndex({
     root: options.root,
     config,
-    useCache: !options.noCache,
+    useCache: false,
     allowReindex: !options.noReindex,
-    persistReindex: !options.dryRun,
+    persistReindex: false,
   });
   const warnings = [...indexWarnings];
   if (stale && !rebuilt && !options.noCache) {
@@ -742,7 +718,8 @@ function planLoopFork(options: LoopForkCommandOptions): {
   warnings.push(...scope.warnings);
 
   const materializationMode = normalizeMaterializationMode(options, template);
-  const allocateId = createIdAllocator(options.root, config, index, ws, !options.dryRun);
+  const reservations: NumericReservation[] = [];
+  const allocateId = createIdAllocator(options.root, config, index, ws, reservations);
   const loopId = allocateId("loop");
   const priority = priorityDefault(config, template);
   const status = statusDefault(config);
@@ -851,8 +828,12 @@ function planLoopFork(options: LoopForkCommandOptions): {
   });
   const loop = nodePlan(ws, loopId, "loop", title, status, priority, loopPath, loopFrontmatter, loopBody, options.root);
   bindNewIdentityGroup(options.root, index, ws, [loop, ...children]);
+  validateProspectiveNodes(options.root, config, index, ws, [loop, ...children].map(node => ({
+    id: node.id, path: node.path, content: renderNodeFile(node.frontmatter, node.body),
+  })));
 
   return {
+    reservations,
     config,
     index,
     ws,
@@ -1097,6 +1078,7 @@ export function runLoopForkCommand(options: LoopForkCommandOptions): void {
       return;
     }
 
+    reservePlannedNumericIds({ root: options.root, config: plan.config, reservations: plan.reservations });
     writePlannedNode(options.root, plan.loop);
     for (const child of plan.children) {
       writePlannedNode(options.root, child);

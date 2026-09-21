@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-86",
+  "finding": "g86-identity-001",
+  "work": "root:bug-54",
+  "date": "2026-09-21",
+  "source_base": "f311c0e0b218b82dfd8e99f4e17180be1a239ef6",
+  "branch": "main",
+  "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_ahead": 61,
+  "cached_behind": 0,
+  "remote_verified": false,
+  "entry_dirty": [
+    ".mdkg/index/mdkg.sqlite"
+  ],
+  "owner": "mdkg-project-agent",
+  "prepatch": {
+    "runtime": "v26.0.0",
+    "tests": 33,
+    "pass": 2,
+    "fail": 31,
+    "log_sha256": "fed55bc5ff51c2f5fbf10234ca9e8d1380a0e3b9df401f0aa97f103e9b0b3624",
+    "harness": "initial 33-case synthetic CLI harness, subsequently expanded; not a recovered scan artifact",
+    "observed": "unsafe new/checkpoint/task-done allocation effects and duplicate repair timeout; safe leading-zero controls pass"
+  },
+  "first_candidate": {
+    "source_hashes": {
+      "src/util/id.ts": "1df6f4ac05a0146abd5d5a8b08453e20ffcbc354e42ad98585351dc5db1c5bf6",
+      "src/commands/fix.ts": "401385023cbbdc96b7fcb4d0b5db2c00ac6a8718b72c64db598d2aba9e8a9b66",
+      "src/commands/new.ts": "fcd8344df3b4bcd2c108db850b5955e60f9aedcb316854e7daee86fa62b8af91",
+      "src/commands/checkpoint.ts": "5bb287f8420bed3ad35b12bc315292e787727db5f4992d57e1710f080f575e86",
+      "src/commands/loop.ts": "da2c1e7c3bc82050f328910935f22f67bb522f6e9238a96db5e900145bbadb2b",
+      "src/commands/task.ts": "4e48ad03d7cc854bbda365cce7dc3eae218f010404d8e02b2bbec99086a86226",
+      "src/graph/identity_authoring.ts": "d30213bccd4e6816417b36a52f0416f59ecbf70d02492932440bbb8c1820e37c",
+      "src/graph/sqlite_index.ts": "f7480b8292b60325f2aa0539c173acfcf0dcb4b09a1fa26017c6a7f8b666ce30",
+      "tests/commands/numeric_allocation.test.ts": "cb655c96866c6d694abfb933fdb5e44a8c3b3669ad429cdb3c76dd61198d05fc"
+    },
+    "full": {
+      "exit": 1,
+      "signal": null,
+      "duration_ms": 411848,
+      "log_sha256": "ef914ec933f2788df044091a6660b3ac9f0d3977eaff2511561d99d06cf10445",
+      "tests": 1815,
+      "pass": 1812,
+      "fail": 3,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "installed": {
+      "tar_sha256": "9659547545bf0de971621e842c9648c8c962a4afeb5f1b304db7c90a377901ba",
+      "tests": 255,
+      "pass": 255,
+      "fail": 0
+    },
+    "disposition": "superseded after full-suite failures: two bundled-schema fallback cases and one preserved legacy --no-reindex relationship authoring case"
+  },
+  "review": {
+    "prepatch": "parent source trace plus reused read-only investigator after fresh-agent limit",
+    "candidate": "one fresh read-only candidate reviewer",
+    "identified": [
+      "stale legacy index admission",
+      "actual task-completion checkpoint body differs from preflight",
+      "aggregate discovery budgets omitted"
+    ],
+    "disposition": "current-source confirmations addressed with regression coverage; not final Task828 clearance"
+  },
+  "protected": {
+    "selected_goal_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_db_sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle_sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": {
+    "blocked_context_accessed": false,
+    "old_findings_recovered_or_rerun": false,
+    "remote_actions": false,
+    "publication": false
+  },
+  "affected_versions": "Vulnerable source verified at f311c0e0b218b82dfd8e99f4e17180be1a239ef6 (draft 0.6.0); published 0.5.2 affectedness remains unassessed."
+}
