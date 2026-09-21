@@ -434,14 +434,15 @@ export function forEachContainedFileChunk(
 }
 
 export function writeContainedFileExclusive(
-  input: ContainedPathInput,
+  input: ContainedPathInput & { mode?: number },
   data: WritableData
 ): ContainedPathDescriptor {
   const descriptor = inspectPath(input.root, input.relativePath, "create", true, input.pathSyntax);
   writeAndSync(
     descriptor.absolutePath,
     data,
-    fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | noFollowFlag()
+    fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | noFollowFlag(),
+    input.mode
   );
   return descriptor;
 }

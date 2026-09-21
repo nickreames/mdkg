@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { spawnSync } from "child_process";
+import { observeGit, readGitStatus } from "../util/git_observation";
 import { loadConfig, SubgraphConfig, SubgraphSourceConfig, validateConfigSchema } from "../core/config";
 import {
   atomicReplaceContainedFile,
@@ -18,7 +18,9 @@ import { writeDerivedIndexes } from "../graph/reindex";
 import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { atomicWriteFile } from "../util/atomic";
 import { withMutationLock } from "../util/lock";
-import { buildBundle, parseBundle, sha256Buffer, verifyBundle } from "./bundle";
+import { buildBundle, bundlePayloadErrors, parseBundle, sha256Buffer, verifyBundle } from "./bundle";
+import { bundleTransportState } from "../graph/transport_policy";
+import { readGraphFormat } from "../graph/identity";
 
 export type SubgraphAddOptions = {
   root: string;
@@ -804,7 +806,7 @@ type GitState = {
 };
 
 function gitRun(cwd: string, args: string[]): { ok: boolean; stdout: string; stderr: string } {
-  const result = spawnSync("git", args, { cwd, encoding: "utf8", stdio: "pipe" });
+  const result = observeGit(cwd, args, { allowedFailures: [128] });
   return {
     ok: result.status === 0,
     stdout: result.stdout.replace(/\r?\n$/, ""),
@@ -861,13 +863,8 @@ function inspectSourcePath(root: string, alias: string, subgraph: SubgraphConfig
   const branch = branchResult.ok && branchValue && branchValue !== "HEAD"
     ? branchValue
     : "detached";
-  const status = gitRun(sourceRoot, ["status", "--porcelain", "--untracked-files=no"]);
-  if (!status.ok) {
-    throw new UsageError(`subgraph ${alias} tracked dirty state could not be read`);
-  }
-  const dirtyTrackedPaths = status.stdout
-    ? status.stdout.split(/\r?\n/).map((line) => line.slice(3)).filter(Boolean).sort()
-    : [];
+  const dirtyTrackedPaths = readGitStatus(sourceRoot, { untracked: "no" })
+    .map((entry) => entry.path).sort();
   if (dirtyTrackedPaths.length > 0 && !allowDirty) {
     throw new UsageError(`subgraph ${alias} ${dirtySourceGuidance(dirtyTrackedPaths)}`);
   }
@@ -982,7 +979,7 @@ function syncOneAlias(options: {
     let oldZipSha256: string | undefined;
     try {
       withContainedPathSink(
-        { root: options.root, relativePath: source.path, operation: "replace", createParents: true },
+        { root: options.root, relativePath: source.path, operation: "replace", createParents: !options.dryRun },
         ({ absolutePath }) => {
           oldBundleHash = existingBundleHash(absolutePath);
           oldZipSha256 = fs.existsSync(absolutePath) ? sha256Buffer(fs.readFileSync(absolutePath)) : undefined;
@@ -1079,7 +1076,7 @@ function syncOneAlias(options: {
 export function runSubgraphSyncCommand(options: SubgraphSyncOptions): void {
   const dryRun = Boolean(options.dryRun);
   const allowDirty = Boolean(options.allowDirty);
-  withSubgraphLock(options.root, () => {
+  const execute = () => {
     const config = loadConfig(options.root);
     const aliases = selectAliases(config, options.alias, options.all);
     const { configPath, raw } = readRawConfig(options.root);
@@ -1125,7 +1122,15 @@ export function runSubgraphSyncCommand(options: SubgraphSyncOptions): void {
     if (!ok) {
       throw new ValidationError("subgraph sync failed");
     }
-  });
+  };
+  if (dryRun) {
+    // Preserve format admission without acquiring even a transient writer lock.
+    // Applying a sync still takes the normal lock and re-reads current inputs.
+    readGraphFormat(options.root);
+    execute();
+  } else {
+    withSubgraphLock(options.root, execute);
+  }
 }
 
 function safeZipEntryPath(entryName: string): string {
@@ -1166,7 +1171,7 @@ function materializeOneAlias(options: {
   const outputRelative = relativeToRoot(options.root, outputDir);
   try {
     withContainedPathSink(
-      { root: options.root, relativePath: outputRelative, operation: "replace", createParents: true },
+      { root: options.root, relativePath: outputRelative, operation: "replace", createParents: false },
       () => undefined
     );
   } catch (error) {
@@ -1197,15 +1202,31 @@ function materializeOneAlias(options: {
 
   const tempDir = path.join(options.targetRoot, `.${options.alias}.${process.pid}.${Date.now()}.tmp`);
   const tempRelative = relativeToRoot(options.root, tempDir);
-  removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
+  let createdTemp = false;
   try {
     const parsed = withContainedPathSink(
       { root: options.root, relativePath: source.path, operation: "read" },
       ({ absolutePath }) => parseBundle(absolutePath)
     );
-    ensureContainedDirectory({ root: options.root, relativePath: tempRelative });
+    const payloadErrors = bundlePayloadErrors(parsed.entries, parsed.manifest);
+    if (payloadErrors.length) throw new ValidationError(`subgraph source integrity failed: ${payloadErrors.join("; ")}`);
+    if (parsed.manifest.profile !== source.expected_profile) throw new ValidationError(`subgraph source profile mismatch: expected ${source.expected_profile}, received ${parsed.manifest.profile}`);
+    const transportState = bundleTransportState(parsed.entries, parsed.manifest);
+    if (!transportState) throw new UsageError("subgraph transport requires an owning config or validated portable-state contract; this bundle is inspect-only until a fresh safe export is available");
+    const skippedPaths: string[] = [];
+    // A predictable temporary name is not custody. Never clear a pre-existing
+    // directory, including when admission fails before any extraction begins.
+    withContainedPathSink(
+      { root: options.root, relativePath: tempRelative, operation: "create", createParents: true },
+      ({ absolutePath }) => fs.mkdirSync(absolutePath)
+    );
+    createdTemp = true;
     for (const [entryName, data] of parsed.entries.entries()) {
       const safeName = safeZipEntryPath(entryName);
+      if (transportState(safeName)) {
+        skippedPaths.push(safeName);
+        continue;
+      }
       writeContainedFileExclusive(
         { root: options.root, relativePath: `${tempRelative}/${safeName}` },
         data
@@ -1217,12 +1238,13 @@ function materializeOneAlias(options: {
       alias: options.alias,
       bundle_path: source.path,
       bundle_hash: parsed.manifest.bundle_hash,
-      zip_sha256: sha256Buffer(readContainedFile({ root: options.root, relativePath: source.path }, null)),
+      zip_sha256: parsed.zipSha256,
       profile: parsed.manifest.profile,
       source_repo: options.subgraph.source_repo ?? parsed.manifest.source.repo,
       source_git_head: parsed.manifest.source.git_head,
       generated_at: new Date().toISOString(),
       mdkg_version: readPackageVersion(),
+      transport_state_policy: parsed.manifest.transport_policy ? "portable-v1" : "owning-config", skipped_paths: skippedPaths.sort(),
     };
     writeContainedFileExclusive(
       { root: options.root, relativePath: `${tempRelative}/.mdkg-materialized.json` },
@@ -1239,6 +1261,7 @@ function materializeOneAlias(options: {
           ({ absolutePath: safeTemp }) => fs.renameSync(safeTemp, safeOutput)
         )
     );
+    createdTemp = false;
     return {
       alias: options.alias,
       ok: true,
@@ -1250,7 +1273,7 @@ function materializeOneAlias(options: {
       errors,
     };
   } catch (err) {
-    removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
+    if (createdTemp) removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
     errors.push(err instanceof Error ? err.message : String(err));
     return { alias: options.alias, ok: false, output_path: relativeToRoot(options.root, outputDir), warnings, errors };
   }
@@ -1270,7 +1293,7 @@ export function runSubgraphMaterializeCommand(options: SubgraphMaterializeOption
         clean: Boolean(options.clean),
       })
     );
-    if (options.gitignore) {
+    if (options.gitignore && results.some((item) => item.ok === true)) {
       ensureContainedDirectory({ root: options.root, relativePath: relativeToRoot(options.root, targetRoot) });
       writeMaterializeGitignore(options.root, targetRoot);
     }

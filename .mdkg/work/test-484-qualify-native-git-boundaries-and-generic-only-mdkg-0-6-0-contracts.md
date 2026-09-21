@@ -9,17 +9,33 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [bug-36, bug-37]
+blocked_by: [bug-36, bug-37, task-827, test-478]
 blocks: []
-refs: [goal-83, goal-84, dec-95, edd-82, task-833, test-478]
-context_refs: []
+refs: [dec-95, edd-82, task-833, test-478]
+context_refs: [goal-86, dec-96, goal-83, goal-84]
 evidence_refs: []
 aliases: []
 skills: []
 cases: []
 created: 2026-09-11
-updated: 2026-09-11
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Refresh all retained/removed CLI/help/docs/MCP/seed/native projection boundaries, generic manifests/work contracts and task833 extraction hashes. Require actual upgrade/worktree evidence; no consumer adoption inference.
+
+This test no longer waits for task826 or Bug7 aggregate closure. Its updated
+implementation prerequisites lead into installed cases; task826 consumes the
+results. Record historical/current-intermediate/final-artifact-pass/failure/
+unverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux
+completeness is independently bound by test487. Task828 remains independent
+acceptance, not an upstream requirement for these test results.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
+
 # Overview
 
 Verify the complete dec-95 breaking boundary change without reducing generic

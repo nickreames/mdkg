@@ -1,0 +1,371 @@
+{
+  "schema_version": 1,
+  "kind": "goal86-draft-release-guidance-verification",
+  "work_qid": "root:task-827",
+  "context_qids": [
+    "root:goal-83",
+    "root:goal-84",
+    "root:goal-86",
+    "root:dec-94",
+    "root:dec-95",
+    "root:dec-96"
+  ],
+  "recorded_at": "2026-09-18T01:49:54.388Z",
+  "outcome": "DRAFT_METADATA_AND_RELEASE_CRITICAL_GUIDANCE_LOCALLY_VERIFIED",
+  "evidence_state": "current-intermediate",
+  "final_artifact_pass": false,
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "branch": "main",
+  "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_divergence": {
+    "ahead": 50,
+    "behind": 0
+  },
+  "remote_verified": false,
+  "owner": "mdkg-project-agent",
+  "authority_used": "Goal86 scoped source/guidance/metadata, local validation and mdkg evidence; no publication or remote authority used",
+  "candidate": {
+    "version": "0.6.0",
+    "public_release_state": "draft",
+    "publication": false,
+    "tarball_sealed": false
+  },
+  "accepted_alignment": [
+    "Core0.6.0 first; broader documentation audit/polish deferred",
+    "Public-alpha unreleased-v2 consumer adoption unknown; no consumer investigation",
+    "Generic OSS only; native Git/worktrees, explicit v2 adoption, stable identities and numeric aliases"
+  ],
+  "changes": {
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "status": " M",
+        "sha256": "cd4e3872aa67b986b6207995b67a22682fa70bf00a31fefd0409f114e349f026",
+        "before_sha256": "8fa15a72787a0e8b185227c3a1e0f58c4989e03e630bfc8ba35ff33c1175b771"
+      },
+      {
+        "path": "CLI_COMMAND_MATRIX.md",
+        "status": " M",
+        "sha256": "9a7a89474b6972ab3bdd70c610cb712a5088e4df88cb39ccf0492d083b3a6c25",
+        "before_sha256": "74fea1f2ca3ef0dc20af70599d542a838433f60fba0abb8bb6bb71f64f445c06"
+      },
+      {
+        "path": "README.md",
+        "status": " M",
+        "sha256": "eec9f5c2879d0114e71978897061180edefde83101da5be3401d5c35e47c9e98",
+        "before_sha256": "da625ce60d98a74ed014fdb580da0d3a2b7835d0a397d337e760b916a783e76f"
+      },
+      {
+        "path": "assets/init/CLI_COMMAND_MATRIX.md",
+        "status": " M",
+        "sha256": "447987b1b28e924e7a44f759885ad4e7ef5ff78a21f7aa1d549b09298f89d22a",
+        "before_sha256": "77de018aaf3aa27678a5d28561e4316f3c8c531ec866fe66a3d650a6ff91e5d9"
+      },
+      {
+        "path": "assets/init/README.md",
+        "status": " M",
+        "sha256": "2cb4064b12a3c3c89445ddcd56a60e04c8879cb2bbfa3e7930249863461652a9",
+        "before_sha256": "8e6601ad0035bea5ca694043ad00c5c76702e7f73f4972a39aeb90eb8dd5d3ff"
+      },
+      {
+        "path": "docs/_generated/cli-reference.md",
+        "status": " M",
+        "sha256": "ca891b8df751dcb59f2eeb2013ece383f2b1c62c517dd36a3ab4067229dc7ad2",
+        "before_sha256": "aa7a6346a5064863945ccdcf40ec0864769d1103d6f898fa070de66e8594de2a"
+      },
+      {
+        "path": "docs/_generated/command-contract-summary.json",
+        "status": " M",
+        "sha256": "caaf6abd296893f1b9437e1f18897e35ebec735a10e66e7aceeabad348bd6d87",
+        "before_sha256": "2cf2f961647359b006df4461e5f30e12de1913d15a5a96a3f38a3dbee263419c"
+      },
+      {
+        "path": "docs/_generated/release-notes.json",
+        "status": " M",
+        "sha256": "e12775352aadc7e4eb17a93bfcf9efa24fa5ae3901833c24453df75cba5be078",
+        "before_sha256": "58cfa2df5c4f5ea0f16e56b217ecb5ca40f9e18f294fa83ef89b39b632a9f3b2"
+      },
+      {
+        "path": "docs/advanced-alpha/git-materialization.md",
+        "status": " M",
+        "sha256": "c5da333d9014194ce9eacde9683ca5bdc6e32f1937309aa9a33ae118bcd68bb7",
+        "before_sha256": "add49109814faa329b3a0866f98cc610e8b27f06561396a256563fdaba06f600"
+      },
+      {
+        "path": "docs/advanced-alpha/graph-movement.md",
+        "status": " M",
+        "sha256": "4a2ecb851da26d37f2ae35e695f3b097897a53606330b52b353cb64e96c3b061",
+        "before_sha256": "ef1a6fca994ccb33b1c7917300a88fb1cc9290181a258667702ae95b15387cc7"
+      },
+      {
+        "path": "docs/src/content/docs/advanced-alpha/git-materialization.md",
+        "status": " M",
+        "sha256": "c5da333d9014194ce9eacde9683ca5bdc6e32f1937309aa9a33ae118bcd68bb7",
+        "before_sha256": "add49109814faa329b3a0866f98cc610e8b27f06561396a256563fdaba06f600"
+      },
+      {
+        "path": "docs/src/content/docs/advanced-alpha/graph-movement.md",
+        "status": " M",
+        "sha256": "4a2ecb851da26d37f2ae35e695f3b097897a53606330b52b353cb64e96c3b061",
+        "before_sha256": "ef1a6fca994ccb33b1c7917300a88fb1cc9290181a258667702ae95b15387cc7"
+      },
+      {
+        "path": "docs/start-here/quickstart.md",
+        "status": " M",
+        "sha256": "1535f1fa50c754c13f01ae62880ee149c404f9521a4d96a1eb5133e091e19be9",
+        "before_sha256": "0c416b9a9c6790af9e347f1c392e73d32ad9a5cf90d0144ae97724abfa242149"
+      },
+      {
+        "path": "package-lock.json",
+        "status": " M",
+        "sha256": "032ee3c8e3d95478f260b74f28e05db6da1550229fca8b97173b42cfad9db57b",
+        "before_sha256": "5625b8b9422af460209395f1f4f4c72615d23c5acadc57efae5cac56e1e09957"
+      },
+      {
+        "path": "package.json",
+        "status": " M",
+        "sha256": "e7ddf8e609bcdf072292d7fa3ca7ba282c8f854974a1f3485bd32e92dd981087",
+        "before_sha256": "d7c3b17006b839c9839e8c3e365468639280f61632917d1718cb7baa2d066d6e"
+      },
+      {
+        "path": "release/0.6.0-qualification-draft.md",
+        "status": " M",
+        "sha256": "c51e9acff60374dd92c2bb2857dc9d3e36d4b5ea4e3fa65680ac3ca5f1ee5ec7",
+        "before_sha256": "5f48e9fa11dfa05a39dfd3e2f739f5dbe792899c9b869bf13d7b6d26e82f1bd2"
+      },
+      {
+        "path": "release/public-release.json",
+        "status": " M",
+        "sha256": "cd4f252295112d4a509b6a47069ede60da5b215b3a22281ba4f4225b5c96bd91",
+        "before_sha256": "471d5f523cf3e2ca7bb8521f981776b81d8549c00ea8b0edb147c1270d78eaa5"
+      },
+      {
+        "path": "tests/public-release.test.mjs",
+        "status": " M",
+        "sha256": "e3b4b21d49e0aae9ca1ff511a3eb4386ea4ed11abc3fd590ccab7466edc420ff",
+        "before_sha256": "26cf36df69d137bfe46b3c7f27172aa0a58707cdee3c44fd82c19a88d7f6bc79"
+      }
+    ],
+    "dependency_versions_changed": false,
+    "runtime_source_changed_by_task827": false,
+    "summary": [
+      "Draft package/root lock versions0.6.0; public release remains draft and hidden in production release presentation",
+      "Complete package-relevant0.5.2 delta grouped into shipped runtime, bundled guidance, validation infrastructure, repository docs and historical/nonshipping assets",
+      "Compact init/managed upgrade, explicit identity migration and writer fencing, reviewed reconciliation/native Git protocol and evidence-bound interrupted recovery guidance",
+      "Exact breaking removals and retained generic contracts; no compatibility aliases, unsupported metadata claims or consumer-adoption claim",
+      "Seed and repository guidance distinguish clone-preserved identity from intentional fork identity; numeric repair preserves staging and refuses v2",
+      "Generated CLI/reference/contract/release-note parity; customized root and project documents remain preserved"
+    ]
+  },
+  "published_baseline": {
+    "evidence": ".mdkg/artifacts/goal-83/baseline.json",
+    "version": "0.5.2",
+    "recorded_source_revision": "867ac7099faaa0b8eeed1e167609e0e1e482d519",
+    "tarball_sha256": "18b9bb3c474481155ad46c4ce9b06530d5bdcce0812052fc76f7bcc159799540",
+    "fresh_registry_or_remote_check": false,
+    "provenance_limit": "Recorded registry integrity/source evidence only; no absent tag or gitHead inferred"
+  },
+  "validation": {
+    "full_source": {
+      "kind": "task827-full-local-source-proof",
+      "started": "2026-09-18T01:42:28.343Z",
+      "finished": "2026-09-18T01:48:20.860Z",
+      "runtime": "v26.0.0",
+      "platform": "darwin",
+      "arch": "arm64",
+      "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "scripts/test-built.js"
+      ],
+      "exit_code": 0,
+      "signal": null,
+      "source_count": 435,
+      "source_before_sha256": "99a8a40a16727c35d6f49514e3809e0123c553808c71de4288c12c08f21c3cbc",
+      "source_after_sha256": "99a8a40a16727c35d6f49514e3809e0123c553808c71de4288c12c08f21c3cbc",
+      "source_unchanged": true,
+      "log_sha256": "2567af48eaa556c34f9b68f929719ccc222022bf3a46f774ea25627679d385ce",
+      "summary": [
+        "ℹ tests 1628",
+        "ℹ suites 0",
+        "ℹ pass 1628",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 352369.091792"
+      ]
+    },
+    "source_inventory_method": "SHA256 of JSON insertion-ordered path/hash object: sorted recursive regular files in src,tests,assets/init,.mdkg/templates followed by package.json,package-lock.json,README.md,CLI_COMMAND_MATRIX.md,CHANGELOG.md,release/public-release.json,release/0.6.0-qualification-draft.md; symlinks refuse",
+    "build": "pass",
+    "build_test": "pass",
+    "focused_init_upgrade_contract_tests": {
+      "passed": 95,
+      "failed": 0
+    },
+    "release_and_contract_tests": {
+      "passed": 27,
+      "failed": 0
+    },
+    "dependency_tree_preflight": "root, docs and mdkg-dev pass; no installs",
+    "cli_help_and_parity": "pass",
+    "command_contract": {
+      "status": "pass",
+      "sha256": "8fe115034e949a84d94af7c9e0861dbc72898b1e59f6cf0ae0ec3059fca3b23c"
+    },
+    "docs": {
+      "status": "pass",
+      "files": 63,
+      "examples": 472,
+      "generated_reference_parity": true
+    },
+    "workflow": "pass",
+    "local_docs_smoke": {
+      "command": "node scripts/smoke-mdkg-dev-docs.js",
+      "status": "pass",
+      "required_files": 69,
+      "network": "offline isolated npm cache",
+      "provider_or_deployment": false
+    },
+    "static_publish_contract": {
+      "command": "node scripts/assert-publish-ready.js",
+      "status": "pass",
+      "actual_release_qualified": false
+    },
+    "graph": {
+      "error_count": 0,
+      "warning_count": 3,
+      "preserved_warning_policy": "Stale imported bundle warnings retained; refresh withheld"
+    },
+    "changed_only": {
+      "error_count": 0,
+      "warning_count": 0
+    },
+    "sqlite": {
+      "ok": true,
+      "fresh_projections": 5
+    },
+    "diff_check": "pass",
+    "upgrade_preview": {
+      "dry_run": true,
+      "plan_hash": "670d67cfb880e45b0ce197acc708d68f132a1cf0d05f5e55e22b31a3081c100d",
+      "safe_to_apply": false,
+      "applied": false,
+      "blocking_conflict": ".mdkg/README.md customization preserved",
+      "legacy_customizations_preserved": [
+        "AGENT_START.md",
+        "CLI_COMMAND_MATRIX.md",
+        "llms.txt"
+      ],
+      "scope": "Observation only; canonical scaffold upgrade not authorized or required"
+    },
+    "prior_runtime_coverage": {
+      "evidence": ".mdkg/artifacts/goal-86/task-836-local-verification.json",
+      "source_runtime_unchanged": true,
+      "lines": 91.8,
+      "branches": 82.8,
+      "functions": 96.99,
+      "final_ladder": false
+    }
+  },
+  "independent_review": {
+    "reviewer": "bounded read-only release_delta_inventory worker",
+    "passes": [
+      "Published0.5.2-to-current shipped delta and bundled guidance inventory",
+      "Corrected guidance/metadata/test-source review",
+      "169-path dirty custody classification"
+    ],
+    "dispositions": [
+      "Corrected seed clone/fork, numeric-repair and v2 template-body descriptions",
+      "Corrected old opt-in validation-profile wording",
+      "Clarified --llm/--agents/--claude/--omni init flags were already unsupported in0.5.2, not newly removed in0.6.0"
+    ],
+    "final_result": "No concrete blocker remained in bounded guidance/metadata/test-source review",
+    "security_clearance": false
+  },
+  "consumer_extraction": {
+    "files_verified": 152,
+    "manifest_sha256": "7ad3dc58e759bd8891089ae532bba513170387a610dbbc77084917c11bc9068a",
+    "status": "LOCAL / UNDISPATCHED / CONSUMER ADOPTION UNVERIFIED",
+    "npm_exclusion": "Required final artifact gate remains test484"
+  },
+  "custody_before_mdkg_closeout": {
+    "baseline_dirty_paths": 155,
+    "current_dirty_paths": 169,
+    "all_classified": true,
+    "dirty_manifest_sha256": "f8b5baed206d31d5bbeab41bc644538138ca262cba15c35019aea0179e27e05e",
+    "manifest_format": "JSON-serialized porcelain-ordered {status,path,sha256} rows",
+    "protected_bookends": {
+      ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+      ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+      ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+      "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+    },
+    "staged_paths": [],
+    "commits_created": [],
+    "unknown_or_moved_paths": [],
+    "bookkeeping_bindings": [
+      {
+        "status": " M",
+        "path": ".mdkg/index/mdkg.sqlite",
+        "sha256": "ff40360c9e5893cc7dd677cb24a96273194620501c390fcbdd76b56ee4926fa1"
+      },
+      {
+        "status": " M",
+        "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+        "sha256": "b5970da6232fb803455119a783c21c5bd76813b18ccced93c6afe93178b2b109"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+        "sha256": "8997efc482d04d0eeba2ec9822247cf59e718cd7f8f00f35870b8e408dee1829"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/artifacts/goal-86/task-836-local-verification.json",
+        "sha256": "fb1fb8821cb8c1c883b6a268b71b33bf9dd4dd950be0928674d98c4bd89dae1d"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/chk-618-verify-evidence-bound-interrupted-writer-recovery-and-local-runtime-qualificatio.md",
+        "sha256": "638402b1da66564f37fd843eae8ae7269a3f007331c9d989d50b6a2d6b69c207"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "sha256": "644e31faa95ef55637518ecd843d239cb46d20a45d18aa21b58ee42e6779c4ae"
+      },
+      {
+        "status": "??",
+        "path": ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md",
+        "sha256": "3dacc188d10ad563f9f9d581c50cf09e9320f9c1151216d577c06119ebc86aa7"
+      }
+    ]
+  },
+  "limitations": [
+    "Initial draft-transition tests failed on historical published-only assumptions/stale generated notes; corrected explicit published/draft fixtures and regenerated references passed with no gate removed",
+    "Canonical upgrade preview intentionally refuses customized.mdkg/README.md; no application or canonical migration performed",
+    "Parent-owned workspace setup and independent root-event-history re-aliasing remain distinct test477 qualification obligations",
+    "Final installed matrix, macOS/Linux x86_64+ARM64, fresh Standard, complete independent remediation diff, full ladder and exact artifact seal remain open",
+    "No claim of no undiscovered bugs; Goal85 remains paused"
+  ],
+  "post_checkpoint_validation": {
+    "checkpoint": "root:chk-619",
+    "full_graph": {"errors": 0, "warnings": 3, "warning_policy": "preserved stale imports; no refresh"},
+    "changed_only": {"errors": 0, "warnings": 0},
+    "sqlite": {"ok": true, "fresh_projections": 5},
+    "diff_check": "pass"
+  },
+  "ownership": {
+    "task827": "done under root:chk-619; task-scoped execution ended",
+    "runtime_lease": "none acquired",
+    "selected_goal": "preserved",
+    "next": "reviewed local-only commit, frozen candidate qualification and fresh Standard"
+  },
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "verify-close-and-checkpoint",
+    "safe-git-publication-preflight"
+  ],
+  "skill_candidates": []
+}

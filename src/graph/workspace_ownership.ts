@@ -43,7 +43,7 @@ export function assertWorkspaceDocumentRootSpellings(root: string, config: Confi
 // state. Inactive roots still prevent their files being borrowed by a parent.
 // Inputs to this resolver are repository-relative, slash-separated paths (Git
 // and ZIP paths); do not reinterpret literal filename backslashes on POSIX.
-export function workspaceDocumentOwner(config: Config): (relativePath: string) => string | undefined {
+export function workspaceDocumentOwner(config: Pick<Config, "workspaces">): (relativePath: string) => string | undefined {
   const roots = Object.entries(config.workspaces).map(([alias, workspace]) => ({
     alias, prefix: workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir),
   })).sort((a, b) => b.prefix.length - a.prefix.length || a.alias.localeCompare(b.alias));

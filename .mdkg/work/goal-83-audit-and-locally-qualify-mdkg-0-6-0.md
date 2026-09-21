@@ -6,8 +6,7 @@ status: progress
 priority: 1
 goal_state: paused
 goal_condition: Complete full audit and installed consumer qualification with all publication blockers independently verified and one exact draft 0.6.0 candidate sealed without publication.
-scope_refs: [task-823, task-824, task-825, task-826, task-827, task-829, task-830, test-477, test-478, test-479, test-480, test-481, test-482, task-833, test-484]
-active_node: task-833
+scope_refs: [task-823, task-824, task-825, task-826, task-827, task-829, task-830, test-477, test-478, test-479, test-480, test-481, test-482, task-833, test-484, task-834, task-837, test-487]
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -20,13 +19,26 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-84, goal-85, dec-94, dec-95, edd-82]
-evidence_refs: []
+context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-84, goal-85, dec-94, dec-95, edd-82, goal-86, dec-96]
+evidence_refs: [chk-608]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-11
+updated: 2026-09-13
+last_active_node: task-833
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Goal86 is the sole future execution lane; preserve this goal's original
+acceptance duties and earned milestones. Dec96 adds fresh Standard and macOS/Linux
+gates. Paused routing is not failure or completion; historical active work is
+retained as last_active_node, not a standing claim. Only a later explicit Run of
+Goal86 authorizes remaining implementation. Goal85 publication remains separate.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Objective
 
@@ -86,6 +98,14 @@ The end condition is supported by exact artifacts and checks, not just report-on
 Unknown dirty ownership, writer collision, baseline movement, global configuration changes, materially new decisions or excluded actions. Publication remains a distinct gate.
 
 # Current State
+
+2026-09-17: Goal86 is the sole active execution lane. Known implementation
+prerequisites through Tasks835/836 and draft release preparation Task827 are
+locally verified. Package metadata is0.6.0, explicitly draft/unpublished;1,628
+source tests pass. Final installed macOS/Linux qualification, fresh Standard,
+independent remediation diff, full ladder and exact seal remain incomplete.
+Goal83 is not achieved, and Goal85 remains paused. Broader docs polish is later.
+See Goal86 and its current receipts; historical entries below are not run gates.
 
 2026-09-11 alignment: Nick accepted the four recommendations in dec-94.
 The prior unanswered-policy/protected-helper blockers are resolved; none of

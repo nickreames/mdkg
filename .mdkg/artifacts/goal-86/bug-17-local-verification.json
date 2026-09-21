@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "kind": "local-transport-implementation-verification",
+  "date": "2026-09-15",
+  "goal": "root:goal-86",
+  "work": "root:bug-17",
+  "owner": "mdkg-project-agent",
+  "outcome": "LOCAL_IMPLEMENTATION_VERIFIED_NOT_RELEASE_QUALIFIED",
+  "supersedes_current_status_only": ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json",
+  "historical_evidence_preserved": true,
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "source_has_uncommitted_changes": true,
+  "source_sha256": {
+    "src/commands/bundle.ts": "c412fb9c572cbfdd21d24c5033fd5d44ae2955e70f90613f88ebeac7f86abb48",
+    "src/commands/graph.ts": "f21105a59135f5578e2787ad47c4884542e448eae2fe188a34acf086de848a05",
+    "src/commands/subgraph.ts": "b42aeab79d58ed905060c32d6fdef41ea657b09227d9c55fd99024a33a9d7fdc",
+    "src/graph/identity_transport.ts": "223b3025352b16f2b03db90cd0aaafcaadba6a5235b6230d274c39bdfe7bb1d0",
+    "src/graph/subgraphs.ts": "c675daa5b3bb5475ee3ca7d05df89cc90f91140e8487adb34aa21a8f0ebbf631",
+    "src/graph/node_body.ts": "f3c26eff4c6e445b0b45d8a29e871070493dea54f6789e9e42376cc1633941fa",
+    "src/graph/transport_state.ts": "9ef4e25fb24b02f57267494918ba45fdf54b79e79f29ef468bfe8551654f5420",
+    "src/graph/transport_policy.ts": "70d2c63deaa0c0e3a28a4d861b7b2f5e6eb4f5a1154eabe9c13bf811a24d67bf",
+    "src/graph/workspace_ownership.ts": "993b4884ab2e32ebfba8c1ac842d3694ee3696e2af3810450e81bb253932ecdc",
+    "src/util/zip.ts": "90336751cca6772ad665a68634a33fc0543907114322d548323a0bd0eb09fd81",
+    "tests/commands/bundle_state.test.ts": "c8db1371040259b2c2336acbfa65ea2c68e9d29fdb4f2a646b7ce73665f458cb",
+    "tests/commands/subgraph.test.ts": "a08cd9b63195a641226fb1c59abe004464725a041db90a5ec4544763642a5cc2",
+    "tests/graph/node_body.test.ts": "f9ba6d8b4a61fbe23f5772d1be592d0b0ee455ecec128ab5c2cf06bc31b36ba8",
+    "tests/graph/subgraph_containment.test.ts": "0b24daa918fc66419e6cc2cf84f4ce3e70097d54d55086228df6d9acab5cfbf2",
+    "scripts/smoke-bundle.js": "f7d00d4c43891e44baae6ffd2a25275f7405eb395dd50173ce77646531c53bb9",
+    "tests/fixtures/transport-state.cjs": "e40f1ccb7efebf0fe08f3814f71db677c3859a6185472ef79d880e511efeef43",
+    "scripts/smoke-subgraph.js": "12c6d39ddff34bff40800721c83909fa797130b85b5b59169a5c06f172a46ff3",
+    "scripts/smoke-visibility.js": "cbf3c4cb1556b507ac7bc72bfa7ae2eb17c41f4ceaf3521a9f0331450b339ef3",
+    "scripts/smoke-capabilities.js": "c6b639998c98561711a4dfd8d870161b67f4e45533d88cfcc7ebf47fd7baeb1d"
+  },
+  "owned_source_and_test_paths": [
+    "src/commands/bundle.ts",
+    "src/commands/graph.ts",
+    "src/commands/subgraph.ts",
+    "src/graph/identity_transport.ts",
+    "src/graph/subgraphs.ts",
+    "src/graph/node_body.ts",
+    "src/graph/transport_state.ts",
+    "src/graph/transport_policy.ts",
+    "src/graph/workspace_ownership.ts",
+    "src/util/zip.ts",
+    "tests/commands/bundle_state.test.ts",
+    "tests/commands/subgraph.test.ts",
+    "tests/graph/node_body.test.ts",
+    "tests/graph/subgraph_containment.test.ts",
+    "scripts/smoke-bundle.js",
+    "tests/fixtures/transport-state.cjs",
+    "scripts/smoke-capabilities.js"
+  ],
+  "invariant": "Public and private transports exclude live databases, sidecars, local selection, locks and derived checkout state. Public transport omits private DB payloads with count-only exclusion evidence. Deliberate private checkpoints and receipts remain portable without restoring execution authority.",
+  "strategy": "One shared configured/conventional state classifier governs producers and consumers; fresh portable declarations bind included roles and owners to the manifest. Validate before payload parsing or target writes and consume one verified ZIP snapshot.",
+  "contract_limits": [
+    "A portable declaration is structural evidence, not authentication, provenance attestation, secret scanning, public-safety attestation or permission to execute or acquire a writer.",
+    "Historical policy-less public snapshots remain bounded inspection-only. No historical bundle or receipt body was rewritten.",
+    "Fresh config-less declarations retain conventional state exclusions; nonconventional portable checkpoint layouts require actual owning configuration. Clone/fork still separately require an owning root configuration.",
+    "Unknown child-declared workspace custody refuses transport; this does not expand selection, add federation or grant descendant write authority."
+  ],
+  "affected_version": {
+    "package_version": "0.5.2",
+    "runtime": "v24.18.0",
+    "package_source": "retained published installation historically verified against registry-integrity-bound tarball in bug-35-affected-versions.json; no new registry verification",
+    "input_sha256": {
+      "package.json": "dcb4984f0201888a092e1379c03a9174041c87f109a99c41eaaaa15d7c097a81",
+      "dist/cli.js": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+      "dist/commands/bundle.js": "702fe1c6cca78dc2b3d772839d000a8e5845e3c1a1d9cc3483f89d925f63d980",
+      "dist/util/zip.js": "6e454fadc8fe94225606f08776972157b681a034c222dd810933f37b4adfe4a9"
+    },
+    "inputs_unchanged": true,
+    "results": [
+      {
+        "profile": "public",
+        "live_db_included": true
+      },
+      {
+        "profile": "private",
+        "live_db_included": true
+      }
+    ],
+    "source_provenance": ".mdkg/artifacts/goal-84/bug-35-affected-versions.json",
+    "distinction": "The retained published 0.5.2 producer includes synthetic live DB payloads in both profiles. New portable-contract bypasses are unreleased-candidate findings; no claim that this contract existed in 0.5.2."
+  },
+  "reviews": {
+    "procedure": "codex-security:fix-finding",
+    "prepatch_workers": 1,
+    "candidate_review_cycles": 1,
+    "worker_names": [
+      "transport_completion_prepatch",
+      "transport_contract_candidate_review"
+    ],
+    "disposition": "Two source-only candidate-review hypotheses were independently reproduced by the parent and corrected. Parent verification additionally reproduced and corrected sidecar spelling, excluded-state projection, unregistered descendant and config-less private-runtime routes.",
+    "security_clearance": false,
+    "remaining": [
+      "root:task-837 fresh Standard workflow",
+      "root:task-828 independent complete remediation-diff acceptance"
+    ]
+  },
+  "reproduced_routes": [
+    {
+      "route": "Configured/unselected child live DB and private payloads omitted from classification",
+      "fix": "Consult enabled registered child owning configurations even when unselected; preserve selected-private portability controls."
+    },
+    {
+      "route": "Child-only transport ignored its included owning configuration",
+      "fix": "Bind scoped owning configurations to manifest and projected workspace roots, then cross-check roles."
+    },
+    {
+      "route": "Mixed-case sidecars and excluded nested Markdown opened before refusal",
+      "fix": "Classify portable spelling before payload reads; reject graph/state discovery overlap before projection parsing."
+    },
+    {
+      "route": "Child-declared unregistered grandchild custom live bytes reached export and restore",
+      "fix": "Use the same descendant-custody refusal in producer and consumer layout classification; exact registration remains a positive control."
+    },
+    {
+      "route": "Config-less private role admitted conventional runtime bytes",
+      "before": "subgraph add and materialize both exited 0 and copied synthetic runtime payload; two source regressions failed while two legitimate controls passed",
+      "fix": "Fresh scoped inventories retain conventional classification even without included config; historical config-less admission is unchanged.",
+      "after": "118 focused tests pass; all five installed consumer paths refuse the forged runtime without persistent changes, including replacement of a previously registered safe snapshot. Conventional private checkpoints and explicit configured runtime-directory checkpoints remain usable."
+    },
+    {
+      "route": "Second-open projections/receipts/template application could consume different bytes",
+      "fix": "Use held validated snapshots and exact metadata/source bindings; preserve safe cached reads after genuine source deletion."
+    },
+    {
+      "route": "Materialization could delete a pre-existing predictable temporary directory",
+      "fix": "Exclusive creation with explicit custody; only remove a temporary directory created by this operation."
+    }
+  ],
+  "validation": {
+    "build": "pass, Node24.18.0; final source built before immutable package creation",
+    "focused": {
+      "tests": 118,
+      "passed": 118,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 8834.092042,
+      "scope": [
+        "bundle_state",
+        "bundle",
+        "bundle_ownership",
+        "subgraph_containment",
+        "node_body",
+        "zip"
+      ]
+    },
+    "full": {
+      "command": [
+        "/opt/homebrew/opt/node@24/bin/node",
+        "/opt/homebrew/Cellar/node@24/24.18.0/lib/node_modules/npm/bin/npm-cli.js",
+        "run",
+        "test:built"
+      ],
+      "runtime": "v24.18.0",
+      "platform": "darwin-arm64",
+      "tests": 1457,
+      "passed": 1457,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 185938.728708,
+      "harness_duration_ms": 187784,
+      "source_hashes_unchanged": true,
+      "receipt_sha256": "fda3bb7b7bf958951af69d630c801088147273a2d566fce412e04988b2872ab9",
+      "stdout_sha256": "ae5fc0c028dc4fbc1adfd7285dfb18c75806883c53ed5869ffd031834e74e9fc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "installed": {
+      "kind": "intermediate candidate, not final 0.6.0 seal",
+      "metadata_version": "0.5.2",
+      "artifact_sha256": "e1fd06482cacfdcde46f5b3c7025556853085475c32ca7594eeacf6565192aed",
+      "artifact_integrity": "sha512-HjVqL4OY893v6PiuElqMWfvAtJ5VWiL1PmF9odM1yT6bUd6AXbaibWGOPZnPqWE/rcultmlsC34/bVgskyvSBQ==",
+      "package_file_count": 223,
+      "artifact_manifest_sha256": "6f81bd688e23f85cc1c63af180ce0da24c282487f22760f98ed42e27e706b6c6",
+      "prepack_bypassed_for_intermediate_fixture_testing": true,
+      "case_names": [
+        "public: state exclusions and portable contract",
+        "private: state exclusions and portable contract",
+        "fresh public: bounded inspection/materialization without restored authority",
+        "fresh public: template application",
+        "fresh public: incomplete checkout clone refuses unchanged",
+        "historical public: inspection retained, both mutation consumers refuse unchanged",
+        "malformed version: all three entrypoints refuse unchanged",
+        "malformed profile: all three entrypoints refuse unchanged",
+        "malformed hash: all three entrypoints refuse unchanged",
+        "malformed role: all three entrypoints refuse unchanged",
+        "malformed missing-row: all three entrypoints refuse unchanged",
+        "malformed workspace: all three entrypoints refuse unchanged",
+        "private clone: checkpoint exact, live state absent",
+        "private fork: checkpoint exact, live state absent",
+        "config-less private: conventional checkpoints remain portable without checkout authority",
+        "config-less private: conventional runtime forgery refuses across five consumers without writes",
+        "private: owning config preserves an explicit checkpoint within the conventional runtime directory",
+        "public: unregistered child-declared payload refuses before export writes",
+        "private: unregistered child-declared payload refuses before export writes",
+        "self-consistent nested live-payload forgery: four consumers refuse unchanged",
+        "public: explicitly registered nested ownership preserves portable checkpoint policy",
+        "private: explicitly registered nested ownership preserves portable checkpoint policy"
+      ],
+      "runtimes": [
+        {
+          "runtime": "v24.15.0",
+          "platform": "darwin-arm64",
+          "cases": 22,
+          "executable": "/private/tmp/mdkg-bug7-recovery.YDpsrx/node-24.15.0/node",
+          "executable_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+          "duration_ms": 36235,
+          "harness_sha256": "e40f1ccb7efebf0fe08f3814f71db677c3859a6185472ef79d880e511efeef43",
+          "source_unchanged": true
+        },
+        {
+          "runtime": "v24.18.0",
+          "platform": "darwin-arm64",
+          "cases": 22,
+          "executable": "/opt/homebrew/opt/node@24/bin/node",
+          "executable_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+          "duration_ms": 38502,
+          "harness_sha256": "e40f1ccb7efebf0fe08f3814f71db677c3859a6185472ef79d880e511efeef43",
+          "source_unchanged": true
+        },
+        {
+          "runtime": "v26.0.0",
+          "platform": "darwin-arm64",
+          "cases": 22,
+          "executable": "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+          "executable_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+          "duration_ms": 39076,
+          "harness_sha256": "e40f1ccb7efebf0fe08f3814f71db677c3859a6185472ef79d880e511efeef43",
+          "source_unchanged": true
+        }
+      ],
+      "bundle_smoke": {
+        "status": 0,
+        "includes_original_checks": true,
+        "transport_cases": 22,
+        "artifact_sha256": "e1fd06482cacfdcde46f5b3c7025556853085475c32ca7594eeacf6565192aed",
+        "receipt_sha256": "44b15989abbf2246256ac68b299864944bfe9a27a345ed5666cb7599a6ef91a0"
+      },
+      "adjacent_smokes": [
+        {
+          "name": "subgraph",
+          "execution": "immutable installed package",
+          "status": 0,
+          "duration_ms": 15290,
+          "stdout_sha256": "07df6c29a973445552e35f1bca75e8a49c02e805cf17e4a9f78901535d599ffd",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "visibility",
+          "execution": "immutable installed package",
+          "status": 0,
+          "duration_ms": 8199,
+          "stdout_sha256": "59ff6860b97173accbc1449ba1c9282f324958a52f2721080c516491f25c25bb",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "capabilities",
+          "execution": "built-source, not installed package proof",
+          "status": 0,
+          "duration_ms": 4144,
+          "stdout_sha256": "5ed72ea968addb7fca1229f6519fe57bc7d8b6ae572a369bc6a48fbd45b7d03b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "prior_candidate": "ab9c6f043b6d80a05c3d02d5ae273aa4e06de13399eb6416fc121c44a3d0da62 passed 19 cases per runtime but is superseded by the reproduced config-less-runtime fix. Its evidence is not current-source acceptance."
+    },
+    "local_checks": [
+      {
+        "name": "cli-parity",
+        "status": 0,
+        "duration_ms": 9354,
+        "stdout_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "docs",
+        "status": 0,
+        "duration_ms": 257,
+        "stdout_sha256": "b73479765523024c5a28e9b0ac4ec5cdf6c617f954e0cd062776b30f54068a35",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "workflow",
+        "status": 0,
+        "duration_ms": 148,
+        "stdout_sha256": "49df378ed623eb43ba43d22b1195aa5f01acd0fd67db0d26cea068794db5f7ec",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "graph-full",
+        "status": 0,
+        "duration_ms": 771,
+        "stdout_sha256": "8a80112c39d7e7c1979902cefb1f6b8d2e131e6db870aa5c9d3d73364f26cf1b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "graph-changed",
+        "status": 0,
+        "duration_ms": 773,
+        "stdout_sha256": "58fef8ea66bc5abbae9d491058659034d46936258ff330bee9cb21746975df5b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "sqlite",
+        "status": 0,
+        "duration_ms": 1025,
+        "stdout_sha256": "350a74bf15fb1b69197d1b76afda5e5097eebc62c769c835da84f49f718a31fe",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "diff-check",
+        "status": 0,
+        "duration_ms": 29,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "local_check_scope": "Before milestone mdkg record changes; post-checkpoint projection/graph bookends are recorded separately.",
+    "graph": "zero errors, three preserved stale-subgraph warnings; changed-only zero errors/warnings",
+    "sqlite": "all five projections fresh",
+    "docs": "63 files, 470 checked examples, zero failures; declared illustrative skips are not execution coverage",
+    "linux": "unverified",
+    "windows": "unqualified",
+    "full_release_ladder": "unverified",
+    "final_artifact_pass": false
+  },
+  "fixture_disposition": {
+    "initial_failed_gates": [
+      "bundle smoke",
+      "capability smoke"
+    ],
+    "cause": "Bare init now creates independent root-scoped agent events before the fixture registers a parent-owned child workspace; later parent-scope validation correctly refuses mixed event scopes.",
+    "evidence": "Retained published 0.5.2 bare init: no initial event and parent validation passes. Current bare init: root/child event scopes and validation status2. Current explicit graph-only init: parent validation passes. Existing event prefixes were preserved.",
+    "correction": "Restore the original graph-only fixture intent explicitly in smoke-bundle.js and smoke-capabilities.js; retain all assertions. No event rewrite or validator relaxation.",
+    "qualification_followup": "Task827/test477 must distinguish parent-owned workspace setup from an independently executed project graph. These fixtures do not qualify re-aliasing independent event histories; do not infer that documentation alone waives a confirmed required compatibility defect.",
+    "case_safety": "Disposable synthetic fixtures only. Installed behavioral tests invoke the installed CLI; shipped ZIP helpers only construct/inspect inputs. The capability smoke is explicitly built-source, not installed proof."
+  },
+  "temporary_receipt_sha256": {
+    "consumer-shared-final/full-tests.receipt.json": "bae066ebe16d75af557fb4b78aff06d17e82b5166b0ff6cf206abbb11118367b",
+    "representation-probes-rB9jeo/receipt.json": "b500aa5f8b3d5ea96f17e1d3dc41111eee7770db2a9f03c7d05e091d3729d4b4",
+    "representation-probes-DumiHb/receipt.json": "32f45a0ecdbad8b336187df102cf5f969d56e34273bbbf633b372e5e502de909",
+    "nested-consumer-oSDw6G/receipt.json": "5ede819cca270192cb507e5a587bbd8bfb219e5325e40dd0cf2adee29c16f0e7",
+    "nested-consumer-MPmHBN/receipt.json": "b45c82a664e6479048166b118e5c7ac63410762416204f5d6f9519e615a63308",
+    "published-transport-Yjf7tB/receipt.json": "e42e94f0bf32a85da75f2ee928001312c0a758ebc59ae1e69d54d65975152a2b",
+    "workspace-events-fCw7RM/receipt.json": "fc4e424e826b89d634da0a40e3bc9ee62e93e0f62d942a605cad3e37894d3c54",
+    "installed-uwq8SG/manifest.json": "4056c07035baf87f32eb863d3d77dafa366a19c4153b90ca428a3fd383a05e67",
+    "installed-uwq8SG/harness-revision.json": "7eeb0c2d654379d3db86edfe63813f65dc56762ede4257cfa30f7b036a2e0b53",
+    "installed-uwq8SG/smoke-harness-revision.json": "3cacad9c8df83fd4830b2220708dc4d0166a9515f70cd38f95f8f6f5759296dc",
+    "installed-uwq8SG/bundle-smoke-1AOQ5c/receipt.json": "3f501670cecda215bc8a5b0fcca9a41cc8945e66ad04e2dbddbe94c454e23970",
+    "installed-uwq8SG/bundle-smoke-T2cGEj/receipt.json": "2d713c99481f9c4002bf74caa53880e079986672ab0b3df1e18d56d90310746c",
+    "installed-uwq8SG/adjacent-smokes-JU63xC/receipt.json": "fd2a29194c7ac84451ea5ac8556a1fc69aef33ecbc823cdd0942ba618abdee25",
+    "installed-uwq8SG/capability-control-RWlxXb/receipt.json": "ee7a96972d1b8c6b0952d67027ed0fec7fb7534b5823e352c959dd6cbb5a3df3",
+    "installed-uwq8SG/minimum-corrected/receipt.json": "11c1590cf944eff1ff84b06ae7bd5800f1f3fd92a0e09b5df42a168ce9b8fdf8",
+    "installed-uwq8SG/supported-corrected/receipt.json": "88c44731463bdc5c156cd3c55590e2834cef549fdb9f37761b3a1b1c10230302",
+    "installed-uwq8SG/compatibility-corrected/receipt.json": "82c2640299bf5fbb0812ea87d22d2742fa5abdb3bc2ec12ee17366a077c7e17b",
+    "configless-final/full-tests.receipt.json": "fda3bb7b7bf958951af69d630c801088147273a2d566fce412e04988b2872ab9",
+    "configless-runtime-IXcnBG/receipt.json": "31f6ad830e340c43ba94c72c37e70aec914113b02ef9afc8f6e242ac7ed02478",
+    "configless-runtime-pYA73a/receipt.json": "186314da479a88914984b41d920bf604e5bc27192d3cf94be706c963db5fe01d",
+    "installed-0LzjA3/manifest.json": "6f81bd688e23f85cc1c63af180ce0da24c282487f22760f98ed42e27e706b6c6",
+    "installed-0LzjA3/bundle-smoke-6ekMMv/receipt.json": "44b15989abbf2246256ac68b299864944bfe9a27a345ed5666cb7599a6ef91a0",
+    "installed-0LzjA3/adjacent-smokes-CKNdM1/receipt.json": "a0eaa22a2e54013cfe20f8f9e2adbc8963f6695483dc4f4510e64d2b821b7341",
+    "local-checks-X9EeIR/receipt.json": "9122290f796a49186590a38d7bbd3fe34fa9149df304e7fc3438c18f0090e5c0",
+    "installed-0LzjA3/minimum/receipt.json": "b8ede6aa938265a208d79c10bd8b9815cc23563c8e92e24371fe478af1bbccfa",
+    "installed-0LzjA3/supported/receipt.json": "72ae1fa6533cea980026a55677c538cd00011545b3efb59902de349a674bf4da",
+    "installed-0LzjA3/compatibility/receipt.json": "712052fdfc32deefade1e3ff6f2e4150a2b8e8ad5981edf2a6695fdac2db61c7"
+  },
+  "temporary_root": "/private/tmp/mdkg-goal86-transport-f1HpnV",
+  "remaining_release_gates": [
+    "Bug39 unsupported options",
+    "Bug41 observational configured-helper execution",
+    "Bug42 copied legacy-cache metadata",
+    "Task835 v2 writer admission",
+    "Task836 evidence-bound killed-writer recovery",
+    "Task827 finalized metadata/guidance",
+    "Tests477-484,486,487 final installed/runtime/platform qualification",
+    "Task826 aggregate/Bug7 qualification",
+    "Task837 fresh Standard and Task828 independent acceptance",
+    "Task829 full unchanged-threshold ladder",
+    "Task830 exact0.6.0 artifact seal",
+    "Task831 and Goal85 fresh publication approval"
+  ],
+  "preserved_sha256": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "git-index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+  },
+  "custody": "Single Goal86 canonical writer; existing planning and Bug35/40 work preserved. No other running review worker, runtime lease, queued message or transient mutation lock at verification. Five historical DB leases remain released.",
+  "git": {
+    "branch": "main",
+    "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+    "cached_ahead": 50,
+    "cached_behind": 0,
+    "staged_paths": [],
+    "commits_created": [],
+    "remote_actions": "none"
+  },
+  "authority_used": "Explicit Goal86 Run: bounded Bug17 source/tests, disposable local fixtures and mdkg milestone evidence. No canonical graph migration, bundle/subgraph refresh, selection mutation, deployment, provider, publication, remote Git, stage or commit.",
+  "portability": "Generic transport/ownership behavior only; no consumer-specific names, scheduling, authentication, accounting or runtime-policy additions.",
+  "skill_coverage": [
+    "pursue-mdkg-goal",
+    "build-pack-and-execute-task",
+    "verify-close-and-checkpoint",
+    "codex-security:fix-finding"
+  ],
+  "skill_candidates": [],
+  "release": "NOT_READY; Goal85 paused and metadata still0.5.2. Local implementation closure is distinct from final independent launch acceptance."
+}

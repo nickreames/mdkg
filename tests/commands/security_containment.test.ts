@@ -152,7 +152,7 @@ test("cand-review-005-003 removed git clone refuses with linked target ancestry"
 
   const rejected = runCli(root, ["git", "clone", "source", "--target", "clones/source", "--json"]);
   assert.equal(rejected.status, 1);
-  assert.match(rejected.stderr, /git requires inspect/);
+  assert.equal(rejected.stderr, "git clone source does not support --target; no command effects attempted\n");
   assert.deepEqual(fs.readdirSync(outside), []);
 });
 
@@ -167,7 +167,7 @@ test("cand-review-005-004 removed git closeout refuses with linked receipt ances
 
   const rejected = runCli(root, ["git", "closeout", "--json"]);
   assert.equal(rejected.status, 1);
-  assert.match(rejected.stderr, /git requires inspect/);
+  assert.equal(rejected.stderr, "git closeout does not support --json; no command effects attempted\n");
   assert.deepEqual(fs.readdirSync(outside), []);
 });
 
@@ -243,7 +243,9 @@ test("review-003-cand-005 init rejects a linked managed destination", (t) => {
   fs.mkdirSync(path.join(root, ".mdkg"));
   if (!linkOrSkip(t, sentinel, path.join(root, ".mdkg", "AGENT_START.md"), "file")) return;
 
-  runRejected(root, ["init", "--agent", "--json"]);
+  // Init has no JSON output option. Reach the containment check with supported
+  // flags rather than accidentally passing at the earlier option-admission gate.
+  runRejected(root, ["init", "--agent"]);
   assert.equal(fs.readFileSync(sentinel, "utf8"), "outside\n");
 });
 

@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { parseArgs } from "./util/argparse";
 import { ParsedArgs } from "./util/argparse";
+import { commandOptionError, commandOptionKind, optionCommandsForHelp } from "./commands/option_contract";
 import { runIndexCommand } from "./commands/index";
 import { runListCommand } from "./commands/list";
 import { runSearchCommand } from "./commands/search";
@@ -245,6 +246,7 @@ function printUsage(log: LogFn): void {
   log("\nFocused discovery:");
   log('  mdkg skill search "<task>"');
   log("\nRun `mdkg help <command>` or `mdkg <command> --help` for details.");
+  log("Options are command-specific and checked before root discovery. Use -- before option-looking positional text.");
   printGlobalOptions(log);
 }
 
@@ -825,10 +827,12 @@ function printGraphHelp(log: LogFn, subcommand?: string): void {
       break;
     case "recover":
       log("Usage:");
-      log("  mdkg graph recover <plan-hash> [--resume|--rollback] [--json]");
+      log("  mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]");
       log("\nNotes:");
       log("  - defaults to read-only journal inspection with raw graph bodies omitted");
       log("  - explicit resume/rollback requires unchanged control inputs and exact owned before/after bytes");
+      log("  - a proven orphan requires the mode-specific --lock-evidence from a fresh inspection");
+      log("  - live, weak, foreign or incomplete ownership evidence refuses; age/PID alone never permits takeover");
       log("  - changed or unowned inputs stop recovery without overwriting user work");
       break;
     case "clone":
@@ -1374,7 +1378,7 @@ function printDoctorHelp(log: LogFn): void {
   printGlobalOptions(log);
 }
 
-function printCommandHelp(log: LogFn, command?: string, subcommand?: string): void {
+function printCommandHelpBody(log: LogFn, command?: string, subcommand?: string): void {
   switch ((command ?? "").toLowerCase()) {
     case "":
     case "help":
@@ -1487,6 +1491,24 @@ function printCommandHelp(log: LogFn, command?: string, subcommand?: string): vo
   }
 }
 
+function printCommandHelp(log: LogFn, command?: string, subcommand?: string, action?: string): void {
+  printCommandHelpBody(log, command, subcommand);
+  const entries = optionCommandsForHelp([command, subcommand, action].filter((value): value is string => value !== undefined));
+  if (!entries.length) return;
+  log("\nAccepted command options (plus global options above):");
+  for (const entry of entries) {
+    const flags = entry.flags.filter(flag => !["--root", "--help", "--version"].includes(flag));
+    log(`  ${entry.command}: ${flags.map(flag => {
+      const kind = commandOptionKind(entry.command, flag);
+      return kind === "boolean" ? flag : `${flag} <${kind === "integer" ? "integer" : "value"}>`;
+    }).join(" ") || "none"}`);
+  }
+  log("Boolean values use =true or =false; value options accept =value or a separate value.");
+  if (entries.some(entry => entry.command === "init")) {
+    log("Compatibility: init --agent also accepts a separate true or false value; event --agent takes an agent name.");
+  }
+}
+
 function printRootError(error: LogFn, root: string): void {
   error("mdkg must be run from a repo root with .mdkg/config.json");
   error(`root checked: ${root}`);
@@ -1518,7 +1540,7 @@ function shouldRequireConfig(command: string, flags: Record<string, string | boo
   if (command === "init" || command === "help") {
     return false;
   }
-  if (command === "pack" && flags["--list-profiles"]) {
+  if (command === "pack" && (flags["--list-profiles"] === true || flags["--list-profiles"] === "true")) {
     return false;
   }
   return true;
@@ -2157,14 +2179,6 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   const source = parsed.positionals[2];
   const target = requireFlagValue("--target", parsed.flags["--target"]);
   const json = parseBooleanFlag("--json", parsed.flags["--json"]);
-  if (subcommand === "migrate" || subcommand === "recover" || subcommand === "reconcile") {
-    const allowed = new Set(["--root", "--json", "--xml", "--toon", "--md",
-      ...(subcommand === "migrate" ? ["--graph-id", "--origin", "--ancestor", "--decisions", "--apply", "--plan-hash"]
-        : subcommand === "reconcile" ? ["--ancestor", "--incoming", "--target", "--decisions", "--apply", "--plan-hash"] : ["--resume", "--rollback"])]);
-    for (const flag of Object.keys(parsed.flags)) {
-      if (!allowed.has(flag)) throw new UsageError(`graph ${subcommand} does not support ${flag}; no mutation attempted`);
-    }
-  }
   switch (subcommand) {
     case "reconcile": {
       if (parsed.positionals.length !== 2) throw new UsageError("graph reconcile does not accept positional arguments");
@@ -2192,6 +2206,7 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
     case "recover": {
       if (!source || parsed.positionals.length !== 3) throw new UsageError("graph recover requires <plan-hash>");
       runGraphRecoverCommand({ root, hash: source,
+        lockEvidence: requireFlagValue("--lock-evidence", parsed.flags["--lock-evidence"]),
         resume: parseBooleanFlag("--resume", parsed.flags["--resume"]),
         rollback: parseBooleanFlag("--rollback", parsed.flags["--rollback"]), json });
       return 0;
@@ -2246,9 +2261,6 @@ function runGraphSubcommand(parsed: ParsedArgs, root: string): ExitCode {
 function runGitSubcommand(parsed: ParsedArgs, root: string): ExitCode {
   if ((parsed.positionals[1] ?? "").toLowerCase() !== "inspect") throw new UsageError("git requires inspect");
   if (parsed.positionals.length !== 2) throw new UsageError("git inspect does not accept positional arguments");
-  for (const flag of Object.keys(parsed.flags)) {
-    if (flag !== "--root" && flag !== "--json") throw new UsageError(`git inspect does not accept ${flag}`);
-  }
   runGitInspectCommand({ root, json: parseBooleanFlag("--json", parsed.flags["--json"]) });
   return 0;
 }
@@ -3117,7 +3129,7 @@ function runCommand(parsed: ParsedArgs, root: string, runtime: ResolvedCliRuntim
       runGuideCommand({ root });
       return 0;
     case "index": {
-      const tolerant = Boolean(parsed.flags["--tolerant"]);
+      const tolerant = parseBooleanFlag("--tolerant", parsed.flags["--tolerant"]);
       runIndexCommand({ root, tolerant });
       return 0;
     }
@@ -3556,11 +3568,19 @@ async function runMcpSubcommand(parsed: ParsedArgs, root: string): Promise<ExitC
 function removedOptionError(parsed: ParsedArgs, argv: string[]): string | undefined {
   // Retired tokens are deliberately absent from the active parser registry.
   // Inspect raw arguments too: a preceding valueless option must not swallow one.
-  if (argv.some((arg) => arg === "--pricing-model" || arg.startsWith("--pricing-model="))) {
+  const separator = argv.indexOf("--");
+  if ((separator < 0 ? argv : argv.slice(0, separator)).some((arg) => arg === "--pricing-model" || arg.startsWith("--pricing-model="))) {
     return "--pricing-model is not supported; commercial policy belongs to consumers";
   }
   const command = (parsed.positionals[0] ?? "").toLowerCase();
   const subcommand = (parsed.positionals[1] ?? "").toLowerCase();
+  if (command === "init") {
+    for (const flag of ["--llm", "--agents", "--claude", "--omni"]) {
+      if (parsed.flags[flag] !== undefined) {
+        return `\`mdkg init ${flag}\` was removed; use \`mdkg init\` for compact agent setup (default), or \`mdkg init --graph-only\` without agent setup`;
+      }
+    }
+  }
   if ((command === "validate" || (command === "work" && subcommand === "validate")) &&
       parsed.flags["--pack-profile"] !== undefined) {
     return "--profile/--pack-profile is not supported for validation; mdkg validates generic contracts only";
@@ -3577,14 +3597,17 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
     return 1;
   }
   if (parsed.error) {
-    io.error(parsed.error);
-    printUsage(io.log);
-    return 1;
+    return handleCommandError(new UsageError(parsed.error), parsed.positionals[0], io);
+  }
+
+  const optionError = commandOptionError(parsed);
+  if (optionError) {
+    return handleCommandError(new UsageError(optionError), parsed.positionals[0], io);
   }
 
   if (parsed.help) {
     try {
-      printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
+      printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1], parsed.positionals[2]);
       return 0;
     } catch (error) {
       return handleCommandError(error, parsed.positionals[0] ?? "help", io);
@@ -3603,7 +3626,7 @@ export function runCli(argv: string[], runtime: CliRuntime = {}): ExitCode {
 
   if (command === "help") {
     try {
-      printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
+      printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2], parsed.positionals[3]);
       return 0;
     } catch (error) {
       return handleCommandError(error, parsed.positionals[1] ?? "help", io);
@@ -3632,14 +3655,17 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
     return 1;
   }
   if (parsed.error) {
-    io.error(parsed.error);
-    printUsage(io.log);
-    return 1;
+    return handleCommandError(new UsageError(parsed.error), parsed.positionals[0], io);
+  }
+
+  const optionError = commandOptionError(parsed);
+  if (optionError) {
+    return handleCommandError(new UsageError(optionError), parsed.positionals[0], io);
   }
 
   if (parsed.help) {
     try {
-      printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1]);
+      printCommandHelp(io.log, parsed.positionals[0], parsed.positionals[1], parsed.positionals[2]);
       return 0;
     } catch (error) {
       return handleCommandError(error, parsed.positionals[0] ?? "help", io);
@@ -3658,7 +3684,7 @@ export async function runCliAsync(argv: string[], runtime: CliRuntime = {}): Pro
 
   if (command === "help") {
     try {
-      printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2]);
+      printCommandHelp(io.log, parsed.positionals[1], parsed.positionals[2], parsed.positionals[3]);
       return 0;
     } catch (error) {
       return handleCommandError(error, parsed.positionals[1] ?? "help", io);

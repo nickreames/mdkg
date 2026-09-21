@@ -1,0 +1,915 @@
+{
+  "schema_version": 1,
+  "kind": "bounded-local-observational-boundary-verification",
+  "goal": "root:goal-86",
+  "owner": "mdkg-project-agent",
+  "bugs_locally_remediated": [
+    "root:bug-35",
+    "root:bug-40"
+  ],
+  "remaining_semantic_failure": "root:bug-42",
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "version": "0.5.2",
+  "classification": "intermediate qualification; not final 0.6.0 release acceptance",
+  "source_manifest": [
+    {
+      "path": "src/commands/subgraph.ts",
+      "sha256": "80a6b6b0b3a830725b7307682de52fee1319edc14c08a4f8a1c6db2a62e861c7"
+    },
+    {
+      "path": "src/commands/bundle.ts",
+      "sha256": "ad04ae9f2f40561edda429e75fab8532a31c5af5f27e5a1ccd90954619dc380d"
+    },
+    {
+      "path": "src/commands/validate.ts",
+      "sha256": "8cf86ebacc18935461d4119b6d4fff32bbe7a9570aac324b09f5ceb02f2310c4"
+    },
+    {
+      "path": "src/graph/subgraphs.ts",
+      "sha256": "08554f74fae1037f12a1c31de2745b5087a65383666e90f17075a9fdf6cbbcbf"
+    },
+    {
+      "path": "src/graph/transport_state.ts",
+      "sha256": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072"
+    },
+    {
+      "path": "src/commands/graph.ts",
+      "sha256": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436"
+    },
+    {
+      "path": "src/graph/identity_transport.ts",
+      "sha256": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684"
+    },
+    {
+      "path": "tests/fixtures/git-observation.cjs",
+      "sha256": "92512fb798c09fa7065de3a9568dbdf458689c02d11301b3172adaa69cb5e9db"
+    },
+    {
+      "path": "tests/commands/git_observation.test.ts",
+      "sha256": "1d114d4c3a777ad2fdefd0d3cdf98c124ae3dd3bc44f9837ee91699ba5c2d4f3"
+    },
+    {
+      "path": "scripts/smoke-git-boundary.js",
+      "sha256": "926977686ddc70d2f406ebe65b2e9c15e3e5daab6aaf1eeee64455fec66489dd"
+    }
+  ],
+  "initial_source_manifest_sha256": "81bcabdeb33e0bcb2e985f89596ccbd1e7f28355ee777c4e18ea9714276ed672",
+  "before": {
+    "bug35": {
+      "receipt_sha256": "767123f2d1ad744c3a0f7434ae4f7acc328a51cfde1d278e61cf964a5dfa22ed",
+      "runtime": "v24.18.0",
+      "cases": 16,
+      "index_failures": 14,
+      "staged_entries_preserved": true,
+      "cases_summary": [
+        {
+          "command": [
+            "status"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "status"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "show",
+            "root:task-1"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "show",
+            "root:task-1"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "validate"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "validate"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "validate",
+            "--changed-only"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": [
+            "root",
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "validate",
+            "--changed-only"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": [
+            "root",
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "subgraph",
+            "list"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "subgraph",
+            "list"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "subgraph",
+            "audit"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "subgraph",
+            "audit"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": [
+            "child"
+          ]
+        },
+        {
+          "command": [
+            "git",
+            "inspect"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": []
+        },
+        {
+          "command": [
+            "git",
+            "inspect"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": []
+        },
+        {
+          "command": [
+            "bundle",
+            "create",
+            "--profile",
+            "private",
+            "--output",
+            ".mdkg/bundles/private/bug35-proof.mdkg.zip"
+          ],
+          "caller_optional_locks": "unset",
+          "changed_indexes": [
+            "root"
+          ]
+        },
+        {
+          "command": [
+            "bundle",
+            "create",
+            "--profile",
+            "private",
+            "--output",
+            ".mdkg/bundles/private/bug35-proof.mdkg.zip"
+          ],
+          "caller_optional_locks": "1",
+          "changed_indexes": [
+            "root"
+          ]
+        }
+      ]
+    },
+    "bug40_lock_evidence": ".mdkg/artifacts/goal-86/observational-boundary-reproductions.json",
+    "bug40_parent_creation": {
+      "kind": "bug40-missing-output-parent-before",
+      "node": "v24.18.0",
+      "cli_sha256": "5caeb1be5f5d3af9586262331d721e9200b109cd08e90ff631d01183bfb2e381",
+      "runner_sha256": "51b8a81bfa417f98bfc3911cd102ec8a967653526dcba9cd31df3dc63c76705b",
+      "expected_parent_absent": true,
+      "actual_parent_created": true,
+      "bundle_written": false,
+      "command": [
+        "subgraph",
+        "sync",
+        "child_demo",
+        "--dry-run",
+        "--allow-dirty",
+        "--json"
+      ],
+      "exit": 0,
+      "source_state": "Bug35 suppression and Bug40 lock bypass applied; missing-parent defect still present",
+      "fixture_removed": true
+    }
+  },
+  "remedies": [
+    "Four observational Git subprocess helpers force GIT_OPTIONAL_LOCKS=0 even when the caller requests1; existing hardened git inspect remains unchanged.",
+    "Subgraph sync preview checks supported format without acquiring a mutation lock; old-bundle inspection cannot create missing parent directories. Real sync keeps its lock and output creation."
+  ],
+  "regression": {
+    "path": "tests/fixtures/git-observation.cjs",
+    "sha256": "92512fb798c09fa7065de3a9568dbdf458689c02d11301b3172adaa69cb5e9db",
+    "runtime_modes": "CLI subprocesses only; built and installed use the same fixture",
+    "evidence_limits": "Persistent inventory/index bookends and selected synchronous string-path mutation traps; not universal syscall or helper-execution proof.",
+    "reviewer_correction": "Restored normal lock timeout after the deliberately short contention control; production/package inputs unchanged."
+  },
+  "independent_review": {
+    "kind": "focused read-only source review, not final security clearance",
+    "reviewer": "git_observation_review",
+    "production_blockers": 0,
+    "source_bookends_matched": true,
+    "addressed": [
+      "missing output parents",
+      "actual first trapped mutation",
+      "positive timeout and normal timeout restoration"
+    ]
+  },
+  "full_tests": {
+    "command": "node scripts/test-built.js after build and build:test",
+    "runtime": "v24.18.0",
+    "tests": 1409,
+    "passed": 1409,
+    "failed": 0,
+    "skipped": 0,
+    "started": "2026-09-15T15:23:06.929Z",
+    "finished": "2026-09-15T15:25:51.795Z",
+    "stdout_sha256": "6f59b86a1671c763374b88b25aaa42d99c3dc31d0d1576c05de10468837567ac",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "harness_note": "Full run preceded test-only normal-timeout restoration; all three installed matrices subsequently exercised that correction."
+  },
+  "candidate": {
+    "sha256": "112a1313af33aa20fbcdb12e08a1918216a1f4e087e39ce4523a22bae5381db8",
+    "integrity": "sha512-uJKQmqHQ7jrny/68g3e9wbYGWwp/duj1g3x3tcrXLqXAvKbpcHN4j7ytUF5b+P+1i5TjRplP7GRjpu9coLQngA==",
+    "files": 222,
+    "file_manifest_sha256": "046730ac361b4ceef7ff3accab1ea11e2966600d37a42af05d76d2815dfafebf",
+    "prepack_skipped_for_intermediate_fixture_only": true,
+    "source_revision_has_uncommitted_changes": true,
+    "final_seal": false,
+    "retention": "Owned temporary intermediate tarball; no publication authority."
+  },
+  "installed": [
+    {
+      "runtime": "v24.15.0",
+      "platform": "darwin",
+      "report_sha256": "20b824f039c41f962c09ee25dcbde425122c677dd7cf9da31103818ea84b44ad",
+      "tarball_sha256": "112a1313af33aa20fbcdb12e08a1918216a1f4e087e39ce4523a22bae5381db8",
+      "cases": 288,
+      "refused_invocations": 26,
+      "retained_inspection_cases": 16,
+      "controls": [
+        {
+          "topology": "standalone",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "worktrees",
+          "native_refresh_observed": true,
+          "checkouts": 6,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "submodule",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "gitdir",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        }
+      ],
+      "commands": [
+        [
+          "status"
+        ],
+        [
+          "show",
+          "root:task-1"
+        ],
+        [
+          "validate"
+        ],
+        [
+          "validate",
+          "--changed-only"
+        ],
+        [
+          "subgraph",
+          "list"
+        ],
+        [
+          "subgraph",
+          "show",
+          "child"
+        ],
+        [
+          "subgraph",
+          "audit"
+        ],
+        [
+          "subgraph",
+          "verify",
+          "child"
+        ],
+        [
+          "subgraph",
+          "upgrade-plan"
+        ],
+        [
+          "subgraph",
+          "sync",
+          "child",
+          "--dry-run",
+          "--allow-dirty"
+        ],
+        [
+          "git",
+          "inspect"
+        ],
+        [
+          "bundle",
+          "create",
+          "--profile",
+          "private",
+          "--output",
+          ".mdkg/bundles/private/observation.mdkg.zip"
+        ]
+      ],
+      "caller_policies": [
+        "unset",
+        "1"
+      ],
+      "dirty_states": [
+        "clean",
+        "staged-and-unstaged"
+      ],
+      "all_case_invariants_passed": true
+    },
+    {
+      "runtime": "v24.18.0",
+      "platform": "darwin",
+      "report_sha256": "c4c134590ba4536334e9a08710cfedc00d9546630dcbf2061f3bbf9ea3ee675c",
+      "tarball_sha256": "112a1313af33aa20fbcdb12e08a1918216a1f4e087e39ce4523a22bae5381db8",
+      "cases": 288,
+      "refused_invocations": 26,
+      "retained_inspection_cases": 16,
+      "controls": [
+        {
+          "topology": "standalone",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "worktrees",
+          "native_refresh_observed": true,
+          "checkouts": 6,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "submodule",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "gitdir",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        }
+      ],
+      "commands": [
+        [
+          "status"
+        ],
+        [
+          "show",
+          "root:task-1"
+        ],
+        [
+          "validate"
+        ],
+        [
+          "validate",
+          "--changed-only"
+        ],
+        [
+          "subgraph",
+          "list"
+        ],
+        [
+          "subgraph",
+          "show",
+          "child"
+        ],
+        [
+          "subgraph",
+          "audit"
+        ],
+        [
+          "subgraph",
+          "verify",
+          "child"
+        ],
+        [
+          "subgraph",
+          "upgrade-plan"
+        ],
+        [
+          "subgraph",
+          "sync",
+          "child",
+          "--dry-run",
+          "--allow-dirty"
+        ],
+        [
+          "git",
+          "inspect"
+        ],
+        [
+          "bundle",
+          "create",
+          "--profile",
+          "private",
+          "--output",
+          ".mdkg/bundles/private/observation.mdkg.zip"
+        ]
+      ],
+      "caller_policies": [
+        "unset",
+        "1"
+      ],
+      "dirty_states": [
+        "clean",
+        "staged-and-unstaged"
+      ],
+      "all_case_invariants_passed": true
+    },
+    {
+      "runtime": "v26.0.0",
+      "platform": "darwin",
+      "report_sha256": "534d3f585d0ad70e016faa60377ba78f338b332811be3baa266a09b34570ea99",
+      "tarball_sha256": "112a1313af33aa20fbcdb12e08a1918216a1f4e087e39ce4523a22bae5381db8",
+      "cases": 288,
+      "refused_invocations": 26,
+      "retained_inspection_cases": 16,
+      "controls": [
+        {
+          "topology": "standalone",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "worktrees",
+          "native_refresh_observed": true,
+          "checkouts": 6,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "submodule",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        },
+        {
+          "topology": "gitdir",
+          "native_refresh_observed": true,
+          "checkouts": 2,
+          "intentional_graph_mutation_preserves_git_index": true,
+          "preview_zero_mutation_attempts": true,
+          "real_sync_mutation_attempt_verified": true,
+          "competing_lock_preserved": true,
+          "unsupported_format_refused": true,
+          "missing_output_parent_preview_preserved": true,
+          "real_sync_creates_output_parents": true
+        }
+      ],
+      "commands": [
+        [
+          "status"
+        ],
+        [
+          "show",
+          "root:task-1"
+        ],
+        [
+          "validate"
+        ],
+        [
+          "validate",
+          "--changed-only"
+        ],
+        [
+          "subgraph",
+          "list"
+        ],
+        [
+          "subgraph",
+          "show",
+          "child"
+        ],
+        [
+          "subgraph",
+          "audit"
+        ],
+        [
+          "subgraph",
+          "verify",
+          "child"
+        ],
+        [
+          "subgraph",
+          "upgrade-plan"
+        ],
+        [
+          "subgraph",
+          "sync",
+          "child",
+          "--dry-run",
+          "--allow-dirty"
+        ],
+        [
+          "git",
+          "inspect"
+        ],
+        [
+          "bundle",
+          "create",
+          "--profile",
+          "private",
+          "--output",
+          ".mdkg/bundles/private/observation.mdkg.zip"
+        ]
+      ],
+      "caller_policies": [
+        "unset",
+        "1"
+      ],
+      "dirty_states": [
+        "clean",
+        "staged-and-unstaged"
+      ],
+      "all_case_invariants_passed": true
+    }
+  ],
+  "mounted": [
+    {
+      "runtime": "v24.15.0",
+      "runtime_sha256": "3200fbd9f7fd4410426dd541e10d1ab829d3472f270d743c7fabd1696c03fe32",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "report_sha256": "b99642202e4bf7a04a93b587e9572311ebe3419f6ea5e824d708a1477963cef1",
+      "fixtures": 12,
+      "cli_reads": 126,
+      "formats": [
+        "legacy",
+        "v2"
+      ],
+      "backends": [
+        "json",
+        "sqlite"
+      ],
+      "cache_states": [
+        "stale",
+        "fresh",
+        "absent"
+      ],
+      "all_write_probes": "EROFS",
+      "all_inventories_preserved": true,
+      "all_sync_previews_passed": true,
+      "all_mcp_semantics_passed": true,
+      "complete_semantic_qualification": false,
+      "failures": [
+        {
+          "fixture": "legacy-json-stale",
+          "args": [
+            "show",
+            "root:task-1"
+          ],
+          "observed_title": "MCP smoke task old cached title",
+          "expected_title": "MCP smoke task latest authored title"
+        },
+        {
+          "fixture": "legacy-json-stale",
+          "args": [
+            "search",
+            "MCP smoke task"
+          ]
+        },
+        {
+          "fixture": "legacy-sqlite-stale",
+          "args": [
+            "show",
+            "root:task-1"
+          ],
+          "observed_title": "MCP smoke task old cached title",
+          "expected_title": "MCP smoke task latest authored title"
+        },
+        {
+          "fixture": "legacy-sqlite-stale",
+          "args": [
+            "search",
+            "MCP smoke task"
+          ]
+        }
+      ],
+      "preparation_runner_sha256": "031de51d30197d2333064685f6f201a3ef037ede12a8d2d361fb810aebb91c16",
+      "collector_runner_sha256": "c5bcce8137fe697206acbbd21381db0494b22a5247723382aa1ad911a0c72cc2",
+      "image_sha256": "b133857a88261dc71be2075328c132a461e46edabeb0535f3f25c3d53b75e485"
+    },
+    {
+      "runtime": "v24.18.0",
+      "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "report_sha256": "c5a9ba90149ae45efbd83dfa74b850e3b4486bb751f88b22c2d2b3a138768b42",
+      "fixtures": 12,
+      "cli_reads": 126,
+      "formats": [
+        "legacy",
+        "v2"
+      ],
+      "backends": [
+        "json",
+        "sqlite"
+      ],
+      "cache_states": [
+        "stale",
+        "fresh",
+        "absent"
+      ],
+      "all_write_probes": "EROFS",
+      "all_inventories_preserved": true,
+      "all_sync_previews_passed": true,
+      "all_mcp_semantics_passed": true,
+      "complete_semantic_qualification": false,
+      "failures": [
+        {
+          "fixture": "legacy-json-stale",
+          "args": [
+            "show",
+            "root:task-1"
+          ],
+          "observed_title": "MCP smoke task old cached title",
+          "expected_title": "MCP smoke task latest authored title"
+        },
+        {
+          "fixture": "legacy-json-stale",
+          "args": [
+            "search",
+            "MCP smoke task"
+          ]
+        },
+        {
+          "fixture": "legacy-sqlite-stale",
+          "args": [
+            "show",
+            "root:task-1"
+          ],
+          "observed_title": "MCP smoke task old cached title",
+          "expected_title": "MCP smoke task latest authored title"
+        },
+        {
+          "fixture": "legacy-sqlite-stale",
+          "args": [
+            "search",
+            "MCP smoke task"
+          ]
+        }
+      ],
+      "preparation_runner_sha256": "031de51d30197d2333064685f6f201a3ef037ede12a8d2d361fb810aebb91c16",
+      "collector_runner_sha256": "c5bcce8137fe697206acbbd21381db0494b22a5247723382aa1ad911a0c72cc2",
+      "image_sha256": "b133857a88261dc71be2075328c132a461e46edabeb0535f3f25c3d53b75e485"
+    },
+    {
+      "runtime": "v26.0.0",
+      "runtime_sha256": "08dad0581f00a0cabf4d49ec92ca1f25fdfd01c2c18fa8e92b35f04d4c24c164",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "report_sha256": "53f0808025d99f0f161d594f2db290b10f70dcc5f08b07d2c4615672676c608a",
+      "fixtures": 12,
+      "cli_reads": 126,
+      "formats": [
+        "legacy",
+        "v2"
+      ],
+      "backends": [
+        "json",
+        "sqlite"
+      ],
+      "cache_states": [
+        "stale",
+        "fresh",
+        "absent"
+      ],
+      "all_write_probes": "EROFS",
+      "all_inventories_preserved": true,
+      "all_sync_previews_passed": true,
+      "all_mcp_semantics_passed": true,
+      "complete_semantic_qualification": false,
+      "failures": [
+        {
+          "fixture": "legacy-json-stale",
+          "args": [
+            "show",
+            "root:task-1"
+          ],
+          "observed_title": "MCP smoke task old cached title",
+          "expected_title": "MCP smoke task latest authored title"
+        },
+        {
+          "fixture": "legacy-json-stale",
+          "args": [
+            "search",
+            "MCP smoke task"
+          ]
+        },
+        {
+          "fixture": "legacy-sqlite-stale",
+          "args": [
+            "show",
+            "root:task-1"
+          ],
+          "observed_title": "MCP smoke task old cached title",
+          "expected_title": "MCP smoke task latest authored title"
+        },
+        {
+          "fixture": "legacy-sqlite-stale",
+          "args": [
+            "search",
+            "MCP smoke task"
+          ]
+        }
+      ],
+      "preparation_runner_sha256": "031de51d30197d2333064685f6f201a3ef037ede12a8d2d361fb810aebb91c16",
+      "collector_runner_sha256": "c5bcce8137fe697206acbbd21381db0494b22a5247723382aa1ad911a0c72cc2",
+      "image_sha256": "b133857a88261dc71be2075328c132a461e46edabeb0535f3f25c3d53b75e485"
+    }
+  ],
+  "readonly_fixture": {
+    "type": "APFS disk image mounted read-only under owned /private/tmp directory",
+    "detached": true,
+    "prior_setup_failures": "Historical helper assumed healthy status for missing legacy caches. The revised harness asserts exact typed degraded legacy status and healthy v2 fallback; no product behavior changed to satisfy it.",
+    "stdout_note": "Per-fixture PASSED labels in the collector denote completed invariant assertions; explicit qualification_pass=false and12 semantic failures control the overall result."
+  },
+  "other_validation": {
+    "build": "passed",
+    "cli_command_matrix": "passed",
+    "documentation": {
+      "files": 63,
+      "examples": 470,
+      "failures": 0
+    },
+    "graph": "Pre-refresh full validation: zero errors and four warnings, including stale derived SQLite plus three preserved stale-subgraph warnings; final post-closeout validation is required.",
+    "sqlite": "five projections fresh after required index refresh",
+    "diff_check": "passed"
+  },
+  "protected_before": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "git-index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+  },
+  "protected_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "git-index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+  },
+  "git": {
+    "branch": "main",
+    "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+    "staging": "none",
+    "commits_created": [],
+    "remote_actions": "none"
+  },
+  "remaining": [
+    "Bug17 transport completion and independent verification",
+    "Bug39 unsupported options",
+    "Bug41 configured helper execution",
+    "Bug42 legacy cache semantic freshness",
+    "Bug7 writer compatibility/recovery and final installed matrix",
+    "Draft0.6.0 metadata, macOS/Linux final qualification, fresh Standard, independent remediation diff, full ladder and exact artifact seal"
+  ],
+  "overall_release_status": "NOT_READY",
+  "goal85": "paused; separate publication authority required",
+  "skill_candidates": []
+}

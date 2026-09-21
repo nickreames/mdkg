@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { spawnSync } from "child_process";
-import { migrateConfig } from "../core/migrate";
+import { observeGit } from "../util/git_observation";
+import { IDENTITY_CONFIG_SCHEMA_VERSION, identityWriterConfig, migrateConfig } from "../core/migrate";
 import { CustomizationConfig, defaultCustomizationConfig, validateConfigSchema } from "../core/config";
 
 import { configPath } from "../core/paths";
@@ -380,12 +380,16 @@ function migrateConfigIfNeeded(root: string, plan: UpgradePlan, summary: Upgrade
   const bundleConfig = migrateLegacyBundleImportsConfig(migrated.config);
   const nextConfig = migrateProjectDbConfig(bundleConfig.config);
   const customizationConfig = migrateCustomizationConfig(nextConfig.config);
-  validateConfigSchema(customizationConfig.config);
-  if (migrated.from === migrated.to && !bundleConfig.changed && !nextConfig.changed && !customizationConfig.changed) {
+  const needsWriterFence = readGraphFormat(root).format_version === 2 &&
+    validateConfigSchema(customizationConfig.config).schema_version !== IDENTITY_CONFIG_SCHEMA_VERSION;
+  const finalConfig = needsWriterFence ? identityWriterConfig(customizationConfig.config) : customizationConfig.config;
+  validateConfigSchema(finalConfig);
+  if (migrated.from === migrated.to && !bundleConfig.changed && !nextConfig.changed && !customizationConfig.changed && !needsWriterFence) {
     summary.unchanged += 1;
     return;
   }
   const reasons: string[] = [];
+  if (needsWriterFence) reasons.push("explicit compatible-writer fence for adopted v2 graph");
   if (bundleConfig.changed) {
     reasons.push("config subgraphs migration");
   }
@@ -404,7 +408,7 @@ function migrateConfigIfNeeded(root: string, plan: UpgradePlan, summary: Upgrade
     action: "migrate",
     reason: reasons.join(" and "),
   });
-  writeFile(plan, cfgPath, `${JSON.stringify(customizationConfig.config, null, 2)}\n`);
+  writeFile(plan, cfgPath, `${JSON.stringify(finalConfig, null, 2)}\n`);
 }
 
 function sameStringArray(left: string[], right: readonly string[]): boolean {
@@ -573,15 +577,14 @@ function isIgnoredBySimpleGitignore(root: string, relativePath: string): boolean
 }
 
 function isGitIgnored(root: string, relativePath: string): boolean {
-  const result = spawnSync("git", ["check-ignore", "--quiet", "--", relativePath], {
-    cwd: root,
-    stdio: "ignore",
-  });
-  if (result.status === 0) {
-    return true;
-  }
-  if (result.status === 1) {
-    return false;
+  try {
+    const result = observeGit(root, ["check-ignore", "--quiet", "--", relativePath], { allowedFailures: [1, 128] });
+    if (result.status === 0) return true;
+    if (result.status === 1) return false;
+  } catch {
+    // This fallback only chooses missing-event guidance; upgrade never restores
+    // deleted history. Preserve non-Git/no-Git installations without claiming a
+    // successful Git observation or using repository-configured helpers.
   }
   return isIgnoredBySimpleGitignore(root, relativePath);
 }
@@ -695,7 +698,8 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
   if (options.resume || options.recover) {
     const journal = continueUpgrade(root, options.recover ? "recover" : "resume", options.planHash, initialConfig.index.lock_timeout_ms, journal => {
       const currentFormat = readGraphFormat(root);
-      if (currentFormat.format_version === 2 && options.resume && journal.schema_version === 1) {
+      const recovering = options.recover || journal.state === "recovered";
+      if (currentFormat.format_version === 2 && !recovering && journal.schema_version === 1) {
         throw new UsageError("unbound legacy upgrade journal cannot resume a v2 graph; preserve evidence and use verified original-byte recovery");
       }
       const operations = new Map(journal.operations.map(op => [op.path, op]));
@@ -704,7 +708,7 @@ export function runUpgradeCommand(options: UpgradeCommandOptions): UpgradeReceip
         const op = operations.get(file);
         return op ? op[side] === null ? null : Buffer.from(op[side], "base64") : plan.read(file);
       };
-      const original = overlay("before"), candidate = options.recover ? original : overlay("after");
+      const original = overlay("before"), candidate = recovering ? original : overlay("after");
       const configFor = (read: typeof original) => validateConfigSchema(migrateConfig(JSON.parse(read(".mdkg/config.json")!.toString("utf8"))).config);
       const originalConfig = configFor(original), candidateConfig = configFor(overlay("after"));
       if (canonicalJson(originalConfig.workspaces) !== canonicalJson(candidateConfig.workspaces)) {

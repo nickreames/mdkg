@@ -1,6 +1,6 @@
 import fs from "fs";
 import { configPath } from "./paths";
-import { migrateConfig } from "./migrate";
+import { LATEST_SCHEMA_VERSION, migrateConfig } from "./migrate";
 import { EventValidationLimits, normalizeEventConfig } from "./event_limits";
 import { normalizeTemplatePath } from "./template_path";
 import {
@@ -538,6 +538,11 @@ export function validateConfigSchema(raw: unknown): Config {
   }
 
   const schema_version = requireNumber(raw.schema_version, "schema_version", errors);
+  if (schema_version !== undefined && (!Number.isInteger(schema_version) || schema_version < 0)) {
+    errors.push("config schema_version must be a non-negative integer");
+  } else if (schema_version !== undefined && schema_version > LATEST_SCHEMA_VERSION) {
+    errors.push(`config schema_version ${schema_version} is newer than supported ${LATEST_SCHEMA_VERSION}`);
+  }
   const tool = requireString(raw.tool, "tool", errors);
   const root_required = requireBoolean(raw.root_required, "root_required", errors);
 

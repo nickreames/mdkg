@@ -1,0 +1,647 @@
+{
+  "schema_version": 1,
+  "kind": "Bug17 post-checkpoint verification and custody",
+  "date": "2026-09-15",
+  "goal": "root:goal-86",
+  "completed": "root:bug-17",
+  "checkpoint": "root:chk-611",
+  "next_claimed": "root:bug-39",
+  "next_node_status": "todo; claimed for bounded intake, no option fix yet",
+  "outcome": "LOCAL_IMPLEMENTATION_VERIFIED_NOT_RELEASE_QUALIFIED",
+  "evidence": {
+    "path": ".mdkg/artifacts/goal-86/bug-17-local-verification.json",
+    "sha256": "75ee40e5405dffcd2c7628113a2af58a709df0e91ace2b546c69d61fefce9c2e"
+  },
+  "validation": {
+    "receipt_sha256": "5ca2108730621aac6b873107a982cc7722790f3f46dfb0fcd647d047b5951a87",
+    "all_passed": true,
+    "full_graph": {
+      "errors": 0,
+      "warnings": 3
+    },
+    "changed_graph": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "sqlite": [
+      {
+        "name": "global",
+        "ok": true,
+        "stale": false
+      },
+      {
+        "name": "skills",
+        "ok": true,
+        "stale": false
+      },
+      {
+        "name": "capabilities",
+        "ok": true,
+        "stale": false
+      },
+      {
+        "name": "subgraphs",
+        "ok": true,
+        "stale": false
+      },
+      {
+        "name": "sqlite",
+        "ok": true,
+        "stale": false
+      }
+    ],
+    "other_checks": [
+      {
+        "name": "cli-parity",
+        "status": 0,
+        "stdout_sha256": "16b49918680c43f4e1fc7882d48c2b48f90210bf7197972286bd2700fe0f9aaf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "docs",
+        "status": 0,
+        "stdout_sha256": "b73479765523024c5a28e9b0ac4ec5cdf6c617f954e0cd062776b30f54068a35",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "workflow",
+        "status": 0,
+        "stdout_sha256": "49df378ed623eb43ba43d22b1195aa5f01acd0fd67db0d26cea068794db5f7ec",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "diff-check",
+        "status": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "protected_before": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "git-index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+  },
+  "protected_after": {
+    ".mdkg/state/selected-goal.json": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    ".mdkg/db/runtime/project.sqlite": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b",
+    "git-index": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+  },
+  "writer": {
+    "owner": "mdkg-project-agent",
+    "runtime_lease": "none acquired or retained",
+    "historical_released_leases": 5,
+    "queue_messages": 0,
+    "queues": 0,
+    "transient_lock": "absent",
+    "identity_journal": "absent"
+  },
+  "git": {
+    "branch": "main",
+    "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+    "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "cached_divergence": "50\t0",
+    "remote_verified": false,
+    "staged_paths": [],
+    "commits_created": []
+  },
+  "dirty_path_inventory": [
+    {
+      "path": ".mdkg/index/mdkg.sqlite",
+      "status": " M",
+      "custody": "approved derived projection",
+      "sha256": "9ccbb172c337848378a3f40f1925cb954157d582355121630f5bee799622eaea",
+      "bytes": 4489216,
+      "execution_baseline_sha256": "3d257d81a6fef726c61fda5d3235e9154cb83647c440566072f1d26cb2474810"
+    },
+    {
+      "path": ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "62d6585d91b41c45c90c02f4a67ef2f35a6d5e9d023ddc37e7d5ca93e00d0da5",
+      "bytes": 15844,
+      "execution_baseline_sha256": "e36e10f64f66a57155d7c75729b84431fe1624697aaa35c4777b92824c2bdd29"
+    },
+    {
+      "path": ".mdkg/work/bug-35-keep-observational-git-subprocesses-from-refreshing-root-and-child-indexes.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "08512d06ed50b3d87f10bbe90e5e42e92095521d5b8fcbaefb9a3d993dab9ec8",
+      "bytes": 9448,
+      "execution_baseline_sha256": "350bdbe90b1d4809af921d7474d80d20c8aedbc4ec835bc32d62da8de4ad064a"
+    },
+    {
+      "path": ".mdkg/work/bug-39-reject-unsupported-command-options-before-dispatch-and-unintended-writes.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "e95c8e1b7e414e6588b223705e1c45c2d7c3da1f5bdaf37c7deefc4bf959a488",
+      "bytes": 4580,
+      "execution_baseline_sha256": "e95c8e1b7e414e6588b223705e1c45c2d7c3da1f5bdaf37c7deefc4bf959a488"
+    },
+    {
+      "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "e40e6ea2001b61a67742ec4fc6ca37c24b3c24fdc7f8946edc16bfddfcaa9a4f",
+      "bytes": 25473,
+      "execution_baseline_sha256": "e40e6ea2001b61a67742ec4fc6ca37c24b3c24fdc7f8946edc16bfddfcaa9a4f"
+    },
+    {
+      "path": ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "99603a36a473ebf92727632106079f7a2393149285185d0998629a9f16705413",
+      "bytes": 2396,
+      "execution_baseline_sha256": "99603a36a473ebf92727632106079f7a2393149285185d0998629a9f16705413"
+    },
+    {
+      "path": ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "6e279c7ecb42a2e2531f113aa66b255cb1ab397fe788b3d75255d5bab805bbf8",
+      "bytes": 9475,
+      "execution_baseline_sha256": "6e279c7ecb42a2e2531f113aa66b255cb1ab397fe788b3d75255d5bab805bbf8"
+    },
+    {
+      "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "625ad1b0becabd2dca4882f2add7d63adccc6d0bb3d23c2a31e380641183cc23",
+      "bytes": 38340,
+      "execution_baseline_sha256": "02ec9d690c684a2e3d84a1eb4d9e209867236c6c8143979792801b2f12ce47fe"
+    },
+    {
+      "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "e622a23999cbcd15bc0d712be183feaec4cc1674b3cc52cf879745a3e64c3381",
+      "bytes": 6162,
+      "execution_baseline_sha256": "e622a23999cbcd15bc0d712be183feaec4cc1674b3cc52cf879745a3e64c3381"
+    },
+    {
+      "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "b79d1504db0565df1af72bcc13fd3fc3fcdfeaba6e124ccd802d3cdb66eaab82",
+      "bytes": 4995,
+      "execution_baseline_sha256": "b79d1504db0565df1af72bcc13fd3fc3fcdfeaba6e124ccd802d3cdb66eaab82"
+    },
+    {
+      "path": ".mdkg/work/task-827-prepare-draft-mdkg-0-6-0-metadata-and-release-guidance.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "ece443e8438fafa2159967504020420269abe3e65f9b392888822f138da1e837",
+      "bytes": 5410,
+      "execution_baseline_sha256": "c1c573c8ec7a7b7a0dd5bbd765d9b81d3eb1b060f99eb52b57739e9f88ec48f1"
+    },
+    {
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "4eb772ecc0827a0dfe15a5ffaece459b2ab4634b63f2e78c9524692a52e195f0",
+      "bytes": 4088,
+      "execution_baseline_sha256": "ad98ba07c566243577de2248c85d03a8e83b4b7f46f7b527b148524aa2045252"
+    },
+    {
+      "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "c4614078ab58931518c05c0c5256980c7e199b46847e10dc053414e7f87f801c",
+      "bytes": 3076,
+      "execution_baseline_sha256": "c4614078ab58931518c05c0c5256980c7e199b46847e10dc053414e7f87f801c"
+    },
+    {
+      "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "759e25c69d02eca322bef9a7d520f51aea523b0dd60cac2cd95c15d91494d4d6",
+      "bytes": 2900,
+      "execution_baseline_sha256": "759e25c69d02eca322bef9a7d520f51aea523b0dd60cac2cd95c15d91494d4d6"
+    },
+    {
+      "path": ".mdkg/work/task-831-recheck-mdkg-0-6-0-approval-blockers-and-sealed-candidate.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "b4382c7024d350895ae5d50759490561421969aacd9c04f7217f0133b6d3f5b8",
+      "bytes": 2796,
+      "execution_baseline_sha256": "b4382c7024d350895ae5d50759490561421969aacd9c04f7217f0133b6d3f5b8"
+    },
+    {
+      "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "b79c7b1a245442b5b78a850c0c2e08a7a3d1c6522d111b94e9127fa3c850bcd2",
+      "bytes": 5259,
+      "execution_baseline_sha256": "c16fcbfe81a1d83067f93fd47b566e1c3908c2413107c07df85f75058dcdc319"
+    },
+    {
+      "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "6ffb33dd63dc20530fad686961842539d8b0abea2562e6dc875aa6ec582a8d42",
+      "bytes": 7168,
+      "execution_baseline_sha256": "6ffb33dd63dc20530fad686961842539d8b0abea2562e6dc875aa6ec582a8d42"
+    },
+    {
+      "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "b6a390fc3e3322c4ba638772c197b7ecb1da17b713746d6fd7c71019a99e0870",
+      "bytes": 5641,
+      "execution_baseline_sha256": "5899b89c004069e893fd1522d8631bd86a15362b777e7a41e16d35f7162a0434"
+    },
+    {
+      "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "0d535919fed0cd49d045af189637a3ddc264577c73f9f7607226f7174cedc625",
+      "bytes": 4252,
+      "execution_baseline_sha256": "397895b5bd678bef392c452919689590dd6b960627ace548d3ab3790517ecb00"
+    },
+    {
+      "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "f3862bf099c569deff70a1dde055fdf895468f87c9b07b7c2549a3f4c2361dea",
+      "bytes": 5488,
+      "execution_baseline_sha256": "f3862bf099c569deff70a1dde055fdf895468f87c9b07b7c2549a3f4c2361dea"
+    },
+    {
+      "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "5d35a8cda272ea2d2cdf1f0ebbfcf9ef70a35b83deea21a10c9791ed9c2a15e6",
+      "bytes": 5521,
+      "execution_baseline_sha256": "5d35a8cda272ea2d2cdf1f0ebbfcf9ef70a35b83deea21a10c9791ed9c2a15e6"
+    },
+    {
+      "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "641b0d5dd447e14ee575107c0df9307a3a8115d58bc3aec2587d121776145459",
+      "bytes": 7041,
+      "execution_baseline_sha256": "641b0d5dd447e14ee575107c0df9307a3a8115d58bc3aec2587d121776145459"
+    },
+    {
+      "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "d91bdba2a80bb02195443b9638e906c9bb0558dadf0b476bc3fe7fcc44325891",
+      "bytes": 4499,
+      "execution_baseline_sha256": "d91bdba2a80bb02195443b9638e906c9bb0558dadf0b476bc3fe7fcc44325891"
+    },
+    {
+      "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+      "status": " M",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "32be496e314020582f4c0ee3fbf19940fa75e6e0bd95c46bc67d199fd1c27cf1",
+      "bytes": 3648,
+      "execution_baseline_sha256": "32be496e314020582f4c0ee3fbf19940fa75e6e0bd95c46bc67d199fd1c27cf1"
+    },
+    {
+      "path": "scripts/smoke-bundle.js",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "f7d00d4c43891e44baae6ffd2a25275f7405eb395dd50173ce77646531c53bb9",
+      "bytes": 10186
+    },
+    {
+      "path": "scripts/smoke-capabilities.js",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "c6b639998c98561711a4dfd8d870161b67f4e45533d88cfcc7ebf47fd7baeb1d",
+      "bytes": 4782
+    },
+    {
+      "path": "scripts/smoke-git-boundary.js",
+      "status": " M",
+      "custody": "completed Bug35/40 source/regression",
+      "sha256": "926977686ddc70d2f406ebe65b2e9c15e3e5daab6aaf1eeee64455fec66489dd",
+      "bytes": 13271
+    },
+    {
+      "path": "src/commands/bundle.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "c412fb9c572cbfdd21d24c5033fd5d44ae2955e70f90613f88ebeac7f86abb48",
+      "bytes": 41803,
+      "execution_baseline_sha256": "aaa0afa1e213896dbfe3264328736bb24fb2c747804885f2b2702b47450400a1"
+    },
+    {
+      "path": "src/commands/graph.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "f21105a59135f5578e2787ad47c4884542e448eae2fe188a34acf086de848a05",
+      "bytes": 46369,
+      "execution_baseline_sha256": "7759fa6b21518d6ab72e531fe52e308a573a69c5cc61efe0d841dc2e82494436"
+    },
+    {
+      "path": "src/commands/subgraph.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "b42aeab79d58ed905060c32d6fdef41ea657b09227d9c55fd99024a33a9d7fdc",
+      "bytes": 48855,
+      "execution_baseline_sha256": "476b3aa5bb7f4392c8644f4024af7b5210ab7a102477aa843d291e0d5f2824a4"
+    },
+    {
+      "path": "src/commands/validate.ts",
+      "status": " M",
+      "custody": "completed Bug35/40 source/regression",
+      "sha256": "8cf86ebacc18935461d4119b6d4fff32bbe7a9570aac324b09f5ceb02f2310c4",
+      "bytes": 30733
+    },
+    {
+      "path": "src/graph/identity_transport.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "223b3025352b16f2b03db90cd0aaafcaadba6a5235b6230d274c39bdfe7bb1d0",
+      "bytes": 5889,
+      "execution_baseline_sha256": "e05c00817adf3a00597ac63feea060d4ba4b64d7b28afd5fc033a76e84740684"
+    },
+    {
+      "path": "src/graph/node_body.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "f3c26eff4c6e445b0b45d8a29e871070493dea54f6789e9e42376cc1633941fa",
+      "bytes": 3566
+    },
+    {
+      "path": "src/graph/subgraphs.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "c675daa5b3bb5475ee3ca7d05df89cc90f91140e8487adb34aa21a8f0ebbf631",
+      "bytes": 32003
+    },
+    {
+      "path": "src/graph/workspace_ownership.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "993b4884ab2e32ebfba8c1ac842d3694ee3696e2af3810450e81bb253932ecdc",
+      "bytes": 2993
+    },
+    {
+      "path": "src/util/zip.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "90336751cca6772ad665a68634a33fc0543907114322d548323a0bd0eb09fd81",
+      "bytes": 12989
+    },
+    {
+      "path": "tests/commands/subgraph.test.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "a08cd9b63195a641226fb1c59abe004464725a041db90a5ec4544763642a5cc2",
+      "bytes": 33931
+    },
+    {
+      "path": "tests/graph/node_body.test.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "f9ba6d8b4a61fbe23f5772d1be592d0b0ee455ecec128ab5c2cf06bc31b36ba8",
+      "bytes": 2980
+    },
+    {
+      "path": "tests/graph/subgraph_containment.test.ts",
+      "status": " M",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "0b24daa918fc66419e6cc2cf84f4ce3e70097d54d55086228df6d9acab5cfbf2",
+      "bytes": 11309
+    },
+    {
+      "path": ".mdkg/artifacts/goal-84/bug-17-progress.json",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e",
+      "bytes": 5477,
+      "execution_baseline_sha256": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-local-verification.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "75ee40e5405dffcd2c7628113a2af58a709df0e91ace2b546c69d61fefce9c2e",
+      "bytes": 24383
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "571aad4616f9590e87612687b3989b88d088da738b74899488f548c3f5a1b66d",
+      "bytes": 8265
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-transport-intake.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "6185afe504911090363661b5de9b5d07e07ae273b3a945a463482831ab01cdcc",
+      "bytes": 3525
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/bug-17-transport-progress.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "e8c9b54a2ce29e825b47826cb4da26cea3421fcb9c91a37f1abc255d1a4d8e6e",
+      "bytes": 7133
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/execution-baseline-20260915.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "928f06257547a95e3a9993f6aca346915a12209886acd7ee29383b34f00ed60e",
+      "bytes": 415107
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/observational-boundary-reproductions.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "c2d734e611af0f6470bb6f5979d996ffffa36644f1fd7593ce4804004ff04270",
+      "bytes": 5745
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/observational-boundary-verification.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "f1edf0ca0dd1ee119b9f6e3f3002eeb67668f1e1d9f8eb258f2264f148ffd265",
+      "bytes": 27897
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/planning-receipt.json",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "01686fd88e5468e6deaa4e99a4be573df41057c377fe0202141cdee8e9d47bbc",
+      "bytes": 65188,
+      "execution_baseline_sha256": "01686fd88e5468e6deaa4e99a4be573df41057c377fe0202141cdee8e9d47bbc"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+      "status": "??",
+      "custody": "Goal86 execution evidence",
+      "sha256": "9db20ee5787152ef99f999cd671863bd8055a5f388bb0a59e00943ceccdac658",
+      "bytes": 101199
+    },
+    {
+      "path": ".mdkg/design/dec-96-require-fresh-security-and-macos-linux-launch-qualification-for-mdkg-0-6-0.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "25697326c8a7a28d7937cfcc422d699283908cca65cbffd71d4bde6d413e7e6e",
+      "bytes": 2895,
+      "execution_baseline_sha256": "25697326c8a7a28d7937cfcc422d699283908cca65cbffd71d4bde6d413e7e6e"
+    },
+    {
+      "path": ".mdkg/work/bug-40-keep-subgraph-sync-previews-free-of-mutation-locks-and-cache-directory-writes.md",
+      "status": "??",
+      "custody": "Goal86 bounded blocker/checkpoint record",
+      "sha256": "37e9b756405fe4d440346e6aff8346386c5332a0a961cabf1ca9ba9223cfdcf0",
+      "bytes": 5556
+    },
+    {
+      "path": ".mdkg/work/bug-41-prevent-configured-git-helpers-from-executing-through-generic-graph-observations.md",
+      "status": "??",
+      "custody": "Goal86 bounded blocker/checkpoint record",
+      "sha256": "b7d0036bf940d1e2df08216d260d49ca7eb3e2c3d976703747b3b145d1b770d4",
+      "bytes": 4339
+    },
+    {
+      "path": ".mdkg/work/bug-42-prevent-copied-legacy-json-caches-from-overriding-current-authored-metadata.md",
+      "status": "??",
+      "custody": "Goal86 bounded blocker/checkpoint record",
+      "sha256": "3a88863fec8ed4a7e7a50a908dc0014059c66111f78c658ab8948ccea8108fef",
+      "bytes": 5321
+    },
+    {
+      "path": ".mdkg/work/chk-608-record-the-mdkg-0-6-0-launch-qualification-planning-package.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "81dbb20a3ca55efc5d332dbc35b8fe47f067cddf98abb6969152aeee9048caba",
+      "bytes": 4717,
+      "execution_baseline_sha256": "81dbb20a3ca55efc5d332dbc35b8fe47f067cddf98abb6969152aeee9048caba"
+    },
+    {
+      "path": ".mdkg/work/chk-609-accept-goal-86-execution-custody-and-requirement-coverage.md",
+      "status": "??",
+      "custody": "Goal86 bounded blocker/checkpoint record",
+      "sha256": "d71f72b51214c1986ca27b0a204098f6ce95d6b51c0a96cb3dc6cf72c1a6e8e7",
+      "bytes": 3262
+    },
+    {
+      "path": ".mdkg/work/chk-610-verify-observational-git-and-subgraph-preview-fixes-and-record-cache-qualificati.md",
+      "status": "??",
+      "custody": "Goal86 bounded blocker/checkpoint record",
+      "sha256": "adc18f9255c126435f050bc777327402b94178846052b182c45e023fe3b1f6f0",
+      "bytes": 5581
+    },
+    {
+      "path": ".mdkg/work/chk-611-verify-shared-transport-state-exclusion-and-portable-checkpoint-compatibility.md",
+      "status": "??",
+      "custody": "Goal86 bounded blocker/checkpoint record",
+      "sha256": "dbf5ed8a12c68637a3e290876dab68eeb7f8707ff64dc96ad0348aab2443a95d",
+      "bytes": 6745
+    },
+    {
+      "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "9e876f24a211908e2a3a6a2d12f0ec1922f6034e00a6a69989977b99bf74560a",
+      "bytes": 16000,
+      "execution_baseline_sha256": "c6a62d24ed6f216938995c51eab53e30745fafe4d283c1dbab6736cb5ec7fb06"
+    },
+    {
+      "path": ".mdkg/work/task-834-freeze-mdkg-0-6-0-launch-custody-and-requirement-coverage.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "9b67858d77741411edcfdddb14dbe6754a7dda53908cc2c1159a5dbc136defda",
+      "bytes": 5710,
+      "execution_baseline_sha256": "ef4ed4d3e31f8276d544131582159306c5b4793922b20f1244693a4179fc628e"
+    },
+    {
+      "path": ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "7d89c61eb0e6cf7501211a0c778dd8990aee4fb34314a4330d5eabc75769f682",
+      "bytes": 3090,
+      "execution_baseline_sha256": "82f9cbe89c692f69062aa20118bc769c7a8c52d43a3e1af0ff0c730e7b9a5f9f"
+    },
+    {
+      "path": ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "5854371c2e765ca0f787d5562bb0aac9be0a4daf2dd169bc54547f1c8424d23a",
+      "bytes": 3287,
+      "execution_baseline_sha256": "5854371c2e765ca0f787d5562bb0aac9be0a4daf2dd169bc54547f1c8424d23a"
+    },
+    {
+      "path": ".mdkg/work/task-837-audit-the-post-remediation-mdkg-0-6-0-repository-with-a-fresh-standard-security.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "7059fc4c9769ae8da6e71ee715ddcd02c98d929d7f879a8fc8d7c3a43ebeb4b6",
+      "bytes": 3626,
+      "execution_baseline_sha256": "7059fc4c9769ae8da6e71ee715ddcd02c98d929d7f879a8fc8d7c3a43ebeb4b6"
+    },
+    {
+      "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "status": "??",
+      "custody": "accepted Task834 planning/partial-work custody",
+      "sha256": "0aaaa0209732c3c0dab8b9573c9a550f1c26a65545bf42450d35d78275c1d66f",
+      "bytes": 4836,
+      "execution_baseline_sha256": "0aaaa0209732c3c0dab8b9573c9a550f1c26a65545bf42450d35d78275c1d66f"
+    },
+    {
+      "path": "src/graph/transport_policy.ts",
+      "status": "??",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "70d2c63deaa0c0e3a28a4d861b7b2f5e6eb4f5a1154eabe9c13bf811a24d67bf",
+      "bytes": 10533
+    },
+    {
+      "path": "src/graph/transport_state.ts",
+      "status": "??",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "9ef4e25fb24b02f57267494918ba45fdf54b79e79f29ef468bfe8551654f5420",
+      "bytes": 14198,
+      "execution_baseline_sha256": "36c30a0c0abd9189df081604b240fd2e89a67a1682b46ef71f10a0efe6779072"
+    },
+    {
+      "path": "tests/commands/bundle_state.test.ts",
+      "status": "??",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "c8db1371040259b2c2336acbfa65ea2c68e9d29fdb4f2a646b7ce73665f458cb",
+      "bytes": 49501,
+      "execution_baseline_sha256": "e6f7434991c5fd32969caa390561ea1ac5a80852a79c8eb579062f96d7ce7ad2"
+    },
+    {
+      "path": "tests/commands/git_observation.test.ts",
+      "status": "??",
+      "custody": "completed Bug35/40 source/regression",
+      "sha256": "1d114d4c3a777ad2fdefd0d3cdf98c124ae3dd3bc44f9837ee91699ba5c2d4f3",
+      "bytes": 1046
+    },
+    {
+      "path": "tests/fixtures/git-observation.cjs",
+      "status": "??",
+      "custody": "completed Bug35/40 source/regression",
+      "sha256": "92512fb798c09fa7065de3a9568dbdf458689c02d11301b3172adaa69cb5e9db",
+      "bytes": 20243
+    },
+    {
+      "path": "tests/fixtures/transport-state.cjs",
+      "status": "??",
+      "custody": "Bug17 source/regression; retained overlapping Bug35/40 edits",
+      "sha256": "e40f1ccb7efebf0fe08f3814f71db677c3859a6185472ef79d880e511efeef43",
+      "bytes": 16176
+    }
+  ],
+  "generated_outputs": [
+    ".mdkg/index/global.json",
+    ".mdkg/index/skills.json",
+    ".mdkg/index/capabilities.json",
+    ".mdkg/index/subgraphs.json",
+    ".mdkg/index/mdkg.sqlite",
+    "enabled mdkg lifecycle event projection"
+  ],
+  "self_inventory_exclusion": "This new receipt is excluded from its own pre-write inventory; it is an owned Goal86 evidence output, not an unclassified path.",
+  "authority_used": "Goal86 Run: local source/test remediation, fixture execution, mdkg evidence and supported claims; no stage/commit/push/publish/scan/provider/canonical bundle refresh.",
+  "release": "NOT_READY; Goal85 paused. Remaining scoped remedies and all final platform/security/ladder/seal gates remain.",
+  "skill_candidates": []
+}

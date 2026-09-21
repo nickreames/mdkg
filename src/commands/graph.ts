@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { buildBundle, BundleManifest, parseBundle, sha256Buffer } from "./bundle";
+import { buildBundle, bundlePayloadErrors, BundleManifest, parseBundle, sha256Buffer } from "./bundle";
 import { rebuildDerivedIndexCaches } from "./index";
 import { collectValidateReceipt, ValidateReceipt } from "./validate";
 import { loadConfig } from "../core/config";
@@ -23,6 +23,7 @@ import { formatDate } from "../util/date";
 import { isUriRef } from "../util/refs";
 import { isCanonicalId, isPortableId } from "../util/id";
 import { planTransportIdentity } from "../graph/identity_transport";
+import { bundleTransportState } from "../graph/transport_policy";
 import { templateIdentityMapper } from "../graph/identity_template";
 import { GRAPH_FORMAT_PATH, identityHash, identityRef } from "../graph/identity";
 import { replaceGraphFrontmatter } from "../graph/identity_migration";
@@ -461,12 +462,14 @@ function loadGraphSource(root: string, source: string): LoadedGraphSource {
     throw new UsageError("source must be a bundle file or directory containing .mdkg");
   }
   const parsed = parseBundle(sourcePath);
+  const errors = bundlePayloadErrors(parsed.entries, parsed.manifest);
+  if (errors.length) throw new ValidationError(`graph source integrity failed: ${errors.join("; ")}`);
   return {
     kind: "bundle",
     sourcePath,
     entries: parsed.entries,
     manifest: parsed.manifest,
-    zipSha256: sha256Buffer(fs.readFileSync(sourcePath)),
+    zipSha256: parsed.zipSha256,
   };
 }
 
@@ -801,23 +804,26 @@ function localIdsAndPaths(root: string): { ids: Set<string>; paths: Set<string> 
   };
 }
 
-function planImportTemplate(options: GraphImportTemplateCommandOptions): GraphImportTemplateReceipt {
+function planImportTemplate(options: GraphImportTemplateCommandOptions, loadedSource?: LoadedGraphSource): GraphImportTemplateReceipt {
   if (options.dryRun && options.apply) {
     throw new UsageError("choose either --dry-run or --apply, not both");
   }
   if (options.selectGoal && !options.startGoal) {
     throw new UsageError("--select-goal requires --start-goal <goal-id>");
   }
-  const source = loadGraphSource(options.root, options.source);
+  const source = loadedSource ?? loadGraphSource(options.root, options.source);
+  const transportState = bundleTransportState(source.entries, source.manifest);
+  if (!transportState) throw new UsageError("template transport requires an owning config or validated portable-state contract; this bundle is inspect-only until a fresh safe export is available");
   const idPrefix = options.idPrefix ? normalizeIdPrefix(options.idPrefix) : undefined;
   const { ids: usedIds, paths: usedPaths } = localIdsAndPaths(options.root);
   const workFiles = source.manifest.files
+    .filter((file) => file.kind !== "generated_index" && !transportState(file.path))
     .map((file) => safeZipEntryPath(file.path))
     .filter(isWorkMarkdownPath)
     .sort();
   const skippedPaths = source.manifest.files
     .map((file) => safeZipEntryPath(file.path))
-    .filter((filePath) => !isWorkMarkdownPath(filePath))
+    .filter((filePath) => !workFiles.includes(filePath))
     .sort();
   const imported = workFiles.map((sourcePath) => {
     const data = source.entries.get(sourcePath);
@@ -986,10 +992,14 @@ function applyImportTemplate(
       }
     }
     const source = loadGraphSource(options.root, options.source);
+    if (source.zipSha256 !== receipt.source_hash.zip_sha256) throw new UsageError("template source snapshot changed before apply; review the new source first");
+    const transportState = bundleTransportState(source.entries, source.manifest);
+    if (!transportState) throw new UsageError("template transport requires an owning config or validated portable-state contract; obtain a fresh safe export");
     const idPrefix = options.idPrefix ? normalizeIdPrefix(options.idPrefix) : undefined;
-    const applyPlan = planImportTemplate({ ...options, apply: true, dryRun: false, idPrefix });
+    const applyPlan = planImportTemplate({ ...options, apply: true, dryRun: false, idPrefix }, source);
     const files = applyPlan.planned_paths;
     const workFiles = source.manifest.files
+      .filter((file) => file.kind !== "generated_index" && !transportState(file.path))
       .map((file) => safeZipEntryPath(file.path))
       .filter(isWorkMarkdownPath)
       .sort();
@@ -1095,7 +1105,7 @@ function runGraphTransport(options: GraphForkCommandOptions, mode: GraphTranspor
   assertSourceNotMutatedByTarget(source, targetRoot);
   const warnings: string[] = [];
 
-  const identityPlan = planTransportIdentity(source.entries, mode, source.manifest.source_tree_hash);
+  const identityPlan = planTransportIdentity(source.entries, mode, source.manifest.source_tree_hash, source.manifest.profile);
   fs.mkdirSync(targetRoot, { recursive: true });
   const { filesWritten, skippedPaths } = writeGraphFiles(targetRoot, source, identityPlan);
   const indexReceipt = rebuildDerivedIndexCaches({ root: targetRoot });

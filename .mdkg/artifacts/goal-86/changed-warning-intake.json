@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "kind": "changed-warning-path-intake",
+  "work_qid": "root:bug-43",
+  "goal_qids": [
+    "root:goal-84",
+    "root:goal-86"
+  ],
+  "source_head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+  "evidence_state": "failure",
+  "severity": "functional release blocker; security exploit severity not established",
+  "fix_applied": false,
+  "platform": "darwin-arm64",
+  "runtime": "24.18.0",
+  "historical_work_preserved": [
+    "root:task-771",
+    "root:test-431",
+    "root:chk-506"
+  ],
+  "boundary": "Full graph errors are still checked; only changed-only path-bound warnings are incorrectly omitted.",
+  "raw_sha256": "0d61083d47a51965dea3d12be7c3f861bf8e9f9949da37e6ddbffc329eeedd2f",
+  "source_sha256": "f58360871fa0adc3c35c9c51f70658cf67af58a5f064ecadf323861044becc52",
+  "rows": [
+    {
+      "version": "current",
+      "nested": false,
+      "literal_backslash": false,
+      "expected_path": ".mdkg/work/task-1-helper-boundary.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-helper-boundary.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-helper-boundary.md"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "current",
+      "nested": false,
+      "literal_backslash": true,
+      "expected_path": ".mdkg/work/task-1-with\\literal.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-with\\literal.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 0,
+          "diagnostic_paths": []
+        }
+      ]
+    },
+    {
+      "version": "current",
+      "nested": true,
+      "literal_backslash": false,
+      "expected_path": ".mdkg/work/task-1-helper-boundary.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-helper-boundary.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 0,
+          "diagnostic_paths": []
+        }
+      ]
+    },
+    {
+      "version": "current",
+      "nested": true,
+      "literal_backslash": true,
+      "expected_path": ".mdkg/work/task-1-with\\literal.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-with\\literal.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 0,
+          "diagnostic_paths": []
+        }
+      ]
+    },
+    {
+      "version": "published",
+      "nested": false,
+      "literal_backslash": false,
+      "expected_path": ".mdkg/work/task-1-helper-boundary.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-helper-boundary.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-helper-boundary.md"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "published",
+      "nested": false,
+      "literal_backslash": true,
+      "expected_path": ".mdkg/work/task-1-with\\literal.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-with\\literal.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 0,
+          "diagnostic_paths": []
+        }
+      ]
+    },
+    {
+      "version": "published",
+      "nested": true,
+      "literal_backslash": false,
+      "expected_path": ".mdkg/work/task-1-helper-boundary.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-helper-boundary.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 0,
+          "diagnostic_paths": []
+        }
+      ]
+    },
+    {
+      "version": "published",
+      "nested": true,
+      "literal_backslash": true,
+      "expected_path": ".mdkg/work/task-1-with\\literal.md",
+      "checks": [
+        {
+          "changed_only": false,
+          "exit": 0,
+          "task_warning_count": 6,
+          "diagnostic_paths": [
+            ".mdkg/work/task-1-with\\literal.md"
+          ]
+        },
+        {
+          "changed_only": true,
+          "exit": 0,
+          "task_warning_count": 0,
+          "diagnostic_paths": []
+        }
+      ]
+    }
+  ]
+}

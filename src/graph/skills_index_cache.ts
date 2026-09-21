@@ -9,7 +9,9 @@ import {
   resolveSkillsIndexPath,
   resolveSkillsRoot,
   SkillsIndex,
+  currentSkillCacheSources,
 } from "./skills_indexer";
+import { readJsonCacheFingerprint, skillCacheFingerprint } from "./json_cache_fingerprint";
 
 export type LoadSkillsIndexOptions = {
   root: string;
@@ -66,7 +68,8 @@ export function isSkillsIndexStale(root: string, config: Config): boolean {
       return true;
     }
   }
-  return false;
+  const fingerprint = readJsonCacheFingerprint(root, indexPath, "skills");
+  return !fingerprint || fingerprint !== skillCacheFingerprint(config, currentSkillCacheSources(root, config));
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

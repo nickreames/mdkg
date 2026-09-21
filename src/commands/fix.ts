@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { spawnSync } from "child_process";
+import { insideGitWorkTree, observeGit, readGitStatus } from "../util/git_observation";
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
@@ -143,10 +143,7 @@ function rel(root: string, target: string): string {
 }
 
 function runGit(root: string, args: string[]): string | undefined {
-  const result = spawnSync("git", args, {
-    cwd: root, encoding: "utf8", maxBuffer: 16 * 1024 * 1024,
-    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" },
-  });
+  const result = observeGit(root, args, { allowedFailures: [1, 128], maxBuffer: 16 * 1024 * 1024 });
   if (result.status !== 0) {
     return undefined;
   }
@@ -154,7 +151,7 @@ function runGit(root: string, args: string[]): string | undefined {
 }
 
 function collectDirtyState(root: string) {
-  const inside = runGit(root, ["rev-parse", "--is-inside-work-tree"]) === "true";
+  const inside = insideGitWorkTree(root);
   if (!inside) {
     return {
       inside: false,
@@ -163,13 +160,12 @@ function collectDirtyState(root: string) {
       untracked_count: 0,
     };
   }
-  const porcelain = runGit(root, ["status", "--porcelain"]) ?? "";
-  const lines = porcelain.split(/\r?\n/).filter(Boolean);
+  const entries = readGitStatus(root, { maxBuffer: 16 * 1024 * 1024 });
   return {
     inside: true,
-    dirty: lines.length > 0,
-    dirty_count: lines.length,
-    untracked_count: lines.filter((line) => line.startsWith("??")).length,
+    dirty: entries.length > 0,
+    dirty_count: entries.length,
+    untracked_count: entries.filter((entry) => entry.index === "?").length,
   };
 }
 
@@ -796,10 +792,7 @@ function candidateDuplicateId(baseId: string, used: Set<string>): string {
 }
 
 function gitShow(root: string, refPath: string): string | undefined {
-  const result = spawnSync("git", ["show", refPath], {
-    cwd: root, encoding: "utf8", maxBuffer: 16 * 1024 * 1024,
-    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" },
-  });
+  const result = observeGit(root, ["show", refPath], { allowedFailures: [128], maxBuffer: 16 * 1024 * 1024 });
   if (result.status !== 0) {
     return undefined;
   }

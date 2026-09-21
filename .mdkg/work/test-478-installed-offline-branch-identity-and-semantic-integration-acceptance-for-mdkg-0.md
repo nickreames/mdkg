@@ -9,17 +9,32 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json]
 relates: []
-blocked_by: [task-826]
+blocked_by: [bug-35, task-835, task-836, task-827]
 blocks: []
-refs: [dec-94, chk-603, dec-95, test-484]
-context_refs: [goal-83]
-evidence_refs: []
+refs: [dec-94, dec-95, test-484]
+context_refs: [goal-83, goal-86, dec-96]
+evidence_refs: [chk-603]
 aliases: []
 skills: []
 cases: [test-478-case-1, test-478-case-2, test-478-case-3, test-478-case-4, test-478-case-5, test-478-case-6, test-478-case-7, test-478-case-8, test-478-case-9, test-478-case-10, test-478-case-11, test-478-case-12]
 created: 2026-09-07
-updated: 2026-09-11
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Two actual concurrent linked worktrees, isolated state, exact pinned target/incoming/ancestor, reconciliation before native ancestry-preserving merge, separate source/config resolution, repeated integration and distinct submodule/gitdir-indirection proof.
+
+This test no longer waits for task826 or Bug7 aggregate closure. Its updated
+implementation prerequisites lead into installed cases; task826 consumes the
+results. Record historical/current-intermediate/final-artifact-pass/failure/
+unverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux
+completeness is independently bound by test487. Task828 remains independent
+acceptance, not an upstream requirement for these test results.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

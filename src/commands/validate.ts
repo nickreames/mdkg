@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { spawnSync } from "child_process";
+import { readGitPrefix, readGitStatus } from "../util/git_observation";
+import { assertCompatibleWriter } from "../util/writer_admission";
 import { loadConfig } from "../core/config";
 import { loadTemplateSchemasWithInfo } from "../graph/template_schema";
 import { ALLOWED_TYPES, parseNode } from "../graph/node";
@@ -262,39 +263,13 @@ function collectContractProfileWarnings(qid: string, node: ReturnType<typeof par
 }
 
 function collectChangedPaths(root: string): Set<string> {
-  const result = spawnSync(
-    "git",
-    ["-C", root, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--", ".mdkg"],
-    {
-    encoding: "utf8",
-    }
-  );
-  if (result.status !== 0) {
-    const detail = result.stderr.trim();
-    throw new ValidationError(
-      `changed-only validation could not enumerate Git paths${detail ? `: ${detail}` : ""}`
-    );
-  }
   const changed = new Set<string>();
-  const records = result.stdout.split("\0");
-  for (let index = 0; index < records.length; index += 1) {
-    const record = records[index];
-    if (!record) {
-      continue;
-    }
-    if (record.length < 4 || record[2] !== " ") {
-      throw new ValidationError("changed-only validation received malformed Git status output");
-    }
-    const status = record.slice(0, 2);
-    changed.add(record.slice(3).replace(/\\/g, "/"));
-    if (status.includes("R") || status.includes("C")) {
-      const sourcePath = records[index + 1];
-      if (!sourcePath) {
-        throw new ValidationError("changed-only validation received an incomplete Git rename record");
-      }
-      changed.add(sourcePath.replace(/\\/g, "/"));
-      index += 1;
-    }
+  const prefix = readGitPrefix(root);
+  for (const entry of readGitStatus(root, { untracked: "all", paths: [".mdkg"] })) {
+    // Porcelain paths are Git-root-relative, while diagnostics are relative to
+    // the mdkg root. POSIX semantics preserve literal backslashes and newlines.
+    changed.add(path.posix.relative(prefix || ".", entry.path));
+    if (entry.original_path) changed.add(path.posix.relative(prefix || ".", entry.original_path));
   }
   return changed;
 }
@@ -618,6 +593,9 @@ function listDirectories(dirPath: string): string[] {
 }
 
 export function collectValidateReceipt(options: ValidateCommandOptions): ValidateReceipt {
+  // Console-only diagnosis may describe unsupported graphs; requested file
+  // outputs are writes and must not bypass compatibility admission.
+  if (options.out || options.jsonOut) assertCompatibleWriter(options.root);
   const config = loadConfig(options.root);
   const templateSchemaInfo = loadTemplateSchemasWithInfo(options.root, config, ALLOWED_TYPES);
   const templateSchemas = templateSchemaInfo.schemas;

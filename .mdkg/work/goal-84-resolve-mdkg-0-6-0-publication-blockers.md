@@ -2,12 +2,12 @@
 id: goal-84
 type: goal
 title: Resolve mdkg 0.6.0 publication blockers
-status: progress
+status: blocked
 priority: 1
-goal_state: active
+goal_state: paused
 goal_condition: Every validated publication blocker is fixed with regression evidence affected-version assessment and independent security diff verification; no automatic risk waiver.
-scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486]
-active_node: bug-37
+scope_refs: [bug-5, bug-6, bug-7, bug-8, bug-9, bug-10, bug-11, bug-12, bug-13, bug-14, bug-15, bug-16, bug-17, bug-18, bug-19, bug-20, bug-21, bug-22, bug-23, bug-24, bug-25, bug-26, bug-27, bug-28, bug-29, bug-30, bug-31, bug-32, bug-33, bug-34, bug-35, test-483, task-828, bug-36, bug-37, test-484, bug-38, test-485, bug-39, test-486, task-835, task-836, task-837, test-487, bug-40, bug-41, bug-42, bug-43]
+last_active_node: bug-37
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, git diff --check]
 max_iterations: 75
@@ -20,15 +20,42 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-83, goal-85, dec-95, edd-82]
-evidence_refs: []
+context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-83, goal-85, dec-95, edd-82, goal-86, dec-96]
+evidence_refs: [chk-608, chk-610, chk-611, chk-612, chk-613]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-12
+updated: 2026-09-15
 ---
 
+# Current Successor Contract - 2026-09-13
+
+2026-09-15 execution addendum: the explicit Goal86 Run has completed local
+implementation acceptance for Bugs35/40 under chk610, Bug17 under chk611 and
+Bug39 in goal86/bug-39-local-verification.json and Bug41 under chk613.
+This supersedes current-status claims in older narratives below, not their
+historical evidence. Bugs42/43, writer compatibility/recovery, aggregate
+installed qualification and final Standard/diff/platform/artifact acceptance
+remain open. Goal84 is still the paused blocker ledger, not the execution lane.
+
+Goal86 is the sole future execution lane; preserve this goal's original
+acceptance duties and earned milestones. Dec96 adds fresh Standard and macOS/Linux
+gates. Paused routing is not failure or completion; historical active work is
+retained as last_active_node, not a standing claim. Only a later explicit Run of
+Goal86 authorizes remaining implementation. Goal85 publication remains separate.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
+
 # Objective
+
+2026-09-15 Goal86 execution adds confirmed functional Bug40 (sync preview lock
+and cache-directory writes) and Bug41 (configured Git helper execution outside
+git inspect). Current and retained published0.5.2 reproductions are bound in
+goal86/observational-boundary-reproductions.json. Bug21/Bug38 accomplishments and
+original Standard finding accounting remain unchanged. Both successors require
+bounded remedies, installed regressions and final independent task828 acceptance.
 
 Latest boundary decision dec95 adds bugs36/37 and test484 as publication blockers.
 Task833 is the external prerequisite owned by Goal83: preserve the extraction
@@ -100,9 +127,20 @@ Unknown dirty ownership, writer collision, baseline movement, global configurati
 
 # Current State
 
+2026-09-17: Goal86 has locally verified Bugs17/35/39/40/41/42/43 and
+Tasks835/836, and prepared draft0.6.0 metadata/guidance under Task827. All1,628
+current source tests pass; this does not close Bug7 aggregate qualification or
+the independent/security/platform publication gates. No new finding is waived.
+Goal86 remains the sole execution lane, Goal85 paused. Historical states follow.
+
 Planning complete at creation; user-approved local execution may resume after planning validation. Canonical main is 9d7e0d3fdbcfbc3908b7d3983b4957f15d17cb2b, two ahead of cached origin/main; no remote verification. Only pre-existing dirty SQLite projection was accepted before these isolated planning nodes. Selection is achieved Goal 73. Runtime leases released, queues empty; obsolete worktree metadata remains untouched.
 
 # Iteration Log
+
+- 2026-09-15: Bug42 records copied legacy JSON cache metadata overriding current
+  Markdown during the installed mounted matrix, on both configured backends and
+  all three runtimes. This is a new functional blocker, not a changed Standard
+  finding count. Goal86 remains the sole execution lane; final acceptance stays open.
 
 - 2026-09-07: User-approved full qualification plan recorded. Frozen Standard source audit is sealed in chk-571; its findings are not remediated yet.
 

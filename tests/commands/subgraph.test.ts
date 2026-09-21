@@ -823,6 +823,9 @@ test("review-003-cand-001 public subgraph projection revalidates foreign index v
   ], root);
   const entries = new Map(readZipEntries(fs.readFileSync(bundlePath)).map((entry) => [entry.name, entry.data]));
   const manifest = JSON.parse(entries.get("manifest.json")!.toString("utf8"));
+  // Keep the original historical-manifest regression aimed at projection
+  // visibility rather than the newer portable-contract hash gate.
+  delete manifest.transport_policy;
   const globalPath = ".mdkg/index/global.json";
   const globalIndex = JSON.parse(entries.get(globalPath)!.toString("utf8"));
   const projectedNode = Object.values(globalIndex.nodes)[0] as { ws: string };

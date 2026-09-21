@@ -58,7 +58,9 @@ function main() {
     fs.mkdirSync(child, { recursive: true });
 
     run(["init", "--agent"], root);
-    run(["init"], child);
+    // Parent-owned workspace: do not create independent root-scoped history
+    // before this child is addressed through the parent's workspace alias.
+    run(["init", "--graph-only"], child);
     run(["workspace", "add", "child", "child-repo", "--visibility", "public", "--json"], root);
 
     writeFile(

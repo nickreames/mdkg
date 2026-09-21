@@ -313,7 +313,7 @@ export function readZipEntries(zip: Buffer, overrides: Partial<ZipReadLimits> = 
   return entries;
 }
 
-export function readZipFileEntries(filePath: string, overrides: Partial<ZipReadLimits> = {}): ZipEntry[] {
+export function readZipFileBytes(filePath: string, overrides: Partial<ZipReadLimits> = {}): Buffer {
   const limits = resolveZipReadLimits(overrides);
   const stat = fs.statSync(filePath);
   if (!stat.isFile()) {
@@ -322,7 +322,13 @@ export function readZipFileEntries(filePath: string, overrides: Partial<ZipReadL
   if (stat.size > limits.maxArchiveBytes) {
     throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
   }
-  return readZipEntries(fs.readFileSync(filePath), limits);
+  const bytes = fs.readFileSync(filePath);
+  if (bytes.length > limits.maxArchiveBytes) throw new Error(`zip archive exceeds configured byte limit: ${limits.maxArchiveBytes}`);
+  return bytes;
+}
+
+export function readZipFileEntries(filePath: string, overrides: Partial<ZipReadLimits> = {}): ZipEntry[] {
+  return readZipEntries(readZipFileBytes(filePath, overrides), overrides);
 }
 
 export function readSingleFileZip(zip: Buffer): { entryName: string; data: Buffer } {

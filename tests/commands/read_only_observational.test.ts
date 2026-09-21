@@ -68,7 +68,7 @@ test("read-only command families leave SQLite, IDs, events, and missing caches u
     ["loop", "plan", "loop-1", "--json"],
     ["loop", "next", "loop-1", "--json"],
     ["skill", "list", "--json"],
-    ["skill", "show", "observed-skill", "--meta-only", "--json"],
+    ["skill", "show", "observed-skill", "--meta", "--json"],
     ["manifest", "list", "--json"],
     ["manifest", "show", "agent.observed", "--json"],
     ["capability", "list", "--json"],
@@ -76,7 +76,11 @@ test("read-only command families leave SQLite, IDs, events, and missing caches u
     ["validate", "--json"],
   ];
   for (const command of commands) {
-    assert.notEqual(run(command, root), "", command.join(" "));
+    const output = run(command, root);
+    assert.notEqual(output, "", command.join(" "));
+    if (command[0] === "skill" && command[1] === "show") {
+      assert.equal(JSON.parse(output).item.body, undefined, "--meta omits the skill body");
+    }
   }
 
   assert.deepEqual(snapshotTree(root, observedPaths), before);

@@ -7,15 +7,19 @@ import { archiveIdFromUri } from "../util/refs";
 import { parseFrontmatter } from "./frontmatter";
 import { mapGraphReferenceFields, matchesWorkContractPath } from "./identity_refs";
 import { replaceGraphFrontmatter } from "./identity_migration";
+import { configuredBundleTransportState } from "./transport_state";
 import {
   assertNodeFormat, canonicalJson, createGraphFormat, GRAPH_FORMAT_PATH,
   identityHash, identityRef, newIdentityUuid, parseGraphFormat, parseIdentityRef, readNodeIdentity,
 } from "./identity";
 
-export function planTransportIdentity(entries: Map<string, Buffer>, mode: "clone" | "fork", sourceHash: string) {
+export function planTransportIdentity(entries: Map<string, Buffer>, mode: "clone" | "fork", sourceHash: string, profile: "public" | "private" = "private") {
   const replacements = new Map<string, Buffer>();
   const additions = new Map<string, Buffer>();
   const skipped = new Set<string>();
+  const transportState = configuredBundleTransportState(entries, profile);
+  if (!transportState) throw new UsageError("graph transport requires the owning graph config; a public inspection bundle is not a restorable checkout");
+  for (const file of entries.keys()) if (transportState(file)) skipped.add(file);
   const manifest = entries.get(GRAPH_FORMAT_PATH);
   if (!manifest) return { replacements, additions, skipped, identity: undefined };
   const format = parseGraphFormat(manifest.toString("utf8"));
@@ -23,10 +27,6 @@ export function planTransportIdentity(entries: Map<string, Buffer>, mode: "clone
   if (!configBytes) throw new UsageError("identity transport requires the owning graph config");
   const config = validateConfigSchema(JSON.parse(configBytes.toString("utf8")));
   const owner = workspaceDocumentOwner(config);
-  for (const file of entries.keys()) {
-    // These are checkout execution state, not knowledge or portable provenance.
-    if (/(^|\/)\.mdkg\/state\//.test(file) || file.startsWith(`${config.db.root_path}/runtime/`)) skipped.add(file);
-  }
   if (mode === "clone") return { replacements, additions, skipped,
     identity: { policy: "same-project-clone", source_graph_id: format.graph_id, target_graph_id: format.graph_id, preserved_node_identities: true } };
 
@@ -39,6 +39,7 @@ export function planTransportIdentity(entries: Map<string, Buffer>, mode: "clone
     if (!workspace.enabled) continue;
     const prefix = workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir);
     for (const [file, data] of entries) {
+      if (skipped.has(file)) continue;
       if (owner(file) !== ws) continue;
       const local = path.posix.relative(prefix, file);
       if (!/^(core|design|work|archive)\/.+\.md$/.test(local) || local === "core/core.md" || local.split("/").includes("source")) continue;

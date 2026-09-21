@@ -4,7 +4,8 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
-const { readZipEntries } = require("../dist/util/zip.js");
+const { runTransportStateFixtures } = require("../tests/fixtures/transport-state.cjs");
+let readZipEntries;
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
@@ -130,7 +131,9 @@ function packAndInstall(tempRoot) {
 
   const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
   assertExists(binPath);
-  return { binPath, tarballPath };
+  const packageRoot = [path.join(prefix, "lib/node_modules/mdkg"), path.join(prefix, "node_modules/mdkg")].find(fs.existsSync);
+  assert(packageRoot, "installed mdkg package is missing");
+  return { binPath, tarballPath, packageRoot };
 }
 
 function bundleEntries(bundlePath) {
@@ -149,7 +152,10 @@ function exerciseBundles(binPath, tempRoot) {
   fs.mkdirSync(child, { recursive: true });
 
   mdkg(binPath, ["init", "--agent"], root);
-  mdkg(binPath, ["init"], child);
+  // This is a parent-owned workspace, not an independently executed graph.
+  // Keep the former graph-only setup explicit now that init defaults to agents;
+  // an independent graph's root-scoped event history must not be relabeled.
+  mdkg(binPath, ["init", "--graph-only"], child);
   mdkg(binPath, ["workspace", "add", "child", "child-repo", "--visibility", "public", "--json"], root);
 
   const childInputs = path.join(child, "inputs");
@@ -234,12 +240,15 @@ function runSmoke() {
   let tempRoot;
   try {
     tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-bundle-"));
-    const { binPath, tarballPath } = packAndInstall(tempRoot);
+    const { binPath, tarballPath, packageRoot } = packAndInstall(tempRoot);
+    ({ readZipEntries } = require(path.join(packageRoot, "dist/util/zip.js")));
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
     if (version !== packageVersion) {
       throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     }
     exerciseBundles(binPath, tempRoot);
+    const transport = runTransportStateFixtures({ packageRoot, root: path.join(tempRoot, "transport-state"), env: commandEnv() });
+    console.log(JSON.stringify({ transport_state: transport }));
     console.log("bundle smoke passed");
     console.log(`version=${version}`);
     console.log(`tarball=${path.basename(tarballPath)}`);

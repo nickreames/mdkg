@@ -7,20 +7,47 @@ priority: 1
 tags: [release-0.6.0, local-qualification]
 owners: [mdkg-project-agent]
 links: []
-artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json, .mdkg/artifacts/goal-84/bug-35-affected-versions.json]
+artifacts: [.mdkg/artifacts/goal-84/bug-7-progress.json, .mdkg/artifacts/goal-84/bug-7-recovery-runtime.json, .mdkg/artifacts/goal-84/bug-7-legacy-writer-barrier.json, .mdkg/artifacts/goal-84/bug-7-graph-recovery.json, .mdkg/artifacts/goal-84/bug-7-mcp-read-parity.json, .mdkg/artifacts/goal-84/bug-7-work-archive.json, .mdkg/artifacts/goal-84/bug-34-verification.json, .mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-nullable-read.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-progress.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json, .mdkg/artifacts/goal-84/bug-35-readonly-git-index-reproduction.json, .mdkg/artifacts/goal-84/bug-35-affected-versions.json, .mdkg/artifacts/goal-86/task-835-local-verification.json, .mdkg/artifacts/goal-86/task-836-local-verification.json]
 relates: [task-826]
-blocked_by: [task-824]
+blocked_by: [task-824, task-826]
 blocks: []
-refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, bug-33, bug-34, test-481, test-482, chk-595, chk-596, chk-598, chk-599, chk-600, bug-35, chk-601]
-context_refs: [goal-84, goal-83]
-evidence_refs: []
+refs: [bug-33, bug-34, test-481, test-482, bug-35, dec-94, chk-617, chk-618]
+context_refs: [goal-84, goal-83, goal-86, dec-96]
+evidence_refs: [chk-586, chk-587, chk-588, chk-589, chk-590, chk-591, chk-595, chk-596, chk-598, chk-599, chk-600, chk-601]
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-11
+updated: 2026-09-17
 ---
 
+# Current Successor Contract - 2026-09-13
+
+This bug is now aggregate installed-qualification acceptance, not a prerequisite
+that blocks its own tests. Tasks835 and836 explicitly own the remaining writer
+fence and evidence-bound recovery implementation. Tests477-484/486 and platform
+test487 precede task826 aggregate acceptance; then this bug may close its missing
+proof obligation. Current partial evidence remains intermediate, not final0.6.0.
+Task309's historical mdkg URI ambiguity must have an evidence-bound unsupported
+or exact-resolution disposition; never alter history or invent identities.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
+
 # Overview
+
+Current 2026-09-18 implementation status: Tasks835 and836 are locally done under
+chk617/618. The capability fence and evidence-bound interrupted-writer recovery
+have exact source/intermediate installed proof. Latest source and coverage runs
+each pass1,627tests; Task836 adds33 installed SIGKILL cases across the three
+required Node runtimes on macOS arm64. This bug remains open for task826's full
+final0.6.0 installed/platform acceptance, historical migration disposition and
+subsequent independent security/release gates. No universal recovery claim.
+
+Current decision: dec-94 records Nick's accepted writer compatibility and
+explicit agent-callable recovery policies. Historical requests for those same
+decisions below are superseded; do not ask again. Implementation, installed
+verification, linked-worktree qualification and final review remain incomplete.
 
 Current source/unit tests do not establish installed-package identity behavior or a real published 0.5.2 upgrade. Missing required compatibility evidence blocks publication.
 

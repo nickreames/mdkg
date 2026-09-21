@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import { spawnSync } from "child_process";
+import { insideGitWorkTree, readGitHead, readGitStatus } from "../util/git_observation";
 import { Config, SubgraphConfig, SubgraphSourceConfig } from "../core/config";
 import { configPath } from "../core/paths";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
@@ -10,6 +10,7 @@ import { Index, IndexNode } from "./indexer";
 import { writeCacheFile } from "./cache_output";
 import { readSubgraphBundleEntries } from "./subgraph_bundle";
 import { normalizeIndexIdentityReferences } from "./identity_refs";
+import { PortableTransportPolicy, portableTransportPayloadErrors, validatePortableTransportPolicy } from "./transport_policy";
 
 export type SubgraphSourceHealth = {
   label?: string;
@@ -84,6 +85,7 @@ type BundleManifest = {
     workspace?: string;
     visibility?: string;
   }>;
+  transport_policy?: PortableTransportPolicy;
 };
 
 type LoadedSource = {
@@ -176,7 +178,7 @@ function validateForeignManifest(value: unknown): BundleManifest {
     const row = files.find((file) => file.path === required);
     if (!row || row.kind !== "generated_index" || row.sha256 !== indexHashes[required]) throw new Error(`bundle manifest invalid: required index contract mismatch for ${required}`);
   }
-  return {
+  const manifest: BundleManifest = {
     manifest_version: 1,
     tool: "mdkg",
     mdkg_version: mdkgVersion,
@@ -189,6 +191,9 @@ function validateForeignManifest(value: unknown): BundleManifest {
     index_hashes: indexHashes,
     files,
   };
+  const policy = validatePortableTransportPolicy(value.transport_policy, manifest);
+  if (policy) manifest.transport_policy = policy;
+  return manifest;
 }
 
 function validateIndexShape(value: unknown): Index {
@@ -233,15 +238,6 @@ function resolveBundlePath(root: string, source: SubgraphSourceConfig): string {
   return path.resolve(root, source.path);
 }
 
-function gitOutput(cwd: string, args: string[]): string | null {
-  const result = spawnSync("git", args, { cwd, encoding: "utf8", stdio: "pipe" });
-  if (result.status !== 0) {
-    return null;
-  }
-  const output = result.stdout.trim();
-  return output.length > 0 ? output : null;
-}
-
 function sourcePathState(
   root: string,
   subgraph: SubgraphConfig,
@@ -257,14 +253,24 @@ function sourcePathState(
     errors.push(`source_path does not exist: ${subgraph.source_path}`);
     return false;
   }
-  const currentHead = gitOutput(sourceRoot, ["rev-parse", "HEAD"]);
-  const currentStatus = gitOutput(sourceRoot, ["status", "--porcelain"]);
+  let currentHead: string | null;
+  let currentStatus;
+  try {
+    const inside = insideGitWorkTree(sourceRoot);
+    currentHead = inside ? readGitHead(sourceRoot) : null;
+    currentStatus = inside ? readGitStatus(sourceRoot) : [];
+  } catch (err) {
+    // The verified bundle remains useful historical context, never fresh proof
+    // of a source checkout whose Git state cannot be observed safely.
+    warnings.push(`source_path Git freshness is unknown: ${subgraph.source_path}; ${err instanceof Error ? err.message : "observation failed"}`);
+    return true;
+  }
   let stale = false;
-  if (manifest.source?.git_head && currentHead && manifest.source.git_head !== currentHead) {
-    warnings.push(`source HEAD changed: ${manifest.source.git_head} -> ${currentHead}`);
+  if (manifest.source?.git_head && manifest.source.git_head !== currentHead) {
+    warnings.push(`source HEAD changed: ${manifest.source.git_head} -> ${currentHead ?? "unavailable"}`);
     stale = true;
   }
-  if (currentStatus) {
+  if (currentStatus.length) {
     warnings.push(`source_path has uncommitted changes: ${subgraph.source_path}`);
     stale = true;
   }
@@ -345,6 +351,62 @@ function entryHashErrors(entries: Map<string, Buffer>, manifest: BundleManifest)
   return errors;
 }
 
+export function validateSubgraphBundleEntries(entries: Map<string, Buffer>) {
+  const manifest = validateForeignManifest(readJsonEntry<unknown>(entries, MANIFEST_ENTRY));
+  const index = validateIndexShape(readJsonEntry<unknown>(entries, GLOBAL_INDEX_ENTRY));
+  const skills = readJsonEntry<unknown>(entries, SKILLS_INDEX_ENTRY);
+  const capabilities = readJsonEntry<unknown>(entries, CAPABILITIES_INDEX_ENTRY);
+  if (!isRecord(skills) || !isRecord(capabilities)) throw new Error("generated discovery index has an invalid shape");
+  const errors = entryHashErrors(entries, manifest);
+  if (errors.length === 0) errors.push(...portableTransportPayloadErrors(entries, manifest));
+  if (errors.length) throw new Error(`subgraph integrity failed: ${errors.join("; ")}`);
+  const rows = new Map(manifest.files.map((row) => [row.path, row]));
+  const checkRecord = (record: unknown, workspaceField: string) => {
+    if (!isRecord(record) || typeof record.path !== "string") throw new Error("invalid projected discovery record");
+    const row = rows.get(record.path);
+    if (!row || row.kind !== "authored" || row.workspace !== record[workspaceField] ||
+      !manifest.selected_workspaces.includes(String(record[workspaceField])) ||
+      (manifest.profile === "public" && row.visibility !== "public")) throw new Error("discovery record has no selected authored file binding");
+  };
+  if (capabilities.records !== undefined && !Array.isArray(capabilities.records)) throw new Error("invalid capability record list");
+  if (skills.skills !== undefined && !isRecord(skills.skills)) throw new Error("invalid skills record map");
+  for (const capability of (capabilities.records ?? []) as unknown[]) checkRecord(capability, "workspace");
+  for (const skill of Object.values((skills.skills ?? {}) as Record<string, unknown>)) checkRecord(skill, "ws");
+  const formatBytes = entries.get(GRAPH_FORMAT_PATH);
+  const format = formatBytes ? parseGraphFormat(formatBytes.toString("utf8")) : { format_version: 1 as const };
+  if (format.format_version === 2) {
+    if (canonicalJson(index.meta.graph_format) !== canonicalJson(format)) throw new Error("subgraph index format disagrees with authored manifest");
+    for (const node of Object.values(index.nodes)) {
+      const authored = entries.get(node.path);
+      if (!authored) throw new Error(`subgraph identity has no authored node: ${node.path}`);
+      const identity = readNodeIdentity(parseFrontmatter(authored.toString("utf8"), node.path).frontmatter, node.path);
+      assertNodeFormat(format, identity, node.path);
+      if (canonicalJson(identity) !== canonicalJson(node.identity)) throw new Error(`subgraph index identity disagrees with authored node: ${node.path}`);
+    }
+  } else if (Object.values(index.nodes).some((node) => node.identity)) {
+    throw new Error("subgraph identity requires an authored format manifest");
+  }
+  const publicErrors = publicProjectionErrors(index, manifest);
+  if (publicErrors.length) throw new Error(publicErrors.join("; "));
+  return { entries, manifest, index, rows, capabilities };
+}
+
+export function importedSnapshotEntry(snapshot: ReturnType<typeof validateSubgraphBundleEntries>, node: IndexNode, maxBytes: number): Buffer {
+  const source = node.source;
+  const original = source && snapshot.index.nodes[source.original_qid];
+  const row = source && snapshot.rows.get(source.original_path);
+  if (!source || !source.bundle_hash || source.bundle_hash !== snapshot.manifest.bundle_hash ||
+    source.profile !== snapshot.manifest.profile || !original || !row || row.kind !== "authored" ||
+    original.path !== source.original_path || original.ws !== source.original_ws || original.id !== node.id || original.type !== node.type) {
+    throw new Error(`imported node snapshot mismatch for ${node.qid}; re-index the source before reading changed bytes`);
+  }
+  const data = snapshot.entries.get(source.original_path)!;
+  if (data.length > maxBytes) throw new Error(`node body source exceeds byte limit for ${node.qid}: ${maxBytes}`);
+  const parsed = parseFrontmatter(data.toString("utf8"), source.original_path);
+  if (parsed.frontmatter.id !== node.id || parsed.frontmatter.type !== node.type) throw new Error(`imported node body identity mismatch for ${node.qid}`);
+  return data;
+}
+
 function projectOneSource(
   root: string,
   subgraph: SubgraphConfig,
@@ -379,26 +441,7 @@ function projectOneSource(
 
   try {
     entries = readSubgraphBundleEntries(root, source.path);
-    manifest = validateForeignManifest(readJsonEntry<unknown>(entries, MANIFEST_ENTRY));
-    index = validateIndexShape(readJsonEntry<unknown>(entries, GLOBAL_INDEX_ENTRY));
-    if (!isRecord(readJsonEntry<unknown>(entries, SKILLS_INDEX_ENTRY))) throw new Error("generated skills index has an invalid shape");
-    if (!isRecord(readJsonEntry<unknown>(entries, CAPABILITIES_INDEX_ENTRY))) throw new Error("generated capabilities index has an invalid shape");
-    errors.push(...entryHashErrors(entries, manifest));
-    const formatBytes = entries.get(GRAPH_FORMAT_PATH);
-    const format = formatBytes ? parseGraphFormat(formatBytes.toString("utf8")) : { format_version: 1 as const };
-    if (format.format_version === 2) {
-      if (canonicalJson(index.meta.graph_format) !== canonicalJson(format)) throw new Error("subgraph index format disagrees with authored manifest");
-      for (const node of Object.values(index.nodes)) {
-        const authored = entries.get(node.path);
-        if (!authored) throw new Error(`subgraph identity has no authored node: ${node.path}`);
-        const identity = readNodeIdentity(parseFrontmatter(authored.toString("utf8"), node.path).frontmatter, node.path);
-        assertNodeFormat(format, identity, node.path);
-        if (canonicalJson(identity) !== canonicalJson(node.identity)) throw new Error(`subgraph index identity disagrees with authored node: ${node.path}`);
-      }
-    } else if (Object.values(index.nodes).some((node) => node.identity)) {
-      throw new Error("subgraph identity requires an authored format manifest");
-    }
-    errors.push(...publicProjectionErrors(index, manifest));
+    ({ manifest, index } = validateSubgraphBundleEntries(entries));
     if (manifest.profile !== source.expected_profile) {
       errors.push(`expected ${source.expected_profile} bundle but found ${manifest.profile}`);
     }
@@ -435,7 +478,7 @@ function projectOneSubgraph(
   root: string,
   alias: string,
   subgraph: SubgraphConfig
-): { health: SubgraphHealth; nodes: Record<string, IndexNode>; reverse_edges: Index["reverse_edges"] } {
+): { health: SubgraphHealth; nodes: Record<string, IndexNode>; reverse_edges: Index["reverse_edges"]; loadedSources: LoadedSource[] } {
   const nodes: Record<string, IndexNode> = {};
   const reverse_edges: Index["reverse_edges"] = {};
   if (!subgraph.enabled) {
@@ -466,6 +509,7 @@ function projectOneSubgraph(
       },
       nodes,
       reverse_edges,
+      loadedSources: [],
     };
   }
 
@@ -567,6 +611,7 @@ function projectOneSubgraph(
     },
     nodes,
     reverse_edges,
+    loadedSources,
   };
 }
 
@@ -713,14 +758,13 @@ export function buildSubgraphCapabilityRecords(root: string, config: Config): {
     if (projection.health.error_count > 0) {
       continue;
     }
-    for (const source of subgraph.sources) {
-      if (!source.enabled) {
+    for (const loaded of projection.loadedSources) {
+      if (!loaded.source.enabled || !loaded.entries) {
         continue;
       }
       try {
-        const bundlePath = resolveBundlePath(root, source);
-        const relativeBundlePath = toPosixPath(path.relative(root, bundlePath));
-        const entries = readSubgraphBundleEntries(root, source.path);
+        const relativeBundlePath = loaded.relativeBundlePath;
+        const entries = loaded.entries;
         const capabilities = readJsonEntry<{ records?: Array<Record<string, unknown>> }>(
           entries,
           CAPABILITIES_INDEX_ENTRY
@@ -744,6 +788,8 @@ export function buildSubgraphCapabilityRecords(root: string, config: Config): {
               original_workspace: originalWorkspace,
               original_path: originalPath,
               bundle_path: relativeBundlePath,
+              bundle_hash: loaded.manifest?.bundle_hash,
+              profile: loaded.manifest?.profile,
               stale: projection.health.stale,
               permissions: subgraph.permissions,
               warnings: [...projection.health.warnings],

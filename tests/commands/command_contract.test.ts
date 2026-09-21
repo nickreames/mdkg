@@ -177,9 +177,13 @@ test("loop descriptor flags match parser branches and generated help", () => {
     "loop runs": ["--root", "--ws", "--json", "--no-cache", "--no-reindex"],
   };
 
+  // Family help is the union of its concrete leaves; each leaf also admits the
+  // same global help/version controls used by both CLI entrypoints.
+  expectedFlags.loop = [...new Set(Object.entries(expectedFlags).filter(([key]) => key !== "loop").flatMap(([, flags]) => flags))];
+
   for (const [key, flags] of Object.entries(expectedFlags)) {
     const command = commandByKey(contract, key);
-    assert.deepEqual(command.flags.map((flag) => flag.name), flags, key);
+    assert.deepEqual(command.flags.map((flag) => flag.name).sort(), [...flags, "--help", "--version"].sort(), key);
     const helpTarget = key.split(" ");
     const help = spawnSync(process.execPath, [path.join(repoRoot, "dist", "cli.js"), "help", ...helpTarget], {
       cwd: repoRoot,
@@ -189,6 +193,30 @@ test("loop descriptor flags match parser branches and generated help", () => {
     for (const flag of flags) {
       assert.match(help.stdout, new RegExp(flag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${key} ${flag}`);
     }
+  }
+});
+
+test("machine option admission is complete and concrete rather than a help-family union", () => {
+  const contract = readContract() as ReturnType<typeof readContract> & {
+    option_admission: Array<{ command: string; flags: Array<{ name: string; kind: string }> }>;
+  };
+  const { COMMAND_OPTIONS, commandOptionKind } = require("../../commands/option_contract") as {
+    COMMAND_OPTIONS: Record<string, string[]>;
+    commandOptionKind: (command: string, flag: string) => string;
+  };
+  assert.deepEqual(contract.option_admission, Object.entries(COMMAND_OPTIONS).map(([command, flags]) => ({
+    command, flags: flags.map(name => ({ name, kind: commandOptionKind(command, name) })),
+  })));
+  const ack = contract.option_admission.find(item => item.command === "db queue ack")!;
+  assert.ok(ack.flags.some(flag => flag.name === "--lease-owner"));
+  assert.ok(!ack.flags.some(flag => flag.name === "--paused" || flag.name === "--lease-ms"));
+  const global = commandByKey(contract, "global");
+  assert.deepEqual(global.flags.map(flag => flag.name), ["--help", "--root", "--version"]);
+  const ids = commandByKey(contract, "fix ids");
+  assert.ok(!ids.flags.some(flag => flag.name === "--family"));
+  const create = commandByKey(contract, "new");
+  for (const flag of ["--prev", "--relates", "--blocks", "--artifacts", "--aliases", "--cases"]) {
+    assert.ok(create.flags.some(item => item.name === flag), flag);
   }
 });
 

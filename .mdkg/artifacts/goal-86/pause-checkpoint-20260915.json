@@ -1,0 +1,2332 @@
+{
+  "schema_version": 1,
+  "kind": "goal-86-user-requested-pause",
+  "goal_qid": "root:goal-86",
+  "checkpoint_qid": "root:chk-616",
+  "outcome": "PAUSED_NOT_READY",
+  "publication_readiness": "NOT_READY",
+  "package_version": "0.5.2",
+  "goal_85_state": "paused",
+  "authority_used": "user-requested mdkg checkpoint, goal pause, scoped evidence and projection validation only",
+  "functional_changes_this_pause": false,
+  "remote_verified": false,
+  "commits_created_this_pause": [],
+  "commits_created_during_current_goal86_remediation": [],
+  "current_task": {
+    "qid": "root:task-835",
+    "status": "progress",
+    "execution": "paused",
+    "owner": "mdkg-project-agent",
+    "functional_patch": "not started",
+    "accepted_contract": "dec-94: explicit adoption, all writers upgraded, no retroactive control of old executables",
+    "confirmed_findings": [
+      "Current migration writes identities but leaves config schema 1 and does not own the configuration fence.",
+      "Actual published 0.5.2 with preserved warm caches modifies a node or creates a node and SQLite allocation before failing; cold-cache controls refuse without writes.",
+      "Fixture-only schema 2 refuses old new/task writers before changes, but cannot prevent old init writes or force-init from removing the fence.",
+      "Current prepatch event enable writes its log with unsupported writer_min or unknown required features. Tested new/index/db init/workspace add controls refuse without changes."
+    ],
+    "source_traced_unreproduced_candidates": [
+      "Current force-init with unsupported config and absent format manifest",
+      "Direct event/cache/SQLite write APIs",
+      "Write-bearing validation reports and DB snapshot exports"
+    ],
+    "next_design_work": "Bound an explicit config fence into reviewed migration/upgrade and exact recovery, preserve legacy defaults and supported unmerged nodes, and guard effect-owning entrypoints. Diagnostic exports and fresh clone targets need precise ownership classification, not blanket defect claims."
+  },
+  "baseline_before_pause": {
+    "captured_at": "2026-09-16T01:29:59.278Z",
+    "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+    "branch": "main",
+    "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "divergence": "50\t0",
+    "staged": "",
+    "dirty_count": 123,
+    "dirty_paths": [
+      {
+        "path": ".mdkg/index/mdkg.sqlite",
+        "status": " M",
+        "mode": 33188,
+        "size": 4493312,
+        "sha256": "aff461c5a04ea268342554af2b85441ddb7b1737f787aa33813756a678bdfa74"
+      },
+      {
+        "path": ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 15844,
+        "sha256": "62d6585d91b41c45c90c02f4a67ef2f35a6d5e9d023ddc37e7d5ca93e00d0da5"
+      },
+      {
+        "path": ".mdkg/work/bug-35-keep-observational-git-subprocesses-from-refreshing-root-and-child-indexes.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 9448,
+        "sha256": "08512d06ed50b3d87f10bbe90e5e42e92095521d5b8fcbaefb9a3d993dab9ec8"
+      },
+      {
+        "path": ".mdkg/work/bug-39-reject-unsupported-command-options-before-dispatch-and-unintended-writes.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 6075,
+        "sha256": "736d89a0b02c14a3f3166df2a0b3778510fd457d6e694291a5ce89c5237eb797"
+      },
+      {
+        "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 25473,
+        "sha256": "e40e6ea2001b61a67742ec4fc6ca37c24b3c24fdc7f8946edc16bfddfcaa9a4f"
+      },
+      {
+        "path": ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 2396,
+        "sha256": "99603a36a473ebf92727632106079f7a2393149285185d0998629a9f16705413"
+      },
+      {
+        "path": ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 9475,
+        "sha256": "6e279c7ecb42a2e2531f113aa66b255cb1ab397fe788b3d75255d5bab805bbf8"
+      },
+      {
+        "path": ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 38434,
+        "sha256": "07efc31c59a4a39f071a0a9569dc5346cd8adaa751fb07091da8689c565debca"
+      },
+      {
+        "path": ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 6162,
+        "sha256": "e622a23999cbcd15bc0d712be183feaec4cc1674b3cc52cf879745a3e64c3381"
+      },
+      {
+        "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 4995,
+        "sha256": "b79d1504db0565df1af72bcc13fd3fc3fcdfeaba6e124ccd802d3cdb66eaab82"
+      },
+      {
+        "path": ".mdkg/work/task-827-prepare-draft-mdkg-0-6-0-metadata-and-release-guidance.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 6429,
+        "sha256": "cf2817bd2c04f5e42932ec7625c4af51a429aba13ddb779e206d3227bc3c6a2f"
+      },
+      {
+        "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 4096,
+        "sha256": "163442cc699d13661d0d1512663f421d323d35ae3dbbf68c6d7d506219c7d991"
+      },
+      {
+        "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 3076,
+        "sha256": "c4614078ab58931518c05c0c5256980c7e199b46847e10dc053414e7f87f801c"
+      },
+      {
+        "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 2900,
+        "sha256": "759e25c69d02eca322bef9a7d520f51aea523b0dd60cac2cd95c15d91494d4d6"
+      },
+      {
+        "path": ".mdkg/work/task-831-recheck-mdkg-0-6-0-approval-blockers-and-sealed-candidate.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 2796,
+        "sha256": "b4382c7024d350895ae5d50759490561421969aacd9c04f7217f0133b6d3f5b8"
+      },
+      {
+        "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 5259,
+        "sha256": "b79c7b1a245442b5b78a850c0c2e08a7a3d1c6522d111b94e9127fa3c850bcd2"
+      },
+      {
+        "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 7168,
+        "sha256": "6ffb33dd63dc20530fad686961842539d8b0abea2562e6dc875aa6ec582a8d42"
+      },
+      {
+        "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 5641,
+        "sha256": "b6a390fc3e3322c4ba638772c197b7ecb1da17b713746d6fd7c71019a99e0870"
+      },
+      {
+        "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 5740,
+        "sha256": "5472622e4949999e53845c1c3af35a5a39875349a411cf3ab76fbbc932af46e9"
+      },
+      {
+        "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 5488,
+        "sha256": "f3862bf099c569deff70a1dde055fdf895468f87c9b07b7c2549a3f4c2361dea"
+      },
+      {
+        "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 5521,
+        "sha256": "5d35a8cda272ea2d2cdf1f0ebbfcf9ef70a35b83deea21a10c9791ed9c2a15e6"
+      },
+      {
+        "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 7041,
+        "sha256": "641b0d5dd447e14ee575107c0df9307a3a8115d58bc3aec2587d121776145459"
+      },
+      {
+        "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 4499,
+        "sha256": "d91bdba2a80bb02195443b9638e906c9bb0558dadf0b476bc3fe7fcc44325891"
+      },
+      {
+        "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 4636,
+        "sha256": "96f8b42a865d7a3af4e79ff8bd7747799816af90dcfad0967d83f9a199a59c68"
+      },
+      {
+        "path": "docs/_generated/cli-reference.md",
+        "status": " M",
+        "mode": 33188,
+        "size": 224230,
+        "sha256": "af5f919f0985b89af58fe45deb2594a8490d4a2d7b6606a2f24efb3ec4cdcdc8"
+      },
+      {
+        "path": "docs/_generated/command-contract-summary.json",
+        "status": " M",
+        "mode": 33188,
+        "size": 30522,
+        "sha256": "1b8ce883aa550b3bf6211263477ba515d440172ea62cc371e9bc34883cd566e9"
+      },
+      {
+        "path": "scripts/generate-command-contract.js",
+        "status": " M",
+        "mode": 33188,
+        "size": 35627,
+        "sha256": "93423d202354ea874223777dde6741d9d345cf4ed7e54052659582ec52c66f1a"
+      },
+      {
+        "path": "scripts/generate-docs-reference.js",
+        "status": " M",
+        "mode": 33188,
+        "size": 11091,
+        "sha256": "cf0017348dae5a515709475a20a82fcde001ca32893a2fde9da4d704c4c028c8"
+      },
+      {
+        "path": "scripts/smoke-bundle.js",
+        "status": " M",
+        "mode": 33188,
+        "size": 10186,
+        "sha256": "f7d00d4c43891e44baae6ffd2a25275f7405eb395dd50173ce77646531c53bb9"
+      },
+      {
+        "path": "scripts/smoke-capabilities.js",
+        "status": " M",
+        "mode": 33188,
+        "size": 4782,
+        "sha256": "c6b639998c98561711a4dfd8d870161b67f4e45533d88cfcc7ebf47fd7baeb1d"
+      },
+      {
+        "path": "scripts/smoke-git-boundary.js",
+        "status": " M",
+        "mode": 33188,
+        "size": 13271,
+        "sha256": "926977686ddc70d2f406ebe65b2e9c15e3e5daab6aaf1eeee64455fec66489dd"
+      },
+      {
+        "path": "src/cli.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 159917,
+        "sha256": "c1ceff0ac5e2789961bd59a8003287757fda2ae6fa1416e71cbe35862ca5d6b3"
+      },
+      {
+        "path": "src/commands/archive.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 32048,
+        "sha256": "dec76ff849619fd8fc790335b39e60ea265e9144bf3bc9b311f46a08998410c1"
+      },
+      {
+        "path": "src/commands/bundle.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 41645,
+        "sha256": "fe5774ffd5a4c9e98ad93b673498a85d0b3872ed69786512eeb856bf8a394579"
+      },
+      {
+        "path": "src/commands/fix.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 61189,
+        "sha256": "4fafdb27ef0ba16b600a3ac8a9214ded38b5d8fc1302d40586bc55bea7032b0b"
+      },
+      {
+        "path": "src/commands/git.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 5761,
+        "sha256": "b4ccb98421f0fa592f0563eeb7e4f098a2da020d4bfce51505947261f427ae0a"
+      },
+      {
+        "path": "src/commands/graph.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 46369,
+        "sha256": "f21105a59135f5578e2787ad47c4884542e448eae2fe188a34acf086de848a05"
+      },
+      {
+        "path": "src/commands/status.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 9689,
+        "sha256": "c69142e21f20e6bc13458babd3d54835e881ea1b4c41c1db98e81ce5ee0a6987"
+      },
+      {
+        "path": "src/commands/subgraph.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 48584,
+        "sha256": "c6dd152119508de1faab1cdbac5247c71d6e2d06cc69a73fe56804eddd35574a"
+      },
+      {
+        "path": "src/commands/upgrade.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 36417,
+        "sha256": "fd33155a25a67962942454caf79dd522cf8de388355b162b6cfc89796c014537"
+      },
+      {
+        "path": "src/commands/validate.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 30039,
+        "sha256": "ddae23565d184dbb066ceda3c63702b8adc5c3f1dd795c2a7bf958168cabc377"
+      },
+      {
+        "path": "src/graph/archive_file.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 5639,
+        "sha256": "3c78d9da5bfe9115b709149adc8873d69fab20493479f3843522eed8fe8d894c"
+      },
+      {
+        "path": "src/graph/capabilities_index_cache.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 5584,
+        "sha256": "875988984a04cef872bad5ff084310aa03505e77e0a7e386ef066f68317a5706"
+      },
+      {
+        "path": "src/graph/capabilities_indexer.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 17171,
+        "sha256": "208b20600252a7e2089021f0cafba03d7eac119c9d54ba495857a9995674fabc"
+      },
+      {
+        "path": "src/graph/identity_transport.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 5889,
+        "sha256": "223b3025352b16f2b03db90cd0aaafcaadba6a5235b6230d274c39bdfe7bb1d0"
+      },
+      {
+        "path": "src/graph/index_cache.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 5786,
+        "sha256": "f0414b329fb89435565b761fb9015bf04abe4032303e9543896e919ceada9694"
+      },
+      {
+        "path": "src/graph/indexer.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 11822,
+        "sha256": "9179209d4597939fd754cd60e6a6d93c2ec06f6ac3fbb46e2cee46dbaa9824a9"
+      },
+      {
+        "path": "src/graph/node.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 26724,
+        "sha256": "526a39c0f61788b3addfad5ba5a08f40a397b8b037de49664c46cb69daceb75c"
+      },
+      {
+        "path": "src/graph/node_body.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 3566,
+        "sha256": "f3c26eff4c6e445b0b45d8a29e871070493dea54f6789e9e42376cc1633941fa"
+      },
+      {
+        "path": "src/graph/skills_index_cache.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 5426,
+        "sha256": "094f3b13ac0a3475b011f7b73a51e40fab54eac0b9bbf7f385f0ee3b5b5a17f9"
+      },
+      {
+        "path": "src/graph/skills_indexer.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 9193,
+        "sha256": "41d869ae7fa56d136d5de7fcc955e5277f27d91a69fed5f3baa73b897d3f3354"
+      },
+      {
+        "path": "src/graph/staleness.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 3081,
+        "sha256": "a2a78a6245a91a27be9c08809f683d84069af3f127905a9e6b4f2722e696788b"
+      },
+      {
+        "path": "src/graph/subgraphs.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 32140,
+        "sha256": "ded4e4c27570aa1e4f54a61fe57d9ee27986f4c3d2d185f727c78404b7c0b38c"
+      },
+      {
+        "path": "src/graph/workspace_ownership.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 2993,
+        "sha256": "993b4884ab2e32ebfba8c1ac842d3694ee3696e2af3810450e81bb253932ecdc"
+      },
+      {
+        "path": "src/util/argparse.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 8155,
+        "sha256": "d42c36acef8717d768278fa62efdf911aafcfaaf6d85904151c125faf0399e4a"
+      },
+      {
+        "path": "src/util/zip.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 12989,
+        "sha256": "90336751cca6772ad665a68634a33fc0543907114322d548323a0bd0eb09fd81"
+      },
+      {
+        "path": "tests/commands/archive_work.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 39282,
+        "sha256": "e90c45010f828d84bee6d58abd14f558452ed9ae0890ab3a569ba724a73354e0"
+      },
+      {
+        "path": "tests/commands/cli_onboarding.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 7038,
+        "sha256": "f527bc05d822dcf75f42e8676876c2b3587d9e5863f40c34d73457cbaddb0928"
+      },
+      {
+        "path": "tests/commands/command_contract.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 11477,
+        "sha256": "4d7c476a8a41bc0e228c8b610c2a291679eb05b6b0479b5afd3cbbecde5381c8"
+      },
+      {
+        "path": "tests/commands/git.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 8358,
+        "sha256": "893d20976b431d3e4f942b359269ece7e7cf5017baa2240d57d6f0bd34ec2b0d"
+      },
+      {
+        "path": "tests/commands/git_inspect.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 15119,
+        "sha256": "8f7d4b307ff16eae6da391d4ae356910bf259e8c3ea2b24fb05992b2be4da48f"
+      },
+      {
+        "path": "tests/commands/graph.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 26430,
+        "sha256": "5292797563c823c9c3a4cadb97f2603cc685c65b4ba055a5312b7effcff13700"
+      },
+      {
+        "path": "tests/commands/read_only_observational.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 3225,
+        "sha256": "184d2e7c4864030b750d2e5ccb63190d24d066bdd89c3df86df31f2cc640b0a0"
+      },
+      {
+        "path": "tests/commands/security_containment.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 17278,
+        "sha256": "4e983b4bd7dde962797741fc7a295ba7886348025cd6a270b1645285189b119e"
+      },
+      {
+        "path": "tests/commands/subgraph.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 33931,
+        "sha256": "a08cd9b63195a641226fb1c59abe004464725a041db90a5ec4544763642a5cc2"
+      },
+      {
+        "path": "tests/commands/validate.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 23902,
+        "sha256": "da36c8f6751e7927f7711e60c6744afcb3ae4e5f2fd6018168091989e1d604cd"
+      },
+      {
+        "path": "tests/graph/node_body.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 2980,
+        "sha256": "f9ba6d8b4a61fbe23f5772d1be592d0b0ee455ecec128ab5c2cf06bc31b36ba8"
+      },
+      {
+        "path": "tests/graph/subgraph_containment.test.ts",
+        "status": " M",
+        "mode": 33188,
+        "size": 11309,
+        "sha256": "0b24daa918fc66419e6cc2cf84f4ce3e70097d54d55086228df6d9acab5cfbf2"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-84/bug-17-progress.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 5477,
+        "sha256": "9dfbfa5f79bf2fa444645ed669cf24fdfae9f121e0761c361ffd54faacf20a0e"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-17-closeout-validation.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 28509,
+        "sha256": "58b9151a0a25d90af11bcca5a3be2d8b73206ddaa1e29beb08778fe4abb0ae4e"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-17-local-verification.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 24383,
+        "sha256": "75ee40e5405dffcd2c7628113a2af58a709df0e91ace2b546c69d61fefce9c2e"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 8265,
+        "sha256": "571aad4616f9590e87612687b3989b88d088da738b74899488f548c3f5a1b66d"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-17-transport-intake.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 3525,
+        "sha256": "6185afe504911090363661b5de9b5d07e07ae273b3a945a463482831ab01cdcc"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-17-transport-progress.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 7133,
+        "sha256": "e8c9b54a2ce29e825b47826cb4da26cea3421fcb9c91a37f1abc255d1a4d8e6e"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-39-local-verification.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 140821,
+        "sha256": "9454a30a324c502e65cf1f95f174013cec267ab2de405d5cd1b4988c5d234c37"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-41-local-verification.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 38064,
+        "sha256": "ecd4db3e338a6163a60744bf92fc2daf4a95cfacd8135c306dcd565c7c3ebc7a"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-42-local-verification.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 24633,
+        "sha256": "a3f582cab32fd103a301e2592cafff45e422eea528d45005439bfecebdb281a9"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-43-local-verification.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 88958,
+        "sha256": "02de1c1960c7c02bea66bbc781a6c66203a6e6db09f5fe7904477c3575019f7c"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/changed-warning-intake.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 5189,
+        "sha256": "c07b8ad46453acc4c706b8ff639c9531ba0049028b7038bbe4b639299797c677"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/execution-baseline-20260915.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 415107,
+        "sha256": "928f06257547a95e3a9993f6aca346915a12209886acd7ee29383b34f00ed60e"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/observational-boundary-reproductions.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 5745,
+        "sha256": "c2d734e611af0f6470bb6f5979d996ffffa36644f1fd7593ce4804004ff04270"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/observational-boundary-verification.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 27897,
+        "sha256": "f1edf0ca0dd1ee119b9f6e3f3002eeb67668f1e1d9f8eb258f2264f148ffd265"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/planning-receipt.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 65188,
+        "sha256": "01686fd88e5468e6deaa4e99a4be573df41057c377fe0202141cdee8e9d47bbc"
+      },
+      {
+        "path": ".mdkg/artifacts/goal-86/requirement-coverage.json",
+        "status": "??",
+        "mode": 33188,
+        "size": 106369,
+        "sha256": "1bde684cef7218ec1d99447ca5c3509660c6eb72817fc730d6b12e955e8a69d6"
+      },
+      {
+        "path": ".mdkg/design/dec-96-require-fresh-security-and-macos-linux-launch-qualification-for-mdkg-0-6-0.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 2895,
+        "sha256": "25697326c8a7a28d7937cfcc422d699283908cca65cbffd71d4bde6d413e7e6e"
+      },
+      {
+        "path": ".mdkg/work/bug-40-keep-subgraph-sync-previews-free-of-mutation-locks-and-cache-directory-writes.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 5556,
+        "sha256": "37e9b756405fe4d440346e6aff8346386c5332a0a961cabf1ca9ba9223cfdcf0"
+      },
+      {
+        "path": ".mdkg/work/bug-41-prevent-configured-git-helpers-from-executing-through-generic-graph-observations.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 5549,
+        "sha256": "12d715ca4d93e7b2a5039ea5c7696724914d45aaa1a5c089701fa505eb043b34"
+      },
+      {
+        "path": ".mdkg/work/bug-42-prevent-copied-legacy-json-caches-from-overriding-current-authored-metadata.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 7874,
+        "sha256": "8973cae0199b2e94ac868bd1d2763ffcad77599fde5e90db7392c8a9053d38d5"
+      },
+      {
+        "path": ".mdkg/work/bug-43-preserve-exact-changed-warning-paths-in-nested-git-checkouts-and-literal-filenam.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 5676,
+        "sha256": "2caaf76c156ae30612d7fbc32d8ec71f521e772dc680778c995a9186e0d4f7d6"
+      },
+      {
+        "path": ".mdkg/work/chk-608-record-the-mdkg-0-6-0-launch-qualification-planning-package.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 4717,
+        "sha256": "81dbb20a3ca55efc5d332dbc35b8fe47f067cddf98abb6969152aeee9048caba"
+      },
+      {
+        "path": ".mdkg/work/chk-609-accept-goal-86-execution-custody-and-requirement-coverage.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 3262,
+        "sha256": "d71f72b51214c1986ca27b0a204098f6ce95d6b51c0a96cb3dc6cf72c1a6e8e7"
+      },
+      {
+        "path": ".mdkg/work/chk-610-verify-observational-git-and-subgraph-preview-fixes-and-record-cache-qualificati.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 5581,
+        "sha256": "adc18f9255c126435f050bc777327402b94178846052b182c45e023fe3b1f6f0"
+      },
+      {
+        "path": ".mdkg/work/chk-611-verify-shared-transport-state-exclusion-and-portable-checkpoint-compatibility.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 6745,
+        "sha256": "dbf5ed8a12c68637a3e290876dab68eeb7f8707ff64dc96ad0348aab2443a95d"
+      },
+      {
+        "path": ".mdkg/work/chk-612-verify-early-cli-option-admission-and-installed-compatibility.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 5961,
+        "sha256": "6905808dc6c6a5e291ba8929b17e14ec7833ae82f9af8b4d2636374fedf22a8d"
+      },
+      {
+        "path": ".mdkg/work/chk-613-verify-helper-free-git-observations-and-exact-provenance.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 6046,
+        "sha256": "69b0b94fd41a8e0110d99a80e3f1819edcfad652e32183847a7d18f9b8fd92c8"
+      },
+      {
+        "path": ".mdkg/work/chk-614-verify-content-bound-cache-freshness-and-explicit-archive-recovery.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 4224,
+        "sha256": "edbae757fddf7c03090417267946ceec1a9e5242acba725a512c5fe1e8212bf1"
+      },
+      {
+        "path": ".mdkg/work/chk-615-verify-exact-changed-only-warning-paths-across-native-git-checkouts.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 4785,
+        "sha256": "5a8eb92edd1e8ddec9a33c470a63959024cefaa8ef5205f408c40d7adb9b7517"
+      },
+      {
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 19355,
+        "sha256": "c29c3d48f8d900d939de9ec3d5e1d89e8775b8a8438f65fd765acd4e6f7678fb"
+      },
+      {
+        "path": ".mdkg/work/task-834-freeze-mdkg-0-6-0-launch-custody-and-requirement-coverage.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 5710,
+        "sha256": "9b67858d77741411edcfdddb14dbe6754a7dda53908cc2c1159a5dbc136defda"
+      },
+      {
+        "path": ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 3028,
+        "sha256": "cd663642ca7502ee2635ce8a8cb80f0dd9f3fde9b0cd652a332884eb27ee8a9e"
+      },
+      {
+        "path": ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 3287,
+        "sha256": "5854371c2e765ca0f787d5562bb0aac9be0a4daf2dd169bc54547f1c8424d23a"
+      },
+      {
+        "path": ".mdkg/work/task-837-audit-the-post-remediation-mdkg-0-6-0-repository-with-a-fresh-standard-security.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 3626,
+        "sha256": "7059fc4c9769ae8da6e71ee715ddcd02c98d929d7f879a8fc8d7c3a43ebeb4b6"
+      },
+      {
+        "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+        "status": "??",
+        "mode": 33188,
+        "size": 4836,
+        "sha256": "0aaaa0209732c3c0dab8b9573c9a550f1c26a65545bf42450d35d78275c1d66f"
+      },
+      {
+        "path": "src/commands/option_contract.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 11804,
+        "sha256": "65962d574874900624db7d5b30edeb918dae6fa87111f4efe9d5e0c582936cbf"
+      },
+      {
+        "path": "src/graph/json_cache_fingerprint.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 3253,
+        "sha256": "123cfcde4d5515ae57b3688e73e334351186fc4758c930f09dcd9ec449cccb7e"
+      },
+      {
+        "path": "src/graph/transport_policy.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 10533,
+        "sha256": "70d2c63deaa0c0e3a28a4d861b7b2f5e6eb4f5a1154eabe9c13bf811a24d67bf"
+      },
+      {
+        "path": "src/graph/transport_state.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 14198,
+        "sha256": "9ef4e25fb24b02f57267494918ba45fdf54b79e79f29ef468bfe8551654f5420"
+      },
+      {
+        "path": "src/util/git_observation.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 10069,
+        "sha256": "c365ea1244ffa4e3b634e5c6b9aecf6e7c631ced0aebdef76abf57f7e90df7e3"
+      },
+      {
+        "path": "tests/commands/bundle_state.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 49501,
+        "sha256": "c8db1371040259b2c2336acbfa65ea2c68e9d29fdb4f2a646b7ce73665f458cb"
+      },
+      {
+        "path": "tests/commands/changed_warning_paths.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 659,
+        "sha256": "93d46353f782dbc6d04e46dee55745bb4675bb545a3a1340e5a20389e0675f43"
+      },
+      {
+        "path": "tests/commands/cli_option_admission.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 6635,
+        "sha256": "e7a7e881703aeb062f8a3e2a6d1b7e76a4f4aa49b927499323c4f18dda5a8375"
+      },
+      {
+        "path": "tests/commands/git_child_observation.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 926,
+        "sha256": "6923b6f8a4373f1317eeadeecdc13c3119f2f65420f845290e125999f059735f"
+      },
+      {
+        "path": "tests/commands/git_helper_observation.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 1981,
+        "sha256": "5f064a4329aff9dc270903d3cefe0683c9cc16da46cac4f6ccb0e3c8da63d16b"
+      },
+      {
+        "path": "tests/commands/git_observation.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 1046,
+        "sha256": "1d114d4c3a777ad2fdefd0d3cdf98c124ae3dd3bc44f9837ee91699ba5c2d4f3"
+      },
+      {
+        "path": "tests/fixtures/cache-freshness.cjs",
+        "status": "??",
+        "mode": 33188,
+        "size": 11121,
+        "sha256": "31295080805838f8072b6521168eba119600d543cfd4da638ac2c88e260c0bb4"
+      },
+      {
+        "path": "tests/fixtures/changed-warnings.cjs",
+        "status": "??",
+        "mode": 33188,
+        "size": 8110,
+        "sha256": "d8f2711453e2cab0cee63c81569aebd58268c003dad4fff2872f5c36409efc92"
+      },
+      {
+        "path": "tests/fixtures/cli-options.cjs",
+        "status": "??",
+        "mode": 33188,
+        "size": 11247,
+        "sha256": "47fa61377e81a86aeceb97471c3b75daf946b1b32d6b1cd817cae777c524c78e"
+      },
+      {
+        "path": "tests/fixtures/git-child-observation.cjs",
+        "status": "??",
+        "mode": 33188,
+        "size": 7771,
+        "sha256": "389be144bccf93e24aa5169544f67da108331dbbd04fd9fd5a96e045e49f2006"
+      },
+      {
+        "path": "tests/fixtures/git-helper-observation.cjs",
+        "status": "??",
+        "mode": 33188,
+        "size": 16996,
+        "sha256": "543e30034835bfff09342d18b47cdd96a0a494f8cfd38bc16bd2cd8d9dcea6e9"
+      },
+      {
+        "path": "tests/fixtures/git-observation.cjs",
+        "status": "??",
+        "mode": 33188,
+        "size": 20243,
+        "sha256": "92512fb798c09fa7065de3a9568dbdf458689c02d11301b3172adaa69cb5e9db"
+      },
+      {
+        "path": "tests/fixtures/transport-state.cjs",
+        "status": "??",
+        "mode": 33188,
+        "size": 16176,
+        "sha256": "e40f1ccb7efebf0fe08f3814f71db677c3859a6185472ef79d880e511efeef43"
+      },
+      {
+        "path": "tests/graph/cache_freshness.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 19865,
+        "sha256": "dd4a197c340eb60c7cddd27577fa56e982f57cbbfc4a6da8a8a9c21338746de2"
+      },
+      {
+        "path": "tests/util/git_prefix.test.ts",
+        "status": "??",
+        "mode": 33188,
+        "size": 1102,
+        "sha256": "4b45d2687aa4281ba9855dad5ab501367494ac1790eb3ac1d1f312acd08e35b8"
+      }
+    ],
+    "non_mdkg_manifest_sha256": "466d68a28edb799b9b687194c7ffda3cb68395d49dad65a4379f008079e8a8e5",
+    "protected": [
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-wal",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-shm",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-journal",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      },
+      {
+        "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index",
+        "sha256": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+      },
+      {
+        "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index.lock",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/index/write.lock",
+        "absent": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": ".mdkg/artifacts/goal-86/bug-43-local-verification.json",
+        "sha256": "02de1c1960c7c02bea66bbc781a6c66203a6e6db09f5fe7904477c3575019f7c",
+        "size": 88958
+      },
+      {
+        "path": "/private/tmp/mdkg-goal86-writer-fence-nREhVd/before.json",
+        "sha256": "695614d9e79d4909e06e98775e930a4c3821f8cdc92ac26bd863fdf0de790892",
+        "size": 9669
+      },
+      {
+        "path": "/private/tmp/mdkg-goal86-writer-fence-nREhVd/warm-hHudZF/before.json",
+        "sha256": "7e633501ff14ad821a410c315b6557127ed7eeff7ddab243bdac225ed06eae66",
+        "size": 9828
+      },
+      {
+        "path": "/private/tmp/mdkg-goal86-writer-fence-nREhVd/capabilities-lUmaF2/before.json",
+        "sha256": "2a0356be7af66fd27e4427821a29ea576574b7c4726b83413bce0f0cce5591de",
+        "size": 9762
+      },
+      {
+        "path": "/private/tmp/mdkg-goal86-writer-fence-nREhVd/reproduce.cjs",
+        "sha256": "8606cfb314a8e97cf923b77f8a8296c1aec80b409ab4f51a7a88b57b8f2eee39",
+        "size": 4016
+      },
+      {
+        "path": "/private/tmp/mdkg-goal86-writer-fence-nREhVd/capability-probe.cjs",
+        "sha256": "188d3f406919de1d8683afaceba858b6f2385e52c7acb59695a7a9e48922594b",
+        "size": 2086
+      }
+    ]
+  },
+  "scope": [
+    {
+      "qid": "root:task-834",
+      "path": ".mdkg/work/task-834-freeze-mdkg-0-6-0-launch-custody-and-requirement-coverage.md",
+      "status": "done",
+      "title": "Freeze mdkg 0.6.0 launch custody and requirement coverage"
+    },
+    {
+      "qid": "root:bug-40",
+      "path": ".mdkg/work/bug-40-keep-subgraph-sync-previews-free-of-mutation-locks-and-cache-directory-writes.md",
+      "status": "done",
+      "title": "Keep subgraph sync previews free of mutation locks and cache directory writes"
+    },
+    {
+      "qid": "root:bug-35",
+      "path": ".mdkg/work/bug-35-keep-observational-git-subprocesses-from-refreshing-root-and-child-indexes.md",
+      "status": "done",
+      "title": "Keep observational Git subprocesses from refreshing root and child indexes"
+    },
+    {
+      "qid": "root:bug-17",
+      "path": ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+      "status": "done",
+      "title": "Public graph bundles include ignored live queue databases and checkout-local state"
+    },
+    {
+      "qid": "root:bug-39",
+      "path": ".mdkg/work/bug-39-reject-unsupported-command-options-before-dispatch-and-unintended-writes.md",
+      "status": "done",
+      "title": "Reject unsupported command options before dispatch and unintended writes"
+    },
+    {
+      "qid": "root:bug-41",
+      "path": ".mdkg/work/bug-41-prevent-configured-git-helpers-from-executing-through-generic-graph-observations.md",
+      "status": "done",
+      "title": "Prevent configured Git helpers from executing through generic graph observations"
+    },
+    {
+      "qid": "root:bug-42",
+      "path": ".mdkg/work/bug-42-prevent-copied-legacy-json-caches-from-overriding-current-authored-metadata.md",
+      "status": "done",
+      "title": "Prevent copied legacy JSON caches from overriding current authored metadata"
+    },
+    {
+      "qid": "root:bug-43",
+      "path": ".mdkg/work/bug-43-preserve-exact-changed-warning-paths-in-nested-git-checkouts-and-literal-filenam.md",
+      "status": "done",
+      "title": "Preserve exact changed-warning paths in nested Git checkouts and literal filenames"
+    },
+    {
+      "qid": "root:task-835",
+      "path": ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md",
+      "status": "progress",
+      "title": "Enforce explicit v2 writer capability admission and document old client limits"
+    },
+    {
+      "qid": "root:task-836",
+      "path": ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md",
+      "status": "backlog",
+      "title": "Add evidence-bound interrupted-writer recovery for graph transactions"
+    },
+    {
+      "qid": "root:task-827",
+      "path": ".mdkg/work/task-827-prepare-draft-mdkg-0-6-0-metadata-and-release-guidance.md",
+      "status": "progress",
+      "title": "Prepare draft mdkg 0.6.0 metadata and release guidance"
+    },
+    {
+      "qid": "root:test-477",
+      "path": ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+      "status": "backlog",
+      "title": "Installed initialization and real 0.5.2 upgrade acceptance for mdkg 0.6.0"
+    },
+    {
+      "qid": "root:test-478",
+      "path": ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+      "status": "backlog",
+      "title": "Installed offline branch identity and semantic integration acceptance for mdkg 0.6.0"
+    },
+    {
+      "qid": "root:test-479",
+      "path": ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+      "status": "backlog",
+      "title": "Installed ownership containment and recovery acceptance for mdkg 0.6.0"
+    },
+    {
+      "qid": "root:test-480",
+      "path": ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+      "status": "backlog",
+      "title": "Installed graph compatibility pack and MCP acceptance for mdkg 0.6.0"
+    },
+    {
+      "qid": "root:test-481",
+      "path": ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+      "status": "backlog",
+      "title": "Installed scale and complete goal blocker-routing acceptance for mdkg 0.6.0"
+    },
+    {
+      "qid": "root:test-482",
+      "path": ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+      "status": "backlog",
+      "title": "Installed Node 24.15.0 supported 24 and Node 26 acceptance for mdkg 0.6.0"
+    },
+    {
+      "qid": "root:test-483",
+      "path": ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+      "status": "backlog",
+      "title": "Verify installed behavioral audit blockers and passing compatibility controls"
+    },
+    {
+      "qid": "root:test-484",
+      "path": ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+      "status": "backlog",
+      "title": "Qualify native Git boundaries and generic-only mdkg 0.6.0 contracts"
+    },
+    {
+      "qid": "root:test-486",
+      "path": ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+      "status": "todo",
+      "title": "Verify unsupported CLI options fail before side effects and supported flags remain compatible"
+    },
+    {
+      "qid": "root:test-487",
+      "path": ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md",
+      "status": "backlog",
+      "title": "Qualify the exact mdkg 0.6.0 candidate on macOS and Linux"
+    },
+    {
+      "qid": "root:task-826",
+      "path": ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+      "status": "backlog",
+      "title": "Execute installed mdkg 0.6.0 temporary graph qualification"
+    },
+    {
+      "qid": "root:bug-7",
+      "path": ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+      "status": "progress",
+      "title": "Qualify installed package identity and real 0.5.2 upgrades"
+    },
+    {
+      "qid": "root:task-837",
+      "path": ".mdkg/work/task-837-audit-the-post-remediation-mdkg-0-6-0-repository-with-a-fresh-standard-security.md",
+      "status": "backlog",
+      "title": "Audit the post-remediation mdkg 0.6.0 repository with a fresh Standard security scan"
+    },
+    {
+      "qid": "root:task-828",
+      "path": ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+      "status": "backlog",
+      "title": "Independently verify all mdkg 0.6.0 publication blocker fixes"
+    },
+    {
+      "qid": "root:task-829",
+      "path": ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+      "status": "backlog",
+      "title": "Run full mdkg 0.6.0 local release qualification ladder"
+    },
+    {
+      "qid": "root:task-830",
+      "path": ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+      "status": "backlog",
+      "title": "Seal exact locally qualified mdkg 0.6.0 candidate"
+    }
+  ],
+  "reproduction_evidence": {
+    "cold": {
+      "kind": "task835-prepatch-capability-fence",
+      "runtime": "v24.18.0",
+      "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+      "current_cli": "4400d15f793f783d6e61206a4357e8904ae5532d2e0958c7a5927dd9d18d0b76",
+      "published_cli": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+      "migration_config_schema": 1,
+      "reviewed_plan_hash": "sha256:045695d49385710c3af1fd6cd79a7ca3c7555971959cec206215330bb12ef23f",
+      "migration_owned_paths": [
+        ".mdkg/core/COLLABORATION.md",
+        ".mdkg/core/guide.md",
+        ".mdkg/core/HUMAN.md",
+        ".mdkg/core/rule-1-mdkg-conventions.md",
+        ".mdkg/core/rule-2-context-pack-rules.md",
+        ".mdkg/core/rule-3-cli-contract.md",
+        ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+        ".mdkg/core/rule-5-release-and-versioning.md",
+        ".mdkg/core/rule-6-templates-and-schemas.md",
+        ".mdkg/core/SOUL.md",
+        ".mdkg/work/task-1-existing-node.md",
+        ".mdkg/graph.json",
+        ".mdkg/identity/migrations/a951b299479842c75a4b79a6636e29a8e141a10913e1e3e91a6100b0a27c2fe6.json"
+      ],
+      "cases": [
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "new",
+            "task",
+            "Old write",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "schema_after": 1,
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "task",
+            "update",
+            "task-1",
+            "--priority",
+            "2",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "schema_after": 1,
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "init"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/init-manifest.json"
+          ],
+          "schema_after": 1,
+          "changed_count": 1,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "init",
+            "--agent"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/init-manifest.json",
+            ".agents",
+            ".agents/skills",
+            ".agents/skills/.mdkg-managed.json",
+            ".agents/skills/author-mdkg-skill",
+            ".agents/skills/author-mdkg-skill/SKILL.md",
+            ".agents/skills/build-pack-and-execute-task",
+            ".agents/skills/build-pack-and-execute-task/SKILL.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 52,
+          "changed_truncated": true
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "init",
+            "--force"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/README.md",
+            ".mdkg/core/COLLABORATION.md",
+            ".mdkg/core/HUMAN.md",
+            ".mdkg/core/SOUL.md",
+            ".mdkg/core/core.md",
+            ".mdkg/core/guide.md",
+            ".mdkg/core/rule-1-mdkg-conventions.md",
+            ".mdkg/core/rule-2-context-pack-rules.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 15,
+          "changed_truncated": true
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "new",
+            "task",
+            "Old write",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "schema_after": 2,
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "task",
+            "update",
+            "task-1",
+            "--priority",
+            "2",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "schema_after": 2,
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "init"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/init-manifest.json"
+          ],
+          "schema_after": 2,
+          "changed_count": 1,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "init",
+            "--agent"
+          ],
+          "status": 4,
+          "changed": [
+            ".mdkg/skills",
+            ".mdkg/skills/author-mdkg-skill",
+            ".mdkg/skills/author-mdkg-skill/SKILL.md",
+            ".mdkg/skills/build-pack-and-execute-task",
+            ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+            ".mdkg/skills/pursue-mdkg-goal",
+            ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+            ".mdkg/skills/pursue-mdkg-loop"
+          ],
+          "schema_after": 2,
+          "changed_count": 21,
+          "changed_truncated": true
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "init",
+            "--force"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/README.md",
+            ".mdkg/config.json",
+            ".mdkg/core/COLLABORATION.md",
+            ".mdkg/core/HUMAN.md",
+            ".mdkg/core/SOUL.md",
+            ".mdkg/core/core.md",
+            ".mdkg/core/guide.md",
+            ".mdkg/core/rule-1-mdkg-conventions.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 16,
+          "changed_truncated": true
+        },
+        {
+          "client": "current-prepatch",
+          "schema": 2,
+          "args": [
+            "new",
+            "task",
+            "Compatible writer",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        }
+      ]
+    },
+    "warm": {
+      "kind": "task835-prepatch-capability-fence",
+      "runtime": "v24.18.0",
+      "runtime_sha256": "72c18e2eeda260f67a5b2b66e96fa9b5ad82864676ebb54925695d87120cae3f",
+      "current_cli": "4400d15f793f783d6e61206a4357e8904ae5532d2e0958c7a5927dd9d18d0b76",
+      "published_cli": "b108d4fefdf398c2a4d37ecd93042cdd12eff1203484afea0c96184b09d0e6c1",
+      "migration_config_schema": 1,
+      "reviewed_plan_hash": "sha256:d86b914787db7293ee3f0f4d071a3df41049f690a5d006ebc8edc778c8ac76f8",
+      "migration_owned_paths": [
+        ".mdkg/core/COLLABORATION.md",
+        ".mdkg/core/guide.md",
+        ".mdkg/core/HUMAN.md",
+        ".mdkg/core/rule-1-mdkg-conventions.md",
+        ".mdkg/core/rule-2-context-pack-rules.md",
+        ".mdkg/core/rule-3-cli-contract.md",
+        ".mdkg/core/rule-4-repo-safety-and-ignores.md",
+        ".mdkg/core/rule-5-release-and-versioning.md",
+        ".mdkg/core/rule-6-templates-and-schemas.md",
+        ".mdkg/core/SOUL.md",
+        ".mdkg/work/task-1-existing-node.md",
+        ".mdkg/graph.json",
+        ".mdkg/identity/migrations/5590e3d410f5d29bfe674617666ac9495c3adc9df8bee9b40845aee8821365b3.json"
+      ],
+      "cases": [
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "new",
+            "task",
+            "Old write",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [
+            ".mdkg/index/mdkg.sqlite",
+            ".mdkg/work/task-2-old-write.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 2,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "task",
+            "update",
+            "task-1",
+            "--priority",
+            "2",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [
+            ".mdkg/work/task-1-existing-node.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 1,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "init"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/init-manifest.json"
+          ],
+          "schema_after": 1,
+          "changed_count": 1,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "init",
+            "--agent"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/init-manifest.json",
+            ".agents",
+            ".agents/skills",
+            ".agents/skills/.mdkg-managed.json",
+            ".agents/skills/author-mdkg-skill",
+            ".agents/skills/author-mdkg-skill/SKILL.md",
+            ".agents/skills/build-pack-and-execute-task",
+            ".agents/skills/build-pack-and-execute-task/SKILL.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 52,
+          "changed_truncated": true
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 1,
+          "args": [
+            "init",
+            "--force"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/README.md",
+            ".mdkg/core/COLLABORATION.md",
+            ".mdkg/core/HUMAN.md",
+            ".mdkg/core/SOUL.md",
+            ".mdkg/core/core.md",
+            ".mdkg/core/guide.md",
+            ".mdkg/core/rule-1-mdkg-conventions.md",
+            ".mdkg/core/rule-2-context-pack-rules.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 15,
+          "changed_truncated": true
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "new",
+            "task",
+            "Old write",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "schema_after": 2,
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "task",
+            "update",
+            "task-1",
+            "--priority",
+            "2",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "schema_after": 2,
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "init"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/init-manifest.json"
+          ],
+          "schema_after": 2,
+          "changed_count": 1,
+          "changed_truncated": false
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "init",
+            "--agent"
+          ],
+          "status": 4,
+          "changed": [
+            ".mdkg/skills",
+            ".mdkg/skills/author-mdkg-skill",
+            ".mdkg/skills/author-mdkg-skill/SKILL.md",
+            ".mdkg/skills/build-pack-and-execute-task",
+            ".mdkg/skills/build-pack-and-execute-task/SKILL.md",
+            ".mdkg/skills/pursue-mdkg-goal",
+            ".mdkg/skills/pursue-mdkg-goal/SKILL.md",
+            ".mdkg/skills/pursue-mdkg-loop"
+          ],
+          "schema_after": 2,
+          "changed_count": 21,
+          "changed_truncated": true
+        },
+        {
+          "client": "published0.5.2",
+          "schema": 2,
+          "args": [
+            "init",
+            "--force"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/README.md",
+            ".mdkg/config.json",
+            ".mdkg/core/COLLABORATION.md",
+            ".mdkg/core/HUMAN.md",
+            ".mdkg/core/SOUL.md",
+            ".mdkg/core/core.md",
+            ".mdkg/core/guide.md",
+            ".mdkg/core/rule-1-mdkg-conventions.md"
+          ],
+          "schema_after": 1,
+          "changed_count": 16,
+          "changed_truncated": true
+        },
+        {
+          "client": "current-prepatch",
+          "schema": 2,
+          "args": [
+            "new",
+            "task",
+            "Compatible writer",
+            "--json"
+          ],
+          "status": 4,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        }
+      ]
+    },
+    "capabilities": {
+      "kind": "task835-current-unknown-capability",
+      "runtime": "v24.18.0",
+      "cases": [
+        {
+          "kind": "writer",
+          "args": [
+            "event",
+            "enable",
+            "--json"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/work/events",
+            ".mdkg/work/events/events.jsonl"
+          ],
+          "changed_count": 2,
+          "changed_truncated": false
+        },
+        {
+          "kind": "writer",
+          "args": [
+            "new",
+            "task",
+            "Unqualified write",
+            "--json"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "kind": "writer",
+          "args": [
+            "index"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "kind": "writer",
+          "args": [
+            "db",
+            "init",
+            "--json"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "kind": "writer",
+          "args": [
+            "workspace",
+            "add",
+            "child",
+            "child",
+            "--json"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "kind": "feature",
+          "args": [
+            "event",
+            "enable",
+            "--json"
+          ],
+          "status": 0,
+          "changed": [
+            ".mdkg/work/events",
+            ".mdkg/work/events/events.jsonl"
+          ],
+          "changed_count": 2,
+          "changed_truncated": false
+        },
+        {
+          "kind": "feature",
+          "args": [
+            "new",
+            "task",
+            "Unqualified write",
+            "--json"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "kind": "feature",
+          "args": [
+            "index"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "kind": "feature",
+          "args": [
+            "db",
+            "init",
+            "--json"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        },
+        {
+          "kind": "feature",
+          "args": [
+            "workspace",
+            "add",
+            "child",
+            "child",
+            "--json"
+          ],
+          "status": 1,
+          "changed": [],
+          "changed_count": 0,
+          "changed_truncated": false
+        }
+      ]
+    }
+  },
+  "completed_local": {
+    "nodes": [
+      "root:task-834",
+      "root:bug-35",
+      "root:bug-40",
+      "root:bug-17",
+      "root:bug-39",
+      "root:bug-41",
+      "root:bug-42",
+      "root:bug-43"
+    ],
+    "meaning": "Local intermediate acceptance only; independent final security/platform/artifact requalification is still mandatory.",
+    "latest_source_suite": {
+      "passed": 1521,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 318934.642583,
+      "rerun_during_pause": false,
+      "receipt": ".mdkg/artifacts/goal-86/bug-43-local-verification.json"
+    },
+    "latest_installed": {
+      "runtimes": [
+        "24.15.0",
+        "24.18.0",
+        "26.0.0"
+      ],
+      "platform": "macOS arm64",
+      "cases_per_runtime": 16,
+      "invocations_per_runtime": 32,
+      "package_version": "0.5.2",
+      "tarball_sha256": "fd927b699a8091922bba4c104c27b0a1ed150ea7790e5cca0882a00236880d06",
+      "final_candidate": false
+    }
+  },
+  "remaining_gates": [
+    {
+      "nodes": [
+        "task-835"
+      ],
+      "gap": "Explicit v2 compatible-writer admission and reviewed migration/upgrade fence; reproduced, not fixed."
+    },
+    {
+      "nodes": [
+        "task-836"
+      ],
+      "gap": "Evidence-bound killed-writer lock/journal recovery; no age/PID-only takeover; not started."
+    },
+    {
+      "nodes": [
+        "task-827"
+      ],
+      "gap": "Finalize 0.6.0 metadata, breaking changes, native Git guidance and package inputs; currently metadata is 0.5.2."
+    },
+    {
+      "nodes": [
+        "test-477",
+        "test-478",
+        "test-479",
+        "test-480",
+        "test-481",
+        "test-482",
+        "test-483",
+        "test-484",
+        "test-486",
+        "test-487",
+        "task-826",
+        "bug-7"
+      ],
+      "gap": "Complete installed, real worktree/topology, upgrade/recovery, macOS/Linux case matrix against exact finalized artifact. Windows remains unqualified."
+    },
+    {
+      "nodes": [
+        "task-837",
+        "task-828"
+      ],
+      "gap": "Fresh Standard repository scan and independent full remediation diff review. Historical task825 and narrow functional reviews are not current clearance."
+    },
+    {
+      "nodes": [
+        "task-829",
+        "task-830",
+        "chk-570"
+      ],
+      "gap": "Unchanged-coverage full release ladder, reviewed local commits and exact artifact seal."
+    },
+    {
+      "nodes": [
+        "task-831",
+        "goal-85"
+      ],
+      "gap": "Separate future publication authority and independent fresh artifact/blocker checks; no publish authority used."
+    }
+  ],
+  "explicit_residuals": [
+    "Historical task309 mdkg://goal-10 migration ambiguity; never invent identity or rewrite historical evidence.",
+    "Ancestor-directory substitution exposure and ACL/ownership preservation require independent macOS/Linux assessment.",
+    "Measured slow transactions remain tracked; larger redesign is deferred unless correctness or mandatory qualification fails.",
+    "Consumer extraction is complete/local/undispatched; final package exclusion/hash recheck remains, consumer adoption unverified.",
+    "Three known stale imported-bundle warnings preserved; no refresh authorized.",
+    "Linux executor capability is not Linux qualification; no container/pull/service operation performed during pause."
+  ],
+  "slowdown_assessment": [
+    {
+      "factor": "New mandatory correctness findings during qualification",
+      "detail": "Bugs40-43 added preview-write, helper-execution, stale-cache and exact-path fixes. These were reproduced blockers, not optional scope expansion."
+    },
+    {
+      "factor": "Cross-layer identity/recovery coupling",
+      "detail": "Config, manifest, warm caches, journals and old executables must agree before writes; failure exits alone did not prove safety."
+    },
+    {
+      "factor": "Repeated wide validation",
+      "detail": "Full source plus installed three-runtime proof has been repeated per bounded fix; source suite alone took about 5.3 minutes latest. Final frozen artifact still requires full requalification."
+    },
+    {
+      "factor": "Large uncommitted custody",
+      "detail": "123 dirty paths at pause entry, 64 outside .mdkg; no new commits during this remediation run. Reviewed complete milestone commits can reduce custody burden after resumption."
+    }
+  ],
+  "recommendations_after_explicit_resume": [
+    "Re-inventory exact hashes and ownership; resume task835 then task836 only within the accepted contract.",
+    "Use focused regression and impacted installed cases during iteration; broad full-suite/three-runtime proof at stable milestones and all mandatory final gates, without lowering acceptance.",
+    "Make reviewed explicit-path milestone commits for complete self-contained units after validation; no broad staging or unrelated inclusion.",
+    "Freeze finalized inputs once, then qualify the exact artifact and run independent read-only security work against that stable snapshot.",
+    "Keep optimization and optional enhancements out unless a confirmed mandatory gate fails."
+  ],
+  "open_clarifications": [
+    {
+      "question": "Does Linux qualification need x86_64 as well as ARM64?",
+      "recommendation": "Include Linux x86_64 for broad CLI users and record ARM64 separately. The previously observed local Docker executor is ARM64; verify emulation versus native coverage explicitly.",
+      "impact": "Defines final matrix scope; may require separate executor authority if local capability is unavailable."
+    },
+    {
+      "question": "Are any real consumers already using v2 graphs produced by unreleased builds?",
+      "recommendation": "If yes, identify producing versions and obtain a sanitized representative fixture through normal ownership routing. Preserve immutable identities via a reviewed explicit upgrade; never silently rewrite consumer graphs.",
+      "impact": "Determines representative compatibility evidence, not a reason to reopen accepted architecture or contact consumers without authority."
+    }
+  ],
+  "ownership": {
+    "semantic_owner": "mdkg-project-agent",
+    "active_execution": "paused by user",
+    "runtime_lease": "none acquired",
+    "transient_lock": "absent at matching post-write bookend",
+    "task_835_retained_for_resume": true,
+    "subagents": "all listed workers completed; no running review/test/build session owned by this turn"
+  },
+  "skill_coverage": [
+    "verify-close-and-checkpoint",
+    "pursue-mdkg-goal",
+    "select-work-and-ground-context"
+  ],
+  "existing_skills_searched": [
+    "checkpoint",
+    "recovery"
+  ],
+  "skill_candidates": [],
+  "verification": {
+    "state": "passed checkpoint-only validation; release remains NOT_READY",
+    "full_graph": {
+      "exit_code": 0,
+      "action": "validated",
+      "ok": true,
+      "warning_count": 3,
+      "error_count": 0,
+      "warnings": [
+        "subgraph ai_native_sdlc_demo: bundle age 3024521s exceeds max_stale_seconds 86400",
+        "subgraph demo_agentic_coding: bundle age 4407181s exceeds max_stale_seconds 2592000",
+        "subgraph template_mdkg_dev: bundle age 4407181s exceeds max_stale_seconds 2592000"
+      ],
+      "warning_diagnostics": [
+        {
+          "id": "subgraph.warning",
+          "category": "subgraph",
+          "severity": "warning",
+          "message": "subgraph ai_native_sdlc_demo: bundle age 3024521s exceeds max_stale_seconds 86400",
+          "remediation": "Run mdkg subgraph verify or refresh the source bundle after reviewing child graph freshness."
+        },
+        {
+          "id": "subgraph.warning",
+          "category": "subgraph",
+          "severity": "warning",
+          "message": "subgraph demo_agentic_coding: bundle age 4407181s exceeds max_stale_seconds 2592000",
+          "remediation": "Run mdkg subgraph verify or refresh the source bundle after reviewing child graph freshness."
+        },
+        {
+          "id": "subgraph.warning",
+          "category": "subgraph",
+          "severity": "warning",
+          "message": "subgraph template_mdkg_dev: bundle age 4407181s exceeds max_stale_seconds 2592000",
+          "remediation": "Run mdkg subgraph verify or refresh the source bundle after reviewing child graph freshness."
+        }
+      ],
+      "warning_summary": {
+        "total": 3,
+        "emitted": 3,
+        "truncated": false,
+        "omitted_count": 0,
+        "limit": null,
+        "affected_file_count": 0,
+        "by_id": [
+          {
+            "key": "subgraph.warning",
+            "count": 3
+          }
+        ],
+        "by_category": [
+          {
+            "key": "subgraph",
+            "count": 3
+          }
+        ],
+        "by_node_type": [],
+        "top_qids": [],
+        "top_paths": []
+      },
+      "errors": []
+    },
+    "changed_graph": {
+      "exit_code": 0,
+      "action": "validated",
+      "ok": true,
+      "warning_count": 0,
+      "error_count": 0,
+      "warnings": [],
+      "warning_diagnostics": [],
+      "warning_summary": {
+        "total": 0,
+        "emitted": 0,
+        "truncated": false,
+        "omitted_count": 0,
+        "limit": null,
+        "affected_file_count": 0,
+        "by_id": [],
+        "by_category": [],
+        "by_node_type": [],
+        "top_qids": [],
+        "top_paths": []
+      },
+      "errors": [],
+      "warning_filter": {
+        "mode": "changed-only",
+        "changed_paths": [
+          ".mdkg/artifacts/goal-84/bug-17-progress.json",
+          ".mdkg/artifacts/goal-86/bug-17-closeout-validation.json",
+          ".mdkg/artifacts/goal-86/bug-17-local-verification.json",
+          ".mdkg/artifacts/goal-86/bug-17-portable-contract-progress.json",
+          ".mdkg/artifacts/goal-86/bug-17-transport-intake.json",
+          ".mdkg/artifacts/goal-86/bug-17-transport-progress.json",
+          ".mdkg/artifacts/goal-86/bug-39-local-verification.json",
+          ".mdkg/artifacts/goal-86/bug-41-local-verification.json",
+          ".mdkg/artifacts/goal-86/bug-42-local-verification.json",
+          ".mdkg/artifacts/goal-86/bug-43-local-verification.json",
+          ".mdkg/artifacts/goal-86/changed-warning-intake.json",
+          ".mdkg/artifacts/goal-86/execution-baseline-20260915.json",
+          ".mdkg/artifacts/goal-86/observational-boundary-reproductions.json",
+          ".mdkg/artifacts/goal-86/observational-boundary-verification.json",
+          ".mdkg/artifacts/goal-86/pause-checkpoint-20260915.json",
+          ".mdkg/artifacts/goal-86/planning-receipt.json",
+          ".mdkg/artifacts/goal-86/requirement-coverage.json",
+          ".mdkg/design/dec-96-require-fresh-security-and-macos-linux-launch-qualification-for-mdkg-0-6-0.md",
+          ".mdkg/index/mdkg.sqlite",
+          ".mdkg/work/bug-17-public-graph-bundles-include-ignored-live-queue-databases-and-checkout-local-sta.md",
+          ".mdkg/work/bug-35-keep-observational-git-subprocesses-from-refreshing-root-and-child-indexes.md",
+          ".mdkg/work/bug-39-reject-unsupported-command-options-before-dispatch-and-unintended-writes.md",
+          ".mdkg/work/bug-40-keep-subgraph-sync-previews-free-of-mutation-locks-and-cache-directory-writes.md",
+          ".mdkg/work/bug-41-prevent-configured-git-helpers-from-executing-through-generic-graph-observations.md",
+          ".mdkg/work/bug-42-prevent-copied-legacy-json-caches-from-overriding-current-authored-metadata.md",
+          ".mdkg/work/bug-43-preserve-exact-changed-warning-paths-in-nested-git-checkouts-and-literal-filenam.md",
+          ".mdkg/work/bug-7-qualify-installed-package-identity-and-real-0-5-2-upgrades.md",
+          ".mdkg/work/chk-570-accept-mdkg-0-6-0-full-local-qualification.md",
+          ".mdkg/work/chk-608-record-the-mdkg-0-6-0-launch-qualification-planning-package.md",
+          ".mdkg/work/chk-609-accept-goal-86-execution-custody-and-requirement-coverage.md",
+          ".mdkg/work/chk-610-verify-observational-git-and-subgraph-preview-fixes-and-record-cache-qualificati.md",
+          ".mdkg/work/chk-611-verify-shared-transport-state-exclusion-and-portable-checkpoint-compatibility.md",
+          ".mdkg/work/chk-612-verify-early-cli-option-admission-and-installed-compatibility.md",
+          ".mdkg/work/chk-613-verify-helper-free-git-observations-and-exact-provenance.md",
+          ".mdkg/work/chk-614-verify-content-bound-cache-freshness-and-explicit-archive-recovery.md",
+          ".mdkg/work/chk-615-verify-exact-changed-only-warning-paths-across-native-git-checkouts.md",
+          ".mdkg/work/chk-616-pause-goal-86-after-local-remediation-and-writer-admission-diagnosis.md",
+          ".mdkg/work/goal-83-audit-and-locally-qualify-mdkg-0-6-0.md",
+          ".mdkg/work/goal-84-resolve-mdkg-0-6-0-publication-blockers.md",
+          ".mdkg/work/goal-85-publish-and-verify-mdkg-0-6-0.md",
+          ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+          ".mdkg/work/task-826-execute-installed-mdkg-0-6-0-temporary-graph-qualification.md",
+          ".mdkg/work/task-827-prepare-draft-mdkg-0-6-0-metadata-and-release-guidance.md",
+          ".mdkg/work/task-828-independently-verify-all-mdkg-0-6-0-publication-blocker-fixes.md",
+          ".mdkg/work/task-829-run-full-mdkg-0-6-0-local-release-qualification-ladder.md",
+          ".mdkg/work/task-830-seal-exact-locally-qualified-mdkg-0-6-0-candidate.md",
+          ".mdkg/work/task-831-recheck-mdkg-0-6-0-approval-blockers-and-sealed-candidate.md",
+          ".mdkg/work/task-834-freeze-mdkg-0-6-0-launch-custody-and-requirement-coverage.md",
+          ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md",
+          ".mdkg/work/task-836-add-evidence-bound-interrupted-writer-recovery-for-graph-transactions.md",
+          ".mdkg/work/task-837-audit-the-post-remediation-mdkg-0-6-0-repository-with-a-fresh-standard-security.md",
+          ".mdkg/work/test-477-installed-initialization-and-real-0-5-2-upgrade-acceptance-for-mdkg-0-6-0.md",
+          ".mdkg/work/test-478-installed-offline-branch-identity-and-semantic-integration-acceptance-for-mdkg-0.md",
+          ".mdkg/work/test-479-installed-ownership-containment-and-recovery-acceptance-for-mdkg-0-6-0.md",
+          ".mdkg/work/test-480-installed-graph-compatibility-pack-and-mcp-acceptance-for-mdkg-0-6-0.md",
+          ".mdkg/work/test-481-installed-scale-and-complete-goal-blocker-routing-acceptance-for-mdkg-0-6-0.md",
+          ".mdkg/work/test-482-installed-node-24-15-0-supported-24-and-node-26-acceptance-for-mdkg-0-6-0.md",
+          ".mdkg/work/test-483-verify-installed-behavioral-audit-blockers-and-passing-compatibility-controls.md",
+          ".mdkg/work/test-484-qualify-native-git-boundaries-and-generic-only-mdkg-0-6-0-contracts.md",
+          ".mdkg/work/test-486-verify-unsupported-cli-options-fail-before-side-effects-and-supported-flags-rema.md",
+          ".mdkg/work/test-487-qualify-the-exact-mdkg-0-6-0-candidate-on-macos-and-linux.md"
+        ]
+      }
+    },
+    "sqlite": {
+      "exit_code": 0,
+      "action": "db-index-verify",
+      "ok": true,
+      "backend": "sqlite",
+      "root": "/Users/nick/omni-chat-rooms/projects/mdkg",
+      "checks": [
+        {
+          "name": "global",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/global.json",
+          "exists": true,
+          "stale": false,
+          "size": 3249366,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "skills",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/skills.json",
+          "exists": true,
+          "stale": false,
+          "size": 7149,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "capabilities",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/capabilities.json",
+          "exists": true,
+          "stale": false,
+          "size": 324551,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "subgraphs",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/subgraphs.json",
+          "exists": true,
+          "stale": false,
+          "size": 559439,
+          "detail": "cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        },
+        {
+          "name": "sqlite",
+          "ok": true,
+          "level": "ok",
+          "path": ".mdkg/index/mdkg.sqlite",
+          "exists": true,
+          "stale": false,
+          "size": 4505600,
+          "detail": "SQLite cache is present and fresh",
+          "errors": [],
+          "warnings": []
+        }
+      ],
+      "failure_count": 0,
+      "warnings": [],
+      "errors": []
+    },
+    "git_diff_check": {
+      "exit_code": 0,
+      "output": ""
+    },
+    "goal_evaluation": {
+      "action": "evaluated",
+      "goal": {
+        "workspace": "root",
+        "id": "goal-86",
+        "qid": "root:goal-86",
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "type": "goal",
+        "title": "Complete mdkg 0.6.0 remediation and launch qualification",
+        "status": "blocked",
+        "priority": 1,
+        "goal_state": "paused",
+        "goal_condition": "Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.",
+        "scope_refs": [
+          "task-834",
+          "bug-40",
+          "bug-35",
+          "bug-17",
+          "bug-39",
+          "bug-41",
+          "bug-42",
+          "bug-43",
+          "task-835",
+          "task-836",
+          "task-827",
+          "test-477",
+          "test-478",
+          "test-479",
+          "test-480",
+          "test-481",
+          "test-482",
+          "test-483",
+          "test-484",
+          "test-486",
+          "test-487",
+          "task-826",
+          "bug-7",
+          "task-837",
+          "task-828",
+          "task-829",
+          "task-830"
+        ],
+        "active_node": "task-835",
+        "required_skills": [
+          "select-work-and-ground-context",
+          "pursue-mdkg-goal",
+          "verify-close-and-checkpoint"
+        ],
+        "required_checks": [
+          "npm run build",
+          "npm run test",
+          "npm run cli:check",
+          "npm run docs:check",
+          "npm run ci:workflow:check",
+          "node dist/cli.js validate --json",
+          "node dist/cli.js validate --changed-only --json",
+          "node dist/cli.js db index verify --json",
+          "git diff --check"
+        ],
+        "max_iterations": "75",
+        "blocked_after_attempts": "3"
+      },
+      "report_only": true,
+      "runs_scripts": false,
+      "checks": [
+        {
+          "command": "npm run build",
+          "status": "report_only"
+        },
+        {
+          "command": "npm run test",
+          "status": "report_only"
+        },
+        {
+          "command": "npm run cli:check",
+          "status": "report_only"
+        },
+        {
+          "command": "npm run docs:check",
+          "status": "report_only"
+        },
+        {
+          "command": "npm run ci:workflow:check",
+          "status": "report_only"
+        },
+        {
+          "command": "node dist/cli.js validate --json",
+          "status": "report_only"
+        },
+        {
+          "command": "node dist/cli.js validate --changed-only --json",
+          "status": "report_only"
+        },
+        {
+          "command": "node dist/cli.js db index verify --json",
+          "status": "report_only"
+        },
+        {
+          "command": "git diff --check",
+          "status": "report_only"
+        }
+      ],
+      "completion_evidence_present": true
+    },
+    "source_tests_rerun": false,
+    "scans_launched": false,
+    "projection_refresh": "Supported goal pause/checkpoint/task update commands rebuilt required indexes; no standalone index or bundle refresh needed.",
+    "bookkeeping_note": "First comparison lacked a journal-path entry in the older snapshot helper, not a changed file. Explicit existence check confirmed runtime journal remains absent; complete comparison passes."
+  },
+  "after_pause": {
+    "head": "38205296208c23fcfcc6fc821a295040be05c0bb",
+    "branch": "main",
+    "cached_upstream": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+    "cached_divergence": "50\t0",
+    "staged_paths": [],
+    "changed_existing_paths": [
+      {
+        "path": ".mdkg/index/mdkg.sqlite",
+        "before": "aff461c5a04ea268342554af2b85441ddb7b1737f787aa33813756a678bdfa74",
+        "after": "f99ac73df6b7e8758f8564dc2e41622cd1898768a3b6f0b3e7231b405095b5fa"
+      },
+      {
+        "path": ".mdkg/work/goal-86-complete-mdkg-0-6-0-remediation-and-launch-qualification.md",
+        "before": "c29c3d48f8d900d939de9ec3d5e1d89e8775b8a8438f65fd765acd4e6f7678fb",
+        "after": "fe6cbe6fea8ed4e0157215d7bb56e309aa56af30e881c5c9b4c815056a106253"
+      },
+      {
+        "path": ".mdkg/work/task-835-enforce-explicit-v2-writer-capability-admission-and-document-old-client-limits.md",
+        "before": "cd663642ca7502ee2635ce8a8cb80f0dd9f3fde9b0cd652a332884eb27ee8a9e",
+        "after": "8944a2fdda93fa4f1a4230afe2a25c3b378b13f7160c7d2551dd2a93b57c4f86"
+      }
+    ],
+    "added_paths": [
+      ".mdkg/artifacts/goal-86/pause-checkpoint-20260915.json",
+      ".mdkg/work/chk-616-pause-goal-86-after-local-remediation-and-writer-admission-diagnosis.md"
+    ],
+    "dirty_count": 125,
+    "protected_match": true,
+    "protected": [
+      {
+        "path": ".mdkg/bundles/private/presentations/ai-native-sdlc-demo.mdkg.zip",
+        "mode": 33188,
+        "size": 488385,
+        "kind": "file",
+        "sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite",
+        "mode": 33188,
+        "size": 118784,
+        "kind": "file",
+        "sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81"
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-shm",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-wal",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/index/capabilities.json",
+        "mode": 33188,
+        "size": 324551,
+        "kind": "file",
+        "sha256": "6c010469967dea86be54977dca652e5f57f13d9e9d0f80d33229b99636f3c24e"
+      },
+      {
+        "path": ".mdkg/index/global.json",
+        "mode": 33188,
+        "size": 3249366,
+        "kind": "file",
+        "sha256": "927908272810c08d79e3e51fd3cdfdccbc473d96279523a2b64023c3c4aa7f7a"
+      },
+      {
+        "path": ".mdkg/index/skills.json",
+        "mode": 33188,
+        "size": 7149,
+        "kind": "file",
+        "sha256": "4d51d7db7e1e05a39a3e375dbf01e8a167f1b5d99ca0f352fce1592fd58937e8"
+      },
+      {
+        "path": ".mdkg/index/subgraphs.json",
+        "mode": 33188,
+        "size": 559439,
+        "kind": "file",
+        "sha256": "73ebff1912d964488aadf4415e5800fdfdbfa982339ba9ec46ab378d0e62f1db"
+      },
+      {
+        "path": ".mdkg/index/write.lock",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/state/selected-goal.json",
+        "mode": 33188,
+        "size": 108,
+        "kind": "file",
+        "sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab"
+      },
+      {
+        "path": ".mdkg/work/events/events.jsonl",
+        "mode": 33188,
+        "size": 1285995,
+        "kind": "file",
+        "sha256": "a2ba28adc988743a6d135dfb45a93e2288f4783e5380c64030113bc940c49731"
+      },
+      {
+        "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index",
+        "mode": 33188,
+        "size": 674003,
+        "kind": "file",
+        "sha256": "ba7d7116d7e1dca87a4c3c043743fc3b57d8385782be2d3f830db6f6c926f009"
+      },
+      {
+        "path": "/Users/nick/omni-chat-rooms/.git/modules/projects/mdkg/index.lock",
+        "absent": true
+      },
+      {
+        "path": ".mdkg/db/runtime/project.sqlite-journal",
+        "absent": true
+      }
+    ],
+    "receipt_self_hash": "Excluded to avoid recursive self-hash; receipt is the final evidence-only write.",
+    "all_64_non_mdkg_dirty_paths_unchanged": true,
+    "release_metadata_unchanged": true
+  }
+}

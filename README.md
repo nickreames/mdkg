@@ -14,7 +14,14 @@ mdkg stays deliberately boring:
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
 
-Current package version in source: `0.5.2`
+Current package version in source: `0.6.0`
+
+The 0.6.0 source is an **unpublished qualification candidate**, not a registry
+availability claim. Published 0.5.2 has different bootstrap and Git command
+behavior; the install command below selects the registry version, not this
+working tree. Check the installed version and the candidate artifact receipt.
+Final macOS/Linux qualification and security acceptance are still required.
+Windows is explicitly unqualified. See the [0.6.0 change notes](CHANGELOG.md).
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -210,8 +217,9 @@ mdkg bundle list --json
 
 Bundles are explicit graph transport artifacts, separate from task context packs. Before a commit in repos that track archives or bundles, refresh compressed archive caches first, then create the private bundle so the committed graph state is self-consistent. Private bundles are the default and may be committed in private repos when configured. Public bundles require at least one selected workspace with `visibility: public` and include only public workspace content and public archive sidecars; bundle creation fails if public content points at private graph, archive, or subgraph records.
 
-Clone or fork a reusable graph template into a separate target when the target
-should preserve IDs as its own graph namespace:
+Clone or fork a reusable graph template into a separate target. Numeric aliases
+are preserved; a v2 same-project clone retains immutable identities, whereas
+an independent v2 fork creates new identities with lineage:
 
 ```bash
 mdkg graph clone .mdkg/bundles/private/all.mdkg.zip --target demos/demo-1 --json
@@ -226,8 +234,9 @@ mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 -
 mdkg graph import-template templates/website-template-mdkg --start-goal goal-1 --select-goal --apply --json
 ```
 
-`graph clone` and `graph fork` preserve IDs; `graph import-template` rewrites
-canonical numeric IDs and internal links to avoid same-repo collisions. With
+`graph clone` and `graph fork` preserve numeric aliases, not identical identity
+semantics; `graph import-template` rewrites canonical numeric aliases and proven
+structured links to avoid same-repo collisions. With
 `--select-goal --apply`, import-template activates the rewritten imported start
 goal, pauses competing active root goals, validates the graph, and then writes
 selected-goal state. Subgraphs remain read-only planning views; use
@@ -418,6 +427,32 @@ mdkg skill show release-readiness
 mdkg skill validate release-readiness
 ```
 
+## Versioned graph collaboration (0.6.0 candidate)
+
+V2 adoption is explicit. Review `mdkg graph migrate --help` and its exact plan;
+upgrade every writer first. The schema2 configuration fence blocks compatible
+old-client entrypoints, but cannot control an old executable's initialization or
+force-init. Do not mix old and new writers. Reads/indexes never invent identities.
+Migration preserves historical evidence and refuses ambiguous legacy continuity.
+
+Use native Git branches/worktrees, one writer per checkout. Branch-local nodes
+work before commit; stable graph/node identities distinguish independent alias
+collisions from conflicting edits to the same node. Pin ancestor/incoming/target,
+review `mdkg graph reconcile`, then apply its exact unchanged plan. Commit that
+reviewed graph result under explicit Git authority before the native merge.
+Resolve graph paths against that exact result, source/configuration separately;
+validate the combined result, commit the merge and verify both ancestries. Never
+blanket-select one side of `.mdkg`. Reconciliation does not stage, merge or fetch.
+
+Selection, indexes, locks, journals and live DB delivery state stay checkout-local.
+Goal claims still change durable lifecycle and do not provide distributed leases.
+Inspect interrupted graph transactions with `mdkg graph recover <plan-hash>`.
+An orphan requires the requested mode's exact `--lock-evidence` approval bound to
+checkout/OS ownership, journal and current bytes; age/PID alone proves nothing.
+Live, changed, weak or incomplete evidence refuses. Do not delete locks to bypass
+this. Complete published transaction boundaries are supported, not every possible
+power-loss window. Final native-worktree/platform qualification remains required.
+
 ## LLM-readable onboarding artifacts
 
 The root docs below are maintained source/reference material for this repository,
@@ -513,10 +548,12 @@ references, and duplicate local ids. Planned changes include affected paths,
 risk, reason codes, command hints, and per-change `apply_supported` metadata.
 Duplicate-ID graph repairs can be applied with
 `mdkg fix apply --family ids --json` or `mdkg fix ids --apply --json`; use
-`--base-ref main` when mainline IDs should win. Index/cache and graph-reference
-findings remain review-only. For unresolved Git add/add conflicts, `fix ids`
-keeps stage 2 at the conflicted path, rewrites stage 3 to the next unused
-canonical ID/path, and records a receipt.
+`--base-ref` only after reviewing its meaning. During unresolved Git repair it
+must match the unique common ancestor. Legacy `fix ids` splits positional
+stage2/stage3 only for proven independent additions, preserves manual resolutions
+and leaves Git staging unchanged. Same-node edits or ambiguous history require
+semantic review. V2 graphs use `graph reconcile`, not numeric repair. Index/cache
+and graph-reference findings remain review-only.
 
 ## Skills
 

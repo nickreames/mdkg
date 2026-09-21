@@ -1,4 +1,5 @@
-import { spawnSync } from "child_process";
+import { insideGitWorkTree, observeGit, readGitStatus } from "../util/git_observation";
+import { ValidationError } from "../util/errors";
 import fs from "fs";
 import path from "path";
 import { loadConfig } from "../core/config";
@@ -33,7 +34,7 @@ function rel(root: string, target: string): string {
 }
 
 function runGit(root: string, args: string[]): string | undefined {
-  const result = spawnSync("git", args, { cwd: root, encoding: "utf8", env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" } });
+  const result = observeGit(root, args, { allowedFailures: [128] });
   if (result.status !== 0) {
     return undefined;
   }
@@ -41,7 +42,7 @@ function runGit(root: string, args: string[]): string | undefined {
 }
 
 function gitStatus(root: string) {
-  const inside = runGit(root, ["rev-parse", "--is-inside-work-tree"]) === "true";
+  const inside = insideGitWorkTree(root);
   if (!inside) {
     return {
       inside: false,
@@ -55,17 +56,19 @@ function gitStatus(root: string) {
   }
 
   const branch = runGit(root, ["rev-parse", "--abbrev-ref", "HEAD"]) ?? null;
-  const porcelain = runGit(root, ["status", "--porcelain"]) ?? "";
-  const lines = porcelain.split(/\r?\n/).filter(Boolean);
-  const untracked = lines.filter((line) => line.startsWith("??")).length;
+  const entries = readGitStatus(root);
+  const untracked = entries.filter((entry) => entry.index === "?").length;
   const aheadBehindRaw = runGit(root, ["rev-list", "--left-right", "--count", "HEAD...@{upstream}"]);
+  if (aheadBehindRaw !== undefined && !/^\d+\s+\d+$/.test(aheadBehindRaw)) {
+    throw new ValidationError("Git rev-list observation failed; invalid divergence counts");
+  }
   const [aheadRaw, behindRaw] = aheadBehindRaw ? aheadBehindRaw.split(/\s+/) : [];
 
   return {
     inside: true,
     branch,
-    dirty: lines.length > 0,
-    dirty_count: lines.length,
+    dirty: entries.length > 0,
+    dirty_count: entries.length,
     untracked_count: untracked,
     ahead: aheadRaw === undefined ? null : Number.parseInt(aheadRaw, 10),
     behind: behindRaw === undefined ? null : Number.parseInt(behindRaw, 10),

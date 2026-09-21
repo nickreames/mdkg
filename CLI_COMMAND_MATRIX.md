@@ -1,7 +1,7 @@
 # CLI Command Matrix
 
 as_of: 2026-07-15
-package_version_in_source: 0.5.2
+package_version_in_source: 0.6.0
 source: live help from `src/cli.ts`, runtime command handlers, and `dec-15`..`dec-18`
 status: canonical single-source command and flag reference for mdkg
 
@@ -752,7 +752,7 @@ Usage:
 - `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
 - `mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]`
 - `mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]`
-- `mdkg graph recover <plan-hash> [--resume|--rollback] [--json]`
+- `mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]`
 
 Flags:
 - `--target <path>`
@@ -781,7 +781,7 @@ Notes:
 - Migration inspects complete local history, merge parents and stage-0 graph inputs. Ambiguous continuity produces `continuity_reviews`; `--decisions` maps legacy QIDs to `{take: restore-ancestor|new-identity, reason: nonempty text, review_hash: exact preview hash}`. The choice binds current structured references, not historical prose. Preview again with the decisions, then apply its exact plan hash with the same decisions file. Missing/shallow/partial history fails closed without fetching. Unrecorded filesystem replacement with no Git trace is not distinguishable from an edit.
 - `graph reconcile` previews fixed local ancestor/incoming commits against the current authored checkout. `--target` must resolve to current HEAD. It preserves target aliases, binds structured references to stable identities, and requires a reasoned JSON decision for same-identity conflicts. Repeated inputs use durable acceptance evidence, including local cherry-pick/revert history; incomplete or ambiguous ancestry fails closed. `--apply --plan-hash` requires the exact unchanged preview. Only reviewed authored paths, immutable identity receipts and local derived indexes are written. Source/config/docs, bundles, checkout selection/runtime state and Git staging/history remain untouched.
 - Migration apply requires `--apply --plan-hash` with the exact reviewed `sha256:...` value and unchanged authored/control inputs. It preserves historical body bytes and records stable identity/reference mappings under `.mdkg/identity/migrations/`.
-- `graph recover` defaults to read-only metadata inspection; `--resume` or `--rollback` uses the private `.mdkg/state/identity-transactions/` journal and refuses changed/unowned inputs. No operation implicitly stages, selects a goal, refreshes bundles, contacts remotes or rewrites Git history.
+- `graph recover` defaults to read-only metadata inspection; `--resume` or `--rollback` uses the private `.mdkg/state/identity-transactions/` journal and refuses changed/unowned inputs. A newly recorded, fully published interrupted graph writer can be recovered only with the mode-specific `recovery.resume.lock_evidence` or `recovery.rollback.lock_evidence` value passed as `--lock-evidence <sha256>`. Review the inspection before applying: the approval binds this exact checkout, issued lock epoch and owner/claim chain, journal bytes, current authored/control/dependency bytes and requested mode. Live/suspended/reused PIDs, unavailable OS proof, foreign boot/user/namespace/checkout, weak legacy locks, incomplete metadata and unknown journal/lock entries refuse without automatic cleanup. Age or PID absence alone grants nothing. A recorded rollback claim cannot become resume, even if its writer died before journal mirroring. Terminal journals with a proven orphan require the same explicit approval to retire their lock; no-lock terminal repeats stay read-only. Complete published owner/journal/claim/operation boundaries are supported, not every power-loss instruction window. No operation implicitly stages, selects a goal, refreshes bundles, contacts remotes or rewrites Git history.
 - subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 JSON receipts:

@@ -3,7 +3,9 @@ title: Graph Movement
 description: Clone, fork, import, and repair mdkg graph state with explicit id policy.
 ---
 
-Graph movement commands support reusable planning templates and multi-repo demos.
+Graph movement commands support reusable planning templates and project memory.
+This page describes the unpublished 0.6.0 candidate; final platform/security
+qualification is still required. Windows remains unqualified.
 
 They are powerful enough to change graph shape, so treat them as planned operations with receipts.
 
@@ -65,6 +67,23 @@ explicit `--resume` or `--rollback` refuses changed or unowned bytes. Successful
 application/recovery strictly validates authored state before rebuilding caches.
 None of these commands stages files or changes Git history.
 
+Reviewed v2 migration also installs the schema2 configuration writer fence as
+the first authored operation; rollback restores the exact old configuration last.
+Upgrade every writer before adoption. Published0.5.2 clients that honor config
+versions refuse, but old init/force-init cannot be controlled retroactively.
+For pre-fence v2 graphs, preview `mdkg upgrade --only .mdkg/config.json --json`
+and apply only the exact reviewed plan. Reads do not silently add this fence.
+
+For a killed writer, `graph recover` inspection reports mode-specific
+`recovery.resume` / `recovery.rollback` readiness and `lock_evidence` hashes.
+Pass the requested mode's exact value as `--lock-evidence <sha256>` with explicit
+resume/rollback. Approval binds checkout/OS owner proof, lock chain, journal
+inventory and current authored/dependency bytes. Live, suspended, reused,
+foreign or insufficient ownership refuses; PID absence/age alone is never enough.
+Unknown/partial metadata also refuses. Do not manually delete evidence to bypass
+recovery. Complete published transaction boundaries, not universal power-loss
+recovery or hostile same-user pathname-race fencing, are the supported contract.
+
 New Git-backed migration application/resume requires reviewed continuity
 evidence. An older interrupted journal without it remains inspectable and can
 roll back exact owned before-bytes, but cannot resume the unreviewed mapping.
@@ -96,8 +115,9 @@ ownership requires separate resolution before migration or rollback. Terminal
 authored/control/dependency checks also run after cache rebuilding.
 
 This contract does not claim that old caches already represent the proposed
-graph, that native skill mirrors are synchronized, or that opt-in validation
-profiles have passed. Those remain separate validation and qualification gates.
+graph, that native skill mirrors are synchronized, or that all applicable
+validation and qualification checks have passed. Those remain separate gates;
+consumer-specific validation profiles are not implemented by mdkg.
 
 V2 same-project clones retain identities. Independent forks allocate new
 identities with lineage, preserving numeric aliases and historical bodies.
@@ -228,6 +248,22 @@ separately authorized exact transfer before a fresh preview can pass. Recovery
 uses `graph recover` and refuses changed or unowned bytes. This command is not a
 Git merge command; literal unresolved Git stages must be resolved separately.
 
+### Native worktree integration protocol
+
+Use separate native Git worktrees of one project repository, one writer per
+checkout. Pin target HEAD, incoming revision and common ancestor before review.
+Apply the accepted mdkg reconcile plan on the target before starting a Git merge;
+validate and explicitly commit that reviewed graph result. Then use native Git
+for an ancestry-preserving merge of the pinned incoming revision. Resolve each
+graph path against the exact reviewed result and source/configuration separately.
+Never use blanket `ours` treatment for `.mdkg`. Validate the combined tree before
+the merge commit, verify both parent ancestries and recheck repeated integration.
+
+Keep local selection, indexes, locks, journals and live runtime DBs out of the
+shared graph merge. Stable identity is shared project knowledge, not shared
+execution ownership. Submodule/gitdir-indirection and required platforms have
+separate qualification gates; ordinary worktree tests do not prove those cases.
+
 ## Selected goal policy
 
 When importing a template that should become active work, use an explicit start goal.
@@ -242,6 +278,7 @@ The selected imported goal should activate cleanly and competing local active ro
 ## Branch repair
 
 Numeric IDs are aliases, not proof of independent node creation. For an unresolved
+legacy
 Git merge, repair checks the common ancestor before proposing an add/add split.
 It preserves positional stage 2 and remaps stage 3; those positions do not imply
 that either branch is `main`. Same-node edits, rename/delete conflicts, and
@@ -261,3 +298,5 @@ unchanged: review the resulting graph and reference notes, explicitly stage the
 resolution, and validate before committing. Do not use graph movement commands
 to bypass review. Reviewed identity reconciliation is separate from legacy
 numeric repair.
+V2 graphs refuse `fix ids`; use reviewed `graph reconcile` before native Git
+integration instead of changing immutable identities through numeric repair.

@@ -187,6 +187,19 @@ test("archive validation and verify fail on missing zip cache and raw source dri
   assert.match(driftVerify.results[0].errors.join("\n"), /raw byte_size mismatch/);
 });
 
+test("explicit archive compression derives current sidecars when legacy caches are absent", t => {
+  const root = makeTempDir("mdkg-archive-uncached-repair-");
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  run(["init", "--graph-only"], root);
+  fs.writeFileSync(path.join(root, "payload.txt"), "payload\n");
+  const created = JSON.parse(run(["archive", "add", "payload.txt", "--id", "archive.payload", "--json"], root).stdout).archive;
+  fs.unlinkSync(path.join(root, created.compressed_path));
+  fs.rmSync(path.join(root, ".mdkg/index"), { recursive: true });
+  const receipt = JSON.parse(run(["archive", "compress", "archive.payload", "--json"], root).stdout);
+  assert.equal(receipt.count, 1);
+  assert.equal(JSON.parse(run(["archive", "verify", "archive.payload", "--json"], root).stdout).ok, true);
+});
+
 test("archive validation and verify fail on corrupt zip payloads even when compressed hash matches", () => {
   const root = makeTempDir("mdkg-archive-corrupt-zip-");
   run(["init", "--agent"], root);

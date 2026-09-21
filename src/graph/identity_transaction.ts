@@ -1,11 +1,13 @@
 import path from "path";
-import { loadConfig } from "../core/config";
+import { loadConfig, validateConfigSchema } from "../core/config";
+import { identityWriterConfig, migrateConfig } from "../core/migrate";
 import {
-  atomicReplaceContainedFile, containedPathExists, readContainedDirectory, readContainedFileIfPresent,
+  atomicReplaceContainedFile, containedPathExists, readContainedDirectory, readContainedFile,
   removeContainedPath, withContainedPathSink, writeContainedFileExclusive,
 } from "../core/filesystem_authority";
 import { UsageError } from "../util/errors";
-import { withMutationLock } from "../util/lock";
+import { heldMutationLock, withMutationLock, withRecoveredMutationLock } from "../util/lock";
+import { assertOrphanLock, MutationLockRecord, readMutationLock, lockRecordHash } from "../util/lock_evidence";
 import { canonicalJson, GRAPH_FORMAT_PATH, identityHash, parseGraphFormat } from "./identity";
 import { GraphFileChange, IdentityPlanBase, publicMigrationPlan } from "./identity_migration";
 import { AuthoredSnapshot, graphControlSnapshot, indexAuthoredSnapshot, readAuthoredSnapshot, readIdentityEvidence } from "./identity_snapshot";
@@ -23,10 +25,14 @@ import { ACCEPTANCE_DIRECTORY, matchesReconciliationAcceptance, reconciliationAc
 
 const JOURNAL_DIR = ".mdkg/state/identity-transactions";
 type TransactionState = "applying" | "applied" | "rolling-back" | "rolled-back";
-type GraphJournal = { schema_version: 1; state: TransactionState; plan: IdentityPlanBase };
+type GraphJournal = { schema_version: 1; state: TransactionState; plan: IdentityPlanBase; lock_epochs?: MutationLockRecord[] };
 export type GraphTransactionHooks = {
   /** Test-only in-process hook; never exposed as a CLI flag or environment variable. */
   afterWrite?: (path: string, index: number) => void;
+  /** Complete claim publication, before journal mirroring. Test-only. */
+  afterClaim?: () => void;
+  /** Complete journal publication, including terminal state. Test-only. */
+  afterJournal?: (state: TransactionState) => void;
 };
 
 function journalPath(hash: string): string {
@@ -35,7 +41,10 @@ function journalPath(hash: string): string {
 }
 
 function value(root: string, relativePath: string): string | null {
-  return readContainedFileIfPresent({ root, relativePath });
+  if (!containedPathExists({ root, relativePath })) return null;
+  const bytes = readContainedFile({ root, relativePath }, null), text = bytes.toString("utf8");
+  if (!Buffer.from(text).equals(bytes)) throw new UsageError(`graph transaction input is not exact UTF-8: ${relativePath}; bytes preserved`);
+  return text;
 }
 
 function put(root: string, change: GraphFileChange, desired: string | null): void {
@@ -47,8 +56,40 @@ function put(root: string, change: GraphFileChange, desired: string | null): voi
   else atomicReplaceContainedFile({ root, relativePath: change.path }, desired);
 }
 
-function saveJournal(root: string, journal: GraphJournal): void {
-  atomicReplaceContainedFile({ root, relativePath: journalPath(journal.plan.plan_hash), mode: 0o600 }, `${JSON.stringify(journal, null, 2)}\n`);
+type JournalGuard = { check(): void; save(journal: GraphJournal): void };
+function journalInventory(root: string, except?: string): Record<string, string> {
+  if (!containedPathExists({ root, relativePath: JOURNAL_DIR })) return {};
+  return Object.fromEntries(readContainedDirectory({ root, relativePath: JOURNAL_DIR }).filter(entry => entry.name !== except).map(entry => {
+    if (!entry.isFile() || !/^[0-9a-f]{64}\.json$/.test(entry.name)) throw new UsageError("unclassifiable graph journal evidence; preserve state");
+    return [entry.name, identityHash(value(root, `${JOURNAL_DIR}/${entry.name}`)!)];
+  }));
+}
+function journalGuard(root: string, hash: string, expected: string | null, hooks: GraphTransactionHooks): JournalGuard {
+  const name = `${hash.slice(7)}.json`, others = canonicalJson(journalInventory(root, name));
+  checkOtherTransactions(root, hash);
+  const check = () => {
+    heldMutationLock(root);
+    if (value(root, journalPath(hash)) !== expected) throw new UsageError("graph journal byte custody changed; preserve evidence and inspect again");
+    if (canonicalJson(journalInventory(root, name)) !== others) throw new UsageError("graph journal inventory/byte custody changed; preserve evidence and inspect again");
+  };
+  return { check, save(journal) {
+    check();
+    const next = `${JSON.stringify(journal, null, 2)}\n`;
+    atomicReplaceContainedFile({ root, relativePath: journalPath(hash), mode: 0o600 }, next);
+    expected = next; check(); hooks.afterJournal?.(journal.state); check();
+  } };
+}
+
+function bindCurrentLock(root: string, journal: GraphJournal): void {
+  const record = heldMutationLock(root), epochs = journal.lock_epochs ?? [];
+  if (!Array.isArray(epochs) || epochs.length >= 128) throw new UsageError("graph journal lock history is invalid or full; preserve for investigation");
+  const previous = epochs[epochs.length - 1];
+  // Mirroring a recovery claim extends its existing epoch; a normal retry after
+  // caught-error release starts a new epoch without discarding original proof.
+  if (previous && canonicalJson(previous.directory) === canonicalJson(record.directory) &&
+    previous.files?.find(file => file.name === "owner.json")?.content === record.files.find(file => file.name === "owner.json")?.content) {
+    journal.lock_epochs = [...epochs.slice(0, -1), record];
+  } else journal.lock_epochs = [...epochs, record];
 }
 
 function checkPlan(root: string, plan: IdentityPlanBase, expectedHash: string): void {
@@ -73,7 +114,13 @@ function checkPlan(root: string, plan: IdentityPlanBase, expectedHash: string): 
         !local.split("/").includes("source");
     });
     const identityReceipt = /^\.mdkg\/identity\/(migrations|reconciliations|templates|forks|acceptances|transported)\/[0-9a-f]{64}\.json$/.test(change.path);
-    if (!nodePath && change.path !== GRAPH_FORMAT_PATH && !identityReceipt) {
+    const configFence = change.path === ".mdkg/config.json";
+    if (configFence && (plan.action !== "graph.migrate.plan" || change.before === null || change.after === null ||
+      identityHash(change.before) !== plan.input_files[change.path] ||
+      change.after !== `${JSON.stringify(identityWriterConfig(JSON.parse(change.before)), null, 2)}\n` || plan.writes[0] !== change)) {
+      throw new UsageError("migration may own only its exact first-operation compatible-writer config fence");
+    }
+    if (!nodePath && change.path !== GRAPH_FORMAT_PATH && !identityReceipt && !configFence) {
       throw new UsageError(`graph transaction cannot own path ${change.path}`);
     }
     if (plan.action === "graph.reconcile.plan" && (change.path === GRAPH_FORMAT_PATH || (identityReceipt && change.before !== null))) {
@@ -123,14 +170,17 @@ function checkCandidate(root: string, plan: IdentityPlanBase): void {
   if (!plan.candidate_validation || !plan.dependency_files) {
     throw new UsageError("graph plan lacks complete candidate validation dependencies; preserve journal for inspection/rollback and re-plan before application");
   }
-  const config = loadConfig(root), owner = workspaceDocumentOwner(config);
-  const templates = loadTemplateSchemas(root, config, ALLOWED_TYPES);
   const changes = new Map(plan.writes.map((change) => [change.path, change]));
+  if (plan.action === "graph.migrate.plan" && !changes.has(".mdkg/config.json")) {
+    throw new UsageError("legacy migration plan lacks reviewed writer compatibility fence; preserve journal for inspection/rollback and re-plan before application");
+  }
   const contents = new Map<string, string>();
   for (const file of new Set([...Object.keys(plan.input_files), ...changes.keys()])) {
     const content = changes.has(file) ? changes.get(file)!.after : value(root, file);
     if (content !== null) contents.set(file, content);
   }
+  const config = validateConfigSchema(migrateConfig(JSON.parse(contents.get(".mdkg/config.json")!)).config);
+  const owner = workspaceDocumentOwner(config), templates = loadTemplateSchemas(root, config, ALLOWED_TYPES);
   const formatContent = contents.get(GRAPH_FORMAT_PATH);
   const candidate: AuthoredSnapshot = { revision: null, tree_hash: "", config,
     format: formatContent === undefined ? { format_version: 1 } : parseGraphFormat(formatContent),
@@ -259,7 +309,8 @@ function checkDerivedOwnership(root: string, plan: IdentityPlanBase): void {
   if (errors.length) throw new UsageError(errors.join("; "));
 }
 
-function finish(root: string, journal: GraphJournal, rollback: boolean): void {
+function finish(root: string, journal: GraphJournal, rollback: boolean, guard: JournalGuard): void {
+  guard.check();
   checkTerminal(root, journal, rollback);
   // Exact rollback restores owned before-bytes; it does not approve the old
   // identity mapping. Preserve recovery for pre-lineage migration journals.
@@ -272,15 +323,17 @@ function finish(root: string, journal: GraphJournal, rollback: boolean): void {
   } else indexAuthoredSnapshot(snapshot);
   const config = loadConfig(root);
   checkDerivedOwnership(root, journal.plan);
+  guard.check();
   // Only local derived caches are regenerated; no bundles, subgraph refresh,
   // provider interaction, Git staging, selected state, queue or claim writes.
   writeDerivedIndexes(root, config, buildIndex(root, config, { tolerant: false }), { tolerant: false });
   // A successful cache rebuild is not proof that authored/control custody held.
   // Recheck bookends before giving the journal its terminal success state.
   checkTerminal(root, journal, rollback);
+  guard.check();
   if (!rollback) checkCandidate(root, journal.plan);
   journal.state = rollback ? "rolled-back" : "applied";
-  saveJournal(root, journal);
+  guard.save(journal);
 }
 
 function receipt(journal: GraphJournal) {
@@ -321,59 +374,104 @@ export function applyGraphMigrationPlan(root: string, plan: IdentityPlanBase, ex
     check();
     if (value(root, journalPath(plan.plan_hash)) !== null) throw new UsageError("graph journal appeared during preflight");
     const journal: GraphJournal = { schema_version: 1, state: "applying", plan };
-    saveJournal(root, journal);
+    const guard = journalGuard(root, plan.plan_hash, null, hooks);
+    bindCurrentLock(root, journal);
+    guard.save(journal);
     for (const [index, change] of plan.writes.entries()) {
       checkRecoveryCustody(root, plan);
+      guard.check();
       put(root, change, change.after);
       hooks.afterWrite?.(change.path, index);
     }
-    finish(root, journal, false);
+    finish(root, journal, false, guard);
     return receipt(journal);
-  });
+  }, { plan_hash: plan.plan_hash, mode: "apply" });
 }
 
-export function continueGraphTransaction(root: string, hash: string, mode: "resume" | "rollback", hooks: GraphTransactionHooks = {}) {
-  const journal = readJournal(root, hash);
+function checkRecoveryRequest(root: string, journal: GraphJournal, mode: "resume" | "rollback"): void {
+  const hash = journal.plan.plan_hash;
   if (mode !== "rollback" || journal.plan.action !== "graph.migrate.plan") checkRevisions(root, journal.plan);
   checkOtherTransactions(root, hash);
   checkDerivedOwnership(root, journal.plan);
-  if (mode === "resume") {
-    checkRecoveryCustody(root, journal.plan);
-    checkCandidate(root, journal.plan);
-  }
-  if ((mode === "resume" && journal.state === "applied") || (mode === "rollback" && journal.state === "rolled-back")) {
-    checkTerminal(root, journal, mode === "rollback");
-    return receipt(journal);
-  }
   if (mode === "resume" && ["rolling-back", "rolled-back"].includes(journal.state)) throw new UsageError("rollback was requested; it cannot be resumed as application");
   checkRecoveryCustody(root, journal.plan);
-  return withMutationLock(root, loadConfig(root).index.lock_timeout_ms, () => {
-    checkOtherTransactions(root, hash);
-    if (canonicalJson(readJournal(root, hash)) !== canonicalJson(journal)) throw new UsageError("graph journal changed during recovery preflight");
-    checkRecoveryCustody(root, journal.plan);
-    if (mode === "resume") checkCandidate(root, journal.plan);
-    checkDerivedOwnership(root, journal.plan);
+  if (mode === "resume") {
+    checkCandidate(root, journal.plan);
+  }
+}
+
+function recoveryBytes(root: string, journal: GraphJournal): string {
+  const files = Object.fromEntries([...new Set([...Object.keys(journal.plan.input_files), ...journal.plan.writes.map(op => op.path)])].sort().map(file => {
+    const content = value(root, file); return [file, content === null ? null : identityHash(content)];
+  }));
+  const dependencies = Object.fromEntries(Object.keys(journal.plan.dependency_files ?? {}).sort().map(file => [file, graphDependencyHash(root, file)]));
+  const journals = journalInventory(root);
+  return identityHash(canonicalJson({ files, dependencies, journals, control: graphControlSnapshot(root) }));
+}
+
+function recoveryReview(root: string, journal: GraphJournal, mode: "resume" | "rollback", expectedJournal: string) {
+  checkRecoveryRequest(root, journal, mode);
+  if ((mode === "resume" && journal.state === "applied") || (mode === "rollback" && journal.state === "rolled-back")) checkTerminal(root, journal, mode === "rollback");
+  if (value(root, journalPath(journal.plan.plan_hash)) !== expectedJournal || canonicalJson(JSON.parse(expectedJournal)) !== canonicalJson(journal)) throw new UsageError("graph journal byte custody changed; inspect again");
+  const record = readMutationLock(root), journalHash = identityHash(expectedJournal);
+  const journalRecord = journal.lock_epochs?.[journal.lock_epochs.length - 1];
+  if (record) assertOrphanLock(root, record, journalRecord, journal.plan.plan_hash, journalHash, mode);
+  const bytes = recoveryBytes(root, journal);
+  const approval = record ? identityHash(canonicalJson({ schema_version: 1, action: "graph.recover.lock", mode,
+    plan_hash: journal.plan.plan_hash, journal_hash: journalHash, lock_hash: lockRecordHash(record), input_hash: bytes })) : null;
+  return { record, journal_record: journalRecord, journal_hash: journalHash, bytes, approval };
+}
+
+export function continueGraphTransaction(root: string, hash: string, mode: "resume" | "rollback", hooks: GraphTransactionHooks = {}, lockEvidence?: string) {
+  const journal = readJournal(root, hash), raw = value(root, journalPath(hash))!;
+  const review = recoveryReview(root, journal, mode, raw);
+  if (review.record && (!lockEvidence || lockEvidence !== review.approval)) throw new UsageError("orphan lock requires the exact fresh --lock-evidence from read-only graph recover inspection");
+  if (!review.record && lockEvidence) throw new UsageError("reviewed orphan lock is no longer present; no recovery attempted");
+  if ((mode === "resume" && journal.state === "applied") || (mode === "rollback" && journal.state === "rolled-back")) {
+    checkTerminal(root, journal, mode === "rollback");
+    if (!review.record) return receipt(journal); // Preserve observational terminal repeat.
+  }
+  const execute = () => {
+    if (review.record) hooks.afterClaim?.();
+    const guard = journalGuard(root, hash, raw, hooks);
+    guard.check();
+    checkRecoveryRequest(root, journal, mode);
+    if (recoveryBytes(root, journal) !== review.bytes) throw new UsageError("graph recovery evidence changed after approval; preserve state and inspect again");
+    bindCurrentLock(root, journal);
     journal.state = mode === "rollback" ? "rolling-back" : "applying";
-    saveJournal(root, journal);
+    guard.save(journal);
     const changes = mode === "rollback" ? [...journal.plan.writes].reverse() : journal.plan.writes;
     for (const [index, change] of changes.entries()) {
       checkRecoveryCustody(root, journal.plan);
+      guard.check();
       put(root, change, mode === "rollback" ? change.before : change.after);
       hooks.afterWrite?.(change.path, index);
     }
-    finish(root, journal, mode === "rollback");
+    finish(root, journal, mode === "rollback", guard);
     return receipt(journal);
-  });
+  };
+  return review.record ? withRecoveredMutationLock(root, { ...review, record: review.record,
+    approval_hash: review.approval!, plan_hash: hash, mode }, execute)
+    : withMutationLock(root, loadConfig(root).index.lock_timeout_ms, execute, { plan_hash: hash, mode });
 }
 
 export function inspectGraphTransaction(root: string, hash: string) {
   const journal = readJournal(root, hash);
+  const raw = value(root, journalPath(hash))!;
   const paths = journal.plan.writes.map((change) => {
     const current = value(root, change.path);
     return { path: change.path, observed_hash: current === null ? null : identityHash(current),
       state: current === change.after ? "after" : current === change.before ? "before" : "custody-collision" };
   });
-  return { action: "graph.transaction.inspect", state: journal.state,
+  const recovery = Object.fromEntries((["resume", "rollback"] as const).map(mode => {
+    try {
+      const review = recoveryReview(root, journal, mode, raw);
+      return [mode, { ready: true, lock_evidence: review.approval, lock_state: review.record ? "proven-orphan" : "absent" }];
+    } catch (error) {
+      return [mode, { ready: false, lock_evidence: null, reason: error instanceof Error ? error.message : "ownership evidence unavailable" }];
+    }
+  }));
+  return { action: "graph.transaction.inspect", state: journal.state, recovery,
     journal_path: journalPath(hash), paths, completed_write_paths: paths.filter((entry) => entry.state === "after").map((entry) => entry.path),
     collision_paths: paths.filter((entry) => entry.state === "custody-collision").map((entry) => entry.path),
     plan: publicMigrationPlan(journal.plan), side_effects: "none" };

@@ -182,6 +182,18 @@ function renderReference(contract) {
   }
   lines.push("");
 
+  if (Array.isArray(contract.option_admission)) {
+    lines.push("## Concrete command options", "",
+      "Options are admitted for the exact command below, not every command in its family or every creation type. Unknown or wrong-command options, missing values, and malformed Boolean/integer syntax are rejected before root/configuration discovery. Valid-value domains, incompatible modes and graph-dependent constraints remain subject to command validation. All commands also accept `--root`, `--help` and `--version`.", "",
+      "Boolean values use `=true` or `=false`; `init --agent` also preserves its legacy separate `true` or `false` value. Value options accept a separate value or `=value`; use `--` before option-looking positional text. Aliases retain the same command boundary as their canonical option. `pack --list-profiles` accepts no other command options.", "",
+      "| Command | Accepted command options |", "| --- | --- |");
+    for (const item of contract.option_admission) {
+      const flags = item.flags.filter(flag => !["--root", "--help", "--version"].includes(flag.name));
+      lines.push(`| \`mdkg ${item.command}\` | ${flags.map(flag => `\`${flag.name}${flag.kind === "boolean" ? "" : flag.kind === "integer" ? " <integer>" : " <value>"}\``).join(", ") || "none"} |`);
+    }
+    lines.push("");
+  }
+
   for (const command of commands) {
     lines.push(renderCommand(command, commands));
   }

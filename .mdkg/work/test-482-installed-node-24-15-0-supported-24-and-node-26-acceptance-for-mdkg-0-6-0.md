@@ -9,17 +9,38 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: [.mdkg/artifacts/goal-84/bug-7-scale-goal.json, .mdkg/artifacts/goal-84/bug-7-scale-identity-verification.json, .mdkg/artifacts/goal-84/bug-7-init-discovery.json, .mdkg/artifacts/goal-84/bug-7-stale-upgrade.json, .mdkg/artifacts/goal-84/bug-7-mixed-state-recovery.json, .mdkg/artifacts/goal-84/bug-7-installed-security-regressions.json]
 relates: []
-blocked_by: [task-826]
+blocked_by: [test-477, test-478, test-479, test-480, test-481, test-483, test-484, test-486]
 blocks: []
-refs: [bug-7, chk-596, chk-600]
-context_refs: [goal-83]
-evidence_refs: []
+refs: [bug-7]
+context_refs: [goal-83, goal-86, dec-96]
+evidence_refs: [chk-596, chk-600]
 aliases: []
 skills: []
 cases: [test-482-case-1, test-482-case-2, test-482-case-3, test-482-case-4, test-482-case-5]
 created: 2026-09-07
-updated: 2026-09-11
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Aggregate exact Node24.15.0, selected supported24 and26 receipts after family cases. No missing runtime, package mismatch, source import or partial execution is a pass.
+
+This test no longer waits for task826 or Bug7 aggregate closure. Its updated
+implementation prerequisites lead into installed cases; task826 consumes the
+results. Record historical/current-intermediate/final-artifact-pass/failure/
+unverified states. Final qualification uses one frozen0.6.0 tarball; macOS/Linux
+completeness is independently bound by test487. Task828 remains independent
+acceptance, not an upstream requirement for these test results.
+
+Current case 3 supersedes the historical Node 26 smoke-only wording below.
+All required installed test families must pass on Node 24.15.0, the selected
+supported Node 24 runtime, and Node 26, on both macOS and Linux. Record each
+exact runtime version and platform, the same tarball hash, and case-level
+coverage; smoke-only or incomplete Node 26 results remain unverified.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

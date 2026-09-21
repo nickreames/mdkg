@@ -5,11 +5,12 @@ import { IndexNode } from "./indexer";
 import { assertSubgraphBundleFile, readSubgraphBundleEntries } from "./subgraph_bundle";
 import { NotFoundError } from "../util/errors";
 import { readContainedFile } from "../core/filesystem_authority";
+import { importedSnapshotEntry, validateSubgraphBundleEntries } from "./subgraphs";
 
 export const DEFAULT_NODE_BODY_MAX_BYTES = 8 * 1024 * 1024;
 
 export function createNodeBodyReader(root: string, maxBytes = DEFAULT_NODE_BODY_MAX_BYTES): (node: IndexNode) => string {
-  const bundleEntries = new Map<string, Map<string, Buffer>>();
+  const bundleEntries = new Map<string, ReturnType<typeof validateSubgraphBundleEntries>>();
   return (node: IndexNode): string => {
     if (!node.source?.imported) {
       const filePath = path.resolve(root, node.path);
@@ -34,13 +35,10 @@ export function createNodeBodyReader(root: string, maxBytes = DEFAULT_NODE_BODY_
       try { assertSubgraphBundleFile(root, source.bundle_path); }
       catch (error) { if (!(error instanceof NotFoundError)) throw error; }
     } else {
-      entries = readSubgraphBundleEntries(root, source.bundle_path);
+      entries = validateSubgraphBundleEntries(readSubgraphBundleEntries(root, source.bundle_path));
       bundleEntries.set(bundlePath, entries);
     }
-    const entry = entries.get(source.original_path);
-    if (!entry) {
-      throw new NotFoundError(`bundle entry not found for ${node.qid}: ${source.original_path}`);
-    }
+    const entry = importedSnapshotEntry(entries, node, maxBytes);
     if (entry.length > maxBytes) {
       throw new Error(`node body source exceeds byte limit for ${node.qid}: ${maxBytes}`);
     }
@@ -53,10 +51,7 @@ function readImportedBody(root: string, node: IndexNode, maxBytes: number): stri
   if (!source?.imported) {
     throw new Error("node is not imported");
   }
-  const entry = readSubgraphBundleEntries(root, source.bundle_path).get(source.original_path);
-  if (!entry) {
-    throw new NotFoundError(`bundle entry not found for ${node.qid}: ${source.original_path}`);
-  }
+  const entry = importedSnapshotEntry(validateSubgraphBundleEntries(readSubgraphBundleEntries(root, source.bundle_path)), node, maxBytes);
   if (entry.length > maxBytes) {
     throw new Error(`node body source exceeds byte limit for ${node.qid}: ${maxBytes}`);
   }

@@ -578,7 +578,9 @@ test("graph import-template rejects closed selected start goals before writing",
     if (action === "done") {
       run(["goal", "done", "goal-1", "--json"], source);
     } else {
-      run(["goal", "archive", "goal-1", "--reason", "closed template", "--json"], source);
+      // Goal archive has no reason option; exercise the actual lifecycle
+      // transition rather than relying on a formerly ignored queue-only flag.
+      run(["goal", "archive", "goal-1", "--json"], source);
     }
     run(["index"], source);
     const beforeHash = hashTree(path.join(root, ".mdkg", "work"));

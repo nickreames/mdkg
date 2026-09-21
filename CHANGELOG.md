@@ -8,7 +8,96 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ## Unreleased
 
+## 0.6.0 - 2026-09-17
+
+### Qualification status
+
+- Draft and unpublished. The date records candidate preparation, not npm
+  publication. Final installed macOS/Linux qualification, security acceptance,
+  release checks and exact artifact sealing remain required. Windows is
+  unqualified. Local intermediate test passes are not a release-readiness claim.
+
+### Added
+
+- Compact agent setup by default: bounded root AGENTS.md/CLAUDE.md sections
+  route to detailed guidance under `.mdkg`, with focused canonical skills and
+  native projections. `init --graph-only` omits agent setup; `--agent` remains
+  its compatible explicit spelling.
+- Explicit format-v2 graph/node identities behind numeric aliases, stable
+  selectors, ancestor-grounded migration and branch-local cross-linked nodes
+  that are usable before Git commit. Indexing never invents identities.
+- Reviewed identity reconciliation with deterministic incoming alias mappings,
+  explicit same-node conflict decisions, immutable lineage, target acceptance
+  receipts and repeat-integration checks. Native Git still owns branches,
+  worktrees, staging, commits and ancestry-preserving merges.
+- Evidence-bound graph transaction recovery with exact journal/checkout/file
+  custody and mode-specific orphan-lock approval. Live, ambiguous, legacy or
+  incompletely recorded ownership refuses; age or PID absence alone never
+  authorizes takeover. Interrupted metadata publication remains fail-closed.
+- Reviewed schema-2 configuration fencing for v2 writers. All writers must be
+  upgraded before adoption; a new client cannot retroactively control old
+  `init` or `init --force` behavior. Legacy graphs remain explicitly supported.
+
+### Breaking changes
+
+- Removed `mdkg git clone`, `fetch`, `push`, `materialize`, `closeout` and
+  `push-ready`, including their Git mutation/authentication behavior. No aliases
+  or fallback wrappers remain. `mdkg git inspect` is observational; use native
+  Git and independently reviewed authorization for repository operations.
+- Removed `validate --profile` and `work validate --profile`, privileged
+  `omni-room` policy, special `ochatr_` skill indexing/search/projections and
+  first-class `--pricing-model` behavior. `room_orchestrated` becomes
+  `orchestrated` with no old-token alias. Generic contracts, opaque policy
+  references and optional local DB/queue/snapshot primitives remain.
+- Legacy init flags `--llm`, `--agents`, `--claude` and `--omni` remain unsupported
+  (already rejected in published 0.5.2). Use compact default initialization or
+  explicit graph-only setup. Unsupported and
+  wrong-command options fail before configuration discovery or side effects.
+- Historical public bundles lacking transport-policy evidence remain
+  inspectable but cannot be silently materialized or imported. Fresh exports
+  exclude live DB/sidecar/lock/selection/cache state in both profiles; public
+  transport omits private DB payloads with exclusion evidence. Deliberately
+  portable private checkpoints do not restore execution or writer authority.
+
 ### Fixed
+
+- Preserved user-authored instructions, seed provenance and resource links
+  through reviewed, stale-plan-resistant scaffold upgrades and exact recovery.
+- Preserved stable identities and proven reference bindings through normal
+  commands, workflow/archive links, packs, template import, clone/fork and
+  reconciliation. Historical receipts/prose are not rewritten to invent proof.
+- Made legacy duplicate-ID repair ancestor-aware so two edits of one node are
+  not mistaken for independent creations; repair leaves Git staging unchanged.
+- Made graph/Git observation preserve exact index and staging bytes, disable
+  optional index writes and filesystem-monitor helpers, refuse unreviewed
+  clean/process filters, and retain bounded sanitized revision descriptors.
+- Bound JSON caches to current authored contents and SQLite source fingerprints
+  independently of wall-clock freshness. Stale/unbound caches cannot replace
+  authored truth; observational reads do not silently persist rebuilt caches.
+- Kept subgraph sync previews read-only, clarified nested workspace transport
+  custody, and preserved exact changed-only warning paths in nested checkouts
+  and literal POSIX filenames. Graph validation errors remain global.
+- Corrected goal dependency/frontier routing, complete piped CLI output,
+  identity candidate validation/recovery and portable dependency classification.
+- Reduced repeated filesystem traversal in large graph transactions without
+  skipping fresh custody checks. Remaining transaction costs are measured
+  limitations, not a performance guarantee.
+
+### Security and qualification
+
+- Added containment, ownership, bounded-input and failure-preservation checks
+  across graph discovery/transport, caches, archives, packs, event history,
+  templates, skill resources and output writes. Shipped legacy defects and
+  unreleased v2 defects retain separate affected-version assessments.
+- Extended complete test discovery, installed-package/runtime fixtures,
+  source/help/docs/package parity and manifest-backed release qualification.
+  Coverage floors remain 89% lines, 77% branches and 96% functions. Structural
+  receipt verification is not external execution/payment/attestation proof.
+- Preserved removed consumer implementation in a source/hash-bound repository
+  extraction package, excluded from npm. Consumer adoption is unverified and
+  not required for mdkg publication; operational policy remains consumer-owned.
+
+### Repository assets
 
 - Made docs current-release supplements derive version, state, qualifier, date,
   note count, and highlights from the shared release manifest and generated

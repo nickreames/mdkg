@@ -9,16 +9,28 @@ owners: [mdkg-project-agent]
 links: []
 artifacts: []
 relates: []
-blocked_by: [chk-570, task-828]
+blocked_by: [chk-570, task-828, task-837, test-487]
 blocks: []
 refs: []
-context_refs: [goal-85]
+context_refs: [goal-85, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Under FUTURE fresh publication approval only, independently recheck chk570,
+task828, fresh Standard task837, macOS/Linux test487 and every Goal84/86 blocker.
+Rehash the exact sealed artifact and package inputs; reject reopened/stale or
+missing gates. Never infer authority from goal state, a green report or old
+approval. No implicit rebuild, remote Git, tag, provider or deployment action.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Overview
 

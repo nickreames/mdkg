@@ -19,13 +19,25 @@ relates: []
 blocked_by: []
 blocks: []
 refs: []
-context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-75, goal-83, goal-84]
+context_refs: [goal-74, goal-77, goal-78, goal-81, goal-82, goal-75, goal-83, goal-84, goal-86, dec-96]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-09-13
 ---
+
+# Current Successor Contract - 2026-09-13
+
+Remain blocked/paused with only task831/832 in execution scope. Fresh publication
+approval, exact artifact and independent blocker checks are still mandatory.
+Task831 now explicitly waits for chk570, task828, task837 and test487. Do not
+expand this goal into remediation by linking other goals through scope/compatibility
+edges. No current Git push, registry, provider or deployment authority.
+
+The earlier sections below retain their historical evidence. This current addendum,
+updated dependencies, goal-86 and dec-96 govern the remaining work. Planning
+authoring is not execution, qualification, a writer claim, or publication.
 
 # Objective
 

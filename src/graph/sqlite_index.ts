@@ -14,6 +14,7 @@ import { SubgraphsIndex } from "./subgraphs";
 import { isIndexStale } from "./staleness";
 import { canonicalJson } from "./identity";
 import { readSubgraphBundleBytes } from "./subgraph_bundle";
+import { assertCompatibleWriter } from "../util/writer_admission";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -241,6 +242,7 @@ export function writeSqliteIndex(options: {
   capabilitiesIndex: CapabilitiesIndex;
   subgraphsIndex: SubgraphsIndex;
 }): string {
+  assertCompatibleWriter(options.root);
   if (options.nodeIndex.meta?.inspection_errors?.length) throw new Error("cannot persist an unresolved inspection graph; reviewed reconciliation required");
   const sqliteRelativePath = options.config.index.sqlite_path;
   const sqlitePath = resolveSqlitePath(options.root, options.config);
@@ -390,6 +392,7 @@ export function reserveSqliteNumericId(options: {
   if (!isSqliteBackend(options.config)) {
     return undefined;
   }
+  assertCompatibleWriter(options.root);
   const DatabaseSync = loadDatabaseCtor();
   return withContainedPathSink(
     { root: options.root, relativePath: options.config.index.sqlite_path, operation: "replace", createParents: true },

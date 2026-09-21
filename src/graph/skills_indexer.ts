@@ -4,6 +4,9 @@ import { Config } from "../core/config";
 import { forEachContainedDirectoryEntry, readContainedFile } from "../core/filesystem_authority";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
+import { identityHash } from "./identity";
+import { SkillCacheSource, skillCacheFingerprint } from "./json_cache_fingerprint";
+import { workspaceDocumentRelativePath } from "../core/workspace_path";
 
 export const SKILLS_INDEX_RELATIVE_PATH = ".mdkg/index/skills.json";
 
@@ -34,6 +37,7 @@ export type SkillsIndex = {
     root: string;
     skills_root: string;
     skill_count: number;
+    source_fingerprint?: string;
   };
   skills: Record<string, SkillIndexEntry>;
 };
@@ -194,19 +198,47 @@ export function buildSkillIndexEntry(root: string, slug: string, filePath: strin
   return buildSkillIndexEntryForWorkspace(root, "root", slug, filePath);
 }
 
+export function skillCacheSource(skill: SkillIndexEntry, content: string): SkillCacheSource {
+  return { workspace: skill.ws, slug: skill.slug, path: skill.path.split(path.sep).join("/"),
+    hash: identityHash(content), has_scripts: skill.has_scripts, has_references: skill.has_references };
+}
+
+export function currentSkillCacheSources(root: string, config: Config, allWorkspaces = false): SkillCacheSource[] {
+  const owner = absoluteWorkspaceDocumentOwner(root, config);
+  const aliases = allWorkspaces ? Object.keys(config.workspaces).filter(alias => config.workspaces[alias].enabled).sort() : ["root"];
+  const sources: SkillCacheSource[] = [];
+  for (const alias of aliases) {
+    const workspace = config.workspaces[alias];
+    const skillsRoot = allWorkspaces
+      ? path.resolve(root, workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "skills")) : resolveSkillsRoot(root, config);
+    for (const candidate of listSkillMarkdownFiles(skillsRoot, file => owner(file) === alias)) {
+      const relativePath = path.relative(root, candidate.filePath);
+      const content = readContainedFile({ root, relativePath, pathSyntax: "native" });
+      sources.push({ workspace: alias, slug: candidate.slug, path: relativePath.split(path.sep).join("/"), hash: identityHash(content),
+        has_scripts: hasDirectory(path.join(path.dirname(candidate.filePath), "scripts")),
+        has_references: hasDirectory(path.join(path.dirname(candidate.filePath), "references")) });
+    }
+  }
+  return sources;
+}
+
 export function buildSkillsIndex(root: string, config: Config,
   options: { maxEntries?: number; readDocument?: (filePath: string) => string } = {}): SkillsIndex {
   const skillsRoot = resolveSkillsRoot(root, config);
   const owner = absoluteWorkspaceDocumentOwner(root, config);
   const files = listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === "root", options.maxEntries);
   const skills: Record<string, SkillIndexEntry> = {};
+  const sourceInputs: SkillCacheSource[] = [];
 
   for (const file of files) {
     const { slug, filePath } = file;
     if (skills[slug]) {
       throw new Error(`${filePath}: duplicate skill slug ${slug}`);
     }
-    skills[slug] = buildSkillIndexEntryForWorkspace(root, "root", slug, filePath, options.readDocument);
+    const content = options.readDocument ? options.readDocument(filePath)
+      : readContainedFile({ root, relativePath: path.relative(root, filePath), pathSyntax: "native" });
+    skills[slug] = buildSkillIndexEntryForWorkspace(root, "root", slug, filePath, () => content);
+    sourceInputs.push(skillCacheSource(skills[slug], content));
   }
 
   const sortedSkills: Record<string, SkillIndexEntry> = {};
@@ -222,6 +254,7 @@ export function buildSkillsIndex(root: string, config: Config,
       root,
       skills_root: path.relative(root, skillsRoot),
       skill_count: Object.keys(sortedSkills).length,
+      source_fingerprint: skillCacheFingerprint(config, sourceInputs),
     },
     skills: sortedSkills,
   };
