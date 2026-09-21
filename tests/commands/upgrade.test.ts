@@ -173,7 +173,7 @@ function setupCurrentAndLegacySeeds(): { oldSeed: string; currentSeed: string } 
   setupSeed(oldSeed, "old");
   setupSeed(currentSeed, "current");
   const legacyManifest = createInitManifest(oldSeed, "0.0.9");
-  writeInitManifest(path.join(currentSeed, "legacy", "v0.0.9-init-manifest.json"), legacyManifest);
+  writeInitManifest(currentSeed, "legacy/v0.0.9-init-manifest.json", legacyManifest);
   return { oldSeed, currentSeed };
 }
 

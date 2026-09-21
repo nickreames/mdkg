@@ -1,5 +1,14 @@
 {
   "schema": "mdkg.goal86.security-findings-checkpoint.v1",
+  "bug53_local_update_20260921": {
+    "status": "bounded local remedy verified; final independent/platform acceptance remains open",
+    "full_tests": {"pass": 1730, "fail": 0, "skipped": 0},
+    "focused_tests": 59,
+    "installed_cases": 111,
+    "evidence": [".mdkg/artifacts/goal-86/bug-53-baseline.json", ".mdkg/artifacts/goal-86/bug-53-full-verification.json", ".mdkg/artifacts/goal-86/bug-53-installed-verification.json"],
+    "local_remedies": ["bug-44", "bug-45", "bug-48", "bug-49", "bug-50", "bug-51", "bug-52", "bug-53"],
+    "scope": "Pre-arranged hard-link admission plus opened-descriptor/path custody checks; regular manifest inode metadata retained. Not native race immunity or general ACL qualification. Fresh review delegation unavailable; parent fallback recorded. No blocked context inspected, recovered or rerun."
+  },
   "bug52_local_update_20260921": {
     "status": "locally verified; final independent/platform acceptance remains open",
     "full_tests": {"pass": 1718, "fail": 0, "skipped": 0},

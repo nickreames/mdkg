@@ -13,7 +13,7 @@ import { appendInstructions, instructionHash, instructionSection } from "./boots
 import { formatDate } from "../util/date";
 import { readPackageVersion } from "../core/version";
 import { PROJECT_DB_GITIGNORE_ENTRIES } from "../core/project_db";
-import { createInitManifest, INIT_MANIFEST_FILE, readInitManifest, sha256File, writeInitManifest } from "./init_manifest";
+import { assertInitManifestWritable, createInitManifest, INIT_MANIFEST_FILE, readInitManifest, sha256File, writeInitManifest } from "./init_manifest";
 import { refreshSkillsRegistry, registryTemplate } from "./skill_support";
 import { preflightSkillMirrorTargets, scaffoldMirrorRoots, syncSkillMirrors } from "./skill_mirror";
 import { assertPublicSkillProjection } from "../core/public_skill_projection";
@@ -531,6 +531,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
   preflightSeedConfig(seedConfig);
   preflightInitIdentity(root, seedCore, agent, force);
   const previousManifestPath = path.join(root, ".mdkg", INIT_MANIFEST_FILE);
+  assertInitManifestWritable(root, `.mdkg/${INIT_MANIFEST_FILE}`);
   if (containedPathExists({ root, relativePath: `.mdkg/${INIT_MANIFEST_FILE}` })) {
     readContainedFile({ root, relativePath: `.mdkg/${INIT_MANIFEST_FILE}` });
   }
@@ -666,7 +667,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
       }
     }
     seedManifest.files = [...installed.values()].sort((a, b) => a.path.localeCompare(b.path));
-    writeInitManifest(path.join(mdkgDir, INIT_MANIFEST_FILE), seedManifest);
+    writeInitManifest(root, `.mdkg/${INIT_MANIFEST_FILE}`, seedManifest);
     stats.manifestWritten = true;
   } catch (err) {
     if (stats.created > 0 || stats.skipped > 0) {

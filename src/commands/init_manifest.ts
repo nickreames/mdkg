@@ -2,6 +2,8 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { appendInstructions, instructionHash, instructionSeed } from "./bootstrap_instructions";
+import { withContainedPathSink } from "../core/filesystem_authority";
+import { UsageError } from "../util/errors";
 
 export const INIT_MANIFEST_FILE = "init-manifest.json";
 export const INIT_MANIFEST_SCHEMA_VERSION = 1;
@@ -165,9 +167,48 @@ export function createInitManifest(
   };
 }
 
-export function writeInitManifest(filePath: string, manifest: InitManifest): void {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+function assertSingleLink(stat: fs.Stats): void {
+  if (!stat.isFile() || stat.nlink !== 1) throw new UsageError("init manifest must be a regular single-link file; hard-linked manifests are not writable");
+}
+
+function manifestStat(filePath: string): fs.Stats | undefined {
+  try { return fs.lstatSync(filePath); }
+  catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") return undefined; throw error; }
+}
+
+/** Observational admission before init's first write, repeated under its lock. */
+export function assertInitManifestWritable(root: string, relativePath: string): void {
+  withContainedPathSink({ root, relativePath, operation: "read" }, ({ absolutePath }) => {
+    const stat = manifestStat(absolutePath);
+    if (stat) assertSingleLink(stat);
+  });
+}
+
+export function writeInitManifest(root: string, relativePath: string, manifest: InitManifest): void {
+  const content = `${JSON.stringify(manifest, null, 2)}\n`;
+  withContainedPathSink({ root, relativePath, operation: "replace", createParents: true }, ({ absolutePath }) => {
+    const expected = manifestStat(absolutePath);
+    if (expected) assertSingleLink(expected);
+    // Do not truncate during open. Admit the actual descriptor before effects,
+    // and preserve existing inode metadata rather than silently replacing ACLs.
+    // This does not establish native ancestor-race immunity (separate boundary).
+    const flags = fs.constants.O_WRONLY | (fs.constants.O_NOFOLLOW ?? 0) | (fs.constants.O_NONBLOCK ?? 0) |
+      (expected ? 0 : fs.constants.O_CREAT | fs.constants.O_EXCL);
+    const handle = fs.openSync(absolutePath, flags, 0o666);
+    try {
+      const actual = fs.fstatSync(handle);
+      assertSingleLink(actual);
+      if (expected && (actual.dev !== expected.dev || actual.ino !== expected.ino)) throw new UsageError("init manifest changed before write; preserve it and retry after reviewing custody");
+      withContainedPathSink({ root, relativePath, operation: "replace" }, ({ absolutePath: currentPath }) => {
+        const current = fs.lstatSync(currentPath);
+        assertSingleLink(current);
+        if (current.dev !== actual.dev || current.ino !== actual.ino) throw new UsageError("init manifest changed before write; preserve it and retry after reviewing custody");
+      });
+      fs.ftruncateSync(handle, 0);
+      fs.writeFileSync(handle, content, "utf8");
+      fs.fsyncSync(handle);
+    } finally { fs.closeSync(handle); }
+  });
 }
 
 export function readInitManifest(filePath: string): InitManifest | undefined {
