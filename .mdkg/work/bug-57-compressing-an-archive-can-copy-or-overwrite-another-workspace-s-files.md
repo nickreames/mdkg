@@ -2,12 +2,12 @@
 id: bug-57
 type: bug
 title: Compressing an archive can copy or overwrite another workspace's files
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-57-baseline.json, .mdkg/artifacts/goal-86/bug-57-full-verification.json, .mdkg/artifacts/goal-86/bug-57-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
@@ -17,7 +17,7 @@ evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -103,5 +103,32 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-21: Bounded local remedy verified against source base
+fb3700edf4c6ef76e3612ecb61dac4aa648a05f8. Compression now admits the whole
+selected resource set before payload reads: deepest configured workspace owner,
+archive layout, protected configured metadata, portable path aliases and
+cross-resource/ancestor collisions. All local archives contribute ownership
+claims, including unselected entries. Sidecar authority is checked again before
+reading the raw input. Native path interpretation is consistent at the sinks.
+
+Fresh corrected prepatch fixtures:19 failures and5 legitimate passes. One
+independent candidate review exposed template-root normalization and regular
+dotfile compatibility gaps; both reproduced and were corrected. Parent testing
+also confirmed/fixed literal-# filename rejection caused by confusing filenames
+with imported projection markers. Imported/read-only mutation refusal remains.
+
+Verification:83 focused tests,1958 complete discovered tests, and38 installed
+cases each on Node24.15.0/24.18.0/26.0.0 (114 total), all pass with0 skips.
+Build, CLI/docs/workflow parity and full/changed graph checks pass; three
+preserved stale-import warnings remain. The preliminary run overlapping a dist
+rebuild is explicitly discarded, not counted as a product pass.
+
+Exact intermediate tarball SHA256:
+a861a6e9083c151c6fa039747e0af14f6637305eae737f8e9205978b9638b634.
+All231 installed files unchanged. This is macOS arm64 local evidence, not a
+final release seal. Published0.5.2 affectedness remains unassessed.
+
+Limits: no new hardlink policy or Bug47 concurrent ancestor-substitution remedy
+is claimed. Linux, Test488, final Task828 acceptance, full coverage ladder and
+artifact seal remain separate gates. Goal85 stays paused. No blocked context,
+old finding recovery, remote Git, provider action or publication occurred.
