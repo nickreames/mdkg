@@ -188,17 +188,24 @@ function parseValue(valueRaw: string, filePath: string, lineNumber: number): Fro
 }
 
 export function parseFrontmatter(content: string, filePath: string): ParsedFrontmatter {
-  const lines = content.split(/\r?\n/);
-  if (lines.length === 0 || lines[0].trim() !== "---") {
-    throw formatError(filePath, 1, "frontmatter must start with ---");
-  }
-
+  // Only retain the bounded header. Splitting a newline-dense body first can
+  // allocate millions of array entries despite the input byte admission limit.
+  const lines: string[] = [];
+  let start = 0, lineIndex = 0, bodyStart = content.length;
   let endIndex = -1;
-  for (let i = 1; i < lines.length; i += 1) {
-    if (lines[i].trim() === "---") {
-      endIndex = i;
+  while (start <= content.length) {
+    const newline = content.indexOf("\n", start);
+    let line = content.slice(start, newline === -1 ? content.length : newline);
+    if (newline !== -1 && line.endsWith("\r")) line = line.slice(0, -1);
+    if (lineIndex === 0 && line.trim() !== "---") throw formatError(filePath, 1, "frontmatter must start with ---");
+    if (lineIndex > 0 && line.trim() === "---") {
+      endIndex = lineIndex;
+      bodyStart = newline === -1 ? content.length : newline + 1;
       break;
     }
+    if (lineIndex <= MAX_FRONTMATTER_LINES) lines.push(line);
+    if (newline === -1) break;
+    start = newline + 1; lineIndex++;
   }
 
   if (endIndex === -1) {
@@ -239,7 +246,7 @@ export function parseFrontmatter(content: string, filePath: string): ParsedFront
     frontmatter[key] = parseValue(rawValue, filePath, lineNumber);
   }
 
-  const body = lines.slice(endIndex + 1).join("\n");
+  const body = content.slice(bodyStart).replace(/\r\n/g, "\n");
   return { frontmatter, body };
 }
 

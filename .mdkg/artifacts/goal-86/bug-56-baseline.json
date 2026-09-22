@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "goal": "root:goal-86",
+  "work": "root:bug-56",
+  "finding": "g86-graph-003",
+  "date": "2026-09-21",
+  "source_base": "21d775a78fdea181dc1fceccb26e92cdee9a2f43",
+  "branch": "main",
+  "cached_origin_main": "9652b8558942041cbebe8f444fbc79e16b1a670d",
+  "cached_ahead": 63,
+  "cached_behind": 0,
+  "remote_verified": false,
+  "owner": "mdkg-project-agent",
+  "entry_dirty": [
+    ".mdkg/index/mdkg.sqlite"
+  ],
+  "prepatch": {
+    "runtime": "v26.0.0",
+    "tests": 7,
+    "pass": 0,
+    "fail": 7,
+    "log_sha256": "a9df6c616199803660d89af1f12a2abed1a307a84040aedeac8d067bac212b6a",
+    "source_hashes": {
+      "src/commands/loop.ts": "3e434534c3d2fbf4387c215b7becf94b952bb585ab0dd854f4a5e83f30b53005",
+      "src/templates/loop_seeds.ts": "4d3380c934b0a3f1fc72ee82ed056ce515f9f1e6711b845e2a0db81a8f77c786",
+      "src/graph/frontmatter.ts": "2346950db5a029f313216356fafee1b8e047f4900bd2a4348d0ee595dd90eb1b",
+      "src/graph/node_body.ts": "f3c26eff4c6e445b0b45d8a29e871070493dea54f6789e9e42376cc1633941fa"
+    },
+    "harness": "Corrected focused regressions against an isolated runtime transpiled from exact committed source; no canonical reset or branch change.",
+    "observed": "Repeated seed/node provenance parsing, indexed source reads above lowered limits, and newline-dense body heap exhaustion. Indexed fork was rejected by a later prospective graph guard, not by the required bounded read.",
+    "fixture_corrections": "Initial fixtures omitted complete index limits and counted index-admission parsing as template parsing. Corrected before baseline replay. Later exact-limit fork controls accounted for output growth; parser header assertion uses the existing 1000-line limit. No production limits were relaxed.",
+    "prior_remedy": "Bug55 already supplied bounded contained seed reads. Bug56 adds command-local reuse/shared budgets, bounded fresh indexed sources and incremental parsing."
+  },
+  "review": {
+    "prepatch": "Fresh read-only boundary investigator plus parent source tracing.",
+    "candidate": "One fresh read-only candidate review identified imported loop bodies missing from shared provenance budget. Confirmed with synthetic child bundle and fixed through exact admitted-source byte accounting; no blocked context or old report read.",
+    "confirmed_gap": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "log_sha256": "86aa1b94820068be9253f978fb08f3e84e46653dc47a2d50f95e958bd41e8851",
+      "case": "40KiB imported body plus 40KiB local seed wrongly accepted under 64KiB total; 80KiB legitimate control retained."
+    },
+    "postfix_focused": {
+      "tests": 161,
+      "pass": 161,
+      "fail": 0,
+      "skipped": 0,
+      "log_sha256": "4f1d270531cc098876a3a08a7f8300e161af2194937fce20c88296b31337b79d",
+      "scope": "41 budget/parser cases, 63 seed-safety cases and 57 loop/frontmatter/node-body/subgraph compatibility cases."
+    }
+  },
+  "protected": {
+    "selected_goal_sha256": "f996926a868b7c06fb29311fb69c48d862e9dc354404f777df93e1c5443b07ab",
+    "runtime_db_sha256": "b1f2bfb3c9ebd254d520eb7f47c12c2fa18daf691056fe97ba1890f94d013a81",
+    "demo3_bundle_sha256": "741b4644da1d3d1ff3bbd4b9240e22870609f015e49e28170a91748ab024570b"
+  },
+  "authority": {
+    "blocked_context_accessed": false,
+    "old_findings_recovered_or_rerun": false,
+    "remote_actions": false,
+    "publication": false
+  },
+  "affected_versions": "Current draft 0.6.0 source at stated base. Published 0.5.2 affectedness remains unassessed.",
+  "limitations": [
+    "macOS arm64 local remedy only; Linux and final independent Task828 review remain release gates.",
+    "Intermediate regression evidence does not replace final artifact qualification, coverage ladder or seal."
+  ]
+}

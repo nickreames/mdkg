@@ -4,6 +4,7 @@ import { containedPathExists, forEachContainedDirectoryEntry, readContainedFileI
 import { localTemplateLimits } from "./limits";
 
 export type LoopSeedSource = { slug: string; path: string; content: string };
+export type LoopTemplateReadBudget = { files: number; bytes: number };
 
 function seedDirectory(root: string, config: Config): string {
   return path.relative(root, path.resolve(root, config.templates.root_path, "loops"));
@@ -26,7 +27,7 @@ export function loadLoopSeed(root: string, config: Config, slug: string): LoopSe
   return readSeed(root, path.join(seedDirectory(root, config), `${slug}.loop.md`), Math.min(limits.max_file_bytes, limits.max_total_bytes));
 }
 
-export function loadLoopSeedCatalog(root: string, config: Config): LoopSeedSource[] {
+export function loadLoopSeedCatalog(root: string, config: Config, budget: LoopTemplateReadBudget = { files: 0, bytes: 0 }): LoopSeedSource[] {
   const dir = seedDirectory(root, config), limits = localTemplateLimits(config);
   if (!containedPathExists({ root, relativePath: dir, pathSyntax: "native" })) return [];
   let entries = 0;
@@ -40,17 +41,17 @@ export function loadLoopSeedCatalog(root: string, config: Config): LoopSeedSourc
       const child = path.join(relativePath, entry.name);
       if (entry.isSymbolicLink()) containedPathExists({ root, relativePath: child, pathSyntax: "native" });
       if (depth === 0 && entry.name.endsWith(".loop.md")) {
-        if (paths.length >= limits.max_files) throw new Error("loop template count exceeds index.limits.max_files");
+        if (paths.length + budget.files >= limits.max_files) throw new Error("loop template count exceeds index.limits.max_files");
         paths.push(child);
       } else if (entry.isDirectory()) visit(child, depth + 1);
     });
   };
   visit(dir, 0);
-  let totalBytes = 0;
   return paths.sort().map((relativePath) => {
-    const source = readSeed(root, relativePath, Math.min(limits.max_file_bytes, limits.max_total_bytes - totalBytes));
+    const source = readSeed(root, relativePath, Math.min(limits.max_file_bytes, limits.max_total_bytes - budget.bytes));
     if (!source) throw new Error(`loop template disappeared during discovery: ${relativePath}`);
-    totalBytes += Buffer.byteLength(source.content, "utf8");
+    budget.bytes += Buffer.byteLength(source.content, "utf8");
+    budget.files++;
     return source;
   });
 }

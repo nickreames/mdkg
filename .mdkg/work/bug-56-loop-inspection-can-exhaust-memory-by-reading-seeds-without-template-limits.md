@@ -2,22 +2,22 @@
 id: bug-56
 type: bug
 title: Loop inspection can exhaust memory by reading seeds without template limits
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-56-baseline.json, .mdkg/artifacts/goal-86/bug-56-full-verification.json, .mdkg/artifacts/goal-86/bug-56-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, test-488, bug-57]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -102,5 +102,37 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+2026-09-21 bounded local remedy verified. Bug55 already admitted contained,
+bounded seed bytes; this pass closes repeated catalog/provenance parsing,
+unbounded fresh indexed-template reads and newline-dense parser amplification.
+Seed and indexed templates share a per-command unique-input file/byte budget;
+subsequent commands read fresh input. Imported loop show bodies debit their
+exact admitted source bytes before local provenance reads. The parser retains
+only the bounded header and scans purpose lines without body-sized line arrays.
+Existing line numbers, CRLF normalization, direct seed isolation, missing
+catalog behavior and legitimate loop operations remain intact.
+
+Seven corrected before-fix regressions fail against isolated runtime bytes from
+21d775a78fdea181dc1fceccb26e92cdee9a2f43. The fork case hit a later prospective
+graph guard, not the required bounded read; no claim that all guards were absent.
+Initial fixture configuration and parse-count errors were corrected before
+baseline replay. One fresh independent candidate review found an imported-body
+aggregate-budget gap; a synthetic 40KiB body plus 40KiB seed reproduced it under
+a 64KiB budget before the byte-accounting fix. No blocked context was accessed.
+
+Verification:1920 full tests,161 focused/nearby cases and312 installed cases pass,
+zero failures/skips. Installed tests run104 cases each on Node24.15.0/24.18.0/
+26.0.0, macOS arm64. All231 installed files remain unchanged. Intermediate
+tarball SHA256:9c54ce1301ee1db89a5afe5f326c485346bb52d10707de46dd49493305f5ddca.
+Build, CLI/docs/workflow parity, graph, SQLite and diff checks pass. Three
+pre-existing stale imported-bundle warnings remain, without refresh. Selected
+Goal73, runtime DB and Demo3 bundle bookends match. The dirty SQLite cache is
+preserved and excluded from the local commit.
+
+This is local remedy closure, not final Task828 security acceptance or release
+qualification. Linux, remaining blockers, full release ladder/coverage and final
+artifact seal remain open; Goal85 stays paused and release NOT_READY. Published
+0.5.2 affectedness remains unassessed. Skill coverage reused; candidates:none.
+
+Historical entry,2026-09-17: source finding accepted; initially backlog with no
+remediation or runtime verification.
