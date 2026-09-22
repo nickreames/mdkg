@@ -2,22 +2,22 @@
 id: bug-55
 type: bug
 title: Creating a loop can read an external file through a linked seed template
-status: backlog
+status: done
 priority: 1
 tags: [release-0.6.0, security]
 owners: [mdkg-project-agent]
 links: []
-artifacts: []
+artifacts: [.mdkg/artifacts/goal-86/bug-55-baseline.json, .mdkg/artifacts/goal-86/bug-55-full-verification.json, .mdkg/artifacts/goal-86/bug-55-installed-verification.json]
 relates: []
 blocked_by: []
 blocks: []
-refs: [task-837, goal-84, goal-86, task-828]
+refs: [task-837, goal-84, goal-86, task-828, test-488, bug-56]
 context_refs: [goal-86, goal-84, task-837]
 evidence_refs: []
 aliases: []
 skills: []
 created: 2026-09-17
-updated: 2026-09-17
+updated: 2026-09-21
 ---
 # Overview
 
@@ -99,5 +99,25 @@ evidence, not reopened or substituted for this new regression.
 
 ## Current State
 
-Planned / backlog. Source finding accepted; no remediation or runtime
-verification has been performed for this new record. Goal85 remains paused.
+Locally remediated and verified on 2026-09-21 against source base
+47e2c1673a07644598c315d9020663495c04a00e. Initial synthetic CLI regressions:
+28 failures / 20 passing controls, including external-title disclosure, FIFO
+timeouts and post-write failures. No blocked context or historical scan recovery.
+
+The shared loop-seed loader uses contained regular-file reads and existing
+template budgets. Suggestions are read once before numeric reservation, authored
+writes, indexes and events; the validated snapshot supplies the receipt. Catalog
+and direct seed readers share this boundary without making direct selection parse
+unrelated templates. Title-only suggestions, missing catalogs and sorted output
+remain supported. One fresh read-only candidate review reported no concrete issue.
+
+Verification: 63 seed-safety cases, 109 nearby compatibility cases and 1879 full
+tests pass; 189 installed checks pass on Node24.15.0/24.18.0/26.0.0, macOS arm64.
+External-open traps and before/after inventories prove refusal without authored,
+Git-index, selection, runtime or external-file changes. CLI/docs/workflow, graph,
+SQLite and diff checks pass. Three stale imported-bundle warnings are preserved.
+
+This is not release clearance. Bug56 retains its complete resource/provenance
+reuse obligations; Bug47 retains concurrent ancestor-substitution exposure.
+Linux, independent Task828 acceptance, full release ladder and final artifact seal
+remain open. Published0.5.2 affectedness is unassessed. Goal85 remains paused.

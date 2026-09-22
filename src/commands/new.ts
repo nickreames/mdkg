@@ -1,4 +1,3 @@
-import fs from "fs";
 import path from "path";
 import { authorNewIdentityNode, validateProspectiveNodes } from "../graph/identity_authoring";
 import { loadConfig, Config } from "../core/config";
@@ -7,6 +6,7 @@ import { ALLOWED_TYPES, WORK_TYPES } from "../graph/node";
 import { isAgentFileType, AGENT_FILE_BASENAMES } from "../graph/agent_file_types";
 import { buildIndex, Index } from "../graph/indexer";
 import { loadTemplate, renderTemplate } from "../templates/loader";
+import { loadLoopSeedCatalog } from "../templates/loop_seeds";
 import { formatFrontmatter, FrontmatterValue, parseFrontmatter } from "../graph/frontmatter";
 import { formatDate } from "../util/date";
 import { NotFoundError, UsageError } from "../util/errors";
@@ -92,31 +92,18 @@ const NEW_LOOP_NEXT_ACTIONS = [
   "Inspect raw loop readiness with mdkg loop plan <loop-id>",
 ];
 
-function toPosix(value: string): string {
-  return value.split(path.sep).join("/");
-}
-
 function loopTemplateSuggestions(root: string, config: Config): LoopTemplateSuggestion[] {
-  const dir = path.resolve(root, config.templates.root_path, "loops");
-  if (!fs.existsSync(dir)) {
-    return [];
-  }
-  return fs
-    .readdirSync(dir)
-    .filter((entry) => entry.endsWith(".loop.md"))
-    .sort()
-    .map((entry) => {
-      const filePath = path.join(dir, entry);
-      const content = fs.readFileSync(filePath, "utf8");
+  return loadLoopSeedCatalog(root, config)
+    .map(({ path: relativePath, slug, content }) => {
+      const filePath = path.resolve(root, relativePath);
       const { frontmatter } = parseFrontmatter(content, filePath);
-      const slug = entry.replace(/\.loop\.md$/, "");
       const title = typeof frontmatter.title === "string" && frontmatter.title.trim().length > 0
         ? frontmatter.title
         : slug;
       return {
         ref: `template://loops/${slug}`,
         title,
-        path: toPosix(path.relative(root, filePath)),
+        path: relativePath,
       };
     });
 }
@@ -539,6 +526,11 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   const { content } = authorNewIdentityNode(options.root, index, ws, authoredContent, filePath);
   assertNodeFormat(graphFormat, readNodeIdentity(parseFrontmatter(content, filePath).frontmatter, filePath), filePath);
   validateProspectiveNodes(options.root, config, index, ws, [{ id, path: relativeFilePath, content }], noReindex);
+  // Guidance must be admitted before allocator, authored, event or cache effects.
+  // Keep this snapshot for output rather than reopening repository input later.
+  const loopGuidance = type === "loop"
+    ? { next_actions: NEW_LOOP_NEXT_ACTIONS, suggested_templates: loopTemplateSuggestions(options.root, config) }
+    : undefined;
   if (allocation) reservePlannedNumericIds({ root: options.root, config, reservations: [{ ...allocation, id }] });
 
   try {
@@ -583,13 +575,6 @@ function runNewCommandLocked(options: NewCommandOptions): void {
   if (legacySpecAlias) {
     console.error(LEGACY_NEW_SPEC_WARNING);
   }
-
-  const loopGuidance = type === "loop"
-    ? {
-        next_actions: NEW_LOOP_NEXT_ACTIONS,
-        suggested_templates: loopTemplateSuggestions(options.root, config),
-      }
-    : undefined;
 
   if (options.json) {
     console.log(
