@@ -7,7 +7,7 @@ priority: 1
 goal_state: active
 goal_condition: Every publication blocker independently verified, complete macOS and Linux installed qualification and fresh security coverage accepted, full release ladder passed and exact 0.6.0 artifact sealed without publication.
 scope_refs: [task-834, bug-40, bug-35, bug-17, bug-39, bug-41, bug-42, bug-43, task-835, task-836, task-827, task-838, bug-44, bug-45, bug-46, bug-47, bug-48, bug-49, bug-50, bug-51, bug-52, bug-53, bug-54, bug-55, bug-56, bug-57, bug-58, bug-59, bug-60, task-839, test-488, test-477, test-478, test-479, test-480, test-481, test-482, test-483, test-484, test-486, test-487, task-826, bug-7, task-837, task-828, task-829, task-830]
-active_node: bug-58
+active_node: bug-59
 required_skills: [select-work-and-ground-context, pursue-mdkg-goal, verify-close-and-checkpoint]
 required_checks: [npm run build, npm run test, npm run cli:check, npm run docs:check, npm run ci:workflow:check, node dist/cli.js validate --json, node dist/cli.js validate --changed-only --json, node dist/cli.js db index verify --json, git diff --check]
 max_iterations: 75
@@ -163,6 +163,18 @@ Do not start/reconfigure services; missing local capability or hosted CI needs
 precise separate authorization and remains a blocking evidence gap.
 
 # Current State
+
+2026-09-21 Bug59 native-Git metadata exclusion locally verified: shared mirror
+admission covers Git directories/files, linked-worktree/submodule topology,
+redirected and alternate stores, nested repositories and upgrade replay.
+47 focused tests,2040 full tests and285 installed cases pass on the required
+three Node runtimes on macOS arm64. One bounded candidate review and its
+corrections are recorded; no blocked context accessed. This adjacent custody
+defect does not change the twelve-of-fourteen locally remedied security count.
+Bugs46/47 and adjacent Bug60 remain, plus Linux, independent final acceptance,
+coverage ladder and exact final seal. Selection/runtime/Demo3 preserved;
+SQLite projection remains separate dirty custody. Next: Bug60 read-only SQLite
+admission. Goal86 active; Goal85 paused / NOT_READY.
 
 2026-09-21 Bug58 MCP request/session remedy verified: unknown parsed values are
 admitted before field access or dispatch; malformed envelopes cannot terminate

@@ -3,7 +3,7 @@ import path from "path";
 import { Config } from "../core/config";
 import { parseFrontmatter } from "../graph/frontmatter";
 import { resolveSkillsRoot, SKILL_SLUG_RE } from "../graph/skills_indexer";
-import { configuredSkillMirrorTargets } from "./skill_mirror";
+import { admitSkillMirrorTargets } from "./skill_mirror";
 import { registryTemplate, renderSkillRegistryContent } from "./skill_support";
 import { UpgradePlan, digest } from "./upgrade_transaction";
 import type { UpgradeChange } from "./upgrade";
@@ -12,6 +12,7 @@ import type { UpgradeChange } from "./upgrade";
 export function planUpgradeProjections(plan: UpgradePlan, config: Config, known: Map<string, Set<string>>): UpgradeChange[] {
   const changes: UpgradeChange[] = [];
   const root = plan.root;
+  const mirrorTargets = admitSkillMirrorTargets(root, config);
   const canonical = path.relative(root, resolveSkillsRoot(root, config)).split(path.sep).join("/");
   const files = new Set<string>();
   function walk(dir: string): void {
@@ -41,7 +42,7 @@ export function planUpgradeProjections(plan: UpgradePlan, config: Config, known:
   }
   const registry = `${canonical}/registry.md`;
   write(registry, renderSkillRegistryContent(plan.read(registry)?.toString("utf8") ?? registryTemplate(), skills), "skill_registry");
-  for (const target of configuredSkillMirrorTargets(config)) {
+  for (const target of mirrorTargets) {
     const manifestPath = `${target}/.mdkg-managed.json`;
     const raw = plan.read(manifestPath);
     const parsed = raw ? JSON.parse(raw.toString("utf8")) : { managed_slugs: [] };

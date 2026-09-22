@@ -542,6 +542,9 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
     }
   }
   const existingCanonicalSkills = agent ? listExistingCanonicalSkillSlugs(root) : [];
+  const effectiveConfig = !force && containedPathExists({ root, relativePath: ".mdkg/config.json" })
+    ? loadConfig(root)
+    : validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(seedConfig, "utf8"))).config);
   if (agent) {
     if (fs.existsSync(seedSkillPolicy)) {
       assertPublicSkillProjection({
@@ -551,6 +554,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
     }
     preflightSkillMirrorTargets({
       root,
+      config: effectiveConfig,
       slugs: [...listSeedSkillSlugs(seedDefaultSkills), ...existingCanonicalSkills],
       force,
     });
@@ -559,10 +563,7 @@ function initialize(options: InitCommandOptions, locked: boolean): void {
   // Refuse incompatible input before creating a lock directory. Re-run the
   // complete preflight under the shared writer lock before the first write.
   if (!locked) {
-    const config = !force && containedPathExists({ root, relativePath: ".mdkg/config.json" })
-      ? loadConfig(root)
-      : validateConfigSchema(migrateConfig(JSON.parse(fs.readFileSync(seedConfig, "utf8"))).config);
-    return withMutationLock(root, config.index.lock_timeout_ms, () => initialize(options, true));
+    return withMutationLock(root, effectiveConfig.index.lock_timeout_ms, () => initialize(options, true));
   }
 
   const stats: CopyStats = {

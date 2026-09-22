@@ -1,0 +1,17 @@
+{
+  "baseline": "b9cfcf0200360fb37867eb48a7f1e345aefdbc9c",
+  "tests": 29,
+  "pass": 5,
+  "fail": 24,
+  "log_sha256": "2ecf1547f96e00d61abdc3269eb69162b6e1963611036c33b684ebdf0a5cea87",
+  "assessment": "20 unsafe successful-operation failures; four existing generic path/gitfile refusals lacked early Git-specific admission. Baseline gitdir-indirection fixture was upgraded to an actual local submodule in final tests. Harness option/parent setup errors corrected before this recorded run.",
+  "source_hashes": {
+    "src/commands/skill_mirror.ts": "4c49a4958d19d81025f860f39a6c6cfb8010290d60cbbc2323e2b1e12f814266",
+    "src/commands/skill.ts": "928f4f985dc6124e8348a3b90588b25077a25bd11d6876936e216f9e76b058d9",
+    "src/commands/init.ts": "89815ddb6579a9677238f84fd674c86c9e254c7296131de2a90312d238bb155a",
+    "src/commands/upgrade_projections.ts": "ad063030fb9c47db63a7ef0dd1fddeb5c7e90acfd466c2ad71f252652d53fe07",
+    "src/commands/upgrade_transaction.ts": "382b8f4b10ed9dfbe9fb398a7bea02f81ca59a33d5e7a0a37163fe33e303db58"
+  },
+  "blocked_context_accessed": false,
+  "classification": "adjacent custody defect, not another retained security finding"
+}

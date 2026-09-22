@@ -29,7 +29,9 @@ function fixture() {
   const manifest = path.join(root, ".mdkg/init-manifest.json");
   const original = JSON.parse(fs.readFileSync(manifest, "utf8")); original.mdkg_version = "fixture-before";
   fs.writeFileSync(manifest, JSON.stringify(original));
-  fs.mkdirSync(path.join(root, ".git")); fs.writeFileSync(path.join(root, ".git/index"), "staged bytes");
+  const initialized = spawnSync("git", ["init", "-q"], { cwd: root, encoding: "utf8" });
+  assert.equal(initialized.status, 0, initialized.stderr);
+  fs.writeFileSync(path.join(root, ".git/index"), "staged bytes");
   return { owned, root, peer, manifest };
 }
 for (const flags of [[], ["--agent"], ["--graph-only"]]) for (const force of [false, true]) {

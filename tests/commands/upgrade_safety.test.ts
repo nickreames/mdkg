@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import { spawnSync } from "node:child_process";
 import { makeTempDir, writeFile } from "../helpers/fs";
 const { runInitCommand } = require("../../commands/init");
 const { runUpgradeCommand } = require("../../commands/upgrade");
@@ -35,6 +36,8 @@ const apply = (root: string, seed: string, receipt: any, extra: any = {}): any =
 
 test("upgrade preview is byte-preserving and stable; stale plans fail before writes", () => {
   const { root, seed } = fixture();
+  const initialized = spawnSync("git", ["init", "-q"], { cwd: root, encoding: "utf8" });
+  assert.equal(initialized.status, 0, initialized.stderr);
   writeFile(path.join(root, ".git/index"), "unrelated staged bytes");
   const before = snapshot(root), receipt = preview(root, seed);
   assert.equal(receipt.safe_to_apply, true);
