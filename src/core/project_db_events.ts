@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
+import { withSelectedSqliteObservation } from "./sqlite_observation";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -12,7 +13,7 @@ type DatabaseSyncType = {
   close(): void;
 };
 
-type DatabaseCtor = new (filename: string) => DatabaseSyncType;
+type DatabaseCtor = new (filename: string, options?: { readOnly?: boolean }) => DatabaseSyncType;
 
 export type ProjectDbEventStatus = "received" | "validated" | "applied" | "rejected" | "dead_letter";
 export type ProjectDbReceiptStatus = "applied" | "rejected" | "duplicate" | "conflict" | "replay" | "dead_letter";
@@ -290,15 +291,18 @@ function toLease(row: Record<string, unknown>): ProjectDbWriterLease {
   };
 }
 
-function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T): T {
+function withDb<T>(databasePath: string, fn: (db: DatabaseSyncType) => T, observation = false): T {
   const DatabaseSync = loadDatabaseCtor();
-  const db = new DatabaseSync(databasePath);
-  try {
-    db.exec("PRAGMA foreign_keys = ON;");
-    return fn(db);
-  } finally {
-    db.close();
-  }
+  const run = (selectedPath: string): T => {
+    const db = new DatabaseSync(selectedPath, { readOnly: observation });
+    try {
+      db.exec("PRAGMA foreign_keys = ON;");
+      return fn(db);
+    } finally {
+      db.close();
+    }
+  };
+  return observation ? withSelectedSqliteObservation(databasePath, run) : run(databasePath);
 }
 
 function withImmediateTransaction<T>(db: DatabaseSyncType, fn: () => T): T {
@@ -879,5 +883,5 @@ export function readProjectWriterLeaseStats(databasePath: string, input: { now_m
         .get(currentNow)?.count ?? 0
     );
     return { active, expired, by_status: byStatus };
-  });
+  }, true);
 }

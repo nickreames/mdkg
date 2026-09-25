@@ -19,6 +19,7 @@ import {
   projectDbStats,
   runProjectDbMigrations,
   verifyProjectDb,
+  verifyProjectDbForMutation,
 } from "../core/project_db_migrations";
 import {
   diffProjectDbSnapshots,
@@ -657,11 +658,11 @@ function requireLeaseMs(options: DbQueueCommandOptions): number {
   return options.leaseMs;
 }
 
-function loadQueueDatabasePath(root: string): string {
+function loadQueueDatabasePath(root: string, mutation = false): string {
   const config = loadConfig(root);
-  const verification = verifyProjectDb(root, config);
+  const verification = mutation ? verifyProjectDbForMutation(root, config) : verifyProjectDb(root, config);
   if (!verification.ok) {
-    throw new ValidationError(`db queue requires a valid project DB; run mdkg db verify`);
+    throw new ValidationError(`db queue requires a valid project DB; run mdkg db verify: ${verification.errors.join("; ")}`);
   }
   return resolveConfiguredProjectDbLayout(root, config.db).runtimeFile;
 }
@@ -700,7 +701,7 @@ function writeQueueJsonOrText(action: string, payload: Record<string, unknown>, 
 function runQueueMutation(options: DbQueueCommandOptions, fn: (databasePath: string) => Record<string, unknown>, action: string): void {
   const config = loadConfig(options.root);
   withMutationLock(options.root, config.index.lock_timeout_ms, () => {
-    const databasePath = loadQueueDatabasePath(options.root);
+    const databasePath = loadQueueDatabasePath(options.root, true);
     writeQueueJsonOrText(action, fn(databasePath), options.json);
   });
 }

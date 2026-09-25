@@ -32,11 +32,11 @@ import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent } from "./event_support";
 import { runArchiveAddCommand } from "./archive";
 import { resolveConfiguredProjectDbLayout } from "../core/project_db";
-import { verifyProjectDb } from "../core/project_db_migrations";
+import { verifyProjectDbForMutation } from "../core/project_db_migrations";
 import {
   enqueueProjectQueueMessage,
   ProjectQueueMessage,
-  readProjectQueue,
+  readProjectQueueForMutation,
 } from "../core/project_db_queue";
 import { collectValidateReceipt } from "./validate";
 import { toNodeSummaryJson, writeJson } from "./query_output";
@@ -454,14 +454,14 @@ function queueRefForWorkOrder(queueName: string, orderId: string): string {
 
 function loadWorkTriggerQueueDatabase(root: string, queueName: string): string {
   const config = loadConfig(root);
-  const verification = verifyProjectDb(root, config);
+  const verification = verifyProjectDbForMutation(root, config);
   if (!verification.ok) {
     throw new ValidationError(
       "work trigger --enqueue requires a valid project DB; run mdkg db init, mdkg db migrate, and mdkg db verify"
     );
   }
   const databasePath = resolveConfiguredProjectDbLayout(root, config.db).runtimeFile;
-  const queue = readProjectQueue(databasePath, queueName);
+  const queue = readProjectQueueForMutation(databasePath, queueName);
   if (!queue) {
     throw new NotFoundError(`project DB queue not found: ${queueName}; run mdkg db queue create ${queueName}`);
   }
