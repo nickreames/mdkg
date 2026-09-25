@@ -4,23 +4,17 @@ const crypto = require("node:crypto");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
 const {
   assert,
   assertNoHighRiskMarkers,
-  mdkg,
   parseJson,
   readText,
-  repoRoot,
+  repoRoot: sourceRepoRoot,
 } = require("./mdkg-dev-smoke-utils");
+const { createOwnedFixture, isolatedFixtureEnvironment, finalizeFixture } = require("./qualification-fixture");
+const { exampleRoots, prepareDemoFixture } = require("./demo-graph-fixture");
 
 const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const exampleRoots = [
-  "examples/demo-agentic-coding",
-  "examples/template-mdkg-dev",
-  "examples/website-demo-template",
-  "examples/demo-runs/demo-001",
-];
 
 function snapshotExampleIndexes() {
   const snapshot = {};
@@ -30,28 +24,21 @@ function snapshotExampleIndexes() {
       if (entry.isDirectory()) {
         visit(filePath);
       } else if (entry.isFile()) {
-        const relativePath = path.relative(repoRoot, filePath).split(path.sep).join("/");
+        const relativePath = path.relative(sourceRepoRoot, filePath).split(path.sep).join("/");
         snapshot[relativePath] = crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
       }
     }
   };
   for (const rootRel of exampleRoots) {
-    visit(path.join(repoRoot, rootRel, ".mdkg", "index"));
+    visit(path.join(sourceRepoRoot, rootRel, ".mdkg", "index"));
   }
   return snapshot;
 }
 
-function copyExample(tempRoot, rootRel) {
-  const target = path.join(tempRoot, rootRel);
-  fs.mkdirSync(path.dirname(target), { recursive: true });
-  fs.cpSync(path.join(repoRoot, rootRel), target, { recursive: true });
-  return target;
-}
-
-function runWebsiteDemoBootstrap(args, options = {}) {
-  const result = spawnSync(process.execPath, [path.join(repoRoot, "scripts", "bootstrap-website-demo-run.js"), ...args], {
+function executeWebsiteDemoBootstrap(fixture, repoRoot, env, args, options = {}) {
+  const result = fixture.runNode([path.join(repoRoot, "scripts", "bootstrap-website-demo-run.js"), ...args], {
     cwd: repoRoot,
-    encoding: "utf8",
+    env,
   });
   if (!options.allowFailure) {
     assert(result.status === 0, `website demo bootstrap failed: ${result.stderr || result.stdout}`);
@@ -81,7 +68,7 @@ function bootstrapArgs(targetRel, manifestRel, releaseRel, bindingRel) {
   ];
 }
 
-function assertBootstrapFailure(targetRel, manifestRel, releaseRel, bindingRel, expectedClassification) {
+function assertBootstrapFailureFor(runWebsiteDemoBootstrap, targetRel, manifestRel, releaseRel, bindingRel, expectedClassification) {
   const failure = runWebsiteDemoBootstrap(
     bootstrapArgs(targetRel, manifestRel, releaseRel, bindingRel),
     { allowFailure: true }
@@ -183,13 +170,16 @@ function buildFixtureBinding({
 }
 
 function assertExample(rootRel, searchText, expectedTitle, options = {}) {
-  const root = options.root || path.join(repoRoot, rootRel);
+  const { root, mdkg } = options;
+  assert(root && typeof mdkg === "function", "example checks require an explicit fixture root and runner");
   const startedAt = Date.now();
+  // Copied indexes bind another checkout's fingerprints. Rebuild derived state
+  // inside this fixture before requiring warning-free validation.
+  mdkg(["--root", root, "index"]);
   const validate = parseJson(mdkg(["--root", root, "validate", "--json"]).stdout);
   assert(validate.ok === true, `${rootRel} did not validate`);
   assert(validate.warning_count === 0, `${rootRel} has validation warnings`);
 
-  mdkg(["--root", root, "index"]);
   const next = parseJson(mdkg(["--root", root, "goal", "next", "goal-1", "--json"]).stdout);
   if (options.allowAchievedGoal) {
     assert(
@@ -280,30 +270,51 @@ function assertExample(rootRel, searchText, expectedTitle, options = {}) {
 
 function main() {
   const sourceIndexSnapshot = snapshotExampleIndexes();
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-demo-graph-smoke-"));
-  const runScratchParent = path.join(
-    repoRoot,
-    "presentations",
-    "ai-native-sdlc-demo",
-    "runs"
-  );
-  const scratchName = `.bootstrap-smoke-${process.pid}-${Date.now()}`;
-  const bootstrapScratchRoot = path.join(runScratchParent, scratchName);
-  const bootstrapScratchRel = path.relative(repoRoot, bootstrapScratchRoot).split(path.sep).join("/");
-  const bootstrapScratchRootB = path.join(runScratchParent, `${scratchName}-b`);
-  const bootstrapScratchRelB = path.relative(repoRoot, bootstrapScratchRootB).split(path.sep).join("/");
-  const manifestRel =
-    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json";
-  const releaseRel =
-    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/source-release-manifest.json";
-  const timedRunRel =
-    "presentations/ai-native-sdlc-demo/artifacts/demo-platform/timed-run-contract.json";
-  const bindingRel = `${bootstrapScratchRel}.binding.json`;
-  const bindingRelB = `${bootstrapScratchRelB}.binding.json`;
-  const semanticSourceRelease = `sha256:${sha256File(path.join(repoRoot, releaseRel))}`;
-  const timingProfileRef = `sha256:${sha256File(path.join(repoRoot, timedRunRel))}`;
-
+  const fixture = createOwnedFixture({ base: fs.realpathSync(tempBase), prefix: "mdkg-demo-graph-smoke-" });
+  let receipt, cleanup, prepared, failure;
   try {
+    prepared = prepareDemoFixture(fixture, sourceRepoRoot);
+    const { repoRoot, copiedRoots } = prepared;
+    const env = isolatedFixtureEnvironment();
+    const runWebsiteDemoBootstrap = (args, options) => {
+      fixture.assertOwned();
+      return executeWebsiteDemoBootstrap(fixture, repoRoot, env, args, options);
+    };
+    const assertBootstrapFailure = (...args) => assertBootstrapFailureFor(runWebsiteDemoBootstrap, ...args);
+    const mdkg = (args, cwd = repoRoot, options = {}) => {
+      fixture.assertOwned();
+      // Only the three explicit canonical observations below use --root;
+      // execution and every mutable graph operation stay in the owned copy.
+      const observingSource = cwd === sourceRepoRoot;
+      const result = fixture.runNode([path.join(repoRoot, "dist/cli.js"), ...(observingSource ? ["--root", sourceRepoRoot] : []), ...args], {
+        cwd: observingSource ? repoRoot : cwd, env,
+      });
+      if (!options.allowFailure) assert(result.status === 0, `mdkg fixture command failed: ${result.stderr || result.stdout}`);
+      return { stdout: (result.stdout || "").trim(), stderr: (result.stderr || "").trim(), status: result.status };
+    };
+    const runScratchParent = path.join(
+      repoRoot,
+      "presentations",
+      "ai-native-sdlc-demo",
+      "runs"
+    );
+    const scratchName = `.bootstrap-smoke-${process.pid}-${Date.now()}`;
+    fs.mkdirSync(runScratchParent, { recursive: true });
+    const bootstrapScratchRoot = path.join(runScratchParent, scratchName);
+    const bootstrapScratchRel = path.relative(repoRoot, bootstrapScratchRoot).split(path.sep).join("/");
+    const bootstrapScratchRootB = path.join(runScratchParent, `${scratchName}-b`);
+    const bootstrapScratchRelB = path.relative(repoRoot, bootstrapScratchRootB).split(path.sep).join("/");
+    const manifestRel =
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/operator-materialization-manifest.json";
+    const releaseRel =
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/source-release-manifest.json";
+    const timedRunRel =
+      "presentations/ai-native-sdlc-demo/artifacts/demo-platform/timed-run-contract.json";
+    const bindingRel = `${bootstrapScratchRel}.binding.json`;
+    const bindingRelB = `${bootstrapScratchRelB}.binding.json`;
+    const semanticSourceRelease = `sha256:${sha256File(path.join(repoRoot, releaseRel))}`;
+    const timingProfileRef = `sha256:${sha256File(path.join(repoRoot, timedRunRel))}`;
+
     fs.writeFileSync(
       path.join(repoRoot, bindingRel),
       `${JSON.stringify(
@@ -340,10 +351,7 @@ function main() {
         2,
       )}\n`,
     );
-    const copiedRoots = Object.fromEntries(
-      exampleRoots.map((rootRel) => [rootRel, copyExample(tempRoot, rootRel)])
-    );
-    const demoReadme = readText(path.join(repoRoot, "examples", "demo-agentic-coding", "README.md"));
+    const demoReadme = readText(path.join(sourceRepoRoot, "examples", "demo-agentic-coding", "README.md"));
     for (const expected of [
       "First-success path",
       "Expected results",
@@ -356,7 +364,7 @@ function main() {
       assert(demoReadme.includes(expected), `demo README missing ${expected}`);
     }
     const demoDocs = readText(
-      path.join(repoRoot, "docs", "src", "content", "docs", "advanced-alpha", "demo-graphs.md")
+      path.join(sourceRepoRoot, "docs", "src", "content", "docs", "advanced-alpha", "demo-graphs.md")
     );
     for (const expected of [
       "First-success path",
@@ -370,25 +378,25 @@ function main() {
       "examples/demo-agentic-coding",
       "agentic coding demo",
       "Build a one-shot agentic coding demo from mdkg context",
-      { root: copiedRoots["examples/demo-agentic-coding"] }
+      { root: copiedRoots["examples/demo-agentic-coding"], mdkg }
     );
     assertExample(
       "examples/template-mdkg-dev",
       "candidate website",
       "Generate a candidate mdkg.dev website from a cloned graph",
-      { root: copiedRoots["examples/template-mdkg-dev"] }
+      { root: copiedRoots["examples/template-mdkg-dev"], mdkg }
     );
     assertExample(
       "examples/website-demo-template",
       "differentiated website demo",
       "Build a complete differentiated website demo from the canonical mdkg template",
-      { root: copiedRoots["examples/website-demo-template"] }
+      { root: copiedRoots["examples/website-demo-template"], mdkg }
     );
     assertExample(
       "examples/demo-runs/demo-001",
       "differentiated website demo",
       "Build a complete differentiated website demo from the canonical mdkg template",
-      { allowAchievedGoal: true, root: copiedRoots["examples/demo-runs/demo-001"] }
+      { allowAchievedGoal: true, root: copiedRoots["examples/demo-runs/demo-001"], mdkg }
     );
 
     const bootstrapCreate = runWebsiteDemoBootstrap(
@@ -650,7 +658,7 @@ function main() {
       "source_release_dependency_drift"
     );
 
-    const subgraphResult = mdkg(["subgraph", "verify", "--all", "--json"], repoRoot, {
+    const subgraphResult = mdkg(["subgraph", "verify", "--all", "--json"], sourceRepoRoot, {
       allowFailure: true,
     });
     const subgraphs = parseJson(subgraphResult.stdout);
@@ -674,87 +682,75 @@ function main() {
       assert(entry.error_count === 0, `${alias} has errors`);
     }
 
-    const demoGoal = parseJson(mdkg(["show", "demo_agentic_coding:goal-1", "--json"]).stdout);
+    const demoGoal = parseJson(mdkg(["show", "demo_agentic_coding:goal-1", "--json"], sourceRepoRoot).stdout);
     assert(demoGoal.item.source.read_only === true, "demo subgraph goal should be read-only");
-    const templateGoal = parseJson(mdkg(["show", "template_mdkg_dev:goal-1", "--json"]).stdout);
+    const templateGoal = parseJson(mdkg(["show", "template_mdkg_dev:goal-1", "--json"], sourceRepoRoot).stdout);
     assert(templateGoal.item.source.read_only === true, "template subgraph goal should be read-only");
 
     assertNoHighRiskMarkers([
-      path.join(repoRoot, "examples", "demo-agentic-coding"),
-      path.join(repoRoot, "examples", "template-mdkg-dev"),
-      path.join(repoRoot, "examples", "website-demo-template"),
-      path.join(repoRoot, "examples", "demo-runs", "demo-001"),
+      path.join(sourceRepoRoot, "examples", "demo-agentic-coding"),
+      path.join(sourceRepoRoot, "examples", "template-mdkg-dev"),
+      path.join(sourceRepoRoot, "examples", "website-demo-template"),
+      path.join(sourceRepoRoot, "examples", "demo-runs", "demo-001"),
     ]);
     assert(
       JSON.stringify(snapshotExampleIndexes()) === JSON.stringify(sourceIndexSnapshot),
       "demo graph smoke mutated committed example index caches"
     );
-    console.log(
-      JSON.stringify(
+    receipt = {
+      ok: true,
+      fixture_inputs: prepared.inputIdentity,
+      semantic_source_release: bootstrapCreate.semantic_source_release,
+      cli_source_tree_hash: bootstrapCreate.cli_source_tree_hash,
+      preserved_ids: bootstrapCreate.preserved_ids,
+      selected_goal_qid: bootstrapCreate.selected_goal_qid,
+      first_actionable_qid: bootstrapCreate.routing.first_actionable_qid,
+      validation: bootstrapCreate.validation,
+      fixtures: [
         {
-          ok: true,
-          semantic_source_release: bootstrapCreate.semantic_source_release,
-          cli_source_tree_hash: bootstrapCreate.cli_source_tree_hash,
-          preserved_ids: bootstrapCreate.preserved_ids,
-          selected_goal_qid: bootstrapCreate.selected_goal_qid,
-          first_actionable_qid: bootstrapCreate.routing.first_actionable_qid,
-          validation: bootstrapCreate.validation,
-          fixtures: [
-            {
-              run_id: "fixture-platform-teams",
-              binding_sha256: bootstrapCreate.binding_sha256,
-              child_interface_sha256: bootstrapCreate.child_interface_sha256,
-              child_contract_seal_sha256: bootstrapCreate.child_contract_seal_sha256,
-              generated_file_count: bootstrapCreate.generated_file_count,
-              generated_inventory_sha256: crypto
-                .createHash("sha256")
-                .update(JSON.stringify(bootstrapCreate.generated_inventory))
-                .digest("hex"),
-              repeat_result: bootstrapVerify.repeat_result,
-            },
-            {
-              run_id: "fixture-independent-builders",
-              binding_sha256: bootstrapCreateB.binding_sha256,
-              child_interface_sha256: bootstrapCreateB.child_interface_sha256,
-              child_contract_seal_sha256: bootstrapCreateB.child_contract_seal_sha256,
-              generated_file_count: bootstrapCreateB.generated_file_count,
-              generated_inventory_sha256: crypto
-                .createHash("sha256")
-                .update(JSON.stringify(bootstrapCreateB.generated_inventory))
-                .digest("hex"),
-              repeat_result: bootstrapVerifyB.repeat_result,
-            },
-          ],
-          operator_manifest_sha256: bootstrapCreate.operator_manifest_sha256,
-          packs: bootstrapCreate.packs,
-          negative_classifications: [
-            "target_content_drift",
-            "skill_mirror_mismatch",
-            "authored_child_drift",
-            "interface_drift",
-            "missing_target_input",
-            "unexpected_target",
-            "binding_authority_leakage",
-            "binding_target_mismatch",
-            "source_release_dependency_drift",
-          ],
-          retained_run_directories: 0,
+          run_id: "fixture-platform-teams",
+          binding_sha256: bootstrapCreate.binding_sha256,
+          child_interface_sha256: bootstrapCreate.child_interface_sha256,
+          child_contract_seal_sha256: bootstrapCreate.child_contract_seal_sha256,
+          generated_file_count: bootstrapCreate.generated_file_count,
+          generated_inventory_sha256: crypto
+            .createHash("sha256")
+            .update(JSON.stringify(bootstrapCreate.generated_inventory))
+            .digest("hex"),
+          repeat_result: bootstrapVerify.repeat_result,
         },
-        null,
-        2,
-      ),
-    );
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-    for (const entry of fs.existsSync(runScratchParent) ? fs.readdirSync(runScratchParent) : []) {
-      if (entry.startsWith(scratchName)) {
-        fs.rmSync(path.join(runScratchParent, entry), { recursive: true, force: true });
-      }
-    }
-    if (fs.existsSync(runScratchParent) && fs.readdirSync(runScratchParent).length === 0) {
-      fs.rmdirSync(runScratchParent);
-    }
-  }
+        {
+          run_id: "fixture-independent-builders",
+          binding_sha256: bootstrapCreateB.binding_sha256,
+          child_interface_sha256: bootstrapCreateB.child_interface_sha256,
+          child_contract_seal_sha256: bootstrapCreateB.child_contract_seal_sha256,
+          generated_file_count: bootstrapCreateB.generated_file_count,
+          generated_inventory_sha256: crypto
+            .createHash("sha256")
+            .update(JSON.stringify(bootstrapCreateB.generated_inventory))
+            .digest("hex"),
+          repeat_result: bootstrapVerifyB.repeat_result,
+        },
+      ],
+      operator_manifest_sha256: bootstrapCreate.operator_manifest_sha256,
+      packs: bootstrapCreate.packs,
+      negative_classifications: [
+        "target_content_drift",
+        "skill_mirror_mismatch",
+        "authored_child_drift",
+        "interface_drift",
+        "missing_target_input",
+        "unexpected_target",
+        "binding_authority_leakage",
+        "binding_target_mismatch",
+        "source_release_dependency_drift",
+      ],
+    };
+  } catch (error) { failure = error; }
+  cleanup = finalizeFixture(fixture, { error: failure, verify: () => prepared?.assertSourceUnchanged() });
+  console.log(JSON.stringify({ ...receipt, cleanup, retained_run_directories: 0 }, null, 2));
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { main };

@@ -1,49 +1,12 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || "npm";
-const GIT_CMD = process.env.GIT || "git";
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(`${command} ${args.join(" ")} failed\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
-  }
-  return result.stdout.trim();
-}
-
-function runRaw(command, args, options = {}) {
-  return spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-}
+let commands;
 
 function assert(condition, message) {
   if (!condition) {
@@ -59,33 +22,34 @@ function parseJson(output) {
   return JSON.parse(output);
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(path.join(prefix, "bin"), { recursive: true });
   fs.mkdirSync(path.join(prefix, "lib"), { recursive: true });
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir]);
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir]).stdout;
   const tarball = packOutput.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).pop();
   assert(tarball, "npm pack did not return a tarball");
   const tarballPath = path.join(packDir, path.basename(tarball));
   assertExists(tarballPath);
-  run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return { binPath, prefix, tarballPath };
+  return { tarballPath, install() {
+    commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, prefix, tarballPath };
+  } };
 }
 
 function mdkg(binPath, args, cwd) {
-  return run(binPath, args, { cwd });
+  return commands.node(binPath, args, cwd).stdout.trim();
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-db-materializer-smoke-"));
-  const { binPath, prefix, tarballPath } = packAndInstall(tempRoot);
+function exerciseSmoke(tempRoot, installed) {
+  const { binPath, prefix, tarballPath } = installed;
   const packageRoot = path.join(prefix, "lib", "node_modules", "mdkg");
   const materializerPath = path.join(packageRoot, "dist", "core", "project_db_materializer.js");
   const eventsPath = path.join(packageRoot, "dist", "core", "project_db_events.js");
@@ -99,7 +63,7 @@ function main() {
 
   const root = path.join(tempRoot, "repo");
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 
   mdkg(binPath, ["init", "--agent"], root);
   const init = parseJson(mdkg(binPath, ["db", "init", "--json"], root));
@@ -109,7 +73,7 @@ function main() {
 
   const databasePath = path.join(root, ".mdkg", "db", "runtime", "project.sqlite");
   assertExists(databasePath);
-  const runtimeIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/runtime/project.sqlite"], { cwd: root });
+  const runtimeIgnored = commands.git(["check-ignore", ".mdkg/db/runtime/project.sqlite"], root, { allowFailure: true });
   assert(runtimeIgnored.status === 0, "runtime project.sqlite should be ignored by default");
 
   events.recordProjectDbEvent(databasePath, {
@@ -267,7 +231,18 @@ function main() {
   assert(!/^\s*mdkg db lease\b/m.test(helpDb), "db help should not expose public lease CLI");
   assert(!/^\s*mdkg db materializer\b/m.test(helpDb), "db help should not expose public materializer CLI");
 
-  console.log(`db materializer smoke passed: ${path.basename(tarballPath)}`);
+  return { smoke: "db-materializer", ok: true, temp_root: tempRoot, tarball: tarballPath };
 }
 
-main();
+function main() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-db-materializer-smoke-",
+    prepare: (root, ownedCommands) => { commands = ownedCommands; return prepareInstall(root); },
+    exercise: exerciseSmoke,
+  });
+  console.log(JSON.stringify(receipt, null, 2));
+}
+
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(error); process.exitCode = 1; }
+}

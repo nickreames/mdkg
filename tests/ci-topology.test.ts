@@ -217,8 +217,9 @@ test("exact SHA validation rejects ambiguous input and requires a detached match
   );
 });
 
-test("full shards restore one hash-bound package and dist context and reject drift", () => {
-  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), "mdkg-ci-context-"));
+test("full shards restore one hash-bound package and dist context and reject drift", (t) => {
+  const fixture = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), "mdkg-ci-context-"));
+  t.after(() => fs.rmSync(fixture, { recursive: true, force: true }));
   const producer = path.join(fixture, "producer");
   const consumer = path.join(fixture, "consumer");
   const contextDir = path.join(fixture, "context");

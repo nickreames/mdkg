@@ -2,10 +2,12 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
-const { spawnSync } = require("node:child_process");
+const { runFixtureNode } = require("./qualification-process");
+const { acceptOwnedGitFixture } = require("./qualification-git");
 
-function exerciseInstalledUpgradeRecovery(candidate, published, ownedRoot, env) {
+function exerciseInstalledUpgradeRecovery(candidate, published, ownedRoot, suppliedEnv = process.env) {
   const base = path.join(ownedRoot, "installed-upgrade-recovery"); fs.mkdirSync(base);
+  const fixtureGit = acceptOwnedGitFixture(ownedRoot, suppliedEnv), env = fixtureGit.environment;
   const preload = path.join(base, "fault.cjs");
   // Instrument only node:fs in a disposable CLI process. The installed package
   // remains byte-identical, and no production fault-injection flag is added.
@@ -16,9 +18,8 @@ const targets=JSON.parse(process.env.MDKG_FIXTURE_TARGETS).map(p=>path.resolve(r
 if(targets.some(p=>!p.startsWith(root+path.sep)))throw Error('fault target boundary');
 const rename=fs.renameSync;let index=0;
 fs.renameSync=function(a,b){const result=rename.apply(this,arguments);if(targets.includes(path.resolve(String(b)))&&index++===Number(process.env.MDKG_FIXTURE_FAULT)){throw Error('installed fixture interrupted after authored write');}return result;};\n`);
-  const nodeFile = bin => process.platform === "win32" ? path.join(path.dirname(bin), "node_modules/mdkg/dist/cli.js") : bin;
-  const run = (root, bin, args, extra = {}) => spawnSync(process.execPath, [...(extra.preload ? ["--require", preload] : []), nodeFile(bin), ...args],
-    { cwd: root, env: { ...env, ...extra.env }, encoding: "utf8", timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
+  const run = (root, bin, args, extra = {}) => runFixtureNode(ownedRoot, bin, args,
+    { cwd: root, env: { ...env, ...extra.env }, nodeArgs: extra.preload ? ["--require", preload] : [], timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
   const cli = (root, bin, args) => {
     const r = run(root, bin, [...args, "--json"]);
     assert.equal(r.status, 0, `${args.join(" ")}\n${r.stderr}\n${r.stdout}`); return JSON.parse(r.stdout);
@@ -39,8 +40,8 @@ fs.renameSync=function(a,b){const result=rename.apply(this,arguments);if(targets
     const root=path.join(base,mode+"-"+position); fs.mkdirSync(root);
     const init=run(root,published,["init","--agent"]); assert.equal(init.status,0,init.stderr);
     fs.writeFileSync(path.join(root,"unknown.txt"),"Preserve unrelated user bytes.\r\n");
-    const git=spawnSync(process.env.GIT || "git",["init","-q"],{cwd:root,env,encoding:"utf8"});assert.equal(git.status,0,git.stderr);
-    const staged=spawnSync(process.env.GIT || "git",["add","--","unknown.txt"],{cwd:root,env,encoding:"utf8"});assert.equal(staged.status,0,staged.stderr);
+    const git=fixtureGit.run(root,["init","-q"]);assert.equal(git.status,0,git.stderr);
+    const staged=fixtureGit.run(root,["add","--","unknown.txt"]);assert.equal(staged.status,0,staged.stderr);
     const initial=snapshot(root), reviewed=cli(root,candidate,["upgrade"]);
     assert.deepEqual(snapshot(root),initial,"fresh preview must preserve all fixture and Git bytes");
     assert.equal(cli(root,candidate,["upgrade"]).plan_hash,reviewed.plan_hash);

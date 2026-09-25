@@ -2,25 +2,24 @@ const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
 const assert = require("node:assert/strict");
-const { spawnSync } = require("node:child_process");
 
 // Installed-package fixture helpers only; no graph implementation imports.
-function command(root, executable, args) {
-  const result = spawnSync(executable, args, { cwd: root, env: process.env, encoding: "utf8", timeout: 60000, maxBuffer: 8 * 1024 * 1024 });
+function command(commands, root, executable, args) {
+  const result = commands.node(executable, args, root, { timeout: 60000 });
   assert.equal(result.status, 0, `${executable} ${args.join(" ")}\n${result.stdout}\n${result.stderr}`);
   return result.stdout;
 }
 
-function prepareWorkIdentity(bin, root, backend) {
+function prepareWorkIdentity(bin, root, backend, commands) {
   if (!backend) return;
   const file = path.join(root, ".mdkg/config.json");
   const config = JSON.parse(fs.readFileSync(file, "utf8"));
   config.index.backend = backend;
   fs.writeFileSync(file, JSON.stringify(config, null, 2) + "\n");
   const args = ["graph", "migrate", "--graph-id", crypto.randomUUID(), "--origin", crypto.randomUUID()];
-  const plan = JSON.parse(command(root, bin, [...args, "--json"]));
+  const plan = JSON.parse(command(commands, root, bin, [...args, "--json"]));
   assert.deepEqual(plan.blocking, []);
-  command(root, bin, [...args, "--apply", "--plan-hash", plan.plan_hash, "--json"]);
+  command(commands, root, bin, [...args, "--apply", "--plan-hash", plan.plan_hash, "--json"]);
 }
 
 function snapshot(root) {
@@ -36,8 +35,8 @@ function snapshot(root) {
   visit(root); return files;
 }
 
-function verifyWorkIdentity(bin, root, { backend, ids, links, orders, receipts }) {
-  const cli = args => JSON.parse(command(root, bin, [...args, "--json"]));
+function verifyWorkIdentity(bin, root, { commands, backend, ids, links, orders, receipts }) {
+  const cli = args => JSON.parse(command(commands, root, bin, [...args, "--json"]));
   const nodes = Object.fromEntries(ids.map(id => [id, cli(["show", id]).item]));
   assert.equal(new Set(Object.values(nodes).map(node => node.stable_ref)).size, ids.length);
   for (const node of Object.values(nodes)) {
@@ -51,7 +50,7 @@ function verifyWorkIdentity(bin, root, { backend, ids, links, orders, receipts }
   }
   // A normal mirror update must retain identity and leave the user's Git index
   // alone. Evidence sidecars and unknown input bytes must also survive.
-  command(root, process.env.GIT || "git", ["add", "--", ...Object.values(nodes).map(node => node.path)]);
+  commands.git(["add", "--", ...Object.values(nodes).map(node => node.path)], root);
   const beforeMutation = snapshot(root), index = fs.readFileSync(path.join(root, ".git/index"));
   for (const id of orders) {
     cli(["work", "order", "update", nodes[id].stable_ref, "--status", "completed"]);

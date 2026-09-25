@@ -2,7 +2,6 @@ const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
 
 const digest = bytes => crypto.createHash("sha256").update(bytes).digest("hex");
 
@@ -22,13 +21,12 @@ function inventory(root) {
 
 // Installed candidate only. Source writes below construct synthetic disposable
 // consumer inputs; they are not a conversion or a reconstruction of lost data.
-function verifyGenericBoundary({ packageRoot, tarballPath, tempRoot }) {
+function verifyGenericBoundary({ packageRoot, tarballPath, tempRoot, commands }) {
   const cli = path.join(packageRoot, "dist/cli.js");
   const root = path.join(tempRoot, "generic-boundary");
   fs.mkdirSync(root);
-  const execute = (cwd, args, extra = []) => spawnSync(process.execPath, [...extra, cli, ...args], {
-    cwd, encoding: "utf8", env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" },
-    timeout: 60000, maxBuffer: 8 * 1024 * 1024,
+  const execute = (cwd, args, nodeArgs = []) => commands.node(cli, args, cwd, {
+    nodeArgs, allowFailure: true, timeout: 60000,
   });
   const run = (cwd, args) => {
     const result = execute(cwd, args);
@@ -132,6 +130,7 @@ function verifyGenericBoundary({ packageRoot, tarballPath, tempRoot }) {
   bundleManifest.bundle_hash = `sha256:${digest(Buffer.from(JSON.stringify(bundleManifest.files.map(file => ({
     path: file.path, kind: file.kind, workspace: file.workspace, visibility: file.visibility, size: file.size, sha256: file.sha256,
   })), null, 2) + "\n"))}`;
+  bundleManifest.transport_policy.bundle_hash = bundleManifest.bundle_hash;
   entries.set("manifest.json", Buffer.from(JSON.stringify(bundleManifest, null, 2) + "\n"));
   const importedRoot = path.join(tempRoot, "generic-import");
   fs.mkdirSync(importedRoot);

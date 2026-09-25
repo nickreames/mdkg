@@ -1,48 +1,12 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
-const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0 && !options.allowFailure) {
-    throw new Error(
-      [
-        `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || repoRoot}`,
-        `exit: ${result.status}`,
-        `stdout:\n${result.stdout}`,
-        `stderr:\n${result.stderr}`,
-      ].join("\n")
-    );
-  }
-  return result;
-}
+let commands;
 
 function assert(condition, message) {
   if (!condition) {
@@ -59,25 +23,21 @@ function assertExists(filePath) {
 }
 
 function mdkg(binPath, args, cwd, options = {}) {
-  const result = run(binPath, args, { cwd, allowFailure: options.allowFailure });
+  const result = commands.node(binPath, args, cwd, { allowFailure: options.allowFailure });
   return options.raw ? result : result.stdout.trim();
 }
 
 function git(args, cwd, options = {}) {
-  return run(
-    GIT_CMD,
-    ["-c", "user.name=mdkg smoke", "-c", "user.email=mdkg-smoke@example.invalid", ...args],
-    { cwd, allowFailure: options.allowFailure }
-  );
+  return commands.git(args, cwd, { allowFailure: options.allowFailure });
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const pack = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir]);
+  const pack = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir]);
   const tarball = pack.stdout
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -87,13 +47,15 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarball));
   assertExists(tarballPath);
 
-  run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return { binPath, tarballPath };
+  return { tarballPath, install() {
+    commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function writeFile(filePath, content) {
@@ -148,9 +110,8 @@ function validateFailsOnDuplicate(binPath, root, id) {
   assert(receipt.errors.some((error) => error.includes(`duplicate id ${id}`)), `validation did not report duplicate ${id}`);
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-id-repair."));
-  const { binPath, tarballPath } = packAndInstall(tempRoot);
+function exerciseSmoke(tempRoot, installed) {
+  const { binPath, tarballPath } = installed;
   const root = path.join(tempRoot, "repo");
   fs.mkdirSync(root, { recursive: true });
   git(["init", "-q"], root);
@@ -247,20 +208,25 @@ function main() {
   assert(fs.readFileSync(path.join(root, ".mdkg", "work", "task-901.md"), "utf8").includes("id: task-901"), "stage 3 content was not rewritten");
   assert(parseJson(mdkg(binPath, ["validate", "--json"], root)).ok === true, "stage repair validate failed");
 
-  console.log(
-    JSON.stringify(
-      {
-        action: "smoke-id-repair",
-        ok: true,
-        temp_root: tempRoot,
-        tarball: tarballPath,
-        clean_plan_hash: cleanPlan.plan_hash,
-        stage_plan_hash: stagePlan.plan_hash,
-      },
-      null,
-      2
-    )
-  );
+  return {
+    action: "smoke-id-repair",
+    ok: true,
+    temp_root: tempRoot,
+    tarball: tarballPath,
+    clean_plan_hash: cleanPlan.plan_hash,
+    stage_plan_hash: stagePlan.plan_hash,
+  };
 }
 
-main();
+function main() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-id-repair-smoke-",
+    prepare: (root, ownedCommands) => { commands = ownedCommands; return prepareInstall(root); },
+    exercise: exerciseSmoke,
+  });
+  console.log(JSON.stringify(receipt, null, 2));
+}
+
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(error); process.exitCode = 1; }
+}

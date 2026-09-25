@@ -2,64 +2,25 @@
 
 const crypto = require("node:crypto");
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 const assert = require("node:assert/strict");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || "npm";
-const GIT_CMD = process.env.GIT || "git";
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
+let commands;
+
+function run(binPath, args, options = {}) {
+  const result = commands.node(binPath, args, options.cwd, options);
+  return { status: result.status, stdout: result.stdout.trim(), stderr: result.stderr.trim(),
+    combined: `${result.stdout}${result.stderr}` };
 }
 
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      `${command} ${args.join(" ")} failed with ${result.status}\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`
-    );
-  }
-  return {
-    stdout: result.stdout.trim(),
-    stderr: result.stderr.trim(),
-    combined: `${result.stdout}${result.stderr}`,
-  };
-}
-
-function runExpectFailure(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status === 0) {
-    throw new Error(`${command} ${args.join(" ")} unexpectedly succeeded`);
-  }
-  return {
-    stdout: result.stdout.trim(),
-    stderr: result.stderr.trim(),
-    combined: `${result.stdout}${result.stderr}`,
-  };
+function runExpectFailure(binPath, args, options = {}) {
+  const result = run(binPath, args, { ...options, allowFailure: true });
+  if (result.status === 0) throw new Error(`command unexpectedly succeeded: ${binPath} ${args.join(" ")}`);
+  return result;
 }
 
 function assertExists(filePath) {
@@ -159,7 +120,7 @@ function exerciseCustomizedDiscovery(binPath, tempRoot) {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
     fs.writeFileSync(path.join(root, file), user + file + "\r\n");
   }
-  run(GIT_CMD, ["add", "--", ...projectFiles, "AGENTS.md", "CLAUDE.md"], { cwd: root });
+  commands.git(["add", "--", ...projectFiles, "AGENTS.md", "CLAUDE.md"], root);
   const before = fileInventory(root);
   mdkg(binPath, ["init"], root);
   for (const file of projectFiles) assert.equal(sha256(path.join(root, file)), before[file]);
@@ -210,7 +171,7 @@ function exerciseCustomizedDiscovery(binPath, tempRoot) {
 
 function initGit(root) {
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 }
 
 function mdkg(binPath, args, cwd) {
@@ -228,14 +189,14 @@ function assertSpecCount(binPath, root, expected, label) {
   }
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "npm-prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    cwd: repoRoot,
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], {
+    cwd: tempRoot,
   }).stdout;
   const tarballName = packOutput
     .split(/\r?\n/)
@@ -248,15 +209,17 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarballName));
   assertExists(tarballPath);
 
-  const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  assertIncludes(install.combined, `mdkg ${packageVersion} installed.`, "postinstall");
+  return { tarballPath, install() {
+    const install = commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    assertIncludes(`${install.stdout}${install.stderr}`, `mdkg ${packageVersion} installed.`, "postinstall");
 
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return binPath;
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function assertManifestMatches(root) {
@@ -596,32 +559,54 @@ function exerciseAgentInit(binPath, tempRoot, explicitAgent = false) {
 }
 
 function runSmoke() {
-  let tempRoot;
-  try {
-    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-init-smoke-"));
-    const binPath = packAndInstall(tempRoot);
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-init-",
+    prepare(tempRoot, ownedCommands) { commands = ownedCommands; return prepareInstall(tempRoot); },
+    exercise(tempRoot, { binPath, tarballPath, packageRoot }) {
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
-    if (version !== packageVersion) {
-      throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
-    }
-    exerciseRemovedFlags(binPath, tempRoot);
-    exerciseMirrorCollision(binPath, tempRoot);
-    exerciseBaseInit(binPath, tempRoot);
-    exerciseOptionalSpecWorkTemplates(binPath, tempRoot);
-    exerciseDbInit(binPath, tempRoot);
-    exerciseAgentInit(binPath, tempRoot);
-    exerciseAgentInit(binPath, tempRoot, true);
-    console.log(JSON.stringify({ action: "installed-customized-discovery-qualified", ...exerciseCustomizedDiscovery(binPath, tempRoot) }));
-    console.log("init smoke passed");
-    console.log(`version=${version}`);
-  } finally {
-    if (tempRoot && process.env.MDKG_KEEP_SMOKE_TMP !== "1") {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
-  }
+    if (version !== packageVersion) throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
+    const exercises = createInitExercises(commands);
+    exercises.exerciseRemovedFlags(binPath, tempRoot);
+    exercises.exerciseMirrorCollision(binPath, tempRoot);
+    exercises.exerciseBaseInit(binPath, tempRoot);
+    exercises.exerciseOptionalSpecWorkTemplates(binPath, tempRoot);
+    exercises.exerciseDbInit(binPath, tempRoot);
+    exercises.exerciseAgentInit(binPath, tempRoot);
+    exercises.exerciseAgentInit(binPath, tempRoot, true);
+    const customizedDiscovery = exercises.exerciseCustomizedDiscovery(binPath, tempRoot);
+    return { ok: true, smoke: "init", version, customizedDiscovery };
+    },
+  });
+  console.log(JSON.stringify(receipt));
 }
 
-if (require.main === module) runSmoke();
-module.exports = { fileInventory, canonicalSkillInventories, assertFocusedDiscovery, exerciseCustomizedDiscovery,
+const initExercises = { exerciseCustomizedDiscovery,
   exerciseRemovedFlags, exerciseMirrorCollision, exerciseBaseInit,
   exerciseOptionalSpecWorkTemplates, exerciseDbInit, exerciseAgentInit };
+
+// Imported executable fixtures must receive an explicitly owned controller;
+// there is no ambient subprocess fallback. All exercises are synchronous.
+// Prefer createInitExercises(controller); named exports take the controller
+// as their final argument, after any exercise-specific options.
+function createInitExercises(ownedCommands) {
+  if (!ownedCommands || typeof ownedCommands.node !== "function" || typeof ownedCommands.git !== "function") {
+    throw new Error("init exercise requires explicit owned smoke commands");
+  }
+  return Object.freeze(Object.fromEntries(Object.entries(initExercises).map(([name, exercise]) => [name, (...args) => {
+    const previous = commands;
+    commands = ownedCommands;
+    try { return exercise(...args); }
+    finally { commands = previous; }
+  }])));
+}
+
+module.exports = { fileInventory, canonicalSkillInventories, assertFocusedDiscovery, createInitExercises,
+  ...Object.fromEntries(Object.keys(initExercises).map(name => [name, (...args) => {
+    const ownedCommands = args.pop();
+    return createInitExercises(ownedCommands)[name](...args);
+  }])) };
+
+if (require.main === module) {
+  try { runSmoke(); }
+  catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; }
+}

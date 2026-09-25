@@ -4,7 +4,9 @@ const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
-const { appendJsonLine, recordBuildReceipt } = require("./build-receipts");
+const { appendJsonLine, readJsonLines, recordBuildReceipt } = require("./build-receipts");
+const { copyVerifiedArtifact, verifyArtifactFile, withVerifiedArtifact } = require("./qualification-artifact");
+const { PUBLISHED_052, readLocalBaseline } = require("./published-upgrade-baseline");
 
 const PROFILE_ENV_KEYS = [
   "VERCEL",
@@ -125,27 +127,19 @@ function provideArtifact(args) {
   if (!artifactPath || !expectedHash || !receiptDir || !fs.existsSync(artifactPath)) {
     fail("immutable smoke artifact environment is incomplete");
   }
-  const actualHash = hashFile(artifactPath);
-  if (actualHash !== expectedHash) {
-    fail(`immutable artifact hash mismatch: expected ${expectedHash}, got ${actualHash}`);
-  }
+  const actualHash = verifyArtifactFile(artifactPath, expectedHash).sha256;
   const destination = packDestination(args);
-  fs.mkdirSync(destination, { recursive: true });
-  const linkedPath = path.join(destination, path.basename(artifactPath));
-  fs.rmSync(linkedPath, { force: true });
-  try {
-    fs.linkSync(artifactPath, linkedPath);
-  } catch {
-    fs.copyFileSync(artifactPath, linkedPath, fs.constants.COPYFILE_EXCL);
-  }
+  const providedPath = path.join(destination, path.basename(artifactPath));
+  copyVerifiedArtifact(artifactPath, providedPath, expectedHash);
   appendJsonLine(path.join(receiptDir, "artifact-usages.jsonl"), {
     schema_version: 1,
     smoke: process.env.MDKG_SMOKE_ID || "unknown",
     canonical_artifact: artifactPath,
-    provided_path: linkedPath,
+    provided_path: providedPath,
     sha256: actualHash,
+    delivery: "independent-verified-copy",
   });
-  process.stdout.write(`${path.basename(linkedPath)}\n`);
+  process.stdout.write(`${path.basename(providedPath)}\n`);
 }
 
 function siteBuildOwner(args) {
@@ -251,6 +245,21 @@ function mappedRootScript(args) {
   return mappings[args[1]];
 }
 
+function admitBaselineInstall(args, baseline) {
+  const flags = new Set(["-g", "--global", "--foreground-scripts", "--offline", "--no-audit", "--no-fund"]);
+  const seen = new Set(); let artifact = false;
+  for (let i = 1; i < args.length; i++) {
+    const arg = args[i];
+    if (flags.has(arg) && !seen.has(arg)) { seen.add(arg); continue; }
+    if (arg === "--prefix" && !seen.has(arg) && args[i + 1] && path.isAbsolute(args[i + 1])) {
+      seen.add(arg); i++; continue;
+    }
+    if (!artifact && !arg.startsWith("-") && /\.tgz$/i.test(arg) && path.resolve(arg) === baseline) { artifact = true; continue; }
+    fail("published baseline installation requires one exact declared offline tarball; additional packages or option overrides are unsupported");
+  }
+  if (!artifact || !seen.has("--offline")) fail("published baseline installation requires one exact declared offline tarball");
+}
+
 function main() {
   const toolArg = process.argv[2];
   const byName = path.basename(process.argv[1]).replace(/\.cmd$/i, "");
@@ -274,7 +283,52 @@ function main() {
       args[1] = mapped;
     }
   }
-  const result = spawnReal(tool, args);
+  let result;
+  if (tool === "npm" && args[0] === "install" && process.env.MDKG_SMOKE_BASELINE_TARBALL) {
+    const baseline = path.resolve(process.env.MDKG_SMOKE_BASELINE_TARBALL);
+    const receiptDir = process.env.MDKG_BUILD_RECEIPT_DIR;
+    admitBaselineInstall(args, baseline);
+    if (!receiptDir) fail("published baseline installation requires a receipt directory");
+    // Baseline evidence is separate from candidate delivery; neither a filename
+    // nor an environment-supplied digest can turn arbitrary bytes into 0.5.2.
+    readLocalBaseline(baseline);
+    const consume = () => withVerifiedArtifact(baseline, PUBLISHED_052.sha256, () => spawnReal(tool, args)).result;
+    result = process.env.MDKG_SMOKE_TARBALL ? withVerifiedArtifact(process.env.MDKG_SMOKE_TARBALL,
+      process.env.MDKG_SMOKE_TARBALL_SHA256, consume).result : consume();
+    appendJsonLine(path.join(receiptDir, "baseline-consumptions.jsonl"), {
+      schema_version: 1, kind: "published-upgrade-baseline", smoke: process.env.MDKG_SMOKE_ID || "unknown",
+      version: PUBLISHED_052.version, baseline_path: baseline, bytes: PUBLISHED_052.bytes,
+      before_sha256: PUBLISHED_052.sha256, after_sha256: PUBLISHED_052.sha256, integrity: PUBLISHED_052.integrity,
+      consumer_exit_status: result.status, consumer_signal: result.signal,
+    });
+  } else if (tool === "npm" && args[0] === "install" && process.env.MDKG_SMOKE_TARBALL) {
+    const artifact = process.env.MDKG_SMOKE_TARBALL, expectedHash = process.env.MDKG_SMOKE_TARBALL_SHA256;
+    const receiptDir = process.env.MDKG_BUILD_RECEIPT_DIR;
+    if (!receiptDir) fail("artifact installation requires a receipt directory");
+    const deliveries = readJsonLines(path.join(receiptDir, "artifact-usages.jsonl"))
+      .filter(usage => usage.smoke === (process.env.MDKG_SMOKE_ID || "unknown") &&
+        args.some(arg => !arg.startsWith("-") && path.resolve(arg) === path.resolve(usage.provided_path)));
+    const paths = [...new Set(deliveries.map(usage => usage.provided_path))];
+    const requestedTarballs = args.filter(arg => !arg.startsWith("-") && /\.tgz$/i.test(arg));
+    if (requestedTarballs.some(arg => !paths.some(provided => path.resolve(provided) === path.resolve(arg)))) {
+      fail("artifact installation requires a recorded verified tarball delivery");
+    }
+    if (deliveries.some(usage => usage.sha256 !== expectedHash || path.resolve(usage.canonical_artifact) !== path.resolve(artifact))) {
+      fail("artifact installation provenance mismatch");
+    }
+    let consume = () => spawnReal(tool, args);
+    for (const provided of paths) {
+      const next = consume;
+      consume = () => withVerifiedArtifact(provided, expectedHash, next).result;
+    }
+    result = withVerifiedArtifact(artifact, expectedHash, consume).result;
+    for (const provided of paths) appendJsonLine(path.join(receiptDir, "artifact-consumptions.jsonl"), {
+      schema_version: 1, smoke: process.env.MDKG_SMOKE_ID || "unknown",
+      canonical_artifact: artifact, provided_path: provided,
+      before_sha256: expectedHash, after_sha256: expectedHash,
+      consumer_exit_status: result.status, consumer_signal: result.signal,
+    });
+  } else result = spawnReal(tool, args);
   process.exit(result.status ?? 1);
 }
 

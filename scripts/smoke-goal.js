@@ -1,47 +1,15 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const assert = require("node:assert/strict");
+const crypto = require("node:crypto");
+const { runInstalledSmoke } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || "npm";
-const GIT_CMD = process.env.GIT || "git";
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      `${command} ${args.join(" ")} failed with ${result.status}\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`
-    );
-  }
-  return {
-    stdout: result.stdout.trim(),
-    stderr: result.stderr.trim(),
-    combined: `${result.stdout}${result.stderr}`,
-  };
-}
+let commands;
 
 function assertIncludes(value, expected, label) {
   if (!value.includes(expected)) {
@@ -67,14 +35,14 @@ function replaceInFile(filePath, from, to) {
   fs.writeFileSync(filePath, content.replace(from, to));
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "npm-prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    cwd: repoRoot,
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], {
+    cwd: tempRoot,
   }).stdout;
   const tarballName = packOutput
     .split(/\r?\n/)
@@ -87,27 +55,51 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarballName));
   assertExists(tarballPath);
 
-  const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  assertIncludes(install.combined, `mdkg ${packageVersion} installed.`, "postinstall");
+  return { tarballPath, install() {
+    const install = commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    assertIncludes(`${install.stdout}${install.stderr}`, `mdkg ${packageVersion} installed.`, "postinstall");
 
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return binPath;
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function mdkg(binPath, args, cwd) {
-  return run(binPath, args, { cwd });
+  const result = commands.node(binPath, args, cwd);
+  return { stdout: result.stdout.trim(), stderr: result.stderr.trim(), combined: `${result.stdout}${result.stderr}` };
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-goal-smoke-"));
-  const binPath = packAndInstall(tempRoot);
+function inventory(root) {
+  const result = {};
+  function visit(relativePath) {
+    const absolutePath = path.join(root, relativePath);
+    const stat = fs.lstatSync(absolutePath);
+    const metadata = { mode: stat.mode, uid: stat.uid, gid: stat.gid, mtime_ms: stat.mtimeMs };
+    if (stat.isDirectory()) {
+      result[relativePath] = { ...metadata, type: "directory" };
+      for (const name of fs.readdirSync(absolutePath).sort()) visit(path.join(relativePath, name));
+    } else if (stat.isSymbolicLink()) {
+      result[relativePath] = { ...metadata, type: "symlink", target: fs.readlinkSync(absolutePath) };
+    } else if (stat.isFile()) {
+      result[relativePath] = { ...metadata, type: "file", size: stat.size,
+        sha256: crypto.createHash("sha256").update(fs.readFileSync(absolutePath)).digest("hex") };
+    } else {
+      throw new Error(`unexpected fixture entry: ${relativePath}`);
+    }
+  }
+  visit("");
+  return result;
+}
+
+function exerciseSmoke(tempRoot, installed) {
+  const { binPath, tarballPath } = installed;
   const root = path.join(tempRoot, "repo");
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 
   mdkg(binPath, ["init", "--agent"], root);
   const goal = parseJson(mdkg(binPath, ["new", "goal", "Ship Goal Smoke", "--json"], root).stdout).node;
@@ -154,7 +146,12 @@ function main() {
   if (current.goal.qid !== goal.qid || current.source !== "selected") {
     throw new Error(`goal current did not use selected goal: ${JSON.stringify(current)}`);
   }
-  const globalNext = mdkg(binPath, ["next", "--json"], root).stdout;
+  const beforeRefusal = inventory(tempRoot);
+  const refusedNext = commands.node(binPath, ["next", "--json"], root, { allowFailure: true });
+  assert.equal(refusedNext.status, 1, "unsupported next option must fail normally");
+  assertIncludes(refusedNext.stderr, "next does not support --json; no command effects attempted", "next refusal");
+  assert.deepEqual(inventory(tempRoot), beforeRefusal, "unsupported next option must preserve every fixture path");
+  const globalNext = mdkg(binPath, ["next"], root).stdout;
   if (!globalNext.includes(unrelated.id)) {
     throw new Error(`mdkg next should ignore goal scope and choose unrelated urgent work: ${globalNext}`);
   }
@@ -204,7 +201,20 @@ function main() {
   }
 
   mdkg(binPath, ["validate"], root);
-  console.log("smoke:goal ok");
+  return { smoke: "goal", ok: true, temp_root: tempRoot, tarball: tarballPath,
+    next_json_refusal: { status: refusedNext.status, fixture_unchanged: true },
+    global_next_id: unrelated.id, scoped_next_id: task.id };
 }
 
-main();
+function main() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-goal-smoke-",
+    prepare: (root, ownedCommands) => { commands = ownedCommands; return prepareInstall(root); },
+    exercise: exerciseSmoke,
+  });
+  console.log(JSON.stringify(receipt, null, 2));
+}
+
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(error); process.exitCode = 1; }
+}

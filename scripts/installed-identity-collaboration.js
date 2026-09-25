@@ -2,18 +2,25 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
-const { spawnSync } = require("node:child_process");
+const { runFixtureNode } = require("./qualification-process");
+const { acceptOwnedGitFixture } = require("./qualification-git");
 
 // Installed CLI only: no source imports, direct ID edits or shared allocator.
 // Every Git operation is confined to independently cloned disposable fixtures.
 function exerciseIdentityCollaboration(binPath, ownedRoot) {
-  const env = { ...process.env, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: process.platform === "win32" ? "NUL" : "/dev/null" };
+  const fixtureGit = acceptOwnedGitFixture(ownedRoot);
+  const env = fixtureGit.environment;
   const run = (root, command, args, allowFailure = false) => {
-    const r = spawnSync(command, args, { cwd: root, env, encoding: "utf8", timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
+    const r = runFixtureNode(ownedRoot, command, args, { cwd: root, env, timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
     if (!allowFailure) assert.equal(r.status, 0, `${command} ${args.join(" ")}\n${r.stderr}\n${r.stdout}`);
     return r;
   };
-  const git = (root, args) => run(root, process.env.GIT || "git", ["-c", "user.name=mdkg fixture", "-c", "user.email=fixture@example.invalid", ...args]).stdout.trim();
+  const gitRaw = (root, args) => {
+    const result = fixtureGit.run(root, args);
+    assert.equal(result.status, 0, `fixture Git ${args.join(" ")}\n${result.stderr}`);
+    return result;
+  };
+  const git = (root, args) => gitRaw(root, args).stdout.trim();
   const cli = (root, args) => JSON.parse(run(root, binPath, [...args, "--json"]).stdout);
   const files = root => {
     const output = {};
@@ -46,10 +53,10 @@ function exerciseIdentityCollaboration(binPath, ownedRoot) {
   // the authored working tree. mdkg must consume the latter without staging it.
   const mixed = path.join(root, "mixed-staged-working-tree");
   git(root, ["clone", "--no-local", seed, mixed]);
-  const committedBody = run(mixed, process.env.GIT || "git", ["show", `HEAD:${common.path}`]).stdout;
+  const committedBody = gitRaw(mixed, ["show", `HEAD:${common.path}`]).stdout;
   cli(mixed, ["task", "update", common.stable_ref, "--priority", "2"]);
   git(mixed, ["add", "--", common.path]);
-  const stagedBody = run(mixed, process.env.GIT || "git", ["show", `:${common.path}`]).stdout;
+  const stagedBody = gitRaw(mixed, ["show", `:${common.path}`]).stdout;
   assert.notEqual(stagedBody, committedBody);
   const mixedIndex = fs.readFileSync(path.join(mixed, ".git/index"));
   cli(mixed, ["task", "update", common.id, "--status", "progress"]);
@@ -96,7 +103,7 @@ function exerciseIdentityCollaboration(binPath, ownedRoot) {
   assert.equal(changed.body, workingBody, "ordinary mutation must preserve the complete latest body");
   assert.ok(changed.artifacts.includes("artifact://fixture.mixed-working-tree"));
   assert.deepEqual(fs.readFileSync(path.join(mixed, ".git/index")), mixedIndex);
-  assert.equal(run(mixed, process.env.GIT || "git", ["show", `:${common.path}`]).stdout, stagedBody);
+  assert.equal(gitRaw(mixed, ["show", `:${common.path}`]).stdout, stagedBody);
   assert.equal(git(mixed, ["rev-parse", "HEAD"]), base);
   cli(mixed, ["validate"]);
   const target = path.join(root, "developer-a"), incoming = path.join(root, "developer-b");

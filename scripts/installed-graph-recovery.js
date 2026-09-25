@@ -2,19 +2,20 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
-const { spawnSync } = require("node:child_process");
+const { runFixtureNode } = require("./qualification-process");
+const { acceptOwnedGitFixture } = require("./qualification-git");
 
 // Exercise installed CLI bytes; do not import graph implementation or expose a
 // production fault flag. All repository and filesystem operations are fixtures.
 function exerciseInstalledGraphRecovery(bin, ownedRoot, suppliedEnv = process.env) {
   const base = path.join(ownedRoot, "installed-graph-recovery"); fs.mkdirSync(base);
-  const env = { ...suppliedEnv, GIT_CONFIG_NOSYSTEM: "1", GIT_CONFIG_GLOBAL: process.platform === "win32" ? "NUL" : "/dev/null" };
-  const binary = process.platform === "win32" && bin.endsWith(".cmd") ? path.join(path.dirname(bin), "node_modules/mdkg/dist/cli.js") : bin;
-  const run = (root, args, fault) => spawnSync(process.execPath, [...(fault ? ["--require", preload] : []), binary, ...args],
+  const fixtureGit = acceptOwnedGitFixture(ownedRoot, suppliedEnv);
+  const env = fixtureGit.environment;
+  const run = (root, args, fault) => runFixtureNode(ownedRoot, bin, args,
     { cwd: root, env: { ...env, ...(fault ? { MDKG_FIXTURE_ROOT: root, MDKG_FIXTURE_TARGETS: JSON.stringify(fault.paths), MDKG_FIXTURE_FAULT: String(fault.index) } : {}) },
-      encoding: "utf8", timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
+      nodeArgs: fault ? ["--require", preload] : [], timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
   const cli = (root, args) => { const r = run(root, [...args, "--json"]); assert.equal(r.status, 0, `${args.join(" ")}\n${r.stderr}\n${r.stdout}`); return JSON.parse(r.stdout); };
-  const git = (root, args) => { const r = spawnSync(process.env.GIT || "git", ["-c", "user.name=mdkg fixture", "-c", "user.email=fixture@example.invalid", ...args], {cwd:root,env,encoding:"utf8",timeout:60000}); assert.equal(r.status,0,r.stderr); return r.stdout.trim(); };
+  const git = (root, args) => { const r = fixtureGit.run(root, args); assert.equal(r.status,0,r.stderr); return r.stdout.trim(); };
   const digest = data => crypto.createHash("sha256").update(data).digest("hex");
   const read = (root, p) => fs.existsSync(path.join(root,p)) ? fs.readFileSync(path.join(root,p),"utf8") : null;
   const snapshot = (root, authored = false) => {

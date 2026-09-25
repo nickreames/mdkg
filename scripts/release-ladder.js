@@ -6,6 +6,8 @@ const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { readJsonLines } = require("./build-receipts");
+const { copyVerifiedArtifact, verifyArtifactFile, withVerifiedArtifact } = require("./qualification-artifact");
+const { assertDirectoryChain, createRunDirectory, prepareEmptyDirectory, readRegularJsonFile, within } = require("./qualification-output");
 
 const repoRoot = path.resolve(__dirname, "..");
 const manifestPath = path.join(repoRoot, "scripts", "smoke-manifest.json");
@@ -27,6 +29,7 @@ function hashFile(filePath) {
 }
 
 function hashDirectory(directory) {
+  assertDirectoryChain(directory);
   const files = [];
   function visit(current, relative) {
     for (const entry of fs.readdirSync(current, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
@@ -38,6 +41,7 @@ function hashDirectory(directory) {
       if (entry.isDirectory()) {
         visit(entryPath, relativePath);
       } else if (entry.isFile()) {
+        if (fs.lstatSync(entryPath).nlink !== 1) throw new Error(`immutable context cannot contain hard link: ${relativePath}`);
         files.push({ path: relativePath, sha256: hashFile(entryPath) });
       } else {
         throw new Error(`immutable context has unsupported entry: ${relativePath}`);
@@ -421,17 +425,25 @@ function writeFullContext(contextDir, tarballPath, artifactHash, trackedBefore, 
   if (!contextDir) {
     throw new Error("full-prepare requires MDKG_RELEASE_CONTEXT_DIR");
   }
-  fs.rmSync(contextDir, { recursive: true, force: true });
-  fs.mkdirSync(contextDir, { recursive: true });
-  const contextTarball = path.join(contextDir, "package.tgz");
-  fs.copyFileSync(tarballPath, contextTarball);
-  fs.chmodSync(contextTarball, 0o444);
+  contextDir = path.resolve(contextDir);
   const distSource = path.join(root, "dist");
   if (!fs.existsSync(distSource)) {
     throw new Error("full release context is missing built dist output");
   }
+  if (within(contextDir, path.resolve(tarballPath)) || within(distSource, contextDir) || within(contextDir, distSource)) {
+    throw new Error("full release context output overlaps its package or build input");
+  }
+  verifyArtifactFile(tarballPath, artifactHash);
   const distIdentity = hashDirectory(distSource);
-  fs.cpSync(distSource, path.join(contextDir, "dist"), { recursive: true });
+  prepareEmptyDirectory(contextDir, { forbiddenRoots: [root] });
+  const contextTarball = path.join(contextDir, "package.tgz");
+  copyVerifiedArtifact(tarballPath, contextTarball, artifactHash);
+  const contextDist = path.join(contextDir, "dist");
+  fs.cpSync(distSource, contextDist, { recursive: true, force: false, errorOnExist: true });
+  if (JSON.stringify(hashDirectory(contextDist)) !== JSON.stringify(distIdentity) ||
+      JSON.stringify(hashDirectory(distSource)) !== JSON.stringify(distIdentity)) {
+    throw new Error("full release context build changed during preparation");
+  }
   const context = {
     schema_version: 1,
     decision_ref: "root:dec-91",
@@ -446,7 +458,9 @@ function writeFullContext(contextDir, tarballPath, artifactHash, trackedBefore, 
       ...distIdentity,
     },
   };
-  fs.writeFileSync(path.join(contextDir, "context.json"), `${JSON.stringify(context, null, 2)}\n`, "utf8");
+  verifyArtifactFile(tarballPath, artifactHash);
+  verifyArtifactFile(contextTarball, artifactHash);
+  fs.writeFileSync(path.join(contextDir, "context.json"), `${JSON.stringify(context, null, 2)}\n`, { encoding: "utf8", flag: "wx", mode: 0o600 });
   return context;
 }
 
@@ -454,11 +468,12 @@ function loadFullContext(contextDir, expectedHead, root = repoRoot) {
   if (!contextDir) {
     throw new Error("full-shard requires MDKG_RELEASE_CONTEXT_DIR");
   }
+  assertDirectoryChain(contextDir);
   const contextPath = path.join(contextDir, "context.json");
   if (!fs.existsSync(contextPath)) {
     throw new Error("full release context manifest is missing");
   }
-  const context = JSON.parse(fs.readFileSync(contextPath, "utf8"));
+  const context = readRegularJsonFile(contextPath);
   if (
     context.schema_version !== 1 ||
     context.decision_ref !== "root:dec-91" ||
@@ -475,13 +490,10 @@ function loadFullContext(contextDir, expectedHead, root = repoRoot) {
     throw new Error("full release context identity does not match the checked-out source");
   }
   const tarballPath = path.join(contextDir, context.package.file || "");
-  if (
-    !fs.existsSync(tarballPath) ||
-    hashFile(tarballPath) !== context.package.sha256 ||
-    fs.statSync(tarballPath).size !== context.package.bytes
-  ) {
-    throw new Error("full release context package hash or size mismatch");
-  }
+  let artifact;
+  try { artifact = verifyArtifactFile(tarballPath, context.package.sha256); }
+  catch (error) { throw new Error(`full release context package hash or size mismatch: ${error.message}`); }
+  if (artifact.bytes !== context.package.bytes) throw new Error("full release context package hash or size mismatch");
   const contextDist = path.join(contextDir, context.dist?.directory || "");
   if (!fs.existsSync(contextDist)) {
     throw new Error("full release context dist output is missing");
@@ -494,8 +506,18 @@ function loadFullContext(contextDir, expectedHead, root = repoRoot) {
     throw new Error("full release context dist hash or file count mismatch");
   }
   const targetDist = path.join(root, "dist");
-  fs.rmSync(targetDist, { recursive: true, force: true });
-  fs.cpSync(contextDist, targetDist, { recursive: true });
+  let targetExists;
+  try { fs.lstatSync(targetDist); targetExists = true; }
+  catch (error) { if (error.code !== "ENOENT") throw error; }
+  if (targetExists) {
+    const existingIdentity = hashDirectory(targetDist);
+    if (existingIdentity.sha256 !== context.dist.sha256 || existingIdentity.file_count !== context.dist.file_count) {
+      throw new Error("existing dist differs from the qualified context; preserve it and use a fresh checkout");
+    }
+  } else {
+    prepareEmptyDirectory(targetDist, { forbiddenRoots: [root] });
+    fs.cpSync(contextDist, targetDist, { recursive: true, force: false, errorOnExist: true });
+  }
   const restoredIdentity = hashDirectory(targetDist);
   if (
     restoredIdentity.sha256 !== context.dist.sha256 ||
@@ -503,6 +525,7 @@ function loadFullContext(contextDir, expectedHead, root = repoRoot) {
   ) {
     throw new Error("restored full release context does not match its identity");
   }
+  verifyArtifactFile(tarballPath, context.package.sha256);
   return {
     context,
     tarballPath,
@@ -636,7 +659,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
   };
   const executions = canonicalEntries(manifest, mode, shardId);
   for (const entry of executions) {
-    const result = run(
+    const { result, verification } = withVerifiedArtifact(tarballPath, artifactHash, () => run(
       entry.canonical,
       process.execPath,
       [path.join(repoRoot, entry.entrypoint)],
@@ -645,11 +668,12 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
         timeoutMs: entry.timeout_seconds * 1000,
         smoke: true,
       },
-    );
+    ));
     const last = smokeReceipts[smokeReceipts.length - 1];
     last.aliases = entry.aliases;
     last.entrypoint = entry.entrypoint;
     last.artifact_required = entry.prerequisites.includes("immutable_package_artifact");
+    last.artifact_verification = verification;
     writeProgress();
     process.stdout.write(`smoke passed: ${entry.canonical} (${last.duration_ms}ms)\n`);
     void result;
@@ -698,6 +722,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
       throw new Error(`${smoke.id} did not consume the immutable package artifact`);
     }
   }
+  const finalArtifact = verifyArtifactFile(tarballPath, artifactHash);
   const trackedAfter = captureTrackedBoundary(repoRoot);
   const gitBoundary = compareTrackedBoundaries(trackedBefore, trackedAfter);
   if (!gitBoundary.ok) {
@@ -719,7 +744,8 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     artifact: {
       path: tarballPath,
       sha256: artifactHash,
-      bytes: fs.statSync(tarballPath).size,
+      bytes: finalArtifact.bytes,
+      final_verified_sha256: finalArtifact.sha256,
     },
     build_counts: {
       root: rootBuildCount,
@@ -749,11 +775,18 @@ function main() {
   }[mode];
   const timeoutMs = timeoutMinutes * 60 * 1000;
   const base = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-  const receiptDir = path.resolve(
-    process.env.MDKG_RELEASE_RECEIPT_DIR ||
-      path.join(base, `mdkg-${mode}-release-${Date.now()}-${process.pid}`),
-  );
-  fs.mkdirSync(receiptDir, { recursive: true });
+  let receiptDir;
+  try {
+    // A configured collection directory grants creation of a fresh run, never
+    // replacement of old receipts. CI's workflow-start.json remains untouched.
+    receiptDir = createRunDirectory(
+      process.env.MDKG_RELEASE_RECEIPT_DIR ?? path.join(fs.realpathSync(base), `mdkg-${mode}-release`),
+      { forbiddenRoots: [repoRoot] },
+    );
+  } catch (error) {
+    process.stderr.write(`release receipt directory refused: ${error.message}\n`);
+    return 1;
+  }
   let receipt;
   let trackedBefore;
   try {

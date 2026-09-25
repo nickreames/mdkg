@@ -1,49 +1,12 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 
 const repoRoot = path.resolve(__dirname, "..");
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
-const NPM_CMD = process.env.npm_execpath || "npm";
-const GIT_CMD = process.env.GIT || "git";
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
-
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(`${command} ${args.join(" ")} failed\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
-  }
-  return result.stdout.trim();
-}
-
-function runRaw(command, args, options = {}) {
-  return spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-}
+let commands;
 
 function assert(condition, message) {
   if (!condition) {
@@ -59,28 +22,30 @@ function parseJson(output) {
   return JSON.parse(output);
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(path.join(prefix, "bin"), { recursive: true });
   fs.mkdirSync(path.join(prefix, "lib"), { recursive: true });
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir]);
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir]).stdout;
   const tarball = packOutput.split(/\r?\n/).map((line) => line.trim()).filter(Boolean).pop();
   assert(tarball, "npm pack did not return a tarball");
   const tarballPath = path.join(packDir, path.basename(tarball));
   assertExists(tarballPath);
-  run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return binPath;
+  return { tarballPath, install() {
+    commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function mdkg(binPath, args, cwd) {
-  return run(binPath, args, { cwd });
+  return commands.node(binPath, args, cwd).stdout.trim();
 }
 
 function verifyInstalledInitContainment(binPath, tempRoot) {
@@ -96,7 +61,7 @@ function verifyInstalledInitContainment(binPath, tempRoot) {
     const linked = path.join(root, linkedPath);
     fs.mkdirSync(path.dirname(linked), { recursive: true });
     fs.symlinkSync(outside, linked, "dir");
-    const result = runRaw(binPath, ["db", "init", "--json"], { cwd: root });
+    const result = commands.node(binPath, ["db", "init", "--json"], root, { allowFailure: true });
     assert(result.status === 2, `installed init must reject ${linkedPath}: ${result.stderr}`);
     assert(fs.readFileSync(configPath).equals(configBefore), "rejected init changed config");
     assert(JSON.stringify(fs.readdirSync(outside)) === JSON.stringify(["sentinel"]), "rejected init created outside files");
@@ -120,13 +85,12 @@ function verifyInstalledInitContainment(binPath, tempRoot) {
   }
 }
 
-function main() {
-  const tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-db-smoke-"));
-  const binPath = packAndInstall(tempRoot);
+function exerciseSmoke(tempRoot, installed) {
+  const { binPath, tarballPath } = installed;
   verifyInstalledInitContainment(binPath, tempRoot);
   const root = path.join(tempRoot, "repo");
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 
   mdkg(binPath, ["init", "--agent"], root);
   const init = parseJson(mdkg(binPath, ["db", "init", "--json"], root));
@@ -148,18 +112,18 @@ function main() {
   assertExists(leasesMigrationFile);
   assertExists(queueControlMigrationFile);
 
-  const runtimeIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/runtime/project.sqlite"], { cwd: root });
+  const runtimeIgnored = commands.git(["check-ignore", ".mdkg/db/runtime/project.sqlite"], root, { allowFailure: true });
   assert(runtimeIgnored.status === 0, "runtime project.sqlite should be ignored by default");
-  const schemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/001_mdkg_project_db_foundation.sql"], { cwd: root });
-  assert(schemaIgnored.status !== 0, "schema migrations should be commit-eligible");
-  const queueSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/002_mdkg_project_db_queue.sql"], { cwd: root });
-  assert(queueSchemaIgnored.status !== 0, "queue schema migration should be commit-eligible");
-  const eventsSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/003_mdkg_project_db_events_receipts.sql"], { cwd: root });
-  assert(eventsSchemaIgnored.status !== 0, "events schema migration should be commit-eligible");
-  const leasesSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/004_mdkg_project_db_writer_leases.sql"], { cwd: root });
-  assert(leasesSchemaIgnored.status !== 0, "writer lease schema migration should be commit-eligible");
-  const queueControlSchemaIgnored = runRaw(GIT_CMD, ["check-ignore", ".mdkg/db/schema/migrations/005_mdkg_project_db_queue_control.sql"], { cwd: root });
-  assert(queueControlSchemaIgnored.status !== 0, "queue control schema migration should be commit-eligible");
+  const schemaIgnored = commands.git(["check-ignore", ".mdkg/db/schema/migrations/001_mdkg_project_db_foundation.sql"], root, { allowFailure: true });
+  assert(schemaIgnored.status === 1, "schema migrations should be commit-eligible");
+  const queueSchemaIgnored = commands.git(["check-ignore", ".mdkg/db/schema/migrations/002_mdkg_project_db_queue.sql"], root, { allowFailure: true });
+  assert(queueSchemaIgnored.status === 1, "queue schema migration should be commit-eligible");
+  const eventsSchemaIgnored = commands.git(["check-ignore", ".mdkg/db/schema/migrations/003_mdkg_project_db_events_receipts.sql"], root, { allowFailure: true });
+  assert(eventsSchemaIgnored.status === 1, "events schema migration should be commit-eligible");
+  const leasesSchemaIgnored = commands.git(["check-ignore", ".mdkg/db/schema/migrations/004_mdkg_project_db_writer_leases.sql"], root, { allowFailure: true });
+  assert(leasesSchemaIgnored.status === 1, "writer lease schema migration should be commit-eligible");
+  const queueControlSchemaIgnored = commands.git(["check-ignore", ".mdkg/db/schema/migrations/005_mdkg_project_db_queue_control.sql"], root, { allowFailure: true });
+  assert(queueControlSchemaIgnored.status === 1, "queue control schema migration should be commit-eligible");
 
   const verify = parseJson(mdkg(binPath, ["db", "verify", "--json"], root));
   assert(verify.action === "db-verify" && verify.ok === true, "db verify receipt failed");
@@ -186,8 +150,18 @@ function main() {
   const show = mdkg(binPath, ["show", task.node.id], root);
   assert(show.includes("db smoke search target"), "show did not return created db smoke task");
 
-  console.log("db smoke passed");
-  fs.rmSync(tempRoot, { recursive: true, force: true });
+  return { smoke: "db", ok: true, temp_root: tempRoot, tarball: tarballPath };
 }
 
-main();
+function main() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-db-smoke-",
+    prepare: (root, ownedCommands) => { commands = ownedCommands; return prepareInstall(root); },
+    exercise: exerciseSmoke,
+  });
+  console.log(JSON.stringify(receipt, null, 2));
+}
+
+if (require.main === module) {
+  try { main(); } catch (error) { console.error(error); process.exitCode = 1; }
+}

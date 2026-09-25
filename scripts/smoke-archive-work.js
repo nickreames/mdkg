@@ -2,53 +2,19 @@
 
 const crypto = require("node:crypto");
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 const { prepareWorkIdentity, verifyWorkIdentity } = require("./installed-work-identity");
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = process.env.MDKG_SMOKE_TMPDIR || (fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir());
-const NPM_CMD = process.env.npm_execpath || (process.platform === "win32" ? "npm.cmd" : "npm");
-const GIT_CMD = process.env.GIT || (process.platform === "win32" ? "git.exe" : "git");
 
-function commandEnv(extra = {}) {
-  const npmCache = process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
+let commands;
 
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd || repoRoot,
-    env: commandEnv(options.env || {}),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      [
-        `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || repoRoot}`,
-        `exit: ${result.status}`,
-        `stdout:\n${result.stdout}`,
-        `stderr:\n${result.stderr}`,
-      ].join("\n")
-    );
-  }
-  return {
-    stdout: result.stdout.trim(),
-    stderr: result.stderr.trim(),
-    combined: `${result.stdout}${result.stderr}`.trim(),
-  };
+function run(binPath, args, options = {}) {
+  const result = commands.node(binPath, args, options.cwd, options);
+  return { status: result.status, stdout: result.stdout.trim(), stderr: result.stderr.trim(),
+    combined: `${result.stdout}${result.stderr}` };
 }
 
 function assertExists(filePath) {
@@ -77,7 +43,7 @@ function mdkg(binPath, args, cwd) {
 
 function initGit(root) {
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 }
 
 function updateFrontmatter(filePath, replacements) {
@@ -103,14 +69,14 @@ function updateFrontmatter(filePath, replacements) {
   fs.writeFileSync(filePath, next, "utf8");
 }
 
-function packAndInstall(tempRoot) {
+function prepareInstall(tempRoot) {
   const packDir = path.join(tempRoot, "pack");
   const prefix = path.join(tempRoot, "npm-prefix");
   fs.mkdirSync(packDir, { recursive: true });
   fs.mkdirSync(prefix, { recursive: true });
 
-  const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-    cwd: repoRoot,
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], {
+    cwd: tempRoot,
   }).stdout;
   const tarballName = packOutput
     .split(/\r?\n/)
@@ -123,22 +89,24 @@ function packAndInstall(tempRoot) {
   const tarballPath = path.join(packDir, path.basename(tarballName));
   assertExists(tarballPath);
 
-  const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
-    cwd: tempRoot,
-    env: { npm_config_prefix: prefix },
-  });
-  assertIncludes(install.combined, `mdkg ${packageVersion} installed.`, "postinstall");
+  return { tarballPath, install() {
+    const install = commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
+      cwd: tempRoot,
+      env: { npm_config_prefix: prefix },
+    });
+    assertIncludes(`${install.stdout}${install.stderr}`, `mdkg ${packageVersion} installed.`, "postinstall");
 
-  const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
-  assertExists(binPath);
-  return { binPath, tarballPath };
+    const binPath = process.platform === "win32" ? path.join(prefix, "mdkg.cmd") : path.join(prefix, "bin", "mdkg");
+    assertExists(binPath);
+    return { binPath, tarballPath };
+  } };
 }
 
 function exerciseArchiveAndWork(binPath, tempRoot, backend) {
   const root = path.join(tempRoot, `archive-work-${backend || "legacy"}`);
   initGit(root);
   mdkg(binPath, ["init", "--agent"], root);
-  prepareWorkIdentity(binPath, root, backend);
+  prepareWorkIdentity(binPath, root, backend, commands);
 
   const gitignore = fs.readFileSync(path.join(root, ".gitignore"), "utf8");
   assertIncludes(gitignore, ".mdkg/archive/**/source/", ".gitignore");
@@ -361,6 +329,7 @@ function exerciseArchiveAndWork(binPath, tempRoot, backend) {
     throw new Error(`doctor failed: ${JSON.stringify(doctor, null, 2)}`);
   }
   return backend ? verifyWorkIdentity(binPath, root, {
+    commands,
     backend,
     ids: [spec.id, work.id, order.id, receipt.id, "archive.key-input-doc", "archive.supplemental-prompt", "archive.image-output"],
     links: [[spec.id, "work_contracts", work.id], [work.id, "agent_id", spec.id], [order.id, "work_id", work.id], [receipt.id, "work_order_id", order.id],
@@ -370,32 +339,22 @@ function exerciseArchiveAndWork(binPath, tempRoot, backend) {
 }
 
 function runSmoke() {
-  let tempRoot;
-  try {
-    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-archive-work-"));
-    const { binPath, tarballPath } = packAndInstall(tempRoot);
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-archive-work-",
+    prepare(tempRoot, ownedCommands) { commands = ownedCommands; return prepareInstall(tempRoot); },
+    exercise(tempRoot, { binPath, tarballPath, packageRoot }) {
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
-    if (version !== packageVersion) {
-      throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
-    }
+    if (version !== packageVersion) throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
     exerciseArchiveAndWork(binPath, tempRoot);
     const identityWorkflows = [];
     for (const backend of ["json", "sqlite"]) identityWorkflows.push(...exerciseArchiveAndWork(binPath, tempRoot, backend));
-    console.log(JSON.stringify({ smoke: "archive-work", identityWorkflows }));
-    console.log("archive/work smoke passed");
-    console.log(`version=${version}`);
-    console.log(`tarball=${path.basename(tarballPath)}`);
-  } finally {
-    if (tempRoot && process.env.MDKG_KEEP_SMOKE_TMP !== "1") {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
-  }
+    return { ok: true, smoke: "archive-work", version, identityWorkflows };
+    },
+  });
+  console.log(JSON.stringify(receipt));
 }
 
-try {
-  runSmoke();
-} catch (err) {
-  const message = err instanceof Error ? err.message : String(err);
-  console.error(message);
-  process.exit(1);
+if (require.main === module) {
+  try { runSmoke(); }
+  catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; }
 }

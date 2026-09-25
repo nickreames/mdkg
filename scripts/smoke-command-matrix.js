@@ -1,54 +1,20 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
-const os = require("node:os");
 const path = require("node:path");
-const { spawnSync } = require("node:child_process");
+const { runInstalledSmoke } = require("./qualification-smoke");
 const { HELP_TARGETS } = require("./cli_help_targets");
 
-const NPM_CMD = process.platform === "win32" ? "npm.cmd" : "npm";
-const GIT_CMD = process.platform === "win32" ? "git.exe" : "git";
 
 const repoRoot = path.resolve(__dirname, "..");
 const packageVersion = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8")).version;
-const tempBase = fs.existsSync("/private/tmp") ? "/private/tmp" : os.tmpdir();
 
-function commandEnv(extra = {}) {
-  const npmCache = extra.NPM_CONFIG_CACHE || process.env.NPM_CONFIG_CACHE || path.join(tempBase, "mdkg-npm-cache");
-  fs.mkdirSync(npmCache, { recursive: true });
-  return {
-    ...process.env,
-    NPM_CONFIG_CACHE: npmCache,
-    npm_config_cache: npmCache,
-    NPM_CONFIG_DRY_RUN: "false",
-    npm_config_dry_run: "false",
-    ...extra,
-  };
-}
+let commands;
 
-function run(command, args, options = {}) {
-  const result = spawnSync(command, args, {
-    cwd: options.cwd,
-    env: commandEnv(options.env),
-    encoding: "utf8",
-    stdio: "pipe",
-  });
-  if (result.status !== 0) {
-    throw new Error(
-      [
-        `command failed: ${command} ${args.join(" ")}`,
-        `cwd: ${options.cwd || process.cwd()}`,
-        `exit: ${result.status}`,
-        `stdout:\n${result.stdout}`,
-        `stderr:\n${result.stderr}`,
-      ].join("\n")
-    );
-  }
-  return {
-    stdout: result.stdout.trim(),
-    stderr: result.stderr.trim(),
-    combined: `${result.stdout}${result.stderr}`.trim(),
-  };
+function run(binPath, args, options = {}) {
+  const result = commands.node(binPath, args, options.cwd, options);
+  return { status: result.status, stdout: result.stdout.trim(), stderr: result.stderr.trim(),
+    combined: `${result.stdout}${result.stderr}` };
 }
 
 function assertIncludes(value, expected, label) {
@@ -103,7 +69,7 @@ function mdkg(binPath, args, cwd) {
 
 function initGit(root) {
   fs.mkdirSync(root, { recursive: true });
-  run(GIT_CMD, ["init", "-q"], { cwd: root });
+  commands.git(["init", "-q"], root);
 }
 
 function assertOnboardingDocs(root) {
@@ -127,10 +93,10 @@ function assertOnboardingDocs(root) {
   assertIncludes(llms, "AGENT_START.md", "llms.txt");
 }
 
-function exerciseHelp(binPath) {
+function exerciseHelp(binPath, tempRoot) {
   for (const target of HELP_TARGETS) {
     const args = target[0] === "global" ? ["--help"] : ["help", ...target];
-    const result = mdkg(binPath, args, repoRoot);
+    const result = mdkg(binPath, args, tempRoot);
     assertIncludes(result.stdout, "mdkg", `help ${target.join(" ")}`);
   }
 }
@@ -182,12 +148,7 @@ function exerciseInit(binPath, tempRoot) {
   for (const removedFlag of ["--llm", "--agents", "--claude", "--omni"]) {
     const removedRoot = path.join(tempRoot, `removed-${removedFlag.slice(2)}`);
     initGit(removedRoot);
-    const removed = spawnSync(binPath, ["init", removedFlag], {
-      cwd: removedRoot,
-      env: commandEnv(),
-      encoding: "utf8",
-      stdio: "pipe",
-    });
+    const removed = commands.node(binPath, ["init", removedFlag], removedRoot, { allowFailure: true });
     if (removed.status === 0 || !removed.stderr.includes("use `mdkg init`") || !removed.stderr.includes("mdkg init --graph-only")) {
       throw new Error(`init ${removedFlag} did not report migration guidance`);
     }
@@ -265,11 +226,6 @@ function exerciseWorkflow(binPath, tempRoot) {
 
   const spec = parseReceipt(mdkg(binPath, ["new", "spec", "Image Worker", "--id", "agent.image-worker", "--json"], root).stdout);
   const work = parseReceipt(mdkg(binPath, ["new", "work", "Generate Image", "--id", "work.generate-image", "--json"], root).stdout);
-  const order = parseReceipt(mdkg(binPath, ["new", "work_order", "Generate Image Order", "--id", "order.generate-image-1", "--no-reindex", "--json"], root).stdout);
-  const receipt = parseReceipt(mdkg(binPath, ["new", "receipt", "Generate Image Receipt", "--id", "receipt.generate-image-1", "--no-reindex", "--json"], root).stdout);
-  const feedback = parseReceipt(mdkg(binPath, ["new", "feedback", "Image Feedback", "--id", "feedback.image-quality-1", "--no-reindex", "--json"], root).stdout);
-  const dispute = parseReceipt(mdkg(binPath, ["new", "dispute", "Image Dispute", "--id", "dispute.image-quality-1", "--no-reindex", "--json"], root).stdout);
-  const proposal = parseReceipt(mdkg(binPath, ["new", "proposal", "Review Loop Proposal", "--id", "proposal.review-loop-1", "--no-reindex", "--json"], root).stdout);
 
   const workContractRef = `${path.basename(path.dirname(work.path))}/WORK.md`;
   writeUpdatedFrontmatter(path.join(root, spec.path), {
@@ -284,26 +240,33 @@ function exerciseWorkflow(binPath, tempRoot) {
     subagent_refs: "[agent.image-worker]",
     relates: "[agent.image-worker]",
   });
+  // Complete each authored mirror before the next allocation admission reads it.
+  // --no-reindex does not waive current-source reference integrity.
+  const order = parseReceipt(mdkg(binPath, ["new", "work_order", "Generate Image Order", "--id", "order.generate-image-1", "--no-reindex", "--json"], root).stdout);
   writeUpdatedFrontmatter(path.join(root, order.path), {
     work_id: "work.generate-image",
     work_version: "0.1.0",
     order_status: "completed",
     relates: "[work.generate-image]",
   });
+  const receipt = parseReceipt(mdkg(binPath, ["new", "receipt", "Generate Image Receipt", "--id", "receipt.generate-image-1", "--no-reindex", "--json"], root).stdout);
   writeUpdatedFrontmatter(path.join(root, receipt.path), {
     work_order_id: "order.generate-image-1",
     relates: "[order.generate-image-1]",
   });
+  const feedback = parseReceipt(mdkg(binPath, ["new", "feedback", "Image Feedback", "--id", "feedback.image-quality-1", "--no-reindex", "--json"], root).stdout);
   writeUpdatedFrontmatter(path.join(root, feedback.path), {
     target_id: "work.generate-image",
     feedback_status: "triaged",
     relates: "[work.generate-image, receipt.generate-image-1]",
   });
+  const dispute = parseReceipt(mdkg(binPath, ["new", "dispute", "Image Dispute", "--id", "dispute.image-quality-1", "--no-reindex", "--json"], root).stdout);
   writeUpdatedFrontmatter(path.join(root, dispute.path), {
     work_order_id: "order.generate-image-1",
     receipt_id: "receipt.generate-image-1",
     relates: "[order.generate-image-1, receipt.generate-image-1]",
   });
+  const proposal = parseReceipt(mdkg(binPath, ["new", "proposal", "Review Loop Proposal", "--id", "proposal.review-loop-1", "--no-reindex", "--json"], root).stdout);
   writeUpdatedFrontmatter(path.join(root, proposal.path), {
     target_id: "skill.review-loop",
     proposal_kind: "skill_update",
@@ -337,64 +300,59 @@ function exerciseWorkflow(binPath, tempRoot) {
   mdkg(binPath, ["validate"], root);
 }
 
-function runSmoke() {
-  let tempRoot;
-  try {
-    tempRoot = fs.mkdtempSync(path.join(tempBase, "mdkg-matrix-"));
-    const packDir = path.join(tempRoot, "pack");
-    const prefix = path.join(tempRoot, "npm-prefix");
-    fs.mkdirSync(packDir, { recursive: true });
-    fs.mkdirSync(prefix, { recursive: true });
+function prepareInstall(tempRoot) {
+  const packDir = path.join(tempRoot, "pack");
+  const prefix = path.join(tempRoot, "npm-prefix");
+  fs.mkdirSync(packDir, { recursive: true });
+  fs.mkdirSync(prefix, { recursive: true });
 
-    const packOutput = run(NPM_CMD, ["pack", "--silent", "--dry-run=false", "--pack-destination", packDir], {
-      cwd: repoRoot,
-    }).stdout;
-    const tarballName = packOutput
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .pop();
-    if (!tarballName) {
-      throw new Error("unable to determine npm pack output tarball");
-    }
-    const tarballPath = path.join(packDir, path.basename(tarballName));
-    assertExists(tarballPath);
+  const packOutput = commands.npm(["pack", repoRoot, "--silent", "--dry-run=false", "--pack-destination", packDir], {
+    cwd: tempRoot,
+  }).stdout;
+  const tarballName = packOutput
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .pop();
+  if (!tarballName) {
+    throw new Error("unable to determine npm pack output tarball");
+  }
+  const tarballPath = path.join(packDir, path.basename(tarballName));
+  assertExists(tarballPath);
 
-    const install = run(NPM_CMD, ["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts"], {
+  return { tarballPath, install() {
+    const install = commands.npm(["install", "-g", tarballPath, "--prefix", prefix, "--foreground-scripts", "--offline"], {
       cwd: tempRoot,
       env: { npm_config_prefix: prefix },
     });
-    assertIncludes(install.combined, `mdkg ${packageVersion} installed.`, "postinstall");
-    assertIncludes(install.combined, "mdkg --help", "postinstall");
+    assertIncludes(`${install.stdout}${install.stderr}`, `mdkg ${packageVersion} installed.`, "postinstall");
+    assertIncludes(`${install.stdout}${install.stderr}`, "mdkg --help", "postinstall");
 
     const binPath = process.platform === "win32"
       ? path.join(prefix, "mdkg.cmd")
       : path.join(prefix, "bin", "mdkg");
     assertExists(binPath);
 
+    return { binPath, tarballPath };
+  } };
+}
+function runSmoke() {
+  const receipt = runInstalledSmoke({
+    prefix: "mdkg-command-matrix-",
+    prepare(tempRoot, ownedCommands) { commands = ownedCommands; return prepareInstall(tempRoot); },
+    exercise(tempRoot, { binPath, tarballPath, packageRoot }) {
     const version = mdkg(binPath, ["--version"], tempRoot).stdout;
-    if (version !== packageVersion) {
-      throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
-    }
-
-    exerciseHelp(binPath);
+    if (version !== packageVersion) throw new Error(`expected mdkg version ${packageVersion}, got ${version}`);
+    exerciseHelp(binPath, tempRoot);
     exerciseInit(binPath, tempRoot);
     exerciseWorkflow(binPath, tempRoot);
-
-    console.log("command matrix smoke passed");
-    console.log(`version=${version}`);
-    console.log(`tarball=${path.basename(tarballPath)}`);
-  } finally {
-    if (tempRoot && fs.existsSync(tempRoot)) {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
-  }
+    return { ok: true, smoke: "command-matrix", version };
+    },
+  });
+  console.log(JSON.stringify(receipt));
 }
 
-try {
-  runSmoke();
-} catch (err) {
-  const message = err instanceof Error ? err.message : String(err);
-  console.error(message);
-  process.exit(1);
+if (require.main === module) {
+  try { runSmoke(); }
+  catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; }
 }
