@@ -93,6 +93,15 @@ test('same-size mutation during a successful consumer invalidates qualification'
   }), /hash or identity mismatch/);
 });
 
+test('same-byte replacement during consumption invalidates original-artifact custody', t => {
+  const f = fixture(t);
+  assert.throws(() => withVerifiedArtifact(f.artifact, f.sha256, () => {
+    fs.renameSync(f.artifact, f.artifact + '.original');
+    fs.copyFileSync(f.artifact + '.original', f.artifact);
+  }), /identity changed or was replaced/);
+  assert.equal(hash(f.artifact), f.sha256);
+});
+
 test('consumer failure is retained when unchanged artifact bytes are verified', t => {
   const f = fixture(t), failure = new Error('synthetic consumer failure');
   assert.throws(() => withVerifiedArtifact(f.artifact, f.sha256, () => { throw failure; }), error => error === failure);

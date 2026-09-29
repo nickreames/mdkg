@@ -49,8 +49,16 @@ function copyVerifiedArtifact(source, destination, expectedHash) {
   // Keep failures visible; do not delete/replace existing or uncertain paths.
   const copy = verifyArtifactFile(target, expectedHash);
   const current = verifyArtifactFile(original.path, expectedHash);
+  assertSameArtifact(original, current);
   if (copy.dev === current.dev && copy.ino === current.ino) throw new Error("artifact delivery shares the canonical inode");
   return copy;
+}
+
+function assertSameArtifact(before, after) {
+  if (before.path !== after.path || before.dev !== after.dev || before.ino !== after.ino ||
+      before.sha256 !== after.sha256 || before.bytes !== after.bytes) {
+    throw new Error("artifact identity changed or was replaced during qualification");
+  }
 }
 
 function withVerifiedArtifact(file, expectedHash, consume) {
@@ -58,13 +66,14 @@ function withVerifiedArtifact(file, expectedHash, consume) {
   let result, consumerError;
   try { result = consume(); } catch (error) { consumerError = error; }
   let after;
-  try { after = verifyArtifactFile(file, expectedHash); }
+  try { after = verifyArtifactFile(file, expectedHash); assertSameArtifact(before, after); }
   catch (error) {
     if (consumerError) throw new AggregateError([consumerError, error], `consumer failed and artifact verification failed: ${consumerError.message}; ${error.message}`);
     throw error;
   }
   if (consumerError) throw consumerError;
-  return { result, verification: { before_sha256: before.sha256, after_sha256: after.sha256, bytes: after.bytes } };
+  return { result, verification: { before_sha256: before.sha256, after_sha256: after.sha256,
+    bytes: after.bytes, identity_preserved: true } };
 }
 
-module.exports = { copyVerifiedArtifact, verifyArtifactFile, withVerifiedArtifact };
+module.exports = { assertSameArtifact, copyVerifiedArtifact, verifyArtifactFile, withVerifiedArtifact };
