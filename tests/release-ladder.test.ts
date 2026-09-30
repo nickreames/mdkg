@@ -17,6 +17,7 @@ const ladder = require(path.join(repoRoot, "scripts", "release-ladder.js")) as {
     manifest: unknown,
     mode: "ci" | "prepublish" | "full-prepare" | "full-shard",
     shardId?: string,
+    scope?: "package" | "repository",
   ): Array<{
     canonical: string;
     aliases: string[];
@@ -61,7 +62,7 @@ function runGit(root: string, args: string[]) {
 
 test("smoke manifest maps package aliases to 46 canonical executions", () => {
   assert.doesNotThrow(() => ladder.validateManifest(manifest, packageJson));
-  const full = ladder.canonicalEntries(manifest, "prepublish");
+  const full = ladder.canonicalEntries(manifest, "prepublish", undefined, "repository");
   const ci = ladder.canonicalEntries(manifest, "ci");
   const subgraph = full.find((entry) => entry.canonical === "smoke:subgraph");
 
@@ -79,7 +80,7 @@ test("smoke manifest maps package aliases to 46 canonical executions", () => {
 });
 
 test("full CI shards partition all canonical smokes exactly once", () => {
-  const full = ladder.canonicalEntries(manifest, "prepublish");
+  const full = ladder.canonicalEntries(manifest, "prepublish", undefined, "repository");
   const sharded: Array<{ canonical: string; prerequisites: string[] }> =
     manifest.ci_topology.full.shards.flatMap((shard: { id: string }) =>
     ladder.canonicalEntries(manifest, "full-shard", shard.id),

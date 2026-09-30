@@ -2,7 +2,7 @@
 name: build-pack-and-execute-task
 description: Build a deterministic mdkg pack for the active work item and use it as the execution handoff when coding or delegating to another AI agent.
 tags: [stage:execute, writer:patch-only, mdkg, pack-first, context]
-version: 0.2.0
+version: 0.2.1
 authors: [mdkg]
 links: [.mdkg/README.md]
 ---
@@ -49,6 +49,10 @@ separate approval.
 5. Use `--skills-depth full` only for active execution, not early discovery.
 6. Discover skills by metadata first; load full skill bodies only for the selected execution procedures.
 7. Hand the pack, not a loose file list, to the next coding step or agent.
+   For test selection, use the Selective Test Execution and Readiness Gates in
+   `verify-close-and-checkpoint`: focused regression and positive controls
+   during iteration, broader checks for shared/uncertain effects, full checks
+   before pre-merge or pre-publish readiness. Preserve explicit task gates.
 8. Keep this stage patch-only: subagents and tools may produce patches, test output, and evidence, but not direct mdkg state writes or commits.
 9. If execution creates or changes archive sidecars, raw source files, or bundle-relevant graph state, hand that to the orchestrator stage for separately authorized archive/bundle refresh; do not infer that authority from the patch-only stage.
 10. If execution reveals new artifacts or blockers, hand them to the orchestrator stage for `mdkg task update ...` as structured field updates; keep narrative summaries in markdown.

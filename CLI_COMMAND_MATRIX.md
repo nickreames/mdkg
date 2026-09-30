@@ -587,7 +587,8 @@ Notes:
 - stale subgraphs remain visible with degraded ranking unless `--fresh-only` is supplied
 - records include deterministic source metadata such as workspace, visibility, kind, id/qid/slug, path, headings, refs, source hash, and `indexed_at`
 - MANIFEST/SPEC and WORK capability records include read-only `linkage` arrays for related manifests, work contracts, work orders, and receipts when those graph mirrors exist
-- `.mdkg/index/capabilities.json` is rebuilt by `mdkg index` and by capability commands when stale
+- `mdkg index` persists `.mdkg/index/capabilities.json`; capability reads derive
+  current projections in memory and do not persist repairs to missing/stale files
 - normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
 - visibility is mdkg export metadata used by capability filters, `pack --visibility`, public bundle checks, validation, and doctor diagnostics; it is not secret scanning or body redaction
 
@@ -724,7 +725,11 @@ Flags:
 Notes:
 - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
 - bundle refresh is explicit; `mdkg index` does not rewrite bundles
-- recommended pre-commit order for repos that track archive caches or bundles is `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, then `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip`
+- when archive/bundle regeneration is explicitly within the approved commit
+  scope, the recommended order is `mdkg archive compress --all`,
+  `mdkg archive verify --json`, `mdkg bundle create --profile private`, then
+  `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip`; otherwise preserve
+  existing artifacts and report freshness separately
 - private bundles include selected authored `.mdkg` content, archive sidecars, archive ZIP caches, and generated bundle-local indexes
 - public bundles include only public workspace content and public archive sidecars
 - public bundles require at least one selected workspace with `visibility: public`
@@ -752,7 +757,7 @@ Usage:
 - `mdkg graph refs <id-or-qid> [--ws <alias>] [--json]`
 - `mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]`
 - `mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--decisions <path>] [--apply --plan-hash <sha256>] [--json]`
-- `mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]`
+- `mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]`
 
 Flags:
 - `--target <path>`
@@ -781,7 +786,7 @@ Notes:
 - Migration inspects complete local history, merge parents and stage-0 graph inputs. Ambiguous continuity produces `continuity_reviews`; `--decisions` maps legacy QIDs to `{take: restore-ancestor|new-identity, reason: nonempty text, review_hash: exact preview hash}`. The choice binds current structured references, not historical prose. Preview again with the decisions, then apply its exact plan hash with the same decisions file. Missing/shallow/partial history fails closed without fetching. Unrecorded filesystem replacement with no Git trace is not distinguishable from an edit.
 - `graph reconcile` previews fixed local ancestor/incoming commits against the current authored checkout. `--target` must resolve to current HEAD. It preserves target aliases, binds structured references to stable identities, and requires a reasoned JSON decision for same-identity conflicts. Repeated inputs use durable acceptance evidence, including local cherry-pick/revert history; incomplete or ambiguous ancestry fails closed. `--apply --plan-hash` requires the exact unchanged preview. Only reviewed authored paths, immutable identity receipts and local derived indexes are written. Source/config/docs, bundles, checkout selection/runtime state and Git staging/history remain untouched.
 - Migration apply requires `--apply --plan-hash` with the exact reviewed `sha256:...` value and unchanged authored/control inputs. It preserves historical body bytes and records stable identity/reference mappings under `.mdkg/identity/migrations/`.
-- `graph recover` defaults to read-only metadata inspection; `--resume` or `--rollback` uses the private `.mdkg/state/identity-transactions/` journal and refuses changed/unowned inputs. A newly recorded, fully published interrupted graph writer can be recovered only with the mode-specific `recovery.resume.lock_evidence` or `recovery.rollback.lock_evidence` value passed as `--lock-evidence <sha256>`. Review the inspection before applying: the approval binds this exact checkout, issued lock epoch and owner/claim chain, journal bytes, current authored/control/dependency bytes and requested mode. Live/suspended/reused PIDs, unavailable OS proof, foreign boot/user/namespace/checkout, weak legacy locks, incomplete metadata and unknown journal/lock entries refuse without automatic cleanup. Age or PID absence alone grants nothing. A recorded rollback claim cannot become resume, even if its writer died before journal mirroring. Terminal journals with a proven orphan require the same explicit approval to retire their lock; no-lock terminal repeats stay read-only. Complete published owner/journal/claim/operation boundaries are supported, not every power-loss instruction window. No operation implicitly stages, selects a goal, refreshes bundles, contacts remotes or rewrites Git history.
+- `graph recover` defaults to read-only metadata inspection. Every recovery write requires `--resume` or `--rollback`, the fresh mode-specific `recovery.resume.lock_evidence` or `recovery.rollback.lock_evidence` as `--lock-evidence <sha256>`, and `--confirm-quiescent` explicitly asserting all checkout writers are stopped. `ready: true` means evidence is reviewable, not OS-proven quiescence. Versioned approval binds this exact checkout, lock presence/absence and owner/claim chain, private journal inventory, current authored/control/dependency bytes and mode. A hash is not authentication; age or PID absence alone grants nothing. Live/suspended/reused or ambiguous local PIDs, foreign checkout, weak legacy locks, incomplete metadata and unknown journal/lock entries refuse without cleanup. No OS utility, boot/user/namespace probe or platform allowlist is used. Complete legacy evidence needs a new approval and assertion; old approval tokens are not reinterpreted. A recorded rollback claim cannot become resume. Terminal journals with a remaining lock need explicit approval to retire it; no-lock terminal repeats stay read-only. Complete published owner/journal/claim/operation boundaries are supported, not every power-loss window, ACL/owner preservation or hostile ancestor-replacement fencing. No operation implicitly stages, selects a goal, refreshes bundles, contacts remotes or rewrites Git history.
 - subgraphs remain read-only bundle projections for orchestration context; use `graph clone|fork|import-template` when authored graph state should be created
 
 JSON receipts:
@@ -1441,11 +1446,15 @@ JSON mutation receipts:
 
 ## Structured output contract
 
-Current structured output surface:
-- `--json`
-- `--xml`
-- `--toon`
-- `--md`
+Structured formats are command-specific, not global output flags:
+- `show`, `list`, `search`, `skill list`, `skill search`, and `skill show`
+  support mutually exclusive `--json`, `--xml`, `--toon`, and `--md` exports.
+- Other commands with a documented `--json` option, including capability,
+  manifest, goal, status, and DB operations, are JSON-only structured surfaces.
+- `pack` chooses its content format with `--format md|json|toon|xml`; it does
+  not accept those discovery export flags.
+- Commands such as `index` have no structured-output flag. Use focused help
+  or the concrete option contract instead of adding a format flag globally.
 
 Current JSON envelopes:
 - `list` / `search`
@@ -1461,7 +1470,8 @@ Current JSON envelopes:
 - `capability show`
   - `{ kind: "capability", item }`
 - `capability resolve`
-  - `{ kind: "capability_resolve", query?, requires?, fresh_only, count, items, warnings }`
+  - `{ kind: "capability.resolve", query?, requires?, fresh_only, count, items }`
+  - each item is `{ rank, score, stale, item }`; warnings go to `stderr`
 - `spec list`
   - `{ kind: "spec", count, items }`
 - `spec show`
@@ -1504,8 +1514,6 @@ Current automatic mutation events:
 
 ## Deferred follow-up work
 
-Tracked separately:
-- XML discovery/show output
-- TOON discovery/show output
-- Markdown discovery/show output
-- additional coverage hardening beyond the current release wave
+Additional coverage and hardening beyond the current release are tracked in
+project memory. The node/skill discovery formats listed above are already
+implemented, not deferred functionality.

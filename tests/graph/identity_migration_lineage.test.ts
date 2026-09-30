@@ -7,10 +7,13 @@ import { spawnSync } from "node:child_process";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
+import { reviewedFixtureRecovery } from "../helpers/identity_recovery";
 
 const runtime=process.env.MDKG_TEST_PACKAGE?path.join(process.env.MDKG_TEST_PACKAGE,"dist"):path.resolve(__dirname,"../..");
 const {planLegacyIdentityMigration}=require(path.join(runtime,"graph/identity_migration"));
-const {applyGraphMigrationPlan,continueGraphTransaction}=require(path.join(runtime,"graph/identity_transaction"));
+const transaction=require(path.join(runtime,"graph/identity_transaction"));
+const {applyGraphMigrationPlan}=transaction;
+const continueGraphTransaction=reviewedFixtureRecovery(transaction);
 const roots:string[]=[];
 const GRAPH="e7403372-f270-4cd7-902d-64b792c781df",ORIGIN="ddf626b6-073f-4f99-9d30-5e30912922fd";
 after(()=>{for(const root of roots)fs.rmSync(root,{recursive:true,force:true});});

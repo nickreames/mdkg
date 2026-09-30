@@ -1,7 +1,7 @@
 # Generated CLI Reference
 
 <!-- generated-from: dist/command-contract.json -->
-<!-- contract-hash: 8fe115034e949a84d94af7c9e0861dbc72898b1e59f6cf0ae0ec3059fca3b23c -->
+<!-- contract-hash: 4647cc608faa3114a47bc0e4cc9e3a23fde6c6a0eea1fd6f7c857d03ac2e063d -->
 
 This generated page is the broad user-facing command reference. Start with the common command groups in the reference home, then use this page when you need the complete command list.
 
@@ -130,7 +130,7 @@ Boolean values use `=true` or `=false`; `init --agent` also preserves its legacy
 | `mdkg bundle verify` | `--json` |
 | `mdkg graph migrate` | `--graph-id <value>`, `--origin <value>`, `--ancestor <value>`, `--decisions <value>`, `--apply`, `--plan-hash <value>`, `--json` |
 | `mdkg graph reconcile` | `--ancestor <value>`, `--incoming <value>`, `--target <value>`, `--decisions <value>`, `--apply`, `--plan-hash <value>`, `--json` |
-| `mdkg graph recover` | `--resume`, `--rollback`, `--lock-evidence <value>`, `--json` |
+| `mdkg graph recover` | `--resume`, `--rollback`, `--lock-evidence <value>`, `--confirm-quiescent`, `--json` |
 | `mdkg graph clone` | `--target <value>`, `--json` |
 | `mdkg graph fork` | `--target <value>`, `--start-goal <value>`, `--json` |
 | `mdkg graph import-template` | `--start-goal <value>`, `--id-prefix <value>`, `--dry-run`, `--apply`, `--select-goal`, `--json` |
@@ -265,7 +265,7 @@ mdkg archive show <id-or-archive-uri> [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-write-archive-sidecars
 - Read paths: .mdkg/**
-- Write paths: .mdkg/archive/**, .mdkg/index/**
+- Write paths: .mdkg/archive/**, .mdkg/index/**, .mdkg/index/write.lock/**, <configured-index-cache-paths>, <workspace-mdkg>/archive/**, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required-for-add-compress
 - Atomic write policy: atomic-file-writes-and-zip-temp-rename
 - Receipts: archive-receipt
@@ -321,7 +321,7 @@ mdkg archive add <file> [--id <archive.id>] [--kind source|artifact] [--visibili
 - Dry run: {"supported":false}
 - Side effects: create-archive-sidecar
 - Read paths: .mdkg/**
-- Write paths: .mdkg/archive/**, .mdkg/index/**
+- Write paths: .mdkg/archive/**, .mdkg/index/**, .mdkg/index/write.lock/**, <configured-index-cache-paths>, <workspace-mdkg>/archive/**, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes-and-zip-temp-rename
 - Receipts: archive-add-receipt
@@ -374,7 +374,7 @@ mdkg archive compress <id-or-archive-uri-or-qid> [--ws <local-alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: refresh-local-workspace-archive-zip-caches
 - Read paths: .mdkg/**
-- Write paths: .mdkg/archive/**, .mdkg/index/**
+- Write paths: .mdkg/archive/**, .mdkg/index/**, .mdkg/index/write.lock/**, <configured-index-cache-paths>, <workspace-mdkg>/archive/**, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: full-selection-preflight-then-per-file-atomic-replacement
 - Receipts: archive-compress-receipt, archive-workspace-selection-receipt, read-only-exclusion-receipt
@@ -583,8 +583,8 @@ mdkg bundle verify [bundle-path] [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-write-mdkg-bundles
 - Read paths: .mdkg/**
-- Write paths: .mdkg/bundles/**, .mdkg/index/**
-- Lock policy: mutation-lock-required-for-create-import
+- Write paths: .mdkg/bundles/**, <--out>, <configured-bundle-output-dir>/**
+- Lock policy: no-command-level-mutation-lock; output-custody-preflight-for-create
 - Atomic write policy: zip-temp-rename-and-atomic-file-writes
 - Receipts: bundle-receipt
 
@@ -635,8 +635,8 @@ mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path
 - Dry run: {"supported":false}
 - Side effects: create-bundle-zip
 - Read paths: .mdkg/**
-- Write paths: .mdkg/bundles/**, .mdkg/index/**
-- Lock policy: mutation-lock-required
+- Write paths: .mdkg/bundles/**, <--out>, <configured-bundle-output-dir>/**
+- Lock policy: no-command-level-mutation-lock; output-custody-preflight
 - Atomic write policy: zip-temp-rename
 - Receipts: bundle-create-receipt
 
@@ -649,15 +649,15 @@ mdkg bundle create [--profile private|public] [--ws <alias|all>] [--output <path
 mdkg bundle import command
 
 - Command: `mdkg bundle import`
-- Mode: Mutating command
+- Mode: Read-only command
 - Public status: stable / public
-- Danger level: moderate
+- Danger level: read-only
 
 ### When to use
 
 Use for portable graph bundle creation, verification, and import.
 
-Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
+Beginner safety: Safe for initial grounding. It should not change repository files.
 
 ### Usage
 
@@ -681,11 +681,11 @@ mdkg subgraph add/list/show/rm/enable/disable/verify/refresh/audit/upgrade-plan/
 
 - Output formats: text
 - Dry run: {"supported":false}
-- Side effects: register-imported-subgraph-bundle
+- Side effects: none
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
-- Lock policy: mutation-lock-required
-- Atomic write policy: atomic-config-write
+- Write paths: none
+- Lock policy: none-read-only
+- Atomic write policy: none-read-only
 - Receipts: bundle-import-receipt
 
 ### Related commands
@@ -1105,7 +1105,7 @@ mdkg checkpoint new <title> [--kind implementation|test-proof|goal-closeout|audi
 - Dry run: {"supported":false}
 - Side effects: create-checkpoint-node
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: exclusive-create
 - Receipts: checkpoint-receipt
@@ -1183,7 +1183,7 @@ mdkg db index verify [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-write-project-db-and-snapshots
 - Read paths: .mdkg/**
-- Write paths: .mdkg/db/**, .mdkg/index/**
+- Write paths: .mdkg/config.json, .mdkg/db/**, .mdkg/index/**, .mdkg/index/write.lock/**, <--out>, <configured-project-db-runtime>, <configured-project-db-state>
 - Lock policy: mutation-lock-required-for-init-migrate-queue-snapshot-seal
 - Atomic write policy: atomic-file-writes-and-sqlite-transactions
 - Receipts: project-db-receipt, queue-receipt, snapshot-receipt
@@ -1237,7 +1237,7 @@ mdkg db index verify [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-rebuild-sqlite-index
 - Read paths: .mdkg/**
-- Write paths: .mdkg/index/**
+- Write paths: .mdkg/index/**, .mdkg/index/write.lock/**, <configured-index-cache-paths>
 - Lock policy: mutation-lock-required-for-rebuild
 - Atomic write policy: sqlite-transaction-and-temp-files
 - Receipts: db-index-receipt
@@ -1309,7 +1309,7 @@ mdkg db queue resume <queue> [--json]
 - Dry run: {"supported":false}
 - Side effects: emit-read-only-adapter-contract, read-or-write-local-project-db-queue-delivery-state
 - Read paths: .mdkg/**
-- Write paths: .mdkg/db/runtime/**
+- Write paths: .mdkg/db/runtime/**, .mdkg/index/write.lock/**, <configured-project-db-runtime>
 - Lock policy: mutation-lock-required-for-create-pause-resume-enqueue-claim-ack-fail-dead-letter-release-expired
 - Atomic write policy: sqlite-transactions
 - Receipts: queue-adapter-contract-receipt, queue-receipt
@@ -1367,7 +1367,7 @@ mdkg db snapshot verify [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-seal-project-db-snapshot
 - Read paths: .mdkg/**
-- Write paths: .mdkg/db/state/**
+- Write paths: .mdkg/db/state/**, .mdkg/index/write.lock/**, <--out>, <configured-project-db-runtime>, <configured-project-db-state>
 - Lock policy: mutation-lock-required-for-seal
 - Atomic write policy: atomic-file-writes
 - Receipts: snapshot-receipt
@@ -1381,15 +1381,15 @@ mdkg db snapshot verify [--json]
 mdkg doctor command
 
 - Command: `mdkg doctor`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use this command when the matching command family is the current workflow surface.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -1417,12 +1417,12 @@ mdkg doctor [--strict] [--json]
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: none
+- Side effects: may-refresh-derived-caches-unless-strict-or-no-reindex
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: .mdkg/index/**, <configured-index-cache-paths>
+- Lock policy: no-command-level-mutation-lock; cache-writers-own-their-write-policy
+- Atomic write policy: atomic-derived-cache-writes
+- Receipts: doctor-receipt
 
 ### Related commands
 
@@ -1479,8 +1479,8 @@ mdkg event enable [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-append-jsonl-event-log
 - Read paths: .mdkg/**
-- Write paths: .mdkg/events.jsonl
-- Lock policy: mutation-lock-required-for-enable-append
+- Write paths: .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: mutation-lock-for-v2-append; no-command-lock-for-legacy-append-or-enable
 - Atomic write policy: append-or-exclusive-create
 - Receipts: event-receipt
 
@@ -1537,8 +1537,8 @@ mdkg event append --kind <kind> --status <ok|error|retry|skipped> --refs <id,...
 - Dry run: {"supported":false}
 - Side effects: append-event-log-row
 - Read paths: .mdkg/**
-- Write paths: .mdkg/events.jsonl
-- Lock policy: mutation-lock-required
+- Write paths: .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: mutation-lock-required-for-v2; no-command-lock-for-legacy
 - Atomic write policy: append-only-jsonl
 - Receipts: event-append-receipt
 
@@ -1587,8 +1587,8 @@ mdkg event enable [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: create-event-log
 - Read paths: .mdkg/**
-- Write paths: .mdkg/events.jsonl
-- Lock policy: mutation-lock-required
+- Write paths: .mdkg/work/events/events.jsonl, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: no-command-level-mutation-lock; exclusive-log-create
 - Atomic write policy: exclusive-create
 - Receipts: event-enable-receipt
 
@@ -1601,15 +1601,15 @@ mdkg event enable [--ws <alias>] [--json]
 mdkg fix command
 
 - Command: `mdkg fix`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use for dry-run repair planning and selected graph repairs.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -1642,12 +1642,12 @@ mdkg fix plan [--family index|refs|ids|all] [--target <id-or-qid>] [--base-ref <
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: none
+- Side effects: preview-or-apply-reviewed-duplicate-id-repair
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: atomic-file-writes
+- Receipts: fix-apply-receipt, fix-plan-receipt
 
 ### Related commands
 
@@ -1696,7 +1696,7 @@ mdkg fix apply [--family ids] [--target <id-or-qid>] [--base-ref <ref>] [--json]
 - Dry run: {"supported":false,"apply_supported":true,"apply_family":"ids"}
 - Side effects: rebuild-derived-indexes, rewrite-duplicate-node-ids
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: fix-apply-receipt
@@ -1748,7 +1748,7 @@ mdkg fix ids [--target <id-or-qid>] [--base-ref <ref>] [--apply] [--json]
 - Dry run: {"supported":true,"default":true,"apply_flag":"--apply","apply_supported":true,"apply_family":"ids"}
 - Side effects: plan-or-rewrite-duplicate-node-ids, rebuild-derived-indexes-when-apply
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required-when-apply
 - Atomic write policy: atomic-file-writes-when-apply
 - Receipts: fix-apply-receipt, fix-plan-receipt
@@ -1853,10 +1853,10 @@ mdkg format --headings [--dry-run|--apply] [--summary] [--limit <n>] [--json]
 ### Output and safety
 
 - Output formats: text, json
-- Dry run: {"supported":true,"default":false,"flag":"--dry-run"}
+- Dry run: {"supported":true,"requires":"--headings","default_when":"--headings without --apply","flag":"--dry-run","side_effects":["acquire-and-release-mutation-lock"],"write_paths":[".mdkg/index/write.lock/**"]}
 - Side effects: normalize-graph-markdown
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: format-receipt
@@ -2062,7 +2062,7 @@ mdkg goal show <goal-id-or-qid> [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-update-selected-goal-state
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required-for-select-clear-claim-pause-resume-done
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-receipt
@@ -2112,7 +2112,7 @@ mdkg goal activate <goal-id-or-qid> [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: activate-goal-and-pause-competing-goals
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2162,7 +2162,7 @@ mdkg goal archive <goal-id-or-qid> [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: archive-goal
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2214,7 +2214,7 @@ mdkg goal claim <work-id-or-qid> [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: claim-goal-active-node
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2263,7 +2263,7 @@ mdkg goal clear [--json]
 - Dry run: {"supported":false}
 - Side effects: clear-selected-goal
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2363,7 +2363,7 @@ mdkg goal done <goal-id-or-qid> [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: complete-goal
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2513,7 +2513,7 @@ mdkg goal pause <goal-id-or-qid> [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: pause-goal
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2563,7 +2563,7 @@ mdkg goal resume <goal-id-or-qid> [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: resume-goal
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2613,7 +2613,7 @@ mdkg goal select <goal-id-or-qid> [--ws <alias>] [--json]
 - Dry run: {"supported":false}
 - Side effects: select-goal
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: goal-state-receipt
@@ -2677,15 +2677,15 @@ mdkg goal show <goal-id-or-qid> [--ws <alias>] [--json]
 mdkg graph command
 
 - Command: `mdkg graph`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use for graph references, clone/fork/import, and graph movement workflows.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -2708,6 +2708,7 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 
 - `--ancestor <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
 - `--apply`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
+- `--confirm-quiescent`: graph recover: --resume --rollback --lock-evidence <value> --confirm-quiescent --json
 - `--decisions <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
 - `--dry-run`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--graph-id <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
@@ -2715,21 +2716,20 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 - `--id-prefix <prefix>`: mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] [--select-goal] [--id-prefix <prefix>] [--dry-run] [--apply] [--json]
 - `--incoming <value>`: graph reconcile: --ancestor <value> --incoming <value> --target <value> --decisions <value> --apply --plan-hash <value> --json
 - `--json`: mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
-- `--lock-evidence <value>`: graph recover: --resume --rollback --lock-evidence <value> --json
+- `--lock-evidence <value>`: graph recover: --resume --rollback --lock-evidence <value> --confirm-quiescent --json
 - `--origin <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
-- `--plan-hash <value>`: graph migrate: --graph-id <value> --origin <value> --ancestor <value> --decisions <value> --apply --plan-hash <value> --json
-- 8 additional flags omitted from this generated summary.
+- 9 additional flags omitted from this generated summary.
 
 ### Output and safety
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: none
+- Side effects: read-or-write-graph-transport-identity-and-reconciliation-state
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: .mdkg/**/*.md, .mdkg/graph.json, .mdkg/identity/**, .mdkg/index/**, .mdkg/state/**, .mdkg/work/events/events.jsonl, <--target>/**, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: operation-specific; target-index-lock-for-clone-fork; mutation-lock-for-apply
+- Atomic write policy: operation-specific-exclusive-create-or-journaled-atomic-writes
+- Receipts: graph-receipt
 
 ### Related commands
 
@@ -2740,15 +2740,15 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 mdkg graph clone command
 
 - Command: `mdkg graph clone`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use for graph references, clone/fork/import, and graph movement workflows.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -2774,12 +2774,12 @@ mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: none
+- Side effects: create-new-target-graph-and-derived-indexes
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: <--target>/**
+- Lock policy: exclusive-empty-target-admission-and-target-index-lock
+- Atomic write policy: exclusive-file-creation; failed-target-may-remain
+- Receipts: graph-clone-receipt
 
 ### Related commands
 
@@ -2790,15 +2790,15 @@ mdkg graph clone <source-bundle-or-mdkg-dir> --target <path> [--json]
 mdkg graph fork command
 
 - Command: `mdkg graph fork`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use for graph references, clone/fork/import, and graph movement workflows.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -2825,12 +2825,12 @@ mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: none
+- Side effects: create-independent-target-graph-and-optional-selected-goal
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: <--target>/**
+- Lock policy: exclusive-empty-target-admission-and-target-index-lock
+- Atomic write policy: exclusive-file-creation; failed-target-may-remain
+- Receipts: graph-fork-receipt
 
 ### Related commands
 
@@ -2841,15 +2841,15 @@ mdkg graph fork <source-bundle-or-mdkg-dir> --target <path> [--start-goal <goal-
 mdkg graph import-template command
 
 - Command: `mdkg graph import-template`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use for graph references, clone/fork/import, and graph movement workflows.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
 
 ### Usage
 
@@ -2878,13 +2878,13 @@ mdkg graph import-template <source-bundle-or-mdkg-dir> [--start-goal <goal-id>] 
 ### Output and safety
 
 - Output formats: text, json
-- Dry run: {"supported":false}
-- Side effects: none
+- Dry run: {"supported":true,"default":true,"apply_flag":"--apply","side_effects":["none"],"write_paths":[]}
+- Side effects: preview-or-import-template-nodes-and-identity-provenance
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: .mdkg/**/*.md, .mdkg/identity/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/selected-goal.json, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: mutation-lock-required-for-apply
+- Atomic write policy: exclusive-node-creation-and-atomic-state-writes
+- Receipts: graph-import-template-receipt
 
 ### Related commands
 
@@ -2936,7 +2936,7 @@ mdkg graph migrate --graph-id <uuid> --origin <uuid> [--ancestor <ref>] [--decis
 - Dry run: {"supported":true,"default":true,"flag":"--apply"}
 - Side effects: preview-or-apply-reviewed-identity-migration
 - Read paths: .mdkg/**, <local-git-objects-and-index>
-- Write paths: .mdkg/graph.json, .mdkg/identity/migrations/**, .mdkg/index/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
+- Write paths: .mdkg/graph.json, .mdkg/identity/migrations/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
 - Lock policy: mutation-lock-required-for-apply
 - Atomic write policy: hash-bound-journal-and-per-file-atomic-writes
 - Receipts: graph-migration-plan, graph-transaction-receipt
@@ -2991,7 +2991,7 @@ mdkg graph reconcile --ancestor <ref> --incoming <ref> [--target <HEAD-ref>] [--
 - Dry run: {"supported":true,"default":true,"flag":"--apply"}
 - Side effects: preview-or-apply-reviewed-identity-reconciliation
 - Read paths: .mdkg/**, <decisions-json>, <local-git-history-and-index>
-- Write paths: .mdkg/identity/**, .mdkg/index/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
+- Write paths: .mdkg/identity/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
 - Lock policy: mutation-lock-required-for-apply
 - Atomic write policy: hash-bound-journal-and-per-file-atomic-writes
 - Receipts: graph-reconciliation-noop, graph-reconciliation-plan, graph-transaction-receipt
@@ -3018,22 +3018,23 @@ Beginner safety: Prefer the dry-run or plan mode before applying changes.
 ### Usage
 
 ```text
-mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]
+mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
 ```
 
 ### Examples
 
 ```bash
-mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]
+mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
 ```
 
 ### Common flags
 
+- `--confirm-quiescent`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
 - `--help`: --help, -h          Show help
-- `--json`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]
-- `--lock-evidence <sha256>`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]
-- `--resume`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]
-- `--rollback`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--json]
+- `--json`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
+- `--lock-evidence <sha256>`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
+- `--resume`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
+- `--rollback`: mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] [--confirm-quiescent] [--json]
 - `--root <value>`: --root, -r <path>   Run against a specific repo root
 - `--version`: --version, -V       Show version
 
@@ -3043,8 +3044,8 @@ mdkg graph recover <plan-hash> [--resume|--rollback] [--lock-evidence <sha256>] 
 - Dry run: {"supported":true,"default":true}
 - Side effects: inspect-or-resume-or-roll-back-reviewed-graph-transaction
 - Read paths: .mdkg/**, <local-git-objects-and-index>
-- Write paths: .mdkg/graph.json, .mdkg/identity/**, .mdkg/index/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
-- Lock policy: mutation-lock-or-explicit-evidence-bound-orphan-recovery
+- Write paths: .mdkg/graph.json, .mdkg/identity/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/state/identity-transactions/**, <reviewed-authored-graph-paths>
+- Lock policy: mutation-lock-and-explicit-quiescence-with-fresh-recovery-evidence
 - Atomic write policy: exact-owned-bytes-and-checkout-lock-journal-custody
 - Receipts: graph-transaction-inspect, graph-transaction-receipt
 
@@ -3155,7 +3156,7 @@ none
 mdkg handoff command
 
 - Command: `mdkg handoff`
-- Mode: Generated artifact command
+- Mode: Mutating command
 - Public status: stable / public
 - Danger level: moderate
 
@@ -3163,7 +3164,7 @@ mdkg handoff command
 
 Use for sanitized transfer prompts between humans and agents.
 
-Beginner safety: Review generated output before sharing it outside the repository.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -3191,11 +3192,11 @@ mdkg handoff create <id-or-qid> [--ws <alias>] [--depth <n>] [--out <path>] [--j
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: create-sanitized-agent-handoff-when-out-is-provided
+- Side effects: create-sanitized-agent-handoff-when-out-is-provided, may-refresh-derived-caches-even-for-stdout
 - Read paths: .mdkg/**
-- Write paths: .mdkg/handoffs/**
-- Lock policy: not-required-for-stdout-output
-- Atomic write policy: atomic-file-write-when-out-is-provided
+- Write paths: .mdkg/handoffs/**, .mdkg/index/**, <--out>, <configured-index-cache-paths>
+- Lock policy: no-command-level-mutation-lock; cache-writers-own-their-write-policy
+- Atomic write policy: atomic-output-and-derived-cache-writes
 - Receipts: handoff-receipt
 
 ### Related commands
@@ -3242,7 +3243,7 @@ mdkg index [--tolerant]
 - Dry run: {"supported":false}
 - Side effects: rebuild-generated-index-cache
 - Read paths: .mdkg/**
-- Write paths: .mdkg/index/**
+- Write paths: .mdkg/index/**, .mdkg/index/write.lock/**, <configured-index-cache-paths>
 - Lock policy: mutation-lock-required
 - Atomic write policy: sqlite-transaction-and-atomic-cache-write
 - Receipts: index-rebuild-receipt
@@ -3297,7 +3298,7 @@ mdkg init [options]
 - Dry run: {"supported":false}
 - Side effects: initialize-mdkg-scaffold
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**, AGENTS.md, AGENT_START.md, CLAUDE.md, CLI_COMMAND_MATRIX.md, llms.txt
+- Write paths: .agents/skills/**, .claude/skills/**, .dockerignore, .gitignore, .mdkg/**, .npmignore, AGENTS.md, AGENT_START.md, CLAUDE.md, CLI_COMMAND_MATRIX.md, llms.txt
 - Lock policy: not-required-before-mdkg-config-exists
 - Atomic write policy: exclusive-create-and-atomic-file-writes
 - Receipts: init-summary
@@ -3420,7 +3421,7 @@ mdkg loop show <loop-or-template> [--meta] [--ws <alias>] [--json]
 - Dry run: {"supported":true,"commands":["fork"]}
 - Side effects: read-or-write-loop-graph-state
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/events/*.jsonl, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required-for-fork
 - Atomic write policy: exclusive-create-and-atomic-file-writes
 - Receipts: loop-receipt
@@ -3478,7 +3479,7 @@ mdkg loop fork <template> --scope <scope> [--title <title>] [--materialization <
 - Dry run: {"supported":true,"flag":"--dry-run","side_effects":["none"],"write_paths":[],"reserves_ids":false}
 - Side effects: append-loop-fork-event-when-event-logging-is-enabled, create-scoped-loop-and-optional-child-nodes, rebuild-derived-indexes-when-auto-reindex-is-enabled, reserve-sqlite-node-ids-when-configured
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/events/*.jsonl, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: exclusive-create-and-atomic-file-writes
 - Receipts: loop-fork-receipt
@@ -4103,7 +4104,7 @@ mdkg new <type> "<title>" [options] [--json]
 - Dry run: {"supported":false}
 - Side effects: create-graph-node
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: exclusive-create
 - Receipts: node-create-receipt
@@ -4168,15 +4169,15 @@ none
 mdkg pack command
 
 - Command: `mdkg pack`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use to assemble deterministic context for one bounded work item.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Prefer the dry-run or plan mode before applying changes.
 
 ### Usage
 
@@ -4211,13 +4212,13 @@ mdkg pack <id-or-qid> [options]
 ### Output and safety
 
 - Output formats: text
-- Dry run: {"supported":false}
-- Side effects: none
+- Dry run: {"supported":true,"flag":"--dry-run","side_effects":["none"],"write_paths":[]}
+- Side effects: write-pack-and-optional-statistics-or-truncation-reports
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: .mdkg/pack/**, <--out>, <--stats-out>, <--truncation-report>, <pack-output>.stats.json, <pack-output>.truncation.json
+- Lock policy: no-command-level-mutation-lock; output-custody-preflight
+- Atomic write policy: atomic-output-replacement
+- Receipts: pack-output, pack-statistics, pack-truncation-report
 
 ### Related commands
 
@@ -4393,7 +4394,7 @@ mdkg skill show <slug> [--meta] [--json|--xml|--toon|--md]
 - Dry run: {"supported":false}
 - Side effects: read-or-write-skills-and-agent-mirrors
 - Read paths: .mdkg/**
-- Write paths: .agents/skills/**, .claude/skills/**, .mdkg/index/**, .mdkg/skills/**
+- Write paths: .agents/skills/**, .claude/skills/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/skills/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <configured-skill-mirror-roots>/**, <configured-skills-root>/**
 - Lock policy: mutation-lock-required-for-new-sync
 - Atomic write policy: exclusive-create-and-atomic-file-writes
 - Receipts: skill-receipt
@@ -4505,7 +4506,7 @@ mdkg skill new <slug> "<name>" --description "<description>" [options] [--json]
 - Dry run: {"supported":false}
 - Side effects: create-skill
 - Read paths: .mdkg/**
-- Write paths: .agents/skills/**, .claude/skills/**, .mdkg/index/**, .mdkg/skills/**
+- Write paths: .agents/skills/**, .claude/skills/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/skills/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <configured-skill-mirror-roots>/**, <configured-skills-root>/**
 - Lock policy: mutation-lock-required
 - Atomic write policy: exclusive-create
 - Receipts: skill-new-receipt
@@ -4666,7 +4667,7 @@ mdkg skill sync [--force] [--json]
 - Dry run: {"supported":false}
 - Side effects: refresh-agent-skill-mirrors
 - Read paths: .mdkg/**
-- Write paths: .agents/skills/**, .claude/skills/**, .mdkg/index/**, .mdkg/skills/**
+- Write paths: .agents/skills/**, .claude/skills/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/skills/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <configured-skill-mirror-roots>/**, <configured-skills-root>/**
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: skill-sync-receipt
@@ -5040,10 +5041,10 @@ mdkg subgraph show <alias> [--json]
 ### Output and safety
 
 - Output formats: text, json
-- Dry run: {"supported":true,"commands":["sync","materialize","audit","upgrade-plan"]}
+- Dry run: {"supported":true,"commands":["sync"]}
 - Side effects: read-or-write-subgraph-config-and-materialized-trees
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
+- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/subgraphs/**, <--target>/**, <configured-index-cache-paths>, <configured-subgraph-bundle-paths>
 - Lock policy: mutation-lock-required-for-add-rm-enable-disable-sync-materialize
 - Atomic write policy: atomic-config-writes-and-temp-tree-rename
 - Receipts: subgraph-receipt
@@ -5097,7 +5098,7 @@ mdkg subgraph add <alias> <bundle-path> [--visibility private|internal|public] [
 - Dry run: {"supported":false}
 - Side effects: register-subgraph
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
+- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/subgraphs/**, <--target>/**, <configured-index-cache-paths>, <configured-subgraph-bundle-paths>
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-config-write
 - Receipts: subgraph-add-receipt
@@ -5146,7 +5147,7 @@ mdkg subgraph disable <alias> [--json]
 - Dry run: {"supported":false}
 - Side effects: disable-subgraph-registration
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
+- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/subgraphs/**, <--target>/**, <configured-index-cache-paths>, <configured-subgraph-bundle-paths>
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-config-write
 - Receipts: subgraph-disable-receipt
@@ -5195,7 +5196,7 @@ mdkg subgraph enable <alias> [--json]
 - Dry run: {"supported":false}
 - Side effects: enable-subgraph-registration
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
+- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/subgraphs/**, <--target>/**, <configured-index-cache-paths>, <configured-subgraph-bundle-paths>
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-config-write
 - Receipts: subgraph-enable-receipt
@@ -5266,7 +5267,7 @@ mdkg subgraph materialize command
 
 Use to inspect and refresh child graph bundles from a parent repo.
 
-Beginner safety: Prefer the dry-run or plan mode before applying changes.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -5294,10 +5295,10 @@ mdkg subgraph materialize [alias|--all] --target <path> [--clean] [--gitignore] 
 ### Output and safety
 
 - Output formats: text, json
-- Dry run: {"supported":true,"flag":"--dry-run"}
-- Side effects: write-materialized-read-only-inspection-tree
+- Dry run: {"supported":false}
+- Side effects: replace-owned-generated-tree-with-clean, write-materialized-read-only-inspection-tree
 - Read paths: .mdkg/**
-- Write paths: .mdkg/subgraphs/**
+- Write paths: .mdkg/index/write.lock/**, <--target>/.gitignore, <--target>/<alias>/**
 - Lock policy: mutation-lock-required-for-write
 - Atomic write policy: temp-tree-rename
 - Receipts: subgraph-materialize-receipt
@@ -5345,11 +5346,11 @@ mdkg subgraph refresh [alias|--all] [--json]
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: refresh-root-owned-subgraph-bundle
+- Side effects: reload-configured-bundle-snapshots-and-rebuild-derived-indexes
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
+- Write paths: .mdkg/index/**, .mdkg/index/write.lock/**, <configured-index-cache-paths>
 - Lock policy: mutation-lock-required
-- Atomic write policy: bundle-temp-rename
+- Atomic write policy: atomic-derived-cache-writes
 - Receipts: subgraph-refresh-receipt
 
 ### Related commands
@@ -5396,7 +5397,7 @@ mdkg subgraph rm <alias> [--json]
 - Dry run: {"supported":false}
 - Side effects: remove-subgraph-registration
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
+- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/subgraphs/**, <--target>/**, <configured-index-cache-paths>, <configured-subgraph-bundle-paths>
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-config-write
 - Receipts: subgraph-rm-receipt
@@ -5497,7 +5498,7 @@ mdkg subgraph sync [alias|--all] [--dry-run] [--allow-dirty] [--json]
 - Dry run: {"supported":true,"default":false,"flag":"--dry-run"}
 - Side effects: refresh-root-owned-subgraph-bundles
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/subgraphs/**
+- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/subgraphs/**, <--target>/**, <configured-index-cache-paths>, <configured-subgraph-bundle-paths>
 - Lock policy: mutation-lock-required-for-apply
 - Atomic write policy: bundle-temp-rename-and-atomic-config-write
 - Receipts: subgraph-sync-receipt
@@ -5609,7 +5610,7 @@ mdkg task update <id-or-qid> [options] [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-update-task-lifecycle
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required-for-start-update-done
 - Atomic write policy: atomic-file-writes
 - Receipts: task-receipt
@@ -5666,7 +5667,7 @@ mdkg task done <id-or-qid> [--ws <alias>] [--add-artifacts <a,...>] [--add-links
 - Dry run: {"supported":false}
 - Side effects: complete-task
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: task-receipt
@@ -5718,7 +5719,7 @@ mdkg task start <id-or-qid> [--ws <alias>] [--run-id <id>] [--note "<text>"] [--
 - Dry run: {"supported":false}
 - Side effects: start-task
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: task-receipt
@@ -5776,7 +5777,7 @@ mdkg task update <id-or-qid> [--ws <alias>] [--status <status>] [--priority <n>]
 - Dry run: {"supported":false}
 - Side effects: update-task
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: atomic-file-writes
 - Receipts: task-receipt
@@ -5831,7 +5832,7 @@ mdkg upgrade [--dry-run | --apply | --resume | --recover] [--plan-hash <sha256>]
 - Dry run: {"supported":true,"default":true,"flag":"--apply"}
 - Side effects: preview-or-apply-managed-scaffold-upgrade
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**, AGENTS.md, AGENT_START.md, CLAUDE.md, CLI_COMMAND_MATRIX.md, llms.txt
+- Write paths: .agents/skills/**, .claude/skills/**, .dockerignore, .gitignore, .mdkg/**, .mdkg/index/write.lock/**, .npmignore, AGENTS.md, AGENT_START.md, CLAUDE.md, CLI_COMMAND_MATRIX.md, llms.txt
 - Lock policy: mutation-lock-required-for-apply
 - Atomic write policy: atomic-file-writes
 - Receipts: upgrade-apply-receipt, upgrade-plan
@@ -5845,15 +5846,15 @@ none
 mdkg validate command
 
 - Command: `mdkg validate`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use before closeout to check graph integrity and warning categories.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -5884,12 +5885,12 @@ mdkg validate [--out <path>] [--json-out <path>] [--quiet] [--changed-only] [--s
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: none
+- Side effects: write-explicit-report-when-out-or-json-out-is-provided
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: <--json-out>, <--out>
+- Lock policy: no-command-level-mutation-lock
+- Atomic write policy: direct-report-writes-not-transactional
+- Receipts: validation-receipt
 
 ### Related commands
 
@@ -5951,7 +5952,7 @@ mdkg work trigger <work-or-capability-ref> ...
 - Dry run: {"supported":false}
 - Side effects: read-or-write-work-contract-mirrors
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/archive/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <configured-project-db-runtime>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/archive/**, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required-for-contract-trigger-receipt-artifact-writes
 - Atomic write policy: exclusive-create-and-atomic-file-writes
 - Receipts: work-contract-receipt, work-order-receipt, work-receipt-receipt
@@ -6001,11 +6002,11 @@ mdkg work artifact add <order-or-receipt-id-or-qid> <file> [--id <archive.id>] [
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: create-work-artifact-record
+- Side effects: create-work-artifact-record-and-update-owning-order-or-receipt
 - Read paths: .mdkg/**
-- Write paths: .mdkg/artifacts/**, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/archive/**, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/archive/**, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
-- Atomic write policy: exclusive-create
+- Atomic write policy: exclusive-archive-create-and-atomic-node-update
 - Receipts: work-artifact-receipt
 
 ### Related commands
@@ -6060,7 +6061,7 @@ mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <ki
 - Dry run: {"supported":false}
 - Side effects: create-or-update-work-contract
 - Read paths: .mdkg/**
-- Write paths: .mdkg/**/*.md, .mdkg/index/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: exclusive-create-or-atomic-file-write
 - Receipts: work-contract-receipt
@@ -6074,15 +6075,15 @@ mdkg work contract new "<title>" --id <work.id> --agent-id <agent.id> --kind <ki
 mdkg work order command
 
 - Command: `mdkg work order`
-- Mode: Read-only command
+- Mode: Mutating command
 - Public status: stable / public
-- Danger level: read-only
+- Danger level: mixed
 
 ### When to use
 
 Use for MANIFEST, legacy SPEC, WORK, WORK_ORDER, and RECEIPT workflow surfaces.
 
-Beginner safety: Safe for initial grounding. It should not change repository files.
+Beginner safety: Run read-only grounding commands first, then use this only when you intend to update mdkg state.
 
 ### Usage
 
@@ -6120,12 +6121,12 @@ mdkg work order update <id-or-qid> [--status <status>] [--add-input-refs <...>] 
 
 - Output formats: text, json
 - Dry run: {"supported":false}
-- Side effects: none
+- Side effects: create-or-update-work-order; status-is-observational
 - Read paths: .mdkg/**
-- Write paths: none
-- Lock policy: none-read-only
-- Atomic write policy: none-read-only
-- Receipts: none
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/**/WORK_ORDER.md, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
+- Lock policy: mutation-lock-required-for-new-update
+- Atomic write policy: exclusive-create-or-atomic-file-write
+- Receipts: work-order-receipt, work-order-status
 
 ### Related commands
 
@@ -6184,7 +6185,7 @@ mdkg work receipt verify <id-or-qid> [--json]
 - Dry run: {"supported":false}
 - Side effects: create-or-update-work-receipt
 - Read paths: .mdkg/**
-- Write paths: .mdkg/index/**, .mdkg/receipts/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/**/RECEIPT.md, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required-for-new-update
 - Atomic write policy: exclusive-create-or-atomic-file-write
 - Receipts: work-receipt-receipt, work-receipt-verify-receipt
@@ -6238,7 +6239,7 @@ mdkg work trigger <work-or-capability-ref> [--id <order.id>] [--title "<title>"]
 - Dry run: {"supported":false}
 - Side effects: create-submitted-work-order-and-optionally-enqueue-message
 - Read paths: .mdkg/**
-- Write paths: .mdkg/db/**, .mdkg/index/**, .mdkg/work_orders/**
+- Write paths: .mdkg/**/*.md, .mdkg/index/**, .mdkg/index/write.lock/**, .mdkg/work/**/WORK_ORDER.md, .mdkg/work/events/events.jsonl, <configured-index-cache-paths>, <configured-project-db-runtime>, <workspace-mdkg>/**/*.md, <workspace-mdkg>/work/events/events.jsonl
 - Lock policy: mutation-lock-required
 - Atomic write policy: exclusive-create-and-sqlite-transaction
 - Receipts: work-trigger-receipt
@@ -6346,7 +6347,7 @@ mdkg workspace rm <alias> [--json]
 - Dry run: {"supported":false}
 - Side effects: read-or-update-workspace-config
 - Read paths: .mdkg/**
-- Write paths: .mdkg/config.json, .mdkg/index/**
+- Write paths: .mdkg/config.json, .mdkg/index/**, .mdkg/index/write.lock/**, <configured-index-cache-paths>, <workspace-mdkg>/core/, <workspace-mdkg>/design/, <workspace-mdkg>/work/
 - Lock policy: mutation-lock-required-for-add-rm-enable-disable
 - Atomic write policy: atomic-config-write
 - Receipts: workspace-receipt

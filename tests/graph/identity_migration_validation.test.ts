@@ -7,10 +7,13 @@ import { spawnSync } from "node:child_process";
 import { makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
+import { reviewedFixtureRecovery } from "../helpers/identity_recovery";
 
 const runtime = process.env.MDKG_TEST_PACKAGE ? path.join(process.env.MDKG_TEST_PACKAGE, "dist") : path.resolve(__dirname, "../..");
 const { planLegacyIdentityMigration, graphPlanHash } = require(path.join(runtime, "graph/identity_migration"));
-const { applyGraphMigrationPlan, continueGraphTransaction } = require(path.join(runtime, "graph/identity_transaction"));
+const transaction = require(path.join(runtime, "graph/identity_transaction"));
+const { applyGraphMigrationPlan } = transaction;
+const continueGraphTransaction = reviewedFixtureRecovery(transaction);
 const { loadConfig } = require(path.join(runtime, "core/config"));
 const roots: string[] = [];
 const parameters = { graphId: "e7403372-f270-4cd7-902d-64b792c781df", origin: "ddf626b6-073f-4f99-9d30-5e30912922fd" };

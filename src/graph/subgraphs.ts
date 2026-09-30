@@ -12,6 +12,7 @@ import { writeCacheFile } from "./cache_output";
 import { readSubgraphBundleEntries } from "./subgraph_bundle";
 import { normalizeIndexIdentityReferences } from "./identity_refs";
 import { PortableTransportPolicy, portableTransportPayloadErrors, validatePortableTransportPolicy } from "./transport_policy";
+import { bindCapabilityLinkage, CapabilityRecord } from "./capabilities_indexer";
 
 export type SubgraphSourceHealth = {
   label?: string;
@@ -777,8 +778,12 @@ export function buildSubgraphCapabilityRecords(root: string, config: Config): {
           const originalQid = String(record.qid ?? id);
           const originalWorkspace = String(record.workspace ?? "");
           const originalPath = String(record.path ?? "");
+          const linked = loaded.index ? bindCapabilityLinkage(loaded.index, record as CapabilityRecord) : { ...record, linkage: undefined };
+          const linkage = linked.linkage ? Object.fromEntries(Object.entries(linked.linkage).map(([field, qids]) =>
+            [field, qids.map(qid => `${alias}:${loaded.index!.nodes[qid].id}`)])) : undefined;
           records.push({
-            ...record,
+            ...linked,
+            ...(linkage ? { linkage } : {}),
             workspace: alias,
             visibility: subgraph.visibility,
             qid: `${alias}:${id}`,

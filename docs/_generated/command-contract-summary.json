@@ -1,6 +1,6 @@
 {
   "generated_from": "dist/command-contract.json",
-  "contract_hash": "8fe115034e949a84d94af7c9e0861dbc72898b1e59f6cf0ae0ec3059fca3b23c",
+  "contract_hash": "4647cc608faa3114a47bc0e4cc9e3a23fde6c6a0eea1fd6f7c857d03ac2e063d",
   "package_version": "0.6.0",
   "command_count": 114,
   "categories": {
@@ -149,7 +149,7 @@
       "key": "bundle import",
       "category": "bundle",
       "visibility": "public",
-      "danger_level": "moderate",
+      "danger_level": "read-only",
       "output_formats": [
         "text"
       ],
@@ -317,7 +317,7 @@
       "key": "doctor",
       "category": "doctor",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"
@@ -369,7 +369,7 @@
       "key": "fix",
       "category": "fix",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"
@@ -437,8 +437,15 @@
       ],
       "dry_run": {
         "supported": true,
-        "default": false,
-        "flag": "--dry-run"
+        "requires": "--headings",
+        "default_when": "--headings without --apply",
+        "flag": "--dry-run",
+        "side_effects": [
+          "acquire-and-release-mutation-lock"
+        ],
+        "write_paths": [
+          ".mdkg/index/write.lock/**"
+        ]
       }
     },
     {
@@ -652,7 +659,7 @@
       "key": "graph",
       "category": "graph",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"
@@ -665,7 +672,7 @@
       "key": "graph clone",
       "category": "graph",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"
@@ -678,7 +685,7 @@
       "key": "graph fork",
       "category": "graph",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"
@@ -691,13 +698,19 @@
       "key": "graph import-template",
       "category": "graph",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"
       ],
       "dry_run": {
-        "supported": false
+        "supported": true,
+        "default": true,
+        "apply_flag": "--apply",
+        "side_effects": [
+          "none"
+        ],
+        "write_paths": []
       }
     },
     {
@@ -1027,12 +1040,17 @@
       "key": "pack",
       "category": "pack",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text"
       ],
       "dry_run": {
-        "supported": false
+        "supported": true,
+        "flag": "--dry-run",
+        "side_effects": [
+          "none"
+        ],
+        "write_paths": []
       }
     },
     {
@@ -1247,10 +1265,7 @@
       "dry_run": {
         "supported": true,
         "commands": [
-          "sync",
-          "materialize",
-          "audit",
-          "upgrade-plan"
+          "sync"
         ]
       }
     },
@@ -1316,8 +1331,7 @@
         "json"
       ],
       "dry_run": {
-        "supported": true,
-        "flag": "--dry-run"
+        "supported": false
       }
     },
     {
@@ -1458,7 +1472,7 @@
       "key": "validate",
       "category": "validate",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"
@@ -1510,7 +1524,7 @@
       "key": "work order",
       "category": "work",
       "visibility": "public",
-      "danger_level": "read-only",
+      "danger_level": "mixed",
       "output_formats": [
         "text",
         "json"

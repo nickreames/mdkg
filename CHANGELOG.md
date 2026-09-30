@@ -31,15 +31,25 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
   receipts and repeat-integration checks. Native Git still owns branches,
   worktrees, staging, commits and ancestry-preserving merges.
 - Evidence-bound graph transaction recovery with exact journal/checkout/file
-  custody and mode-specific orphan-lock approval. Live, ambiguous, legacy or
-  incompletely recorded ownership refuses; age or PID absence alone never
-  authorizes takeover. Interrupted metadata publication remains fail-closed.
+  custody, fresh mode-specific approval and explicit `--confirm-quiescent` for
+  every recovery write. Operator-confirmed quiescence replaces OS-specific
+  orphanhood probes; it is not authentication or proof across hosts/namespaces.
+  Live/ambiguous PIDs and weak/incomplete ownership refuse. PID absence or age
+  alone never authorizes takeover. No-lock terminal repeats remain read-only.
+  Legacy evidence is preserved and requires fresh approval; interrupted metadata
+  publication remains fail-closed.
 - Reviewed schema-2 configuration fencing for v2 writers. All writers must be
   upgraded before adoption; a new client cannot retroactively control old
   `init` or `init --force` behavior. Legacy graphs remain explicitly supported.
 
 ### Breaking changes
 
+- The 0.6.0 candidate requires Node.js `>=24.18.0 <25` and the built-in SQLite
+  deserialization, authorizer and defensive APIs plus available-memory reporting.
+  Unsupported runtimes refuse commands before workspace discovery; help/version
+  remain available. Node24.15 and tested Node26.0 are unsupported controls, not
+  successful compatibility results. No mdkg-owned native helper or OS-specific
+  SQLite pathname fallback is included.
 - Removed `mdkg git clone`, `fetch`, `push`, `materialize`, `closeout` and
   `push-ready`, including their Git mutation/authentication behavior. No aliases
   or fallback wrappers remain. `mdkg git inspect` is observational; use native
@@ -85,6 +95,15 @@ mdkg is pre-v1 public alpha software. Command, graph, cache, bundle, and DAL con
 
 ### Security and qualification
 
+- Restrictive per-file ACL/owner preservation and adversarial ancestor-directory
+  replacement remain deferred, unresolved filesystem bugs under a separate
+  hardening goal. They are not accepted or fixed findings. Use cooperative,
+  access-controlled checkouts; existing Node link/type/custody checks remain.
+- Observational SQLite queries use a held-source image in memory, refuse
+  journal/recovery state and SQL writes, and recheck source custody. Image
+  memory is proportional to database size; resource admission cannot guarantee
+  against concurrent system memory exhaustion. Final installed/platform proof
+  remains required; local source tests alone do not qualify a release.
 - Added containment, ownership, bounded-input and failure-preservation checks
   across graph discovery/transport, caches, archives, packs, event history,
   templates, skill resources and output writes. Shipped legacy defects and

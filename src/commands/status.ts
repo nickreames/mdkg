@@ -2,7 +2,8 @@ import { insideGitWorkTree, observeGit, readGitStatus } from "../util/git_observ
 import { ValidationError } from "../util/errors";
 import fs from "fs";
 import path from "path";
-import { loadConfig } from "../core/config";
+import { loadConfig, DEFAULT_INDEX_LIMITS } from "../core/config";
+import { readContainedFileIfPresent } from "../core/filesystem_authority";
 import { verifyProjectDb } from "../core/project_db_migrations";
 import { readPackageVersion } from "../core/version";
 import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
@@ -93,16 +94,15 @@ function cacheStatus(
   };
 }
 
-function releaseStatus(root: string) {
+function releaseStatus(root: string, errors: string[]) {
   const version = readPackageVersion();
-  const changelogPath = path.join(root, "CHANGELOG.md");
-  const changelogHasVersion = fs.existsSync(changelogPath)
-    ? fs.readFileSync(changelogPath, "utf8").includes(`## ${version}`) ||
-      fs.readFileSync(changelogPath, "utf8").includes(`## [${version}]`)
-    : false;
+  let content: string | null = null;
+  try { content = readContainedFileIfPresent({ root, relativePath: "CHANGELOG.md", maxBytes: DEFAULT_INDEX_LIMITS.max_file_bytes }); }
+  catch (error) { errors.push(`release changelog unreadable: ${error instanceof Error ? error.message : String(error)}`); }
+  const changelogHasVersion = content !== null && (content.includes(`## ${version}`) || content.includes(`## [${version}]`));
   return {
     package_version: version,
-    changelog_path: fs.existsSync(changelogPath) ? "CHANGELOG.md" : null,
+    changelog_path: content !== null ? "CHANGELOG.md" : null,
     changelog_has_version: changelogHasVersion,
   };
 }
@@ -224,6 +224,7 @@ export function collectStatus(root: string) {
     }
   }
 
+  const release = releaseStatus(root, errors);
   const level: StatusLevel = errors.length > 0 ? "fail" : warnings.length > 0 ? "warn" : "ok";
 
   return {
@@ -237,7 +238,7 @@ export function collectStatus(root: string) {
       index_backend: config.index.backend,
     },
     git,
-    release: releaseStatus(root),
+    release,
     graph: {
       ok: graphErrors.length === 0,
       node_count: index ? Object.keys(index.nodes).length : null,

@@ -187,20 +187,25 @@ function parseValue(valueRaw: string, filePath: string, lineNumber: number): Fro
   return valueRaw;
 }
 
-export function parseFrontmatter(content: string, filePath: string): ParsedFrontmatter {
+type FrontmatterSourceBounds = { headerEnd: number; bodyStart: number; eol: "\n" | "\r\n" };
+
+function scanFrontmatterHeader(content: string, filePath: string): FrontmatterSourceBounds & { lines: string[]; endIndex: number } {
   // Only retain the bounded header. Splitting a newline-dense body first can
   // allocate millions of array entries despite the input byte admission limit.
   const lines: string[] = [];
-  let start = 0, lineIndex = 0, bodyStart = content.length;
+  let start = 0, lineIndex = 0, bodyStart = content.length, headerEnd = content.length;
+  let eol: "\n" | "\r\n" = "\n";
   let endIndex = -1;
   while (start <= content.length) {
     const newline = content.indexOf("\n", start);
+    if (lineIndex === 0 && newline > 0 && content[newline - 1] === "\r") eol = "\r\n";
     let line = content.slice(start, newline === -1 ? content.length : newline);
     if (newline !== -1 && line.endsWith("\r")) line = line.slice(0, -1);
     if (lineIndex === 0 && line.trim() !== "---") throw formatError(filePath, 1, "frontmatter must start with ---");
     if (lineIndex > 0 && line.trim() === "---") {
       endIndex = lineIndex;
       bodyStart = newline === -1 ? content.length : newline + 1;
+      headerEnd = newline === -1 ? content.length : newline - (content[newline - 1] === "\r" ? 1 : 0);
       break;
     }
     if (lineIndex <= MAX_FRONTMATTER_LINES) lines.push(line);
@@ -214,7 +219,17 @@ export function parseFrontmatter(content: string, filePath: string): ParsedFront
   if (endIndex > MAX_FRONTMATTER_LINES) {
     throw formatError(filePath, 1, `frontmatter exceeds ${MAX_FRONTMATTER_LINES} lines`);
   }
+  return { lines, endIndex, bodyStart, headerEnd, eol };
+}
 
+/** Exact source spans using the parser's delimiter grammar; body bytes are not normalized. */
+export function frontmatterSourceBounds(content: string, filePath: string): FrontmatterSourceBounds {
+  const { headerEnd, bodyStart, eol } = scanFrontmatterHeader(content, filePath);
+  return { headerEnd, bodyStart, eol };
+}
+
+export function parseFrontmatter(content: string, filePath: string): ParsedFrontmatter {
+  const { lines, endIndex, bodyStart } = scanFrontmatterHeader(content, filePath);
   const frontmatter: Record<string, FrontmatterValue> = {};
   for (let i = 1; i < endIndex; i += 1) {
     const line = lines[i];

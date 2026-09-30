@@ -28,6 +28,7 @@ import { NotFoundError, UsageError, ValidationError } from "../util/errors";
 import { isPortableId, isPortableIdRef } from "../util/id";
 import { archiveIdFromUri, isSha256Ref } from "../util/refs";
 import { formatResolveError, resolveQid } from "../util/qid";
+import { workflowTarget } from "../graph/workflow_refs";
 import { withMutationLock } from "../util/lock";
 import { appendAutomaticEvent } from "./event_support";
 import { runArchiveAddCommand } from "./archive";
@@ -797,18 +798,10 @@ function nodeReceipt(root: string, node: IndexNode): WorkMutationReceipt {
   };
 }
 
-function resolveOptionalQid(index: Index, ws: string, idOrQid: string | undefined): string | undefined {
-  if (!idOrQid) {
-    return undefined;
-  }
-  const resolved = resolveQid(index, idOrQid, ws);
-  return resolved.status === "ok" ? resolved.qid : undefined;
-}
-
 function listReceiptsForOrder(index: Index, order: IndexNode): IndexNode[] {
-  const orderRefs = new Set([order.id, order.qid, `${order.ws}:${order.id}`]);
   return Object.values(index.nodes)
-    .filter((node) => node.type === "receipt" && orderRefs.has(String(node.attributes.work_order_id ?? "")))
+    .filter((node) => node.type === "receipt" &&
+      workflowTarget(index, node, "work_order_id", "work_order") === order.qid)
     .sort((a, b) => a.qid.localeCompare(b.qid));
 }
 
@@ -844,7 +837,7 @@ function buildWorkOrderStatusReceipt(index: Index, order: IndexNode): WorkOrderS
       title: order.title,
       status: typeof order.attributes.order_status === "string" ? order.attributes.order_status : undefined,
       work_id: workId,
-      work_qid: resolveOptionalQid(index, order.ws, workId),
+      work_qid: workflowTarget(index, order, "work_id", "work"),
       requester: typeof order.attributes.requester === "string" ? order.attributes.requester : undefined,
       request_ref: typeof order.attributes.request_ref === "string" ? order.attributes.request_ref : undefined,
       trigger_ref: typeof order.attributes.trigger_ref === "string" ? order.attributes.trigger_ref : undefined,
@@ -921,11 +914,11 @@ function buildWorkReceiptVerifyReceipt(index: Index, receipt: IndexNode): WorkRe
   const checks: WorkReceiptVerifyReceipt["checks"] = [];
   const workOrderId =
     typeof receipt.attributes.work_order_id === "string" ? receipt.attributes.work_order_id : undefined;
-  const workOrder = workOrderId
-    ? resolveTypedReadableNode(index, receipt.ws, workOrderId, "work_order")
-    : undefined;
+  const workOrderQid = workflowTarget(index, receipt, "work_order_id", "work_order");
+  const workOrder = workOrderQid ? index.nodes[workOrderQid] : undefined;
   const workId = typeof workOrder?.attributes.work_id === "string" ? workOrder.attributes.work_id : undefined;
-  const workNode = workId ? resolveTypedReadableNode(index, workOrder?.ws ?? receipt.ws, workId, "work") : undefined;
+  const workQid = workOrder ? workflowTarget(index, workOrder, "work_id", "work") : undefined;
+  const workNode = workQid ? index.nodes[workQid] : undefined;
   const artifacts = receipt.artifacts;
   const proofRefs = toStringList(receipt.attributes.proof_refs);
   const attestationRefs = toStringList(receipt.attributes.attestation_refs);
@@ -1533,7 +1526,7 @@ function runWorkOrderUpdateCommandLocked(options: WorkOrderUpdateCommandOptions)
 function runWorkOrderStatusCommandLocked(options: WorkOrderStatusCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  const { index } = loadIndex({ root: options.root, config, persistReindex: false });
+  const { index } = loadIndex({ root: options.root, config, useCache: false, persistReindex: false, inspection: true });
   const order = resolveReadableWorkNode(index, options.id, ws, "work_order", "work order");
   const receipt = buildWorkOrderStatusReceipt(index, order);
   if (options.json) {
@@ -1619,7 +1612,7 @@ function runWorkReceiptUpdateCommandLocked(options: WorkReceiptUpdateCommandOpti
 function runWorkReceiptVerifyCommandLocked(options: WorkReceiptVerifyCommandOptions): void {
   const config = loadConfig(options.root);
   const ws = normalizeWorkspace(options.ws);
-  const { index } = loadIndex({ root: options.root, config, persistReindex: false });
+  const { index } = loadIndex({ root: options.root, config, useCache: false, persistReindex: false, inspection: true });
   const receiptNode = resolveReadableWorkNode(index, options.id, ws, "receipt", "receipt");
   const receipt = buildWorkReceiptVerifyReceipt(index, receiptNode);
   if (options.json) {

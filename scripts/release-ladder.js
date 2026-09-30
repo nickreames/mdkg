@@ -5,6 +5,8 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { releaseScope, scopeForMode } = require("./release-scope");
+const { admitRetainedCandidate, captureQualificationInputs, retainedOptions } = require("./retained-release-candidate");
 const { readJsonLines } = require("./build-receipts");
 const { copyVerifiedArtifact, verifyArtifactFile, withVerifiedArtifact } = require("./qualification-artifact");
 const { assertDirectoryChain, createRunDirectory, prepareEmptyDirectory, readRegularJsonFile, within } = require("./qualification-output");
@@ -62,6 +64,7 @@ function hashText(value) {
 
 function runGit(root, args) {
   const result = spawnSync("git", ["-C", root, ...args], {
+    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" },
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
   });
@@ -104,6 +107,7 @@ function captureTrackedBoundary(root = repoRoot) {
     .map((relativePath) => `${relativePath}\0${trackedHashes[relativePath]}\0`)
     .join("");
   const diffCheck = spawnSync("git", ["-C", root, "diff", "--check"], {
+    env: { ...process.env, GIT_OPTIONAL_LOCKS: "0" },
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
   });
@@ -226,22 +230,23 @@ function canonicalEntryMap(manifest) {
 
 function validateCiTopology(manifest, grouped) {
   const topology = manifest.ci_topology;
-  if (!topology || topology.decision_ref !== "root:dec-91") {
-    throw new Error("smoke manifest CI topology must remain bound to root:dec-91");
+  if (!topology || topology.decision_ref !== "root:dec-91" || topology.runtime_decision_ref !== "root:dec-98") {
+    throw new Error("smoke manifest CI topology must remain bound to root:dec-91 and runtime root:dec-98");
   }
   if (
     JSON.stringify(topology.fast?.runtimes) !== JSON.stringify([
-      { id: "minimum", version: "24.15.0" },
+      { id: "minimum", version: "24.18.0" },
       { id: "floating", version: "24.x" },
     ])
   ) {
-    throw new Error("fast CI runtime matrix must be Node 24.15.0 and 24.x");
+    throw new Error("fast CI runtime matrix must be Node 24.18.0 and 24.x");
   }
   for (const [field, value] of [
     ["fast timeout", topology.fast?.timeout_minutes],
     ["full prepare timeout", topology.full?.prepare_timeout_minutes],
     ["full shard timeout", topology.full?.shard_timeout_minutes],
     ["full aggregate timeout", topology.full?.aggregate_timeout_minutes],
+    ["full Linux filesystem timeout", topology.full?.linux_filesystem?.timeout_minutes],
     ["fast artifact retention", topology.fast?.artifact_retention_days],
     ["full context retention", topology.full?.context_retention_days],
     ["full evidence retention", topology.full?.evidence_retention_days],
@@ -251,10 +256,21 @@ function validateCiTopology(manifest, grouped) {
     }
   }
   if (
-    topology.full.runtime !== "24.15.0" ||
+    topology.full.runtime !== "24.18.0" ||
     topology.full.exact_sha_pattern !== "^[a-f0-9]{40}$"
   ) {
-    throw new Error("full CI must use Node 24.15.0 and a strict lowercase full SHA");
+    throw new Error("full CI must use Node 24.18.0 and a strict lowercase full SHA");
+  }
+  if (
+    topology.full.linux_filesystem?.state !== "unqualified_stub" ||
+    topology.full.linux_filesystem?.qualification_scope !== "portable-node-installed-contracts" ||
+    topology.full.linux_filesystem?.test_ref !== "root:test-487" ||
+    JSON.stringify(topology.full.linux_filesystem?.runners) !== JSON.stringify([
+      { id: "x64", label: "ubuntu-24.04" },
+      { id: "arm64", label: "ubuntu-24.04-arm" },
+    ])
+  ) {
+    throw new Error("full Linux filesystem qualification must remain an explicit Test487 x64/ARM64 unqualified stub");
   }
   const canonicalIds = [...grouped.keys()].sort();
   const fastIds = topology.fast.canonical;
@@ -300,6 +316,9 @@ function validateCiTopology(manifest, grouped) {
 }
 
 function validateManifest(manifest, packageJson) {
+  if (packageJson.engines?.node !== ">=24.18.0 <25") {
+    throw new Error("release runtime must match the package Node range >=24.18.0 <25");
+  }
   if (manifest.schema_version !== 1 || !Array.isArray(manifest.aliases)) {
     throw new Error("unsupported smoke manifest");
   }
@@ -343,13 +362,23 @@ function validateManifest(manifest, packageJson) {
   if (canonical.size !== manifest.canonical_execution_count || canonical.size !== 46) {
     throw new Error(`smoke manifest must contain 46 canonical executions, got ${canonical.size}`);
   }
+  const profiles = manifest.release_profiles;
+  const siteCount = [...canonicalEntryMap(manifest).values()].filter((entry) => entry.prerequisites.includes("site_profile_cache")).length;
+  if (profiles?.decision_ref !== "root:dec-100" || profiles.package?.canonical_execution_count !== 37 ||
+      profiles.package?.excluded_prerequisite !== "site_profile_cache" ||
+      JSON.stringify(profiles.package?.dependency_domains) !== JSON.stringify(["root"]) ||
+      profiles.repository?.canonical_execution_count !== 46 ||
+      JSON.stringify(profiles.repository?.dependency_domains) !== JSON.stringify(["root", "docs", "mdkg-dev"]) || siteCount !== 9) {
+    throw new Error("release profiles must preserve the Dec100 package37 / repository46 split and nine website smokes");
+  }
   validateCiTopology(manifest, canonicalEntryMap(manifest));
 }
 
-function canonicalEntries(manifest, mode, shardId) {
+function canonicalEntries(manifest, mode, shardId, scope = scopeForMode(mode)) {
+  scope = releaseScope(scope);
   const grouped = canonicalEntryMap(manifest);
   if (mode === "prepublish") {
-    return [...grouped.values()];
+    return [...grouped.values()].filter((entry) => scope === "repository" || !entry.prerequisites.includes("site_profile_cache"));
   }
   if (mode === "ci") {
     return manifest.ci_topology.fast.canonical.map((id) => grouped.get(id));
@@ -390,9 +419,11 @@ function createProxyBin(receiptDir) {
   return binDir;
 }
 
-function releaseEnvironment(receiptDir, tools) {
+function releaseEnvironment(receiptDir, tools, scope = "repository") {
   const env = {
     ...process.env,
+    MDKG_RELEASE_SCOPE: releaseScope(scope),
+    GIT_OPTIONAL_LOCKS: "0",
     NPM_CONFIG_OFFLINE: "true",
     npm_config_offline: "true",
     NPM_CONFIG_AUDIT: "false",
@@ -534,8 +565,14 @@ function loadFullContext(contextDir, expectedHead, root = repoRoot) {
 }
 
 function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBoundary(repoRoot)) {
+  const scope = scopeForMode(mode);
+  const retained = retainedOptions();
+  if (retained && mode !== "prepublish") throw new Error("retained candidate inputs are supported only by local prepublish");
+  // Reject stale/partial admission before builds or consuming any candidate.
+  const admitted = retained ? admitRetainedCandidate(repoRoot, retained, { verifyBuild: false }) : undefined;
+  const qualificationInputs = captureQualificationInputs(repoRoot);
   const tools = resolveTools();
-  const env = releaseEnvironment(receiptDir, tools);
+  const env = releaseEnvironment(receiptDir, tools, scope);
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   const packageJson = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8"));
   validateManifest(manifest, packageJson);
@@ -608,11 +645,16 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
 
   let tarballPath;
   let artifactHash;
+  let retainedReceipt;
   if (isFullShard) {
     const loaded = loadFullContext(process.env.MDKG_RELEASE_CONTEXT_DIR, trackedBefore.head);
     tarballPath = loaded.tarballPath;
     artifactHash = loaded.artifactHash;
     fullContext = loaded.context;
+  } else if (retained) {
+    retainedReceipt = admitRetainedCandidate(repoRoot, retained, { previous: admitted });
+    tarballPath = retained.tarball;
+    artifactHash = retained.sha256;
   } else {
     const artifactDir = path.join(receiptDir, "artifact");
     fs.mkdirSync(artifactDir, { recursive: true });
@@ -657,7 +699,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     MDKG_SMOKE_TARBALL: tarballPath,
     MDKG_SMOKE_TARBALL_SHA256: artifactHash,
   };
-  const executions = canonicalEntries(manifest, mode, shardId);
+  const executions = canonicalEntries(manifest, mode, shardId, scope);
   for (const entry of executions) {
     const { result, verification } = withVerifiedArtifact(tarballPath, artifactHash, () => run(
       entry.canonical,
@@ -697,7 +739,7 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
       entry.environment_profiles.some((profile) => profile.startsWith(`${owner}:`)),
     );
     if (
-      (mode === "prepublish" || shardRequiresOwner) &&
+      ((mode === "prepublish" && scope === "repository") || shardRequiresOwner) &&
       JSON.stringify(declaredProfiles) !== JSON.stringify(observedProfiles)
     ) {
       throw new Error(`${owner} profile coverage mismatch: declared ${declaredProfiles}, observed ${observedProfiles}`);
@@ -723,6 +765,10 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     }
   }
   const finalArtifact = verifyArtifactFile(tarballPath, artifactHash);
+  if (retained) admitRetainedCandidate(repoRoot, retained, { previous: admitted });
+  if (captureQualificationInputs(repoRoot).sha256 !== qualificationInputs.sha256) {
+    throw new Error("qualification harness inputs changed during the release ladder");
+  }
   const trackedAfter = captureTrackedBoundary(repoRoot);
   const gitBoundary = compareTrackedBoundaries(trackedBefore, trackedAfter);
   if (!gitBoundary.ok) {
@@ -735,23 +781,27 @@ function runner(mode, receiptDir, deadline, trackedBefore = captureTrackedBounda
     action: "release-ladder",
     ok: true,
     mode,
+    scope,
+    deferred: scope === "package" ? { website_canonical_count: 9, hosted_ci: "unverified", owners: ["root:epic-258", "root:epic-257"] } : undefined,
     shard: shardId,
     offline: true,
     registry: env.NPM_CONFIG_REGISTRY,
     receipt_dir: receiptDir,
-    alias_count: mode === "prepublish" ? manifest.alias_count : executions.reduce((sum, entry) => sum + entry.aliases.length, 0),
+    alias_count: executions.reduce((sum, entry) => sum + entry.aliases.length, 0),
     canonical_execution_count: executions.length,
     artifact: {
       path: tarballPath,
       sha256: artifactHash,
       bytes: finalArtifact.bytes,
       final_verified_sha256: finalArtifact.sha256,
+      retained_admission: retainedReceipt,
     },
     build_counts: {
       root: rootBuildCount,
       sites: siteBuilds,
     },
     artifact_usage_count: artifactUsages.length,
+    qualification_inputs: qualificationInputs,
     coverage: coverageSummary,
     full_context: fullContext,
     git_boundary: gitBoundary,
@@ -766,6 +816,12 @@ function main() {
     process.stderr.write("Usage: node scripts/release-ladder.js <ci|prepublish|full-prepare|full-shard>\n");
     return 2;
   }
+  try {
+    releaseScope(); scopeForMode(mode);
+    const retained = retainedOptions();
+    if (retained && mode !== "prepublish") throw new Error("retained candidate inputs require local prepublish");
+  }
+  catch (error) { process.stderr.write(`${error.message}\n`); return 2; }
   const started = Date.now();
   const timeoutMinutes = {
     ci: 15,
@@ -829,6 +885,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  releaseEnvironment,
   canonicalEntryMap,
   canonicalEntries,
   captureTrackedBoundary,

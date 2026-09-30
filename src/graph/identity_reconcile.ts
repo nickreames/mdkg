@@ -1,7 +1,7 @@
 import path from "path";
 import { UsageError } from "../util/errors";
 import { archiveIdFromUri, isUriRef } from "../util/refs";
-import { FrontmatterValue } from "./frontmatter";
+import { frontmatterSourceBounds, FrontmatterValue } from "./frontmatter";
 import { assertNodeFormat, canonicalJson, identityHash, identityRef, parseIdentityRef } from "./identity";
 import { replaceGraphFrontmatter } from "./identity_migration";
 import { mapGraphReferenceFields, matchesWorkContractPath } from "./identity_refs";
@@ -37,9 +37,7 @@ const EVIDENCE = new Set(["artifacts", "evidence_refs", "proof_refs", "attestati
 const equal = (left: unknown, right: unknown) => canonicalJson(left) === canonicalJson(right);
 
 function exactBody(content: string): string {
-  const boundary = /\r?\n---(?:\r?\n|$)/.exec(content);
-  if (!boundary) throw new UsageError("reconciliation requires a complete authored frontmatter boundary");
-  return content.slice(boundary.index + boundary[0].length);
+  return content.slice(frontmatterSourceBounds(content, "reconciliation node").bodyStart);
 }
 
 function inputNodes(snapshot: AuthoredSnapshot): Map<string, SemanticNode> {

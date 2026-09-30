@@ -3,6 +3,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
+const { releaseScope } = require("./release-scope");
 
 const DEFAULT_REPO_ROOT = path.resolve(__dirname, "..");
 const BOOTSTRAP_COMMAND = "npm run deps:bootstrap";
@@ -230,11 +231,14 @@ function inspectDependencyDomain(repoRoot, domain) {
   };
 }
 
-function inspectDependencyTrees(repoRoot = DEFAULT_REPO_ROOT) {
-  const domains = DEPENDENCY_DOMAINS.map((domain) => inspectDependencyDomain(repoRoot, domain));
+function inspectDependencyTrees(repoRoot = DEFAULT_REPO_ROOT, scope = "repository") {
+  scope = releaseScope(scope);
+  const domains = DEPENDENCY_DOMAINS.filter((domain) => scope === "repository" || domain.id === "root")
+    .map((domain) => inspectDependencyDomain(repoRoot, domain));
   const issueCount = domains.reduce((total, domain) => total + domain.issues.length, 0);
   return {
     action: "dependency-preflight",
+    scope,
     ok: issueCount === 0,
     network_access: false,
     mutation: false,
@@ -259,8 +263,8 @@ function formatPreflightFailure(receipt) {
   return lines.join("\n");
 }
 
-function assertDependencyTreesReady(repoRoot = DEFAULT_REPO_ROOT) {
-  const receipt = inspectDependencyTrees(repoRoot);
+function assertDependencyTreesReady(repoRoot = DEFAULT_REPO_ROOT, scope = releaseScope()) {
+  const receipt = inspectDependencyTrees(repoRoot, scope);
   if (!receipt.ok) {
     const error = new Error(formatPreflightFailure(receipt));
     error.code = "DEPENDENCY_PREFLIGHT_FAILED";
@@ -270,8 +274,9 @@ function assertDependencyTreesReady(repoRoot = DEFAULT_REPO_ROOT) {
   return receipt;
 }
 
-function bootstrapPlan(repoRoot = DEFAULT_REPO_ROOT) {
-  return DEPENDENCY_DOMAINS.map((domain) => ({
+function bootstrapPlan(repoRoot = DEFAULT_REPO_ROOT, scope = "repository") {
+  scope = releaseScope(scope);
+  return DEPENDENCY_DOMAINS.filter((domain) => scope === "repository" || domain.id === "root").map((domain) => ({
     domain: domain.id,
     directory: domain.directory,
     lockfile: domain.lockfile,
@@ -281,7 +286,7 @@ function bootstrapPlan(repoRoot = DEFAULT_REPO_ROOT) {
 }
 
 function runBootstrap(repoRoot = DEFAULT_REPO_ROOT, options = {}) {
-  const commands = bootstrapPlan(repoRoot);
+  const commands = bootstrapPlan(repoRoot, options.scope ?? "repository");
   if (options.dryRun) {
     return {
       action: "dependency-bootstrap",
@@ -330,7 +335,7 @@ function runBootstrap(repoRoot = DEFAULT_REPO_ROOT, options = {}) {
 }
 
 function parseArgs(argv) {
-  const options = { command: "preflight", json: false, dryRun: false, repoRoot: DEFAULT_REPO_ROOT, help: false };
+  const options = { command: "preflight", json: false, dryRun: false, repoRoot: DEFAULT_REPO_ROOT, help: false, scope: releaseScope() };
   const args = [...argv];
   if (args[0] === "preflight" || args[0] === "bootstrap") {
     options.command = args.shift();
@@ -341,6 +346,9 @@ function parseArgs(argv) {
       options.json = true;
     } else if (arg === "--dry-run") {
       options.dryRun = true;
+    } else if (arg === "--scope") {
+      if (!args.length) throw new Error("--scope requires package or repository");
+      options.scope = releaseScope(args.shift());
     } else if (arg === "--root") {
       const root = args.shift();
       if (!root) {
@@ -370,6 +378,7 @@ function helpText() {
     "",
     `Repair command: ${BOOTSTRAP_COMMAND}`,
     "Verification boundary: run preflight, then set NPM_CONFIG_OFFLINE=true for tests and smokes.",
+    "Scope: --scope package|repository or MDKG_RELEASE_SCOPE; repository is the standalone default.",
   ].join("\n");
 }
 
@@ -388,12 +397,12 @@ function main(argv = process.argv.slice(2)) {
 
   const receipt = options.command === "bootstrap"
     ? runBootstrap(options.repoRoot, options)
-    : inspectDependencyTrees(options.repoRoot);
+    : inspectDependencyTrees(options.repoRoot, options.scope);
   if (options.json) {
     process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`);
   } else if (receipt.ok) {
     const verb = options.command === "bootstrap" && !options.dryRun ? "bootstrapped" : "verified";
-    process.stdout.write(`dependency trees ${verb}: root, docs, mdkg-dev\n`);
+    process.stdout.write(`dependency trees ${verb}: ${options.scope === "package" ? "root" : "root, docs, mdkg-dev"}\n`);
   } else {
     process.stderr.write(`${options.command === "preflight" ? formatPreflightFailure(receipt) : "dependency bootstrap failed"}\n`);
   }

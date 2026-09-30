@@ -2,6 +2,11 @@
   "schema_version": 1,
   "alias_count": 47,
   "canonical_execution_count": 46,
+  "release_profiles": {
+    "decision_ref": "root:dec-100",
+    "package": {"canonical_execution_count": 37, "excluded_prerequisite": "site_profile_cache", "dependency_domains": ["root"]},
+    "repository": {"canonical_execution_count": 46, "dependency_domains": ["root", "docs", "mdkg-dev"]}
+  },
   "full_ladder_timeout_seconds": 3600,
   "profiles": {
     "docs": [
@@ -20,9 +25,10 @@
   },
   "ci_topology": {
     "decision_ref": "root:dec-91",
+    "runtime_decision_ref": "root:dec-98",
     "fast": {
       "runtimes": [
-        {"id": "minimum", "version": "24.15.0"},
+        {"id": "minimum", "version": "24.18.0"},
         {"id": "floating", "version": "24.x"}
       ],
       "timeout_minutes": 15,
@@ -44,10 +50,20 @@
       ]
     },
     "full": {
-      "runtime": "24.15.0",
+      "runtime": "24.18.0",
       "prepare_timeout_minutes": 30,
       "shard_timeout_minutes": 20,
       "aggregate_timeout_minutes": 5,
+      "linux_filesystem": {
+        "state": "unqualified_stub",
+        "qualification_scope": "portable-node-installed-contracts",
+        "test_ref": "root:test-487",
+        "timeout_minutes": 5,
+        "runners": [
+          {"id": "x64", "label": "ubuntu-24.04"},
+          {"id": "arm64", "label": "ubuntu-24.04-arm"}
+        ]
+      },
       "context_retention_days": 14,
       "evidence_retention_days": 30,
       "exact_sha_pattern": "^[a-f0-9]{40}$",

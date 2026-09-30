@@ -50,7 +50,7 @@ function createSmokeCommands(fixture, suppliedEnv = process.env) {
     fixture.assertOwned();
     return checked(fixtureGit.run(cwd, args, options), `fixture Git ${args.join(" ")}`, options.allowFailure);
   }
-  return Object.freeze({ environment, npm, node, git });
+  return Object.freeze({ environment, fixtureRoot: fixture.root, assertOwned: fixture.assertOwned, npm, node, git });
 }
 
 // The callbacks are trusted fixture code. Final success is returned only after

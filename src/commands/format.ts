@@ -4,6 +4,7 @@ import {
   DEFAULT_FRONTMATTER_KEY_ORDER,
   FrontmatterValue,
   formatFrontmatter,
+  frontmatterSourceBounds,
   parseFrontmatter,
 } from "../graph/frontmatter";
 import { loadTemplateSchemas, TemplateSchema } from "../graph/template_schema";
@@ -456,11 +457,11 @@ function runHeadingFormatCommandLocked(options: FormatCommandOptions): void {
       if (addedHeadings.length === 0) {
         continue;
       }
-      const frontmatterEnd = content.indexOf("---", 3);
-      const frontmatterBlock =
-        frontmatterEnd >= 0 ? content.slice(0, frontmatterEnd + 3) : ["---", ...formatFrontmatter(parsed.frontmatter, DEFAULT_FRONTMATTER_KEY_ORDER), "---"].join("\n");
+      const boundary = frontmatterSourceBounds(content, filePath);
+      const frontmatterBlock = content.slice(0, boundary.bodyStart);
+      const separator = boundary.bodyStart === boundary.headerEnd ? boundary.eol : "";
       const nextBody = appendMissingHeadings(parsed.body, addedHeadings);
-      const nextContent = `${frontmatterBlock}\n${nextBody.endsWith("\n") ? nextBody : `${nextBody}\n`}`;
+      const nextContent = `${frontmatterBlock}${separator}${nextBody.endsWith("\n") ? nextBody : `${nextBody}\n`}`;
       changes.push({
         filePath,
         path: path.relative(options.root, filePath).split(path.sep).join("/"),

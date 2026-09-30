@@ -7,9 +7,8 @@ import { buildIndex, Index } from "./indexer";
 import { writeIndex } from "./index_cache";
 import { writeSkillsIndex } from "./skills_index_cache";
 import { buildSkillsIndex, resolveSkillsIndexPath } from "./skills_indexer";
-import { isSqliteBackend, writeSqliteIndex } from "./sqlite_index";
+import { isSqliteBackend, preflightSqliteIndexOutputs, writeSqliteIndex } from "./sqlite_index";
 import { preflightCacheOutputs } from "./cache_output";
-import { withContainedPathSink } from "../core/filesystem_authority";
 
 export type DerivedIndexWriteResult = {
   nodeIndex: Index;
@@ -48,7 +47,7 @@ export function writeDerivedIndexes(
   // a transaction for authoring operations that called into cache rebuilding.
   preflightCacheOutputs(root, [nodesOutputPath, skillsOutputPath, capabilitiesOutputPath, subgraphsOutputPath]);
   if (isSqliteBackend(config)) {
-    withContainedPathSink({ root, relativePath: config.index.sqlite_path, operation: "replace", createParents: false }, () => undefined);
+    preflightSqliteIndexOutputs(root, config);
   }
   writeIndex(root, nodesOutputPath, nextNodeIndex);
   writeSkillsIndex(root, skillsOutputPath, skillsIndex);

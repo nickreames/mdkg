@@ -8,11 +8,16 @@ const contractPath = path.join(repoRoot, "dist", "command-contract.json");
 const rootPackage = JSON.parse(fs.readFileSync(path.join(repoRoot, "package.json"), "utf8"));
 const docsPackage = JSON.parse(fs.readFileSync(path.join(repoRoot, "docs", "package.json"), "utf8"));
 const sitePackage = JSON.parse(fs.readFileSync(path.join(repoRoot, "mdkg-dev", "package.json"), "utf8"));
+const { parseArgs } = require("../dist/util/argparse.js");
+const { commandOptionError } = require("../dist/commands/option_contract.js");
 
 const PUBLIC_ROOTS = [
   "README.md",
   "docs/README.md",
   "docs/SUMMARY.md",
+  "docs/guides/agent-workflow.md",
+  "docs/start-here/install.md",
+  "docs/start-here/safety-boundaries.md",
   "docs/src/content/docs",
   "mdkg-dev/src/pages",
   "mdkg-dev/src/components",
@@ -142,6 +147,15 @@ function contractIndex() {
   return commands;
 }
 
+function historicalBoundaryLine(source, filePath) {
+  // The versioned changelog is evidence of older releases, not current command
+  // instructions. Only its explicitly marked historical section is exempt;
+  // candidate guidance above the marker still uses current option admission.
+  if (path.resolve(filePath) !== path.join(repoRoot, "docs/src/content/docs/project/changelog.md")) return undefined;
+  const marker = /^## Historical version notes\s*$/m.exec(source);
+  return marker ? source.slice(0, marker.index).split("\n").length : undefined;
+}
+
 function requireCommandKeys(commands) {
   const missing = REQUIRED_MDKG_COMMAND_KEYS.filter((key) => !commands.has(key));
   if (missing.length > 0) {
@@ -153,6 +167,14 @@ function matchMdkgCommand(command, commands) {
   const words = shellWords(command);
   if (words[0] !== "mdkg") {
     return { ok: false, reason: "not an mdkg command" };
+  }
+  try {
+    const parsed = parseArgs(words.slice(1));
+    if (parsed.error) return { ok: false, reason: parsed.error };
+    const optionError = commandOptionError(parsed);
+    if (optionError) return { ok: false, reason: optionError };
+  } catch (error) {
+    return { ok: false, reason: error instanceof Error ? error.message : String(error) };
   }
   if (words[1] === "--version" || words[1] === "-V" || words[1] === "--help" || words[1] === "-h") {
     return { ok: true, key: "<global>" };
@@ -224,6 +246,7 @@ function validateNpmCommand(command, filePath) {
 }
 
 function validateCommand(example, commands) {
+  if (example.historical === true) return { ok: true, historical: true };
   if (example.promptPrefixed) {
     return { ok: false, reason: "copyable command examples must omit shell prompts" };
   }
@@ -276,16 +299,21 @@ function main() {
   const examples = [];
   for (const filePath of files) {
     const source = fs.readFileSync(filePath, "utf8");
-    examples.push(...extractFencedCommands(source, filePath));
-    examples.push(...extractInlineCommands(source, filePath));
+    const historyLine = historicalBoundaryLine(source, filePath);
+    for (const example of [...extractFencedCommands(source, filePath), ...extractInlineCommands(source, filePath)]) {
+      examples.push({ ...example, historical: historyLine !== undefined && example.line > historyLine });
+    }
   }
 
   const failures = [];
   const checked = [];
   const skippedIllustrative = [];
+  const skippedHistorical = [];
   for (const example of examples) {
     const result = validateCommand(example, commands);
-    if (result.illustrative) {
+    if (result.historical) {
+      skippedHistorical.push(example);
+    } else if (result.illustrative) {
       skippedIllustrative.push(example);
     } else if (result.ok) {
       checked.push({ ...example, contract_key: result.key || null, parent_matched: Boolean(result.parentMatched) });
@@ -308,6 +336,7 @@ function main() {
     placeholder_fence_examples: placeholderFenceExamples.length,
     placeholder_fence_context_examples: placeholderFenceExamples.filter(hasPlaceholderContext).length,
     skipped_illustrative_examples: skippedIllustrative.length,
+    skipped_historical_examples: skippedHistorical.length,
     failed_examples: failures.length,
     by_source: {
       fence: examples.filter((example) => example.source === "fence").length,
@@ -328,4 +357,6 @@ function main() {
   console.log(JSON.stringify(receipt, null, 2));
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { matchMdkgCommand, contractIndex, historicalBoundaryLine };

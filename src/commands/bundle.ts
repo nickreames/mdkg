@@ -381,30 +381,63 @@ function relativePath(root: string, absolutePath: string): string {
   return toPosixPath(path.relative(root, absolutePath));
 }
 
-function archiveVisibilityByPath(index: Index): Map<string, string> {
+type ArchiveVisibility = {
+  exact: Map<string, string>;
+  aliases: Map<string, { file: string; visibility: string }>;
+};
+
+function archiveVisibilityByPath(root: string, config: Config, index: Index): ArchiveVisibility {
   const visibility = new Map<string, string>();
+  const aliases = new Map<string, { file: string; visibility: string }>();
+  const owner = absoluteWorkspaceDocumentOwner(root, config);
+  const claims = new Map<string, { qid: string; role: string; file: string }>();
+  const key = (file: string) => file.normalize("NFC").toLowerCase();
+  const claim = (node: IndexNode, absolute: string, role: string, value?: string) => {
+    const file = relativePath(root, absolute), normalized = key(file);
+    const existing = claims.get(normalized);
+    if (existing?.role === "document" && role === "document") return;
+    if (existing) throw new ValidationError(`archive resource ownership overlap: ${node.qid} ${role} and ${existing.qid} ${existing.role}`);
+    claims.set(normalized, { qid: node.qid, role, file });
+    if (value !== undefined) {
+      if (owner(absolute) !== node.ws) throw new ValidationError(`${node.qid}: archive resource belongs to another workspace owner`);
+      visibility.set(file, value);
+      aliases.set(normalized, { file, visibility: value });
+    }
+  };
   for (const node of Object.values(index.nodes)) {
+    if (node.source?.imported || node.source?.read_only) continue;
+    const sidecar = path.resolve(root, node.path);
     if (node.type !== "archive") {
+      claim(node, sidecar, "document");
       continue;
     }
-    visibility.set(node.path, String(node.attributes.visibility ?? "private"));
-    visibility.set(`${toPosixPath(path.dirname(node.path))}/`, String(node.attributes.visibility ?? "private"));
+    const value = String(node.attributes.visibility ?? "private"), dir = path.dirname(sidecar);
+    claim(node, sidecar, "sidecar", value);
+    claim(node, path.resolve(dir, String(node.attributes.stored_path)), "raw", value);
+    claim(node, path.resolve(dir, String(node.attributes.compressed_path)), "cache", value);
   }
-  return visibility;
-}
-
-function archivePathVisibility(visibilityByPath: Map<string, string>, relative: string): string | undefined {
-  const exact = visibilityByPath.get(relative);
-  if (exact) {
-    return exact;
-  }
-  const normalized = relative.replace(/\\/g, "/");
-  for (const [key, value] of visibilityByPath.entries()) {
-    if (key.endsWith("/") && normalized.startsWith(key)) {
-      return value;
+  for (const [file, resource] of claims) {
+    for (let parent = path.posix.dirname(file); parent !== "." && parent !== path.posix.dirname(parent); parent = path.posix.dirname(parent)) {
+      const ancestor = claims.get(parent);
+      if (ancestor && (ancestor.role !== "document" || resource.role !== "document")) {
+        throw new ValidationError(`archive resource ownership overlap: ${ancestor.file} and ${resource.file}`);
+      }
     }
   }
-  return undefined;
+  return { exact: visibility, aliases };
+}
+
+function archivePathVisibility(root: string, visibility: ArchiveVisibility, file: string): string | undefined {
+  const exact = visibility.exact.get(file);
+  if (exact !== undefined) return exact;
+  const alias = visibility.aliases.get(file.normalize("NFC").toLowerCase());
+  if (!alias) return undefined;
+  // A native case/normalization alias is the same admitted file, not permission
+  // for a distinct similarly spelled file on a case-sensitive filesystem.
+  const expected = fs.lstatSync(path.resolve(root, alias.file));
+  const actual = fs.lstatSync(path.resolve(root, file));
+  return expected.isFile() && actual.isFile() && expected.ino !== 0 &&
+    expected.dev === actual.dev && expected.ino === actual.ino ? alias.visibility : undefined;
 }
 
 function entryForFile(
@@ -813,7 +846,7 @@ export function buildBundle(options: BundleCreateCommandOptions): BundleBuildRes
     }
   }
   const index = buildIndex(options.root, config);
-  const archiveVisibility = archiveVisibilityByPath(index);
+  const archiveVisibility = archiveVisibilityByPath(options.root, config, index);
   const entries: ZipEntry[] = [];
   const files: BundleManifestFile[] = [];
   for (const selected of selectedFiles) {
@@ -823,17 +856,20 @@ export function buildBundle(options: BundleCreateCommandOptions): BundleBuildRes
       if (profile === "public" && (rel === `${wsPrefix}config.json` || rel.endsWith("/.mdkg/config.json"))) {
         continue;
       }
-      const visibility = archivePathVisibility(archiveVisibility, rel) ?? workspace.visibility;
+      const archiveFile = rel.startsWith(`${wsPrefix}archive/`);
+      // Only an exact resource claim can make archive bytes public. Adjacent
+      // files and nested archives never inherit authority from a directory.
+      const visibility = archivePathVisibility(options.root, archiveVisibility, rel) ?? (archiveFile ? "private" : workspace.visibility);
       if (profile === "public") {
         if (!rel.startsWith(wsPrefix)) {
           continue;
         }
-        if (rel.includes("/archive/") && visibility !== "public") {
+        if (visibility !== "public") {
           continue;
         }
       }
       const kind: BundleFileKind =
-        rel.includes("/archive/") && rel.endsWith(".zip") ? "archive_cache" : "authored";
+        archiveFile && rel.endsWith(".zip") ? "archive_cache" : "authored";
       const { entry, manifestFile } = entryForFile(
         options.root,
         filePath,

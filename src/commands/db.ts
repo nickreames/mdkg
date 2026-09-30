@@ -53,6 +53,7 @@ import { resolveCapabilitiesIndexPath } from "../graph/capabilities_indexer";
 import { buildCapabilitiesIndex } from "../graph/capabilities_indexer";
 import { isCapabilitiesIndexStale } from "../graph/capabilities_index_cache";
 import { buildIndex } from "../graph/indexer";
+import { readJsonCacheText } from "../graph/json_cache_fingerprint";
 import { isIndexStale } from "../graph/staleness";
 import { buildSkillsIndex, resolveSkillsIndexPath } from "../graph/skills_indexer";
 import { isSkillsIndexStale } from "../graph/skills_index_cache";
@@ -158,13 +159,6 @@ function initPath(root: string, filePath: string): ContainedPathInput {
   return { root, relativePath: path.relative(root, filePath), pathSyntax: "native" };
 }
 
-function fileSize(filePath: string): number | undefined {
-  if (!fs.existsSync(filePath)) {
-    return undefined;
-  }
-  return fs.statSync(filePath).size;
-}
-
 function readRawConfig(root: string): { configPath: string; raw: Record<string, unknown> } {
   const filePath = configPath(root);
   if (!fs.existsSync(filePath)) {
@@ -238,33 +232,24 @@ function writeJsonIfChanged(
   created.push(relative);
 }
 
-function readJsonCache(filePath: string): string | undefined {
-  try {
-    JSON.parse(fs.readFileSync(filePath, "utf8"));
-    return undefined;
-  } catch (err) {
-    return err instanceof Error ? err.message : String(err);
-  }
-}
-
 function jsonCacheCheck(options: {
   root: string;
   name: string;
   filePath: string;
-  stale: boolean;
+  stale: () => boolean;
 }): DbIndexCheck {
-  const exists = fs.existsSync(options.filePath);
+  let exists = true, stale = true;
+  let size: number | undefined;
   const errors: string[] = [];
   const warnings: string[] = [];
-  if (!exists) {
-    errors.push("cache file missing");
-  } else {
-    const readError = readJsonCache(options.filePath);
-    if (readError) {
-      errors.push(`cache is unreadable: ${readError}`);
-    }
+  try {
+    const content = readJsonCacheText(options.root, options.filePath, true);
+    if (content === null) { exists = false; errors.push("cache file missing"); }
+    else { size = Buffer.byteLength(content); JSON.parse(content); stale = options.stale(); }
+  } catch (error) {
+    errors.push(`cache is unreadable: ${error instanceof Error ? error.message : String(error)}`);
   }
-  if (exists && options.stale) {
+  if (exists && errors.length === 0 && stale) {
     warnings.push("cache is stale");
   }
   const ok = errors.length === 0 && warnings.length === 0;
@@ -274,11 +259,11 @@ function jsonCacheCheck(options: {
     level: errors.length > 0 ? "fail" : warnings.length > 0 ? "warn" : "ok",
     path: rel(options.root, options.filePath),
     exists,
-    stale: exists ? options.stale : true,
-    size: fileSize(options.filePath),
-    detail: !exists
+    stale,
+    size,
+    detail: errors.length ? errors.join("; ") : !exists
       ? "cache file missing"
-      : options.stale
+      : stale
         ? "cache is stale"
         : "cache is present and fresh",
     errors,
@@ -368,25 +353,25 @@ function collectDbIndexChecks(root: string, tolerant: boolean): DbIndexCheck[] {
       root,
       name: "global",
       filePath: path.resolve(root, config.index.global_index_path),
-      stale: isIndexStale(root, config),
+      stale: () => isIndexStale(root, config),
     }),
     jsonCacheCheck({
       root,
       name: "skills",
       filePath: resolveSkillsIndexPath(root),
-      stale: isSkillsIndexStale(root, config),
+      stale: () => isSkillsIndexStale(root, config),
     }),
     jsonCacheCheck({
       root,
       name: "capabilities",
       filePath: resolveCapabilitiesIndexPath(root, config),
-      stale: isCapabilitiesIndexStale(root, config),
+      stale: () => isCapabilitiesIndexStale(root, config),
     }),
     jsonCacheCheck({
       root,
       name: "subgraphs",
       filePath: resolveSubgraphsIndexPath(root),
-      stale: isSubgraphsIndexStale(root, config),
+      stale: () => isSubgraphsIndexStale(root, config),
     }),
     sqliteCacheCheck(root, tolerant),
   ];

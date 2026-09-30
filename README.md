@@ -9,7 +9,7 @@ It is built for:
 
 mdkg stays deliberately boring:
 - repo-native under `.mdkg/`
-- TypeScript + Node.js `>=24.15.0`
+- TypeScript + Node.js `>=24.18.0 <25`
 - zero third-party runtime dependencies
 - first-class rebuildable SQLite cache through built-in `node:sqlite`
 - no daemon, hosted index, or vector DB
@@ -22,6 +22,21 @@ behavior; the install command below selects the registry version, not this
 working tree. Check the installed version and the candidate artifact receipt.
 Final macOS/Linux qualification and security acceptance are still required.
 Windows is explicitly unqualified. See the [0.6.0 change notes](CHANGELOG.md).
+
+The candidate uses built-in Node APIs, not an mdkg-owned native addon or
+OS-specific SQLite path. Node 24.18+ within the 24 line is required, including
+`DatabaseSync.deserialize`, `setAuthorizer`, `enableDefensive` and
+`process.availableMemory`. Unsupported runtimes refuse before graph discovery
+or mutation; help and version remain available. Node 24.15 and the tested
+Node 26.0 do not provide the required API set. Higher majors are not implicitly
+supported. SQLite observations use memory proportional to the database image
+and refuse insufficient available memory rather than opening a writable file.
+
+Use a cooperative, access-controlled checkout with one writer per checkout.
+Preservation of restrictive per-file ACL/owner metadata and resistance to
+adversarial ancestor-directory replacement remain **deferred and unresolved**
+for 0.6.0; they are not fixed or accepted findings. These limits are distinct
+from ordinary link/type/custody checks, which remain enforced.
 
 mdkg is still pre-v1 public alpha software. The public package is usable, but graph, cache, bundle, and DAL contracts may continue to change quickly while the project converges on a stable v1 surface.
 
@@ -389,7 +404,9 @@ mdkg event append --kind RUN_COMPLETED --status ok --refs task-1 --notes "manual
 Validation streams contained regular event-log files; it never rotates, deletes,
 rewrites, or silently skips oversized history. Missing logs remain valid. Links,
 special files, and exceeded limits produce validation errors, including through
-MCP and Git materialization. A rejected/incomplete validation is not clearance.
+the MCP validation tool. After caller-owned native Git operations, run graph
+validation separately; Git inspection does not validate the graph. A rejected
+or incomplete validation is not clearance.
 
 Optional `events.validation` fields in `.mdkg/config.json` override these defaults:
 
@@ -450,10 +467,14 @@ blanket-select one side of `.mdkg`. Reconciliation does not stage, merge or fetc
 Selection, indexes, locks, journals and live DB delivery state stay checkout-local.
 Goal claims still change durable lifecycle and do not provide distributed leases.
 Inspect interrupted graph transactions with `mdkg graph recover <plan-hash>`.
-An orphan requires the requested mode's exact `--lock-evidence` approval bound to
-checkout/OS ownership, journal and current bytes; age/PID alone proves nothing.
-Live, changed, weak or incomplete evidence refuses. Do not delete locks to bypass
-this. Complete published transaction boundaries are supported, not every possible
+Every recovery write requires the requested mode's fresh `--lock-evidence`
+approval and `--confirm-quiescent`, an explicit operator assertion that **all
+checkout writers are stopped**. Inspection validates exact checkout, lock chain,
+journal and file evidence; it does not prove quiescence across hosts, reboots or
+process namespaces. A hash is not authentication, and age/PID absence alone
+grants nothing. Live/ambiguous PIDs, changed, weak or incomplete evidence refuse.
+No-lock terminal repeats stay read-only. Do not delete locks to bypass checks.
+Complete published transaction boundaries are supported, not every possible
 power-loss window. Final native-worktree/platform qualification remains required.
 
 ## LLM-readable onboarding artifacts
@@ -615,7 +636,13 @@ mdkg maintains `.mdkg/index/capabilities.json` as a derived access cache for det
 - core docs
 - design docs
 
-The capability cache is not the full graph and is not source of truth. Normal tasks, epics, bugs, tests, feats, and checkpoints remain in the standard graph index. Markdown remains authoritative; deleting the cache is recoverable with `mdkg index` or by running a capability command when auto-reindex is enabled.
+The capability cache is not the full graph and is not source of truth. Normal
+tasks, epics, bugs, tests, feats, and checkpoints remain in the standard graph
+index. Markdown remains authoritative. Observational capability reads do not
+persist rebuilt projections: they can derive current results in memory without
+repairing missing or stale files. Run `mdkg index` to persist refreshed caches.
+`--no-reindex` can instead return an existing stale legacy cache with a warning,
+or fail if it is missing; v2 discovery derives identity from authored source.
 
 Capability records aggregate enabled registered workspaces and include deterministic source metadata such as `workspace`, `visibility`, `kind`, `id`, `qid`, `path`, headings, refs, source hash, and `indexed_at`. MANIFEST/SPEC and WORK records also expose read-only `linkage` arrays when related work contracts, work orders, and receipts exist, so an orchestrator can discover a capability from reusable surface to invocation evidence without loading the full graph. Workspace `visibility` also feeds mdkg's export safety checks for public/internal packs and public bundles. This is a CLI safety layer, not secret scanning, body redaction, or a replacement for private git hosting.
 
@@ -815,7 +842,7 @@ This release includes:
 - latest-checkpoint resolver + index hint
 - events JSONL validation
 - XML / TOON / Markdown output for node and skill list/search/show
-- agent workflow file types and semantic `mdkg new --id` support
+- agent workflow file types and semantic IDs using the `--id` option on `mdkg new`
 - product-specific skill mirrors for Codex/OpenAI and Claude
 - compact `.mdkg/AGENT_START.md` routing through root `AGENTS.md` / `CLAUDE.md`
 - conservative `mdkg upgrade` with mode-aware init manifests

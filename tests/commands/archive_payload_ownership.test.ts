@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { spawnSync } from "node:child_process";
-import { makeTempDir, writeFile } from "../helpers/fs";
+import { initializeTestGitIndex, makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
 const runtime = process.env.MDKG_TEST_PACKAGE ? path.join(process.env.MDKG_TEST_PACKAGE, "dist") : path.resolve(__dirname, "../..");
@@ -38,7 +38,7 @@ function fixture(t: any) {
   assert.equal(added.status, 0, added.stderr);
   const dir = path.join(root, ".mdkg/archive/archive.a"), sidecar = path.join(dir, "payload.txt.md");
   fields(sidecar, { updated: "2000-01-01" });
-  writeFile(path.join(root, ".git/index"), "index sentinel");
+  initializeTestGitIndex(root);
   writeFile(path.join(root, ".mdkg/state/selected-goal.json"), "{}\n");
   writeFile(path.join(root, ".mdkg/db/runtime/sentinel"), "runtime sentinel");
   return { root, dir, sidecar, raw: path.join(dir, "source/payload.txt"), zip: path.join(dir, "payload.txt.zip") };

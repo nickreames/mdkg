@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const cp = require('node:child_process');
 const assert = require('node:assert/strict');
+const { assertDirectoryChain, within } = require('../../scripts/qualification-output');
 
 const sha256 = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 function inventory(root) {
@@ -29,19 +29,27 @@ function changed(before, after) {
     .filter(file => JSON.stringify(before[file]) !== JSON.stringify(after[file]));
 }
 
-function runCliOptionFixtures({ packageRoot, root, executable = process.execPath }) {
+function runCliOptionFixtures({ packageRoot, root, ownedRoot, commands }) {
+  assert(commands && typeof commands.node === 'function' && typeof commands.git === 'function' &&
+    typeof commands.assertOwned === 'function' && commands.environment &&
+    typeof ownedRoot === 'string' && path.isAbsolute(ownedRoot),
+  'CLI option qualification requires an explicit owned smoke controller');
+  assert(commands.assertOwned() === ownedRoot && commands.fixtureRoot === ownedRoot,
+    'CLI option qualification controller does not own the supplied fixture root');
   assert(path.isAbsolute(root) && path.isAbsolute(packageRoot));
+  assert(root !== ownedRoot && within(ownedRoot, root) && packageRoot !== ownedRoot && within(ownedRoot, packageRoot),
+    'CLI option fixture path escapes its accepted ownership root');
+  assertDirectoryChain(ownedRoot);
+  assertDirectoryChain(path.dirname(root));
+  assertDirectoryChain(packageRoot);
   fs.mkdirSync(root, { recursive: false });
   const graph = path.join(root, 'graph'); fs.mkdirSync(graph);
   const cli = path.join(packageRoot, 'dist/cli.js');
   const contract = JSON.parse(fs.readFileSync(path.join(packageRoot, 'dist/command-contract.json'), 'utf8'));
   assert(Array.isArray(contract.option_admission), 'installed package lacks concrete option contract');
-  const safeEnv = { ...process.env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: '/dev/null',
-    GIT_TERMINAL_PROMPT: '0', GIT_OPTIONAL_LOCKS: '0' };
+  const safeEnv = commands.environment;
   const invoke = (args, cwd = graph, env = safeEnv) => {
-    const result = cp.spawnSync(executable, [cli, ...args], {
-      cwd, env, encoding: 'utf8', timeout: 20000, maxBuffer: 4 * 1024 * 1024,
-    });
+    const result = commands.node(cli, args, cwd, { env, allowFailure: true, timeout: 20000 });
     assert.equal(result.error, undefined, args.join(' '));
     assert.equal(result.signal, null, args.join(' '));
     return result;
@@ -57,12 +65,12 @@ function runCliOptionFixtures({ packageRoot, root, executable = process.execPath
   success(['index']);
   fs.writeFileSync(path.join(graph, 'preserve-unknown.txt'), 'synthetic user-owned sentinel\n', { flag: 'wx' });
   const git = args => {
-    const result = cp.spawnSync('/usr/bin/git', args, { cwd: graph, env: safeEnv, encoding: 'utf8' });
+    const result = commands.git(args, graph);
     assert.equal(result.status, 0, result.stderr);
   };
   git(['init', '-b', 'main']);
   git(['add', '--', 'preserve-unknown.txt']);
-  git(['-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '-m', 'fixture baseline']);
+  git(['commit', '-m', 'fixture baseline']);
   fs.writeFileSync(path.join(graph, 'preserve-unknown.txt'), 'staged fixture bytes\n');
   git(['add', '--', 'preserve-unknown.txt']);
   fs.writeFileSync(path.join(graph, 'preserve-unknown.txt'), 'unstaged fixture bytes\n');
@@ -70,9 +78,9 @@ function runCliOptionFixtures({ packageRoot, root, executable = process.execPath
   const trapDir = path.join(root, 'traps'); fs.mkdirSync(trapDir);
   const marker = path.join(root, 'unexpected-subprocess');
   for (const name of ['git', 'ssh', 'gh', 'curl']) {
-    fs.writeFileSync(path.join(trapDir, name), `#!${executable}\nrequire('node:fs').appendFileSync(${JSON.stringify(marker)}, ${JSON.stringify(name + '\n')}); process.exit(93);\n`, { mode: 0o755, flag: 'wx' });
+    fs.writeFileSync(path.join(trapDir, name), `#!${process.execPath}\nrequire('node:fs').appendFileSync(${JSON.stringify(marker)}, ${JSON.stringify(name + '\n')}); process.exit(93);\n`, { mode: 0o755, flag: 'wx' });
   }
-  const trappedEnv = { ...safeEnv, PATH: `${trapDir}:${path.dirname(executable)}:/usr/bin:/bin` };
+  const trappedEnv = { ...safeEnv, PATH: [trapDir, path.dirname(process.execPath), safeEnv.PATH || ''].join(path.delimiter) };
   const rejected = [
     ...contract.option_admission.map(item => [...item.command.split(' '), '--unsupported-option']),
     ['index', '--verify', '--json'], ['index', '--json'],
@@ -103,17 +111,6 @@ function runCliOptionFixtures({ packageRoot, root, executable = process.execPath
     ['new', 'work', 'No create', '--validation-policy-ref=policy://example'],
     ...['clone', 'fetch', 'push', 'materialize', 'closeout', 'push-ready'].map(command => ['git', command]),
   ];
-  const before = inventory(root);
-  const failures = [];
-  for (const args of rejected) {
-    const result = invoke(args, graph, trappedEnv);
-    const changes = changed(before, inventory(root));
-    if (result.status !== 1 || changes.length || fs.existsSync(marker)) {
-      failures.push({ args, code: result.status, changes, stderr: result.stderr });
-    }
-  }
-  assert.deepEqual(failures, []);
-
   // The installed module's two public entrypoints must reject before even
   // asking for a cwd. The CLI process loop above also proves full filesystem
   // and executable-trap preservation around those refusals.
@@ -127,9 +124,19 @@ function runCliOptionFixtures({ packageRoot, root, executable = process.execPath
       }
       process.stdout.write(JSON.stringify({checked}));
     })().catch(error=>{console.error(error);process.exitCode=1;});`;
-  const apiResult = cp.spawnSync(executable, ['-e', apiScript], {
-    cwd: graph, env: trappedEnv, encoding: 'utf8', timeout: 20000, maxBuffer: 4 * 1024 * 1024,
-  });
+  const apiPath = path.join(root, 'installed-entrypoint-refusals.cjs');
+  fs.writeFileSync(apiPath, apiScript, { flag: 'wx', mode: 0o600 });
+  const before = inventory(root);
+  const failures = [];
+  for (const args of rejected) {
+    const result = invoke(args, graph, trappedEnv);
+    const changes = changed(before, inventory(root));
+    if (result.status !== 1 || changes.length || fs.existsSync(marker)) {
+      failures.push({ args, code: result.status, changes, stderr: result.stderr });
+    }
+  }
+  assert.deepEqual(failures, []);
+  const apiResult = commands.node(apiPath, [], graph, { env: trappedEnv, allowFailure: true, timeout: 20000 });
   assert.equal(apiResult.status, 0, apiResult.stderr);
   const entrypointRefusals = JSON.parse(apiResult.stdout).checked;
   assert.equal(entrypointRefusals, rejected.length * 2);
@@ -195,6 +202,8 @@ function runCliOptionFixtures({ packageRoot, root, executable = process.execPath
     inventory_entry_count: Object.keys(before).length,
     inventory_sha256: sha256(JSON.stringify(before)),
     subprocess_traps: ['git', 'ssh', 'gh', 'curl'], subprocess_calls: 0,
+    subprocess_evidence_scope: 'zero hits on the four PATH executable traps; not universal process instrumentation',
+    inventory_scope: 'complete option-qualification subtree including its graph and native Git metadata',
     positive_controls: positives, git_index_preserved: true, unknown_file_preserved: true,
     final_artifact_qualification: false };
 }

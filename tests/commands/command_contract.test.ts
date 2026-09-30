@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { test } from "node:test";
+import { makeTempDir } from "../helpers/fs";
 
 const repoRoot = path.resolve(__dirname, "..", "..", "..");
 const contractPath = path.join(repoRoot, "dist", "command-contract.json");
@@ -119,6 +120,67 @@ test("mutating commands carry safety metadata and read-only commands stay read-o
   assert.ok(dbQueue.side_effects.includes("emit-read-only-adapter-contract"));
 });
 
+test("safety classification is explicit and reflects conditional writes and configured destinations", () => {
+  const { defaultSafety } = require(path.join(repoRoot, "scripts/generate-command-contract.js"));
+  assert.throws(() => defaultSafety("new-unreviewed-command", ""), /explicit reviewed safety classification/);
+  const contract = readContract();
+  for (const key of ["pack", "validate", "doctor", "work order", "graph", "graph clone", "graph fork", "graph import-template", "fix"]) {
+    const record = commandByKey(contract, key);
+    assert.notEqual(record.danger_level, "read-only", key);
+    assert.ok(record.write_paths.length, key);
+  }
+  for (const key of ["new", "task start", "event append", "loop fork"]) {
+    assert.ok(commandByKey(contract, key).write_paths.includes(".mdkg/work/events/events.jsonl"), key);
+  }
+  assert.ok(commandByKey(contract, "goal").write_paths.includes(".mdkg/state/selected-goal.json"));
+  assert.ok(commandByKey(contract, "db").write_paths.includes(".mdkg/config.json"));
+  for (const key of ["index", "db index", "doctor", "handoff"]) {
+    assert.ok(commandByKey(contract, key).write_paths.includes("<configured-index-cache-paths>"), key);
+  }
+  assert.equal(commandByKey(contract, "subgraph materialize").dry_run.supported, false);
+  assert.equal(commandByKey(contract, "format").dry_run.requires, "--headings");
+  assert.equal(commandByKey(contract, "bundle import").danger_level, "read-only");
+  assert.deepEqual(commandByKey(contract, "pack").dry_run.write_paths, []);
+});
+
+test("real pack/report/cache effects and observational controls match command safety metadata", () => {
+  const root = makeTempDir("mdkg-contract-effects-");
+  const cli = path.join(repoRoot, "dist/cli.js");
+  const run = (args: string[], allowed = [0]) => {
+    const result = spawnSync(process.execPath, [cli, ...args], { cwd: root, encoding: "utf8" });
+    assert.ok(allowed.includes(result.status!), `${args.join(" ")}: ${result.stderr}\n${result.stdout}`);
+    return result.stdout;
+  };
+  const inventory = () => {
+    const files: Record<string, string> = {};
+    const walk = (dir: string) => { for (const item of fs.readdirSync(dir, { withFileTypes: true })) {
+      const file = path.join(dir, item.name);
+      if (item.isDirectory()) walk(file); else files[path.relative(root, file)] = fs.readFileSync(file).toString("base64");
+    } };
+    walk(root); return files;
+  };
+  run(["init", "--graph-only"]);
+  run(["new", "task", "Effect fixture", "--json"]);
+  const before = inventory();
+  run(["pack", "task-1", "--dry-run", "--stats-out", "ignored.json"]);
+  run(["validate", "--json"]);
+  run(["show", "task-1", "--json"]);
+  assert.deepEqual(inventory(), before);
+  run(["pack", "task-1", "--out", "review/pack.md", "--stats-out", "review/stats.json"]);
+  run(["validate", "--out", "review/validation.txt", "--json-out", "review/validation.json", "--json"]);
+  for (const name of ["pack.md", "stats.json", "validation.txt", "validation.json"]) assert.ok(fs.existsSync(path.join(root, "review", name)));
+  run(["pack", "task-1"]);
+  assert.ok(fs.readdirSync(path.join(root, ".mdkg/pack")).length > 0);
+  // Owned fixture only: a cold cache exposes doctor's default refresh effect.
+  fs.rmSync(path.join(root, ".mdkg/index"), { recursive: true });
+  const cold = inventory();
+  run(["doctor", "--strict", "--json"], [2]);
+  assert.deepEqual(inventory(), cold);
+  run(["doctor", "--json"], [0, 2]);
+  assert.ok(fs.existsSync(path.join(root, ".mdkg/index/global.json")));
+  assert.ok(fs.existsSync(path.join(root, ".mdkg/index/capabilities.json")));
+});
+
 test("loop command contract records are backed by typed descriptors", () => {
   const contract = readContract();
   const loopNext = commandByKey(contract, "loop next");
@@ -146,7 +208,7 @@ test("loop command contract records are backed by typed descriptors", () => {
   assert.ok(loopFork.flags.some((flag) => flag.name === "--no-reindex"));
   assert.ok(loopFork.side_effects.includes("reserve-sqlite-node-ids-when-configured"));
   assert.ok(loopFork.side_effects.includes("append-loop-fork-event-when-event-logging-is-enabled"));
-  assert.ok(loopFork.write_paths.includes(".mdkg/events/*.jsonl"));
+  assert.ok(loopFork.write_paths.includes(".mdkg/work/events/events.jsonl"));
   assert.deepEqual(loopFork.dry_run.side_effects, ["none"]);
   assert.deepEqual(loopFork.dry_run.write_paths, []);
   assert.equal(loopFork.dry_run.reserves_ids, false);

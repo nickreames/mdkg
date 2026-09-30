@@ -99,6 +99,26 @@ test("event enable and append create valid JSONL that validate accepts", () => {
   assert.doesNotThrow(() => runValidateCommand({ root, quiet: true }));
 });
 
+test("manual and automatic events refuse hard-linked logs without changing their peer", () => {
+  const root = createTaskRepo("mdkg-event-hardlink-");
+  const peerRoot = makeTempDir("mdkg-event-peer-");
+  try {
+    captureOutput(() => runEventEnableCommand({ root }));
+    const log = path.join(root, ".mdkg/work/events/events.jsonl");
+    const peer = path.join(peerRoot, "peer.jsonl");
+    const before = fs.readFileSync(log);
+    fs.linkSync(log, peer);
+    for (const invoke of [
+      () => runEventAppendCommand({ root, kind: "RUN_COMPLETED", status: "ok", refs: "task-1" }),
+      () => runTaskStartCommand({ root, id: "task-1" }),
+    ]) {
+      assert.throws(() => captureOutput(invoke), /single-link/);
+      assert.deepEqual(fs.readFileSync(log), before);
+      assert.deepEqual(fs.readFileSync(peer), before);
+    }
+  } finally { fs.rmSync(root, { recursive: true }); fs.rmSync(peerRoot, { recursive: true }); }
+});
+
 test("event enable reports already-present logs", () => {
   const root = createTaskRepo("mdkg-event-enable-existing-");
   captureOutput(() => runEventEnableCommand({ root }));

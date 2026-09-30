@@ -4,6 +4,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { validateGoalPursuitContract } = require("./goal-pursuit-contract.js");
 const { verifyMatrix } = require("./verify-security-remediation.js");
+const { releaseScope } = require("./release-scope");
+const scope = releaseScope(undefined, "package");
 
 const root = path.resolve(__dirname, "..");
 
@@ -32,6 +34,9 @@ function requirePackageVersions() {
   const pkg = JSON.parse(requireFile("package.json"));
   const lock = JSON.parse(requireFile("package-lock.json"));
   const lockRootVersion = lock.packages && lock.packages[""] && lock.packages[""].version;
+  if (pkg.engines?.node !== ">=24.18.0 <25" || lock.packages?.[""]?.engines?.node !== pkg.engines.node) {
+    fail("Node runtime metadata must agree on the Dec98 contract >=24.18.0 <25");
+  }
   if (pkg.version !== lock.version || pkg.version !== lockRootVersion) {
     fail(
       `package version mismatch: package.json=${pkg.version}, package-lock.json=${lock.version}, package-lock root=${lockRootVersion}`
@@ -114,7 +119,7 @@ function requirePackageVersions() {
     }
   }
   const siteSmokeUtils = requireFile("scripts/mdkg-dev-smoke-utils.js");
-  if (!siteSmokeUtils.includes("assertDependencyTreesReady(repoRoot)")) {
+  if (!siteSmokeUtils.includes('assertDependencyTreesReady(repoRoot, "repository")')) {
     fail("mdkg-dev smoke utilities must preflight all dependency owners before building");
   }
   if (siteSmokeUtils.includes('["ci", "--prefix", "mdkg-dev"') || siteSmokeUtils.includes("ensureSiteDeps")) {
@@ -411,7 +416,8 @@ function requireCliBuild() {
   if (
     !loopFork ||
     !loopFork.side_effects.includes("reserve-sqlite-node-ids-when-configured") ||
-    !loopFork.write_paths.includes(".mdkg/events/*.jsonl") ||
+    !loopFork.write_paths.includes(".mdkg/work/events/events.jsonl") ||
+    !loopFork.write_paths.includes("<workspace-mdkg>/work/events/events.jsonl") ||
     loopFork.dry_run?.reserves_ids !== false ||
     !Array.isArray(loopFork.dry_run?.write_paths) ||
     loopFork.dry_run.write_paths.length !== 0
@@ -1025,6 +1031,7 @@ function requireInitAssets() {
       fail(`scripts/smoke-command-docs.js is missing ${expected} proof`);
     }
   }
+  if (scope === "repository") {
   const smokeMdkgDev = requireFile("scripts/smoke-mdkg-dev.js");
   for (const expected of ["buildSite", "llms-full.txt", "social-card.svg", "Git-native project memory", "Customize standards without forking the kernel"]) {
     if (!smokeMdkgDev.includes(expected)) {
@@ -1049,6 +1056,7 @@ function requireInitAssets() {
       fail(`scripts/smoke-mdkg-dev-polish-pass2.js is missing ${expected} proof`);
     }
   }
+  }
   const smokeDemoGraph = requireFile("scripts/smoke-demo-graph.js");
   for (const expected of ["demo_agentic_coding", "template_mdkg_dev", "goal next", "subgraph", "read_only"]) {
     if (!smokeDemoGraph.includes(expected)) {
@@ -1066,7 +1074,7 @@ function requireInitAssets() {
     "user-story-audit-and-recommendations",
     "--dry-run",
     "whole_loop_blocked",
-    "SQLite backend",
+    'config.index.backend === "sqlite"',
   ]) {
     if (!smokeLoop.includes(expected)) {
       fail(`scripts/smoke-loop.js is missing ${expected} proof`);
@@ -1078,12 +1086,15 @@ function requireInitAssets() {
     fail("release-readiness workflow does not match its deterministic source");
   }
   for (const expected of [
-    "24.15.0",
+    "24.18.0",
     "24.x",
     "npm run deps:bootstrap",
     "npm run ci:release",
     "npm run ci:full:prepare",
     "npm run ci:full:shard",
+    "full_linux_filesystem:",
+    "needs: [full_prepare, full_smoke, full_linux_filesystem]",
+    "Test487 unqualified",
     "full_release:",
     "if-no-files-found: error",
   ]) {
@@ -1091,6 +1102,7 @@ function requireInitAssets() {
       fail(`release-readiness workflow is missing ${expected}`);
     }
   }
+  if (scope === "repository") {
   requireDir("mdkg-dev");
   requireFile("mdkg-dev/package.json");
   requireFile("mdkg-dev/astro.config.mjs");
@@ -1107,6 +1119,7 @@ function requireInitAssets() {
   const docsReadme = requireFile("docs/README.md");
   if (!docsReadme.includes("repo-owned source") || docsReadme.includes("GitBook")) {
     fail("docs/README.md must describe repo-owned source docs and not GitBook");
+  }
   }
   requireDir("examples/demo-agentic-coding/.mdkg");
   requireDir("examples/template-mdkg-dev/.mdkg");
@@ -1135,4 +1148,4 @@ if (process.exitCode) {
   process.exit(process.exitCode);
 }
 
-console.log("publish readiness ok");
+console.log(`publish readiness ok (scope=${scope}; qualification receipts and separate publication authority still required)`);

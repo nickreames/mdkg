@@ -52,18 +52,18 @@ const calls: Record<string, [string, string, string]> = {
   verifyCannotDowngrade: ["core/project_db_migrations", "verifyProjectDb(root,config,{readOnly:false})", "db"],
   summaryCannotDowngrade: ["core/project_db_queue", "readProjectQueueSnapshotSummary(file,{readOnly:false})", "db"],
 };
-function read(f: any, name: string, requireReadOnly = false) {
+function read(f: any, name: string, requireMemory = false) {
   const [module, call, key] = calls[name];
   const script = `const root=${JSON.stringify(f.root)},file=${JSON.stringify(f[key])};
     const sqlite=require('node:sqlite'),Ctor=sqlite.DatabaseSync;let opens=0;
-    if(${requireReadOnly})sqlite.DatabaseSync=function(file,options){if(options?.readOnly!==true)throw Error('WRITE_CAPABLE_OPEN');opens++;return new Ctor(file,options)};
+    if(${requireMemory}){sqlite.DatabaseSync=function(file,options){if(file!==':memory:'||options?.allowExtension!==false)throw Error('OBSERVATION_OPENED_FILE');opens++;return new Ctor(file,options)};sqlite.DatabaseSync.prototype=Ctor.prototype;}
     const config=require(${JSON.stringify(path.join(runtime, "core/config"))}).loadConfig(root);
     const api=require(${JSON.stringify(path.join(runtime, module))});
-    try{const result=api.${call};const text=JSON.stringify(result);if(text?.includes('WRITE_CAPABLE_OPEN'))throw Error(text);console.log(JSON.stringify({result,opens}));}catch(error){console.error(error.message);process.exitCode=1}`;
+    try{const result=api.${call};const text=JSON.stringify(result);if(text?.includes('OBSERVATION_OPENED_FILE'))throw Error(text);console.log(JSON.stringify({result,opens}));}catch(error){console.error(error.message);process.exitCode=1}`;
   return spawnSync(process.execPath, ["-e", script], { cwd: f.root, encoding: "utf8", timeout: 10000 });
 }
 for (const name of Object.keys(calls)) {
-  test(`${name} observation uses an explicit read-only native connection`, t => {
+  test(`${name} observation uses only an in-memory native connection`, t => {
     const f = fixture(t), before = inventory(f.root), r = read(f, name, true);
     assert.equal(r.status, 0, r.stdout + r.stderr); assert.ok(JSON.parse(r.stdout).opens > 0); assert.deepEqual(inventory(f.root), before);
   });
@@ -89,17 +89,19 @@ test("a journal-mode transition after admission must not let an observation crea
     const sqlite=require('node:sqlite'),Native=sqlite.DatabaseSync,file=${JSON.stringify(f.index)};
     function inventory(){return Object.fromEntries(fs.readdirSync(path.dirname(file)).sort().map(name=>[name,crypto.createHash('sha256').update(fs.readFileSync(path.join(path.dirname(file),name))).digest('hex')]))}
     let before,options;
-    sqlite.DatabaseSync=function(selected,input){if(!/^\\/(?:dev|proc\\/self)\\/fd\\/\\d+$/.test(selected)||input?.readOnly!==true)throw Error('unexpected observation open');
+    sqlite.DatabaseSync=function(selected,input){if(selected!==':memory:'||input?.allowExtension!==false)throw Error('unexpected observation open');
       const writer=new Native(file);writer.exec('PRAGMA journal_mode=WAL');writer.close();
-      before=inventory();options=input;return new Native(selected,input)};
+      before=inventory();options=input;return new Native(selected,input)};sqlite.DatabaseSync.prototype=Native.prototype;
     const config=require(${JSON.stringify(path.join(runtime, "core/config"))}).loadConfig(${JSON.stringify(f.root)});
     let result,error;try{result=require(${JSON.stringify(path.join(runtime, "graph/sqlite_index"))}).readSqliteIndexMeta(${JSON.stringify(f.root)},config)}catch(e){error=String(e)}
     console.log(JSON.stringify({before,after:inventory(),options,result,error}));`;
   const r = spawnSync(process.execPath, ["-e", script], { cwd: f.root, encoding: "utf8", timeout: 10000 });
   assert.equal(r.status, 0, r.stderr);
   const result = JSON.parse(r.stdout);
-  assert.deepEqual(result.options, { readOnly: true });
+  assert.deepEqual(result.options, { allowExtension: false });
   assert.ok(result.before, "interleaving reached the boundary after admission");
+  assert.match(result.error, /WAL|transient/);
+  assert.equal(result.result, undefined);
   assert.deepEqual(result.after, result.before, "the observational connection changed the post-writer baseline");
 });
 
@@ -109,16 +111,16 @@ test("a valid database replacing the pathname during observation is rejected", t
     const sqlite=require('node:sqlite'),Native=sqlite.DatabaseSync,file=${JSON.stringify(f.index)};
     function inventory(){return Object.fromEntries(fs.readdirSync(path.dirname(file)).sort().map(name=>[name,crypto.createHash('sha256').update(fs.readFileSync(path.join(path.dirname(file),name))).digest('hex')]))}
     let atReplacement,options;
-    sqlite.DatabaseSync=function(selected,input){if(!/^\\/(?:dev|proc\\/self)\\/fd\\/\\d+$/.test(selected)||input?.readOnly!==true)throw Error('unexpected observation open');
+    sqlite.DatabaseSync=function(selected,input){if(selected!==':memory:'||input?.allowExtension!==false)throw Error('unexpected observation open');
       const replacement=file+'.replacement';fs.copyFileSync(file,replacement);fs.renameSync(replacement,file);
-      atReplacement=inventory();options=input;return new Native(selected,input)};
+      atReplacement=inventory();options=input;return new Native(selected,input)};sqlite.DatabaseSync.prototype=Native.prototype;
     const config=require(${JSON.stringify(path.join(runtime, "core/config"))}).loadConfig(${JSON.stringify(f.root)});
     let result,error;try{result=require(${JSON.stringify(path.join(runtime, "graph/sqlite_index"))}).readSqliteIndexMeta(${JSON.stringify(f.root)},config)}catch(e){error=String(e)}
     console.log(JSON.stringify({atReplacement,after:inventory(),options,result,error}));`;
   const r = spawnSync(process.execPath, ["-e", script], { cwd: f.root, encoding: "utf8", timeout: 10000 });
   assert.equal(r.status, 0, r.stderr);
   const result = JSON.parse(r.stdout);
-  assert.deepEqual(result.options, { readOnly: true });
+  assert.deepEqual(result.options, { allowExtension: false });
   assert.ok(result.atReplacement, "interleaving replaced the pathname after descriptor admission");
   assert.match(result.error, /SQLite database path was replaced during observation/);
   assert.equal(result.result, undefined);

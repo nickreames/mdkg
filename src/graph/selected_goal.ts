@@ -2,6 +2,7 @@ import { atomicReplaceContainedFile, containedPathExists, readContainedFile } fr
 import { identityRef, parseIdentityRef } from "./identity";
 import { identityMatches } from "./identity_refs";
 import type { Index, IndexNode } from "./indexer";
+import { MAX_CONFIG_BYTES } from "../core/config";
 
 export type SelectedGoalState = {
   qid: string;
@@ -16,7 +17,7 @@ export const SELECTED_GOAL_PATH = ".mdkg/state/selected-goal.json";
 export function readLocalGoalSelection(root: string): { state?: SelectedGoalState; warning?: string } {
   try {
     if (!containedPathExists({ root, relativePath: SELECTED_GOAL_PATH })) return {};
-    const parsed = JSON.parse(readContainedFile({ root, relativePath: SELECTED_GOAL_PATH }));
+    const parsed = JSON.parse(readContainedFile({ root, relativePath: SELECTED_GOAL_PATH, maxBytes: MAX_CONFIG_BYTES }));
     if (!parsed || typeof parsed !== "object" ||
       !["qid", "id", "ws", "selected_at"].every((key) => typeof parsed[key] === "string") ||
       (parsed.stable_ref !== undefined && (typeof parsed.stable_ref !== "string" || !parseIdentityRef(parsed.stable_ref)))) {

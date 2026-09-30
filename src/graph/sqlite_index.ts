@@ -17,7 +17,8 @@ import { readSubgraphBundleBytes } from "./subgraph_bundle";
 import { assertCompatibleWriter } from "../util/writer_admission";
 import { numericAlias, numericSuccessor } from "../util/id";
 import { UsageError } from "../util/errors";
-import { withObservedSqlitePath } from "../core/sqlite_observation";
+import { withObservedSqliteDatabase } from "../core/sqlite_observation";
+import { assertNoGitMetadataDestinations } from "../util/git_metadata";
 
 type DatabaseSyncType = {
   exec(sql: string): void;
@@ -218,20 +219,22 @@ export function sqliteSourceFingerprint(options: {
 }
 
 export function readSqliteIndexMeta(root: string, config: Config): Record<string, string> {
-  const DatabaseSync = loadDatabaseCtor();
-  return withObservedSqlitePath(root, config.index.sqlite_path, (descriptorPath) => {
-      const db = new DatabaseSync(descriptorPath, { readOnly: true });
-      try {
-        const rows = db.prepare("SELECT key, value FROM meta").all();
-        const meta: Record<string, string> = {};
-        for (const row of rows) {
-          meta[String(row.key)] = String(row.value);
-        }
-        return meta;
-      } finally {
-        db.close();
-      }
-    });
+  return withObservedSqliteDatabase(root, config.index.sqlite_path, (db) => {
+    const rows = db.prepare("SELECT key, value FROM meta").all();
+    const meta: Record<string, string> = {};
+    for (const row of rows) {
+      meta[String(row.key)] = String(row.value);
+    }
+    return meta;
+  });
+}
+
+export function preflightSqliteIndexOutputs(root: string, config: Config, extraPaths: string[] = []): void {
+  const paths = [config.index.sqlite_path, ...extraPaths].flatMap(file => [file, ...["-wal", "-shm", "-journal"].map(suffix => file + suffix)]);
+  assertNoGitMetadataDestinations(root, paths);
+  for (const relativePath of paths) withContainedPathSink(
+    { root, relativePath, operation: "replace", createParents: false }, () => undefined
+  );
 }
 
 export function writeSqliteIndex(options: {
@@ -247,6 +250,7 @@ export function writeSqliteIndex(options: {
   const sqliteRelativePath = options.config.index.sqlite_path;
   const sqlitePath = resolveSqlitePath(options.root, options.config);
   const tempRelativePath = sqliteTempRelativePath(sqliteRelativePath);
+  preflightSqliteIndexOutputs(options.root, options.config, [tempRelativePath]);
   withContainedPathSink(
     { root: options.root, relativePath: sqliteRelativePath, operation: "replace", createParents: true },
     () => undefined
@@ -367,6 +371,7 @@ export function writeSqliteIndex(options: {
         }
       }
     );
+    preflightSqliteIndexOutputs(options.root, options.config, [tempRelativePath]);
     withContainedPathSink(
       { root: options.root, relativePath: sqliteRelativePath, operation: "replace", createParents: true },
       ({ absolutePath: targetPath }) =>
@@ -409,11 +414,7 @@ export function planNumericId(options: {
 }): string {
   const fallback = allocationCandidate(undefined, options);
   if (!isSqliteBackend(options.config) || !containedPathExists({ root: options.root, relativePath: options.config.index.sqlite_path })) return fallback;
-  const DatabaseSync = loadDatabaseCtor();
-  return withObservedSqlitePath(options.root, options.config.index.sqlite_path, (descriptorPath) => {
-    const db = new DatabaseSync(descriptorPath, { readOnly: true });
-    try { return allocationCandidate(db, options); } finally { db.close(); }
-  });
+  return withObservedSqliteDatabase(options.root, options.config.index.sqlite_path, db => allocationCandidate(db, options));
 }
 
 // All authored content is checked before this single reservation boundary.
@@ -421,6 +422,7 @@ export function planNumericId(options: {
 // different alias. BigInt is used only for the bounded exhaustion sentinel.
 export function reservePlannedNumericIds(options: { root: string; config: Config; reservations: NumericReservation[] }): void {
   if (!isSqliteBackend(options.config) || options.reservations.length === 0) return;
+  preflightSqliteIndexOutputs(options.root, options.config);
   for (const request of options.reservations) {
     if (!numericAlias(request.id) || request.id !== planNumericId({ ...options, ...request })) {
       throw new UsageError("numeric alias reservation plan is stale or invalid");
@@ -431,6 +433,7 @@ export function reservePlannedNumericIds(options: { root: string; config: Config
   withContainedPathSink(
     { root: options.root, relativePath: options.config.index.sqlite_path, operation: "replace", createParents: true },
     ({ absolutePath }) => {
+      preflightSqliteIndexOutputs(options.root, options.config);
       const db = new DatabaseSync(absolutePath);
       try {
         db.exec("BEGIN IMMEDIATE");
@@ -491,18 +494,12 @@ export function sqliteHealth(root: string, config: Config): {
     }
   }
   try {
-    const DatabaseSync = loadDatabaseCtor();
-    withObservedSqlitePath(root, config.index.sqlite_path, (descriptorPath) => {
-        const db = new DatabaseSync(descriptorPath, { readOnly: true });
-        try {
-          const row = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get();
-          if (String(row?.value ?? "") !== String(SQLITE_SCHEMA_VERSION)) {
-            errors.push(`SQLite schema mismatch; run mdkg index`);
-          }
-        } finally {
-          db.close();
-        }
-      });
+    withObservedSqliteDatabase(root, config.index.sqlite_path, (db) => {
+      const row = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get();
+      if (String(row?.value ?? "") !== String(SQLITE_SCHEMA_VERSION)) {
+        errors.push(`SQLite schema mismatch; run mdkg index`);
+      }
+    });
   } catch (err) {
     errors.push(`failed to read SQLite cache: ${err instanceof Error ? err.message : String(err)}`);
   }

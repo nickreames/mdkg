@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Config } from "../core/config";
-import { forEachContainedDirectoryEntry, readContainedFile } from "../core/filesystem_authority";
+import { containedPathExists, forEachContainedDirectoryEntry, readContainedFile } from "../core/filesystem_authority";
 import { FrontmatterValue, parseFrontmatter } from "./frontmatter";
 import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 import { identityHash } from "./identity";
@@ -48,9 +48,10 @@ export type SkillDocCandidate = {
 };
 
 export function listSkillMarkdownFiles(dir: string, owns: (file: string) => boolean = () => true,
-  maxEntries?: number): SkillDocCandidate[] {
+  maxEntries?: number, authorityRoot?: string): SkillDocCandidate[] {
   if (!owns(dir)) return [];
-  if (!fs.existsSync(dir)) {
+  const relativePath = authorityRoot ? path.relative(authorityRoot, dir) || "." : ".";
+  if (authorityRoot && relativePath !== "." ? !containedPathExists({ root: authorityRoot, relativePath, pathSyntax: "native" }) : !fs.existsSync(dir)) {
     return [];
   }
   const files: SkillDocCandidate[] = [];
@@ -79,7 +80,7 @@ export function listSkillMarkdownFiles(dir: string, owns: (file: string) => bool
     }
   };
   if (maxEntries === undefined) fs.readdirSync(dir, { withFileTypes: true }).forEach(visit);
-  else forEachContainedDirectoryEntry({ root: dir, relativePath: "." }, visit);
+  else forEachContainedDirectoryEntry({ root: authorityRoot ?? dir, relativePath, pathSyntax: "native" }, visit);
   files.sort((a, b) => a.slug.localeCompare(b.slug));
   return files;
 }
@@ -203,17 +204,28 @@ export function skillCacheSource(skill: SkillIndexEntry, content: string): Skill
     hash: identityHash(content), has_scripts: skill.has_scripts, has_references: skill.has_references };
 }
 
+export function createSkillDocumentReader(root: string, config: Config): (file: string) => string {
+  let files = 0, bytes = 0;
+  return file => {
+    if (++files > config.index.limits.max_files) throw new Error("skill source inventory exceeds file limit");
+    const content = readContainedFile({ root, relativePath: path.relative(root, file), pathSyntax: "native",
+      maxBytes: Math.min(config.index.limits.max_file_bytes, config.index.limits.max_total_bytes - bytes) });
+    bytes += Buffer.byteLength(content); return content;
+  };
+}
+
 export function currentSkillCacheSources(root: string, config: Config, allWorkspaces = false): SkillCacheSource[] {
   const owner = absoluteWorkspaceDocumentOwner(root, config);
   const aliases = allWorkspaces ? Object.keys(config.workspaces).filter(alias => config.workspaces[alias].enabled).sort() : ["root"];
   const sources: SkillCacheSource[] = [];
+  const readDocument = createSkillDocumentReader(root, config);
   for (const alias of aliases) {
     const workspace = config.workspaces[alias];
     const skillsRoot = allWorkspaces
       ? path.resolve(root, workspaceDocumentRelativePath(workspace.path, workspace.mdkg_dir, "skills")) : resolveSkillsRoot(root, config);
-    for (const candidate of listSkillMarkdownFiles(skillsRoot, file => owner(file) === alias)) {
+    for (const candidate of listSkillMarkdownFiles(skillsRoot, file => owner(file) === alias, config.index.limits.max_files, root)) {
       const relativePath = path.relative(root, candidate.filePath);
-      const content = readContainedFile({ root, relativePath, pathSyntax: "native" });
+      const content = readDocument(candidate.filePath);
       sources.push({ workspace: alias, slug: candidate.slug, path: relativePath.split(path.sep).join("/"), hash: identityHash(content),
         has_scripts: hasDirectory(path.join(path.dirname(candidate.filePath), "scripts")),
         has_references: hasDirectory(path.join(path.dirname(candidate.filePath), "references")) });
@@ -226,7 +238,8 @@ export function buildSkillsIndex(root: string, config: Config,
   options: { maxEntries?: number; readDocument?: (filePath: string) => string } = {}): SkillsIndex {
   const skillsRoot = resolveSkillsRoot(root, config);
   const owner = absoluteWorkspaceDocumentOwner(root, config);
-  const files = listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === "root", options.maxEntries);
+  const files = listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === "root", options.maxEntries ?? config.index.limits.max_files, root);
+  const readDocument = options.readDocument ?? createSkillDocumentReader(root, config);
   const skills: Record<string, SkillIndexEntry> = {};
   const sourceInputs: SkillCacheSource[] = [];
 
@@ -235,8 +248,7 @@ export function buildSkillsIndex(root: string, config: Config,
     if (skills[slug]) {
       throw new Error(`${filePath}: duplicate skill slug ${slug}`);
     }
-    const content = options.readDocument ? options.readDocument(filePath)
-      : readContainedFile({ root, relativePath: path.relative(root, filePath), pathSyntax: "native" });
+    const content = readDocument(filePath);
     skills[slug] = buildSkillIndexEntryForWorkspace(root, "root", slug, filePath, () => content);
     sourceInputs.push(skillCacheSource(skills[slug], content));
   }

@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import { spawnSync } from "node:child_process";
-import { makeTempDir, writeFile } from "../helpers/fs";
+import { initializeTestGitIndex, makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -37,13 +37,13 @@ function fixture(backend: string, v2: boolean) {
   const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
   config.index.backend = backend; fs.writeFileSync(configPath, JSON.stringify(config));
   writeFile(path.join(root, ".mdkg/core/core.md"), "# Core\n");
-  writeFile(path.join(root, ".git/index"), "staged index sentinel");
+  const gitIndex = initializeTestGitIndex(root);
   writeFile(path.join(root, ".mdkg/state/selected-goal.json"), "{}\n");
   writeFile(path.join(root, ".mdkg/db/runtime/preserved"), "runtime sentinel");
   if (v2) writeFile(path.join(root, ".mdkg/graph.json"), JSON.stringify(createGraphFormat()));
   assert.equal(run(root, ["index"]).status, 0);
   const dir = path.join(root, ".mdkg/templates/loops"); fs.mkdirSync(dir, { recursive: true });
-  return { owner, root, dir };
+  return { owner, root, dir, gitIndex };
 }
 for (const backend of ["json", "sqlite"]) for (const v2 of [false, true]) {
   for (const shape of ["file-link", "directory-link", "ancestor-link", "dangling-link", "fifo", "linked-fifo", "directory-seed", "malformed"]) {
@@ -94,7 +94,7 @@ for (const backend of ["json", "sqlite"]) for (const v2 of [false, true]) {
   }
   for (const mode of ["valid", "absent", "legacy-title-only", "no-reindex"]) {
     test(`new loop ${backend} v${v2 ? 2 : 1} preserves ${mode} suggestions`, () => {
-      const { owner, root, dir } = fixture(backend, v2);
+      const { owner, root, dir, gitIndex } = fixture(backend, v2);
       try {
         if (mode === "absent") fs.rmdirSync(dir);
         else {
@@ -108,7 +108,7 @@ for (const backend of ["json", "sqlite"]) for (const v2 of [false, true]) {
         assert.equal(receipt.action, "created");
         assert.equal(fs.existsSync(path.join(root, receipt.node.path)), true);
         assert.deepEqual(receipt.suggested_templates.map((item: { title: string }) => item.title), mode === "absent" ? [] : ["First seed", "Local seed"]);
-        assert.equal(fs.readFileSync(path.join(root, ".git/index"), "utf8"), "staged index sentinel");
+        assert.deepEqual(fs.readFileSync(path.join(root, ".git/index")), gitIndex);
         assert.equal(fs.readFileSync(path.join(root, ".mdkg/db/runtime/preserved"), "utf8"), "runtime sentinel");
       } finally { fs.rmSync(owner, { recursive: true, force: true }); }
     });

@@ -452,14 +452,22 @@ export function appendContainedFile(
   data: WritableData
 ): ContainedPathDescriptor {
   const descriptor = inspectPath(input.root, input.relativePath, "replace", false, input.pathSyntax);
-  const handle = fs.openSync(
-    descriptor.absolutePath,
-    fs.constants.O_WRONLY | fs.constants.O_APPEND | noFollowFlag()
-  );
-  try {
-    if (!fs.fstatSync(handle).isFile()) {
+  const admitAppendTarget = (stat: fs.Stats): void => {
+    if (!stat.isFile()) {
       fail("ERR_CONTAINED_PATH_TYPE", "replace", input.relativePath, "contained append target must be a file");
     }
+    if (stat.nlink !== 1) {
+      fail("ERR_CONTAINED_PATH_LINK", "replace", input.relativePath, "contained append target must be a single-link file");
+    }
+  };
+  admitAppendTarget(fs.lstatSync(descriptor.absolutePath));
+  const nonblock = typeof fs.constants.O_NONBLOCK === "number" ? fs.constants.O_NONBLOCK : 0;
+  const handle = fs.openSync(
+    descriptor.absolutePath,
+    fs.constants.O_WRONLY | fs.constants.O_APPEND | noFollowFlag() | nonblock
+  );
+  try {
+    admitAppendTarget(fs.fstatSync(handle));
     fs.writeFileSync(handle, data, typeof data === "string" ? "utf8" : undefined);
     fs.fsyncSync(handle);
   } finally {

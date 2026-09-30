@@ -2,13 +2,13 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import { Config, WorkspaceConfig } from "../core/config";
-import { readContainedFile } from "../core/filesystem_authority";
 import { workspaceDocumentRelativePath } from "../core/workspace_path";
 import { absoluteWorkspaceDocumentOwner } from "./workspace_ownership";
 import { FrontmatterValue } from "./frontmatter";
 import { identityRef, NodeIdentity } from "./identity";
 import { resolveQid } from "../util/qid";
 import { matchesWorkContractPath } from "./identity_refs";
+import { workflowTarget } from "./workflow_refs";
 import { capabilityCacheFingerprint } from "./json_cache_fingerprint";
 import { Index, IndexNode, buildIndex } from "./indexer";
 import {
@@ -18,6 +18,7 @@ import {
 } from "./agent_file_types";
 import {
   buildSkillIndexEntryForWorkspace,
+  createSkillDocumentReader,
   listSkillMarkdownFiles,
   SkillIndexEntry,
 } from "./skills_indexer";
@@ -277,26 +278,30 @@ function resolveWorkSpecs(index: Index, workNode: IndexNode): IndexNode[] {
 }
 
 function resolveWorkOrders(index: Index, workNode: IndexNode): IndexNode[] {
-  const workRefs = nodeRefSet(workNode);
   return sortedNodes(
     Object.values(index.nodes).filter(
-      (node) => node.type === "work_order" && workRefs.has(String(node.attributes.work_id ?? ""))
+      (node) => node.type === "work_order" && workflowTarget(index, node, "work_id", "work") === workNode.qid
     )
   );
 }
 
 function resolveReceiptsForOrders(index: Index, orderNodes: IndexNode[]): IndexNode[] {
-  const orderRefs = new Set<string>();
-  for (const order of orderNodes) {
-    for (const ref of nodeRefSet(order)) {
-      orderRefs.add(ref);
-    }
-  }
+  const orderRefs = new Set(orderNodes.map(order => order.qid));
   return sortedNodes(
     Object.values(index.nodes).filter(
-      (node) => node.type === "receipt" && orderRefs.has(String(node.attributes.work_order_id ?? ""))
+      (node) => node.type === "receipt" && orderRefs.has(workflowTarget(index, node, "work_order_id", "work_order") ?? "")
     )
   );
+}
+
+// Cached linkage is derived evidence, never association authority. Even an
+// explicitly stale cache must resolve associations in the authored workspace.
+export function bindCapabilityLinkage(index: Index, record: CapabilityRecord): CapabilityRecord {
+  const { linkage: _old, ...projected } = projectCapabilityRecord(record);
+  const node = index.nodes[record.qid];
+  if (!node || node.id !== record.id || node.ws !== record.workspace || node.path !== record.path ||
+      (record.kind === "work" ? node.type !== "work" : record.kind === "spec" ? !isManifestSemanticType(node.type) : true)) return projected;
+  return { ...projected, linkage: buildCapabilityLinkage(index, node, record.kind) };
 }
 
 function buildCapabilityLinkage(index: Index, node: IndexNode, kind: CapabilityKind): CapabilityRecord["linkage"] | undefined {
@@ -462,14 +467,15 @@ function buildWorkspaceSkillCapabilities(
 ): CapabilityRecord[] {
   const records: CapabilityRecord[] = [];
   const owner = absoluteWorkspaceDocumentOwner(root, config);
+  const readSkillDocument = createSkillDocumentReader(root, config);
   for (const alias of Object.keys(config.workspaces).sort()) {
     const workspace = config.workspaces[alias];
     if (!workspace.enabled) {
       continue;
     }
     const skillsRoot = workspaceSkillsRoot(root, workspace);
-    for (const candidate of listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === alias)) {
-      const content = readContainedFile({ root, relativePath: path.relative(root, candidate.filePath), pathSyntax: "native" });
+    for (const candidate of listSkillMarkdownFiles(skillsRoot, (file) => owner(file) === alias, config.index.limits.max_files, root)) {
+      const content = readSkillDocument(candidate.filePath);
       const skill = buildSkillIndexEntryForWorkspace(
         root,
         alias,

@@ -2,7 +2,7 @@
 name: pursue-mdkg-goal
 description: Pursue an explicit mdkg goal QID through owned scoped work, durable evidence, evaluation, and supported local-only closure while treating selected state as a hint.
 tags: [stage:execute, writer:orchestrator, mdkg, goal, recursive]
-version: 0.3.0
+version: 0.3.1
 authors: [mdkg]
 links: [.mdkg/README.md]
 ---
@@ -106,6 +106,9 @@ separate approval.
    - Do not expand into unrelated urgent work or opportunistic skill edits.
 6. Run the required technical checks yourself.
    - Goal `required_checks` are report-only guidance; mdkg does not execute them.
+   - Use `verify-close-and-checkpoint` for risk-based test selection. Do not
+     repeat the full suite after every edit; preserve explicit acceptance gates
+     and require full checks at pre-merge/pre-publish readiness boundaries.
    - Record concise pass/fail evidence on the owned work node.
 7. Handle blockers without abandoning independent scope.
    - Record the affected lane's blocker and failed evidence.

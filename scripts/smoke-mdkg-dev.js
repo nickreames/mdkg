@@ -467,7 +467,7 @@ function main() {
     {
       label: "README",
       source: readme,
-      expected: ["Node.js `>=24.15.0`", "mdkg init --agent", "context_refs", "evidence_refs", "mdkg handoff create", "mdkg db queue contract --json"],
+      expected: ["Node.js `>=24.18.0 <25`", "mdkg init --agent", "context_refs", "evidence_refs", "mdkg handoff create", "mdkg db queue contract --json"],
     },
     {
       label: "docs README",
@@ -477,7 +477,7 @@ function main() {
     {
       label: "Starlight install docs",
       source: docsInstall,
-      expected: ["Node.js `>=24.15.0`", "npm install -g mdkg", "mdkg init --agent"],
+      expected: ["Node.js `>=24.18.0 <25`", "npm install -g mdkg", "mdkg init --agent"],
     },
     {
       label: "Starlight quickstart docs",
@@ -497,7 +497,7 @@ function main() {
     {
       label: "quickstart page",
       source: quickstart,
-      expected: ["Node 24.15.0 or newer", "GOAL_ID", "WORK_ID", "TASK_ID", "mdkg handoff create WORK_ID"],
+      expected: ["Node 24.18+ within the Node 24 line", "GOAL_ID", "WORK_ID", "TASK_ID", "mdkg handoff create WORK_ID"],
     },
     {
       label: "homepage",

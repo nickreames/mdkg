@@ -5,9 +5,16 @@ description: Install mdkg and initialize a git-native project memory graph.
 
 ## Requirements
 
-- Node.js `>=24.15.0`
+- Node.js `>=24.18.0 <25` for the unpublished 0.6.0 candidate
 - npm for the primary global install path
 - A Git repository when you want reviewable project memory
+
+The candidate requires built-in SQLite `deserialize`, `setAuthorizer` and
+`enableDefensive`, plus `process.availableMemory`. Other Node majors are not
+implicitly supported. Unsupported runtimes fail before workspace discovery;
+help/version remain available. This is Node-only implementation, not proof of
+every operating system: macOS/Linux final qualification remains required and
+Windows remains unqualified. Published 0.5.2 has its own runtime contract.
 
 Check your runtime:
 

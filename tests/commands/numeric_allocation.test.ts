@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { spawnSync } from "node:child_process";
 import crypto from "node:crypto";
-import { makeTempDir, writeFile } from "../helpers/fs";
+import { initializeTestGitIndex, makeTempDir, writeFile } from "../helpers/fs";
 import { writeRootConfig } from "../helpers/config";
 import { writeDefaultTemplates } from "../helpers/templates";
 
@@ -30,7 +30,7 @@ function fixture(backend = "json", v2 = false) {
   fs.writeFileSync(configPath, JSON.stringify(config));
   writeFile(path.join(root, ".mdkg/core/core.md"), "# Core\n");
   if (v2) writeFile(path.join(root, ".mdkg/graph.json"), JSON.stringify({ ...createGraphFormat(), graph_id: graphId }));
-  writeFile(path.join(root, ".git/index"), "untouched staged bytes");
+  initializeTestGitIndex(root);
   return root;
 }
 function authored(root: string): Record<string, string> {
@@ -221,9 +221,7 @@ test("Git-stage unsafe add/add repair refuses without changing the unmerged inde
   const git = (args: string[]) => spawnSync("git", ["-c", "user.name=mdkg fixture", "-c", "user.email=fixture@example.invalid", ...args], { cwd: root, encoding: "utf8", timeout: 5000 });
   const ok = (args: string[]) => { const result = git(args); assert.equal(result.status, 0, result.stderr); return result.stdout.trim(); };
   try {
-    // Replace only the synthetic staging sentinel with a real fixture index.
-    fs.unlinkSync(path.join(root, ".git/index"));
-    ok(["init", "-q"]); ok(["add", ".mdkg/config.json"]); ok(["commit", "-qm", "base"]);
+    ok(["add", ".mdkg/config.json"]); ok(["commit", "-qm", "base"]);
     const base = ok(["rev-parse", "HEAD"]), file = ".mdkg/work/collision.md";
     for (const branch of ["left", "right"]) {
       ok(["checkout", "-qb", branch, base]);

@@ -221,6 +221,8 @@ Capability discovery:
 - `mdkg capability show <id-or-qid-or-slug> [--json]`
 - `mdkg capability resolve [query] [--requires <capability>] [--fresh-only] [--json]`
 - capability records are deterministic cache projections from Markdown
+- capability reads derive projections in memory without persistent repair;
+  `mdkg index` explicitly refreshes the generated cache files
 - records include source hash, headings, refs, and `indexed_at`
 - MANIFEST/SPEC and WORK capability records include read-only `linkage` arrays for related manifests, work contracts, work orders, and receipts when those graph mirrors exist
 - normal task, epic, feat, bug, test, spike, and checkpoint nodes are intentionally excluded
@@ -262,7 +264,11 @@ Graph snapshot bundles:
 - `mdkg bundle list [--json]`
 - default output is `.mdkg/bundles/<profile>/<workspace-or-all>.mdkg.zip`
 - private bundles are explicit local graph transport artifacts
-- repos that track archive caches or bundles should run `mdkg archive compress --all`, `mdkg archive verify --json`, `mdkg bundle create --profile private`, and `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip` before commit
+- when archive/bundle regeneration is explicitly within the approved commit
+  scope, run `mdkg archive compress --all`, `mdkg archive verify --json`,
+  `mdkg bundle create --profile private`, and
+  `mdkg bundle verify .mdkg/bundles/private/all.mdkg.zip`; otherwise preserve
+  existing artifacts and report freshness separately
 - public bundles include only public workspace content and public archive sidecars
 - public bundle creation fails when public records reference private graph, archive, or subgraph records
 
@@ -282,7 +288,7 @@ Graph clone, fork, and template import:
 - v2 templates require a v2 target; template import allocates target-owned identities
 - explicit `graph migrate` adopts v2 with reviewed graph/origin UUIDs, local ancestry, compatible-writer fencing and an exact plan hash; reads/indexing never migrate
 - `graph reconcile` handles reviewed v2 identity/alias integration; `fix ids` is legacy-only and refuses v2 rather than changing immutable identity
-- `graph recover <plan-hash>` inspects privately journaled transactions; explicit resume/rollback refuses changed files and requires mode-specific `--lock-evidence` for a proven orphan
+- `graph recover <plan-hash>` inspects privately journaled transactions; every recovery write requires fresh mode-specific `--lock-evidence` and `--confirm-quiescent` asserting all checkout writers stopped; live/ambiguous PIDs and changed/incomplete evidence refuse; no-lock terminal repeats remain read-only
 - use `mdkg graph migrate --help`, `mdkg graph reconcile --help` and `mdkg graph recover --help` for current flags; no command stages or merges Git history
 - `--select-goal` requires `--start-goal`; on apply it activates the imported start goal, pauses competing active root goals, validates, then writes selected-goal state
 - importing active template goals without `--select-goal` fails before writing when it would create multiple active root goals
@@ -363,8 +369,10 @@ Goal nodes:
 - `mdkg goal evaluate` is report-only and never runs commands from `required_checks`
 - skill improvements discovered during normal goal execution should be recorded as candidates or proposals unless the active node is skill-maintenance
 
-Discovery/show export flags:
-- `--json`
-- `--xml`
-- `--toon`
-- `--md`
+Structured formats are command-specific, not global output flags:
+- `show`, `list`, `search`, `skill list`, `skill search`, and `skill show`
+  support mutually exclusive `--json`, `--xml`, `--toon`, and `--md` exports.
+- Other commands with a documented `--json` option, including capability,
+  manifest, goal, status, and DB operations, are JSON-only structured surfaces.
+- `pack` selects content with `--format md|json|toon|xml`, not discovery flags.
+- `index` has no structured-output flag; use focused help for exact options.
