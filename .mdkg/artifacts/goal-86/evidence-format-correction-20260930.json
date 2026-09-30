@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "local-evidence-formatting-correction",
+  "parent_commit": "6355a7815f4f24104c9c807834a457177f4fbfd4",
+  "recorded_at": "2026-09-30T20:51:47.335Z",
+  "outcome": "LOCAL_READY_NOT_PUBLISHED",
+  "issue": "The original local evidence commit6355a781 contains two added blank lines at EOF reported by its staged diff checker (exit2). This follow-up removes those lines and updates only the evidence-manifest byte hash in the seal; history is not rewritten.",
+  "original_allowlist_scope": "The235-path allowlist binds original6355a781 staging bytes. Resolve its original input hashes against that commit; the following exact paths record subsequent format-only differences.",
+  "paths": [
+    {
+      "path": ".mdkg/artifacts/goal-86/closeout-commit-allowlist-20260930.json",
+      "before_sha256": "da5830f69d541de001cea345ccd3f321bd30c2c0631d27733395a9136befd7e5",
+      "after_sha256": "bf688e58ba389ba30320381091c6aba5d7ebaa142fe74f6e3dec0f02da21b136"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.qualification-inputs.json",
+      "before_sha256": "96090997ad2696dfefdf9cfb6b48c68ff98fdf2e422e94ff81840c7f94eb7ee7",
+      "after_sha256": "7d122cea072f0bdf1834692e12a2804fa7b742292f797a5012dace8d16b580b0"
+    },
+    {
+      "path": ".mdkg/artifacts/goal-86/candidate-seal-20260930.json",
+      "before_sha256": "35833915e1e2a2da5962e5d9b4efab01e3cfc15bdcb608402b24ca15da0ba6c2",
+      "after_sha256": "0430c815c009cc43163b9b3b4cc35112b24d6afd6944432380882964fbc1c935"
+    }
+  ],
+  "validation": {
+    "json_semantics_unchanged": true,
+    "seal_change": "Only qualification-input manifest file byte hash changes;348 actual harness inputs and237 shipped files remain identical",
+    "candidate_sha256": "b5497c5f5e5f022e19f10c72512cd23d1dfbfa874e79e384112e293df7bff2bc",
+    "package_inputs_sha256": "a3be355158cc34ce65e02d5dcb2fc5b270f768a51925e570983f7570d1e4cbd4",
+    "harness_inputs_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
+    "repacked": false,
+    "full_suite_and_platform_evidence_reused": "Already-complete unchanged-input proof; no behavioral test rerun needed",
+    "required_precommit_checks": [
+      "git diff --cached --check",
+      "git diff --check 6d23981e70bc68798def73c81b9cd5fa7bc9f3df",
+      "exact four-path staging/byte review"
+    ]
+  },
+  "authority": "Reviewed local mdkg evidence commit only. No source/package/harness behavior, runtime state, bundle, selected goal, remote, tag, publication, provider or deployment changes.",
+  "remaining_custody": ".mdkg/index/mdkg.sqlite remains excluded and unstaged; private candidates remain local/ignored."
+}

@@ -1220,7 +1220,7 @@
   },
   "qualification_harness": {
     "path": ".mdkg/artifacts/goal-86/private/candidate-0.6.0-b5497c5f5e5f022e.qualification-inputs.json",
-    "manifest_sha256": "96090997ad2696dfefdf9cfb6b48c68ff98fdf2e422e94ff81840c7f94eb7ee7",
+    "manifest_sha256": "7d122cea072f0bdf1834692e12a2804fa7b742292f797a5012dace8d16b580b0",
     "inventory_sha256": "e4f0504ad3876a94832fd3dc2abe6240bbdbf7e74de94ed6ffc29ec52ab708f7",
     "file_count": 348
   },
