@@ -6,6 +6,7 @@ import {
   containedPathExists,
   ensureContainedDirectory,
   readContainedFile,
+  withContainedPathSink,
 } from "../core/filesystem_authority";
 import {
   buildSkillIndexEntry,
@@ -35,6 +36,7 @@ import { appendAutomaticEvent } from "./event_support";
 import {
   configuredSkillMirrorTargets,
   admitSkillMirrorTargets,
+  preflightPendingSkillMirrors,
   shouldMaintainSkillMirrors,
   syncSkillMirrors,
 } from "./skill_mirror";
@@ -272,7 +274,10 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
   // Registry customization will be copied into the refreshed file. Admit it
   // before creating or replacing any skill; --force is not a containment bypass.
   const content = renderSkillTemplate({ name, description, tags, authors, links });
+  withContainedPathSink({ root, relativePath: path.relative(root, canonicalPath), operation: "replace", pathSyntax: "native" }, () => undefined);
   prepareSkillsRegistry(root, config, { slug, filePath: canonicalPath, content });
+  const maintainMirrors = shouldMaintainSkillMirrors(root, config);
+  if (maintainMirrors) preflightPendingSkillMirrors(root, config, { slug, filePath: canonicalPath, content, withScripts: options.withScripts });
 
   const relativeSkillDir = path.relative(root, skillDir).split(path.sep).join("/");
   ensureContainedDirectory({ root, relativePath: relativeSkillDir });
@@ -285,7 +290,7 @@ function runSkillNewCommandLocked(options: SkillNewCommandOptions): void {
   atomicReplaceContainedFile({ root, relativePath: `${relativeSkillDir}/SKILL.md` }, content);
 
   refreshSkillsRegistry(root, config);
-  if (shouldMaintainSkillMirrors(root, config)) {
+  if (maintainMirrors) {
     syncSkillMirrors({ root, config, createRoots: true, force });
   }
 

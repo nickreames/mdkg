@@ -66,6 +66,63 @@ function qualifySkillRegistryAdmission({ cli, tempRoot, node = process.execPath 
       const before = inventory(f.base), result = run(f.root, [...skillArgs, '--force']);
       assert.equal(result.error, undefined); assert.notEqual(result.status, 0); assert.deepEqual(inventory(f.base), before);
     });
+    check('force refuses a linked pending skill before creating resources or projections', () => {
+      const f = setup(), file = path.join(f.skills, 'admitted-skill/SKILL.md'); fs.mkdirSync(path.dirname(file)); fs.symlinkSync(f.sentinel, file);
+      const before = inventory(f.base), result = run(f.root, [...skillArgs, '--force']);
+      assert.equal(result.error, undefined); assert.notEqual(result.status, 0); assert.match(result.stderr, /symbolic link/);
+      assert.deepEqual(inventory(f.base), before);
+    });
+    for (const operation of ['new', 'force', 'sync']) check(`${operation} refuses an oversized mirror manifest before all effects`, () => {
+      const f = setup();
+      if (operation === 'force') ok(run(f.root, skillArgs));
+      const manifest = path.join(f.root, '.agents/skills/.mdkg-managed.json'); fs.mkdirSync(path.dirname(manifest), { recursive: true });
+      fs.writeFileSync(manifest, JSON.stringify({ managed_slugs: [], padding: 'x'.repeat(8193) }));
+      const before = inventory(f.base), result = run(f.root, operation === 'sync' ? ['skill', 'sync', '--force', '--json'] : [...skillArgs, ...(operation === 'force' ? ['--force'] : [])]);
+      assert.equal(result.error, undefined); assert.equal(result.signal, null); assert.notEqual(result.status, 0, 'oversized mirror manifest accepted');
+      assert.match(result.stderr, /byte limit/); assert.deepEqual(inventory(f.base), before);
+    });
+    check('a boundary-equal regular mirror manifest remains usable', () => {
+      const f = setup(), manifest = path.join(f.root, '.agents/skills/.mdkg-managed.json'); fs.mkdirSync(path.dirname(manifest), { recursive: true });
+      const base = JSON.stringify({ managed_slugs: [], padding: '' });
+      fs.writeFileSync(manifest, JSON.stringify({ managed_slugs: [], padding: 'x'.repeat(8192 - Buffer.byteLength(base)) }));
+      assert.equal(fs.statSync(manifest).size, 8192); ok(run(f.root, skillArgs));
+      assert(JSON.parse(fs.readFileSync(manifest)).managed_slugs.includes('admitted-skill'));
+    });
+    for (const budget of ['file', 'combined', 'count']) check(`pending source ${budget} budget refuses before all effects`, () => {
+      const f = setup(), configPath = path.join(f.root, '.mdkg/config.json'), config = JSON.parse(fs.readFileSync(configPath));
+      const source = name => path.join(f.skills, name, 'SKILL.md');
+      const writeSource = (name, padding) => { const file = source(name); fs.mkdirSync(path.dirname(file)); fs.writeFileSync(file, `---\nname: ${name}\ndescription: synthetic source\n---\n` + padding); };
+      writeSource('existing', budget === 'file' ? 'é'.repeat(8192) : '');
+      if (budget === 'combined') config.index.limits.max_total_bytes = 100;
+      if (budget === 'count') { writeSource('second', ''); config.index.limits.max_files = 2; }
+      fs.writeFileSync(configPath, JSON.stringify(config));
+      const initialized = spawnSync('git', ['init', '-q'], { cwd: f.root, env, encoding: 'utf8', timeout: 3000 });
+      assert.equal(initialized.status, 0, initialized.stderr);
+      const before = inventory(f.base), result = run(f.root, skillArgs);
+      assert.equal(result.error, undefined); assert.equal(result.signal, null); assert.notEqual(result.status, 0);
+      assert.match(result.stderr, /byte limit|file limit|entry limit/);
+      assert.deepEqual(inventory(f.base), before, 'source budget refusal changed skill, registry, index or Git custody');
+    });
+    check('prospective directory and registry entries share the discovery limit', () => {
+      const f = setup(), file = path.join(f.root, '.mdkg/config.json'), c = JSON.parse(fs.readFileSync(file));
+      c.index.limits.max_files = 1; fs.writeFileSync(file, JSON.stringify(c));
+      const before = inventory(f.base), denied = run(f.root, skillArgs);
+      assert.equal(denied.error, undefined); assert.notEqual(denied.status, 0); assert.match(denied.stderr, /file limit|entry(?:\/depth)? limit/);
+      assert.deepEqual(inventory(f.base), before);
+      c.index.limits.max_files = 2; fs.writeFileSync(file, JSON.stringify(c));
+      const resourceBefore = inventory(f.base), resourceDenied = run(f.root, skillArgs);
+      assert.equal(resourceDenied.error, undefined); assert.notEqual(resourceDenied.status, 0);
+      assert.match(resourceDenied.stderr, /resource inventory exceeds entry\/depth limit/);
+      assert.deepEqual(inventory(f.base), resourceBefore);
+      c.index.limits.max_files = 3; fs.writeFileSync(file, JSON.stringify(c));
+      ok(run(f.root, skillArgs)); assert(fs.existsSync(path.join(f.skills, 'admitted-skill/SKILL.md')));
+    });
+    check('force can replace an oversized existing source with bounded content', () => {
+      const f = setup(), file = path.join(f.skills, 'admitted-skill/SKILL.md'); fs.mkdirSync(path.dirname(file));
+      fs.writeFileSync(file, 'invalid superseded source\n' + 'é'.repeat(8192));
+      ok(run(f.root, [...skillArgs, '--force']));
+      assert(fs.statSync(file).size <= 8192); assert.match(fs.readFileSync(f.registry, 'utf8'), /Admitted skill/);
+    });
     for (const custom of [false]) for (const kind of ['missing', 'customized', 'managed', 'hardlinked']) check(`${custom ? 'custom' : 'default'} regular ${kind} registry retains customization`, () => {
       const f = setup(custom), prefix = '# My registry\n\nKeep my project notes.\n', suffix = '\nKeep my footer.\n';
       if (kind === 'customized') fs.writeFileSync(f.registry, prefix);

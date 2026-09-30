@@ -1182,6 +1182,7 @@ function materializeOneAlias(options: {
   subgraph: SubgraphConfig;
   targetRoot: string;
   clean: boolean;
+  maxEntries: number;
 }): Record<string, unknown> {
   const enabled = enabledSources(options.subgraph);
   const errors: string[] = [];
@@ -1189,7 +1190,7 @@ function materializeOneAlias(options: {
   const outputDir = path.join(options.targetRoot, options.alias);
   const outputRelative = relativeToRoot(options.root, outputDir);
   try {
-    assertNoGitMetadataDestinations(options.root, [outputRelative]);
+    assertNoGitMetadataDestinations(options.root, [outputRelative], { recursiveMaxEntries: options.maxEntries });
     withContainedPathSink(
       { root: options.root, relativePath: outputRelative, operation: "replace", createParents: false },
       () => undefined
@@ -1237,20 +1238,36 @@ function materializeOneAlias(options: {
     const transportState = bundleTransportState(parsed.entries, parsed.manifest);
     if (!transportState) throw new UsageError("subgraph transport requires an owning config or validated portable-state contract; this bundle is inspect-only until a fresh safe export is available");
     const skippedPaths: string[] = [];
+    const materializedEntries = new Map<string, Buffer>();
+    // Admit the incoming tree before any extraction or removal. The temporary
+    // tree must fit the same bounded inventory used at replacement and cleanup.
+    const prospective = new Set<string>([".mdkg-materialized.json"]);
+    const children = new Map<string, Set<string>>();
+    for (const [entryName, data] of parsed.entries) {
+      const safeName = safeZipEntryPath(entryName);
+      if (transportState(safeName)) { skippedPaths.push(safeName); continue; }
+      materializedEntries.set(safeName, data);
+      const parts = safeName.split("/");
+      for (let i = 0; i < parts.length; i++) {
+        prospective.add(parts.slice(0, i + 1).join("/"));
+        if (prospective.size > options.maxEntries) throw new UsageError("Git destination tree inventory exceeds entry limit");
+        const parent = parts.slice(0, i).join("/");
+        const names = children.get(parent) ?? new Set<string>();
+        names.add(parts[i].normalize("NFC").toLowerCase()); children.set(parent, names);
+        if (["head", "objects", "config"].every(name => names.has(name))) {
+          throw new UsageError(`incoming materialized tree contains native Git metadata: ${parent || "."}`);
+        }
+      }
+    }
     // A predictable temporary name is not custody. Never clear a pre-existing
     // directory, including when admission fails before any extraction begins.
-    assertNoGitMetadataDestinations(options.root, [tempRelative, outputRelative]);
+    assertNoGitMetadataDestinations(options.root, [tempRelative, outputRelative], { recursiveMaxEntries: options.maxEntries });
     withContainedPathSink(
       { root: options.root, relativePath: tempRelative, operation: "create", createParents: true },
       ({ absolutePath }) => fs.mkdirSync(absolutePath)
     );
     createdTemp = true;
-    for (const [entryName, data] of parsed.entries.entries()) {
-      const safeName = safeZipEntryPath(entryName);
-      if (transportState(safeName)) {
-        skippedPaths.push(safeName);
-        continue;
-      }
+    for (const [safeName, data] of materializedEntries) {
       writeContainedFileExclusive(
         { root: options.root, relativePath: `${tempRelative}/${safeName}` },
         data
@@ -1275,13 +1292,13 @@ function materializeOneAlias(options: {
       `${JSON.stringify(marker, null, 2)}\n`
     );
     if (fs.existsSync(outputDir)) {
-      assertNoGitMetadataDestinations(options.root, [outputRelative]);
+      assertNoGitMetadataDestinations(options.root, [outputRelative], { recursiveMaxEntries: options.maxEntries });
       removeContainedPath({ root: options.root, relativePath: outputRelative, recursive: true, force: true });
     }
     withContainedPathSink(
       { root: options.root, relativePath: outputRelative, operation: "replace", createParents: true },
       ({ absolutePath: safeOutput }) => {
-        assertNoGitMetadataDestinations(options.root, [outputRelative, tempRelative]);
+        assertNoGitMetadataDestinations(options.root, [outputRelative, tempRelative], { recursiveMaxEntries: options.maxEntries });
         return withContainedPathSink(
           { root: options.root, relativePath: tempRelative, operation: "read" },
           ({ absolutePath: safeTemp }) => fs.renameSync(safeTemp, safeOutput)
@@ -1301,7 +1318,7 @@ function materializeOneAlias(options: {
     };
   } catch (err) {
     if (createdTemp) {
-      assertNoGitMetadataDestinations(options.root, [tempRelative]);
+      assertNoGitMetadataDestinations(options.root, [tempRelative], { recursiveMaxEntries: options.maxEntries });
       removeContainedPath({ root: options.root, relativePath: tempRelative, recursive: true, force: true });
     }
     errors.push(err instanceof Error ? err.message : String(err));
@@ -1314,7 +1331,8 @@ export function runSubgraphMaterializeCommand(options: SubgraphMaterializeOption
     const config = loadConfig(options.root);
     const aliases = selectAliases(config, options.alias, options.all);
     const targetRoot = path.resolve(options.root, normalizeContained(options.target, "--target"));
-    assertNoGitMetadataDestinations(options.root, aliases.map(alias => relativeToRoot(options.root, path.join(targetRoot, alias))));
+    assertNoGitMetadataDestinations(options.root, aliases.map(alias => relativeToRoot(options.root, path.join(targetRoot, alias))),
+      { recursiveMaxEntries: config.index.limits.max_files });
     const results = aliases.map((alias) =>
       materializeOneAlias({
         root: options.root,
@@ -1322,6 +1340,7 @@ export function runSubgraphMaterializeCommand(options: SubgraphMaterializeOption
         subgraph: config.subgraphs[alias],
         targetRoot,
         clean: Boolean(options.clean),
+        maxEntries: config.index.limits.max_files,
       })
     );
     if (options.gitignore && results.some((item) => item.ok === true)) {

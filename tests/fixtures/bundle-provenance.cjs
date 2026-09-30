@@ -84,6 +84,10 @@ function qualifyBundleProvenance({ cli, tempRoot, node = process.execPath }) {
       ["encoded-userinfo", "https://%67%38%36secretEncoded@example.invalid/repo?%74oken=g86secretEncodedQuery"],
       ["extra-authority-slashes", "https:///user:g86secretSlashes@example.invalid/repo"],
       ["four-authority-slashes", "https:////user:g86secretSlashes@example.invalid/repo"],
+      ["ssh-authority-backslash", "ssh://user:part@prefix\\g86secretSsh@example.invalid/repo?unknown=g86secretQuery"],
+      ["git-authority-backslash", "git://user\\g86secretGit@example.invalid/repo# g86secretFragment"],
+      ["ftps-authority-backslash", "ftps://user:part%40first\\g86secretFtps@example.invalid/repo"],
+      ["upper-multiple-authority-at", "SSH://user:first@second\\third@g86secretMulti@example.invalid/repo"],
       ["explicit-helper", "g86fixture::g86secretOpaque"],
       ["implicit-helper", "g86fixture://example.invalid/g86secretOpaque"],
       ["malformed-url", "https://g86secretMalformed@[bad/repo"],
@@ -132,7 +136,7 @@ function qualifyBundleProvenance({ cli, tempRoot, node = process.execPath }) {
     fs.mkdirSync(path.dirname(legacy));
     const legacyEntries = entries(safe.file);
     const legacyManifest = JSON.parse(legacyEntries.find(entry => entry.name === "manifest.json").data);
-    legacyManifest.source.repo = "https://g86secretLegacy@example.invalid/repo?key=g86secretLegacyQuery# g86secretLegacyFragment";
+    legacyManifest.source.repo = "ssh://user:prefix@part\\g86secretLegacy@example.invalid/repo?key=g86secretLegacyQuery# g86secretLegacyFragment";
     legacyEntries.find(entry => entry.name === "manifest.json").data = Buffer.from(JSON.stringify(legacyManifest, null, 2) + "\n");
     fs.writeFileSync(legacy, createDeterministicZipFromEntries(legacyEntries));
     const legacyBytes = fs.readFileSync(legacy);
@@ -189,7 +193,7 @@ function qualifyBundleProvenance({ cli, tempRoot, node = process.execPath }) {
       assert.deepEqual(fs.readFileSync(path.join(parent, ".mdkg/subgraphs/safe/manifest.json")),
         entries(safe.file).find(entry => entry.name === "manifest.json").data);
     });
-    const configuredRepo = "https://user:g86secretConfigured@example.invalid/repo?arbitrary=g86secretSuffix";
+    const configuredRepo = "ftps://user:prefix@part\\g86secretConfigured@example.invalid/repo?arbitrary=g86secretSuffix";
     const configuredAdd = ok(mdkg(parent, ["subgraph", "add", "configured", "imports/safe.mdkg.zip",
       "--source-path", "projects/child", "--source-repo", configuredRepo, "--json"]));
     check("configured:added", () => noSecrets(configuredAdd.stdout + configuredAdd.stderr));
@@ -231,7 +235,7 @@ function qualifyBundleProvenance({ cli, tempRoot, node = process.execPath }) {
       assert.equal(JSON.parse(fs.readFileSync(path.join(parent, ".mdkg/config.json"))).subgraphs.configured.source_repo, configuredRepo);
     });
     check("subgraph-sync:shared-producer", () => {
-      git(root, ["config", "remote.origin.url", "https://g86secretSync@example.invalid/repo?token=g86secretSyncQuery"]);
+      git(root, ["config", "remote.origin.url", "git://user:prefix@part\\g86secretSync@example.invalid/repo?token=g86secretSyncQuery"]);
       fs.mkdirSync(path.join(parent, ".mdkg/bundles/private"), { recursive: true });
       fs.copyFileSync(safe.file, path.join(parent, ".mdkg/bundles/private/child.mdkg.zip"));
       ok(mdkg(parent, ["subgraph", "add", "child", ".mdkg/bundles/private/child.mdkg.zip", "--source-path", "projects/child", "--json"]));

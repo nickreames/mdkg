@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Config, defaultCustomizationConfig } from "../core/config";
+import { Config, defaultCustomizationConfig, DEFAULT_INDEX_LIMITS } from "../core/config";
 import {
   atomicReplaceContainedFile,
   containedPathExists,
@@ -10,7 +10,7 @@ import {
   withContainedPathSink,
   withContainedTreeSink,
 } from "../core/filesystem_authority";
-import { buildSkillsIndex, resolveSkillsRoot, SKILL_SLUG_RE, SkillsIndex } from "../graph/skills_indexer";
+import { buildSkillIndexEntryForWorkspace, buildSkillsIndex, resolveSkillsRoot, SKILL_SLUG_RE, SkillsIndex } from "../graph/skills_indexer";
 import { UsageError } from "../util/errors";
 import { assertNoGitMetadataDestinations } from "../util/git_metadata";
 
@@ -88,7 +88,17 @@ export function admitSkillMirrorTargets(root: string, config?: Config): string[]
     }
     for (const name of names) inspect(path.join(relativePath, name), depth + 1);
   }
-  for (const target of targets) inspect(target, 0);
+  let manifestBytes = 0;
+  for (const target of targets) {
+    inspect(target, 0);
+    const relativePath = `${target}/${MANIFEST_FILE}`;
+    if (containedPathExists({ root, relativePath })) {
+      const bytes = readContainedFile({ root, relativePath,
+        maxBytes: Math.min(config?.index.limits.max_file_bytes ?? DEFAULT_INDEX_LIMITS.max_file_bytes,
+          (config?.index.limits.max_total_bytes ?? DEFAULT_INDEX_LIMITS.max_total_bytes) - manifestBytes) }, null);
+      manifestBytes += bytes.length;
+    }
+  }
   return targets;
 }
 
@@ -106,15 +116,18 @@ function resolveMirrorTargets(root: string, config?: Config): MirrorTarget[] {
   });
 }
 
-function readManifest(target: MirrorTarget): Set<string> {
+function readManifest(target: MirrorTarget, config?: Config): Set<string> {
   const relativeManifest = `${target.relativeSkillsRoot}/${MANIFEST_FILE}`;
   if (!containedPathExists({ root: target.boundaryRoot, relativePath: relativeManifest })) {
     return new Set();
   }
+  // Authority/resource refusal must not be mistaken for malformed optional
+  // metadata. Preserve the existing empty-set treatment only for bounded JSON.
+  const raw = readContainedFile({ root: target.boundaryRoot, relativePath: relativeManifest,
+    maxBytes: Math.min(config?.index.limits.max_file_bytes ?? DEFAULT_INDEX_LIMITS.max_file_bytes,
+      config?.index.limits.max_total_bytes ?? DEFAULT_INDEX_LIMITS.max_total_bytes) });
   try {
-    const parsed = JSON.parse(
-      readContainedFile({ root: target.boundaryRoot, relativePath: relativeManifest })
-    ) as MirrorManifest;
+    const parsed = JSON.parse(raw) as MirrorManifest;
     if (!Array.isArray(parsed.managed_slugs)) {
       return new Set();
     }
@@ -169,36 +182,60 @@ function inventoryEntry(root: string, relativePath: string, key: string, entries
   }
 }
 
-function loadCanonicalSources(root: string, config: Config): SkillMirrorSource[] {
+type PendingSkillSource = { slug: string; filePath: string; content: string; withScripts?: boolean };
+
+function loadCanonicalSources(root: string, config: Config, pending?: PendingSkillSource): SkillMirrorSource[] {
   const budget = { bytes: 0, entries: 0 };
   const documents = new Map<string, SkillTree>();
   // Discovery and parsing must consume the same bounded snapshot as projection,
   // rather than parsing an unbounded document before enforcing resource limits.
   containedPathExists({ root, relativePath: path.relative(root, resolveSkillsRoot(root, config)), pathSyntax: "native" });
-  const index = buildSkillsIndex(root, config, {
-    maxEntries: config.index.limits.max_files,
-    readDocument: (filePath) => {
+  const readDocument = (filePath: string) => {
       const entries: SkillTree = new Map();
       const relativePath = path.relative(root, filePath);
-      inventoryEntry(root, relativePath, "SKILL.md", entries, config, budget, 0, true);
+      if (pending && path.resolve(filePath) === path.resolve(pending.filePath)) {
+        const bytes = Buffer.from(pending.content, "utf8");
+        if (++budget.entries > config.index.limits.max_files) throw new UsageError("skill resource inventory exceeds entry/depth limit");
+        if (bytes.length > Math.min(config.index.limits.max_file_bytes, config.index.limits.max_total_bytes - budget.bytes)) throw new UsageError("skill resource exceeds byte limit");
+        budget.bytes += bytes.length; entries.set("SKILL.md", bytes);
+      } else inventoryEntry(root, relativePath, "SKILL.md", entries, config, budget, 0, true);
       documents.set(relativePath, entries);
       return (entries.get("SKILL.md") as Buffer).toString("utf8");
-    },
-  });
+  };
+  const index = buildSkillsIndex(root, config, { maxEntries: config.index.limits.max_files, readDocument });
+  if (pending && !index.skills[pending.slug]) {
+    index.skills[pending.slug] = buildSkillIndexEntryForWorkspace(root, "root", pending.slug, pending.filePath, readDocument);
+  }
   return Object.values(index.skills).sort((a, b) => a.slug.localeCompare(b.slug)).map((entry) => {
     const entries = documents.get(entry.path) as SkillTree;
     for (const name of ALLOWED_ROOT_ENTRIES.slice(1)) {
       const relativePath = path.join(path.dirname(entry.path), name);
       const input = { root, relativePath, pathSyntax: "native" as const };
-      if (!containedPathExists(input)) continue;
+      const required = pending?.slug === entry.slug && (name === "references" || name === "assets" || name === "scripts" && pending.withScripts);
+      if (!containedPathExists(input)) {
+        if (required) {
+          if (++budget.entries > config.index.limits.max_files) throw new UsageError("skill resource inventory exceeds entry/depth limit");
+          entries.set(name, null);
+        }
+        continue;
+      }
       const stat = withContainedPathSink({ ...input, operation: "read" }, ({ absolutePath }) => fs.lstatSync(absolutePath));
       // Historical regular files at resource-directory names are not projected.
       // Links and special files are never silently accepted.
-      if (stat.isFile()) continue;
+      if (stat.isFile()) {
+        if (required) throw new UsageError(`${relativePath}: pending skill resource must be a directory`);
+        continue;
+      }
       inventoryEntry(root, relativePath, name, entries, config, budget, 0);
     }
     return { slug: entry.slug, entries };
   });
+}
+
+// The authoring command will preserve resources and add required empty
+// directories. Admit that exact prospective source before any of those writes.
+export function preflightPendingSkillMirrors(root: string, config: Config, pending: PendingSkillSource): void {
+  loadCanonicalSources(root, config, pending);
 }
 
 function materializeSkillMirror(root: string, source: SkillMirrorSource, destDir: string): void {
@@ -272,7 +309,7 @@ export function syncSkillMirrors(options: SyncSkillMirrorsOptions): SyncSkillMir
     withContainedTreeSink(
       { root: options.root, relativePath: target.relativeSkillsRoot, operation: "replace" },
       () => {
-        const managed = readManifest(target);
+        const managed = readManifest(target, options.config);
 
         for (const source of sources) {
           const destDir = path.join(target.skillsRoot, source.slug);
@@ -320,7 +357,7 @@ export function preflightSkillMirrorTargets(options: PreflightSkillMirrorTargets
     if (!fs.existsSync(target.rootDir) && !fs.existsSync(target.skillsRoot)) {
       continue;
     }
-    const managed = readManifest(target);
+    const managed = readManifest(target, options.config);
     for (const slug of slugs) {
       const destDir = path.join(target.skillsRoot, slug);
       if (fs.existsSync(destDir) && !managed.has(slug)) {
@@ -354,7 +391,7 @@ export function auditSkillMirrors(root: string, config: Config): string[] {
       continue;
     }
 
-    const managed = readManifest(target);
+    const managed = readManifest(target, config);
     if (!fs.existsSync(target.manifestPath)) {
       warnings.push(`${path.relative(root, target.manifestPath)}: mirror manifest missing; run \`mdkg skill sync\``);
     }

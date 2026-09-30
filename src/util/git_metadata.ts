@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { observeGit } from "./git_observation";
 import { UsageError } from "./errors";
-import { readContainedFile } from "../core/filesystem_authority";
+import { forEachContainedDirectoryEntry, readContainedFile } from "../core/filesystem_authority";
 
 const REDIRECTS = ["GIT_DIR", "GIT_COMMON_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE", "GIT_OBJECT_DIRECTORY",
   "GIT_ALTERNATE_OBJECT_DIRECTORIES", "GIT_CEILING_DIRECTORIES", "GIT_DISCOVERY_ACROSS_FILESYSTEM"];
@@ -74,12 +74,33 @@ function alternateNames(raw: string, delimiter: string): string[] {
 }
 
 /** Refuse infrastructure, never invoke Git workflow/authentication helpers. */
-export function assertNoGitMetadataDestinations(root: string, paths: string[], options: { pathSyntax?: "native" } = {}): void {
+export function assertNoGitMetadataDestinations(root: string, paths: string[],
+  options: { pathSyntax?: "native"; recursiveMaxEntries?: number } = {}): void {
   if (!paths.length) return;
   const components = (value: string) => options.pathSyntax === "native" ? value.split(path.sep) : value.split(/[\\/]/);
   for (const relative of paths) {
     if (components(relative).some(part => part.toLowerCase() === ".git")) {
       throw new UsageError(`destination overlaps native Git metadata: ${relative}`);
+    }
+  }
+  // Recursive replacement also owns every descendant it removes. Observe only
+  // the affected trees, bound entries by the caller's existing graph limit, and
+  // never follow a link while looking for nested repositories or bare stores.
+  if (options.recursiveMaxEntries !== undefined) {
+    let entries = 0;
+    const pending = paths.map(relative => path.resolve(root, components(relative).join(path.sep)));
+    const seen = new Set<string>();
+    while (pending.length) {
+      const directory = pending.pop()!;
+      if (seen.has(directory) || !exists(directory) || !fs.lstatSync(directory).isDirectory()) continue;
+      seen.add(directory);
+      if (exists(path.join(directory, ".git")) || ["HEAD", "objects", "config"].every(name => exists(path.join(directory, name)))) {
+        throw new UsageError(`destination overlaps native Git metadata: ${path.relative(root, directory)}`);
+      }
+      forEachContainedDirectoryEntry({ root, relativePath: path.relative(root, directory) || ".", pathSyntax: "native" }, entry => {
+        if (++entries > options.recursiveMaxEntries!) throw new UsageError("Git destination tree inventory exceeds entry limit");
+        if (entry.isDirectory()) pending.push(path.join(directory, entry.name));
+      });
     }
   }
   const observations: Array<{ cwd: string; env: NodeJS.ProcessEnv }> = [];
@@ -89,7 +110,9 @@ export function assertNoGitMetadataDestinations(root: string, paths: string[], o
   // Inspect its ancestors, not only the command root and not an unbounded
   // repository-wide search. Each observation retains natural Git discovery.
   for (const relative of paths) {
-    for (let current = path.dirname(path.resolve(root, components(relative).join(path.sep))); ; current = path.dirname(current)) {
+    const destination = path.resolve(root, components(relative).join(path.sep));
+    const start = exists(destination) && fs.lstatSync(destination).isDirectory() ? destination : path.dirname(destination);
+    for (let current = start; ; current = path.dirname(current)) {
       const within = path.relative(path.resolve(root), current);
       if (within === ".." || within.startsWith(`..${path.sep}`) || path.isAbsolute(within)) break;
       if (exists(path.join(current, ".git")) || ["HEAD", "objects", "config"].every(name => exists(path.join(current, name)))) naturalRoots.add(current);

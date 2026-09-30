@@ -1,6 +1,7 @@
 import { observeGit } from "./git_observation";
 
 const URL_PROTOCOLS = new Set(["http:", "https:", "ssh:", "git:", "file:", "ftp:", "ftps:"]);
+const SPECIAL_URL_PROTOCOLS = new Set(["http:", "https:", "file:", "ftp:"]);
 const REDACTED = "<redacted remote descriptor>";
 const HELPER = "<redacted remote helper descriptor>";
 
@@ -23,7 +24,11 @@ export function redactRemoteRef(value: string, opaqueHelper = false): string {
   try {
     const parsed = new URL(value);
     if (!parsed.host && parsed.protocol !== "file:") return REDACTED;
-    const authority = value.slice(scheme[0].length).split(/[\/\\?#]/, 1)[0];
+    // Only WHATWG special schemes treat a backslash as an authority delimiter.
+    // For ssh/git/ftps it can be authored userinfo; stopping there would copy
+    // the remaining credential bytes into the supposedly redacted suffix.
+    const authority = value.slice(scheme[0].length).split(
+      SPECIAL_URL_PROTOCOLS.has(parsed.protocol) ? /[\/\\?#]/ : /[\/?#]/, 1)[0];
     // WHATWG can reinterpret extra leading slashes as an authority. Never
     // retain userinfo when the authored and parsed authority boundaries differ.
     if ((parsed.username || parsed.password) && !authority.includes("@")) return REDACTED;

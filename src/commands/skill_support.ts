@@ -4,10 +4,11 @@ import { Config } from "../core/config";
 import {
   buildSkillsIndex,
   buildSkillIndexEntryForWorkspace,
+  createSkillDocumentReader,
   resolveSkillsRoot,
   SkillIndexEntry,
 } from "../graph/skills_indexer";
-import { atomicReplaceContainedFile, readContainedFile, readContainedFileIfPresent } from "../core/filesystem_authority";
+import { atomicReplaceContainedFile, readContainedFileIfPresent } from "../core/filesystem_authority";
 
 export const SKILL_REGISTRY_START = "<!-- mdkg:skill-registry:start -->";
 export const SKILL_REGISTRY_END = "<!-- mdkg:skill-registry:end -->";
@@ -148,14 +149,21 @@ function assertRegistryOutputBudget(config: Config, content: string): void {
 // publishing a skill or registry. The same renderer/budget is used at refresh.
 export function prepareSkillsRegistry(root: string, config: Config,
   pending?: { slug: string; filePath: string; content: string }): string {
-  const raw = readSkillsRegistry(root, config) ?? registryTemplate();
-  const index = buildSkillsIndex(root, config, pending ? {
-    readDocument: filePath => filePath === pending.filePath ? pending.content
-      : readContainedFile({ root, relativePath: path.relative(root, filePath), pathSyntax: "native" }),
-  } : {});
+  const existingRegistry = readSkillsRegistry(root, config);
+  const raw = existingRegistry ?? registryTemplate();
+  const readDocument = createSkillDocumentReader(root, config, pending);
+  // Discovery also bounds directory entries. Include the registry and any new
+  // pending directory in that same prospective inventory before publishing.
+  const newEntries = Number(existingRegistry === null) + Number(Boolean(pending && !fs.existsSync(path.dirname(pending.filePath))));
+  const maxEntries = config.index.limits.max_files - newEntries;
+  if (maxEntries < 0) throw new Error("skill source inventory exceeds file limit");
+  const index = buildSkillsIndex(root, config, { readDocument, maxEntries });
   if (pending) {
+    // A new file is not in the on-disk inventory yet. The shared reader admits
+    // it now; an existing replacement was already admitted and is not counted twice.
+    const content = readDocument(pending.filePath);
     index.skills[pending.slug] = buildSkillIndexEntryForWorkspace(root, "root", pending.slug,
-      pending.filePath, () => pending.content);
+      pending.filePath, () => content);
   }
   const updated = renderSkillRegistryContent(raw, Object.values(index.skills));
   assertRegistryOutputBudget(config, updated);

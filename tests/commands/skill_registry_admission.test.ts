@@ -60,6 +60,30 @@ test("force preflight uses replacement metadata even when the existing skill is 
   assert.match(fs.readFileSync(f.registry, "utf8"), /Valid replacement/);
 });
 
+test("pending source uses UTF8 file, combined and count budgets exactly once", t => {
+  const f = fixture(t), existing = path.join(f.root, ".mdkg/skills/existing/SKILL.md"), pending = path.join(f.root, ".mdkg/skills/new/SKILL.md");
+  fs.mkdirSync(path.dirname(existing), { recursive: true }); fs.writeFileSync(existing, "éé");
+  f.config.index.limits.max_file_bytes = 4; f.config.index.limits.max_total_bytes = 8; f.config.index.limits.max_files = 2;
+  const read = skillsIndexer.createSkillDocumentReader(f.root, f.config, { filePath: pending, content: "éé" });
+  assert.equal(read(existing), "éé"); assert.equal(read(existing), "éé");
+  assert.equal(read(pending), "éé"); assert.equal(read(pending), "éé");
+  assert.equal(fs.existsSync(pending), false);
+  assert.throws(() => skillsIndexer.createSkillDocumentReader(f.root, f.config, { filePath: pending, content: "ééé" })(pending), /byte limit/);
+  const total = skillsIndexer.createSkillDocumentReader(f.root, { ...f.config, index: { ...f.config.index, limits: { ...f.config.index.limits, max_total_bytes: 7 } } }, { filePath: pending, content: "éé" });
+  total(existing); assert.throws(() => total(pending), /byte limit/);
+  const count = skillsIndexer.createSkillDocumentReader(f.root, { ...f.config, index: { ...f.config.index, limits: { ...f.config.index.limits, max_files: 1 } } }, { filePath: pending, content: "éé" });
+  count(existing); assert.throws(() => count(pending), /file limit/);
+});
+
+test("pending force budgets replacement bytes rather than superseded bytes", t => {
+  const f = fixture(t), filePath = path.join(f.root, ".mdkg/skills/replaced/SKILL.md");
+  fs.mkdirSync(path.dirname(filePath), { recursive: true }); fs.writeFileSync(filePath, "x".repeat(20000));
+  f.config.index.limits.max_file_bytes = 8192; f.config.index.limits.max_total_bytes = 8192;
+  const content = "---\nname: replacement\ndescription: bounded replacement\n---\n";
+  assert.match(prepareSkillsRegistry(f.root, f.config, { slug: "replaced", filePath, content }), /bounded replacement/);
+  assert.equal(fs.statSync(filePath).size, 20000);
+});
+
 test("shared registry helpers use the supplied canonical location without granting CLI config compatibility", t => {
   const f = fixture(t);
   f.config.workspaces.root.path = "nested"; f.config.workspaces.root.mdkg_dir = ".graph";
